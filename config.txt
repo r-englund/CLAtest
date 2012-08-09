@@ -1,0 +1,10 @@
+###############################################
+# Project build configuration file for Inviwo #
+# Rename this file to 'config.txt' and adapt. #
+###############################################
+
+# The path to Inviwo home is detected automatically
+IVW_ROOT = $$PWD
+
+# Add modules
+IVW_MODULE_LIST += default

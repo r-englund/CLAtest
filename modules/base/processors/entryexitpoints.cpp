@@ -1,0 +1,113 @@
+#include "entryexitpoints.h"
+
+namespace inviwo {
+
+    EntryExitPoints::EntryExitPoints()
+        : ProcessorGL(),
+        volumePort_(Port::INPORT, "volume"),
+        entryPort_(Port::OUTPORT, "entry-points"),
+        exitPort_(Port::OUTPORT, "exit-points"),
+        camera_("camera", "Camera"),
+        viewDist_("viewDist", "View distance", 0.0f, -10.0f, 10.0f, 0.1f)
+    {
+        addPort(volumePort_);
+        addPort(entryPort_);
+        addPort(exitPort_);
+
+        addProperty(camera_);
+        addProperty(viewDist_);
+    }
+
+    EntryExitPoints::~EntryExitPoints() {}
+
+    void EntryExitPoints::initialize() {
+        ProcessorGL::initialize();
+        shader_ = new Shader("eepgeneration.frag");
+
+        addInteractionHandler(new Trackball(&camera_));
+
+        // compute bounding box dimensions
+        // TODO: change upon volume change
+        //ivec3 volDim = ivec3(256);
+        //unsigned int maxDim = max(volDim.x, max(volDim.y, volDim.z));
+        //vec3 ratio = vec3(maxDim)/volDim;
+
+        vec3 llf = vec3(-1.0, -1.0, -1.0);
+        vec3 urb = vec3( 1.0,  1.0,  1.0);
+        listID_ = glGenLists(1);
+        glNewList(listID_, GL_COMPILE);
+        renderBoundingBox(llf, urb);
+        glEndList();
+    }
+
+    void EntryExitPoints::deinitialize() {
+        delete shader_;
+        ProcessorGL::deinitialize();
+    }
+
+    void EntryExitPoints::renderBoundingBox(vec3 llf, vec3 urb) {
+	    glBegin(GL_QUADS);
+		    // back face
+		    glTexCoord3f(0.0f, 1.0f, 1.0f); glVertex3f(llf[0], urb[1], urb[2]);
+		    glTexCoord3f(0.0f, 0.0f, 1.0f); glVertex3f(llf[0], llf[1], urb[2]);
+		    glTexCoord3f(1.0f, 0.0f, 1.0f); glVertex3f(urb[0], llf[1], urb[2]);
+		    glTexCoord3f(1.0f, 1.0f, 1.0f); glVertex3f(urb[0], urb[1], urb[2]);
+		    // front face
+		    glTexCoord3f(1.0f, 0.0f, 0.0f); glVertex3f(urb[0], llf[1], llf[2]);
+		    glTexCoord3f(0.0f, 0.0f, 0.0f); glVertex3f(llf[0], llf[1], llf[2]);
+		    glTexCoord3f(0.0f, 1.0f, 0.0f); glVertex3f(llf[0], urb[1], llf[2]);
+		    glTexCoord3f(1.0f, 1.0f, 0.0f); glVertex3f(urb[0], urb[1], llf[2]);
+		    // top face
+		    glTexCoord3f(1.0f, 1.0f, 0.0f); glVertex3f(urb[0], urb[1], llf[2]);
+		    glTexCoord3f(0.0f, 1.0f, 0.0f); glVertex3f(llf[0], urb[1], llf[2]);
+		    glTexCoord3f(0.0f, 1.0f, 1.0f); glVertex3f(llf[0], urb[1], urb[2]);
+		    glTexCoord3f(1.0f, 1.0f, 1.0f); glVertex3f(urb[0], urb[1], urb[2]);
+		    // bottom face
+		    glTexCoord3f(0.0f, 0.0f, 1.0f); glVertex3f(llf[0], llf[1], urb[2]);
+		    glTexCoord3f(0.0f, 0.0f, 0.0f); glVertex3f(llf[0], llf[1], llf[2]);
+		    glTexCoord3f(1.0f, 0.0f, 0.0f); glVertex3f(urb[0], llf[1], llf[2]);
+		    glTexCoord3f(1.0f, 0.0f, 1.0f); glVertex3f(urb[0], llf[1], urb[2]);
+		    // right face
+		    glTexCoord3f(1.0f, 0.0f, 1.0f); glVertex3f(urb[0], llf[1], urb[2]);
+		    glTexCoord3f(1.0f, 0.0f, 0.0f); glVertex3f(urb[0], llf[1], llf[2]);
+		    glTexCoord3f(1.0f, 1.0f, 0.0f); glVertex3f(urb[0], urb[1], llf[2]);
+		    glTexCoord3f(1.0f, 1.0f, 1.0f); glVertex3f(urb[0], urb[1], urb[2]);
+		    // left face
+		    glTexCoord3f(0.0f, 1.0f, 0.0f); glVertex3f(llf[0], urb[1], llf[2]);
+		    glTexCoord3f(0.0f, 0.0f, 0.0f); glVertex3f(llf[0], llf[1], llf[2]);
+		    glTexCoord3f(0.0f, 0.0f, 1.0f); glVertex3f(llf[0], llf[1], urb[2]);
+		    glTexCoord3f(0.0f, 1.0f, 1.0f); glVertex3f(llf[0], urb[1], urb[2]);
+	    glEnd();
+    }
+
+    void EntryExitPoints::process() {
+        std::cout << "EntryExitPoints::process()" << std::endl;
+        glEnable(GL_CULL_FACE);
+        shader_->activate();
+
+        glPushMatrix();
+        //glTranslatef(0.0f, 0.0f, -3.0f-viewDist_.get());
+        glMultMatrixf(camera_.viewMatrix().elem);
+        std::cout << camera_.viewMatrix() << std::endl;
+
+        // generate exit points
+        activateTarget(exitPort_);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glCullFace(GL_FRONT);
+        glCallList(listID_);
+        deactivateCurrentTarget();
+
+        // generate entry points
+        activateTarget(entryPort_);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glCullFace(GL_BACK);
+        glCallList(listID_);
+        deactivateCurrentTarget();
+
+        glPopMatrix();
+
+        shader_->deactivate();
+        glDisable(GL_CULL_FACE);
+    }
+
+} // namespace

@@ -1,0 +1,22 @@
+isEmpty(IVW_APPLICATION_PATH) {
+    IVW_APPLICATION_PATH = "$${IVW_ROOT}/bin"
+}
+
+win32 {
+    CONFIG(debug, debug|release) {
+        DESTDIR = "$${IVW_APPLICATION_PATH}/debug"
+    } else {
+        DESTDIR = "$${IVW_APPLICATION_PATH}/release"
+    }
+
+    win32-msvc {
+        LIBS += "$${IVW_ROOT}/bin/$${WIN32_CONFIG_NAME}/voreen.lib"
+        LIBS += "$${IVW_ROOT}/bin/$${WIN32_CONFIG_NAME}/inviwo-core.lib"
+        LIBS += /NODEFAULTLIB:libc.lib
+    }
+    
+    win64-msvc {
+        LIBS += "$${IVW_ROOT}/bin/$${WIN64_CONFIG_NAME}/inviwo-core.lib"
+        LIBS += /NODEFAULTLIB:libc.lib
+    }
+}

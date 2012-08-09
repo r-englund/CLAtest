@@ -1,0 +1,76 @@
+#ifndef IVW_PROCESSOR_H
+#define IVW_PROCESSOR_H
+
+#include "inviwo/core/inviwo.h"
+#include "inviwo/core/interaction/interactionhandler.h"
+#include "inviwo/core/interaction/events/event.h"
+#include "inviwo/core/ports/port.h"
+#include "inviwo/core/properties/properties.h"
+#include "inviwo/core/properties/propertyowner.h"
+
+namespace inviwo {
+
+class Processor : public PropertyOwner, public Serializable {
+
+public:
+    Processor();
+    virtual ~Processor();
+
+    enum CodeState {
+        CODE_STATE_EXPERIMENTAL,
+        CODE_STATE_TESTING,
+        CODE_STATE_STABLE
+    };
+
+    virtual std::string getClassName() const { return "Processor"; }
+    virtual std::string getCategory() const { return "undefined"; }
+    virtual CodeState getCodeState() const { return codeState_; }
+
+    void setIdentifier(const std::string& identifier) { identifier_ = identifier; }
+    std::string getIdentifier() const { return identifier_; }
+
+    virtual void initialize() throw (Exception);
+    virtual void deinitialize() throw (Exception);
+
+    virtual void beforeProcess();
+    virtual void process();
+    virtual void afterProcess();
+
+    virtual bool isEndProcessor() { return false; }
+
+    Port* getPort(std::string identifier) const;
+    std::vector<Port*> getInports() { return inports_; }
+    std::vector<Port*> getOutports() { return outports_; }
+
+    void invalidate() { invalid_ = true; }
+    bool isInvalid() { return (invalid_ == true); }
+    void setValid() { invalid_ = false; }
+
+    void addInteractionHandler(InteractionHandler* interactionHandler);
+    void removeInteractionHandler(InteractionHandler* interactionHandler);
+    inline bool hasInteractionHandler() { return (interactionHandlers_.size() != 0); }
+    void invokeInteractionEvent(Event* event);
+
+protected:
+
+    void addPort(Port* port);
+    void addPort(Port& port);
+
+private:
+    CodeState codeState_;
+    std::string identifier_;
+    std::vector<Port*> inports_;
+    std::vector<Port*> outports_;
+
+    std::vector<InteractionHandler*> interactionHandlers_;
+
+    bool invalid_;
+
+    virtual void serialize(XmlSerializer& s) const;
+    virtual void deserialize(XmlDeserializer& s);
+
+};
+
+} // namespace
+
+#endif // IVW_PROCESSOR_H
