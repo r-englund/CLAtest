@@ -42,9 +42,9 @@ public:
     std::vector<Port*> getInports() { return inports_; }
     std::vector<Port*> getOutports() { return outports_; }
 
-    void invalidate() { invalid_ = true; }
-    bool isInvalid() { return (invalid_ == true); }
-    void setValid() { invalid_ = false; }
+    void invalidate();
+    bool isValid() { return PropertyOwner::isValid(); }
+    void setValid() { PropertyOwner::setValid(); }
 
     void addInteractionHandler(InteractionHandler* interactionHandler);
     void removeInteractionHandler(InteractionHandler* interactionHandler);
@@ -63,8 +63,6 @@ private:
     std::vector<Port*> outports_;
 
     std::vector<InteractionHandler*> interactionHandlers_;
-
-    bool invalid_;
 
     virtual void serialize(XmlSerializer& s) const;
     virtual void deserialize(XmlDeserializer& s);

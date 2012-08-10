@@ -28,8 +28,6 @@ namespace inviwo {
     }
 
     void SimpleRaycaster::process() {
-        std::cout << "SimpleRaycaster::process()" << std::endl;
-
         activateTarget(outport_);
                 
         bindColorTexture(entryPort_, GL_TEXTURE0);

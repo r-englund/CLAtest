@@ -24,8 +24,6 @@ void FirstIvwProcessor::deinitialize() {
 }
 
 void FirstIvwProcessor::process() {
-    std::cout << "FirstIvwProcessor::process()" << std::endl;
-
     activateTarget(outport_);
 
     glClearColor(1.0, 0.0, 0.0, 1.0);

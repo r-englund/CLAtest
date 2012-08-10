@@ -19,6 +19,7 @@ public:
     virtual void deinitialize() throw (Exception);
 
     static void display(void);
+    static void idle(void);
     static void reshape(int width, int height);
 
     static MouseEvent::MouseButton mapMouseButton(const int mouseButtonGLUT);

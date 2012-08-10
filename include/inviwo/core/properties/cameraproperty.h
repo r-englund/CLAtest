@@ -24,6 +24,8 @@ public:
     mat4 viewMatrix() const { return viewMatrix_; }
     mat4 projectionMatrix() const { return projectionMatrix_; }
 
+    void invalidate();
+
 private:
     FloatVec3Property lookFrom_;
     FloatVec3Property lookTo_;

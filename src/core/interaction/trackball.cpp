@@ -23,22 +23,30 @@ namespace inviwo {
 
     void Trackball::invokeEvent(Event* event) {
         MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-        ivec2 curMousePos = mouseEvent->pos();
-        vec3 curTrackballPos = mapNormalizedMousePosToTrackball(mouseEvent->posNormalized());
         if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
-            /*
-            vec3 direction = curTrackballPos - lastTrackballPos_;
-            float velocity = length(direction);
-            if (velocity > MOVEMENT_EPSILON) {
-                //std::cout << "rotation speed " << velocity << std::endl;
+            ivec2 curMousePos = mouseEvent->pos();
+            vec3 curTrackballPos = mapNormalizedMousePosToTrackball(mouseEvent->posNormalized());
+            
+            if (curTrackballPos != lastTrackballPos_) {
+                // calculate rotation angle
+                float rotationAngle = acos(dot(curTrackballPos, lastTrackballPos_));
+
+                // obtain rotation axis
+                vec3 roatationAxis = cross(lastTrackballPos_, curTrackballPos);
+
+                // generate quaternion and rotate camera
+                tgt::quat quaternion = tgt::quat::createQuat(rotationAngle, roatationAxis);
+                camera_->setLookFrom(tgt::quat::rotate(camera_->lookFrom(), quaternion));
+                camera_->setLookTo(tgt::quat::rotate(camera_->lookTo(), quaternion));
+                camera_->setLookUp(tgt::quat::rotate(camera_->lookUp(), quaternion));
+                camera_->invalidate();
+
+                lastMousePos_ = curMousePos;
+                lastTrackballPos_ = curTrackballPos;
             }
-            */
-            camera_->setLookFrom(curTrackballPos);
         } else if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_RIGHT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
-            std::cout << "movement" << std::endl;
+            //std::cout << "zooming" << std::endl;
         }
-        lastMousePos_ = curMousePos;
-        lastTrackballPos_ = curTrackballPos;
     }
 
 } // namespace

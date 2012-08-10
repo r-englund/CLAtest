@@ -15,6 +15,7 @@
 // include some old tgt and Voreen stuff
 //#include "ext/voreen/ext/tgt/logmanager.h"
 //#include "ext/voreen/ext/tgt/matrix.h"
+#include "ext/voreen/ext/tgt/quaternion.h"
 #include "ext/voreen/ext/tgt/vector.h"
 #include "ext/voreen/serialization/serialization.h"
 using namespace tgt;

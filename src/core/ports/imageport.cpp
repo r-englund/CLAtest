@@ -9,7 +9,6 @@ namespace inviwo {
     ImagePort::~ImagePort() {}
 
     void ImagePort::initialize() {
-        std::cout << "initializing port " << identifier_ << std::endl;
         data_ = new Image(dimensions_);
     }
 

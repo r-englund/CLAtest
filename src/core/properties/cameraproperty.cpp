@@ -1,13 +1,14 @@
 #include "inviwo/core/properties/cameraproperty.h"
+#include "inviwo/core/processors/processor.h"
 
 namespace inviwo {
 
 CameraProperty::CameraProperty(std::string identifier, std::string displayName,
                                vec3 lookFrom, vec3 lookTo, vec3 lookUp)
     : CompositeProperty(identifier, displayName),
-    lookFrom_("lookFrom", "Look from", lookFrom, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.0f, 0.0f, -1.0f)),
-    lookTo_("lookTo", "Look to", lookTo, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.0f, 0.0f, 0.0f)),
-    lookUp_("lookUp", "Look up", lookUp, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.0f, 1.0f, 0.0f))
+    lookFrom_("lookFrom", "Look from", lookFrom, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
+    lookTo_("lookTo", "Look to", lookTo, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
+    lookUp_("lookUp", "Look up", lookUp, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f))
 {
     addProperty(lookFrom_);
     addProperty(lookTo_);
@@ -44,6 +45,9 @@ void CameraProperty::updateViewMatrix() {
     viewMatrix_ = m * mat4::createTranslation(-lookFrom_.get());
 }
 
-
+void CameraProperty::invalidate() {
+    Processor* owner = dynamic_cast<Processor*>(getOwner());
+    if (owner) owner->invalidate();
+}
 
 } // namespace

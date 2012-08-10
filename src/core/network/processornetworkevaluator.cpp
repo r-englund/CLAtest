@@ -110,13 +110,16 @@ namespace inviwo {
     }
 
     void ProcessorNetworkEvaluator::evaluate() {
-        std::cout << "ProcessorNetworkEvaluator::evaluate()" << std::endl;
-
+        repaintRequired_ = false;
+        
+        // TODO: perform only if network has been changed
         sortTopologically();
+
         for (size_t i=0; i<processorsSorted_.size(); i++) {
-            if (processorsSorted_[i]->isInvalid()) {
+            if (!processorsSorted_[i]->isValid()) {
                 processorsSorted_[i]->process();
-                //processorsSorted_[i]->setValid();
+                processorsSorted_[i]->setValid();
+                repaintRequired_ = true;
             }
         }
     }

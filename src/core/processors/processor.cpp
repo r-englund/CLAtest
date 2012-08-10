@@ -3,8 +3,7 @@
 namespace inviwo {
 
     Processor::Processor()
-        : identifier_("undefined"),
-          invalid_(true)
+        : identifier_("undefined")
     {}
     Processor::~Processor() {}
 
@@ -41,6 +40,12 @@ namespace inviwo {
             inports_[i]->deinitialize();
         for (size_t i=0; i<outports_.size(); i++)
             outports_[i]->deinitialize();
+    }
+
+    void Processor::invalidate() {
+        PropertyOwner::invalidate();
+        for (size_t i=0; i<outports_.size(); i++)
+            outports_[i]->invalidate();
     }
 
     void Processor::beforeProcess() {}

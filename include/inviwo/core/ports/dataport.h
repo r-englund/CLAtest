@@ -34,9 +34,9 @@ namespace inviwo {
 
     template <typename T>
     void DataPort<T>::connectTo(Port* port) {
+        Port::connectTo(port);
         //TODO: check that port is a DataPort
         connectedDataPort_ = dynamic_cast<DataPort<T>* >(port);
-        connected_ = true;
     }
 
     template <typename T>

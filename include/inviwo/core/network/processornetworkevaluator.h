@@ -24,6 +24,8 @@ public:
     void evaluate();
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
 
+    bool repaintRequired() { return repaintRequired_; }
+
 private:
     bool hasBeenVisited(Processor* processor);
     std::vector<Processor*> getDirectPredecessors(Processor* processor);
@@ -38,6 +40,8 @@ private:
     std::vector<Processor*> processorsVisited_; // a bool vector containing flags whether a processor has been visited during traversal
 
     std::vector<Canvas*> registeredCanvases_;
+
+    bool repaintRequired_;
 };
 
 } // namespace

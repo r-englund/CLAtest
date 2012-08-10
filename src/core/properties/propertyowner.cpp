@@ -3,7 +3,8 @@
 
 namespace inviwo {
 
-PropertyOwner::PropertyOwner() {}
+PropertyOwner::PropertyOwner()
+    : invalid_(true) {}
 
 PropertyOwner::~PropertyOwner() {
     for (size_t i=0; i<properties_.size(); i++)
@@ -27,7 +28,17 @@ Property* PropertyOwner::getPropertyByIdentifier(std::string identifier) {
             return properties_[i];
 }
 
-void PropertyOwner::invalidate() {}
+void PropertyOwner::invalidate() {
+    invalid_ = true;
+}
+
+void PropertyOwner::setValid() {
+    invalid_ = false;
+}
+
+bool PropertyOwner::isValid() {
+    return (invalid_ == false);
+}
 
 
 } // namespace

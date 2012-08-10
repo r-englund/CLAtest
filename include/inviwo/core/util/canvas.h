@@ -18,9 +18,9 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { networkEvaluator_ = networkEvaluator; };
+    void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };
 
-    static ProcessorNetworkEvaluator* networkEvaluator_; //TODO: should this rather be private?
+    static ProcessorNetworkEvaluator* processorNetworkEvaluator_; //TODO: should this rather be private?
 
 protected:
     ivec2 dimensions_;

@@ -20,7 +20,7 @@ namespace inviwo {
     }
 
     void VolumeSource::process() {
-        std::cout << "VolumeSource::process()" << std::endl;
+        //std::cout << "VolumeSource::process()" << std::endl;
         //TODO: if volume has changed setData
     }
 

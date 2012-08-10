@@ -30,6 +30,8 @@ namespace inviwo {
         virtual void initialize();
         virtual void deinitialize();
 
+        void invalidate();
+
     protected:
 
         void setIdentifier(const std::string& name);
@@ -41,6 +43,7 @@ namespace inviwo {
 
     private:
         Processor* processor_;
+        std::vector<Port*> connectedPorts_;
     };
 
 } // namespace

@@ -18,10 +18,13 @@ public:
 
     Property* getPropertyByIdentifier(std::string identifier);
 
-    virtual void invalidate();
+    void invalidate();
+    void setValid();
+    bool isValid();
 
 private:
     std::vector<Property*> properties_;
+    bool invalid_;
 
 };
 

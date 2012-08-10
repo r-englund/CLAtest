@@ -31,6 +31,9 @@ namespace inviwo {
         connectPorts(imageSource->getPort("image.outport"), firstProcessor->getPort("image.inport"));
         connectPorts(firstProcessor->getPort("image.outport"), canvasProcessor->getPort("image.inport"));
         */
+
+        
+        // simple volume raycasting
         VolumeSource* volumeSource = new VolumeSource();
         volumeSource->setIdentifier("VolumeSource");
         EntryExitPoints* entryExitPoints = new EntryExitPoints();
@@ -48,6 +51,21 @@ namespace inviwo {
         connectPorts(entryExitPoints->getPort("entry-points"), rayCaster->getPort("entry-points"));
         connectPorts(entryExitPoints->getPort("exit-points"), rayCaster->getPort("exit-points"));
         connectPorts(rayCaster->getPort("outport"), canvasProcessorGL->getPort("inport"));
+        
+        /*
+        // show entry points
+        VolumeSource* volumeSource = new VolumeSource();
+        volumeSource->setIdentifier("VolumeSource");
+        EntryExitPoints* entryExitPoints = new EntryExitPoints();
+        entryExitPoints->setIdentifier("EntryExitPoints");
+        CanvasProcessorGL* canvasProcessorGL = new CanvasProcessorGL();
+        canvasProcessorGL->setIdentifier("CanvasProcessor");
+        processors_.push_back(volumeSource);
+        processors_.push_back(entryExitPoints);
+        processors_.push_back(canvasProcessorGL);
+        connectPorts(volumeSource->getPort("volume"), entryExitPoints->getPort("volume"));
+        connectPorts(entryExitPoints->getPort("entry-points"), canvasProcessorGL->getPort("inport"));
+        */
     }
 
     ProcessorNetwork::~ProcessorNetwork() {}

@@ -33,7 +33,6 @@ namespace inviwo {
         ImagePort exitPort_;
 
         CameraProperty camera_;
-        FloatProperty viewDist_;
 
         Shader* shader_;
 

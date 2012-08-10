@@ -42,14 +42,12 @@ void keyPressed(unsigned char key, int /*x*/, int /*y*/) {
             Processor* processor = processorNetwork->getProcessorByName("EntryExitPoints");
             FloatProperty* distance = dynamic_cast<FloatProperty*>(processor->getPropertyByIdentifier("viewDist"));
             distance->increase();
-            glutPostRedisplay();
             break;
         }
         case '2': {
             Processor* processor = processorNetwork->getProcessorByName("EntryExitPoints");
             FloatProperty* distance = dynamic_cast<FloatProperty*>(processor->getPropertyByIdentifier("viewDist"));
-            distance->decrease();
-            glutPostRedisplay();
+            distance->decrease();            
             break;
         }
     }
@@ -71,14 +69,14 @@ int main(int argc, char** argv) {
     
     glewInit();
 
-    glutKeyboardFunc(keyPressed);
-    glutSpecialFunc(keyPressedSpecial);
-    
     Project* project = new Project();
     project->load(InviwoApplication::app()->getPath(InviwoApplication::PATH_PROJECT, "simple.vws"));
     processorNetwork = project->getProcessorNetwork();
     processorNetworkEvaluator = new ProcessorNetworkEvaluator(processorNetwork);
     processorNetworkEvaluator->registerCanvas(canvas);
+
+    glutKeyboardFunc(keyPressed);
+    glutSpecialFunc(keyPressedSpecial);
     
     glutMainLoop();
     return 0;

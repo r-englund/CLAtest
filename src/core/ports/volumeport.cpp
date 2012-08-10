@@ -10,7 +10,6 @@ namespace inviwo {
     }
 
     void VolumePort::initialize() {
-        std::cout << "initializing port " << identifier_ << std::endl;
         data_ = new Volume();
     }
 

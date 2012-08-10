@@ -7,15 +7,13 @@ namespace inviwo {
         volumePort_(Port::INPORT, "volume"),
         entryPort_(Port::OUTPORT, "entry-points"),
         exitPort_(Port::OUTPORT, "exit-points"),
-        camera_("camera", "Camera"),
-        viewDist_("viewDist", "View distance", 0.0f, -10.0f, 10.0f, 0.1f)
+        camera_("camera", "Camera", vec3(0.0f, 0.0f, 2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
     {
         addPort(volumePort_);
         addPort(entryPort_);
         addPort(exitPort_);
 
         addProperty(camera_);
-        addProperty(viewDist_);
     }
 
     EntryExitPoints::~EntryExitPoints() {}
@@ -81,14 +79,13 @@ namespace inviwo {
     }
 
     void EntryExitPoints::process() {
-        std::cout << "EntryExitPoints::process()" << std::endl;
         glEnable(GL_CULL_FACE);
         shader_->activate();
 
+        glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        //glTranslatef(0.0f, 0.0f, -3.0f-viewDist_.get());
-        glMultMatrixf(camera_.viewMatrix().elem);
-        std::cout << camera_.viewMatrix() << std::endl;
+        glLoadIdentity();
+        glLoadMatrixf(transpose(camera_.viewMatrix()).elem);
 
         // generate exit points
         activateTarget(exitPort_);

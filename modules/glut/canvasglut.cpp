@@ -8,7 +8,7 @@ namespace inviwo {
 
     EventHandler* CanvasGLUT::eventHandler_;
 
-    ProcessorNetworkEvaluator* CanvasGLUT::networkEvaluator_ = 0;
+    ProcessorNetworkEvaluator* CanvasGLUT::processorNetworkEvaluator_ = 0;
 
     CanvasGLUT::CanvasGLUT(std::string windowTitle, ivec2 dimensions)
         : CanvasGL(dimensions),
@@ -23,9 +23,9 @@ namespace inviwo {
     }
 
     void CanvasGLUT::initialize() throw (Exception) {
-        glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
         glutInitWindowSize(dimensions_.x, dimensions_.y);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
         glutCreateWindow(windowTitle_.c_str());
 
         canvasID_ = glutGetWindow();
@@ -33,6 +33,7 @@ namespace inviwo {
 
         glutReshapeFunc(reshape);
         glutDisplayFunc(display);
+        glutIdleFunc(idle);
         glutKeyboardFunc(keyboard);
         glutSpecialFunc(keyboardSpecial);
         glutMouseFunc(mouse);
@@ -55,12 +56,17 @@ namespace inviwo {
         else gluPerspective (60.0, static_cast<double>(width) / static_cast<double>(height), 0.1, 10.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        display();
+        glutPostRedisplay();
     }
 
     void CanvasGLUT::display(void) {
-        networkEvaluator_->evaluate();
         glutSwapBuffers();
+    }
+
+    void CanvasGLUT::idle() {
+        processorNetworkEvaluator_->evaluate();
+        if (processorNetworkEvaluator_->repaintRequired())
+            glutPostRedisplay();
     }
 
     void CanvasGLUT::keyboard(unsigned char /*key*/, int /*x*/, int /*y*/) {
@@ -101,14 +107,14 @@ namespace inviwo {
         thisCanvas->mouseModifiers_ = mapModifiers(glutGetModifiers());
         MouseEvent* mouseEvent = new MouseEvent(ivec2(x, thisCanvas->dimensions_.y-y), thisCanvas->mouseButton_,
             thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
-        canvases_[glutGetWindow()]->networkEvaluator_->propagateMouseEvent(canvases_[glutGetWindow()], mouseEvent);
+        canvases_[glutGetWindow()]->processorNetworkEvaluator_->propagateMouseEvent(canvases_[glutGetWindow()], mouseEvent);
     }
 
     void CanvasGLUT::mouseMotion(int x, int y) {
         CanvasGLUT* thisCanvas = canvases_[glutGetWindow()];
         MouseEvent* mouseEvent = new MouseEvent(ivec2(x, thisCanvas->dimensions_.y-y), thisCanvas->mouseButton_,
                                                 thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
-        canvases_[glutGetWindow()]->networkEvaluator_->propagateMouseEvent(canvases_[glutGetWindow()], mouseEvent);
+        canvases_[glutGetWindow()]->processorNetworkEvaluator_->propagateMouseEvent(canvases_[glutGetWindow()], mouseEvent);
     }
 
 } // namespace

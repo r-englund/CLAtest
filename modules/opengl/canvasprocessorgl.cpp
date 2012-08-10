@@ -37,8 +37,6 @@ namespace inviwo {
     }
 
     void CanvasProcessorGL::process() {
-        std::cout << "CanvasProcessor::process()" << std::endl;
-
         Image* inImage = inport_.getData();
         ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
         inImageGL->bindColorTexture(GL_TEXTURE0);
