@@ -11,6 +11,10 @@ CubeProxygeometry::CubeProxygeometry()
 
 CubeProxygeometry::~CubeProxygeometry() {}
 
+Processor* CubeProxygeometry::create() const {
+    return new CubeProxygeometry();
+}
+
 void CubeProxygeometry::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader("img_identity.frag");

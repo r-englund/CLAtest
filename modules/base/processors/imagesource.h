@@ -13,6 +13,7 @@ namespace inviwo {
     class ImageSource : public ProcessorGL {
     public:
         ImageSource();
+        virtual Processor* create() const;
 
         virtual void initialize();
         virtual void deinitialize();

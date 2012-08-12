@@ -18,6 +18,10 @@ namespace inviwo {
 
     EntryExitPoints::~EntryExitPoints() {}
 
+    Processor* EntryExitPoints::create() const {
+        return new EntryExitPoints();
+    }
+
     void EntryExitPoints::initialize() {
         ProcessorGL::initialize();
         shader_ = new Shader("eepgeneration.frag");
@@ -79,6 +83,7 @@ namespace inviwo {
     }
 
     void EntryExitPoints::process() {
+        std::cout << "EntryExitPoints::process()" << std::endl;
         glEnable(GL_CULL_FACE);
         shader_->activate();
 

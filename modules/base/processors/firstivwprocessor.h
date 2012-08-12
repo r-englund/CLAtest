@@ -14,6 +14,7 @@ class FirstIvwProcessor : public ProcessorGL {
 public:
     FirstIvwProcessor();
     ~FirstIvwProcessor();
+    virtual Processor* create() const;
 
     void initialize();
     void deinitialize();

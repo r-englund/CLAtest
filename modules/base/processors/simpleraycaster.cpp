@@ -17,6 +17,10 @@ namespace inviwo {
 
     SimpleRaycaster::~SimpleRaycaster() {}
 
+    Processor* SimpleRaycaster::create() const {
+        return new SimpleRaycaster();
+    }
+
     void SimpleRaycaster::initialize() {
         ProcessorGL::initialize();
         shader_ = new Shader("raycasting.frag");

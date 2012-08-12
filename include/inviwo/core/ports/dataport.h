@@ -15,6 +15,7 @@ namespace inviwo {
         virtual ~DataPort();
 
         virtual void connectTo(Port* port);
+        virtual void disconnectFrom(Port* port);
 
         virtual T* getData() const;
         virtual void setData(T* data);
@@ -37,6 +38,13 @@ namespace inviwo {
         Port::connectTo(port);
         //TODO: check that port is a DataPort
         connectedDataPort_ = dynamic_cast<DataPort<T>* >(port);
+    }
+
+    template <typename T>
+    void DataPort<T>::disconnectFrom(Port* port) {
+        Port::disconnectFrom(port);
+        //TODO: check that port is a DataPort
+        connectedDataPort_ = 0;
     }
 
     template <typename T>

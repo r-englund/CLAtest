@@ -9,6 +9,10 @@ namespace inviwo {
         addPort(outport_);
     }
 
+    Processor* ImageSource::create() const {
+        return new ImageSource();
+    }
+
     void ImageSource::initialize() {
         Processor::initialize();
         shader_ = new Shader("img_texturequad.frag");

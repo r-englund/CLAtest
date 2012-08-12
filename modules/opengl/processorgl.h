@@ -14,6 +14,7 @@ class ProcessorGL : public Processor {
 public:
     ProcessorGL();
     virtual ~ProcessorGL();
+    virtual Processor* create() const;
 
     void activateTarget(ImagePort outport);
     void deactivateCurrentTarget();

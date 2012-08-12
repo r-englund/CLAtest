@@ -6,6 +6,10 @@ namespace inviwo {
         : CanvasProcessor()
     {}
 
+    Processor* CanvasProcessorGL::create() const {
+        return new CanvasProcessorGL();
+    }
+
     void CanvasProcessorGL::initialize() {
         CanvasProcessor::initialize();
         shader_ = new Shader("img_texturequad.frag");

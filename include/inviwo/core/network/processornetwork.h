@@ -17,6 +17,10 @@ public:
     ProcessorNetwork();
     virtual ~ProcessorNetwork();
 
+    void addProcessor(Processor* processor);
+    void removeProcessor(Processor* processor);
+
+
     std::vector<Processor*> getProcessors() const { return processors_; }
     Processor* getProcessorByName(std::string name) const;
     template<class T> std::vector<T*> getProcessorsByType() const;

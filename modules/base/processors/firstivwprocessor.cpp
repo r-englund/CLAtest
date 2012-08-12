@@ -13,6 +13,10 @@ FirstIvwProcessor::FirstIvwProcessor()
 
 FirstIvwProcessor::~FirstIvwProcessor() {}
 
+Processor* FirstIvwProcessor::create() const {
+    return new FirstIvwProcessor();
+}
+
 void FirstIvwProcessor::initialize() {
     Processor::initialize();
     shader_ = new Shader("img_identity.frag");

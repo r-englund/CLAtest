@@ -3,9 +3,14 @@
 namespace inviwo {
 
     Processor::Processor()
-        : identifier_("undefined")
+        : identifier_("undefined"),
+          processorWidget_(0)
     {}
     Processor::~Processor() {}
+
+    Processor* Processor::create() const {
+        return new Processor();
+    }
 
     void Processor::addPort(Port* port) {
         // TODO: check if port with same name has been added before

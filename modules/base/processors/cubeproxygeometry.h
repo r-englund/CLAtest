@@ -14,6 +14,7 @@ class CubeProxygeometry : public ProcessorGL {
 public:
     CubeProxygeometry();
     ~CubeProxygeometry();
+    virtual Processor* create() const;
 
     void initialize();
     void deinitialize();

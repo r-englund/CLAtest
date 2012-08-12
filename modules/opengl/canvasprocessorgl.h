@@ -14,6 +14,7 @@ namespace inviwo {
     class CanvasProcessorGL : public CanvasProcessor {
     public:
         CanvasProcessorGL();
+        Processor* create() const;
 
         virtual void initialize();
         virtual void deinitialize();

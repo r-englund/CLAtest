@@ -26,6 +26,7 @@ namespace inviwo {
         bool isOutport() const { return (direction_ == Port::OUTPORT); }
         bool isConnected() const { return connected_; }
         virtual void connectTo(Port* port);
+        virtual void disconnectFrom(Port* port);
 
         virtual void initialize();
         virtual void deinitialize();

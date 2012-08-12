@@ -117,6 +117,8 @@ HEADERS += \
     ../../include/inviwo/core/ports/volumeport.h \
     ../../include/inviwo/core/processors/canvasprocessor.h \
     ../../include/inviwo/core/processors/processor.h \
+    ../../include/inviwo/core/processors/processorfactory.h \
+    ../../include/inviwo/core/processors/processorwidget.h \
     ../../include/inviwo/core/processors/datasource/datasourceprocessor.h \
     ../../include/inviwo/core/processors/datasource/volumesource.h \
     ../../include/inviwo/core/properties/cameraproperty.h \
@@ -168,6 +170,8 @@ SOURCES += \
     ports/volumeport.cpp \
     processors/canvasprocessor.cpp \
     processors/processor.cpp \
+    processors/processorfactory.cpp \
+    processors/processorwidget.cpp \
     processors/datasource/datasourceprocessor.cpp \
     processors/datasource/volumesource.cpp \
     properties/cameraproperty.cpp \

@@ -14,9 +14,21 @@ namespace inviwo {
     void Port::deinitialize() {}
 
     void Port::connectTo(Port* port) {
-        connected_ = true;
-        connectedPorts_.push_back(port);
-        port->connectedPorts_.push_back(this);
+        if (std::find(connectedPorts_.begin(), connectedPorts_.end(), port) == connectedPorts_.end()) {
+            connected_ = true;
+            connectedPorts_.push_back(port);
+            //port->connectedPorts_.push_back(this);
+            port->connectTo(this);
+        }
+    }
+
+    void Port::disconnectFrom(Port* port) {
+        if (std::find(connectedPorts_.begin(), connectedPorts_.end(), port) != connectedPorts_.end()) {
+            connectedPorts_.erase(std::remove(connectedPorts_.begin(), connectedPorts_.end(), port), connectedPorts_.end());
+            if (connectedPorts_.empty())
+                connected_ = false;
+            port->disconnectFrom(this);
+        }
     }
 
     void Port::invalidate() {

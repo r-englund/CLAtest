@@ -59,7 +59,7 @@ void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
 
 
 int main(int argc, char** argv) {
-    InviwoApplication* app = new InviwoApplication("glutminimum", "glutminimum", argc, argv);
+    InviwoApplication* app = new InviwoApplication("glutminimum", "D:/inviwo");
     app->initialize();
 
     glutInit(&argc, argv);
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
     Project* project = new Project();
     project->load(InviwoApplication::app()->getPath(InviwoApplication::PATH_PROJECT, "simple.vws"));
     processorNetwork = project->getProcessorNetwork();
-    processorNetworkEvaluator = new ProcessorNetworkEvaluator(processorNetwork);
+    processorNetworkEvaluator =  new ProcessorNetworkEvaluator(processorNetwork);
     processorNetworkEvaluator->registerCanvas(canvas);
 
     glutKeyboardFunc(keyPressed);

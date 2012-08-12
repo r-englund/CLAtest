@@ -10,7 +10,7 @@ namespace inviwo {
 class InviwoApplication {
 
 public:
-    InviwoApplication(std::string identifier, std::string displayName_, int argc, char** argv);
+    InviwoApplication(std::string displayName_, std::string basePath_);
     virtual ~InviwoApplication();
 
     static InviwoApplication* app();
@@ -32,7 +32,6 @@ protected:
     static InviwoApplication* app_;
 
 private:
-    std::string identifier_;
     std::string displayName_;
 
     std::string basePath_;
@@ -40,7 +39,6 @@ private:
     std::vector<InviwoModule*> modules_;
 
     bool initialized_;
-
 };
 
 } // namespace

@@ -39,7 +39,7 @@ private:
     MouseEvent::MouseState mouseState_;
     Event::Modifier mouseModifiers_;
 
-    // this members are used to deal with the static
+    // these members are used to deal with the static
     // callback functions available through GLUT
     static unsigned int canvasCount_;
     static CanvasGLUT* canvases_[];

@@ -14,8 +14,8 @@ public:
     PortConnection(Port* outport, Port* inport);
     virtual ~PortConnection();
 
-    const Port* getInport() { return inport_; }
-    const Port* getOutport() { return outport_; }
+    Port* getInport() { return inport_; }
+    Port* getOutport() { return outport_; }
 
     virtual void serialize(XmlSerializer& s) const;
     virtual void deserialize(XmlDeserializer& s);

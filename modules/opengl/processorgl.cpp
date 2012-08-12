@@ -7,6 +7,10 @@ namespace inviwo {
     {}
     ProcessorGL::~ProcessorGL() {}
 
+    Processor* ProcessorGL::create() const {
+        return new ProcessorGL();
+    }
+
     void ProcessorGL::activateTarget(ImagePort outport) {
         Image* outImage = outport.getData();
         ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();

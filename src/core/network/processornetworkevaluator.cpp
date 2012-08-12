@@ -1,5 +1,6 @@
 #include "inviwo/core/network/processornetworkevaluator.h"
 #include "inviwo/core/processors/canvasprocessor.h"
+#include "modules/opengl/canvasprocessorgl.h"
 
 namespace inviwo {
 
@@ -116,11 +117,11 @@ namespace inviwo {
         sortTopologically();
 
         for (size_t i=0; i<processorsSorted_.size(); i++) {
-            if (!processorsSorted_[i]->isValid()) {
+            //if (!processorsSorted_[i]->isValid()) {
                 processorsSorted_[i]->process();
                 processorsSorted_[i]->setValid();
                 repaintRequired_ = true;
-            }
+            //}
         }
     }
 

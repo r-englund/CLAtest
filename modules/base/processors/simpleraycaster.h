@@ -15,6 +15,7 @@ namespace inviwo {
     public:
         SimpleRaycaster();
         ~SimpleRaycaster();
+        virtual Processor* create() const;
 
         void initialize();
         void deinitialize();

@@ -16,6 +16,7 @@ namespace inviwo {
     public:
         EntryExitPoints();
         ~EntryExitPoints();
+        virtual Processor* create() const;
 
         void initialize();
         void deinitialize();

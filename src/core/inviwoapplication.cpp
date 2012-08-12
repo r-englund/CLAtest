@@ -1,4 +1,5 @@
 #include "inviwo/core/inviwoapplication.h"
+#include "inviwo/core/processors/processorfactory.h"
 #include "modules/moduleregistration.h"
 
 
@@ -6,13 +7,10 @@ namespace inviwo {
 
     InviwoApplication* InviwoApplication::app_ = 0;
 
-    InviwoApplication::InviwoApplication(std::string identifier, std::string displayName,
-                                         int /*argc*/, char** /*argv*/)
-                                         : identifier_(identifier)
-                                         , displayName_(displayName)
+    InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
+                                         : displayName_(displayName), basePath_(basePath)
     {
         app_ = this;
-        basePath_ = "D:/inviwo";
     }
 
     InviwoApplication::~InviwoApplication() {}
@@ -22,6 +20,10 @@ namespace inviwo {
         registerAllModules(this);
         for (size_t i=0; i<modules_.size(); i++)
             modules_[i]->initialize();
+
+        ProcessorFactory* processorFactory = new ProcessorFactory();
+        processorFactory->initialize();
+
         initialized_ = true;
     }
 

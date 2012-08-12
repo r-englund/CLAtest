@@ -5,6 +5,7 @@
 #include "inviwo/core/interaction/interactionhandler.h"
 #include "inviwo/core/interaction/events/event.h"
 #include "inviwo/core/ports/port.h"
+#include "inviwo/core/processors/processorwidget.h"
 #include "inviwo/core/properties/properties.h"
 #include "inviwo/core/properties/propertyowner.h"
 
@@ -25,9 +26,15 @@ public:
     virtual std::string getClassName() const { return "Processor"; }
     virtual std::string getCategory() const { return "undefined"; }
     virtual CodeState getCodeState() const { return codeState_; }
+    virtual Processor* create() const;
 
     void setIdentifier(const std::string& identifier) { identifier_ = identifier; }
     std::string getIdentifier() const { return identifier_; }
+
+    virtual void createProcessorWidget() { processorWidget_ = 0; }
+    void setProcessorWidget(ProcessorWidget* processorWidget) { processorWidget_ = processorWidget; }
+    ProcessorWidget* getProcessorWidget() { return processorWidget_; }
+    bool hasProcessorWidget() { return (processorWidget_ != 0); }
 
     virtual void initialize() throw (Exception);
     virtual void deinitialize() throw (Exception);
@@ -55,6 +62,9 @@ protected:
 
     void addPort(Port* port);
     void addPort(Port& port);
+
+    ProcessorWidget* processorWidget_;
+
 
 private:
     CodeState codeState_;

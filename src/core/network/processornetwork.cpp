@@ -32,7 +32,7 @@ namespace inviwo {
         connectPorts(firstProcessor->getPort("image.outport"), canvasProcessor->getPort("image.inport"));
         */
 
-        
+        /*
         // simple volume raycasting
         VolumeSource* volumeSource = new VolumeSource();
         volumeSource->setIdentifier("VolumeSource");
@@ -51,6 +51,7 @@ namespace inviwo {
         connectPorts(entryExitPoints->getPort("entry-points"), rayCaster->getPort("entry-points"));
         connectPorts(entryExitPoints->getPort("exit-points"), rayCaster->getPort("exit-points"));
         connectPorts(rayCaster->getPort("outport"), canvasProcessorGL->getPort("inport"));
+        */
         
         /*
         // show entry points
@@ -69,6 +70,51 @@ namespace inviwo {
     }
 
     ProcessorNetwork::~ProcessorNetwork() {}
+
+    void ProcessorNetwork::addProcessor(Processor* processor) {
+        processors_.push_back(processor);
+    }
+
+    void ProcessorNetwork::removeProcessor(Processor* processor) {
+        // remove all connections to other processors
+        std::vector<PortConnection*> eraseList;
+        std::vector<Port*> outports = processor->getOutports();
+        for (size_t i=0; i<portConnections_.size(); i++) {
+            for (size_t j=0; j<outports.size(); j++) {
+                if (portConnections_[i]->getOutport() == outports[j]) {
+                    outports[j]->disconnectFrom(portConnections_[i]->getInport());
+                    eraseList.push_back(portConnections_[i]);
+                }
+            }
+        }
+        for (size_t i=0; i<eraseList.size(); i++) {
+            for (size_t j=0; j<portConnections_.size(); j++) {
+                if (portConnections_[j] == eraseList[i])
+                    portConnections_.erase(portConnections_.begin()+j);
+            }
+        }
+
+        eraseList.clear();
+        std::vector<Port*> inports = processor->getInports();
+        for (size_t i=0; i<portConnections_.size(); i++) {
+            for (size_t j=0; j<inports.size(); j++) {
+                if (portConnections_[i]->getInport() == inports[j]) {
+                    inports[j]->disconnectFrom(portConnections_[i]->getOutport());
+                    eraseList.push_back(portConnections_[i]);
+                }
+            }
+        }
+        for (size_t i=0; i<eraseList.size(); i++) {
+            for (size_t j=0; j<portConnections_.size(); j++) {
+                if (portConnections_[j] == eraseList[i])
+                    portConnections_.erase(portConnections_.begin()+j);
+            }
+        }
+
+        // remove processors itself
+        processors_.erase(std::remove(processors_.begin(), processors_.end(),
+                          processor), processors_.end());
+    }
 
     Processor* ProcessorNetwork::getProcessorByName(std::string name) const {
         for (size_t i=0; i<processors_.size(); i++)
