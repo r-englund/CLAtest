@@ -1,20 +1,16 @@
-#include "inviwo/qt/editor/networkeditorview.h"
-
-#include <QCursor>
 #include <QMatrix>
-#include <QPainter>
 #include <QMouseEvent>
 #include <QWheelEvent>
-#include <QApplication>
+
+#include "inviwo/qt/editor/networkeditorview.h"
 
 namespace inviwo {
 
 NetworkEditorView::NetworkEditorView(QWidget* parent) : QGraphicsView(parent),
-                                                        zoomLevel_(3)
+                                                        zoomLevel_(0)
 {
     setNetworkEditor(NetworkEditor::instance());
     setRenderHint(QPainter::Antialiasing, true);
-    //zoomValue_ = calculateScaleFor(zoomLevel_);
 }
 
 NetworkEditorView::~NetworkEditorView() {}
@@ -29,18 +25,7 @@ NetworkEditor* NetworkEditorView::getNetworkEditor() const {
     return networkEditor_;
 }
 
-int NetworkEditorView::zoomLevel() const {
-    return zoomLevel_;
-}
-
-double NetworkEditorView::zoomScale() const {
-    return zoomValue_;
-}
-
 void NetworkEditorView::setZoomLevel(int zoomLevel) {
-    if (zoomLevel_ == zoomLevel)
-        return;
-
     if (zoomLevel < -10) zoomLevel = -10;
     else if (zoomLevel > 10) zoomLevel = 10;
 
@@ -50,58 +35,22 @@ void NetworkEditorView::setZoomLevel(int zoomLevel) {
     QMatrix matrix;
     matrix.scale(zoomValue_, zoomValue_);
     setMatrix(matrix);
-
-    emit zoomLevelChanged(zoomLevel_);
-    emit zoomScaleChanged(zoomValue_);
 }
 
-void NetworkEditorView::zoomIn() {
-    setZoomLevel(zoomLevel_++);
-}
+void NetworkEditorView::mouseDoubleClickEvent(QMouseEvent* e) {
+    QGraphicsView::mouseDoubleClickEvent(e);
 
-void NetworkEditorView::zoomOut() {
-    setZoomLevel(zoomLevel_--);
-}
-
-void NetworkEditorView::zoomFull() {
-    setZoomLevel(10);
-}
-
-void NetworkEditorView::zoomOne() {
-    setZoomLevel(0);
-}
-
-void NetworkEditorView::zoomFit() {
-    QRectF bBox = networkEditor_->itemsBoundingRect();
-    fitInView(bBox, Qt::KeepAspectRatio);
+    fitInView(networkEditor_->itemsBoundingRect(), Qt::KeepAspectRatio);
 
     float scale = matrix().m11();
     zoomLevel_ = calculateZoomLevelFor(scale);
-
-    emit zoomLevelChanged(zoomLevel_);
-    emit zoomScaleChanged(scale);
-}
-
-void NetworkEditorView::mousePressEvent(QMouseEvent* e) {
-    QGraphicsView::mousePressEvent(e);
-    zoomFit();
-}
-
-void NetworkEditorView::mouseMoveEvent(QMouseEvent* e) {
-    QGraphicsView::mouseMoveEvent(e);
-}
-
-void NetworkEditorView::mouseReleaseEvent(QMouseEvent* e) {
-    QGraphicsView::mouseReleaseEvent(e);
+    e->accept();
 }
 
 void NetworkEditorView::resizeEvent(QResizeEvent* e) {
     QGraphicsView::resizeEvent(e);
-    if (zoomLevel_ != 0) {
-        int oldZoomLevel = zoomLevel_;
-        zoomLevel_ = 0;
-        setZoomLevel(oldZoomLevel);
-    }
+    setZoomLevel(zoomLevel_);
+    e->accept();
 }
 
 void NetworkEditorView::wheelEvent(QWheelEvent* e) {
@@ -113,14 +62,11 @@ void NetworkEditorView::wheelEvent(QWheelEvent* e) {
 }
 
 float NetworkEditorView::calculateScaleFor(int zoomLevel) const {
-    if (!networkEditor_)
-        return 1.0f;
+    float editorWidth = networkEditor_->width();
+    float editorHeight = networkEditor_->height();
 
-    float canvasWidth = networkEditor_->width();
-    float canvasHeight = networkEditor_->height();
-
-    float canvasSize = canvasWidth > canvasHeight ? canvasWidth : canvasHeight;
-    float viewSize = canvasWidth > canvasHeight ?
+    float canvasSize = editorWidth > editorHeight ? editorWidth : editorHeight;
+    float viewSize = editorWidth > editorHeight ?
                      float(viewport()->width()) :
                      float(viewport()->height());
 
@@ -141,14 +87,11 @@ float NetworkEditorView::calculateScaleFor(int zoomLevel) const {
 }
 
 int NetworkEditorView::calculateZoomLevelFor(float scale) const {
-    if (!networkEditor_)
-        return 0;
+    float editorWidth = networkEditor_->width();
+    float editorHeight = networkEditor_->height();
 
-    float canvasWidth = networkEditor_->width();
-    float canvasHeight = networkEditor_->height();
-
-    float canvasSize = canvasWidth > canvasHeight ? canvasWidth : canvasHeight;
-    float viewSize = canvasWidth > canvasHeight ?
+    float canvasSize = editorWidth > editorHeight ? editorWidth : editorHeight;
+    float viewSize = editorWidth > editorHeight ?
                      float(viewport()->width()) :
                      float(viewport()->height());
 

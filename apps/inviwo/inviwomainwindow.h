@@ -8,7 +8,6 @@
 namespace inviwo {
 
     class InviwoMainWindow : public QMainWindow {
-        Q_OBJECT
 
     public:
         InviwoMainWindow();

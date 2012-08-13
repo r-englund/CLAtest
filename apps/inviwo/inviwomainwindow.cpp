@@ -7,14 +7,11 @@
 namespace inviwo { 
 
 InviwoMainWindow::InviwoMainWindow() {
-    NetworkEditorView* dataFlowEditorView = new NetworkEditorView(this);
-    setCentralWidget(dataFlowEditorView);
+    NetworkEditorView* networkEditorView = new NetworkEditorView(this);
+    setCentralWidget(networkEditorView);
 
     ProcessorListWidget* processorListWidget = new ProcessorListWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, processorListWidget);
-
-    //connect( &CWrapperCanvas::instance(), SIGNAL(wrapperSelected(QObject*)),
-    //       d->ui.propertyEditor, SLOT(setObject(QObject*)));
 }
 
 InviwoMainWindow::~InviwoMainWindow() {}
