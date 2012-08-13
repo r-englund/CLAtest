@@ -33,6 +33,13 @@ namespace inviwo {
         return 0;
     }
 
+    bool Processor::allInportsConnected() const {
+        for (size_t i=0; i<inports_.size(); i++)
+            if (!inports_[i]->isConnected())
+                return false;
+        return true;
+    }
+
     void Processor::initialize() throw (Exception) {
         for (size_t i=0; i<inports_.size(); i++)
             inports_[i]->initialize();

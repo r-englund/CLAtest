@@ -18,6 +18,8 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
+    virtual void repaint();
+
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };
 
     static ProcessorNetworkEvaluator* processorNetworkEvaluator_; //TODO: should this rather be private?

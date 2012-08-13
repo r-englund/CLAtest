@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
 
     glutInit(&argc, argv);
 
-    canvas = new CanvasGLUT("glutminimum", ivec2(512,512));//, GLCanvas::RGBAD);
+    canvas = new CanvasGLUT("glutminimum", ivec2(256,256));//, GLCanvas::RGBAD);
     canvas->initialize();
     
     glewInit();

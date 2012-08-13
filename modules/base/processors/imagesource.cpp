@@ -24,13 +24,11 @@ namespace inviwo {
     }
 
     void ImageSource::process() {
-        std::cout << "ImageSource::process()" << std::endl;
-
         Image* outImage = outport_.getData();
         ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
         outImageGL->activateBuffer();
 
-        Texture2D* testTex = new Texture2D(ivec2(512,512), GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
+        Texture2D* testTex = new Texture2D(ivec2(256,256), GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
         glActiveTexture(GL_TEXTURE0);
         testTex->loadTexture("D:/inviwo/data/images/swirl.tga");
 

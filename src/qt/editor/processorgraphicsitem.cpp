@@ -31,7 +31,7 @@ namespace inviwo {
     }
 
     QRectF ProcessorGraphicsItem::calculatePortRect(unsigned int curPort, Port::PortDirection portDir) {
-        QPointF portDims(15.0f, 15.0f);
+        QPointF portDims(20.0f, 20.0f);
         if (portDir == Port::INPORT)
             return QRectF(rect().left()+10.0f+curPort*(portDims.x()*1.5), rect().top(), portDims.x(), portDims.y());
         else

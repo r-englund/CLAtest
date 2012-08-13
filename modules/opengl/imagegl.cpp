@@ -4,7 +4,7 @@ namespace inviwo {
 
     ImageGL::ImageGL()
         : ImageRepresentation(),
-        dimensions_(ivec2(512,512)) //TODO: use actual value
+        dimensions_(ivec2(256,256)) //TODO: use actual value
     {
         initialize();
     }

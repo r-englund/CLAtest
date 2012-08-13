@@ -16,7 +16,6 @@ namespace inviwo {
     }
 
     void CanvasProcessor::createProcessorWidget() {
-        std::cout << "creating canvas" << std::endl;
         InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::app());
         if (app) {
             QWidget* parent = app->getMainWindow();

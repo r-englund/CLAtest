@@ -83,7 +83,6 @@ namespace inviwo {
     }
 
     void EntryExitPoints::process() {
-        std::cout << "EntryExitPoints::process()" << std::endl;
         glEnable(GL_CULL_FACE);
         shader_->activate();
 

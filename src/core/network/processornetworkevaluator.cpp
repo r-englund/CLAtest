@@ -117,12 +117,18 @@ namespace inviwo {
         sortTopologically();
 
         for (size_t i=0; i<processorsSorted_.size(); i++) {
-            //if (!processorsSorted_[i]->isValid()) {
-                processorsSorted_[i]->process();
-                processorsSorted_[i]->setValid();
-                repaintRequired_ = true;
-            //}
+            if (!processorsSorted_[i]->isValid()) {
+                if (processorsSorted_[i]->allInportsConnected()) {
+                    processorsSorted_[i]->process();
+                    if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
+                        processorsSorted_[i]->setValid();
+                    repaintRequired_ = true;
+                }
+            }
         }
+        if (repaintRequired_)
+            for (size_t i=0; i<registeredCanvases_.size(); i++)
+                registeredCanvases_[i]->repaint();
     }
 
 } // namespace

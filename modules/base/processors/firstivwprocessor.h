@@ -27,10 +27,7 @@ protected:
     virtual void process();
 
 private:
-    ImagePort inport_;
     ImagePort outport_;
-
-    Shader* shader_;
 };
 
 } // namespace

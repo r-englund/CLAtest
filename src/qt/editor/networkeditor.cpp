@@ -174,7 +174,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         if (startPort_ && startPort_->isOutport()) {
             connectionLine_ = new QGraphicsLineItem(0, this);
             connectionLine_->setZValue(3.0f);
-            connectionLine_->setPen(QPen(Qt::blue, 2.0f));
+            connectionLine_->setPen(QPen(Qt::darkGray, 4.0f));
             QRectF portRect = startProcessor_->calculatePortRect(startPort_);
             portRect = startProcessor_->mapToScene(portRect).boundingRect();
             connectionLine_->setLine(portRect.center().x(), portRect.center().y(), e->scenePos().x(), e->scenePos().y());

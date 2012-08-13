@@ -49,6 +49,8 @@ public:
     std::vector<Port*> getInports() { return inports_; }
     std::vector<Port*> getOutports() { return outports_; }
 
+    bool allInportsConnected() const;
+
     void invalidate();
     bool isValid() { return PropertyOwner::isValid(); }
     void setValid() { PropertyOwner::setValid(); }

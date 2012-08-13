@@ -10,6 +10,7 @@ namespace inviwo {
           canvas_(0)
     {
         setMinimumSize(256, 256); 
+        setMaximumSize(256, 256); 
     }
 
     CanvasProcessorWidget::~CanvasProcessorWidget() {}
@@ -17,14 +18,14 @@ namespace inviwo {
     void CanvasProcessorWidget::initialize() {
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
         canvas_ = new CanvasQt(this);
+        canvas_->initialize();
+        canvasProcessor->setCanvas(dynamic_cast<Canvas*>(canvas_));
 
         QGridLayout* layout = new QGridLayout;
         layout->setContentsMargins(0, 0, 0, 0);
         layout->addWidget(dynamic_cast<QWidget*>(canvas_), 0, 0);
         setLayout(layout);
 
-
-        canvasProcessor->setCanvas(dynamic_cast<Canvas*>(canvas_));
         initialized_ = true;
     }
 

@@ -5,7 +5,8 @@ namespace inviwo {
 
     Port::Port(PortDirection direction, std::string identifier)
         : direction_(direction),
-          identifier_(identifier)
+          identifier_(identifier),
+          connected_(false)
     {}
 
     Port::~Port() {}

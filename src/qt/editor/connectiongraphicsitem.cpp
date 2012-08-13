@@ -17,7 +17,7 @@ ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcess
 ConnectionGraphicsItem::~ConnectionGraphicsItem() {}
 
 void ConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* opt, QWidget* w) {
-    p->setPen(QPen(Qt::red, 5.0f));
+    p->setPen(QPen(Qt::darkGray, 4.0f));
     p->drawLine(line().x1(), line().y1(), line().x2(), line().y2());
 }
 

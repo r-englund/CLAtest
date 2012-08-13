@@ -19,11 +19,21 @@ namespace inviwo {
 
     ProcessorNetwork::ProcessorNetwork() {
         /*
+        FirstIvwProcessor* firstProcessor = new FirstIvwProcessor();
+        firstProcessor->setIdentifier("FirstIVWProcessor");
+        CanvasProcessorGL* canvasProcessor = new CanvasProcessorGL();
+        canvasProcessor->setIdentifier("CanvasProcessor");
+        processors_.push_back(firstProcessor);
+        processors_.push_back(canvasProcessor);
+        connectPorts(firstProcessor->getPort("outport"), canvasProcessor->getPort("inport"));
+        */
+
+        /*
         ImageSource* imageSource = new ImageSource();
         imageSource->setIdentifier("ImageSource");
         FirstIvwProcessor* firstProcessor = new FirstIvwProcessor();
         firstProcessor->setIdentifier("FirstIVWProcessor");
-        CanvasProcessor* canvasProcessor = new CanvasProcessor();
+        CanvasProcessorGL* canvasProcessor = new CanvasProcessorGL();
         canvasProcessor->setIdentifier("CanvasProcessor");
         processors_.push_back(imageSource);
         processors_.push_back(firstProcessor);
@@ -66,6 +76,21 @@ namespace inviwo {
         processors_.push_back(canvasProcessorGL);
         connectPorts(volumeSource->getPort("volume"), entryExitPoints->getPort("volume"));
         connectPorts(entryExitPoints->getPort("entry-points"), canvasProcessorGL->getPort("inport"));
+        */
+
+        /*
+        // show exit points
+        VolumeSource* volumeSource = new VolumeSource();
+        volumeSource->setIdentifier("VolumeSource");
+        EntryExitPoints* entryExitPoints = new EntryExitPoints();
+        entryExitPoints->setIdentifier("EntryExitPoints");
+        CanvasProcessorGL* canvasProcessorGL = new CanvasProcessorGL();
+        canvasProcessorGL->setIdentifier("CanvasProcessor");
+        processors_.push_back(volumeSource);
+        processors_.push_back(entryExitPoints);
+        processors_.push_back(canvasProcessorGL);
+        connectPorts(volumeSource->getPort("volume"), entryExitPoints->getPort("volume"));
+        connectPorts(entryExitPoints->getPort("exit-points"), canvasProcessorGL->getPort("inport"));
         */
     }
 

@@ -14,4 +14,7 @@ void Canvas::initialize() {}
 
 void Canvas::deinitialize() {}
 
+void Canvas::repaint() {}
+
+
 } // namespace

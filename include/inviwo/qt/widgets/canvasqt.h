@@ -9,6 +9,9 @@ namespace inviwo {
 
     class CanvasQt : public CanvasGL, public QGLWidget {
     public:
+
+        static EventHandler* eventHandler_;
+
         CanvasQt(QWidget* parent);
         ~CanvasQt();
 
@@ -16,10 +19,13 @@ namespace inviwo {
         void initializeGL();
         void resizeGL(int w, int h);
         void paintGL();
+
         void repaint();
-        void update();
-        void swap();
-        void getGLFocus();
+
+        void mousePressEvent(QMouseEvent* e);
+        void mouseReleaseEvent (QMouseEvent* e);
+        void mouseMoveEvent(QMouseEvent* e);
+        void timerEvent(QTimerEvent* e);
     };
 
 } // namespace
