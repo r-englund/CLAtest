@@ -13,13 +13,13 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     : processor_(0) {
     setZValue(1.0f);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
-    setRect(-150, -50, 300, 100);
+    setRect(-60, -30, 120, 60);
 }
 
 ProcessorGraphicsItem::~ProcessorGraphicsItem() {}
 
 QRectF ProcessorGraphicsItem::calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const {
-    QPointF portDims(20.0f, 20.0f);
+    QPointF portDims(10.0f, 10.0f);
     if (portDir == Port::INPORT)
         return QRectF(rect().left()+10.0f+curPort*(portDims.x()*1.5), rect().top(),
                       portDims.x(), portDims.y());

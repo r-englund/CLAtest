@@ -91,17 +91,17 @@ namespace inviwo {
         glLoadIdentity();
         glLoadMatrixf(transpose(camera_.viewMatrix()).elem);
 
-        // generate exit points
-        activateTarget(exitPort_);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glCullFace(GL_FRONT);
-        glCallList(listID_);
-        deactivateCurrentTarget();
-
         // generate entry points
         activateTarget(entryPort_);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glCullFace(GL_BACK);
+        glCallList(listID_);
+        deactivateCurrentTarget();
+
+        // generate exit points
+        activateTarget(exitPort_);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glCullFace(GL_FRONT);
         glCallList(listID_);
         deactivateCurrentTarget();
 

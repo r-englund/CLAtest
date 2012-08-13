@@ -41,18 +41,22 @@ win32 {
 # Add header and source files             #
 ###########################################
 HEADERS += \
+    ../../../include/inviwo/qt/editor/consolewidget.h \
     ../../../include/inviwo/qt/editor/connectiongraphicsitem.h \
     ../../../include/inviwo/qt/editor/networkeditor.h \
     ../../../include/inviwo/qt/editor/networkeditorview.h \
     ../../../include/inviwo/qt/editor/processorlistwidget.h \
-    ../../../include/inviwo/qt/editor/processorgraphicsitem.h
+    ../../../include/inviwo/qt/editor/processorgraphicsitem.h \
+    ../../../include/inviwo/qt/editor/propertylistwidget.h
 
 SOURCES += \
+    consolewidget.cpp \
     connectiongraphicsitem.cpp \
     networkeditor.cpp \
     networkeditorview.cpp \
     processorlistwidget.cpp \
-    processorgraphicsitem.cpp
+    processorgraphicsitem.cpp \
+    propertylistwidget.cpp
         
 HEADERS = $$unique(HEADERS)
 SOURCES = $$unique(SOURCES)

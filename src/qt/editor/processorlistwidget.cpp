@@ -1,4 +1,3 @@
-
 #include <QApplication>
 
 #include "inviwo/core/inviwoapplication.h"

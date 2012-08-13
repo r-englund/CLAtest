@@ -7,7 +7,7 @@
 namespace inviwo {
 
 NetworkEditorView::NetworkEditorView(QWidget* parent) : QGraphicsView(parent),
-                                                        zoomLevel_(0)
+                                                        zoomLevel_(1)
 {
     setNetworkEditor(NetworkEditor::instance());
     setRenderHint(QPainter::Antialiasing, true);

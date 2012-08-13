@@ -4,6 +4,7 @@
 #include "modules/base/processors/entryexitpoints.h"
 #include "modules/base/processors/firstivwprocessor.h"
 #include "modules/base/processors/imagesource.h"
+#include "modules/base/processors/redgreenprocessor.h"
 #include "modules/base/processors/simpleraycaster.h"
 
 namespace inviwo {
@@ -16,6 +17,7 @@ BaseModule::BaseModule() : InviwoModule() {
     addProcessor(new EntryExitPoints());
     addProcessor(new FirstIvwProcessor());
     addProcessor(new ImageSource());
+    addProcessor(new RedGreenProcessor());
     addProcessor(new SimpleRaycaster());
 }
 
