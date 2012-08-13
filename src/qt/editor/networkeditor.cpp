@@ -30,7 +30,8 @@ NetworkEditor::~NetworkEditor() {
 }
 
 
-void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* outport, ProcessorGraphicsItem* inProcessor, Port* inport) {
+void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* outport,
+                                  ProcessorGraphicsItem* inProcessor, Port* inport) {
     // create connection in data flow network
     processorNetwork_->connectPorts(outport, inport);
 
@@ -132,41 +133,6 @@ ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItem(const QPointF pos
     return 0;
 }
 
-
-
-
-
-ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(unsigned int index) const {
-    if (index > 0 && index <= connectionGraphicsItems_.size())
-        return connectionGraphicsItems_[index];
-    return 0;
-}
-
-ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(const QString name) const {
-    /*
-    for(unsigned int i=0; i<connectionGraphicsItems_.size(); i++)
-        if(connectionGraphicsItems_[i]->name() == name)
-            return connectionGraphicsItems_[i];
-    */
-    return 0;
-}
-
-/*
-QList<CWrapperLink*> NetworkEditor::link(CWrapper* output, CWrapper* input)
-{
-    QList<CWrapperLink*> ret;
-
-    for(int i=0; i<d->wrapperLinkList.count(); i++)
-    {
-        CWrapperLink* link = d->wrapperLinkList[i];
-        if(link->input() == input && link->output() == output)
-            ret.push_back(link);
-    }
-
-    return ret;
-}
-*/
-
 void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     startProcessor_ = getProcessorGraphicsItem(e->scenePos());
     if (startProcessor_) {
@@ -177,7 +143,8 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
             connectionLine_->setPen(QPen(Qt::darkGray, 4.0f));
             QRectF portRect = startProcessor_->calculatePortRect(startPort_);
             portRect = startProcessor_->mapToScene(portRect).boundingRect();
-            connectionLine_->setLine(portRect.center().x(), portRect.center().y(), e->scenePos().x(), e->scenePos().y());
+            connectionLine_->setLine(portRect.center().x(), portRect.center().y(),
+                                     e->scenePos().x(), e->scenePos().y());
             connectionLine_->show();
         } else
             QGraphicsScene::mousePressEvent(e);
@@ -247,20 +214,5 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
         }
     }
 }
-
-
-/*
-void NetworkEditor::addConnection(ConnectionGraphicsItem* conncetionGraphicsItem) {
-    if (!conncetionGraphicsItem) return;
-    connectionGraphicsItems_.push_back(conncetionGraphicsItem);
-    conncetionGraphicsItem->show();
-}
-
-void NetworkEditor::removeConnection(ConnectionGraphicsItem* conncetionGraphicsItem) {
-    if (!conncetionGraphicsItem) return;
-    connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(),
-                                               conncetionGraphicsItem), connectionGraphicsItems_.end());
-}
-*/
 
 } // namespace

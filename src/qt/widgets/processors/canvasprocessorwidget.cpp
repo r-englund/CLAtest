@@ -9,8 +9,9 @@ namespace inviwo {
         : ProcessorWidgetQt(processor, parent),
           canvas_(0)
     {
-        setMinimumSize(256, 256); 
-        setMaximumSize(256, 256); 
+        setMinimumSize(256, 256);
+        setMaximumSize(256, 256);
+        setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
     }
 
     CanvasProcessorWidget::~CanvasProcessorWidget() {}
@@ -21,21 +22,19 @@ namespace inviwo {
         canvas_->initialize();
         canvasProcessor->setCanvas(dynamic_cast<Canvas*>(canvas_));
 
-        QGridLayout* layout = new QGridLayout;
-        layout->setContentsMargins(0, 0, 0, 0);
-        layout->addWidget(dynamic_cast<QWidget*>(canvas_), 0, 0);
-        setLayout(layout);
+        QGridLayout* gridLayout = new QGridLayout;
+        gridLayout->setContentsMargins(0, 0, 0, 0);
+        gridLayout->addWidget(dynamic_cast<QWidget*>(canvas_), 0, 0);
+        setLayout(gridLayout);
 
         initialized_ = true;
     }
 
     void CanvasProcessorWidget::show() {
-        //std::cout << "showing" << std::endl;
         ProcessorWidgetQt::show();
     }
 
     void CanvasProcessorWidget::hide() {
-        //std::cout << "hiding" << std::endl;
         ProcessorWidgetQt::hide();
     }
 

@@ -14,8 +14,8 @@ public:
     NetworkEditorView(QWidget* parent=0);
     ~NetworkEditorView();
 
-    void setDataFlowEditor(NetworkEditor* dataFlowEditor);
-    NetworkEditor* getDataFlowEditor() const;
+    void setNetworkEditor(NetworkEditor* networkEditor);
+    NetworkEditor* getNetworkEditor() const;
 
     int zoomLevel() const;
     double zoomScale() const;
@@ -40,7 +40,7 @@ protected:
     void wheelEvent(QWheelEvent * e);
 
 private:
-    NetworkEditor* dataFlowEditor_;
+    NetworkEditor* networkEditor_;
 
     int zoomLevel_;
     float zoomValue_;

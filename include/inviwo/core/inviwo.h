@@ -9,12 +9,12 @@
 #include <string>
 #include <vector>
 
+// error handling
 #include "inviwo/core/util/assertion.h"
 #include "inviwo/core/util/exception.h"
+#define IVW_UNUSED_PARAM(param) (void)param
 
 // include some old tgt and Voreen stuff
-//#include "ext/voreen/ext/tgt/logmanager.h"
-//#include "ext/voreen/ext/tgt/matrix.h"
 #include "ext/voreen/ext/tgt/quaternion.h"
 #include "ext/voreen/ext/tgt/vector.h"
 #include "ext/voreen/serialization/serialization.h"
