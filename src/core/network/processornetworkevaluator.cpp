@@ -1,6 +1,5 @@
 #include "inviwo/core/network/processornetworkevaluator.h"
 #include "inviwo/core/processors/canvasprocessor.h"
-#include "modules/opengl/canvasprocessorgl.h"
 
 namespace inviwo {
 

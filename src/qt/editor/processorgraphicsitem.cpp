@@ -11,7 +11,7 @@ namespace inviwo {
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
     : processor_(0) {
-    setZValue(1.0f);
+    setZValue(2.0f);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-60, -30, 120, 60);
 }
