@@ -6,15 +6,15 @@
 
 namespace inviwo {
 
-    class ProcessorWidgetQt : public ProcessorWidget, public QWidget {
+class ProcessorWidgetQt : public ProcessorWidget, public QWidget {
 
-    public:
-        ProcessorWidgetQt(Processor* processor, QWidget* parent);
-        virtual ~ProcessorWidgetQt();
+public:
+    ProcessorWidgetQt(Processor* processor, QWidget* parent);
+    virtual ~ProcessorWidgetQt();
 
-        virtual void show();
-        virtual void hide();
-    };
+    virtual void show();
+    virtual void hide();
+};
 
 } // namespace
 

@@ -24,6 +24,7 @@ public:
     void mouseReleaseEvent (QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void timerEvent(QTimerEvent* e);
+};
 
 } // namespace
 
