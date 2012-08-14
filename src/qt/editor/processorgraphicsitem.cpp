@@ -9,11 +9,16 @@
 
 namespace inviwo {
 
+static const int width = 120;
+static const int height = 60;
+static const int roundedCorners = 10;
+static const int labelHeight = 8;
+
 ProcessorGraphicsItem::ProcessorGraphicsItem()
     : processor_(0) {
     setZValue(2.0f);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
-    setRect(-60, -30, 120, 60);
+    setRect(-width/2, -height/2, width, height);
 }
 
 ProcessorGraphicsItem::~ProcessorGraphicsItem() {}
@@ -65,25 +70,41 @@ Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
 void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
     IVW_UNUSED_PARAM(widget);
 
+    p->save();
+    p->setRenderHint(QPainter::Antialiasing, true);
+
     // paint processor
     QLinearGradient grad(rect().topLeft(), rect().bottomLeft());
     if (isSelected()) {
-        grad.setColorAt(0.0f, options->palette.mid().color());
-        grad.setColorAt(0.5f, options->palette.button().color());
-        grad.setColorAt(1.0f, options->palette.mid().color());
+        grad.setColorAt(0.0f, QColor(110,77,77));
+        grad.setColorAt(0.2f, QColor(110,77,77));
+        grad.setColorAt(1.0f, QColor(50,38,38));
     } else {
-        grad.setColorAt(0.0f, options->palette.light().color());
-        grad.setColorAt(0.5f, options->palette.button().color());
-        grad.setColorAt(1.0f, options->palette.light().color());
+        grad.setColorAt(0.0f, QColor(77,77,77));
+        grad.setColorAt(0.2f, QColor(77,77,77));
+        grad.setColorAt(1.0f, QColor(38,38,38));
     }
-    p->fillRect(rect(), grad);
-    p->drawRect(rect());
+    p->setBrush(grad);
+
+    QPainterPath roundRectPath;
+    QRectF bRect = rect();
+    roundRectPath.moveTo(bRect.left(), bRect.top()+roundedCorners);
+    roundRectPath.lineTo(bRect.left(), bRect.bottom()-roundedCorners);
+    roundRectPath.arcTo(bRect.left(), bRect.bottom()-(2*roundedCorners), (2*roundedCorners), (2*roundedCorners), 180.0, 90.0);
+    roundRectPath.lineTo(bRect.right()-roundedCorners, bRect.bottom());
+    roundRectPath.arcTo(bRect.right()-(2*roundedCorners), bRect.bottom()-(2*roundedCorners), (2*roundedCorners), (2*roundedCorners), 270.0, 90.0);
+    roundRectPath.lineTo(bRect.right(), bRect.top()+roundedCorners);
+    roundRectPath.arcTo(bRect.right()-(2*roundedCorners), bRect.top(), (2*roundedCorners), (2*roundedCorners), 0.0, 90.0);
+    roundRectPath.lineTo(bRect.left()+roundedCorners, bRect.top());
+    roundRectPath.arcTo(bRect.left(), bRect.top(), (2*roundedCorners), (2*roundedCorners), 90.0, 90.0);
+    p->drawPath(roundRectPath);
 
     // paint inports
     std::vector<Port*> inports = processor_->getInports();
     for (size_t i=0; i<inports.size(); i++) {
         QRectF portRect = calculatePortRect(i, Port::INPORT);
-        p->fillRect(portRect, options->palette.dark());
+        ivec3 portColor = inports[i]->getColorCode();
+        p->setBrush(QColor(portColor.r, portColor.g, portColor.b));
         p->drawRect(portRect);
     }
 
@@ -91,15 +112,24 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     std::vector<Port*> outports = processor_->getOutports();
     for (size_t i=0; i<outports.size(); i++) {
         QRectF portRect = calculatePortRect(i, Port::OUTPORT);
-        p->fillRect(portRect, options->palette.dark());
+        ivec3 portColor = outports[i]->getColorCode();
+        p->setBrush(QColor(portColor.r, portColor.g, portColor.b));
         p->drawRect(portRect);
     }
 
     // paint labels
-    QRectF nameRect(rect().left(), rect().top(), rect().width(), rect().height()/2.0f);
-    QRectF classRect(nameRect.left(), nameRect.bottom(), nameRect.width(), nameRect.height());
+    p->setBrush(Qt::NoBrush);
+    QRectF nameRect(rect().left(), rect().top()+rect().height()/2.0f-labelHeight*2.0,
+                    rect().width(), labelHeight*2.0);
+    QRectF classRect(nameRect.left(), nameRect.bottom(), rect().width(), labelHeight*2.0);
+    p->setPen(Qt::white);
+    p->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
     p->drawText(nameRect, Qt::AlignCenter, QString::fromStdString(processor_->getIdentifier()));
+    p->setPen(Qt::lightGray);
+    p->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
     p->drawText(classRect, Qt::AlignCenter, QString::fromStdString(processor_->getClassName()));
+
+    p->restore();
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {

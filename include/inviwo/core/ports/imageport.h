@@ -17,6 +17,8 @@ namespace inviwo {
 
         void resize(ivec2 dimensions);
 
+        virtual ivec3 getColorCode() { return ivec3(90,127,183); }
+
     private:
         ivec2 dimensions_;
 

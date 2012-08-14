@@ -6,7 +6,7 @@
 
 namespace inviwo {
 
-ProcessorListWidget::ProcessorListWidget(QWidget* parent) : QDockWidget(tr("Processors"), parent) {
+ProcessorListWidget::ProcessorListWidget(QWidget* parent) : InviwoDockWidget(tr("Processors"), parent) {
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
    
     processorList_ = new ProcessorList(this);

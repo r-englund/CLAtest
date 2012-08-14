@@ -1,20 +1,26 @@
-#include <QApplication>
+#include <QFile>
 
 #include "../../modules/opengl/inviwoopengl.h"
 #include "inviwomainwindow.h"
 #include "inviwo/qt/widgets/inviwoapplicationqt.h"
 
 int main(int argc, char** argv) {
-    QApplication a(argc, argv);
+
+    inviwo::InviwoApplicationQt inviwoApp("Inviwo", "D:/inviwo", argc, argv);
+    inviwoApp.initialize();
+
+    #if (QT_VERSION >= 0x040400)
+        QFile styleSheetFile("D:/inviwo/resources/stylesheets/inviwo.qss");
+        styleSheetFile.open(QFile::ReadOnly);
+        QString styleSheet = QLatin1String(styleSheetFile.readAll());
+        inviwoApp.setStyleSheet(styleSheet);
+    #endif
 
     glewInit();
-
-    inviwo::InviwoApplicationQt inviwoApp("Inviwo", "D:/inviwo");
-    inviwoApp.initialize();
 
     inviwo::InviwoMainWindow mainWin;
     inviwoApp.setMainWindow(&mainWin);
     mainWin.show();
 
-    return a.exec();
+    return inviwoApp.exec();
 }

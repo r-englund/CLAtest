@@ -33,6 +33,8 @@ namespace inviwo {
 
         void invalidate();
 
+        virtual ivec3 getColorCode() { return ivec3(128,128,128); }
+
     protected:
 
         void setIdentifier(const std::string& name);

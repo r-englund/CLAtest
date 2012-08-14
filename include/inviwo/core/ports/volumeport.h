@@ -14,6 +14,8 @@ namespace inviwo {
 
         void initialize();
         void deinitialize();
+
+        virtual ivec3 getColorCode() { return ivec3(188,101,101); }
     };
 
 } // namespace

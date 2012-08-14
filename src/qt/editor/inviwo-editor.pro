@@ -43,6 +43,7 @@ win32 {
 HEADERS += \
     ../../../include/inviwo/qt/editor/consolewidget.h \
     ../../../include/inviwo/qt/editor/connectiongraphicsitem.h \
+    ../../../include/inviwo/qt/editor/inviwodockwidget.h \
     ../../../include/inviwo/qt/editor/networkeditor.h \
     ../../../include/inviwo/qt/editor/networkeditorview.h \
     ../../../include/inviwo/qt/editor/processorlistwidget.h \
@@ -52,6 +53,7 @@ HEADERS += \
 SOURCES += \
     consolewidget.cpp \
     connectiongraphicsitem.cpp \
+    inviwodockwidget.cpp \
     networkeditor.cpp \
     networkeditorview.cpp \
     processorlistwidget.cpp \

@@ -2,8 +2,9 @@
 
 namespace inviwo {
 
-PropertyListWidget::PropertyListWidget(QWidget* parent) : QDockWidget(tr("Properties"), parent) {
+PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent) {
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    setMinimumWidth(200);
 }
 
 PropertyListWidget::~PropertyListWidget() {}

@@ -1,9 +1,10 @@
 #ifndef IVW_PROCESSORLISTWIDGET_H
 #define IVW_PROCESSORLISTWIDGET_H
 
-#include <QDockWidget>
 #include <QListWidget>
 #include <QMouseEvent>
+
+#include "inviwo/qt/editor/inviwodockwidget.h"
 
 namespace inviwo {
 
@@ -22,7 +23,7 @@ private:
 };
 
 
-class ProcessorListWidget : public QDockWidget {
+class ProcessorListWidget : public InviwoDockWidget {
 
 public:
     ProcessorListWidget(QWidget* parent);

@@ -62,6 +62,11 @@ private:
     ProcessorGraphicsItem* inProcessor_; ///< Processor representation to which the connection goes to
     Port* outport_; ///< Port of outProcessor_ from which the connection starts
     Port* inport_; ///< Port of inProcessor_ to which the connection goes to
+
+    /**
+     * Returns a QPainterPath representing the current connection as a bezier curve.
+     */
+    QPainterPath computeCurve();
 };
 
 } // namespace

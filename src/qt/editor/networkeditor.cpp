@@ -19,7 +19,8 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     connectionLine_ = 0;
     startProcessor_ = 0;
     endProcessor_ = 0;
-    setSceneRect(-1000, -1000, 1000, 1000);
+    setSceneRect(-1000,-1000,1000,1000);
+    this->setBackgroundBrush(Qt::darkGray);
 
     processorNetwork_ = new ProcessorNetwork();
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
@@ -140,7 +141,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         if (startPort_ && startPort_->isOutport()) {
             connectionLine_ = new QGraphicsLineItem(0, this);
             connectionLine_->setZValue(1.0f);
-            connectionLine_->setPen(QPen(Qt::darkGray, 2.0f));
+            connectionLine_->setPen(QPen(Qt::black, 2.0f));
             QRectF portRect = startProcessor_->calculatePortRect(startPort_);
             portRect = startProcessor_->mapToScene(portRect).boundingRect();
             connectionLine_->setLine(portRect.center().x(), portRect.center().y(),

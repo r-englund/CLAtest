@@ -1,11 +1,11 @@
 #ifndef IVW_PROPERTYLISTWIDGET_H
 #define IVW_PROPERTYLISTWIDGET_H
 
-#include <QDockWidget>
+#include "inviwo/qt/editor/inviwodockwidget.h"
 
 namespace inviwo {
 
-class PropertyListWidget : public QDockWidget {
+class PropertyListWidget : public InviwoDockWidget {
 
 public:
     PropertyListWidget(QWidget* parent);

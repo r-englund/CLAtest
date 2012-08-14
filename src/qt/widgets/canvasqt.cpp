@@ -31,7 +31,6 @@ void CanvasQt::resizeGL(int width, int height) {
     else gluPerspective (60.0, static_cast<double>(width) / static_cast<double>(height), 0.1, 10.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    //sizeChanged(ivec2(w, h));
 }
 
 void CanvasQt::paintGL() {
@@ -68,6 +67,5 @@ void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
         MouseEvent::MOUSE_STATE_PRESS, MouseEvent::MODIFIER_NONE, dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
 }
-
 
 } // namespace
