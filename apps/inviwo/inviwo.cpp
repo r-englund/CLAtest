@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
         inviwoApp.setStyleSheet(styleSheet);
     #endif
 
-    glewInit();
+    //glewInit();
 
     inviwo::InviwoMainWindow mainWin;
     inviwoApp.setMainWindow(&mainWin);

@@ -137,14 +137,16 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
         std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::instance()->connectionGraphicsItems_;
         for (size_t i=0; i<connectionGraphicsItems.size(); i++) {
             if (connectionGraphicsItems[i]->getOutProcessor() == this) {
-                QLineF oldLine = connectionGraphicsItems[i]->line();
+                //QLineF oldLine = connectionGraphicsItems[i]->line();
                 QPointF newAnchor = mapToScene(calculatePortRect(connectionGraphicsItems[i]->getOutport())).boundingRect().center();
-                connectionGraphicsItems[i]->setLine(newAnchor.x(), newAnchor.y(), oldLine.x2(), oldLine.y2());
+                //connectionGraphicsItems[i]->setLine(newAnchor.x(), newAnchor.y(), oldLine.x2(), oldLine.y2());
+                connectionGraphicsItems[i]->setStartPoint(newAnchor);
             }
             if (connectionGraphicsItems[i]->getInProcessor() == this) {
-                QLineF oldLine = connectionGraphicsItems[i]->line();
+                //QLineF oldLine = connectionGraphicsItems[i]->line();
                 QPointF newAnchor = mapToScene(calculatePortRect(connectionGraphicsItems[i]->getInport())).boundingRect().center();
-                connectionGraphicsItems[i]->setLine(oldLine.x1(), oldLine.y1(), newAnchor.x(), newAnchor.y());
+                //connectionGraphicsItems[i]->setLine(oldLine.x1(), oldLine.y1(), newAnchor.x(), newAnchor.y());
+                connectionGraphicsItems[i]->setEndPoint(newAnchor);
             }
         }
     }

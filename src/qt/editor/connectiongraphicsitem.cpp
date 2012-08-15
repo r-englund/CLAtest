@@ -6,34 +6,56 @@
 
 namespace inviwo {
 
+CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint)
+                                     : startPoint_(startPoint),
+                                       endPoint_(endPoint) {}
+
+CurveGraphicsItem::~CurveGraphicsItem() {}
+
+QPainterPath CurveGraphicsItem::obtainCurvePath() const {
+    float deltaY = endPoint_.y()-startPoint_.y();
+    QPointF ctrlPoint1 = QPointF(startPoint_.x(), endPoint_.y()-deltaY/4.0);
+    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y()+deltaY/4.0);
+    QPainterPath bezierCurve;
+    bezierCurve.moveTo(startPoint_);
+    bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint_);
+    return bezierCurve;
+}
+
+void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
+    IVW_UNUSED_PARAM(options);
+    IVW_UNUSED_PARAM(widget);
+
+    p->setPen(QPen(Qt::black, 2.0f));
+    p->drawPath(obtainCurvePath());
+}
+
+QPainterPath CurveGraphicsItem::shape() const {
+    QPainterPathStroker pathStrocker;
+    pathStrocker.setWidth(10.0);
+    return pathStrocker.createStroke(obtainCurvePath());
+}
+
+QRectF CurveGraphicsItem::boundingRect() const {
+    QPointF topLeft = QPointF(std::min(startPoint_.x(), endPoint_.x()),
+                              std::min(startPoint_.y(), endPoint_.y()));
+    return QRectF(topLeft.x(), topLeft.y(),
+                  abs(startPoint_.x()-endPoint_.x()),
+                  abs(startPoint_.y()-endPoint_.y()));
+}
+
+
+
 ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
                                                ProcessorGraphicsItem* inProcessor, Port* inport)
-                                               : outProcessor_(outProcessor), outport_(outport),
+                                               : CurveGraphicsItem(outProcessor->mapToScene(outProcessor->calculatePortRect(outport)).boundingRect().center(),
+                                                                   inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center()),
+                                                 outProcessor_(outProcessor), outport_(outport),
                                                  inProcessor_(inProcessor), inport_(inport) {
     setZValue(1.0f);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable);
 }
 
 ConnectionGraphicsItem::~ConnectionGraphicsItem() {}
-
-QPainterPath ConnectionGraphicsItem::computeCurve() {
-    QPointF startPoint = QPointF(line().x1(), line().y1());
-    QPointF endPoint = QPointF(line().x2(), line().y2());
-    float deltaY = endPoint.y()-startPoint.y();
-    QPointF ctrlPoint1 = QPointF(startPoint.x(), endPoint.y()-deltaY/4.0);
-    QPointF ctrlPoint2 = QPointF(endPoint.x(), startPoint.y()+deltaY/4.0);
-    QPainterPath bezierPath;
-    bezierPath.moveTo(startPoint);
-    bezierPath.cubicTo(ctrlPoint1, ctrlPoint2, endPoint);
-    return bezierPath;
-}
-
-void ConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
-    IVW_UNUSED_PARAM(options);
-    IVW_UNUSED_PARAM(widget);
-
-    p->setPen(QPen(Qt::black, 2.0f));
-    p->drawPath(computeCurve());
-}
 
 } // namespace

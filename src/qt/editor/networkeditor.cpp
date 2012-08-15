@@ -16,7 +16,7 @@ NetworkEditor* NetworkEditor::instance() {
 }
 
 NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
-    connectionLine_ = 0;
+    connectionCurve_ = 0;
     startProcessor_ = 0;
     endProcessor_ = 0;
     setSceneRect(-1000,-1000,1000,1000);
@@ -38,9 +38,6 @@ void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* out
 
     // generate GUI representation and add to editor
     ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(outProcessor, outport, inProcessor, inport);
-    QPointF startPoint = outProcessor->mapToScene(outProcessor->calculatePortRect(outport)).boundingRect().center();
-    QPointF endPoint = inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center();
-    connectionGraphicsItem->setLine(startPoint.x(), startPoint.y(), endPoint.x(), endPoint.y());
     connectionGraphicsItems_.push_back(connectionGraphicsItem);
     addItem(connectionGraphicsItem);
     connectionGraphicsItem->show();
@@ -130,6 +127,12 @@ ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItem(const QPointF pos
         ProcessorGraphicsItem* processorGraphicsItem = qgraphicsitem_cast<ProcessorGraphicsItem*>(graphicsItem);
         if (processorGraphicsItem)
             return processorGraphicsItem;
+        else {
+            ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(graphicsItem);
+            if (connectionGraphicsItem) {
+                //std::cout << "hit" << std::endl;
+            }
+        }
     }
     return 0;
 }
@@ -139,31 +142,29 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     if (startProcessor_) {
         startPort_ = startProcessor_->getSelectedPort(e->scenePos());
         if (startPort_ && startPort_->isOutport()) {
-            connectionLine_ = new QGraphicsLineItem(0, this);
-            connectionLine_->setZValue(1.0f);
-            connectionLine_->setPen(QPen(Qt::black, 2.0f));
             QRectF portRect = startProcessor_->calculatePortRect(startPort_);
             portRect = startProcessor_->mapToScene(portRect).boundingRect();
-            connectionLine_->setLine(portRect.center().x(), portRect.center().y(),
-                                     e->scenePos().x(), e->scenePos().y());
-            connectionLine_->show();
+            connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos());
+            addItem(connectionCurve_);
+            connectionCurve_->show();
         } else
             QGraphicsScene::mousePressEvent(e);
     }
 }
 
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
-    if (connectionLine_) {
-        QLineF line = connectionLine_->line();
-        connectionLine_->setLine(line.x1(), line.y1(), e->scenePos().x(), e->scenePos().y());
+    if (connectionCurve_) {
+        connectionCurve_->setEndPoint(e->scenePos());
+        connectionCurve_->update();
     } else
         QGraphicsScene::mouseMoveEvent(e);
 }
 
 void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
-    if (connectionLine_) {
-        delete connectionLine_;
-        connectionLine_ = 0;
+    if (connectionCurve_) {
+        removeItem(connectionCurve_);
+        delete connectionCurve_;
+        connectionCurve_ = 0;
 
         endProcessor_ = getProcessorGraphicsItem(e->scenePos());
         if (endProcessor_) {

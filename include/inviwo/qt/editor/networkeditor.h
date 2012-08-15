@@ -52,7 +52,7 @@ private:
     ProcessorNetwork* processorNetwork_;
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
     
-    QGraphicsLineItem* connectionLine_;
+    CurveGraphicsItem* connectionCurve_;
     ProcessorGraphicsItem* startProcessor_;
     ProcessorGraphicsItem* endProcessor_;
     Port* startPort_;
