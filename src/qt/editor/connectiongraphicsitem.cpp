@@ -26,7 +26,8 @@ void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* optio
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
 
-    p->setPen(QPen(Qt::black, 2.0f));
+    if (isSelected()) p->setPen(QPen(Qt::darkRed, 2.0, Qt::SolidLine, Qt::RoundCap));
+    else p->setPen(QPen(QColor(38,38,38), 2.0, Qt::SolidLine, Qt::RoundCap));
     p->drawPath(obtainCurvePath());
 }
 
@@ -39,9 +40,9 @@ QPainterPath CurveGraphicsItem::shape() const {
 QRectF CurveGraphicsItem::boundingRect() const {
     QPointF topLeft = QPointF(std::min(startPoint_.x(), endPoint_.x()),
                               std::min(startPoint_.y(), endPoint_.y()));
-    return QRectF(topLeft.x(), topLeft.y(),
-                  abs(startPoint_.x()-endPoint_.x()),
-                  abs(startPoint_.y()-endPoint_.y()));
+    return QRectF(topLeft.x()-30.0, topLeft.y()-30.0,
+                  abs(startPoint_.x()-endPoint_.x())+60.0,
+                  abs(startPoint_.y()-endPoint_.y())+60.0);
 }
 
 
@@ -52,8 +53,8 @@ ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcess
                                                                    inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center()),
                                                  outProcessor_(outProcessor), outport_(outport),
                                                  inProcessor_(inProcessor), inport_(inport) {
-    setZValue(1.0f);
-    setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable);
+    setZValue(2.0f);
+    setFlags(ItemIsSelectable | ItemIsFocusable);
 }
 
 ConnectionGraphicsItem::~ConnectionGraphicsItem() {}

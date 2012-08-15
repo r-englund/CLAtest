@@ -16,7 +16,7 @@ static const int labelHeight = 8;
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
     : processor_(0) {
-    setZValue(2.0f);
+    setZValue(1.0f);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
 }
@@ -137,16 +137,14 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
         std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::instance()->connectionGraphicsItems_;
         for (size_t i=0; i<connectionGraphicsItems.size(); i++) {
             if (connectionGraphicsItems[i]->getOutProcessor() == this) {
-                //QLineF oldLine = connectionGraphicsItems[i]->line();
                 QPointF newAnchor = mapToScene(calculatePortRect(connectionGraphicsItems[i]->getOutport())).boundingRect().center();
-                //connectionGraphicsItems[i]->setLine(newAnchor.x(), newAnchor.y(), oldLine.x2(), oldLine.y2());
                 connectionGraphicsItems[i]->setStartPoint(newAnchor);
+                connectionGraphicsItems[i]->update();
             }
             if (connectionGraphicsItems[i]->getInProcessor() == this) {
-                //QLineF oldLine = connectionGraphicsItems[i]->line();
                 QPointF newAnchor = mapToScene(calculatePortRect(connectionGraphicsItems[i]->getInport())).boundingRect().center();
-                //connectionGraphicsItems[i]->setLine(oldLine.x1(), oldLine.y1(), newAnchor.x(), newAnchor.y());
                 connectionGraphicsItems[i]->setEndPoint(newAnchor);
+                connectionGraphicsItems[i]->update();
             }
         }
     }

@@ -121,7 +121,7 @@ ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItem(std::string ident
     return 0;
 }
 
-ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItem(const QPointF pos) const {
+QGraphicsItem* NetworkEditor::getGraphicsItemAt(const QPointF pos) const {
     QGraphicsItem* graphicsItem = itemAt(pos);
     if (graphicsItem) {
         ProcessorGraphicsItem* processorGraphicsItem = qgraphicsitem_cast<ProcessorGraphicsItem*>(graphicsItem);
@@ -129,27 +129,28 @@ ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItem(const QPointF pos
             return processorGraphicsItem;
         else {
             ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(graphicsItem);
-            if (connectionGraphicsItem) {
-                //std::cout << "hit" << std::endl;
-            }
+            if (connectionGraphicsItem)
+                return connectionGraphicsItem;
         }
     }
     return 0;
 }
 
 void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    startProcessor_ = getProcessorGraphicsItem(e->scenePos());
+    startProcessor_ = dynamic_cast<ProcessorGraphicsItem*>(getGraphicsItemAt(e->scenePos()));
     if (startProcessor_) {
         startPort_ = startProcessor_->getSelectedPort(e->scenePos());
         if (startPort_ && startPort_->isOutport()) {
             QRectF portRect = startProcessor_->calculatePortRect(startPort_);
             portRect = startProcessor_->mapToScene(portRect).boundingRect();
             connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos());
+            connectionCurve_->setZValue(2.0);
             addItem(connectionCurve_);
             connectionCurve_->show();
         } else
             QGraphicsScene::mousePressEvent(e);
-    }
+    } else
+        QGraphicsScene::mousePressEvent(e);
 }
 
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
@@ -166,7 +167,7 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         delete connectionCurve_;
         connectionCurve_ = 0;
 
-        endProcessor_ = getProcessorGraphicsItem(e->scenePos());
+        endProcessor_ = dynamic_cast<ProcessorGraphicsItem*>(getGraphicsItemAt(e->scenePos()));
         if (endProcessor_) {
             endPort_ = endProcessor_->getSelectedPort(e->scenePos());
             if (endPort_ && !endPort_->isOutport())
@@ -179,17 +180,27 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
-    ProcessorGraphicsItem* w = getProcessorGraphicsItem(e->scenePos());
-    if (!w) {
+    QGraphicsItem* graphicsItem = getGraphicsItemAt(e->scenePos());
+    if (graphicsItem) {
+        ProcessorGraphicsItem* processorGraphicsItem = qgraphicsitem_cast<ProcessorGraphicsItem*>(graphicsItem);
+        if (processorGraphicsItem) {
+            QMenu menu;
+            QAction* action = menu.addAction("Delete");
+            QAction* result = menu.exec(QCursor::pos());
+            if (result == action)
+                removeProcessor(processorGraphicsItem->getIdentifier());
+        } else {
+            ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(graphicsItem);
+            if (connectionGraphicsItem) {
+                QMenu menu;
+                QAction* action = menu.addAction("Delete");
+                QAction* result = menu.exec(QCursor::pos());
+                if (result == action)
+                    removeConnection(connectionGraphicsItem);
+            }
+        }
+    } else
         QGraphicsScene::contextMenuEvent(e);
-        return;
-    }
-    QMenu menu;
-    QAction* action = menu.addAction("Delete");
-    QAction* result = menu.exec(QCursor::pos());
-    if (result == action) {
-        removeProcessor(w->getIdentifier());
-    }
 }
 
 

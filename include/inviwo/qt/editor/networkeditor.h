@@ -26,7 +26,7 @@ public:
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
-    ProcessorGraphicsItem* getProcessorGraphicsItem(const QPointF pos) const;
+    QGraphicsItem* getGraphicsItemAt(const QPointF pos) const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
