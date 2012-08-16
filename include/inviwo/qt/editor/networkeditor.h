@@ -57,6 +57,8 @@ private:
     ProcessorGraphicsItem* endProcessor_;
     Port* startPort_;
     Port* endPort_;
+
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace

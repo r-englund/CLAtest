@@ -136,7 +136,7 @@ HEADERS += \
     ../../include/inviwo/core/util/canvas.h \
     ../../include/inviwo/core/util/assertion.h \
     ../../include/inviwo/core/util/exception.h \
-    ../../include/inviwo/core/util/logger.h \
+    ../../include/inviwo/core/util/logdistributor.h \
     ../../include/inviwo/core/util/project.h
 
 SOURCES += \
@@ -187,7 +187,7 @@ SOURCES += \
     util/canvas.cpp \
     util/assertion.cpp \
     util/exception.cpp \
-    util/logger.cpp \
+    util/logdistributor.cpp \
     util/project.cpp
         
 HEADERS = $$unique(HEADERS)

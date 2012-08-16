@@ -24,6 +24,9 @@ public:
     void mouseReleaseEvent (QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void timerEvent(QTimerEvent* e);
+
+private:
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace

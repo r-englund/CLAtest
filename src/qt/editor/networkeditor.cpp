@@ -10,6 +10,8 @@
 
 namespace inviwo {
 
+const std::string NetworkEditor::logSource_ = "NetworkEditor";
+
 NetworkEditor* NetworkEditor::instance() {
     static NetworkEditor* newInstance = new NetworkEditor(qApp);
     return newInstance;
@@ -33,6 +35,7 @@ NetworkEditor::~NetworkEditor() {
 
 void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* outport,
                                   ProcessorGraphicsItem* inProcessor, Port* inport) {
+    LogInfo("Adding connection.");
     // create connection in data flow network
     processorNetwork_->connectPorts(outport, inport);
 
@@ -46,6 +49,7 @@ void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* out
 }
 
 void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsItem) {
+    LogInfo("Removing connection.");
     // remove GUI representation from editor
     connectionGraphicsItem->hide();
     removeItem(connectionGraphicsItem);
@@ -56,6 +60,7 @@ void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsI
 }
 
 void NetworkEditor::addProcessor(std::string className, QPointF pos) {
+    LogInfo("Adding processor.");
     // create processor and add to data flow network
     Processor* processor = ProcessorFactory::instance()->create(className);
     // TODO: if identifier classname exists, generate a new identifier
@@ -86,6 +91,7 @@ void NetworkEditor::addProcessor(std::string className, QPointF pos) {
 }
 
 void NetworkEditor::removeProcessor(std::string identifier) {
+    LogInfo("Removing processor.");
     ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(identifier);
 
     // remove processor from data flow network and delete it

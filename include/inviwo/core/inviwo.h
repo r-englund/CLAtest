@@ -12,7 +12,7 @@
 // error handling
 #include "inviwo/core/util/assertion.h"
 #include "inviwo/core/util/exception.h"
-#include "inviwo/core/util/logger.h"
+#include "inviwo/core/util/logdistributor.h"
 #define IVW_UNUSED_PARAM(param) (void)param
 
 // include some old tgt and Voreen stuff
