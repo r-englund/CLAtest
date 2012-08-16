@@ -163,13 +163,13 @@ struct Matrix2 {
     /// return arbitrary row-vector similar to GLSL. <br>
     /// BUT REMEMBER: GLSL gives you COLS NOT ROWS!
     const Vector2<T>& operator [] (size_t i) const {
-        tgtAssert(i < size, "i must be less than size");
+        //tgtAssert(i < size, "i must be less than size");
         return *((Vector2<T>*) elemRowCol[i]);
     }
     /// return arbitrary row-vector similar to GLSL. <br>
     /// BUT REMEMBER: GLSL gives you COLS NOT ROWS!
     Vector2<T>& operator [] (size_t i) {
-        tgtAssert(i < size, "i must be less than size");
+        //tgtAssert(i < size, "i must be less than size");
         return *((Vector2<T>*) elemRowCol[i]);
     }
 };
@@ -362,13 +362,13 @@ struct Matrix3 {
     /// return arbitrary row-vector similar to GLSL. <br>
     /// BUT REMEMBER: GLSL gives you COLS NOT ROWS!
     const Vector3<T>& operator [] (size_t i) const {
-        tgtAssert(i < size, "i must be less than size");
+        //tgtAssert(i < size, "i must be less than size");
         return *((Vector3<T>*) elemRowCol[i]);
     }
     /// return arbitrary row-vector similar to GLSL. <br>
     /// BUT REMEMBER: GLSL gives you COLS NOT ROWS!
     Vector3<T>& operator [] (size_t i) {
-        tgtAssert(i < size, "i must be less than size");
+        //tgtAssert(i < size, "i must be less than size");
         return *((Vector3<T>*) elemRowCol[i]);
     }
 };
@@ -631,13 +631,13 @@ struct Matrix4 {
     /// return arbitrary row-vector similar to GLSL. <br>
     /// BUT REMEMBER: GLSL gives you COLS NOT ROWS!
     const Vector4<T>& operator [] (size_t i) const {
-        tgtAssert(i < size, "i must be less than size");
+        //tgtAssert(i < size, "i must be less than size");
         return *((Vector4<T>*) elemRowCol[i]);
     }
     /// return arbitrary row-vector similar to GLSL. <br>
     /// BUT REMEMBER: GLSL gives you COLS NOT ROWS!
     Vector4<T>& operator [] (size_t i) {
-        tgtAssert(i < size, "i must be less than size");
+        //tgtAssert(i < size, "i must be less than size");
         return *((Vector4<T>*) elemRowCol[i]);
     }
 
@@ -1063,7 +1063,7 @@ template<class T>
 Matrix4<T> Matrix4<T>::createFrustum(T left, T right, T bottom, T top, T pnear, T pfar) {
 #ifdef TGT_DEBUG
     if ((pnear == pfar) || (left == right) || (top == bottom)) {
-        tgtAssert(false, "The parameters passed to createFrustum cannot be used to form a projection matrix.");
+        //tgtAssert(false, "The parameters passed to createFrustum cannot be used to form a projection matrix.");
         return Matrix4<T>::identity;
     }
 #endif // TGT_DEBUG
@@ -1082,7 +1082,7 @@ template<class T>
 Matrix4<T> Matrix4<T>::createPerspective(T fov, T aspect, T pnear, T pfar) {
 #ifdef TGT_DEBUG
     if ((pnear == pfar) || (rad2deg(fov) > T(355)) || (rad2deg(fov) < T(5)) || (aspect == T(0))) {
-        tgtAssert(false, "The parameters passed to createPerspective cannot be used to form a projection matrix.");
+        //tgtAssert(false, "The parameters passed to createPerspective cannot be used to form a projection matrix.");
         return Matrix4<T>::identity;
     }
 #endif // TGT_DEBUG
@@ -1102,7 +1102,7 @@ template<class T>
 Matrix4<T> Matrix4<T>::createOrtho(T left, T right, T top, T bottom, T pnear, T pfar) {
 #ifdef TGT_DEBUG
     if ((pnear == pfar) || (left == right) || (top == bottom)) {
-        tgtAssert(false, "The parameters passed to createOrthogonal cannot be used to form a projection matrix.");
+        //tgtAssert(false, "The parameters passed to createOrthogonal cannot be used to form a projection matrix.");
         return Matrix4<T>::identity;
     }
 #endif // TGT_DEBUG

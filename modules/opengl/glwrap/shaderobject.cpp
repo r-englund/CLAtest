@@ -27,9 +27,9 @@ namespace inviwo {
         char* fileContent = NULL;
 
         int f, count;
-        f = open(fileName.c_str(), _IOREAD);
-        count = lseek(f, 0, SEEK_END);
-        close(f);
+        f = _open(fileName.c_str(), _IOREAD);
+        count = _lseek(f, 0, SEEK_END);
+        _close(f);
 
         if (fileName.length() > 0) {
             file = fopen(fileName.c_str(), "rt");

@@ -9,10 +9,10 @@
 #include <sstream>
 #include <windows.h>
 
-void logGLError(const char* fileName, const char* functionName, int lineNumber);
+void LogGLError(const char* fileName, const char* functionName, int lineNumber);
 
 #if defined(IVW_DEBUG)
-    #define LGL_ERROR logGLError(__FILE__, __FUNCTION__, __LINE__)
+    #define LGL_ERROR LogGLError(__FILE__, __FUNCTION__, __LINE__)
 #else
     #define LGL_ERROR
 #endif

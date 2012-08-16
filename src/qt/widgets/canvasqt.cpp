@@ -1,5 +1,6 @@
 #include <QMouseEvent>
 
+#include "inviwo/core/inviwo.h"
 #include "inviwo/qt/widgets/canvasqt.h"
 #include "inviwo/core/network/processornetworkevaluator.h"
 
@@ -19,6 +20,7 @@ void CanvasQt::initialize() {
 }
 
 void CanvasQt::initializeGL() {
+    LogInfo("Initializing GLEW");
 	glewInit();
     QGLWidget::initializeGL();
 }
@@ -44,6 +46,7 @@ void CanvasQt::repaint() {
 
 
 void CanvasQt::timerEvent(QTimerEvent* e) {
+    IVW_UNUSED_PARAM(e);
     processorNetworkEvaluator_->evaluate();
     if (processorNetworkEvaluator_->repaintRequired())
         repaint();

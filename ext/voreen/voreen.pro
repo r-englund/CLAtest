@@ -80,16 +80,9 @@ HEADERS += \
 #
 # tgt files    
 #    
-SOURCES += \
-    ext/tgt/assert.cpp \
-    ext/tgt/logmanager.cpp
-
 HEADERS += \
-    ext/tgt/assert.h \
-    ext/tgt/logmanager.h \
     ext/tgt/matrix.h \
     ext/tgt/quaternion.h \
-    ext/tgt/singleton.h \
     ext/tgt/tgt_math.h \
     ext/tgt/types.h \
     ext/tgt/vector.h

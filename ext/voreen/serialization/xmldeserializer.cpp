@@ -45,7 +45,7 @@ XmlDeserializer::XmlDeserializer(std::string documentPath)
             registerFactories(modules.at(i)->getSerializableFactories());
     }
     else {
-        LWARNING("Unable to retrieve factories from modules: InviwoApplication not instantiated");
+        //LWARNING("Unable to retrieve factories from modules: InviwoApplication not instantiated");
     }
 }
 

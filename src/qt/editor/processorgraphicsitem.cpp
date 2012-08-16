@@ -68,6 +68,7 @@ Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
 }
 
 void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
+    IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
 
     p->save();

@@ -394,7 +394,7 @@ inline Quaternion<T> invert(const Quaternion<T>& q) {
 */
 template<class T>
 inline Quaternion<T> lerpQuat(const Quaternion<T>& a, const Quaternion<T>& b, T t) {
-    tgtAssert(!((t < 0.0) || (t > 1.0)), "running-parameter must be between 0 and 1");
+    //tgtAssert(!((t < 0.0) || (t > 1.0)), "running-parameter must be between 0 and 1");
 
     return normalize((b - a)*t + a);
 }
@@ -408,7 +408,7 @@ inline Quaternion<T> lerpQuat(const Quaternion<T>& a, const Quaternion<T>& b, T 
 template<class T>
 Quaternion<T> slerpQuat(const Quaternion<T>& a, const Quaternion<T>& b, T t, bool inv = true) {
     using namespace std; // use overloaded cos and sin
-    tgtAssert(!((t < T(0.0)) || (t > T(1.0))), "running-parameter must be between 0 and 1");
+    //tgtAssert(!((t < T(0.0)) || (t > T(1.0))), "running-parameter must be between 0 and 1");
 
     Quaternion<T> c = b;
     T tmp = a.w*b.w + a.x*b.x + a.y*b.y + a.z*b.z;
@@ -436,7 +436,7 @@ template<class T>
 inline Quaternion<T> squadQuat(const Quaternion<T>& p, const Quaternion<T>& q,
                                const Quaternion<T>& a, const Quaternion<T>& b, double t)
 {
-    tgtAssert(!((t < 0.0) || (t > 1.0)), "running-parameter must be between 0 and 1");
+    //tgtAssert(!((t < 0.0) || (t > 1.0)), "running-parameter must be between 0 and 1");
 
     return slerpQuat<T>(slerpQuat<T>(p, q, static_cast<T>(t)), slerpQuat<T>(a, b, static_cast<T>(t)), static_cast<T>(2.0*t*(1.0 - t)), false);
 }

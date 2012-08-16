@@ -44,7 +44,6 @@
 
 #include "../ext/tgt/vector.h"
 #include "../ext/tgt/matrix.h"
-#include "../ext/tgt/logmanager.h"
 
 #include "xmlserializerbase.h"
 #include "serializationexceptions.h"
@@ -1929,7 +1928,7 @@ inline void XmlDeserializer::deserializeCollection(const std::string& key, T& co
         getNextXmlElement(itemKey);
         // Collection is too small for storing all serialized values. Log it, but do not treat as error.
         //addError(XmlSerializationMemoryAllocationException("Not enough allocated items in collection."));
-        LWARNING("Not enough allocated items in collection with key: " << key);
+        //LWARNING("Not enough allocated items in collection with key: " << key);
     }
     catch (XmlSerializationNoSuchDataException&) {
         removeLastError();
@@ -1977,7 +1976,7 @@ inline void XmlDeserializer::deserializeMap(const std::string& key,
                 if (map.find(key) == map.end()) {
                     // There is no map item with deserialized key. Log it, but do not treat it as error.
                     //addError(XmlSerializationMemoryAllocationException("No allocated map item with key '" + convertDataToString(key) + "'."));
-                    LWARNING("No allocated map item with key '" << convertDataToString(key) << "'.");
+                    //LWARNING("No allocated map item with key '" << convertDataToString(key) << "'.");
                     getNextXmlElement(valueKey);
                     continue;
                 }

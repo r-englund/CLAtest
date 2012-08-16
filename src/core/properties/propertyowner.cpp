@@ -26,6 +26,7 @@ Property* PropertyOwner::getPropertyByIdentifier(std::string identifier) {
     for (size_t i=0; i<properties_.size(); i++)
         if ((properties_[i]->getIdentifier()).compare(identifier) == 0)
             return properties_[i];
+    return 0;
 }
 
 void PropertyOwner::invalidate() {

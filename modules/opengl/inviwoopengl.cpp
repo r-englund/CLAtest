@@ -1,6 +1,6 @@
 #include "inviwoopengl.h"
 
-void logGLError(const char* fileName, const char* functionName, int lineNumber) {
+void LogGLError(const char* fileName, const char* functionName, int lineNumber) {
     GLenum err = glGetError();
     if (err != GL_NO_ERROR) {
         const GLubyte* errorString = gluErrorString(err);
