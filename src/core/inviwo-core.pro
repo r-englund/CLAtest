@@ -127,7 +127,10 @@ HEADERS += \
     ../../include/inviwo/core/properties/ordinalproperty.h \
     ../../include/inviwo/core/properties/properties.h \
     ../../include/inviwo/core/properties/property.h \
+    ../../include/inviwo/core/properties/propertyfactory.h \
     ../../include/inviwo/core/properties/propertyowner.h \
+    ../../include/inviwo/core/properties/propertywidget.h \
+    ../../include/inviwo/core/properties/propertywidgetfactory.h \
     ../../include/inviwo/core/properties/scalarproperties.h \
     ../../include/inviwo/core/properties/templateproperty.h \
     ../../include/inviwo/core/properties/vectorproperties.h \
@@ -179,7 +182,10 @@ SOURCES += \
     properties/compositeproperty.cpp \
     properties/fileproperty.cpp \
     properties/property.cpp \
+    properties/propertyfactory.cpp \
     properties/propertyowner.cpp \
+    properties/propertywidget.cpp \
+    properties/propertywidgetfactory.cpp \
     properties/scalarproperties.cpp \
     properties/vectorproperties.cpp \
     io/datareader.cpp \

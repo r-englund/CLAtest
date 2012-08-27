@@ -31,10 +31,13 @@ void Property::setOwner(PropertyOwner* owner) {
     owner_ = owner;
 }
 
-void Property::onChange() {
-    owner_->invalidate();
+void Property::registerPropertyWidget(PropertyWidget* propertyWidget) {
+    propertyWidgets_.push_back(propertyWidget);
 }
 
-
+void Property::updatePropertyWidgets() {
+    for (size_t i=0; i<propertyWidgets_.size(); i++)
+        propertyWidgets_[i]->updateFromProperty();
+}
 
 } // namespace

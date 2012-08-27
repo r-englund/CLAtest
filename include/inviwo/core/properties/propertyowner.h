@@ -17,6 +17,7 @@ public:
     void addProperty(Property& property);
 
     Property* getPropertyByIdentifier(std::string identifier);
+    std::vector<Property*> getProperties() { return properties_; }
 
     void invalidate();
     void setValid();

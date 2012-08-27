@@ -1,8 +1,8 @@
 #ifndef IVW_PROPERTY_H
 #define IVW_PROPERTY_H
 
-#include "inviwo/core/inviwo.h"
 #include "inviwo/core/properties/propertyowner.h"
+#include "inviwo/core/properties/propertywidget.h"
 
 namespace inviwo {
 
@@ -20,12 +20,14 @@ public:
     PropertyOwner* getOwner();
     virtual void setOwner(PropertyOwner* owner);
 
-    virtual void onChange();
+    void registerPropertyWidget(PropertyWidget* propertyWidget);
+    void updatePropertyWidgets();
 
 private:
     std::string identifier_;
     std::string displayName_;
     PropertyOwner* owner_;
+    std::vector<PropertyWidget*> propertyWidgets_;
 };
 
 } // namespace

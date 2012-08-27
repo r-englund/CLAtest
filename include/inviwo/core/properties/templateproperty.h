@@ -35,6 +35,7 @@ namespace inviwo {
     void TemplateProperty<T>::set(T value) {
         value_ = value;
         getOwner()->invalidate();
+        updatePropertyWidgets();
     }
 }
 

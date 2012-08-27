@@ -17,7 +17,7 @@ namespace inviwo {
         void deinitialize();
 
         void registerProcessor(Processor* processor);
-        Processor* create(std::string className) const;
+        Processor* ProcessorFactory::create(std::string className) const;
 
     protected:
         static ProcessorFactory* factory_;

@@ -48,6 +48,7 @@ HEADERS += \
     ../../../include/inviwo/qt/editor/networkeditorview.h \
     ../../../include/inviwo/qt/editor/processorlistwidget.h \
     ../../../include/inviwo/qt/editor/processorgraphicsitem.h \
+    ../../../include/inviwo/qt/editor/processorpropertywidget.h \
     ../../../include/inviwo/qt/editor/propertylistwidget.h
 
 SOURCES += \
@@ -58,6 +59,7 @@ SOURCES += \
     networkeditorview.cpp \
     processorlistwidget.cpp \
     processorgraphicsitem.cpp \
+    processorpropertywidget.cpp \
     propertylistwidget.cpp
         
 HEADERS = $$unique(HEADERS)

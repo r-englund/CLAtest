@@ -44,13 +44,19 @@ HEADERS += \
     ../../../include/inviwo/qt/widgets/canvasqt.h \
     ../../../include/inviwo/qt/widgets/inviwoapplicationqt.h \
     ../../../include/inviwo/qt/widgets/processors/canvasprocessorwidget.h \
-    ../../../include/inviwo/qt/widgets/processors/processorwidgetqt.h
+    ../../../include/inviwo/qt/widgets/processors/processorwidgetqt.h \
+    ../../../include/inviwo/qt/widgets/properties/floatpropertywidgetqt.h \
+    ../../../include/inviwo/qt/widgets/properties/propertywidgetfactoryqt.h \
+    ../../../include/inviwo/qt/widgets/properties/propertywidgetqt.h
 
 SOURCES += \
     canvasqt.cpp \
     inviwoapplicationqt.cpp \
     processors/canvasprocessorwidget.cpp \
-    processors/processorwidgetqt.cpp
+    processors/processorwidgetqt.cpp \
+    properties/floatpropertywidgetqt.cpp \
+    properties/propertywidgetfactoryqt.cpp \
+    properties/propertywidgetqt.cpp
         
 HEADERS = $$unique(HEADERS)
 SOURCES = $$unique(SOURCES)

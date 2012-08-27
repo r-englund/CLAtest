@@ -3,6 +3,7 @@
 
 #include "inviwo/qt/editor/networkeditor.h"
 #include "inviwo/qt/editor/processorlistwidget.h"
+#include "inviwo/qt/editor/propertylistwidget.h"
 
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
@@ -83,10 +84,13 @@ void NetworkEditor::addProcessor(std::string className, QPointF pos) {
         processor->getProcessorWidget()->show();
     }
 
+    // show property widgets
+    PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+    propertyListWidget_->showProcessorProperties(processor);
+
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
     if (canvasProcessor) {
         processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas());
-
     }
 }
 

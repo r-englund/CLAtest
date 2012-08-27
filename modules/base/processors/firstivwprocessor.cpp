@@ -4,9 +4,11 @@ namespace inviwo {
 
 FirstIvwProcessor::FirstIvwProcessor()
     : ProcessorGL(),
-      outport_(Port::OUTPORT, "outport")
+      outport_(Port::OUTPORT, "outport"),
+      intensity_("colorIntensity", "Color intensity", 1.0f, 0.0f, 1.0f, 0.1f)
 {
     addPort(outport_);
+    addProperty(intensity_);
 }
 
 FirstIvwProcessor::~FirstIvwProcessor() {}
@@ -26,10 +28,11 @@ void FirstIvwProcessor::deinitialize() {
 void FirstIvwProcessor::process() {
     activateTarget(outport_);
 
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClearColor(1.0*intensity_.get(), 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    /*
     glLoadIdentity();
-    glColor4f(1.0, 0.0, 0.0, 1.0);
+    glColor4f(1.0f*intensity_.get(), 0.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
         glVertex3f(-1.0f,  1.0f, 0.0f);
         glVertex3f( 1.0f,  1.0f, 0.0f);
@@ -42,6 +45,7 @@ void FirstIvwProcessor::process() {
     glVertex3f(-1.0f, -1.0f, 0.0f);
     glVertex3f( 1.0f, -1.0f, 0.0f);
     glEnd();
+    */
 
     deactivateCurrentTarget();
 }

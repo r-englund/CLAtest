@@ -1,46 +1,53 @@
 #include "inviwo/core/inviwoapplication.h"
 #include "inviwo/core/inviwomodule.h"
-#include "inviwo/core/processors/processorfactory.h"
+#include "inviwo/core/properties/propertywidgetfactory.h"
 
 
 namespace inviwo {
 
-ProcessorFactory* ProcessorFactory::factory_ = 0;
+PropertyWidgetFactory* PropertyWidgetFactory::factory_ = 0;
 
-ProcessorFactory::ProcessorFactory() {
+PropertyWidgetFactory::PropertyWidgetFactory() {
     factory_ = this;
 }
 
-ProcessorFactory::~ProcessorFactory() {}
+PropertyWidgetFactory::~PropertyWidgetFactory() {}
 
-void ProcessorFactory::initialize() {
+void PropertyWidgetFactory::initialize() {
     //TODO: check that inviwoapp is initialized
 
+    /*
     InviwoApplication* inviwoApp = InviwoApplication::app();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
         std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
         for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
             registerProcessor(curProcessorList[curProcessorId]);
     }
+    */
 }
 
-void ProcessorFactory::registerProcessor(Processor* processor) {
+void PropertyWidgetFactory::registerPropertyWidget(PropertyWidget* propertyWidget) {
+    /*
     if (processorClassMap_.find(processor->getClassName()) == processorClassMap_.end())
         processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));
+    */
 }
 
-Processor* ProcessorFactory::create(std::string className) const {
-    std::map<std::string, Processor*>::iterator it = processorClassMap_.find(className);
-    if (it != processorClassMap_.end())
+PropertyWidget* PropertyWidgetFactory::create(std::string className) const {
+    /*
+    std::map<std::string, PropertyWidget*>::iterator it = propertyWidgetMap_.find(className);
+    if (it != propertyWidgetMap_.end())
         return it->second->create();
     else
+    */
         return 0;
+
 }
 
-void ProcessorFactory::deinitialize() {
+void PropertyWidgetFactory::deinitialize() {
 }
 
-ProcessorFactory* ProcessorFactory::instance() {
+PropertyWidgetFactory* PropertyWidgetFactory::instance() {
     return factory_;
 }
 
