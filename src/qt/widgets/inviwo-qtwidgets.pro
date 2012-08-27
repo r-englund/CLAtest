@@ -45,7 +45,11 @@ HEADERS += \
     ../../../include/inviwo/qt/widgets/inviwoapplicationqt.h \
     ../../../include/inviwo/qt/widgets/processors/canvasprocessorwidget.h \
     ../../../include/inviwo/qt/widgets/processors/processorwidgetqt.h \
+    ../../../include/inviwo/qt/widgets/properties/camerapropertywidgetqt.h \
+    ../../../include/inviwo/qt/widgets/properties/filepropertywidgetqt.h \
     ../../../include/inviwo/qt/widgets/properties/floatpropertywidgetqt.h \
+    ../../../include/inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h \
+    ../../../include/inviwo/qt/widgets/properties/intpropertywidgetqt.h \
     ../../../include/inviwo/qt/widgets/properties/propertywidgetfactoryqt.h \
     ../../../include/inviwo/qt/widgets/properties/propertywidgetqt.h
 
@@ -54,7 +58,11 @@ SOURCES += \
     inviwoapplicationqt.cpp \
     processors/canvasprocessorwidget.cpp \
     processors/processorwidgetqt.cpp \
+    properties/camerapropertywidgetqt.cpp \
+    properties/filepropertywidgetqt.cpp \
     properties/floatpropertywidgetqt.cpp \
+    properties/floatvec3propertywidgetqt.cpp \
+    properties/intpropertywidgetqt.cpp \
     properties/propertywidgetfactoryqt.cpp \
     properties/propertywidgetqt.cpp
         

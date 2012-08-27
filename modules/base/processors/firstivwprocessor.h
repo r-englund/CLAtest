@@ -28,7 +28,7 @@ protected:
 
 private:
     ImagePort outport_;
-    FloatProperty intensity_;
+    FloatVec3Property color_;
 };
 
 } // namespace
