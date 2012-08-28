@@ -62,6 +62,7 @@ private:
     std::vector<voreen::SerializableFactory*> serializableFactories_;
 
     std::string xmlDocuFileName_;
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace

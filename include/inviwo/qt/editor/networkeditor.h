@@ -51,6 +51,8 @@ private:
 
     ProcessorNetwork* processorNetwork_;
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
+
+    bool processorWithIdentifierExists(std::string identifier);
     
     CurveGraphicsItem* connectionCurve_;
     ProcessorGraphicsItem* startProcessor_;

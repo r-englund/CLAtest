@@ -3,6 +3,8 @@
 
 namespace inviwo {
 
+const std::string InviwoModule::logSource_ = "InviwoModule";
+
 InviwoModule::InviwoModule()
     : identifier_("undefined")
     , xmlDocuFileName_("undefined")
@@ -11,7 +13,7 @@ InviwoModule::InviwoModule()
 
 InviwoModule::~InviwoModule() {
     if (isInitialized())
-        std::cout << "Module '" << getIdentifier() << "' should have been deinitialized before destruction.";
+        LogWarn("Module '" + getIdentifier() + "' should have been deinitialized before destruction.");
 
     for (size_t i=0; i<processors_.size(); i++)
         delete processors_[i];

@@ -60,12 +60,31 @@ void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsI
     processorNetworkEvaluator_->evaluate();
 }
 
+bool NetworkEditor::processorWithIdentifierExists(std::string identifier) {
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    for (size_t i=0; i<processors.size(); i++)
+        if (processors[i]->getIdentifier() == identifier)
+            return true;
+    return false;
+}
+
 void NetworkEditor::addProcessor(std::string className, QPointF pos) {
     LogInfo("Adding processor.");
     // create processor and add to data flow network
     Processor* processor = ProcessorFactory::instance()->create(className);
-    // TODO: if identifier classname exists, generate a new identifier
-    processor->setIdentifier(className);
+    
+    // if identifier classname already exists, generate a new identifier
+    std::string identifier = className;
+    if (processorWithIdentifierExists(identifier)) {
+        unsigned int idNumber = 1;
+        do {
+            std::stringstream stringStream;
+            stringStream << idNumber++;            
+            identifier = className + stringStream.str();
+        } while (processorWithIdentifierExists(identifier));
+    }
+
+    processor->setIdentifier(identifier);
     processor->createProcessorWidget();
     processorNetwork_->addProcessor(processor);
 
