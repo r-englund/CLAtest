@@ -157,8 +157,13 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
             connectionCurve_->setZValue(2.0);
             addItem(connectionCurve_);
             connectionCurve_->show();
-        } else
+        } else {
+            LogInfo("Processor " + startProcessor_->getIdentifier() + " selected.");
+            // show property widgets
+            PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+            propertyListWidget_->showProcessorProperties(startProcessor_->getProcessor());
             QGraphicsScene::mousePressEvent(e);
+        }
     } else
         QGraphicsScene::mousePressEvent(e);
 }

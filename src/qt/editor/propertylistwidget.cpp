@@ -17,21 +17,26 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
 PropertyListWidget::~PropertyListWidget() {}
 
 void PropertyListWidget::showProcessorProperties(Processor* processor) {
-    // check if processor widgets are already generated
-    // if not generate and store them
-    // else obtain them
-    // show them
-    QWidget* processorPropertyWidget = new QWidget();
-    QVBoxLayout* vLayout = new QVBoxLayout(processorPropertyWidget);
-    vLayout->addWidget(new QLabel(QString::fromStdString(processor->getIdentifier())));
-    std::vector<Property*> properties = processor->getProperties();
-    for (size_t i=0; i<properties.size(); i++) {
-        Property* curProperty = properties[i];
-        PropertyWidgetQt* propertyWidget = propertyWidgetFactory_->create(curProperty);
-        vLayout->addWidget(propertyWidget);
-        curProperty->registerPropertyWidget(propertyWidget);
+    // check if processor widget has been already generated
+    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
+    if (it != propertyWidgetMap_.end()) {
+        // property widget has already been created and stored in the map
+        setWidget(it->second);
+    } else {
+        // create property widget and store it in the map
+        QWidget* processorPropertyWidget = new QWidget();
+        QVBoxLayout* vLayout = new QVBoxLayout(processorPropertyWidget);
+        vLayout->addWidget(new QLabel(QString::fromStdString(processor->getIdentifier())));
+        std::vector<Property*> properties = processor->getProperties();
+        for (size_t i=0; i<properties.size(); i++) {
+            Property* curProperty = properties[i];
+            PropertyWidgetQt* propertyWidget = propertyWidgetFactory_->create(curProperty);
+            vLayout->addWidget(propertyWidget);
+            curProperty->registerPropertyWidget(propertyWidget);
+        }
+        setWidget(processorPropertyWidget);
+        propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
     }
-    setWidget(processorPropertyWidget);
 }
 
 PropertyListWidget* PropertyListWidget::instance() {
