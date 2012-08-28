@@ -67,6 +67,7 @@ protected:
 
     ProcessorWidget* processorWidget_;
 
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
 
 private:
     CodeState codeState_;
@@ -78,7 +79,6 @@ private:
 
     virtual void serialize(XmlSerializer& s) const;
     virtual void deserialize(XmlDeserializer& s);
-
 };
 
 } // namespace

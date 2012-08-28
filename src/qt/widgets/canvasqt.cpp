@@ -6,12 +6,17 @@
 
 namespace inviwo {
 
+bool CanvasQt::glewInitialized_ = false;
+QGLWidget* CanvasQt::sharedWidget_ = 0;
 const std::string CanvasQt::logSource_ = "CanvasQt";
 
 CanvasQt::CanvasQt(QWidget* parent)
-    : QGLWidget(QGLFormat(QGL::SingleBuffer | QGL::DepthBuffer), parent),
+    : QGLWidget(QGLFormat(QGL::SingleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
     CanvasGL(ivec2(256,256))
-{}
+{
+    if (sharedWidget_ == 0)
+        sharedWidget_ = this;
+}
 
 CanvasQt::~CanvasQt() {}
 
@@ -23,7 +28,10 @@ void CanvasQt::initialize() {
 
 void CanvasQt::initializeGL() {
     LogInfo("Initializing GLEW");
-	glewInit();
+    if (!glewInitialized_) {
+	    glewInit();
+        glewInitialized_ = true;
+    }
     QGLWidget::initializeGL();
 }
 

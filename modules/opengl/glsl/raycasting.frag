@@ -41,7 +41,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
 }
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy / vec2(512.0); //TODO: replace vec2(512.0) by screenDimRCP
+    vec2 texCoords = gl_FragCoord.xy / vec2(256.0); //TODO: replace vec2(512.0) by screenDimRCP
     vec3 entryPoint = texture2D(entryTex_, texCoords).rgb;
     vec3 exitPoint = texture2D(exitTex_, texCoords).rgb;
     vec4 color = rayTraversal(entryPoint, exitPoint);

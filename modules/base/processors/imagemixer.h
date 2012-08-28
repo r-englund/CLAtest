@@ -1,5 +1,5 @@
-#ifndef IVW_FIRSTIVWPROCESSOR_H
-#define IVW_FIRSTIVWPROCESSOR_H
+#ifndef IVW_IMAGEMIXER_H
+#define IVW_IMAGEMIXER_H
 
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/imageport.h"
@@ -9,27 +9,31 @@
 
 namespace inviwo {
 
-class FirstIvwProcessor : public ProcessorGL {
+class ImageMixer : public ProcessorGL {
 public:
-    FirstIvwProcessor();
-    ~FirstIvwProcessor();
+    ImageMixer();
+    ~ImageMixer();
     virtual Processor* create() const;
 
     void initialize();
     void deinitialize();
 
-    virtual std::string getClassName() const { return "FirstIVWProcessor"; }
-    virtual std::string getCategory() const  { return "Dummy Processors"; }
+    virtual std::string getClassName() const { return "ImageMixer"; }
+    virtual std::string getCategory() const  { return "Compositer"; }
     virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
 
 protected:
     virtual void process();
 
 private:
+    ImagePort inport0_;
+    ImagePort inport1_;
     ImagePort outport_;
-    FloatVec3Property color_;
+    FloatProperty alpha_;
+
+    Shader* shader_;
 };
 
 } // namespace
 
-#endif // VRN_FIRSTIVWPROCESSOR_H
+#endif // IVW_IMAGEMIXER_H

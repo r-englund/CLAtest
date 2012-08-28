@@ -14,19 +14,17 @@ namespace inviwo {
     }
 
     void ImageSource::initialize() {
-        Processor::initialize();
+        ProcessorGL::initialize();
         shader_ = new Shader("img_texturequad.frag");
     }
 
     void ImageSource::deinitialize() {
         delete shader_;
-        Processor::deinitialize();
+        ProcessorGL::deinitialize();
     }
 
     void ImageSource::process() {
-        Image* outImage = outport_.getData();
-        ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-        outImageGL->activateBuffer();
+        activateTarget(outport_);
 
         Texture2D* testTex = new Texture2D(ivec2(256,256), GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
         glActiveTexture(GL_TEXTURE0);
@@ -37,7 +35,7 @@ namespace inviwo {
         renderImagePlaneQuad();
         shader_->deactivate();
 
-        outImageGL->deactivateBuffer();
+        deactivateCurrentTarget();
     }
 
 } // namespace
