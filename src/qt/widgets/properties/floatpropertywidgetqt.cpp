@@ -1,8 +1,5 @@
 #include "inviwo/qt/widgets/properties/floatpropertywidgetqt.h"
 
-#include <QHBoxLayout>
-#include <QLabel>
-
 namespace inviwo {
 
 FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property_(property) {

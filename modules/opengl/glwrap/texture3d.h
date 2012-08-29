@@ -8,46 +8,45 @@
 
 namespace inviwo {
 
-    class Texture3D {
+class Texture3D {
 
-    public:
-        Texture3D(ivec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
-        virtual ~Texture3D();
+public:
+    Texture3D(ivec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
+    virtual ~Texture3D();
 
-        unsigned int getID() const { return id_; }
+    unsigned int getID() const { return id_; }
 
-        // TODO: remove this function
-        void loadTexture(std::string fileName, ivec3 dimensions) {
-            bind();
+    // TODO: remove this function
+    void loadTexture(std::string fileName, ivec3 dimensions) {
+        bind();
 
-            texels_ = new GLubyte[dimensions.x*dimensions.y*dimensions.z];
+        texels_ = new GLubyte[dimensions.x*dimensions.y*dimensions.z];
 
-            std::fstream fin(fileName.c_str(), std::ios::in | std::ios::binary);
-            if (!fin.good()) {
-                std::cout << "Can't open volume file" << fileName << std::endl;
-                exit(-1);
-            }
-            fin.read((char*)texels_, dimensions.x*dimensions.y*dimensions.z);
-            fin.close();
-            dimensions_ = dimensions;
-            upload();
-        }
+        std::fstream fin(fileName.c_str(), std::ios::in | std::ios::binary);
+        ivwAssert(fin.good(), "cannot open volume file");
+        fin.read((char*)texels_, dimensions.x*dimensions.y*dimensions.z);
+        fin.close();
+        dimensions_ = dimensions;
+        upload();
+    }
 
-        void setTexels(GLubyte* texels) { texels_ = texels; }
+    void setTexels(GLubyte* texels) { texels_ = texels; }
 
-        void bind();
-        void upload();
+    void bind();
+    void upload();
 
-    private:
-        ivec3 dimensions_;
-        GLenum format_;
-        GLenum internalformat_;
-        GLenum dataType_;
-        GLenum filtering_;
+private:
+    ivec3 dimensions_;
+    GLenum format_;
+    GLenum internalformat_;
+    GLenum dataType_;
+    GLenum filtering_;
 
-        GLuint id_;
-        GLubyte* texels_;
-    };
+    GLuint id_;
+    GLubyte* texels_;
+
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
+};
 
 } // namespace
 

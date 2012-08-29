@@ -19,7 +19,7 @@ void ivwAssertion(const char* fileName, const char* functionName, long lineNumbe
 #define ivwAssert(condition, message) \
     if (!(bool(condition))) ivwAssertion(__FILE__, __FUNCTION__, __LINE__, (message));
 #else
-#define ivwAssertion(condition, message)
+#define ivwAssert(condition, message)
 #endif
 
 #endif // IVW_ASSERTION_H

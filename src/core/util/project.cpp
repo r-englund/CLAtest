@@ -2,11 +2,13 @@
 
 namespace inviwo {
 
+const std::string Project::logSource_ = "Project";
+
 Project::Project() {}
 Project::~Project() {}
 
 void Project::load(std::string projectName) throw (Exception) {
-    std::cout << "loading project " << projectName << "..." << std::endl;
+    LogInfo("loading project " + projectName);
 
     std::fstream fileStream(projectName.c_str(), std::ios_base::in);
     if (fileStream.fail())
@@ -47,7 +49,7 @@ ProcessorNetwork* Project::getProcessorNetwork() {
 
 void Project::serialize(XmlSerializer& /*s*/) const {}
 void Project::deserialize(XmlDeserializer& s) {
-    std::cout << "deserializing project" << std::endl;
+    LogInfo("deserializing project");
     // Deserialize network...
     s.deserialize("ProcessorNetwork", processorNetwork_);
 }

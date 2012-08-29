@@ -7,22 +7,24 @@
 
 namespace inviwo {
 
-    class FrameBufferObject {
+class FrameBufferObject {
 
-    public:
-        FrameBufferObject();
-        ~FrameBufferObject();
+public:
+    FrameBufferObject();
+    ~FrameBufferObject();
 
-        void activate();
-        static void deactivate();
+    void activate();
+    static void deactivate();
 
-        void attachTexture(Texture2D* texture, GLenum attachementType=GL_COLOR_ATTACHMENT0_EXT);
+    void attachTexture(Texture2D* texture, GLenum attachementType=GL_COLOR_ATTACHMENT0_EXT);
 
-        void checkStatus();
+    void checkStatus();
 
-    private:
-        unsigned int id_;
-    };
+private:
+    unsigned int id_;
+
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
+};
 
 } // namespace
 

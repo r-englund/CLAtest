@@ -26,7 +26,6 @@ void CubeProxygeometry::deinitialize() {
 }
 
 void CubeProxygeometry::process() {
-    std::cout << "CubeProxygeometry::process()" << std::endl;
 }
 
 } // namespace

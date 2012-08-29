@@ -1,33 +1,33 @@
-#ifndef IVW_FLOATPROPERTYWIDGETQT_H
-#define IVW_FLOATPROPERTYWIDGETQT_H
+#ifndef IVW_FILEPROPERTYWIDGETQT_H
+#define IVW_FILEPROPERTYWIDGETQT_H
 
-#include <QSlider>
+#include <QLineEdit>
 
 #include "inviwo/qt/widgets/properties/propertywidgetqt.h"
 
-#include "inviwo/core/properties/scalarproperties.h"
+#include "inviwo/core/properties/fileproperty.h"
 
 namespace inviwo {
 
-class FloatPropertyWidgetQt : public PropertyWidgetQt {
+class FilePropertyWidgetQt : public PropertyWidgetQt {
 
-Q_OBJECT;
+    Q_OBJECT;
 
 public:
-    FloatPropertyWidgetQt(FloatProperty* property);
+    FilePropertyWidgetQt(FileProperty* property);
 
     void updateFromProperty();
 
 private:
-    FloatProperty* property_;
-    QSlider* slider_;
+    FileProperty* property_;
+    QLineEdit* lineEdit_;
 
     void generateWidget();
 
 public slots:
-    void setPropertyValue(int value);
+    void setPropertyValue();
 };
 
 } // namespace
 
-#endif // IVW_FLOATPROPERTYWIDGETQT_H
+#endif // IVW_FILEPROPERTYWIDGETQT_H

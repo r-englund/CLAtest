@@ -1,4 +1,7 @@
 #include "inviwo/core/util/assertion.h"
+#include "inviwo/core/inviwo.h"
+
+#include <sstream>
 
 #if defined(IVW_DEBUG)
 

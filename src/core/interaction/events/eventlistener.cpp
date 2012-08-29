@@ -2,13 +2,12 @@
 
 namespace inviwo {
 
-    EventListener::EventListener() {}
+EventListener::EventListener() {}
 
-    EventListener::~EventListener() {
-    }
+EventListener::~EventListener() {
+}
 
-    void EventListener::invokeEvent(Event* /*event*/) {
-        std::cout << "EventListener::invokeEvent()" << std::endl;
-    }
+void EventListener::invokeEvent(Event* /*event*/) {
+}
 
 } // namespace

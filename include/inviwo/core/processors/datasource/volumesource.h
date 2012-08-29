@@ -7,24 +7,25 @@
 
 namespace inviwo {
 
-    class VolumeSource : public Processor {
-    public:
-        VolumeSource();
-        virtual Processor* create() const;
+class VolumeSource : public Processor {
+public:
+    VolumeSource();
+    virtual Processor* create() const;
 
-        virtual void initialize();
-        virtual void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
 
-        virtual std::string getClassName() const { return "VolumeSource"; }
-        virtual std::string getCategory() const  { return "Data Source Processor"; }
-        virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
+    virtual std::string getClassName() const { return "VolumeSource"; }
+    virtual std::string getCategory() const  { return "Data Source Processor"; }
+    virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
 
-    protected:
-        virtual void process();
+protected:
+    virtual void process();
 
-    private:
-        VolumePort volumePort_;
-    };
+private:
+    VolumePort volumePort_;
+    FileProperty volumeFileName_;
+};
 
 } // namespace
 

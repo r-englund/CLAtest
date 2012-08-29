@@ -10,26 +10,27 @@
 
 namespace inviwo {
 
-    class ImageSource : public ProcessorGL {
-    public:
-        ImageSource();
-        virtual Processor* create() const;
+class ImageSource : public ProcessorGL {
+public:
+    ImageSource();
+    virtual Processor* create() const;
 
-        virtual void initialize();
-        virtual void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
 
-        virtual std::string getClassName() const { return "ImageSource"; }
-        virtual std::string getCategory() const  { return "Data Source Processor"; }
-        virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
+    virtual std::string getClassName() const { return "ImageSource"; }
+    virtual std::string getCategory() const  { return "Data Source Processor"; }
+    virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
 
-    protected:
-        virtual void process();
+protected:
+    virtual void process();
 
-    private:
-        ImagePort outport_;
-        Shader* shader_;
+private:
+    ImagePort outport_;
+    FileProperty imageFileName_;
 
-    };
+    Shader* shader_;
+};
 
 } // namespace
 

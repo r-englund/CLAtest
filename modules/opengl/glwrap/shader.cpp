@@ -62,4 +62,11 @@ void Shader::setUniform(const std::string name, GLint value) {
         LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
+void Shader::setUniform(const std::string name, GLfloat value) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+    if (uniformLocation != -1) glUniform1f(uniformLocation, value);
+    else
+        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
+
 } // namespace

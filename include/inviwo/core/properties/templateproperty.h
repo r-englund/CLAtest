@@ -6,37 +6,38 @@
 
 namespace inviwo {
 
-    template<typename T>
-    class TemplateProperty : public Property {
+template<typename T>
+class TemplateProperty : public Property {
 
-    public:
+public:
 
-        TemplateProperty(std::string identifier, std::string displayName, T value);
+    TemplateProperty(std::string identifier, std::string displayName, T value);
 
-        virtual T get() const;
-        virtual void set(T value);
+    virtual T get() const;
+    virtual void set(T value);
 
-    protected:
-        T value_;
-    };
+protected:
+    T value_;
+};
 
-    template <typename T>
-    TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value)
-        : Property(identifier, displayName),
-          value_(value)
-    {}
+template <typename T>
+TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value)
+    : Property(identifier, displayName),
+      value_(value)
+{}
 
-    template <typename T>
-    T TemplateProperty<T>::get() const {
-        return value_;
-    }
-
-    template <typename T>
-    void TemplateProperty<T>::set(T value) {
-        value_ = value;
-        getOwner()->invalidate();
-        updatePropertyWidgets();
-    }
+template <typename T>
+T TemplateProperty<T>::get() const {
+    return value_;
 }
+
+template <typename T>
+void TemplateProperty<T>::set(T value) {
+    value_ = value;
+    getOwner()->invalidate();
+    updatePropertyWidgets();
+}
+
+} // namespace
 
 #endif // IVW_TEMPLATEPROPERTY_H

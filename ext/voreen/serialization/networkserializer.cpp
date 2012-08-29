@@ -77,7 +77,6 @@ void NetworkSerializer::writeNetworkToFile(const ProcessorNetwork* network, cons
 }
 
 void NetworkSerializer::process(TiXmlDocument& /*document*/) {
-    std::cout << "applying preprocessor" << std::endl;
 }
 
 int NetworkSerializer::readVersionFromFile(std::string filename)

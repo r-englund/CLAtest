@@ -5,11 +5,11 @@
 
 namespace inviwo {
 
-    class FileProperty : public TemplateProperty<std::string> {
+class FileProperty : public TemplateProperty<std::string> {
 
-    public:
-        FileProperty(std::string identifier, std::string displayName, std::string value);
-    };
+public:
+    FileProperty(std::string identifier, std::string displayName, std::string value);
+};
 
 } // namespace
 
