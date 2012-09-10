@@ -18,7 +18,7 @@ namespace inviwo {
         // compute z = sqrt(r-x^2-y^2) with r=0.5
         result.z = 0.5f - mousePos.x*mousePos.x - mousePos.y*mousePos.y;
         result.z = result.z > 0.0f ? sqrtf(result.z) : 0.0f;
-        return normalize(result);
+        return glm::normalize(result);
     }
 
     void Trackball::invokeEvent(Event* event) {
@@ -29,18 +29,19 @@ namespace inviwo {
             
             if (curTrackballPos != lastTrackballPos_) {
                 // calculate rotation angle
-                float rotationAngle = acos(dot(curTrackballPos, lastTrackballPos_));
+				float rotationAngle = acos(glm::dot(curTrackballPos, lastTrackballPos_));
 
                 // obtain rotation axis
-                vec3 roatationAxis = cross(lastTrackballPos_, curTrackballPos);
+				vec3 roatationAxis = glm::cross(lastTrackballPos_, curTrackballPos);
 
-                // generate quaternion and rotate camera
-                tgt::quat quaternion = tgt::quat::createQuat(rotationAngle, roatationAxis);
-                camera_->setLookFrom(tgt::quat::rotate(camera_->lookFrom(), quaternion));
-                camera_->setLookTo(tgt::quat::rotate(camera_->lookTo(), quaternion));
-                camera_->setLookUp(tgt::quat::rotate(camera_->lookUp(), quaternion));
+                // generate quaternion and rotate camera                
+				roatationAxis = glm::normalize(roatationAxis);
+				quat quaternion = glm::angleAxis(rotationAngle, roatationAxis);
+                camera_->setLookFrom(glm::rotate(quaternion, camera_->lookFrom()));
+                camera_->setLookTo(glm::rotate(quaternion, camera_->lookTo()));
+                camera_->setLookUp(glm::rotate(quaternion, camera_->lookUp()));
                 camera_->invalidate();
-
+				
                 lastMousePos_ = curMousePos;
                 lastTrackballPos_ = curTrackballPos;
             }
