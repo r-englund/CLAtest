@@ -89,7 +89,7 @@ void EntryExitPoints::process() {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glLoadMatrixf(transpose(camera_.viewMatrix()).elem);
+	glLoadMatrixf(glm::value_ptr(glm::transpose(camera_.viewMatrix())));
 
     // generate entry points
     activateTarget(entryPort_);
