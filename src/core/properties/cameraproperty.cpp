@@ -34,15 +34,15 @@ void CameraProperty::setLookUp(vec3 lookUp) {
 }
 
 void CameraProperty::updateViewMatrix() {
-    vec3 lookVector = normalize(lookTo_.get() - lookFrom_.get());
-    vec3 upVector = normalize(lookUp_.get());
-    vec3 sideVector = cross(lookVector, upVector);
-    upVector = cross(sideVector, lookVector);
+	vec3 lookVector = glm::normalize(lookTo_.get() - lookFrom_.get());
+    vec3 upVector = glm::normalize(lookUp_.get());
+    vec3 sideVector = glm::cross(lookVector, upVector);
+    upVector = glm::cross(sideVector, lookVector);
     mat4 m = mat4(vec4(sideVector,       0.0f),
                   vec4(upVector,         0.0f),
                   vec4(-lookVector,      0.0f),
                   vec4(0.0f, 0.0f, 0.0f, 1.0f));
-    viewMatrix_ = m * mat4::createTranslation(-lookFrom_.get());
+	viewMatrix_ = m * glm::translate(-lookFrom_.get());
 }
 
 void CameraProperty::invalidate() {
