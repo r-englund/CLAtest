@@ -42,7 +42,7 @@ void CameraProperty::updateViewMatrix() {
                   vec4(upVector,         0.0f),
                   vec4(-lookVector,      0.0f),
                   vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	viewMatrix_ = m * glm::translate(-lookFrom_.get());
+	viewMatrix_ = m * glm::transpose(glm::translate(-lookFrom_.get())) ;
 }
 
 void CameraProperty::invalidate() {
