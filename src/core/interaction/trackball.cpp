@@ -36,7 +36,7 @@ namespace inviwo {
 
                 // generate quaternion and rotate camera                
 				roatationAxis = glm::normalize(roatationAxis);
-				quat quaternion = glm::angleAxis(rotationAngle, roatationAxis);
+				quat quaternion = glm::angleAxis(rotationAngle*180.0f/3.14f, roatationAxis);
                 camera_->setLookFrom(glm::rotate(quaternion, camera_->lookFrom()));
                 camera_->setLookTo(glm::rotate(quaternion, camera_->lookTo()));
                 camera_->setLookUp(glm::rotate(quaternion, camera_->lookUp()));
