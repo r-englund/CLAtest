@@ -26,7 +26,14 @@ void PropertyListWidget::showProcessorProperties(Processor* processor) {
         // create property widget and store it in the map
         QWidget* processorPropertyWidget = new QWidget();
         QVBoxLayout* vLayout = new QVBoxLayout(processorPropertyWidget);
-        vLayout->addWidget(new QLabel(QString::fromStdString(processor->getIdentifier())));
+        vLayout->setAlignment(Qt::AlignTop);
+
+        QLabel* processorLabel = new QLabel(QString::fromStdString(processor->getIdentifier()));
+        processorLabel->setAlignment(Qt::AlignCenter);
+        processorLabel->setAutoFillBackground(true);
+        processorLabel->setFrameStyle(QFrame::StyledPanel);
+        
+        vLayout->addWidget(processorLabel);
         std::vector<Property*> properties = processor->getProperties();
         for (size_t i=0; i<properties.size(); i++) {
             Property* curProperty = properties[i];
