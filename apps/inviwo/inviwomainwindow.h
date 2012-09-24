@@ -4,14 +4,51 @@
 #include <QMainWindow>
 #include <QDockWidget>
 #include <QListWidget>
+#include <QToolBar>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
+
+
 
 namespace inviwo {
 
-    class InviwoMainWindow : public QMainWindow {
+    class NetworkEditorView;
 
+    class InviwoMainWindow : public QMainWindow {
+Q_OBJECT
     public:
         InviwoMainWindow();
         ~InviwoMainWindow();
+
+    public slots:
+        bool saveNetwork(); 
+        bool loadNetwork(); 
+
+    private:
+        void addToolBars();
+        void addMenus();
+        void addMenuActions();
+
+
+        //TODO: Currently for testing, save the NetworkEditorView which consists entire network processors
+        NetworkEditorView* networkEditorView_;
+
+        //MainWindow ToolBars
+        QToolBar *basicToolbar_;
+
+        //MainWindow Menus
+        QMenuBar *basicMenuBar;
+        QMenu *fileMenuItem_;
+        QMenu *editMenuItem_;
+        
+        //MainWindow MenuActions
+        QAction *openFileAction_;
+        QAction *saveFileAction_;
+
+        //Paths
+        QString rootDir_;
+        QString networkFileDir_;
 
 };
 
