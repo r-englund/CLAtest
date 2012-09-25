@@ -80,10 +80,10 @@ bool InviwoMainWindow::saveNetwork() {
         bool valid;
         QString path = saveFileDialog.selectedFiles().at(0);
         if (!path.endsWith(".inv")) {
-            valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString() + ".inv");
+            //valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString() + ".inv");
         }
         else {
-            valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString());
+            //valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString());
         }
         networkFileDir_ = saveFileDialog.directory().path();
         return valid;
@@ -114,10 +114,10 @@ bool InviwoMainWindow::loadNetwork() {
         bool valid;
         QString path = openFileDialog.selectedFiles().at(0);
         if (!path.endsWith(".inv")) {
-            valid = networkEditorView_->getNetworkEditor()->loadNetwork(path.toStdString() + ".inv");
+            //valid = networkEditorView_->getNetworkEditor()->loadNetwork(path.toStdString() + ".inv");
         }
         else {
-            valid = networkEditorView_->getNetworkEditor()->loadNetwork(path.toStdString());
+            //valid = networkEditorView_->getNetworkEditor()->loadNetwork(path.toStdString());
         }
         networkFileDir_ = openFileDialog.directory().path();
         return valid;
