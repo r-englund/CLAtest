@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-    class ProcessorNetwork : public Serializable {
+    class ProcessorNetwork : public IvwSerializable {
 
 public:
 
@@ -27,8 +27,8 @@ public:
 
     std::vector<PortConnection*> getPortConnections() const { return portConnections_; }
 
-    virtual void serialize(XmlSerializer& s) const;
-    virtual void deserialize(XmlDeserializer& s);
+    virtual void serialize(IvwSerializeBase& s) const;
+    virtual void deserialize(IvwSerializeBase& s);
 
 private:
 

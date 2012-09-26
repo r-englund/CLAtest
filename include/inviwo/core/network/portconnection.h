@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-class PortConnection : public Serializable {
+class PortConnection : public IvwSerializable {
 
 public:
     PortConnection();
@@ -17,8 +17,8 @@ public:
     Port* getInport() { return inport_; }
     Port* getOutport() { return outport_; }
 
-    virtual void serialize(XmlSerializer& s) const;
-    virtual void deserialize(XmlDeserializer& s);
+    virtual void serialize(IvwSerializeBase& s) const;
+    virtual void deserialize(IvwSerializeBase& s);
 
 private:
     Port* inport_;
