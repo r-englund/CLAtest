@@ -33,7 +33,7 @@ void PropertyWidgetFactory::registerPropertyWidget(PropertyWidget* propertyWidge
     */
 }
 
-PropertyWidget* PropertyWidgetFactory::create(std::string className) const {
+IvwSerializable* PropertyWidgetFactory::create(std::string className) const {
     /*
     std::map<std::string, PropertyWidget*>::iterator it = propertyWidgetMap_.find(className);
     if (it != propertyWidgetMap_.end())
