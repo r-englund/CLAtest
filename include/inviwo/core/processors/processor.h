@@ -11,7 +11,7 @@
 
 namespace inviwo {
 
-class Processor : public PropertyOwner, public Serializable {
+class Processor : public PropertyOwner, public IvwSerializable {
 
 public:
     Processor();
@@ -77,8 +77,8 @@ private:
 
     std::vector<InteractionHandler*> interactionHandlers_;
 
-    virtual void serialize(XmlSerializer& s) const;
-    virtual void deserialize(XmlDeserializer& s);
+    virtual void serialize(IvwSerializeBase& s) const;
+    virtual void deserialize(IvwSerializeBase& s);
 };
 
 } // namespace

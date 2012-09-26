@@ -2,22 +2,23 @@
 #define IVW_PROCESSORFACTORY_H
 
 #include "inviwo/core/processors/processor.h"
+#include "inviwo/core/inviwofactorybase.h"
 
 namespace inviwo {
 
-    class ProcessorFactory {
+    class ProcessorFactory : public InviwoFactoryBase {
 
     public:
         ProcessorFactory();
-        ~ProcessorFactory();
+        virtual ~ProcessorFactory();
 
         static ProcessorFactory* instance();
 
-        void initialize();
-        void deinitialize();
+        virtual void initialize();
+        virtual void deinitialize();
 
         void registerProcessor(Processor* processor);
-        Processor* create(std::string className) const;
+        virtual IvwSerializable* create(std::string className) const;
 
     protected:
         static ProcessorFactory* factory_;
