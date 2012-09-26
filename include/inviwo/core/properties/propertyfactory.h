@@ -1,29 +1,30 @@
 #ifndef IVW_PROCESSORFACTORY_H
 #define IVW_PROCESSORFACTORY_H
 
-#include "inviwo/core/processors/processor.h"
+#include "inviwo/core/properties/property.h"
+#include "inviwo/core/inviwofactorybase.h"
 
 namespace inviwo {
 
-    class ProcessorFactory {
+    class PropertyFactory : public InviwoFactoryBase {
 
     public:
-        ProcessorFactory();
-        ~ProcessorFactory();
+        PropertyFactory();
+        ~PropertyFactory();
 
-        static ProcessorFactory* instance();
+        static PropertyFactory* instance();
 
-        void initialize();
-        void deinitialize();
+        virtual void initialize();
+        virtual void deinitialize();
 
-        void registerProcessor(Processor* processor);
-        Processor* ProcessorFactory::create(std::string className) const;
+        void registerProcessor(Property* property);
+        virtual IvwSerializable* PropertyFactory::create(std::string className) const;
 
     protected:
-        static ProcessorFactory* factory_;
+        static PropertyFactory* factory_;
 
     private:
-        mutable std::map<std::string, Processor*> processorClassMap_;
+        mutable std::map<std::string, Property*> processorClassMap_;
     };
 
 } // namespace

@@ -2,10 +2,11 @@
 #define IVW_PROPERTYWIDGETFACTORY_H
 
 #include "inviwo/core/properties/propertywidget.h"
+#include "inviwo/core/inviwofactorybase.h"
 
 namespace inviwo {
 
-class PropertyWidgetFactory {
+    class PropertyWidgetFactory : public InviwoFactoryBase {
 
 public:
     PropertyWidgetFactory();
@@ -13,11 +14,11 @@ public:
 
     static PropertyWidgetFactory* instance();
 
-    void initialize();
-    void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
 
     void registerPropertyWidget(PropertyWidget* propertyWidget);
-    PropertyWidget* create(std::string className) const;
+    virtual IvwSerializable* create(std::string className) const;
 
 protected:
     static PropertyWidgetFactory* factory_;
