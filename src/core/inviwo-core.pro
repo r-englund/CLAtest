@@ -151,6 +151,7 @@ SOURCES += \
     inviwoapplication.cpp \
     inviwocore.cpp \
     inviwomodule.cpp \
+    inviwofactorybase.cpp \	
     datastructures/data.cpp \
     datastructures/datarepresentation.cpp \
     datastructures/image.cpp \
@@ -195,7 +196,6 @@ SOURCES += \
     properties/vectorproperties.cpp \
     io/datareader.cpp \
     io/datawriter.cpp \
-    io/serialization/inviwofactorybase.cpp \
     util/canvas.cpp \
     util/assertion.cpp \
     util/exception.cpp \
