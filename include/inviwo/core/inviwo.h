@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+#include <algorithm>
 
 // error handling
 #include "inviwo/core/util/assertion.h"
@@ -15,7 +17,8 @@
 #include "inviwo/core/util/logdistributor.h"
 #define IVW_UNUSED_PARAM(param) (void)param
 
-#include "ext/voreen/serialization/serialization.h"
+//#include "ext/voreen/serialization/serialization.h"
+#include "inviwo/core/io/serialization/ivwserialization.h"
 
 // include glm
 #include "ext/glm/glm.hpp"
@@ -39,6 +42,6 @@ typedef glm::mat3 mat3;
 typedef glm::mat4 mat4;
 typedef glm::quat quat;
 
-using namespace voreen;
+//using namespace voreen;
 
 #endif // IVW_INVIWO_H
