@@ -149,7 +149,7 @@ namespace inviwo {
         // TODO: throw not found exception
     }
 
-    void ProcessorNetwork::serialize(XmlSerializer& /*s*/) const {}
-    void ProcessorNetwork::deserialize(XmlDeserializer& /*d*/) {}
+    void ProcessorNetwork::serialize(IvwSerializeBase& /*s*/) const {}
+    void ProcessorNetwork::deserialize(IvwSerializeBase& /*d*/) {}
 
 } // namespace
