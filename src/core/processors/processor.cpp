@@ -84,7 +84,7 @@ void Processor::invokeInteractionEvent(Event* event) {
         interactionHandlers_[i]->invokeEvent(event);
 }
 
-void Processor::serialize(XmlSerializer& /*s*/) const {}
-void Processor::deserialize(XmlDeserializer& /*d*/) {}
+void Processor::serialize(IvwSerializeBase& /*s*/) const {}
+void Processor::deserialize(IvwSerializeBase& /*d*/) {}
 
 } // namespace

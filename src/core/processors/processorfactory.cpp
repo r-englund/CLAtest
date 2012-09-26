@@ -1,6 +1,7 @@
 #include "inviwo/core/inviwoapplication.h"
 #include "inviwo/core/inviwomodule.h"
 #include "inviwo/core/processors/processorfactory.h"
+#include "inviwo/core/io/serialization/ivwserializable.h"
 
 
 namespace inviwo {
@@ -29,7 +30,7 @@ void ProcessorFactory::registerProcessor(Processor* processor) {
         processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));
 }
 
-Processor* ProcessorFactory::create(std::string className) const {
+IvwSerializable* ProcessorFactory::create(std::string className) const {
     std::map<std::string, Processor*>::iterator it = processorClassMap_.find(className);
     if (it != processorClassMap_.end())
         return it->second->create();
