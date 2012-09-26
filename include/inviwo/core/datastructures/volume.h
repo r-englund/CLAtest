@@ -12,7 +12,7 @@ namespace inviwo {
         virtual ~Volume();
 
     private:
-        tgt::ivec3 dimensions_;
+        ivec3 dimensions_;
     };
 
 } // namespace
