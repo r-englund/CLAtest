@@ -1,5 +1,6 @@
 
 #include "inviwo/core/processors/canvasprocessor.h"
+#include "inviwo/core/inviwofactorybase.h"
 
 #include "inviwo/qt/editor/networkeditor.h"
 #include "inviwo/qt/editor/processorlistwidget.h"
@@ -71,7 +72,13 @@ bool NetworkEditor::processorWithIdentifierExists(std::string identifier) {
 void NetworkEditor::addProcessor(std::string className, QPointF pos) {
     LogInfo("Adding processor.");
     // create processor and add to data flow network
-    Processor* processor = ProcessorFactory::instance()->create(className);
+    Processor* processor = dynamic_cast<Processor*>(InviwoFactoryBase::instance<ProcessorFactory>()->create(className));
+    //Processor* processor = dynamic_cast<Processor*>(ProcessorFactory::instance()->create(className));
+
+    if(!processor) {
+        LogInfo("Adding failed. Processor not found!");
+        return;
+    }
     
     // if identifier classname already exists, generate a new identifier
     std::string identifier = className;
