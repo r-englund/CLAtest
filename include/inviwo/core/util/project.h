@@ -3,11 +3,12 @@
 
 #include <fstream>
 #include "inviwo/core/inviwo.h"
-#include "ext/voreen/serialization/networkserializer.h"
+//#include "ext/voreen/serialization/networkserializer.h"
+#include "inviwo/core/network/processornetwork.h"
 
 namespace inviwo {
 
-class Project : public Serializable {
+class Project : public IvwSerializable {
 
 public:
     Project();
@@ -17,8 +18,8 @@ public:
     
     ProcessorNetwork* getProcessorNetwork();
 
-    virtual void serialize(XmlSerializer& s) const;
-    virtual void deserialize(XmlDeserializer& s);
+    virtual void serialize(IvwSerializeBase& s) const;
+    virtual void deserialize(IvwSerializeBase& s);
 
 private:
     ProcessorNetwork* processorNetwork_;
