@@ -136,6 +136,9 @@ HEADERS += \
     ../../include/inviwo/core/properties/vectorproperties.h \
     ../../include/inviwo/core/io/datareader.h \
     ../../include/inviwo/core/io/datawriter.h \
+    ../../include/inviwo/core/io/serialization/ivwserializable.h \
+    ../../include/inviwo/core/io/serialization/ivwserializableinterface.h \	
+    ../../include/inviwo/core/io/serialization/ivwserializebase.h \	
     ../../include/inviwo/core/util/canvas.h \
     ../../include/inviwo/core/util/assertion.h \
     ../../include/inviwo/core/util/exception.h \
@@ -195,7 +198,20 @@ SOURCES += \
     util/exception.cpp \
     util/logdistributor.cpp \
     util/project.cpp
-        
+
+HEADERS += \
+    ../../ext/ticpp/ticpp.h \
+    ../../ext/ticpp/ticpprc.h \
+    ../../ext/ticpp/tinystr.h \
+    ../../ext/ticpp/tinyxml.h
+	
+SOURCES += \
+    ../../ext/ticpp/ticpp.cpp \
+    ../../ext/ticpp/tinystr.cpp \
+    ../../ext/ticpp/tinyxml.cpp	\
+    ../../ext/ticpp/tinyxmlerror.cpp \
+    ../../ext/ticpp/tinyxmlparser.cpp
+	
 HEADERS = $$unique(HEADERS)
 SOURCES = $$unique(SOURCES)
 #                                         #
