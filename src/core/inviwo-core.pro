@@ -88,6 +88,7 @@ HEADERS += \
     ../../include/inviwo/core/inviwoapplication.h \
     ../../include/inviwo/core/inviwocore.h \
     ../../include/inviwo/core/inviwomodule.h \
+    ../../include/inviwo/core/inviwofactorybase.h \
     ../../include/inviwo/core/datastructures/data.h \
     ../../include/inviwo/core/datastructures/datarepresentation.h \
     ../../include/inviwo/core/datastructures/image.h \
@@ -139,6 +140,7 @@ HEADERS += \
     ../../include/inviwo/core/io/serialization/ivwserializable.h \
     ../../include/inviwo/core/io/serialization/ivwserializableinterface.h \	
     ../../include/inviwo/core/io/serialization/ivwserializebase.h \	
+    ../../include/inviwo/core/io/serialization/ivwserialization.h \	
     ../../include/inviwo/core/util/canvas.h \
     ../../include/inviwo/core/util/assertion.h \
     ../../include/inviwo/core/util/exception.h \
@@ -193,6 +195,7 @@ SOURCES += \
     properties/vectorproperties.cpp \
     io/datareader.cpp \
     io/datawriter.cpp \
+    io/serialization/inviwofactorybase.cpp \
     util/canvas.cpp \
     util/assertion.cpp \
     util/exception.cpp \
