@@ -8,7 +8,7 @@ Project::Project() {}
 Project::~Project() {}
 
 void Project::load(std::string projectName) throw (Exception) {
-    LogInfo("loading project " + projectName);
+   /* LogInfo("loading project " + projectName);
 
     std::fstream fileStream(projectName.c_str(), std::ios_base::in);
     if (fileStream.fail())
@@ -40,18 +40,18 @@ void Project::load(std::string projectName) throw (Exception) {
     }
     catch (...) {
         throw SerializationException("Deserialization from workspace file '" + projectName + "' failed (unknown exception).");
-    }
+    }*/
 }
 
 ProcessorNetwork* Project::getProcessorNetwork() {
     return processorNetwork_;
 }
 
-void Project::serialize(XmlSerializer& /*s*/) const {}
-void Project::deserialize(XmlDeserializer& s) {
-    LogInfo("deserializing project");
+void Project::serialize(IvwSerializeBase& /*s*/) const {}
+void Project::deserialize(IvwSerializeBase& s) {
+    //LogInfo("deserializing project");
     // Deserialize network...
-    s.deserialize("ProcessorNetwork", processorNetwork_);
+    //s.deserialize("ProcessorNetwork", processorNetwork_);
 }
 
 } // namespace
