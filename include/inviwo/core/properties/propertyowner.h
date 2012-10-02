@@ -19,9 +19,9 @@ public:
     Property* getPropertyByIdentifier(std::string identifier);
     std::vector<Property*> getProperties() { return properties_; }
 
-    void invalidate();
-    void setValid();
-    bool isValid();
+    virtual void invalidate();
+    virtual void setValid();
+    virtual bool isValid();
 
 private:
     std::vector<Property*> properties_;

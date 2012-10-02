@@ -26,6 +26,6 @@ void FloatPropertyWidgetQt::updateFromProperty() {
     float valuef = property_->get();
     int value = slider_->minimum() + static_cast<int>(ceilf(valuef * (slider_->maximum()-slider_->minimum())));
     slider_->setValue(value);
-};
+}
 
 } // namespace

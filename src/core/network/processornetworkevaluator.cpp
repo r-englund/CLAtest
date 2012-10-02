@@ -78,7 +78,7 @@ void ProcessorNetworkEvaluator::sortTopologically() {
     // in processorsSorted_
     processorsSorted_.clear();
     processorsVisited_.clear();
-    for (unsigned int i=0; i<endProcessors.size(); i++)
+    for (size_t i=0; i<endProcessors.size(); i++)
         traversePredecessors(endProcessors[i]);
 }
 
