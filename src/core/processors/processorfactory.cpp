@@ -38,6 +38,14 @@ IvwSerializable* ProcessorFactory::create(std::string className) const {
         return 0;
 }
 
+bool ProcessorFactory::isValidType(std::string className) const {
+    std::map<std::string, Processor*>::iterator it = processorClassMap_.find(className);
+    if (it != processorClassMap_.end())
+        return true;
+    else
+        return false;
+}
+
 void ProcessorFactory::deinitialize() {
 }
 

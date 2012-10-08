@@ -84,7 +84,16 @@ void Processor::invokeInteractionEvent(Event* event) {
         interactionHandlers_[i]->invokeEvent(event);
 }
 
-void Processor::serialize(IvwSerializeBase& /*s*/) const {}
-void Processor::deserialize(IvwSerializeBase& /*d*/) {}
+void Processor::serialize(IvwSerializer& s) const {
+    s.serialize("type", getClassName(), true);
+    s.serialize("identifier", identifier_, true);
+    PropertyOwner::serialize(s);
+}
+void Processor::deserialize(IvwDeserializer& d) {
+    std::string className;
+    d.deserialize("type", className, true);
+    d.deserialize("identifier", identifier_, true);
+    PropertyOwner::deserialize(d);  
+}
 
 } // namespace
