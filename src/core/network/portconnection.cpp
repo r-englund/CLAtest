@@ -10,7 +10,7 @@ PortConnection::PortConnection(Port* outport, Port* inport)
 
 PortConnection::~PortConnection() {}
 
-void PortConnection::serialize(IvwSerializeBase& /*s*/) const {}
-void PortConnection::deserialize(IvwSerializeBase& /*s*/) {}
+void PortConnection::serialize(IvwSerializer& /*s*/) const {}
+void PortConnection::deserialize(IvwDeserializer& /*s*/) {}
 
 } // namespace

@@ -97,7 +97,8 @@ namespace inviwo {
     ProcessorNetwork::~ProcessorNetwork() {}
 
     void ProcessorNetwork::addProcessor(Processor* processor) {
-        processors_.push_back(processor);
+        if(std::find(processors_.begin(), processors_.end(), processor)== processors_.end())
+            processors_.push_back(processor);
     }
 
     void ProcessorNetwork::removeProcessor(Processor* processor) {
@@ -149,7 +150,13 @@ namespace inviwo {
         // TODO: throw not found exception
     }
 
-    void ProcessorNetwork::serialize(IvwSerializeBase& /*s*/) const {}
-    void ProcessorNetwork::deserialize(IvwSerializeBase& /*d*/) {}
+    void ProcessorNetwork::serialize(IvwSerializer& s) const {
+        s.serialize("Processors", processors_, "Processor");
+    }
+
+    void ProcessorNetwork::deserialize(IvwDeserializer& d) {
+        processors_.clear();
+        d.deserialize("Processors", processors_, "Processor");
+    }
 
 } // namespace
