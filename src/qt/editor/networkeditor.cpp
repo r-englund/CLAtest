@@ -1,7 +1,8 @@
 
 #include "inviwo/core/processors/canvasprocessor.h"
 #include "inviwo/core/inviwofactorybase.h"
-
+#include "inviwo/core/io/serialization/ivwserializer.h"
+#include "inviwo/core/io/serialization/ivwdeserializer.h"
 #include "inviwo/qt/editor/networkeditor.h"
 #include "inviwo/qt/editor/processorlistwidget.h"
 #include "inviwo/qt/editor/propertylistwidget.h"
@@ -69,10 +70,10 @@ bool NetworkEditor::processorWithIdentifierExists(std::string identifier) {
     return false;
 }
 
-void NetworkEditor::addProcessor(std::string className, QPointF pos) {
+void NetworkEditor::addProcessor(std::string className, QPointF pos, Processor* processor) {
     LogInfo("Adding processor.");
     // create processor and add to data flow network
-    Processor* processor = dynamic_cast<Processor*>(InviwoFactoryBase::instance<ProcessorFactory>()->create(className));
+    if(!processor) processor = dynamic_cast<Processor*>(InviwoFactoryBase::instance<ProcessorFactory>()->create(className));
     //Processor* processor = dynamic_cast<Processor*>(ProcessorFactory::instance()->create(className));
 
     if(!processor) {
@@ -267,6 +268,47 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
             e->acceptProposedAction();
         }
     }
+}
+
+bool NetworkEditor::saveNetwork(std::string fileName) {
+    IvwSerializer xmlSerializer(fileName);
+
+    //xmlSerializer.serialize("NetworkEditor", *this) ;
+    processorNetwork_->serialize(xmlSerializer) ;
+
+    xmlSerializer.writeFile(std::cout);
+    
+    return true;
+}
+
+bool NetworkEditor::loadNetwork(std::string fileName) {
+    
+    IvwDeserializer xmlDeserializer(fileName);
+
+    //xmlSerializer.serialize("NetworkEditor", *this) ;    
+
+    //xmlDeserializer.readFile(std::cin);
+
+    processorNetwork_->deserialize(xmlDeserializer) ;
+
+    std::vector<Processor*> processors = processorNetwork_->getProcessors() ;
+
+    float denom = processors.size()+1.0f ;
+
+    //QPointF center = QPointF(sceneRect().x() + sceneRect().width() / 2.0f, sceneRect().y() + sceneRect().height() / 2.0f);
+
+    QPointF initial = QPointF( sceneRect().x() + sceneRect().width() / 2.0f, sceneRect().y() + sceneRect().height() / denom);
+
+    QPointF offset =  QPointF( 0.0f, sceneRect().height() / denom );
+
+    for(std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end();it++)
+    {
+        Processor *p = *it; 
+        addProcessor(p->getClassName(), initial, p);
+        initial+=offset ;        
+    }
+    
+    return true;
 }
 
 } // namespace
