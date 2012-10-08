@@ -29,6 +29,7 @@ win32 {
         DESTDIR = "$${IVW_ROOT}/bin/release"
     }
     
+	LIBS += "$${IVW_ROOT}/bin/$${WIN32_CONFIG_NAME}/ticpp.lib"
     # allow to build multithreaded executable
     LIBS += /NODEFAULTLIB:libc.lib    
 }
@@ -140,7 +141,10 @@ HEADERS += \
     ../../include/inviwo/core/io/serialization/ivwserializable.h \
     ../../include/inviwo/core/io/serialization/ivwserializableinterface.h \	
     ../../include/inviwo/core/io/serialization/ivwserializebase.h \	
-    ../../include/inviwo/core/io/serialization/ivwserialization.h \	
+    ../../include/inviwo/core/io/serialization/ivwserializer.h \
+    ../../include/inviwo/core/io/serialization/ivwdeserializer.h \
+    ../../include/inviwo/core/io/serialization/ivwserialization.h \
+    ../../include/inviwo/core/io/serialization/ivwserializeconstants.h \
     ../../include/inviwo/core/util/canvas.h \
     ../../include/inviwo/core/util/assertion.h \
     ../../include/inviwo/core/util/exception.h \
@@ -196,24 +200,15 @@ SOURCES += \
     properties/vectorproperties.cpp \
     io/datareader.cpp \
     io/datawriter.cpp \
+    io/serialization/ivwserializebase.cpp \
+    io/serialization/ivwserializer.cpp \
+	io/serialization/ivwdeserializer.cpp \
+    io/serialization/ivwserializeconstants.cpp \
     util/canvas.cpp \
     util/assertion.cpp \
     util/exception.cpp \
     util/logdistributor.cpp \
     util/project.cpp
-
-HEADERS += \
-    ../../ext/ticpp/ticpp.h \
-    ../../ext/ticpp/ticpprc.h \
-    ../../ext/ticpp/tinystr.h \
-    ../../ext/ticpp/tinyxml.h
-	
-SOURCES += \
-    ../../ext/ticpp/ticpp.cpp \
-    ../../ext/ticpp/tinystr.cpp \
-    ../../ext/ticpp/tinyxml.cpp	\
-    ../../ext/ticpp/tinyxmlerror.cpp \
-    ../../ext/ticpp/tinyxmlparser.cpp
 	
 HEADERS = $$unique(HEADERS)
 SOURCES = $$unique(SOURCES)
