@@ -7,7 +7,7 @@ namespace inviwo {
 
 class Property;
 
-class PropertyOwner {
+class PropertyOwner : public IvwSerializable {
 
 public:
     PropertyOwner();
@@ -22,6 +22,9 @@ public:
     virtual void invalidate();
     virtual void setValid();
     virtual bool isValid();
+       
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
 private:
     std::vector<Property*> properties_;
