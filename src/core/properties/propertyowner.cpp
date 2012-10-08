@@ -1,5 +1,6 @@
 #include "inviwo/core/properties/property.h"
 #include "inviwo/core/properties/propertyowner.h"
+#include "inviwo/core/io/serialization/ivwserializable.h"
 
 namespace inviwo {
 
@@ -39,6 +40,14 @@ void PropertyOwner::setValid() {
 
 bool PropertyOwner::isValid() {
     return (invalid_ == false);
+}
+
+void PropertyOwner::serialize(IvwSerializer& s) const {
+    s.serialize("Properties", properties_, "Property") ;
+}
+
+void PropertyOwner::deserialize(IvwDeserializer& d) {
+    d.deserialize("Properties", properties_, "Property") ;
 }
 
 
