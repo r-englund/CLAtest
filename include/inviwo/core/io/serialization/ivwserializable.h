@@ -4,14 +4,14 @@
 namespace inviwo {
 
 class IvwSerializer;
-class IvwDeSerializer;
+class IvwDeserializer;
 class IvwSerializeBase;
 
 class IvwSerializable{
 public:
     virtual ~IvwSerializable(){}
-    virtual void serialize(IvwSerializeBase &s) const=0;
-    virtual void deserialize(IvwSerializeBase &d)=0;
+    virtual void serialize(IvwSerializer &s) const=0;
+    virtual void deserialize(IvwDeserializer &d)=0;
 };
 
 } //namespace
