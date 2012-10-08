@@ -19,6 +19,7 @@ namespace inviwo {
 
         void registerProcessor(Processor* processor);
         virtual IvwSerializable* create(std::string className) const;
+        virtual bool isValidType(std::string className) const;
 
     protected:
         static ProcessorFactory* factory_;
