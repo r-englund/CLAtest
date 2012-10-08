@@ -29,6 +29,7 @@ win32 {
         DESTDIR = "$${IVW_ROOT}/bin/release"
     }
     
+	LIBS += "$${IVW_ROOT}/bin/$${WIN32_CONFIG_NAME}/ticpp.lib"
     # allow to build multithreaded executable
     LIBS += /NODEFAULTLIB:libc.lib    
 }
