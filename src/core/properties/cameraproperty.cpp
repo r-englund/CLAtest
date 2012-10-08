@@ -50,4 +50,18 @@ void CameraProperty::invalidate() {
     if (owner) owner->invalidate();
 }
 
+void CameraProperty::serialize(IvwSerializer& s) const {
+    Property::serialize(s) ;
+    s.serialize("lookFrom", lookFrom_);
+    s.serialize("lookTo", lookTo_);
+    s.serialize("lookUp", lookUp_);
+}
+
+void CameraProperty::deserialize(IvwDeserializer& d) {
+    Property::deserialize(d) ;
+    d.deserialize("lookFrom", lookFrom_);
+    d.deserialize("lookTo", lookTo_);
+    d.deserialize("lookUp", lookUp_);
+}
+
 } // namespace

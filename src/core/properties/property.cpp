@@ -7,6 +7,11 @@ Property::Property(std::string identifier, std::string displayName)
       displayName_(displayName)
 {}
 
+Property::Property()
+    : identifier_(""),
+      displayName_("")
+{}
+
 std::string Property::getIdentifier() const {
     return identifier_;
 }
@@ -38,6 +43,16 @@ void Property::registerPropertyWidget(PropertyWidget* propertyWidget) {
 void Property::updatePropertyWidgets() {
     for (size_t i=0; i<propertyWidgets_.size(); i++)
         propertyWidgets_[i]->updateFromProperty();
+}
+
+void Property::serialize(IvwSerializer& s) const {
+    s.serialize("identifier", identifier_, true);
+    s.serialize("displayName", displayName_, true);
+}
+
+void Property::deserialize(IvwDeserializer& d) {
+    d.deserialize("identifier", identifier_, true);
+    d.deserialize("displayName", displayName_, true);
 }
 
 } // namespace

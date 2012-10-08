@@ -44,6 +44,16 @@ IvwSerializable* PropertyWidgetFactory::create(std::string className) const {
 
 }
 
+bool PropertyWidgetFactory::isValidType(std::string className) const {
+    /*std::map<std::string, PropertyWidget*>::iterator it = propertyWidgetMap_.find(className);
+    if (it != processorClassMap_.end())
+        return true;
+    else
+        return false;*/
+
+    return false;
+}
+
 void PropertyWidgetFactory::deinitialize() {
 }
 
