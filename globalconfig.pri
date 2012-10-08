@@ -94,6 +94,11 @@ win32 {
         DESTDIR = release
     }
 }
+
+win32 {
+	DEFINES += TIXML_USE_TICPP
+}
+
 #                                         #
 ###########################################
 

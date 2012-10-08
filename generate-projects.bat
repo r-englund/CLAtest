@@ -46,6 +46,14 @@ IF ERRORLEVEL 1 GOTO :ERROR
 cd ..\..
 ECHO.
 
+ECHO Processing ticpp.pro...
+cd ext\ticpp
+qmake.exe -tp vc ticpp.pro
+IF ERRORLEVEL 1 GOTO :ERROR
+cd ..\..
+ECHO.
+
+
 ECHO SUCCESS: Inviwo project files succesfully generated.
 ECHO.
 PAUSE
