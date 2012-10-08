@@ -18,12 +18,16 @@ public:
     static NetworkEditor* instance();
     ~NetworkEditor();
 
-    void addProcessor(std::string className, QPointF pos);
+    void addProcessor(std::string className, QPointF pos=QPointF(10.0f, 10.0f), Processor* processor=0);
     void removeProcessor(std::string identifier);
 
     void addConnection(ProcessorGraphicsItem* startProcessor_, Port* startPort_,
                        ProcessorGraphicsItem* endProcessor_, Port* endPort_);
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
+
+    bool saveNetwork(std::string fileName);
+
+    bool loadNetwork(std::string fileName);
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
     QGraphicsItem* getGraphicsItemAt(const QPointF pos) const;
