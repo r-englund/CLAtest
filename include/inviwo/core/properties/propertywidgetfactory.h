@@ -19,6 +19,7 @@ public:
 
     void registerPropertyWidget(PropertyWidget* propertyWidget);
     virtual IvwSerializable* create(std::string className) const;
+    virtual bool isValidType(std::string className) const;
 
 protected:
     static PropertyWidgetFactory* factory_;

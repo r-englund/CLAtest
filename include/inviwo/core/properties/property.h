@@ -6,10 +6,11 @@
 
 namespace inviwo {
 
-class Property {
+class Property : public IvwSerializable {
 
 public:
     Property(std::string identifier, std::string displayName);
+    Property();
 
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);
@@ -22,6 +23,9 @@ public:
 
     void registerPropertyWidget(PropertyWidget* propertyWidget);
     void updatePropertyWidgets();
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& s);
 
 private:
     std::string identifier_;

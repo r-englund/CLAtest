@@ -14,10 +14,20 @@ public:
     OrdinalProperty(std::string identifier, std::string displayName, T value,
                     T minValue, T maxValue, T increment);
 
-    T getMinValue();
-    T getMaxValue();
+    T getMinValue()const ;
+    T getMaxValue() const ;
+    T getIncrement() const ;
 
-    T getIncrement();
+    void setMinValue(const T &value) {
+        minValue_ = value;
+    }
+
+    void setMaxValue(const T &value) {
+        maxValue_ = value;
+    }
+    void setIncrement(const T &value) {
+        increment_ = value;
+    }
 
     void increase() {
         value_ += increment_;
@@ -47,12 +57,12 @@ OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayN
 {}
 
 template <typename T>
-T OrdinalProperty<T>::getMinValue() { return minValue_; }
+T OrdinalProperty<T>::getMinValue() const { return minValue_; }
 template <typename T>
-T OrdinalProperty<T>::getMaxValue() { return maxValue_; }
+T OrdinalProperty<T>::getMaxValue() const { return maxValue_; }
 
 template <typename T>
-T OrdinalProperty<T>::getIncrement() { return increment_; }
+T OrdinalProperty<T>::getIncrement() const { return increment_; }
 
 } // namespace
 

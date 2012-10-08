@@ -26,6 +26,9 @@ public:
 
     void invalidate();
 
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+
 private:
     FloatVec3Property lookFrom_;
     FloatVec3Property lookTo_;
