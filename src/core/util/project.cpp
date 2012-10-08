@@ -47,11 +47,7 @@ ProcessorNetwork* Project::getProcessorNetwork() {
     return processorNetwork_;
 }
 
-void Project::serialize(IvwSerializeBase& /*s*/) const {}
-void Project::deserialize(IvwSerializeBase& s) {
-    //LogInfo("deserializing project");
-    // Deserialize network...
-    //s.deserialize("ProcessorNetwork", processorNetwork_);
-}
+void Project::serialize(IvwSerializer& /*s*/) const {}
+void Project::deserialize(IvwDeserializer& /*s*/) {}
 
 } // namespace
