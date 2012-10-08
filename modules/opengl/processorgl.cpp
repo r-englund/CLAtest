@@ -47,4 +47,12 @@ namespace inviwo {
         glPopMatrix();
     }
 
+    void ProcessorGL::serialize(IvwSerializer& s) const {
+         Processor::serialize(s);
+    }
+
+    void ProcessorGL::deserialize(IvwDeserializer& d) {
+         Processor::deserialize(d);
+    }
+
 } // namespace

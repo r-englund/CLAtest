@@ -22,6 +22,9 @@ public:
     void bindColorTexture(ImagePort inport, GLenum texUnit);
 
     void renderImagePlaneQuad() const;
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 };
 
 } // namespace
