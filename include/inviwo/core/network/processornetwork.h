@@ -5,6 +5,9 @@
 #include "inviwo/core/network/portconnection.h"
 #include "inviwo/core/processors/processor.h"
 
+#include <string>
+using namespace std;
+
 namespace inviwo {
 
     class ProcessorNetwork : public IvwSerializable {
@@ -27,8 +30,8 @@ public:
 
     std::vector<PortConnection*> getPortConnections() const { return portConnections_; }
 
-    virtual void serialize(IvwSerializeBase& s) const;
-    virtual void deserialize(IvwSerializeBase& s);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& s);
 
 private:
 
