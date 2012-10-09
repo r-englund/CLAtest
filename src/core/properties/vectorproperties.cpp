@@ -25,10 +25,10 @@ namespace inviwo {
         OrdinalProperty<vec3>::setMinValue(value);
 
         d.deserialize("f_maxvalue", value);
-        OrdinalProperty<vec3>::setMinValue(value);
+        OrdinalProperty<vec3>::setMaxValue(value);
 
         d.deserialize("f_incrementvalue", value);
-        OrdinalProperty<vec3>::setMinValue(value);
+        OrdinalProperty<vec3>::setIncrement(value);
     }
 
 } // namespace

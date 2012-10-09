@@ -101,6 +101,13 @@ void IvwSerializer::serialize(const std::string &key, const std::string &data, c
     }
 }
 
+void IvwSerializer::serialize(const std::string &key, const float &data) {
+    serializePrimitives<float>(key, data);
+}
+void IvwSerializer::serialize(const std::string &key, const int &data) {
+    serializePrimitives<int>(key, data);
+}
+
 void IvwSerializer::serialize(const std::string &key, const ivec2 &data) {
     serializeVector(key, data);
 }
