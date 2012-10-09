@@ -24,6 +24,8 @@ public:
     template <typename T>
     void deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey);
     void deserialize(const std::string &key, std::string &data, const bool asAttribute=false);    
+    void deserialize(const std::string &key, float &data);
+    void deserialize(const std::string &key, int &data);
     void deserialize(const std::string &key, vec2 &data);
     void deserialize(const std::string &key, vec3 &data);
     void deserialize(const std::string &key, vec4 &data);
@@ -168,7 +170,9 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
 
 template<class T>
 inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {    
-
+    TxElement* keyNode = _root->FirstChildElement(key); 
+    //if(!keyNode) return;
+    keyNode->GetAttribute(IvwSerializeConstants::VALUE_ATTRIBUTE, &data);
 }
 
 template<class T>

@@ -24,6 +24,8 @@ public:
     template <typename T>
     void serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey);
     void serialize(const std::string &key, const std::string &data, const bool asAttribute=false);
+    void serialize(const std::string &key, const float &data);
+    void serialize(const std::string &key, const int &data);
     void serialize(const std::string &key, const vec2 &data);
     void serialize(const std::string &key, const vec3 &data);
     void serialize(const std::string &key, const vec4 &data);
@@ -107,13 +109,9 @@ inline void IvwSerializer::serialize(const std::string& key, const T* const& dat
 template<class T>
 inline void IvwSerializer::serializePrimitives(const std::string& key, const T& data)
 {
-    /*std::stringstream ss;
-    ss.precision(IvwSerializeConstants::STRINGSTREAM_PRECISION);
-    ss<<data;
-    TxElement* newNode = new TxElement(key);
-    _root->LinkEndChild(newNode);
-    newNode->SetAttribute(IvwSerializeConstants::VALUE_ATTRIBUTE, ss.str());
-    */
+     TxElement* node = new TxElement(key);
+     _root->LinkEndChild(node);
+     node->SetAttribute(IvwSerializeConstants::VALUE_ATTRIBUTE, data);
 }
 
 template<class T>
