@@ -8,7 +8,6 @@
 #include "inviwo/core/io/datawriter.h"
 #include "inviwo/core/datastructures/representationconverter.h"
 
-#include "ext/voreen/serialization/serialization.h"
 
 namespace inviwo {
 
@@ -27,7 +26,6 @@ public:
     const std::vector<DataReader*>& getDataReaders() const;
     const std::vector<DataWriter*>& getDataWriters() const;
     const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
-    const std::vector<voreen::SerializableFactory*>& getSerializableFactories() const;
 
     std::string getDescription() const;
     void setDescription(const std::string& description) const;
@@ -59,7 +57,6 @@ private:
     std::vector<DataReader*> dataReaders_;
     std::vector<DataWriter*> dataWriters_;
     std::vector<RepresentationConverter*> representationConverters_;
-    std::vector<voreen::SerializableFactory*> serializableFactories_;
 
     std::string xmlDocuFileName_;
     static const std::string logSource_; ///< Source string to be displayed for log messages.

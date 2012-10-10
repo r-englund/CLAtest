@@ -60,10 +60,6 @@ const std::vector<RepresentationConverter*>& InviwoModule::getRepresentationConv
     return representationConverters_;
 }
 
-const std::vector<voreen::SerializableFactory*>& InviwoModule::getSerializableFactories() const {
-    return serializableFactories_;
-}
-
 void InviwoModule::initialize() throw (Exception) {
     initialized_ = true;
 }

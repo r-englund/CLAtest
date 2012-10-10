@@ -172,7 +172,7 @@ template<class T>
 inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {    
     TxElement* keyNode = _root->FirstChildElement(key); 
     //if(!keyNode) return;
-    keyNode->GetAttribute(IvwSerializeConstants::VALUE_ATTRIBUTE, &data);
+    keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
 }
 
 template<class T>

@@ -70,17 +70,11 @@ bool NetworkEditor::processorWithIdentifierExists(std::string identifier) {
     return false;
 }
 
-void NetworkEditor::addProcessor(std::string className, QPointF pos, Processor* processor) {
+Processor* NetworkEditor::createProcessor(std::string className) {
     LogInfo("Adding processor.");
     // create processor and add to data flow network
-    if(!processor) processor = dynamic_cast<Processor*>(InviwoFactoryBase::instance<ProcessorFactory>()->create(className));
-    //Processor* processor = dynamic_cast<Processor*>(ProcessorFactory::instance()->create(className));
+    Processor* processor = dynamic_cast<Processor*>(ProcessorFactory::instance()->create(className));
 
-    if(!processor) {
-        LogInfo("Adding failed. Processor not found!");
-        return;
-    }
-    
     // if identifier classname already exists, generate a new identifier
     std::string identifier = className;
     if (processorWithIdentifierExists(identifier)) {
@@ -93,8 +87,13 @@ void NetworkEditor::addProcessor(std::string className, QPointF pos, Processor* 
     }
 
     processor->setIdentifier(identifier);
-    processor->createProcessorWidget();
     processorNetwork_->addProcessor(processor);
+
+    return processor;
+}
+
+void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPointF pos) {
+    processor->createProcessorWidget();
 
     // generate GUI representation and add to editor
     ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem();
@@ -263,7 +262,8 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
         QString className;
         ProcessorDragObject::decode(e->mimeData(), className);
         if (!className.isEmpty()) {
-            addProcessor(className.toStdString(), e->scenePos());
+            Processor* processor = createProcessor(className.toStdString());
+            initializeProcessorRepresentation(processor, e->scenePos());
             e->setAccepted(true);
             e->acceptProposedAction();
         }
@@ -272,9 +272,8 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
 
 bool NetworkEditor::saveNetwork(std::string fileName) {
     IvwSerializer xmlSerializer(fileName);
-
     //xmlSerializer.serialize("NetworkEditor", *this) ;
-    processorNetwork_->serialize(xmlSerializer) ;
+    processorNetwork_->serialize(xmlSerializer);
 
     xmlSerializer.writeFile(std::cout);
     
@@ -285,27 +284,26 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     
     IvwDeserializer xmlDeserializer(fileName);
 
-    //xmlSerializer.serialize("NetworkEditor", *this) ;    
+    //xmlSerializer.serialize("NetworkEditor", *this);
 
     //xmlDeserializer.readFile(std::cin);
 
-    processorNetwork_->deserialize(xmlDeserializer) ;
+    processorNetwork_->deserialize(xmlDeserializer);
 
-    std::vector<Processor*> processors = processorNetwork_->getProcessors() ;
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();
 
     float denom = processors.size()+1.0f ;
 
     //QPointF center = QPointF(sceneRect().x() + sceneRect().width() / 2.0f, sceneRect().y() + sceneRect().height() / 2.0f);
 
-    QPointF initial = QPointF( sceneRect().x() + sceneRect().width() / 2.0f, sceneRect().y() + sceneRect().height() / denom);
+    QPointF initial = QPointF(sceneRect().x() + sceneRect().width() / 2.0f, sceneRect().y() + sceneRect().height() / denom);
 
-    QPointF offset =  QPointF( 0.0f, sceneRect().height() / denom );
+    QPointF offset =  QPointF(0.0f, sceneRect().height() / denom);
 
-    for(std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end();it++)
-    {
-        Processor *p = *it; 
-        addProcessor(p->getClassName(), initial, p);
-        initial+=offset ;        
+    for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
+        Processor* p = *it; 
+        initializeProcessorRepresentation(p, initial);
+        initial += offset;        
     }
     
     return true;

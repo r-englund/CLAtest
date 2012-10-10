@@ -3,6 +3,7 @@
 ###########################################
 TARGET = inviwo-qtwidgets
 TEMPLATE = lib
+QT += opengl
 
 ###########################################
 # Include global project configurations   #

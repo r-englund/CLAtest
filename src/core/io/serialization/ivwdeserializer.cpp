@@ -138,7 +138,7 @@ void IvwDeserializer::deserializePrimitives(const std::string &key, std::string 
     TxElement* keyNode = _root->FirstChildElement(key); 
     //if(!keyNode) return;   
 
-    keyNode->GetAttribute(IvwSerializeConstants::VALUE_ATTRIBUTE, &data);
+    keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
     
 }
 

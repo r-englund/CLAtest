@@ -111,7 +111,7 @@ inline void IvwSerializer::serializePrimitives(const std::string& key, const T& 
 {
      TxElement* node = new TxElement(key);
      _root->LinkEndChild(node);
-     node->SetAttribute(IvwSerializeConstants::VALUE_ATTRIBUTE, data);
+     node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, data);
 }
 
 template<class T>

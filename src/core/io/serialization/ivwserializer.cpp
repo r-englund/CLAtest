@@ -74,7 +74,7 @@ void IvwSerializer::serializeAttributes(const std::string &key, const std::strin
 
      //TxElement* node = new TxElement(key);
      //_root->LinkEndChild(node);
-     //node->SetAttribute(IvwSerializeConstants::VALUE_ATTRIBUTE, ss.str());
+     //node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, ss.str());
 
     //TODO: Check key for xml keys
     _root->SetAttribute(key, ss.str());
@@ -88,7 +88,7 @@ void IvwSerializer::serializePrimitives(const std::string &key, const std::strin
 
      TxElement* node = new TxElement(key);
      _root->LinkEndChild(node);
-     node->SetAttribute(IvwSerializeConstants::VALUE_ATTRIBUTE, ss.str());
+     node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, ss.str());
 }
 
 void IvwSerializer::serialize(const std::string &key, const std::string &data, const bool asAttribute) {

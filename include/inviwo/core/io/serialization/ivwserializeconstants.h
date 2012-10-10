@@ -15,7 +15,7 @@ public:
     static const std::string EDIT_COMMENT;
     static const std::string ID_ATTRIBUTE;
     static const std::string VERSION_ATTRIBUTE;
-    static const std::string VALUE_ATTRIBUTE;
+    static const std::string CONTENT_ATTRIBUTE;
     static const std::string TYPE_ATTRIBUTE;
     static const std::string COLOR_R_ATTRIBUTE;
     static const std::string COLOR_G_ATTRIBUTE;

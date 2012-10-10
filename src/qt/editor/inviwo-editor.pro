@@ -3,6 +3,7 @@
 ###########################################
 TARGET = inviwo-editor
 TEMPLATE = lib
+QT += opengl
 
 ###########################################
 # Include global project configurations   #

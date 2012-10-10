@@ -18,8 +18,9 @@ public:
     static NetworkEditor* instance();
     ~NetworkEditor();
 
-    void addProcessor(std::string className, QPointF pos=QPointF(10.0f, 10.0f), Processor* processor=0);
+    Processor* createProcessor(std::string className);
     void removeProcessor(std::string identifier);
+    void initializeProcessorRepresentation(Processor* processor, QPointF pos=QPointF(10.0f, 10.0f));
 
     void addConnection(ProcessorGraphicsItem* startProcessor_, Port* startPort_,
                        ProcessorGraphicsItem* endProcessor_, Port* endPort_);

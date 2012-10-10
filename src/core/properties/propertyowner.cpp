@@ -8,8 +8,6 @@ PropertyOwner::PropertyOwner()
     : invalid_(true) {}
 
 PropertyOwner::~PropertyOwner() {
-    for (size_t i=0; i<properties_.size(); i++)
-        properties_[i]->setOwner(0);
     properties_.clear();
 }
 
