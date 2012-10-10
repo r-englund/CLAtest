@@ -22,6 +22,7 @@ public:
 
     void addProcessor(Processor* processor);
     void removeProcessor(Processor* processor);
+    void clear();
 
 
     std::vector<Processor*> getProcessors() const { return processors_; }
