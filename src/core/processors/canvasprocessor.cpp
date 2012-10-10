@@ -11,6 +11,11 @@ CanvasProcessor::CanvasProcessor()
     addPort(inport_);
 }
 
+
+CanvasProcessor::~CanvasProcessor() {
+    Processor::~Processor();
+}
+
 Processor* CanvasProcessor::create() const {
     return new CanvasProcessor();
 }
