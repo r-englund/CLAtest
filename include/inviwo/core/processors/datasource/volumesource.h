@@ -10,6 +10,7 @@ namespace inviwo {
 class VolumeSource : public Processor {
 public:
     VolumeSource();
+    virtual ~VolumeSource();
     virtual Processor* create() const;
 
     virtual void initialize();
