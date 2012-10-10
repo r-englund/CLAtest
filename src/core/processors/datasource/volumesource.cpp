@@ -13,6 +13,10 @@ VolumeSource::VolumeSource()
     addProperty(volumeFileName_);
 }
 
+VolumeSource::~VolumeSource() {
+    Processor::~Processor();
+}
+
 Processor* VolumeSource::create() const {
     return new VolumeSource();
 }
