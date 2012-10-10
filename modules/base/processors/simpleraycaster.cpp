@@ -15,7 +15,9 @@ SimpleRaycaster::SimpleRaycaster()
     addPort(outport_);
 }
 
-SimpleRaycaster::~SimpleRaycaster() {}
+SimpleRaycaster::~SimpleRaycaster() {
+    Processor::~Processor();
+}
 
 Processor* SimpleRaycaster::create() const {
     return new SimpleRaycaster();

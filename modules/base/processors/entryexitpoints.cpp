@@ -16,7 +16,9 @@ EntryExitPoints::EntryExitPoints()
     addProperty(camera_);
 }
 
-EntryExitPoints::~EntryExitPoints() {}
+EntryExitPoints::~EntryExitPoints() {
+    Processor::~Processor();
+}
 
 Processor* EntryExitPoints::create() const {
     return new EntryExitPoints();

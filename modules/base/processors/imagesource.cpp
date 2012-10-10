@@ -11,6 +11,10 @@ ImageSource::ImageSource()
     addProperty(imageFileName_);
 }
 
+ImageSource::~ImageSource() {
+   Processor::~Processor();
+}
+
 Processor* ImageSource::create() const {
     return new ImageSource();
 }

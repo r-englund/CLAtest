@@ -15,7 +15,9 @@ ImageMixer::ImageMixer()
     addProperty(alpha_);
 }
 
-ImageMixer::~ImageMixer() {}
+ImageMixer::~ImageMixer() {
+   Processor::~Processor();
+}
 
 Processor* ImageMixer::create() const {
     return new ImageMixer();
