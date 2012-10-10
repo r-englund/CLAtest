@@ -101,6 +101,12 @@ namespace inviwo {
             processors_.push_back(processor);
     }
 
+    void ProcessorNetwork::clear() {
+        while(processors_.size()) {
+            removeProcessor(processors_.front()) ;
+        }
+    }
+
     void ProcessorNetwork::removeProcessor(Processor* processor) {
         // remove all connections to other processors
         std::vector<PortConnection*> eraseList;
@@ -155,7 +161,7 @@ namespace inviwo {
     }
 
     void ProcessorNetwork::deserialize(IvwDeserializer& d) {
-        processors_.clear();
+        clear();
         d.deserialize("Processors", processors_, "Processor");
     }
 
