@@ -158,11 +158,13 @@ namespace inviwo {
 
     void ProcessorNetwork::serialize(IvwSerializer& s) const {
         s.serialize("Processors", processors_, "Processor");
+        s.serialize("Connections", portConnections_, "Connection");
     }
 
     void ProcessorNetwork::deserialize(IvwDeserializer& d) {
         clear();
         d.deserialize("Processors", processors_, "Processor");
+        d.deserialize("Connections", portConnections_, "Connection");
     }
 
 } // namespace
