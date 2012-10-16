@@ -9,25 +9,25 @@ FloatProperty::FloatProperty(std::string identifier, std::string displayName, fl
 
 void FloatProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
-    s.serialize("f_value", get());
-    s.serialize("f_minvalue", OrdinalProperty<float>::getMinValue());
-    s.serialize("f_maxvalue", OrdinalProperty<float>::getMaxValue());
-    s.serialize("f_incrementvalue", OrdinalProperty<float>::getIncrement());
+    s.serialize("value", get());
+    s.serialize("minvalue", OrdinalProperty<float>::getMinValue());
+    s.serialize("maxvalue", OrdinalProperty<float>::getMaxValue());
+    s.serialize("increment", OrdinalProperty<float>::getIncrement());
 }
 
 void FloatProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d) ;
     float value;
-    d.deserialize("f_value", value);
+    d.deserialize("value", value);
     set(value);
 
-    d.deserialize("f_minvalue",  value);
+    d.deserialize("minvalue",  value);
     OrdinalProperty<float>::setMinValue(value);
 
-    d.deserialize("f_maxvalue", value);
+    d.deserialize("maxvalue", value);
     OrdinalProperty<float>::setMaxValue(value);
 
-    d.deserialize("f_incrementvalue", value);
+    d.deserialize("increment", value);
     OrdinalProperty<float>::setIncrement(value);
 }
 
@@ -38,25 +38,25 @@ IntProperty::IntProperty(std::string identifier, std::string displayName, int va
 
 void IntProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
-    s.serialize("i_value", get());
-    s.serialize("i_minvalue", OrdinalProperty<int>::getMinValue());
-    s.serialize("i_maxvalue", OrdinalProperty<int>::getMaxValue());
-    s.serialize("i_incrementvalue", OrdinalProperty<int>::getIncrement());
+    s.serialize("value", get());
+    s.serialize("minvalue", OrdinalProperty<int>::getMinValue());
+    s.serialize("maxvalue", OrdinalProperty<int>::getMaxValue());
+    s.serialize("increment", OrdinalProperty<int>::getIncrement());
 }
 
 void IntProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d) ;
     int value;
-    d.deserialize("i_value", value);
+    d.deserialize("value", value);
     set(value);
 
-    d.deserialize("i_minvalue",  value);
+    d.deserialize("minvalue",  value);
     OrdinalProperty<int>::setMinValue(value);
 
-    d.deserialize("i_maxvalue", value);
+    d.deserialize("maxvalue", value);
     OrdinalProperty<int>::setMaxValue(value);
 
-    d.deserialize("i_incrementvalue", value);
+    d.deserialize("increment", value);
     OrdinalProperty<int>::setIncrement(value);
 }
 

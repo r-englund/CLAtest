@@ -9,25 +9,25 @@ namespace inviwo {
 
     void FloatVec3Property::serialize(IvwSerializer& s) const {
         Property::serialize(s) ;
-        s.serialize("f_value", get());
-        s.serialize("f_minvalue", OrdinalProperty<vec3>::getMinValue());
-        s.serialize("f_maxvalue", OrdinalProperty<vec3>::getMaxValue());
-        s.serialize("f_incrementvalue", OrdinalProperty<vec3>::getIncrement());
+        s.serialize("value", get());
+        s.serialize("minvalue", OrdinalProperty<vec3>::getMinValue());
+        s.serialize("maxvalue", OrdinalProperty<vec3>::getMaxValue());
+        s.serialize("increment", OrdinalProperty<vec3>::getIncrement());
     }
 
     void FloatVec3Property::deserialize(IvwDeserializer& d) {
         Property::deserialize(d) ;
         vec3 value;
-        d.deserialize("f_value", value);
+        d.deserialize("value", value);
         set(value);
 
-        d.deserialize("f_minvalue",  value);
+        d.deserialize("minvalue",  value);
         OrdinalProperty<vec3>::setMinValue(value);
 
-        d.deserialize("f_maxvalue", value);
+        d.deserialize("maxvalue", value);
         OrdinalProperty<vec3>::setMaxValue(value);
 
-        d.deserialize("f_incrementvalue", value);
+        d.deserialize("increment", value);
         OrdinalProperty<vec3>::setIncrement(value);
     }
 
