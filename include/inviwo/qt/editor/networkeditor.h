@@ -22,8 +22,14 @@ public:
     void removeProcessor(std::string identifier);
     void initializeProcessorRepresentation(Processor* processor, QPointF pos=QPointF(10.0f, 10.0f));
 
+    void initializeConnectionRepresentation(ProcessorGraphicsItem* outProcessor, Port* outport, 
+                                       ProcessorGraphicsItem* inProcessor, Port* inport) ;
+
     void addConnection(ProcessorGraphicsItem* startProcessor_, Port* startPort_,
                        ProcessorGraphicsItem* endProcessor_, Port* endPort_);
+
+    void addConnection(PortConnection *connection);
+
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
 
     bool saveNetwork(std::string fileName);
