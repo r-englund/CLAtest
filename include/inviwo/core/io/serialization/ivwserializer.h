@@ -15,8 +15,8 @@ class IvwSerializable;
 
 class IvwSerializer : public  IvwSerializeBase {
 public:
-    IvwSerializer(IvwSerializer &s, bool allowReference=false) ;
-    IvwSerializer(std::string fileName, bool allowReference=false) ;
+    IvwSerializer(IvwSerializer &s, bool allowReference=true);
+    IvwSerializer(std::string fileName, bool allowReference=true);
     virtual ~IvwSerializer();
 
     virtual void writeFile(std::ostream& stream);    
@@ -33,6 +33,8 @@ public:
     void serialize(const std::string &key, const ivec3 &data);
     void serialize(const std::string &key, const ivec4 &data);
     void serialize(const std::string &key, const IvwSerializable &sObj);
+    template<class T>
+    void serialize(const std::string& key, const T* const& data);
     
     /*class NodeSwitch {
     public:
@@ -49,8 +51,6 @@ protected:
 
 private:
 
-    template<class T>
-    void serialize(const std::string& key, const T* const& data);
 
     template <typename T>
     void serializeSTL_Vector(const std::string &key, const T &sVector, const std::string &itemKey);
@@ -80,8 +80,8 @@ inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &
     NodeSwitch tempNodeSwitch(*this, newNode);
 
     for (typename T::const_iterator it = sVector.begin(); it != sVector.end(); ++it) {
-        if(!isPrimitiveType(typeid(typename T::value_type)) && !isPrimitivePointerType(typeid(typename T::value_type)) ) {
-            serialize(itemKey, (*it)) ;
+        if (!isPrimitiveType(typeid(typename T::value_type)) && !isPrimitivePointerType(typeid(typename T::value_type)) ) {
+            serialize(itemKey, (*it));
         }
     }
 }
@@ -89,10 +89,22 @@ inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &
 template<class T>
 inline void IvwSerializer::serialize(const std::string& key, const T* const& data) {
     
-    if(!_allowReference)
-    {
+    if (!_allowReference) {
         //_allowReference = true;
-        serialize(key, *data) ;
+        serialize(key, *data);
+        return;
+    }
+    else {
+        if (_references.find(data)) {
+            //std::vector<TxElement*> nodeList = _references.getNode(data);
+            TxElement* newNode = _references.nodeCopy(data);
+            _root->LinkEndChild(newNode);
+            _references.insert(data, newNode);
+        }
+        else {
+            serialize(key, *data);
+            _references.insert(data, _root->LastChild()->ToElement(), false);
+        }
         return;
     }
 
@@ -100,8 +112,9 @@ inline void IvwSerializer::serialize(const std::string& key, const T* const& dat
 
     if (data) {
         //std::string typeString = getTypeString(typeid(*data));
-        //if (!typeString.empty())
-        //newNode->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, typeid(*data).name());            
+        //if (!typeString.empty()) {
+        //  newNode->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, typeid(*data).name());
+        //}
     }
     _root->LinkEndChild(newNode);
 }

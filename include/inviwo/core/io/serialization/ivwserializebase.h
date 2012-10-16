@@ -7,6 +7,7 @@
 
 #include "ticpp/ticpp.h"
 #include "inviwo/core/io/serialization/ivwserializeconstants.h"
+#include <map>
 
 // include glm
 #include "ext/glm/glm.hpp"
@@ -49,8 +50,8 @@ namespace inviwo {
 
     class IvwSerializeBase {
     public:
-        IvwSerializeBase(IvwSerializeBase &s, bool allowReference=false);
-        IvwSerializeBase(std::string fileName, bool allowReference=false);
+        IvwSerializeBase(IvwSerializeBase &s, bool allowReference=true);
+        IvwSerializeBase(std::string fileName, bool allowReference=true);
         virtual ~IvwSerializeBase();
         virtual std::string getFileName();
         
@@ -59,7 +60,7 @@ namespace inviwo {
 
         void setAllowReference(const bool &allowReference);
 
-        virtual void registerFactories(void) ;
+        virtual void registerFactories(void);
 
         template <typename T>
         T* getRegisteredType(const std::string &className);
@@ -81,6 +82,33 @@ namespace inviwo {
             IvwSerializeBase& _serializer;
             TxElement* _storedNode;
         };
+
+        struct ReferenceData {            
+            TxElement* _node;
+            bool _isPointer;
+        };
+
+        typedef std::pair<const void *, IvwSerializeBase::ReferenceData> RefDataPair;
+        typedef std::multimap<const void*,ReferenceData> RefMap;
+        typedef std::vector<IvwSerializeBase::ReferenceData> RefDataList;
+
+        class ReferenceDataContainer {
+        public:
+             ReferenceDataContainer();
+            ~ReferenceDataContainer();
+            int insert(const void *data, TxElement *node, bool isPointer=true);
+            int find(const void *data);
+            void* find(const std::string& key, const std::string& reference_or_id);
+            std::vector<ReferenceData> getNodes(const void *data);
+            TxElement* nodeCopy(const void *data);
+            void setReferenceAttributes();
+
+        private:  
+            RefMap _allReferenceMap;
+            int _refCount;
+        };
+
+        
         
     protected:
         friend class NodeSwitch;
@@ -90,7 +118,8 @@ namespace inviwo {
         std::string _fileName;
         TxDocument _doc;
         TxElement*_root;
-        bool _allowReference;    
+        bool _allowReference;
+        ReferenceDataContainer _references;
     };
 
 
@@ -98,10 +127,9 @@ namespace inviwo {
     T* IvwSerializeBase::getRegisteredType(const std::string &className) {
         T* data = 0;
         std::vector<InviwoFactoryBase *>::iterator it;
-        for(it = _registeredFactoryVector.begin(); it!=_registeredFactoryVector.end(); it++)
-        {
-            data = dynamic_cast<T*>( (*it)->create(className) ) ;
-            if(data)
+        for (it = _registeredFactoryVector.begin(); it!=_registeredFactoryVector.end(); it++) {
+            data = dynamic_cast<T*>( (*it)->create(className) );
+            if (data)
                 break;
         }
 
