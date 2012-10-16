@@ -10,19 +10,33 @@ namespace inviwo {
 class PortConnection : public IvwSerializable {
 
 public:
+    class SlimPort : public IvwSerializable {
+    public:
+        SlimPort();
+        SlimPort(Port*);
+        virtual void serialize(IvwSerializer& s) const;
+        virtual void deserialize(IvwDeserializer& s);
+        Port* getPort() const;
+    private:
+        Port* _port;
+    };
+
     PortConnection();
     PortConnection(Port* outport, Port* inport);
     virtual ~PortConnection();
 
-    Port* getInport() { return inport_; }
-    Port* getOutport() { return outport_; }
+    Port* getInport() const{ return inport_.getPort(); }
+    Port* getOutport() const{ return outport_.getPort(); }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 
 private:
-    Port* inport_;
-    Port* outport_;
+    
+
+
+    SlimPort inport_;
+    SlimPort outport_;
 };
 
 } // namespace
