@@ -26,7 +26,7 @@ IvwSerializer::IvwSerializer(IvwSerializer &s, bool allowReference)
 	    comment->SetValue(IvwSerializeConstants::EDIT_COMMENT.c_str());  
 	    _root->LinkEndChild( comment ); 
     }
-    catch(TxException& ex) {
+    catch (TxException& ) {
         
     }
 }
@@ -50,7 +50,7 @@ IvwSerializer::IvwSerializer(std::string fileName, bool allowReference)
 	    comment->SetValue(IvwSerializeConstants::EDIT_COMMENT.c_str());  
 	    _root->LinkEndChild( comment ); 
     }
-    catch(TxException& ex) {
+    catch (TxException& ) {
         
     }
 }
@@ -63,7 +63,7 @@ void IvwSerializer::serialize(const std::string &key, const IvwSerializable &sOb
     _root->LinkEndChild(newNode);
 
     NodeSwitch tempNodeSwitch(*this, newNode);
-    sObj.serialize(*this) ; 
+    sObj.serialize(*this); 
 }
 
 void IvwSerializer::serializeAttributes(const std::string &key, const std::string &data) {
@@ -92,12 +92,11 @@ void IvwSerializer::serializePrimitives(const std::string &key, const std::strin
 }
 
 void IvwSerializer::serialize(const std::string &key, const std::string &data, const bool asAttribute) {
-    if(asAttribute)
-    {
-        serializeAttributes(key, data) ;
+    if (asAttribute) {
+        serializeAttributes(key, data);
     }
     else {
-        serializePrimitives(key, data) ;
+        serializePrimitives(key, data);
     }
 }
 
@@ -136,9 +135,10 @@ void IvwSerializer::writeFile(std::ostream& stream) {
     try { 
         std::cout<<_doc;
         stream<<_doc;
+        _references.setReferenceAttributes();
         _doc.SaveFile();
     }
-    catch(TxException& ex) {
+    catch (TxException& ) {
         
     }
 

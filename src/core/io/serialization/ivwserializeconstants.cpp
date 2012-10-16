@@ -9,6 +9,7 @@ const std::string IvwSerializeConstants::NETWORK_VERSION="1.0";
 const std::string IvwSerializeConstants::VERSION="version";
 const std::string IvwSerializeConstants::EDIT_COMMENT=" Don't edit the following code ";
 const std::string IvwSerializeConstants::ID_ATTRIBUTE="id";
+const std::string IvwSerializeConstants::REF_ATTRIBUTE="reference";
 const std::string IvwSerializeConstants::VERSION_ATTRIBUTE="version";
 const std::string IvwSerializeConstants::CONTENT_ATTRIBUTE="content";
 const std::string IvwSerializeConstants::TYPE_ATTRIBUTE="type";

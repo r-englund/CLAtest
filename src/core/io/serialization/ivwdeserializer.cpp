@@ -16,14 +16,11 @@ IvwDeserializer::IvwDeserializer(IvwDeserializer &s, bool allowReference)
         readFile(std::cout);
 
         TxElement *inviwoTree = _doc.FirstChildElement();
-
         //Comment is not a tree element
         //TxElement *comment = inviwoTree->FirstChildElement();
-
-        _root = inviwoTree; 
-
+        _root = inviwoTree;
     }
-    catch(TxException& ex) {
+    catch (TxException& ) {
         
     }
 }
@@ -44,7 +41,7 @@ IvwDeserializer::IvwDeserializer(std::string fileName, bool allowReference)
         _root = inviwoTree; 
 
     }
-    catch(TxException& ex) {
+    catch (TxException& ) {
         
     }
 }
@@ -53,56 +50,36 @@ IvwDeserializer::~IvwDeserializer() {
 }
 
 void IvwDeserializer::deserialize(const std::string &key, IvwSerializable &sObj) {
-    sObj.deserialize(*this) ; 
-}
-
-/*
-inline void IvwDeserializer::deserialize(const std::string& key, IvwSerializable* & data) {
     
-    TxElement* keyNode = _root->FirstChildElement(); 
-    if(!keyNode) return;
-
-    //NodeSwitch tempNodeSwitch(*this, keyNode);
-    std::string attr("");
+    TxElement* keyNode = 0;
+    
     try {
-        keyNode->GetAttribute( IvwSerializeConstants::TYPE_ATTRIBUTE, &attr );
-    }
-    catch(TxException& ex) {
+        std::string rootKey("");
+        keyNode = _root;        
+        rootKey = keyNode->Value();
 
+        while(rootKey!=key) {            
+            keyNode = keyNode->NextSiblingElement();
+            rootKey = keyNode->Value();
+        };
     }
-
-    if(!_allowReference) {
-        //_allowReference = true;
-        if(!data) {
-            if(!attr.empty()) {
-                data = IvwSerializeBase::getRegisteredType(attr);     
-                if(data) {
-                    _root = keyNode;
-                    (*data).deserialize(*this) ;
-                }
-            }
-            else
-            {
-                //Possibly a non-registered type
-            }
-        }
-        else {
-            _root = keyNode;
-            (*data).deserialize(*this) ;
-        }
-        
+    catch (TxException& ) {
+        keyNode = 0;
         return;
-    }    
+    }
+
+     if (keyNode) {
+        NodeSwitch tempNodeSwitch(*this, keyNode);
+        sObj.deserialize(*this);
+     }
 }
-*/
 
 void IvwDeserializer::deserializeAttributes(const std::string &key, std::string &data) {
 
     TxElement* keyNode = _root->FirstChildElement(); 
-    //if(!keyNode) return;   
+    //if (!keyNode) return;   
 
     _root->GetAttribute(key, &data);
-    TxAttribute* currAttribute = 0;
 
     try {
         
@@ -113,13 +90,10 @@ void IvwDeserializer::deserializeAttributes(const std::string &key, std::string 
             lastAttribute = attribute;
         }
 
-        if( lastAttribute->Name() == key)
-        {
-            if( lastAttribute->Value() == data)
-            {
-                if(keyNode && keyNode->FirstAttribute())
-                {
-                    if(IvwSerializeConstants::isReversvedAttribute(keyNode->FirstAttribute()->Name())) {
+        if ( lastAttribute->Name() == key) {
+            if ( lastAttribute->Value() == data) {
+                if (keyNode && keyNode->FirstAttribute()) {
+                    if (IvwSerializeConstants::isReversvedAttribute(keyNode->FirstAttribute()->Name())) {
                         //If next element has valid attributes
                         _root = keyNode; 
                     }
@@ -129,34 +103,34 @@ void IvwDeserializer::deserializeAttributes(const std::string &key, std::string 
        
 
     }
-    catch(TxException& ex) {
+    catch (TxException& ) {
     }
 }
 
 void IvwDeserializer::deserializePrimitives(const std::string &key, std::string &data) {
 
-    TxElement* keyNode = _root->FirstChildElement(key); 
-    //if(!keyNode) return;   
+    TxElement* keyNode = _root->FirstChildElement(key);
+    //if (!keyNode) return;   
 
     keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
     
 }
 
 void IvwDeserializer::deserialize(const std::string &key, std::string &data, const bool asAttribute) {
-    if(asAttribute) {
-        deserializeAttributes(key, data) ;
+    if (asAttribute) {
+        deserializeAttributes(key, data);
     }
     else {
-        deserializePrimitives(key, data) ;
+        deserializePrimitives(key, data);
     }
 }
 
 void IvwDeserializer::deserialize(const std::string &key, float &data) {
-    deserializePrimitives<float>(key, data) ;
+    deserializePrimitives<float>(key, data);
 }
 
 void IvwDeserializer::deserialize(const std::string &key, int &data) {
-    deserializePrimitives<int>(key, data) ;
+    deserializePrimitives<int>(key, data);
 }
 
 void IvwDeserializer::deserialize(const std::string &key, ivec2 &data) {
@@ -188,7 +162,7 @@ void IvwDeserializer::readFile(std::ostream& stream) {
         _doc.LoadFile(); 
         //stream<<_doc;
     }
-    catch(TxException& ex) {
+    catch (TxException& ) {
         
     }
 
