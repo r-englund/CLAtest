@@ -35,12 +35,21 @@ NetworkEditor::~NetworkEditor() {
     // TODO: cleanup
 }
 
+void NetworkEditor::addConnection(PortConnection *connection) {
+    ProcessorGraphicsItem* outProcessorItem=0;
+    ProcessorGraphicsItem* inProcessorItem=0;
 
-void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* outport,
-                                  ProcessorGraphicsItem* inProcessor, Port* inport) {
-    LogInfo("Adding connection.");
-    // create connection in data flow network
-    processorNetwork_->connectPorts(outport, inport);
+    Processor* outProcessor =  connection->getOutport()->getProcessor();
+    Processor* inProcessor =  connection->getInport()->getProcessor();
+
+    outProcessorItem = getProcessorGraphicsItem(outProcessor->getIdentifier());
+    inProcessorItem = getProcessorGraphicsItem(inProcessor->getIdentifier());
+
+    initializeConnectionRepresentation(outProcessorItem, connection->getOutport(), inProcessorItem, connection->getInport()) ;
+}
+
+void NetworkEditor::initializeConnectionRepresentation(ProcessorGraphicsItem* outProcessor, Port* outport,
+                                                       ProcessorGraphicsItem* inProcessor, Port* inport) {
 
     // generate GUI representation and add to editor
     ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(outProcessor, outport, inProcessor, inport);
@@ -49,6 +58,15 @@ void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* out
     connectionGraphicsItem->show();
     processorNetworkEvaluator_->initializeNetwork();
     processorNetworkEvaluator_->evaluate();
+}
+
+void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* outport,
+                                  ProcessorGraphicsItem* inProcessor, Port* inport) {
+    LogInfo("Adding connection.");
+    // create connection in data flow network
+    processorNetwork_->connectPorts(outport, inport);
+
+    initializeConnectionRepresentation(outProcessor, outport, inProcessor, inport) ;
 }
 
 void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsItem) {
@@ -304,6 +322,12 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
         Processor* p = *it; 
         initializeProcessorRepresentation(p, initial);
         initial += offset;        
+    }
+
+    std::vector<PortConnection*> connections = processorNetwork_->getPortConnections();
+
+    for (std::vector<PortConnection*>::iterator it = connections.begin(); it!=connections.end(); it++) {
+       addConnection(*it) ;      
     }
     
     return true;
