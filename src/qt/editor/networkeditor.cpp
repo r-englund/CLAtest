@@ -90,8 +90,8 @@ bool NetworkEditor::processorWithIdentifierExists(std::string identifier) {
 
 Processor* NetworkEditor::createProcessor(std::string className) {
     LogInfo("Adding processor.");
-    // create processor and add to data flow network
-    Processor* processor = dynamic_cast<Processor*>(ProcessorFactory::instance()->create(className));
+    // create processor and add to data flow network    
+    Processor* processor = dynamic_cast<Processor*>(InviwoFactoryBase::instance<ProcessorFactory>()->create(className));
 
     // if identifier classname already exists, generate a new identifier
     std::string identifier = className;
@@ -166,6 +166,13 @@ void NetworkEditor::removeProcessor(std::string identifier) {
     delete processorGraphicsItem;
     processorNetworkEvaluator_->initializeNetwork();
     processorNetworkEvaluator_->evaluate();
+}
+
+void NetworkEditor::clearNetwork() {
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();
+     for (size_t i = 0; i < processors.size(); ++i) {
+        removeProcessor(processors[i]->getIdentifier()) ;
+    }
 }
 
 ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItem(std::string identifier) const {
@@ -299,20 +306,16 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
 }
 
 bool NetworkEditor::loadNetwork(std::string fileName) {
-    
+
+    clearNetwork();
+
     IvwDeserializer xmlDeserializer(fileName);
-
-    //xmlSerializer.serialize("NetworkEditor", *this);
-
-    //xmlDeserializer.readFile(std::cin);
 
     processorNetwork_->deserialize(xmlDeserializer);
 
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
 
     float denom = processors.size()+1.0f ;
-
-    //QPointF center = QPointF(sceneRect().x() + sceneRect().width() / 2.0f, sceneRect().y() + sceneRect().height() / 2.0f);
 
     QPointF initial = QPointF(sceneRect().x() + sceneRect().width() / 2.0f, sceneRect().y() + sceneRect().height() / denom);
 
