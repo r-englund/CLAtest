@@ -36,16 +36,6 @@ public:
     template<class T>
     void serialize(const std::string& key, const T* const& data);
     
-    /*class NodeSwitch {
-    public:
-         NodeSwitch(IvwSerializer& serializer, TxElement* node);
-        ~NodeSwitch();
-
-    private:  
-        IvwSerializer& _serializer;
-        TxElement* _storedNode;
-    };*/
-    
 protected:
     friend class NodeSwitch;
 
