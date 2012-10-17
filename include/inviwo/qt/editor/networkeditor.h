@@ -36,6 +36,8 @@ public:
 
     bool loadNetwork(std::string fileName);
 
+    void clearNetwork();
+
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
     QGraphicsItem* getGraphicsItemAt(const QPointF pos) const;
 
