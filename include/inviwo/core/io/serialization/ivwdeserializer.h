@@ -65,23 +65,18 @@ inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T*>
 template <typename T>
 inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) {
     
-    TxElement* keyNode;    
-    TxElement* rootCopy = _root;  
+    TxElement* keyNode;
+
 
      try {
         keyNode = _root->FirstChildElement(key);
         keyNode->FirstChildElement();
      }
     catch (TxException& ) {
-        try {
-           keyNode = rootCopy->NextSiblingElement(); 
-        }
-        catch (TxException& ) {
-            keyNode = 0;            
-        }
-        _root = keyNode;
         return;
     }
+
+    NodeSwitch tempNodeSwitch(*this, keyNode);
   
     typename T* item;
     std::vector<T*> tVector;
@@ -103,14 +98,6 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
         
     }
 
-    try {
-       keyNode = rootCopy->NextSiblingElement(); 
-    }
-    catch (TxException& ) {
-        keyNode = rootCopy;
-    }
-
-     _root = keyNode;
 
     sVector = tVector;
 }
