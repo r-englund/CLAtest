@@ -1,4 +1,6 @@
 #include "inviwo/core/processors/processor.h"
+#include "inviwo/core/inviwofactorybase.h"
+#include "inviwo/core/metadata/metadatafactory.h"
 
 namespace inviwo {
 
@@ -84,15 +86,34 @@ void Processor::invokeInteractionEvent(Event* event) {
         interactionHandlers_[i]->invokeEvent(event);
 }
 
+
+MetaData* Processor::getMetaData(std::string className) {
+    MetaData* meta = 0;
+    for ( size_t i=0; i<metaData_.size(); i++ ) {
+        if (metaData_[i]->getClassName()==className) {
+            meta = metaData_[i];
+            break;
+        }
+    }
+
+    if (!meta) {
+        meta = dynamic_cast<MetaData*>(InviwoFactoryBase::instance<MetaDataFactory>()->create(className));
+        metaData_.push_back(meta);
+    }
+    return meta;
+}
+
 void Processor::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassName(), true);
     s.serialize("identifier", identifier_, true);
+    s.serialize("MetaDataList", metaData_, "MetaData") ;
     PropertyOwner::serialize(s);
 }
 void Processor::deserialize(IvwDeserializer& d) {
     std::string className;
     d.deserialize("type", className, true);
     d.deserialize("identifier", identifier_, true);
+    d.deserialize("MetaDataList", metaData_, "MetaData") ;
     PropertyOwner::deserialize(d);  
 }
 

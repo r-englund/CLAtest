@@ -1,5 +1,6 @@
 #include "inviwo/core/inviwoapplication.h"
 #include "inviwo/core/processors/processorfactory.h"
+#include "inviwo/core/metadata/metadatafactory.h"
 #include "modules/moduleregistration.h"
 
 
@@ -23,6 +24,9 @@ namespace inviwo {
 
         ProcessorFactory* processorFactory = new ProcessorFactory();
         processorFactory->initialize();
+
+        MetaDataFactory* metadataFactory = new MetaDataFactory();
+        metadataFactory->initialize();
 
         initialized_ = true;
     }

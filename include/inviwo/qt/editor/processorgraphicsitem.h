@@ -22,6 +22,8 @@ public:
 
     Port* getSelectedPort(const QPointF pos) const;
 
+    void updateMetaData();
+
 protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);

@@ -2,6 +2,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "inviwo/core/ports/port.h"
+#include "inviwo/core/metadata/positionmetadata.h"
 
 #include "inviwo/qt/editor/networkeditor.h"
 #include "inviwo/qt/editor/connectiongraphicsitem.h"
@@ -148,8 +149,15 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
                 connectionGraphicsItems[i]->update();
             }
         }
+        updateMetaData();
     }
     return QGraphicsItem::itemChange(change, value);
+}
+
+void ProcessorGraphicsItem::updateMetaData() {
+    //TODO: this is not pretty way to access processor metadata, find another way
+    PositionMetaData* position_meta = dynamic_cast<PositionMetaData*>(processor_->getMetaData("PositionMetaData"));
+    position_meta->setXY(ivec2(x(), y()));
 }
 
 } // namespace

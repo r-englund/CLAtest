@@ -1,6 +1,7 @@
 #include "inviwo/core/io/serialization/ivwserializebase.h"
 #include "inviwo/core/inviwofactorybase.h"
 #include "inviwo/core/processors/processorfactory.h"
+#include "inviwo/core/metadata/metadatafactory.h"
 #include "inviwo/core/io/serialization/ivwserializable.h"
 #include "inviwo/core/inviwo.h"
 
@@ -110,11 +111,11 @@ void* IvwSerializeBase::ReferenceDataContainer::find(const std::string& type, co
                 try {
                     (*nodeIt)._node->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attrib );
                 }
-                catch (TxException& ex) {
+                catch (TxException& ) {
                 }
                 (*nodeIt)._node->GetAttribute( IvwSerializeConstants::ID_ATTRIBUTE, &id_attrib );
             }
-            catch (TxException& ex) {
+            catch (TxException& ) {
             }
 
             if (type_attrib == type) {
@@ -191,6 +192,7 @@ IvwSerializeBase::~IvwSerializeBase() {
 void IvwSerializeBase::registerFactories(void) {
     _registeredFactoryVector.clear();
     _registeredFactoryVector.push_back(InviwoFactoryBase::instance<ProcessorFactory>());
+    _registeredFactoryVector.push_back(InviwoFactoryBase::instance<MetaDataFactory>());
 }
 
 template <typename T>

@@ -8,6 +8,7 @@
 #include "inviwo/core/processors/processorwidget.h"
 #include "inviwo/core/properties/properties.h"
 #include "inviwo/core/properties/propertyowner.h"
+#include "inviwo/core/metadata/metadata.h"
 
 namespace inviwo {
 
@@ -35,6 +36,8 @@ public:
     void setProcessorWidget(ProcessorWidget* processorWidget) { processorWidget_ = processorWidget; }
     ProcessorWidget* getProcessorWidget() { return processorWidget_; }
     bool hasProcessorWidget() { return (processorWidget_ != 0); }
+
+    MetaData* getMetaData(std::string meta);
 
     virtual void initialize() throw (Exception);
     virtual void deinitialize() throw (Exception);
@@ -80,6 +83,8 @@ private:
 
     std::vector<InteractionHandler*> interactionHandlers_;
 
+    //TODO: Use map
+    std::vector<MetaData*> metaData_;
 };
 
 } // namespace

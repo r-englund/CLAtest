@@ -6,6 +6,7 @@
 #include "inviwo/qt/editor/networkeditor.h"
 #include "inviwo/qt/editor/processorlistwidget.h"
 #include "inviwo/qt/editor/propertylistwidget.h"
+#include "inviwo/core/metadata/positionmetadata.h"
 
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
@@ -118,9 +119,10 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
     processorGraphicsItem->setProcessor(processor);
     // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
     processorGraphicsItem->setPos(pos);
+    processorGraphicsItem->updateMetaData();
     processorGraphicsItems_.push_back(processorGraphicsItem);
     addItem(processorGraphicsItem);
-    processorGraphicsItem->show();
+    processorGraphicsItem->show();    
 
     // show processor widget
     if (processor->hasProcessorWidget()) {
@@ -315,16 +317,10 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
 
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
 
-    float denom = processors.size()+1.0f ;
-
-    QPointF initial = QPointF(sceneRect().x() + sceneRect().width() / 2.0f, sceneRect().y() + sceneRect().height() / denom);
-
-    QPointF offset =  QPointF(0.0f, sceneRect().height() / denom);
-
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
-        Processor* p = *it; 
-        initializeProcessorRepresentation(p, initial);
-        initial += offset;        
+        Processor* p = *it;
+        PositionMetaData* meta = dynamic_cast<PositionMetaData*>(p->getMetaData("PositionMetaData"));        
+        initializeProcessorRepresentation(p, QPointF(meta->getX(), meta->getY()));
     }
 
     std::vector<PortConnection*> connections = processorNetwork_->getPortConnections();

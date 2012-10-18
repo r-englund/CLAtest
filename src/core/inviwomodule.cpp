@@ -60,6 +60,10 @@ const std::vector<RepresentationConverter*>& InviwoModule::getRepresentationConv
     return representationConverters_;
 }
 
+const std::vector<MetaData*>& InviwoModule::getMetaData() const {
+    return metadata_;
+}
+
 void InviwoModule::initialize() throw (Exception) {
     initialized_ = true;
 }
@@ -82,6 +86,10 @@ void InviwoModule::addProcessor(Processor* processor) {
     // check processor pointer and module's name
     //processor->setModuleIdentifier(identifier_);
     processors_.push_back(processor);
+}
+
+void InviwoModule::addMetaData(MetaData* meta) {
+    metadata_.push_back(meta);
 }
 
 void InviwoModule::addProperty(Property* property) {

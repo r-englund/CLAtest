@@ -113,6 +113,9 @@ HEADERS += \
     ../../include/inviwo/core/network/portconnection.h \
     ../../include/inviwo/core/network/processornetwork.h \
     ../../include/inviwo/core/network/processornetworkevaluator.h \
+    ../../include/inviwo/core/metadata/positionmetadata.h \
+    ../../include/inviwo/core/metadata/metadata.h \
+    ../../include/inviwo/core/metadata/metadatafactory.h \	
     ../../include/inviwo/core/ports/dataport.h \
     ../../include/inviwo/core/ports/port.h \
     ../../include/inviwo/core/ports/imageport.h \
@@ -179,6 +182,9 @@ SOURCES += \
     network/portconnection.cpp \
     network/processornetwork.cpp \
     network/processornetworkevaluator.cpp \
+    metadata/positionmetadata.cpp \
+    metadata/metadata.cpp \
+    metadata/metadatafactory.cpp \
     ports/port.cpp \
     ports/imageport.cpp \
     ports/volumeport.cpp \
