@@ -8,7 +8,9 @@ namespace inviwo {
 
 CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint)
                                      : startPoint_(startPoint),
-                                       endPoint_(endPoint) {}
+                                       endPoint_(endPoint) {
+     setZValue(connectionGraphicsItemDepth);
+}
 
 CurveGraphicsItem::~CurveGraphicsItem() {}
 
