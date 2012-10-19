@@ -7,6 +7,11 @@
 
 namespace inviwo {
 
+//TODO: Move this to common header later on (eg., BaseGraphicsItem.h )
+static const qreal initialGraphicsItemDepth = 1.0f; 
+static const qreal processGraphicsItemDepth = initialGraphicsItemDepth + 1.0f;
+static const qreal connectionGraphicsItemDepth = initialGraphicsItemDepth + 2.0f;
+
 class ProcessorGraphicsItem : public QGraphicsRectItem {
 
 public:
