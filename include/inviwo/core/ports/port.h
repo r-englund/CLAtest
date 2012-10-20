@@ -24,6 +24,7 @@ namespace inviwo {
         Processor* getProcessor() const { return processor_; }
 
         bool isOutport() const { return (direction_ == Port::OUTPORT); }
+        bool isInport() const { return (direction_ == Port::INPORT); }
         bool isConnected() const { return connected_; }
         virtual void connectTo(Port* port);
         virtual void disconnectFrom(Port* port);

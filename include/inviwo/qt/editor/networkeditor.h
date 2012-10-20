@@ -39,12 +39,15 @@ public:
     void clearNetwork();
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
-    QGraphicsItem* getGraphicsItemAt(const QPointF pos) const;
+    QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
+    QGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
+
+    void keyPressEvent(QKeyEvent* keyEvent);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
 
