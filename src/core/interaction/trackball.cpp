@@ -23,31 +23,43 @@ namespace inviwo {
 
     void Trackball::invokeEvent(Event* event) {
         MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
+
         if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             ivec2 curMousePos = mouseEvent->pos();
-            vec3 curTrackballPos = mapNormalizedMousePosToTrackball(mouseEvent->posNormalized());
-            
+            vec3 curTrackballPos = mapNormalizedMousePosToTrackball(mouseEvent->posNormalized());                       
             if (curTrackballPos != lastTrackballPos_) {
                 // calculate rotation angle
-				float rotationAngle = acos(glm::dot(curTrackballPos, lastTrackballPos_));
+                float rotationAngle = acos(glm::dot(curTrackballPos, lastTrackballPos_ ));
 
                 // obtain rotation axis
-				vec3 roatationAxis = glm::cross(lastTrackballPos_, curTrackballPos);
+                vec3 rotationAxis = glm::cross(lastTrackballPos_, curTrackballPos);
 
                 // generate quaternion and rotate camera                
-				roatationAxis = glm::normalize(roatationAxis);
-				quat quaternion = glm::angleAxis(rotationAngle*180.0f/3.14f, roatationAxis);
+                rotationAxis = glm::normalize(rotationAxis);
+                quat quaternion = glm::angleAxis(rotationAngle*180.0f/3.14f, rotationAxis);
                 camera_->setLookFrom(glm::rotate(quaternion, camera_->lookFrom()));
                 camera_->setLookTo(glm::rotate(quaternion, camera_->lookTo()));
                 camera_->setLookUp(glm::rotate(quaternion, camera_->lookUp()));
                 camera_->invalidate();
-				
+
                 lastMousePos_ = curMousePos;
                 lastTrackballPos_ = curTrackballPos;
             }
         } else if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_RIGHT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //std::cout << "zooming" << std::endl;
+            float zoomFactor = 1.0f;
+            ivec2 curMousePos = mouseEvent->pos();
+            vec3 curTrackballPos = mapNormalizedMousePosToTrackball(mouseEvent->posNormalized());                       
+            if (curTrackballPos != lastTrackballPos_) {
+                vec3 zoomVec = (lastTrackballPos_-curTrackballPos)*zoomFactor;
+                camera_->setLookTo(camera_->lookTo()+zoomVec);
+                camera_->invalidate();
+
+                lastMousePos_ = curMousePos;
+                lastTrackballPos_ = curTrackballPos;
+            }
         }
+        
     }
 
 } // namespace
