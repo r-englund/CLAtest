@@ -14,6 +14,7 @@ public:
 
     virtual void show();
     virtual void hide();
+    virtual void resize();
 
 protected:
     Processor* processor_;
