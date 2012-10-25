@@ -9,6 +9,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     : processorNetwork_(processorNetwork) { 
     registeredCanvases_.clear();
     initializeNetwork();
+    renderContext = 0;
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
@@ -25,11 +26,43 @@ void ProcessorNetworkEvaluator::initializeNetwork() {
         processors[i]->initialize();
 }
 
-void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, unsigned int canvasNum) {
+void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string associatedProcessName) {
     canvas->setNetworkEvaluator(this);
     registeredCanvases_.push_back(canvas);
     std::vector<CanvasProcessor*> canvasProcessors = processorNetwork_->getProcessorsByType<CanvasProcessor>();
-    canvasProcessors[canvasNum]->setCanvas(canvas);
+    for(size_t i=0; i<canvasProcessors.size(); i++) {
+        if(canvasProcessors[i]->getIdentifier()==associatedProcessName) {
+            canvasProcessors[i]->setCanvas(canvas);
+        }
+    }
+}
+
+void ProcessorNetworkEvaluator::deRegisterCanvas(Canvas *canvas) {
+
+    /*
+    CanvasProcessor* canvasProc = dynamic_cast<CanvasProcessor*>(processorNetwork_->getProcessorByName(associatedProcessName));
+
+    if(canvasProc) {
+
+        Canvas* canvas = canvasProc->getCanvas();
+
+       if(canvas) {
+
+            if( std::find(registeredCanvases_.begin(), registeredCanvases_.end(), canvas)== registeredCanvases_.end()) {
+                return;
+            }
+
+             canvas->setNetworkEvaluator(0);
+            canvasProc->setCanvas(0);
+
+            registeredCanvases_.erase(std::remove(registeredCanvases_.begin(), registeredCanvases_.end(),
+                                        canvas), registeredCanvases_.end());
+        }
+    }
+    */
+
+    registeredCanvases_.erase(std::remove(registeredCanvases_.begin(), registeredCanvases_.end(),
+                                        canvas), registeredCanvases_.end());
 }
 
 
@@ -97,7 +130,7 @@ void ProcessorNetworkEvaluator::propagateMouseEvent(Processor* processor, MouseE
 
 void ProcessorNetworkEvaluator::propagateMouseEvent(Canvas* canvas, MouseEvent* mouseEvent) {
     // find the canvas processor from which the event was emitted
-    Processor* eventInitiator; 
+    Processor* eventInitiator=0; 
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++) {
         if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
@@ -107,6 +140,7 @@ void ProcessorNetworkEvaluator::propagateMouseEvent(Canvas* canvas, MouseEvent* 
         }
     }
 
+    if(!eventInitiator) return;
     processorsVisited_.clear();
     propagateMouseEvent(eventInitiator, mouseEvent);
 }
@@ -120,6 +154,7 @@ void ProcessorNetworkEvaluator::evaluate() {
     for (size_t i=0; i<processorsSorted_.size(); i++) {
         if (!processorsSorted_[i]->isValid()) {
             if (processorsSorted_[i]->allInportsConnected()) {
+                _renderContext->switchContext();
                 processorsSorted_[i]->process();
                 if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
                     processorsSorted_[i]->setValid();
