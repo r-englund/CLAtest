@@ -17,6 +17,10 @@ namespace inviwo {
         virtual void show();
         virtual void hide();
 
+    protected:
+
+    void resizeEvent(QResizeEvent*);
+
     private:
         CanvasQt* canvas_;
     };

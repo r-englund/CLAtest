@@ -14,6 +14,9 @@ public:
 
     virtual void show();
     virtual void hide();
+
+    protected:
+    void resizeEvent(QResizeEvent*);
 };
 
 } // namespace
