@@ -17,8 +17,10 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
-
+    virtual void switchContext();
     virtual void repaint();
+    virtual void resize(ivec2 dimensions);
+    virtual void update();
 
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };
 
