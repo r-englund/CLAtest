@@ -18,4 +18,13 @@ void CanvasGL::initialize() {
 
 void CanvasGL::deinitialize() {}
 
+void CanvasGL::switchContext() {}
+
+void CanvasGL::repaint() {}
+
+void CanvasGL::resize(ivec2 size) {
+    Canvas::resize(size);
+}
+void CanvasGL::update() {}
+
 } // namespace

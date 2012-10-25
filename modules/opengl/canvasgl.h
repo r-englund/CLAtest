@@ -12,6 +12,10 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
+    virtual void switchContext();
+    virtual void repaint();
+    virtual void resize(ivec2 size);
+    virtual void update();
 
 };
 
