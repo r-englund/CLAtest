@@ -9,7 +9,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     : processorNetwork_(processorNetwork) { 
     registeredCanvases_.clear();
     initializeNetwork();
-    renderContext = 0;
+    _renderContext = 0;
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
