@@ -41,6 +41,7 @@ void CanvasProcessorGL::renderImagePlaneQuad() const {
 }
 
 void CanvasProcessorGL::process() {
+    CanvasProcessor::process();
     Image* inImage = inport_.getData();
     ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     inImageGL->bindColorTexture(GL_TEXTURE0);
