@@ -129,6 +129,9 @@ bool InviwoMainWindow::loadNetwork() {
 
 }
 
+void InviwoMainWindow::closeEvent(QCloseEvent *event) {
+    networkEditorView_->getNetworkEditor()->clearNetwork();
+}
 
 
 InviwoMainWindow::~InviwoMainWindow() {}

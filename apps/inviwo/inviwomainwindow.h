@@ -29,6 +29,7 @@ Q_OBJECT
         void addToolBars();
         void addMenus();
         void addMenuActions();
+        void closeEvent(QCloseEvent *event);
 
 
         //TODO: Currently for testing, save the NetworkEditorView which consists entire network processors
