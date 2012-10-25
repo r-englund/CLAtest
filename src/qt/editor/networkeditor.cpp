@@ -32,6 +32,13 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
 }
 
+void NetworkEditor::createDefaultRenderContext(QWidget *qwidget) {         
+    _defaultRenderContext = new CanvasQt(qwidget);
+    _defaultRenderContext->setNetworkEvaluator(0) ;
+    _defaultRenderContext->switchContext();
+    processorNetworkEvaluator_->setRenderContext(_defaultRenderContext) ;
+}
+
 NetworkEditor::~NetworkEditor() {
     // TODO: cleanup
 }
@@ -57,7 +64,7 @@ void NetworkEditor::initializeConnectionRepresentation(ProcessorGraphicsItem* ou
     connectionGraphicsItems_.push_back(connectionGraphicsItem);
     addItem(connectionGraphicsItem);
     connectionGraphicsItem->show();
-    processorNetworkEvaluator_->initializeNetwork();
+    //processorNetworkEvaluator_->initializeNetwork();
     processorNetworkEvaluator_->evaluate();
 }
 
@@ -77,7 +84,7 @@ void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsI
     removeItem(connectionGraphicsItem);
     connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(),
         connectionGraphicsItem), connectionGraphicsItems_.end());
-    processorNetworkEvaluator_->initializeNetwork();
+    //processorNetworkEvaluator_->initializeNetwork();
     processorNetworkEvaluator_->evaluate();
 }
 
@@ -122,7 +129,8 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
     processorGraphicsItem->updateMetaData();
     processorGraphicsItems_.push_back(processorGraphicsItem);
     addItem(processorGraphicsItem);
-    processorGraphicsItem->show();    
+    processorGraphicsItem->show();
+    processor->initialize();
 
     // show processor widget
     if (processor->hasProcessorWidget()) {
@@ -136,7 +144,7 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
 
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
     if (canvasProcessor) {
-        processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas());
+        processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
     }
 }
 
@@ -144,10 +152,17 @@ void NetworkEditor::removeProcessor(std::string identifier) {
     LogInfo("Removing processor.");
     ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(identifier);
 
-    // remove processor from data flow network and delete it
+    // remove processor from data flow network and delete it    
     Processor* processor = processorGraphicsItem->getProcessor();
+
+    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
+    if (canvasProcessor) {
+        processorNetworkEvaluator_->deRegisterCanvas(canvasProcessor->getCanvas());
+    }    
+
     processorNetwork_->removeProcessor(processor);
     processorGraphicsItem->setProcessor(0);
+    processor->deinitialize();
     delete processor;
 
     // remove GUI connections
@@ -159,14 +174,14 @@ void NetworkEditor::removeProcessor(std::string identifier) {
         }
     }
 
-    // remove GUI representation from editor
+    // remove GUI representation from editor    
+
     processorGraphicsItem->hide();
     removeItem(processorGraphicsItem);
     processorGraphicsItems_.erase(std::remove(processorGraphicsItems_.begin(), processorGraphicsItems_.end(),
                                   processorGraphicsItem), processorGraphicsItems_.end());
 
     delete processorGraphicsItem;
-    processorNetworkEvaluator_->initializeNetwork();
     processorNetworkEvaluator_->evaluate();
 }
 
@@ -373,7 +388,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     std::vector<PortConnection*> connections = processorNetwork_->getPortConnections();
 
     for (std::vector<PortConnection*>::iterator it = connections.begin(); it!=connections.end(); it++) {
-       addConnection(*it) ;      
+       addConnection(*it) ;
     }
     
     return true;

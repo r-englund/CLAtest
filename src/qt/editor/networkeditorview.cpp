@@ -13,6 +13,7 @@ NetworkEditorView::NetworkEditorView(QWidget* parent) : QGraphicsView(parent),
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
+    getNetworkEditor()->createDefaultRenderContext(parent);
 }
 
 NetworkEditorView::~NetworkEditorView() {}
