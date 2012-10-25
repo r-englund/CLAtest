@@ -18,4 +18,9 @@ void ProcessorWidgetQt::hide() {
     QWidget::hide();
 }
 
+void ProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
+    ProcessorWidget::hide();
+    QWidget::resizeEvent(event);
+}
+
 } // namespace

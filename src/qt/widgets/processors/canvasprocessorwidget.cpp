@@ -10,29 +10,41 @@ CanvasProcessorWidget::CanvasProcessorWidget(Processor* processor, QWidget* pare
       canvas_(0)
 {
     setMinimumSize(256, 256);
-    setMaximumSize(256, 256);
+    setMaximumSize(512, 512);
     setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
-    setWindowTitle(QString::fromStdString(processor->getIdentifier()));
+    setWindowTitle(QString::fromStdString(processor->getIdentifier())); 
 }
 
-CanvasProcessorWidget::~CanvasProcessorWidget() {}
+CanvasProcessorWidget::~CanvasProcessorWidget() {
+    if(canvas_) {
+        canvas_->hide();
+        ProcessorWidgetQt::hide();
+        delete canvas_;
+    }
+}
 
 void CanvasProcessorWidget::initialize() {
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
     canvas_ = new CanvasQt(this);
     canvas_->initialize();
-    canvasProcessor->setCanvas(dynamic_cast<Canvas*>(canvas_));
-
+    canvas_->setMouseTracking(true);
+    
     QGridLayout* gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 0, 0, 0);
     gridLayout->addWidget(dynamic_cast<QWidget*>(canvas_), 0, 0);
     setLayout(gridLayout);
+
+    canvasProcessor->setCanvas(dynamic_cast<Canvas*>(canvas_));
 
     initialized_ = true;
 }
 
 void CanvasProcessorWidget::show() {
     ProcessorWidgetQt::show();
+}
+
+void CanvasProcessorWidget::resizeEvent(QResizeEvent* event) {
+    ProcessorWidgetQt::resizeEvent(event);
 }
 
 void CanvasProcessorWidget::hide() {
