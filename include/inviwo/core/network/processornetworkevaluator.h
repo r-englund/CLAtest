@@ -18,7 +18,9 @@ public:
     virtual ~ProcessorNetworkEvaluator();
 
     void setProcessorNetwork(ProcessorNetwork* processorNetwork);
-    void registerCanvas(Canvas* canvas, unsigned int canvasNum=0);
+    void registerCanvas(Canvas* canvas, std::string associatedProcessName="CanvasProcessorGL");
+    void deRegisterCanvas(Canvas *canvas);
+    void setRenderContext(Canvas* canvas) {_renderContext = canvas;}
     void initializeNetwork();
 
     void evaluate();
@@ -40,6 +42,7 @@ private:
     std::vector<Processor*> processorsVisited_; // a bool vector containing flags whether a processor has been visited during traversal
 
     std::vector<Canvas*> registeredCanvases_;
+    Canvas* _renderContext;
 
     bool repaintRequired_;
 
