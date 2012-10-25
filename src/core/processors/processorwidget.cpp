@@ -20,4 +20,8 @@ void ProcessorWidget::hide() {
     //std::cout << "hiding" << std::endl;
 }
 
+void ProcessorWidget::resize() {
+    //TODO: Add size to processor meta data
+}
+
 } // namespace
