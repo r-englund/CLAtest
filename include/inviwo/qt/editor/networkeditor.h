@@ -12,6 +12,8 @@
 
 namespace inviwo {
 
+class CanvasQt;
+
 class NetworkEditor : public QGraphicsScene {
 
 public:
@@ -37,6 +39,8 @@ public:
     bool loadNetwork(std::string fileName);
 
     void clearNetwork();
+
+    void createDefaultRenderContext(QWidget *qwidget);
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
     QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
@@ -76,6 +80,8 @@ private:
     Port* startPort_;
     Port* endPort_;
 
+    CanvasQt* _defaultRenderContext;
+    
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
