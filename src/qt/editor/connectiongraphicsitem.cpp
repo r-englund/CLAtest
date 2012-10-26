@@ -9,7 +9,7 @@ namespace inviwo {
 CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint)
                                      : startPoint_(startPoint),
                                        endPoint_(endPoint) {
-     setZValue(connectionGraphicsItemDepth);
+    setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
 }
 
 CurveGraphicsItem::~CurveGraphicsItem() {}
@@ -55,7 +55,6 @@ ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcess
                                                                    inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center()),
                                                  outProcessor_(outProcessor), outport_(outport),
                                                  inProcessor_(inProcessor), inport_(inport) {
-    setZValue(2.0f);
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
 

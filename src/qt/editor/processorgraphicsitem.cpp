@@ -17,7 +17,7 @@ static const int labelHeight = 8;
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
     : processor_(0) {
-    setZValue(processGraphicsItemDepth);
+    setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
 }

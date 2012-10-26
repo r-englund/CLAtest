@@ -20,7 +20,7 @@ public:
     void setProcessorNetwork(ProcessorNetwork* processorNetwork);
     void registerCanvas(Canvas* canvas, std::string associatedProcessName="CanvasProcessorGL");
     void deRegisterCanvas(Canvas *canvas);
-    void setRenderContext(Canvas* canvas) {_renderContext = canvas;}
+    void setDefaultRenderContext(Canvas* canvas) {renderContext_ = canvas;}
     void initializeNetwork();
 
     void evaluate();
@@ -42,7 +42,7 @@ private:
     std::vector<Processor*> processorsVisited_; // a bool vector containing flags whether a processor has been visited during traversal
 
     std::vector<Canvas*> registeredCanvases_;
-    Canvas* _renderContext;
+    Canvas* renderContext_;
 
     bool repaintRequired_;
 

@@ -80,7 +80,7 @@ private:
     Port* startPort_;
     Port* endPort_;
 
-    CanvasQt* _defaultRenderContext;
+    CanvasQt* defaultRenderContext_;
     
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };

@@ -9,7 +9,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     : processorNetwork_(processorNetwork) { 
     registeredCanvases_.clear();
     initializeNetwork();
-    _renderContext = 0;
+    renderContext_ = 0;
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
@@ -20,6 +20,7 @@ void ProcessorNetworkEvaluator::setProcessorNetwork(ProcessorNetwork* processorN
 }
 
 void ProcessorNetworkEvaluator::initializeNetwork() {
+    ivwAssert(processorNetwork_, "processorNetwork_ not initialized, call setProcessorNetwork()");
     // initialize network
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++)
@@ -30,8 +31,8 @@ void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string assoc
     canvas->setNetworkEvaluator(this);
     registeredCanvases_.push_back(canvas);
     std::vector<CanvasProcessor*> canvasProcessors = processorNetwork_->getProcessorsByType<CanvasProcessor>();
-    for(size_t i=0; i<canvasProcessors.size(); i++) {
-        if(canvasProcessors[i]->getIdentifier()==associatedProcessName) {
+    for (size_t i=0; i<canvasProcessors.size(); i++) {
+        if(canvasProcessors[i]->getIdentifier() == associatedProcessName) {
             canvasProcessors[i]->setCanvas(canvas);
         }
     }
@@ -151,13 +152,15 @@ void ProcessorNetworkEvaluator::evaluate() {
     // TODO: perform only if network has been changed
     sortTopologically();
 
+    renderContext_->switchContext();
     for (size_t i=0; i<processorsSorted_.size(); i++) {
         if (!processorsSorted_[i]->isValid()) {
             if (processorsSorted_[i]->allInportsConnected()) {
-                _renderContext->switchContext();
                 processorsSorted_[i]->process();
-                if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
+                if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i])) {
                     processorsSorted_[i]->setValid();
+                    renderContext_->switchContext();
+                }
                 repaintRequired_ = true;
             }
         }

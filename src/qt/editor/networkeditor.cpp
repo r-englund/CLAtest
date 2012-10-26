@@ -33,10 +33,10 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
 }
 
 void NetworkEditor::createDefaultRenderContext(QWidget *qwidget) {         
-    _defaultRenderContext = new CanvasQt(qwidget);
-    _defaultRenderContext->setNetworkEvaluator(0) ;
-    _defaultRenderContext->switchContext();
-    processorNetworkEvaluator_->setRenderContext(_defaultRenderContext) ;
+    defaultRenderContext_ = new CanvasQt(qwidget);
+    defaultRenderContext_->setNetworkEvaluator(0) ;
+    defaultRenderContext_->switchContext();
+    processorNetworkEvaluator_->setDefaultRenderContext(defaultRenderContext_) ;
 }
 
 NetworkEditor::~NetworkEditor() {
@@ -174,8 +174,7 @@ void NetworkEditor::removeProcessor(std::string identifier) {
         }
     }
 
-    // remove GUI representation from editor    
-
+    // remove GUI representation from editor
     processorGraphicsItem->hide();
     removeItem(processorGraphicsItem);
     processorGraphicsItems_.erase(std::remove(processorGraphicsItems_.begin(), processorGraphicsItems_.end(),

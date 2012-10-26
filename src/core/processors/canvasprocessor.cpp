@@ -35,11 +35,9 @@ void CanvasProcessor::createProcessorWidget() {
 
 void CanvasProcessor::initialize() {
     Processor::initialize();
-    //canvas_->initialize();
 }
 
 void CanvasProcessor::deinitialize() {
-    //canvas_->deinitialize();
     processorWidget_->hide();
     delete processorWidget_;
     processorWidget_ = 0;

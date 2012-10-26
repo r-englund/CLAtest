@@ -10,6 +10,7 @@ Processor::Processor()
     : identifier_("undefined"),
       processorWidget_(0)
 {}
+
 Processor::~Processor() {}
 
 Processor* Processor::create() const {
