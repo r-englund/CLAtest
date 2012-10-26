@@ -9,6 +9,7 @@
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QList>
+#include <QSettings>
 #include <QUrl>
 
 namespace inviwo { 
@@ -30,10 +31,18 @@ InviwoMainWindow::InviwoMainWindow() {
     addMenus();
     addMenuActions();
 
+    setWindowTitle("Inviwo - Interactiv Visualization Workshop");
+
     rootDir_ = QString("D:/inviwo/data/");
     networkFileDir_ = rootDir_ + "workspaces/";
 
+    // restore window state
+    QSettings settings;
+    restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
+    restoreState(settings.value("mainWindowState").toByteArray());
 }
+
+InviwoMainWindow::~InviwoMainWindow() {}
 
 void InviwoMainWindow::addToolBars() {
     //basicToolbar_ = addToolBar(tr("File"));
@@ -59,81 +68,71 @@ void InviwoMainWindow::addMenuActions() {
 
 
 bool InviwoMainWindow::saveNetwork() {
-
-    //Dialog Window Setting
+    // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
 
-    QList<QUrl> sidebar_urls;
-    sidebar_urls << QUrl::fromLocalFile(QDir(networkFileDir_).absolutePath());
-    sidebar_urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebar_urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    QList<QUrl> sidebarURLs;
+    sidebarURLs << QUrl::fromLocalFile(QDir(networkFileDir_).absolutePath());
+    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 
     QFileDialog saveFileDialog(this, tr("Save Network ..."), QDir(networkFileDir_).absolutePath());
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
     saveFileDialog.setNameFilters(extension);
-    saveFileDialog.setSidebarUrls(sidebar_urls);
+    saveFileDialog.setSidebarUrls(sidebarURLs);
 
     if (saveFileDialog.exec()) {
         bool valid;
         QString path = saveFileDialog.selectedFiles().at(0);
-        if (!path.endsWith(".inv")) {
+        if (!path.endsWith(".inv"))
             valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString() + ".inv");
-        }
-        else {
+        else
             valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString());
-        }
         networkFileDir_ = saveFileDialog.directory().path();
-
         return valid;
-    }
-    else {
+    } else
         return false;
-    }
-    
 }
 
 bool InviwoMainWindow::loadNetwork() {
-
-    //Dialog Window Setting
+    // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
 
-    QList<QUrl> sidebar_urls;
-    sidebar_urls << QUrl::fromLocalFile(QDir(networkFileDir_).absolutePath());
-    sidebar_urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebar_urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    QList<QUrl> sidebarURLs;
+    sidebarURLs << QUrl::fromLocalFile(QDir(networkFileDir_).absolutePath());
+    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 
     QFileDialog openFileDialog(this, tr("Open Network ..."), QDir(networkFileDir_).absolutePath());
     openFileDialog.setFileMode(QFileDialog::AnyFile);
     openFileDialog.setNameFilters(extension);
-    openFileDialog.setSidebarUrls(sidebar_urls);
+    openFileDialog.setSidebarUrls(sidebarURLs);
 
     if (openFileDialog.exec()) {
         bool valid;
         QString path = openFileDialog.selectedFiles().at(0);
-        if (!path.endsWith(".inv")) {
+        if (!path.endsWith(".inv"))
             valid = networkEditorView_->getNetworkEditor()->loadNetwork(path.toStdString() + ".inv");
-        }
-        else {
+        else
             valid = networkEditorView_->getNetworkEditor()->loadNetwork(path.toStdString());
-        }
         networkFileDir_ = openFileDialog.directory().path();
         return valid;
-    }
-    else {
+    } else
         return false;
-    }
-
 }
 
-void InviwoMainWindow::closeEvent(QCloseEvent *event) {
+void InviwoMainWindow::closeEvent(QCloseEvent* event) {
+    IVW_UNUSED_PARAM(event);
     networkEditorView_->getNetworkEditor()->clearNetwork();
+
+    // save window state
+    QSettings settings;
+    settings.setValue("mainWindowGeometry", saveGeometry());
+    settings.setValue("mainWindowState", saveState());
 }
-
-
-InviwoMainWindow::~InviwoMainWindow() {}
 
 } // namespace

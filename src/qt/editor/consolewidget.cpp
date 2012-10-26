@@ -17,8 +17,18 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : InviwoDockWidget(tr("Console"), 
 
 ConsoleWidget::~ConsoleWidget() {}
 
-void ConsoleWidget::log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) {
-    textField_->append(QString::fromStdString(logSource + ": " + logMsg));
+void ConsoleWidget::log(std::string logSource, unsigned int logLevel, const char* fileName,
+                        const char* functionName, int lineNumber, std::string logMsg) {
+    IVW_UNUSED_PARAM(functionName);
+    if (logLevel == Error) {
+        std::ostringstream lineNumberStr;
+        lineNumberStr << lineNumber;
+        textField_->setTextColor(Qt::red);
+        textField_->append(QString::fromStdString(logSource + " (" + std::string(fileName) +
+                           ", " + lineNumberStr.str() + "): " + logMsg));
+        textField_->setTextColor(Qt::black);
+    } else
+        textField_->append(QString::fromStdString(logSource + ": " + logMsg));
 }
 
 } // namespace
