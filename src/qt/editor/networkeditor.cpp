@@ -206,8 +206,8 @@ QGraphicsItem* NetworkEditor::getProcessorGraphicsItemAt(const QPointF pos) cons
             if (processorGraphicsItem)
                 return processorGraphicsItem;
         }
-    } else
-        return 0;
+    }  
+    return 0;
 }
 
 QGraphicsItem* NetworkEditor::getConnectionGraphicsItemAt(const QPointF pos) const {
@@ -218,12 +218,12 @@ QGraphicsItem* NetworkEditor::getConnectionGraphicsItemAt(const QPointF pos) con
             if (connectionGraphicsItem)
                 return connectionGraphicsItem;
         }
-    } else
-        return 0;
+    }  
+    return 0;
 }
 
 void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    startProcessor_ = dynamic_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(e->scenePos()));
+    startProcessor_ = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(e->scenePos()));
     if (startProcessor_) {
         startPort_ = startProcessor_->getSelectedPort(e->scenePos());
         if (startPort_ && startPort_->isOutport()) {
@@ -246,7 +246,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 }
                 ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(getConnectionGraphicsItemAt(e->scenePos()));
                 QPointF startPoint = connectionGraphicsItem->getStartPoint();
-                startProcessor_ = dynamic_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(startPoint));
+                startProcessor_ = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(startPoint));
                 removeConnection(connectionGraphicsItem);
                 connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos());
                 connectionCurve_->setZValue(2.0);
