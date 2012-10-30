@@ -40,6 +40,7 @@ void CanvasProcessorWidget::initialize() {
 }
 
 void CanvasProcessorWidget::show() {
+    canvas_->show();
     ProcessorWidgetQt::show();
 }
 
@@ -48,6 +49,11 @@ void CanvasProcessorWidget::resizeEvent(QResizeEvent* event) {
 }
 
 void CanvasProcessorWidget::hide() {
+    ProcessorWidgetQt::hide();
+}
+
+void CanvasProcessorWidget::closeEvent(QCloseEvent *e) {    
+    canvas_->hide();
     ProcessorWidgetQt::hide();
 }
 
