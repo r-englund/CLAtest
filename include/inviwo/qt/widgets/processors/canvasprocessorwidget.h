@@ -20,6 +20,7 @@ namespace inviwo {
     protected:
 
     void resizeEvent(QResizeEvent*);
+    void closeEvent(QCloseEvent *e);
 
     private:
         CanvasQt* canvas_;

@@ -17,6 +17,7 @@ public:
 
     protected:
     void resizeEvent(QResizeEvent*);
+    void closeEvent(QCloseEvent *);
 };
 
 } // namespace
