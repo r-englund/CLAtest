@@ -40,7 +40,7 @@ InviwoMainWindow::InviwoMainWindow() {
     addMenus();
     addMenuActions();
 
-    setWindowTitle("Inviwo - Interactiv Visualization Workshop");
+    setWindowTitle("Inviwo - Interactive Visualization Workshop");
 
     rootDir_ = QString("D:/inviwo/data/");
     networkFileDir_ = rootDir_ + "workspaces/";
