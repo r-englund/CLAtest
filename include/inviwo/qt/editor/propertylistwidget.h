@@ -18,6 +18,16 @@ public:
     ~PropertyListWidget();
 
     void showProcessorProperties(Processor* processor);
+    void removeProcessorProperties(Processor* processor);
+    void showProcessorProperties(std::vector<Processor*> processors);
+    void removeAllProcessorProperties();
+
+private:
+    QWidget* createNewProcessorPropertiesItem(Processor* processor);
+    void addProcessorPropertiesToLayout(Processor* processor);
+
+    QVBoxLayout* listWidgetLayout_;
+    QWidget* listWidget_;
 
 protected:
     static PropertyListWidget* propertyListWidget_;
