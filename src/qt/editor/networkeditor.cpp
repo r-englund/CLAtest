@@ -146,9 +146,11 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
 void NetworkEditor::removeProcessor(std::string identifier) {
     LogInfo("Removing processor.");
     ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(identifier);
-
     // remove processor from data flow network and delete it    
     Processor* processor = processorGraphicsItem->getProcessor();
+
+    PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+    propertyListWidget_->removeProcessorProperties(processor);
 
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
     if (canvasProcessor) {
@@ -256,8 +258,11 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
             QGraphicsScene::mousePressEvent(e);
         }
         e->accept();
-    } else
+    } else {
+        PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+        propertyListWidget_->removeAllProcessorProperties();
         QGraphicsScene::mousePressEvent(e);
+    }
 }
 
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
