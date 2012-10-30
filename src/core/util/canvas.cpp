@@ -4,6 +4,8 @@ namespace inviwo {
 
 EventHandler* eventHandler_();
 
+ProcessorNetworkEvaluator* Canvas::processorNetworkEvaluator_ = 0;
+
 Canvas::Canvas(ivec2 dimensions)
                : dimensions_(dimensions) {
 }
