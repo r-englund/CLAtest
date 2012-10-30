@@ -5,6 +5,9 @@
 #include "inviwo/qt/editor/networkeditorview.h"
 #include "inviwo/qt/editor/processorlistwidget.h"
 #include "inviwo/qt/editor/propertylistwidget.h"
+#include "inviwo/qt/widgets/canvasqt.h"
+
+#include "inviwo/core/network/processornetworkevaluator.h"
 
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -26,6 +29,12 @@ InviwoMainWindow::InviwoMainWindow() {
 
     ConsoleWidget* consoleWidget = new ConsoleWidget(this);
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget);
+
+    defaultRenderContext_ = new CanvasQt(this);    
+    defaultRenderContext_->switchContext();
+    ProcessorNetworkEvaluator* processEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
+    processEvaluator->setDefaultRenderContext(defaultRenderContext_);
+    defaultRenderContext_->setFixedSize(0,0);
 
     addToolBars();
     addMenus();
@@ -128,11 +137,12 @@ bool InviwoMainWindow::loadNetwork() {
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
     networkEditorView_->getNetworkEditor()->clearNetwork();
-
     // save window state
     QSettings settings;
     settings.setValue("mainWindowGeometry", saveGeometry());
     settings.setValue("mainWindowState", saveState());
+
+    QMainWindow::closeEvent(event);
 }
 
 } // namespace

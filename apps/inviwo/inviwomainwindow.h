@@ -14,6 +14,7 @@
 namespace inviwo {
 
     class NetworkEditorView;
+    class CanvasQt;
 
     class InviwoMainWindow : public QMainWindow {
 Q_OBJECT
@@ -50,6 +51,8 @@ Q_OBJECT
         //Paths
         QString rootDir_;
         QString networkFileDir_;
+
+        CanvasQt *defaultRenderContext_;
 
 };
 
