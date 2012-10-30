@@ -32,11 +32,8 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
 }
 
-void NetworkEditor::createDefaultRenderContext(QWidget *qwidget) {         
-    defaultRenderContext_ = new CanvasQt(qwidget);
-    defaultRenderContext_->setNetworkEvaluator(0) ;
-    defaultRenderContext_->switchContext();
-    processorNetworkEvaluator_->setDefaultRenderContext(defaultRenderContext_) ;
+ProcessorNetworkEvaluator* NetworkEditor::getProcessorNetworkEvaluator() {         
+    return processorNetworkEvaluator_;
 }
 
 NetworkEditor::~NetworkEditor() {
@@ -64,7 +61,6 @@ void NetworkEditor::initializeConnectionRepresentation(ProcessorGraphicsItem* ou
     connectionGraphicsItems_.push_back(connectionGraphicsItem);
     addItem(connectionGraphicsItem);
     connectionGraphicsItem->show();
-    //processorNetworkEvaluator_->initializeNetwork();
     processorNetworkEvaluator_->evaluate();
 }
 
@@ -74,7 +70,7 @@ void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* out
     // create connection in data flow network
     processorNetwork_->connectPorts(outport, inport);
 
-    initializeConnectionRepresentation(outProcessor, outport, inProcessor, inport) ;
+    initializeConnectionRepresentation(outProcessor, outport, inProcessor, inport);
 }
 
 void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsItem) {
@@ -84,7 +80,6 @@ void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsI
     removeItem(connectionGraphicsItem);
     connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(),
         connectionGraphicsItem), connectionGraphicsItems_.end());
-    //processorNetworkEvaluator_->initializeNetwork();
     processorNetworkEvaluator_->evaluate();
 }
 
@@ -318,10 +313,30 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(getConnectionGraphicsItemAt(e->scenePos()));
     if (processorGraphicsItem) {
         QMenu menu;
-        QAction* action = menu.addAction("Delete");
+        QAction* deleteAction = menu.addAction("Delete");
+
+        QAction* showAction = 0;
+        if (processorGraphicsItem->getProcessor()->hasProcessorWidget()) {
+            showAction = menu.addAction("Show Widget");
+            showAction->setCheckable(true);
+            ProcessorWidgetQt* qtWidget = dynamic_cast<ProcessorWidgetQt*>(processorGraphicsItem->getProcessor()->getProcessorWidget());
+            if(qtWidget && qtWidget->isHidden()) {
+                showAction->setChecked(false);
+            }
+            else
+                showAction->setChecked(true);
+        }
         QAction* result = menu.exec(QCursor::pos());
-        if (result == action)
+        if (result == deleteAction) {
             removeProcessor(processorGraphicsItem->getIdentifier());
+        }
+        else if (showAction && result == showAction) {
+            if(showAction->isChecked()) {
+                processorGraphicsItem->getProcessor()->getProcessorWidget()->show();
+            } else
+                processorGraphicsItem->getProcessor()->getProcessorWidget()->hide();
+
+        }
     } else if (connectionGraphicsItem) {
         QMenu menu;
         QAction* action = menu.addAction("Delete");
