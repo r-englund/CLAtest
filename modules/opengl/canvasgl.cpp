@@ -25,6 +25,13 @@ void CanvasGL::repaint() {}
 
 void CanvasGL::resize(ivec2 size) {
     Canvas::resize(size);
+    glViewport(0, 0, size[0], size[1]);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    //if (height == 0) gluPerspective(60.0, static_cast<double>(width), 0.1, 10.0);
+    //else gluPerspective (60.0, static_cast<double>(width) / static_cast<double>(height), 0.1, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 void CanvasGL::update() {}
 
