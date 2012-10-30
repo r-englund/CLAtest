@@ -49,13 +49,6 @@ void CanvasQt::initializeGL() {
 
 void CanvasQt::resizeGL(int width, int height) {
     CanvasGL::resize(ivec2(width, height));
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    //if (height == 0) gluPerspective(60.0, static_cast<double>(width), 0.1, 10.0);
-    //else gluPerspective (60.0, static_cast<double>(width) / static_cast<double>(height), 0.1, 10.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 }
 
 void CanvasQt::paintGL() {
