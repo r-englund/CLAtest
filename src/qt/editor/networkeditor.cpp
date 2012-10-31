@@ -76,6 +76,7 @@ void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* out
 void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsItem) {
     LogInfo("Removing connection.");
     // remove GUI representation from editor
+    processorNetwork_->disconnectPorts(connectionGraphicsItem->getInport(), connectionGraphicsItem->getOutport());
     connectionGraphicsItem->hide();
     removeItem(connectionGraphicsItem);
     connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(),
