@@ -16,6 +16,7 @@ public:
 
     // FIXME: temporary method supporting non serialization-based network creation
     void connectPorts(Port* sourcePort, Port* destPort);
+    void disconnectPorts(Port* sourcePort, Port* destPort);
     
     ProcessorNetwork();
     virtual ~ProcessorNetwork();
