@@ -153,8 +153,8 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
         for (size_t i=0; i<directPredecessors.size(); i++) {            
             std::vector<Port*> outPorts = directPredecessors[i]->getOutports();
             for (size_t j=0; j<outPorts.size(); j++) {
-                if (dynamic_cast<ImagePort*>(outPorts[j])) {
-                    ImagePort* imagePort = dynamic_cast<ImagePort*>(outPorts[j]);
+                ImagePort* imagePort = dynamic_cast<ImagePort*>(outPorts[j]);
+                if (imagePort) {               
                     imagePort->resize(resizeEvent->canvasSize());
                 }
             }                        
