@@ -110,6 +110,7 @@ HEADERS += \
     ../../include/inviwo/core/interaction/events/keyboardevent.h \
     ../../include/inviwo/core/interaction/events/mouseevent.h \
     ../../include/inviwo/core/interaction/events/timerevent.h \
+    ../../include/inviwo/core/interaction/events/resizeevent.h \
     ../../include/inviwo/core/network/portconnection.h \
     ../../include/inviwo/core/network/processornetwork.h \
     ../../include/inviwo/core/network/processornetworkevaluator.h \
@@ -179,6 +180,7 @@ SOURCES += \
     interaction/events/keyboardevent.cpp \
     interaction/events/mouseevent.cpp \
     interaction/events/timerevent.cpp \
+    interaction/events/resizeevent.cpp \
     network/portconnection.cpp \
     network/processornetwork.cpp \
     network/processornetworkevaluator.cpp \
