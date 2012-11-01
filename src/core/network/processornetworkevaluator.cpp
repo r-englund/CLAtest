@@ -150,14 +150,17 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
     if (!hasBeenVisited(processor)) {
         processorsVisited_.push_back(processor);
         std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
-        for (size_t i=0; i<directPredecessors.size(); i++) {            
+        for (size_t i=0; i<directPredecessors.size(); i++) {
+            bool invalidate=false;
             std::vector<Port*> outPorts = directPredecessors[i]->getOutports();
             for (size_t j=0; j<outPorts.size(); j++) {
                 ImagePort* imagePort = dynamic_cast<ImagePort*>(outPorts[j]);
-                if (imagePort) {               
+                if (imagePort) {
                     imagePort->resize(resizeEvent->canvasSize());
+                    invalidate = true;
                 }
-            }                        
+            }
+            if (invalidate) directPredecessors[i]->invalidate();
             propagateResizeEvent(directPredecessors[i], resizeEvent);
         }
     }
