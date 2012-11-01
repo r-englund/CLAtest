@@ -20,10 +20,9 @@ namespace inviwo {
     void ProcessorNetwork::disconnectPorts(Port* sourcePort, Port* destPort) {
         //TODO: remove connection information from sourcePort and destPort
         for (size_t i=0; i<portConnections_.size(); i++) {            
-            if (portConnections_[i]->getInport()==sourcePort && portConnections_[i]->getOutport()==destPort ||
-                portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort
-                ) {
-                
+            if ( (portConnections_[i]->getInport()==sourcePort && portConnections_[i]->getOutport()==destPort) ||
+                 (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort)
+                ) {                
                      portConnections_.erase(portConnections_.begin()+i);
                      break;
                 }
