@@ -32,12 +32,17 @@ void ImageSource::deinitialize() {
 void ImageSource::process() {
     activateTarget(outport_);
 
-    Texture2D* testTex = new Texture2D(ivec2(256,256), GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
+    Image* outImage = outport_.getData();
+    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    ivec2 csize = outImageGL->size();
+
+    Texture2D* testTex = new Texture2D(csize, GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
     glActiveTexture(GL_TEXTURE0);
     testTex->loadTexture(imageFileName_.get());
 
     shader_->activate();
     shader_->setUniform("colorTex_", 0);
+    shader_->setUniform("dimension_", vec2( 1.f /csize[0],  1.f /csize[1]) );
     renderImagePlaneQuad();
     shader_->deactivate();
 
