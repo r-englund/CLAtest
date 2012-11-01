@@ -26,6 +26,7 @@ public:
 
     void setUniform(const std::string name, GLint value);
     void setUniform(const std::string name, GLfloat value);
+    void setUniform(const std::string name, vec2 value);
 
 private:
     unsigned int id_;

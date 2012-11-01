@@ -27,9 +27,12 @@ namespace inviwo {
 
         void bind();
         void upload();
+        void unbind();
 
         int getWidth() { return dimensions_.x; }
         int getHeight() { return dimensions_.y; }
+        void setWidth(int x) { dimensions_.x = x; }
+        void setHeight(int y) { dimensions_.y = y; }
 
     private:
         ivec2 dimensions_;

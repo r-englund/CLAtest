@@ -8,7 +8,9 @@ FrameBufferObject::FrameBufferObject() {
     glGenFramebuffersEXT(1, &id_);
 }
 
-FrameBufferObject::~FrameBufferObject() {}
+FrameBufferObject::~FrameBufferObject() {
+    glDeleteFramebuffers(1, &id_);
+}
 
 void FrameBufferObject::activate() {
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, id_);

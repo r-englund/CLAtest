@@ -69,4 +69,13 @@ void Shader::setUniform(const std::string name, GLfloat value) {
         LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
+void Shader::setUniform(const std::string name, vec2 value) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+    GLfloat* glvalues = new GLfloat[2];
+    glvalues[0] = value[0];
+    glvalues[1] = value[1];
+    if (uniformLocation != -1) glUniform2fv(uniformLocation, 1, glvalues);
+    else
+        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
 } // namespace

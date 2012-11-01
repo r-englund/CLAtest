@@ -12,7 +12,9 @@ namespace inviwo {
         texels_ = 0;
     }
 
-    Texture2D::~Texture2D() {}
+    Texture2D::~Texture2D() {
+        glDeleteTextures(1, &id_);
+    }
 
     void Texture2D::bind() {
         glBindTexture(GL_TEXTURE_2D, id_);
@@ -29,4 +31,8 @@ namespace inviwo {
         LGL_ERROR;
     }
 
+    void Texture2D::unbind() {
+        glBindTexture(GL_TEXTURE_2D, 0);
+        LGL_ERROR;
+    }
 } // namespace
