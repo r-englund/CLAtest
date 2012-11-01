@@ -2,6 +2,7 @@
 #define IVW_IMAGEREPRESENTATION_H
 
 #include "inviwo/core/datastructures/datarepresentation.h"
+#include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
@@ -10,6 +11,8 @@ namespace inviwo {
     public:
         ImageRepresentation();
         virtual ~ImageRepresentation();
+        virtual void resize(ivec2 dimensions);
+        virtual ivec2 size() {return ivec2(0,0);}
     };
 
 } // namespace

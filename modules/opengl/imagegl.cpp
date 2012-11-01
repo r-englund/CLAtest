@@ -34,10 +34,13 @@ namespace inviwo {
     }
 
     void ImageGL::deinitialize() {
+        frameBufferObject_->deactivate();
         delete frameBufferObject_;
         frameBufferObject_ = 0;
+        colorTexture_->unbind();
         delete colorTexture_;
         colorTexture_ = 0;
+        depthTexture_->unbind();
         delete depthTexture_;
         depthTexture_ = 0;
     }
@@ -65,6 +68,19 @@ namespace inviwo {
     void ImageGL::bindTextures(GLenum colorTexUnit, GLenum depthTexUnit) {
         bindColorTexture(colorTexUnit);
         bindDepthTexture(depthTexUnit);
+    }
+
+    void ImageGL::resize(ivec2 dimensions) {
+        dimensions_ = dimensions;
+        colorTexture_->unbind();
+        colorTexture_->setWidth(dimensions_.x);
+        colorTexture_->setHeight(dimensions_.y);
+        colorTexture_->upload();
+
+        depthTexture_->unbind();
+        depthTexture_->setWidth(dimensions_.x);
+        depthTexture_->setHeight(dimensions_.y);
+        depthTexture_->upload();
     }
 
 } // namespace

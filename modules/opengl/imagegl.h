@@ -24,6 +24,8 @@ namespace inviwo {
         void bindColorTexture(GLenum texUnit);
         void bindDepthTexture(GLenum texUnit);
         void bindTextures(GLenum colorTexUnit, GLenum depthTexUnit);
+        virtual void resize(ivec2 dimensions);
+        virtual ivec2 size() { return dimensions_;}
 
     private:
         ivec2 dimensions_;

@@ -44,10 +44,12 @@ void CanvasProcessorGL::process() {
     CanvasProcessor::process();
     Image* inImage = inport_.getData();
     ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+    ivec2 csize = inImageGL->size();
     inImageGL->bindColorTexture(GL_TEXTURE0);
 
     shader_->activate();
     shader_->setUniform("colorTex_", 0);
+    shader_->setUniform("dimension_", vec2( 1.f /csize[0],  1.f /csize[1]) );
     renderImagePlaneQuad();
     shader_->deactivate();
 }

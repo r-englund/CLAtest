@@ -49,6 +49,10 @@ void CanvasQt::initializeGL() {
 
 void CanvasQt::resizeGL(int width, int height) {
     CanvasGL::resize(ivec2(width, height));
+    if(processorNetworkEvaluator_) {
+        ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
+        processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
+    }
 }
 
 void CanvasQt::paintGL() {

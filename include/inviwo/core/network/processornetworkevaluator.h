@@ -3,6 +3,7 @@
 
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/interaction/events/mouseevent.h"
+#include "inviwo/core/interaction/events/resizeevent.h"
 #include "inviwo/core/network/processornetwork.h"
 
 namespace inviwo {
@@ -25,6 +26,7 @@ public:
 
     void evaluate();
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
+    void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
 
     bool repaintRequired() { return repaintRequired_; }
 
@@ -35,6 +37,7 @@ private:
     void sortTopologically();
 
     void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);
+    void propagateResizeEvent(Processor* processor, ResizeEvent* resizeEvent);
 
     ProcessorNetwork* processorNetwork_;
 

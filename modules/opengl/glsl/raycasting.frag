@@ -1,6 +1,7 @@
 uniform sampler2D entryTex_;
 uniform sampler2D exitTex_;
 uniform sampler3D volume_;
+uniform vec2 dimension_;
 
 // set reference sampling interval for opacity correction
 #define REF_SAMPLING_INTERVAL 150.0
@@ -41,7 +42,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
 }
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy / vec2(256.0); //TODO: replace vec2(512.0) by screenDimRCP
+    vec2 texCoords = gl_FragCoord.xy * dimension_; //TODO: replace vec2(512.0) by screenDimRCP
     vec3 entryPoint = texture2D(entryTex_, texCoords).rgb;
     vec3 exitPoint = texture2D(exitTex_, texCoords).rgb;
     vec4 color = rayTraversal(entryPoint, exitPoint);

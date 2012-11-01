@@ -8,4 +8,6 @@ namespace inviwo {
 
     ImageRepresentation::~ImageRepresentation() {}
 
+    void ImageRepresentation::resize(ivec2){}
+
 } // namespace

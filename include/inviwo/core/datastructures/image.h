@@ -12,10 +12,7 @@ namespace inviwo {
         Image(ivec2 dimensions);
         virtual ~Image();
 
-        void resize(ivec2 dimensions) {
-            dimensions_ = dimensions;
-            clearRepresentations();
-        }
+        void resize(ivec2 dimensions);
 
     private:
         ivec2 dimensions_;

@@ -35,6 +35,9 @@ void SimpleRaycaster::deinitialize() {
 
 void SimpleRaycaster::process() {
     activateTarget(outport_);
+    Image* inImage = outport_.getData();
+    ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+    ivec2 csize = inImageGL->size();
             
     bindColorTexture(entryPort_, GL_TEXTURE0);
     bindColorTexture(exitPort_, GL_TEXTURE1);
@@ -47,6 +50,7 @@ void SimpleRaycaster::process() {
     shader_->setUniform("entryTex_", 0);
     shader_->setUniform("exitTex_", 1);
     shader_->setUniform("volume_", 2);
+    shader_->setUniform("dimension_", vec2(1.f / csize[0], 1.f / csize[1]) );
     renderImagePlaneQuad();
     shader_->deactivate();
 
