@@ -35,9 +35,9 @@ void SimpleRaycaster::deinitialize() {
 
 void SimpleRaycaster::process() {
     activateTarget(outport_);
-    Image* inImage = outport_.getData();
-    ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    ivec2 csize = inImageGL->size();
+    Image* outImage = outport_.getData();
+    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    ivec2 csize = outImageGL->size();
             
     bindColorTexture(entryPort_, GL_TEXTURE0);
     bindColorTexture(exitPort_, GL_TEXTURE1);
