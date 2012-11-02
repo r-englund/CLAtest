@@ -36,6 +36,10 @@ void ImageMixer::deinitialize() {
 void ImageMixer::process() {
     activateTarget(outport_);
 
+    Image* outImage = outport_.getData();
+    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    ivec2 csize = outImageGL->size();
+
     bindColorTexture(inport0_, GL_TEXTURE0);
     bindColorTexture(inport1_, GL_TEXTURE1);
 
@@ -43,6 +47,7 @@ void ImageMixer::process() {
     shader_->setUniform("inport0_", 0);
     shader_->setUniform("inport1_", 1);
     shader_->setUniform("alpha_", alpha_.get());
+    shader_->setUniform("dimension_", vec2(1.f / csize[0], 1.f / csize[1]) );
     renderImagePlaneQuad();
     shader_->deactivate();
 
