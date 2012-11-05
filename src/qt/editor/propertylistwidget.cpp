@@ -72,7 +72,7 @@ void PropertyListWidget::removeAllProcessorProperties() {
 
 QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* processor) {
     // create property widget and store it in the map
-    QWidget* processorPropertyWidget = new QWidget();
+    QWidget* processorPropertyWidget = new QWidget(this, Qt::WindowStaysOnBottomHint);
     QVBoxLayout* vLayout = new QVBoxLayout(processorPropertyWidget);
     vLayout->setAlignment(Qt::AlignTop);
 
