@@ -4,9 +4,9 @@
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/processors/processor.h"
 #include "inviwo/core/ports/imageport.h"
-#include "../../inviwo/modules/opengl/inviwoopengl.h"
-#include "../../inviwo/modules/opengl/processorgl.h"
-#include "../../inviwo/modules/opengl/glwrap/shader.h"
+#include "modules/opengl/inviwoopengl.h"
+#include "modules/opengl/processorgl.h"
+#include "modules/opengl/glwrap/shader.h"
 
 namespace inviwo {
 
