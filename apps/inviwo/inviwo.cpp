@@ -1,16 +1,16 @@
 #include <QFile>
 
-#include "../../modules/opengl/inviwoopengl.h"
+#include "modules/opengl/inviwoopengl.h"
 #include "inviwomainwindow.h"
 #include "inviwo/qt/widgets/inviwoapplicationqt.h"
 
 int main(int argc, char** argv) {
 
-    inviwo::InviwoApplicationQt inviwoApp("Inviwo", "D:/inviwo", argc, argv);
+    inviwo::InviwoApplicationQt inviwoApp("Inviwo", "C:/InViWo/inviwo", argc, argv);
     inviwoApp.initialize();
 
     #if (QT_VERSION >= 0x040400)
-        QFile styleSheetFile("D:/inviwo/resources/stylesheets/inviwo.qss");
+    QFile styleSheetFile(QString::fromStdString(IVW_DIR+"resources/stylesheets/inviwo.qss"));
         styleSheetFile.open(QFile::ReadOnly);
         QString styleSheet = QLatin1String(styleSheetFile.readAll());
         inviwoApp.setStyleSheet(styleSheet);

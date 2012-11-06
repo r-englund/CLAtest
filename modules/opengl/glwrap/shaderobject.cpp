@@ -17,7 +17,7 @@ ShaderObject::~ShaderObject() {
 
 void ShaderObject::initialize() {
     // TODO: remove absolute paths
-    loadSource("D:/inviwo/modules/opengl/glsl/"+fileName_);
+    loadSource(IVW_DIR+"modules/opengl/glsl/"+fileName_);
     upload();
     compile();
 }

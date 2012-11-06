@@ -2,8 +2,8 @@
 #define IVW_TEXTURE2D_H
 
 #include "inviwo/core/inviwo.h"
-#include "../inviwoopengl.h"
-#include "../ext/tgaload/tgaload.h"
+#include "modules/opengl/inviwoopengl.h"
+#include "modules/opengl/ext/tgaload/tgaload.h"
 
 
 namespace inviwo {

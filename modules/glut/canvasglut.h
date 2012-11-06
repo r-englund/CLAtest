@@ -2,9 +2,9 @@
 #define IVW_CANVASGLUT_H
 
 #include <stdlib.h>
-#include "../../modules/opengl/inviwoopengl.h"
+#include "modules/opengl/inviwoopengl.h"
 #include <GL/glut.h>
-#include "../../modules/opengl/canvasgl.h"
+#include "modules/opengl/canvasgl.h"
 
 namespace inviwo {
 

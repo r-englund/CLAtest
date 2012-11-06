@@ -2,7 +2,7 @@
 #define IVW_FRAMEBUFFEROBJECT_H
 
 #include "inviwo/core/inviwo.h"
-#include "../inviwoopengl.h"
+#include "modules/opengl/inviwoopengl.h"
 #include "texture2d.h"
 
 namespace inviwo {

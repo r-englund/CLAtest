@@ -1,7 +1,7 @@
 #ifndef IVW_CANVASQT_H
 #define IVW_CANVASQT_H
 
-#include "../../../../modules/opengl/canvasgl.h"
+#include "modules/opengl/canvasgl.h"
 
 #include <QtOpenGL/QGLWidget>
 

@@ -42,7 +42,7 @@ InviwoMainWindow::InviwoMainWindow() {
 
     setWindowTitle("Inviwo - Interactive Visualization Workshop");
 
-    rootDir_ = QString("D:/inviwo/data/");
+    rootDir_ = QString::fromStdString(IVW_DIR+"data/");
     networkFileDir_ = rootDir_ + "workspaces/";
 
     // restore window state

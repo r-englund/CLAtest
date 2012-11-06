@@ -3,6 +3,8 @@
 
 #define IVW_DEBUG //TODO: move into project file
 
+#define IVW_DIR std::string("D:/inviwo/")
+
 #pragma warning(disable: 4290)
 
 #include <iostream>

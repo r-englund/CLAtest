@@ -5,7 +5,7 @@ namespace inviwo {
 VolumeSource::VolumeSource()
     : Processor(),
       volumePort_(Port::OUTPORT, "volume"),
-      volumeFileName_("volumeFileName", "Volume file name", "D:/inviwo/data/volumes/hydrogenatom.raw")
+      volumeFileName_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/hydrogenatom.raw")
 {
     addPort(volumePort_);
     Volume* volume = new Volume();

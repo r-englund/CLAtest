@@ -5,7 +5,7 @@ namespace inviwo {
 ImageSource::ImageSource()
     : ProcessorGL(),
     outport_(Port::OUTPORT, "image.outport"),
-    imageFileName_("imageFileName", "Image file name", "C:/InViWo/inviwo/data/images/swirl.tga")
+    imageFileName_("imageFileName", "Image file name", IVW_DIR+"data/images/swirl.tga")
 {
     addPort(outport_);
     addProperty(imageFileName_);
