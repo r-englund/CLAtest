@@ -20,6 +20,7 @@ public:
     virtual void switchContext();
     virtual void repaint();
     virtual void resize(ivec2 dimensions);
+    virtual ivec2 size() { return dimensions_;}
     virtual void update();
 
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };
