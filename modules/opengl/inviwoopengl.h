@@ -7,7 +7,10 @@
 
 #include <iostream>
 #include <sstream>
+
+#ifdef WIN32
 #include <windows.h>
+#endif
 
 void LogGLError(const char* fileName, const char* functionName, int lineNumber);
 
