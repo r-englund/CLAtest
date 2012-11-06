@@ -44,7 +44,7 @@ void CanvasProcessorGL::process() {
     CanvasProcessor::process();
     Image* inImage = inport_.getData();
     ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    ivec2 csize = inImageGL->size();
+    ivec2 csize = getCanvas()->size();
     inImageGL->bindColorTexture(GL_TEXTURE0);
 
     shader_->activate();
