@@ -18,7 +18,7 @@ namespace inviwo {
 
     void ImagePort::resize(ivec2 dimensions) {
         dimensions_ = dimensions;
-        data_->resize(dimensions);
+        data_->resize(dimensions_);
         invalidate();
     }
 
