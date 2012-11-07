@@ -1,7 +1,6 @@
 #ifndef IVW_SHADER_H
 #define IVW_SHADER_H
 
-#include <io.h>
 #include "inviwo/core/inviwo.h"
 #include "modules/opengl/inviwoopengl.h"
 #include "shaderobject.h"

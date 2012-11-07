@@ -3,7 +3,7 @@
 
 #include "inviwo/core/inviwo.h"
 #include "modules/opengl/inviwoopengl.h"
-#include <io.h>
+#include <stdio.h>
 #include <fstream>
 
 namespace inviwo {

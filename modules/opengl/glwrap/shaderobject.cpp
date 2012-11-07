@@ -1,4 +1,11 @@
 #include "shaderobject.h"
+#include <stdio.h>
+
+#ifdef WIN32
+#define OPEN_FILE(a,b,c) fopen_s(&a, b, c);
+#else
+#define OPEN_FILE(a,b,c) a = fopen(b, c);
+#endif
 
 namespace inviwo {
 
@@ -27,19 +34,18 @@ void ShaderObject::deinitialize() {}
 void ShaderObject::loadSource(std::string fileName) {
     FILE* file;
     char* fileContent = NULL;
-
-    int f, count;
-    f = _open(fileName.c_str(), _IOREAD);
-    count = _lseek(f, 0, SEEK_END);
-    _close(f);
+    long len;
 
     if (fileName.length() > 0) {
-        file = fopen(fileName.c_str(), "rt");
+        OPEN_FILE(file, fileName.c_str(), "rb");
         if (file != NULL) {
-            if (count > 0) {
-                fileContent = (char*)malloc(sizeof(char)*(count+1));
-                count = fread(fileContent, sizeof(char), count, file);
-                fileContent[count] = '\0';
+            fseek(file, 0L, SEEK_END);
+            len = ftell(file);
+            fseek(file, 0L, SEEK_SET);
+            fileContent = (char*)malloc(sizeof(char)*(len));
+            if(fileContent != NULL){
+                fread(fileContent, sizeof(char), len, file);
+                fileContent[len] = '\0';
             }
             fclose(file);
         }
