@@ -13,10 +13,15 @@ namespace inviwo {
         representations_.clear();
     }
 
-    Image::~Image() {}
+    Image::~Image() {
+        for (size_t i=0; i<representations_.size(); i++) {
+            representations_[i]->deinitialize();
+        }
+        representations_.clear();
+    }
 
     void Image::resize(ivec2 dimensions) {
-        dimensions_ = dimensions;       
+        dimensions_ = dimensions;
         for (size_t i=0; i<representations_.size(); i++) {
             ImageRepresentation* imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;
             if ( imageRepresentation ) {
