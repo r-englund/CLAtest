@@ -17,4 +17,8 @@ namespace inviwo {
         delete data_;
     }
 
+    Volume* VolumePort::scaledData(Volume*, Processor*) {
+        return getData();
+    }
+
 } // namespace
