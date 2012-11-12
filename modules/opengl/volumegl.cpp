@@ -4,7 +4,7 @@ namespace inviwo {
 
 VolumeGL::VolumeGL()
     : VolumeRepresentation(),
-    dimensions_(ivec3(256,256,256)) //TODO: use actual value
+    dimensions_(ivec3(128,128,128)) //TODO: use actual value
 {
     initialize();
 }
@@ -34,6 +34,10 @@ void VolumeGL::deinitialize() {
 void VolumeGL::bindTexture(GLenum texUnit) {
     glActiveTexture(texUnit);
     volumeTexture_->bind();
+}
+
+void VolumeGL::unbindTexture() {
+    volumeTexture_->unbind();
 }
 
 } // namespace

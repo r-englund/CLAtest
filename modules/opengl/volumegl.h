@@ -18,6 +18,7 @@ namespace inviwo {
         void deinitialize();
 
         void bindTexture(GLenum texUnit);
+        void unbindTexture();
 
     private:
         ivec3 dimensions_;
