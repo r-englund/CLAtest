@@ -102,7 +102,7 @@ namespace inviwo {
         ImageGL* source = this;
         ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
 
-        if(!target) return;
+        if (!target) return;
 
         //TODO: Fix FBO blit
 
