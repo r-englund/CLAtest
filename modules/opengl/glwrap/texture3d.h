@@ -33,6 +33,7 @@ public:
     void setTexels(GLubyte* texels) { texels_ = texels; }
 
     void bind();
+    void unbind();
     void upload();
 
 private:

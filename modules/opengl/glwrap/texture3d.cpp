@@ -21,6 +21,11 @@ void Texture3D::bind() {
     LGL_ERROR;
 }
 
+void Texture3D::unbind() {
+    glBindTexture(GL_TEXTURE_3D, 0);
+    LGL_ERROR;
+}
+
 void Texture3D::upload() {
     bind();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
