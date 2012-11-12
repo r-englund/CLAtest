@@ -27,6 +27,12 @@ namespace inviwo {
         inImageGL->bindColorTexture(texUnit);
     }
 
+    void ProcessorGL::unbindColorTexture(ImagePort inport) {
+        Image* inImage = inport.getData();
+        ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+        inImageGL->unbindColorTexture();
+    }
+
     void ProcessorGL::renderImagePlaneQuad() const {
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();

@@ -20,6 +20,7 @@ public:
     void deactivateCurrentTarget();
 
     void bindColorTexture(ImagePort inport, GLenum texUnit);
+    void unbindColorTexture(ImagePort inport);
 
     void renderImagePlaneQuad() const;
 
