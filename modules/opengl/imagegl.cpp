@@ -1,4 +1,5 @@
 #include "imagegl.h"
+#include "glwrap/shader.h"
 
 namespace inviwo {
 
@@ -31,6 +32,8 @@ namespace inviwo {
         frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT);
         frameBufferObject_->deactivate();
         frameBufferObject_->checkStatus();
+
+        shader_ = new Shader("img_texturequad.frag");
     }
 
     void ImageGL::deinitialize() {
@@ -43,6 +46,8 @@ namespace inviwo {
         depthTexture_->unbind();
         delete depthTexture_;
         depthTexture_ = 0;
+        delete shader_;
+        shader_=0;
     }
 
     void ImageGL::activateBuffer() {
@@ -57,7 +62,6 @@ namespace inviwo {
     void ImageGL::bindColorTexture(GLenum texUnit) {
         glActiveTexture(texUnit);
         colorTexture_->bind();
-
     }
 
     void ImageGL::bindDepthTexture(GLenum texUnit) {
@@ -70,17 +74,99 @@ namespace inviwo {
         bindDepthTexture(depthTexUnit);
     }
 
+    void ImageGL::unbindDepthTexture() {
+        depthTexture_->unbind();
+    }
+
+    void ImageGL::unbindColorTexture() {
+        colorTexture_->unbind();
+    }
+
     void ImageGL::resize(ivec2 dimensions) {
-        dimensions_ = dimensions;
+        dimensions_ = dimensions;        
         colorTexture_->unbind();
         colorTexture_->setWidth(dimensions_.x);
         colorTexture_->setHeight(dimensions_.y);
         colorTexture_->upload();
+        colorTexture_->unbind();
 
         depthTexture_->unbind();
         depthTexture_->setWidth(dimensions_.x);
         depthTexture_->setHeight(dimensions_.y);
         depthTexture_->upload();
+        depthTexture_->unbind();
+    }
+
+    void ImageGL::blit(ImageRepresentation* targetRep) {
+        
+        ImageGL* source = this;
+        ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
+
+        if(!target) return;
+
+        //TODO: Fix FBO blit
+
+        //Resize by FBO blit
+        /*FrameBufferObject* srcFBO = source->getFBO();
+        FrameBufferObject* tgtFBO = target->getFBO();
+        Texture2D* sTex = source->getColorTexture();
+        Texture2D* tTex = target->getColorTexture();
+        
+        FrameBufferObject::deactivate();
+        source->activateBuffer();
+        srcFBO->setRead_Blit(); 
+        //glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
+
+        FrameBufferObject::deactivate();
+        target->activateBuffer();
+        tgtFBO->setDraw_Blit();
+        //glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);        
+                
+        //srcFBO->attachTexture(sTex);
+        //tgtFBO->attachTexture(tTex);        
+        FrameBufferObject::deactivate();
+        glDisable(GL_SCISSOR_TEST);
+        glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
+                             0, 0, tTex->getWidth()/2, tTex->getHeight()/2,
+                             GL_COLOR_BUFFER_BIT, GL_LINEAR);
+             
+        srcFBO->setRead_Blit(false); 
+        tgtFBO->setDraw_Blit(false);        
+        FrameBufferObject::deactivate();
+        */         
+        
+        //Resize by rendering
+        ivec2 csize = target->size();        
+        source->bindColorTexture(GL_TEXTURE0);
+        target->activateBuffer();
+        shader_->activate();
+        shader_->setUniform("colorTex_", 0);
+        shader_->setUniform("dimension_", vec2( 1.f / csize[0],  1.f / csize[1]) );
+        renderImagePlaneQuad();
+        shader_->deactivate();
+        FrameBufferObject::deactivate();
+        source->unbindColorTexture();        
+    }
+
+    void ImageGL::renderImagePlaneQuad() const {
+        glDisable(GL_CULL_FACE);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glDepthFunc(GL_ALWAYS);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.f, 0.f); glVertex2f(-1.f, -1.f);
+        glTexCoord2f(1.f, 0.f); glVertex2f( 1.f, -1.f);
+        glTexCoord2f(1.f, 1.f); glVertex2f( 1.f,  1.f);
+        glTexCoord2f(0.f, 1.f); glVertex2f(-1.f,  1.f);
+        glEnd();
+        glDepthFunc(GL_LESS);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
     }
 
 } // namespace

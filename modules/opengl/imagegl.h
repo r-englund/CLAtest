@@ -8,6 +8,7 @@
 
 namespace inviwo {
 
+    class Shader;
     class ImageGL : public ImageRepresentation {
 
     public:
@@ -24,8 +25,16 @@ namespace inviwo {
         void bindColorTexture(GLenum texUnit);
         void bindDepthTexture(GLenum texUnit);
         void bindTextures(GLenum colorTexUnit, GLenum depthTexUnit);
+        void unbindDepthTexture();
+        void unbindColorTexture();
         virtual void resize(ivec2 dimensions);
         virtual ivec2 size() { return dimensions_;}
+        virtual void blit(ImageRepresentation* target) ;
+        void renderImagePlaneQuad() const;
+    private:
+        FrameBufferObject* getFBO() {return frameBufferObject_;}
+        Texture2D* getColorTexture() {return colorTexture_;}
+        Texture2D* getDepthTexture() {return depthTexture_;}
 
     private:
         ivec2 dimensions_;
@@ -33,6 +42,7 @@ namespace inviwo {
         Texture2D* colorTexture_;
         Texture2D* depthTexture_;
         FrameBufferObject* frameBufferObject_;
+        Shader* shader_;
     };
 
 } // namespace
