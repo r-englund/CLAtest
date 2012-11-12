@@ -124,6 +124,7 @@ void ProcessorNetworkEvaluator::propagateMouseEvent(Processor* processor, MouseE
             if (directPredecessors[i]->hasInteractionHandler())
                 directPredecessors[i]->invokeInteractionEvent(mouseEvent);
             // TODO: transform positions based on subcanvas arrangement
+            //directPredecessors[i]->invalidate();  //TODO: Check if this is needed
             propagateMouseEvent(directPredecessors[i], mouseEvent);
         }
     }
@@ -144,17 +145,29 @@ void ProcessorNetworkEvaluator::propagateMouseEvent(Canvas* canvas, MouseEvent* 
     if(!eventInitiator) return;
     processorsVisited_.clear();
     propagateMouseEvent(eventInitiator, mouseEvent);
+    //eventInitiator->invalidate(); //TODO: Check if this is needed
 }
 
 void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, ResizeEvent* resizeEvent) {
     if (!hasBeenVisited(processor)) {
+        processor->invalidate();
         processorsVisited_.push_back(processor);
         std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
         for (size_t i=0; i<directPredecessors.size(); i++) {
             bool invalidate=false;
-            std::vector<Port*> outPorts = directPredecessors[i]->getOutports();
-            for (size_t j=0; j<outPorts.size(); j++) {
-                ImagePort* imagePort = dynamic_cast<ImagePort*>(outPorts[j]);
+            std::vector<Port*> outports = directPredecessors[i]->getOutports();
+            for (size_t j=0; j<outports.size(); j++) {
+                ImagePort* imagePort = dynamic_cast<ImagePort*>(outports[j]);
+                if (imagePort) {
+                    imagePort->resize(resizeEvent->canvasSize());
+                    invalidate = true;
+                }
+            }
+            if (invalidate) directPredecessors[i]->invalidate();
+            invalidate=false;
+            std::vector<Port*> inports = directPredecessors[i]->getInports();
+            for (size_t j=0; j<inports.size(); j++) {
+                ImagePort* imagePort = dynamic_cast<ImagePort*>(inports[j]);
                 if (imagePort) {
                     imagePort->resize(resizeEvent->canvasSize());
                     invalidate = true;
@@ -179,8 +192,20 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     }
 
     if(!eventInitiator) return;
+
     processorsVisited_.clear();
     propagateResizeEvent(eventInitiator, resizeEvent);
+
+    bool invalidate=false;
+    std::vector<Port*> inports = eventInitiator->getInports();
+    for (size_t j=0; j<inports.size(); j++) {
+        ImagePort* imagePort = dynamic_cast<ImagePort*>(inports[j]);
+        if (imagePort) {
+            imagePort->resize(resizeEvent->canvasSize());
+            invalidate = true;
+        }
+    }
+    if (invalidate) eventInitiator->invalidate();
 }
 
 void ProcessorNetworkEvaluator::evaluate() {
