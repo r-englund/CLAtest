@@ -3,6 +3,8 @@
 
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/port.h"
+#include "inviwo/core/datastructures/data.h"
+
 
 namespace inviwo {
 
@@ -17,8 +19,9 @@ namespace inviwo {
         virtual void connectTo(Port* port);
         virtual void disconnectFrom(Port* port);
 
-        virtual T* getData() const;
+        virtual T* getData() ;
         virtual void setData(T* data);
+        virtual T* scaledData(T* , Processor*) {return data_;}
 
     protected:
         T* data_;
@@ -48,9 +51,11 @@ namespace inviwo {
     }
 
     template <typename T>
-    T* DataPort<T>::getData() const {
+    T* DataPort<T>::getData() {
         if (isOutport()) return data_;
-        else if (isConnected()) return connectedDataPort_->getData();
+        else if (isConnected()) {
+            return connectedDataPort_->scaledData(data_, getProcessor());
+        }
         else return 0;
     }
 
