@@ -13,6 +13,7 @@ namespace inviwo {
         virtual ~ImageRepresentation();
         virtual void resize(ivec2 dimensions);
         virtual ivec2 size() {return ivec2(0,0);}
+        virtual void blit(ImageRepresentation*);
     };
 
 } // namespace
