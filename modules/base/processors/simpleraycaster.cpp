@@ -34,18 +34,17 @@ void SimpleRaycaster::deinitialize() {
 }
 
 void SimpleRaycaster::process() {
-    activateTarget(outport_);
+    
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
     ivec2 csize = outImageGL->size();
-            
-    bindColorTexture(entryPort_, GL_TEXTURE0);
-    bindColorTexture(exitPort_, GL_TEXTURE1);
 
     Volume* volume = volumePort_.getData();
     VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
+    bindColorTexture(entryPort_, GL_TEXTURE0);
+    bindColorTexture(exitPort_, GL_TEXTURE1);
     volumeGL->bindTexture(GL_TEXTURE2);
-
+    activateTarget(outport_);
     shader_->activate();
     shader_->setUniform("entryTex_", 0);
     shader_->setUniform("exitTex_", 1);
@@ -53,8 +52,10 @@ void SimpleRaycaster::process() {
     shader_->setUniform("dimension_", vec2(1.f / csize[0], 1.f / csize[1]) );
     renderImagePlaneQuad();
     shader_->deactivate();
-
     deactivateCurrentTarget();
+    unbindColorTexture(entryPort_);
+    unbindColorTexture(exitPort_);
+    volumeGL->unbindTexture();
 }
 
 } // namespace

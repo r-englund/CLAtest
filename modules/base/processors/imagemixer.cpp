@@ -33,13 +33,13 @@ void ImageMixer::deinitialize() {
     Processor::deinitialize();
 }
 
-void ImageMixer::process() {
-    activateTarget(outport_);
-
+void ImageMixer::process() {    
+    
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
     ivec2 csize = outImageGL->size();
 
+    activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);
     bindColorTexture(inport1_, GL_TEXTURE1);
 

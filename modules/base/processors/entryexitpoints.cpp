@@ -85,8 +85,8 @@ void EntryExitPoints::renderBoundingBox(vec3 llf, vec3 urb) {
 }
 
 void EntryExitPoints::process() {
-    glEnable(GL_CULL_FACE);
-    shader_->activate();
+    
+    glEnable(GL_CULL_FACE);    
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -95,21 +95,23 @@ void EntryExitPoints::process() {
 
     // generate entry points
     activateTarget(entryPort_);
+    shader_->activate();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
     glCallList(listID_);
+    shader_->deactivate();
     deactivateCurrentTarget();
 
     // generate exit points
     activateTarget(exitPort_);
+    shader_->activate();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_FRONT);
     glCallList(listID_);
+    shader_->deactivate();
     deactivateCurrentTarget();
 
-    glPopMatrix();
-
-    shader_->deactivate();
+    glPopMatrix();    
     glDisable(GL_CULL_FACE);
 }
 
