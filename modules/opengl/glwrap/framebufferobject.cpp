@@ -30,4 +30,19 @@ void FrameBufferObject::checkStatus() {
         LogWarn("incomplete framebuffer object");
 }
 
+void FrameBufferObject::setRead_Blit(bool set) {
+    if (set)
+        glBindFramebufferEXT(GL_READ_FRAMEBUFFER, id_ );
+    else
+        glBindFramebufferEXT(GL_READ_FRAMEBUFFER, 0 );
+}
+
+void FrameBufferObject::setDraw_Blit(bool set) {
+    if (set)
+        glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER, id_ );
+    else
+        glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER, 0 );
+}
+
+
 } // namespace

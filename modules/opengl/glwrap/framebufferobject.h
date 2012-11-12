@@ -20,6 +20,9 @@ public:
 
     void checkStatus();
 
+    void setRead_Blit(bool set=true);
+    void setDraw_Blit(bool set=true);
+
 private:
     unsigned int id_;
 
