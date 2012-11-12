@@ -10,4 +10,6 @@ namespace inviwo {
 
     void ImageRepresentation::resize(ivec2){}
 
+    void ImageRepresentation::blit(ImageRepresentation*){}
+
 } // namespace
