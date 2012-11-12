@@ -13,6 +13,7 @@ namespace inviwo {
         virtual ~Image();
 
         void resize(ivec2 dimensions);
+        ivec2 size() {return dimensions_;}
 
     private:
         ivec2 dimensions_;
