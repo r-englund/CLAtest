@@ -2,23 +2,19 @@
 
 namespace inviwo {
 
-    VolumePort::VolumePort(PortDirection direction, std::string identifier)
-        : DataPort<Volume>(direction, identifier)
-    {}
+VolumePort::VolumePort(PortDirection direction, std::string identifier)
+    : DataPort<Volume>(direction, identifier)
+{}
 
-    VolumePort::~VolumePort() {
-    }
+VolumePort::~VolumePort() {
+}
 
-    void VolumePort::initialize() {
-        data_ = new Volume();
-    }
+void VolumePort::initialize() {
+    data_ = new Volume();
+}
 
-    void VolumePort::deinitialize() {
-        delete data_;
-    }
-
-    Volume* VolumePort::scaledData(Volume*, Processor*) {
-        return getData();
-    }
+void VolumePort::deinitialize() {
+    delete data_;
+}
 
 } // namespace

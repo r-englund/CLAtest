@@ -218,9 +218,9 @@ void ProcessorNetworkEvaluator::evaluate() {
     for (size_t i=0; i<processorsSorted_.size(); i++) {
         if (!processorsSorted_[i]->isValid()) {
             if (processorsSorted_[i]->allInportsConnected()) {
-                processorsSorted_[i]->process();
+                processorsSorted_[i]->process();                
+                processorsSorted_[i]->setValid();
                 if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i])) {
-                    processorsSorted_[i]->setValid();
                     renderContext_->switchContext();
                 }
                 repaintRequired_ = true;

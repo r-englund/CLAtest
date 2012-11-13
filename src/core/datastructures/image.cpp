@@ -4,6 +4,7 @@
 namespace inviwo {
 
     Image::Image() : Data() {
+        dimensions_ = ivec2(256,256);
         representations_.clear();
     }
 

@@ -6,26 +6,28 @@
 
 namespace inviwo {
 
-    class ImagePort : public DataPort<Image> {
+class ImagePort : public DataPort<Image> {
 
-    public:
-        ImagePort(Port::PortDirection direction, std::string identifier);
-        ~ImagePort();
+public:
+    ImagePort(Port::PortDirection direction, std::string identifier);
+    ~ImagePort();
 
-        void initialize();
-        void deinitialize();
+    void initialize();
+    void deinitialize();
 
-        void resize(ivec2 dimensions);
+    void resize(ivec2 dimensions);
+    ivec2 getDimensions() { return dimensions_; }
 
-        virtual Image* scaledData(Image* data, Processor* processor);
+    virtual Image* getData();
 
-        virtual ivec3 getColorCode() { return ivec3(90,127,183); }
+    virtual ivec3 getColorCode() { return ivec3(90,127,183); }
 
-    private:
-        ivec2 dimensions_;
-        std::map<std::string, Image*> imageDataMap_;
+private:
+    ivec2 dimensions_;
+    std::map<std::string, Image*> imageDataMap_;
 
-    };
+    Image* resizeImageData(std::string processorID, ivec2 targetDim);
+};
 
 } // namespace
 
