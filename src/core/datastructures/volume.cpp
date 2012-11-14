@@ -8,4 +8,10 @@ namespace inviwo {
 
     Volume::~Volume() {}
 
+    Data* Volume::clone() {
+        Volume* newVolume = new Volume();
+        copyRepresentations(newVolume);
+        return newVolume;
+    }
+
 } // namespace

@@ -16,6 +16,7 @@ namespace inviwo {
 
         void initialize();
         void deinitialize();
+        DataRepresentation* clone();
 
         void bindTexture(GLenum texUnit);
         void unbindTexture();

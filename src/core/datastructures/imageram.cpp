@@ -6,6 +6,14 @@ namespace inviwo {
         : ImageRepresentation()
     {}
 
-    ImageRAM::~ImageRAM() {}
+    ImageRAM::~ImageRAM() {}  
+
+    void ImageRAM::initialize() {}
+
+    void ImageRAM::deinitialize() {}
+
+    DataRepresentation* ImageRAM::clone() {
+        return new ImageRAM();
+    }
 
 } // namespace

@@ -17,6 +17,8 @@ namespace inviwo {
         template<class T>
         T* getRepresentation();
         void clearRepresentations();
+        void copyRepresentations(Data* targetData);
+        virtual Data* clone()=0;
 
     protected:
         std::vector<DataRepresentation*> representations_;

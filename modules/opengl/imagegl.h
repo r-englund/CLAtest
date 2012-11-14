@@ -18,6 +18,8 @@ namespace inviwo {
 
         void initialize();
         void deinitialize();
+        virtual DataRepresentation* clone();
+        virtual std::string getClassName() const { return "ImageGL"; }
 
         void activateBuffer();
         void deactivateBuffer();
@@ -29,7 +31,7 @@ namespace inviwo {
         void unbindColorTexture();
         virtual void resize(ivec2 dimensions);
         virtual ivec2 size() { return dimensions_;}
-        virtual void blit(ImageRepresentation* target) ;
+        virtual void copyAndResizeImage(DataRepresentation* target) ;
         void renderImagePlaneQuad() const;
     private:
         FrameBufferObject* getFBO() {return frameBufferObject_;}

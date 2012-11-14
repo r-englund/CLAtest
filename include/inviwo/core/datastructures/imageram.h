@@ -10,6 +10,11 @@ namespace inviwo {
     public:
         ImageRAM();
         virtual ~ImageRAM();
+        virtual void initialize();
+        void deinitialize();
+        DataRepresentation* clone();
+        virtual std::string getClassName() const { return "ImageRAM"; }
+        void copyAndResizeImage(DataRepresentation*){}
     };
 
 } // namespace

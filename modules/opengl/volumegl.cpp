@@ -27,6 +27,12 @@ void VolumeGL::initialize() {
     //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/aneurysm.raw", dimensions_=ivec3(256,256,256));
 }
 
+DataRepresentation* VolumeGL::clone() {
+    VolumeGL* newVolumeGL = new VolumeGL(dimensions_);
+    //TODO:: Copy volume textures if necessary
+    return newVolumeGL;
+}
+
 void VolumeGL::deinitialize() {
     delete volumeTexture_;
 }

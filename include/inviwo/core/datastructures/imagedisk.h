@@ -10,6 +10,11 @@ namespace inviwo {
     public:
         ImageDisk();
         virtual ~ImageDisk();
+        virtual void initialize();
+        virtual void deinitialize();
+        virtual DataRepresentation* clone();
+        virtual std::string getClassName() const { return "ImageDisk"; }
+        void copyAndResizeImage(DataRepresentation*){}
     };
 
 } // namespace

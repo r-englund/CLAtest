@@ -10,6 +10,7 @@ namespace inviwo {
     public:
         Volume();
         virtual ~Volume();
+        Data* clone();
 
     private:
         ivec3 dimensions_;

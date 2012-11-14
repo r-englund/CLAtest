@@ -1,5 +1,4 @@
 #include "inviwo/core/ports/imageport.h"
-#include "../../inviwo/modules/opengl/imagegl.h"
 #include "inviwo/core/processors/processor.h"
 
 namespace inviwo {
@@ -30,18 +29,14 @@ Image* ImagePort::resizeImageData(std::string processorID, ivec2 targetDim) {
 
     Image* result = 0;
     if (imageDataMap_.find(processorID) == imageDataMap_.end()) {
-        result = new Image();
-        imageDataMap_.insert(std::make_pair(processorID, result)); 
+        result = dynamic_cast<Image*>(data_->clone());
+        if (result) imageDataMap_.insert(std::make_pair(processorID, result)); 
     } else
         result = imageDataMap_[processorID];
 
     //TODO: do the following resizing only if the entry in the map is invalid or the size has changed
-    //if (!IS_STILL_VALID || result.getDimensions!=targetDim) { //FIXME
-        //TODO: ImageGL module should not be accessed from here
-        ImageGL* newImageGL = result->getRepresentation<ImageGL>();
-        result->resize(targetDim);
-        ImageGL* imageGL = data_->getRepresentation<ImageGL>();
-        imageGL->blit(newImageGL);
+    //if (!IS_STILL_VALID || result.getDimensions!=targetDim) { //FIXME        
+        if (result) data_->resizeImageRepresentations(result, targetDim);
     //}
 
     return result;

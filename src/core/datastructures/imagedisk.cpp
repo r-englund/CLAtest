@@ -8,4 +8,12 @@ namespace inviwo {
 
     ImageDisk::~ImageDisk() {}
 
+    void ImageDisk::initialize() {}
+
+    void ImageDisk::deinitialize() {}
+
+    DataRepresentation* ImageDisk::clone() {
+        return new ImageDisk();
+    }
+
 } // namespace

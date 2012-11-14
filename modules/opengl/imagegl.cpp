@@ -50,6 +50,20 @@ namespace inviwo {
         shader_=0;
     }
 
+    DataRepresentation* ImageGL::clone() {
+        ImageGL* newImageGL = new ImageGL(dimensions_);  
+
+        if (getColorTexture()->getTexels()) {
+            memcpy(newImageGL->getColorTexture()->getTexels(), getColorTexture()->getTexels(), 
+                   dimensions_.x*dimensions_.y*sizeof(GLubyte));
+        }
+        if (getDepthTexture()->getTexels()) {
+            memcpy(newImageGL->getDepthTexture()->getTexels(), getDepthTexture()->getTexels(),
+                   dimensions_.x*dimensions_.y*sizeof(GLubyte));
+        }
+        return newImageGL;
+    }
+
     void ImageGL::activateBuffer() {
         frameBufferObject_->activate();
         glViewport(0, 0, colorTexture_->getWidth(), colorTexture_->getHeight());
@@ -97,7 +111,7 @@ namespace inviwo {
         depthTexture_->unbind();
     }
 
-    void ImageGL::blit(ImageRepresentation* targetRep) {
+    void ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
         
         ImageGL* source = this;
         ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
