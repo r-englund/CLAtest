@@ -11,9 +11,7 @@ RedGreenProcessor::RedGreenProcessor()
     addPort(outportGreen_);
 }
 
-RedGreenProcessor::~RedGreenProcessor() {
-    Processor::~Processor();
-}
+RedGreenProcessor::~RedGreenProcessor() {}
 
 Processor* RedGreenProcessor::create() const {
     return new RedGreenProcessor();

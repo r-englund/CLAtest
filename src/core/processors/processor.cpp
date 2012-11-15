@@ -23,7 +23,7 @@ void Processor::addPort(Port* port, std::string groupName) {
     if (port->isOutport()) outports_.push_back(port);
     else inports_.push_back(port);
 
-    portGroupMap_.insert(groupName, port);
+    portGroup_.insert(groupName, port);
 }
 
 void Processor::addPort(Port& port, std::string groupName) {
@@ -41,51 +41,15 @@ Port* Processor::getPort(std::string identifier) const {
 }
 
 std::vector<Port*> Processor::getPortsByGroup(std::string groupName) {
-    /*
-    std::pair<PortGroupMap::iterator, PortGroupMap::iterator> pgRangeIt;
-    std::vector<Port*> ports;
-    pgRangeIt = portGroupMap_.equal_range(groupName);
-    for (PortGroupMap::iterator mIt = pgRangeIt.first; mIt != pgRangeIt.second; ++mIt) {
-        ports.push_back((*mIt).second);
-    }
-    return ports;
-    */
-
-    return portGroupMap_.getGroupedData(groupName);
+     return portGroup_.getGroupedData(groupName);
 }
 
 std::vector<std::string> Processor::getPortGroupNames() {
-    /*
-    std::map<std::string, int> keyMap;
-    std::map<std::string, int>::iterator keyMapIt;
-    std::vector<std::string> portGroups;
-    PortGroupMap::iterator it;
-    for (it = portGroupMap_.begin(); it != portGroupMap_.end(); ++it) {
-        keyMap[(*it).first]++;
-    }
-    for (keyMapIt=keyMap.begin(); keyMapIt != keyMap.end(); keyMapIt++) {
-        portGroups.push_back((*keyMapIt).first);
-    }
-    return portGroups;
-    */
-
-    return portGroupMap_.getGroupKeys();
+    return portGroup_.getGroupKeys();
 }
 
 std::string Processor::getPortGroupName(Port* port) {
-    /*
-    std::string portGroupName("");
-    PortGroupMap::iterator it;
-    for (it = portGroupMap_.begin(); it != portGroupMap_.end(); ++it) {
-        if ((*it).second == port) {
-            portGroupName = (*it).first;
-            break;
-        }
-    }    
-    return portGroupName;
-    */
-
-    return portGroupMap_.getKey(port);
+    return portGroup_.getKey(port);
 
 }
 
@@ -109,7 +73,7 @@ void Processor::deinitialize() throw (Exception) {
     for (size_t i=0; i<outports_.size(); i++)
         outports_[i]->deinitialize();
 
-    portGroupMap_.deinitialize();
+    portGroup_.deinitialize();
 }
 
 void Processor::invalidate() {

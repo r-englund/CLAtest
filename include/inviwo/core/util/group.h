@@ -3,6 +3,17 @@
 
 #include <map>
 
+/*
+
+1) Group can consist key and data
+2) Key, for example, can be std::string, Processor* , int ... etc
+3) Data, for example, can be Port*, Processor*, Canvas* ... etc
+
+Example Group types: <std::string, Port*> where KEY is std::string, DATA is Port*
+                     <std::string, Processor*> where KEY is std::string, DATA is Processor*
+                     <Processor*, Port*> where KEY is Processor, DATA is Port*
+
+*/
 template<typename KEY,typename DATA>
 class Group {
 public:
@@ -10,6 +21,7 @@ public:
     Group(){}
     ~Group() {}
 
+    //Erase all data corressponding to each key
     void deinitialize() {
         std::vector<KEY> keys = getGroupKeys();
         for(size_t i=0; i<keys.size(); i++) {
@@ -17,6 +29,7 @@ public:
         }
     }
 
+    //Get the data corressponding to supplied key. There can be multiple data for each key.
     std::vector<DATA> getGroupedData(KEY groupKEY) {
         std::pair<GroupMap::iterator, GroupMap::iterator> pgRangeIt;
         std::vector<DATA> ports;
@@ -27,6 +40,7 @@ public:
         return ports;
     }
 
+    //Get all existing keys in map with no duplicates
     std::vector<KEY> getGroupKeys() {        
         std::map<KEY, int> keyMap;
         std::map<KEY, int>::iterator keyMapIt;
@@ -42,6 +56,7 @@ public:
         return groups;
     }
 
+    //Get key that corresponds to data
     KEY getKey(DATA data) {
         KEY key;
         GroupMap::iterator it;
@@ -54,6 +69,7 @@ public:
         return key;
     }
 
+    //Insert key and data  
     void insert(KEY key, DATA data) {
         groupMap_.insert(std::pair<KEY,DATA>(key, data));
     }

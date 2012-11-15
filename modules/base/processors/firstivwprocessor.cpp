@@ -11,9 +11,7 @@ FirstIvwProcessor::FirstIvwProcessor()
     addProperty(color_);
 }
 
-FirstIvwProcessor::~FirstIvwProcessor() {
-    Processor::~Processor();
-}
+FirstIvwProcessor::~FirstIvwProcessor() {}
 
 Processor* FirstIvwProcessor::create() const {
     return new FirstIvwProcessor();

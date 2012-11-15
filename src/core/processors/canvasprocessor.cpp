@@ -17,8 +17,7 @@ CanvasProcessor::~CanvasProcessor() {
     if(processorWidget_) {
         delete processorWidget_;
         processorWidget_ = 0;
-    }
-    Processor::~Processor();
+    }    
 }
 
 Processor* CanvasProcessor::create() const {

@@ -89,12 +89,9 @@ private:
     std::vector<InteractionHandler*> interactionHandlers_;
 
     //TODO: Use map
-    std::vector<MetaData*> metaData_;
+    std::vector<MetaData*> metaData_; 
 
-    //typedef std::multimap<std::string,Port*> PortGroupMap;
-    //PortGroupMap portGroupMap_;
-
-    Group<std::string,Port*> portGroupMap_;
+    Group<std::string,Port*> portGroup_;
 };
 
 } // namespace

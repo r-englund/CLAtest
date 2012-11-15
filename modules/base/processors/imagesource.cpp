@@ -11,9 +11,7 @@ ImageSource::ImageSource()
     addProperty(imageFileName_);
 }
 
-ImageSource::~ImageSource() {
-   Processor::~Processor();
-}
+ImageSource::~ImageSource() {}
 
 Processor* ImageSource::create() const {
     return new ImageSource();

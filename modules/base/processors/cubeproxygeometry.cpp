@@ -9,9 +9,7 @@ CubeProxygeometry::CubeProxygeometry()
     addPort(inport_);
 }
 
-CubeProxygeometry::~CubeProxygeometry() {
-    Processor::~Processor();
-}
+CubeProxygeometry::~CubeProxygeometry() {}
 
 Processor* CubeProxygeometry::create() const {
     return new CubeProxygeometry();
