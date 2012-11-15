@@ -103,7 +103,7 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
 }
 
 template<class T>
-inline void IvwDeserializer::deserializePointer(const std::string& key, T* & data) {
+inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) {
     
     TxElement* nextRootNode;
     TxElement* rootCopy = _root;
