@@ -153,7 +153,8 @@ HEADERS += \
     ../../include/inviwo/core/util/assertion.h \
     ../../include/inviwo/core/util/exception.h \
     ../../include/inviwo/core/util/logdistributor.h \
-    ../../include/inviwo/core/util/project.h
+    ../../include/inviwo/core/util/project.h \
+    ../../include/inviwo/core/util/group.h	
 
 SOURCES += \
     inviwoapplication.cpp \

@@ -17,15 +17,17 @@ Processor* Processor::create() const {
     return new Processor();
 }
 
-void Processor::addPort(Port* port) {
+void Processor::addPort(Port* port, std::string groupName) {
     // TODO: check if port with same name has been added before
     port->setProcessor(this);
     if (port->isOutport()) outports_.push_back(port);
     else inports_.push_back(port);
+
+    portGroupMap_.insert(groupName, port);
 }
 
-void Processor::addPort(Port& port) {
-    addPort(&port);
+void Processor::addPort(Port& port, std::string groupName) {
+    addPort(&port, groupName);
 }
 
 Port* Processor::getPort(std::string identifier) const {
@@ -36,6 +38,55 @@ Port* Processor::getPort(std::string identifier) const {
         if (ports[i]->getIdentifier() == identifier)
             return ports[i];
     return 0;
+}
+
+std::vector<Port*> Processor::getPortsByGroup(std::string groupName) {
+    /*
+    std::pair<PortGroupMap::iterator, PortGroupMap::iterator> pgRangeIt;
+    std::vector<Port*> ports;
+    pgRangeIt = portGroupMap_.equal_range(groupName);
+    for (PortGroupMap::iterator mIt = pgRangeIt.first; mIt != pgRangeIt.second; ++mIt) {
+        ports.push_back((*mIt).second);
+    }
+    return ports;
+    */
+
+    return portGroupMap_.getGroupedData(groupName);
+}
+
+std::vector<std::string> Processor::getPortGroupNames() {
+    /*
+    std::map<std::string, int> keyMap;
+    std::map<std::string, int>::iterator keyMapIt;
+    std::vector<std::string> portGroups;
+    PortGroupMap::iterator it;
+    for (it = portGroupMap_.begin(); it != portGroupMap_.end(); ++it) {
+        keyMap[(*it).first]++;
+    }
+    for (keyMapIt=keyMap.begin(); keyMapIt != keyMap.end(); keyMapIt++) {
+        portGroups.push_back((*keyMapIt).first);
+    }
+    return portGroups;
+    */
+
+    return portGroupMap_.getGroupKeys();
+}
+
+std::string Processor::getPortGroupName(Port* port) {
+    /*
+    std::string portGroupName("");
+    PortGroupMap::iterator it;
+    for (it = portGroupMap_.begin(); it != portGroupMap_.end(); ++it) {
+        if ((*it).second == port) {
+            portGroupName = (*it).first;
+            break;
+        }
+    }    
+    return portGroupName;
+    */
+
+    return portGroupMap_.getKey(port);
+
 }
 
 bool Processor::allInportsConnected() const {
@@ -57,6 +108,8 @@ void Processor::deinitialize() throw (Exception) {
         inports_[i]->deinitialize();
     for (size_t i=0; i<outports_.size(); i++)
         outports_[i]->deinitialize();
+
+    portGroupMap_.deinitialize();
 }
 
 void Processor::invalidate() {
@@ -90,7 +143,7 @@ void Processor::invokeInteractionEvent(Event* event) {
 
 MetaData* Processor::getMetaData(std::string className) {
     MetaData* meta = 0;
-    for ( size_t i=0; i<metaData_.size(); i++ ) {
+    for (size_t i=0; i<metaData_.size(); i++) {
         if (metaData_[i]->getClassName()==className) {
             meta = metaData_[i];
             break;

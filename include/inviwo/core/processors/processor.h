@@ -9,6 +9,7 @@
 #include "inviwo/core/properties/properties.h"
 #include "inviwo/core/properties/propertyowner.h"
 #include "inviwo/core/metadata/metadata.h"
+#include "inviwo/core/util/group.h"
 
 namespace inviwo {
 
@@ -51,6 +52,10 @@ public:
     Port* getPort(std::string identifier) const;
     std::vector<Port*> getInports() { return inports_; }
     std::vector<Port*> getOutports() { return outports_; }
+    std::vector<std::string> getPortGroupNames();
+    std::vector<Port*> getPortsByGroup(std::string groupName);
+    std::string getPortGroupName(Port* port);
+    
 
     bool allInportsConnected() const;
 
@@ -68,8 +73,8 @@ public:
 
 protected:
 
-    void addPort(Port* port);
-    void addPort(Port& port);
+    void addPort(Port* port, std::string groupName="default");
+    void addPort(Port& port, std::string groupName="default");  
 
     ProcessorWidget* processorWidget_;
 
@@ -85,6 +90,11 @@ private:
 
     //TODO: Use map
     std::vector<MetaData*> metaData_;
+
+    //typedef std::multimap<std::string,Port*> PortGroupMap;
+    //PortGroupMap portGroupMap_;
+
+    Group<std::string,Port*> portGroupMap_;
 };
 
 } // namespace

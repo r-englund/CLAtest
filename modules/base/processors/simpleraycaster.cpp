@@ -9,15 +9,13 @@ SimpleRaycaster::SimpleRaycaster()
     exitPort_(Port::INPORT, "exit-points"),
     outport_(Port::OUTPORT, "outport")
 {
-    addPort(volumePort_);
-    addPort(entryPort_);
-    addPort(exitPort_);
-    addPort(outport_);
+    addPort(volumePort_, "VolumePortGroup");
+    addPort(entryPort_, "ImagePortGroup1");
+    addPort(exitPort_, "ImagePortGroup1");
+    addPort(outport_, "ImagePortGroup1");
 }
 
-SimpleRaycaster::~SimpleRaycaster() {
-    Processor::~Processor();
-}
+SimpleRaycaster::~SimpleRaycaster() {}
 
 Processor* SimpleRaycaster::create() const {
     return new SimpleRaycaster();
