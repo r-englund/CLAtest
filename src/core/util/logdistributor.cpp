@@ -8,7 +8,12 @@ LogCentral* LogCentral::instance_ = 0;
 ConsoleLogger::ConsoleLogger() : Logger() {}
 ConsoleLogger::~ConsoleLogger() {}
 
-void ConsoleLogger::log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) {
+void ConsoleLogger::log(std::string logSource, unsigned int logLevel, const char* fileName,
+                        const char* functionName, int lineNumber, std::string logMsg) {
+    IVW_UNUSED_PARAM(fileName);
+    IVW_UNUSED_PARAM(logLevel);
+    IVW_UNUSED_PARAM(functionName);
+    IVW_UNUSED_PARAM(lineNumber);
     std::cout << logSource << ": " << logMsg << std::endl;
 }
 

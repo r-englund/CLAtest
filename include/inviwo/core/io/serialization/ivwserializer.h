@@ -65,7 +65,7 @@ inline void IvwSerializer::serialize(const std::string &key, const std::vector<T
 template <typename T>
 inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &sVector, const std::string &itemKey) {
     TxElement* newNode = new TxElement(key);
-    _root->LinkEndChild(newNode);
+    rootElement_->LinkEndChild(newNode);
 
     NodeSwitch tempNodeSwitch(*this, newNode);
 
@@ -79,21 +79,21 @@ inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &
 template<class T>
 inline void IvwSerializer::serialize(const std::string& key, const T* const& data) {
     
-    if (!_allowReference) {
-        //_allowReference = true;
+    if (!allowRef_) {
+        //allowRef_ = true;
         serialize(key, *data);
         return;
     }
     else {
-        if (_references.find(data)) {
-            //std::vector<TxElement*> nodeList = _references.getNode(data);
-            TxElement* newNode = _references.nodeCopy(data);
-            _root->LinkEndChild(newNode);
-            _references.insert(data, newNode);
+        if (refDataContainer_.find(data)) {
+            //std::vector<TxElement*> nodeList = refDataContainer_.getNode(data);
+            TxElement* newNode = refDataContainer_.nodeCopy(data);
+            rootElement_->LinkEndChild(newNode);
+            refDataContainer_.insert(data, newNode);
         }
         else {
             serialize(key, *data);
-            _references.insert(data, _root->LastChild()->ToElement(), false);
+            refDataContainer_.insert(data, rootElement_->LastChild()->ToElement(), false);
         }
         return;
     }
@@ -106,14 +106,14 @@ inline void IvwSerializer::serialize(const std::string& key, const T* const& dat
         //  newNode->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, typeid(*data).name());
         //}
     }
-    _root->LinkEndChild(newNode);
+    rootElement_->LinkEndChild(newNode);
 }
 
 template<class T>
 inline void IvwSerializer::serializePrimitives(const std::string& key, const T& data)
 {
      TxElement* node = new TxElement(key);
-     _root->LinkEndChild(node);
+     rootElement_->LinkEndChild(node);
      node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, data);
 }
 
@@ -121,7 +121,7 @@ template<class T>
 inline void IvwSerializer::serializeVector(const std::string& key, const T& vector, const bool& isColor)
 {
     TxElement* newNode = new TxElement(key);
-    _root->LinkEndChild(newNode);
+    rootElement_->LinkEndChild(newNode);
 
     std::stringstream ss;
     ss.precision(IvwSerializeConstants::STRINGSTREAM_PRECISION);

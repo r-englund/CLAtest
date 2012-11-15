@@ -114,12 +114,12 @@ namespace inviwo {
         friend class NodeSwitch;
 
         //TODO: These are static factory objects. But still storing them in vectors can be useful??? 
-        std::vector<InviwoFactoryBase *> _registeredFactoryVector;
-        std::string _fileName;
-        TxDocument _doc;
-        TxElement*_root;
-        bool _allowReference;
-        ReferenceDataContainer _references;
+        std::vector<InviwoFactoryBase*> registeredFactories_;
+        std::string fileName_;
+        TxDocument doc_;
+        TxElement* rootElement_;
+        bool allowRef_;
+        ReferenceDataContainer refDataContainer_;
     };
 
 
@@ -127,7 +127,7 @@ namespace inviwo {
     T* IvwSerializeBase::getRegisteredType(const std::string &className) {
         T* data = 0;
         std::vector<InviwoFactoryBase *>::iterator it;
-        for (it = _registeredFactoryVector.begin(); it!=_registeredFactoryVector.end(); it++) {
+        for (it = registeredFactories_.begin(); it!=registeredFactories_.end(); it++) {
             data = dynamic_cast<T*>( (*it)->create(className) );
             if (data)
                 break;

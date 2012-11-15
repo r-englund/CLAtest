@@ -10,13 +10,13 @@ namespace inviwo {
 
 IvwSerializeBase::NodeSwitch::NodeSwitch(IvwSerializeBase& serializer, TxElement* node)
     : _serializer(serializer)
-    , _storedNode(_serializer._root)
+    , _storedNode(_serializer.rootElement_)
 {
-    _serializer._root = node;
+    _serializer.rootElement_ = node;
 }
 
 IvwSerializeBase::NodeSwitch::~NodeSwitch() {
-    _serializer._root = _storedNode;
+    _serializer.rootElement_ = _storedNode;
 }
 
 IvwSerializeBase::ReferenceDataContainer::ReferenceDataContainer() {
@@ -171,17 +171,17 @@ std::vector<IvwSerializeBase::ReferenceData> IvwSerializeBase::ReferenceDataCont
 }
 
 IvwSerializeBase::IvwSerializeBase(IvwSerializeBase &s, bool allowReference)
-    : _fileName(s._fileName)
-    , _doc(s._fileName)
-    , _allowReference(allowReference)
+    : fileName_(s.fileName_)
+    , doc_(s.fileName_)
+    , allowRef_(allowReference)
 {
      registerFactories();  
 }
 
 IvwSerializeBase::IvwSerializeBase(std::string fileName, bool allowReference)
-    : _fileName(fileName)
-    , _doc(fileName)
-    , _allowReference(allowReference)
+    : fileName_(fileName)
+    , doc_(fileName)
+    , allowRef_(allowReference)
 {
     registerFactories(); 
 }
@@ -190,9 +190,9 @@ IvwSerializeBase::~IvwSerializeBase() {
 }
 
 void IvwSerializeBase::registerFactories(void) {
-    _registeredFactoryVector.clear();
-    _registeredFactoryVector.push_back(InviwoFactoryBase::instance<ProcessorFactory>());
-    _registeredFactoryVector.push_back(InviwoFactoryBase::instance<MetaDataFactory>());
+    registeredFactories_.clear();
+    registeredFactories_.push_back(InviwoFactoryBase::instance<ProcessorFactory>());
+    registeredFactories_.push_back(InviwoFactoryBase::instance<MetaDataFactory>());
 }
 
 template <typename T>
@@ -202,11 +202,11 @@ T* IvwSerializeBase::allocateMemory(std::string className) {
 }
 
 std::string IvwSerializeBase::getFileName() {
-    return _fileName;
+    return fileName_;
 }
 
 void IvwSerializeBase::setFileName(const std::string fileName) {
-    _fileName = fileName;
+    fileName_ = fileName;
 }
 
 bool IvwSerializeBase::isPrimitivePointerType(const std::type_info& type) const {
@@ -242,7 +242,7 @@ bool IvwSerializeBase::isPrimitiveType(const std::type_info& type) const {
 }
 
 void IvwSerializeBase::setAllowReference(const bool& allowReference) {
-    _allowReference = allowReference;
+    allowRef_ = allowReference;
 }
 
 } //namespace

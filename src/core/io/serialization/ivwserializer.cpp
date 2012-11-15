@@ -16,15 +16,15 @@ IvwSerializer::IvwSerializer(IvwSerializer &s, bool allowReference)
         TxComment* comment;
 
         TxDeclaration* decl = new TxDeclaration( IvwSerializeConstants::XML_VERSION, "", "" ); 
-	    _doc.LinkEndChild( decl ); 
+	    doc_.LinkEndChild( decl ); 
      
-        _root = new TxElement(IvwSerializeConstants::INVIWO_TREEDATA);  
-        _root->SetAttribute(IvwSerializeConstants::VERSION_ATTRIBUTE, IvwSerializeConstants::INVIWO_VERSION);
-	    _doc.LinkEndChild( _root );
+        rootElement_ = new TxElement(IvwSerializeConstants::INVIWO_TREEDATA);  
+        rootElement_->SetAttribute(IvwSerializeConstants::VERSION_ATTRIBUTE, IvwSerializeConstants::INVIWO_VERSION);
+	    doc_.LinkEndChild( rootElement_ );
 
         comment = new TxComment();
 	    comment->SetValue(IvwSerializeConstants::EDIT_COMMENT.c_str());  
-	    _root->LinkEndChild( comment ); 
+	    rootElement_->LinkEndChild( comment ); 
     }
     catch (TxException& ) {
         
@@ -40,15 +40,15 @@ IvwSerializer::IvwSerializer(std::string fileName, bool allowReference)
         TxComment* comment;
 
         TxDeclaration* decl = new TxDeclaration( IvwSerializeConstants::XML_VERSION, "", "" ); 
-	    _doc.LinkEndChild( decl ); 
+	    doc_.LinkEndChild( decl ); 
      
-        _root = new TxElement(IvwSerializeConstants::INVIWO_TREEDATA);  
-        _root->SetAttribute(IvwSerializeConstants::VERSION_ATTRIBUTE, IvwSerializeConstants::INVIWO_VERSION);
-	    _doc.LinkEndChild( _root );
+        rootElement_ = new TxElement(IvwSerializeConstants::INVIWO_TREEDATA);  
+        rootElement_->SetAttribute(IvwSerializeConstants::VERSION_ATTRIBUTE, IvwSerializeConstants::INVIWO_VERSION);
+	    doc_.LinkEndChild( rootElement_ );
 
         comment = new TxComment();
 	    comment->SetValue(IvwSerializeConstants::EDIT_COMMENT.c_str());  
-	    _root->LinkEndChild( comment ); 
+	    rootElement_->LinkEndChild( comment ); 
     }
     catch (TxException& ) {
         
@@ -60,7 +60,7 @@ IvwSerializer::~IvwSerializer() {
 
 void IvwSerializer::serialize(const std::string &key, const IvwSerializable &sObj) {
     TxElement* newNode = new TxElement(key);
-    _root->LinkEndChild(newNode);
+    rootElement_->LinkEndChild(newNode);
 
     NodeSwitch tempNodeSwitch(*this, newNode);
     sObj.serialize(*this); 
@@ -73,11 +73,11 @@ void IvwSerializer::serializeAttributes(const std::string &key, const std::strin
     ss<<data;
 
      //TxElement* node = new TxElement(key);
-     //_root->LinkEndChild(node);
+     //rootElement_->LinkEndChild(node);
      //node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, ss.str());
 
     //TODO: Check key for xml keys
-    _root->SetAttribute(key, ss.str());
+    rootElement_->SetAttribute(key, ss.str());
 }
 
 void IvwSerializer::serializePrimitives(const std::string &key, const std::string &data) {
@@ -87,7 +87,7 @@ void IvwSerializer::serializePrimitives(const std::string &key, const std::strin
     ss<<data;
 
      TxElement* node = new TxElement(key);
-     _root->LinkEndChild(node);
+     rootElement_->LinkEndChild(node);
      node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, ss.str());
 }
 
@@ -133,10 +133,10 @@ void IvwSerializer::serialize(const std::string &key, const vec4 &data) {
 void IvwSerializer::writeFile(std::ostream& stream) {
 
     try { 
-        std::cout<<_doc;
-        stream<<_doc;
-        _references.setReferenceAttributes();
-        _doc.SaveFile();
+        std::cout<<doc_;
+        stream<<doc_;
+        refDataContainer_.setReferenceAttributes();
+        doc_.SaveFile();
     }
     catch (TxException& ) {
         

@@ -15,10 +15,10 @@ IvwDeserializer::IvwDeserializer(IvwDeserializer &s, bool allowReference)
     try {
         readFile(std::cout);
 
-        TxElement *inviwoTree = _doc.FirstChildElement();
+        TxElement *inviwoTree = doc_.FirstChildElement();
         //Comment is not a tree element
         //TxElement *comment = inviwoTree->FirstChildElement();
-        _root = inviwoTree;
+        rootElement_ = inviwoTree;
     }
     catch (TxException& ) {
         
@@ -33,12 +33,12 @@ IvwDeserializer::IvwDeserializer(std::string fileName, bool allowReference)
     try {
         readFile(std::cout);
 
-        TxElement *inviwoTree = _doc.FirstChildElement();
+        TxElement *inviwoTree = doc_.FirstChildElement();
 
         //Comment is not a tree element
         //TxElement *comment = inviwoTree->FirstChildElement();
 
-        _root = inviwoTree; 
+        rootElement_ = inviwoTree; 
 
     }
     catch (TxException& ) {
@@ -55,7 +55,7 @@ void IvwDeserializer::deserialize(const std::string &key, IvwSerializable &sObj)
     
     try {
         std::string rootKey("");
-        keyNode = _root;        
+        keyNode = rootElement_;        
         rootKey = keyNode->Value();
 
         while(rootKey!=key) {            
@@ -76,17 +76,17 @@ void IvwDeserializer::deserialize(const std::string &key, IvwSerializable &sObj)
 
 void IvwDeserializer::deserializeAttributes(const std::string &key, std::string &data) {
 
-    TxElement* keyNode = _root->FirstChildElement(); 
+    TxElement* keyNode = rootElement_->FirstChildElement(); 
     //if (!keyNode) return;   
 
-    _root->GetAttribute(key, &data);
+    rootElement_->GetAttribute(key, &data);
 
     try {
         
-        //lastAttribute = _root->LastAttribute();
+        //lastAttribute = rootElement_->LastAttribute();
         TxAIt attribute;
         TxAIt lastAttribute;
-        for ( attribute = attribute.begin( _root ); attribute != attribute.end(); attribute++ ) {
+        for ( attribute = attribute.begin( rootElement_ ); attribute != attribute.end(); attribute++ ) {
             lastAttribute = attribute;
         }
 
@@ -95,34 +95,23 @@ void IvwDeserializer::deserializeAttributes(const std::string &key, std::string 
                 if (keyNode && keyNode->FirstAttribute()) {
                     if (IvwSerializeConstants::isReversvedAttribute(keyNode->FirstAttribute()->Name())) {
                         //If next element has valid attributes
-                        _root = keyNode; 
+                        rootElement_ = keyNode; 
                     }
                 }                   
             }
         }
-       
-
-    }
-    catch (TxException& ) {
-    }
+    } catch (TxException& ) {}
 }
 
 void IvwDeserializer::deserializePrimitives(const std::string &key, std::string &data) {
-
-    TxElement* keyNode = _root->FirstChildElement(key);
+    TxElement* keyNode = rootElement_->FirstChildElement(key);
     //if (!keyNode) return;   
-
     keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
-    
 }
 
 void IvwDeserializer::deserialize(const std::string &key, std::string &data, const bool asAttribute) {
-    if (asAttribute) {
-        deserializeAttributes(key, data);
-    }
-    else {
-        deserializePrimitives(key, data);
-    }
+    if (asAttribute) deserializeAttributes(key, data);
+    else deserializePrimitives(key, data);
 }
 
 void IvwDeserializer::deserialize(const std::string &key, float &data) {
@@ -155,18 +144,11 @@ void IvwDeserializer::deserialize(const std::string &key, vec4 &data) {
     deserializeVector(key, data);
 }
 
-
 void IvwDeserializer::readFile(std::ostream& stream) {
-
     try {   
-        _doc.LoadFile(); 
-        //stream<<_doc;
-    }
-    catch (TxException& ) {
-        
-    }
-
+        doc_.LoadFile(); 
+        //stream<<doc_;
+    } catch (TxException& ) {}
 }
-
 
 } //namespace

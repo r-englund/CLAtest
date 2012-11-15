@@ -68,11 +68,10 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
     TxElement* keyNode;
 
 
-     try {
-        keyNode = _root->FirstChildElement(key);
+    try {
+        keyNode = rootElement_->FirstChildElement(key);
         keyNode->FirstChildElement();
-     }
-    catch (TxException& ) {
+    } catch (TxException&) {
         return;
     }
 
@@ -82,9 +81,9 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
     std::vector<T*> tVector;
 
     //TODO: Add count attribute to store vector.size() if necessary
-    int i=0;
+    unsigned int i=0;
     for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {
-        _root = &(*child);
+        rootElement_ = &(*child);
         
         if (sVector.size()==0) {
             item = 0;
@@ -106,10 +105,10 @@ template<class T>
 inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) {
     
     TxElement* nextRootNode;
-    TxElement* rootCopy = _root;
+    TxElement* rootCopy = rootElement_;
 
     try {
-        nextRootNode = _root->FirstChildElement(); 
+        nextRootNode = rootElement_->FirstChildElement(); 
         //if (!keyNode) return;
     }
     catch (TxException& ) {
@@ -120,19 +119,14 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
     std::string ref_attr("");
     std::string id_attr("");
     try {
-        _root->GetAttribute( IvwSerializeConstants::TYPE_ATTRIBUTE, &type_attr );
-        if (_allowReference) {
+        rootElement_->GetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, &type_attr);
+        if (allowRef_) {
             try {
-                _root->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attr );
-            }
-            catch (TxException& ) {
-            }
-            _root->GetAttribute( IvwSerializeConstants::ID_ATTRIBUTE, &id_attr );
+                rootElement_->GetAttribute(IvwSerializeConstants::REF_ATTRIBUTE, &ref_attr);
+            } catch (TxException& ) {}
+            rootElement_->GetAttribute(IvwSerializeConstants::ID_ATTRIBUTE, &id_attr);
         }
-    }
-    catch (TxException& ) {
-
-    }
+    } catch (TxException& ) {}
 
 
     //allocation of referenced data
@@ -145,7 +139,7 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
             // and add to list
             //return the data, donot deserialize it yet
 
-           data=static_cast<T*>(_references.find(type_attr, ref_attr));
+           data=static_cast<T*>(refDataContainer_.find(type_attr, ref_attr));
 
             if (!data) {
                 if (!type_attr.empty()) {
@@ -154,10 +148,10 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
                 else {
                     data = IvwSerializeBase::getNonRegisteredType<T>();                    
                 }
-                if (data) _references.insert(data, rootCopy);
+                if (data) refDataContainer_.insert(data, rootCopy);
             }            
             
-            _root = nextRootNode;
+            rootElement_ = nextRootNode;
 
             return;
 
@@ -167,29 +161,29 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
             //if data exist , data needs to deserialized but not allocated
             //else data needs to be both allocated and deserialized
 
-            data = static_cast<T*>(_references.find(type_attr, id_attr));
+            data = static_cast<T*>(refDataContainer_.find(type_attr, id_attr));
             
             if (!data) {
                 if (!type_attr.empty()) {
                     data = IvwSerializeBase::getRegisteredType<T>(type_attr);     
                     if (data) { 
                         (*data).deserialize(*this);
-                        _root = nextRootNode;
+                        rootElement_ = nextRootNode;
                     }     
                 }
                 else {
                     data = IvwSerializeBase::getNonRegisteredType<T>();
                     if (data) {
                         (*data).deserialize(*this);
-                        _root = nextRootNode; 
+                        rootElement_ = nextRootNode; 
                     }
                     
                 }
-                if (data) _references.insert(data, rootCopy);
+                if (data) refDataContainer_.insert(data, rootCopy);
             }
             else {
                 (*data).deserialize(*this);
-                _root = nextRootNode;
+                rootElement_ = nextRootNode;
             }
             
             return;
@@ -203,22 +197,22 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
             data = IvwSerializeBase::getRegisteredType<T>(type_attr);
             if (data) {
                (*data).deserialize(*this);
-                _root = nextRootNode;
+                rootElement_ = nextRootNode;
             }     
         }
         else {
             data = IvwSerializeBase::getNonRegisteredType<T>();
             if (data) {
                 (*data).deserialize(*this);
-                _root = nextRootNode;  
+                rootElement_ = nextRootNode;  
             }
             
         }
-        if (data) _references.insert(data, rootCopy);
+        if (data) refDataContainer_.insert(data, rootCopy);
     }
     else {
         (*data).deserialize(*this);
-         _root = nextRootNode;
+         rootElement_ = nextRootNode;
     }    
     
     return;
@@ -230,7 +224,7 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
     TxElement* keyNode;
 
     try {
-        keyNode = _root->FirstChildElement(key); 
+        keyNode = rootElement_->FirstChildElement(key); 
     }
     catch (TxException& ) {
         return;
@@ -241,7 +235,7 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
     std::string id_attr("");
     try {
         keyNode->GetAttribute( IvwSerializeConstants::TYPE_ATTRIBUTE, &type_attr );
-        if (_allowReference) {
+        if (allowRef_) {
             try {
                 keyNode->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attr );
             }
@@ -263,7 +257,7 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
             // and add to list
             //return the data, donot deserialize it yet
 
-           data=static_cast<T*>(_references.find(type_attr, ref_attr));
+           data=static_cast<T*>(refDataContainer_.find(type_attr, ref_attr));
 
             if (!data) {
                 if (!type_attr.empty()) {
@@ -272,7 +266,7 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
                 else {
                     data = IvwSerializeBase::getNonRegisteredType<T>();
                 }
-                if (data) _references.insert(data, keyNode);
+                if (data) refDataContainer_.insert(data, keyNode);
             }
 
             return;
@@ -286,7 +280,7 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
 
 template<class T>
 inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {
-    TxElement* keyNode = _root->FirstChildElement(key); 
+    TxElement* keyNode = rootElement_->FirstChildElement(key); 
     //if (!keyNode) return;
     keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
 }
@@ -294,7 +288,7 @@ inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& da
 template<class T>
 inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) {
 
-    TxElement* keyNode = _root->FirstChildElement(key); 
+    TxElement* keyNode = rootElement_->FirstChildElement(key); 
     if (!keyNode) {
         return;
     }
