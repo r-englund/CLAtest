@@ -39,6 +39,8 @@ private:
     void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);
     void propagateResizeEvent(Processor* processor, ResizeEvent* resizeEvent);
 
+    bool isPortConnectedToProcessor(Port* port, Processor *processor);
+
     ProcessorNetwork* processorNetwork_;
 
     std::vector<Processor*> processorsSorted_; // the sorted list of processors obtained through topological sorting
