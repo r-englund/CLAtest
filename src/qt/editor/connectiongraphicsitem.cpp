@@ -6,18 +6,28 @@
 
 namespace inviwo {
 
-CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint)
+CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption, ivec3 color)
                                      : startPoint_(startPoint),
-                                       endPoint_(endPoint) {
+                                       endPoint_(endPoint),
+                                       verticalLayout_(layoutOption),
+                                       color_(color.r, color.g, color.b){
     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
 }
 
 CurveGraphicsItem::~CurveGraphicsItem() {}
 
 QPainterPath CurveGraphicsItem::obtainCurvePath() const {
-    float deltaY = endPoint_.y()-startPoint_.y();
-    QPointF ctrlPoint1 = QPointF(startPoint_.x(), endPoint_.y()-deltaY/4.0);
-    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y()+deltaY/4.0);
+    float delta = endPoint_.y()-startPoint_.y();
+    
+    QPointF ctrlPoint1 = QPointF(startPoint_.x(), endPoint_.y()-delta/4.0);
+    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y()+delta/4.0);
+
+    if (!verticalLayout_) {
+        delta = endPoint_.x()-startPoint_.x();
+        ctrlPoint1 = QPointF(startPoint_.x()+delta/4.0, startPoint_.y());
+        ctrlPoint2 = QPointF(endPoint_.x()-delta/4.0, endPoint_.y());
+    }
+
     QPainterPath bezierCurve;
     bezierCurve.moveTo(startPoint_);
     bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint_);
@@ -29,7 +39,7 @@ void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* optio
     IVW_UNUSED_PARAM(widget);
 
     if (isSelected()) p->setPen(QPen(Qt::darkRed, 2.0, Qt::SolidLine, Qt::RoundCap));
-    else p->setPen(QPen(QColor(38,38,38), 2.0, Qt::SolidLine, Qt::RoundCap));
+    else p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
     p->drawPath(obtainCurvePath());
 }
 
@@ -50,14 +60,27 @@ QRectF CurveGraphicsItem::boundingRect() const {
 
 
 ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
-                                               ProcessorGraphicsItem* inProcessor, Port* inport)
+                                               ProcessorGraphicsItem* inProcessor, Port* inport, bool layoutOption)
                                                : CurveGraphicsItem(outProcessor->mapToScene(outProcessor->calculatePortRect(outport)).boundingRect().center(),
-                                                                   inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center()),
+                                                                   inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center(), 
+                                                                   layoutOption, inport->getColorCode()),
                                                  outProcessor_(outProcessor), outport_(outport),
                                                  inProcessor_(inProcessor), inport_(inport) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
 
 ConnectionGraphicsItem::~ConnectionGraphicsItem() {}
+
+void ConnectionGraphicsItem::flipLayout() {
+    setStartPoint(outProcessor_->mapToScene(outProcessor_->calculatePortRect(outport_)).boundingRect().center());
+    setEndPoint(inProcessor_->mapToScene(inProcessor_->calculatePortRect(inport_)).boundingRect().center());
+
+    if (getLayoutOption()) {
+        setLayoutOption(false);
+    }
+    else
+        setLayoutOption(true);
+
+}
 
 } // namespace

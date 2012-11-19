@@ -24,7 +24,8 @@ Q_OBJECT
 
     public slots:
         bool saveNetwork(); 
-        bool loadNetwork(); 
+        bool loadNetwork();
+        bool changeNetworkLayout();
 
     private:
         void addToolBars();
@@ -43,10 +44,12 @@ Q_OBJECT
         QMenuBar *basicMenuBar;
         QMenu *fileMenuItem_;
         QMenu *editMenuItem_;
+        QMenu *viewMenuItem_;
         
         //MainWindow MenuActions
         QAction *openFileAction_;
         QAction *saveFileAction_;
+        QAction *changeNetworkLayoutAction_;
 
         //Paths
         QString rootDir_;

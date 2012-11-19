@@ -14,7 +14,7 @@ static const qreal CONNECTIONGRAPHICSITEM_DEPTH = 2.0f;
 class ProcessorGraphicsItem : public QGraphicsRectItem {
 
 public:
-    ProcessorGraphicsItem();
+    ProcessorGraphicsItem(bool fitVerticalLayout=true);
     ~ProcessorGraphicsItem();
 
     Processor* getProcessor() const { return processor_; }
@@ -28,12 +28,15 @@ public:
 
     void updateMetaData();
 
+    void flipLayout();
+
 protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
     Processor* processor_;
+    bool fitVerticalLayout_;
 };
 
 } // namespace

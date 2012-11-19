@@ -15,8 +15,9 @@ static const int height = 60;
 static const int roundedCorners = 10;
 static const int labelHeight = 8;
 
-ProcessorGraphicsItem::ProcessorGraphicsItem()
-    : processor_(0) {
+ProcessorGraphicsItem::ProcessorGraphicsItem(bool fitVerticalLayout)
+    : processor_(0),
+      fitVerticalLayout_(fitVerticalLayout) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
@@ -24,14 +25,38 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
 
 ProcessorGraphicsItem::~ProcessorGraphicsItem() {}
 
+void ProcessorGraphicsItem::flipLayout() {
+    fitVerticalLayout_ = (fitVerticalLayout_)?false:true;
+    //TODO: transform from vertical to horizontal or vice versa
+    //if (!fitVerticalLayout_) {        
+        vec2 position(x(), y());
+        setX(position.y);
+        setY(position.x);
+        //repaint if necessary
+    //}
+}
+
 QRectF ProcessorGraphicsItem::calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const {
     QPointF portDims(10.0f, 10.0f);
-    if (portDir == Port::INPORT)
-        return QRectF(rect().left()+10.0f+curPort*(portDims.x()*1.5), rect().top(),
-                      portDims.x(), portDims.y());
-    else
-        return QRectF(rect().left()+10.0f+curPort*(portDims.x()*1.5), rect().bottom()-portDims.y(),
-                      portDims.x(), portDims.y());
+    
+    if (portDir == Port::INPORT) {
+        qreal left = rect().left()+10.0f+curPort*(portDims.x()*1.5);
+        qreal top = rect().top();
+        if (!fitVerticalLayout_) {
+            left = rect().left();
+            top = rect().bottom()-20.0f-curPort*(portDims.y()*1.5);
+        }
+        return QRectF(left, top, portDims.x(), portDims.y());
+    }
+    else {
+        qreal left = rect().left()+10.0f+curPort*(portDims.x()*1.5);
+        qreal top = rect().bottom()-portDims.y();
+        if (!fitVerticalLayout_) {
+            left = rect().right()-portDims.x();
+            top = rect().bottom()-20.0f-curPort*(portDims.y()*1.5);
+        }
+        return QRectF(left, top, portDims.x(), portDims.y());
+    }
 }
 
 QRectF ProcessorGraphicsItem::calculatePortRect(Port* port) const {
@@ -77,6 +102,7 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
 
     // paint processor
     QLinearGradient grad(rect().topLeft(), rect().bottomLeft());
+
     if (isSelected()) {
         grad.setColorAt(0.0f, QColor(110,77,77));
         grad.setColorAt(0.2f, QColor(110,77,77));

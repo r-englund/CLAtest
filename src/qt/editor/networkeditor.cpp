@@ -27,6 +27,7 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     endProcessor_ = 0;
     setSceneRect(-1000,-1000,1000,1000);
     this->setBackgroundBrush(Qt::darkGray);
+    verticalLayout_ = true;
 
     processorNetwork_ = new ProcessorNetwork();
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
@@ -57,7 +58,7 @@ void NetworkEditor::initializeConnectionRepresentation(ProcessorGraphicsItem* ou
                                                        ProcessorGraphicsItem* inProcessor, Port* inport) {
 
     // generate GUI representation and add to editor
-    ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(outProcessor, outport, inProcessor, inport);
+    ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(outProcessor, outport, inProcessor, inport, verticalLayout_);
     connectionGraphicsItems_.push_back(connectionGraphicsItem);
     addItem(connectionGraphicsItem);
     connectionGraphicsItem->show();
@@ -118,7 +119,7 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
     processor->createProcessorWidget();
 
     // generate GUI representation and add to editor
-    ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem();
+    ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem(verticalLayout_);
     processorGraphicsItem->setProcessor(processor);
     // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
     processorGraphicsItem->setPos(pos);
@@ -227,7 +228,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         if (startPort_ && startPort_->isOutport()) {
             QRectF portRect = startProcessor_->calculatePortRect(startPort_);
             portRect = startProcessor_->mapToScene(portRect).boundingRect();
-            connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos());
+            connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(), verticalLayout_);
             connectionCurve_->setZValue(2.0);
             addItem(connectionCurve_);
             connectionCurve_->show();
@@ -246,7 +247,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 QPointF startPoint = connectionGraphicsItem->getStartPoint();
                 startProcessor_ = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(startPoint));
                 removeConnection(connectionGraphicsItem);
-                connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos());
+                connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(), verticalLayout_);
                 connectionCurve_->setZValue(2.0);
                 addItem(connectionCurve_);
                 connectionCurve_->show();
@@ -412,6 +413,18 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     }
     
     return true;
+}
+
+void NetworkEditor::setVerticalNetworkLayout(bool layoutOption) {
+    for (size_t i=0; i<processorGraphicsItems_.size(); i++) {
+        processorGraphicsItems_[i]->flipLayout();
+    }
+
+    for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
+        connectionGraphicsItems_[i]->flipLayout();
+    }
+
+    verticalLayout_ = layoutOption;
 }
 
 } // namespace

@@ -40,6 +40,8 @@ public:
 
     void clearNetwork();
 
+    void setVerticalNetworkLayout(bool layoutOption);
+
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator();
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
@@ -79,6 +81,8 @@ private:
     ProcessorGraphicsItem* endProcessor_;
     Port* startPort_;
     Port* endPort_;
+
+    bool verticalLayout_;
     
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };

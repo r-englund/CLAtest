@@ -62,6 +62,7 @@ void InviwoMainWindow::addMenus() {
     basicMenuBar = menuBar();
     fileMenuItem_ = basicMenuBar->addMenu(tr("&File"));
     editMenuItem_ = basicMenuBar->addMenu(tr("&Edit"));
+    viewMenuItem_ = basicMenuBar->addMenu(tr("&View"));
 }
 
 void InviwoMainWindow::addMenuActions() {
@@ -73,6 +74,12 @@ void InviwoMainWindow::addMenuActions() {
     saveFileAction_ = new QAction(tr("&Save"),  this);
     connect(saveFileAction_, SIGNAL(triggered()), this, SLOT(saveNetwork()));
     fileMenuItem_->addAction(saveFileAction_);
+
+    changeNetworkLayoutAction_ = new QAction(tr("&Vertical Network Layout"),  this);    
+    connect(changeNetworkLayoutAction_, SIGNAL(triggered()), this, SLOT(changeNetworkLayout()));
+    viewMenuItem_->addAction(changeNetworkLayoutAction_);
+    changeNetworkLayoutAction_->setCheckable(true);
+    changeNetworkLayoutAction_->setChecked(true);
 }
 
 
@@ -143,6 +150,16 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     settings.setValue("mainWindowState", saveState());
 
     QMainWindow::closeEvent(event);
+}
+
+bool InviwoMainWindow::changeNetworkLayout() {    
+    if (changeNetworkLayoutAction_->isChecked()) {
+        networkEditorView_->getNetworkEditor()->setVerticalNetworkLayout(true);    
+    }
+    else
+        networkEditorView_->getNetworkEditor()->setVerticalNetworkLayout(false);   
+
+    return true;
 }
 
 } // namespace
