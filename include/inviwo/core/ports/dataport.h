@@ -30,7 +30,7 @@ protected:
 
 template <typename T>
 DataPort<T>::DataPort(PortDirection direction, std::string identifier)
-    : Port(direction, identifier)
+    : Port(direction, identifier), data_(0)
 {}
 
 template <typename T>
