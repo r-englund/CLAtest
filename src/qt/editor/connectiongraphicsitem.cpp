@@ -6,11 +6,12 @@
 
 namespace inviwo {
 
-CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption, ivec3 color)
+CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption, ivec3 color, bool dragMode)
                                      : startPoint_(startPoint),
                                        endPoint_(endPoint),
                                        verticalLayout_(layoutOption),
-                                       color_(color.r, color.g, color.b){
+                                       color_(color.r, color.g, color.b),
+                                       dragMode_(dragMode){
     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
 }
 
@@ -38,6 +39,11 @@ void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* optio
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
 
+    if(!dragMode_) {
+        p->setPen(QPen(Qt::black, 3.5, Qt::SolidLine, Qt::RoundCap));
+        p->drawPath(obtainCurvePath());
+    }
+
     if (isSelected()) p->setPen(QPen(Qt::darkRed, 2.0, Qt::SolidLine, Qt::RoundCap));
     else p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
     p->drawPath(obtainCurvePath());
@@ -63,7 +69,7 @@ ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcess
                                                ProcessorGraphicsItem* inProcessor, Port* inport, bool layoutOption)
                                                : CurveGraphicsItem(outProcessor->mapToScene(outProcessor->calculatePortRect(outport)).boundingRect().center(),
                                                                    inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center(), 
-                                                                   layoutOption, inport->getColorCode()),
+                                                                   layoutOption, inport->getColorCode(), false),
                                                  outProcessor_(outProcessor), outport_(outport),
                                                  inProcessor_(inProcessor), inport_(inport) {
     setFlags(ItemIsSelectable | ItemIsFocusable);

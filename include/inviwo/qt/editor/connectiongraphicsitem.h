@@ -13,7 +13,7 @@ namespace inviwo {
 class CurveGraphicsItem : public QGraphicsItem {
 
 public:
-    CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption=true, ivec3 color=ivec3(38,38,38));
+    CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption=true, ivec3 color=ivec3(38,38,38), bool dragMode=true);
     ~CurveGraphicsItem();
 
     virtual QPainterPath shape() const;
@@ -39,6 +39,7 @@ private:
     QPointF endPoint_;
     bool verticalLayout_;
     QColor color_;
+    bool dragMode_;
 
     QPainterPath obtainCurvePath() const;
 };
