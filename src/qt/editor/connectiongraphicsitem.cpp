@@ -40,12 +40,15 @@ void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* optio
     IVW_UNUSED_PARAM(widget);
 
     if(!dragMode_) {
-        p->setPen(QPen(Qt::black, 3.0, Qt::SolidLine, Qt::RoundCap));
+        if (isSelected()) 
+            p->setPen(QPen(Qt::darkRed, 5.0, Qt::SolidLine, Qt::RoundCap));        
+        else
+            p->setPen(QPen(Qt::black, 3.0, Qt::SolidLine, Qt::RoundCap));
+
         p->drawPath(obtainCurvePath());
     }
 
-    if (isSelected()) p->setPen(QPen(Qt::darkRed, 2.0, Qt::SolidLine, Qt::RoundCap));
-    else p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
+    p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
     p->drawPath(obtainCurvePath());
 }
 
