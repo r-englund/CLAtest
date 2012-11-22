@@ -1,3 +1,4 @@
+#include "inviwo/qt/widgets/inviwoapplicationqt.h"
 
 #include "inviwomainwindow.h"
 
@@ -57,23 +58,33 @@ void InviwoMainWindow::addToolBars() {
     //basicToolbar_ = addToolBar(tr("File"));
 }
 
-
 void InviwoMainWindow::addMenus() {
     basicMenuBar = menuBar();
     fileMenuItem_ = basicMenuBar->addMenu(tr("&File"));
-    editMenuItem_ = basicMenuBar->addMenu(tr("&Edit"));
     viewMenuItem_ = basicMenuBar->addMenu(tr("&View"));
+    helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
 }
 
 void InviwoMainWindow::addMenuActions() {
-    openFileAction_ = new QAction(tr("&Open"),  this);
-    connect(openFileAction_, SIGNAL(triggered()), this, SLOT(loadNetwork()));
+    newFileAction_ = new QAction(QIcon(":/icons/network_new.png"), tr("&New Network"), this);
+    newFileAction_->setShortcut(QKeySequence::New);
+    connect(newFileAction_, SIGNAL(triggered()), this, SLOT(newNetwork()));
+    fileMenuItem_->addAction(newFileAction_);
+
+    openFileAction_ = new QAction(QIcon(":/icons/network_open.png"), tr("&Open Network"), this);
+    openFileAction_->setShortcut(QKeySequence::Open);
+    connect(openFileAction_, SIGNAL(triggered()), this, SLOT(openNetwork()));
     fileMenuItem_->addAction(openFileAction_);
 
-    // NetworkEditors File Save
-    saveFileAction_ = new QAction(tr("&Save"),  this);
+    saveFileAction_ = new QAction(QIcon(":/icons/network_save.png"), tr("&Save Network"), this);
+    saveFileAction_->setShortcut(QKeySequence::Save);
     connect(saveFileAction_, SIGNAL(triggered()), this, SLOT(saveNetwork()));
     fileMenuItem_->addAction(saveFileAction_);
+
+    saveAsFileAction_ = new QAction(QIcon(":/icons/network_saveas.png"), tr("&Save Network As"), this);
+    connect(saveAsFileAction_, SIGNAL(triggered()), this, SLOT(saveNetworkAs()));
+    fileMenuItem_->addAction(saveAsFileAction_);
+
 
     changeNetworkLayoutAction_ = new QAction(tr("&Vertical Network Layout"),  this);    
     connect(changeNetworkLayoutAction_, SIGNAL(triggered()), this, SLOT(changeNetworkLayout()));
@@ -82,38 +93,11 @@ void InviwoMainWindow::addMenuActions() {
     changeNetworkLayoutAction_->setChecked(true);
 }
 
-
-bool InviwoMainWindow::saveNetwork() {
-    // dialog window settings
-    QStringList extension;
-    extension << "Inviwo File (*.inv)";
-
-    QList<QUrl> sidebarURLs;
-    sidebarURLs << QUrl::fromLocalFile(QDir(networkFileDir_).absolutePath());
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-
-    QFileDialog saveFileDialog(this, tr("Save Network ..."), QDir(networkFileDir_).absolutePath());
-    saveFileDialog.setFileMode(QFileDialog::AnyFile);
-    saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
-    saveFileDialog.setConfirmOverwrite(true);
-    saveFileDialog.setNameFilters(extension);
-    saveFileDialog.setSidebarUrls(sidebarURLs);
-
-    if (saveFileDialog.exec()) {
-        bool valid;
-        QString path = saveFileDialog.selectedFiles().at(0);
-        if (!path.endsWith(".inv"))
-            valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString() + ".inv");
-        else
-            valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString());
-        networkFileDir_ = saveFileDialog.directory().path();
-        return valid;
-    } else
-        return false;
+void InviwoMainWindow::newNetwork() {
+    networkEditorView_->getNetworkEditor()->clearNetwork();
 }
 
-bool InviwoMainWindow::loadNetwork() {
+bool InviwoMainWindow::openNetwork() {
     // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
@@ -141,6 +125,48 @@ bool InviwoMainWindow::loadNetwork() {
         return false;
 }
 
+bool InviwoMainWindow::saveNetwork() {
+    /*
+    // dialog window settings
+    QStringList extension;
+    extension << "Inviwo File (*.inv)";
+
+    QList<QUrl> sidebarURLs;
+    sidebarURLs << QUrl::fromLocalFile(QDir(networkFileDir_).absolutePath());
+    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+
+    QFileDialog saveFileDialog(this, tr("Save Network ..."), QDir(networkFileDir_).absolutePath());
+    saveFileDialog.setFileMode(QFileDialog::AnyFile);
+    saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    saveFileDialog.setConfirmOverwrite(true);
+    saveFileDialog.setNameFilters(extension);
+    saveFileDialog.setSidebarUrls(sidebarURLs);
+
+    if (saveFileDialog.exec()) {
+        bool valid;
+        QString path = saveFileDialog.selectedFiles().at(0);
+        if (!path.endsWith(".inv"))
+            valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString() + ".inv");
+        else
+            valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString());
+        networkFileDir_ = saveFileDialog.directory().path();
+        return valid;
+    } else
+        return false;
+    */
+    QFile styleSheetFile(QString::fromStdString(IVW_DIR+"resources/stylesheets/inviwo.qss"));
+    styleSheetFile.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(styleSheetFile.readAll());
+    dynamic_cast<InviwoApplicationQt*>(InviwoApplication::app())->setStyleSheet(styleSheet);
+    styleSheetFile.close();
+    return true;
+}
+
+bool InviwoMainWindow::saveNetworkAs() {
+    return true;
+}
+
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
     networkEditorView_->getNetworkEditor()->clearNetwork();
@@ -152,14 +178,11 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     QMainWindow::closeEvent(event);
 }
 
-bool InviwoMainWindow::changeNetworkLayout() {    
-    if (changeNetworkLayoutAction_->isChecked()) {
-        networkEditorView_->getNetworkEditor()->setVerticalNetworkLayout(true);    
-    }
+void InviwoMainWindow::changeNetworkLayout() {    
+    if (changeNetworkLayoutAction_->isChecked())
+        networkEditorView_->getNetworkEditor()->setVerticalNetworkLayout(true);
     else
-        networkEditorView_->getNetworkEditor()->setVerticalNetworkLayout(false);   
-
-    return true;
+        networkEditorView_->getNetworkEditor()->setVerticalNetworkLayout(false);
 }
 
 } // namespace

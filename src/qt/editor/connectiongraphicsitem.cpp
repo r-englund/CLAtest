@@ -1,5 +1,5 @@
+#include <QGraphicsDropShadowEffect>
 #include <QPainter>
-
 #include <QPainterPath>
 
 #include "inviwo/qt/editor/connectiongraphicsitem.h"
@@ -13,6 +13,11 @@ CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool 
                                        color_(color.r, color.g, color.b),
                                        dragMode_(dragMode){
     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
+
+    QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
+    shadowEffect->setOffset(3.0);
+    shadowEffect->setBlurRadius(3.0);    
+    setGraphicsEffect(shadowEffect);
 }
 
 CurveGraphicsItem::~CurveGraphicsItem() {}
@@ -39,9 +44,9 @@ void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* optio
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
 
-    if(!dragMode_) {
+    if (!dragMode_) {
         if (isSelected()) 
-            p->setPen(QPen(Qt::darkRed, 5.0, Qt::SolidLine, Qt::RoundCap));        
+            p->setPen(QPen(Qt::darkRed, 4.0, Qt::SolidLine, Qt::RoundCap));        
         else
             p->setPen(QPen(Qt::black, 3.0, Qt::SolidLine, Qt::RoundCap));
 

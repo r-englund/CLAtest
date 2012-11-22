@@ -32,7 +32,7 @@ public:
     void deserialize(const std::string &key, ivec3 &data);
     void deserialize(const std::string &key, ivec4 &data); 
     void deserialize(const std::string &key, IvwSerializable &sObj);
-    template<class T>
+    template <class T>
     void deserialize(const std::string& key, T* & data);
     
 protected:
@@ -46,13 +46,13 @@ private:
 
     void deserializeAttributes(const std::string &key, std::string &data);
     
-    template<typename T>
+    template <typename T>
     void deserializePrimitives(const std::string& key, T& data);
     
-    template<class T>
+    template <class T>
     void deserializeVector(const std::string& key, T& vector, const bool& isColor=false);
 
-    template<class T>
+    template <class T>
     void deserializePointer(const std::string& key, T* & data);
 
 };

@@ -24,6 +24,7 @@ include(../applicationconfig.pri)
 CONFIG += console
 CONFIG += qt
 QT += opengl
+RESOURCES = "$${IVW_ROOT}/resources/inviwo.qrc"
 #                                         #
 ###########################################
 

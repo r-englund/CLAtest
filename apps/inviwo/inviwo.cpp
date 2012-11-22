@@ -6,20 +6,20 @@
 
 int main(int argc, char** argv) {
 
-    inviwo::InviwoApplicationQt inviwoApp("Inviwo", "C:/InViWo/inviwo", argc, argv);
+    inviwo::InviwoApplicationQt inviwoApp("Inviwo", "C:/inviwo/inviwo", argc, argv);
     inviwoApp.initialize();
 
     #if (QT_VERSION >= 0x040400)
-    QFile styleSheetFile(QString::fromStdString(IVW_DIR+"resources/stylesheets/inviwo.qss"));
+        QFile styleSheetFile(":/stylesheets/inviwo.qss");
         styleSheetFile.open(QFile::ReadOnly);
         QString styleSheet = QLatin1String(styleSheetFile.readAll());
         inviwoApp.setStyleSheet(styleSheet);
+        styleSheetFile.close();
     #endif
-
-    //glewInit();
 
     inviwo::InviwoMainWindow mainWin;
     inviwoApp.setMainWindow(&mainWin);
+    inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
     mainWin.showMaximized();
 
     return inviwoApp.exec();

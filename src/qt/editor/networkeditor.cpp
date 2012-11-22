@@ -11,6 +11,7 @@
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
+#include <QVarLengthArray>
 
 namespace inviwo {
 
@@ -26,7 +27,7 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     startProcessor_ = 0;
     endProcessor_ = 0;
     setSceneRect(-1000,-1000,1000,1000);
-    this->setBackgroundBrush(Qt::darkGray);
+    //setBackgroundBrush(Qt::darkGray);
     verticalLayout_ = true;
 
     processorNetwork_ = new ProcessorNetwork();
@@ -378,6 +379,26 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
             e->acceptProposedAction();
         }
     }
+}
+
+void NetworkEditor::drawBackground(QPainter* painter, const QRectF & rect) {
+    int gridInterval = 50;
+    painter->setWorldMatrixEnabled(true);
+    painter->fillRect(rect, Qt::darkGray);
+
+    qreal left = int(rect.left()) - (int(rect.left()) % gridInterval );
+    qreal top = int(rect.top()) - (int(rect.top()) % gridInterval );
+
+    QVarLengthArray<QLineF, 100> linesX;
+    for (qreal x = left; x < rect.right(); x += gridInterval )
+        linesX.append(QLineF(x, rect.top(), x, rect.bottom()));
+
+    QVarLengthArray<QLineF, 100> linesY;
+    for (qreal y = top; y < rect.bottom(); y += gridInterval )
+        linesY.append(QLineF(rect.left(), y, rect.right(), y));
+
+    painter->drawLines(linesX.data(), linesX.size());
+    painter->drawLines(linesY.data(), linesY.size());
 }
 
 bool NetworkEditor::saveNetwork(std::string fileName) {

@@ -42,6 +42,8 @@ public:
 
     void setVerticalNetworkLayout(bool layoutOption);
 
+    void drawBackground(QPainter* painter, const QRectF& rect);
+
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator();
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;

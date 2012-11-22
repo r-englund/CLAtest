@@ -1,3 +1,4 @@
+#include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
@@ -21,6 +22,11 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(bool fitVerticalLayout)
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
+
+    QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
+    shadowEffect->setOffset(3.0);
+    shadowEffect->setBlurRadius(3.0);    
+    setGraphicsEffect(shadowEffect);
 }
 
 ProcessorGraphicsItem::~ProcessorGraphicsItem() {}
@@ -98,6 +104,7 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     IVW_UNUSED_PARAM(widget);
 
     p->save();
+    p->setPen(Qt::black);
     p->setRenderHint(QPainter::Antialiasing, true);
 
     // paint processor

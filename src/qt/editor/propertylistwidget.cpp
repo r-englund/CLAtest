@@ -9,7 +9,7 @@ PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 
 PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent) {
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    setMinimumWidth(200);
+    setMinimumWidth(300);
     propertyListWidget_ = this;
     propertyWidgetFactory_ = new PropertyWidgetFactoryQt();
 

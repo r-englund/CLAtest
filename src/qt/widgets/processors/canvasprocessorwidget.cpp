@@ -10,7 +10,6 @@ CanvasProcessorWidget::CanvasProcessorWidget(Processor* processor, QWidget* pare
       canvas_(0)
 {
     setMinimumSize(256, 256);
-    setMaximumSize(512, 512);
     setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
     setWindowTitle(QString::fromStdString(processor->getIdentifier())); 
 }

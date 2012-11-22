@@ -23,9 +23,11 @@ Q_OBJECT
         ~InviwoMainWindow();
 
     public slots:
-        bool saveNetwork(); 
-        bool loadNetwork();
-        bool changeNetworkLayout();
+        void newNetwork();
+        bool openNetwork();
+        bool saveNetwork();
+        bool saveNetworkAs();
+        void changeNetworkLayout();
 
     private:
         void addToolBars();
@@ -33,30 +35,30 @@ Q_OBJECT
         void addMenuActions();
         void closeEvent(QCloseEvent *event);
 
-
         //TODO: Currently for testing, save the NetworkEditorView which consists entire network processors
         NetworkEditorView* networkEditorView_;
 
         //MainWindow ToolBars
-        QToolBar *basicToolbar_;
+        QToolBar* basicToolbar_;
 
         //MainWindow Menus
-        QMenuBar *basicMenuBar;
-        QMenu *fileMenuItem_;
-        QMenu *editMenuItem_;
-        QMenu *viewMenuItem_;
+        QMenuBar* basicMenuBar;
+        QMenu* fileMenuItem_;
+        QMenu* helpMenuItem_;
+        QMenu* viewMenuItem_;
         
         //MainWindow MenuActions
-        QAction *openFileAction_;
-        QAction *saveFileAction_;
-        QAction *changeNetworkLayoutAction_;
+        QAction* newFileAction_;
+        QAction* openFileAction_;
+        QAction* saveFileAction_;
+        QAction* saveAsFileAction_;
+        QAction* changeNetworkLayoutAction_;
 
         //Paths
         QString rootDir_;
         QString networkFileDir_;
 
-        CanvasQt *defaultRenderContext_;
-
+        CanvasQt* defaultRenderContext_;
 };
 
 } // namespace
