@@ -12,7 +12,7 @@ class Canvas;
 
 class ProcessorNetworkEvaluator {
 
-friend Processor;
+friend class Processor;
 
 public:
     ProcessorNetworkEvaluator(ProcessorNetwork* processorNetwork);
