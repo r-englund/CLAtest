@@ -22,7 +22,7 @@ Processor* EntryExitPoints::create() const {
     return new EntryExitPoints();
 }
 
-void EntryExitPoints::initialize() {
+void EntryExitPoints::initialize() throw (Exception) {
     ProcessorGL::initialize();
     shader_ = new Shader("eepgeneration.frag");
 
@@ -42,7 +42,7 @@ void EntryExitPoints::initialize() {
     glEndList();
 }
 
-void EntryExitPoints::deinitialize() {
+void EntryExitPoints::deinitialize() throw (Exception) {
     delete shader_;
     ProcessorGL::deinitialize();
 }

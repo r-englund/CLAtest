@@ -16,8 +16,8 @@ public:
     ~CubeProxygeometry();
     virtual Processor* create() const;
 
-    void initialize();
-    void deinitialize();
+    void initialize() throw (Exception);
+    void deinitialize() throw (Exception);
 
     virtual std::string getClassName() const { return "CubeProxygeometry"; }
     virtual std::string getCategory() const  { return "Proxy Geometry"; }

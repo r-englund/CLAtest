@@ -15,8 +15,8 @@ public:
     ~FirstIvwProcessor();
     virtual Processor* create() const;
 
-    void initialize();
-    void deinitialize();
+    void initialize() throw (Exception);
+    void deinitialize() throw (Exception);
 
     virtual std::string getClassName() const { return "FirstIVWProcessor"; }
     virtual std::string getCategory() const  { return "Dummy Processors"; }
