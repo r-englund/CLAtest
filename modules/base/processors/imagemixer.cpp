@@ -21,12 +21,12 @@ Processor* ImageMixer::create() const {
     return new ImageMixer();
 }
 
-void ImageMixer::initialize() {
+void ImageMixer::initialize() throw (Exception) {
     ProcessorGL::initialize();
     shader_ = new Shader("img_mix.frag");
 }
 
-void ImageMixer::deinitialize() {
+void ImageMixer::deinitialize() throw (Exception) {
     delete shader_;
     Processor::deinitialize();
 }

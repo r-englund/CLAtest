@@ -21,12 +21,12 @@ Processor* SimpleRaycaster::create() const {
     return new SimpleRaycaster();
 }
 
-void SimpleRaycaster::initialize() {
+void SimpleRaycaster::initialize() throw (Exception) {
     ProcessorGL::initialize();
     shader_ = new Shader("raycasting.frag");
 }
 
-void SimpleRaycaster::deinitialize() {
+void SimpleRaycaster::deinitialize() throw (Exception) {
     delete shader_;
     ProcessorGL::deinitialize();
 }

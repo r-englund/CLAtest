@@ -15,8 +15,8 @@ public:
     ~ImageMixer();
     virtual Processor* create() const;
 
-    void initialize();
-    void deinitialize();
+    void initialize() throw (Exception);
+    void deinitialize() throw (Exception);
 
     virtual std::string getClassName() const { return "ImageMixer"; }
     virtual std::string getCategory() const  { return "Compositer"; }

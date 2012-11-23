@@ -17,11 +17,11 @@ Processor* RedGreenProcessor::create() const {
     return new RedGreenProcessor();
 }
 
-void RedGreenProcessor::initialize() {
+void RedGreenProcessor::initialize() throw (Exception) {
     Processor::initialize();
 }
 
-void RedGreenProcessor::deinitialize() {
+void RedGreenProcessor::deinitialize() throw (Exception) {
     Processor::deinitialize();
 }
 

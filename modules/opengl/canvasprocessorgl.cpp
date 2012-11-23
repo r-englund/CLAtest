@@ -10,12 +10,12 @@ Processor* CanvasProcessorGL::create() const {
     return new CanvasProcessorGL();
 }
 
-void CanvasProcessorGL::initialize() {
+void CanvasProcessorGL::initialize() throw (Exception) {
     CanvasProcessor::initialize();
     shader_ = new Shader("img_texturequad.frag");
 }
 
-void CanvasProcessorGL::deinitialize() {
+void CanvasProcessorGL::deinitialize() throw (Exception) {
     delete shader_;
     CanvasProcessor::deinitialize();
 }
