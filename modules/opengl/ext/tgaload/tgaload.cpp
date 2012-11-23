@@ -25,6 +25,7 @@
 #endif
 #include <GL/glu.h>
 #include <stdio.h>
+#include <string.h>
 //#include <mem.h>
 #include "tgaload.h"
 
@@ -38,10 +39,17 @@ bool tgaCompressedTexSupport = true;
 
 void tgaGetExtensions ( void )
 {  
-   glCompressedTexImage2DARB  = ( PFNGLCOMPRESSEDTEXIMAGE2DARBPROC  ) 
-                   wglGetProcAddress ( "glCompressedTexImage2DARB"  );
-   glGetCompressedTexImageARB = ( PFNGLGETCOMPRESSEDTEXIMAGEARBPROC ) 
-                   wglGetProcAddress ( "glGetCompressedTexImageARB" );
+#if TARGET_HOST_MS_WINDOWS
+        glCompressedTexImage2DARB  = ( PFNGLCOMPRESSEDTEXIMAGE2DARBPROC  ) 
+            wglGetProcAddress ( "glCompressedTexImage2DARB"  );
+        glGetCompressedTexImageARB = ( PFNGLGETCOMPRESSEDTEXIMAGEARBPROC ) 
+            wglGetProcAddress ( "glGetCompressedTexImageARB" );
+#elif TARGET_HOST_POSIX_X11 && defined( GLX_ARB_get_proc_address )
+        glCompressedTexImage2DARB  = ( PFNGLCOMPRESSEDTEXIMAGE2DARBPROC  ) 
+            glXGetProcAddressARB ( "glCompressedTexImage2DARB"  );
+        glGetCompressedTexImageARB = ( PFNGLGETCOMPRESSEDTEXIMAGEARBPROC ) 
+            glXGetProcAddressARB ( "glGetCompressedTexImageARB" );
+#endif
    
    if ( glCompressedTexImage2DARB == NULL || glGetCompressedTexImageARB == NULL )
    	tgaCompressedTexSupport = false;
@@ -53,7 +61,7 @@ void tgaSetTexParams  ( unsigned int min_filter, unsigned int mag_filter, unsign
    glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter );
    glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter );
 
-   glTexEnvf ( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, application );
+   glTexEnvf ( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, static_cast<float>(application) );
 }
 
 
@@ -381,7 +389,7 @@ void tgaLoad ( char *file_name, image_t *p, tgaFLAG mode )
 GLuint tgaLoadAndBind ( char *file_name, tgaFLAG mode )
 {
    GLuint   texture_id;
-   image_t  *p;
+   image_t  *p = NULL;
 
    glGenTextures ( 1, &texture_id );
    glBindTexture ( GL_TEXTURE_2D, texture_id );
