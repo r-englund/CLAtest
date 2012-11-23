@@ -23,7 +23,7 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
-#include <GL\glu.h>
+#include <GL/glu.h>
 #include <stdio.h>
 //#include <mem.h>
 #include "tgaload.h"

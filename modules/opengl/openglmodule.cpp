@@ -14,10 +14,10 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     addProcessor(new CanvasProcessorGL());
 }
 
-void OpenGLModule::initialize() {
+void OpenGLModule::initialize() throw (Exception) {
 //    glewInit();
 }
 
-void OpenGLModule::deinitialize() {}
+void OpenGLModule::deinitialize() throw (Exception) {}
 
 } // namespace

@@ -10,8 +10,8 @@ class OpenGLModule : public InviwoModule {
 public:
     OpenGLModule();
 
-    void initialize();
-    void deinitialize();
+    void initialize() throw (Exception);
+    void deinitialize() throw (Exception);
 
 };
 

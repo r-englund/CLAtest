@@ -8,7 +8,7 @@ CanvasGLUT* CanvasGLUT::canvases_[MAX_CANVAS_NUMBER];
 
 EventHandler* CanvasGLUT::eventHandler_;
 
-ProcessorNetworkEvaluator* CanvasGLUT::processorNetworkEvaluator_ = 0;
+//ProcessorNetworkEvaluator* CanvasGLUT::processorNetworkEvaluator_ = 0;
 
 CanvasGLUT::CanvasGLUT(std::string windowTitle, ivec2 dimensions)
     : CanvasGL(dimensions),
