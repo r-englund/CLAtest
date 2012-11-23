@@ -28,7 +28,7 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(bool fitVerticalLayout)
     processorShadowEffect->setBlurRadius(3.0);    
     setGraphicsEffect(processorShadowEffect);
 
-    nameLabel_ = new LabelGraphicsItem(this);
+    /*nameLabel_ = new LabelGraphicsItem(this);
     nameLabel_->setPos(-width/2.0+labelHeight/2.0, -height/2.0+labelHeight);
     nameLabel_->setDefaultTextColor(Qt::white);
     nameLabel_->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
@@ -37,22 +37,22 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(bool fitVerticalLayout)
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-width/2.0+labelHeight/2.0, -height/2.0+labelHeight*2.5);
     classLabel_->setDefaultTextColor(Qt::lightGray);
-    classLabel_->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
+    classLabel_->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));*/
 }
 
 ProcessorGraphicsItem::~ProcessorGraphicsItem() {
-    delete nameLabel_;
+    //delete nameLabel_;
 }
 
 void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     processor_ = processor;
-    if (processor) {
+    /*if (processor) {
         nameLabel_->setPlainText(QString::fromStdString(processor_->getIdentifier()));
         classLabel_->setPlainText(QString::fromStdString(processor_->getClassName()));
     } else {
         nameLabel_->setPlainText("");
         classLabel_->setPlainText("");
-    }
+    }*/
 }
 
 void ProcessorGraphicsItem::flipLayout() {
@@ -67,9 +67,9 @@ void ProcessorGraphicsItem::flipLayout() {
 }
 
 void ProcessorGraphicsItem::editProcessorName() {
-    nameLabel_ ->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+    /*nameLabel_ ->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
     nameLabel_ ->setTextInteractionFlags(Qt::TextEditorInteraction);
-    nameLabel_->setFocus();
+    nameLabel_->setFocus();*/
 }
 
 QRectF ProcessorGraphicsItem::calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const {

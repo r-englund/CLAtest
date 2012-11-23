@@ -77,7 +77,7 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
 
     NodeSwitch tempNodeSwitch(*this, keyNode);
   
-    typename T* item;
+    T* item;
     std::vector<T*> tVector;
 
     //TODO: Add count attribute to store vector.size() if necessary

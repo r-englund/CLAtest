@@ -17,7 +17,7 @@ namespace inviwo {
         unsigned int getID() const { return id_; }
 
         // TODO: remove this function
-        void loadTexture(std::string fileName, ivec2 &dimensions=ivec2(0,0)) {
+        void loadTexture(std::string fileName, ivec2 dimensions=ivec2(0,0)) {
             bind();
             image_t temp_image;
             tgaLoad((char*)(fileName.c_str()), &temp_image, TGA_FREE | TGA_LOW_QUALITY);

@@ -14,6 +14,7 @@
 namespace inviwo {
 
     class NetworkEditorView;
+    class NetworkEditor;
     class CanvasQt;
 
     class InviwoMainWindow : public QMainWindow {

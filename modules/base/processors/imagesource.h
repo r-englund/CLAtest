@@ -16,8 +16,8 @@ public:
     ~ImageSource();
     virtual Processor* create() const;
 
-    virtual void initialize();
-    virtual void deinitialize();
+    virtual void initialize() throw (Exception);
+    virtual void deinitialize() throw (Exception);
 
     virtual std::string getClassName() const { return "ImageSource"; }
     virtual std::string getCategory() const  { return "Data Source Processor"; }

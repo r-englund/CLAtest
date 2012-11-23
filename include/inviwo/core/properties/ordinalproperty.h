@@ -30,15 +30,15 @@ public:
     }
 
     void increase() {
-        value_ += increment_;
-        if (value_ > maxValue_) value_ = maxValue_;
-        getOwner()->invalidate();
+        this->value_ += increment_;
+        if (this->value_ > maxValue_) this->value_ = maxValue_;
+        this->getOwner()->invalidate();
     }
 
     void decrease() {
-        value_ -= increment_;
-        if (value_ < minValue_) value_ = minValue_;
-        getOwner()->invalidate();
+        this->value_ -= increment_;
+        if (this->value_ < minValue_) this->value_ = minValue_;
+        this->getOwner()->invalidate();
     }
 
 private:

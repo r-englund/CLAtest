@@ -17,12 +17,12 @@ Processor* ImageSource::create() const {
     return new ImageSource();
 }
 
-void ImageSource::initialize() {
+void ImageSource::initialize() throw (Exception) {
     ProcessorGL::initialize();
     shader_ = new Shader("img_texturequad.frag");
 }
 
-void ImageSource::deinitialize() {
+void ImageSource::deinitialize() throw (Exception) {
     delete shader_;
     ProcessorGL::deinitialize();
 }

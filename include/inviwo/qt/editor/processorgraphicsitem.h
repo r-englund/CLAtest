@@ -4,7 +4,7 @@
 #include <QGraphicsRectItem>
 
 #include "inviwo/core/processors/processor.h"
-#include "inviwo/qt/editor/labelgraphicsitem.h"
+//#include "inviwo/qt/editor/labelgraphicsitem.h"
 
 namespace inviwo {
 
@@ -40,8 +40,8 @@ protected:
 private:
     Processor* processor_;
     bool fitVerticalLayout_;
-    LabelGraphicsItem* nameLabel_;
-    LabelGraphicsItem* classLabel_;
+    //LabelGraphicsItem* nameLabel_;
+    //LabelGraphicsItem* classLabel_;
 };
 
 } // namespace
