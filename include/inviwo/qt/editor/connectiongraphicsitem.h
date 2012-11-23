@@ -85,7 +85,7 @@ public:
      */
     Port* getOutport() const { return outport_; }
     /**
-     * Return the inport to which the connection goes.
+     * Return the inport to which the connection goes to.
      */
     Port* getInport() const { return inport_; }
 

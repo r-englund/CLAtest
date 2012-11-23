@@ -46,6 +46,7 @@ HEADERS += \
     ../../../include/inviwo/qt/editor/consolewidget.h \
     ../../../include/inviwo/qt/editor/connectiongraphicsitem.h \
     ../../../include/inviwo/qt/editor/inviwodockwidget.h \
+    ../../../include/inviwo/qt/editor/labelgraphicsitem.h \
     ../../../include/inviwo/qt/editor/networkeditor.h \
     ../../../include/inviwo/qt/editor/networkeditorview.h \
     ../../../include/inviwo/qt/editor/processorlistwidget.h \
@@ -57,6 +58,7 @@ SOURCES += \
     consolewidget.cpp \
     connectiongraphicsitem.cpp \
     inviwodockwidget.cpp \
+    labelgraphicsitem.cpp \
     networkeditor.cpp \
     networkeditorview.cpp \
     processorlistwidget.cpp \

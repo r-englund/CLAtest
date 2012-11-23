@@ -2,9 +2,9 @@
 
 namespace inviwo {
 
-    KeyboardEvent::KeyboardEvent()
-        : Event() {}
+KeyboardEvent::KeyboardEvent()
+    : Event() {}
 
-    KeyboardEvent::~KeyboardEvent() {}
+KeyboardEvent::~KeyboardEvent() {}
 
 } // namespace

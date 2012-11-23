@@ -27,7 +27,7 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     startProcessor_ = 0;
     endProcessor_ = 0;
     setSceneRect(-1000,-1000,1000,1000);
-    //setBackgroundBrush(Qt::darkGray);
+    gridSnapping_ = true;
     verticalLayout_ = true;
 
     processorNetwork_ = new ProcessorNetwork();
@@ -116,6 +116,14 @@ Processor* NetworkEditor::createProcessor(std::string className) {
     return processor;
 }
 
+QPointF NetworkEditor::snapToGrid(QPointF pos) {
+    int gridInterval = 50;
+    QPointF result;
+    result.setX((int(pos.x()/gridInterval-0.5))*gridInterval);
+    result.setY((int(pos.y()/gridInterval-0.5))*gridInterval);
+    return result;
+}
+
 void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPointF pos) {
     processor->createProcessorWidget();
 
@@ -123,6 +131,7 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
     ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem(verticalLayout_);
     processorGraphicsItem->setProcessor(processor);
     // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
+    if (gridSnapping_) pos = snapToGrid(pos);
     processorGraphicsItem->setPos(pos);
     processorGraphicsItem->updateMetaData();
     processorGraphicsItems_.push_back(processorGraphicsItem);
@@ -292,13 +301,17 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         startProcessor_ = 0; 
         endProcessor_ = 0;
         e->accept();
-    } else
+    } else {
+        ProcessorGraphicsItem* processorGraphicsItem = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(e->scenePos()));
+        if (processorGraphicsItem)  
+            if (gridSnapping_) processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
         QGraphicsScene::mouseReleaseEvent(e);
+    }
 }
 
-void NetworkEditor::keyPressEvent(QKeyEvent* keyEvent) {
+void NetworkEditor::keyPressEvent(QKeyEvent* e) {
     // delete selected graphics items
-    if (keyEvent->key() == Qt::Key_Delete) {
+    if (e->key() == Qt::Key_Delete) {
         // first delete connections
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
@@ -314,6 +327,7 @@ void NetworkEditor::keyPressEvent(QKeyEvent* keyEvent) {
                 removeProcessor(processorGraphicsItem->getIdentifier());
         }
     }
+    QGraphicsScene::keyPressEvent(e);
 }
 
 void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
@@ -321,6 +335,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(getConnectionGraphicsItemAt(e->scenePos()));
     if (processorGraphicsItem) {
         QMenu menu;
+        QAction* renameAction = menu.addAction("Rename");
         QAction* deleteAction = menu.addAction("Delete");
 
         QAction* showAction = 0;
@@ -335,10 +350,11 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
                 showAction->setChecked(true);
         }
         QAction* result = menu.exec(QCursor::pos());
-        if (result == deleteAction) {
+        if (result == renameAction) {
+            processorGraphicsItem->editProcessorName();
+        } else if (result == deleteAction) {
             removeProcessor(processorGraphicsItem->getIdentifier());
-        }
-        else if (showAction && result == showAction) {
+        } else if (showAction && result == showAction) {
             if(showAction->isChecked()) {
                 processorGraphicsItem->getProcessor()->getProcessorWidget()->show();
             } else

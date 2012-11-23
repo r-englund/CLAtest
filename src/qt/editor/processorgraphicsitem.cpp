@@ -20,16 +20,40 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(bool fitVerticalLayout)
     : processor_(0),
       fitVerticalLayout_(fitVerticalLayout) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
-    setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
+    setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable);
     setRect(-width/2, -height/2, width, height);
 
-    QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
-    shadowEffect->setOffset(3.0);
-    shadowEffect->setBlurRadius(3.0);    
-    setGraphicsEffect(shadowEffect);
+    QGraphicsDropShadowEffect* processorShadowEffect = new QGraphicsDropShadowEffect();
+    processorShadowEffect->setOffset(3.0);
+    processorShadowEffect->setBlurRadius(3.0);    
+    setGraphicsEffect(processorShadowEffect);
+
+    nameLabel_ = new LabelGraphicsItem(this);
+    nameLabel_->setPos(-width/2.0+labelHeight/2.0, -height/2.0+labelHeight);
+    nameLabel_->setDefaultTextColor(Qt::white);
+    nameLabel_->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
+    //nameLabel_->setTextInteractionFlags(Qt::TextEditable);
+
+    classLabel_ = new LabelGraphicsItem(this);
+    classLabel_->setPos(-width/2.0+labelHeight/2.0, -height/2.0+labelHeight*2.5);
+    classLabel_->setDefaultTextColor(Qt::lightGray);
+    classLabel_->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
 }
 
-ProcessorGraphicsItem::~ProcessorGraphicsItem() {}
+ProcessorGraphicsItem::~ProcessorGraphicsItem() {
+    delete nameLabel_;
+}
+
+void ProcessorGraphicsItem::setProcessor(Processor* processor) {
+    processor_ = processor;
+    if (processor) {
+        nameLabel_->setPlainText(QString::fromStdString(processor_->getIdentifier()));
+        classLabel_->setPlainText(QString::fromStdString(processor_->getClassName()));
+    } else {
+        nameLabel_->setPlainText("");
+        classLabel_->setPlainText("");
+    }
+}
 
 void ProcessorGraphicsItem::flipLayout() {
     fitVerticalLayout_ = (fitVerticalLayout_)?false:true;
@@ -40,6 +64,12 @@ void ProcessorGraphicsItem::flipLayout() {
         setY(position.x);
         //repaint if necessary
     //}
+}
+
+void ProcessorGraphicsItem::editProcessorName() {
+    nameLabel_ ->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+    nameLabel_ ->setTextInteractionFlags(Qt::TextEditorInteraction);
+    nameLabel_->setFocus();
 }
 
 QRectF ProcessorGraphicsItem::calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const {
@@ -152,23 +182,11 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
         p->drawRect(portRect);
     }
 
-    // paint labels
-    p->setBrush(Qt::NoBrush);
-    QRectF nameRect(rect().left(), rect().top()+rect().height()/2.0f-labelHeight*2.0,
-                    rect().width(), labelHeight*2.0);
-    QRectF classRect(nameRect.left(), nameRect.bottom(), rect().width(), labelHeight*2.0);
-    p->setPen(Qt::white);
-    p->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
-    p->drawText(nameRect, Qt::AlignCenter, QString::fromStdString(processor_->getIdentifier()));
-    p->setPen(Qt::lightGray);
-    p->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
-    p->drawText(classRect, Qt::AlignCenter, QString::fromStdString(processor_->getClassName()));
-
     p->restore();
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {
-    if(change == ItemPositionChange) {
+    if (change == ItemPositionChange) {
         std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::instance()->connectionGraphicsItems_;
         for (size_t i=0; i<connectionGraphicsItems.size(); i++) {
             if (connectionGraphicsItems[i]->getOutProcessor() == this) {

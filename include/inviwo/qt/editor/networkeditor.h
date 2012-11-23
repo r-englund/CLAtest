@@ -63,8 +63,8 @@ protected:
     void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
     void dropEvent(QGraphicsSceneDragDropEvent* de);
 
-protected:
     NetworkEditor(QObject* parent=0);
+    QPointF snapToGrid(QPointF pos);
 
 private:
     friend class ProcessorGraphicsItem;
@@ -85,6 +85,7 @@ private:
     Port* endPort_;
 
     bool verticalLayout_;
+    bool gridSnapping_;
     
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };

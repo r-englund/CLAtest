@@ -4,6 +4,7 @@
 #include <QGraphicsRectItem>
 
 #include "inviwo/core/processors/processor.h"
+#include "inviwo/qt/editor/labelgraphicsitem.h"
 
 namespace inviwo {
 
@@ -18,8 +19,10 @@ public:
     ~ProcessorGraphicsItem();
 
     Processor* getProcessor() const { return processor_; }
-    void setProcessor(Processor* processor) { processor_ = processor; }
     std::string getIdentifier() const { return processor_->getIdentifier(); }
+    void setProcessor(Processor* processor);
+
+    void editProcessorName();
 
     QRectF calculatePortRect(Port* port) const;
     QRectF calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const;
@@ -37,6 +40,8 @@ protected:
 private:
     Processor* processor_;
     bool fitVerticalLayout_;
+    LabelGraphicsItem* nameLabel_;
+    LabelGraphicsItem* classLabel_;
 };
 
 } // namespace
