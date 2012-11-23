@@ -20,7 +20,9 @@
    Finally exorcised all the paletted texture code...
 */
 
+#ifdef WIN32
 #include <windows.h>
+#endif
 #include <GL\glu.h>
 #include <stdio.h>
 //#include <mem.h>
