@@ -303,7 +303,7 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         e->accept();
     } else {
         ProcessorGraphicsItem* processorGraphicsItem = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(e->scenePos()));
-        if (processorGraphicsItem)  
+        if (processorGraphicsItem)
             if (gridSnapping_) processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
         QGraphicsScene::mouseReleaseEvent(e);
     }

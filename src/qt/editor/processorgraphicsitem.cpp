@@ -20,7 +20,7 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(bool fitVerticalLayout)
     : processor_(0),
       fitVerticalLayout_(fitVerticalLayout) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
-    setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable);
+    setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
 
     QGraphicsDropShadowEffect* processorShadowEffect = new QGraphicsDropShadowEffect();
@@ -186,7 +186,7 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {
-    if (change == ItemPositionChange) {
+    if (change == ItemPositionHasChanged) {
         std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::instance()->connectionGraphicsItems_;
         for (size_t i=0; i<connectionGraphicsItems.size(); i++) {
             if (connectionGraphicsItems[i]->getOutProcessor() == this) {
