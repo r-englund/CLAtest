@@ -18,7 +18,7 @@ namespace inviwo {
         virtual void deinitialize();
 
         void registerProcessor(Property* property);
-        virtual IvwSerializable* PropertyFactory::create(std::string className) const;
+        virtual IvwSerializable* create(std::string className) const;
 
     protected:
         static PropertyFactory* factory_;
