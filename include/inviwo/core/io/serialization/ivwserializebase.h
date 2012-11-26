@@ -7,6 +7,7 @@
 
 #include "ticpp/ticpp.h"
 #include "inviwo/core/io/serialization/ivwserializeconstants.h"
+#include "inviwo/core/inviwofactorybase.h"
 #include <map>
 
 // include glm
@@ -43,10 +44,7 @@ namespace inviwo {
     typedef ticpp::Iterator<TxElement> TxEIt;
     typedef ticpp::Iterator<TxAttribute> TxAIt;
 
-
-    class InviwoFactoryBase;
     class IvwSerializable;
-
 
     class IvwSerializeBase {
     public:
