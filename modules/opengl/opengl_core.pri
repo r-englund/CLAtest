@@ -2,8 +2,10 @@ INCLUDEPATH += $${IVW_ROOT}/modules/opengl/ext/glew/include
 
 # TODO: check if 32 or 64 bit lib is used
 DEFINES += GLEW_STATIC
-LIBS += glew32s.lib
-QMAKE_LIBDIR += $${IVW_ROOT}/modules/opengl/ext/glew/lib/win32/debug
+win32 {
+    LIBS += glew32s.lib
+    QMAKE_LIBDIR += $${IVW_ROOT}/modules/opengl/ext/glew/lib/win32/debug
+}
 
 SOURCES += \
     $${IVW_MODULE_PATH}/opengl/canvasgl.cpp \
