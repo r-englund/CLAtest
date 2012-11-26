@@ -7,7 +7,7 @@ EntryExitPoints::EntryExitPoints()
     volumePort_(Port::INPORT, "volume"),
     entryPort_(Port::OUTPORT, "entry-points"),
     exitPort_(Port::OUTPORT, "exit-points"),
-    camera_("camera", "Camera", vec3(0.0f, 0.0f, 2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     addPort(volumePort_);
     addPort(entryPort_);
@@ -22,7 +22,7 @@ Processor* EntryExitPoints::create() const {
     return new EntryExitPoints();
 }
 
-void EntryExitPoints::initialize() throw (Exception) {
+void EntryExitPoints::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader("eepgeneration.frag");
 
@@ -42,7 +42,7 @@ void EntryExitPoints::initialize() throw (Exception) {
     glEndList();
 }
 
-void EntryExitPoints::deinitialize() throw (Exception) {
+void EntryExitPoints::deinitialize() {
     delete shader_;
     ProcessorGL::deinitialize();
 }
@@ -86,10 +86,13 @@ void EntryExitPoints::process() {
     
     glEnable(GL_CULL_FACE);    
 
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-	glLoadMatrixf(glm::value_ptr(glm::transpose(camera_.viewMatrix())));
+    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
 
     // generate entry points
     activateTarget(entryPort_);
@@ -110,6 +113,7 @@ void EntryExitPoints::process() {
     deactivateCurrentTarget();
 
     glPopMatrix();    
+    
     glDisable(GL_CULL_FACE);
 }
 

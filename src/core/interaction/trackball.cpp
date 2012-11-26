@@ -23,7 +23,7 @@ namespace inviwo {
 
     void Trackball::invokeEvent(Event* event) {
         MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-
+        if (mouseEvent) {
         if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             ivec2 curMousePos = mouseEvent->pos();
             vec3 curTrackballPos = mapNormalizedMousePosToTrackball(mouseEvent->posNormalized());                       
@@ -59,6 +59,18 @@ namespace inviwo {
                 lastTrackballPos_ = curTrackballPos;
             }
         }
+            return;
+        }
+
+        ResizeEvent* resizeEvent = dynamic_cast<ResizeEvent*>(event);
+        if (resizeEvent) {
+            ivec2 canvasSize = resizeEvent->canvasSize();
+            float width = (float) canvasSize[0];
+            float height = (float) canvasSize[1];
+            camera_->setProjectionMatrix(60.f, width/height, 0.0001f, 100.0f );
+            return;
+        }
+
         
     }
 

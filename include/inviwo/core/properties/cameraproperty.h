@@ -3,6 +3,7 @@
 
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/properties/vectorproperties.h"
+#include "inviwo/core/properties/scalarproperties.h"
 #include "inviwo/core/properties/compositeproperty.h"
 
 namespace inviwo {
@@ -11,7 +12,7 @@ class CameraProperty : public CompositeProperty {
 
 public:
     CameraProperty(std::string identifier, std::string displayName,
-                   vec3 lookFrom=vec3(0.0f, 0.0f, -3.0f), vec3 lookTo=vec3(0.0f), vec3 lookUp=vec3(0.0f, 1.0f, 0.0f));
+                   vec3 center=vec3(0.0f, 0.0f, -3.0f), vec3 eye=vec3(0.0f), vec3 lookUp=vec3(0.0f, 1.0f, 0.0f));
     virtual ~CameraProperty();
 
     vec3 lookFrom() const { return lookFrom_.get(); }
@@ -23,6 +24,7 @@ public:
 
     mat4 viewMatrix() const { return viewMatrix_; }
     mat4 projectionMatrix() const { return projectionMatrix_; }
+    void setProjectionMatrix(float fovy, float aspect, float farPlane, float nearPlane);
 
     void invalidate();
 
@@ -33,11 +35,16 @@ private:
     FloatVec3Property lookFrom_;
     FloatVec3Property lookTo_;
     FloatVec3Property lookUp_;
+    FloatProperty fovy_;
+    FloatProperty aspectRatio_;
+    FloatProperty farPlane_;
+    FloatProperty nearPlane_;
 
     mat4 viewMatrix_;
     mat4 projectionMatrix_;
 
     void updateViewMatrix();
+    void updateProjectionMatrix();
 };
 
 } // namespace

@@ -3,6 +3,7 @@
 
 #include "inviwo/core/interaction/interactionhandler.h"
 #include "inviwo/core/interaction/events/mouseevent.h"
+#include "inviwo/core/interaction/events/resizeevent.h"
 #include "inviwo/core/properties/cameraproperty.h"
 
 namespace inviwo {

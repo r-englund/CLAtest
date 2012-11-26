@@ -4,16 +4,25 @@
 namespace inviwo {
 
 CameraProperty::CameraProperty(std::string identifier, std::string displayName,
-                               vec3 lookFrom, vec3 lookTo, vec3 lookUp)
+                               vec3 center, vec3 eye, vec3 lookUp)
     : CompositeProperty(identifier, displayName),
-    lookFrom_("lookFrom", "Look from", lookFrom, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
-    lookTo_("lookTo", "Look to", lookTo, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
-    lookUp_("lookUp", "Look up", lookUp, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f))
+    lookFrom_("lookFrom", "Look from", center, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
+    lookTo_("lookTo", "Look to", eye, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
+    lookUp_("lookUp", "Look up", lookUp, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
+    fovy_("fov", "FOV", 60.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
+    aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
+    nearPlane_("near", "Near Plane", 0.0001f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
+    farPlane_("far", "Far Plane", 100.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f)
 {
     addProperty(lookFrom_);
     addProperty(lookTo_);
     addProperty(lookUp_);
+    addProperty(fovy_);
+    addProperty(aspectRatio_);
+    addProperty(nearPlane_);
+    addProperty(farPlane_);
     updateViewMatrix();
+    updateProjectionMatrix();
 }
 
 CameraProperty::~CameraProperty() {}
@@ -31,6 +40,18 @@ void CameraProperty::setLookTo(vec3 lookTo) {
 void CameraProperty::setLookUp(vec3 lookUp) {
     lookUp_.set(lookUp);
     updateViewMatrix();
+}
+
+void CameraProperty::setProjectionMatrix(float fovy, float aspect, float nearPlane, float farPlane) {
+    fovy_.set(fovy);
+    aspectRatio_.set(aspect);
+    farPlane_.set(farPlane);
+    nearPlane_.set(nearPlane);
+    updateProjectionMatrix();
+}
+
+void CameraProperty::updateProjectionMatrix() {
+    projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), nearPlane_.get(), farPlane_.get());
 }
 
 void CameraProperty::updateViewMatrix() {
