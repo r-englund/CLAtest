@@ -25,3 +25,12 @@ win32 {
         LIBS += /NODEFAULTLIB:libc.lib
     }
 }
+
+unix {
+  DESTDIR = "$${IVW_APPLICATION_PATH}"
+  
+  LIBS += -lticpp
+  LIBS += -linviwo-core
+  LIBS += -linviwo-qtwidgets
+  LIBS += -linviwo-editor
+}
