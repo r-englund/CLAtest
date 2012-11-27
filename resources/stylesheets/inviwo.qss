@@ -221,9 +221,9 @@ QTableView QTableCornerButton::section {
     background: transparent;
 }
 
-QPushButton, QToolButton, QComboBox {
-	border: 1px solid grey;
+QPushButton, QComboBox {
+	border: 1px solid #999999;
 }
-QPushButton:flat, QToolButton:flat {
+QPushButton:flat, QToolButton {
 	border: none;
 }

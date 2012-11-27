@@ -2,6 +2,7 @@
 #define IVW_FILEPROPERTYWIDGETQT_H
 
 #include <QLineEdit>
+#include <QToolButton>
 
 #include "inviwo/qt/widgets/properties/propertywidgetqt.h"
 
@@ -21,6 +22,7 @@ public:
 private:
     FileProperty* property_;
     QLineEdit* lineEdit_;
+    QToolButton* openButton_;
 
     void generateWidget();
 

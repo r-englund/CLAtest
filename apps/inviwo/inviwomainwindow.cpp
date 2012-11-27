@@ -126,7 +126,6 @@ bool InviwoMainWindow::openNetwork() {
 }
 
 bool InviwoMainWindow::saveNetwork() {
-    /*
     // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
@@ -154,13 +153,6 @@ bool InviwoMainWindow::saveNetwork() {
         return valid;
     } else
         return false;
-    */
-    QFile styleSheetFile(QString::fromStdString(IVW_DIR+"resources/stylesheets/inviwo.qss"));
-    styleSheetFile.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(styleSheetFile.readAll());
-    dynamic_cast<InviwoApplicationQt*>(InviwoApplication::app())->setStyleSheet(styleSheet);
-    styleSheetFile.close();
-    return true;
 }
 
 bool InviwoMainWindow::saveNetworkAs() {
