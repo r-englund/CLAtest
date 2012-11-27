@@ -19,11 +19,11 @@ Processor* VolumeSource::create() const {
     return new VolumeSource();
 }
 
-void VolumeSource::initialize() throw (Exception) {
+void VolumeSource::initialize() {
     Processor::initialize();
 }
 
-void VolumeSource::deinitialize() throw (Exception) {
+void VolumeSource::deinitialize() {
     Processor::deinitialize();
 }
 

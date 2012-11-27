@@ -32,8 +32,8 @@ public:
     std::string getDescription() const;
     void setDescription(const std::string& description) const;
 
-    virtual void initialize() throw (Exception);
-    virtual void deinitialize() throw (Exception);
+    virtual void initialize();
+    virtual void deinitialize();
 
 protected:
 

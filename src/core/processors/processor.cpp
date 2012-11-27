@@ -60,14 +60,14 @@ bool Processor::allInportsConnected() const {
     return true;
 }
 
-void Processor::initialize() throw (Exception) {
+void Processor::initialize() {
     for (size_t i=0; i<inports_.size(); i++)
         inports_[i]->initialize();
     for (size_t i=0; i<outports_.size(); i++)
         outports_[i]->initialize();
 }
 
-void Processor::deinitialize() throw (Exception) {
+void Processor::deinitialize() {
     for (size_t i=0; i<inports_.size(); i++)
         inports_[i]->deinitialize();
     for (size_t i=0; i<outports_.size(); i++)

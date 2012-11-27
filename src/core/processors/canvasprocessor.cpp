@@ -32,11 +32,11 @@ void CanvasProcessor::createProcessorWidget() {
     }
 }
 
-void CanvasProcessor::initialize() throw (Exception) {
+void CanvasProcessor::initialize() {
     Processor::initialize();
 }
 
-void CanvasProcessor::deinitialize() throw (Exception) {
+void CanvasProcessor::deinitialize() {
     processorWidget_->hide();
     delete processorWidget_;
     processorWidget_ = 0;

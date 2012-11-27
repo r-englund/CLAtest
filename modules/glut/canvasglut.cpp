@@ -22,7 +22,7 @@ CanvasGLUT::~CanvasGLUT() {
     glutDestroyWindow(canvasID_);
 }
 
-void CanvasGLUT::initialize() throw (Exception) {
+void CanvasGLUT::initialize() {
 
     glutInitWindowSize(dimensions_.x, dimensions_.y);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -43,7 +43,7 @@ void CanvasGLUT::initialize() throw (Exception) {
     CanvasGL::initialize();
 }
 
-void CanvasGLUT::deinitialize() throw (Exception) {
+void CanvasGLUT::deinitialize() {
     CanvasGL::deinitialize();
 }
 

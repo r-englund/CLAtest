@@ -31,6 +31,6 @@ unix {
   
   LIBS += -lticpp
   LIBS += -linviwo-core
-  LIBS += -linviwo-qtwidgets
-  LIBS += -linviwo-editor
+  qt : LIBS += -linviwo-qtwidgets
+  qt : LIBS += -linviwo-editor
 }

@@ -10,8 +10,8 @@ namespace inviwo {
     public:
         DataSourceProcessor();
 
-        virtual void initialize() throw (Exception);
-        virtual void deinitialize() throw (Exception);
+        virtual void initialize();
+        virtual void deinitialize();
 
     protected:
         virtual void process();

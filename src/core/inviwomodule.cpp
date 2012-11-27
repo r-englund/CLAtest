@@ -64,11 +64,11 @@ const std::vector<MetaData*>& InviwoModule::getMetaData() const {
     return metadata_;
 }
 
-void InviwoModule::initialize() throw (Exception) {
+void InviwoModule::initialize() {
     initialized_ = true;
 }
 
-void InviwoModule::deinitialize() throw (Exception) {
+void InviwoModule::deinitialize() {
     initialized_ = false;
 }
 

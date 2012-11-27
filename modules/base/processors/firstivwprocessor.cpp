@@ -17,11 +17,11 @@ Processor* FirstIvwProcessor::create() const {
     return new FirstIvwProcessor();
 }
 
-void FirstIvwProcessor::initialize() throw (Exception) {
+void FirstIvwProcessor::initialize() {
     ProcessorGL::initialize();
 }
 
-void FirstIvwProcessor::deinitialize() throw (Exception) {
+void FirstIvwProcessor::deinitialize() {
     ProcessorGL::deinitialize();
 }
 

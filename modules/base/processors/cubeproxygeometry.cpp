@@ -15,12 +15,12 @@ Processor* CubeProxygeometry::create() const {
     return new CubeProxygeometry();
 }
 
-void CubeProxygeometry::initialize() throw (Exception) {
+void CubeProxygeometry::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader("img_identity.frag");
 }
 
-void CubeProxygeometry::deinitialize() throw (Exception) {
+void CubeProxygeometry::deinitialize() {
     delete shader_;
     ProcessorGL::deinitialize();
 }

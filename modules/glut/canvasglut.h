@@ -15,8 +15,8 @@ public:
     CanvasGLUT(std::string title, ivec2 dimensions);
     ~CanvasGLUT();
 
-    virtual void initialize() throw (Exception);
-    virtual void deinitialize() throw (Exception);
+    virtual void initialize();
+    virtual void deinitialize();
 
     static void display(void);
     static void idle(void);

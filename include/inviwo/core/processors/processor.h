@@ -40,8 +40,8 @@ public:
 
     MetaData* getMetaData(std::string meta);
 
-    virtual void initialize() throw (Exception);
-    virtual void deinitialize() throw (Exception);
+    virtual void initialize();
+    virtual void deinitialize();
 
     virtual void beforeProcess();
     virtual void process();

@@ -14,8 +14,8 @@ namespace inviwo {
         ~CanvasProcessor();
         virtual Processor* create() const;
 
-        virtual void initialize() throw (Exception);
-        virtual void deinitialize() throw (Exception);
+        virtual void initialize();
+        virtual void deinitialize();
 
         virtual void process();
 

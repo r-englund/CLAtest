@@ -18,8 +18,8 @@ namespace inviwo {
         ~EntryExitPoints();
         virtual Processor* create() const;
 
-        void initialize() throw (Exception);
-        void deinitialize() throw (Exception);
+        void initialize();
+        void deinitialize();
 
         virtual std::string getClassName() const { return "EntryExitPoints"; }
         virtual std::string getCategory() const  { return "Entry Exit Points"; }
