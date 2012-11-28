@@ -15,7 +15,7 @@ namespace inviwo {
     void ProcessorNetwork::connectPorts(Port* sourcePort, Port* destPort) {
         destPort->connectTo(sourcePort);
         portConnections_.push_back(new PortConnection(sourcePort, destPort));
-    }
+    }    
 
     void ProcessorNetwork::disconnectPorts(Port* sourcePort, Port* destPort) {
         //TODO: remove connection information from sourcePort and destPort
@@ -27,6 +27,21 @@ namespace inviwo {
                      break;
                 }
         }        
+    }
+
+    void ProcessorNetwork::linkProcessors(Processor* sourceProcessor, Processor* destProcessor) {        
+        processorLinks_.push_back(new ProcessorLink(sourceProcessor, destProcessor));
+    }
+
+    void ProcessorNetwork::unlinkProcessors(Processor* sourceProcessor, Processor* destProcessor) {
+        for (size_t i=0; i<processorLinks_.size(); i++) {            
+            if ( (processorLinks_[i]->getInProcessor()==sourceProcessor && processorLinks_[i]->getOutProcessor()==destProcessor) ||
+                (processorLinks_[i]->getOutProcessor()==sourceProcessor && processorLinks_[i]->getInProcessor()==destProcessor)
+                ) {                
+                    processorLinks_.erase(processorLinks_.begin()+i);
+                    break;
+            }
+        }
     }
 
     ProcessorNetwork::ProcessorNetwork() {
@@ -165,15 +180,21 @@ namespace inviwo {
     void ProcessorNetwork::serialize(IvwSerializer& s) const {
         s.serialize("Processors", processors_, "Processor");
         s.serialize("Connections", portConnections_, "Connection");
+        s.serialize("ProcessorLinks", processorLinks_, "ProcessorLink");
     }
 
     void ProcessorNetwork::deserialize(IvwDeserializer& d) {
         std::vector<PortConnection*> portConnections;
         d.deserialize("Processors", processors_, "Processor");
         d.deserialize("Connections", portConnections, "Connection");
+        d.deserialize("ProcessorLinks", processorLinks_, "ProcessorLink");
 
         for (size_t i=0; i<portConnections.size(); i++) {
             connectPorts(portConnections[i]->getOutport(), portConnections[i]->getInport());
+        }
+
+        for (size_t i=0; i<processorLinks_.size(); i++) {
+            linkProcessors(processorLinks_[i]->getOutProcessor(), processorLinks_[i]->getInProcessor());
         }
     }
 

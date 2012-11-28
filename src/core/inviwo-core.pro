@@ -112,6 +112,7 @@ HEADERS += \
     ../../include/inviwo/core/interaction/events/timerevent.h \
     ../../include/inviwo/core/interaction/events/resizeevent.h \
     ../../include/inviwo/core/network/portconnection.h \
+    ../../include/inviwo/core/network/processorlink.h \
     ../../include/inviwo/core/network/processornetwork.h \
     ../../include/inviwo/core/network/processornetworkevaluator.h \
     ../../include/inviwo/core/metadata/positionmetadata.h \
@@ -155,7 +156,8 @@ HEADERS += \
     ../../include/inviwo/core/util/exception.h \
     ../../include/inviwo/core/util/logdistributor.h \
     ../../include/inviwo/core/util/project.h \
-    ../../include/inviwo/core/util/group.h	
+    ../../include/inviwo/core/util/group.h 
+#    ../../include/inviwo/core/util/variant.h
 
 SOURCES += \
     inviwoapplication.cpp \
@@ -184,6 +186,7 @@ SOURCES += \
     interaction/events/timerevent.cpp \
     interaction/events/resizeevent.cpp \
     network/portconnection.cpp \
+    network/processorlink.cpp \
     network/processornetwork.cpp \
     network/processornetworkevaluator.cpp \
     metadata/positionmetadata.cpp \
@@ -213,14 +216,15 @@ SOURCES += \
     io/datawriter.cpp \
     io/serialization/ivwserializebase.cpp \
     io/serialization/ivwserializer.cpp \
-	io/serialization/ivwdeserializer.cpp \
+    io/serialization/ivwdeserializer.cpp \
     io/serialization/ivwserializeconstants.cpp \
     util/canvas.cpp \
     util/assertion.cpp \
     util/exception.cpp \
     util/logdistributor.cpp \
-    util/project.cpp
-	
+    util/project.cpp 
+#    util/variant.cpp
+
 HEADERS = $$unique(HEADERS)
 SOURCES = $$unique(SOURCES)
 #                                         #

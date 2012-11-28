@@ -3,6 +3,7 @@
 
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/network/portconnection.h"
+#include "inviwo/core/network/processorlink.h"
 #include "inviwo/core/processors/processor.h"
 
 #include <string>
@@ -18,6 +19,9 @@ public:
     void connectPorts(Port* sourcePort, Port* destPort);
     void disconnectPorts(Port* sourcePort, Port* destPort);
     
+    void linkProcessors(Processor* sourceProcessor, Processor* destProcessor);
+    void unlinkProcessors(Processor* sourceProcessor, Processor* destProcessor);
+
     ProcessorNetwork();
     virtual ~ProcessorNetwork();
 
@@ -31,6 +35,8 @@ public:
 
     std::vector<PortConnection*> getPortConnections() const { return portConnections_; }
 
+    std::vector<ProcessorLink*> getProcessorLinks() const { return processorLinks_; }
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 
@@ -38,6 +44,7 @@ private:
 
     std::vector<Processor*> processors_;
     std::vector<PortConnection*> portConnections_;
+    std::vector<ProcessorLink*> processorLinks_;
 
 };
 
