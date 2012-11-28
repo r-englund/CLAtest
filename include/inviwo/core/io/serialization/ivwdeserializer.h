@@ -23,6 +23,7 @@ public:
     template <typename T>
     void deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey);
     void deserialize(const std::string &key, std::string &data, const bool asAttribute=false);    
+    void deserialize(const std::string &key, bool &data);
     void deserialize(const std::string &key, float &data);
     void deserialize(const std::string &key, int &data);
     void deserialize(const std::string &key, vec2 &data);

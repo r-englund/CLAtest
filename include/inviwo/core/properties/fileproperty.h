@@ -10,7 +10,7 @@ class FileProperty : public TemplateProperty<std::string> {
 public:
     FileProperty(std::string identifier, std::string displayName, std::string value);
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 };
 
 } // namespace

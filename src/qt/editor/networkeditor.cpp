@@ -117,7 +117,7 @@ Processor* NetworkEditor::createProcessor(std::string className) {
 }
 
 QPointF NetworkEditor::snapToGrid(QPointF pos) {
-    int gridInterval = 50;
+    int gridInterval = 30;
     QPointF result;
     result.setX((int(pos.x()/gridInterval-0.5))*gridInterval);
     result.setY((int(pos.y()/gridInterval-0.5))*gridInterval);
@@ -398,7 +398,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
 }
 
 void NetworkEditor::drawBackground(QPainter* painter, const QRectF & rect) {
-    int gridInterval = 50;
+    int gridInterval = 30;
     painter->setWorldMatrixEnabled(true);
     painter->fillRect(rect, Qt::darkGray);
 

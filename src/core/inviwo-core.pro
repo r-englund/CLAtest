@@ -127,6 +127,7 @@ HEADERS += \
     ../../include/inviwo/core/processors/processorwidget.h \
     ../../include/inviwo/core/processors/datasource/datasourceprocessor.h \
     ../../include/inviwo/core/processors/datasource/volumesource.h \
+    ../../include/inviwo/core/properties/boolproperty.h \
     ../../include/inviwo/core/properties/cameraproperty.h \
     ../../include/inviwo/core/properties/compositeproperty.h \
     ../../include/inviwo/core/properties/fileproperty.h \
@@ -197,6 +198,7 @@ SOURCES += \
     processors/processorwidget.cpp \
     processors/datasource/datasourceprocessor.cpp \
     processors/datasource/volumesource.cpp \
+    properties/boolproperty.cpp \
     properties/cameraproperty.cpp \
     properties/compositeproperty.cpp \
     properties/fileproperty.cpp \
