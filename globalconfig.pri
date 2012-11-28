@@ -96,7 +96,8 @@ win32 {
 }
 
 win32 {
-	DEFINES += TIXML_USE_TICPP
+    DEFINES += TIXML_USE_TICPP
+    DEFINES += _CRT_SECURE_NO_DEPRECATE
 }
 
 #                                         #
