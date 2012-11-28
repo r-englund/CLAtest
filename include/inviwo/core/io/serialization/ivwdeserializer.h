@@ -8,7 +8,7 @@
 #include "ticpp/ticpp.h"
 #include "inviwo/core/io/serialization/ivwserializeconstants.h"
 #include "inviwo/core/io/serialization/ivwserializebase.h"
-
+#include "inviwo/core/inviwo.h"
 namespace inviwo {
 
 class IvwSerializable;
@@ -25,13 +25,21 @@ public:
     void deserialize(const std::string &key, std::string &data, const bool asAttribute=false);    
     void deserialize(const std::string &key, bool &data);
     void deserialize(const std::string &key, float &data);
+    void deserialize(const std::string &key, double &data);
     void deserialize(const std::string &key, int &data);
+    void deserialize(const std::string &key, long &data);
     void deserialize(const std::string &key, vec2 &data);
     void deserialize(const std::string &key, vec3 &data);
     void deserialize(const std::string &key, vec4 &data);
     void deserialize(const std::string &key, ivec2 &data);
     void deserialize(const std::string &key, ivec3 &data);
     void deserialize(const std::string &key, ivec4 &data); 
+    void deserialize(const std::string &key, dvec2 &data);
+    void deserialize(const std::string &key, dvec3 &data);
+    void deserialize(const std::string &key, dvec4 &data); 
+    void deserialize(const std::string &key, mat2 &data);
+    void deserialize(const std::string &key, mat3 &data);
+    void deserialize(const std::string &key, mat4 &data); 
     void deserialize(const std::string &key, IvwSerializable &sObj);
     template <class T>
     void deserialize(const std::string& key, T* & data);

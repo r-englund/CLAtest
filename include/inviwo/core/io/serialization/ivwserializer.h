@@ -8,6 +8,7 @@
 #include "ticpp/ticpp.h"
 #include "inviwo/core/io/serialization/ivwserializeconstants.h"
 #include "inviwo/core/io/serialization/ivwserializebase.h"
+#include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
@@ -25,6 +26,8 @@ public:
     void serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey);
     void serialize(const std::string &key, const std::string &data, const bool asAttribute=false);
     void serialize(const std::string &key, const float &data);
+    void serialize(const std::string &key, const double &data);
+    void serialize(const std::string &key, const bool &data);
     void serialize(const std::string &key, const int &data);
     void serialize(const std::string &key, const vec2 &data);
     void serialize(const std::string &key, const vec3 &data);
@@ -32,6 +35,12 @@ public:
     void serialize(const std::string &key, const ivec2 &data);
     void serialize(const std::string &key, const ivec3 &data);
     void serialize(const std::string &key, const ivec4 &data);
+    void serialize(const std::string &key, const dvec2 &data);
+    void serialize(const std::string &key, const dvec3 &data);
+    void serialize(const std::string &key, const dvec4 &data);
+    void serialize(const std::string &key, const mat2 &data);
+    void serialize(const std::string &key, const mat3 &data);
+    void serialize(const std::string &key, const mat4 &data); 
     void serialize(const std::string &key, const IvwSerializable &sObj);
     template<class T>
     void serialize(const std::string& key, const T* const& data);

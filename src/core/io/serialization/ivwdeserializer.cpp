@@ -126,6 +126,16 @@ void IvwDeserializer::deserialize(const std::string &key, int &data) {
     deserializePrimitives<int>(key, data);
 }
 
+
+void IvwDeserializer::deserialize(const std::string &key, double &data) {
+    deserializePrimitives<double>(key, data);
+}
+
+
+void IvwDeserializer::deserialize(const std::string &key, long &data) {
+    deserializePrimitives<long>(key, data);
+}
+
 void IvwDeserializer::deserialize(const std::string &key, ivec2 &data) {
     deserializeVector(key, data);
 }
@@ -146,6 +156,28 @@ void IvwDeserializer::deserialize(const std::string &key, vec3 &data) {
 
 void IvwDeserializer::deserialize(const std::string &key, vec4 &data) {
     deserializeVector(key, data);
+}
+
+void IvwDeserializer::deserialize(const std::string &key, dvec2 &data) {
+    deserializeVector(key, data);
+}
+void IvwDeserializer::deserialize(const std::string &key, dvec3 &data) {
+    deserializeVector(key, data);
+}
+
+void IvwDeserializer::deserialize(const std::string &key, dvec4 &data) {
+    deserializeVector(key, data);
+}
+
+void IvwDeserializer::deserialize(const std::string &key, mat2 &data) {
+    
+}
+void IvwDeserializer::deserialize(const std::string &key, mat3 &data) {
+    
+}
+
+void IvwDeserializer::deserialize(const std::string &key, mat4 &data) {
+    
 }
 
 void IvwDeserializer::readFile(std::ostream& stream) {

@@ -2,7 +2,6 @@
 #include "inviwo/core/inviwofactorybase.h"
 #include "inviwo/core/processors/processorfactory.h"
 #include "inviwo/core/io/serialization/ivwserializable.h"
-#include "inviwo/core/inviwo.h"
 
 
 namespace inviwo {
@@ -103,6 +102,15 @@ void IvwSerializer::serialize(const std::string &key, const std::string &data, c
 void IvwSerializer::serialize(const std::string &key, const float &data) {
     serializePrimitives<float>(key, data);
 }
+
+void IvwSerializer::serialize(const std::string &key, const double &data) {
+    serializePrimitives<double>(key, data);
+}
+
+void IvwSerializer::serialize(const std::string &key, const bool &data) {
+    serializePrimitives<bool>(key, data);
+}
+
 void IvwSerializer::serialize(const std::string &key, const int &data) {
     serializePrimitives<int>(key, data);
 }
@@ -129,6 +137,54 @@ void IvwSerializer::serialize(const std::string &key, const vec4 &data) {
     serializeVector(key, data);
 }
 
+void IvwSerializer::serialize(const std::string &key, const dvec2 &data) {
+    serializeVector(key, data);
+}
+void IvwSerializer::serialize(const std::string &key, const dvec3 &data) {
+    serializeVector(key, data);
+}
+
+void IvwSerializer::serialize(const std::string &key, const dvec4 &data) {
+    serializeVector(key, data);
+}
+
+void IvwSerializer::serialize(const std::string &key, const mat2 &data) {
+    vec2 rowVec;
+
+    rowVec = vec2(data[0][0], data[0][1]);
+    serializeVector(key, rowVec);
+
+    rowVec = vec2(data[1][0], data[1][1]);
+    serializeVector(key, rowVec);
+}
+void IvwSerializer::serialize(const std::string &key, const mat3 &data) {
+    vec3 rowVec;
+
+    rowVec = vec3(data[0][0], data[0][1], data[0][2]);
+    serializeVector(key, rowVec);
+
+    rowVec = vec3(data[1][0], data[1][1], data[1][2]);
+    serializeVector(key, rowVec);
+
+    rowVec = vec3(data[2][0], data[2][1], data[2][2]);
+    serializeVector(key, rowVec);
+}
+
+void IvwSerializer::serialize(const std::string &key, const mat4 &data) {
+    vec4 rowVec;
+
+    rowVec = vec4(data[0][0], data[0][1], data[0][2], data[0][3]);
+    serializeVector(key, rowVec);
+
+    rowVec = vec4(data[1][0], data[1][1], data[1][2], data[1][3]);
+    serializeVector(key, rowVec);
+
+    rowVec = vec4(data[2][0], data[2][1], data[2][2], data[2][3]);
+    serializeVector(key, rowVec);
+
+    rowVec = vec4(data[3][0], data[3][1], data[3][2], data[3][3]);
+    serializeVector(key, rowVec);
+}
 
 void IvwSerializer::writeFile(std::ostream& stream) {
 
