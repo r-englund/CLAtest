@@ -30,7 +30,7 @@ win32 {
         DESTDIR = "$${IVW_ROOT}/bin/release"
     }
     
-	LIBS += "$${IVW_ROOT}/bin/$${WIN32_CONFIG_NAME}/ticpp.lib"
+    LIBS += "$${IVW_ROOT}/bin/$${WIN32_CONFIG_NAME}/ticpp.lib"
     # allow to build multithreaded executable
     LIBS += /NODEFAULTLIB:libc.lib    
 }
@@ -45,6 +45,7 @@ win32 {
 HEADERS += \
     ../../../include/inviwo/qt/editor/consolewidget.h \
     ../../../include/inviwo/qt/editor/connectiongraphicsitem.h \
+    ../../../include/inviwo/qt/editor/linkgraphicsitem.h \
     ../../../include/inviwo/qt/editor/inviwodockwidget.h \
     ../../../include/inviwo/qt/editor/labelgraphicsitem.h \
     ../../../include/inviwo/qt/editor/networkeditor.h \
@@ -57,6 +58,7 @@ HEADERS += \
 SOURCES += \
     consolewidget.cpp \
     connectiongraphicsitem.cpp \
+    linkgraphicsitem.cpp \
     inviwodockwidget.cpp \
     labelgraphicsitem.cpp \
     networkeditor.cpp \
