@@ -29,8 +29,8 @@ win32 {
 unix {
   DESTDIR = "$${IVW_APPLICATION_PATH}"
   
-  LIBS += -lticpp
-  LIBS += -linviwo-core
-  qt : LIBS += -linviwo-qtwidgets
-  qt : LIBS += -linviwo-editor
+  LIBS += -libticpp
+  LIBS += -llibinviwo-core
+  qt : LIBS += -llibinviwo-qtwidgets
+  qt : LIBS += -llibinviwo-editor
 }
