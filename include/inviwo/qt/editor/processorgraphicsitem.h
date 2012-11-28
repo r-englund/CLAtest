@@ -11,6 +11,13 @@ namespace inviwo {
 //TODO: Move this to common header later on (eg., BaseGraphicsItem.h )
 static const qreal PROCESSORGRAPHICSITEM_DEPTH = 1.0f;
 static const qreal CONNECTIONGRAPHICSITEM_DEPTH = 2.0f;
+static const qreal LINKGRAPHICSITEM_DEPTH = 3.0f;
+
+enum GraphicsItemType {
+    ProcessorGraphicsType = 1,
+    ConnectionGraphicsType = 2,
+    LinkGraphicsType = 3
+};
 
 class ProcessorGraphicsItem : public QGraphicsRectItem {
 
@@ -32,6 +39,10 @@ public:
     void updateMetaData();
 
     void flipLayout();
+
+    //override for qgraphicsitem_cast (refer qt documentation)
+    enum { Type = UserType + ProcessorGraphicsType };
+    int type() const  {return Type; }
 
 protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);

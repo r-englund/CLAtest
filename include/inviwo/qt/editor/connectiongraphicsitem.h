@@ -24,6 +24,10 @@ public:
     void setEndPoint(QPointF endPoint) { endPoint_ = endPoint; }
     QPointF getEndPoint() const { return endPoint_; }
 
+    //override for qgraphicsitem_cast (refer qt documentation)
+    enum { Type = UserType + ConnectionGraphicsType };
+    int type() const  {return Type; }
+
     /**
      * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
      */
