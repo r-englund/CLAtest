@@ -3,6 +3,7 @@
 
 #include "inviwo/core/properties/propertyowner.h"
 #include "inviwo/core/properties/propertywidget.h"
+#include "inviwo/core/util/variant.h"
 
 namespace inviwo {
 
@@ -23,6 +24,10 @@ public:
 
     void registerPropertyWidget(PropertyWidget* propertyWidget);
     void updatePropertyWidgets();
+
+    virtual Variant getVariant();
+    virtual void setVariant(const Variant&);
+    virtual int getVariantType();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);

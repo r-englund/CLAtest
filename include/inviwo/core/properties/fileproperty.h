@@ -9,6 +9,9 @@ class FileProperty : public TemplateProperty<std::string> {
 
 public:
     FileProperty(std::string identifier, std::string displayName, std::string value);
+    virtual Variant getVariant();
+    virtual void setVariant(const Variant&);
+    virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };

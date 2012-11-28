@@ -156,8 +156,8 @@ HEADERS += \
     ../../include/inviwo/core/util/exception.h \
     ../../include/inviwo/core/util/logdistributor.h \
     ../../include/inviwo/core/util/project.h \
-    ../../include/inviwo/core/util/group.h 
-#    ../../include/inviwo/core/util/variant.h
+    ../../include/inviwo/core/util/group.h \
+    ../../include/inviwo/core/util/variant.h
 
 SOURCES += \
     inviwoapplication.cpp \
@@ -222,8 +222,8 @@ SOURCES += \
     util/assertion.cpp \
     util/exception.cpp \
     util/logdistributor.cpp \
-    util/project.cpp 
-#    util/variant.cpp
+    util/project.cpp \
+    util/variant.cpp
 
 HEADERS = $$unique(HEADERS)
 SOURCES = $$unique(SOURCES)

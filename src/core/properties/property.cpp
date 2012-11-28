@@ -45,6 +45,16 @@ void Property::updatePropertyWidgets() {
         propertyWidgets_[i]->updateFromProperty();
 }
 
+Variant Property::getVariant() {
+    return Variant(0);
+}
+
+void Property::setVariant(const Variant&) {}
+
+int Property::getVariantType() {
+    return Variant::VariantTypeInvalid;
+}
+
 void Property::serialize(IvwSerializer& s) const {
     s.serialize("identifier", identifier_, true);
     s.serialize("displayName", displayName_, true);

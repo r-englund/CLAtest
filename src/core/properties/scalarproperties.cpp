@@ -7,6 +7,20 @@ FloatProperty::FloatProperty(std::string identifier, std::string displayName, fl
     : OrdinalProperty(identifier, displayName, value, minValue, maxValue, increment)
 {}
 
+int FloatProperty::getVariantType() {
+    return Variant::VariantTypeFloat;
+}
+
+Variant FloatProperty::getVariant() {
+    return Variant(get());
+}
+
+void  FloatProperty::setVariant(const Variant& val) {
+    if (val.canConvert(getVariantType())) {
+        set(val.getFloat());
+    }
+}
+
 void FloatProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
     s.serialize("value", get());
@@ -35,6 +49,20 @@ IntProperty::IntProperty(std::string identifier, std::string displayName, int va
     int minValue, int maxValue, int increment)
     : OrdinalProperty(identifier, displayName, value, minValue, maxValue, increment)
 {}
+
+int IntProperty::getVariantType() {
+    return Variant::VariantTypeInteger;
+}
+
+Variant IntProperty::getVariant() {
+    return Variant(get());
+}
+
+void  IntProperty::setVariant(const Variant& val) {
+    if (val.canConvert(getVariantType())) {
+        set(val.getInt());
+    }
+}
 
 void IntProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
