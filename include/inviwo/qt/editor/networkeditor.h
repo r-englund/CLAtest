@@ -9,6 +9,7 @@
 
 #include "processorgraphicsitem.h"
 #include "connectiongraphicsitem.h"
+#include "linkgraphicsitem.h"
 
 namespace inviwo {
 
@@ -27,12 +28,20 @@ public:
     void initializeConnectionRepresentation(ProcessorGraphicsItem* outProcessor, Port* outport, 
                                        ProcessorGraphicsItem* inProcessor, Port* inport) ;
 
+    void initializeLinkRepresentation(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
+
     void addConnection(ProcessorGraphicsItem* startProcessor_, Port* startPort_,
                        ProcessorGraphicsItem* endProcessor_, Port* endPort_);
 
     void addConnection(PortConnection *connection);
 
+    void addLink(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
+
+    void addLink(ProcessorLink *link);
+
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
+
+    void removeLink(LinkConnectionGraphicsItem* linkGraphicsItem);
 
     bool saveNetwork(std::string fileName);
 
@@ -49,6 +58,7 @@ public:
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
     QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
     QGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
+    QGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
@@ -72,6 +82,7 @@ private:
 
     std::vector<ProcessorGraphicsItem*> processorGraphicsItems_;
     std::vector<ConnectionGraphicsItem*> connectionGraphicsItems_;
+    std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems_;
 
     ProcessorNetwork* processorNetwork_;
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
@@ -79,6 +90,7 @@ private:
     bool processorWithIdentifierExists(std::string identifier);
     
     CurveGraphicsItem* connectionCurve_;
+    LinkGraphicsItem* linkCurve_;
     ProcessorGraphicsItem* startProcessor_;
     ProcessorGraphicsItem* endProcessor_;
     Port* startPort_;

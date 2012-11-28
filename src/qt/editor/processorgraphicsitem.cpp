@@ -7,6 +7,7 @@
 
 #include "inviwo/qt/editor/networkeditor.h"
 #include "inviwo/qt/editor/connectiongraphicsitem.h"
+#include "inviwo/qt/editor/linkgraphicsitem.h"
 #include "inviwo/qt/editor/processorgraphicsitem.h"
 
 namespace inviwo {
@@ -200,6 +201,21 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
                 connectionGraphicsItems[i]->update();
             }
         }
+
+        std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = NetworkEditor::instance()->linkGraphicsItems_;
+        for (size_t i=0; i<linkGraphicsItems.size(); i++) {
+            if (linkGraphicsItems[i]->getOutProcessor() == this) {
+                QPointF newAnchor = mapToScene(rect()).boundingRect().center();
+                linkGraphicsItems[i]->setStartPoint(newAnchor);
+                linkGraphicsItems[i]->update();
+            }
+            if (linkGraphicsItems[i]->getInProcessor() == this) {
+                QPointF newAnchor = mapToScene(rect()).boundingRect().center();
+                linkGraphicsItems[i]->setEndPoint(newAnchor);
+                linkGraphicsItems[i]->update();
+            }
+        }
+
         updateMetaData();
     }
     return QGraphicsItem::itemChange(change, value);
