@@ -375,7 +375,8 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         linkCurve_ = 0;
         endProcessor_ = dynamic_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(e->scenePos()));
         if (endProcessor_) {
-            addLink(startProcessor_, endProcessor_);
+            if (endProcessor_ != startProcessor_)
+                addLink(startProcessor_, endProcessor_);
         }
         startProcessor_ = 0; 
         endProcessor_ = 0;

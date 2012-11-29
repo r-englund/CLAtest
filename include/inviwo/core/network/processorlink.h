@@ -8,13 +8,14 @@ namespace inviwo {
 
 class ProcessorLink : public IvwSerializable {
 
-public:
+public:    
+
     ProcessorLink();
-    ProcessorLink(Processor* outport, Processor* inport);
+    ProcessorLink(Processor* outProcessor, Processor* inProcessor);
     virtual ~ProcessorLink();
 
-    Processor* getInProcessor() const{ return inProcessor_; }
-    Processor* getOutProcessor() const{ return outProcessor_; }
+    Processor* getInProcessor() const{ return inProcessor_.getProcessor(); }
+    Processor* getOutProcessor() const{ return outProcessor_.getProcessor(); }
 
     void autoLinkPropertiesByType();
 
@@ -22,8 +23,21 @@ public:
     virtual void deserialize(IvwDeserializer& s);
 
 private:
-    Processor* inProcessor_;
-    Processor* outProcessor_;
+    //TODO: This is just for serialization/deserialization
+    //This is temporary fix. Serialization needs improvement.
+    class SlimProcessor : public IvwSerializable {
+    public:
+        SlimProcessor();
+        SlimProcessor(Processor*);
+        virtual void serialize(IvwSerializer& s) const;
+        virtual void deserialize(IvwDeserializer& s);
+        Processor* getProcessor() const;
+    private:
+        Processor* processor_;
+    };
+
+   SlimProcessor inProcessor_;
+   SlimProcessor outProcessor_;
 };
 
 } // namespace

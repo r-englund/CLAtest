@@ -123,16 +123,18 @@ namespace inviwo {
 
     void ProcessorNetwork::deserialize(IvwDeserializer& d) {
         std::vector<PortConnection*> portConnections;
+        std::vector<ProcessorLink*> processorLinks;
+
         d.deserialize("Processors", processors_, "Processor");
         d.deserialize("Connections", portConnections, "Connection");
-        d.deserialize("ProcessorLinks", processorLinks_, "ProcessorLink");
+        d.deserialize("ProcessorLinks", processorLinks, "ProcessorLink");
 
         for (size_t i=0; i<portConnections.size(); i++) {
             connectPorts(portConnections[i]->getOutport(), portConnections[i]->getInport());
         }
 
-        for (size_t i=0; i<processorLinks_.size(); i++) {
-            linkProcessors(processorLinks_[i]->getOutProcessor(), processorLinks_[i]->getInProcessor());
+        for (size_t i=0; i<processorLinks.size(); i++) {
+            linkProcessors(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor());
         }
     }
 
