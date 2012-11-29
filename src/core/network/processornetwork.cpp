@@ -29,6 +29,19 @@ namespace inviwo {
         }        
     }
 
+    ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* sourceProcessor, Processor* destProcessor) {
+        ProcessorLink* link=0;
+        for (size_t i=0; i<processorLinks_.size(); i++) { 
+            if ( (processorLinks_[i]->getInProcessor()==sourceProcessor && processorLinks_[i]->getOutProcessor()==destProcessor) ||
+                 (processorLinks_[i]->getOutProcessor()==sourceProcessor && processorLinks_[i]->getInProcessor()==destProcessor)
+                ) {
+                    link = processorLinks_[i];
+                    break;
+            }
+        }
+        return link;
+    }
+
     void ProcessorNetwork::linkProcessors(Processor* sourceProcessor, Processor* destProcessor) {        
         processorLinks_.push_back(new ProcessorLink(sourceProcessor, destProcessor));
     }

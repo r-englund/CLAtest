@@ -478,6 +478,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             removeConnection(connectionGraphicsItem);
     } else if (linkConnectionGraphicsItem) {
         QMenu menu;
+        QAction* linkAction = menu.addAction("Link Properties");
         QAction* editAction = menu.addAction("Edit");
         QAction* deleteAction = menu.addAction("Delete");
         QAction* result = menu.exec(QCursor::pos());
@@ -485,6 +486,15 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             removeLink(linkConnectionGraphicsItem);
         else if (result == editAction) {
             //Show link edit dialog
+        }
+        else if (result == linkAction) {
+            Processor* inProcessor = linkConnectionGraphicsItem->getInProcessor()->getProcessor();
+            Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessor()->getProcessor();
+            ProcessorLink* plink = processorNetwork_->getProcessorLink(inProcessor, outProcessor);
+            if (plink) {
+                plink->autoLinkPropertiesByType();
+            }
+
         }
 
     } else

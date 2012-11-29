@@ -16,6 +16,8 @@ public:
     Processor* getInProcessor() const{ return inProcessor_; }
     Processor* getOutProcessor() const{ return outProcessor_; }
 
+    void autoLinkPropertiesByType();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 

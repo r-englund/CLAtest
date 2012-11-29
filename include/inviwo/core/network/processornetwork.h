@@ -36,6 +36,7 @@ public:
     std::vector<PortConnection*> getPortConnections() const { return portConnections_; }
 
     std::vector<ProcessorLink*> getProcessorLinks() const { return processorLinks_; }
+    ProcessorLink* getProcessorLink(Processor* sourceProcessor, Processor* destProcessor);
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);

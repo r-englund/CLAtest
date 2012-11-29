@@ -142,6 +142,7 @@ HEADERS += \
     ../../include/inviwo/core/properties/scalarproperties.h \
     ../../include/inviwo/core/properties/templateproperty.h \
     ../../include/inviwo/core/properties/vectorproperties.h \
+    ../../include/inviwo/core/properties/linkevaluator.h \	
     ../../include/inviwo/core/io/datareader.h \
     ../../include/inviwo/core/io/datawriter.h \
     ../../include/inviwo/core/io/serialization/ivwserializable.h \
@@ -212,6 +213,7 @@ SOURCES += \
     properties/propertywidgetfactory.cpp \
     properties/scalarproperties.cpp \
     properties/vectorproperties.cpp \
+    properties/linkevaluator.cpp \	
     io/datareader.cpp \
     io/datawriter.cpp \
     io/serialization/ivwserializebase.cpp \

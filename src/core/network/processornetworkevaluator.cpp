@@ -272,6 +272,13 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
 }
 
 void ProcessorNetworkEvaluator::evaluate() {
+
+    //TODO: This is just for testing. Remove it once we have proper linking interface
+    std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
+    for (size_t i=0; i<links.size(); i++) {
+        links[i]->autoLinkPropertiesByType();
+    }
+
     repaintRequired_ = false;
     
     // TODO: perform only if network has been changed

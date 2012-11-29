@@ -1,4 +1,5 @@
 #include "inviwo/core/network/processorlink.h"
+#include "inviwo/core/properties/linkevaluator.h"
 
 namespace inviwo {
 
@@ -11,6 +12,18 @@ ProcessorLink::ProcessorLink(Processor* outProecessor, Processor* inProecessor)
       inProcessor_(inProecessor) {}
 
 ProcessorLink::~ProcessorLink() {}
+
+void ProcessorLink::autoLinkPropertiesByType() {    
+    //This is just for testing. Best to use if processors are of same type
+    //This links all the properties of source processor to destination processor
+    std::vector<Property*> srcProperties = outProcessor_->getProperties();
+    Property* dstProperty=0;
+    LinkEvaluator leval;
+    for (size_t i=0; i<srcProperties.size(); i++) {
+        dstProperty = inProcessor_->getPropertyByIdentifier(srcProperties[i]->getIdentifier());
+        if (dstProperty) leval.evaluate(srcProperties[i], dstProperty);
+    }
+}
 
 void ProcessorLink::serialize(IvwSerializer& s) const {
     s.serialize("processor_link", getInProcessor()->getClassName(), true);
