@@ -3,6 +3,9 @@ uniform sampler2D exitTex_;
 uniform sampler3D volume_;
 uniform vec2 dimension_;
 
+uniform bool enableShading_;
+uniform float samplingRate_;
+
 // set reference sampling interval for opacity correction
 #define REF_SAMPLING_INTERVAL 150.0
 // set threshold for early ray termination
@@ -20,14 +23,17 @@ vec4 applyTF(vec4 voxel) {
 vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
     vec4 result = vec4(0.0);
     float t = 0.0;
-    float tIncr = 0.0005;
     vec3 rayDirection = exitPoint - entryPoint;
+    vec3 volumeDimension = vec3(64.0);
+    float tIncr = 1.0/(samplingRate_*length(rayDirection*volumeDimension));
     float tEnd = length(rayDirection);
     rayDirection = normalize(rayDirection);
     while (t < tEnd) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getVoxel(volume_, samplePos);
         vec4 color = applyTF(voxel);
+
+        if (enableShading_) color.r *= 10.0;
         
         // opacity correction
         color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);

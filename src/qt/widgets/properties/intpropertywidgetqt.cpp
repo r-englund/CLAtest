@@ -15,13 +15,13 @@ void IntPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     slider_ = new QSlider();
     slider_->setOrientation(Qt::Horizontal);
-    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue(int)));
+    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     hLayout->addWidget(slider_);
     setLayout(hLayout);
 }
 
-void IntPropertyWidgetQt::setPropertyValue(int value) {
-    property_->set(value);
+void IntPropertyWidgetQt::setPropertyValue() {
+    property_->set(slider_->value());
 }
 
 void IntPropertyWidgetQt::updateFromProperty() {

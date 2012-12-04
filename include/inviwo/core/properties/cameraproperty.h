@@ -22,6 +22,8 @@ public:
     vec3 lookUp() const { return lookUp_.get(); }
     void setLookUp(vec3 lookUp);
 
+    void updateViewMatrix();
+    void updateProjectionMatrix();
     mat4 viewMatrix() const { return viewMatrix_; }
     mat4 projectionMatrix() const { return projectionMatrix_; }
     void setProjectionMatrix(float fovy, float aspect, float farPlane, float nearPlane);
@@ -42,9 +44,6 @@ private:
 
     mat4 viewMatrix_;
     mat4 projectionMatrix_;
-
-    void updateViewMatrix();
-    void updateProjectionMatrix();
 };
 
 } // namespace

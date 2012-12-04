@@ -14,7 +14,6 @@ class PropertyWidgetQt : public PropertyWidget, public QWidget {
 public:
     PropertyWidgetQt();
     PropertyWidgetQt* create();
-
 };
 
 } // namespace

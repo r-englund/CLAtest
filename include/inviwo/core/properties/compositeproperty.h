@@ -14,11 +14,12 @@ public:
 
     void addProperty(Property* property);
     void addProperty(Property& property);
+    std::vector<Property*> getSubProperties() { return subProperties_; }
 
     void setOwner(PropertyOwner* owner);
 
 private:
-    std::vector<Property*> properties_;
+    std::vector<Property*> subProperties_;
     
 };
 

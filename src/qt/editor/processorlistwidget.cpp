@@ -1,4 +1,7 @@
 #include <QApplication>
+#include <QLayout>
+#include <QLineEdit>
+#include <QVBoxLayout>
 
 #include "inviwo/core/inviwoapplication.h"
 
@@ -8,21 +11,49 @@ namespace inviwo {
 
 ProcessorListWidget::ProcessorListWidget(QWidget* parent) : InviwoDockWidget(tr("Processors"), parent) {
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-   
-    processorList_ = new ProcessorList(this);
 
+    QFrame* frame = new QFrame();
+    QVBoxLayout* vLayout = new QVBoxLayout(frame);
+   
+    QLineEdit* lineEdit = new QLineEdit();
+    lineEdit->setPlaceholderText("Filter processor list...");
+    connect(lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(addProcessorsToList(const QString&)));
+    vLayout->addWidget(lineEdit);
+
+    processorList_ = new ProcessorList(this);
+    addProcessorsToList();
+    vLayout->addWidget(processorList_);
+
+    frame->setLayout(vLayout);
+    setWidget(frame);
+}
+
+ProcessorListWidget::~ProcessorListWidget() {}
+
+bool ProcessorListWidget::processorFits(Processor* processor, const QString& filter) {
+    return (QString::fromStdString(processor->getClassName()).contains(filter, Qt::CaseInsensitive));
+}
+
+void ProcessorListWidget::addProcessorsToList(const QString& text) {
+    processorList_->clear();
     // add processors from all modules to the list
     InviwoApplication* inviwoApp = InviwoApplication::app();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
         std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-        for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
-            processorList_->addItem(new QListWidgetItem(QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
+        for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
+            if (text.isEmpty() || processorFits(curProcessorList[curProcessorId], text)) {
+                QString iconName = ":/icons/processor_experimental.png";
+                if (curProcessorList[curProcessorId]->getCodeState() == Processor::CODE_STATE_BROKEN)
+                    iconName = ":/icons/processor_broken.png";
+                else if (curProcessorList[curProcessorId]->getCodeState() == Processor::CODE_STATE_STABLE)
+                    iconName = ":/icons/processor_stable.png";
+                processorList_->addItem(new QListWidgetItem(QIcon(iconName),
+                                        QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
+            }
+        }
     }
-
-    setWidget(processorList_);
 }
 
-ProcessorListWidget::~ProcessorListWidget() {}
 
 void ProcessorList::mousePressEvent(QMouseEvent* e) {
     if (e->buttons() & Qt::LeftButton)
@@ -40,7 +71,6 @@ void ProcessorList::mouseMoveEvent(QMouseEvent* e) {
             new ProcessorDragObject(this, selectedProcessor->text());
     }
 }
-
 
 
 static QString mimeType = "inviwo/ProcessorDragObject";

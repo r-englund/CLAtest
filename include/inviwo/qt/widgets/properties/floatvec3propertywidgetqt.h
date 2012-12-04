@@ -30,6 +30,7 @@ public slots:
     void setXValue(int value);
     void setYValue(int value);
     void setZValue(int value);
+    void setPropertyValue();
 };
 
 } // namespace

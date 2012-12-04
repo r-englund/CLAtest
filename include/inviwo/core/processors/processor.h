@@ -20,14 +20,14 @@ public:
     virtual ~Processor();
 
     enum CodeState {
+        CODE_STATE_BROKEN,
         CODE_STATE_EXPERIMENTAL,
-        CODE_STATE_TESTING,
         CODE_STATE_STABLE
     };
 
     virtual std::string getClassName() const { return "Processor"; }
     virtual std::string getCategory() const { return "undefined"; }
-    virtual CodeState getCodeState() const { return codeState_; }
+    virtual CodeState getCodeState() const { return CODE_STATE_EXPERIMENTAL; }
     virtual Processor* create() const;
 
     void setIdentifier(const std::string& identifier) { identifier_ = identifier; }
@@ -81,7 +81,6 @@ protected:
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 
 private:
-    CodeState codeState_;
     std::string identifier_;
     std::vector<Port*> inports_;
     std::vector<Port*> outports_;

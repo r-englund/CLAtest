@@ -4,6 +4,7 @@
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/imageport.h"
 #include "inviwo/core/ports/volumeport.h"
+#include "inviwo/core/properties/properties.h"
 #include "modules/opengl/inviwoopengl.h"
 #include "modules/opengl/processorgl.h"
 #include "modules/opengl/volumegl.h"
@@ -11,30 +12,33 @@
 
 namespace inviwo {
 
-    class SimpleRaycaster : public ProcessorGL {
-    public:
-        SimpleRaycaster();
-        ~SimpleRaycaster();
-        virtual Processor* create() const;
+class SimpleRaycaster : public ProcessorGL {
+public:
+    SimpleRaycaster();
+    ~SimpleRaycaster();
+    virtual Processor* create() const;
 
-        void initialize();
-        void deinitialize();
+    void initialize();
+    void deinitialize();
 
-        virtual std::string getClassName() const { return "SimpleRaycaster"; }
-        virtual std::string getCategory() const  { return "Ray Caster"; }
-        virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
+    virtual std::string getClassName() const { return "SimpleRaycaster"; }
+    virtual std::string getCategory() const  { return "Ray Caster"; }
+    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
-    protected:
-        virtual void process();
+protected:
+    virtual void process();
 
-    private:
-        VolumePort volumePort_;
-        ImagePort entryPort_;
-        ImagePort exitPort_;
-        ImagePort outport_;
+private:
+    VolumePort volumePort_;
+    ImagePort entryPort_;
+    ImagePort exitPort_;
+    ImagePort outport_;
 
-        Shader* shader_;
-    };
+    BoolProperty enableShading_;
+    FloatProperty samplingRate_;
+
+    Shader* shader_;
+};
 
 } // namespace
 

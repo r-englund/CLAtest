@@ -21,7 +21,7 @@ public:
 
     virtual std::string getClassName() const { return "ImageSource"; }
     virtual std::string getCategory() const  { return "Data Source Processor"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
+    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     virtual void process();

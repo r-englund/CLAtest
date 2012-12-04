@@ -52,6 +52,12 @@ void FloatVec3PropertyWidgetQt::setZValue(int value) {
     property_->set(valueVec3);
 }
 
+void FloatVec3PropertyWidgetQt::setPropertyValue() {
+    setXValue(sliderX_->value());
+    setYValue(sliderY_->value());
+    setZValue(sliderZ_->value());
+}
+
 void FloatVec3PropertyWidgetQt::updateFromProperty() {
     vec3 valueVec3 = property_->get();
     int valueX = sliderX_->minimum() + static_cast<int>(ceilf(valueVec3.x * (sliderX_->maximum()-sliderX_->minimum())));

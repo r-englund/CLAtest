@@ -55,7 +55,7 @@ void CameraProperty::updateProjectionMatrix() {
 }
 
 void CameraProperty::updateViewMatrix() {
-    viewMatrix_ = glm::lookAt( lookTo_.get(), lookFrom_.get(), lookUp_.get());
+    viewMatrix_ = glm::lookAt(lookTo_.get(), lookFrom_.get(), lookUp_.get());
 }
 
 void CameraProperty::invalidate() {
@@ -68,6 +68,10 @@ void CameraProperty::serialize(IvwSerializer& s) const {
     s.serialize("lookFrom", lookFrom_);
     s.serialize("lookTo", lookTo_);
     s.serialize("lookUp", lookUp_);
+    s.serialize("fovy", fovy_);
+    s.serialize("aspectRatio", aspectRatio_);
+    s.serialize("nearPlane", nearPlane_);
+    s.serialize("farPlane", farPlane_);
 }
 
 void CameraProperty::deserialize(IvwDeserializer& d) {
@@ -75,6 +79,10 @@ void CameraProperty::deserialize(IvwDeserializer& d) {
     d.deserialize("lookFrom", lookFrom_);
     d.deserialize("lookTo", lookTo_);
     d.deserialize("lookUp", lookUp_);
+    d.deserialize("fovy", fovy_);
+    d.deserialize("aspectRatio", aspectRatio_);
+    d.deserialize("nearPlane", nearPlane_);
+    d.deserialize("farPlane", farPlane_);
 }
 
 } // namespace

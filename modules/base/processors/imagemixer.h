@@ -20,7 +20,7 @@ public:
 
     virtual std::string getClassName() const { return "ImageMixer"; }
     virtual std::string getCategory() const  { return "Compositer"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
+    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     virtual void process();

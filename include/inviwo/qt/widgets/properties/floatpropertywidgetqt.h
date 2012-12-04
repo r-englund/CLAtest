@@ -25,7 +25,7 @@ private:
     void generateWidget();
 
 public slots:
-    void setPropertyValue(int value);
+    void setPropertyValue();
 };
 
 } // namespace

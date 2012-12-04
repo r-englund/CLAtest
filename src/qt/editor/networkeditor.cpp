@@ -287,7 +287,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     startProcessor_ = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(e->scenePos()));
 
     //Link mode
-    if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
+    if (e->modifiers() == Qt::ControlModifier) {
        if (startProcessor_) {
            QRectF processorRect = startProcessor_->rect();
            processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
@@ -306,7 +306,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         if (startPort_ && startPort_->isOutport()) {
             QRectF portRect = startProcessor_->calculatePortRect(startPort_);
             portRect = startProcessor_->mapToScene(portRect).boundingRect();
-            connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(), verticalLayout_);
+            connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(), verticalLayout_, startPort_->getColorCode());
             connectionCurve_->setZValue(2.0);
             addItem(connectionCurve_);
             connectionCurve_->show();

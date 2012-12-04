@@ -83,15 +83,16 @@ void EntryExitPoints::renderBoundingBox(vec3 llf, vec3 urb) {
 }
 
 void EntryExitPoints::process() {
-    
     glEnable(GL_CULL_FACE);    
 
     glMatrixMode(GL_PROJECTION);
+    //camera_.updateProjectionMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
+    //camera_.updateViewMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
 
     // generate entry points

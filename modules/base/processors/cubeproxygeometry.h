@@ -21,7 +21,7 @@ public:
 
     virtual std::string getClassName() const { return "CubeProxygeometry"; }
     virtual std::string getCategory() const  { return "Proxy Geometry"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
+    virtual CodeState getCodeState() const   { return CODE_STATE_BROKEN; }
 
 protected:
     virtual void process();

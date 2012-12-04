@@ -12,13 +12,13 @@ void FloatPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     slider_ = new QSlider();
     slider_->setOrientation(Qt::Horizontal);
-    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue(int)));
+    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     hLayout->addWidget(slider_);
     setLayout(hLayout);
 }
 
-void FloatPropertyWidgetQt::setPropertyValue(int value) {
-    float valuef = (static_cast<float>(value)-slider_->minimum()) / (slider_->maximum()-slider_->minimum());
+void FloatPropertyWidgetQt::setPropertyValue() {
+    float valuef = (static_cast<float>(slider_->value())-slider_->minimum()) / (slider_->maximum()-slider_->minimum());
     property_->set(valuef);
 }
 

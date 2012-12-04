@@ -18,7 +18,7 @@ public:
     void updateFromProperty();
 
 public slots:
-    void setPropertyValue(int value);
+    void setPropertyValue();
 
 private:
     CameraProperty* property_;

@@ -1,11 +1,15 @@
 #include "inviwo/qt/widgets/properties/propertywidgetfactoryqt.h"
 
+#include "inviwo/core/properties/boolproperty.h"
 #include "inviwo/core/properties/cameraproperty.h"
+#include "inviwo/core/properties/compositeproperty.h"
 #include "inviwo/core/properties/fileproperty.h"
 #include "inviwo/core/properties/scalarproperties.h"
 #include "inviwo/core/properties/vectorproperties.h"
 
+#include "inviwo/qt/widgets/properties/boolpropertywidgetqt.h"
 #include "inviwo/qt/widgets/properties/camerapropertywidgetqt.h"
+#include "inviwo/qt/widgets/properties/compositepropertywidgetqt.h"
 #include "inviwo/qt/widgets/properties/filepropertywidgetqt.h"
 #include "inviwo/qt/widgets/properties/floatpropertywidgetqt.h"
 #include "inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h"
@@ -18,8 +22,12 @@ const std::string PropertyWidgetFactoryQt::logSource_ = "PropertyWidgetFactoryQt
 PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
 
 PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
-    if (dynamic_cast<CameraProperty*>(property))
-        return new CameraPropertyWidgetQt(static_cast<CameraProperty*>(property));
+    //if (dynamic_cast<CameraProperty*>(property))
+    //    return new CameraPropertyWidgetQt(static_cast<CameraProperty*>(property));
+    if (dynamic_cast<BoolProperty*>(property))
+        return new BoolPropertyWidgetQt(static_cast<BoolProperty*>(property));
+    if (dynamic_cast<CompositeProperty*>(property))
+        return new CompositePropertyWidgetQt(static_cast<CompositeProperty*>(property));
     if (dynamic_cast<FileProperty*>(property))
         return new FilePropertyWidgetQt(static_cast<FileProperty*>(property));
     if (dynamic_cast<FloatProperty*>(property))

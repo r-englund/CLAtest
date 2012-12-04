@@ -15,12 +15,12 @@ void CameraPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     slider_ = new QSlider();
     slider_->setOrientation(Qt::Horizontal);
-    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue(int)));
+    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     hLayout->addWidget(slider_);
     setLayout(hLayout);
 }
 
-void CameraPropertyWidgetQt::setPropertyValue(int value) {
+void CameraPropertyWidgetQt::setPropertyValue() {
 }
 
 void CameraPropertyWidgetQt::updateFromProperty() {
