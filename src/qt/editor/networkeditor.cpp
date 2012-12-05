@@ -105,7 +105,7 @@ void NetworkEditor::addLink(ProcessorLink *link) {
     outProcessorItem = getProcessorGraphicsItem(outProcessor->getIdentifier());
     inProcessorItem = getProcessorGraphicsItem(inProcessor->getIdentifier());
 
-    initializeLinkRepresentation(outProcessorItem, inProcessorItem) ;
+    initializeLinkRepresentation(outProcessorItem, inProcessorItem);
 }
 
 void NetworkEditor::addLink(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor) {
@@ -292,6 +292,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
            QRectF processorRect = startProcessor_->rect();
            processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
 
+           if (linkCurve_) delete linkCurve_;
            linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos(), verticalLayout_);
            linkCurve_->setZValue(2.0);
            addItem(linkCurve_);
@@ -487,6 +488,11 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             removeLink(linkConnectionGraphicsItem);
         else if (result == editAction) {
             //Show link edit dialog
+            Processor* inProcessor = linkConnectionGraphicsItem->getInProcessor()->getProcessor();
+            Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessor()->getProcessor();
+
+            LinkDialog* linkDialog = new LinkDialog(inProcessor, outProcessor, processorNetwork_, 0);
+            linkDialog->exec();
         }
         else if (result == linkAction) {
             Processor* inProcessor = linkConnectionGraphicsItem->getInProcessor()->getProcessor();

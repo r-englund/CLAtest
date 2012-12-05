@@ -53,7 +53,8 @@ HEADERS += \
     ../../../include/inviwo/qt/editor/processorlistwidget.h \
     ../../../include/inviwo/qt/editor/processorgraphicsitem.h \
     ../../../include/inviwo/qt/editor/processorpropertywidget.h \
-    ../../../include/inviwo/qt/editor/propertylistwidget.h
+    ../../../include/inviwo/qt/editor/propertylistwidget.h \
+    ../../../include/inviwo/qt/editor/linkdialog.h	
 
 SOURCES += \
     consolewidget.cpp \
@@ -66,7 +67,8 @@ SOURCES += \
     processorlistwidget.cpp \
     processorgraphicsitem.cpp \
     processorpropertywidget.cpp \
-    propertylistwidget.cpp
+    propertylistwidget.cpp \
+    linkdialog.cpp
         
 HEADERS = $$unique(HEADERS)
 SOURCES = $$unique(SOURCES)

@@ -6,6 +6,29 @@
 
 namespace inviwo {
 
+class PropertyLink : public IvwSerializable {
+public :
+    PropertyLink();
+    PropertyLink(Property* srcProperty, Property* dstProperty, bool biDirectional=false);
+    virtual ~PropertyLink();
+    
+    void setSourceProperty(Property* src) { srcProperty_=src; }
+    void setDestinationProperty(Property* dst) { dstProperty_=dst; }
+    void setBirectional(bool biDirectional) {isBidirectional_ = biDirectional;}
+
+    Property* getSourceProperty() const{ return srcProperty_; }
+    Property* getDestinationProperty() const{ return dstProperty_; }
+    bool isBidirectional() {return isBidirectional_;}   
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& s);
+
+private:
+    Property* srcProperty_;
+    Property* dstProperty_;
+    bool isBidirectional_;
+};
+
 class ProcessorLink : public IvwSerializable {
 
 public:    
@@ -18,6 +41,10 @@ public:
     Processor* getOutProcessor() const{ return outProcessor_.getProcessor(); }
 
     void autoLinkPropertiesByType();
+    bool isLinked(Property* startProperty, Property* endProperty);
+
+    void addPropertyLinks(Property* startProperty, Property* endProperty);    
+    std::vector<PropertyLink*> getPropertyLinks() {return propertyLinks_;} 
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
@@ -38,6 +65,7 @@ private:
 
    SlimProcessor inProcessor_;
    SlimProcessor outProcessor_;
+   std::vector<PropertyLink*> propertyLinks_;
 };
 
 } // namespace

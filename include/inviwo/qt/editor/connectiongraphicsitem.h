@@ -13,7 +13,7 @@ namespace inviwo {
 class CurveGraphicsItem : public QGraphicsItem {
 
 public:
-    CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption=true, ivec3 color=ivec3(38,38,38), bool dragMode=true);
+    CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption=true, ivec3 color=ivec3(38,38,38), bool dragOrDrawMode_=true);
     ~CurveGraphicsItem();
 
     virtual QPainterPath shape() const;
@@ -31,21 +31,20 @@ public:
     /**
      * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
      */
-    void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     QRectF boundingRect() const;
 
 protected:
     void setLayoutOption(bool layoutOption) {verticalLayout_=layoutOption;}
     bool getLayoutOption() {return verticalLayout_;}
+    virtual QPainterPath obtainCurvePath() const;
 
 private:
     QPointF startPoint_;
     QPointF endPoint_;
     bool verticalLayout_;
     QColor color_;
-    bool dragMode_;
-
-    QPainterPath obtainCurvePath() const;
+    bool dragOrDrawMode_;
 };
 
 

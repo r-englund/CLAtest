@@ -6,9 +6,9 @@
     <file>icons/network_open.png</file>
     <file>icons/network_save.png</file>
     <file>icons/network_saveas.png</file>
-    <file>icons/processor_broken.png</file>
-    <file>icons/processor_experimental.png</file>
-    <file>icons/processor_stable.png</file>
+    <file>icons/arrow_left.png</file>
+    <file>icons/arrow_right.png</file>
+    <file>icons/arrow_bidirectional.png</file>
 
     <file>stylesheets/inviwo.qss</file>
     <file>stylesheets/images/arrow_down.png</file>

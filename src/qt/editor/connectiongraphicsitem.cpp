@@ -11,7 +11,7 @@ CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool 
                                        endPoint_(endPoint),
                                        verticalLayout_(layoutOption),
                                        color_(color.r, color.g, color.b),
-                                       dragMode_(dragMode){
+                                       dragOrDrawMode_(dragMode){
     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
 
     QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
@@ -44,7 +44,7 @@ void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* optio
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
 
-    if (!dragMode_) {
+    if (!dragOrDrawMode_) {
         if (isSelected()) 
             p->setPen(QPen(Qt::darkRed, 4.0, Qt::SolidLine, Qt::RoundCap));        
         else

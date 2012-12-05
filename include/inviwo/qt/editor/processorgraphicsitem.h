@@ -13,10 +13,11 @@ static const qreal PROCESSORGRAPHICSITEM_DEPTH = 1.0f;
 static const qreal CONNECTIONGRAPHICSITEM_DEPTH = 2.0f;
 static const qreal LINKGRAPHICSITEM_DEPTH = 3.0f;
 
-enum GraphicsItemType {
+enum InviwoUserGraphicsItemType {
     ProcessorGraphicsType = 1,
     ConnectionGraphicsType = 2,
     LinkGraphicsType = 3
+    //LinkDialogGraphicsType = 4
 };
 
 class ProcessorGraphicsItem : public QGraphicsRectItem {

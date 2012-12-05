@@ -10,6 +10,7 @@
 #include "processorgraphicsitem.h"
 #include "connectiongraphicsitem.h"
 #include "linkgraphicsitem.h"
+#include "linkdialog.h"
 
 namespace inviwo {
 
