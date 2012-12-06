@@ -145,6 +145,27 @@ void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endPr
     }  
 }
 
+PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* endProperty) {
+    Processor* outProcessor = outProcessor_.getProcessor();
+    Processor* inProcessor = inProcessor_.getProcessor();
+
+    //if (!isLinked(startProperty, endProperty)) return;
+    PropertyLink* plink=0;
+    if ( (startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
+        (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
+            for (size_t i=0; i<propertyLinks_.size(); i++) {
+                if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ||
+                     (propertyLinks_[i]->getSourceProperty() == endProperty && propertyLinks_[i]->getDestinationProperty() == startProperty) ) {
+
+                        plink = propertyLinks_[i];  
+                        break;
+                }
+            }
+    }
+
+    return plink;
+}
+
 
 void ProcessorLink::serialize(IvwSerializer& s) const {
     s.serialize("link", getInProcessor()->getClassName(), true);

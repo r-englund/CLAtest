@@ -201,7 +201,7 @@ void LinkDialogPropertyGraphicsItem::updatePositionBasedOnProcessor() {
     if (prop) {        
         std::vector<Property*> properties = processor->getProperties();
         for (size_t i=0; i<properties.size(); i++) {
-            if (prop == properties[i]) {                
+            if (prop == properties[i]) { 
                 break;
             }
             ind++;
@@ -438,6 +438,34 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
     }
 }
 
+bool LinkDialogGraphicsScene::isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink) {
+    LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
+    LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+
+    Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
+    Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
+
+    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+
+    PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+
+    return propLink->isBidirectional();
+}
+
+void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional) {
+    LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
+    LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+
+    Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
+    Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
+
+    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+
+    PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+
+    propLink->setBirectional(isBidirectional);
+}
+
 void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty) {
     DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, true);
     connectionGraphicsItems_.push_back(cItem);
@@ -459,12 +487,21 @@ void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e
         QAction* biDirectionAction = menu.addAction("BiDirectional");
         biDirectionAction->setCheckable(true);
 
+        if (isPropertyLinkBidirectional(linkGraphicsItem)) {
+            biDirectionAction->setChecked(true);
+        }
+        else biDirectionAction->setChecked(false);
+
+
         QAction* result = menu.exec(QCursor::pos());
         if (result == action) {
             removePropertyLink(linkGraphicsItem);
         }
-        else if (result == biDirectionAction) {
-            
+        else if (result == biDirectionAction) { 
+            if (biDirectionAction->isChecked())
+                makePropertyLinkBidirectional(linkGraphicsItem, true);
+            else
+                makePropertyLinkBidirectional(linkGraphicsItem, false);
         }
     }
 }

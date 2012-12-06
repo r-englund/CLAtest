@@ -168,6 +168,8 @@ protected:
     void addPropertyLink(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
     void removePropertyLink(DialogConnectionGraphicsItem* propertyLink);
     void addPropertyLink(PropertyLink* propertyLink);
+    bool isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink);
+    void makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional);
     
     void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
     void addProcessorsItemsToScene(Processor *prcoessor, int xPosition, int yPosition);

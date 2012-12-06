@@ -49,6 +49,7 @@ public:
     void addPropertyLinks(Property* startProperty, Property* endProperty);
     void removePropertyLinks(Property* startProperty, Property* endProperty);
     std::vector<PropertyLink*> getPropertyLinks() {return propertyLinks_;} 
+    PropertyLink* getPropertyLink(Property* startProperty, Property* endProperty);
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
