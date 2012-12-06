@@ -19,8 +19,8 @@ public:
     void connectPorts(Port* sourcePort, Port* destPort);
     void disconnectPorts(Port* sourcePort, Port* destPort);
     
-    void linkProcessors(Processor* sourceProcessor, Processor* destProcessor);
-    void unlinkProcessors(Processor* sourceProcessor, Processor* destProcessor);
+    void addLink(Processor* sourceProcessor, Processor* destProcessor);
+    void removeLink(Processor* sourceProcessor, Processor* destProcessor);
 
     ProcessorNetwork();
     virtual ~ProcessorNetwork();

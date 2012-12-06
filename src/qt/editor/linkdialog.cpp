@@ -13,6 +13,7 @@
 #include <QButtonGroup>
 #include <QVector2D>
 #include <QGraphicsSceneMouseEvent>
+#include <QMenu>
 
 #include "inviwo/qt/editor/linkdialog.h"
 
@@ -45,12 +46,14 @@ DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF end
 DialogCurveGraphicsItem::~DialogCurveGraphicsItem() { }
 
 
-DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* outProperty, 
-                                                           LinkDialogPropertyGraphicsItem* inProperty,
+DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, 
+                                                           LinkDialogPropertyGraphicsItem* endProperty,
                                                            bool layoutOption) : 
-                                                           DialogCurveGraphicsItem(outProperty->getShortestBoundaryPointTo(inProperty), 
-                                                                                   inProperty->getShortestBoundaryPointTo(outProperty), 
-                                                                                   false, ivec3(38,38,38), false)
+                                                           DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty), 
+                                                                                   endProperty->getShortestBoundaryPointTo(startProperty),
+                                                                                   false, ivec3(38,38,38), false),
+                                                           startPropertyGraphicsItem_(startProperty),
+                                                           endPropertyGraphicsItem_(endProperty)
 {
     IVW_UNUSED_PARAM(layoutOption);
     setFlags(ItemIsSelectable | ItemIsFocusable);
@@ -327,18 +330,6 @@ LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent):QGraphicsScene
 
 }
 
-QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemAt(const QPointF pos) const {    
-    QList<QGraphicsItem*> graphicsItems =items(pos);
-    if (graphicsItems.size() > 0) {
-        for (int i=0; i<graphicsItems.size(); i++) {
-            LinkDialogPropertyGraphicsItem* graphicsItem = qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(graphicsItems[i]);
-            if (graphicsItem)
-                return graphicsItem;
-        }
-    }
-    return 0;
-}
-
 QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemAt(Property* property) {
     LinkDialogPropertyGraphicsItem* graphicsItem=0;
     for (size_t i=0; i<processorGraphicsItems_.size(); i++) {
@@ -355,7 +346,7 @@ QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemAt(Property* prop
 
 void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {    
 
-    LinkDialogPropertyGraphicsItem* tempProperty = qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(e->scenePos()));
+    LinkDialogPropertyGraphicsItem* tempProperty = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
 
     if (!startProperty_ && tempProperty) {
         startProperty_ = tempProperty;
@@ -394,9 +385,9 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         delete linkCurve_;
         linkCurve_ = 0;
 
-        endProperty_ = dynamic_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(e->scenePos()));
+        endProperty_ = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
         if (endProperty_ && (endProperty_!=startProperty_)) {            
-                addPropertyLink(startProperty_, endProperty_);
+            addPropertyLink(startProperty_, endProperty_);
         }
         startProperty_ = 0;
         endProperty_ = 0;
@@ -408,9 +399,6 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 
 void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
     //LogInfo("Adding Property Link.");
-    Processor* startProcessor = dynamic_cast<Processor*>(propertyLink->getSourceProperty()->getOwner());
-    Processor* endProcessor = dynamic_cast<Processor*>(propertyLink->getDestinationProperty()->getOwner());
-
     LinkDialogPropertyGraphicsItem* startProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(propertyLink->getSourceProperty()));
     LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(propertyLink->getDestinationProperty()));
 
@@ -423,9 +411,31 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     Processor* endProcessor = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
     
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
-    processorLink->addPropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 
-    initializePorpertyLinkRepresentation(startProperty, endProperty);
+    if (!processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {
+        processorLink->addPropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+        initializePorpertyLinkRepresentation(startProperty, endProperty);
+    }
+}
+
+void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* propertyLink) {
+    //LogInfo("Removing Property Link.");
+    LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
+    LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+
+    Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
+    Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
+
+    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+
+    if (processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {      
+        processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+        propertyLink->hide();
+        removeItem(propertyLink);
+        connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(), propertyLink),
+                                       connectionGraphicsItems_.end());
+        
+    }
 }
 
 void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty) {
@@ -436,11 +446,27 @@ void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPro
 }
 
 void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* keyEvent) {
-
+    IVW_UNUSED_PARAM(keyEvent);
 }
 
 void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
+    DialogConnectionGraphicsItem* linkGraphicsItem = getSceneGraphicsItemAt<DialogConnectionGraphicsItem>(e->scenePos()) ;
+    //DialogConnectionGraphicsItem* linkGraphicsItem = qgraphicsitem_cast<DialogConnectionGraphicsItem*>(getPropertyGraphicsItemAt(e->scenePos()));
 
+    if (linkGraphicsItem) {
+        QMenu menu;
+        QAction* action = menu.addAction("Delete");
+        QAction* biDirectionAction = menu.addAction("BiDirectional");
+        biDirectionAction->setCheckable(true);
+
+        QAction* result = menu.exec(QCursor::pos());
+        if (result == action) {
+            removePropertyLink(linkGraphicsItem);
+        }
+        else if (result == biDirectionAction) {
+            
+        }
+    }
 }
 
 void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList) {
@@ -596,7 +622,13 @@ void LinkDialog::initDialog() {
 }
 
 void LinkDialog::handleButton(QAbstractButton* button) {    
-    if( button == leftButton_) {
+    if (button == leftButton_) {
+       
+    }
+    else if (button == rightButton_) {
+
+    }
+    else {
 
     }
 }

@@ -45,64 +45,19 @@ class DialogConnectionGraphicsItem : public DialogCurveGraphicsItem {
 
 public:
 
-    DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty,
-                           bool layoutOption=true);
+    DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
+                                 bool layoutOption=true);
     ~DialogConnectionGraphicsItem();
 
-    LinkDialogPropertyGraphicsItem* getOutProperty() const { return outPropertyGraphicsItem_; }
+    LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }
  
-    LinkDialogPropertyGraphicsItem* getInProperty() const { return inPropertyGraphicsItem_; }
+    LinkDialogPropertyGraphicsItem* getEndProperty() const { return endPropertyGraphicsItem_; }
 
 private:
-    LinkDialogPropertyGraphicsItem* outPropertyGraphicsItem_;
-    LinkDialogPropertyGraphicsItem* inPropertyGraphicsItem_;
+    LinkDialogPropertyGraphicsItem* startPropertyGraphicsItem_;
+    LinkDialogPropertyGraphicsItem* endPropertyGraphicsItem_;
 };
 
-
-/*---------------------------------------------------------------------------------------*/
-
-class LinkDialogGraphicsScene : public QGraphicsScene {
-public:
-    LinkDialogGraphicsScene(QWidget* parent=0);
-    ~LinkDialogGraphicsScene() {}
-    QGraphicsItem* getPropertyGraphicsItemAt(const QPointF pos) const;
-    QGraphicsItem* getPropertyGraphicsItemAt(Property* property);
-    void setNetwork(ProcessorNetwork* network) {processorNetwork_ = network;}
-
-    void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
-
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent* e);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
-    void keyPressEvent(QKeyEvent* keyEvent);
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
-    void addPropertyLink(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
-    void addPropertyLink(PropertyLink* propertyLink);
-    
-    void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
-    void addProcessorsItemsToScene(Processor *prcoessor, int xPosition, int yPosition);
-
-private:
-    DialogCurveGraphicsItem* linkCurve_;
-    LinkDialogPropertyGraphicsItem* startProperty_;
-    LinkDialogPropertyGraphicsItem* endProperty_;
-
-    std::vector<LinkDialogProcessorGraphicsItem*> processorGraphicsItems_;
-    std::vector<DialogConnectionGraphicsItem*> connectionGraphicsItems_;
-    
-    ProcessorNetwork* processorNetwork_;
-};
-
-
-/*---------------------------------------------------------------------------------------*/
-
-class LinkDialogGraphicsView : public QGraphicsView {
-public:
-    LinkDialogGraphicsView(QWidget* parent=0);
-    ~LinkDialogGraphicsView();
-    void setDialogScene(LinkDialogGraphicsScene* scene);
-};
 
 /*---------------------------------------------------------------------------------------*/
 
@@ -173,9 +128,68 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
-    
+
     LabelGraphicsItem* classLabel_;
     LinkDialogProcessorGraphicsItem* processorGraphicsItem_;
+};
+
+/*---------------------------------------------------------------------------------------*/
+
+
+class LinkDialogGraphicsScene : public QGraphicsScene {
+public:
+    LinkDialogGraphicsScene(QWidget* parent=0);
+    ~LinkDialogGraphicsScene() {}
+
+    template <typename T>
+    T* getSceneGraphicsItemAt(const QPointF pos) const {    
+        QList<QGraphicsItem*> graphicsItems =items(pos);
+        if (graphicsItems.size() > 0) {
+            for (int i=0; i<graphicsItems.size(); i++) {
+                T* graphicsItem = qgraphicsitem_cast<T*>(graphicsItems[i]);
+                if (graphicsItem)
+                    return graphicsItem;
+            }
+        }
+        return 0;
+    }
+    
+    QGraphicsItem* getPropertyGraphicsItemAt(Property* property);
+    void setNetwork(ProcessorNetwork* network) {processorNetwork_ = network;}
+
+    void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* e);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
+    void keyPressEvent(QKeyEvent* keyEvent);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
+    void addPropertyLink(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
+    void removePropertyLink(DialogConnectionGraphicsItem* propertyLink);
+    void addPropertyLink(PropertyLink* propertyLink);
+    
+    void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
+    void addProcessorsItemsToScene(Processor *prcoessor, int xPosition, int yPosition);
+
+private:
+    DialogCurveGraphicsItem* linkCurve_;
+    LinkDialogPropertyGraphicsItem* startProperty_;
+    LinkDialogPropertyGraphicsItem* endProperty_;
+
+    std::vector<LinkDialogProcessorGraphicsItem*> processorGraphicsItems_;
+    std::vector<DialogConnectionGraphicsItem*> connectionGraphicsItems_;
+    
+    ProcessorNetwork* processorNetwork_;
+};
+
+/*---------------------------------------------------------------------------------------*/
+
+class LinkDialogGraphicsView : public QGraphicsView {
+public:
+    LinkDialogGraphicsView(QWidget* parent=0);
+    ~LinkDialogGraphicsView();
+    void setDialogScene(LinkDialogGraphicsScene* scene);
 };
 
 /*---------------------------------------------------------------------------------------*/

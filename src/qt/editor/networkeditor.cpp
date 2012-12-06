@@ -111,18 +111,18 @@ void NetworkEditor::addLink(ProcessorLink *link) {
 void NetworkEditor::addLink(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor) {
     LogInfo("Adding link.");
     // create link in data flow network
-    processorNetwork_->linkProcessors(outProcessor->getProcessor(), inProcessor->getProcessor());
+    processorNetwork_->addLink(outProcessor->getProcessor(), inProcessor->getProcessor());
     initializeLinkRepresentation(outProcessor, inProcessor);
 }
 
 void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
     LogInfo("Removing link.");
     // remove GUI representation from editor
-    processorNetwork_->unlinkProcessors(linkGraphicsItem->getOutProcessor()->getProcessor(), linkGraphicsItem->getInProcessor()->getProcessor());
+    processorNetwork_->removeLink(linkGraphicsItem->getOutProcessor()->getProcessor(), linkGraphicsItem->getInProcessor()->getProcessor());
     linkGraphicsItem->hide();
     removeItem(linkGraphicsItem);
-    linkGraphicsItems_.erase(std::remove(linkGraphicsItems_.begin(), linkGraphicsItems_.end(),
-        linkGraphicsItem), linkGraphicsItems_.end());
+    linkGraphicsItems_.erase(std::remove(linkGraphicsItems_.begin(), linkGraphicsItems_.end(), linkGraphicsItem),
+                             linkGraphicsItems_.end());
     processorNetworkEvaluator_->evaluate();
 }
 

@@ -37,7 +37,13 @@ PropertyLink::PropertyLink(Property* srcProperty, Property* destProperty, bool b
               : srcProperty_(srcProperty), dstProperty_(destProperty),
                 isBidirectional_(biDirectional){
 
-}  
+}
+
+void PropertyLink::switchDirection() {
+    Property* tempProperty = srcProperty_;
+    srcProperty_ = dstProperty_;
+    dstProperty_ = tempProperty;
+}
 
 void PropertyLink::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
@@ -72,11 +78,30 @@ void ProcessorLink::autoLinkPropertiesByType() {
     }
 }
 
+void ProcessorLink::evaluate() {
+    Property* startProperty;
+    Property* endProperty;
+
+    Processor* outProcessor = outProcessor_.getProcessor();
+    Processor* inProcessor = inProcessor_.getProcessor();
+
+    //Evaluate only if processors/properties are invalid
+    if (outProcessor->isValid() && inProcessor->isValid())
+        return;
+
+    LinkEvaluator leval;
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        startProperty = propertyLinks_[i]->getSourceProperty();
+        endProperty = propertyLinks_[i]->getDestinationProperty();
+        leval.evaluate(startProperty, endProperty);
+    }
+}
+
 bool ProcessorLink::isLinked(Property* startProperty, Property* endProperty) {
     bool isLinkFound = false;
     for (size_t i=0; i<propertyLinks_.size(); i++) {
         if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ||
-            (propertyLinks_[i]->getSourceProperty() == endProperty && propertyLinks_[i]->getDestinationProperty() == startProperty) ) {
+             (propertyLinks_[i]->getSourceProperty() == endProperty && propertyLinks_[i]->getDestinationProperty() == startProperty) ) {
                 isLinkFound = true;
                 break;
         }
@@ -89,11 +114,37 @@ void ProcessorLink::addPropertyLinks(Property* startProperty, Property* endPrope
     Processor* outProcessor = outProcessor_.getProcessor();
     Processor* inProcessor = inProcessor_.getProcessor();
 
+    if (isLinked(startProperty, endProperty)) return;
+
     if ( (startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
          (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
-        propertyLinks_.push_back(new PropertyLink(startProperty, endProperty));
+            propertyLinks_.push_back(new PropertyLink(startProperty, endProperty));
     }  
 }
+
+void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endProperty) {
+    //do assertion     
+    Processor* outProcessor = outProcessor_.getProcessor();
+    Processor* inProcessor = inProcessor_.getProcessor();
+
+    //if (!isLinked(startProperty, endProperty)) return;
+
+    if ( (startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
+        (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
+         
+            for (size_t i=0; i<propertyLinks_.size(); i++) {
+                if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ||
+                    (propertyLinks_[i]->getSourceProperty() == endProperty && propertyLinks_[i]->getDestinationProperty() == startProperty) ) {
+                        
+                        PropertyLink* plink = propertyLinks_[i];
+                        propertyLinks_.erase(propertyLinks_.begin()+i);
+                        delete plink;
+                        break;
+                }
+            }
+    }  
+}
+
 
 void ProcessorLink::serialize(IvwSerializer& s) const {
     s.serialize("link", getInProcessor()->getClassName(), true);

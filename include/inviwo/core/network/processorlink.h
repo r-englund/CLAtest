@@ -18,7 +18,9 @@ public :
 
     Property* getSourceProperty() const{ return srcProperty_; }
     Property* getDestinationProperty() const{ return dstProperty_; }
-    bool isBidirectional() {return isBidirectional_;}   
+
+    bool isBidirectional() {return isBidirectional_;}
+    void switchDirection();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
@@ -41,9 +43,11 @@ public:
     Processor* getOutProcessor() const{ return outProcessor_.getProcessor(); }
 
     void autoLinkPropertiesByType();
+    void evaluate();
     bool isLinked(Property* startProperty, Property* endProperty);
 
-    void addPropertyLinks(Property* startProperty, Property* endProperty);    
+    void addPropertyLinks(Property* startProperty, Property* endProperty);
+    void removePropertyLinks(Property* startProperty, Property* endProperty);
     std::vector<PropertyLink*> getPropertyLinks() {return propertyLinks_;} 
 
     virtual void serialize(IvwSerializer& s) const;
