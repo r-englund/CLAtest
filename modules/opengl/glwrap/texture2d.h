@@ -21,7 +21,7 @@ public:
         bind();
         image_t temp_image;
         tgaLoad((char*)(fileName.c_str()), &temp_image, TGA_FREE | TGA_LOW_QUALITY);
-        dimensions = ivec2(temp_image.info.width, temp_image.info.height );
+        dimensions = ivec2(temp_image.info.width, temp_image.info.height);
     }
 
     void setTexels(GLubyte* texels) { texels_ = texels; }

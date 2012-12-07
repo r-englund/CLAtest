@@ -40,7 +40,7 @@ void ImageSource::process() {
 
     shader_->activate();
     shader_->setUniform("colorTex_", 0);
-    shader_->setUniform("dimension_", vec2( 1.f /csize[0],  1.f /csize[1]) );
+    shader_->setUniform("dimension_", vec2(1.f/csize[0],  1.f/csize[1]));
     renderImagePlaneQuad();
     shader_->deactivate();
 

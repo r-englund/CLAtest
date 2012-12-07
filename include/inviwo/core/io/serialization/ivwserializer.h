@@ -29,6 +29,7 @@ public:
     void serialize(const std::string &key, const double &data);
     void serialize(const std::string &key, const bool &data);
     void serialize(const std::string &key, const int &data);
+    void serialize(const std::string &key, const long &data);
     void serialize(const std::string &key, const vec2 &data);
     void serialize(const std::string &key, const vec3 &data);
     void serialize(const std::string &key, const vec4 &data);
