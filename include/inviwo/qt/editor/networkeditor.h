@@ -50,11 +50,10 @@ public:
 
     void clearNetwork();
 
-    void setVerticalNetworkLayout(bool layoutOption);
-
     void drawBackground(QPainter* painter, const QRectF& rect);
 
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator();
+    ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
     QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
@@ -97,7 +96,6 @@ private:
     Port* startPort_;
     Port* endPort_;
 
-    bool verticalLayout_;
     bool gridSnapping_;
     
     static const std::string logSource_; ///< Source string to be displayed for log messages.

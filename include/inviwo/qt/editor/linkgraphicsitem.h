@@ -13,7 +13,7 @@ namespace inviwo {
 class LinkGraphicsItem : public QGraphicsItem {
 
 public:
-    LinkGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption=true, ivec3 color=ivec3(38,38,38), bool dragMode=true);
+    LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool dragMode=true);
     ~LinkGraphicsItem();
 
     virtual QPainterPath shape() const;
@@ -34,14 +34,9 @@ public:
     enum { Type = UserType + LinkGraphicsType };
     int type() const  {return Type; }
 
-protected:
-    void setLayoutOption(bool layoutOption) {verticalLayout_=layoutOption;}
-    bool getLayoutOption() {return verticalLayout_;}
-
 private:
     QPointF startPoint_;
     QPointF endPoint_;
-    bool verticalLayout_;
     QColor color_;
     bool dragMode_;
 
@@ -68,8 +63,7 @@ public:
      * @param inProcessor Graphical representation of the destination processor.
      * @param inport Destination port.
      */
-    LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor,
-                           bool layoutOption=true);
+    LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
     ~LinkConnectionGraphicsItem();
 
     /**

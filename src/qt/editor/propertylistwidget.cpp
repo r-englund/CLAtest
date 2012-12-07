@@ -8,6 +8,7 @@ namespace inviwo {
 PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 
 PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent) {
+    setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     setMinimumWidth(300);
     propertyListWidget_ = this;

@@ -29,7 +29,6 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     endProcessor_ = 0;
     setSceneRect(-1000,-1000,1000,1000);
     gridSnapping_ = true;
-    verticalLayout_ = true;
 
     processorNetwork_ = new ProcessorNetwork();
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
@@ -60,7 +59,7 @@ void NetworkEditor::initializeConnectionRepresentation(ProcessorGraphicsItem* ou
                                                        ProcessorGraphicsItem* inProcessor, Port* inport) {
 
     // generate GUI representation and add to editor
-    ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(outProcessor, outport, inProcessor, inport, verticalLayout_);
+    ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(outProcessor, outport, inProcessor, inport);
     connectionGraphicsItems_.push_back(connectionGraphicsItem);
     addItem(connectionGraphicsItem);
     connectionGraphicsItem->show();
@@ -69,7 +68,7 @@ void NetworkEditor::initializeConnectionRepresentation(ProcessorGraphicsItem* ou
 
 void NetworkEditor::initializeLinkRepresentation(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor) {
 
-    LinkConnectionGraphicsItem* linkGraphicsItem = new LinkConnectionGraphicsItem(outProcessor, inProcessor, verticalLayout_);
+    LinkConnectionGraphicsItem* linkGraphicsItem = new LinkConnectionGraphicsItem(outProcessor, inProcessor);
     linkGraphicsItems_.push_back(linkGraphicsItem);
     addItem(linkGraphicsItem);
     linkGraphicsItem->show();
@@ -168,7 +167,7 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
     processor->createProcessorWidget();
 
     // generate GUI representation and add to editor
-    ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem(verticalLayout_);
+    ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem();
     processorGraphicsItem->setProcessor(processor);
     // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
     if (gridSnapping_) pos = snapToGrid(pos);
@@ -293,7 +292,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
            processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
 
            if (linkCurve_) delete linkCurve_;
-           linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos(), verticalLayout_);
+           linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos());
            linkCurve_->setZValue(2.0);
            addItem(linkCurve_);
            linkCurve_->show();          
@@ -307,7 +306,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         if (startPort_ && startPort_->isOutport()) {
             QRectF portRect = startProcessor_->calculatePortRect(startPort_);
             portRect = startProcessor_->mapToScene(portRect).boundingRect();
-            connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(), verticalLayout_, startPort_->getColorCode());
+            connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(), startPort_->getColorCode());
             connectionCurve_->setZValue(2.0);
             addItem(connectionCurve_);
             connectionCurve_->show();
@@ -326,7 +325,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 QPointF startPoint = connectionGraphicsItem->getStartPoint();
                 startProcessor_ = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(startPoint));
                 removeConnection(connectionGraphicsItem);
-                connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(), verticalLayout_);
+                connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos());
                 connectionCurve_->setZValue(2.0);
                 addItem(connectionCurve_);
                 connectionCurve_->show();
@@ -558,6 +557,7 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
     IvwSerializer xmlSerializer(fileName);
     //xmlSerializer.serialize("NetworkEditor", *this) ;
     processorNetwork_->serialize(xmlSerializer);
+    processorNetwork_->setModified(false);
 
     xmlSerializer.writeFile(std::cout);
     
@@ -590,19 +590,9 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
         addLink(*it) ;
     }
     
+    processorNetwork_->setModified(false);
+
     return true;
-}
-
-void NetworkEditor::setVerticalNetworkLayout(bool layoutOption) {
-    for (size_t i=0; i<processorGraphicsItems_.size(); i++) {
-        processorGraphicsItems_[i]->flipLayout();
-    }
-
-    for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
-        connectionGraphicsItems_[i]->flipLayout();
-    }
-
-    verticalLayout_ = layoutOption;
 }
 
 } // namespace

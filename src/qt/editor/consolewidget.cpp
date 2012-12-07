@@ -5,6 +5,7 @@
 namespace inviwo {
 
 ConsoleWidget::ConsoleWidget(QWidget* parent) : InviwoDockWidget(tr("Console"), parent) {
+    setObjectName("ConsoleWidget");
     setAllowedAreas(Qt::BottomDockWidgetArea);
 
     textField_ = new QTextEdit(this);

@@ -41,15 +41,17 @@ InviwoMainWindow::InviwoMainWindow() {
     addMenus();
     addMenuActions();
 
-    setWindowTitle("Inviwo - Interactive Visualization Workshop");
-
-    rootDir_ = QString::fromStdString(IVW_DIR+"data/");
-    networkFileDir_ = rootDir_ + "workspaces/";
-
-    // restore window state
-    QSettings settings;
+    // load settings and restore window state
+    QSettings settings("Inviwo", "Inviwo");
     restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
     restoreState(settings.value("mainWindowState").toByteArray());
+
+    // restore previous files
+    rootDir_ = QString::fromStdString(IVW_DIR+"data/");
+    networkFileDir_ = rootDir_ + "workspaces/";
+    recentFileList_ = settings.value("recentFileList").toStringList();
+    updateRecentNetworks();
+    newNetwork();
 }
 
 InviwoMainWindow::~InviwoMainWindow() {}
@@ -85,19 +87,61 @@ void InviwoMainWindow::addMenuActions() {
     connect(saveAsFileAction_, SIGNAL(triggered()), this, SLOT(saveNetworkAs()));
     fileMenuItem_->addAction(saveAsFileAction_);
 
+    recentFileSeparator_ = fileMenuItem_->addSeparator();
+    for (int i=0; i<maxNumRecentFiles_; i++) {
+        recentFileActions_[i] = new QAction(this);
+        recentFileActions_[i]->setVisible(false);
+        connect(recentFileActions_[i], SIGNAL(triggered()), this, SLOT(openRecentNetwork()));
+        fileMenuItem_->addAction(recentFileActions_[i]);
+    }
+}
 
-    changeNetworkLayoutAction_ = new QAction(tr("&Vertical Network Layout"),  this);    
-    connect(changeNetworkLayoutAction_, SIGNAL(triggered()), this, SLOT(changeNetworkLayout()));
-    viewMenuItem_->addAction(changeNetworkLayoutAction_);
-    changeNetworkLayoutAction_->setCheckable(true);
-    changeNetworkLayoutAction_->setChecked(true);
+void InviwoMainWindow::updateWindowTitle() {
+    QString windowTitle = QString("Inviwo - Interactive Visualization Workshop - ");
+    windowTitle.append(currentNetworkFileName_);
+    if (networkEditorView_->getNetworkEditor()->getProcessorNetwork()->isModified())
+        windowTitle.append("*");
+    setWindowTitle(windowTitle);
+}
+
+void InviwoMainWindow::updateRecentNetworks() {
+    for (int i=0; i<recentFileList_.size(); i++) {
+        if (!recentFileList_[i].isEmpty()) {
+            QString menuEntry = tr("&%1 %2").arg(i + 1).arg(QFileInfo(recentFileList_[i]).fileName());
+            recentFileActions_[i]->setText(menuEntry);
+            recentFileActions_[i]->setData(recentFileList_[i]);
+            recentFileActions_[i]->setVisible(true);
+        } else recentFileActions_[i]->setVisible(false);
+    }
+    recentFileSeparator_->setVisible(recentFileList_.size() > 0);
+}
+
+void InviwoMainWindow::addToRecentNetworks(QString networkFileName) {
+    recentFileList_.removeAll(networkFileName);
+    recentFileList_.prepend(networkFileName);
+    if (recentFileList_.size() > maxNumRecentFiles_)
+        recentFileList_.removeLast();
+    updateRecentNetworks();
+}
+
+void InviwoMainWindow::setCurrentNetwork(QString networkFileName) {
+    networkFileDir_ = QFileInfo(networkFileName).absolutePath();
+    currentNetworkFileName_ = networkFileName;
+    updateWindowTitle();
 }
 
 void InviwoMainWindow::newNetwork() {
     networkEditorView_->getNetworkEditor()->clearNetwork();
+    setCurrentNetwork(rootDir_ + "workspaces/untitled.inv");
 }
 
-bool InviwoMainWindow::openNetwork() {
+void InviwoMainWindow::openNetwork(QString networkFileName) {
+    networkEditorView_->getNetworkEditor()->loadNetwork(networkFileName.toStdString());
+    setCurrentNetwork(networkFileName);
+    addToRecentNetworks(networkFileName);
+}
+
+void InviwoMainWindow::openNetwork() {
     // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
@@ -113,19 +157,23 @@ bool InviwoMainWindow::openNetwork() {
     openFileDialog.setSidebarUrls(sidebarURLs);
 
     if (openFileDialog.exec()) {
-        bool valid;
         QString path = openFileDialog.selectedFiles().at(0);
-        if (!path.endsWith(".inv"))
-            valid = networkEditorView_->getNetworkEditor()->loadNetwork(path.toStdString() + ".inv");
-        else
-            valid = networkEditorView_->getNetworkEditor()->loadNetwork(path.toStdString());
-        networkFileDir_ = openFileDialog.directory().path();
-        return valid;
-    } else
-        return false;
+        openNetwork(path);
+    }
 }
 
-bool InviwoMainWindow::saveNetwork() {
+void InviwoMainWindow::openRecentNetwork() {
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action)
+        openNetwork(action->data().toString());
+}
+
+void InviwoMainWindow::saveNetwork() {
+    networkEditorView_->getNetworkEditor()->saveNetwork(currentNetworkFileName_.toStdString());
+    updateWindowTitle();
+}
+
+void InviwoMainWindow::saveNetworkAs() {
     // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
@@ -143,38 +191,24 @@ bool InviwoMainWindow::saveNetwork() {
     saveFileDialog.setSidebarUrls(sidebarURLs);
 
     if (saveFileDialog.exec()) {
-        bool valid;
         QString path = saveFileDialog.selectedFiles().at(0);
-        if (!path.endsWith(".inv"))
-            valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString() + ".inv");
-        else
-            valid = networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString());
-        networkFileDir_ = saveFileDialog.directory().path();
-        return valid;
-    } else
-        return false;
-}
-
-bool InviwoMainWindow::saveNetworkAs() {
-    return true;
+        if (!path.endsWith(".inv")) path.append(".inv");
+        networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString());
+        setCurrentNetwork(path);
+        addToRecentNetworks(path);
+    }
 }
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
     networkEditorView_->getNetworkEditor()->clearNetwork();
     // save window state
-    QSettings settings;
+    QSettings settings("Inviwo","Inviwo");
     settings.setValue("mainWindowGeometry", saveGeometry());
     settings.setValue("mainWindowState", saveState());
+    settings.setValue("recentFileList", recentFileList_);
 
     QMainWindow::closeEvent(event);
-}
-
-void InviwoMainWindow::changeNetworkLayout() {    
-    if (changeNetworkLayoutAction_->isChecked())
-        networkEditorView_->getNetworkEditor()->setVerticalNetworkLayout(true);
-    else
-        networkEditorView_->getNetworkEditor()->setVerticalNetworkLayout(false);
 }
 
 } // namespace

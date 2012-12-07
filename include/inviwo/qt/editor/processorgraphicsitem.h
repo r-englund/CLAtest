@@ -23,7 +23,7 @@ enum InviwoUserGraphicsItemType {
 class ProcessorGraphicsItem : public QGraphicsRectItem {
 
 public:
-    ProcessorGraphicsItem(bool fitVerticalLayout=true);
+    ProcessorGraphicsItem();
     ~ProcessorGraphicsItem();
 
     Processor* getProcessor() const { return processor_; }
@@ -51,7 +51,6 @@ protected:
 
 private:
     Processor* processor_;
-    bool fitVerticalLayout_;
     LabelGraphicsItem* nameLabel_;
     LabelGraphicsItem* classLabel_;
 };

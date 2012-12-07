@@ -17,9 +17,8 @@ static const int height = 60;
 static const int roundedCorners = 10;
 static const int labelHeight = 8;
 
-ProcessorGraphicsItem::ProcessorGraphicsItem(bool fitVerticalLayout)
-    : processor_(0),
-      fitVerticalLayout_(fitVerticalLayout) {
+ProcessorGraphicsItem::ProcessorGraphicsItem()
+    : processor_(0) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
@@ -56,17 +55,6 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     }
 }
 
-void ProcessorGraphicsItem::flipLayout() {
-    fitVerticalLayout_ = (fitVerticalLayout_)?false:true;
-    //TODO: transform from vertical to horizontal or vice versa
-    //if (!fitVerticalLayout_) {        
-        vec2 position(x(), y());
-        setX(position.y);
-        setY(position.x);
-        //repaint if necessary
-    //}
-}
-
 void ProcessorGraphicsItem::editProcessorName() {
     nameLabel_ ->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
     nameLabel_ ->setTextInteractionFlags(Qt::TextEditorInteraction);
@@ -79,19 +67,11 @@ QRectF ProcessorGraphicsItem::calculatePortRect(unsigned int curPort, Port::Port
     if (portDir == Port::INPORT) {
         qreal left = rect().left()+10.0f+curPort*(portDims.x()*1.5);
         qreal top = rect().top();
-        if (!fitVerticalLayout_) {
-            left = rect().left();
-            top = rect().bottom()-20.0f-curPort*(portDims.y()*1.5);
-        }
         return QRectF(left, top, portDims.x(), portDims.y());
     }
     else {
         qreal left = rect().left()+10.0f+curPort*(portDims.x()*1.5);
         qreal top = rect().bottom()-portDims.y();
-        if (!fitVerticalLayout_) {
-            left = rect().right()-portDims.x();
-            top = rect().bottom()-20.0f-curPort*(portDims.y()*1.5);
-        }
         return QRectF(left, top, portDims.x(), portDims.y());
     }
 }

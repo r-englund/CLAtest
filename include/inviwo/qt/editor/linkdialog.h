@@ -29,7 +29,7 @@ enum InviwoLinkUserGraphicsItemType {
 class DialogCurveGraphicsItem : public CurveGraphicsItem {
 
 public:
-    DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption=false, ivec3 color=ivec3(38,38,38), bool dragMode=true);
+    DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool dragMode=true);
     ~DialogCurveGraphicsItem();    
 
     //override for qgraphicsitem_cast (refer qt documentation)
@@ -45,8 +45,7 @@ class DialogConnectionGraphicsItem : public DialogCurveGraphicsItem {
 
 public:
 
-    DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
-                                 bool layoutOption=true);
+    DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty);
     ~DialogConnectionGraphicsItem();
 
     LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }

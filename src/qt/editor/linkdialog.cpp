@@ -33,8 +33,8 @@ static const int propertyRoundedCorners = 0;
 static const int propertyLabelHeight = 12;
 
 
-DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption, ivec3 color, bool dragOrDrawMode) :
-                         CurveGraphicsItem(startPoint, endPoint, layoutOption, color, dragOrDrawMode) {
+DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color, bool dragOrDrawMode) :
+                         CurveGraphicsItem(startPoint, endPoint, color, dragOrDrawMode) {
      setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
 
      QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
@@ -47,15 +47,13 @@ DialogCurveGraphicsItem::~DialogCurveGraphicsItem() { }
 
 
 DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, 
-                                                           LinkDialogPropertyGraphicsItem* endProperty,
-                                                           bool layoutOption) : 
+                                                           LinkDialogPropertyGraphicsItem* endProperty) : 
                                                            DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty), 
                                                                                    endProperty->getShortestBoundaryPointTo(startProperty),
-                                                                                   false, ivec3(38,38,38), false),
+                                                                                   ivec3(38,38,38), false),
                                                            startPropertyGraphicsItem_(startProperty),
                                                            endPropertyGraphicsItem_(endProperty)
 {
-    IVW_UNUSED_PARAM(layoutOption);
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
 
@@ -467,7 +465,7 @@ void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGrap
 }
 
 void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty) {
-    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, true);
+    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty);
     connectionGraphicsItems_.push_back(cItem);
     addItem(cItem);
     cItem->show();

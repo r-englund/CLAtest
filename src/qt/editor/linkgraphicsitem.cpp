@@ -6,10 +6,9 @@
 
 namespace inviwo {
 
-LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, bool layoutOption, ivec3 color, bool dragMode)
+LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color, bool dragMode)
                                      : startPoint_(startPoint),
                                        endPoint_(endPoint),
-                                       verticalLayout_(layoutOption),
                                        color_(color.r, color.g, color.b),
                                        dragMode_(dragMode){
     setZValue(LINKGRAPHICSITEM_DEPTH);
@@ -28,12 +27,6 @@ QPainterPath LinkGraphicsItem::obtainCurvePath() const {
     QPointF ctrlPoint1 = QPointF((startPoint_.x()+endPoint_.x())/2.0, startPoint_.y());
     QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y()+delta/2.0);
 
-    if (!verticalLayout_) {
-        delta = endPoint_.x()-startPoint_.x();
-        ctrlPoint1 = QPointF(startPoint_.x()+delta/4.0, startPoint_.y());
-        ctrlPoint2 = QPointF(endPoint_.x()-delta/4.0, endPoint_.y());
-    }
-    
     QPainterPath bezierCurve;
     bezierCurve.moveTo(startPoint_);
     bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint_);
@@ -74,26 +67,14 @@ QRectF LinkGraphicsItem::boundingRect() const {
 
 
 LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor,
-                                               ProcessorGraphicsItem* inProcessor, bool layoutOption)
+                                               ProcessorGraphicsItem* inProcessor)
                                                : LinkGraphicsItem(outProcessor->mapToScene(outProcessor->rect()).boundingRect().center(),
                                                                    inProcessor->mapToScene(inProcessor->rect()).boundingRect().center(), 
-                                                                   layoutOption, ivec3(256,256,256), false),
+                                                                   ivec3(256,256,256), false),
                                                  outProcessor_(outProcessor), inProcessor_(inProcessor) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
 
 LinkConnectionGraphicsItem::~LinkConnectionGraphicsItem() {}
-
-void LinkConnectionGraphicsItem::flipLayout() {
-    setStartPoint(outProcessor_->mapToScene(inProcessor_->rect()).boundingRect().center());
-    setEndPoint(inProcessor_->mapToScene(inProcessor_->rect()).boundingRect().center());
-
-    if (getLayoutOption()) {
-        setLayoutOption(false);
-    }
-    else
-        setLayoutOption(true);
-
-}
 
 } // namespace

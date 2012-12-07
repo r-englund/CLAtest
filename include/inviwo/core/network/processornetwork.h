@@ -11,7 +11,7 @@ using namespace std;
 
 namespace inviwo {
 
-    class ProcessorNetwork : public IvwSerializable {
+class ProcessorNetwork : public IvwSerializable {
 
 public:
 
@@ -28,6 +28,10 @@ public:
     void addProcessor(Processor* processor);
     void removeProcessor(Processor* processor);
 
+    inline void modified() { isModified_ = true; }
+    void setModified(bool isModified) { isModified_ = isModified; }
+    bool isModified() { return isModified_; }
+
 
     std::vector<Processor*> getProcessors() const { return processors_; }
     Processor* getProcessorByName(std::string name) const;
@@ -42,6 +46,8 @@ public:
     virtual void deserialize(IvwDeserializer& s);
 
 private:
+
+    bool isModified_;
 
     std::vector<Processor*> processors_;
     std::vector<PortConnection*> portConnections_;

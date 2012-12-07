@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     inviwo::InviwoMainWindow mainWin;
     inviwoApp.setMainWindow(&mainWin);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
-    mainWin.showMaximized();
+    mainWin.show();
 
     return inviwoApp.exec();
 }
