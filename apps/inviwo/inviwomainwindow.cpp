@@ -141,6 +141,11 @@ void InviwoMainWindow::openNetwork(QString networkFileName) {
     addToRecentNetworks(networkFileName);
 }
 
+void InviwoMainWindow::openLastNetwork() {
+    if (!recentFileList_.isEmpty())
+        openNetwork(recentFileList_[0]);
+}
+
 void InviwoMainWindow::openNetwork() {
     // dialog window settings
     QStringList extension;

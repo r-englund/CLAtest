@@ -32,6 +32,12 @@ QMenuBar, QMenuBar::item, QMenu, QMenu::item, QMenu::item::selected {
     selection-background-color: #888888;
 }
 
+QMenu::separator {
+    height: 1px;
+    background: #999999;
+    margin-left: 25px;
+}
+
 
 /* QLabel styles */
 QLabel {

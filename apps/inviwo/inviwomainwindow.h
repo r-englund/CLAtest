@@ -24,6 +24,8 @@ public:
     InviwoMainWindow();
     ~InviwoMainWindow();
 
+    void openLastNetwork();
+
 public slots:
     void newNetwork();
     void openNetwork();
