@@ -33,9 +33,9 @@ static const int propertyRoundedCorners = 0;
 static const int propertyLabelHeight = 12;
 
 
-DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color, bool dragOrDrawMode) :
-                         CurveGraphicsItem(startPoint, endPoint, color, dragOrDrawMode) {
-     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
+DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color, bool layoutOption, bool dragOrDrawMode) :
+                         CurveGraphicsItem(startPoint, endPoint, color, layoutOption, dragOrDrawMode) {
+     setZValue(LINKDIALOG_CONNECTION_GRAPHICSITEM_DEPTH);
 
      QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
      shadowEffect->setOffset(3.0);
@@ -45,19 +45,139 @@ DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF end
 
 DialogCurveGraphicsItem::~DialogCurveGraphicsItem() { }
 
+void DialogCurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
+    CurveGraphicsItem::paint(p, options, widget);
+}
+
 
 DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, 
-                                                           LinkDialogPropertyGraphicsItem* endProperty) : 
+                                                           LinkDialogPropertyGraphicsItem* endProperty,
+                                                           PropertyLink* propertyLink,
+                                                           bool layoutOption) : 
                                                            DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty), 
                                                                                    endProperty->getShortestBoundaryPointTo(startProperty),
-                                                                                   ivec3(38,38,38), false),
+                                                                                   ivec3(38,38,38), false, false),
                                                            startPropertyGraphicsItem_(startProperty),
-                                                           endPropertyGraphicsItem_(endProperty)
+                                                           endPropertyGraphicsItem_(endProperty),
+                                                           propertyLink_(propertyLink)
 {
+    IVW_UNUSED_PARAM(layoutOption); //always make layout to be horizontal
     setFlags(ItemIsSelectable | ItemIsFocusable);
+    initialize();
+
 }
 
 DialogConnectionGraphicsItem::~DialogConnectionGraphicsItem() {
+}
+
+void DialogConnectionGraphicsItem::initialize() {
+    startPropertyGraphicsItem_->addArrow();
+    setStartArrowHeadIndex(startPropertyGraphicsItem_->getArrowCount());
+
+    endPropertyGraphicsItem_->addArrow();
+    setEndArrowHeadIndex(endPropertyGraphicsItem_->getArrowCount());
+}
+
+void DialogConnectionGraphicsItem::deinitialize() {
+    startPropertyGraphicsItem_->removeArrow();
+    endPropertyGraphicsItem_->removeArrow();
+}
+
+void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {    
+    
+    DialogCurveGraphicsItem::paint(p, options, widget);
+    QPoint arrowDim(20, 10);
+
+    
+    //Start Property
+    QPointF aCenterR = startPropertyGraphicsItem_->calculateArrowCenter(startArrowHeadIndex_, true);
+    QPointF aCenterL = startPropertyGraphicsItem_->calculateArrowCenter(startArrowHeadIndex_, false);
+
+    QPointF arrowCenter;
+
+    QPointF start = getStartPoint();
+
+    QVector2D vec1(aCenterR - start);
+    QVector2D vec2(aCenterL - start);
+
+    QVector2D arrowNose(aCenterL - aCenterR);
+    arrowNose.normalize();
+    arrowNose.setX(arrowNose.x()*arrowDim.x());
+    arrowNose.setY(arrowNose.y()*arrowDim.y());
+
+    arrowCenter = aCenterR;
+
+    if (vec2.length()<vec1.length()) {
+        arrowCenter = aCenterL;
+        arrowNose = QVector2D(aCenterR - aCenterL);
+        arrowNose.normalize();
+        arrowNose.setX(arrowNose.x()*arrowDim.x());
+        arrowNose.setY(arrowNose.y()*arrowDim.y());
+    }
+
+    setStartPoint(arrowCenter);
+    
+    QPoint arrowPolygonCenter(arrowCenter.x(), arrowCenter.y());
+    QPolygon polygon;
+    polygon << arrowPolygonCenter << arrowPolygonCenter + QPoint(0, -arrowDim.y())
+            << arrowPolygonCenter + QPoint(arrowNose.x(), arrowNose.y())
+            << arrowPolygonCenter + QPoint(0, arrowDim.y()); 
+
+    if (propertyLink_->getDestinationProperty() == startPropertyGraphicsItem_->getGraphicsItemData() ||
+        propertyLink_->isBidirectional()) {
+        p->setPen(Qt::black);    
+        p->setBrush(Qt::red);
+        p->drawPolygon(polygon);
+    }
+    else {
+        p->setPen(Qt::black);    
+        p->setBrush(Qt::darkGray);
+        p->drawPolygon(polygon);
+    }
+
+
+    //End Property
+    aCenterR = endPropertyGraphicsItem_->calculateArrowCenter(endArrowHeadIndex_, true);
+    aCenterL = endPropertyGraphicsItem_->calculateArrowCenter(endArrowHeadIndex_, false);
+
+    QPointF end = getEndPoint();
+    vec1 = QVector2D(aCenterR - end);
+    vec2 = QVector2D(aCenterL - end);
+
+    arrowNose = QVector2D(aCenterL - aCenterR);
+    arrowNose.normalize();
+    arrowNose.setX(arrowNose.x()*arrowDim.x());
+    arrowNose.setY(arrowNose.y()*arrowDim.y());
+    arrowCenter = aCenterR;
+
+    if (vec2.length()<vec1.length()) {
+        arrowCenter = aCenterL;
+        arrowNose = QVector2D(aCenterR - aCenterL);
+        arrowNose.normalize();
+        arrowNose.setX(arrowNose.x()*arrowDim.x());
+        arrowNose.setY(arrowNose.y()*arrowDim.y());
+    }
+
+    setEndPoint(arrowCenter);
+
+    arrowPolygonCenter = QPoint(arrowCenter.x(), arrowCenter.y());
+    QPolygon polygon1;
+    polygon1 << arrowPolygonCenter << arrowPolygonCenter + QPoint(0, -arrowDim.y())
+             << arrowPolygonCenter + QPoint(arrowNose.x(), arrowNose.y())
+             << arrowPolygonCenter + QPoint(0, arrowDim.y());    
+
+    if (propertyLink_->getDestinationProperty() == endPropertyGraphicsItem_->getGraphicsItemData() ||
+        propertyLink_->isBidirectional()) {
+            p->setPen(Qt::black);
+            p->setBrush(Qt::red);
+            p->drawPolygon(polygon1);
+    }
+    else {
+        p->setPen(Qt::black);    
+        p->setBrush(Qt::darkGray);
+        p->drawPolygon(polygon);
+    }
+
 
 }
 
@@ -160,13 +280,6 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor) {
     }
 }
 
-//void LinkDialogProcessorGraphicsItem::addToItemsToScene(LinkDialogGraphicsScene *linkDialogScene) {
-//    linkDialogScene->addItem(this);
-//    for (size_t i=0; i<propertyGraphicsItems_.size(); i++) {
-//        linkDialogScene->addItem(propertyGraphicsItems_[i]);
-//        propertyGraphicsItems_[i]->updatePositionBasedOnProcessor();
-//    }
-//}
 /*---------------------------------------------------------------------------------------*/
 
 LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem* processor, Property* prop) : GraphicsItemData<Property>() {
@@ -187,6 +300,8 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
     processorGraphicsItem_ = processor;
 
     setProperty(prop);
+
+    arrowCount_ = 0;
 
     updatePositionBasedOnProcessor();
 }
@@ -273,7 +388,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     roundRectPath.arcTo(bRect.right()-(2*propertyRoundedCorners), bRect.top(), (2*propertyRoundedCorners), (2*propertyRoundedCorners), 0.0, 90.0);
     roundRectPath.lineTo(bRect.left()+propertyRoundedCorners, bRect.top());
     roundRectPath.arcTo(bRect.left(), bRect.top(), (2*propertyRoundedCorners), (2*propertyRoundedCorners), 90.0, 90.0);
-    p->drawPath(roundRectPath); 
+    p->drawPath(roundRectPath);
     
 
     p->restore();
@@ -293,28 +408,49 @@ void LinkDialogPropertyGraphicsItem::setProperty(Property* prop) {
 }
 
 QPointF LinkDialogPropertyGraphicsItem::getShortestBoundaryPointTo(LinkDialogPropertyGraphicsItem* inProperty) {
-    QPointF c = inProperty->pos();
-    QPointF bl = inProperty->rect().bottomLeft();
-    QPointF br = inProperty->rect().bottomRight();
+    return getShortestBoundaryPointTo(inProperty->pos());
+}
+
+QPointF LinkDialogPropertyGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
+    QPointF c = pos();
+    QPointF bl = rect().bottomLeft();
+    QPointF br = rect().bottomRight();
     QPointF propertyMappedDim ;
 
-    propertyMappedDim = inProperty->mapToParent(br) -  inProperty->mapToParent(bl);
+    propertyMappedDim = mapToParent(br) -  mapToParent(bl);
     QPointF rightBoundaryCenter1 = c + (propertyMappedDim/2.0);
 
-    propertyMappedDim = inProperty->mapToParent(bl) -  inProperty->mapToParent(br);
+    propertyMappedDim = mapToParent(bl) -  mapToParent(br);
     QPointF leftBoundaryCenter1 = c + (propertyMappedDim/2.0);
 
-    QVector2D vec1(leftBoundaryCenter1 - pos());
-    QVector2D vec2(rightBoundaryCenter1 - pos());
+    QVector2D vec1(leftBoundaryCenter1 - inPos);
+    QVector2D vec2(rightBoundaryCenter1 - inPos);
 
     if ( vec1.length()>vec2.length() )
         return rightBoundaryCenter1;
-    
+
     return leftBoundaryCenter1;
 }
 
-QPointF LinkDialogPropertyGraphicsItem::getShortestBoundaryPointTo(QPointF c) {
-    return c;
+QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(unsigned int curPort, bool computeRight) const {
+    QPointF o = pos() ;
+    if (computeRight) {
+        QPointF br = o + QPointF(rect().width()/2, rect().height()/2);
+        QPointF tr = o + QPointF(rect().width()/2, -rect().height()/2);
+
+        QPointF vec(tr - br);
+        vec = vec/(arrowCount_+1) ;
+        vec*=curPort;
+        return br+vec;
+    }
+
+    QPointF bl = o + QPointF(-rect().width()/2, rect().height()/2);
+    QPointF tl = o + QPointF(-rect().width()/2, -rect().height()/2);
+
+    QPointF vec(tl - bl);
+    vec = vec/(arrowCount_+1) ;
+    vec*=curPort;
+    return bl+vec;
 }
 
 /*---------------------------------------------------------------------------------------*/
@@ -347,14 +483,13 @@ void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     LinkDialogPropertyGraphicsItem* tempProperty = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
 
     if (!startProperty_ && tempProperty) {
-        startProperty_ = tempProperty;
-        QRectF propertyRect = startProperty_->rect();
-        propertyRect = startProperty_->mapToScene(propertyRect).boundingRect();
+        startProperty_ = tempProperty;        
         if (linkCurve_) {
             removeItem(linkCurve_);
             delete linkCurve_;
         }
-        QPointF center = propertyRect.center();
+
+        QPointF center = startProperty_->getShortestBoundaryPointTo(e->scenePos());
 
         linkCurve_ = new DialogCurveGraphicsItem(center, e->scenePos());
         linkCurve_->setZValue(2.0);
@@ -370,8 +505,11 @@ void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
 void LinkDialogGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
     if (linkCurve_) {
+        QPointF center = startProperty_->getShortestBoundaryPointTo(e->scenePos());        
+        linkCurve_->setStartPoint(center) ;
         linkCurve_->setEndPoint(e->scenePos());
         linkCurve_->update();
+        update();
         e->accept();
     } else
         QGraphicsScene::mouseMoveEvent(e);
@@ -400,19 +538,23 @@ void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
     LinkDialogPropertyGraphicsItem* startProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(propertyLink->getSourceProperty()));
     LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(propertyLink->getDestinationProperty()));
 
-    initializePorpertyLinkRepresentation(startProperty, endProperty);
+    initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
 }
 
 void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty) {
     //LogInfo("Adding Property Link.");
-    Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
-    Processor* endProcessor = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
+    Property* sProp = startProperty->getGraphicsItemData();
+    Property* eProp = endProperty->getGraphicsItemData();
+
+    Processor* startProcessor = dynamic_cast<Processor*>(sProp->getOwner());
+    Processor* endProcessor = dynamic_cast<Processor*>(eProp->getOwner());
     
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
 
-    if (!processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {
-        processorLink->addPropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
-        initializePorpertyLinkRepresentation(startProperty, endProperty);
+    if (!processorLink->isLinked(sProp, eProp)) {
+        processorLink->addPropertyLinks(sProp, eProp);
+        PropertyLink* propertyLink = processorLink->getPropertyLink(sProp, eProp);
+        initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
     }
 }
 
@@ -430,8 +572,29 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
         processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
         propertyLink->hide();
         removeItem(propertyLink);
+
+        //re-assign connection ids
+        for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
+            if (connectionGraphicsItems_[i]->getStartProperty() == startProperty) {
+                int index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
+                if (index > propertyLink->getStartArrowHeadIndex()) {
+                    connectionGraphicsItems_[i]->setStartArrowHeadIndex(index-1);
+                }
+            }
+        }
+
+        for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
+            if (connectionGraphicsItems_[i]->getEndProperty() == endProperty) {
+                int index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
+                if (index > propertyLink->getEndArrowHeadIndex()) {
+                    connectionGraphicsItems_[i]->setEndArrowHeadIndex(index-1);
+                }
+            }
+        }
+
         connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(), propertyLink),
                                        connectionGraphicsItems_.end());
+        propertyLink->deinitialize();
         
     }
 }
@@ -464,8 +627,26 @@ void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGrap
     propLink->setBirectional(isBidirectional);
 }
 
-void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty) {
-    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty);
+void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink) {
+    LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
+    LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+
+    Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
+    Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
+
+    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+
+    PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+
+    propLink->switchDirection();
+    propertyLink->switchDirection();    
+    update();
+}
+
+void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, 
+                                                                   LinkDialogPropertyGraphicsItem* inProperty,
+                                                                   PropertyLink* propertyLink) {
+    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, true);
     connectionGraphicsItems_.push_back(cItem);
     addItem(cItem);
     cItem->show();
@@ -484,6 +665,7 @@ void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e
         QAction* action = menu.addAction("Delete");
         QAction* biDirectionAction = menu.addAction("BiDirectional");
         biDirectionAction->setCheckable(true);
+        QAction* switchDirection = menu.addAction("Switch Direction");
 
         if (isPropertyLinkBidirectional(linkGraphicsItem)) {
             biDirectionAction->setChecked(true);
@@ -500,6 +682,9 @@ void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e
                 makePropertyLinkBidirectional(linkGraphicsItem, true);
             else
                 makePropertyLinkBidirectional(linkGraphicsItem, false);
+        }
+        else if (result == switchDirection) { 
+            switchPropertyLinkDirection(linkGraphicsItem);
         }
     }
 }
@@ -627,7 +812,7 @@ void LinkDialog::initDialog() {
 
     mainLayout->addWidget(linkDialogView_);
 
-    QHBoxLayout* arrowButtonLayout = new QHBoxLayout;
+/*    QHBoxLayout* arrowButtonLayout = new QHBoxLayout;
     arrowButtonLayout->setAlignment(Qt::AlignHCenter);
 
     leftButton_ = new QPushButton(QIcon(":/icons/arrow_left.png"),"");
@@ -653,20 +838,20 @@ void LinkDialog::initDialog() {
     group->addButton(rightButton_);
     group->setExclusive(true);
 
-    connect(group, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(handleButton(QAbstractButton*)));    
+    connect(group, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(handleButton(QAbstractButton*))); */   
 }
 
-void LinkDialog::handleButton(QAbstractButton* button) {    
-    if (button == leftButton_) {
-       
-    }
-    else if (button == rightButton_) {
-
-    }
-    else {
-
-    }
-}
+//void LinkDialog::handleButton(QAbstractButton* button) {    
+//    if (button == leftButton_) {
+//       
+//    }
+//    else if (button == rightButton_) {
+//
+//    }
+//    else {
+//
+//    }
+//}
 
 
 /*---------------------------------------------------------------------------------------*/

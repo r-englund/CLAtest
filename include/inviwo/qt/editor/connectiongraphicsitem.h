@@ -13,7 +13,7 @@ namespace inviwo {
 class CurveGraphicsItem : public QGraphicsItem {
 
 public:
-    CurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool dragOrDrawMode_=true);
+    CurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool layoutOption=true, bool dragOrDrawMode_=true);
     ~CurveGraphicsItem();
 
     virtual QPainterPath shape() const;
@@ -40,6 +40,7 @@ protected:
 private:
     QPointF startPoint_;
     QPointF endPoint_;
+    bool verticalLayout_;
     QColor color_;
     bool dragOrDrawMode_;
 };
@@ -87,8 +88,6 @@ public:
      * Return the inport to which the connection goes to.
      */
     Port* getInport() const { return inport_; }
-
-    void flipLayout();
 
 private:
     ProcessorGraphicsItem* outProcessor_; ///< Processor representation from which the connection starts

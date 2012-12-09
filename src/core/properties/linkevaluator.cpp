@@ -21,7 +21,7 @@ bool LinkEvaluator::canConvert(Variant& src, Variant& dst) {
     if (src.getType() == Variant::VariantTypeInvalid || dst.getType() == Variant::VariantTypeInvalid) {
         //Error message
         return false;
-    }    
+    }
     return Variant::canConvert(src.getType(), dst.getType());
 }
 

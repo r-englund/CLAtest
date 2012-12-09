@@ -16,6 +16,7 @@
 
 static const qreal LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH = 1.0f;
 static const qreal LINKDIALOG_PROPERTY_GRAPHICSITEM_DEPTH = 2.0f;
+static const qreal LINKDIALOG_CONNECTION_GRAPHICSITEM_DEPTH = 3.0f;
 
 namespace inviwo {
 
@@ -29,9 +30,9 @@ enum InviwoLinkUserGraphicsItemType {
 class DialogCurveGraphicsItem : public CurveGraphicsItem {
 
 public:
-    DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool dragMode=true);
-    ~DialogCurveGraphicsItem();    
-
+    DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool layoutOption=false, bool dragMode=true);
+    ~DialogCurveGraphicsItem();
+    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkDialogCurveGraphicsItemType };
     int type() const  {return Type; }
@@ -45,16 +46,39 @@ class DialogConnectionGraphicsItem : public DialogCurveGraphicsItem {
 
 public:
 
-    DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty);
+    DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
+                                 PropertyLink* propertyLink, bool layoutOption=true);
     ~DialogConnectionGraphicsItem();
+
+    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
 
     LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }
  
     LinkDialogPropertyGraphicsItem* getEndProperty() const { return endPropertyGraphicsItem_; }
 
+    void switchDirection() {
+        LinkDialogPropertyGraphicsItem* tempLink = getEndProperty();
+        endPropertyGraphicsItem_ = startPropertyGraphicsItem_;
+        startPropertyGraphicsItem_ = tempLink;
+
+        int temp = endArrowHeadIndex_;
+        endArrowHeadIndex_ = startArrowHeadIndex_;
+        startArrowHeadIndex_ = temp;
+    }
+
+    void initialize();
+    void deinitialize();
+    void setStartArrowHeadIndex(int index) {startArrowHeadIndex_ = index;}
+    void setEndArrowHeadIndex(int index) {endArrowHeadIndex_ = index;}
+    int getStartArrowHeadIndex() { return startArrowHeadIndex_;}
+    int getEndArrowHeadIndex() { return endArrowHeadIndex_;}
+
 private:
     LinkDialogPropertyGraphicsItem* startPropertyGraphicsItem_;
     LinkDialogPropertyGraphicsItem* endPropertyGraphicsItem_;
+    int startArrowHeadIndex_;
+    int endArrowHeadIndex_;
+    PropertyLink* propertyLink_;
 };
 
 
@@ -80,8 +104,6 @@ public:
 
     void setProcessor(Processor* processor);
     Processor* getProcessor() {return getGraphicsItemData();}
-
-    //void addToItemsToScene(LinkDialogGraphicsView *linkDialogView);
 
     std::vector<LinkDialogPropertyGraphicsItem*> getPropertyItemList() {return propertyGraphicsItems_;}
 
@@ -122,6 +144,12 @@ public:
 
     void updatePositionBasedOnProcessor();
 
+    QPointF calculateArrowCenter(unsigned int curPort, bool computeRight) const;
+
+    void addArrow() {arrowCount_++;}
+    int getArrowCount() {return arrowCount_;}
+    void removeArrow() {arrowCount_--;}
+
 protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -130,6 +158,7 @@ private:
 
     LabelGraphicsItem* classLabel_;
     LinkDialogProcessorGraphicsItem* processorGraphicsItem_;
+    int arrowCount_;
 };
 
 /*---------------------------------------------------------------------------------------*/
@@ -169,8 +198,9 @@ protected:
     void addPropertyLink(PropertyLink* propertyLink);
     bool isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink);
     void makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional);
+    void switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink);
     
-    void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
+    void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty, PropertyLink* propLink);
     void addProcessorsItemsToScene(Processor *prcoessor, int xPosition, int yPosition);
 
 private:
@@ -201,17 +231,17 @@ public:
     LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent);    
     LinkDialog(Processor* src, Processor *dest, ProcessorNetwork* network, QWidget* parent);
 
-private slots:
-   void handleButton(QAbstractButton* b);
+//private slots:
+//   void handleButton(QAbstractButton* b);
 
 private:   
     void initDialog();
 
     LinkDialogGraphicsView* linkDialogView_;
     LinkDialogGraphicsScene* linkDialogScene_;
-    QPushButton* leftButton_;
-    QPushButton* rightButton_;
-    QPushButton* bidirectionButton_;
+    //QPushButton* leftButton_;
+    //QPushButton* rightButton_;
+    //QPushButton* bidirectionButton_;
 
     //Start and End Properties
     //Curve graphics item
