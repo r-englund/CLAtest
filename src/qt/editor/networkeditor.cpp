@@ -72,6 +72,7 @@ void NetworkEditor::initializeLinkRepresentation(ProcessorGraphicsItem* outProce
     linkGraphicsItems_.push_back(linkGraphicsItem);
     addItem(linkGraphicsItem);
     linkGraphicsItem->show();
+    showLinkDialog(linkGraphicsItem);
 }
 
 void NetworkEditor::addConnection(ProcessorGraphicsItem* outProcessor, Port* outport,
@@ -487,11 +488,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             removeLink(linkConnectionGraphicsItem);
         else if (result == editAction) {
             //Show link edit dialog
-            Processor* inProcessor = linkConnectionGraphicsItem->getInProcessor()->getProcessor();
-            Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessor()->getProcessor();
-
-            LinkDialog* linkDialog = new LinkDialog(inProcessor, outProcessor, processorNetwork_, 0);
-            linkDialog->exec();
+            showLinkDialog(linkConnectionGraphicsItem);
         }
         else if (result == linkAction) {
             Processor* inProcessor = linkConnectionGraphicsItem->getInProcessor()->getProcessor();
@@ -505,6 +502,14 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
 
     } else
         QGraphicsScene::contextMenuEvent(e);
+}
+
+void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem) {
+    Processor* inProcessor = linkConnectionGraphicsItem->getInProcessor()->getProcessor();
+    Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessor()->getProcessor();
+
+    LinkDialog* linkDialog = new LinkDialog(inProcessor, outProcessor, processorNetwork_, 0);
+    linkDialog->exec();
 }
 
 

@@ -76,6 +76,8 @@ protected:
     NetworkEditor(QObject* parent=0);
     QPointF snapToGrid(QPointF pos);
 
+    void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
+
 private:
     friend class ProcessorGraphicsItem;
     friend class ConnectionGraphicsItem;
