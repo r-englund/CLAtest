@@ -207,12 +207,7 @@ void NetworkEditor::removeProcessor(std::string identifier) {
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
     if (canvasProcessor) {
         processorNetworkEvaluator_->deRegisterCanvas(canvasProcessor->getCanvas());
-    }    
-
-    processorNetwork_->removeProcessor(processor);
-    processorGraphicsItem->setProcessor(0);
-    processor->deinitialize();
-    delete processor;
+    }     
 
     // remove GUI connections
     std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::instance()->connectionGraphicsItems_;
@@ -222,6 +217,19 @@ void NetworkEditor::removeProcessor(std::string identifier) {
             removeConnection(connectionGraphicsItems[i]);
         }
     }
+
+    std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = NetworkEditor::instance()->linkGraphicsItems_;
+    for (size_t i=0; i<linkGraphicsItems.size(); i++) {
+        if (linkGraphicsItems[i]->getOutProcessor() == processorGraphicsItem ||
+            linkGraphicsItems[i]->getInProcessor() == processorGraphicsItem) {
+                removeLink(linkGraphicsItems[i]);
+        }
+    }
+
+    processorNetwork_->removeProcessor(processor);
+    processorGraphicsItem->setProcessor(0);
+    processor->deinitialize();
+    delete processor;
 
     // remove GUI representation from editor
     processorGraphicsItem->hide();
