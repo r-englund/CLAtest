@@ -276,7 +276,8 @@ void ProcessorNetworkEvaluator::evaluate() {
     //TODO: This is just for testing. Remove it once we have proper linking interface
     std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
     for (size_t i=0; i<links.size(); i++) {
-        links[i]->autoLinkPropertiesByType();
+        //links[i]->autoLinkPropertiesByType();
+        links[i]->evaluate();
     }
 
     repaintRequired_ = false;
