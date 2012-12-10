@@ -534,6 +534,7 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
+    //For adding representations for existing links in the network
     //LogInfo("Adding Property Link.");
     LinkDialogPropertyGraphicsItem* startProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(propertyLink->getSourceProperty()));
     LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(propertyLink->getDestinationProperty()));
@@ -542,6 +543,7 @@ void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
 }
 
 void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty) {
+    //For adding new links to network and creating representations
     //LogInfo("Adding Property Link.");
     Property* sProp = startProperty->getGraphicsItemData();
     Property* eProp = endProperty->getGraphicsItemData();
@@ -555,6 +557,13 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
         processorLink->addPropertyLinks(sProp, eProp);
         PropertyLink* propertyLink = processorLink->getPropertyLink(sProp, eProp);
         initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
+    }
+}
+
+void LinkDialogGraphicsScene::removeAllPropertyLinks() {
+    DialogConnectionGraphicsItem* propertyLink=0;
+    foreach (propertyLink, connectionGraphicsItems_) {
+        removePropertyLink(propertyLink);
     }
 }
 
@@ -639,7 +648,7 @@ void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphi
     PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 
     propLink->switchDirection();
-    propertyLink->switchDirection();    
+    propertyLink->switchDirection();
     update();
 }
 
@@ -658,7 +667,6 @@ void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* keyEvent) {
 
 void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     DialogConnectionGraphicsItem* linkGraphicsItem = getSceneGraphicsItemAt<DialogConnectionGraphicsItem>(e->scenePos()) ;
-    //DialogConnectionGraphicsItem* linkGraphicsItem = qgraphicsitem_cast<DialogConnectionGraphicsItem*>(getPropertyGraphicsItemAt(e->scenePos()));
 
     if (linkGraphicsItem) {
         QMenu menu;
@@ -812,46 +820,26 @@ void LinkDialog::initDialog() {
 
     mainLayout->addWidget(linkDialogView_);
 
-/*    QHBoxLayout* arrowButtonLayout = new QHBoxLayout;
-    arrowButtonLayout->setAlignment(Qt::AlignHCenter);
+    QHBoxLayout* okayCancelButtonLayout = new QHBoxLayout;
+    okayCancelButtonLayout->setAlignment(Qt::AlignRight);
 
-    leftButton_ = new QPushButton(QIcon(":/icons/arrow_left.png"),"");
-    leftButton_->setIconSize(QSize(32,32));
-    leftButton_->setFixedSize(32,32);
-    arrowButtonLayout->addWidget(leftButton_);
-
-    bidirectionButton_ = new QPushButton(QIcon(":/icons/arrow_bidirectional.png"),"");
-    bidirectionButton_->setIconSize(QSize(32,32));
-    bidirectionButton_->setFixedSize(32,32);
-    arrowButtonLayout->addWidget(bidirectionButton_);
-
-    rightButton_ = new QPushButton(QIcon(":/icons/arrow_right.png"),"");
-    rightButton_->setIconSize(QSize(32,32));
-    rightButton_->setFixedSize(32,32);
-    arrowButtonLayout->addWidget(rightButton_);
-
-    mainLayout->addLayout(arrowButtonLayout);
-
-    QButtonGroup* group = new QButtonGroup();
-    group->addButton(leftButton_);    
-    group->addButton(bidirectionButton_);    
-    group->addButton(rightButton_);
-    group->setExclusive(true);
-
-    connect(group, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(handleButton(QAbstractButton*))); */   
+    //qt documentation
+    okayCancelbuttonBox_ = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    connect(okayCancelbuttonBox_, SIGNAL(accepted()), this, SLOT(clickedOkayButton()));
+    connect(okayCancelbuttonBox_, SIGNAL(rejected()), this, SLOT(clickedCancelButton()));
+    okayCancelButtonLayout->addWidget(okayCancelbuttonBox_);
+    mainLayout->addLayout(okayCancelButtonLayout);
+  
 }
 
-//void LinkDialog::handleButton(QAbstractButton* button) {    
-//    if (button == leftButton_) {
-//       
-//    }
-//    else if (button == rightButton_) {
-//
-//    }
-//    else {
-//
-//    }
-//}
+void LinkDialog::clickedOkayButton() {    
+    accept();
+}
+
+void LinkDialog::clickedCancelButton() {
+    linkDialogScene_->removeAllPropertyLinks();
+    accept();
+}
 
 
 /*---------------------------------------------------------------------------------------*/
