@@ -45,6 +45,7 @@ public:
     void autoLinkPropertiesByType();
     void evaluate();
     bool isLinked(Property* startProperty, Property* endProperty);
+    bool isValid();
 
     void addPropertyLinks(Property* startProperty, Property* endProperty);
     void removePropertyLinks(Property* startProperty, Property* endProperty);

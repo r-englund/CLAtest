@@ -44,40 +44,15 @@ private:
 };
 
 
-/**
- * Graphical representation of the connection between two ports in the network editor.
- */
-
 class LinkConnectionGraphicsItem : public LinkGraphicsItem {
 
 public:
-    /**
-     * Construct a new graphical representation between the outport of the outProcessor
-     * and the inport of the inProcessor. Data is assumed to flow from outport to inport.
-     * While the processors are provided through their graphical representations
-     * (@see ProcessorGraphicsItem), the ports directly specified as used in the data flow
-     * network.
-     *
-     * @param outProcessor Graphical representation of the source processor.
-     * @param outport Source port.
-     * @param inProcessor Graphical representation of the destination processor.
-     * @param inport Destination port.
-     */
+    
     LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
     ~LinkConnectionGraphicsItem();
-
-    /**
-     * Return the graphical representation of the processor from which the connection starts.
-     * This processors provides the data within the data flow network.
-     */
-    ProcessorGraphicsItem* getOutProcessor() const { return outProcessor_; }
-    /**
-     * Return the graphical representation of the processor to which the connection goes to.
-     * This processors receives the data within the data flow network.
-     */
+    
+    ProcessorGraphicsItem* getOutProcessor() const { return outProcessor_; }    
     ProcessorGraphicsItem* getInProcessor() const { return inProcessor_; }
-
-    void flipLayout();
 
 private:
     ProcessorGraphicsItem* outProcessor_; ///< Processor representation from which the connection starts

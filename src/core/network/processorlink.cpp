@@ -78,16 +78,23 @@ void ProcessorLink::autoLinkPropertiesByType() {
     }
 }
 
-void ProcessorLink::evaluate() {
-    Property* startProperty;
-    Property* endProperty;
-
+bool ProcessorLink::isValid() {
     Processor* outProcessor = outProcessor_.getProcessor();
     Processor* inProcessor = inProcessor_.getProcessor();
 
-    //Evaluate only if processors/properties are invalid
     if (outProcessor->isValid() && inProcessor->isValid())
+        return true;
+
+    return false;
+}
+
+void ProcessorLink::evaluate() {
+    //Evaluate only if processors/properties are invalid
+    if (isValid()) {
         return;
+    }
+    Property* startProperty;
+    Property* endProperty;
 
     LinkEvaluator leval;
     for (size_t i=0; i<propertyLinks_.size(); i++) {
@@ -116,10 +123,16 @@ void ProcessorLink::addPropertyLinks(Property* startProperty, Property* endPrope
 
     if (isLinked(startProperty, endProperty)) return;
 
+    PropertyLink* newLink = 0;
+
     if ( (startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
          (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
-            propertyLinks_.push_back(new PropertyLink(startProperty, endProperty));
-    }  
+            newLink = new PropertyLink(startProperty, endProperty);            
+    }
+
+    if (newLink) {
+        propertyLinks_.push_back(newLink);
+    }
 }
 
 void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endProperty) {

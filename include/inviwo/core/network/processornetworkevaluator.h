@@ -5,6 +5,7 @@
 #include "inviwo/core/interaction/events/mouseevent.h"
 #include "inviwo/core/interaction/events/resizeevent.h"
 #include "inviwo/core/network/processornetwork.h"
+#include "inviwo/core/properties/linkevaluator.h"
 
 namespace inviwo {
 
@@ -24,6 +25,7 @@ public:
     void setDefaultRenderContext(Canvas* canvas) {renderContext_ = canvas;}
     void initializeNetwork();
 
+    void executePropertyLinking(Property* sourceProperty);
     void evaluate();
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
@@ -41,13 +43,19 @@ private:
 
     bool isPortConnectedToProcessor(Port* port, Processor *processor);
 
+    //Property Linking support
+    std::vector<PropertyLink*> getConnectedPropertyLinks(Property* property);
+    void getConnectedLinksToDestinationProperty(PropertyLink* propertyLink);
+
     ProcessorNetwork* processorNetwork_;
 
     std::vector<Processor*> processorsSorted_; // the sorted list of processors obtained through topological sorting
     std::vector<Processor*> processorsVisited_; // a bool vector containing flags whether a processor has been visited during traversal
+    std::vector<Property*> destinationPropertiesVisited_;
 
     std::vector<Canvas*> registeredCanvases_;
     Canvas* renderContext_;
+    LinkEvaluator* linkEvaluator_;
 
     bool repaintRequired_;
 

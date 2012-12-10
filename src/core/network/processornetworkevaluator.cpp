@@ -17,6 +17,7 @@ ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
 void ProcessorNetworkEvaluator::setProcessorNetwork(ProcessorNetwork* processorNetwork) {
     processorNetwork_ = processorNetwork;
     initializeNetwork();
+    linkEvaluator_ = new LinkEvaluator();
 }
 
 void ProcessorNetworkEvaluator::initializeNetwork() {
@@ -271,13 +272,81 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     if (invalidate) eventInitiator->invalidate();
 }
 
-void ProcessorNetworkEvaluator::evaluate() {
-
-    //TODO: This is just for testing. Remove it once we have proper linking interface
+std::vector<PropertyLink*> ProcessorNetworkEvaluator::getConnectedPropertyLinks(Property* property) {
+    std::vector<PropertyLink*> propertyLinks;
     std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
     for (size_t i=0; i<links.size(); i++) {
-        //links[i]->autoLinkPropertiesByType();
-        links[i]->evaluate();
+        std::vector<PropertyLink*> plinks = links[i]->getPropertyLinks();
+        for (size_t j=0; j<plinks.size(); j++) {
+            if (plinks[j]->getSourceProperty()==property || plinks[j]->getDestinationProperty()==property) {
+                propertyLinks.push_back(plinks[j]);
+            }
+        }
+    }
+    return propertyLinks;
+}
+
+void ProcessorNetworkEvaluator::getConnectedLinksToDestinationProperty(PropertyLink* propertyLink) {
+    Property* destinationProperty = propertyLink->getDestinationProperty();
+    if( std::find(destinationPropertiesVisited_.begin(), destinationPropertiesVisited_.end(), destinationProperty)== destinationPropertiesVisited_.end()) {
+        destinationPropertiesVisited_.push_back(destinationProperty);
+    }
+    else {
+        if (propertyLink->isBidirectional()) {
+            destinationProperty = propertyLink->getSourceProperty();
+            if( std::find(destinationPropertiesVisited_.begin(), destinationPropertiesVisited_.end(), destinationProperty)== destinationPropertiesVisited_.end())
+                destinationPropertiesVisited_.push_back(destinationProperty);
+            else
+                return;
+        }
+        else
+            return;
+    }
+
+    std::vector<PropertyLink*> propertyLinks = getConnectedPropertyLinks(destinationProperty);
+
+    for (size_t i=0; i<propertyLinks.size(); i++) {
+        if (propertyLinks[i]==propertyLink) continue;
+        if (destinationProperty == propertyLinks[i]->getSourceProperty())
+            linkEvaluator_->evaluate(propertyLinks[i]->getSourceProperty(), propertyLinks[i]->getDestinationProperty());
+        else if (propertyLinks[i]->isBidirectional())
+            linkEvaluator_->evaluate(propertyLinks[i]->getDestinationProperty(), propertyLinks[i]->getSourceProperty());
+
+        getConnectedLinksToDestinationProperty(propertyLinks[i]);  
+    }    
+}
+
+void ProcessorNetworkEvaluator::executePropertyLinking(Property* sourceProperty) {
+    
+    std::vector<PropertyLink*> propertyLinks = getConnectedPropertyLinks(sourceProperty);
+
+    //source is considered as visited destination
+    destinationPropertiesVisited_.clear();
+    destinationPropertiesVisited_.push_back(sourceProperty);
+
+    for (size_t i=0; i<propertyLinks.size(); i++) {
+        Property* destinationProperty=0;
+        if (propertyLinks[i]->getSourceProperty() == sourceProperty) {
+            destinationProperty = propertyLinks[i]->getDestinationProperty();
+        }
+        else if (propertyLinks[i]->isBidirectional()) {
+            destinationProperty = propertyLinks[i]->getSourceProperty();
+        }
+
+        linkEvaluator_->evaluate(sourceProperty, destinationProperty);
+        getConnectedLinksToDestinationProperty(propertyLinks[i]);
+    }
+}
+
+void ProcessorNetworkEvaluator::evaluate() {
+
+   //TODO: This is just for testing. Remove it once we have proper linking interface
+   //No cyclic check or change propagation
+    std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
+    for (size_t i=0; i<links.size(); i++) {
+        if (!links[i]->isValid()) {
+            links[i]->evaluate();
+        }
     }
 
     repaintRequired_ = false;
