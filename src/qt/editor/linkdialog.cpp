@@ -556,7 +556,7 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     if (!processorLink->isLinked(sProp, eProp)) {
         processorLink->addPropertyLinks(sProp, eProp);
         PropertyLink* propertyLink = processorLink->getPropertyLink(sProp, eProp);
-        initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
+        if (propertyLink) initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
     }
 }
 
