@@ -53,13 +53,15 @@ void DialogCurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem*
 DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, 
                                                            LinkDialogPropertyGraphicsItem* endProperty,
                                                            PropertyLink* propertyLink,
+                                                           ProcessorLink* processorLink,
                                                            bool layoutOption) : 
                                                            DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty), 
                                                                                    endProperty->getShortestBoundaryPointTo(startProperty),
                                                                                    ivec3(38,38,38), false, false),
                                                            startPropertyGraphicsItem_(startProperty),
                                                            endPropertyGraphicsItem_(endProperty),
-                                                           propertyLink_(propertyLink)
+                                                           propertyLink_(propertyLink),
+                                                           processorLink_(processorLink)
 {
     IVW_UNUSED_PARAM(layoutOption); //always make layout to be horizontal
     setFlags(ItemIsSelectable | ItemIsFocusable);
@@ -161,7 +163,7 @@ void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphics
             << arrowPolygonCenter + QPoint(0, arrowDim.y()); 
 
     if (propertyLink_->getDestinationProperty() == startPropertyGraphicsItem_->getGraphicsItemData() ||
-        propertyLink_->isBidirectional()) {
+        isBidirectional()) {
         p->setPen(Qt::black);    
         p->setBrush(Qt::red);
         p->drawPolygon(polygon);
@@ -204,7 +206,7 @@ void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphics
              << arrowPolygonCenter + QPoint(0, arrowDim.y());    
 
     if (propertyLink_->getDestinationProperty() == endPropertyGraphicsItem_->getGraphicsItemData() ||
-        propertyLink_->isBidirectional()) {
+        isBidirectional()) {
             p->setPen(Qt::black);
             p->setBrush(Qt::red);
             p->drawPolygon(polygon1);
@@ -214,8 +216,10 @@ void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphics
         p->setBrush(Qt::darkGray);
         p->drawPolygon(polygon);
     }
+}
 
-
+bool DialogConnectionGraphicsItem::isBidirectional() {
+    return processorLink_->getBidirectionalPair(propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty())!=0;
 }
 
 /*---------------------------------------------------------------------------------------*/
@@ -677,7 +681,7 @@ bool LinkDialogGraphicsScene::isPropertyLinkBidirectional(DialogConnectionGraphi
 
     PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 
-    return propLink->isBidirectional();
+    return processorLink->getBidirectionalPair(propLink)!=0;
 }
 
 void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional) {
@@ -691,7 +695,16 @@ void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGrap
 
     PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 
-    propLink->setBirectional(isBidirectional);
+    if (isBidirectional) {
+        if (processorLink->getBidirectionalPair(propLink)==0) {
+             processorLink->addPropertyLinks(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
+        }
+    }
+    else {
+        if (processorLink->getBidirectionalPair(propLink)) {
+            processorLink->removeBidirectionalPair(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+        }
+    }
 }
 
 void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink) {
@@ -713,7 +726,11 @@ void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphi
 void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, 
                                                                    LinkDialogPropertyGraphicsItem* inProperty,
                                                                    PropertyLink* propertyLink) {
-    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, true);
+    Processor* startProcessor = dynamic_cast<Processor*>(outProperty->getGraphicsItemData()->getOwner());
+    Processor* endProcessor   = dynamic_cast<Processor*>(inProperty->getGraphicsItemData()->getOwner());
+    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+
+    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, processorLink, true);
     connectionGraphicsItems_.push_back(cItem);
     addItem(cItem);
 
@@ -798,8 +815,14 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
         //inProcessor, outProcessor cannot be in the same processor list. But that case can never occur      
 
         std::vector<PropertyLink*> propertyLinks = processorLinks[i]->getPropertyLinks();
+        std::vector<PropertyLink*> pairList;
+        PropertyLink* pair=0;
         for (size_t j=0; j<propertyLinks.size(); j++) {
-            addPropertyLink(propertyLinks[j]);
+            if (std::find(pairList.begin(), pairList.end(), propertyLinks[j])==pairList.end()) {
+                addPropertyLink(propertyLinks[j]);
+                pair = processorLinks[i]->getBidirectionalPair(propertyLinks[j]);
+                if (pair) pairList.push_back(pair);
+            }
         }
     }
 }

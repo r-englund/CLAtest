@@ -48,7 +48,7 @@ class DialogConnectionGraphicsItem : public DialogCurveGraphicsItem {
 public:
 
     DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
-                                 PropertyLink* propertyLink, bool layoutOption=true);
+                                 PropertyLink* propertyLink, ProcessorLink* processorLink, bool layoutOption=true);
     ~DialogConnectionGraphicsItem();
 
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
@@ -67,6 +67,7 @@ public:
         startArrowHeadIndex_ = temp;
     }
 
+    bool isBidirectional();
     void initialize();
     void deinitialize();
     void setStartArrowHeadIndex(int index) {startArrowHeadIndex_ = index;}
@@ -81,6 +82,7 @@ private:
     int startArrowHeadIndex_;
     int endArrowHeadIndex_;
     PropertyLink* propertyLink_;
+    ProcessorLink* processorLink_;
 };
 
 

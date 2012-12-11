@@ -287,7 +287,7 @@ std::vector<PropertyLink*> ProcessorNetworkEvaluator::getConnectedPropertyLinks(
 }
 
 void ProcessorNetworkEvaluator::getConnectedLinksToDestinationProperty(PropertyLink* propertyLink) {
-    Property* destinationProperty = propertyLink->getDestinationProperty();
+    /*Property* destinationProperty = propertyLink->getDestinationProperty();
     if( std::find(destinationPropertiesVisited_.begin(), destinationPropertiesVisited_.end(), destinationProperty)== destinationPropertiesVisited_.end()) {
         destinationPropertiesVisited_.push_back(destinationProperty);
     }
@@ -313,7 +313,7 @@ void ProcessorNetworkEvaluator::getConnectedLinksToDestinationProperty(PropertyL
             linkEvaluator_->evaluate(propertyLinks[i]->getDestinationProperty(), propertyLinks[i]->getSourceProperty());
 
         getConnectedLinksToDestinationProperty(propertyLinks[i]);  
-    }    
+    } */
 }
 
 void ProcessorNetworkEvaluator::executePropertyLinking(Property* sourceProperty) {
@@ -329,9 +329,9 @@ void ProcessorNetworkEvaluator::executePropertyLinking(Property* sourceProperty)
         if (propertyLinks[i]->getSourceProperty() == sourceProperty) {
             destinationProperty = propertyLinks[i]->getDestinationProperty();
         }
-        else if (propertyLinks[i]->isBidirectional()) {
+        /*else if (propertyLinks[i]->isBidirectional()) {
             destinationProperty = propertyLinks[i]->getSourceProperty();
-        }
+        }*/
 
         linkEvaluator_->evaluate(sourceProperty, destinationProperty);
         getConnectedLinksToDestinationProperty(propertyLinks[i]);

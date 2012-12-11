@@ -33,10 +33,8 @@ PropertyLink::PropertyLink()
 
 PropertyLink::~PropertyLink() {}
 
-PropertyLink::PropertyLink(Property* srcProperty, Property* destProperty, bool biDirectional) 
-              : srcProperty_(srcProperty), dstProperty_(destProperty),
-                isBidirectional_(biDirectional){
-
+PropertyLink::PropertyLink(Property* srcProperty, Property* destProperty) 
+              : srcProperty_(srcProperty), dstProperty_(destProperty) {
 }
 
 void PropertyLink::switchDirection() {
@@ -107,8 +105,7 @@ void ProcessorLink::evaluate() {
 bool ProcessorLink::isLinked(Property* startProperty, Property* endProperty) {
     bool isLinkFound = false;
     for (size_t i=0; i<propertyLinks_.size(); i++) {
-        if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ||
-             (propertyLinks_[i]->getSourceProperty() == endProperty && propertyLinks_[i]->getDestinationProperty() == startProperty) ) {
+        if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ) {
                 isLinkFound = true;
                 break;
         }
@@ -127,11 +124,37 @@ void ProcessorLink::addPropertyLinks(Property* startProperty, Property* endPrope
 
     if ( (startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
          (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
-            newLink = new PropertyLink(startProperty, endProperty);            
+            newLink = new PropertyLink(startProperty, endProperty);
     }
 
     if (newLink) {
         propertyLinks_.push_back(newLink);
+    }
+}
+
+void ProcessorLink::removeBidirectionalPair(Property* startProperty, Property* endProperty) {
+
+    Processor* outProcessor = outProcessor_.getProcessor();
+    Processor* inProcessor = inProcessor_.getProcessor();
+
+    //if (!isLinked(startProperty, endProperty)) return;
+
+    if ( (startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
+        (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {  
+
+        PropertyLink* pair = getBidirectionalPair(startProperty, endProperty);
+
+        if (pair) {
+            for (size_t i=0; i<propertyLinks_.size(); i++) {
+                if ( (propertyLinks_[i]->getSourceProperty() == pair->getSourceProperty() && 
+                    propertyLinks_[i]->getDestinationProperty() == pair->getDestinationProperty()) ) {                        
+                        PropertyLink* plink = propertyLinks_[i];
+                        propertyLinks_.erase(propertyLinks_.begin()+i);
+                        delete plink;
+                        break;
+                }
+            }
+        }
     }
 }
 
@@ -143,16 +166,16 @@ void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endPr
     //if (!isLinked(startProperty, endProperty)) return;
 
     if ( (startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
-        (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
-         
+         (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
+
+            removeBidirectionalPair(startProperty, endProperty);
+
             for (size_t i=0; i<propertyLinks_.size(); i++) {
-                if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ||
-                    (propertyLinks_[i]->getSourceProperty() == endProperty && propertyLinks_[i]->getDestinationProperty() == startProperty) ) {
-                        
-                        PropertyLink* plink = propertyLinks_[i];
-                        propertyLinks_.erase(propertyLinks_.begin()+i);
-                        delete plink;
-                        break;
+                if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ) {                        
+                    PropertyLink* plink = propertyLinks_[i];
+                    propertyLinks_.erase(propertyLinks_.begin()+i);
+                    delete plink;
+                    break;
                 }
             }
     }  
@@ -167,9 +190,7 @@ PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* 
     if ( (startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
         (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
             for (size_t i=0; i<propertyLinks_.size(); i++) {
-                if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ||
-                     (propertyLinks_[i]->getSourceProperty() == endProperty && propertyLinks_[i]->getDestinationProperty() == startProperty) ) {
-
+                if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ) {
                         plink = propertyLinks_[i];  
                         break;
                 }
@@ -179,6 +200,15 @@ PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* 
     return plink;
 }
 
+PropertyLink* ProcessorLink::getBidirectionalPair(Property* startProperty, Property* endProperty) {
+    PropertyLink* link = getPropertyLink(startProperty, endProperty);
+    if (!link) return 0;
+    return getBidirectionalPair(link);
+}
+
+PropertyLink* ProcessorLink::getBidirectionalPair(PropertyLink* propertyLink) {
+    return getPropertyLink(propertyLink->getDestinationProperty(), propertyLink->getSourceProperty());
+}
 
 void ProcessorLink::serialize(IvwSerializer& s) const {
     s.serialize("link", getInProcessor()->getClassName(), true);
