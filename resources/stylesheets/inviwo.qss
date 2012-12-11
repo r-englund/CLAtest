@@ -93,9 +93,6 @@ QLineEdit {
     color: #888888;
     background-color: #111111;
 }
-QLineEdit:read-only{
-	border: 0px;
-}
 
 
 /* Arrow style sheets for different widgets */

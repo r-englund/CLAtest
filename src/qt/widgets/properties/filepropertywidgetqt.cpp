@@ -18,6 +18,7 @@ void FilePropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     lineEdit_ = new QLineEdit();
+    lineEdit_->setReadOnly(true);
     openButton_ = new QToolButton();
     openButton_->setIcon(QIcon(":/icons/network_open.png"));
     connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
