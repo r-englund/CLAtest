@@ -1,5 +1,4 @@
 #include "inviwo/core/network/processorlink.h"
-#include "inviwo/core/properties/linkevaluator.h"
 
 namespace inviwo {
 
@@ -86,20 +85,26 @@ bool ProcessorLink::isValid() {
     return false;
 }
 
-void ProcessorLink::evaluate() {
+void ProcessorLink::evaluate(LinkEvaluator *leval) {
     //Evaluate only if processors/properties are invalid
-    if (isValid()) {
-        return;
-    }
+    if (isValid()) return; 
+
     Property* startProperty;
     Property* endProperty;
 
-    LinkEvaluator leval;
     for (size_t i=0; i<propertyLinks_.size(); i++) {
         startProperty = propertyLinks_[i]->getSourceProperty();
         endProperty = propertyLinks_[i]->getDestinationProperty();
-        leval.evaluate(startProperty, endProperty);
+        leval->evaluate(startProperty, endProperty);
     }
+}
+
+std::vector<Property*> ProcessorLink::getSourceProperties() {
+    std::vector<Property*> sourceProperties;
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        sourceProperties.push_back(propertyLinks_[i]->getSourceProperty());
+    }
+    return sourceProperties;
 }
 
 bool ProcessorLink::isLinked(Property* startProperty, Property* endProperty) {

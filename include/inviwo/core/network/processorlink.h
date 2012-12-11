@@ -3,6 +3,7 @@
 
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/processors/processor.h"
+#include "inviwo/core/properties/linkevaluator.h"
 
 namespace inviwo {
 
@@ -40,9 +41,10 @@ public:
     Processor* getOutProcessor() const{ return outProcessor_.getProcessor(); }
 
     void autoLinkPropertiesByType();
-    void evaluate();
+    void evaluate(LinkEvaluator *leval);
     bool isLinked(Property* startProperty, Property* endProperty);
     bool isValid();
+    std::vector<Property*> getSourceProperties();
 
     void addPropertyLinks(Property* startProperty, Property* endProperty);
     void removePropertyLinks(Property* startProperty, Property* endProperty);

@@ -25,7 +25,7 @@ public:
     void setDefaultRenderContext(Canvas* canvas) {renderContext_ = canvas;}
     void initializeNetwork();
 
-    void executePropertyLinking(Property* sourceProperty);
+    void evaluateLinks(Property* sourceProperty);    
     void evaluate();
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
@@ -34,6 +34,7 @@ public:
 
 private:
     bool hasBeenVisited(Processor* processor);
+    bool hasBeenVisited(Property* property);
     std::vector<Processor*> getDirectPredecessors(Processor* processor);
     void traversePredecessors(Processor* processor);
     void sortTopologically();
@@ -45,13 +46,14 @@ private:
 
     //Property Linking support
     std::vector<PropertyLink*> getConnectedPropertyLinks(Property* property);
-    void getConnectedLinksToDestinationProperty(PropertyLink* propertyLink);
+    std::vector<Property*> getConnectedProperties(Property* property);
+    void executePropertyLinking(Property* sourceProperty);
 
     ProcessorNetwork* processorNetwork_;
 
     std::vector<Processor*> processorsSorted_; // the sorted list of processors obtained through topological sorting
     std::vector<Processor*> processorsVisited_; // a bool vector containing flags whether a processor has been visited during traversal
-    std::vector<Property*> destinationPropertiesVisited_;
+    std::vector<Property*> propertiesVisited_;
 
     std::vector<Canvas*> registeredCanvases_;
     Canvas* renderContext_;

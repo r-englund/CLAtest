@@ -718,8 +718,10 @@ void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphi
 
     PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 
-    propLink->switchDirection();
-    propertyLink->switchDirection();
+    if (!propertyLink->isBidirectional()) {
+        propLink->switchDirection();
+        propertyLink->switchDirection();
+    }
     update();
 }
 
