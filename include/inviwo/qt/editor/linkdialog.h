@@ -73,6 +73,7 @@ public:
     void setEndArrowHeadIndex(int index) {endArrowHeadIndex_ = index;}
     int getStartArrowHeadIndex() { return startArrowHeadIndex_;}
     int getEndArrowHeadIndex() { return endArrowHeadIndex_;}
+    void updateStartEndPoint();
 
 private:
     LinkDialogPropertyGraphicsItem* startPropertyGraphicsItem_;
