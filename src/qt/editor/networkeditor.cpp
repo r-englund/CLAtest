@@ -357,7 +357,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {    
 
     //Link mode
-    if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
+    if (e->modifiers() == Qt::ControlModifier) {
         if (linkCurve_) {
             linkCurve_->setEndPoint(e->scenePos());
             linkCurve_->update();
@@ -378,7 +378,7 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 
     //Link mode
-    if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
+    if (e->modifiers() == Qt::ControlModifier) {
         removeItem(linkCurve_);
         delete linkCurve_;
         linkCurve_ = 0;
@@ -413,6 +413,17 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
             if (gridSnapping_) processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
         QGraphicsScene::mouseReleaseEvent(e);
     }
+}
+
+void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
+    LinkConnectionGraphicsItem* linkConnectionGraphicsItem = qgraphicsitem_cast<LinkConnectionGraphicsItem*>(getLinkGraphicsItemAt(e->scenePos()));
+
+    if (linkConnectionGraphicsItem) {
+        showLinkDialog(linkConnectionGraphicsItem);
+        e->accept(); 
+    }       
+    else
+        QGraphicsScene::mouseDoubleClickEvent(e);
 }
 
 void NetworkEditor::keyPressEvent(QKeyEvent* e) {
@@ -489,15 +500,10 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     } else if (linkConnectionGraphicsItem) {
         QMenu menu;
         QAction* linkAction = menu.addAction("Link Properties");
-        QAction* editAction = menu.addAction("Edit");
         QAction* deleteAction = menu.addAction("Delete");
         QAction* result = menu.exec(QCursor::pos());
         if (result == deleteAction)
             removeLink(linkConnectionGraphicsItem);
-        else if (result == editAction) {
-            //Show link edit dialog
-            showLinkDialog(linkConnectionGraphicsItem);
-        }
         else if (result == linkAction) {
             Processor* inProcessor = linkConnectionGraphicsItem->getInProcessor()->getProcessor();
             Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessor()->getProcessor();

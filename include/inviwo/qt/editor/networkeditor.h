@@ -64,6 +64,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 
     void keyPressEvent(QKeyEvent* keyEvent);
 

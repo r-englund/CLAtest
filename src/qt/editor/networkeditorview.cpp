@@ -42,11 +42,13 @@ void NetworkEditorView::setZoomLevel(int zoomLevel) {
 void NetworkEditorView::mouseDoubleClickEvent(QMouseEvent* e) {
     QGraphicsView::mouseDoubleClickEvent(e);
 
-    fitInView(networkEditor_->itemsBoundingRect(), Qt::KeepAspectRatio);
+    if (!e->isAccepted()) {
+        fitInView(networkEditor_->itemsBoundingRect(), Qt::KeepAspectRatio);
 
-    float scale = matrix().m11();
-    zoomLevel_ = calculateZoomLevelFor(scale);
-    e->accept();
+        float scale = matrix().m11();
+        zoomLevel_ = calculateZoomLevelFor(scale);
+        e->accept();
+    }
 }
 
 void NetworkEditorView::resizeEvent(QResizeEvent* e) {
