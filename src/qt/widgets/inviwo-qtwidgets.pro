@@ -53,6 +53,7 @@ HEADERS += \
     ../../../include/inviwo/qt/widgets/properties/floatpropertywidgetqt.h \
     ../../../include/inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h \
     ../../../include/inviwo/qt/widgets/properties/intpropertywidgetqt.h \
+    ../../../include/inviwo/qt/widgets/properties/optionpropertywidgetqt.h \
     ../../../include/inviwo/qt/widgets/properties/propertywidgetfactoryqt.h \
     ../../../include/inviwo/qt/widgets/properties/propertywidgetqt.h
 
@@ -68,6 +69,7 @@ SOURCES += \
     properties/floatpropertywidgetqt.cpp \
     properties/floatvec3propertywidgetqt.cpp \
     properties/intpropertywidgetqt.cpp \
+    properties/optionpropertywidgetqt.cpp \
     properties/propertywidgetfactoryqt.cpp \
     properties/propertywidgetqt.cpp
         

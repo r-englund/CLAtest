@@ -25,7 +25,7 @@ public:
     void setDefaultRenderContext(Canvas* canvas) {renderContext_ = canvas;}
     void initializeNetwork();
 
-    void evaluateLinks(Property* sourceProperty);    
+    void evaluatePropertyLinks(Property* sourceProperty);    
     void evaluate();
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
@@ -46,8 +46,8 @@ private:
 
     //Property Linking support
     std::vector<PropertyLink*> getConnectedPropertyLinks(Property* property);
-    std::vector<Property*> getConnectedProperties(Property* property);
-    void executePropertyLinking(Property* sourceProperty);
+    std::vector<Property*> getLinkedProperties(Property* property);
+    void evaluatePropertyLinks(Property* sourceProperty, Property* curProperty);
 
     ProcessorNetwork* processorNetwork_;
 

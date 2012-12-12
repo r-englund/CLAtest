@@ -43,8 +43,9 @@ win32 {
 # Add header and source files             #
 ###########################################
 HEADERS += \
-    ../../../include/inviwo/qt/editor/consolewidget.h \
     ../../../include/inviwo/qt/editor/connectiongraphicsitem.h \
+    ../../../include/inviwo/qt/editor/consolewidget.h \
+    ../../../include/inviwo/qt/editor/linkdialog.h \
     ../../../include/inviwo/qt/editor/linkgraphicsitem.h \
     ../../../include/inviwo/qt/editor/inviwodockwidget.h \
     ../../../include/inviwo/qt/editor/labelgraphicsitem.h \
@@ -53,22 +54,21 @@ HEADERS += \
     ../../../include/inviwo/qt/editor/processorlistwidget.h \
     ../../../include/inviwo/qt/editor/processorgraphicsitem.h \
     ../../../include/inviwo/qt/editor/processorpropertywidget.h \
-    ../../../include/inviwo/qt/editor/propertylistwidget.h \
-    ../../../include/inviwo/qt/editor/linkdialog.h	
+    ../../../include/inviwo/qt/editor/propertylistwidget.h
 
 SOURCES += \
-    consolewidget.cpp \
     connectiongraphicsitem.cpp \
-    linkgraphicsitem.cpp \
+    consolewidget.cpp \
     inviwodockwidget.cpp \
     labelgraphicsitem.cpp \
+    linkdialog.cpp \
+    linkgraphicsitem.cpp \
     networkeditor.cpp \
     networkeditorview.cpp \
     processorlistwidget.cpp \
     processorgraphicsitem.cpp \
     processorpropertywidget.cpp \
-    propertylistwidget.cpp \
-    linkdialog.cpp
+    propertylistwidget.cpp
         
 HEADERS = $$unique(HEADERS)
 SOURCES = $$unique(SOURCES)

@@ -25,6 +25,7 @@ public:
     void setMaxValue(const T &value) {
         maxValue_ = value;
     }
+
     void setIncrement(const T &value) {
         increment_ = value;
     }
@@ -32,13 +33,13 @@ public:
     void increase() {
         this->value_ += increment_;
         if (this->value_ > maxValue_) this->value_ = maxValue_;
-        this->getOwner()->invalidate();
+        getOwner()->invalidate();
     }
 
     void decrease() {
         this->value_ -= increment_;
         if (this->value_ < minValue_) this->value_ = minValue_;
-        this->getOwner()->invalidate();
+        getOwner()->invalidate();
     }
 
 private:
@@ -46,6 +47,7 @@ private:
     T maxValue_;
     T increment_;
 };
+
 
 template <typename T>
 OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayName, T value,
@@ -58,6 +60,7 @@ OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayN
 
 template <typename T>
 T OrdinalProperty<T>::getMinValue() const { return minValue_; }
+
 template <typename T>
 T OrdinalProperty<T>::getMaxValue() const { return maxValue_; }
 

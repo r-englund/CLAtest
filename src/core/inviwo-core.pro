@@ -133,6 +133,7 @@ HEADERS += \
     ../../include/inviwo/core/properties/compositeproperty.h \
     ../../include/inviwo/core/properties/fileproperty.h \
     ../../include/inviwo/core/properties/ordinalproperty.h \
+    ../../include/inviwo/core/properties/optionproperty.h \
     ../../include/inviwo/core/properties/properties.h \
     ../../include/inviwo/core/properties/property.h \
     ../../include/inviwo/core/properties/propertyfactory.h \
@@ -206,6 +207,7 @@ SOURCES += \
     properties/cameraproperty.cpp \
     properties/compositeproperty.cpp \
     properties/fileproperty.cpp \
+    properties/optionproperty.cpp \
     properties/property.cpp \
     properties/propertyfactory.cpp \
     properties/propertyowner.cpp \

@@ -286,7 +286,7 @@ std::vector<PropertyLink*> ProcessorNetworkEvaluator::getConnectedPropertyLinks(
     return propertyLinks;
 }
 
-std::vector<Property*> ProcessorNetworkEvaluator::getConnectedProperties(Property* property) {
+std::vector<Property*> ProcessorNetworkEvaluator::getLinkedProperties(Property* property) {
     std::vector<Property*> connectedProperties;
     std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
     for (size_t i=0; i<links.size(); i++) {
@@ -306,25 +306,25 @@ bool ProcessorNetworkEvaluator::hasBeenVisited(Property* property) {
     return true;
 }
 
-void ProcessorNetworkEvaluator::executePropertyLinking(Property* sourceProperty) {
-    std::vector<Property*> currentProperties = getConnectedProperties(sourceProperty);
+void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty, Property* curProperty) {
+    std::vector<Property*> linkedProperties = getLinkedProperties(curProperty);
 
     //Set current properties and its connected properties
-    for (size_t i=0; i<currentProperties.size(); i++) {
-        if (!hasBeenVisited(currentProperties[i])) {
-            propertiesVisited_.push_back(currentProperties[i]);
-            linkEvaluator_->evaluate(sourceProperty, currentProperties[i]);
-            executePropertyLinking(currentProperties[i]);
+    for (size_t i=0; i<linkedProperties.size(); i++) {
+        if (!hasBeenVisited(linkedProperties[i])) {
+            propertiesVisited_.push_back(linkedProperties[i]);
+            linkEvaluator_->evaluate(sourceProperty, linkedProperties[i]);
+            evaluatePropertyLinks(sourceProperty, linkedProperties[i]);
         }
     }
 }
 
-void ProcessorNetworkEvaluator::evaluateLinks(Property* sourceProperty) {
+void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty) {
     propertiesVisited_.clear();
     //sourceProperty is considered to have the value already set. this value needs to be propagated.
     //Transfer values from sourceProperty to its connected properties recursively
     propertiesVisited_.push_back(sourceProperty);
-    executePropertyLinking(sourceProperty);
+    evaluatePropertyLinks(sourceProperty, sourceProperty);
 }
 
 
@@ -338,7 +338,7 @@ void ProcessorNetworkEvaluator::evaluate() {
             sourceProperties = links[i]->getSourceProperties();
             //TODO: Evaluate only invalid properties
              for (size_t j=0; j<sourceProperties.size(); j++) {
-                evaluateLinks(sourceProperties[j]);
+                evaluatePropertyLinks(sourceProperties[j]);
              }
         }
         sourceProperties.clear();

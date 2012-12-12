@@ -34,7 +34,7 @@ T TemplateProperty<T>::get() const {
 template <typename T>
 void TemplateProperty<T>::set(T value) {
     value_ = value;
-    this->getOwner()->invalidate();
+    getOwner()->invalidate();
     updatePropertyWidgets();
 }
 
