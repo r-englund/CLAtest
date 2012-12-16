@@ -71,12 +71,6 @@ DialogConnectionGraphicsItem::~DialogConnectionGraphicsItem() {
 }
 
 void DialogConnectionGraphicsItem::initialize() {
-    /*startPropertyGraphicsItem_->addArrow();
-    setStartArrowHeadIndex(startPropertyGraphicsItem_->getArrowCount());
-
-    endPropertyGraphicsItem_->addArrow();
-    setEndArrowHeadIndex(endPropertyGraphicsItem_->getArrowCount());
-    */
     startPropertyGraphicsItem_->addConnectionGraphicsItem(this);
     setStartArrowHeadIndex(startPropertyGraphicsItem_->getConnectionGraphicsItemCount());
 
@@ -113,87 +107,6 @@ void DialogConnectionGraphicsItem::updateStartEndPoint() {
 
     setStartPoint(arrowCenter);
 
-    aCenterR = endPropertyGraphicsItem_->calculateArrowCenter(endArrowHeadIndex_, true);
-    aCenterL = endPropertyGraphicsItem_->calculateArrowCenter(endArrowHeadIndex_, false);
-
-    QPointF end = getEndPoint();
-    vec1 = QVector2D(aCenterR - end);
-    vec2 = QVector2D(aCenterL - end);
-
-    arrowCenter = aCenterR;
-
-    if (vec2.length()<vec1.length()) {
-        arrowCenter = aCenterL;
-    }
-
-    setEndPoint(arrowCenter);
-
-    //startPropertyGraphicsItem_->update();
-    //endPropertyGraphicsItem_->update();
-
-}
-
-void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {        
-    DialogCurveGraphicsItem::paint(p, options, widget);
-    //paintArrow(p, options, widget);
-}
-
-void DialogConnectionGraphicsItem::paintArrow(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
-    IVW_UNUSED_PARAM(options);
-    IVW_UNUSED_PARAM(widget);
-
-    QPoint arrowDim(20, 10);
-
-    //Start Property
-    QPointF aCenterR = startPropertyGraphicsItem_->calculateArrowCenter(startArrowHeadIndex_, true);
-    QPointF aCenterL = startPropertyGraphicsItem_->calculateArrowCenter(startArrowHeadIndex_, false);
-
-    QPointF arrowCenter;
-
-    QPointF start = getStartPoint();
-
-    QVector2D vec1(aCenterR - start);
-    QVector2D vec2(aCenterL - start);
-
-    QVector2D arrowNose(aCenterL - aCenterR);
-    arrowNose.normalize();
-    arrowNose.setX(arrowNose.x()*arrowDim.x());
-    arrowNose.setY(arrowNose.y()*arrowDim.y());
-
-    arrowCenter = aCenterR;
-
-    if (vec2.length()<vec1.length()) {
-        arrowCenter = aCenterL;
-        arrowNose = QVector2D(aCenterR - aCenterL);
-        arrowNose.normalize();
-        arrowNose.setX(arrowNose.x()*arrowDim.x());
-        arrowNose.setY(arrowNose.y()*arrowDim.y());
-    }
-
-    setStartPoint(arrowCenter);
-
-    QPoint arrowPolygonCenter(arrowCenter.x(), arrowCenter.y());
-    QPolygon polygon;
-    polygon << arrowPolygonCenter << arrowPolygonCenter + QPoint(0, -arrowDim.y())
-        << arrowPolygonCenter + QPoint(arrowNose.x(), arrowNose.y())
-        << arrowPolygonCenter + QPoint(0, arrowDim.y()); 
-
-
-    if (propertyLink_->getDestinationProperty() == startPropertyGraphicsItem_->getGraphicsItemData() ||
-        isBidirectional()) {
-            p->setPen(QPen(Qt::black, 2.0, Qt::SolidLine));    
-            p->setBrush(Qt::red);
-            p->drawPolygon(polygon);
-    }
-    else {
-        p->setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
-        p->setBrush(Qt::darkGray);
-        p->drawPolygon(polygon);
-    }
-
-     
-
-
     //End Property
     aCenterR = endPropertyGraphicsItem_->calculateArrowCenter(endArrowHeadIndex_, true);
     aCenterL = endPropertyGraphicsItem_->calculateArrowCenter(endArrowHeadIndex_, false);
@@ -202,39 +115,17 @@ void DialogConnectionGraphicsItem::paintArrow(QPainter* p, const QStyleOptionGra
     vec1 = QVector2D(aCenterR - end);
     vec2 = QVector2D(aCenterL - end);
 
-    arrowNose = QVector2D(aCenterL - aCenterR);
-    arrowNose.normalize();
-    arrowNose.setX(arrowNose.x()*arrowDim.x());
-    arrowNose.setY(arrowNose.y()*arrowDim.y());
     arrowCenter = aCenterR;
 
     if (vec2.length()<vec1.length()) {
         arrowCenter = aCenterL;
-        arrowNose = QVector2D(aCenterR - aCenterL);
-        arrowNose.normalize();
-        arrowNose.setX(arrowNose.x()*arrowDim.x());
-        arrowNose.setY(arrowNose.y()*arrowDim.y());
     }
 
     setEndPoint(arrowCenter);
+}
 
-    arrowPolygonCenter = QPoint(arrowCenter.x(), arrowCenter.y());
-    QPolygon polygon1;
-    polygon1 << arrowPolygonCenter << arrowPolygonCenter + QPoint(0, -arrowDim.y())
-        << arrowPolygonCenter + QPoint(arrowNose.x(), arrowNose.y())
-        << arrowPolygonCenter + QPoint(0, arrowDim.y());    
-
-    if (propertyLink_->getDestinationProperty() == endPropertyGraphicsItem_->getGraphicsItemData() ||
-        isBidirectional()) {
-            p->setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
-            p->setBrush(Qt::red);
-            p->drawPolygon(polygon1);
-    }
-    else {
-        p->setPen(QPen(Qt::black, 2.0, Qt::SolidLine));    
-        p->setBrush(Qt::darkGray);
-        p->drawPolygon(polygon);
-    }
+void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {        
+    DialogCurveGraphicsItem::paint(p, options, widget);
 }
 
 bool DialogConnectionGraphicsItem::isBidirectional() {
@@ -256,8 +147,6 @@ void DialogConnectionGraphicsItem::switchDirection() {
 
 void DialogConnectionGraphicsItem::updateConnectionDrawing() {
     if (!processorLink_ || !propertyLink_) return;
-    //startPropertyGraphicsItem_->update();
-    //endPropertyGraphicsItem_->update();
     startPropertyGraphicsItem_->prepareGeometryChange();
     endPropertyGraphicsItem_->prepareGeometryChange();
     update();
@@ -399,8 +288,6 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
     processorGraphicsItem_ = processor;
 
     setProperty(prop);
-
-    //arrowCount_ = 0;
 
     updatePositionBasedOnProcessor();
 }
@@ -569,8 +456,6 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     p->save();
     QPoint arrowDim(20, 10);
     for (size_t i=0; i<connectionItems_.size(); i++) {
-        //connectionItems_[i]->paintArrow(p, options, widget);
-
         //Determine if arrow need to be drawn pointing left or right side
         bool right = isArrowPointedRight(connectionItems_[i]);
 
@@ -599,16 +484,12 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
             rectPath.moveTo(arrowRect.left(), arrowRect.top());
             rectPath.lineTo(arrowRect.left(), arrowRect.bottom());
             rectPath.lineTo(arrowRect.right(), arrowRect.bottom()-arrowRect.height()/2);
-            //rectPath.lineTo(arrowRect.right(), arrowRect.top());
-            //rectPath.lineTo(arrowRect.left(), arrowRect.top()-arrowRect.width()/2);
             rectPath.closeSubpath();
         }
         else {
             rectPath.moveTo(arrowRect.right(), arrowRect.top());
             rectPath.lineTo(arrowRect.right(), arrowRect.bottom());
             rectPath.lineTo(arrowRect.left(), arrowRect.bottom()-arrowRect.height()/2);
-            //rectPath.lineTo(arrowRect.left(), arrowRect.top());
-            //rectPath.lineTo(arrowRect.right(), arrowRect.top()-arrowRect.width()/2);
             rectPath.closeSubpath();
         }
                 
@@ -848,8 +729,6 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
         
         startProperty->prepareGeometryChange();
         endProperty->prepareGeometryChange();
-        //startProperty->update();
-        //endProperty->update();
     }
 }
 
@@ -933,16 +812,6 @@ void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGrap
 }
 
 void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink) {
-    //LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
-    //LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
-
-    //Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
-    //Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
-
-    //ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
-
-    //PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
-
     if (!propertyLink->isBidirectional()) {        
         propertyLink->switchDirection();
         propertyLink->updateConnectionDrawing();

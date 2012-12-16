@@ -53,7 +53,6 @@ public:
     ~DialogConnectionGraphicsItem();
 
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-    void paintArrow(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
 
     QRectF boundingRect() const;
 
