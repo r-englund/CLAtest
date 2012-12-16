@@ -49,7 +49,6 @@ void DialogCurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem*
     CurveGraphicsItem::paint(p, options, widget);
 }
 
-
 DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, 
                                                            LinkDialogPropertyGraphicsItem* endProperty,
                                                            PropertyLink* propertyLink,
@@ -72,16 +71,24 @@ DialogConnectionGraphicsItem::~DialogConnectionGraphicsItem() {
 }
 
 void DialogConnectionGraphicsItem::initialize() {
-    startPropertyGraphicsItem_->addArrow();
+    /*startPropertyGraphicsItem_->addArrow();
     setStartArrowHeadIndex(startPropertyGraphicsItem_->getArrowCount());
 
     endPropertyGraphicsItem_->addArrow();
     setEndArrowHeadIndex(endPropertyGraphicsItem_->getArrowCount());
+    */
+    startPropertyGraphicsItem_->addConnectionGraphicsItem(this);
+    setStartArrowHeadIndex(startPropertyGraphicsItem_->getConnectionGraphicsItemCount());
+
+    endPropertyGraphicsItem_->addConnectionGraphicsItem(this);
+    setEndArrowHeadIndex(endPropertyGraphicsItem_->getConnectionGraphicsItemCount());
 }
 
 void DialogConnectionGraphicsItem::deinitialize() {
-    startPropertyGraphicsItem_->removeArrow();
-    endPropertyGraphicsItem_->removeArrow();
+    startPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
+    endPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
+    propertyLink_ = 0;
+    processorLink_ = 0;
 }
 
 void DialogConnectionGraphicsItem::updateStartEndPoint() {
@@ -121,13 +128,22 @@ void DialogConnectionGraphicsItem::updateStartEndPoint() {
 
     setEndPoint(arrowCenter);
 
+    //startPropertyGraphicsItem_->update();
+    //endPropertyGraphicsItem_->update();
+
 }
 
-void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {    
-    
+void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {        
     DialogCurveGraphicsItem::paint(p, options, widget);
+    //paintArrow(p, options, widget);
+}
+
+void DialogConnectionGraphicsItem::paintArrow(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
+    IVW_UNUSED_PARAM(options);
+    IVW_UNUSED_PARAM(widget);
+
     QPoint arrowDim(20, 10);
-    
+
     //Start Property
     QPointF aCenterR = startPropertyGraphicsItem_->calculateArrowCenter(startArrowHeadIndex_, true);
     QPointF aCenterL = startPropertyGraphicsItem_->calculateArrowCenter(startArrowHeadIndex_, false);
@@ -155,24 +171,27 @@ void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphics
     }
 
     setStartPoint(arrowCenter);
-    
+
     QPoint arrowPolygonCenter(arrowCenter.x(), arrowCenter.y());
     QPolygon polygon;
     polygon << arrowPolygonCenter << arrowPolygonCenter + QPoint(0, -arrowDim.y())
-            << arrowPolygonCenter + QPoint(arrowNose.x(), arrowNose.y())
-            << arrowPolygonCenter + QPoint(0, arrowDim.y()); 
+        << arrowPolygonCenter + QPoint(arrowNose.x(), arrowNose.y())
+        << arrowPolygonCenter + QPoint(0, arrowDim.y()); 
+
 
     if (propertyLink_->getDestinationProperty() == startPropertyGraphicsItem_->getGraphicsItemData() ||
         isBidirectional()) {
-        p->setPen(Qt::black);    
-        p->setBrush(Qt::red);
-        p->drawPolygon(polygon);
+            p->setPen(QPen(Qt::black, 2.0, Qt::SolidLine));    
+            p->setBrush(Qt::red);
+            p->drawPolygon(polygon);
     }
     else {
-        p->setPen(Qt::black);    
+        p->setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
         p->setBrush(Qt::darkGray);
         p->drawPolygon(polygon);
     }
+
+     
 
 
     //End Property
@@ -202,24 +221,61 @@ void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphics
     arrowPolygonCenter = QPoint(arrowCenter.x(), arrowCenter.y());
     QPolygon polygon1;
     polygon1 << arrowPolygonCenter << arrowPolygonCenter + QPoint(0, -arrowDim.y())
-             << arrowPolygonCenter + QPoint(arrowNose.x(), arrowNose.y())
-             << arrowPolygonCenter + QPoint(0, arrowDim.y());    
+        << arrowPolygonCenter + QPoint(arrowNose.x(), arrowNose.y())
+        << arrowPolygonCenter + QPoint(0, arrowDim.y());    
 
     if (propertyLink_->getDestinationProperty() == endPropertyGraphicsItem_->getGraphicsItemData() ||
         isBidirectional()) {
-            p->setPen(Qt::black);
+            p->setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
             p->setBrush(Qt::red);
             p->drawPolygon(polygon1);
     }
     else {
-        p->setPen(Qt::black);    
+        p->setPen(QPen(Qt::black, 2.0, Qt::SolidLine));    
         p->setBrush(Qt::darkGray);
         p->drawPolygon(polygon);
     }
 }
 
 bool DialogConnectionGraphicsItem::isBidirectional() {
+    if (!processorLink_ || !propertyLink_) return false;
     return processorLink_->getBidirectionalPair(propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty())!=0;
+}
+
+void DialogConnectionGraphicsItem::switchDirection() {
+    LinkDialogPropertyGraphicsItem* tempProp = getEndProperty();
+    endPropertyGraphicsItem_ = getStartProperty();
+    startPropertyGraphicsItem_ = tempProp;
+
+    int temp = endArrowHeadIndex_;
+    endArrowHeadIndex_ = startArrowHeadIndex_;
+    startArrowHeadIndex_ = temp;
+
+    if (propertyLink_) propertyLink_->switchDirection();
+}
+
+void DialogConnectionGraphicsItem::updateConnectionDrawing() {
+    if (!processorLink_ || !propertyLink_) return;
+    //startPropertyGraphicsItem_->update();
+    //endPropertyGraphicsItem_->update();
+    startPropertyGraphicsItem_->prepareGeometryChange();
+    endPropertyGraphicsItem_->prepareGeometryChange();
+    update();
+    updateStartEndPoint();
+}
+
+QRectF DialogConnectionGraphicsItem::boundingRect() const {
+   QPointF startPoint = getStartPoint();
+   QPointF endPoint = getEndPoint();
+   QPointF topLeft = QPointF(std::min(startPoint.x(), endPoint.x()),
+                             std::min(startPoint.y(), endPoint.y()));
+   return QRectF(topLeft.x()-30.0, topLeft.y()-30.0,
+        abs(startPoint.x()-endPoint.x())+60.0,
+        abs(startPoint.y()-endPoint.y())+60);
+}
+
+void DialogConnectionGraphicsItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
+        QGraphicsItem::mouseDoubleClickEvent(e);
 }
 
 /*---------------------------------------------------------------------------------------*/
@@ -242,7 +298,7 @@ LinkDialogProcessorGraphicsItem::LinkDialogProcessorGraphicsItem() : GraphicsIte
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight*2.5);
     classLabel_->setDefaultTextColor(Qt::lightGray);
-    classLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));    
+    classLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
 }
 
 LinkDialogProcessorGraphicsItem::~LinkDialogProcessorGraphicsItem() {}
@@ -298,6 +354,8 @@ void LinkDialogProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraph
     p->restore();
 }
 
+
+
 QVariant LinkDialogProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {
      return QGraphicsItem::itemChange(change, value);
 }
@@ -342,7 +400,7 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
 
     setProperty(prop);
 
-    arrowCount_ = 0;
+    //arrowCount_ = 0;
 
     updatePositionBasedOnProcessor();
 }
@@ -395,13 +453,89 @@ QSizeF LinkDialogPropertyGraphicsItem::sizeHint(Qt::SizeHint which, const QSizeF
     return constraint;
 }
 
+void LinkDialogPropertyGraphicsItem::addConnectionGraphicsItem(DialogConnectionGraphicsItem* cItem) {
+    connectionItems_.push_back(cItem);
+}
+
+int LinkDialogPropertyGraphicsItem::getConnectionGraphicsItemCount() const{
+    return connectionItems_.size();
+}
+
+void LinkDialogPropertyGraphicsItem::removeConnectionGraphicsItem(DialogConnectionGraphicsItem* cItem) {
+    connectionItems_.erase(std::remove(connectionItems_.begin(), connectionItems_.end(), cItem), connectionItems_.end());
+}
+
+DialogConnectionGraphicsItem* LinkDialogPropertyGraphicsItem::getArrowConnectionAt(const QPointF pos) const {
+    QPointF itemPos = mapFromScene(pos);
+
+    for (size_t i=0; i<connectionItems_.size(); i++) {
+        QRectF arrowRect = calculateArrowRect(i+1, true);
+        if (arrowRect.contains(itemPos))
+            return connectionItems_[i];
+    }
+
+    for (size_t i=0; i<connectionItems_.size(); i++) {
+        QRectF arrowRect = calculateArrowRect(i+1, false);
+        if (arrowRect.contains(itemPos))
+            return connectionItems_[i];
+    }
+
+    return 0;
+}
+
+QRectF LinkDialogPropertyGraphicsItem::calculateArrowRect(unsigned int curPort, bool computeRight) const {
+    QPointF arrowDim(20.0f, 10.0f);
+    QPointF rectDim(0, rect().height()/(getConnectionGraphicsItemCount()+1));
+
+    qreal x = rect().right()-arrowDim.x();
+
+    if (!computeRight) {
+        x = rect().left();
+    }
+
+    qreal y = rect().top()+(curPort*rectDim.y()) - arrowDim.y();
+
+    return QRectF(x, y, arrowDim.x(), 2*arrowDim.y());
+}
+
+QRectF LinkDialogPropertyGraphicsItem::calculateArrowRect(DialogConnectionGraphicsItem* cItem, bool computeRight) const {    
+    for (size_t i=0; i<connectionItems_.size(); i++) {
+        if (connectionItems_[i]==cItem)
+           return calculateArrowRect(i+1, computeRight);
+    }
+    return QRectF();
+}
+
+bool LinkDialogPropertyGraphicsItem::isArrowPointedRight(DialogConnectionGraphicsItem* cItem) {
+    QPointF c = pos();
+    QPointF bl = rect().bottomLeft();
+    QPointF br = rect().bottomRight();
+    QPointF propertyMappedDim ;
+
+    propertyMappedDim = mapToParent(br) -  mapToParent(bl);
+    QPointF rightBoundaryCenter = c + (propertyMappedDim/2.0);
+
+    propertyMappedDim = mapToParent(bl) -  mapToParent(br);
+    QPointF leftBoundaryCenter = c + (propertyMappedDim/2.0);
+
+    qreal dist1 = std::min( QVector2D(rightBoundaryCenter - cItem->getStartPoint()).length(),
+                            QVector2D(rightBoundaryCenter - cItem->getEndPoint()).length());
+    qreal dist2 = std::min( QVector2D(leftBoundaryCenter - cItem->getStartPoint()).length(),
+                            QVector2D(leftBoundaryCenter - cItem->getEndPoint()).length());
+    
+    if (dist1<dist2) return false;
+
+    return true;
+}
+
 void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
 
-    p->save();
     p->setPen(Qt::black);
     p->setRenderHint(QPainter::Antialiasing, true);
+
+    p->save();
 
     // paint property
     QLinearGradient grad(rect().topLeft(), rect().bottomLeft());
@@ -418,7 +552,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     p->setBrush(grad);
 
     QPainterPath roundRectPath;
-    QRectF bRect = rect();    
+    QRectF bRect = rect();
     
     roundRectPath.moveTo(bRect.left(), bRect.top()+propertyRoundedCorners);
     roundRectPath.lineTo(bRect.left(), bRect.bottom()-propertyRoundedCorners);
@@ -429,10 +563,59 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     roundRectPath.arcTo(bRect.right()-(2*propertyRoundedCorners), bRect.top(), (2*propertyRoundedCorners), (2*propertyRoundedCorners), 0.0, 90.0);
     roundRectPath.lineTo(bRect.left()+propertyRoundedCorners, bRect.top());
     roundRectPath.arcTo(bRect.left(), bRect.top(), (2*propertyRoundedCorners), (2*propertyRoundedCorners), 90.0, 90.0);
-    p->drawPath(roundRectPath);
-    
-
+    p->drawPath(roundRectPath);    
     p->restore();
+
+    p->save();
+    QPoint arrowDim(20, 10);
+    for (size_t i=0; i<connectionItems_.size(); i++) {
+        //connectionItems_[i]->paintArrow(p, options, widget);
+
+        //Determine if arrow need to be drawn pointing left or right side
+        bool right = isArrowPointedRight(connectionItems_[i]);
+
+        //If arrow points right, then get the rectangle aligned to the left-
+        //boundary of property item (rectangle) and vice versa
+        QRectF arrowRect = calculateArrowRect(connectionItems_[i], !right);
+
+       
+        QPainterPath rectPath;
+        p->setPen(Qt::black);
+        //determine color of start and end arrow       
+        if (connectionItems_[i]->getEndProperty()==this) {
+            arrowRect = calculateArrowRect(connectionItems_[i]->getEndArrowHeadIndex(), !right);
+            p->setBrush(Qt::red);
+        }
+        else if (connectionItems_[i]->getStartProperty()==this) {
+            arrowRect = calculateArrowRect(connectionItems_[i]->getStartArrowHeadIndex(), !right);
+            p->setBrush(Qt::gray);
+        }        
+        
+        if (connectionItems_[i]->isBidirectional()) {
+            p->setBrush(Qt::green);
+        }
+
+        if (right) {
+            rectPath.moveTo(arrowRect.left(), arrowRect.top());
+            rectPath.lineTo(arrowRect.left(), arrowRect.bottom());
+            rectPath.lineTo(arrowRect.right(), arrowRect.bottom()-arrowRect.height()/2);
+            //rectPath.lineTo(arrowRect.right(), arrowRect.top());
+            //rectPath.lineTo(arrowRect.left(), arrowRect.top()-arrowRect.width()/2);
+            rectPath.closeSubpath();
+        }
+        else {
+            rectPath.moveTo(arrowRect.right(), arrowRect.top());
+            rectPath.lineTo(arrowRect.right(), arrowRect.bottom());
+            rectPath.lineTo(arrowRect.left(), arrowRect.bottom()-arrowRect.height()/2);
+            //rectPath.lineTo(arrowRect.left(), arrowRect.top());
+            //rectPath.lineTo(arrowRect.right(), arrowRect.top()-arrowRect.width()/2);
+            rectPath.closeSubpath();
+        }
+                
+        p->drawPath(rectPath);
+    }
+    p->restore();
+    
 }
 
 QVariant LinkDialogPropertyGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {
@@ -474,26 +657,27 @@ QPointF LinkDialogPropertyGraphicsItem::getShortestBoundaryPointTo(QPointF inPos
 }
 
 QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(unsigned int curPort, bool computeRight) const {
+    int arrowCount = getConnectionGraphicsItemCount();
     QPointF o = pos() ;
     if (computeRight) {
         QPointF br = o + QPointF(rect().width()/2, rect().height()/2);
         QPointF tr = o + QPointF(rect().width()/2, -rect().height()/2);
 
-        QPointF vec(tr - br);
-        vec = vec/(arrowCount_+1) ;
-        if (arrowCount_==0) vec = vec/2;
+        QPointF vec(br - tr);
+        vec = vec/(arrowCount+1) ;
+        if (arrowCount==0) vec = vec/2;
         vec*=curPort;
-        return br+vec;
+        return tr+vec;
     }
 
     QPointF bl = o + QPointF(-rect().width()/2, rect().height()/2);
     QPointF tl = o + QPointF(-rect().width()/2, -rect().height()/2);
 
-    QPointF vec(tl - bl);
-    vec = vec/(arrowCount_+1) ;
-    if (arrowCount_==0) vec = vec/2;
+    QPointF vec(bl - tl);
+    vec = vec/(arrowCount+1) ;
+    if (arrowCount==0) vec = vec/2;
     vec*=curPort;
-    return bl+vec;
+    return tl+vec;
 }
 
 /*---------------------------------------------------------------------------------------*/
@@ -528,12 +712,11 @@ void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     if (!startProperty_ && tempProperty) {
         startProperty_ = tempProperty;        
         if (linkCurve_) {
+            linkCurve_->hide();
             removeItem(linkCurve_);
-            delete linkCurve_;
+            //delete linkCurve_;
         }
-
         QPointF center = startProperty_->getShortestBoundaryPointTo(e->scenePos());
-
         linkCurve_ = new DialogCurveGraphicsItem(center, e->scenePos());
         linkCurve_->setZValue(2.0);
         addItem(linkCurve_);
@@ -560,13 +743,18 @@ void LinkDialogGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 
 void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
     if (linkCurve_) {
+        linkCurve_->hide();
         removeItem(linkCurve_);
-        delete linkCurve_;
+        //delete linkCurve_;
         linkCurve_ = 0;
 
         endProperty_ = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
-        if (endProperty_ && (endProperty_!=startProperty_)) {            
-            addPropertyLink(startProperty_, endProperty_);
+        if (endProperty_ && (endProperty_!=startProperty_)) {
+            LinkDialogPropertyGraphicsItem* start = startProperty_;
+            LinkDialogPropertyGraphicsItem* end = endProperty_;
+            startProperty_ = 0;
+            endProperty_ = 0;
+            addPropertyLink(start, end);
         }
         startProperty_ = 0;
         endProperty_ = 0;
@@ -574,6 +762,32 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
     } else {                   
         QGraphicsScene::mouseReleaseEvent(e);
     }
+    startProperty_ = 0;
+    endProperty_ = 0;
+}
+
+void LinkDialogGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
+    LinkDialogPropertyGraphicsItem* propertyItem = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
+
+    if (propertyItem) {
+       DialogConnectionGraphicsItem* propertyLink = propertyItem->getArrowConnectionAt(e->scenePos());
+       if (propertyLink) {
+           if (isPropertyLinkBidirectional(propertyLink)) {
+               makePropertyLinkBidirectional(propertyLink, false);
+               if (propertyLink->getStartProperty() == propertyItem) {
+                   switchPropertyLinkDirection(propertyLink);
+               }
+           }
+           else {
+               if (propertyLink->getStartProperty() == propertyItem) {
+                   makePropertyLinkBidirectional(propertyLink, true);
+               }
+           }
+       }
+       e->accept(); 
+    }       
+    else
+        QGraphicsScene::mouseDoubleClickEvent(e);
 }
 
 void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
@@ -596,7 +810,7 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
 
-    if (!processorLink->isLinked(sProp, eProp)) {
+    if ( !processorLink->isLinked(sProp, eProp) && !processorLink->isLinked(eProp, sProp)) {
         processorLink->addPropertyLinks(sProp, eProp);
         PropertyLink* propertyLink = processorLink->getPropertyLink(sProp, eProp);
         if (propertyLink) initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
@@ -607,7 +821,7 @@ void LinkDialogGraphicsScene::removeAllPropertyLinks() {
     DialogConnectionGraphicsItem* propertyLink=0;
     foreach (propertyLink, connectionGraphicsItems_) {
         removePropertyLink(propertyLink);
-    }
+    }    
 }
 
 void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* propertyLink) {
@@ -620,54 +834,63 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
 
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
 
-    if (processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {      
-        processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+    if (processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {
+
         propertyLink->hide();
-        removeItem(propertyLink);
-
-        //re-assign connection ids
-        for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
-            if (connectionGraphicsItems_[i] == propertyLink) continue;
-            else if (connectionGraphicsItems_[i]->getStartProperty() == startProperty) {
-                int index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
-                if (index > propertyLink->getStartArrowHeadIndex()) {
-                    connectionGraphicsItems_[i]->setStartArrowHeadIndex(index-1);
-                }
-            }
-            else if (connectionGraphicsItems_[i]->getEndProperty() == startProperty) {
-                int index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
-                if (index > propertyLink->getStartArrowHeadIndex()) {
-                    connectionGraphicsItems_[i]->setEndArrowHeadIndex(index-1);
-                }
-            }
-        }
-
-        for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
-            if (connectionGraphicsItems_[i] == propertyLink) continue;
-            else if (connectionGraphicsItems_[i]->getEndProperty() == endProperty) {
-                int index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
-                if (index > propertyLink->getEndArrowHeadIndex()) {
-                    connectionGraphicsItems_[i]->setEndArrowHeadIndex(index-1);
-                }
-            }
-            else if (connectionGraphicsItems_[i]->getStartProperty() == endProperty) {
-                int index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
-                if (index > propertyLink->getEndArrowHeadIndex()) {
-                    connectionGraphicsItems_[i]->setStartArrowHeadIndex(index-1);
-                }
-            }
-        }
-
         connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(), propertyLink),
                                        connectionGraphicsItems_.end());
+        removeItem(propertyLink);
         propertyLink->deinitialize();
+        cleanupAfterRemoveLink(propertyLink);
 
-        for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
-            connectionGraphicsItems_[i]->updateStartEndPoint();
-            connectionGraphicsItems_[i]->update();
-        }
+        delete propertyLink;
+        processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());               
         
+        startProperty->prepareGeometryChange();
+        endProperty->prepareGeometryChange();
+        //startProperty->update();
+        //endProperty->update();
     }
+}
+
+void LinkDialogGraphicsScene::cleanupAfterRemoveLink(DialogConnectionGraphicsItem* propertyLink) {
+    LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
+    LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+    //re-assign connection ids
+    for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
+        if (connectionGraphicsItems_[i] == propertyLink) continue;
+        else if (connectionGraphicsItems_[i]->getStartProperty() == startProperty) {
+            int index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
+            if (index > propertyLink->getStartArrowHeadIndex()) {
+                connectionGraphicsItems_[i]->setStartArrowHeadIndex(index-1);
+            }
+        }
+        else if (connectionGraphicsItems_[i]->getEndProperty() == startProperty) {
+            int index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
+            if (index > propertyLink->getStartArrowHeadIndex()) {
+                connectionGraphicsItems_[i]->setEndArrowHeadIndex(index-1);
+            }
+        }
+    }
+
+    for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
+        if (connectionGraphicsItems_[i] == propertyLink) continue;
+        else if (connectionGraphicsItems_[i]->getEndProperty() == endProperty) {
+            int index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
+            if (index > propertyLink->getEndArrowHeadIndex()) {
+                connectionGraphicsItems_[i]->setEndArrowHeadIndex(index-1);
+            }
+        }
+        else if (connectionGraphicsItems_[i]->getStartProperty() == endProperty) {
+            int index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
+            if (index > propertyLink->getEndArrowHeadIndex()) {
+                connectionGraphicsItems_[i]->setStartArrowHeadIndex(index-1);
+            }
+        }
+    }
+
+    for (size_t i=0; i<connectionGraphicsItems_.size(); i++)
+        connectionGraphicsItems_[i]->updateConnectionDrawing();
 }
 
 bool LinkDialogGraphicsScene::isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink) {
@@ -705,22 +928,24 @@ void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGrap
             processorLink->removeBidirectionalPair(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
         }
     }
+
+    propertyLink->updateConnectionDrawing();
 }
 
 void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink) {
-    LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
-    LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+    //LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
+    //LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
 
-    Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
-    Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
+    //Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
+    //Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
 
-    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+    //ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
 
-    PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+    //PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 
-    if (!propertyLink->isBidirectional()) {
-        propLink->switchDirection();
+    if (!propertyLink->isBidirectional()) {        
         propertyLink->switchDirection();
+        propertyLink->updateConnectionDrawing();
     }
     update();
 }
@@ -733,19 +958,26 @@ void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPro
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
 
     DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, processorLink, true);
-    connectionGraphicsItems_.push_back(cItem);
     addItem(cItem);
+    cItem->show();
+    connectionGraphicsItems_.push_back(cItem);
 
     for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
-        connectionGraphicsItems_[i]->updateStartEndPoint();
-        connectionGraphicsItems_[i]->update();
+        connectionGraphicsItems_[i]->updateConnectionDrawing();
     }
-
-    cItem->show();
 }
 
-void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* keyEvent) {
-    IVW_UNUSED_PARAM(keyEvent);
+void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* e) {
+    if (e->key() == Qt::Key_Delete) {
+        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
+        for (int i=0; i<selectedGraphicsItems.size(); i++) {
+            DialogConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<DialogConnectionGraphicsItem*>(selectedGraphicsItems[i]);
+            if (connectionGraphicsItem)
+                removePropertyLink(connectionGraphicsItem);
+        }
+    }
+
+    QGraphicsScene::keyPressEvent(e);
 }
 
 void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
@@ -859,15 +1091,21 @@ void LinkDialogGraphicsScene::addProcessorsItemsToScene(Processor *prcoessor, in
 
 /*---------------------------------------------------------------------------------------*/
 
-LinkDialogGraphicsView::LinkDialogGraphicsView(QWidget* parent) : QGraphicsView(parent) {    
+LinkDialogGraphicsView::LinkDialogGraphicsView(QWidget* parent) : QGraphicsView(parent), scene_(0) {    
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
+    
 }
 
 void LinkDialogGraphicsView::setDialogScene(LinkDialogGraphicsScene* scene) {
     scene->setBackgroundBrush(QBrush(Qt::lightGray));
     setScene(scene);
+    scene_ = scene;
+}
+
+void LinkDialogGraphicsView::mouseDoubleClickEvent(QMouseEvent* e) {    
+    QGraphicsView::mouseDoubleClickEvent(e);
 }
 
 

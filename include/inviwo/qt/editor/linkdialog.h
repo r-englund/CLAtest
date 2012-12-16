@@ -7,6 +7,7 @@
 #include <QGraphicsRectItem>
 #include <QPushButton>
 #include <QGraphicsLineItem>
+#include <QGraphicsPolygonItem>
 #include <QPainterPath>
 #include <QDialogButtonBox>
 
@@ -52,20 +53,15 @@ public:
     ~DialogConnectionGraphicsItem();
 
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    void paintArrow(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+
+    QRectF boundingRect() const;
 
     LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }
  
     LinkDialogPropertyGraphicsItem* getEndProperty() const { return endPropertyGraphicsItem_; }
 
-    void switchDirection() {
-        LinkDialogPropertyGraphicsItem* tempLink = getEndProperty();
-        endPropertyGraphicsItem_ = startPropertyGraphicsItem_;
-        startPropertyGraphicsItem_ = tempLink;
-
-        int temp = endArrowHeadIndex_;
-        endArrowHeadIndex_ = startArrowHeadIndex_;
-        startArrowHeadIndex_ = temp;
-    }
+    void switchDirection();
 
     bool isBidirectional();
     void initialize();
@@ -75,6 +71,10 @@ public:
     int getStartArrowHeadIndex() { return startArrowHeadIndex_;}
     int getEndArrowHeadIndex() { return endArrowHeadIndex_;}
     void updateStartEndPoint();
+    void updateConnectionDrawing();
+
+protected:
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 
 private:
     LinkDialogPropertyGraphicsItem* startPropertyGraphicsItem_;
@@ -149,10 +149,20 @@ public:
     void updatePositionBasedOnProcessor();
 
     QPointF calculateArrowCenter(unsigned int curPort, bool computeRight) const;
+    QRectF calculateArrowRect(unsigned int curPort, bool computeRight) const;
+    QRectF calculateArrowRect(DialogConnectionGraphicsItem* cItem, bool computeRight=true) const;
+    DialogConnectionGraphicsItem* getArrowConnectionAt(const QPointF pos) const;
+    bool isArrowPointedRight(DialogConnectionGraphicsItem* cItem);
 
-    void addArrow() {arrowCount_++;}
-    int getArrowCount() {return arrowCount_;}
-    void removeArrow() {arrowCount_--;}
+    //void addArrow() {arrowCount_++;}
+    //int getArrowCount() {return arrowCount_;}
+    //void removeArrow() {arrowCount_--;}
+
+    void prepareGeometryChange() {QGraphicsItem::prepareGeometryChange();}
+
+    void addConnectionGraphicsItem(DialogConnectionGraphicsItem*);
+    int getConnectionGraphicsItemCount() const;
+    void removeConnectionGraphicsItem(DialogConnectionGraphicsItem*);
 
 protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
@@ -162,7 +172,8 @@ private:
 
     LabelGraphicsItem* classLabel_;
     LinkDialogProcessorGraphicsItem* processorGraphicsItem_;
-    int arrowCount_;
+    //int arrowCount_;
+    std::vector<DialogConnectionGraphicsItem*> connectionItems_;
 };
 
 /*---------------------------------------------------------------------------------------*/
@@ -174,8 +185,8 @@ public:
     ~LinkDialogGraphicsScene() {}
 
     template <typename T>
-    T* getSceneGraphicsItemAt(const QPointF pos) const {    
-        QList<QGraphicsItem*> graphicsItems =items(pos);
+    T* getSceneGraphicsItemAt(const QPointF pos, const Qt::ItemSelectionMode mode= Qt::IntersectsItemShape, Qt::SortOrder order=Qt::DescendingOrder) const {    
+        QList<QGraphicsItem*> graphicsItems =items(pos, mode, order);
         if (graphicsItems.size() > 0) {
             for (int i=0; i<graphicsItems.size(); i++) {
                 T* graphicsItem = qgraphicsitem_cast<T*>(graphicsItems[i]);
@@ -196,10 +207,12 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
     void keyPressEvent(QKeyEvent* keyEvent);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
     void addPropertyLink(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
     void removePropertyLink(DialogConnectionGraphicsItem* propertyLink);
+    void cleanupAfterRemoveLink(DialogConnectionGraphicsItem* propertyLink);
     void addPropertyLink(PropertyLink* propertyLink);
     bool isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink);
     void makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional);
@@ -226,6 +239,10 @@ public:
     LinkDialogGraphicsView(QWidget* parent=0);
     ~LinkDialogGraphicsView();
     void setDialogScene(LinkDialogGraphicsScene* scene);
+protected:
+    void mouseDoubleClickEvent(QMouseEvent* e);
+private:
+    LinkDialogGraphicsScene* scene_;
 };
 
 /*---------------------------------------------------------------------------------------*/
