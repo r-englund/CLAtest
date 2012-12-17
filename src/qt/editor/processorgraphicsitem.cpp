@@ -1,6 +1,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <QVector2D>
 
 #include "inviwo/core/ports/port.h"
 #include "inviwo/core/metadata/positionmetadata.h"
@@ -59,6 +60,49 @@ void ProcessorGraphicsItem::editProcessorName() {
     nameLabel_ ->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
     nameLabel_ ->setTextInteractionFlags(Qt::TextEditorInteraction);
     nameLabel_->setFocus();
+}
+
+QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(ProcessorGraphicsItem* processorGraphicsItem) {
+    return getShortestBoundaryPointTo(processorGraphicsItem->pos());
+}
+
+QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
+    QPointF c = pos();
+    QPointF bl = rect().bottomLeft();
+    QPointF br = rect().bottomRight();
+    QPointF tr = rect().topRight();
+    QPointF propertyMappedDim ;
+    std::vector<QPointF> centerPoints;
+
+    //center
+    centerPoints.push_back(c);
+
+    //right boundary center
+    propertyMappedDim = mapToParent(br) -  mapToParent(bl);
+    centerPoints.push_back(c + (propertyMappedDim/2.0));
+
+    //left boundary center
+    propertyMappedDim = mapToParent(bl) -  mapToParent(br);
+    centerPoints.push_back(c + (propertyMappedDim/2.0));
+
+    //top boundary center
+    propertyMappedDim = mapToParent(tr) -  mapToParent(br);
+    centerPoints.push_back(c + (propertyMappedDim/2.0));
+
+    //bottom boundary center
+    propertyMappedDim = mapToParent(br) -  mapToParent(tr);
+    centerPoints.push_back(c + (propertyMappedDim/2.0));
+    
+    qreal minDist = std::numeric_limits<qreal>::max();
+    int minInd=0;
+    for (size_t i=1; i<centerPoints.size(); i++) {
+        if (QVector2D(centerPoints[i] - inPos).length()<minDist) {
+            minInd = i;
+            minDist = QVector2D(centerPoints[i] - inPos).length();
+        }
+    }    
+
+    return centerPoints[minInd];
 }
 
 QRectF ProcessorGraphicsItem::calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const {
@@ -184,16 +228,13 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
 
         std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = NetworkEditor::instance()->linkGraphicsItems_;
         for (size_t i=0; i<linkGraphicsItems.size(); i++) {
-            if (linkGraphicsItems[i]->getOutProcessor() == this) {
-                QPointF newAnchor = mapToScene(rect()).boundingRect().center();
-                linkGraphicsItems[i]->setStartPoint(newAnchor);
-                linkGraphicsItems[i]->update();
-            }
-            if (linkGraphicsItems[i]->getInProcessor() == this) {
-                QPointF newAnchor = mapToScene(rect()).boundingRect().center();
-                linkGraphicsItems[i]->setEndPoint(newAnchor);
-                linkGraphicsItems[i]->update();
-            }
+             if (linkGraphicsItems[i]->getOutProcessor() == this || linkGraphicsItems[i]->getInProcessor() == this) {
+                 QPointF startPoint = linkGraphicsItems[i]->getOutProcessor()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getInProcessor());
+                 QPointF endPoint = linkGraphicsItems[i]->getInProcessor()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getOutProcessor());
+                 linkGraphicsItems[i]->setStartPoint(startPoint);
+                 linkGraphicsItems[i]->setEndPoint(endPoint);
+                 linkGraphicsItems[i]->update();
+             }
         }
 
         updateMetaData();

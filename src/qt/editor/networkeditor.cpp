@@ -359,6 +359,8 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
     //Link mode
     if (e->modifiers() == Qt::ControlModifier) {
         if (linkCurve_) {
+            QPointF center = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
+            linkCurve_->setStartPoint(center) ;
             linkCurve_->setEndPoint(e->scenePos());
             linkCurve_->update();
             e->accept();

@@ -29,17 +29,14 @@ public:
     Processor* getProcessor() const { return processor_; }
     std::string getIdentifier() const { return processor_->getIdentifier(); }
     void setProcessor(Processor* processor);
-
     void editProcessorName();
-
     QRectF calculatePortRect(Port* port) const;
     QRectF calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const;
-
     Port* getSelectedPort(const QPointF pos) const;
-
     void updateMetaData();
-
     void flipLayout();
+    QPointF getShortestBoundaryPointTo(ProcessorGraphicsItem* processorGraphicsItem);
+    QPointF getShortestBoundaryPointTo(QPointF inPos);
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ProcessorGraphicsType };

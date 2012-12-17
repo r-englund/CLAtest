@@ -68,9 +68,9 @@ QRectF LinkGraphicsItem::boundingRect() const {
 
 LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor,
                                                ProcessorGraphicsItem* inProcessor)
-                                               : LinkGraphicsItem(outProcessor->mapToScene(outProcessor->rect()).boundingRect().center(),
-                                                                   inProcessor->mapToScene(inProcessor->rect()).boundingRect().center(), 
-                                                                   ivec3(256,256,256), false),
+                                               : LinkGraphicsItem(outProcessor->getShortestBoundaryPointTo(inProcessor),
+                                                                  inProcessor->getShortestBoundaryPointTo(outProcessor), 
+                                                                  ivec3(256,256,256), false),
                                                  outProcessor_(outProcessor), inProcessor_(inProcessor) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
