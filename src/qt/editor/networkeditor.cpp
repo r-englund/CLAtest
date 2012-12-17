@@ -384,8 +384,13 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         linkCurve_ = 0;
         endProcessor_ = dynamic_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(e->scenePos()));
         if (endProcessor_) {
-            if (endProcessor_ != startProcessor_)
-                addLink(startProcessor_, endProcessor_);
+            if (endProcessor_ != startProcessor_) {
+                if (endProcessor_->getProcessor()->getProperties().size() && 
+                    startProcessor_->getProcessor()->getProperties().size())
+                    addLink(startProcessor_, endProcessor_);
+                else
+                    LogInfo("Processor must have properties to link.");
+            }
         }
         startProcessor_ = 0; 
         endProcessor_ = 0;
