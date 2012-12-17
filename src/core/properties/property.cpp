@@ -4,7 +4,8 @@ namespace inviwo {
 
 Property::Property(std::string identifier, std::string displayName)
     : identifier_(identifier),
-      displayName_(displayName)
+      displayName_(displayName),
+      invalid_(true)
 {}
 
 Property::Property()
@@ -43,6 +44,18 @@ void Property::registerPropertyWidget(PropertyWidget* propertyWidget) {
 void Property::updatePropertyWidgets() {
     for (size_t i=0; i<propertyWidgets_.size(); i++)
         propertyWidgets_[i]->updateFromProperty();
+}
+
+void Property::invalidate() {
+    invalid_ = true;
+}
+
+void Property::setValid() {
+    invalid_ = false;
+}
+
+bool Property::isValid() {
+    return (invalid_ == false);
 }
 
 Variant Property::getVariant() {

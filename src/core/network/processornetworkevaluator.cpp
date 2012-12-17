@@ -314,6 +314,10 @@ void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty, 
         if (!hasBeenVisited(linkedProperties[i])) {
             propertiesVisited_.push_back(linkedProperties[i]);
             linkEvaluator_->evaluate(sourceProperty, linkedProperties[i]);
+            // TODO: Assumed that only one property can be invalid which is sourceProperty, 
+            //       meaning user interacts with only one property at a time which is sourceProperty
+            //       other properties should be assumed to be valid. hence setValid() is used.
+            linkedProperties[i]->setValid();
             evaluatePropertyLinks(sourceProperty, linkedProperties[i]);
         }
     }
@@ -336,9 +340,11 @@ void ProcessorNetworkEvaluator::evaluate() {
         if (!links[i]->isValid()) {
             //links[i]->evaluate(linkEvaluator_);
             sourceProperties = links[i]->getSourceProperties();
-            //TODO: Evaluate only invalid properties
-             for (size_t j=0; j<sourceProperties.size(); j++) {
-                evaluatePropertyLinks(sourceProperties[j]);
+            for (size_t j=0; j<sourceProperties.size(); j++) {
+                if (!sourceProperties[j]->isValid()) {
+                    evaluatePropertyLinks(sourceProperties[j]);
+                    sourceProperties[j]->setValid();
+                }
              }
         }
         sourceProperties.clear();
