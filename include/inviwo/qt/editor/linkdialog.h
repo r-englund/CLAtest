@@ -200,7 +200,7 @@ public:
     void setNetwork(ProcessorNetwork* network) {processorNetwork_ = network;}
 
     void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
-    void removeAllPropertyLinks();
+    void removeCurrentPropertyLinks();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
@@ -215,10 +215,10 @@ protected:
     void addPropertyLink(PropertyLink* propertyLink);
     bool isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink);
     void makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional);
-    void switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink);
-    
+    void switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink);    
     void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty, PropertyLink* propLink);
     void addProcessorsItemsToScene(Processor *prcoessor, int xPosition, int yPosition);
+    DialogConnectionGraphicsItem* getConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* , LinkDialogPropertyGraphicsItem*);
 
 private:
     DialogCurveGraphicsItem* linkCurve_;
@@ -227,8 +227,13 @@ private:
 
     std::vector<LinkDialogProcessorGraphicsItem*> processorGraphicsItems_;
     std::vector<DialogConnectionGraphicsItem*> connectionGraphicsItems_;
+    std::vector<DialogConnectionGraphicsItem*> currentConnectionGraphicsItems_;
     
     ProcessorNetwork* processorNetwork_;
+
+    void addConnectionToCurrentList(DialogConnectionGraphicsItem*);
+    void removeConnectionFromCurrentList(DialogConnectionGraphicsItem*);
+
 };
 
 /*---------------------------------------------------------------------------------------*/

@@ -636,6 +636,9 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
             startProperty_ = 0;
             endProperty_ = 0;
             addPropertyLink(start, end);
+            DialogConnectionGraphicsItem* propLink = getConnectionGraphicsItem(start, end);
+            if (propLink)
+                addConnectionToCurrentList(propLink);
         }
         startProperty_ = 0;
         endProperty_ = 0;
@@ -698,11 +701,16 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     }
 }
 
-void LinkDialogGraphicsScene::removeAllPropertyLinks() {
+
+void LinkDialogGraphicsScene::removeCurrentPropertyLinks() {
     DialogConnectionGraphicsItem* propertyLink=0;
-    foreach (propertyLink, connectionGraphicsItems_) {
+    std::vector<DialogConnectionGraphicsItem*> tempList = currentConnectionGraphicsItems_;
+
+    foreach (propertyLink, currentConnectionGraphicsItems_)
+        removeConnectionFromCurrentList(propertyLink);
+
+    foreach (propertyLink, tempList)
         removePropertyLink(propertyLink);
-    }    
 }
 
 void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* propertyLink) {
@@ -715,7 +723,7 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
 
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
 
-    if (processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {
+    if (processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {        
 
         propertyLink->hide();
         connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(), propertyLink),
@@ -819,6 +827,25 @@ void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphi
     update();
 }
 
+void LinkDialogGraphicsScene::addConnectionToCurrentList(DialogConnectionGraphicsItem* propertyLink) {
+    currentConnectionGraphicsItems_.push_back(propertyLink);    
+}
+
+void LinkDialogGraphicsScene::removeConnectionFromCurrentList(DialogConnectionGraphicsItem* propertyLink) {
+    currentConnectionGraphicsItems_.erase(std::remove(currentConnectionGraphicsItems_.begin(), currentConnectionGraphicsItems_.end(), propertyLink), 
+                                          currentConnectionGraphicsItems_.end());
+}
+
+DialogConnectionGraphicsItem* LinkDialogGraphicsScene::getConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* outProperty, 
+                                                                                 LinkDialogPropertyGraphicsItem* inProperty) {
+    for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
+        if ( (connectionGraphicsItems_[i]->getStartProperty() == outProperty && connectionGraphicsItems_[i]->getEndProperty() == inProperty) ||
+             (connectionGraphicsItems_[i]->getStartProperty() == inProperty && connectionGraphicsItems_[i]->getEndProperty() == outProperty) )
+             return connectionGraphicsItems_[i];
+    }
+    return 0;
+}
+
 void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, 
                                                                    LinkDialogPropertyGraphicsItem* inProperty,
                                                                    PropertyLink* propertyLink) {
@@ -841,8 +868,10 @@ void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* e) {
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
             DialogConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<DialogConnectionGraphicsItem*>(selectedGraphicsItems[i]);
-            if (connectionGraphicsItem)
+            if (connectionGraphicsItem) {
+                removeConnectionFromCurrentList(connectionGraphicsItem);
                 removePropertyLink(connectionGraphicsItem);
+            }
         }
     }
 
@@ -854,19 +883,20 @@ void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e
 
     if (linkGraphicsItem) {
         QMenu menu;
-        QAction* action = menu.addAction("Delete");
+        QAction* deleteAction = menu.addAction("Delete");
         QAction* biDirectionAction = menu.addAction("BiDirectional");
         biDirectionAction->setCheckable(true);
         QAction* switchDirection = menu.addAction("Switch Direction");
 
-        if (isPropertyLinkBidirectional(linkGraphicsItem)) {
+        if (isPropertyLinkBidirectional(linkGraphicsItem))
             biDirectionAction->setChecked(true);
-        }
-        else biDirectionAction->setChecked(false);
+        else 
+            biDirectionAction->setChecked(false);
 
 
         QAction* result = menu.exec(QCursor::pos());
-        if (result == action) {
+        if (result == deleteAction) {
+            removeConnectionFromCurrentList(linkGraphicsItem);
             removePropertyLink(linkGraphicsItem);
         }
         else if (result == biDirectionAction) { 
@@ -1033,7 +1063,7 @@ void LinkDialog::clickedOkayButton() {
 }
 
 void LinkDialog::clickedCancelButton() {
-    linkDialogScene_->removeAllPropertyLinks();
+    linkDialogScene_->removeCurrentPropertyLinks();
     accept();
 }
 
