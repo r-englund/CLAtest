@@ -119,6 +119,10 @@ void IvwSerializer::serialize(const std::string &key, const long &data) {
     serializePrimitives<long>(key, data);
 }
 
+void IvwSerializer::serialize(const std::string &key, const long long &data) {
+    serializePrimitives<long long>(key, data);
+}
+
 void IvwSerializer::serialize(const std::string &key, const ivec2 &data) {
     serializeVector(key, data);
 }
