@@ -6,6 +6,8 @@
 #include <algorithm>
 
 namespace inviwo {
+// Forward declaration
+class ObservableInterface;
 
 /** \class Observer 
 *
