@@ -157,6 +157,7 @@ HEADERS += \
     ../../include/inviwo/core/util/assertion.h \
     ../../include/inviwo/core/util/exception.h \
     ../../include/inviwo/core/util/logdistributor.h \
+    ../../include/inviwo/core/util/observer.h \
     ../../include/inviwo/core/util/project.h \
     ../../include/inviwo/core/util/group.h \
     ../../include/inviwo/core/util/variant.h
@@ -226,6 +227,7 @@ SOURCES += \
     util/assertion.cpp \
     util/exception.cpp \
     util/logdistributor.cpp \
+    util/observer.cpp \
     util/project.cpp \
     util/variant.cpp
 
