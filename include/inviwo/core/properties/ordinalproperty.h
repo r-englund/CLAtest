@@ -33,13 +33,13 @@ public:
     void increase() {
         this->value_ += increment_;
         if (this->value_ > maxValue_) this->value_ = maxValue_;
-        getOwner()->invalidate();
+        this->getOwner()->invalidate();
     }
 
     void decrease() {
         this->value_ -= increment_;
         if (this->value_ < minValue_) this->value_ = minValue_;
-        getOwner()->invalidate();
+        this->getOwner()->invalidate();
     }
 
 private:
