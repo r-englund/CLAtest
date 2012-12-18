@@ -17,7 +17,7 @@ bool LinkEvaluator::canLink(Property* src, Property *dst) {
     return canConvert(src->getVariant(), dst->getVariant());
 }
 
-bool LinkEvaluator::canConvert(Variant& src, Variant& dst) {
+bool LinkEvaluator::canConvert(const Variant& src, const Variant& dst) {
     if (src.getType() == Variant::VariantTypeInvalid || dst.getType() == Variant::VariantTypeInvalid) {
         //Error message
         return false;

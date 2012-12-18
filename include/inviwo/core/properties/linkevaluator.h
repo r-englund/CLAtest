@@ -13,7 +13,7 @@ public:
    void evaluate(Property* src, Property *dst);   
 private:
    bool canLink(Property* src, Property *dst);
-   bool canConvert(Variant& src, Variant& dst);
+   static bool canConvert(const Variant& src, const Variant& dst);   
 };
 
 } // namespace
