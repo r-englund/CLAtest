@@ -7,24 +7,149 @@
 
 namespace inviwo {
 
-    class VolumeGL : public VolumeRepresentation {
+class VolumeGL : public VolumeRepresentation {
 
-    public:
-        VolumeGL();
-        VolumeGL(ivec3 dimensions);
-        virtual ~VolumeGL();
+public:
+    VolumeGL();
+    VolumeGL(ivec3 dimensions);
+    virtual ~VolumeGL();
 
-        void initialize();
-        void deinitialize();
-        DataRepresentation* clone();
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual DataRepresentation* clone()=0;
+    virtual GLenum getDataType()=0;
+    virtual GLint getFormat()=0;
+    virtual GLint getInternalFormat()=0;
+    virtual void bindTexture(GLenum texUnit);
+    virtual void unbindTexture();
 
-        void bindTexture(GLenum texUnit);
-        void unbindTexture();
+protected:
+    ivec3 dimensions_;
+    Texture3D* volumeTexture_;
+};
 
-    private:
-        ivec3 dimensions_;
-        Texture3D* volumeTexture_;
-    };
+template<class T=UINT8>
+class VolumeGLPrecision : public VolumeGL {
+public:
+    VolumeGLPrecision();
+    VolumeGLPrecision(ivec3 dimensions);
+    virtual ~VolumeGLPrecision() {};
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual DataRepresentation* clone();
+    virtual GLenum getDataType();
+    virtual GLint getFormat();
+    virtual GLint getInternalFormat();
+private :
+    void setTypeAndFormat();
+    GLenum dataType_;
+    GLint format_;
+    GLint internalFormat_;
+};
+
+template<class T>
+VolumeGLPrecision<T>::VolumeGLPrecision() : VolumeGL() {
+    VolumeGLPrecision<T>::setTypeAndFormat();
+    VolumeGLPrecision<T>::initialize();
+}
+
+template<class T>
+VolumeGLPrecision<T>::VolumeGLPrecision(ivec3 dimensions) : VolumeGL(dimensions) {
+    VolumeGLPrecision<T>::setTypeAndFormat();
+    VolumeGLPrecision<T>::initialize();
+}
+
+template<class T>
+void VolumeGLPrecision<T>::setTypeAndFormat() {
+    if (dynamic_cast< VolumeGLPrecision<UINT8>* >(this)) {
+        dataType_ = GL_UNSIGNED_BYTE;
+        format_ = GL_ALPHA;
+        internalFormat_ = GL_ALPHA8;
+        return;
+    }
+    else if (dynamic_cast< VolumeGLPrecision<INT8>* >(this)) {
+        dataType_ = GL_BYTE;
+        format_ = GL_ALPHA;
+        internalFormat_ = GL_ALPHA8;
+        return;
+    }
+    else if (dynamic_cast< VolumeGLPrecision<UINT16>* >(this)) {
+        dataType_ = GL_UNSIGNED_SHORT;
+        format_ = GL_ALPHA;
+        internalFormat_ = GL_ALPHA16;
+        return;
+    }
+    else if (dynamic_cast< VolumeGLPrecision<INT16>* >(this)) {
+        dataType_ = GL_SHORT;
+        format_ = GL_ALPHA;
+        internalFormat_ = GL_ALPHA16;
+        return;
+    }
+    else if (dynamic_cast< VolumeGLPrecision<UINT32>* >(this)) {
+        dataType_ = GL_UNSIGNED_INT;
+        format_ = GL_ALPHA;
+        internalFormat_ = GL_ALPHA;
+        return;
+    }
+    else if (dynamic_cast< VolumeGLPrecision<INT32>* >(this)) {
+        dataType_ = GL_INT;
+        format_ = GL_ALPHA;
+        internalFormat_ = GL_ALPHA;
+        return;
+    }
+
+    format_ = GL_ALPHA;
+    internalFormat_ = GL_ALPHA8;
+    dataType_ = GL_UNSIGNED_BYTE;
+}
+
+
+template<class T>
+GLenum VolumeGLPrecision<T>::getDataType() {
+    return dataType_; 
+}
+
+template<class T>
+GLint VolumeGLPrecision<T>::getFormat() {
+    return format_; 
+}
+
+template<class T>
+GLint VolumeGLPrecision<T>::getInternalFormat() {
+    return internalFormat_; 
+}
+
+template<class T>
+void VolumeGLPrecision<T>::initialize() {
+    volumeTexture_ = new Texture3D(dimensions_, getFormat(), getInternalFormat(), getDataType(), GL_LINEAR);
+    //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/nucleon.raw", dimensions_=ivec3(41,41,41));
+    volumeTexture_->loadTexture(IVW_DIR+"data/volumes/hydrogenatom.raw", dimensions_=ivec3(128,128,128));
+    //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/neghip.raw", dimensions_=ivec3(64,64,64));
+    //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/marschnerlobb.raw", dimensions_=ivec3(41,41,41));
+    //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/aneurysm.raw", dimensions_=ivec3(256,256,256));
+    VolumeGL::initialize();
+}
+
+template<class T>
+DataRepresentation* VolumeGLPrecision<T>::clone() {
+    VolumeGLPrecision* newVolumeGL = new VolumeGLPrecision<T>(dimensions_);
+    //TODO:: Copy volume textures if necessary
+    return newVolumeGL;
+}
+
+template<class T>
+void VolumeGLPrecision<T>::deinitialize() {
+    delete volumeTexture_;
+    volumeTexture_ = 0;
+    VolumeGL::deinitialize();
+}
+
+typedef VolumeGLPrecision<UINT8> VolumeGLuint8;
+typedef VolumeGLPrecision<INT8> VolumeGLint8;
+typedef VolumeGLPrecision<UINT16> VolumeGLuint16;
+typedef VolumeGLPrecision<INT16> VolumeGLint16;
+typedef VolumeGLPrecision<UINT32> VolumeGLuint32;
+typedef VolumeGLPrecision<INT32> VolumeGLint32;
 
 } // namespace
 
