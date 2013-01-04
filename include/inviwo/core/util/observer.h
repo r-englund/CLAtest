@@ -2,8 +2,6 @@
 #define IVW_OBSERVER_H
 
 #include <set>
-#include <vector>
-#include <algorithm>
 
 namespace inviwo {
 // Forward declaration
@@ -100,7 +98,7 @@ protected:
 /** \class Observable 
 *
 * Class to support observer pattern. 
-* Template class must inherit from the Observer class. 
+* Usage example:
 * @code
 *    class ButtonObserver: public Observer {
 *    public:
@@ -113,9 +111,10 @@ protected:
 *        void pressButton() {
 *            // Do stuff
 *            // Notify observers
-*            std::vector<ButtonObserver*> observers = getObservers();
-*            for(std::vector<ButtonObserver*>::iterator it = observers.begin(); it != observers.end(); ++it) {
-*                (*it)->buttonPressed();    
+*            ObserverSet::iterator endIt = observers_->end();
+*            for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+*               // static_cast can be used since only template class objects can be added
+*               static_cast<ButtonObserver*>(*it)->buttonPressed();    
 *            }
 *        }
 *    };
@@ -146,25 +145,6 @@ public:
     virtual void removeObserver(T* observer) {
         ObservableInterface::removeObserver(observer);
     }
-
-protected:
-    // Helper to copy observers
-    template <typename From, typename To>
-    struct static_caster
-    {
-        To operator()(From p) {return static_cast<To>(p);}
-    };
- 	/* 
-	 * Get all observers. Convenience function that type casts all observers to type T.
-	 * 
-	 * @return All observers observing the object.
-	 */
-    std::vector<T*> getObservers() { 
-        std::vector<T*> observers(observers_->size());
-        std::transform(observers_->begin(), observers_->end(), observers.begin(), static_caster<Observer*, T*>());
-        return observers; 
-    }
-
 };
 
 
