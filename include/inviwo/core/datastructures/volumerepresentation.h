@@ -8,8 +8,13 @@ namespace inviwo {
     class VolumeRepresentation : public DataRepresentation {
 
     public:
-        VolumeRepresentation();
+        VolumeRepresentation(ivec3 dimension, std::string format);
         virtual ~VolumeRepresentation();
+        virtual ivec3 dimension() {return dimensions_;}
+        virtual std::string getDataFormat() {return dataFormat_;}
+    protected:
+        ivec3 dimensions_;
+        std::string dataFormat_;
     };
 
 } // namespace

@@ -15,6 +15,7 @@ SOURCES += \
     $${IVW_MODULE_PATH}/opengl/inviwoopengl.cpp \
     $${IVW_MODULE_PATH}/opengl/processorgl.cpp \
     $${IVW_MODULE_PATH}/opengl/volumegl.cpp \
+	$${IVW_MODULE_PATH}/opengl/volumeglconverter.cpp \
     $${IVW_MODULE_PATH}/opengl/glwrap/framebufferobject.cpp \
     $${IVW_MODULE_PATH}/opengl/glwrap/shader.cpp \
     $${IVW_MODULE_PATH}/opengl/glwrap/shaderobject.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     $${IVW_MODULE_PATH}/opengl/inviwoopengl.h \
     $${IVW_MODULE_PATH}/opengl/processorgl.h \
     $${IVW_MODULE_PATH}/opengl/volumegl.h \
+    $${IVW_MODULE_PATH}/opengl/volumeglconverter.h \	
     $${IVW_MODULE_PATH}/opengl/glwrap/framebufferobject.h \
     $${IVW_MODULE_PATH}/opengl/glwrap/shader.h \
     $${IVW_MODULE_PATH}/opengl/glwrap/shaderobject.h \

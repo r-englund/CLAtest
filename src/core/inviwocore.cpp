@@ -5,6 +5,8 @@
 
 #include "inviwo/core/metadata/positionmetadata.h"
 
+#include "inviwo/core/datastructures/volumeramconverter.h"
+
 namespace inviwo {
 
     InviwoCore::InviwoCore() : InviwoModule() {
@@ -12,6 +14,8 @@ namespace inviwo {
         //setXMLFileName(InviwoApplication::app()->getRootPath() + "/src/core/core.xml", true);
 
         addProcessor(new VolumeSource());
+
+        addRepresentationConverter(new VolumeRAMConverter());
 
         addMetaData(new PositionMetaData());
     }

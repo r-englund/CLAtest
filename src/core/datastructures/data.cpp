@@ -19,4 +19,8 @@ namespace inviwo {
         }
     }
 
+    void Data::addRepresentation(DataRepresentation* representation) {
+        representations_.push_back(representation);
+    }
+
 } // namespace

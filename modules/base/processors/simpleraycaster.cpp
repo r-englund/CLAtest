@@ -43,7 +43,7 @@ void SimpleRaycaster::process() {
     ivec2 outportDim = outImageGL->size();
 
     Volume* volume = volumePort_.getData();
-    VolumeGL* volumeGL = volume->getRepresentation<VolumeGLuint8>();
+    VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
     bindColorTexture(entryPort_, GL_TEXTURE0);
     bindColorTexture(exitPort_, GL_TEXTURE1);
     volumeGL->bindTexture(GL_TEXTURE2);

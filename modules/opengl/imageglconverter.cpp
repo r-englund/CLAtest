@@ -4,18 +4,17 @@
 namespace inviwo {
 
     ImageGLConverter::ImageGLConverter()
-        : RepresentationConverter()
+        : RepresentationConverterType<ImageGL>()
     {}
 
     ImageGLConverter::~ImageGLConverter() {}
 
-    void ImageGLConverter::convert(DataRepresentation* source, DataRepresentation* destination) {
+    DataRepresentation* ImageGLConverter::convert(DataRepresentation* source) {
+        DataRepresentation* destination = 0;
         ImageRepresentation* imageRepresentation = dynamic_cast<ImageRepresentation*>(source);
-        if (imageRepresentation) {
+        if (imageRepresentation)
             destination = new ImageGL(imageRepresentation->size());
-            return;
-        }
-        destination = 0;
+        return destination;
     }
 
 } // namespace

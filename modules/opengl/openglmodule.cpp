@@ -2,6 +2,7 @@
 
 #include "modules/opengl/canvasprocessorgl.h"
 #include "modules/opengl/imageglconverter.h"
+#include "modules/opengl/volumeglconverter.h"
 
 namespace inviwo {
 
@@ -10,6 +11,8 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     setXMLFileName("opengl/openglmodule.xml");
 
     addRepresentationConverter(new ImageGLConverter());
+
+    addRepresentationConverter(new VolumeGLConverter());
 
     addProcessor(new CanvasProcessorGL());
 }

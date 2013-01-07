@@ -21,8 +21,8 @@ namespace inviwo {
         virtual void initialize()=0;
         virtual void deinitialize()=0;
 
-        virtual IvwSerializable* create(std::string className) const=0;
-        virtual bool isValidType(std::string className) const=0;
+        virtual IvwSerializable* create(std::string className) const{ return 0; }
+        virtual bool isValidType(std::string className) const {return false; }
     };
 
 } // namespace

@@ -24,7 +24,6 @@ public:
     virtual void unbindTexture();
 
 protected:
-    ivec3 dimensions_;
     Texture3D* volumeTexture_;
 };
 
@@ -33,8 +32,9 @@ class VolumeGLPrecision : public VolumeGL {
 public:
     VolumeGLPrecision();
     VolumeGLPrecision(ivec3 dimensions);
+    VolumeGLPrecision(T* texels, ivec3 dimensions);
     virtual ~VolumeGLPrecision() {};
-    virtual void initialize();
+    virtual void initialize(GLubyte* texels);
     virtual void deinitialize();
     virtual DataRepresentation* clone();
     virtual GLenum getDataType();
@@ -50,54 +50,67 @@ private :
 template<class T>
 VolumeGLPrecision<T>::VolumeGLPrecision() : VolumeGL() {
     VolumeGLPrecision<T>::setTypeAndFormat();
-    VolumeGLPrecision<T>::initialize();
+    VolumeGLPrecision<T>::initialize(0);
 }
 
 template<class T>
 VolumeGLPrecision<T>::VolumeGLPrecision(ivec3 dimensions) : VolumeGL(dimensions) {
     VolumeGLPrecision<T>::setTypeAndFormat();
-    VolumeGLPrecision<T>::initialize();
+    VolumeGLPrecision<T>::initialize(0);
+}
+
+template<class T>
+VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, ivec3 dimensions) : VolumeGL(dimensions) {
+    VolumeGLPrecision<T>::setTypeAndFormat();
+    VolumeGLPrecision<T>::initialize(static_cast<GLubyte*>(texels));
 }
 
 template<class T>
 void VolumeGLPrecision<T>::setTypeAndFormat() {
     if (dynamic_cast< VolumeGLPrecision<UINT8>* >(this)) {
+        dataFormat_ = "UINT8";
         dataType_ = GL_UNSIGNED_BYTE;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA8;
         return;
     }
     else if (dynamic_cast< VolumeGLPrecision<INT8>* >(this)) {
+        dataFormat_ = "UINT8";
         dataType_ = GL_BYTE;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA8;
         return;
     }
     else if (dynamic_cast< VolumeGLPrecision<UINT16>* >(this)) {
+        dataFormat_ = "UINT16";
         dataType_ = GL_UNSIGNED_SHORT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA16;
         return;
     }
     else if (dynamic_cast< VolumeGLPrecision<INT16>* >(this)) {
+        dataFormat_ = "INT16";
         dataType_ = GL_SHORT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA16;
         return;
     }
     else if (dynamic_cast< VolumeGLPrecision<UINT32>* >(this)) {
+        dataFormat_ = "UINT32";
         dataType_ = GL_UNSIGNED_INT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA;
         return;
     }
     else if (dynamic_cast< VolumeGLPrecision<INT32>* >(this)) {
+        dataFormat_ = "INT32";
         dataType_ = GL_INT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA;
         return;
     }
 
+    dataFormat_ = "UINT8";
     format_ = GL_ALPHA;
     internalFormat_ = GL_ALPHA8;
     dataType_ = GL_UNSIGNED_BYTE;
@@ -120,13 +133,22 @@ GLint VolumeGLPrecision<T>::getInternalFormat() {
 }
 
 template<class T>
-void VolumeGLPrecision<T>::initialize() {
+void VolumeGLPrecision<T>::initialize(GLubyte* texels) {
     volumeTexture_ = new Texture3D(dimensions_, getFormat(), getInternalFormat(), getDataType(), GL_LINEAR);
-    //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/nucleon.raw", dimensions_=ivec3(41,41,41));
-    volumeTexture_->loadTexture(IVW_DIR+"data/volumes/hydrogenatom.raw", dimensions_=ivec3(128,128,128));
-    //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/neghip.raw", dimensions_=ivec3(64,64,64));
-    //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/marschnerlobb.raw", dimensions_=ivec3(41,41,41));
-    //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/aneurysm.raw", dimensions_=ivec3(256,256,256));
+
+    if (!texels) {
+        //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/nucleon.raw", dimensions_=ivec3(41,41,41));
+        volumeTexture_->loadTexture(IVW_DIR+"data/volumes/hydrogenatom.raw", dimensions_=ivec3(128,128,128));
+        //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/neghip.raw", dimensions_=ivec3(64,64,64));
+        //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/marschnerlobb.raw", dimensions_=ivec3(41,41,41));
+        //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/aneurysm.raw", dimensions_=ivec3(256,256,256));
+    }
+    else {
+        volumeTexture_->bind();
+        volumeTexture_->setTexels(texels);
+        volumeTexture_->upload();
+    }
+
     VolumeGL::initialize();
 }
 

@@ -7,17 +7,18 @@
 
 namespace inviwo {
 
-    class ImageGLConverter : public RepresentationConverter {
+    class ImageGLConverter : public RepresentationConverterType<ImageGL> {
 
     public:
         ImageGLConverter();
         virtual ~ImageGLConverter();
 
-        inline bool canConvert(DataRepresentation* source, DataRepresentation* destination) {
-            return (dynamic_cast<ImageRAM*>(source) && dynamic_cast<ImageGL*>(destination));
+        inline bool canConvert(DataRepresentation* source) {
+            if (dynamic_cast<ImageRAM*>(source)) return true;
+            return false;
         }
 
-        void convert(DataRepresentation* source, DataRepresentation* destination);
+         DataRepresentation* convert(DataRepresentation* source);
     };
 
 } // namespace

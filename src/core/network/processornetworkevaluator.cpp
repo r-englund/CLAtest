@@ -355,17 +355,30 @@ void ProcessorNetworkEvaluator::evaluate() {
     // TODO: perform only if network has been changed
     sortTopologically();
 
+     bool inValidTopology = false;
+    //TODO: there is better way to check for valid connections;
     renderContext_->switchContext();
     for (size_t i=0; i<processorsSorted_.size(); i++) {
         if (!processorsSorted_[i]->isValid()) {
-            if (processorsSorted_[i]->allInportsConnected()) {
-                processorsSorted_[i]->process();                
-                processorsSorted_[i]->setValid();
-                if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i])) {
-                    renderContext_->switchContext();
-                }
-                repaintRequired_ = true;
+            if (!processorsSorted_[i]->allInportsConnected()) {
+                inValidTopology = true;
             }
+        }
+    }
+
+    if (inValidTopology)
+        return;
+
+   
+    renderContext_->switchContext();
+    for (size_t i=0; i<processorsSorted_.size(); i++) {
+        if (!processorsSorted_[i]->isValid()) {
+            processorsSorted_[i]->process();                
+            processorsSorted_[i]->setValid();
+            if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i])) {
+                renderContext_->switchContext();
+            }
+            repaintRequired_ = true;
         }
     }
     if (repaintRequired_)

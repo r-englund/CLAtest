@@ -2,8 +2,10 @@
 
 namespace inviwo {
 
-    VolumeRepresentation::VolumeRepresentation()
-        : DataRepresentation()
+    VolumeRepresentation::VolumeRepresentation(ivec3 dimension, std::string format)
+        : DataRepresentation(),
+        dimensions_(dimension),
+        dataFormat_(format)
     {}
 
     VolumeRepresentation::~VolumeRepresentation() {}

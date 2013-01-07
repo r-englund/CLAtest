@@ -1,4 +1,5 @@
 #include "inviwo/core/processors/datasource/volumesource.h"
+#include "inviwo/core/datastructures/volumedisk.h"
 
 namespace inviwo {
 
@@ -8,8 +9,6 @@ VolumeSource::VolumeSource()
       volumeFileName_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/hydrogenatom.raw")
 {
     addPort(volumePort_);
-    Volume* volume = new Volume();
-    volumePort_.setData(volume);
     addProperty(volumeFileName_);
 }
 
@@ -21,6 +20,9 @@ Processor* VolumeSource::create() const {
 
 void VolumeSource::initialize() {
     Processor::initialize();
+    Volume* volume = volumePort_.getData();
+    if (volume)
+        volume->addRepresentation(new VolumeDisk(volumeFileName_.get()) );
 }
 
 void VolumeSource::deinitialize() {

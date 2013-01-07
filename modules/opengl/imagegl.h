@@ -39,8 +39,6 @@ namespace inviwo {
         Texture2D* getDepthTexture() {return depthTexture_;}
 
     private:
-        ivec2 dimensions_;
-
         Texture2D* colorTexture_;
         Texture2D* depthTexture_;
         FrameBufferObject* frameBufferObject_;

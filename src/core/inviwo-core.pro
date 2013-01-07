@@ -102,6 +102,7 @@ HEADERS += \
     ../../include/inviwo/core/datastructures/volumedisk.h \
     ../../include/inviwo/core/datastructures/volumeram.h \
     ../../include/inviwo/core/datastructures/volumerepresentation.h \
+    ../../include/inviwo/core/datastructures/volumeramconverter.h \	
     ../../include/inviwo/core/interaction/interactionhandler.h \
     ../../include/inviwo/core/interaction/trackball.h \
     ../../include/inviwo/core/interaction/events/event.h \
@@ -179,6 +180,7 @@ SOURCES += \
     datastructures/volumedisk.cpp \
     datastructures/volumeram.cpp \
     datastructures/volumerepresentation.cpp \
+    datastructures/volumeramconverter.cpp \
     interaction/interactionhandler.cpp \
     interaction/trackball.cpp \
     interaction/events/event.cpp \

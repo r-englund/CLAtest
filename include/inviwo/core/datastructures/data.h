@@ -3,6 +3,7 @@
 
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/datarepresentation.h"
+#include "inviwo/core/datastructures/representationconverterfactory.h"
 
 namespace inviwo {
 
@@ -16,6 +17,7 @@ namespace inviwo {
         bool hasRepresentation() const;
         template<class T>
         T* getRepresentation();
+        void addRepresentation(DataRepresentation* representation);
         void clearRepresentations();
         void copyRepresentations(Data* targetData);
         virtual Data* clone()=0;
@@ -31,21 +33,31 @@ namespace inviwo {
             // check if a representation exists and return it
             for (size_t i=0; i<representations_.size(); i++) {
                 T* representation = dynamic_cast<T*>(representations_[i]);
-                if (representation)
+                if (representation) {
                     return representation;
+                }
             }
             // no representation exists, so we try to create one
-            T* result = 0;
-            // TODO: convert existing representations
-            //converter = app.getRepresentationFactory().getConverter(T*); // how to deal with source
-            // result = converter.convert(this);
-            return result;
+            DataRepresentation* result = 0;
+            RepresentationConverterFactory* representationConverterFactory = new RepresentationConverterFactory();
+            //TODO: static variable does not exist anymore in this library,
+            //hence representationConverterFactory->initialize() is required. this problem is common.
+            //also try to use InviwoFactoryBase::instance<RepresentationConverterFactory>()
+            representationConverterFactory->initialize();
+            for (size_t i=0; i<representations_.size(); i++) {                
+                RepresentationConverter* converter = representationConverterFactory->getRepresentationConverter<T>(representations_[i]);
+                if (converter) {
+                    result = converter->convert(representations_[i]);
+                    addRepresentation(result);
+                    return dynamic_cast<T*>(result);
+                }
+            }
         } else {
             // no representation exists, so create one
-            T* result = new T();
-            representations_.push_back(result);
-            return result;
+            // using representation factory
         }
+
+        return 0;
     }
 
     template<class T>
@@ -56,7 +68,6 @@ namespace inviwo {
         }
         return false;
     }
-
 } // namespace
 
 #endif // IVW_DATA_H

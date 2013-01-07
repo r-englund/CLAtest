@@ -9,12 +9,16 @@ namespace inviwo {
 
     public:
         ImageRAM();
+        ImageRAM(ivec2 dimension);
         virtual ~ImageRAM();
         virtual void initialize();
         void deinitialize();
         DataRepresentation* clone();
         virtual std::string getClassName() const { return "ImageRAM"; }
         void copyAndResizeImage(DataRepresentation*){}
+        virtual void* getData() {return data_;}
+    protected:
+        void* data_;
     };
 
 } // namespace

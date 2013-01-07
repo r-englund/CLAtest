@@ -1,6 +1,7 @@
 #include "inviwo/core/inviwoapplication.h"
 #include "inviwo/core/processors/processorfactory.h"
 #include "inviwo/core/metadata/metadatafactory.h"
+#include "inviwo/core/datastructures/representationconverterfactory.h"
 #include "modules/moduleregistration.h"
 
 
@@ -27,6 +28,9 @@ namespace inviwo {
 
         MetaDataFactory* metadataFactory = new MetaDataFactory();
         metadataFactory->initialize();
+
+        RepresentationConverterFactory* representationConverterFactory = new RepresentationConverterFactory();
+        representationConverterFactory->initialize();
 
         initialized_ = true;
     }

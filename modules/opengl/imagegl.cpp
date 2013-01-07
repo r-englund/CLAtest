@@ -4,15 +4,13 @@
 namespace inviwo {
 
     ImageGL::ImageGL()
-        : ImageRepresentation(),
-        dimensions_(ivec2(256,256)) //TODO: use actual value
+        : ImageRepresentation(ivec2(256,256))
     {
         initialize();
     }
 
     ImageGL::ImageGL(ivec2 dimensions)
-        : ImageRepresentation(),
-        dimensions_(dimensions)
+        : ImageRepresentation(dimensions)
     {
         initialize();
     }
