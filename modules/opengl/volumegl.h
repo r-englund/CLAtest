@@ -34,7 +34,7 @@ public:
     VolumeGLPrecision(ivec3 dimensions);
     VolumeGLPrecision(T* texels, ivec3 dimensions);
     virtual ~VolumeGLPrecision() {};
-    virtual void initialize(GLubyte* texels);
+    virtual void initialize(void* texels);
     virtual void deinitialize();
     virtual DataRepresentation* clone();
     virtual GLenum getDataType();
@@ -62,7 +62,7 @@ VolumeGLPrecision<T>::VolumeGLPrecision(ivec3 dimensions) : VolumeGL(dimensions)
 template<class T>
 VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, ivec3 dimensions) : VolumeGL(dimensions) {
     VolumeGLPrecision<T>::setTypeAndFormat();
-    VolumeGLPrecision<T>::initialize(static_cast<GLubyte*>(texels));
+    VolumeGLPrecision<T>::initialize(texels);
 }
 
 template<class T>
@@ -133,7 +133,7 @@ GLint VolumeGLPrecision<T>::getInternalFormat() {
 }
 
 template<class T>
-void VolumeGLPrecision<T>::initialize(GLubyte* texels) {
+void VolumeGLPrecision<T>::initialize(void* texels) {
     volumeTexture_ = new Texture3D(dimensions_, getFormat(), getInternalFormat(), getDataType(), GL_LINEAR);
 
     if (!texels) {

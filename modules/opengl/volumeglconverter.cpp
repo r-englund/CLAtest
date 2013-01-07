@@ -27,12 +27,18 @@ namespace inviwo {
         else if (volumeDisk = dynamic_cast<VolumeDisk*>(source)) {            
             dimension = volumeDisk->dimension();
             dataFormat = volumeDisk->getDataFormat();
-            //TODO: Remove this function call
-            data = volumeDisk->loadData<GLubyte>();
+            //TODO: Remove this function call after data reader
+            if (dataFormat == "UINT8")
+                data = volumeDisk->loadData<GLubyte>();
+            else if (dataFormat == "UINT16")
+                data = volumeDisk->loadData<GLushort>();
         }
 
         if (dataFormat == "UINT8") {
             destination = new VolumeGLuint8(static_cast<UINT8*>(data), dimension);
+        }
+        else if (dataFormat == "UINT16") {
+            destination = new VolumeGLuint16(static_cast<UINT16*>(data), dimension);
         }
 
         return destination;

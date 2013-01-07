@@ -30,7 +30,7 @@ public:
         upload();
     }
 
-    void setTexels(GLubyte* texels) { texels_ = texels; }
+    void setTexels(void* texels) { texels_ = texels; }
 
     void bind();
     void unbind();
@@ -44,7 +44,7 @@ private:
     GLenum filtering_;
 
     GLuint id_;
-    GLubyte* texels_;
+    void* texels_;
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
