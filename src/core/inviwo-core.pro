@@ -161,6 +161,7 @@ HEADERS += \
     ../../include/inviwo/core/util/observer.h \
     ../../include/inviwo/core/util/project.h \
     ../../include/inviwo/core/util/group.h \
+    ../../include/inviwo/core/util/pstdint.h \
     ../../include/inviwo/core/util/variant.h
 
 SOURCES += \

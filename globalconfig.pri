@@ -93,6 +93,9 @@ win32 {
         OBJECTS_DIR = release
         DESTDIR = release
     }
+    
+    QMAKE_CXXFLAGS_DEBUG += /Z7
+    QMAKE_LFLAGS += /ignore:4217
 }
 
 win32 {

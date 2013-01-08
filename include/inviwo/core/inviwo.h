@@ -13,6 +13,8 @@
 #include <map>
 #include <algorithm>
 
+#include "inviwo/core/util/pstdint.h"
+
 // error handling
 #include "inviwo/core/util/assertion.h"
 #include "inviwo/core/util/exception.h"
@@ -21,15 +23,6 @@
 
 //#include "ext/voreen/serialization/serialization.h"
 #include "inviwo/core/io/serialization/ivwserialization.h"
-
-typedef signed char         INT8;
-typedef signed short        INT16;
-typedef signed int          INT32;
-typedef signed __int64      INT64;
-typedef unsigned char       UINT8;
-typedef unsigned short      UINT16;
-typedef unsigned int        UINT32;
-typedef unsigned __int64    UINT64;
 
 // include glm
 #include "ext/glm/glm.hpp"
