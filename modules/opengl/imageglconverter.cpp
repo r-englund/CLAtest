@@ -3,13 +3,13 @@
 
 namespace inviwo {
 
-    ImageGLConverter::ImageGLConverter()
+    ImageRAM2GLConverter::ImageRAM2GLConverter()
         : RepresentationConverterType<ImageGL>()
     {}
 
-    ImageGLConverter::~ImageGLConverter() {}
+    ImageRAM2GLConverter::~ImageRAM2GLConverter() {}
 
-    DataRepresentation* ImageGLConverter::convert(DataRepresentation* source) {
+    DataRepresentation* ImageRAM2GLConverter::convert(DataRepresentation* source) {
         DataRepresentation* destination = 0;
         ImageRepresentation* imageRepresentation = dynamic_cast<ImageRepresentation*>(source);
         if (imageRepresentation)

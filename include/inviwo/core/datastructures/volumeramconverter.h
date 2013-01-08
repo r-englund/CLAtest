@@ -7,11 +7,11 @@
 
 namespace inviwo {
 
-    class VolumeRAMConverter : public RepresentationConverterType<VolumeRAM> {
+    class VolumeDisk2RAMConverter : public RepresentationConverterType<VolumeRAM> {
 
     public:
-        VolumeRAMConverter();
-        virtual ~VolumeRAMConverter();
+        VolumeDisk2RAMConverter();
+        virtual ~VolumeDisk2RAMConverter();
 
         inline bool canConvert(DataRepresentation* source) {
             if (dynamic_cast<VolumeDisk*>(source)) return true;

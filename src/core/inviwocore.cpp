@@ -15,7 +15,7 @@ namespace inviwo {
 
         addProcessor(new VolumeSource());
 
-        addRepresentationConverter(new VolumeRAMConverter());
+        addRepresentationConverter(new VolumeDisk2RAMConverter());
 
         addMetaData(new PositionMetaData());
     }

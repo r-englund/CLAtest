@@ -65,27 +65,27 @@ void VolumeRAMPrecision<T>::initialize(void* data) {
 
 template<class T>
 void VolumeRAMPrecision<T>::setTypeAndFormat() {
-    if (dynamic_cast< VolumeRAMPrecision<UINT8>* >(this)) {
+    if (dynamic_cast< VolumeRAMPrecision<uint8_t>* >(this)) {
         dataFormat_ = "UINT8";
         return;
     }
-    else if (dynamic_cast< VolumeRAMPrecision<INT8>* >(this)) {
+    else if (dynamic_cast< VolumeRAMPrecision<int8_t>* >(this)) {
         dataFormat_ = "UINT8";
         return;
     }
-    else if (dynamic_cast< VolumeRAMPrecision<UINT16>* >(this)) {
+    else if (dynamic_cast< VolumeRAMPrecision<uint16_t>* >(this)) {
         dataFormat_ = "UINT16";
         return;
     }
-    else if (dynamic_cast< VolumeRAMPrecision<INT16>* >(this)) {
+    else if (dynamic_cast< VolumeRAMPrecision<int16_t>* >(this)) {
         dataFormat_ = "INT16";            
         return;
     }
-    else if (dynamic_cast< VolumeRAMPrecision<UINT32>* >(this)) {
+    else if (dynamic_cast< VolumeRAMPrecision<uint32_t>* >(this)) {
         dataFormat_ = "UINT32";            
         return;
     }
-    else if (dynamic_cast< VolumeRAMPrecision<INT32>* >(this)) {
+    else if (dynamic_cast< VolumeRAMPrecision<int32_t>* >(this)) {
         dataFormat_ = "INT32";
         return;
     }
@@ -107,12 +107,12 @@ void VolumeRAMPrecision<T>::deinitialize() {
     VolumeRAM::deinitialize();
 }
 
-typedef VolumeRAMPrecision<UINT8> VolumeRAMuint8;
-typedef VolumeRAMPrecision<INT8> VolumeRAMint8;
-typedef VolumeRAMPrecision<UINT16> VolumeRAMuint16;
-typedef VolumeRAMPrecision<INT16> VolumeRAMint16;
-typedef VolumeRAMPrecision<UINT32> VolumeRAMuint32;
-typedef VolumeRAMPrecision<INT32> VolumeRAMint32;
+typedef VolumeRAMPrecision<uint8_t> VolumeRAMuint8;
+typedef VolumeRAMPrecision<int8_t> VolumeRAMint8;
+typedef VolumeRAMPrecision<uint16_t> VolumeRAMuint16;
+typedef VolumeRAMPrecision<int16_t> VolumeRAMint16;
+typedef VolumeRAMPrecision<uint32_t> VolumeRAMuint32;
+typedef VolumeRAMPrecision<int32_t> VolumeRAMint32;
 
 } // namespace
 

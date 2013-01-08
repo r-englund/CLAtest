@@ -3,18 +3,17 @@
 
 namespace inviwo {
 
-    VolumeGLConverter::VolumeGLConverter()
+    VolumeRAM2GLConverter::VolumeRAM2GLConverter()
         : RepresentationConverterType<VolumeGL>()
     {}
 
-    VolumeGLConverter::~VolumeGLConverter() {}
+    VolumeRAM2GLConverter::~VolumeRAM2GLConverter() {}
 
-    DataRepresentation* VolumeGLConverter::convert(DataRepresentation* source) {     
+    DataRepresentation* VolumeRAM2GLConverter::convert(DataRepresentation* source) {     
         DataRepresentation* destination = 0;
         std::string dataFormat("");
         ivec3 dimension(0,0,0);
         VolumeRAM* volumeRAM = 0;
-        VolumeDisk* volumeDisk = 0;
         void* data = 0;
 
         if (volumeRAM = dynamic_cast<VolumeRAM*>(source)) {
@@ -23,15 +22,6 @@ namespace inviwo {
                 dataFormat = volumeRAM->getDataFormat();
                 data = volumeRAM->getData();
             }
-        }
-        else if (volumeDisk = dynamic_cast<VolumeDisk*>(source)) {            
-            dimension = volumeDisk->dimension();
-            dataFormat = volumeDisk->getDataFormat();
-            //TODO: Remove this function call after data reader
-            if (dataFormat == "UINT8")
-                data = volumeDisk->loadData<GLubyte>();
-            else if (dataFormat == "UINT16")
-                data = volumeDisk->loadData<GLushort>();
         }
 
         if (dataFormat == "UINT8") {

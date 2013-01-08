@@ -18,7 +18,7 @@ namespace inviwo {
     ImageRAM::~ImageRAM() {}  
 
     void ImageRAM::initialize() {
-        data_ = new UINT8[dimensions_.x*dimensions_.y];
+        data_ = new uint8_t[dimensions_.x*dimensions_.y];
     }
     
     void ImageRAM::deinitialize() {}

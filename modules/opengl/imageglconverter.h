@@ -7,11 +7,11 @@
 
 namespace inviwo {
 
-    class ImageGLConverter : public RepresentationConverterType<ImageGL> {
+    class ImageRAM2GLConverter : public RepresentationConverterType<ImageGL> {
 
     public:
-        ImageGLConverter();
-        virtual ~ImageGLConverter();
+        ImageRAM2GLConverter();
+        virtual ~ImageRAM2GLConverter();
 
         inline bool canConvert(DataRepresentation* source) {
             if (dynamic_cast<ImageRAM*>(source)) return true;

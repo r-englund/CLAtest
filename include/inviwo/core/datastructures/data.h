@@ -52,12 +52,39 @@ namespace inviwo {
                     return dynamic_cast<T*>(result);
                 }
             }
+            //A one-2-one converter could not be found, thus we want to find the smallest package of converters to get to our destination
+            RepresentationConverterPackage<T>* converterPackage = NULL;
+            for (size_t i=0; i<representations_.size(); i++) {                
+                RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(representations_[i]);
+                if(currentConverterPackage){
+                    if(converterPackage){
+                        if(currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()){
+                            converterPackage = currentConverterPackage;
+                            result = representations_[i];
+                        }
+                    }
+                    else{
+                        converterPackage = currentConverterPackage;
+                        result = representations_[i];
+                    }
+                }
+                
+            }
+            //Go-through the conversion package
+            if (converterPackage) {
+                for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
+                    result = converterPackage->convert(result);
+                    addRepresentation(result);
+                }
+                return dynamic_cast<T*>(result);
+            }
+            return NULL;
         } else {
             // no representation exists, so create one
             // using representation factory
         }
 
-        return 0;
+        return NULL;
     }
 
     template<class T>

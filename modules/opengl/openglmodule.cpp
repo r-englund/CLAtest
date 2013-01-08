@@ -10,9 +10,10 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     setIdentifier("OpenGL");
     setXMLFileName("opengl/openglmodule.xml");
 
-    addRepresentationConverter(new ImageGLConverter());
+    addRepresentationConverter(new ImageRAM2GLConverter());
 
-    addRepresentationConverter(new VolumeGLConverter());
+    addRepresentationConverter(new VolumeRAM2GLConverter());
+    addRepresentationConverter(new VolumeDisk2GLConverter());
 
     addProcessor(new CanvasProcessorGL());
 }

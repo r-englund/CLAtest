@@ -20,21 +20,39 @@ namespace inviwo {
         template <typename T>
         RepresentationConverter* getRepresentationConverter(DataRepresentation* source) {
             // TODO: optimize performance, e.g., by using a hash table
-            for (unsigned int i=0; i<representationConverters_.size(); i++) {
+            for (size_t i=0; i<representationConverters_.size(); i++) {
                 RepresentationConverterType<T>* repConverterTyped = dynamic_cast<RepresentationConverterType<T>*>(representationConverters_[i]);
-                if (repConverterTyped->isValidConverter<T>())
-                if (repConverterTyped->canConvert(source))
-                    return representationConverters_[i];
+                if(repConverterTyped){
+                    if (repConverterTyped->canConvert(source)){
+                        return representationConverters_[i];
+                    }
+                }
             }
-            return 0; //TODO: throw an exception here
+            return NULL; //TODO: throw an exception here
         }
 
+        template <typename T>
+        RepresentationConverterPackage<T>* getRepresentationConverterPackage(DataRepresentation* source) {
+            // TODO: optimize performance, e.g., by using a hash table
+            RepresentationConverterPackage<T>* currentConverterPackage = NULL; 
+            for (size_t i=0; i<representationConverters_.size(); i++) {
+                RepresentationConverterPackage<T>* repConverterPackage = dynamic_cast<RepresentationConverterPackage<T>*>(representationConverters_[i]);
+                if(repConverterPackage){
+                    if (repConverterPackage->canConvert(source)){
+                        if(currentConverterPackage)
+                            currentConverterPackage = (repConverterPackage->getNumberOfConverters() < currentConverterPackage->getNumberOfConverters() ? repConverterPackage : currentConverterPackage);
+                    }
+                }
+            }
+            return currentConverterPackage; //TODO: throw an exception here
+        }
 
     protected:
         static RepresentationConverterFactory* factory_;
 
     private:
         std::vector<RepresentationConverter*> representationConverters_;
+        int largestPac;
     };
 
 } // namespace
