@@ -27,7 +27,7 @@ protected:
     Texture3D* volumeTexture_;
 };
 
-template<class T=UINT8>
+template<class T=uint8_t>
 class VolumeGLPrecision : public VolumeGL {
 public:
     VolumeGLPrecision();
@@ -67,42 +67,42 @@ VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, ivec3 dimensions) : VolumeGL(
 
 template<class T>
 void VolumeGLPrecision<T>::setTypeAndFormat() {
-    if (dynamic_cast< VolumeGLPrecision<UINT8>* >(this)) {
+    if (dynamic_cast< VolumeGLPrecision<uint8_t>* >(this)) {
         dataFormat_ = "UINT8";
         dataType_ = GL_UNSIGNED_BYTE;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA8;
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<INT8>* >(this)) {
+    else if (dynamic_cast< VolumeGLPrecision<int8_t>* >(this)) {
         dataFormat_ = "UINT8";
         dataType_ = GL_BYTE;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA8;
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<UINT16>* >(this)) {
+    else if (dynamic_cast< VolumeGLPrecision<uint16_t>* >(this)) {
         dataFormat_ = "UINT16";
         dataType_ = GL_UNSIGNED_SHORT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA16;
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<INT16>* >(this)) {
+    else if (dynamic_cast< VolumeGLPrecision<int16_t>* >(this)) {
         dataFormat_ = "INT16";
         dataType_ = GL_SHORT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA16;
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<UINT32>* >(this)) {
+    else if (dynamic_cast< VolumeGLPrecision<uint32_t>* >(this)) {
         dataFormat_ = "UINT32";
         dataType_ = GL_UNSIGNED_INT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA;
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<INT32>* >(this)) {
+    else if (dynamic_cast< VolumeGLPrecision<int32_t>* >(this)) {
         dataFormat_ = "INT32";
         dataType_ = GL_INT;
         format_ = GL_ALPHA;
