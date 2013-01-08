@@ -27,7 +27,7 @@ protected:
     Texture3D* volumeTexture_;
 };
 
-template<class T>
+template<typename T>
 class VolumeGLPrecision : public VolumeGL {
 public:
     VolumeGLPrecision();
@@ -47,25 +47,25 @@ private :
     GLint internalFormat_;
 };
 
-template<class T>
+template<typename T>
 VolumeGLPrecision<T>::VolumeGLPrecision() : VolumeGL() {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(0);
 }
 
-template<class T>
+template<typename T>
 VolumeGLPrecision<T>::VolumeGLPrecision(ivec3 dimensions) : VolumeGL(dimensions) {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(0);
 }
 
-template<class T>
+template<typename T>
 VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, ivec3 dimensions) : VolumeGL(dimensions) {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(texels);
 }
 
-template<class T>
+template<typename T>
 void VolumeGLPrecision<T>::setTypeAndFormat() {
     if (dynamic_cast< VolumeGLPrecision<uint8_t>* >(this)) {
         dataFormat_ = "UINT8";
@@ -117,22 +117,22 @@ void VolumeGLPrecision<T>::setTypeAndFormat() {
 }
 
 
-template<class T>
+template<typename T>
 GLenum VolumeGLPrecision<T>::getDataType() {
     return dataType_; 
 }
 
-template<class T>
+template<typename T>
 GLint VolumeGLPrecision<T>::getFormat() {
     return format_; 
 }
 
-template<class T>
+template<typename T>
 GLint VolumeGLPrecision<T>::getInternalFormat() {
     return internalFormat_; 
 }
 
-template<class T>
+template<typename T>
 void VolumeGLPrecision<T>::initialize(void* texels) {
     volumeTexture_ = new Texture3D(dimensions_, getFormat(), getInternalFormat(), getDataType(), GL_LINEAR);
 
@@ -152,14 +152,14 @@ void VolumeGLPrecision<T>::initialize(void* texels) {
     VolumeGL::initialize();
 }
 
-template<class T>
+template<typename T>
 DataRepresentation* VolumeGLPrecision<T>::clone() {
     VolumeGLPrecision* newVolumeGL = new VolumeGLPrecision<T>(dimensions_);
     //TODO:: Copy volume textures if necessary
     return newVolumeGL;
 }
 
-template<class T>
+template<typename T>
 void VolumeGLPrecision<T>::deinitialize() {
     delete volumeTexture_;
     volumeTexture_ = 0;

@@ -20,8 +20,7 @@ protected:
     void* data_;
 };
 
-
-template<class T=UINT8>
+template<typename T>
 class VolumeRAMPrecision : public VolumeRAM {
 public:
     VolumeRAMPrecision();
@@ -35,25 +34,25 @@ private:
     void setTypeAndFormat();
 };
 
-template<class T>
+template<typename T>
 VolumeRAMPrecision<T>::VolumeRAMPrecision() : VolumeRAM() {
     VolumeRAMPrecision<T>::setTypeAndFormat();
     VolumeRAMPrecision<T>::initialize(0);
 }
 
-template<class T>
+template<typename T>
 VolumeRAMPrecision<T>::VolumeRAMPrecision(ivec3 dimensions) : VolumeRAM(dimensions) {
     VolumeRAMPrecision<T>::setTypeAndFormat();
     VolumeRAMPrecision<T>::initialize(0);
 }
 
-template<class T>
+template<typename T>
 VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, ivec3 dimensions) : VolumeRAM(dimensions) { 
     VolumeRAMPrecision<T>::setTypeAndFormat();
     VolumeRAMPrecision<T>::initialize(data);
 }
 
-template<class T>
+template<typename T>
 void VolumeRAMPrecision<T>::initialize(void* data) {
     if (!data)
         data_ = new T[dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T)];
@@ -63,7 +62,7 @@ void VolumeRAMPrecision<T>::initialize(void* data) {
 }
 
 
-template<class T>
+template<typename T>
 void VolumeRAMPrecision<T>::setTypeAndFormat() {
     if (dynamic_cast< VolumeRAMPrecision<uint8_t>* >(this)) {
         dataFormat_ = "UINT8";
@@ -93,14 +92,14 @@ void VolumeRAMPrecision<T>::setTypeAndFormat() {
     dataFormat_ = "UINT8";
 }
 
-template<class T>
+template<typename T>
 DataRepresentation* VolumeRAMPrecision<T>::clone() {
     VolumeRAMPrecision* newVolumeRAM = new VolumeRAMPrecision<T>(dimensions_);
     //TODO:: Copy volume textures if necessary
     return newVolumeRAM;
 }
 
-template<class T>
+template<typename T>
 void VolumeRAMPrecision<T>::deinitialize() {
     delete data_;
     data_ = 0;
