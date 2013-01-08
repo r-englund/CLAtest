@@ -25,10 +25,10 @@ namespace inviwo {
         }
 
         if (dataFormat == "UINT8") {
-            destination = new VolumeGLuint8(static_cast<UINT8*>(data), dimension);
+            destination = new VolumeGLuint8(static_cast<uint8_t*>(data), dimension);
         }
         else if (dataFormat == "UINT16") {
-            destination = new VolumeGLuint16(static_cast<UINT16*>(data), dimension);
+            destination = new VolumeGLuint16(static_cast<uint16_t*>(data), dimension);
         }
 
         return destination;
