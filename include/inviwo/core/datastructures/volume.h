@@ -10,10 +10,9 @@ namespace inviwo {
     public:
         Volume();
         virtual ~Volume();
-        Data* clone();
-
-    private:
-        ivec3 dimensions_;
+        Data* clone();        
+        void setDimension(ivec3 dim);
+        void setFormat(std::string format);        
     };
 
 } // namespace

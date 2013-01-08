@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-class PositionMetaData : public MetaData {
+class PositionMetaData : public IVec2MetaData {
 
 public:
     PositionMetaData();
@@ -33,9 +33,6 @@ protected:
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 
-private:
-    std::string identifier_;
-    ivec2 _xy;
 };
 
 } // namespace

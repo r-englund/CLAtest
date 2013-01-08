@@ -4,6 +4,7 @@
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/datarepresentation.h"
 #include "inviwo/core/datastructures/representationconverterfactory.h"
+#include "inviwo/core/metadata/metadatamap.h"
 
 namespace inviwo {
 
@@ -13,6 +14,7 @@ namespace inviwo {
         Data();
         virtual ~Data();
 
+        //Representations
         template<class T>
         bool hasRepresentation() const;
         template<class T>
@@ -20,10 +22,17 @@ namespace inviwo {
         void addRepresentation(DataRepresentation* representation);
         void clearRepresentations();
         void copyRepresentations(Data* targetData);
+
+        //MetaData
+        template<typename T, typename U>
+        void setMetaData(std::string key, U value);
+
+        //Others
         virtual Data* clone()=0;
 
     protected:
         std::vector<DataRepresentation*> representations_;
+        MetaDataMap metaData_;
 
     };
 
@@ -94,6 +103,28 @@ namespace inviwo {
             if (representation) return true;
         }
         return false;
+    }
+
+    template<typename T, typename U>
+    void Data::setMetaData(std::string key, U value) {
+        MetaData* baseMetaData = metaData_.get(key);
+
+        T* derivedMetaData = 0;
+        if (baseMetaData) {
+            derivedMetaData = dynamic_cast<T*>(baseMetaData);
+            //if not an instance of valid meta data, forcefully replace with valid one
+            if (!derivedMetaData) {
+                metaData_.remove(key);
+                derivedMetaData = new T();
+                metaData_.add(key, derivedMetaData);
+            }
+            derivedMetaData->set(value);
+        }
+        else {
+            derivedMetaData = new T();
+            metaData_.add(key, derivedMetaData);
+            derivedMetaData->set(value);
+        }
     }
 } // namespace
 
