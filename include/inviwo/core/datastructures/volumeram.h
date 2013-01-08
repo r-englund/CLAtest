@@ -69,7 +69,7 @@ void VolumeRAMPrecision<T>::setTypeAndFormat() {
         return;
     }
     else if (dynamic_cast< VolumeRAMPrecision<int8_t>* >(this)) {
-        dataFormat_ = "UINT8";
+        dataFormat_ = "INT8";
         return;
     }
     else if (dynamic_cast< VolumeRAMPrecision<uint16_t>* >(this)) {

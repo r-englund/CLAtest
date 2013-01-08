@@ -21,7 +21,13 @@ namespace inviwo {
                 dataFormat = volumeRAM->getDataFormat();
                 data = volumeRAM->getData();
             }
-        }
+            else if (dynamic_cast<VolumeRAMuint16*>(volumeRAM)) {
+                dimension = volumeRAM->dimension();
+                dataFormat = volumeRAM->getDataFormat();
+                data = volumeRAM->getData();
+            }
+        }        
+
 
         if (dataFormat == "UINT8") {
             destination = new VolumeGLuint8(static_cast<uint8_t*>(data), dimension);

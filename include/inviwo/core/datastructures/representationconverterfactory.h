@@ -41,6 +41,8 @@ namespace inviwo {
                     if (repConverterPackage->canConvert(source)){
                         if(currentConverterPackage)
                             currentConverterPackage = (repConverterPackage->getNumberOfConverters() < currentConverterPackage->getNumberOfConverters() ? repConverterPackage : currentConverterPackage);
+                        else
+                            currentConverterPackage = repConverterPackage;
                     }
                 }
             }
