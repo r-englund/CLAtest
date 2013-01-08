@@ -166,12 +166,12 @@ void VolumeGLPrecision<T>::deinitialize() {
     VolumeGL::deinitialize();
 }
 
-typedef VolumeGLPrecision<UINT8> VolumeGLuint8;
-typedef VolumeGLPrecision<INT8> VolumeGLint8;
-typedef VolumeGLPrecision<UINT16> VolumeGLuint16;
-typedef VolumeGLPrecision<INT16> VolumeGLint16;
-typedef VolumeGLPrecision<UINT32> VolumeGLuint32;
-typedef VolumeGLPrecision<INT32> VolumeGLint32;
+typedef VolumeGLPrecision<uint8_t> VolumeGLuint8;
+typedef VolumeGLPrecision<int8_t> VolumeGLint8;
+typedef VolumeGLPrecision<uint16_t> VolumeGLuint16;
+typedef VolumeGLPrecision<int16_t> VolumeGLint16;
+typedef VolumeGLPrecision<uint32_t> VolumeGLuint32;
+typedef VolumeGLPrecision<int32_t> VolumeGLint32;
 
 } // namespace
 
