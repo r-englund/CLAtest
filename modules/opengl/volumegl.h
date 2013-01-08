@@ -27,7 +27,7 @@ protected:
     Texture3D* volumeTexture_;
 };
 
-template<class T=uint8_t>
+template<class T>
 class VolumeGLPrecision : public VolumeGL {
 public:
     VolumeGLPrecision();

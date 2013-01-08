@@ -13,10 +13,9 @@ namespace inviwo {
         DataRepresentation* destination = 0;
         std::string dataFormat("");
         ivec3 dimension(0,0,0);
-        VolumeRAM* volumeRAM = 0;
         void* data = 0;
-
-        if (volumeRAM = dynamic_cast<VolumeRAM*>(source)) {
+        VolumeRAM* volumeRAM = volumeRAM = dynamic_cast<VolumeRAM*>(source);
+        if (volumeRAM) {
             if (dynamic_cast<VolumeRAMuint8*>(volumeRAM)) {
                 dimension = volumeRAM->dimension();
                 dataFormat = volumeRAM->getDataFormat();
