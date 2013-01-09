@@ -12,7 +12,9 @@ namespace inviwo {
         virtual ~Volume();
         Data* clone();        
         void setDimension(ivec3 dim);
-        void setFormat(std::string format);        
+        void setFormat(std::string format); 
+        ivec3 getDimension();
+        std::string getFormat();
     };
 
 } // namespace

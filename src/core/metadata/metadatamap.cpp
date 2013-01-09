@@ -23,7 +23,7 @@ void MetaDataMap::removeAll() {
     metaData_.clear();
 }
 
-void MetaDataMap::rename(std::string key, MetaData* metaData) {
+void MetaDataMap::rename(std::string newKey, MetaData* metaData) {
     for (cItreator cIt = metaData_.begin(); cIt!=metaData_.end(); ++cIt) {
         if (cIt->second == metaData) {
             std::string oldKey = cIt->first;
@@ -31,7 +31,7 @@ void MetaDataMap::rename(std::string key, MetaData* metaData) {
             break;
         }
     }
-    add(key, metaData);
+    add(newKey, metaData);
 }
 
 void MetaDataMap::rename(std::string newKey, std::string oldKey) {

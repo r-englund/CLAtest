@@ -22,4 +22,12 @@ namespace inviwo {
         setMetaData<StringMetaData>("format", format);
     }
 
+    ivec3 Volume::getDimension() {
+        return getMetaData<IVec3MetaData>("dimension", ivec3(0));
+    }
+
+    std::string Volume::getFormat() {
+        return getMetaData<StringMetaData>("format", std::string(""));
+    }
+
 } // namespace

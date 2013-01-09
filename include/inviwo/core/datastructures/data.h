@@ -27,6 +27,10 @@ namespace inviwo {
         template<typename T, typename U>
         void setMetaData(std::string key, U value);
 
+        //param val is required to deduce the template argument
+        template<typename T, typename U>
+        U getMetaData(std::string key, U val);
+
         //Others
         virtual Data* clone()=0;
 
@@ -124,6 +128,25 @@ namespace inviwo {
             derivedMetaData = new T();
             metaData_.add(key, derivedMetaData);
             derivedMetaData->set(value);
+        }
+    }
+
+    //param val is required to deduce the template argument
+    template<typename T, typename U>
+    U Data::getMetaData(std::string key, U val) {
+        MetaData* baseMetaData = metaData_.get(key);
+
+        T* derivedMetaData = 0;
+        if (baseMetaData) {
+            derivedMetaData = dynamic_cast<T*>(baseMetaData);
+            //if not an instance of valid meta data, forcefully replace with valid one
+            if (!derivedMetaData) {
+                return val;
+            }
+            return derivedMetaData->get();
+        }
+        else {
+            return val;
         }
     }
 } // namespace
