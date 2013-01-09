@@ -5,15 +5,15 @@
 
 namespace inviwo {
 
-    class Volume : public Data {
+    class Volume : public Data3D {
 
     public:
         Volume();
         virtual ~Volume();
         Data* clone();        
-        void setDimension(ivec3 dim);
+        //void setDimension(ivec3 dim);
         void setFormat(std::string format); 
-        ivec3 getDimension();
+        //ivec3 getDimension();
         std::string getFormat();
     };
 

@@ -34,6 +34,11 @@ namespace inviwo {
         //Others
         virtual Data* clone()=0;
 
+        typedef int   TYPE1D;
+        typedef ivec2 TYPE2D;
+        typedef ivec3 TYPE3D;
+        typedef ivec4 TYPE4D;
+
     protected:
         std::vector<DataRepresentation*> representations_;
         MetaDataMap metaData_;
@@ -149,6 +154,67 @@ namespace inviwo {
             return val;
         }
     }
+
+    /*---------------------------------------------------------------*/
+
+    template <typename T>
+    class DataDimension : public Data {
+    public:
+        DataDimension(T dimension);
+        DataDimension(){}
+        virtual ~DataDimension(){}
+        virtual Data* clone()=0;
+    protected:
+        template<typename U, typename V>
+        U getDimension(U dimension);
+
+        template<typename U, typename V>
+        void setDimension(U dimension);
+
+        T dimension_;
+    };
+
+    template <typename T>
+    DataDimension<T>::DataDimension(T dimension) {
+        dimension_ = dimension;
+    }
+
+    template <typename T> template<typename U, typename V>
+    void DataDimension<T>::setDimension(U dim) {
+        Data::setMetaData<V>("dimension", dim);
+    }
+
+   template <typename T> template<typename U, typename V>
+    U DataDimension<T>::getDimension(U dimension) {
+        return Data::getMetaData<V>("dimension", dimension);
+    }
+
+    /*---------------------------------------------------------------*/
+
+    class Data3D : public DataDimension<Data::TYPE3D> {
+    public :
+        typedef DataDimension<Data::TYPE3D> PARENT;
+        Data3D();
+        Data3D(Data::TYPE3D dimension);
+        virtual ~Data3D();
+        virtual Data* clone()=0;
+        ivec3 getDimension();
+        void setDimension(ivec3 dim);
+    };
+
+    /*---------------------------------------------------------------*/
+
+    class Data2D : public DataDimension<Data::TYPE2D> {
+    public :
+        typedef DataDimension<Data::TYPE2D> PARENT;
+        Data2D();
+        Data2D(Data::TYPE2D dimension);
+        virtual ~Data2D();
+        virtual Data* clone()=0;
+        ivec2 getDimension();
+        void setDimension(ivec2 dim);
+    };
+
 } // namespace
 
 #endif // IVW_DATA_H
