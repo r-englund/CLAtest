@@ -160,7 +160,6 @@ namespace inviwo {
     template <typename T>
     class DataDimension : public Data {
     public:
-        DataDimension(T dimension);
         DataDimension(){}
         virtual ~DataDimension(){}
         virtual Data* clone()=0;
@@ -170,14 +169,7 @@ namespace inviwo {
 
         template<typename U, typename V>
         void setDimension(U dimension);
-
-        T dimension_;
     };
-
-    template <typename T>
-    DataDimension<T>::DataDimension(T dimension) {
-        dimension_ = dimension;
-    }
 
     template <typename T> template<typename U, typename V>
     void DataDimension<T>::setDimension(U dim) {

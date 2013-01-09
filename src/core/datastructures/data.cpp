@@ -25,12 +25,12 @@ namespace inviwo {
 
     /*---------------------------------------------------------------*/
 
-    Data3D::Data3D() : PARENT(Data::TYPE3D(0)) {
+    Data3D::Data3D() : PARENT() {
         
     }
 
-    Data3D::Data3D(Data::TYPE3D dim) : PARENT(dim) {
-
+    Data3D::Data3D(Data::TYPE3D dim) : PARENT() {
+        setDimension(dim);
     }
 
     Data3D::~Data3D() {}
@@ -46,12 +46,12 @@ namespace inviwo {
 
     /*---------------------------------------------------------------*/
 
-    Data2D::Data2D() : PARENT(Data::TYPE2D(0)) {
+    Data2D::Data2D() : PARENT() {
 
     }
 
-    Data2D::Data2D(Data::TYPE2D dim) : PARENT(dim) {
-
+    Data2D::Data2D(Data::TYPE2D dim) : PARENT() {
+        setDimension(dim);
     }
 
     Data2D::~Data2D() {}
