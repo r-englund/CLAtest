@@ -7,6 +7,10 @@ namespace inviwo {
 
 MetaDataMap::MetaDataMap() {}
 
+MetaDataMap::MetaDataMap(const MetaDataMap& inMap) {
+    this->metaData_ = inMap.metaData_;
+}
+
 MetaDataMap::~MetaDataMap() {}
 
 void MetaDataMap::add(std::string key, MetaData* metaData) {
@@ -53,6 +57,13 @@ MetaData* MetaDataMap::get(std::string key) {
     if (metaData_.find(key)!=metaData_.end())
         metaData_[key];
     return 0;
+}
+
+MetaDataMap& MetaDataMap::operator=(const MetaDataMap& map) {
+    removeAll();
+    for (cItreator cIt = map.metaData_.begin(); cIt!=map.metaData_.end(); ++cIt)
+        add(cIt->first, cIt->second);
+    return *this;
 }
 
 } // namespace

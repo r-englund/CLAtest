@@ -1,4 +1,5 @@
 #include "inviwo/core/ports/volumeport.h"
+#include "inviwo/core/datastructures/volumetypeclassification.h"
 
 namespace inviwo {
 
@@ -10,7 +11,7 @@ VolumePort::~VolumePort() {
 }
 
 void VolumePort::initialize() {
-    data_ = new Volume();
+    data_ = new StandardVolume();
 }
 
 void VolumePort::deinitialize() {

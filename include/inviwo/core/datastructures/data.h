@@ -31,6 +31,8 @@ namespace inviwo {
         template<typename T, typename U>
         U getMetaData(std::string key, U val);
 
+        void copyMetaData(Data* targetData);
+
         //Others
         virtual Data* clone()=0;
 

@@ -23,11 +23,14 @@ namespace inviwo {
         representations_.push_back(representation);
     }
 
+    void Data::copyMetaData(Data* targetData) {
+        targetData->metaData_.removeAll();
+        targetData->metaData_ = metaData_;
+    }
+
     /*---------------------------------------------------------------*/
 
-    Data3D::Data3D() : PARENT() {
-        
-    }
+    Data3D::Data3D() : PARENT() { }
 
     Data3D::Data3D(Data::TYPE3D dim) : PARENT() {
         setDimension(dim);

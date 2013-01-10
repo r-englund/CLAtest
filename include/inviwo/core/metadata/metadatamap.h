@@ -20,6 +20,8 @@ public:
     std::vector<std::string> getKeys();
     MetaData* get(std::string key);
 
+    MetaDataMap& operator=(const MetaDataMap& map) ;
+
     typedef std::map<std::string, MetaData*>::const_iterator cItreator;
     typedef std::map<std::string, MetaData*>::iterator itreator;
 

@@ -4,31 +4,21 @@ namespace inviwo {
 
     Volume::Volume() : Data3D() {
         representations_.clear();
+        metaData_.removeAll();
     }
 
     Volume::~Volume() {}
 
     Data* Volume::clone() {
-        Volume* newVolume = new Volume();
-        copyRepresentations(newVolume);
-        return newVolume;
+        //Volume* newVolume = new Volume();
+        //copyRepresentations(newVolume);
+        //return newVolume;
+        return 0;
     }
-
-    /*
-    void Volume::setDimension(ivec3 dim) {
-        setMetaData<IVec3MetaData>("dimension", dim);
-    }*/
 
     void Volume::setFormat(std::string format) {
         setMetaData<StringMetaData>("format", format);
     }
-    
-
-    /*
-    ivec3 Volume::getDimension() {
-        return getMetaData<IVec3MetaData>("dimension", ivec3(0));
-    }
-    */
     
     std::string Volume::getFormat() {
         return getMetaData<StringMetaData>("format", std::string(""));

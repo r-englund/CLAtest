@@ -92,6 +92,7 @@ HEADERS += \
     ../../include/inviwo/core/inviwofactorybase.h \
     ../../include/inviwo/core/datastructures/data.h \
     ../../include/inviwo/core/datastructures/datarepresentation.h \
+    ../../include/inviwo/core/datastructures/datatypeclassification.h \	
     ../../include/inviwo/core/datastructures/image.h \
     ../../include/inviwo/core/datastructures/imagedisk.h \
     ../../include/inviwo/core/datastructures/imageram.h \
@@ -103,6 +104,7 @@ HEADERS += \
     ../../include/inviwo/core/datastructures/volumeram.h \
     ../../include/inviwo/core/datastructures/volumerepresentation.h \
     ../../include/inviwo/core/datastructures/volumeramconverter.h \	
+    ../../include/inviwo/core/datastructures/volumetypeclassification.h \
     ../../include/inviwo/core/interaction/interactionhandler.h \
     ../../include/inviwo/core/interaction/trackball.h \
     ../../include/inviwo/core/interaction/events/event.h \
@@ -183,6 +185,7 @@ SOURCES += \
     datastructures/volumeram.cpp \
     datastructures/volumerepresentation.cpp \
     datastructures/volumeramconverter.cpp \
+    datastructures/volumetypeclassification.cpp \
     interaction/interactionhandler.cpp \
     interaction/trackball.cpp \
     interaction/events/event.cpp \
