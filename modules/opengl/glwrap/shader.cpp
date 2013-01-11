@@ -74,8 +74,40 @@ void Shader::setUniform(const std::string name, vec2 value) {
     GLfloat* glvalues = new GLfloat[2];
     glvalues[0] = value[0];
     glvalues[1] = value[1];
-    if (uniformLocation != -1) glUniform2fv(uniformLocation, 1, glvalues);
+    if (uniformLocation != -1) glUniform2fv(uniformLocation, 1, glm::value_ptr(value));
     else
         LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
+
+void Shader::setUniform(const std::string name, vec3 value) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+    GLfloat* glvalues = new GLfloat[3];
+    glvalues[0] = value[0];
+    glvalues[1] = value[1];
+    glvalues[2] = value[2];
+    if (uniformLocation != -1) glUniform3fv(uniformLocation, 1, glm::value_ptr(value));
+    else
+        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
+
+void Shader::setUniform(const std::string name, vec4 value) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+    GLfloat* glvalues = new GLfloat[4];
+    glvalues[0] = value[0];
+    glvalues[1] = value[1];
+    glvalues[2] = value[2];
+    glvalues[3] = value[3];
+    if (uniformLocation != -1) glUniform4fv(uniformLocation, 1, glm::value_ptr(value));
+    else
+        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
+
+void Shader::setUniform(const std::string name, mat4 value) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+    if (uniformLocation != -1) glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
+    else
+        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
+
+
 } // namespace
