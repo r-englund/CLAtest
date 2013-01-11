@@ -27,10 +27,22 @@ namespace inviwo {
         inImageGL->bindColorTexture(texUnit);
     }
 
+    void ProcessorGL::bindDepthTexture(ImagePort inport, GLenum texUnit) {
+        Image* inImage = inport.getData();
+        ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+        inImageGL->bindDepthTexture(texUnit);
+    }
+
     void ProcessorGL::unbindColorTexture(ImagePort inport) {
         Image* inImage = inport.getData();
         ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
         inImageGL->unbindColorTexture();
+    }
+
+    void ProcessorGL::unbindDepthTexture(ImagePort inport) {
+        Image* inImage = inport.getData();
+        ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+        inImageGL->unbindDepthTexture();
     }
 
     void ProcessorGL::renderImagePlaneQuad() const {

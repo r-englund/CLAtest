@@ -21,6 +21,8 @@ public:
 
     void bindColorTexture(ImagePort inport, GLenum texUnit);
     void unbindColorTexture(ImagePort inport);
+    void bindDepthTexture(ImagePort inport, GLenum texUnit);
+    void unbindDepthTexture(ImagePort inport);
 
     void renderImagePlaneQuad() const;
 
