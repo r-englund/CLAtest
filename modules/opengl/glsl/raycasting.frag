@@ -1,3 +1,6 @@
+#include "mod_classification.frag"
+#include "mod_sampler3d.frag"
+
 uniform sampler2D entryTex_;
 uniform sampler2D exitTex_;
 uniform sampler3D volume_;
@@ -10,15 +13,6 @@ uniform float samplingRate_;
 #define REF_SAMPLING_INTERVAL 150.0
 // set threshold for early ray termination
 #define ERT_THRESHOLD 0.9
-
-vec4 getVoxel(sampler3D volume, vec3 samplePos) {
-    return texture3D(volume_, samplePos);
-}
-
-vec4 applyTF(vec4 voxel) {
-    if (voxel.a < 0.05) return vec4(0.0);
-    return vec4(1.0, 1.0, 1.0, 1.0)*voxel.a*5.0;
-}
 
 vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
     vec4 result = vec4(0.0);

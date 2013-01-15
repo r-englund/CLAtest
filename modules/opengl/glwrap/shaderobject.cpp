@@ -1,5 +1,7 @@
 #include "shaderobject.h"
 #include <stdio.h>
+//#include <iostream>
+#include <fstream>
 
 #ifdef WIN32
 #define OPEN_FILE(a,b,c) fopen_s(&a, b, c);
@@ -22,9 +24,55 @@ ShaderObject::~ShaderObject() {
     //free(source_);
 }
 
+std::string ShaderObject::embeddDefines(std::string source) {
+    std::ostringstream result;
+    for (size_t i=0; i<shaderDefines_.size(); i++) {
+        std::pair<std::string, std::string> curDefine = shaderDefines_[i];
+        result << "#define" << curDefine.first << " " << curDefine.second << "\n";
+    }
+    std::string curLine;
+    std::istringstream shaderSource(source);
+    while (std::getline(shaderSource, curLine))
+        result << curLine << "\n";
+
+    return result.str();
+}
+
+std::string ShaderObject::embeddIncludes(std::string source) {
+    std::ostringstream result;
+    std::string curLine;
+    std::istringstream shaderSource(source);
+    while (std::getline(shaderSource, curLine)) {
+        std::string::size_type posInclude = curLine.find("#include");
+        std::string::size_type posComment = curLine.find("//");
+        if (posInclude!=std::string::npos && (posComment==std::string::npos || posComment>posInclude)) {
+            std::string::size_type pathBegin = curLine.find("\"", posInclude+1);
+            std::string::size_type pathEnd = curLine.find("\"", pathBegin+1);
+            std::string includeFileName(curLine, pathBegin+1, pathEnd-pathBegin-1);
+
+            // TODO: remove absolute paths
+            std::ifstream includeFileStream(std::string(IVW_DIR+"modules/opengl/glsl/"+includeFileName).c_str());
+            std::stringstream buffer;
+            buffer << includeFileStream.rdbuf();
+            std::string includeSource = buffer.str();
+            
+            if (!includeSource.empty())
+                result << embeddIncludes(includeSource) << "\n"; 
+        }
+        else
+            result << curLine << "\n";
+    }
+    return result.str();
+}
+
+
 void ShaderObject::initialize() {
     // TODO: remove absolute paths
     loadSource(IVW_DIR+"modules/opengl/glsl/"+fileName_);
+    std::string sourceStr = std::string(source_);
+    sourceStr = embeddDefines(sourceStr);
+    sourceStr = embeddIncludes(sourceStr);
+    source_ = sourceStr.c_str();
     upload();
     compile();
 }
