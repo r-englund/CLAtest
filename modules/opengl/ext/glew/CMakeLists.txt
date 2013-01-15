@@ -1,8 +1,8 @@
 project(glew)
 
 set(GLEW_MAJOR_VERSION 1)
-set(GLEW_MINOR_VERSION 5)
-set(GLEW_PATCH_VERSION 8)
+set(GLEW_MINOR_VERSION 9)
+set(GLEW_PATCH_VERSION 0)
 set(GLEW_VERSION ${GLEW_MAJOR_VERSION}.${GLEW_MINOR_VERSION}.${GLEW_PATCH_VERSION})
 
 #--------------------------------------------------------------------
