@@ -1,10 +1,6 @@
 #ifndef IVW_INVIWO_H
 #define IVW_INVIWO_H
 
-#define IVW_DEBUG //TODO: move into project file
-
-#define IVW_DIR std::string("D:/inviwo/")
-
 #pragma warning(disable: 4290)
 
 #include <iostream>
@@ -13,6 +9,7 @@
 #include <map>
 #include <algorithm>
 
+#include "inviwo/core/inviwocommondefines.h"
 #include "inviwo/core/util/pstdint.h"
 
 // error handling

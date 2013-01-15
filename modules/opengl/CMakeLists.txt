@@ -1,0 +1,67 @@
+#--------------------------------------------------------------------
+# Inviwo OpenGL Module
+ivw_module(OpenGL)
+
+#--------------------------------------------------------------------
+# Add header files
+set(HEADER_FILES
+    ${IVW_MODULE_DIR}/opengl/canvasgl.h
+    ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/imagegl.h
+    ${IVW_MODULE_DIR}/opengl/imageglconverter.h
+    ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
+    ${IVW_MODULE_DIR}/opengl/processorgl.h
+    ${IVW_MODULE_DIR}/opengl/openglmodule.h
+    ${IVW_MODULE_DIR}/opengl/volumegl.h
+    ${IVW_MODULE_DIR}/opengl/volumeglconverter.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/shader.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
+    ${IVW_MODULE_DIR}/opengl/ext/tgaload/tgaload.h
+)
+ivw_group("Header Files" ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Add source files
+set(SOURCE_FILES
+    ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
+    ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/imagegl.cpp
+    ${IVW_MODULE_DIR}/opengl/imageglconverter.cpp
+    ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
+    ${IVW_MODULE_DIR}/opengl/processorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
+    ${IVW_MODULE_DIR}/opengl/volumegl.cpp
+	${IVW_MODULE_DIR}/opengl/volumeglconverter.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/shader.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp
+    ${IVW_MODULE_DIR}/opengl/ext/tgaload/tgaload.cpp
+)
+ivw_group("Source Files" ${SOURCE_FILES})
+
+#--------------------------------------------------------------------
+# Add shaders
+set(SHADER_FILES
+    ${IVW_MODULE_DIR}/opengl/glsl/eepgeneration.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/img_identity.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/img_identity.vert
+    ${IVW_MODULE_DIR}/opengl/glsl/img_mix.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
+)
+ivw_group("Shader Files" ${SHADER_FILES})
+
+#--------------------------------------------------------------------
+# Create module
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+
+#--------------------------------------------------------------------
+# Build GLEW if it couldn't be found
+if(BUILD_GLEW)
+	add_subdirectory(ext/glew)
+endif(BUILD_GLEW)

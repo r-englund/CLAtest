@@ -1,0 +1,72 @@
+#--------------------------------------------------------------------
+# Inviwo Qt Widgets
+ivw_project(inviwo-qtwidgets)
+
+#--------------------------------------------------------------------
+# Add header files
+set(HEADER_FILES
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/canvasqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/canvasprocessorwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/camerapropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/compositepropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/filepropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatpropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intpropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetfactoryqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
+)
+qt4_wrap_cpp(MOC_FILES ${HEADER_FILES})
+ivw_group("Header Files" ${HEADER_FILES})
+source_group("MOC Files" FILES ${MOC_FILES})
+
+#--------------------------------------------------------------------
+# Add source files
+set(SOURCE_FILES
+    canvasqt.cpp
+    inviwoapplicationqt.cpp
+    processors/canvasprocessorwidget.cpp
+    processors/processorwidgetqt.cpp
+    properties/boolpropertywidgetqt.cpp
+    properties/camerapropertywidgetqt.cpp
+    properties/compositepropertywidgetqt.cpp
+    properties/filepropertywidgetqt.cpp
+    properties/floatpropertywidgetqt.cpp
+    properties/floatvec3propertywidgetqt.cpp
+    properties/intpropertywidgetqt.cpp
+    properties/optionpropertywidgetqt.cpp
+    properties/propertywidgetfactoryqt.cpp
+    properties/propertywidgetqt.cpp
+)
+ivw_group("Source Files" ${SOURCE_FILES})
+
+#--------------------------------------------------------------------
+# Define defintions
+ivw_define_standard_definitions(IVW_QTWIDGETS)
+add_definitions(-DQT_CORE_LIB
+                      -DQT_GUI_LIB
+                      -DQT_OPENGL_LIB
+                      -DQT_DLL
+                      -DQT_THREAD_SUPPORT)
+
+#--------------------------------------------------------------------
+# Create library
+add_library(inviwo-qtwidgets ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES})
+
+# Add core dependencies to this list
+ivw_add_dependencies(
+    InviwoCore
+    Qt
+)
+
+#--------------------------------------------------------------------
+# Creates VS folder structure
+ivw_vs_folder(inviwo-qtwidgets qt)
+
+#--------------------------------------------------------------------
+# Make package (for other projects to find)
+ivw_make_package(InviwoQtWidgets inviwo-qtwidgets)

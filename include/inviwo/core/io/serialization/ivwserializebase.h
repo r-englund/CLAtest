@@ -5,7 +5,7 @@
 #  define TIXML_USE_TICPP
 #endif
 
-#include "ticpp/ticpp.h"
+#include "ext/ticpp/ticpp.h"
 #include "inviwo/core/io/serialization/ivwserializeconstants.h"
 #include "inviwo/core/inviwofactorybase.h"
 #include <map>

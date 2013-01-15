@@ -1,0 +1,193 @@
+#--------------------------------------------------------------------
+# Inviwo Core
+ivw_project(inviwo-core)
+
+#--------------------------------------------------------------------
+# Add header files
+set(HEADER_FILES
+    ${IVW_INCLUDE_DIR}/inviwo/core/inviwo.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/inviwoapplication.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/inviwocore.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/inviwomodule.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/inviwofactorybase.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imagedisk.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imageram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imagerepresentation.h 
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumedisk.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumerepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramconverter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumetypeclassification.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventlistener.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/keyboardevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mouseevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/timerevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/resizeevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/portconnection.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/processorlink.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetwork.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/positionmetadata.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatafactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatamap.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/imageport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/volumeport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessor.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/processor.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/datasourceprocessor.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/boolproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/cameraproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/properties.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyowner.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/scalarproperties.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializableinterface.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserialization.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/project.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
+)
+ivw_group("Header Files" ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Add source files
+set(SOURCE_FILES
+    inviwoapplication.cpp
+    inviwocore.cpp
+    inviwomodule.cpp
+    inviwofactorybase.cpp	
+    datastructures/data.cpp
+    datastructures/datarepresentation.cpp
+    datastructures/image.cpp
+    datastructures/imagedisk.cpp
+    datastructures/imageram.cpp
+    datastructures/imagerepresentation.cpp
+    datastructures/representationconverter.cpp
+    datastructures/representationconverterfactory.cpp
+    datastructures/volume.cpp
+    datastructures/volumedisk.cpp
+    datastructures/volumeram.cpp
+    datastructures/volumerepresentation.cpp
+    datastructures/volumeramconverter.cpp
+    datastructures/volumetypeclassification.cpp
+    interaction/interactionhandler.cpp
+    interaction/trackball.cpp
+    interaction/events/event.cpp
+    interaction/events/eventhandler.cpp
+    interaction/events/eventlistener.cpp
+    interaction/events/keyboardevent.cpp
+    interaction/events/mouseevent.cpp
+    interaction/events/timerevent.cpp
+    interaction/events/resizeevent.cpp
+    network/portconnection.cpp
+    network/processorlink.cpp
+    network/processornetwork.cpp
+    network/processornetworkevaluator.cpp
+    metadata/positionmetadata.cpp
+    metadata/metadata.cpp
+    metadata/metadatafactory.cpp
+    metadata/metadatamap.cpp
+    ports/port.cpp
+    ports/imageport.cpp
+    ports/volumeport.cpp
+    processors/canvasprocessor.cpp
+    processors/processor.cpp
+    processors/processorfactory.cpp
+    processors/processorwidget.cpp
+    processors/datasource/datasourceprocessor.cpp
+    processors/datasource/volumesource.cpp
+    properties/boolproperty.cpp
+    properties/cameraproperty.cpp
+    properties/compositeproperty.cpp
+    properties/fileproperty.cpp
+    properties/optionproperty.cpp
+    properties/property.cpp
+    properties/propertyfactory.cpp
+    properties/propertyowner.cpp
+    properties/propertywidget.cpp
+    properties/propertywidgetfactory.cpp
+    properties/scalarproperties.cpp
+    properties/vectorproperties.cpp
+    properties/linkevaluator.cpp	
+    io/datareader.cpp
+    io/datawriter.cpp
+    io/serialization/ivwserializebase.cpp
+    io/serialization/ivwserializer.cpp
+    io/serialization/ivwdeserializer.cpp
+    io/serialization/ivwserializeconstants.cpp
+    util/canvas.cpp
+    util/assertion.cpp
+    util/exception.cpp
+    util/logdistributor.cpp
+    util/observer.cpp
+    util/project.cpp
+    util/variant.cpp
+)
+ivw_group("Source Files" ${SOURCE_FILES})
+
+#--------------------------------------------------------------------
+# Define standard defintions
+ivw_define_standard_definitions(IVW_CORE)
+
+#--------------------------------------------------------------------
+# Create library
+add_library(inviwo-core ${SOURCE_FILES} ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Add core folders to includes
+ivw_include_directories(${IVW_INCLUDE_DIR})
+ivw_include_directories(${CMAKE_SOURCE_DIR})
+
+# Add core dependencies to this list
+ivw_add_dependencies(
+    TiCPP
+    Qt
+)
+
+#--------------------------------------------------------------------
+# Creates VS folder structure
+ivw_vs_folder(inviwo-core core)
+
+#--------------------------------------------------------------------
+# Make package (for other projects to find)
+ivw_make_package(InviwoCore inviwo-core)

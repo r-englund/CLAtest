@@ -1,0 +1,41 @@
+#--------------------------------------------------------------------
+# TiCPP Package
+ivw_project(ticpp)
+
+#--------------------------------------------------------------------
+# Add header files
+set(HEADER_FILES
+    ${IVW_EXTENSIONS_DIR}/ticpp/ticpp.h
+    ${IVW_EXTENSIONS_DIR}/ticpp/ticpprc.h
+    ${IVW_EXTENSIONS_DIR}/ticpp/tinystr.h
+    ${IVW_EXTENSIONS_DIR}/ticpp/tinyxml.h
+)
+ivw_group("Header Files" ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Add source files
+set(SOURCE_FILES
+    ${IVW_EXTENSIONS_DIR}/ticpp/ticpp.cpp
+    ${IVW_EXTENSIONS_DIR}/ticpp/tinystr.cpp
+    ${IVW_EXTENSIONS_DIR}/ticpp/tinyxml.cpp
+    ${IVW_EXTENSIONS_DIR}/ticpp/tinyxmlerror.cpp
+    ${IVW_EXTENSIONS_DIR}/ticpp/tinyxmlparser.cpp
+)
+ivw_group("Source Files" ${SOURCE_FILES})
+
+#--------------------------------------------------------------------
+# Define defintions
+ivw_define_standard_definitions(ticpp)
+ivw_add_definition(TIXML_USE_TICPP)
+
+#--------------------------------------------------------------------
+# Create library
+add_library(ticpp ${SOURCE_FILES} ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Creates VS folder structure
+ivw_vs_folder(ticpp ext)
+
+#--------------------------------------------------------------------
+# Make package (for other projects to find)
+ivw_make_package(TiCPP ticpp)
