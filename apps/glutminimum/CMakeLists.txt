@@ -1,37 +1,22 @@
 #--------------------------------------------------------------------
-# Inviwo Qt Application
-ivw_project(inviwo)
-
-#--------------------------------------------------------------------
-# Add header files
-set(HEADER_FILES
-    inviwomainwindow.h
-)
-qt4_wrap_cpp(MOC_FILES ${HEADER_FILES})
-ivw_group("Header Files" ${HEADER_FILES})
-source_group("MOC Files" FILES ${MOC_FILES})
+# Inviwo GLUT Application
+ivw_project(glutminimum)
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    inviwo.cpp
-    inviwomainwindow.cpp
+    glutminimum.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
-
-#--------------------------------------------------------------------
-# Add resource file
-qt4_add_resources(QRC_FILE ${CMAKE_SOURCE_DIR}/resources/inviwo.qrc)
-source_group("Resource Files" FILES ${QRC_FILE} ${CMAKE_SOURCE_DIR}/resources/inviwo.qrc)
         
 #--------------------------------------------------------------------
 # Define defintions
-ivw_define_standard_definitions(inviwo)
+ivw_define_standard_definitions(glutminimum)
 
 #--------------------------------------------------------------------
 # Define libraries that should be linked
 ivw_retrieve_all_modules(package_list)
-list(APPEND package_list InviwoQtEditor)
+list(APPEND package_list InviwoCore)
 
 #--------------------------------------------------------------------
 # Need to add dependent directories before creating application
@@ -39,7 +24,7 @@ ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
 # Create application
-add_executable(inviwo WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE})
+add_executable(glutminimum WIN32 ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Add dependencies
@@ -47,8 +32,8 @@ ivw_add_dependencies(${package_list})
 
 #--------------------------------------------------------------------
 # Creates VS folder structure
-ivw_vs_folder(inviwo application)
+ivw_vs_folder(glutminimum application)
 
 #--------------------------------------------------------------------
 # Set VS Executable properties
-ivw_vs_executable_setup(inviwo)
+ivw_vs_executable_setup(glutminimum)

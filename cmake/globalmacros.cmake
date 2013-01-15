@@ -120,13 +120,14 @@ macro(list_filter_remove retval pattern)
 endmacro()
 
 #--------------------------------------------------------------------
-# Add all modules as dependancy
-macro(ivw_add_all_modules)
+# Retrieve all modules as a list
+macro(ivw_retrieve_all_modules module_list)
     if(EXISTS "${IVW_MODULE_DIR}/modules.cmake")
         include(${IVW_MODULE_DIR}/modules.cmake)
-        foreach(package ${module_packages})
-            ivw_add_dependencies(${package})
+        foreach(exclude_module ${ARGN})
+            list(REMOVE_ITEM module_packages ${exclude_module})
         endforeach()
+        set(${module_list} ${module_packages})
     endif()
 endmacro()
 
@@ -161,7 +162,7 @@ macro(generate_module_registration_file module_classes modules_class_paths)
     set(functions ${functions})
     join(";" "\n" MODULE_HEADERS ${headers})
     join(";" ";\n" MODULE_CLASS_FUNCTIONS ${functions})
-    configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_registration_template.h ${IVW_MODULE_DIR}/moduleregistration.h @ONLY)
+    configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_registration_template.h ${IVW_MODULE_DIR}/moduleregistration.h @ONLY IMMEDIATE)
 endmacro()
 
 #--------------------------------------------------------------------
@@ -216,6 +217,15 @@ macro(build_module the_module)
     ivw_dir_to_mod_prefix(mod_name ${the_module})
     first_case_upper(dir_name_cap ${the_module})
     option(BUILD_${mod_name} "Build ${dir_name_cap} Module" ON)
+endmacro()
+
+#--------------------------------------------------------------------
+# Set module build option to true
+macro(hide_module the_module)
+    ivw_dir_to_mod_prefix(mod_name ${the_module})
+    first_case_upper(dir_name_cap ${the_module})
+    option(BUILD_${mod_name} "Build ${dir_name_cap} Module" OFF)
+    mark_as_advanced(FORCE  BUILD_${mod_name})
 endmacro()
 
 #--------------------------------------------------------------------
@@ -298,6 +308,21 @@ macro(ivw_vs_folder project_name folder_name)
 endmacro()
 
 #--------------------------------------------------------------------
+# Add console to debug build only
+macro(ivw_vs_executable_setup project_name)
+    if(WIN32)
+      if(MSVC)
+         set_target_properties(${project_name} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
+         set_target_properties(${project_name} PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
+         set_target_properties(${project_name} PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
+         set_target_properties(${project_name} PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
+         set_target_properties(${project_name} PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS") 
+         set_target_properties(${project_name} PROPERTIES MINSIZEREL "/SUBSYSTEM:WINDOWS")
+        endif(MSVC)
+    endif(WIN32)
+endmacro()
+
+#--------------------------------------------------------------------
 # Define standard defintions
 macro(ivw_define_standard_definitions project_name)
     #--------------------------------------------------------------------
@@ -368,12 +393,6 @@ endmacro()
 
 #--------------------------------------------------------------------
 # Make package (with configure file etc)
-macro(ivw_make_module_packages package_name project_name)
-
-endmacro()
-
-#--------------------------------------------------------------------
-# Make package (with configure file etc)
 macro(ivw_make_package package_name project_name)
   #--------------------------------------------------------------------
   # Append headers etc of project to include list
@@ -384,7 +403,7 @@ macro(ivw_make_package package_name project_name)
   #else()
   #  list(APPEND _allIncludeDirs ${ARGN})
   #endif()
-  list(APPEND _allLibsDir ${IVW_LIBRARY_DIR})
+  list(APPEND _allLibsDir "${IVW_LIBRARY_DIR}")
   set(PROJECT_LIBRARIES optimized ${project_name} debug ${project_name}${CMAKE_DEBUG_POSTFIX})
   list(APPEND _allLibs ${PROJECT_LIBRARIES})
   
@@ -403,7 +422,7 @@ macro(ivw_make_package package_name project_name)
   set(_allDefinitions ${uniqueDefs})
   set(_project_name ${project_name})
   
-  configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_package_template.cmake ${IVW_CMAKE_BINARY_MODULE_DIR}/Find${package_name}.cmake @ONLY)
+  configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_package_template.cmake ${IVW_CMAKE_BINARY_MODULE_DIR}/Find${package_name}.cmake @ONLY IMMEDIATE)
 endmacro()
 
 #--------------------------------------------------------------------
@@ -420,6 +439,34 @@ endmacro()
 
 #--------------------------------------------------------------------
 # Defines option for module and add subdirectory if such is ON
+macro(ivw_add_dependency_directories)
+    foreach (package ${ARGN})
+      #--------------------------------------------------------------------
+      # Locate libraries
+      find_package(${package} QUIET REQUIRED)
+      
+      #--------------------------------------------------------------------
+      # Make string upper case
+      string(TOUPPER ${package} u_package)
+
+      #--------------------------------------------------------------------
+      # Set directory links
+      link_directories(${${u_package}_LIBRARY_DIR})
+      
+      #--------------------------------------------------------------------
+      # Add dependcy package variables to this package if shared build
+      if(NOT BUILD_SHARED_LIBS)
+          
+          #--------------------------------------------------------------------
+          # Append library directories to project list
+          list(APPEND _allLibsDir ${${u_package}_LIBRARY_DIR})
+      
+      endif()
+    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
+# Adds dependancy and includes package variables to the project
 macro(ivw_add_dependencies)
     foreach (package ${ARGN})
       #--------------------------------------------------------------------
@@ -446,11 +493,11 @@ macro(ivw_add_dependencies)
 
       #--------------------------------------------------------------------
       # Set directory links
-      link_directories("${${u_package}_LIBRARY_DIR}")
+      link_directories(${${u_package}_LIBRARY_DIR})
       
       #--------------------------------------------------------------------
       # Set directory links
-      add_definitions("${${u_package}_DEFINITIONS}")
+      add_definitions(${${u_package}_DEFINITIONS})
       
       #--------------------------------------------------------------------
       # Add dependency projects
