@@ -7,6 +7,7 @@ ivw_project(inviwo-qtwidgets)
 set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/canvasqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/canvasprocessorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
@@ -62,10 +63,6 @@ ivw_add_dependencies(
     InviwoCore
     Qt
 )
-
-#--------------------------------------------------------------------
-# Creates VS folder structure
-ivw_vs_folder(inviwo-qtwidgets qt)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)

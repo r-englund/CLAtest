@@ -1,5 +1,21 @@
 set_property(GLOBAL PROPERTY USE_FOLDERS On)
-set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER utils)
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER ext)
+
+#--------------------------------------------------------------------
+# Only output error messages
+function(message)
+  list(GET ARGV 0 MessageType)
+  if(MessageType STREQUAL FATAL_ERROR OR
+     MessageType STREQUAL SEND_ERROR OR
+     MessageType STREQUAL WARNING OR
+     MessageType STREQUAL AUTHOR_WARNING)
+    list(REMOVE_AT ARGV 0)
+    _message(STATUS "${ARGV}")
+  endif()
+endfunction()
+function(ivw_message)
+    _message(${ARGV})
+endfunction()
 
 #--------------------------------------------------------------------
 # Add own cmake modules
@@ -86,7 +102,11 @@ if(DEBUG_POSTFIX)
 endif(DEBUG_POSTFIX)
 
 # Build shared libs or static libs
-option(BUILD_SHARED_LIBS "Build shared libs, else static libs" OFF)
+option(SHARED_LIBS "Build shared libs, else static libs" OFF)
+
+if(SHARED_LIBS)
+    set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs, else static libs" FORCE)
+endif()
 
 #--------------------------------------------------------------------
 # Specify build-based defintions
@@ -99,7 +119,7 @@ endif(BUILD_SHARED_LIBS)
 
 #--------------------------------------------------------------------
 # TODO: REMOVE!!!
-find_package(Qt REQUIRED)
+find_package(Qt QUIET REQUIRED)
 
 set(QT_DONT_USE_QTCORE FALSE)
 set(QT_DONT_USE_QTGUI FALSE)
@@ -123,4 +143,6 @@ set(QT_USE_QTHELP FALSE)
 set(QT_USE_QTWEBKIT FALSE)
 set(QT_USE_QTXMLPATTERNS FALSE)
 set(QT_USE_PHONON FALSE)
+
+mark_as_advanced(DESIRED_QT_VERSION)
 

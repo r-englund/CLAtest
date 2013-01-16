@@ -31,9 +31,5 @@ add_executable(glutminimum WIN32 ${SOURCE_FILES})
 ivw_add_dependencies(${package_list})
 
 #--------------------------------------------------------------------
-# Creates VS folder structure
-ivw_vs_folder(glutminimum application)
-
-#--------------------------------------------------------------------
 # Set VS Executable properties
 ivw_vs_executable_setup(glutminimum)

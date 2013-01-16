@@ -1,8 +1,8 @@
-#if(BUILD_IVW_TINY_GLUT_APPLICATION)
+#if(IVW_TINY_GLUT_APPLICATION)
     #add_subdirectory(glutminimum)
 #endif()
-if(BUILD_IVW_QT_APPLICATION)
-    find_package(Qt REQUIRED)
+if(IVW_QT_APPLICATION)
+    find_package(Qt QUIET REQUIRED)
     
     set(QT_DONT_USE_QTCORE FALSE)
     set(QT_DONT_USE_QTGUI FALSE)

@@ -22,7 +22,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add resource file
 qt4_add_resources(QRC_FILE ${CMAKE_SOURCE_DIR}/resources/inviwo.qrc)
-source_group("Resource Files" FILES ${QRC_FILE} ${CMAKE_SOURCE_DIR}/resources/inviwo.qrc)
+source_group("Resource Files" FILES ${CMAKE_SOURCE_DIR}/resources/inviwo.qrc)
         
 #--------------------------------------------------------------------
 # Define defintions
@@ -44,10 +44,6 @@ add_executable(inviwo WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_F
 #--------------------------------------------------------------------
 # Add dependencies
 ivw_add_dependencies(${package_list})
-
-#--------------------------------------------------------------------
-# Creates VS folder structure
-ivw_vs_folder(inviwo application)
 
 #--------------------------------------------------------------------
 # Set VS Executable properties

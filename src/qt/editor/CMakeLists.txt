@@ -10,6 +10,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwodockwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwoqteditordefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/labelgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditorview.h
@@ -59,10 +60,6 @@ ivw_add_dependencies(
     Qt
     InviwoQtWidgets
 )
-
-#--------------------------------------------------------------------
-# Creates VS folder structure
-ivw_vs_folder(inviwo-qteditor qt)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)

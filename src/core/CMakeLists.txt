@@ -8,6 +8,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwo.h
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwoapplication.h
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwocore.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/inviwocoredefine.h
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwomodule.h
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwofactorybase.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
@@ -183,10 +184,6 @@ ivw_add_dependencies(
     TiCPP
     Qt
 )
-
-#--------------------------------------------------------------------
-# Creates VS folder structure
-ivw_vs_folder(inviwo-core core)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
