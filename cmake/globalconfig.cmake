@@ -101,6 +101,11 @@ if(DEBUG_POSTFIX)
 	add_definitions(-D_DEBUG_POSTFIX)
 endif(DEBUG_POSTFIX)
 
+# Check if MAC
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  add_definitions(-DDARWIN)
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
 # Build shared libs or static libs
 option(SHARED_LIBS "Build shared libs, else static libs" OFF)
 mark_as_advanced(SHARED_LIBS)

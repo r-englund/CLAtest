@@ -24,7 +24,7 @@ ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
 # Create application
-add_executable(glutminimum WIN32 ${SOURCE_FILES})
+add_executable(glutminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Add dependencies

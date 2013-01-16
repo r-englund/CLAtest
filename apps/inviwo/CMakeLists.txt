@@ -39,7 +39,7 @@ ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
 # Create application
-add_executable(inviwo WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE})
+add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE})
 
 #--------------------------------------------------------------------
 # Add dependencies
