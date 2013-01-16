@@ -23,16 +23,26 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
+
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
 #include <GL/glu.h>
+#endif // __APPLE__
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 //#include <mem.h>
 #include "tgaload.h"
 
+#ifdef WIN32
 /* Extension Management */
 PFNGLCOMPRESSEDTEXIMAGE2DARBPROC  glCompressedTexImage2DARB  = NULL;
 PFNGLGETCOMPRESSEDTEXIMAGEARBPROC glGetCompressedTexImageARB = NULL;
+#endif
 
 /* Default support - lets be optimistic! */
 bool tgaCompressedTexSupport = true;

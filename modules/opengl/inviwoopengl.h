@@ -3,9 +3,13 @@
 
 #include "modules/opengl/openglmoduledefine.h"
 #include "ext/glew/include/GL/glew.h" //TODO: Why is <GL/glew.h> not working
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
-
+#endif // __APPLE__
 #include <iostream>
 #include <sstream>
 
