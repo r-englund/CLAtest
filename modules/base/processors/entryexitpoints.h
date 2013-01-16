@@ -1,6 +1,7 @@
 #ifndef IVW_ENTRYEXITPOINTS_H
 #define IVW_ENTRYEXITPOINTS_H
 
+#include "modules/base/basemoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/imageport.h"
 #include "inviwo/core/ports/volumeport.h"
@@ -12,7 +13,7 @@
 
 namespace inviwo {
 
-    class EntryExitPoints : public ProcessorGL {
+    class IVW_MODULE_BASE_API EntryExitPoints : public ProcessorGL {
     public:
         EntryExitPoints();
         ~EntryExitPoints();

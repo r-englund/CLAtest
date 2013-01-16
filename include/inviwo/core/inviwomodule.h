@@ -1,6 +1,7 @@
 #ifndef IVW_INVIWOMODULE_H
 #define IVW_INVIWOMODULE_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/processors/processor.h"
 #include "inviwo/core/properties/property.h"
@@ -12,7 +13,7 @@
 
 namespace inviwo {
 
-class InviwoModule {
+class IVW_CORE_API InviwoModule {
 
 public:
     InviwoModule();

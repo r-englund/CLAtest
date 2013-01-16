@@ -1,6 +1,7 @@
 #ifndef IVW_INTPROPERTYWIDGETQT_H
 #define IVW_INTPROPERTYWIDGETQT_H
 
+#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QSlider>
 
 #include "inviwo/qt/widgets/properties/propertywidgetqt.h"
@@ -9,7 +10,7 @@
 
 namespace inviwo {
 
-class IntPropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API IntPropertyWidgetQt : public PropertyWidgetQt {
 
 Q_OBJECT;
 

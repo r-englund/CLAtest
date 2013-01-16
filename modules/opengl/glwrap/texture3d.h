@@ -1,6 +1,7 @@
 #ifndef IVW_TEXTURE3D_H
 #define IVW_TEXTURE3D_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "modules/opengl/inviwoopengl.h"
 #include <stdio.h>
@@ -8,7 +9,7 @@
 
 namespace inviwo {
 
-class Texture3D {
+class IVW_MODULE_OPENGL_API Texture3D {
 
 public:
     Texture3D(ivec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);

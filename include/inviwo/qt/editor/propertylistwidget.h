@@ -1,6 +1,7 @@
 #ifndef IVW_PROPERTYLISTWIDGET_H
 #define IVW_PROPERTYLISTWIDGET_H
 
+#include "inviwo/qt/editor/inviwoqteditordefine.h"
 #include "inviwo/core/processors/processor.h"
 
 #include "inviwo/qt/editor/inviwodockwidget.h"
@@ -9,7 +10,7 @@
 
 namespace inviwo {
 
-class PropertyListWidget : public InviwoDockWidget {
+class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget {
 
 public:
     static PropertyListWidget* instance();

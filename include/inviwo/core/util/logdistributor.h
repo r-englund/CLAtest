@@ -1,24 +1,25 @@
 #ifndef IVW_LOGGER_H
 #define IVW_LOGGER_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
-enum LogLevel {
+IVW_CORE_API enum LogLevel {
     Info,
     Warn,
     Error
 };
 
 #define LogInfo(message) \
-    LogCentral::instance()->log(logSource_, Info, __FILE__, __FUNCTION__, __LINE__, (message));
+    IVW_CORE_API LogCentral::instance()->log(logSource_, Info, __FILE__, __FUNCTION__, __LINE__, (message));
 #define LogWarn(message) \
-    LogCentral::instance()->log(logSource_, Warn, __FILE__, __FUNCTION__, __LINE__, (message));
+    IVW_CORE_API LogCentral::instance()->log(logSource_, Warn, __FILE__, __FUNCTION__, __LINE__, (message));
 #define LogError(message) \
-    LogCentral::instance()->log(logSource_, Error, __FILE__, __FUNCTION__, __LINE__, (message));
+    IVW_CORE_API LogCentral::instance()->log(logSource_, Error, __FILE__, __FUNCTION__, __LINE__, (message));
 
-class Logger {
+class IVW_CORE_API Logger {
 
 public:
     Logger() {};
@@ -27,7 +28,7 @@ public:
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) = 0;
 };
 
-class ConsoleLogger : public Logger{
+class IVW_CORE_API ConsoleLogger : public Logger{
 
 public:
     ConsoleLogger();
@@ -36,7 +37,7 @@ public:
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
 };
 
-class LogCentral {
+class IVW_CORE_API LogCentral {
 
 public:
     LogCentral();

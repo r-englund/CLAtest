@@ -1,13 +1,14 @@
 #ifndef IVW_IMAGEGLCONVERTER_H
 #define IVW_IMAGEGLCONVERTER_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/datastructures/representationconverter.h"
 #include "inviwo/core/datastructures/imageram.h"
 #include "imagegl.h"
 
 namespace inviwo {
 
-    class ImageRAM2GLConverter : public RepresentationConverterType<ImageGL> {
+    class IVW_MODULE_OPENGL_API ImageRAM2GLConverter : public RepresentationConverterType<ImageGL> {
 
     public:
         ImageRAM2GLConverter();

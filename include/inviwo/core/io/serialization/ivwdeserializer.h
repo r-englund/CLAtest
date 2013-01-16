@@ -5,6 +5,7 @@
 #  define TIXML_USE_TICPP
 #endif
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "ext/ticpp/ticpp.h"
 #include "inviwo/core/io/serialization/ivwserializeconstants.h"
 #include "inviwo/core/io/serialization/ivwserializebase.h"
@@ -13,7 +14,7 @@ namespace inviwo {
 
 class IvwSerializable;
 
-class IvwDeserializer : public  IvwSerializeBase {
+class IVW_CORE_API IvwDeserializer : public  IvwSerializeBase {
 public:
     IvwDeserializer(IvwDeserializer &s, bool allowReference=true);
     IvwDeserializer(std::string fileName, bool allowReference=true);
@@ -67,12 +68,12 @@ private:
 };
 
 template <typename T>
-inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) {
+inline IVW_CORE_API void IvwDeserializer::deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) {
     deserializeSTL_Vector(key, sVector, itemKey);
 }
 
 template <typename T>
-inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) {
+inline IVW_CORE_API void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) {
     
     TxElement* keyNode;
 
@@ -111,7 +112,7 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
 }
 
 template<class T>
-inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) {
+inline IVW_CORE_API void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) {
     
     TxElement* nextRootNode;
     TxElement* rootCopy = rootElement_;
@@ -229,7 +230,7 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
 }
 
 template<class T>
-inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
+inline IVW_CORE_API void IvwDeserializer::deserialize(const std::string& key, T* & data) {
     TxElement* keyNode;
 
     try {
@@ -288,14 +289,14 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
 
 
 template<class T>
-inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {
+inline IVW_CORE_API void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {
     TxElement* keyNode = rootElement_->FirstChildElement(key); 
     //if (!keyNode) return;
     keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
 }
 
 template<class T>
-inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) {
+inline IVW_CORE_API void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) {
 
     TxElement* keyNode = rootElement_->FirstChildElement(key); 
     if (!keyNode) {

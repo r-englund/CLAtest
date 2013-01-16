@@ -1,12 +1,13 @@
 #ifndef IVW_PROPERTYWIDGETFACTORY_H
 #define IVW_PROPERTYWIDGETFACTORY_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/properties/propertywidget.h"
 #include "inviwo/core/inviwofactorybase.h"
 
 namespace inviwo {
 
-    class PropertyWidgetFactory : public InviwoFactoryBase {
+    class IVW_CORE_API PropertyWidgetFactory : public InviwoFactoryBase {
 
 public:
     PropertyWidgetFactory();

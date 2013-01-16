@@ -1,6 +1,7 @@
 #ifndef IVW_VOLUMEGLCONVERTER_H
 #define IVW_VOLUMEGLCONVERTER_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/datastructures/representationconverter.h"
 #include "inviwo/core/datastructures/volumeram.h"
 #include "inviwo/core/datastructures/volumeramconverter.h"
@@ -9,7 +10,7 @@
 
 namespace inviwo {
 
-    class VolumeRAM2GLConverter : public RepresentationConverterType<VolumeGL> {
+    class IVW_MODULE_OPENGL_API VolumeRAM2GLConverter : public RepresentationConverterType<VolumeGL> {
 
     public:
         VolumeRAM2GLConverter();
@@ -25,7 +26,7 @@ namespace inviwo {
         DataRepresentation* convert(DataRepresentation* source);
     };
 
-    class VolumeDisk2GLConverter : public RepresentationConverterPackage<VolumeGL> {
+    class IVW_MODULE_OPENGL_API VolumeDisk2GLConverter : public RepresentationConverterPackage<VolumeGL> {
     
     public:
         VolumeDisk2GLConverter() : RepresentationConverterPackage<VolumeGL>(){

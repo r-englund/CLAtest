@@ -5,6 +5,7 @@
 #  define TIXML_USE_TICPP
 #endif
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "ext/ticpp/ticpp.h"
 #include "inviwo/core/io/serialization/ivwserializeconstants.h"
 #include "inviwo/core/io/serialization/ivwserializebase.h"
@@ -14,7 +15,7 @@ namespace inviwo {
 
 class IvwSerializable;
 
-class IvwSerializer : public  IvwSerializeBase {
+class IVW_CORE_API IvwSerializer : public  IvwSerializeBase {
 public:
     IvwSerializer(IvwSerializer &s, bool allowReference=true);
     IvwSerializer(std::string fileName, bool allowReference=true);
@@ -69,12 +70,12 @@ private:
 };
 
 template <typename T>
-inline void IvwSerializer::serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey) {
+inline IVW_CORE_API void IvwSerializer::serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey) {
     serializeSTL_Vector(key, sVector, itemKey);
 }
 
 template <typename T>
-inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &sVector, const std::string &itemKey) {
+inline IVW_CORE_API void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &sVector, const std::string &itemKey) {
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
 
@@ -88,7 +89,7 @@ inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &
 }
 
 template<class T>
-inline void IvwSerializer::serialize(const std::string& key, const T* const& data) {
+inline IVW_CORE_API void IvwSerializer::serialize(const std::string& key, const T* const& data) {
     
     if (!allowRef_) {
         //allowRef_ = true;

@@ -1,13 +1,14 @@
 #ifndef IVW_PROCESSORCONNECTION_H
 #define IVW_PROCESSORCONNECTION_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/processors/processor.h"
 #include "inviwo/core/properties/linkevaluator.h"
 
 namespace inviwo {
 
-class PropertyLink : public IvwSerializable {
+class IVW_CORE_API PropertyLink : public IvwSerializable {
 public :
     PropertyLink();
     PropertyLink(Property* srcProperty, Property* dstProperty);
@@ -29,7 +30,7 @@ private:
     Property* dstProperty_;
 };
 
-class ProcessorLink : public IvwSerializable {
+class IVW_CORE_API ProcessorLink : public IvwSerializable {
 
 public:    
 

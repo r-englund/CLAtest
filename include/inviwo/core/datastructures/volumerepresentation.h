@@ -1,11 +1,12 @@
 #ifndef IVW_VOLUMEREPRESENTATION_H
 #define IVW_VOLUMEREPRESENTATION_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/datarepresentation.h"
 
 namespace inviwo {
 
-    class VolumeRepresentation : public DataRepresentation {
+    class IVW_CORE_API VolumeRepresentation : public DataRepresentation {
 
     public:
         VolumeRepresentation(ivec3 dimension, std::string format);

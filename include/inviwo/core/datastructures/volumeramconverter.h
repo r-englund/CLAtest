@@ -1,13 +1,14 @@
 #ifndef IVW_VOLUMERAMCONVERTER_H
 #define IVW_VOLUMERAMCONVERTER_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/representationconverter.h"
 #include "inviwo/core/datastructures/volumeram.h"
 #include "inviwo/core/datastructures/volumedisk.h"
 
 namespace inviwo {
 
-    class VolumeDisk2RAMConverter : public RepresentationConverterType<VolumeRAM> {
+    class IVW_CORE_API VolumeDisk2RAMConverter : public RepresentationConverterType<VolumeRAM> {
 
     public:
         VolumeDisk2RAMConverter();

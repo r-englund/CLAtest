@@ -1,13 +1,14 @@
 #ifndef IVW_SHADER_H
 #define IVW_SHADER_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "modules/opengl/inviwoopengl.h"
 #include "shaderobject.h"
 
 namespace inviwo {
 
-class Shader {
+class IVW_MODULE_OPENGL_API Shader {
 
 public:
     Shader(std::string fragmentFilename);

@@ -1,13 +1,14 @@
 #ifndef IVW_PROPERTY_H
 #define IVW_PROPERTY_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/properties/propertyowner.h"
 #include "inviwo/core/properties/propertywidget.h"
 #include "inviwo/core/util/variant.h"
 
 namespace inviwo {
 
-class Property : public IvwSerializable {
+class IVW_CORE_API Property : public IvwSerializable {
 
 public:
     Property(std::string identifier, std::string displayName);

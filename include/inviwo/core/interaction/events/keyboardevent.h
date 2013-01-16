@@ -1,11 +1,12 @@
 #ifndef IVW_KEYBOARDEVENT_H
 #define IVW_KEYBOARDEVENT_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/interaction/events/event.h"
 
 namespace inviwo {
 
-    class KeyboardEvent : public Event {
+    class IVW_CORE_API KeyboardEvent : public Event {
 
     public:
         KeyboardEvent();

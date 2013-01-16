@@ -1,6 +1,7 @@
 #ifndef IVW_DATAPORT_H
 #define IVW_DATAPORT_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/port.h"
 #include "inviwo/core/datastructures/data.h"
@@ -9,7 +10,7 @@
 namespace inviwo {
 
 template<typename T>
-class DataPort : public Port {
+class IVW_CORE_API DataPort : public Port {
 
 public:
 
@@ -37,21 +38,21 @@ template <typename T>
 DataPort<T>::~DataPort() {}
 
 template <typename T>
-void DataPort<T>::connectTo(Port* port) {
+IVW_CORE_API void DataPort<T>::connectTo(Port* port) {
     Port::connectTo(port);
     //TODO: check that port is a DataPort
     connectedDataPort_ = dynamic_cast<DataPort<T>* >(port);
 }
 
 template <typename T>
-void DataPort<T>::disconnectFrom(Port* port) {
+IVW_CORE_API void DataPort<T>::disconnectFrom(Port* port) {
     Port::disconnectFrom(port);
     //TODO: check that port is a DataPort
     connectedDataPort_ = 0;
 }
 
 template <typename T>
-T* DataPort<T>::getData() {
+IVW_CORE_API T* DataPort<T>::getData() {
     if (isOutport()) return data_;
     else if (isConnected()) {
         return connectedDataPort_->getData();
@@ -60,7 +61,7 @@ T* DataPort<T>::getData() {
 }
 
 template <typename T>
-void DataPort<T>::setData(T* data) {
+IVW_CORE_API void DataPort<T>::setData(T* data) {
     data_ = data;
 }
 

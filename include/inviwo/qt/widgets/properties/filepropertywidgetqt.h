@@ -1,6 +1,7 @@
 #ifndef IVW_FILEPROPERTYWIDGETQT_H
 #define IVW_FILEPROPERTYWIDGETQT_H
 
+#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QLineEdit>
 #include <QToolButton>
 
@@ -10,7 +11,7 @@
 
 namespace inviwo {
 
-class FilePropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API FilePropertyWidgetQt : public PropertyWidgetQt {
 
     Q_OBJECT;
 

@@ -1,6 +1,7 @@
 #ifndef IVW_NETWORKEDITOR_H
 #define IVW_NETWORKEDITOR_H
 
+#include "inviwo/qt/editor/inviwoqteditordefine.h"
 #include <QGraphicsScene>
 
 #include "inviwo/core/network/processornetworkevaluator.h"
@@ -16,7 +17,7 @@ namespace inviwo {
 
 class CanvasQt;
 
-class NetworkEditor : public QGraphicsScene {
+class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene {
 
 public:
     static NetworkEditor* instance();

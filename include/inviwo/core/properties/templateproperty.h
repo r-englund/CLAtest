@@ -1,13 +1,14 @@
 #ifndef IVW_TEMPLATEPROPERTY_H
 #define IVW_TEMPLATEPROPERTY_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/properties/property.h"
 
 namespace inviwo {
 
 template<typename T>
-class TemplateProperty : public Property {
+class IVW_CORE_API TemplateProperty : public Property {
 
 public:
 
@@ -32,7 +33,7 @@ T TemplateProperty<T>::get() const {
 }
 
 template <typename T>
-void TemplateProperty<T>::set(T value) {
+IVW_CORE_API void TemplateProperty<T>::set(T value) {
     value_ = value;
     getOwner()->invalidate();
     invalidate();

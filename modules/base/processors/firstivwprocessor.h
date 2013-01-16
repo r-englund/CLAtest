@@ -1,6 +1,7 @@
 #ifndef IVW_FIRSTIVWPROCESSOR_H
 #define IVW_FIRSTIVWPROCESSOR_H
 
+#include "modules/base/basemoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/imageport.h"
 #include "modules/opengl/inviwoopengl.h"
@@ -9,7 +10,7 @@
 
 namespace inviwo {
 
-class FirstIvwProcessor : public ProcessorGL {
+class IVW_MODULE_BASE_API FirstIvwProcessor : public ProcessorGL {
 public:
     FirstIvwProcessor();
     ~FirstIvwProcessor();

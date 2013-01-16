@@ -1,6 +1,7 @@
 #ifndef IVW_IMAGEGL_H
 #define IVW_IMAGEGL_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/imagerepresentation.h"
 #include "glwrap/framebufferobject.h"
@@ -9,7 +10,7 @@
 namespace inviwo {
 
     class Shader;
-    class ImageGL : public ImageRepresentation {
+    class IVW_MODULE_OPENGL_API ImageGL : public ImageRepresentation {
 
     public:
         ImageGL();

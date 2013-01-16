@@ -1,6 +1,7 @@
 #ifndef IVW_IMAGEMIXER_H
 #define IVW_IMAGEMIXER_H
 
+#include "modules/base/basemoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/imageport.h"
 #include "modules/opengl/inviwoopengl.h"
@@ -9,7 +10,7 @@
 
 namespace inviwo {
 
-class ImageMixer : public ProcessorGL {
+class IVW_MODULE_BASE_API ImageMixer : public ProcessorGL {
 public:
     ImageMixer();
     ~ImageMixer();

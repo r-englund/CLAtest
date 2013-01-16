@@ -1,11 +1,12 @@
 #ifndef IVW_OPENGLMODULE_H
 #define IVW_OPENGLMODULE_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/inviwomodule.h"
 
 namespace inviwo {
 
-class OpenGLModule : public InviwoModule {
+class IVW_MODULE_OPENGL_API OpenGLModule : public InviwoModule {
 
 public:
     OpenGLModule();

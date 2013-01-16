@@ -1,11 +1,12 @@
 #ifndef IVW_GLUTMODULE_H
 #define IVW_GLUTMODULE_H
 
+#include "modules/glut/glutmoduledefine.h"
 #include "inviwo/core/inviwomodule.h"
 
 namespace inviwo {
 
-class GLUTModule : public InviwoModule {
+class IVW_MODULE_GLUT_API GLUTModule : public InviwoModule {
 
 public:
     GLUTModule();

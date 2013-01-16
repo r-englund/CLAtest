@@ -1,12 +1,13 @@
 #ifndef IVW_SHADEROBJECT_H
 #define IVW_SHADEROBJECT_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "modules/opengl/inviwoopengl.h"
 
 namespace inviwo {
 
-class ShaderObject {
+class IVW_MODULE_OPENGL_API ShaderObject {
 
 public:
     ShaderObject(GLenum shaderType, std::string fileName);

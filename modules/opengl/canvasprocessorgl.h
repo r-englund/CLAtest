@@ -1,6 +1,7 @@
 #ifndef IVW_CANVASPROCESSORGL_H
 #define IVW_CANVASPROCESSORGL_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/imageport.h"
 #include "inviwo/core/util/canvas.h"
@@ -11,7 +12,7 @@
 
 namespace inviwo {
 
-    class CanvasProcessorGL : public CanvasProcessor {
+    class IVW_MODULE_OPENGL_API CanvasProcessorGL : public CanvasProcessor {
     public:
         CanvasProcessorGL();
         Processor* create() const;

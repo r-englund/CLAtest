@@ -1,6 +1,7 @@
 #ifndef IVW_PROCESSORGRAPHICSITEM_H
 #define IVW_PROCESSORGRAPHICSITEM_H
 
+#include "inviwo/qt/editor/inviwoqteditordefine.h"
 #include <QGraphicsRectItem>
 
 #include "inviwo/core/processors/processor.h"
@@ -13,14 +14,14 @@ static const qreal PROCESSORGRAPHICSITEM_DEPTH = 1.0f;
 static const qreal CONNECTIONGRAPHICSITEM_DEPTH = 2.0f;
 static const qreal LINKGRAPHICSITEM_DEPTH = 3.0f;
 
-enum InviwoUserGraphicsItemType {
+IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
     ProcessorGraphicsType = 1,
     ConnectionGraphicsType = 2,
     LinkGraphicsType = 3
     //LinkDialogGraphicsType = 4
 };
 
-class ProcessorGraphicsItem : public QGraphicsRectItem {
+class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem {
 
 public:
     ProcessorGraphicsItem();

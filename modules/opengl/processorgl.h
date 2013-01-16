@@ -1,6 +1,7 @@
 #ifndef IVW_PROCESSORGL_H
 #define IVW_PROCESSORGL_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwoopengl.h"
 #include "imagegl.h"
 #include "inviwo/core/inviwo.h"
@@ -9,7 +10,7 @@
 
 namespace inviwo {
 
-class ProcessorGL : public Processor {
+class IVW_MODULE_OPENGL_API ProcessorGL : public Processor {
 
 public:
     ProcessorGL();

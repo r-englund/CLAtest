@@ -1,6 +1,7 @@
 #ifndef IVW_LINKGRAPHICSITEM_H
 #define IVW_LINKGRAPHICSITEM_H
 
+#include "inviwo/qt/editor/inviwoqteditordefine.h"
 #include <QGraphicsLineItem>
 #include <QPainterPath>
 
@@ -10,7 +11,7 @@
 namespace inviwo {
 
 
-class LinkGraphicsItem : public QGraphicsItem {
+class IVW_QTEDITOR_API LinkGraphicsItem : public QGraphicsItem {
 
 public:
     LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool dragMode=true);
@@ -44,7 +45,7 @@ private:
 };
 
 
-class LinkConnectionGraphicsItem : public LinkGraphicsItem {
+class IVW_QTEDITOR_API LinkConnectionGraphicsItem : public LinkGraphicsItem {
 
 public:
     

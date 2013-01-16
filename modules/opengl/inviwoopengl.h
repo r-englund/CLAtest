@@ -1,6 +1,7 @@
 #ifndef IVW_INVIWOOPENGL_H
 #define IVW_INVIWOOPENGL_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "ext/glew/include/GL/glew.h" //TODO: Why is <GL/glew.h> not working
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -12,7 +13,7 @@
 #include <windows.h>
 #endif
 
-void LogGLError(const char* fileName, const char* functionName, int lineNumber);
+IVW_MODULE_OPENGL_API void LogGLError(const char* fileName, const char* functionName, int lineNumber);
 
 #if defined(IVW_DEBUG)
     #define LGL_ERROR LogGLError(__FILE__, __FUNCTION__, __LINE__)

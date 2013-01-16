@@ -1,6 +1,7 @@
 #ifndef IVW_CANVASGLUT_H
 #define IVW_CANVASGLUT_H
 
+#include "modules/glut/glutmoduledefine.h"
 #include <stdlib.h>
 #include "modules/opengl/inviwoopengl.h"
 #include <GL/glut.h>
@@ -8,7 +9,7 @@
 
 namespace inviwo {
 
-class CanvasGLUT : public CanvasGL {
+class IVW_MODULE_GLUT_API CanvasGLUT : public CanvasGL {
 public:
     static EventHandler* eventHandler_;
 

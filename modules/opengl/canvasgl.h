@@ -1,12 +1,13 @@
 #ifndef IVW_CANVASGL_H
 #define IVW_CANVASGL_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwoopengl.h"
 #include "inviwo/core/util/canvas.h"
 
 namespace inviwo {
 
-class CanvasGL : public Canvas {
+class IVW_MODULE_OPENGL_API CanvasGL : public Canvas {
 public:
     CanvasGL(ivec2 dimensions);
 

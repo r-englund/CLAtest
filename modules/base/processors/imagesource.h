@@ -1,6 +1,7 @@
 #ifndef IVW_IMAGESOURCE_H
 #define IVW_IMAGESOURCE_H
 
+#include "modules/base/basemoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/processors/processor.h"
 #include "inviwo/core/ports/imageport.h"
@@ -10,7 +11,7 @@
 
 namespace inviwo {
 
-class ImageSource : public ProcessorGL {
+class IVW_MODULE_BASE_API ImageSource : public ProcessorGL {
 public:
     ImageSource();
     ~ImageSource();

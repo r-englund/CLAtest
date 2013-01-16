@@ -1,13 +1,14 @@
 #ifndef IVW_VOLUMEGL_H
 #define IVW_VOLUMEGL_H
 
+#include "modules/opengl/openglmoduledefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/volumerepresentation.h"
 #include "glwrap/texture3d.h"
 
 namespace inviwo {
 
-class VolumeGL : public VolumeRepresentation {
+class IVW_MODULE_OPENGL_API VolumeGL : public VolumeRepresentation {
 
 public:
     VolumeGL();
@@ -28,7 +29,7 @@ protected:
 };
 
 template<typename T>
-class VolumeGLPrecision : public VolumeGL {
+class IVW_MODULE_OPENGL_API VolumeGLPrecision : public VolumeGL {
 public:
     VolumeGLPrecision();
     VolumeGLPrecision(ivec3 dimensions);
@@ -48,25 +49,25 @@ private :
 };
 
 template<typename T>
-VolumeGLPrecision<T>::VolumeGLPrecision() : VolumeGL() {
+IVW_MODULE_OPENGL_API VolumeGLPrecision<T>::VolumeGLPrecision() : VolumeGL() {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-VolumeGLPrecision<T>::VolumeGLPrecision(ivec3 dimensions) : VolumeGL(dimensions) {
+IVW_MODULE_OPENGL_API VolumeGLPrecision<T>::VolumeGLPrecision(ivec3 dimensions) : VolumeGL(dimensions) {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, ivec3 dimensions) : VolumeGL(dimensions) {
+IVW_MODULE_OPENGL_API VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, ivec3 dimensions) : VolumeGL(dimensions) {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(texels);
 }
 
 template<typename T>
-void VolumeGLPrecision<T>::setTypeAndFormat() {
+IVW_MODULE_OPENGL_API void VolumeGLPrecision<T>::setTypeAndFormat() {
     if (dynamic_cast< VolumeGLPrecision<uint8_t>* >(this)) {
         dataFormat_ = "UINT8";
         dataType_ = GL_UNSIGNED_BYTE;
@@ -118,22 +119,22 @@ void VolumeGLPrecision<T>::setTypeAndFormat() {
 
 
 template<typename T>
-GLenum VolumeGLPrecision<T>::getDataType() {
+IVW_MODULE_OPENGL_API GLenum VolumeGLPrecision<T>::getDataType() {
     return dataType_; 
 }
 
 template<typename T>
-GLint VolumeGLPrecision<T>::getFormat() {
+IVW_MODULE_OPENGL_API GLint VolumeGLPrecision<T>::getFormat() {
     return format_; 
 }
 
 template<typename T>
-GLint VolumeGLPrecision<T>::getInternalFormat() {
+IVW_MODULE_OPENGL_API GLint VolumeGLPrecision<T>::getInternalFormat() {
     return internalFormat_; 
 }
 
 template<typename T>
-void VolumeGLPrecision<T>::initialize(void* texels) {
+IVW_MODULE_OPENGL_API void VolumeGLPrecision<T>::initialize(void* texels) {
     volumeTexture_ = new Texture3D(dimensions_, getFormat(), getInternalFormat(), getDataType(), GL_LINEAR);
 
     if (!texels) {
@@ -153,14 +154,14 @@ void VolumeGLPrecision<T>::initialize(void* texels) {
 }
 
 template<typename T>
-DataRepresentation* VolumeGLPrecision<T>::clone() {
+IVW_MODULE_OPENGL_API DataRepresentation* VolumeGLPrecision<T>::clone() {
     VolumeGLPrecision* newVolumeGL = new VolumeGLPrecision<T>(dimensions_);
     //TODO:: Copy volume textures if necessary
     return newVolumeGL;
 }
 
 template<typename T>
-void VolumeGLPrecision<T>::deinitialize() {
+IVW_MODULE_OPENGL_API void VolumeGLPrecision<T>::deinitialize() {
     delete volumeTexture_;
     volumeTexture_ = 0;
     VolumeGL::deinitialize();

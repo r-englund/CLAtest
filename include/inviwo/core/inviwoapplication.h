@@ -1,13 +1,14 @@
 #ifndef IVW_INVIWOAPPLICATION_H
 #define IVW_INVIWOAPPLICATION_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/inviwocore.h"
 #include "inviwo/core/inviwomodule.h"
 
 namespace inviwo {
 
-class InviwoApplication {
+class IVW_CORE_API InviwoApplication {
 
 public:
     InviwoApplication(std::string displayName_, std::string basePath_);
