@@ -1,7 +1,6 @@
 #ifndef IVW_PROJECT_H
 #define IVW_PROJECT_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include <fstream>
 #include "inviwo/core/inviwo.h"
 //#include "ext/voreen/serialization/networkserializer.h"
@@ -9,7 +8,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API Project : public IvwSerializable {
+class Project : public IvwSerializable {
 
 public:
     Project();

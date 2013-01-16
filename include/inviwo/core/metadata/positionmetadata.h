@@ -1,14 +1,13 @@
 #ifndef IVW_POSITION_METADATA_H
 #define IVW_POSITION_METADATA_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/metadata/metadata.h"
 
 
 namespace inviwo {
 
-class IVW_CORE_API PositionMetaData : public IVec2MetaData {
+class PositionMetaData : public IVec2MetaData {
 
 public:
     PositionMetaData();

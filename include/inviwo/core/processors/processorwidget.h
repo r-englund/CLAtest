@@ -1,12 +1,10 @@
 #ifndef IVW_PROCESSORWIDGET_H
 #define IVW_PROCESSORWIDGET_H
 
-#include "inviwo/core/inviwocoredefine.h"
-
 namespace inviwo {
 
 class Processor;
-class IVW_CORE_API ProcessorWidget {
+class ProcessorWidget {
 
 public:
     ProcessorWidget(Processor* processor);

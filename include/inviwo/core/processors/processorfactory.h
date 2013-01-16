@@ -1,13 +1,12 @@
 #ifndef IVW_PROCESSORFACTORY_H
 #define IVW_PROCESSORFACTORY_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/processors/processor.h"
 #include "inviwo/core/inviwofactorybase.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API ProcessorFactory : public InviwoFactoryBase {
+    class ProcessorFactory : public InviwoFactoryBase {
 
     public:
         ProcessorFactory();

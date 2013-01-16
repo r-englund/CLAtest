@@ -1,7 +1,6 @@
 #ifndef IVW_VARIANT_H
 #define IVW_VARIANT_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/util/exception.h"
 
@@ -10,7 +9,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API Variant : public IvwSerializable {
+class Variant : public IvwSerializable {
 public:
     enum VariantType {
         // Don't change order
@@ -160,7 +159,7 @@ private:
 #define VP(a) (*(a*)value_)
 
 template<class T>
-IVW_CORE_API void Variant::set(const T& value, VariantType type) {
+void Variant::set(const T& value, VariantType type) {
     if (type != currentType_) {
         deleteValue();
         currentType_ = type;
@@ -172,12 +171,12 @@ IVW_CORE_API void Variant::set(const T& value, VariantType type) {
 }
 
 template<class T>
-IVW_CORE_API void Variant::set(const T& value, int type) {
+void Variant::set(const T& value, int type) {
     set<T>(value, VariantType(type));
 }
 
 template<class T>
-IVW_CORE_API T Variant::get() const {
+T Variant::get() const {
     return VP(T);
 }
 

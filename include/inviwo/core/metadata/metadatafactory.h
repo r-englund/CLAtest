@@ -1,13 +1,12 @@
 #ifndef IVW_METADATA_FACTORY_H
 #define IVW_METADATA_FACTORY_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/metadata/metadata.h"
 #include "inviwo/core/inviwofactorybase.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API MetaDataFactory : public InviwoFactoryBase {
+    class MetaDataFactory : public InviwoFactoryBase {
 
     public:
         MetaDataFactory();

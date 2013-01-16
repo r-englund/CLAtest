@@ -1,12 +1,11 @@
 #ifndef IVW_DATAWRITER_H
 #define IVW_DATAWRITER_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API DataWriter {
+    class DataWriter {
 
     public:
         DataWriter();

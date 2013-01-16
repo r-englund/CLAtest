@@ -1,14 +1,13 @@
 #ifndef IVW_LIKEVALUATOR_H
 #define IVW_LIKEVALUATOR_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/properties/property.h"
 
 namespace inviwo {
 
 //TODO:
 //Make this base class to support more evaluator types
-class IVW_CORE_API LinkEvaluator {
+class LinkEvaluator {
 public:
    LinkEvaluator();
    void evaluate(Property* src, Property *dst);   

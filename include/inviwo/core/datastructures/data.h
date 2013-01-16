@@ -1,7 +1,6 @@
 #ifndef IVW_DATA_H
 #define IVW_DATA_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/datarepresentation.h"
 #include "inviwo/core/datastructures/representationconverterfactory.h"
@@ -9,7 +8,7 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API Data {
+    class Data {
 
     public:
         Data();
@@ -49,7 +48,7 @@ namespace inviwo {
     };
 
     template<class T>
-    IVW_CORE_API T* Data::getRepresentation() {
+    T* Data::getRepresentation() {
         if (representations_.size() > 0) {
             // check if a representation exists and return it
             for (size_t i=0; i<representations_.size(); i++) {
@@ -109,7 +108,7 @@ namespace inviwo {
     }
 
     template<class T>
-    IVW_CORE_API bool Data::hasRepresentation() const {
+    bool Data::hasRepresentation() const {
         for (size_t i=0; i<representations_.size(); i++) {
             T* representation = dynamic_cast<T*>(representations_[i]);
             if (representation) return true;
@@ -118,7 +117,7 @@ namespace inviwo {
     }
 
     template<typename T, typename U>
-    IVW_CORE_API void Data::setMetaData(std::string key, U value) {
+    void Data::setMetaData(std::string key, U value) {
         MetaData* baseMetaData = metaData_.get(key);
 
         T* derivedMetaData = 0;
@@ -141,7 +140,7 @@ namespace inviwo {
 
     //param val is required to deduce the template argument
     template<typename T, typename U>
-    IVW_CORE_API U Data::getMetaData(std::string key, U val) {
+    U Data::getMetaData(std::string key, U val) {
         MetaData* baseMetaData = metaData_.get(key);
 
         T* derivedMetaData = 0;
@@ -161,7 +160,7 @@ namespace inviwo {
     /*---------------------------------------------------------------*/
 
     template <typename T>
-    class IVW_CORE_API DataDimension : public Data {
+    class DataDimension : public Data {
     public:
         DataDimension(){}
         virtual ~DataDimension(){}
@@ -175,18 +174,18 @@ namespace inviwo {
     };
 
     template <typename T> template<typename U, typename V>
-    IVW_CORE_API void DataDimension<T>::setDimension(U dim) {
+    void DataDimension<T>::setDimension(U dim) {
         Data::setMetaData<V>("dimension", dim);
     }
 
    template <typename T> template<typename U, typename V>
-    IVW_CORE_API U DataDimension<T>::getDimension(U dimension) {
+    U DataDimension<T>::getDimension(U dimension) {
         return Data::getMetaData<V>("dimension", dimension);
     }
 
     /*---------------------------------------------------------------*/
 
-    class IVW_CORE_API Data3D : public DataDimension<Data::TYPE3D> {
+    class Data3D : public DataDimension<Data::TYPE3D> {
     public :
         typedef DataDimension<Data::TYPE3D> PARENT;
         Data3D();
@@ -199,7 +198,7 @@ namespace inviwo {
 
     /*---------------------------------------------------------------*/
 
-    class IVW_CORE_API Data2D : public DataDimension<Data::TYPE2D> {
+    class Data2D : public DataDimension<Data::TYPE2D> {
     public :
         typedef DataDimension<Data::TYPE2D> PARENT;
         Data2D();

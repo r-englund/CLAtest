@@ -1,14 +1,13 @@
 #ifndef IVW_REPRESENTATIONCONVERTERFACTORY_H
 #define IVW_REPRESENTATIONCONVERTERFACTORY_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/representationconverter.h"
 #include "inviwo/core/inviwofactorybase.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API RepresentationConverterFactory : public InviwoFactoryBase  {
+    class RepresentationConverterFactory : public InviwoFactoryBase  {
 
     public:
         RepresentationConverterFactory();

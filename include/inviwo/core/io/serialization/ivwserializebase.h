@@ -5,7 +5,6 @@
 #  define TIXML_USE_TICPP
 #endif
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "ext/ticpp/ticpp.h"
 #include "inviwo/core/io/serialization/ivwserializeconstants.h"
 #include "inviwo/core/inviwofactorybase.h"
@@ -50,7 +49,7 @@ namespace inviwo {
 
     class IvwSerializable;
 
-    class IVW_CORE_API IvwSerializeBase {
+    class IvwSerializeBase {
     public:
         IvwSerializeBase(IvwSerializeBase &s, bool allowReference=true);
         IvwSerializeBase(std::string fileName, bool allowReference=true);
@@ -126,7 +125,7 @@ namespace inviwo {
 
 
     template <typename T>
-    IVW_CORE_API T* IvwSerializeBase::getRegisteredType(const std::string &className) {
+    T* IvwSerializeBase::getRegisteredType(const std::string &className) {
         T* data = 0;
         std::vector<InviwoFactoryBase *>::iterator it;
         for (it = registeredFactories_.begin(); it!=registeredFactories_.end(); it++) {
@@ -139,7 +138,7 @@ namespace inviwo {
     }
 
     template <typename T>
-    inline IVW_CORE_API T* IvwSerializeBase::getNonRegisteredType() {   
+    inline T* IvwSerializeBase::getNonRegisteredType() {   
         return new T();
     }
 

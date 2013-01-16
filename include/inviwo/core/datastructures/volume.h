@@ -1,12 +1,11 @@
 #ifndef IVW_VOLUME_H
 #define IVW_VOLUME_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/data.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API Volume : public Data3D {
+    class Volume : public Data3D {
 
     public:
         Volume();

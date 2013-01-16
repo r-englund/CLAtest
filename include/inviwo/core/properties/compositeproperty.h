@@ -1,13 +1,12 @@
 #ifndef IVW_COMPOSITEPROPERTY_H
 #define IVW_COMPOSITEPROPERTY_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/properties/property.h"
 
 namespace inviwo {
 
-class IVW_CORE_API CompositeProperty : public Property {
+class CompositeProperty : public Property {
 
 public:
     CompositeProperty(std::string identifier, std::string displayName);

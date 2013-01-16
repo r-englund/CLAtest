@@ -1,13 +1,12 @@
 #ifndef IVW_VOLUMEPORT_H
 #define IVW_VOLUMEPORT_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/ports/dataport.h"
 #include "inviwo/core/datastructures/volume.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API VolumePort : public DataPort<Volume> {
+    class VolumePort : public DataPort<Volume> {
 
     public:
         VolumePort(Port::PortDirection direction, std::string identifier);

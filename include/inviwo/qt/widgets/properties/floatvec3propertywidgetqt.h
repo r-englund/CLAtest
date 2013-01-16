@@ -1,7 +1,6 @@
 #ifndef IVW_FLOATVEC3PROPERTYWIDGETQT_H
 #define IVW_FLOATVEC3PROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QSlider>
 
 #include "inviwo/qt/widgets/properties/propertywidgetqt.h"
@@ -10,7 +9,7 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API FloatVec3PropertyWidgetQt : public PropertyWidgetQt {
+class FloatVec3PropertyWidgetQt : public PropertyWidgetQt {
 
 Q_OBJECT;
 

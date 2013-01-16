@@ -1,7 +1,6 @@
 #ifndef IVW_PROCESSORLISTWIDGET_H
 #define IVW_PROCESSORLISTWIDGET_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMouseEvent>
@@ -12,7 +11,7 @@
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API ProcessorList : public QListWidget {
+class ProcessorList : public QListWidget {
 
 public:
     ProcessorList(QWidget* parent) : QListWidget(parent) {};
@@ -27,7 +26,7 @@ private:
 };
 
 
-class IVW_QTEDITOR_API ProcessorListWidget : public InviwoDockWidget {
+class ProcessorListWidget : public InviwoDockWidget {
 Q_OBJECT
 public:
     ProcessorListWidget(QWidget* parent);
@@ -44,7 +43,7 @@ private slots:
 };
 
 
-class IVW_QTEDITOR_API ProcessorDragObject : public QDrag {
+class ProcessorDragObject : public QDrag {
 public:
     ProcessorDragObject(QWidget* source, const QString className);
 

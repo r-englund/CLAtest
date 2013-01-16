@@ -1,13 +1,12 @@
 #ifndef IVW_IMAGEPORT_H
 #define IVW_IMAGEPORT_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/ports/dataport.h"
 #include "inviwo/core/datastructures/image.h"
 
 namespace inviwo {
 
-class IVW_CORE_API ImagePort : public DataPort<Image> {
+class ImagePort : public DataPort<Image> {
 
 public:
     ImagePort(Port::PortDirection direction, std::string identifier);

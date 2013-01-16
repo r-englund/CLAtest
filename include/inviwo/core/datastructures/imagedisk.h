@@ -1,12 +1,11 @@
 #ifndef IVW_IMAGEDISK_H
 #define IVW_IMAGEDISK_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/imagerepresentation.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API ImageDisk : public ImageRepresentation {
+    class ImageDisk : public ImageRepresentation {
 
     public:
         ImageDisk();

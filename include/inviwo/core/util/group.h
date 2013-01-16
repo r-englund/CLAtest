@@ -1,7 +1,6 @@
 #ifndef IVW_GROUP_H
 #define IVW_GROUP_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include <map>
 
 /*
@@ -16,7 +15,7 @@ Example Group types: <std::string, Port*> where KEY is std::string, DATA is Port
 
 */
 template<typename KEY,typename DATA>
-class IVW_CORE_API Group {
+class Group {
 public:
 
     Group(){}

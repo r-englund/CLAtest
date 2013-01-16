@@ -1,7 +1,6 @@
 #ifndef IVW_COMPOSITEPROPERTYWIDGETQT_H
 #define IVW_COMPOSITEPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QLineEdit>
 #include <QToolButton>
 
@@ -11,7 +10,7 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API CompositePropertyWidgetQt : public PropertyWidgetQt {
+class CompositePropertyWidgetQt : public PropertyWidgetQt {
 
     Q_OBJECT;
 

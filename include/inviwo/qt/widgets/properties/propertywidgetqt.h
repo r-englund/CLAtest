@@ -1,7 +1,6 @@
 #ifndef IVW_PROPERTYWIDGETQT_H
 #define IVW_PROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QWidget>
@@ -10,7 +9,7 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API PropertyWidgetQt : public PropertyWidget, public QWidget {
+class PropertyWidgetQt : public PropertyWidget, public QWidget {
 
 public:
     PropertyWidgetQt();

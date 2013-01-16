@@ -1,7 +1,6 @@
 #ifndef IVW_CANVASPROCESSOR_H
 #define IVW_CANVASPROCESSOR_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/imageport.h"
 #include "inviwo/core/util/canvas.h"
@@ -9,7 +8,7 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API CanvasProcessor : public Processor {
+    class CanvasProcessor : public Processor {
     public:
         CanvasProcessor();
         ~CanvasProcessor();

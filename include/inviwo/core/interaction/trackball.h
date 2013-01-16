@@ -1,7 +1,6 @@
 #ifndef IVW_TRACKBALL_H
 #define IVW_TRACKBALL_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/interaction/interactionhandler.h"
 #include "inviwo/core/interaction/events/mouseevent.h"
 #include "inviwo/core/interaction/events/resizeevent.h"
@@ -9,7 +8,7 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API Trackball : public InteractionHandler {
+    class Trackball : public InteractionHandler {
 
     public:
         Trackball(CameraProperty* camera);

@@ -1,13 +1,12 @@
 #ifndef IVW_MOUSEEVENT_H
 #define IVW_MOUSEEVENT_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/interaction/events/event.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API MouseEvent : public Event {
+    class MouseEvent : public Event {
 
     public:
         enum MouseButton {

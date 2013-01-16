@@ -1,12 +1,11 @@
 #ifndef IVW_IMAGERAM_H
 #define IVW_IMAGERAM_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/imagerepresentation.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API ImageRAM : public ImageRepresentation {
+    class ImageRAM : public ImageRepresentation {
 
     public:
         ImageRAM();

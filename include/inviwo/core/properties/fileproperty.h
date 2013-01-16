@@ -1,12 +1,11 @@
 #ifndef IVW_FILEPROPERTY_H
 #define IVW_FILEPROPERTY_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/properties/templateproperty.h"
 
 namespace inviwo {
 
-class IVW_CORE_API FileProperty : public TemplateProperty<std::string> {
+class FileProperty : public TemplateProperty<std::string> {
 
 public:
     FileProperty(std::string identifier, std::string displayName, std::string value);

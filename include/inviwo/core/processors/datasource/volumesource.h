@@ -1,14 +1,13 @@
 #ifndef IVW_VOLUMESOURCE_H
 #define IVW_VOLUMESOURCE_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/processors/processor.h"
 #include "inviwo/core/ports/volumeport.h"
 
 namespace inviwo {
 
-class IVW_CORE_API VolumeSource : public Processor {
+class VolumeSource : public Processor {
 public:
     VolumeSource();
     ~VolumeSource();

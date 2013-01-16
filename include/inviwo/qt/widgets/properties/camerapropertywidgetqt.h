@@ -1,7 +1,6 @@
 #ifndef IVW_CAMERAPROPERTYWIDGETQT_H
 #define IVW_CAMERAPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QSlider>
 
 #include "inviwo/qt/widgets/properties/propertywidgetqt.h"
@@ -10,7 +9,7 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API CameraPropertyWidgetQt : public PropertyWidgetQt {
+class CameraPropertyWidgetQt : public PropertyWidgetQt {
 
     Q_OBJECT;
 

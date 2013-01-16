@@ -1,14 +1,13 @@
 #ifndef IVW_PORT_H
 #define IVW_PORT_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
     class Processor;
 
-    class IVW_CORE_API Port {
+    class Port {
 
     public:
 

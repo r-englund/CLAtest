@@ -1,12 +1,11 @@
 #ifndef IVW_REPRESENTATIONCONVERTER_H
 #define IVW_REPRESENTATIONCONVERTER_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/datarepresentation.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API RepresentationConverter {
+    class RepresentationConverter {
 
     public:
         RepresentationConverter();
@@ -17,7 +16,7 @@ namespace inviwo {
     };
 
     template <typename T>
-    class IVW_CORE_API RepresentationConverterType : public RepresentationConverter{};
+    class RepresentationConverterType : public RepresentationConverter{};
 
     template <typename T>
     class RepresentationConverterPackage : public RepresentationConverter{

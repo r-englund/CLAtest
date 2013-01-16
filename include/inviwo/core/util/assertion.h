@@ -1,7 +1,6 @@
 #ifndef IVW_ASSERTION_H
 #define IVW_ASSERTION_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include <iostream>
 
 #if defined(IVW_DEBUG)
@@ -14,11 +13,11 @@
     #define IVW_BREAKPOINT
 #endif
 
-IVW_CORE_API void ivwAssertion(const char* fileName, const char* functionName, long lineNumber, const char* message);
+void ivwAssertion(const char* fileName, const char* functionName, long lineNumber, const char* message);
 
 #if defined(IVW_DEBUG)
 #define ivwAssert(condition, message) \
-    IVW_CORE_API if (!(bool(condition))) ivwAssertion(__FILE__, __FUNCTION__, __LINE__, (message));
+    if (!(bool(condition))) ivwAssertion(__FILE__, __FUNCTION__, __LINE__, (message));
 #else
 #define ivwAssert(condition, message)
 #endif

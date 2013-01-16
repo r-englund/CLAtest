@@ -1,7 +1,6 @@
 #ifndef IVW_INVIWOAPPLICATIONQT_H
 #define IVW_INVIWOAPPLICATIONQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QApplication>
 #include <QMainWindow>
 
@@ -9,7 +8,7 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API InviwoApplicationQt : public InviwoApplication, public QApplication {
+    class InviwoApplicationQt : public InviwoApplication, public QApplication {
 
 public:
     InviwoApplicationQt(std::string displayName_, std::string basePath_,
@@ -17,7 +16,7 @@ public:
     virtual ~InviwoApplicationQt();
 
     void setMainWindow(QMainWindow* mainWindow) { mainWindow_ = mainWindow; }
-    IVW_QTWIDGETS_API QMainWindow* getMainWindow() { return mainWindow_; }
+    QMainWindow* getMainWindow() { return mainWindow_; }
 
 private:
     QMainWindow* mainWindow_;

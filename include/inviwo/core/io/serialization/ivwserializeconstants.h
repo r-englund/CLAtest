@@ -1,12 +1,11 @@
 #ifndef IVW_SERIALIZE_CONSTANTS_H
 #define IVW_SERIALIZE_CONSTANTS_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include <string>
 
 namespace inviwo {
 
-class IVW_CORE_API IvwSerializeConstants {
+class IvwSerializeConstants {
 public:
     static const std::string XML_VERSION;
     static const std::string INVIWO_TREEDATA;

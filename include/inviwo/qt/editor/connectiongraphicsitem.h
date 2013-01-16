@@ -1,7 +1,6 @@
 #ifndef IVW_CONNECTIONGRAPHICSITEM_H
 #define IVW_CONNECTIONGRAPHICSITEM_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
 #include <QGraphicsLineItem>
 #include <QPainterPath>
 
@@ -11,7 +10,7 @@
 namespace inviwo {
 
 
-class IVW_QTEDITOR_API CurveGraphicsItem : public QGraphicsItem {
+class CurveGraphicsItem : public QGraphicsItem {
 
 public:
     CurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool layoutOption=true, bool dragOrDrawMode_=true);
@@ -51,7 +50,7 @@ private:
  * Graphical representation of the connection between two ports in the network editor.
  */
 
-class IVW_QTEDITOR_API ConnectionGraphicsItem : public CurveGraphicsItem {
+class ConnectionGraphicsItem : public CurveGraphicsItem {
 
 public:
     /**

@@ -1,7 +1,6 @@
 #ifndef IVW_PROCESSORNETWORK_H
 #define IVW_PROCESSORNETWORK_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/network/portconnection.h"
 #include "inviwo/core/network/processorlink.h"
@@ -12,7 +11,7 @@ using namespace std;
 
 namespace inviwo {
 
-class IVW_CORE_API ProcessorNetwork : public IvwSerializable {
+class ProcessorNetwork : public IvwSerializable {
 
 public:
 
@@ -57,7 +56,7 @@ private:
 };
 
 template<class T>
-IVW_CORE_API std::vector<T*> ProcessorNetwork::getProcessorsByType() const {
+std::vector<T*> ProcessorNetwork::getProcessorsByType() const {
     std::vector<T*> processors;
     for (size_t i=0; i<processors_.size(); i++) {
         T* processor = dynamic_cast<T*>(processors_[i]);

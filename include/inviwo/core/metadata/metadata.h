@@ -1,12 +1,11 @@
 #ifndef IVW_METADATA_H
 #define IVW_METADATA_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
-class IVW_CORE_API MetaData : public IvwSerializable {
+class MetaData : public IvwSerializable {
 
 public:
     MetaData();
@@ -27,7 +26,7 @@ protected:
 /*---------------------------------------------------------------------*/
 
 template <typename T>
-class IVW_CORE_API MetaDataPrimitiveType : public MetaData {
+class MetaDataPrimitiveType : public MetaData {
 public:
     MetaDataPrimitiveType(T value);
     void set(T value);
@@ -37,23 +36,23 @@ protected:
 };
 
 template <typename T>
-IVW_CORE_API MetaDataPrimitiveType<T>::MetaDataPrimitiveType(T value) : value_(value) {
+MetaDataPrimitiveType<T>::MetaDataPrimitiveType(T value) : value_(value) {
 
 }
 
 template <typename T>
-IVW_CORE_API void MetaDataPrimitiveType<T>::set(T value) {
+void MetaDataPrimitiveType<T>::set(T value) {
     value_ = value;
 }
 
 template <typename T>
-IVW_CORE_API T MetaDataPrimitiveType<T>::get() {
+T MetaDataPrimitiveType<T>::get() {
     return value_;
 }
 
 /*---------------------------------------------------------------------*/
 
-class IVW_CORE_API BoolMetaData : public MetaDataPrimitiveType<bool> {
+class BoolMetaData : public MetaDataPrimitiveType<bool> {
 public:
     BoolMetaData();
     BoolMetaData(bool value);
@@ -65,7 +64,7 @@ public:
 
 /*---------------------------------------------------------------------*/
 
-class IVW_CORE_API IntMetaData : public MetaDataPrimitiveType<int> {
+class IntMetaData : public MetaDataPrimitiveType<int> {
 public:
     IntMetaData();
     IntMetaData(int value);
@@ -77,7 +76,7 @@ public:
 
 /*---------------------------------------------------------------------*/
 
-class IVW_CORE_API IVec2MetaData : public MetaDataPrimitiveType<ivec2> {
+class IVec2MetaData : public MetaDataPrimitiveType<ivec2> {
 public:
     IVec2MetaData();
     IVec2MetaData(ivec2 value);
@@ -89,7 +88,7 @@ public:
 
 /*---------------------------------------------------------------------*/
 
-class IVW_CORE_API IVec3MetaData : public MetaDataPrimitiveType<ivec3> {
+class IVec3MetaData : public MetaDataPrimitiveType<ivec3> {
 public:
     IVec3MetaData();
     IVec3MetaData(ivec3 value);
@@ -101,7 +100,7 @@ public:
 
 /*---------------------------------------------------------------------*/
 
-class IVW_CORE_API FloatMetaData : public MetaDataPrimitiveType<float> {
+class FloatMetaData : public MetaDataPrimitiveType<float> {
 public:
     FloatMetaData();
     FloatMetaData(float value);
@@ -113,7 +112,7 @@ public:
 
 /*---------------------------------------------------------------------*/
 
-class IVW_CORE_API Vec2MetaData : public MetaDataPrimitiveType<vec2> {
+class Vec2MetaData : public MetaDataPrimitiveType<vec2> {
 public:
     Vec2MetaData();
     Vec2MetaData(vec2 value);
@@ -125,7 +124,7 @@ public:
 
 /*---------------------------------------------------------------------*/
 
-class IVW_CORE_API Vec3MetaData : public MetaDataPrimitiveType<vec3> {
+class Vec3MetaData : public MetaDataPrimitiveType<vec3> {
 public:
     Vec3MetaData();
     Vec3MetaData(vec3 value);
@@ -137,7 +136,7 @@ public:
 
 /*---------------------------------------------------------------------*/
 
-class IVW_CORE_API StringMetaData : public MetaDataPrimitiveType<std::string> {
+class StringMetaData : public MetaDataPrimitiveType<std::string> {
 public:
     StringMetaData();
     StringMetaData(std::string value);

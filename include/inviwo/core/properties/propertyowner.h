@@ -1,14 +1,13 @@
 #ifndef IVW_PROPERTYOWNER_H
 #define IVW_PROPERTYOWNER_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
 class Property;
 
-class IVW_CORE_API PropertyOwner : public IvwSerializable {
+class PropertyOwner : public IvwSerializable {
 
 public:
     PropertyOwner();

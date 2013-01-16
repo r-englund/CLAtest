@@ -1,13 +1,12 @@
 #ifndef IVW_IMAGEREPRESENTATION_H
 #define IVW_IMAGEREPRESENTATION_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/datarepresentation.h"
 #include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API ImageRepresentation : public DataRepresentation {
+    class ImageRepresentation : public DataRepresentation {
 
     public:
         ImageRepresentation();

@@ -1,11 +1,9 @@
 #ifndef IVW_PROPERTYWIDGET_H
 #define IVW_PROPERTYWIDGET_H
 
-#include "inviwo/core/inviwocoredefine.h"
-
 namespace inviwo {
 
-class IVW_CORE_API PropertyWidget {
+class PropertyWidget {
 
 public:
     PropertyWidget();

@@ -1,7 +1,6 @@
 #ifndef IVW_VOLUME_TYPE_CLASSIFICATION_H
 #define IVW_VOLUME_TYPE_CLASSIFICATION_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/datatypeclassification.h"
 
@@ -22,21 +21,21 @@ namespace inviwo {
     */
 
     //TODO: So for now use classes are used instead of typedefs
-    class IVW_CORE_API StructuredVolume : public StructuredData<Data::TYPE3D, Volume> {
+    class StructuredVolume : public StructuredData<Data::TYPE3D, Volume> {
     public:
         StructuredVolume() {}
         ~StructuredVolume() {}
         virtual Data* clone()=0;
     };
 
-    class IVW_CORE_API RectiLinearVolume : public RectiLinearData<Data::TYPE3D, StructuredVolume> {  
+    class RectiLinearVolume : public RectiLinearData<Data::TYPE3D, StructuredVolume> {  
     public:
         RectiLinearVolume() {}
         ~RectiLinearVolume() {}
         virtual Data* clone()=0;
     };
 
-    class IVW_CORE_API CurviLinearVolume : public CurviLinearData<Data::TYPE3D, StructuredVolume> {
+    class CurviLinearVolume : public CurviLinearData<Data::TYPE3D, StructuredVolume> {
     public:
         CurviLinearVolume() {}
         ~CurviLinearVolume() {}
@@ -45,28 +44,28 @@ namespace inviwo {
 
     /*----------------------------------------------------------------------*/
 
-    class IVW_CORE_API UniformRectiLinearVolume : public UniformData<Data::TYPE3D, RectiLinearVolume> {
+    class UniformRectiLinearVolume : public UniformData<Data::TYPE3D, RectiLinearVolume> {
     public:
         UniformRectiLinearVolume();
         ~UniformRectiLinearVolume();
         virtual Data* clone();
     };
 
-    class IVW_CORE_API UniformCurviLinearVolume : public UniformData<Data::TYPE3D, CurviLinearVolume> {
+    class UniformCurviLinearVolume : public UniformData<Data::TYPE3D, CurviLinearVolume> {
     public:
         UniformCurviLinearVolume();
         ~UniformCurviLinearVolume();
         virtual Data* clone();
     };
 
-    class IVW_CORE_API NonUniformRectiLinearVolume : public NonUniformData<Data::TYPE3D, RectiLinearVolume> {
+    class NonUniformRectiLinearVolume : public NonUniformData<Data::TYPE3D, RectiLinearVolume> {
     public:
         NonUniformRectiLinearVolume();
         ~NonUniformRectiLinearVolume();
         virtual Data* clone();
     };
 
-    class IVW_CORE_API NonUniformCurviLinearVolume : public NonUniformData<Data::TYPE3D, CurviLinearVolume> {
+    class NonUniformCurviLinearVolume : public NonUniformData<Data::TYPE3D, CurviLinearVolume> {
     public:
         NonUniformCurviLinearVolume();
         ~NonUniformCurviLinearVolume();

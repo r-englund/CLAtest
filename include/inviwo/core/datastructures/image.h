@@ -1,12 +1,11 @@
 #ifndef IVW_IMAGE_H
 #define IVW_IMAGE_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/data.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API Image : public Data {
+    class Image : public Data {
 
     public:
         Image();

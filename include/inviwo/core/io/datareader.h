@@ -1,12 +1,11 @@
 #ifndef IVW_DATAREADER_H
 #define IVW_DATAREADER_H
 
-#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
-class IVW_CORE_API DataReader {
+class DataReader {
 
 public:
     DataReader();

@@ -2,14 +2,13 @@
 #define IVW_INVIWOFACTORYBASE_H
 
 //#include "inviwo/core/inviwo.h"
-#include "inviwo/core/inviwocoredefine.h"
 #include <string>
 
 namespace inviwo {
 
     class IvwSerializable;
 
-    class IVW_CORE_API InviwoFactoryBase {
+    class InviwoFactoryBase {
 
     public:
         ~InviwoFactoryBase() {}
