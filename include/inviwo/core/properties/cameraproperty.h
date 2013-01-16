@@ -1,6 +1,7 @@
 #ifndef IVW_CAMERAPROPERTY_H
 #define IVW_CAMERAPROPERTY_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/properties/vectorproperties.h"
 #include "inviwo/core/properties/scalarproperties.h"
@@ -8,7 +9,7 @@
 
 namespace inviwo {
 
-class CameraProperty : public CompositeProperty {
+class IVW_CORE_API CameraProperty : public CompositeProperty {
 
 public:
     CameraProperty(std::string identifier, std::string displayName,

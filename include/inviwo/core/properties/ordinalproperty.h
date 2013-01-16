@@ -1,6 +1,7 @@
 #ifndef IVW_ORDINALPROPERTY_H
 #define IVW_ORDINALPROPERTY_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include <limits>
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/properties/templateproperty.h"
@@ -8,7 +9,7 @@
 namespace inviwo {
 
 template<typename T>
-class OrdinalProperty : public TemplateProperty<T> {
+class IVW_CORE_API OrdinalProperty : public TemplateProperty<T> {
 
 public:
     OrdinalProperty(std::string identifier, std::string displayName, T value,

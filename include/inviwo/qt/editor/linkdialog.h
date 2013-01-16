@@ -2,6 +2,7 @@
 #ifndef  IVW_LINKDIALOG_H
 #define  IVW_LINKDIALOG_H
 
+#include "inviwo/qt/editor/inviwoqteditordefine.h"
 #include <QGraphicsView>
 #include <QDialog>
 #include <QGraphicsRectItem>
@@ -22,14 +23,14 @@ static const qreal LINKDIALOG_CONNECTION_GRAPHICSITEM_DEPTH = 3.0f;
 
 namespace inviwo {
 
-enum InviwoLinkUserGraphicsItemType {
+IVW_QTEDITOR_API enum InviwoLinkUserGraphicsItemType {
     LinkDialogProcessorGraphicsItemType = 4,
     LinkDialogPropertyGraphicsItemType = 5,
     LinkDialogCurveGraphicsItemType = 6
 };
 
 
-class DialogCurveGraphicsItem : public CurveGraphicsItem {
+class IVW_QTEDITOR_API DialogCurveGraphicsItem : public CurveGraphicsItem {
 
 public:
     DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool layoutOption=false, bool dragMode=true);
@@ -44,7 +45,7 @@ public:
 class LinkDialogPropertyGraphicsItem;
 class LinkDialogProcessorGraphicsItem;
 
-class DialogConnectionGraphicsItem : public DialogCurveGraphicsItem {
+class IVW_QTEDITOR_API DialogConnectionGraphicsItem : public DialogCurveGraphicsItem {
 
 public:
 
@@ -88,7 +89,7 @@ private:
 /*---------------------------------------------------------------------------------------*/
 
 template <typename T>
-class GraphicsItemData : public QGraphicsRectItem {
+class IVW_QTEDITOR_API GraphicsItemData : public QGraphicsRectItem {
 public:
     GraphicsItemData(T* item=0) : QGraphicsRectItem() {item_ = item;}
     T* getGraphicsItemData() {return item_;}
@@ -99,7 +100,7 @@ private:
 
 class LinkDialogPropertyGraphicsItem;
 
-class LinkDialogProcessorGraphicsItem : public GraphicsItemData<Processor> {
+class IVW_QTEDITOR_API LinkDialogProcessorGraphicsItem : public GraphicsItemData<Processor> {
 
 public:
     LinkDialogProcessorGraphicsItem();
@@ -128,7 +129,7 @@ private:
 
 /*---------------------------------------------------------------------------------------*/
 
-class LinkDialogPropertyGraphicsItem : public GraphicsItemData<Property> {
+class IVW_QTEDITOR_API LinkDialogPropertyGraphicsItem : public GraphicsItemData<Property> {
 
 public:
     LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem* , Property* );
@@ -178,7 +179,7 @@ private:
 /*---------------------------------------------------------------------------------------*/
 
 
-class LinkDialogGraphicsScene : public QGraphicsScene {
+class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene {
 public:
     LinkDialogGraphicsScene(QWidget* parent=0);
     ~LinkDialogGraphicsScene() {}
@@ -238,7 +239,7 @@ private:
 
 /*---------------------------------------------------------------------------------------*/
 
-class LinkDialogGraphicsView : public QGraphicsView {
+class IVW_QTEDITOR_API LinkDialogGraphicsView : public QGraphicsView {
 public:
     LinkDialogGraphicsView(QWidget* parent=0);
     ~LinkDialogGraphicsView();
@@ -251,7 +252,7 @@ private:
 
 /*---------------------------------------------------------------------------------------*/
 
-class LinkDialog : public QDialog {
+class IVW_QTEDITOR_API LinkDialog : public QDialog {
 Q_OBJECT
 public:
     LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent);    

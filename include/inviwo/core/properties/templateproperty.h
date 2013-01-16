@@ -1,13 +1,14 @@
 #ifndef IVW_TEMPLATEPROPERTY_H
 #define IVW_TEMPLATEPROPERTY_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/properties/property.h"
 
 namespace inviwo {
 
 template<typename T>
-class TemplateProperty : public Property {
+class IVW_CORE_API TemplateProperty : public Property {
 
 public:
 

@@ -1,11 +1,12 @@
 #ifndef IVW_DATAREPRESENTATION_H
 #define IVW_DATAREPRESENTATION_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
-    class DataRepresentation {
+    class IVW_CORE_API DataRepresentation {
 
     public:
         DataRepresentation();

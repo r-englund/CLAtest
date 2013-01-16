@@ -103,9 +103,11 @@ endif(DEBUG_POSTFIX)
 
 # Build shared libs or static libs
 option(SHARED_LIBS "Build shared libs, else static libs" OFF)
+mark_as_advanced(SHARED_LIBS)
 
 if(SHARED_LIBS)
     set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs, else static libs" FORCE)
+    mark_as_advanced(BUILD_SHARED_LIBS)
 endif()
 
 #--------------------------------------------------------------------

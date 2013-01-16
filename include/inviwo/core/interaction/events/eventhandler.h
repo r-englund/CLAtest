@@ -1,12 +1,13 @@
 #ifndef IVW_EVENTHANDLER_H
 #define IVW_EVENTHANDLER_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/interaction/events/event.h"
 #include "inviwo/core/interaction/events/eventlistener.h"
 
 namespace inviwo {
 
-    class EventHandler {
+    class IVW_CORE_API EventHandler {
 
     public:
         EventHandler();

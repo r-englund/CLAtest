@@ -1,6 +1,7 @@
 #ifndef IVW_DATAPORT_H
 #define IVW_DATAPORT_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/ports/port.h"
 #include "inviwo/core/datastructures/data.h"
@@ -9,7 +10,7 @@
 namespace inviwo {
 
 template<typename T>
-class DataPort : public Port {
+class IVW_CORE_API DataPort : public Port {
 
 public:
 

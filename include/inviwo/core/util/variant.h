@@ -1,6 +1,7 @@
 #ifndef IVW_VARIANT_H
 #define IVW_VARIANT_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/util/exception.h"
 
@@ -9,7 +10,7 @@
 
 namespace inviwo {
 
-class Variant : public IvwSerializable {
+class IVW_CORE_API Variant : public IvwSerializable {
 public:
     enum VariantType {
         // Don't change order

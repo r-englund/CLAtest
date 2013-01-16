@@ -1,6 +1,7 @@
 #ifndef IVW_OPTIONPROPERTYWIDGETQT_H
 #define IVW_OPTIONPROPERTYWIDGETQT_H
 
+#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QCheckBox>
 
 #include "inviwo/qt/widgets/properties/propertywidgetqt.h"
@@ -9,7 +10,7 @@
 
 namespace inviwo {
 
-class OptionPropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API OptionPropertyWidgetQt : public PropertyWidgetQt {
 
     Q_OBJECT;
 

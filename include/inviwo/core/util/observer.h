@@ -1,6 +1,7 @@
 #ifndef IVW_OBSERVER_H
 #define IVW_OBSERVER_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include <set>
 
 namespace inviwo {
@@ -100,15 +101,15 @@ protected:
 * Class to support observer pattern. 
 * Usage example:
 * @code
-*    class ButtonObserver: public Observer {
+*    class IVW_CORE_API ButtonObserver: public Observer {
 *    public:
 *        ButtonObserver(): Observer() {};
 *        // Will be notified when the observed button is pressed.
-*        void buttonPressed(){};
+IVW_CORE_API *        void buttonPressed(){};
 *    };
-*    class Button: public Observable<ButtonObserver> {
+*    class IVW_CORE_API Button: public Observable<ButtonObserver> {
 *        Button(): Observable<ButtonObserver>() {};
-*        void pressButton() {
+IVW_CORE_API *        void pressButton() {
 *            // Do stuff
 *            // Notify observers
 *            ObserverSet::iterator endIt = observers_->end();
@@ -122,7 +123,7 @@ protected:
 * @see Observer
 */
 template<typename T>
-class Observable: public ObservableInterface {
+class IVW_CORE_API Observable: public ObservableInterface {
 public:
     Observable(): ObservableInterface() {};
     /*

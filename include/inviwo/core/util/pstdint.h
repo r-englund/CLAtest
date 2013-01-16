@@ -182,6 +182,7 @@
  *
  */
 
+#include "inviwo/core/inviwocoredefine.h"
 #include <stddef.h>
 #include <limits.h>
 #include <signal.h>
@@ -742,14 +743,14 @@ typedef uint_least32_t uint_fast32_t;
 #define glue3_aux(x,y,z) x ## y ## z
 #define glue3(x,y,z) glue3_aux(x,y,z)
 
-#define DECLU(bits) glue3(uint,bits,_t) glue3(u,bits,=) glue3(UINT,bits,_C) (0);
-#define DECLI(bits) glue3(int,bits,_t) glue3(i,bits,=) glue3(INT,bits,_C) (0);
+IVW_CORE_API #define DECLU(bits) glue3(uint,bits,_t) glue3(u,bits,=) glue3(UINT,bits,_C) (0);
+IVW_CORE_API #define DECLI(bits) glue3(int,bits,_t) glue3(i,bits,=) glue3(INT,bits,_C) (0);
 
 #define DECL(us,bits) glue3(DECL,us,) (bits)
 
 #define TESTUMAX(bits) glue3(u,bits,=) glue3(~,u,bits); if (glue3(UINT,bits,_MAX) glue3(!=,u,bits)) printf ("Something wrong with UINT%d_MAX\n", bits)
  
-int main () {
+IVW_CORE_API int main () {
 	DECL(I,8)
 	DECL(U,8)
 	DECL(I,16)

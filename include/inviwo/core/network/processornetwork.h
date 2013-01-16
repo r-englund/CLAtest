@@ -1,6 +1,7 @@
 #ifndef IVW_PROCESSORNETWORK_H
 #define IVW_PROCESSORNETWORK_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/network/portconnection.h"
 #include "inviwo/core/network/processorlink.h"
@@ -11,7 +12,7 @@ using namespace std;
 
 namespace inviwo {
 
-class ProcessorNetwork : public IvwSerializable {
+class IVW_CORE_API ProcessorNetwork : public IvwSerializable {
 
 public:
 

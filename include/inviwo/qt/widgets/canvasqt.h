@@ -1,13 +1,14 @@
 #ifndef IVW_CANVASQT_H
 #define IVW_CANVASQT_H
 
+#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include "modules/opengl/canvasgl.h"
 
 #include <QtOpenGL/QGLWidget>
 
 namespace inviwo {
 
-class CanvasQt : public CanvasGL, public QGLWidget {
+class IVW_QTWIDGETS_API CanvasQt : public CanvasGL, public QGLWidget {
 public:
 
     CanvasQt(QWidget* parent);

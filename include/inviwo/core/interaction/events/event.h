@@ -1,9 +1,11 @@
 #ifndef IVW_EVENT_H
 #define IVW_EVENT_H
 
+#include "inviwo/core/inviwocoredefine.h"
+
 namespace inviwo {
 
-    class Event {
+    class IVW_CORE_API Event {
     public:
 
         enum Modifier {

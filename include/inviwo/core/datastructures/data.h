@@ -1,6 +1,7 @@
 #ifndef IVW_DATA_H
 #define IVW_DATA_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/datarepresentation.h"
 #include "inviwo/core/datastructures/representationconverterfactory.h"
@@ -8,7 +9,7 @@
 
 namespace inviwo {
 
-    class Data {
+    class IVW_CORE_API Data {
 
     public:
         Data();
@@ -160,7 +161,7 @@ namespace inviwo {
     /*---------------------------------------------------------------*/
 
     template <typename T>
-    class DataDimension : public Data {
+    class IVW_CORE_API DataDimension : public Data {
     public:
         DataDimension(){}
         virtual ~DataDimension(){}

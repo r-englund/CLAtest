@@ -1,12 +1,13 @@
 #ifndef IVW_PROCESSORWIDGETQT_H
 #define IVW_PROCESSORWIDGETQT_H
 
+#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include <QWidget>
 #include "inviwo/core/processors/processorwidget.h"
 
 namespace inviwo {
 
-class ProcessorWidgetQt : public ProcessorWidget, public QWidget {
+class IVW_QTWIDGETS_API ProcessorWidgetQt : public ProcessorWidget, public QWidget {
 
 public:
     ProcessorWidgetQt(Processor* processor, QWidget* parent);

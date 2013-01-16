@@ -1,12 +1,13 @@
 #ifndef IVW_VOLUMERAM_H
 #define IVW_VOLUMERAM_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/datastructures/volumerepresentation.h"
 
 namespace inviwo {
 
-class VolumeRAM : public VolumeRepresentation {
+class IVW_CORE_API VolumeRAM : public VolumeRepresentation {
 
 public:
     VolumeRAM();
@@ -21,7 +22,7 @@ protected:
 };
 
 template<typename T>
-class VolumeRAMPrecision : public VolumeRAM {
+class IVW_CORE_API VolumeRAMPrecision : public VolumeRAM {
 public:
     VolumeRAMPrecision();
     VolumeRAMPrecision(ivec3 dimensions);

@@ -1,13 +1,14 @@
 #ifndef IVW_VOLUMEDISK_H
 #define IVW_VOLUMEDISK_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/datastructures/volumerepresentation.h"
 #include <stdio.h>
 #include <fstream>
 
 namespace inviwo {
 
-    class VolumeDisk : public VolumeRepresentation {
+    class IVW_CORE_API VolumeDisk : public VolumeRepresentation {
 
     public:
         VolumeDisk(std::string url);

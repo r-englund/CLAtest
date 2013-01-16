@@ -17,7 +17,6 @@ use File::Copy;
 # my $definition = 'IVW_MODULE_OPENGL_API';
 # my $definepat = 'modules/opengl/openglmoduledefine.h';
 
-#my @dirs = qw(../include/inviwo/core/io/serialization);
 # my @dirs = qw(../include/inviwo/core);
 # my $definition = 'IVW_CORE_API';
 # my $definepat = 'inviwo/core/inviwocoredefine.h';
@@ -33,8 +32,7 @@ use File::Copy;
 my $interesting = 'h';
 my $skip_dirs = '\.svn|\.moc|\.obj|\.ui';
 
-# Find class/struct and put API after it
-# If outside {};
+# Put project defintion in proper location (and #include to *define.h)
 
 find(\&wanted, @dirs);
 
@@ -66,23 +64,23 @@ sub add_class_defintion {
     foreach (@f) {
         $l = $_;
         # Search lines to replace with define
-        if ($outside && ($l =~ m/class \w+\s*(:|{)/)) {
+        if ($outside && !($l =~ m/::+/) && ($l =~ m/class \w+\s*(:|{)/)) {
             $l =~ s/class/class $definition/;
             print $l;
             $do_replace = 1;
-        } elsif ($outside && ($l =~ m/struct \w+\s*(:|{)/)) {
+        } elsif ($outside && !($l =~ m/::+/) && ($l =~ m/struct \w+\s*(:|{)/)) {
             $l =~ s/struct/struct $definition/;
             print $l;
             $do_replace = 1;
-        } elsif ($outside && ($l =~ m/template class \w+</) && ($l =~ m/>;$/)) {
+        } elsif ($outside && !($l =~ m/::+/) && ($l =~ m/template class \w+</) && ($l =~ m/>;$/)) {
             $l =~ s/template class/template class $definition/;
             print $l;
             $do_replace = 1;
-        } elsif ($outside && ($l =~ m/inline \w+/) && (($l =~ m/\);$/) || ($l =~ m/{/))) {
+        } elsif ($outside && !($l =~ m/::+/) && ($l =~ m/inline \w+/) && (($l =~ m/\);$/) || ($l =~ m/{/))) {
             $l =~ s/inline/inline $definition/;
             print $l;
             $do_replace = 1;
-        } elsif ($outside && ($l =~ m/\w+/) && !($l =~ m/namespace/) && (($l =~ m/\);$/) || ($l =~ m/{/))) {
+        } elsif ($outside && !($l =~ m/::+/) && ($l =~ m/\w+/) && !($l =~ m/namespace/) && (($l =~ m/\);$/) || ($l =~ m/{/))) {
             $l =~ /^(\s*)/;
             my $start_space_count = length($1);
             my $new_line = $l;

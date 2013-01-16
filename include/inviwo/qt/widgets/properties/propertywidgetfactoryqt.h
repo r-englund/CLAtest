@@ -1,13 +1,14 @@
 #ifndef IVW_PROPERTYWIDGETFACTORYQT_H
 #define IVW_PROPERTYWIDGETFACTORYQT_H
 
+#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
 #include "inviwo/core/properties/property.h"
 
 #include "inviwo/qt/widgets/properties/propertywidgetqt.h"
 
 namespace inviwo {
 
-class PropertyWidgetFactoryQt {
+class IVW_QTWIDGETS_API PropertyWidgetFactoryQt {
 
 public:
     PropertyWidgetFactoryQt();

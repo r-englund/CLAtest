@@ -1,6 +1,7 @@
 #ifndef IVW_CONSOLEWIDGET_H
 #define IVW_CONSOLEWIDGET_H
 
+#include "inviwo/qt/editor/inviwoqteditordefine.h"
 #include <QTextEdit>
 
 #include "inviwo/core/util/logdistributor.h"
@@ -8,7 +9,7 @@
 
 namespace inviwo {
 
-class ConsoleWidget : public InviwoDockWidget, public Logger {
+class IVW_QTEDITOR_API ConsoleWidget : public InviwoDockWidget, public Logger {
 
 public:
     ConsoleWidget(QWidget* parent);

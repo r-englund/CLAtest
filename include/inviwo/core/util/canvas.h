@@ -1,6 +1,7 @@
 #ifndef IVW_CANVAS_H
 #define IVW_CANVAS_H
 
+#include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
 #include "inviwo/core/network/processornetworkevaluator.h"
 #include "inviwo/core/interaction/events/eventhandler.h"
@@ -10,7 +11,7 @@
 
 namespace inviwo {
 
-class Canvas {
+class IVW_CORE_API Canvas {
 public:
     Canvas(ivec2 dimensions);
     virtual ~Canvas();
