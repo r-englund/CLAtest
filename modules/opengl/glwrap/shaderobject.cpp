@@ -1,6 +1,5 @@
 #include "shaderobject.h"
 #include <stdio.h>
-//#include <iostream>
 #include <fstream>
 
 #ifdef WIN32
@@ -38,10 +37,11 @@ std::string ShaderObject::embeddDefines(std::string source) {
     return result.str();
 }
 
-std::string ShaderObject::embeddIncludes(std::string source) {
+std::string ShaderObject::embeddIncludes(std::string source, std::string fileName) {
     std::ostringstream result;
     std::string curLine;
     std::istringstream shaderSource(source);
+    unsigned int localLineNumber = 0;
     while (std::getline(shaderSource, curLine)) {
         std::string::size_type posInclude = curLine.find("#include");
         std::string::size_type posComment = curLine.find("//");
@@ -57,10 +57,12 @@ std::string ShaderObject::embeddIncludes(std::string source) {
             std::string includeSource = buffer.str();
             
             if (!includeSource.empty())
-                result << embeddIncludes(includeSource) << "\n"; 
+                result << embeddIncludes(includeSource, includeFileName) << "\n"; 
         }
         else
             result << curLine << "\n";
+        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>(fileName, localLineNumber));
+        localLineNumber++;
     }
     return result.str();
 }
@@ -71,7 +73,8 @@ void ShaderObject::initialize() {
     loadSource(IVW_DIR+"modules/opengl/glsl/"+fileName_);
     std::string sourceStr = std::string(source_);
     sourceStr = embeddDefines(sourceStr);
-    sourceStr = embeddIncludes(sourceStr);
+    lineNumberResolver_.clear();
+    sourceStr = embeddIncludes(sourceStr, fileName_);
     source_ = sourceStr.c_str();
     upload();
     compile();
@@ -110,7 +113,6 @@ std::string ShaderObject::getCompileLog() {
     GLint maxLogLength;
     glGetShaderiv(id_, GL_INFO_LOG_LENGTH , &maxLogLength);
     LGL_ERROR;
-
     if (maxLogLength > 1) {
         GLchar* compileLog = new GLchar[maxLogLength];
         ivwAssert(compileLog!=0, "could not allocate memory for compiler log");
@@ -122,11 +124,45 @@ std::string ShaderObject::getCompileLog() {
     } else return "";
 }
 
+int ShaderObject::getLogLineNumber(const std::string& compileLogLine) {
+    // TODO: adapt to ATI compile log syntax
+    int result = 0;
+    std::istringstream input(compileLogLine);
+    int num;
+    if (input>>num) {
+        char c;
+        if (input>>c && c=='(') {
+            if (input>>result) {
+                return result;
+            }
+        }
+    }
+    return result;
+}
+
+std::string ShaderObject::reformatCompileLog(const std::string compileLog) {
+    std::ostringstream result;
+    std::string curLine;
+    std::istringstream origCompileLog(compileLog);
+    while (std::getline(origCompileLog, curLine)) {
+        unsigned int origLineNumber = getLogLineNumber(curLine);
+        unsigned int lineNumber = lineNumberResolver_[origLineNumber].second;
+        std::string fileName = lineNumberResolver_[origLineNumber].first;
+        // TODO: adapt substr call to ATI compile log syntax
+        result << "\n" << fileName << " (" << lineNumber << "): " << curLine.substr(curLine.find(":")+1);
+    }
+    return result.str();
+}
+
 void ShaderObject::compile() {
     glCompileShader(id_);
-    std::string compilerLog = getCompileLog();
-    if (!compilerLog.empty())
-        LogInfo(compilerLog);
+    GLint compiledOk = 0;
+    glGetShaderiv(id_, GL_COMPILE_STATUS, &compiledOk);
+    if (!compiledOk) {
+        std::string compilerLog = getCompileLog();
+        compilerLog = reformatCompileLog(compilerLog);
+        LogError(compilerLog);
+    }
 }
 
 } // namespace

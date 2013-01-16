@@ -34,7 +34,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/processorgl.cpp
     ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
     ${IVW_MODULE_DIR}/opengl/volumegl.cpp
-	${IVW_MODULE_DIR}/opengl/volumeglconverter.cpp
+    ${IVW_MODULE_DIR}/opengl/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.cpp

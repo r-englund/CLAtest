@@ -25,7 +25,10 @@ public:
 
 private:
     std::string embeddDefines(std::string source);
-    std::string embeddIncludes(std::string source);
+    std::string embeddIncludes(std::string source, std::string fileName);
+
+    int getLogLineNumber(const std::string& compileLogLine);
+    std::string reformatCompileLog(const std::string compileLog);
 
     GLenum shaderType_;
     std::string fileName_;
@@ -34,6 +37,7 @@ private:
     const char* source_;
 
     std::vector<std::pair<std::string, std::string> > shaderDefines_;
+    std::vector<std::pair<std::string, unsigned int> > lineNumberResolver_;
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
