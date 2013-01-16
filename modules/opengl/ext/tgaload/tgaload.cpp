@@ -38,7 +38,7 @@
 //#include <mem.h>
 #include "tgaload.h"
 
-#ifdef WIN32
+#ifndef __APPLE__
 /* Extension Management */
 PFNGLCOMPRESSEDTEXIMAGE2DARBPROC  glCompressedTexImage2DARB  = NULL;
 PFNGLGETCOMPRESSEDTEXIMAGEARBPROC glGetCompressedTexImageARB = NULL;
