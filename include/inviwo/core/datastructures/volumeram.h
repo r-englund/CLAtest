@@ -113,6 +113,7 @@ typedef VolumeRAMPrecision<uint16_t> VolumeRAMuint16;
 typedef VolumeRAMPrecision<int16_t> VolumeRAMint16;
 typedef VolumeRAMPrecision<uint32_t> VolumeRAMuint32;
 typedef VolumeRAMPrecision<int32_t> VolumeRAMint32;
+typedef VolumeRAMPrecision<float> VolumeRAMfloat;
 
 } // namespace
 

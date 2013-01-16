@@ -435,7 +435,7 @@ endmacro()
 macro(ivw_include_directories)
       #--------------------------------------------------------------------
       # Set includes
-      include_directories(${ARGN})
+      include_directories("${ARGN}")
           
       #--------------------------------------------------------------------
       # Append includes to project list
@@ -499,7 +499,7 @@ macro(ivw_add_dependencies)
       #--------------------------------------------------------------------
       # Set directory links
       link_directories(${${u_package}_LIBRARY_DIR})
-      
+      #message("${${u_package}_LIBRARY_DIR}")
       #--------------------------------------------------------------------
       # Set directory links
       add_definitions(${${u_package}_DEFINITIONS})
@@ -516,6 +516,7 @@ macro(ivw_add_dependencies)
       #--------------------------------------------------------------------
       # Create target
       target_link_libraries(${_projectName} ${${u_package}_LIBRARIES})
+	  #message(${${u_package}_LIBRARIES})
       
       #--------------------------------------------------------------------
       # Add dependcy package variables to this package if shared build

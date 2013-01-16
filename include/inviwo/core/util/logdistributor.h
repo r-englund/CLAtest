@@ -3,6 +3,7 @@
 
 #include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/inviwo.h"
+#include <sstream>
 
 namespace inviwo {
 
@@ -13,11 +14,24 @@ IVW_CORE_API enum LogLevel {
 };
 
 #define LogInfo(message) \
-    IVW_CORE_API LogCentral::instance()->log(logSource_, Info, __FILE__, __FUNCTION__, __LINE__, (message));
+    {   std::ostringstream stream; stream << message; \
+    IVW_CORE_API inviwo::LogCentral::instance()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream.str());}
 #define LogWarn(message) \
-    IVW_CORE_API LogCentral::instance()->log(logSource_, Warn, __FILE__, __FUNCTION__, __LINE__, (message));
+    {   std::ostringstream stream; stream << message; \
+    IVW_CORE_API inviwo::LogCentral::instance()->log(logSource_, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream.str());}
 #define LogError(message) \
-    IVW_CORE_API LogCentral::instance()->log(logSource_, Error, __FILE__, __FUNCTION__, __LINE__, (message));
+    {   std::ostringstream stream; stream << message; \
+    inviwo::LogCentral::instance()->log(logSource_, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+
+#define LogInfoS(source, message) \
+    {   std::ostringstream stream; stream << message; \
+    IVW_CORE_API inviwo::LogCentral::instance()->log(source, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+#define LogWarnS(source, message) \
+    {   std::ostringstream stream; stream << message; \
+    IVW_CORE_API inviwo::LogCentral::instance()->log(source, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+#define LogErrorS(source, message) \
+    {   std::ostringstream stream; stream << message; \
+    inviwo::LogCentral::instance()->log(source, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream.str());}
 
 class IVW_CORE_API Logger {
 

@@ -1,0 +1,40 @@
+#--------------------------------------------------------------------
+# Inviwo OpenCL Module
+ivw_module(OpenCL)
+
+#--------------------------------------------------------------------
+# Add header files
+set(HEADER_FILES
+    ${IVW_MODULE_DIR}/opencl/cl.hpp
+    ${IVW_MODULE_DIR}/opencl/glmcl.h
+	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
+    ${IVW_MODULE_DIR}/opencl/openclmodule.h
+    ${IVW_MODULE_DIR}/opencl/volumecl.h
+    ${IVW_MODULE_DIR}/opencl/volumeclconverter.h
+)
+ivw_group("Header Files" ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Add source files
+set(SOURCE_FILES
+    ${IVW_MODULE_DIR}/opencl/cl.cpp
+    ${IVW_MODULE_DIR}/opencl/glmcl.cpp
+    ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
+    ${IVW_MODULE_DIR}/opencl/openclmodule.cpp
+    ${IVW_MODULE_DIR}/opencl/volumecl.cpp
+	${IVW_MODULE_DIR}/opencl/volumeclconverter.cpp
+)
+ivw_group("Source Files" ${SOURCE_FILES})
+
+ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
+
+#--------------------------------------------------------------------
+# Add shaders
+#set(SHADER_FILES
+#)
+#ivw_group("Shader Files" ${SHADER_FILES})
+
+#--------------------------------------------------------------------
+# Create module
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+
