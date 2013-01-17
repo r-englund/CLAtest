@@ -2,12 +2,12 @@
 #define IVW_OPENCLMODULE_H
 
 #include "inviwo/core/inviwomodule.h"
-
+#include "modules/opencl/openclmoduledefine.h"
 namespace inviwo {
 /*
  * See inviwoopencl.h for usage.
  */ 
-class OpenCLModule : public InviwoModule {
+class IVW_MODULE_OPENCL_API OpenCLModule : public InviwoModule {
 
 public:
     OpenCLModule();

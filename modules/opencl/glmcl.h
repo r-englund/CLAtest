@@ -1,7 +1,7 @@
 #ifndef __GLMCL_H__
 #define __GLMCL_H__
 
-#include "cl.hpp"
+#include "modules/opencl/cl.hpp"
 #include "ext/glm/glm.hpp"
 #include "inviwo/core/util/pstdint.h"
 #include "inviwo/core/util/logdistributor.h"

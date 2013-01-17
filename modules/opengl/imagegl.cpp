@@ -148,7 +148,7 @@ namespace inviwo {
         */         
         
         //Resize by rendering
-        ivec2 csize = target->size();        
+        ivec2 csize = target->dimension();        
         source->bindColorTexture(GL_TEXTURE0);
         target->activateBuffer();
         shader_->activate();

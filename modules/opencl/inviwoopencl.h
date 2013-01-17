@@ -4,7 +4,7 @@
 #include <iostream>
 #include "ext/glm/glm.hpp"
 #include "modules/opencl/cl.hpp"
-
+#include "modules/opencl/openclmoduledefine.h"
 
 namespace cl{
 
@@ -42,7 +42,7 @@ namespace inviwo {
 * Singleton class that manages OpenCL context and queues. 
 *
 */
-class OpenCL {
+class IVW_MODULE_OPENCL_API OpenCL {
 public:
 
 

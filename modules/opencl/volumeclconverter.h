@@ -9,7 +9,7 @@
 
 namespace inviwo {
 
-    class VolumeRAM2CLConverter : public RepresentationConverterType<VolumeCL> {
+    class IVW_MODULE_OPENCL_API VolumeRAM2CLConverter : public RepresentationConverterType<VolumeCL> {
 
     public:
         VolumeRAM2CLConverter();
@@ -25,7 +25,7 @@ namespace inviwo {
         DataRepresentation* convert(DataRepresentation* source);
     };
 
-    class VolumeDisk2CLConverter : public RepresentationConverterPackage<VolumeCL> {
+    class IVW_MODULE_OPENCL_API VolumeDisk2CLConverter : public RepresentationConverterPackage<VolumeCL> {
     
     public:
         VolumeDisk2CLConverter() : RepresentationConverterPackage<VolumeCL>(){
@@ -35,7 +35,7 @@ namespace inviwo {
         virtual ~VolumeDisk2CLConverter() {};
     };
 
-    class VolumeCL2RAMConverter : public RepresentationConverterType<VolumeRAM> {
+    class IVW_MODULE_OPENCL_API VolumeCL2RAMConverter : public RepresentationConverterType<VolumeRAM> {
 
     public:
         VolumeCL2RAMConverter();

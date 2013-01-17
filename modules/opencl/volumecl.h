@@ -5,35 +5,36 @@
 #include "inviwo/core/datastructures/volumerepresentation.h"
 #include "inviwo/core/util/typetostring.h"
 #include "modules/opencl/glmcl.h"
+#include "modules/opencl/openclmoduledefine.h"
 
 namespace inviwo {
 
-class VolumeCL : public VolumeRepresentation {
+class IVW_MODULE_OPENCL_API VolumeCL : public VolumeRepresentation {
 
 public:
     VolumeCL();
     VolumeCL(ivec3 dimensions);
     virtual ~VolumeCL();
-
-    virtual void initialize();
-    virtual void deinitialize();
-    virtual DataRepresentation* clone()=0;
+    
+    virtual void initialize() {};
+    virtual void deinitialize() {};
     cl::ImageFormat getFormat() const { return imageFormat_;}
-    const cl::Image3D* getVolume() const { return volumeImage_; }
+    const cl::Image3D* getVolume() const { return image3D_; }
 
 protected:
-    cl::Image3D* volumeImage_;
+    cl::Image3D* image3D_;
     cl::ImageFormat imageFormat_;
 };
 
 template<typename T>
-class VolumeCLPrecision : public VolumeCL {
+class IVW_MODULE_OPENCL_API VolumeCLPrecision : public VolumeCL {
 public:
     VolumeCLPrecision();
     VolumeCLPrecision(ivec3 dimensions);
-    VolumeCLPrecision(T* texels, ivec3 dimensions);
+    VolumeCLPrecision(T* voxels, ivec3 dimensions);
     virtual ~VolumeCLPrecision() {};
-    virtual void initialize(void* texels);
+    virtual void initialize() { initialize(0); }
+    virtual void initialize(void* voxels = NULL);
     virtual void deinitialize();
     virtual DataRepresentation* clone();
 private :
@@ -69,9 +70,9 @@ void VolumeCLPrecision<T>::setTypeAndFormat() {
 
 template<typename T>
 void VolumeCLPrecision<T>::initialize(void* texels) {
-    volumeImage_ = new cl::Image3D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y, dimensions_.z);
+    image3D_ = new cl::Image3D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y, dimensions_.z);
     if (!texels) {
-        OpenCL::getInstance()->getSynchronosGPUQueue().enqueueWriteImage(*volumeImage_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, texels);
+        OpenCL::getInstance()->getSynchronosGPUQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, texels);
     }
     VolumeCL::initialize();
 }
@@ -85,8 +86,8 @@ DataRepresentation* VolumeCLPrecision<T>::clone() {
 
 template<typename T>
 void VolumeCLPrecision<T>::deinitialize() {
-    delete volumeImage_;
-    volumeImage_ = 0;
+    delete image3D_;
+    image3D_ = 0;
     VolumeCL::deinitialize();
 }
 

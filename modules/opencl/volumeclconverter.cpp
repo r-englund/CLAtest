@@ -1,6 +1,6 @@
-#include "volumeclconverter.h"
+#include "modules/opencl/volumeclconverter.h"
 #include "inviwo/core/datastructures/volumerepresentation.h"
-#include "inviwoopencl.h"
+#include "modules/opencl/inviwoopencl.h"
 
 namespace inviwo {
 

@@ -35,7 +35,7 @@ void ImageMixer::process() {
     
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    ivec2 csize = outImageGL->size();
+    ivec2 csize = outImageGL->dimension();
 
     activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);

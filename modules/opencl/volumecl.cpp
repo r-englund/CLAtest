@@ -1,24 +1,21 @@
-#include "volumecl.h"
+#include "modules/opencl/volumecl.h"
 
 namespace inviwo {
 
 VolumeCL::VolumeCL()
-    : volumeImage_(0), VolumeRepresentation(ivec3(128,128,128), "UINT8") //TODO: use actual value
+    : image3D_(0), VolumeRepresentation(ivec3(128,128,128), "UINT8") //TODO: use actual value
 {
-    initialize();
 }
 
 VolumeCL::VolumeCL(ivec3 dimensions)
-    : volumeImage_(0), VolumeRepresentation(dimensions, "UINT8")
+    : image3D_(0), VolumeRepresentation(dimensions, "UINT8")
 {
-    initialize();
 }
 
 VolumeCL::~VolumeCL() {}
 
-void VolumeCL::initialize() {}
 
-void VolumeCL::deinitialize() {}
+
 
 
 

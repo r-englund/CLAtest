@@ -40,7 +40,7 @@ void SimpleRaycaster::process() {
     
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    ivec2 outportDim = outImageGL->size();
+    ivec2 outportDim = outImageGL->dimension();
 
     Volume* volume = volumePort_.getData();
     VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();

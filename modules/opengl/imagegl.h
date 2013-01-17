@@ -31,7 +31,7 @@ namespace inviwo {
         void unbindDepthTexture();
         void unbindColorTexture();
         virtual void resize(ivec2 dimensions);
-        virtual ivec2 size() { return dimensions_;}
+        virtual ivec2 dimension() { return dimensions_;}
         virtual void copyAndResizeImage(DataRepresentation* target) ;
         void renderImagePlaneQuad() const;
     private:

@@ -472,7 +472,7 @@ bool Variant::canConvert(VariantType t, VariantType s) {
         else if (t >= Variant::VariantTypeUserType || s >= Variant::VariantTypeUserType)
             return t == s;
         else
-            return canConvertMatrix[t] & (1 << s);
+            return (canConvertMatrix[t] & (1 << s)) != 0; // != 0 gets rid of performance warning
     }
 }
 
@@ -493,11 +493,11 @@ bool Variant::getBool() const {
     case VariantTypeBool:
         return VP(bool);
     case VariantTypeDouble:
-        return static_cast<bool>(VP(double));
+        return static_cast<bool>(VP(double)!= 0); // != 0 gets rid of performance warning
     case VariantTypeInteger:
-        return static_cast<bool>(VP(int));
+        return static_cast<bool>(VP(int)!= 0); // != 0 gets rid of performance warning
     case VariantTypeFloat:
-        return static_cast<bool>(VP(float));
+        return static_cast<bool>(VP(float)!= 0); // != 0 gets rid of performance warning
     case VariantTypeString:
         {
             std::string s = VP(std::string);
@@ -513,7 +513,7 @@ bool Variant::getBool() const {
             throw Exception("String->Bool conversion failed");
         }
     case VariantTypeLong:
-        return static_cast<bool>(VP(long));
+        return static_cast<bool>(VP(long)!= 0); // != 0 gets rid of performance warning
     case VariantTypeInvalid:
         throw Exception("");
     default:            

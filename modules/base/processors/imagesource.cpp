@@ -32,7 +32,7 @@ void ImageSource::process() {
 
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    ivec2 csize = outImageGL->size();
+    ivec2 csize = outImageGL->dimension();
 
     Texture2D* testTex = new Texture2D(csize, GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
     glActiveTexture(GL_TEXTURE0);
