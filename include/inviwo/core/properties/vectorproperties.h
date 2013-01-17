@@ -13,6 +13,14 @@ public:
     virtual void deserialize(IvwDeserializer& s);
 };
 
+class IntVec2Property : public OrdinalProperty<vec2> {
+public:
+	IntVec2Property(std::string identifier, std::string displayName, vec2 value, vec2 minValue=vec2(0), vec2 maxValue= vec2(10), vec2 increment=vec2(1));
+	virtual void serialize(IvwSerializer& s) const;
+	virtual void deserialize(IvwDeserializer& s);
+
+};
+
 } // namespace
 
 #endif // IVW_VECTORPROPERTIES_H
