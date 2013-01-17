@@ -10,7 +10,7 @@
 
 int main(int argc, char** argv) {
 
-    inviwo::InviwoApplicationQt inviwoApp("Inviwo", "C:/inviwo/inviwo", argc, argv);
+    inviwo::InviwoApplicationQt inviwoApp("Inviwo", IVW_DIR, argc, argv);
     inviwoApp.initialize();
 
     #if (QT_VERSION >= 0x040400)

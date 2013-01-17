@@ -136,6 +136,10 @@ void InviwoMainWindow::newNetwork() {
 }
 
 void InviwoMainWindow::openNetwork(QString networkFileName) {
+    QFile file(networkFileName);
+    if(!file.exists())
+        return;
+    
     networkEditorView_->getNetworkEditor()->loadNetwork(networkFileName.toStdString());
     setCurrentNetwork(networkFileName);
     addToRecentNetworks(networkFileName);
