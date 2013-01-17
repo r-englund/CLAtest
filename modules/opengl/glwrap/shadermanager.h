@@ -11,7 +11,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API ShaderManager : public Singleton<ShaderManager> {
 
 public:
-    ShaderManager::ShaderManager();
+    ShaderManager();
     void loadShader();
 
 private:
