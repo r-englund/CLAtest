@@ -17,6 +17,10 @@ use File::Copy;
 # my $definition = 'IVW_MODULE_OPENGL_API';
 # my $definepat = 'modules/opengl/openglmoduledefine.h';
 
+# my @dirs = qw(../modules/opencl);
+# my $definition = 'IVW_MODULE_OPENCL_API';
+# my $definepat = 'modules/opencl/openclmoduledefine.h';
+
 # my @dirs = qw(../include/inviwo/core);
 # my $definition = 'IVW_CORE_API';
 # my $definepat = 'inviwo/core/inviwocoredefine.h';
