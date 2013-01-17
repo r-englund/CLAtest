@@ -324,7 +324,7 @@ int tgaLoadTheImage ( char *file_name, image_t *p, tgaFLAG mode )
 
    if (( file = fopen ( file_name, "rb" )) == NULL )
    {
-   	tgaError ( "File not found", file_name, file, p );
+   	tgaError ((char *)"File not found", file_name, file, p );
       return 0;
    }
 
@@ -333,7 +333,7 @@ int tgaLoadTheImage ( char *file_name, image_t *p, tgaFLAG mode )
    switch ( p->info.image_type )
    {
       case 1 :
-         tgaError ( "8-bit colour no longer supported", file_name, file, p );
+         tgaError ((char *)"8-bit colour no longer supported", file_name, file, p );
          return 0;
 
       case 2 :
@@ -343,7 +343,7 @@ int tgaLoadTheImage ( char *file_name, image_t *p, tgaFLAG mode )
             p->info.tgaColourType = GL_RGBA;
 			else
 	      {
-         	tgaError ( "Unsupported RGB format", file_name, file, p );
+         	tgaError ((char *)"Unsupported RGB format", file_name, file, p );
          	return 0;
          }
          break;
@@ -355,13 +355,13 @@ int tgaLoadTheImage ( char *file_name, image_t *p, tgaFLAG mode )
             p->info.tgaColourType = GL_ALPHA;
       	else
 	      {
-         	tgaError ( "Must be LUMINANCE or ALPHA greyscale", file_name, file, p );
+         	tgaError ((char *)"Must be LUMINANCE or ALPHA greyscale", file_name, file, p );
 				return 0;
          }
          break;
 
       case 9 :
-         tgaError ( "8-bit colour no longer supported", file_name, file, p );
+         tgaError ((char *)"8-bit colour no longer supported", file_name, file, p );
          return 0;
 
       case 10 :
@@ -371,7 +371,7 @@ int tgaLoadTheImage ( char *file_name, image_t *p, tgaFLAG mode )
             p->info.tgaColourType = GL_RGBA;
          else
 	      {
-         	tgaError ( "Unsupported compressed RGB format", file_name, file, p );
+         	tgaError ((char *)"Unsupported compressed RGB format", file_name, file, p );
          	return 0;
          }
    }
