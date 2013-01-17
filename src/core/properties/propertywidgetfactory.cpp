@@ -5,11 +5,7 @@
 
 namespace inviwo {
 
-PropertyWidgetFactory* PropertyWidgetFactory::factory_ = 0;
-
-PropertyWidgetFactory::PropertyWidgetFactory() {
-    factory_ = this;
-}
+PropertyWidgetFactory::PropertyWidgetFactory() {}
 
 PropertyWidgetFactory::~PropertyWidgetFactory() {}
 
@@ -55,10 +51,6 @@ bool PropertyWidgetFactory::isValidType(std::string className) const {
 }
 
 void PropertyWidgetFactory::deinitialize() {
-}
-
-PropertyWidgetFactory* PropertyWidgetFactory::instance() {
-    return factory_;
 }
 
 } // namespace

@@ -3,17 +3,17 @@
 
 #include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/properties/propertywidget.h"
-#include "inviwo/core/inviwofactorybase.h"
+#include "inviwo/core/util/inviwofactorybase.h"
+#include "inviwo/core/util/singleton.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API PropertyWidgetFactory : public InviwoFactoryBase {
+class IVW_CORE_API PropertyWidgetFactory : public Factory,
+                                           public Singleton<PropertyWidgetFactory> {
 
 public:
     PropertyWidgetFactory();
     ~PropertyWidgetFactory();
-
-    static PropertyWidgetFactory* instance();
 
     virtual void initialize();
     virtual void deinitialize();
@@ -21,9 +21,6 @@ public:
     void registerPropertyWidget(PropertyWidget* propertyWidget);
     virtual IvwSerializable* create(std::string className) const;
     virtual bool isValidType(std::string className) const;
-
-protected:
-    static PropertyWidgetFactory* factory_;
 
 private:
     mutable std::map<std::string, PropertyWidget*> propertyWidgetMap_;

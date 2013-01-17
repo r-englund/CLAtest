@@ -7,54 +7,43 @@
 
 namespace inviwo {
 
-    InviwoApplication* InviwoApplication::app_ = 0;
+InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
+                                     : displayName_(displayName), basePath_(basePath)
+{}
 
-    InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
-                                         : displayName_(displayName), basePath_(basePath)
-    {
-        app_ = this;
-    }
+InviwoApplication::~InviwoApplication() {}
 
-    InviwoApplication::~InviwoApplication() {}
+void InviwoApplication::initialize() {
+    init(this);
+    registerModule(new InviwoCore());
+    registerAllModules(this);
+    for (size_t i=0; i<modules_.size(); i++)
+        modules_[i]->initialize();
 
-    void InviwoApplication::initialize() {
-        registerModule(new InviwoCore());
-        registerAllModules(this);
-        for (size_t i=0; i<modules_.size(); i++)
-            modules_[i]->initialize();
+    // initialize singleton factories
+    ProcessorFactory::init();
+    MetaDataFactory::init();
+    RepresentationConverterFactory::init();
 
-        ProcessorFactory* processorFactory = new ProcessorFactory();
-        processorFactory->initialize();
+    initialized_ = true;
+}
 
-        MetaDataFactory* metadataFactory = new MetaDataFactory();
-        metadataFactory->initialize();
+void InviwoApplication::deinitialize() {
+    for (size_t i=0; i<modules_.size(); i++)
+        modules_[i]->deinitialize();
+    initialized_ = false;
+}
 
-        RepresentationConverterFactory* representationConverterFactory = new RepresentationConverterFactory();
-        representationConverterFactory->initialize();
-
-        initialized_ = true;
-    }
-
-    void InviwoApplication::deinitialize() {
-        for (size_t i=0; i<modules_.size(); i++)
-            modules_[i]->deinitialize();
-        initialized_ = false;
-    }
-
-    std::string InviwoApplication::getPath(PathType pathType, const std::string& suffix) {
-        std::string result = basePath_ + "/";
-        if (pathType == InviwoApplication::PATH_PROJECT)
-            result += "data/workspaces/";
-        else if (pathType == InviwoApplication::PATH_DATA)
-            result += "data/volumes/";
-        else if (pathType == InviwoApplication::PATH_MODULES)
-            result += "modules/";
-        result += suffix;
-        return result;
-    }
-
-    InviwoApplication* InviwoApplication::app() {
-        return app_;
-    }
+std::string InviwoApplication::getPath(PathType pathType, const std::string& suffix) {
+    std::string result = basePath_ + "/";
+    if (pathType == InviwoApplication::PATH_PROJECT)
+        result += "data/workspaces/";
+    else if (pathType == InviwoApplication::PATH_DATA)
+        result += "data/volumes/";
+    else if (pathType == InviwoApplication::PATH_MODULES)
+        result += "modules/";
+    result += suffix;
+    return result;
+}
 
 } // namespace

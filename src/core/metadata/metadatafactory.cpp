@@ -6,10 +6,8 @@
 
 namespace inviwo {
 
-MetaDataFactory* MetaDataFactory::factory_ = 0;
-
 MetaDataFactory::MetaDataFactory() {
-    factory_ = this;
+    initialize();
 }
 
 MetaDataFactory::~MetaDataFactory() {}
@@ -17,7 +15,7 @@ MetaDataFactory::~MetaDataFactory() {}
 void MetaDataFactory::initialize() {
     //TODO: check that inviwoapp is initialized
 
-    InviwoApplication* inviwoApp = InviwoApplication::app();
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
         std::vector<MetaData*> curMetadataList = inviwoApp->getModules()[curModuleId]->getMetaData();
         for (size_t curMetadataId=0; curMetadataId<curMetadataList.size(); curMetadataId++)
@@ -47,10 +45,6 @@ bool MetaDataFactory::isValidType(std::string className) const {
 }
 
 void MetaDataFactory::deinitialize() {
-}
-
-MetaDataFactory* MetaDataFactory::instance() {
-    return factory_;
 }
 
 } // namespace

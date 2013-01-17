@@ -37,7 +37,7 @@ std::string InviwoModule::getIdentifier() const {
 }
 
 std::string InviwoModule::getPath(const std::string& suffix) const {
-    return InviwoApplication::app()->getPath(InviwoApplication::PATH_MODULES, suffix);
+    return InviwoApplication::getRef().getPath(InviwoApplication::PATH_MODULES, suffix);
 }
 
 const std::vector<Processor*>& InviwoModule::getProcessors() const {

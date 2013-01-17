@@ -6,18 +6,15 @@
 
 namespace inviwo {
 
-ProcessorFactory* ProcessorFactory::factory_ = 0;
-
 ProcessorFactory::ProcessorFactory() {
-    factory_ = this;
+    initialize();
 }
 
 ProcessorFactory::~ProcessorFactory() {}
 
 void ProcessorFactory::initialize() {
     //TODO: check that inviwoapp is initialized
-
-    InviwoApplication* inviwoApp = InviwoApplication::app();
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
         std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
         for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
@@ -47,10 +44,6 @@ bool ProcessorFactory::isValidType(std::string className) const {
 }
 
 void ProcessorFactory::deinitialize() {
-}
-
-ProcessorFactory* ProcessorFactory::instance() {
-    return factory_;
 }
 
 } // namespace

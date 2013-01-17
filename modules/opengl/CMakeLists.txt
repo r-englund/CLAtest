@@ -16,6 +16,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/volumeglconverter.h
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
@@ -37,6 +38,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp

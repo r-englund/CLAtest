@@ -80,5 +80,5 @@ void ObservableInterface::removeObservers() {
 }
 
 
-} // End of namespace
+} // namespace
 

@@ -1,9 +1,9 @@
 #include "inviwo/core/io/serialization/ivwserializebase.h"
-#include "inviwo/core/inviwofactorybase.h"
 #include "inviwo/core/processors/processorfactory.h"
 #include "inviwo/core/metadata/metadatafactory.h"
 #include "inviwo/core/io/serialization/ivwserializable.h"
 #include "inviwo/core/inviwo.h"
+#include "inviwo/core/util/inviwofactorybase.h"
 
 
 namespace inviwo {
@@ -191,8 +191,8 @@ IvwSerializeBase::~IvwSerializeBase() {
 
 void IvwSerializeBase::registerFactories(void) {
     registeredFactories_.clear();
-    registeredFactories_.push_back(InviwoFactoryBase::instance<ProcessorFactory>());
-    registeredFactories_.push_back(InviwoFactoryBase::instance<MetaDataFactory>());
+    registeredFactories_.push_back(ProcessorFactory::getPtr());
+    registeredFactories_.push_back(MetaDataFactory::getPtr());
 }
 
 template <typename T>

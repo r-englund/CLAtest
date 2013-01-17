@@ -32,7 +32,6 @@ private:
 
 protected:
     static PropertyListWidget* propertyListWidget_;
-    PropertyWidgetFactoryQt* propertyWidgetFactory_;
     mutable std::map<std::string, QWidget*> propertyWidgetMap_;
 };
 

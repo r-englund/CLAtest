@@ -25,7 +25,7 @@ Processor* CanvasProcessor::create() const {
 }
 
 void CanvasProcessor::createProcessorWidget() {
-    InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::app());
+    InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     if (app) {
         QWidget* parent = app->getMainWindow();
         processorWidget_ = new CanvasProcessorWidget(this, parent);

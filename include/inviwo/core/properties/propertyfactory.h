@@ -3,30 +3,27 @@
 
 #include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/properties/property.h"
-#include "inviwo/core/inviwofactorybase.h"
+#include "inviwo/core/util/inviwofactorybase.h"
+#include "inviwo/core/util/singleton.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API PropertyFactory : public InviwoFactoryBase {
+class IVW_CORE_API PropertyFactory : public Factory,
+                                     public Singleton<PropertyFactory> {
 
-    public:
-        PropertyFactory();
-        ~PropertyFactory();
+public:
+    PropertyFactory();
+    ~PropertyFactory();
 
-        static PropertyFactory* instance();
+    virtual void initialize();
+    virtual void deinitialize();
 
-        virtual void initialize();
-        virtual void deinitialize();
+    void registerProcessor(Property* property);
+    virtual IvwSerializable* create(std::string className) const;
 
-        void registerProcessor(Property* property);
-        virtual IvwSerializable* create(std::string className) const;
-
-    protected:
-        static PropertyFactory* factory_;
-
-    private:
-        mutable std::map<std::string, Property*> processorClassMap_;
-    };
+private:
+    mutable std::map<std::string, Property*> processorClassMap_;
+};
 
 } // namespace
 

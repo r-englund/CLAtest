@@ -1,4 +1,5 @@
 #include "inviwo/qt/editor/propertylistwidget.h"
+#include "inviwo/core/properties/propertywidgetfactory.h"
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -12,7 +13,6 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     setMinimumWidth(300);
     propertyListWidget_ = this;
-    propertyWidgetFactory_ = new PropertyWidgetFactoryQt();
 
     listWidget_ = new QWidget(propertyListWidget_);
     listWidgetLayout_ = new QVBoxLayout(listWidget_);
@@ -86,7 +86,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
     std::vector<Property*> properties = processor->getProperties();
     for (size_t i=0; i<properties.size(); i++) {
         Property* curProperty = properties[i];
-        PropertyWidgetQt* propertyWidget = propertyWidgetFactory_->create(curProperty);
+        PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
         vLayout->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
     } 

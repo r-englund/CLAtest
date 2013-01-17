@@ -10,7 +10,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwocore.h
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwocoredefine.h
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwomodule.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/inviwofactorybase.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
@@ -81,11 +80,13 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/inviwofactorybase.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/project.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -96,7 +97,6 @@ set(SOURCE_FILES
     inviwoapplication.cpp
     inviwocore.cpp
     inviwomodule.cpp
-    inviwofactorybase.cpp	
     datastructures/data.cpp
     datastructures/datarepresentation.cpp
     datastructures/image.cpp
@@ -156,8 +156,8 @@ set(SOURCE_FILES
     io/serialization/ivwserializer.cpp
     io/serialization/ivwdeserializer.cpp
     io/serialization/ivwserializeconstants.cpp
-    util/canvas.cpp
     util/assertion.cpp
+    util/canvas.cpp
     util/exception.cpp
     util/logdistributor.cpp
     util/observer.cpp

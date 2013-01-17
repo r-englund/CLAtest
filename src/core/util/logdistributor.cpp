@@ -4,7 +4,6 @@ namespace inviwo {
 
 LogCentral* LogCentral::instance_ = 0;
 
-
 ConsoleLogger::ConsoleLogger() : Logger() {}
 ConsoleLogger::~ConsoleLogger() {}
 

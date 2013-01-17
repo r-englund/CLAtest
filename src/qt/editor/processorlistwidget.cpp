@@ -38,7 +38,7 @@ bool ProcessorListWidget::processorFits(Processor* processor, const QString& fil
 void ProcessorListWidget::addProcessorsToList(const QString& text) {
     processorList_->clear();
     // add processors from all modules to the list
-    InviwoApplication* inviwoApp = InviwoApplication::app();
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
         std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
         for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {

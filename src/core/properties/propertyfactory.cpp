@@ -5,10 +5,8 @@
 
 namespace inviwo {
 
-PropertyFactory* PropertyFactory::factory_ = 0;
-
 PropertyFactory::PropertyFactory() {
-    factory_ = this;
+    initialize();
 }
 
 PropertyFactory::~PropertyFactory() {}
@@ -38,10 +36,6 @@ IvwSerializable* PropertyFactory::create(std::string className) const {
 }
 
 void PropertyFactory::deinitialize() {
-}
-
-PropertyFactory* PropertyFactory::instance() {
-    return factory_;
 }
 
 } // namespace

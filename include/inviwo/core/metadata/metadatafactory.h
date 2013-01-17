@@ -3,31 +3,28 @@
 
 #include "inviwo/core/inviwocoredefine.h"
 #include "inviwo/core/metadata/metadata.h"
-#include "inviwo/core/inviwofactorybase.h"
+#include "inviwo/core/util/inviwofactorybase.h"
+#include "inviwo/core/util/singleton.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API MetaDataFactory : public InviwoFactoryBase {
+class IVW_CORE_API MetaDataFactory : public Factory,
+                                     public Singleton<MetaDataFactory>  {
 
-    public:
-        MetaDataFactory();
-        virtual ~MetaDataFactory();
+public:
+    MetaDataFactory();
+    virtual ~MetaDataFactory();
 
-        static MetaDataFactory* instance();
+    virtual void initialize();
+    virtual void deinitialize();
 
-        virtual void initialize();
-        virtual void deinitialize();
+    void registerMetaData(MetaData* meta);
+    virtual IvwSerializable* create(std::string className) const;
+    virtual bool isValidType(std::string className) const;
 
-        void registerMetaData(MetaData* meta);
-        virtual IvwSerializable* create(std::string className) const;
-        virtual bool isValidType(std::string className) const;
-
-    protected:
-        static MetaDataFactory* factory_;
-
-    private:
-        mutable std::map<std::string, MetaData*> metaDataClassMap_;
-    };
+private:
+    mutable std::map<std::string, MetaData*> metaDataClassMap_;
+};
 
 } // namespace
 

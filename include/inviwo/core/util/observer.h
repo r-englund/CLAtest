@@ -148,11 +148,6 @@ public:
     }
 };
 
-
-
-} // End of namespace
-
-
-
+} // namespace
 
 #endif // IVW_OBSERVER_H

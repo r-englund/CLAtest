@@ -1,6 +1,6 @@
 #include "inviwo/core/processors/processor.h"
-#include "inviwo/core/inviwofactorybase.h"
 #include "inviwo/core/metadata/metadatafactory.h"
+#include "inviwo/core/util/inviwofactorybase.h"
 
 namespace inviwo {
 
@@ -115,7 +115,7 @@ MetaData* Processor::getMetaData(std::string className) {
     }
 
     if (!meta) {
-        meta = dynamic_cast<MetaData*>(InviwoFactoryBase::instance<MetaDataFactory>()->create(className));
+        meta = dynamic_cast<MetaData*>(MetaDataFactory::getRef().create(className));
         metaData_.push_back(meta);
     }
     return meta;
