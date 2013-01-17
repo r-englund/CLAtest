@@ -1,3 +1,7 @@
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+#endif
+
 #include <QFile>
 
 #include "modules/opengl/inviwoopengl.h"
