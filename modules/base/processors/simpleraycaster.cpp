@@ -44,6 +44,7 @@ void SimpleRaycaster::process() {
 
     Volume* volume = volumePort_.getData();
     VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
+    ivec3 volumeDim = volumeGL->dimension();
     bindColorTexture(entryPort_, GL_TEXTURE0);
     bindColorTexture(exitPort_, GL_TEXTURE1);
     volumeGL->bindTexture(GL_TEXTURE2);
@@ -55,6 +56,7 @@ void SimpleRaycaster::process() {
     shader_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
     shader_->setUniform("enableShading_", enableShading_.get());
     shader_->setUniform("samplingRate_", samplingRate_.get());
+    shader_->setUniform("volumeDimension_", vec3(volumeDim.x, volumeDim.y, volumeDim.z));
     renderImagePlaneQuad();
     shader_->deactivate();
     deactivateCurrentTarget();

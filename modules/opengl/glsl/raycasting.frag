@@ -5,6 +5,7 @@ uniform sampler2D entryTex_;
 uniform sampler2D exitTex_;
 uniform sampler3D volume_;
 uniform vec2 dimension_;
+uniform vec3 volumeDimension_;
 
 uniform bool enableShading_;
 uniform float samplingRate_;
@@ -18,8 +19,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
     vec4 result = vec4(0.0);
     float t = 0.0;
     vec3 rayDirection = exitPoint - entryPoint;
-    vec3 volumeDimension = vec3(64.0);
-    float tIncr = 1.0/(samplingRate_*length(rayDirection*volumeDimension));
+    float tIncr = 1.0/(samplingRate_*length(rayDirection*volumeDimension_));
     float tEnd = length(rayDirection);
     rayDirection = normalize(rayDirection);
     while (t < tEnd) {
