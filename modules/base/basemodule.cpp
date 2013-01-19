@@ -2,6 +2,7 @@
 
 #include "modules/base/processors/cubeproxygeometry.h"
 #include "modules/base/processors/entryexitpoints.h"
+#include "modules/base/processors/findedges.h"
 #include "modules/base/processors/firstivwprocessor.h"
 #include "modules/base/processors/imagemixer.h"
 #include "modules/base/processors/imagesource.h"
@@ -16,7 +17,8 @@ BaseModule::BaseModule() : InviwoModule() {
 
     addProcessor(new CubeProxygeometry());
     addProcessor(new EntryExitPoints());
-    addProcessor(new FirstIvwProcessor());
+	addProcessor(new FindEdges());
+	addProcessor(new FirstIvwProcessor());
     addProcessor(new ImageMixer());
     addProcessor(new ImageSource());
     addProcessor(new RedGreenProcessor());

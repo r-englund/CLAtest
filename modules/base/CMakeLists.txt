@@ -7,6 +7,7 @@ ivw_module(Base)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.h
     ${IVW_MODULE_DIR}/base/processors/entryexitpoints.h
+    ${IVW_MODULE_DIR}/base/processors/findedges.h
     ${IVW_MODULE_DIR}/base/processors/firstivwprocessor.h
     ${IVW_MODULE_DIR}/base/processors/imagemixer.h
     ${IVW_MODULE_DIR}/base/processors/imagesource.h
@@ -20,6 +21,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.cpp
     ${IVW_MODULE_DIR}/base/processors/entryexitpoints.cpp
+    ${IVW_MODULE_DIR}/base/processors/findedges.cpp
     ${IVW_MODULE_DIR}/base/processors/firstivwprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/imagemixer.cpp
     ${IVW_MODULE_DIR}/base/processors/imagesource.cpp
