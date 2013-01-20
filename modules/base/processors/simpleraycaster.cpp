@@ -28,7 +28,7 @@ Processor* SimpleRaycaster::create() const {
 
 void SimpleRaycaster::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("raycasting.frag");
+    shader_ = ShaderManager::getRef().setupShader("raycasting.frag");
 }
 
 void SimpleRaycaster::deinitialize() {

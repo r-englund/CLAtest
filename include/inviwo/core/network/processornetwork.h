@@ -33,7 +33,6 @@ public:
     void setModified(bool isModified) { isModified_ = isModified; }
     bool isModified() { return isModified_; }
 
-
     std::vector<Processor*> getProcessors() const { return processors_; }
     Processor* getProcessorByName(std::string name) const;
     template<class T> std::vector<T*> getProcessorsByType() const;

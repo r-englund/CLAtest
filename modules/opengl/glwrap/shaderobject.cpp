@@ -50,7 +50,7 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
             std::string::size_type pathEnd = curLine.find("\"", pathBegin+1);
             std::string includeFileName(curLine, pathBegin+1, pathEnd-pathBegin-1);
 
-            // TODO: remove absolute paths
+            // TODO: remove absolute path
             std::ifstream includeFileStream(std::string(IVW_DIR+"modules/opengl/glsl/"+includeFileName).c_str());
             std::stringstream buffer;
             buffer << includeFileStream.rdbuf();
@@ -68,16 +68,15 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
 }
 
 
-void ShaderObject::initialize() {
-    // TODO: remove absolute paths
-    loadSource(IVW_DIR+"modules/opengl/glsl/"+fileName_);
+bool ShaderObject::initialize() {
+    loadSource(fileName_);
     std::string sourceStr = std::string(source_);
     sourceStr = embeddDefines(sourceStr);
     lineNumberResolver_.clear();
     sourceStr = embeddIncludes(sourceStr, fileName_);
     source_ = sourceStr.c_str();
     upload();
-    compile();
+    return compile();
 }
 
 void ShaderObject::deinitialize() {}
@@ -154,7 +153,7 @@ std::string ShaderObject::reformatCompileLog(const std::string compileLog) {
     return result.str();
 }
 
-void ShaderObject::compile() {
+bool ShaderObject::compile() {
     glCompileShader(id_);
     GLint compiledOk = 0;
     glGetShaderiv(id_, GL_COMPILE_STATUS, &compiledOk);
@@ -162,7 +161,9 @@ void ShaderObject::compile() {
         std::string compilerLog = getCompileLog();
         compilerLog = reformatCompileLog(compilerLog);
         LogError(compilerLog);
+        return false;
     }
+    return true;
 }
 
 } // namespace

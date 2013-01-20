@@ -21,7 +21,6 @@ class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene {
 
 public:
     static NetworkEditor* instance();
-    ~NetworkEditor();
 
     Processor* createProcessor(std::string className);
     void removeProcessor(std::string identifier);
@@ -103,6 +102,7 @@ private:
     bool gridSnapping_;
     
     static const std::string logSource_; ///< Source string to be displayed for log messages.
+    static NetworkEditor* instance_;
 };
 
 } // namespace

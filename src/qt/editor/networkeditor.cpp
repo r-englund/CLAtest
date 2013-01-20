@@ -1,4 +1,5 @@
 
+#include "inviwo/core/inviwoapplication.h"
 #include "inviwo/core/processors/canvasprocessor.h"
 #include "inviwo/core/io/serialization/ivwserializer.h"
 #include "inviwo/core/io/serialization/ivwdeserializer.h"
@@ -16,10 +17,12 @@
 namespace inviwo {
 
 const std::string NetworkEditor::logSource_ = "NetworkEditor";
+NetworkEditor* NetworkEditor::instance_ = 0;
 
 NetworkEditor* NetworkEditor::instance() {
-    static NetworkEditor* newInstance = new NetworkEditor(qApp);
-    return newInstance;
+    if (!instance_)
+        instance_ = new NetworkEditor(qApp);
+    return instance_;
 }
 
 NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
@@ -31,15 +34,12 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     gridSnapping_ = true;
 
     processorNetwork_ = new ProcessorNetwork();
+    InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
 }
 
 ProcessorNetworkEvaluator* NetworkEditor::getProcessorNetworkEvaluator() {         
     return processorNetworkEvaluator_;
-}
-
-NetworkEditor::~NetworkEditor() {
-    // TODO: cleanup
 }
 
 void NetworkEditor::addConnection(PortConnection *connection) {

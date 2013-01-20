@@ -161,33 +161,49 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     p->save();
     p->setPen(Qt::black);
     p->setRenderHint(QPainter::Antialiasing, true);
+    QRectF bRect = rect();
 
     // paint processor
-    QLinearGradient grad(rect().topLeft(), rect().bottomLeft());
+    QLinearGradient processorGrad(bRect.topLeft(), bRect.bottomLeft());
 
     if (isSelected()) {
-        grad.setColorAt(0.0f, QColor(110,77,77));
-        grad.setColorAt(0.2f, QColor(110,77,77));
-        grad.setColorAt(1.0f, QColor(50,38,38));
+        processorGrad.setColorAt(0.0f, QColor(110,77,77));
+        processorGrad.setColorAt(0.2f, QColor(110,77,77));
+        processorGrad.setColorAt(1.0f, QColor(50,38,38));
     } else {
-        grad.setColorAt(0.0f, QColor(77,77,77));
-        grad.setColorAt(0.2f, QColor(77,77,77));
-        grad.setColorAt(1.0f, QColor(38,38,38));
+        processorGrad.setColorAt(0.0f, QColor(77,77,77));
+        processorGrad.setColorAt(0.2f, QColor(77,77,77));
+        processorGrad.setColorAt(1.0f, QColor(38,38,38));
     }
-    p->setBrush(grad);
+    p->setBrush(processorGrad);
+    QPainterPath processorPath;
+    processorPath.moveTo(bRect.left(), bRect.top()+roundedCorners);
+    processorPath.lineTo(bRect.left(), bRect.bottom()-roundedCorners);
+    processorPath.arcTo(bRect.left(), bRect.bottom()-(2*roundedCorners), (2*roundedCorners), (2*roundedCorners), 180.0, 90.0);
+    processorPath.lineTo(bRect.right()-roundedCorners, bRect.bottom());
+    processorPath.arcTo(bRect.right()-(2*roundedCorners), bRect.bottom()-(2*roundedCorners), (2*roundedCorners), (2*roundedCorners), 270.0, 90.0);
+    processorPath.lineTo(bRect.right(), bRect.top()+(2*roundedCorners));
+    processorPath.lineTo(bRect.right()-(2*roundedCorners), bRect.top());
+    processorPath.lineTo(bRect.left()+roundedCorners, bRect.top());
+    processorPath.arcTo(bRect.left(), bRect.top(), (2*roundedCorners), (2*roundedCorners), 90.0, 90.0);
+    p->drawPath(processorPath);
 
-    QPainterPath roundRectPath;
-    QRectF bRect = rect();
-    roundRectPath.moveTo(bRect.left(), bRect.top()+roundedCorners);
-    roundRectPath.lineTo(bRect.left(), bRect.bottom()-roundedCorners);
-    roundRectPath.arcTo(bRect.left(), bRect.bottom()-(2*roundedCorners), (2*roundedCorners), (2*roundedCorners), 180.0, 90.0);
-    roundRectPath.lineTo(bRect.right()-roundedCorners, bRect.bottom());
-    roundRectPath.arcTo(bRect.right()-(2*roundedCorners), bRect.bottom()-(2*roundedCorners), (2*roundedCorners), (2*roundedCorners), 270.0, 90.0);
-    roundRectPath.lineTo(bRect.right(), bRect.top()+roundedCorners);
-    roundRectPath.arcTo(bRect.right()-(2*roundedCorners), bRect.top(), (2*roundedCorners), (2*roundedCorners), 0.0, 90.0);
-    roundRectPath.lineTo(bRect.left()+roundedCorners, bRect.top());
-    roundRectPath.arcTo(bRect.left(), bRect.top(), (2*roundedCorners), (2*roundedCorners), 90.0, 90.0);
-    p->drawPath(roundRectPath);
+    QLinearGradient indicatorGrad(bRect.topRight(), bRect.bottomLeft());
+    if (processor_->isValid()) {
+        indicatorGrad.setColorAt(0.0f, QColor(77,110,77));
+        indicatorGrad.setColorAt(1.0f, QColor(33,110,33));
+    } else {
+        indicatorGrad.setColorAt(0.0f, QColor(110,77,77));
+        indicatorGrad.setColorAt(1.0f, QColor(110,33,33));
+    }
+    p->setBrush(indicatorGrad);
+    QPainterPath indicatorPath;
+    indicatorPath.moveTo(bRect.right(), bRect.top()+(2*roundedCorners));
+    indicatorPath.arcTo(bRect.right()-(2*roundedCorners), bRect.top(), (2*roundedCorners), (2*roundedCorners), 0.0, 90.0);
+    indicatorPath.lineTo(bRect.right()-(2*roundedCorners), bRect.top());
+    indicatorPath.lineTo(bRect.right(), bRect.top()+(2*roundedCorners));
+    p->drawPath(indicatorPath);
+
 
     // paint inports
     std::vector<Port*> inports = processor_->getInports();

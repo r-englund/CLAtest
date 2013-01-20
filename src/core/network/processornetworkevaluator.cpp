@@ -368,7 +368,6 @@ void ProcessorNetworkEvaluator::evaluate() {
 
     if (inValidTopology)
         return;
-
    
     renderContext_->switchContext();
     for (size_t i=0; i<processorsSorted_.size(); i++) {

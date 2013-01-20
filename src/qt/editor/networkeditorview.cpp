@@ -15,7 +15,9 @@ NetworkEditorView::NetworkEditorView(QWidget* parent) : QGraphicsView(parent),
     setDragMode(QGraphicsView::RubberBandDrag);
 }
 
-NetworkEditorView::~NetworkEditorView() {}
+NetworkEditorView::~NetworkEditorView() {
+    QGraphicsView::setScene(0);
+}
 
 
 void NetworkEditorView::setNetworkEditor(NetworkEditor* networkEditor) {

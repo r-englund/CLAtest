@@ -18,8 +18,10 @@ public:
     void initialize();
     void deinitialize();
 
-    void attachShaderObject(ShaderObject* shaderObject);
     void link();
+
+    ShaderObject* getVertexShaderObject() { return vertexShaderObject_; }
+    ShaderObject* getFragmentShaderObject() { return fragmentShaderObject_; }
 
     void activate();
     void deactivate();
@@ -38,6 +40,8 @@ private:
     std::string fragmentFilename_;
     ShaderObject* vertexShaderObject_;
     ShaderObject* fragmentShaderObject_;
+
+    void attachShaderObject(ShaderObject* shaderObject);
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };

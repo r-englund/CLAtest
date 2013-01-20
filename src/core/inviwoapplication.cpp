@@ -7,6 +7,9 @@
 
 namespace inviwo {
 
+const std::string InviwoApplication::logSource_ = "InviwoApplication";
+
+
 InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
                                      : displayName_(displayName), basePath_(basePath)
 {}

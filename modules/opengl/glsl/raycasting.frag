@@ -7,6 +7,7 @@ uniform sampler3D volume_;
 uniform vec2 dimension_;
 uniform vec3 volumeDimension_;
 
+
 uniform bool enableShading_;
 uniform float samplingRate_;
 
@@ -27,7 +28,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
         vec4 voxel = getVoxel(volume_, samplePos);
         vec4 color = applyTF(voxel);
 
-        if (enableShading_) color.r *= 10.0;
+        if (enableShading_) color.b *= 10.0;
         
         // opacity correction
         color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);

@@ -14,14 +14,15 @@ public:
     ~ShaderObject();
 
     GLuint getID() { return id_; }
+    std::string getFileName() { return fileName_; }
 
-    void initialize();
+    bool initialize();
     void deinitialize();
 
     void loadSource(std::string fileName);
     void preprocess();
     void upload();
-    void compile();
+    bool compile();
     std::string getCompileLog();
 
 private:

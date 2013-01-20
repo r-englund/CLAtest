@@ -34,8 +34,8 @@ void Shader::link() {
 void Shader::initialize() {
     id_ = glCreateProgram();
     LGL_ERROR;
-    vertexShaderObject_ = new ShaderObject(GL_VERTEX_SHADER , vertexFilename_);
-    fragmentShaderObject_ = new ShaderObject(GL_FRAGMENT_SHADER , fragmentFilename_);
+    vertexShaderObject_ = new ShaderObject(GL_VERTEX_SHADER , IVW_DIR+"modules/opengl/glsl/"+vertexFilename_);
+    fragmentShaderObject_ = new ShaderObject(GL_FRAGMENT_SHADER , IVW_DIR+"modules/opengl/glsl/"+fragmentFilename_);
     vertexShaderObject_->initialize();
     fragmentShaderObject_->initialize();
     attachShaderObject(vertexShaderObject_);

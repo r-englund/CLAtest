@@ -4,7 +4,6 @@ namespace inviwo {
 
 const std::string MetaData::logSource_ = "MetaData";
 
-
 MetaData::MetaData() {}
 
 MetaData::~MetaData() {}
