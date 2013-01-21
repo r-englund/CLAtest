@@ -8,7 +8,8 @@ SimpleRaycaster::SimpleRaycaster()
     entryPort_(Port::INPORT, "entry-points"),
     exitPort_(Port::INPORT, "exit-points"),
     outport_(Port::OUTPORT, "outport"),
-    enableShading_("enableShading", "Shading", true),
+    enableShading_("enableShading", "Shading", false),
+	enableMIP_("enableMIP", "MIP", false),
     samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f)
 {
     addPort(volumePort_, "VolumePortGroup");
@@ -17,6 +18,7 @@ SimpleRaycaster::SimpleRaycaster()
     addPort(outport_, "ImagePortGroup1");
 
     addProperty(enableShading_);
+	addProperty(enableMIP_);
     addProperty(samplingRate_);
 }
 
@@ -55,6 +57,7 @@ void SimpleRaycaster::process() {
     shader_->setUniform("volume_", 2);
     shader_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
     shader_->setUniform("enableShading_", enableShading_.get());
+	shader_->setUniform("enableMIP_", enableMIP_.get());
     shader_->setUniform("samplingRate_", samplingRate_.get());
     shader_->setUniform("volumeDimension_", vec3(volumeDim.x, volumeDim.y, volumeDim.z));
     renderImagePlaneQuad();

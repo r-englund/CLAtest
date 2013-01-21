@@ -9,6 +9,7 @@ uniform vec3 volumeDimension_;
 
 
 uniform bool enableShading_;
+uniform bool enableMIP_;
 uniform float samplingRate_;
 
 // set reference sampling interval for opacity correction
@@ -27,14 +28,19 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getVoxel(volume_, samplePos);
         vec4 color = applyTF(voxel);
-
-        if (enableShading_) color.b *= 10.0;
         
-        // opacity correction
-        color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);
-        result.rgb = result.rgb + (1.0 - result.a) * color.a * color.rgb;
-        result.a = result.a + (1.0 -result.a) * color.a;
-
+        if (enableMIP_) {
+			if (color.a > result.a)
+				result = color;						
+		} else {
+			if (enableShading_) color.r *= 10.0;
+	        
+			// opacity correction
+			color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);
+			result.rgb = result.rgb + (1.0 - result.a) * color.a * color.rgb;
+			result.a = result.a + (1.0 -result.a) * color.a;
+			
+		}
         // early ray termination
         if (result.a > ERT_THRESHOLD) t = tEnd;
         else t += tIncr;

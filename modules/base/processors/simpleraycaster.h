@@ -37,6 +37,7 @@ private:
     ImagePort outport_;
 
     BoolProperty enableShading_;
+	BoolProperty enableMIP_;
     FloatProperty samplingRate_;
 
     Shader* shader_;
