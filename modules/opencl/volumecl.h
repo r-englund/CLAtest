@@ -5,6 +5,7 @@
 #include "inviwo/core/datastructures/volumerepresentation.h"
 #include "inviwo/core/util/typetostring.h"
 #include "modules/opencl/glmcl.h"
+#include "modules/opencl/inviwoopencl.h"
 #include "modules/opencl/openclmoduledefine.h"
 
 namespace inviwo {

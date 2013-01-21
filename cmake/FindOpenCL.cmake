@@ -17,9 +17,11 @@ IF(WIN32) # Windows
 	IF(CMAKE_SIZEOF_VOID_P EQUAL 8) # 64-bit
 		SET(OPENCL_LIB_DIR "$ENV{AMDAPPSDKROOT}/lib/x86_64") # AMD
 		SET(OPENCL_LIB_DIR "$ENV{CUDA_PATH}/lib/x64") 		 # NVIDIA
+		SET(OPENCL_LIB_DIR "$ENV{INTELOCLSDKROOT}/lib/x64") 	# INTEL
 	ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8) # 32-bit
 		SET(OPENCL_LIB_DIR "$ENV{AMDAPPSDKROOT}/lib/x86") 	 # AMD
 		SET(OPENCL_LIB_DIR "$ENV{CUDA_PATH}/lib/Win32") 	 # NVIDIA
+		SET(OPENCL_LIB_DIR "$ENV{INTELOCLSDKROOT}/lib/x86") 	# INTEL
 	ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 	
 	
@@ -35,7 +37,7 @@ ELSE(WIN32)
 	IF(APPLE)
 		# Tested, at least works if OpenCL is distributed with OSX
 		FIND_LIBRARY(OPENCL_LIBRARIES OpenCL DOC "OpenCL lib for OSX")
-		FIND_LIBRARY(OPENCL_INCLUDE_DIR OpenCL/cl.h DOC "Include directory for OpenCL on OSX")
+		FIND_PATH(OPENCL_INCLUDE_DIR OpenCL/cl.h DOC "Include directory for OpenCL on OSX")
 	ELSE(APPLE) # Linux. Note, untested
 		# Library needs to be in set in the LD_LIBRARY_PATH variable
 		FIND_LIBRARY(OPENCL_LIBRARIES OpenCL 

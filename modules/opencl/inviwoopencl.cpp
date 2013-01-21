@@ -230,7 +230,7 @@ namespace inviwo {
         cl_context_properties props[] = {
             CL_GL_CONTEXT_KHR, (cl_context_properties) wglGetCurrentContext(), 
             CL_WGL_HDC_KHR, (cl_context_properties) wglGetCurrentDC()};
-#elif APPLE
+#elif __APPLE__
         CGLContextObj glContext = CGLGetCurrentContext();
         CGLShareGroupObj shareGroup = CGLGetShareGroup(glContext);
         cl_context_properties props[] = {
