@@ -36,6 +36,7 @@ namespace inviwo {
 #endif
 
 
+std::string loadFile(std::string fileName);
 
 /** \class OpenCL 
 *
@@ -90,6 +91,14 @@ public:
      */
     static void printDeviceInfo(const cl::Device& device);
 
+    /**
+     * Outputs formatted build error to logger.
+     * 
+     * \param devices (const std::vector<cl::Device> &)
+     * \param program (const cl::Program &)
+     * \param filename (const std::string &)
+     * \return (void)
+     */
     static void printBuildError(const std::vector<cl::Device>& devices, const cl::Program& program, const std::string& filename = "");
 
     static void printBuildError(const cl::Device& device, const cl::Program& program, const std::string& filename = "");

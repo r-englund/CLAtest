@@ -81,7 +81,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
 template<typename T>
 DataRepresentation* ImageCLPrecision<T>::clone() {
     ImageCLPrecision* newImageCL = new ImageCLPrecision<T>(dimensions_);
-    //TODO:: Copy if necessary
+    OpenCL::getInstance()->getSynchronosGPUQueue().enqueueCopyImage(image2D_, *(newImageCL->getImage()), glm::svec3(0), glm::svec3(0), dimensions_);
     return newImageCL;
 }
 

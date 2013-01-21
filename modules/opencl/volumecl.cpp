@@ -3,7 +3,7 @@
 namespace inviwo {
 
 VolumeCL::VolumeCL()
-    : image3D_(0), VolumeRepresentation(ivec3(128,128,128), "UINT8") //TODO: use actual value
+    :  VolumeRepresentation(ivec3(128,128,128), "UINT8"), image3D_(0)
 {
 }
 

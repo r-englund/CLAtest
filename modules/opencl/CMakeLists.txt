@@ -7,12 +7,13 @@ ivw_module(OpenCL)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/cl.hpp
     ${IVW_MODULE_DIR}/opencl/glmcl.h
+    ${IVW_MODULE_DIR}/opencl/imagecl.h
+    ${IVW_MODULE_DIR}/opencl/imageclconverter.h
+    ${IVW_MODULE_DIR}/opencl/imageclresizer.h
 	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
     ${IVW_MODULE_DIR}/opencl/openclmodule.h
     ${IVW_MODULE_DIR}/opencl/volumecl.h
     ${IVW_MODULE_DIR}/opencl/volumeclconverter.h
-    ${IVW_MODULE_DIR}/opencl/imagecl.h
-    ${IVW_MODULE_DIR}/opencl/imageclconverter.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -21,12 +22,14 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/cl.cpp
     ${IVW_MODULE_DIR}/opencl/glmcl.cpp
+    ${IVW_MODULE_DIR}/opencl/imagecl.cpp
+	${IVW_MODULE_DIR}/opencl/imageclconverter.cpp
+	${IVW_MODULE_DIR}/opencl/imageclresizer.cpp
     ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
     ${IVW_MODULE_DIR}/opencl/openclmodule.cpp
     ${IVW_MODULE_DIR}/opencl/volumecl.cpp
 	${IVW_MODULE_DIR}/opencl/volumeclconverter.cpp
-	${IVW_MODULE_DIR}/opencl/imagecl.cpp
-	${IVW_MODULE_DIR}/opencl/imageclconverter.cpp
+
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

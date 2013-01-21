@@ -65,4 +65,10 @@ cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::float32> va
     return setArg(index, glm::detail::tvec4<glm::detail::float32>(value, 0));
 }
 
+//template <>
+//cl_int Kernel::setArg(cl_uint index, const cl::Image2D& value)
+//{
+//    return setArg(index, value());
+//}
+
 } // namespace cl

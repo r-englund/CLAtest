@@ -39,6 +39,8 @@ cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::float16> va
 template <>
 cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::float32> value);
 
+//template <>
+//cl_int Kernel::setArg(cl_uint index, const cl::Image2D& value);
 
 // Image formats for OpenCL
 
