@@ -119,38 +119,40 @@ namespace inviwo {
                 return;
             }
 
-            cl::Device device;
             cl::Platform platform;
-            getBestGPUDevice(device, platform);
+            getBestGPUDevice(gpuDevice_, platform);
             std::vector<cl_context_properties> properties;
             if(glSharing) 
                 properties = getGLSharingContextProperties();
             cl_context_properties platformProperties[] = {CL_CONTEXT_PLATFORM, (cl_context_properties)platform(), 0};
             properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
-            cl::Context context;
             try
             {
-                context = cl::Context(device, &properties[0]);
+                gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
             }
             catch (cl::Error&)
             {
                 LogErrorS("OpenCL", "ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
                 properties.clear();
                 properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
-                context = cl::Context(device, &properties[0]);
+                gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
                 LogErrorS("OpenCL", std::string("Succeeded creating OpenCL without OpenGL sharing. ") << std::string(" sf"));
 
             }
 
-            printDeviceInfo(device);
+            printDeviceInfo(gpuDevice_);
 
             cl_command_queue_properties queueProperties = 0;
+            cl_command_queue_properties supportedQueueProperties;
+            gpuDevice_.getInfo(CL_DEVICE_QUEUE_PROPERTIES, &supportedQueueProperties);
             #if IVW_PROFILING
-                queueProperties |= CL_QUEUE_PROFILING_ENABLE;
+                if ( supportedQueueProperties & CL_QUEUE_PROFILING_ENABLE)
+                    queueProperties |= CL_QUEUE_PROFILING_ENABLE;
             #endif
-            synchronosGPUQueue_ = cl::CommandQueue(context, device, queueProperties);
-            queueProperties |= CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
-            asyncGPUQueue_ = cl::CommandQueue(context, device, queueProperties);
+            synchronosGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
+            if ( supportedQueueProperties & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE)
+                queueProperties |= CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
+            asyncGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
             //printDeviceInfo(devices[0]);
 
         } catch (cl::Error& err) {
@@ -185,6 +187,9 @@ namespace inviwo {
         std::string deviceVersion, driverVersion;
         std::string clVersion, extensions;
         cl::size_t<3> maxWorkItemSizes;
+        cl_uint maxWorkItemDimension;
+                cl_uint uintProperty;
+        cl_ulong ulongProperty;
         device.getInfo(CL_DEVICE_NAME, &name);
         device.getInfo(CL_DEVICE_VENDOR, &vendor);
         device.getInfo(CL_DEVICE_PROFILE, &profile);
@@ -207,6 +212,53 @@ namespace inviwo {
             stream << maxWorkItemSizes[i] << ", ";
         }
         stream << maxWorkItemSizes[2] << std::endl;
+
+        device.getInfo(CL_DEVICE_PREFERRED_VECTOR_WIDTH_CHAR, &uintProperty);
+        stream << "Preffered vector width (char): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_PREFERRED_VECTOR_WIDTH_SHORT, &uintProperty);
+        stream << "Preffered vector width (short): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_PREFERRED_VECTOR_WIDTH_INT, &uintProperty);
+        stream << "Preffered vector width (int): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_PREFERRED_VECTOR_WIDTH_LONG, &uintProperty);
+        stream << "Preffered vector width (long): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_PREFERRED_VECTOR_WIDTH_FLOAT, &uintProperty);
+        stream << "Preffered vector width (float): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_PREFERRED_VECTOR_WIDTH_DOUBLE, &uintProperty);
+        stream << "Preffered vector width (double): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_PREFERRED_VECTOR_WIDTH_HALF, &uintProperty);
+        stream << "Preffered vector width (half): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_NATIVE_VECTOR_WIDTH_CHAR, &uintProperty);
+        stream << "Preffered native vector width (char): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_NATIVE_VECTOR_WIDTH_SHORT, &uintProperty);
+        stream << "Preffered native vector width (short): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_NATIVE_VECTOR_WIDTH_INT, &uintProperty);
+        stream << "Preffered native vector width (int): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_NATIVE_VECTOR_WIDTH_LONG, &uintProperty);
+        stream << "Preffered native vector width (long): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_NATIVE_VECTOR_WIDTH_FLOAT, &uintProperty);
+        stream << "Preffered native vector width (float): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_NATIVE_VECTOR_WIDTH_DOUBLE, &uintProperty);
+        stream << "Preffered native vector width (double): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_NATIVE_VECTOR_WIDTH_HALF, &uintProperty);
+        stream << "Preffered native vector width (half): " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_MAX_CLOCK_FREQUENCY, &uintProperty);
+        stream << "Max clock frequency: " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_ADDRESS_BITS, &uintProperty);
+        stream << "Address bits: " << uintProperty << std::endl;
+        device.getInfo(CL_DEVICE_MAX_MEM_ALLOC_SIZE, &ulongProperty);
+        stream << "Max alloc size: " << ulongProperty << std::endl;
+        
+        
+        cl_command_queue_properties commandQueueProperties;
+        device.getInfo(CL_DEVICE_QUEUE_PROPERTIES, &commandQueueProperties);
+        std::string supported = "No";
+        if ( commandQueueProperties & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE)
+            supported = "Yes";
+        stream << "Supports out of order execution: " << supported << std::endl;
+        supported = "No";
+        if ( commandQueueProperties & CL_QUEUE_PROFILING_ENABLE)
+            supported = "Yes";
+        stream << "Supports profiling: " << supported << std::endl;
         LogInfoS("OpenCL", stream.str());
     }
     /*! \brief Get the device that has most compute units.

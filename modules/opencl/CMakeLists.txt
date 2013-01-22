@@ -45,3 +45,5 @@ ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
 # Create module
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
+add_subdirectory(test)
+
