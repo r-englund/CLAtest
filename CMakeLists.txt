@@ -23,6 +23,7 @@ mark_as_advanced(FORCE  IVW_TINY_GLUT_APPLICATION)
 # Add subdirectories
 
 add_subdirectory(ext/ticpp)
+add_subdirectory(ext/tinythread)
 add_subdirectory(src/core)
 add_subdirectory(modules)
 add_subdirectory(src/qt)
