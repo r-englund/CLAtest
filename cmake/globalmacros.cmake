@@ -312,7 +312,7 @@ macro(ivw_qt_automoc project_name)
 endmacro()
 
 #--------------------------------------------------------------------
-# Add console to debug build only
+# Specify console as target
 macro(ivw_vs_executable_setup project_name)
     if(WIN32)
       if(MSVC)
@@ -394,6 +394,24 @@ macro(ivw_create_module)
   # Make package (for other modules to find)
   #string(TOUPPER ${project_name} u_project_name)
   ivw_make_package(${_packageName} inviwo-module-${_projectName})
+endmacro()
+
+#--------------------------------------------------------------------
+# Creates project module from name 
+macro(ivw_create_test)
+    set(_projectName test-${_projectName})
+    
+    #--------------------------------------------------------------------
+	# Create test application
+	add_executable(${_projectName} MACOSX_BUNDLE WIN32 ${ARGN})
+    
+    #--------------------------------------------------------------------
+    # Specify console as target
+    ivw_vs_executable_setup(${_projectName})
+
+	#--------------------------------------------------------------------
+	# Set VS Executable properties
+	ivw_vs_folder(${_projectName} tests)
 endmacro()
 
 #--------------------------------------------------------------------

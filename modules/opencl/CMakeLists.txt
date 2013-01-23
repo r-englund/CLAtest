@@ -33,17 +33,15 @@ set(SOURCE_FILES
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
-ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
-
 #--------------------------------------------------------------------
-# Add shaders
-#set(SHADER_FILES
-#)
-#ivw_group("Shader Files" ${SHADER_FILES})
+# Add definition
+ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
 
 #--------------------------------------------------------------------
 # Create module
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
+#--------------------------------------------------------------------
+# Add test
 add_subdirectory(test)
 
