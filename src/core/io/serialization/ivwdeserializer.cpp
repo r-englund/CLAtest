@@ -13,7 +13,7 @@ IvwDeserializer::IvwDeserializer(IvwDeserializer &s, bool allowReference)
     registerFactories();
 
     try {
-        readFile(std::cout);
+        readFile();
 
         TxElement *inviwoTree = doc_.FirstChildElement();
         //Comment is not a tree element
@@ -31,15 +31,12 @@ IvwDeserializer::IvwDeserializer(std::string fileName, bool allowReference)
     registerFactories();
 
     try {
-        readFile(std::cout);
+        readFile();
 
         TxElement *inviwoTree = doc_.FirstChildElement();
-
         //Comment is not a tree element
         //TxElement *comment = inviwoTree->FirstChildElement();
-
         rootElement_ = inviwoTree; 
-
     }
     catch (TxException& ) {
         
@@ -81,8 +78,7 @@ void IvwDeserializer::deserializeAttributes(const std::string &key, std::string 
 
     rootElement_->GetAttribute(key, &data);
 
-    try {
-        
+    try {        
         //lastAttribute = rootElement_->LastAttribute();
         TxAIt attribute;
         TxAIt lastAttribute;
@@ -180,10 +176,9 @@ void IvwDeserializer::deserialize(const std::string &key, mat4 &data) {
     
 }
 
-void IvwDeserializer::readFile(std::ostream& stream) {
+void IvwDeserializer::readFile() {
     try {   
-        doc_.LoadFile(); 
-        //stream<<doc_;
+        doc_.LoadFile();         
     } catch (TxException& ) {}
 }
 

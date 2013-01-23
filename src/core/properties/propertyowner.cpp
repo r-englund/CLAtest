@@ -41,11 +41,34 @@ bool PropertyOwner::isValid() {
 }
 
 void PropertyOwner::serialize(IvwSerializer& s) const {
-    s.serialize("Properties", properties_, "Property") ;
+
+    std::map<std::string, Property*> propertyMap;
+    for (std::vector<Property*>::const_iterator it = properties_.begin(); it != properties_.end(); ++it) {
+        propertyMap[(*it)->getIdentifier()] = *it; 
+    }
+    s.serialize("Properties", propertyMap, "Property" );
 }
 
 void PropertyOwner::deserialize(IvwDeserializer& d) {
-    d.deserialize("Properties", properties_, "Property") ;
+
+    /* 1) Vector desrialization does not allow
+    *     specification of comparision attribute string.
+    *  2) But Map deserialization does allow 
+    *     specification of comparision attribute string.
+    *     (eg. "identifier" in this case).
+    *  3) Hence map deserialization is preffered here.
+    *  4) TODO: Vector can be made to behave like Map.
+    *           But then it necessitates passing of two extra arguments.
+    *           And they are list of attribute values, comparision attribute string.
+    *           eg., list of identifier for each property and "identifier"
+    *                                                 
+    */
+
+    std::map<std::string, Property*> propertyMap;
+    for (std::vector<Property*>::const_iterator it = properties_.begin(); it != properties_.end(); ++it) {
+        propertyMap[(*it)->getIdentifier()] = *it; 
+    }
+    d.deserialize("Properties", propertyMap, "Property", "identifier") ;
 }
 
 

@@ -584,9 +584,7 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
     //xmlSerializer.serialize("NetworkEditor", *this) ;
     processorNetwork_->serialize(xmlSerializer);
     processorNetwork_->setModified(false);
-
-    xmlSerializer.writeFile(std::cout);
-    
+    xmlSerializer.writeFile();    
     return true;
 }
 

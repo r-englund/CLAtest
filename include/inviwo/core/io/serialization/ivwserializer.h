@@ -21,10 +21,12 @@ public:
     IvwSerializer(std::string fileName, bool allowReference=true);
     virtual ~IvwSerializer();
 
-    virtual void writeFile(std::ostream& stream);    
+    virtual void writeFile();
 
     template <typename T>
     void serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey);
+    template <typename K, typename V, typename C>
+    void serialize(const std::string &key, const std::map<K,V,C> &sMap, const std::string &itemKey);
     void serialize(const std::string &key, const std::string &data, const bool asAttribute=false);
     void serialize(const std::string &key, const float &data);
     void serialize(const std::string &key, const double &data);
@@ -53,9 +55,11 @@ protected:
 
 private:
 
-
     template <typename T>
     void serializeSTL_Vector(const std::string &key, const T &sVector, const std::string &itemKey);
+
+    template <typename T>
+    void serializeSTL_Map(const std::string &key, const T &sMap, const std::string &itemKey);
 
     void serializeAttributes(const std::string &key, const std::string &data);
 
@@ -74,6 +78,11 @@ inline void IvwSerializer::serialize(const std::string &key, const std::vector<T
     serializeSTL_Vector(key, sVector, itemKey);
 }
 
+template <typename K, typename V, typename C>
+inline void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C> &sMap, const std::string &itemKey) {
+    serializeSTL_Map(key, sMap, itemKey);
+}
+
 template <typename T>
 inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &sVector, const std::string &itemKey) {
     TxElement* newNode = new TxElement(key);
@@ -84,6 +93,20 @@ inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &
     for (typename T::const_iterator it = sVector.begin(); it != sVector.end(); ++it) {
         if (!isPrimitiveType(typeid(typename T::value_type)) && !isPrimitivePointerType(typeid(typename T::value_type)) ) {
             serialize(itemKey, (*it));
+        }
+    }
+}
+
+template <typename T>
+inline void IvwSerializer::serializeSTL_Map(const std::string &key, const T &sMap, const std::string &itemKey) {
+    TxElement* newNode = new TxElement(key);
+    rootElement_->LinkEndChild(newNode);
+
+    NodeSwitch tempNodeSwitch(*this, newNode);
+
+    for (typename T::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
+        if (!isPrimitiveType(typeid(typename T::mapped_type)) && !isPrimitivePointerType(typeid(typename T::mapped_type)) ) {
+            serialize(itemKey, it->second);
         }
     }
 }

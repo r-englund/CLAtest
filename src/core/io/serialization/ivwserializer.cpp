@@ -194,11 +194,9 @@ void IvwSerializer::serialize(const std::string &key, const mat4 &data) {
     serializeVector(key, rowVec);
 }
 
-void IvwSerializer::writeFile(std::ostream& stream) {
+void IvwSerializer::writeFile() {
 
     try { 
-        std::cout<<doc_;
-        stream<<doc_;
         refDataContainer_.setReferenceAttributes();
         doc_.SaveFile();
     }

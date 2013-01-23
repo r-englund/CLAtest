@@ -20,10 +20,53 @@ public:
     IvwDeserializer(IvwDeserializer &s, bool allowReference=true);
     IvwDeserializer(std::string fileName, bool allowReference=true);
     virtual ~IvwDeserializer();
-    virtual void readFile(std::ostream& stream);
+    virtual void readFile();
 
     template <typename T>
     void deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey);
+
+    /* 
+     * Deserialize a map, which can have 
+     * keys of type K, 
+     * values of type V* (pointers) 
+     * and compare function C ( optional if 
+     * K primitive type, i.e., std::string, int, etc.,)
+     * eg., std::map<std::string, Property*>
+     * 
+     * @param key - parent node of itemKey.
+     * @param sMap - source / input map.
+     * @param itemKey - children nodes.
+     * @param comparisionAttribute - forced comparison attribute.
+     *
+     * eg. xml tree
+     *
+     * <Properties>
+     *      <Property identifier="enableMIP" displayName="MIP">
+     *          <value content="0" />
+     *      </Property>
+     *      <Property identifier="enableShading" displayName="Shading">
+     *          <value content="0" />
+     *      </Property>
+     * <Properties>
+     *
+     * In the above xml tree,
+     *
+     * @ param key                   = "Properties"
+     * @ param itemKey               = "Property"
+     * @ param comparisionAttribute  = "identifier"
+     * @ param sMap["enableMIP"]     = address of a property
+     *         sMap["enableShading"] = address of a property
+     *         where, "enableMIP" & "enableShading" are keys.
+     *         address of a property is a value
+     *
+     * Note: If children has attribute "type" , then comparisionAttribute becomes meaningless.
+     *       Because deserializer always allocates a new instance of type using registered factories.
+     *
+     *       eg., <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+     */
+    template <typename K, typename V, typename C>
+    void deserialize(const std::string &key, std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute);
+
     void deserialize(const std::string &key, std::string &data, const bool asAttribute=false);    
     void deserialize(const std::string &key, bool &data);
     void deserialize(const std::string &key, float &data);
@@ -53,6 +96,16 @@ private:
     template <typename T>
     void deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey);
 
+    /* 
+     * Deserialize a map, which can have keys of type K, values of type V* (pointers) 
+     * and an optional compare function C.
+     * eg., std::map<std::string, Property*>
+     *
+     * @ param refer void deserialize()
+     */
+    template <typename T>
+    void deserializeSTL_Map(const std::string &key, T &sMap, const std::string &itemKey, const std::string &comparisionAttribute);
+
     void deserializePrimitives(const std::string &key, std::string &data);
 
     void deserializeAttributes(const std::string &key, std::string &data);
@@ -71,6 +124,11 @@ private:
 template <typename T>
 inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) {
     deserializeSTL_Vector(key, sVector, itemKey);
+}
+
+template <typename K, typename V, typename C>
+inline void IvwDeserializer::deserialize(const std::string &key,std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute) {
+    deserializeSTL_Map(key, sMap, itemKey, comparisionAttribute);
 }
 
 template <typename T>
@@ -102,14 +160,72 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
             tVector.push_back(item);
         }
         else {
-            deserializePointer(itemKey, sVector[i++]);
-            tVector.push_back(sVector[i-1]);
+            deserializePointer(itemKey, sVector[i]);
+            tVector.push_back(sVector[i]);
+            i++;
         }        
-        
     }
 
-
     sVector = tVector;
+}
+
+template <typename T>
+inline void IvwDeserializer::deserializeSTL_Map(const std::string &key, 
+                                                T &sMap, 
+                                                const std::string &itemKey, 
+                                                const std::string &comparisionAttribute) {
+
+    TxElement* keyNode;
+
+
+    try {
+        keyNode = rootElement_->FirstChildElement(key);
+        keyNode->FirstChildElement();
+    } catch (TxException&) {
+        return;
+    }
+
+    if (comparisionAttribute == "")
+        return;
+
+    NodeSwitch tempNodeSwitch(*this, keyNode);
+
+    TxElement* nextRootNode;
+    TxElement* rootElement;
+
+    
+    T::key_compare keyCompare = sMap.key_comp();
+    
+    if ( isPrimitiveType(typeid(typename T::key_type)) ) {
+        //always use primitive types as keys
+        
+        for (T::iterator it = sMap.begin(); it != sMap.end(); ++it) {            
+            //Probe if there is any children with attribute 'comparisionAttribute'
+            for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {                
+                rootElement = &(*child);            
+                try { 
+                    nextRootNode = rootElement->FirstChildElement();
+                    T::key_type keyTypeAttr;
+                    rootElement->GetAttribute(comparisionAttribute, &keyTypeAttr);
+                    //keyCompare returns false if first argument is less than second.
+                    if ( (!keyCompare(keyTypeAttr, it->first)) && (!keyCompare(it->first, keyTypeAttr)) ) {
+                        //if required attribute exists then deserialize it
+                        rootElement_ = &(*child);
+                        deserializePointer(itemKey, it->second);
+                        break;
+                    }
+                }
+                catch (TxException& ) {
+                    rootElement = 0;
+                    nextRootNode = 0;
+                    break;
+                }
+            }
+        }
+    }
+    else {
+        //TODO: support maps with non-primitive key types if necessary
+    }
 }
 
 template<class T>
