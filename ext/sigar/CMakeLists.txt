@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------
 # Sigar Library
-ivw_project(Sigar)
+ivw_project(sigar)
 
 #--------------------------------------------------------------------
 # Define defintions
@@ -80,7 +80,9 @@ if(CMAKE_SYSTEM_NAME MATCHES "(AIX)" )
 endif(CMAKE_SYSTEM_NAME MATCHES "(AIX)" )
 
 if(WIN32)
-  ivw_add_definition(-DSIGAR_SHARED)
+  if(BUILD_SHARED_LIBS)
+    ivw_add_definition(-DSIGAR_SHARED)
+  endif()
   set(SIGAR_SRC src/os/win32/peb.c src/os/win32/win32_sigar.c src/os/win32/wmi.cpp)
   include_directories(src/os/win32)
 endif(WIN32)
@@ -96,10 +98,10 @@ set(SIGAR_SRC ${SIGAR_SRC}
   src/sigar_util.c
 )
 
-add_library(sigar SHARED ${SIGAR_SRC} ${HEADER_FILES})
+add_library(sigar ${SIGAR_SRC} ${HEADER_FILES})
 
 if(WIN32)
-	target_link_libraries(sigar ws2_32 netapi32 version)
+	ivw_add_dependency_libraries(ws2_32 netapi32 version)
 endif(WIN32)
 
 if(SIGAR_LINK_FLAGS)
@@ -113,3 +115,9 @@ ivw_vs_folder(sigar ext)
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
 ivw_make_package(Sigar sigar)
+
+#--------------------------------------------------------------------
+# Add test
+if(TEST_APPLICATIONS)
+    add_subdirectory(examples)
+endif()

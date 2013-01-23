@@ -490,6 +490,26 @@ endmacro()
 
 #--------------------------------------------------------------------
 # Adds dependancy and includes package variables to the project
+macro(ivw_add_dependency_libraries)
+    foreach (package ${ARGN})
+      #--------------------------------------------------------------------
+      # Link library
+      target_link_libraries(${_projectName} ${package})
+      
+      #--------------------------------------------------------------------
+      # Add dependcy package variables to this package if shared build
+      if(NOT BUILD_SHARED_LIBS)
+          
+          #--------------------------------------------------------------------
+          # Append library directories to project list
+          list(APPEND _allLibs ${package})
+      
+      endif()
+    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
+# Adds dependancy and includes package variables to the project
 macro(ivw_add_dependencies)
     foreach (package ${ARGN})
       #--------------------------------------------------------------------
@@ -517,7 +537,7 @@ macro(ivw_add_dependencies)
       #--------------------------------------------------------------------
       # Set directory links
       link_directories(${${u_package}_LIBRARY_DIR})
-      #message("${${u_package}_LIBRARY_DIR}")
+
       #--------------------------------------------------------------------
       # Set directory links
       add_definitions(${${u_package}_DEFINITIONS})
@@ -532,9 +552,8 @@ macro(ivw_add_dependencies)
       endif(BUILD_${u_package})
       
       #--------------------------------------------------------------------
-      # Create target
+      # Link library
       target_link_libraries(${_projectName} ${${u_package}_LIBRARIES})
-	  #message(${${u_package}_LIBRARIES})
       
       #--------------------------------------------------------------------
       # Add dependcy package variables to this package if shared build

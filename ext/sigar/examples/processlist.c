@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+#endif
+
 #include <stdio.h>
 
 #include "sigar.h"
 
 int main(int argc, char **argv) {
-    int status, i;
+    int status;
+    unsigned long i;
     sigar_t *sigar;
     sigar_proc_list_t proclist;
 
@@ -30,7 +35,7 @@ int main(int argc, char **argv) {
     if (status != SIGAR_OK) {
         printf("proc_list error: %d (%s)\n",
                status, sigar_strerror(sigar, status));
-        exit(1);
+        return 1;
     }
 
     for (i=0; i<proclist.number; i++) {

@@ -4,9 +4,7 @@ ivw_project(opencl)
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/test/opencl.cpp
-
 )
-ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Create test

@@ -42,6 +42,8 @@ ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
-# Add test
-add_subdirectory(test)
+# Add tests
+if(TEST_APPLICATIONS)
+    add_subdirectory(test)
+endif()
 
