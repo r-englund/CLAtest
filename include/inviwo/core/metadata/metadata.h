@@ -31,7 +31,7 @@ class IVW_CORE_API MetaDataPrimitiveType : public MetaData {
 public:
     MetaDataPrimitiveType(T value);
     void set(T value);
-    T get();    
+    T get() const;    
 protected:
     T value_;
 };
@@ -47,7 +47,7 @@ void MetaDataPrimitiveType<T>::set(T value) {
 }
 
 template <typename T>
-T MetaDataPrimitiveType<T>::get() {
+T MetaDataPrimitiveType<T>::get() const {
     return value_;
 }
 

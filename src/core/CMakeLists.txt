@@ -38,10 +38,12 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processorlink.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetwork.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/positionmetadata.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/compositemetadata.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatafactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatamap.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/positionmetadata.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processorwidgetmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/imageport.h
@@ -125,10 +127,12 @@ set(SOURCE_FILES
     network/processorlink.cpp
     network/processornetwork.cpp
     network/processornetworkevaluator.cpp
-    metadata/positionmetadata.cpp
+    metadata/compositemetadata.cpp	
     metadata/metadata.cpp
     metadata/metadatafactory.cpp
     metadata/metadatamap.cpp
+    metadata/positionmetadata.cpp
+    metadata/processorwidgetmetadata.cpp
     ports/port.cpp
     ports/imageport.cpp
     ports/volumeport.cpp

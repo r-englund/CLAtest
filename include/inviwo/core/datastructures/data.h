@@ -160,6 +160,11 @@ namespace inviwo {
 
     /*---------------------------------------------------------------*/
 
+    /*
+    * T represents template argument of class
+    * U, V represents template arguments of member functions
+    */
+
     template <typename T>
     class IVW_CORE_API DataDimension : public Data {
     public:
