@@ -19,7 +19,6 @@
 #endif
 
 #include <stdio.h>
-
 #include "sigar.h"
 
 int main(int argc, char **argv) {
@@ -28,10 +27,10 @@ int main(int argc, char **argv) {
     sigar_t *sigar;
     sigar_sys_info_t systeminfo;
     //sigar_resource_limit_t resinfo;
+    sigar_cpu_info_list_t cpulinfolist;
     sigar_mem_t meminfo;
     sigar_file_system_list_t diskinfolist;
     sigar_file_system_usage_t diskusageinfo;
-    sigar_cpu_info_list_t cpulinfolist;
 
     sigar_open(&sigar);
 
@@ -43,6 +42,7 @@ int main(int argc, char **argv) {
         return 1;
     }
     printf("OS Info: %s\n", systeminfo.description);
+    printf("Program Arch: %s\n", systeminfo.arch);
 
     //Resource Info
     /*status = sigar_resource_limit_get(sigar, &resinfo);
@@ -51,47 +51,7 @@ int main(int argc, char **argv) {
             status, sigar_strerror(sigar, status));
         return 1;
     }
-    printf("%i %i\n", resinfo.virtual_memory_cur, resinfo.virtual_memory_max);*/
-
-    //Memory Info
-    status = sigar_mem_get(sigar, &meminfo);
-    if (status != SIGAR_OK) {
-        printf("mem_info error: %d (%s)\n",
-            status, sigar_strerror(sigar, status));
-        return 1;
-    }
-    printf("Memory Info: %i %i %d %i %d %i\n", meminfo.ram, meminfo.free, meminfo.free_percent, meminfo.used, meminfo.used_percent, meminfo.total);
-
-    //Disk Info
-    status = sigar_file_system_list_get(sigar, &diskinfolist);
-    if (status != SIGAR_OK) {
-        printf("file_system_list error: %d (%s)\n",
-            status, sigar_strerror(sigar, status));
-        return 1;
-    }
-    for (i=0; i<diskinfolist.number; i++) {
-        sigar_file_system_t disk_info = diskinfolist.data[i];
-
-        status = sigar_file_system_usage_get(sigar, disk_info.dir_name, &diskusageinfo);
-
-        if (status != SIGAR_OK) {
-            printf("disk_usage error: %d (%s)\n",
-                status, sigar_strerror(sigar, status));
-            return 1;
-        }
-
-        printf("Disk Info: %s %i\n", disk_info.dev_name, diskusageinfo.total);
-    }
-    sigar_file_system_list_destroy(sigar, &diskinfolist);
-
-    //Disk Usage
-    /*status = sigar_disk_usage_get(sigar, &diskusageinfo);
-    if (status != SIGAR_OK) {
-        printf("disk_usage error: %d (%s)\n",
-            status, sigar_strerror(sigar, status));
-        return 1;
-    }
-    printf("%s\n", diskusageinfo.qtime);*/
+    printf("%i %i\n", resinfo.memory_cur, resinfo.memory_max);*/
 
     //CPU Info
     status = sigar_cpu_info_list_get(sigar, &cpulinfolist);
@@ -100,12 +60,45 @@ int main(int argc, char **argv) {
             status, sigar_strerror(sigar, status));
         return 1;
     }
+    printf("CPU Info\n");
     for (i=0; i<cpulinfolist.number; i++) {
         sigar_cpu_info_t cpu_info = cpulinfolist.data[i];
 
-        printf("CPU Info: %i %s\n", cpu_info.mhz, cpu_info.vendor);
+        printf(" %s %s %i Mhz\n", cpu_info.vendor, cpu_info.model, cpu_info.mhz);
     }
     sigar_cpu_info_list_destroy(sigar, &cpulinfolist);
+
+    //Memory Info
+    status = sigar_mem_get(sigar, &meminfo);
+    if (status != SIGAR_OK) {
+        printf("mem_info error: %d (%s)\n",
+            status, sigar_strerror(sigar, status));
+        return 1;
+    }
+    printf("Memory Info\n RAM: %llu MB\n Used: %llu MB %.2f%%\n Free: %llu MB %.2f%%\n", meminfo.ram, meminfo.used/1000000, meminfo.used_percent, meminfo.free/1000000, meminfo.free_percent);
+
+    //Disk Info
+    status = sigar_file_system_list_get(sigar, &diskinfolist);
+    if (status != SIGAR_OK) {
+        printf("file_system_list error: %d (%s)\n",
+            status, sigar_strerror(sigar, status));
+        return 1;
+    }
+    printf("Disk Info\n");
+    for (i=0; i<diskinfolist.number; i++) {
+        sigar_file_system_t disk_info = diskinfolist.data[i];
+
+        status = sigar_file_system_usage_get(sigar, disk_info.dir_name, &diskusageinfo);
+
+        if (status != SIGAR_OK) {
+            /*printf("disk_usage error: %d (%s)\n",
+                status, sigar_strerror(sigar, status));
+            return 1;*/
+        }
+        else if(disk_info.dev_name[0] != '\\')
+            printf("%s Total: %llu MB Used: %llu MB Free: %llu MB\n", disk_info.dev_name, diskusageinfo.total/1000, diskusageinfo.used/1000, diskusageinfo.free/1000);
+    }
+    sigar_file_system_list_destroy(sigar, &diskinfolist);
 
     sigar_close(sigar);
 

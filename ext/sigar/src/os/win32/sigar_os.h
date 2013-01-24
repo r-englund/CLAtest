@@ -23,7 +23,6 @@
 #define SIGAR_USING_MSC6 /* Visual Studio version 6 */
 #endif
 
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <winreg.h>
 #include <winperf.h>

@@ -4,7 +4,6 @@ ivw_project(sigar)
 
 #--------------------------------------------------------------------
 # Define defintions
-ivw_define_standard_definitions(sigar)
 if(WIN32) 
 	## make sure we only use the smallest set of 
 	## headers on win32. Otherwise we get clashes 
@@ -14,6 +13,10 @@ if(WIN32)
 	# force the correct version for the redist manifest
 	add_definitions(-D_BIND_TO_CURRENT_MFC_VERSION=1 -D_BIND_TO_CURRENT_CRT_VERSION=1)
 endif()
+
+add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    
+source_group("CMake Files" FILES ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt)
 
 set(HEADER_FILES include/sigar.h 
 	include/sigar_fileinfo.h 
