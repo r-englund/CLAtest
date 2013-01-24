@@ -194,18 +194,18 @@ inline void IvwDeserializer::deserializeSTL_Map(const std::string &key,
     TxElement* rootElement;
 
     
-    T::key_compare keyCompare = sMap.key_comp();
+    typename T::key_compare keyCompare = sMap.key_comp();
     
     if ( isPrimitiveType(typeid(typename T::key_type)) ) {
         //always use primitive types as keys
         
-        for (T::iterator it = sMap.begin(); it != sMap.end(); ++it) {            
+        for (typename T::iterator it = sMap.begin(); it != sMap.end(); ++it) {            
             //Probe if there is any children with attribute 'comparisionAttribute'
             for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {                
                 rootElement = &(*child);            
                 try { 
                     nextRootNode = rootElement->FirstChildElement();
-                    T::key_type keyTypeAttr;
+                    typename T::key_type keyTypeAttr;
                     rootElement->GetAttribute(comparisionAttribute, &keyTypeAttr);
                     //keyCompare returns false if first argument is less than second.
                     if ( (!keyCompare(keyTypeAttr, it->first)) && (!keyCompare(it->first, keyTypeAttr)) ) {
