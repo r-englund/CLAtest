@@ -535,7 +535,7 @@ static int ptql_branch_list_grow(ptql_branch_list_t *branches)
 static int ptql_branch_list_destroy(ptql_branch_list_t *branches)
 {
     if (branches->size) {
-        int i;
+        unsigned long i;
 
         for (i=0; i<branches->number; i++) {
             ptql_branch_t *branch =
@@ -772,7 +772,8 @@ static int ptql_branch_init_pid(ptql_parse_branch_t *parsed,
     if (strEQ(parsed->attr, "Pid")) {
         branch->flags = PTQL_PID_PID;
         if (strEQ(parsed->value, "$$")) {
-            branch->data.pid = getpid();
+            //TODO: No getpid function
+            //branch->data.pid = getpid();
         }
         else {
             char *ptr;
@@ -886,7 +887,7 @@ static int sigar_services_walk(sigar_services_walker_t *walker,
 
         if ((value && ptql_str_match(walker->sigar, branch, value)) ||
             (service_pid &&
-             pid_branch_match(branch, service_pid, atoi(branch->data.str))))
+             pid_branch_match(branch, (sigar_uint32_t)service_pid, atoi(branch->data.str))))
         {
             if (walker->add_service(walker, name) != SIGAR_OK) {
                 break;
@@ -1048,7 +1049,8 @@ static int ptql_pid_list_get(sigar_t *sigar,
                              ptql_branch_t *branch,
                              sigar_proc_list_t *proclist)
 {
-    int status, i;
+    int status;
+    unsigned long i;
     sigar_pid_t match_pid;
 
     if (IS_PID_SERVICE_QUERY(branch)) {
@@ -1076,7 +1078,7 @@ static int ptql_pid_list_get(sigar_t *sigar,
     }
     for (i=0; i<sigar->pids->number; i++) {
         sigar_pid_t pid = sigar->pids->data[i];
-        if (pid_branch_match(branch, pid, match_pid)) {
+        if (pid_branch_match(branch, (sigar_uint32_t)pid, (sigar_uint32_t)match_pid)) {
             SIGAR_PROC_LIST_GROW(proclist);
             proclist->data[proclist->number++] = pid;
         }
@@ -1130,7 +1132,7 @@ static int SIGAPI ptql_args_match(sigar_t *sigar,
     }
 
     if (branch->op_flags & PTQL_OP_FLAG_GLOB) {
-        int i;
+        unsigned long i;
         for (i=0; i<args.number; i++) {
             matched = 
                 ptql_str_match(sigar, branch, args.data[i]);
@@ -1141,7 +1143,7 @@ static int SIGAPI ptql_args_match(sigar_t *sigar,
         }
     }
     else {
-        int num = branch->data.ui32;
+        unsigned long num = (unsigned long)branch->data.ui32;
 
         /* e.g. find last element of args: Args.-1.eq=weblogic.Server */
         if (num < 0) {
@@ -1763,7 +1765,7 @@ SIGAR_DECLARE(int) sigar_ptql_query_match(sigar_t *sigar,
                                           sigar_ptql_query_t *query,
                                           sigar_pid_t query_pid)
 {
-    int i;
+    unsigned long i;
 
     for (i=0; i<query->branches.number; i++) {
         sigar_pid_t pid = query_pid;
@@ -1829,7 +1831,7 @@ static int ptql_proc_list_get(sigar_t *sigar,
                               sigar_proc_list_t **proclist)
 {
     int status;
-    int i;
+    unsigned long i;
 
     *proclist = NULL;
 
@@ -1881,7 +1883,8 @@ SIGAR_DECLARE(int) sigar_ptql_query_find_process(sigar_t *sigar,
                                                  sigar_pid_t *pid)
 {
     int status;
-    int i, matches=0;
+    unsigned long i;
+    int matches=0;
     sigar_proc_list_t *pids;
 
     status = ptql_proc_list_get(sigar, query, &pids);
@@ -1931,7 +1934,7 @@ SIGAR_DECLARE(int) sigar_ptql_query_find(sigar_t *sigar,
                                          sigar_proc_list_t *proclist)
 {
     int status;
-    int i;
+    unsigned long i;
     sigar_proc_list_t *pids;
 
     status = ptql_proc_list_get(sigar, query, &pids);

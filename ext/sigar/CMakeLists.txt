@@ -12,6 +12,9 @@ if(WIN32)
 
 	# force the correct version for the redist manifest
 	add_definitions(-D_BIND_TO_CURRENT_MFC_VERSION=1 -D_BIND_TO_CURRENT_CRT_VERSION=1)
+    
+    #disable useless warning
+    add_definitions( "/wd4013 /wd4018 /wd4244 /wd4293 /wd4307 /wd4996 /nologo" )
 endif()
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -84,10 +87,13 @@ endif(CMAKE_SYSTEM_NAME MATCHES "(AIX)" )
 
 if(WIN32)
   if(BUILD_SHARED_LIBS)
-    ivw_add_definition(-DSIGAR_SHARED)
+    ivw_add_definition(SIGAR_SHARED)
+    add_definitions(-Dsigar_EXPORTS)
   endif()
   set(SIGAR_SRC src/os/win32/peb.c src/os/win32/win32_sigar.c src/os/win32/wmi.cpp)
   include_directories(src/os/win32)
+else(WIN32)
+      add_definitions(-DHAVE_CONFIG_H)
 endif(WIN32)
 
 set(SIGAR_SRC ${SIGAR_SRC}

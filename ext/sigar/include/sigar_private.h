@@ -111,8 +111,8 @@
 #endif
 
 #ifdef WIN32
-#define strcasecmp stricmp
-#define strncasecmp strnicmp
+#define strcasecmp _stricmp
+#define strncasecmp _strnicmp
 #endif
 
 #ifndef strcaseEQ

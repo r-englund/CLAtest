@@ -75,8 +75,11 @@ int main(int argc, char **argv) {
             status, sigar_strerror(sigar, status));
         return 1;
     }
-    printf("Memory Info\n RAM: %llu MB\n Used: %llu MB %.2f%%\n Free: %llu MB %.2f%%\n", meminfo.ram, meminfo.used/1000000, meminfo.used_percent, meminfo.free/1000000, meminfo.free_percent);
-
+#ifdef WIN32
+    printf("Memory Info\n RAM: %I64d MB\n Used: %I64d MB %.2f%%\n Free: %I64d MB %.2f%%\n", meminfo.ram, meminfo.used/1000000, meminfo.used_percent, meminfo.free/1000000, meminfo.free_percent);
+#else
+    printf("Memory Info\n RAM: %lu MB\n Used: %lu MB %.2f%%\n Free: %lu MB %.2f%%\n", meminfo.ram, meminfo.used/1000000, meminfo.used_percent, meminfo.free/1000000, meminfo.free_percent);
+#endif
     //Disk Info
     status = sigar_file_system_list_get(sigar, &diskinfolist);
     if (status != SIGAR_OK) {
@@ -95,8 +98,13 @@ int main(int argc, char **argv) {
                 status, sigar_strerror(sigar, status));
             return 1;*/
         }
-        else if(disk_info.dev_name[0] != '\\')
-            printf("%s Total: %llu MB Used: %llu MB Free: %llu MB\n", disk_info.dev_name, diskusageinfo.total/1000, diskusageinfo.used/1000, diskusageinfo.free/1000);
+        else if(disk_info.dev_name[0] != '\\'){
+#ifdef WIN32
+            printf("%s Total: %I64d MB Used: %I64d MB Free: %I64d MB\n", disk_info.dev_name, diskusageinfo.total/1000, diskusageinfo.used/1000, diskusageinfo.free/1000);
+#else
+            printf("%s Total: %lu MB Used: %lu MB Free: %lu MB\n", disk_info.dev_name, diskusageinfo.total/1000, diskusageinfo.used/1000, diskusageinfo.free/1000);
+#endif
+        }
     }
     sigar_file_system_list_destroy(sigar, &diskinfolist);
 

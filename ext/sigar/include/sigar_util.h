@@ -144,8 +144,8 @@ int sigar_cpu_core_count(sigar_t *sigar);
 
 /* e.g. VM guest may have 1 virtual ncpu on multicore hosts */
 #define sigar_cpu_socket_count(sigar) \
-    (sigar->ncpu < sigar->lcpu) ? sigar->ncpu : \
-    (sigar->ncpu / sigar->lcpu)
+    (sigar->ncpu < (unsigned int)sigar->lcpu) ? sigar->ncpu : \
+    (sigar->ncpu / (unsigned int)sigar->lcpu)
 
 int sigar_cpu_core_rollup(sigar_t *sigar);
 

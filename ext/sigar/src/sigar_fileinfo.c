@@ -512,9 +512,7 @@ static int dir_stat_get(sigar_t *sigar,
             continue;
         }
 
-        dirstats->disk_usage +=
-            (data.nFileSizeHigh * (MAXDWORD+1)) +
-            data.nFileSizeLow;
+        dirstats->disk_usage += ((data.nFileSizeHigh * (MAXDWORD+1)) + data.nFileSizeLow);
 
         /* e.g. "C:\sigar\lib" */
         strncpy(ptr, data.cFileName, max);

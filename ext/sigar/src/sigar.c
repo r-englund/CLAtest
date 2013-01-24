@@ -98,9 +98,10 @@ SIGAR_DECLARE(int) sigar_close(sigar_t *sigar)
 #ifndef __linux__ /* linux has a special case */
 SIGAR_DECLARE(sigar_pid_t) sigar_pid_get(sigar_t *sigar)
 {
-    if (!sigar->pid) {
+    //TODO: No getpid function
+    /*if (!sigar->pid) {
         sigar->pid = getpid();
-    }
+    }*/
 
     return sigar->pid;
 }
@@ -171,7 +172,8 @@ SIGAR_DECLARE(int) sigar_proc_cpu_get(sigar_t *sigar, sigar_pid_t pid,
 SIGAR_DECLARE(int) sigar_proc_stat_get(sigar_t *sigar,
                                        sigar_proc_stat_t *procstat)
 {
-    int status, i;
+    int status;
+    unsigned long i;
     sigar_proc_list_t *pids;
 
     SIGAR_ZERO(procstat);
@@ -1948,7 +1950,8 @@ SIGAR_DECLARE(int)
 sigar_net_interface_config_primary_get(sigar_t *sigar,
                                        sigar_net_interface_config_t *ifconfig)
 {
-    int i, status, found=0;
+    unsigned long i; 
+    int status, found=0;
     sigar_net_interface_list_t iflist;
     sigar_net_interface_config_t possible_config;
 
@@ -2097,7 +2100,6 @@ SIGAR_DECLARE(int) sigar_fqdn_get(sigar_t *sigar, char *name, int namelen)
     register int is_debug = SIGAR_LOG_IS_DEBUG(sigar);
     sigar_hostent_t data;
     struct hostent *p;
-    char domain[SIGAR_FQDN_LEN + 1];
 #ifdef WIN32
     int status = sigar_wsa_init(sigar);
 
@@ -2237,6 +2239,7 @@ SIGAR_DECLARE(int) sigar_fqdn_get(sigar_t *sigar, char *name, int namelen)
               "[fqdn] unresolved using gethostbyname.h_addr_list");
 
 #if !defined(WIN32) && !defined(NETWARE)
+    char domain[SIGAR_FQDN_LEN + 1];
     if (!IS_FQDN(name) && /* e.g. aix gethostname is already fqdn */
         (getdomainname(domain, sizeof(domain) - 1) == 0) &&
         (domain[0] != '\0') &&

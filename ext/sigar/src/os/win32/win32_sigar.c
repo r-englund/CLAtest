@@ -219,7 +219,7 @@ static PERF_OBJECT_TYPE *get_perf_object_inst(sigar_t *sigar,
     if (inst && (object->NumInstances == PERF_NO_INSTANCES)) {
         int i;
 
-        for (i=0; i<block->NumObjectTypes; i++) {
+        for (i=0; i<(int)block->NumObjectTypes; i++) {
             if (object->NumInstances != PERF_NO_INSTANCES) {
                 return object;
             }
@@ -240,7 +240,6 @@ static int get_mem_counters(sigar_t *sigar, sigar_swap_t *swap, sigar_mem_t *mem
     int status;
     PERF_OBJECT_TYPE *object =
         get_perf_object_inst(sigar, PERF_TITLE_MEM_KEY, 0, &status);
-    PERF_INSTANCE_DEFINITION *inst;
     PERF_COUNTER_DEFINITION *counter;
     BYTE *data;
     DWORD i;
@@ -510,9 +509,7 @@ static int sigar_enable_privilege(char *name)
 int sigar_os_open(sigar_t **sigar_ptr)
 {
     LONG result;
-    HINSTANCE h;
     OSVERSIONINFO version;
-    int i;
     sigar_t *sigar;
 
     *sigar_ptr = sigar = malloc(sizeof(*sigar));
@@ -676,7 +673,6 @@ SIGAR_DECLARE(int) sigar_mem_get(sigar_t *sigar, sigar_mem_t *mem)
 
 SIGAR_DECLARE(int) sigar_swap_get(sigar_t *sigar, sigar_swap_t *swap)
 {
-    int status;
     DLLMOD_INIT(kernel, TRUE);
 
     if (sigar_GlobalMemoryStatusEx) {
@@ -713,7 +709,6 @@ static PERF_INSTANCE_DEFINITION *get_cpu_instance(sigar_t *sigar,
                                                   DWORD *num, DWORD *err)
 {
     PERF_OBJECT_TYPE *object = get_perf_object(sigar, PERF_TITLE_CPU_KEY, err);
-    PERF_INSTANCE_DEFINITION *inst;
     PERF_COUNTER_DEFINITION *counter;
     DWORD i;
 
@@ -782,7 +777,7 @@ static int get_idle_cpu(sigar_t *sigar, sigar_cpu_t *cpu,
 
             if (idx == -1) {
                 int i;
-                for (i=0; i<num; i++) {
+                for (i=0; i<(int)num; i++) {
                     cpu->idle += NS100_2MSEC(info[i].IdleTime.QuadPart);
                 }
             }
@@ -852,7 +847,7 @@ static int sigar_cpu_ntsys_get(sigar_t *sigar, sigar_cpu_t *cpu)
     num = retval/sizeof(info[0]);
     SIGAR_ZERO(cpu);
 
-    for (i=0; i<num; i++) {
+    for (i=0; i<(int)num; i++) {
         cpu->idle += NS100_2MSEC(info[i].IdleTime.QuadPart);
         cpu->user += NS100_2MSEC(info[i].UserTime.QuadPart);
         cpu->sys  += NS100_2MSEC(info[i].KernelTime.QuadPart -
@@ -878,7 +873,7 @@ SIGAR_DECLARE(int) sigar_cpu_get(sigar_t *sigar, sigar_cpu_t *cpu)
 static int sigar_cpu_list_perflib_get(sigar_t *sigar,
                                       sigar_cpu_list_t *cpulist)
 {
-    int status, i, j;
+    int i;
     PERF_INSTANCE_DEFINITION *inst;
     DWORD perf_offsets[PERF_IX_CPU_MAX], num, err;
     int core_rollup = sigar_cpu_core_rollup(sigar);
@@ -905,7 +900,7 @@ static int sigar_cpu_list_perflib_get(sigar_t *sigar,
         core_rollup = 0;
     }
 
-    for (i=0; i<num; i++) {
+    for (i=0; i<(int)num; i++) {
         PERF_COUNTER_BLOCK *counter_block;
         sigar_cpu_t *cpu;
 
@@ -940,7 +935,7 @@ static int sigar_cpu_list_ntsys_get(sigar_t *sigar,
                                     sigar_cpu_list_t *cpulist)
 {
     DWORD retval, num;
-    int status, i, j;
+    int i;
     int core_rollup = sigar_cpu_core_rollup(sigar);
 
     SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION info[SPPI_MAX];
@@ -960,7 +955,7 @@ static int sigar_cpu_list_ntsys_get(sigar_t *sigar,
         core_rollup = 0;
     }
 
-    for (i=0; i<num; i++) {
+    for (i=0; i<(int)num; i++) {
         sigar_cpu_t *cpu;
         sigar_uint64_t idle, user, sys;
 
@@ -1008,7 +1003,6 @@ SIGAR_DECLARE(int) sigar_uptime_get(sigar_t *sigar,
     int status;
     PERF_OBJECT_TYPE *object =
         get_perf_object_inst(sigar, PERF_TITLE_SYS_KEY, 0, &status);
-    PERF_INSTANCE_DEFINITION *inst;
     PERF_COUNTER_DEFINITION *counter;
     BYTE *data;
     DWORD i;
@@ -1028,7 +1022,7 @@ SIGAR_DECLARE(int) sigar_uptime_get(sigar_t *sigar,
             LONGLONG time = object->PerfTime.QuadPart;
             LONGLONG freq = object->PerfFreq.QuadPart;
             LONGLONG counter = *((LONGLONG *)(data + offset));
-            uptime->uptime = (time - counter) / freq;
+            uptime->uptime = (double)((time - counter) / freq);
             return SIGAR_OK;
         }
     }
@@ -1058,7 +1052,7 @@ static int sigar_proc_list_get_perf(sigar_t *sigar,
     PERF_OBJECT_TYPE *object;
     PERF_INSTANCE_DEFINITION *inst;
     PERF_COUNTER_DEFINITION *counter;
-    DWORD i, err;
+    int i, err;
     DWORD perf_offsets[PERF_IX_MAX];
 
     perf_offsets[PERF_IX_PID] = 0;
@@ -1078,7 +1072,7 @@ static int sigar_proc_list_get_perf(sigar_t *sigar,
      */
 
     for (i=0, counter = PdhFirstCounter(object);
-         i<object->NumCounters;
+         i<(int)object->NumCounters;
          i++, counter = PdhNextCounter(counter))
     {
         DWORD offset = counter->CounterOffset;
@@ -1091,7 +1085,7 @@ static int sigar_proc_list_get_perf(sigar_t *sigar,
     }
 
     for (i=0, inst = PdhFirstInstance(object);
-         i<object->NumInstances;
+         i<(int)object->NumInstances;
          i++, inst = PdhNextInstance(inst))
     {
         PERF_COUNTER_BLOCK *counter_block = PdhGetCounterBlock(inst);
@@ -1424,7 +1418,7 @@ static int get_proc_info(sigar_t *sigar, sigar_pid_t pid)
     }
 
     for (i=0, inst = PdhFirstInstance(object);
-         i<object->NumInstances;
+         i<(int)object->NumInstances;
          i++, inst = PdhNextInstance(inst))
     {
         PERF_COUNTER_BLOCK *counter_block = PdhGetCounterBlock(inst);
@@ -1456,7 +1450,7 @@ static int sigar_remote_proc_args_get(sigar_t *sigar, sigar_pid_t pid,
                                       sigar_proc_args_t *procargs)
 {
     int status;
-    char cmdline[SIGAR_CMDLINE_MAX], *ptr = cmdline, *arg;
+    char cmdline[SIGAR_CMDLINE_MAX], *ptr = cmdline;
     HANDLE proc = open_process(pid);
 
     if (proc) {
@@ -1894,7 +1888,6 @@ static PERF_INSTANCE_DEFINITION *get_disk_instance(sigar_t *sigar,
 {
     PERF_OBJECT_TYPE *object =
         get_perf_object(sigar, PERF_TITLE_DISK_KEY, err);
-    PERF_INSTANCE_DEFINITION *inst;
     PERF_COUNTER_DEFINITION *counter;
     DWORD i, found=0;
 
@@ -1960,11 +1953,10 @@ SIGAR_DECLARE(int) sigar_disk_usage_get(sigar_t *sigar,
                                         const char *dirname,
                                         sigar_disk_usage_t *disk)
 {
-    DWORD i, err;
+    int i, err;
     PERF_OBJECT_TYPE *object =
         get_perf_object(sigar, PERF_TITLE_DISK_KEY, &err);
     PERF_INSTANCE_DEFINITION *inst;
-    PERF_COUNTER_DEFINITION *counter;
     DWORD perf_offsets[PERF_IX_DISK_MAX];
 
     SIGAR_DISK_STATS_INIT(disk);
@@ -1981,7 +1973,7 @@ SIGAR_DECLARE(int) sigar_disk_usage_get(sigar_t *sigar,
     }
 
     for (i=0, inst = PdhFirstInstance(object);
-         i<object->NumInstances;
+         i<(int)object->NumInstances;
          i++, inst = PdhNextInstance(inst))
     {
         char drive[MAX_PATH];
@@ -2127,7 +2119,8 @@ static int sigar_cpu_info_get(sigar_t *sigar, sigar_cpu_info_t *info)
 SIGAR_DECLARE(int) sigar_cpu_info_list_get(sigar_t *sigar,
                                            sigar_cpu_info_list_t *cpu_infos)
 {
-    int i, status;
+    unsigned int i;
+    int status;
     sigar_cpu_info_t info;
     int core_rollup = sigar_cpu_core_rollup(sigar);
 
@@ -2390,7 +2383,7 @@ static int sigar_get_netif_ipaddr(sigar_t *sigar,
             return status;
         }
 
-        for (i=0; i<mib->dwNumEntries; i++) {
+        for (i=0; i<(int)mib->dwNumEntries; i++) {
             MIB_IPADDRROW *row = &mib->table[i];
             short type;
 
@@ -2680,7 +2673,7 @@ sigar_net_interface_list_get(sigar_t *sigar,
             malloc(sizeof(*(iflist->data)) * iflist->size);
     }
 
-    for (i=0; i<ift->dwNumEntries; i++) {
+    for (i=0; i<(int)ift->dwNumEntries; i++) {
         char name[16];
         int key;
         MIB_IFROW *ifr = ift->table + i;
@@ -2894,7 +2887,7 @@ static int net_conn_get_tcp(sigar_net_connection_walker_t *walker)
 {
     sigar_t *sigar = walker->sigar;
     int flags = walker->flags;
-    int status, i;
+    int i;
     DWORD rc, size=0;
     PMIB_TCPTABLE tcp;
 
@@ -3001,7 +2994,6 @@ static int net_conn_get_udp(sigar_net_connection_walker_t *walker)
 {
     sigar_t *sigar = walker->sigar;
     int flags = walker->flags;
-    int status;
     DWORD rc, size=0, i;
     PMIB_UDPTABLE udp;
 
@@ -3220,7 +3212,6 @@ SIGAR_DECLARE(int) sigar_proc_port_get(sigar_t *sigar,
 SIGAR_DECLARE(int) sigar_arp_list_get(sigar_t *sigar,
                                       sigar_arp_list_t *arplist)
 {
-    int status;
     DWORD rc, size=0, i;
     PMIB_IPNETTABLE ipnet;
 
@@ -3653,10 +3644,15 @@ int sigar_os_sys_info_get(sigar_t *sigar,
                 vendor_version = "Vista";
                 code_name = "Longhorn";
             }
-            else {
+            else if (version.dwMinorVersion == 1) {
                 vendor_name = "Windows 7";
                 vendor_version = "7";
                 code_name = "Vienna";
+            }
+            else {
+                vendor_name = "Windows 8";
+                vendor_version = "8";
+                code_name = "Windows 8";
             }
         }
         else {
