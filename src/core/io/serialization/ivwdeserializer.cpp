@@ -74,11 +74,10 @@ void IvwDeserializer::deserialize(const std::string &key, IvwSerializable &sObj)
 void IvwDeserializer::deserializeAttributes(const std::string &key, std::string &data) {
 
     TxElement* keyNode = rootElement_->FirstChildElement(); 
-    //if (!keyNode) return;   
+    //if (!keyNode) return;      
 
-    rootElement_->GetAttribute(key, &data);
-
-    try {        
+    try {
+        rootElement_->GetAttribute(key, &data);
         //lastAttribute = rootElement_->LastAttribute();
         TxAIt attribute;
         TxAIt lastAttribute;
