@@ -11,8 +11,8 @@ QGLWidget* CanvasQt::sharedWidget_ = 0;
 const std::string CanvasQt::logSource_ = "CanvasQt";
 
 CanvasQt::CanvasQt(QWidget* parent)
-: QGLWidget(QGLFormat(QGL::DoubleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
-    CanvasGL(ivec2(256,256))
+: QGLWidget(QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
+  CanvasGL(ivec2(256,256))
 {
     //This is our default rendering context
     //Intialized once. So "THE" first object of this class will not have any shared context (or widget)
