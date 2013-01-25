@@ -11,7 +11,7 @@ QGLWidget* CanvasQt::sharedWidget_ = 0;
 const std::string CanvasQt::logSource_ = "CanvasQt";
 
 CanvasQt::CanvasQt(QWidget* parent)
-    : QGLWidget(QGLFormat(QGL::SingleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
+: QGLWidget(QGLFormat(QGL::DoubleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
     CanvasGL(ivec2(256,256))
 {
     //This is our default rendering context
@@ -65,7 +65,7 @@ void CanvasQt::update() {
 
 void CanvasQt::repaint() {
     //CanvasGL::repaint();
-    //QGLWidget::repaint();
+    QGLWidget::repaint();
 }
 
 
