@@ -1,10 +1,24 @@
 #include "inviwo/qt/widgets/processors/processorwidgetqt.h"
+#include <QResizeEvent>
+#include <QMoveEvent>
+#include "inviwo/core/inviwo.h"
 
 namespace inviwo {
 
 ProcessorWidgetQt::ProcessorWidgetQt(Processor* processor, QWidget* parent)
     : ProcessorWidget(processor)
-{}
+{
+    ivec2 pos = ProcessorWidget::getPositionMetaData();
+    QWidget::move(pos.x, pos.y);
+
+    ivec2 dim = ProcessorWidget::getDimensionMetaData();
+    QWidget::resize(dim.x, dim.y);
+
+    if (ProcessorWidget::getVisibilityMetaData())
+        setVisible(true);
+    else
+        setVisible(false);
+}
 
 ProcessorWidgetQt::~ProcessorWidgetQt() {}
 
@@ -19,13 +33,18 @@ void ProcessorWidgetQt::hide() {
 }
 
 void ProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
-    ProcessorWidget::hide();
+    ProcessorWidget::resize(ivec2(event->size().width(), event->size().height()) );
     QWidget::resizeEvent(event);
 }
 
 void ProcessorWidgetQt::closeEvent(QCloseEvent* event) {
     ProcessorWidget::hide();
     QWidget::hide();
+}
+
+void ProcessorWidgetQt::moveEvent(QMoveEvent* event) {
+    ProcessorWidget::move(ivec2(event->pos().x(), event->pos().y()) );
+    QWidget::moveEvent(event);
 }
 
 } // namespace

@@ -9,7 +9,7 @@ namespace inviwo {
 
 class IVW_CORE_API CompositeMetaData : public MetaData {
 
-public:
+protected:
     CompositeMetaData();
     virtual ~CompositeMetaData();
 

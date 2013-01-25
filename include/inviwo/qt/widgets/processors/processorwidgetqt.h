@@ -19,6 +19,7 @@ public:
     protected:
     void resizeEvent(QResizeEvent*);
     void closeEvent(QCloseEvent *);
+    void moveEvent(QMoveEvent* event);
 };
 
 } // namespace
