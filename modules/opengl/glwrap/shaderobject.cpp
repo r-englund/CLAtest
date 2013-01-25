@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <fstream>
 
+#include "modules/opengl/glwrap/shadermanager.h"
+
 #ifdef WIN32
 #define OPEN_FILE(a,b,c) fopen_s(&a, b, c);
 #else
@@ -16,11 +18,33 @@ ShaderObject::ShaderObject(GLenum shaderType, std::string fileName) :
     fileName_(fileName),
     shaderType_(shaderType)
 {
-    id_ = glCreateShader(shaderType);
+    initialize();
 }
 
-ShaderObject::~ShaderObject() {
-    //free(source_);
+ShaderObject::~ShaderObject() {}
+
+bool ShaderObject::initialize() {
+    id_ = glCreateShader(shaderType_);
+    LGL_ERROR;
+    loadSource(fileName_);
+    preprocess();
+    upload();
+    return compile();
+}
+
+bool ShaderObject::rebuild() {
+    if (loadSource(fileName_)) {
+        preprocess();
+        upload();
+        return compile();
+    } else return false;
+}
+
+void ShaderObject::preprocess() {
+    sourceProcessed_ = embeddDefines(source_);
+    includeFileNames_.clear();
+    lineNumberResolver_.clear();
+    sourceProcessed_ = embeddIncludes(sourceProcessed_, fileName_);
 }
 
 std::string ShaderObject::embeddDefines(std::string source) {
@@ -51,13 +75,14 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
             std::string includeFileName(curLine, pathBegin+1, pathEnd-pathBegin-1);
 
             // TODO: remove absolute path
-            std::ifstream includeFileStream(std::string(IVW_DIR+"modules/opengl/glsl/"+includeFileName).c_str());
+            includeFileName = IVW_DIR+"modules/opengl/glsl/"+includeFileName;
+            includeFileNames_.push_back(includeFileName);
+            std::ifstream includeFileStream(includeFileName.c_str());
             std::stringstream buffer;
             buffer << includeFileStream.rdbuf();
-            std::string includeSource = buffer.str();
-            
+            std::string includeSource = buffer.str();            
             if (!includeSource.empty())
-                result << embeddIncludes(includeSource, includeFileName) << "\n"; 
+                result << embeddIncludes(includeSource, includeFileName) << "\n";
         }
         else
             result << curLine << "\n";
@@ -67,21 +92,7 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
     return result.str();
 }
 
-
-bool ShaderObject::initialize() {
-    loadSource(fileName_);
-    std::string sourceStr = std::string(source_);
-    sourceStr = embeddDefines(sourceStr);
-    lineNumberResolver_.clear();
-    sourceStr = embeddIncludes(sourceStr, fileName_);
-    source_ = sourceStr.c_str();
-    upload();
-    return compile();
-}
-
-void ShaderObject::deinitialize() {}
-
-void ShaderObject::loadSource(std::string fileName) {
+bool ShaderObject::loadSource(std::string fileName) {
     FILE* file;
     char* fileContent = NULL;
     long len;
@@ -98,13 +109,15 @@ void ShaderObject::loadSource(std::string fileName) {
                 fileContent[len] = '\0';
             }
             fclose(file);
-        }
-    }
-    source_ = fileContent;
+        } else return false;
+    } else return false;
+    source_ = std::string(fileContent);
+    return true;
 }
 
 void ShaderObject::upload() {
-    glShaderSource(id_, 1, &source_, 0);
+    const char* source = sourceProcessed_.c_str();
+    glShaderSource(id_, 1, &source, 0);
     LGL_ERROR;
 }
 

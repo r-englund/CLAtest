@@ -34,6 +34,7 @@ private:
     QMainWindow* mainWindow_;
     std::vector<FileObserver*> fileObservers_;
     QFileSystemWatcher* fileWatcher_;
+    bool reloadingFile_;
 };
 
 } // namespace

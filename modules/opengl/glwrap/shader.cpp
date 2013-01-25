@@ -1,22 +1,48 @@
 #include "shader.h"
 
+#include "modules/opengl/glwrap/shadermanager.h"
+
 namespace inviwo {
 
 const std::string Shader::logSource_ = "Shader";
 
 Shader::Shader(std::string fragmentFilename) :
-    vertexFilename_("img_identity.vert"),
-    fragmentFilename_(fragmentFilename) {
+    //TODO: remove absolute path
+    vertexFilename_(IVW_DIR+"modules/opengl/glsl/img_identity.vert"),
+    fragmentFilename_(IVW_DIR+"modules/opengl/glsl/"+fragmentFilename)
+{
     initialize();
 }
 
 Shader::Shader(std::string vertexFilename, std::string fragmentFilename) :
-    vertexFilename_(vertexFilename),
-    fragmentFilename_(fragmentFilename) {
+//TODO: remove absolute path
+    vertexFilename_(IVW_DIR+"modules/opengl/glsl/"+vertexFilename),
+    fragmentFilename_(IVW_DIR+"modules/opengl/glsl/"+fragmentFilename)
+{
     initialize();
 }
 
 Shader::~Shader() {
+    deinitialize();
+}
+
+void Shader::initialize() {
+    id_ = glCreateProgram();
+    LGL_ERROR;
+    vertexShaderObject_ = new ShaderObject(GL_VERTEX_SHADER , vertexFilename_);
+    fragmentShaderObject_ = new ShaderObject(GL_FRAGMENT_SHADER , fragmentFilename_);
+    attachShaderObject(vertexShaderObject_);
+    attachShaderObject(fragmentShaderObject_);
+    link();
+    ShaderManager::getRef().registerShader(this);
+}
+
+void Shader::deinitialize() {
+    ShaderManager::getRef().unregisterShader(this);
+    detachShaderObject(vertexShaderObject_);
+    detachShaderObject(fragmentShaderObject_);
+    delete vertexShaderObject_;
+    delete fragmentShaderObject_;
     glDeleteProgram(id_);
     LGL_ERROR;
 }
@@ -26,24 +52,15 @@ void Shader::attachShaderObject(ShaderObject* shaderObject) {
     LGL_ERROR;
 }
 
+void Shader::detachShaderObject(ShaderObject* shaderObject) {
+    glDetachShader(id_, shaderObject->getID());
+    LGL_ERROR;
+}
+
 void Shader::link() {
     glLinkProgram(id_);
     LGL_ERROR;
 }
-
-void Shader::initialize() {
-    id_ = glCreateProgram();
-    LGL_ERROR;
-    vertexShaderObject_ = new ShaderObject(GL_VERTEX_SHADER , IVW_DIR+"modules/opengl/glsl/"+vertexFilename_);
-    fragmentShaderObject_ = new ShaderObject(GL_FRAGMENT_SHADER , IVW_DIR+"modules/opengl/glsl/"+fragmentFilename_);
-    vertexShaderObject_->initialize();
-    fragmentShaderObject_->initialize();
-    attachShaderObject(vertexShaderObject_);
-    attachShaderObject(fragmentShaderObject_);
-    link();
-}
-
-void Shader::deinitialize() {}
 
 void Shader::activate() {
     glUseProgram(id_);

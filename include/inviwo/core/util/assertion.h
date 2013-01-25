@@ -4,17 +4,7 @@
 #include "inviwo/core/inviwocoredefine.h"
 #include <iostream>
 
-#if defined(IVW_DEBUG)
-    #if defined(WIN32)
-        #define IVW_BREAKPOINT __debugbreak()
-    #else
-        #define IVW_BREAKPOINT
-    #endif
-#else
-    #define IVW_BREAKPOINT
-#endif
-
-IVW_CORE_API void ivwAssertion(const char* fileName, const char* functionName, long lineNumber, const char* message);
+IVW_CORE_API void ivwAssertion(const char* fileName, const char* functionName, long lineNumber, std::string message);
 
 #if defined(IVW_DEBUG)
 #define ivwAssert(condition, message) \

@@ -10,7 +10,6 @@
 #include "modules/opengl/processorgl.h"
 #include "modules/opengl/volumegl.h"
 #include "modules/opengl/glwrap/shader.h"
-#include "modules/opengl/glwrap/shadermanager.h"
 
 namespace inviwo {
 
@@ -37,6 +36,7 @@ private:
     ImagePort outport_;
 
     BoolProperty enableShading_;
+    FloatVec3Property lightSourcePos_;
 	BoolProperty enableMIP_;
     FloatProperty samplingRate_;
 

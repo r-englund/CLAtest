@@ -15,9 +15,6 @@ public:
     Shader(std::string vertexFilename, std::string fragmentFilename);
     virtual ~Shader();
 
-    void initialize();
-    void deinitialize();
-
     void link();
 
     ShaderObject* getVertexShaderObject() { return vertexShaderObject_; }
@@ -41,7 +38,11 @@ private:
     ShaderObject* vertexShaderObject_;
     ShaderObject* fragmentShaderObject_;
 
+    void initialize();
+    void deinitialize();
+
     void attachShaderObject(ShaderObject* shaderObject);
+    void detachShaderObject(ShaderObject* shaderObject);
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };

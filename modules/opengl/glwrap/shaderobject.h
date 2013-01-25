@@ -15,17 +15,19 @@ public:
 
     GLuint getID() { return id_; }
     std::string getFileName() { return fileName_; }
+    std::vector<std::string> getIncludeFileNames() { return includeFileNames_; }
 
-    bool initialize();
-    void deinitialize();
-
-    void loadSource(std::string fileName);
+    bool loadSource(std::string fileName);
     void preprocess();
     void upload();
     bool compile();
     std::string getCompileLog();
+    bool rebuild();
 
 private:
+    bool initialize();
+    void deinitialize();
+
     std::string embeddDefines(std::string source);
     std::string embeddIncludes(std::string source, std::string fileName);
 
@@ -34,9 +36,11 @@ private:
 
     GLenum shaderType_;
     std::string fileName_;
+    std::vector<std::string> includeFileNames_;
 
     GLuint id_;
-    const char* source_;
+    std::string source_;
+    std::string sourceProcessed_;
 
     std::vector<std::pair<std::string, std::string> > shaderDefines_;
     std::vector<std::pair<std::string, unsigned int> > lineNumberResolver_;

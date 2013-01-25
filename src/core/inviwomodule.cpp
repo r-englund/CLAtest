@@ -83,7 +83,7 @@ void InviwoModule::setXMLFileName(const std::string& xmlFileName) {
 }
 
 void InviwoModule::addProcessor(Processor* processor) {
-    // check processor pointer and module's name
+    // FIXME: check processor pointer and module's name
     //processor->setModuleIdentifier(identifier_);
     processors_.push_back(processor);
 }

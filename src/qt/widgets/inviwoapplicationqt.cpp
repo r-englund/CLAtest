@@ -11,29 +11,42 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
                                        QApplication(argc, argv)
 {
     PropertyWidgetFactoryQt::init();
+    reloadingFile_ = false;
     fileWatcher_ = new QFileSystemWatcher();
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 }
 
 void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {
+    ivwAssert(std::find(fileObservers_.begin(),fileObservers_.end(),fileObserver)==fileObservers_.end(),
+              "File observer already registered.");
     fileObservers_.push_back(fileObserver);
 }
 
 void InviwoApplicationQt::startFileObservation(std::string fileName) {
-    fileWatcher_->addPath(QString::fromStdString(fileName));
+    if (!fileWatcher_->files().contains(QString::fromStdString(fileName)))
+        fileWatcher_->addPath(QString::fromStdString(fileName));
 }
 
 void InviwoApplicationQt::stopFileObservation(std::string fileName) {
-    fileWatcher_->removePath(QString::fromStdString(fileName));
+    ivwAssert(fileWatcher_->files().contains(QString::fromStdString(fileName)),
+              "trying to stop observation of an unobserved file: "+fileName);
+    if (fileWatcher_->files().contains(QString::fromStdString(fileName)))
+        fileWatcher_->removePath(QString::fromStdString(fileName));
 }
 
 void InviwoApplicationQt::fileChanged(QString fileName) {
-    // FIXME: for some reason these slot is executed twice upon file change
-    std::string fileNameStd = fileName.toStdString();
-    for (size_t i=0; i<fileObservers_.size(); i++) {
-        std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
-        if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
-            fileObservers_[i]->fileChanged(fileNameStd);
+    // FIXME: When using visual studio for file editing, the file is renamed, deleted, and copied over
+    // therefore the filesystemwatcher might 'forget' about the file
+    if (!reloadingFile_) {
+        reloadingFile_ = true;
+        std::string fileNameStd = fileName.toStdString();
+        for (size_t i=0; i<fileObservers_.size(); i++) {
+            std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
+            if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
+                fileObservers_[i]->fileChanged(fileNameStd);
+        }
+        startFileObservation(fileNameStd);
+        reloadingFile_ = false;
     }
 }
 

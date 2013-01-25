@@ -74,16 +74,15 @@ QCheckBox::indicator {
     border: 1px solid #111111;
     background: qradialgradient(cx: 0, cy: 0, radius: 1,
                                 fx: 0.5, fy: 0.5, 
-                                stop: 0 #78d, stop: 0.4999 #46a,
-                                stop: 0.5 #45a, stop: 1 #238);
+                                stop: 0 #fff, stop: 0.4999 #eee,
+                                stop: 0.5 #ddd, stop: 1 #eee);
 }
-
 QCheckBox::indicator:checked {
     border: 1px solid #111111;
     background: qradialgradient(cx: 0, cy: 0, radius: 1,
                                 fx: 0.5, fy: 0.5, 
-                                stop: 0 #fff, stop: 0.4999 #eee,
-                                stop: 0.5 #ddd, stop: 1 #eee);
+                                stop: 0 #78d, stop: 0.4999 #46a,
+                                stop: 0.5 #45a, stop: 1 #238);
 }
 
 

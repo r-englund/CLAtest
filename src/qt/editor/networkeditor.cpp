@@ -170,6 +170,7 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
     // generate GUI representation and add to editor
     ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem();
     processorGraphicsItem->setProcessor(processor);
+    
     // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
     if (gridSnapping_) pos = snapToGrid(pos);
     processorGraphicsItem->setPos(pos);
@@ -185,7 +186,7 @@ void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPoi
         processor->getProcessorWidget()->show();
     }
 
-    // show property widgets
+    // FIXME: show property widgets, but then also deselect all other processors and select this one
     PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
     propertyListWidget_->showProcessorProperties(processor);
 
@@ -465,10 +466,8 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
 
 void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     ProcessorGraphicsItem* processorGraphicsItem = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(e->scenePos()));
-    
-    ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(getConnectionGraphicsItemAt(e->scenePos()));    
-       
-    LinkConnectionGraphicsItem* linkConnectionGraphicsItem = qgraphicsitem_cast<LinkConnectionGraphicsItem*>(getLinkGraphicsItemAt(e->scenePos()));    
+    ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(getConnectionGraphicsItemAt(e->scenePos()));
+    LinkConnectionGraphicsItem* linkConnectionGraphicsItem = qgraphicsitem_cast<LinkConnectionGraphicsItem*>(getLinkGraphicsItemAt(e->scenePos()));
     
     if (processorGraphicsItem) {
         QMenu menu;
@@ -496,7 +495,6 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
                 processorGraphicsItem->getProcessor()->getProcessorWidget()->show();
             } else
                 processorGraphicsItem->getProcessor()->getProcessorWidget()->hide();
-
         }
     } else if (connectionGraphicsItem) {
         QMenu menu;
@@ -518,7 +516,6 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             if (plink) {
                 plink->autoLinkPropertiesByType();
             }
-
         }
 
     } else
@@ -553,6 +550,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
         if (!className.isEmpty()) {
             Processor* processor = createProcessor(className.toStdString());
             initializeProcessorRepresentation(processor, e->scenePos());
+
             e->setAccepted(true);
             e->acceptProposedAction();
         }

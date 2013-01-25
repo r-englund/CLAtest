@@ -11,7 +11,7 @@ void BoolPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     checkBox_ = new QCheckBox();
-    connect(checkBox_, SIGNAL(released()), this, SLOT(setPropertyValue()));
+    connect(checkBox_, SIGNAL(clicked()), this, SLOT(setPropertyValue()));
     hLayout->addWidget(checkBox_);
     setLayout(hLayout);
 }

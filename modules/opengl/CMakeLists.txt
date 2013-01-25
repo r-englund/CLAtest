@@ -56,8 +56,10 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/img_identity.vert
     ${IVW_MODULE_DIR}/opengl/glsl/img_mix.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/mod_sampler3d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/mod_classification.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/mod_gradients.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/mod_sampler3d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/mod_shading.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
 )
 ivw_group("Shader Files" ${SHADER_FILES})

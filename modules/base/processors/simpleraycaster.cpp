@@ -8,18 +8,20 @@ SimpleRaycaster::SimpleRaycaster()
     entryPort_(Port::INPORT, "entry-points"),
     exitPort_(Port::INPORT, "exit-points"),
     outport_(Port::OUTPORT, "outport"),
+    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f),
     enableShading_("enableShading", "Shading", false),
-	enableMIP_("enableMIP", "MIP", false),
-    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f)
+    lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
+	enableMIP_("enableMIP", "MIP", false)
 {
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
 
-    addProperty(enableShading_);
-	addProperty(enableMIP_);
     addProperty(samplingRate_);
+    addProperty(enableShading_);
+    addProperty(lightSourcePos_);
+	addProperty(enableMIP_);
 }
 
 SimpleRaycaster::~SimpleRaycaster() {}
@@ -30,7 +32,7 @@ Processor* SimpleRaycaster::create() const {
 
 void SimpleRaycaster::initialize() {
     ProcessorGL::initialize();
-    shader_ = ShaderManager::getRef().setupShader("raycasting.frag");
+    shader_ = new Shader("raycasting.frag");
 }
 
 void SimpleRaycaster::deinitialize() {
@@ -56,9 +58,10 @@ void SimpleRaycaster::process() {
     shader_->setUniform("exitTex_", 1);
     shader_->setUniform("volume_", 2);
     shader_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
-    shader_->setUniform("enableShading_", enableShading_.get());
-	shader_->setUniform("enableMIP_", enableMIP_.get());
     shader_->setUniform("samplingRate_", samplingRate_.get());
+    shader_->setUniform("enableShading_", enableShading_.get());
+    shader_->setUniform("lightSourcePos_", lightSourcePos_.get());
+	shader_->setUniform("enableMIP_", enableMIP_.get());
     shader_->setUniform("volumeDimension_", vec3(volumeDim.x, volumeDim.y, volumeDim.z));
     renderImagePlaneQuad();
     shader_->deactivate();

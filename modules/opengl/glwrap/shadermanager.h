@@ -14,8 +14,9 @@ class IVW_MODULE_OPENGL_API ShaderManager : public Singleton<ShaderManager>, pub
 
 public:
     ShaderManager();
-    Shader* setupShader(std::string fragmentFilename);
-    Shader* setupShader(std::string vertexFilename, std::string fragmentFilename);
+
+    void registerShader(Shader* shader);
+    void unregisterShader(Shader* shader);
 
     virtual void fileChanged(std::string shaderFilename);
 
