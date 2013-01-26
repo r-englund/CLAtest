@@ -55,6 +55,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/datasourceprocessor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/boolproperty.h
+	${IVW_INCLUDE_DIR}/inviwo/core/properties/buttonproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/cameraproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
@@ -143,6 +144,7 @@ set(SOURCE_FILES
     processors/datasource/datasourceprocessor.cpp
     processors/datasource/volumesource.cpp
     properties/boolproperty.cpp
+    properties/buttonproperty.cpp
     properties/cameraproperty.cpp
     properties/compositeproperty.cpp
     properties/fileproperty.cpp
