@@ -15,9 +15,13 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/compositepropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/filepropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatpropertywidgetqt.h
+	${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h
+	${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec2propertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec3propertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec4propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetfactoryqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
@@ -38,9 +42,13 @@ set(SOURCE_FILES
     properties/compositepropertywidgetqt.cpp
     properties/filepropertywidgetqt.cpp
     properties/floatpropertywidgetqt.cpp
+	properties/floatvec2propertywidgetqt.cpp
     properties/floatvec3propertywidgetqt.cpp
+	properties/floatvec4propertywidgetqt.cpp
     properties/intpropertywidgetqt.cpp
     properties/intvec2propertywidgetqt.cpp
+    properties/intvec3propertywidgetqt.cpp
+    properties/intvec4propertywidgetqt.cpp
     properties/optionpropertywidgetqt.cpp
     properties/propertywidgetfactoryqt.cpp
     properties/propertywidgetqt.cpp

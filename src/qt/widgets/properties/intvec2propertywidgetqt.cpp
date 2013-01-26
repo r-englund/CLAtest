@@ -4,7 +4,7 @@
 
 namespace inviwo {
 
-IntVec2PropertyWidgetQt::IntVec2PropertyWidgetQt(IntVec2Property *property) {
+IntVec2PropertyWidgetQt::IntVec2PropertyWidgetQt(IntVec2Property *property) : property_(property) {
 	generateWidget();
 	updateFromProperty();
 	}
@@ -17,7 +17,6 @@ void IntVec2PropertyWidgetQt::generateWidget() {
 	QVBoxLayout* vLayout = new QVBoxLayout();
 	sliderWidget->setLayout(vLayout);
 	sliderX_ = new QSlider(Qt::Horizontal);
-	//sliderX_->setOrientation(Qt::Horizontal);
 	vLayout->addWidget(sliderX_);
 	sliderY_ =new QSlider(Qt::Horizontal);
 	vLayout->addWidget(sliderY_);
@@ -28,24 +27,24 @@ void IntVec2PropertyWidgetQt::generateWidget() {
 }
 
 void IntVec2PropertyWidgetQt::setXValue(int value) {
-	vec2 valueVec2 = property_->get();
+	ivec2 valueVec2 = property_->get();
 	valueVec2.x = value;
 	property_->set(valueVec2);
 }
 
 void IntVec2PropertyWidgetQt::setYValue(int value) {
-	vec2 valueVec2 = property_->get();
+	ivec2 valueVec2 = property_->get();
 	valueVec2.y = value;
 	property_->set(valueVec2);
 }
 
 void IntVec2PropertyWidgetQt::setPropertyValue() {
 	setXValue(sliderX_->value());
-	setYValue(sliderX_->value());
+	setYValue(sliderY_->value());
 }
 
 void IntVec2PropertyWidgetQt::updateFromProperty() {
-	vec2 valueVec2 = property_->get();
+	ivec2 valueVec2 = property_->get();
 	sliderX_->setValue(sliderX_->minimum()+valueVec2.x);
 	sliderY_->setValue(sliderY_->minimum()+valueVec2.y);
 };

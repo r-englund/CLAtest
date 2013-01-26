@@ -1,5 +1,5 @@
-#ifndef IVW_INTVEC2PROPERTYWIDGETQT_H
-#define IVW_INTVEC2PROPERTYWIDGETQT_H
+#ifndef IVW_FLOATVEC2PROPERTYWIDGETQT_H
+#define IVW_FLOATVEC2PROPERTYWIDGETQT_H
 
 #include <QSlider>
 
@@ -9,17 +9,17 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API IntVec2PropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API FloatVec2PropertyWidgetQt : public PropertyWidgetQt {
 
 Q_OBJECT;
 
 public:
-    IntVec2PropertyWidgetQt(IntVec2Property* property);
+    FloatVec2PropertyWidgetQt(FloatVec2Property* property);
 
     void updateFromProperty();
 
 private:
-    IntVec2Property* property_;
+    FloatVec2Property* property_;
     QSlider* sliderX_;
     QSlider* sliderY_;
 
