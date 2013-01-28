@@ -1,8 +1,8 @@
 #ifndef IVW_OPENGLMODULE_H
 #define IVW_OPENGLMODULE_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/inviwomodule.h"
+#include <modules/opengl/openglmoduledefine.h>
+#include <inviwo/core/inviwomodule.h>
 
 namespace inviwo {
 

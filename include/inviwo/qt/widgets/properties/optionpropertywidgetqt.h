@@ -1,12 +1,12 @@
 #ifndef IVW_OPTIONPROPERTYWIDGETQT_H
 #define IVW_OPTIONPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QCheckBox>
 
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/optionproperty.h"
+#include <inviwo/core/properties/optionproperty.h>
 
 namespace inviwo {
 

@@ -1,8 +1,8 @@
 #ifndef IVW_BOOLPROPERTY_H
 #define IVW_BOOLPROPERTY_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/properties/templateproperty.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
 

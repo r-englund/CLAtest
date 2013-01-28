@@ -1,4 +1,4 @@
-#include "inviwo/core/network/processorlink.h"
+#include <inviwo/core/network/processorlink.h>
 
 namespace inviwo {
 

@@ -1,11 +1,11 @@
 #ifndef IVW_VOLUMECLCONVERTER_H
 #define IVW_VOLUMECLCONVERTER_H
 
-#include "inviwo/core/datastructures/representationconverter.h"
-#include "inviwo/core/datastructures/volumeram.h"
-#include "inviwo/core/datastructures/volumeramconverter.h"
-#include "inviwo/core/datastructures/volumedisk.h"
-#include "modules/opencl/volumecl.h"
+#include <inviwo/core/datastructures/representationconverter.h>
+#include <inviwo/core/datastructures/volumeram.h>
+#include <inviwo/core/datastructures/volumeramconverter.h>
+#include <inviwo/core/datastructures/volumedisk.h>
+#include <modules/opencl/volumecl.h>
 
 namespace inviwo {
 

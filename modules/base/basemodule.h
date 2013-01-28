@@ -1,8 +1,8 @@
 #ifndef IVW_BASEMODULE_H
 #define IVW_BASEMODULE_H
 
-#include "modules/base/basemoduledefine.h"
-#include "inviwo/core/inviwomodule.h"
+#include <modules/base/basemoduledefine.h>
+#include <inviwo/core/inviwomodule.h>
 
 namespace inviwo {
 

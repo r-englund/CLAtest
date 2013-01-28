@@ -1,4 +1,4 @@
-#include "inviwo/core/util/canvas.h"
+#include <inviwo/core/util/canvas.h>
 
 namespace inviwo {
 

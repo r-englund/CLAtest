@@ -3,9 +3,9 @@
 
 #include <QPushButton>
 
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/buttonproperty.h"
+#include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {
 

@@ -1,7 +1,7 @@
 #ifndef IVW_PROCESSORPROPERTYWIDGET_H
 #define IVW_PROCESSORPROPERTYWIDGET_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QWidget>
 
 namespace inviwo {

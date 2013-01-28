@@ -1,10 +1,10 @@
-#include "modules/opencl/inviwoopencl.h"
-#include "inviwo/core/util/logdistributor.h"
+#include <modules/opencl/inviwoopencl.h>
+#include <inviwo/core/util/logdistributor.h>
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
-#include "modules/opencl/cl.hpp"
-#include "modules/opencl/glmcl.h"
+#include <modules/opencl/cl.hpp>
+#include <modules/opencl/glmcl.h>
 
 #ifdef WIN32
 #define OPEN_FILE(a,b,c) fopen_s(&a, b, c);

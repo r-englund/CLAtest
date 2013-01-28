@@ -1,4 +1,4 @@
-#include "inviwo/core/interaction/events/timerevent.h"
+#include <inviwo/core/interaction/events/timerevent.h>
 
 namespace inviwo {
 

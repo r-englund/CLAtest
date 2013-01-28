@@ -1,12 +1,12 @@
 #ifndef IVW_CONNECTIONGRAPHICSITEM_H
 #define IVW_CONNECTIONGRAPHICSITEM_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsLineItem>
 #include <QPainterPath>
 
-#include "inviwo/core/ports/port.h"
-#include "inviwo/qt/editor/processorgraphicsitem.h"
+#include <inviwo/core/ports/port.h>
+#include <inviwo/qt/editor/processorgraphicsitem.h>
 
 namespace inviwo {
 

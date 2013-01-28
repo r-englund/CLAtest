@@ -1,6 +1,6 @@
 #include "shader.h"
 
-#include "modules/opengl/glwrap/shadermanager.h"
+#include <modules/opengl/glwrap/shadermanager.h>
 
 namespace inviwo {
 

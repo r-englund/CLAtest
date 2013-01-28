@@ -1,11 +1,11 @@
 #ifndef IVW_VOLUMEGLCONVERTER_H
 #define IVW_VOLUMEGLCONVERTER_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/datastructures/representationconverter.h"
-#include "inviwo/core/datastructures/volumeram.h"
-#include "inviwo/core/datastructures/volumeramconverter.h"
-#include "inviwo/core/datastructures/volumedisk.h"
+#include <modules/opengl/openglmoduledefine.h>
+#include <inviwo/core/datastructures/representationconverter.h>
+#include <inviwo/core/datastructures/volumeram.h>
+#include <inviwo/core/datastructures/volumeramconverter.h>
+#include <inviwo/core/datastructures/volumedisk.h>
 #include "volumegl.h"
 
 namespace inviwo {

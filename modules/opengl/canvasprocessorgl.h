@@ -1,11 +1,11 @@
 #ifndef IVW_CANVASPROCESSORGL_H
 #define IVW_CANVASPROCESSORGL_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/ports/imageport.h"
-#include "inviwo/core/util/canvas.h"
-#include "inviwo/core/processors/canvasprocessor.h"
+#include <modules/opengl/openglmoduledefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/util/canvas.h>
+#include <inviwo/core/processors/canvasprocessor.h>
 
 #include "processorgl.h"
 #include "glwrap/shader.h"

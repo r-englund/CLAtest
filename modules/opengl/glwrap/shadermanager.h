@@ -1,12 +1,12 @@
 #ifndef IVW_SHADERMANAGER_H
 #define IVW_SHADERMANAGER_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "modules/opengl/inviwoopengl.h"
-#include "modules/opengl/glwrap/shader.h"
-#include "inviwo/core/util/fileobserver.h"
-#include "inviwo/core/util/singleton.h"
+#include <modules/opengl/openglmoduledefine.h>
+#include <inviwo/core/inviwo.h>
+#include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <inviwo/core/util/fileobserver.h>
+#include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
 

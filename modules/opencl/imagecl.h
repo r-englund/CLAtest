@@ -1,12 +1,12 @@
 #ifndef IVW_IMAGECL_H
 #define IVW_IMAGECL_H
 
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/datastructures/imagerepresentation.h"
-#include "inviwo/core/util/typetostring.h"
-#include "modules/opencl/glmcl.h"
-#include "modules/opencl/inviwoopencl.h"
-#include "modules/opencl/openclmoduledefine.h"
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/datastructures/imagerepresentation.h>
+#include <inviwo/core/util/typetostring.h>
+#include <modules/opencl/glmcl.h>
+#include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/openclmoduledefine.h>
 
 namespace inviwo {
 

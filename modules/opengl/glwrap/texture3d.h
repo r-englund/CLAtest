@@ -1,9 +1,9 @@
 #ifndef IVW_TEXTURE3D_H
 #define IVW_TEXTURE3D_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "modules/opengl/inviwoopengl.h"
+#include <modules/opengl/openglmoduledefine.h>
+#include <inviwo/core/inviwo.h>
+#include <modules/opengl/inviwoopengl.h>
 #include <stdio.h>
 #include <fstream>
 

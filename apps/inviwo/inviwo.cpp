@@ -4,9 +4,9 @@
 
 #include <QFile>
 
-#include "modules/opengl/inviwoopengl.h"
+#include <modules/opengl/inviwoopengl.h>
 #include "inviwomainwindow.h"
-#include "inviwo/qt/widgets/inviwoapplicationqt.h"
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 int main(int argc, char** argv) {
 #ifdef __unix__

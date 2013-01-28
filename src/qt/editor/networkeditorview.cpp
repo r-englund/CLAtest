@@ -2,7 +2,7 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 
-#include "inviwo/qt/editor/networkeditorview.h"
+#include <inviwo/qt/editor/networkeditorview.h>
 
 namespace inviwo {
 

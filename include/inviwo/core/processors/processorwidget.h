@@ -1,9 +1,9 @@
 #ifndef IVW_PROCESSORWIDGET_H
 #define IVW_PROCESSORWIDGET_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/metadata/processorwidgetmetadata.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/metadata/processorwidgetmetadata.h>
 
 namespace inviwo {
 

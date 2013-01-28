@@ -1,4 +1,4 @@
-#include "inviwo/core/datastructures/volumeram.h"
+#include <inviwo/core/datastructures/volumeram.h>
 
 namespace inviwo {
 

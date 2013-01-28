@@ -1,14 +1,14 @@
 #ifndef IVW_PROCESSORLISTWIDGET_H
 #define IVW_PROCESSORLISTWIDGET_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMouseEvent>
 
-#include "inviwo/qt/editor/inviwodockwidget.h"
+#include <inviwo/qt/editor/inviwodockwidget.h>
 
-#include "inviwo/core/processors/processor.h"
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 

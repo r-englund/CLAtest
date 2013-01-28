@@ -1,11 +1,11 @@
 #ifndef IVW_TRACKBALL_H
 #define IVW_TRACKBALL_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/interaction/interactionhandler.h"
-#include "inviwo/core/interaction/events/mouseevent.h"
-#include "inviwo/core/interaction/events/resizeevent.h"
-#include "inviwo/core/properties/cameraproperty.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/interaction/interactionhandler.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/resizeevent.h>
+#include <inviwo/core/properties/cameraproperty.h>
 
 namespace inviwo {
 

@@ -1,4 +1,4 @@
-#include "inviwo/core/properties/optionproperty.h"
+#include <inviwo/core/properties/optionproperty.h>
 
 namespace inviwo {
 

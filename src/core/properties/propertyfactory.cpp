@@ -1,6 +1,6 @@
-#include "inviwo/core/inviwoapplication.h"
-#include "inviwo/core/inviwomodule.h"
-#include "inviwo/core/properties/propertyfactory.h"
+#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/inviwomodule.h>
+#include <inviwo/core/properties/propertyfactory.h>
 
 
 namespace inviwo {

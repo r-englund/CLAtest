@@ -1,8 +1,8 @@
 #ifndef IVW_TRANSFERPROPERTY_H
 #define IVW_TRANSFERPROPERTY_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/properties/templateproperty.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
 

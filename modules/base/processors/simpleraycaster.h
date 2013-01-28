@@ -1,15 +1,15 @@
 #ifndef IVW_SIMPLERAYCASTER_H
 #define IVW_SIMPLERAYCASTER_H
 
-#include "modules/base/basemoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/ports/imageport.h"
-#include "inviwo/core/ports/volumeport.h"
-#include "inviwo/core/properties/properties.h"
-#include "modules/opengl/inviwoopengl.h"
-#include "modules/opengl/processorgl.h"
-#include "modules/opengl/volumegl.h"
-#include "modules/opengl/glwrap/shader.h"
+#include <modules/base/basemoduledefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/properties/properties.h>
+#include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/processorgl.h>
+#include <modules/opengl/volumegl.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 

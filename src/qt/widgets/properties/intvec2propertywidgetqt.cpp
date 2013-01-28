@@ -1,4 +1,4 @@
-#include "inviwo/qt/widgets/properties/intvec2propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/intvec2propertywidgetqt.h>
 #include <QHBoxLayout>
 #include <QLabel>
 

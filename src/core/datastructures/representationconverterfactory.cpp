@@ -1,6 +1,6 @@
-#include "inviwo/core/inviwoapplication.h"
-#include "inviwo/core/inviwomodule.h"
-#include "inviwo/core/datastructures/representationconverterfactory.h"
+#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/inviwomodule.h>
+#include <inviwo/core/datastructures/representationconverterfactory.h>
 
 namespace inviwo {
 

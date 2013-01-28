@@ -1,8 +1,8 @@
 #ifndef IVW_LOGGER_H
 #define IVW_LOGGER_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
 #include <sstream>
 
 namespace inviwo {

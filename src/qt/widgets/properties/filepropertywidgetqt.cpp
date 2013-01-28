@@ -1,4 +1,4 @@
-#include "inviwo/qt/widgets/properties/filepropertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 
 #include <QDesktopServices>
 #include <QDir>

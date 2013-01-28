@@ -1,9 +1,9 @@
 #ifndef IVW_EVENTLISTENER_H
 #define IVW_EVENTLISTENER_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/interaction/events/event.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/interaction/events/event.h>
 
 namespace inviwo {
 

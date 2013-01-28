@@ -1,8 +1,8 @@
 #ifndef IVW_METADATA_H
 #define IVW_METADATA_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
 
 namespace inviwo {
 

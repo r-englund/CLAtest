@@ -1,10 +1,10 @@
 #ifndef __GLMCL_H__
 #define __GLMCL_H__
 
-#include "modules/opencl/cl.hpp"
-#include "ext/glm/glm.hpp"
-#include "inviwo/core/util/pstdint.h"
-#include "inviwo/core/util/logdistributor.h"
+#include <modules/opencl/cl.hpp>
+#include <glm/glm.hpp>
+#include <inviwo/core/util/pstdint.h>
+#include <inviwo/core/util/logdistributor.h>
 #include <iostream>
 
 namespace cl {

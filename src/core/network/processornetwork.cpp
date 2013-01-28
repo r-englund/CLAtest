@@ -1,13 +1,13 @@
-#include "inviwo/core/network/processornetwork.h"
+#include <inviwo/core/network/processornetwork.h>
 
 //TODO: remove these includes
-#include "modules/base/processors/firstivwprocessor.h"
-#include "modules/base/processors/imagesource.h"
-#include "modules/base/processors/entryexitpoints.h"
-#include "modules/base/processors/simpleraycaster.h"
-#include "modules/base/processors/imagesource.h"
-#include "modules/opengl/canvasprocessorgl.h"
-#include "inviwo/core/processors/datasource/volumesource.h"
+#include <modules/base/processors/firstivwprocessor.h>
+#include <modules/base/processors/imagesource.h>
+#include <modules/base/processors/entryexitpoints.h>
+#include <modules/base/processors/simpleraycaster.h>
+#include <modules/base/processors/imagesource.h>
+#include <modules/opengl/canvasprocessorgl.h>
+#include <inviwo/core/processors/datasource/volumesource.h>
 
 namespace inviwo {
 

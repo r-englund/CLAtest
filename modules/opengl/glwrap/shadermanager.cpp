@@ -1,6 +1,6 @@
 #include "shadermanager.h"
-#include "inviwo/core/inviwoapplication.h"
-#include "modules/opengl/processorgl.h"
+#include <inviwo/core/inviwoapplication.h>
+#include <modules/opengl/processorgl.h>
 
 namespace inviwo {
 

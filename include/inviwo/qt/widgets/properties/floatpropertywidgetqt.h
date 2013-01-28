@@ -1,12 +1,12 @@
 #ifndef IVW_FLOATPROPERTYWIDGETQT_H
 #define IVW_FLOATPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QSlider>
 
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/scalarproperties.h"
+#include <inviwo/core/properties/scalarproperties.h>
 
 namespace inviwo {
 

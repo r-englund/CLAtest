@@ -1,11 +1,11 @@
 #ifndef IVW_PROCESSORNETWORK_H
 #define IVW_PROCESSORNETWORK_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/network/portconnection.h"
-#include "inviwo/core/network/processorlink.h"
-#include "inviwo/core/processors/processor.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/network/portconnection.h>
+#include <inviwo/core/network/processorlink.h>
+#include <inviwo/core/processors/processor.h>
 
 #include <string>
 using namespace std;

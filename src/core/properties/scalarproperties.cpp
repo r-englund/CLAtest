@@ -1,4 +1,4 @@
-#include "inviwo/core/properties/scalarproperties.h"
+#include <inviwo/core/properties/scalarproperties.h>
 
 namespace inviwo {
 

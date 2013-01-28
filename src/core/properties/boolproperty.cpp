@@ -1,4 +1,4 @@
-#include "inviwo/core/properties/boolproperty.h"
+#include <inviwo/core/properties/boolproperty.h>
 
 namespace inviwo {
 

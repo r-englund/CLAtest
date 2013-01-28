@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <fstream>
 
-#include "modules/opengl/glwrap/shadermanager.h"
+#include <modules/opengl/glwrap/shadermanager.h>
 
 #ifdef WIN32
 #define OPEN_FILE(a,b,c) fopen_s(&a, b, c);

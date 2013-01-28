@@ -1,4 +1,4 @@
-#include "inviwo/core/util/logdistributor.h"
+#include <inviwo/core/util/logdistributor.h>
 
 namespace inviwo {
 

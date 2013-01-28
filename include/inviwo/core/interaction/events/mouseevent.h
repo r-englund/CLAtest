@@ -1,9 +1,9 @@
 #ifndef IVW_MOUSEEVENT_H
 #define IVW_MOUSEEVENT_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/interaction/events/event.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/interaction/events/event.h>
 
 namespace inviwo {
 

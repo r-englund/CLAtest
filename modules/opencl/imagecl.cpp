@@ -1,6 +1,6 @@
-#include "modules/opencl/imagecl.h"
-#include "modules/opencl/imageclresizer.h"
-#include "inviwo/core/util/assertion.h"
+#include <modules/opencl/imagecl.h>
+#include <modules/opencl/imageclresizer.h>
+#include <inviwo/core/util/assertion.h>
 namespace inviwo {
 
 ImageCL::ImageCL()

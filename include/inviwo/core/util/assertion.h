@@ -1,7 +1,7 @@
 #ifndef IVW_ASSERTION_H
 #define IVW_ASSERTION_H
 
-#include "inviwo/core/inviwocoredefine.h"
+#include <inviwo/core/inviwocoredefine.h>
 #include <iostream>
 
 IVW_CORE_API void ivwAssertion(const char* fileName, const char* functionName, long lineNumber, std::string message);

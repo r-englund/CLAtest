@@ -1,11 +1,11 @@
 #ifndef IVW_PROCESSORNETWORKEVALUATOR_H
 #define IVW_PROCESSORNETWORKEVALUATOR_H
 
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/interaction/events/mouseevent.h"
-#include "inviwo/core/interaction/events/resizeevent.h"
-#include "inviwo/core/network/processornetwork.h"
-#include "inviwo/core/properties/linkevaluator.h"
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/resizeevent.h>
+#include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/properties/linkevaluator.h>
 
 namespace inviwo {
 

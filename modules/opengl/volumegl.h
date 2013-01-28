@@ -1,9 +1,9 @@
 #ifndef IVW_VOLUMEGL_H
 #define IVW_VOLUMEGL_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/datastructures/volumerepresentation.h"
+#include <modules/opengl/openglmoduledefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/datastructures/volumerepresentation.h>
 #include "glwrap/texture3d.h"
 
 namespace inviwo {

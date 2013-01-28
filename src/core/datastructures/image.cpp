@@ -1,7 +1,7 @@
-#include "inviwo/core/datastructures/image.h"
-#include "inviwo/core/datastructures/imagerepresentation.h"
+#include <inviwo/core/datastructures/image.h>
+#include <inviwo/core/datastructures/imagerepresentation.h>
 
-#include "inviwo/core/datastructures/imageram.h"
+#include <inviwo/core/datastructures/imageram.h>
 
 namespace inviwo {
 

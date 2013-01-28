@@ -187,6 +187,7 @@ add_library(inviwo-core ${SOURCE_FILES} ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add core folders to includes
 ivw_include_directories(${IVW_INCLUDE_DIR})
+ivw_include_directories(${IVW_EXTENSIONS_DIR})
 ivw_include_directories(${CMAKE_SOURCE_DIR})
 
 # Add core dependencies to this list

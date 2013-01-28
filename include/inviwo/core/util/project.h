@@ -1,11 +1,11 @@
 #ifndef IVW_PROJECT_H
 #define IVW_PROJECT_H
 
-#include "inviwo/core/inviwocoredefine.h"
+#include <inviwo/core/inviwocoredefine.h>
 #include <fstream>
-#include "inviwo/core/inviwo.h"
-//#include "ext/voreen/serialization/networkserializer.h"
-#include "inviwo/core/network/processornetwork.h"
+#include <inviwo/core/inviwo.h>
+//#include <voreen/serialization/networkserializer.h>
+#include <inviwo/core/network/processornetwork.h>
 
 namespace inviwo {
 

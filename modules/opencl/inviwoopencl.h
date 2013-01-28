@@ -2,9 +2,9 @@
 #define IVW_INVIWOOPENCL_H
 #include <vector>
 #include <iostream>
-#include "ext/glm/glm.hpp"
-#include "modules/opencl/cl.hpp"
-#include "modules/opencl/openclmoduledefine.h"
+#include <glm/glm.hpp>
+#include <modules/opencl/cl.hpp>
+#include <modules/opencl/openclmoduledefine.h>
 
 namespace cl{
 

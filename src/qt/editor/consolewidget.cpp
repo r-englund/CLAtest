@@ -1,6 +1,6 @@
 #include <QVBoxLayout>
 
-#include "inviwo/qt/editor/consolewidget.h"
+#include <inviwo/qt/editor/consolewidget.h>
 
 namespace inviwo {
 

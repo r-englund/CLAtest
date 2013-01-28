@@ -1,4 +1,4 @@
-#include "inviwo/core/datastructures/representationconverter.h"
+#include <inviwo/core/datastructures/representationconverter.h>
 
 namespace inviwo {
 

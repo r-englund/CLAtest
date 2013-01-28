@@ -1,16 +1,16 @@
 #ifndef IVW_PROCESSOR_H
 #define IVW_PROCESSOR_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/interaction/interactionhandler.h"
-#include "inviwo/core/interaction/events/event.h"
-#include "inviwo/core/ports/port.h"
-#include "inviwo/core/processors/processorwidget.h"
-#include "inviwo/core/properties/properties.h"
-#include "inviwo/core/properties/propertyowner.h"
-#include "inviwo/core/metadata/metadata.h"
-#include "inviwo/core/util/group.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/interaction/interactionhandler.h>
+#include <inviwo/core/interaction/events/event.h>
+#include <inviwo/core/ports/port.h>
+#include <inviwo/core/processors/processorwidget.h>
+#include <inviwo/core/properties/properties.h>
+#include <inviwo/core/properties/propertyowner.h>
+#include <inviwo/core/metadata/metadata.h>
+#include <inviwo/core/util/group.h>
 
 namespace inviwo {
 

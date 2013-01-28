@@ -1,12 +1,12 @@
 #ifndef IVW_CAMERAPROPERTYWIDGETQT_H
 #define IVW_CAMERAPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QSlider>
 
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/cameraproperty.h"
+#include <inviwo/core/properties/cameraproperty.h>
 
 namespace inviwo {
 

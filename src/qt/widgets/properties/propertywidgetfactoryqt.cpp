@@ -1,30 +1,30 @@
-#include "inviwo/qt/widgets/properties/propertywidgetfactoryqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
-#include "inviwo/core/properties/boolproperty.h"
-#include "inviwo/core/properties/buttonproperty.h"
-#include "inviwo/core/properties/cameraproperty.h"
-#include "inviwo/core/properties/compositeproperty.h"
-#include "inviwo/core/properties/fileproperty.h"
-#include "inviwo/core/properties/optionproperty.h"
-#include "inviwo/core/properties/scalarproperties.h"
-#include "inviwo/core/properties/transferproperty.h"
-#include "inviwo/core/properties/vectorproperties.h"
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/optionproperty.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/transferproperty.h>
+#include <inviwo/core/properties/vectorproperties.h>
 
-#include "inviwo/qt/widgets/properties/boolpropertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/buttonpropertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/camerapropertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/compositepropertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/filepropertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/floatpropertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/intpropertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/intvec2propertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/intvec3propertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/intvec4propertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/optionpropertywidgetqt.h"
-#include "inviwo/qt/widgets/properties/transferpropertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/intpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/intvec2propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/intvec3propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/intvec4propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/transferpropertywidgetqt.h>
 
 namespace inviwo {
 

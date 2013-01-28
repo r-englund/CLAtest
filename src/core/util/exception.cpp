@@ -1,4 +1,4 @@
-#include "inviwo/core/util/exception.h"
+#include <inviwo/core/util/exception.h>
 
 namespace inviwo {
 

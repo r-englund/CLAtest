@@ -1,5 +1,5 @@
 #include "inviwoopengl.h"
-#include "inviwo/core/util/logdistributor.h"
+#include <inviwo/core/util/logdistributor.h>
 
 void LogGLError(const char* fileName, const char* functionName, int lineNumber) {
     GLenum err = glGetError();

@@ -1,11 +1,11 @@
 #ifndef IVW_CONSOLEWIDGET_H
 #define IVW_CONSOLEWIDGET_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QTextEdit>
 
-#include "inviwo/core/util/logdistributor.h"
-#include "inviwo/qt/editor/inviwodockwidget.h"
+#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/qt/editor/inviwodockwidget.h>
 
 namespace inviwo {
 

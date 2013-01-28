@@ -1,11 +1,11 @@
 #ifndef IVW_PROCESSORGRAPHICSITEM_H
 #define IVW_PROCESSORGRAPHICSITEM_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsRectItem>
 
-#include "inviwo/core/processors/processor.h"
-#include "inviwo/qt/editor/labelgraphicsitem.h"
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/qt/editor/labelgraphicsitem.h>
 
 namespace inviwo {
 

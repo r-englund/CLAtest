@@ -1,9 +1,9 @@
 #ifndef IVW_IMAGEGL_H
 #define IVW_IMAGEGL_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/datastructures/imagerepresentation.h"
+#include <modules/opengl/openglmoduledefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/datastructures/imagerepresentation.h>
 #include "glwrap/framebufferobject.h"
 #include "glwrap/texture2d.h"
 

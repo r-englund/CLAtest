@@ -2,7 +2,7 @@
 #ifndef  IVW_LINKDIALOG_H
 #define  IVW_LINKDIALOG_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsView>
 #include <QDialog>
 #include <QGraphicsRectItem>
@@ -12,10 +12,10 @@
 #include <QPainterPath>
 #include <QDialogButtonBox>
 
-#include "inviwo/core/network/processorlink.h"
-#include "inviwo/core/network/processornetwork.h"
-#include "inviwo/qt/editor/labelgraphicsitem.h"
-#include "inviwo/qt/editor/connectiongraphicsitem.h"
+#include <inviwo/core/network/processorlink.h>
+#include <inviwo/core/network/processornetwork.h>
+#include <inviwo/qt/editor/labelgraphicsitem.h>
+#include <inviwo/qt/editor/connectiongraphicsitem.h>
 
 static const qreal LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH = 1.0f;
 static const qreal LINKDIALOG_PROPERTY_GRAPHICSITEM_DEPTH = 2.0f;

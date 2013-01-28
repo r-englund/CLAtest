@@ -1,6 +1,6 @@
 
 
-#include "modules/opencl/glmcl.h"
+#include <modules/opencl/glmcl.h>
 
 
 namespace cl {

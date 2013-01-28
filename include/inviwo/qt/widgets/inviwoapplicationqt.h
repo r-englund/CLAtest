@@ -1,12 +1,12 @@
 #ifndef IVW_INVIWOAPPLICATIONQT_H
 #define IVW_INVIWOAPPLICATIONQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QApplication>
 #include <QMainWindow>
 #include <QFileSystemWatcher>
 
-#include "inviwo/core/inviwoapplication.h"
+#include <inviwo/core/inviwoapplication.h>
 
 namespace inviwo {
 
@@ -16,10 +16,10 @@ class IVW_QTWIDGETS_API InviwoApplicationQt : public QApplication, public Inviwo
 
 public:
     InviwoApplicationQt(std::string displayName_, std::string basePath_,
-                        int argc, char** argv);
+                        int& argc, char** argv);
 
     void setMainWindow(QMainWindow* mainWindow) { mainWindow_ = mainWindow; }
-    IVW_QTWIDGETS_API QMainWindow* getMainWindow() { return mainWindow_; }
+    QMainWindow* getMainWindow() { return mainWindow_; }
 
     virtual void registerFileObserver(FileObserver* fileObserver);
     virtual void startFileObservation(std::string fileName);

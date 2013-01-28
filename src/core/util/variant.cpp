@@ -1,5 +1,5 @@
 
-#include "inviwo/core/util/variant.h"
+#include <inviwo/core/util/variant.h>
 
 #include <sstream>
 

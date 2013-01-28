@@ -1,8 +1,8 @@
 #include <QMouseEvent>
 
-#include "inviwo/core/inviwo.h"
-#include "inviwo/qt/widgets/canvasqt.h"
-#include "inviwo/core/network/processornetworkevaluator.h"
+#include <inviwo/core/inviwo.h>
+#include <inviwo/qt/widgets/canvasqt.h>
+#include <inviwo/core/network/processornetworkevaluator.h>
 
 namespace inviwo {
 

@@ -1,4 +1,4 @@
-#include "inviwo/qt/widgets/properties/buttonpropertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <QHBoxLayout>
 #include <QLabel>
 

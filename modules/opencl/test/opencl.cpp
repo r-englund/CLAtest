@@ -2,7 +2,7 @@
 #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
 #endif
 
-#include "modules/opencl/inviwoopencl.h"
+#include <modules/opencl/inviwoopencl.h>
 #include <cstdio>
 
 int test_buffer()

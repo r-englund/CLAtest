@@ -1,12 +1,12 @@
 #ifndef IVW_FLOATVEC3PROPERTYWIDGETQT_H
 #define IVW_FLOATVEC3PROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QSlider>
 
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/vectorproperties.h"
+#include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
 

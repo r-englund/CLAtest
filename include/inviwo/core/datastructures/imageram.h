@@ -1,8 +1,8 @@
 #ifndef IVW_IMAGERAM_H
 #define IVW_IMAGERAM_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/datastructures/imagerepresentation.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/datastructures/imagerepresentation.h>
 
 namespace inviwo {
 

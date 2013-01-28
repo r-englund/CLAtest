@@ -1,4 +1,4 @@
-#include "inviwo/qt/widgets/properties/transferpropertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/transferpropertywidgetqt.h>
 
 namespace inviwo {
 

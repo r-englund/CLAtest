@@ -1,10 +1,10 @@
 #ifndef IVW_PROCESSORFACTORY_H
 #define IVW_PROCESSORFACTORY_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/properties/property.h"
-#include "inviwo/core/util/inviwofactorybase.h"
-#include "inviwo/core/util/singleton.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
 

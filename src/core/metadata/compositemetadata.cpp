@@ -1,4 +1,4 @@
-#include "inviwo/core/metadata/compositemetadata.h"
+#include <inviwo/core/metadata/compositemetadata.h>
 
 namespace inviwo {
 

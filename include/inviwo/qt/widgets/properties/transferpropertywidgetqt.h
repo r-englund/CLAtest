@@ -1,13 +1,13 @@
 #ifndef IVW_TRANSFERPROPERTYWIDGETQT_H
 #define IVW_TRANSFERPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QCheckBox>
 #include <QPixmap>
 #include <QPainter>
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/transferproperty.h"
+#include <inviwo/core/properties/transferproperty.h>
 
 namespace inviwo {
 

@@ -1,8 +1,8 @@
 #ifndef IVW_OPTIONPROPERTY_H
 #define IVW_OPTIONPROPERTY_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/properties/property.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/properties/property.h>
 
 namespace inviwo {
 

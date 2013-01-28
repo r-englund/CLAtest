@@ -1,9 +1,9 @@
 #ifndef IVW_VARIANT_H
 #define IVW_VARIANT_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/util/exception.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/util/exception.h>
 
 #include <vector>
 #include <string>

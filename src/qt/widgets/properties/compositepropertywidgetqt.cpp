@@ -1,6 +1,6 @@
-#include "inviwo/qt/widgets/properties/compositepropertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
 
-#include "inviwo/qt/widgets/properties/propertywidgetfactoryqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 namespace inviwo {
 

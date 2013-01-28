@@ -2,7 +2,7 @@
 #include <QPainter>
 #include <QPainterPath>
 
-#include "inviwo/qt/editor/linkgraphicsitem.h"
+#include <inviwo/qt/editor/linkgraphicsitem.h>
 
 namespace inviwo {
 

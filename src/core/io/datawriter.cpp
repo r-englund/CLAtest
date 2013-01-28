@@ -1,4 +1,4 @@
-#include "inviwo/core/io/datawriter.h"
+#include <inviwo/core/io/datawriter.h>
 
 namespace inviwo {
 

@@ -1,13 +1,13 @@
 #ifndef IVW_COMPOSITEPROPERTYWIDGETQT_H
 #define IVW_COMPOSITEPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QLineEdit>
 #include <QToolButton>
 
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/compositeproperty.h"
+#include <inviwo/core/properties/compositeproperty.h>
 
 namespace inviwo {
 

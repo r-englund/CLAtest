@@ -1,10 +1,10 @@
 #ifndef IVW_VOLUMESOURCE_H
 #define IVW_VOLUMESOURCE_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/processors/processor.h"
-#include "inviwo/core/ports/volumeport.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/ports/volumeport.h>
 
 namespace inviwo {
 

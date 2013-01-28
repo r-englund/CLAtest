@@ -1,4 +1,4 @@
-#include "inviwo/qt/editor/inviwodockwidget.h"
+#include <inviwo/qt/editor/inviwodockwidget.h>
 
 namespace inviwo {
 

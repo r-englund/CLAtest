@@ -3,13 +3,13 @@
 #include <QStyleOptionGraphicsItem>
 #include <QVector2D>
 
-#include "inviwo/core/ports/port.h"
-#include "inviwo/core/metadata/positionmetadata.h"
+#include <inviwo/core/ports/port.h>
+#include <inviwo/core/metadata/positionmetadata.h>
 
-#include "inviwo/qt/editor/networkeditor.h"
-#include "inviwo/qt/editor/connectiongraphicsitem.h"
-#include "inviwo/qt/editor/linkgraphicsitem.h"
-#include "inviwo/qt/editor/processorgraphicsitem.h"
+#include <inviwo/qt/editor/networkeditor.h>
+#include <inviwo/qt/editor/connectiongraphicsitem.h>
+#include <inviwo/qt/editor/linkgraphicsitem.h>
+#include <inviwo/qt/editor/processorgraphicsitem.h>
 
 namespace inviwo {
 

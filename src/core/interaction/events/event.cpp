@@ -1,4 +1,4 @@
-#include "inviwo/core/interaction/events/event.h"
+#include <inviwo/core/interaction/events/event.h>
 
 namespace inviwo {
 

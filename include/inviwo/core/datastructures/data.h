@@ -1,11 +1,11 @@
 #ifndef IVW_DATA_H
 #define IVW_DATA_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/datastructures/datarepresentation.h"
-#include "inviwo/core/datastructures/representationconverterfactory.h"
-#include "inviwo/core/metadata/metadatamap.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/datastructures/datarepresentation.h>
+#include <inviwo/core/datastructures/representationconverterfactory.h>
+#include <inviwo/core/metadata/metadatamap.h>
 
 namespace inviwo {
 

@@ -2,8 +2,8 @@
 #include <QFont>
 #include <QPainter>
 
-#include "inviwo/qt/editor/labelgraphicsitem.h"
-#include "inviwo/qt/editor/processorgraphicsitem.h"
+#include <inviwo/qt/editor/labelgraphicsitem.h>
+#include <inviwo/qt/editor/processorgraphicsitem.h>
 
 namespace inviwo {
 

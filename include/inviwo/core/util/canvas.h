@@ -1,13 +1,13 @@
 #ifndef IVW_CANVAS_H
 #define IVW_CANVAS_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/network/processornetworkevaluator.h"
-#include "inviwo/core/interaction/events/eventhandler.h"
-#include "inviwo/core/interaction/events/keyboardevent.h"
-#include "inviwo/core/interaction/events/mouseevent.h"
-#include "inviwo/core/interaction/events/timerevent.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/interaction/events/eventhandler.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/timerevent.h>
 
 namespace inviwo {
 

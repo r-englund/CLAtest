@@ -1,9 +1,9 @@
 #ifndef IVW_PROCESSORWIDGETQT_H
 #define IVW_PROCESSORWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QWidget>
-#include "inviwo/core/processors/processorwidget.h"
+#include <inviwo/core/processors/processorwidget.h>
 
 namespace inviwo {
 

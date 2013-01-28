@@ -1,13 +1,13 @@
 
-#include "inviwo/core/inviwoapplication.h"
-#include "inviwo/core/processors/canvasprocessor.h"
-#include "inviwo/core/io/serialization/ivwserializer.h"
-#include "inviwo/core/io/serialization/ivwdeserializer.h"
-#include "inviwo/qt/editor/networkeditor.h"
-#include "inviwo/qt/editor/processorlistwidget.h"
-#include "inviwo/qt/editor/propertylistwidget.h"
-#include "inviwo/core/metadata/positionmetadata.h"
-#include "inviwo/core/util/inviwofactorybase.h"
+#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/core/io/serialization/ivwserializer.h>
+#include <inviwo/core/io/serialization/ivwdeserializer.h>
+#include <inviwo/qt/editor/networkeditor.h>
+#include <inviwo/qt/editor/processorlistwidget.h>
+#include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/core/metadata/positionmetadata.h>
+#include <inviwo/core/util/inviwofactorybase.h>
 
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>

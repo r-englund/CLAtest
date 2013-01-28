@@ -1,4 +1,4 @@
-#include "inviwo/core/io/datareader.h"
+#include <inviwo/core/io/datareader.h>
 
 namespace inviwo {
 

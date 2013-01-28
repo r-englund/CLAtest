@@ -1,10 +1,10 @@
 #ifndef IVW_PROCESSOR_WIDGET_METADATA_H
 #define IVW_PROCESSOR_WIDGET_METADATA_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/metadata/compositemetadata.h"
-#include "inviwo/core/metadata/positionmetadata.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/metadata/compositemetadata.h>
+#include <inviwo/core/metadata/positionmetadata.h>
 
 
 namespace inviwo {

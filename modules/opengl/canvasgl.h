@@ -1,9 +1,9 @@
 #ifndef IVW_CANVASGL_H
 #define IVW_CANVASGL_H
 
-#include "modules/opengl/openglmoduledefine.h"
+#include <modules/opengl/openglmoduledefine.h>
 #include "inviwoopengl.h"
-#include "inviwo/core/util/canvas.h"
+#include <inviwo/core/util/canvas.h>
 
 namespace inviwo {
 

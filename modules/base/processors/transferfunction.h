@@ -1,12 +1,12 @@
 #ifndef IVW_TRANSFERFUNCTION_H
 #define IVW_TRANSFERFUNCTION_H
 
-#include "modules/base/basemoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/ports/imageport.h"
-#include "modules/opengl/inviwoopengl.h"
-#include "modules/opengl/processorgl.h"
-#include "modules/opengl/glwrap/shader.h"
+#include <modules/base/basemoduledefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/ports/imageport.h>
+#include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/processorgl.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 

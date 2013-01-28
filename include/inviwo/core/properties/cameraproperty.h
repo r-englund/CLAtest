@@ -1,11 +1,11 @@
 #ifndef IVW_CAMERAPROPERTY_H
 #define IVW_CAMERAPROPERTY_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/properties/vectorproperties.h"
-#include "inviwo/core/properties/scalarproperties.h"
-#include "inviwo/core/properties/compositeproperty.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/compositeproperty.h>
 
 namespace inviwo {
 

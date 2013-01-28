@@ -1,6 +1,6 @@
-#include "modules/opencl/imageclconverter.h"
-#include "inviwo/core/datastructures/imagerepresentation.h"
-#include "modules/opencl/inviwoopencl.h"
+#include <modules/opencl/imageclconverter.h>
+#include <inviwo/core/datastructures/imagerepresentation.h>
+#include <modules/opencl/inviwoopencl.h>
 
 namespace inviwo {
 

@@ -1,4 +1,4 @@
-#include "inviwo/core/interaction/events/keyboardevent.h"
+#include <inviwo/core/interaction/events/keyboardevent.h>
 
 namespace inviwo {
 

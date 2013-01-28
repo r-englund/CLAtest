@@ -1,8 +1,8 @@
 #ifndef IVW_VECTORPROPERTIES_H
 #define IVW_VECTORPROPERTIES_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/properties/ordinalproperty.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 

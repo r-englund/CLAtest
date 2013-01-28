@@ -3,9 +3,9 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 
-#include "inviwo/core/inviwoapplication.h"
+#include <inviwo/core/inviwoapplication.h>
 
-#include "inviwo/qt/editor/processorlistwidget.h"
+#include <inviwo/qt/editor/processorlistwidget.h>
 
 namespace inviwo {
 

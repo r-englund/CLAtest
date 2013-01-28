@@ -9,25 +9,25 @@
 #include <map>
 #include <algorithm>
 
-#include "inviwo/core/inviwocommondefines.h"
-#include "inviwo/core/util/pstdint.h"
+#include <inviwo/core/inviwocommondefines.h>
+#include <inviwo/core/util/pstdint.h>
 
 // error handling
-#include "inviwo/core/util/assertion.h"
-#include "inviwo/core/util/exception.h"
-#include "inviwo/core/util/logdistributor.h"
+#include <inviwo/core/util/assertion.h>
+#include <inviwo/core/util/exception.h>
+#include <inviwo/core/util/logdistributor.h>
 #define IVW_UNUSED_PARAM(param) (void)param
 
-//#include "ext/voreen/serialization/serialization.h"
-#include "inviwo/core/io/serialization/ivwserialization.h"
+//#include <voreen/serialization/serialization.h>
+#include <inviwo/core/io/serialization/ivwserialization.h>
 
 // include glm
-#include "ext/glm/glm.hpp"
-#include "ext/glm/gtx/transform.hpp"
-#include "ext/glm/gtc/quaternion.hpp"
-#include "ext/glm/gtx/quaternion.hpp"
-#include "ext/glm/core/type.hpp"
-#include "ext/glm/gtc/type_ptr.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/core/type.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 typedef glm::ivec2 ivec2;
 typedef glm::ivec3 ivec3;

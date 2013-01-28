@@ -1,8 +1,8 @@
 #ifndef IVW_CANVASQT_H
 #define IVW_CANVASQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
-#include "modules/opengl/canvasgl.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <modules/opengl/canvasgl.h>
 
 #include <QtOpenGL/QGLWidget>
 

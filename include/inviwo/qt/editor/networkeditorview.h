@@ -1,7 +1,7 @@
 #ifndef IVW_NETWORKEDITORVIEW_H
 #define IVW_NETWORKEDITORVIEW_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsView>
 
 #include "networkeditor.h"

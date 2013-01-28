@@ -1,12 +1,12 @@
 #ifndef IVW_PROCESSORGL_H
 #define IVW_PROCESSORGL_H
 
-#include "modules/opengl/openglmoduledefine.h"
+#include <modules/opengl/openglmoduledefine.h>
 #include "inviwoopengl.h"
 #include "imagegl.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/ports/imageport.h"
-#include "inviwo/core/processors/processor.h"
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 

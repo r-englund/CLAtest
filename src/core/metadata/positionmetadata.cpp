@@ -1,4 +1,4 @@
-#include "inviwo/core/metadata/positionmetadata.h"
+#include <inviwo/core/metadata/positionmetadata.h>
 
 namespace inviwo {
 

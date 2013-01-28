@@ -1,7 +1,7 @@
 #ifndef IVW_LABELGRAPHICSITEM_H
 #define IVW_LABELGRAPHICSITEM_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsTextItem>
 
 namespace inviwo {

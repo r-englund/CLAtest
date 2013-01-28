@@ -1,7 +1,7 @@
-#include "modules/opencl/openclmodule.h"
-#include "modules/opencl/imageclconverter.h"
-#include "modules/opencl/volumeclconverter.h"
-#include "modules/opencl/inviwoopencl.h"
+#include <modules/opencl/openclmodule.h>
+#include <modules/opencl/imageclconverter.h>
+#include <modules/opencl/volumeclconverter.h>
+#include <modules/opencl/inviwoopencl.h>
 
 namespace inviwo {
 

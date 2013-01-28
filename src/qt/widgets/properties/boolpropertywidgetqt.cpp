@@ -1,4 +1,4 @@
-#include "inviwo/qt/widgets/properties/boolpropertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
 
 namespace inviwo {
 

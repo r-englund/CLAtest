@@ -1,4 +1,4 @@
-#include "inviwo/core/datastructures/volumedisk.h"
+#include <inviwo/core/datastructures/volumedisk.h>
 
 namespace inviwo {
 

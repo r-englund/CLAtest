@@ -1,4 +1,4 @@
-#include "inviwo/core/interaction/trackball.h"
+#include <inviwo/core/interaction/trackball.h>
 //#include <iostream>
 
 namespace inviwo {

@@ -1,9 +1,9 @@
 #ifndef IVW_COMPOSITE_METADATA_H
 #define IVW_COMPOSITE_METADATA_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/metadata/metadata.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/metadata/metadata.h>
 
 namespace inviwo {
 

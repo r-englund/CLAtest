@@ -1,12 +1,12 @@
 #ifndef IVW_IMAGECLCONVERTER_H
 #define IVW_IMAGECLCONVERTER_H
 
-#include "inviwo/core/datastructures/representationconverter.h"
-#include "inviwo/core/datastructures/imageram.h"
+#include <inviwo/core/datastructures/representationconverter.h>
+#include <inviwo/core/datastructures/imageram.h>
 // TODO: implement conversion when imageram converter exist
-//#include "inviwo/core/datastructures/imageramconverter.h" 
-#include "inviwo/core/datastructures/imagedisk.h"
-#include "modules/opencl/imagecl.h"
+//#include <inviwo/core/datastructures/imageramconverter.h> 
+#include <inviwo/core/datastructures/imagedisk.h>
+#include <modules/opencl/imagecl.h>
 
 namespace inviwo {
 

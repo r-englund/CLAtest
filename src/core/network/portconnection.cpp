@@ -1,4 +1,4 @@
-#include "inviwo/core/network/portconnection.h"
+#include <inviwo/core/network/portconnection.h>
 
 namespace inviwo {
 

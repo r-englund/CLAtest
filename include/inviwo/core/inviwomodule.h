@@ -1,14 +1,14 @@
 #ifndef IVW_INVIWOMODULE_H
 #define IVW_INVIWOMODULE_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/processors/processor.h"
-#include "inviwo/core/properties/property.h"
-#include "inviwo/core/io/datareader.h"
-#include "inviwo/core/io/datawriter.h"
-#include "inviwo/core/datastructures/representationconverter.h"
-#include "inviwo/core/metadata/metadata.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/io/datareader.h>
+#include <inviwo/core/io/datawriter.h>
+#include <inviwo/core/datastructures/representationconverter.h>
+#include <inviwo/core/metadata/metadata.h>
 
 
 namespace inviwo {

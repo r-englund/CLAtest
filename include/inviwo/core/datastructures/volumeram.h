@@ -1,9 +1,9 @@
 #ifndef IVW_VOLUMERAM_H
 #define IVW_VOLUMERAM_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/datastructures/volumerepresentation.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/datastructures/volumerepresentation.h>
 
 namespace inviwo {
 
@@ -102,7 +102,7 @@ DataRepresentation* VolumeRAMPrecision<T>::clone() {
 
 template<typename T>
 void VolumeRAMPrecision<T>::deinitialize() {
-    delete data_;
+    delete static_cast<T*>(data_);
     data_ = 0;
     VolumeRAM::deinitialize();
 }

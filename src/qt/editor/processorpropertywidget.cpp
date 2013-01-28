@@ -1,4 +1,4 @@
-#include "inviwo/qt/editor/processorpropertywidget.h"
+#include <inviwo/qt/editor/processorpropertywidget.h>
 
 namespace inviwo {
 

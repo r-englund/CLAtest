@@ -1,4 +1,4 @@
-#include "inviwo/qt/widgets/properties/camerapropertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
 
 #include <QHBoxLayout>
 #include <QLabel>

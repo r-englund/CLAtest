@@ -1,8 +1,8 @@
 #ifndef IVW_INVIWOOPENGL_H
 #define IVW_INVIWOOPENGL_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "ext/glew/include/GL/glew.h" //TODO: Why is <GL/glew.h> not working
+#include <modules/opengl/openglmoduledefine.h>
+#include <modules/opengl/ext/glew/include/GL/glew.h> //TODO: Why is <GL/glew.h> not working
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>

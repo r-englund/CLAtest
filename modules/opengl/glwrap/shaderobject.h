@@ -1,9 +1,9 @@
 #ifndef IVW_SHADEROBJECT_H
 #define IVW_SHADEROBJECT_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "modules/opengl/inviwoopengl.h"
+#include <modules/opengl/openglmoduledefine.h>
+#include <inviwo/core/inviwo.h>
+#include <modules/opengl/inviwoopengl.h>
 
 namespace inviwo {
 

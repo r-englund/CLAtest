@@ -1,10 +1,10 @@
 #ifndef IVW_DATA_TYPE_CLASSIFICATION_H
 #define IVW_DATA_TYPE_CLASSIFICATION_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/datastructures/data.h"
-#include "inviwo/core/datastructures/volume.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/datastructures/data.h>
+#include <inviwo/core/datastructures/volume.h>
 
 namespace inviwo {
 

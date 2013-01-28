@@ -1,8 +1,8 @@
 #ifndef IVW_PORT_H
 #define IVW_PORT_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
 
 namespace inviwo {
 

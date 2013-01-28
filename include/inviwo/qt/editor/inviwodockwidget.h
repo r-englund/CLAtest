@@ -1,7 +1,7 @@
 #ifndef IVW_INVIWODOCKWIDGET_H
 #define IVW_INVIWODOCKWIDGET_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QDockWidget>
 
 namespace inviwo {

@@ -1,14 +1,14 @@
-#include "inviwo/qt/widgets/inviwoapplicationqt.h"
-#include "inviwo/qt/widgets/properties/propertywidgetfactoryqt.h"
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 #include <QSound>
 
 namespace inviwo {
 
 InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string basePath,
-                                         int argc, char** argv)
-                                     : InviwoApplication(displayName, basePath),
-                                       QApplication(argc, argv)
+                                         int& argc, char** argv)
+                                     : QApplication(argc, argv),
+                                       InviwoApplication(displayName, basePath)  
 {
     PropertyWidgetFactoryQt::init();
     reloadingFile_ = false;

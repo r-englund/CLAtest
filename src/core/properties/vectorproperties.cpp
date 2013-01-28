@@ -1,4 +1,4 @@
-#include "inviwo/core/properties/vectorproperties.h"
+#include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
 

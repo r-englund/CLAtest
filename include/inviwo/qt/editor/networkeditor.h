@@ -1,12 +1,12 @@
 #ifndef IVW_NETWORKEDITOR_H
 #define IVW_NETWORKEDITOR_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsScene>
 
-#include "inviwo/core/network/processornetworkevaluator.h"
-#include "inviwo/core/processors/processorfactory.h"
-#include "inviwo/core/ports/port.h"
+#include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/processors/processorfactory.h>
+#include <inviwo/core/ports/port.h>
 
 #include "processorgraphicsitem.h"
 #include "connectiongraphicsitem.h"

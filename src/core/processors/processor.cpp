@@ -1,6 +1,6 @@
-#include "inviwo/core/processors/processor.h"
-#include "inviwo/core/metadata/metadatafactory.h"
-#include "inviwo/core/util/inviwofactorybase.h"
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/metadata/metadatafactory.h>
+#include <inviwo/core/util/inviwofactorybase.h>
 
 namespace inviwo {
 

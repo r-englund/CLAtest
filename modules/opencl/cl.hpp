@@ -229,7 +229,7 @@
 // The following modifications have been made:
 // - Replaced size_t<3> with glm::svec3
 // - Default device, context and command queue is replaced with corresponding inviwo variables
-#include "ext/glm/glm.hpp"
+#include <glm/glm.hpp>
 namespace glm {
 typedef glm::detail::tvec3<size_t>	svec3;
 }

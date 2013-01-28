@@ -1,12 +1,12 @@
 #ifndef IVW_PROPERTYLISTWIDGET_H
 #define IVW_PROPERTYLISTWIDGET_H
 
-#include "inviwo/qt/editor/inviwoqteditordefine.h"
-#include "inviwo/core/processors/processor.h"
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/core/processors/processor.h>
 
-#include "inviwo/qt/editor/inviwodockwidget.h"
-#include "inviwo/qt/widgets/properties/propertywidgetfactoryqt.h"
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/editor/inviwodockwidget.h>
+#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
 namespace inviwo {
 

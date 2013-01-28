@@ -1,5 +1,5 @@
-#include "inviwo/core/processors/processorwidget.h"
-#include "inviwo/core/processors/processor.h"
+#include <inviwo/core/processors/processorwidget.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 

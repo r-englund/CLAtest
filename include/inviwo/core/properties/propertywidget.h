@@ -1,7 +1,7 @@
 #ifndef IVW_PROPERTYWIDGET_H
 #define IVW_PROPERTYWIDGET_H
 
-#include "inviwo/core/inviwocoredefine.h"
+#include <inviwo/core/inviwocoredefine.h>
 
 namespace inviwo {
 

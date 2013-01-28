@@ -1,4 +1,4 @@
-#include "inviwo/core/properties/compositeproperty.h"
+#include <inviwo/core/properties/compositeproperty.h>
 
 namespace inviwo {
 

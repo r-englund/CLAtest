@@ -1,14 +1,14 @@
-#include "inviwo/qt/widgets/inviwoapplicationqt.h"
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 #include "inviwomainwindow.h"
 
-#include "inviwo/qt/editor/consolewidget.h"
-#include "inviwo/qt/editor/networkeditorview.h"
-#include "inviwo/qt/editor/processorlistwidget.h"
-#include "inviwo/qt/editor/propertylistwidget.h"
-#include "inviwo/qt/widgets/canvasqt.h"
+#include <inviwo/qt/editor/consolewidget.h>
+#include <inviwo/qt/editor/networkeditorview.h>
+#include <inviwo/qt/editor/processorlistwidget.h>
+#include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/qt/widgets/canvasqt.h>
 
-#include "inviwo/core/network/processornetworkevaluator.h"
+#include <inviwo/core/network/processornetworkevaluator.h>
 
 #include <QDesktopServices>
 #include <QFileDialog>

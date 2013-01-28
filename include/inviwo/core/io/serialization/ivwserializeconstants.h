@@ -1,7 +1,7 @@
 #ifndef IVW_SERIALIZE_CONSTANTS_H
 #define IVW_SERIALIZE_CONSTANTS_H
 
-#include "inviwo/core/inviwocoredefine.h"
+#include <inviwo/core/inviwocoredefine.h>
 #include <string>
 
 namespace inviwo {

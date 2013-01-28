@@ -1,4 +1,4 @@
-#include "inviwo/core/properties/transferproperty.h"
+#include <inviwo/core/properties/transferproperty.h>
 
 namespace inviwo {
 

@@ -1,6 +1,6 @@
-#include "inviwo/core/inviwoapplication.h"
-#include "inviwo/core/processors/canvasprocessor.h"
-#include "inviwo/qt/widgets/inviwoapplicationqt.h"
+#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 namespace inviwo {
 

@@ -1,10 +1,10 @@
 #ifndef IVW_PORTCONNECTION_H
 #define IVW_PORTCONNECTION_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/ports/port.h"
-#include "inviwo/core/processors/processor.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/ports/port.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 

@@ -1,4 +1,4 @@
-#include "inviwo/core/processors/datasource/datasourceprocessor.h"
+#include <inviwo/core/processors/datasource/datasourceprocessor.h>
 
 namespace inviwo {
 

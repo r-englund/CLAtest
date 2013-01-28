@@ -1,5 +1,5 @@
-#include "inviwo/qt/editor/propertylistwidget.h"
-#include "inviwo/core/properties/propertywidgetfactory.h"
+#include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/core/properties/propertywidgetfactory.h>
 
 #include <QLabel>
 #include <QVBoxLayout>

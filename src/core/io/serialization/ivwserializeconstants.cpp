@@ -1,4 +1,4 @@
-#include "inviwo/core/io/serialization/ivwserializeconstants.h"
+#include <inviwo/core/io/serialization/ivwserializeconstants.h>
 
 namespace inviwo {
 

@@ -1,4 +1,4 @@
-#include "inviwo/core/datastructures/imageram.h"
+#include <inviwo/core/datastructures/imageram.h>
 
 namespace inviwo {
 

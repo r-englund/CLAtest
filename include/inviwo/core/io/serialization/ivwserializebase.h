@@ -5,18 +5,18 @@
 #  define TIXML_USE_TICPP
 #endif
 
-#include "ext/ticpp/ticpp.h"
-#include "inviwo/core/io/serialization/ivwserializeconstants.h"
-#include "inviwo/core/util/inviwofactorybase.h"
+#include <ticpp/ticpp.h>
+#include <inviwo/core/io/serialization/ivwserializeconstants.h>
+#include <inviwo/core/util/inviwofactorybase.h>
 #include <map>
 
 // include glm
-#include "ext/glm/glm.hpp"
-#include "ext/glm/gtx/transform.hpp"
-#include "ext/glm/gtc/quaternion.hpp"
-#include "ext/glm/gtx/quaternion.hpp"
-#include "ext/glm/core/type.hpp"
-#include "ext/glm/gtc/type_ptr.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/core/type.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 typedef glm::ivec2 ivec2;
 typedef glm::ivec3 ivec3;

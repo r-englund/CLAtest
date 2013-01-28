@@ -15,7 +15,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 
-#include "inviwo/qt/editor/linkdialog.h"
+#include <inviwo/qt/editor/linkdialog.h>
 
 namespace inviwo {
 

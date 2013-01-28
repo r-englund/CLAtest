@@ -1,10 +1,10 @@
-#include "modules/opengl/openglmodule.h"
+#include <modules/opengl/openglmodule.h>
 
-#include "modules/opengl/glwrap/shadermanager.h"
+#include <modules/opengl/glwrap/shadermanager.h>
 
-#include "modules/opengl/canvasprocessorgl.h"
-#include "modules/opengl/imageglconverter.h"
-#include "modules/opengl/volumeglconverter.h"
+#include <modules/opengl/canvasprocessorgl.h>
+#include <modules/opengl/imageglconverter.h>
+#include <modules/opengl/volumeglconverter.h>
 
 namespace inviwo {
 

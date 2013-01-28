@@ -1,12 +1,12 @@
 #ifndef IVW_BOOLPROPERTYWIDGETQT_H
 #define IVW_BOOLPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QCheckBox>
 
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/boolproperty.h"
+#include <inviwo/core/properties/boolproperty.h>
 
 namespace inviwo {
 

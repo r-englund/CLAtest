@@ -1,4 +1,4 @@
-#include "inviwo/core/util/project.h"
+#include <inviwo/core/util/project.h>
 
 namespace inviwo {
 

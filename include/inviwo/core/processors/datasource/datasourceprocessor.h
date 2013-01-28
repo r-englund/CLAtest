@@ -1,9 +1,9 @@
 #ifndef IVW_DATASOURCEPROCESSOR_H
 #define IVW_DATASOURCEPROCESSOR_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/processors/processor.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 

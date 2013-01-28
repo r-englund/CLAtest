@@ -1,6 +1,6 @@
-#include "inviwo/core/inviwocommondefines.h"
-#include "inviwo/core/util/assertion.h"
-#include "modules/opencl/imageclresizer.h"
+#include <inviwo/core/inviwocommondefines.h>
+#include <inviwo/core/util/assertion.h>
+#include <modules/opencl/imageclresizer.h>
 
 namespace inviwo {
 

@@ -1,4 +1,4 @@
-#include "inviwo/core/interaction/interactionhandler.h"
+#include <inviwo/core/interaction/interactionhandler.h>
 
 namespace inviwo {
 

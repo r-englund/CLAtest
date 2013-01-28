@@ -1,13 +1,13 @@
 #ifndef IVW_FILEPROPERTYWIDGETQT_H
 #define IVW_FILEPROPERTYWIDGETQT_H
 
-#include "inviwo/qt/widgets/inviwoqtwidgetsdefine.h"
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QLineEdit>
 #include <QToolButton>
 
-#include "inviwo/qt/widgets/properties/propertywidgetqt.h"
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include "inviwo/core/properties/fileproperty.h"
+#include <inviwo/core/properties/fileproperty.h>
 
 namespace inviwo {
 

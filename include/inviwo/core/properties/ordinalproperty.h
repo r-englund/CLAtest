@@ -1,10 +1,10 @@
 #ifndef IVW_ORDINALPROPERTY_H
 #define IVW_ORDINALPROPERTY_H
 
-#include "inviwo/core/inviwocoredefine.h"
+#include <inviwo/core/inviwocoredefine.h>
 #include <limits>
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/properties/templateproperty.h"
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
 

@@ -1,4 +1,4 @@
-#include "inviwo/core/datastructures/datarepresentation.h"
+#include <inviwo/core/datastructures/datarepresentation.h>
 
 namespace inviwo {
 

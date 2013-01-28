@@ -1,8 +1,8 @@
 #ifndef IVW_IMAGE_CL_RESIZER_H
 #define IVW_IMAGE_CL_RESIZER_H
 
-#include "modules/opencl/inviwoopencl.h"
-#include "modules/opencl/openclmoduledefine.h"
+#include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/openclmoduledefine.h>
 
 namespace inviwo {
 

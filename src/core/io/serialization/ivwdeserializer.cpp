@@ -1,8 +1,8 @@
-#include "inviwo/core/io/serialization/ivwdeserializer.h"
-#include "inviwo/core/util/inviwofactorybase.h"
-#include "inviwo/core/processors/processorfactory.h"
-#include "inviwo/core/io/serialization/ivwserializable.h"
-#include "inviwo/core/inviwo.h"
+#include <inviwo/core/io/serialization/ivwdeserializer.h>
+#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/processors/processorfactory.h>
+#include <inviwo/core/io/serialization/ivwserializable.h>
+#include <inviwo/core/inviwo.h>
 
 
 namespace inviwo {

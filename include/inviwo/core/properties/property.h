@@ -1,10 +1,10 @@
 #ifndef IVW_PROPERTY_H
 #define IVW_PROPERTY_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/properties/propertyowner.h"
-#include "inviwo/core/properties/propertywidget.h"
-#include "inviwo/core/util/variant.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/properties/propertyowner.h>
+#include <inviwo/core/properties/propertywidget.h>
+#include <inviwo/core/util/variant.h>
 
 namespace inviwo {
 
