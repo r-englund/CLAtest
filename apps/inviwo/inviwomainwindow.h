@@ -24,6 +24,9 @@ public:
     InviwoMainWindow();
     ~InviwoMainWindow();
 
+    virtual void initialize();
+    virtual void deinitialize();
+
     void openLastNetwork();
 
 public slots:
@@ -72,6 +75,8 @@ private:
     QStringList recentFileList_;
 
     CanvasQt* defaultRenderContext_;
+
+    bool initialized_;
 };
 
 } // namespace

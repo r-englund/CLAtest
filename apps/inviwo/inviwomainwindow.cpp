@@ -31,12 +31,6 @@ InviwoMainWindow::InviwoMainWindow() {
     ConsoleWidget* consoleWidget = new ConsoleWidget(this);
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget);
 
-    defaultRenderContext_ = new CanvasQt(this);    
-    defaultRenderContext_->switchContext();
-    ProcessorNetworkEvaluator* processEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
-    processEvaluator->setDefaultRenderContext(defaultRenderContext_);
-    defaultRenderContext_->setFixedSize(0,0);
-
     addToolBars();
     addMenus();
     addMenuActions();
@@ -45,16 +39,31 @@ InviwoMainWindow::InviwoMainWindow() {
     QSettings settings("Inviwo", "Inviwo");
     restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
     restoreState(settings.value("mainWindowState").toByteArray());
+}
+
+InviwoMainWindow::~InviwoMainWindow() {}
+
+void InviwoMainWindow::initialize() {
+    defaultRenderContext_ = new CanvasQt(this);    
+    defaultRenderContext_->switchContext();
+    ProcessorNetworkEvaluator* processEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
+    processEvaluator->setDefaultRenderContext(defaultRenderContext_);
+    defaultRenderContext_->setFixedSize(0,0);
 
     // restore previous files
+    QSettings settings("Inviwo", "Inviwo");
     rootDir_ = QString::fromStdString(IVW_DIR+"data/");
     networkFileDir_ = rootDir_ + "workspaces/";
     recentFileList_ = settings.value("recentFileList").toStringList();
     updateRecentNetworks();
     newNetwork();
+
+    initialized_ = true;
 }
 
-InviwoMainWindow::~InviwoMainWindow() {}
+void InviwoMainWindow::deinitialize() {
+    initialized_ = false;
+}
 
 void InviwoMainWindow::addToolBars() {
     //basicToolbar_ = addToolBar(tr("File"));

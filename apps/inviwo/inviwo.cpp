@@ -27,6 +27,7 @@ int main(int argc, char** argv) {
     inviwoApp.setMainWindow(&mainWin);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
     mainWin.show();
+    mainWin.initialize();
     mainWin.openLastNetwork();
 
     return inviwoApp.exec();
