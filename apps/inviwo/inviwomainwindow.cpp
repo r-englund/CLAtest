@@ -32,8 +32,6 @@ InviwoMainWindow::InviwoMainWindow() {
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget);
 
     addToolBars();
-    addMenus();
-    addMenuActions();
 
     // load settings and restore window state
     QSettings settings("Inviwo", "Inviwo");
@@ -44,6 +42,9 @@ InviwoMainWindow::InviwoMainWindow() {
 InviwoMainWindow::~InviwoMainWindow() {}
 
 void InviwoMainWindow::initialize() {
+    addMenus();
+    addMenuActions();
+
     defaultRenderContext_ = new CanvasQt(this);    
     defaultRenderContext_->switchContext();
     ProcessorNetworkEvaluator* processEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
