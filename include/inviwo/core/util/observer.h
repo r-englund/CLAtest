@@ -17,29 +17,32 @@ class Observer
 {
 friend class ObservableInterface;
 public:
-	/* 
+	/** 
 	 * Allocates Observable set.
 	 */
 	Observer();
-	/* 
-	 * Removes the observer from all observable objects. Makes sure that it cannot be called when destroyed.
-	 */
-	virtual ~Observer();
 
- 	/* 
+	/**
+	 * Removes the observer from all observable objects. Makes sure that it cannot be called when destroyed.
+	 * 
+	 */
+    virtual ~Observer();
+
+	/**
 	 * Stop observing object by removing it from observation list.
 	 * 
-	 * @param observable The observable to stop observing.
+	 * \param observable (ObservableInterface *) The observable to stop observing.
 	 */
-	void removeObservation(ObservableInterface* observable);
+    void removeObservation(ObservableInterface* observable);
 
-	/* 
+	/**
 	 * Stops observing all objects by removing them from observation list.
+	 * 
 	 */
-	void removeObservations();
+    void removeObservations();
 
 protected:
-	/* 
+	/** 
 	 * Add an object to observe.
 	 * 
 	 * @param observable The observable to add.
@@ -64,7 +67,7 @@ class ObservableInterface
 {
 friend class Observer;
 public:
-    /* 
+    /** 
 	 * Allocates Observer set.
 	 */
 	ObservableInterface();
@@ -74,19 +77,19 @@ public:
 	virtual ~ObservableInterface();
 
 protected:
-	/* 
+	/** 
 	 * Add an observer.
 	 * 
 	 * @param observer The observer to add.
 	 */
 	virtual void addObserver(Observer* observer);
- 	/* 
+ 	/** 
 	 * Remove an observer.
 	 * 
 	 * @param observer The observer to remove.
 	 */
 	virtual void removeObserver(Observer* observer);
-	/* 
+	/** 
 	 * Remove all observers.
 	 */
 	void removeObservers();
@@ -99,6 +102,8 @@ protected:
 /** \class Observable 
 *
 * Class to support observer pattern. 
+*
+* \section example Example
 * Usage example:
 * @code
 *    class IVW_CORE_API ButtonObserver: public Observer {
@@ -126,11 +131,11 @@ template<typename T>
 class IVW_CORE_API Observable: public ObservableInterface {
 public:
     Observable(): ObservableInterface() {};
-    /*
+    /**
      * Removes all observers 
      */
     virtual ~Observable() {};
-	/* 
+	/** 
 	 * Add an observer.
 	 * 
 	 * @param observer The observer to add.
@@ -138,7 +143,7 @@ public:
     virtual void addObserver(T* observer) { 
         ObservableInterface::addObserver(observer); 
     }
- 	/* 
+ 	/** 
 	 * Remove an observer.
 	 * 
 	 * @param observer The observer to remove.
