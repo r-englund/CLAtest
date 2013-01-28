@@ -9,6 +9,7 @@
 #include "modules/base/processors/imagesource.h"
 #include "modules/base/processors/redgreenprocessor.h"
 #include "modules/base/processors/simpleraycaster.h"
+#include "modules/base/processors/transferfunction.h"
 
 namespace inviwo {
 
@@ -25,6 +26,7 @@ BaseModule::BaseModule() : InviwoModule() {
     addProcessor(new ImageSource());
     addProcessor(new RedGreenProcessor());
     addProcessor(new SimpleRaycaster());
+    addProcessor(new TransferFunction());
 }
 
 } // namespace

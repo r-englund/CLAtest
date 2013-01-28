@@ -26,6 +26,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetfactoryqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
+    #${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/shadewidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferpropertywidgetqt.h
 )
 qt4_wrap_cpp(MOC_FILES ${HEADER_FILES})
 ivw_group("Header Files" ${HEADER_FILES})
@@ -54,6 +56,9 @@ set(SOURCE_FILES
     properties/optionpropertywidgetqt.cpp
     properties/propertywidgetfactoryqt.cpp
     properties/propertywidgetqt.cpp
+    #properties/shadewidgetqt.cpp
+    properties/transferpropertywidgetqt.cpp
+    
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

@@ -14,6 +14,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/imagesource.h
     ${IVW_MODULE_DIR}/base/processors/redgreenprocessor.h
     ${IVW_MODULE_DIR}/base/processors/simpleraycaster.h
+    ${IVW_MODULE_DIR}/base/processors/transferfunction.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -29,6 +30,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/imagesource.cpp
     ${IVW_MODULE_DIR}/base/processors/redgreenprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/simpleraycaster.cpp
+    ${IVW_MODULE_DIR}/base/processors/transferfunction.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

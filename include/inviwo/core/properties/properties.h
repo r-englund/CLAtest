@@ -7,5 +7,6 @@
 #include "inviwo/core/properties/fileproperty.h"
 #include "inviwo/core/properties/scalarproperties.h"
 #include "inviwo/core/properties/vectorproperties.h"
+#include "inviwo/core/properties/transferproperty.h"
 
 #endif // IVW_PROPERTIES_H
