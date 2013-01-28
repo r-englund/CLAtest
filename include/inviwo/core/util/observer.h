@@ -104,17 +104,18 @@ protected:
 * Class to support observer pattern. 
 *
 * \section example Example
-* Usage example:
+* Example of how to apply it to a simple button.
 * @code
-*    class IVW_CORE_API ButtonObserver: public Observer {
+*    class IVW_XXX_API ButtonObserver: public Observer {
 *    public:
 *        ButtonObserver(): Observer() {};
 *        // Will be notified when the observed button is pressed.
-IVW_CORE_API *        void buttonPressed(){};
+*        void buttonPressed(){};
 *    };
-*    class IVW_CORE_API Button: public Observable<ButtonObserver> {
+*
+*    class IVW_XXX_API Button: public Observable<ButtonObserver> {
 *        Button(): Observable<ButtonObserver>() {};
-IVW_CORE_API *        void pressButton() {
+*        void pressButton() {
 *            // Do stuff
 *            // Notify observers
 *            ObserverSet::iterator endIt = observers_->end();
