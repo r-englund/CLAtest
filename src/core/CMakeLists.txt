@@ -74,7 +74,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h   
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializableinterface.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h	
@@ -161,6 +164,9 @@ set(SOURCE_FILES
     properties/vectorproperties.cpp
     properties/linkevaluator.cpp	
     io/datareader.cpp
+    io/datvolumereader.cpp
+    io/rawvolumereader.cpp
+    io/volumereader.cpp
     io/datawriter.cpp
     io/serialization/ivwserializebase.cpp
     io/serialization/ivwserializer.cpp

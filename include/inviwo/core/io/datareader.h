@@ -3,6 +3,7 @@
 
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/inviwo.h>
+#include "inviwo/core/datastructures/data.h"
 
 namespace inviwo {
 
@@ -13,6 +14,7 @@ public:
     virtual ~DataReader();
 
     std::string getIdentifier() const;
+    virtual Data* readData(const std::string filePath)=0;
 
 protected:
 

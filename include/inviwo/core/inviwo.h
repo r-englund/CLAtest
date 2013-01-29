@@ -8,6 +8,8 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <fstream>
+#include <stdio.h>
 
 #include <inviwo/core/inviwocommondefines.h>
 #include <inviwo/core/util/pstdint.h>

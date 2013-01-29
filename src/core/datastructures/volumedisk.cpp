@@ -1,4 +1,5 @@
 #include <inviwo/core/datastructures/volumedisk.h>
+#include "inviwo/core/io/datvolumereader.h"
 
 namespace inviwo {
 
@@ -12,62 +13,35 @@ namespace inviwo {
     VolumeDisk::~VolumeDisk() {}
 
     void VolumeDisk::initialize() {
-        // From url
-        //1. read file name 
-        //2. read format
-        //3. read dimension
-        
-        rawFile_ = sourceFile_;
-        dataFormat_ = "UINT8";
-        dimensions_ = ivec3(128,128,128);
 
-        size_t pos = sourceFile_.find_last_of("\\/") + 1;
-        sourceFileLocation_ = sourceFile_.substr(0, pos);
-
-        pos = sourceFile_.rfind(".") + 1;
-        sourceFileExtension_ = sourceFile_.substr( pos, sourceFile_.length());
-
-        if (sourceFileExtension_=="dat") {
-            //TODO: use dat file reader
-            std::istream* f = new std::ifstream(sourceFile_.c_str());
-
-            std::string textLine; 
-            getline(*f, textLine);
-
-            std::string key;
-            do {               
-                std::stringstream ss(textLine);
-                transform(textLine.begin(), textLine.end(), textLine.begin(), (int (*)(int))tolower);
-                ss >> key;            
-                if (key=="ObjectFileName:") {
-                    ss >> rawFile_;
-                    rawFile_ = sourceFileLocation_ + rawFile_;
-                }
-                else if (key=="Resolution:") {
-                    ss >> dimensions_.x;
-                    ss >> dimensions_.y;
-                    ss >> dimensions_.z;
-                }
-                else if (key=="Format:") {
-                    ss >> dataFormat_;
-
-                    if (dataFormat_=="UCHAR") {
-                        dataFormat_ = "UINT8";
-                    }
-                    else if (dataFormat_=="USHORT") {
-                        dataFormat_ = "UINT16";
-                    }
-                    else
-                        dataFormat_="";
-                }
-                getline(*f, textLine);
-            }while (!f->eof());  
+        std::string fileExtension = UrlParser::getFileExtension(sourceFile_);
+        if (!fileExtension.empty()) {
+            //TODO: better pattern for automatic data reader selection
+            if (fileExtension=="dat") {
+                RawVolumeReader::ReaderSettings readerSettings;
+                DatVolumeReader::readDatFileSettings(sourceFile_, readerSettings);
+                dataFormat_ = readerSettings.dataFormat_;
+                dimensions_ = readerSettings.dimensions_;
+            }
         }
 
     }
 
-    void VolumeDisk::deinitialize() {
+    void* VolumeDisk::loadRawData() {
+        std::string fileExtension = UrlParser::getFileExtension(sourceFile_);
+        if (!fileExtension.empty()) {
+            //TODO: better pattern for automatic data reader selection
+            if (fileExtension=="dat") {
+                RawVolumeReader::ReaderSettings readerSettings;
+                DatVolumeReader::readDatFileSettings(sourceFile_, readerSettings);
+                return RawVolumeReader::loadRawData(readerSettings);                
+            }
+        }
 
+        return 0;
+    }
+
+    void VolumeDisk::deinitialize() {
     }
 
     DataRepresentation* VolumeDisk::clone() {

@@ -13,12 +13,13 @@ namespace inviwo {
         DataRepresentation* destination=0;
         VolumeDisk* volumeDisk = 0;
         if (volumeDisk = dynamic_cast<VolumeDisk*>(source)) {
+
             if (volumeDisk->getDataFormat()=="UINT8") {
-                void* data = volumeDisk->loadData<uint8_t>();
+                void* data = volumeDisk->loadRawData();    
                 destination = new VolumeRAMuint8(static_cast<uint8_t*>(data), volumeDisk->dimension());
             }
             else if (volumeDisk->getDataFormat()=="UINT16") {
-                void* data = volumeDisk->loadData<uint16_t>();
+               void* data = volumeDisk->loadRawData();
                 destination = new VolumeRAMuint16(static_cast<uint16_t*>(data), volumeDisk->dimension());
             }
         }
