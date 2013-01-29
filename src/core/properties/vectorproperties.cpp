@@ -4,32 +4,32 @@ namespace inviwo {
 
 	FloatVec2Property::FloatVec2Property(std::string identifier, std::string displayName, vec2 value,
 								 vec2 minValue, vec2 maxValue, vec2 increment)
-	: OrdinalProperty(identifier, displayName, value, minValue, maxValue, increment)
+	: OrdinalProperty<vec2>(identifier, displayName, value, minValue, maxValue, increment)
 {}
 
 FloatVec3Property::FloatVec3Property(std::string identifier, std::string displayName, vec3 value,
                                      vec3 minValue, vec3 maxValue, vec3 increment)
-    : OrdinalProperty(identifier, displayName, value, minValue, maxValue, increment)
+    : OrdinalProperty<vec3>(identifier, displayName, value, minValue, maxValue, increment)
 {}
 
 FloatVec4Property::FloatVec4Property(std::string identifier, std::string displayName, vec4 value,
                                      vec4 minValue, vec4 maxValue, vec4 increment)
-    : OrdinalProperty(identifier, displayName, value, minValue, maxValue, increment)
+    : OrdinalProperty<vec4>(identifier, displayName, value, minValue, maxValue, increment)
 {}
 
 IntVec2Property::IntVec2Property(std::string identifier, std::string displayName, ivec2 value,
 								 ivec2 minValue, ivec2 maxValue, ivec2 increment)
-	: OrdinalProperty(identifier, displayName, value, minValue, maxValue, increment)
+	: OrdinalProperty<ivec2>(identifier, displayName, value, minValue, maxValue, increment)
 {}
 
 IntVec3Property::IntVec3Property(std::string identifier, std::string displayName, ivec3 value,
 								 ivec3 minValue, ivec3 maxValue, ivec3 increment)
-	: OrdinalProperty(identifier, displayName, value, minValue, maxValue, increment)
+	: OrdinalProperty<ivec3>(identifier, displayName, value, minValue, maxValue, increment)
 {}
 
 IntVec4Property::IntVec4Property(std::string identifier, std::string displayName, ivec4 value,
 								 ivec4 minValue, ivec4 maxValue, ivec4 increment)
-	: OrdinalProperty(identifier, displayName, value, minValue, maxValue, increment)
+	: OrdinalProperty<ivec4>(identifier, displayName, value, minValue, maxValue, increment)
 {}
 
 void FloatVec2Property::serialize(IvwSerializer& s) const {

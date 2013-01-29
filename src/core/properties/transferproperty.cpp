@@ -3,7 +3,7 @@
 namespace inviwo {
 
 TransferProperty::TransferProperty(std::string identifier, std::string displayName, bool value)
-    : TemplateProperty(identifier, displayName, value)
+    : TemplateProperty<bool>(identifier, displayName, value)
 {}
 
 void TransferProperty::serialize(IvwSerializer& s) const {
