@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref0">
+            <MetaDataList>
+                <MetaData type="PositionMetaData">
+                    <position x="-600" y="-540" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property identifier="color" displayName="Color">
+                    <value x="0.52525252" y="0.78787881" z="0.34343433" />
+                    <minvalue x="0" y="0" z="0" />
+                    <maxvalue x="1" y="1" z="1" />
+                    <increment x="0.1" y="0.1" z="0.1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="896" y="370" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="PositionMetaData">
+                    <position x="-600" y="-390" />
+                </MetaData>
+            </MetaDataList>
+            <Properties />
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection connection="inport">
+            <OutPort identifier="outport">
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref1" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <ProcessorLinks />
+</InviwoTreeData>

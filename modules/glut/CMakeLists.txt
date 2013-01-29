@@ -1,4 +1,12 @@
 #--------------------------------------------------------------------
+# Build FREEGLUT if it couldn't be found
+find_package(FreeGLUT)
+if(BUILD_FREEGLUT)
+	add_subdirectory(ext/freeglut)
+    include(${CMAKE_BINARY_DIR}/freeglut.pc)
+endif(BUILD_FREEGLUT)
+
+#--------------------------------------------------------------------
 # Inviwo GLUT Module
 ivw_module(GLUT)
 
@@ -19,11 +27,12 @@ set(SOURCE_FILES
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
-# Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
+# Add additonal dependency libs
+if(BUILD_FREEGLUT AND NOT BUILD_SHARED_LIBS)
+    include(${CMAKE_BINARY_DIR}/freeglut.pc)
+    add_dependency_libs_to_module(${GLUT_LIBS_PRIVATE})
+endif()
 
 #--------------------------------------------------------------------
-# Build FREEGLUT if it couldn't be found
-if(BUILD_FREEGLUT)
-	add_subdirectory(ext/freeglut)
-endif(BUILD_FREEGLUT)
+# Create module
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})

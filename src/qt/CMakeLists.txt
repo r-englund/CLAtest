@@ -1,11 +1,11 @@
 if(IVW_QT_APPLICATION AND NOT IVW_QT_EDITOR)
     set(IVW_QT_EDITOR ON CACHE BOOL "Build Inviwo Qt Editor" FORCE)
-    message("IVW_QT_EDITOR was set to build, due to dependency towards IVW_QT_APPLICATION")
+    ivw_message("IVW_QT_EDITOR was set to build, due to dependency towards IVW_QT_APPLICATION")
 endif()
 
 if(IVW_QT_EDITOR AND NOT IVW_QT_WIDGETS)
     set(IVW_QT_WIDGETS ON CACHE BOOL "Build Inviwo Qt Widgets" FORCE)
-    message("IVW_QT_WIDGETS was set to build, due to dependency towards IVW_QT_EDITOR")
+    ivw_message("IVW_QT_WIDGETS was set to build, due to dependency towards IVW_QT_EDITOR")
 endif()
 
 if(IVW_QT_EDITOR OR IVW_QT_WIDGETS)

@@ -10,14 +10,11 @@ include(cmake/globalconfig.cmake)
 build_module(Base)
 build_module(OpenGL)
 
-hide_module(GLUT)
-
 # Applications/Qt
 option(IVW_QT_APPLICATION "Build Inviwo Qt Application" ON)
 option(IVW_QT_EDITOR "Build Inviwo Qt Editor" ON)
 option(IVW_QT_WIDGETS "Build Inviwo Qt Widgets" ON)
 option(IVW_TINY_GLUT_APPLICATION "Build Inviwo Tiny GLUT Application" OFF)
-mark_as_advanced(FORCE  IVW_TINY_GLUT_APPLICATION)
 option(TEST_APPLICATIONS "Build All Test Application" OFF)
 
 #--------------------------------------------------------------------

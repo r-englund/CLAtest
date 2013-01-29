@@ -77,6 +77,7 @@ macro(ivw_module project_name)
   string(TOLOWER ${project_name} l_project_name)
   ivw_project(${l_project_name})
   set(_packageName Inviwo${project_name}Module)
+  set(_preModuleDependencies "")
   set(IVW_MODULE_CLASS ${project_name} PARENT_SCOPE)
   set(IVW_MODULE_CLASS_PATH "${l_project_name}/${l_project_name}module" PARENT_SCOPE)
 endmacro()
@@ -229,6 +230,13 @@ macro(hide_module the_module)
 endmacro()
 
 #--------------------------------------------------------------------
+# Set module build option to true
+macro(add_dependency_libs_to_module)
+    list(APPEND _preModuleDependencies ${ARGN})
+endmacro()
+
+
+#--------------------------------------------------------------------
 # Generate module options (which was not specifed before) and,
 # Sort directories based on dependencies inside directories
 macro(generate_unset_mod_options_and_depend_sort retval)
@@ -378,6 +386,7 @@ macro(ivw_create_module)
   # Add dependencies
   set(tmpProjectName ${_projectName})
   set(_projectName inviwo-module-${tmpProjectName})
+  ivw_add_dependency_libraries(${_preModuleDependencies})
   ivw_add_dependencies(InviwoCore)
   if(HAS_DEPEND)
     include(${DEPEND_PATH})

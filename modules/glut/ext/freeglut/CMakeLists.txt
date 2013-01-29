@@ -176,15 +176,15 @@ ivw_vs_folder(freeglut ext)
 # pkg-config support, to install at $(libdir)/pkgconfig
 # Define static build dependencies
 IF(WIN32)
-  SET(PC_LIBS_PRIVATE "-lopengl32 -lwinmm -lgdi32 -lm")
+  SET(PC_LIBS_PRIVATE opengl32 winmm gdi32)
 ELSE()
-  SET(PC_LIBS_PRIVATE "-lX11 -lXxf86vm -lXrandr -lGL -lm")
+  SET(PC_LIBS_PRIVATE X11 Xxf86vm Xrandr GL)
 ENDIF()
 # Client applications need to define FreeGLUT GLES version to
 # bootstrap headers inclusion in freeglut_std.h:
 SET(PC_LIBNAME "glut")
 SET(PC_FILENAME "freeglut.pc")
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/freeglut.pc.in ${CMAKE_BINARY_DIR}/freeglut.pc @ONLY)
-INSTALL(FILES ${CMAKE_BINARY_DIR}/freeglut.pc DESTINATION share/pkgconfig/ RENAME ${PC_FILENAME})
+#INSTALL(FILES ${CMAKE_BINARY_DIR}/freeglut.pc DESTINATION share/pkgconfig/ RENAME ${PC_FILENAME})
 # TODO: change the library and .pc name when building for GLES,
 # e.g. -lglut-GLES2

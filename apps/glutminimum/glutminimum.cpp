@@ -2,15 +2,15 @@
 #include <windows.h>
 #endif
 
-#include "../../modules/opengl/inviwoopengl.h"
+#include <modules/opengl/inviwoopengl.h>
 #include <GL/glut.h>
-#include "../../modules/glut/canvasglut.h"
+#include <modules/glut/canvasglut.h>
 
-#include "inviwo/core/inviwo.h"
-#include "inviwo/core/inviwoapplication.h"
-#include "inviwo/core/network/processornetwork.h"
-#include "inviwo/core/network/processornetworkevaluator.h"
-#include "inviwo/core/util/project.h"
+#include <inviwo/core/inviwo.h>
+#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/processors/canvasprocessor.h>
 
 
 using namespace inviwo;
@@ -59,8 +59,8 @@ void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
 
 
 int main(int argc, char** argv) {
-    InviwoApplication* app = new InviwoApplication("glutminimum", "D:/inviwo");
-    app->initialize();
+    InviwoApplication inviwoApp("glutminimum", IVW_DIR);
+    inviwoApp.initialize();
 
     glutInit(&argc, argv);
 
@@ -69,10 +69,24 @@ int main(int argc, char** argv) {
     
     glewInit();
 
-    Project* project = new Project();
-    project->load(InviwoApplication::app()->getPath(InviwoApplication::PATH_PROJECT, "simple.vws"));
-    processorNetwork = project->getProcessorNetwork();
-    processorNetworkEvaluator =  new ProcessorNetworkEvaluator(processorNetwork);
+    // Create process network
+    processorNetwork = new ProcessorNetwork();
+    inviwoApp.setProcessorNetwork(processorNetwork);
+
+    // Create process network evaluator
+    processorNetworkEvaluator = new ProcessorNetworkEvaluator(processorNetwork);
+    processorNetworkEvaluator->setDefaultRenderContext(canvas);
+    canvas->setNetworkEvaluator(processorNetworkEvaluator);
+
+    // Load simple scene
+    IvwDeserializer xmlDeserializer(inviwoApp.getPath(InviwoApplication::PATH_PROJECT, "simple.inv"));
+    processorNetwork->deserialize(xmlDeserializer);
+    std::vector<Processor*> processors = processorNetwork->getProcessors();
+    for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
+        (*it)->initialize();
+    }
+
+    // Register Canvas GLUT
     processorNetworkEvaluator->registerCanvas(canvas);
 
     glutKeyboardFunc(keyPressed);

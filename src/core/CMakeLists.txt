@@ -90,7 +90,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/project.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
@@ -173,7 +172,6 @@ set(SOURCE_FILES
     util/fileobserver.cpp
     util/logdistributor.cpp
     util/observer.cpp
-    util/project.cpp
     util/variant.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
