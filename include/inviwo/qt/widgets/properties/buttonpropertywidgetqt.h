@@ -19,6 +19,7 @@ class ButtonPropertyWidgetQt : public PropertyWidgetQt {
 public:
 	ButtonPropertyWidgetQt(ButtonProperty* property);
 
+    void updateFromProperty();
 
 private:
 	ButtonProperty* property_;

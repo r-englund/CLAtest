@@ -2,7 +2,7 @@
 
 namespace inviwo {
 ButtonProperty::ButtonProperty(std::string identifier, std::string displayName, TFunctionPointer<ButtonProperty>::Type value)
-	: TemplateProperty<std::string>(identifier,displayName, value)
+	: TemplateProperty<TFunctionPointer<ButtonProperty>::Type>(identifier,displayName, value)
 	{}
 
 	void ButtonProperty::serialize(inviwo::IvwSerializer &s) const {
@@ -14,7 +14,7 @@ ButtonProperty::ButtonProperty(std::string identifier, std::string displayName, 
 	//	Property::deserialize(d);
 	//	TFunctionPointer<ButtonProperty>::Type value;
 	//	//d.deserialize("value", value);
-    //  d.deserializePointer("value",value);
+ //     d.deserializePointer("value",value);
 	//	set(value);
 	//}
 

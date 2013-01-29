@@ -7,7 +7,7 @@ namespace inviwo {
 
 ButtonPropertyWidgetQt::ButtonPropertyWidgetQt(ButtonProperty *property) : property_(property){
 	generateWidget();
-	updateFromProperty();
+    updateFromProperty();
 	}
 
 void ButtonPropertyWidgetQt::generateWidget() {
@@ -23,5 +23,8 @@ void ButtonPropertyWidgetQt::handleButton(){
     funcPtr = property_->get();
     (property_->*funcPtr)();  
 }
+void ButtonPropertyWidgetQt::updateFromProperty() {
+}
+
 
 } //namespace
