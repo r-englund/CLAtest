@@ -20,8 +20,9 @@ void ButtonPropertyWidgetQt::generateWidget() {
 }
 
 void ButtonPropertyWidgetQt::handleButton(){
-    funcPtr = property_->get();
-    (property_->*funcPtr)();  
+    //funcPtr = property_->get();
+    //(property_->*funcPtr)();  
+    property_->invokeMemberFunctions();
 }
 void ButtonPropertyWidgetQt::updateFromProperty() {
 }
