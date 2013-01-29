@@ -37,9 +37,9 @@ public:
 
     virtual Data* readData();
     
-    RawVolumeReader::ReaderSettings& getReaderSettings() const;
+    //RawVolumeReader::ReaderSettings& getReaderSettings() const;
 
-    static void DatVolumeReader::readDatFileSettings(const std::string filePath, RawVolumeReader::ReaderSettings& readerSettings)  {
+    static void DatVolumeReader::readDatFileSettings(const std::string filePath, ReaderSettings& readerSettings)  {
         readerSettings.rawFileAbsolutePath_ = "";
         readerSettings.dataFormat_ = "";
         readerSettings.dimensions_ = ivec3(0,0,0);

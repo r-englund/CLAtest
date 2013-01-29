@@ -16,7 +16,7 @@ Data* DatVolumeReader::readData() {
 
 Data* DatVolumeReader::readRawVolumeData() {
 
-    RawVolumeReader::ReaderSettings readerSettings;
+    ReaderSettings readerSettings;
 
     //Get reader settings
     DatVolumeReader::readDatFileSettings(sourceFileAbsolutePath_, readerSettings);    

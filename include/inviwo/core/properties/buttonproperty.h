@@ -2,26 +2,38 @@
 #define IVW_BUTTONPROPERTY_H
 
 #include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/properties/templateproperty.h>
+#include <inviwo/core/util/callback.h>
+#include <inviwo/core/properties/property.h>
 
-namespace inviwo {
+namespace inviwo {    
 
-    //Memberfunctionpointer
+class IVW_CORE_API ButtonProperty : public Property {
+
+public:
+	ButtonProperty(std::string identifier, std::string displayName);
+    void consolePrinter();
+
+    //TODO: Only member functions zero (void) parameter is allowed now.
+    // Example usage
+    // myButton_.registerClassMemberFunction(this, &MyButton::doSomethingFunction);
+    // it is possible to register more than one functions
     template <typename T>
-    struct TFunctionPointer
-    {
-        typedef void (T::*Type)();
-    };
+    void registerClassMemberFunction(T* o, void (T::*m)()) {
+        callBackList_.addMemberFunction(o, m); 
+    }
 
-	class IVW_CORE_API ButtonProperty : public TemplateProperty<TFunctionPointer<ButtonProperty>::Type> {
-	
-	public:
-		ButtonProperty(std::string identifier, std::string displayName, TFunctionPointer<ButtonProperty>::Type value);
-        void consolePrinter();
-		virtual void serialize(IvwSerializer& s) const;
-		//virtual void deserialize(IvwDeserializer& d);
-	};
+    //invokes all functions
+    void invokeMemberFunctions() {
+        callBackList_.invokeAll();
+    }
+
+	virtual void serialize(IvwSerializer& s) const;
+	virtual void deserialize(IvwDeserializer& d);
+
+private:
+    CallBackList callBackList_;
+};
 
 } //namespace
 
-#endif 
+#endif //IVW_BUTTONPROPERTY_H

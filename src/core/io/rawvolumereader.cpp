@@ -3,16 +3,11 @@
 
 namespace inviwo {
 
-RawVolumeReader::ReaderSettings::ReaderSettings(std::string rawFile, ivec3 dimensions, std::string format) 
-    : rawFileAbsolutePath_(rawFile)
-    , dimensions_(dimensions)
-    , dataFormat_(format)
-{}
 
 RawVolumeReader::RawVolumeReader()
 {}
 
-void* RawVolumeReader::loadRawData(RawVolumeReader::ReaderSettings& readerSettings) {
+void* RawVolumeReader::loadRawData(ReaderSettings& readerSettings) {
 
     if (readerSettings.dataFormat_ == "UINT8") {
         return  loadData<uint8_t>(readerSettings.rawFileAbsolutePath_, readerSettings.dimensions_ );

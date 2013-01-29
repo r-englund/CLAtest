@@ -18,7 +18,7 @@ namespace inviwo {
         if (!fileExtension.empty()) {
             //TODO: better pattern for automatic data reader selection
             if (fileExtension=="dat") {
-                RawVolumeReader::ReaderSettings readerSettings;
+                ReaderSettings readerSettings;
                 DatVolumeReader::readDatFileSettings(sourceFile_, readerSettings);
                 dataFormat_ = readerSettings.dataFormat_;
                 dimensions_ = readerSettings.dimensions_;
@@ -32,7 +32,7 @@ namespace inviwo {
         if (!fileExtension.empty()) {
             //TODO: better pattern for automatic data reader selection
             if (fileExtension=="dat") {
-                RawVolumeReader::ReaderSettings readerSettings;
+                ReaderSettings readerSettings;
                 DatVolumeReader::readDatFileSettings(sourceFile_, readerSettings);
                 return RawVolumeReader::loadRawData(readerSettings);                
             }
