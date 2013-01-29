@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
+
 namespace inviwo {
 
 ButtonPropertyWidgetQt::ButtonPropertyWidgetQt(ButtonProperty *property) : property_(property){
@@ -11,26 +12,16 @@ ButtonPropertyWidgetQt::ButtonPropertyWidgetQt(ButtonProperty *property) : prope
 
 void ButtonPropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
-	hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
 	button_ = new QPushButton();
+    button_->setText(QString::fromStdString(property_->getDisplayName()));
 	connect(button_, SIGNAL(released()), this, SLOT(handleButton()));
 	hLayout->addWidget(button_);
 	setLayout(hLayout);
 }
 
-void ButtonPropertyWidgetQt::handleButton()
-{
-    // change the text
-    button_->setText("Pressed the button");
+void ButtonPropertyWidgetQt::handleButton(){
+    funcPtr = property_->get();
+    (property_->*funcPtr)();  
 }
-
-void ButtonPropertyWidgetQt::updateFromProperty() {
-	std::string valueStr = property_->get();
-	QString str = QString::fromUtf8(valueStr.c_str());
-	button_->setText(str);
-}
-
-
-
 
 } //namespace

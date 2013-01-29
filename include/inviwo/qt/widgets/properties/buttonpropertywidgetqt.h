@@ -7,7 +7,10 @@
 
 #include <inviwo/core/properties/buttonproperty.h>
 
+
+
 namespace inviwo {
+
 
 class ButtonPropertyWidgetQt : public PropertyWidgetQt {
 
@@ -16,19 +19,17 @@ class ButtonPropertyWidgetQt : public PropertyWidgetQt {
 public:
 	ButtonPropertyWidgetQt(ButtonProperty* property);
 
-	void updateFromProperty();
-
 
 private:
 	ButtonProperty* property_;
 	QPushButton* button_;
+    TFunctionPointer<ButtonProperty>::Type funcPtr;
 
 	void generateWidget();
+    void consolePrinter();
 
 public slots:
 	void handleButton();
-	//void setLabel(std::string value);
-	//void setPropertyValue();
 };
 
 } //namespace
