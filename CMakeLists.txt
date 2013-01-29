@@ -14,7 +14,10 @@ build_module(OpenGL)
 option(IVW_QT_APPLICATION "Build Inviwo Qt Application" ON)
 option(IVW_QT_EDITOR "Build Inviwo Qt Editor" ON)
 option(IVW_QT_WIDGETS "Build Inviwo Qt Widgets" ON)
+
 option(IVW_TINY_GLUT_APPLICATION "Build Inviwo Tiny GLUT Application" OFF)
+build_module_dependency(GLUT IVW_TINY_GLUT_APPLICATION)
+
 option(TEST_APPLICATIONS "Build All Test Application" OFF)
 
 #--------------------------------------------------------------------

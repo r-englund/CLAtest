@@ -1,8 +1,4 @@
 if(IVW_TINY_GLUT_APPLICATION)
-    if(NOT IVW_MODULE_GLUT)
-        set(IVW_MODULE_GLUT ON CACHE BOOL "Build Glut Module" FORCE)
-        ivw_message("IVW_MODULE_GLUT was set to build, due to dependency towards IVW_TINY_GLUT_APPLICATION")
-    endif()
     add_subdirectory(glutminimum)
 endif()
 if(IVW_QT_APPLICATION)

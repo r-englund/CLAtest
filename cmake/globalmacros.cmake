@@ -203,7 +203,7 @@ macro(resolve_module_dependencies)
                     ivw_dir_to_mod_prefix(depend_mod_name ${depend_folder})
                     first_case_upper(depend_name_cap ${depend_folder})
                     if(NOT ${depend_mod_name})
-                        set(${depend_mod_name} ON CACHE BOOL "Build ${depend_name_cap} Modules" FORCE)
+                        set(${depend_mod_name} ON CACHE BOOL "Build ${depend_name_cap} Module" FORCE)
                         ivw_message("${depend_mod_name} was set to build, due to dependency towards ${mod_name}")
                     endif()
                 endforeach()
@@ -218,6 +218,17 @@ macro(build_module the_module)
     ivw_dir_to_mod_prefix(mod_name ${the_module})
     first_case_upper(dir_name_cap ${the_module})
     option(${mod_name} "Build ${dir_name_cap} Module" ON)
+endmacro()
+
+#--------------------------------------------------------------------
+# Set module build option to true if the owner is built
+macro(build_module_dependency the_module the_owner)
+    ivw_dir_to_mod_prefix(mod_name ${the_module})
+    first_case_upper(dir_name_cap ${the_module})
+    if(${the_owner} AND NOT ${mod_name})
+        set(${mod_name} ON CACHE BOOL "Build ${dir_name_cap} Module" FORCE)
+        ivw_message("${mod_name} was set to build, due to dependency towards ${the_owner}")
+    endif()
 endmacro()
 
 #--------------------------------------------------------------------
