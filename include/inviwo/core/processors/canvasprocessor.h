@@ -5,7 +5,6 @@
 #include <inviwo/core/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/util/canvas.h>
-#include <inviwo/qt/widgets/processors/canvasprocessorwidget.h>
 
 namespace inviwo {
 
@@ -19,8 +18,6 @@ namespace inviwo {
         virtual void deinitialize();
 
         virtual void process();
-
-        virtual void createProcessorWidget();
 
         void setCanvas(Canvas* canvas) { canvas_ = canvas; }
         Canvas* getCanvas() const { return canvas_; }

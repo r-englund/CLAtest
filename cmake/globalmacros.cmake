@@ -83,8 +83,8 @@ endmacro()
 
 #--------------------------------------------------------------------
 # List subdirectories
-macro(list_subdirectories retval curdir currelative return_relative)
-   file(GLOB sub-dir RELATIVE ${curdir} ${currelative})
+macro(list_subdirectories retval curdir return_relative)
+   file(GLOB sub-dir RELATIVE ${curdir} ${curdir}/[^.svn]*)
    set(list_of_dirs "")
    foreach(dir ${sub-dir})
      if(IS_DIRECTORY ${curdir}/${dir})

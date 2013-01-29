@@ -33,6 +33,8 @@ if(IVW_QT_EDITOR OR IVW_QT_WIDGETS)
     set(QT_USE_QTWEBKIT FALSE)
     set(QT_USE_QTXMLPATTERNS FALSE)
     set(QT_USE_PHONON FALSE)
+    
+    mark_as_advanced(DESIRED_QT_VERSION)
 endif()
 
 if(IVW_QT_WIDGETS)

@@ -1,11 +1,11 @@
 #include <QGridLayout>
 
 #include <inviwo/core/processors/canvasprocessor.h>
-#include <inviwo/qt/widgets/processors/canvasprocessorwidget.h>
+#include <inviwo/qt/widgets/processors/canvasprocessorwidgetqt.h>
 
 namespace inviwo {
 
-CanvasProcessorWidget::CanvasProcessorWidget(Processor* processor, QWidget* parent)
+CanvasProcessorWidgetQt::CanvasProcessorWidgetQt(Processor* processor, QWidget* parent)
     : ProcessorWidgetQt(processor, parent),
       canvas_(0)
 {
@@ -14,7 +14,7 @@ CanvasProcessorWidget::CanvasProcessorWidget(Processor* processor, QWidget* pare
     setWindowTitle(QString::fromStdString(processor->getIdentifier())); 
 }
 
-CanvasProcessorWidget::~CanvasProcessorWidget() {
+CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
     if(canvas_) {
         canvas_->hide();
         ProcessorWidgetQt::hide();
@@ -22,7 +22,7 @@ CanvasProcessorWidget::~CanvasProcessorWidget() {
     }
 }
 
-void CanvasProcessorWidget::initialize() {
+void CanvasProcessorWidgetQt::initialize() {
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
     canvas_ = new CanvasQt(this);
     canvas_->initialize();
@@ -38,20 +38,20 @@ void CanvasProcessorWidget::initialize() {
     initialized_ = true;
 }
 
-void CanvasProcessorWidget::show() {
+void CanvasProcessorWidgetQt::show() {
     canvas_->show();
     ProcessorWidgetQt::show();
 }
 
-void CanvasProcessorWidget::resizeEvent(QResizeEvent* event) {
+void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     ProcessorWidgetQt::resizeEvent(event);
 }
 
-void CanvasProcessorWidget::hide() {
+void CanvasProcessorWidgetQt::hide() {
     ProcessorWidgetQt::hide();
 }
 
-void CanvasProcessorWidget::closeEvent(QCloseEvent *e) {    
+void CanvasProcessorWidgetQt::closeEvent(QCloseEvent *e) {    
     canvas_->hide();
     ProcessorWidgetQt::hide();
 }

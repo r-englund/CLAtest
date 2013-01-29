@@ -6,6 +6,8 @@
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/qt/widgets/processors/processorwidgetfactoryqt.h>
+#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/core/metadata/positionmetadata.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 
@@ -165,7 +167,9 @@ QPointF NetworkEditor::snapToGrid(QPointF pos) {
 }
 
 void NetworkEditor::initializeProcessorRepresentation(Processor* processor, QPointF pos) {
-    processor->createProcessorWidget();
+    // create and set processor widget(might be null if no widget exists)  
+    ProcessorWidgetQt* processorWidgetQt = ProcessorWidgetFactoryQt::getRef().create(processor);
+    processor->setProcessorWidget(processorWidgetQt);
 
     // generate GUI representation and add to editor
     ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem();

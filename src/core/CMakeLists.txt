@@ -52,6 +52,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/datasourceprocessor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/boolproperty.h
@@ -142,6 +143,7 @@ set(SOURCE_FILES
     processors/processor.cpp
     processors/processorfactory.cpp
     processors/processorwidget.cpp
+    processors/processorwidgetfactory.cpp
     processors/datasource/datasourceprocessor.cpp
     processors/datasource/volumesource.cpp
     properties/boolproperty.cpp
@@ -193,7 +195,6 @@ ivw_include_directories(${CMAKE_SOURCE_DIR})
 # Add core dependencies to this list
 ivw_add_dependencies(
     TiCPP
-    Qt
 )
 
 #--------------------------------------------------------------------

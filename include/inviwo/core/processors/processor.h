@@ -34,7 +34,6 @@ public:
     void setIdentifier(const std::string& identifier) { identifier_ = identifier; }
     std::string getIdentifier() const { return identifier_; }
 
-    virtual void createProcessorWidget() { processorWidget_ = 0; }
     void setProcessorWidget(ProcessorWidget* processorWidget) { processorWidget_ = processorWidget; }
     ProcessorWidget* getProcessorWidget() { return processorWidget_; }
     bool hasProcessorWidget() { return (processorWidget_ != 0); }
@@ -56,7 +55,6 @@ public:
     std::vector<std::string> getPortGroupNames();
     std::vector<Port*> getPortsByGroup(std::string groupName);
     std::string getPortGroupName(Port* port);
-    
 
     bool allInportsConnected() const;
 

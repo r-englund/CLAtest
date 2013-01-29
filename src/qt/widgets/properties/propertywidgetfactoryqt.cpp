@@ -28,49 +28,48 @@
 
 namespace inviwo {
 
-	const std::string PropertyWidgetFactoryQt::logSource_ = "PropertyWidgetFactoryQt";
+const std::string PropertyWidgetFactoryQt::logSource_ = "PropertyWidgetFactoryQt";
 
-	PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
+PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
 
-	PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
-		//if (dynamic_cast<CameraProperty*>(property))
-		//    return new CameraPropertyWidgetQt(static_cast<CameraProperty*>(property));
-    
+PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
+    //if (dynamic_cast<CameraProperty*>(property))
+    //    return new CameraPropertyWidgetQt(static_cast<CameraProperty*>(property));
 
-	if (dynamic_cast<BoolProperty*>(property))
-			return new BoolPropertyWidgetQt(static_cast<BoolProperty*>(property));
-	if (dynamic_cast<ButtonProperty*>(property))
-		return new ButtonPropertyWidgetQt(static_cast<ButtonProperty*>(property));
-		if (dynamic_cast<CompositeProperty*>(property))
-			return new CompositePropertyWidgetQt(static_cast<CompositeProperty*>(property));
-		if (dynamic_cast<FileProperty*>(property))
-			return new FilePropertyWidgetQt(static_cast<FileProperty*>(property));
-		if (dynamic_cast<FloatProperty*>(property))
-			return new FloatPropertyWidgetQt(static_cast<FloatProperty*>(property));
-	if (dynamic_cast<FloatVec2Property*>(property))
+    if (dynamic_cast<BoolProperty*>(property))
+        return new BoolPropertyWidgetQt(static_cast<BoolProperty*>(property));
+    if (dynamic_cast<ButtonProperty*>(property))
+        return new ButtonPropertyWidgetQt(static_cast<ButtonProperty*>(property));
+    if (dynamic_cast<CompositeProperty*>(property))
+        return new CompositePropertyWidgetQt(static_cast<CompositeProperty*>(property));
+    if (dynamic_cast<FileProperty*>(property))
+        return new FilePropertyWidgetQt(static_cast<FileProperty*>(property));
+    if (dynamic_cast<FloatProperty*>(property))
+        return new FloatPropertyWidgetQt(static_cast<FloatProperty*>(property));
+    if (dynamic_cast<FloatVec2Property*>(property))
         return new FloatVec2PropertyWidgetQt(static_cast<FloatVec2Property*>(property));
-		if (dynamic_cast<FloatVec3Property*>(property))
-			return new FloatVec3PropertyWidgetQt(static_cast<FloatVec3Property*>(property));
-	if (dynamic_cast<FloatVec4Property*>(property))
+    if (dynamic_cast<FloatVec3Property*>(property))
+        return new FloatVec3PropertyWidgetQt(static_cast<FloatVec3Property*>(property));
+    if (dynamic_cast<FloatVec4Property*>(property))
         return new FloatVec4PropertyWidgetQt(static_cast<FloatVec4Property*>(property));
-	if (dynamic_cast<IntVec2Property*>(property))
+    if (dynamic_cast<IntVec2Property*>(property))
         return new IntVec2PropertyWidgetQt(static_cast<IntVec2Property*>(property));
 
-	if (dynamic_cast<IntVec3Property*>(property))
+    if (dynamic_cast<IntVec3Property*>(property))
         return new IntVec3PropertyWidgetQt(static_cast<IntVec3Property*>(property));
 
-	if (dynamic_cast<IntVec4Property*>(property))
+    if (dynamic_cast<IntVec4Property*>(property))
         return new IntVec4PropertyWidgetQt(static_cast<IntVec4Property*>(property));
 
-		if (dynamic_cast<IntProperty*>(property))
-			return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
-		if (dynamic_cast<OptionProperty*>(property))
-			return new OptionPropertyWidgetQt(static_cast<OptionProperty*>(property));
-		if (dynamic_cast<TransferProperty*>(property))
-			return new TransferPropertyWidgetQt(static_cast<TransferProperty*>(property));
+    if (dynamic_cast<IntProperty*>(property))
+        return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
+    if (dynamic_cast<OptionProperty*>(property))
+        return new OptionPropertyWidgetQt(static_cast<OptionProperty*>(property));
+    if (dynamic_cast<TransferProperty*>(property))
+        return new TransferPropertyWidgetQt(static_cast<TransferProperty*>(property));
 
-		LogWarn("No widget for property " + property->getIdentifier() + " found.")
-			return 0;
-	}
+    LogWarn("No widget for property " + property->getIdentifier() + " found.")
+        return 0;
+}
 
 } // namespace

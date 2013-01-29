@@ -1,6 +1,5 @@
 #include <inviwo/core/inviwoapplication.h>
 #include <inviwo/core/processors/canvasprocessor.h>
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 namespace inviwo {
 
@@ -22,14 +21,6 @@ CanvasProcessor::~CanvasProcessor() {
 
 Processor* CanvasProcessor::create() const {
     return new CanvasProcessor();
-}
-
-void CanvasProcessor::createProcessorWidget() {
-    InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    if (app) {
-        QWidget* parent = app->getMainWindow();
-        processorWidget_ = new CanvasProcessorWidget(this, parent);
-    }
 }
 
 void CanvasProcessor::initialize() {

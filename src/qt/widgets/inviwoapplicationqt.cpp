@@ -1,4 +1,5 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/qt/widgets/processors/processorwidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 #include <QSound>
@@ -10,6 +11,7 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
                                      : QApplication(argc, argv),
                                        InviwoApplication(displayName, basePath)  
 {
+    ProcessorWidgetFactoryQt::init();
     PropertyWidgetFactoryQt::init();
     reloadingFile_ = false;
     fileWatcher_ = new QFileSystemWatcher();
