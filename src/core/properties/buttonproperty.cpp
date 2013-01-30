@@ -9,13 +9,13 @@ ButtonProperty::ButtonProperty(std::string identifier, std::string displayName)
 		Property::serialize(s);
 	}
 	
-	//void ButtonProperty::deserialize(IvwDeserializer& d) {
-	//	Property::deserialize(d);
+	void ButtonProperty::deserialize(IvwDeserializer& d) {
+		Property::deserialize(d);
 	//	TFunctionPointer<ButtonProperty>::Type value;
 	//	//d.deserialize("value", value);
     //  d.deserializePointer("value",value);
 	//	set(value);
-	//}
+	}
 
     void ButtonProperty::consolePrinter(){
         std::cout <<"Function pointer working  "<<std::endl;
