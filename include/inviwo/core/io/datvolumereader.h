@@ -39,7 +39,7 @@ public:
     
     //RawVolumeReader::ReaderSettings& getReaderSettings() const;
 
-    static void DatVolumeReader::readDatFileSettings(const std::string filePath, ReaderSettings& readerSettings)  {
+    static void readDatFileSettings(const std::string filePath, ReaderSettings& readerSettings)  {
         readerSettings.rawFileAbsolutePath_ = "";
         readerSettings.dataFormat_ = "";
         readerSettings.dimensions_ = ivec3(0,0,0);
