@@ -83,6 +83,8 @@ void CameraProperty::deserialize(IvwDeserializer& d) {
     d.deserialize("aspectRatio", aspectRatio_);
     d.deserialize("nearPlane", nearPlane_);
     d.deserialize("farPlane", farPlane_);
+    updateViewMatrix();
+    updateProjectionMatrix();
 }
 
 } // namespace
