@@ -11,7 +11,7 @@ class IVW_CORE_API ButtonProperty : public Property {
 
 public:
 	ButtonProperty(std::string identifier, std::string displayName);
-    void consolePrinter();
+    
 
     //TODO: Only member functions zero (void) parameter is allowed now.
     // Example usage

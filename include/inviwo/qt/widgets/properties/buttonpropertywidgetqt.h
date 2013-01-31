@@ -24,10 +24,8 @@ public:
 private:
 	ButtonProperty* property_;
 	QPushButton* button_;
-    //TFunctionPointer<ButtonProperty>::Type funcPtr;
 
 	void generateWidget();
-    void consolePrinter();
 
 public slots:
 	void handleButton();

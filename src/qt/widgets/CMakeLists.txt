@@ -16,6 +16,9 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/camerapropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/compositepropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/filepropertywidgetqt.h
+	${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatmat2propertywidgetqt.h
+	${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatmat3propertywidgetqt.h
+	${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatmat4propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatpropertywidgetqt.h
 	${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h
@@ -47,6 +50,9 @@ set(SOURCE_FILES
     properties/camerapropertywidgetqt.cpp
     properties/compositepropertywidgetqt.cpp
     properties/filepropertywidgetqt.cpp
+	properties/floatmat2propertywidgetqt.cpp
+	properties/floatmat3propertywidgetqt.cpp
+	properties/floatmat4propertywidgetqt.cpp
     properties/floatpropertywidgetqt.cpp
 	properties/floatvec2propertywidgetqt.cpp
     properties/floatvec3propertywidgetqt.cpp

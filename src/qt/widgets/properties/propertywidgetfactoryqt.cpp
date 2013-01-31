@@ -5,6 +5,7 @@
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperty.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/transferproperty.h>
@@ -16,6 +17,9 @@
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/floatmat2propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/floatmat3propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/floatmat4propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h>
@@ -44,6 +48,12 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new CompositePropertyWidgetQt(static_cast<CompositeProperty*>(property));
     if (dynamic_cast<FileProperty*>(property))
         return new FilePropertyWidgetQt(static_cast<FileProperty*>(property));
+	if (dynamic_cast<FloatMat2Property*>(property))
+		return new FloatMat2PropertyWidgetQt(static_cast<FloatMat2Property*>(property));
+    if (dynamic_cast<FloatMat3Property*>(property))
+        return new FloatMat3PropertyWidgetQt(static_cast<FloatMat3Property*>(property));
+    if (dynamic_cast<FloatMat4Property*>(property))
+        return new FloatMat4PropertyWidgetQt(static_cast<FloatMat4Property*>(property));
     if (dynamic_cast<FloatProperty*>(property))
         return new FloatPropertyWidgetQt(static_cast<FloatProperty*>(property));
     if (dynamic_cast<FloatVec2Property*>(property))

@@ -42,7 +42,7 @@ void FloatVec2PropertyWidgetQt::setYValue(int value) {
 
 void FloatVec2PropertyWidgetQt::setPropertyValue() {
 	setXValue(sliderX_->value());
-	setYValue(sliderX_->value());
+	setYValue(sliderY_->value());
 }
 
 void FloatVec2PropertyWidgetQt::updateFromProperty() {

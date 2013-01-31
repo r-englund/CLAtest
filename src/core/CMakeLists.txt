@@ -60,6 +60,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/cameraproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
+	${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/properties.h
@@ -156,6 +157,7 @@ set(SOURCE_FILES
     properties/cameraproperty.cpp
     properties/compositeproperty.cpp
     properties/fileproperty.cpp
+	properties/matrixproperties.cpp
     properties/optionproperty.cpp
     properties/property.cpp
     properties/propertyfactory.cpp

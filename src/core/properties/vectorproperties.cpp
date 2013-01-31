@@ -152,6 +152,7 @@ void IntVec3Property::deserialize(IvwDeserializer& d){
 	OrdinalProperty<ivec3>::setIncrement(value);
 }
 
+
 void IntVec4Property::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
 	s.serialize("value", get());
