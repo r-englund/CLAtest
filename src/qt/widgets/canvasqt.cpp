@@ -11,7 +11,7 @@ QGLWidget* CanvasQt::sharedWidget_ = 0;
 const std::string CanvasQt::logSource_ = "CanvasQt";
 
 CanvasQt::CanvasQt(QWidget* parent)
-: QGLWidget(QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
+: QGLWidget(QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
   CanvasGL(ivec2(256,256))
 {
     //This is our default rendering context
@@ -22,13 +22,15 @@ CanvasQt::CanvasQt(QWidget* parent)
         QGLWidget::glInit();
     }
     //
+
+    //setAutoBufferSwap(false);
 }
 
 CanvasQt::~CanvasQt() {}
 
 void CanvasQt::initialize() {
     CanvasGL::initialize();
-    QObject::startTimer(1);
+    QObject::startTimer(16);
     show();
 }
 
@@ -59,6 +61,7 @@ void CanvasQt::resizeGL(int width, int height) {
 
 void CanvasQt::paintGL() {
     //QGLWidget::paintGL();
+    //QGLWidget::swapBuffers();
 }
 
 void CanvasQt::update() {
