@@ -11,6 +11,10 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
                                      : QApplication(argc, argv),
                                        InviwoApplication(displayName, basePath)  
 {
+    QCoreApplication::setOrganizationName("Inviwo");
+    //QCoreApplication::setOrganizationDomain("inviwo.org");
+    QCoreApplication::setApplicationName(displayName.c_str());
+
     ProcessorWidgetFactoryQt::init();
     PropertyWidgetFactoryQt::init();
     reloadingFile_ = false;

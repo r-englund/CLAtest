@@ -59,7 +59,7 @@ void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
 
 
 int main(int argc, char** argv) {
-    InviwoApplication inviwoApp("glutminimum", IVW_DIR);
+    InviwoApplication inviwoApp("glutminimum "+IVW_VERSION, IVW_DIR);
     inviwoApp.initialize();
 
     glutInit(&argc, argv);

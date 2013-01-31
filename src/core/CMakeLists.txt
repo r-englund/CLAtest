@@ -95,7 +95,9 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/systeminfo.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -180,6 +182,8 @@ set(SOURCE_FILES
     util/fileobserver.cpp
     util/logdistributor.cpp
     util/observer.cpp
+    util/settings.cpp
+    util/systeminfo.cpp
     util/variant.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
@@ -201,6 +205,7 @@ ivw_include_directories(${CMAKE_SOURCE_DIR})
 # Add core dependencies to this list
 ivw_add_dependencies(
     TiCPP
+    Sigar
 )
 
 #--------------------------------------------------------------------

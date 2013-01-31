@@ -18,6 +18,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorpropertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/propertylistwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
 )
 qt4_wrap_cpp(MOC_FILES ${HEADER_FILES})
 ivw_group("Header Files" ${HEADER_FILES})
@@ -38,6 +39,7 @@ set(SOURCE_FILES
     processorgraphicsitem.cpp
     processorpropertywidget.cpp
     propertylistwidget.cpp
+    settingswidget.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

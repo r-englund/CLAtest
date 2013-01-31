@@ -7,6 +7,7 @@
 #include <inviwo/core/inviwomodule.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/fileobserver.h>
+#include <inviwo/core/util/settings.h>
 #include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
@@ -32,6 +33,7 @@ public:
 
     void setProcessorNetwork(ProcessorNetwork* processorNetwork) { processorNetwork_ = processorNetwork; }
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
+    Settings* getSettings() { return settings_; }
 
     virtual void registerFileObserver(FileObserver* fileObserver) { LogWarn("This Inviwo application does not support FileObservers."); }
     virtual void startFileObservation(std::string fileName) { LogWarn("This Inviwo application does not support FileObservers."); }
@@ -51,6 +53,8 @@ private:
     std::vector<InviwoModule*> modules_;
 
     ProcessorNetwork* processorNetwork_;
+
+    Settings* settings_;
 
     bool initialized_;
 

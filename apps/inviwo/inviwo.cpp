@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 #ifdef __unix__
     setenv ("XLIB_SKIP_ARGB_VISUALS", "1", 1);
 #endif
-    inviwo::InviwoApplicationQt inviwoApp("Inviwo", IVW_DIR, argc, argv);
+    inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, IVW_DIR, argc, argv);
     inviwoApp.initialize();
 
     #if (QT_VERSION >= 0x040400)

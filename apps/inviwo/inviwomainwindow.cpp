@@ -2,13 +2,11 @@
 
 #include "inviwomainwindow.h"
 
-#include <inviwo/qt/editor/consolewidget.h>
 #include <inviwo/qt/editor/networkeditorview.h>
-#include <inviwo/qt/editor/processorlistwidget.h>
-#include <inviwo/qt/editor/propertylistwidget.h>
 #include <inviwo/qt/widgets/canvasqt.h>
 
 #include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/util/systeminfo.h>
 
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -22,28 +20,33 @@ InviwoMainWindow::InviwoMainWindow() {
     networkEditorView_ = new NetworkEditorView(this);
     setCentralWidget(networkEditorView_);
 
-    ProcessorListWidget* processorListWidget = new ProcessorListWidget(this);
-    addDockWidget(Qt::LeftDockWidgetArea, processorListWidget);
-
-    PropertyListWidget* propertyListWidget = new PropertyListWidget(this);
-    addDockWidget(Qt::RightDockWidgetArea, propertyListWidget);
-
-    ConsoleWidget* consoleWidget = new ConsoleWidget(this);
-    addDockWidget(Qt::BottomDockWidgetArea, consoleWidget);
-
-    addToolBars();
+    addMenus();
 }
 
 InviwoMainWindow::~InviwoMainWindow() {}
 
 void InviwoMainWindow::initialize() {
-    addMenus();
-    addMenuActions();
+    settingsWidget_ = new SettingsWidget(this);
+    addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
+
+    processorListWidget_ = new ProcessorListWidget(this);
+    addDockWidget(Qt::LeftDockWidgetArea, processorListWidget_);
+
+    propertyListWidget_ = new PropertyListWidget(this);
+    addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
+
+    consoleWidget_ = new ConsoleWidget(this);
+    addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
 
     // load settings and restore window state
     QSettings settings("Inviwo", "Inviwo");
     restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
     restoreState(settings.value("mainWindowState").toByteArray());
+    settingsWidget_->loadSettings();
+
+    printSystemInfo();
+
+    addMenuActions();
 
     defaultRenderContext_ = new CanvasQt(this);    
     defaultRenderContext_->switchContext();
@@ -63,10 +66,6 @@ void InviwoMainWindow::initialize() {
 
 void InviwoMainWindow::deinitialize() {
     initialized_ = false;
-}
-
-void InviwoMainWindow::addToolBars() {
-    //basicToolbar_ = addToolBar(tr("File"));
 }
 
 void InviwoMainWindow::addMenus() {
@@ -103,6 +102,30 @@ void InviwoMainWindow::addMenuActions() {
         connect(recentFileActions_[i], SIGNAL(triggered()), this, SLOT(openRecentNetwork()));
         fileMenuItem_->addAction(recentFileActions_[i]);
     }
+
+    settingsWidgetViewAction_ = new QAction(tr("&Settings"), this);
+    settingsWidgetViewAction_->setCheckable(true);
+    settingsWidgetViewAction_->setChecked(settingsWidget_->isVisible());
+    connect(settingsWidgetViewAction_, SIGNAL(triggered(bool)), settingsWidget_, SLOT(setVisible(bool)));
+    viewMenuItem_->addAction(settingsWidgetViewAction_);
+
+    processorListWidgetViewAction_ = new QAction(tr("&Processor List"), this);
+    processorListWidgetViewAction_->setCheckable(true);
+    processorListWidgetViewAction_->setChecked(processorListWidget_->isVisible());
+    connect(processorListWidgetViewAction_, SIGNAL(triggered(bool)), processorListWidget_, SLOT(setVisible(bool)));
+    viewMenuItem_->addAction(processorListWidgetViewAction_);
+
+    propertyListWidgetViewAction_ = new QAction(tr("&Property List"), this);
+    propertyListWidgetViewAction_->setCheckable(true);
+    propertyListWidgetViewAction_->setChecked(propertyListWidget_->isVisible());
+    connect(propertyListWidgetViewAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setVisible(bool)));
+    viewMenuItem_->addAction(propertyListWidgetViewAction_);
+
+    consoleWidgetViewAction_ = new QAction(tr("&Output Console"), this);
+    consoleWidgetViewAction_->setCheckable(true);
+    consoleWidgetViewAction_->setChecked(consoleWidget_->isVisible());
+    connect(consoleWidgetViewAction_, SIGNAL(triggered(bool)), consoleWidget_, SLOT(setVisible(bool)));
+    viewMenuItem_->addAction(consoleWidgetViewAction_);
 }
 
 void InviwoMainWindow::updateWindowTitle() {

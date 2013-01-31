@@ -2,8 +2,8 @@
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
+#include <inviwo/core/util/systeminfo.h>
 #include <modules/moduleregistration.h>
-
 
 namespace inviwo {
 
@@ -27,6 +27,9 @@ void InviwoApplication::initialize() {
     ProcessorFactory::init();
     MetaDataFactory::init();
     RepresentationConverterFactory::init();
+    settings_ = new Settings();
+    settings_->initialize();
+    settings_->addProperty(new IntProperty("totalRAM", "Total RAM", 100, 1, 8192));
 
     initialized_ = true;
 }

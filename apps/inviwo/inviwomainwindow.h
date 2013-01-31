@@ -9,6 +9,10 @@
 #include <QMenuBar>
 #include <QAction>
 
+#include <inviwo/qt/editor/settingswidget.h>
+#include <inviwo/qt/editor/consolewidget.h>
+#include <inviwo/qt/editor/processorlistwidget.h>
+#include <inviwo/qt/editor/propertylistwidget.h>
 
 namespace inviwo {
 
@@ -38,7 +42,6 @@ public slots:
 
 private:
     void openNetwork(QString networkFileName);
-    void addToolBars();
     void addMenus();
     void addMenuActions();
     void closeEvent(QCloseEvent *event);
@@ -54,6 +57,12 @@ private:
     //MainWindow ToolBars
     QToolBar* basicToolbar_;
 
+    //Widgets
+    SettingsWidget* settingsWidget_;
+    ProcessorListWidget* processorListWidget_;
+    PropertyListWidget* propertyListWidget_;
+    ConsoleWidget* consoleWidget_;
+
     //MainWindow Menus
     QMenuBar* basicMenuBar;
     QMenu* fileMenuItem_;
@@ -67,6 +76,10 @@ private:
     QAction* saveAsFileAction_;
     QAction* recentFileSeparator_;
     QAction* recentFileActions_[maxNumRecentFiles_];
+    QAction* settingsWidgetViewAction_;
+    QAction* processorListWidgetViewAction_;
+    QAction* propertyListWidgetViewAction_;
+    QAction* consoleWidgetViewAction_;
 
     //Paths
     QString rootDir_;
