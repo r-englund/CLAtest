@@ -16,5 +16,5 @@ Context Context::getDefault(cl_int *) {
 }
 
 CommandQueue CommandQueue::getDefault(cl_int *) {
-    return inviwo::OpenCL::getInstance()->getSynchronosGPUQueue();
+    return inviwo::OpenCL::getInstance()->getQueue();
 }

@@ -62,7 +62,7 @@ namespace inviwo {
             }
             if (destination) {
                 VolumeRAM* volumeRAM = static_cast<VolumeRAM*>(destination);
-                const cl::CommandQueue& queue = OpenCL::getInstance()->getSynchronosGPUQueue();
+                const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
                 queue.enqueueReadImage(*volumeCL->getVolume(), true, glm::svec3(0), glm::svec3(dimension), 0, 0, volumeRAM->getData());
             }
         }        

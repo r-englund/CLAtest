@@ -72,8 +72,8 @@ void VolumeCLPrecision<T>::setTypeAndFormat() {
 template<typename T>
 void VolumeCLPrecision<T>::initialize(void* texels) {
     image3D_ = new cl::Image3D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y, dimensions_.z);
-    if (!texels) {
-        OpenCL::getInstance()->getSynchronosGPUQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, texels);
+    if (texels != NULL) {
+        OpenCL::getInstance()->getQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, texels);
     }
     VolumeCL::initialize();
 }

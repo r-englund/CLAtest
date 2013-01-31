@@ -51,42 +51,42 @@ public:
         static OpenCL instance;// Guaranteed to be destroyed. Instantiated on first use.
         return &instance;
     }
-    /*
+    /**
      * Get queue that can perform tasks in serial (no need to explicitly manage events).
      * This should be the first choice of use. Expert users may want to use the 
      * asynchronous queue.
      */
-    const cl::CommandQueue& getSynchronosGPUQueue() const { return synchronosGPUQueue_; }
-    /*
+    const cl::CommandQueue& getQueue() const { return synchronosGPUQueue_; }
+    /**
      * Get queue that can perform tasks in parallel (need to explicitly manage events).
      * This is for expert users. be the first choice of use. Expert users may want to use the 
      * asynchronous queue.
      */
-    const cl::CommandQueue& getAsynchronousGPUQueue() const { return synchronosGPUQueue_; }
+    const cl::CommandQueue& getAsyncQueue() const { return asyncGPUQueue_; }
 
-    /*
+    /**
      * Get default OpenCL context.
      */
     const cl::Context& getContext() const { return gpuContext_; }
 
-    /*
+    /**
      * Get default OpenCL device.
      */
     const cl::Device& getDevice() const { return gpuDevice_; }
 
-    /*
+    /**
      * Check if image format combination is valid.
      * @return True if image format combination is valid, false otherwise.
      */
     static bool isValidImageFormat(const cl::Context& context, const cl::ImageFormat& format);
 
-    /*
+    /**
      * Check if volume format (Image3D) combination is valid.
      * @return True if image format combination is valid, false otherwise.
      */
     static bool isValidVolumeFormat(const cl::Context& context, const cl::ImageFormat& format);
 
-    /*
+    /**
      * Print all available information on device.
      */
     static void printDeviceInfo(const cl::Device& device);
@@ -94,17 +94,17 @@ public:
     /**
      * Outputs formatted build error to logger.
      * 
-     * \param devices (const std::vector<cl::Device> &)
-     * \param program (const cl::Program &)
-     * \param filename (const std::string &)
-     * \return (void)
+     * @param devices (const std::vector<cl::Device> &)
+     * @param program (const cl::Program &)
+     * @param filename (const std::string &)
+     * @return (void)
      */
     static void printBuildError(const std::vector<cl::Device>& devices, const cl::Program& program, const std::string& filename = "");
 
     static void printBuildError(const cl::Device& device, const cl::Program& program, const std::string& filename = "");
 
-    /*! Get OpenGL sharing properties depending on operating system.
-     *   
+    /** 
+     * Get OpenGL sharing properties depending on operating system.
      */
     static std::vector<cl_context_properties> getGLSharingContextProperties();
 
@@ -117,11 +117,11 @@ private:
     /// Initialize OpenCL context and queues.
     void initialize(bool enableOpenGLSharing);
 
-    /*! Get the device that has most compute units.
-     *  
+    /** 
+     *  Get the device that has most compute units.
      *  @param bestDevice Set to found device, if found.
      *  @param onPlatform Set to platform that device exist on, if found.
-     *  \return True if any device found, false otherwise. 
+     *  @return True if any device found, false otherwise. 
      */
     static bool getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform);
     /// Queue which can perform tasks in serial (no need to explicitly manage events)

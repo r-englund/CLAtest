@@ -17,6 +17,8 @@ public:
     ImageCL(ivec2 dimensions);
     virtual ~ImageCL();
     virtual std::string getClassName() const { return "ImageCL"; }
+    virtual void initialize(){};
+    virtual void deinitialize(){};
     virtual void resize(ivec2 dimensions);
     virtual ivec2 dimension() { return dimensions_;}
     virtual void copyAndResizeImage(DataRepresentation* target);
@@ -71,9 +73,20 @@ void ImageCLPrecision<T>::setTypeAndFormat() {
 
 template<typename T>
 void ImageCLPrecision<T>::initialize(void* texels) {
+    
     image2D_ = new cl::Image2D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y);
-    if (!texels) {
-        OpenCL::getInstance()->getSynchronosGPUQueue().enqueueWriteImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, texels);
+    if (texels != NULL) {
+        // Could performance be increased by using pinned memory?
+        // 3.1.1 http://www.nvidia.com/content/cudazone/CUDABrowser/downloads/papers/NVIDIA_OpenCL_BestPracticesGuide.pdf
+        //cl::Buffer pinnedMem(OpenCL::getInstance()->getContext(), CL_MEM_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, sizeof(texels), NULL, NULL);
+        //unsigned char* mappedMem = (unsigned char*)OpenCL::getInstance()->getQueue().enqueueMapBuffer(pinnedMem, true, CL_MAP_WRITE, 0, sizeof(texels), 0);
+        //memcpy(mappedMem, texels, sizeof(texels));
+        //OpenCL::getInstance()->getQueue().enqueueUnmapMemObject(pinnedMem, mappedMem);
+        //mappedMem = (unsigned char*)OpenCL::getInstance()->getQueue().enqueueMapBuffer(pinnedMem, true, CL_MAP_WRITE, 0, sizeof(texels), 0);
+        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, mappedMem);
+        //OpenCL::getInstance()->getQueue().enqueueUnmapMemObject(pinnedMem, mappedMem);
+
+        OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, texels);
     }
     ImageCL::initialize();
 }
@@ -81,7 +94,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
 template<typename T>
 DataRepresentation* ImageCLPrecision<T>::clone() {
     ImageCLPrecision* newImageCL = new ImageCLPrecision<T>(dimensions_);
-    OpenCL::getInstance()->getSynchronosGPUQueue().enqueueCopyImage(image2D_, *(newImageCL->getImage()), glm::svec3(0), glm::svec3(0), dimensions_);
+    OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, *(newImageCL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
     return newImageCL;
 }
 
@@ -91,14 +104,21 @@ void ImageCLPrecision<T>::deinitialize() {
     image2D_ = 0;
     ImageCL::deinitialize();
 }
+typedef ImageCLPrecision< uint8_t > ImageCLuint8;
+typedef ImageCLPrecision< int8_t > ImageCLint8;
+typedef ImageCLPrecision< uint16_t > ImageCLuint16;
+typedef ImageCLPrecision< int16_t > ImageCLint16;
+typedef ImageCLPrecision< uint32_t > ImageCLuint32;
+typedef ImageCLPrecision< int32_t > ImageCLint32;
+typedef ImageCLPrecision< float > ImageCLfloat;
 
-typedef ImageCLPrecision< glm::detail::tvec4<uint8_t> > ImageCLuint8;
-typedef ImageCLPrecision< glm::detail::tvec4<int8_t> > ImageCLint8;
-typedef ImageCLPrecision< glm::detail::tvec4<uint16_t> > ImageCLuint16;
-typedef ImageCLPrecision< glm::detail::tvec4<int16_t> > ImageCLint16;
-typedef ImageCLPrecision< glm::detail::tvec4<uint32_t> > ImageCLuint32;
-typedef ImageCLPrecision< glm::detail::tvec4<int32_t> > ImageCLint32;
-typedef ImageCLPrecision< glm::detail::tvec4<float> > ImageCLfloat;
+typedef ImageCLPrecision< glm::detail::tvec4<uint8_t> > ImageCLuint8vec4;
+typedef ImageCLPrecision< glm::detail::tvec4<int8_t> > ImageCLint8vec4;
+typedef ImageCLPrecision< glm::detail::tvec4<uint16_t> > ImageCLuint16vec4;
+typedef ImageCLPrecision< glm::detail::tvec4<int16_t> > ImageCLint16vec4;
+typedef ImageCLPrecision< glm::detail::tvec4<uint32_t> > ImageCLuivec4;
+typedef ImageCLPrecision< glm::detail::tvec4<int32_t> > ImageCLivec4;
+typedef ImageCLPrecision< glm::detail::tvec4<float> > ImageCLvec4;
 
 } // namespace
 

@@ -26,7 +26,7 @@ ImageCLResizer::ImageCLResizer() {
     instance.getResizeKernel()->setArg(0, src);
     instance.resizeKernel_.setArg(1, dst);
     cl::Event event;
-    OpenCL::getInstance()->getSynchronosGPUQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0], resizeToDimension[1]),
+    OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0], resizeToDimension[1]),
         cl::NullRange, NULL, &event);
     event.wait();
  }

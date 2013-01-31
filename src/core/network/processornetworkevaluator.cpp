@@ -21,7 +21,7 @@ void ProcessorNetworkEvaluator::setProcessorNetwork(ProcessorNetwork* processorN
 }
 
 void ProcessorNetworkEvaluator::initializeNetwork() {
-    ivwAssert(processorNetwork_, "processorNetwork_ not initialized, call setProcessorNetwork()");
+    ivwAssert(processorNetwork_!=0, "processorNetwork_ not initialized, call setProcessorNetwork()");
     // initialize network
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++)

@@ -13,4 +13,7 @@ ivw_create_test(${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add dependency
 ivw_add_dependencies(InviwoOpenCLModule)
+ivw_add_dependencies(InviwoBaseModule)
+ivw_add_dependencies(InviwoOpenGLModule)
+#ivw_add_dependencies(InviwoQtWidgets)
 

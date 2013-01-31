@@ -14,6 +14,7 @@ namespace inviwo {
         if (imageRAM) {
             ivec2 dimension = imageRAM->dimension();;
             void* data = imageRAM->getData();
+            destination = new ImageCLuint8(static_cast<uint8_t*>(data), dimension);
             // TODO: Implement conversion
             //if (dynamic_cast<ImageRAMuint8*>(imageRAM)) {
             //    destination = new ImageCLuint8(static_cast<uint8_t*>(data), dimension);
@@ -63,7 +64,7 @@ namespace inviwo {
             //}
             if (destination) {
                 ImageRAM* imageRAM = static_cast<ImageRAM*>(destination);
-                const cl::CommandQueue& queue = OpenCL::getInstance()->getSynchronosGPUQueue();
+                const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
                 queue.enqueueReadImage(*imageCL->getImage(), true, glm::svec3(0), glm::svec3(dimension, 1), 0, 0, imageRAM->getData());
             }
         }        

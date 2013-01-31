@@ -14,24 +14,24 @@ IVW_CORE_API enum LogLevel {
 };
 
 #define LogInfo(message) \
-    {   std::ostringstream stream; stream << message; \
-    inviwo::LogCentral::instance()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+    {   std::ostringstream stream__; stream__ << message; \
+    inviwo::LogCentral::instance()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogWarn(message) \
-    {   std::ostringstream stream; stream << message; \
-    inviwo::LogCentral::instance()->log(logSource_, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+    {   std::ostringstream stream__; stream__ << message; \
+    inviwo::LogCentral::instance()->log(logSource_, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogError(message) \
-    {   std::ostringstream stream; stream << message; \
-    inviwo::LogCentral::instance()->log(logSource_, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+    {   std::ostringstream stream__; stream__ << message; \
+    inviwo::LogCentral::instance()->log(logSource_, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 
 #define LogInfoS(source, message) \
-    {   std::ostringstream stream; stream << message; \
-    inviwo::LogCentral::instance()->log(source, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+    {   std::ostringstream stream__; stream__ << message; \
+    inviwo::LogCentral::instance()->log(source, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogWarnS(source, message) \
-    {   std::ostringstream stream; stream << message; \
-    inviwo::LogCentral::instance()->log(source, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+    {   std::ostringstream stream__; stream__ << message; \
+    inviwo::LogCentral::instance()->log(source, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogErrorS(source, message) \
-    {   std::ostringstream stream; stream << message; \
-    inviwo::LogCentral::instance()->log(source, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream.str());}
+    {   std::ostringstream stream__; stream__ << message; \
+    inviwo::LogCentral::instance()->log(source, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 
 class IVW_CORE_API Logger {
 
