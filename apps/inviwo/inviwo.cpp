@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
 
     mainWin.initialize();
     mainWin.show();
+    mainWin.setupEnvironment();
     mainWin.openLastNetwork();
 
     return inviwoApp.exec();

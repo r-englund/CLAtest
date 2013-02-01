@@ -42,8 +42,19 @@ void InviwoMainWindow::initialize() {
     QSettings settings("Inviwo", "Inviwo");
     restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
     restoreState(settings.value("mainWindowState").toByteArray());
+    rootDir_ = QString::fromStdString(IVW_DIR+"data/");
+    networkFileDir_ = rootDir_ + "workspaces/";
+    recentFileList_ = settings.value("recentFileList").toStringList();
     settingsWidget_->loadSettings();
 
+    initialized_ = true;
+}
+
+void InviwoMainWindow::deinitialize() {
+    initialized_ = false;
+}
+
+void InviwoMainWindow::setupEnvironment(){
     addMenuActions();
 
     defaultRenderContext_ = new CanvasQt(this);    
@@ -53,17 +64,8 @@ void InviwoMainWindow::initialize() {
     defaultRenderContext_->setFixedSize(0,0);
 
     // restore previous files
-    rootDir_ = QString::fromStdString(IVW_DIR+"data/");
-    networkFileDir_ = rootDir_ + "workspaces/";
-    recentFileList_ = settings.value("recentFileList").toStringList();
     updateRecentNetworks();
     newNetwork();
-
-    initialized_ = true;
-}
-
-void InviwoMainWindow::deinitialize() {
-    initialized_ = false;
 }
 
 void InviwoMainWindow::addMenus() {
