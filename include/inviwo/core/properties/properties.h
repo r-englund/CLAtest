@@ -8,6 +8,7 @@
 #include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/transferproperty.h>
 
 #endif // IVW_PROPERTIES_H
