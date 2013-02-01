@@ -179,10 +179,14 @@
 #include <OpenGL/OpenGL.h>
 #include <OpenCL/opencl.h>
 #include <libkern/OSAtomic.h>
-#else
+#elif defined(_WIN32)
 #include <GL/gl.h>
 #include <CL/opencl.h>
-#endif // !__APPLE__
+#else
+#include <GL/gl.h>
+#include <CL/cl.h>
+#include <CL/cl_gl.h>
+#endif
 
 // To avoid accidentally taking ownership of core OpenCL types
 // such as cl_kernel constructors are made explicit
