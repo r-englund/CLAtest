@@ -19,6 +19,10 @@ public:
 
 private:
     QTextEdit* textField_;
+    /// Log level colors
+    QColor infoTextColor_;
+    QColor warnTextColor_;
+    QColor errorTextColor_;
 };
 
 } // namespace
