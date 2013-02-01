@@ -19,6 +19,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorpropertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transfereditor.h
 )
 qt4_wrap_cpp(MOC_FILES ${HEADER_FILES})
 ivw_group("Header Files" ${HEADER_FILES})
@@ -40,6 +41,7 @@ set(SOURCE_FILES
     processorpropertywidget.cpp
     propertylistwidget.cpp
     settingswidget.cpp
+    transfereditor.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
