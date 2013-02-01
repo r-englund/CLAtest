@@ -106,7 +106,7 @@ void printSystemInfo(){
     // Try to retrieve operating system information
     OSInfo infoOS;
     if(lookupOSInfo(infoOS)){
-        SystemInfo("(OS) - " << infoOS.description << " " << infoOS.platform << "-bit");
+        SystemInfo("(OS) " << infoOS.description << " " << infoOS.platform << "-bit");
     }
     else{
         SystemInfoNotFound("(OS)");
