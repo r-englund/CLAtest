@@ -3,7 +3,6 @@
 find_package(FreeGLUT)
 if(BUILD_FREEGLUT)
 	add_subdirectory(ext/freeglut)
-    include(${CMAKE_BINARY_DIR}/freeglut.pc)
 endif(BUILD_FREEGLUT)
 
 #--------------------------------------------------------------------
