@@ -42,21 +42,24 @@ int test_image() {
     // Create image representations and module
     inviwo::InviwoApplication app("Test", "");
     app.initialize();
-    uint8_t imageData[16] = {1, 1, 1, 1,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0};
+    //uint8_t imageData[16] = {1, 1, 1, 1,
+    //    0, 0, 0, 0,
+    //    0, 0, 0, 0,
+    //    0, 0, 0, 0};
 
     //cl::Image2D img(*inviwo::OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, CL_FLOAT, 4, 4, imageData);
-    inviwo::Image image(glm::ivec2(4,4));
+    glm::ivec2 imageSize(512, 503);
+    std::vector<uint8_t> imageData(imageSize.x*imageSize.y);
+    inviwo::Image image(imageSize);
     inviwo::ImageRAM* ram = image.getRepresentation<inviwo::ImageRAM>();
 
     try {
         inviwo::ImageCL *imageCL = image.getRepresentation<inviwo::ImageCL>();
-        inviwo::OpenCL::getInstance()->getQueue().enqueueWriteImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(4, 4, 1), 0, 0, imageData);
-        imageCL->resize(glm::ivec2(2,2));
-        uint8_t resizedImageData[4];
-        inviwo::OpenCL::getInstance()->getQueue().enqueueReadImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(2, 2, 1), 0, 0, resizedImageData);
+        inviwo::OpenCL::getInstance()->getQueue().enqueueWriteImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(imageSize, 1), 0, 0, &imageData[0]);
+        glm::ivec2 resizeTo(212, 103);
+        imageCL->resize(resizeTo);
+        std::vector<uint8_t> resizedImageData(resizeTo.x*resizeTo.y);
+        inviwo::OpenCL::getInstance()->getQueue().enqueueReadImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(resizeTo, 1), 0, 0, &resizedImageData[0]);
     } catch(cl::Error) {
         error +=1;
     }

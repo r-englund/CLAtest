@@ -1,20 +1,14 @@
 #include <inviwo/core/inviwocommondefines.h>
 #include <inviwo/core/util/assertion.h>
+#include <inviwo/core/util/logdistributor.h>
 #include <modules/opencl/imageclresizer.h>
 
 namespace inviwo {
 
 
 ImageCLResizer::ImageCLResizer() {
-    std::string kernelStr = inviwo::loadFile(IVW_DIR+"modules/opencl/cl/img_resize.cl");
 
-    cl::Program::Sources source(1, std::make_pair(kernelStr.c_str(), kernelStr.length()));
-    cl::Program program = cl::Program(OpenCL::getInstance()->getContext(), source);
-    try {
-        program.build(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()));
-    } catch (cl::Error&) {
-        OpenCL::printBuildError(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()), program);
-    }
+    cl::Program program = OpenCL::buildProgram(IVW_DIR+"modules/opencl/cl/img_resize.cl");
 
     resizeKernel_ = cl::Kernel(program, "resizeImage");
 }
@@ -28,6 +22,10 @@ ImageCLResizer::ImageCLResizer() {
     cl::Event event;
     OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0], resizeToDimension[1]),
         cl::NullRange, NULL, &event);
+    
     event.wait();
+    #if IVW_PROFILING
+    LogInfoS("OpenCL", "Image resizing from (" << src.getImageInfo<CL_IMAGE_WIDTH>() << ", " << src.getImageInfo<CL_IMAGE_HEIGHT>() << ") to (" << resizeToDimension.x << ", " << resizeToDimension.y << ") in " << event.getElapsedTime() << " ms");
+    #endif
  }
 } // namespace

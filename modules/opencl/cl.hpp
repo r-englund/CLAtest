@@ -2725,6 +2725,12 @@ public:
         return param;
     }
 
+    /** \brief Returns time taken for command execution in milliseconds.
+     * 
+     * @return float Time in milliseconds
+     */
+    float getElapsedTime() const { return 1e-6f * static_cast<float>(getProfilingInfo<CL_PROFILING_COMMAND_END>() - getProfilingInfo<CL_PROFILING_COMMAND_START>()); }
+    
     /*! \brief Blocks the calling thread until this event completes.
      * 
      *  Wraps clWaitForEvents().
@@ -4512,8 +4518,6 @@ __GET_INFO_HELPER_WITH_RETAIN(cl::Kernel)
  */
 class Program : public detail::Wrapper<cl_program>
 {
-private:
-    STRING_CLASS fileName_; /// Name of file containing source code/binary (empty if not created from file).
 public:
     typedef VECTOR_CLASS<std::pair<const void*, ::size_t> > Binaries;
     typedef VECTOR_CLASS<std::pair<const char*, ::size_t> > Sources;

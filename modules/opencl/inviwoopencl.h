@@ -36,8 +36,6 @@ namespace inviwo {
 #endif
 
 
-std::string loadFile(std::string fileName);
-
 /** \class OpenCL 
 *
 * Singleton class that manages OpenCL context and queues. 
@@ -73,6 +71,9 @@ public:
      * Get default OpenCL device.
      */
     const cl::Device& getDevice() const { return gpuDevice_; }
+
+    static cl::Program buildProgram(const std::string& fileName, const std::string& defines = "");
+    static cl::Program buildProgram(const std::string& fileName, const std::string& defines, const cl::CommandQueue& queue);
 
     /**
      * Check if image format combination is valid.

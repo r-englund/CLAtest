@@ -1,10 +1,12 @@
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/cl.hpp>
+#include <modules/opencl/glmcl.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
-#include <modules/opencl/cl.hpp>
-#include <modules/opencl/glmcl.h>
+#include <fstream>
+
 
 #ifdef WIN32
 #define OPEN_FILE(a,b,c) fopen_s(&a, b, c);
@@ -83,27 +85,6 @@ namespace cl {
 
 
 namespace inviwo {
-    std::string loadFile(std::string fileName) {
-        FILE* file;
-        char* fileContent = NULL;
-        long len;
-
-        if (fileName.length() > 0) {
-            OPEN_FILE(file, fileName.c_str(), "rb");
-            if (file != NULL) {
-                fseek(file, 0L, SEEK_END);
-                len = ftell(file);
-                fseek(file, 0L, SEEK_SET);
-                fileContent = (char*)malloc(sizeof(char)*(len));
-                if(fileContent != NULL){
-                    fread(fileContent, sizeof(char), len, file);
-                    fileContent[len] = '\0';
-                }
-                fclose(file);
-            }
-        }
-        return std::string(fileContent);
-    }
 
     OpenCL::OpenCL() {
         initialize(true);
@@ -369,6 +350,33 @@ namespace inviwo {
             CL_GLX_DISPLAY_KHR, (cl_context_properties) glXGetCurrentDisplay()};
 #endif
         return std::vector<cl_context_properties>(props, props + sizeof(props)/sizeof(cl_context_properties));
+    }
+
+    cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string& defines, const cl::CommandQueue& queue) 
+    {
+        cl::Context context = queue.getInfo<CL_QUEUE_CONTEXT>();
+        cl::Device device = queue.getInfo<CL_QUEUE_DEVICE>();
+        // build the program from the source in the file
+        std::ifstream file(fileName.c_str());
+        std::string prog(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+        cl::Program::Sources source( 1, std::make_pair(prog.c_str(), prog.length()+1));
+        cl::Program program(context, source);
+        try {
+            program.build(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()));
+            std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device);
+            // Output log if it contains any info
+            if(buildLog.size() > 1)
+                LogInfoS("OpenCL", fileName << " build info:" << std::endl << buildLog);
+        } catch (cl::Error& e) {
+            OpenCL::printBuildError(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()), program);
+            throw e;
+        }
+        return program;
+    }
+
+    cl::Program OpenCL::buildProgram( const std::string& fileName, const std::string& defines /*= ""*/ )
+    {
+        return OpenCL::buildProgram(fileName, defines, OpenCL::getInstance()->getQueue());
     }
 
 
