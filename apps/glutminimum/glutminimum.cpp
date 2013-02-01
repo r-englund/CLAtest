@@ -66,7 +66,6 @@ int main(int argc, char** argv) {
 
     canvas = new CanvasGLUT("glutminimum", ivec2(256,256));//, GLCanvas::RGBAD);
     canvas->initialize();
-    canvas->initializeGL();
 
     // Create process network
     processorNetwork = new ProcessorNetwork();
