@@ -13,21 +13,23 @@ int main(int argc, char** argv) {
     setenv ("XLIB_SKIP_ARGB_VISUALS", "1", 1);
 #endif
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, IVW_DIR, argc, argv);
-    inviwoApp.initialize();
 
-    #if (QT_VERSION >= 0x040400)
-        QFile styleSheetFile(":/stylesheets/inviwo.qss");
-        styleSheetFile.open(QFile::ReadOnly);
-        QString styleSheet = QLatin1String(styleSheetFile.readAll());
-        inviwoApp.setStyleSheet(styleSheet);
-        styleSheetFile.close();
-    #endif
+#if (QT_VERSION >= 0x040400)
+    QFile styleSheetFile(":/stylesheets/inviwo.qss");
+    styleSheetFile.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(styleSheetFile.readAll());
+    inviwoApp.setStyleSheet(styleSheet);
+    styleSheetFile.close();
+#endif
 
     inviwo::InviwoMainWindow mainWin;
+
+    inviwoApp.initialize();
     inviwoApp.setMainWindow(&mainWin);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
-    mainWin.show();
+
     mainWin.initialize();
+    mainWin.show();
     mainWin.openLastNetwork();
 
     return inviwoApp.exec();

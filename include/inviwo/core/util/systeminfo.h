@@ -2,13 +2,38 @@
 #define IVW_SYSTEMINFO_H
 
 #include <inviwo/core/inviwocoredefine.h>
-#include <sstream>
+#include <vector>
+#include <string>
 
 namespace inviwo {
 
-IVW_CORE_API size_t getTotalRAM();
+struct IVW_CORE_API OSInfo {
+    std::string description;
+    int platform;
+};
 
-IVW_CORE_API void getSystemInfo(std::ostringstream&);
+struct IVW_CORE_API CPUInfo {
+    std::string vendor;
+    std::string model;
+    size_t mhz;
+};
+
+struct IVW_CORE_API MemoryInfo {
+    size_t total; //MB
+    size_t available; //MB
+};
+
+struct IVW_CORE_API DiskInfo {
+    std::string diskName;
+    std::string diskType;
+    size_t total; //MB
+    size_t free; //MB
+};
+
+IVW_CORE_API bool lookupOSInfo(OSInfo&);
+IVW_CORE_API bool lookupCPUInfo(std::vector<CPUInfo>&);
+IVW_CORE_API bool lookupMemoryInfo(MemoryInfo&);
+IVW_CORE_API bool lookupDiskInfo(std::vector<DiskInfo>&);
 
 IVW_CORE_API void printSystemInfo();
 

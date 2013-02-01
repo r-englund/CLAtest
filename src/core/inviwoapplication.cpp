@@ -12,12 +12,19 @@ const std::string InviwoApplication::logSource_ = "InviwoApplication";
 
 InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
                                      : displayName_(displayName), basePath_(basePath)
-{}
+{
+    init(this);
+}
 
 InviwoApplication::~InviwoApplication() {}
 
 void InviwoApplication::initialize() {
-    init(this);
+    printSystemInfo();
+
+    settings_ = new Settings();
+    settings_->initialize();
+    settings_->addProperty(new IntProperty("totalRAM", "Total RAM", 100, 1, 8192));
+
     registerModule(new InviwoCore());
     registerAllModules(this);
     for (size_t i=0; i<modules_.size(); i++)
@@ -27,9 +34,6 @@ void InviwoApplication::initialize() {
     ProcessorFactory::init();
     MetaDataFactory::init();
     RepresentationConverterFactory::init();
-    settings_ = new Settings();
-    settings_->initialize();
-    settings_->addProperty(new IntProperty("totalRAM", "Total RAM", 100, 1, 8192));
 
     initialized_ = true;
 }

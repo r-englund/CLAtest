@@ -6,7 +6,6 @@
 #include <inviwo/qt/widgets/canvasqt.h>
 
 #include <inviwo/core/network/processornetworkevaluator.h>
-#include <inviwo/core/util/systeminfo.h>
 
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -19,6 +18,8 @@ namespace inviwo {
 InviwoMainWindow::InviwoMainWindow() {
     networkEditorView_ = new NetworkEditorView(this);
     setCentralWidget(networkEditorView_);
+
+    consoleWidget_ = new ConsoleWidget(this);
 
     addMenus();
 }
@@ -35,7 +36,6 @@ void InviwoMainWindow::initialize() {
     propertyListWidget_ = new PropertyListWidget(this);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
 
-    consoleWidget_ = new ConsoleWidget(this);
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
 
     // load settings and restore window state
@@ -43,8 +43,6 @@ void InviwoMainWindow::initialize() {
     restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
     restoreState(settings.value("mainWindowState").toByteArray());
     settingsWidget_->loadSettings();
-
-    printSystemInfo();
 
     addMenuActions();
 
