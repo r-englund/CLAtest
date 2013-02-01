@@ -98,10 +98,9 @@ SIGAR_DECLARE(int) sigar_close(sigar_t *sigar)
 #ifndef __linux__ /* linux has a special case */
 SIGAR_DECLARE(sigar_pid_t) sigar_pid_get(sigar_t *sigar)
 {
-    //TODO: No getpid function
-    /*if (!sigar->pid) {
+    if (!sigar->pid) {
         sigar->pid = getpid();
-    }*/
+    }
 
     return sigar->pid;
 }

@@ -27,8 +27,12 @@ int main(int argc, char **argv) {
     unsigned long i;
     sigar_t *sigar;
     sigar_proc_list_t proclist;
+    sigar_pid_t my_pid;
 
     sigar_open(&sigar);
+
+    my_pid = sigar_pid_get(sigar);
+    printf("%li\n\n", (long)my_pid);
 
     status = sigar_proc_list_get(sigar, &proclist);
 

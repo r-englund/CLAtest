@@ -62,7 +62,7 @@ bool lookupMemoryInfo(MemoryInfo& infoRAM){
     bool SUCCESS = (status == SIGAR_OK);
     if(SUCCESS) {
         infoRAM.total = static_cast<size_t>(meminfo.ram);
-        infoRAM.available = static_cast<size_t>(meminfo.free/1000000);
+        infoRAM.available = static_cast<size_t>(meminfo.actual_free/1000000);
     }
 
     sigar_close(sigar);
@@ -102,6 +102,24 @@ bool lookupDiskInfo(std::vector<DiskInfo> &infoDisks){
     return SUCCESS;
 }
 
+bool lookupProcessMemoryInfo(ProcessMemoryInfo& infoProcMem){
+    int status;
+    sigar_t *sigar;
+    sigar_open(&sigar);
+    sigar_proc_mem_t meminfo;
+
+    status = sigar_proc_mem_get(sigar, sigar_pid_get(sigar), &meminfo);
+    bool SUCCESS = (status == SIGAR_OK);
+    if(SUCCESS) {
+        infoProcMem.residentMem = static_cast<size_t>(meminfo.resident/1000);
+        infoProcMem.sharedMem = static_cast<size_t>(meminfo.share/1000);
+        infoProcMem.virtualMem = static_cast<size_t>(meminfo.size/1000);
+    }
+
+    sigar_close(sigar);
+    return SUCCESS;
+}
+
 void printSystemInfo(){
     // Try to retrieve operating system information
     OSInfo infoOS;
@@ -132,7 +150,7 @@ void printSystemInfo(){
         SystemInfoNotFound("(RAM)");
     }
 
-    // Try to retrieve CPU information
+    // Try to retrieve Disk information
     std::vector<DiskInfo> infoDisks;
     if(lookupDiskInfo(infoDisks)){
         for(unsigned long i=0; i<infoDisks.size(); i++){
@@ -142,6 +160,15 @@ void printSystemInfo(){
     else{
         SystemInfoNotFound("(Disk)");
     }
+
+    // Try to retrieve this process memory information
+    /*ProcessMemoryInfo infoProcRAM;
+    if(lookupProcessMemoryInfo(infoProcRAM)){
+        SystemInfo("(Processor Memory) Resident - " << infoProcRAM.residentMem << " MB, Shared - " << infoProcRAM.sharedMem << " MB, Virtual - " << infoProcRAM.virtualMem << " MB");
+    }
+    else{
+        SystemInfoNotFound("(Processor Memory)");
+    }*/
 }
 
 } // namespace

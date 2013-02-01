@@ -773,7 +773,7 @@ static int ptql_branch_init_pid(ptql_parse_branch_t *parsed,
         branch->flags = PTQL_PID_PID;
         if (strEQ(parsed->value, "$$")) {
             //TODO: No getpid function
-            //branch->data.pid = getpid();
+            branch->data.pid = getpid();
         }
         else {
             char *ptr;

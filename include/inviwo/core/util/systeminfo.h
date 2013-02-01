@@ -30,10 +30,17 @@ struct IVW_CORE_API DiskInfo {
     size_t free; //MB
 };
 
+struct IVW_CORE_API ProcessMemoryInfo {
+    size_t residentMem; //MB
+    size_t sharedMem; //MB
+    size_t virtualMem; //MB
+};
+
 IVW_CORE_API bool lookupOSInfo(OSInfo&);
 IVW_CORE_API bool lookupCPUInfo(std::vector<CPUInfo>&);
 IVW_CORE_API bool lookupMemoryInfo(MemoryInfo&);
 IVW_CORE_API bool lookupDiskInfo(std::vector<DiskInfo>&);
+IVW_CORE_API bool lookupProcessMemoryInfo(ProcessMemoryInfo&);
 
 IVW_CORE_API void printSystemInfo();
 
