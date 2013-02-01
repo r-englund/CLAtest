@@ -23,9 +23,8 @@ CanvasGLUT::~CanvasGLUT() {
 }
 
 void CanvasGLUT::initialize() {
-
     glutInitWindowSize(dimensions_.x, dimensions_.y);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     glutCreateWindow(windowTitle_.c_str());
 
     canvasID_ = glutGetWindow();
@@ -41,6 +40,10 @@ void CanvasGLUT::initialize() {
     glutPassiveMotionFunc(mouseMotion);
     
     CanvasGL::initialize();
+}
+
+void CanvasGLUT::initializeGL() {
+    CanvasGL::initializeGL();
 }
 
 void CanvasGLUT::deinitialize() {

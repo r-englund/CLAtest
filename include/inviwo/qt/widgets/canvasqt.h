@@ -29,7 +29,6 @@ public:
     MouseEvent::MouseButton getMouseButton(QMouseEvent* e);
 
 private:
-    static bool glewInitialized_;
     static QGLWidget* sharedWidget_; //For rendering-context sharing
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };

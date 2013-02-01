@@ -12,11 +12,16 @@ public:
     CanvasGL(ivec2 dimensions);
 
     virtual void initialize();
+    virtual void initializeGL();
     virtual void deinitialize();
     virtual void switchContext();
     virtual void repaint();
     virtual void resize(ivec2 size);
     virtual void update();
+
+private:
+    static bool glewInitialized_;
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
 
 };
 

@@ -17,6 +17,7 @@ public:
     ~CanvasGLUT();
 
     virtual void initialize();
+    virtual void initializeGL();
     virtual void deinitialize();
 
     static void display(void);

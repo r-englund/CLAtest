@@ -2,6 +2,9 @@
 
 namespace inviwo {
 
+bool CanvasGL::glewInitialized_ = false;
+const std::string CanvasGL::logSource_ = "CanvasGL";
+
 CanvasGL::CanvasGL(ivec2 dimensions)
     : Canvas(dimensions)
 {}
@@ -15,6 +18,14 @@ void CanvasGL::initialize() {
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_COLOR_MATERIAL);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+}
+
+void CanvasGL::initializeGL() {
+    if (!glewInitialized_) {
+        LogInfo("Initializing GLEW");
+        glewInit();
+        glewInitialized_ = true;
+    }
 }
 
 void CanvasGL::deinitialize() {}
