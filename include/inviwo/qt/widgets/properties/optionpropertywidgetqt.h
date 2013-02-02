@@ -2,7 +2,8 @@
 #define IVW_OPTIONPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QCheckBox>
+
+#include <QComboBox>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
@@ -21,7 +22,8 @@ public:
 
 private:
     OptionProperty* property_;
-    QCheckBox* checkBox_;
+    QComboBox* comboBox_;
+
 
     void generateWidget();
 
