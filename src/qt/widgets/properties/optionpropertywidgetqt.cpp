@@ -9,7 +9,9 @@ OptionPropertyWidgetQt::OptionPropertyWidgetQt(OptionProperty* property) : prope
 
 void OptionPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    comboBox_ = new QComboBox;
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    hLayout->addWidget(comboBox_);
     setLayout(hLayout);
 }
 
