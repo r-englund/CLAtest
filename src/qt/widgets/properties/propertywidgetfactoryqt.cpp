@@ -8,6 +8,7 @@
 #include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperty.h>
 #include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/snapshotproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/texteditorproperty.h>
 #include <inviwo/core/properties/transferproperty.h>
@@ -30,6 +31,7 @@
 #include <inviwo/qt/widgets/properties/intvec3propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intvec4propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/snapshotpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferpropertywidgetqt.h>
@@ -76,6 +78,10 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
     if (dynamic_cast<OptionProperty*>(property))
         return new OptionPropertyWidgetQt(static_cast<OptionProperty*>(property));
+
+    if (dynamic_cast<SnapshotProperty*>(property))
+        return new SnapshotPropertyWidgetQt(static_cast<SnapshotProperty*>(property));
+
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
     if (dynamic_cast<TextEditorProperty*>(property))

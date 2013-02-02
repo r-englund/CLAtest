@@ -5,6 +5,7 @@
 #include <inviwo/core/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/util/canvas.h>
+#include "inviwo/core/properties/snapshotproperty.h"
 
 namespace inviwo {
 
@@ -26,6 +27,7 @@ namespace inviwo {
 
     protected:
         ImagePort inport_;
+        SnapshotProperty snapshot_;
 
     private:
         Canvas* canvas_;

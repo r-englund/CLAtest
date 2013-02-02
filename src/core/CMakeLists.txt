@@ -70,6 +70,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/scalarproperties.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/snapshotproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
@@ -167,6 +168,7 @@ set(SOURCE_FILES
     properties/propertywidget.cpp
     properties/propertywidgetfactory.cpp
     properties/scalarproperties.cpp
+    properties/snapshotproperty.cpp
     properties/stringproperty.cpp
     properties/texteditorproperty.cpp
     properties/transferproperty.cpp

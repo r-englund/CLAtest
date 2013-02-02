@@ -30,6 +30,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetfactoryqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/snapshotpropertywidgetqt.h
     #${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/shadewidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/stringpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/texteditorwidgetqt.h
@@ -66,6 +67,7 @@ set(SOURCE_FILES
     properties/optionpropertywidgetqt.cpp
     properties/propertywidgetfactoryqt.cpp
     properties/propertywidgetqt.cpp
+    properties/snapshotpropertywidgetqt.cpp
     #properties/shadewidgetqt.cpp
     properties/stringpropertywidgetqt.cpp
     properties/texteditorwidgetqt.cpp
