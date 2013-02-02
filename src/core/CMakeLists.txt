@@ -73,6 +73,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
@@ -167,6 +168,7 @@ set(SOURCE_FILES
     properties/propertywidgetfactory.cpp
     properties/scalarproperties.cpp
     properties/stringproperty.cpp
+    properties/texteditorproperty.cpp
     properties/transferproperty.cpp
     properties/vectorproperties.cpp
     properties/linkevaluator.cpp	
