@@ -4,7 +4,6 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QLineEdit>
 
-
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
 #include <inviwo/core/properties/stringproperty.h>
