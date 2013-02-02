@@ -13,7 +13,7 @@ public:
 	ButtonProperty(std::string identifier, std::string displayName);
     
 
-    //TODO: Only member functions zero (void) parameter is allowed now.
+    //TODO: Only member functions with zero (void) arguments is allowed now.
     // Example usage
     // myButton_.registerClassMemberFunction(this, &MyButton::doSomethingFunction);
     // it is possible to register more than one functions
