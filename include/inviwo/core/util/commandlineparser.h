@@ -4,7 +4,7 @@
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/inviwo.h>
 
-#include <tclap/CmdLine.h>
+//#include <tclap/CmdLine.h>
 
 namespace inviwo {
 
@@ -27,7 +27,7 @@ public:
     virtual void deinitialize();
 
     void parse(int argc, char** argv) {
-        cmd_.parse(argc, argv);
+        //cmd_.parse(argc, argv);
     }
 
     void setArgc(int argc) {
@@ -44,7 +44,7 @@ public:
     //virtual void deserialize(IvwDeserializer& d);
 
 protected:
-    TCLAP::CmdLine cmd_;
+    //TCLAP::CmdLine cmd_;
 
 private:
     int argc_;

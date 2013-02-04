@@ -3,7 +3,9 @@
 namespace inviwo {
 
     CommandLineParser::CommandLineParser()
-        : cmd_("Inviwo description...", ' ', "0.0.0") {}
+        {
+    //cmd_("Inviwo description...", ' ', "0.0.0");
+    }
 
 CommandLineParser::~CommandLineParser() {}
 
