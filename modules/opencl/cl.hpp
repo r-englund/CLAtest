@@ -458,7 +458,7 @@ static inline cl_int errHandler (cl_int err, const char * errStr = NULL)
 /**
  * Deprecated APIs for 1.2
  */
-#if defined(CL_USE_DEPRECATED_OPENCL_1_1_APIS) || ( (defined(CL_VERSION_1_1)||defined(CL_VERSION_1_1)) && !defined(CL_VERSION_1_2)) 
+#if defined(CL_USE_DEPRECATED_OPENCL_1_1_APIS) || ( (defined(CL_VERSION_1_0)||defined(CL_VERSION_1_1)) && !defined(CL_VERSION_1_2)) 
 #define __ENQUEUE_MARKER_ERR                __ERR_STR(clEnqueueMarker)
 #define __ENQUEUE_WAIT_FOR_EVENTS_ERR       __ERR_STR(clEnqueueWaitForEvents)
 #define __ENQUEUE_BARRIER_ERR               __ERR_STR(clEnqueueBarrier)
