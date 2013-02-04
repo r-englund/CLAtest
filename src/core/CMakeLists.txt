@@ -91,6 +91,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/callback.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
@@ -186,6 +187,7 @@ set(SOURCE_FILES
     util/assertion.cpp
     util/canvas.cpp
     util/callback.cpp
+    util/commandlineparser.cpp
     util/exception.cpp
     util/fileobserver.cpp
     util/logdistributor.cpp
