@@ -11,6 +11,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/imageclconverter.h
     ${IVW_MODULE_DIR}/opencl/imageclresizer.h
 	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
+	${IVW_MODULE_DIR}/opencl/openclinfo.h
     ${IVW_MODULE_DIR}/opencl/openclmodule.h
     ${IVW_MODULE_DIR}/opencl/volumecl.h
     ${IVW_MODULE_DIR}/opencl/volumeclconverter.h

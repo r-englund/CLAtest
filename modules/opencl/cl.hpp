@@ -252,7 +252,7 @@ class Memory;
 /**
  * Deprecated APIs for 1.2
  */
-#if defined(CL_USE_DEPRECATED_OPENCL_1_1_APIS) || (defined(CL_VERSION_1_1) && !defined(CL_VERSION_1_2)) 
+#if defined(CL_USE_DEPRECATED_OPENCL_1_1_APIS) || ((defined(CL_VERSION_1_0) || defined(CL_VERSION_1_1)) && !defined(CL_VERSION_1_2)) 
 #define __INIT_CL_EXT_FCN_PTR(name) \
     if(!pfn_##name) { \
         pfn_##name = (PFN_##name) \
