@@ -47,7 +47,8 @@ public:
 
     template <typename T>
     void addMemberFunction(T* o, void (T::*m)()) {
-        callBackList_.push_back(new MemberFunctionCallBack<T>(o, m)); 
+        callBackList_.clear();
+        callBackList_.push_back(new MemberFunctionCallBack<T>(o, m));
     }
 
 private:
