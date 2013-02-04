@@ -7,7 +7,9 @@
 #include <sstream>
 #include <stdio.h>
 #include <fstream>
-
+#if !(WIN32 || __APPLE__) // LINUX
+#include <GL/glx.h> // glXCurrentContext()
+#endif
 
 #ifdef WIN32
 #define OPEN_FILE(a,b,c) fopen_s(&a, b, c);
@@ -40,9 +42,10 @@ namespace cl {
         case CL_IMAGE_FORMAT_NOT_SUPPORTED: error = "CL_IMAGE_FORMAT_NOT_SUPPORTED"; break; //                                  -10
         case CL_BUILD_PROGRAM_FAILURE: error = "CL_BUILD_PROGRAM_FAILURE"; break; //                                            -11
         case CL_MAP_FAILURE: error = "CL_MAP_FAILURE"; break; //                                                                -12
+#if defined(CL_VERSION_1_1)
         case CL_MISALIGNED_SUB_BUFFER_OFFSET: error = "CL_MISALIGNED_SUB_BUFFER_OFFSET"; break; //                              -13
         case CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST: error = "CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST"; break; //    -14
-
+#endif
         case CL_INVALID_VALUE: error = "CL_INVALID_VALUE"; break; //                                                            -30
         case CL_INVALID_DEVICE_TYPE: error = "CL_INVALID_DEVICE_TYPE"; break; //                                                -31
         case CL_INVALID_PLATFORM: error = "CL_INVALID_PLATFORM"; break; //                                                      -32
@@ -77,8 +80,10 @@ namespace cl {
         case CL_INVALID_BUFFER_SIZE: error = "CL_INVALID_BUFFER_SIZE"; break; //                                                -61
         case CL_INVALID_MIP_LEVEL: error = "CL_INVALID_MIP_LEVEL"; break; //                                                    -62
         case CL_INVALID_GLOBAL_WORK_SIZE: error = "CL_INVALID_GLOBAL_WORK_SIZE"; break; //                                      -63
+#if defined(CL_VERSION_1_1)
         case CL_INVALID_PROPERTY: error = "CL_INVALID_PROPERTY"; break; //                                                      -64
-        default: error = "unknown error"; break;
+#endif
+        default: error = "unknown OpenCL error"; break;
         }
         return error;
     }
