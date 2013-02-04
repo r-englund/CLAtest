@@ -83,6 +83,225 @@ namespace cl {
     }
 }
 
+// Copied macros __PARAM_NAME_INFO_X_X from cl.hpp 
+// but modified them to only contain cl_device_info.
+// Future versions just need to add the macro,
+// make sure that template function deviceInfoToString 
+// is updated, and call the macro in OpenCL::printDeviceInfo(const cl::Device& device)
+#define STRING_CLASS std::string
+
+#define __DEVICE_INFO_1_0(F) \
+    F(cl_device_info, CL_DEVICE_TYPE, cl_device_type) \
+    F(cl_device_info, CL_DEVICE_NAME, STRING_CLASS) \
+    F(cl_device_info, CL_DEVICE_VENDOR, STRING_CLASS) \
+    F(cl_device_info, CL_DRIVER_VERSION, STRING_CLASS) \
+    F(cl_device_info, CL_DEVICE_PROFILE, STRING_CLASS) \
+    F(cl_device_info, CL_DEVICE_VERSION, STRING_CLASS) \
+    F(cl_device_info, CL_DEVICE_EXTENSIONS, STRING_CLASS) \
+    F(cl_device_info, CL_DEVICE_MAX_COMPUTE_UNITS, cl_uint) \
+    F(cl_device_info, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, cl_uint) \
+    F(cl_device_info, CL_DEVICE_MAX_WORK_GROUP_SIZE, ::size_t) \
+    F(cl_device_info, CL_DEVICE_MAX_WORK_ITEM_SIZES, VECTOR_CLASS< ::size_t>) \
+    F(cl_device_info, CL_DEVICE_PREFERRED_VECTOR_WIDTH_CHAR, cl_uint) \
+    F(cl_device_info, CL_DEVICE_PREFERRED_VECTOR_WIDTH_SHORT, cl_uint) \
+    F(cl_device_info, CL_DEVICE_PREFERRED_VECTOR_WIDTH_INT, cl_uint) \
+    F(cl_device_info, CL_DEVICE_PREFERRED_VECTOR_WIDTH_LONG, cl_uint) \
+    F(cl_device_info, CL_DEVICE_PREFERRED_VECTOR_WIDTH_FLOAT, cl_uint) \
+    F(cl_device_info, CL_DEVICE_PREFERRED_VECTOR_WIDTH_DOUBLE, cl_uint) \
+    F(cl_device_info, CL_DEVICE_MAX_CLOCK_FREQUENCY, cl_uint) \
+    F(cl_device_info, CL_DEVICE_ADDRESS_BITS, cl_uint) \
+    F(cl_device_info, CL_DEVICE_MAX_READ_IMAGE_ARGS, cl_uint) \
+    F(cl_device_info, CL_DEVICE_MAX_WRITE_IMAGE_ARGS, cl_uint) \
+    F(cl_device_info, CL_DEVICE_MAX_MEM_ALLOC_SIZE, cl_ulong) \
+    F(cl_device_info, CL_DEVICE_IMAGE2D_MAX_WIDTH, ::size_t) \
+    F(cl_device_info, CL_DEVICE_IMAGE2D_MAX_HEIGHT, ::size_t) \
+    F(cl_device_info, CL_DEVICE_IMAGE3D_MAX_WIDTH, ::size_t) \
+    F(cl_device_info, CL_DEVICE_IMAGE3D_MAX_HEIGHT, ::size_t) \
+    F(cl_device_info, CL_DEVICE_IMAGE3D_MAX_DEPTH, ::size_t) \
+    F(cl_device_info, CL_DEVICE_IMAGE_SUPPORT, cl_bool) \
+    F(cl_device_info, CL_DEVICE_MAX_PARAMETER_SIZE, ::size_t) \
+    F(cl_device_info, CL_DEVICE_MAX_SAMPLERS, cl_uint) \
+    F(cl_device_info, CL_DEVICE_MEM_BASE_ADDR_ALIGN, cl_uint) \
+    F(cl_device_info, CL_DEVICE_MIN_DATA_TYPE_ALIGN_SIZE, cl_uint) \
+    F(cl_device_info, CL_DEVICE_SINGLE_FP_CONFIG, cl_device_fp_config) \
+    F(cl_device_info, CL_DEVICE_GLOBAL_MEM_CACHE_TYPE, cl_device_mem_cache_type) \
+    F(cl_device_info, CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE, cl_uint)\
+    F(cl_device_info, CL_DEVICE_GLOBAL_MEM_CACHE_SIZE, cl_ulong) \
+    F(cl_device_info, CL_DEVICE_GLOBAL_MEM_SIZE, cl_ulong) \
+    F(cl_device_info, CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE, cl_ulong) \
+    F(cl_device_info, CL_DEVICE_MAX_CONSTANT_ARGS, cl_uint) \
+    F(cl_device_info, CL_DEVICE_LOCAL_MEM_TYPE, cl_device_local_mem_type) \
+    F(cl_device_info, CL_DEVICE_LOCAL_MEM_SIZE, cl_ulong) \
+    F(cl_device_info, CL_DEVICE_ERROR_CORRECTION_SUPPORT, cl_bool) \
+    F(cl_device_info, CL_DEVICE_PROFILING_TIMER_RESOLUTION, ::size_t) \
+    F(cl_device_info, CL_DEVICE_ENDIAN_LITTLE, cl_bool) \
+    F(cl_device_info, CL_DEVICE_AVAILABLE, cl_bool) \
+    F(cl_device_info, CL_DEVICE_COMPILER_AVAILABLE, cl_bool) \
+    F(cl_device_info, CL_DEVICE_EXECUTION_CAPABILITIES, cl_device_exec_capabilities) \
+    F(cl_device_info, CL_DEVICE_QUEUE_PROPERTIES, cl_command_queue_properties) \
+    F(cl_device_info, CL_DEVICE_PLATFORM, cl_platform_id) 
+
+#if defined(CL_VERSION_1_1)
+#define __DEVICE_INFO_1_1(F) \
+    F(cl_device_info, CL_DEVICE_PREFERRED_VECTOR_WIDTH_HALF, cl_uint) \
+    F(cl_device_info, CL_DEVICE_NATIVE_VECTOR_WIDTH_CHAR, cl_uint) \
+    F(cl_device_info, CL_DEVICE_NATIVE_VECTOR_WIDTH_SHORT, cl_uint) \
+    F(cl_device_info, CL_DEVICE_NATIVE_VECTOR_WIDTH_INT, cl_uint) \
+    F(cl_device_info, CL_DEVICE_NATIVE_VECTOR_WIDTH_LONG, cl_uint) \
+    F(cl_device_info, CL_DEVICE_NATIVE_VECTOR_WIDTH_FLOAT, cl_uint) \
+    F(cl_device_info, CL_DEVICE_NATIVE_VECTOR_WIDTH_DOUBLE, cl_uint) \
+    F(cl_device_info, CL_DEVICE_NATIVE_VECTOR_WIDTH_HALF, cl_uint) \
+    F(cl_device_info, CL_DEVICE_DOUBLE_FP_CONFIG, cl_device_fp_config) \
+    F(cl_device_info, CL_DEVICE_HALF_FP_CONFIG, cl_device_fp_config) \
+    F(cl_device_info, CL_DEVICE_HOST_UNIFIED_MEMORY, cl_bool) \
+    F(cl_device_info, CL_DEVICE_OPENCL_C_VERSION, STRING_CLASS) 
+#endif
+#if defined(CL_VERSION_1_2)
+#define __DEVICE_INFO_1_2(F) \
+    F(cl_device_info, CL_DEVICE_PARENT_DEVICE, cl_device_id) \
+    F(cl_device_info, CL_DEVICE_PARTITION_PROPERTIES, VECTOR_CLASS<cl_device_partition_property>) \
+    F(cl_device_info, CL_DEVICE_PARTITION_TYPE, VECTOR_CLASS<cl_device_partition_property>)  \
+    F(cl_device_info, CL_DEVICE_REFERENCE_COUNT, cl_uint) \
+    F(cl_device_info, CL_DEVICE_PREFERRED_INTEROP_USER_SYNC, cl_bool) \
+    F(cl_device_info, CL_DEVICE_PARTITION_AFFINITY_DOMAIN, cl_device_affinity_domain) \
+    F(cl_device_info, CL_DEVICE_BUILT_IN_KERNELS, STRING_CLASS)
+#endif // #if defined(CL_VERSION_1_2)
+
+ /** \brief Return string representation of  device info and corresponding value
+  * @note Added 
+  * @param cl_device_info info OpenCL device info identifier.
+  * @param const T & value 
+  * @param bool is_cl_bool Necessary since cl_bool is a cl_uint
+  * @return string representation of device info and corresponding value
+  */
+template< typename T>
+std::string deviceInfoToString(cl_device_info info, const T& value, bool is_cl_bool) { 
+    std::ostringstream stream;
+    stream << std::boolalpha; // bool will print true/false
+    switch(info) {
+        case CL_DEVICE_TYPE: 
+            switch(value) {
+                case CL_DEVICE_TYPE_CPU:  stream << "CPU";  break;
+                case CL_DEVICE_TYPE_GPU:  stream << "GPU";  break;
+                case CL_DEVICE_TYPE_ACCELERATOR:  stream << "accelerator";  break;
+            }
+            break;
+        case CL_DEVICE_GLOBAL_MEM_CACHE_TYPE:
+            stream << "read only cache: " << static_cast<bool>((value & CL_READ_ONLY_CACHE) != 0) << ", ";
+            stream << "read-write cache: " << static_cast<bool>((value & CL_READ_WRITE_CACHE) != 0);
+            break;
+        case CL_DEVICE_LOCAL_MEM_TYPE:
+            switch(value) {
+                case CL_LOCAL: stream << "local"; break;
+                case CL_GLOBAL: stream << "global"; break;
+                case CL_NONE: stream << "none"; break;
+            }
+            break;
+        case CL_DEVICE_EXECUTION_CAPABILITIES:
+            stream << "kernel execution: " << static_cast<bool>((value & CL_EXEC_KERNEL) != 0) << ", ";
+            stream << "native kernel execution: " << static_cast<bool>((value & CL_EXEC_NATIVE_KERNEL) != 0);
+            break;
+        case CL_DEVICE_QUEUE_PROPERTIES:
+            stream << "out of order execution: " << static_cast<bool>((value & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE) != 0) << ", ";
+            stream << "profiling: " << static_cast<bool>((value & CL_QUEUE_PROFILING_ENABLE) != 0);
+            break;
+#if defined(CL_VERSION_1_1)
+        case CL_DEVICE_SINGLE_FP_CONFIG: 
+        case CL_DEVICE_DOUBLE_FP_CONFIG:
+            stream << "denorms: " << static_cast<bool>((value & CL_FP_DENORM) != 0) << ", ";
+            stream << "INF and quiet NaN: " << static_cast<bool>((value & CL_FP_INF_NAN) != 0) << ", ";
+            stream << "round to nearest: " << static_cast<bool>((value & CL_FP_ROUND_TO_NEAREST) != 0) << ", ";
+            stream << "round to zero: " << static_cast<bool>((value & CL_FP_ROUND_TO_ZERO) != 0) << ", ";
+            stream << "round to inf: " << static_cast<bool>((value & CL_FP_ROUND_TO_INF) != 0) << ", ";
+            stream << "IEEE754-2008 fused multiply-add: " << static_cast<bool>((value & CL_FP_FMA) != 0) << ", ";
+            //stream << "IEEE754 correct divide and sqrt round: " << static_cast<bool>(value & CL_FP_CORRECTLY_ROUNDED_DIVIDE_SQRT!= 0) << ", ";
+            stream << "software implementation: " << static_cast<bool>((value & CL_FP_SOFT_FLOAT) != 0);
+            break;
+#endif
+#if defined(CL_VERSION_1_2)
+        case CL_DEVICE_PARTITION_AFFINITY_DOMAIN: 
+            stream << "numa: " << static_cast<bool>((value & CL_DEVICE_AFFINITY_DOMAIN_NUMA) != 0) << ", ";
+            stream << "L1 cache: " << static_cast<bool>((value & CL_DEVICE_AFFINITY_DOMAIN_L1_CACHE) != 0) << ", ";
+            stream << "L2 cache: " << static_cast<bool>((value & CL_DEVICE_AFFINITY_DOMAIN_L2_CACHE) != 0) << ", ";
+            stream << "L3 cache: " << static_cast<bool>((value & CL_DEVICE_AFFINITY_DOMAIN_L3_CACHE) != 0) << ", ";
+            stream << "L4 cache: " << static_cast<bool>((value & CL_DEVICE_AFFINITY_DOMAIN_L4_CACHE) != 0) << ", ";
+            stream << "next partitionable: " << static_cast<bool>((value & CL_DEVICE_AFFINITY_DOMAIN_NEXT_PARTITIONABLE) != 0);
+            break;
+#endif
+        default: 
+            if(is_cl_bool) {
+                stream << static_cast<bool>(value != 0);
+            } else {
+                stream << value;
+            }
+            
+    }    
+    return stream.str();
+}
+template<>
+std::string deviceInfoToString(cl_device_info, const std::string& value, bool) {
+    return value;
+}
+template<typename T>
+std::string deviceInfoToString(cl_device_info info, const std::vector<T>& value, bool) { 
+    std::ostringstream stream;
+    if(info == CL_DEVICE_MAX_WORK_ITEM_SIZES) {
+        stream << "(";
+        for(size_t i = 0; i < value.size()-1; ++i) {
+            stream << value[i] << ", ";
+        }
+        stream << "("<< value.back() << ")";
+    }
+#if defined(CL_VERSION_1_2)
+    if(info == CL_DEVICE_PARTITION_PROPERTIES || info == CL_DEVICE_PARTITION_TYPE) {
+        for(size_t i = 0; i < value.size(); ++i) {
+            switch(value[i]) {
+                case CL_DEVICE_PARTITION_EQUALLY: stream << "partition equally"; break;
+                case CL_DEVICE_PARTITION_BY_COUNTS: stream << "partition by counts"; break;
+                case CL_DEVICE_PARTITION_BY_COUNTS_LIST_END: stream << "partition by counts list end"; break;
+                case CL_DEVICE_PARTITION_BY_AFFINITY_DOMAIN: stream << "partition by affinity domain"; break;
+            }
+            if(i < value.size()-1)       
+                stream << ", ";
+        }
+    }
+#endif
+#if defined(USE_CL_DEVICE_FISSION)
+    if(info == CL_DEVICE_AFFINITY_DOMAINS_EXT || info == CL_DEVICE_PARTITION_TYPES_EXT || Info == CL_DEVICE_PARTITION_STYLE_EXT) {
+        for(size_t i = 0; i < value.size(); ++i) {
+            switch(value[i]) {
+                case CL_DEVICE_PARTITION_EQUALLY_EXT: stream << "partition equally"; break;
+                case CL_DEVICE_PARTITION_BY_COUNTS_EXT: stream << "partition by counts"; break;
+                case CL_DEVICE_PARTITION_BY_NAMES_EXT: stream << "partition by names"; break;
+                case CL_DEVICE_PARTITION_BY_AFFINITY_DOMAIN_EXT: stream << "partition by affinity domain"; break;
+                case CL_PROPERTIES_LIST_END_EXT: stream << "list end"; break;
+                case CL_PARTITION_BY_COUNTS_LIST_END_EXT: stream << "partition by counts list end"; break;
+                case CL_PARTITION_BY_NAMES_LIST_END_EXT: stream << "partition by names list end"; break;
+            }
+            if(i < value.size()-1)       
+                stream << ", ";
+        }
+    }
+#endif // USE_CL_DEVICE_FISSION
+
+    return stream.str();
+}
+// We do not print platform info so far.
+template<>
+std::string deviceInfoToString(cl_device_info, const cl_platform_id& value, bool) { 
+    return "";
+}
+
+#define __CL_PRINT_DEVICE_INFO(token, param_name, T) \
+    if(std::string(#T).compare("cl_bool") == 0) { \
+        LogInfoS("OpenCL", #param_name << ": " << deviceInfoToString(param_name, device.getInfo<param_name>(), true)) \
+    } else {                                        \
+        LogInfoS("OpenCL", #param_name << ": " << deviceInfoToString(param_name, device.getInfo<param_name>(), false)) \
+    } 
+        
+
+
+
 
 namespace inviwo {
 
@@ -164,133 +383,24 @@ namespace inviwo {
 
     void OpenCL::printDeviceInfo(const cl::Device& device) {
         
-        std::ostringstream stream;
-        stream << std::boolalpha; // Allow bool to print true/false
         try
         {
-            stream << "OpenCL device info: " << std::endl;
-            stream << "Name: " << device.getInfo<CL_DEVICE_NAME>() << std::endl;
-            stream << "Vendor: " << device.getInfo<CL_DEVICE_VENDOR>() << std::endl;
-            stream << "Profile: " << device.getInfo<CL_DEVICE_PROFILE>() << std::endl;
-            stream << "Device version: " << device.getInfo<CL_DEVICE_VERSION>() << std::endl;
-            stream << "Driver version: " << device.getInfo<CL_DRIVER_VERSION>() << std::endl;
-            stream << "OpenCL C version: " << device.getInfo<CL_DEVICE_OPENCL_C_VERSION>() << std::endl;
-            stream << "Extensions: " << device.getInfo<CL_DEVICE_EXTENSIONS>() << std::endl;
-            stream << "Max compute units: " << device.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>() << std::endl;
-            cl::size_t<3> maxWorkItemSizes;
-            device.getInfo(CL_DEVICE_MAX_WORK_ITEM_SIZES, &maxWorkItemSizes);
-            stream << "Max work item sizes: (";
-            for(int i = 0; i < 2; ++i) {
-                stream << maxWorkItemSizes[i] << ", ";
-            }
-            stream << maxWorkItemSizes[2] << ")" << std::endl;
-
-            stream << "Preffered vector width (char): " << device.getInfo<CL_DEVICE_PREFERRED_VECTOR_WIDTH_CHAR>() << std::endl;
-            stream << "Preffered vector width (short): " << device.getInfo<CL_DEVICE_PREFERRED_VECTOR_WIDTH_SHORT>() << std::endl;
-            stream << "Preffered vector width (int): " << device.getInfo<CL_DEVICE_PREFERRED_VECTOR_WIDTH_INT>() << std::endl;
-            stream << "Preffered vector width (long): " << device.getInfo<CL_DEVICE_PREFERRED_VECTOR_WIDTH_LONG>() << std::endl;
-            stream << "Preffered vector width (float): " << device.getInfo<CL_DEVICE_PREFERRED_VECTOR_WIDTH_FLOAT>() << std::endl;
-            stream << "Preffered vector width (double): " << device.getInfo<CL_DEVICE_PREFERRED_VECTOR_WIDTH_DOUBLE>() << std::endl;
-            stream << "Preffered vector width (half): " << device.getInfo<CL_DEVICE_PREFERRED_VECTOR_WIDTH_HALF>() << std::endl;
-            stream << "Preffered native vector width (char): " << device.getInfo<CL_DEVICE_NATIVE_VECTOR_WIDTH_CHAR>() << std::endl;
-            stream << "Preffered native vector width (short): " << device.getInfo<CL_DEVICE_NATIVE_VECTOR_WIDTH_SHORT>() << std::endl;
-            stream << "Preffered native vector width (int): " << device.getInfo<CL_DEVICE_NATIVE_VECTOR_WIDTH_INT>() << std::endl;
-            stream << "Preffered native vector width (long): " << device.getInfo<CL_DEVICE_NATIVE_VECTOR_WIDTH_LONG>() << std::endl;
-            stream << "Preffered native vector width (float): " << device.getInfo<CL_DEVICE_NATIVE_VECTOR_WIDTH_FLOAT>() << std::endl;
-            stream << "Preffered native vector width (double): " << device.getInfo<CL_DEVICE_NATIVE_VECTOR_WIDTH_DOUBLE>() << std::endl;
-            stream << "Preffered native vector width (half): " << device.getInfo<CL_DEVICE_NATIVE_VECTOR_WIDTH_HALF>() << std::endl;
-            stream << "Max clock frequency: " << device.getInfo<CL_DEVICE_MAX_CLOCK_FREQUENCY>() << std::endl;
-            stream << "Address bits: " << device.getInfo<CL_DEVICE_ADDRESS_BITS>() << std::endl;
-            stream << "Max alloc size: " << device.getInfo<CL_DEVICE_MAX_MEM_ALLOC_SIZE>() << std::endl;
-            stream << "Supports image: " << static_cast<bool>(device.getInfo<CL_DEVICE_IMAGE_SUPPORT>() != 0) << std::endl;
-            stream << "Max number of simultaneous image objects that can be read by a kernel: " << device.getInfo<CL_DEVICE_MAX_READ_IMAGE_ARGS>() << std::endl;
-            stream << "Max number of simultaneous image objects that can be written by a kernel: " << device.getInfo<CL_DEVICE_MAX_WRITE_IMAGE_ARGS>() << std::endl;
-           
-            stream << "Max 2D image (width, height): (" << device.getInfo<CL_DEVICE_IMAGE2D_MAX_WIDTH>() << ", " << device.getInfo<CL_DEVICE_IMAGE2D_MAX_HEIGHT>() << ")" << std::endl;
-            stream << "Max 3D image (width, height, depth): (" << device.getInfo<CL_DEVICE_IMAGE3D_MAX_WIDTH>() << ", " << device.getInfo<CL_DEVICE_IMAGE3D_MAX_HEIGHT>() << ", " << device.getInfo<CL_DEVICE_IMAGE3D_MAX_DEPTH>() << ")" << std::endl;
-            #if defined(CL_VERSION_1_2) 
-            stream << "Max 1D image size: " << device.getInfo<CL_DEVICE_IMAGE_MAX_BUFFER_SIZE>() << std::endl;
-            stream << "Max number of images in a 1D or 2D image array: " << device.getInfo<CL_DEVICE_IMAGE_MAX_ARRAY_SIZE>() << std::endl;
-            #endif
-            stream << "Max samplers: " << device.getInfo<CL_DEVICE_MAX_SAMPLERS>() << std::endl;
-            stream << "Max kernel arguments size (bytes): " << device.getInfo<CL_DEVICE_MAX_PARAMETER_SIZE>() << std::endl;
-            stream << "Memory base address align: " << device.getInfo<CL_DEVICE_MEM_BASE_ADDR_ALIGN>() << std::endl;
-            // Floating point support
-            cl_device_fp_config fpConfig;
-            device.getInfo(CL_DEVICE_SINGLE_FP_CONFIG, &fpConfig);
-            stream << "Supports float denorms: " << static_cast<bool>((fpConfig & CL_FP_DENORM) != 0) << std::endl;
-            stream << "Supports float INF and quiet NaN: " << static_cast<bool>((fpConfig & CL_FP_INF_NAN) != 0) << std::endl;
-            stream << "Supports float round to nearest: " << static_cast<bool>((fpConfig & CL_FP_ROUND_TO_NEAREST) != 0) << std::endl;
-            stream << "Supports float round to zero: " << static_cast<bool>((fpConfig & CL_FP_ROUND_TO_ZERO) != 0) << std::endl;
-            stream << "Supports float round to inf: " << static_cast<bool>((fpConfig & CL_FP_ROUND_TO_INF) != 0) << std::endl;
-            stream << "Supports float IEEE754-2008 fused multiply-add: " << static_cast<bool>((fpConfig & CL_FP_FMA) != 0) << std::endl;
-            //stream << "Supports float IEEE754 correct divide and sqrt round: " << static_cast<bool>(fpConfig & CL_FP_CORRECTLY_ROUNDED_DIVIDE_SQRT!= 0) << std::endl;
-            stream << "Software float implementation: " << static_cast<bool>((fpConfig & CL_FP_SOFT_FLOAT) != 0) << std::endl;
-            
-            device.getInfo(CL_DEVICE_DOUBLE_FP_CONFIG, &fpConfig);
-            stream << "Supports double denorms: " << static_cast<bool>((fpConfig & CL_FP_DENORM) != 0) << std::endl;
-            stream << "Supports double INF and quiet NaN: " << static_cast<bool>((fpConfig & CL_FP_INF_NAN) != 0) << std::endl;
-            stream << "Supports double round to nearest: " << static_cast<bool>((fpConfig & CL_FP_ROUND_TO_NEAREST) != 0) << std::endl;
-            stream << "Supports double round to zero: " << static_cast<bool>((fpConfig & CL_FP_ROUND_TO_ZERO) != 0) << std::endl;
-            stream << "Supports double round to inf: " << static_cast<bool>((fpConfig & CL_FP_ROUND_TO_INF) != 0) << std::endl;
-            stream << "Supports double IEEE754-2008 fused multiply-add: " << static_cast<bool>((fpConfig & CL_FP_FMA) != 0) << std::endl;
-            //stream << "Supports double IEEE754 correct divide and sqrt round: " << static_cast<bool>(fpConfig & CL_FP_CORRECTLY_ROUNDED_DIVIDE_SQRT != 0) << std::endl;
-            stream << "Software double implementation: " << static_cast<bool>((fpConfig & CL_FP_SOFT_FLOAT) != 0) << std::endl;
-            // Cache
-            cl_device_mem_cache_type cacheType;
-            device.getInfo(CL_DEVICE_GLOBAL_MEM_CACHE_TYPE, &cacheType);
-            stream << "Supports read only cache: " << static_cast<bool>((cacheType & CL_READ_ONLY_CACHE) != 0) << std::endl;
-            stream << "Supports read-write cache: " << static_cast<bool>((cacheType & CL_READ_WRITE_CACHE) != 0) << std::endl;
-            stream << "Size of global memory cache line in bytes: " << device.getInfo<CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE>() << std::endl;
-            stream << "Size of global memory cache in bytes: " << device.getInfo<CL_DEVICE_GLOBAL_MEM_CACHE_SIZE>() << std::endl;
-            stream << "Size of global device memory in bytes: " << device.getInfo<CL_DEVICE_GLOBAL_MEM_SIZE>() << std::endl;
-            stream << "Max size in bytes of a constant buffer allocation: " << device.getInfo<CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE>() << std::endl;
-            
-            stream << "Max number of arguments declared with the __constant qualifier in a kernel: " << device.getInfo<CL_DEVICE_MAX_CONSTANT_ARGS>() << std::endl;
-            
-            // Local memory
-            cl_device_local_mem_type lmemType;
-            device.getInfo(CL_DEVICE_GLOBAL_MEM_CACHE_TYPE, &lmemType);
-            stream << "Supports dedicated local memory: " << static_cast<bool>((lmemType & CL_LOCAL) != 0) << std::endl;
-            stream << "Supports local memory: " << (lmemType != CL_NONE) << std::endl;
-            stream << "Local memory size in bytes: " << device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>() << std::endl;
-
-
-            stream << "Supports error correction for memory: " << static_cast<bool>(device.getInfo<CL_DEVICE_ERROR_CORRECTION_SUPPORT>() != 0) << std::endl;
-            stream << "Unified memory subsystem: " << static_cast<bool>(device.getInfo<CL_DEVICE_HOST_UNIFIED_MEMORY>() != 0) << std::endl;
-            stream << "Profiling timer resolution (nanoseconds): " << device.getInfo<CL_DEVICE_PROFILING_TIMER_RESOLUTION>() << std::endl;
-            stream << "Little endian: " << static_cast<bool>(device.getInfo<CL_DEVICE_ENDIAN_LITTLE>() != 0) << std::endl;
-            stream << "Device available: " << static_cast<bool>(device.getInfo<CL_DEVICE_AVAILABLE>() != 0) << std::endl;
-            stream << "Compiler available: " << static_cast<bool>(device.getInfo<CL_DEVICE_COMPILER_AVAILABLE>() != 0) << std::endl;
-            #if defined(CL_VERSION_1_2) 
-            stream << "Linker available: " << static_cast<bool>(device.getInfo<CL_DEVICE_LINKER_AVAILABLE>() != 0) << std::endl;
-            #endif
-            // Device execution
-            cl_device_exec_capabilities execCap;
-            device.getInfo(CL_DEVICE_EXECUTION_CAPABILITIES, &execCap);
-            stream << "Supports kernel execution: " << static_cast<bool>((execCap & CL_EXEC_KERNEL) != 0) << std::endl;
-            stream << "Supports native kernel execution: " << static_cast<bool>((execCap & CL_EXEC_NATIVE_KERNEL) != 0) << std::endl;
-           
-            
-            // Command queue
-            cl_command_queue_properties commandQueueProperties;
-            device.getInfo(CL_DEVICE_QUEUE_PROPERTIES, &commandQueueProperties);
-            stream << "Supports out of order execution: " << static_cast<bool>((commandQueueProperties & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE) != 0) << std::endl;
-            stream << "Supports profiling: " << static_cast<bool>((commandQueueProperties & CL_QUEUE_PROFILING_ENABLE) != 0) << std::endl;
-            
-            #if defined(CL_VERSION_1_2) 
-            stream << "Built-in kernels: " << device.getInfo<CL_DEVICE_BUILT_IN_KERNELS>() << std::endl;
-            
-            stream << "Max printf buffer size: " << device.getInfo<CL_DEVICE_PRINTF_BUFFER_SIZE>() << std::endl;
-            stream << "Preferred user GL/DirectX sync responsibility: " << static_cast<bool>(device.getInfo<CL_DEVICE_PREFERRED_INTEROP_USER_SYNC>() != 0) << std::endl;
+            // Macros will print print supported device info
+            __DEVICE_INFO_1_0(__CL_PRINT_DEVICE_INFO)
+            #if defined(CL_VERSION_1_1)
+                __DEVICE_INFO_1_1(__CL_PRINT_DEVICE_INFO) 
+            #endif 
+            #if defined(CL_VERSION_1_2)
+                __DEVICE_INFO_1_2(__CL_PRINT_DEVICE_INFO) 
+            #endif 
+            #if defined(USE_CL_DEVICE_FISSION)
+                __PARAM_NAME_DEVICE_FISSION(__CL_PRINT_DEVICE_INFO) 
             #endif
         }
         catch (cl::Error&)
         {
             LogInfoS("OpenCL", "Error while retrieving device info.");
-        }
-        LogInfoS("OpenCL", stream.str());
-        
+        }        
     }
     /*! \brief Get the device that has most compute units.
      *  

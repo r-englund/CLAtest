@@ -2,11 +2,13 @@
 #define IVW_TEXTEDITORWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <QFile>
 #include <QPlainTextEdit>
 #include <QLineEdit>
 #include <QToolButton>
 #include <QPushButton>
 #include <QTextStream>
+
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 

@@ -10,7 +10,7 @@ namespace cl{
 
 
 void LogOpenCLError(cl_int err, const char* fileName, const char* functionName, int lineNumber);
-/*! \brief Get string representation of error code according to definitions in CL/cl.h
+/** \brief Get string representation of error code according to definitions in CL/cl.h
  *
  *  \return The error code string.
  */
