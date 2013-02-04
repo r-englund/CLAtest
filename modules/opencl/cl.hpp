@@ -414,11 +414,17 @@ static inline cl_int errHandler (cl_int err, const char * errStr = NULL)
 #define __CREATE_COMMAND_QUEUE_ERR          __ERR_STR(clCreateCommandQueue)
 #define __SET_COMMAND_QUEUE_PROPERTY_ERR    __ERR_STR(clSetCommandQueueProperty)
 #define __ENQUEUE_READ_BUFFER_ERR           __ERR_STR(clEnqueueReadBuffer)
+#if defined(CL_VERSION_1_1)
 #define __ENQUEUE_READ_BUFFER_RECT_ERR      __ERR_STR(clEnqueueReadBufferRect)
+#endif
 #define __ENQUEUE_WRITE_BUFFER_ERR          __ERR_STR(clEnqueueWriteBuffer)
+#if defined(CL_VERSION_1_1)
 #define __ENQUEUE_WRITE_BUFFER_RECT_ERR     __ERR_STR(clEnqueueWriteBufferRect)
+#endif
 #define __ENQEUE_COPY_BUFFER_ERR            __ERR_STR(clEnqueueCopyBuffer)
+#if defined(CL_VERSION_1_1)
 #define __ENQEUE_COPY_BUFFER_RECT_ERR       __ERR_STR(clEnqueueCopyBufferRect)
+#endif
 #define __ENQUEUE_FILL_BUFFER_ERR           __ERR_STR(clEnqueueFillBuffer)
 #define __ENQUEUE_READ_IMAGE_ERR            __ERR_STR(clEnqueueReadImage)
 #define __ENQUEUE_WRITE_IMAGE_ERR           __ERR_STR(clEnqueueWriteImage)
@@ -5205,7 +5211,7 @@ public:
 
         return err;
     }
-
+#if defined(CL_VERSION_1_1)
     cl_int enqueueReadBufferRect(
         const Buffer& buffer,
         cl_bool blocking,
@@ -5320,7 +5326,7 @@ public:
 
         return err;
     }
-
+#endif
 #if defined(CL_VERSION_1_2)
     /**
      * Enqueue a command to fill a buffer object with a pattern
