@@ -8,25 +8,25 @@
 
 namespace inviwo {
 
-class IVW_CORE_API Settings : public PropertyOwner {
+    class IVW_CORE_API Settings : public PropertyOwner {
 
-public:
-    Settings();
-    virtual ~Settings();
+    public:
+        Settings();
+        virtual ~Settings();
 
-    virtual void initialize();
-    virtual void deinitialize();
+        virtual void initialize();
+        virtual void deinitialize();
 
-    void invalidate();
-    bool isValid() { return PropertyOwner::isValid(); }
-    void setValid() { PropertyOwner::setValid(); }
+        void invalidate();
+        bool isValid() { return PropertyOwner::isValid(); }
+        void setValid() { PropertyOwner::setValid(); }
 
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+        virtual void serialize(IvwSerializer& s) const;
+        virtual void deserialize(IvwDeserializer& d);
 
-protected:
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-};
+    protected:
+        static const std::string logSource_; ///< Source string to be displayed for log messages.
+    };
 
 } // namespace
 

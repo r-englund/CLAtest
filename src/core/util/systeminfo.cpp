@@ -5,10 +5,26 @@
 
 namespace inviwo {
 
-#define SystemInfo(message) { LogInfoS("SystemInfo", message); }
-#define SystemInfoNotFound(message) { LogInfoS("SystemInfo", message << " Info could not be retrieved"); }
+#define SystemInfoNotFound(message) { LogInfo(message << " Info could not be retrieved"); }
 
-bool lookupOSInfo(OSInfo& infoOS){
+const std::string SystemInfo::logSource_ = "SystemInfo";
+
+SystemInfo::SystemInfo() {}
+
+SystemInfo::~SystemInfo() {}
+
+void SystemInfo::retrieveStaticInfo(){
+    successOSInfo_ = lookupOSInfo();
+}
+
+void SystemInfo::retrieveDynamicInfo(){
+    successCPUInfo_ = lookupCPUInfo();
+    successMemoryInfo_ = lookupMemoryInfo();
+    successDiskInfo_ = lookupDiskInfo();
+    //successProcessMemoryInfo_ = lookupProcessMemoryInfo();
+}
+
+bool SystemInfo::lookupOSInfo(){
     int status;
     sigar_t *sigar;
     sigar_open(&sigar);
@@ -17,19 +33,19 @@ bool lookupOSInfo(OSInfo& infoOS){
     status = sigar_sys_info_get(sigar, &systeminfo);
     bool SUCCESS = (status == SIGAR_OK);
     if(SUCCESS) {
-        infoOS.description = std::string(systeminfo.description);
+        infoOS_.description = std::string(systeminfo.description);
         if(systeminfo.arch == "x86")
-            infoOS.platform = 32;
+            infoOS_.platform = 32;
         else
-            infoOS.platform = 64;
+            infoOS_.platform = 64;
     }
 
     sigar_close(sigar);
     return SUCCESS;
 }
 
-bool lookupCPUInfo(std::vector<CPUInfo> &infoCPUs){
-    infoCPUs.clear();
+bool SystemInfo::lookupCPUInfo(){
+    infoCPUs_.clear();
     int status;
     sigar_t *sigar;
     sigar_open(&sigar);
@@ -38,12 +54,12 @@ bool lookupCPUInfo(std::vector<CPUInfo> &infoCPUs){
 
     bool SUCCESS = (status == SIGAR_OK);
     if(SUCCESS) {
-        infoCPUs.resize(cpulinfolist.number);
+        infoCPUs_.resize(cpulinfolist.number);
         for (unsigned long i=0; i<cpulinfolist.number; i++) {
             sigar_cpu_info_t cpu_info = cpulinfolist.data[i];
-            infoCPUs[i].vendor = std::string(cpu_info.vendor);
-            infoCPUs[i].model = std::string(cpu_info.model);
-            infoCPUs[i].mhz = static_cast<size_t>(cpu_info.mhz);
+            infoCPUs_[i].vendor = std::string(cpu_info.vendor);
+            infoCPUs_[i].model = std::string(cpu_info.model);
+            infoCPUs_[i].mhz = static_cast<size_t>(cpu_info.mhz);
         }
     }
     sigar_cpu_info_list_destroy(sigar, &cpulinfolist);
@@ -52,7 +68,7 @@ bool lookupCPUInfo(std::vector<CPUInfo> &infoCPUs){
     return SUCCESS;
 }
 
-bool lookupMemoryInfo(MemoryInfo& infoRAM){
+bool SystemInfo::lookupMemoryInfo(){
     int status;
     sigar_t *sigar;
     sigar_open(&sigar);
@@ -61,16 +77,16 @@ bool lookupMemoryInfo(MemoryInfo& infoRAM){
     status = sigar_mem_get(sigar, &meminfo);
     bool SUCCESS = (status == SIGAR_OK);
     if(SUCCESS) {
-        infoRAM.total = static_cast<size_t>(meminfo.ram);
-        infoRAM.available = static_cast<size_t>(meminfo.actual_free/1000000);
+        infoRAM_.total = static_cast<size_t>(meminfo.ram);
+        infoRAM_.available = static_cast<size_t>(meminfo.actual_free/1000000);
     }
 
     sigar_close(sigar);
     return SUCCESS;
 }
 
-bool lookupDiskInfo(std::vector<DiskInfo> &infoDisks){
-    infoDisks.clear();
+bool SystemInfo::lookupDiskInfo(){
+    infoDisks_.clear();
     int status;
     sigar_t *sigar;
     sigar_open(&sigar);
@@ -91,7 +107,7 @@ bool lookupDiskInfo(std::vector<DiskInfo> &infoDisks){
                     currentDiskInfo.diskName = std::string(disk_info.dev_name);
                     currentDiskInfo.total = static_cast<size_t>(diskusageinfo.total/1000);
                     currentDiskInfo.free = static_cast<size_t>(diskusageinfo.free/1000);
-                    infoDisks.push_back(currentDiskInfo);
+                    infoDisks_.push_back(currentDiskInfo);
                 }
             }
         }
@@ -102,7 +118,7 @@ bool lookupDiskInfo(std::vector<DiskInfo> &infoDisks){
     return SUCCESS;
 }
 
-bool lookupProcessMemoryInfo(ProcessMemoryInfo& infoProcMem){
+bool SystemInfo::lookupProcessMemoryInfo(){
     int status;
     sigar_t *sigar;
     sigar_open(&sigar);
@@ -111,30 +127,28 @@ bool lookupProcessMemoryInfo(ProcessMemoryInfo& infoProcMem){
     status = sigar_proc_mem_get(sigar, sigar_pid_get(sigar), &meminfo);
     bool SUCCESS = (status == SIGAR_OK);
     if(SUCCESS) {
-        infoProcMem.residentMem = static_cast<size_t>(meminfo.resident/1000);
-        infoProcMem.sharedMem = static_cast<size_t>(meminfo.share/1000);
-        infoProcMem.virtualMem = static_cast<size_t>(meminfo.size/1000);
+        infoProcMem_.residentMem = static_cast<size_t>(meminfo.resident/1000);
+        infoProcMem_.sharedMem = static_cast<size_t>(meminfo.share/1000);
+        infoProcMem_.virtualMem = static_cast<size_t>(meminfo.size/1000);
     }
 
     sigar_close(sigar);
     return SUCCESS;
 }
 
-void printSystemInfo(){
+void SystemInfo::printInfo(){
     // Try to retrieve operating system information
-    OSInfo infoOS;
-    if(lookupOSInfo(infoOS)){
-        SystemInfo("(OS) " << infoOS.description << " " << infoOS.platform << "-bit");
+    if(successOSInfo_){
+        LogInfo("(OS) " << infoOS_.description << " " << infoOS_.platform << "-bit");
     }
     else{
         SystemInfoNotFound("(OS)");
     }
 
     // Try to retrieve CPU information
-    std::vector<CPUInfo> infoCPUs;
-    if(lookupCPUInfo(infoCPUs)){
-        for(unsigned long i=0; i<infoCPUs.size(); i++){
-            SystemInfo("(CPU " << i+1 << ") " << infoCPUs[i].vendor << " " << infoCPUs[i].model << " " << infoCPUs[i].mhz << " Mhz");
+    if(successCPUInfo_){
+        for(unsigned long i=0; i<infoCPUs_.size(); i++){
+            LogInfo("(CPU " << i+1 << ") " << infoCPUs_[i].vendor << " " << infoCPUs_[i].model << " " << infoCPUs_[i].mhz << " Mhz");
         }
     }
     else{
@@ -142,19 +156,17 @@ void printSystemInfo(){
     }
 
     // Try to retrieve memory information
-    MemoryInfo infoRAM;
-    if(lookupMemoryInfo(infoRAM)){
-        SystemInfo("(RAM) Total - " << infoRAM.total << " MB, Free - " << infoRAM.available << " MB");
+    if(successMemoryInfo_){
+        LogInfo("(RAM) Total - " << infoRAM_.total << " MB, Free - " << infoRAM_.available << " MB");
     }
     else{
         SystemInfoNotFound("(RAM)");
     }
 
     // Try to retrieve Disk information
-    std::vector<DiskInfo> infoDisks;
-    if(lookupDiskInfo(infoDisks)){
-        for(unsigned long i=0; i<infoDisks.size(); i++){
-            SystemInfo("(Disk " << infoDisks[i].diskName << ") Total - " << infoDisks[i].total/1000 << " GB, Free - " << infoDisks[i].free/1000 << " GB");
+    if(successDiskInfo_){
+        for(unsigned long i=0; i<infoDisks_.size(); i++){
+            LogInfo("(Disk " << infoDisks_[i].diskName << ") Total - " << infoDisks_[i].total/1000 << " GB, Free - " << infoDisks_[i].free/1000 << " GB");
         }
     }
     else{
@@ -162,9 +174,8 @@ void printSystemInfo(){
     }
 
     // Try to retrieve this process memory information
-    /*ProcessMemoryInfo infoProcRAM;
-    if(lookupProcessMemoryInfo(infoProcRAM)){
-        SystemInfo("(Processor Memory) Resident - " << infoProcRAM.residentMem << " MB, Shared - " << infoProcRAM.sharedMem << " MB, Virtual - " << infoProcRAM.virtualMem << " MB");
+    /*if(successProcessMemoryInfo_){
+        LogInfo("(Processor Memory) Resident - " << infoProcRAM_.residentMem << " MB, Shared - " << infoProcRAM_.sharedMem << " MB, Virtual - " << infoProcRAM_.virtualMem << " MB");
     }
     else{
         SystemInfoNotFound("(Processor Memory)");

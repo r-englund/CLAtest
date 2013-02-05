@@ -19,7 +19,8 @@ InviwoApplication::InviwoApplication(std::string displayName, std::string basePa
 InviwoApplication::~InviwoApplication() {}
 
 void InviwoApplication::initialize() {
-    printSystemInfo();
+    resourcesInformation_ = new ResourceInfoContainer();
+    resourcesInformation_->addInfo(new SystemInfo());
 
     settings_ = new Settings();
     settings_->initialize();
@@ -29,6 +30,8 @@ void InviwoApplication::initialize() {
     registerAllModules(this);
     for (size_t i=0; i<modules_.size(); i++)
         modules_[i]->initialize();
+
+    resourcesInformation_->printInfos();
 
     // initialize singleton factories
     ProcessorFactory::init();
