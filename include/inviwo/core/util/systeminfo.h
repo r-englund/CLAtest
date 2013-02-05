@@ -54,6 +54,8 @@ namespace inviwo {
         bool lookupDiskInfo();
         bool lookupProcessMemoryInfo();
 
+        static const std::string logSource_; ///< Source string to be displayed for log messages.
+
     private:
         OSInfo infoOS_;
         std::vector<CPUInfo> infoCPUs_;

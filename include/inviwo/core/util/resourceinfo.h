@@ -19,9 +19,6 @@ namespace inviwo {
         virtual void retrieveStaticInfo() = 0;
         virtual void retrieveDynamicInfo() = 0;
         virtual void printInfo() = 0;
-
-    protected:
-        static const std::string logSource_; ///< Source string to be displayed for log messages.
     };
 
 } // namespace
