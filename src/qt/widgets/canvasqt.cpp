@@ -109,7 +109,7 @@ void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
     if(!processorNetworkEvaluator_) return;
 
     MouseEvent* mouseEvent = 0;
-    if(e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton) {
+    if(e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
         mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), getMouseButton(e),
         MouseEvent::MOUSE_STATE_PRESS, MouseEvent::MODIFIER_NONE, dimensions_);
     }

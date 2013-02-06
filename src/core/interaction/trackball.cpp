@@ -3,7 +3,7 @@
 
 namespace inviwo {
 
-    static const float MOVEMENT_EPSILON = 0.0001f;	
+    static const float MOVEMENT_THRESHOLD =0.007f;	
 	static const float ZOOM_FACTOR = 0.005f;
     static const float PAN_FACTOR = 0.005f;
 	bool mouseHold = false;
@@ -41,10 +41,11 @@ namespace inviwo {
     void Trackball::invokeEvent(Event* event) {
         MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
         if (mouseEvent) {
-            if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_MIDDLE && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+            if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
                 // ROTATION
                 ivec2 curMousePos = mouseEvent->pos();
-                vec3 curTrackballPos = mapNormalizedMousePosToTrackball(mouseEvent->posNormalized());                
+                vec3 curTrackballPos = mapNormalizedMousePosToTrackball(mouseEvent->posNormalized());
+                float lookLength;
     			
 			    // disable movements on first press
 			    if (!mouseHold){				
@@ -56,20 +57,32 @@ namespace inviwo {
                 if (curTrackballPos != lastTrackballPos_) {
                     // calculate rotation angle
 				    float rotationAngle = acos(glm::dot(curTrackballPos, lastTrackballPos_));
-    				
-                    // obtain rotation axis
-                    vec3 rotationAxis = glm::cross(curTrackballPos, lastTrackballPos_);
+                    //std::cout << rotationAngle << std::endl;                    
                     
-				    // generate quaternion and rotate camera                
-                    rotationAxis = glm::normalize(rotationAxis);                
-                    quat quaternion = glm::angleAxis(rotationAngle*180.0f/3.14f, rotationAxis);
-                    camera_->setLookFrom(glm::rotate(quaternion, camera_->lookFrom()));
-                    camera_->setLookTo(glm::rotate(quaternion, camera_->lookTo()));
-                    camera_->setLookUp(glm::rotate(quaternion, camera_->lookUp()));
-                    camera_->invalidate();
+                    // obtain rotation axis
+                    if(rotationAngle > MOVEMENT_THRESHOLD){
+                        vec3 rotationAxis = glm::cross(curTrackballPos, lastTrackballPos_);
+                        
+				        // generate quaternion and rotate camera                
+                        rotationAxis = glm::normalize(rotationAxis);                
+                        quat quaternion = glm::angleAxis(rotationAngle*180.0f/3.14f, rotationAxis);
+                        lookLength = glm::length(camera_->lookFrom()-camera_->lookTo());
+                        camera_->setLookFrom(glm::rotate(quaternion, camera_->lookFrom()));
+                        camera_->setLookTo(glm::rotate(quaternion, camera_->lookTo()));
+                        camera_->setLookUp(glm::rotate(quaternion, camera_->lookUp()));
+                        
+                        // Check the length of the length-vector, might change due to float precision
+                        if (lookLength != glm::length(camera_->lookFrom()-camera_->lookTo())){
+                            float diff = lookLength/glm::length(camera_->lookFrom()-camera_->lookTo());
+                            camera_->setLookTo(camera_->lookTo()*diff);
+                        }
 
-                    lastMousePos_ = curMousePos;
-                    lastTrackballPos_ = curTrackballPos;
+                        //std::cout << lookLength-glm::length(camera_->lookFrom() - camera_->lookTo()) << std::endl;
+                        camera_->invalidate();
+                        
+                        lastMousePos_ = curMousePos;
+                        lastTrackballPos_ = curTrackballPos;
+                    }
                 }
         } else if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_RIGHT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             // ZOOM
@@ -92,14 +105,14 @@ namespace inviwo {
 				diff = (lastMousePos_.y - curMousePos.y)*ZOOM_FACTOR;
 
                 // zoom by moving the camera
-				camera_->setLookTo(camera_->lookTo()+direction*diff);     
+				camera_->setLookTo(camera_->lookTo()+direction*diff);
 				camera_->invalidate();
 				lastMousePos_ = curMousePos;
 			}
 			
 		} else if (mouseEvent->state() == MouseEvent::MOUSE_STATE_RELEASE) {
 			mouseHold = false;
-        } else if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+        } else if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_MIDDLE && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             // PAN
             ivec2 curMousePos = mouseEvent->pos();
 
@@ -111,18 +124,13 @@ namespace inviwo {
            
             if (curMousePos != lastMousePos_){
                 vec3 diffX, diffY, tmp;
-                // Calculate movement for lookTo
+
+                // Calculate movement
                 vec3 direction = camera_->lookFrom()-camera_->lookTo();
                 vec3 up = camera_->lookUp();
                 diffX = (float)(lastMousePos_.x - curMousePos.x)*glm::normalize(glm::cross(direction, up));
                 diffY = (float)(curMousePos.y - lastMousePos_.y)*up;
                 camera_->setLookTo(camera_->lookTo()+(diffX+diffY)*PAN_FACTOR);
-                
-                // Calculate movement for lookFrom
-                up = up+direction;
-                direction = camera_->lookTo()-camera_->lookFrom();                
-                diffX = (float)(lastMousePos_.x - curMousePos.x)*glm::normalize(glm::cross(up, direction));
-                diffY = (float)(curMousePos.y - lastMousePos_.y)*up;
                 camera_->setLookFrom(camera_->lookFrom()+(diffX+diffY)*PAN_FACTOR);
                 camera_->invalidate();
                 lastMousePos_ = curMousePos;
