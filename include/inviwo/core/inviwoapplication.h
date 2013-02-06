@@ -48,6 +48,10 @@ public:
     };
     virtual void playSound(unsigned int soundID) { /*LogWarn("This Inviwo application does not support sound feedback.");*/ }
 
+protected:
+    void setSystemSettings();
+    void allocationTest();
+
 private:
     std::string displayName_;
 
@@ -62,6 +66,8 @@ private:
     Settings* settings_;
 
     bool initialized_;
+
+    uint8_t* allocTest_;
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };

@@ -43,25 +43,28 @@ namespace inviwo {
         SystemInfo();
         virtual ~SystemInfo();
 
-        void retrieveStaticInfo();
-        void retrieveDynamicInfo();
         void printInfo();
 
+        size_t getAvailableMemory();
+
     protected:
+        void retrieveStaticInfo();
+        void retrieveDynamicInfo();
+
+        static const std::string logSource_; ///< Source string to be displayed for log messages.
+
+    private:
         bool lookupOSInfo();
         bool lookupCPUInfo();
         bool lookupMemoryInfo();
         bool lookupDiskInfo();
         bool lookupProcessMemoryInfo();
 
-        static const std::string logSource_; ///< Source string to be displayed for log messages.
-
-    private:
         OSInfo infoOS_;
         std::vector<CPUInfo> infoCPUs_;
         MemoryInfo infoRAM_;
         std::vector<DiskInfo> infoDisks_;
-        ProcessMemoryInfo infoProcMem_;
+        ProcessMemoryInfo infoProcRAM_;
 
         bool successOSInfo_;
         bool successCPUInfo_;

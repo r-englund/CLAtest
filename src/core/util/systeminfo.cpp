@@ -78,7 +78,7 @@ bool SystemInfo::lookupMemoryInfo(){
     bool SUCCESS = (status == SIGAR_OK);
     if(SUCCESS) {
         infoRAM_.total = static_cast<size_t>(meminfo.ram);
-        infoRAM_.available = static_cast<size_t>(meminfo.actual_free/1000000);
+        infoRAM_.available = static_cast<size_t>(meminfo.free/(1024*1024));
     }
 
     sigar_close(sigar);
@@ -105,8 +105,8 @@ bool SystemInfo::lookupDiskInfo(){
                 currentDiskInfo.diskType[0] = toupper(currentDiskInfo.diskType[0]);
                 if(currentDiskInfo.diskType == "Local"){
                     currentDiskInfo.diskName = std::string(disk_info.dev_name);
-                    currentDiskInfo.total = static_cast<size_t>(diskusageinfo.total/1000);
-                    currentDiskInfo.free = static_cast<size_t>(diskusageinfo.free/1000);
+                    currentDiskInfo.total = static_cast<size_t>(diskusageinfo.total/1024);
+                    currentDiskInfo.free = static_cast<size_t>(diskusageinfo.free/1024);
                     infoDisks_.push_back(currentDiskInfo);
                 }
             }
@@ -127,9 +127,9 @@ bool SystemInfo::lookupProcessMemoryInfo(){
     status = sigar_proc_mem_get(sigar, sigar_pid_get(sigar), &meminfo);
     bool SUCCESS = (status == SIGAR_OK);
     if(SUCCESS) {
-        infoProcMem_.residentMem = static_cast<size_t>(meminfo.resident/1000);
-        infoProcMem_.sharedMem = static_cast<size_t>(meminfo.share/1000);
-        infoProcMem_.virtualMem = static_cast<size_t>(meminfo.size/1000);
+        infoProcRAM_.residentMem = static_cast<size_t>(meminfo.resident/1024);
+        infoProcRAM_.sharedMem = static_cast<size_t>(meminfo.share/1024);
+        infoProcRAM_.virtualMem = static_cast<size_t>(meminfo.size/1024);
     }
 
     sigar_close(sigar);
@@ -137,6 +137,8 @@ bool SystemInfo::lookupProcessMemoryInfo(){
 }
 
 void SystemInfo::printInfo(){
+    retrieveDynamicInfo();
+
     // Try to retrieve operating system information
     if(successOSInfo_){
         LogInfo("(OS) " << infoOS_.description << " " << infoOS_.platform << "-bit");
@@ -157,7 +159,7 @@ void SystemInfo::printInfo(){
 
     // Try to retrieve memory information
     if(successMemoryInfo_){
-        LogInfo("(RAM) Total - " << infoRAM_.total << " MB, Free - " << infoRAM_.available << " MB");
+        LogInfo("(RAM) Total - " << infoRAM_.total << " MB, Available - " << infoRAM_.available << " MB");
     }
     else{
         SystemInfoNotFound("(RAM)");
@@ -180,6 +182,16 @@ void SystemInfo::printInfo(){
     else{
         SystemInfoNotFound("(Processor Memory)");
     }*/
+}
+
+size_t SystemInfo::getAvailableMemory(){
+    successMemoryInfo_ = lookupMemoryInfo();
+
+    if(successMemoryInfo_){
+        return infoRAM_.available;
+    }
+    
+    return 0;
 }
 
 } // namespace

@@ -19,7 +19,6 @@ namespace inviwo {
 
     void ResourceInfoContainer::printInfos() {
         for (size_t i=0; i<infos_.size(); i++) {
-            infos_[i]->retrieveDynamicInfo();
             infos_[i]->printInfo();
         }
     }

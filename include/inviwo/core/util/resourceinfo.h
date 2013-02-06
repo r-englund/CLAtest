@@ -16,9 +16,11 @@ namespace inviwo {
             retrieveStaticInfo();
         }
 
+        virtual void printInfo() = 0;
+
+    protected:
         virtual void retrieveStaticInfo() = 0;
         virtual void retrieveDynamicInfo() = 0;
-        virtual void printInfo() = 0;
     };
 
 } // namespace
