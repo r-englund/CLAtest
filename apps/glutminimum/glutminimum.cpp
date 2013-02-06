@@ -1,3 +1,7 @@
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+#endif
+
 #ifdef WIN32
 #include <windows.h>
 #endif
