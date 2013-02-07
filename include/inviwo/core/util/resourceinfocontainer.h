@@ -19,6 +19,7 @@ namespace inviwo {
         template<class T>
         T* getInfo();
         void addInfo(ResourceInfo* info);
+        void addInfo(std::vector<ResourceInfo*> infos);
         void printInfos();
         void clearInfo();
 
@@ -32,9 +33,9 @@ namespace inviwo {
         if (infos_.size() > 0) {
             // check if info exists and return it
             for (size_t i=0; i<infos_.size(); i++) {
-                T* representation = dynamic_cast<T*>(infos_[i]);
-                if (representation) {
-                    return representation;
+                T* info = dynamic_cast<T*>(infos_[i]);
+                if (info) {
+                    return info;
                 }
             }
         }
@@ -44,8 +45,8 @@ namespace inviwo {
     template<class T>
     bool ResourceInfoContainer::hasInfo() const {
         for (size_t i=0; i<infos_.size(); i++) {
-            T* representation = dynamic_cast<T*>(infos_[i]);
-            if (representation) return true;
+            T* info = dynamic_cast<T*>(infos_[i]);
+            if (info) return true;
         }
         return false;
     }

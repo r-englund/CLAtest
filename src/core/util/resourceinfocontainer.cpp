@@ -3,11 +3,19 @@
 namespace inviwo {
 
     ResourceInfoContainer::ResourceInfoContainer() {}
-    ResourceInfoContainer::~ResourceInfoContainer() {}
+    ResourceInfoContainer::~ResourceInfoContainer() {
+        clearInfo();
+    }
 
     void ResourceInfoContainer::addInfo(ResourceInfo* info) {
         info->initialize();
         infos_.push_back(info);
+    }
+
+    void ResourceInfoContainer::addInfo(std::vector<ResourceInfo*> infos) {
+        for (size_t i=0; i<infos.size(); i++) {
+            addInfo(infos[i]);
+        }
     }
 
     void ResourceInfoContainer::clearInfo() {

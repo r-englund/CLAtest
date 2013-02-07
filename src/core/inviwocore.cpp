@@ -7,6 +7,9 @@
 #include <inviwo/core/metadata/positionmetadata.h>
 #include <inviwo/core/metadata/processorwidgetmetadata.h>
 
+//Resource Info
+#include <inviwo/core/util/systeminfo.h>
+
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/processors/datasource/volumesource.h>
@@ -23,6 +26,8 @@ namespace inviwo {
 
         addMetaData(new PositionMetaData());
         addMetaData(new ProcessorWidgetMetaData());
+
+        addResourceInfo(new SystemInfo());
     }
 
 } // namespace

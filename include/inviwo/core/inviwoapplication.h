@@ -10,7 +10,6 @@
 #include <inviwo/core/util/resourceinfocontainer.h>
 #include <inviwo/core/util/settings.h>
 #include <inviwo/core/util/singleton.h>
-#include <inviwo/core/util/systeminfo.h>
 
 namespace inviwo {
 
@@ -35,7 +34,7 @@ public:
 
     void setProcessorNetwork(ProcessorNetwork* processorNetwork) { processorNetwork_ = processorNetwork; }
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
-    ResourceInfoContainer* getResourceInfo() { return resourcesInformation_; }
+    ResourceInfoContainer* getResourceInfoContainer() { return resourcesInformation_; }
     Settings* getSettings() { return settings_; }
 
     virtual void registerFileObserver(FileObserver* fileObserver) { LogWarn("This Inviwo application does not support FileObservers."); }

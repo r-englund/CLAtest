@@ -2,9 +2,10 @@
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
-#include <inviwo/core/util/systeminfo.h>
 #include <modules/moduleregistration.h>
 
+#include <inviwo/core/util/formatconversion.h>
+#include <inviwo/core/util/systeminfo.h>
 #include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {
@@ -23,7 +24,6 @@ InviwoApplication::~InviwoApplication() {}
 
 void InviwoApplication::initialize() {
     resourcesInformation_ = new ResourceInfoContainer();
-    resourcesInformation_->addInfo(new SystemInfo());
 
     settings_ = new Settings();
     settings_->initialize();
@@ -65,7 +65,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
 
 void InviwoApplication::setSystemSettings(){
     if(settings_){
-        SystemInfo* sysInfo = getResourceInfo()->getInfo<SystemInfo>();
+        SystemInfo* sysInfo = getResourceInfoContainer()->getInfo<SystemInfo>();
         if(sysInfo){
             ButtonProperty* btnSysInfo = new ButtonProperty("printSysInfo", "Print System Info");
             btnSysInfo->registerClassMemberFunction(sysInfo, &SystemInfo::printInfo);
@@ -82,25 +82,25 @@ void InviwoApplication::setSystemSettings(){
 
 void InviwoApplication::allocationTest(){
     if(settings_){
-        SystemInfo* sysInfo = getResourceInfo()->getInfo<SystemInfo>();
+        SystemInfo* sysInfo = getResourceInfoContainer()->getInfo<SystemInfo>();
         if(sysInfo){
             if(allocTest_){
                 delete allocTest_;
                 LogInfo("Deleted previous test allocation");
             }
             IntProperty* useRAMPercent = dynamic_cast<IntProperty*>(settings_->getPropertyByIdentifier("useRAMPercent"));
-            size_t memBytesAlloc = sysInfo->getAvailableMemory()*1024*1024; //In Bytes
-            LogInfo("Maximum Available Memory is " << memBytesAlloc/(1024*1024) << " MB");
+            uint64_t memBytesAlloc = sysInfo->getAvailableMemory(); //In Bytes
+            LogInfo("Maximum Available Memory is " << formatBytes(memBytesAlloc));
             memBytesAlloc /= 100; //1% of total available memory
             memBytesAlloc *= useRAMPercent->get(); //?% of total available memory
             try
             {
                 allocTest_ = new uint8_t[memBytesAlloc];
-                LogInfo("Allocated " << memBytesAlloc/(1024*1024) << " MB, which is " << useRAMPercent->get() << "% of available memory");
+                LogInfo("Allocated " << formatBytes(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
             }
             catch(std::bad_alloc&)
             {
-                LogError("Failed allocation of " << memBytesAlloc/(1024*1024) << " MB, which is " << useRAMPercent->get() << "% of available memory");
+                LogError("Failed allocation of " << formatBytes(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
             }
         }
     }

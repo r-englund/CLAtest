@@ -108,6 +108,10 @@ void InviwoModule::addRepresentationConverter(RepresentationConverter* represent
     representationConverters_.push_back(representationConverter);
 }
 
+void InviwoModule::addResourceInfo(ResourceInfo* resourceInfo) {
+    InviwoApplication::getRef().getResourceInfoContainer()->addInfo(resourceInfo);
+}
+
 bool InviwoModule::isInitialized() const {
     return initialized_;
 }

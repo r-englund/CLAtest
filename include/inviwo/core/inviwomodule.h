@@ -9,6 +9,7 @@
 #include <inviwo/core/io/datawriter.h>
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <inviwo/core/metadata/metadata.h>
+#include <inviwo/core/util/resourceinfo.h>
 
 
 namespace inviwo {
@@ -29,7 +30,7 @@ public:
     const std::vector<DataWriter*>& getDataWriters() const;
     const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
     const std::vector<MetaData*>& getMetaData() const;
-
+    
     std::string getDescription() const;
     void setDescription(const std::string& description) const;
 
@@ -44,8 +45,9 @@ protected:
     void addProperty(Property* property);
     void addDataReader(DataReader* reader);
     void addDataWriter(DataWriter* writer);
-    void addRepresentationConverter(RepresentationConverter* representationConverter);
     void addMetaData(MetaData* meta);
+    void addRepresentationConverter(RepresentationConverter* representationConverter);
+    void addResourceInfo(ResourceInfo* info);
 
     void setXMLFileName(const std::string& xmlDocuFileName);
 
@@ -60,8 +62,8 @@ private:
     std::vector<Property*> properties_;
     std::vector<DataReader*> dataReaders_;
     std::vector<DataWriter*> dataWriters_;
-    std::vector<RepresentationConverter*> representationConverters_;
     std::vector<MetaData*> metadata_;
+    std::vector<RepresentationConverter*> representationConverters_;
 
     std::string xmlDocuFileName_;
     static const std::string logSource_; ///< Source string to be displayed for log messages.

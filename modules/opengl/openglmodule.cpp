@@ -6,6 +6,8 @@
 #include <modules/opengl/imageglconverter.h>
 #include <modules/opengl/volumeglconverter.h>
 
+#include <modules/opengl/openglinfo.h>
+
 namespace inviwo {
 
 OpenGLModule::OpenGLModule() : InviwoModule() {
@@ -19,6 +21,8 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     addRepresentationConverter(new VolumeDisk2GLConverter());
 
     addProcessor(new CanvasProcessorGL());
+
+    addResourceInfo(new OpenGLInfo());
 }
 
 void OpenGLModule::initialize() {

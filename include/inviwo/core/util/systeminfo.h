@@ -19,25 +19,25 @@ namespace inviwo {
         struct CPUInfo {
             std::string vendor;
             std::string model;
-            size_t mhz;
+            uint64_t mhz;
         };
 
         struct MemoryInfo {
-            size_t total; //MB
-            size_t available; //MB
+            uint64_t total; //In Bytes
+            uint64_t available; //In Bytes
         };
 
         struct DiskInfo {
             std::string diskName;
             std::string diskType;
-            size_t total; //MB
-            size_t free; //MB
+            uint64_t total; //In Bytes
+            uint64_t free; //In Bytes
         };
 
         struct ProcessMemoryInfo {
-            size_t residentMem; //MB
-            size_t sharedMem; //MB
-            size_t virtualMem; //MB
+            uint64_t residentMem; //In Bytes
+            uint64_t sharedMem; //In Bytes
+            uint64_t virtualMem; //In Bytes
         };
 
         SystemInfo();
@@ -45,7 +45,7 @@ namespace inviwo {
 
         void printInfo();
 
-        size_t getAvailableMemory();
+        uint64_t getAvailableMemory();
 
     protected:
         void retrieveStaticInfo();
