@@ -28,6 +28,7 @@ set(SOURCE_FILES
 	${IVW_MODULE_DIR}/opencl/imageclresizer.cpp
     ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
     ${IVW_MODULE_DIR}/opencl/openclmodule.cpp
+    ${IVW_MODULE_DIR}/opencl/openclinfo.cpp
     ${IVW_MODULE_DIR}/opencl/volumecl.cpp
 	${IVW_MODULE_DIR}/opencl/volumeclconverter.cpp
 

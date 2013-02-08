@@ -1,4 +1,5 @@
 #include <modules/opencl/openclmodule.h>
+#include <modules/opencl/openclinfo.h>
 #include <modules/opencl/imageclconverter.h>
 #include <modules/opencl/volumeclconverter.h>
 #include <modules/opencl/inviwoopencl.h>
@@ -15,6 +16,8 @@ OpenCLModule::OpenCLModule() : InviwoModule() {
     addRepresentationConverter(new VolumeDisk2CLConverter());
     addRepresentationConverter(new VolumeRAM2CLConverter());
     addRepresentationConverter(new VolumeCL2RAMConverter());
+    
+    addResourceInfo(new OpenCLInfo());
 }
 
 void OpenCLModule::initialize() {

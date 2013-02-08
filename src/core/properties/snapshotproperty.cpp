@@ -3,7 +3,7 @@
 namespace inviwo {
 
     SnapshotProperty::SnapshotProperty(std::string identifier, std::string displayName, ImagePort& imagePort)
-: TemplateProperty(identifier, displayName, "")
+: TemplateProperty<std::string>(identifier, displayName, "")
 {
     imagePort_ = &imagePort;
 }
