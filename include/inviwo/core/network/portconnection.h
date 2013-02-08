@@ -33,9 +33,6 @@ public:
     virtual void deserialize(IvwDeserializer& s);
 
 private:
-    
-
-
     SlimPort inport_;
     SlimPort outport_;
 };

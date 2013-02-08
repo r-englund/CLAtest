@@ -58,8 +58,8 @@ public:
      * Construct a new graphical representation between the outport of the outProcessor
      * and the inport of the inProcessor. Data is assumed to flow from outport to inport.
      * While the processors are provided through their graphical representations
-     * (@see ProcessorGraphicsItem), the ports directly specified as used in the data flow
-     * network.
+     * (@see ProcessorGraphicsItem), the ports are directly specified as used in the data
+     * flow network.
      *
      * @param outProcessor Graphical representation of the source processor.
      * @param outport Source port.

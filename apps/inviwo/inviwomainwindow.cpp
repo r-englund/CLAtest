@@ -16,6 +16,9 @@
 namespace inviwo { 
 
 InviwoMainWindow::InviwoMainWindow() {
+    NetworkEditor::init();
+    networkEditorView_ = new NetworkEditorView(this);
+    setCentralWidget(networkEditorView_);
     defaultRenderContext_ = new CanvasQt(this);    
     defaultRenderContext_->switchContext();
 

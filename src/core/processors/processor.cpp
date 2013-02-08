@@ -127,6 +127,7 @@ void Processor::serialize(IvwSerializer& s) const {
     s.serialize("MetaDataList", metaData_, "MetaData") ;
     PropertyOwner::serialize(s);
 }
+
 void Processor::deserialize(IvwDeserializer& d) {
     std::string className;
     d.deserialize("type", className, true);

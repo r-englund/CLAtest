@@ -9,7 +9,7 @@ namespace inviwo {
 NetworkEditorView::NetworkEditorView(QWidget* parent) : QGraphicsView(parent),
                                                         zoomLevel_(1)
 {
-    setNetworkEditor(NetworkEditor::instance());
+    setNetworkEditor(NetworkEditor::getPtr());
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);

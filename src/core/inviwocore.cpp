@@ -4,7 +4,7 @@
 #include <inviwo/core/datastructures/volumeramconverter.h>
 
 //Meta Data
-#include <inviwo/core/metadata/positionmetadata.h>
+#include <inviwo/core/metadata/processormetadata.h>
 #include <inviwo/core/metadata/processorwidgetmetadata.h>
 
 //Resource Info
@@ -25,6 +25,7 @@ namespace inviwo {
         addRepresentationConverter(new VolumeDisk2RAMConverter());
 
         addMetaData(new PositionMetaData());
+        addMetaData(new ProcessorMetaData());
         addMetaData(new ProcessorWidgetMetaData());
 
         addResourceInfo(new SystemInfo());

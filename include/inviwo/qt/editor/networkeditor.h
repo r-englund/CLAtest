@@ -7,6 +7,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/ports/port.h>
+#include <inviwo/core/util/singleton.h>
 
 #include "processorgraphicsitem.h"
 #include "connectiongraphicsitem.h"
@@ -15,45 +16,51 @@
 
 namespace inviwo {
 
-class CanvasQt;
-
-class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene {
-
+class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
+                                       public Singleton<NetworkEditor>  {
 public:
-    static NetworkEditor* instance();
 
-    Processor* createProcessor(std::string className);
-    void removeProcessor(std::string identifier);
-    void initializeProcessorRepresentation(Processor* processor, QPointF pos=QPointF(10.0f, 10.0f));
+    NetworkEditor(QObject* parent=0);
 
-    void initializeConnectionRepresentation(ProcessorGraphicsItem* outProcessor, Port* outport, 
-                                       ProcessorGraphicsItem* inProcessor, Port* inport) ;
+    /** 
+     * \brief This method adds a processor to the network.
+     *
+     * Before the processor is added to the network, its identifier is analyzed and
+     * if necessary changed, such that the processor names within each network are unique.
+     * 
+     * @param Processor * processor The processor to be added
+     */
+    void addProcessor(Processor* processor);
+    void removeProcessor(Processor* processor);
 
-    void initializeLinkRepresentation(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
+    void addProcessorWidget(Processor* processor);
+    void addPropertyWidgets(Processor* processor);
+    void removePropertyWidgets(Processor* processor);
 
-    void addConnection(ProcessorGraphicsItem* startProcessor_, Port* startPort_,
-                       ProcessorGraphicsItem* endProcessor_, Port* endPort_);
+    void addProcessorGraphicsItem(Processor* processor, QPointF pos=QPointF(10.0f, 10.0f));
+    void removeProcessorGraphicsItem(Processor* processor);
 
-    void addConnection(PortConnection *connection);
+    void addConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
+                                   ProcessorGraphicsItem* inProcessor, Port* inport);
+    void removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem);
 
-    void addLink(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
+    void addLinkGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
+    void removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem);
 
-    void addLink(ProcessorLink *link);
 
-    void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
+    void addInspectorNetwork(Port* port, ivec2 pos, std::string fileName);
+    void removeInspectorNetwork(Port* port);
+    void addPortInspector(Port* port, QPointF pos);
 
-    void removeLink(LinkConnectionGraphicsItem* linkGraphicsItem);
 
     bool saveNetwork(std::string fileName);
-
     bool loadNetwork(std::string fileName);
-
     void clearNetwork();
 
     void drawBackground(QPainter* painter, const QRectF& rect);
 
-    ProcessorNetworkEvaluator* getProcessorNetworkEvaluator();
-    ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
+    ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
+    ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() const { return processorNetworkEvaluator_; }
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
     QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
@@ -74,7 +81,6 @@ protected:
     void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
     void dropEvent(QGraphicsSceneDragDropEvent* de);
 
-    NetworkEditor(QObject* parent=0);
     QPointF snapToGrid(QPointF pos);
 
     void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
@@ -100,9 +106,8 @@ private:
     Port* endPort_;
 
     bool gridSnapping_;
-    
+
     static const std::string logSource_; ///< Source string to be displayed for log messages.
-    static NetworkEditor* instance_;
 };
 
 } // namespace

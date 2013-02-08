@@ -333,7 +333,6 @@ void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty) 
 
 
 void ProcessorNetworkEvaluator::evaluate() {
-
     std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
     std::vector<Property*> sourceProperties;
     for (size_t i=0; i<links.size(); i++) {

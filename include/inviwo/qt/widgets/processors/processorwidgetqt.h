@@ -15,6 +15,7 @@ public:
 
     virtual void show();
     virtual void hide();
+    virtual void move(ivec2 pos);
 
     protected:
     void resizeEvent(QResizeEvent*);

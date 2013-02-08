@@ -4,7 +4,7 @@
 #include <QVector2D>
 
 #include <inviwo/core/ports/port.h>
-#include <inviwo/core/metadata/positionmetadata.h>
+#include <inviwo/core/metadata/processormetadata.h>
 
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
@@ -212,7 +212,7 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {
     if (change == ItemPositionHasChanged) {
-        std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::instance()->connectionGraphicsItems_;
+        std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::getRef().connectionGraphicsItems_;
         for (size_t i=0; i<connectionGraphicsItems.size(); i++) {
             if (connectionGraphicsItems[i]->getOutProcessor() == this) {
                 QPointF newAnchor = mapToScene(calculatePortRect(connectionGraphicsItems[i]->getOutport())).boundingRect().center();
@@ -226,7 +226,7 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
             }
         }
 
-        std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = NetworkEditor::instance()->linkGraphicsItems_;
+        std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = NetworkEditor::getRef().linkGraphicsItems_;
         for (size_t i=0; i<linkGraphicsItems.size(); i++) {
              if (linkGraphicsItems[i]->getOutProcessor() == this || linkGraphicsItems[i]->getInProcessor() == this) {
                  QPointF startPoint = linkGraphicsItems[i]->getOutProcessor()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getInProcessor());
@@ -244,8 +244,9 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
 
 void ProcessorGraphicsItem::updateMetaData() {
     //TODO: this is not pretty way to access processor metadata, find another way
-    PositionMetaData* position_meta = dynamic_cast<PositionMetaData*>(processor_->getMetaData("PositionMetaData"));
-    position_meta->setXY(ivec2(x(), y()));
+    ProcessorMetaData* processorMeta = dynamic_cast<ProcessorMetaData*>(processor_->getMetaData("ProcessorMetaData"));
+    processorMeta->setVisibile(true);
+    processorMeta->setPosition(ivec2(x(), y()));
 }
 
 } // namespace

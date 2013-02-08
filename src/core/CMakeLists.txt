@@ -43,6 +43,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatafactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatamap.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/positionmetadata.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processormetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processorwidgetmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
@@ -148,6 +149,7 @@ set(SOURCE_FILES
     metadata/metadatafactory.cpp
     metadata/metadatamap.cpp
     metadata/positionmetadata.cpp
+    metadata/processormetadata.cpp
     metadata/processorwidgetmetadata.cpp
     ports/port.cpp
     ports/imageport.cpp

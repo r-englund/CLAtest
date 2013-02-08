@@ -7,9 +7,9 @@ const std::string ProcessorWidgetMetaData::logSource_ = "ProcessorWidgetMetaData
 ProcessorWidgetMetaData::ProcessorWidgetMetaData() 
     : CompositeMetaData()
 {
-    addMetaData( positionMetaData_ );
-    addMetaData( dimensionMetaData_ );
-    addMetaData( visiblityMetaData_ );    
+    addMetaData(positionMetaData_);
+    addMetaData(dimensionMetaData_);
+    addMetaData(visiblityMetaData_);
 }
 
 ProcessorWidgetMetaData::~ProcessorWidgetMetaData() {}

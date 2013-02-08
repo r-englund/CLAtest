@@ -32,6 +32,11 @@ void ProcessorWidgetQt::hide() {
     QWidget::hide();
 }
 
+void ProcessorWidgetQt::move(ivec2 pos) {
+    ProcessorWidget::move(pos);
+    QWidget::move(pos.x, pos.y);
+}
+
 void ProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     ProcessorWidget::resize(ivec2(event->size().width(), event->size().height()) );
     QWidget::resizeEvent(event);
