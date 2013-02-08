@@ -11,8 +11,8 @@ class IVW_MODULE_OPENGL_API OpenGLModule : public InviwoModule {
 public:
     OpenGLModule();
 
-    void initialize();
-    void deinitialize();
+protected:
+    void setupGlobalSystemSettings();
 
 };
 

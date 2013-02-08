@@ -7,7 +7,6 @@
 #include <inviwo/core/inviwomodule.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/fileobserver.h>
-#include <inviwo/core/util/resourceinfocontainer.h>
 #include <inviwo/core/util/settings.h>
 #include <inviwo/core/util/singleton.h>
 
@@ -34,7 +33,6 @@ public:
 
     void setProcessorNetwork(ProcessorNetwork* processorNetwork) { processorNetwork_ = processorNetwork; }
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
-    ResourceInfoContainer* getResourceInfoContainer() { return resourcesInformation_; }
     Settings* getSettings() { return settings_; }
 
     virtual void registerFileObserver(FileObserver* fileObserver) { LogWarn("This Inviwo application does not support FileObservers."); }
@@ -47,9 +45,7 @@ public:
     };
     virtual void playSound(unsigned int soundID) { /*LogWarn("This Inviwo application does not support sound feedback.");*/ }
 
-protected:
-    void setSystemSettings();
-    void allocationTest();
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
 
 private:
     std::string displayName_;
@@ -60,15 +56,9 @@ private:
 
     ProcessorNetwork* processorNetwork_;
 
-    ResourceInfoContainer* resourcesInformation_;
-
     Settings* settings_;
 
     bool initialized_;
-
-    uint32_t* allocTest_;
-
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace

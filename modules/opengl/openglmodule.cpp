@@ -25,10 +25,4 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     addResourceInfo(new OpenGLInfo());
 }
 
-void OpenGLModule::initialize() {
-
-}
-
-void OpenGLModule::deinitialize() {}
-
 } // namespace

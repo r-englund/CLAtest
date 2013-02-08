@@ -159,7 +159,7 @@ namespace inviwo {
 
         // Try to retrieve memory information
         if(successMemoryInfo_){
-            LogInfo("(RAM) Total - " << formatBytes(infoRAM_.total) << ", Available - " << formatBytes(infoRAM_.available));
+            LogInfo("(RAM) Total - " << formatBytesToString(infoRAM_.total) << ", Available - " << formatBytesToString(infoRAM_.available));
         }
         else{
             SystemInfoNotFound("(RAM)");
@@ -168,7 +168,7 @@ namespace inviwo {
         // Try to retrieve Disk information
         if(successDiskInfo_){
             for(unsigned long i=0; i<infoDisks_.size(); i++){
-                LogInfo("(Disk " << infoDisks_[i].diskName << ") Total - " << formatBytes(infoDisks_[i].total) << ", Free - " << formatBytes(infoDisks_[i].free));
+                LogInfo("(Disk " << infoDisks_[i].diskName << ") Total - " << formatBytesToString(infoDisks_[i].total) << ", Free - " << formatBytesToString(infoDisks_[i].free));
             }
         }
         else{

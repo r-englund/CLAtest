@@ -10,7 +10,7 @@
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/util/resourceinfo.h>
-
+#include <inviwo/core/util/settings.h>
 
 namespace inviwo {
 
@@ -28,16 +28,20 @@ public:
     const std::vector<Property*>& getProperties() const;
     const std::vector<DataReader*>& getDataReaders() const;
     const std::vector<DataWriter*>& getDataWriters() const;
-    const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
     const std::vector<MetaData*>& getMetaData() const;
+    const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
+    std::vector<ResourceInfo*>& getResourceInfos();
     
     std::string getDescription() const;
     void setDescription(const std::string& description) const;
+    void setGlobalSettings(Settings* settings);
 
     virtual void initialize();
     virtual void deinitialize();
 
 protected:
+
+    Settings* getSettings() { return applicationSettings_; }
 
     void setIdentifier(const std::string& identifier);
 
@@ -50,6 +54,8 @@ protected:
     void addResourceInfo(ResourceInfo* info);
 
     void setXMLFileName(const std::string& xmlDocuFileName);
+
+    virtual void setupModuleSettings(){};
 
     std::string getPath(const std::string& suffix = "") const;
 
@@ -64,6 +70,9 @@ private:
     std::vector<DataWriter*> dataWriters_;
     std::vector<MetaData*> metadata_;
     std::vector<RepresentationConverter*> representationConverters_;
+    std::vector<ResourceInfo*> resourceInfos_;
+
+    Settings* applicationSettings_;
 
     std::string xmlDocuFileName_;
     static const std::string logSource_; ///< Source string to be displayed for log messages.

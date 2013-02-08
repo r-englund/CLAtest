@@ -9,6 +9,7 @@ InviwoModule::InviwoModule()
     : identifier_("undefined")
     , xmlDocuFileName_("undefined")
     , initialized_(false)
+    , applicationSettings_(NULL)
 {}
 
 InviwoModule::~InviwoModule() {
@@ -30,6 +31,10 @@ InviwoModule::~InviwoModule() {
     for (size_t i=0; i<dataWriters_.size(); i++)
         delete dataWriters_[i];
     dataWriters_.clear();
+
+    for (size_t i=0; i<resourceInfos_.size(); i++)
+        delete resourceInfos_[i];
+    resourceInfos_.clear();
 }
 
 std::string InviwoModule::getIdentifier() const {
@@ -56,15 +61,31 @@ const std::vector<DataWriter*>& InviwoModule::getDataWriters() const {
     return dataWriters_;
 }
 
-const std::vector<RepresentationConverter*>& InviwoModule::getRepresentationConverters() const {
-    return representationConverters_;
-}
-
 const std::vector<MetaData*>& InviwoModule::getMetaData() const {
     return metadata_;
 }
 
+const std::vector<RepresentationConverter*>& InviwoModule::getRepresentationConverters() const {
+    return representationConverters_;
+}
+
+std::vector<ResourceInfo*>& InviwoModule::getResourceInfos() {
+    return resourceInfos_;
+}
+
+void InviwoModule::setGlobalSettings(Settings* settings){
+    if(settings){
+        applicationSettings_ = settings;
+        setupModuleSettings();
+    }
+}
+
 void InviwoModule::initialize() {
+    for(size_t i=0; i<resourceInfos_.size(); i++){
+        resourceInfos_[i]->initialize();
+        resourceInfos_[i]->printInfo();
+    }
+
     initialized_ = true;
 }
 
@@ -109,7 +130,7 @@ void InviwoModule::addRepresentationConverter(RepresentationConverter* represent
 }
 
 void InviwoModule::addResourceInfo(ResourceInfo* resourceInfo) {
-    InviwoApplication::getRef().getResourceInfoContainer()->addInfo(resourceInfo);
+    resourceInfos_.push_back(resourceInfo);
 }
 
 bool InviwoModule::isInitialized() const {

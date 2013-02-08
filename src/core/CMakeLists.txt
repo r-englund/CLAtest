@@ -103,11 +103,12 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/resourceinfo.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/resourceinfocontainer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/settings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systeminfo.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -196,7 +197,6 @@ set(SOURCE_FILES
     util/fileobserver.cpp
     util/logdistributor.cpp
     util/observer.cpp
-    util/resourceinfocontainer.cpp
     util/settings.cpp
     util/systeminfo.cpp
     util/variant.cpp
