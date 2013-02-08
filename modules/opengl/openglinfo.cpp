@@ -16,11 +16,16 @@ namespace inviwo {
     }
 
     void OpenGLInfo::retrieveDynamicInfo(){
-        
+
     }
 
     void OpenGLInfo::printInfo(){
-        LogInfo("(Version) " << 4.2);
+        const GLubyte* test = glGetString(GL_RENDERER);
+        std::string test2 = std::string(reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+        //LogInfo("Vendor: " << ));
+        LogInfo("Renderer: " << glGetString(GL_RENDERER));
+        LogInfo("Version: " << glGetString(GL_VERSION));
+        LogInfo("GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION));
     }
 
 } // namespace

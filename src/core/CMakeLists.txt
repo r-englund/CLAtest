@@ -189,7 +189,6 @@ set(SOURCE_FILES
     io/serialization/ivwserializeconstants.cpp
     util/assertion.cpp
     util/canvas.cpp
-    util/callback.cpp
     util/commandlineparser.cpp
     util/exception.cpp
     util/fileobserver.cpp

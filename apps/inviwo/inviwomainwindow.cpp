@@ -16,8 +16,8 @@
 namespace inviwo { 
 
 InviwoMainWindow::InviwoMainWindow() {
-    networkEditorView_ = new NetworkEditorView(this);
-    setCentralWidget(networkEditorView_);
+    defaultRenderContext_ = new CanvasQt(this);    
+    defaultRenderContext_->switchContext();
 
     consoleWidget_ = new ConsoleWidget(this);
 
@@ -27,6 +27,9 @@ InviwoMainWindow::InviwoMainWindow() {
 InviwoMainWindow::~InviwoMainWindow() {}
 
 void InviwoMainWindow::initialize() {
+    networkEditorView_ = new NetworkEditorView(this);
+    setCentralWidget(networkEditorView_);
+
     settingsWidget_ = new SettingsWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
 
@@ -57,8 +60,6 @@ void InviwoMainWindow::deinitialize() {
 void InviwoMainWindow::setupEnvironment(){
     addMenuActions();
 
-    defaultRenderContext_ = new CanvasQt(this);    
-    defaultRenderContext_->switchContext();
     ProcessorNetworkEvaluator* processEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
     processEvaluator->setDefaultRenderContext(defaultRenderContext_);
     defaultRenderContext_->setFixedSize(0,0);

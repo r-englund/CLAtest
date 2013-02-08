@@ -26,7 +26,7 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
 }
 
 void OpenGLModule::initialize() {
-//    glewInit();
+
 }
 
 void OpenGLModule::deinitialize() {}

@@ -64,12 +64,13 @@ void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
 
 int main(int argc, char** argv) {
     InviwoApplication inviwoApp("glutminimum "+IVW_VERSION, IVW_DIR);
-    inviwoApp.initialize();
 
     glutInit(&argc, argv);
 
     canvas = new CanvasGLUT("glutminimum", ivec2(256,256));//, GLCanvas::RGBAD);
     canvas->initialize();
+
+    inviwoApp.initialize();
 
     // Create process network
     processorNetwork = new ProcessorNetwork();

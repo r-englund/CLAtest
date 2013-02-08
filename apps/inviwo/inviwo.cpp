@@ -24,13 +24,17 @@ int main(int argc, char** argv) {
 
     inviwo::InviwoMainWindow mainWin;
 
+    // ISetup Core Application
     inviwoApp.initialize();
     inviwoApp.setMainWindow(&mainWin);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
 
+    // Setup Main Window
     mainWin.initialize();
     mainWin.show();
     mainWin.setupEnvironment();
+
+    // Open Last Network
     mainWin.openLastNetwork();
 
     return inviwoApp.exec();

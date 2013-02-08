@@ -95,7 +95,7 @@ void InviwoApplication::allocationTest(){
             memBytesAlloc *= useRAMPercent->get(); //?% of total available memory
             try
             {
-                allocTest_ = new uint8_t[memBytesAlloc];
+                allocTest_ = new uint32_t[static_cast<uint32_t>(memBytesAlloc/4)];
                 LogInfo("Allocated " << formatBytes(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
             }
             catch(std::bad_alloc&)
