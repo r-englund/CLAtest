@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-450" y="-450" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="8" y="30" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property identifier="snapshot" displayName="Create Snapshot" />
+            </Properties>
+        </Processor>
+    </Processors>
+    <Connections />
+    <ProcessorLinks />
+</InviwoTreeData>

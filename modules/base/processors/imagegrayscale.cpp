@@ -32,14 +32,14 @@ void ImageGrayscale::process() {
     
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    ivec2 csize = outImageGL->dimension();
+    ivec2 imageSize = outImageGL->dimension();
 
     activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);
 
     shader_->activate();
     shader_->setUniform("inport0_", 0);
-    shader_->setUniform("dimension_", vec2(1.f / csize[0], 1.f / csize[1]) );
+    shader_->setUniform("dimension_", vec2(1.f / imageSize[0], 1.f / imageSize[1]) );
     renderImagePlaneQuad();
     shader_->deactivate();
 

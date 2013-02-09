@@ -85,12 +85,10 @@ void NetworkEditor::addPropertyWidgets(Processor* processor) {
     }
 }
 
-
 void NetworkEditor::removePropertyWidgets(Processor* processor) {
     PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
     propertyListWidget_->removeProcessorProperties(processor);
 }
-
 
 void NetworkEditor::removeProcessor(Processor* processor) {
     LogInfo("Removing processor.");
@@ -142,7 +140,6 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
     delete processorGraphicsItem;
 }
 
-
 void NetworkEditor::addConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
                                               ProcessorGraphicsItem* inProcessor, Port* inport) {
     // generate GUI representation and add to editor
@@ -150,19 +147,18 @@ void NetworkEditor::addConnectionGraphicsItem(ProcessorGraphicsItem* outProcesso
     connectionGraphicsItems_.push_back(connectionGraphicsItem);
     addItem(connectionGraphicsItem);
     connectionGraphicsItem->show();
-processorNetworkEvaluator_->evaluate();
+    //FIXME: evaluation necessary?
+    processorNetworkEvaluator_->evaluate();
 }
-
 
 void NetworkEditor::removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem) {
     connectionGraphicsItem->hide();
     removeItem(connectionGraphicsItem);
     connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(),
         connectionGraphicsItem), connectionGraphicsItems_.end());
-processorNetworkEvaluator_->evaluate();
+    //FIXME: evaluation necessary?
+    processorNetworkEvaluator_->evaluate();
 }
-
-
 
 void NetworkEditor::addLinkGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor) {
     LinkConnectionGraphicsItem* linkGraphicsItem = new LinkConnectionGraphicsItem(outProcessor, inProcessor);
@@ -172,27 +168,14 @@ void NetworkEditor::addLinkGraphicsItem(ProcessorGraphicsItem* outProcessor, Pro
     showLinkDialog(linkGraphicsItem);
 }
 
-
-
-
 void NetworkEditor::removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem) {
     linkGraphicsItem->hide();
     removeItem(linkGraphicsItem);
     linkGraphicsItems_.erase(std::remove(linkGraphicsItems_.begin(), linkGraphicsItems_.end(), linkGraphicsItem),
                              linkGraphicsItems_.end());
-processorNetworkEvaluator_->evaluate();
+    //FIXME: evaluation necessary?
+    processorNetworkEvaluator_->evaluate();
 }
-
-
-
-
-
-
-
-
-
-
-
 
 bool NetworkEditor::processorWithIdentifierExists(std::string identifier) {
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
@@ -235,6 +218,8 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
         if (canvasProcessor) {
             processor->setIdentifier("PortInspector "+port->getProcessor()->getIdentifier()+":"+port->getIdentifier());
             ProcessorWidgetQt* processorWidgetQt = ProcessorWidgetFactoryQt::getRef().create(processor);
+            processorWidgetQt->setMaximumSize(256, 256);
+            processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
             processor->setProcessorWidget(processorWidgetQt);
             processorWidgetQt->move(pos);
             processorWidgetQt->initialize();
@@ -278,15 +263,13 @@ void NetworkEditor::removeInspectorNetwork(Port* port) {
     std::string portPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0;i<processors.size();i++) {
-        if (processors[i]->getIdentifier().find(portPrefix)!=std::string::npos) {
-            processorNetwork_->removeProcessor(processors[i]);
-            //processors[i]->deinitialize();
-            delete processors[i];
-        }
+        if (processors[i]->getIdentifier().find(portPrefix)!=std::string::npos)
+            removeProcessor(processors[i]);
     }
 }
 
 void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
+    //TODO: allow to define inspectors in module
     ImagePort* imagePort = dynamic_cast<ImagePort*>(port);
     if (imagePort) {
         addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
