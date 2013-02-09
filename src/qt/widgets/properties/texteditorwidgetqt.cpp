@@ -1,73 +1,80 @@
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 
-#include <QDesktopServices>
-#include <QDir>
-#include <QFileDialog>
-#include <QList>
-#include <QSettings>
-#include <QUrl>
-#include <QFile>
-#include <QTextStream>
 
 namespace inviwo {
-
-TextEditorWidgetQt::TextEditorWidgetQt(TextEditorProperty* property) : property_(property) {
+TextEditorWidgetQt::TextEditorWidgetQt(Property* property,bool showProperty) : property_(property), btnProperty_("Edit","Open text editor"){
+    btnWidget_ = new ButtonPropertyWidgetQt(&btnProperty_);
+    showProperty_=showProperty;
     generateWidget();
     updateFromProperty();
 }
 
 void TextEditorWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-    textEditor_ = new QPlainTextEdit();
-    //Adds contextMenu
-    textEditor_->createStandardContextMenu();
-    lineEdit_ = new QLineEdit();
-    lineEdit_->setReadOnly(true);
-    editButton_ = new QPushButton();
-    editButton_->setText("Edit File");
-    openButton_ = new QToolButton();
-    openButton_->setIcon(QIcon(":/icons/network_open.png"));
-    connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
-    connect(editButton_,SIGNAL(pressed()),this,SLOT(editFile()));
-    hLayout->addWidget(lineEdit_);
-    hLayout->addWidget(openButton_);
-    hLayout->addWidget(editButton_);
-    setLayout(hLayout);
-}
+    if (dynamic_cast<FileProperty*>(property_))
+    {
+        fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
+        btnProperty_.registerClassMemberFunction(this, &TextEditorWidgetQt::editFile);
+       
+        if(showProperty_)
+            hLayout->addWidget(fileWidget_);
 
-void TextEditorWidgetQt::setPropertyValue() {
-    // dialog window settings
-    QStringList extension;
-    extension << "All Files (*.*)";
+    }
+    else if (dynamic_cast<StringProperty*>(property_))
+    {
+        stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
+        btnProperty_.registerClassMemberFunction(this, &TextEditorWidgetQt::editString);
 
-    QString dataDir_ = QString::fromStdString(IVW_DIR+"data/");
-
-    QList<QUrl> sidebarURLs;
-    sidebarURLs << QUrl::fromLocalFile(QDir(dataDir_).absolutePath());
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-
-    QFileDialog openFileDialog(this, tr("Open File ..."), QDir(dataDir_).absolutePath());
-    openFileDialog.setFileMode(QFileDialog::AnyFile);
-    openFileDialog.setNameFilters(extension);
-    openFileDialog.setSidebarUrls(sidebarURLs);
-
-    if (openFileDialog.exec()) {
-        QString path = openFileDialog.selectedFiles().at(0);
-        property_->set(path.toStdString());
+        if(showProperty_) 
+            hLayout->addWidget(stringWidget_);
     }
 
+    hLayout->addWidget(btnWidget_);
+    setLayout(hLayout);
+
+
+    QVBoxLayout* textEditorLayout = new QVBoxLayout();
+    textEditorLayout->setSpacing(0);
+    textEditorLayout->setMargin(0);
+    toolBar_ = new QToolBar();
+
+    saveButton_ = new QToolButton();
+    saveButton_->setIcon(QIcon(":/icons/network_save.png"));
+ 
+    toolBar_->addWidget(saveButton_);
+    toolBar_->addSeparator();
+
+    mainWidget_ = new QWidget();
+    textEditor_ = new QPlainTextEdit();
+    textEditor_->createStandardContextMenu();
+
+    textEditorLayout->addWidget(toolBar_);
+    textEditorLayout->addWidget(textEditor_);
+    mainWidget_->setLayout(textEditorLayout);
+
+
+
+    //Using a toolbar instead of this
+    //menuBar_ = new QMenuBar(mainWidget_);
+    //fileMenu_ = new QMenu(tr("File"));
+    //menuBar_->addMenu(fileMenu_);
+    //fileMenu_->addAction(tr("Save"), this, SLOT(writeToFile()));
+
 }
+
+void TextEditorWidgetQt::setPropertyValue() {}
+
+
 //Function loads the file into the textEditor_
 void TextEditorWidgetQt::editFile(){
-    file_ = new QFile(QString::fromStdString(property_->get()));
+    connect(saveButton_, SIGNAL(pressed()), this, SLOT(writeToFile()));
+    tmpPropertyValue_ = static_cast<StringProperty*>(property_)->get();
+    textEditor_->setPlainText(QString::fromStdString(tmpPropertyValue_));
+    file_ = new QFile(QString::fromStdString(tmpPropertyValue_));
     file_->open(QIODevice::ReadWrite);
     QTextStream textStream_(file_);
-    textEditor_->show();
-    textEditor_->setPlainText(textStream_.readAll());
-    connect(textEditor_,SIGNAL(textChanged ()),this,SLOT(writeToFile()));
-   
+    mainWidget_->show();
+    textEditor_->setPlainText(textStream_.readAll());   
 }
 //Function writes content of the textEditor_ to the file
 void TextEditorWidgetQt::writeToFile(){
@@ -78,9 +85,20 @@ void TextEditorWidgetQt::writeToFile(){
     textStream_ << textEditor_->toPlainText();
     file_->close();
 }
-
-void TextEditorWidgetQt::updateFromProperty() {
-    lineEdit_->setText(QFileInfo(QString::fromStdString(property_->get())).fileName());
+//Loads string into textEditor
+void TextEditorWidgetQt::editString(){
+    connect(saveButton_, SIGNAL(pressed()), this, SLOT(writeToString()));
+    mainWidget_->show();
+    tmpPropertyValue_ = static_cast<StringProperty*>(property_)->get();
+    textEditor_->setPlainText(QString::fromStdString(tmpPropertyValue_));
 }
+void TextEditorWidgetQt::writeToString()
+{
+    static_cast<StringProperty*>(property_)->set(textEditor_->toPlainText().toStdString());
+    stringWidget_->updateFromProperty();
+}
+
+
+void TextEditorWidgetQt::updateFromProperty() {}
 
 } // namespace
