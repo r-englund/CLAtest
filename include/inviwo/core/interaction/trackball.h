@@ -20,7 +20,7 @@ namespace inviwo {
     private:
         CameraProperty* camera_;
 
-        ivec2 lastMousePos_;
+        vec2 lastMousePos_;
         vec3 lastTrackballPos_;
 
         vec3 mapNormalizedMousePosToTrackball(vec2 mousePos);
