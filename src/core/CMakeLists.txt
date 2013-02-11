@@ -206,6 +206,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Define standard defintions
 ivw_define_standard_definitions(IVW_CORE)
+remove_definitions(-DHAVE_CONFIG_H)
 
 #--------------------------------------------------------------------
 # Create library
