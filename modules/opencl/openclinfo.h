@@ -109,7 +109,7 @@ std::string deviceInfoToString(cl_device_info info, const T& value, bool is_cl_b
     return stream.str();
 }
 
-template<typename T>
+template<typename T> inline
 std::string deviceInfoToString(cl_device_info info, const std::vector<T>& value, bool) { 
     std::ostringstream stream;
     if(info == CL_DEVICE_MAX_WORK_ITEM_SIZES) {
@@ -155,12 +155,12 @@ std::string deviceInfoToString(cl_device_info info, const std::vector<T>& value,
 }
 
 
-template<>
+template<> inline 
 static std::string deviceInfoToString(cl_device_info, const std::string& value, bool) {
     return value;
 }
 // We do not print platform info so far.
-template<>
+template<> inline
 static std::string deviceInfoToString(cl_device_info, const cl_platform_id& value, bool) { 
     return "";
 }
