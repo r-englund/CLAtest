@@ -126,7 +126,7 @@ namespace inviwo {
 
             }
 
-            printDeviceInfo(gpuDevice_);
+            OpenCLInfo::printDeviceInfo(gpuDevice_);
 
             cl_command_queue_properties queueProperties = 0;
             cl_command_queue_properties supportedQueueProperties;
@@ -167,27 +167,6 @@ namespace inviwo {
         return false;
     }
 
-    void OpenCL::printDeviceInfo(const cl::Device& device) {
-        
-        try
-        {
-            // Macros will print print supported device info
-            __DEVICE_INFO_1_0(__CL_PRINT_DEVICE_INFO)
-            #if defined(CL_VERSION_1_1)
-                __DEVICE_INFO_1_1(__CL_PRINT_DEVICE_INFO) 
-            #endif 
-            #if defined(CL_VERSION_1_2)
-                __DEVICE_INFO_1_2(__CL_PRINT_DEVICE_INFO) 
-            #endif 
-            #if defined(USE_CL_DEVICE_FISSION)
-                __PARAM_NAME_DEVICE_FISSION(__CL_PRINT_DEVICE_INFO) 
-            #endif
-        }
-        catch (cl::Error&)
-        {
-            LogInfoS("OpenCL", "Error while retrieving device info.");
-        }        
-    }
     /*! \brief Get the device that has most compute units.
      *  
      *  @param bestDevice Set to found device, if found.

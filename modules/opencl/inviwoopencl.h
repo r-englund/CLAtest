@@ -88,11 +88,6 @@ public:
     static bool isValidVolumeFormat(const cl::Context& context, const cl::ImageFormat& format);
 
     /**
-     * Print all available information on device.
-     */
-    static void printDeviceInfo(const cl::Device& device);
-
-    /**
      * Outputs formatted build error to logger.
      * 
      * @param devices (const std::vector<cl::Device> &)
