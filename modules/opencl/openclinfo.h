@@ -44,7 +44,7 @@ namespace inviwo {
  * @param bool is_cl_bool Necessary since cl_bool is a cl_uint
  * @return string representation of device info and corresponding value
  */
-template< typename T>
+template< typename T >
 std::string deviceInfoToString(cl_device_info info, const T& value, bool is_cl_bool) { 
     std::ostringstream stream;
     stream << std::boolalpha; // bool will print true/false
@@ -156,12 +156,12 @@ std::string deviceInfoToString(cl_device_info info, const std::vector<T>& value,
 
 
 template<> inline 
-static std::string deviceInfoToString<std::string>(cl_device_info, const std::string& value, bool) {
+std::string deviceInfoToString<std::string>(cl_device_info, const std::string& value, bool) {
     return value;
 }
 // We do not print platform info so far.
 template<> inline
-static std::string deviceInfoToString<cl_platform_id>(cl_device_info, const cl_platform_id& value, bool) { 
+std::string deviceInfoToString<cl_platform_id>(cl_device_info, const cl_platform_id& value, bool) { 
     return "";
 }
 
