@@ -21,7 +21,7 @@ public:
 
     void setStartPoint(QPointF startPoint) { startPoint_ = startPoint; }
     QPointF getStartPoint() const { return startPoint_; }
-
+ 
     void setEndPoint(QPointF endPoint) { endPoint_ = endPoint; }
     QPointF getEndPoint() const { return endPoint_; }
 

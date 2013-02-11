@@ -25,13 +25,11 @@ public:
 private:
     TransferProperty* property_;
 	QGraphicsView*	view;
-	QGraphicsScene* scene;
     QCheckBox* checkBox_;
-	TransferEditor editor;
+    QGraphicsScene* scene;
+	TransferEditor* editor;
 	static const std::string logSource_;
     void generateWidget();
-	void mousePressEvent(QGraphicsSceneMouseEvent * e);
-	void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
 
 public slots:
     void setPropertyValue();
