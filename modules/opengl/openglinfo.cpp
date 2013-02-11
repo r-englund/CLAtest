@@ -185,7 +185,7 @@ void OpenGLInfo::retrieveStaticInfo(){
     shadersAreSupportedARB_ = isExtensionSupported("GL_ARB_fragment_program");
 
 #ifdef GLEW_VERSION_4_3
-    GLint numberOfSupportedVersions;
+    GLint numberOfSupportedVersions = 0;
     glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &numberOfSupportedVersions);
     for(int i=0; i<numberOfSupportedVersions; i++){
         parseAndAddShaderVersion(toString(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
