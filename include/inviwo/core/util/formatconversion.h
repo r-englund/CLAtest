@@ -17,10 +17,10 @@ static const uint64_t GIGA_BYTE_SIZE = BYTE_SWAP * MEGA_BYTE_SIZE;
 static const uint64_t TERA_BYTE_SIZE = BYTE_SWAP * GIGA_BYTE_SIZE;
 static const float BYTE_DIV = 1.f/BYTE_SWAP;
 
-#define BYTES_TO_KILOBYTES(bytes) (bytes/BYTE_SWAP);
-#define BYTES_TO_MEGABYTES(bytes) (bytes/(BYTE_SWAP*BYTE_SWAP));
-#define KILOBYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP);
-#define MEGABYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP*BYTE_SWAP);
+#define BYTES_TO_KILOBYTES(bytes) (bytes/BYTE_SWAP)
+#define BYTES_TO_MEGABYTES(bytes) (bytes/(BYTE_SWAP*BYTE_SWAP))
+#define KILOBYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP)
+#define MEGABYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP*BYTE_SWAP)
 
 static IVW_CORE_API inline std::string formatBytesToString(uint64_t bytes) {
     std::ostringstream stream;
