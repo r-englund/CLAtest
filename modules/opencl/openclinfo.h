@@ -156,12 +156,12 @@ std::string deviceInfoToString(cl_device_info info, const std::vector<T>& value,
 
 
 template<> inline 
-static std::string deviceInfoToString(cl_device_info, const std::string& value, bool) {
+static std::string deviceInfoToString<std::string>(cl_device_info, const std::string& value, bool) {
     return value;
 }
 // We do not print platform info so far.
 template<> inline
-static std::string deviceInfoToString(cl_device_info, const cl_platform_id& value, bool) { 
+static std::string deviceInfoToString<cl_platform_id>(cl_device_info, const cl_platform_id& value, bool) { 
     return "";
 }
 
