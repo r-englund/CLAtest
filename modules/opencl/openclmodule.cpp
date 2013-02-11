@@ -22,6 +22,7 @@ OpenCLModule::OpenCLModule() : InviwoModule() {
 
 void OpenCLModule::initialize() {
     OpenCL::getInstance();
+    InviwoModule::initialize();
 }
 
 void OpenCLModule::deinitialize() {

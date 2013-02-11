@@ -15,7 +15,6 @@
 
 // This file contains macros and functions for printing OpenCL information.
 
-
 namespace inviwo {
     
     class IVW_MODULE_OPENCL_API OpenCLInfo: public ResourceInfo {
@@ -30,27 +29,6 @@ namespace inviwo {
          */
         static void printDeviceInfo(const cl::Device& device);
 
-        /** \brief Return string representation of  device info and corresponding value
-         * @note Added 
-         * @param cl_device_info info OpenCL device info identifier.
-         * @param const T & value 
-         * @param bool is_cl_bool Necessary since cl_bool is a cl_uint
-         * @return string representation of device info and corresponding value
-         */
-        template< typename T>
-        static std::string deviceInfoToString(cl_device_info info, const T& value, bool is_cl_bool);
-        template<typename T>
-        static std::string deviceInfoToString(cl_device_info info, const std::vector<T>& value, bool);
-        template<>
-        static std::string deviceInfoToString(cl_device_info, const std::string& value, bool) {
-            return value;
-        }
-        // We do not print platform info so far.
-        template<>
-        static std::string deviceInfoToString(cl_device_info, const cl_platform_id& value, bool) { 
-            return "";
-        }
-        
     protected:
         void retrieveStaticInfo();
         void retrieveDynamicInfo();
@@ -59,9 +37,15 @@ namespace inviwo {
     };
     
 
-
+/** \brief Return string representation of  device info and corresponding value
+ * @note Added 
+ * @param cl_device_info info OpenCL device info identifier.
+ * @param const T & value 
+ * @param bool is_cl_bool Necessary since cl_bool is a cl_uint
+ * @return string representation of device info and corresponding value
+ */
 template< typename T>
-std::string OpenCLInfo::deviceInfoToString(cl_device_info info, const T& value, bool is_cl_bool) { 
+std::string deviceInfoToString(cl_device_info info, const T& value, bool is_cl_bool) { 
     std::ostringstream stream;
     stream << std::boolalpha; // bool will print true/false
     switch(info) {
@@ -126,7 +110,7 @@ std::string OpenCLInfo::deviceInfoToString(cl_device_info info, const T& value, 
 }
 
 template<typename T>
-std::string OpenCLInfo::deviceInfoToString(cl_device_info info, const std::vector<T>& value, bool) { 
+std::string deviceInfoToString(cl_device_info info, const std::vector<T>& value, bool) { 
     std::ostringstream stream;
     if(info == CL_DEVICE_MAX_WORK_ITEM_SIZES) {
         stream << "(";
@@ -168,6 +152,17 @@ std::string OpenCLInfo::deviceInfoToString(cl_device_info info, const std::vecto
 #endif // USE_CL_DEVICE_FISSION
 
     return stream.str();
+}
+
+
+template<>
+static std::string deviceInfoToString(cl_device_info, const std::string& value, bool) {
+    return value;
+}
+// We do not print platform info so far.
+template<>
+static std::string deviceInfoToString(cl_device_info, const cl_platform_id& value, bool) { 
+    return "";
 }
 
 } // end namespace
@@ -257,11 +252,15 @@ F(cl_device_info, CL_DEVICE_BUILT_IN_KERNELS, STRING_CLASS)
 #endif // #if defined(CL_VERSION_1_2)
 
 #define __CL_PRINT_DEVICE_INFO(token, param_name, T) \
-    if(std::string(#T).compare("cl_bool") == 0) { \
-    LogInfoS("OpenCL", #param_name << ": " << OpenCLInfo::deviceInfoToString(param_name, device.getInfo<param_name>(), true)) \
-    } else {                                        \
-    LogInfoS("OpenCL", #param_name << ": " << OpenCLInfo::deviceInfoToString(param_name, device.getInfo<param_name>(), false)) \
-    } 
+    try { \
+        if(std::string(#T).compare("cl_bool") == 0) { \
+        LogInfoS("OpenCL Info", #param_name << ": " << inviwo::deviceInfoToString(param_name, device.getInfo<param_name>(), true)) \
+        } else {                                        \
+        LogInfoS("OpenCL Info", #param_name << ": " << inviwo::deviceInfoToString(param_name, device.getInfo<param_name>(), false)) \
+        } \
+    } catch(cl::Error&) { \
+        LogErrorS("OpenCL Info", "Error while retrieving device info for " << #param_name); \
+    }        
         
 #endif
 

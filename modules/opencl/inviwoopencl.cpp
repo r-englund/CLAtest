@@ -126,7 +126,7 @@ namespace inviwo {
 
             }
 
-            OpenCLInfo::printDeviceInfo(gpuDevice_);
+            //OpenCLInfo::printDeviceInfo(gpuDevice_);
 
             cl_command_queue_properties queueProperties = 0;
             cl_command_queue_properties supportedQueueProperties;

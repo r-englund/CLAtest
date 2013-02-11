@@ -24,7 +24,7 @@ namespace inviwo {
             default:            order = "unkown channel order"; break;
         }
         std::string type;
-        switch (format.image_channel_order) {
+        switch (format.image_channel_data_type) {
             case CL_SNORM_INT8: type = "CL_SNORM_INT8"; break;
             case CL_SNORM_INT16: type = "CL_SNORM_INT16"; break;
             case CL_UNORM_INT8: type = "CL_UNORM_INT8"; break;
@@ -65,22 +65,31 @@ namespace inviwo {
     void OpenCLInfo::printInfo(){
         OpenCLInfo::printDeviceInfo(OpenCL::getInstance()->getDevice());
         
-        // Supported image 2D formats
-        std::vector<cl::ImageFormat> formats;
-        OpenCL::getInstance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
-        std::ostringstream stream;
-        stream << "Supported 2D READ_WRITE formats: " << imageFormatToString(formats[0]);
-        for(::size_t i = 1; i < formats.size(); ++i) {
-            stream << ", " << imageFormatToString(formats[i]);
-        }
-        LogInfoS("OpenCL", stream.str())
-        formats.clear();
-        OpenCL::getInstance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
-        stream.clear();
-        stream << "Supported 3D READ_WRITE formats: " << imageFormatToString(formats[0]);
-        for(::size_t i = 1; i < formats.size(); ++i) {
-            stream << ", " << imageFormatToString(formats[i]);
-        }
+        //// Supported image 2D formats
+        //std::vector<cl::ImageFormat> formats;
+        //OpenCL::getInstance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
+        //std::ostringstream stream;
+        ////stream << "Supported 2D READ_WRITE formats: " << imageFormatToString(formats[0]);
+        ////for(::size_t i = 1; i < formats.size(); ++i) {
+        ////    stream << ", " << imageFormatToString(formats[i]) << std::endl;
+        ////}
+        //stream << "Supported 2D READ_WRITE formats: " << std::endl;
+        //for(::size_t i = 0; i < formats.size(); ++i) {
+        //    stream << imageFormatToString(formats[i]) << std::endl;
+        //}
+        //LogInfo(stream.str())
+        //formats.clear();
+        //OpenCL::getInstance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
+        //stream.clear();
+        ////stream << "Supported 3D READ_WRITE formats: " << imageFormatToString(formats[0]);
+        ////for(::size_t i = 1; i < formats.size(); ++i) {
+        ////    stream << ", " << imageFormatToString(formats[i]) << std::endl;
+        ////}
+        //stream << "Supported 3D READ_WRITE formats: " << std::endl;
+        //for(::size_t i = 0; i < formats.size(); ++i) {
+        //    stream << imageFormatToString(formats[i]) << std::endl;
+        //}
+        //LogInfo(stream.str())
     }
 
     void OpenCLInfo::printDeviceInfo(const cl::Device& device) {
@@ -99,9 +108,9 @@ namespace inviwo {
                 __PARAM_NAME_DEVICE_FISSION(__CL_PRINT_DEVICE_INFO) 
             #endif
         }
-        catch (cl::Error&)
+        catch (cl::Error& e)
         {
-            LogInfoS("OpenCL", "Error while retrieving device info.");
+            LogError("Error while retrieving device info: " << e.what());
         }        
     }
 
