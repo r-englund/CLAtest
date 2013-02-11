@@ -9,8 +9,8 @@
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/snapshotproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
-#include <inviwo/core/properties/stringoptionproperty.h>
-#include <inviwo/core/properties/templatedoptionproperty.h>
+//#include <inviwo/core/properties/stringoptionproperty.h>
+//#include <inviwo/core/properties/templatedoptionproperty.h>
 #include <inviwo/core/properties/texteditorproperty.h>
 #include <inviwo/core/properties/transferproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
