@@ -4,6 +4,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/openglinfo.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/core/util/singleton.h>
@@ -20,9 +21,12 @@ public:
 
     virtual void fileChanged(std::string shaderFilename);
 
+    std::string getGlobalGLSLHeader();
+
 private:
     static const std::string logSource_; ///< Source string to be displayed for log messages.
     std::vector<Shader*> shaders_;
+    OpenGLInfo* openGLInfoRef_;
 };
 
 } // namespace

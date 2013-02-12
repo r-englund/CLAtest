@@ -58,7 +58,7 @@ std::string ShaderObject::embeddDefines(std::string source) {
     while (std::getline(shaderSource, curLine))
         result << curLine << "\n";
 
-    return result.str();
+    return ShaderManager::getRef().getGlobalGLSLHeader() + result.str();
 }
 
 std::string ShaderObject::embeddIncludes(std::string source, std::string fileName) {

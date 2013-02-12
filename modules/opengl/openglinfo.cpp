@@ -1,8 +1,7 @@
 #include "openglinfo.h"
+#include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <inviwo/core/util/stringconversion.h>
-#include <inviwo/core/util/formatconversion.h>
-#include <string>
 
 namespace inviwo {
 
@@ -10,25 +9,55 @@ namespace inviwo {
 
 const std::string OpenGLInfo::logSource_ = "OpenGL Info";
 
+OpenGLInfo::GLSLShaderVersion::GLSLShaderVersion() : number_(0), profile_("") {}
+
+OpenGLInfo::GLSLShaderVersion::GLSLShaderVersion(int num) : number_(num), profile_("") {}
+
+OpenGLInfo::GLSLShaderVersion::GLSLShaderVersion(int num, std::string pro) : number_(num), profile_(pro) {}
+
+std::string OpenGLInfo::GLSLShaderVersion::getProfile() { 
+    return profile_; 
+}
+
+int OpenGLInfo::GLSLShaderVersion::getVersion() { 
+    return number_; 
+}
+
+std::string OpenGLInfo::GLSLShaderVersion::getVersionAsString(){
+    return toString<int>(number_); 
+}
+
+std::string OpenGLInfo::GLSLShaderVersion::getVersionAndProfileAsString() { 
+    return (hasProfile() ? getVersionAsString() + " " + profile_ : getVersionAsString()); 
+}
+
+bool OpenGLInfo::GLSLShaderVersion::hasProfile() { 
+    return (profile_ != ""); 
+}
+
 OpenGLInfo::OpenGLInfo() {
     supportedShaderVersions_.clear();
+    currentGlobalGLSLHeader_ = "";
+    preferredGLSLProfile_ = "compatibility";
 }
 
 OpenGLInfo::~OpenGLInfo() {}
 
 void OpenGLInfo::printInfo(){
-    LogInfo("GL Vendor: " << glGetString(GL_VENDOR));
-    LogInfo("GL Renderer: " << glGetString(GL_RENDERER));
-    LogInfo("GL Version: " << glGetString(GL_VERSION));
+    //OpenGL General Info
+    LogInfo("Vendor: " << glGetString(GL_VENDOR));
+    LogInfo("Renderer: " << glGetString(GL_RENDERER));
+    LogInfo("Version: " << glGetString(GL_VERSION));
 
     //GLSL
-    
     if(isShadersSupported()){
-        LogInfo("GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION));
+        LogInfo("GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION));
+        LogInfo("Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
         LogInfo("Shaders supported: YES");
     }
     else if(isShadersSupportedARB()){
-        LogInfo("GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION_ARB));
+        LogInfo("GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION_ARB));
+        LogInfo("Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
         LogInfo("Shaders supported: YES(ARB)");
     }
     else
@@ -58,15 +87,6 @@ void OpenGLInfo::printInfo(){
         int curMem = getCurrentAvailableTextureMem();
         LogInfo("Current available texture memory: " << (curMem>0 ? formatBytesToString(curMem) : "UNKNOWN"));
     }
-
-    /*for(size_t i=0; i<supportedShaderVersions_.size(); i++){
-        if(supportedShaderVersions_[i].hasProfile()){
-            LogInfo("Supports shader version " << supportedShaderVersions_[i].getVersion() << " with profile " << supportedShaderVersions_[i].getProfile());
-        }
-        else{
-            LogInfo("Supports shader version " << supportedShaderVersions_[i].getVersion());
-        }
-    }*/
 }
 
 bool OpenGLInfo::isExtensionSupported(const char* name){
@@ -99,6 +119,17 @@ bool OpenGLInfo::isShadersSupported(){
 
 bool OpenGLInfo::isShadersSupportedARB(){
     return shadersAreSupportedARB_;
+}
+
+OpenGLInfo::GLSLShaderVersion OpenGLInfo::getCurrentShaderVersion(){
+    return supportedShaderVersions_[currentGlobalGLSLVersionIdx_];
+}
+
+std::string OpenGLInfo::getCurrentGlobalGLSLHeader(){
+    if(currentGlobalGLSLHeader_ == "")
+        rebuildGLSLHeader();
+
+    return currentGlobalGLSLHeader_;
 }
 
 int OpenGLInfo::getCurrentAvailableTextureMem() throw (Exception) {
@@ -184,46 +215,59 @@ void OpenGLInfo::retrieveStaticInfo(){
     shadersAreSupported_ = isSupported("GL_VERSION_2_0");
     shadersAreSupportedARB_ = isExtensionSupported("GL_ARB_fragment_program");
 
-#ifdef GLEW_VERSION_4_3
     GLint numberOfSupportedVersions = 0;
+#ifdef GLEW_VERSION_4_3
     glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &numberOfSupportedVersions);
     for(int i=0; i<numberOfSupportedVersions; i++){
-        parseAndAddShaderVersion(toString(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
+        parseAndAddShaderVersion(toString<const GLubyte*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
     }
-#else
+#endif
+    if(numberOfSupportedVersions == 0){
+#ifdef GLEW_VERSION_4_3
+        addShaderVersion(GLSLShaderVersion(430, "core"));
+        addShaderVersion(GLSLShaderVersion(430, "compatibility"));
+#endif
 #ifdef GLEW_VERSION_4_2
-    addShaderVersion(GLSLShaderVersion(420, "core"));
-    addShaderVersion(GLSLShaderVersion(420, "compatibility"));
+        addShaderVersion(GLSLShaderVersion(420, "core"));
+        addShaderVersion(GLSLShaderVersion(420, "compatibility"));
 #endif
 #ifdef GLEW_VERSION_4_1
-    addShaderVersion(GLSLShaderVersion(410, "core"));
-    addShaderVersion(GLSLShaderVersion(410, "compatibility"));
+        addShaderVersion(GLSLShaderVersion(410, "core"));
+        addShaderVersion(GLSLShaderVersion(410, "compatibility"));
 #endif
 #ifdef GLEW_VERSION_4_0
-    addShaderVersion(GLSLShaderVersion(400, "core"));
-    addShaderVersion(GLSLShaderVersion(400, "compatibility"));
+        addShaderVersion(GLSLShaderVersion(400, "core"));
+        addShaderVersion(GLSLShaderVersion(400, "compatibility"));
 #endif
 #ifdef GLEW_VERSION_3_3
-    addShaderVersion(GLSLShaderVersion(330, "core"));
-    addShaderVersion(GLSLShaderVersion(300, "compatibility"));
+        addShaderVersion(GLSLShaderVersion(330, "core"));
+        addShaderVersion(GLSLShaderVersion(330, "compatibility"));
 #endif
 #ifdef GLEW_VERSION_3_2
-    addShaderVersion(GLSLShaderVersion(150, "core"));
-    addShaderVersion(GLSLShaderVersion(150, "compatibility"));
+        addShaderVersion(GLSLShaderVersion(150, "core"));
+        addShaderVersion(GLSLShaderVersion(150, "compatibility"));
 #endif
 #ifdef GLEW_VERSION_3_1
-    addShaderVersion(GLSLShaderVersion(140));
+        addShaderVersion(GLSLShaderVersion(140));
 #endif
 #ifdef GLEW_VERSION_3_0
-    addShaderVersion(GLSLShaderVersion(130));
+        addShaderVersion(GLSLShaderVersion(130));
 #endif
 #ifdef GLEW_VERSION_2_1
-    addShaderVersion(GLSLShaderVersion(120));
+        addShaderVersion(GLSLShaderVersion(120));
 #endif
 #ifdef GLEW_VERSION_2_0
-    addShaderVersion(GLSLShaderVersion(110));
+        addShaderVersion(GLSLShaderVersion(110));
 #endif
-#endif
+    }
+
+    //Set current used GLSL version to highest(i.e. 1st in vector) with preferred profile (or no profile)
+    if(isShadersSupported() || isShadersSupportedARB()){
+        size_t i = 0;
+        while(i<supportedShaderVersions_.size() && (supportedShaderVersions_[i].hasProfile() && supportedShaderVersions_[i].getProfile() != preferredGLSLProfile_))
+            i++;
+        currentGlobalGLSLVersionIdx_ = i;
+    }
 
     maxProgramLoopCount_ = -1;
     if (GLEW_NV_fragment_program2) {
@@ -231,7 +275,7 @@ void OpenGLInfo::retrieveStaticInfo(){
         glGetProgramivARB(GL_FRAGMENT_PROGRAM_ARB, GL_MAX_PROGRAM_LOOP_COUNT_NV, &i);
         if (i > 0) {
             //Restrict cycles to realistic samplingRate*maximumDimension, 20*(10 000) slices = 200 000
-            //maxProgramLoopCount_ = std::min(static_cast<int>(i), 200000);
+            maxProgramLoopCount_ = std::min<int>(static_cast<int>(i), 200000);
         }
     }
 
@@ -277,6 +321,29 @@ void OpenGLInfo::retrieveStaticInfo(){
 
 void OpenGLInfo::retrieveDynamicInfo(){
 
+}
+
+void OpenGLInfo::rebuildGLSLHeader(){
+    currentGlobalGLSLHeader_ = "#version " + supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersionAndProfileAsString() + "\n";
+
+    if(supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() == 140 && preferredGLSLProfile_ == "compatibility")
+        currentGlobalGLSLHeader_ += "#extension GL_ARB_compatibility : enable\n";
+
+    if(supportedShaderVersions_[currentGlobalGLSLVersionIdx_].hasProfile()){
+        currentGlobalGLSLHeader_ += "#define GLSL_PROFILE_" + toUpper(supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getProfile()) + "\n";
+    }
+
+    int lastVersion = -1;
+    for(size_t i=currentGlobalGLSLVersionIdx_; i<supportedShaderVersions_.size(); i++){
+        if(lastVersion != supportedShaderVersions_[i].getVersion()){
+            currentGlobalGLSLHeader_ += "#define GLSL_VERSION_" + supportedShaderVersions_[i].getVersionAsString() + "\n";
+            lastVersion = supportedShaderVersions_[i].getVersion();
+        }
+    }
+
+    if(getMaxProgramLoopCount() > 0){
+        currentGlobalGLSLHeader_ += "#define MAX_PROGRAM_LOOP_COUNT " + toString(getMaxProgramLoopCount()) + "\n";
+    }
 }
 
 void OpenGLInfo::addShaderVersion(GLSLShaderVersion version){

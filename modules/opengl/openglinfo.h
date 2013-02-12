@@ -11,14 +11,16 @@ class IVW_MODULE_OPENGL_API OpenGLInfo : public ResourceInfo {
 public:
     class IVW_MODULE_OPENGL_API GLSLShaderVersion {
     public:
-        GLSLShaderVersion() : number_(0), profile_("") {}
-        GLSLShaderVersion(int num) : number_(num), profile_("") {}
-        GLSLShaderVersion(int num, std::string pro) : number_(num), profile_(pro) {}
+        GLSLShaderVersion();
+        GLSLShaderVersion(int num);
+        GLSLShaderVersion(int num, std::string pro);
 
-        int getVersion() { return number_; }
-        std::string getProfile() { return profile_; }
+        std::string getProfile();
+        int getVersion();
+        std::string getVersionAsString();
+        std::string getVersionAndProfileAsString();
 
-        bool hasProfile() { return (profile_ != ""); }
+        bool hasProfile();
 
     private:
         int number_;
@@ -47,6 +49,9 @@ public:
     bool isShadersSupported();
     bool isShadersSupportedARB();
 
+    GLSLShaderVersion getCurrentShaderVersion();
+    std::string getCurrentGlobalGLSLHeader();
+
     int getCurrentAvailableTextureMem() throw (Exception);
     int getTotalAvailableTextureMem() throw (Exception);
 
@@ -61,6 +66,8 @@ protected:
     void retrieveStaticInfo();
     void retrieveDynamicInfo();
 
+    void rebuildGLSLHeader();
+
     void addShaderVersion(GLSLShaderVersion);
     void parseAndAddShaderVersion(std::string);
 
@@ -73,7 +80,10 @@ private:
     bool shadersAreSupported_;
     bool shadersAreSupportedARB_;
     int maxProgramLoopCount_;
-    GLSLShaderVersion currentUsedGLSLVersion_;
+
+    size_t currentGlobalGLSLVersionIdx_;
+    std::string currentGlobalGLSLHeader_;
+    std::string preferredGLSLProfile_;
     std::vector<GLSLShaderVersion> supportedShaderVersions_;
 
     //Texturing

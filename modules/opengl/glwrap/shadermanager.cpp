@@ -1,5 +1,7 @@
 #include "shadermanager.h"
 #include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/util/vectoroperations.h>
+#include <modules/opengl/openglmodule.h>
 #include <modules/opengl/processorgl.h>
 
 namespace inviwo {
@@ -8,6 +10,7 @@ const std::string ShaderManager::logSource_ = "ShaderManager";
 
 ShaderManager::ShaderManager() {
     InviwoApplication::getRef().registerFileObserver(this);
+    openGLInfoRef_ = NULL;
 }
 
 void ShaderManager::registerShader(Shader* shader) {
@@ -64,6 +67,20 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
                     processors[i]->invalidate();
         } else InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
     }
+}
+
+std::string ShaderManager::getGlobalGLSLHeader(){
+    if(!openGLInfoRef_){
+        OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
+        if(openGLModule)
+            openGLInfoRef_ = getTypeFromVector<OpenGLInfo>(openGLModule->getResourceInfos());
+    }
+
+    if(openGLInfoRef_){
+        return openGLInfoRef_->getCurrentGlobalGLSLHeader();
+    }
+
+    return "";
 }
 
 } // namespace

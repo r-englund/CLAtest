@@ -3,8 +3,10 @@
 
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/inviwo.h>
+#include <algorithm>
 #include <string>
 #include <sstream>
+#include <vector>
 
 namespace inviwo {
 
@@ -32,6 +34,16 @@ namespace inviwo {
             strings.push_back(part);
         }
         return strings;
+    }
+
+    IVW_CORE_API std::string toUpper(std::string str) {
+        std::transform(str.begin(), str.end(),str.begin(), ::toupper);
+        return str;
+    }
+
+    IVW_CORE_API std::string toLower(std::string str) {
+        std::transform(str.begin(), str.end(),str.begin(), ::tolower);
+        return str;
     }
 
 } // namespace
