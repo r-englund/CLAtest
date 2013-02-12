@@ -10,6 +10,7 @@ macro(ivw_project project_name)
   set(_allLibsDir "")
   set(_allLibs "")
   set(_allDefinitions "")
+  set(_allLinkFlags "")
 endmacro()
 
 #--------------------------------------------------------------------
@@ -470,6 +471,7 @@ macro(ivw_make_package package_name project_name)
   remove_duplicates(uniqueLibsDir ${_allLibsDir})
   clean_library_list(_allLibs)
   remove_duplicates(uniqueDefs ${_allDefinitions})
+  remove_duplicates(uniqueLinkFlags ${_allLinkFlags})
   
   string(TOUPPER ${package_name} u_package_name)
   set(package_name ${u_package_name})
@@ -478,6 +480,7 @@ macro(ivw_make_package package_name project_name)
   set(_allLibsDir ${uniqueLibsDir})
   set(_allLibs ${_allLibs})
   set(_allDefinitions ${uniqueDefs})
+  set(_allLinkFlags ${uniqueLinkFlags})
   set(_project_name ${project_name})
   
   configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_package_template.cmake ${IVW_CMAKE_BINARY_MODULE_DIR}/Find${package_name}.cmake @ONLY IMMEDIATE)
@@ -493,6 +496,18 @@ macro(ivw_include_directories)
       #--------------------------------------------------------------------
       # Append includes to project list
       list(APPEND _allIncludeDirs ${ARGN})
+endmacro()
+
+#--------------------------------------------------------------------
+# Add includes
+macro(ivw_add_link_flags)
+      #--------------------------------------------------------------------
+      # Set link flags
+      set_target_properties(${project_name} PROPERTIES LINK_FLAGS "${ARGN}")
+         
+      #--------------------------------------------------------------------
+      # Append includes to project list
+      list(APPEND _allLinkFlags "\"${ARGN}\"")
 endmacro()
 
 #--------------------------------------------------------------------
@@ -558,7 +573,7 @@ macro(ivw_add_dependencies)
       #--------------------------------------------------------------------
       # Set includes and append to list
       if(DEFINED ${u_package}_USE_FILE)
-        if(NOT ${u_package}_USE_FILE STREQUAL "")
+        if(NOT "${${u_package}_USE_FILE}" STREQUAL "")
             include(${${u_package}_USE_FILE})
             list(APPEND _allIncludes \"${${u_package}_USE_FILE}\")
         endif()
@@ -589,6 +604,12 @@ macro(ivw_add_dependencies)
       #--------------------------------------------------------------------
       # Link library
       target_link_libraries(${_projectName} ${${u_package}_LIBRARIES})
+
+      #--------------------------------------------------------------------
+      # Link flags
+      if(NOT "${${u_package}_LINK_FLAGS}" STREQUAL "")
+      	set_target_properties(${_projectName} PROPERTIES LINK_FLAGS "${${u_package}_LINK_FLAGS}")
+      endif()
       
       #--------------------------------------------------------------------
       # Add dependcy package variables to this package if shared build
@@ -605,7 +626,12 @@ macro(ivw_add_dependencies)
           #--------------------------------------------------------------------
           # Append definitions to project list
           list (APPEND _allDefinitions ${${u_package}_DEFINITIONS})
-      
+
+          #--------------------------------------------------------------------
+          # Append link flags to project list
+	  if(NOT "${${u_package}_LINK_FLAGS}" STREQUAL "")
+              list (APPEND _allLinkFlags "\"${${u_package}_LINK_FLAGS}\"")
+          endif()
       endif()
     endforeach()
 endmacro()

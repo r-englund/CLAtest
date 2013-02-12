@@ -46,7 +46,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
 
   include_directories(src/os/darwin/)
   if(CMAKE_SYSTEM_NAME MATCHES "(Darwin)")
-    include_directories(/Developer/Headers/FlatCarbon/)
+    ivw_include_directories(/Developer/Headers/FlatCarbon/)
     add_definitions(-DDARWIN)
     set(SIGAR_LINK_FLAGS "-framework CoreServices -framework IOKit")
   else(CMAKE_SYSTEM_NAME MATCHES "(Darwin)")
@@ -114,7 +114,7 @@ if(WIN32)
 endif(WIN32)
 
 if(SIGAR_LINK_FLAGS)
-  set_target_properties(sigar PROPERTIES LINK_FLAGS "${SIGAR_LINK_FLAGS}")
+    ivw_add_link_flags(${SIGAR_LINK_FLAGS})
 endif(SIGAR_LINK_FLAGS)
 
 #--------------------------------------------------------------------
