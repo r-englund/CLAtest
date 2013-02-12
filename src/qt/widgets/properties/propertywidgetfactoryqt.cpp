@@ -91,8 +91,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
     if (dynamic_cast<SnapshotProperty*>(property))
         return new SnapshotPropertyWidgetQt(static_cast<SnapshotProperty*>(property));
-    if (dynamic_cast<StringOptionProperty*>(property))
-        return new OptionPropertyWidgetQt(static_cast<StringOptionProperty*>(property));
+    //if (dynamic_cast<StringOptionProperty*>(property))
+    //    return new OptionPropertyWidgetQt(static_cast<StringOptionProperty*>(property));
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
     if (dynamic_cast<TransferProperty*>(property))

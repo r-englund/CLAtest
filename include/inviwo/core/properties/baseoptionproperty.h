@@ -10,9 +10,7 @@ namespace inviwo {
 
 class IVW_CORE_API BaseOptionProperty : public StringProperty{
 public:
-    //BaseOptionProperty(std::string identifier, std::string displayName,std::string value);
-
-    BaseOptionProperty::BaseOptionProperty(std::string identifier, std::string displayName,std::string value)
+    BaseOptionProperty(std::string identifier, std::string displayName,std::string value)
         :StringProperty(identifier,displayName,value)
     {}
 };
@@ -27,11 +25,11 @@ public:
     virtual void addOption(std::string optionName,T optionValue);
     virtual std::vector<std::pair<std::string, T>> getOptions();
     virtual int getSelectedOption();
-    virtual void setSelectedOption(int);
+    virtual void setSelectedOption( int );
 
 
 private:
-    std::vector<std::pair<std::string, T>> optionVector_;
+    std::vector< std::pair<std::string, T> > optionVector_;
     int selectedOption_;
 };
 
@@ -47,7 +45,7 @@ void TemplatedOptionProperty<T>::addOption(std::string optionName,T optionValue)
     optionVector_.push_back(std::make_pair(optionName,optionValue));
 }
 template<typename T>
-std::vector<std::pair<std::string, T>> TemplatedOptionProperty<T>::getOptions(){
+std::vector< std::pair<std::string, T> > TemplatedOptionProperty< T >::getOptions(){
     return optionVector_;
 }
 template<typename T>
