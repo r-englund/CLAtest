@@ -26,7 +26,7 @@ void OptionPropertyWidgetQt::fillComboBox(){
    }   
 }
 void OptionPropertyWidgetQt::optionChanged(){
-    std::cout<<static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().at(comboBox_->currentIndex()).second << std::endl;
+    //std::cout<<static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().at(comboBox_->currentIndex()).second << std::endl;
     static_cast<TemplatedOptionProperty<std::string>*>(property_)->setSelectedOption(comboBox_->currentIndex());
 }
 
