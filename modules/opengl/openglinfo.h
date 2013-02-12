@@ -69,7 +69,9 @@ protected:
     void rebuildGLSLHeader();
 
     void addShaderVersion(GLSLShaderVersion);
+    void addShaderVersionIfEqualOrLower(GLSLShaderVersion, int);
     void parseAndAddShaderVersion(std::string);
+    int parseAndRetrieveShaderVersion(std::string);
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 

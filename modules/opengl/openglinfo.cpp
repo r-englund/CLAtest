@@ -223,42 +223,52 @@ void OpenGLInfo::retrieveStaticInfo(){
     }
 #endif
     if(numberOfSupportedVersions == 0){
+        std::string glslStr = "";
+        if(isShadersSupported())
+            glslStr = std::string(reinterpret_cast<const char*>((glGetString(GL_SHADING_LANGUAGE_VERSION))));
+        else if(isShadersSupportedARB())
+            glslStr = std::string(reinterpret_cast<const char*>((glGetString(GL_SHADING_LANGUAGE_VERSION_ARB))));
+
+        int glslVersion = parseAndRetrieveShaderVersion(glslStr);
+
+        if(glslVersion != 0){
 #ifdef GLEW_VERSION_4_3
-        addShaderVersion(GLSLShaderVersion(430, "core"));
-        addShaderVersion(GLSLShaderVersion(430, "compatibility"));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "core"), glslVersion);
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "compatibility"), glslVersion);
 #endif
 #ifdef GLEW_VERSION_4_2
-        addShaderVersion(GLSLShaderVersion(420, "core"));
-        addShaderVersion(GLSLShaderVersion(420, "compatibility"));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(420, "core"), glslVersion);
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(420, "compatibility"), glslVersion);
 #endif
 #ifdef GLEW_VERSION_4_1
-        addShaderVersion(GLSLShaderVersion(410, "core"));
-        addShaderVersion(GLSLShaderVersion(410, "compatibility"));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(410, "core"), glslVersion);
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(410, "compatibility"), glslVersion);
 #endif
 #ifdef GLEW_VERSION_4_0
-        addShaderVersion(GLSLShaderVersion(400, "core"));
-        addShaderVersion(GLSLShaderVersion(400, "compatibility"));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(400, "core"), glslVersion);
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(400, "compatibility"), glslVersion);
 #endif
 #ifdef GLEW_VERSION_3_3
-        addShaderVersion(GLSLShaderVersion(330, "core"));
-        addShaderVersion(GLSLShaderVersion(330, "compatibility"));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(330, "core"), glslVersion);
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(330, "compatibility"), glslVersion);
 #endif
 #ifdef GLEW_VERSION_3_2
-        addShaderVersion(GLSLShaderVersion(150, "core"));
-        addShaderVersion(GLSLShaderVersion(150, "compatibility"));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(150, "core"), glslVersion);
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(150, "compatibility"), glslVersion);
 #endif
 #ifdef GLEW_VERSION_3_1
-        addShaderVersion(GLSLShaderVersion(140));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(140), glslVersion);
 #endif
 #ifdef GLEW_VERSION_3_0
-        addShaderVersion(GLSLShaderVersion(130));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(130), glslVersion);
 #endif
 #ifdef GLEW_VERSION_2_1
-        addShaderVersion(GLSLShaderVersion(120));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(120), glslVersion);
 #endif
 #ifdef GLEW_VERSION_2_0
-        addShaderVersion(GLSLShaderVersion(110));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(110), glslVersion);
 #endif
+        }
     }
 
     //Set current used GLSL version to highest(i.e. 1st in vector) with preferred profile (or no profile)
@@ -350,6 +360,11 @@ void OpenGLInfo::addShaderVersion(GLSLShaderVersion version){
     supportedShaderVersions_.push_back(version);
 }
 
+void OpenGLInfo::addShaderVersionIfEqualOrLower(GLSLShaderVersion version, int compVersion){
+    if(version.getVersion() <= compVersion)
+        addShaderVersion(version);
+}
+
 void OpenGLInfo::parseAndAddShaderVersion(std::string versionStr){
     //Assumes <version><space><profile> or <version>, example 420 core or 140
     if(!versionStr.empty()){
@@ -359,6 +374,15 @@ void OpenGLInfo::parseAndAddShaderVersion(std::string versionStr){
         else
             addShaderVersion(GLSLShaderVersion(stringTo<int>(versionSplit[0])));
     }
+}
+
+int OpenGLInfo::parseAndRetrieveShaderVersion(std::string versionStr){
+    //Assumes <version><space><desc>
+    if(!versionStr.empty()){
+        std::vector<std::string> versionSplit = splitString(versionStr);
+        return stringTo<int>(removeFromString(versionSplit[0], '.'));
+    }
+    return 0;
 }
 
 } // namespace

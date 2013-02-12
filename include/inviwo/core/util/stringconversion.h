@@ -36,6 +36,11 @@ namespace inviwo {
         return strings;
     }
 
+    IVW_CORE_API std::string removeFromString(std::string str, char char_to_remove = ' ') {
+        str.erase(std::remove(str.begin(), str.end(), char_to_remove), str.end());
+        return str;
+    }
+
     IVW_CORE_API std::string toUpper(std::string str) {
         std::transform(str.begin(), str.end(),str.begin(), ::toupper);
         return str;
