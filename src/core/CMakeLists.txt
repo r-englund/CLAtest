@@ -163,7 +163,6 @@ set(SOURCE_FILES
     processors/processorwidgetfactory.cpp
     processors/datasource/datasourceprocessor.cpp
     processors/datasource/volumesource.cpp
-    properties/baseoptionproperty.cpp
     properties/boolproperty.cpp
     properties/buttonproperty.cpp
     properties/cameraproperty.cpp
