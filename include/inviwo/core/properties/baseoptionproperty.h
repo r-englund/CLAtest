@@ -23,7 +23,7 @@ class IVW_CORE_API TemplatedOptionProperty : public BaseOptionProperty {
 public:
     TemplatedOptionProperty(std::string identifier, std::string displayName,std::string value, int selectedOption);
     virtual void addOption(std::string optionName,T optionValue);
-    virtual std::vector<std::pair<std::string, T>> getOptions();
+    virtual std::vector< std::pair<std::string, T> > getOptions();
     virtual int getSelectedOption();
     virtual void setSelectedOption( int );
 
