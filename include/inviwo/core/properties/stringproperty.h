@@ -5,7 +5,7 @@
 
 namespace inviwo {
 
-    class StringProperty : public TemplateProperty<std::string> {
+    class IVW_CORE_API StringProperty : public TemplateProperty<std::string> {
 
     public:
         StringProperty(std::string identifier, std::string displayName, std::string value);

@@ -9,8 +9,7 @@
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/snapshotproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
-//#include <inviwo/core/properties/stringoptionproperty.h>
-//#include <inviwo/core/properties/templatedoptionproperty.h>
+#include <inviwo/core/properties/stringoptionproperty.h>
 #include <inviwo/core/properties/texteditorproperty.h>
 #include <inviwo/core/properties/transferproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
@@ -40,8 +39,6 @@
 
 namespace inviwo {
 
-    typedef FileProperty TextFileProperty;
-    typedef StringProperty TextStringProperty;
 
 const std::string PropertyWidgetFactoryQt::logSource_ = "PropertyWidgetFactoryQt";
 
@@ -50,15 +47,16 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
     //if (dynamic_cast<CameraProperty*>(property))
     //    return new CameraPropertyWidgetQt(static_cast<CameraProperty*>(property));
     //if (dynamic_cast<TextFileProperty*>(property))
-    //    return new TextEditorWidgetQt(static_cast<TextFileProperty*>(property),true);
+        //return new TextEditorWidgetQt(static_cast<TextFileProperty*>(property),true);
     //if (dynamic_cast<TextStringProperty*>(property))
-    //    return new TextEditorWidgetQt(static_cast<TextStringProperty*>(property),true);
+        //return new TextEditorWidgetQt(static_cast<TextStringProperty*>(property),true);
     //if (dynamic_cast<TemplatedOptionProperty<int>*>(property))
     //    return new OptionPropertyWidgetQt<int>(static_cast<TemplatedOptionProperty<int>*>(property));
     //if (dynamic_cast<TextEditorProperty*>(property))
     //    return new TextEditorWidgetQt(static_cast<TextEditorProperty*>(property));
     //if (dynamic_cast<StringOptionProperty*>(property))
-    //return new OptionPropertyWidgetQt<std::string>(static_cast<StringOptionProperty*>(property));
+    //return new OptionPropertyWidgetQt(static_cast<StringOptionProperty*>(property));
+
 
 
     if (dynamic_cast<BoolProperty*>(property))
@@ -93,6 +91,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
     if (dynamic_cast<SnapshotProperty*>(property))
         return new SnapshotPropertyWidgetQt(static_cast<SnapshotProperty*>(property));
+    if (dynamic_cast<StringOptionProperty*>(property))
+        return new OptionPropertyWidgetQt(static_cast<StringOptionProperty*>(property));
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
     if (dynamic_cast<TransferProperty*>(property))

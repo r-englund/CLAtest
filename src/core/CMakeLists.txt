@@ -56,6 +56,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/datasourceprocessor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/baseoptionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/boolproperty.h
 	${IVW_INCLUDE_DIR}/inviwo/core/properties/buttonproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/cameraproperty.h
@@ -63,7 +64,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
 	${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/properties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
@@ -74,6 +74,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/snapshotproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringoptionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
@@ -162,6 +163,7 @@ set(SOURCE_FILES
     processors/processorwidgetfactory.cpp
     processors/datasource/datasourceprocessor.cpp
     processors/datasource/volumesource.cpp
+    properties/baseoptionproperty.cpp
     properties/boolproperty.cpp
     properties/buttonproperty.cpp
     properties/cameraproperty.cpp
@@ -176,6 +178,7 @@ set(SOURCE_FILES
     properties/propertywidgetfactory.cpp
     properties/scalarproperties.cpp
     properties/snapshotproperty.cpp
+    properties/stringoptionproperty.cpp
     properties/stringproperty.cpp
     properties/texteditorproperty.cpp
     properties/transferproperty.cpp

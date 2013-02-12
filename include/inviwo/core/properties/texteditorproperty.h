@@ -13,6 +13,12 @@ namespace inviwo {
         virtual void deserialize(IvwDeserializer& d);
     };
 
+    //typedef FileProperty TextFileProperty;
+
+    //typedef StringProperty TextStringProperty;
+
 } // namespace
+
+
 
 #endif // IVW_TEXTEDITORPROPERTY_H
