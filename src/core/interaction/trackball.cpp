@@ -1,5 +1,5 @@
 #include <inviwo/core/interaction/trackball.h>
-//#include <modules/opengl/inviwoopengl.h> // FOR DEBUGGING
+#include <modules/opengl/inviwoopengl.h> // FOR DEBUGGING
 
 namespace inviwo {
 
@@ -18,11 +18,11 @@ namespace inviwo {
     vec3 Trackball::mapNormalizedMousePosToTrackball(vec2 mousePos) {
         // set x and y to lie in interval [-r, r]
         float r = RADIUS;
-        vec3 result = vec3(mousePos.x, mousePos.y, 0.0f);
+        vec3 result = vec3(mousePos.x-RADIUS, -1.0f*(mousePos.y-RADIUS), 0.0f);
         
         // HOLROYD
         // compute z = sqrt(r^2-x^2+y^2) if r/sqrt(2) => sqrt(x^2+y^2) (sphere)
-        if (sqrtf(result.x*result.x + result.y*result.y) <= r/sqrtf(2.0f)) {
+        if ((result.x*result.x + result.y*result.y) <= r*r/(2.0f)) {
             result.z = r*r - (result.x*result.x + result.y*result.y);
             result.z = result.z > 0.0f ? sqrtf(result.z) : 0.0f;
             //std::cout << "Sphere " << result.z << std::endl;
@@ -55,8 +55,6 @@ namespace inviwo {
             if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
                 // ROTATION
                 vec2 curMousePos = mouseEvent->posNormalized();
-                curMousePos.x = curMousePos.x-RADIUS;
-                curMousePos.y = RADIUS-curMousePos.y;
                 vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);
                 float lookLength;
     			
@@ -66,11 +64,19 @@ namespace inviwo {
                     lastMousePos_ = curMousePos;
 				    mouseHold = true;
 			    }
-                vec2 normMousePos = mouseEvent->posNormalized();
+                //vec2 normMousePos = mouseEvent->posNormalized();
                 if (curTrackballPos != lastTrackballPos_) {
+
+                    // Map trackball coordinates to the camera according to result' = viewmatrix*(eye^-1)*result <=> result' = viewmatrix*result
+                    vec4 curr = vec4(curTrackballPos.x, curTrackballPos.y, curTrackballPos.z, 0.0f);
+                    vec4 prev = vec4(lastTrackballPos_.x, lastTrackballPos_.y, lastTrackballPos_.z, 0.0f);
+                    curr = camera_->viewMatrix()*curr;
+                    prev = camera_->viewMatrix()*prev;
+                    //result = vec3(tmp.x, tmp.y, tmp.z);
+
                     // calculate rotation angle
-				    float rotationAngle = acos(glm::dot(curTrackballPos, lastTrackballPos_));
-                    //std::cout << rotationAngle << std::endl;   
+				    float rotationAngle = acos(glm::dot(curr, prev));
+                    std::cout << rotationAngle << std::endl;   
 
                     // FOR DEBUGGING 
                     // Draws a line with the trackball x and y. Color with z.
@@ -82,8 +88,7 @@ namespace inviwo {
                     
                     // obtain rotation axis
                     if(rotationAngle > MOVEMENT_THRESHOLD){
-                        vec3 rotationAxis = glm::cross(curTrackballPos, lastTrackballPos_);
-                        
+                        vec3 rotationAxis = glm::cross(vec3(curr.x, curr.y, curr.z), vec3(prev.x, prev.y, prev.z) );                       
                         
 				        // generate quaternion and rotate camera                
                         rotationAxis = glm::normalize(rotationAxis);                
@@ -112,27 +117,28 @@ namespace inviwo {
             // ZOOM
             float diff;
             vec2 curMousePos = mouseEvent->posNormalized();
-            curMousePos.x = curMousePos.x-RADIUS;
-            curMousePos.y = RADIUS-curMousePos.y;
-            
+            vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);
+          
             // compute direction vector
             vec3 direction = camera_->lookFrom() - camera_->lookTo();
 			
             // disable movements on first press
 			if (!mouseHold){				
 				lastMousePos_ = curMousePos;
+                lastTrackballPos_ = curTrackballPos;
 				mouseHold = true;
 			}
 
 			if (curMousePos != lastMousePos_ && direction.length() > 0){
 
 				// use the difference in mouse y-position to determine amount of zoom				
-				diff = curMousePos.y - lastMousePos_.y;
+				diff = curTrackballPos.y - lastTrackballPos_.y;
 
                 // zoom by moving the camera
-				camera_->setLookTo(camera_->lookTo()+direction*diff);
+                camera_->setLookTo(camera_->lookTo()+direction*diff);
 				camera_->invalidate();
 				lastMousePos_ = curMousePos;
+                lastTrackballPos_ = curTrackballPos;
 			}
 			
 		} else if (mouseEvent->state() == MouseEvent::MOUSE_STATE_RELEASE) {
@@ -140,12 +146,12 @@ namespace inviwo {
         } else if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_MIDDLE && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             // PAN
             vec2 curMousePos = mouseEvent->posNormalized();
-            curMousePos.x = curMousePos.x-RADIUS;
-            curMousePos.y = RADIUS-curMousePos.y;
+            vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);
 
             // disable movements on first press
             if (!mouseHold){				
                 lastMousePos_ = curMousePos;
+                lastTrackballPos_ = curTrackballPos;
                 mouseHold = true;
             }
            
@@ -155,12 +161,13 @@ namespace inviwo {
                 // Calculate movement
                 vec3 direction = camera_->lookFrom()-camera_->lookTo();
                 vec3 up = camera_->lookUp();
-                diffX = (float)(lastMousePos_.x - curMousePos.x)*glm::normalize(glm::cross(direction, up));
-                diffY = (float)(lastMousePos_.y - curMousePos.y)*up;
+                diffX = (float)(lastMousePos_.x - curTrackballPos.x)*glm::normalize(glm::cross(direction, up));
+                diffY = (float)(lastMousePos_.y - curTrackballPos.y)*up;
                 camera_->setLookTo(camera_->lookTo()+diffX+diffY);
                 camera_->setLookFrom(camera_->lookFrom()+diffX+diffY);
                 camera_->invalidate();
                 lastMousePos_ = curMousePos;
+                lastTrackballPos_ = curTrackballPos;
             }
         } 
             return;
