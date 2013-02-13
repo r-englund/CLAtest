@@ -3649,16 +3649,38 @@ int sigar_os_sys_info_get(sigar_t *sigar,
                 vendor_version = "7";
                 code_name = "Vienna";
             }
-            else {
+            else if (version.dwMinorVersion == 2) {
                 vendor_name = "Windows 8";
                 vendor_version = "8";
                 code_name = "Windows 8";
             }
+            else {
+                vendor_name = "Newer than Windows 8";
+                vendor_version = "Unknown";
+                code_name = "";
+            }
         }
         else {
-            vendor_name = "Windows 2008";
-            vendor_version = "2008";
-            code_name = "Longhorn Server";
+            if (version.dwMinorVersion == 0) {
+                vendor_name = "Windows Server 2008";
+                vendor_version = "2008";
+                code_name = "Longhorn Server";
+            }
+            else if (version.dwMinorVersion == 1) {
+                vendor_name = "Windows Server 2008 R2";
+                vendor_version = "2008 R2";
+                code_name = "Vienna Server";
+            }
+            else if (version.dwMinorVersion == 2) {
+                vendor_name = "Windows Server 2012";
+                vendor_version = "2012";
+                code_name = "";
+            }
+            else {
+                vendor_name = "Newer than Windows Server 2012";
+                vendor_version = "Unknown";
+                code_name = "";
+            }
         }
     }
 

@@ -3673,15 +3673,23 @@ int sigar_os_sys_info_get(sigar_t *sigar,
         }
     }
     else {
-        return SIGAR_ENOTIMPL;
+        codename = "Unknown";
     }
 
     SIGAR_SSTRCPY(sysinfo->vendor_code_name, codename);
 
-    snprintf(sysinfo->description,
-             sizeof(sysinfo->description),
-             "%s %s %s",
-             sysinfo->vendor_name, sysinfo->version, sysinfo->vendor_code_name);
+    if(strcmp(sysinfo->vendor_code_name, "Unknown") == 0){
+        snprintf(sysinfo->description,
+                 sizeof(sysinfo->description),
+                 "%s %s",
+                 sysinfo->vendor_name, sysinfo->version);
+    }
+    else{
+        snprintf(sysinfo->description,
+                 sizeof(sysinfo->description),
+                 "%s %s %s",
+                 sysinfo->vendor_name, sysinfo->version, sysinfo->vendor_code_name);
+    }
 #else
     char *ptr;
 

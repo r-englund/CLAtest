@@ -61,7 +61,9 @@ void InviwoApplication::printApplicationInfo(){
 #ifdef CMAKE_GENERATOR
     LogInfoS("Application Info", "Compiler: " << CMAKE_GENERATOR);
 #endif
-#ifdef CMAKE_INTDIR
+#if defined(CMAKE_BUILD_TYPE)
+    LogInfoS("Application Info", "Configuration: " << CMAKE_BUILD_TYPE);
+#elif defined(CMAKE_INTDIR)
     LogInfoS("Application Info", "Configuration: " << CMAKE_INTDIR);
 #endif
 }
