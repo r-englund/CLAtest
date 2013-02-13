@@ -208,7 +208,14 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Define standard defintions
 ivw_define_standard_definitions(IVW_CORE)
+
+# Special Core Defines
 remove_definitions(-DHAVE_CONFIG_H)
+# Define Build Type if not empty
+if(NOT "${CMAKE_BUILD_TYPE}" STREQUAL "")
+    add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+endif()
+add_definitions(-DCMAKE_GENERATOR="${CMAKE_GENERATOR}")
 
 #--------------------------------------------------------------------
 # Create library

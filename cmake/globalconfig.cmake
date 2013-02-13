@@ -106,12 +106,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_definitions(-DDARWIN)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-# Define Build Type if not empty
-if(NOT "${CMAKE_BUILD_TYPE}" STREQUAL "")
-    add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
-endif()
-add_definitions(-DCMAKE_GENERATOR="${CMAKE_GENERATOR}")
-
 # Build shared libs or static libs
 option(SHARED_LIBS "Build shared libs, else static libs" OFF)
 mark_as_advanced(SHARED_LIBS)

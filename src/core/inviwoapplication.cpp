@@ -58,14 +58,17 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
 
 void InviwoApplication::printApplicationInfo(){
     LogInfoS("Inviwo Info", "Version: " << IVW_VERSION);
+    std::string config = "";
 #ifdef CMAKE_GENERATOR
-    LogInfoS("Inviwo Info", "Compiler: " << CMAKE_GENERATOR);
+    config += std::string(CMAKE_GENERATOR);
 #endif
 #if defined(CMAKE_BUILD_TYPE)
-    LogInfoS("Inviwo Info", "Configuration: " << CMAKE_BUILD_TYPE);
+    config += " [" + std::string(CMAKE_BUILD_TYPE) + "]";
 #elif defined(CMAKE_INTDIR)
-    LogInfoS("Inviwo Info", "Configuration: " << CMAKE_INTDIR);
+    config += " [" + std::string(CMAKE_INTDIR) + "]";
 #endif
+    if(config != "")
+        LogInfoS("Inviwo Info", "Config: " << config);
 }
 
 } // namespace
