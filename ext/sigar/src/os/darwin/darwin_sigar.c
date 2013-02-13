@@ -1390,7 +1390,7 @@ int sigar_proc_time_get(sigar_t *sigar, sigar_pid_t pid,
 
 #ifdef DARWIN
 /* thread state mapping derived from ps.tproj */
-static const char const thread_states[] = {
+static const char thread_states[] = {
     /*0*/ '-',
     /*1*/ SIGAR_PROC_STATE_RUN,
     /*2*/ SIGAR_PROC_STATE_ZOMBIE,
@@ -3661,6 +3661,12 @@ int sigar_os_sys_info_get(sigar_t *sigar,
           case 6:
             codename = "Snow Leopard";
             break;
+          case 7:
+            codename = "Lion";
+            break;
+          case 8:
+            codename = "Mountain Lion";
+            break;
           default:
             codename = "Unknown";
             break;
@@ -3674,8 +3680,8 @@ int sigar_os_sys_info_get(sigar_t *sigar,
 
     snprintf(sysinfo->description,
              sizeof(sysinfo->description),
-             "%s %s",
-             sysinfo->vendor_name, sysinfo->vendor_code_name);
+             "%s %s %s",
+             sysinfo->vendor_name, sysinfo->version, sysinfo->vendor_code_name);
 #else
     char *ptr;
 

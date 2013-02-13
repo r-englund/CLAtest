@@ -29,12 +29,12 @@ Port* PortConnection::SlimPort::getPort() const{
 }
 
 PortConnection::PortConnection()   
-    : outport_(0),
-      inport_(0) {}
+    : inport_(0),
+      outport_(0){}
 
 PortConnection::PortConnection(Port* outport, Port* inport)
-    : outport_(outport),
-      inport_(inport) {}
+    : inport_(inport),
+      outport_(outport){}
 
 PortConnection::~PortConnection() {}
 

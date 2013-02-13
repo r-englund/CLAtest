@@ -28,6 +28,7 @@ public:
     VolumeRAMPrecision(ivec3 dimensions);
     VolumeRAMPrecision(T* data, ivec3 dimensions);
     virtual ~VolumeRAMPrecision() {};
+    using VolumeRAM::initialize;
     virtual void initialize(void*);
     virtual void deinitialize();    
     virtual DataRepresentation* clone();

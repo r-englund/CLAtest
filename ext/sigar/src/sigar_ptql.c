@@ -1143,7 +1143,7 @@ static int SIGAPI ptql_args_match(sigar_t *sigar,
         }
     }
     else {
-        unsigned long num = (unsigned long)branch->data.ui32;
+        long num = (long)branch->data.ui32;
 
         /* e.g. find last element of args: Args.-1.eq=weblogic.Server */
         if (num < 0) {

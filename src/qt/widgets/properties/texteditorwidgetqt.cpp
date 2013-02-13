@@ -2,7 +2,7 @@
 
 
 namespace inviwo {
-TextEditorWidgetQt::TextEditorWidgetQt(Property* property,bool showProperty) : property_(property), btnProperty_("Edit","Open text editor"){
+TextEditorWidgetQt::TextEditorWidgetQt(Property* property,bool showProperty) : btnProperty_("Edit","Open text editor"), property_(property){
     btnWidget_ = new ButtonPropertyWidgetQt(&btnProperty_);
     showProperty_=showProperty;
     generateWidget();

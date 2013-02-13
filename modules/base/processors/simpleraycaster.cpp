@@ -8,10 +8,10 @@ SimpleRaycaster::SimpleRaycaster()
     entryPort_(Port::INPORT, "entry-points"),
     exitPort_(Port::INPORT, "exit-points"),
     outport_(Port::OUTPORT, "outport"),
-    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f),
     enableShading_("enableShading", "Shading", false),
     lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
-	enableMIP_("enableMIP", "MIP", false)
+	enableMIP_("enableMIP", "MIP", false),
+    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f)
 {
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");

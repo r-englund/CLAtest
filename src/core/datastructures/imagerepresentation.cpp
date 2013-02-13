@@ -7,7 +7,7 @@ namespace inviwo {
     {}
 
     ImageRepresentation::ImageRepresentation(ivec2 dimensions)
-        : dimensions_(dimensions), DataRepresentation()
+        : DataRepresentation(), dimensions_(dimensions)
     {
 
     }

@@ -70,7 +70,7 @@ namespace inviwo {
         bool successCPUInfo_;
         bool successMemoryInfo_;
         bool successDiskInfo_;
-        bool successProcessMemoryInfo_;
+        //bool successProcessMemoryInfo_;
     };
 
 } // namespace

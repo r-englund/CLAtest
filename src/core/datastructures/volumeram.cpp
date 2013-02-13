@@ -3,11 +3,11 @@
 namespace inviwo {
 
     VolumeRAM::VolumeRAM()
-        : data_(0), VolumeRepresentation(ivec3(128,128,128), "UINT8")
+        : VolumeRepresentation(ivec3(128,128,128), "UINT8"), data_(0)
     {}
 
     VolumeRAM::VolumeRAM(ivec3 dimensions)
-        : data_(0), VolumeRepresentation(dimensions, "UINT8")
+        : VolumeRepresentation(dimensions, "UINT8"), data_(0)
     {}
 
     VolumeRAM::~VolumeRAM() {}

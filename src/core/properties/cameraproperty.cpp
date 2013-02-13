@@ -11,8 +11,8 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     lookUp_("lookUp", "Look up", lookUp, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
     fovy_("fov", "FOV", 60.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
     aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
-    nearPlane_("near", "Near Plane", 0.0001f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
-    farPlane_("far", "Far Plane", 100.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f)
+    farPlane_("far", "Far Plane", 100.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
+    nearPlane_("near", "Near Plane", 0.0001f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f)
 {
     addProperty(lookFrom_);
     addProperty(lookTo_);

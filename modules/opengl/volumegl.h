@@ -35,6 +35,7 @@ public:
     VolumeGLPrecision(ivec3 dimensions);
     VolumeGLPrecision(T* texels, ivec3 dimensions);
     virtual ~VolumeGLPrecision() {};
+    using VolumeGL::initialize;
     virtual void initialize(void* texels);
     virtual void deinitialize();
     virtual DataRepresentation* clone();

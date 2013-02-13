@@ -78,8 +78,10 @@ ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcess
                                                : CurveGraphicsItem(outProcessor->mapToScene(outProcessor->calculatePortRect(outport)).boundingRect().center(),
                                                                    inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center(), 
                                                                    inport->getColorCode(), true, false),
-                                                 outProcessor_(outProcessor), outport_(outport),
-                                                 inProcessor_(inProcessor), inport_(inport) {
+                                                 outProcessor_(outProcessor), 
+                                                 inProcessor_(inProcessor),
+                                                 outport_(outport),
+                                                 inport_(inport) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
 

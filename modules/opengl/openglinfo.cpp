@@ -79,6 +79,10 @@ void OpenGLInfo::printInfo(){
     if(isTextureArraysSupported()){
         LogInfo("Max array texture size: " << getMaxArrayTexSize());
     }
+    if(isFboSupported()){
+        LogInfo("Max color attachments: " << getMaxColorAttachments());
+    }
+
 
     if(isTexturesSupported()){
         LogInfo("Max number of texture units: " << getNumTexUnits());
@@ -196,7 +200,7 @@ int OpenGLInfo::getMaxArrayTexSize(){
 }
 
 int OpenGLInfo::getMaxColorAttachments(){
-    return maxArrayTexSize_;
+    return maxColorAttachments_;
 }
 
 void OpenGLInfo::retrieveStaticInfo(){
@@ -327,6 +331,10 @@ void OpenGLInfo::retrieveStaticInfo(){
 
     //FBO
     fboSupported_ = isExtensionSupported("GL_EXT_framebuffer_object");
+    
+    maxColorAttachments_ = 0;
+    if(isFboSupported())
+        glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachments_);
 }
 
 void OpenGLInfo::retrieveDynamicInfo(){

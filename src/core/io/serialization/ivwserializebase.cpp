@@ -161,7 +161,8 @@ std::vector<IvwSerializeBase::ReferenceData> IvwSerializeBase::ReferenceDataCont
     pIt = _allReferenceMap.equal_range(data);
 
     for (RefMap::iterator mIt = pIt.first; mIt != pIt.second; ++mIt) {
-        if (nodeCopy = (*mIt).second._node->Clone()->ToElement()) {
+        nodeCopy = (*mIt).second._node->Clone()->ToElement();
+        if (nodeCopy) {
             nodeCopy->Clear();
             break;
         }

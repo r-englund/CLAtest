@@ -34,7 +34,7 @@ namespace inviwo {
         bool SUCCESS = (status == SIGAR_OK);
         if(SUCCESS) {
             infoOS_.description = std::string(systeminfo.description);
-            if(systeminfo.arch == "x86")
+            if(strcmp(systeminfo.arch, "x86") == 0)
                 infoOS_.platform = 32;
             else
                 infoOS_.platform = 64;

@@ -52,12 +52,12 @@ void PropertyLink::deserialize(IvwDeserializer& s) {
 
 
 ProcessorLink::ProcessorLink()   
-    : outProcessor_(0),
-      inProcessor_(0) {}
+    : inProcessor_(0),
+      outProcessor_(0){}
 
 ProcessorLink::ProcessorLink(Processor* outProecessor, Processor* inProecessor)
-    : outProcessor_(outProecessor),
-      inProcessor_(inProecessor) {}
+    : inProcessor_(inProecessor),
+      outProcessor_(outProecessor){}
 
 ProcessorLink::~ProcessorLink() {}
 

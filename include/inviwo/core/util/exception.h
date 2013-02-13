@@ -8,7 +8,7 @@ namespace inviwo {
 class Exception : public std::exception {
 
 public:
-    Exception(const std::string& message);
+    Exception(const std::string& message = "");
     virtual ~Exception() throw() {}
 
     virtual const std::string getMessage() const throw();

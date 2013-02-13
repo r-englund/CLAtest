@@ -536,8 +536,10 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
 
             QAction* result = menu.exec(QCursor::pos());
             if (result == inspectorAction)
-                if (inspectorAction->isChecked()) addPortInspector(selectedPort, e->screenPos());
-                else removeInspectorNetwork(selectedPort);
+                if (inspectorAction->isChecked())
+                    addPortInspector(selectedPort, e->screenPos());
+                else
+                    removeInspectorNetwork(selectedPort);
         } else {
             // Processor context menu
             QMenu menu;

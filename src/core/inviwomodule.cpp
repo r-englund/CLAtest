@@ -7,9 +7,9 @@ const std::string InviwoModule::logSource_ = "InviwoModule";
 
 InviwoModule::InviwoModule()
     : identifier_("undefined")
-    , xmlDocuFileName_("undefined")
     , initialized_(false)
     , applicationSettings_(NULL)
+    , xmlDocuFileName_("undefined")
 {}
 
 InviwoModule::~InviwoModule() {

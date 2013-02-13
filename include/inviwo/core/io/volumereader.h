@@ -13,6 +13,7 @@ public:
     virtual ~VolumeReader() {}
 
     //virtual Data* readData(const std::string filePath)=0;
+    using DataReader::readData;
     virtual Data* readData()=0;
 protected:
 };

@@ -4,8 +4,7 @@
 namespace inviwo {
 
 ImagePort::ImagePort(PortDirection direction, std::string identifier)
-    : dimensions_(ivec2(256,256)),
-      DataPort<Image>(direction, identifier)
+    : DataPort<Image>(direction, identifier), dimensions_(ivec2(256,256))
 {}
 
 ImagePort::~ImagePort() {}

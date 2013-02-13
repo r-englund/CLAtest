@@ -6,8 +6,8 @@ namespace inviwo {
 CanvasProcessor::CanvasProcessor()
     : Processor(),
     inport_(Port::INPORT, "inport"),
-    canvas_(0),
-	snapshot_("snapshot", "Create Snapshot", inport_)
+	snapshot_("snapshot", "Create Snapshot", inport_),
+    canvas_(0)
 {
     addPort(inport_);
 	addProperty(snapshot_);
