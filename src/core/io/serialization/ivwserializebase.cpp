@@ -26,7 +26,7 @@ IvwSerializeBase::ReferenceDataContainer::ReferenceDataContainer() {
 IvwSerializeBase::ReferenceDataContainer::~ReferenceDataContainer() {
 }
 
-int IvwSerializeBase::ReferenceDataContainer::insert(const void *data, TxElement *node, bool isPointer) {
+size_t IvwSerializeBase::ReferenceDataContainer::insert(const void *data, TxElement *node, bool isPointer) {
  
     IvwSerializeBase::ReferenceData refData;
 
@@ -35,7 +35,7 @@ int IvwSerializeBase::ReferenceDataContainer::insert(const void *data, TxElement
 
     _allReferenceMap.insert(RefDataPair(data, refData));
 
-    int count = _allReferenceMap.count(data);
+    size_t count = _allReferenceMap.count(data);
 
     return count;
 }
@@ -80,7 +80,7 @@ void IvwSerializeBase::ReferenceDataContainer::setReferenceAttributes() {
     
 }
 
-int IvwSerializeBase::ReferenceDataContainer::find(const void *data) {
+size_t IvwSerializeBase::ReferenceDataContainer::find(const void *data) {
     return _allReferenceMap.count(data);
 }
 

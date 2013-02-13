@@ -94,7 +94,7 @@ QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
     centerPoints.push_back(c + (propertyMappedDim/2.0));
     
     qreal minDist = std::numeric_limits<qreal>::max();
-    int minInd=0;
+    size_t minInd=0;
     for (size_t i=1; i<centerPoints.size(); i++) {
         if (QVector2D(centerPoints[i] - inPos).length()<minDist) {
             minInd = i;
@@ -105,7 +105,7 @@ QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
     return centerPoints[minInd];
 }
 
-QRectF ProcessorGraphicsItem::calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const {
+QRectF ProcessorGraphicsItem::calculatePortRect(size_t curPort, Port::PortDirection portDir) const {
     QPointF portDims(10.0f, 10.0f);
     
     if (portDir == Port::INPORT) {

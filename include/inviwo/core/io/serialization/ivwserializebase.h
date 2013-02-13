@@ -97,8 +97,8 @@ public:
     public:
          ReferenceDataContainer();
         ~ReferenceDataContainer();
-        int insert(const void *data, TxElement *node, bool isPointer=true);
-        int find(const void *data);
+        size_t insert(const void *data, TxElement *node, bool isPointer=true);
+        size_t find(const void *data);
         void* find(const std::string& key, const std::string& reference_or_id);
         std::vector<ReferenceData> getNodes(const void *data);
         TxElement* nodeCopy(const void *data);

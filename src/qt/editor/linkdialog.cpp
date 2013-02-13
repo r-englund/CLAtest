@@ -138,7 +138,7 @@ void DialogConnectionGraphicsItem::switchDirection() {
     endPropertyGraphicsItem_ = getStartProperty();
     startPropertyGraphicsItem_ = tempProp;
 
-    int temp = endArrowHeadIndex_;
+    size_t temp = endArrowHeadIndex_;
     endArrowHeadIndex_ = startArrowHeadIndex_;
     startArrowHeadIndex_ = temp;
 
@@ -344,7 +344,7 @@ void LinkDialogPropertyGraphicsItem::addConnectionGraphicsItem(DialogConnectionG
     connectionItems_.push_back(cItem);
 }
 
-int LinkDialogPropertyGraphicsItem::getConnectionGraphicsItemCount() const{
+size_t LinkDialogPropertyGraphicsItem::getConnectionGraphicsItemCount() const{
     return connectionItems_.size();
 }
 
@@ -370,7 +370,7 @@ DialogConnectionGraphicsItem* LinkDialogPropertyGraphicsItem::getArrowConnection
     return 0;
 }
 
-QRectF LinkDialogPropertyGraphicsItem::calculateArrowRect(unsigned int curPort, bool computeRight) const {
+QRectF LinkDialogPropertyGraphicsItem::calculateArrowRect(size_t curPort, bool computeRight) const {
     QPointF arrowDim(20.0f, 10.0f);
     QPointF rectDim(0, rect().height()/(getConnectionGraphicsItemCount()+1));
 
@@ -537,8 +537,8 @@ QPointF LinkDialogPropertyGraphicsItem::getShortestBoundaryPointTo(QPointF inPos
     return leftBoundaryCenter1;
 }
 
-QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(unsigned int curPort, bool computeRight) const {
-    int arrowCount = getConnectionGraphicsItemCount();
+QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(size_t curPort, bool computeRight) const {
+    size_t arrowCount = getConnectionGraphicsItemCount();
     QPointF o = pos() ;
     if (computeRight) {
         QPointF br = o + QPointF(rect().width()/2, rect().height()/2);
@@ -747,13 +747,13 @@ void LinkDialogGraphicsScene::cleanupAfterRemoveLink(DialogConnectionGraphicsIte
     for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
         if (connectionGraphicsItems_[i] == propertyLink) continue;
         else if (connectionGraphicsItems_[i]->getStartProperty() == startProperty) {
-            int index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
+            size_t index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
             if (index > propertyLink->getStartArrowHeadIndex()) {
                 connectionGraphicsItems_[i]->setStartArrowHeadIndex(index-1);
             }
         }
         else if (connectionGraphicsItems_[i]->getEndProperty() == startProperty) {
-            int index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
+            size_t index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
             if (index > propertyLink->getStartArrowHeadIndex()) {
                 connectionGraphicsItems_[i]->setEndArrowHeadIndex(index-1);
             }
@@ -763,13 +763,13 @@ void LinkDialogGraphicsScene::cleanupAfterRemoveLink(DialogConnectionGraphicsIte
     for (size_t i=0; i<connectionGraphicsItems_.size(); i++) {
         if (connectionGraphicsItems_[i] == propertyLink) continue;
         else if (connectionGraphicsItems_[i]->getEndProperty() == endProperty) {
-            int index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
+            size_t index = connectionGraphicsItems_[i]->getEndArrowHeadIndex();
             if (index > propertyLink->getEndArrowHeadIndex()) {
                 connectionGraphicsItems_[i]->setEndArrowHeadIndex(index-1);
             }
         }
         else if (connectionGraphicsItems_[i]->getStartProperty() == endProperty) {
-            int index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
+            size_t index = connectionGraphicsItems_[i]->getStartArrowHeadIndex();
             if (index > propertyLink->getEndArrowHeadIndex()) {
                 connectionGraphicsItems_[i]->setStartArrowHeadIndex(index-1);
             }

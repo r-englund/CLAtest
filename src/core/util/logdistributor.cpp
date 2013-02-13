@@ -13,7 +13,7 @@ void ConsoleLogger::log(std::string logSource, unsigned int logLevel, const char
     IVW_UNUSED_PARAM(logLevel);
     IVW_UNUSED_PARAM(functionName);
     IVW_UNUSED_PARAM(lineNumber);
-    std::cout << logSource << ": " << logMsg << std::endl;
+    std::cout << "(" << logSource << ") " << logMsg << std::endl;
 }
 
 

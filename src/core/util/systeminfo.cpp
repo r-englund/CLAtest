@@ -141,46 +141,46 @@ namespace inviwo {
 
         // Try to retrieve operating system information
         if(successOSInfo_){
-            LogInfo("(OS) " << infoOS_.description << " " << infoOS_.platform << "-bit");
+            LogInfo("OS: " << infoOS_.description << " " << infoOS_.platform << "-bit");
         }
         else{
-            SystemInfoNotFound("(OS)");
+            SystemInfoNotFound("OS:");
         }
 
         // Try to retrieve CPU information
         if(successCPUInfo_){
             for(unsigned long i=0; i<infoCPUs_.size(); i++){
-                LogInfo("(CPU " << i+1 << ") " << infoCPUs_[i].vendor << " " << infoCPUs_[i].model << " " << infoCPUs_[i].mhz << " Mhz");
+                LogInfo("CPU " << i+1 << ": " << infoCPUs_[i].vendor << " " << infoCPUs_[i].model << " " << infoCPUs_[i].mhz << " Mhz");
             }
         }
         else{
-            SystemInfoNotFound("(CPU)");
+            SystemInfoNotFound("CPU:");
         }
 
         // Try to retrieve memory information
         if(successMemoryInfo_){
-            LogInfo("(RAM) Total - " << formatBytesToString(infoRAM_.total) << ", Available - " << formatBytesToString(infoRAM_.available));
+            LogInfo("RAM: Total - " << formatBytesToString(infoRAM_.total) << ", Available - " << formatBytesToString(infoRAM_.available));
         }
         else{
-            SystemInfoNotFound("(RAM)");
+            SystemInfoNotFound("RAM:");
         }
 
         // Try to retrieve Disk information
         if(successDiskInfo_){
             for(unsigned long i=0; i<infoDisks_.size(); i++){
-                LogInfo("(Disk " << infoDisks_[i].diskName << ") Total - " << formatBytesToString(infoDisks_[i].total) << ", Free - " << formatBytesToString(infoDisks_[i].free));
+                LogInfo("Disk: " << infoDisks_[i].diskName << " Total - " << formatBytesToString(infoDisks_[i].total) << ", Free - " << formatBytesToString(infoDisks_[i].free));
             }
         }
         else{
-            SystemInfoNotFound("(Disk)");
+            SystemInfoNotFound("Disk:");
         }
 
         // Try to retrieve this process memory information
         /*if(successProcessMemoryInfo_){
-        LogInfo("(Processor Memory) Resident - " << formatBytes(infoProcRAM_.residentMem) << ", Shared - " << formatBytes(infoProcRAM_.sharedMem) << ", Virtual - " << formatBytes(infoProcRAM_.virtualMem));
+        LogInfo("Processor Memory: Resident - " << formatBytes(infoProcRAM_.residentMem) << ", Shared - " << formatBytes(infoProcRAM_.sharedMem) << ", Virtual - " << formatBytes(infoProcRAM_.virtualMem));
         }
         else{
-        SystemInfoNotFound("(Processor Memory)");
+        SystemInfoNotFound("Processor Memory:");
         }*/
     }
 

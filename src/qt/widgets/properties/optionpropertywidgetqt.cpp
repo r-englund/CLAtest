@@ -19,8 +19,8 @@ void OptionPropertyWidgetQt::generateWidget() {
 }
 
 void OptionPropertyWidgetQt::fillComboBox(){
-   int size_ = static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().size();
-   for (int i=0; i<size_; i++)
+   size_t size_ = static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().size();
+   for (size_t i=0; i<size_; i++)
    {
        comboBox_->addItem(QString::fromStdString(static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().at(i).first));
    }   

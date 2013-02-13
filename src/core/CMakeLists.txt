@@ -208,6 +208,8 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Define standard defintions
 ivw_define_standard_definitions(IVW_CORE)
+add_definitions(-DCMAKE_GENERATOR="${CMAKE_GENERATOR}")
+add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
 remove_definitions(-DHAVE_CONFIG_H)
 
 #--------------------------------------------------------------------

@@ -21,6 +21,8 @@ void InviwoApplication::initialize() {
     settings_ = new Settings();
     settings_->initialize();
 
+    printApplicationInfo();
+
     registerModule(new InviwoCore());
     registerAllModules(this);
     for (size_t i=0; i<modules_.size(); i++){
@@ -52,6 +54,16 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
         result += "modules/";
     result += suffix;
     return result;
+}
+
+void InviwoApplication::printApplicationInfo(){
+    LogInfoS("Application Info", "Version: " << IVW_VERSION);
+#ifdef CMAKE_GENERATOR
+    LogInfoS("Application Info", "Compiler: " << CMAKE_GENERATOR);
+#endif
+#ifdef CMAKE_INTDIR
+    LogInfoS("Application Info", "Configuration: " << CMAKE_INTDIR);
+#endif
 }
 
 } // namespace

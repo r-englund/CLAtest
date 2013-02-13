@@ -26,23 +26,23 @@ void ConsoleWidget::log(std::string logSource, unsigned int logLevel, const char
     switch (logLevel) {
         case Info: 
             textField_->setTextColor(infoTextColor_);
-            message = QString::fromStdString(logSource + ": " + logMsg);
+            message = QString::fromStdString("(" + logSource + ") " + logMsg);
             break;
         case Warn: 
             textField_->setTextColor(warnTextColor_);
-            message = QString::fromStdString(logSource + ": " + logMsg);
+            message = QString::fromStdString("(" + logSource + ") " + logMsg);
             break;
         case Error: {
             textField_->setTextColor(errorTextColor_);
             std::ostringstream lineNumberStr;
             lineNumberStr << lineNumber;
-            message = QString::fromStdString(logSource + " (" + std::string(fileName) +
-                ", " + lineNumberStr.str() + "): " + logMsg);
+            message = QString::fromStdString("(" + logSource + ") [" + std::string(fileName) +
+                ", " + lineNumberStr.str() + "]: " + logMsg);
             break;
         }
         default:
             textField_->setTextColor(infoTextColor_);
-            message = QString::fromStdString(logSource + ": " + logMsg);
+            message = QString::fromStdString("(" + logSource + ") " + logMsg);
             //textField_->append(QString::fromStdString(logSource + ": " + logMsg)); 
     }
     textField_->append(message); 

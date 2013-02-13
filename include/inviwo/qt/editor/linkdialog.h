@@ -66,10 +66,10 @@ public:
     bool isBidirectional();
     void initialize();
     void deinitialize();
-    void setStartArrowHeadIndex(int index) {startArrowHeadIndex_ = index;}
-    void setEndArrowHeadIndex(int index) {endArrowHeadIndex_ = index;}
-    int getStartArrowHeadIndex() { return startArrowHeadIndex_;}
-    int getEndArrowHeadIndex() { return endArrowHeadIndex_;}
+    void setStartArrowHeadIndex(size_t index) {startArrowHeadIndex_ = index;}
+    void setEndArrowHeadIndex(size_t index) {endArrowHeadIndex_ = index;}
+    size_t getStartArrowHeadIndex() { return startArrowHeadIndex_;}
+    size_t getEndArrowHeadIndex() { return endArrowHeadIndex_;}
     void updateStartEndPoint();
     void updateConnectionDrawing();
 
@@ -79,8 +79,8 @@ protected:
 private:
     LinkDialogPropertyGraphicsItem* startPropertyGraphicsItem_;
     LinkDialogPropertyGraphicsItem* endPropertyGraphicsItem_;
-    int startArrowHeadIndex_;
-    int endArrowHeadIndex_;
+    size_t startArrowHeadIndex_;
+    size_t endArrowHeadIndex_;
     PropertyLink* propertyLink_;
     ProcessorLink* processorLink_;
 };
@@ -148,8 +148,8 @@ public:
 
     void updatePositionBasedOnProcessor();
 
-    QPointF calculateArrowCenter(unsigned int curPort, bool computeRight) const;
-    QRectF calculateArrowRect(unsigned int curPort, bool computeRight) const;
+    QPointF calculateArrowCenter(size_t curPort, bool computeRight) const;
+    QRectF calculateArrowRect(size_t curPort, bool computeRight) const;
     QRectF calculateArrowRect(DialogConnectionGraphicsItem* cItem, bool computeRight=true) const;
     DialogConnectionGraphicsItem* getArrowConnectionAt(const QPointF pos) const;
     bool isArrowPointedRight(DialogConnectionGraphicsItem* cItem);
@@ -161,7 +161,7 @@ public:
     void prepareGeometryChange() {QGraphicsItem::prepareGeometryChange();}
 
     void addConnectionGraphicsItem(DialogConnectionGraphicsItem*);
-    int getConnectionGraphicsItemCount() const;
+    size_t getConnectionGraphicsItemCount() const;
     void removeConnectionGraphicsItem(DialogConnectionGraphicsItem*);
 
 protected:

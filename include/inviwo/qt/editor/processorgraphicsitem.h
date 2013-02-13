@@ -32,7 +32,7 @@ public:
     void setProcessor(Processor* processor);
     void editProcessorName();
     QRectF calculatePortRect(Port* port) const;
-    QRectF calculatePortRect(unsigned int curPort, Port::PortDirection portDir) const;
+    QRectF calculatePortRect(size_t curPort, Port::PortDirection portDir) const;
     Port* getSelectedPort(const QPointF pos) const;
     void updateMetaData();
     void flipLayout();
