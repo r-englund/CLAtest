@@ -8,7 +8,7 @@
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
-#include <inviwo/core/properties/stringoptionproperty.h>
+#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/property.h>
 #include <typeinfo>
 

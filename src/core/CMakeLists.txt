@@ -63,6 +63,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
 	${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
+	${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/properties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
@@ -74,7 +75,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/snapshotproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringoptionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
@@ -169,7 +169,7 @@ set(SOURCE_FILES
     properties/compositeproperty.cpp
     properties/fileproperty.cpp
 	properties/matrixproperties.cpp
-    properties/optionproperty.cpp
+    properties/optionproperties.cpp
     properties/property.cpp
     properties/propertyfactory.cpp
     properties/propertyowner.cpp
@@ -177,7 +177,6 @@ set(SOURCE_FILES
     properties/propertywidgetfactory.cpp
     properties/scalarproperties.cpp
     properties/snapshotproperty.cpp
-    properties/stringoptionproperty.cpp
     properties/stringproperty.cpp
     properties/texteditorproperty.cpp
     properties/transferproperty.cpp

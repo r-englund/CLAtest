@@ -5,11 +5,11 @@
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/snapshotproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
-#include <inviwo/core/properties/stringoptionproperty.h>
 #include <inviwo/core/properties/texteditorproperty.h>
 #include <inviwo/core/properties/transferproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
@@ -83,8 +83,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
     if (dynamic_cast<SnapshotProperty*>(property))
         return new SnapshotPropertyWidgetQt(static_cast<SnapshotProperty*>(property));
-    if (dynamic_cast<StringOptionProperty*>(property))
-        return new OptionPropertyWidgetQt(static_cast<StringOptionProperty*>(property));
+    if (dynamic_cast<OptionPropertyString*>(property))
+        return new OptionPropertyWidgetQt(static_cast<OptionPropertyString*>(property));
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
     //if (dynamic_cast<TextEditorProperty*>(property))
