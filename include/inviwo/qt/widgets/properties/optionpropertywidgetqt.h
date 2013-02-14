@@ -8,7 +8,9 @@
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
+#include <inviwo/core/properties/stringoptionproperty.h>
 #include <inviwo/core/properties/property.h>
+#include <typeinfo>
 
 namespace inviwo {
 
@@ -26,7 +28,8 @@ private:
 
     BaseOptionProperty* property_;
     QComboBox* comboBox_;
-
+    
+    void setType();
     void generateWidget();
     void fillComboBox();
 

@@ -1,8 +1,8 @@
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
 #include <QComboBox>
 namespace inviwo {
-
 OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) : property_(property) {
+    setType();
     generateWidget();
     updateFromProperty();
 }
@@ -20,18 +20,23 @@ void OptionPropertyWidgetQt::generateWidget() {
 
 void OptionPropertyWidgetQt::fillComboBox(){
    size_t size_ = static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().size();
-   for (size_t i=0; i<size_; i++)
+    for(int i=0; i<size_;i++)
    {
        comboBox_->addItem(QString::fromStdString(static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().at(i).first));
    }   
 }
 void OptionPropertyWidgetQt::optionChanged(){
-    //std::cout<<static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().at(comboBox_->currentIndex()).second << std::endl;
+    std::cout<<static_cast<TemplatedOptionProperty<std::string>*>(property_)->getOptions().at(comboBox_->currentIndex()).second << std::endl;
     static_cast<TemplatedOptionProperty<std::string>*>(property_)->setSelectedOption(comboBox_->currentIndex());
+
 }
 
 void OptionPropertyWidgetQt::updateFromProperty() {
     comboBox_->setCurrentIndex(static_cast<TemplatedOptionProperty<std::string>*>(property_)->getSelectedOption());
+
+}
+
+void OptionPropertyWidgetQt::setType(){
 }
 
 } // namespace

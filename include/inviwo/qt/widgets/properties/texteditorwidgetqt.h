@@ -3,67 +3,93 @@
 
 
 #include <QFile>
-#include <QPlainTextEdit>
 #include <QLineEdit>
-#include <QToolButton>
+#include <QMenu>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QPlainTextEdit>
 #include <QPushButton>
 #include <QTextStream>
-#include <QMenuBar>
-#include <QMenu>
-#include <QWidget>
 #include <QToolBar>
+#include <QToolButton>
+#include <QWidget>
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/property.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
-#include <inviwo/core/properties/property.h>
-#include <inviwo/core/properties/buttonproperty.h>
+#include <QMainWindow>
 
 
 namespace inviwo{
+class TextEditorWidgetQt;
+class IVW_QTWIDGETS_API ModifiedWidget : public QWidget{
+
+    Q_OBJECT;
+
+public:
+    ModifiedWidget();
+    bool saveDialog();
+    void setParent(TextEditorWidgetQt*);
+
+    QFile* file_;
+    QPlainTextEdit* textEditor_;
+    TextEditorWidgetQt* mainParentWidget_;
+    QToolBar* toolBar_;
+    QToolButton *reDoButton_;
+    QToolButton *reLoadButton_;
+    QToolButton *saveButton_;
+    QToolButton *unDoButton_;
+    QWidget* mainWidget_;
+    std::string tmpPropertyValue_;
+
+    void generateWidget();
+protected:
+    void closeEvent(QCloseEvent *);
+    /*void showEvent(QShowEvent *);*/
+};
 
 class IVW_QTWIDGETS_API TextEditorWidgetQt : public PropertyWidgetQt{
     
     Q_OBJECT;
 
 public:
- /**
- * A constructor for the text editor widget
- * @param property a stringproperty or a fileproperty
- * @param showProperty a bool for showing the string- or filepropertywidget
- */
-    TextEditorWidgetQt(Property* property,bool showProperty);
+ 
+    TextEditorWidgetQt(Property* property);
 
     void updateFromProperty();
 
+public:
+     bool saveDialog();
+
+
 private:
-    bool showProperty_;
-    ButtonPropertyWidgetQt* btnWidget_;
+    
     ButtonProperty btnProperty_;
+    ButtonPropertyWidgetQt* btnWidget_;
     FilePropertyWidgetQt* fileWidget_;
     Property* property_;
-    QPlainTextEdit* textEditor_;
     QFile* file_;
+    ModifiedWidget* textEditorWidget_;
     StringPropertyWidgetQt* stringWidget_;
     std::string tmpPropertyValue_;
-    //QMenuBar* menuBar_;
-    //QMenu*  fileMenu_;
-    QWidget* mainWidget_;
-    QToolBar* toolBar_;
-    QToolButton *saveButton_;
-    
 
     void generateWidget();
+   
 
-    public slots:
-        void setPropertyValue();
-        void editFile();
-        void editString();
-        void writeToFile();
-        void writeToString();
+public slots:
+    void loadFile();
+    void loadString();
+    void editFile();
+    void editString();
+    void setPropertyValue();
+    bool writeToFile();
+    bool writeToString();
+
+
 };
-
 
 
 }//namespace

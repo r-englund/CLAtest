@@ -39,23 +39,15 @@
 
 namespace inviwo {
 
-
 const std::string PropertyWidgetFactoryQt::logSource_ = "PropertyWidgetFactoryQt";
 
 PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
 PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
-    //if (dynamic_cast<CameraProperty*>(property))
-    //    return new CameraPropertyWidgetQt(static_cast<CameraProperty*>(property));
-    //if (dynamic_cast<TextFileProperty*>(property))
-        //return new TextEditorWidgetQt(static_cast<TextFileProperty*>(property),true);
-    //if (dynamic_cast<TextStringProperty*>(property))
-        //return new TextEditorWidgetQt(static_cast<TextStringProperty*>(property),true);
-    //if (dynamic_cast<TemplatedOptionProperty<int>*>(property))
-    //    return new OptionPropertyWidgetQt<int>(static_cast<TemplatedOptionProperty<int>*>(property));
-    //if (dynamic_cast<TextEditorProperty*>(property))
-    //    return new TextEditorWidgetQt(static_cast<TextEditorProperty*>(property));
-    //if (dynamic_cast<StringOptionProperty*>(property))
-    //return new OptionPropertyWidgetQt(static_cast<StringOptionProperty*>(property));
+
+     ////Uncomment this to test texteditor
+    //if (dynamic_cast<FileProperty*>(property))
+    //    return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
+
 
 
 
@@ -95,6 +87,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new OptionPropertyWidgetQt(static_cast<StringOptionProperty*>(property));
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
+    //if (dynamic_cast<TextEditorProperty*>(property))
+    //    return new TextEditorWidgetQt(static_cast<TextEditorProperty*>(property));
     if (dynamic_cast<TransferProperty*>(property))
         return new TransferPropertyWidgetQt(static_cast<TransferProperty*>(property));
 
