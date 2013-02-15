@@ -27,6 +27,10 @@ public:
 private:
 
     BaseOptionProperty* property_;
+    OptionPropertyString* propertyString_;
+    OptionPropertyInt* propertyInt_;
+    OptionPropertyDouble* propertyDouble_;
+    OptionPropertyFloat* propertyFloat_;
     QComboBox* comboBox_;
     
     void setType();
