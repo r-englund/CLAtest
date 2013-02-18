@@ -45,8 +45,8 @@ PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
 PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
 
      ////Uncomment this to test texteditor
-    //if (dynamic_cast<FileProperty*>(property))
-    //    return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
+    if (dynamic_cast<FileProperty*>(property))
+        return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
 
 
 

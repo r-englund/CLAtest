@@ -10,10 +10,19 @@ namespace inviwo {
 
 class IVW_CORE_API BaseOptionProperty : public StringProperty{
 public:
-    BaseOptionProperty(std::string identifier, std::string displayName,std::string value)
-        :StringProperty(identifier,displayName,value)
+    BaseOptionProperty(std::string identifier, std::string displayName,std::string value,int selectedOption)
+        :StringProperty(identifier,displayName,value), 
+        selectedOption_(selectedOption)
     {}
+
+    std::vector<std::string> optionKeys_;
+    int getSelectedOption(){return selectedOption_;};
+    void setSelectedOption(int tmp){ selectedOption_=tmp;};
+    private:
+        int selectedOption_;
 };
+
+
 
 
 
@@ -24,36 +33,29 @@ public:
     TemplatedOptionProperty(std::string identifier, std::string displayName,std::string value, int selectedOption);
     virtual void addOption(std::string optionName,T optionValue);
     virtual std::vector< std::pair<std::string, T> > getOptions();
-    virtual int getSelectedOption();
-    virtual void setSelectedOption( int );
+
 
 
 private:
     std::vector< std::pair<std::string, T> > optionVector_;
-    int selectedOption_;
+
 };
 
 template <typename T>
 TemplatedOptionProperty<T>::TemplatedOptionProperty(std::string identifier, std::string displayName, std::string value, int selectedOption)
-    : BaseOptionProperty(identifier,displayName,value),
-     selectedOption_(selectedOption)
+    : BaseOptionProperty(identifier,displayName,value, selectedOption)
+
 {}
 
 template<typename T>
 void TemplatedOptionProperty<T>::addOption(std::string optionName,T optionValue){
-
     optionVector_.push_back(std::make_pair(optionName,optionValue));
+    optionKeys_.push_back(optionName);
 }
 template<typename T>
 std::vector< std::pair<std::string, T> > TemplatedOptionProperty< T >::getOptions(){
     return optionVector_;
 }
-template<typename T>
-int TemplatedOptionProperty<T>::getSelectedOption(){return selectedOption_;}
-
-template<typename T>
-void TemplatedOptionProperty<T>::setSelectedOption(int selected){selectedOption_=selected;}
-
 
 } // namespace
 

@@ -33,7 +33,6 @@ private:
     OptionPropertyFloat* propertyFloat_;
     QComboBox* comboBox_;
     
-    void setType();
     void generateWidget();
     void fillComboBox();
 
