@@ -16,13 +16,12 @@ void OptionPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(comboBox_);
     setLayout(hLayout);
     connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
-    
 }
 
 void OptionPropertyWidgetQt::fillComboBox(){
-    int size_ = property_->optionKeys_.size();
+    int size_ = property_->getOptionKeys().size();
     for (int i=0; i < size_; i++){
-        comboBox_->addItem(QString::fromStdString(property_->optionKeys_.at(i)));
+        comboBox_->addItem(QString::fromStdString(property_->getOptionKeys().at(i)));
     }
 }
 void OptionPropertyWidgetQt::optionChanged(){
@@ -30,7 +29,8 @@ void OptionPropertyWidgetQt::optionChanged(){
 }
 
 void OptionPropertyWidgetQt::updateFromProperty() {
-    comboBox_->setCurrentIndex(property_->getSelectedOption());
+    int index = property_->getSelectedOption();
+    comboBox_->setCurrentIndex(index);
 }
 
 
