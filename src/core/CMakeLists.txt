@@ -30,6 +30,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventlistener.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventmapper.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/keyboardevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mouseevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/timerevent.h
@@ -138,6 +139,7 @@ set(SOURCE_FILES
     interaction/events/event.cpp
     interaction/events/eventhandler.cpp
     interaction/events/eventlistener.cpp
+    interaction/events/eventmapper.cpp
     interaction/events/keyboardevent.cpp
     interaction/events/mouseevent.cpp
     interaction/events/timerevent.cpp

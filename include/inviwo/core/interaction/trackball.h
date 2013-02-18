@@ -4,6 +4,8 @@
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/eventmapper.h>
+#include <inviwo/core/interaction/events/eventlistener.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
 #include <inviwo/core/properties/cameraproperty.h>
 
@@ -19,6 +21,7 @@ namespace inviwo {
 
     private:
         CameraProperty* camera_;
+        EventMapper* eventmapper_;
 
         vec2 lastMousePos_;
         vec3 lastTrackballPos_;

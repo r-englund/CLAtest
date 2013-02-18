@@ -7,11 +7,14 @@ namespace inviwo {
     static const float RADIUS = 0.5f;
 	bool mouseHold = false;
 
+
     Trackball::Trackball(CameraProperty* camera)
         : InteractionHandler(),
           camera_(camera),
           lastMousePos_(ivec2(0)),
-          lastTrackballPos_(vec3(0.5f)) {}
+          lastTrackballPos_(vec3(0.5f)){ 
+              eventmapper_ = new EventMapper();
+    }
 
     Trackball::~Trackball() {}
 
@@ -52,7 +55,7 @@ namespace inviwo {
         //glEnd();
 
         if (mouseEvent) {
-            if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+            if (mouseEvent->button() == eventmapper_->getKey(EventMapper::TRACKBALL_ROTATE) && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
                 // ROTATION
                 vec2 curMousePos = mouseEvent->posNormalized();
                 vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);
@@ -172,6 +175,7 @@ namespace inviwo {
         } 
             return;
         }
+           
 
         ResizeEvent* resizeEvent = dynamic_cast<ResizeEvent*>(event);
         if (resizeEvent) {
