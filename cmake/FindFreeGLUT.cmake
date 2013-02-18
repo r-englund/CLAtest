@@ -31,13 +31,11 @@ IF (WIN32)
 ELSE (WIN32)
   
   IF (APPLE)
-    # These values for Apple could probably do with improvement.
-    # FIND_PATH( FREEGLUT_INCLUDE_DIR freeglut.h
-    #  /System/Library/Frameworks/Freeglut.framework/Versions/A/Headers
-    #  ${OPENGL_LIBRARY_DIR}
-    #  )
-    SET(FREEGLUT_glut_LIBRARY "-framework GLUT" CACHE STRING "GLUT library for OSX") 
-    # SET(FREEGLUT_cocoa_LIBRARY "-framework Cocoa" CACHE STRING "Cocoa framework for OSX")
+    FIND_LIBRARY(FREEGLUT_glut_LIBRARY 
+		NAMES glut 
+		PATHS "$ENV{LD_LIBRARY_PATH}"
+		DOC "GLUT library for OSX") 
+    FIND_PATH( FREEGLUT_INCLUDE_DIR NAMES GL/freeglut.h)
   ELSE (APPLE)
     
     FIND_PATH( FREEGLUT_INCLUDE_DIR GL/freeglut.h
