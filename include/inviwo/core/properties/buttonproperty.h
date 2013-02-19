@@ -16,22 +16,22 @@ public:
     //TODO: Only member functions with zero (void) arguments is allowed now.
     // Example usage
     // myButton_.registerClassMemberFunction(this, &MyButton::doSomethingFunction);
-    // it is possible to register more than one functions
+    // it is possible to register only one function
     template <typename T>
     void registerClassMemberFunction(T* o, void (T::*m)()) {
-        callBackList_.addMemberFunction(o, m); 
+        callBack_.addMemberFunction(o,m);
     }
 
     //invokes all functions
     void invokeMemberFunctions() {
-        callBackList_.invokeAll();
+        callBack_.invoke();
     }
 
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& d);
 
 private:
-    CallBackList callBackList_;
+    SingleCallBack callBack_;
 };
 
 } //namespace

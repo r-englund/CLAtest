@@ -55,6 +55,22 @@ private:
     std::vector<BaseCallBack*> callBackList_;
 };
 
+class IVW_CORE_API SingleCallBack {
+public:
+    SingleCallBack(){}
+    void invoke(){
+        callBack_->invoke();
+    }
+
+    template <typename T>
+    void addMemberFunction(T* o, void (T::*m)()){
+        callBack_ = new MemberFunctionCallBack<T>(o,m);
+    }
+
+private:
+    BaseCallBack* callBack_;
+};
+
 
 } // namespace
 
