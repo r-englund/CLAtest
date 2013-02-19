@@ -1,21 +1,21 @@
-#include <inviwo/core/interaction/events/eventmapper.h>
+#include <inviwo/core/interaction/trackballkeymapper.h>
 
 namespace inviwo {
 
     // Default key binding
-    EventMapper::EventMapper() {
+    TrackballKeyMapper::TrackballKeyMapper() {
         keys[TRACKBALL_ROTATE] = MouseEvent::MOUSE_BUTTON_LEFT;
         keys[TRACKBALL_ZOOM] = MouseEvent::MOUSE_BUTTON_RIGHT;
         keys[TRACKBALL_PAN] = MouseEvent::MOUSE_BUTTON_MIDDLE;
     }
 
-    EventMapper::~EventMapper() {}
+    TrackballKeyMapper::~TrackballKeyMapper() {}
 
-    int EventMapper::getKey( int action ) {
+    int TrackballKeyMapper::getKey( int action ) {
         return keys[action];
     }
 
-    void EventMapper::setKey( int action, int key ) {
+    void TrackballKeyMapper::setKey( int action, int key ) {
         keys[action] = key;
     }
 

@@ -7,13 +7,15 @@ EntryExitPoints::EntryExitPoints()
     volumePort_(Port::INPORT, "volume"),
     entryPort_(Port::OUTPORT, "entry-points"),
     exitPort_(Port::OUTPORT, "exit-points"),
-    camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f))
+    camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f)),
+    keybindings_("keybindings", "Key bindings")
 {
     addPort(volumePort_);
     addPort(entryPort_);
     addPort(exitPort_);
 
     addProperty(camera_);
+    addProperty(keybindings_);
 }
 
 EntryExitPoints::~EntryExitPoints() {}

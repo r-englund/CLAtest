@@ -13,7 +13,7 @@ namespace inviwo {
           camera_(camera),
           lastMousePos_(ivec2(0)),
           lastTrackballPos_(vec3(0.5f)){ 
-              eventmapper_ = new EventMapper();
+              keymapper_ = new TrackballKeyMapper();
     }
 
     Trackball::~Trackball() {}
@@ -55,7 +55,7 @@ namespace inviwo {
         //glEnd();
 
         if (mouseEvent) {
-            if (mouseEvent->button() == eventmapper_->getKey(EventMapper::TRACKBALL_ROTATE) && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+            if (mouseEvent->button() == keymapper_->getKey(TrackballKeyMapper::TRACKBALL_ROTATE) && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
                 // ROTATION
                 vec2 curMousePos = mouseEvent->posNormalized();
                 vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);

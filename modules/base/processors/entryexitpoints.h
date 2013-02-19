@@ -35,6 +35,7 @@ namespace inviwo {
         ImagePort exitPort_;
 
         CameraProperty camera_;
+        ButtonProperty keybindings_;
 
         Shader* shader_;
 
