@@ -9,6 +9,7 @@
 #include <inviwo/core/metadata/positionmetadata.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/qt/editor/transfereditor.h>
+#include <inviwo/qt/editor/transfereditorgraphicsitem.h>
 
 #include <QApplication>
 #include <QBrush>
@@ -32,7 +33,6 @@ namespace inviwo {
         endpoint = new QPointF(255, 0);
         prev = new QPointF(*startpoint);
         next = new QPointF(*endpoint);
-
     }
 
     TransferEditor::~TransferEditor(){}
@@ -44,63 +44,60 @@ namespace inviwo {
 
         QPen* p = new QPen(Qt::darkCyan, 2.0, Qt::SolidLine, Qt::RoundCap);
 
-        QGraphicsEllipseItem * ellips = new QGraphicsEllipseItem(e->scenePos().x() - 5, e->scenePos().y() - 5, 10, 10);
+        //QGraphicsEllipseItem * ellips = new QGraphicsEllipseItem(e->scenePos().x() - 5, e->scenePos().y() - 5, 10, 10);
 
-        ellips->setPen(*p);
-        this->addItem(ellips);
+        TransferEditorGraphicsItem * item = new TransferEditorGraphicsItem(e->scenePos());
+
+        this->addItem(item);
         
         std::stringstream ss;
         ss << "Press: " << e->scenePos().x() << ", " << e->scenePos().y();
         LogInfo(ss.str());
     }
 
-    //QGraphicsEllipseItem::mousePressEvent(QGraphicsSceneMouseEvent *e){
-    //    LogInfo("Boink");
-    //}
-
     void TransferEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
-        QPointF* release = new QPointF(e->scenePos());
+        //QPointF* release = new QPointF(e->scenePos());
 
-        int x1 = release->x();
-        int y1 = release->y();
-        int x2 = press->x();
-        int y2 = press->y();
+        //int x1 = release->x();
+        //int y1 = release->y();
+        //int x2 = press->x();
+        //int y2 = press->y();
 
-        QRect* rect = new QRect();
+        //QRect* rect = new QRect();
 
-        if (x1 < x2){
-            rect->setRight(x1);
-            rect->setLeft(x2);
-        } 
-        else{
-            rect->setRight(x2);
-            rect->setLeft(x1);
-        }
+        //if (x1 < x2){
+        //    rect->setRight(x1);
+        //    rect->setLeft(x2);
+        //} 
+        //else{
+        //    rect->setRight(x2);
+        //    rect->setLeft(x1);
+        //}
 
-        if (y1 < y2){
-            rect->setTop(y1);
-            rect->setBottom(y2);
-        } 
-        else{        
-            rect->setTop(y2);
-            rect->setBottom(y1);
-        }
-        
-        QPen* p = new QPen(QColor(60,60,60,50), 3.0, Qt::SolidLine, Qt::RoundCap);
-        
-        QGraphicsLineItem* line = new QGraphicsLineItem(0,0,450,300);
-        
-        line->setPen(*p);
+        //if (y1 < y2){
+        //    rect->setTop(y1);
+        //    rect->setBottom(y2);
+        //} 
+        //else{        
+        //    rect->setTop(y2);
+        //    rect->setBottom(y1);
+        //}
+        //
+        //QPen* p = new QPen(QColor(60,60,60,50), 3.0, Qt::SolidLine, Qt::RoundCap);
+        //
+        //QGraphicsLineItem* line = new QGraphicsLineItem(0,0,450,300);
+        //
+        //line->setPen(*p);
 
-        this->addItem(line);
+        //this->addItem(line);
 
-        //this->clear();
-        //this->addRect(*rect, *p);
-        this->update();
-        
-        std::stringstream ss;
-        ss << "Release: " << e->scenePos().x() << ", " << e->scenePos().y();
-        LogInfo(ss.str());
-        e->accept();
+        ////this->clear();
+        ////this->addRect(*rect, *p);
+        //this->update();
+        //
+        //std::stringstream ss;
+        //ss << "Release: " << e->scenePos().x() << ", " << e->scenePos().y();
+        //LogInfo(ss.str());
+        //e->accept();
     }
 }
