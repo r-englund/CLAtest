@@ -46,8 +46,8 @@ void CanvasQt::initializeGL() {
     QGLWidget::initializeGL();
 }
 
-void CanvasQt::resizeGL(uint32_t width, uint32_t height) {
-    CanvasGL::resize(uvec2(width, height));
+void CanvasQt::resizeGL(int width, int height) {
+    CanvasGL::resize(uvec2(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));
     if(processorNetworkEvaluator_) {
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
         processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
