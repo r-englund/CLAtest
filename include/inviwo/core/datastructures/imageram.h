@@ -10,7 +10,7 @@ namespace inviwo {
 
     public:
         ImageRAM();
-        ImageRAM(ivec2 dimension);
+        ImageRAM(uvec2 dimension);
         virtual ~ImageRAM();
         virtual void initialize();
         void deinitialize();

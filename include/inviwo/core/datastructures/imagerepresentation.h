@@ -11,15 +11,15 @@ namespace inviwo {
 
     public:
         ImageRepresentation();
-        ImageRepresentation(ivec2 dimensions);
+        ImageRepresentation(uvec2 dimensions);
         virtual ~ImageRepresentation();
-        virtual void resize(ivec2 dimensions);
-        virtual ivec2 dimension() {return dimensions_;}
+        virtual void resize(uvec2 dimensions);
+        virtual uvec2 getDimension() {return dimensions_;}
         virtual void copyAndResizeImage(DataRepresentation*)=0;
         virtual DataRepresentation* clone()=0;
         virtual std::string getClassName() const { return "ImageRepresentation"; }
    protected:
-        ivec2 dimensions_;
+        uvec2 dimensions_;
    };
 
 } // namespace

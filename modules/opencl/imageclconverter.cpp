@@ -12,7 +12,7 @@ namespace inviwo {
         DataRepresentation* destination = 0;
         ImageRAM* imageRAM = dynamic_cast<ImageRAM*>(source);
         if (imageRAM) {
-            ivec2 dimension = imageRAM->dimension();;
+            uvec2 dimension = imageRAM->getDimension();;
             void* data = imageRAM->getData();
             destination = new ImageCLuint8(static_cast<uint8_t*>(data), dimension);
             // TODO: Implement conversion
@@ -44,7 +44,7 @@ namespace inviwo {
         DataRepresentation* destination = 0;
         ImageCL* imageCL = dynamic_cast<ImageCL*>(source);
         if (imageCL) {
-            ivec2 dimension = imageCL->dimension();
+            uvec2 dimension = imageCL->dimension();
             LogErrorS("OpenCL", "Conversion not implemented yet");
             // TODO: Implement conversion
             //if (dynamic_cast<ImageRAMuint8*>(imageCL)) {
@@ -65,7 +65,7 @@ namespace inviwo {
             if (destination) {
                 ImageRAM* imageRAM = static_cast<ImageRAM*>(destination);
                 const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
-                queue.enqueueReadImage(*imageCL->getImage(), true, glm::svec3(0), glm::svec3(dimension, 1), 0, 0, imageRAM->getData());
+                queue.enqueueReadImage(*imageCL->getImage(), true, glm::uvec3(0), glm::uvec3(dimension, 1), 0, 0, imageRAM->getData());
             }
         }        
         return destination;

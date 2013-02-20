@@ -10,12 +10,12 @@ namespace inviwo {
     class IVW_CORE_API ResizeEvent : public Event {
 
     public:        
-        ResizeEvent(ivec2 canvasSize);
+        ResizeEvent(uvec2 canvasSize);
         ~ResizeEvent();
-        inline ivec2 canvasSize() const {return canvasSize_; }
+        inline uvec2 canvasSize() const {return canvasSize_; }
 
     private:        
-        ivec2 canvasSize_;
+        uvec2 canvasSize_;
     };
 
 } // namespace

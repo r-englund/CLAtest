@@ -32,7 +32,7 @@ void ImageGrayscale::process() {
     
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    ivec2 imageSize = outImageGL->dimension();
+    uvec2 imageSize = outImageGL->getDimension();
 
     activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);

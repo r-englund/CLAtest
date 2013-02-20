@@ -193,7 +193,7 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     std::vector<Port*> inports = processor_->getInports();
     for (size_t i=0; i<inports.size(); i++) {
         QRectF portRect = calculatePortRect(i, Port::INPORT);
-        ivec3 portColor = inports[i]->getColorCode();
+        uvec3 portColor = inports[i]->getColorCode();
         p->setBrush(QColor(portColor.r, portColor.g, portColor.b));
         p->drawRect(portRect);
     }
@@ -202,7 +202,7 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     std::vector<Port*> outports = processor_->getOutports();
     for (size_t i=0; i<outports.size(); i++) {
         QRectF portRect = calculatePortRect(i, Port::OUTPORT);
-        ivec3 portColor = outports[i]->getColorCode();
+        uvec3 portColor = outports[i]->getColorCode();
         p->setBrush(QColor(portColor.r, portColor.g, portColor.b));
         p->drawRect(portRect);
     }

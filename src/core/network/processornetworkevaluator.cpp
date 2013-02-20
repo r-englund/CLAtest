@@ -215,11 +215,11 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                 ports.clear();
                 ports = directPredecessors[i]->getPortsByGroup(portGroups[j]);
 
-                ivec2 dimMax(0);
+                uvec2 dimMax(0);
                 for (size_t j=0; j<ports.size(); j++) {
                     ImagePort* imagePort = dynamic_cast<ImagePort*>(ports[j]);
                     if (imagePort && imagePort->isOutport()) {
-                        ivec2 dim = imagePort->getDimensions();
+                        uvec2 dim = imagePort->getDimensions();
                         //TODO: Determine max dimension based on aspect ratio?
                         if ((dimMax.x<dim.x) || (dimMax.y<dim.y)) {
                             dimMax = imagePort->getDimensions();

@@ -6,7 +6,7 @@ EventHandler* eventHandler_();
 
 ProcessorNetworkEvaluator* Canvas::processorNetworkEvaluator_ = 0;
 
-Canvas::Canvas(ivec2 dimensions)
+Canvas::Canvas(uvec2 dimensions)
                : dimensions_(dimensions) {
 }
 
@@ -20,7 +20,7 @@ void Canvas::repaint() {}
 
 void Canvas::switchContext() {}
 
-void Canvas::resize(ivec2 size) {
+void Canvas::resize(uvec2 size) {
     dimensions_ = size;
 }
 

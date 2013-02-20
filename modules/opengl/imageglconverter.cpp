@@ -13,7 +13,7 @@ namespace inviwo {
         DataRepresentation* destination = 0;
         ImageRepresentation* imageRepresentation = dynamic_cast<ImageRepresentation*>(source);
         if (imageRepresentation)
-            destination = new ImageGL(imageRepresentation->dimension());
+            destination = new ImageGL(imageRepresentation->getDimension());
         return destination;
     }
 

@@ -4,12 +4,12 @@
 namespace inviwo {
 
     ImageGL::ImageGL()
-        : ImageRepresentation(ivec2(256,256))
+        : ImageRepresentation(uvec2(256,256))
     {
         initialize();
     }
 
-    ImageGL::ImageGL(ivec2 dimensions)
+    ImageGL::ImageGL(uvec2 dimensions)
         : ImageRepresentation(dimensions)
     {
         initialize();
@@ -94,7 +94,7 @@ namespace inviwo {
         colorTexture_->unbind();
     }
 
-    void ImageGL::resize(ivec2 dimensions) {
+    void ImageGL::resize(uvec2 dimensions) {
         dimensions_ = dimensions;        
         colorTexture_->unbind();
         colorTexture_->setWidth(dimensions_.x);
@@ -148,7 +148,7 @@ namespace inviwo {
         */         
         
         //Resize by rendering
-        ivec2 csize = target->dimension();        
+        uvec2 csize = target->getDimension();        
         source->bindColorTexture(GL_TEXTURE0);
         target->activateBuffer();
         shader_->activate();

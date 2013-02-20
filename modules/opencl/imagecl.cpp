@@ -4,12 +4,12 @@
 namespace inviwo {
 
 ImageCL::ImageCL()
-    : ImageRepresentation(ivec2(128,128)), image2D_(0) //TODO: use actual value
+    : ImageRepresentation(uvec2(128,128)), image2D_(0) //TODO: use actual value
 {
     initialize();
 }
 
-ImageCL::ImageCL(ivec2 dimensions)
+ImageCL::ImageCL(uvec2 dimensions)
     : image2D_(0), ImageRepresentation(dimensions)
 {
     initialize();
@@ -18,7 +18,7 @@ ImageCL::ImageCL(ivec2 dimensions)
 ImageCL::~ImageCL() {}
 
 
-void ImageCL::resize(ivec2 dimensions)
+void ImageCL::resize(uvec2 dimensions)
 {
     if (dimensions == dimensions_) {
         return;

@@ -14,13 +14,13 @@ class IVW_MODULE_OPENCL_API ImageCL : public ImageRepresentation {
 
 public:
     ImageCL();
-    ImageCL(ivec2 dimensions);
+    ImageCL(uvec2 dimensions);
     virtual ~ImageCL();
     virtual std::string getClassName() const { return "ImageCL"; }
     virtual void initialize(){};
     virtual void deinitialize(){};
-    virtual void resize(ivec2 dimensions);
-    virtual ivec2 dimension() { return dimensions_;}
+    virtual void resize(uvec2 dimensions);
+    virtual uvec2 dimension() { return dimensions_;}
     virtual void copyAndResizeImage(DataRepresentation* target);
     virtual DataRepresentation* clone()=0;
     cl::ImageFormat getFormat() const { return imageFormat_;}
@@ -35,8 +35,8 @@ template<typename T>
 class IVW_MODULE_OPENCL_API ImageCLPrecision : public ImageCL {
 public:
     ImageCLPrecision();
-    ImageCLPrecision(ivec2 dimensions);
-    ImageCLPrecision(T* texels, ivec2 dimensions);
+    ImageCLPrecision(uvec2 dimensions);
+    ImageCLPrecision(T* texels, uvec2 dimensions);
     virtual ~ImageCLPrecision() {};
     virtual void initialize(void* texels);
     virtual void deinitialize();
@@ -52,13 +52,13 @@ ImageCLPrecision<T>::ImageCLPrecision() : ImageCL() {
 }
 
 template<typename T>
-ImageCLPrecision<T>::ImageCLPrecision(ivec2 dimensions) : ImageCL(dimensions) {
+ImageCLPrecision<T>::ImageCLPrecision(uvec2 dimensions) : ImageCL(dimensions) {
     ImageCLPrecision<T>::setTypeAndFormat();
     ImageCLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-ImageCLPrecision<T>::ImageCLPrecision(T* texels, ivec2 dimensions) : ImageCL(dimensions) {
+ImageCLPrecision<T>::ImageCLPrecision(T* texels, uvec2 dimensions) : ImageCL(dimensions) {
     ImageCLPrecision<T>::setTypeAndFormat();
     ImageCLPrecision<T>::initialize(texels);
 }
@@ -81,7 +81,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
         //cl::Buffer pinnedMem(OpenCL::getInstance()->getContext(), CL_MEM_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, sizeof(texels), NULL, NULL);
         //unsigned char* mappedMem = (unsigned char*)OpenCL::getInstance()->getQueue().enqueueMapBuffer(pinnedMem, true, CL_MAP_WRITE, 0, sizeof(texels), 0);
         //memcpy(mappedMem, texels, sizeof(texels));
-        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, mappedMem);
+        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::uvec3(0), glm::uvec3(dimensions_, 1), 0, 0, mappedMem);
         //OpenCL::getInstance()->getQueue().enqueueUnmapMemObject(pinnedMem, mappedMem);
 
         // This should also use pinned memory...
@@ -90,7 +90,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
             getFormat(), dimensions_.x, dimensions_.y, 0, texels);
         // Alternatively first allocate memory on device and then transfer
         //image2D_ = new cl::Image2D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y);
-        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, texels);
+        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::uvec3(0), glm::uvec3(dimensions_, 1), 0, 0, texels);
     } else {
         image2D_ = new cl::Image2D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y);
     }
@@ -100,7 +100,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
 template<typename T>
 DataRepresentation* ImageCLPrecision<T>::clone() {
     ImageCLPrecision* newImageCL = new ImageCLPrecision<T>(dimensions_);
-    OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, *(newImageCL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
+    OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, *(newImageCL->getImage()), glm::uvec3(0), glm::uvec3(0), glm::uvec3(dimensions_, 1));
     return newImageCL;
 }
 

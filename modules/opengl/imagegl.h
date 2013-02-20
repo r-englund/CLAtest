@@ -14,7 +14,7 @@ namespace inviwo {
 
     public:
         ImageGL();
-        ImageGL(ivec2 dimensions);
+        ImageGL(uvec2 dimensions);
         virtual ~ImageGL();
 
         void initialize();
@@ -30,8 +30,8 @@ namespace inviwo {
         void bindTextures(GLenum colorTexUnit, GLenum depthTexUnit);
         void unbindDepthTexture();
         void unbindColorTexture();
-        virtual void resize(ivec2 dimensions);
-        virtual ivec2 dimension() { return dimensions_;}
+        virtual void resize(uvec2 dimensions);
+        virtual uvec2 getDimension() { return dimensions_;}
         virtual void copyAndResizeImage(DataRepresentation* target) ;
         void renderImagePlaneQuad() const;
     private:

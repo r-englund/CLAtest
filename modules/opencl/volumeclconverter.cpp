@@ -12,7 +12,7 @@ namespace inviwo {
         DataRepresentation* destination = 0;
         VolumeRAM* volumeRAM = dynamic_cast<VolumeRAM*>(source);
         if (volumeRAM) {
-            ivec3 dimension = volumeRAM->dimension();;
+            uvec3 dimension = volumeRAM->getDimension();
             void* data = volumeRAM->getData();
 
             if (dynamic_cast<VolumeRAMuint8*>(volumeRAM)) {
@@ -43,7 +43,7 @@ namespace inviwo {
         DataRepresentation* destination = 0;
         VolumeCL* volumeCL = dynamic_cast<VolumeCL*>(source);
         if (volumeCL) {
-            ivec3 dimension = volumeCL->dimension();
+            uvec3 dimension = volumeCL->getDimension();
 
             if (dynamic_cast<VolumeRAMuint8*>(volumeCL)) {
                 destination = new VolumeRAMuint8(dimension);
@@ -63,7 +63,7 @@ namespace inviwo {
             if (destination) {
                 VolumeRAM* volumeRAM = static_cast<VolumeRAM*>(destination);
                 const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
-                queue.enqueueReadImage(*volumeCL->getVolume(), true, glm::svec3(0), glm::svec3(dimension), 0, 0, volumeRAM->getData());
+                queue.enqueueReadImage(*volumeCL->getVolume(), true, glm::uvec3(0), glm::uvec3(dimension), 0, 0, volumeRAM->getData());
             }
         }        
         return destination;

@@ -11,7 +11,7 @@ class IVW_CORE_API VolumeRAM : public VolumeRepresentation {
 
 public:
     VolumeRAM();
-    VolumeRAM(ivec3 dimensions);
+    VolumeRAM(uvec3 dimensions);
     virtual ~VolumeRAM();
     virtual void initialize();
     virtual void deinitialize();
@@ -25,8 +25,8 @@ template<typename T>
 class IVW_CORE_API VolumeRAMPrecision : public VolumeRAM {
 public:
     VolumeRAMPrecision();
-    VolumeRAMPrecision(ivec3 dimensions);
-    VolumeRAMPrecision(T* data, ivec3 dimensions);
+    VolumeRAMPrecision(uvec3 dimensions);
+    VolumeRAMPrecision(T* data, uvec3 dimensions);
     virtual ~VolumeRAMPrecision() {};
     using VolumeRAM::initialize;
     virtual void initialize(void*);
@@ -43,13 +43,13 @@ VolumeRAMPrecision<T>::VolumeRAMPrecision() : VolumeRAM() {
 }
 
 template<typename T>
-VolumeRAMPrecision<T>::VolumeRAMPrecision(ivec3 dimensions) : VolumeRAM(dimensions) {
+VolumeRAMPrecision<T>::VolumeRAMPrecision(uvec3 dimensions) : VolumeRAM(dimensions) {
     VolumeRAMPrecision<T>::setTypeAndFormat();
     VolumeRAMPrecision<T>::initialize(0);
 }
 
 template<typename T>
-VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, ivec3 dimensions) : VolumeRAM(dimensions) { 
+VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, uvec3 dimensions) : VolumeRAM(dimensions) { 
     VolumeRAMPrecision<T>::setTypeAndFormat();
     VolumeRAMPrecision<T>::initialize(data);
 }

@@ -12,17 +12,17 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API Texture2D {
 
 public:
-    Texture2D(ivec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
+    Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
     virtual ~Texture2D();
 
     unsigned int getID() const { return id_; }
 
     // TODO: remove this function
-    void loadTexture(std::string fileName, ivec2 dimensions=ivec2(0,0)) {
+    void loadTexture(std::string fileName, uvec2 dimensions=uvec2(0,0)) {
         bind();
         image_t temp_image;
         tgaLoad((char*)(fileName.c_str()), &temp_image, TGA_FREE | TGA_LOW_QUALITY);
-        dimensions = ivec2(temp_image.info.width, temp_image.info.height);
+        dimensions = uvec2(temp_image.info.width, temp_image.info.height);
     }
 
     void setTexels(GLubyte* texels) { texels_ = texels; }
@@ -38,7 +38,7 @@ public:
     void setHeight(int y) { dimensions_.y = y; }
 
 private:
-    ivec2 dimensions_;
+    uvec2 dimensions_;
     GLenum format_;
     GLenum internalformat_;
     GLenum dataType_;

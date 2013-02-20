@@ -33,7 +33,7 @@ IVW_QTEDITOR_API enum InviwoLinkUserGraphicsItemType {
 class IVW_QTEDITOR_API DialogCurveGraphicsItem : public CurveGraphicsItem {
 
 public:
-    DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38), bool layoutOption=false, bool dragMode=true);
+    DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color=uvec3(38,38,38), bool layoutOption=false, bool dragMode=true);
     ~DialogCurveGraphicsItem();
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     //override for qgraphicsitem_cast (refer qt documentation)

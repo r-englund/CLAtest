@@ -9,14 +9,14 @@ namespace inviwo {
 
 class IVW_MODULE_OPENGL_API CanvasGL : public Canvas {
 public:
-    CanvasGL(ivec2 dimensions);
+    CanvasGL(uvec2 dimensions);
 
     virtual void initialize();
     virtual void initializeGL();
     virtual void deinitialize();
     virtual void switchContext();
     virtual void repaint();
-    virtual void resize(ivec2 size);
+    virtual void resize(uvec2 size);
     virtual void update();
 
 private:

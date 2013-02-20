@@ -11,7 +11,7 @@ const std::string CanvasQt::logSource_ = "CanvasQt";
 
 CanvasQt::CanvasQt(QWidget* parent)
 : QGLWidget(QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
-  CanvasGL(ivec2(256,256))
+  CanvasGL(uvec2(256,256))
 {
     //This is our default rendering context
     //Intialized once. So "THE" first object of this class will not have any shared context (or widget)
@@ -46,8 +46,8 @@ void CanvasQt::initializeGL() {
     QGLWidget::initializeGL();
 }
 
-void CanvasQt::resizeGL(int width, int height) {
-    CanvasGL::resize(ivec2(width, height));
+void CanvasQt::resizeGL(uint32_t width, uint32_t height) {
+    CanvasGL::resize(uvec2(width, height));
     if(processorNetworkEvaluator_) {
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
         processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);

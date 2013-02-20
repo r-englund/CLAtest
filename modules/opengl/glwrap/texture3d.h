@@ -12,13 +12,13 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API Texture3D {
 
 public:
-    Texture3D(ivec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
+    Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
     virtual ~Texture3D();
 
     unsigned int getID() const { return id_; }
 
     // TODO: remove this function
-    void loadTexture(std::string fileName, ivec3 dimensions) {
+    void loadTexture(std::string fileName, uvec3 dimensions) {
         bind();
 
         texels_ = new GLubyte[dimensions.x*dimensions.y*dimensions.z];
@@ -38,7 +38,7 @@ public:
     void upload();
 
 private:
-    ivec3 dimensions_;
+    uvec3 dimensions_;
     GLenum format_;
     GLenum internalformat_;
     GLenum dataType_;

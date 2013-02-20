@@ -16,18 +16,18 @@ public:
     void initialize();
     void deinitialize();
 
-    void resize(ivec2 dimensions);
-    ivec2 getDimensions() { return dimensions_; }
+    void resize(uvec2 dimensions);
+    uvec2 getDimensions() { return dimensions_; }
 
     virtual Image* getData();
 
-    virtual ivec3 getColorCode() { return ivec3(90,127,183); }
+    virtual uvec3 getColorCode() { return uvec3(90,127,183); }
 
 private:
-    ivec2 dimensions_;
+    uvec2 dimensions_;
     std::map<std::string, Image*> imageDataMap_;
 
-    Image* resizeImageData(std::string processorID, ivec2 targetDim);
+    Image* resizeImageData(std::string processorID, uvec2 targetDim);
 };
 
 } // namespace

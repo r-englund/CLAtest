@@ -15,11 +15,11 @@ namespace inviwo {
         if (volumeDisk) {
             if (volumeDisk->getDataFormat()=="UINT8") {
                 void* data = volumeDisk->loadRawData();    
-                destination = new VolumeRAMuint8(static_cast<uint8_t*>(data), volumeDisk->dimension());
+                destination = new VolumeRAMuint8(static_cast<uint8_t*>(data), volumeDisk->getDimension());
             }
             else if (volumeDisk->getDataFormat()=="UINT16") {
                void* data = volumeDisk->loadRawData();
-                destination = new VolumeRAMuint16(static_cast<uint16_t*>(data), volumeDisk->dimension());
+                destination = new VolumeRAMuint16(static_cast<uint16_t*>(data), volumeDisk->getDimension());
             }
         }
         return destination;

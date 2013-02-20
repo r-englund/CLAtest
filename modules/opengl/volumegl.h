@@ -12,7 +12,7 @@ class IVW_MODULE_OPENGL_API VolumeGL : public VolumeRepresentation {
 
 public:
     VolumeGL();
-    VolumeGL(ivec3 dimensions);
+    VolumeGL(uvec3 dimensions);
     virtual ~VolumeGL();
 
     virtual void initialize();
@@ -32,8 +32,8 @@ template<typename T>
 class IVW_MODULE_OPENGL_API VolumeGLPrecision : public VolumeGL {
 public:
     VolumeGLPrecision();
-    VolumeGLPrecision(ivec3 dimensions);
-    VolumeGLPrecision(T* texels, ivec3 dimensions);
+    VolumeGLPrecision(uvec3 dimensions);
+    VolumeGLPrecision(T* texels, uvec3 dimensions);
     virtual ~VolumeGLPrecision() {};
     using VolumeGL::initialize;
     virtual void initialize(void* texels);
@@ -56,13 +56,13 @@ VolumeGLPrecision<T>::VolumeGLPrecision() : VolumeGL() {
 }
 
 template<typename T>
-VolumeGLPrecision<T>::VolumeGLPrecision(ivec3 dimensions) : VolumeGL(dimensions) {
+VolumeGLPrecision<T>::VolumeGLPrecision(uvec3 dimensions) : VolumeGL(dimensions) {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, ivec3 dimensions) : VolumeGL(dimensions) {
+VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, uvec3 dimensions) : VolumeGL(dimensions) {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(texels);
 }

@@ -35,7 +35,7 @@ namespace inviwo {
 
         void invalidate();
 
-        virtual ivec3 getColorCode() { return ivec3(128,128,128); }
+        virtual uvec3 getColorCode() { return uvec3(128,128,128); }
 
     protected:
 

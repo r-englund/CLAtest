@@ -25,7 +25,7 @@ namespace inviwo {
         };
 
         MouseEvent(ivec2 position, MouseEvent::MouseButton button,
-                   MouseEvent::MouseState state, Event::Modifier modifier, ivec2 canvasSize);
+                   MouseEvent::MouseState state, Event::Modifier modifier, uvec2 canvasSize);
         ~MouseEvent();
 
         inline ivec2 pos() const { return position_; }
@@ -35,14 +35,14 @@ namespace inviwo {
         inline MouseEvent::MouseButton button() const { return button_; }
         inline MouseEvent::MouseState state() const { return state_; }
         inline Event::Modifier modifier() const { return modifier_; }
-        inline ivec2 canvasSize() const {return canvasSize_; }
+        inline uvec2 canvasSize() const {return canvasSize_; }
 
     private:
         ivec2 position_;
         MouseEvent::MouseButton button_;
         MouseEvent::MouseState state_;
         Event::Modifier modifier_;
-        ivec2 canvasSize_;
+        uvec2 canvasSize_;
     };
 
 } // namespace

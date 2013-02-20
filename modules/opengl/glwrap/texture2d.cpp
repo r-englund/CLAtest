@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-    Texture2D::Texture2D(ivec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
+    Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
         : dimensions_(dimensions),
           format_(format),
           internalformat_(internalformat),

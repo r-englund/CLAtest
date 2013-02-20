@@ -33,7 +33,7 @@ static const int propertyRoundedCorners = 0;
 static const int propertyLabelHeight = 12;
 
 
-DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color, bool layoutOption, bool dragOrDrawMode) :
+DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color, bool layoutOption, bool dragOrDrawMode) :
                          CurveGraphicsItem(startPoint, endPoint, color, layoutOption, dragOrDrawMode) {
      setZValue(LINKDIALOG_CONNECTION_GRAPHICSITEM_DEPTH);
 
@@ -56,7 +56,7 @@ DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGra
                                                            bool layoutOption) : 
                                                            DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty), 
                                                                                    endProperty->getShortestBoundaryPointTo(startProperty),
-                                                                                   ivec3(38,38,38), false, false),
+                                                                                   uvec3(38,38,38), false, false),
                                                            startPropertyGraphicsItem_(startProperty),
                                                            endPropertyGraphicsItem_(endProperty),
                                                            propertyLink_(propertyLink),

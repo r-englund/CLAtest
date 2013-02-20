@@ -10,16 +10,16 @@ namespace inviwo {
 
     public:
         Image();
-        Image(ivec2 dimensions);
+        Image(uvec2 dimensions);
         virtual ~Image();
 
-        void resize(ivec2 dimensions);
-        ivec2 size() {return dimensions_;}
+        void resize(uvec2 dimensions);
+        uvec2 size() {return dimensions_;}
         virtual Data* clone();
-        void resizeImageRepresentations(Image* targetImage, ivec2 targetDim);
+        void resizeImageRepresentations(Image* targetImage, uvec2 targetDim);
 
     private:
-        ivec2 dimensions_;
+        uvec2 dimensions_;
     };
 
 } // namespace

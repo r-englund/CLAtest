@@ -13,7 +13,7 @@ class IVW_MODULE_GLUT_API CanvasGLUT : public CanvasGL {
 public:
     static EventHandler* eventHandler_;
 
-    CanvasGLUT(std::string title, ivec2 dimensions);
+    CanvasGLUT(std::string title, uvec2 dimensions);
     ~CanvasGLUT();
 
     virtual void initialize();

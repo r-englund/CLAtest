@@ -10,7 +10,7 @@ EventHandler* CanvasGLUT::eventHandler_;
 
 //ProcessorNetworkEvaluator* CanvasGLUT::processorNetworkEvaluator_ = 0;
 
-CanvasGLUT::CanvasGLUT(std::string windowTitle, ivec2 dimensions)
+CanvasGLUT::CanvasGLUT(std::string windowTitle, uvec2 dimensions)
     : CanvasGL(dimensions),
     mouseButton_(MouseEvent::MOUSE_BUTTON_NONE),
     mouseState_(MouseEvent::MOUSE_STATE_NONE),

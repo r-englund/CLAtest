@@ -33,7 +33,7 @@ void FindEdges::process() {
     
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    ivec2 csize = outImageGL->dimension();
+    uvec2 csize = outImageGL->getDimension();
 
     activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);

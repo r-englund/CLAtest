@@ -4,7 +4,7 @@
 namespace inviwo {
 
     VolumeDisk::VolumeDisk(std::string srcFile)
-        : VolumeRepresentation(ivec3(128,128,128), "UINT8")
+        : VolumeRepresentation(uvec3(128,128,128), "UINT8")
     {
         sourceFile_ = srcFile;
         initialize();

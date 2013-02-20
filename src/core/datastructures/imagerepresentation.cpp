@@ -6,7 +6,7 @@ namespace inviwo {
         : DataRepresentation()
     {}
 
-    ImageRepresentation::ImageRepresentation(ivec2 dimensions)
+    ImageRepresentation::ImageRepresentation(uvec2 dimensions)
         : DataRepresentation(), dimensions_(dimensions)
     {
 
@@ -14,7 +14,7 @@ namespace inviwo {
 
     ImageRepresentation::~ImageRepresentation() {}
 
-    void ImageRepresentation::resize(ivec2 dimensions){
+    void ImageRepresentation::resize(uvec2 dimensions){
         dimensions_ = dimensions;
     }    
 

@@ -5,7 +5,7 @@ namespace inviwo {
 bool CanvasGL::glewInitialized_ = false;
 const std::string CanvasGL::logSource_ = "CanvasGL";
 
-CanvasGL::CanvasGL(ivec2 dimensions)
+CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)
 {}
 
@@ -34,7 +34,7 @@ void CanvasGL::switchContext() {}
 
 void CanvasGL::repaint() {}
 
-void CanvasGL::resize(ivec2 size) {
+void CanvasGL::resize(uvec2 size) {
     Canvas::resize(size);
     glViewport(0, 0, size[0], size[1]);
 }

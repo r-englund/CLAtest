@@ -9,7 +9,7 @@ namespace inviwo {
 
 struct ReaderSettings {            
     std::string rawFileAbsolutePath_;
-    ivec3 dimensions_;
+    uvec3 dimensions_;
     std::string dataFormat_;
     ReaderSettings(std::string rawFile, ivec3 resolution=ivec3(0), std::string format="UCHAR");
     ReaderSettings() {}
@@ -24,7 +24,7 @@ public:
 
 protected:
     template <class T>
-    static T* loadData(std::string rawFileAbsolutePath, ivec3 dimensions) {
+    static T* loadData(std::string rawFileAbsolutePath, uvec3 dimensions) {
         T* texels = new T[dimensions.x * dimensions.y * dimensions.z];
         std::fstream fin(rawFileAbsolutePath.c_str(), std::ios::in | std::ios::binary);
         ivwAssert(fin.good(), "cannot open volume file");

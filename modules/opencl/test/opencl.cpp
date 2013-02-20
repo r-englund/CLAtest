@@ -48,7 +48,7 @@ int test_image() {
     //    0, 0, 0, 0};
 
     //cl::Image2D img(*inviwo::OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, CL_FLOAT, 4, 4, imageData);
-    glm::ivec2 imageSize(512, 503);
+    uvec2 imageSize(512, 503);
     std::vector<uint8_t> imageData(imageSize.x*imageSize.y);
     inviwo::Image image(imageSize);
     inviwo::ImageRAM* ram = image.getRepresentation<inviwo::ImageRAM>();
@@ -56,7 +56,7 @@ int test_image() {
     try {
         inviwo::ImageCL *imageCL = image.getRepresentation<inviwo::ImageCL>();
         inviwo::OpenCL::getInstance()->getQueue().enqueueWriteImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(imageSize, 1), 0, 0, &imageData[0]);
-        glm::ivec2 resizeTo(212, 103);
+        glm::uvec2 resizeTo(212, 103);
         imageCL->resize(resizeTo);
         std::vector<uint8_t> resizedImageData(resizeTo.x*resizeTo.y);
         inviwo::OpenCL::getInstance()->getQueue().enqueueReadImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(resizeTo, 1), 0, 0, &resizedImageData[0]);

@@ -3,12 +3,12 @@
 namespace inviwo {
 
 VolumeGL::VolumeGL()
-    : VolumeRepresentation(ivec3(128,128,128), "UINT8"), volumeTexture_(0) //TODO: use actual value
+    : VolumeRepresentation(uvec3(128,128,128), "UINT8"), volumeTexture_(0) //TODO: use actual value
 {
     initialize();
 }
 
-VolumeGL::VolumeGL(ivec3 dimensions)
+VolumeGL::VolumeGL(uvec3 dimensions)
     : VolumeRepresentation(dimensions, "UINT8"), volumeTexture_(0)
 {
     initialize();

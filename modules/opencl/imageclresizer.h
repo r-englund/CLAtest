@@ -24,7 +24,7 @@ public:
      * \param resizeToDimension (const glm::ivec2 &) Size to resize to
      * \return (void)
      */
-    static void resize(const cl::Image2D& src, const cl::Image2D& dst, const glm::ivec2& resizeToDimension);
+    static void resize(const cl::Image2D& src, const cl::Image2D& dst, const glm::uvec2& resizeToDimension);
 
 private:
     ImageCLResizer();

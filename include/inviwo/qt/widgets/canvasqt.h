@@ -16,7 +16,7 @@ public:
 
     void initialize();
     void initializeGL();
-    void resizeGL(int w, int h);
+    void resizeGL(uint32_t w, uint32_t h);
     void paintGL();
     virtual void switchContext();   
     virtual void update();

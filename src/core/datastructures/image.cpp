@@ -6,12 +6,12 @@
 namespace inviwo {
 
     Image::Image() : Data() {
-        dimensions_ = ivec2(256,256);
+        dimensions_ = uvec2(256,256);
         representations_.clear();
         addRepresentation(new ImageRAM(dimensions_));
     }
 
-    Image::Image(ivec2 dimensions)
+    Image::Image(uvec2 dimensions)
         : Data(),
           dimensions_(dimensions) {
         representations_.clear();
@@ -31,7 +31,7 @@ namespace inviwo {
         representations_.clear();
     }
 
-    void Image::resize(ivec2 dimensions) {
+    void Image::resize(uvec2 dimensions) {
         dimensions_ = dimensions;
         for (size_t i=0; i<representations_.size(); i++) {
             ImageRepresentation* imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;
@@ -41,7 +41,7 @@ namespace inviwo {
         }
     }
 
-    void Image::resizeImageRepresentations(Image* targetImage, ivec2 targetDim) {
+    void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
         //TODO: check if getClassName() is necessary.
         //TODO: And also need to be tested on multiple representations_ such as ImageRAM, ImageDisk etc.,
         //TODO: optimize the code

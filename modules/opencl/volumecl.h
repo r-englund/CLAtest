@@ -14,7 +14,7 @@ class IVW_MODULE_OPENCL_API VolumeCL : public VolumeRepresentation {
 
 public:
     VolumeCL();
-    VolumeCL(ivec3 dimensions);
+    VolumeCL(uvec3 dimensions);
     virtual ~VolumeCL();
     
     virtual void initialize() {};
@@ -31,8 +31,8 @@ template<typename T>
 class IVW_MODULE_OPENCL_API VolumeCLPrecision : public VolumeCL {
 public:
     VolumeCLPrecision();
-    VolumeCLPrecision(ivec3 dimensions);
-    VolumeCLPrecision(T* voxels, ivec3 dimensions);
+    VolumeCLPrecision(uvec3 dimensions);
+    VolumeCLPrecision(T* voxels, uvec3 dimensions);
     virtual ~VolumeCLPrecision() {};
     virtual void initialize() { initialize(0); }
     virtual void initialize(void* voxels = NULL);
@@ -49,13 +49,13 @@ VolumeCLPrecision<T>::VolumeCLPrecision() : VolumeCL() {
 }
 
 template<typename T>
-VolumeCLPrecision<T>::VolumeCLPrecision(ivec3 dimensions) : VolumeCL(dimensions) {
+VolumeCLPrecision<T>::VolumeCLPrecision(uvec3 dimensions) : VolumeCL(dimensions) {
     VolumeCLPrecision<T>::setTypeAndFormat();
     VolumeCLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-VolumeCLPrecision<T>::VolumeCLPrecision(T* texels, ivec3 dimensions) : VolumeCL(dimensions) {
+VolumeCLPrecision<T>::VolumeCLPrecision(T* texels, uvec3 dimensions) : VolumeCL(dimensions) {
     VolumeCLPrecision<T>::setTypeAndFormat();
     VolumeCLPrecision<T>::initialize(texels);
 }
@@ -73,7 +73,7 @@ template<typename T>
 void VolumeCLPrecision<T>::initialize(void* texels) {
     image3D_ = new cl::Image3D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y, dimensions_.z);
     if (texels != NULL) {
-        OpenCL::getInstance()->getQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, texels);
+        OpenCL::getInstance()->getQueue().enqueueWriteImage(*image3D_, true, glm::uvec3(0), glm::uvec3(dimensions_), 0, 0, texels);
     }
     VolumeCL::initialize();
 }

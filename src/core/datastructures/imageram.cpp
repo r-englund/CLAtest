@@ -8,7 +8,7 @@ namespace inviwo {
         ImageRAM::initialize();
     }
 
-    ImageRAM::ImageRAM(ivec2 dimension)
+    ImageRAM::ImageRAM(uvec2 dimension)
         : ImageRepresentation(dimension)
 
     {

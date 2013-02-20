@@ -2,10 +2,19 @@
 
 namespace inviwo {
 
-    VolumeRepresentation::VolumeRepresentation(ivec3 dimension, std::string format)
+    VolumeRepresentation::VolumeRepresentation(uvec3 dimension, std::string format)
         : DataRepresentation(),
         dimensions_(dimension),
-        dataFormat_(format)
+        dataFormat_(format),
+        borders_(VolumeBorders())
+    {}
+
+    VolumeRepresentation::VolumeRepresentation(uvec3 dimension, std::string format, const VolumeBorders& border)
+        : DataRepresentation(),
+        dimensions_(dimension),
+        dataFormat_(format),
+        borders_(border)
+
     {}
 
     VolumeRepresentation::~VolumeRepresentation() {}

@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-    ResizeEvent::ResizeEvent( ivec2 canvasSize)
+    ResizeEvent::ResizeEvent( uvec2 canvasSize)
         : Event(),
           canvasSize_(canvasSize) {}
 

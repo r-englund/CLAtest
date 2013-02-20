@@ -12,17 +12,17 @@ VolumeRAM2GLConverter::~VolumeRAM2GLConverter() {}
 DataRepresentation* VolumeRAM2GLConverter::convert(DataRepresentation* source) {     
     DataRepresentation* destination = 0;
     std::string dataFormat("");
-    ivec3 dimension(0,0,0);
+    uvec3 dimension(0,0,0);
     void* data = 0;
     VolumeRAM* volumeRAM = dynamic_cast<VolumeRAM*>(source);
     if (volumeRAM) {
         if (dynamic_cast<VolumeRAMuint8*>(volumeRAM)) {
-            dimension = volumeRAM->dimension();
+            dimension = volumeRAM->getDimension();
             dataFormat = volumeRAM->getDataFormat();
             data = volumeRAM->getData();
         }
         else if (dynamic_cast<VolumeRAMuint16*>(volumeRAM)) {
-            dimension = volumeRAM->dimension();
+            dimension = volumeRAM->getDimension();
             dataFormat = volumeRAM->getDataFormat();
             data = volumeRAM->getData();
         }

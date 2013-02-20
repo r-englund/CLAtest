@@ -3,7 +3,7 @@
 namespace inviwo {
 
     MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
-                           MouseEvent::MouseState state, Event::Modifier modifier, ivec2 canvasSize)
+                           MouseEvent::MouseState state, Event::Modifier modifier, uvec2 canvasSize)
         : Event(),
           position_(position),
           button_(button),

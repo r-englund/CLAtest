@@ -4,7 +4,7 @@
 namespace inviwo {
 
 ImagePort::ImagePort(PortDirection direction, std::string identifier)
-    : DataPort<Image>(direction, identifier), dimensions_(ivec2(256,256))
+    : DataPort<Image>(direction, identifier), dimensions_(uvec2(256,256))
 {}
 
 ImagePort::~ImagePort() {}
@@ -17,14 +17,14 @@ void ImagePort::deinitialize() {
     delete data_;
 }
 
-void ImagePort::resize(ivec2 dimensions) {
+void ImagePort::resize(uvec2 dimensions) {
     dimensions_ = dimensions;
     //TODO: data_ is sometimes un-initialized. Especially while loading workspace.
     if (data_) data_->resize(dimensions_);
     invalidate();
 }
 
-Image* ImagePort::resizeImageData(std::string processorID, ivec2 targetDim) {
+Image* ImagePort::resizeImageData(std::string processorID, uvec2 targetDim) {
     ivwAssert(isOutport(), "This method should only be called for outports.");
 
     Image* result = 0;

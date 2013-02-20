@@ -13,15 +13,15 @@ namespace inviwo {
 
 class IVW_CORE_API Canvas {
 public:
-    Canvas(ivec2 dimensions);
+    Canvas(uvec2 dimensions);
     virtual ~Canvas();
 
     virtual void initialize();
     virtual void deinitialize();
     virtual void switchContext();
     virtual void repaint();
-    virtual void resize(ivec2 dimensions);
-    virtual ivec2 size() { return dimensions_;}
+    virtual void resize(uvec2 dimensions);
+    virtual uvec2 size() { return dimensions_;}
     virtual void update();
 
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };
@@ -29,7 +29,7 @@ public:
     static ProcessorNetworkEvaluator* processorNetworkEvaluator_; //TODO: should this rather be private?
 
 protected:
-    ivec2 dimensions_;
+    uvec2 dimensions_;
 };
 
 } // namespace

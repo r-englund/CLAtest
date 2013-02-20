@@ -6,7 +6,7 @@
 
 namespace inviwo {
 
-CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color, bool layoutOption, bool dragMode)
+CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color, bool layoutOption, bool dragMode)
                                      : startPoint_(startPoint),
                                        endPoint_(endPoint),
                                        verticalLayout_(layoutOption),
