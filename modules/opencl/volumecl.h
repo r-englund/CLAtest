@@ -73,7 +73,7 @@ template<typename T>
 void VolumeCLPrecision<T>::initialize(void* texels) {
     image3D_ = new cl::Image3D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y, dimensions_.z);
     if (texels != NULL) {
-        OpenCL::getInstance()->getQueue().enqueueWriteImage(*image3D_, true, glm::uvec3(0), glm::uvec3(dimensions_), 0, 0, texels);
+        OpenCL::getInstance()->getQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, texels);
     }
     VolumeCL::initialize();
 }

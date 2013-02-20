@@ -65,7 +65,7 @@ namespace inviwo {
             if (destination) {
                 ImageRAM* imageRAM = static_cast<ImageRAM*>(destination);
                 const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
-                queue.enqueueReadImage(*imageCL->getImage(), true, glm::uvec3(0), glm::uvec3(dimension, 1), 0, 0, imageRAM->getData());
+                queue.enqueueReadImage(*imageCL->getImage(), true, glm::svec3(0), glm::svec3(dimension, 1), 0, 0, imageRAM->getData());
             }
         }        
         return destination;

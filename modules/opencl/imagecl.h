@@ -81,7 +81,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
         //cl::Buffer pinnedMem(OpenCL::getInstance()->getContext(), CL_MEM_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, sizeof(texels), NULL, NULL);
         //unsigned char* mappedMem = (unsigned char*)OpenCL::getInstance()->getQueue().enqueueMapBuffer(pinnedMem, true, CL_MAP_WRITE, 0, sizeof(texels), 0);
         //memcpy(mappedMem, texels, sizeof(texels));
-        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::uvec3(0), glm::uvec3(dimensions_, 1), 0, 0, mappedMem);
+        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, mappedMem);
         //OpenCL::getInstance()->getQueue().enqueueUnmapMemObject(pinnedMem, mappedMem);
 
         // This should also use pinned memory...
@@ -90,7 +90,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
             getFormat(), dimensions_.x, dimensions_.y, 0, texels);
         // Alternatively first allocate memory on device and then transfer
         //image2D_ = new cl::Image2D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y);
-        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::uvec3(0), glm::uvec3(dimensions_, 1), 0, 0, texels);
+        //OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, texels);
     } else {
         image2D_ = new cl::Image2D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y);
     }
