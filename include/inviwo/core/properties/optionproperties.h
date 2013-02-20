@@ -7,7 +7,7 @@ namespace inviwo {
     class IVW_CORE_API OptionPropertyDouble : public TemplatedOptionProperty<double> {
 
     public:
-        OptionPropertyDouble(std::string identifier, std::string displayName, std::string value, int selectedOption);
+        OptionPropertyDouble(std::string identifier, std::string displayName, std::string value);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };
@@ -15,7 +15,7 @@ namespace inviwo {
     class IVW_CORE_API OptionPropertyFloat : public TemplatedOptionProperty<float> {
 
     public:
-        OptionPropertyFloat(std::string identifier, std::string displayName, std::string value, int selectedOption);
+        OptionPropertyFloat(std::string identifier, std::string displayName, std::string value);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };
@@ -23,7 +23,7 @@ namespace inviwo {
     class IVW_CORE_API OptionPropertyInt : public TemplatedOptionProperty<int> {
 
     public:
-        OptionPropertyInt(std::string identifier, std::string displayName, std::string value, int selectedOption);
+        OptionPropertyInt(std::string identifier, std::string displayName, std::string value);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };
@@ -31,7 +31,7 @@ namespace inviwo {
     class IVW_CORE_API OptionPropertyString : public TemplatedOptionProperty<std::string> {
 
     public:
-        OptionPropertyString(std::string identifier, std::string displayName, std::string value, int selectedOption);
+        OptionPropertyString(std::string identifier, std::string displayName, std::string value);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };

@@ -25,7 +25,7 @@ void OptionPropertyWidgetQt::fillComboBox(){
     }
 }
 void OptionPropertyWidgetQt::optionChanged(){
-    property_->setSelectedOption(comboBox_->currentIndex());
+    property_->setSelectedOption(comboBox_->currentText().toStdString());
 }
 
 void OptionPropertyWidgetQt::updateFromProperty() {
