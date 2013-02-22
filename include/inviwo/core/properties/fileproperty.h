@@ -8,6 +8,7 @@ namespace inviwo {
 class FileProperty : public TemplateProperty<std::string> {
 
 public:
+    FileProperty(std::string identifier, std::string displayName,PropertySemantics::Type semantics, std::string value);
     FileProperty(std::string identifier, std::string displayName, std::string value);
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);

@@ -2,8 +2,12 @@
 
 namespace inviwo {
 
+FileProperty::FileProperty(std::string identifier, std::string displayName,PropertySemantics::Type semantics, std::string value)
+    : TemplateProperty<std::string>(identifier, displayName,semantics,value)
+{}
+
 FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value)
-    : TemplateProperty<std::string>(identifier, displayName, value)
+: TemplateProperty<std::string>(identifier, displayName, value)
 {}
 
 int FileProperty::getVariantType() {

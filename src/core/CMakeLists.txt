@@ -70,6 +70,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyowner.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertysemantics.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/scalarproperties.h

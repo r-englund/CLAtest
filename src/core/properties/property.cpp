@@ -7,6 +7,13 @@ Property::Property(std::string identifier, std::string displayName)
       displayName_(displayName),
       invalid_(true)
 {}
+Property::Property(std::string identifier, std::string displayName, PropertySemantics::Type semantics)
+    : identifier_(identifier_),
+      displayName_(displayName),
+      invalid_(true),
+      semantics_(semantics)
+{}
+
 
 Property::Property()
     : identifier_(""),
@@ -27,6 +34,14 @@ std::string Property::getDisplayName() const {
 
 void Property::setDisplayName(const std::string& displayName) {
     displayName_ = displayName;
+}
+
+void Property::setSemantics( const PropertySemantics::Type& semantics) {
+    semantics_ = semantics;
+}
+
+inviwo::PropertySemantics::Type Property::getSemantics() const {
+    return semantics_;
 }
 
 PropertyOwner* Property::getOwner() {
@@ -77,5 +92,7 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("identifier", identifier_, true);
     d.deserialize("displayName", displayName_, true);
 }
+
+
 
 } // namespace
