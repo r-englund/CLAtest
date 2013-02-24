@@ -21,6 +21,7 @@ namespace inviwo {
 
         void initialize();
         void deinitialize();
+        
 
         virtual std::string getClassName() const { return "EntryExitPoints"; }
         virtual std::string getCategory() const  { return "Entry Exit Points"; }
@@ -35,12 +36,14 @@ namespace inviwo {
         ImagePort exitPort_;
 
         CameraProperty camera_;
-        ButtonProperty keybindings_;
+        ButtonProperty keymapbutton_;
+        KeyMapProperty keymap_;
 
         Shader* shader_;
 
         GLuint listID_;
 
+        void openKeyMapWindow();
         void renderBoundingBox(vec3 llf, vec3 urb);
     };
 

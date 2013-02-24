@@ -8,14 +8,16 @@ EntryExitPoints::EntryExitPoints()
     entryPort_(Port::OUTPORT, "entry-points"),
     exitPort_(Port::OUTPORT, "exit-points"),
     camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f)),
-    keybindings_("keybindings", "Key bindings")
+    keymapbutton_("keybindings", "Key bindings"),
+    keymap_("keymap", "Key mapping", "test")
 {
     addPort(volumePort_);
     addPort(entryPort_);
     addPort(exitPort_);
 
     addProperty(camera_);
-    addProperty(keybindings_);
+    addProperty(keymapbutton_);
+    addProperty(keymap_);
 }
 
 EntryExitPoints::~EntryExitPoints() {}
@@ -28,8 +30,9 @@ void EntryExitPoints::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader("eepgeneration.frag");
 
-    addInteractionHandler(new Trackball(&camera_));
-
+    addInteractionHandler(new Trackball(&camera_));    
+    keymapbutton_.registerClassMemberFunction(this, &EntryExitPoints::openKeyMapWindow);
+    
     // compute bounding box dimensions
     // TODO: change upon volume change
     //ivec3 volDim = ivec3(256);
@@ -42,6 +45,10 @@ void EntryExitPoints::initialize() {
     glNewList(listID_, GL_COMPILE);
     renderBoundingBox(llf, urb);
     glEndList();
+}
+
+void EntryExitPoints::openKeyMapWindow(){
+    keymap_.updatePropertyWidgets();
 }
 
 void EntryExitPoints::deinitialize() {

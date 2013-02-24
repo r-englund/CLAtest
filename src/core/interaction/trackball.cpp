@@ -79,7 +79,7 @@ namespace inviwo {
 
                     // calculate rotation angle
 				    float rotationAngle = acos(glm::dot(curr, prev));
-                    std::cout << rotationAngle << std::endl;   
+                    //std::cout << rotationAngle << std::endl;   
 
                     // FOR DEBUGGING 
                     // Draws a line with the trackball x and y. Color with z.

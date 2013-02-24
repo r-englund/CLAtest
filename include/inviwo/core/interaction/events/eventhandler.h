@@ -16,7 +16,7 @@ namespace inviwo {
         void broadcast(Event* event);
 
     private:
-        std::vector<EventListener*> eventListeners_;
+        std::vector<EventListener*> eventListeners_;        
     };
 
 } // namespace
