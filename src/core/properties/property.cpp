@@ -8,7 +8,7 @@ Property::Property(std::string identifier, std::string displayName)
       invalid_(true)
 {}
 Property::Property(std::string identifier, std::string displayName, PropertySemantics::Type semantics)
-    : identifier_(identifier_),
+    : identifier_(identifier),
       displayName_(displayName),
       invalid_(true),
       semantics_(semantics)
