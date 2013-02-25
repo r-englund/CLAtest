@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include <inviwo/core/inviwocommondefines.h>
-#include <inviwo/core/util/pstdint.h>
+#include <inviwo/core/util/types.h>
 
 // error handling
 #include <inviwo/core/util/assertion.h>

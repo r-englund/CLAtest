@@ -12,13 +12,18 @@ class IVW_CORE_API VolumeRAM : public VolumeRepresentation {
 public:
     VolumeRAM();
     VolumeRAM(uvec3 dimensions);
+    VolumeRAM(uvec3 dimension, const VolumeBorders& border);
     virtual ~VolumeRAM();
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone()=0;
+    virtual DataRepresentation* clone() = 0;
     virtual void* getData();
+    virtual const void* getData() const;
+    virtual size_t getBitsPerVoxel() const;
+    virtual size_t getBytesPerVoxel() const;
 protected:
     void* data_;
+    size_t bytesPerVoxel_;
 };
 
 template<typename T>
@@ -26,18 +31,31 @@ class IVW_CORE_API VolumeRAMPrecision : public VolumeRAM {
 public:
     VolumeRAMPrecision();
     VolumeRAMPrecision(uvec3 dimensions);
+    VolumeRAMPrecision(uvec3 dimensions, const VolumeBorders& border);
     VolumeRAMPrecision(T* data, uvec3 dimensions);
+    VolumeRAMPrecision(T* data, uvec3 dimensions, const VolumeBorders& border);
     virtual ~VolumeRAMPrecision() {};
     using VolumeRAM::initialize;
     virtual void initialize(void*);
-    virtual void deinitialize();    
+    virtual void deinitialize();
     virtual DataRepresentation* clone();
+    virtual void setSubVolume(const VolumeRAM* vol, const uvec3& offset = uvec3(0,0,0));
+    virtual VolumeRAMPrecision<T>* getSubVolume(const uvec3& dimensions, const uvec3& offset = uvec3(0,0,0), const VolumeRepresentation::VolumeBorders& border = VolumeRepresentation::VolumeBorders()) const throw (std::bad_alloc);
 private:
     void setTypeAndFormat();
 };
 
+//template<typename T>
+//const size_t VolumeRAMPrecision<T>::bytesPerVoxel_ = sizeof<T>;
+
 template<typename T>
 VolumeRAMPrecision<T>::VolumeRAMPrecision() : VolumeRAM() {
+    VolumeRAMPrecision<T>::setTypeAndFormat();
+    VolumeRAMPrecision<T>::initialize(0);
+}
+
+template<typename T>
+VolumeRAMPrecision<T>::VolumeRAMPrecision(uvec3 dimensions, const VolumeBorders& border) : VolumeRAM(dimensions, border) {
     VolumeRAMPrecision<T>::setTypeAndFormat();
     VolumeRAMPrecision<T>::initialize(0);
 }
@@ -50,6 +68,12 @@ VolumeRAMPrecision<T>::VolumeRAMPrecision(uvec3 dimensions) : VolumeRAM(dimensio
 
 template<typename T>
 VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, uvec3 dimensions) : VolumeRAM(dimensions) { 
+    VolumeRAMPrecision<T>::setTypeAndFormat();
+    VolumeRAMPrecision<T>::initialize(data);
+}
+
+template<typename T>
+VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, uvec3 dimensions, const VolumeBorders& border) : VolumeRAM(dimensions, border) { 
     VolumeRAMPrecision<T>::setTypeAndFormat();
     VolumeRAMPrecision<T>::initialize(data);
 }
@@ -106,6 +130,67 @@ void VolumeRAMPrecision<T>::deinitialize() {
     delete static_cast<T*>(data_);
     data_ = 0;
     VolumeRAM::deinitialize();
+}
+
+template<class T>
+VolumeRAMPrecision<T>* VolumeRAMPrecision<T>::getSubVolume(const uvec3& dimensions, const uvec3& offset, const VolumeRepresentation::VolumeBorders& border) const
+throw (std::bad_alloc)
+{
+    // create new volume
+    VolumeRAMPrecision<T>* newVolume = new VolumeRAMPrecision<T>(dimensions, border);
+    newVolume->originalDimensions_ = getDimensions();
+    T* data = reinterpret_cast<T*>(newVolume->getData());
+
+    // determine parameters
+    uvec3 dataDims = getDimensions();
+    uvec3 offsetDims = offset-newVolume->getBorderLLF();
+    offsetDims = glm::max(offsetDims, uvec3(0,0,0));
+    size_t initialStartPos = (offsetDims.z * (dataDims.x*dataDims.y))+(offsetDims.y * dataDims.x) + offsetDims.x;
+    uvec3 internalDimension = getDimensionsWithBorder();
+
+    // per row
+    size_t dataSize = internalDimension.x*static_cast<size_t>(getBytesPerVoxel());
+
+    // memcpy each row for every slice to form sub volume
+    size_t volumePos;
+    size_t subVolumePos;
+    for (size_t i=0; i < internalDimension.z; i++) {
+        for (size_t j=0; j < internalDimension.y; j++) {
+            volumePos = (j*dataDims.x) + (i*dataDims.x*dataDims.y);
+            subVolumePos = (j*internalDimension.x) + (i*internalDimension.x*internalDimension.y);
+            //memcpy(data + subVolumePos, (data_ + volumePos + initialStartPos), dataSize);
+        }
+    }
+
+    return newVolume;
+}
+
+template<class T>
+void VolumeRAMPrecision<T>::setSubVolume(const VolumeRAM* vol, const uvec3& offset)
+{
+    const T* data = reinterpret_cast<const T*>(vol->getData());
+
+    // determine parameters
+    uvec3 dataDims = getDimensions();
+    size_t initialStartPos = (offset.z * (dataDims.x*dataDims.y))+(offset.y * dataDims.x) + offset.x;
+
+    // per row
+    uvec3 dimensions = vol->getDimensions();
+    size_t dataSize = dimensions.x*static_cast<size_t>(getBytesPerVoxel());
+
+    // internal dimension including volume of the subvolume
+    uvec3 internalDimension = vol->getDimensionsWithBorder();
+
+    // memcpy each row for every slice in sub volume to form this volume
+    size_t volumePos;
+    size_t subVolumePos;
+    for (size_t i=0; i < dimensions.z; i++) {
+        for (size_t j=0; j < dimensions.y; j++) {
+            volumePos =  (j*dataDims.x) + (i*dataDims.x*dataDims.y);
+            subVolumePos = ((j+vol->getBorderLLF().y)*internalDimension.x) + ((i+vol->getBorderLLF().z)*internalDimension.x*internalDimension.y) + vol->getBorderLLF().x;
+            //memcpy((data_ + volumePos + initialStartPos), (data + subVolumePos), dataSize);
+        }
+    }
 }
 
 typedef VolumeRAMPrecision<uint8_t> VolumeRAMuint8;

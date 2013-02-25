@@ -12,7 +12,7 @@ namespace inviwo {
         DataRepresentation* destination = 0;
         VolumeRAM* volumeRAM = dynamic_cast<VolumeRAM*>(source);
         if (volumeRAM) {
-            uvec3 dimension = volumeRAM->getDimension();
+            uvec3 dimension = volumeRAM->getDimensions();
             void* data = volumeRAM->getData();
 
             if (dynamic_cast<VolumeRAMuint8*>(volumeRAM)) {
@@ -43,7 +43,7 @@ namespace inviwo {
         DataRepresentation* destination = 0;
         VolumeCL* volumeCL = dynamic_cast<VolumeCL*>(source);
         if (volumeCL) {
-            uvec3 dimension = volumeCL->getDimension();
+            uvec3 dimension = volumeCL->getDimensions();
 
             if (dynamic_cast<VolumeRAMuint8*>(volumeCL)) {
                 destination = new VolumeRAMuint8(dimension);

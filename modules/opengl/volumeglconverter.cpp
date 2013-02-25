@@ -17,12 +17,12 @@ DataRepresentation* VolumeRAM2GLConverter::convert(DataRepresentation* source) {
     VolumeRAM* volumeRAM = dynamic_cast<VolumeRAM*>(source);
     if (volumeRAM) {
         if (dynamic_cast<VolumeRAMuint8*>(volumeRAM)) {
-            dimension = volumeRAM->getDimension();
+            dimension = volumeRAM->getDimensions();
             dataFormat = volumeRAM->getDataFormat();
             data = volumeRAM->getData();
         }
         else if (dynamic_cast<VolumeRAMuint16*>(volumeRAM)) {
-            dimension = volumeRAM->getDimension();
+            dimension = volumeRAM->getDimensions();
             dataFormat = volumeRAM->getDataFormat();
             data = volumeRAM->getData();
         }

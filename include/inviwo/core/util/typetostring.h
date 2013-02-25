@@ -1,7 +1,7 @@
 #ifndef IVW_TYPE_TO_STRING_H
 #define IVW_TYPE_TO_STRING_H
 
-#include "inviwo/core/util/pstdint.h"
+#include <inviwo/core/util/types.h>
 
 #include <string>
 
@@ -15,8 +15,16 @@ template<typename T>
 std::string typeToString() {
     return std::string("Error, type specialization not implemented");
 }
-template< int8_t >
+/*template< struct DataType<glm::detail::float16, 2>* >
 std::string typeToString() {
+    return typeToString<DataType<glm::detail::float16, 2>::type>();
+}
+template< const DataFLOAT32& >
+std::string typeToString() {
+    return typeToString<DataFLOAT32::type>();
+}
+/*template<>
+std::string typeToString<int8_t>() {
     return "INT8";
 }
 template< int16_t >
@@ -31,10 +39,9 @@ template< int64_t >
 std::string typeToString() {
     return "INT64";
 }
-
 template< uint8_t >
 std::string typeToString() {
-    return "INT8";
+    return "UINT8";
 }
 template< uint16_t >
 std::string typeToString() {
@@ -56,7 +63,7 @@ std::string typeToString() {
 template< const double& >
 std::string typeToString() {
     return "FLOAT64";
-}
+}*/
 
 
 }

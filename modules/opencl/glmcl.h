@@ -3,7 +3,7 @@
 
 #include <modules/opencl/cl.hpp>
 #include <glm/glm.hpp>
-#include <inviwo/core/util/pstdint.h>
+#include <inviwo/core/util/types.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <iostream>
 
