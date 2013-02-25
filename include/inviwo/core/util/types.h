@@ -57,31 +57,31 @@ typedef GenericDataType<uint32_t>::type DataUINT32;
 typedef GenericDataType<uint64_t>::type DataUINT64;
 
 // Min/Max Specializations
-template<> static inline glm::detail::float16 DataFLOAT16::getMax() { return static_cast<glm::detail::float16>(glm::detail::toFloat16(std::numeric_limits<float>::max())); }
-template<> static inline glm::detail::float16 DataFLOAT16::getMin() { return static_cast<glm::detail::float16>(glm::detail::toFloat16(std::numeric_limits<float>::min())); }
+template<> inline glm::detail::float16 DataFLOAT16::getMax() { return static_cast<glm::detail::float16>(glm::detail::toFloat16(std::numeric_limits<float>::max())); }
+template<> inline glm::detail::float16 DataFLOAT16::getMin() { return static_cast<glm::detail::float16>(glm::detail::toFloat16(std::numeric_limits<float>::min())); }
 
-template<> static inline int16_t DataINT12::getMax() { return static_cast<int16_t>(2047); }
-template<> static inline int16_t DataINT12::getMin() { return static_cast<int16_t>(-2047); }
+template<> inline int16_t DataINT12::getMax() { return static_cast<int16_t>(2047); }
+template<> inline int16_t DataINT12::getMin() { return static_cast<int16_t>(-2047); }
 
-template<> static inline uint16_t DataUINT12::getMax() { return static_cast<uint16_t>(4095); }
-template<> static inline uint16_t DataUINT12::getMin() { return static_cast<uint16_t>(0); }
+template<> inline uint16_t DataUINT12::getMax() { return static_cast<uint16_t>(4095); }
+template<> inline uint16_t DataUINT12::getMin() { return static_cast<uint16_t>(0); }
 
 // String Function Specializations
-template<> static inline std::string DataFLOAT16::getString() { return "FLOAT16"; }
-template<> static inline std::string DataFLOAT32::getString() { return "FLOAT32"; }
-template<> static inline std::string DataFLOAT64::getString() { return "FLOAT64"; }
+template<> inline std::string DataFLOAT16::getString() { return "FLOAT16"; }
+template<> inline std::string DataFLOAT32::getString() { return "FLOAT32"; }
+template<> inline std::string DataFLOAT64::getString() { return "FLOAT64"; }
 
-template<> static inline std::string DataINT8::getString() { return "INT8"; }
-template<> static inline std::string DataINT12::getString() { return "INT12"; }
-template<> static inline std::string DataINT16::getString() { return "INT16"; }
-template<> static inline std::string DataINT32::getString() { return "INT32"; }
-template<> static inline std::string DataINT64::getString() { return "INT64"; }
+template<> inline std::string DataINT8::getString() { return "INT8"; }
+template<> inline std::string DataINT12::getString() { return "INT12"; }
+template<> inline std::string DataINT16::getString() { return "INT16"; }
+template<> inline std::string DataINT32::getString() { return "INT32"; }
+template<> inline std::string DataINT64::getString() { return "INT64"; }
 
-template<> static inline std::string DataUINT8::getString() { return "UINT8"; }
-template<> static inline std::string DataUINT12::getString() { return "UINT12"; }
-template<> static inline std::string DataUINT16::getString() { return "UINT16"; }
-template<> static inline std::string DataUINT32::getString() { return "UINT32"; }
-template<> static inline std::string DataUINT64::getString() { return "UINT64"; }
+template<> inline std::string DataUINT8::getString() { return "UINT8"; }
+template<> inline std::string DataUINT12::getString() { return "UINT12"; }
+template<> inline std::string DataUINT16::getString() { return "UINT16"; }
+template<> inline std::string DataUINT32::getString() { return "UINT32"; }
+template<> inline std::string DataUINT64::getString() { return "UINT64"; }
 
 }
 
