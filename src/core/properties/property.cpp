@@ -2,12 +2,7 @@
 
 namespace inviwo {
 
-Property::Property(std::string identifier, std::string displayName)
-    : identifier_(identifier),
-      displayName_(displayName),
-      invalid_(true)
-{}
-Property::Property(std::string identifier, std::string displayName, PropertySemantics::Type semantics)
+    Property::Property(std::string identifier, std::string displayName, PropertySemantics::Type semantics/* = PropertySemantics::Default*/)
     : identifier_(identifier),
       displayName_(displayName),
       invalid_(true),

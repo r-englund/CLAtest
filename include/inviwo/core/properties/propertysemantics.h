@@ -5,7 +5,8 @@ namespace inviwo {
     class IVW_CORE_API PropertySemantics {
 
     public:
-        enum Type { Color =1,
+        enum Type { Default =0,
+                    Color =1,
                     LightPosition =2,
                     Editor=3};
     };

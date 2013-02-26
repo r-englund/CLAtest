@@ -7,7 +7,7 @@ namespace inviwo {
     class IVW_CORE_API OptionPropertyDouble : public TemplatedOptionProperty<double> {
 
     public:
-        OptionPropertyDouble(std::string identifier, std::string displayName, std::string value);
+        OptionPropertyDouble(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };
@@ -15,7 +15,7 @@ namespace inviwo {
     class IVW_CORE_API OptionPropertyFloat : public TemplatedOptionProperty<float> {
 
     public:
-        OptionPropertyFloat(std::string identifier, std::string displayName, std::string value);
+        OptionPropertyFloat(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };
@@ -23,7 +23,7 @@ namespace inviwo {
     class IVW_CORE_API OptionPropertyInt : public TemplatedOptionProperty<int> {
 
     public:
-        OptionPropertyInt(std::string identifier, std::string displayName, std::string value);
+        OptionPropertyInt(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };
@@ -31,7 +31,7 @@ namespace inviwo {
     class IVW_CORE_API OptionPropertyString : public TemplatedOptionProperty<std::string> {
 
     public:
-        OptionPropertyString(std::string identifier, std::string displayName, std::string value);
+        OptionPropertyString(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };

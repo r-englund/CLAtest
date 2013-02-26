@@ -3,33 +3,33 @@
 namespace inviwo {
 
 	FloatVec2Property::FloatVec2Property(std::string identifier, std::string displayName, vec2 value,
-								 vec2 minValue, vec2 maxValue, vec2 increment)
-	: OrdinalProperty<vec2>(identifier, displayName, value, minValue, maxValue, increment)
+        vec2 minValue, vec2 maxValue, vec2 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+	: OrdinalProperty<vec2>(identifier, displayName, value, minValue, maxValue, increment, semantics)
 {}
 
 FloatVec3Property::FloatVec3Property(std::string identifier, std::string displayName, vec3 value,
-                                     vec3 minValue, vec3 maxValue, vec3 increment)
-    : OrdinalProperty<vec3>(identifier, displayName, value, minValue, maxValue, increment)
+                                     vec3 minValue, vec3 maxValue, vec3 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+    : OrdinalProperty<vec3>(identifier, displayName, value, minValue, maxValue, increment, semantics)
 {}
 
 FloatVec4Property::FloatVec4Property(std::string identifier, std::string displayName, vec4 value,
-                                     vec4 minValue, vec4 maxValue, vec4 increment)
-    : OrdinalProperty<vec4>(identifier, displayName, value, minValue, maxValue, increment)
+                                     vec4 minValue, vec4 maxValue, vec4 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+    : OrdinalProperty<vec4>(identifier, displayName, value, minValue, maxValue, increment, semantics)
 {}
 
 IntVec2Property::IntVec2Property(std::string identifier, std::string displayName, ivec2 value,
-								 ivec2 minValue, ivec2 maxValue, ivec2 increment)
-	: OrdinalProperty<ivec2>(identifier, displayName, value, minValue, maxValue, increment)
+								 ivec2 minValue, ivec2 maxValue, ivec2 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+	: OrdinalProperty<ivec2>(identifier, displayName, value, minValue, maxValue, increment, semantics)
 {}
 
 IntVec3Property::IntVec3Property(std::string identifier, std::string displayName, ivec3 value,
-								 ivec3 minValue, ivec3 maxValue, ivec3 increment)
-	: OrdinalProperty<ivec3>(identifier, displayName, value, minValue, maxValue, increment)
+								 ivec3 minValue, ivec3 maxValue, ivec3 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+	: OrdinalProperty<ivec3>(identifier, displayName, value, minValue, maxValue, increment, semantics)
 {}
 
 IntVec4Property::IntVec4Property(std::string identifier, std::string displayName, ivec4 value,
-								 ivec4 minValue, ivec4 maxValue, ivec4 increment)
-	: OrdinalProperty<ivec4>(identifier, displayName, value, minValue, maxValue, increment)
+								 ivec4 minValue, ivec4 maxValue, ivec4 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+	: OrdinalProperty<ivec4>(identifier, displayName, value, minValue, maxValue, increment, semantics)
 {}
 
 void FloatVec2Property::serialize(IvwSerializer& s) const {

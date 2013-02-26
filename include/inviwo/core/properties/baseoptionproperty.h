@@ -11,8 +11,8 @@ namespace inviwo {
 class IVW_CORE_API BaseOptionProperty : public StringProperty{
 public:
 
-    BaseOptionProperty(std::string identifier, std::string displayName,std::string value)
-        :StringProperty(identifier,displayName,value)
+    BaseOptionProperty(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default)
+        :StringProperty(identifier,displayName,value,semantics)
     {}
 
     virtual std::vector< std::string > getOptionKeys()=0;
@@ -27,7 +27,7 @@ template<typename T>
 class IVW_CORE_API TemplatedOptionProperty : public BaseOptionProperty {
 
 public:
-    TemplatedOptionProperty(std::string identifier, std::string displayName,std::string value);
+    TemplatedOptionProperty(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default);
 
     virtual void addOption(std::string optionName,T optionValue);
     virtual std::vector< std::pair<std::string, T> > getOptions();
@@ -43,8 +43,8 @@ private:
 
 
 template <typename T>
-TemplatedOptionProperty<T>::TemplatedOptionProperty(std::string identifier, std::string displayName, std::string value)
-    : BaseOptionProperty(identifier,displayName,value)
+TemplatedOptionProperty<T>::TemplatedOptionProperty(std::string identifier, std::string displayName,  std::string value , PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+    : BaseOptionProperty(identifier,displayName,value, semantics)
 {}
 
 template<typename T>

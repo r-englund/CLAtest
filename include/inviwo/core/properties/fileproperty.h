@@ -8,8 +8,18 @@ namespace inviwo {
 class FileProperty : public TemplateProperty<std::string> {
 
 public:
-    FileProperty(std::string identifier, std::string displayName,PropertySemantics::Type semantics, std::string value);
-    FileProperty(std::string identifier, std::string displayName, std::string value);
+
+    /** 
+     * \brief Constructor for the FileProperty
+     *
+     * The PropertySemantics can be set to Editor. Then a TextEditorWidget will be used instead of a FilePropertyWidget
+     * 
+     * @param std::string identifier identifier for the property 
+     * @param std::string displayName displayName for the property
+     * @param std::string value the path to the file
+     * @param PropertySemantics::Type semantics Can be set to Editor
+     */
+    FileProperty(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();

@@ -2,8 +2,8 @@
 
 namespace inviwo {
 
-    SnapshotProperty::SnapshotProperty(std::string identifier, std::string displayName, ImagePort& imagePort)
-: TemplateProperty<std::string>(identifier, displayName, "")
+    SnapshotProperty::SnapshotProperty(std::string identifier, std::string displayName, ImagePort& imagePort, PropertySemantics::Type semantics/* = PropertySemantics::Default*/)
+: TemplateProperty<std::string>(identifier, displayName,"",semantics)
 {
     imagePort_ = &imagePort;
 }

@@ -46,16 +46,23 @@ const std::string PropertyWidgetFactoryQt::logSource_ = "PropertyWidgetFactoryQt
 PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
 PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
 
+
+    if(property->getSemantics()!=PropertySemantics::Default){
+
+        if (dynamic_cast<FileProperty*>(property)&& property->getSemantics() == PropertySemantics::Editor) {
+            return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
+        }
+        if (dynamic_cast<StringProperty*>(property)&& property->getSemantics() == PropertySemantics::Editor) {
+            return new TextEditorWidgetQt(static_cast<StringProperty*>(property));
+        }
+    }
+
     if (dynamic_cast<BoolProperty*>(property))
         return new BoolPropertyWidgetQt(static_cast<BoolProperty*>(property));
     if (dynamic_cast<ButtonProperty*>(property))
         return new ButtonPropertyWidgetQt(static_cast<ButtonProperty*>(property));
     if (dynamic_cast<CompositeProperty*>(property))
         return new CompositePropertyWidgetQt(static_cast<CompositeProperty*>(property));
-
-    if (dynamic_cast<FileProperty*>(property)&& property->getSemantics() == PropertySemantics::Editor) {
-        return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
-    }
     if (dynamic_cast<FileProperty*>(property))
         return new FilePropertyWidgetQt(static_cast<FileProperty*>(property));
 	if (dynamic_cast<FloatMat2Property*>(property))
@@ -94,8 +101,6 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new SnapshotPropertyWidgetQt(static_cast<SnapshotProperty*>(property));
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
-    //if (dynamic_cast<TextEditorProperty*>(property))
-    //    return new TextEditorWidgetQt(static_cast<TextEditorProperty*>(property));
     if (dynamic_cast<TransferProperty*>(property))
         return new TransferPropertyWidgetQt(static_cast<TransferProperty*>(property));
 

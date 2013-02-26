@@ -16,7 +16,7 @@ namespace inviwo {
 class IVW_CORE_API SnapshotProperty : public TemplateProperty<std::string> {
 
 public:
-    SnapshotProperty(std::string identifier, std::string displayName, ImagePort& imagePort);
+    SnapshotProperty(std::string identifier, std::string displayName, ImagePort& imagePort, PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual ~SnapshotProperty();
 
     /**

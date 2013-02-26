@@ -2,8 +2,8 @@
 
 namespace inviwo {
 
-StringProperty::StringProperty(std::string identifier, std::string displayName, std::string value)
-    : TemplateProperty<std::string>(identifier, displayName, value)
+    StringProperty::StringProperty(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+    : TemplateProperty<std::string>(identifier, displayName,value, semantics)
 {}
 
 void StringProperty::serialize(IvwSerializer& s) const {

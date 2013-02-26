@@ -10,7 +10,7 @@ namespace inviwo {
 class IVW_CORE_API CompositeProperty : public Property {
 
 public:
-    CompositeProperty(std::string identifier, std::string displayName);
+    CompositeProperty(std::string identifier, std::string displayName, PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual ~CompositeProperty();
 
     void addProperty(Property* property);

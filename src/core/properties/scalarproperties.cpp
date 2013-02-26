@@ -3,8 +3,8 @@
 namespace inviwo {
 
 FloatProperty::FloatProperty(std::string identifier, std::string displayName, float value,
-    float minValue, float maxValue, float increment)
-    : OrdinalProperty<float>(identifier, displayName, value, minValue, maxValue, increment)
+    float minValue, float maxValue, float increment,PropertySemantics::Type semantics/* = PropertySemantics::Default*/)
+    : OrdinalProperty<float>(identifier, displayName, value, minValue, maxValue, increment,semantics)
 {}
 
 int FloatProperty::getVariantType() {
@@ -46,8 +46,8 @@ void FloatProperty::deserialize(IvwDeserializer& d) {
 }
 
 IntProperty::IntProperty(std::string identifier, std::string displayName, int value,
-    int minValue, int maxValue, int increment)
-    : OrdinalProperty<int>(identifier, displayName, value, minValue, maxValue, increment)
+    int minValue, int maxValue, int increment,PropertySemantics::Type semantics/* = PropertySemantics::Default*/)
+    : OrdinalProperty<int>(identifier, displayName, value, minValue, maxValue, increment, semantics)
 {}
 
 int IntProperty::getVariantType() {

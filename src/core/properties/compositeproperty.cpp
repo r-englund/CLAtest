@@ -2,8 +2,8 @@
 
 namespace inviwo {
 
-CompositeProperty::CompositeProperty(std::string identifier, std::string displayName)
-    : Property(identifier, displayName)
+    CompositeProperty::CompositeProperty(std::string identifier, std::string displayName,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+    : Property(identifier, displayName,semantics)
 {}
 
 CompositeProperty::~CompositeProperty() {}

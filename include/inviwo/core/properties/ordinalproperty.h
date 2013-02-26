@@ -13,7 +13,7 @@ class IVW_CORE_API OrdinalProperty : public TemplateProperty<T> {
 
 public:
     OrdinalProperty(std::string identifier, std::string displayName, T value,
-                    T minValue, T maxValue, T increment);
+                    T minValue, T maxValue, T increment, PropertySemantics::Type semantics = PropertySemantics::Default);
 
     T getMinValue()const ;
     T getMaxValue() const ;
@@ -52,8 +52,8 @@ private:
 
 template <typename T>
 OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayName, T value,
-                                    T minValue, T maxValue, T increment)
-    : TemplateProperty<T>(identifier, displayName, value),
+                                    T minValue, T maxValue, T increment, PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+    : TemplateProperty<T>(identifier, displayName, value, semantics),
       minValue_(minValue),
       maxValue_(maxValue),
       increment_(increment)

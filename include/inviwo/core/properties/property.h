@@ -12,8 +12,7 @@ namespace inviwo {
 class IVW_CORE_API Property : public IvwSerializable {
 
 public:
-    Property(std::string identifier, std::string displayName);
-    Property(std::string identifier, std::string displayName, PropertySemantics::Type semantics);
+    Property(std::string identifier, std::string displayName,  PropertySemantics::Type semantics = PropertySemantics::Default);
     Property();
     
     virtual std::string getIdentifier() const;

@@ -2,8 +2,8 @@
 
 namespace inviwo {
 
-TransferProperty::TransferProperty(std::string identifier, std::string displayName, bool value)
-    : TemplateProperty<bool>(identifier, displayName, value)
+    TransferProperty::TransferProperty(std::string identifier, std::string displayName, bool value,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+    : TemplateProperty<bool>(identifier, displayName, value, semantics)
 {}
 
 void TransferProperty::serialize(IvwSerializer& s) const {

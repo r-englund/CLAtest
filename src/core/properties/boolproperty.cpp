@@ -2,8 +2,8 @@
 
 namespace inviwo {
 
-BoolProperty::BoolProperty(std::string identifier, std::string displayName, bool value)
-    : TemplateProperty<bool>(identifier, displayName, value)
+    BoolProperty::BoolProperty(std::string identifier, std::string displayName, bool value, PropertySemantics::Type semantics/* = PropertySemantics::Default*/)
+    : TemplateProperty<bool>(identifier, displayName, value, semantics)
 {}
 
 void BoolProperty::serialize(IvwSerializer& s) const {

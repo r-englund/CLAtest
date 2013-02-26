@@ -2,8 +2,8 @@
 
 namespace inviwo {
 
-    TextEditorProperty::TextEditorProperty(std::string identifier, std::string displayName, std::string value)
-        : TemplateProperty<std::string>(identifier, displayName, value)
+    TextEditorProperty::TextEditorProperty(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+        : TemplateProperty<std::string>(identifier, displayName, value, semantics)
     {}
 
     void TextEditorProperty::serialize(IvwSerializer& s) const {
