@@ -31,7 +31,7 @@ ivw_define_standard_definitions(libjpeg)
 # Create library
 add_library(libjpeg ${SOURCE_FILES} ${HEADER_FILES})
 
-ivw_add_dependencies(ZLib)
+# ivw_add_dependencies(ZLib)
 
 #--------------------------------------------------------------------
 # Creates VS folder structure
