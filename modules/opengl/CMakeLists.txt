@@ -7,6 +7,7 @@ ivw_module(OpenGL)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/canvasgl.h
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/imageloader.h
     ${IVW_MODULE_DIR}/opengl/imagegl.h
     ${IVW_MODULE_DIR}/opengl/imageglconverter.h
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
@@ -21,7 +22,6 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
-    ${IVW_MODULE_DIR}/opengl/ext/tgaload/tgaload.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -30,6 +30,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/imageloader.cpp
     ${IVW_MODULE_DIR}/opengl/imagegl.cpp
     ${IVW_MODULE_DIR}/opengl/imageglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
@@ -44,7 +45,6 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp
-    ${IVW_MODULE_DIR}/opengl/ext/tgaload/tgaload.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

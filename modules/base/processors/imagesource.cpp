@@ -34,17 +34,22 @@ void ImageSource::process() {
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
     uvec2 csize = outImageGL->getDimension();
 
-    Texture2D* testTex = new Texture2D(csize, GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
-    glActiveTexture(GL_TEXTURE0);
-    testTex->loadTexture(imageFileName_.get());
-
-    shader_->activate();
-    shader_->setUniform("colorTex_", 0);
-    shader_->setUniform("dimension_", vec2(1.f/csize[0],  1.f/csize[1]));
-    renderImagePlaneQuad();
-    shader_->deactivate();
-
-    deactivateCurrentTarget();
+	glActiveTexture(GL_TEXTURE0);
+	Texture2D* texture = ImageLoader::loadImage(imageFileName_.get());
+	
+	if(texture != NULL){
+		shader_->activate();
+		shader_->setUniform("colorTex_", 0);
+		shader_->setUniform("dimension_", vec2(1.f/csize[0],  1.f/csize[1]));
+		renderImagePlaneQuad();
+		shader_->deactivate();
+		deactivateCurrentTarget();
+	}
+	else{
+		//Print in console if the image did not load correctly.
+		LogInfoS(getClassName(), "Error: The specified image file was not loaded " 
+								<< "correctly. The file format might not be supported.");
+	}
 }
 
 } // namespace

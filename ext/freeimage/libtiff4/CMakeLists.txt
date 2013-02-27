@@ -1,0 +1,43 @@
+
+ivw_project(libtiff4)
+
+#--------------------------------------------------------------------
+# Supress warnings
+add_definitions( "/W0 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo /IGNORE:4006" )
+
+#--------------------------------------------------------------------
+# Add header files
+
+file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+
+ivw_group("Header Files" ${HEADER_FILES} )
+
+#--------------------------------------------------------------------
+# Add source files
+
+file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
+
+list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_wince.c)
+list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_win3.c)
+list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_vms.c)
+list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_atari.c)
+list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_acorn.c)
+list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_apple.c)
+
+ivw_group("Source Files" ${SOURCE_FILES} )
+
+#--------------------------------------------------------------------
+# Define defintions
+ivw_define_standard_definitions(libtiff4)
+
+#--------------------------------------------------------------------
+# Create library
+add_library(libtiff4 ${SOURCE_FILES} ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Creates VS folder structure
+ivw_vs_folder(libtiff4 ext/freeimagelib)
+
+#--------------------------------------------------------------------
+# Make package (for other projects to find)
+ivw_make_package(LibTiff4 libtiff4)

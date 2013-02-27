@@ -8,6 +8,7 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/imageloader.h>
 
 namespace inviwo {
 

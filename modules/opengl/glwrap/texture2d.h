@@ -17,14 +17,6 @@ public:
 
     unsigned int getID() const { return id_; }
 
-    // TODO: remove this function
-    void loadTexture(std::string fileName, uvec2 dimensions=uvec2(0,0)) {
-        bind();
-        image_t temp_image;
-        tgaLoad((char*)(fileName.c_str()), &temp_image, TGA_FREE | TGA_LOW_QUALITY);
-        dimensions = uvec2(temp_image.info.width, temp_image.info.height);
-    }
-
     void setTexels(GLubyte* texels) { texels_ = texels; }
     GLubyte* getTexels() { return texels_; }
 
