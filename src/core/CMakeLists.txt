@@ -101,6 +101,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatconversion.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/formats.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/inviwofactorybase.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
@@ -111,7 +112,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systeminfo.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/types.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/typetostring.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h

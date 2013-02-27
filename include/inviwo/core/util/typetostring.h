@@ -1,7 +1,7 @@
 #ifndef IVW_TYPE_TO_STRING_H
 #define IVW_TYPE_TO_STRING_H
 
-#include <inviwo/core/util/types.h>
+#include <inviwo/core/util/formats.h>
 
 #include <string>
 

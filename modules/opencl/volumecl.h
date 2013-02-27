@@ -62,7 +62,7 @@ VolumeCLPrecision<T>::VolumeCLPrecision(T* texels, uvec3 dimensions) : VolumeCL(
 
 template<typename T>
 void VolumeCLPrecision<T>::setTypeAndFormat() {
-    dataFormat_ = typeToString<T>();
+    //dataFormat_ = typeToString<T>();
     imageFormat_ = cl::typeToImageFormat<T>();
 
 }

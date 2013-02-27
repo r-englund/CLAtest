@@ -75,10 +75,10 @@ public:
                     ss >> readerSettings.dataFormat_;
 
                     if (readerSettings.dataFormat_=="UCHAR") {
-                        readerSettings.dataFormat_ = "UINT8";
+                        readerSettings.dataFormat_ = DataUINT8::str();
                     }
                     else if (readerSettings.dataFormat_=="USHORT") {
-                        readerSettings.dataFormat_ = "UINT16";
+                        readerSettings.dataFormat_ = DataUINT16::str();
                     }
                     else
                         readerSettings.dataFormat_="";

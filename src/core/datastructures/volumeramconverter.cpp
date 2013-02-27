@@ -10,19 +10,16 @@ namespace inviwo {
     VolumeDisk2RAMConverter::~VolumeDisk2RAMConverter() {}
 
     DataRepresentation* VolumeDisk2RAMConverter::convert(DataRepresentation* source) {
-        DataRepresentation* destination=0;
         VolumeDisk* volumeDisk = dynamic_cast<VolumeDisk*>(source);
         if (volumeDisk) {
-            if (volumeDisk->getDataFormat()=="UINT8") {
-                void* data = volumeDisk->loadRawData();    
-                destination = new VolumeRAMuint8(static_cast<uint8_t*>(data), volumeDisk->getDimensions());
-            }
-            else if (volumeDisk->getDataFormat()=="UINT16") {
-               void* data = volumeDisk->loadRawData();
-                destination = new VolumeRAMuint16(static_cast<uint16_t*>(data), volumeDisk->getDimensions());
+            switch (volumeDisk->getDataFormatId()) {
+            case UINT8:
+                return new VolumeRAMuint8(static_cast<DataUINT8::type*>(volumeDisk->loadRawData()), volumeDisk->getDimensions());
+            case UINT16:
+                return new VolumeRAMuint16(static_cast<DataUINT16::type*>(volumeDisk->loadRawData()), volumeDisk->getDimensions());
             }
         }
-        return destination;
+        return NULL;
     }
 
 } // namespace

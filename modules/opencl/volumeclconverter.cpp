@@ -27,7 +27,7 @@ namespace inviwo {
                 destination = new VolumeCLint16(static_cast<int16_t*>(data), dimension);
             } else if (dynamic_cast<VolumeRAMint32*>(volumeRAM)) {
                 destination = new VolumeCLint32(static_cast<int32_t*>(data), dimension);
-            } else if (dynamic_cast<VolumeRAMfloat*>(volumeRAM)) {
+            } else if (dynamic_cast<VolumeRAMfloat32*>(volumeRAM)) {
                 destination = new VolumeCLfloat(static_cast<float*>(data), dimension);
             }
         }        
@@ -57,8 +57,8 @@ namespace inviwo {
                 destination = new VolumeRAMint16(dimension);
             } else if (dynamic_cast<VolumeRAMint32*>(volumeCL)) {
                 destination = new VolumeRAMint32(dimension);
-            } else if (dynamic_cast<VolumeRAMfloat*>(volumeCL)) {
-                destination = new VolumeRAMfloat(dimension);
+            } else if (dynamic_cast<VolumeRAMfloat32*>(volumeCL)) {
+                destination = new VolumeRAMfloat32(dimension);
             }
             if (destination) {
                 VolumeRAM* volumeRAM = static_cast<VolumeRAM*>(destination);

@@ -23,20 +23,23 @@ namespace inviwo {
             bool operator!= (const VolumeBorders &vb) const{ return (llf != vb.llf || urb != vb.urb);}
         };
 
-        VolumeRepresentation(uvec3 dimension, std::string format);
-        VolumeRepresentation(uvec3 dimension, std::string format, const VolumeBorders& border);
+        VolumeRepresentation(uvec3 dimension);
+        VolumeRepresentation(uvec3 dimension, DataFormatBase format);
+        VolumeRepresentation(uvec3 dimension, DataFormatBase format, const VolumeBorders& border);
         virtual ~VolumeRepresentation();
         virtual VolumeBorders getBorder() const {return borders_;}
         virtual uvec3 getBorderLLF() const {return borders_.llf;}
         virtual uvec3 getBorderURB() const {return borders_.urb;}
         virtual uvec3 getDimensions() const {return dimensions_;}
         virtual uvec3 getDimensionsWithBorder() const { return dimensions_+getBorderLLF()+getBorderURB(); }
-        virtual std::string getDataFormat() {return dataFormat_;}
+        virtual DataFormatBase getDataFormat() const {return dataFormatBase_;}
+        virtual std::string getDataFormatString() const {return dataFormatBase_.getString();}
+        virtual DataFormatId getDataFormatId() const {return dataFormatBase_.getId();}
         virtual bool hasBorder() const {return borders_.hasBorder;}
     protected:
         uvec3 dimensions_;
         uvec3 originalDimensions_;
-        std::string dataFormat_;
+        DataFormatBase dataFormatBase_;
         VolumeBorders borders_;
     };
 

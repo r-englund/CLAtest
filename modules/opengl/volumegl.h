@@ -11,8 +11,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API VolumeGL : public VolumeRepresentation {
 
 public:
-    VolumeGL();
-    VolumeGL(uvec3 dimensions);
+    VolumeGL(uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormatBase());
     virtual ~VolumeGL();
 
     virtual void initialize();
@@ -31,9 +30,8 @@ protected:
 template<typename T>
 class IVW_MODULE_OPENGL_API VolumeGLPrecision : public VolumeGL {
 public:
-    VolumeGLPrecision();
-    VolumeGLPrecision(uvec3 dimensions);
-    VolumeGLPrecision(T* texels, uvec3 dimensions);
+    VolumeGLPrecision(uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = GenericDataFormat(T)());
+    VolumeGLPrecision(T* texels, uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = GenericDataFormat(T)());
     virtual ~VolumeGLPrecision() {};
     using VolumeGL::initialize;
     virtual void initialize(void* texels);
@@ -49,73 +47,78 @@ private :
     GLint internalFormat_;
 };
 
+template<typename T, size_t B>
+class IVW_MODULE_OPENGL_API VolumeGLCustomPrecision : public VolumeGLPrecision<T> {
+public:
+    VolumeGLCustomPrecision(uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormat<T, B>()) : VolumeGLPrecision(dimensions, format) {};
+    VolumeGLCustomPrecision(T* texels, uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormat<T, B>()) : VolumeGLPrecision(texels, dimensions, format) {};
+};
+
 template<typename T>
-VolumeGLPrecision<T>::VolumeGLPrecision() : VolumeGL() {
+VolumeGLPrecision<T>::VolumeGLPrecision(uvec3 dimensions, DataFormatBase format) : VolumeGL(dimensions, format) {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-VolumeGLPrecision<T>::VolumeGLPrecision(uvec3 dimensions) : VolumeGL(dimensions) {
-    VolumeGLPrecision<T>::setTypeAndFormat();
-    VolumeGLPrecision<T>::initialize(0);
-}
-
-template<typename T>
-VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, uvec3 dimensions) : VolumeGL(dimensions) {
+VolumeGLPrecision<T>::VolumeGLPrecision(T* texels, uvec3 dimensions, DataFormatBase format) : VolumeGL(dimensions, format) {
     VolumeGLPrecision<T>::setTypeAndFormat();
     VolumeGLPrecision<T>::initialize(texels);
 }
 
 template<typename T>
 void VolumeGLPrecision<T>::setTypeAndFormat() {
-    if (dynamic_cast< VolumeGLPrecision<uint8_t>* >(this)) {
-        dataFormat_ = "UINT8";
+    if (typeid(this) == typeid(VolumeGLPrecision<DataUINT8::type>*)) {
         dataType_ = GL_UNSIGNED_BYTE;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA8;
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<int8_t>* >(this)) {
-        dataFormat_ = "UINT8";
+    else if (typeid(this) == typeid(VolumeGLPrecision<DataINT8::type>*)) {
         dataType_ = GL_BYTE;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA8;
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<uint16_t>* >(this)) {
-        dataFormat_ = "UINT16";
+    else if (typeid(this) == typeid(VolumeGLPrecision<DataUINT16::type>*)) {
         dataType_ = GL_UNSIGNED_SHORT;
         format_ = GL_ALPHA;
-        internalFormat_ = GL_ALPHA16;
+
+        if(dataFormatBase_.getBitsStored() == DataUINT12::bits){
+            internalFormat_ = GL_ALPHA12;
+        }
+        else{
+            internalFormat_ = GL_ALPHA16;
+        }
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<int16_t>* >(this)) {
-        dataFormat_ = "INT16";
+    else if (typeid(this) == typeid(VolumeGLPrecision<DataINT16::type>*)) {
         dataType_ = GL_SHORT;
         format_ = GL_ALPHA;
-        internalFormat_ = GL_ALPHA16;
+        if(dataFormatBase_.getBitsStored() == DataINT12::bits){
+            internalFormat_ = GL_ALPHA12;
+        }
+        else{
+            internalFormat_ = GL_ALPHA16;
+        }
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<uint32_t>* >(this)) {
-        dataFormat_ = "UINT32";
+    else if (typeid(this) == typeid(VolumeGLPrecision<DataUINT32::type>*)) {
         dataType_ = GL_UNSIGNED_INT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA;
         return;
     }
-    else if (dynamic_cast< VolumeGLPrecision<int32_t>* >(this)) {
-        dataFormat_ = "INT32";
+    else if (typeid(this) == typeid(VolumeGLPrecision<DataINT32::type>*)) {
         dataType_ = GL_INT;
         format_ = GL_ALPHA;
         internalFormat_ = GL_ALPHA;
         return;
     }
 
-    dataFormat_ = "UINT8";
     format_ = GL_ALPHA;
-    internalFormat_ = GL_ALPHA8;
     dataType_ = GL_UNSIGNED_BYTE;
+    internalFormat_ = GL_ALPHA8;
 }
 
 
@@ -168,12 +171,18 @@ void VolumeGLPrecision<T>::deinitialize() {
     VolumeGL::deinitialize();
 }
 
-typedef VolumeGLPrecision<uint8_t> VolumeGLuint8;
-typedef VolumeGLPrecision<int8_t> VolumeGLint8;
-typedef VolumeGLPrecision<uint16_t> VolumeGLuint16;
-typedef VolumeGLPrecision<int16_t> VolumeGLint16;
-typedef VolumeGLPrecision<uint32_t> VolumeGLuint32;
-typedef VolumeGLPrecision<int32_t> VolumeGLint32;
+typedef VolumeGLPrecision<DataUINT8::type>     VolumeGLuint8;
+typedef VolumeGLPrecision<DataINT8::type>      VolumeGLint8;
+typedef VolumeGLPrecision<DataUINT16::type>    VolumeGLuint16;
+typedef VolumeGLPrecision<DataINT16::type>     VolumeGLint16;
+typedef VolumeGLPrecision<DataUINT32::type>    VolumeGLuint32;
+typedef VolumeGLPrecision<DataINT32::type>     VolumeGLint32;
+typedef VolumeGLPrecision<DataFLOAT16::type>   VolumeGLfloat16;
+typedef VolumeGLPrecision<DataFLOAT32::type>   VolumeGLfloat32;
+typedef VolumeGLPrecision<DataFLOAT64::type>   VolumeGLfloat64;
+
+typedef VolumeGLCustomPrecision<DataUINT12::type, DataUINT12::bits> VolumeGLuint12;
+typedef VolumeGLCustomPrecision<DataINT12::type, DataINT12::bits> VolumeGLint12;
 
 } // namespace
 

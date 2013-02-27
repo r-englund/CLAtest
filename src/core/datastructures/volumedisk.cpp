@@ -4,7 +4,7 @@
 namespace inviwo {
 
     VolumeDisk::VolumeDisk(std::string srcFile)
-        : VolumeRepresentation(uvec3(128,128,128), "UINT8")
+        : VolumeRepresentation(uvec3(128,128,128), DataUINT8())
     {
         sourceFile_ = srcFile;
         initialize();
@@ -20,7 +20,7 @@ namespace inviwo {
             if (fileExtension=="dat") {
                 ReaderSettings readerSettings;
                 DatVolumeReader::readDatFileSettings(sourceFile_, readerSettings);
-                dataFormat_ = readerSettings.dataFormat_;
+                //dataFormat_ = readerSettings.dataFormat_;
                 dimensions_ = readerSettings.dimensions_;
             }
         }

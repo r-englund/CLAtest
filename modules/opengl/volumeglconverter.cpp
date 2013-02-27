@@ -10,33 +10,16 @@ VolumeRAM2GLConverter::VolumeRAM2GLConverter()
 VolumeRAM2GLConverter::~VolumeRAM2GLConverter() {}
 
 DataRepresentation* VolumeRAM2GLConverter::convert(DataRepresentation* source) {     
-    DataRepresentation* destination = 0;
-    std::string dataFormat("");
-    uvec3 dimension(0,0,0);
-    void* data = 0;
     VolumeRAM* volumeRAM = dynamic_cast<VolumeRAM*>(source);
     if (volumeRAM) {
-        if (dynamic_cast<VolumeRAMuint8*>(volumeRAM)) {
-            dimension = volumeRAM->getDimensions();
-            dataFormat = volumeRAM->getDataFormat();
-            data = volumeRAM->getData();
+        switch (volumeRAM->getDataFormatId()) {
+            case UINT8:
+              return new VolumeGLuint8(static_cast<DataUINT8::type*>(volumeRAM->getData()), volumeRAM->getDimensions());
+            case UINT16:
+              return new VolumeGLuint16(static_cast<DataUINT16::type*>(volumeRAM->getData()), volumeRAM->getDimensions());
         }
-        else if (dynamic_cast<VolumeRAMuint16*>(volumeRAM)) {
-            dimension = volumeRAM->getDimensions();
-            dataFormat = volumeRAM->getDataFormat();
-            data = volumeRAM->getData();
-        }
-    }        
-
-
-    if (dataFormat == "UINT8") {
-        destination = new VolumeGLuint8(static_cast<uint8_t*>(data), dimension);
     }
-    else if (dataFormat == "UINT16") {
-        destination = new VolumeGLuint16(static_cast<uint16_t*>(data), dimension);
-    }
-
-    return destination;
+    return NULL;
 }
 
 } // namespace
