@@ -174,7 +174,7 @@ program under the GPL.
    malloc and free should be declared in stdlib.h,
    but if you've got a K&R compiler, they probably aren't.
  */
-# ifdef MSDOS
+/*# ifdef MSDOS
 #  include <malloc.h>
 # else
 #  ifdef VMS
@@ -184,7 +184,7 @@ program under the GPL.
      extern char *malloc();
      extern int free();
 #  endif
-# endif
+# endif*/
 
 #endif
 
