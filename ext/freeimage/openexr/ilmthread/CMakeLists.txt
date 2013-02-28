@@ -19,6 +19,11 @@ ivw_group("Iex Header Files" ${HEADER_FILES} )
 
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
+if(NOT WIN32)
+    file(GLOB_RECURSE WIN32_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*Win32.cpp)
+    list(REMOVE_ITEM SOURCE_FILES ${WIN32_FILES})
+endif()
+
 ivw_group("Iex Source Files" ${SOURCE_FILES} )
 
 #--------------------------------------------------------------------
