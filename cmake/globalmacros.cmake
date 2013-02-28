@@ -438,6 +438,10 @@ macro(ivw_create_test)
     set(_projectName test-${_projectName})
     
     #--------------------------------------------------------------------
+    # Define defintions
+    ivw_define_standard_definitions(${_projectName})
+    
+    #--------------------------------------------------------------------
 	# Create test application
 	add_executable(${_projectName} MACOSX_BUNDLE WIN32 ${ARGN})
     
@@ -629,7 +633,7 @@ macro(ivw_add_dependencies)
 
           #--------------------------------------------------------------------
           # Append link flags to project list
-	  if(NOT "${${u_package}_LINK_FLAGS}" STREQUAL "")
+          if(NOT "${${u_package}_LINK_FLAGS}" STREQUAL "")
               list (APPEND _allLinkFlags "\"${${u_package}_LINK_FLAGS}\"")
           endif()
       endif()

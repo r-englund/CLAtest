@@ -13,6 +13,21 @@ namespace inviwo {
 
     SystemInfo::~SystemInfo() {}
 
+    bool SystemInfo::canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory){
+        return getAvailableMemory()*percentageOfAvailableMemory/100 >= dataSize;
+    }
+
+    uvec3 SystemInfo::calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory){
+        uvec3 currentBrickDimensions = dimensions;
+        while(!canAllocate(getMemorySizeInBytes(currentBrickDimensions, formatSizeInBytes), percentageOfAvailableMemory)){
+            int theMaxDim = (currentBrickDimensions.x > currentBrickDimensions.y ? (currentBrickDimensions.x > currentBrickDimensions.z ? 0 : 2) : (currentBrickDimensions.y > currentBrickDimensions.z ? 1 : 2));
+            if (currentBrickDimensions[theMaxDim] % 2 != 0)
+                currentBrickDimensions[theMaxDim]++; //Make the dim we are dividing even
+            currentBrickDimensions[theMaxDim] /= 2;
+        }
+        return currentBrickDimensions;
+    }
+
     void SystemInfo::retrieveStaticInfo(){
         successOSInfo_ = lookupOSInfo();
     }

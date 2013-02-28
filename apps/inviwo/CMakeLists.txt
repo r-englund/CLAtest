@@ -44,7 +44,3 @@ add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_
 #--------------------------------------------------------------------
 # Add dependencies
 ivw_add_dependencies(${package_list})
-
-#--------------------------------------------------------------------
-# Set VS Executable properties
-ivw_vs_executable_setup(inviwo)

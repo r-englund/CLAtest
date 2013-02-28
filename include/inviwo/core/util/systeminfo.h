@@ -44,6 +44,9 @@ namespace inviwo {
         virtual ~SystemInfo();
 
         void printInfo();
+        
+        bool canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory);
+        uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory);
 
         uint64_t getAvailableMemory();
 
