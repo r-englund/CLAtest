@@ -47,7 +47,7 @@ ivw_add_dependencies(Half
 					Iex
 					IlmImf
 					IlmThread
-					Imath)
+					IMath)
 
 
 
