@@ -50,8 +50,8 @@ private :
 template<typename T, size_t B>
 class IVW_MODULE_OPENGL_API VolumeGLCustomPrecision : public VolumeGLPrecision<T> {
 public:
-    VolumeGLCustomPrecision(uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormat<T, B>()) : VolumeGLPrecision(dimensions, format) {};
-    VolumeGLCustomPrecision(T* texels, uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormat<T, B>()) : VolumeGLPrecision(texels, dimensions, format) {};
+    VolumeGLCustomPrecision(uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormat<T, B>()) : VolumeGLPrecision<T>(dimensions, format) {};
+    VolumeGLCustomPrecision(T* texels, uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormat<T, B>()) : VolumeGLPrecision<T>(texels, dimensions, format) {};
 };
 
 template<typename T>

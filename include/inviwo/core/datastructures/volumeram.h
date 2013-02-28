@@ -40,8 +40,8 @@ public:
 template<typename T, size_t B>
 class IVW_CORE_API VolumeRAMCustomPrecision : public VolumeRAMPrecision<T> {
 public:
-    VolumeRAMCustomPrecision(uvec3 dimensions = uvec3(128,128,128), const VolumeBorders& border = VolumeBorders(), DataFormatBase format = DataFormat<T, B>()) : VolumeRAMPrecision(dimensions, border, format) {};
-    VolumeRAMCustomPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), const VolumeBorders& border = VolumeBorders(), DataFormatBase format = DataFormat<T, B>()) : VolumeRAMPrecision(data, dimensions, border, format) {};
+    VolumeRAMCustomPrecision(uvec3 dimensions = uvec3(128,128,128), const VolumeBorders& border = VolumeBorders(), DataFormatBase format = DataFormat<T, B>()) : VolumeRAMPrecision<T>(dimensions, border, format) {};
+    VolumeRAMCustomPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), const VolumeBorders& border = VolumeBorders(), DataFormatBase format = DataFormat<T, B>()) : VolumeRAMPrecision<T>(data, dimensions, border, format) {};
 };
 
 template<typename T>
