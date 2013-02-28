@@ -214,8 +214,8 @@ static const TIFFField ojpegFields[] = {
 # define HAVE_BOOLEAN            /* prevent jmorecfg.h from redefining it */
 #endif
 
-#include "../LibJPEG/jpeglib.h"
-#include "../LibJPEG/jerror.h"
+#include "../libjpeg/jpeglib.h"
+#include "../libjpeg/jerror.h"
 
 typedef struct jpeg_error_mgr jpeg_error_mgr;
 typedef struct jpeg_common_struct jpeg_common_struct;

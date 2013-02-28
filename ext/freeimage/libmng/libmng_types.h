@@ -194,7 +194,7 @@
 #undef FAR                             /* possibly defined by zlib or lcms */
 #endif
 #define JPEG_INTERNAL_OPTIONS          /* for RGB_PIXELSIZE */
-#include "../LibJPEG/jpeglib.h"        /* all that for JPEG support  :-) */
+#include "../libjpeg/jpeglib.h"        /* all that for JPEG support  :-) */
 #endif /* MNG_INCLUDE_IJG6B */
 
 #if defined(MNG_INTERNAL_MEMMNGMT) || defined(MNG_INCLUDE_FILTERS)

@@ -21,7 +21,7 @@
 
 #include "FreeImage.h"
 #include "Utilities.h"
-#include "../LibOpenJPEG/openjpeg.h"
+#include "../libopenjpeg/openjpeg.h"
 
 // ==========================================================
 // Plugin Interface

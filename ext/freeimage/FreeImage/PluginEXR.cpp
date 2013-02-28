@@ -22,16 +22,16 @@
 
 #include "FreeImage.h"
 #include "Utilities.h"
-#include "../OpenEXR/IlmImf/ImfIO.h"
-#include "../OpenEXR/Iex/Iex.h"
-#include "../OpenEXR/IlmImf/ImfOutputFile.h"
-#include "../OpenEXR/IlmImf/ImfInputFile.h"
-#include "../OpenEXR/IlmImf/ImfRgbaFile.h"
-#include "../OpenEXR/IlmImf/ImfChannelList.h"
-#include "../OpenEXR/IlmImf/ImfRgba.h"
-#include "../OpenEXR/IlmImf/ImfArray.h"
-#include "../OpenEXR/IlmImf/ImfPreviewImage.h"
-#include "../OpenEXR/Half/half.h"
+#include "../openexr/ilmimf/ImfIO.h"
+#include "../openexr/iex/Iex.h"
+#include "../openexr/ilmimf/ImfOutputFile.h"
+#include "../openexr/ilmimf/ImfInputFile.h"
+#include "../openexr/ilmimf/ImfRgbaFile.h"
+#include "../openexr/ilmimf/ImfChannelList.h"
+#include "../openexr/ilmimf/ImfRgba.h"
+#include "../openexr/ilmimf/ImfArray.h"
+#include "../openexr/ilmimf/ImfPreviewImage.h"
+#include "../openexr/half/half.h"
 
 
 // ==========================================================
