@@ -25,7 +25,8 @@ ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
-file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+# file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+set(SOURCE_FILES 	${CMAKE_CURRENT_SOURCE_DIR}/asd.cpp)
 
 ivw_group("Source Files" ${SOURCE_FILES} )
 
