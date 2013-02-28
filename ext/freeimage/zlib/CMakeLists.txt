@@ -2,10 +2,9 @@ ivw_project(zlib)
 
 #--------------------------------------------------------------------
 # Supress warnings
+if(WIN32)
 add_definitions( "/W0 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo /IGNORE:4006 /DZ_PREFIX" )
-
-
-
+endif()
 
 #--------------------------------------------------------------------
 # Add header files
