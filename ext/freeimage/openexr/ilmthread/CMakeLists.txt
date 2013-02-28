@@ -9,20 +9,34 @@ endif()
 
 #--------------------------------------------------------------------
 # Add header files
-
-file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
-
+set(HEADER_FILES
+    IlmThread.h
+    IlmThreadMutex.h
+    IlmThreadPool.h
+    IlmThreadSemaphore.h
+)
 ivw_group("Iex Header Files" ${HEADER_FILES} )
 
 #--------------------------------------------------------------------
 # Add source files
-
+set(SOURCE_FILES
+    IlmThread.cpp
+    IlmThreadMutex.cpp
+    IlmThreadMutexPosix.cpp
+    IlmThreadPool.cpp
+    IlmThreadPosix.cpp
+    IlmThreadPool.cpp
+    IlmThreadSemaphore.cpp
+    IlmThreadSemaphorePosix.cpp
+    IlmThreadSemaphorePosixCompat.cpp
+)
 if(WIN32)
-    file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
-else()
-    file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
-    file(GLOB_RECURSE WIN32_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*Win32.cpp)
-    list(REMOVE_ITEM SOURCE_FILES ${WIN32_FILES})
+    set(WIN32_FILES
+        IlmThreadMutexWin32.cpp
+        IlmThreadSemaphoreWin32.cpp
+        IlmThreadWin32.cpp
+    )
+    list(APPEND SOURCE_FILES ${WIN32_FILES})
 endif()
 
 ivw_group("Iex Source Files" ${SOURCE_FILES} )
