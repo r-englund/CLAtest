@@ -1,5 +1,6 @@
 #--------------------------------------------------------------------
 # Add subdirectories
+add_subdirectory(zlib)
 add_subdirectory(libjpeg)
 add_subdirectory(libmng)
 add_subdirectory(libopenjpeg)
@@ -8,7 +9,6 @@ add_subdirectory(librawlite)
 add_subdirectory(libtiff)
 add_subdirectory(libtiff4)
 add_subdirectory(openexr)
-add_subdirectory(zlib)
 #--------------------------------------------------------------------
 # FreeImage Package
 ivw_project(freeimage)
