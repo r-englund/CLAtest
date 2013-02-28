@@ -28,6 +28,7 @@ ivw_group("Source Files" ${SOURCE_FILES} )
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(libjpeg)
+remove_definitions(-DHAVE_CONFIG_H)
 
 #--------------------------------------------------------------------
 # Create library
