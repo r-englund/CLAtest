@@ -34,4 +34,4 @@ ivw_vs_folder(zlib ext/freeimagelib)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
-ivw_make_package(ZLib zlib)
+ivw_make_package(InternalZLib zlib)

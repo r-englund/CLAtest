@@ -35,9 +35,9 @@ ivw_vs_folder(libmng ext/freeimagelib)
 
 #--------------------------------------------------------------------
 # Add dependencies
-# ivw_add_dependencies(ZLib)
+# ivw_add_dependencies(InternalZLib)
 
-#ivw_add_dependency_libraries(ZLib)
+#ivw_add_dependency_libraries(InternalZLib)
 
 INCLUDE_DIRECTORIES("${IVW_EXTENSIONS_DIR}/freeimage/zlib/")
 # TARGET_LINK_LIBRARIES(libmng "${IVW_EXTENSIONS_DIR}/freeimage/zlib")

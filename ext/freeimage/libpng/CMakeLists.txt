@@ -38,7 +38,7 @@ ivw_vs_folder(libpng ext/freeimagelib)
 #--------------------------------------------------------------------
 # Add dependencies
 
-ivw_add_dependency_directories(ZLib)
+ivw_add_dependency_directories(InternalZLib)
 
 
 INCLUDE_DIRECTORIES("${IVW_EXTENSIONS_DIR}/freeimage/zlib/")

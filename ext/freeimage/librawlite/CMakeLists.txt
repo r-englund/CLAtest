@@ -38,7 +38,7 @@ ivw_vs_folder(librawlite ext/freeimagelib)
 
 #--------------------------------------------------------------------
 # Add dependencies
-ivw_add_dependencies(ZLib)
+ivw_add_dependencies(InternalZLib)
 
 #--------------------------------------------------------------------
 # Link folders

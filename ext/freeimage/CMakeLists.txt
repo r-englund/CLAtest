@@ -90,7 +90,7 @@ ivw_add_dependencies(
 	LibTiff4 
 	LibTiff 
 	OpenEXR
-	ZLib
+	InternalZLib
 	)
 
 ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/)
