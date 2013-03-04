@@ -18,13 +18,13 @@ void OptionPropertyWidgetQt::generateWidget() {
     connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
 }
 
-void OptionPropertyWidgetQt::fillComboBox(){
-    int size_ = property_->getOptionKeys().size();
-    for (int i=0; i < size_; i++){
+void OptionPropertyWidgetQt::fillComboBox() {
+    int size = property_->getOptionKeys().size();
+    for (int i=0; i < size; i++) {
         comboBox_->addItem(QString::fromStdString(property_->getOptionKeys().at(i)));
     }
 }
-void OptionPropertyWidgetQt::optionChanged(){
+void OptionPropertyWidgetQt::optionChanged() {
     property_->setSelectedOption(comboBox_->currentText().toStdString());
 }
 
