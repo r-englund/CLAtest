@@ -20,7 +20,6 @@ void ModifiedWidget::closeEvent(QCloseEvent *event)
 void ModifiedWidget::generateWidget(){
 
     QVBoxLayout* textEditorLayout = new QVBoxLayout();
-    //textEditorLayout->layout()->setSizeConstraint(QLayout::SizeConstraint )
     textEditorLayout->setSpacing(0);
     textEditorLayout->setMargin(0);
     toolBar_ = new QToolBar();
@@ -74,21 +73,31 @@ TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property)
 
 void TextEditorWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    if (dynamic_cast<FileProperty*>(property_))
-    {
+    if (dynamic_cast<FileProperty*>(property_)) {
+
+        QVBoxLayout* vLayout = new QVBoxLayout();
+        QHBoxLayout* hLayout2 = new QHBoxLayout();
+        QWidget* editorWidget_ = new QWidget();
+        QWidget* checkBoxWidget_ = new QWidget();
+        checkBoxWidget_->setLayout(hLayout2);
+        editorWidget_->setLayout(vLayout);
+        checkBox_ = new QCheckBox();
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
         btnProperty_.registerClassMemberFunction(this, &TextEditorWidgetQt::editFile);
-            hLayout->addWidget(fileWidget_);
-
+           vLayout->addWidget(fileWidget_);
+           hLayout2->addWidget(new QLabel("Use system texteditor"));
+           hLayout2->addWidget(checkBox_);
+           vLayout->addWidget(checkBoxWidget_);
+           hLayout->addWidget(editorWidget_);
     }
-    else if (dynamic_cast<StringProperty*>(property_))
-    {
+    else if (dynamic_cast<StringProperty*>(property_)) {
         stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
         btnProperty_.registerClassMemberFunction(this, &TextEditorWidgetQt::editString);
             hLayout->addWidget(stringWidget_);
     }
 
     hLayout->addWidget(btnWidget_);
+
     setLayout(hLayout);
      textEditorWidget_= new ModifiedWidget();
      textEditorWidget_->setParent(this);
@@ -100,19 +109,25 @@ void TextEditorWidgetQt::setPropertyValue() {}
 
 //Function loads the file into the textEditor_
 void TextEditorWidgetQt::editFile(){
-    connect(textEditorWidget_->saveButton_, SIGNAL(pressed()), this, SLOT(writeToFile()));
-    connect(textEditorWidget_->reLoadButton_, SIGNAL(pressed()), this, SLOT(loadFile()));
-    loadFile();
-    textEditorWidget_->show();
-      
+    if (checkBox_->isChecked()) {
+        const QString filePath_ = QString::fromStdString(tmpPropertyValue_);
+        QUrl url_ = QUrl(filePath_);
+        QDesktopServices::openUrl(url_);
+    }
+    else {
+        connect(textEditorWidget_->saveButton_, SIGNAL(pressed()), this, SLOT(writeToFile()));
+        connect(textEditorWidget_->reLoadButton_, SIGNAL(pressed()), this, SLOT(loadFile()));
+        loadFile();
+        textEditorWidget_->show();
+    }
 }
 
 void TextEditorWidgetQt::loadFile(){
     tmpPropertyValue_ = static_cast<StringProperty*>(property_)->get();
-    file_ = new QFile(QString::fromStdString(tmpPropertyValue_));
-    file_->open(QIODevice::ReadWrite);
-    QTextStream textStream_(file_);
-    textEditorWidget_->textEditor_->setPlainText(textStream_.readAll());
+        file_ = new QFile(QString::fromStdString(tmpPropertyValue_));
+        file_->open(QIODevice::ReadWrite);
+        QTextStream textStream_(file_);
+        textEditorWidget_->textEditor_->setPlainText(textStream_.readAll());
 }
 
 //Function writes content of the textEditor_ to the file

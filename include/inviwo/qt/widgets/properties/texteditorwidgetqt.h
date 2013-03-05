@@ -3,6 +3,7 @@
 
 
 #include <QFile>
+#include <QCheckBox>
 #include <QLineEdit>
 #include <QMenu>
 #include <QMenuBar>
@@ -21,6 +22,8 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 #include <QMainWindow>
+#include <QDesktopServices>
+#include <QUrl>
 
 
 namespace inviwo{
@@ -44,6 +47,7 @@ public:
     QToolButton *unDoButton_;
     QWidget* mainWidget_;
     std::string tmpPropertyValue_;
+
 
     void generateWidget();
 protected:
@@ -75,6 +79,8 @@ private:
     ModifiedWidget* textEditorWidget_;
     StringPropertyWidgetQt* stringWidget_;
     std::string tmpPropertyValue_;
+    QCheckBox* checkBox_;
+
 
     void generateWidget();
    
