@@ -6,6 +6,7 @@ ivw_project(inviwo-qtwidgets)
 # Add header files
 set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/canvasqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/floatsliderqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/canvasprocessorwidgetqt.h
@@ -76,6 +77,7 @@ source_group("MOC Files" FILES ${MOC_FILES})
 # Add source files
 set(SOURCE_FILES
     canvasqt.cpp
+    floatsliderqt.cpp
     inviwoapplicationqt.cpp
     processors/canvasprocessorwidgetqt.cpp
     processors/processorwidgetqt.cpp

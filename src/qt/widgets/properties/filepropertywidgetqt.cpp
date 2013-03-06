@@ -48,6 +48,7 @@ void FilePropertyWidgetQt::setPropertyValue() {
         QString path = openFileDialog.selectedFiles().at(0);
         property_->set(path.toStdString());
     }
+    updateFromProperty();
 }
 
 void FilePropertyWidgetQt::updateFromProperty() {

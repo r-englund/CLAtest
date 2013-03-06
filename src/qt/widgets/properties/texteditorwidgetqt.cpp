@@ -110,6 +110,7 @@ void TextEditorWidgetQt::setPropertyValue() {}
 //Function loads the file into the textEditor_
 void TextEditorWidgetQt::editFile(){
     if (checkBox_->isChecked()) {
+        tmpPropertyValue_ = static_cast<StringProperty*>(property_)->get();
         const QString filePath_ = QString::fromStdString(tmpPropertyValue_);
         QUrl url_ = QUrl(filePath_);
         QDesktopServices::openUrl(url_);
