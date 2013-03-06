@@ -4,7 +4,7 @@
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/inviwo.h>
 #include <inviwo/core/datastructures/volumerepresentation.h>
-#include <inviwo/core/datastructures/volumeoperation.h>
+#include <inviwo/core/datastructures/volumeramoperationexecuter.h>
 
 namespace inviwo {
 
