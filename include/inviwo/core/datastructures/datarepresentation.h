@@ -3,6 +3,7 @@
 
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/inviwo.h>
+#include <inviwo/core/datastructures/dataoperation.h>
 
 namespace inviwo {
 
@@ -11,6 +12,7 @@ namespace inviwo {
     public:
         DataRepresentation();
         virtual ~DataRepresentation();
+        virtual void applyOperation(DataOperation*) = 0;
 
         virtual void initialize() = 0;
         virtual void deinitialize() = 0;

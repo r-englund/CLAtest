@@ -75,7 +75,9 @@ public:
     static DataFormatId id() { return DataFormatBase::id(); }
 };
 
-#define GenericDataFormat(T) DataFormat<T, BYTES_TO_BITS(sizeof(T))>
+#define GenericDataBits(T) BYTES_TO_BITS(sizeof(T))
+
+#define GenericDataFormat(T) DataFormat<T, GenericDataBits(T)>
 
 // Floats
 typedef GenericDataFormat(glm::detail::float16) DataFLOAT16;

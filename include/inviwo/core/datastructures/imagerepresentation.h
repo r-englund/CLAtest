@@ -13,6 +13,7 @@ namespace inviwo {
         ImageRepresentation();
         ImageRepresentation(uvec2 dimensions);
         virtual ~ImageRepresentation();
+        virtual void applyOperation(DataOperation*) {};
         virtual void resize(uvec2 dimensions);
         virtual uvec2 getDimension() {return dimensions_;}
         virtual void copyAndResizeImage(DataRepresentation*)=0;

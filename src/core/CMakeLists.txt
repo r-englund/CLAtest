@@ -11,6 +11,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwocoredefine.h
     ${IVW_INCLUDE_DIR}/inviwo/core/inviwomodule.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image.h
@@ -21,6 +22,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumedisk.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramconverter.h

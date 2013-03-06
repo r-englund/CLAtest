@@ -18,11 +18,11 @@ namespace inviwo {
 
         virtual void printInfo() = 0;
 
-        virtual bool canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory){
+        virtual bool canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory = 100){
             return true;
         }
     
-        virtual uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory){
+        virtual uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory = 100){
             return dimensions;
         }
 
