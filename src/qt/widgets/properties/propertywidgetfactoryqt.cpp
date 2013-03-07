@@ -18,6 +18,7 @@
 #include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/colorpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
@@ -54,6 +55,12 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         }
         if (dynamic_cast<StringProperty*>(property)&& property->getSemantics() == PropertySemantics::Editor) {
             return new TextEditorWidgetQt(static_cast<StringProperty*>(property));
+        }
+        if (dynamic_cast<FloatVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {
+            return new ColorPropertyWidgetQt(static_cast<FloatVec4Property*>(property));
+        }
+        if (dynamic_cast<IntVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {
+            return new ColorPropertyWidgetQt(static_cast<IntVec4Property*>(property));
         }
     }
 
