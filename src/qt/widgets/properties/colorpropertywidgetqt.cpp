@@ -52,19 +52,18 @@ QColor ColorPropertyWidgetQt::getCurrentColor(){
 
 void ColorPropertyWidgetQt::setPropertyValue() {
 
-    currentColor_ = &colorDialog_->currentColor();
     if (dynamic_cast<IntVec4Property*>(property_)) {
-        dynamic_cast<IntVec4Property*>(property_)->set(ivec4(currentColor_->red(),
-                                                            currentColor_->green(),
-                                                            currentColor_->blue(),
-                                                            currentColor_->alpha()));
+        dynamic_cast<IntVec4Property*>(property_)->set(ivec4(colorDialog_->currentColor().red(),
+                                                            colorDialog_->currentColor().green(),
+                                                            colorDialog_->currentColor().blue(),
+                                                            colorDialog_->currentColor().alpha()));
 
     }
     if (dynamic_cast<FloatVec4Property*>(property_)) {
-        dynamic_cast<FloatVec4Property*>(property_)->set(vec4(static_cast<float>(currentColor_->red())/255,
-                                                            static_cast<float>(currentColor_->green())/255,
-                                                            static_cast<float>(currentColor_->blue())/255,
-                                                            static_cast<float>(currentColor_->alpha())/255));
+        dynamic_cast<FloatVec4Property*>(property_)->set(vec4(static_cast<float>(colorDialog_->currentColor().red())/255,
+                                                            static_cast<float>(colorDialog_->currentColor().green())/255,
+                                                            static_cast<float>(colorDialog_->currentColor().blue())/255,
+                                                            static_cast<float>(colorDialog_->currentColor().alpha())/255));
 
     }
         
