@@ -18,6 +18,7 @@ namespace inviwo {
         ~Trackball();
 
         virtual void invokeEvent(Event* event);
+        TrackballKeyMapper* getMapper(){return keymapper_;}
 
     private:
         CameraProperty* camera_;

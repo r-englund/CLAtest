@@ -3,6 +3,7 @@
 
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
+#include <string>
 
 
 namespace inviwo {
@@ -15,8 +16,8 @@ namespace inviwo {
         */
         enum Action {
             TRACKBALL_ROTATE  =      0,
-            TRACKBALL_ZOOM    = 1 << 1,
-            TRACKBALL_PAN     = 1 << 2,
+            TRACKBALL_ZOOM    ,
+            TRACKBALL_PAN     ,
             COUNT
         };
 
@@ -43,9 +44,12 @@ namespace inviwo {
          * @return void
          */
         void setKey (int action, int key);
+
+        std::string getActionName(int action);
         
     private:
         int keys[COUNT]; ///< The array containing all mapping.
+        std::string actionNames[COUNT];
 
     };
 

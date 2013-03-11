@@ -9,7 +9,7 @@ EntryExitPoints::EntryExitPoints()
     exitPort_(Port::OUTPORT, "exit-points"),
     camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f)),
     keymapbutton_("keybindings", "Key bindings"),
-    keymap_("keymap", "Key mapping", "test")
+    keymap_("keymap", "Key mapping")
 {
     addPort(volumePort_);
     addPort(entryPort_);
@@ -29,9 +29,12 @@ Processor* EntryExitPoints::create() const {
 void EntryExitPoints::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader("eepgeneration.frag");
-
-    addInteractionHandler(new Trackball(&camera_));    
+    
+    Trackball *trackball = new Trackball(&camera_);
+    addInteractionHandler(trackball);    
+    
     keymapbutton_.registerClassMemberFunction(this, &EntryExitPoints::openKeyMapWindow);
+    keymap_.setMapper(trackball->getMapper());
     
     // compute bounding box dimensions
     // TODO: change upon volume change

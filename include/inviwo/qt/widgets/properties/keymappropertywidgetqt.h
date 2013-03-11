@@ -3,9 +3,12 @@
 
 
 #include <QWidget>
+#include <QPushButton>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <inviwo/core/interaction/trackballkeymapper.h>
+#include <inviwo/core/properties/keymapproperty.h>
 #include <QMainWindow>
 
 
@@ -17,12 +20,14 @@ namespace inviwo{
 
     public:
 
-        KeyMapPropertyWidgetQt(Property* property);
+        KeyMapPropertyWidgetQt(KeyMapProperty* property);
         void updateFromProperty();
+        void setKeyMapper(TrackballKeyMapper *keymapper);
 
     private:
-
-        Property* property_;
+        QString intToQString(int num);
+        TrackballKeyMapper *keymapper_;
+        KeyMapProperty* property_;
         QWidget* window_;
         void generateWidget();
 

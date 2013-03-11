@@ -1,9 +1,8 @@
 #include <inviwo/qt/widgets/properties/keymappropertywidgetqt.h>
-#include <QPushButton>
 
 namespace inviwo {
 
-KeyMapPropertyWidgetQt::KeyMapPropertyWidgetQt( Property* property ) : property_(property)
+KeyMapPropertyWidgetQt::KeyMapPropertyWidgetQt( KeyMapProperty* property ) : property_(property)
 {
     generateWidget();
 }
@@ -12,25 +11,24 @@ void KeyMapPropertyWidgetQt::generateWidget()
 {
     window_ = new QWidget();
     window_->setWindowFlags(Qt::WindowStaysOnTopHint);
-    window_->setWindowTitle("Change key bindings");   
+    window_->setWindowTitle("Change key bindings");
+    
+    keymapper_ = property_->getMapper();
 
     QVBoxLayout *leftVbox = new QVBoxLayout();
     QVBoxLayout *rightVbox = new QVBoxLayout();
     QHBoxLayout *hbox = new QHBoxLayout(); 
-    QPushButton *button1 = new QPushButton("Button 1");    
-    QPushButton *button2 = new QPushButton("Button 2");
-    QPushButton *button3 = new QPushButton("Button 3");
 
-    QLabel *label1 = new QLabel("Label 1");
-    QLabel *label2 = new QLabel("Label 2");
-    QLabel *label3 = new QLabel("Label 3");
+    QPushButton *buttons[TrackballKeyMapper::COUNT];
+    QLabel *labels[TrackballKeyMapper::COUNT];
 
-    rightVbox->addWidget(button1);
-    rightVbox->addWidget(button2);
-    rightVbox->addWidget(button3);
-    leftVbox->addWidget(label1);
-    leftVbox->addWidget(label2);
-    leftVbox->addWidget(label3);
+    for (int i = 0; i < TrackballKeyMapper::COUNT; i++)
+    {
+        buttons[i] = new QPushButton(intToQString(keymapper_->getKey(i)));
+        labels[i] = new QLabel(keymapper_->getActionName(i).c_str());
+        rightVbox->addWidget(buttons[i]);
+        leftVbox->addWidget(labels[i]);
+    }
 
     hbox->addLayout(leftVbox);
     hbox->addLayout(rightVbox);
@@ -46,6 +44,19 @@ void KeyMapPropertyWidgetQt::updateFromProperty()
     } else {
         window_->hide();
     }
+}
+
+
+void KeyMapPropertyWidgetQt::setKeyMapper( TrackballKeyMapper *keymapper )
+{
+    keymapper_ = keymapper;
+}
+
+QString KeyMapPropertyWidgetQt::intToQString( int num )
+{
+    std::stringstream convert;
+    convert << num;
+    return convert.str().c_str();
 }
 
 } // namespace
