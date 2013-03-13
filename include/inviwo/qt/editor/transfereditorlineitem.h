@@ -1,5 +1,5 @@
-#ifndef IVW_TRANSFEREDITORGRAPHICSITEM_H
-#define IVW_TRANSFEREDITORGRAPHICSITEM_H
+#ifndef IVW_TRANSFEREDITORLINEITEM_H
+#define IVW_TRANSFEREDITORLINEITEM_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsLineItem>
@@ -8,18 +8,18 @@
 
 #include <inviwo/core/ports/port.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
+#include <inviwo/qt/editor/transfereditorgraphicsitem.h>
 
 namespace inviwo {
 
-    class IVW_QTEDITOR_API TransferEditorGraphicsItem : public QGraphicsItem {
+    class IVW_QTEDITOR_API TransferEditorLineItem : public QGraphicsItem {
 
     public:
-        TransferEditorGraphicsItem(QPointF startPoint);
-        TransferEditorGraphicsItem(int x, int y);
-        TransferEditorGraphicsItem();
-        ~TransferEditorGraphicsItem();
-        //const bool operator < (const TransferEditorGraphicsItem & a);
-        //bool compare (TransferEditorGraphicsItem a);
+        TransferEditorLineItem(TransferEditorGraphicsItem*, TransferEditorGraphicsItem*);
+        TransferEditorLineItem();
+		~TransferEditorLineItem();
+		void setStart(TransferEditorGraphicsItem* start_);
+		void setFinish(TransferEditorGraphicsItem* finish_);
 
         //virtual QPainterPath shape() const;
 
@@ -36,16 +36,17 @@ namespace inviwo {
         int getId();
         void setId(int id);
 
-
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
         void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
+
     private:
         static const std::string logSource_;
-        int id;
+        TransferEditorGraphicsItem* start;
+        TransferEditorGraphicsItem* finish;
     };
 
 }// namespace
-#endif // IVW_TRANSFEREDITORGRAPHICSITEM_H
+#endif // IVW_TRANSFEREDITORLINEITEM_H

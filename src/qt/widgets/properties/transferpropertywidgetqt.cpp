@@ -18,6 +18,8 @@ namespace inviwo {
         view->setScene(editor); 
         editor->setBackgroundBrush(Qt::transparent);
 
+        view->setInteractive(true);
+
 		vLayout->addWidget(view);
 		view->show();
 		setLayout(vLayout);

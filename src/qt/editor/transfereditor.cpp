@@ -9,7 +9,6 @@
 #include <inviwo/core/metadata/positionmetadata.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/qt/editor/transfereditor.h>
-#include <inviwo/qt/editor/transfereditorgraphicsitem.h>
 
 #include <QApplication>
 #include <QBrush>
@@ -19,9 +18,9 @@
 #include <QPen>
 #include <QLineF>
 #include <QGraphicsLineItem>
-
 #include <QVarLengthArray>
 
+#include <stdlib.h>
 
 namespace inviwo {
 
@@ -31,73 +30,81 @@ namespace inviwo {
         setSceneRect(0.0, 0.0, 0.0, 0.0);
         startpoint = new QPointF(0,0);
         endpoint = new QPointF(255, 0);
-        prev = new QPointF(*startpoint);
-        next = new QPointF(*endpoint);
+
+        for (int i = 0; i < 5; i++)
+        {
+            points.push_back(new TransferEditorGraphicsItem(32 * i, 25));
+            points[i]->setId(i);
+            addItem(points[i]);
+        }
+
+        for (int i = 0; i < (int)points.size() - 1; i++)
+        {
+            lines.push_back(new TransferEditorLineItem(points[i], points[i+1]));
+            addItem(lines[i]);
+        }
     }
 
     TransferEditor::~TransferEditor(){}
 
-    void TransferEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-        this->update();
-        press = new QPointF(e->scenePos());
-        curr = new QPointF(e->scenePos());
-
-        QPen* p = new QPen(Qt::darkCyan, 2.0, Qt::SolidLine, Qt::RoundCap);
-
-        //QGraphicsEllipseItem * ellips = new QGraphicsEllipseItem(e->scenePos().x() - 5, e->scenePos().y() - 5, 10, 10);
-
-        TransferEditorGraphicsItem * item = new TransferEditorGraphicsItem(e->scenePos());
-
-        this->addItem(item);
-        
+    void TransferEditor::mousePressEvent(QGraphicsSceneMouseEvent *e)
+    {
+        update();
         std::stringstream ss;
-        ss << "Press: " << e->scenePos().x() << ", " << e->scenePos().y();
-        LogInfo(ss.str());
+
+        if (itemAt(e->scenePos()) == NULL){
+            addPoint(e);
+        }
+        else{
+            QGraphicsScene::mousePressEvent(e); // this forwards the event to the item
+        }
     }
 
-    void TransferEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
-        //QPointF* release = new QPointF(e->scenePos());
+	void TransferEditor::addPoint(QGraphicsSceneMouseEvent *e){
+		points.push_back(new TransferEditorGraphicsItem(e->scenePos()/2));
+		lines.push_back(new TransferEditorLineItem());
+		addItem(lines[lines.size() - 1]);
+		addItem(points[points.size() - 1]);
+		sortPoints();
+		for (int i = 0; i < (int)points.size() - 1; i++){
+			lines[i]->setStart(points[i]);
+			lines[i]->setFinish(points[i + 1]);
+		}
+		//this->update();
+	}
 
-        //int x1 = release->x();
-        //int y1 = release->y();
-        //int x2 = press->x();
-        //int y2 = press->y();
-
-        //QRect* rect = new QRect();
-
-        //if (x1 < x2){
-        //    rect->setRight(x1);
-        //    rect->setLeft(x2);
-        //} 
-        //else{
-        //    rect->setRight(x2);
-        //    rect->setLeft(x1);
-        //}
-
-        //if (y1 < y2){
-        //    rect->setTop(y1);
-        //    rect->setBottom(y2);
-        //} 
-        //else{        
-        //    rect->setTop(y2);
-        //    rect->setBottom(y1);
-        //}
-        //
-        //QPen* p = new QPen(QColor(60,60,60,50), 3.0, Qt::SolidLine, Qt::RoundCap);
-        //
-        //QGraphicsLineItem* line = new QGraphicsLineItem(0,0,450,300);
-        //
-        //line->setPen(*p);
-
-        //this->addItem(line);
-
-        ////this->clear();
-        ////this->addRect(*rect, *p);
-        //this->update();
-        //
-        //std::stringstream ss;
-        //ss << "Release: " << e->scenePos().x() << ", " << e->scenePos().y();
-        //LogInfo(ss.str());
-        //e->accept();
+    void TransferEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent *e){
+        QGraphicsScene::mouseReleaseEvent(e);
     }
-}
+
+    
+	void TransferEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
+        if (points[0]->pos().x() != 0)
+        {
+            points[0]->setPos(QPoint(0, points[0]->pos().y()));
+        }
+        update();
+        sortPoints();
+		for (int i = 0; i < (int)points.size() - 1; i++){
+			lines[i]->setStart(points[i]);
+			lines[i]->setFinish(points[i + 1]);
+		}
+
+		//for (int i = 0; i < (int)points.size(); i++)
+		//{
+		//	LogInfo(points[i]->pos().x());
+		//}
+
+        QGraphicsScene::mouseMoveEvent(e);
+    }
+
+  
+	bool myCompare (const TransferEditorGraphicsItem * a, const TransferEditorGraphicsItem* b){
+		return a->pos().x() < b->pos().x();
+		//return true;
+	}
+
+	void TransferEditor::sortPoints(){
+		std::sort(points.begin(), points.end(), myCompare);
+    }
+};

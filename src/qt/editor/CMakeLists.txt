@@ -21,6 +21,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transfereditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transfereditorgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transfereditorlineitem.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -52,6 +53,7 @@ set(SOURCE_FILES
     settingswidget.cpp
     transfereditor.cpp
     transfereditorgraphicsitem.cpp
+    transfereditorlineitem.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
