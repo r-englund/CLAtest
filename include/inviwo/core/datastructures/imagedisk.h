@@ -15,9 +15,9 @@ namespace inviwo {
         virtual void initialize();
         virtual void deinitialize();
         virtual DataRepresentation* clone();
-        virtual std::string getClassName() const { return "ImageDisk"; }
-        void copyAndResizeImage(DataRepresentation*){}
-        void* ImageDisk::loadFileData();
+        virtual std::string getClassName() const { return "ImageDisk"; };
+        void copyAndResizeImage(DataRepresentation*){};
+        void* loadFileData();
 	private:
 		std::string sourceFile_;
     };
