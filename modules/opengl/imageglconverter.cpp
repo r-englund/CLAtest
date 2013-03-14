@@ -12,8 +12,9 @@ namespace inviwo {
     DataRepresentation* ImageRAM2GLConverter::convert(DataRepresentation* source) {
         DataRepresentation* destination = 0;
         ImageRepresentation* imageRepresentation = dynamic_cast<ImageRepresentation*>(source);
-        if (imageRepresentation)
+        if (imageRepresentation){
             destination = new ImageGL(imageRepresentation->getDimension());
+        }
         return destination;
     }
 

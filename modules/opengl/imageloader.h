@@ -15,12 +15,18 @@ public:
 		FreeImage_DeInitialise();
 	}
 	static Texture2D* loadImage(std::string filename);
+    static uint8_t* loadImageToData(std::string filename);
+    static bvec2 imageDimensions(std::string filename);
 private:
 	static bool readInImage(std::string filename, FIBITMAP **bitmap);
 
 	static void powerOfTwo(int& number);
 
 	static Texture2D* loadImageToTexture(FIBITMAP *bitmap);
+
+    static void initLoader();
+
+    static uint8_t* imageToBitmap(FIBITMAP *bitmap);
 
 	static bool loader_initialized;
 };

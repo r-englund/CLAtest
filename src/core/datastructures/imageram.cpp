@@ -15,6 +15,13 @@ namespace inviwo {
         ImageRAM::initialize();
     }
 
+    ImageRAM::ImageRAM(void* data, uvec2 dimension)
+        : ImageRepresentation(dimension)
+    {
+        ImageRAM::initialize();
+        data_ = data;
+    }
+
     ImageRAM::~ImageRAM() {}  
 
     void ImageRAM::initialize() {

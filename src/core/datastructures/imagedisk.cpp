@@ -1,4 +1,5 @@
 #include <inviwo/core/datastructures/imagedisk.h>
+#include <modules/opengl/imageloader.h>
 
 namespace inviwo {
 
@@ -6,9 +7,23 @@ namespace inviwo {
         : ImageRepresentation()
     {}
 
+	ImageDisk::ImageDisk(std::string url)
+        : ImageRepresentation(){
+		sourceFile_ = url;
+        initialize();
+	}
+
     ImageDisk::~ImageDisk() {}
 
-    void ImageDisk::initialize() {}
+    void ImageDisk::initialize(){
+        if(!sourceFile_.empty()){
+            dimensions_ = ImageLoader::imageDimensions(sourceFile_);
+        }
+    }
+
+    void* ImageDisk::loadFileData(){
+        return ImageLoader::loadImageToData(sourceFile_);  
+    }
 
     void ImageDisk::deinitialize() {}
 

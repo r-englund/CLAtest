@@ -11,6 +11,7 @@ namespace inviwo {
     public:
         ImageRAM();
         ImageRAM(uvec2 dimension);
+        ImageRAM(void* data, uvec2 dimension);
         virtual ~ImageRAM();
         virtual void initialize();
         void deinitialize();

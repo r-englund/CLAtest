@@ -9,6 +9,7 @@
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/imageloader.h>
+#include <inviwo/core/datastructures/imagedisk.h>
 
 namespace inviwo {
 
