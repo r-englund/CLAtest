@@ -15,13 +15,9 @@ namespace inviwo {
 
     public:
         TransferEditorGraphicsItem(QPointF startPoint);
-        TransferEditorGraphicsItem(int x, int y);
+        TransferEditorGraphicsItem(float x, float y);
         TransferEditorGraphicsItem();
         ~TransferEditorGraphicsItem();
-        //const bool operator < (const TransferEditorGraphicsItem & a);
-        //bool compare (TransferEditorGraphicsItem a);
-
-        //virtual QPainterPath shape() const;
 
         //override for qgraphicsitem_cast (refer qt documentation)
         enum { Type = UserType + ConnectionGraphicsType };
@@ -35,6 +31,7 @@ namespace inviwo {
 
         int getId();
         void setId(int id);
+        QPointF position();
 
 
     protected:

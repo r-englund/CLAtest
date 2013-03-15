@@ -13,16 +13,16 @@ namespace inviwo {
         setFlag(QGraphicsItem::ItemIsMovable);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges);
         setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-        this->setPos(position);
+        this->setPos(position/2);
     }
 
-    TransferEditorGraphicsItem::TransferEditorGraphicsItem(int x, int y){
+    TransferEditorGraphicsItem::TransferEditorGraphicsItem(float x, float y){
         setFlag(QGraphicsItem::ItemIsMovable, true);
         setFlag(QGraphicsItem::ItemIsSelectable);
         setFlag(QGraphicsItem::ItemIsMovable);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges);
         setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-        this->setPos(QPointF(x, y));
+        this->setPos(x / 2, y / 2);
     }
 
 
@@ -43,10 +43,10 @@ namespace inviwo {
         QPointF position;
         position = this->scenePos();
 
-        int size = 12;
+        int size = 6;
 
         setFlag(QGraphicsItem::ItemIsMovable, true);
-		painter->setRenderHint(QPainter::Antialiasing, true);
+        painter->setRenderHint(QPainter::Antialiasing, true);
 
         QPen* pen = new QPen(Qt::black, 2.5, Qt::SolidLine, Qt::RoundCap);
         painter->setPen(*pen);
@@ -73,7 +73,7 @@ namespace inviwo {
         if (id == 0){
             position = QPointF(0, position.y());
         }
-        if (id == 4){
+        if (id == 1){
             position = QPointF(255, position.y());
         }
         if (position.x() < 0){
@@ -89,5 +89,9 @@ namespace inviwo {
             position = QPointF(position.x(), 100);
         }
         setPos(position/2);
+    }
+
+    QPointF TransferEditorGraphicsItem::position(){
+        return this->pos() * 2;
     }
 } // namespace

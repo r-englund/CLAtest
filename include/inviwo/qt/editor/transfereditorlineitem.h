@@ -35,6 +35,9 @@ namespace inviwo {
 
         int getId();
         void setId(int id);
+        QPointF getStart();
+        QPointF getFinish();
+        QPointF startPos;
 
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -46,6 +49,7 @@ namespace inviwo {
         static const std::string logSource_;
         TransferEditorGraphicsItem* start;
         TransferEditorGraphicsItem* finish;
+        
     };
 
 }// namespace

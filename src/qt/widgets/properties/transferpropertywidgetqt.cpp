@@ -14,12 +14,11 @@ namespace inviwo {
         editor->setSceneRect(0,0,255,100);
         
         view = new QGraphicsView(this);
-        view->setFixedSize(257, 102);        
+        view->setFixedSize(257, 102);
+        view->scale(1, -1);
         view->setScene(editor); 
         editor->setBackgroundBrush(Qt::transparent);
-
         view->setInteractive(true);
-
 		vLayout->addWidget(view);
 		view->show();
 		setLayout(vLayout);
@@ -35,14 +34,5 @@ namespace inviwo {
 
 	void TransferPropertyWidgetQt::updateFromProperty() {
 		checkBox_->setChecked(property_->get());
-		if (property_->get())
-		{
-			//editor->setBackgroundBrush(Qt::green);
-		}
-		else
-		{
-			//editor->setBackgroundBrush(Qt::red);
-		}
 	}
-
 } // namespace

@@ -11,7 +11,7 @@ namespace inviwo {
     {
         start = start_;
         finish = finish_;
-        LogInfo("Constructor");
+        startPos = start->position();
     };
 
     TransferEditorLineItem::TransferEditorLineItem(){};
@@ -28,8 +28,8 @@ namespace inviwo {
 
         point1 = start->pos();
         point2 = finish->pos();
-	
-		painter->setRenderHint(QPainter::Antialiasing, true);
+
+        painter->setRenderHint(QPainter::Antialiasing, true);
 
         QPen* pen = new QPen(Qt::black, 2.5, Qt::SolidLine, Qt::RoundCap);
         painter->setPen(*pen);
@@ -50,10 +50,15 @@ namespace inviwo {
 
     void TransferEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e){}
 
-	void TransferEditorLineItem::setStart(TransferEditorGraphicsItem* start_){
-		start = start_;
-	}
-	void TransferEditorLineItem::setFinish(TransferEditorGraphicsItem* finish_){
-		finish = finish_;
-	}
+    QPointF TransferEditorLineItem::getStart(){return this->start->position();}
+
+    QPointF TransferEditorLineItem::getFinish(){return this->finish->position();}
+
+    void TransferEditorLineItem::setStart(TransferEditorGraphicsItem* start_){
+        start = start_;
+        startPos = start->position();
+    }
+    void TransferEditorLineItem::setFinish(TransferEditorGraphicsItem* finish_){
+        finish = finish_;
+    }
 } // namespace
