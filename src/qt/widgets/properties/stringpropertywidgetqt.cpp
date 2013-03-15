@@ -1,4 +1,5 @@
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
 
 namespace inviwo {
 
@@ -23,6 +24,7 @@ namespace inviwo {
 
     void StringPropertyWidgetQt::updateFromProperty() {
        lineEdit_->setText(QString::fromStdString(property_->get()));
+
     }
 
 } // namespace

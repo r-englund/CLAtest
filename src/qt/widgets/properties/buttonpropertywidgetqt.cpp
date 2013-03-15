@@ -24,5 +24,9 @@ void ButtonPropertyWidgetQt::handleButton(){
 }
 void ButtonPropertyWidgetQt::updateFromProperty() {}
 
+QPushButton* ButtonPropertyWidgetQt::getButton() {
+    return button_;
+}
+
 
 } //namespace

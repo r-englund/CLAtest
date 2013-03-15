@@ -20,6 +20,7 @@ public:
 	ButtonPropertyWidgetQt(ButtonProperty* property);
 
     void updateFromProperty();
+    QPushButton* getButton();
 
 private:
 	ButtonProperty* property_;

@@ -27,7 +27,6 @@ private:
     Property* property_;
     ButtonProperty btnProperty_;
     ButtonPropertyWidgetQt* btnWidget_;
-    QLabel* colorLabel_;
     QColorDialog* colorDialog_;
     QColor* currentColor_;
     void generateWidget();

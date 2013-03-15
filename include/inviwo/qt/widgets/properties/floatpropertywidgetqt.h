@@ -3,6 +3,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QSlider>
+#include <QMenu>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
@@ -27,6 +28,7 @@ private:
 
 public slots:
     void setPropertyValue();
+    void showContextMenu(const QPoint& pos);
 };
 
 } // namespace

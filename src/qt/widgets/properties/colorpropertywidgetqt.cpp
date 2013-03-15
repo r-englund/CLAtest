@@ -6,7 +6,7 @@
 namespace inviwo {
 
 
-ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(property), btnProperty_("ColorBtn","Open color dialog") {
+ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(property), btnProperty_("ColorBtn"," ") {
     btnWidget_ = new ButtonPropertyWidgetQt(&btnProperty_);
     generateWidget();
     updateFromProperty();
@@ -15,14 +15,13 @@ ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(pro
 void ColorPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-    colorLabel_ = new QLabel(" ");
-    colorLabel_->setFixedWidth(50);
-    hLayout->addWidget(colorLabel_);
-    
-    colorDialog_ = new QColorDialog();
+    colorDialog_ = new QColorDialog();                                                  
+    colorDialog_->setStyleSheet("QSpinBox {border: 1px solid #000000;}");
     btnProperty_.registerClassMemberFunction(this, &ColorPropertyWidgetQt::openColorDialog);
     hLayout->addWidget(btnWidget_);
     connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
+    btnWidget_->getButton()->setFixedWidth(50);
+    btnWidget_->getButton()->setFixedHeight(50);
     currentColor_ = new QColor();
     setLayout(hLayout);
 }
@@ -40,7 +39,7 @@ void ColorPropertyWidgetQt::updateFromProperty(){
         currentColor_->setRgb(xVal, yVal, zVal, wVal);
     }
 
-    colorLabel_->setStyleSheet("QLabel { background-color : "+currentColor_->name() +"; }");
+    btnWidget_->getButton()->setStyleSheet("QPushButton { background-color : "+currentColor_->name() +"; }");
     colorDialog_->setCurrentColor(*currentColor_);
 
 }
@@ -66,8 +65,7 @@ void ColorPropertyWidgetQt::setPropertyValue() {
                                                             static_cast<float>(colorDialog_->currentColor().alpha())/255));
 
     }
-        
-        colorLabel_->setStyleSheet("QLabel { background-color : "+currentColor_->name() +"; }");
+         btnWidget_->getButton()->setStyleSheet("QPushButton { background-color : "+currentColor_->name() +"; }");
 }
 
 void ColorPropertyWidgetQt::openColorDialog() {
