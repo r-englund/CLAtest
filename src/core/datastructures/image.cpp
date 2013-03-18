@@ -2,20 +2,20 @@
 #include <inviwo/core/datastructures/imagerepresentation.h>
 
 #include <inviwo/core/datastructures/imageram.h>
-
+#include <modules/opengl/imagegl.h>
 namespace inviwo {
 
     Image::Image() : Data() {
         dimensions_ = uvec2(256,256);
         representations_.clear();
-        addRepresentation(new ImageRAM(dimensions_));
+        //addRepresentation(new ImageGL(dimensions_));
     }
 
     Image::Image(uvec2 dimensions)
         : Data(),
           dimensions_(dimensions) {
         representations_.clear();
-        addRepresentation(new ImageRAM(dimensions_));
+        //addRepresentation(new ImageGL(dimensions_));
     }
 
     Data* Image::clone() {

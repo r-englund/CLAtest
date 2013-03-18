@@ -13,11 +13,13 @@ namespace inviwo {
         initialize();
 	}
 
-    ImageDisk::~ImageDisk() {}
+    ImageDisk::~ImageDisk() {
+    }
 
     void ImageDisk::initialize(){
         if(!sourceFile_.empty()){
             dimensions_ = ImageLoader::imageDimensions(sourceFile_);
+            ImageLoader::loadImageToData(sourceFile_);
         }
     }
 
@@ -28,7 +30,7 @@ namespace inviwo {
     void ImageDisk::deinitialize() {}
 
     DataRepresentation* ImageDisk::clone() {
-        return new ImageDisk();
+        return new ImageDisk(sourceFile_);
     }
 
 } // namespace

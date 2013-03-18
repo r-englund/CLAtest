@@ -13,8 +13,11 @@ namespace inviwo {
 
     void ProcessorGL::activateTarget(ImagePort outport) {
         Image* outImage = outport.getData();
+
         ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+
         outImageGL->activateBuffer();
+
     }
 
     void ProcessorGL::deactivateCurrentTarget() {

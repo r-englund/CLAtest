@@ -16,7 +16,7 @@ public:
 	}
 	static Texture2D* loadImage(std::string filename);
     static uint8_t* loadImageToData(std::string filename);
-    static bvec2 imageDimensions(std::string filename);
+    static uvec2 imageDimensions(std::string filename);
 private:
 	static bool readInImage(std::string filename, FIBITMAP **bitmap);
 

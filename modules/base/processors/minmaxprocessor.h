@@ -9,7 +9,7 @@
 #include <modules/opengl/processorgl.h>
 
 #include <inviwo/core/datastructures/imageram.h>
-
+#include <inviwo/core/datastructures/imagedisk.h>
 namespace inviwo {
 
 class IVW_MODULE_BASE_API MinMaxProcessor : public ProcessorGL {
@@ -29,6 +29,8 @@ protected:
     virtual void process();
 
 private:
+    
+    uvec2 calculateMinMaxValues(uint8_t *data, int size) const;
 
 	ImagePort inport0_;
     ImagePort outport_;

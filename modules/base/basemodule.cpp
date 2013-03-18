@@ -11,7 +11,7 @@
 #include <modules/base/processors/simpleraycaster.h>
 #include <modules/base/processors/testprocessor.h>
 #include <modules/base/processors/transferfunction.h>
-
+#include <modules/base/processors/minmaxprocessor.h>
 namespace inviwo {
 
 BaseModule::BaseModule() : InviwoModule() {
@@ -25,6 +25,7 @@ BaseModule::BaseModule() : InviwoModule() {
 	addProcessor(new ImageGrayscale());
     addProcessor(new ImageMixer());
     addProcessor(new ImageSource());
+    addProcessor(new MinMaxProcessor());
     addProcessor(new RedGreenProcessor());
     addProcessor(new SimpleRaycaster());
     addProcessor(new TestProcessor());

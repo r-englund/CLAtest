@@ -7,7 +7,6 @@
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
-#include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/imageloader.h>
 #include <inviwo/core/datastructures/imagedisk.h>
 
@@ -32,8 +31,6 @@ protected:
 private:
     ImagePort outport_;
     FileProperty imageFileName_;
-
-    Shader* shader_;
 };
 
 } // namespace

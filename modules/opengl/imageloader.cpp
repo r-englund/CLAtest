@@ -9,18 +9,13 @@
 
 bool ImageLoader::loader_initialized = false;
 
-bvec2 ImageLoader::imageDimensions(std::string filename){
-    if(!loader_initialized)
-	{
-		loader_initialized = true;
-		FreeImage_Initialise(1);
-	}
-
+uvec2 ImageLoader::imageDimensions(std::string filename){
+    initLoader();
     FIBITMAP *bitmap = new FIBITMAP(); 
     readInImage(filename, &bitmap);
-	int width = FreeImage_GetWidth(bitmap);
-	int height = FreeImage_GetHeight(bitmap);
-    return bvec2(width, height);
+	unsigned int width = FreeImage_GetWidth(bitmap);
+	unsigned int height = FreeImage_GetHeight(bitmap);
+    return uvec2(width, height);
 }
 
 bool ImageLoader::readInImage(std::string filename, FIBITMAP **bitmap){
@@ -61,7 +56,8 @@ void ImageLoader::powerOfTwo(int& number){
 }
 
 /**
-* Internal function to load a bitmap to a texture
+* Internal function to load a bitmap to a texture is to be removed when converter from
+* imageRAM to ImageGL is implemented.
 * @param bitmap is where the loaded image should be loaded.
 * @return texture that has been loaded from the bitmap
 */
@@ -120,7 +116,7 @@ uint8_t* ImageLoader::imageToBitmap(FIBITMAP *bitmap){
     FIBITMAP *bitmap2 = FreeImage_Allocate(width, height, 32);
     FreeImage_Paste(bitmap2, bitmap, 0, 0, 255);
 
-	GLubyte *pixelValues = (GLubyte*)FreeImage_GetBits(bitmap2);
+	GLubyte *pixelValues = static_cast<GLubyte*>(FreeImage_GetBits(bitmap2));
     uint8_t* data = new uint8_t[4 * width * height];
 
 	//Fill in the texture, a shift is needed to convert from BGRA to RGBA
@@ -129,7 +125,6 @@ uint8_t* ImageLoader::imageToBitmap(FIBITMAP *bitmap){
 		data[i * 4 + 1] = static_cast<uint8_t>(pixelValues[i * 4 + 1]);
 		data[i * 4 + 2] = static_cast<uint8_t>(pixelValues[i * 4 + 0]);
 		data[i * 4 + 3] = static_cast<uint8_t>(pixelValues[i * 4 + 3]);
-
 	}
     return data;
 }
@@ -150,7 +145,7 @@ uint8_t* ImageLoader::loadImageToData(std::string filename){
 
 /**
 * Initializes freeimage if needed.
-*/
+**/
 void ImageLoader::initLoader(){
     if(!loader_initialized){
 		loader_initialized = true;
