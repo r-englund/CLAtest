@@ -52,8 +52,15 @@ namespace inviwo {
 
                 ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");
                 btnAllocTest->registerClassMemberFunction(this, &InviwoCore::allocationTest);
-                getSettings()->addProperty(btnAllocTest);
+                getSettings()->addProperty(btnAllocTest);             
             }
+            /*InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+            std::vector<Processor*> curProcessorList = inviwoApp->getProcessorNetwork()->getProcessors();
+            std::cout << curProcessorList.size();            
+            for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
+                std::cout << curProcessorList[curProcessorId]->getClassName() << std::endl;*/
+            
+            getSettings()->addProperty(new KeyMapProperty("keymap", "Key mapping"));
         }
     }
 

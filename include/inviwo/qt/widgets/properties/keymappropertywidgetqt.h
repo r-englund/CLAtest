@@ -9,6 +9,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/interaction/trackballkeymapper.h>
 #include <inviwo/core/properties/keymapproperty.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
 #include <QMainWindow>
 
 

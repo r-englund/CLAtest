@@ -37,7 +37,7 @@ namespace inviwo {
 
         CameraProperty camera_;
         ButtonProperty keymapbutton_;
-        KeyMapProperty keymap_;
+        //KeyMapProperty keymap_;
 
         Shader* shader_;
 

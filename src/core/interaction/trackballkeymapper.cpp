@@ -7,9 +7,12 @@ namespace inviwo {
         keys[TRACKBALL_ROTATE] = MouseEvent::MOUSE_BUTTON_LEFT;
         keys[TRACKBALL_ZOOM] = MouseEvent::MOUSE_BUTTON_RIGHT;
         keys[TRACKBALL_PAN] = MouseEvent::MOUSE_BUTTON_MIDDLE;
-        actionNames[TRACKBALL_ROTATE] = "TRACKBALL_ROTATE";
-        actionNames[TRACKBALL_ZOOM] = "TRACKBALL_ZOOM";
-        actionNames[TRACKBALL_PAN] = "TRACKBALL_PAN";
+        actionNames[TRACKBALL_ROTATE] = "Rotate";
+        actionNames[TRACKBALL_ZOOM] = "Zoom";
+        actionNames[TRACKBALL_PAN] = "Pan";
+        eventNames[MouseEvent::MOUSE_BUTTON_LEFT] = "Left mouse button";
+        eventNames[MouseEvent::MOUSE_BUTTON_MIDDLE] = "Middle mouse button";
+        eventNames[MouseEvent::MOUSE_BUTTON_RIGHT] = "Right mouse button";
     }
 
     TrackballKeyMapper::~TrackballKeyMapper() {}
@@ -25,6 +28,11 @@ namespace inviwo {
     std::string TrackballKeyMapper::getActionName( int action )
     {
         return actionNames[action];
+    }
+
+    std::string TrackballKeyMapper::getEventName( int eventNum )
+    {
+        return eventNames[eventNum];
     }
 
     

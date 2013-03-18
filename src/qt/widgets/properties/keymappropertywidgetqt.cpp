@@ -4,6 +4,7 @@ namespace inviwo {
 
 KeyMapPropertyWidgetQt::KeyMapPropertyWidgetQt( KeyMapProperty* property ) : property_(property)
 {
+    
     generateWidget();
 }
 
@@ -12,7 +13,7 @@ void KeyMapPropertyWidgetQt::generateWidget()
     window_ = new QWidget();
     window_->setWindowFlags(Qt::WindowStaysOnTopHint);
     window_->setWindowTitle("Change key bindings");
-    
+
     keymapper_ = property_->getMapper();
 
     QVBoxLayout *leftVbox = new QVBoxLayout();
@@ -24,8 +25,10 @@ void KeyMapPropertyWidgetQt::generateWidget()
 
     for (int i = 0; i < TrackballKeyMapper::COUNT; i++)
     {
-        buttons[i] = new QPushButton(intToQString(keymapper_->getKey(i)));
-        labels[i] = new QLabel(keymapper_->getActionName(i).c_str());
+        //buttons[i] = new QPushButton(keymapper_->getEventName(keymapper_->getKey(i)).c_str());
+        //labels[i] = new QLabel(keymapper_->getActionName(i).c_str());
+        buttons[i] = new QPushButton("Button " + intToQString(i));
+        labels[i] = new QLabel("Label " + intToQString(i));
         rightVbox->addWidget(buttons[i]);
         leftVbox->addWidget(labels[i]);
     }
@@ -33,7 +36,8 @@ void KeyMapPropertyWidgetQt::generateWidget()
     hbox->addLayout(leftVbox);
     hbox->addLayout(rightVbox);
 
-    window_->setLayout(hbox);
+    //window_->setLayout(hbox);
+    setLayout(hbox);
 
 }
 

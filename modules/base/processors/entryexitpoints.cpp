@@ -1,4 +1,5 @@
 #include "entryexitpoints.h"
+#include <inviwo\core\inviwoapplication.h>
 
 namespace inviwo {
 
@@ -8,8 +9,8 @@ EntryExitPoints::EntryExitPoints()
     entryPort_(Port::OUTPORT, "entry-points"),
     exitPort_(Port::OUTPORT, "exit-points"),
     camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f)),
-    keymapbutton_("keybindings", "Key bindings"),
-    keymap_("keymap", "Key mapping")
+    keymapbutton_("keybindings", "Key bindings")
+    //keymap_("keymap", "Key mapping")
 {
     addPort(volumePort_);
     addPort(entryPort_);
@@ -17,7 +18,7 @@ EntryExitPoints::EntryExitPoints()
 
     addProperty(camera_);
     addProperty(keymapbutton_);
-    addProperty(keymap_);
+    //addProperty(keymap_);
 }
 
 EntryExitPoints::~EntryExitPoints() {}
@@ -34,7 +35,7 @@ void EntryExitPoints::initialize() {
     addInteractionHandler(trackball);    
     
     keymapbutton_.registerClassMemberFunction(this, &EntryExitPoints::openKeyMapWindow);
-    keymap_.setMapper(trackball->getMapper());
+    //keymap_.setMapper(trackball->getMapper());
     
     // compute bounding box dimensions
     // TODO: change upon volume change
@@ -51,7 +52,12 @@ void EntryExitPoints::initialize() {
 }
 
 void EntryExitPoints::openKeyMapWindow(){
-    keymap_.updatePropertyWidgets();
+    //keymap_.updatePropertyWidgets();
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+    std::vector<Processor*> curProcessorList = inviwoApp->getProcessorNetwork()->getProcessors();
+    std::cout << curProcessorList.size() << std::endl;            
+    for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
+        std::cout << curProcessorList[curProcessorId]->getClassName() << std::endl;
 }
 
 void EntryExitPoints::deinitialize() {

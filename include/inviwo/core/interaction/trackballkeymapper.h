@@ -46,10 +46,12 @@ namespace inviwo {
         void setKey (int action, int key);
 
         std::string getActionName(int action);
+        std::string getEventName(int eventNum);
         
     private:
         int keys[COUNT]; ///< The array containing all mapping.
         std::string actionNames[COUNT];
+        std::string eventNames[MouseEvent::COUNT];
 
     };
 
