@@ -9,6 +9,7 @@
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <inviwo/core/interaction/trackball.h>
+#include <inviwo/core/inviwoapplication.h>
 
 
 namespace inviwo {

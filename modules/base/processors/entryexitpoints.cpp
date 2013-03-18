@@ -1,5 +1,4 @@
 #include "entryexitpoints.h"
-#include <inviwo\core\inviwoapplication.h>
 
 namespace inviwo {
 
