@@ -114,6 +114,7 @@ protected:
 *    };
 *
 *    class IVW_XXX_API Button: public Observable<ButtonObserver> {
+*    public:
 *        Button(): Observable<ButtonObserver>() {};
 *        void pressButton() {
 *            // Do stuff
@@ -127,6 +128,7 @@ protected:
 *    };
 * @endcode
 * @see Observer
+* @see VoidObserver
 */
 template<typename T>
 class IVW_CORE_API Observable: public ObservableInterface {
@@ -151,6 +153,50 @@ public:
 	 */
     virtual void removeObserver(T* observer) {
         ObservableInterface::removeObserver(observer);
+    }
+};
+
+
+/** \class VoidObserver 
+*
+* Simple observer that does not require any arguments
+* when observed object changes. The observer therefore 
+* does not know what changed, only that it changed.
+*
+* @see VoidObservable
+*/
+class IVW_CORE_API VoidObserver: public Observer {
+public:
+    VoidObserver(): Observer() {};
+
+    /**
+    * This method will be called when observed object changes.
+    * Override it to add behavior.
+    */
+    virtual void notify() {};
+};
+
+
+/** \class VoidObservable 
+*
+* Simple observable that should call notifyObservers as soon as it 
+* has changed. The observer  
+* does not know what changed, only that it changed.
+*
+* @see VoidObserver
+*/
+class IVW_CORE_API VoidObservable: public Observable<VoidObserver> {
+public:
+    VoidObservable(): Observable<VoidObserver>() {};
+
+
+    void notifyObservers() {
+        // Notify observers
+        ObserverSet::iterator endIt = observers_->end();
+        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<VoidObserver*>(*it)->notify();    
+        }
     }
 };
 
