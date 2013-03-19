@@ -12,7 +12,6 @@ class IVW_CORE_API TemplateProperty : public Property {
 
 public:
 
-    //TemplateProperty(std::string identifier, std::string displayName, T value);
     TemplateProperty(std::string identifier, std::string displayName, T value , PropertySemantics::Type semantics = PropertySemantics::Default);
 
     virtual T get() const;
@@ -22,11 +21,6 @@ protected:
     T value_;
 };
 
-//template <typename T>
-//TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value)
-//    : Property(identifier, displayName),
-//      value_(value)
-//{}
 template <typename T>
 TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value , PropertySemantics::Type semantics/* = PropertySemantics::Default*/)
 : Property(identifier, displayName, semantics),
@@ -44,6 +38,8 @@ void TemplateProperty<T>::set(T value) {
     getOwner()->invalidate();
     invalidate();
     updatePropertyWidgets();
+    notifyObservers();
+
 }
 
 } // namespace

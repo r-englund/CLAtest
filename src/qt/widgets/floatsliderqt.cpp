@@ -24,8 +24,8 @@ void FloatSliderQt::setValue( float tmpValue ) {
     }
 }
 
-void FloatSliderQt::setOrientation( Qt::Orientation orientation_) {
-    this->setOrientation(orientation_);
-}
+//void FloatSliderQt::setOrientation( Qt::Orientation orientation_) {
+//    setOrientation(orientation_);
+//}
 
 }//Namespace

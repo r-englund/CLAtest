@@ -6,10 +6,11 @@
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/properties/propertysemantics.h>
 #include <inviwo/core/util/variant.h>
+#include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
-class IVW_CORE_API Property : public IvwSerializable {
+class IVW_CORE_API Property : public IvwSerializable, public VoidObservable {
 
 public:
     Property(std::string identifier, std::string displayName,  PropertySemantics::Type semantics = PropertySemantics::Default);

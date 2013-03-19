@@ -6,7 +6,8 @@ namespace inviwo {
     : identifier_(identifier),
       displayName_(displayName),
       invalid_(true),
-      semantics_(semantics)
+      semantics_(semantics),
+      VoidObservable()
 {}
 
 

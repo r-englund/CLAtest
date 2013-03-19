@@ -16,7 +16,8 @@ void ColorPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     colorDialog_ = new QColorDialog();                                                  
-    colorDialog_->setStyleSheet("QSpinBox {border: 1px solid #000000;}");
+    //colorDialog_->setStyleSheet("QSpinBox {border: 1px solid #000000; background: #000000;}");
+    colorDialog_->setStyleSheet("QSpinBox {background: #000000;}");
     btnProperty_.registerClassMemberFunction(this, &ColorPropertyWidgetQt::openColorDialog);
     hLayout->addWidget(btnWidget_);
     connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));

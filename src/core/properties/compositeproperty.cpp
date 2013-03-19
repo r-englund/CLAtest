@@ -1,4 +1,5 @@
 #include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
 
@@ -11,6 +12,7 @@ CompositeProperty::~CompositeProperty() {}
 
 void CompositeProperty::addProperty(Property* property) {
     subProperties_.push_back(property);
+    property->addObserver(this);
 }
 
 void CompositeProperty::addProperty(Property& property) {
@@ -22,5 +24,10 @@ void CompositeProperty::setOwner(PropertyOwner* owner) {
     for (size_t i=0; i<subProperties_.size(); i++)
         subProperties_[i]->setOwner(owner);
 }
+
+void CompositeProperty::notify() {
+    updatePropertyWidgets();
+}
+
 
 } // namespace

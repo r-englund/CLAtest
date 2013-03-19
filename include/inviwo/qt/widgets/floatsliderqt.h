@@ -41,7 +41,7 @@ public:
      */
     void setValue(float tmpValue);
 
-    void setOrientation(Qt::Orientation orientation_);
+    //void setOrientation(Qt::Orientation orientation_);
 
 private:
     float sliderValue_;
