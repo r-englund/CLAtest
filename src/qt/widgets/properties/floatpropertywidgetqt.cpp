@@ -10,10 +10,14 @@ FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property
 void FloatPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-    slider_ = new QSlider();
-    slider_->setOrientation(Qt::Horizontal);
-    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+    slider_ = new FloatSliderQt(property_->getMinValue(), property_->getMaxValue());
+    spinBox_ = new QDoubleSpinBox();
+    spinBox_->setRange(static_cast<double>(property_->getMinValue()),static_cast<double>(property_->getMaxValue()));
+    spinBox_->setSingleStep(static_cast<double>(property_->getIncrement()));
+    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
+    //connect (spinBox_,SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinbBox()));
     hLayout->addWidget(slider_);
+    hLayout->addWidget (spinBox_);
     setLayout(hLayout);
     
     slider_->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -21,15 +25,19 @@ void FloatPropertyWidgetQt::generateWidget() {
 
 }
 
-void FloatPropertyWidgetQt::setPropertyValue() {
-    float valuef = (static_cast<float>(slider_->value())-slider_->minimum()) / (slider_->maximum()-slider_->minimum());
-    property_->set(valuef);
+void FloatPropertyWidgetQt::setPropertyValueFromSlider() {
+
+    property_->set(slider_->getValue());
+    spinBox_->setValue(static_cast<double>(slider_->getValue()));
+}
+void FloatPropertyWidgetQt::setPropertyValueFromSpinbBox() {
+    property_->set(static_cast<float>(spinBox_->value()));
+    slider_->setValue(static_cast<float>(spinBox_->value()));
 }
 
 void FloatPropertyWidgetQt::updateFromProperty() {
-    float valuef = property_->get();
-    int value = slider_->minimum() + static_cast<int>(ceilf(valuef * (slider_->maximum()-slider_->minimum())));
-    slider_->setValue(value);
+    slider_->setValue(property_->get());
+    spinBox_->setValue(static_cast<double>(property_->get ()));
 }
 
 void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
@@ -48,5 +56,6 @@ void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
 
 
 }
+
 
 } // namespace
