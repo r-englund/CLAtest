@@ -6,6 +6,7 @@
 #include <QMenu>
 #include <QDoubleSpinBox>
 #include <inviwo/qt/widgets/floatsliderqt.h>
+#include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
@@ -27,6 +28,7 @@ private:
     //QSlider* slider_;
     FloatSliderQt* slider_;
     QDoubleSpinBox* spinBox_;
+    PropertySettingsWidgetQt* settingsWidget_;
 
     void generateWidget();
 

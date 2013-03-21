@@ -8,6 +8,7 @@ FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property
 }
 
 void FloatPropertyWidgetQt::generateWidget() {
+    
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     slider_ = new FloatSliderQt(property_->getMinValue(), property_->getMaxValue());
@@ -22,6 +23,8 @@ void FloatPropertyWidgetQt::generateWidget() {
     
     slider_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(slider_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
+
+    settingsWidget_ = new PropertySettingsWidgetQt(property_);
 
 }
 
@@ -46,12 +49,11 @@ void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
 
     QMenu settingsMenu;
 
-    settingsMenu.addAction("SetMax");
-    settingsMenu.addAction("SetMin");
+    settingsMenu.addAction("Property settings");
 
     QAction* selecteditem = settingsMenu.exec(globalPos);
     if (selecteditem) {
-        std::cout<<"Inne i menu" << std::endl;
+        settingsWidget_->show();
     }
 
 
