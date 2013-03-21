@@ -24,6 +24,19 @@ void FloatSliderQt::setValue( float tmpValue ) {
     }
 }
 
+void FloatSliderQt::setMinValue( float tmpValue ) {
+    minValue_ = tmpValue;
+}
+
+void FloatSliderQt::setMaxValue( float tmpValue ) {
+    maxValue_ = tmpValue;
+}
+
+void FloatSliderQt::setRange( float min,float max ) {
+ minValue_ = min;
+ maxValue_ = max;
+}
+
 //void FloatSliderQt::setOrientation( Qt::Orientation orientation_) {
 //    setOrientation(orientation_);
 //}

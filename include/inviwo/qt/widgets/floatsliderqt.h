@@ -40,6 +40,10 @@ public:
      * @return void <DESCRIBE ME>
      */
     void setValue(float tmpValue);
+    void setMaxValue(float tmpValue);
+    void setMinValue(float tmpValue);
+    void setRange(float min,float max);
+
 
     //void setOrientation(Qt::Orientation orientation_);
 

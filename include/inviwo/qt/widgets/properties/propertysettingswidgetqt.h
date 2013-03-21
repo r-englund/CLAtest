@@ -12,7 +12,7 @@
 
 
 namespace inviwo {
-
+class FloatPropertyWidgetQt;
 class IVW_QTWIDGETS_API PropertySettingsWidgetQt : public QWidget {
 
     Q_OBJECT;

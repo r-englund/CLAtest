@@ -39,8 +39,12 @@ void FloatPropertyWidgetQt::setPropertyValueFromSpinbBox() {
 }
 
 void FloatPropertyWidgetQt::updateFromProperty() {
+    slider_->setRange(property_->getMinValue(), property_->getMaxValue());
+    spinBox_->setRange(static_cast<double>(property_->getMinValue()),static_cast<double>(property_->getMaxValue()));
     slider_->setValue(property_->get());
-    spinBox_->setValue(static_cast<double>(property_->get ()));
+    spinBox_->setValue(static_cast<double>(property_->get()));
+
+    
 }
 
 void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {

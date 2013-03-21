@@ -2,7 +2,10 @@
 
 namespace inviwo {
 
-    PropertySettingsWidgetQt::PropertySettingsWidgetQt(FloatProperty *property) : property_(property), btnPropertyApply_("Apply", "Apply"), btnPropertyCancel_("Cancel", "Cancel"), btnPropertyReload_("Reload","Reload") {
+    PropertySettingsWidgetQt::PropertySettingsWidgetQt(FloatProperty *property) : property_(property),
+        btnPropertyApply_("Apply", "Apply"), 
+        btnPropertyCancel_("Cancel", "Cancel"), 
+        btnPropertyReload_("Reload","Reload") {
         generateWidget();
     }
 
@@ -54,6 +57,8 @@ namespace inviwo {
         
         property_->setMaxValue(lineEditMax_->text().toFloat());
         property_->setMinValue(lineEditMin_->text().toFloat());
+        property_->updatePropertyWidgets();
+        hide();
 
     }
 
