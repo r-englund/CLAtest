@@ -21,8 +21,8 @@ void ColorPropertyWidgetQt::generateWidget() {
     btnProperty_.registerClassMemberFunction(this, &ColorPropertyWidgetQt::openColorDialog);
     hLayout->addWidget(btnWidget_);
     connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
-    btnWidget_->getButton()->setFixedWidth(50);
-    btnWidget_->getButton()->setFixedHeight(50);
+    btnWidget_->getButton()->setFixedWidth(100);
+    btnWidget_->getButton()->setFixedHeight(30);
     currentColor_ = new QColor();
     setLayout(hLayout);
 }

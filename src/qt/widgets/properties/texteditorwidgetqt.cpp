@@ -75,20 +75,15 @@ void TextEditorWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     if (dynamic_cast<FileProperty*>(property_)) {
 
-        QVBoxLayout* vLayout = new QVBoxLayout();
-        QHBoxLayout* hLayout2 = new QHBoxLayout();
-        QWidget* editorWidget_ = new QWidget();
-        QWidget* checkBoxWidget_ = new QWidget();
-        checkBoxWidget_->setLayout(hLayout2);
-        editorWidget_->setLayout(vLayout);
+        QGridLayout* gridLayout = new QGridLayout();
         checkBox_ = new QCheckBox();
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
         btnProperty_.registerClassMemberFunction(this, &TextEditorWidgetQt::editFile);
-           vLayout->addWidget(fileWidget_);
-           hLayout2->addWidget(new QLabel("Use system texteditor"));
-           hLayout2->addWidget(checkBox_);
-           vLayout->addWidget(checkBoxWidget_);
-           hLayout->addWidget(editorWidget_);
+        gridLayout->addWidget(fileWidget_,1,1,2,2);
+        gridLayout->addWidget(new QLabel("Use system text editor"),3,1);
+        gridLayout->addWidget(checkBox_,3,2);
+        hLayout->addLayout(gridLayout);
+
     }
     else if (dynamic_cast<StringProperty*>(property_)) {
         stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
@@ -109,13 +104,20 @@ void TextEditorWidgetQt::setPropertyValue() {}
 
 //Function loads the file into the textEditor_
 void TextEditorWidgetQt::editFile(){
+
     if (checkBox_->isChecked()) {
+        if (static_cast<StringProperty*>(property_)->get() == "") {
+            fileWidget_->setPropertyValue();
+        }
         tmpPropertyValue_ = static_cast<StringProperty*>(property_)->get();
         const QString filePath_ = QString::fromStdString(tmpPropertyValue_);
         QUrl url_ = QUrl(filePath_);
         QDesktopServices::openUrl(url_);
     }
     else {
+        if (static_cast<StringProperty*>(property_)->get() == "") {
+            fileWidget_->setPropertyValue();
+        }
         connect(textEditorWidget_->saveButton_, SIGNAL(pressed()), this, SLOT(writeToFile()));
         connect(textEditorWidget_->reLoadButton_, SIGNAL(pressed()), this, SLOT(loadFile()));
         loadFile();

@@ -43,8 +43,6 @@ void FloatPropertyWidgetQt::updateFromProperty() {
     spinBox_->setRange(static_cast<double>(property_->getMinValue()),static_cast<double>(property_->getMaxValue()));
     slider_->setValue(property_->get());
     spinBox_->setValue(static_cast<double>(property_->get()));
-
-    
 }
 
 void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
@@ -54,14 +52,23 @@ void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
     QMenu settingsMenu;
 
     settingsMenu.addAction("Property settings");
+    settingsMenu.addAction("Set as Min");
+    settingsMenu.addAction("Set as Max");
 
     QAction* selecteditem = settingsMenu.exec(globalPos);
-    if (selecteditem) {
+    if (selecteditem == settingsMenu.actions().at(0)) {
         settingsWidget_->show();
     }
-
-
+    else if (selecteditem == settingsMenu.actions().at(1)) {
+        //Set current value of the slider to min value of the property
+        property_->setMinValue(slider_->getValue());
+        updateFromProperty();
+    }
+    else if (selecteditem == settingsMenu.actions().at(2)){
+    //Set current value of the slider to max value of the property
+        property_->setMaxValue(slider_->getValue());
+        updateFromProperty();
+    }
 }
-
 
 } // namespace

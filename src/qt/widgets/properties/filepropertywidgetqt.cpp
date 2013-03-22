@@ -55,4 +55,5 @@ void FilePropertyWidgetQt::updateFromProperty() {
     lineEdit_->setText(QFileInfo(QString::fromStdString(property_->get())).fileName());
 }
 
+
 } // namespace
