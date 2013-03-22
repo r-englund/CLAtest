@@ -7,6 +7,7 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
+#include <inviwo/core/datastructures/transferfunc.h>
 
 namespace inviwo {
 
@@ -20,17 +21,15 @@ public:
     void deinitialize();
 
     virtual std::string getClassName() const { return "TransferFunction"; }
-    virtual std::string getCategory() const  { return "Compositer"; }
+    virtual std::string getCategory() const  { return "Transfer function source"; }
     virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     virtual void process();
 
 private:
-	//BoolProperty bool_;
 	TransferProperty trans_;
-	//BoolProperty bool2_;
-
+    ImagePort outport_;
     Shader* shader_;
 };
 

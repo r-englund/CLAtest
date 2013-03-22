@@ -11,8 +11,6 @@
 #include <inviwo/core/ports/port.h>
 
 #include <inviwo/core/ports/imageport.h>
-#include <vector>
-#include <valarray>
 #include <inviwo/qt/editor/transfereditorgraphicsitem.h>
 #include <inviwo/qt/editor/transfereditorlineitem.h>
 
@@ -21,8 +19,9 @@ namespace inviwo {
 
     public :
         TransferEditor();
+        TransferEditor(PropertyWidgetQt *parent_);
         ~TransferEditor();
-        vector<int> getTransferValues();
+        float* getTransferValues();
         void sortPoints();
         void sortLines();
 
@@ -33,14 +32,15 @@ namespace inviwo {
 
         void addPoint(QGraphicsSceneMouseEvent *e);
         void removePoint(QGraphicsSceneMouseEvent *e);
-        void calcTransferArray();
+        void calcTransferValues();
         float linearInterpolation(QPointF, QPointF, int);
 
     private :
         static const std::string logSource_;
         vector<TransferEditorGraphicsItem*> points;
         vector<TransferEditorLineItem*> lines;
-        vector<int> transferValues;        
+        float* transferValues;
+        PropertyWidgetQt *parent;
     };
 
 } // namespace
