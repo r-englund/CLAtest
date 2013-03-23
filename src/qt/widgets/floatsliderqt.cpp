@@ -18,7 +18,7 @@ float inviwo::FloatSliderQt::getValue() {
 }
 
 void FloatSliderQt::setValue( float tmpValue ) {
-    if (minValue_<tmpValue<=maxValue_) {
+    if (minValue_<tmpValue || tmpValue<=maxValue_) {
     sliderValue_ =static_cast<int>(ceilf(((tmpValue-minValue_)/(maxValue_ - minValue_)) * (maximum()-minimum())));
     setSliderPosition(static_cast<int>(sliderValue_));
     }
