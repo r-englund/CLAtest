@@ -32,8 +32,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumetypeclassification.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballkeymapper.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
@@ -69,6 +71,7 @@ set(HEADER_FILES
 	${IVW_INCLUDE_DIR}/inviwo/core/properties/buttonproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/cameraproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/keymapproperty.h
 	${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
@@ -147,8 +150,10 @@ set(SOURCE_FILES
     datastructures/volumerepresentation.cpp
     datastructures/volumeramconverter.cpp
     datastructures/volumetypeclassification.cpp
+    interaction/action.cpp
     interaction/interactionhandler.cpp
     interaction/trackball.cpp
+    interaction/trackballaction.cpp
     interaction/trackballkeymapper.cpp
     interaction/events/event.cpp
     interaction/events/eventhandler.cpp
@@ -182,6 +187,7 @@ set(SOURCE_FILES
     properties/buttonproperty.cpp
     properties/cameraproperty.cpp
     properties/compositeproperty.cpp
+    properties/eventproperty.cpp
     properties/fileproperty.cpp
     properties/keymapproperty.cpp
 	properties/matrixproperties.cpp

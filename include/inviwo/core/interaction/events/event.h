@@ -2,6 +2,7 @@
 #define IVW_EVENT_H
 
 #include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
 
 namespace inviwo {
 
@@ -12,11 +13,24 @@ namespace inviwo {
             MODIFIER_NONE  =      0,
             MODIFIER_ALT   = 1 << 1,
             MODIFIER_CTRL  = 1 << 2,
-            MODIFIER_SHIFT = 1 << 3
+            MODIFIER_SHIFT = 1 << 3,
+            COUNT
         };
 
         Event();
         virtual ~Event();
+
+        inline int button() const { return button_; }
+        inline Event::Modifier modifier() const { return modifier_; }
+        inline std::string modifierName() const { return modifierName_; }
+        inline std::string buttonName() const { return buttonName_; }
+
+    protected:
+        Event::Modifier modifier_;
+        int button_;
+        std::string modifierName_;
+        std::string buttonName_;
+        std::string modifierNames_[COUNT];
     };
 
 } // namespace

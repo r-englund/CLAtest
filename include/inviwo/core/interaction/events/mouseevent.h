@@ -27,23 +27,21 @@ namespace inviwo {
 
         MouseEvent(ivec2 position, MouseEvent::MouseButton button,
                    MouseEvent::MouseState state, Event::Modifier modifier, uvec2 canvasSize);
+        MouseEvent(MouseEvent::MouseButton button, Event::Modifier modifier);
         ~MouseEvent();
 
         inline ivec2 pos() const { return position_; }
         inline vec2 posNormalized() const { return vec2(vec2(position_)/vec2(canvasSize_)); }
         inline unsigned int x() const { return position_.x; }
         inline unsigned int y() const { return position_.y; }
-        inline MouseEvent::MouseButton button() const { return button_; }
         inline MouseEvent::MouseState state() const { return state_; }
-        inline Event::Modifier modifier() const { return modifier_; }
         inline uvec2 canvasSize() const {return canvasSize_; }
 
     private:
         ivec2 position_;
-        MouseEvent::MouseButton button_;
         MouseEvent::MouseState state_;
-        Event::Modifier modifier_;
         uvec2 canvasSize_;
+        std::string buttonNames_[COUNT];
     };
 
 } // namespace

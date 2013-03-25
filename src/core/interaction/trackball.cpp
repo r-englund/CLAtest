@@ -6,7 +6,7 @@ namespace inviwo {
     static const float MOVEMENT_THRESHOLD =0.007f;	
     static const float RADIUS = 0.5f;
 	bool mouseHold = false;
-
+   
 
     Trackball::Trackball(CameraProperty* camera)
         : InteractionHandler(),
@@ -55,7 +55,8 @@ namespace inviwo {
         //glEnd();
 
         if (mouseEvent) {
-            if (mouseEvent->button() == keymapper_->getKey(TrackballKeyMapper::TRACKBALL_ROTATE) && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+            if (mouseEvent->button() == keymapper_->getKey(TrackballAction::TRACKBALL_ROTATE) && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+                
                 // ROTATION
                 vec2 curMousePos = mouseEvent->posNormalized();
                 vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);

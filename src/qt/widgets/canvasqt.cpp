@@ -91,17 +91,29 @@ MouseEvent::MouseButton CanvasQt::getMouseButton(QMouseEvent* e) {
      return MouseEvent::MOUSE_BUTTON_NONE;
 }
 
+Event::Modifier CanvasQt::getModifier( QInputEvent* e )
+{
+    if(e->modifiers() == Qt::ShiftModifier) {
+        return Event::MODIFIER_SHIFT;
+    } else if(e->modifiers() == Qt::ControlModifier) {
+        return Event::MODIFIER_CTRL;
+    } else if(e->modifiers() == Qt::AltModifier) {
+        return Event::MODIFIER_ALT;
+    }
+    return Event::MODIFIER_NONE;
+}
+
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if(!processorNetworkEvaluator_) return;
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), getMouseButton(e),
-        MouseEvent::MOUSE_STATE_PRESS, MouseEvent::MODIFIER_NONE, dimensions_);
+        MouseEvent::MOUSE_STATE_PRESS, getModifier(e), dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
 }
 
 void CanvasQt::mouseReleaseEvent (QMouseEvent* e) {
     if(!processorNetworkEvaluator_) return;
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), getMouseButton(e),
-        MouseEvent::MOUSE_STATE_RELEASE, MouseEvent::MODIFIER_NONE, dimensions_);
+        MouseEvent::MOUSE_STATE_RELEASE, getModifier(e), dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
 }
 
@@ -111,13 +123,15 @@ void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
     MouseEvent* mouseEvent = 0;
     if(e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
         mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), getMouseButton(e),
-        MouseEvent::MOUSE_STATE_PRESS, MouseEvent::MODIFIER_NONE, dimensions_);
+        MouseEvent::MOUSE_STATE_PRESS, getModifier(e), dimensions_);
     }
     else {
         mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), MouseEvent::MOUSE_BUTTON_NONE,
-        MouseEvent::MOUSE_STATE_NONE, MouseEvent::MODIFIER_NONE, dimensions_);
+        MouseEvent::MOUSE_STATE_NONE, getModifier(e), dimensions_);
     }
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
 }
+
+
 
 } // namespace

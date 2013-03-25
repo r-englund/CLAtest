@@ -9,6 +9,11 @@
 #include <inviwo/core/interaction/events/resizeevent.h>
 #include <inviwo/core/properties/cameraproperty.h>
 
+#include <inviwo/core/properties/eventproperty.h>
+#include <inviwo/core/interaction/events/event.h>
+#include <inviwo/core/interaction/trackballaction.h>
+
+
 namespace inviwo {
 
     class IVW_CORE_API Trackball : public InteractionHandler {

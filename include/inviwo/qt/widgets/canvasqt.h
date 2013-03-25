@@ -5,6 +5,7 @@
 #include <modules/opengl/canvasgl.h>
 
 #include <QtOpenGL/QGLWidget>
+#include <QInputEvent>
 
 namespace inviwo {
 
@@ -27,6 +28,7 @@ public:
     void mouseMoveEvent(QMouseEvent* e);
     void timerEvent(QTimerEvent* e);
     MouseEvent::MouseButton getMouseButton(QMouseEvent* e);
+    Event::Modifier getModifier(QInputEvent* e);
 
 private:
     static QGLWidget* sharedWidget_; //For rendering-context sharing

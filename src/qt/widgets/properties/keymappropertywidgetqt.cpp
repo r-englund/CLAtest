@@ -14,25 +14,23 @@ void KeyMapPropertyWidgetQt::generateWidget()
     window_->setWindowFlags(Qt::WindowStaysOnTopHint);
     window_->setWindowTitle("Change key bindings");
 
-    keymapper_ = property_->getMapper();
+    //keymapper_ = property_->getMapper();
 
     QVBoxLayout *leftVbox = new QVBoxLayout();
     QVBoxLayout *rightVbox = new QVBoxLayout();
     QHBoxLayout *hbox = new QHBoxLayout(); 
 
-    QPushButton *buttons[TrackballKeyMapper::COUNT];
-    QLabel *labels[TrackballKeyMapper::COUNT];
+   
+    QPushButton *buttons[3];
+    QLabel *labels[3];
 
-    for (int i = 0; i < TrackballKeyMapper::COUNT; i++)
-    {
-        //buttons[i] = new QPushButton(keymapper_->getEventName(keymapper_->getKey(i)).c_str());
-        //labels[i] = new QLabel(keymapper_->getActionName(i).c_str());
+    for (int i = 0; i < 3; i++) {         
         buttons[i] = new QPushButton("Button " + intToQString(i));
         labels[i] = new QLabel("Label " + intToQString(i));
         rightVbox->addWidget(buttons[i]);
         leftVbox->addWidget(labels[i]);
     }
-
+    
     hbox->addLayout(leftVbox);
     hbox->addLayout(rightVbox);
 
