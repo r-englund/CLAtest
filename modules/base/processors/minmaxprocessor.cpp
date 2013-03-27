@@ -83,7 +83,6 @@ void MinMaxProcessor::process() {
     shader_->deactivate();
 
     deactivateCurrentTarget();
-    delete texture;
 }
 
 } // namespace
