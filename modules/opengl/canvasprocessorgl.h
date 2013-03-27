@@ -7,6 +7,8 @@
 #include <inviwo/core/util/canvas.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 
+#include <inviwo/core/datastructures/imageram.h>
+
 #include "processorgl.h"
 #include "glwrap/shader.h"
 

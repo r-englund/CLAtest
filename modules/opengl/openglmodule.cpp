@@ -5,6 +5,7 @@
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/opengl/imageglconverter.h>
 #include <modules/opengl/volumeglconverter.h>
+#include <inviwo/core/datastructures/imageramconverter.h>
 
 #include <modules/opengl/openglinfo.h>
 
@@ -15,7 +16,7 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     setXMLFileName("opengl/openglmodule.xml");
 
     ShaderManager::init();
-
+    addRepresentationConverter(new ImageDisk2RAMConverter());
     addRepresentationConverter(new ImageRAM2GLConverter());
     addRepresentationConverter(new VolumeRAM2GLConverter());
     addRepresentationConverter(new VolumeDisk2GLConverter());

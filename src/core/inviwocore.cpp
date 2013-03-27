@@ -3,6 +3,7 @@
 //Data Structures
 #include <inviwo/core/datastructures/volumeramconverter.h>
 #include <inviwo/core/datastructures/imageramconverter.h>
+#include <modules/opengl/imageglconverter.h>
 
 //Meta Data
 #include <inviwo/core/metadata/processormetadata.h>
@@ -32,6 +33,7 @@ namespace inviwo {
 
         addRepresentationConverter(new VolumeDisk2RAMConverter());
         addRepresentationConverter(new ImageDisk2RAMConverter());
+        addRepresentationConverter(new ImageRAM2GLConverter());
 
         addMetaData(new PositionMetaData());
         addMetaData(new ProcessorMetaData());

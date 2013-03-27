@@ -1,5 +1,8 @@
 #include "imagemixer.h"
 
+#include <inviwo/core/datastructures/imageram.h>
+
+
 namespace inviwo {
 
 ImageMixer::ImageMixer()
@@ -34,8 +37,21 @@ void ImageMixer::deinitialize() {
 void ImageMixer::process() {    
     
     Image* outImage = outport_.getData();
-    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    uvec2 csize = outImageGL->getDimension();
+    Image* inputImage0 = inport0_.getData();
+    Image* inputImage1 = inport1_.getData();
+    //Temporary line because of converterpackage not working (data.h)
+    //this line forces a ImageRAM representation to be made which results
+    //in a representation that we can convert to a ImageGL.
+    ImageRAM* temp = inputImage0->getRepresentation<ImageRAM>();
+    ImageRAM* temp1 = inputImage1->getRepresentation<ImageRAM>();
+    
+    ImageGL* inImage0GL = inputImage0->getRepresentation<ImageGL>();
+    ImageGL* inImage1GL = inputImage1->getRepresentation<ImageGL>();
+
+    uvec2 csize = inImage0GL->getDimension();
+
+    if(outImage->getRepresentation<ImageGL>() == NULL)
+        outImage->addRepresentation(new ImageGL(csize));
 
     activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);

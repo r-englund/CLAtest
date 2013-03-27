@@ -1,5 +1,7 @@
 #include "imagegrayscale.h"
 
+#include <inviwo/core/datastructures/imageram.h>
+
 namespace inviwo {
 
 ImageGrayscale::ImageGrayscale()
@@ -30,9 +32,20 @@ void ImageGrayscale::deinitialize() {
 
 void ImageGrayscale::process() {    
     
+    Image* inputImage = inport0_.getData();
     Image* outImage = outport_.getData();
-    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    uvec2 imageSize = outImageGL->getDimension();
+
+    //Temporary line because of converterpackage not working (data.h)
+    //this line forces a ImageRAM representation to be made which results
+    //in a representation that we can convert to a ImageGL.
+    ImageRAM* temp = inputImage->getRepresentation<ImageRAM>();
+    
+    ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
+
+    uvec2 imageSize = inImageGL->getDimension();
+    
+    if(outImage->getRepresentation<ImageGL>() == NULL)
+        outImage->addRepresentation(new ImageGL(imageSize));
 
     activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);
@@ -44,6 +57,7 @@ void ImageGrayscale::process() {
     shader_->deactivate();
 
     deactivateCurrentTarget();
+    
 }
 
 } // namespace

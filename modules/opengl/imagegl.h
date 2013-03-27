@@ -15,6 +15,7 @@ namespace inviwo {
     public:
         ImageGL();
         ImageGL(uvec2 dimensions);
+        ImageGL(Texture2D* colorTexture, uvec2 dimensions);
         virtual ~ImageGL();
 
         void initialize();

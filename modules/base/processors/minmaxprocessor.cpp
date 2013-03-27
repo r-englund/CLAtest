@@ -53,7 +53,7 @@ void MinMaxProcessor::process() {
     
     //Add a GL representation to outport if there isn't any already. This should be done in data.h,
     //when it is implemented, the if wont be nessecary.
-    if(outImage->getRepresentation<ImageGL>() == NULL) //This wont be 
+    if(outImage->getRepresentation<ImageGL>() == NULL)
         outImage->addRepresentation(new ImageGL());
     
     //Get ram representation
@@ -70,23 +70,15 @@ void MinMaxProcessor::process() {
 
     //Print results
     LogInfoS(getClassName(), " Image minimum: " << minmax.x << " maximum: " << minmax.y);
-
-    //Upload to GL (Because RAM2GL isn't working)
-    Texture2D* texture = new Texture2D(uvec2(width, height), GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_NEAREST);
-
-	texture->setTexels(data);
-	texture->setWidth(width);
-	texture->setHeight(height);
+    
+    if(outImage->getRepresentation<ImageGL>() == NULL)
+        outImage->addRepresentation(new ImageGL(dim));
 
     activateTarget(outport_);
-	
-    texture->upload();
-
-    uvec2 csize = outImage->size();
 
     shader_->activate();
     shader_->setUniform("colorTex_", 0);
-    shader_->setUniform("dimension_", vec2(1.f/csize.x,  1.f/csize.y));
+    shader_->setUniform("dimension_", vec2(1.f/dim.x,  1.f/dim.y));
     renderImagePlaneQuad();
     shader_->deactivate();
 

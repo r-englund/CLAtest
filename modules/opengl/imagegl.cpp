@@ -15,6 +15,15 @@ namespace inviwo {
         initialize();
     }
 
+    ImageGL::ImageGL(Texture2D* colorTexture, uvec2 dimensions)
+        : ImageRepresentation(dimensions)
+    {
+        initialize();
+        colorTexture_ = colorTexture;
+        colorTexture_->bind();
+        colorTexture_->upload();
+    }
+
     ImageGL::~ImageGL() {}
 
     void ImageGL::initialize() {
