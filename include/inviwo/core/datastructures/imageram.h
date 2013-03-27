@@ -3,6 +3,7 @@
 
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/datastructures/imagerepresentation.h>
+#include <inviwo/core/util/formats.h>
 
 namespace inviwo {
 
@@ -11,17 +12,66 @@ namespace inviwo {
     public:
         ImageRAM();
         ImageRAM(uvec2 dimension);
-        ImageRAM(void* data, uvec2 dimension);
+        ImageRAM(void* data, uvec2 dimension, DataFormatBase format = DataFormatBase());
         virtual ~ImageRAM();
         virtual void initialize();
         void deinitialize();
         DataRepresentation* clone();
         virtual std::string getClassName() const { return "ImageRAM"; }
         void copyAndResizeImage(DataRepresentation*){}
-        virtual void* getData() {return data_;}
+        virtual void* getData() {return data_;};
+        virtual const void* getData() const {return data_;};
     protected:
         void* data_;
     };
+
+    template<typename T>
+    class IVW_CORE_API ImageRAMPrecision : public ImageRAM {
+    public:
+        ImageRAMPrecision(uvec2 dimensions = uvec2(128,128), DataFormatBase format = GenericDataFormat(T)());
+        virtual ~ImageRAMPrecision() {};
+        using ImageRAM::initialize;
+        virtual void initialize(void*);
+        virtual void deinitialize();
+        virtual DataRepresentation* clone();
+    };
+    template<typename T>
+    ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, DataFormatBase format) : ImageRAM(dimensions, format) {
+        initialize(0);
+    }
+
+
+    template<typename T>
+    void ImageRAMPrecision<T>::initialize(void* data) {
+        if (!data)
+            data_ = new T[dimensions_.x*dimensions_.y*sizeof(T)];
+        else
+            data_ = data;
+        ImageRAM::initialize();
+    }
+
+    template<typename T>
+    DataRepresentation* ImageRAMPrecision<T>::clone() {
+        ImageRAMPrecision* newImageRAM = new ImageRAMPrecision<T>(dimensions_);
+        return newImageRAM;
+    }
+
+    template<typename T>
+    void ImageRAMPrecision<T>::deinitialize() {
+        delete static_cast<T*>(data_);
+        data_ = 0;
+        ImageRAM::deinitialize();
+    }
+
+    typedef ImageRAMPrecision<DataUINT8::type>     ImageRAMuint8;
+    typedef ImageRAMPrecision<DataINT8::type>      ImageRAMint8;
+    typedef ImageRAMPrecision<DataUINT16::type>    ImageRAMuint16;
+    typedef ImageRAMPrecision<DataINT16::type>     ImageRAMint16;
+    typedef ImageRAMPrecision<DataUINT32::type>    ImageRAMuint32;
+    typedef ImageRAMPrecision<DataINT32::type>     ImageRAMint32;
+    typedef ImageRAMPrecision<DataFLOAT16::type>   ImageRAMfloat16;
+    typedef ImageRAMPrecision<DataFLOAT32::type>   ImageRAMfloat32;
+    typedef ImageRAMPrecision<DataFLOAT64::type>   ImageRAMfloat64;
 
 } // namespace
 

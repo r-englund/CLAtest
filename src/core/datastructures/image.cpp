@@ -12,8 +12,7 @@ namespace inviwo {
     }
 
     Image::Image(uvec2 dimensions)
-        : Data(),
-          dimensions_(dimensions) {
+        : Data(), dimensions_(dimensions) {
         representations_.clear();
         //addRepresentation(new ImageGL(dimensions_));
     }

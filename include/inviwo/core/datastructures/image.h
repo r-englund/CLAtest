@@ -12,7 +12,6 @@ namespace inviwo {
         Image();
         Image(uvec2 dimensions);
         virtual ~Image();
-
         void resize(uvec2 dimensions);
         uvec2 size() {return dimensions_;}
         virtual Data* clone();
@@ -21,6 +20,9 @@ namespace inviwo {
     private:
         uvec2 dimensions_;
     };
+
+
+
 
 } // namespace
 

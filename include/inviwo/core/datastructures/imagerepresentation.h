@@ -12,6 +12,7 @@ namespace inviwo {
     public:
         ImageRepresentation();
         ImageRepresentation(uvec2 dimensions);
+        ImageRepresentation(uvec2 dimensions, DataFormatBase format);
         virtual ~ImageRepresentation();
         virtual void applyOperation(DataOperation*) {};
         virtual void resize(uvec2 dimensions);
@@ -21,6 +22,7 @@ namespace inviwo {
         virtual std::string getClassName() const { return "ImageRepresentation"; }
    protected:
         uvec2 dimensions_;
+        DataFormatBase dataFormatBase_;
    };
 
 } // namespace
