@@ -2,7 +2,8 @@
 #define IVW_INTPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QSlider>
+//#include <QSlider>
+#include <inviwo/qt/widgets/intsliderwidgetqt.h>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
@@ -21,12 +22,14 @@ public:
 
 private:
     IntProperty* property_;
-    QSlider* slider_;
+    //QSlider* slider_;
+    IntSliderWidgetQt* sliderWidget_;
 
     void generateWidget();
 
 public slots:
-    void setPropertyValue();
+    void setPropertyValueFromSlider();
+    void setPropertyValueFromSpinBox();
 };
 
 } // namespace

@@ -1,0 +1,104 @@
+#ifndef IVW_INTSLIDERQT_H
+#define IVW_INTSLIDERQT_H
+
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <QSlider>
+#include <QSpinBox>
+#include <QHBoxLayout>
+
+namespace inviwo {
+
+class IVW_QTWIDGETS_API IntSliderWidgetQt : public QWidget {
+
+        Q_OBJECT;
+public:
+
+    IntSliderWidgetQt(int minValue_, int maxValue_, int increment_);
+
+    virtual ~IntSliderWidgetQt();
+
+ 
+    /** 
+     * \brief Returns the integer value of the slider
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @return int <DESCRIBE ME>
+     */
+    int getValue();
+ 
+    /** 
+     * \brief Sets the value of the slider and spinbox
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @param int tmpValue <DESCRIBE ME>
+     * @return void <DESCRIBE ME>
+     */
+    void setValue(int tmpValue);
+
+    /** 
+     * \brief sets the maximum value of the spin box and slider
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @param int max <DESCRIBE ME>
+     * @return void <DESCRIBE ME>
+     */
+    void setMaxValue(int max);
+    /** 
+     * \brief sets the minimum value of the spin box and slider
+     * <DESCRIBE THE METHOD>
+     * 
+     * @param int min <DESCRIBE ME>
+     * @return void <DESCRIBE ME>
+     */
+    void setMinValue(int min);
+
+    /** 
+     * \brief Sets the minimum and maximum values of the slider and spin box
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @param int min <DESCRIBE ME>
+     * @param int max <DESCRIBE ME>
+     * @return void <DESCRIBE ME>
+     */
+    void setRange(int min,int max);
+
+    /** 
+     * \brief updates the value of the spin box from the slider value
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @return void <DESCRIBE ME>
+     */
+    void updateValueSpinbox();
+
+    /** 
+     * \brief updates the value of the slider from the spin box value
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @return void <DESCRIBE ME>
+     */void updateValueSlider();
+
+    QSlider* getSlider();
+    QSpinBox* getSpinBox();
+
+
+
+private:
+    int sliderValue_;
+    int maxValue_;
+    int minValue_;
+    int increment_;
+    QSpinBox* spinBox_;
+    QSlider* slider_;
+    void generateWidget();
+
+};
+
+}//namespace
+
+#endif // IVW_INTSLIDERQT_H

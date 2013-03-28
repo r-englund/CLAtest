@@ -11,43 +11,40 @@ void FloatPropertyWidgetQt::generateWidget() {
     
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-    slider_ = new FloatSliderQt(property_->getMinValue(), property_->getMaxValue());
-    spinBox_ = new QDoubleSpinBox();
-    spinBox_->setRange(static_cast<double>(property_->getMinValue()),static_cast<double>(property_->getMaxValue()));
-    spinBox_->setSingleStep(static_cast<double>(property_->getIncrement()));
-    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    //connect (spinBox_,SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinbBox()));
-    hLayout->addWidget(slider_);
-    hLayout->addWidget (spinBox_);
+    sliderWidget_ = new FloatSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
+    sliderWidget_->setValue(property_->get());
+    connect(sliderWidget_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
+    connect (sliderWidget_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
+    hLayout->addWidget(sliderWidget_);
     setLayout(hLayout);
     
-    slider_->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(slider_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
+    sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(sliderWidget_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
 
     settingsWidget_ = new PropertySettingsWidgetQt(property_);
 
 }
 
 void FloatPropertyWidgetQt::setPropertyValueFromSlider() {
-
-    property_->set(slider_->getValue());
-    spinBox_->setValue(static_cast<double>(slider_->getValue()));
+    sliderWidget_->updateValueSpinBox();
+    property_->set(sliderWidget_->getValue());
 }
-void FloatPropertyWidgetQt::setPropertyValueFromSpinbBox() {
-    property_->set(static_cast<float>(spinBox_->value()));
-    slider_->setValue(static_cast<float>(spinBox_->value()));
+void FloatPropertyWidgetQt::setPropertyValueFromSpinBox() {
+    sliderWidget_->updateValueSlider();
+    property_->set(sliderWidget_->getValue());
 }
+    
 
 void FloatPropertyWidgetQt::updateFromProperty() {
-    slider_->setRange(property_->getMinValue(), property_->getMaxValue());
-    spinBox_->setRange(static_cast<double>(property_->getMinValue()),static_cast<double>(property_->getMaxValue()));
-    slider_->setValue(property_->get());
-    spinBox_->setValue(static_cast<double>(property_->get()));
+    sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
+    sliderWidget_->setValue(property_->get());
+    sliderWidget_->setIncrement(property_->getIncrement());
+    sliderWidget_->updateValueSpinBox();
 }
 
 void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
 
-    QPoint globalPos = slider_->mapToGlobal(pos);
+    QPoint globalPos = sliderWidget_->mapToGlobal(pos);
 
     QMenu settingsMenu;
 
@@ -61,12 +58,12 @@ void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
     }
     else if (selecteditem == settingsMenu.actions().at(1)) {
         //Set current value of the slider to min value of the property
-        property_->setMinValue(slider_->getValue());
+        property_->setMinValue(sliderWidget_->getValue());
         updateFromProperty();
     }
     else if (selecteditem == settingsMenu.actions().at(2)){
     //Set current value of the slider to max value of the property
-        property_->setMaxValue(slider_->getValue());
+        property_->setMaxValue(sliderWidget_->getValue());
         updateFromProperty();
     }
 }

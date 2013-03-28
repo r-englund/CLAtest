@@ -24,6 +24,7 @@ private:
     FloatProperty* property_;
     QLineEdit* lineEditMax_;
     QLineEdit* lineEditMin_;
+    QLineEdit* lineEditIcrement_;
     ButtonProperty btnPropertyApply_;
     ButtonProperty btnPropertyReload_;
     ButtonProperty btnPropertyCancel_;

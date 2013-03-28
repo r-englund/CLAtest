@@ -2,13 +2,12 @@
 #define IVW_FLOATPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QSlider>
 #include <QMenu>
-#include <QDoubleSpinBox>
-#include <inviwo/qt/widgets/floatsliderqt.h>
+#include <inviwo/qt/widgets/floatsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+//#include <inviwo/qt/widgets/properties/ordinalpropertywidgetqt.h>
 
 #include <inviwo/core/properties/scalarproperties.h>
 
@@ -25,16 +24,14 @@ public:
 
 private:
     FloatProperty* property_;
-    //QSlider* slider_;
-    FloatSliderQt* slider_;
-    QDoubleSpinBox* spinBox_;
+    FloatSliderWidgetQt* sliderWidget_;
     PropertySettingsWidgetQt* settingsWidget_;
 
     void generateWidget();
 
 public slots:
     void setPropertyValueFromSlider();
-    void setPropertyValueFromSpinbBox();
+    void setPropertyValueFromSpinBox();
 
     void showContextMenu(const QPoint& pos);
 };
