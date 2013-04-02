@@ -29,17 +29,22 @@ namespace inviwo {
     class IVW_CORE_API ImageRAMPrecision : public ImageRAM {
     public:
         ImageRAMPrecision(uvec2 dimensions = uvec2(128,128), DataFormatBase format = GenericDataFormat(T)());
+        ImageRAMPrecision(T* data, uvec2 dimensions = uvec2(128,128), DataFormatBase format = GenericDataFormat(T)());
         virtual ~ImageRAMPrecision() {};
         using ImageRAM::initialize;
         virtual void initialize(void*);
         virtual void deinitialize();
         virtual DataRepresentation* clone();
     };
+
     template<typename T>
     ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, DataFormatBase format) : ImageRAM(dimensions, format) {
         initialize(0);
     }
-
+    template<typename T>
+    ImageRAMPrecision<T>::ImageRAMPrecision(T* data, uvec2 dimensions, DataFormatBase format) : ImageRAM(dimensions, format) {
+        initialize(data);
+    }
 
     template<typename T>
     void ImageRAMPrecision<T>::initialize(void* data) {
@@ -68,6 +73,7 @@ namespace inviwo {
     typedef ImageRAMPrecision<DataUINT16::type>    ImageRAMuint16;
     typedef ImageRAMPrecision<DataINT16::type>     ImageRAMint16;
     typedef ImageRAMPrecision<DataUINT32::type>    ImageRAMuint32;
+    typedef ImageRAMPrecision<DataUINT64::type>    ImageRAMuint64;
     typedef ImageRAMPrecision<DataINT32::type>     ImageRAMint32;
     typedef ImageRAMPrecision<DataFLOAT16::type>   ImageRAMfloat16;
     typedef ImageRAMPrecision<DataFLOAT32::type>   ImageRAMfloat32;
