@@ -30,7 +30,7 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
-    virtual void setupEnvironment();
+    virtual void initializeWorkspace();
 
     void openLastNetwork();
 

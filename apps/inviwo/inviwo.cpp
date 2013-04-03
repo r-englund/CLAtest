@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     // Setup Main Window
     mainWin.initialize();
     mainWin.show();
-    mainWin.setupEnvironment();
+    mainWin.initializeWorkspace();
 
     // Open Last Network
     mainWin.openLastNetwork();

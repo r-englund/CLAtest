@@ -11,23 +11,23 @@ class IVW_CORE_API ImagePort : public DataPort<Image> {
 
 public:
     ImagePort(Port::PortDirection direction, std::string identifier);
-    ~ImagePort();
+    virtual ~ImagePort();
 
-    void initialize();
-    void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
 
-    void resize(uvec2 dimensions);
+    void changeDimensions(uvec2 dimensions);
     uvec2 getDimensions() { return dimensions_; }
 
     virtual Image* getData();
 
-    virtual uvec3 getColorCode() { return uvec3(90,127,183); }
+    virtual uvec3 getColorCode() const { return uvec3(90,127,183); }
 
 private:
     uvec2 dimensions_;
     std::map<std::string, Image*> imageDataMap_;
 
-    Image* resizeImageData(std::string processorID, uvec2 targetDim);
+    Image* resizeImageData(uvec2 dimensions);
 };
 
 } // namespace

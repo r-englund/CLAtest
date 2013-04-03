@@ -28,12 +28,12 @@ void FirstIvwProcessor::deinitialize() {
 void FirstIvwProcessor::process() {
     activateTarget(outport_);
 
-    glClearColor(color_.get().x, color_.get().y, color_.get().z, 1.0);
+    //glClearColor(color_.get().x, color_.get().y, color_.get().z, 1.0);
     //glClearColor(1.0*color_.get(), 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    /*
+    
     glLoadIdentity();
-    glColor4f(1.0f*color_.get(), 0.0f, 0.0f, 1.0f);
+    glColor4f(color_.get().x, color_.get().y, color_.get().z, 1.0);
     glBegin(GL_QUADS);
         glVertex3f(-1.0f,  1.0f, 0.0f);
         glVertex3f( 1.0f,  1.0f, 0.0f);
@@ -46,8 +46,7 @@ void FirstIvwProcessor::process() {
     glVertex3f(-1.0f, -1.0f, 0.0f);
     glVertex3f( 1.0f, -1.0f, 0.0f);
     glEnd();
-    */
-
+    
     deactivateCurrentTarget();
 }
 

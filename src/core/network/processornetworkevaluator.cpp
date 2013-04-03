@@ -203,7 +203,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                 ImagePort* imagePort = dynamic_cast<ImagePort*>(outports[j]);
                 if (imagePort) {
                     if (isPortConnectedToProcessor(imagePort, processor)) {
-                        imagePort->resize(resizeEvent->canvasSize());
+                        imagePort->changeDimensions(resizeEvent->canvasSize());
                         invalidate = true;
                     }
                 }
@@ -231,7 +231,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                     for (size_t j=0; j<ports.size(); j++) {
                         ImagePort* imagePort = dynamic_cast<ImagePort*>(ports[j]);
                         if (imagePort && imagePort->isInport()) {
-                            imagePort->resize(dimMax);
+                            imagePort->changeDimensions(dimMax);
                         }
                     }
                 }                
@@ -265,7 +265,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     for (size_t j=0; j<inports.size(); j++) {
         ImagePort* imagePort = dynamic_cast<ImagePort*>(inports[j]);
         if (imagePort) {
-            imagePort->resize(resizeEvent->canvasSize());
+            imagePort->changeDimensions(resizeEvent->canvasSize());
             invalidate = true;
         }
     }

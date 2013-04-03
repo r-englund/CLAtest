@@ -20,7 +20,6 @@
 #include <inviwo/core/util/logdistributor.h>
 #define IVW_UNUSED_PARAM(param) (void)param
 
-//#include <voreen/serialization/serialization.h>
 #include <inviwo/core/io/serialization/ivwserialization.h>
 
 // include glm

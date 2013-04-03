@@ -15,8 +15,10 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
     //QCoreApplication::setOrganizationDomain("inviwo.org");
     QCoreApplication::setApplicationName(displayName.c_str());
 
+    // initialize singletons
     ProcessorWidgetFactoryQt::init();
     PropertyWidgetFactoryQt::init();
+
     reloadingFile_ = false;
     fileWatcher_ = new QFileSystemWatcher();
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));

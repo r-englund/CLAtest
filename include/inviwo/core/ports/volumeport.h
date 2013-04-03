@@ -7,17 +7,17 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API VolumePort : public DataPort<Volume> {
+class IVW_CORE_API VolumePort : public DataPort<Volume> {
 
-    public:
-        VolumePort(Port::PortDirection direction, std::string identifier);
-        virtual ~VolumePort();
+public:
+    VolumePort(Port::PortDirection direction, std::string identifier);
+    virtual ~VolumePort();
 
-        void initialize();
-        void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
 
-        virtual uvec3 getColorCode() { return uvec3(188,101,101); }
-    };
+    virtual uvec3 getColorCode() const { return uvec3(188,101,101); }
+};
 
 } // namespace
 

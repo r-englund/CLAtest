@@ -20,7 +20,7 @@ Processor* ImageSource::create() const {
 void ImageSource::initialize() {
     ProcessorGL::initialize();
 	Image* image = outport_.getData();
-    if(image){
+    if (image) {
         image->clearRepresentations();
         //image->addRepresentation(new ImageDisk(imageFileName_.get()));
     }

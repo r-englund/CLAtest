@@ -37,7 +37,7 @@ protected:
     ~Singleton() {};
     
 private:    
-    // No implementation for copy functionalities by making the following two methods
+    // no implementation for copy functionalities by making the following two methods
     // unaccessible. Otherwise unwanted Singleton copies might appear.
     Singleton<T>(Singleton<T> const&);
     void operator=(Singleton<T> const&);

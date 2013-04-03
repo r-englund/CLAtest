@@ -18,8 +18,7 @@ namespace inviwo {
 
 class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
                                        public Singleton<NetworkEditor>  {
-    public:
-
+public:
     NetworkEditor(QObject* parent=0);
 
     /** 
@@ -53,62 +52,62 @@ class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
     void addPortInspector(Port* port, QPointF pos);
 
 
-        bool saveNetwork(std::string fileName);
-        bool loadNetwork(std::string fileName);
-        void clearNetwork();
+    bool saveNetwork(std::string fileName);
+    bool loadNetwork(std::string fileName);
+    void clearNetwork();
 
-        void drawBackground(QPainter* painter, const QRectF& rect);
+    void drawBackground(QPainter* painter, const QRectF& rect);
 
     ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() const { return processorNetworkEvaluator_; }
 
-        ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
-        QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
-        QGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
-        QGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
+    ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
+    QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
+    QGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
+    QGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
 
-    protected:
-        void mousePressEvent(QGraphicsSceneMouseEvent* e);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
-        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* e);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 
-        void keyPressEvent(QKeyEvent* keyEvent);
+    void keyPressEvent(QKeyEvent* keyEvent);
 
-        void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
 
-        void dragEnterEvent(QGraphicsSceneDragDropEvent* de);
-        void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
-        void dropEvent(QGraphicsSceneDragDropEvent* de);
+    void dragEnterEvent(QGraphicsSceneDragDropEvent* de);
+    void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
+    void dropEvent(QGraphicsSceneDragDropEvent* de);
 
-        QPointF snapToGrid(QPointF pos);
+    QPointF snapToGrid(QPointF pos);
 
-        void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
+    void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
 
-    private:
-        friend class ProcessorGraphicsItem;
-        friend class ConnectionGraphicsItem;
+private:
+    friend class ProcessorGraphicsItem;
+    friend class ConnectionGraphicsItem;
 
-        std::vector<ProcessorGraphicsItem*> processorGraphicsItems_;
-        std::vector<ConnectionGraphicsItem*> connectionGraphicsItems_;
-        std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems_;
+    std::vector<ProcessorGraphicsItem*> processorGraphicsItems_;
+    std::vector<ConnectionGraphicsItem*> connectionGraphicsItems_;
+    std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems_;
 
-        ProcessorNetwork* processorNetwork_;
-        ProcessorNetworkEvaluator* processorNetworkEvaluator_;
+    ProcessorNetwork* processorNetwork_;
+    ProcessorNetworkEvaluator* processorNetworkEvaluator_;
 
-        bool processorWithIdentifierExists(std::string identifier);
+    bool processorWithIdentifierExists(std::string identifier);
 
-        CurveGraphicsItem* connectionCurve_;
-        LinkGraphicsItem* linkCurve_;
-        ProcessorGraphicsItem* startProcessor_;
-        ProcessorGraphicsItem* endProcessor_;
-        Port* startPort_;
-        Port* endPort_;
+    CurveGraphicsItem* connectionCurve_;
+    LinkGraphicsItem* linkCurve_;
+    ProcessorGraphicsItem* startProcessor_;
+    ProcessorGraphicsItem* endProcessor_;
+    Port* startPort_;
+    Port* endPort_;
 
-        bool gridSnapping_;
+    bool gridSnapping_;
 
-        static const std::string logSource_; ///< Source string to be displayed for log messages.
-    };
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
+};
 
 } // namespace
 

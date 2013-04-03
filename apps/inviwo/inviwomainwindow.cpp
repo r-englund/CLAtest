@@ -60,7 +60,7 @@ void InviwoMainWindow::deinitialize() {
     initialized_ = false;
 }
 
-void InviwoMainWindow::setupEnvironment(){
+void InviwoMainWindow::initializeWorkspace(){
     addMenuActions();
 
     ProcessorNetworkEvaluator* processEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
@@ -247,6 +247,7 @@ void InviwoMainWindow::saveNetworkAs() {
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
     networkEditorView_->getNetworkEditor()->clearNetwork();
+
     // save window state
     QSettings settings("Inviwo","Inviwo");
     settings.setValue("mainWindowGeometry", saveGeometry());
