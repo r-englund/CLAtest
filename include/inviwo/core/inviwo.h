@@ -29,6 +29,9 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/core/type.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/vector_angle.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 typedef glm::ivec2 ivec2;
 typedef glm::ivec3 ivec3;

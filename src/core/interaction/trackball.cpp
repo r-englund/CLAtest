@@ -73,14 +73,29 @@ namespace inviwo {
 
                     // Map trackball coordinates to the camera according to result' = viewmatrix*(eye^-1)*result <=> result' = viewmatrix*result
                     vec4 curr = vec4(curTrackballPos.x, curTrackballPos.y, curTrackballPos.z, 0.0f);
-                    vec4 prev = vec4(lastTrackballPos_.x, lastTrackballPos_.y, lastTrackballPos_.z, 0.0f);
-                    curr = camera_->viewMatrix()*curr;
-                    prev = camera_->viewMatrix()*prev;
-                    //result = vec3(tmp.x, tmp.y, tmp.z);
+                    vec4 prev = vec4(lastTrackballPos_.x, lastTrackballPos_.y, lastTrackballPos_.z, 0.0f);                   
 
                     // calculate rotation angle
-				    float rotationAngle = acos(glm::dot(curr, prev));
+                    float rotationAngle = glm::angle(curr, prev); //angle returned in degrees
                     //std::cout << rotationAngle << std::endl;   
+
+                    //Get x,y,z axis of current view
+                    vec3 currentViewYaxis = glm::normalize(camera_->lookUp());
+                    vec3 currentViewZaxis = glm::normalize(camera_->lookTo()-camera_->lookFrom());
+                    vec3 currentViewXaxis = glm::normalize(glm::cross(currentViewYaxis, currentViewZaxis));                        
+
+                    //difference vector in trackball co-ordinates
+                    vec3 diffTrackBall = lastTrackballPos_ - curTrackballPos;
+
+                    //mapping from trackball to current view
+                    currentViewXaxis*=diffTrackBall.x;
+                    currentViewYaxis*=diffTrackBall.y;
+
+                    //compute difference vector in current veiw
+                    vec3 currentCamPos = camera_->lookTo();
+                    vec3 nextCamPos = currentCamPos+(currentViewXaxis+currentViewYaxis);
+
+                    
 
                     // FOR DEBUGGING 
                     // Draws a line with the trackball x and y. Color with z.
@@ -92,11 +107,12 @@ namespace inviwo {
                     
                     // obtain rotation axis
                     if(rotationAngle > MOVEMENT_THRESHOLD){
-                        vec3 rotationAxis = glm::cross(vec3(curr.x, curr.y, curr.z), vec3(prev.x, prev.y, prev.z) );                       
-                        
+
+                        //rotation axis
+                        vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);                                               
 				        // generate quaternion and rotate camera                
                         rotationAxis = glm::normalize(rotationAxis);                
-                        quat quaternion = glm::angleAxis(rotationAngle*180.0f/3.14f, rotationAxis);
+                        quat quaternion = glm::angleAxis(rotationAngle, rotationAxis);
                         lookLength = glm::length(camera_->lookFrom()-camera_->lookTo());
                         vec3 offset = camera_->lookFrom();
                         vec3 rotation = glm::rotate(quaternion, offset);
