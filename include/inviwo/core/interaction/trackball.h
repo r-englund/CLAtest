@@ -26,13 +26,20 @@ namespace inviwo {
         TrackballKeyMapper* getMapper(){return keymapper_;}
 
     private:
-        CameraProperty* camera_;
-        TrackballKeyMapper* keymapper_;
+
+        float pixelWidth_;
+        bool isMouseBeingPressedAndHold_;
 
         vec2 lastMousePos_;
         vec3 lastTrackballPos_;
 
+        CameraProperty* camera_;
+        TrackballKeyMapper* keymapper_;
+
         vec3 mapNormalizedMousePosToTrackball(vec2 mousePos);
+        void rotateCamera(MouseEvent* mouseEvent);
+        void zoomCamera(MouseEvent* mouseEvent);
+        void panCamera(MouseEvent* mouseEvent);
     };
 
 } // namespace
