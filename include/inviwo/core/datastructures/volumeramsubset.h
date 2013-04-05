@@ -36,7 +36,7 @@ namespace inviwo {
 
     template<typename T, size_t B>
     void VolumeRAMSubSet::evaluate(){
-        const VolumeRAMPrecision<T>* volume = dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
+        /*const VolumeRAMPrecision<T>* volume = dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
         if(!volume){
             setOutputVolume(NULL);
             return;
@@ -94,7 +94,7 @@ namespace inviwo {
             }
         }
 
-        setOutputVolume(newVolume);
+        setOutputVolume(newVolume);*/
     }
 
 } // namespace
