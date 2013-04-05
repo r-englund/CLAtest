@@ -113,7 +113,7 @@ Volume* VolumeSplit::createNewVolume(VolumeSplit::Brick brick){
     Volume* volume;
     if (inport_.getData()->hasRepresentation<VolumeRepresentation>()){
         VolumeRepresentation* vol = inport_.getData()->getRepresentation<VolumeRepresentation>();
-        volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)), inport_.getData());
+        //volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)), inport_.getData());
     }
 
     vec3 offsetTexCoords = (static_cast<vec3>(brick.offset)/static_cast<vec3>(inport_.getData()->getDimension()));//*inport_.getData()->getCubeSize();
@@ -154,8 +154,9 @@ bool VolumeSplit::connectedToImageCompositor(){
 void VolumeSplit::calculateCameraBrickDistance(std::vector<VolumeSplit::Brick>& bricks, vec3 cameraposition, uvec3 dimension, mat4 toWorld) {
     for (std::vector<VolumeSplit::Brick>::iterator it = bricks.begin(); it!=bricks.end(); ++it) {
         vec4 brickCenterTexCoords = vec4((*it).getCenterPosNormalized(dimension), 1.f);
-        vec4 brickCenterWorldCoords = toWorld*brickCenterTexCoords;        
-        (*it).distanceFromCamera = glm::length(cameraposition - brickCenterWorldCoords.xyz());
+        vec4 brickCenterWorldCoords = toWorld*brickCenterTexCoords;
+        vec3 brickCenterWorldCoordsWYZ = brickCenterWorldCoords.xyz();
+        (*it).distanceFromCamera = glm::length(cameraposition - brickCenterWorldCoordsWYZ);
     }
 }
 
