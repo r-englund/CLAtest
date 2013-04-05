@@ -12,6 +12,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwodockwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwoqteditordefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/labelgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditorview.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
@@ -29,6 +30,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add MOC files
 set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
 )
@@ -44,6 +46,7 @@ set(SOURCE_FILES
     labelgraphicsitem.cpp
     linkdialog.cpp
     linkgraphicsitem.cpp
+    mappingwidget.cpp
     networkeditor.cpp
     networkeditorview.cpp
     processorlistwidget.cpp

@@ -5,7 +5,6 @@
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/properties/keymapproperty.h>
 #include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
@@ -32,7 +31,6 @@
 #include <inviwo/qt/widgets/properties/intvec2propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intvec3propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intvec4propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/keymappropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/snapshotpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
@@ -94,8 +92,6 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new IntVec4PropertyWidgetQt(static_cast<IntVec4Property*>(property));
     if (dynamic_cast<IntProperty*>(property))
         return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
-    if (dynamic_cast<KeyMapProperty*>(property))
-        return new KeyMapPropertyWidgetQt(static_cast<KeyMapProperty*>(property));
     if (dynamic_cast<OptionPropertyDouble*>(property))
         return new OptionPropertyWidgetQt(static_cast<OptionPropertyDouble*>(property));
     if (dynamic_cast<OptionPropertyFloat*>(property))

@@ -33,6 +33,9 @@ void InviwoMainWindow::initialize() {
     networkEditorView_ = new NetworkEditorView(this);
     setCentralWidget(networkEditorView_);
 
+    mappingwidget_ = new MappingWidget(this);
+    addDockWidget(Qt::LeftDockWidgetArea, mappingwidget_);
+
     settingsWidget_ = new SettingsWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
 
@@ -106,6 +109,12 @@ void InviwoMainWindow::addMenuActions() {
         connect(recentFileActions_[i], SIGNAL(triggered()), this, SLOT(openRecentNetwork()));
         fileMenuItem_->addAction(recentFileActions_[i]);
     }
+    
+    mappingwidgetviewAction_ = new QAction(tr("&Mapping"), this);
+    mappingwidgetviewAction_->setCheckable(true);
+    mappingwidgetviewAction_->setChecked(mappingwidget_->isVisible());
+    connect(mappingwidgetviewAction_, SIGNAL(triggered(bool)), mappingwidget_, SLOT(setVisible(bool)));
+    viewMenuItem_->addAction(mappingwidgetviewAction_);
 
     settingsWidgetViewAction_ = new QAction(tr("&Settings"), this);
     settingsWidgetViewAction_->setCheckable(true);

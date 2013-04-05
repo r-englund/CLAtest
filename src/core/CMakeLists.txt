@@ -73,7 +73,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/keymapproperty.h
 	${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
 	${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
@@ -189,7 +188,6 @@ set(SOURCE_FILES
     properties/compositeproperty.cpp
     properties/eventproperty.cpp
     properties/fileproperty.cpp
-    properties/keymapproperty.cpp
 	properties/matrixproperties.cpp
     properties/optionproperties.cpp
     properties/property.cpp

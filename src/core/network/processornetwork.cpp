@@ -12,7 +12,7 @@
 namespace inviwo {
 
 // FIXME: temporary method supporting non serialization-based network creation
-void ProcessorNetwork::connectPorts(Port* sourcePort, Port* destPort) {
+    void ProcessorNetwork::connectPorts(Port* sourcePort, Port* destPort) {
     destPort->connectTo(sourcePort);
     portConnections_.push_back(new PortConnection(sourcePort, destPort));
     modified();
@@ -61,7 +61,7 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
     modified();
 }
 
-ProcessorNetwork::ProcessorNetwork() {
+ProcessorNetwork::ProcessorNetwork() : VoidObservable() {
     isModified_ = true;
 }
 

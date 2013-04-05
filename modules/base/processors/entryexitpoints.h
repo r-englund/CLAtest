@@ -37,14 +37,11 @@ namespace inviwo {
         ImagePort exitPort_;
 
         CameraProperty camera_;
-        ButtonProperty keymapbutton_;
-        //KeyMapProperty keymap_;
 
         Shader* shader_;
 
         GLuint listID_;
 
-        void openKeyMapWindow();
         void renderBoundingBox(vec3 llf, vec3 urb);
     };
 

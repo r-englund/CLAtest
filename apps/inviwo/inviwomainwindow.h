@@ -9,6 +9,7 @@
 #include <QMenuBar>
 #include <QAction>
 
+#include <inviwo/qt/editor/mappingwidget.h>
 #include <inviwo/qt/editor/settingswidget.h>
 #include <inviwo/qt/editor/consolewidget.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
@@ -64,6 +65,8 @@ private:
     PropertyListWidget* propertyListWidget_;
     ConsoleWidget* consoleWidget_;
 
+    MappingWidget* mappingwidget_;
+
     //MainWindow Menus
     QMenuBar* basicMenuBar;
     QMenu* fileMenuItem_;
@@ -81,6 +84,8 @@ private:
     QAction* processorListWidgetViewAction_;
     QAction* propertyListWidgetViewAction_;
     QAction* consoleWidgetViewAction_;
+
+    QAction* mappingwidgetviewAction_;
 
     //Paths
     QString rootDir_;

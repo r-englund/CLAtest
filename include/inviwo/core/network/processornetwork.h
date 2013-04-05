@@ -6,13 +6,14 @@
 #include <inviwo/core/network/portconnection.h>
 #include <inviwo/core/network/processorlink.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/util/observer.h>
 
 #include <string>
 using namespace std;
 
 namespace inviwo {
 
-class IVW_CORE_API ProcessorNetwork : public IvwSerializable {
+class IVW_CORE_API ProcessorNetwork : public IvwSerializable, public VoidObservable {
 
 public:
 
@@ -29,7 +30,7 @@ public:
     void addProcessor(Processor* processor);
     void removeProcessor(Processor* processor);
 
-    inline void modified() { isModified_ = true; }
+    inline void modified() { isModified_ = true; notifyObservers(); }
     void setModified(bool isModified) { isModified_ = isModified; }
     bool isModified() { return isModified_; }
 
