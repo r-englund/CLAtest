@@ -37,8 +37,8 @@ namespace inviwo {
 
     private :
         static const std::string logSource_;
-        vector<TransferEditorGraphicsItem*> points;
-        vector<TransferEditorLineItem*> lines;
+        std::vector<TransferEditorGraphicsItem*> points;
+        std::vector<TransferEditorLineItem*> lines;
         float* transferValues;
         PropertyWidgetQt *parent;
     };

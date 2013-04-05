@@ -7,11 +7,15 @@
 #include <modules/base/processors/imagegrayscale.h>
 #include <modules/base/processors/imagemixer.h>
 #include <modules/base/processors/imagesource.h>
+#include <modules/base/processors/minmaxprocessor.h>
 #include <modules/base/processors/redgreenprocessor.h>
 #include <modules/base/processors/simpleraycaster.h>
 #include <modules/base/processors/testprocessor.h>
 #include <modules/base/processors/transferfunction.h>
-#include <modules/base/processors/minmaxprocessor.h>
+#include <modules/base/processors/volumesplit.h>
+#include <modules/base/processors/volumesplitcompositor.h>
+#include <modules/base/processors/volumesplitimagecompositor.h>
+
 namespace inviwo {
 
 BaseModule::BaseModule() : InviwoModule() {
@@ -30,6 +34,9 @@ BaseModule::BaseModule() : InviwoModule() {
     addProcessor(new SimpleRaycaster());
     addProcessor(new TestProcessor());
     addProcessor(new TransferFunction());
+    addProcessor(new VolumeSplit());
+    addProcessor(new VolumeSplitCompositor());
+    addProcessor(new VolumeSplitImageCompositor());
 }
 
 } // namespace

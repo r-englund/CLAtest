@@ -3,6 +3,8 @@
 
 #pragma warning(disable: 4290)
 
+#define NOMINMAX
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -12,17 +14,9 @@
 #include <stdio.h>
 
 #include <inviwo/core/inviwocommondefines.h>
-#include <inviwo/core/util/formats.h>
-
-// error handling
-#include <inviwo/core/util/assertion.h>
-#include <inviwo/core/util/exception.h>
-#include <inviwo/core/util/logdistributor.h>
-#define IVW_UNUSED_PARAM(param) (void)param
-
-#include <inviwo/core/io/serialization/ivwserialization.h>
 
 // include glm
+#define GLM_SWIZZLE
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -52,6 +46,16 @@ typedef glm::mat2 mat2;
 typedef glm::mat3 mat3;
 typedef glm::mat4 mat4;
 typedef glm::quat quat;
+
+#include <inviwo/core/util/formats.h>
+
+// error handling
+#include <inviwo/core/util/assertion.h>
+#include <inviwo/core/util/exception.h>
+#include <inviwo/core/util/logdistributor.h>
+#define IVW_UNUSED_PARAM(param) (void)param
+
+#include <inviwo/core/io/serialization/ivwserialization.h>
 
 //using namespace voreen;
 

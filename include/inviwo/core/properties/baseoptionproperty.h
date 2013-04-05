@@ -34,6 +34,7 @@ public:
 
     std::vector< std::string > getOptionKeys();
     int getSelectedOption();
+    T getSelectedValue();
     void setSelectedOption( std::string );
     virtual void updateValue( std::string);
 
@@ -77,10 +78,17 @@ int TemplatedOptionProperty<T>::getSelectedOption() {
     }
     return 0;
 }
+
+template<typename T>
+T TemplatedOptionProperty<T>::getSelectedValue() {
+    return optionVector_[getSelectedOption()].second;
+}
+
 template<typename T>
 void TemplatedOptionProperty<T>::setSelectedOption(std::string tmpStr) {
     set(tmpStr);
 }
+
 template<typename T>
 void TemplatedOptionProperty<T>::updateValue(std::string tmpStr) {
     set(tmpStr);

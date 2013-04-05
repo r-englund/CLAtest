@@ -3,6 +3,7 @@
 
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/datastructures/data.h>
+#include <inviwo/core/datastructures/volumerepresentation.h>
 
 namespace inviwo {
 
@@ -10,12 +11,13 @@ namespace inviwo {
 
     public:
         Volume();
+        Volume(VolumeRepresentation*);
+        Volume(VolumeRepresentation*, Volume*);
         virtual ~Volume();
-        Data* clone()=0;        
-        //void setDimension(ivec3 dim);
-        void setFormat(std::string format); 
-        //ivec3 getDimension();
-        std::string getFormat();
+        Data* clone();        
+        void setOffset(ivec3); 
+        ivec3 getOffset();
+        DataFormatBase getDataFormat();
     };
 
 } // namespace

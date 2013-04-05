@@ -7,6 +7,19 @@ namespace inviwo {
         metaData_.removeAll();
     }
 
+    Volume::Volume(VolumeRepresentation* in) : Data3D() {
+        representations_.clear();
+        representations_.push_back(in);
+        metaData_.removeAll();
+    }
+
+    Volume::Volume(VolumeRepresentation* in, Volume* src) : Data3D() {
+        representations_.clear();
+        representations_.push_back(in);
+        metaData_.removeAll();
+        src->copyMetaData(this);
+    }
+
     Volume::~Volume() {}
 
     Data* Volume::clone() {
@@ -16,12 +29,22 @@ namespace inviwo {
         return 0;
     }
 
-    void Volume::setFormat(std::string format) {
-        setMetaData<StringMetaData>("format", format);
+    void Volume::setOffset(ivec3 offset) {
+        setMetaData<IVec3MetaData>("offset", offset);
     }
     
-    std::string Volume::getFormat() {
-        return getMetaData<StringMetaData>("format", std::string(""));
+    ivec3 Volume::getOffset() {
+        return getMetaData<IVec3MetaData>("offset", ivec3(0,0,0));
+    }
+
+    DataFormatBase Volume::getDataFormat(){
+        DataFormatBase format = DataUINT8();
+        if(representations_[0]){
+            VolumeRepresentation* volRep = dynamic_cast<VolumeRepresentation*>(representations_[0]);
+            if(volRep)
+                format = volRep->getDataFormat();
+        }
+        return format;
     }
 
 

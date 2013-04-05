@@ -9,7 +9,6 @@
 #include <inviwo/core/util/observer.h>
 
 #include <string>
-using namespace std;
 
 namespace inviwo {
 

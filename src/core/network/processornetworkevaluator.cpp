@@ -209,7 +209,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                 }
             }
             
-            std::vector<string> portGroups = directPredecessors[i]->getPortGroupNames();
+            std::vector<std::string> portGroups = directPredecessors[i]->getPortGroupNames();
             std::vector<Port*> ports;
             for (size_t j=0; j<portGroups.size(); j++) {
                 ports.clear();

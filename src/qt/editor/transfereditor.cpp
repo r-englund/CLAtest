@@ -31,7 +31,7 @@ namespace inviwo {
         parent = parent_;
         setSceneRect(0.0, 0.0, 0.0, 0.0);
         transferValues = new float[256];
-        fill(transferValues, transferValues + 256, 0.0f);
+        std::fill(transferValues, transferValues + 256, 0.0f);
 
         points.push_back(new TransferEditorGraphicsItem(0, 0));
         points.push_back(new TransferEditorGraphicsItem(255 , 0));

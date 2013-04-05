@@ -28,9 +28,15 @@ namespace inviwo {
         bool clampBorderOutsideVolume_;
     };
 
+    template<typename T>
+    class VolumeRAMPrecision;
+
+    template<typename T, size_t B>
+    class VolumeRAMCustomPrecision;
+
     template<typename T, size_t B>
     void VolumeRAMSubSet::evaluate(){
-        /*const VolumeRAMPrecision<T>* volume = dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
+        const VolumeRAMPrecision<T>* volume = dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
         if(!volume){
             setOutputVolume(NULL);
             return;
@@ -43,25 +49,25 @@ namespace inviwo {
         }
 
         // determine parameters
-        uvec3 copyDataDims = static_cast<uvec3>(glm::max(static_cast<glm::ivec3>(newDim_) - glm::max(static_cast<glm::ivec3>(newOffset_+newDim_)-static_cast<glm::ivec3>(dataDims), glm::ivec3(0,0,0)), glm::ivec3(0,0,0)));
-        glm::ivec3 newOffset_Dims = static_cast<glm::ivec3>(glm::min(newOffset_, dataDims)-newBorder_.llf);
+        uvec3 copyDataDims = static_cast<uvec3>(glm::max(static_cast<ivec3>(newDim_) - glm::max(static_cast<ivec3>(newOffset_+newDim_)-static_cast<ivec3>(dataDims), ivec3(0,0,0)), ivec3(0,0,0)));
+        ivec3 newOffset_Dims = static_cast<ivec3>(glm::min(newOffset_, dataDims)-newBorder_.llf);
         VolumeRepresentation::VolumeBorders trueBorder = VolumeRepresentation::VolumeBorders();
         VolumeRepresentation::VolumeBorders correctBorder = newBorder_;
 
         if(clampBorderOutsideVolume_){
-            correctBorder.llf += static_cast<uvec3>(-glm::min(newOffset_Dims, glm::ivec3(0,0,0)));
-            correctBorder.urb += static_cast<uvec3>(-glm::min(static_cast<glm::ivec3>(dataDims)-static_cast<glm::ivec3>(newOffset_+copyDataDims+correctBorder.urb), glm::ivec3(0,0,0)));
-            newOffset_Dims = static_cast<glm::ivec3>(newOffset_-correctBorder.llf);
+            correctBorder.llf += static_cast<uvec3>(-glm::min(newOffset_Dims, ivec3(0,0,0)));
+            correctBorder.urb += static_cast<uvec3>(-glm::min(static_cast<ivec3>(dataDims)-static_cast<ivec3>(newOffset_+copyDataDims+correctBorder.urb), ivec3(0,0,0)));
+            newOffset_Dims = static_cast<ivec3>(newOffset_-correctBorder.llf);
         }
         else{
-            trueBorder.llf = static_cast<uvec3>(-glm::min(newOffset_Dims, glm::ivec3(0,0,0)));
-            trueBorder.urb = static_cast<uvec3>(glm::max(static_cast<glm::ivec3>(newOffset_+copyDataDims+correctBorder.urb)-static_cast<glm::ivec3>(dataDims),glm::ivec3(0,0,0)));
+            trueBorder.llf = static_cast<uvec3>(-glm::min(newOffset_Dims, ivec3(0,0,0)));
+            trueBorder.urb = static_cast<uvec3>(glm::max(static_cast<ivec3>(newOffset_+copyDataDims+correctBorder.urb)-static_cast<ivec3>(dataDims),ivec3(0,0,0)));
         }
 
-        uvec3 newOffset_DimsU = static_cast<uvec3>(glm::max(newOffset_Dims, glm::ivec3(0,0,0)));
+        uvec3 newOffset_DimsU = static_cast<uvec3>(glm::max(newOffset_Dims, ivec3(0,0,0)));
         size_t initialStartPos = (newOffset_DimsU.z * (dataDims.x*dataDims.y))+(newOffset_DimsU.y * dataDims.x) + newOffset_DimsU.x;
         uvec3 dimsWithBorder = newDim_+correctBorder.llf+correctBorder.urb;
-        uvec3 copyDimsWithoutBorder = static_cast<uvec3>(glm::max(static_cast<glm::ivec3>(copyDataDims+correctBorder.llf+correctBorder.urb)-static_cast<glm::ivec3>(trueBorder.llf)-static_cast<glm::ivec3>(trueBorder.urb), glm::ivec3(1,1,1)));
+        uvec3 copyDimsWithoutBorder = static_cast<uvec3>(glm::max(static_cast<ivec3>(copyDataDims+correctBorder.llf+correctBorder.urb)-static_cast<ivec3>(trueBorder.llf)-static_cast<ivec3>(trueBorder.urb), ivec3(1,1,1)));
 
         // per row
         size_t dataSize = copyDimsWithoutBorder.x*static_cast<size_t>(volume->getDataFormat().getBytesAllocated());
@@ -88,7 +94,7 @@ namespace inviwo {
             }
         }
 
-        setOutputVolume(newVolume);*/
+        setOutputVolume(newVolume);
     }
 
 } // namespace

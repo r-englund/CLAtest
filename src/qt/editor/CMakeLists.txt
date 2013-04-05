@@ -71,7 +71,7 @@ add_definitions(-DQT_CORE_LIB
 
 #--------------------------------------------------------------------
 # Create library
-add_library(inviwo-qteditor ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES})
+add_library(inviwo-qteditor ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
 # Add core dependencies to this list
 ivw_add_dependencies(

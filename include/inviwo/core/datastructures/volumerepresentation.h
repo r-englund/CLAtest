@@ -39,7 +39,6 @@ namespace inviwo {
         virtual bool hasBorder() const {return borders_.hasBorder;}
     protected:
         uvec3 dimensions_;
-        uvec3 originalDimensions_;
         DataFormatBase dataFormatBase_;
         VolumeBorders borders_;
     };
