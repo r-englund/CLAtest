@@ -6,7 +6,6 @@
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/properties/keymapproperty.h>
 #include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
