@@ -6,12 +6,14 @@
 #include <QGraphicsView>
 #include <QPointF>
 
+#include<vector>
+
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/ports/port.h>
 
 #include <inviwo/core/ports/imageport.h>
-#include <inviwo/qt/editor/transfereditorgraphicsitem.h>
+#include <inviwo/qt/editor/transfereditorcontrolpoint.h>
 #include <inviwo/qt/editor/transfereditorlineitem.h>
 
 namespace inviwo {
@@ -19,9 +21,9 @@ namespace inviwo {
 
     public :
         TransferEditor();
-        TransferEditor(PropertyWidgetQt *parent_);
+        TransferEditor(PropertyWidgetQt *parent_, ImageRAMfloat16* transferImage_);
         ~TransferEditor();
-        float* getTransferValues();
+        //float* getTransferValues();
         void sortPoints();
         void sortLines();
 
@@ -33,13 +35,12 @@ namespace inviwo {
         void addPoint(QGraphicsSceneMouseEvent *e);
         void removePoint(QGraphicsSceneMouseEvent *e);
         void calcTransferValues();
-        float linearInterpolation(QPointF, QPointF, int);
 
     private :
         static const std::string logSource_;
-        std::vector<TransferEditorGraphicsItem*> points;
+        std::vector<TransferEditorControlPoint*> points;
         std::vector<TransferEditorLineItem*> lines;
-        float* transferValues;
+        ImageRAMfloat16* transferImage;
         PropertyWidgetQt *parent;
     };
 

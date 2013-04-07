@@ -11,7 +11,7 @@
 #include <inviwo/core/properties/snapshotproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/texteditorproperty.h>
-#include <inviwo/core/properties/transferproperty.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
 
 #include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
@@ -35,7 +35,7 @@
 #include <inviwo/qt/widgets/properties/snapshotpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
-#include <inviwo/qt/widgets/properties/transferpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 
 
 namespace inviwo {
@@ -104,8 +104,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new SnapshotPropertyWidgetQt(static_cast<SnapshotProperty*>(property));
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
-    if (dynamic_cast<TransferProperty*>(property))
-        return new TransferPropertyWidgetQt(static_cast<TransferProperty*>(property));
+    if (dynamic_cast<TransferFunctionProperty*>(property))
+        return new TransferFunctionPropertyWidgetQt(static_cast<TransferFunctionProperty*>(property));
 
 
     LogWarn("No widget for property " + property->getIdentifier() + " found.")

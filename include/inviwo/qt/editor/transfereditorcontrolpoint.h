@@ -1,5 +1,5 @@
-#ifndef IVW_TRANSFEREDITORLINEITEM_H
-#define IVW_TRANSFEREDITORLINEITEM_H
+#ifndef IVW_TRANSFEREDITORCONTROLPOINT_H
+#define IVW_TRANSFEREDITORCONTROLPOINT_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsLineItem>
@@ -8,20 +8,16 @@
 
 #include <inviwo/core/ports/port.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
-#include <inviwo/qt/editor/transfereditorcontrolpoint.h>
 
 namespace inviwo {
 
-    class IVW_QTEDITOR_API TransferEditorLineItem : public QGraphicsItem {
+    class IVW_QTEDITOR_API TransferEditorControlPoint : public QGraphicsItem {
 
     public:
-        TransferEditorLineItem(TransferEditorControlPoint*, TransferEditorControlPoint*);
-        TransferEditorLineItem();
-		~TransferEditorLineItem();
-		void setStart(TransferEditorControlPoint* start_);
-		void setFinish(TransferEditorControlPoint* finish_);
-
-        //virtual QPainterPath shape() const;
+        TransferEditorControlPoint(QPointF startPoint);
+        TransferEditorControlPoint(float x, float y);
+        TransferEditorControlPoint();
+        ~TransferEditorControlPoint();
 
         //override for qgraphicsitem_cast (refer qt documentation)
         enum { Type = UserType + ConnectionGraphicsType };
@@ -35,22 +31,19 @@ namespace inviwo {
 
         int getId();
         void setId(int id);
-        QPointF getStart();
-        QPointF getFinish();
-        QPointF startPos;
+        QPointF position();
+
 
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
         void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
-
     private:
         static const std::string logSource_;
-        TransferEditorControlPoint* start;
-        TransferEditorControlPoint* finish;
-        
+        int id;
+        int size;
     };
 
 }// namespace
-#endif // IVW_TRANSFEREDITORLINEITEM_H
+#endif // IVW_TRANSFEREDITORCONTROLPOINT_H

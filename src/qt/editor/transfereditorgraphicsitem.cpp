@@ -1,13 +1,13 @@
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
-#include <inviwo/qt/editor/transfereditorgraphicsitem.h>
+#include <inviwo/qt/editor/transfereditorcontrolpoint.h>
 
 namespace inviwo {
 
-    const std::string TransferEditorGraphicsItem::logSource_ = "TransferEditorGraphicsItem";
+    const std::string TransferEditorControlPoint::logSource_ = "TransferEditorControlPoint";
 
-    TransferEditorGraphicsItem::TransferEditorGraphicsItem(QPointF position){
+    TransferEditorControlPoint::TransferEditorControlPoint(QPointF position){
         setFlag(QGraphicsItem::ItemIsMovable, true);
         setFlag(QGraphicsItem::ItemIsSelectable);
         setFlag(QGraphicsItem::ItemIsMovable);
@@ -16,7 +16,7 @@ namespace inviwo {
         this->setPos(position/2);
     }
 
-    TransferEditorGraphicsItem::TransferEditorGraphicsItem(float x, float y){
+    TransferEditorControlPoint::TransferEditorControlPoint(float x, float y){
         setFlag(QGraphicsItem::ItemIsMovable, true);
         setFlag(QGraphicsItem::ItemIsSelectable);
         setFlag(QGraphicsItem::ItemIsMovable);
@@ -26,17 +26,17 @@ namespace inviwo {
     }
 
 
-    void TransferEditorGraphicsItem::setId(int id_){id = id_;}
+    void TransferEditorControlPoint::setId(int id_){id = id_;}
 
-    int TransferEditorGraphicsItem::getId(){return id;}
+    int TransferEditorControlPoint::getId(){return id;}
 
-    TransferEditorGraphicsItem::TransferEditorGraphicsItem(){};
-
-
-    TransferEditorGraphicsItem::~TransferEditorGraphicsItem() {}
+    TransferEditorControlPoint::TransferEditorControlPoint(){};
 
 
-    void TransferEditorGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
+    TransferEditorControlPoint::~TransferEditorControlPoint() {}
+
+
+    void TransferEditorControlPoint::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
         IVW_UNUSED_PARAM(options);
         IVW_UNUSED_PARAM(widget);
 
@@ -58,15 +58,15 @@ namespace inviwo {
     }
 
 
-    QRectF TransferEditorGraphicsItem::boundingRect() const {
+    QRectF TransferEditorControlPoint::boundingRect() const {
         return QRectF(this->pos().x() - 8, this->pos().y() - 8, 16, 16);
     }
 
-    void TransferEditorGraphicsItem::mousePressEvent ( QGraphicsSceneMouseEvent *e ){}
+    void TransferEditorControlPoint::mousePressEvent ( QGraphicsSceneMouseEvent *e ){}
 
-    void TransferEditorGraphicsItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
+    void TransferEditorControlPoint::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
 
-    void TransferEditorGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
+    void TransferEditorControlPoint::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
     {
         QPointF position = e->scenePos();
 
@@ -91,7 +91,7 @@ namespace inviwo {
         setPos(position/2);
     }
 
-    QPointF TransferEditorGraphicsItem::position(){
+    QPointF TransferEditorControlPoint::position(){
         return this->pos() * 2;
     }
 } // namespace

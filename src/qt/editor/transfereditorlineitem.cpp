@@ -7,7 +7,7 @@ namespace inviwo {
 
     const std::string TransferEditorLineItem::logSource_ = "TransferEditorLineItem";
 
-    TransferEditorLineItem::TransferEditorLineItem(TransferEditorGraphicsItem* start_, TransferEditorGraphicsItem* finish_)
+    TransferEditorLineItem::TransferEditorLineItem(TransferEditorControlPoint* start_, TransferEditorControlPoint* finish_)
     {
         start = start_;
         finish = finish_;
@@ -54,11 +54,11 @@ namespace inviwo {
 
     QPointF TransferEditorLineItem::getFinish(){return this->finish->position();}
 
-    void TransferEditorLineItem::setStart(TransferEditorGraphicsItem* start_){
+    void TransferEditorLineItem::setStart(TransferEditorControlPoint* start_){
         start = start_;
         startPos = start->position();
     }
-    void TransferEditorLineItem::setFinish(TransferEditorGraphicsItem* finish_){
+    void TransferEditorLineItem::setFinish(TransferEditorControlPoint* finish_){
         finish = finish_;
     }
 } // namespace

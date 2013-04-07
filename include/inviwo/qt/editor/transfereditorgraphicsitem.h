@@ -11,13 +11,13 @@
 
 namespace inviwo {
 
-    class IVW_QTEDITOR_API TransferEditorGraphicsItem : public QGraphicsItem {
+    class IVW_QTEDITOR_API TransferEditorControlPoint : public QGraphicsItem {
 
     public:
-        TransferEditorGraphicsItem(QPointF startPoint);
-        TransferEditorGraphicsItem(float x, float y);
-        TransferEditorGraphicsItem();
-        ~TransferEditorGraphicsItem();
+        TransferEditorControlPoint(QPointF startPoint);
+        TransferEditorControlPoint(float x, float y);
+        TransferEditorControlPoint();
+        ~TransferEditorControlPoint();
 
         //override for qgraphicsitem_cast (refer qt documentation)
         enum { Type = UserType + ConnectionGraphicsType };

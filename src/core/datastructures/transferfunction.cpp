@@ -1,11 +1,11 @@
 #include <inviwo/core/datastructures/transferfunction.h>
-#include <stdlib.h>
+
 namespace inviwo {
 
     TransferFunction::TransferFunction() : Data() {
-        alphaValues = new float[256];
-        std::fill(alphaValues, alphaValues + 256, 0.5f);
+        alphaImage = new ImageRAMfloat16(uvec2(1,256));
     }
+
     TransferFunction::~TransferFunction() {
     }
 
@@ -15,12 +15,11 @@ namespace inviwo {
         return newImage;
     }
 
-    void TransferFunction::setAlpha(float* alphaValues_){
-        alphaValues = alphaValues_;
+    void TransferFunction::setAlpha(ImageRAMfloat16* alphaImage_){
+        alphaImage = alphaImage_;
     }
     
-    float* TransferFunction::getAlpha(){
-        return alphaValues;
+    ImageRAMfloat16* TransferFunction::getAlpha(){
+        return alphaImage;
     }
-
 }

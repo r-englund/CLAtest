@@ -6,11 +6,11 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API TransferFunc : public Data {
+    class IVW_CORE_API TransferFunction : public Data {
 
     public:
-        TransferFunc();
-        virtual ~TransferFunc();
+        TransferFunction();
+        virtual ~TransferFunction();
         virtual Data* clone();
         void setAlpha(float*);
         float* getAlpha();

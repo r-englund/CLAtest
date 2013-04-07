@@ -11,7 +11,7 @@
 #include <modules/base/processors/redgreenprocessor.h>
 #include <modules/base/processors/simpleraycaster.h>
 #include <modules/base/processors/testprocessor.h>
-#include <modules/base/processors/transferfunction.h>
+#include <modules/base/processors/transferfunctiontestprocessor.h>
 #include <modules/base/processors/volumesplit.h>
 #include <modules/base/processors/volumesplitcompositor.h>
 #include <modules/base/processors/volumesplitimagecompositor.h>
@@ -33,7 +33,7 @@ BaseModule::BaseModule() : InviwoModule() {
     addProcessor(new RedGreenProcessor());
     addProcessor(new SimpleRaycaster());
     addProcessor(new TestProcessor());
-    addProcessor(new TransferFunction());
+    addProcessor(new TransferFunctiontionTestProcessor());
     addProcessor(new VolumeSplit());
     addProcessor(new VolumeSplitCompositor());
     addProcessor(new VolumeSplitImageCompositor());

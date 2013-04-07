@@ -10,7 +10,7 @@
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/qt/editor/transfereditor.h>
 
-#include <inviwo/qt/widgets/properties/transferpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 
 #include <QApplication>
 #include <QBrush>
@@ -27,14 +27,13 @@ namespace inviwo {
 
     const std::string TransferEditor::logSource_ = "TransferEditor";
 
-    TransferEditor::TransferEditor(PropertyWidgetQt *parent_){
-        parent = parent_;
+    TransferEditor::TransferEditor(PropertyWidgetQt *parent_, ImageRAMfloat16* transferImage_)
+        :transferImage(transferImage_),
+        parent(parent_){
         setSceneRect(0.0, 0.0, 0.0, 0.0);
-        transferValues = new float[256];
-        std::fill(transferValues, transferValues + 256, 0.0f);
 
-        points.push_back(new TransferEditorGraphicsItem(0, 0));
-        points.push_back(new TransferEditorGraphicsItem(255 , 0));
+        points.push_back(new TransferEditorControlPoint(0, 0));
+        points.push_back(new TransferEditorControlPoint(255 , 0));
         calcTransferValues();
         points[0]->setId(0);
         points[1]->setId(1);
@@ -55,7 +54,7 @@ namespace inviwo {
 
     void TransferEditor::mousePressEvent(QGraphicsSceneMouseEvent *e)
     {
-        update();
+        //update();
         std::stringstream ss;
 
         if (e->button() == Qt::LeftButton){
@@ -68,7 +67,7 @@ namespace inviwo {
         }
         if(e->button() == Qt::RightButton){
             if (itemAt(e->scenePos()) == NULL){}
-            else if(itemAt(e->scenePos())->type() == TransferEditorGraphicsItem::Type) {
+            else if(itemAt(e->scenePos())->type() == TransferEditorControlPoint::Type) {
                 removePoint(e);
             }
         }
@@ -81,12 +80,12 @@ namespace inviwo {
 
     void TransferEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
         if (points[0]->pos().x() != 0)
-        {
             points[0]->setPos(QPoint(0, points[0]->pos().y()));
-        }
-        update();
+        
+        //update();
         sortLines();
         sortPoints();
+        
         for (int i = 0; i < (int)points.size() - 1; i++){
             lines[i]->setStart(points[i]);
             lines[i]->setFinish(points[i + 1]);
@@ -96,27 +95,26 @@ namespace inviwo {
         parent->updateFromProperty();
     }
 
-    bool myPointCompare (const TransferEditorGraphicsItem * a, const TransferEditorGraphicsItem* b){
-        return a->pos().x() < b->pos().x();
-    }
-
-    bool myLineCompare (const TransferEditorLineItem * a, const TransferEditorLineItem * b){
-        return a->startPos.x() < b->startPos.x();
-    }
-
     void TransferEditor::calcTransferValues(){
+        float* data = static_cast<float*>(transferImage->getData());
+        glm::quat startQuat;
+        glm::quat stopQuat;
+        float factor;
         for (int i = 0; i < (int)points.size() - 1; i++){
-            QPointF start   = points[i]     ->position();
-            QPointF stop    = points[i + 1] ->position();
+            QPointF start   = points[i]->position();
+            QPointF stop    = points[i + 1]->position();
 
             for (int j = start.x(); j <=  stop.x(); j++){
-                transferValues[j] = linearInterpolation(start, stop, j) / 100.0f;
+                startQuat.x = start.y();
+                stopQuat.x = stop.y();
+                factor = (j - start.x())/(stop.x() - start.x());
+                data[j] = glm::lerp(startQuat, stopQuat, factor).x/100.0f;
             }
         }
     }
 
     void TransferEditor::addPoint(QGraphicsSceneMouseEvent *e){
-        points.push_back(new TransferEditorGraphicsItem(e->scenePos()));
+        points.push_back(new TransferEditorControlPoint(e->scenePos()));
         lines.push_back(new TransferEditorLineItem());
         points[points.size() - 1]->setZValue(1);
         addItem(lines[lines.size() - 1]);
@@ -144,6 +142,7 @@ namespace inviwo {
                     lines[i]->setVisible(false);
 
                     removeItem(points[i]);
+
                     lines.erase(lines.begin() + i);
                     points.erase(points.begin() + i);
                     for (int j = 0; j < (int)points.size() - 1; j++){
@@ -156,21 +155,24 @@ namespace inviwo {
         }
     }
 
-    float TransferEditor::linearInterpolation(QPointF p0, QPointF p1, int posx){
-        float factor = (posx - p0.x())/(p1.x() - p0.x());
-        return (1 - factor) * p0.y() + factor * p1.y();
+    //float* TransferEditor::getTransferValues(){
+    //    calcTransferValues();
+    //    return 0;
+    //}
+
+    bool myPointCompare (const TransferEditorControlPoint * a, const TransferEditorControlPoint* b){
+        return a->pos().x() < b->pos().x();
     }
 
-    float* TransferEditor::getTransferValues(){
-        calcTransferValues();
-        return transferValues;
+    bool myLineCompare (const TransferEditorLineItem * a, const TransferEditorLineItem * b){
+        return a->startPos.x() < b->startPos.x();
     }
-
     void TransferEditor::sortPoints(){
         std::sort(points.begin(), points.end(), myPointCompare);
     }
     void TransferEditor::sortLines(){
         std::sort(lines.begin(), lines.end(), myLineCompare);
     }
+
 
 };

@@ -21,7 +21,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imagerepresentation.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunc.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeoperation.h
@@ -86,7 +86,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/scalarproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/snapshotproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferfunctionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
@@ -142,7 +142,7 @@ set(SOURCE_FILES
     datastructures/imagerepresentation.cpp
     datastructures/representationconverter.cpp
     datastructures/representationconverterfactory.cpp
-    datastructures/transferfunc.cpp
+    datastructures/transferfunction.cpp
     datastructures/volume.cpp
     datastructures/volumedisk.cpp
     datastructures/volumeram.cpp
@@ -199,7 +199,7 @@ set(SOURCE_FILES
     properties/snapshotproperty.cpp
     properties/stringproperty.cpp
     properties/texteditorproperty.cpp
-    properties/transferproperty.cpp
+    properties/transferfunctionproperty.cpp
     properties/vectorproperties.cpp
     properties/linkevaluator.cpp	
     io/datareader.cpp
