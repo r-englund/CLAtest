@@ -27,8 +27,8 @@ namespace inviwo {
 
     const std::string TransferEditor::logSource_ = "TransferEditor";
 
-    TransferEditor::TransferEditor(PropertyWidgetQt *parent_, ImageRAMfloat16* transferImage_)
-        :transferImage(transferImage_),
+    TransferEditor::TransferEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunc_)
+        :transferFunc(transferFunc_),
         parent(parent_){
         setSceneRect(0.0, 0.0, 0.0, 0.0);
 
@@ -82,7 +82,6 @@ namespace inviwo {
         if (points[0]->pos().x() != 0)
             points[0]->setPos(QPoint(0, points[0]->pos().y()));
         
-        //update();
         sortLines();
         sortPoints();
         
@@ -96,7 +95,7 @@ namespace inviwo {
     }
 
     void TransferEditor::calcTransferValues(){
-        float* data = static_cast<float*>(transferImage->getData());
+        float* data = static_cast<float*>(transferFunc->getAlpha()->getData());
         glm::quat startQuat;
         glm::quat stopQuat;
         float factor;

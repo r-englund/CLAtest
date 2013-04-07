@@ -33,7 +33,7 @@ private:
     QGraphicsView* paintview;
     QGraphicsScene* paintscene;
     ImageRAMfloat16* transferImage;
-    //TransferFunction* func;
+    TransferFunction* transferFunc;
 
 public slots:
     void setPropertyValue();
