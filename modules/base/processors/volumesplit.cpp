@@ -1,5 +1,5 @@
 #include "volumesplit.h"
-#include <inviwo/core/datastructures/volumeramsubset.h>
+//#include <inviwo/core/datastructures/volumeramsubset.h>
 #include <inviwo/core/inviwocore.h>
 #include <inviwo/core/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
@@ -113,7 +113,7 @@ Volume* VolumeSplit::createNewVolume(VolumeSplit::Brick brick){
     Volume* volume;
     if (inport_.getData()->hasRepresentation<VolumeRepresentation>()){
         VolumeRepresentation* vol = inport_.getData()->getRepresentation<VolumeRepresentation>();
-        volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)), inport_.getData());
+        //volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)), inport_.getData());
     }
 
     vec3 offsetTexCoords = (static_cast<vec3>(brick.offset)/static_cast<vec3>(inport_.getData()->getDimension()));//*inport_.getData()->getCubeSize();
