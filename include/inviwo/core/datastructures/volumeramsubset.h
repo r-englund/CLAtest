@@ -5,7 +5,7 @@
 #include <inviwo/core/datastructures/volumeramoperation.h>
 
 namespace inviwo {
-    
+   
     class IVW_CORE_API VolumeRAMSubSet : public VolumeRAMOperation {
     public:
         VolumeRAMSubSet(VolumeRepresentation* in, uvec3 dim, uvec3 offset, VolumeRepresentation::VolumeBorders border, bool clampBorderOutsideVolume) 
@@ -36,7 +36,7 @@ namespace inviwo {
 
     template<typename T, size_t B>
     void VolumeRAMSubSet::evaluate(){
-        /*const VolumeRAMPrecision<T>* volume = dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
+        const VolumeRAMPrecision<T>* volume = dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
         if(!volume){
             setOutputVolume(NULL);
             return;
@@ -74,7 +74,7 @@ namespace inviwo {
 
         //allocate space
         VolumeRAMPrecision<T>* newVolume;
-        if(volume->getDataFormat().getBitsAllocated() != B)
+        /*if(volume->getDataFormat().getBitsAllocated() != B)
             newVolume = new VolumeRAMCustomPrecision<T, B>(newDim_, correctBorder);
         else
             newVolume = new VolumeRAMPrecision<T>(newDim_, correctBorder);
@@ -92,9 +92,9 @@ namespace inviwo {
                 subVolumePos = ((j+trueBorder.llf.y)*dimsWithBorder.x) + ((i+trueBorder.llf.z)*dimsWithBorder.x*dimsWithBorder.y) + trueBorder.llf.x;
                 memcpy(dst + subVolumePos, (src + volumePos + initialStartPos), dataSize);
             }
-        }
+        }*/
 
-        setOutputVolume(newVolume);*/
+        setOutputVolume(newVolume);
     }
 
 } // namespace

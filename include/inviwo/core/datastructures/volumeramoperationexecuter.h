@@ -5,7 +5,7 @@
 
 namespace inviwo {
 
-    //class VolumeRAMSubSet;
+    class VolumeRAMSubSet;
 
     template<typename T, size_t B>
     static IVW_CORE_API inline void executeOperationOnVolumeRAMPrecision(DataOperation* dop){
