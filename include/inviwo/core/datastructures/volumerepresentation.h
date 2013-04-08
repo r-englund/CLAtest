@@ -25,7 +25,7 @@ namespace inviwo {
 
         VolumeRepresentation(uvec3 dimension);
         VolumeRepresentation(uvec3 dimension, DataFormatBase format);
-        VolumeRepresentation(uvec3 dimension, DataFormatBase format, VolumeBorders& border);
+        VolumeRepresentation(uvec3 dimension, DataFormatBase format, const VolumeBorders& border);
         virtual ~VolumeRepresentation();
         virtual void applyOperation(DataOperation*) {};
         virtual VolumeBorders getBorder() const {return borders_;}
