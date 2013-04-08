@@ -3,15 +3,7 @@
 
 namespace inviwo {
 
-   /* VolumeRAM::VolumeRAM(DataFormatBase format)
-        : VolumeRepresentation(uvec3(128,128,128), format), data_(0)
-    {}
-
-    VolumeRAM::VolumeRAM(uvec3 dimensions, DataFormatBase format)
-        : VolumeRepresentation(dimensions, format), data_(0)
-    {}*/
-
-    VolumeRAM::VolumeRAM(uvec3 dimensions, const VolumeBorders& border, DataFormatBase format)
+    VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeBorders border, DataFormatBase format)
         : VolumeRepresentation(dimensions, format, border), data_(0)
     {}
 
