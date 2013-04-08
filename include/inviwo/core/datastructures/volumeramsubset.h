@@ -74,7 +74,7 @@ namespace inviwo {
 
         //allocate space
         VolumeRAMPrecision<T>* newVolume;
-        /*if(volume->getDataFormat().getBitsAllocated() != B)
+        if(volume->getDataFormat().getBitsAllocated() != B)
             newVolume = new VolumeRAMCustomPrecision<T, B>(newDim_, correctBorder);
         else
             newVolume = new VolumeRAMPrecision<T>(newDim_, correctBorder);
@@ -92,7 +92,7 @@ namespace inviwo {
                 subVolumePos = ((j+trueBorder.llf.y)*dimsWithBorder.x) + ((i+trueBorder.llf.z)*dimsWithBorder.x*dimsWithBorder.y) + trueBorder.llf.x;
                 memcpy(dst + subVolumePos, (src + volumePos + initialStartPos), dataSize);
             }
-        }*/
+        }
 
         setOutputVolume(newVolume);
     }
