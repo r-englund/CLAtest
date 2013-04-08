@@ -32,8 +32,10 @@ private:
 
     QGraphicsView* paintview;
     QGraphicsScene* paintscene;
-    ImageRAMfloat16* transferImage;
+    //ImageRAMfloat16* transferImage;
     TransferFunction* transferFunc;
+    std::vector<TransferEditorControlPoint*> points;
+    void calcTransferValues();
 
 public slots:
     void setPropertyValue();

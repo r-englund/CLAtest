@@ -21,9 +21,8 @@ namespace inviwo {
 
     public :
         TransferEditor();
-        TransferEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunc_);
+        TransferEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunc_, std::vector<TransferEditorControlPoint*>* points_);
         ~TransferEditor();
-        //float* getTransferValues();
         void sortPoints();
         void sortLines();
 
@@ -38,9 +37,8 @@ namespace inviwo {
 
     private :
         static const std::string logSource_;
-        std::vector<TransferEditorControlPoint*> points;
+        std::vector<TransferEditorControlPoint*>* points;
         std::vector<TransferEditorLineItem*> lines;
-        ImageRAMfloat16* transferImage;
         TransferFunction* transferFunc;
         PropertyWidgetQt *parent;
     };
