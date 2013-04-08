@@ -1,5 +1,5 @@
 #include "volumesplit.h"
-//#include <inviwo/core/datastructures/volumeramsubset.h>
+#include <inviwo/core/datastructures/volumeramsubset.h>
 #include <inviwo/core/inviwocore.h>
 #include <inviwo/core/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
@@ -113,7 +113,7 @@ Volume* VolumeSplit::createNewVolume(VolumeSplit::Brick brick){
     Volume* volume;
     if (inport_.getData()->hasRepresentation<VolumeRepresentation>()){
         VolumeRepresentation* vol = inport_.getData()->getRepresentation<VolumeRepresentation>();
-        //volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)), inport_.getData());
+        volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)), inport_.getData());
     }
 
     vec3 offsetTexCoords = (static_cast<vec3>(brick.offset)/static_cast<vec3>(inport_.getData()->getDimension()));//*inport_.getData()->getCubeSize();
@@ -195,12 +195,12 @@ void VolumeSplit::performBricking() {
                     //calculate brick offset
                     ivec3 brickOffset = ivec3(static_cast<int>(brickX*brickDim.x), static_cast<int>(brickY*brickDim.y), static_cast<int>(brickZ*brickDim.z));
                     //calculate valid brick dimensions
-                    //uvec3 actualBrickDim = uvec3(brickDim - glm::max((brickOffset + brickDim) - originalVolDim, ivec3(0,0,0)));
+                    uvec3 actualBrickDim = uvec3(brickDim - glm::max((brickOffset + brickDim) - originalVolDim, ivec3(0,0,0)));
                     //define valid borders
-                    //uvec3 borderLLF = uvec3(brickOffset - ivec3(glm::max(ivec3(0), brickOffset - ivec3(borderWidth_.get()))));
-                    //uvec3 borderURB = uvec3(glm::min(originalVolDim - (brickOffset + ivec3(actualBrickDim)), ivec3(borderWidth_.get())));
+                    uvec3 borderLLF = uvec3(brickOffset - ivec3(glm::max(ivec3(0), brickOffset - ivec3(borderWidth_.get()))));
+                    uvec3 borderURB = uvec3(glm::min(originalVolDim - (brickOffset + ivec3(actualBrickDim)), ivec3(borderWidth_.get())));
                     // push brick into data structure
-                    //bricks_.push_back(VolumeSplit::Brick(actualBrickDim, uvec3(brickOffset), borderLLF, borderURB));
+                    bricks_.push_back(VolumeSplit::Brick(actualBrickDim, uvec3(brickOffset), borderLLF, borderURB));
                 }
             }
         }
