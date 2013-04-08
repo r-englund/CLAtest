@@ -56,7 +56,9 @@ namespace inviwo {
 
                 ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");
                 btnAllocTest->registerClassMemberFunction(this, &InviwoCore::allocationTest);
-                getSettings()->addProperty(btnAllocTest);             
+                getSettings()->addProperty(btnAllocTest);
+
+                getSettings()->addProperty(new BoolProperty("txtEditor","Use system text editor", true));
             }           
         }
     }

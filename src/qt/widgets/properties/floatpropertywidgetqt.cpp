@@ -18,11 +18,7 @@ void FloatPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(sliderWidget_);
     setLayout(hLayout);
     
-    sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(sliderWidget_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
-
-    settingsWidget_ = new PropertySettingsWidgetQt(property_);
-
+    generatesSettingsWidget();
 }
 
 void FloatPropertyWidgetQt::setPropertyValueFromSlider() {
@@ -46,26 +42,32 @@ void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
 
     QPoint globalPos = sliderWidget_->mapToGlobal(pos);
 
-    QMenu settingsMenu;
-
-    settingsMenu.addAction("Property settings");
-    settingsMenu.addAction("Set as Min");
-    settingsMenu.addAction("Set as Max");
-
-    QAction* selecteditem = settingsMenu.exec(globalPos);
-    if (selecteditem == settingsMenu.actions().at(0)) {
+    QAction* selecteditem = settingsMenu_->exec(globalPos);
+    if (selecteditem == settingsMenu_->actions().at(0)) {
+        settingsWidget_->reload();
         settingsWidget_->show();
     }
-    else if (selecteditem == settingsMenu.actions().at(1)) {
+    else if (selecteditem == settingsMenu_->actions().at(1)) {
         //Set current value of the slider to min value of the property
         property_->setMinValue(sliderWidget_->getValue());
         updateFromProperty();
     }
-    else if (selecteditem == settingsMenu.actions().at(2)){
+    else if (selecteditem == settingsMenu_->actions().at(2)){
     //Set current value of the slider to max value of the property
         property_->setMaxValue(sliderWidget_->getValue());
         updateFromProperty();
     }
+}
+
+void FloatPropertyWidgetQt::generatesSettingsWidget() {
+    settingsWidget_ = new PropertySettingsWidgetQt(property_);
+    
+    settingsMenu_ = new QMenu();
+    settingsMenu_->addAction("Property settings");
+    settingsMenu_->addAction("Set as Min");
+    settingsMenu_->addAction("Set as Max");
+    sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(sliderWidget_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
 }
 
 } // namespace

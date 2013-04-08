@@ -13,7 +13,7 @@ void inviwo::IntSliderWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     slider_ = new QSlider(Qt::Horizontal);
 
-    slider_->setMaximum(maxValue_);
+    //slider_->setMaximum((maxValue_-minValue_)/increment_);
     slider_->setRange(this->minValue_,this->maxValue_);
     spinBox_ = new QSpinBox();
     spinBox_->setRange(this->minValue_,this->maxValue_);
@@ -43,21 +43,16 @@ void inviwo::IntSliderWidgetQt::setValue( int tmpValue ) {
 void inviwo::IntSliderWidgetQt::setMaxValue( int max ) {
     maxValue_ = max;
     spinBox_->setMaximum(maxValue_);
-    slider_->setMaximum(maxValue_);
-
 }
 
 void inviwo::IntSliderWidgetQt::setMinValue( int min ) {
     minValue_ = min;
     spinBox_->setMinimum(minValue_);
-    slider_->setMinimum(minValue_);
-
 }
 
 void inviwo::IntSliderWidgetQt::setRange( int min,int max ) {
     setMinValue(min);
     setMaxValue(max);
-
 }
 
 QSpinBox* inviwo::IntSliderWidgetQt::getSpinBox() {
@@ -70,7 +65,7 @@ QSlider* inviwo::IntSliderWidgetQt::getSlider() {
 
 }
 
-void inviwo::IntSliderWidgetQt::updateValueSpinbox() {
+void inviwo::IntSliderWidgetQt::updateValueSpinBox() {
     if (spinBox_->value()!=slider_->value()) {
         spinBox_->setValue(slider_->value());
     }
@@ -84,6 +79,11 @@ void inviwo::IntSliderWidgetQt::updateValueSlider() {
 
 }
 
-
+void IntSliderWidgetQt::setIncrement( int increment ) {
+ this->increment_ = increment_;
+ spinBox_->setSingleStep(increment_);
+ //slider_->setMaximum((maxValue_-minValue_)/increment_);
+     slider_->setRange(this->minValue_,this->maxValue_);
+}
 
 }//namespace

@@ -1,5 +1,5 @@
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
-
+#include <inviwo/core/inviwomodule.h>
 
 namespace inviwo {
 
@@ -65,24 +65,20 @@ void ModifiedWidget::setParent(TextEditorWidgetQt* tmp){
 }
 
 
-TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property), btnProperty_("Edit","Open text editor"){
+TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property), btnProperty_("Edit","") {
     btnWidget_ = new ButtonPropertyWidgetQt(&btnProperty_);
     generateWidget();
     updateFromProperty();
 }
 
 void TextEditorWidgetQt::generateWidget() {
+
     QHBoxLayout* hLayout = new QHBoxLayout();
     if (dynamic_cast<FileProperty*>(property_)) {
 
-        QGridLayout* gridLayout = new QGridLayout();
-        checkBox_ = new QCheckBox();
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
         btnProperty_.registerClassMemberFunction(this, &TextEditorWidgetQt::editFile);
-        gridLayout->addWidget(fileWidget_,1,1,2,2);
-        gridLayout->addWidget(new QLabel("Use system text editor"),3,1);
-        gridLayout->addWidget(checkBox_,3,2);
-        hLayout->addLayout(gridLayout);
+        hLayout->addWidget(fileWidget_);
 
     }
     else if (dynamic_cast<StringProperty*>(property_)) {
@@ -92,6 +88,8 @@ void TextEditorWidgetQt::generateWidget() {
     }
 
     hLayout->addWidget(btnWidget_);
+
+    btnWidget_->getButton()->setIcon(QIcon(":/icons/network_open.png")); // Temporary icon, change to a text edit icon
 
     setLayout(hLayout);
      textEditorWidget_= new ModifiedWidget();
@@ -105,7 +103,8 @@ void TextEditorWidgetQt::setPropertyValue() {}
 //Function loads the file into the textEditor_
 void TextEditorWidgetQt::editFile(){
 
-    if (checkBox_->isChecked()) {
+    
+    if (1==1) { //Check boolproperty from settings instead of 1==1
         if (static_cast<StringProperty*>(property_)->get() == "") {
             fileWidget_->setPropertyValue();
         }

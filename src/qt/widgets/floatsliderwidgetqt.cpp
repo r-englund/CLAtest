@@ -1,4 +1,5 @@
 #include <inviwo/qt/widgets/floatsliderwidgetqt.h>
+#include <iostream>
 
 
 
@@ -15,15 +16,17 @@ void FloatSliderWidgetQt::generateWidget() {
     
     QHBoxLayout* hLayout = new QHBoxLayout();
     slider_ = new QSlider(Qt::Horizontal);
-    //slider_->setTickInterval(static_cast<int>(ceilf((maxValue_-minValue_)/increment_)));
-    //slider_->setTickPosition(QSlider::TicksBothSides);
-    //slider_->setTickInterval(10);
-    //slider_->setSingleStep(1);
-    slider_->setMaximum(static_cast<int>(ceilf((maxValue_-minValue_)/increment_)));
+    /*slider_->setTickInterval(static_cast<int>(ceilf((maxValue_-minValue_)/increment_)));
+    slider_->setTickPosition(QSlider::TicksBothSides);
+    slider_->setTickInterval(10);
+    slider_->setSingleStep(1);*/
+    slider_->setMaximum(static_cast<int>(ceilf((maxValue_-minValue_)/increment_)+1000));
     spinBox_ = new QDoubleSpinBox();
     spinBox_->setRange(static_cast<double>(this->minValue_),static_cast<double>(this->maxValue_));
     spinBox_->setSingleStep(static_cast<double>(this->increment_));
-    spinBox_->setDecimals(3);
+
+    setDecimals();
+
     hLayout->addWidget(slider_);
     hLayout->addWidget(spinBox_);
     setLayout(hLayout);
@@ -86,8 +89,24 @@ void FloatSliderWidgetQt::setIncrement( float increment_ ) {
 
     this->increment_ = increment_;
 
+    setDecimals();
     spinBox_->setSingleStep(static_cast<double>(this->increment_));
-    slider_->setMaximum(static_cast<int>(ceilf((maxValue_-minValue_)/increment_)));
+    slider_->setMaximum(static_cast<int>(ceilf((maxValue_-minValue_)/increment_)+1000));
+    
+
+}
+
+void FloatSliderWidgetQt::setDecimals() {
+        //Not working....
+    float tmpIncrement = increment_;
+    int count = 0;
+    while(fmod(tmpIncrement,10.0f)!= 0) {
+            tmpIncrement=tmpIncrement*10.0f;
+            ++count;
+        }
+        //std::cout << "Number of decimals:   " << count << std::endl;
+        //spinBox_->setDecimals(count);
+        spinBox_->setDecimals(4);
 
 }
 

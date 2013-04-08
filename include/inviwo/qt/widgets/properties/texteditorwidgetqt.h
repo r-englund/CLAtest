@@ -1,7 +1,7 @@
 #ifndef IVW_TEXTEDITORWIDGETQT_H
 #define IVW_TEXTEDITORWIDGETQT_H
 
-
+//QT includes
 #include <QFile>
 #include <QCheckBox>
 #include <QGridLayout>
@@ -15,16 +15,24 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QWidget>
+#include <QMainWindow>
+#include <QDesktopServices>
+#include <QUrl>
+
+
+//Property includes
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/property.h>
+
+//Widget includes
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
-#include <QMainWindow>
-#include <QDesktopServices>
-#include <QUrl>
+
+//Inviwo settings
+#include <inviwo/core/inviwomodule.h>
 
 
 namespace inviwo{

@@ -26,8 +26,10 @@ private:
     FloatProperty* property_;
     FloatSliderWidgetQt* sliderWidget_;
     PropertySettingsWidgetQt* settingsWidget_;
+    QMenu* settingsMenu_;
 
     void generateWidget();
+    void generatesSettingsWidget();
 
 public slots:
     void setPropertyValueFromSlider();

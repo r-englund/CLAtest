@@ -21,7 +21,6 @@ public:
 
     void updateFromProperty();
     QPushButton* getButton();
-
 private:
 	ButtonProperty* property_;
         QPushButton* button_;

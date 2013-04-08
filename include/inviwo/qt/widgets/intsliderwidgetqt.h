@@ -5,6 +5,7 @@
 #include <QSlider>
 #include <QSpinBox>
 #include <QHBoxLayout>
+#include <math.h>
 
 namespace inviwo {
 
@@ -66,6 +67,9 @@ public:
      */
     void setRange(int min,int max);
 
+
+    void setIncrement(int increment);
+
     /** 
      * \brief updates the value of the spin box from the slider value
      *
@@ -73,7 +77,7 @@ public:
      * 
      * @return void <DESCRIBE ME>
      */
-    void updateValueSpinbox();
+    void updateValueSpinBox();
 
     /** 
      * \brief updates the value of the slider from the spin box value

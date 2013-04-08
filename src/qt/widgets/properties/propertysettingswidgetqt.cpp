@@ -2,11 +2,14 @@
 
 namespace inviwo {
 
-    PropertySettingsWidgetQt::PropertySettingsWidgetQt(FloatProperty *property) : property_(property),
+    const std::string PropertySettingsWidgetQt::logSource_ = "PropertySettingsWidgetQt";
+
+    PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property) : property_(property),
         btnPropertyApply_("Apply", "Apply"), 
-        btnPropertyCancel_("Cancel", "Cancel"), 
-        btnPropertyReload_("Reload","Reload") {
+        btnPropertyCancel_("Cancel", "Cancel") {
         generateWidget();
+        this->setWindowFlags(Qt::WindowStaysOnTopHint);
+        this->setWindowModality(Qt::ApplicationModal);
     }
 
 
@@ -14,20 +17,18 @@ namespace inviwo {
 
         btnApply_ = new ButtonPropertyWidgetQt(&btnPropertyApply_);
         btnCancel_ = new ButtonPropertyWidgetQt(&btnPropertyCancel_);
-        btnReload_ = new ButtonPropertyWidgetQt(&btnPropertyReload_);
+        //btnReload_ = new ButtonPropertyWidgetQt(&btnPropertyReload_);
         btnPropertyApply_.registerClassMemberFunction(this, &PropertySettingsWidgetQt::save);
         btnPropertyCancel_.registerClassMemberFunction(this,&PropertySettingsWidgetQt::cancel);
-        btnPropertyReload_.registerClassMemberFunction(this,&PropertySettingsWidgetQt::reload);
+        //btnPropertyReload_.registerClassMemberFunction(this,&PropertySettingsWidgetQt::reload);
 
 
         QGridLayout* gridLayout = new QGridLayout();
         lineEditMax_ = new QLineEdit();
         lineEditMin_ = new QLineEdit();
         lineEditIcrement_ = new QLineEdit();
+        
 
-        //lineEditMin_->setText(QString::number(property_->getMinValue()));
-        //lineEditMax_->setText(QString::number(property_->getMaxValue()));
-        //lineEditIcrement_->setText(QString::number(property_->getIncrement()));
         reload();
 
         gridLayout->addWidget(new QLabel("Min value"),1,1);
@@ -38,7 +39,7 @@ namespace inviwo {
         gridLayout->addWidget(lineEditIcrement_,3,2);
         gridLayout->addWidget(btnApply_,4,1);
         gridLayout->addWidget(btnCancel_,4,2);
-        gridLayout->addWidget(btnReload_,4,3);
+        //gridLayout->addWidget(btnReload_,4,3);
 
         setLayout(gridLayout);
 
@@ -52,17 +53,32 @@ namespace inviwo {
     }
 
     void PropertySettingsWidgetQt::reload() {
-
-        lineEditMin_->setText(QString::number(property_->getMinValue()));
-        lineEditMax_->setText(QString::number(property_->getMaxValue()));
-        lineEditIcrement_->setText(QString::number(property_->getIncrement()));
+        if (dynamic_cast<FloatProperty*>(property_)) {
+            lineEditMin_->setText(QString::number(static_cast<FloatProperty*>(property_)->getMinValue()));
+            lineEditMax_->setText(QString::number(static_cast<FloatProperty*>(property_)->getMaxValue()));
+            lineEditIcrement_->setText(QString::number(static_cast<FloatProperty*>(property_)->getIncrement()));    
+            return;
+        }
+        if (dynamic_cast<IntProperty*>(property_)) {
+            lineEditMin_->setText(QString::number(static_cast<IntProperty*>(property_)->getMinValue()));
+            lineEditMax_->setText(QString::number(static_cast<IntProperty*>(property_)->getMaxValue()));
+            lineEditIcrement_->setText(QString::number(static_cast<IntProperty*>(property_)->getIncrement()));
+            return;
+        }
+        LogWarn("No settings widget for " + property_->getIdentifier() + " found.")
     }
 
     void PropertySettingsWidgetQt::save() {
-        
-        property_->setMaxValue(lineEditMax_->text().toFloat());
-        property_->setMinValue(lineEditMin_->text().toFloat());
-        property_->setIncrement(lineEditIcrement_->text().toFloat());
+        if (dynamic_cast<FloatProperty*>(property_)) {
+            static_cast<FloatProperty*>(property_)->setMaxValue(lineEditMax_->text().toFloat());
+            static_cast<FloatProperty*>(property_)->setMinValue(lineEditMin_->text().toFloat());
+            static_cast<FloatProperty*>(property_)->setIncrement(lineEditIcrement_->text().toFloat());
+        }
+        if (dynamic_cast<IntProperty*>(property_)) {
+            static_cast<IntProperty*>(property_)->setMaxValue(lineEditMax_->text().toInt());
+            static_cast<IntProperty*>(property_)->setMinValue(lineEditMin_->text().toInt());
+            static_cast<IntProperty*>(property_)->setIncrement(lineEditIcrement_->text().toInt());
+        }
         property_->updatePropertyWidgets();
         hide();
 

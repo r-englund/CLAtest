@@ -17,19 +17,21 @@ class IVW_QTWIDGETS_API PropertySettingsWidgetQt : public QWidget {
 
     Q_OBJECT;
 public:
-    PropertySettingsWidgetQt(FloatProperty *property);
+    PropertySettingsWidgetQt(Property *property);
+
+    static const std::string logSource_; ///< Source string to be displayed for log messages.
     
 
 private:
-    FloatProperty* property_;
+    Property* property_;
     QLineEdit* lineEditMax_;
     QLineEdit* lineEditMin_;
     QLineEdit* lineEditIcrement_;
     ButtonProperty btnPropertyApply_;
-    ButtonProperty btnPropertyReload_;
+    //ButtonProperty btnPropertyReload_;
     ButtonProperty btnPropertyCancel_;
     ButtonPropertyWidgetQt* btnApply_;
-    ButtonPropertyWidgetQt* btnReload_;
+    //ButtonPropertyWidgetQt* btnReload_;
     ButtonPropertyWidgetQt* btnCancel_;
     void generateWidget();
 
