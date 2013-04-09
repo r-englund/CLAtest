@@ -28,6 +28,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramoperationexecuter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramsubset.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramconverter.h

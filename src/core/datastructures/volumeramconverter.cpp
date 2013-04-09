@@ -1,5 +1,5 @@
 #include <inviwo/core/datastructures/volumeramconverter.h>
-#include <inviwo/core/datastructures/volumerepresentation.h>
+#include <inviwo/core/datastructures/volumeramprecision.h>
 
 namespace inviwo {
 

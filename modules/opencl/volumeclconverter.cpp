@@ -1,5 +1,5 @@
 #include <modules/opencl/volumeclconverter.h>
-#include <inviwo/core/datastructures/volumerepresentation.h>
+#include <inviwo/core/datastructures/volumeramprecision.h>
 #include <modules/opencl/inviwoopencl.h>
 
 namespace inviwo {

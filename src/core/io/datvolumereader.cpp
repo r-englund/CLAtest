@@ -1,5 +1,5 @@
 #include "inviwo/core/io/datvolumereader.h"
-#include "inviwo/core/datastructures/volumeram.h"
+#include "inviwo/core/datastructures/volumeramprecision.h"
 #include "inviwo/core/datastructures/volumetypeclassification.h"
 
 namespace inviwo {

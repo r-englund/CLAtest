@@ -3,6 +3,7 @@
 
 #include <inviwo/core/datastructures/volumeram.h>
 #include <inviwo/core/datastructures/volumeramoperation.h>
+#include <inviwo/core/datastructures/volumeramprecision.h>
 
 namespace inviwo {
    
@@ -28,11 +29,11 @@ namespace inviwo {
         bool clampBorderOutsideVolume_;
     };
 
-    template<typename T>
+    /*template<typename T>
     class VolumeRAMPrecision;
 
     template<typename T, size_t B>
-    class VolumeRAMCustomPrecision;
+    class VolumeRAMCustomPrecision;*/
 
     template<typename T, size_t B>
     void VolumeRAMSubSet::evaluate(){
