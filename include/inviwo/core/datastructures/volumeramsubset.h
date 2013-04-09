@@ -3,7 +3,6 @@
 
 #include <inviwo/core/datastructures/volumeram.h>
 #include <inviwo/core/datastructures/volumeramoperation.h>
-//#include <inviwo/core/datastructures/volumeramprecision.h>
 
 namespace inviwo {
    

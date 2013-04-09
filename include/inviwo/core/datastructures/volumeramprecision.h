@@ -28,19 +28,6 @@ public:
     void applyOperation(DataOperation*);
 };
 
-/*template class VolumeRAMPrecision<DataUINT8::type>;
-template class VolumeRAMPrecision<DataINT8::type>;
-template class VolumeRAMPrecision<DataUINT16::type>;
-template class VolumeRAMPrecision<DataINT16::type>;
-template class VolumeRAMPrecision<DataUINT32::type>;
-template class VolumeRAMPrecision<DataINT32::type>;
-template class VolumeRAMPrecision<DataFLOAT16::type>;
-template class VolumeRAMPrecision<DataFLOAT32::type>;
-template class VolumeRAMPrecision<DataFLOAT64::type>;
-
-template class VolumeRAMCustomPrecision<DataUINT12::type, DataUINT12::bits>;
-template class VolumeRAMCustomPrecision<DataINT12::type, DataINT12::bits>;*/
-
 typedef VolumeRAMPrecision<DataUINT8::type>     VolumeRAMuint8;
 typedef VolumeRAMPrecision<DataINT8::type>      VolumeRAMint8;
 typedef VolumeRAMPrecision<DataUINT16::type>    VolumeRAMuint16;
