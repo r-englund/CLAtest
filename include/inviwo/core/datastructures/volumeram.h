@@ -8,8 +8,6 @@
 
 namespace inviwo {
 
-struct VolumeRepresentation::VolumeBorders;
-
 class IVW_CORE_API VolumeRAM : public VolumeRepresentation {
 
 public:
