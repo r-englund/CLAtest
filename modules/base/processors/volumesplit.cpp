@@ -221,20 +221,20 @@ void VolumeSplit::invalidateBricking() {
 
 void VolumeSplit::process(){ 
     Volume* volHandle = NULL;
-    /*if (inport_.hasData()) {
-        if (inport_.hasChanged() || updateBricks_)
+    if (inport_.hasData()) {
+        if (/*inport_.hasChanged() || */updateBricks_)
             performBricking();
         if (startSettings_)
             startSettings();
         if (!bricks_.empty())
-            volHandle = createNewVolume(bricks_[loopInport_.getLoopIteration()]);
+            volHandle = createNewVolume(bricks_[0/*loopInport_.getLoopIteration()*/]);
     }
 
     // put out result volume
     if (volHandle)
         outport_.setData(volHandle);
     else
-        outport_.setData(const_cast<VolumeBase*>(inport_.getData()), false); //Don't take ownership or we can't use it again*/
+        outport_.setData(inport_.getData()); //Don't take ownership or we can't use it again
 }
 
 void VolumeSplit::initialize() {

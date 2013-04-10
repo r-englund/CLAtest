@@ -81,6 +81,7 @@ protected:
 
 private:
     std::string identifier_;
+
     std::vector<Port*> inports_;
     std::vector<Port*> outports_;
 

@@ -22,6 +22,8 @@ public:
     virtual T* getData() const;
     void setData(T* data);
 
+    bool hasData() const;
+
 protected:
     T* data_;
     DataPort* connectedDataPort_;
@@ -68,6 +70,11 @@ template <typename T>
 void DataPort<T>::setData(T* data) {
     ivwAssert(isInport(), "Calling setData() on inport.");
     data_ = data;
+}
+
+template <typename T>
+bool DataPort<T>::hasData() const {
+    return (data_ != NULL);
 }
 
 } // namespace
