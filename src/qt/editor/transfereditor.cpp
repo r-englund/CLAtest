@@ -27,28 +27,29 @@ namespace inviwo {
 
     const std::string TransferEditor::logSource_ = "TransferEditor";
 
-    TransferEditor::TransferEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunc_, std::vector<TransferEditorControlPoint*>* points_)
-        :transferFunc(transferFunc_),
-        parent(parent_),
-        points(points_)
+    TransferEditor::TransferEditor(PropertyWidgetQt *parent, TransferFunction* transferFunc, std::vector<TransferEditorControlPoint*>* points)
+        :
+		transferFunc_(transferFunc),
+        parent_(parent),
+        points_(points)
     {
         setSceneRect(0.0, 0.0, 0.0, 0.0);
 
-        points->push_back(new TransferEditorControlPoint(0, 0));
-        points->push_back(new TransferEditorControlPoint(255 , 0));
+        points_->push_back(new TransferEditorControlPoint(0, 0));
+        points_->push_back(new TransferEditorControlPoint(255 , 0));
         calcTransferValues();
-        (*points)[0]->setId(0);
-        (*points)[1]->setId(1);
-        (*points)[0]->setZValue(1);
-        (*points)[1]->setZValue(1);
-        addItem((*points)[0]);
-        addItem((*points)[1]);
+        (*points_)[0]->setId(0);
+        (*points_)[1]->setId(1);
+        (*points_)[0]->setZValue(1);
+        (*points_)[1]->setZValue(1);
+        addItem((*points_)[0]);
+        addItem((*points_)[1]);
 
-        for (int i = 0; i < (int)points->size() - 1; i++)
+        for (int i = 0; i < (int)points_->size() - 1; i++)
         {
-            lines.push_back(new TransferEditorLineItem((*points)[i], (*points)[i+1]));
-            lines[i]->setZValue(0);
-            addItem(lines[i]);
+            lines_.push_back(new TransferEditorLineItem((*points_)[i], (*points_)[i+1]));
+            lines_[i]->setZValue(0);
+            addItem(lines_[i]);
         }
     }
 
@@ -72,7 +73,7 @@ namespace inviwo {
                 removePoint(e);
             }
         }
-        parent->updateFromProperty();
+        parent_->updateFromProperty();
     }
 
     void TransferEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent *e){
@@ -80,29 +81,34 @@ namespace inviwo {
     }
 
     void TransferEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
-        if ((*points)[0]->pos().x() != 0)
-            (*points)[0]->setPos(QPoint(0, (*points)[0]->pos().y()));
+        if ((*points_)[0]->pos().x() != 0)
+            (*points_)[0]->setPos(QPoint(0, (*points_)[0]->pos().y()));
         
         sortLines();
         sortPoints();
         
-        for (int i = 0; i < (int)points->size() - 1; i++){
-            lines[i]->setStart((*points)[i]);
-            lines[i]->setFinish((*points)[i + 1]);
+        for (int i = 0; i < (int)points_->size() - 1; i++){
+            lines_[i]->setStart((*points_)[i]);
+            lines_[i]->setFinish((*points_)[i + 1]);
         }
         QGraphicsScene::mouseMoveEvent(e);
         calcTransferValues();
-        parent->updateFromProperty();
+        parent_->updateFromProperty();
     }
 
     void TransferEditor::calcTransferValues(){
-        float* data = static_cast<float*>(transferFunc->getAlpha()->getData());
-        glm::quat startQuat;
+        //float* data = static_cast<float*>(transferFunc->getAlpha()->getData());
+		
+		Image* img = transferFunc_->getData();
+		ImageRAMfloat32* imgRam = img->getRepresentation<ImageRAMfloat32>();
+		float* data = static_cast<float*>(imgRam->getData());
+
+		glm::quat startQuat;
         glm::quat stopQuat;
         float factor;
-        for (int i = 0; i < (int)points->size() - 1; i++){
-            QPointF start   = (*points)[i]->position();
-            QPointF stop    = (*points)[i + 1]->position();
+        for (int i = 0; i < (int)points_->size() - 1; i++){
+            QPointF start   = (*points_)[i]->position();
+            QPointF stop    = (*points_)[i + 1]->position();
 
             for (int j = start.x(); j <=  stop.x(); j++){
                 startQuat.x = start.y();
@@ -114,17 +120,17 @@ namespace inviwo {
     }
 
     void TransferEditor::addPoint(QGraphicsSceneMouseEvent *e){
-        points->push_back(new TransferEditorControlPoint(e->scenePos()));
-        lines.push_back(new TransferEditorLineItem());
-        (*points)[points->size() - 1]->setZValue(1);
-        addItem(lines[lines.size() - 1]);
-        addItem((*points)[points->size() - 1]);
+        points_->push_back(new TransferEditorControlPoint(e->scenePos()));
+        lines_.push_back(new TransferEditorLineItem());
+        (*points_)[points_->size() - 1]->setZValue(1);
+        addItem(lines_[lines_.size() - 1]);
+        addItem((*points_)[points_->size() - 1]);
 
         sortPoints();
-        for (int i = 0; i < (int)points->size() - 1; i++){
-            lines[i]->setStart((*points)[i]);
-            lines[i]->setFinish((*points)[i + 1]);
-            lines[i]->setZValue(0);
+        for (int i = 0; i < (int)points_->size() - 1; i++){
+            lines_[i]->setStart((*points_)[i]);
+            lines_[i]->setFinish((*points_)[i + 1]);
+            lines_[i]->setZValue(0);
         }
         calcTransferValues();
     }
@@ -133,21 +139,21 @@ namespace inviwo {
         QPointF hit = itemAt(e->scenePos())->pos() * 2;
         QPointF curr;
 
-        for (int i = 0; i < (int)points->size() ; i++){
-            curr = (*points)[i]->position();
+        for (int i = 0; i < (int)points_->size() ; i++){
+            curr = (*points_)[i]->position();
             if(curr.x() == hit.x() && curr.y() == hit.y()){
-                if ((*points)[i]->getId() != 0 && (*points)[i]->getId() != 1)
+                if ((*points_)[i]->getId() != 0 && (*points_)[i]->getId() != 1)
                 {
-                    removeItem(lines[i]);
-                    lines[i]->setVisible(false);
+                    removeItem(lines_[i]);
+                    lines_[i]->setVisible(false);
 
-                    removeItem((*points)[i]);
+                    removeItem((*points_)[i]);
 
-                    lines.erase(lines.begin() + i);
-                    points->erase(points->begin() + i);
-                    for (int j = 0; j < (int)points->size() - 1; j++){
-                        lines[j]->setStart((*points)[j]);
-                        lines[j]->setFinish((*points)[j + 1]);
+                    lines_.erase(lines_.begin() + i);
+                    points_->erase(points_->begin() + i);
+                    for (int j = 0; j < (int)points_->size() - 1; j++){
+                        lines_[j]->setStart((*points_)[j]);
+                        lines_[j]->setFinish((*points_)[j + 1]);
                     }
                     update();
                 }
@@ -163,10 +169,10 @@ namespace inviwo {
         return a->startPos.x() < b->startPos.x();
     }
     void TransferEditor::sortPoints(){
-        std::sort((*points).begin(), (*points).end(), myPointCompare);
+        std::sort((*points_).begin(), (*points_).end(), myPointCompare);
     }
     void TransferEditor::sortLines(){
-        std::sort(lines.begin(), lines.end(), myLineCompare);
+        std::sort(lines_.begin(), lines_.end(), myLineCompare);
     }
 
 

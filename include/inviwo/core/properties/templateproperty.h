@@ -14,7 +14,8 @@ public:
 
     TemplateProperty(std::string identifier, std::string displayName, T value , PropertySemantics::Type semantics = PropertySemantics::Default);
 
-    virtual T get() const;
+    virtual T& get();
+	virtual const T& get() const { return value_; };
     virtual void set(T value);
 
 protected:
@@ -28,7 +29,7 @@ value_(value)
 {}
 
 template <typename T>
-T TemplateProperty<T>::get() const {
+T& TemplateProperty<T>::get() {
     return value_;
 }
 

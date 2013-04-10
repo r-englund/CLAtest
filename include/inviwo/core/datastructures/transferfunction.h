@@ -2,24 +2,24 @@
 #define IVW_TRANSFERFUNCTION_H
 #include <stdlib.h>
 #include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/datastructures/data.h>
 #include <inviwo/core/datastructures/imagedisk.h>
 #include <inviwo/core/datastructures/imageram.h>
 #include <inviwo/core/ports/imageport.h>
 
 namespace inviwo {
 
-    class IVW_CORE_API TransferFunction : public Data {
+    class IVW_CORE_API TransferFunction {
 
     public:
         TransferFunction();
         virtual ~TransferFunction();
-        virtual Data* clone();
-        void setAlpha(ImageRAMfloat16*);
-        ImageRAMfloat16* getAlpha();
+        //virtual Data* clone();
+        void setData(Image);
+        Image* getData() const;
 
     private:
-        ImageRAMfloat16* alphaImage;
+		Image data_;
+        //ImageRAMfloat32* alphaImage;
     };
 
 } // namespace

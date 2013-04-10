@@ -37,10 +37,10 @@ namespace inviwo {
 
     private :
         static const std::string logSource_;
-        std::vector<TransferEditorControlPoint*>* points;
-        std::vector<TransferEditorLineItem*> lines;
-        TransferFunction* transferFunc;
-        PropertyWidgetQt *parent;
+        std::vector<TransferEditorControlPoint*>* points_;
+        std::vector<TransferEditorLineItem*> lines_;
+        TransferFunction* transferFunc_;
+        PropertyWidgetQt *parent_;
     };
 
 } // namespace

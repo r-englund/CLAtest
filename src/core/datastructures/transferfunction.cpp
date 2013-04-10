@@ -2,24 +2,25 @@
 
 namespace inviwo {
 
-    TransferFunction::TransferFunction() : Data() {
-        alphaImage = new ImageRAMfloat16(uvec2(1,256));
+    TransferFunction::TransferFunction(){
+        //alphaImage = new ImageRAMfloat32(uvec2(1,256));
+		data_.addRepresentation(new ImageRAMfloat32(uvec2(256,1)));
     }
 
     TransferFunction::~TransferFunction() {
     }
 
-    Data* TransferFunction::clone() {
-        TransferFunction* newImage = new TransferFunction();
-        copyRepresentations(newImage);
-        return newImage;
-    }
+    //Data* TransferFunction::clone() {
+    //    TransferFunction* newImage = new TransferFunction();
+    //    copyRepresentations(newImage);
+    //    return newImage;
+    //}
 
-    void TransferFunction::setAlpha(ImageRAMfloat16* alphaImage_){
-        alphaImage = alphaImage_;
+    void TransferFunction::setData(Image data){
+        data_ = data;
     }
     
-    ImageRAMfloat16* TransferFunction::getAlpha(){
-        return alphaImage;
+    Image* TransferFunction::getData() const{
+        return const_cast<Image*>(&data_);
     }
 }

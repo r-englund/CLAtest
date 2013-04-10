@@ -16,8 +16,8 @@ namespace inviwo {
         paintview->scale(1, -1);
         paintview->setScene(paintscene); 
         paintview->show();
-
-        transferFunc = new TransferFunction();
+		
+        transferFunc = &property_->get();
         editor = new TransferEditor(this, transferFunc, &points);
         editor->setSceneRect(0,0,255,100);
         editor->setBackgroundBrush(Qt::transparent);
@@ -40,18 +40,19 @@ namespace inviwo {
 
 
     void TransferFunctionPropertyWidgetQt::setPropertyValue() {
-        property_->set(*transferFunc);
+        //property_->set(*transferFunc);
     }
 
     void TransferFunctionPropertyWidgetQt::updateFromProperty() {
         QPen pen;
         //LogInfo(points.size());
-        float* data = static_cast<float*>(transferFunc->getAlpha()->getData());
+        float* data = static_cast<float*>(transferFunc->getData()->getRepresentation<ImageRAMfloat32>()->getData());
         for (int i = 0; i < 256 ; i++)
         {
             pen.setColor(QColor::fromRgbF(data[i], data[i], data[i], 1.0f));
             paintscene->addLine(i, 0, i, 50, pen);
         }
         this->update();
+		property_->invalidate();
     }
 } // namespace

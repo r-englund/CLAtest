@@ -9,13 +9,13 @@ namespace inviwo {
 Image::Image() : Data() {
     dimensions_ = uvec2(256,256);
     representations_.clear();
-    addRepresentation(new ImageGL(dimensions_));
+    //addRepresentation(new ImageGL(dimensions_));
 }
 
 Image::Image(uvec2 dimensions)
     : Data(), dimensions_(dimensions) {
     representations_.clear();
-    addRepresentation(new ImageGL(dimensions_));
+    //addRepresentation(new ImageGL(dimensions_));
 }
 
 Data* Image::clone() {
