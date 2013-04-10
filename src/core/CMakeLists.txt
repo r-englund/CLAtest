@@ -37,7 +37,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballkeymapper.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventlistener.h
@@ -154,7 +153,6 @@ set(SOURCE_FILES
     interaction/interactionhandler.cpp
     interaction/trackball.cpp
     interaction/trackballaction.cpp
-    interaction/trackballkeymapper.cpp
     interaction/events/event.cpp
     interaction/events/eventhandler.cpp
     interaction/events/eventlistener.cpp

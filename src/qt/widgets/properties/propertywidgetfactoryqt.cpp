@@ -4,6 +4,7 @@
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperties.h>
@@ -19,6 +20,7 @@
 #include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/colorpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatmat2propertywidgetqt.h>
@@ -68,6 +70,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new ButtonPropertyWidgetQt(static_cast<ButtonProperty*>(property));
     if (dynamic_cast<CompositeProperty*>(property))
         return new CompositePropertyWidgetQt(static_cast<CompositeProperty*>(property));
+    if (dynamic_cast<EventProperty*>(property))
+        return new EventPropertyWidgetQt(static_cast<EventProperty*>(property));
     if (dynamic_cast<FileProperty*>(property))
         return new FilePropertyWidgetQt(static_cast<FileProperty*>(property));
 	if (dynamic_cast<FloatMat2Property*>(property))

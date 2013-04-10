@@ -27,7 +27,12 @@ void EntryExitPoints::initialize() {
     shader_ = new Shader("eepgeneration.frag");
     
     Trackball *trackball = new Trackball(&camera_);
-    addInteractionHandler(trackball);    
+    addInteractionHandler(trackball);
+
+    std::vector<Property*> map_ = trackball->getProperties();
+    for (size_t i = 0; i < map_.size(); i++) {
+        addProperty(map_.at(i));
+    }
         
     // compute bounding box dimensions
     // TODO: change upon volume change

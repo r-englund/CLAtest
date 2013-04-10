@@ -5,15 +5,26 @@ namespace inviwo {
 
 static const float RADIUS = 0.5f;
 
-Trackball::Trackball(CameraProperty* camera)
-    : InteractionHandler(),
+Trackball::Trackball(CameraProperty* camera) : InteractionHandler(), PropertyOwner(),
       camera_(camera),
       lastMousePos_(ivec2(0)),
       lastTrackballPos_(vec3(0.5f)),
       pixelWidth_(0.007f),
       isMouseBeingPressedAndHold_(false)
 { 
-    keymapper_ = new TrackballKeyMapper();
+    rotateEventProperty_ = new EventProperty("rotate", "Rotate", 
+        MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, Event::MODIFIER_NONE), 
+        TrackballAction(TrackballAction::TRACKBALL_ROTATE));
+    zoomEventProperty_ = new EventProperty("zoom", "Zoom", 
+        MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, Event::MODIFIER_NONE), 
+        TrackballAction(TrackballAction::TRACKBALL_ZOOM));
+    panEventProperty_ = new EventProperty("pan", "Pan", 
+        MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, Event::MODIFIER_NONE), 
+        TrackballAction(TrackballAction::TRACKBALL_PAN));
+
+    addProperty(rotateEventProperty_);
+    addProperty(zoomEventProperty_);
+    addProperty(panEventProperty_);    
 }
 
 Trackball::~Trackball() {}
@@ -62,15 +73,14 @@ void Trackball::invokeEvent(Event* event) {
     //    glVertex3f(camera_->lookTo().x, camera_->lookTo().y, camera_->lookTo().z);
     //    glVertex3f(camera_->lookFrom().x, camera_->lookFrom().y, camera_->lookFrom().z);
     //glEnd();
-
     if (mouseEvent) {
-        if (mouseEvent->button() == keymapper_->getKey(TrackballAction::TRACKBALL_ROTATE) && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+        if (mouseEvent->button() == rotateEventProperty_->getEvent().button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform rotation
             rotateCamera(mouseEvent);
-        } else if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_RIGHT && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+        } else if (mouseEvent->button() == zoomEventProperty_->getEvent().button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform zoom
             zoomCamera(mouseEvent);
-	    } else if (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_MIDDLE && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+	    } else if (mouseEvent->button() == panEventProperty_->getEvent().button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform pan
             panCamera(mouseEvent);  
         } else if (mouseEvent->state() == MouseEvent::MOUSE_STATE_RELEASE) {
