@@ -8,7 +8,8 @@ namespace inviwo {
         enum Type { Default =0,
                     Color =1,
                     LightPosition =2,
-                    Editor=3};
+                    Editor=3,
+                    Collapsible=4};
     };
 }
 
