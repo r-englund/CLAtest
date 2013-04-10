@@ -104,7 +104,7 @@ void FloatSliderWidgetQt::setDecimals() {
             tmpIncrement=tmpIncrement*10.0f;
             ++count;
         }
-        //std::cout << "Number of decimals:   " << count << std::endl;
+        std::cout << "Number of decimals:   " << count << std::endl;
         //spinBox_->setDecimals(count);
         spinBox_->setDecimals(4);
 

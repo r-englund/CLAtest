@@ -31,8 +31,8 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 
-//Inviwo settings
-#include <inviwo/core/inviwomodule.h>
+//Inviwo
+#include <inviwo/core/inviwoapplication.h>
 
 
 namespace inviwo{

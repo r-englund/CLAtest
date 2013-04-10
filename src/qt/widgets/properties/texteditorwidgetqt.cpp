@@ -103,8 +103,10 @@ void TextEditorWidgetQt::setPropertyValue() {}
 //Function loads the file into the textEditor_
 void TextEditorWidgetQt::editFile(){
 
+     // fetch settings from the settings menu to determine what editor to use
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     
-    if (1==1) { //Check boolproperty from settings instead of 1==1
+    if (dynamic_cast<BoolProperty*>(inviwoApp->getSettings()->getPropertyByIdentifier("txtEditor"))->get()) { 
         if (static_cast<StringProperty*>(property_)->get() == "") {
             fileWidget_->setPropertyValue();
         }
