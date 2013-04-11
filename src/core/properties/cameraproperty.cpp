@@ -14,13 +14,22 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     farPlane_("far", "Far Plane", 100.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
     nearPlane_("near", "Near Plane", 0.0001f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f)
 {
+    lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
+    lookTo_.onChange(this, &CameraProperty::updateViewMatrix);
+    lookUp_.onChange(this, &CameraProperty::updateViewMatrix);
     addProperty(lookFrom_);
     addProperty(lookTo_);
     addProperty(lookUp_);
+
+    fovy_.onChange(this, &CameraProperty::updateProjectionMatrix);
+    aspectRatio_.onChange(this, &CameraProperty::updateProjectionMatrix);
+    nearPlane_.onChange(this, &CameraProperty::updateProjectionMatrix);
+    farPlane_.onChange(this, &CameraProperty::updateProjectionMatrix);
     addProperty(fovy_);
     addProperty(aspectRatio_);
     addProperty(nearPlane_);
     addProperty(farPlane_);
+
     updateViewMatrix();
     updateProjectionMatrix();
 }

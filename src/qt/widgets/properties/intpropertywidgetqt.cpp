@@ -13,7 +13,7 @@ IntPropertyWidgetQt::IntPropertyWidgetQt(IntProperty* property) : property_(prop
 void IntPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-    sliderWidget_  = new IntSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
+    sliderWidget_ = new IntSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
     connect(sliderWidget_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
     connect(sliderWidget_->getSpinBox(), SIGNAL(valueChanged(int)),this,SLOT(setPropertyValueFromSpinBox()));
     hLayout->addWidget(sliderWidget_);
@@ -21,25 +21,21 @@ void IntPropertyWidgetQt::generateWidget() {
     generatesSettingsWidget();
 }
 
-
-
 void IntPropertyWidgetQt::updateFromProperty() {
     sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
     sliderWidget_->setValue(property_->get());
     sliderWidget_->setIncrement(property_->getIncrement());
     sliderWidget_->updateValueSpinBox();
-};
+}
 
 void IntPropertyWidgetQt::setPropertyValueFromSpinBox() {
     sliderWidget_->updateValueSlider();
     property_->set(sliderWidget_->getValue());
-
 }
 
 void IntPropertyWidgetQt::setPropertyValueFromSlider() {
     sliderWidget_->updateValueSpinBox();
     property_->set(sliderWidget_->getValue());
-
 }
 
 void IntPropertyWidgetQt::showContextMenu( const QPoint& pos ) {
@@ -61,11 +57,9 @@ void IntPropertyWidgetQt::showContextMenu( const QPoint& pos ) {
         property_->setMaxValue(sliderWidget_->getValue());
         updateFromProperty();
     }
-
 }
 
 void IntPropertyWidgetQt::generatesSettingsWidget() {
-
     settingsWidget_ = new PropertySettingsWidgetQt(property_);
     settingsMenu_ = new QMenu();
     settingsMenu_->addAction("Property settings");
@@ -73,9 +67,6 @@ void IntPropertyWidgetQt::generatesSettingsWidget() {
     settingsMenu_->addAction("Set as Max");
     sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(sliderWidget_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
-
-
-
 }
 
 } // namespace

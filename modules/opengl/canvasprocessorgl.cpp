@@ -15,7 +15,7 @@ Processor* CanvasProcessorGL::create() const {
 }
 
 void CanvasProcessorGL::resizeCanvas() {
-    std::cout << "onChange" << std::endl;
+    //std::cout << "onChange" << std::endl;
     //getCanvas()->resize(uvec2(dimensions_.get()));
 }
 
