@@ -9,10 +9,12 @@ EventProperty::EventProperty( std::string identifier, std::string displayName, E
 }
 
 void EventProperty::serialize( IvwSerializer& s ) const {
+    // TODO
     Property::serialize(s);
 }
 
 void EventProperty::deserialize( IvwDeserializer& d ) {
+    // TODO
     Property::deserialize(d);
 }
 

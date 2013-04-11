@@ -230,5 +230,4 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     return;
 }
 
-
 } // namespace

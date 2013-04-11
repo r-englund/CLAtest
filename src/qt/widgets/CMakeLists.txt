@@ -10,6 +10,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/canvasprocessorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetfactoryqt.h
@@ -50,6 +51,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/floatsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/canvasprocessorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
@@ -89,6 +91,7 @@ set(SOURCE_FILES
     floatsliderwidgetqt.cpp
     intsliderwidgetqt.cpp
     inviwoapplicationqt.cpp
+    mappingpopup.cpp
     processors/canvasprocessorwidgetqt.cpp
     processors/processorwidgetqt.cpp
     processors/processorwidgetfactoryqt.cpp

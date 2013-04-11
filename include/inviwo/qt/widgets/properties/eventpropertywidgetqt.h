@@ -3,6 +3,7 @@
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/eventproperty.h>
+#include <inviwo/qt/widgets/mappingpopup.h>
 
 #include <QLabel>
 #include <QPushButton>
@@ -19,8 +20,10 @@ public:
 
 private:
     EventProperty* eventproperty_;
-
     void generateWidget();
+
+public slots:
+    void clickedSlot();
 
 };
 
