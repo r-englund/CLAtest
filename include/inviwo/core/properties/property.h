@@ -5,6 +5,7 @@
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/properties/propertysemantics.h>
+#include <inviwo/core/util/callback.h>
 #include <inviwo/core/util/variant.h>
 #include <inviwo/core/util/observer.h>
 
@@ -22,7 +23,7 @@ public:
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
 
-    virtual PropertySemantics::Type  getSemantics() const;
+    virtual PropertySemantics::Type getSemantics() const;
     virtual void setSemantics(const PropertySemantics::Type& semantics);
 
     PropertyOwner* getOwner();
@@ -41,6 +42,14 @@ public:
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
+
+    template <typename T>
+    void onChange(T* o, void (T::*m)()) {
+        onChangeCallback_.addMemberFunction(o,m);
+    }
+
+protected:
+    SingleCallBack onChangeCallback_;
 
 private:
     std::string identifier_;

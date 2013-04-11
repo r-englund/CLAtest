@@ -14,26 +14,29 @@
 
 namespace inviwo {
 
-    class IVW_MODULE_OPENGL_API CanvasProcessorGL : public CanvasProcessor {
-    public:
-        CanvasProcessorGL();
-        Processor* create() const;
+class IVW_MODULE_OPENGL_API CanvasProcessorGL : public CanvasProcessor {
+public:
+    CanvasProcessorGL();
+    Processor* create() const;
 
-        virtual void initialize();
-        virtual void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
 
-        virtual std::string getClassName() const { return "CanvasProcessorGL"; }
-        virtual std::string getCategory() const  { return "Canvas Processor"; }
-        virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
+    virtual std::string getClassName() const { return "CanvasProcessorGL"; }
+    virtual std::string getCategory() const  { return "Canvas Processor"; }
+    virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
 
-    protected:
-        virtual void process();
+protected:
+    virtual void process();
 
-    private:
-        Shader* shader_;
+    IntVec2Property dimensions_;
 
-        void renderImagePlaneQuad() const;
-    };
+private:
+    Shader* shader_;
+
+    void resizeCanvas();
+    void renderImagePlaneQuad() const;
+};
 
 } // namespace
 

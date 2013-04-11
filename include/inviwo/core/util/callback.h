@@ -57,9 +57,11 @@ private:
 
 class IVW_CORE_API SingleCallBack {
 public:
-    SingleCallBack(){}
+    SingleCallBack() : callBack_(0) {}
+
     void invoke(){
-        callBack_->invoke();
+        if (callBack_)
+            callBack_->invoke();
     }
 
     template <typename T>

@@ -4,7 +4,7 @@
 namespace inviwo {
 
 CameraProperty::CameraProperty(std::string identifier, std::string displayName, 
-                               vec3 center, vec3 eye, vec3 lookUp,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
+                               vec3 center, vec3 eye, vec3 lookUp, PropertySemantics::Type semantics/*= PropertySemantics::Default*/)
     : CompositeProperty(identifier, displayName,semantics),
     lookFrom_("lookFrom", "Look from", center, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
     lookTo_("lookTo", "Look to", eye, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),

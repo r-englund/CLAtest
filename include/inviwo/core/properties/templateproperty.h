@@ -36,6 +36,7 @@ T& TemplateProperty<T>::get() {
 template <typename T>
 void TemplateProperty<T>::set(T value) {
     value_ = value;
+    onChangeCallback_.invoke();
     getOwner()->invalidate();
     invalidate();
     updatePropertyWidgets();

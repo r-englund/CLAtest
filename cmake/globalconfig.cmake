@@ -93,7 +93,8 @@ endif(CMAKE_COMPILER_2005)
 # Add debug postfix if WIN32
 IF(WIN32)
     IF(MSVC)
-        SET( CMAKE_DEBUG_POSTFIX "d" )
+        SET(CMAKE_DEBUG_POSTFIX "d")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
     ENDIF(MSVC)
 ENDIF()
 
