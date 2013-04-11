@@ -45,11 +45,11 @@ namespace inviwo {
                     case 1:
                         image = new ImageRAMPrecision<uint8_t>(dim); break;
                     case 2:
-                        image = new ImageRAMPrecision<glm::detail::tvec2<uint8_t>>(dim); break;
+                        image = new ImageRAMPrecision< glm::detail::tvec2<uint8_t> >(dim); break;
                     case 3:
-                        image = new ImageRAMPrecision<glm::detail::tvec3<uint8_t>>(dim); break;
+                        image = new ImageRAMPrecision< glm::detail::tvec3<uint8_t> >(dim); break;
                     case 4:
-                        image = new ImageRAMPrecision<glm::detail::tvec4<uint8_t>>(dim); break;
+                        image = new ImageRAMPrecision< glm::detail::tvec4<uint8_t> >(dim); break;
                     default:
                         image = NULL;
                     }
@@ -71,11 +71,11 @@ namespace inviwo {
                     case 1:
                         image = new ImageRAMPrecision<float>(dim); break;
                     case 2:
-                        image = new ImageRAMPrecision<glm::detail::tvec2<float>>(dim); break;
+                        image = new ImageRAMPrecision< glm::detail::tvec2<float> >(dim); break;
                     case 3:
-                        image = new ImageRAMPrecision<glm::detail::tvec3<float>>(dim); break;
+                        image = new ImageRAMPrecision< glm::detail::tvec3<float> >(dim); break;
                     case 4:
-                        image = new ImageRAMPrecision<glm::detail::tvec4<float>>(dim); break;
+                        image = new ImageRAMPrecision< glm::detail::tvec4<float> >(dim); break;
                     default:
                         image = NULL;
                 }
