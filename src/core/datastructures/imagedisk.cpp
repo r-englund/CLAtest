@@ -1,5 +1,5 @@
 #include <inviwo/core/datastructures/imagedisk.h>
-#include <modules/opengl/imageloader.h>
+#include <inviwo/core/io/imageloader.h>
 
 namespace inviwo {
 

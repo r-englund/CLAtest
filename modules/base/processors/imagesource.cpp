@@ -3,7 +3,7 @@
 namespace inviwo {
 
 ImageSource::ImageSource()
-    : ProcessorGL(),
+    : Processor(),
     outport_(Port::OUTPORT, "image.outport"),
     imageFileName_("imageFileName", "Image file name", IVW_DIR+"data/images/swirl.tga")
 {
@@ -18,7 +18,7 @@ Processor* ImageSource::create() const {
 }
 
 void ImageSource::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
 	Image* image = outport_.getData();
     if (image) {
         image->clearRepresentations();
@@ -26,16 +26,14 @@ void ImageSource::initialize() {
 }
 
 void ImageSource::deinitialize() {
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 /**
 * Creates a ImageDisk representation if there isn't an object already defined.
 **/
 void ImageSource::process() {
-
-	Image* outImage = outport_.getData();
-    
+	Image* outImage = outport_.getData(); 
     if(outImage){
         ImageDisk *outImageDisk_ = outImage->getRepresentation<ImageDisk>();
         if(!outImageDisk_ || outImageDisk_->getSourceFile() != imageFileName_.get()){ 
@@ -43,8 +41,6 @@ void ImageSource::process() {
         }
         outImage->clearRepresentations();
         outImage->addRepresentation(outImageDisk_);
-
-
     }
 }
 

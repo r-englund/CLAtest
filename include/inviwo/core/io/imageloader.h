@@ -1,14 +1,13 @@
-#ifndef IMAGELOADER_H
-#define IMAGELOADER_H
+#ifndef IVW_IMAGELOADER_H
+#define IVW_IMAGELOADER_H
 
-#include "modules/opengl/openglmoduledefine.h"
-#include "inviwo/core/inviwo.h"
-#include "glwrap/texture2d.h"
-#include "ext/freeimage/FreeImage.h"
+#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/inviwo.h>
+#include <ext/freeimage/FreeImage.h>
 
 using namespace inviwo;
 
-class ImageLoader{
+class IVW_CORE_API ImageLoader{
 public:
 	ImageLoader(){};
 	~ImageLoader(){
@@ -50,4 +49,4 @@ private:
 
 	static bool loader_initialized;
 };
-#endif
+#endif // IVW_IMAGELOADER_H

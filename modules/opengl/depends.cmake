@@ -3,5 +3,4 @@
 set(dependencies 
     GLEW
     OpenGL
-    FreeImage
 )

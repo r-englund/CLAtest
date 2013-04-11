@@ -6,7 +6,6 @@
 #include "inviwo/core/io/volumereader.h"
 #include "inviwo/core/io/rawvolumereader.h"
 
-
 namespace inviwo {
 
     

@@ -1,4 +1,4 @@
-#include "imageloader.h"
+#include <inviwo/core/io/imageloader.h>
 
 bool ImageLoader::loader_initialized = false;
 
@@ -36,8 +36,6 @@ bool ImageLoader::readInImage(std::string filename, FIBITMAP **bitmap){
 	return (imageFormat != FIF_UNKNOWN);
 }
 
-
-
 uint8_t* ImageLoader::imageToBitmap(FIBITMAP *bitmap){
     int width = FreeImage_GetWidth(bitmap);
 	int height = FreeImage_GetHeight(bitmap);
@@ -45,7 +43,7 @@ uint8_t* ImageLoader::imageToBitmap(FIBITMAP *bitmap){
     FIBITMAP *bitmap2 = FreeImage_Allocate(width, height, 32);
     FreeImage_Paste(bitmap2, bitmap, 0, 0, 255);
 
-	GLubyte *pixelValues = static_cast<GLubyte*>(FreeImage_GetBits(bitmap2));
+	BYTE *pixelValues = FreeImage_GetBits(bitmap2);
     uint8_t* data = new uint8_t[4 * width * height];
 
 	//Fill in the texture, a shift is needed to convert from BGRA to RGBA

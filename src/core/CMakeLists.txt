@@ -94,6 +94,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h   
@@ -204,6 +205,7 @@ set(SOURCE_FILES
     properties/linkevaluator.cpp	
     io/datareader.cpp
     io/datvolumereader.cpp
+    io/imageloader.cpp
     io/rawvolumereader.cpp
     io/volumereader.cpp
     io/datawriter.cpp
@@ -250,6 +252,7 @@ ivw_include_directories(${CMAKE_SOURCE_DIR})
 ivw_add_dependencies(
     TiCPP
     Sigar
+    FreeImage
 )
 
 #--------------------------------------------------------------------

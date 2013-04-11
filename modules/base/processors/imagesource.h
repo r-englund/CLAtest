@@ -5,14 +5,11 @@
 #include <inviwo/core/inviwo.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/imageport.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
-#include <modules/opengl/imageloader.h>
 #include <inviwo/core/datastructures/imagedisk.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API ImageSource : public ProcessorGL {
+class IVW_MODULE_BASE_API ImageSource : public Processor {
 public:
     ImageSource();
     ~ImageSource();

@@ -1,5 +1,4 @@
 #include <inviwo/core/interaction/trackball.h>
-#include <modules/opengl/inviwoopengl.h> // FOR DEBUGGING
 
 namespace inviwo {
 
