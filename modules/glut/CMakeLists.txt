@@ -1,6 +1,7 @@
 #--------------------------------------------------------------------
 # Build FREEGLUT if it couldn't be found
 find_package(FreeGLUT)
+
 if(BUILD_FREEGLUT)
 	add_subdirectory(ext/freeglut)
 endif(BUILD_FREEGLUT)

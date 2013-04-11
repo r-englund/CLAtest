@@ -19,6 +19,10 @@ option(IVW_QT_WIDGETS "Build Inviwo Qt Widgets" ON)
 option(IVW_TINY_GLUT_APPLICATION "Build Inviwo Tiny GLUT Application" OFF)
 build_module_dependency(GLUT IVW_TINY_GLUT_APPLICATION)
 
+option(IVW_DICOM_APPLICATION "Build DICOM Application" OFF)
+build_module_dependency(DICOM IVW_DICOM_APPLICATION)
+
+
 option(TEST_APPLICATIONS "Build All Test Application" OFF)
 
 #--------------------------------------------------------------------

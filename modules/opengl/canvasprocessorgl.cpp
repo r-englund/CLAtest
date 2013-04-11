@@ -49,7 +49,6 @@ void CanvasProcessorGL::process() {
     //in a representation that we can convert to a ImageGL.
     ImageRAM* temp = inImage->getRepresentation<ImageRAM>();
     
-    
     ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     if(inImageGL == NULL)
         inImageGL = new ImageGL();

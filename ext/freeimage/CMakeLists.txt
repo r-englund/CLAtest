@@ -96,8 +96,6 @@ ivw_add_dependencies(
 ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/)
 ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/FreeImage)
 
-
-
 #--------------------------------------------------------------------
 # This is to use .lib file, should be deleted when real linker is working 
 # link_directories(${IVW_EXTENSIONS_DIR}/freeimage/FreeImageLib/)

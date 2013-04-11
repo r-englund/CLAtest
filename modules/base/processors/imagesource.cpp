@@ -22,7 +22,6 @@ void ImageSource::initialize() {
 	Image* image = outport_.getData();
     if (image) {
         image->clearRepresentations();
-        //image->addRepresentation(new ImageDisk(imageFileName_.get()));
     }
 }
 
