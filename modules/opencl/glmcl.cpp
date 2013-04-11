@@ -65,6 +65,30 @@ cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::float32> va
     return setArg(index, glm::detail::tvec4<glm::detail::float32>(value, 0));
 }
 
+cl::ImageFormat typeToImageFormat( inviwo::DataFormatId format )
+{
+    switch (format) {
+        case inviwo::UINT8:
+            return cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT8); 
+        case inviwo::UINT16:
+            return cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT16);
+        case inviwo::UINT32:
+            return cl::ImageFormat(CL_R, CL_UNSIGNED_INT32);
+        case inviwo::INT8:
+            return cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT8);
+        case inviwo::INT16:
+            return cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT16);
+        case inviwo::INT32:
+            return cl::ImageFormat(CL_R, CL_SIGNED_INT32);
+        case inviwo::FLOAT32:
+            return cl::ImageFormat(CL_INTENSITY, CL_FLOAT);
+        case inviwo::Vec4UINT8:
+            return cl::ImageFormat(CL_RGBA, CL_UNORM_INT8);
+    }
+    LogErrorS("cl::ImageFormat typeToImageFormat", "Format not implmented yet");
+    return cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT8);
+}
+
 //template <>
 //cl_int Kernel::setArg(cl_uint index, const cl::Image2D& value)
 //{

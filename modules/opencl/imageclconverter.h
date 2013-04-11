@@ -3,9 +3,9 @@
 
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <inviwo/core/datastructures/imageram.h>
-// TODO: implement conversion when imageram converter exist
-//#include <inviwo/core/datastructures/imageramconverter.h> 
+#include <inviwo/core/datastructures/imageramconverter.h> 
 #include <inviwo/core/datastructures/imagedisk.h>
+#include <modules/opengl/imageglconverter.h> 
 #include <modules/opencl/imagecl.h>
 
 namespace inviwo {
@@ -29,8 +29,8 @@ namespace inviwo {
     class IVW_MODULE_OPENCL_API ImageDisk2CLConverter : public RepresentationConverterPackage<ImageCL> {
     
     public:
-        ImageDisk2CLConverter() : RepresentationConverterPackage<ImageCL>(){
-            //addConverter(new ImageDisk2RAMConverter());
+        ImageDisk2CLConverter() : RepresentationConverterPackage<ImageCL>() {
+            addConverter(new ImageDisk2RAMConverter());
             addConverter(new ImageRAM2CLConverter());
         };
         virtual ~ImageDisk2CLConverter() {};
@@ -50,6 +50,26 @@ namespace inviwo {
         }
 
         DataRepresentation* convert(DataRepresentation* source);
+    };
+
+    class IVW_MODULE_OPENCL_API ImageGL2CLConverter : public RepresentationConverterPackage<ImageCL> {
+
+    public:
+        ImageGL2CLConverter() : RepresentationConverterPackage<ImageCL>() {
+            addConverter(new ImageGL2RAMConverter());
+            addConverter(new ImageRAM2CLConverter());
+        };
+        virtual ~ImageGL2CLConverter() {};
+    };
+
+    class IVW_MODULE_OPENCL_API ImageCL2GLConverter : public RepresentationConverterPackage<ImageGL> {
+
+    public:
+        ImageCL2GLConverter() : RepresentationConverterPackage<ImageGL>() {
+            addConverter(new ImageCL2RAMConverter());
+            addConverter(new ImageRAM2GLConverter());
+        };
+        virtual ~ImageCL2GLConverter() {};
     };
 
 

@@ -13,8 +13,11 @@ set(HEADER_FILES
 	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
 	${IVW_MODULE_DIR}/opencl/openclinfo.h
     ${IVW_MODULE_DIR}/opencl/openclmodule.h
+    ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.h
     ${IVW_MODULE_DIR}/opencl/volumecl.h
     ${IVW_MODULE_DIR}/opencl/volumeclconverter.h
+	${IVW_MODULE_DIR}/opencl/cl/img_resize.cl
+	${IVW_MODULE_DIR}/opencl/cl/volumeraycaster.cl
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -29,6 +32,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
     ${IVW_MODULE_DIR}/opencl/openclmodule.cpp
     ${IVW_MODULE_DIR}/opencl/openclinfo.cpp
+    ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.cpp
     ${IVW_MODULE_DIR}/opencl/volumecl.cpp
 	${IVW_MODULE_DIR}/opencl/volumeclconverter.cpp
 

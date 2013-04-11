@@ -18,8 +18,10 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     ShaderManager::init();
     addRepresentationConverter(new ImageDisk2RAMConverter());
     addRepresentationConverter(new ImageRAM2GLConverter());
+    addRepresentationConverter(new ImageGL2RAMConverter());
     addRepresentationConverter(new VolumeRAM2GLConverter());
     addRepresentationConverter(new VolumeDisk2GLConverter());
+    
 
     addProcessor(new CanvasProcessorGL());
 

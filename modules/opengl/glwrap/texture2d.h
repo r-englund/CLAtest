@@ -20,8 +20,24 @@ public:
     void setTexels(GLubyte* texels) { texels_ = texels; }
     GLubyte* getTexels() { return texels_; }
 
+    size_t getSizeInBytes() const;
+
+    unsigned int getNChannels() const;
+
+    GLenum getFormat() const { return format_; }
+    GLenum getDataType() const { return dataType_; }
+
     void bind();
     void upload();
+    
+    /**
+     * Download texture data to preallocated memory.
+     * 
+     * \param data (void *) Preallocated pointer that will contain texture data after function returns.
+     * \return (void)
+     */
+    void download(void* data); 
+
     void unbind();
 
     int getWidth() { return dimensions_.x; }

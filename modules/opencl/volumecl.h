@@ -13,14 +13,14 @@ namespace inviwo {
 class IVW_MODULE_OPENCL_API VolumeCL : public VolumeRepresentation {
 
 public:
-    VolumeCL();
-    VolumeCL(uvec3 dimensions);
+    VolumeCL(DataFormatBase format = DataFormatBase());
+    VolumeCL(uvec3 dimensions, DataFormatBase format = DataFormatBase());
     virtual ~VolumeCL();
     
     virtual void initialize() {};
     virtual void deinitialize() {};
     cl::ImageFormat getFormat() const { return imageFormat_;}
-    const cl::Image3D* getVolume() const { return image3D_; }
+    cl::Image3D getVolume() const { return *image3D_; }
 
 protected:
     cl::Image3D* image3D_;
@@ -30,9 +30,9 @@ protected:
 template<typename T>
 class IVW_MODULE_OPENCL_API VolumeCLPrecision : public VolumeCL {
 public:
-    VolumeCLPrecision();
-    VolumeCLPrecision(uvec3 dimensions);
-    VolumeCLPrecision(T* voxels, uvec3 dimensions);
+    VolumeCLPrecision(DataFormatBase format = GenericDataFormat(T)());
+    VolumeCLPrecision(uvec3 dimensions, DataFormatBase format = GenericDataFormat(T)());
+    VolumeCLPrecision(T* voxels, uvec3 dimensions, DataFormatBase format = GenericDataFormat(T)());
     virtual ~VolumeCLPrecision() {};
     virtual void initialize() { initialize(0); }
     virtual void initialize(void* voxels = NULL);
@@ -43,27 +43,26 @@ private :
 };
 
 template<typename T>
-VolumeCLPrecision<T>::VolumeCLPrecision() : VolumeCL() {
+VolumeCLPrecision<T>::VolumeCLPrecision(DataFormatBase format) : VolumeCL(format) {
     VolumeCLPrecision<T>::setTypeAndFormat();
     VolumeCLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-VolumeCLPrecision<T>::VolumeCLPrecision(uvec3 dimensions) : VolumeCL(dimensions) {
+VolumeCLPrecision<T>::VolumeCLPrecision(uvec3 dimensions, DataFormatBase format) : VolumeCL(dimensions, format) {
     VolumeCLPrecision<T>::setTypeAndFormat();
     VolumeCLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-VolumeCLPrecision<T>::VolumeCLPrecision(T* texels, uvec3 dimensions) : VolumeCL(dimensions) {
+VolumeCLPrecision<T>::VolumeCLPrecision(T* texels, uvec3 dimensions, DataFormatBase format) : VolumeCL(dimensions, format) {
     VolumeCLPrecision<T>::setTypeAndFormat();
     VolumeCLPrecision<T>::initialize(texels);
 }
 
 template<typename T>
 void VolumeCLPrecision<T>::setTypeAndFormat() {
-    //dataFormat_ = typeToString<T>();
-    imageFormat_ = cl::typeToImageFormat<T>();
+    imageFormat_ = cl::typeToImageFormat(getDataFormatId());
 
 }
 

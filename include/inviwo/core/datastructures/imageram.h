@@ -79,6 +79,8 @@ namespace inviwo {
     typedef ImageRAMPrecision<DataFLOAT32::type>   ImageRAMfloat32;
     typedef ImageRAMPrecision<DataFLOAT64::type>   ImageRAMfloat64;
 
+    typedef ImageRAMPrecision<DataVec4UINT8::type>   ImageRAMVec4uint8;
+
 } // namespace
 
 #endif // IVW_IMAGERAM_H

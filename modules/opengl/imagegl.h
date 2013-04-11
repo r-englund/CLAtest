@@ -35,7 +35,7 @@ namespace inviwo {
         virtual uvec2 getDimension() { return dimensions_;}
         virtual void copyAndResizeImage(DataRepresentation* target) ;
         void renderImagePlaneQuad() const;
-    private:
+    //private:
         FrameBufferObject* getFBO() {return frameBufferObject_;}
         Texture2D* getColorTexture() {return colorTexture_;}
         Texture2D* getDepthTexture() {return depthTexture_;}

@@ -22,6 +22,20 @@ namespace inviwo {
          DataRepresentation* convert(DataRepresentation* source);
     };
 
+    class IVW_MODULE_OPENGL_API ImageGL2RAMConverter : public RepresentationConverterType<ImageRAM> {
+
+    public:
+        ImageGL2RAMConverter();
+        virtual ~ImageGL2RAMConverter();
+
+        inline bool canConvert(DataRepresentation* source) {
+            if (dynamic_cast<ImageGL*>(source)) return true;
+            return false;
+        }
+
+        DataRepresentation* convert(DataRepresentation* source);
+    };
+
 } // namespace
 
 #endif // IVW_IMAGEGLCONVERTER_H

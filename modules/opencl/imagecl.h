@@ -13,8 +13,8 @@ namespace inviwo {
 class IVW_MODULE_OPENCL_API ImageCL : public ImageRepresentation {
 
 public:
-    ImageCL();
-    ImageCL(uvec2 dimensions);
+    ImageCL(DataFormatBase format = DataFormatBase());
+    ImageCL(uvec2 dimensions, DataFormatBase format = DataFormatBase());
     virtual ~ImageCL();
     virtual std::string getClassName() const { return "ImageCL"; }
     virtual void initialize(){};
@@ -24,7 +24,7 @@ public:
     virtual void copyAndResizeImage(DataRepresentation* target);
     virtual DataRepresentation* clone()=0;
     cl::ImageFormat getFormat() const { return imageFormat_;}
-    const cl::Image2D* getImage() const { return image2D_; }
+    cl::Image2D getImage() const { return *image2D_; }
 
 protected:
     cl::Image2D* image2D_;
@@ -34,9 +34,9 @@ protected:
 template<typename T>
 class IVW_MODULE_OPENCL_API ImageCLPrecision : public ImageCL {
 public:
-    ImageCLPrecision();
-    ImageCLPrecision(uvec2 dimensions);
-    ImageCLPrecision(T* texels, uvec2 dimensions);
+    ImageCLPrecision(DataFormatBase format = GenericDataFormat(T)());
+    ImageCLPrecision(uvec2 dimensions, DataFormatBase format = GenericDataFormat(T)());
+    ImageCLPrecision(T* texels, uvec2 dimensions, DataFormatBase format = GenericDataFormat(T)());
     virtual ~ImageCLPrecision() {};
     virtual void initialize(void* texels);
     virtual void deinitialize();
@@ -46,26 +46,26 @@ private :
 };
 
 template<typename T>
-ImageCLPrecision<T>::ImageCLPrecision() : ImageCL() {
+ImageCLPrecision<T>::ImageCLPrecision(DataFormatBase format) : ImageCL(format) {
     ImageCLPrecision<T>::setTypeAndFormat();
     ImageCLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-ImageCLPrecision<T>::ImageCLPrecision(uvec2 dimensions) : ImageCL(dimensions) {
+ImageCLPrecision<T>::ImageCLPrecision(uvec2 dimensions, DataFormatBase format) : ImageCL(dimensions, format) {
     ImageCLPrecision<T>::setTypeAndFormat();
     ImageCLPrecision<T>::initialize(0);
 }
 
 template<typename T>
-ImageCLPrecision<T>::ImageCLPrecision(T* texels, uvec2 dimensions) : ImageCL(dimensions) {
+ImageCLPrecision<T>::ImageCLPrecision(T* texels, uvec2 dimensions, DataFormatBase format) : ImageCL(dimensions, format) {
     ImageCLPrecision<T>::setTypeAndFormat();
     ImageCLPrecision<T>::initialize(texels);
 }
 
 template<typename T>
 void ImageCLPrecision<T>::setTypeAndFormat() {
-    imageFormat_ = cl::typeToImageFormat<T>();
+    imageFormat_ = cl::typeToImageFormat(getDataFormatId());
 
 }
 
@@ -100,7 +100,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
 template<typename T>
 DataRepresentation* ImageCLPrecision<T>::clone() {
     ImageCLPrecision* newImageCL = new ImageCLPrecision<T>(dimensions_);
-    OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, *(newImageCL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
+    OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, (newImageCL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
     return newImageCL;
 }
 

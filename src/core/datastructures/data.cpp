@@ -3,7 +3,7 @@
 namespace inviwo {
 
 Data::Data() {}
-Data::~Data() {}
+Data::~Data() { clearRepresentations(); }
 
 void Data::clearRepresentations() {
     while (!representations_.empty()) {

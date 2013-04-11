@@ -3,14 +3,14 @@
 #include <inviwo/core/util/assertion.h>
 namespace inviwo {
 
-ImageCL::ImageCL()
-    : ImageRepresentation(uvec2(128,128)), image2D_(0) //TODO: use actual value
+ImageCL::ImageCL(DataFormatBase format)
+    : ImageRepresentation(uvec2(128,128), format), image2D_(0) //TODO: use actual value
 {
     initialize();
 }
 
-ImageCL::ImageCL(uvec2 dimensions)
-    : image2D_(0), ImageRepresentation(dimensions)
+ImageCL::ImageCL(uvec2 dimensions, DataFormatBase format)
+    : image2D_(0), ImageRepresentation(dimensions, format)
 {
     initialize();
 }
@@ -35,7 +35,7 @@ void ImageCL::copyAndResizeImage(DataRepresentation* target) {
 
     if (!targetCL) return;
 
-    ImageCLResizer::resize(*image2D_, *(targetCL->getImage()), targetCL->dimension());
+    ImageCLResizer::resize(*image2D_, (targetCL->getImage()), targetCL->dimension());
 
 }
 

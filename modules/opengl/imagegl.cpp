@@ -1,22 +1,24 @@
+#include <inviwo/core/util/formats.h>
 #include "imagegl.h"
 #include "glwrap/shader.h"
+
 
 namespace inviwo {
 
 ImageGL::ImageGL()
-    : ImageRepresentation(uvec2(256,256))
+    : ImageRepresentation(uvec2(256,256), DataVec4UINT8())
 {
     initialize();
 }
 
 ImageGL::ImageGL(uvec2 dimensions)
-    : ImageRepresentation(dimensions)
+    : ImageRepresentation(dimensions, DataVec4UINT8())
 {
     initialize();
 }
 
 ImageGL::ImageGL(Texture2D* colorTexture, uvec2 dimensions)
-    : ImageRepresentation(dimensions)
+    : ImageRepresentation(dimensions, DataVec4UINT8())
 {
     initialize();
     colorTexture_ = colorTexture;

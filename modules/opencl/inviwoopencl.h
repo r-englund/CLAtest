@@ -26,6 +26,7 @@ using cl::Platform;
 using cl::Program;
 using cl::ImageFormat;
 
+
 namespace inviwo {
 
 

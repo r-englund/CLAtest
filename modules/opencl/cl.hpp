@@ -232,9 +232,11 @@
 ///////////////////////////// inviwo modifications /////////////////////////////////////////////
 // The following modifications have been made:
 // - Replaced size_t<3> with glm::svec3
+// - Added constructors for NDRange to handle usage of glm::svec2 and glm::svec3
 // - Default device, context and command queue is replaced with corresponding inviwo variables
 #include <glm/glm.hpp>
 namespace glm {
+typedef glm::detail::tvec2<size_t>	svec2;
 typedef glm::detail::tvec3<size_t>	svec3;
 }
 
@@ -4301,6 +4303,14 @@ public:
         sizes_[1] = size1;
     }
 
+    //! \brief Constructs two-dimensional range.
+    NDRange(const glm::svec2& size)
+        : dimensions_(2)
+    {
+        sizes_[0] = size[0];
+        sizes_[1] = size[1];
+    }
+
     //! \brief Constructs three-dimensional range.
     NDRange(::size_t size0, ::size_t size1, ::size_t size2)
         : dimensions_(3)
@@ -4308,6 +4318,15 @@ public:
         sizes_[0] = size0;
         sizes_[1] = size1;
         sizes_[2] = size2;
+    }
+
+    //! \brief Constructs three-dimensional range.
+    NDRange(const glm::svec3& size)
+        : dimensions_(3)
+    {
+        sizes_[0] = size[0];
+        sizes_[1] = size[1];
+        sizes_[2] = size[2];
     }
 
     /*! \brief Conversion operator to const ::size_t *.
