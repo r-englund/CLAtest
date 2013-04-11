@@ -18,6 +18,8 @@ namespace inviwo {
         void setOffset(ivec3); 
         ivec3 getOffset();
         DataFormatBase getDataFormat();
+    protected:
+        void createDefaultRepresentation();
     };
 
 } // namespace

@@ -50,12 +50,7 @@ void MinMaxProcessor::process() {
     //Get images from in- and outport.
     Image* inputImage = inport0_.getData();
     Image* outImage = outport_.getData();
-    
-    //Add a GL representation to outport if there isn't any already. This should be done in data.h,
-    //when it is implemented, the if wont be nessecary.
-    if(outImage->getRepresentation<ImageGL>() == NULL)
-        outImage->addRepresentation(new ImageGL());
-    
+       
     //Get ram representation
     ImageRAM *imageRam = inputImage->getRepresentation<ImageRAM>();
 
@@ -71,8 +66,8 @@ void MinMaxProcessor::process() {
     //Print results
     LogInfoS(getClassName(), " Image minimum: " << minmax.x << " maximum: " << minmax.y);
     
-    if(outImage->getRepresentation<ImageGL>() == NULL)
-        outImage->addRepresentation(new ImageGL(dim));
+    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    outImageGL->resize(dim);
 
     activateTarget(outport_);
 

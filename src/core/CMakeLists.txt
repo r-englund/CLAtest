@@ -14,6 +14,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imagedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imageram.h

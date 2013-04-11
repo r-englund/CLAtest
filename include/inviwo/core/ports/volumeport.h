@@ -13,10 +13,10 @@ public:
     VolumePort(Port::PortDirection direction, std::string identifier);
     virtual ~VolumePort();
 
-    virtual void initialize();
-    virtual void deinitialize();
+    void initialize();
+    void deinitialize();
 
-    virtual uvec3 getColorCode() const { return uvec3(188,101,101); }
+    uvec3 getColorCode() const { return uvec3(188,101,101); }
 };
 
 } // namespace

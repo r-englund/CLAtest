@@ -23,6 +23,8 @@ namespace inviwo {
         if(imageDisk){
 
             switch (imageDisk->getDataFormatId()) {
+            case Vec4UINT8:
+                return new ImageRAMVec4uint8(static_cast<DataVec4UINT8::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
             case FLOAT16:
                 return new ImageRAMfloat16(static_cast<DataFLOAT16::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
             case FLOAT32:

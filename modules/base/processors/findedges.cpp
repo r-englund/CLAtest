@@ -34,19 +34,12 @@ void FindEdges::process() {
     
     Image* inputImage = inport0_.getData();
     Image* outImage = outport_.getData();
-
+    
+    ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
 
-    //Temporary line because of converterpackage not working (data.h)
-    //this line forces a ImageRAM representation to be made which results
-    //in a representation that we can convert to a ImageGL.
-    ImageRAM* temp = inputImage->getRepresentation<ImageRAM>();
-  
-    ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
-
     uvec2 csize = inImageGL->getDimension();
-    if(outImage->getRepresentation<ImageGL>() == NULL)
-        outImage->addRepresentation(new ImageGL(csize));
+    outImageGL->resize(csize);
 
     activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);

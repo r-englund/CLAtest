@@ -4,6 +4,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <inviwo/core/datastructures/imageram.h>
+#include <inviwo/core/datastructures/imageramconverter.h>
 #include "imagegl.h"
 
 namespace inviwo {
@@ -34,6 +35,16 @@ namespace inviwo {
         }
 
         DataRepresentation* convert(DataRepresentation* source);
+    };
+
+    class IVW_MODULE_OPENGL_API ImageDisk2GLConverter : public RepresentationConverterPackage<ImageGL> {
+
+    public:
+        ImageDisk2GLConverter() : RepresentationConverterPackage<ImageGL>(){
+            addConverter(new ImageDisk2RAMConverter());
+            addConverter(new ImageRAM2GLConverter());
+        };
+        virtual ~ImageDisk2GLConverter() {};
     };
 
 } // namespace

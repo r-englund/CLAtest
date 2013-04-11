@@ -41,11 +41,6 @@ void SimpleRaycaster::deinitialize() {
 }
 
 void SimpleRaycaster::process() {
-    
-    Image* outImage = outport_.getData();
-    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    uvec2 outportDim = outImageGL->getDimension();
-
     Volume* volume = volumePort_.getData();
     VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
     uvec3 volumeDim = volumeGL->getDimensions();
@@ -53,6 +48,9 @@ void SimpleRaycaster::process() {
     bindColorTexture(exitPort_, GL_TEXTURE1);
     volumeGL->bindTexture(GL_TEXTURE2);
     activateTarget(outport_);
+    Image* outImage = outport_.getData();
+    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    uvec2 outportDim = outImageGL->getDimension();
     shader_->activate();
     shader_->setUniform("entryTex_", 0);
     shader_->setUniform("exitTex_", 1);

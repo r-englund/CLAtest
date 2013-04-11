@@ -34,18 +34,12 @@ void ImageGrayscale::process() {
     
     Image* inputImage = inport0_.getData();
     Image* outImage = outport_.getData();
-
-    //Temporary line because of converterpackage not working (data.h)
-    //this line forces a ImageRAM representation to be made which results
-    //in a representation that we can convert to a ImageGL.
-    ImageRAM* temp = inputImage->getRepresentation<ImageRAM>();
     
     ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
+    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
 
     uvec2 imageSize = inImageGL->getDimension();
-    
-    if(outImage->getRepresentation<ImageGL>() == NULL)
-        outImage->addRepresentation(new ImageGL(imageSize));
+    outImageGL->resize(imageSize);
 
     activateTarget(outport_);
     bindColorTexture(inport0_, GL_TEXTURE0);

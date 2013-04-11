@@ -33,7 +33,7 @@ Image* ImagePort::resizeImageData(uvec2 dimensions) {
     return result;
     */
 
-    //TODO: imageDataMap_ needs to be cleaned up, when when dimensions or connections change
+    //TODO: imageDataMap_ needs to be cleaned up, when dimensions or connections change
     Image* result = 0;
     std::ostringstream dimensionString;
     dimensionString << dimensions.x << "x" << dimensions.y;

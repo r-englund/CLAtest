@@ -3,10 +3,13 @@
 
 namespace inviwo {
 
+    VolumeDisk::VolumeDisk()
+        : VolumeRepresentation(uvec3(128,128,128), DataUINT8()), DiskRepresentation()
+    {}
+
     VolumeDisk::VolumeDisk(std::string srcFile)
-        : VolumeRepresentation(uvec3(128,128,128), DataUINT8())
+        : VolumeRepresentation(uvec3(128,128,128), DataUINT8()), DiskRepresentation(srcFile)
     {
-        sourceFile_ = srcFile;
         initialize();
     }
 
@@ -14,12 +17,12 @@ namespace inviwo {
 
     void VolumeDisk::initialize() {
 
-        std::string fileExtension = UrlParser::getFileExtension(sourceFile_);
+        std::string fileExtension = UrlParser::getFileExtension(getSourceFile());
         if (!fileExtension.empty()) {
             //TODO: better pattern for automatic data reader selection
             if (fileExtension=="dat") {
                 ReaderSettings readerSettings;
-                DatVolumeReader::readDatFileSettings(sourceFile_, readerSettings);
+                DatVolumeReader::readDatFileSettings(getSourceFile(), readerSettings);
                 //dataFormat_ = readerSettings.dataFormat_;
                 dimensions_ = readerSettings.dimensions_;
             }
@@ -28,12 +31,12 @@ namespace inviwo {
     }
 
     void* VolumeDisk::loadRawData() {
-        std::string fileExtension = UrlParser::getFileExtension(sourceFile_);
+        std::string fileExtension = UrlParser::getFileExtension(getSourceFile());
         if (!fileExtension.empty()) {
             //TODO: better pattern for automatic data reader selection
             if (fileExtension=="dat") {
                 ReaderSettings readerSettings;
-                DatVolumeReader::readDatFileSettings(sourceFile_, readerSettings);
+                DatVolumeReader::readDatFileSettings(getSourceFile(), readerSettings);
                 return RawVolumeReader::loadRawData(readerSettings);                
             }
         }
@@ -45,7 +48,7 @@ namespace inviwo {
     }
 
     DataRepresentation* VolumeDisk::clone() {
-        return new VolumeDisk(sourceFile_);
+        return new VolumeDisk(getSourceFile());
     }
 
 

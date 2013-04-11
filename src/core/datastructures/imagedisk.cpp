@@ -4,12 +4,10 @@
 namespace inviwo {
 
     ImageDisk::ImageDisk()
-        : ImageRepresentation()
-    {}
+        : ImageRepresentation(uvec2(128,128), DataVec4UINT8()), DiskRepresentation(){}
 
 	ImageDisk::ImageDisk(std::string url)
-        : ImageRepresentation(uvec2(128,128), DataUINT8()){
-		sourceFile_ = url;
+        : ImageRepresentation(), DiskRepresentation(url){
         initialize();
 	}
 
@@ -17,20 +15,22 @@ namespace inviwo {
     }
 
     void ImageDisk::initialize(){
-        if(!sourceFile_.empty()){
-            dimensions_ = ImageLoader::imageDimensions(sourceFile_);
-            ImageLoader::loadImageToData(sourceFile_);
+        if(hasSourceFile()){
+            dimensions_ = ImageLoader::imageDimensions(getSourceFile());
         }
     }
 
     void* ImageDisk::loadFileData(){
-        return ImageLoader::loadImageToData(sourceFile_);  
+        if(hasSourceFile())
+            return ImageLoader::loadImageToData(getSourceFile());
+
+        return NULL;
     }
 
     void ImageDisk::deinitialize() {}
 
     DataRepresentation* ImageDisk::clone() {
-        return new ImageDisk(sourceFile_);
+        return new ImageDisk(getSourceFile());
     }
 
 } // namespace

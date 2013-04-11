@@ -6,7 +6,7 @@ Data::Data() {}
 Data::~Data() { clearRepresentations(); }
 
 void Data::clearRepresentations() {
-    while (!representations_.empty()) {
+    while (hasRepresentations()) {
         delete representations_.back();
         representations_.pop_back();
     }
@@ -21,6 +21,10 @@ void Data::copyRepresentations(Data* targetData) {
 
 void Data::addRepresentation(DataRepresentation* representation) {
     representations_.push_back(representation);
+}
+
+bool Data::hasRepresentations() const {
+    return !representations_.empty();
 }
 
 void Data::copyMetaData(Data* targetData) {
@@ -50,6 +54,7 @@ void Data3D::setDimension(ivec3 dim) {
 /*---------------------------------------------------------------*/
 
 Data2D::Data2D() : PARENT() {
+
 }
 
 Data2D::Data2D(Data::TYPE2D dim) : PARENT() {
@@ -65,5 +70,6 @@ ivec2 Data2D::getDimension() {
 void Data2D::setDimension(ivec2 dim) {
     Data2D::PARENT::setDimension<ivec2,IVec2MetaData>(dim);
 }
+
 
 } // namespace

@@ -2,11 +2,12 @@
 #define IVW_IMAGEDISK_H
 
 #include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/datastructures/diskrepresentation.h>
 #include <inviwo/core/datastructures/imagerepresentation.h>
 
 namespace inviwo {
 
-    class IVW_CORE_API ImageDisk : public ImageRepresentation {
+    class IVW_CORE_API ImageDisk : public ImageRepresentation, public DiskRepresentation {
 
     public:
         ImageDisk();
@@ -16,11 +17,8 @@ namespace inviwo {
         virtual void deinitialize();
         virtual DataRepresentation* clone();
         virtual std::string getClassName() const { return "ImageDisk"; };
-        std::string getSourceFile(){ return sourceFile_; };
         void copyAndResizeImage(DataRepresentation*){};
         void* loadFileData();
-	private:
-		std::string sourceFile_;
     };
 
 } // namespace

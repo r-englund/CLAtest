@@ -13,15 +13,15 @@ public:
     ImagePort(Port::PortDirection direction, std::string identifier);
     virtual ~ImagePort();
 
-    virtual void initialize();
-    virtual void deinitialize();
+    void initialize();
+    void deinitialize();
 
     void changeDimensions(uvec2 dimensions);
     uvec2 getDimensions() { return dimensions_; }
 
-    virtual Image* getData();
+    Image* getData();
 
-    virtual uvec3 getColorCode() const { return uvec3(90,127,183); }
+    uvec3 getColorCode() const { return uvec3(90,127,183); }
 
 private:
     uvec2 dimensions_;
