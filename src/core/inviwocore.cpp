@@ -23,70 +23,70 @@
 
 namespace inviwo {
 
-    const std::string InviwoCore::logSource_ = "InviwoCore";
+const std::string InviwoCore::logSource_ = "InviwoCore";
 
-    InviwoCore::InviwoCore() : InviwoModule() {
-        setIdentifier("Core");
-        //setXMLFileName(InviwoApplication::app()->getRootPath() + "/src/core/core.xml", true);
+InviwoCore::InviwoCore() : InviwoModule() {
+    setIdentifier("Core");
+    //setXMLFileName(InviwoApplication::app()->getRootPath() + "/src/core/core.xml", true);
 
-        addProcessor(new VolumeSource());
+    addProcessor(new VolumeSource());
 
-        addRepresentationConverter(new VolumeDisk2RAMConverter());
-        addRepresentationConverter(new ImageDisk2RAMConverter());
-        addRepresentationConverter(new ImageRAM2GLConverter());
+    addRepresentationConverter(new VolumeDisk2RAMConverter());
+    addRepresentationConverter(new ImageDisk2RAMConverter());
+    addRepresentationConverter(new ImageRAM2GLConverter());
 
-        addMetaData(new PositionMetaData());
-        addMetaData(new ProcessorMetaData());
-        addMetaData(new ProcessorWidgetMetaData());
+    addMetaData(new PositionMetaData());
+    addMetaData(new ProcessorMetaData());
+    addMetaData(new ProcessorWidgetMetaData());
 
-        addResourceInfo(new SystemInfo());
+    addResourceInfo(new SystemInfo());
 
-        allocTest_ = NULL;
+    allocTest_ = NULL;
+}
+
+void InviwoCore::setupModuleSettings(){
+    if (getSettings()){
+        SystemInfo* sysInfo = getTypeFromVector<SystemInfo>(getResourceInfos());
+        if(sysInfo){
+            ButtonProperty* btnSysInfo = new ButtonProperty("printSysInfo", "Print System Info");
+            btnSysInfo->registerClassMemberFunction(sysInfo, &SystemInfo::printInfo);
+            getSettings()->addProperty(btnSysInfo);
+
+            getSettings()->addProperty(new IntProperty("useRAMPercent", "Max Use Mem %", 50, 1, 100));
+
+            ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");
+            btnAllocTest->registerClassMemberFunction(this, &InviwoCore::allocationTest);
+            getSettings()->addProperty(btnAllocTest);
+
+            getSettings()->addProperty(new BoolProperty("txtEditor","Use system text editor", true));
+        }           
     }
+}
 
-    void InviwoCore::setupModuleSettings(){
-        if(getSettings()){
-            SystemInfo* sysInfo = getTypeFromVector<SystemInfo>(getResourceInfos());
-            if(sysInfo){
-                ButtonProperty* btnSysInfo = new ButtonProperty("printSysInfo", "Print System Info");
-                btnSysInfo->registerClassMemberFunction(sysInfo, &SystemInfo::printInfo);
-                getSettings()->addProperty(btnSysInfo);
-
-                getSettings()->addProperty(new IntProperty("useRAMPercent", "Max Use Mem %", 50, 1, 100));
-
-                ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");
-                btnAllocTest->registerClassMemberFunction(this, &InviwoCore::allocationTest);
-                getSettings()->addProperty(btnAllocTest);
-
-                getSettings()->addProperty(new BoolProperty("txtEditor","Use system text editor", true));
-            }           
-        }
-    }
-
-    void InviwoCore::allocationTest(){
-        if(getSettings()){
-            SystemInfo* sysInfo = getTypeFromVector<SystemInfo>(getResourceInfos());
-            if(sysInfo){
-                if(allocTest_){
-                    delete allocTest_;
-                    LogInfo("Deleted previous test allocation");
-                }
-                IntProperty* useRAMPercent = dynamic_cast<IntProperty*>(getSettings()->getPropertyByIdentifier("useRAMPercent"));
-                uint64_t memBytesAlloc = sysInfo->getAvailableMemory(); //In Bytes
-                LogInfo("Maximum Available Memory is " << formatBytesToString(memBytesAlloc));
-                memBytesAlloc /= 100; //1% of total available memory
-                memBytesAlloc *= useRAMPercent->get(); //?% of total available memory
-                try
-                {
-                    allocTest_ = new uint32_t[static_cast<uint32_t>(memBytesAlloc/4)];
-                    LogInfo("Allocated " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
-                }
-                catch(std::bad_alloc&)
-                {
-                    LogError("Failed allocation of " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
-                }
+void InviwoCore::allocationTest(){
+    if (getSettings()){
+        SystemInfo* sysInfo = getTypeFromVector<SystemInfo>(getResourceInfos());
+        if(sysInfo){
+            if(allocTest_){
+                delete allocTest_;
+                LogInfo("Deleted previous test allocation");
+            }
+            IntProperty* useRAMPercent = dynamic_cast<IntProperty*>(getSettings()->getPropertyByIdentifier("useRAMPercent"));
+            uint64_t memBytesAlloc = sysInfo->getAvailableMemory(); //In Bytes
+            LogInfo("Maximum Available Memory is " << formatBytesToString(memBytesAlloc));
+            memBytesAlloc /= 100; //1% of total available memory
+            memBytesAlloc *= useRAMPercent->get(); //?% of total available memory
+            try
+            {
+                allocTest_ = new uint32_t[static_cast<uint32_t>(memBytesAlloc/4)];
+                LogInfo("Allocated " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
+            }
+            catch(std::bad_alloc&)
+            {
+                LogError("Failed allocation of " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
             }
         }
     }
+}
 
 } // namespace

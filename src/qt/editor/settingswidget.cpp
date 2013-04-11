@@ -12,6 +12,7 @@ SettingsWidget::SettingsWidget(QWidget* parent) : InviwoDockWidget(tr("Settings"
 
     QFrame* frame = new QFrame();
     vLayout_ = new QVBoxLayout(frame);
+    vLayout_->setSpacing(0);
 
     frame->setLayout(vLayout_);
     setWidget(frame);
@@ -28,12 +29,12 @@ void SettingsWidget::loadSettings() {
         PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
         vLayout_->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
-    } 
+    }
+    vLayout_->addStretch(1);
 }
 
 //Save application settings to QSettings
 void SettingsWidget::saveSettings() {
-
 }
 
 } // namespace

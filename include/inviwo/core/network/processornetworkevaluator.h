@@ -21,7 +21,7 @@ public:
 
     void setProcessorNetwork(ProcessorNetwork* processorNetwork);
     void registerCanvas(Canvas* canvas, std::string associatedProcessName="CanvasProcessorGL");
-    void deRegisterCanvas(Canvas *canvas);
+    void deregisterCanvas(Canvas *canvas);
     void setDefaultRenderContext(Canvas* canvas) {renderContext_ = canvas;}
     void initializeNetwork();
 

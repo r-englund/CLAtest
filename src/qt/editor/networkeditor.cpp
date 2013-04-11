@@ -22,6 +22,7 @@
 namespace inviwo {
 
 const std::string NetworkEditor::logSource_ = "NetworkEditor";
+const int NetworkEditor::GRID_SPACING = 25;
 
 NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     connectionCurve_ = 0;
@@ -93,17 +94,19 @@ void NetworkEditor::removePropertyWidgets(Processor* processor) {
 void NetworkEditor::removeProcessor(Processor* processor) {
     LogInfo("Removing processor.");
 
+    // deregister processors which act as initiation points for the network evaluation
     // TODO: generalize, should be done for all output processors
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
     if (canvasProcessor)
-        processorNetworkEvaluator_->deRegisterCanvas(canvasProcessor->getCanvas());
+        processorNetworkEvaluator_->deregisterCanvas(canvasProcessor->getCanvas());
 
     processorNetwork_->removeProcessor(processor);
     // deinitialize also removes the processor's widget
     processor->deinitialize();
     delete processor;
 
-processorNetworkEvaluator_->evaluate();
+    //FIXME: evaluation necessary?
+    processorNetworkEvaluator_->evaluate();
 }
 
 void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
@@ -186,10 +189,9 @@ bool NetworkEditor::processorWithIdentifierExists(std::string identifier) {
 }
 
 QPointF NetworkEditor::snapToGrid(QPointF pos) {
-    int gridInterval = 30;
     QPointF result;
-    result.setX((int(pos.x()/gridInterval-0.5))*gridInterval);
-    result.setY((int(pos.y()/gridInterval-0.5))*gridInterval);
+    result.setX((int(pos.x()/GRID_SPACING-0.5))*GRID_SPACING);
+    result.setY((int(pos.y()/GRID_SPACING-0.5))*GRID_SPACING);
     return result;
 }
 
@@ -231,7 +233,7 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
     std::vector<PortConnection*> connections = processorNetwork->getPortConnections();
     for (size_t i=0; i<connections.size(); i++) {
         PortConnection* connection = connections[i];
-        processorNetwork_->connectPorts(connection->getOutport(), connection->getInport());
+        processorNetwork_->addConnection(connection->getOutport(), connection->getInport());
     }
 
     /*
@@ -249,10 +251,10 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
             if (!inports[i]->isConnected()) {
                 if (dynamic_cast<ImagePort*>(port)) {
                     if (dynamic_cast<ImagePort*>(inports[i]))
-                        processorNetwork_->connectPorts(port, inports[i]);
+                        processorNetwork_->addConnection(port, inports[i]);
                 } else if (dynamic_cast<VolumePort*>(port)) {
                     if (dynamic_cast<VolumePort*>(inports[i]))
-                        processorNetwork_->connectPorts(port, inports[i]);
+                        processorNetwork_->addConnection(port, inports[i]);
                 }
             }
         }
@@ -340,7 +342,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
            addItem(linkCurve_);
            linkCurve_->show();          
        }
-        e->accept();
+       e->accept();
        return;
     }
 
@@ -367,8 +369,8 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(getConnectionGraphicsItemAt(e->scenePos()));
                 QPointF startPoint = connectionGraphicsItem->getStartPoint();
                 startProcessor_ = qgraphicsitem_cast<ProcessorGraphicsItem*>(getProcessorGraphicsItemAt(startPoint));
-                processorNetwork_->disconnectPorts(connectionGraphicsItem->getInport(),
-                                                   connectionGraphicsItem->getOutport());
+                processorNetwork_->removeConnection(connectionGraphicsItem->getInport(),
+                                                    connectionGraphicsItem->getOutport());
                 removeConnectionGraphicsItem(connectionGraphicsItem);
                 connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos());
                 connectionCurve_->setZValue(2.0);
@@ -445,7 +447,7 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         if (endProcessor_) {
             endPort_ = endProcessor_->getSelectedPort(e->scenePos());
             if (endPort_ && !endPort_->isOutport()) {
-                processorNetwork_->connectPorts(startPort_, endPort_);
+                processorNetwork_->addConnection(startPort_, endPort_);
                 addConnectionGraphicsItem(startProcessor_, startPort_, endProcessor_, endPort_);
             }
         }
@@ -474,21 +476,26 @@ void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
 void NetworkEditor::keyPressEvent(QKeyEvent* e) {
     // delete selected graphics items
     if (e->key() == Qt::Key_Delete) {
-        // first delete connections & links
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
             ConnectionGraphicsItem* connectionGraphicsItem = dynamic_cast<ConnectionGraphicsItem*>(selectedGraphicsItems[i]);
-            if (connectionGraphicsItem)
-                processorNetwork_->disconnectPorts(connectionGraphicsItem->getInport(),
-                                                   connectionGraphicsItem->getOutport());
+            if (connectionGraphicsItem) {
+                removeConnectionGraphicsItem(connectionGraphicsItem);
+                processorNetwork_->removeConnection(connectionGraphicsItem->getInport(),
+                                                    connectionGraphicsItem->getOutport());
+                delete connectionGraphicsItem;
+            }
         }
         
         selectedGraphicsItems = selectedItems();
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
             LinkConnectionGraphicsItem* linkGraphicsItem = dynamic_cast<LinkConnectionGraphicsItem*>(selectedGraphicsItems[i]);
-            if (linkGraphicsItem)
+            if (linkGraphicsItem) {
+                removeLinkGraphicsItem(linkGraphicsItem);
                 processorNetwork_->removeLink(linkGraphicsItem->getOutProcessor()->getProcessor(),
                                               linkGraphicsItem->getInProcessor()->getProcessor());
+                delete linkGraphicsItem;
+            }
         }
 
         // second delete processors
@@ -498,6 +505,7 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
             if (processorGraphicsItem) {
                 Processor* processor = processorGraphicsItem->getProcessor();
                 removeProcessorGraphicsItem(processor);
+                update();
                 removeProcessor(processor);
             }
         }
@@ -573,8 +581,8 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
         QAction* action = menu.addAction(tr("Delete"));
         QAction* result = menu.exec(QCursor::pos());
         if (result == action)
-            processorNetwork_->disconnectPorts(connectionGraphicsItem->getInport(),
-                                               connectionGraphicsItem->getOutport());
+            processorNetwork_->removeConnection(connectionGraphicsItem->getInport(),
+                                                connectionGraphicsItem->getOutport());
     } else if (linkConnectionGraphicsItem) {
         QMenu menu;
         QAction* linkAction = menu.addAction(tr("Link properties"));
@@ -644,19 +652,18 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
 }
 
 void NetworkEditor::drawBackground(QPainter* painter, const QRectF & rect) {
-    int gridInterval = 30;
     painter->setWorldMatrixEnabled(true);
     painter->fillRect(rect, Qt::darkGray);
 
-    qreal left = int(rect.left()) - (int(rect.left()) % gridInterval );
-    qreal top = int(rect.top()) - (int(rect.top()) % gridInterval );
+    qreal left = int(rect.left()) - (int(rect.left()) % GRID_SPACING );
+    qreal top = int(rect.top()) - (int(rect.top()) % GRID_SPACING );
 
     QVarLengthArray<QLineF, 100> linesX;
-    for (qreal x = left; x < rect.right(); x += gridInterval )
+    for (qreal x = left; x < rect.right(); x += GRID_SPACING )
         linesX.append(QLineF(x, rect.top(), x, rect.bottom()));
 
     QVarLengthArray<QLineF, 100> linesY;
-    for (qreal y = top; y < rect.bottom(); y += gridInterval )
+    for (qreal y = top; y < rect.bottom(); y += GRID_SPACING )
         linesY.append(QLineF(rect.left(), y, rect.right(), y));
 
     painter->drawLines(linesX.data(), linesX.size());

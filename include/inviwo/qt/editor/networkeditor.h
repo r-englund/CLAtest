@@ -105,6 +105,7 @@ private:
     Port* endPort_;
 
     bool gridSnapping_;
+    static const int GRID_SPACING;
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
 };

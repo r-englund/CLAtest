@@ -29,6 +29,11 @@ public:
     Port* getInport() const{ return inport_.getPort(); }
     Port* getOutport() const{ return outport_.getPort(); }
 
+    bool involvesProcessor(Processor* processor) const {
+        return (inport_.getPort()->getProcessor()==processor ||
+                outport_.getPort()->getProcessor()==processor);
+    }
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 

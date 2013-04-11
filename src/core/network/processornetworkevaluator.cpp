@@ -39,32 +39,21 @@ void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string assoc
     }
 }
 
-void ProcessorNetworkEvaluator::deRegisterCanvas(Canvas *canvas) {
-
-    /*
-    CanvasProcessor* canvasProc = dynamic_cast<CanvasProcessor*>(processorNetwork_->getProcessorByName(associatedProcessName));
-
-    if(canvasProc) {
-
-        Canvas* canvas = canvasProc->getCanvas();
-
-       if(canvas) {
-
-            if( std::find(registeredCanvases_.begin(), registeredCanvases_.end(), canvas)== registeredCanvases_.end()) {
+void ProcessorNetworkEvaluator::deregisterCanvas(Canvas *canvas) {
+    std::vector<CanvasProcessor*> canvasProcessors = processorNetwork_->getProcessorsByType<CanvasProcessor>();
+    for (unsigned int i=0; i<canvasProcessors.size(); i++) {
+        Canvas* curCanvas = canvasProcessors[i]->getCanvas();
+        if (curCanvas==canvas) {
+            if (std::find(registeredCanvases_.begin(), registeredCanvases_.end(), canvas)!=registeredCanvases_.end()) {
+                canvas->setNetworkEvaluator(0);
+                canvasProcessors[i]->setCanvas(0);
+                registeredCanvases_.erase(std::remove(registeredCanvases_.begin(), registeredCanvases_.end(),
+                                          canvas), registeredCanvases_.end());
                 return;
             }
-
-             canvas->setNetworkEvaluator(0);
-            canvasProc->setCanvas(0);
-
-            registeredCanvases_.erase(std::remove(registeredCanvases_.begin(), registeredCanvases_.end(),
-                                        canvas), registeredCanvases_.end());
         }
     }
-    */
-
-    registeredCanvases_.erase(std::remove(registeredCanvases_.begin(), registeredCanvases_.end(),
-                                        canvas), registeredCanvases_.end());
+    LogError("Trying to deregister unregistered Canvas.");
 }
 
 
@@ -335,19 +324,7 @@ void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty) 
 void ProcessorNetworkEvaluator::evaluate() {
     std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
     std::vector<Property*> sourceProperties;
-    for (size_t i=0; i<links.size(); i++) {
-        if (!links[i]->isValid()) {
-            //links[i]->evaluate(linkEvaluator_);
-            sourceProperties = links[i]->getSourceProperties();
-            for (size_t j=0; j<sourceProperties.size(); j++) {
-                if (!sourceProperties[j]->isValid()) {
-                    evaluatePropertyLinks(sourceProperties[j]);
-                    sourceProperties[j]->setValid();
-                }
-             }
-        }
-        sourceProperties.clear();
-    }
+       
 
     repaintRequired_ = false;
     

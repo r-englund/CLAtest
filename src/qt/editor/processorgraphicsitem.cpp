@@ -13,9 +13,9 @@
 
 namespace inviwo {
 
-static const int width = 120;
-static const int height = 60;
-static const int roundedCorners = 10;
+static const int width = 150;
+static const int height = 50;
+static const int roundedCorners = 9;
 static const int labelHeight = 8;
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
@@ -78,19 +78,19 @@ QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
     centerPoints.push_back(c);
 
     //right boundary center
-    propertyMappedDim = mapToParent(br) -  mapToParent(bl);
+    propertyMappedDim = mapToParent(br) - mapToParent(bl);
     centerPoints.push_back(c + (propertyMappedDim/2.0));
 
     //left boundary center
-    propertyMappedDim = mapToParent(bl) -  mapToParent(br);
+    propertyMappedDim = mapToParent(bl) - mapToParent(br);
     centerPoints.push_back(c + (propertyMappedDim/2.0));
 
     //top boundary center
-    propertyMappedDim = mapToParent(tr) -  mapToParent(br);
+    propertyMappedDim = mapToParent(tr) - mapToParent(br);
     centerPoints.push_back(c + (propertyMappedDim/2.0));
 
     //bottom boundary center
-    propertyMappedDim = mapToParent(br) -  mapToParent(tr);
+    propertyMappedDim = mapToParent(br) - mapToParent(tr);
     centerPoints.push_back(c + (propertyMappedDim/2.0));
     
     qreal minDist = std::numeric_limits<qreal>::max();
@@ -106,18 +106,15 @@ QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
 }
 
 QRectF ProcessorGraphicsItem::calculatePortRect(size_t curPort, Port::PortDirection portDir) const {
-    QPointF portDims(10.0f, 10.0f);
+    QPointF portDims(9.0f, 9.0f);
+    float xOffset = 8.0f;   // based on roundedCorners
+    float xSpacing = 12.5f; // GRID_SIZE / 2.0
     
-    if (portDir == Port::INPORT) {
-        qreal left = rect().left()+10.0f+curPort*(portDims.x()*1.5);
-        qreal top = rect().top();
-        return QRectF(left, top, portDims.x(), portDims.y());
-    }
-    else {
-        qreal left = rect().left()+10.0f+curPort*(portDims.x()*1.5);
-        qreal top = rect().bottom()-portDims.y();
-        return QRectF(left, top, portDims.x(), portDims.y());
-    }
+    qreal left = rect().left()+xOffset+curPort*xSpacing;
+    qreal top;
+    if (portDir == Port::INPORT) top = rect().top();
+    else top = rect().bottom()-portDims.y();
+    return QRectF(left, top, portDims.x(), portDims.y());
 }
 
 QRectF ProcessorGraphicsItem::calculatePortRect(Port* port) const {
@@ -159,25 +156,28 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     IVW_UNUSED_PARAM(widget);
 
     p->save();
-    p->setPen(Qt::black);
+    p->setPen(Qt::NoPen);
     p->setRenderHint(QPainter::Antialiasing, true);
+
+    QColor topColor(140,140,140);
+    QColor middleColor(59,61,61);
+    QColor bottomColor(40,40,40);
 
     // paint processor
     QLinearGradient grad(rect().topLeft(), rect().bottomLeft());
-
     if (isSelected()) {
-        grad.setColorAt(0.0f, QColor(110,77,77));
-        grad.setColorAt(0.2f, QColor(110,77,77));
-        grad.setColorAt(1.0f, QColor(50,38,38));
+        grad.setColorAt(0.0f, topColor);
+        grad.setColorAt(0.2f, middleColor);
+        grad.setColorAt(0.5f, Qt::darkRed);
+        grad.setColorAt(1.0f, bottomColor);
     } else {
-        grad.setColorAt(0.0f, QColor(77,77,77));
-        grad.setColorAt(0.2f, QColor(77,77,77));
-        grad.setColorAt(1.0f, QColor(38,38,38));
+        grad.setColorAt(0.0f, topColor);
+        grad.setColorAt(0.2f, middleColor);
+        grad.setColorAt(1.0f, bottomColor);
     }
-    p->setBrush(grad);
 
-    QPainterPath roundRectPath;
     QRectF bRect = rect();
+    QPainterPath roundRectPath;
     roundRectPath.moveTo(bRect.left(), bRect.top()+roundedCorners);
     roundRectPath.lineTo(bRect.left(), bRect.bottom()-roundedCorners);
     roundRectPath.arcTo(bRect.left(), bRect.bottom()-(2*roundedCorners), (2*roundedCorners), (2*roundedCorners), 180.0, 90.0);
@@ -187,14 +187,49 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     roundRectPath.arcTo(bRect.right()-(2*roundedCorners), bRect.top(), (2*roundedCorners), (2*roundedCorners), 0.0, 90.0);
     roundRectPath.lineTo(bRect.left()+roundedCorners, bRect.top());
     roundRectPath.arcTo(bRect.left(), bRect.top(), (2*roundedCorners), (2*roundedCorners), 90.0, 90.0);
+    p->setBrush(grad);
+    p->drawPath(roundRectPath);
+
+
+    QLinearGradient highlightGrad(rect().topLeft(), rect().bottomLeft());
+    if (isSelected()) {
+        highlightGrad.setColorAt(0.0f, bottomColor);
+        highlightGrad.setColorAt(0.1f, bottomColor);
+        highlightGrad.setColorAt(0.5f, Qt::darkRed);
+        highlightGrad.setColorAt(1.0f, bottomColor);
+    } else {
+        highlightGrad.setColorAt(0.0f, bottomColor);
+        highlightGrad.setColorAt(1.0f, bottomColor);
+    }
+
+    QPainterPath highlightPath;
+    float highlightLength = bRect.width()/8.0;
+    highlightPath.moveTo(bRect.left(), bRect.top()+roundedCorners);
+    highlightPath.lineTo(bRect.left(), bRect.bottom()-roundedCorners);
+    highlightPath.arcTo(bRect.left(), bRect.bottom()-(2*roundedCorners), (2*roundedCorners), (2*roundedCorners), 180.0, 90.0);
+    highlightPath.lineTo(bRect.left()+(bRect.width()/2.0)+highlightLength, bRect.bottom());
+    highlightPath.lineTo(bRect.left()+(bRect.width()/2.0)-highlightLength, bRect.top());
+    highlightPath.lineTo(bRect.left()+roundedCorners, bRect.top());
+    highlightPath.arcTo(bRect.left(), bRect.top(), (2*roundedCorners), (2*roundedCorners), 90.0, 90.0);
+    p->setBrush(highlightGrad);
+    p->drawPath(highlightPath);
+
+    p->setPen(QPen(QColor(164,164,164), 1.0));
+    p->setBrush(Qt::NoBrush);
     p->drawPath(roundRectPath);
 
     // paint inports
+    p->setPen(QPen(bottomColor, 1.0));
+    //p->setPen(Qt::NoPen);
     std::vector<Port*> inports = processor_->getInports();
     for (size_t i=0; i<inports.size(); i++) {
         QRectF portRect = calculatePortRect(i, Port::INPORT);
         uvec3 portColor = inports[i]->getColorCode();
-        p->setBrush(QColor(portColor.r, portColor.g, portColor.b));
+        QLinearGradient portGrad(portRect.topLeft(), portRect.bottomLeft());
+        portGrad.setColorAt(0.0f, QColor(portColor.r*0.6, portColor.g*0.6, portColor.b*0.6));
+        portGrad.setColorAt(0.3f, QColor(portColor.r, portColor.g, portColor.b));
+        portGrad.setColorAt(1.0f, QColor(portColor.r, portColor.g, portColor.b));
+        p->setBrush(portGrad);
         p->drawRect(portRect);
     }
 
@@ -203,7 +238,11 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     for (size_t i=0; i<outports.size(); i++) {
         QRectF portRect = calculatePortRect(i, Port::OUTPORT);
         uvec3 portColor = outports[i]->getColorCode();
-        p->setBrush(QColor(portColor.r, portColor.g, portColor.b));
+        QLinearGradient portGrad(portRect.topLeft(), portRect.bottomLeft());
+        portGrad.setColorAt(0.0f, QColor(portColor.r*0.6, portColor.g*0.6, portColor.b*0.6));
+        portGrad.setColorAt(0.3f, QColor(portColor.r, portColor.g, portColor.b));
+        portGrad.setColorAt(1.0f, QColor(portColor.r, portColor.g, portColor.b));
+        p->setBrush(portGrad);
         p->drawRect(portRect);
     }
 

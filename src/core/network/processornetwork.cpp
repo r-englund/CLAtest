@@ -1,59 +1,78 @@
 #include <inviwo/core/network/processornetwork.h>
 
-//TODO: remove these includes
-#include <modules/base/processors/firstivwprocessor.h>
-#include <modules/base/processors/imagesource.h>
-#include <modules/base/processors/entryexitpoints.h>
-#include <modules/base/processors/simpleraycaster.h>
-#include <modules/base/processors/imagesource.h>
-#include <modules/opengl/canvasprocessorgl.h>
-#include <inviwo/core/processors/datasource/volumesource.h>
-
 namespace inviwo {
 
-// FIXME: temporary method supporting non serialization-based network creation
-    void ProcessorNetwork::connectPorts(Port* sourcePort, Port* destPort) {
-    destPort->connectTo(sourcePort);
-    portConnections_.push_back(new PortConnection(sourcePort, destPort));
-    modified();
-}    
+const std::string ProcessorNetwork::logSource_ = "ProcessorNetwork";
 
-void ProcessorNetwork::disconnectPorts(Port* sourcePort, Port* destPort) {
-    //TODO: remove connection information from sourcePort and destPort
-    for (size_t i=0; i<portConnections_.size(); i++) {            
-        if ( (portConnections_[i]->getInport()==sourcePort && portConnections_[i]->getOutport()==destPort) ||
-             (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort)
-            ) {                
-                 portConnections_.erase(portConnections_.begin()+i);
-                 break;
-            }
-    }        
+ProcessorNetwork::ProcessorNetwork() : VoidObservable(),
+    isModified_(true) {}
+
+ProcessorNetwork::~ProcessorNetwork() {}
+
+
+void ProcessorNetwork::addProcessor(Processor* processor) {
+    ivwAssert(std::find(processors_.begin(), processors_.end(), processor)==processors_.end(),
+              "Processor instance already contained in processor network.");
+    processors_.push_back(processor);
     modified();
 }
 
-ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* sourceProcessor, Processor* destProcessor) {
-    ProcessorLink* link=0;
-    for (size_t i=0; i<processorLinks_.size(); i++) { 
-        if ( (processorLinks_[i]->getInProcessor()==sourceProcessor && processorLinks_[i]->getOutProcessor()==destProcessor) ||
-             (processorLinks_[i]->getOutProcessor()==sourceProcessor && processorLinks_[i]->getInProcessor()==destProcessor)
-            ) {
-                link = processorLinks_[i];
+void ProcessorNetwork::removeProcessor(Processor* processor) {
+    ivwAssert(std::find(processors_.begin(), processors_.end(), processor)!=processors_.end(),
+              "Processor instance not contained in processor network.");
+
+    // remove all connections for this processor
+    std::vector<PortConnection*> portConnections = portConnections_;
+    for (size_t i=0; i<portConnections.size(); i++)
+        if (portConnections[i]->involvesProcessor(processor))
+            removeConnection(portConnections[i]->getInport(), portConnections[i]->getOutport());
+
+    // remove all links for this processor
+    std::vector<ProcessorLink*> processorLinks = processorLinks_;
+    for (size_t i=0; i<processorLinks.size(); i++)
+        if (processorLinks[i]->involvesProcessor(processor))
+            removeLink(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor());
+
+    // remove processor itself
+    processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
+
+    modified();
+}
+
+
+void ProcessorNetwork::addConnection(Port* sourcePort, Port* destPort) {
+    ivwAssert(!sourcePort->isConnectedTo(destPort), "Ports already connected.");
+    sourcePort->connectTo(destPort);
+    portConnections_.push_back(new PortConnection(sourcePort, destPort));
+    modified();
+}
+
+void ProcessorNetwork::removeConnection(Port* sourcePort, Port* destPort) {
+    for (size_t i=0; i<portConnections_.size(); i++) {
+        if ((portConnections_[i]->getInport()==sourcePort && portConnections_[i]->getOutport()==destPort) ||
+            (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort)) {                
+                sourcePort->disconnectFrom(destPort);
+                portConnections_.erase(portConnections_.begin()+i);
                 break;
         }
     }
-    return link;
+    modified();
 }
 
+
 void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {        
+    //FIXME: link processors
     processorLinks_.push_back(new ProcessorLink(sourceProcessor, destProcessor));
     modified();
 }
 
 void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destProcessor) {
     for (size_t i=0; i<processorLinks_.size(); i++) {            
-        if ((processorLinks_[i]->getInProcessor()==sourceProcessor && processorLinks_[i]->getOutProcessor()==destProcessor) ||
-            (processorLinks_[i]->getOutProcessor()==sourceProcessor && processorLinks_[i]->getInProcessor()==destProcessor)
-            ) {                
+        if ((processorLinks_[i]->getInProcessor()==sourceProcessor &&
+             processorLinks_[i]->getOutProcessor()==destProcessor) ||
+            (processorLinks_[i]->getOutProcessor()==sourceProcessor &&
+             processorLinks_[i]->getInProcessor()==destProcessor)) {
+                //FIXME: unlink processors
                 processorLinks_.erase(processorLinks_.begin()+i);
                 break;
         }
@@ -61,68 +80,29 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
     modified();
 }
 
-ProcessorNetwork::ProcessorNetwork() : VoidObservable() {
-    isModified_ = true;
-}
 
-ProcessorNetwork::~ProcessorNetwork() {}
-
-void ProcessorNetwork::addProcessor(Processor* processor) {
-    if(std::find(processors_.begin(), processors_.end(), processor)== processors_.end())
-        processors_.push_back(processor);
-    modified();
-}
-
-void ProcessorNetwork::removeProcessor(Processor* processor) {
-    // remove all connections to other processors
-    std::vector<PortConnection*> eraseList;
-    std::vector<Port*> outports = processor->getOutports();
-    for (size_t i=0; i<portConnections_.size(); i++) {
-        for (size_t j=0; j<outports.size(); j++) {
-            if (portConnections_[i]->getOutport() == outports[j]) {
-                outports[j]->disconnectFrom(portConnections_[i]->getInport());
-                eraseList.push_back(portConnections_[i]);
-            }
-        }
-    }
-    for (size_t i=0; i<eraseList.size(); i++) {
-        for (size_t j=0; j<portConnections_.size(); j++) {
-            if (portConnections_[j] == eraseList[i])
-                portConnections_.erase(portConnections_.begin()+j);
-        }
-    }
-
-    eraseList.clear();
-    std::vector<Port*> inports = processor->getInports();
-    for (size_t i=0; i<portConnections_.size(); i++) {
-        for (size_t j=0; j<inports.size(); j++) {
-            if (portConnections_[i]->getInport() == inports[j]) {
-                inports[j]->disconnectFrom(portConnections_[i]->getOutport());
-                eraseList.push_back(portConnections_[i]);
-            }
-        }
-    }
-    for (size_t i=0; i<eraseList.size(); i++) {
-        for (size_t j=0; j<portConnections_.size(); j++) {
-            if (portConnections_[j] == eraseList[i])
-                portConnections_.erase(portConnections_.begin()+j);
-        }
-    }
-
-    // remove processors itself
-    processors_.erase(std::remove(processors_.begin(), processors_.end(),
-                      processor), processors_.end());
-
-    modified();
-}
-
-Processor* ProcessorNetwork::getProcessorByName(std::string name) const {
+Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
     for (size_t i=0; i<processors_.size(); i++)
-        if ((processors_[i]->getIdentifier()).compare(name) == 0)
+        if (processors_[i]->getIdentifier()==identifier)
             return processors_[i];
+    LogWarn("Processor "+identifier+" not contained in processor network.");
     return 0;
-    // TODO: throw not found exception
 }
+
+ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* processor1, Processor* processor2) const {
+    for (size_t i=0; i<processorLinks_.size(); i++) { 
+        if ((processorLinks_[i]->getInProcessor()==processor1 &&
+             processorLinks_[i]->getOutProcessor()==processor2) ||
+            (processorLinks_[i]->getOutProcessor()==processor1 &&
+             processorLinks_[i]->getInProcessor()==processor2)) {
+            return processorLinks_[i];
+        }
+    }
+    LogWarn("No link between "+processor1->getIdentifier()+" and "+
+                               processor2->getIdentifier()+" contained in processor network.");
+    return 0;
+}
+
 
 void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("Processors", processors_, "Processor");
@@ -138,13 +118,11 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) {
     d.deserialize("Connections", portConnections, "Connection");
     d.deserialize("ProcessorLinks", processorLinks, "ProcessorLink");
 
-    for (size_t i=0; i<portConnections.size(); i++) {
-        connectPorts(portConnections[i]->getOutport(), portConnections[i]->getInport());
-    }
+    for (size_t i=0; i<portConnections.size(); i++)
+        addConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());
 
-    for (size_t i=0; i<processorLinks.size(); i++) {
+    for (size_t i=0; i<processorLinks.size(); i++)
         addLink(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor());
-    }
 }
 
 } // namespace

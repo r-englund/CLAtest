@@ -2,8 +2,7 @@
 
 namespace inviwo {
 
-PortConnection::SlimPort::SlimPort() {
-}
+PortConnection::SlimPort::SlimPort() {}
 PortConnection::SlimPort::SlimPort(Port* p):_port(p) {
 }
 
@@ -39,7 +38,7 @@ PortConnection::PortConnection(Port* outport, Port* inport)
 PortConnection::~PortConnection() {}
 
 void PortConnection::serialize(IvwSerializer& s) const {
-    s.serialize("connection", getInport()->getIdentifier(),true);
+    s.serialize("connection", getInport()->getIdentifier(), true);
     s.serialize("OutPort", outport_);
     s.serialize("InPort", inport_);
 }

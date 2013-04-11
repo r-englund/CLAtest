@@ -43,7 +43,6 @@ private:
     QPointF endPoint_;
     bool verticalLayout_;
     QColor color_;
-    bool dragOrDrawMode_;
 };
 
 

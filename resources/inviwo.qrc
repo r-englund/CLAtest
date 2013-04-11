@@ -15,8 +15,6 @@
 
     <file>stylesheets/inviwo.qss</file>
     <file>stylesheets/images/arrow_down.png</file>
-    <file>stylesheets/images/arrow_left.png</file>
-    <file>stylesheets/images/arrow_right.png</file>
     <file>stylesheets/images/arrow_up.png</file>
     <file>stylesheets/images/circle.png</file>
     <file>stylesheets/images/circle_disabled.png</file>

@@ -6,6 +6,24 @@ QWidget {
 }
 
 
+/* QPushButton styles */
+QPushButton {
+    color: #999999;
+    border: 1px solid black;
+    border-radius: 3px;
+    min-height: 20px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #b6b6b6, stop: 0.1 #4d4d4d, 
+                                stop:0.9 #4d4d4d, stop:1 #383838);
+} 
+QPushButton:pressed {
+    color: #888888;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #383838, stop:0.1 #4d4d4d,
+                                stop: 0.9 #4d4d4d, stop:1 #b6b6b6);
+}
+
+
 /* QDockWidget styles */
 QDockWidget::close-button, QDockWidget::float-button {
     padding: 0px;
@@ -14,24 +32,37 @@ QDockWidget::close-button, QDockWidget::float-button {
 QDockWidget::title {
     padding-top: 5px;
     padding-left: 5px;
-    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #383838, stop:1 #000000);
+    border-radius: 3px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #888888, stop: 0.4 #555555, 
+                                stop:0.5 #000000, stop:1 #111111);
 }
 QDockWidget {
     color: #999999;
+    border: 0px;
     titlebar-close-icon: url(:/stylesheets/images/close.png);
     titlebar-normal-icon: url(:/stylesheets/images/undock.png);
 }
 
 
 /* QMenu styles */
-QMenuBar, QMenuBar::item, QMenu, QMenu::item, QMenu::item::selected {
+QMenuBar, QMenuBar::item, QMenuBar::item::selected, QMenu, QMenu::item, QMenu::item::selected {
     color: #999999;
     selection-color: #111111;
     background-color: black;
     selection-background-color: #888888;
 }
-
+QMenuBar, QMenuBar::item {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #888888, stop: 0.4 #555555,
+                                stop:0.5 #000000, stop:1 #111111);
+}
+QMenuBar::item::selected {
+    color: white;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #111111, stop: 0.4 #000000,
+                                stop:0.5 #555555, stop:1 #888888);
+}
 QMenu::separator {
     height: 1px;
     background: #999999;
@@ -71,47 +102,69 @@ QRadioButton::indicator::checked:disabled {
 	image: url(:/stylesheets/images/circle_disabled.png);
 }
 QCheckBox::indicator {
-    border: 1px solid #111111;
-    background: qradialgradient(cx: 0, cy: 0, radius: 1,
-                                fx: 0.5, fy: 0.5, 
-                                stop: 0 #fff, stop: 0.4999 #eee,
-                                stop: 0.5 #ddd, stop: 1 #eee);
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #383838, stop: 0.2 #999999, stop:1 #999999);
+    border: 1px solid black;
+    border-radius: 1px;
 }
 QCheckBox::indicator:checked {
-    border: 1px solid #111111;
-    background: qradialgradient(cx: 0, cy: 0, radius: 1,
-                                fx: 0.5, fy: 0.5, 
-                                stop: 0 #78d, stop: 0.4999 #46a,
-                                stop: 0.5 #45a, stop: 1 #238);
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #78d, stop: 0.2 #46a,
+                                stop: 0.8 #45a, stop: 1 #238);
+    border: 1px solid black;
+    border-radius: 1px;
+}
+
+
+/* QScrollBar styles */
+QScrollBar:horizontal {
+    border: 0px;
+    background: #999999;
+    height: 12px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar:vertical {
+    border: 0px;
+    background: #999999;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:horizontal {
+    background: #333333;
+    min-width: 12px;
+    border-width: 6px;
+    border-radius: 6px;
+}
+QScrollBar::handle:vertical {
+    background: #333333;
+    min-height: 26px;
+    border-width: 6px;
+    border-radius: 6px;
 }
 
 
 /* QLineEdit styles */
 QLineEdit {
-	border: 1px solid #999999;
-    color: #888888;
-    background-color: #111111;
+    color: black;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #383838, stop: 0.2 #999999, stop:1 #999999);
+    border: 1px solid black;
+    border-radius: 1px;
 }
 
 
-/* Arrow style sheets for different widgets */
-QAbstractSpinBox::up-arrow, QAbstractSpinBox::up-arrow,
-QAbstractSpinBox::left-arrow, QAbstractSpinBox::right-arrow {
-    border: 0px;
-	width: 8px;
-	height: 8px;
+/* QAbstractSpinBox styles */
+QAbstractSpinBox {
+	border: 1px solid black;
+    color: black;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #383838, stop: 0.2 #999999, stop:1 #999999);
 }
-QScrollBar::left-arrow:horizontal{
-	image: url(:/stylesheets/images/arrow_left.png);
+QAbstractSpinBox::up-button {
+     image: url(:/stylesheets/images/arrow_up.png);
 }
-QScrollBar::right-arrow:horizontal{
-	image: url(:/stylesheets/images/arrow_right.png);
-}
-QScrollBar::sub-line:vertical, QAbstractSpinBox::up-arrow {
-	image: url(:/stylesheets/images/arrow_up.png);
-}
-QScrollBar::add-line:vertical, QAbstractSpinBox::down-arrow {
-	image: url(:/stylesheets/images/arrow_down.png);
+QAbstractSpinBox::down-button {
+     image: url(:/stylesheets/images/arrow_down.png);
 }
 
 
@@ -182,15 +235,22 @@ QSlider::handle:vertical:disabled, QSlider::handle:horizontal:disabled {
 
 
 /* QComboBox styles */
-QComboBox::down-arrow {
-	width: 11px;
-}
 QComboBox {
-	border: 1px solid #999999;
-    color: #888888;
-    background-color: #111111;
-    selection-background-color: lightgrey;
-	selection-color: black;
+	border: 1px solid black;
+	border-radius: 1px;
+    color: black;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #383838, stop: 0.2 #999999, stop:1 #999999);
+}
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 20px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+QComboBox::down-arrow {
+     image: url(:/stylesheets/images/arrow_down.png);
 }
 
 

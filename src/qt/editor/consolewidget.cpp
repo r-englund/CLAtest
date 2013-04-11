@@ -5,7 +5,7 @@
 namespace inviwo {
 
 ConsoleWidget::ConsoleWidget(QWidget* parent) : InviwoDockWidget(tr("Console"), parent)
-, infoTextColor_(233,233, 233), warnTextColor_(221,165,8), errorTextColor_(255,107,107) {
+, infoTextColor_(153,153,153), warnTextColor_(221,165,8), errorTextColor_(255,107,107) {
     setObjectName("ConsoleWidget");
     setAllowedAreas(Qt::BottomDockWidgetArea);
 

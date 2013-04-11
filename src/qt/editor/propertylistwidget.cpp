@@ -76,6 +76,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
     QWidget* processorPropertyWidget = new QWidget(this, Qt::WindowStaysOnBottomHint);
     QVBoxLayout* vLayout = new QVBoxLayout(processorPropertyWidget);
     vLayout->setAlignment(Qt::AlignTop);
+    vLayout->setSpacing(0);
 
     QLabel* processorLabel = new QLabel(QString::fromStdString(processor->getIdentifier()));
     processorLabel->setAlignment(Qt::AlignCenter);
@@ -90,6 +91,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
         vLayout->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
     } 
+    vLayout->addStretch(1);
     propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
 
     return processorPropertyWidget;

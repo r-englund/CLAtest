@@ -27,11 +27,16 @@ void ImagePort::changeDimensions(uvec2 dimensions) {
 Image* ImagePort::resizeImageData(uvec2 dimensions) {
     ivwAssert(isOutport(), "This method should only be called for outports.");
 
-    std::ostringstream dimensionString;
-    dimensionString << dimensions.x << "x" << dimensions.y;
+    /*
+    Image* result = dynamic_cast<Image*>(data_->clone());
+    if (result) data_->resizeImageRepresentations(result, dimensions);
+    return result;
+    */
 
     //TODO: imageDataMap_ needs to be cleaned up, when when dimensions or connections change
     Image* result = 0;
+    std::ostringstream dimensionString;
+    dimensionString << dimensions.x << "x" << dimensions.y;
     if (imageDataMap_.find(dimensionString.str()) == imageDataMap_.end()) {
         result = dynamic_cast<Image*>(data_->clone());
         if (result) imageDataMap_.insert(std::make_pair(dimensionString.str(), result)); 
@@ -42,7 +47,6 @@ Image* ImagePort::resizeImageData(uvec2 dimensions) {
     //if (!IS_STILL_VALID || result.getDimensions!=targetDim) { //FIXME        
         if (result) data_->resizeImageRepresentations(result, dimensions);
     //}
-
     return result;
 }
 
@@ -50,7 +54,7 @@ Image* ImagePort::getData() {
     if (isOutport()) return data_;
     else if (isConnected()) {
         ImagePort* outport = dynamic_cast<ImagePort*>(connectedDataPort_);
-        if (dimensions_.x==outport->getDimensions().x && dimensions_.y==outport->getDimensions().y) //TODO: check if component wise comparison support by ivec2
+        if (dimensions_==outport->getDimensions())
             return outport->getData();
         else
             return outport->resizeImageData(dimensions_);

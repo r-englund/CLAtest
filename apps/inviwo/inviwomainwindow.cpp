@@ -225,6 +225,17 @@ void InviwoMainWindow::openRecentNetwork() {
 void InviwoMainWindow::saveNetwork() {
     networkEditorView_->getNetworkEditor()->saveNetwork(currentNetworkFileName_.toStdString());
     updateWindowTitle();
+
+    /*
+    // FIXME: the following code snippet allows to reload the Qt style sheets during runtime,
+    // which is handy while we change them. once the style hseets have been finalized,
+    // this code should be removed.
+    QFile styleSheetFile("D:/inviwo/resources/stylesheets/inviwo.qss");
+    styleSheetFile.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(styleSheetFile.readAll());
+    dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->setStyleSheet(styleSheet);
+    styleSheetFile.close();
+    */
 }
 
 void InviwoMainWindow::saveNetworkAs() {

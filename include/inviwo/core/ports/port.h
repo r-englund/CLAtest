@@ -63,6 +63,9 @@ public:
     bool isOutport() const { return (direction_ == Port::OUTPORT); }
     bool isInport() const { return (direction_ == Port::INPORT); }
     bool isConnected() const { return !(connectedPorts_.empty()); }
+    bool isConnectedTo(Port* port) const {
+        return !(std::find(connectedPorts_.begin(),connectedPorts_.end(),port)==connectedPorts_.end());
+    }
 
     void invalidate();
 

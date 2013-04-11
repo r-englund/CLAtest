@@ -41,6 +41,10 @@ public:
     Processor* getInProcessor() const{ return inProcessor_.getProcessor(); }
     Processor* getOutProcessor() const{ return outProcessor_.getProcessor(); }
 
+    bool involvesProcessor(Processor* processor) const {
+        return (inProcessor_.getProcessor()==processor || outProcessor_.getProcessor()==processor);
+    }
+
     void autoLinkPropertiesByType();
     void evaluate(LinkEvaluator *leval);
     bool isLinked(Property* startProperty, Property* endProperty);
