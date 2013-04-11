@@ -8,7 +8,7 @@ namespace inviwo {
     {}
 
 	ImageDisk::ImageDisk(std::string url)
-        : ImageRepresentation(){
+        : ImageRepresentation(uvec2(128,128), DataUINT8()){
 		sourceFile_ = url;
         initialize();
 	}
