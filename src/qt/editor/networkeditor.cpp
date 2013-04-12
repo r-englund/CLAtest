@@ -431,8 +431,9 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
                     inspectedPort_ = 0;
                 }
             }
-        }
+        } else
         */
+        QGraphicsScene::mousePressEvent(e);
     }
 }
 
