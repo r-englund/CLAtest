@@ -12,7 +12,7 @@ namespace inviwo {
 //TODO: Move this to common header later on (eg., BaseGraphicsItem.h )
 static const qreal PROCESSORGRAPHICSITEM_DEPTH = 1.0f;
 static const qreal CONNECTIONGRAPHICSITEM_DEPTH = 2.0f;
-static const qreal LINKGRAPHICSITEM_DEPTH = 3.0f;
+static const qreal LINKGRAPHICSITEM_DEPTH = 2.0f;
 
 IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
     ProcessorGraphicsType = 1,

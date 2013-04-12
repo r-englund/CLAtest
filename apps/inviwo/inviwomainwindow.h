@@ -53,27 +53,25 @@ private:
     void setCurrentNetwork(QString currentNetworkFileName);
     void updateWindowTitle();
 
-    //TODO: Currently for testing, save the NetworkEditorView which consists entire network processors
     NetworkEditorView* networkEditorView_;
 
-    //MainWindow ToolBars
+    // mainwindow toolbar
     QToolBar* basicToolbar_;
 
-    //Widgets
+    // dock widgets
     SettingsWidget* settingsWidget_;
     ProcessorListWidget* processorListWidget_;
     PropertyListWidget* propertyListWidget_;
     ConsoleWidget* consoleWidget_;
-
     MappingWidget* mappingwidget_;
 
-    //MainWindow Menus
+    // mainwindow menus
     QMenuBar* basicMenuBar;
     QMenu* fileMenuItem_;
     QMenu* helpMenuItem_;
     QMenu* viewMenuItem_;
     
-    //MainWindow MenuActions
+    // mainwindow menuactions
     QAction* newFileAction_;
     QAction* openFileAction_;
     QAction* saveFileAction_;
@@ -84,18 +82,16 @@ private:
     QAction* processorListWidgetViewAction_;
     QAction* propertyListWidgetViewAction_;
     QAction* consoleWidgetViewAction_;
-
     QAction* mappingwidgetviewAction_;
 
-    //Paths
+    // paths
     QString rootDir_;
     QString networkFileDir_;
     QString currentNetworkFileName_;
     QStringList recentFileList_;
 
+    // the default render context for managing render sates
     CanvasQt* defaultRenderContext_;
-
-    bool initialized_;
 };
 
 } // namespace

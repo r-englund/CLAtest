@@ -17,14 +17,13 @@ namespace inviwo {
 
 InviwoMainWindow::InviwoMainWindow() {
     NetworkEditor::init();
-    networkEditorView_ = new NetworkEditorView(this);
-    setCentralWidget(networkEditorView_);
-    defaultRenderContext_ = new CanvasQt(this);    
-    defaultRenderContext_->switchContext();
 
+    // initialize console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
 
-    addMenus();
+    // the default render context managing the rendering state
+    defaultRenderContext_ = new CanvasQt(this);    
+    defaultRenderContext_->switchContext();
 }
 
 InviwoMainWindow::~InviwoMainWindow() {}
@@ -56,23 +55,22 @@ void InviwoMainWindow::initialize() {
     recentFileList_ = settings.value("recentFileList").toStringList();
     settingsWidget_->loadSettings();
 
-    initialized_ = true;
+    // initialize menus
+    addMenus();
+    addMenuActions();
+    updateRecentNetworks();
+
+    // reset the network
+    newNetwork();
 }
 
 void InviwoMainWindow::deinitialize() {
-    initialized_ = false;
 }
 
 void InviwoMainWindow::initializeWorkspace(){
-    addMenuActions();
-
     ProcessorNetworkEvaluator* processEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
     processEvaluator->setDefaultRenderContext(defaultRenderContext_);
     defaultRenderContext_->setFixedSize(0,0);
-
-    // restore previous files
-    updateRecentNetworks();
-    newNetwork();
 }
 
 void InviwoMainWindow::addMenus() {
@@ -182,7 +180,7 @@ void InviwoMainWindow::newNetwork() {
 
 void InviwoMainWindow::openNetwork(QString networkFileName) {
     QFile file(networkFileName);
-    if(!file.exists())
+    if (!file.exists())
         return;
     
     networkEditorView_->getNetworkEditor()->loadNetwork(networkFileName.toStdString());

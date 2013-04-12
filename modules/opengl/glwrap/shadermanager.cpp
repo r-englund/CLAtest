@@ -38,34 +38,36 @@ void ShaderManager::unregisterShader(Shader* shader) {
 }
 
 void ShaderManager::fileChanged(std::string shaderFilename) {
-    if (isObserved(shaderFilename)) {
-        bool successfulReload = true;
-        for (size_t i=0; i<shaders_.size(); i++) {
-            bool relink = false;
-            std::vector<std::string> vertexIncludes = shaders_[i]->getVertexShaderObject()->getIncludeFileNames();
-            if (shaders_[i]->getVertexShaderObject()->getFileName()==shaderFilename ||
-                std::find(vertexIncludes.begin(), vertexIncludes.end(), shaderFilename) != vertexIncludes.end()) {
-                bool rebuild = shaders_[i]->getVertexShaderObject()->rebuild();
-                if (!rebuild) successfulReload = false;
-                relink = true;
+    if (dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("shaderReloading"))->get()) { 
+        if (isObserved(shaderFilename)) {
+            bool successfulReload = true;
+            for (size_t i=0; i<shaders_.size(); i++) {
+                bool relink = false;
+                std::vector<std::string> vertexIncludes = shaders_[i]->getVertexShaderObject()->getIncludeFileNames();
+                if (shaders_[i]->getVertexShaderObject()->getFileName()==shaderFilename ||
+                    std::find(vertexIncludes.begin(), vertexIncludes.end(), shaderFilename) != vertexIncludes.end()) {
+                    bool rebuild = shaders_[i]->getVertexShaderObject()->rebuild();
+                    if (!rebuild) successfulReload = false;
+                    relink = true;
+                }
+                std::vector<std::string> fragmentIncludes = shaders_[i]->getFragmentShaderObject()->getIncludeFileNames();
+                if (shaders_[i]->getFragmentShaderObject()->getFileName()==shaderFilename ||
+                    std::find(fragmentIncludes.begin(), fragmentIncludes.end(), shaderFilename) != fragmentIncludes.end()) {
+                    bool rebuild = shaders_[i]->getFragmentShaderObject()->rebuild();
+                    if (!rebuild) successfulReload = false;
+                    relink = true;
+                }
+                if (relink) shaders_[i]->link();
             }
-            std::vector<std::string> fragmentIncludes = shaders_[i]->getFragmentShaderObject()->getIncludeFileNames();
-            if (shaders_[i]->getFragmentShaderObject()->getFileName()==shaderFilename ||
-                std::find(fragmentIncludes.begin(), fragmentIncludes.end(), shaderFilename) != fragmentIncludes.end()) {
-                bool rebuild = shaders_[i]->getFragmentShaderObject()->rebuild();
-                if (!rebuild) successfulReload = false;
-                relink = true;
-            }
-            if (relink) shaders_[i]->link();
+            if (successfulReload) {
+                LogInfo(shaderFilename + " successfuly reloaded");
+                InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
+                std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
+                for (size_t i=0;i<processors.size();i++)
+                    if (dynamic_cast<ProcessorGL*>(processors[i]))
+                        processors[i]->invalidate();
+            } else InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
         }
-        if (successfulReload) {
-            LogInfo(shaderFilename + " successfuly reloaded");
-            InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
-            std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
-            for (size_t i=0;i<processors.size();i++)
-                if (dynamic_cast<ProcessorGL*>(processors[i]))
-                    processors[i]->invalidate();
-        } else InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
     }
 }
 

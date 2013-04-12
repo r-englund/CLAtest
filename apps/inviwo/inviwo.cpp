@@ -4,7 +4,6 @@
 
 #include <QFile>
 
-#include <modules/opengl/inviwoopengl.h>
 #include "inviwomainwindow.h"
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
@@ -24,17 +23,17 @@ int main(int argc, char** argv) {
 
     inviwo::InviwoMainWindow mainWin;
 
-    // Setup Core Application
+    // setup core application
     inviwoApp.initialize();
     inviwoApp.setMainWindow(&mainWin);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
 
-    // Setup Main Window
+    // setup main window
     mainWin.initialize();
     mainWin.show();
     mainWin.initializeWorkspace();
 
-    // Open Last Network
+    // open last network
     mainWin.openLastNetwork();
 
     return inviwoApp.exec();

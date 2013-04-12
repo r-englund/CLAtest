@@ -16,12 +16,24 @@
 
 namespace inviwo {
 
+/**
+ * The NetworkEditor supports interactive editing of a ProcessorNetwork. Processors can be added
+ * and removed, and their ports can be connected, while their properties can be linked.
+ * - interactive editing, but if necessary use access fucntions
+ * - graphical representation automatically managed
+ * - inspector networks
+ */
 class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
                                        public Singleton<NetworkEditor>  {
 public:
     NetworkEditor(QObject* parent=0);
 
-    /** 
+    void clearNetwork();
+    bool saveNetwork(std::string fileName);
+    bool loadNetwork(std::string fileName);
+
+
+    /**
      * \brief This method adds a processor to the network.
      *
      * Before the processor is added to the network, its identifier is analyzed and
@@ -32,39 +44,15 @@ public:
     void addProcessor(Processor* processor);
     void removeProcessor(Processor* processor);
 
-    void addProcessorWidget(Processor* processor);
-    void addPropertyWidgets(Processor* processor);
-    void removePropertyWidgets(Processor* processor);
+    void addConnection();
+    void removeConnection();
 
-    void addProcessorGraphicsItem(Processor* processor, QPointF pos=QPointF(10.0f, 10.0f));
-    void removeProcessorGraphicsItem(Processor* processor);
+    void addLink();
+    void removeLink();
 
-    void addConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
-                                   ProcessorGraphicsItem* inProcessor, Port* inport);
-    void removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem);
-
-    void addLinkGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
-    void removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem);
-
-
-    void addInspectorNetwork(Port* port, ivec2 pos, std::string fileName);
-    void removeInspectorNetwork(Port* port);
-    void addPortInspector(Port* port, QPointF pos);
-
-
-    bool saveNetwork(std::string fileName);
-    bool loadNetwork(std::string fileName);
-    void clearNetwork();
-
-    void drawBackground(QPainter* painter, const QRectF& rect);
 
     ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() const { return processorNetworkEvaluator_; }
-
-    ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
-    QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
-    QGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
-    QGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
@@ -80,10 +68,6 @@ protected:
     void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
     void dropEvent(QGraphicsSceneDragDropEvent* de);
 
-    QPointF snapToGrid(QPointF pos);
-
-    void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
-
 private:
     friend class ProcessorGraphicsItem;
     friend class ConnectionGraphicsItem;
@@ -95,19 +79,50 @@ private:
     ProcessorNetwork* processorNetwork_;
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
 
-    bool processorWithIdentifierExists(std::string identifier);
-
     CurveGraphicsItem* connectionCurve_;
     LinkGraphicsItem* linkCurve_;
+
+    // these members are used to save the start state for click-move events
     ProcessorGraphicsItem* startProcessor_;
     ProcessorGraphicsItem* endProcessor_;
     Port* startPort_;
     Port* endPort_;
+    Port* inspectedPort_; // the port which is currently inspected by hovering over it
 
     bool gridSnapping_;
     static const int GRID_SPACING;
 
     static const std::string logSource_; ///< Source string to be displayed for log messages.
+
+
+    QPointF snapToGrid(QPointF pos);
+    void drawBackground(QPainter* painter, const QRectF& rect);
+
+    void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
+
+    void addProcessorGraphicsItem(Processor* processor, QPointF pos=QPointF(10.0f, 10.0f));
+    void removeProcessorGraphicsItem(Processor* processor);
+    void addProcessorWidget(Processor* processor);
+    void addPropertyWidgets(Processor* processor);
+    void removePropertyWidgets(Processor* processor);
+
+    void addConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
+                                   ProcessorGraphicsItem* inProcessor, Port* inport);
+    void removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem);
+
+    void addLinkGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
+    void removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem);
+
+
+    ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
+    QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
+    QGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
+    QGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
+
+
+    void addInspectorNetwork(Port* port, ivec2 pos, std::string fileName);
+    void removeInspectorNetwork(Port* port);
+    void addPortInspector(Port* port, QPointF pos);
 };
 
 } // namespace
