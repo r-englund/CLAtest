@@ -30,7 +30,8 @@ namespace inviwo {
         UINT16,
         UINT32,
         UINT64,
-        Vec4UINT8
+        Vec4UINT8,
+        Vec4FLOAT32
     };
 
 class DataFormatBase
@@ -100,6 +101,7 @@ typedef GenericDataFormat(uint32_t)       DataUINT32;
 typedef GenericDataFormat(uint64_t)       DataUINT64;
 
 typedef GenericDataFormat(glm::detail::tvec4<uint8_t>)       DataVec4UINT8;
+typedef GenericDataFormat(glm::detail::tvec4<float>)       DataVec4FLOAT32;
 
 // Bit Specializations
 template<> inline size_t DataINT12::bitsAllocated() { return DataINT16::bitsAllocated(); }
@@ -133,6 +135,7 @@ template<> inline DataFormatId DataUINT32::id() { return UINT32; }
 template<> inline DataFormatId DataUINT64::id() { return UINT64; }
 
 template<> inline DataFormatId DataVec4UINT8::id() { return Vec4UINT8; }
+template<> inline DataFormatId DataVec4FLOAT32::id() { return Vec4FLOAT32; }
 
 // String Function Specializations
 template<> inline std::string DataFLOAT16::str() { return "FLOAT16"; }
@@ -153,6 +156,7 @@ template<> inline std::string DataUINT64::str() { return "UINT64"; }
 
 
 template<> inline std::string DataVec4UINT8::str() { return "Vec4UINT8"; }
+template<> inline std::string DataVec4FLOAT32::str() { return "DataVec4FLOAT32"; }
 
 }
 

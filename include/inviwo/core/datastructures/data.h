@@ -14,7 +14,15 @@ class IVW_CORE_API Data {
 public:
     Data();
     virtual ~Data();
-
+    Data(const Data& rhs) {
+        *this = rhs;
+    }
+    Data& operator=(const Data& rhs) {
+        if (this != &rhs) {
+            rhs.copyRepresentations(this);
+        }
+        return *this;
+    };
     //Representations
     template<class T>
     bool hasRepresentation() const;
@@ -23,7 +31,7 @@ public:
     T* getRepresentation();
     void addRepresentation(DataRepresentation* representation);
     void clearRepresentations();
-    void copyRepresentations(Data* targetData);
+    void copyRepresentations(Data* targetData) const;
 
     //MetaData
     template<typename T, typename U>
@@ -36,7 +44,7 @@ public:
     void copyMetaData(Data* targetData);
 
     //Others
-    virtual Data* clone()=0;
+    virtual Data* clone() const = 0;
 
     typedef int   TYPE1D;
     typedef ivec2 TYPE2D;

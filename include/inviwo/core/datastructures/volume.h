@@ -14,7 +14,7 @@ namespace inviwo {
         Volume(VolumeRepresentation*);
         Volume(VolumeRepresentation*, Volume*);
         virtual ~Volume();
-        Data* clone();        
+        Data* clone() const;        
         void setOffset(ivec3); 
         ivec3 getOffset();
         DataFormatBase getDataFormat();

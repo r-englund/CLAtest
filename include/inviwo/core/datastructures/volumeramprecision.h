@@ -16,7 +16,7 @@ public:
     using VolumeRAM::initialize;
     virtual void initialize(void*);
     virtual void deinitialize();
-    virtual DataRepresentation* clone();
+    virtual DataRepresentation* clone() const;
 };
 
 template<typename T, size_t B>
@@ -61,7 +61,7 @@ void VolumeRAMPrecision<T>::initialize(void* data) {
 }
 
 template<typename T>
-DataRepresentation* VolumeRAMPrecision<T>::clone() {
+DataRepresentation* VolumeRAMPrecision<T>::clone() const {
     VolumeRAMPrecision* newVolumeRAM = new VolumeRAMPrecision<T>(dimensions_);
     //TODO:: Copy volume textures if necessary
     return newVolumeRAM;

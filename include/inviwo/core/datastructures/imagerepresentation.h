@@ -20,7 +20,7 @@ namespace inviwo {
         virtual DataFormatBase getDataFormat() const {return dataFormatBase_;}
         virtual DataFormatId getDataFormatId() const {return dataFormatBase_.getId();}
         virtual void copyAndResizeImage(DataRepresentation*)=0;
-        virtual DataRepresentation* clone()=0;
+        virtual DataRepresentation* clone() const = 0;
         virtual std::string getClassName() const { return "ImageRepresentation"; }
    protected:
         uvec2 dimensions_;

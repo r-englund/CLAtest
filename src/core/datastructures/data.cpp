@@ -12,7 +12,8 @@ void Data::clearRepresentations() {
     }
 }
 
-void Data::copyRepresentations(Data* targetData) {
+void Data::copyRepresentations( Data* targetData ) const
+{
     targetData->representations_.clear();
     for(size_t i=0; i<representations_.size(); i++) {
         targetData->representations_.push_back(representations_[i]->clone());

@@ -29,7 +29,7 @@ namespace inviwo {
 
     void ImageDisk::deinitialize() {}
 
-    DataRepresentation* ImageDisk::clone() {
+    DataRepresentation* ImageDisk::clone() const {
         return new ImageDisk(getSourceFile());
     }
 

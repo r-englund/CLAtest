@@ -20,7 +20,7 @@ namespace inviwo {
 
         void initialize();
         void deinitialize();
-        virtual DataRepresentation* clone();
+        virtual DataRepresentation* clone() const;
         virtual std::string getClassName() const { return "ImageGL"; }
 
         void activateBuffer();
@@ -39,6 +39,8 @@ namespace inviwo {
         FrameBufferObject* getFBO() {return frameBufferObject_;}
         Texture2D* getColorTexture() {return colorTexture_;}
         Texture2D* getDepthTexture() {return depthTexture_;}
+        const Texture2D* getColorTexture() const {return colorTexture_;}
+        const Texture2D* getDepthTexture() const {return depthTexture_;}
 
     private:
         Texture2D* colorTexture_;

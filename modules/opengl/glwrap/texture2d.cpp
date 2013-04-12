@@ -33,9 +33,10 @@ namespace inviwo {
 
     void Texture2D::download(void* data) {
         bind();
+        glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, data);
         // Using FBO
-        glReadBuffer((GLenum)GL_COLOR_ATTACHMENT0_EXT);
-        glReadPixels(0, 0, dimensions_.x, dimensions_.y, format_, dataType_, (GLvoid*)data);
+        //glReadBuffer((GLenum)GL_COLOR_ATTACHMENT0_EXT);
+        //glReadPixels(0, 0, dimensions_.x, dimensions_.y, format_, dataType_, (GLvoid*)data);
         LGL_ERROR;
         //// Using PBO ( could be performed asynchronos
         //glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, id_);

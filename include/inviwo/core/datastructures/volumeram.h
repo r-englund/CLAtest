@@ -15,7 +15,7 @@ public:
     virtual void applyOperation(DataOperation*) = 0;
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() = 0;
+    virtual DataRepresentation* clone() const = 0;
     virtual void* getData();
     virtual const void* getData() const;
 protected:

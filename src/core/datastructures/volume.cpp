@@ -23,7 +23,7 @@ Volume::Volume(VolumeRepresentation* in, Volume* src) : Data3D() {
 
 Volume::~Volume() {}
 
-Data* Volume::clone() {
+Data* Volume::clone() const {
     //Volume* newVolume = new Volume();
     //copyRepresentations(newVolume);
     //return newVolume;

@@ -47,7 +47,7 @@ namespace inviwo {
     void VolumeDisk::deinitialize() {
     }
 
-    DataRepresentation* VolumeDisk::clone() {
+    DataRepresentation* VolumeDisk::clone() const {
         return new VolumeDisk(getSourceFile());
     }
 

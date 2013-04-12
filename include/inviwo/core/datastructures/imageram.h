@@ -13,10 +13,12 @@ namespace inviwo {
         ImageRAM();
         ImageRAM(uvec2 dimension);
         ImageRAM(uvec2 dimension, DataFormatBase format = DataFormatBase());
+
         virtual ~ImageRAM();
+
         virtual void initialize();
         void deinitialize();
-        DataRepresentation* clone();
+        DataRepresentation* clone() const;
         virtual std::string getClassName() const { return "ImageRAM"; }
         void copyAndResizeImage(DataRepresentation*){}
         virtual void* getData() {return data_;};
@@ -30,11 +32,23 @@ namespace inviwo {
     public:
         ImageRAMPrecision(uvec2 dimensions = uvec2(128,128), DataFormatBase format = GenericDataFormat(T)());
         ImageRAMPrecision(T* data, uvec2 dimensions = uvec2(128,128), DataFormatBase format = GenericDataFormat(T)());
+        ImageRAMPrecision(const ImageRAMPrecision<T>& rhs) {
+            *this = rhs;
+        }
+        ImageRAMPrecision<T>& operator=(const ImageRAMPrecision<T>& rhs) {
+            if (this != &rhs) {
+                delete[] data_;
+                dimensions_ = rhs.getDimension();
+                initialize();
+                std::copy(rhs.getData(), rhs.getData()+dimensions_.x*dimensions_.y*sizeof(T), data_);
+            }
+            return *this;
+        };
         virtual ~ImageRAMPrecision() {};
         using ImageRAM::initialize;
         virtual void initialize(void*);
         virtual void deinitialize();
-        virtual DataRepresentation* clone();
+        virtual DataRepresentation* clone() const;
     };
 
     template<typename T>
@@ -56,7 +70,7 @@ namespace inviwo {
     }
 
     template<typename T>
-    DataRepresentation* ImageRAMPrecision<T>::clone() {
+    DataRepresentation* ImageRAMPrecision<T>::clone() const {
         ImageRAMPrecision* newImageRAM = new ImageRAMPrecision<T>(dimensions_);
         return newImageRAM;
     }
@@ -79,7 +93,8 @@ namespace inviwo {
     typedef ImageRAMPrecision<DataFLOAT32::type>   ImageRAMfloat32;
     typedef ImageRAMPrecision<DataFLOAT64::type>   ImageRAMfloat64;
 
-    typedef ImageRAMPrecision<DataVec4UINT8::type>   ImageRAMVec4uint8;
+    typedef ImageRAMPrecision<DataVec4UINT8::type>      ImageRAMVec4uint8;
+    typedef ImageRAMPrecision<DataVec4FLOAT32::type>    ImageRAMVec4float32;
 
 } // namespace
 

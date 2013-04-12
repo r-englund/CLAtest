@@ -19,6 +19,7 @@ public:
 
     void setTexels(GLubyte* texels) { texels_ = texels; }
     GLubyte* getTexels() { return texels_; }
+    const GLubyte* getTexels() const { return texels_; }
 
     size_t getSizeInBytes() const;
 

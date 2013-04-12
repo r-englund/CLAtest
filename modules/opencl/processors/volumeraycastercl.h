@@ -7,6 +7,7 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/properties.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 
 #include <modules/opencl/inviwoopencl.h>
 
@@ -36,6 +37,7 @@ private:
 
     FloatVec3Property lightSourcePos_;
     FloatProperty samplingRate_;
+    TransferFunctionProperty transferFunction_;
 
     cl::Kernel* kernel_;
 };

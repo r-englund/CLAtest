@@ -88,9 +88,9 @@ namespace inviwo {
             //    LogErrorS("ImageGL2RAMConverter::convert()", "Invalid data type: " << dataTypeSize);
         }
         if (image) {
-            imageRepresentation->activateBuffer();
+            //imageRepresentation->activateBuffer();
             imageRepresentation->getColorTexture()->download(image->getData());
-            imageRepresentation->deactivateBuffer();
+            //imageRepresentation->deactivateBuffer();
             return image;
         } else {
             LogErrorS("ImageGL2RAMConverter::convert()", "Invalid conversion");

@@ -17,7 +17,7 @@ namespace inviwo {
         return data_;
     }
 
-    const void* VolumeRAM::getData() const{
+    const void* VolumeRAM::getData() const {
         return const_cast<void*>(data_);
     }
 

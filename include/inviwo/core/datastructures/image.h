@@ -14,7 +14,7 @@ namespace inviwo {
         virtual ~Image();
         void resize(uvec2 dimensions);
         uvec2 size() {return dimensions_;}
-        virtual Data* clone();
+        virtual Data* clone() const;
         void resizeImageRepresentations(Image* targetImage, uvec2 targetDim);
     protected:
         void createDefaultRepresentation();

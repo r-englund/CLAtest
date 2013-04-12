@@ -13,6 +13,7 @@ VolumeRaycasterCL::VolumeRaycasterCL()
     outport_(Port::OUTPORT, "outport"),
     lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
     samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f),
+    transferFunction_("transferFunction", "Transfer function", TransferFunction()),
     kernel_(NULL)
 {
     addPort(volumePort_, "VolumePortGroup");
@@ -22,6 +23,7 @@ VolumeRaycasterCL::VolumeRaycasterCL()
 
     addProperty(samplingRate_);
     addProperty(lightSourcePos_);
+    addProperty(transferFunction_);
 }
 
 VolumeRaycasterCL::~VolumeRaycasterCL() {}
@@ -49,38 +51,47 @@ void VolumeRaycasterCL::deinitialize() {
 }
 
 void VolumeRaycasterCL::process() {
-    size_t ttt = sizeof(uint8_t);
-    size_t tt = sizeof(glm::detail::tvec4<uint8_t>);
-    //Image* outImage = outport_.getData();
-    //uvec2 outportDim = outImage->size();
-    uvec2 outportDim = uvec2(4, 4);
-    Image* outImage = new Image(outportDim);
+
+    Image* outImage = outport_.getData();
+    uvec2 outportDim = outImage->size();
+    //uvec2 outportDim = uvec2(4, 4);
+    //Image* outImage = new Image(outportDim);
     outImage->clearRepresentations();
     outImage->addRepresentation(new ImageCLuint8vec4(outportDim));
+    //outImage->addRepresentation(new ImageCLvec4float32(outportDim));
     ImageCL* outImageCL = outImage->getRepresentation<ImageCL>();
 
 
     Volume* volume = volumePort_.getData();
     VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
     uvec3 volumeDim = volumeCL->getDimensions();
+    ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
     cl_uint arg = 0;
     //kernel_->setArg(arg++, volumeCL->getVolume());
-    //kernel_->setArg(arg++, (entryPort_.getData()->getRepresentation<ImageCL>()->getImage()));
+    kernel_->setArg(arg++, entryCL->getImage());
     //kernel_->setArg(arg++, exitPort_.getData()->getRepresentation<ImageCL>()->getImage());
     //kernel_->setArg(arg++, samplingRate_.get());
     kernel_->setArg(arg++, outImageCL->getImage());
     // 
     OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
 
-    ImageRAM* testImage = outImage->getRepresentation<ImageRAM>();
-    glm::detail::tvec4<uint8_t>* data = static_cast<glm::detail::tvec4<uint8_t>*>(testImage->getData());
-    for(unsigned int y = 0; y < outportDim.y; ++y) {
-        for(unsigned int x = 0; x < outportDim.x; ++x) {
-            unsigned int index = outportDim.x*y + x;
-            glm::detail::tvec4<int> dd(data[index]);
-            std::cerr << "(" << x << ", " << y << ")" << static_cast<int>(dd.x)  << ", " << static_cast<int>(dd.y) << ", " << static_cast<int>(dd.z) << ", " << static_cast<int>(dd.w) << std::endl;
-        }
-    }
+    //ImageRAM* testImage = outImage->getRepresentation<ImageRAM>();
+    // Texture2D* colorTexture_;
+    //colorTexture_->bind();
+    //colorTexture_->upload();
+    //ImageRAM* testImage = entryPort_.getData()->getRepresentation<ImageRAM>();
+    //glm::detail::tvec4<uint8_t>* data = static_cast<glm::detail::tvec4<uint8_t>*>(testImage->getData());
+    ////glm::detail::tvec4<float>* data = static_cast<glm::detail::tvec4<float>*>(testImage->getData());
+    //for(unsigned int y = 0; y < outportDim.y; ++y) {
+    //    for(unsigned int x = 0; x < outportDim.x; ++x) {
+    //        unsigned int index = outportDim.x*y + x;
+    //        glm::detail::tvec4<int> dd(data[index]);
+    //        //glm::detail::tvec4<float> dd(data[index]);
+    //        std::cerr << "(" << x << ", " << y << ")" << dd.x  << ", " << dd.y << ", " << dd.z << ", " << dd.w << std::endl;
+
+    //        //std::cerr << "(" << x << ", " << y << ")" << data[index] << std::endl;
+    //    }
+    //}
 }
 
 } // namespace

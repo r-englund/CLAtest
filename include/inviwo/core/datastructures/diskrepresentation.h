@@ -12,7 +12,7 @@ namespace inviwo {
         DiskRepresentation(){ sourceFile_=""; };
         DiskRepresentation(std::string srcFile){ sourceFile_=srcFile; };
         virtual ~DiskRepresentation(){};
-        std::string getSourceFile(){ return sourceFile_; };
+        const std::string& getSourceFile() const { return sourceFile_; };
         bool hasSourceFile() { return !sourceFile_.empty(); };
 	private:
 		std::string sourceFile_;

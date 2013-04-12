@@ -1,6 +1,7 @@
 
 
 #include <modules/opencl/glmcl.h>
+#include <modules/opencl/inviwoopencl.h>
 
 
 namespace cl {
@@ -66,27 +67,38 @@ cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::float32> va
 }
 
 cl::ImageFormat typeToImageFormat( inviwo::DataFormatId format )
-{
+{   
+    cl::ImageFormat clFormat;
     switch (format) {
         case inviwo::UINT8:
-            return cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT8); 
+            clFormat = cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT8);  break;
         case inviwo::UINT16:
-            return cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT16);
+            clFormat = cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT16); break;
         case inviwo::UINT32:
-            return cl::ImageFormat(CL_R, CL_UNSIGNED_INT32);
+            clFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32); break;
         case inviwo::INT8:
-            return cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT8);
+            clFormat = cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT8); break;
         case inviwo::INT16:
-            return cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT16);
+            clFormat = cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT16); break;
         case inviwo::INT32:
-            return cl::ImageFormat(CL_R, CL_SIGNED_INT32);
+            clFormat = cl::ImageFormat(CL_R, CL_SIGNED_INT32); break;
         case inviwo::FLOAT32:
-            return cl::ImageFormat(CL_INTENSITY, CL_FLOAT);
+            clFormat = cl::ImageFormat(CL_INTENSITY, CL_FLOAT); break;
         case inviwo::Vec4UINT8:
-            return cl::ImageFormat(CL_RGBA, CL_UNORM_INT8);
+            clFormat = cl::ImageFormat(CL_RGBA, CL_UNORM_INT8); break; // TODO: Find out why CL_UNORM_INT8 does not work
+        case inviwo::Vec4FLOAT32:
+            clFormat = cl::ImageFormat(CL_RGBA, CL_FLOAT); break;
+        default:
+            LogErrorS("cl::ImageFormat typeToImageFormat", "Format not implmented yet"); break;
+
     }
-    LogErrorS("cl::ImageFormat typeToImageFormat", "Format not implmented yet");
-    return cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT8);
+#ifdef DEBUG
+    if (!inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::getInstance()->getContext(), clFormat)) {
+        LogErrorS("cl::ImageFormat typeToImageFormat", "OpenCL device does not support format");   
+    };
+#endif 
+    
+    return clFormat;
 }
 
 //template <>

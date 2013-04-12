@@ -37,7 +37,7 @@ public:
     virtual void initialize() { initialize(0); }
     virtual void initialize(void* voxels = NULL);
     virtual void deinitialize();
-    virtual DataRepresentation* clone();
+    virtual DataRepresentation* clone() const;
 private :
     void setTypeAndFormat();
 };
@@ -78,7 +78,7 @@ void VolumeCLPrecision<T>::initialize(void* texels) {
 }
 
 template<typename T>
-DataRepresentation* VolumeCLPrecision<T>::clone() {
+DataRepresentation* VolumeCLPrecision<T>::clone() const {
     VolumeCLPrecision* newVolumeCL = new VolumeCLPrecision<T>(dimensions_);
     //TODO:: Copy volume textures if necessary
     return newVolumeCL;

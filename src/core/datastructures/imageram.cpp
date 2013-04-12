@@ -29,7 +29,7 @@ namespace inviwo {
     
     void ImageRAM::deinitialize() {}
 
-    DataRepresentation* ImageRAM::clone() {
+    DataRepresentation* ImageRAM::clone() const {
         return new ImageRAM();
     }
 

@@ -60,7 +60,8 @@ void ImageGL::deinitialize() {
     shader_=0;
 }
 
-DataRepresentation* ImageGL::clone() {
+DataRepresentation* ImageGL::clone() const
+{
     ImageGL* newImageGL = new ImageGL(dimensions_);  
 
     if (getColorTexture()->getTexels()) {

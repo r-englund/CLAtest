@@ -2,6 +2,7 @@
 #include <inviwo/core/datastructures/imagerepresentation.h>
 #include <inviwo/core/datastructures/imagedisk.h>
 
+#include <modules/opengl/imagegl.h>
 namespace inviwo {
 
 Image::Image() : Data() {
@@ -12,7 +13,7 @@ Image::Image(uvec2 dimensions)
     : Data(), dimensions_(dimensions) {
 }
 
-Data* Image::clone() {
+Data* Image::clone() const {
     Image* newImage = new Image(dimensions_);
     copyRepresentations(newImage);
     return newImage;
@@ -58,6 +59,7 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
 
 void Image::createDefaultRepresentation(){
     addRepresentation(new ImageDisk());
+    //addRepresentation(new ImageGL());
 }
 
 } // namespace

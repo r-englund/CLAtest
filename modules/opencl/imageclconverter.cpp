@@ -29,9 +29,11 @@ DataRepresentation* ImageRAM2CLConverter::convert(DataRepresentation* source) {
         case INT32:
             return new ImageCLint32(static_cast<DataINT32::type*>(imageRAM->getData()), imageRAM->getDimension());
         case FLOAT32:
-            return new ImageCLfloat(static_cast<DataFLOAT32::type*>(imageRAM->getData()), imageRAM->getDimension());
+            return new ImageCLfloat32(static_cast<DataFLOAT32::type*>(imageRAM->getData()), imageRAM->getDimension());
         case Vec4UINT8:
             return new ImageCLuint8vec4(static_cast<DataVec4UINT8::type*>(imageRAM->getData()), imageRAM->getDimension());
+        case Vec4FLOAT32:
+            return new ImageCLvec4float32(static_cast<DataVec4FLOAT32::type*>(imageRAM->getData()), imageRAM->getDimension());
         }
        
         LogErrorS("ImageRAM2CLConverter::convert()", "Invalid conversion or not implemented");
@@ -68,6 +70,8 @@ DataRepresentation* ImageCL2RAMConverter::convert(DataRepresentation* source) {
             destination = new ImageRAMfloat32(dimension);
         case Vec4UINT8:
             destination = new ImageRAMVec4uint8(dimension);
+        case Vec4FLOAT32:
+            destination = new ImageRAMVec4float32(dimension);
         }
 
         if (destination) {

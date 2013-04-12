@@ -22,7 +22,7 @@ public:
     virtual void resize(uvec2 dimensions);
     virtual uvec2 dimension() { return dimensions_;}
     virtual void copyAndResizeImage(DataRepresentation* target);
-    virtual DataRepresentation* clone()=0;
+    virtual DataRepresentation* clone() const = 0;
     cl::ImageFormat getFormat() const { return imageFormat_;}
     cl::Image2D getImage() const { return *image2D_; }
 
@@ -40,7 +40,7 @@ public:
     virtual ~ImageCLPrecision() {};
     virtual void initialize(void* texels);
     virtual void deinitialize();
-    virtual DataRepresentation* clone();
+    virtual DataRepresentation* clone() const;
 private :
     void setTypeAndFormat();
 };
@@ -98,7 +98,7 @@ void ImageCLPrecision<T>::initialize(void* texels) {
 }
 
 template<typename T>
-DataRepresentation* ImageCLPrecision<T>::clone() {
+DataRepresentation* ImageCLPrecision<T>::clone() const {
     ImageCLPrecision* newImageCL = new ImageCLPrecision<T>(dimensions_);
     OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, (newImageCL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
     return newImageCL;
@@ -116,7 +116,7 @@ typedef ImageCLPrecision< uint16_t > ImageCLuint16;
 typedef ImageCLPrecision< int16_t > ImageCLint16;
 typedef ImageCLPrecision< uint32_t > ImageCLuint32;
 typedef ImageCLPrecision< int32_t > ImageCLint32;
-typedef ImageCLPrecision< float > ImageCLfloat;
+typedef ImageCLPrecision< float > ImageCLfloat32;
 
 typedef ImageCLPrecision< glm::detail::tvec4<uint8_t> > ImageCLuint8vec4;
 typedef ImageCLPrecision< glm::detail::tvec4<int8_t> > ImageCLint8vec4;
@@ -124,7 +124,7 @@ typedef ImageCLPrecision< glm::detail::tvec4<uint16_t> > ImageCLuint16vec4;
 typedef ImageCLPrecision< glm::detail::tvec4<int16_t> > ImageCLint16vec4;
 typedef ImageCLPrecision< glm::detail::tvec4<uint32_t> > ImageCLuivec4;
 typedef ImageCLPrecision< glm::detail::tvec4<int32_t> > ImageCLivec4;
-typedef ImageCLPrecision< glm::detail::tvec4<float> > ImageCLvec4;
+typedef ImageCLPrecision< glm::detail::tvec4<float> > ImageCLvec4float32;
 
 } // namespace
 

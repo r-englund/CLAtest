@@ -16,7 +16,7 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone()=0;
+    virtual DataRepresentation* clone() const = 0;
     virtual GLenum getDataType()=0;
     virtual GLint getFormat()=0;
     virtual GLint getInternalFormat()=0;
@@ -36,7 +36,7 @@ public:
     using VolumeGL::initialize;
     virtual void initialize(void* texels);
     virtual void deinitialize();
-    virtual DataRepresentation* clone();
+    virtual DataRepresentation* clone() const;
     virtual GLenum getDataType();
     virtual GLint getFormat();
     virtual GLint getInternalFormat();
@@ -158,7 +158,7 @@ void VolumeGLPrecision<T>::initialize(void* texels) {
 }
 
 template<typename T>
-DataRepresentation* VolumeGLPrecision<T>::clone() {
+DataRepresentation* VolumeGLPrecision<T>::clone() const {
     VolumeGLPrecision* newVolumeGL = new VolumeGLPrecision<T>(dimensions_);
     //TODO:: Copy volume textures if necessary
     return newVolumeGL;
