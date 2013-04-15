@@ -27,7 +27,7 @@ protected:
 template <typename T>
 TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value,
                                       PropertyOwner::InvalidationLevel invalidationLevel,
-                                      PropertySemantics::Type semantics = PropertySemantics::Default)
+                                      PropertySemantics::Type semantics)
 : Property(identifier, displayName, invalidationLevel, semantics),
 value_(value)
 {}
