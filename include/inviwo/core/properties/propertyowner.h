@@ -14,6 +14,12 @@ public:
     PropertyOwner();
     virtual ~PropertyOwner();
 
+    enum InvalidationLevel {
+        VALID,
+        INVALID_OUTPUT,
+        INVALID_RESOURCES
+    };
+
     void addProperty(Property* property);
     void addProperty(Property& property);
 

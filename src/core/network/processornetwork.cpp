@@ -3,7 +3,7 @@
 namespace inviwo {
 
 ProcessorNetwork::ProcessorNetwork() : VoidObservable(),
-    isModified_(true) {}
+    modified_(true) {}
 
 ProcessorNetwork::~ProcessorNetwork() {}
 

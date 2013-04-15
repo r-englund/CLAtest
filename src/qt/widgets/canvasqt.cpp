@@ -70,10 +70,13 @@ void CanvasQt::repaint() {
 
 void CanvasQt::timerEvent(QTimerEvent* e) {
     IVW_UNUSED_PARAM(e);
-    if(processorNetworkEvaluator_) {
+    if (processorNetworkEvaluator_) {
         processorNetworkEvaluator_->evaluate();
+        /*
+        //FIXME: update() already called in network evaluator?!
         if (processorNetworkEvaluator_->repaintRequired())
             update();
+        */
     }
 }
 

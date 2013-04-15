@@ -8,7 +8,9 @@ namespace inviwo {
     class TextEditorProperty : public TemplateProperty<std::string> {
 
     public:
-        TextEditorProperty(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default);
+        TextEditorProperty(std::string identifier, std::string displayName, std::string value,
+                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     };

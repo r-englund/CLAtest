@@ -10,7 +10,9 @@ namespace inviwo {
 class IVW_CORE_API ButtonProperty : public Property {
 
 public:
-	ButtonProperty(std::string identifier, std::string displayName, PropertySemantics::Type semantics = PropertySemantics::Default);
+	ButtonProperty(std::string identifier, std::string displayName,
+                   PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
+                   PropertySemantics::Type semantics = PropertySemantics::Default);
     
 
     //TODO: Only member functions with zero (void) arguments is allowed now.

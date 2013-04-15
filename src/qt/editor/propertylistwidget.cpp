@@ -39,7 +39,7 @@ void PropertyListWidget::showProcessorProperties(Processor* processor) {
         processorPropertyWidget = createNewProcessorPropertiesItem(processor);
     }
 
-    if(processorPropertyWidget) {
+    if (processorPropertyWidget) {
         removeAllProcessorProperties();
         processorPropertyWidget->setVisible(true);
         listWidgetLayout_->addWidget(processorPropertyWidget);
@@ -57,7 +57,7 @@ void PropertyListWidget::addProcessorPropertiesToLayout(Processor* processor) {
         processorPropertyWidget = createNewProcessorPropertiesItem(processor); 
     }
 
-    if(processorPropertyWidget) {
+    if (processorPropertyWidget) {
         processorPropertyWidget->setVisible(true);
         listWidgetLayout_->addWidget(processorPropertyWidget);
     }

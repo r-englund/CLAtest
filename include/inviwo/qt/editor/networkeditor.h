@@ -35,17 +35,19 @@ public:
 
     /**
      * \brief This method adds a processor to the network.
+     * - modified called by processornetwork
+     * - models and views are added independently (e.g., addProcessor vs. addProcessorRepresentation)
      *
      * Before the processor is added to the network, its identifier is analyzed and
      * if necessary changed, such that the processor names within each network are unique.
      * 
      * @param Processor * processor The processor to be added
      */
-    void addProcessor(Processor* processor);
+    void addProcessor(Processor* processor, QPointF pos);
     void removeProcessor(Processor* processor);
 
-    void addConnection();
-    void removeConnection();
+    void addConnection(Port* port1, Port* port2);
+    void removeConnection(Port* port1, Port* port2);
 
     void addLink();
     void removeLink();
@@ -98,15 +100,23 @@ private:
 
     void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
 
+
+    void addProcessor(Processor* processor);
+    void addProcessorRepresentations(Processor* processor, QPointF pos);
+    void removeProcessorRepresentations(Processor* processor);
+
+
     void addProcessorGraphicsItem(Processor* processor, QPointF pos=QPointF(10.0f, 10.0f));
     void removeProcessorGraphicsItem(Processor* processor);
     void addProcessorWidget(Processor* processor);
+    void removeProcessorWidget(Processor* processor);
     void addPropertyWidgets(Processor* processor);
     void removePropertyWidgets(Processor* processor);
 
-    void addConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
-                                   ProcessorGraphicsItem* inProcessor, Port* inport);
+
+    void addConnectionGraphicsItem(Port* port1, Port* port2);
     void removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem);
+    void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
 
     void addLinkGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
     void removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem);

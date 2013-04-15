@@ -105,15 +105,20 @@ public:
 
     ProcessorLink* getProcessorLink(Processor* sourceProcessor, Processor* destProcessor) const;    
     
-    inline void modified() { isModified_ = true; notifyObservers(); }
-    void setModified(bool isModified) { isModified_ = isModified; }
-    bool isModified() const { return isModified_; }
+    inline void modified() { modified_ = true; notifyObservers(); }
+    void setModified(bool modified) { modified_ = modified; }
+    bool isModified() const { return modified_; }
+
+    void lock() { locked_ = true; }
+    void unlock() { locked_ = false; }
+    bool islocked() const { return (locked_==true); }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 
 private:
-    bool isModified_;
+    bool modified_;
+    bool locked_;
 
     std::vector<Processor*> processors_;
     std::vector<PortConnection*> portConnections_;

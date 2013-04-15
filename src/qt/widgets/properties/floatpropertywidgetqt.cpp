@@ -53,7 +53,7 @@ void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
         updateFromProperty();
     }
     else if (selecteditem == settingsMenu_->actions().at(2)){
-    //Set current value of the slider to max value of the property
+        //Set current value of the slider to max value of the property
         property_->setMaxValue(sliderWidget_->getValue());
         updateFromProperty();
     }

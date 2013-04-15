@@ -88,7 +88,7 @@ void ProcessorNetworkEvaluator::traversePredecessors(Processor* processor) {
     }
 }
 
-void ProcessorNetworkEvaluator::sortTopologically() {
+void ProcessorNetworkEvaluator::determineProcessingOrder() {
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
 
     std::vector<Processor*> endProcessors;
@@ -320,41 +320,64 @@ void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty) 
 
 
 void ProcessorNetworkEvaluator::evaluate() {
-    std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
-    std::vector<Property*> sourceProperties;
-       
+    if (processorNetwork_->islocked()) return;
 
-    repaintRequired_ = false;
-    
-    // TODO: perform only if network has been changed
-    sortTopologically();
+    // lock processor network to avoid concurrent evaluation
+    processorNetwork_->lock();
 
-     bool inValidTopology = false;
-    //TODO: there is better way to check for valid connections;
-    renderContext_->switchContext();
-    for (size_t i=0; i<processorsSorted_.size(); i++) {
-        if (!processorsSorted_[i]->isValid()) {
-            if (!processorsSorted_[i]->allInportsConnected()) {
-                inValidTopology = true;
-            }
-        }
+    //std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
+  
+    // if the processor network has changed determine the new processor order
+    if (processorNetwork_->isModified()) {
+        determineProcessingOrder();
+        processorNetwork_->setModified(false);
     }
 
+    bool inValidTopology = false;
+    for (size_t i=0; i<processorsSorted_.size(); i++)
+        if (!processorsSorted_[i]->isValid())
+            if (!processorsSorted_[i]->allInportsConnected())
+                inValidTopology = true;
     if (inValidTopology)
         return;
-   
+
+    // call before process on all processors
+    for (size_t i=0; i<processorsSorted_.size(); i++)
+        if (!processorsSorted_[i]->isValid())
+            processorsSorted_[i]->beforeProcess();
+
+    bool repaintRequired = false;
     renderContext_->switchContext();
     for (size_t i=0; i<processorsSorted_.size(); i++) {
         if (!processorsSorted_[i]->isValid()) {
+            // re-initialize resources (e.g., shaders) if necessary
+            if (processorsSorted_[i]->getInvalidationLevel() >= Processor::INVALID_RESOURCES)
+                processorsSorted_[i]->initializeResources();
+
+            // do the actual processing
             processorsSorted_[i]->process();                
-            processorsSorted_[i]->setValid();
-            if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i])) {
+
+            // if a canvas processor has activated its rendering context
+            // switch back to the default rendering context
+            // TODO: Should/can this not be done directly in the canvas processor?
+            if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
                 renderContext_->switchContext();
-            }
-            repaintRequired_ = true;
+
+            repaintRequired = true;
         }
     }
-    if (repaintRequired_)
+
+    // call after process on all processors and validate them
+    for (size_t i=0; i<processorsSorted_.size(); i++)
+        if (!processorsSorted_[i]->isValid()) {
+            processorsSorted_[i]->afterProcess();
+            processorsSorted_[i]->setValid();
+        }
+
+    // unlock processor network to allow next evaluation
+    processorNetwork_->unlock();
+
+    if (repaintRequired)
         for (size_t i=0; i<registeredCanvases_.size(); i++)
             registeredCanvases_[i]->repaint();
 }

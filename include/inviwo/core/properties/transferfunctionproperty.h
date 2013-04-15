@@ -9,7 +9,9 @@ namespace inviwo {
     class IVW_CORE_API TransferFunctionProperty : public TemplateProperty<TransferFunction> {
 
     public:
-        TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value, PropertySemantics::Type semantics = PropertySemantics::Default);
+        TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value,
+                                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                                 PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
     private:

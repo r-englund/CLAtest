@@ -1,24 +1,29 @@
 #include <inviwo/core/properties/optionproperties.h>
 
 namespace inviwo {
-    OptionPropertyDouble::OptionPropertyDouble(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-        : TemplatedOptionProperty<double>(identifier, displayName,value,semantics)
-    {}
 
-    void OptionPropertyDouble::serialize(IvwSerializer& s) const {
-        Property::serialize(s) ;
-        s.serialize("value", get());
-    }
+OptionPropertyDouble::OptionPropertyDouble(std::string identifier, std::string displayName, std::string value,
+                                       PropertyOwner::InvalidationLevel invalidationLevel,
+                                       PropertySemantics::Type semantics )
+    : TemplatedOptionProperty<double>(identifier, displayName,value, invalidationLevel, semantics)
+{}
 
-    void OptionPropertyDouble::deserialize(IvwDeserializer& d) {
-        Property::deserialize(d) ;
-        std::string value;
-        d.deserialize("value", value);
-        set(value);
-    }
+void OptionPropertyDouble::serialize(IvwSerializer& s) const {
+    Property::serialize(s) ;
+    s.serialize("value", get());
+}
 
-OptionPropertyFloat::OptionPropertyFloat(std::string identifier, std::string displayName, std::string value,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-    : TemplatedOptionProperty<float>(identifier, displayName,value,semantics)
+void OptionPropertyDouble::deserialize(IvwDeserializer& d) {
+    Property::deserialize(d) ;
+    std::string value;
+    d.deserialize("value", value);
+    set(value);
+}
+
+OptionPropertyFloat::OptionPropertyFloat(std::string identifier, std::string displayName, std::string value,
+                                         PropertyOwner::InvalidationLevel invalidationLevel,
+                                         PropertySemantics::Type semantics )
+    : TemplatedOptionProperty<float>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
 void OptionPropertyFloat::serialize(IvwSerializer& s) const {
@@ -33,8 +38,10 @@ void OptionPropertyFloat::deserialize(IvwDeserializer& d) {
     set(value);
 }
 
-OptionPropertyInt::OptionPropertyInt(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-: TemplatedOptionProperty<int>(identifier, displayName,value,semantics)
+OptionPropertyInt::OptionPropertyInt(std::string identifier, std::string displayName, std::string value,
+                                     PropertyOwner::InvalidationLevel invalidationLevel,
+                                     PropertySemantics::Type semantics )
+: TemplatedOptionProperty<int>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
 void OptionPropertyInt::serialize(IvwSerializer& s) const {
@@ -50,8 +57,10 @@ void OptionPropertyInt::deserialize(IvwDeserializer& d) {
 }
 
 
-OptionPropertyString::OptionPropertyString(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-    : TemplatedOptionProperty<std::string>(identifier, displayName, value, semantics)
+OptionPropertyString::OptionPropertyString(std::string identifier, std::string displayName, std::string value,
+                                           PropertyOwner::InvalidationLevel invalidationLevel,
+                                           PropertySemantics::Type semantics )
+    : TemplatedOptionProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
 void OptionPropertyString::serialize(IvwSerializer& s) const {

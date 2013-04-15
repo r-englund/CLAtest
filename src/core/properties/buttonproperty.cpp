@@ -1,8 +1,10 @@
 #include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {
-    ButtonProperty::ButtonProperty(std::string identifier, std::string displayName,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-	: Property(identifier,displayName,semantics)
+    ButtonProperty::ButtonProperty(std::string identifier, std::string displayName,
+                                   PropertyOwner::InvalidationLevel invalidationLevel, 
+                                   PropertySemantics::Type semantics)
+	: Property(identifier,displayName,invalidationLevel,semantics)
 	{}
 
 

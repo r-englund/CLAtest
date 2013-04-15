@@ -3,33 +3,44 @@
 namespace inviwo {
 
 	FloatVec2Property::FloatVec2Property(std::string identifier, std::string displayName, vec2 value,
-        vec2 minValue, vec2 maxValue, vec2 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-	: OrdinalProperty<vec2>(identifier, displayName, value, minValue, maxValue, increment, semantics)
+        vec2 minValue, vec2 maxValue, vec2 increment, PropertyOwner::InvalidationLevel invalidationLevel,
+        PropertySemantics::Type semantics )
+	: OrdinalProperty<vec2>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 FloatVec3Property::FloatVec3Property(std::string identifier, std::string displayName, vec3 value,
-                                     vec3 minValue, vec3 maxValue, vec3 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-    : OrdinalProperty<vec3>(identifier, displayName, value, minValue, maxValue, increment, semantics)
+                                     vec3 minValue, vec3 maxValue, vec3 increment,
+                                     PropertyOwner::InvalidationLevel invalidationLevel,
+                                     PropertySemantics::Type semantics )
+    : OrdinalProperty<vec3>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 FloatVec4Property::FloatVec4Property(std::string identifier, std::string displayName, vec4 value,
-                                     vec4 minValue, vec4 maxValue, vec4 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-    : OrdinalProperty<vec4>(identifier, displayName, value, minValue, maxValue, increment, semantics)
+                                     vec4 minValue, vec4 maxValue, vec4 increment,
+                                     PropertyOwner::InvalidationLevel invalidationLevel,
+                                     PropertySemantics::Type semantics )
+    : OrdinalProperty<vec4>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 IntVec2Property::IntVec2Property(std::string identifier, std::string displayName, ivec2 value,
-								 ivec2 minValue, ivec2 maxValue, ivec2 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-	: OrdinalProperty<ivec2>(identifier, displayName, value, minValue, maxValue, increment, semantics)
+								 ivec2 minValue, ivec2 maxValue, ivec2 increment,
+                                 PropertyOwner::InvalidationLevel invalidationLevel,
+                                 PropertySemantics::Type semantics )
+	: OrdinalProperty<ivec2>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 IntVec3Property::IntVec3Property(std::string identifier, std::string displayName, ivec3 value,
-								 ivec3 minValue, ivec3 maxValue, ivec3 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-	: OrdinalProperty<ivec3>(identifier, displayName, value, minValue, maxValue, increment, semantics)
+								 ivec3 minValue, ivec3 maxValue, ivec3 increment,
+                                 PropertyOwner::InvalidationLevel invalidationLevel,
+                                 PropertySemantics::Type semantics )
+	: OrdinalProperty<ivec3>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 IntVec4Property::IntVec4Property(std::string identifier, std::string displayName, ivec4 value,
-								 ivec4 minValue, ivec4 maxValue, ivec4 increment,PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-	: OrdinalProperty<ivec4>(identifier, displayName, value, minValue, maxValue, increment, semantics)
+								 ivec4 minValue, ivec4 maxValue, ivec4 increment,
+                                 PropertyOwner::InvalidationLevel invalidationLevel,
+                                 PropertySemantics::Type semantics )
+	: OrdinalProperty<ivec4>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 void FloatVec2Property::serialize(IvwSerializer& s) const {

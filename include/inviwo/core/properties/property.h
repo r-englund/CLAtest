@@ -14,7 +14,9 @@ namespace inviwo {
 class IVW_CORE_API Property : public IvwSerializable, public VoidObservable {
 
 public:
-    Property(std::string identifier, std::string displayName,  PropertySemantics::Type semantics = PropertySemantics::Default);
+    Property(std::string identifier, std::string displayName,
+        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics::Type semantics = PropertySemantics::Default);
     Property();
     
     virtual std::string getIdentifier() const;
@@ -25,6 +27,9 @@ public:
 
     virtual PropertySemantics::Type getSemantics() const;
     virtual void setSemantics(const PropertySemantics::Type& semantics);
+
+    PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
+    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) { invalidationLevel_ = invalidationLevel; }
 
     PropertyOwner* getOwner();
     virtual void setOwner(PropertyOwner* owner);
@@ -58,6 +63,7 @@ private:
     std::vector<PropertyWidget*> propertyWidgets_;
     bool invalid_;
     PropertySemantics::Type semantics_;
+    PropertyOwner::InvalidationLevel invalidationLevel_;
 };
 
 } // namespace

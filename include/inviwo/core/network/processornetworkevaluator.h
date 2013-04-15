@@ -30,14 +30,14 @@ public:
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
 
-    bool repaintRequired() { return repaintRequired_; }
+    //bool repaintRequired() { return repaintRequired; }
 
 private:
     bool hasBeenVisited(Processor* processor);
     bool hasBeenVisited(Property* property);
     std::vector<Processor*> getDirectPredecessors(Processor* processor);
     void traversePredecessors(Processor* processor);
-    void sortTopologically();
+    void determineProcessingOrder();
 
     void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);
     void propagateResizeEvent(Processor* processor, ResizeEvent* resizeEvent);
@@ -58,8 +58,6 @@ private:
     std::vector<Canvas*> registeredCanvases_;
     Canvas* renderContext_;
     LinkEvaluator* linkEvaluator_;
- 
-    bool repaintRequired_;
 };
 
 } // namespace

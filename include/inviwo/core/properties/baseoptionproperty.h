@@ -11,8 +11,10 @@ namespace inviwo {
 class IVW_CORE_API BaseOptionProperty : public StringProperty{
 public:
 
-    BaseOptionProperty(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default)
-        :StringProperty(identifier,displayName,value,semantics)
+    BaseOptionProperty(std::string identifier, std::string displayName, std::string value,
+        PropertyOwner::InvalidationLevel invalidationLevel,
+        PropertySemantics::Type semantics = PropertySemantics::Default)
+        :StringProperty(identifier,displayName,value,invalidationLevel,semantics)
     {}
 
     virtual std::vector< std::string > getOptionKeys()=0;
@@ -27,7 +29,9 @@ template<typename T>
 class IVW_CORE_API TemplatedOptionProperty : public BaseOptionProperty {
 
 public:
-    TemplatedOptionProperty(std::string identifier, std::string displayName, std::string value, PropertySemantics::Type semantics = PropertySemantics::Default);
+    TemplatedOptionProperty(std::string identifier, std::string displayName, std::string value,
+                            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                            PropertySemantics::Type semantics = PropertySemantics::Default);
 
     virtual void addOption(std::string optionName,T optionValue);
     virtual std::vector< std::pair<std::string, T> > getOptions();
@@ -44,8 +48,10 @@ private:
 
 
 template <typename T>
-TemplatedOptionProperty<T>::TemplatedOptionProperty(std::string identifier, std::string displayName,  std::string value , PropertySemantics::Type semantics /*= PropertySemantics::Default*/)
-    : BaseOptionProperty(identifier,displayName,value, semantics)
+TemplatedOptionProperty<T>::TemplatedOptionProperty(std::string identifier, std::string displayName, std::string value,
+                                                    PropertyOwner::InvalidationLevel invalidationLevel,
+                                                    PropertySemantics::Type semantics )
+    : BaseOptionProperty(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
 template<typename T>

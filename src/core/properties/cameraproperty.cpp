@@ -4,15 +4,16 @@
 namespace inviwo {
 
 CameraProperty::CameraProperty(std::string identifier, std::string displayName, 
-                               vec3 center, vec3 eye, vec3 lookUp, PropertySemantics::Type semantics/*= PropertySemantics::Default*/)
-    : CompositeProperty(identifier, displayName,semantics),
+                               vec3 center, vec3 eye, vec3 lookUp,
+                               PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
+    : CompositeProperty(identifier, displayName, invalidationLevel, semantics),
     lookFrom_("lookFrom", "Look from", center, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
     lookTo_("lookTo", "Look to", eye, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
     lookUp_("lookUp", "Look up", lookUp, vec3(std::numeric_limits<float>::min()), vec3(std::numeric_limits<float>::max()), vec3(0.1f)),
-    fovy_("fov", "FOV", 60.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
-    aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
-    farPlane_("far", "Far Plane", 100.0f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f),
-    nearPlane_("near", "Near Plane", 0.0001f, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), 0.1f)
+    fovy_("fov", "FOV", 60.0f, 30.0f, 360.0f, 0.1f),
+    aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 1.0f, 0.1f),
+    nearPlane_("near", "Near Plane", 0.0001f, 0.0f, 1000.0f, 0.1f),
+    farPlane_("far", "Far Plane", 100.0f, 0.0f, 1000.0f, 0.1f)
 {
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
     lookTo_.onChange(this, &CameraProperty::updateViewMatrix);

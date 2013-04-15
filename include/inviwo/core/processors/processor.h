@@ -58,9 +58,12 @@ public:
 
     bool allInportsConnected() const;
 
+    // TODO: should validation mechanism be moved into PropertyOwner?
     void invalidate();
     bool isValid() { return PropertyOwner::isValid(); }
     void setValid() { PropertyOwner::setValid(); }
+    InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
+    void initializeResources() {} // TODO: reload shaders etc. here
 
     void addInteractionHandler(InteractionHandler* interactionHandler);
     void removeInteractionHandler(InteractionHandler* interactionHandler);
@@ -89,6 +92,8 @@ private:
     std::vector<MetaData*> metaData_; 
 
     Group<std::string,Port*> portGroup_;
+
+    InvalidationLevel invalidationLevel_;
 };
 
 } // namespace

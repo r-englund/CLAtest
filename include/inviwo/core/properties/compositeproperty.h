@@ -11,7 +11,9 @@ namespace inviwo {
 class IVW_CORE_API CompositeProperty : public Property, public VoidObserver {
 
 public:
-    CompositeProperty(std::string identifier, std::string displayName, PropertySemantics::Type semantics = PropertySemantics::Default);
+    CompositeProperty(std::string identifier, std::string displayName,
+                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                      PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual ~CompositeProperty();
 
     void addProperty(Property* property);

@@ -23,6 +23,7 @@ public:
         std::string displayName,
         Event e,
         Action action,
+        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 
     virtual void serialize(IvwSerializer& s) const; //TODO
@@ -52,7 +53,7 @@ public:
      * @param Event e The new event
      */void setEvent(Event e) { event_ = e; }
 
-    // FOR TESTING
+    // FOR TESTING //FIXME: remove
     void tmpTest(int i) { std::cout << "QMouseEvent: " << i << std::endl; }
 
 private:
