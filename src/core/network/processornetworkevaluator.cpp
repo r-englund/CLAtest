@@ -338,8 +338,10 @@ void ProcessorNetworkEvaluator::evaluate() {
         if (!processorsSorted_[i]->isValid())
             if (!processorsSorted_[i]->allInportsConnected())
                 inValidTopology = true;
-    if (inValidTopology)
+    if (inValidTopology) {
+        processorNetwork_->unlock();
         return;
+    }
 
     // call before process on all processors
     for (size_t i=0; i<processorsSorted_.size(); i++)
@@ -355,7 +357,7 @@ void ProcessorNetworkEvaluator::evaluate() {
                 processorsSorted_[i]->initializeResources();
 
             // do the actual processing
-            processorsSorted_[i]->process();                
+            processorsSorted_[i]->process(); 
 
             // if a canvas processor has activated its rendering context
             // switch back to the default rendering context

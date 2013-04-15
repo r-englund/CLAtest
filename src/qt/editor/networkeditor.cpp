@@ -507,7 +507,7 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
             }
         } else
         */
-        QGraphicsScene::mousePressEvent(e);
+        QGraphicsScene::mouseMoveEvent(e);
     }
 }
 

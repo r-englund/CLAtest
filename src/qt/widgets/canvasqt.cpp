@@ -13,9 +13,9 @@ CanvasQt::CanvasQt(QWidget* parent)
   CanvasGL(uvec2(256,256))
 {
     //This is our default rendering context
-    //Intialized once. So "THE" first object of this class will not have any shared context (or widget)
+    //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
     //But Following objects, will share the context of initial object
-    if(!sharedWidget_){
+    if (!sharedWidget_){
         sharedWidget_ = this;
         QGLWidget::glInit();
     }
