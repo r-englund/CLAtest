@@ -1,4 +1,5 @@
 #include <inviwo/core/interaction/trackball.h>
+#include <exception>
 
 namespace inviwo {
 
@@ -21,9 +22,12 @@ Trackball::Trackball(CameraProperty* camera) : InteractionHandler(), PropertyOwn
         MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, Event::MODIFIER_NONE), 
         TrackballAction(TrackballAction::TRACKBALL_PAN));
 
-    addProperty(rotateEventProperty_);
+    CameraProperty* cam = new CameraProperty("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f));
+
+    addProperty(cam);
+    addProperty(*rotateEventProperty_);
     addProperty(zoomEventProperty_);
-    addProperty(panEventProperty_);    
+    addProperty(panEventProperty_);
 }
 
 Trackball::~Trackball() {}
@@ -230,4 +234,16 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     return;
 }
 
+void Trackball::addProperty( Property& property ) {
+    if (dynamic_cast<EventProperty*>(&property)) 
+       addProperty(&property);
+    
+}
+
+void Trackball::addProperty( Property* property ) {    
+    if (dynamic_cast<EventProperty*>(property)) {
+        properties_.push_back(property);
+        property->setOwner(this);
+    }
+}
 } // namespace

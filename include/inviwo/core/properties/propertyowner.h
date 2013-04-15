@@ -33,10 +33,11 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-private:
+protected:
     std::vector<Property*> properties_;
-    bool invalid_;
 
+private:    
+    bool invalid_;
 };
 
 } // namespace

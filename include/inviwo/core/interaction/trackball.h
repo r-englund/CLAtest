@@ -23,6 +23,8 @@ public:
     ~Trackball();
 
     virtual void invokeEvent(Event* event);
+    void addProperty(Property& property);
+    void addProperty(Property* property);
 
 private:
 
