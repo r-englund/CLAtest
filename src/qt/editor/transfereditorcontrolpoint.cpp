@@ -5,8 +5,6 @@
 
 namespace inviwo {
 
-    const std::string TransferEditorControlPoint::logSource_ = "TransferEditorControlPoint";
-
     TransferEditorControlPoint::TransferEditorControlPoint(QPointF position){
         setFlag(QGraphicsItem::ItemIsMovable, true);
         setFlag(QGraphicsItem::ItemIsSelectable);

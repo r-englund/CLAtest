@@ -2,8 +2,6 @@
 
 namespace inviwo {
 
-const std::string FrameBufferObject::logSource_ = "FrameBufferObject";
-
 FrameBufferObject::FrameBufferObject() {
     glGenFramebuffersEXT(1, &id_);
 }

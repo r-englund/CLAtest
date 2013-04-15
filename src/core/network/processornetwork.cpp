@@ -2,8 +2,6 @@
 
 namespace inviwo {
 
-const std::string ProcessorNetwork::logSource_ = "ProcessorNetwork";
-
 ProcessorNetwork::ProcessorNetwork() : VoidObservable(),
     isModified_(true) {}
 

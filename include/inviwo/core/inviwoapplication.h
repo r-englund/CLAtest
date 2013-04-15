@@ -48,8 +48,6 @@ public:
 protected:
     void printApplicationInfo();
 
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 private:
     std::string displayName_;
 

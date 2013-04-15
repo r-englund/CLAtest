@@ -3,8 +3,6 @@
 
 namespace inviwo {
 
-const std::string ProcessorNetworkEvaluator::logSource_ = "ProcessorNetworkEvaluator";
-
 ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processorNetwork)
     : processorNetwork_(processorNetwork) { 
     registeredCanvases_.clear();

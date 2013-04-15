@@ -18,10 +18,7 @@ class IVW_QTWIDGETS_API PropertySettingsWidgetQt : public QWidget {
     Q_OBJECT;
 public:
     PropertySettingsWidgetQt(Property *property);
-
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
     
-
 private:
     Property* property_;
     QLineEdit* lineEditMax_;

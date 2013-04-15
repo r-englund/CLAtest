@@ -26,30 +26,14 @@ namespace inviwo {
         return result;
     }
 
-    IVW_CORE_API std::vector<std::string> splitString(const std::string& str, char delimeter = ' ') {
-        std::vector<std::string> strings;
-        std::stringstream stream(str);
-        std::string part;
-        while(std::getline(stream, part, delimeter)) {
-            strings.push_back(part);
-        }
-        return strings;
-    }
+    IVW_CORE_API std::vector<std::string> splitString(const std::string& str, char delimeter = ' ') ;
+    IVW_CORE_API std::string removeFromString(std::string str, char char_to_remove = ' ');
 
-    IVW_CORE_API std::string removeFromString(std::string str, char char_to_remove = ' ') {
-        str.erase(std::remove(str.begin(), str.end(), char_to_remove), str.end());
-        return str;
-    }
+    IVW_CORE_API void replaceInString(std::string& str, const std::string& oldStr, const std::string& newStr);
+    IVW_CORE_API std::string parseTypeIdName(std::string str) ;
 
-    IVW_CORE_API std::string toUpper(std::string str) {
-        std::transform(str.begin(), str.end(),str.begin(), ::toupper);
-        return str;
-    }
-
-    IVW_CORE_API std::string toLower(std::string str) {
-        std::transform(str.begin(), str.end(),str.begin(), ::tolower);
-        return str;
-    }
+    IVW_CORE_API std::string toUpper(std::string str);
+    IVW_CORE_API std::string toLower(std::string str);
 
 } // namespace
 

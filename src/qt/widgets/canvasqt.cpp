@@ -7,7 +7,6 @@
 namespace inviwo {
 
 QGLWidget* CanvasQt::sharedWidget_ = 0;
-const std::string CanvasQt::logSource_ = "CanvasQt";
 
 CanvasQt::CanvasQt(QWidget* parent)
 : QGLWidget(QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::DepthBuffer), parent, sharedWidget_),

@@ -2,8 +2,6 @@
 
 namespace inviwo {
 
-const std::string PositionMetaData::logSource_ = "PositionMetaData";
-
 PositionMetaData::PositionMetaData() 
     : IVec2MetaData(ivec2(0,0))
 {}

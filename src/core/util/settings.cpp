@@ -2,8 +2,6 @@
 
 namespace inviwo {
 
-const std::string Settings::logSource_ = "Settings";
-
 Settings::Settings(){}
 
 Settings::~Settings() {}

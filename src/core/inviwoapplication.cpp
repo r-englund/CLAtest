@@ -6,9 +6,6 @@
 
 namespace inviwo {
 
-const std::string InviwoApplication::logSource_ = "InviwoApplication";
-
-
 InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
                                      : displayName_(displayName), basePath_(basePath)
 {
@@ -57,7 +54,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
 }
 
 void InviwoApplication::printApplicationInfo(){
-    LogInfoS("Inviwo Info", "Version: " << IVW_VERSION);
+    LogInfoCustom("InviwoInfo", "Version: " << IVW_VERSION);
     std::string config = "";
 #ifdef CMAKE_GENERATOR
     config += std::string(CMAKE_GENERATOR);
@@ -68,7 +65,7 @@ void InviwoApplication::printApplicationInfo(){
     config += " [" + std::string(CMAKE_INTDIR) + "]";
 #endif
     if(config != "")
-        LogInfoS("Inviwo Info", "Config: " << config);
+        LogInfoCustom("InviwoInfo", "Config: " << config);
 }
 
 } // namespace

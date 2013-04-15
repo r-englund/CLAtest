@@ -4,6 +4,8 @@
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/inviwo.h>
 #include <sstream>
+#include <typeinfo.h>
+#include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {
 
@@ -15,21 +17,21 @@ IVW_CORE_API enum LogLevel {
 
 #define LogInfo(message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+    inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogWarn(message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(logSource_, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+    inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogError(message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(logSource_, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+    inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 
-#define LogInfoS(source, message) \
+#define LogInfoCustom(source, message) \
     {   std::ostringstream stream__; stream__ << message; \
     inviwo::LogCentral::instance()->log(source, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
-#define LogWarnS(source, message) \
+#define LogWarnCustom(source, message) \
     {   std::ostringstream stream__; stream__ << message; \
     inviwo::LogCentral::instance()->log(source, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
-#define LogErrorS(source, message) \
+#define LogErrorCustom(source, message) \
     {   std::ostringstream stream__; stream__ << message; \
     inviwo::LogCentral::instance()->log(source, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 

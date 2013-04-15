@@ -92,8 +92,6 @@ private:
     bool gridSnapping_;
     static const int GRID_SPACING;
 
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 
     QPointF snapToGrid(QPointF pos);
     void drawBackground(QPainter* painter, const QRectF& rect);

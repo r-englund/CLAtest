@@ -22,8 +22,6 @@
 
 namespace inviwo {
 
-const std::string InviwoCore::logSource_ = "InviwoCore";
-
 InviwoCore::InviwoCore() : InviwoModule() {
     setIdentifier("Core");
     //setXMLFileName(InviwoApplication::app()->getRootPath() + "/src/core/core.xml", true);

@@ -7,8 +7,6 @@ namespace inviwo {
 
 #define SystemInfoNotFound(message) { LogInfo(message << " Info could not be retrieved"); }
 
-    const std::string SystemInfo::logSource_ = "System Info";
-
     SystemInfo::SystemInfo() {}
 
     SystemInfo::~SystemInfo() {}

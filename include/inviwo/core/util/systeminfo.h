@@ -54,8 +54,6 @@ namespace inviwo {
         void retrieveStaticInfo();
         void retrieveDynamicInfo();
 
-        static const std::string logSource_; ///< Source string to be displayed for log messages.
-
     private:
         bool lookupOSInfo();
         bool lookupCPUInfo();

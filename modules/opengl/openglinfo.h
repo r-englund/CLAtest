@@ -76,8 +76,6 @@ protected:
     void parseAndAddShaderVersion(std::string);
     int parseAndRetrieveShaderVersion(std::string);
 
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 private:
     GlVendor glVendor_;
 

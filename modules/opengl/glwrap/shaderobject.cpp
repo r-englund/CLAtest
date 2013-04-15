@@ -12,8 +12,6 @@
 
 namespace inviwo {
 
-const std::string ShaderObject::logSource_ = "ShaderObject";
-
 ShaderObject::ShaderObject(GLenum shaderType, std::string fileName) :
     shaderType_(shaderType),
     fileName_(fileName)

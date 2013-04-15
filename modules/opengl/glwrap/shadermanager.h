@@ -24,7 +24,6 @@ public:
     std::string getGlobalGLSLHeader();
 
 private:
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
     std::vector<Shader*> shaders_;
     OpenGLInfo* openGLInfoRef_;
 };

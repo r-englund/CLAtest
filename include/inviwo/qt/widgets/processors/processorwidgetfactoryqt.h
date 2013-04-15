@@ -15,8 +15,6 @@ class IVW_QTWIDGETS_API ProcessorWidgetFactoryQt : public Singleton<ProcessorWid
 public:
     ProcessorWidgetFactoryQt();
     ProcessorWidgetQt* create(Processor* processor);
-
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace

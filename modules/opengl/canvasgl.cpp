@@ -3,7 +3,6 @@
 namespace inviwo {
 
 bool CanvasGL::glewInitialized_ = false;
-const std::string CanvasGL::logSource_ = "CanvasGL";
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)

@@ -46,7 +46,7 @@ namespace inviwo {
             case UINT64:
                 return new ImageRAMuint64(static_cast<DataUINT64::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
             default: 
-                LogErrorS("ImageDisk2RAMConverter", "Cannot convert format from disk to RAM:" << imageDisk->getDataFormat().getString());
+                LogError("Cannot convert format from disk to RAM:" << imageDisk->getDataFormat().getString());
             } 
             
         }

@@ -6,8 +6,6 @@
 
 namespace inviwo {
 
-const std::string ShaderManager::logSource_ = "ShaderManager";
-
 ShaderManager::ShaderManager() {
     InviwoApplication::getRef().registerFileObserver(this);
     openGLInfoRef_ = NULL;

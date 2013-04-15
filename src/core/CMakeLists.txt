@@ -221,6 +221,7 @@ set(SOURCE_FILES
     util/logdistributor.cpp
     util/observer.cpp
     util/settings.cpp
+    util/stringconversion.cpp
     util/systeminfo.cpp
     util/variant.cpp
 )

@@ -43,8 +43,6 @@
 
 namespace inviwo {
 
-const std::string PropertyWidgetFactoryQt::logSource_ = "PropertyWidgetFactoryQt";
-
 PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
 PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
 

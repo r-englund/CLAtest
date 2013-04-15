@@ -16,8 +16,6 @@ protected:
     void setupModuleSettings();
     void allocationTest();
 
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 private:
     uint32_t* allocTest_;
 };

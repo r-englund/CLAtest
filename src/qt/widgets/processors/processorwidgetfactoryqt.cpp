@@ -7,8 +7,6 @@
 
 namespace inviwo {
 
-const std::string ProcessorWidgetFactoryQt::logSource_ = "ProcessorWidgetFactoryQt";
-
 ProcessorWidgetFactoryQt::ProcessorWidgetFactoryQt() {}
 
 ProcessorWidgetQt* ProcessorWidgetFactoryQt::create(Processor* processor) {

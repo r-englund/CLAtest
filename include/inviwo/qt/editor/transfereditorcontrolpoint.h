@@ -40,7 +40,6 @@ namespace inviwo {
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
     private:
-        static const std::string logSource_;
         int id;
         int size;
     };

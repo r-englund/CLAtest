@@ -21,7 +21,6 @@ public:
 
 private:
     static bool glewInitialized_;
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
 
 };
 

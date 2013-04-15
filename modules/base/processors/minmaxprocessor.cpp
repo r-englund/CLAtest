@@ -64,7 +64,7 @@ void MinMaxProcessor::process() {
     uvec2 minmax = calculateMinMaxValues(data, width * height * 4);
 
     //Print results
-    LogInfoS(getClassName(), " Image minimum: " << minmax.x << " maximum: " << minmax.y);
+    LogInfo(" Image minimum: " << minmax.x << " maximum: " << minmax.y);
     
     ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
     outImageGL->resize(dim);

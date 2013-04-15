@@ -25,8 +25,6 @@
 
 namespace inviwo {
 
-    const std::string TransferEditor::logSource_ = "TransferEditor";
-
     TransferEditor::TransferEditor(PropertyWidgetQt *parent, TransferFunction* transferFunc, std::vector<TransferEditorControlPoint*>* points)
         :
 		transferFunc_(transferFunc),

@@ -2,8 +2,6 @@
 
 namespace inviwo {
 
-const std::string ProcessorWidgetMetaData::logSource_ = "ProcessorWidgetMetaData";
-
 ProcessorWidgetMetaData::ProcessorWidgetMetaData() 
     : CompositeMetaData()
 {

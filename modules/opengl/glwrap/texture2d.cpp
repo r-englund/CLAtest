@@ -79,7 +79,7 @@ namespace inviwo {
                 break;
             default:
                 dataTypeSize = 0;
-                LogErrorS("Texture2D::getSizeInBytes()", "Invalid data type: " << dataTypeSize);
+                LogError("Invalid data type: " << dataTypeSize);
         }
         return channels*dataTypeSize;
     }
@@ -106,7 +106,7 @@ namespace inviwo {
                 break;
             default:
                 channels = 0;
-                LogErrorS("Texture2D::getSizeInBytes()", "Invalid format: " << format_);
+                LogError("Invalid format: " << format_);
         }
         return channels;
     }

@@ -118,11 +118,11 @@ namespace inviwo {
             }
             catch (cl::Error&)
             {
-                LogErrorS("OpenCL", "ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
+                LogError("ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
                 properties.clear();
                 properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
                 gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
-                LogErrorS("OpenCL", "Succeeded creating OpenCL without OpenGL sharing. ");
+                LogError("Succeeded creating OpenCL without OpenGL sharing. ");
 
             }
 
@@ -142,7 +142,7 @@ namespace inviwo {
 
         } catch (cl::Error& err) {
             
-            LogErrorS("OpenCL", "ERROR: " << err.what() << "(" << err.err() << "), " << cl::errorCodeToString(err.err()) << std::endl);
+            LogError("ERROR: " << err.what() << "(" << err.err() << "), " << cl::errorCodeToString(err.err()) << std::endl);
             
         }
     }
@@ -201,7 +201,7 @@ namespace inviwo {
              // Houston, we have a problem
              if(status == CL_BUILD_ERROR) {
                  std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[i]);
-                LogErrorS("OpenCL", filename << " build error:" << std::endl << buildLog);
+                LogErrorCustom("OpenCL", filename << " build error:" << std::endl << buildLog);
              }
         }
     }
@@ -241,7 +241,7 @@ namespace inviwo {
             std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device);
             // Output log if it contains any info
             if(buildLog.size() > 1)
-                LogInfoS("OpenCL", fileName << " build info:" << std::endl << buildLog);
+                LogInfoCustom("OpenCL", fileName << " build info:" << std::endl << buildLog);
         } catch (cl::Error& e) {
             OpenCL::printBuildError(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()), program);
             throw e;

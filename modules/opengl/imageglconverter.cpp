@@ -93,7 +93,7 @@ namespace inviwo {
             //imageRepresentation->deactivateBuffer();
             return image;
         } else {
-            LogErrorS("ImageGL2RAMConverter::convert()", "Invalid conversion");
+            LogError("Invalid conversion");
         }
         return NULL;
     }

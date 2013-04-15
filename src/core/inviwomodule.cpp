@@ -3,8 +3,6 @@
 
 namespace inviwo {
 
-const std::string InviwoModule::logSource_ = "InviwoModule";
-
 InviwoModule::InviwoModule()
     : identifier_("undefined")
     , initialized_(false)

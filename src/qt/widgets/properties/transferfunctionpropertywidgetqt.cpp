@@ -1,7 +1,7 @@
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 
 namespace inviwo {
-    const std::string TransferFunctionPropertyWidgetQt::logSource_ = "TransferFunctionPropertyWidget";
+
     TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property) {
         generateWidget();
         updateFromProperty();

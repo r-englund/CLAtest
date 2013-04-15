@@ -7,8 +7,6 @@ namespace inviwo {
 
 #define OpenGLInfoNotFound(message) { LogInfo(message << " Info could not be retrieved"); }
 
-const std::string OpenGLInfo::logSource_ = "OpenGL Info";
-
 OpenGLInfo::GLSLShaderVersion::GLSLShaderVersion() : number_(0), profile_("") {}
 
 OpenGLInfo::GLSLShaderVersion::GLSLShaderVersion(int num) : number_(num), profile_("") {}

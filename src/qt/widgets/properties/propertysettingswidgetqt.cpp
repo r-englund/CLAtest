@@ -2,8 +2,6 @@
 
 namespace inviwo {
 
-const std::string PropertySettingsWidgetQt::logSource_ = "PropertySettingsWidgetQt";
-
 PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property) : property_(property),
     btnPropertyApply_("Apply", "Apply"), 
     btnPropertyCancel_("Cancel", "Cancel") {

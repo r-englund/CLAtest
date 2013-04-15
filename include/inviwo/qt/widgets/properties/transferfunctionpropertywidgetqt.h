@@ -21,7 +21,6 @@ public:
     void updateFromProperty();
 
 private:
-    static const std::string logSource_;
     TransferFunctionProperty* property_;
 	QGraphicsView*	view;
     QCheckBox* checkBox_;

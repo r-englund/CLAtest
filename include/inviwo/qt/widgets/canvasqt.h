@@ -32,7 +32,6 @@ public:
 
 private:
     static QGLWidget* sharedWidget_; //For rendering-context sharing
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace

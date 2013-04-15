@@ -21,7 +21,6 @@
 
 namespace inviwo {
 
-const std::string NetworkEditor::logSource_ = "NetworkEditor";
 const int NetworkEditor::GRID_SPACING = 25;
 
 NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {

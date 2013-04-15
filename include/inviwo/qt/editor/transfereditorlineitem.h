@@ -46,7 +46,6 @@ namespace inviwo {
 
 
     private:
-        static const std::string logSource_;
         TransferEditorControlPoint* start;
         TransferEditorControlPoint* finish;
         

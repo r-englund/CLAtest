@@ -30,10 +30,6 @@ public:
     int getY();
     void setY(const int &y);
 
-protected:
-
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 };
 
 } // namespace

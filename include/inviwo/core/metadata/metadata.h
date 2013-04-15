@@ -19,9 +19,6 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-protected:
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 };
 
 /*---------------------------------------------------------------------*/

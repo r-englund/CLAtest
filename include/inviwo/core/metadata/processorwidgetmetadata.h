@@ -33,10 +33,6 @@ private:
     IVec2MetaData dimensionMetaData_;
     BoolMetaData visiblityMetaData_;
 
-protected:
-
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 };
 
 } // namespace

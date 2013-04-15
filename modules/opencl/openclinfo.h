@@ -32,8 +32,6 @@ namespace inviwo {
     protected:
         void retrieveStaticInfo();
         void retrieveDynamicInfo();
-        
-        static const std::string logSource_; ///< Source string to be displayed for log messages.
     };
     
 
@@ -254,12 +252,12 @@ F(cl_device_info, CL_DEVICE_BUILT_IN_KERNELS, STRING_CLASS)
 #define __CL_PRINT_DEVICE_INFO(token, param_name, T) \
     try { \
         if(std::string(#T).compare("cl_bool") == 0) { \
-        LogInfoS("OpenCL Info", #param_name << ": " << inviwo::deviceInfoToString(param_name, device.getInfo<param_name>(), true)) \
+        LogInfoCustom("OpenCLInfo", #param_name << ": " << inviwo::deviceInfoToString(param_name, device.getInfo<param_name>(), true)) \
         } else {                                        \
-        LogInfoS("OpenCL Info", #param_name << ": " << inviwo::deviceInfoToString(param_name, device.getInfo<param_name>(), false)) \
+        LogInfoCustom("OpenCLInfo", #param_name << ": " << inviwo::deviceInfoToString(param_name, device.getInfo<param_name>(), false)) \
         } \
     } catch(cl::Error&) { \
-        LogErrorS("OpenCL Info", "Error while retrieving device info for " << #param_name); \
+        LogErrorCustom("OpenCLInfo", "Error while retrieving device info for " << #param_name); \
     }        
         
 #endif

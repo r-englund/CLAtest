@@ -2,8 +2,6 @@
 
 namespace inviwo {
 
-const std::string CompositeMetaData::logSource_ = "CompositeMetaData";
-
 CompositeMetaData::CompositeMetaData()
     : MetaData()
 {}

@@ -89,12 +89,12 @@ cl::ImageFormat typeToImageFormat( inviwo::DataFormatId format )
         case inviwo::Vec4FLOAT32:
             clFormat = cl::ImageFormat(CL_RGBA, CL_FLOAT); break;
         default:
-            LogErrorS("cl::ImageFormat typeToImageFormat", "Format not implmented yet"); break;
+            LogErrorCustom("cl::ImageFormat typeToImageFormat", "Format not implmented yet"); break;
 
     }
 #ifdef DEBUG
     if (!inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::getInstance()->getContext(), clFormat)) {
-        LogErrorS("cl::ImageFormat typeToImageFormat", "OpenCL device does not support format");   
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "OpenCL device does not support format");
     };
 #endif 
     

@@ -5,8 +5,6 @@
 
 namespace inviwo {
 
-    const std::string TransferEditorLineItem::logSource_ = "TransferEditorLineItem";
-
     TransferEditorLineItem::TransferEditorLineItem(TransferEditorControlPoint* start_, TransferEditorControlPoint* finish_)
     {
         start = start_;

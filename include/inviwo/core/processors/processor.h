@@ -77,8 +77,6 @@ protected:
 
     ProcessorWidget* processorWidget_;
 
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 private:
     std::string identifier_;
 

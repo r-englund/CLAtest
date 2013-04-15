@@ -2,8 +2,6 @@
 
 namespace inviwo {
 
-const std::string Texture3D::logSource_ = "Texture3D";
-
 Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
     : dimensions_(dimensions),
       format_(format),

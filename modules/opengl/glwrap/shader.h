@@ -43,8 +43,6 @@ private:
 
     void attachShaderObject(ShaderObject* shaderObject);
     void detachShaderObject(ShaderObject* shaderObject);
-
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace

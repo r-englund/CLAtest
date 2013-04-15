@@ -48,7 +48,6 @@ namespace inviwo {
         return stream.str();
         
     }
-    const std::string OpenCLInfo::logSource_ = "OpenCL Info";
 
     OpenCLInfo::OpenCLInfo() {}
 
@@ -110,7 +109,7 @@ namespace inviwo {
         }
         catch (cl::Error& e)
         {
-            LogError("Error while retrieving device info: " << e.what());
+            LogErrorCustom("OpenCL", "Error while retrieving device info: " << e.what());
         }        
     }
 

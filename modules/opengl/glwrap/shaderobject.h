@@ -44,8 +44,6 @@ private:
 
     std::vector<std::pair<std::string, std::string> > shaderDefines_;
     std::vector<std::pair<std::string, unsigned int> > lineNumberResolver_;
-
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace

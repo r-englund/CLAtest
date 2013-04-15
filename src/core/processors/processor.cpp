@@ -4,8 +4,6 @@
 
 namespace inviwo {
 
-const std::string Processor::logSource_ = "Processor";
-
 Processor::Processor()
     : processorWidget_(0), identifier_("undefined")
 {}

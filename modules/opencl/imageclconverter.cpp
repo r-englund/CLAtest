@@ -36,7 +36,7 @@ DataRepresentation* ImageRAM2CLConverter::convert(DataRepresentation* source) {
             return new ImageCLvec4float32(static_cast<DataVec4FLOAT32::type*>(imageRAM->getData()), imageRAM->getDimension());
         }
        
-        LogErrorS("ImageRAM2CLConverter::convert()", "Invalid conversion or not implemented");
+        LogError("Invalid conversion or not implemented");
         
     }        
     return destination;
@@ -79,7 +79,7 @@ DataRepresentation* ImageCL2RAMConverter::convert(DataRepresentation* source) {
             const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
             queue.enqueueReadImage(imageCL->getImage(), true, glm::svec3(0), glm::svec3(dimension, 1), 0, 0, imageRAM->getData());
         } else {
-            LogErrorS("ImageCL2RAMConverter::convert()", "Invalid conversion or not implemented");
+            LogError("Invalid conversion or not implemented");
         }
     }        
     return destination;

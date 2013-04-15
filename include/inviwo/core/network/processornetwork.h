@@ -112,9 +112,6 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 
-protected:
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
-
 private:
     bool isModified_;
 

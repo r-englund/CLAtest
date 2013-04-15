@@ -23,9 +23,6 @@ protected:
 
 private:
     std::vector<MetaData*> subMetaData_;
-
-protected:
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
     
 };
 

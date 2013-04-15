@@ -15,8 +15,6 @@ class IVW_QTWIDGETS_API PropertyWidgetFactoryQt : public Singleton<PropertyWidge
 public:
     PropertyWidgetFactoryQt();
     PropertyWidgetQt* create(Property* property);
-
-    static const std::string logSource_; ///< Source string to be displayed for log messages.
 };
 
 } // namespace
