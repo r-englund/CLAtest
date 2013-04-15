@@ -4,7 +4,7 @@
 #include <inviwo/core/inviwocoredefine.h>
 #include <inviwo/core/inviwo.h>
 #include <sstream>
-#include <typeinfo.h>
+#include <typeinfo>
 #include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {
