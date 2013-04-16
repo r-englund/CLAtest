@@ -143,8 +143,12 @@ template<class T>
 void Data::invalidateAllOther(){
     for (size_t i=0; i<representations_.size(); i++) {
         T* representation = dynamic_cast<T*>(representations_[i]);
-        if (!representation) 
+        if (!representation){
             representations_[i]->invalidate();
+            //TODO : make updates (VolumeGL2RAMUpdate) existing representations instead of deleting old ones.
+            delete representations_[i];
+            representations_.erase(representations_.begin() + i);
+        }
     }
 }
 
