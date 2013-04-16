@@ -33,8 +33,8 @@ public:
 
     void setTexels(void* texels) { texels_ = texels; }
 
-    void bind();
-    void unbind();
+    void bind() const;
+    void unbind() const;
     void upload();
 
 private:

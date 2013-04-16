@@ -30,7 +30,7 @@ protected:
 
 private:
     
-    uvec2 calculateMinMaxValues(uint8_t *data, int size) const;
+    uvec2 calculateMinMaxValues(const uint8_t *data, int size) const;
 
 	ImagePort inport0_;
     ImagePort outport_;

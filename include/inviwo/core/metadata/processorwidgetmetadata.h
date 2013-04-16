@@ -24,9 +24,9 @@ public:
     void setWidgetPosition(ivec2 pos);
     ivec2 getWidgetPosition();
     void setDimension(ivec2 dim); 
-    ivec2 getDimension();
+    ivec2 getDimension() const;
     void setVisibile(bool visibility);
-    bool isVisible();
+    bool isVisible() const;
 
 private:
     IVec2MetaData positionMetaData_;

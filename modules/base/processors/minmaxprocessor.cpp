@@ -21,7 +21,6 @@ Processor* MinMaxProcessor::create() const {
 void MinMaxProcessor::initialize() {
     Processor::initialize();
     shader_ = new Shader("img_texturequad.frag");
-     Image* outImage = outport_.getData();
 }
 
 void MinMaxProcessor::deinitialize() {
@@ -35,7 +34,7 @@ void MinMaxProcessor::deinitialize() {
 * @param dim is the dimensions of the data.
 * @return the minimum and maximum values of data.
 **/
-uvec2 MinMaxProcessor::calculateMinMaxValues(uint8_t *data, int size) const{
+uvec2 MinMaxProcessor::calculateMinMaxValues(const uint8_t *data, int size) const{
     uvec2 minmax = uvec2(data[0], data[0]);
     for(int i = 0; i < size; i++){
         if(data[i] < minmax.x)
@@ -48,13 +47,13 @@ uvec2 MinMaxProcessor::calculateMinMaxValues(uint8_t *data, int size) const{
 
 void MinMaxProcessor::process() {
     //Get images from in- and outport.
-    Image* inputImage = inport0_.getData();
-    Image* outImage = outport_.getData();
+    const Image* inputImage = inport0_.getData();
+    Image* outImage = outport_.getEditableData();
        
     //Get ram representation
-    ImageRAM *imageRam = inputImage->getRepresentation<ImageRAM>();
+    const ImageRAM *imageRam = inputImage->getRepresentation<ImageRAM>();
 
-    uint8_t *data = static_cast<uint8_t*>(imageRam->getData());
+    const uint8_t *data = static_cast<const uint8_t*>(imageRam->getData());
 
     uvec2 dim = inputImage->size();
     int width = dim.x,
@@ -66,7 +65,7 @@ void MinMaxProcessor::process() {
     //Print results
     LogInfo(" Image minimum: " << minmax.x << " maximum: " << minmax.y);
     
-    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     outImageGL->resize(dim);
 
     activateTarget(outport_);

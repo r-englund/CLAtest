@@ -14,7 +14,7 @@ Volume::Volume(VolumeRepresentation* in) : Data3D() {
     metaData_.removeAll();
 }
 
-Volume::Volume(VolumeRepresentation* in, Volume* src) : Data3D() {
+Volume::Volume(VolumeRepresentation* in, const Volume* src) : Data3D() {
     representations_.clear();
     representations_.push_back(in);
     metaData_.removeAll();
@@ -34,11 +34,11 @@ void Volume::setOffset(ivec3 offset) {
     setMetaData<IVec3MetaData>("offset", offset);
 }
 
-ivec3 Volume::getOffset() {
+ivec3 Volume::getOffset() const{
     return getMetaData<IVec3MetaData>("offset", ivec3(0,0,0));
 }
 
-DataFormatBase Volume::getDataFormat(){
+DataFormatBase Volume::getDataFormat() const{
     DataFormatBase format = DataUINT8();
     if(representations_[0]){
         VolumeRepresentation* volRep = dynamic_cast<VolumeRepresentation*>(representations_[0]);
@@ -48,8 +48,8 @@ DataFormatBase Volume::getDataFormat(){
     return format;
 }
 
-void Volume::createDefaultRepresentation(){
-    addRepresentation(new VolumeDisk());
+void Volume::createDefaultRepresentation() const{
+    representations_.push_back(new VolumeDisk());
 }
 
 

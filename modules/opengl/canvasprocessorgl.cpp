@@ -51,16 +51,8 @@ void CanvasProcessorGL::renderImagePlaneQuad() const {
 
 void CanvasProcessorGL::process() {
     CanvasProcessor::process();
-    Image* inImage = inport_.getData();
-
-    //Temporary line because of converterpackage not working (data.h)
-    //this line forces a ImageRAM representation to be made which results
-    //in a representation that we can convert to a ImageGL.
-    ImageRAM* temp = inImage->getRepresentation<ImageRAM>();
-    
-    ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    if(inImageGL == NULL)
-        inImageGL = new ImageGL();
+    const Image* inImage = inport_.getData();
+    const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     uvec2 csize = getCanvas()->size();
     inImageGL->bindColorTexture(GL_TEXTURE0);
 

@@ -26,13 +26,12 @@ namespace inviwo {
         void activateBuffer();
         void deactivateBuffer();
 
-        void bindColorTexture(GLenum texUnit);
-        void bindDepthTexture(GLenum texUnit);
-        void bindTextures(GLenum colorTexUnit, GLenum depthTexUnit);
-        void unbindDepthTexture();
-        void unbindColorTexture();
+        void bindColorTexture(GLenum texUnit) const;
+        void bindDepthTexture(GLenum texUnit) const;
+        void bindTextures(GLenum colorTexUnit, GLenum depthTexUnit) const;
+        void unbindDepthTexture() const;
+        void unbindColorTexture() const;
         virtual void resize(uvec2 dimensions);
-        virtual uvec2 getDimension() { return dimensions_;}
         virtual void copyAndResizeImage(DataRepresentation* target) ;
         void renderImagePlaneQuad() const;
     //private:

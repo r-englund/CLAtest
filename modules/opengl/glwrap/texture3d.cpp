@@ -14,12 +14,12 @@ Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenu
 
 Texture3D::~Texture3D() {}
 
-void Texture3D::bind() {
+void Texture3D::bind() const{
     glBindTexture(GL_TEXTURE_3D, id_);
     LGL_ERROR;
 }
 
-void Texture3D::unbind() {
+void Texture3D::unbind() const{
     glBindTexture(GL_TEXTURE_3D, 0);
     LGL_ERROR;
 }

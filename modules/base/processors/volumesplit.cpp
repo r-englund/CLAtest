@@ -112,7 +112,7 @@ ivec3 VolumeSplit::calculateBestBrickDimension(MaximumMemoryCondition memCond, u
 Volume* VolumeSplit::createNewVolume(VolumeSplit::Brick brick){
     Volume* volume;
     if (inport_.getData()->hasRepresentation<VolumeRepresentation>()){
-        VolumeRepresentation* vol = inport_.getData()->getRepresentation<VolumeRepresentation>();
+        const VolumeRepresentation* vol = inport_.getData()->getRepresentation<VolumeRepresentation>();
         volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)), inport_.getData());
     }
 
@@ -233,8 +233,8 @@ void VolumeSplit::process(){
     // put out result volume
     if (volHandle)
         outport_.setData(volHandle);
-    else
-        outport_.setData(inport_.getData()); //Don't take ownership or we can't use it again
+    //else
+    //    outport_.setData(inport_.getData()); //Don't take ownership or we can't use it again
 }
 
 void VolumeSplit::initialize() {

@@ -20,6 +20,7 @@ public:
     void rename(std::string newKey, std::string oldKey);
     std::vector<std::string> getKeys();
     MetaData* get(std::string key);
+    const MetaData* get(std::string key) const;
 
     MetaDataMap& operator=(const MetaDataMap& map) ;
 

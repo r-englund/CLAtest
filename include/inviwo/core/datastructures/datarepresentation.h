@@ -12,12 +12,17 @@ namespace inviwo {
     public:
         DataRepresentation();
         virtual ~DataRepresentation();
-        virtual void applyOperation(DataOperation*) = 0;
+        virtual void performOperation(DataOperation*) const = 0;
 
         virtual void initialize() = 0;
         virtual void deinitialize() = 0;
         virtual DataRepresentation* clone() const = 0;
-        virtual std::string getClassName() const { return "DataRepresentation"; }
+        virtual std::string getClassName() const;
+        bool isValid() const;
+        void invalidate();
+
+    private:
+        bool valid_;
     };
 
 } // namespace

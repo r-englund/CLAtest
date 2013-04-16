@@ -52,20 +52,20 @@ void VolumeRaycasterCL::deinitialize() {
 
 void VolumeRaycasterCL::process() {
 
-    Image* outImage = outport_.getData();
+    Image* outImage = outport_.getEditableData();
     uvec2 outportDim = outImage->size();
     //uvec2 outportDim = uvec2(4, 4);
     //Image* outImage = new Image(outportDim);
     outImage->clearRepresentations();
     outImage->addRepresentation(new ImageCLuint8vec4(outportDim));
     //outImage->addRepresentation(new ImageCLvec4float32(outportDim));
-    ImageCL* outImageCL = outImage->getRepresentation<ImageCL>();
+    ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
 
 
-    Volume* volume = volumePort_.getData();
-    VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
+    const Volume* volume = volumePort_.getData();
+    const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
     uvec3 volumeDim = volumeCL->getDimensions();
-    ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
+    const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
     cl_uint arg = 0;
     //kernel_->setArg(arg++, volumeCL->getVolume());
     kernel_->setArg(arg++, entryCL->getImage());

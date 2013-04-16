@@ -25,10 +25,15 @@ public:
     };
     //Representations
     template<class T>
+    const T* getRepresentation() const;
+
+    template<class T>
+    T* getEditableRepresentation();
+
+    template<class T>
     bool hasRepresentation() const;
     bool hasRepresentations() const;
-    template<class T>
-    T* getRepresentation();
+
     void addRepresentation(DataRepresentation* representation);
     void clearRepresentations();
     void copyRepresentations(Data* targetData) const;
@@ -39,9 +44,9 @@ public:
 
     //param val is required to deduce the template argument
     template<typename T, typename U>
-    U getMetaData(std::string key, U val);
+    U getMetaData(std::string key, U val) const;
 
-    void copyMetaData(Data* targetData);
+    void copyMetaData(Data* targetData) const;
 
     //Others
     virtual Data* clone() const = 0;
@@ -52,14 +57,17 @@ public:
     typedef ivec4 TYPE4D;
 
 protected:
-    virtual void createDefaultRepresentation()=0;
+    virtual void createDefaultRepresentation() const = 0;
 
-    std::vector<DataRepresentation*> representations_;
+    template<class T>
+    void invalidateAllOther();
+
+    mutable std::vector<DataRepresentation*> representations_;
     MetaDataMap metaData_;
 };
 
 template<class T>
-T* Data::getRepresentation() {
+const T* Data::getRepresentation() const{
     if (!hasRepresentations()) {
         createDefaultRepresentation();
     }
@@ -81,7 +89,7 @@ T* Data::getRepresentation() {
         RepresentationConverter* converter = representationConverterFactory->getRepresentationConverter<T>(representations_[i]);
         if (converter) {
             result = converter->convert(representations_[i]);
-            addRepresentation(result);
+            representations_.push_back(result);
             return dynamic_cast<T*>(result);
         }
     }
@@ -107,12 +115,19 @@ T* Data::getRepresentation() {
     if (converterPackage) {
         for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
             result = converterPackage->convert(result);
-            addRepresentation(result);
+            representations_.push_back(result);
         }
         return dynamic_cast<T*>(result);
     }
 
     return NULL;
+}
+
+template<class T>
+T* Data::getEditableRepresentation() {
+    T* result = const_cast<T*>(getRepresentation<T>());
+    invalidateAllOther<T>();
+    return result;
 }
 
 template<class T>
@@ -122,6 +137,15 @@ bool Data::hasRepresentation() const {
         if (representation) return true;
     }
     return false;
+}
+
+template<class T>
+void Data::invalidateAllOther(){
+    for (size_t i=0; i<representations_.size(); i++) {
+        T* representation = dynamic_cast<T*>(representations_[i]);
+        if (!representation) 
+            representations_[i]->invalidate();
+    }
 }
 
 template<typename T, typename U>
@@ -148,12 +172,12 @@ void Data::setMetaData(std::string key, U value) {
 
 //param val is required to deduce the template argument
 template<typename T, typename U>
-U Data::getMetaData(std::string key, U val) {
-    MetaData* baseMetaData = metaData_.get(key);
+U Data::getMetaData(std::string key, U val) const {
+    const MetaData* baseMetaData = metaData_.get(key);
 
-    T* derivedMetaData = 0;
+    const T* derivedMetaData = 0;
     if (baseMetaData) {
-        derivedMetaData = dynamic_cast<T*>(baseMetaData);
+        derivedMetaData = dynamic_cast<const T*>(baseMetaData);
         //if not an instance of valid meta data, forcefully replace with valid one
         if (!derivedMetaData) {
             return val;
@@ -179,7 +203,7 @@ public:
     virtual ~DataDimension(){}
 protected:
     template<typename U, typename V>
-    U getDimension(U dimension);
+    U getDimension(U dimension) const;
 
     template<typename U, typename V>
     void setDimension(U dimension);
@@ -191,7 +215,7 @@ void DataDimension<T>::setDimension(U dim) {
 }
 
 template <typename T> template<typename U, typename V>
-U DataDimension<T>::getDimension(U dimension) {
+U DataDimension<T>::getDimension(U dimension) const {
     return Data::getMetaData<V>("dimension", dimension);
 }
 
@@ -203,7 +227,7 @@ public :
     Data3D();
     Data3D(Data::TYPE3D dimension);
     virtual ~Data3D();
-    ivec3 getDimension();
+    ivec3 getDimension() const;
     void setDimension(ivec3 dim);
 };
 
@@ -215,7 +239,7 @@ public :
     Data2D();
     Data2D(Data::TYPE2D dimension);
     virtual ~Data2D();
-    ivec2 getDimension();
+    ivec2 getDimension() const;
     void setDimension(ivec2 dim);
 };
 

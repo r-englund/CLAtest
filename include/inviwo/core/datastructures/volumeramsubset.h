@@ -8,16 +8,16 @@ namespace inviwo {
    
     class IVW_CORE_API VolumeRAMSubSet : public VolumeRAMOperation {
     public:
-        VolumeRAMSubSet(VolumeRepresentation* in, uvec3 dim, uvec3 offset, VolumeRepresentation::VolumeBorders border, bool clampBorderOutsideVolume) 
+        VolumeRAMSubSet(const VolumeRepresentation* in, uvec3 dim, uvec3 offset, VolumeRepresentation::VolumeBorders border, bool clampBorderOutsideVolume) 
             : VolumeRAMOperation(in), newDim_(dim), newOffset_(offset), newBorder_(border), clampBorderOutsideVolume_(clampBorderOutsideVolume) {}
         virtual ~VolumeRAMSubSet() {}
 
         template<typename T, size_t B>
         void evaluate();
 
-        static inline VolumeRAM* apply(VolumeRepresentation* in, uvec3 dim, uvec3 offset, VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), bool clampBorderOutsideVolume = true){
+        static inline VolumeRAM* apply(const VolumeRepresentation* in, uvec3 dim, uvec3 offset, VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), bool clampBorderOutsideVolume = true){
             VolumeRAMSubSet subsetOP = VolumeRAMSubSet(in, dim, offset, border, clampBorderOutsideVolume);
-            in->applyOperation(&subsetOP);
+            in->performOperation(&subsetOP);
             return subsetOP.getOutputVolume();
         }
 

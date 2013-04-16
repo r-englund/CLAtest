@@ -84,26 +84,26 @@ void ImageGL::deactivateBuffer() {
     frameBufferObject_->deactivate();
 }
 
-void ImageGL::bindColorTexture(GLenum texUnit) {
+void ImageGL::bindColorTexture(GLenum texUnit) const {
     glActiveTexture(texUnit);
     colorTexture_->bind();
 }
 
-void ImageGL::bindDepthTexture(GLenum texUnit) {
+void ImageGL::bindDepthTexture(GLenum texUnit) const {
     glActiveTexture(texUnit);
     depthTexture_->bind();
 }
 
-void ImageGL::bindTextures(GLenum colorTexUnit, GLenum depthTexUnit) {
+void ImageGL::bindTextures(GLenum colorTexUnit, GLenum depthTexUnit) const {
     bindColorTexture(colorTexUnit);
     bindDepthTexture(depthTexUnit);
 }
 
-void ImageGL::unbindDepthTexture() {
+void ImageGL::unbindDepthTexture() const {
     depthTexture_->unbind();
 }
 
-void ImageGL::unbindColorTexture() {
+void ImageGL::unbindColorTexture() const {
     colorTexture_->unbind();
 }
 

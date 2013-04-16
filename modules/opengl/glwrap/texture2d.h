@@ -28,7 +28,7 @@ public:
     GLenum getFormat() const { return format_; }
     GLenum getDataType() const { return dataType_; }
 
-    void bind();
+    void bind() const;
     void upload();
     
     /**
@@ -39,10 +39,10 @@ public:
      */
     void download(void* data); 
 
-    void unbind();
+    void unbind() const;
 
-    int getWidth() { return dimensions_.x; }
-    int getHeight() { return dimensions_.y; }
+    int getWidth() const{ return dimensions_.x; }
+    int getHeight() const{ return dimensions_.y; }
     void setWidth(int x) { dimensions_.x = x; }
     void setHeight(int y) { dimensions_.y = y; }
 

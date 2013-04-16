@@ -32,11 +32,11 @@ void ImageGrayscale::deinitialize() {
 
 void ImageGrayscale::process() {    
     
-    Image* inputImage = inport0_.getData();
-    Image* outImage = outport_.getData();
+    const Image* inputImage = inport0_.getData();
+    Image* outImage = outport_.getEditableData();
     
-    ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
-    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
+    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
 
     uvec2 imageSize = inImageGL->getDimension();
     outImageGL->resize(imageSize);

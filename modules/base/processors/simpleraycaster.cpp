@@ -41,15 +41,15 @@ void SimpleRaycaster::deinitialize() {
 }
 
 void SimpleRaycaster::process() {
-    Volume* volume = volumePort_.getData();
-    VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
+    const Volume* volume = volumePort_.getData();
+    const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
     uvec3 volumeDim = volumeGL->getDimensions();
     bindColorTexture(entryPort_, GL_TEXTURE0);
     bindColorTexture(exitPort_, GL_TEXTURE1);
     volumeGL->bindTexture(GL_TEXTURE2);
     activateTarget(outport_);
-    Image* outImage = outport_.getData();
-    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    Image* outImage = outport_.getEditableData();
+    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     uvec2 outportDim = outImageGL->getDimension();
     shader_->activate();
     shader_->setUniform("entryTex_", 0);

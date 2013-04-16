@@ -35,16 +35,16 @@ void ImageMixer::deinitialize() {
 }
 
 void ImageMixer::process() {    
-    Image* outImage = outport_.getData();
-    Image* inputImage0 = inport0_.getData();
-    Image* inputImage1 = inport1_.getData();
+    Image* outImage = outport_.getEditableData();
+    const Image* inputImage0 = inport0_.getData();
+    const Image* inputImage1 = inport1_.getData();
     
-    ImageGL* inImage0GL = inputImage0->getRepresentation<ImageGL>();
-    ImageGL* inImage1GL = inputImage1->getRepresentation<ImageGL>();
+    const ImageGL* inImage0GL = inputImage0->getRepresentation<ImageGL>();
+    const ImageGL* inImage1GL = inputImage1->getRepresentation<ImageGL>();
 
     uvec2 csize = inImage0GL->getDimension();
 
-    ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     outImageGL->resize(csize);
 
     activateTarget(outport_);

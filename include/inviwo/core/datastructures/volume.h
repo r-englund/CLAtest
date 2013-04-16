@@ -12,14 +12,14 @@ namespace inviwo {
     public:
         Volume();
         Volume(VolumeRepresentation*);
-        Volume(VolumeRepresentation*, Volume*);
+        Volume(VolumeRepresentation*, const Volume*);
         virtual ~Volume();
         Data* clone() const;        
         void setOffset(ivec3); 
-        ivec3 getOffset();
-        DataFormatBase getDataFormat();
+        ivec3 getOffset() const;
+        DataFormatBase getDataFormat() const;
     protected:
-        void createDefaultRepresentation();
+        void createDefaultRepresentation() const;
     };
 
 } // namespace

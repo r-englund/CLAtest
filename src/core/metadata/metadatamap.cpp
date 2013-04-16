@@ -1,8 +1,6 @@
 #include <inviwo/core/metadata/metadatamap.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
 
-
-
 namespace inviwo {
 
 MetaDataMap::MetaDataMap() {}
@@ -54,9 +52,17 @@ std::vector<std::string> MetaDataMap::getKeys() {
 }
 
 MetaData* MetaDataMap::get(std::string key) {
-    if (metaData_.find(key)!=metaData_.end())
-        metaData_[key];
-    return 0;
+    std::map<std::string, MetaData*>::const_iterator it = metaData_.find(key);
+    if (it!=metaData_.end())
+        return it->second;
+    return NULL;
+}
+
+const MetaData* MetaDataMap::get(std::string key) const{
+    std::map<std::string, MetaData*>::const_iterator it = metaData_.find(key);
+    if (it!=metaData_.end())
+        return const_cast<const MetaData*>(it->second);
+    return NULL;
 }
 
 MetaDataMap& MetaDataMap::operator=(const MetaDataMap& map) {

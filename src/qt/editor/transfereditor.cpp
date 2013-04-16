@@ -98,7 +98,7 @@ namespace inviwo {
         //float* data = static_cast<float*>(transferFunc->getAlpha()->getData());
 		
 		Image* img = transferFunc_->getData();
-		ImageRAMfloat32* imgRam = img->getRepresentation<ImageRAMfloat32>();
+		ImageRAMfloat32* imgRam = img->getEditableRepresentation<ImageRAMfloat32>();
 		float* data = static_cast<float*>(imgRam->getData());
 
 		glm::quat startQuat;

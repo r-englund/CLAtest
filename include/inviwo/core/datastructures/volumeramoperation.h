@@ -10,7 +10,7 @@ namespace inviwo {
 
     class IVW_CORE_API VolumeRAMOperation : public VolumeOperation {
     public:
-        VolumeRAMOperation(VolumeRepresentation* in) : VolumeOperation(in), out_(NULL){}
+        VolumeRAMOperation(const VolumeRepresentation* in) : VolumeOperation(in), out_(NULL){}
         virtual ~VolumeRAMOperation(){}
 
         void setOutputVolume(VolumeRAM* vol) { out_=vol; }

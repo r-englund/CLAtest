@@ -28,7 +28,7 @@ bool Data::hasRepresentations() const {
     return !representations_.empty();
 }
 
-void Data::copyMetaData(Data* targetData) {
+void Data::copyMetaData(Data* targetData) const{
     targetData->metaData_.removeAll();
     targetData->metaData_ = metaData_;
 }
@@ -43,7 +43,7 @@ Data3D::Data3D(Data::TYPE3D dim) : PARENT() {
 
 Data3D::~Data3D() {}
 
-ivec3 Data3D::getDimension() {
+ivec3 Data3D::getDimension() const {
     return Data3D::PARENT::getDimension<ivec3,IVec3MetaData>(ivec3(0));
 }
 
@@ -64,7 +64,7 @@ Data2D::Data2D(Data::TYPE2D dim) : PARENT() {
 
 Data2D::~Data2D() {}
 
-ivec2 Data2D::getDimension() {
+ivec2 Data2D::getDimension() const {
     return Data2D::PARENT::getDimension<ivec2,IVec2MetaData>(ivec2(0));
 }
 

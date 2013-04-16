@@ -19,7 +19,7 @@ public:
     void changeDimensions(uvec2 dimensions);
     uvec2 getDimensions() { return dimensions_; }
 
-    Image* getData();
+    const Image* getData() const;
 
     uvec3 getColorCode() const { return uvec3(90,127,183); }
 

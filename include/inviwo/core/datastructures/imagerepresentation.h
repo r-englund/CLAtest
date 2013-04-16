@@ -14,9 +14,9 @@ namespace inviwo {
         ImageRepresentation(uvec2 dimensions);
         ImageRepresentation(uvec2 dimensions, DataFormatBase format);
         virtual ~ImageRepresentation();
-        virtual void applyOperation(DataOperation*) {};
+        virtual void performOperation(DataOperation*) const {};
         virtual void resize(uvec2 dimensions);
-        virtual uvec2 getDimension() {return dimensions_;}
+        virtual uvec2 getDimension() const {return dimensions_;}
         virtual DataFormatBase getDataFormat() const {return dataFormatBase_;}
         virtual DataFormatId getDataFormatId() const {return dataFormatBase_.getId();}
         virtual void copyAndResizeImage(DataRepresentation*)=0;

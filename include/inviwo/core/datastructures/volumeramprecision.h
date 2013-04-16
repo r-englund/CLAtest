@@ -12,7 +12,7 @@ public:
     VolumeRAMPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = GenericDataFormat(T)());
     VolumeRAMPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = GenericDataFormat(T)());
     virtual ~VolumeRAMPrecision() {};
-    virtual void applyOperation(DataOperation* dop);
+    virtual void performOperation(DataOperation* dop) const;
     using VolumeRAM::initialize;
     virtual void initialize(void*);
     virtual void deinitialize();
@@ -25,7 +25,7 @@ public:
     VolumeRAMCustomPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = DataFormat<T, B>()) : VolumeRAMPrecision<T>(dimensions, border, format) {};
     VolumeRAMCustomPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = DataFormat<T, B>()) : VolumeRAMPrecision<T>(data, dimensions, border, format) {};
     virtual ~VolumeRAMCustomPrecision() {};
-    void applyOperation(DataOperation*);
+    void performOperation(DataOperation*) const;
 };
 
 typedef VolumeRAMPrecision<DataUINT8::type>     VolumeRAMuint8;
@@ -75,12 +75,12 @@ void VolumeRAMPrecision<T>::deinitialize() {
 }
 
 template<typename T>
-void VolumeRAMPrecision<T>::applyOperation(DataOperation* dop){ 
+void VolumeRAMPrecision<T>::performOperation(DataOperation* dop) const{ 
     executeOperationOnVolumeRAMPrecision<T, GenericDataBits(T)>(dop);
 }
 
 template<typename T, size_t B>
-void VolumeRAMCustomPrecision<T,B>::applyOperation(DataOperation* dop){ 
+void VolumeRAMCustomPrecision<T,B>::performOperation(DataOperation* dop) const{ 
     executeOperationOnVolumeRAMPrecision<T, B>(dop); 
 }
 

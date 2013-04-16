@@ -20,7 +20,7 @@ Processor* VolumeSource::create() const {
 
 void VolumeSource::initialize() {
     Processor::initialize();
-    Volume* volume = volumePort_.getData();
+    Volume* volume = volumePort_.getEditableData();
     if (volume)
         volume->addRepresentation(new VolumeDisk(volumeFileName_.get()) );
 }
@@ -31,9 +31,9 @@ void VolumeSource::deinitialize() {
 
 void VolumeSource::process() {
     //TODO: if volume has changed setData
-    Volume* volume = volumePort_.getData();
+    Volume* volume = volumePort_.getEditableData();
     if (volume) {
-        VolumeDisk* volumeDisk = volume->getRepresentation<VolumeDisk>();
+        VolumeDisk* volumeDisk = volume->getEditableRepresentation<VolumeDisk>();
         if (volumeDisk && (volumeDisk->getSourceFile()!=volumeFileName_.get())) {
             //Clear all existing representations if volumeDisk representation is to be removed
             volume->clearRepresentations();

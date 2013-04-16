@@ -28,7 +28,7 @@ void ProcessorWidgetMetaData::setDimension(ivec2 dim) {
     dimensionMetaData_.set(dim); 
 }
 
-ivec2 ProcessorWidgetMetaData::getDimension() {
+ivec2 ProcessorWidgetMetaData::getDimension() const{
     return dimensionMetaData_.get();
 }
 
@@ -36,7 +36,7 @@ void ProcessorWidgetMetaData::setVisibile(bool visibility) {
     visiblityMetaData_.set(visibility);
 }
 
-bool ProcessorWidgetMetaData::isVisible() {
+bool ProcessorWidgetMetaData::isVisible() const{
     return visiblityMetaData_.get();
 }
 

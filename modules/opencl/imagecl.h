@@ -24,7 +24,8 @@ public:
     virtual void copyAndResizeImage(DataRepresentation* target);
     virtual DataRepresentation* clone() const = 0;
     cl::ImageFormat getFormat() const { return imageFormat_;}
-    cl::Image2D getImage() const { return *image2D_; }
+    cl::Image2D getEditableImage() { return *image2D_; }
+    const cl::Image2D getImage() const { return *const_cast<const cl::Image2D*>(image2D_); }
 
 protected:
     cl::Image2D* image2D_;

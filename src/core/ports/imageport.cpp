@@ -50,14 +50,15 @@ Image* ImagePort::resizeImageData(uvec2 dimensions) {
     return result;
 }
 
-Image* ImagePort::getData() {
-    if (isOutport()) return data_;
+const Image* ImagePort::getData() const{
+    if (isOutport()) 
+        return const_cast<const Image*>(data_);
     else if (isConnected()) {
         ImagePort* outport = dynamic_cast<ImagePort*>(connectedDataPort_);
         if (dimensions_==outport->getDimensions())
             return outport->getData();
         else
-            return outport->resizeImageData(dimensions_);
+            return const_cast<const Image*>(outport->resizeImageData(dimensions_));
     }
     else return 0;
 }

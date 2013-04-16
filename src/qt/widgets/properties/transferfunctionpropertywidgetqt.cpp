@@ -46,7 +46,7 @@ namespace inviwo {
     void TransferFunctionPropertyWidgetQt::updateFromProperty() {
         QPen pen;
         //LogInfo(points.size());
-        float* data = static_cast<float*>(transferFunc->getData()->getRepresentation<ImageRAMfloat32>()->getData());
+        const float* data = static_cast<const float*>(transferFunc->getData()->getRepresentation<ImageRAMfloat32>()->getData());
         for (int i = 0; i < 256 ; i++)
         {
             pen.setColor(QColor::fromRgbF(data[i], data[i], data[i], 1.0f));

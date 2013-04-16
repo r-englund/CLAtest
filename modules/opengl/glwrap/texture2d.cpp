@@ -16,7 +16,7 @@ namespace inviwo {
         glDeleteTextures(1, &id_);
     }
 
-    void Texture2D::bind() {
+    void Texture2D::bind() const{
         glBindTexture(GL_TEXTURE_2D, id_);
         LGL_ERROR;
     }
@@ -52,7 +52,7 @@ namespace inviwo {
         //glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0); 
     }
 
-    void Texture2D::unbind() {
+    void Texture2D::unbind() const{
         glBindTexture(GL_TEXTURE_2D, 0);
         LGL_ERROR;
     }

@@ -19,7 +19,8 @@ public:
     virtual void connectTo(Port* port);
     virtual void disconnectFrom(Port* port);
 
-    virtual T* getData() const;
+    virtual const T* getData() const;
+    virtual T* getEditableData();
     void setData(T* data);
 
     bool hasData() const;
@@ -58,17 +59,26 @@ void DataPort<T>::disconnectFrom(Port* port) {
 }
 
 template <typename T>
-T* DataPort<T>::getData() const {
-    if (isOutport()) return data_;
+const T* DataPort<T>::getData() const {
+    if (isOutport()){
+        return const_cast<const T*>(data_);
+    }
     else if (isConnected()) {
         return connectedDataPort_->getData();
     }
-    else return 0;
+    else 
+        return 0;
+}
+
+template <typename T>
+T* DataPort<T>::getEditableData() {
+    ivwAssert(isOutport(), "Calling getEditableData() on inport.");
+    return data_;
 }
 
 template <typename T>
 void DataPort<T>::setData(T* data) {
-    ivwAssert(isInport(), "Calling setData() on inport.");
+    ivwAssert(isOutport(), "Calling setData() on inport.");
     data_ = data;
 }
 

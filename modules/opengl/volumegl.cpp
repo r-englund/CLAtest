@@ -14,12 +14,12 @@ void VolumeGL::initialize() {}
 
 void VolumeGL::deinitialize() {}
 
-void VolumeGL::bindTexture(GLenum texUnit) {
+void VolumeGL::bindTexture(GLenum texUnit) const{
     glActiveTexture(texUnit);
     volumeTexture_->bind();
 }
 
-void VolumeGL::unbindTexture() {
+void VolumeGL::unbindTexture() const{
     volumeTexture_->unbind();
 }
 

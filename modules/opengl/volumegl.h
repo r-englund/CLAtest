@@ -20,8 +20,8 @@ public:
     virtual GLenum getDataType()=0;
     virtual GLint getFormat()=0;
     virtual GLint getInternalFormat()=0;
-    virtual void bindTexture(GLenum texUnit);
-    virtual void unbindTexture();
+    virtual void bindTexture(GLenum texUnit) const;
+    virtual void unbindTexture() const;
 
 protected:
     Texture3D* volumeTexture_;

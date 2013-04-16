@@ -12,8 +12,8 @@ namespace inviwo {
     }
 
     void ProcessorGL::activateTarget(ImagePort outport) {
-        Image* outImage = outport.getData();
-        ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
+        Image* outImage = outport.getEditableData();
+        ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
         outImageGL->activateBuffer();
     }
 
@@ -22,26 +22,26 @@ namespace inviwo {
     }
 
     void ProcessorGL::bindColorTexture(ImagePort inport, GLenum texUnit) {
-        Image* inImage = inport.getData();
-        ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+        const Image* inImage = inport.getData();
+        const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
         inImageGL->bindColorTexture(texUnit);
     }
 
     void ProcessorGL::bindDepthTexture(ImagePort inport, GLenum texUnit) {
-        Image* inImage = inport.getData();
-        ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+        const Image* inImage = inport.getData();
+        const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
         inImageGL->bindDepthTexture(texUnit);
     }
 
     void ProcessorGL::unbindColorTexture(ImagePort inport) {
-        Image* inImage = inport.getData();
-        ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+        const Image* inImage = inport.getData();
+        const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
         inImageGL->unbindColorTexture();
     }
 
     void ProcessorGL::unbindDepthTexture(ImagePort inport) {
-        Image* inImage = inport.getData();
-        ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+        const Image* inImage = inport.getData();
+        const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
         inImageGL->unbindDepthTexture();
     }
 

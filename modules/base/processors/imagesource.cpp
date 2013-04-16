@@ -19,10 +19,6 @@ Processor* ImageSource::create() const {
 
 void ImageSource::initialize() {
     Processor::initialize();
-	Image* image = outport_.getData();
-    if (image) {
-        image->clearRepresentations();
-    }
 }
 
 void ImageSource::deinitialize() {
@@ -33,9 +29,9 @@ void ImageSource::deinitialize() {
 * Creates a ImageDisk representation if there isn't an object already defined.
 **/
 void ImageSource::process() {
-	Image* outImage = outport_.getData(); 
+	Image* outImage = outport_.getEditableData(); 
     if(outImage){
-        ImageDisk *outImageDisk_ = outImage->getRepresentation<ImageDisk>();
+        ImageDisk *outImageDisk_ = outImage->getEditableRepresentation<ImageDisk>();
         if(!outImageDisk_ || outImageDisk_->getSourceFile() != imageFileName_.get()){ 
             outImageDisk_ = new ImageDisk(imageFileName_.get());
         }
