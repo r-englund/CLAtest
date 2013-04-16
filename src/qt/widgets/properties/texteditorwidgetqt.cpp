@@ -9,7 +9,6 @@ ModifiedWidget::ModifiedWidget(){
 
 void ModifiedWidget::closeEvent(QCloseEvent *event)
 {
-    bool test = true;
     if (mainParentWidget_->saveDialog()) {
         event->accept();
     } else {
@@ -25,18 +24,17 @@ void ModifiedWidget::generateWidget(){
     toolBar_ = new QToolBar();
 
     saveButton_ = new QToolButton();
-    saveButton_->setIcon(QIcon(":/icons/network_save.png"));
+    saveButton_->setIcon(QIcon(":/icons/network_save.png")); // Temporary icon
     saveButton_->setToolTip("Save file");
     unDoButton_ = new QToolButton();
-    unDoButton_->setIcon(QIcon(":/icons/arrow_left.png"));
+    unDoButton_->setIcon(QIcon(":/icons/arrow_left.png")); // Temporary icon
     unDoButton_->setToolTip("Undo");
     reDoButton_ = new QToolButton();
-    reDoButton_->setIcon(QIcon(":/icons/arrow_right.png"));
+    reDoButton_->setIcon(QIcon(":/icons/arrow_right.png")); // Temporary icon
     reDoButton_->setToolTip("Redo");
     reLoadButton_ = new QToolButton();
-    reLoadButton_->setIcon(QIcon(":/icons/inviwo_tmp.png"));
+    reLoadButton_->setIcon(QIcon(":/icons/inviwo_tmp.png")); // Temporary icon
     reLoadButton_->setToolTip("Reload");
-
 
     toolBar_->addWidget(saveButton_);
     toolBar_->addSeparator();
@@ -51,7 +49,6 @@ void ModifiedWidget::generateWidget(){
     textEditor_ = new QPlainTextEdit();
     textEditor_->createStandardContextMenu();
 
-
     textEditorLayout->addWidget(toolBar_);
     textEditorLayout->addWidget(textEditor_);
     setLayout(textEditorLayout);
@@ -65,8 +62,7 @@ void ModifiedWidget::setParent(TextEditorWidgetQt* tmp){
 }
 
 
-TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property), btnProperty_("Edit","") {
-    btnWidget_ = new ButtonPropertyWidgetQt(&btnProperty_);
+TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property) {
     generateWidget();
     updateFromProperty();
 }
@@ -74,31 +70,30 @@ TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property)
 void TextEditorWidgetQt::generateWidget() {
 
     QHBoxLayout* hLayout = new QHBoxLayout();
+    btnEdit_ = new QToolButton();
+    btnEdit_->setIcon(QIcon(":/icons/network_open.png")); // Temporary icon, change to a text edit icon
+
     if (dynamic_cast<FileProperty*>(property_)) {
 
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
-        btnProperty_.registerClassMemberFunction(this, &TextEditorWidgetQt::editFile);
+        connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editFile()));
         hLayout->addWidget(fileWidget_);
 
     }
     else if (dynamic_cast<StringProperty*>(property_)) {
+
         stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
-        btnProperty_.registerClassMemberFunction(this, &TextEditorWidgetQt::editString);
-            hLayout->addWidget(stringWidget_);
+        connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editString()));
+        hLayout->addWidget(stringWidget_);
     }
-
-    hLayout->addWidget(btnWidget_);
-
-    btnWidget_->getButton()->setIcon(QIcon(":/icons/network_open.png")); // Temporary icon, change to a text edit icon
-
+    hLayout->addWidget(btnEdit_);
     setLayout(hLayout);
-     textEditorWidget_= new ModifiedWidget();
-     textEditorWidget_->setParent(this);
-
+    hLayout->setContentsMargins(QMargins(0,0,0,0));
+    textEditorWidget_= new ModifiedWidget();
+    textEditorWidget_->setParent(this);
 }
 
 void TextEditorWidgetQt::setPropertyValue() {}
-
 
 //Function loads the file into the textEditor_
 void TextEditorWidgetQt::editFile(){

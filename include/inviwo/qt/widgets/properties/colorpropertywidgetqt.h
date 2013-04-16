@@ -3,10 +3,10 @@
 
 #include <QColorDialog>
 #include <QLabel>
+#include <QPushButton>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
-//#include <inviwo/core/properties/property.h>
 #include <inviwo/core/properties/properties.h>
 #include <inviwo/core/properties/buttonproperty.h>
 
@@ -25,15 +25,14 @@ public:
 
 private:
     Property* property_;
-    ButtonProperty btnProperty_;
-    ButtonPropertyWidgetQt* btnWidget_;
+    QPushButton* btnColor_;
     QColorDialog* colorDialog_;
     QColor* currentColor_;
     void generateWidget();
-    void openColorDialog();
     
 public slots:
     void setPropertyValue();
+    void openColorDialog();
 };
 
 }//namespace

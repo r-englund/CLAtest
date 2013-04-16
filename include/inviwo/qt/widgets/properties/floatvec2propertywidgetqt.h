@@ -1,10 +1,12 @@
 #ifndef IVW_FLOATVEC2PROPERTYWIDGETQT_H
 #define IVW_FLOATVEC2PROPERTYWIDGETQT_H
-
-#include <QSlider>
-
+//Qt
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/floatsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-
+#include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
+#include <QMenu>
+//Core
 #include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
@@ -20,15 +22,24 @@ public:
 
 private:
     FloatVec2Property* property_;
-    QSlider* sliderX_;
-    QSlider* sliderY_;
+    FloatSliderWidgetQt* sliderX_;
+    FloatSliderWidgetQt* sliderY_;
+    PropertySettingsWidgetQt* settingsWidget_;
+    QMenu* settingsMenu_;
+    vec2 valueVec2Max_;
+    vec2 valueVec2Min_;
+    vec2 valueIncrement_;
+    vec2 valueVec2_;
 
     void generateWidget();
+    void generatesSettingsWidget();
 
 public slots:
-    void setXValue(int value);
-    void setYValue(int value);
-    void setPropertyValue();
+    void setPropertyValueFromSlider();
+    void setPropertyValueFromSpinBox();
+
+    void showContextMenuX(const QPoint& pos);
+    void showContextMenuY(const QPoint& pos);
 };
 
 } // namespace

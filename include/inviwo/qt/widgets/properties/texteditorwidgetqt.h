@@ -79,9 +79,7 @@ public:
 
 
 private:
-    
-    ButtonProperty btnProperty_;
-    ButtonPropertyWidgetQt* btnWidget_;
+    QToolButton* btnEdit_;
     FilePropertyWidgetQt* fileWidget_;
     Property* property_;
     QFile* file_;
@@ -90,10 +88,8 @@ private:
     std::string tmpPropertyValue_;
     QCheckBox* checkBox_;
 
-
     void generateWidget();
    
-
 public slots:
     void loadFile();
     void loadString();
@@ -102,7 +98,6 @@ public slots:
     void setPropertyValue();
     bool writeToFile();
     bool writeToString();
-
 
 };
 

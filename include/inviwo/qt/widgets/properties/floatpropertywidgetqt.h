@@ -7,7 +7,6 @@
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-//#include <inviwo/qt/widgets/properties/ordinalpropertywidgetqt.h>
 
 #include <inviwo/core/properties/scalarproperties.h>
 

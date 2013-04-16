@@ -4,6 +4,7 @@ namespace inviwo {
 
 FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property_(property) {
     generateWidget();
+    generatesSettingsWidget();
     updateFromProperty();
 }
 
@@ -18,7 +19,7 @@ void FloatPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(sliderWidget_);
     setLayout(hLayout);
     
-    generatesSettingsWidget();
+
 }
 
 void FloatPropertyWidgetQt::setPropertyValueFromSlider() {

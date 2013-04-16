@@ -4,15 +4,15 @@
 
 namespace inviwo {
 
-    CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt(CompositeProperty* property) : property_(property), btnProperty_("Edit","-") {
-
+    CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt() {
         generateWidget();
         updateFromProperty();
     }
 
     void CollapsiveGroupBoxWidgetQt::generateWidget() {
-        btnWidget_ = new ButtonPropertyWidgetQt(&btnProperty_);
-        btnWidget_->getButton()->setFixedSize(15,15);
+
+        btnCollapse_ = new QPushButton("-");
+        btnCollapse_->setFixedSize(15,15);
 
         QHBoxLayout* hLayout = new QHBoxLayout();
         QHBoxLayout* boxLayout = new QHBoxLayout();
@@ -26,26 +26,17 @@ namespace inviwo {
         frame->setLineWidth(2);
         hLayout->addWidget(frame);
 
-
-        QVBoxLayout* vLayout = new QVBoxLayout();
-        vLayout->setAlignment(Qt::AlignTop);
-        std::vector<Property*> subProperties = property_->getSubProperties();
-        PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
-        for (size_t i=0; i<subProperties.size(); i++) {
-            Property* curProperty = subProperties[i];
-            PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
-            subPropertyWidgets_.push_back(propertyWidget);
-            vLayout->addWidget(propertyWidget);
-            curProperty->registerPropertyWidget(propertyWidget);
-        } 
+        vLayout_ = new QVBoxLayout();
+        vLayout_->setAlignment(Qt::AlignTop);
         
-        groupBox_->setLayout(vLayout);
+        
+        groupBox_->setLayout(vLayout_);
         groupBox_->layout()->setContentsMargins(0,0,0,0);
         groupBox_->setStyleSheet("border:0;");
         
         gridLayout->setContentsMargins(0,0,0,0);
         gridLayout->setSpacing(0);
-        gridLayout->addWidget(btnWidget_,1,1,1,1,Qt::AlignLeft);
+        gridLayout->addWidget(btnCollapse_,1,1,1,1,Qt::AlignLeft);
         gridLayout->addWidget(groupBox_,1,2,4,4,Qt::AlignTop);
 
         frame->setLayout(gridLayout);
@@ -56,23 +47,34 @@ namespace inviwo {
     }
 
     void CollapsiveGroupBoxWidgetQt::updateFromProperty() {
-        for (size_t i=0; i<subPropertyWidgets_.size(); i++)
-            subPropertyWidgets_[i]->updateFromProperty();
+        //for (size_t i=0; i<subPropertyWidgets_.size(); i++)
+        //    subPropertyWidgets_[i]->updateFromProperty();
     }
 
     void CollapsiveGroupBoxWidgetQt::show() {
         groupBox_->show();
-        btnWidget_->getButton()->setText("-");
-        //visible_=true;
-        btnProperty_.registerClassMemberFunction(this,&CollapsiveGroupBoxWidgetQt::hide);
+        btnCollapse_->setText("-");
+        connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(hide()));
     }
 
     void CollapsiveGroupBoxWidgetQt::hide() {
         groupBox_->hide();
-        btnWidget_->getButton()->setText("+");
-        //visible_ = false;
-        btnProperty_.registerClassMemberFunction(this,&CollapsiveGroupBoxWidgetQt::show);
+        btnCollapse_->setText("-");
+        connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
+    }
 
+    void CollapsiveGroupBoxWidgetQt::addProperty( Property* tmpProperty ) {
+        properties_.push_back(tmpProperty);
+    }
+
+    void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
+        PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
+        for (size_t i=0; i<properties_.size(); i++) {
+            Property* curProperty = properties_[i];
+            PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
+            vLayout_->addWidget(propertyWidget);
+            curProperty->registerPropertyWidget(propertyWidget);
+        }
     }
 
 } // namespace

@@ -48,9 +48,6 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
 
 
     if(property->getSemantics()!=PropertySemantics::Default){
-        if (dynamic_cast<CompositeProperty*>(property)&& property->getSemantics() == PropertySemantics::Collapsible) {
-            return new CollapsiveGroupBoxWidgetQt(static_cast<CompositeProperty*>(property));
-        }
         if (dynamic_cast<FloatVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {
             return new ColorPropertyWidgetQt(static_cast<FloatVec4Property*>(property));
         }

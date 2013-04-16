@@ -1,10 +1,11 @@
 #ifndef IVW_INTVEC3PROPERTYWIDGETQT_H
 #define IVW_INTVEC3PROPERTYWIDGETQT_H
 
-#include <QSlider>
-
+#include <QMenu>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/intsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-
+#include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
@@ -20,17 +21,26 @@ public:
 
 private:
     IntVec3Property* property_;
-    QSlider* sliderX_;
-    QSlider* sliderY_;
-	QSlider* sliderZ_;
+    PropertySettingsWidgetQt* settingsWidget_;
+    QMenu* settingsMenu_;
+    IntSliderWidgetQt* sliderX_;
+    IntSliderWidgetQt* sliderY_;
+    IntSliderWidgetQt* sliderZ_;
+    ivec3 valueVecMax_;
+    ivec3 valueVecMin_;
+    ivec3 valueIncrement_;
+    ivec3 valueVec_;
 
     void generateWidget();
+    void generatesSettingsWidget();
 
 public slots:
-    void setXValue(int value);
-    void setYValue(int value);
-	void setZValue(int value);
-    void setPropertyValue();
+    void setPropertyValueFromSlider();
+    void setPropertyValueFromSpinBox();
+
+    void showContextMenuX(const QPoint& pos);
+    void showContextMenuY(const QPoint& pos);
+    void showContextMenuZ(const QPoint& pos);
 };
 
 } // namespace

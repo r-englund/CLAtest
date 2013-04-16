@@ -6,13 +6,12 @@
 #include <QLineEdit>
 #include <QToolButton>
 #include <QGroupBox>
+#include <QPushButton>
 
 //Widgets
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
-//Properties
-#include <inviwo/core/properties/compositeproperty.h>
-#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/property.h>
+
 
 namespace inviwo {
 
@@ -21,20 +20,19 @@ namespace inviwo {
         Q_OBJECT;
 
     public:
-        CollapsiveGroupBoxWidgetQt(CompositeProperty* property);
+        CollapsiveGroupBoxWidgetQt();
 
         void updateFromProperty();
+        void addProperty(Property* tmpProperty);
+        QVBoxLayout* vLayout_;
+        void generatePropertyWidgets();
 
     private:
-        CompositeProperty* property_;
-        ButtonProperty btnProperty_;
-        ButtonPropertyWidgetQt* btnWidget_;
-        bool visible_;
+        QPushButton* btnCollapse_;
         QGroupBox* groupBox_;
+        std::vector<Property*> properties_;
 
         void generateWidget();
-
-        std::vector<PropertyWidgetQt*> subPropertyWidgets_;
 
         public slots:
             void hide();

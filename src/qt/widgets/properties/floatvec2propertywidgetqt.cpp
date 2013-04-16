@@ -4,10 +4,15 @@
 
 namespace inviwo {
 
-FloatVec2PropertyWidgetQt::FloatVec2PropertyWidgetQt(FloatVec2Property *property) : property_(property) {
+FloatVec2PropertyWidgetQt::FloatVec2PropertyWidgetQt(FloatVec2Property *property) : property_(property),
+valueVec2Min_(property->getMinValue()),
+valueVec2Max_(property->getMaxValue()),
+valueIncrement_(property->getIncrement()) {
 	generateWidget();
+    generatesSettingsWidget();
 	updateFromProperty();
 	}
+
 
 void FloatVec2PropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
@@ -16,42 +21,122 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
 	QWidget* sliderWidget = new QWidget();
 	QVBoxLayout* vLayout = new QVBoxLayout();
 	sliderWidget->setLayout(vLayout);
-	sliderX_ = new QSlider(Qt::Horizontal);
+
+    sliderX_ = new FloatSliderWidgetQt(valueVec2Min_.x,valueVec2Max_.x,valueIncrement_.x);
+    sliderY_ = new FloatSliderWidgetQt(valueVec2Min_.y,valueVec2Max_.y,valueIncrement_.y);
+
 	vLayout->addWidget(sliderX_);
-	sliderY_ =new QSlider(Qt::Horizontal);
 	vLayout->addWidget(sliderY_);
 	hLayout->addWidget(sliderWidget);
-	connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setXValue(int)));
-	connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setYValue(int)));
 	setLayout(hLayout);
-}
 
-void FloatVec2PropertyWidgetQt::setXValue(int value) {
-    float valuef = (static_cast<float>(value)-sliderX_->minimum()) / (sliderX_->maximum()-sliderX_->minimum());
-    vec2 valueVec2 = property_->get();
-    valueVec2.x = valuef;
-    property_->set(valueVec2);
-}
+    connect(sliderX_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
+    connect(sliderY_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
 
-void FloatVec2PropertyWidgetQt::setYValue(int value) {
-    float valuef = (static_cast<float>(value)-sliderY_->minimum()) / (sliderY_->maximum()-sliderY_->minimum());
-    vec2 valueVec2 = property_->get();
-    valueVec2.y = valuef;
-    property_->set(valueVec2);
-}
+    connect (sliderX_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
+    connect (sliderY_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
 
-void FloatVec2PropertyWidgetQt::setPropertyValue() {
-	setXValue(sliderX_->value());
-	setYValue(sliderY_->value());
 }
-
 void FloatVec2PropertyWidgetQt::updateFromProperty() {
-	vec2 valueVec2 = property_->get();
-    int valueX = sliderX_->minimum() + static_cast<int>(ceilf(valueVec2.x * (sliderX_->maximum()-sliderX_->minimum())));
-    sliderX_->setValue(valueX);
-    int valueY = sliderY_->minimum() + static_cast<int>(ceilf(valueVec2.y * (sliderY_->maximum()-sliderY_->minimum())));
-    sliderY_->setValue(valueY);
-};
+    valueVec2Max_ = property_->getMaxValue();
+    valueVec2Min_ = property_->getMinValue();
+    valueIncrement_ = property_->getIncrement();
+    valueVec2_ = property_->get();
 
+    sliderX_->setRange(valueVec2Min_.x,valueVec2Max_.x);
+    sliderY_->setRange(valueVec2Min_.y,valueVec2Max_.y);
+    
+
+    sliderX_->setValue(valueVec2_.x);
+    sliderY_->setValue(valueVec2_.y);
+
+    sliderX_->setIncrement(valueIncrement_.x);
+    sliderY_->setIncrement(valueIncrement_.y);
+
+    sliderX_->updateValueSpinBox();
+    sliderY_->updateValueSpinBox();
+}
+
+
+void FloatVec2PropertyWidgetQt::generatesSettingsWidget() {
+    settingsWidget_ = new PropertySettingsWidgetQt(property_);
+
+    settingsMenu_ = new QMenu();
+    settingsMenu_->addAction("Property settings");
+    settingsMenu_->addAction("Set as Min");
+    settingsMenu_->addAction("Set as Max");
+
+    sliderX_->setContextMenuPolicy(Qt::CustomContextMenu);
+    sliderY_->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(sliderX_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuX(const QPoint&)));
+    connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));
+}
+void FloatVec2PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
+    QPoint globalPos = sliderX_->mapToGlobal(pos);
+    QAction* selecteditem = settingsMenu_->exec(globalPos);
+    if (selecteditem == settingsMenu_->actions().at(0)) {
+        settingsWidget_->reload();
+        settingsWidget_->show();
+    }
+    else if (selecteditem == settingsMenu_->actions().at(1)) {
+        //Set current value of the slider to min value of the property
+        valueVec2Min_ = property_->getMinValue();
+        valueVec2Min_.x = sliderX_->getValue();
+        property_->setMinValue(valueVec2Min_);
+        updateFromProperty();
+    }
+    else if (selecteditem == settingsMenu_->actions().at(2)){
+        //Set current value of the slider to max value of the property
+        valueVec2Max_ = property_->getMaxValue();
+        valueVec2Max_.x = sliderX_->getValue();
+        property_->setMaxValue(valueVec2Max_);
+        updateFromProperty();
+    }
+}
+
+void FloatVec2PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
+    QPoint globalPos = sliderY_->mapToGlobal(pos);
+
+    QAction* selecteditem = settingsMenu_->exec(globalPos);
+    if (selecteditem == settingsMenu_->actions().at(0)) {
+        settingsWidget_->reload();
+        settingsWidget_->show();
+    }
+    else if (selecteditem == settingsMenu_->actions().at(1)) {
+        //Set current value of the slider to min value of the property
+        valueVec2Min_ = property_->getMinValue();
+        valueVec2Min_.y = sliderY_->getValue();
+        property_->setMinValue(valueVec2Min_);
+        updateFromProperty();
+    }
+    else if (selecteditem == settingsMenu_->actions().at(2)){
+        //Set current value of the slider to max value of the property
+        valueVec2Max_ = property_->getMaxValue();
+        valueVec2Max_.y = sliderY_->getValue();
+        property_->setMaxValue(valueVec2Max_);
+        updateFromProperty();
+    }
+}
+
+void FloatVec2PropertyWidgetQt::setPropertyValueFromSlider() {
+    sliderX_->updateValueSpinBox();
+    sliderY_->updateValueSpinBox();
+
+    valueVec2_ = property_->get();
+    valueVec2_.x = sliderX_->getValue();
+    valueVec2_.y = sliderY_->getValue();
+    property_->set(valueVec2_);
+}
+
+void FloatVec2PropertyWidgetQt::setPropertyValueFromSpinBox() {
+    sliderX_->updateValueSlider();
+    sliderY_->updateValueSlider();
+
+    valueVec2_ = property_->get();
+    valueVec2_.x = sliderX_->getValue();
+    valueVec2_.y = sliderY_->getValue();
+    property_->set(valueVec2_);
+}
 
 } //namespace

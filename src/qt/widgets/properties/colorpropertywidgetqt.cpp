@@ -6,22 +6,25 @@
 namespace inviwo {
 
 
-ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(property), btnProperty_("ColorBtn"," ") {
-    btnWidget_ = new ButtonPropertyWidgetQt(&btnProperty_);
+ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(property) {
     generateWidget();
     updateFromProperty();
 }
 
 void ColorPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-    colorDialog_ = new QColorDialog();
-    btnProperty_.registerClassMemberFunction(this, &ColorPropertyWidgetQt::openColorDialog);
-    hLayout->addWidget(btnWidget_);
-    connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
-    btnWidget_->getButton()->setFixedWidth(100);
-    btnWidget_->getButton()->setFixedHeight(30);
     currentColor_ = new QColor();
+    colorDialog_ = new QColorDialog();
+
+    btnColor_ = new QPushButton();
+    btnColor_->setFixedWidth(100);
+    btnColor_->setFixedHeight(30);
+    connect(btnColor_,SIGNAL(clicked()),this,SLOT(openColorDialog()));
+    
+    connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
+
+    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    hLayout->addWidget(btnColor_);
     setLayout(hLayout);
 }
 
@@ -39,7 +42,7 @@ void ColorPropertyWidgetQt::updateFromProperty(){
     }
     QColor topColor = currentColor_->lighter();
     QColor bottomColor = currentColor_->darker();
-    btnWidget_->getButton()->setStyleSheet("QPushButton { background: qlineargradient( \
+    btnColor_->setStyleSheet("QPushButton { background: qlineargradient( \
                                                           x1:0, y1:0, x2:0, y2:1, \
                                                           stop:0 "+topColor.name()+", \
                                                           stop: 0.1 "+currentColor_->name()+", \
@@ -67,7 +70,7 @@ void ColorPropertyWidgetQt::setPropertyValue() {
     }
     QColor topColor = currentColor_->lighter();
     QColor bottomColor = currentColor_->darker();
-    btnWidget_->getButton()->setStyleSheet("QPushButton { background: qlineargradient( \
+    btnColor_->setStyleSheet("QPushButton { background: qlineargradient( \
                                            x1:0, y1:0, x2:0, y2:1, \
                                            stop:0 "+topColor.name()+", \
                                            stop: 0.1 "+currentColor_->name()+", \
