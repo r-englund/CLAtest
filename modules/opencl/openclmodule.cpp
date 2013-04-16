@@ -17,6 +17,7 @@ OpenCLModule::OpenCLModule() : InviwoModule() {
     addRepresentationConverter(new ImageRAM2CLConverter());
     addRepresentationConverter(new ImageCL2RAMConverter());
     addRepresentationConverter(new ImageGL2CLConverter());
+    addRepresentationConverter(new ImageCL2GLConverter());
 
     addRepresentationConverter(new VolumeDisk2CLConverter());
     addRepresentationConverter(new VolumeRAM2CLConverter());

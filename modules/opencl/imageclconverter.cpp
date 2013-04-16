@@ -55,24 +55,28 @@ DataRepresentation* ImageCL2RAMConverter::convert(DataRepresentation* source) {
         // TODO: Add more formats
         switch (imageCL->getDataFormatId()) {
         case UINT8:
-            destination = new ImageRAMuint8(dimension);
+            destination = new ImageRAMuint8(dimension); break;
         case UINT16:
-            destination = new ImageRAMuint16(dimension);
+            destination = new ImageRAMuint16(dimension); break;
         case UINT32:
-            destination = new ImageRAMuint32(dimension);
+            destination = new ImageRAMuint32(dimension); break;
         case INT8:
-            destination = new ImageRAMint8(dimension);
+            destination = new ImageRAMint8(dimension); break;
         case INT16:
-            destination = new ImageRAMint16(dimension);
+            destination = new ImageRAMint16(dimension); break;
         case INT32:
-            destination = new ImageRAMint32(dimension);
+            destination = new ImageRAMint32(dimension); break;
         case FLOAT32:
-            destination = new ImageRAMfloat32(dimension);
+            destination = new ImageRAMfloat32(dimension); break;
         case Vec4UINT8:
-            destination = new ImageRAMVec4uint8(dimension);
+            destination = new ImageRAMVec4uint8(dimension); break;
         case Vec4FLOAT32:
-            destination = new ImageRAMVec4float32(dimension);
-        }
+            destination = new ImageRAMVec4float32(dimension); break;
+        default:
+                LogError("Invalid conversion or not implemented");
+        } 
+    
+            
 
         if (destination) {
             ImageRAM* imageRAM = static_cast<ImageRAM*>(destination);
