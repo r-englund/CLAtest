@@ -9,12 +9,12 @@ inviwo::EventPropertyWidgetQt::EventPropertyWidgetQt( EventProperty* eventproper
 
 
 void inviwo::EventPropertyWidgetQt::generateWidget() {
-
+    delete layout();
     std::string eventName = eventproperty_->getEvent().modifierName() + eventproperty_->getEvent().buttonName();
     std::string actionName = eventproperty_->getAction().name();
 
     QHBoxLayout* hLayout = new QHBoxLayout();
-    QPushButton* button_ = new QPushButton(eventName.c_str());
+    button_ = new QPushButton(eventName.c_str());
     QLabel* label_ = new QLabel(actionName.c_str());    
 
     QObject::connect(button_, SIGNAL(clicked()), this, SLOT(clickedSlot()));
@@ -24,24 +24,18 @@ void inviwo::EventPropertyWidgetQt::generateWidget() {
     setLayout(hLayout);
 }
 
-
 void EventPropertyWidgetQt::updateFromProperty() {
-
+    generateWidget();
 }
 
 void EventPropertyWidgetQt::clickedSlot() {
-    MappingPopup* popup_ = new MappingPopup(eventproperty_);
-    std::string popupLabelText_ = "Press button to map to " + eventproperty_->getAction().name();
-    QLabel* popupLabel_ = new QLabel(popupLabelText_.c_str());
-    QHBoxLayout* popupLayout_ = new QHBoxLayout();
-
-    popupLayout_->addWidget(popupLabel_);    
-    popup_->setWindowFlags(Qt::WindowStaysOnTopHint);
-    popup_->setWindowTitle("Map");
-    popup_->setLayout(popupLayout_);
+    MappingPopup* popup_ = new MappingPopup(eventproperty_);        
+    popup_->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup );
+    popup_->setFixedSize(1,1); // I am so sorry.
     popup_->show();
-    
-    
+
+    button_->setText("ENTER NEW KEYBINDING");
+    button_->setEnabled(false);
 }
 
 } //namespace

@@ -20,6 +20,8 @@ public:
 
 private:
     EventProperty* eventproperty_;
+    QPushButton* button_;
+
     void generateWidget();
 
 public slots:

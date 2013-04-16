@@ -1,8 +1,4 @@
-#include <QMouseEvent>
-
-#include <inviwo/core/inviwo.h>
 #include <inviwo/qt/widgets/canvasqt.h>
-#include <inviwo/core/network/processornetworkevaluator.h>
 
 namespace inviwo {
 
@@ -19,9 +15,8 @@ CanvasQt::CanvasQt(QWidget* parent)
         sharedWidget_ = this;
         QGLWidget::glInit();
     }
-    //
-
     //setAutoBufferSwap(false);
+    eventConverter_ = new EventConverterQt();
 }
 
 CanvasQt::~CanvasQt() {}
@@ -80,42 +75,19 @@ void CanvasQt::timerEvent(QTimerEvent* e) {
     }
 }
 
-MouseEvent::MouseButton CanvasQt::getMouseButton(QMouseEvent* e) {
-     if(e->buttons() == Qt::LeftButton) {
-         return MouseEvent::MOUSE_BUTTON_LEFT;
-     }
-     else if(e->buttons() == Qt::RightButton) {
-         return MouseEvent::MOUSE_BUTTON_RIGHT;
-     }
-     else if(e->buttons() == Qt::MiddleButton) {
-         return MouseEvent::MOUSE_BUTTON_MIDDLE;
-     }
-     return MouseEvent::MOUSE_BUTTON_NONE;
-}
-
-Event::Modifier CanvasQt::getModifier( QInputEvent* e )
-{
-    if(e->modifiers() == Qt::ShiftModifier) {
-        return Event::MODIFIER_SHIFT;
-    } else if(e->modifiers() == Qt::ControlModifier) {
-        return Event::MODIFIER_CTRL;
-    } else if(e->modifiers() == Qt::AltModifier) {
-        return Event::MODIFIER_ALT;
-    }
-    return Event::MODIFIER_NONE;
-}
-
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if(!processorNetworkEvaluator_) return;
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), getMouseButton(e),
-        MouseEvent::MOUSE_STATE_PRESS, getModifier(e), dimensions_);
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
+        eventConverter_->getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
+        eventConverter_->getModifier(e), dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
 }
 
 void CanvasQt::mouseReleaseEvent (QMouseEvent* e) {
     if(!processorNetworkEvaluator_) return;
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), getMouseButton(e),
-        MouseEvent::MOUSE_STATE_RELEASE, getModifier(e), dimensions_);
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
+        eventConverter_->getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE, 
+        eventConverter_->getModifier(e), dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
 }
 
@@ -124,16 +96,15 @@ void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
 
     MouseEvent* mouseEvent = 0;
     if(e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
-        mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), getMouseButton(e),
-        MouseEvent::MOUSE_STATE_PRESS, getModifier(e), dimensions_);
+        mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
+            eventConverter_->getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
+            eventConverter_->getModifier(e), dimensions_);
     }
     else {
-        mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), MouseEvent::MOUSE_BUTTON_NONE,
-        MouseEvent::MOUSE_STATE_NONE, getModifier(e), dimensions_);
+        mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
+            MouseEvent::MOUSE_BUTTON_NONE, MouseEvent::MOUSE_STATE_NONE, 
+            eventConverter_->getModifier(e), dimensions_);
     }
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
 }
-
-
-
 } // namespace

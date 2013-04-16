@@ -3,9 +3,13 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <modules/opengl/canvasgl.h>
+#include <inviwo/qt/widgets/eventconverterqt.h>
+#include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/inviwo.h>
 
 #include <QtOpenGL/QGLWidget>
 #include <QInputEvent>
+#include <QMouseEvent>
 
 namespace inviwo {
 
@@ -27,10 +31,9 @@ public:
     void mouseReleaseEvent (QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void timerEvent(QTimerEvent* e);
-    MouseEvent::MouseButton getMouseButton(QMouseEvent* e);
-    Event::Modifier getModifier(QInputEvent* e);
 
 private:
+    EventConverterQt* eventConverter_;
     static QGLWidget* sharedWidget_; //For rendering-context sharing
 };
 
