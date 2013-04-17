@@ -33,8 +33,8 @@ static const int propertyRoundedCorners = 0;
 static const int propertyLabelHeight = 12;
 
 
-DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color, bool layoutOption, bool dragOrDrawMode) :
-                         CurveGraphicsItem(startPoint, endPoint, color, layoutOption, dragOrDrawMode) {
+DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color) :
+                         CurveGraphicsItem(startPoint, endPoint, color) {
      setZValue(LINKDIALOG_CONNECTION_GRAPHICSITEM_DEPTH);
 
      QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
@@ -52,17 +52,15 @@ void DialogCurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem*
 DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, 
                                                            LinkDialogPropertyGraphicsItem* endProperty,
                                                            PropertyLink* propertyLink,
-                                                           ProcessorLink* processorLink,
-                                                           bool layoutOption) : 
+                                                           ProcessorLink* processorLink) : 
                                                            DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty), 
                                                                                    endProperty->getShortestBoundaryPointTo(startProperty),
-                                                                                   uvec3(38,38,38), false, false),
+                                                                                   uvec3(38,38,38)),
                                                            startPropertyGraphicsItem_(startProperty),
                                                            endPropertyGraphicsItem_(endProperty),
                                                            propertyLink_(propertyLink),
                                                            processorLink_(processorLink)
 {
-    IVW_UNUSED_PARAM(layoutOption); //always make layout to be horizontal
     setFlags(ItemIsSelectable | ItemIsFocusable);
     initialize();
 }
@@ -853,7 +851,7 @@ void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPro
     Processor* endProcessor   = dynamic_cast<Processor*>(inProperty->getGraphicsItemData()->getOwner());
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
 
-    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, processorLink, true);
+    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, processorLink);
     addItem(cItem);
     cItem->show();
     connectionGraphicsItems_.push_back(cItem);

@@ -33,7 +33,7 @@ IVW_QTEDITOR_API enum InviwoLinkUserGraphicsItemType {
 class IVW_QTEDITOR_API DialogCurveGraphicsItem : public CurveGraphicsItem {
 
 public:
-    DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color=uvec3(38,38,38), bool layoutOption=false, bool dragMode=true);
+    DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color=uvec3(38,38,38));
     ~DialogCurveGraphicsItem();
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     //override for qgraphicsitem_cast (refer qt documentation)
@@ -50,7 +50,7 @@ class IVW_QTEDITOR_API DialogConnectionGraphicsItem : public DialogCurveGraphics
 public:
 
     DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
-                                 PropertyLink* propertyLink, ProcessorLink* processorLink, bool layoutOption=true);
+                                 PropertyLink* propertyLink, ProcessorLink* processorLink);
     ~DialogConnectionGraphicsItem();
 
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);

@@ -6,11 +6,10 @@
 
 namespace inviwo {
 
-LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color, bool dragMode)
+LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color)
                                      : startPoint_(startPoint),
                                        endPoint_(endPoint),
-                                       color_(color.r, color.g, color.b),
-                                       dragMode_(dragMode){
+                                       color_(color.r, color.g, color.b) {
     setZValue(LINKGRAPHICSITEM_DEPTH);
 
     QGraphicsDropShadowEffect* processorShadowEffect = new QGraphicsDropShadowEffect();
@@ -37,14 +36,12 @@ void LinkGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* option
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
 
-    if(!dragMode_) {
-        if (isSelected()) 
-            p->setPen(QPen(Qt::darkRed, 3.0, Qt::DotLine, Qt::RoundCap));        
-        else
-            p->setPen(QPen(Qt::black, 2.0, Qt::DotLine, Qt::RoundCap));
+    if (isSelected()) 
+        p->setPen(QPen(Qt::darkRed, 3.0, Qt::DotLine, Qt::RoundCap));        
+    else
+        p->setPen(QPen(Qt::black, 2.0, Qt::DotLine, Qt::RoundCap));
 
-        p->drawPath(obtainCurvePath());
-    }
+    p->drawPath(obtainCurvePath());
 
     p->setPen(QPen(color_, 2.0, Qt::DotLine, Qt::RoundCap));
     p->drawPath(obtainCurvePath());
@@ -70,7 +67,7 @@ LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorGraphicsItem* ou
                                                ProcessorGraphicsItem* inProcessor)
                                                : LinkGraphicsItem(outProcessor->getShortestBoundaryPointTo(inProcessor),
                                                                   inProcessor->getShortestBoundaryPointTo(outProcessor), 
-                                                                  ivec3(256,256,256), false),
+                                                                  ivec3(256,256,256)),
                                                  outProcessor_(outProcessor), inProcessor_(inProcessor) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }

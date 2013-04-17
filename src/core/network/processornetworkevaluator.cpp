@@ -325,7 +325,21 @@ void ProcessorNetworkEvaluator::evaluate() {
     // lock processor network to avoid concurrent evaluation
     processorNetwork_->lock();
 
-    //std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
+    std::vector<ProcessorLink*> processorLinks = processorNetwork_->getProcessorLinks();
+    std::vector<Property*> sourceProperties; 
+    for (size_t i=0; i<processorLinks.size(); i++) { 
+        if (!processorLinks[i]->isValid()) { 
+            //processorLinks[i]->evaluate(linkEvaluator_); 
+            sourceProperties = processorLinks[i]->getSourceProperties(); 
+            for (size_t j=0; j<sourceProperties.size(); j++) { 
+                if (!sourceProperties[j]->isValid()) { 
+                    evaluatePropertyLinks(sourceProperties[j]); 
+                    sourceProperties[j]->setValid(); 
+                } 
+            } 
+        }
+        sourceProperties.clear();
+    } 
   
     // if the processor network has changed determine the new processor order
     if (processorNetwork_->isModified()) {

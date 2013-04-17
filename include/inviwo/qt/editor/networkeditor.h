@@ -28,11 +28,6 @@ class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
 public:
     NetworkEditor(QObject* parent=0);
 
-    void clearNetwork();
-    bool saveNetwork(std::string fileName);
-    bool loadNetwork(std::string fileName);
-
-
     /**
      * \brief This method adds a processor to the network.
      * - modified called by processornetwork
@@ -49,11 +44,14 @@ public:
     void addConnection(Port* port1, Port* port2);
     void removeConnection(Port* port1, Port* port2);
 
-    void addLink();
-    void removeLink();
+    void addLink(Processor* processor1, Processor* processor2);
+    void removeLink(Processor* processor1, Processor* processor2);
 
+    void clearNetwork();
+    bool saveNetwork(std::string fileName);
+    bool loadNetwork(std::string fileName);
 
-    ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
+    const ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() const { return processorNetworkEvaluator_; }
 
 protected:
@@ -94,43 +92,39 @@ private:
     bool gridSnapping_;
     static const int GRID_SPACING;
 
+    void addProcessorRepresentations(Processor* processor, QPointF pos);
+    void removeProcessorRepresentations(Processor* processor);
+    void addProcessorGraphicsItem(Processor* processor, QPointF pos);
+    void removeProcessorGraphicsItem(Processor* processor);
+    void addPropertyWidgets(Processor* processor);
+    void removePropertyWidgets(Processor* processor);
+    void addProcessorWidget(Processor* processor);
 
-    QPointF snapToGrid(QPointF pos);
-    void drawBackground(QPainter* painter, const QRectF& rect);
+    void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
+    void addConnectionGraphicsItem(Port* port1, Port* port2);
+    void removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem);
+
+    void removeLink(LinkConnectionGraphicsItem* linkGraphicsItem);
+    void addLinkGraphicsItem(Processor* processor1, Processor* processor2);
+    void removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem);
 
     void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
 
-
-    void addProcessor(Processor* processor);
-    void addProcessorRepresentations(Processor* processor, QPointF pos);
-    void removeProcessorRepresentations(Processor* processor);
-
-
-    void addProcessorGraphicsItem(Processor* processor, QPointF pos=QPointF(10.0f, 10.0f));
-    void removeProcessorGraphicsItem(Processor* processor);
-    void addProcessorWidget(Processor* processor);
-    void removeProcessorWidget(Processor* processor);
-    void addPropertyWidgets(Processor* processor);
-    void removePropertyWidgets(Processor* processor);
-
-
-    void addConnectionGraphicsItem(Port* port1, Port* port2);
-    void removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem);
-    void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
-
-    void addLinkGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
-    void removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem);
-
-
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
-    QGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
-    QGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
-    QGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
+    ConnectionGraphicsItem* getConnectionGraphicsItem(Port* port1, Port* port2) const;
+    LinkConnectionGraphicsItem* getLinkGraphicsItem(Processor* processor1, Processor* processor2) const;
 
+    ProcessorGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;
+    ConnectionGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
+    LinkConnectionGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
 
     void addInspectorNetwork(Port* port, ivec2 pos, std::string fileName);
     void removeInspectorNetwork(Port* port);
     void addPortInspector(Port* port, QPointF pos);
+
+    QPointF snapToGrid(QPointF pos);
+    void drawBackground(QPainter* painter, const QRectF& rect);
+    std::string obtainUniqueProcessorID(Processor* processor) const;
 };
 
 } // namespace

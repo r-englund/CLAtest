@@ -14,7 +14,7 @@ namespace inviwo {
 class IVW_QTEDITOR_API CurveGraphicsItem : public QGraphicsItem {
 
 public:
-    CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color=uvec3(38,38,38), bool layoutOption=true, bool dragOrDrawMode_=true);
+    CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color=uvec3(38,38,38));
     ~CurveGraphicsItem();
 
     virtual QPainterPath shape() const;
@@ -41,7 +41,7 @@ protected:
 private:
     QPointF startPoint_;
     QPointF endPoint_;
-    bool verticalLayout_;
+
     QColor color_;
 };
 
