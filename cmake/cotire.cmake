@@ -2610,14 +2610,14 @@ function (cotire_add_to_unity_all_target _unityTargetName)
 endfunction()
 
 function (cotire_setup_clean_all_target)
-	set (_targetName "${COTIRE_CLEAN_ALL_TARGET_NAME}")
-	if (NOT TARGET "${_targetName}")
-		cotire_set_cmd_to_prologue(_cmds)
-		list (APPEND _cmds -P "${COTIRE_CMAKE_MODULE_FILE}" "cleanup" "${CMAKE_BINARY_DIR}" "${COTIRE_INTDIR}")
-		add_custom_target(${_targetName} COMMAND ${_cmds}
-			WORKING_DIRECTORY "${CMAKE_BINARY_DIR}" COMMENT "Cleaning up all cotire generated files" VERBATIM)
-		cotire_init_target("${_targetName}")
-	endif()
+	# set (_targetName "${COTIRE_CLEAN_ALL_TARGET_NAME}")
+	# if (NOT TARGET "${_targetName}")
+		# cotire_set_cmd_to_prologue(_cmds)
+		# list (APPEND _cmds -P "${COTIRE_CMAKE_MODULE_FILE}" "cleanup" "${CMAKE_BINARY_DIR}" "${COTIRE_INTDIR}")
+		# add_custom_target(${_targetName} COMMAND ${_cmds}
+			# WORKING_DIRECTORY "${CMAKE_BINARY_DIR}" COMMENT "Cleaning up all cotire generated files" VERBATIM)
+		# cotire_init_target("${_targetName}")
+	# endif()
 endfunction()
 
 function (cotire)

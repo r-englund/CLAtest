@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
+#undef HAVE_CONFIG_H
 #include <tclap/CmdLine.h>
 
 namespace inviwo {
