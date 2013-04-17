@@ -69,13 +69,13 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/baseoptionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/boolproperty.h
-	${IVW_INCLUDE_DIR}/inviwo/core/properties/buttonproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/buttonproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/cameraproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
-	${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
-	${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/properties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
@@ -189,7 +189,7 @@ set(SOURCE_FILES
     properties/compositeproperty.cpp
     properties/eventproperty.cpp
     properties/fileproperty.cpp
-	properties/matrixproperties.cpp
+    properties/matrixproperties.cpp
     properties/optionproperties.cpp
     properties/property.cpp
     properties/propertyfactory.cpp
