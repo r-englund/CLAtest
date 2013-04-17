@@ -234,6 +234,10 @@
 // - Replaced size_t<3> with glm::svec3
 // - Added constructors for NDRange to handle usage of glm::svec2 and glm::svec3
 // - Default device, context and command queue is replaced with corresponding inviwo variables
+// - Changed setArg(cl_uint index, T& value)  to setArg(cl_uint index, const T& value)
+// - Changed KernelArgumentHandler:
+//      static T* ptr(T& value) { return &value; } to static const T* ptr(const T& value) { return &value; }
+//      static void* ptr(LocalSpaceArg& value) { return &value; } to static const void* ptr(const LocalSpaceArg& value) { return &value; }
 #include <glm/glm.hpp>
 namespace glm {
 typedef glm::detail::tvec2<size_t>	svec2;
@@ -4356,14 +4360,14 @@ template <typename T>
 struct KernelArgumentHandler
 {
     static ::size_t size(const T&) { return sizeof(T); }
-    static T* ptr(T& value) { return &value; }
+    static const T* ptr(const T& value) { return &value; }
 };
 
 template <>
 struct KernelArgumentHandler<LocalSpaceArg>
 {
     static ::size_t size(const LocalSpaceArg& value) { return value.size_; }
-    static void* ptr(LocalSpaceArg&) { return NULL; }
+    static const void* ptr(const LocalSpaceArg&) { return NULL; }
 };
 
 } 
@@ -4521,14 +4525,14 @@ public:
     }
 
     template <typename T>
-    cl_int setArg(cl_uint index, T value)
+    cl_int setArg(cl_uint index, const T& value)
     {
         return detail::errHandler(
             ::clSetKernelArg(
-                object_,
-                index,
-                detail::KernelArgumentHandler<T>::size(value),
-                detail::KernelArgumentHandler<T>::ptr(value)),
+            object_,
+            index,
+            detail::KernelArgumentHandler<T>::size(value),
+            detail::KernelArgumentHandler<T>::ptr(value)),
             __SET_KERNEL_ARGS_ERR);
     }
 

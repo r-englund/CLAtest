@@ -40,3 +40,13 @@ void ImageCL::copyAndResizeImage(DataRepresentation* target) {
 }
 
 } // namespace
+
+namespace cl {
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCL& value)
+{
+    return setArg(index, value.getImage());
+}
+
+
+}

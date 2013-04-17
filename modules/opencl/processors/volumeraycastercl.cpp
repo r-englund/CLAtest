@@ -51,13 +51,17 @@ void VolumeRaycasterCL::deinitialize() {
 }
 
 void VolumeRaycasterCL::process() {
-
+    if( kernel_ == NULL) {
+        return;
+    }
     Image* outImage = outport_.getEditableData();
+    const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
+    outImage->resize(entryCL->getDimension());
     uvec2 outportDim = outImage->size();
     //uvec2 outportDim = uvec2(4, 4);
     //Image* outImage = new Image(outportDim);
-    outImage->clearRepresentations();
-    outImage->addRepresentation(new ImageCLuint8vec4(outportDim));
+    //outImage->clearRepresentations();
+    //outImage->addRepresentation(new ImageCLuint8vec4(outportDim));
     //outImage->addRepresentation(new ImageCLvec4float32(outportDim));
     ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
 
@@ -65,13 +69,14 @@ void VolumeRaycasterCL::process() {
     const Volume* volume = volumePort_.getData();
     const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
     uvec3 volumeDim = volumeCL->getDimensions();
-    const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
+    
     cl_uint arg = 0;
-    //kernel_->setArg(arg++, volumeCL->getVolume());
-    kernel_->setArg(arg++, entryCL->getImage());
-    //kernel_->setArg(arg++, exitPort_.getData()->getRepresentation<ImageCL>()->getImage());
-    //kernel_->setArg(arg++, samplingRate_.get());
-    kernel_->setArg(arg++, outImageCL->getImage());
+    kernel_->setArg(arg++, volumeCL->getVolume());
+    kernel_->setArg(arg++, *entryCL);
+    kernel_->setArg(arg++, *exitPort_.getData()->getRepresentation<ImageCL>());
+    kernel_->setArg(arg++, samplingRate_.get() / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
+    kernel_->setArg(arg++, volumeDim);
+    kernel_->setArg(arg++, *outImageCL);
     // 
     OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
 

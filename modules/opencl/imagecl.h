@@ -129,4 +129,15 @@ typedef ImageCLPrecision< glm::detail::tvec4<float> > ImageCLvec4float32;
 
 } // namespace
 
+namespace cl {
+
+// Kernel argument specializations for ImageCL type 
+// (enables calling cl::Queue::setArg with ImageCL
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCL& value);
+
+}
+
+
+
 #endif // IVW_IMAGECL_H

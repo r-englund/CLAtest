@@ -14,30 +14,30 @@ namespace cl {
 
 // int types
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::int8> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int8>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::int16> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int16>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::int32> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int32>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::int64> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int64>& value);
 
 // uint types
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::uint8> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint8>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::uint16> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint16>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::uint32> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint32>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::uint64> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint64>& value);
 
 
 // float types
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::float16> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::float16>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, glm::detail::tvec3<glm::detail::float32> value);
+cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::float32>& value);
 
 //template <>
 //cl_int Kernel::setArg(cl_uint index, const cl::Image2D& value);
