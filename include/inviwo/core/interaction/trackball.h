@@ -13,7 +13,6 @@
 #include <inviwo/core/interaction/events/event.h>
 #include <inviwo/core/interaction/trackballaction.h>
 
-
 namespace inviwo {
 
 class IVW_CORE_API Trackball : public InteractionHandler, public PropertyOwner {
@@ -27,7 +26,6 @@ public:
     void addProperty(Property* property);
 
 private:
-
     float pixelWidth_;
     bool isMouseBeingPressedAndHold_;
 

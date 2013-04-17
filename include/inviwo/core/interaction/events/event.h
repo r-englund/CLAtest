@@ -24,6 +24,7 @@ public:
     inline Event::Modifier modifier() const { return modifier_; }
     inline std::string modifierName() const { return modifierName_; }
     inline std::string buttonName() const { return buttonName_; }
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 

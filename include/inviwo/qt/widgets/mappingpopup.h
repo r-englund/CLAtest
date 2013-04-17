@@ -1,11 +1,10 @@
 #ifndef IVW_MAPPINGPOPUP_H
 #define IVW_MAPPINGPOPUP_H
 
-//#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/eventproperty.h>
+#include <inviwo/qt/widgets/eventconverterqt.h>
 #include <QWidget>
 #include <QMouseEvent>
-//#include <iostream>
 
 namespace inviwo {
 
@@ -20,7 +19,7 @@ protected:
 
 private:
     EventProperty* parentProperty_;
-
+    EventConverterQt* eventConverter_;
 };
 
 } // namespace

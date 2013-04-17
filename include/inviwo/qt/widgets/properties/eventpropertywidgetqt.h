@@ -26,8 +26,8 @@ private:
 
 public slots:
     void clickedSlot();
-
 };
 
 } //namespace
+
 #endif // IVW_EVENTPROPERTYWIDGETQT_H

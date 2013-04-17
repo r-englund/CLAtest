@@ -7,9 +7,8 @@ inviwo::EventPropertyWidgetQt::EventPropertyWidgetQt( EventProperty* eventproper
     generateWidget();
 }
 
-
 void inviwo::EventPropertyWidgetQt::generateWidget() {
-    delete layout();
+    delete layout(); // Make sure there is no previous layout
     std::string eventName = eventproperty_->getEvent().modifierName() + eventproperty_->getEvent().buttonName();
     std::string actionName = eventproperty_->getAction().name();
 
@@ -31,7 +30,7 @@ void EventPropertyWidgetQt::updateFromProperty() {
 void EventPropertyWidgetQt::clickedSlot() {
     MappingPopup* popup_ = new MappingPopup(eventproperty_);        
     popup_->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup );
-    popup_->setFixedSize(1,1); // I am so sorry.
+    popup_->setFixedSize(1,1); // I am so sorry
     popup_->show();
 
     button_->setText("ENTER NEW KEYBINDING");

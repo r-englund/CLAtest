@@ -20,5 +20,4 @@ void EventProperty::deserialize( IvwDeserializer& d ) {
     Property::deserialize(d);
 }
 
-
 } // namespace

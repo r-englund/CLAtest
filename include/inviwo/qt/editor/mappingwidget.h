@@ -4,10 +4,11 @@
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/inviwodockwidget.h>
 #include <inviwo/core/util/observer.h>
+#include <inviwo/core/common/inviwoapplication.h>
+
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
@@ -17,10 +18,13 @@ public:
     MappingWidget(QWidget* parent);
     ~MappingWidget();
     void notify();
+
 private:
-    QString intToQString(int num);
     InviwoApplication* inviwoApp_;
-    QLabel* label;
+    QLabel* label_;
+
+    void updateWidget();
+    QString intToQString(int num); // For testing
 };
 
 } // namespace

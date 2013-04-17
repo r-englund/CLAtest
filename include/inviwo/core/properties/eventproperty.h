@@ -3,23 +3,30 @@
 
 #include <inviwo/core/interaction/action.h>
 #include <inviwo/core/interaction/events/event.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/properties/property.h>
 
-
 namespace inviwo {
+
+/** class EventProperty
+* 
+* Property which contains one event and one action to represent the current key binding for the contained action.
+* @see EventPropertyWidgetQt
+*/
 class IVW_CORE_API EventProperty : public Property {
 public:
     /** 
-     * \brief Constructor.
+     * \brief Constructor used to create a new action-key binding.
      *
-     * Constructor taking identifier, displayname, key or mouse event and the action to be mapped.
+     * The constructor creates a new binding between a specified action and event.
      * 
      * @param std::string identifier 
      * @param std::string displayName 
      * @param Event e The key or mouse event to bind to an action
      * @param Action action The action to be bound to an event
      * @param PropertySemantics::Type semantics 
-     */EventProperty(std::string identifier, 
+     */
+    EventProperty(std::string identifier, 
         std::string displayName,
         Event e,
         Action action,
@@ -29,37 +36,26 @@ public:
     virtual void serialize(IvwSerializer& s) const; //TODO
     virtual void deserialize(IvwDeserializer& d); //TODO
 
-    /** 
-     * \brief Gets the event.
-     *
-     * Gets the event which is bound to this property.
-     * 
-     * @return inviwo::Event Key or mouse event
-     */Event getEvent() { return event_; }
-    
-    /** 
-     * \brief Gets the action.
-     *
-     * Gets the action which is bound to this property.
-     * 
-     * @return inviwo::Action The bound action
-     */Action getAction() { return action_; }
+    Event getEvent() const { return event_; }    
+    Action getAction() const { return action_; }
 
     /** 
      * \brief Maps action to new event.
      *
-     * Takes in a new event to remap to the action of this property.
+     * Changes the current action-to-key binding by replacing the old event with a new.
      * 
      * @param Event e The new event
-     */void setEvent(Event e) { event_ = e; }
+     */
+    void setEvent(Event e) { event_ = e; }
 
     // FOR TESTING //FIXME: remove
-    void tmpTest(int i) { std::cout << "QMouseEvent: " << i << std::endl; }
+    void tmpTest(MouseEvent::MouseButton i) const { std::cout << "Mousebutton: " << i << std::endl; }
 
 private:
     Event event_;
     Action action_;
 };
+
 } // namespace
 
 #endif // IVW_EVENTPROPERTY_H

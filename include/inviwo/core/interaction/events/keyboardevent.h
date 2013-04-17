@@ -6,12 +6,11 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API KeyboardEvent : public Event {
-
-    public:
-        KeyboardEvent();
-        ~KeyboardEvent();
-    };
+class IVW_CORE_API KeyboardEvent : public Event {
+public:
+    KeyboardEvent();
+    ~KeyboardEvent();
+};
 
 } // namespace
 

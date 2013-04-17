@@ -9,8 +9,7 @@ Trackball::Trackball(CameraProperty* camera) : InteractionHandler(), PropertyOwn
       lastMousePos_(ivec2(0)),
       lastTrackballPos_(vec3(0.5f)),
       pixelWidth_(0.007f),
-      isMouseBeingPressedAndHold_(false)
-{ 
+      isMouseBeingPressedAndHold_(false) { 
     rotateEventProperty_ = new EventProperty("rotate", "Rotate", 
         MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, Event::MODIFIER_NONE), 
         TrackballAction(TrackballAction::TRACKBALL_ROTATE));
@@ -21,7 +20,7 @@ Trackball::Trackball(CameraProperty* camera) : InteractionHandler(), PropertyOwn
         MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, Event::MODIFIER_NONE), 
         TrackballAction(TrackballAction::TRACKBALL_PAN));
 
-    addProperty(*rotateEventProperty_);
+    addProperty(rotateEventProperty_);
     addProperty(zoomEventProperty_);
     addProperty(panEventProperty_);
 }
@@ -33,7 +32,7 @@ vec3 Trackball::mapNormalizedMousePosToTrackball(vec2 mousePos) {
     float r = RADIUS;
     vec3 result = vec3(mousePos.x-RADIUS, -1.0f*(mousePos.y-RADIUS), 0.0f);
     
-    // HOLROYD
+    // Mapping according to Holroyds trackball
     //Piece-wise sphere + hyperbolic sheet        
     if ((result.x*result.x + result.y*result.y) <= r*r/(2.0f)) {
         //Spherical Region
@@ -232,8 +231,7 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
 
 void Trackball::addProperty( Property& property ) {
     if (dynamic_cast<EventProperty*>(&property)) 
-       addProperty(&property);
-    
+       addProperty(&property);    
 }
 
 void Trackball::addProperty( Property* property ) {    
@@ -242,4 +240,5 @@ void Trackball::addProperty( Property* property ) {
         property->setOwner(this);
     }
 }
+
 } // namespace
