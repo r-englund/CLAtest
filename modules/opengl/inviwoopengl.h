@@ -2,7 +2,13 @@
 #define IVW_INVIWOOPENGL_H
 
 #include <modules/opengl/openglmoduledefine.h>
+
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 #include <modules/opengl/ext/glew/include/GL/glew.h> //TODO: Why is <GL/glew.h> not working
+
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -12,10 +18,6 @@
 #endif // __APPLE__
 #include <iostream>
 #include <sstream>
-
-#ifdef WIN32
-#include <windows.h>
-#endif
 
 IVW_MODULE_OPENGL_API void LogGLError(const char* fileName, const char* functionName, int lineNumber);
 

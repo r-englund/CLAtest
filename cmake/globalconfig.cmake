@@ -62,7 +62,7 @@ set(IVW_EXECUTABLE_DIR ${EXECUTABLE_OUTPUT_PATH})
 set(IVW_CMAKE_SOURCE_MODULE_DIR ${CMAKE_SOURCE_DIR}/cmake)
 set(IVW_CMAKE_BINARY_MODULE_DIR ${CMAKE_BINARY_DIR}/cmake)
 
-configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/inviwocommondefines_template.h ${IVW_INCLUDE_DIR}/inviwo/core/inviwocommondefines.h @ONLY IMMEDIATE)
+configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/inviwocommondefines_template.h ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocommondefines.h @ONLY IMMEDIATE)
 
 # Set ignored libs
 set(VS_MULTITHREADED_DEBUG_DLL_IGNORE_LIBRARY_FLAGS

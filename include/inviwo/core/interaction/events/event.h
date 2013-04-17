@@ -1,8 +1,8 @@
 #ifndef IVW_EVENT_H
 #define IVW_EVENT_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
 
 namespace inviwo {

@@ -1,8 +1,8 @@
 #ifndef IVW_FORMATCONVERSION_H
 #define IVW_FORMATCONVERSION_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <string>
 #include <sstream>
 

@@ -2,7 +2,7 @@
 #define IVW_SINGLETON_H
 
 #include <inviwo/core/util/assertion.h>
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 
 namespace inviwo {
 

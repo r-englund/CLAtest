@@ -1,8 +1,8 @@
 #ifndef IVW_COMPOSITEPROPERTY_H
 #define IVW_COMPOSITEPROPERTY_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/util/observer.h>
 

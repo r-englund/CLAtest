@@ -5,11 +5,11 @@ ivw_project(inviwo-core)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_INCLUDE_DIR}/inviwo/core/inviwo.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/inviwoapplication.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/inviwocore.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/inviwocoredefine.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/inviwomodule.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwo.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwoapplication.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocore.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocoredefine.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwomodule.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
@@ -132,9 +132,9 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    inviwoapplication.cpp
-    inviwocore.cpp
-    inviwomodule.cpp
+    common/inviwoapplication.cpp
+    common/inviwocore.cpp
+    common/inviwomodule.cpp
     datastructures/data.cpp
     datastructures/datarepresentation.cpp
     datastructures/image.cpp
@@ -228,6 +228,16 @@ set(SOURCE_FILES
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
+# Optimize compilation with pre-compilied headers
+set(PCH_PATH_FILES
+    ${IVW_INCLUDE_DIR}/inviwo/core/common
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata
+    ${IVW_INCLUDE_DIR}/inviwo/core/util
+)
+ivw_add_pch_path(${PCH_PATH_FILES})
+
+#--------------------------------------------------------------------
 # Define standard defintions
 ivw_define_standard_definitions(IVW_CORE)
 
@@ -255,6 +265,9 @@ ivw_add_dependencies(
     Sigar
     FreeImage
 )
+
+#Optimize compiliation with PCH etc
+ivw_compile_optimize()
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)

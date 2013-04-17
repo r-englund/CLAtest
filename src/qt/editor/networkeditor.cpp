@@ -1,4 +1,4 @@
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/io/serialization/ivwserializer.h>
 #include <inviwo/core/io/serialization/ivwdeserializer.h>

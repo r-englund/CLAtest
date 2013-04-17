@@ -1,7 +1,7 @@
 #ifndef IVW_PROPERTY_H
 #define IVW_PROPERTY_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/properties/propertysemantics.h>

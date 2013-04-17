@@ -1,9 +1,9 @@
 #ifndef IVW_IMAGEREPRESENTATION_H
 #define IVW_IMAGEREPRESENTATION_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/datarepresentation.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 

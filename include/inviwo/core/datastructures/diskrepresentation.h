@@ -1,7 +1,7 @@
 #ifndef IVW_DISKREPRESENTATION_H
 #define IVW_DISKREPRESENTATION_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <string>
 
 namespace inviwo {

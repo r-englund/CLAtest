@@ -6,7 +6,7 @@
 #include <QMainWindow>
 #include <QFileSystemWatcher>
 
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 

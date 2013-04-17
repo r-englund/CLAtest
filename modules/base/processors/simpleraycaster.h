@@ -2,7 +2,7 @@
 #define IVW_SIMPLERAYCASTER_H
 
 #include <modules/base/basemoduledefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/properties.h>

@@ -1,7 +1,7 @@
 #ifndef IVW_BUTTONPROPERTY_H
 #define IVW_BUTTONPROPERTY_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/util/callback.h>
 #include <inviwo/core/properties/property.h>
 

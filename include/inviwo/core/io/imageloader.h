@@ -1,8 +1,8 @@
 #ifndef IVW_IMAGELOADER_H
 #define IVW_IMAGELOADER_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <ext/freeimage/FreeImage.h>
 
 using namespace inviwo;

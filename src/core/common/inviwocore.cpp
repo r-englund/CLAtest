@@ -1,4 +1,4 @@
-#include <inviwo/core/inviwocore.h>
+#include <inviwo/core/common/inviwocore.h>
 
 //Data Structures
 #include <inviwo/core/datastructures/volumeramconverter.h>

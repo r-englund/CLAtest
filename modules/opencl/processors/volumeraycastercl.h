@@ -2,7 +2,7 @@
 #define IVW_VOLUME_RAYCASTER_CL_H
 
 #include <modules/opencl/openclmoduledefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>

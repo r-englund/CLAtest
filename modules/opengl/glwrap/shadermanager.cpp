@@ -1,5 +1,5 @@
 #include "shadermanager.h"
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
 #include <modules/opengl/openglmodule.h>
 #include <modules/opengl/processorgl.h>

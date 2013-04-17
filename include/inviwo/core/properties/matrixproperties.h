@@ -1,7 +1,7 @@
 #ifndef  IVW_MATRIXPROPERTIES_H
 #define IVW_MATRIXPROPERTIES_H
 
-#include "inviwo/core/inviwocoredefine.h"
+#include "inviwo/core/common/inviwocoredefine.h"
 #include "inviwo/core/properties/ordinalproperty.h"
 
 namespace inviwo {

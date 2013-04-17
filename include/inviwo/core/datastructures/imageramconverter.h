@@ -1,7 +1,7 @@
 #ifndef IVW_IMAGERAMCONVERTER_H
 #define IVW_IMAGERAMCONVERTER_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <inviwo/core/datastructures/imageram.h>
 #include <inviwo/core/datastructures/imagedisk.h>

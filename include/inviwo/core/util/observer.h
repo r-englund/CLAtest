@@ -1,7 +1,7 @@
 #ifndef IVW_OBSERVER_H
 #define IVW_OBSERVER_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <set>
 
 namespace inviwo {

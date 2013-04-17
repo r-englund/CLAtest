@@ -2,7 +2,7 @@
 #define IVW_BASEMODULE_H
 
 #include <modules/base/basemoduledefine.h>
-#include <inviwo/core/inviwomodule.h>
+#include <inviwo/core/common/inviwomodule.h>
 
 namespace inviwo {
 

@@ -1,8 +1,6 @@
 #include <inviwo/core/datastructures/image.h>
 #include <inviwo/core/datastructures/imagerepresentation.h>
 #include <inviwo/core/datastructures/imagedisk.h>
-
-#include <modules/opengl/imagegl.h>
 namespace inviwo {
 
 Image::Image() : Data() {

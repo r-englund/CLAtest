@@ -1,7 +1,7 @@
 #ifndef IVW_METADATA_MAP_H
 #define IVW_METADATA_MAP_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 

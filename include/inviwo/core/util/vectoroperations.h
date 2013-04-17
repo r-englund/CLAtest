@@ -1,7 +1,7 @@
 #ifndef IVW_VECTOROPERATIONS_H
 #define IVW_VECTOROPERATIONS_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <vector>
 
 namespace inviwo {

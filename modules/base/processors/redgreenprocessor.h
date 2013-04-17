@@ -2,7 +2,7 @@
 #define IVW_REDGREENPROCESSOR_H
 
 #include <modules/base/basemoduledefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/inviwoopengl.h>

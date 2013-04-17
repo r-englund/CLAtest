@@ -149,5 +149,9 @@ ivw_add_dependencies(
 )
 
 #--------------------------------------------------------------------
+# Optimize compilation with pre-compilied headers based on inviwo-core
+ivw_compile_optimize_inviwo_core()
+
+#--------------------------------------------------------------------
 # Make package (for other projects to find)
 ivw_make_package(InviwoQtWidgets inviwo-qtwidgets)

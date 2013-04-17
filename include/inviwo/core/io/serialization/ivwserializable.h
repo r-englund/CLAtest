@@ -1,7 +1,7 @@
 #ifndef IVW_SERIALIZABLE_H
 #define IVW_SERIALIZABLE_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 
 namespace inviwo {
 

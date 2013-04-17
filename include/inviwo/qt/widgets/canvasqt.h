@@ -5,7 +5,7 @@
 #include <modules/opengl/canvasgl.h>
 #include <inviwo/qt/widgets/eventconverterqt.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 
 #include <QtOpenGL/QGLWidget>
 #include <QInputEvent>

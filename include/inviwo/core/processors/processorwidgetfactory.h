@@ -1,7 +1,7 @@
 #ifndef IVW_PROCESSORWIDGETFACTORY_H
 #define IVW_PROCESSORWIDGETFACTORY_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/util/singleton.h>

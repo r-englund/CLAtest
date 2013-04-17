@@ -13,7 +13,11 @@
 #include <fstream>
 #include <stdio.h>
 
-#include <inviwo/core/inviwocommondefines.h>
+#include <inviwo/core/common/inviwocommondefines.h>
+
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 // include glm
 #define GLM_SWIZZLE

@@ -1,8 +1,8 @@
 #ifndef IVW_PROCESSORCONNECTION_H
 #define IVW_PROCESSORCONNECTION_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/linkevaluator.h>
 

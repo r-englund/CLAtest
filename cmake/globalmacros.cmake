@@ -1,4 +1,13 @@
 include(clean_library_list)
+include(cotire)
+
+mark_as_advanced(COTIRE_ADDITIONAL_PREFIX_HEADER_IGNORE_EXTENSIONS 
+COTIRE_ADDITIONAL_PREFIX_HEADER_IGNORE_PATH 
+COTIRE_DEBUG 
+COTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES 
+COTIRE_MINIMUM_NUMBER_OF_TARGET_SOURCES
+COTIRE_UNITY_SOURCE_EXCLUDE_EXTENSIONS
+COTIRE_VERBOSE)
 
 #--------------------------------------------------------------------
 # Creates project with initial variables
@@ -11,6 +20,7 @@ macro(ivw_project project_name)
   set(_allLibs "")
   set(_allDefinitions "")
   set(_allLinkFlags "")
+  set(_allPchDirs "")
 endmacro()
 
 #--------------------------------------------------------------------
@@ -433,6 +443,11 @@ macro(ivw_create_module)
     # Add dependencies to this list
     ivw_add_dependencies(${dependencies})
   endif()
+  
+  #--------------------------------------------------------------------
+  # Optimize compilation with pre-compilied headers based on inviwo-core
+  ivw_compile_optimize_inviwo_core()
+  
   set(_projectName ${tmpProjectName})
   
   #--------------------------------------------------------------------
@@ -465,6 +480,32 @@ macro(ivw_create_test)
 	#--------------------------------------------------------------------
 	# Set VS Executable properties
 	ivw_vs_folder(${_projectName} tests)
+endmacro()
+
+#--------------------------------------------------------------------
+# Add directory to precompilied headers
+macro(ivw_add_pch_path)
+    list(APPEND _allPchDirs ${ARGN})
+endmacro()
+
+#--------------------------------------------------------------------
+# Optimize compilation with pre-compilied headers from inviwo core
+macro(ivw_compile_optimize_inviwo_core)
+      set_target_properties(${_projectName} PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+      get_target_property(_prefixHeader inviwo-core COTIRE_CXX_PREFIX_HEADER)
+      set_target_properties(${_projectName} PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "${_prefixHeader}")
+      cotire(${_projectName})
+endmacro()
+
+#--------------------------------------------------------------------
+# Optimize compilation with pre-compilied headers
+macro(ivw_compile_optimize)
+      #set_target_properties(${_projectName} PROPERTIES COTIRE_ENABLE_PRECOMPILED_HEADER FALSE)
+      set_target_properties(${_projectName} PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+      list(APPEND _allPchDirs ${CMAKE_SOURCE_DIR}/ext)
+      set_target_properties(${_projectName} PROPERTIES COTIRE_PREFIX_HEADER_INCLUDE_PATH "${_allPchDirs}")
+      cotire(${_projectName})
+      #target_link_libraries(${_projectName}_unity ${_allLibs})
 endmacro()
 
 #--------------------------------------------------------------------
@@ -553,16 +594,6 @@ macro(ivw_add_dependency_directories)
       #--------------------------------------------------------------------
       # Set directory links
       link_directories(${${u_package}_LIBRARY_DIR})
-      
-      #--------------------------------------------------------------------
-      # Add dependcy package variables to this package if shared build
-      #if(NOT BUILD_SHARED_LIBS)
-          
-          #--------------------------------------------------------------------
-          # Append library directories to project list
-         # list(APPEND _allLibsDir ${${u_package}_LIBRARY_DIR})
-      
-      #endif()
     endforeach()
 endmacro()
 
@@ -584,16 +615,6 @@ macro(ivw_add_dependency_libraries)
       #--------------------------------------------------------------------
       # Link library
       target_link_libraries(${_projectName} ${package})
-      
-      #--------------------------------------------------------------------
-      # Add dependcy package variables to this package if shared build
-      #if(NOT BUILD_SHARED_LIBS)
-          
-          #--------------------------------------------------------------------
-          # Append library directories to project list
-         # list(APPEND _allLibs ${package})
-      
-     # endif()
     endforeach()
 endmacro()
 

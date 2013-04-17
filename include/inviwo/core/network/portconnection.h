@@ -1,8 +1,8 @@
 #ifndef IVW_PORTCONNECTION_H
 #define IVW_PORTCONNECTION_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/port.h>
 #include <inviwo/core/processors/processor.h>
 

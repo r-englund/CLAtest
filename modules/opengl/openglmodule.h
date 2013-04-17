@@ -2,7 +2,7 @@
 #define IVW_OPENGLMODULE_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/inviwomodule.h>
+#include <inviwo/core/common/inviwomodule.h>
 
 namespace inviwo {
 

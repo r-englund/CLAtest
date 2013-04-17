@@ -1,7 +1,7 @@
 #ifndef IVW_REPRESENTATIONCONVERTER_H
 #define IVW_REPRESENTATIONCONVERTER_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/datarepresentation.h>
 
 namespace inviwo {

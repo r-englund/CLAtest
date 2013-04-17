@@ -1,8 +1,8 @@
 #ifndef IVW_DATVOLUMEREADER_H
 #define IVW_DATVOLUMEREADER_H
 
-#include "inviwo/core/inviwocoredefine.h"
-#include "inviwo/core/inviwo.h"
+#include "inviwo/core/common/inviwocoredefine.h"
+#include "inviwo/core/common/inviwo.h"
 #include "inviwo/core/io/volumereader.h"
 #include "inviwo/core/io/rawvolumereader.h"
 

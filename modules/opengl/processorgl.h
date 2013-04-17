@@ -4,7 +4,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include "inviwoopengl.h"
 #include "imagegl.h"
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/processors/processor.h>
 

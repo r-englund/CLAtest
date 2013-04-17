@@ -2,7 +2,7 @@
 #define IVW_IMAGESOURCE_H
 
 #include <modules/base/basemoduledefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/datastructures/imagedisk.h>

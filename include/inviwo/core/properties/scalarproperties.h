@@ -1,7 +1,7 @@
 #ifndef IVW_SCALARPROPERTIES_H
 #define IVW_SCALARPROPERTIES_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {

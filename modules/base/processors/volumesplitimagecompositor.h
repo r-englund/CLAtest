@@ -1,7 +1,7 @@
 #ifndef IVW_VOLUMESPLITIMAGECOMPOSITOR_H
 #define IVW_VOLUMESPLITIMAGECOMPOSITOR_H
 
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/base/basemoduledefine.h>
 #include <modules/opengl/processorgl.h>

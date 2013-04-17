@@ -1,7 +1,7 @@
 #ifndef IVW_VOLUME_TYPE_CLASSIFICATION_H
 #define IVW_VOLUME_TYPE_CLASSIFICATION_H
 
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/datatypeclassification.h>
 
 namespace inviwo {

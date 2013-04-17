@@ -5,11 +5,11 @@
 #  define TIXML_USE_TICPP
 #endif
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <ticpp/ticpp.h>
 #include <inviwo/core/io/serialization/ivwserializeconstants.h>
 #include <inviwo/core/io/serialization/ivwserializebase.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 

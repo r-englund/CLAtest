@@ -1,7 +1,7 @@
 #ifndef IVW_TRACKBALL_H
 #define IVW_TRACKBALL_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/eventlistener.h>

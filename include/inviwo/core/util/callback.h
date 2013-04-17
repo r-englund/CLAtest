@@ -1,8 +1,8 @@
 #ifndef IVW_CALLBACK_H
 #define IVW_CALLBACK_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 

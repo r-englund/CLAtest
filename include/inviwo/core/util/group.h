@@ -1,7 +1,7 @@
 #ifndef IVW_GROUP_H
 #define IVW_GROUP_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <map>
 
 /*

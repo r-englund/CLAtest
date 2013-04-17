@@ -1,7 +1,7 @@
 #ifndef IVW_INVIWOFACTORYBASE_H
 #define IVW_INVIWOFACTORYBASE_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <string>
 
 namespace inviwo {

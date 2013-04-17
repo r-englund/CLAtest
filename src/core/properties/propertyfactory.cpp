@@ -1,5 +1,5 @@
-#include <inviwo/core/inviwoapplication.h>
-#include <inviwo/core/inviwomodule.h>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/properties/propertyfactory.h>
 
 

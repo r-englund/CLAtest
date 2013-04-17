@@ -1,7 +1,7 @@
 #ifndef IVW_METADATA_FACTORY_H
 #define IVW_METADATA_FACTORY_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/util/singleton.h>

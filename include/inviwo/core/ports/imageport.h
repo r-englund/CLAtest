@@ -1,7 +1,7 @@
 #ifndef IVW_IMAGEPORT_H
 #define IVW_IMAGEPORT_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/ports/dataport.h>
 #include <inviwo/core/datastructures/image.h>
 

@@ -1,8 +1,8 @@
 #ifndef IVW_PROCESSOR_H
 #define IVW_PROCESSOR_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/interaction/events/event.h>
 #include <inviwo/core/ports/port.h>

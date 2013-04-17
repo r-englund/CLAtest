@@ -31,5 +31,9 @@ add_executable(glutminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 ivw_add_dependencies(${package_list})
 
 #--------------------------------------------------------------------
+# Optimize compilation with pre-compilied headers based on inviwo-core
+ivw_compile_optimize_inviwo_core()
+
+#--------------------------------------------------------------------
 # Set VS Executable properties
 #ivw_vs_executable_setup(glutminimum)

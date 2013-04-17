@@ -1,8 +1,8 @@
 #ifndef IVW_DATAREPRESENTATION_H
 #define IVW_DATAREPRESENTATION_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/dataoperation.h>
 
 namespace inviwo {

@@ -1,7 +1,7 @@
 #ifndef IVW_VOLUMEDISK_H
 #define IVW_VOLUMEDISK_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/diskrepresentation.h>
 #include <inviwo/core/datastructures/volumerepresentation.h>
 #include <stdio.h>

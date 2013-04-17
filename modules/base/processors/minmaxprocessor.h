@@ -2,7 +2,7 @@
 #define IVW_MINMAXPROCESSOR_H
 
 #include <modules/base/basemoduledefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 
 #include <modules/opengl/glwrap/shader.h>
 

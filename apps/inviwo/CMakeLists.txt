@@ -44,3 +44,7 @@ add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_
 #--------------------------------------------------------------------
 # Add dependencies
 ivw_add_dependencies(${package_list})
+
+#--------------------------------------------------------------------
+# Optimize compilation with pre-compilied headers based on inviwo-core
+ivw_compile_optimize_inviwo_core()

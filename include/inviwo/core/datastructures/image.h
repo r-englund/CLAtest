@@ -1,7 +1,7 @@
 #ifndef IVW_IMAGE_H
 #define IVW_IMAGE_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/data.h>
 
 namespace inviwo {

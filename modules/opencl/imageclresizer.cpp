@@ -1,4 +1,4 @@
-#include <inviwo/core/inviwocommondefines.h>
+#include <inviwo/core/common/inviwocommondefines.h>
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <modules/opencl/imageclresizer.h>

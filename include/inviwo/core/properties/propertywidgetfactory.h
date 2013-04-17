@@ -1,7 +1,7 @@
 #ifndef IVW_PROPERTYWIDGETFACTORY_H
 #define IVW_PROPERTYWIDGETFACTORY_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/util/singleton.h>

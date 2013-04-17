@@ -1,7 +1,7 @@
 #ifndef IVW_SYSTEMINFO_H
 #define IVW_SYSTEMINFO_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/util/resourceinfo.h>
 #include <vector>
 #include <string>

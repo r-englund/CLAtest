@@ -1,10 +1,10 @@
 #ifndef IVW_INVIWOAPPLICATION_H
 #define IVW_INVIWOAPPLICATION_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
-#include <inviwo/core/inviwocore.h>
-#include <inviwo/core/inviwomodule.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/common/inviwocore.h>
+#include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/core/util/settings.h>

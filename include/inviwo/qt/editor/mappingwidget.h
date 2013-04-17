@@ -7,7 +7,7 @@
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 

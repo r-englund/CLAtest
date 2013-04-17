@@ -1,7 +1,7 @@
 #ifndef IVW_VOLUME_H
 #define IVW_VOLUME_H
 
-#include <inviwo/core/inviwocoredefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/data.h>
 #include <inviwo/core/datastructures/volumerepresentation.h>
 

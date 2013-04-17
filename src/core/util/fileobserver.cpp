@@ -1,5 +1,5 @@
 #include <inviwo/core/util/fileobserver.h>
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 

@@ -1,5 +1,5 @@
 #include <inviwo/qt/editor/settingswidget.h>
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 #include <QFrame>

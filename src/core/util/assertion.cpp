@@ -1,5 +1,5 @@
 #include <inviwo/core/util/assertion.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 
 #include <sstream>
 

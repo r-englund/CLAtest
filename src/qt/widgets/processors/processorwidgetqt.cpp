@@ -1,7 +1,7 @@
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 #include <QResizeEvent>
 #include <QMoveEvent>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 

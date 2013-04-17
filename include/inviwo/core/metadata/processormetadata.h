@@ -1,8 +1,8 @@
 #ifndef IVW_PROCESSORMETADATA_H
 #define IVW_PROCESSORMETADATA_H
 
-#include <inviwo/core/inviwocoredefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/metadata/compositemetadata.h>
 #include <inviwo/core/metadata/positionmetadata.h>
 

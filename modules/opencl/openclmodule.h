@@ -1,7 +1,7 @@
 #ifndef IVW_OPENCLMODULE_H
 #define IVW_OPENCLMODULE_H
 
-#include <inviwo/core/inviwomodule.h>
+#include <inviwo/core/common/inviwomodule.h>
 #include <modules/opencl/openclmoduledefine.h>
 namespace inviwo {
 /*

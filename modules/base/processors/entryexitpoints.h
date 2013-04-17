@@ -2,14 +2,14 @@
 #define IVW_ENTRYEXITPOINTS_H
 
 #include <modules/base/basemoduledefine.h>
-#include <inviwo/core/inviwo.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <inviwo/core/interaction/trackball.h>
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 
 namespace inviwo {

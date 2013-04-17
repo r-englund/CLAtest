@@ -32,7 +32,7 @@
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 
 //Inviwo
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 
 namespace inviwo{
