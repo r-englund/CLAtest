@@ -74,6 +74,9 @@ include_directories(${FREEIMAGE_DIRS})
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(freeimage)
+if(NOT BUILD_SHARED_LIBS)
+    ivw_add_definition(FREEIMAGE_LIB)
+endif()
 
 #--------------------------------------------------------------------
 # Create library

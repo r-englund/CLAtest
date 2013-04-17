@@ -32,4 +32,4 @@ ivw_add_dependencies(${package_list})
 
 #--------------------------------------------------------------------
 # Set VS Executable properties
-ivw_vs_executable_setup(glutminimum)
+#ivw_vs_executable_setup(glutminimum)

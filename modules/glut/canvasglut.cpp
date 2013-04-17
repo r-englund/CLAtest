@@ -69,9 +69,11 @@ void CanvasGLUT::display(void) {
 }
 
 void CanvasGLUT::idle() {
-    processorNetworkEvaluator_->evaluate();
+    //FIXME: update() already called in network evaluator?!
+    /*processorNetworkEvaluator_->evaluate();
     if (processorNetworkEvaluator_->repaintRequired())
         glutPostRedisplay();
+    */
 }
 
 void CanvasGLUT::keyboard(unsigned char /*key*/, int /*x*/, int /*y*/) {

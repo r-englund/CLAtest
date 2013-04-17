@@ -70,3 +70,59 @@ function(clean_library_list _var)
 		set(${_var} ${_std} PARENT_SCOPE)
 	endif()
 endfunction()
+
+function(remove_library_list _var newlibs)
+	# combine variable's current value with additional list items
+    set(_libs ${ARGN})
+	set(_work ${newlibs})
+	if(_work AND _libs)
+		# Turn each of optimized, debug, and general into flags
+		# prefixed on their respective library (combining list items)
+		string(REGEX REPLACE "optimized;" "1CLL%O%" _work "${_work}")
+		string(REGEX REPLACE "debug;" "1CLL%D%" _work "${_work}")
+		string(REGEX REPLACE "general;" "1CLL%G%" _work "${_work}")
+        string(REGEX REPLACE "optimized;" "1CLL%O%" _libs "${_libs}")
+		string(REGEX REPLACE "debug;" "1CLL%D%" _libs "${_libs}")
+		string(REGEX REPLACE "general;" "1CLL%G%" _libs "${_libs}")
+
+		# Any library that doesn't have a prefix is general, and a general
+		# library is both debug and optimized so stdize it
+		set(_std_new)
+		foreach(_lib ${_work})
+			if(NOT "${_lib}" MATCHES "^1CLL%.%")
+				list(APPEND _std_new "1CLL%D%${_lib}" "1CLL%O%${_lib}")
+			elseif("${_lib}" MATCHES "^1CLL%G%")
+				string(REPLACE "1CLL%G%" "" _justlib "${_lib}")
+				list(APPEND _std_new "1CLL%D%${_justlib}" "1CLL%O%${_justlib}")
+			else()
+				list(APPEND _std_new "${_lib}")
+			endif()
+		endforeach()
+        set(_std_old)
+        foreach(_lib ${_libs})
+			if(NOT "${_lib}" MATCHES "^1CLL%.%")
+				list(APPEND _std_old "1CLL%D%${_lib}" "1CLL%O%${_lib}")
+			elseif("${_lib}" MATCHES "^1CLL%G%")
+				string(REPLACE "1CLL%G%" "" _justlib "${_lib}")
+				list(APPEND _std_old "1CLL%D%${_justlib}" "1CLL%O%${_justlib}")
+			else()
+				list(APPEND _std_old "${_lib}")
+			endif()
+		endforeach()
+
+		# remove old from new list
+        foreach(item ${_std_old})
+            list(REMOVE_ITEM _std_new ${item})
+        endforeach()
+
+		# Split list items back out again: turn prefixes into the
+		# library type flags.
+		string(REGEX REPLACE "1CLL%D%" "debug;" _std_new "${_std_new}")
+		string(REGEX REPLACE "1CLL%O%" "optimized;" _std_new "${_std_new}")
+
+		# Return _std_new
+		set(${_var} ${_std_new} PARENT_SCOPE)
+    else()
+        set(${_var} ${_work} PARENT_SCOPE)
+	endif()
+endfunction()
