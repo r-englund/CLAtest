@@ -19,7 +19,7 @@ static const int roundedCorners = 9;
 static const int labelHeight = 8;
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
-    : processor_(0) {
+    : VoidObserver(), processor_(0) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
@@ -50,6 +50,8 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     if (processor) {
         nameLabel_->setPlainText(QString::fromStdString(processor_->getIdentifier()));
         classLabel_->setPlainText(QString::fromStdString(processor_->getClassName()));
+        addObservation(processor_);
+        processor_->addObserver(this);
     } else {
         nameLabel_->setPlainText("");
         classLabel_->setPlainText("");
@@ -57,8 +59,8 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
 }
 
 void ProcessorGraphicsItem::editProcessorName() {
-    nameLabel_ ->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
-    nameLabel_ ->setTextInteractionFlags(Qt::TextEditorInteraction);
+    nameLabel_->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+    nameLabel_->setTextInteractionFlags(Qt::TextEditorInteraction);
     nameLabel_->setFocus();
 }
 
@@ -107,7 +109,7 @@ QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
 
 QRectF ProcessorGraphicsItem::calculatePortRect(size_t curPort, Port::PortDirection portDir) const {
     QPointF portDims(9.0f, 9.0f);
-    float xOffset = 8.0f;   // based on roundedCorners
+    float xOffset = 8.0f;   // based isOn roundedCorners
     float xSpacing = 12.5f; // GRID_SIZE / 2.0
     
     qreal left = rect().left()+xOffset+curPort*xSpacing;
@@ -149,6 +151,74 @@ Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
             return outports[i];
     }
     return 0;
+}
+
+void ProcessorGraphicsItem::paintStatusIndicator(QPainter* p, QPointF offset,
+                                                 bool isOn, QColor baseColor) {
+    // This code has been modified based on the KLed class from the KDE libraries
+    // TODO: check license implications
+    p->save();
+    p->translate(offset);
+
+    int width = 12;
+    int scale = 1;
+    width *= scale;
+
+    QColor color;
+    if (isOn) color = baseColor;
+    else color = baseColor.dark(500);
+     
+    p->setBrush(QBrush(color));
+    p->drawEllipse(scale, scale, width-scale*2, width-scale*2);
+
+    // draw the bright light spot of the LED
+    // set new width of the pen avoid a "pixelized" shadow
+     
+    // shrink the light on the LED to a size about 3/4 of the complete LED
+    int pos = width / 5 + 1;
+    int lightWidth = width*3/4;
+     
+    // Calculate the LED's "light factor"
+    int lightFactor = (130*2 / (lightWidth ? lightWidth : 1)) + 100;
+
+    // draw the bright spot on the LED
+    while (lightWidth) {
+        color = color.light(lightFactor);
+        p->setPen(QPen(color));
+        p->drawEllipse(pos, pos, lightWidth, lightWidth);
+        lightWidth--;
+        if (!lightWidth) break;
+
+        p->drawEllipse(pos, pos, lightWidth, lightWidth);
+        lightWidth--;
+        if (!lightWidth) break;
+
+        p->drawEllipse(pos, pos, lightWidth, lightWidth);
+        lightWidth--;
+        pos++;
+    }
+
+    // draw a thin border around the LED which resembles a shadow with light coming
+    // from the upper left
+    QPen pen;
+    pen.setWidth(2 * scale + 1);
+    p->setBrush(Qt::NoBrush);
+
+    // set the initial color and draw the shadow border at 45° (45*16 = 720).
+    int angle = -720;
+    if (isOn == true) color = baseColor.lighter(100);
+    else color = Qt::darkGray;
+
+    for (int arc=120; arc<2880; arc+=240) {
+        pen.setColor(color);
+        p->setPen(pen);
+        int w = width-pen.width()/2 - scale+1;
+        p->drawArc(pen.width()/2, pen.width()/2, w, w, angle+arc, 240);
+        p->drawArc(pen.width()/2, pen.width()/2, w, w, angle-arc, 240);
+        color = color.dark(110);
+    }
+
+    p->restore();
 }
 
 void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
@@ -220,7 +290,6 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
 
     // paint inports
     p->setPen(QPen(bottomColor, 1.0));
-    //p->setPen(Qt::NoPen);
     std::vector<Port*> inports = processor_->getInports();
     for (size_t i=0; i<inports.size(); i++) {
         QRectF portRect = calculatePortRect(i, Port::INPORT);
@@ -245,6 +314,9 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
         p->setBrush(portGrad);
         p->drawRect(portRect);
     }
+
+    paintStatusIndicator(p, QPointF(57.0f, -20.0f),
+                         processor_->allInportsConnected(), QColor(0,170,0));
 
     p->restore();
 }
@@ -286,6 +358,10 @@ void ProcessorGraphicsItem::updateMetaData() {
     ProcessorMetaData* processorMeta = dynamic_cast<ProcessorMetaData*>(processor_->getMetaData("ProcessorMetaData"));
     processorMeta->setVisibile(true);
     processorMeta->setPosition(ivec2(x(), y()));
+}
+
+void ProcessorGraphicsItem::notify() {
+    update();
 }
 
 } // namespace

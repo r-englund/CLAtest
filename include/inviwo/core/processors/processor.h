@@ -11,10 +11,11 @@
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/util/group.h>
+#include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
-class IVW_CORE_API Processor : public PropertyOwner {
+class IVW_CORE_API Processor : public PropertyOwner, public VoidObservable {
 
 public:
     Processor();

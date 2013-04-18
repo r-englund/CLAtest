@@ -71,7 +71,7 @@ void TextEditorWidgetQt::generateWidget() {
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     btnEdit_ = new QToolButton();
-    btnEdit_->setIcon(QIcon(":/icons/network_open.png")); // Temporary icon, change to a text edit icon
+    btnEdit_->setIcon(QIcon(":/icons/edit.png"));
 
     if (dynamic_cast<FileProperty*>(property_)) {
 

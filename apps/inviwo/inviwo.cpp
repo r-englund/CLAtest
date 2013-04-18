@@ -29,8 +29,7 @@ int main(int argc, char** argv) {
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
 
     // setup main window
-    mainWin.initialize();
-    mainWin.show();
+    mainWin.initializeAndShow();
     mainWin.initializeWorkspace();
 
     // open last network

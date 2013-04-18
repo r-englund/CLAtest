@@ -5,11 +5,11 @@
         <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-575" y="-425" />
+                    <position x="-525" y="-300" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="-1586" y="471" />
+                    <position x="-1572" y="498" />
                     <dimension x="362" y="353" />
                     <visibility content="1" />
                 </MetaData>
@@ -27,7 +27,7 @@
         <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-575" y="-725" />
+                    <position x="-525" y="-600" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -40,7 +40,7 @@
         <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-525" y="-625" />
+                    <position x="-475" y="-500" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -97,7 +97,7 @@
         <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-575" y="-525" />
+                    <position x="-525" y="-400" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>

@@ -21,7 +21,7 @@ IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
     //LinkDialogGraphicsType = 4
 };
 
-class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem {
+class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem, public VoidObserver {
 
 public:
     ProcessorGraphicsItem();
@@ -39,12 +39,15 @@ public:
     QPointF getShortestBoundaryPointTo(ProcessorGraphicsItem* processorGraphicsItem);
     QPointF getShortestBoundaryPointTo(QPointF inPos);
 
+    void notify();
+
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ProcessorGraphicsType };
     int type() const  {return Type; }
 
 protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    void paintStatusIndicator(QPainter* p, QPointF offset, bool status, QColor baseColor);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:

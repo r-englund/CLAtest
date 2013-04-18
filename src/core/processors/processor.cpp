@@ -4,8 +4,8 @@
 
 namespace inviwo {
 
-Processor::Processor()
-    : processorWidget_(0), identifier_("undefined")
+Processor::Processor() : VoidObservable(),
+        processorWidget_(0), identifier_("undefined")
 {}
 
 Processor::~Processor() {}
@@ -77,6 +77,7 @@ void Processor::invalidate() {
     PropertyOwner::invalidate();
     for (size_t i=0; i<outports_.size(); i++)
         outports_[i]->invalidate();
+    notifyObservers();
 }
 
 void Processor::beforeProcess() {}

@@ -59,6 +59,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/imageport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/inport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/outport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/volumeport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processor.h
@@ -175,6 +177,8 @@ set(SOURCE_FILES
     metadata/processorwidgetmetadata.cpp
     ports/port.cpp
     ports/imageport.cpp
+    ports/inport.cpp
+    ports/outport.cpp
     ports/volumeport.cpp
     processors/canvasprocessor.cpp
     processors/processor.cpp

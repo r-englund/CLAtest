@@ -22,10 +22,12 @@ void CanvasProcessorGL::resizeCanvas() {
 void CanvasProcessorGL::initialize() {
     CanvasProcessor::initialize();
     shader_ = new Shader("img_texturequad.frag");
+    noiseShader_ = new Shader("img_noise.frag");
 }
 
 void CanvasProcessorGL::deinitialize() {
     delete shader_;
+    delete noiseShader_;
     CanvasProcessor::deinitialize();
 }
 
@@ -51,17 +53,24 @@ void CanvasProcessorGL::renderImagePlaneQuad() const {
 
 void CanvasProcessorGL::process() {
     CanvasProcessor::process();
-    const Image* inImage = inport_.getData();
-    const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     uvec2 csize = getCanvas()->size();
-    inImageGL->bindColorTexture(GL_TEXTURE0);
+    if (inport_.isConnected()) {
+        const Image* inImage = inport_.getData();
+        const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
+        inImageGL->bindColorTexture(GL_TEXTURE0);
 
-    shader_->activate();
-    shader_->setUniform("colorTex_", 0);
-    shader_->setUniform("dimension_", vec2( 1.f / csize[0],  1.f / csize[1]) );
-    renderImagePlaneQuad();
-    shader_->deactivate();
-    inImageGL->unbindColorTexture();
+        shader_->activate();
+        shader_->setUniform("colorTex_", 0);
+        shader_->setUniform("dimension_", vec2( 1.f / csize[0],  1.f / csize[1]) );
+        renderImagePlaneQuad();
+        shader_->deactivate();
+        inImageGL->unbindColorTexture();
+    } else {
+        noiseShader_->activate();
+        noiseShader_->setUniform("dimension_", vec2( 1.f / csize[0],  1.f / csize[1]) );
+        renderImagePlaneQuad();
+        noiseShader_->deactivate();
+    }
 }
 
 } // namespace

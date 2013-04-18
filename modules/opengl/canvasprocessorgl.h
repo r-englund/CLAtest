@@ -33,6 +33,7 @@ protected:
 
 private:
     Shader* shader_;
+    Shader* noiseShader_;
 
     void resizeCanvas();
     void renderImagePlaneQuad() const;

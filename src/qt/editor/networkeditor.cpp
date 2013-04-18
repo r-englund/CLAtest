@@ -428,7 +428,6 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
                 } else if (startPort_ && startPort_->isInport()) {
                     // click on inport: disconnect if connected
-                    /*
                     // FIXME: delete operation in release event handling results in a crash when
                     //        disconnecting two ports through drag and drop
                     if (startPort_->isConnected()) {
@@ -450,9 +449,9 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                         connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(), startPort_->getColorCode());
                         addItem(connectionCurve_);
                         connectionCurve_->show();
-                        */
+
                         e->accept();
-                    //}
+                    }
 
                 } else {
                     // click on processor but not on port: show property widgets

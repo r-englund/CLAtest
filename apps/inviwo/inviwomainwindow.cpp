@@ -18,7 +18,7 @@ namespace inviwo {
 InviwoMainWindow::InviwoMainWindow() {
     NetworkEditor::init();
 
-    // initialize console widget first to receive log messages
+    // initializeAndShow console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
 
     // the default render context managing the rendering state
@@ -28,7 +28,7 @@ InviwoMainWindow::InviwoMainWindow() {
 
 InviwoMainWindow::~InviwoMainWindow() {}
 
-void InviwoMainWindow::initialize() {
+void InviwoMainWindow::initializeAndShow() {
     networkEditorView_ = new NetworkEditorView(this);
     setCentralWidget(networkEditorView_);
 
@@ -48,11 +48,17 @@ void InviwoMainWindow::initialize() {
 
     // load settings and restore window state
     QSettings settings("Inviwo", "Inviwo");
-    restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
-    restoreState(settings.value("mainWindowState").toByteArray());
+    settings.beginGroup("mainwindow");
+    restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
+    restoreState(settings.value("state", saveState()).toByteArray());
+    move(settings.value("pos", pos()).toPoint());
+    resize(settings.value("size", size()).toSize());
+    bool maximized = settings.value("maximized", isMaximized()).toBool();
+    recentFileList_ = settings.value("recentFileList").toStringList();
+    settings.endGroup();
+
     rootDir_ = QString::fromStdString(IVW_DIR+"data/");
     networkFileDir_ = rootDir_ + "workspaces/";
-    recentFileList_ = settings.value("recentFileList").toStringList();
     settingsWidget_->loadSettings();
 
     // initialize menus
@@ -61,7 +67,10 @@ void InviwoMainWindow::initialize() {
     updateRecentNetworks();
 
     // reset the network
-    newNetwork();
+    //newNetwork(); //FIXME: is this necessary?
+
+    if (maximized) showMaximized();
+    else show();
 }
 
 void InviwoMainWindow::deinitialize() {
@@ -267,10 +276,15 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     networkEditorView_->getNetworkEditor()->clearNetwork();
 
     // save window state
-    QSettings settings("Inviwo","Inviwo");
-    settings.setValue("mainWindowGeometry", saveGeometry());
-    settings.setValue("mainWindowState", saveState());
+    QSettings settings("Inviwo", "Inviwo");
+    settings.beginGroup("mainwindow");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("state", saveState());
+    settings.setValue("maximized", isMaximized());
+    settings.setValue("pos", pos());
+    settings.setValue("size", size());
     settings.setValue("recentFileList", recentFileList_);
+    settings.endGroup();
 
     QMainWindow::closeEvent(event);
 }

@@ -29,7 +29,7 @@ public:
     InviwoMainWindow();
     ~InviwoMainWindow();
 
-    virtual void initialize();
+    virtual void initializeAndShow();
     virtual void deinitialize();
     virtual void initializeWorkspace();
 

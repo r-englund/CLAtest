@@ -81,6 +81,39 @@ private:
     std::vector<Port*> connectedPorts_;
 };
 
+
+class IVW_CORE_API Port2 {
+
+friend class Processor;
+
+public:
+    Port2(std::string identifier);
+    virtual ~Port2();
+
+    virtual void initialize() = 0;
+    virtual void deinitialize() = 0;
+
+    virtual uvec3 getColorCode() const { return uvec3(128,128,128); }
+
+    Processor* getProcessor() const { return processor_; }
+    std::string getIdentifier() const {return identifier_; }
+
+    virtual bool isOutport() const = 0;
+    virtual bool isInport() const = 0;
+    virtual bool isConnected() const = 0;
+
+    virtual void invalidate() = 0;
+
+protected:
+    std::string identifier_;
+
+    void setIdentifier(const std::string& name);
+    void setProcessor(Processor* processor) { processor_ = processor; }
+
+private:
+    Processor* processor_;
+};
+
 } // namespace
 
 #endif // IVW_PORT_H
