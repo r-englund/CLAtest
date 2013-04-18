@@ -251,11 +251,13 @@ void OpenGLInfo::retrieveStaticInfo(){
     }
 #endif
     if(numberOfSupportedVersions == 0){
-        std::string glslStr = "";
+        const GLubyte *glslStrByte = NULL;
         if(isShadersSupported())
-            glslStr = std::string(reinterpret_cast<const char*>((glGetString(GL_SHADING_LANGUAGE_VERSION))));
+            glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
         else if(isShadersSupportedARB())
-            glslStr = std::string(reinterpret_cast<const char*>((glGetString(GL_SHADING_LANGUAGE_VERSION_ARB))));
+            glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION_ARB);
+
+        std::string glslStr = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
 
         int glslVersion = parseAndRetrieveShaderVersion(glslStr);
 
