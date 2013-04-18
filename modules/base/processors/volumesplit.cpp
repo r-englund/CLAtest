@@ -75,7 +75,7 @@ Processor* VolumeSplit::create() const {
     return new VolumeSplit();
 }
 
-uint64_t VolumeSplit::getVolumeMemorySizeInBytes(ivec3 dims, int bits){
+uint64_t VolumeSplit::getVolumeMemorySizeInBytes(ivec3 dims, size_t bits){
     return static_cast<uint64_t>(static_cast<float>(dims.x*dims.y*dims.z*bits)/8.0f);
 }
 
@@ -88,7 +88,7 @@ bool VolumeSplit::dataFitsIntoMemory(MaximumMemoryCondition memCond, uint64_t av
 }
 
 //Always divide largest dimension to get least number of bricks, which are as cubed as possible
-ivec3 VolumeSplit::calculateBestBrickDimension(MaximumMemoryCondition memCond, uint64_t availableMemSize, ivec3 volDims, int volBits){
+ivec3 VolumeSplit::calculateBestBrickDimension(MaximumMemoryCondition memCond, uint64_t availableMemSize, ivec3 volDims, size_t volBits){
     ivec3 currentBrickDims = volDims;
     while (!dataFitsIntoMemory(memCond, availableMemSize, getVolumeMemorySizeInBytes(currentBrickDims, volBits))) {
         int theMaxDim = (currentBrickDims.x > currentBrickDims.y ? (currentBrickDims.x > currentBrickDims.z ? 0 : 2) : (currentBrickDims.y > currentBrickDims.z ? 1 : 2));

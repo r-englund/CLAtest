@@ -100,13 +100,13 @@ private:
     SystemInfo* systemInfoRef_;
 
     // calculate and return the size needed to store the volume 
-    uint64_t getVolumeMemorySizeInBytes(ivec3 dims, int bits); 
+    uint64_t getVolumeMemorySizeInBytes(ivec3 dims, size_t bits); 
 
     // check if data can be allocated according to the conditions specified
     bool dataFitsIntoMemory(MaximumMemoryCondition memCond, uint64_t memSize, uint64_t volMemSize);
 
     // return bricks size based on user defined and hardware-based limitations
-    ivec3 calculateBestBrickDimension(MaximumMemoryCondition memCond, uint64_t availableMemSize, ivec3 volDims, int volBits);
+    ivec3 calculateBestBrickDimension(MaximumMemoryCondition memCond, uint64_t availableMemSize, ivec3 volDims, size_t volBits);
 
     // create volume handle if necessary (take spacing and transformation from incoming volume)
     Volume* createNewVolume(VolumeSplit::Brick brick);

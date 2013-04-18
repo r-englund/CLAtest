@@ -19,8 +19,8 @@ void OptionPropertyWidgetQt::generateWidget() {
 }
 
 void OptionPropertyWidgetQt::fillComboBox() {
-    int size = property_->getOptionKeys().size();
-    for (int i=0; i < size; i++) {
+    size_t size = property_->getOptionKeys().size();
+    for (size_t i=0; i < size; i++) {
         comboBox_->addItem(QString::fromStdString(property_->getOptionKeys().at(i)));
     }
 }

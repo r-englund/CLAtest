@@ -491,6 +491,7 @@ endmacro()
 #--------------------------------------------------------------------
 # Optimize compilation with pre-compilied headers from inviwo core
 macro(ivw_compile_optimize_inviwo_core)
+      #set_target_properties(${_projectName} PROPERTIES COTIRE_ENABLE_PRECOMPILED_HEADER FALSE)
       set_target_properties(${_projectName} PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
       get_target_property(_prefixHeader inviwo-core COTIRE_CXX_PREFIX_HEADER)
       set_target_properties(${_projectName} PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "${_prefixHeader}")

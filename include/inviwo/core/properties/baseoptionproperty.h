@@ -67,8 +67,8 @@ template<typename T>
 std::vector< std::string > TemplatedOptionProperty<T>::getOptionKeys(){
     
     std::vector< std::string > ret;
-    int size = optionVector_.size();
-    for (int i=0; i<size;i++) {
+    size_t size = optionVector_.size();
+    for (size_t i=0; i<size;i++) {
         ret.push_back(optionVector_.at(i).first);
     }
     return ret;
@@ -77,7 +77,7 @@ std::vector< std::string > TemplatedOptionProperty<T>::getOptionKeys(){
 template<typename T>
 int TemplatedOptionProperty<T>::getSelectedOption() {
     std::vector< std::string > tmp = getOptionKeys();
-    int size = tmp.size();
+    int size = static_cast<int>(tmp.size());
     for (int i=0; i<size;i++) {
         if(getOptionKeys().at(i)== value_)
             return i;

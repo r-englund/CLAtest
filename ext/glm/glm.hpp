@@ -80,6 +80,8 @@
 #ifndef glm_glm
 #define glm_glm
 
+#define GLM_SWIZZLE
+
 #include <cmath>
 #include <climits>
 #include <cfloat>

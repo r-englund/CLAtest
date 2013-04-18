@@ -20,7 +20,6 @@
 #endif
 
 // include glm
-#define GLM_SWIZZLE
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/quaternion.hpp>
