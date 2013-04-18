@@ -228,7 +228,8 @@ int OpenGLInfo::getMaxColorAttachments(){
 
 void OpenGLInfo::retrieveStaticInfo(){
     //GL Vendor
-    std::string glVendorStr = std::string(reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+    const GLubyte *vendor = glGetString(GL_VENDOR);
+    std::string glVendorStr = std::string((vendor!=NULL ? reinterpret_cast<const char*>(vendor) : "INVALID"));
     if (glVendorStr.find("NVIDIA") != std::string::npos)
         glVendor_ = NVIDIA;
     else if (glVendorStr.find("AMD") != std::string::npos || glVendorStr.find("ATI") != std::string::npos)
