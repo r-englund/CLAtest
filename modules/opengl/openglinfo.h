@@ -79,6 +79,11 @@ protected:
 private:
     GlVendor glVendor_;
 
+    std::string glVendorStr_;
+    std::string glRenderStr_;
+    std::string glVersionStr_;
+    std::string glslVersionStr_;
+
     //GLSL
     bool shadersAreSupported_;
     bool shadersAreSupportedARB_;

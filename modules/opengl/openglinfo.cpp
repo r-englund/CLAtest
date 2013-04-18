@@ -43,18 +43,18 @@ OpenGLInfo::~OpenGLInfo() {}
 
 void OpenGLInfo::printInfo(){
     //OpenGL General Info
-    LogInfo("Vendor: " << glGetString(GL_VENDOR));
-    LogInfo("Renderer: " << glGetString(GL_RENDERER));
-    LogInfo("Version: " << glGetString(GL_VERSION));
+    LogInfo("Vendor: " << glVendorStr_);
+    LogInfo("Renderer: " << glRenderStr_);
+    LogInfo("Version: " << glVersionStr_);
 
     //GLSL
     if(isShadersSupported()){
-        LogInfo("GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION));
+        LogInfo("GLSL version: " << glslVersionStr_);
         LogInfo("Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
         LogInfo("Shaders supported: YES");
     }
     else if(isShadersSupportedARB()){
-        LogInfo("GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION_ARB));
+        LogInfo("GLSL version: " << glslVersionStr_);
         LogInfo("Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
         LogInfo("Shaders supported: YES(ARB)");
     }
@@ -227,17 +227,23 @@ int OpenGLInfo::getMaxColorAttachments(){
 }
 
 void OpenGLInfo::retrieveStaticInfo(){
-    //GL Vendor
+    //GL
     const GLubyte *vendor = glGetString(GL_VENDOR);
-    std::string glVendorStr = std::string((vendor!=NULL ? reinterpret_cast<const char*>(vendor) : "INVALID"));
-    if (glVendorStr.find("NVIDIA") != std::string::npos)
+    glVendorStr_ = std::string((vendor!=NULL ? reinterpret_cast<const char*>(vendor) : "INVALID"));
+    if (glVendorStr_.find("NVIDIA") != std::string::npos)
         glVendor_ = NVIDIA;
-    else if (glVendorStr.find("AMD") != std::string::npos || glVendorStr.find("ATI") != std::string::npos)
+    else if (glVendorStr_.find("AMD") != std::string::npos || glVendorStr_.find("ATI") != std::string::npos)
         glVendor_ = AMD;
-    else if (glVendorStr.find("INTEL") != std::string::npos || glVendorStr.find("Intel") != std::string::npos)
+    else if (glVendorStr_.find("INTEL") != std::string::npos || glVendorStr_.find("Intel") != std::string::npos)
         glVendor_ = INTEL;
     else 
         glVendor_ = UNKNOWN;
+
+    const GLubyte *glrender = glGetString(GL_RENDERER);
+    glRenderStr_ = std::string((glrender!=NULL ? reinterpret_cast<const char*>(glrender) : "INVALID"));
+
+    const GLubyte *glversion = glGetString(GL_VERSION);
+    glVersionStr_ = std::string((glversion!=NULL ? reinterpret_cast<const char*>(glversion) : "INVALID"));
 
     //GLSL
     shadersAreSupported_ = isSupported("GL_VERSION_2_0");
@@ -257,9 +263,9 @@ void OpenGLInfo::retrieveStaticInfo(){
         else if(isShadersSupportedARB())
             glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION_ARB);
 
-        std::string glslStr = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
+        glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
 
-        int glslVersion = parseAndRetrieveShaderVersion(glslStr);
+        int glslVersion = parseAndRetrieveShaderVersion(glslVersionStr_);
 
         if(glslVersion != 0){
 #ifdef GLEW_VERSION_4_3
