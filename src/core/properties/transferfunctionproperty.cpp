@@ -6,15 +6,7 @@ namespace inviwo {
         : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
     {}
 
-    void TransferFunctionProperty::serialize(IvwSerializer& s) const {
-        //Property::serialize(s) ;
-        //s.serialize("value", get());
-    }
+    void TransferFunctionProperty::serialize(IvwSerializer& s) const {}
 
-    void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
-        //Property::deserialize(d) ;
-        //TransferFunction value;
-        //d.deserialize("value", value);
-        //set(value);
-    }
+    void TransferFunctionProperty::deserialize(IvwDeserializer& d) {}
 } // namespace

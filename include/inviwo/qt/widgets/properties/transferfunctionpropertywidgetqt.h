@@ -1,5 +1,9 @@
-#ifndef IVW_TRANSFERPROPERTYWIDGETQT_H
-#define IVW_TRANSFERPROPERTYWIDGETQT_H
+/** \ Widget for containing the TransferFunctionEditor QGraphicsScene
+*       Widget that contains the TransferFunctionEditor and the painted representation
+*/
+
+#ifndef IVW_TRANSFERFUNCTIONPROPERTYWIDGETQT_H
+#define IVW_TRANSFERFUNCTIONPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QCheckBox>
@@ -8,38 +12,49 @@
 #include <QGraphicsView>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-#include <inviwo/qt/editor/transfereditor.h>
+#include <inviwo/qt/editor/transferfunctioneditor.h>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidgetQt {
+    class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidgetQt {
 
-    Q_OBJECT;
+        Q_OBJECT;
 
-public:
-    TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property);
-    void updateFromProperty();
+    public:
+        TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property);
+        
+        /** \Updates and draws the visual transferfunction
+        *         
+        *      Fetches the float array from the TransferFunction and draws a line for each value
+        *      Redraws it fully every time, to be optimized if it is allowed to stay
+        */
+        void updateFromProperty();
 
-private:
-    TransferFunctionProperty* property_;
-	QGraphicsView*	view;
-    QCheckBox* checkBox_;
-    QGraphicsScene* scene;
-	TransferEditor* editor;
+    private:
+        int zoom_;
+        static const std::string logSource_;
 
-    void generateWidget();
+        QGraphicsView*	editorview_; ///< View that contains the editor
+        QCheckBox* checkBox_; ///< Checkbox for debugging purposes, to disable paintscene
+        QGraphicsView* paintview_; ///< View that contains the scene for the painted transferfunction
+        QGraphicsScene* paintscene_; ///< Scene where the transferfunction is painted
+        TransferFunction* transferFunc; ///< The TransferFunction property
+        TransferFunctionProperty* property_; ///< Pointer to property, for get and invalidation in the widget
+        TransferFunctionEditor* editor_; ///< TransferFunctionEditor inherited from QGraphicsScene
+        std::vector<TransferFunctionEditorControlPoint*> points_; ///< Control points used for calculating transferfunction-values
 
-    QGraphicsView* paintview;
-    QGraphicsScene* paintscene;
-    //ImageRAMfloat16* transferImage;
-    TransferFunction* transferFunc;
-    std::vector<TransferEditorControlPoint*> points;
-    void calcTransferValues();
+        /** \Mousewheel zoom functionality
+        *         Enables zooming in and out with mousescroll
+        *         Begining of zoom implementation, currently in early stages
+        */
+        void wheelEvent(QWheelEvent * e);
+        void generateWidget();
 
-public slots:
-    void setPropertyValue();
-};
+
+        public slots:
+            void setPropertyValue();
+    };
 
 } // namespace
 
-#endif // IVW_TRANSFERPROPERTYWIDGETQT_H
+#endif // IVW_TRANSFERFUNCTIONPROPERTYWIDGETQT_H

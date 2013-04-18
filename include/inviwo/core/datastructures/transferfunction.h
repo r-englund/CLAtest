@@ -1,3 +1,9 @@
+/** \Class for holding transfer function data
+ *
+ *  This class holds transfer function data, currently one parameter in the variable data_.
+ *  TODO: refactor to also hold control points instead of keeping them in widget
+ */
+
 #ifndef IVW_TRANSFERFUNCTION_H
 #define IVW_TRANSFERFUNCTION_H
 #include <stdlib.h>
@@ -13,13 +19,11 @@ namespace inviwo {
     public:
         TransferFunction();
         virtual ~TransferFunction();
-        //virtual Data* clone();
         void setData(Image);
         Image* getData() const;
 
     private:
 		Image data_;
-        //ImageRAMfloat32* alphaImage;
     };
 
 } // namespace

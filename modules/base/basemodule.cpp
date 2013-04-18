@@ -33,7 +33,7 @@ BaseModule::BaseModule() : InviwoModule() {
     addProcessor(new RedGreenProcessor());
     addProcessor(new SimpleRaycaster());
     addProcessor(new TestProcessor());
-    //addProcessor(new TransferFunctiontionTestProcessor());
+    addProcessor(new TransferFunctiontionTestProcessor());
     addProcessor(new VolumeSplit());
     addProcessor(new VolumeSplitCompositor());
     addProcessor(new VolumeSplitImageCompositor());
