@@ -10,42 +10,42 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API FloatMat3PropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API FloatMat3PropertyWidgetQt : public PropertyWidgetQt {
 
-        Q_OBJECT;
+    Q_OBJECT;
 
-    public:
-        FloatMat3PropertyWidgetQt(FloatMat3Property* property);
+public:
+    FloatMat3PropertyWidgetQt(FloatMat3Property* property);
 
-        void updateFromProperty();
+    void updateFromProperty();
 
-    private:
-        FloatMat3Property* property_;
-        QLineEdit* mat0x0_;
-        QLineEdit* mat0x1_;
-        QLineEdit* mat0x2_;
-        QLineEdit* mat1x0_;
-        QLineEdit* mat1x1_;
-        QLineEdit* mat1x2_;
-        QLineEdit* mat2x0_;
-        QLineEdit* mat2x1_;
-        QLineEdit* mat2x2_;
+private:
+    FloatMat3Property* property_;
+    QLineEdit* mat0x0_;
+    QLineEdit* mat0x1_;
+    QLineEdit* mat0x2_;
+    QLineEdit* mat1x0_;
+    QLineEdit* mat1x1_;
+    QLineEdit* mat1x2_;
+    QLineEdit* mat2x0_;
+    QLineEdit* mat2x1_;
+    QLineEdit* mat2x2_;
 
-        void generateWidget();
+    void generateWidget();
 
-        public slots:
-            void set0x0Value();
-            void set0x1Value();
-            void set0x2Value();
-            void set1x0Value();
-            void set1x1Value();
-            void set1x2Value();
-            void set2x0Value();
-            void set2x1Value();
-            void set2x2Value();
+    public slots:
+        void set0x0Value();
+        void set0x1Value();
+        void set0x2Value();
+        void set1x0Value();
+        void set1x1Value();
+        void set1x2Value();
+        void set2x0Value();
+        void set2x1Value();
+        void set2x2Value();
 
-            void setPropertyValue();
-    };
+        void setPropertyValue();
+};
 
 } // namespace
 

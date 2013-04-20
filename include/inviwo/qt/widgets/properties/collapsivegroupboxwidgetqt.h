@@ -15,29 +15,29 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt {
 
-        Q_OBJECT;
+    Q_OBJECT;
 
-    public:
-        CollapsiveGroupBoxWidgetQt();
+public:
+    CollapsiveGroupBoxWidgetQt();
 
-        void updateFromProperty();
-        void addProperty(Property* tmpProperty);
-        QVBoxLayout* vLayout_;
-        void generatePropertyWidgets();
+    void updateFromProperty();
+    void addProperty(Property* tmpProperty);
+    QVBoxLayout* vLayout_;
+    void generatePropertyWidgets();
 
-    private:
-        QPushButton* btnCollapse_;
-        QGroupBox* groupBox_;
-        std::vector<Property*> properties_;
+private:
+    QPushButton* btnCollapse_;
+    QGroupBox* groupBox_;
+    std::vector<Property*> properties_;
 
-        void generateWidget();
+    void generateWidget();
 
-        public slots:
-            void hide();
-            void show();
-    };
+    public slots:
+        void hide();
+        void show();
+};
 
 } // namespace
 

@@ -10,32 +10,32 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API FloatMat2PropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API FloatMat2PropertyWidgetQt : public PropertyWidgetQt {
 
-        Q_OBJECT;
+    Q_OBJECT;
 
-    public:
-        FloatMat2PropertyWidgetQt(FloatMat2Property* property);
+public:
+    FloatMat2PropertyWidgetQt(FloatMat2Property* property);
 
-        void updateFromProperty();
+    void updateFromProperty();
 
-    private:
-        FloatMat2Property* property_;
-        QLineEdit* mat0x0_; ///< coordinates 0,0 of the matrix equals upper left corner
-        QLineEdit* mat0x1_;
-        QLineEdit* mat1x0_;
-        QLineEdit* mat1x1_;///< coordinates 1,1 of the matrix equals lower right corner
-        
+private:
+    FloatMat2Property* property_;
+    QLineEdit* mat0x0_; ///< coordinates 0,0 of the matrix equals upper left corner
+    QLineEdit* mat0x1_;
+    QLineEdit* mat1x0_;
+    QLineEdit* mat1x1_;///< coordinates 1,1 of the matrix equals lower right corner
+    
 
-        void generateWidget();
+    void generateWidget();
 
-        public slots:
-            void set0x0Value();
-            void set0x1Value();
-            void set1x0Value();
-            void set1x1Value();
-            void setPropertyValue();
-    };
+    public slots:
+        void set0x0Value();
+        void set0x1Value();
+        void set1x0Value();
+        void set1x1Value();
+        void setPropertyValue();
+};
 
 } // namespace
 

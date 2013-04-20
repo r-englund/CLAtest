@@ -10,24 +10,24 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API StringPropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API StringPropertyWidgetQt : public PropertyWidgetQt {
 
-        Q_OBJECT;
+    Q_OBJECT;
 
-    public:
-        StringPropertyWidgetQt(StringProperty* property);
+public:
+    StringPropertyWidgetQt(StringProperty* property);
 
-        void updateFromProperty();
+    void updateFromProperty();
 
-    private:
-        StringProperty* property_;
-        QLineEdit* lineEdit_;
+private:
+    StringProperty* property_;
+    QLineEdit* lineEdit_;
 
-        void generateWidget();
+    void generateWidget();
 
-        public slots:
-            void setPropertyValue();
-    };
+    public slots:
+        void setPropertyValue();
+};
 
 } // namespace
 

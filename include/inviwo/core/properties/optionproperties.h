@@ -4,45 +4,45 @@
 #include <inviwo/core/properties/baseoptionproperty.h>
 
 namespace inviwo {
-    class IVW_CORE_API OptionPropertyDouble : public TemplatedOptionProperty<double> {
+class IVW_CORE_API OptionPropertyDouble : public TemplatedOptionProperty<double> {
 
-    public:
-        OptionPropertyDouble(std::string identifier, std::string displayName, std::string value,
-                             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                             PropertySemantics::Type semantics = PropertySemantics::Default);
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& d);
-    };
+public:
+    OptionPropertyDouble(std::string identifier, std::string displayName, std::string value,
+                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                         PropertySemantics::Type semantics = PropertySemantics::Default);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+};
 
-    class IVW_CORE_API OptionPropertyFloat : public TemplatedOptionProperty<float> {
+class IVW_CORE_API OptionPropertyFloat : public TemplatedOptionProperty<float> {
 
-    public:
-        OptionPropertyFloat(std::string identifier, std::string displayName, std::string value,
-                            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                            PropertySemantics::Type semantics = PropertySemantics::Default);
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& d);
-    };
+public:
+    OptionPropertyFloat(std::string identifier, std::string displayName, std::string value,
+                        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                        PropertySemantics::Type semantics = PropertySemantics::Default);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+};
 
-    class IVW_CORE_API OptionPropertyInt : public TemplatedOptionProperty<int> {
+class IVW_CORE_API OptionPropertyInt : public TemplatedOptionProperty<int> {
 
-    public:
-        OptionPropertyInt(std::string identifier, std::string displayName, std::string value,
-                           PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                           PropertySemantics::Type semantics = PropertySemantics::Default);
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& d);
-    };
+public:
+    OptionPropertyInt(std::string identifier, std::string displayName, std::string value,
+                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                       PropertySemantics::Type semantics = PropertySemantics::Default);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+};
 
-    class IVW_CORE_API OptionPropertyString : public TemplatedOptionProperty<std::string> {
+class IVW_CORE_API OptionPropertyString : public TemplatedOptionProperty<std::string> {
 
-    public:
-        OptionPropertyString(std::string identifier, std::string displayName, std::string value,
-            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-            PropertySemantics::Type semantics = PropertySemantics::Default);
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& d);
-    };
+public:
+    OptionPropertyString(std::string identifier, std::string displayName, std::string value,
+        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics::Type semantics = PropertySemantics::Default);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+};
 
 } // namespace
 

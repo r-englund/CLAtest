@@ -5,22 +5,18 @@
 
 namespace inviwo {
 
-    class TextEditorProperty : public TemplateProperty<std::string> {
+class TextEditorProperty : public TemplateProperty<std::string> {
 
-    public:
-        TextEditorProperty(std::string identifier, std::string displayName, std::string value,
-                           PropertyOwner::InvalidationLevel invalidationLevel,
-                           PropertySemantics::Type semantics = PropertySemantics::Default);
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& d);
-    };
+public:
+    TextEditorProperty(std::string identifier, std::string displayName, std::string value,
+                       PropertyOwner::InvalidationLevel invalidationLevel,
+                       PropertySemantics::Type semantics = PropertySemantics::Default);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+};
 
-    //typedef FileProperty TextFileProperty;
 
-    //typedef StringProperty TextStringProperty;
 
 } // namespace
-
-
 
 #endif // IVW_TEXTEDITORPROPERTY_H
