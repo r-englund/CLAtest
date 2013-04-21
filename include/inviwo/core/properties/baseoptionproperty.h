@@ -8,6 +8,12 @@
 
 namespace inviwo {
 
+/** class BaseOptionProperty
+*   Base class for the option properties
+* 
+* @see TemplatedOptionProperty
+*/
+
 class IVW_CORE_API BaseOptionProperty : public StringProperty{
 public:
 
@@ -25,6 +31,13 @@ public:
 };
 
 
+/** class TemplatedOptionProperty
+*   Template class for option properties
+* 
+* @see OptionProperties
+* @see BaseOptionProperty
+*/
+
 template<typename T>
 class IVW_CORE_API TemplatedOptionProperty : public BaseOptionProperty {
 
@@ -33,13 +46,53 @@ public:
                             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                             PropertySemantics::Type semantics = PropertySemantics::Default);
 
-    virtual void addOption(std::string optionName,T optionValue);
-    virtual std::vector< std::pair<std::string, T> > getOptions();
+    /** 
+     * \brief Adds a option to the property
+     *
+     * Adds a option to the property and stores it as a pair in the optionVector_
+     * The option name is the name of the option that will be displayed in the widget.
+     * 
+     * @See optionpropertywidgetqt
+     * @param std::string optionName identifier name
+     * @param T optionValue the value of the option
+     */virtual void addOption(std::string optionName,T optionValue);
 
-    std::vector< std::string > getOptionKeys();
-    int getSelectedOption();
-    T getSelectedValue();
-    void setSelectedOption( std::string );
+
+    /** 
+     * \brief Returns the vector of options
+     *
+     * 
+     * @return std::vector< std::pair<std::string, T> > <DESCRIBE ME>
+     */virtual std::vector< std::pair<std::string, T> > getOptions();
+
+    /** 
+     * \brief returns a vector of keys from the option vector
+     *
+     * 
+     * @return std::vector< std::string > <DESCRIBE ME>
+     */std::vector< std::string > getOptionKeys();
+
+    /** 
+     * \brief Returns the current selected option of the property
+     *
+     * 
+     * @return int the index of the selected option
+     */int getSelectedOption();
+
+    /** 
+     * \brief returns the value of the currently seleceted option
+     *
+     * 
+     * @return T <DESCRIBE ME>
+     */T getSelectedValue();
+
+    /** 
+     * \brief Set the currently selected option
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @param std::string the key to the desiered value
+     */void setSelectedOption( std::string );
     virtual void updateValue( std::string);
 
 private:

@@ -5,6 +5,13 @@
 
 namespace inviwo {
 
+    /** class StringProperty
+    *   A property that holds a string as value, can use TextEditorWidget or StringPropertyWidget
+    * 
+    * @see StringPropertyWidgetQt
+    * @see TextEditorWidgetQt
+    */
+
 class IVW_CORE_API StringProperty : public TemplateProperty<std::string> {
 
 public:
@@ -14,6 +21,8 @@ public:
      * The PropertySemantics can be set to Editor. Then a TextEditorWidget will be used instead of a StringPropertyWidget
      *
      *
+     * @see StringPropertyWidgetQt
+     * @see TextEditorWidgetQt
      * @param std::string identifier identifier for the property
      * @param std::string displayName displayName for the property
      * @param std::string value value of the property

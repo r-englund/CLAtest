@@ -5,7 +5,11 @@
 #include "inviwo/core/properties/ordinalproperty.h"
 
 namespace inviwo {
-
+/** class FloatMat2Property
+*   A class for 2x2 matrices containing float values
+* 
+* @see OrdinalProperty
+*/
 class IVW_CORE_API FloatMat2Property : public OrdinalProperty<mat2> {
 public:
 	FloatMat2Property(std::string identifier, std::string displayName,mat2 value,
@@ -16,6 +20,11 @@ public:
 	virtual void deserialize(IvwDeserializer& s);
 	};
 
+/** class FloatMat3Property
+*   A class for 3x3 matrices containing float values
+* 
+* @see OrdinalProperty
+*/
 class IVW_CORE_API FloatMat3Property : public OrdinalProperty<mat3> {
 public:
     FloatMat3Property(std::string identifier, std::string displayName,mat3 value,
@@ -25,7 +34,11 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 };
-
+/** class FloatMat4Property
+*   A class for 4x4 matrices containing float values
+* 
+* @see OrdinalProperty
+*/
 class IVW_CORE_API FloatMat4Property : public OrdinalProperty<mat4> {
 public:
     FloatMat4Property(std::string identifier, std::string displayName, mat4 value,

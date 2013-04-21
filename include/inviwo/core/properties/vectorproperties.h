@@ -6,6 +6,7 @@
 
 namespace inviwo {
 
+
 class IVW_CORE_API FloatVec2Property : public OrdinalProperty<vec2> {
 public:	
     FloatVec2Property(std::string identifier, std::string displayName, vec2 value, 

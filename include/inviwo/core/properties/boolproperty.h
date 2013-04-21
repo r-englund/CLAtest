@@ -5,6 +5,12 @@
 #include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
+    /** class BoolProperty
+    *  Property for boolean values, the widget consist of a checkbox
+    *  
+    * @see TemplateProperty
+    * @see BoolPropertyWidgetQt
+    */
 
 class IVW_CORE_API BoolProperty : public TemplateProperty<bool> {
 

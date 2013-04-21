@@ -91,7 +91,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferfunctionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
@@ -203,7 +202,6 @@ set(SOURCE_FILES
     properties/scalarproperties.cpp
     properties/snapshotproperty.cpp
     properties/stringproperty.cpp
-    properties/texteditorproperty.cpp
     properties/transferfunctionproperty.cpp
     properties/vectorproperties.cpp
     properties/linkevaluator.cpp	
