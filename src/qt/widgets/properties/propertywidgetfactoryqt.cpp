@@ -11,6 +11,7 @@
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/snapshotproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
+#include <inviwo/core/properties/texteditorproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
 

@@ -6,12 +6,7 @@
 #include <inviwo/core/properties/property.h>
 
 namespace inviwo {    
-/** class ButtonProperty
-*  Property for buttons where you are able to assign functions to the property
-*  Its only possible to register 1 function for each property.
-*  
-* @see ButtonPropertyWidgetQt
-*/
+
 class IVW_CORE_API ButtonProperty : public Property {
 
 public:
