@@ -6,6 +6,8 @@
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/templateproperty.h>
 
+//
+
 namespace inviwo {
 /** \brief Property for saving a snapshot of the specified ImagePort.
  *
@@ -32,6 +34,8 @@ public:
      * The file path used is stored in the value_ member.
      */
     void saveSnapshot();
+
+    void saveSnapshot(const char* path, const Image* image);
 
 private:
     /**

@@ -5,6 +5,10 @@
 #include <inviwo/core/common/inviwo.h>
 #include <ext/freeimage/FreeImage.h>
 
+#include <inviwo/core/datastructures/image.h>
+
+#include <inviwo/core/util/formats.h>
+#include <inviwo/core/datastructures/imageram.h>
 using namespace inviwo;
 
 class IVW_CORE_API ImageLoader{
@@ -17,8 +21,15 @@ public:
     * Loads an image to bitmap.
     * @param filename is the file that is to be loaded
     * @return bitmap
-    */
-    static uint8_t* loadImageToData(std::string filename);
+    */ 
+     static void* loadImageToData(std::string filename);
+    
+    /**
+    * Saves an image to a specified filename.
+    * @param filename the path including name to file that is to be stored.
+    * @param inputImage specifies the image that is to be saved.
+    **/
+    static void saveImage(const char* filename, const Image* inputImage);
 
     /**
     * Calculates image dimensions.
@@ -41,11 +52,35 @@ private:
     static void initLoader();
 
     /**
+    * Converts image to byte array.
+    * @param inputImage is the image that is to be converted.
+    * @param dim is the dimensions of the image.
+    * @return the converted image.
+    */
+    static FIBITMAP* convertToByte(const ImageRAM* inputImage, uvec2 dim, size_t bitsPerPixel);
+
+template<typename T>
+    static FIBITMAP* handleConvertions(const T *data, size_t bitsPerPixel, uvec2 dim);
+
+template<typename T>
+    static FIBITMAP* convertToBitmap(T *data, uvec2 dim, size_t bitsPerPixel);
+
+    /**
+    * Switch red and blue channels in the image.
+    * @param inputImage is the image that is switching channels.
+    * @param dim is the dimension of the image.
+    * @return the new image.
+    */
+template<typename T>
+    static T* switchChannels(const T *inputImage, uvec2 dim);
+
+    /**
     * Converts an image from freeimage format to regular int.
     * @param bitmap is the bitmap to convert
     * @return the converted bitmap.
     **/
-    static uint8_t* imageToBitmap(FIBITMAP *bitmap);
+template<typename T>
+    static T* fiBitmapToDataArray(FIBITMAP *bitmap);
 
 	static bool loader_initialized;
 };

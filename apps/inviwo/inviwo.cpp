@@ -1,7 +1,11 @@
 #ifdef _MSC_VER
 #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
 #endif
-
+// MY INCLUDES
+#include <inviwo/core/util/commandlineparser.h>
+#include <vector>
+#include <modules/opengl/canvasprocessorgl.h>
+///
 #include <QFile>
 
 #include "inviwomainwindow.h"
@@ -33,6 +37,10 @@ int main(int argc, char** argv) {
     mainWin.initializeWorkspace();
 
     // open last network
+    
+
+
+
     mainWin.openLastNetwork();
 
     return inviwoApp.exec();

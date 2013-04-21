@@ -7,7 +7,7 @@
 #include <modules/base/processors/imagegrayscale.h>
 #include <modules/base/processors/imagemixer.h>
 #include <modules/base/processors/imagesource.h>
-#include <modules/base/processors/minmaxprocessor.h>
+#include <modules/base/processors/snapshotprocessor.h>
 #include <modules/base/processors/redgreenprocessor.h>
 #include <modules/base/processors/simpleraycaster.h>
 #include <modules/base/processors/testprocessor.h>
@@ -29,7 +29,7 @@ BaseModule::BaseModule() : InviwoModule() {
 	addProcessor(new ImageGrayscale());
     addProcessor(new ImageMixer());
     addProcessor(new ImageSource());
-    addProcessor(new MinMaxProcessor());
+    addProcessor(new SnapshotProcessor());
     addProcessor(new RedGreenProcessor());
     addProcessor(new SimpleRaycaster());
     addProcessor(new TestProcessor());

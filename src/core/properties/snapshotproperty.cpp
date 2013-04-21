@@ -1,5 +1,5 @@
 #include <inviwo/core/properties/snapshotproperty.h>
-
+#include <inviwo/core/io/imageloader.h>
 namespace inviwo {
 
     SnapshotProperty::SnapshotProperty(std::string identifier, std::string displayName, ImagePort& imagePort,
@@ -13,16 +13,19 @@ namespace inviwo {
 SnapshotProperty::~SnapshotProperty() {}
 
 void SnapshotProperty::saveSnapshot() {
-    // TODO: Might be good to do some validation of the ImagePort.
     // Perhaps check whether it's an input or output port?
+    const Image *image = imagePort_->getData();
+    if(value_.size() != 0)
+        saveSnapshot(value_.c_str(), image);
 
+}
 
-    // TODO: Implement real saving functionality
-    if (!value_.empty()) {
-        std::cout << "Snapshot being saved..." << std::endl;
+void SnapshotProperty::saveSnapshot(const char* path, const Image* image){
+    if(sizeof(path) != 0){
+        ImageLoader::saveImage(path, image);
     } else {
         std::cout << "No filename specified..." << std::endl;
-    }
+    } 
 }
 
 } // namespace

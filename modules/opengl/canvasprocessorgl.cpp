@@ -14,6 +14,14 @@ Processor* CanvasProcessorGL::create() const {
     return new CanvasProcessorGL();
 }
 
+void CanvasProcessorGL::takeSnapshot(const char *filePath){
+    CanvasProcessor::process();
+    process();
+    const Image* img = inport_.getData();
+    if(img != NULL)
+        snapshot_.saveSnapshot(filePath, img);
+}
+
 void CanvasProcessorGL::resizeCanvas() {
     //std::cout << "onChange" << std::endl;
     //getCanvas()->resize(uvec2(dimensions_.get()));
