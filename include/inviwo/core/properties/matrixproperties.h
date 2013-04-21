@@ -15,7 +15,7 @@ public:
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& s);
 	};
-/** class FloatMat3Property 
+
 class IVW_CORE_API FloatMat3Property : public OrdinalProperty<mat3> {
 public:
     FloatMat3Property(std::string identifier, std::string displayName,mat3 value,

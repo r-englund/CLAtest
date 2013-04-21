@@ -13,7 +13,7 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };
-/** class OptionPropertyFloat 
+
 class IVW_CORE_API OptionPropertyFloat : public TemplatedOptionProperty<float> {
 
 public:

@@ -60,12 +60,6 @@ public:
      * @return std::vector< std::string > <DESCRIBE ME> 
      */std::vector< std::string > getOptionKeys(); 
  
-    virtual void addOption(std::string optionName,T optionValue);
-    virtual std::vector< std::pair<std::string, T> > getOptions();
-     *  
-     * @return T <DESCRIBE ME> 
-     */T getSelectedValue(); 
- 
     /**  
      * \brief Set the currently selected option 
      * 
@@ -74,10 +68,8 @@ public:
      * @param std::string the key to the desiered value 
      */void setSelectedOption( std::string ); 
 
-    std::vector< std::string > getOptionKeys();
     int getSelectedOption();
     T getSelectedValue();
-    void setSelectedOption( std::string );
     virtual void updateValue( std::string);
 
 private:
