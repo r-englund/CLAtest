@@ -4,6 +4,13 @@
 #include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
+/** class FileProperty
+*  A class for file representations.
+*  Holds the value of the path to a file as a string.
+*  
+* @see TemplateProperty
+*/
+
 class FileProperty : public TemplateProperty<std::string> {
 
 public:

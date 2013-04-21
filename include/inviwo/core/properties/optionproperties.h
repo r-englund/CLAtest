@@ -4,6 +4,10 @@
 #include <inviwo/core/properties/baseoptionproperty.h>
 
 namespace inviwo {
+/** class OptionPropertyDouble
+* 
+* @see TemplatedOptionProperty
+*/
 class IVW_CORE_API OptionPropertyDouble : public TemplatedOptionProperty<double> {
 
 public:
@@ -14,6 +18,10 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 };
 
+/** class OptionPropertyFloat
+* 
+* @see TemplatedOptionProperty
+*/
 class IVW_CORE_API OptionPropertyFloat : public TemplatedOptionProperty<float> {
 
 public:
@@ -23,7 +31,10 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };
-
+/** class OptionPropertyInt
+* 
+* @see TemplatedOptionProperty
+*/
 class IVW_CORE_API OptionPropertyInt : public TemplatedOptionProperty<int> {
 
 public:
@@ -33,7 +44,10 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };
-
+/** class OptionPropertyString
+* 
+* @see TemplatedOptionProperty
+*/
 class IVW_CORE_API OptionPropertyString : public TemplatedOptionProperty<std::string> {
 
 public:
