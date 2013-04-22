@@ -39,6 +39,7 @@ private:
     FloatVec3Property lightSourcePos_;
 	BoolProperty enableMIP_;
     FloatProperty samplingRate_;
+    TransferFunctionProperty transferFunction_;
 
     Shader* shader_;
 };

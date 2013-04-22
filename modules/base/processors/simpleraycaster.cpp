@@ -11,7 +11,8 @@ SimpleRaycaster::SimpleRaycaster()
     enableShading_("enableShading", "Shading", false),
     lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
 	enableMIP_("enableMIP", "MIP", false),
-    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f)
+    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f),
+    transferFunction_("transferFunction", "Transfer function", TransferFunction())
 {
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
@@ -22,6 +23,7 @@ SimpleRaycaster::SimpleRaycaster()
     addProperty(enableShading_);
     addProperty(lightSourcePos_);
 	addProperty(enableMIP_);
+    addProperty(transferFunction_);
 }
 
 SimpleRaycaster::~SimpleRaycaster() {}
@@ -47,6 +49,8 @@ void SimpleRaycaster::process() {
     bindColorTexture(entryPort_, GL_TEXTURE0);
     bindColorTexture(exitPort_, GL_TEXTURE1);
     volumeGL->bindTexture(GL_TEXTURE2);
+    const ImageGL* transferFunctionGL = transferFunction_.get().getData()->getRepresentation<ImageGL>();
+    transferFunctionGL->bindColorTexture(GL_TEXTURE3);
     activateTarget(outport_);
     Image* outImage = outport_.getEditableData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
@@ -55,6 +59,7 @@ void SimpleRaycaster::process() {
     shader_->setUniform("entryTex_", 0);
     shader_->setUniform("exitTex_", 1);
     shader_->setUniform("volume_", 2);
+    shader_->setUniform("transferFunction_", 3);
     shader_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
     shader_->setUniform("samplingRate_", samplingRate_.get());
     shader_->setUniform("enableShading_", enableShading_.get());
@@ -67,6 +72,7 @@ void SimpleRaycaster::process() {
     unbindColorTexture(entryPort_);
     unbindColorTexture(exitPort_);
     volumeGL->unbindTexture();
+    transferFunctionGL->unbindColorTexture();
 }
 
 } // namespace

@@ -5,6 +5,7 @@
 
 uniform sampler2D entryTex_;
 uniform sampler2D exitTex_;
+uniform sampler2D transferFunction_;
 uniform sampler3D volume_;
 uniform vec2 dimension_;
 uniform vec3 volumeDimension_;
@@ -31,7 +32,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getVoxel(volume_, samplePos);
         voxel = gradientForwardDiff(voxel.a, volume_, samplePos);
-        vec4 colorClassified = applyTF(voxel);
+        vec4 colorClassified = applyTF(transferFunction_, voxel);
         vec4 color = colorClassified;
         if (enableShading_) {
             color.rgb = shadeDiffuse(colorClassified.rgb, vec3(2.5), voxel.xyz, lightSourcePos_);
