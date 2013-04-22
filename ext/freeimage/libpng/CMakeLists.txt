@@ -28,12 +28,12 @@ ivw_define_standard_definitions(libpng)
 
 #--------------------------------------------------------------------
 # Create library
-add_library(libpng ${SOURCE_FILES} ${HEADER_FILES})
+add_library(internallibpng ${SOURCE_FILES} ${HEADER_FILES})
 
 
 #--------------------------------------------------------------------
 # Creates VS folder structure
-ivw_vs_folder(libpng ext/freeimagelib)
+ivw_vs_folder(internallibpng ext/freeimagelib)
 
 #--------------------------------------------------------------------
 # Add dependencies
@@ -45,6 +45,6 @@ INCLUDE_DIRECTORIES("${IVW_EXTENSIONS_DIR}/freeimage/zlib/")
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
-ivw_make_package(InternalLibPNG libpng)
+ivw_make_package(InternalLibPNG internallibpng)
 
 
