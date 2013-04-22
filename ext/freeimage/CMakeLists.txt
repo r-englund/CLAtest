@@ -88,7 +88,7 @@ ivw_add_dependencies(
 	LibJPEG 
 	LibMNG 
 	LibOpenJPEG
-	LibPNG  
+	InternalLibPNG  
 	LibRawLite 
 	LibTiff4 
 	LibTiff 

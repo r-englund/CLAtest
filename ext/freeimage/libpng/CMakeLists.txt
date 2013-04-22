@@ -45,6 +45,6 @@ INCLUDE_DIRECTORIES("${IVW_EXTENSIONS_DIR}/freeimage/zlib/")
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
-ivw_make_package(LibPNG libpng)
+ivw_make_package(InternalLibPNG libpng)
 
 
