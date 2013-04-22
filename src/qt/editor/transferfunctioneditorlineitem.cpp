@@ -35,7 +35,7 @@ namespace inviwo {
 
 
     QRectF TransferFunctionEditorLineItem::boundingRect() const {
-        return QRectF(start_->getPosition()->x(), start_->getPosition()->y(), finish_->getPosition()->x(), finish_->getPosition()->y());
+        return QRectF(0,0,0,0);
     }
     void TransferFunctionEditorLineItem::mousePressEvent ( QGraphicsSceneMouseEvent *e ){}
 

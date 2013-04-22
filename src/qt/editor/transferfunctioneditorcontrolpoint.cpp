@@ -41,7 +41,7 @@ namespace inviwo {
 
         painter->setRenderHint(QPainter::Antialiasing, true);
 
-        float size = 8.0f;
+        float size = 10.0f;
 
         setFlag(QGraphicsItem::ItemIsMovable, true);
 
@@ -52,20 +52,24 @@ namespace inviwo {
         pen = new QPen(Qt::cyan, 1.0, Qt::SolidLine, Qt::RoundCap);
         painter->setPen(*pen);
         painter->drawEllipse(pos_->x() - size/2, pos_->y() - size/2, size, size);
-    }
 
+        //Draw the bounding rectangle
+        if (false)
+        {
+	        float left = pos_->x() - size/2;
+	        float top = pos_->y() - size/2;
+	        painter->drawRect(left, top, size, size);
+        }
+    }
 
     QRectF TransferFunctionEditorControlPoint::boundingRect() const {
         float size = 12.0f;
         float left = pos_->x() - size/2;
-        float top = pos_->y() + size/2;
+        float top = pos_->y() - size/2;
         return QRectF(left, top, size, size);
     }
 
-    void TransferFunctionEditorControlPoint::mousePressEvent ( QGraphicsSceneMouseEvent *e ){
-        LogInfo(e->scenePos().x());
-        LogInfo(this->getPosition()->x());
-    }
+    void TransferFunctionEditorControlPoint::mousePressEvent ( QGraphicsSceneMouseEvent *e ){}
 
     void TransferFunctionEditorControlPoint::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
 
@@ -81,19 +85,18 @@ namespace inviwo {
             pos->setX(255);
             pos->setY(e->scenePos().y());
         }
-        if (pos->x() < 0){
+        if (pos->x() <= 0){
             pos->setX(0);
         } 
-        if (pos->x() > 255){
+        if (pos->x() >= 255){
             pos->setX(255);
         }
-        if (pos->y() < 0){
+        if (pos->y() <= 0){
             pos->setY(0);
         } 
-        if (pos->y() > 100){
+        if (pos->y() >= 100){
             pos->setY(100);
         }
-
         setPosition(pos);
     }
 

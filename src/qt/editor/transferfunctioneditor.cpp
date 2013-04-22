@@ -32,7 +32,7 @@ namespace inviwo {
         points_(points)
     {
         points_->push_back(new TransferFunctionEditorControlPoint(0.0f, 0.0f));
-        points_->push_back(new TransferFunctionEditorControlPoint(255.0f , 0.0f));
+        points_->push_back(new TransferFunctionEditorControlPoint(255.0f , 100.0f));
         (*points_)[0]->setId(0);
         (*points_)[1]->setId(1);
         calcTransferValues();
@@ -61,6 +61,7 @@ namespace inviwo {
             }
         }
         if(e->button() == Qt::RightButton){
+
             if (itemAt(e->scenePos()) == NULL){}
             else if(itemAt(e->scenePos())->type() == TransferFunctionEditorControlPoint::Type) {
                 removePoint(e);
@@ -70,12 +71,11 @@ namespace inviwo {
     }
 
     void TransferFunctionEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
-        if ((*points_)[0]->pos().x() != 0)
-            (*points_)[0]->setPos(QPoint(0, (*points_)[0]->pos().y()));
+        if ((*points_)[0]->getPosition()->x() != 0)
+            (*points_)[0]->setPosition(new QPointF(0, (*points_)[0]->getPosition()->y()));
 
         sortLines();
         sortPoints();
-
         for (int i = 0; i < (int)points_->size() - 1; i++){
             lines_[i]->setStart((*points_)[i]);
             lines_[i]->setFinish((*points_)[i + 1]);
@@ -102,18 +102,19 @@ namespace inviwo {
     }
 
     void TransferFunctionEditor::removePoint(QGraphicsSceneMouseEvent *e){
-        QPointF* hit = new QPointF(itemAt(e->scenePos())->pos() * 2);
+        TransferFunctionEditorControlPoint* target = (TransferFunctionEditorControlPoint*)itemAt(e->scenePos());
+        const QPointF* hit = target->getPosition();
         const QPointF* curr;
 
-        for (int i = 0; i < (int)points_->size() ; i++){
-            curr = (*points_)[i]->getPosition();
-            if(curr->x() == hit->x() && curr->y() == hit->y()){
-                if ((*points_)[i]->getId() != 0 && (*points_)[i]->getId() != 1)
-                {
+        if (target->getId() != 0 && target->getId() != 1)
+        {
+            for (int i = 0; i < (int)points_->size() ; i++){
+                curr = (*points_)[i]->getPosition();
+                if(curr->x() == hit->x() && curr->y() == hit->y()){
                     removeItem(lines_[i]);
                     lines_[i]->setVisible(false);
-
                     removeItem((*points_)[i]);
+                    target->setVisible(false);
 
                     lines_.erase(lines_.begin() + i);
                     points_->erase(points_->begin() + i);
@@ -121,10 +122,11 @@ namespace inviwo {
                         lines_[j]->setStart((*points_)[j]);
                         lines_[j]->setFinish((*points_)[j + 1]);
                     }
-                    update();
+
                 }
             }
         }
+        this->update();
     }
 
     void TransferFunctionEditor::calcTransferValues(){

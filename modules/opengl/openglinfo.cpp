@@ -181,6 +181,7 @@ int OpenGLInfo::getCurrentAvailableTextureMem() throw (Exception) {
     }
 
     return currentAvailableTexMeminBytes;
+
 }
 
 int OpenGLInfo::getTotalAvailableTextureMem() throw (Exception) {
