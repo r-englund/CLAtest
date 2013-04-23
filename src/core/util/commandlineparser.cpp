@@ -6,6 +6,11 @@ CommandLineParser::CommandLineParser(){
     cmd_ = new TCLAP::CmdLine("Inviwo description...", ' ', "0.0.0");
 }
 
+CommandLineParser::CommandLineParser(int argc, char **argv) : argc_(argc), argv_(argv) 
+{
+    cmd_ = new TCLAP::CmdLine("Inviwo description...", ' ', "0.0.0");
+}
+
 CommandLineParser::~CommandLineParser() {
 }
 
@@ -36,6 +41,10 @@ void CommandLineParser::parse(int argc, char** argv){
     } catch (TCLAP::ArgException &e) { 
         std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; // catch exceptions 
     }
+}
+
+void CommandLineParser::parse(){
+    parse(argc_, argv_);
 }
 
 bool CommandLineParser::getExitWithCapture() const{

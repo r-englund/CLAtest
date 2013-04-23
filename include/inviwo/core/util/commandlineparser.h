@@ -24,12 +24,15 @@ class IVW_CORE_API CommandLineParser {
     
 public:
     CommandLineParser();
+    CommandLineParser(int argc, char** argv);
     ~CommandLineParser();
     
     void initialize();
     void deinitialize();
 
     void parse(int argc, char** argv);
+
+    void parse();
 
     void setArgc(int argc) {
         argc_ = argc;

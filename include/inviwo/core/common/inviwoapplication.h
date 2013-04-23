@@ -10,12 +10,15 @@
 #include <inviwo/core/util/settings.h>
 #include <inviwo/core/util/singleton.h>
 
+#include <inviwo/core/util/commandlineparser.h>
+
 namespace inviwo {
 
 class IVW_CORE_API InviwoApplication : public Singleton<InviwoApplication> {
 
 public:
-    InviwoApplication(std::string displayName_, std::string basePath_);
+    InviwoApplication(std::string displayName, std::string basePath);
+    InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath);
     virtual ~InviwoApplication();
 
     virtual void initialize();
@@ -56,6 +59,8 @@ private:
     std::vector<InviwoModule*> modules_;
 
     ProcessorNetwork* processorNetwork_;
+
+    CommandLineParser *commandLineParser_;
 
     Settings* settings_;
 

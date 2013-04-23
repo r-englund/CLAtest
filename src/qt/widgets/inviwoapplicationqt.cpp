@@ -9,7 +9,7 @@ namespace inviwo {
 InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string basePath,
                                          int& argc, char** argv)
                                      : QApplication(argc, argv),
-                                       InviwoApplication(displayName, basePath)  
+                                       InviwoApplication(argc, argv, displayName, basePath)  
 {
     QCoreApplication::setOrganizationName("Inviwo");
     //QCoreApplication::setOrganizationDomain("inviwo.org");

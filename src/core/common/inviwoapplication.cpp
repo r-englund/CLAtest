@@ -12,9 +12,18 @@ InviwoApplication::InviwoApplication(std::string displayName, std::string basePa
     init(this);
 }
 
+InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath)
+                                    : displayName_(displayName), basePath_(basePath)
+{
+    commandLineParser_ = new CommandLineParser(argc, argv);
+    init(this);
+}
+
 InviwoApplication::~InviwoApplication() {}
 
 void InviwoApplication::initialize() {
+
+    commandLineParser_->initialize();
     settings_ = new Settings();
     settings_->initialize();
 
