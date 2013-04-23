@@ -72,7 +72,7 @@ void VolumeRaycasterCL::process() {
     const ImageCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<ImageCL>();
     
     cl_uint arg = 0;
-    kernel_->setArg(arg++, volumeCL->getVolume());
+    kernel_->setArg(arg++, *volumeCL);
     kernel_->setArg(arg++, *entryCL);
     kernel_->setArg(arg++, *exitPort_.getData()->getRepresentation<ImageCL>());
     kernel_->setArg(arg++, *transferFunctionCL);

@@ -15,9 +15,15 @@ VolumeCL::VolumeCL(uvec3 dimensions, DataFormatBase format)
 VolumeCL::~VolumeCL() {}
 
 
-
-
-
-
-
 } // namespace
+
+namespace cl {
+
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCL& value)
+{
+    return setArg(index, value.getVolume());
+}
+
+
+} // namespace cl

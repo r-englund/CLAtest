@@ -101,4 +101,13 @@ typedef VolumeCLPrecision<float> VolumeCLfloat;
 
 } // namespace
 
+namespace cl {
+
+// Kernel argument specializations for VolumeCL type 
+// (enables calling cl::Queue::setArg with VolumeCL
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCL& value);
+ 
+} // namespace cl
+
 #endif // IVW_VOLUMECL_H
