@@ -14,7 +14,7 @@ public:
     virtual void initialize();
     virtual void initializeGL();
     virtual void deinitialize();
-    virtual void switchContext();
+    virtual void activate();
     virtual void repaint();
     virtual void resize(uvec2 size);
     virtual void update();

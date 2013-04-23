@@ -19,18 +19,16 @@ public:
     ProcessorNetworkEvaluator(ProcessorNetwork* processorNetwork);
     virtual ~ProcessorNetworkEvaluator();
 
-    void setProcessorNetwork(ProcessorNetwork* processorNetwork);
     void registerCanvas(Canvas* canvas, std::string associatedProcessName="CanvasProcessorGL");
-    void deregisterCanvas(Canvas *canvas);
-    void setDefaultRenderContext(Canvas* canvas) {renderContext_ = canvas;}
+    void deregisterCanvas(Canvas* canvas);
+    void setDefaultRenderContext(Canvas* canvas) { defaultContext_ = canvas; }
+    void activateDefaultRenderContext();
     void initializeNetwork();
 
     void evaluatePropertyLinks(Property* sourceProperty);    
     void evaluate();
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
-
-    //bool repaintRequired() { return repaintRequired; }
 
 private:
     bool hasBeenVisited(Processor* processor);
@@ -56,7 +54,7 @@ private:
     std::vector<Property*> propertiesVisited_;
 
     std::vector<Canvas*> registeredCanvases_;
-    Canvas* renderContext_;
+    Canvas* defaultContext_;
     LinkEvaluator* linkEvaluator_;
 };
 

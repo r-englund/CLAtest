@@ -18,7 +18,7 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
-    virtual void switchContext();
+    virtual void activate();
     virtual void repaint();
     virtual void resize(uvec2 dimensions);
     virtual uvec2 size() { return dimensions_;}

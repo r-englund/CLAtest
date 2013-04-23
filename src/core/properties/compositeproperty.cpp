@@ -31,5 +31,4 @@ void CompositeProperty::notify() {
     updatePropertyWidgets();
 }
 
-
 } // namespace

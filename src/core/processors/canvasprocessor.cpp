@@ -43,7 +43,7 @@ void CanvasProcessor::process() {
     // or if the inport remains the same when reconnecting processors
     snapshot_.setImagePort(inport_);
 
-    if(canvas_) canvas_->switchContext();
+    if (canvas_) canvas_->activate();
 }
 
 } // namespace

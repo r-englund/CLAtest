@@ -18,12 +18,12 @@ namespace inviwo {
 InviwoMainWindow::InviwoMainWindow() {
     NetworkEditor::init();
 
-    // initializeAndShow console widget first to receive log messages
+    // initialize console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
 
     // the default render context managing the rendering state
     defaultRenderContext_ = new CanvasQt(this);    
-    defaultRenderContext_->switchContext();
+    defaultRenderContext_->activate();
 }
 
 InviwoMainWindow::~InviwoMainWindow() {}
@@ -66,9 +66,6 @@ void InviwoMainWindow::initializeAndShow() {
     addMenuActions();
     updateRecentNetworks();
 
-    // reset the network
-    //newNetwork(); //FIXME: is this necessary?
-
     if (maximized) showMaximized();
     else show();
 }
@@ -77,8 +74,8 @@ void InviwoMainWindow::deinitialize() {
 }
 
 void InviwoMainWindow::initializeWorkspace(){
-    ProcessorNetworkEvaluator* processEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
-    processEvaluator->setDefaultRenderContext(defaultRenderContext_);
+    ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
+    networkEvaluator->setDefaultRenderContext(defaultRenderContext_);
     defaultRenderContext_->setFixedSize(0,0);
 }
 

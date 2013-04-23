@@ -56,6 +56,8 @@ void NetworkEditor::removeProcessor(Processor* processor) {
     removeProcessorRepresentations(processor);
     // remove the processor from the network
     processorNetwork_->removeProcessor(processor);
+    // enable default rendering context before deinitializing processor
+    processorNetworkEvaluator_->activateDefaultRenderContext();
     processor->deinitialize();
     delete processor;
 }
@@ -756,7 +758,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // add processors
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++) {
-        processors[i]->initialize();
+        //processors[i]->invalidate();
         ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
         addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y));
     }

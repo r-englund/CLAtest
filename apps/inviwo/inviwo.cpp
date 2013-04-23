@@ -13,7 +13,7 @@
 
 int main(int argc, char** argv) {
 #ifdef __unix__
-    setenv ("XLIB_SKIP_ARGB_VISUALS", "1", 1);
+    setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
 #endif
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, IVW_DIR, argc, argv);
 
@@ -37,10 +37,6 @@ int main(int argc, char** argv) {
     mainWin.initializeWorkspace();
 
     // open last network
-    
-
-
-
     mainWin.openLastNetwork();
 
     return inviwoApp.exec();

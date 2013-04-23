@@ -5,7 +5,6 @@
 namespace inviwo {
 
 Shader::Shader(std::string fragmentFilename) :
-    //TODO: remove absolute path
     vertexFilename_(IVW_DIR+"modules/opengl/glsl/img_identity.vert"),
     fragmentFilename_(IVW_DIR+"modules/opengl/glsl/"+fragmentFilename)
 {
@@ -13,7 +12,6 @@ Shader::Shader(std::string fragmentFilename) :
 }
 
 Shader::Shader(std::string vertexFilename, std::string fragmentFilename) :
-//TODO: remove absolute path
     vertexFilename_(IVW_DIR+"modules/opengl/glsl/"+vertexFilename),
     fragmentFilename_(IVW_DIR+"modules/opengl/glsl/"+fragmentFilename)
 {

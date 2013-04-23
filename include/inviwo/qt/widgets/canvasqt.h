@@ -23,7 +23,7 @@ public:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
-    virtual void switchContext();   
+    virtual void activate();   
     virtual void update();
     void repaint();
 

@@ -7,15 +7,13 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     : processorNetwork_(processorNetwork) { 
     registeredCanvases_.clear();
     initializeNetwork();
-    renderContext_ = 0;
+    defaultContext_ = 0;
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
 
-void ProcessorNetworkEvaluator::setProcessorNetwork(ProcessorNetwork* processorNetwork) {
-    processorNetwork_ = processorNetwork;
-    initializeNetwork();
-    linkEvaluator_ = new LinkEvaluator();
+void ProcessorNetworkEvaluator::activateDefaultRenderContext() {
+    defaultContext_->activate();
 }
 
 void ProcessorNetworkEvaluator::initializeNetwork() {
@@ -207,7 +205,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                     ImagePort* imagePort = dynamic_cast<ImagePort*>(ports[j]);
                     if (imagePort && imagePort->isOutport()) {
                         uvec2 dim = imagePort->getDimensions();
-                        //TODO: Determine max dimension based on aspect ratio?
+                        //TODO: determine max dimension based on aspect ratio?
                         if ((dimMax.x<dim.x) || (dimMax.y<dim.y)) {
                             dimMax = imagePort->getDimensions();
                         }
@@ -343,6 +341,8 @@ void ProcessorNetworkEvaluator::evaluate() {
   
     // if the processor network has changed determine the new processor order
     if (processorNetwork_->isModified()) {
+        defaultContext_->activate();
+        initializeNetwork();
         determineProcessingOrder();
         processorNetwork_->setModified(false);
     }
@@ -364,7 +364,7 @@ void ProcessorNetworkEvaluator::evaluate() {
             processorsSorted_[i]->beforeProcess();
 
     bool repaintRequired = false;
-    renderContext_->switchContext();
+    defaultContext_->activate();
     for (size_t i=0; i<processorsSorted_.size(); i++) {
         if (!processorsSorted_[i]->isValid()) {
             // re-initialize resources (e.g., shaders) if necessary
@@ -372,14 +372,7 @@ void ProcessorNetworkEvaluator::evaluate() {
                 processorsSorted_[i]->initializeResources();
 
             // do the actual processing
-            processorsSorted_[i]->process(); 
-
-            // if a canvas processor has activated its rendering context
-            // switch back to the default rendering context
-            // TODO: Should/can this not be done directly in the canvas processor?
-            if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
-                renderContext_->switchContext();
-
+            processorsSorted_[i]->process();
             repaintRequired = true;
         }
     }
@@ -397,6 +390,7 @@ void ProcessorNetworkEvaluator::evaluate() {
     if (repaintRequired)
         for (size_t i=0; i<registeredCanvases_.size(); i++)
             registeredCanvases_[i]->repaint();
+    defaultContext_->activate();
 }
 
 } // namespace

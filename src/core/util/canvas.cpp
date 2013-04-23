@@ -18,7 +18,7 @@ void Canvas::deinitialize() {}
 
 void Canvas::repaint() {}
 
-void Canvas::switchContext() {}
+void Canvas::activate() {}
 
 void Canvas::resize(uvec2 size) {
     dimensions_ = size;

@@ -51,15 +51,15 @@ void PropertyOwner::serialize(IvwSerializer& s) const {
 
 void PropertyOwner::deserialize(IvwDeserializer& d) {
 
-    /* 1) Vector desrialization does not allow
+    /* 1) Vector deserialization does not allow
     *     specification of comparision attribute string.
     *  2) But Map deserialization does allow 
     *     specification of comparision attribute string.
     *     (eg. "identifier" in this case).
-    *  3) Hence map deserialization is preffered here.
+    *  3) Hence map deserialization is prefered here.
     *  4) TODO: Vector can be made to behave like Map.
     *           But then it necessitates passing of two extra arguments.
-    *           And they are list of attribute values, comparision attribute string.
+    *           And they are list of attribute values, comparison attribute string.
     *           eg., list of identifier for each property and "identifier"
     *                                                 
     */

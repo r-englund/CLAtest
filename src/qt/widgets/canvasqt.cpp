@@ -27,12 +27,9 @@ void CanvasQt::initialize() {
     show();
 }
 
-void CanvasQt::switchContext() {
-    if( context() != context()->currentContext() ) {
-        //LogInfo("Switching Context");
-        QGLWidget::doneCurrent();
-        QGLWidget::makeCurrent();
-    }
+void CanvasQt::activate() {
+    if (context() != QGLContext::currentContext())
+        makeCurrent();
 }
 
 void CanvasQt::initializeGL() {
@@ -65,14 +62,8 @@ void CanvasQt::repaint() {
 
 void CanvasQt::timerEvent(QTimerEvent* e) {
     IVW_UNUSED_PARAM(e);
-    if (processorNetworkEvaluator_) {
+    if (processorNetworkEvaluator_)
         processorNetworkEvaluator_->evaluate();
-        /*
-        //FIXME: update() already called in network evaluator?!
-        if (processorNetworkEvaluator_->repaintRequired())
-            update();
-        */
-    }
 }
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {

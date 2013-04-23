@@ -111,7 +111,7 @@ private:
     QDoubleSpinBox* spinBox_;
     QSlider* slider_;
     void generateWidget();
-    void setDecimals();
+    void updateDecimals();
 
 };
 

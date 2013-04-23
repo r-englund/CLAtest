@@ -29,7 +29,7 @@ void CanvasGL::initializeGL() {
 
 void CanvasGL::deinitialize() {}
 
-void CanvasGL::switchContext() {}
+void CanvasGL::activate() {}
 
 void CanvasGL::repaint() {}
 
