@@ -38,8 +38,7 @@ private:
     void generatesSettingsWidget();
 
 public slots:
-    void setPropertyValueFromSlider();
-    void setPropertyValueFromSpinBox();
+    void setPropertyValue();
 
     void showContextMenuX(const QPoint& pos);
     void showContextMenuY(const QPoint& pos);

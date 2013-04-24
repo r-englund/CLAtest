@@ -33,36 +33,17 @@ void FloatVec4PropertyWidgetQt::generateWidget() {
     hLayout->addWidget(sliderWidget);
     setLayout(hLayout);
 
-    connect(sliderX_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderY_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderZ_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderW_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect (sliderX_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderY_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderZ_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderW_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
-
-
+    /*
+    connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    connect(sliderW_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    */
 }
 
-void FloatVec4PropertyWidgetQt::setPropertyValueFromSlider() {
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
-    sliderZ_->updateValueSpinBox();
-    sliderW_->updateValueSpinBox();
+void FloatVec4PropertyWidgetQt::setPropertyValue() {
     vec4 valueVec4(sliderX_->getValue(),sliderY_->getValue(),sliderZ_->getValue(),sliderW_->getValue());
     property_->set(valueVec4);
-
-}
-
-void FloatVec4PropertyWidgetQt::setPropertyValueFromSpinBox() {
-    sliderX_->updateValueSlider();
-    sliderY_->updateValueSlider();
-    sliderZ_->updateValueSlider();
-    sliderW_->updateValueSlider();
-    vec4 valueVec4(sliderX_->getValue(),sliderY_->getValue(),sliderZ_->getValue(),sliderW_->getValue());
-    property_->set(valueVec4);
-
 }
 
 
@@ -88,11 +69,6 @@ void FloatVec4PropertyWidgetQt::updateFromProperty() {
     sliderY_->setIncrement(valueIncrement.y);
     sliderZ_->setIncrement(valueIncrement.z);
     sliderW_->setIncrement(valueIncrement.w);
-
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
-    sliderZ_->updateValueSpinBox();
-    sliderW_->updateValueSpinBox();
 }
 
 void FloatVec4PropertyWidgetQt::generatesSettingsWidget() {

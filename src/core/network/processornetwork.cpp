@@ -83,7 +83,6 @@ Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
     for (size_t i=0; i<processors_.size(); i++)
         if (processors_[i]->getIdentifier()==identifier)
             return processors_[i];
-    LogWarn("Processor "+identifier+" not contained in processor network.");
     return 0;
 }
 

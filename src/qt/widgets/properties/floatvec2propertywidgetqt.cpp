@@ -30,13 +30,12 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
 	hLayout->addWidget(sliderWidget);
 	setLayout(hLayout);
 
-    connect(sliderX_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderY_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-
-    connect (sliderX_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderY_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
-
+    /*
+    connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    */
 }
+
 void FloatVec2PropertyWidgetQt::updateFromProperty() {
     valueVec2Max_ = property_->getMaxValue();
     valueVec2Min_ = property_->getMinValue();
@@ -52,9 +51,6 @@ void FloatVec2PropertyWidgetQt::updateFromProperty() {
 
     sliderX_->setIncrement(valueIncrement_.x);
     sliderY_->setIncrement(valueIncrement_.y);
-
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
 }
 
 
@@ -119,20 +115,7 @@ void FloatVec2PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
     }
 }
 
-void FloatVec2PropertyWidgetQt::setPropertyValueFromSlider() {
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
-
-    valueVec2_ = property_->get();
-    valueVec2_.x = sliderX_->getValue();
-    valueVec2_.y = sliderY_->getValue();
-    property_->set(valueVec2_);
-}
-
-void FloatVec2PropertyWidgetQt::setPropertyValueFromSpinBox() {
-    sliderX_->updateValueSlider();
-    sliderY_->updateValueSlider();
-
+void FloatVec2PropertyWidgetQt::setPropertyValue() {
     valueVec2_ = property_->get();
     valueVec2_.x = sliderX_->getValue();
     valueVec2_.y = sliderY_->getValue();

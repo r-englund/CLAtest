@@ -10,8 +10,7 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API FloatSliderWidgetQt : public QWidget {
-
-        Q_OBJECT;
+    Q_OBJECT;
 public:
     /** 
      * \brief <VERY BRIEFLY DESCRIBE THE METHOD>
@@ -43,7 +42,7 @@ public:
      * @param float tmpValue Must be between minValue and maxValue of the slider
      * @return void <DESCRIBE ME>
      */
-    void setValue(float tmpValue);
+    void setValue(float value);
     /** 
      * \brief sets the maximum value of the spin box and slider
      *
@@ -52,7 +51,7 @@ public:
      * @param float max <DESCRIBE ME>
      * @return void <DESCRIBE ME>
      */
-    void setMaxValue(float max);
+    void setMaxValue(float maxValue);
     /** 
      * \brief sets the minimum value of the spin box and slider
      *
@@ -61,18 +60,10 @@ public:
      * @param float min <DESCRIBE ME>
      * @return void <DESCRIBE ME>
      */
-    void setMinValue(float min);
+    void setMinValue(float minValue);
 
-    /** 
-     * \brief sets the range of the slider and spin box
-     *
-     * <DESCRIBE THE METHOD>
-     * 
-     * @param float min <DESCRIBE ME>
-     * @param float max <DESCRIBE ME>
-     * @return void <DESCRIBE ME>
-     */
-    void setRange(float min,float max);
+
+    void setRange(float minValue, float maxValue);
 
     /** 
      * \brief Sets the increment of the spinbox and slider
@@ -83,6 +74,24 @@ public:
      * @return void <DESCRIBE ME>
      */void setIncrement(float increment);
 
+private slots:
+    void updateFromSlider();
+    void updateFromSpinBox();
+
+signals:
+    void valueChanged(float value);
+
+private:
+    float value_;
+    float minValue_;
+    float maxValue_;
+    float increment_;
+
+    QDoubleSpinBox* spinBox_;
+    QSlider* slider_;
+
+    void generateWidget();
+    void updateDecimals();
     /** 
      * \brief updates the value of the spin box from the slider value
      *
@@ -90,7 +99,7 @@ public:
      * 
      * @return void <DESCRIBE ME>
      */
-    void updateValueSpinBox();
+    void updateSpinBox();
     /** 
      * \brief updates the value of the slider from the spin box value
      *
@@ -99,20 +108,8 @@ public:
      * @return void <DESCRIBE ME>
      */
 
-    void updateValueSlider();
-    QDoubleSpinBox* getSpinBox();
-    QSlider* getSlider();
-
-private:
-    float sliderValue_;
-    float maxValue_;
-    float minValue_;
-    float increment_;
-    QDoubleSpinBox* spinBox_;
-    QSlider* slider_;
-    void generateWidget();
-    void updateDecimals();
-
+    void updateSlider();
+    void updateSliderRange();
 };
 
 }//namespace

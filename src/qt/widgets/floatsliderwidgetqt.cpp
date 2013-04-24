@@ -3,10 +3,10 @@
 namespace inviwo {
      
 FloatSliderWidgetQt::FloatSliderWidgetQt(float minValue, float maxValue, float increment) {
-    minValue_ = minValue;
-    maxValue_ = maxValue;
-    increment_= increment;
     generateWidget();
+    setMinValue(minValue);
+    setMaxValue(minValue);
+    setIncrement(increment);
 }
 
 void FloatSliderWidgetQt::generateWidget() {
@@ -16,76 +16,100 @@ void FloatSliderWidgetQt::generateWidget() {
     //slider_->setTickPosition(QSlider::TicksBothSides);
     //slider_->setTickInterval(10);
     //slider_->setSingleStep(1);
-    slider_->setMaximum(static_cast<int>(ceilf((maxValue_-minValue_)/increment_)+1000)); //FIXME: ???
-
+    //slider_->setMaximum(static_cast<int>(ceilf((maxValue_-minValue_)/increment_)+1000)); //FIXME: ???
     spinBox_ = new QDoubleSpinBox();
-    spinBox_->setSingleStep(static_cast<double>(increment_));
-    spinBox_->setRange(static_cast<double>(minValue_), static_cast<double>(maxValue_));
-
-    updateDecimals();
-
     hLayout->addWidget(slider_);
     hLayout->addWidget(spinBox_);
     setLayout(hLayout);
+
+    connect(slider_,  SIGNAL(valueChanged(int)),    this, SLOT(updateFromSlider()));
+    connect(spinBox_, SIGNAL(valueChanged(double)), this, SLOT(updateFromSpinBox()));
 }
 
 FloatSliderWidgetQt::~FloatSliderWidgetQt() {}
 
-float inviwo::FloatSliderWidgetQt::getValue() {
-    sliderValue_ = (maxValue_-minValue_)*(static_cast<float>(slider_->value())/slider_->maximum())+minValue_;
-    return sliderValue_;
-}
 
 void FloatSliderWidgetQt::setValue(float value) {
-    if (minValue_<value || value<=maxValue_ && value != getValue()) {
-        sliderValue_ = static_cast<int>(ceilf(((value-minValue_)/(maxValue_ - minValue_)) * (slider_->maximum()-slider_->minimum())));
-        slider_->setSliderPosition(static_cast<int>(sliderValue_));
+    if (value>=minValue_ && value<=maxValue_ && value!=value_) {
+        value_ = value;
+        updateSlider();
+        updateSpinBox();
+        emit valueChanged(value_);
     }
 }
 
-void FloatSliderWidgetQt::setMinValue(float min) {
-    minValue_ = min;
-    spinBox_->setMinimum(static_cast<double>(min));
-}
-
-void FloatSliderWidgetQt::setMaxValue(float max) {
-    maxValue_ = max;
-    spinBox_->setMaximum(static_cast<double>(max));
-}
-
-void FloatSliderWidgetQt::setRange(float min, float max) {
-    setMinValue(min);
-    setMaxValue(max);
+float inviwo::FloatSliderWidgetQt::getValue() {
+    return value_;
 }
 
 
-QDoubleSpinBox* FloatSliderWidgetQt::getSpinBox() {
-    return spinBox_;
+void FloatSliderWidgetQt::setMinValue(float minValue) {
+    minValue_ = minValue;
+    spinBox_->setMinimum(static_cast<double>(minValue));
+    updateSliderRange();
 }
 
-void FloatSliderWidgetQt::updateValueSpinBox() {
-    if (static_cast<double>(getValue()) != spinBox_->value()) {
-        spinBox_->setValue(static_cast<double>(getValue()));
-    }
+void FloatSliderWidgetQt::setMaxValue(float maxValue) {
+    maxValue_ = maxValue;
+    spinBox_->setMaximum(static_cast<double>(maxValue));
+    updateSliderRange();
 }
 
-void FloatSliderWidgetQt::updateValueSlider() {
-    if (getValue() != static_cast<float>(spinBox_->value())) {
-        setValue(static_cast<float>(spinBox_->value()));
-    }
+void FloatSliderWidgetQt::setRange(float minValue, float maxValue) {
+    setMinValue(minValue);
+    setMaxValue(maxValue);
 }
 
 
-QSlider* FloatSliderWidgetQt::getSlider() {
-    return slider_;
+void FloatSliderWidgetQt::updateSliderRange() {
+    int maxValue = static_cast<int>(ceilf((maxValue_-minValue_)/increment_));
+    slider_->setMaximum(maxValue);
 }
+
 
 void FloatSliderWidgetQt::setIncrement(float increment) {
     increment_ = increment;
     updateDecimals();
     spinBox_->setSingleStep(static_cast<double>(increment));
-    slider_->setMaximum(static_cast<int>(ceilf((maxValue_-minValue_)/increment)+1000));
+    slider_->setSingleStep(10);
+    updateSliderRange();
 }
+
+
+void FloatSliderWidgetQt::updateFromSlider() {
+    float normalizedValue = static_cast<float>(slider_->value())/static_cast<float>(slider_->maximum());
+    float newValue = minValue_ + (normalizedValue * (maxValue_ - minValue_));
+    if (newValue != value_) {
+        value_ = newValue;
+        updateSpinBox();
+        emit valueChanged(value_);
+    }
+}
+
+void FloatSliderWidgetQt::updateSlider() {
+    float normalizedValue = (value_-minValue_)/(maxValue_-minValue_);
+    int newValue = static_cast<int>(normalizedValue * slider_->maximum());
+    slider_->blockSignals(true);
+    slider_->setValue(newValue);
+    slider_->blockSignals(false);
+}
+
+
+void FloatSliderWidgetQt::updateFromSpinBox() {
+    float newValue = static_cast<float>(spinBox_->value());
+    if (newValue != value_) {
+        value_ = newValue;
+        updateSlider();
+        emit valueChanged(value_);
+    }
+}
+
+void FloatSliderWidgetQt::updateSpinBox() {
+    spinBox_->blockSignals(true);
+    spinBox_->setValue(static_cast<double>(value_));
+    spinBox_->blockSignals(false);
+}
+
 
 void FloatSliderWidgetQt::updateDecimals() {
     //Not working....
@@ -101,4 +125,4 @@ void FloatSliderWidgetQt::updateDecimals() {
     spinBox_->setDecimals(4);
 }
 
-}//Namespace
+} // namespace inviwo

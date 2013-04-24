@@ -32,13 +32,11 @@ void FloatVec3PropertyWidgetQt::generateWidget() {
     hLayout->addWidget(sliderWidget);
     setLayout(hLayout);
 
-    connect(sliderX_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderY_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderZ_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-
-    connect (sliderX_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderY_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderZ_->getSpinBox(),SIGNAL(valueChanged(double)), this, SLOT(setPropertyValueFromSpinBox()));
+    /*
+    connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    */
 }
 
 void FloatVec3PropertyWidgetQt::updateFromProperty() {
@@ -58,11 +56,6 @@ void FloatVec3PropertyWidgetQt::updateFromProperty() {
     sliderX_->setIncrement(valueIncrement_.x);
     sliderY_->setIncrement(valueIncrement_.y);
     sliderZ_->setIncrement(valueIncrement_.z);
-
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
-    sliderZ_->updateValueSpinBox();
-
 }
 
 
@@ -81,7 +74,6 @@ void FloatVec3PropertyWidgetQt::generatesSettingsWidget() {
     connect(sliderX_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuX(const QPoint&)));
     connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));
     connect(sliderZ_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuZ(const QPoint&)));
-
 }
 
 void FloatVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
@@ -157,31 +149,12 @@ void FloatVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
 
 }
 
-
-void FloatVec3PropertyWidgetQt::setPropertyValueFromSlider() {
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
-    sliderZ_->updateValueSpinBox();
-
+void FloatVec3PropertyWidgetQt::setPropertyValue() {
     valueVec3_ = property_->get();
     valueVec3_.x = sliderX_->getValue();
     valueVec3_.y = sliderY_->getValue();
     valueVec3_.z = sliderZ_->getValue();
     property_->set(valueVec3_);
-
-}
-
-void FloatVec3PropertyWidgetQt::setPropertyValueFromSpinBox() {
-    sliderX_->updateValueSlider();
-    sliderY_->updateValueSlider();
-    sliderZ_->updateValueSlider();
-
-    valueVec3_ = property_->get();
-    valueVec3_.x = sliderX_->getValue();
-    valueVec3_.y = sliderY_->getValue();
-    valueVec3_.z = sliderZ_->getValue();
-    property_->set(valueVec3_);
-
 }
 
 } // namespace

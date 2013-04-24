@@ -11,7 +11,7 @@ SimpleRaycaster::SimpleRaycaster()
     enableShading_("enableShading", "Shading", false),
     lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
 	enableMIP_("enableMIP", "MIP", false),
-    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f),
+    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 10.0f),
     transferFunction_("transferFunction", "Transfer function", TransferFunction())
 {
     addPort(volumePort_, "VolumePortGroup");

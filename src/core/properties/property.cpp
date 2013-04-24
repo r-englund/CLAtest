@@ -90,6 +90,4 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("displayName", displayName_, true);
 }
 
-
-
 } // namespace
