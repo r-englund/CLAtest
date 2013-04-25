@@ -2,15 +2,15 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-525" y="-300" />
+                    <position x="-550" y="-375" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="-1572" y="498" />
-                    <dimension x="362" y="353" />
+                    <position x="8" y="26" />
+                    <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -24,144 +24,30 @@
                 <Property identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-525" y="-600" />
+                    <position x="-475" y="-525" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property identifier="volumeFileName" displayName="Volume file name">
-                    <url content="D:/inviwo/data/volumes/hydrogenatom.dat" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref2">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-475" y="-500" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="camera" displayName="Camera">
-                    <lookFrom identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookFrom>
-                    <lookTo identifier="lookTo" displayName="Look to">
-                        <value x="0" y="0" z="3.6545455" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookTo>
-                    <lookUp identifier="lookUp" displayName="Look up">
-                        <value x="0" y="1" z="0" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookUp>
-                    <fovy identifier="fov" displayName="FOV">
-                        <value content="60.0837" />
-                        <minvalue content="30" />
-                        <maxvalue content="360" />
-                        <increment content="0.1" />
-                    </fovy>
-                    <aspectRatio identifier="aspectRatio" displayName="Aspect Ratio">
-                        <value content="1" />
-                        <minvalue content="0" />
-                        <maxvalue content="1" />
-                        <increment content="0.1" />
-                    </aspectRatio>
-                    <nearPlane identifier="near" displayName="Near Plane">
-                        <value content="0.181818" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
-                </Property>
-                <Property identifier="pan" displayName="Pan" />
-                <Property identifier="rotate" displayName="Rotate" />
-                <Property identifier="zoom" displayName="Zoom" />
-            </Properties>
-        </Processor>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref3">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-525" y="-400" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="enableMIP" displayName="MIP">
-                    <value content="0" />
-                </Property>
-                <Property identifier="enableShading" displayName="Shading">
-                    <value content="0" />
-                </Property>
-                <Property identifier="lightSourcePos" displayName="Light source position">
-                    <value x="1" y="0" z="-1" />
-                    <minvalue x="-1" y="-1" z="-1" />
+                <Property identifier="color" displayName="Color">
+                    <value x="1" y="1" z="1" />
+                    <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.1" y="0.1" z="0.1" />
-                </Property>
-                <Property identifier="samplingRate" displayName="Sampling rate">
-                    <value content="2.26562" />
-                    <minvalue content="0.1" />
-                    <maxvalue content="15" />
-                    <increment content="0.1" />
                 </Property>
             </Properties>
         </Processor>
     </Processors>
     <Connections>
-        <Connection connection="entry-points">
-            <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
-            </OutPort>
-            <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection connection="exit-points">
-            <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
-            </OutPort>
-            <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection connection="volume">
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection connection="volume">
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
-            </InPort>
-        </Connection>
         <Connection connection="inport">
             <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref1" />
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>

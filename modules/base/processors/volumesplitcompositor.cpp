@@ -4,8 +4,8 @@ namespace inviwo {
 
 VolumeSplitCompositor::VolumeSplitCompositor()
     : Processor(),
-      inport_(Port::INPORT, "volumebrick.in"),
-      outport_(Port::OUTPORT, "volume.out"),
+      inport_("volumebrick.in"),
+      outport_("volume.out"),
       volume_(0)
 {
     addPort(inport_);

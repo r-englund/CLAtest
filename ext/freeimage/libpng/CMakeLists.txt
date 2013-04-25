@@ -1,5 +1,5 @@
 
-ivw_project(libpng)
+ivw_project(internallibpng)
 
 #--------------------------------------------------------------------
 # Supress warnings
@@ -23,7 +23,7 @@ ivw_group("Source Files" ${SOURCE_FILES} )
 
 #--------------------------------------------------------------------
 # Define defintions
-ivw_define_standard_definitions(libpng)
+ivw_define_standard_definitions(internallibpng)
 
 
 #--------------------------------------------------------------------

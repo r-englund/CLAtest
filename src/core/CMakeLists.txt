@@ -56,7 +56,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/positionmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processormetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processorwidgetmetadata.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/datainport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataoutport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/imageport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/inport.h

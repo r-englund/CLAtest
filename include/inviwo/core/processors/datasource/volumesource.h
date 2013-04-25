@@ -25,7 +25,7 @@ protected:
     virtual void process();
 
 private:
-    VolumePort volumePort_;
+    VolumeOutport volumePort_;
     FileProperty volumeFileName_;
 };
 

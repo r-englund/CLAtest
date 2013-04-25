@@ -27,7 +27,7 @@ protected:
     virtual void process();
 
 private:
-    ImagePort outport_;
+    ImageOutport outport_;
     FloatVec3Property color_;
 };
 

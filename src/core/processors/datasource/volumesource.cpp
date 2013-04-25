@@ -5,7 +5,7 @@ namespace inviwo {
 
 VolumeSource::VolumeSource()
     : Processor(),
-      volumePort_(Port::OUTPORT, "volume"),
+      volumePort_("volume"),
       volumeFileName_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/hydrogenatom.dat")
 {
     addPort(volumePort_);
@@ -20,7 +20,7 @@ Processor* VolumeSource::create() const {
 
 void VolumeSource::initialize() {
     Processor::initialize();
-    Volume* volume = volumePort_.getEditableData();
+    Volume* volume = volumePort_.getData();
     if (volume)
         volume->addRepresentation(new VolumeDisk(volumeFileName_.get()) );
 }
@@ -31,7 +31,7 @@ void VolumeSource::deinitialize() {
 
 void VolumeSource::process() {
     //TODO: if volume has changed setData
-    Volume* volume = volumePort_.getEditableData();
+    Volume* volume = volumePort_.getData();
     if (volume) {
         VolumeDisk* volumeDisk = volume->getEditableRepresentation<VolumeDisk>();
         if (volumeDisk && (volumeDisk->getSourceFile()!=volumeFileName_.get())) {

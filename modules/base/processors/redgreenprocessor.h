@@ -28,8 +28,8 @@ protected:
     virtual void process();
 
 private:
-    ImagePort outportRed_;
-    ImagePort outportGreen_;
+    ImageOutport outportRed_;
+    ImageOutport outportGreen_;
 };
 
 } // namespace

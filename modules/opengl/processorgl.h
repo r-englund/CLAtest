@@ -17,13 +17,13 @@ public:
     virtual ~ProcessorGL();
     virtual Processor* create() const;
 
-    void activateTarget(ImagePort outport);
+    void activateTarget(ImageOutport outport);
     void deactivateCurrentTarget();
 
-    void bindColorTexture(ImagePort inport, GLenum texUnit);
-    void unbindColorTexture(ImagePort inport);
-    void bindDepthTexture(ImagePort inport, GLenum texUnit);
-    void unbindDepthTexture(ImagePort inport);
+    void bindColorTexture(ImageInport inport, GLenum texUnit);
+    void unbindColorTexture(ImageInport inport);
+    void bindDepthTexture(ImageInport inport, GLenum texUnit);
+    void unbindDepthTexture(ImageInport inport);
 
     void renderImagePlaneQuad() const;
 

@@ -3,30 +3,68 @@
 
 namespace inviwo {
 
-ImagePort::ImagePort(PortDirection direction, std::string identifier)
-    : DataPort<Image>(direction, identifier), dimensions_(uvec2(256,256))
+// Image Inport
+ImageInport::ImageInport(std::string identifier)
+    : DataInport<Image>(identifier), dimensions_(uvec2(256,256))
 {}
 
-ImagePort::~ImagePort() {}
+ImageInport::~ImageInport() {}
 
-void ImagePort::initialize() {
+void ImageInport::initialize() {}
+
+void ImageInport::deinitialize() {}
+
+void ImageInport::changeDimensions(uvec2 dimensions) {
+    dimensions_ = dimensions;
+}
+
+uvec2 ImageInport::getDimensions() const{ 
+    return dimensions_; 
+}
+
+const Image* ImageInport::getData() const{
+    if (isConnected()) {
+        ImageOutport* outport = dynamic_cast<ImageOutport*>(dataOutport_);
+        if (dimensions_==outport->getDimensions())
+            return outport->getConstData();
+        else
+            return const_cast<const Image*>(outport->resizeImageData(dimensions_));
+    }
+    else 
+        return NULL;
+}
+
+uvec3 ImageInport::getColorCode() const { 
+    return uvec3(90,127,183); 
+}
+
+// Image Outport
+ImageOutport::ImageOutport(std::string identifier)
+    : DataOutport<Image>(identifier), dimensions_(uvec2(256,256))
+{}
+
+ImageOutport::~ImageOutport() {}
+
+void ImageOutport::initialize() {
     data_ = new Image(dimensions_);
 }
 
-void ImagePort::deinitialize() {
+void ImageOutport::deinitialize() {
     delete data_;
 }
 
-void ImagePort::changeDimensions(uvec2 dimensions) {
+void ImageOutport::changeDimensions(uvec2 dimensions) {
     dimensions_ = dimensions;
     //TODO: data_ is sometimes un-initialized. Especially while loading workspace.
     if (data_) data_->resize(dimensions_);
     invalidate();
 }
 
-Image* ImagePort::resizeImageData(uvec2 dimensions) {
-    ivwAssert(isOutport(), "This method should only be called for outports.");
+uvec2 ImageOutport::getDimensions() const{ 
+    return dimensions_; 
+}
 
+Image* ImageOutport::resizeImageData(uvec2 dimensions){
     /*
     Image* result = dynamic_cast<Image*>(data_->clone());
     if (result) data_->resizeImageRepresentations(result, dimensions);
@@ -50,17 +88,8 @@ Image* ImagePort::resizeImageData(uvec2 dimensions) {
     return result;
 }
 
-const Image* ImagePort::getData() const{
-    if (isOutport()) 
-        return const_cast<const Image*>(data_);
-    else if (isConnected()) {
-        ImagePort* outport = dynamic_cast<ImagePort*>(connectedDataPort_);
-        if (dimensions_==outport->getDimensions())
-            return outport->getData();
-        else
-            return const_cast<const Image*>(outport->resizeImageData(dimensions_));
-    }
-    else return 0;
+uvec3 ImageOutport::getColorCode() const { 
+    return uvec3(90,127,183); 
 }
 
 } // namespace

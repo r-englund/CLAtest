@@ -3,7 +3,8 @@
 #include <QStyleOptionGraphicsItem>
 #include <QVector2D>
 
-#include <inviwo/core/ports/port.h>
+#include <inviwo/core/ports/inport.h>
+#include <inviwo/core/ports/outport.h>
 #include <inviwo/core/metadata/processormetadata.h>
 
 #include <inviwo/qt/editor/networkeditor.h>
@@ -107,46 +108,55 @@ QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
     return centerPoints[minInd];
 }
 
-QRectF ProcessorGraphicsItem::calculatePortRect(size_t curPort, Port::PortDirection portDir) const {
+QRectF ProcessorGraphicsItem::calculatePortRect(Inport* port) const {
+    std::vector<Inport*> inports = processor_->getInports();
+    for (size_t i=0; i<inports.size(); i++)
+        if (inports[i] == port)
+        return calculateInportRect(i);
+    return QRectF();
+}
+
+QRectF ProcessorGraphicsItem::calculatePortRect(Outport* port) const {
+    std::vector<Outport*> outports = processor_->getOutports();
+    for (size_t i=0; i<outports.size(); i++)
+        if (outports[i] == port)
+            return calculateOutportRect(i);
+    return QRectF();
+}
+
+QRectF ProcessorGraphicsItem::calculateInportRect(size_t curPort) const {
+    QPointF portDims(9.0f, 9.0f);
+    float xOffset = 8.0f;   // based isOn roundedCorners
+    float xSpacing = 12.5f; // GRID_SIZE / 2.0
+
+    qreal left = rect().left()+xOffset+curPort*xSpacing;
+    qreal top = rect().top();
+    return QRectF(left, top, portDims.x(), portDims.y());
+}
+
+QRectF ProcessorGraphicsItem::calculateOutportRect(size_t curPort) const {
     QPointF portDims(9.0f, 9.0f);
     float xOffset = 8.0f;   // based isOn roundedCorners
     float xSpacing = 12.5f; // GRID_SIZE / 2.0
     
     qreal left = rect().left()+xOffset+curPort*xSpacing;
-    qreal top;
-    if (portDir == Port::INPORT) top = rect().top();
-    else top = rect().bottom()-portDims.y();
+    qreal top = rect().bottom()-portDims.y();
     return QRectF(left, top, portDims.x(), portDims.y());
-}
-
-QRectF ProcessorGraphicsItem::calculatePortRect(Port* port) const {
-    if (!port->isOutport()) {
-        std::vector<Port*> inports = processor_->getInports();
-        for (size_t i=0; i<inports.size(); i++)
-            if (inports[i] == port)
-                return calculatePortRect(i, Port::INPORT);
-    } else {
-        std::vector<Port*> outports = processor_->getOutports();
-        for (size_t i=0; i<outports.size(); i++)
-            if (outports[i] == port)
-                return calculatePortRect(i, Port::OUTPORT);
-    }
-    return QRectF();
 }
 
 Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
     QPointF itemPos = mapFromScene(pos);
 
-    std::vector<Port*> inports = processor_->getInports();
+    std::vector<Inport*> inports = processor_->getInports();
     for (size_t i=0; i<inports.size(); i++) {
-        QRectF portRect = calculatePortRect(i, Port::INPORT);
+        QRectF portRect = calculateInportRect(i);
         if (portRect.contains(itemPos))
             return inports[i];
     }
 
-    std::vector<Port*> outports = processor_->getOutports();
+    std::vector<Outport*> outports = processor_->getOutports();
     for (size_t i=0; i<outports.size(); i++) {
-        QRectF portRect = calculatePortRect(i, Port::OUTPORT);
+        QRectF portRect = calculateOutportRect(i);
         if (portRect.contains(itemPos))
             return outports[i];
     }
@@ -290,9 +300,9 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
 
     // paint inports
     p->setPen(QPen(bottomColor, 1.0));
-    std::vector<Port*> inports = processor_->getInports();
+    std::vector<Inport*> inports = processor_->getInports();
     for (size_t i=0; i<inports.size(); i++) {
-        QRectF portRect = calculatePortRect(i, Port::INPORT);
+        QRectF portRect = calculateInportRect(i);
         uvec3 portColor = inports[i]->getColorCode();
         QLinearGradient portGrad(portRect.topLeft(), portRect.bottomLeft());
         portGrad.setColorAt(0.0f, QColor(portColor.r*0.6, portColor.g*0.6, portColor.b*0.6));
@@ -303,9 +313,9 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     }
 
     // paint outports
-    std::vector<Port*> outports = processor_->getOutports();
+    std::vector<Outport*> outports = processor_->getOutports();
     for (size_t i=0; i<outports.size(); i++) {
-        QRectF portRect = calculatePortRect(i, Port::OUTPORT);
+        QRectF portRect = calculateOutportRect(i);
         uvec3 portColor = outports[i]->getColorCode();
         QLinearGradient portGrad(portRect.topLeft(), portRect.bottomLeft());
         portGrad.setColorAt(0.0f, QColor(portColor.r*0.6, portColor.g*0.6, portColor.b*0.6));

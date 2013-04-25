@@ -5,8 +5,8 @@ namespace inviwo {
 
 FindEdges::FindEdges()
     : ProcessorGL(),
-      inport0_(Port::INPORT, "inport0"),
-      outport_(Port::OUTPORT, "outport"),
+      inport0_("inport0"),
+      outport_("outport"),
       alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
 {
     addPort(inport0_);
@@ -33,7 +33,7 @@ void FindEdges::deinitialize() {
 void FindEdges::process() {    
     
     const Image* inputImage = inport0_.getData();
-    Image* outImage = outport_.getEditableData();
+    Image* outImage = outport_.getData();
     
     const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();

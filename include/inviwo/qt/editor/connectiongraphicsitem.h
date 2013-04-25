@@ -5,7 +5,8 @@
 #include <QGraphicsLineItem>
 #include <QPainterPath>
 
-#include <inviwo/core/ports/port.h>
+#include <inviwo/core/ports/inport.h>
+#include <inviwo/core/ports/outport.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
 
 namespace inviwo {
@@ -65,8 +66,8 @@ public:
      * @param inProcessor Graphical representation of the destination processor.
      * @param inport Destination port.
      */
-    ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
-                           ProcessorGraphicsItem* inProcessor, Port* inport);
+    ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Outport* outport,
+                           ProcessorGraphicsItem* inProcessor, Inport* inport);
     ~ConnectionGraphicsItem();
 
     /**
@@ -83,17 +84,17 @@ public:
     /**
      * Return the outport from which the connection starts.
      */
-    Port* getOutport() const { return outport_; }
+    Outport* getOutport() const { return outport_; }
     /**
      * Return the inport to which the connection goes to.
      */
-    Port* getInport() const { return inport_; }
+    Inport* getInport() const { return inport_; }
 
 private:
     ProcessorGraphicsItem* outProcessor_; ///< Processor representation from which the connection starts
     ProcessorGraphicsItem* inProcessor_; ///< Processor representation to which the connection goes to
-    Port* outport_; ///< Port of outProcessor_ from which the connection starts
-    Port* inport_; ///< Port of inProcessor_ to which the connection goes to
+    Outport* outport_; ///< Port of outProcessor_ from which the connection starts
+    Inport* inport_; ///< Port of inProcessor_ to which the connection goes to
 };
 
 } // namespace

@@ -14,16 +14,25 @@ Processor* Processor::create() const {
     return new Processor();
 }
 
-void Processor::addPort(Port* port, std::string groupName) {
+void Processor::addPort(Inport* port, std::string groupName) {
     // TODO: check if port with same name has been added before
     port->setProcessor(this);
-    if (port->isOutport()) outports_.push_back(port);
-    else inports_.push_back(port);
-
+    inports_.push_back(port);
     portGroup_.insert(groupName, port);
 }
 
-void Processor::addPort(Port& port, std::string groupName) {
+void Processor::addPort(Inport& port, std::string groupName) {
+    addPort(&port, groupName);
+}
+
+void Processor::addPort(Outport* port, std::string groupName) {
+    // TODO: check if port with same name has been added before
+    port->setProcessor(this);
+    outports_.push_back(port);
+    portGroup_.insert(groupName, port);
+}
+
+void Processor::addPort(Outport& port, std::string groupName) {
     addPort(&port, groupName);
 }
 
@@ -34,7 +43,7 @@ Port* Processor::getPort(std::string identifier) const {
     for (size_t i=0; i<ports.size(); i++)
         if (ports[i]->getIdentifier() == identifier)
             return ports[i];
-    return 0;
+    return NULL;
 }
 
 std::vector<Port*> Processor::getPortsByGroup(std::string groupName) {

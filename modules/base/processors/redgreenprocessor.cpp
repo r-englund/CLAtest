@@ -4,8 +4,8 @@ namespace inviwo {
 
 RedGreenProcessor::RedGreenProcessor()
     : ProcessorGL(),
-    outportRed_(Port::OUTPORT, "outportRed"),
-    outportGreen_(Port::OUTPORT, "outportGreen")
+    outportRed_("outportRed"),
+    outportGreen_("outportGreen")
 {
     addPort(outportRed_);
     addPort(outportGreen_);

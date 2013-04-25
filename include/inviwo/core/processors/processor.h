@@ -5,7 +5,8 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/interaction/events/event.h>
-#include <inviwo/core/ports/port.h>
+#include <inviwo/core/ports/inport.h>
+#include <inviwo/core/ports/outport.h>
 #include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/properties/properties.h>
 #include <inviwo/core/properties/propertyowner.h>
@@ -51,8 +52,8 @@ public:
     virtual bool isEndProcessor() { return false; }
 
     Port* getPort(std::string identifier) const;
-    std::vector<Port*> getInports() { return inports_; }
-    std::vector<Port*> getOutports() { return outports_; }
+    std::vector<Inport*> getInports() { return inports_; }
+    std::vector<Outport*> getOutports() { return outports_; }
     std::vector<std::string> getPortGroupNames();
     std::vector<Port*> getPortsByGroup(std::string groupName);
     std::string getPortGroupName(Port* port);
@@ -76,16 +77,19 @@ public:
 
 protected:
 
-    void addPort(Port* port, std::string groupName="default");
-    void addPort(Port& port, std::string groupName="default");  
+    void addPort(Inport* port, std::string groupName="default");
+    void addPort(Inport& port, std::string groupName="default");  
+
+    void addPort(Outport* port, std::string groupName="default");
+    void addPort(Outport& port, std::string groupName="default");  
 
     ProcessorWidget* processorWidget_;
 
 private:
     std::string identifier_;
 
-    std::vector<Port*> inports_;
-    std::vector<Port*> outports_;
+    std::vector<Inport*> inports_;
+    std::vector<Outport*> outports_;
 
     std::vector<InteractionHandler*> interactionHandlers_;
 

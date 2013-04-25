@@ -26,7 +26,7 @@ public:
     bool isEndProcessor() { return true; }
 
 protected:
-    ImagePort inport_;
+    ImageInport inport_;
     SnapshotProperty snapshot_;
 
 private:

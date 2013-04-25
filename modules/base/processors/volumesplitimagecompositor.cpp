@@ -4,8 +4,8 @@ namespace inviwo {
 
 VolumeSplitImageCompositor::VolumeSplitImageCompositor()
     : ProcessorGL(),
-      inport_(Port::INPORT, "image.in"),
-      outport_(Port::OUTPORT, "image.out")
+      inport_("image.in"),
+      outport_("image.out")
 {
     addPort(inport_);
     addPort(outport_);

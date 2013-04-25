@@ -5,8 +5,8 @@ namespace inviwo {
 
 CanvasProcessor::CanvasProcessor()
     : Processor(),
-    inport_(Port::INPORT, "inport"),
-	snapshot_("snapshot", "Create Snapshot", inport_),
+    inport_("inport"),
+	snapshot_("snapshot", "Create Snapshot"),
     canvas_(0)
 {
     addPort(inport_);
@@ -41,7 +41,7 @@ void CanvasProcessor::process() {
 
     // TODO: Check if this is required,
     // or if the inport remains the same when reconnecting processors
-    snapshot_.setImagePort(inport_);
+    snapshot_.setImage(inport_.getData());
 
     if (canvas_) canvas_->activate();
 }

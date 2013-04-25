@@ -5,8 +5,8 @@ namespace inviwo {
 
 SnapshotProcessor::SnapshotProcessor()
         : ProcessorGL(),      
-	    inport0_(Port::INPORT, "inport0"),
-	    outport_(Port::OUTPORT, "outport"),
+	    inport0_("inport0"),
+	    outport_("outport"),
         imageFileName_("imageFileName", "Image file name", IVW_DIR+"data/images/output.png"),
         buttonPropperty_("takeSnapShot", "Take snapshot")
         //snapshotProperty_("snapshot", "Take snapshot", inport0_)
@@ -46,7 +46,7 @@ void SnapshotProcessor::buttonAction(){
 
 void SnapshotProcessor::process() {
     const Image* inputImage = inport0_.getData();
-    Image* outImage = outport_.getEditableData();
+    Image* outImage = outport_.getData();
     
     const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();

@@ -85,8 +85,8 @@ protected:
     /// Camera property.
     CameraProperty camera_;
 
-    VolumePort inport_;
-    VolumePort outport_;
+    VolumeInport inport_;
+    VolumeOutport outport_;
 
 private:
     bool updateBricks_;

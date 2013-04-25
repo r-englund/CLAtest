@@ -4,7 +4,7 @@ namespace inviwo {
 
 CubeProxygeometry::CubeProxygeometry()
     : ProcessorGL(),
-      inport_(Port::INPORT, "image.inport")
+      inport_("image.inport")
 {
     addPort(inport_);
 }

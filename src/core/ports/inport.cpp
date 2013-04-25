@@ -5,11 +5,12 @@
 namespace inviwo {
 
 Inport::Inport(std::string identifier)
-: identifier_(identifier)
+: Port(identifier), connectedOutport_(NULL)
 {}
 
 Inport::~Inport() {}
 
+//Inport should determine if we can connect to the outport
 void Inport::connectTo(Outport* outport) {
     connectedOutport_ = outport;
     invalidate();
@@ -19,14 +20,21 @@ void Inport::connectTo(Outport* outport) {
 void Inport::disconnectFrom(Outport* outport) {
     // TODO: check if ports are connected
     ivwAssert(connectedOutport_==outport, "Ports are not connected.");
-    connectedOutport_ = 0;
+    connectedOutport_ = NULL;
     invalidate();
     outport->disconnectFrom(this);
 }
 
+bool Inport::isConnected() const { 
+    return (connectedOutport_!=NULL); 
+}
+
+bool Inport::isConnectedTo(Outport* outport) const {
+    return connectedOutport_==outport;
+}
+
 void Inport::invalidate() {
-    //if (processor_->isValid())
-        processor_->invalidate();
+    Port::invalidate();
 }
 
 } // namespace

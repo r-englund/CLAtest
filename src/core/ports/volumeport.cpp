@@ -1,22 +1,43 @@
 #include <inviwo/core/ports/volumeport.h>
-
 #include <inviwo/core/datastructures/volumetypeclassification.h>
 
 namespace inviwo {
 
-VolumePort::VolumePort(PortDirection direction, std::string identifier)
-    : DataPort<Volume>(direction, identifier)
+// Volume Inport
+VolumeInport::VolumeInport(std::string identifier)
+: DataInport<Volume>(identifier)
 {}
 
-VolumePort::~VolumePort() {
+VolumeInport::~VolumeInport() {
 }
 
-void VolumePort::initialize() {
+void VolumeInport::initialize() {}
+
+void VolumeInport::deinitialize() {}
+
+
+uvec3 VolumeInport::getColorCode() const { 
+    return uvec3(188,101,101); 
+}
+
+// Volume Outport
+VolumeOutport::VolumeOutport(std::string identifier)
+: DataOutport<Volume>(identifier)
+{}
+
+VolumeOutport::~VolumeOutport() {
+}
+
+void VolumeOutport::initialize() {
     data_ = new StandardVolume();
 }
 
-void VolumePort::deinitialize() {
+void VolumeOutport::deinitialize() {
     delete data_;
+}
+
+uvec3 VolumeOutport::getColorCode() const { 
+    return uvec3(188,101,101); 
 }
 
 } // namespace

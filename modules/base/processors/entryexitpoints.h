@@ -32,9 +32,9 @@ protected:
     virtual void process();
 
 private:
-    VolumePort volumePort_;
-    ImagePort entryPort_;
-    ImagePort exitPort_;
+    VolumeInport volumePort_;
+    ImageOutport entryPort_;
+    ImageOutport exitPort_;
 
     CameraProperty camera_;
 

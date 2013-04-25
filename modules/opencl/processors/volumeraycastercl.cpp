@@ -7,10 +7,10 @@ namespace inviwo {
 
 VolumeRaycasterCL::VolumeRaycasterCL()
     : Processor(),
-    volumePort_(Port::INPORT, "volume"),
-    entryPort_(Port::INPORT, "entry-points"),
-    exitPort_(Port::INPORT, "exit-points"),
-    outport_(Port::OUTPORT, "outport"),
+    volumePort_("volume"),
+    entryPort_("entry-points"),
+    exitPort_("exit-points"),
+    outport_("outport"),
     lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
     samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f),
     transferFunction_("transferFunction", "Transfer function", TransferFunction()),
@@ -54,7 +54,7 @@ void VolumeRaycasterCL::process() {
     if( kernel_ == NULL) {
         return;
     }
-    Image* outImage = outport_.getEditableData();
+    Image* outImage = outport_.getData();
     const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
     outImage->resize(entryCL->getDimension());
     uvec2 outportDim = outImage->size();

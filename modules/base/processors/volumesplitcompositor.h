@@ -26,8 +26,8 @@ protected:
     virtual void process();
 
 private:
-    VolumePort inport_;
-    VolumePort outport_;
+    VolumeInport inport_;
+    VolumeOutport outport_;
 
     Volume* volume_;
 };

@@ -31,8 +31,10 @@ public:
     std::string getIdentifier() const { return processor_->getIdentifier(); }
     void setProcessor(Processor* processor);
     void editProcessorName();
-    QRectF calculatePortRect(Port* port) const;
-    QRectF calculatePortRect(size_t curPort, Port::PortDirection portDir) const;
+    QRectF calculatePortRect(Inport* port) const;
+    QRectF calculatePortRect(Outport* port) const;
+    QRectF calculateInportRect(size_t curPort) const;
+    QRectF calculateOutportRect(size_t curPort) const;
     Port* getSelectedPort(const QPointF pos) const;
     void updateMetaData();
     void flipLayout();

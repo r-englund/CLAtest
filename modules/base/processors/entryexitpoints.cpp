@@ -4,9 +4,9 @@ namespace inviwo {
 
 EntryExitPoints::EntryExitPoints()
     : ProcessorGL(),
-    volumePort_(Port::INPORT, "volume"),
-    entryPort_(Port::OUTPORT, "entry-points"),
-    exitPort_(Port::OUTPORT, "exit-points"),
+    volumePort_("volume"),
+    entryPort_("entry-points"),
+    exitPort_("exit-points"),
     camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     addPort(volumePort_);

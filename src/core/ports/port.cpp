@@ -4,46 +4,34 @@
 
 namespace inviwo {
 
-Port::Port(PortDirection direction, std::string identifier)
-    : direction_(direction),
-    identifier_(identifier)
+Port::Port(std::string identifier)
+    : identifier_(identifier)
 {}
 
 Port::~Port() {}
 
-void Port::connectTo(Port* port) {
-    if (std::find(connectedPorts_.begin(), connectedPorts_.end(), port) == connectedPorts_.end()) {
-        connectedPorts_.push_back(port);
-        port->invalidate();
-        port->connectTo(this);
-    }
+uvec3 Port::getColorCode() const { 
+    return uvec3(128,128,128); 
 }
 
-void Port::disconnectFrom(Port* port) {
-    if (std::find(connectedPorts_.begin(), connectedPorts_.end(), port) != connectedPorts_.end()) {
-        connectedPorts_.erase(std::remove(connectedPorts_.begin(), connectedPorts_.end(), port),
-            connectedPorts_.end());
-        port->invalidate();
-        port->disconnectFrom(this);
-    }
+Processor* Port::getProcessor() const { 
+    return processor_; 
 }
 
-void Port::invalidate() {
-    if (direction_ == Port::INPORT) {
-        //if (processor_->isValid())
-        processor_->invalidate();
-    } else if (direction_ == Port::OUTPORT) {
-        for (size_t i=0; i<connectedPorts_.size(); i++)
-            connectedPorts_[i]->invalidate();
-    }
+std::string Port::getIdentifier() const {
+    return identifier_; 
 }
 
+void Port::setIdentifier(const std::string& name) {
+    identifier_ = name;
+}
 
+void Port::setProcessor(Processor* processor) { 
+    processor_ = processor; 
+}
 
-Port2::Port2(std::string identifier)
-    : identifier_(identifier)
-{}
-
-Port2::~Port2() {}
+void Port::invalidate() { 
+    processor_->invalidate(); 
+}
 
 } // namespace

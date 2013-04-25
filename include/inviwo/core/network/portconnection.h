@@ -3,7 +3,8 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/port.h>
+#include <inviwo/core/ports/inport.h>
+#include <inviwo/core/ports/outport.h>
 #include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
@@ -19,15 +20,33 @@ public:
         virtual void deserialize(IvwDeserializer& s);
         Port* getPort() const;
     private:
-        Port* _port;
+        Port* port_;
+    };
+
+    class SlimInport : public SlimPort {
+    public:
+        SlimInport();
+        SlimInport(Inport*);
+        Inport* getInport() const;
+    private:
+        Inport* inport_;
+    };
+
+    class SlimOutport : public SlimPort {
+    public:
+        SlimOutport();
+        SlimOutport(Outport*);
+        Outport* getOutport() const;
+    private:
+        Outport* outport_;
     };
 
     PortConnection();
-    PortConnection(Port* outport, Port* inport);
+    PortConnection(Outport* outport, Inport* inport);
     virtual ~PortConnection();
 
-    Port* getInport() const { return inport_.getPort(); }
-    Port* getOutport() const { return outport_.getPort(); }
+    Inport* getInport() const { return inport_.getInport(); }
+    Outport* getOutport() const { return outport_.getOutport(); }
 
     bool involvesProcessor(Processor* processor) const {
         return (inport_.getPort()->getProcessor()==processor ||
@@ -38,8 +57,8 @@ public:
     virtual void deserialize(IvwDeserializer& s);
 
 private:
-    SlimPort inport_;
-    SlimPort outport_;
+    SlimInport inport_;
+    SlimOutport outport_;
 };
 
 } // namespace

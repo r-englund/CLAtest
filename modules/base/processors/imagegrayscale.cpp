@@ -6,8 +6,8 @@ namespace inviwo {
 
 ImageGrayscale::ImageGrayscale()
     : ProcessorGL(),
-      inport0_(Port::INPORT, "inport0"),
-      outport_(Port::OUTPORT, "outport")
+      inport0_("inport0"),
+      outport_("outport")
       
 {
     addPort(inport0_);
@@ -33,7 +33,7 @@ void ImageGrayscale::deinitialize() {
 void ImageGrayscale::process() {    
     
     const Image* inputImage = inport0_.getData();
-    Image* outImage = outport_.getEditableData();
+    Image* outImage = outport_.getData();
     
     const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();

@@ -30,10 +30,10 @@ protected:
     virtual void process();
 
 private:
-    VolumePort volumePort_;
-    ImagePort entryPort_;
-    ImagePort exitPort_;
-    ImagePort outport_;
+    VolumeInport volumePort_;
+    ImageInport entryPort_;
+    ImageInport exitPort_;
+    ImageOutport outport_;
 
     FloatVec3Property lightSourcePos_;
     FloatProperty samplingRate_;

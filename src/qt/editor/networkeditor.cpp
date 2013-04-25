@@ -63,14 +63,14 @@ void NetworkEditor::removeProcessor(Processor* processor) {
 }
 
 
-void NetworkEditor::addConnection(Port* port1, Port* port2) {
-    processorNetwork_->addConnection(port1, port2);
-    addConnectionGraphicsItem(port1, port2);
+void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
+    processorNetwork_->addConnection(outport, inport);
+    addConnectionGraphicsItem(outport, inport);
 }
 
-void NetworkEditor::removeConnection(Port* port1, Port* port2) {
-    removeConnectionGraphicsItem(getConnectionGraphicsItem(port1, port2));
-    processorNetwork_->removeConnection(port1, port2);
+void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
+    removeConnectionGraphicsItem(getConnectionGraphicsItem(outport, inport));
+    processorNetwork_->removeConnection(outport, inport);
 }
 
 
@@ -192,17 +192,17 @@ void NetworkEditor::addProcessorWidget(Processor* processor) {
 //   PRIVATE METHODS FOR ADDING/REMOVING CONNECTIONS   //
 /////////////////////////////////////////////////////////
 void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsItem) {
-    Port* port1 = connectionGraphicsItem->getOutport();
-    Port* port2 = connectionGraphicsItem->getInport();
+    Outport* outport = connectionGraphicsItem->getOutport();
+    Inport* inport = connectionGraphicsItem->getInport();
     removeConnectionGraphicsItem(connectionGraphicsItem);
-    processorNetwork_->removeConnection(port1, port2);
+    processorNetwork_->removeConnection(outport, inport);
 }
 
-void NetworkEditor::addConnectionGraphicsItem(Port* port1, Port* port2) {
-    ProcessorGraphicsItem* processor1 = getProcessorGraphicsItem(port1->getProcessor()->getIdentifier());
-    ProcessorGraphicsItem* processor2 = getProcessorGraphicsItem(port2->getProcessor()->getIdentifier());
-    ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(processor1, port1,
-                                                                                processor2, port2);
+void NetworkEditor::addConnectionGraphicsItem(Outport* outport, Inport* inport) {
+    ProcessorGraphicsItem* processor1 = getProcessorGraphicsItem(outport->getProcessor()->getIdentifier());
+    ProcessorGraphicsItem* processor2 = getProcessorGraphicsItem(inport->getProcessor()->getIdentifier());
+    ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(processor1, outport,
+                                                                                processor2, inport);
     connectionGraphicsItems_.push_back(connectionGraphicsItem);
     addItem(connectionGraphicsItem);
     connectionGraphicsItem->show();
@@ -302,15 +302,16 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
 
     for (size_t i=0; i<processors.size(); i++) {
         Processor* processor = processors[i];
-        std::vector<Port*> inports = processor->getInports();
+        std::vector<Inport*> inports = processor->getInports();
         for (size_t i=0; i<inports.size(); i++) {
             if (!inports[i]->isConnected()) {
-                if (dynamic_cast<ImagePort*>(port)) {
-                    if (dynamic_cast<ImagePort*>(inports[i]))
-                        processorNetwork_->addConnection(port, inports[i]);
-                } else if (dynamic_cast<VolumePort*>(port)) {
-                    if (dynamic_cast<VolumePort*>(inports[i]))
-                        processorNetwork_->addConnection(port, inports[i]);
+                Outport* outport = dynamic_cast<Outport*>(port);
+                if (dynamic_cast<ImageOutport*>(outport)) {
+                    if (dynamic_cast<ImageInport*>(inports[i]))
+                        processorNetwork_->addConnection(outport, inports[i]);
+                } else if (dynamic_cast<VolumeOutport*>(outport)) {
+                    if (dynamic_cast<VolumeInport*>(inports[i]))
+                        processorNetwork_->addConnection(outport, inports[i]);
                 }
             }
         }
@@ -330,16 +331,14 @@ void NetworkEditor::removeInspectorNetwork(Port* port) {
 
 void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
     //TODO: allow to define inspectors in module
-    ImagePort* imagePort = dynamic_cast<ImagePort*>(port);
-    if (imagePort) {
+    if (dynamic_cast<ImageInport*>(port) || dynamic_cast<ImageOutport*>(port)) {
         addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
                             IVW_DIR+"data/workspaces/portinspectors/imageportinspector.inv");
         processorNetwork_->setModified(true);
         processorNetworkEvaluator_->evaluate();
         return;
     }
-    VolumePort* volumePort = dynamic_cast<VolumePort*>(port);
-    if (volumePort) {
+    if (dynamic_cast<VolumeInport*>(port) || dynamic_cast<VolumeOutport*>(port)) {
         addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
                             IVW_DIR+"data/workspaces/portinspectors/volumeportinspector.inv");
         processorNetwork_->setModified(true);
@@ -360,10 +359,10 @@ ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItem(std::string ident
     return 0;
 }
 
-ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(Port* port1, Port* port2) const {
+ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(Outport* outport, Inport* inport) const {
     for (size_t i=0; i<connectionGraphicsItems_.size(); i++)
-        if (connectionGraphicsItems_[i]->getOutport() == port1 &&
-            connectionGraphicsItems_[i]->getOutport() == port2)
+        if (connectionGraphicsItems_[i]->getOutport() == outport &&
+            connectionGraphicsItems_[i]->getInport() == inport)
             return connectionGraphicsItems_[i];
     return 0;
 }
@@ -419,16 +418,16 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
             if (e->modifiers()==Qt::NoModifier) {
                 startPort_ = startProcessor_->getSelectedPort(e->scenePos());
 
-                if (startPort_ && startPort_->isOutport()) {
+                if (startPort_ && dynamic_cast<Outport*>(startPort_)) {
                     // click on outport: start drawing a connection
-                    QRectF portRect = startProcessor_->calculatePortRect(startPort_);
+                    QRectF portRect = startProcessor_->calculatePortRect(dynamic_cast<Outport*>(startPort_));
                     portRect = startProcessor_->mapToScene(portRect).boundingRect();
                     connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(), startPort_->getColorCode());
                     addItem(connectionCurve_);
                     connectionCurve_->show();
                     e->accept();
 
-                } else if (startPort_ && startPort_->isInport()) {
+                } else if (startPort_ && dynamic_cast<Inport*>(startPort_)) {
                     // click on inport: disconnect if connected
                     // FIXME: delete operation in release event handling results in a crash when
                     //        disconnecting two ports through drag and drop
@@ -531,8 +530,8 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
         if (endProcessor_) {
             endPort_ = endProcessor_->getSelectedPort(e->scenePos());
-            if (endPort_ && !endPort_->isOutport() && !endPort_->isConnected())
-                addConnection(startPort_, endPort_);
+            if (endPort_ && dynamic_cast<Inport*>(endPort_) && !endPort_->isConnected())
+                addConnection(dynamic_cast<Outport*>(startPort_), dynamic_cast<Inport*>(endPort_));
         }
 
         startProcessor_ = 0;
@@ -614,7 +613,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     
     if (processorGraphicsItem) {
         Port* selectedPort = processorGraphicsItem->getSelectedPort(e->scenePos());
-        if (selectedPort && selectedPort->isOutport()) {
+        if (selectedPort && dynamic_cast<Outport*>(selectedPort)) {
             // Port context menu
             QMenu menu;
             QAction* inspectorAction = 0;

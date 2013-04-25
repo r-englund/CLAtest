@@ -17,8 +17,8 @@ VolumeSplit::VolumeSplit()
       brickSizeVoxel_("brickSizeVoxel", "Brick Size (Voxel)", "32"), //TODO: set min and max for this and bricks per dim based on volume dimensions
       borderWidth_("borderWidth", "Border Width", 2, 0, 16),
       camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f)),
-      inport_(Port::INPORT, "volume.in"),
-      outport_(Port::OUTPORT, "volumebrick.out")
+      inport_("volume.in"),
+      outport_("volumebrick.out")
 {
     limitingMemory_.addOption("CPU (Main Memory)", CPU);
     limitingMemory_.addOption("GPU (TextureGL)", GPU);

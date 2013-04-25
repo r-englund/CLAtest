@@ -23,7 +23,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     std::vector<PortConnection*> portConnections = portConnections_;
     for (size_t i=0; i<portConnections.size(); i++)
         if (portConnections[i]->involvesProcessor(processor))
-            removeConnection(portConnections[i]->getInport(), portConnections[i]->getOutport());
+            removeConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());
 
     // remove all links for this processor
     std::vector<ProcessorLink*> processorLinks = processorLinks_;
@@ -38,25 +38,23 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
 }
 
 
-void ProcessorNetwork::addConnection(Port* sourcePort, Port* destPort) {
+void ProcessorNetwork::addConnection(Outport* sourcePort, Inport* destPort) {
     ivwAssert(!sourcePort->isConnectedTo(destPort), "Ports already connected.");
-    sourcePort->connectTo(destPort);
+    destPort->connectTo(sourcePort);
     portConnections_.push_back(new PortConnection(sourcePort, destPort));
     modified();
 }
 
-void ProcessorNetwork::removeConnection(Port* sourcePort, Port* destPort) {
+void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
     for (size_t i=0; i<portConnections_.size(); i++) {
-        if ((portConnections_[i]->getInport()==sourcePort && portConnections_[i]->getOutport()==destPort) ||
-            (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort)) {                
-                sourcePort->disconnectFrom(destPort);
+        if (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort) {                
+                destPort->disconnectFrom(sourcePort);
                 portConnections_.erase(portConnections_.begin()+i);
                 break;
         }
     }
     modified();
 }
-
 
 void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {        
     //FIXME: link processors

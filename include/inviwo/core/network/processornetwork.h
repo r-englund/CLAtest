@@ -58,24 +58,23 @@ public:
     /**
      * Adds a PortConnection to the ProcessorNetwork. This involves creating the connection
      * between the two specified ports, as well as adding this connection to the ProcessorNetwork.
-     * The order in which the two Ports are specified does not play a role.
      *
-     * @param port1 One of the two Ports to be connected.
-     * @param port2 The other of the two Ports to be connected.
+     * @param sourcePort The outport.
+     * @param destPort The inport.
      * @see removeConnection()
      */
-    void addConnection(Port* port1, Port* port2);
+    void addConnection(Outport* sourcePort, Inport* destPort);
 
     /**
      * Removes a PortConnection from the ProcessorNetwork. This involves resolving the connection
      * between the two specified Ports, as well as removing this connection from the
-     * ProcessorNetwork. The order in which the two Ports are specified does not play a role.
+     * ProcessorNetwork.
      *
-     * @param port1 One of the two Ports to be connected.
-     * @param port2 The other of the two Ports to be connected.
+     * @param sourcePort The outport.
+     * @param destPort The inport.
      * @see addConnection()
      */
-    void removeConnection(Port* port1, Port* port2);
+    void removeConnection(Outport* sourcePort, Inport* destPort);
 
     void addLink(Processor* sourceProcessor, Processor* destProcessor);
     void removeLink(Processor* sourceProcessor, Processor* destProcessor);

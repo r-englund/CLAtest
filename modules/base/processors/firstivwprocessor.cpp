@@ -4,7 +4,7 @@ namespace inviwo {
 
 FirstIvwProcessor::FirstIvwProcessor()
     : ProcessorGL(),
-      outport_(Port::OUTPORT, "outport"),
+      outport_("outport"),
       color_("color", "Color", vec3(1.0f), vec3(0.0f), vec3(1.0f), vec3(0.1f))
 {
     addPort(outport_);

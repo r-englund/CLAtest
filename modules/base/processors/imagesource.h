@@ -26,7 +26,7 @@ protected:
     virtual void process();
 
 private:
-    ImagePort outport_;
+    ImageOutport outport_;
     FileProperty imageFileName_;
 };
 

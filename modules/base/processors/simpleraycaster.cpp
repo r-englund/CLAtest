@@ -4,10 +4,10 @@ namespace inviwo {
 
 SimpleRaycaster::SimpleRaycaster()
     : ProcessorGL(),
-    volumePort_(Port::INPORT, "volume"),
-    entryPort_(Port::INPORT, "entry-points"),
-    exitPort_(Port::INPORT, "exit-points"),
-    outport_(Port::OUTPORT, "outport"),
+    volumePort_("volume"),
+    entryPort_("entry-points"),
+    exitPort_("exit-points"),
+    outport_("outport"),
     enableShading_("enableShading", "Shading", false),
     lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
 	enableMIP_("enableMIP", "MIP", false),
@@ -52,7 +52,7 @@ void SimpleRaycaster::process() {
     const ImageGL* transferFunctionGL = transferFunction_.get().getData()->getRepresentation<ImageGL>();
     transferFunctionGL->bindColorTexture(GL_TEXTURE3);
     activateTarget(outport_);
-    Image* outImage = outport_.getEditableData();
+    Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     uvec2 outportDim = outImageGL->getDimension();
     shader_->activate();

@@ -62,13 +62,13 @@ bool ProcessorNetworkEvaluator::hasBeenVisited(Processor* processor) {
 
 std::vector<Processor*> ProcessorNetworkEvaluator::getDirectPredecessors(Processor* processor) {
     std::vector<Processor*> predecessors;
-    std::vector<Port*> inports = processor->getInports();
+    std::vector<Inport*> inports = processor->getInports();
     std::vector<PortConnection*> portConnections = processorNetwork_->getPortConnections();
     for (size_t i=0; i<inports.size(); i++) {
         for (size_t j=0; j<portConnections.size(); j++) {
             const Port* curInport = portConnections[j]->getInport();
             if (curInport == inports[i]) {
-                const Port* connectedOutport = portConnections[j]->getOutport();
+                const Outport* connectedOutport = portConnections[j]->getOutport();
                 predecessors.push_back(connectedOutport->getProcessor());
             }
         }
@@ -138,7 +138,7 @@ bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor
     bool isConnected = false;
     std::vector<PortConnection*> portConnections = processorNetwork_->getPortConnections();
 
-    std::vector<Port*> outports = processor->getOutports();   
+    std::vector<Outport*> outports = processor->getOutports();   
     for (size_t i=0; i<outports.size(); i++) {
         for (size_t j=0; j<portConnections.size(); j++) {
             const Port* curOutport = portConnections[j]->getOutport();
@@ -154,12 +154,12 @@ bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor
 
     if (isConnected) return isConnected;
 
-    std::vector<Port*> inports = processor->getInports();   
+    std::vector<Inport*> inports = processor->getInports();   
     for (size_t i=0; i<inports.size(); i++) {
         for (size_t j=0; j<portConnections.size(); j++) {
             const Port* curInport = portConnections[j]->getInport();
             if (curInport == inports[i]) {
-                const Port* connectedOutport = portConnections[j]->getOutport();
+                const Outport* connectedOutport = portConnections[j]->getOutport();
                 if (connectedOutport == port) {
                     isConnected = true;
                     break;
@@ -183,9 +183,9 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
             if (directPredecessors[i]->hasInteractionHandler())
                 directPredecessors[i]->invokeInteractionEvent(resizeEvent);
             
-            std::vector<Port*> outports = directPredecessors[i]->getOutports();
+            std::vector<Outport*> outports = directPredecessors[i]->getOutports();
             for (size_t j=0; j<outports.size(); j++) {
-                ImagePort* imagePort = dynamic_cast<ImagePort*>(outports[j]);
+                ImageOutport* imagePort = dynamic_cast<ImageOutport*>(outports[j]);
                 if (imagePort) {
                     if (isPortConnectedToProcessor(imagePort, processor)) {
                         imagePort->changeDimensions(resizeEvent->canvasSize());
@@ -202,21 +202,21 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
 
                 uvec2 dimMax(0);
                 for (size_t j=0; j<ports.size(); j++) {
-                    ImagePort* imagePort = dynamic_cast<ImagePort*>(ports[j]);
-                    if (imagePort && imagePort->isOutport()) {
-                        uvec2 dim = imagePort->getDimensions();
+                    ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(ports[j]);
+                    if (imageOutport) {
+                        uvec2 dim = imageOutport->getDimensions();
                         //TODO: determine max dimension based on aspect ratio?
                         if ((dimMax.x<dim.x) || (dimMax.y<dim.y)) {
-                            dimMax = imagePort->getDimensions();
+                            dimMax = imageOutport->getDimensions();
                         }
                     }
                 }
 
                 if(dimMax.x>0 && dimMax.y>0) {
                     for (size_t j=0; j<ports.size(); j++) {
-                        ImagePort* imagePort = dynamic_cast<ImagePort*>(ports[j]);
-                        if (imagePort && imagePort->isInport()) {
-                            imagePort->changeDimensions(dimMax);
+                        ImageInport* imageInport = dynamic_cast<ImageInport*>(ports[j]);
+                        if (imageInport) {
+                            imageInport->changeDimensions(dimMax);
                         }
                     }
                 }                
@@ -246,9 +246,9 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     propagateResizeEvent(eventInitiator, resizeEvent);
 
     bool invalidate=false;
-    std::vector<Port*> inports = eventInitiator->getInports();
+    std::vector<Inport*> inports = eventInitiator->getInports();
     for (size_t j=0; j<inports.size(); j++) {
-        ImagePort* imagePort = dynamic_cast<ImagePort*>(inports[j]);
+        ImageInport* imagePort = dynamic_cast<ImageInport*>(inports[j]);
         if (imagePort) {
             imagePort->changeDimensions(resizeEvent->canvasSize());
             invalidate = true;

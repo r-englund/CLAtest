@@ -3,7 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/datastructures/image.h>
 #include <inviwo/core/properties/templateproperty.h>
 
 //
@@ -18,7 +18,7 @@ namespace inviwo {
 class IVW_CORE_API SnapshotProperty : public TemplateProperty<std::string> {
 
 public:
-    SnapshotProperty(std::string identifier, std::string displayName, ImagePort& imagePort,
+    SnapshotProperty(std::string identifier, std::string displayName,
                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                      PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual ~SnapshotProperty();
@@ -27,7 +27,7 @@ public:
      * Set the internal imagePort.
      * @param imagePort The new imagePort.
      */
-    void setImagePort(ImagePort& imagePort) { imagePort_ = &imagePort; }
+    void setImage(const Image* image) { image_ = image; }
 
     /**
      * Save a snapshot of imagePort to file.
@@ -39,9 +39,9 @@ public:
 
 private:
     /**
-     * The imagePort from which the snapshot should be taken.
+     * The image from which the snapshot should be taken.
      */
-    ImagePort* imagePort_;
+    const Image* image_;
 
 };
 

@@ -4,7 +4,7 @@ namespace inviwo {
 
 ImageSource::ImageSource()
     : Processor(),
-    outport_(Port::OUTPORT, "image.outport"),
+    outport_("image.outport"),
     imageFileName_("imageFileName", "Image file name", IVW_DIR+"data/images/swirl.tga")
 {
     addPort(outport_);
@@ -29,7 +29,7 @@ void ImageSource::deinitialize() {
 * Creates a ImageDisk representation if there isn't an object already defined.
 **/
 void ImageSource::process() {
-	Image* outImage = outport_.getEditableData(); 
+	Image* outImage = outport_.getData(); 
     if(outImage){
         ImageDisk *outImageDisk_ = outImage->getEditableRepresentation<ImageDisk>();
         if(!outImageDisk_ || outImageDisk_->getSourceFile() != imageFileName_.get()){ 

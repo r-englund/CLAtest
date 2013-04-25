@@ -35,8 +35,8 @@ private:
     ButtonProperty buttonPropperty_;
     //SnapshotProperty snapshotProperty_;
 
-	ImagePort inport0_;
-    ImagePort outport_;
+	ImageInport inport0_;
+    ImageOutport outport_;
     Shader* shader_;
 };
 

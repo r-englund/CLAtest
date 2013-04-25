@@ -7,9 +7,9 @@ namespace inviwo {
 
 ImageMixer::ImageMixer()
     : ProcessorGL(),
-      inport0_(Port::INPORT, "inport0"),
-      inport1_(Port::INPORT, "inport1"),
-      outport_(Port::OUTPORT, "outport"),
+      inport0_("inport0"),
+      inport1_("inport1"),
+      outport_("outport"),
       alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
 {
     addPort(inport0_);
@@ -35,7 +35,7 @@ void ImageMixer::deinitialize() {
 }
 
 void ImageMixer::process() {    
-    Image* outImage = outport_.getEditableData();
+    Image* outImage = outport_.getData();
     const Image* inputImage0 = inport0_.getData();
     const Image* inputImage1 = inport1_.getData();
     

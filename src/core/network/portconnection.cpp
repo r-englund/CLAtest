@@ -2,13 +2,12 @@
 
 namespace inviwo {
 
-PortConnection::SlimPort::SlimPort() {}
-PortConnection::SlimPort::SlimPort(Port* p):_port(p) {
-}
+PortConnection::SlimPort::SlimPort():port_(NULL) {}
+PortConnection::SlimPort::SlimPort(Port* p):port_(p) {}
 
 void PortConnection::SlimPort::serialize(IvwSerializer& s) const {
-    s.serialize("identifier", _port->getIdentifier(), true);
-    s.serialize("Processor", _port->getProcessor());
+    s.serialize("identifier", port_->getIdentifier(), true);
+    s.serialize("Processor", port_->getProcessor());
 }
 
 void PortConnection::SlimPort::deserialize(IvwDeserializer& s) {
@@ -19,19 +18,33 @@ void PortConnection::SlimPort::deserialize(IvwDeserializer& s) {
    s.deserialize("Processor", processor);   
 
    if(processor) {
-       _port = processor->getPort(name);       
+       port_ = processor->getPort(name);       
    }
 }
 
 Port* PortConnection::SlimPort::getPort() const{
-    return _port;
+    return port_;
+}
+
+PortConnection::SlimInport::SlimInport():SlimPort(),inport_(NULL) {}
+PortConnection::SlimInport::SlimInport(Inport* p):SlimPort(p),inport_(p) {}
+
+Inport* PortConnection::SlimInport::getInport() const{
+    return inport_;
+}
+
+PortConnection::SlimOutport::SlimOutport():SlimPort(),outport_(NULL) {}
+PortConnection::SlimOutport::SlimOutport(Outport* p):SlimPort(p),outport_(p) {}
+
+Outport* PortConnection::SlimOutport::getOutport() const{
+    return outport_;
 }
 
 PortConnection::PortConnection()   
     : inport_(0),
       outport_(0){}
 
-PortConnection::PortConnection(Port* outport, Port* inport)
+PortConnection::PortConnection(Outport* outport, Inport* inport)
     : inport_(inport),
       outport_(outport){}
 

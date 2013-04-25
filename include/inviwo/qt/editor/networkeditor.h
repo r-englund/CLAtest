@@ -6,7 +6,8 @@
 
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
-#include <inviwo/core/ports/port.h>
+#include <inviwo/core/ports/inport.h>
+#include <inviwo/core/ports/outport.h>
 #include <inviwo/core/util/singleton.h>
 
 #include "processorgraphicsitem.h"
@@ -41,8 +42,8 @@ public:
     void addProcessor(Processor* processor, QPointF pos);
     void removeProcessor(Processor* processor);
 
-    void addConnection(Port* port1, Port* port2);
-    void removeConnection(Port* port1, Port* port2);
+    void addConnection(Outport* outport, Inport* inport);
+    void removeConnection(Outport* outport, Inport* inport);
 
     void addLink(Processor* processor1, Processor* processor2);
     void removeLink(Processor* processor1, Processor* processor2);
@@ -101,7 +102,7 @@ private:
     void addProcessorWidget(Processor* processor);
 
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
-    void addConnectionGraphicsItem(Port* port1, Port* port2);
+    void addConnectionGraphicsItem(Outport* outport, Inport* inport);
     void removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem);
 
     void removeLink(LinkConnectionGraphicsItem* linkGraphicsItem);
@@ -111,7 +112,7 @@ private:
     void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(std::string identifier) const;
-    ConnectionGraphicsItem* getConnectionGraphicsItem(Port* port1, Port* port2) const;
+    ConnectionGraphicsItem* getConnectionGraphicsItem(Outport* outport, Inport* inport) const;
     LinkConnectionGraphicsItem* getLinkGraphicsItem(Processor* processor1, Processor* processor2) const;
 
     ProcessorGraphicsItem* getProcessorGraphicsItemAt(const QPointF pos) const;

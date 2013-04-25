@@ -28,8 +28,8 @@ protected:
     virtual void compile();
 
 private:
-    ImagePort inport_;
-    ImagePort outport_;
+    ImageInport inport_;
+    ImageOutport outport_;
 
     int pingPongMod;
 

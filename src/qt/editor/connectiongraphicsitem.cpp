@@ -69,8 +69,8 @@ QRectF CurveGraphicsItem::boundingRect() const {
 
 
 
-ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Port* outport,
-                                               ProcessorGraphicsItem* inProcessor, Port* inport)
+ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Outport* outport,
+                                               ProcessorGraphicsItem* inProcessor, Inport* inport)
                                                : CurveGraphicsItem(outProcessor->mapToScene(outProcessor->calculatePortRect(outport)).boundingRect().center(),
                                                                    inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center(), 
                                                                    inport->getColorCode()),

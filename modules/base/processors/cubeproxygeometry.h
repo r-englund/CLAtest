@@ -28,7 +28,7 @@ protected:
     virtual void process();
 
 private:
-    VolumePort inport_;
+    VolumeInport inport_;
 
     Shader* shader_;
 };
