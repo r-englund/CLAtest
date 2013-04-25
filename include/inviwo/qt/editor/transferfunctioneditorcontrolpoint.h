@@ -23,12 +23,12 @@ namespace inviwo {
         /** \TransferFunctionEditorControlPoint constructor  
         *      Creates a TransferFunctionEditorControlPoint at a QPointF
         */
-        TransferFunctionEditorControlPoint(QPointF* pos);
+        TransferFunctionEditorControlPoint(QPointF* pos, vec4* val);
 
         /** \TransferFunctionEditorControlPoint constructor  
         *      Creates a TransferFunctionEditorControlPoint at a point from x and y float coordinates
         */
-        TransferFunctionEditorControlPoint(float x, float y);
+        TransferFunctionEditorControlPoint(float x, float y, vec4* val);
 
         /** \TransferFunctionEditorControlPoint constructor  
         *      Default constructor
@@ -66,6 +66,7 @@ namespace inviwo {
         int id_; ///< id to identify edge points
         int size_; ///< size for drawing the points
         QPointF* pos_;///< position
+        vec4* data_;///< Pointer to where the controlpoint gets its color value
     };
 
 }// namespace

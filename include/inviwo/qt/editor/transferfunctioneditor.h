@@ -36,7 +36,7 @@ namespace inviwo {
         *         
         *  Main constructor, creates edge control points and corresponding line
         */
-        TransferFunctionEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunc_, std::vector<TransferFunctionEditorControlPoint*>* points_);
+        TransferFunctionEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunction_, std::vector<TransferFunctionEditorControlPoint*>* points_);
         ~TransferFunctionEditor();
 
         /** \Custom sort
@@ -75,8 +75,12 @@ namespace inviwo {
     private :
         std::vector<TransferFunctionEditorControlPoint*>* points_; ///< Control points in the transfer function graph
         std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
-        TransferFunction* transferFunc_; ///< Pointer to widget's member variable
+        TransferFunction* transferFunction_; ///< Pointer to widget's member variable
         PropertyWidgetQt *parent_; ///< Pointer to widget so it can be updated from the editor
+        vec4* data_;
+        //IntVec4Property colorpicker_;
+
+
     };
 
 } // namespace

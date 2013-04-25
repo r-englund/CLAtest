@@ -5,22 +5,24 @@
 
 namespace inviwo {
 
-    TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(QPointF* position){
+    TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(QPointF* position, vec4* data){
         setFlag(QGraphicsItem::ItemIsMovable, true);
         setFlag(QGraphicsItem::ItemIsSelectable);
         setFlag(QGraphicsItem::ItemIsMovable);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges);
         setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
         this->setPosition(new QPointF((*position)));
+        data_ = data;
     }
 
-    TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(float x, float y){
+    TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(float x, float y, vec4* data){
         setFlag(QGraphicsItem::ItemIsMovable, true);
         setFlag(QGraphicsItem::ItemIsSelectable);
         setFlag(QGraphicsItem::ItemIsMovable);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges);
         setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
         this->setPosition(new QPointF(x, y));
+        data_ = data;
     }
 
     void TransferFunctionEditorControlPoint::setId(int id){
@@ -45,11 +47,14 @@ namespace inviwo {
 
         setFlag(QGraphicsItem::ItemIsMovable, true);
 
+        std::stringstream ss;
+        vec4 col = data_[(int)pos_->x()];
+        
         QPen* pen = new QPen(Qt::black, 2.5, Qt::SolidLine, Qt::RoundCap);
         painter->setPen(*pen);
-        painter->drawEllipse(this->getPosition()->x() - size/2, this->getPosition()->y() - size/2, size, size);
+        painter->drawEllipse(getPosition()->x() - size/2, getPosition()->y() - size/2, size, size);
 
-        pen = new QPen(Qt::cyan, 1.0, Qt::SolidLine, Qt::RoundCap);
+        pen = new QPen(QColor::fromRgbF(col.r, col.b, col.g), 1.0, Qt::SolidLine, Qt::RoundCap);
         painter->setPen(*pen);
         painter->drawEllipse(pos_->x() - size/2, pos_->y() - size/2, size, size);
 
@@ -78,24 +83,24 @@ namespace inviwo {
         QPointF* pos = new QPointF(e->scenePos());
 
         if (id_ == 0){
-            pos->setX(0);
+            pos->setX(0.0f);
             pos->setY(e->scenePos().y());
         }
         if (id_ == 1){
-            pos->setX(255);
+            pos->setX(255.0f);
             pos->setY(e->scenePos().y());
         }
-        if (pos->x() <= 0){
+        if (pos->x() <= 0.0f){
             pos->setX(0);
         } 
-        if (pos->x() >= 255){
-            pos->setX(255);
+        if (pos->x() >= 255.0f){
+            pos->setX(255.0f);
         }
-        if (pos->y() <= 0){
-            pos->setY(0);
+        if (pos->y() <= 0.0f){
+            pos->setY(0.0f);
         } 
-        if (pos->y() >= 100){
-            pos->setY(100);
+        if (pos->y() >= 100.0f){
+            pos->setY(100.0f);
         }
         setPosition(pos);
     }

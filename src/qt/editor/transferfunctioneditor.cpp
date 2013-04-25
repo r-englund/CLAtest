@@ -11,6 +11,9 @@
 #include <inviwo/qt/editor/transferfunctioneditor.h>
 
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
+#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 #include <QApplication>
 #include <QBrush>
@@ -27,14 +30,25 @@ namespace inviwo {
 
     TransferFunctionEditor::TransferFunctionEditor(PropertyWidgetQt *parent, TransferFunction* transferFunc, std::vector<TransferFunctionEditorControlPoint*>* points)
         :
-    transferFunc_(transferFunc),
+        transferFunction_(transferFunc),
         parent_(parent),
         points_(points)
     {
-        points_->push_back(new TransferFunctionEditorControlPoint(0.0f, 0.0f));
-        points_->push_back(new TransferFunctionEditorControlPoint(255.0f , 100.0f));
+        //colorpicker_ = new IntVec4Property();
+        //colorpicker_.setSemantics(PropertySemantics::Color);
+        Image* img = transferFunction_->getData();
+        ImageRAMVec4float32 * imgRam = img->getEditableRepresentation<ImageRAMVec4float32>();
+        data_ = static_cast<vec4*>(imgRam->getData());
+
+        points_->push_back(new TransferFunctionEditorControlPoint(0.0f, 0.0f, data_));
+        points_->push_back(new TransferFunctionEditorControlPoint(255.0f , 100.0f, data_));
+
+        data_[0] = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+        data_[255] = vec4(0.0f, 1.0f, 1.0f, 1.0f);
+
         (*points_)[0]->setId(0);
         (*points_)[1]->setId(1);
+
         calcTransferValues();
         (*points_)[0]->setZValue(1);
         (*points_)[1]->setZValue(1);
@@ -44,6 +58,7 @@ namespace inviwo {
         lines_.push_back(new TransferFunctionEditorLineItem((*points_)[0], (*points_)[1]));
         lines_[0]->setZValue(0);
         addItem(lines_[0]);
+
     }
 
     TransferFunctionEditor::~TransferFunctionEditor(){}
@@ -71,9 +86,6 @@ namespace inviwo {
     }
 
     void TransferFunctionEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
-        if ((*points_)[0]->getPosition()->x() != 0)
-            (*points_)[0]->setPosition(new QPointF(0, (*points_)[0]->getPosition()->y()));
-
         sortLines();
         sortPoints();
         for (int i = 0; i < (int)points_->size() - 1; i++){
@@ -83,11 +95,15 @@ namespace inviwo {
         QGraphicsScene::mouseMoveEvent(e);
         calcTransferValues();
         parent_->updateFromProperty();
+        //parent_->setProperty();
     }
 
     void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
-        points_->push_back(new TransferFunctionEditorControlPoint(new QPointF(e->scenePos())));
+        points_->push_back(new TransferFunctionEditorControlPoint(new QPointF(e->scenePos()), data_));
         lines_.push_back(new TransferFunctionEditorLineItem());
+
+        data_[(int)e->scenePos().x()] = vec4(e->scenePos().y()/100.0f);
+
         (*points_)[points_->size() - 1]->setZValue(1);
         addItem(lines_[lines_.size() - 1]);
         addItem((*points_)[points_->size() - 1]);
@@ -122,30 +138,51 @@ namespace inviwo {
                         lines_[j]->setStart((*points_)[j]);
                         lines_[j]->setFinish((*points_)[j + 1]);
                     }
-
                 }
             }
         }
+        calcTransferValues();
         this->update();
     }
 
     void TransferFunctionEditor::calcTransferValues(){
-        Image* img = transferFunc_->getData();
-        ImageRAMfloat32* imgRam = img->getEditableRepresentation<ImageRAMfloat32>();
-        float* data = static_cast<float*>(imgRam->getData());
+        //transferFunction_->calcTransferValues();
 
+        vec4* newValues;
+        std::stringstream ss;
         glm::quat startQuat;
         glm::quat stopQuat;
         float factor;
+
+        //Loops through all point to point intervals
         for (int i = 0; i < (int)points_->size() - 1; i++){
             const QPointF* start = (*points_)[i]->getPosition();
             const QPointF* stop = (*points_)[i + 1]->getPosition();
 
+            vec4 startValues = data_[(int)(*points_)[i]->getPosition()->x()];
+            vec4 stopValues = data_[(int)(*points_)[i + 1]->getPosition()->x()];
+            
+            startValues.a = (*points_)[i]->getPosition()->y()/100.0f;
+            stopValues.a = (*points_)[i + 1]->getPosition()->y()/100.0f;
+
+            //Interpolates the function values for all intermediate positions
             for (int j = start->x(); j <=  stop->x(); j++){
-                startQuat.x = start->y();
-                stopQuat.x = stop->y();
                 factor = (j - start->x())/(stop->x() - start->x());
-                data[j] = glm::lerp(startQuat, stopQuat, factor).x/100.0f;
+
+                startQuat.x = startValues.a;
+                stopQuat.x = stopValues.a;
+                float newA = glm::lerp(startQuat, stopQuat, factor).x;
+                startQuat.x = startValues.r;
+                stopQuat.x = stopValues.r;
+                float newR = glm::lerp(startQuat, stopQuat, factor).x; 
+                startQuat.x = startValues.b;
+                stopQuat.x = stopValues.b;
+                float newB = glm::lerp(startQuat, stopQuat, factor).x;
+                startQuat.x = startValues.g;
+                stopQuat.x = stopValues.g;
+                float newG = glm::lerp(startQuat, stopQuat, factor).x;
+                newValues = new vec4(newR, newB, newG, newA);
+                data_[j] = *newValues;
             }
         }
     }
