@@ -46,7 +46,6 @@ template<typename T>
 FIBITMAP* ImageLoader::handleConvertions(const T *data, size_t bitsPerPixel, uvec2 dim){
     T* dataswitch = switchChannels<T>(data, dim);
     FIBITMAP *bitmap = convertToBitmap<T>(dataswitch, dim, bitsPerPixel);
-    std::cout << static_cast<int*>(bitmap->data)[1] << std::endl;
     return bitmap;
     //return NULL;
 }

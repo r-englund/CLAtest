@@ -17,25 +17,27 @@ CommandLineParser::~CommandLineParser() {
 void CommandLineParser::initialize() {
     // Set up available arguments and flags
     try{  
-        snapshotValueArg_ = new TCLAP::MultiArg<std::string>("w",
-                                                            "workspaceSnapshot",
-                                                            "Take snapshot on specified workspace",
+        workspaceValueArg_ = new TCLAP::ValueArg<std::string>("w",
+                                                            "workspacePath",
+                                                            "Specify workspace to open",
                                                             false,
+                                                            "",
                                                             "Name of workspace");
-        cmd_->add( *snapshotValueArg_ );
+        snapshotCloseArg_ = new TCLAP::SwitchArg("s", "snapshot", 
+            "Pass this flag if you want to take snapshots on all canvases and then close inviwo.");
+        cmd_->add( *snapshotCloseArg_ );
+        cmd_->add( *workspaceValueArg_ );
     } catch (TCLAP::ArgException &e)  // catch exceptions
     { std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
 }
-std::string CommandLineParser::getWorkspace() const{
-    if(snapshotValueArg_->isSet()){
-        std::vector<std::string> values = snapshotValueArg_->getValue();
-        return *(values.begin());
+const std::string CommandLineParser::getWorkspace() const{
+    if(workspaceValueArg_->isSet()){
+        return (workspaceValueArg_->getValue());
     }
-    return "";
+    return NULL;
 }
 
 void CommandLineParser::parse(int argc, char** argv){
-    
     try{        
         cmd_->parse(argc, argv);
     } catch (TCLAP::ArgException &e) { 
@@ -48,16 +50,15 @@ void CommandLineParser::parse(){
 }
 
 bool CommandLineParser::getExitWithCapture() const{
-    if(snapshotValueArg_->isSet()){
-        std::vector<std::string> values = snapshotValueArg_->getValue();
-        //Should it be possible to print several workspaces at the same time?
-        assert(values.size() == 1);
+    return snapshotCloseArg_->getValue();
+}
 
+bool CommandLineParser::getLoadWorkspaceFromArg() const{
+    if(workspaceValueArg_->isSet()){
+        std::string values = workspaceValueArg_->getValue();
+
+        assert(values.size() != 0);
         return true;
-        
-        /*for(std::vector<std::string>::iterator it = values.begin(); it < values.end(); ++it){
-            std::cout << "Got yah!" << (*it) << std::endl;
-        }*/
     }
     return false;
 }

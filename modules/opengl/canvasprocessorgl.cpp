@@ -8,6 +8,8 @@ CanvasProcessorGL::CanvasProcessorGL()
 {
     dimensions_.onChange(this, &CanvasProcessorGL::resizeCanvas);
     addProperty(dimensions_);
+    shader_ = NULL;
+    noiseShader_ = NULL;
 }
 
 Processor* CanvasProcessorGL::create() const {

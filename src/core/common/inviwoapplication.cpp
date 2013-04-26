@@ -24,6 +24,7 @@ InviwoApplication::~InviwoApplication() {}
 void InviwoApplication::initialize() {
 
     commandLineParser_->initialize();
+    commandLineParser_->parse();
     settings_ = new Settings();
     settings_->initialize();
 

@@ -37,6 +37,7 @@ public:
     void setProcessorNetwork(ProcessorNetwork* processorNetwork) { processorNetwork_ = processorNetwork; }
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
     Settings* getSettings() { return settings_; }
+    const CommandLineParser* getCommandLineParser() const { return commandLineParser_; } 
 
     virtual void registerFileObserver(FileObserver* fileObserver) { LogWarn("This Inviwo application does not support FileObservers."); }
     virtual void startFileObservation(std::string fileName) { LogWarn("This Inviwo application does not support FileObservers."); }

@@ -10,6 +10,7 @@ ImageGrayscale::ImageGrayscale()
       outport_("outport")
       
 {
+    shader_ = NULL;
     addPort(inport0_);
     addPort(outport_);
 }
