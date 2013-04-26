@@ -27,6 +27,7 @@ public:
     public:
         SlimInport();
         SlimInport(Inport*);
+        virtual void deserialize(IvwDeserializer& s);
         Inport* getInport() const;
     private:
         Inport* inport_;
@@ -36,6 +37,7 @@ public:
     public:
         SlimOutport();
         SlimOutport(Outport*);
+        virtual void deserialize(IvwDeserializer& s);
         Outport* getOutport() const;
     private:
         Outport* outport_;
