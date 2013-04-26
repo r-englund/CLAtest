@@ -39,7 +39,7 @@ void VolumeRaycasterCL::initialize() {
         kernel_ = new cl::Kernel(program, "raycaster");
 
     } catch (cl::Error& e) {
-        throw e;
+        
     }
     
     
@@ -76,7 +76,7 @@ void VolumeRaycasterCL::process() {
     kernel_->setArg(arg++, *entryCL);
     kernel_->setArg(arg++, *exitPort_.getData()->getRepresentation<ImageCL>());
     kernel_->setArg(arg++, *transferFunctionCL);
-    kernel_->setArg(arg++, samplingRate_.get() / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
+    kernel_->setArg(arg++, samplingRate_.get());// / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
     kernel_->setArg(arg++, volumeDim);
     kernel_->setArg(arg++, *outImageCL);
     // 

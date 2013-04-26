@@ -3,6 +3,8 @@
 __constant sampler_t smpUNormNoClampNearest = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_NONE | CLK_FILTER_NEAREST;
 __constant sampler_t smpNormClampLinear = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRESS_CLAMP | CLK_FILTER_LINEAR;
 
+__constant float REF_SAMPLING_INTERVAL = 150.f;
+
 __kernel void raycaster(read_only image3d_t volume
                         , read_only image2d_t entryPoints
                         , read_only image2d_t exitPoints
@@ -30,19 +32,19 @@ __kernel void raycaster(read_only image3d_t volume
         while(t <= tEnd) {
             float3 pos = entry.xyz+t*direction;
             volumeSample = read_imagef(volume, smpNormClampLinear, as_float4(pos)).w; 
-            float4 color = 10.f*read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
-   //         color.a = 1.f - pow(1.f - color.a, tIncr * REF_SAMPLING_INTERVAL);
-			//result.rgb = result.rgb + (1.0 - result.a) * color.a * color.rgb;
-			//result.a = result.a + (1.0 -result.a) * color.a;	
-            result += color;
+            float4 color = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
+            color.w = 1.f - pow(1.f - color.w, tIncr * REF_SAMPLING_INTERVAL);
+			result.xyz = result.xyz + (1.0 - result.w) * color.w * color.xyz;
+			result.w = result.w + (1.0 -result.w) * color.w;	
+            //result += color;
             t += tIncr;
 
         }
         // Riemann sum
-        result *= tIncr; 
+        //result *= tIncr; 
         // Remove last part due to steppping too far. 
         //result -= (t-tEnd)*volumeSample;
-        result.w = 1.f;
+        //result.w = 1.f;
         //result.xy = exit.xy;
         //result.x = 1.f;
     }
