@@ -1,9 +1,9 @@
+
 #include <inviwo/core/network/processornetworkevaluator.h>
-#include <modules/opengl/canvasprocessorgl.h>
+
+//#include <modules/opengl/canvasprocessorgl.h>
 
 #include <inviwo/core/processors/canvasprocessor.h>
-
-#include <inviwo/core/util/commandlineparser.h>
 
 namespace inviwo {
 
@@ -397,10 +397,10 @@ void ProcessorNetworkEvaluator::evaluate() {
     defaultContext_->activate();
     
     if(snapshotAndExit){
-        std::vector<inviwo::CanvasProcessorGL*> pv = processorNetwork_->getProcessorsByType<inviwo::CanvasProcessorGL>();
+        std::vector<inviwo::CanvasProcessor*> pv = processorNetwork_->getProcessorsByType<inviwo::CanvasProcessor>();
         std::cout << "Number of canvases: " << pv.size() << std::endl;
         int i = 0;
-        for(std::vector<inviwo::CanvasProcessorGL*>::iterator it = pv.begin(); it != pv.end(); it++){
+        for(std::vector<inviwo::CanvasProcessor*>::iterator it = pv.begin(); it != pv.end(); it++){
             std::stringstream ss;
             ss << i;
             std::string path(IVW_DIR+"data/images/" + ss.str() + ".png");

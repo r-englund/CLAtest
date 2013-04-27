@@ -24,6 +24,8 @@ public:
     Canvas* getCanvas() const { return canvas_; }
 
     bool isEndProcessor() { return true; }
+    
+    void takeSnapshot(const char* filePath);
 
 protected:
     ImageInport inport_;

@@ -26,8 +26,6 @@ public:
     virtual std::string getCategory() const  { return "Canvas Processor"; }
     virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
 
-    void takeSnapshot(const char* filePath);
-
 protected:
     virtual void process();
 

@@ -21,6 +21,12 @@ CanvasProcessor::~CanvasProcessor() {
     }
 }
 
+void CanvasProcessor::takeSnapshot(const char *filePath){
+    const Image* img = inport_.getData();
+    if(img != NULL)
+        snapshot_.saveSnapshot(filePath, img);
+}
+
 Processor* CanvasProcessor::create() const {
     return new CanvasProcessor();
 }

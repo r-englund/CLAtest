@@ -1,7 +1,7 @@
 #ifndef IVW_COMMANDLINEPARSER_H
 #define IVW_COMMANDLINEPARSER_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
+//#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
 #undef HAVE_CONFIG_H
