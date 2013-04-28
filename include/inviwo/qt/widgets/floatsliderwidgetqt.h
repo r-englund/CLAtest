@@ -12,17 +12,7 @@ namespace inviwo {
 class IVW_QTWIDGETS_API FloatSliderWidgetQt : public QWidget {
     Q_OBJECT;
 public:
-    /** 
-     * \brief <VERY BRIEFLY DESCRIBE THE METHOD>
-     *
-     * <DESCRIBE THE METHOD>
-     * 
-     * @param float minValue_ <DESCRIBE ME>
-     * @param float maxValue_ <DESCRIBE ME>
-     * @param float increment_ <DESCRIBE ME>
-     * @return  <DESCRIBE ME>
-     */
-    //FloatSliderWidgetQt(float minValue_, float maxValue_, float increment_);
+
     FloatSliderWidgetQt();
 
     virtual ~FloatSliderWidgetQt();
@@ -91,13 +81,11 @@ private:
     float maxValue_;
     float increment_;
     static const int SLIDER_MAX = 10000; 
-    static const int SLIDER_MIN = -10000; 
 
     QDoubleSpinBox* spinBox_;
     QSlider* slider_;
 
     void generateWidget();
-    void updateDecimals();
     /** 
      * \brief updates the value of the spin box from the slider value
      *
@@ -115,7 +103,6 @@ private:
      */
 
     void updateSlider();
-    void updateSliderRange();
 };
 
 }//namespace
