@@ -22,7 +22,8 @@ public:
      * @param float increment_ <DESCRIBE ME>
      * @return  <DESCRIBE ME>
      */
-    FloatSliderWidgetQt(float minValue_, float maxValue_, float increment_);
+    //FloatSliderWidgetQt(float minValue_, float maxValue_, float increment_);
+    FloatSliderWidgetQt();
 
     virtual ~FloatSliderWidgetQt();
 
@@ -74,9 +75,12 @@ public:
      * @return void <DESCRIBE ME>
      */void setIncrement(float increment);
 
+    void setDecimals(int numberOfDecimals);
+
 private slots:
     void updateFromSlider();
     void updateFromSpinBox();
+
 
 signals:
     void valueChanged(float value);
@@ -86,6 +90,8 @@ private:
     float minValue_;
     float maxValue_;
     float increment_;
+    static const int SLIDER_MAX = 10000; 
+    static const int SLIDER_MIN = -10000; 
 
     QDoubleSpinBox* spinBox_;
     QSlider* slider_;

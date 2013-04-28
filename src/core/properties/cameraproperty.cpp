@@ -14,6 +14,7 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 1.0f, 0.1f),
     nearPlane_("near", "Near Plane", 0.0001f, 0.0f, 1000.0f, 0.1f),
     farPlane_("far", "Far Plane", 100.0f, 0.0f, 1000.0f, 0.1f)
+
 {
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
     lookTo_.onChange(this, &CameraProperty::updateViewMatrix);

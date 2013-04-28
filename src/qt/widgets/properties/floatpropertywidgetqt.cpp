@@ -11,7 +11,8 @@ FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property
 void FloatPropertyWidgetQt::generateWidget() {    
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-    sliderWidget_ = new FloatSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
+    //sliderWidget_ = new FloatSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
+    sliderWidget_ = new FloatSliderWidgetQt();
     sliderWidget_->setValue(property_->get());
     hLayout->addWidget(sliderWidget_);
     setLayout(hLayout);
@@ -24,9 +25,10 @@ void FloatPropertyWidgetQt::setPropertyValue(float value) {
 }
 
 void FloatPropertyWidgetQt::updateFromProperty() {
+    sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
     sliderWidget_->setValue(property_->get());
     sliderWidget_->setIncrement(property_->getIncrement());
-    sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
+
 }
 
 void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
