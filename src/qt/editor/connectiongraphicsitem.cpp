@@ -7,9 +7,9 @@
 namespace inviwo {
 
 CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color)
-                                     : startPoint_(startPoint),
-                                       endPoint_(endPoint),
-                                       color_(color.r, color.g, color.b) {
+                                     : color_(color.r, color.g, color.b) {
+    setStartPoint(startPoint);
+    setEndPoint(endPoint);
     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
 
     QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();

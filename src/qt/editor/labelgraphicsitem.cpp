@@ -7,16 +7,16 @@
 
 namespace inviwo {
 
-LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent) : QGraphicsTextItem(parent) {
+LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent) : QGraphicsSimpleTextItem(parent) {
 }
 
 LabelGraphicsItem::~LabelGraphicsItem() {}
 
 void LabelGraphicsItem::focusOutEvent(QFocusEvent* event) {
     setFlags(0);
-    setTextInteractionFlags(Qt::NoTextInteraction);
-    ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(parent());
-    if (processorGraphicsItem) processorGraphicsItem->getProcessor()->setIdentifier(toPlainText().toStdString());
+    //setTextInteractionFlags(Qt::NoTextInteraction);
+    //ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(parent());
+    //if (processorGraphicsItem) processorGraphicsItem->getProcessor()->setIdentifier(toPlainText().toStdString());
 }
 
 

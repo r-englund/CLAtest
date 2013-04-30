@@ -91,11 +91,8 @@ void NetworkEditor::removeLink(Processor* processor1, Processor* processor2) {
 ////////////////////////////////////////////////////////
 void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos) {
     // generate GUI representations (graphics item, property widget, processor widget)
-    ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"));
-    if (meta->isVisible()) {
-        addProcessorGraphicsItem(processor, pos);
-        addPropertyWidgets(processor);
-    }
+    addProcessorGraphicsItem(processor, pos);
+    addPropertyWidgets(processor);
     addProcessorWidget(processor);
 
     // TODO: Generalize by registering output processors (can also be e.g. VolumeSave)
@@ -111,8 +108,7 @@ void NetworkEditor::removeProcessorRepresentations(Processor* processor) {
     if (canvasProcessor)
         processorNetworkEvaluator_->deregisterCanvas(canvasProcessor->getCanvas());
 
-    if (dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"))->isVisible())
-        removeProcessorGraphicsItem(processor);
+    removeProcessorGraphicsItem(processor);
     removePropertyWidgets(processor);
     // processor widget already removed when processor is destroyed
 }
@@ -121,6 +117,9 @@ void NetworkEditor::addProcessorGraphicsItem(Processor* processor, QPointF pos) 
     // generate GUI representation and add to editor
     ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem();
     processorGraphicsItem->setProcessor(processor);
+
+    ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"));
+    if (!meta->isVisible()) processorGraphicsItem->setVisible(false);
 
     // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
     if (gridSnapping_) pos = snapToGrid(pos);
@@ -769,7 +768,6 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
         //addConnectionGraphicsItem(connections[i]);
         //ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(processor1, port1,
                                                                             //processor2, port2);
-
 
     // add link graphics items
     std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();

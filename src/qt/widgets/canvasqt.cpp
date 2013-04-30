@@ -19,7 +19,9 @@ CanvasQt::CanvasQt(QWidget* parent)
     eventConverter_ = new EventConverterQt();
 }
 
-CanvasQt::~CanvasQt() {}
+CanvasQt::~CanvasQt() {
+    delete eventConverter_;
+}
 
 void CanvasQt::initialize() {
     CanvasGL::initialize();

@@ -2,11 +2,11 @@
 #define IVW_LABELGRAPHICSITEM_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <QGraphicsTextItem>
+#include <QGraphicsSimpleTextItem>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API LabelGraphicsItem : public QGraphicsTextItem {
+class IVW_QTEDITOR_API LabelGraphicsItem : public QGraphicsSimpleTextItem {
 
 public:
     LabelGraphicsItem(QGraphicsItem* parent);

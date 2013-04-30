@@ -179,12 +179,12 @@ LinkDialogProcessorGraphicsItem::LinkDialogProcessorGraphicsItem() : GraphicsIte
 
     nameLabel_ = new LabelGraphicsItem(this);
     nameLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight);
-    nameLabel_->setDefaultTextColor(Qt::white);
+    nameLabel_->setBrush(Qt::white);
     nameLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Black, false));
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight*2.5);
-    classLabel_->setDefaultTextColor(Qt::lightGray);
+    classLabel_->setBrush(Qt::lightGray);
     classLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
 }
 
@@ -250,8 +250,8 @@ QVariant LinkDialogProcessorGraphicsItem::itemChange(GraphicsItemChange change, 
 void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor) {
     setGraphicsItemData(processor);    
     if (processor) {
-        nameLabel_->setPlainText(QString::fromStdString(processor->getIdentifier()));
-        classLabel_->setPlainText(QString::fromStdString(processor->getClassName()));
+        nameLabel_->setText(QString::fromStdString(processor->getIdentifier()));
+        classLabel_->setText(QString::fromStdString(processor->getClassName()));
 
         propertyGraphicsItems_.clear();
 
@@ -261,8 +261,8 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor) {
         }
 
     } else {
-        nameLabel_->setPlainText("");
-        classLabel_->setPlainText("");
+        nameLabel_->setText("");
+        classLabel_->setText("");
     }
 }
 
@@ -280,7 +280,7 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight*2.5);
-    classLabel_->setDefaultTextColor(Qt::darkGray);
+    classLabel_->setBrush(Qt::darkGray);
     classLabel_->setFont(QFont("Segoe", propertyLabelHeight, QFont::Normal, true));
 
     processorGraphicsItem_ = processor;
@@ -504,9 +504,9 @@ QVariant LinkDialogPropertyGraphicsItem::itemChange(GraphicsItemChange change, c
 void LinkDialogPropertyGraphicsItem::setProperty(Property* prop) {
     setGraphicsItemData(prop);    
     if (prop) {
-        classLabel_->setPlainText(QString::fromStdString(prop->getDisplayName()));
+        classLabel_->setText(QString::fromStdString(prop->getDisplayName()));
     } else {        
-        classLabel_->setPlainText("");
+        classLabel_->setText("");
     }
 }
 

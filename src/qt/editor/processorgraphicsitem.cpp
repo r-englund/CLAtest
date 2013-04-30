@@ -31,37 +31,38 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     setGraphicsEffect(processorShadowEffect);
 
     nameLabel_ = new LabelGraphicsItem(this);
-    nameLabel_->setPos(-width/2.0+labelHeight/2.0, -height/2.0+labelHeight);
-    nameLabel_->setDefaultTextColor(Qt::white);
+    nameLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight);
+    nameLabel_->setBrush(Qt::white);
     nameLabel_->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
     //nameLabel_->setTextInteractionFlags(Qt::TextEditable);
 
     classLabel_ = new LabelGraphicsItem(this);
-    classLabel_->setPos(-width/2.0+labelHeight/2.0, -height/2.0+labelHeight*2.5);
-    classLabel_->setDefaultTextColor(Qt::lightGray);
+    classLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight*2.5);
+    classLabel_->setBrush(Qt::lightGray);
     classLabel_->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
 }
 
 ProcessorGraphicsItem::~ProcessorGraphicsItem() {
     delete nameLabel_;
+    delete classLabel_;
 }
 
 void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     processor_ = processor;
     if (processor) {
-        nameLabel_->setPlainText(QString::fromStdString(processor_->getIdentifier()));
-        classLabel_->setPlainText(QString::fromStdString(processor_->getClassName()));
+        nameLabel_->setText(QString::fromStdString(processor_->getIdentifier()));
+        classLabel_->setText(QString::fromStdString(processor_->getClassName()));
         addObservation(processor_);
         processor_->addObserver(this);
     } else {
-        nameLabel_->setPlainText("");
-        classLabel_->setPlainText("");
+        nameLabel_->setText("");
+        classLabel_->setText("");
     }
 }
 
 void ProcessorGraphicsItem::editProcessorName() {
     nameLabel_->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
-    nameLabel_->setTextInteractionFlags(Qt::TextEditorInteraction);
+    //nameLabel_->setTextInteractionFlags(Qt::TextEditorInteraction);
     nameLabel_->setFocus();
 }
 
@@ -126,7 +127,7 @@ QRectF ProcessorGraphicsItem::calculatePortRect(Outport* port) const {
 
 QRectF ProcessorGraphicsItem::calculateInportRect(size_t curPort) const {
     QPointF portDims(9.0f, 9.0f);
-    float xOffset = 8.0f;   // based isOn roundedCorners
+    float xOffset = 8.0f;   // based on roundedCorners
     float xSpacing = 12.5f; // GRID_SIZE / 2.0
 
     qreal left = rect().left()+xOffset+curPort*xSpacing;
@@ -136,7 +137,7 @@ QRectF ProcessorGraphicsItem::calculateInportRect(size_t curPort) const {
 
 QRectF ProcessorGraphicsItem::calculateOutportRect(size_t curPort) const {
     QPointF portDims(9.0f, 9.0f);
-    float xOffset = 8.0f;   // based isOn roundedCorners
+    float xOffset = 8.0f;   // based on roundedCorners
     float xSpacing = 12.5f; // GRID_SIZE / 2.0
     
     qreal left = rect().left()+xOffset+curPort*xSpacing;
@@ -366,7 +367,7 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
 void ProcessorGraphicsItem::updateMetaData() {
     //TODO: this is not pretty way to access processor metadata, find another way
     ProcessorMetaData* processorMeta = dynamic_cast<ProcessorMetaData*>(processor_->getMetaData("ProcessorMetaData"));
-    processorMeta->setVisibile(true);
+    processorMeta->setVisibile(isVisible());
     processorMeta->setPosition(ivec2(x(), y()));
 }
 
