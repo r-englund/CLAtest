@@ -56,14 +56,17 @@ void FloatVec4PropertyWidgetQt::updateFromProperty() {
 
     vec4 valueVec4Max = property_->getMaxValue();
     vec4 valueVec4Min = property_->getMinValue();
-
+    vec4 valueVec4 = property_->get();
+    sliderX_->initValue(valueVec4.x);
+    sliderY_->initValue(valueVec4.y);
+    sliderZ_->initValue(valueVec4.z);
+    sliderW_->initValue(valueVec4.w);
 
     sliderX_->setRange(valueVec4Min.x,valueVec4Max.x);
     sliderY_->setRange(valueVec4Min.y,valueVec4Max.y);
     sliderZ_->setRange(valueVec4Min.z,valueVec4Max.z);
     sliderW_->setRange(valueVec4Min.w,valueVec4Max.w);
-
-    vec4 valueVec4 = property_->get();
+    
     sliderX_->setValue(valueVec4.x);
     sliderY_->setValue(valueVec4.y);
     sliderZ_->setValue(valueVec4.z);

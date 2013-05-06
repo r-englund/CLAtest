@@ -44,6 +44,8 @@ void FloatVec2PropertyWidgetQt::updateFromProperty() {
     valueVec2Min_ = property_->getMinValue();
     valueIncrement_ = property_->getIncrement();
     valueVec2_ = property_->get();
+    sliderX_->initValue(valueVec2_.x);
+    sliderY_->initValue(valueVec2_.y);
 
     sliderX_->setRange(valueVec2Min_.x,valueVec2Max_.x);
     sliderY_->setRange(valueVec2Min_.y,valueVec2Max_.y);

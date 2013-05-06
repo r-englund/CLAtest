@@ -12,8 +12,7 @@ void FloatPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     //sliderWidget_ = new FloatSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
-    sliderWidget_ = new FloatSliderWidgetQt();
-    sliderWidget_->setValue(property_->get());
+    sliderWidget_ = new FloatSliderWidgetQt();    
     hLayout->addWidget(sliderWidget_);
     setLayout(hLayout);
 
@@ -25,6 +24,7 @@ void FloatPropertyWidgetQt::setPropertyValue(float value) {
 }
 
 void FloatPropertyWidgetQt::updateFromProperty() {
+    sliderWidget_->initValue(property_->get());
     sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
     sliderWidget_->setValue(property_->get());
     sliderWidget_->setIncrement(property_->getIncrement());

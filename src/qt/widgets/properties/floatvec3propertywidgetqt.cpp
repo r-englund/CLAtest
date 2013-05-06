@@ -49,6 +49,10 @@ void FloatVec3PropertyWidgetQt::updateFromProperty() {
     valueIncrement_ = property_->getIncrement();
     valueVec3_ = property_->get();
 
+    sliderX_->initValue(valueVec3_.x);
+    sliderY_->initValue(valueVec3_.y);
+    sliderZ_->initValue(valueVec3_.z);
+
     sliderX_->setRange(valueVec3Min_.x,valueVec3Max_.x);
     sliderY_->setRange(valueVec3Min_.y,valueVec3Max_.y);
     sliderZ_->setRange(valueVec3Min_.z,valueVec3Max_.z);

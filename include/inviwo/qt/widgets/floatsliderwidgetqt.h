@@ -34,6 +34,17 @@ public:
      * @return void <DESCRIBE ME>
      */
     void setValue(float value);
+
+    /** 
+     * \brief In contrast to setValue(float), initValue(float) does not emit signals. Also this is added due to lack of constructor.
+     *
+     * Sets the float value
+     * 
+     * @param float tmpValue Must be between minValue and maxValue of the slider
+     * @return void <DESCRIBE ME>
+     */
+    void initValue(float value) { value_ = value; }
+
     /** 
      * \brief sets the maximum value of the spin box and slider
      *
