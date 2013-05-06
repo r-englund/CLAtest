@@ -38,7 +38,7 @@ void VolumeRaycasterCL::initialize() {
         cl::Program program = OpenCL::buildProgram(IVW_DIR+"modules/opencl/cl/volumeraycaster.cl");
         kernel_ = new cl::Kernel(program, "raycaster");
 
-    } catch (cl::Error& e) {
+    } catch (cl::Error&) {
         
     }
     

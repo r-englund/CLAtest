@@ -18,7 +18,7 @@ public:
 
     virtual T& get();
 	virtual const T& get() const { return value_; };
-    virtual void set(T value);
+    virtual void set(const T& value);
 
 protected:
     T value_;
@@ -38,7 +38,7 @@ T& TemplateProperty<T>::get() {
 }
 
 template <typename T>
-void TemplateProperty<T>::set(T value) {
+void TemplateProperty<T>::set(const T& value) {
     value_ = value;
     onChangeCallback_.invoke();
     getOwner()->invalidate();
