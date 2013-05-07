@@ -126,7 +126,8 @@ const T* Data::getRepresentation() const{
 template<class T>
 T* Data::getEditableRepresentation() {
     T* result = const_cast<T*>(getRepresentation<T>());
-    invalidateAllOther<T>();
+    if(representations_.size()>1)
+        invalidateAllOther<T>();
     return result;
 }
 
@@ -141,13 +142,17 @@ bool Data::hasRepresentation() const {
 
 template<class T>
 void Data::invalidateAllOther(){
-    for (size_t i=0; i<representations_.size(); i++) {
-        T* representation = dynamic_cast<T*>(representations_[i]);
+    std::vector<DataRepresentation*>::iterator it = representations_.begin();
+    for( ; it != representations_.end(); ) {
+        T* representation = dynamic_cast<T*>((*it));
         if (!representation){
-            representations_[i]->invalidate();
+            (*it)->invalidate();
             //TODO : make updates (VolumeGL2RAMUpdate) existing representations instead of deleting old ones.
-            delete representations_[i];
-            representations_.erase(representations_.begin() + i);
+            delete (*it);
+            it = representations_.erase(it);
+        }
+        else{
+            ++it;
         }
     }
 }
