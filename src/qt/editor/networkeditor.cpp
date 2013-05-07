@@ -155,12 +155,10 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
 
     // remove processor graphics item from editor
     processorGraphicsItem->hide();
-    removeItem(processorGraphicsItem);
     processorGraphicsItems_.erase(std::remove(processorGraphicsItems_.begin(), processorGraphicsItems_.end(),
                                               processorGraphicsItem), processorGraphicsItems_.end());
 
     // delete processor graphics item
-    processorGraphicsItem->setProcessor(0);
     delete processorGraphicsItem;
 }
 
