@@ -35,5 +35,9 @@ int main(int argc, char** argv) {
     // open last network
     mainWin.openLastNetwork();
 
-    return inviwoApp.exec();
+    // process last arguments
+    if(mainWin.processEndCommandLineArgs())
+        return inviwoApp.exec();
+    else
+        return 0;
 }

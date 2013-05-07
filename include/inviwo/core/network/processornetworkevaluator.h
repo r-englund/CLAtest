@@ -21,6 +21,7 @@ public:
 
     void registerCanvas(Canvas* canvas, std::string associatedProcessName="CanvasProcessorGL");
     void deregisterCanvas(Canvas* canvas);
+    void saveSnapshotAllCanvases(std::string dir, std::string ext = ".png");
     void setDefaultRenderContext(Canvas* canvas) { defaultContext_ = canvas; }
     void activateDefaultRenderContext();
     void initializeNetwork();
@@ -30,7 +31,6 @@ public:
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
 
-    void setSnapshotAndExit(bool value){ snapshotAndExit = value; };
 private:
     bool hasBeenVisited(Processor* processor);
     bool hasBeenVisited(Property* property);
@@ -57,8 +57,6 @@ private:
     std::vector<Canvas*> registeredCanvases_;
     Canvas* defaultContext_;
     LinkEvaluator* linkEvaluator_;
-
-    bool snapshotAndExit;
 };
 
 } // namespace

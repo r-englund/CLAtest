@@ -41,7 +41,8 @@ public:
     void setArgv(char** argv) {
         argv_ = argv;
     }
-    const std::string getWorkspace() const;
+    const std::string getOutputPath() const;
+    const std::string getWorkspacePath() const;
     bool getExitWithCapture() const;
     bool getLoadWorkspaceFromArg() const;
     // TODO: No need to serialize the parser, right?
@@ -54,6 +55,7 @@ private:
     char** argv_;
     TCLAP::CmdLine *cmd_;
     TCLAP::ValueArg<std::string> *workspaceValueArg_;
+    TCLAP::ValueArg<std::string> *outputValueArg_;
     TCLAP::SwitchArg *snapshotCloseArg_;
     std::string workspaceName_;
 

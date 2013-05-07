@@ -23,18 +23,33 @@ void CommandLineParser::initialize() {
                                                             false,
                                                             "",
                                                             "Name of workspace");
+        outputValueArg_ = new TCLAP::ValueArg<std::string>("o",
+            "outputPath",
+            "Specify output path",
+            false,
+            "",
+            "Output path");
         snapshotCloseArg_ = new TCLAP::SwitchArg("s", "snapshot", 
             "Pass this flag if you want to take snapshots on all canvases and then close inviwo.");
-        cmd_->add( *snapshotCloseArg_ );
-        cmd_->add( *workspaceValueArg_ );
+        cmd_->add(*snapshotCloseArg_);
+        cmd_->add(*outputValueArg_);
+        cmd_->add(*workspaceValueArg_);
     } catch (TCLAP::ArgException &e)  // catch exceptions
     { std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
 }
-const std::string CommandLineParser::getWorkspace() const{
+
+const std::string CommandLineParser::getOutputPath() const{
+    if(outputValueArg_->isSet()){
+        return (outputValueArg_->getValue());
+    }
+    return "";
+}
+
+const std::string CommandLineParser::getWorkspacePath() const{
     if(workspaceValueArg_->isSet()){
         return (workspaceValueArg_->getValue());
     }
-    return NULL;
+    return "";
 }
 
 void CommandLineParser::parse(int argc, char** argv){

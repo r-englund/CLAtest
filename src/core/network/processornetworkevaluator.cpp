@@ -57,6 +57,20 @@ void ProcessorNetworkEvaluator::deregisterCanvas(Canvas *canvas) {
 }
 
 
+void ProcessorNetworkEvaluator::saveSnapshotAllCanvases(std::string dir, std::string ext){
+    std::vector<inviwo::CanvasProcessor*> pv = processorNetwork_->getProcessorsByType<inviwo::CanvasProcessor>();
+    std::cout << "Number of canvases: " << pv.size() << std::endl;
+    int i = 0;
+    for(std::vector<inviwo::CanvasProcessor*>::iterator it = pv.begin(); it != pv.end(); it++){
+        std::stringstream ss;
+        ss << (*it)->getIdentifier();
+        std::string path(dir + ss.str() + ext);
+        std::cout << "Saving canvas to: " << path << std::endl;
+        (*it)->takeSnapshot((path).c_str());
+        ++i;
+    }
+}
+
 bool ProcessorNetworkEvaluator::hasBeenVisited(Processor* processor) {
     for (size_t i=0; i<processorsVisited_.size(); i++)
         if (processorsVisited_[i] == processor)
@@ -395,21 +409,6 @@ void ProcessorNetworkEvaluator::evaluate() {
         for (size_t i=0; i<registeredCanvases_.size(); i++)
             registeredCanvases_[i]->repaint();
     defaultContext_->activate();
-    
-    if(snapshotAndExit){
-        std::vector<inviwo::CanvasProcessor*> pv = processorNetwork_->getProcessorsByType<inviwo::CanvasProcessor>();
-        std::cout << "Number of canvases: " << pv.size() << std::endl;
-        int i = 0;
-        for(std::vector<inviwo::CanvasProcessor*>::iterator it = pv.begin(); it != pv.end(); it++){
-            std::stringstream ss;
-            ss << i;
-            std::string path(IVW_DIR+"data/images/" + ss.str() + ".png");
-            std::cout << "Saving canvas to: " << path << std::endl;
-            (*it)->takeSnapshot((path).c_str());
-            ++i;
-        }
-        exit(0);
-    }
 }
 
 } // namespace

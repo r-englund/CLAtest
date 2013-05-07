@@ -34,7 +34,7 @@ public:
     virtual void initializeWorkspace();
 
     void openLastNetwork();
-    bool getSnapshotAndClose();
+    bool processEndCommandLineArgs();
 
 public slots:
     void newNetwork();

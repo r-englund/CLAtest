@@ -78,12 +78,22 @@ void InviwoMainWindow::deinitialize() {
 void InviwoMainWindow::initializeWorkspace(){
     ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
     networkEvaluator->setDefaultRenderContext(defaultRenderContext_);
-    networkEvaluator->setSnapshotAndExit(getSnapshotAndClose());
     defaultRenderContext_->setFixedSize(0,0);
 }
 
-bool InviwoMainWindow::getSnapshotAndClose(){
-    return (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser()->getExitWithCapture();
+bool InviwoMainWindow::processEndCommandLineArgs(){
+    const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
+    if(cmdparser->getExitWithCapture()){
+        ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
+        networkEvaluator->evaluate();
+        std::string path = cmdparser->getOutputPath();
+        if(path.empty())
+            path = IVW_DIR+"data/images/";
+        networkEvaluator->saveSnapshotAllCanvases(path);
+        return false;
+    }
+
+    return true;
 }
 
 void InviwoMainWindow::addMenus() {
@@ -205,10 +215,12 @@ void InviwoMainWindow::openLastNetwork() {
     //If a network is defined by an argument, that network is opened, otherwise, the last opened network is opened.
     const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
     if (cmdparser->getLoadWorkspaceFromArg())
-        openNetwork(static_cast<const QString>(cmdparser->getWorkspace().c_str()));
+        openNetwork(static_cast<const QString>(cmdparser->getWorkspacePath().c_str()));
 
     else if (!recentFileList_.isEmpty())
         openNetwork(recentFileList_[0]);
+
+    networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->evaluate();
 }
 
 void InviwoMainWindow::openNetwork() {
