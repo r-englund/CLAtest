@@ -216,11 +216,8 @@ void InviwoMainWindow::openLastNetwork() {
     const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
     if (cmdparser->getLoadWorkspaceFromArg())
         openNetwork(static_cast<const QString>(cmdparser->getWorkspacePath().c_str()));
-
     else if (!recentFileList_.isEmpty())
         openNetwork(recentFileList_[0]);
-
-    networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->evaluate();
 }
 
 void InviwoMainWindow::openNetwork() {
