@@ -41,22 +41,24 @@ uvec3 ImageInport::getColorCode() const {
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier)
     : DataOutport<Image>(identifier), dimensions_(uvec2(256,256))
-{}
-
-ImageOutport::~ImageOutport() {}
-
-void ImageOutport::initialize() {
+{
     data_ = new Image(dimensions_);
 }
 
-void ImageOutport::deinitialize() {
+ImageOutport::~ImageOutport() {
     delete data_;
 }
+
+void ImageOutport::initialize() {}
+
+void ImageOutport::deinitialize() {}
 
 void ImageOutport::changeDimensions(uvec2 dimensions) {
     dimensions_ = dimensions;
     //TODO: data_ is sometimes un-initialized. Especially while loading workspace.
-    if (data_) data_->resize(dimensions_);
+    if (data_) 
+        data_->resize(dimensions_);
+    
     invalidate();
 }
 

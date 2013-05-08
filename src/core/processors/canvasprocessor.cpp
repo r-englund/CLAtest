@@ -23,6 +23,7 @@ CanvasProcessor::~CanvasProcessor() {
 
 void CanvasProcessor::takeSnapshot(const char *filePath){
     const Image* img = inport_.getData();
+    snapshot_.setImage(inport_.getData());
     if(img != NULL)
         snapshot_.saveSnapshot(filePath, img);
 }
@@ -44,10 +45,6 @@ void CanvasProcessor::deinitialize() {
 
 void CanvasProcessor::process() {
     Processor::process();
-
-    // TODO: Check if this is required,
-    // or if the inport remains the same when reconnecting processors
-    snapshot_.setImage(inport_.getData());
 
     if (canvas_) canvas_->activate();
 }

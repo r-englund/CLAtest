@@ -11,7 +11,7 @@ Processor* ProcessorGL::create() const {
     return new ProcessorGL();
 }
 
-void ProcessorGL::activateTarget(ImageOutport outport){
+void ProcessorGL::activateTarget(ImageOutport& outport){
     Image* outImage = outport.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     outImageGL->activateBuffer();
@@ -21,25 +21,25 @@ void ProcessorGL::deactivateCurrentTarget() {
     FrameBufferObject::deactivate();
 }
 
-void ProcessorGL::bindColorTexture(ImageInport inport, GLenum texUnit) {
+void ProcessorGL::bindColorTexture(const ImageInport& inport, GLenum texUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     inImageGL->bindColorTexture(texUnit);
 }
 
-void ProcessorGL::bindDepthTexture(ImageInport inport, GLenum texUnit) {
+void ProcessorGL::bindDepthTexture(const ImageInport& inport, GLenum texUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     inImageGL->bindDepthTexture(texUnit);
 }
 
-void ProcessorGL::unbindColorTexture(ImageInport inport) {
+void ProcessorGL::unbindColorTexture(const ImageInport& inport) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     inImageGL->unbindColorTexture();
 }
 
-void ProcessorGL::unbindDepthTexture(ImageInport inport) {
+void ProcessorGL::unbindDepthTexture(const ImageInport& inport) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     inImageGL->unbindDepthTexture();
