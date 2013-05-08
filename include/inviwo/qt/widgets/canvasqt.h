@@ -22,7 +22,6 @@ public:
     void initialize();
     void initializeGL();
     void resizeGL(int w, int h);
-    void paintGL();
     virtual void activate();   
     virtual void update();
     void repaint();

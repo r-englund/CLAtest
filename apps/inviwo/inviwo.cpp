@@ -1,5 +1,5 @@
 #ifdef _MSC_VER
-#pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 #endif
 
 #include <QFile>

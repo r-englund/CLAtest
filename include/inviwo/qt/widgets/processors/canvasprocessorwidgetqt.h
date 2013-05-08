@@ -7,25 +7,25 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API CanvasProcessorWidgetQt : public ProcessorWidgetQt {
+class IVW_QTWIDGETS_API CanvasProcessorWidgetQt : public ProcessorWidgetQt {
 
-    public:
-        CanvasProcessorWidgetQt(Processor* processor, QWidget* parent);
-        virtual ~CanvasProcessorWidgetQt();
+public:
+    CanvasProcessorWidgetQt(Processor* processor, QWidget* parent);
+    virtual ~CanvasProcessorWidgetQt();
 
-        virtual void initialize();
+    virtual void initialize();
 
-        virtual void show();
-        virtual void hide();
+    virtual void show();
+    virtual void hide();
 
-    protected:
-
+protected:
     void resizeEvent(QResizeEvent*);
-    void closeEvent(QCloseEvent *e);
+    void showEvent(QShowEvent*);
+    void closeEvent(QCloseEvent*);
 
-    private:
-        CanvasQt* canvas_;
-    };
+private:
+    CanvasQt* canvas_;
+};
 
 } // namespace
 

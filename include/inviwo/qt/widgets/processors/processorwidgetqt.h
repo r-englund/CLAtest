@@ -17,10 +17,11 @@ public:
     virtual void hide();
     virtual void move(ivec2 pos);
 
-    protected:
-    void resizeEvent(QResizeEvent*);
-    void closeEvent(QCloseEvent *);
-    void moveEvent(QMoveEvent* event);
+protected:
+    virtual void resizeEvent(QResizeEvent*);
+    virtual void closeEvent(QCloseEvent*);
+    virtual void showEvent(QShowEvent*);
+    virtual void moveEvent(QMoveEvent*);
 };
 
 } // namespace

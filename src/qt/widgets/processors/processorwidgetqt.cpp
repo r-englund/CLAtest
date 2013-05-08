@@ -6,7 +6,7 @@
 namespace inviwo {
 
 ProcessorWidgetQt::ProcessorWidgetQt(Processor* processor, QWidget* parent)
-    : ProcessorWidget(processor)
+    : ProcessorWidget(processor), QWidget(parent)
 {
     ivec2 pos = ProcessorWidget::getPositionMetaData();
     QWidget::move(pos.x, pos.y);
@@ -42,9 +42,12 @@ void ProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     QWidget::resizeEvent(event);
 }
 
+void ProcessorWidgetQt::showEvent(QShowEvent* event) {
+    ProcessorWidget::show();
+}
+
 void ProcessorWidgetQt::closeEvent(QCloseEvent* event) {
     ProcessorWidget::hide();
-    QWidget::hide();
 }
 
 void ProcessorWidgetQt::moveEvent(QMoveEvent* event) {

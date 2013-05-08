@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/image.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/interaction/events/eventhandler.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
@@ -19,6 +20,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual void activate();
+    virtual void render(const Image*);
     virtual void repaint();
     virtual void resize(uvec2 dimensions);
     virtual uvec2 size() { return dimensions_;}

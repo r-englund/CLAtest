@@ -9,8 +9,8 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt(Processor* processor, QWidget* 
     : ProcessorWidgetQt(processor, parent),
       canvas_(0)
 {
-    setMinimumSize(256, 256);
-    setWindowFlags(windowFlags() | Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+    setMinimumSize(32, 32);
+    setWindowFlags(windowFlags() | Qt::Tool | Qt::CustomizeWindowHint);
     setWindowTitle(QString::fromStdString(processor->getIdentifier())); 
 }
 
@@ -38,22 +38,30 @@ void CanvasProcessorWidgetQt::initialize() {
     initialized_ = true;
 }
 
+void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
+    ProcessorWidgetQt::resizeEvent(event);
+}
+
 void CanvasProcessorWidgetQt::show() {
     canvas_->show();
     ProcessorWidgetQt::show();
 }
 
-void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
-    ProcessorWidgetQt::resizeEvent(event);
+void CanvasProcessorWidgetQt::showEvent(QShowEvent* event) {
+    canvas_->show();
+    canvas_->activate();
+    canvas_->update();
+    ProcessorWidgetQt::showEvent(event);
 }
 
 void CanvasProcessorWidgetQt::hide() {
+    canvas_->hide();
     ProcessorWidgetQt::hide();
 }
 
-void CanvasProcessorWidgetQt::closeEvent(QCloseEvent *e) {    
+void CanvasProcessorWidgetQt::closeEvent(QCloseEvent *event) {    
     canvas_->hide();
-    ProcessorWidgetQt::hide();
+    ProcessorWidgetQt::closeEvent(event);
 }
 
 } // namespace

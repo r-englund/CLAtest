@@ -4,6 +4,8 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include "inviwoopengl.h"
 #include <inviwo/core/util/canvas.h>
+#include "glwrap/shader.h"
+#include "imagegl.h"
 
 namespace inviwo {
 
@@ -15,12 +17,21 @@ public:
     virtual void initializeGL();
     virtual void deinitialize();
     virtual void activate();
+    void render(const Image*);
     virtual void repaint();
     virtual void resize(uvec2 size);
     virtual void update();
 
+protected:
+    void renderImage();
+    void renderNoise();
+    void renderImagePlaneQuad();
+
 private:
     static bool glewInitialized_;
+    const ImageGL* image_;
+    Shader* shader_;
+    Shader* noiseShader_;
 
 };
 

@@ -47,13 +47,8 @@ void CanvasQt::resizeGL(int width, int height) {
     }
 }
 
-void CanvasQt::paintGL() {
-    //QGLWidget::paintGL();
-    //QGLWidget::swapBuffers();
-}
-
 void CanvasQt::update() {
-    //QGLWidget::updateGL();
+    CanvasGL::update();
 }
 
 void CanvasQt::repaint() {
