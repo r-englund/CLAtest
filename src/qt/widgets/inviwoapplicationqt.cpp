@@ -49,7 +49,7 @@ void InviwoApplicationQt::fileChanged(QString fileName) {
     // therefore the filesystemwatcher might 'forget' about the file
     if (!reloadingFile_) {
         reloadingFile_ = true;
-        std::string fileNameStd = fileName.toStdString();
+        std::string fileNameStd = fileName.toLocal8Bit().constData();
         for (size_t i=0; i<fileObservers_.size(); i++) {
             std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
             if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())

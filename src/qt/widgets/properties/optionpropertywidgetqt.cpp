@@ -25,7 +25,7 @@ void OptionPropertyWidgetQt::fillComboBox() {
     }
 }
 void OptionPropertyWidgetQt::optionChanged() {
-    property_->setSelectedOption(comboBox_->currentText().toStdString());
+    property_->setSelectedOption(comboBox_->currentText().toLocal8Bit().constData());
 }
 
 void OptionPropertyWidgetQt::updateFromProperty() {

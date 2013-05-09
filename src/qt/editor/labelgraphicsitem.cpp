@@ -16,7 +16,7 @@ void LabelGraphicsItem::focusOutEvent(QFocusEvent* event) {
     setFlags(0);
     //setTextInteractionFlags(Qt::NoTextInteraction);
     //ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(parent());
-    //if (processorGraphicsItem) processorGraphicsItem->getProcessor()->setIdentifier(toPlainText().toStdString());
+    //if (processorGraphicsItem) processorGraphicsItem->getProcessor()->setIdentifier(toPlainText().toLocal8Bit().constData());
 }
 
 

@@ -716,7 +716,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
         ProcessorDragObject::decode(e->mimeData(), className);
         if (!className.isEmpty()) {
             // create processor, add it to processor network, and generate it's widgets
-            Processor* processor = dynamic_cast<Processor*>(ProcessorFactory::getRef().create(className.toStdString()));
+            Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
             addProcessor(processor, e->scenePos());
             e->setAccepted(true);
             e->acceptProposedAction();

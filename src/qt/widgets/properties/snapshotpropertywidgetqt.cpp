@@ -44,7 +44,7 @@ void SnapshotPropertyWidgetQt::handleButton(){
     if (saveFileDialog.exec()) {
         QString path = saveFileDialog.selectedFiles().at(0);
         // Save the path to the property
-        property_->set(path.toStdString());
+        property_->set(path.toLocal8Bit().constData());
 
         // Trigger snapshot creation
         property_->saveSnapshot();

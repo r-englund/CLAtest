@@ -154,7 +154,7 @@ void TextEditorWidgetQt::loadString(){
 }
 bool TextEditorWidgetQt::writeToString()
 {
-    static_cast<StringProperty*>(property_)->set(textEditorWidget_->textEditor_->toPlainText().toStdString());
+    static_cast<StringProperty*>(property_)->set(textEditorWidget_->textEditor_->toPlainText().toLocal8Bit().constData());
     stringWidget_->updateFromProperty();
     return true;
 }

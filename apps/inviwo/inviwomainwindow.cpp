@@ -206,7 +206,7 @@ void InviwoMainWindow::openNetwork(QString networkFileName) {
     if (!file.exists())
         return;
     
-    networkEditorView_->getNetworkEditor()->loadNetwork(networkFileName.toStdString());
+    networkEditorView_->getNetworkEditor()->loadNetwork(networkFileName.toLocal8Bit().constData());
     setCurrentNetwork(networkFileName);
     addToRecentNetworks(networkFileName);
 }
@@ -248,7 +248,7 @@ void InviwoMainWindow::openRecentNetwork() {
 }
 
 void InviwoMainWindow::saveNetwork() {
-    networkEditorView_->getNetworkEditor()->saveNetwork(currentNetworkFileName_.toStdString());
+    networkEditorView_->getNetworkEditor()->saveNetwork(currentNetworkFileName_.toLocal8Bit().constData());
     updateWindowTitle();
 
     /*
@@ -283,7 +283,7 @@ void InviwoMainWindow::saveNetworkAs() {
     if (saveFileDialog.exec()) {
         QString path = saveFileDialog.selectedFiles().at(0);
         if (!path.endsWith(".inv")) path.append(".inv");
-        networkEditorView_->getNetworkEditor()->saveNetwork(path.toStdString());
+        networkEditorView_->getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
         setCurrentNetwork(path);
         addToRecentNetworks(path);
     }
