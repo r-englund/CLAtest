@@ -5,7 +5,7 @@
 namespace inviwo {
 
 Processor::Processor() : VoidObservable(),
-        processorWidget_(0), identifier_("undefined")
+        processorWidget_(NULL), identifier_("undefined"), invalidationLevel_(PropertyOwner::INVALID_OUTPUT)
 {}
 
 Processor::~Processor() {}

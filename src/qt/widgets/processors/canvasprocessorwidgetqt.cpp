@@ -34,6 +34,8 @@ void CanvasProcessorWidgetQt::initialize() {
     setLayout(gridLayout);
 
     canvasProcessor->setCanvas(dynamic_cast<Canvas*>(canvas_));
+    uvec2 csize = canvasProcessor->getCanvas()->size();
+    resize(static_cast<int>(csize[0]), static_cast<int>(csize[1]));
 
     initialized_ = true;
 }

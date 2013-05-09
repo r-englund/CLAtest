@@ -38,7 +38,7 @@ void ProcessorWidgetQt::move(ivec2 pos) {
 }
 
 void ProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
-    ProcessorWidget::resize(ivec2(event->size().width(), event->size().height()) );
+    ProcessorWidget::setDimensions(ivec2(event->size().width(), event->size().height()) );
     QWidget::resizeEvent(event);
 }
 

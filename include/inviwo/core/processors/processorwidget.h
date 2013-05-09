@@ -17,7 +17,7 @@ public:
     virtual void initialize();
     virtual void show();
     virtual void hide();    
-    virtual void resize(ivec2);
+    virtual void setDimensions(ivec2);
     virtual void move(ivec2);
 
 private:
