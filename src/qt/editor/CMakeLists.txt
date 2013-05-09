@@ -63,11 +63,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(IVW_QTEDITOR)
-add_definitions(-DQT_CORE_LIB
-                      -DQT_GUI_LIB
-                      -DQT_OPENGL_LIB
-                      -DQT_DLL
-                      -DQT_THREAD_SUPPORT)
+ivw_define_qt_definitions()
 
 #--------------------------------------------------------------------
 # Create library

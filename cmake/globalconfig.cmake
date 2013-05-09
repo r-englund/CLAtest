@@ -86,22 +86,6 @@ if(CMAKE_COMPILER_2005)
   add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE)
 endif(CMAKE_COMPILER_2005)
 
-#--------------------------------------------------------------------
-# Set preprocessor definition to indicate whether 
-# to use the debug postfix
-
-# Add debug postfix if WIN32
-IF(WIN32)
-    IF(MSVC)
-        SET(CMAKE_DEBUG_POSTFIX "d")
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-    ENDIF(MSVC)
-ENDIF()
-
-if(DEBUG_POSTFIX)
-	add_definitions(-D_DEBUG_POSTFIX)
-endif(DEBUG_POSTFIX)
-
 # Check if MAC
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_definitions(-DDARWIN)
@@ -114,7 +98,33 @@ mark_as_advanced(SHARED_LIBS)
 if(SHARED_LIBS)
     set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs, else static libs" FORCE)
     mark_as_advanced(BUILD_SHARED_LIBS)
+else()
+	IF(WIN32)
+		IF(MSVC)
+        	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+			set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+			set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT")
+			set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MTd")
+		ENDIF(MSVC)
+	ENDIF()
 endif()
+
+#--------------------------------------------------------------------
+# Set preprocessor definition to indicate whether 
+# to use the debug postfix
+
+# Add debug postfix if WIN32
+IF(WIN32)
+    IF(MSVC)
+        SET(CMAKE_DEBUG_POSTFIX "d")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+		SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
+    ENDIF(MSVC)
+ENDIF()
+
+if(DEBUG_POSTFIX)
+	add_definitions(-D_DEBUG_POSTFIX)
+endif(DEBUG_POSTFIX)
 
 #--------------------------------------------------------------------
 # Specify build-based defintions

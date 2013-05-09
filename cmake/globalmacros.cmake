@@ -402,6 +402,14 @@ macro(ivw_define_standard_definitions project_name)
 endmacro()
 
 #--------------------------------------------------------------------
+# Define QT defintions
+macro(ivw_define_qt_definitions)
+	add_definitions(-DQT_CORE_LIB
+                      -DQT_GUI_LIB
+                      -DQT_OPENGL_LIB)
+endmacro()
+
+#--------------------------------------------------------------------
 # Add defintion
 macro(ivw_add_definition def)
     add_definitions(-D${def})
