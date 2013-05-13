@@ -192,7 +192,6 @@ bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor
 
 void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, ResizeEvent* resizeEvent) {
     if (!hasBeenVisited(processor)) {
-        processor->invalidate();
         processorsVisited_.push_back(processor);
         std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
         for (size_t i=0; i<directPredecessors.size(); i++) {
