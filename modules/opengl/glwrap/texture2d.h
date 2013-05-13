@@ -15,6 +15,7 @@ public:
     Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
     virtual ~Texture2D();
 
+    Texture2D* Texture2D::clone() const;
     unsigned int getID() const { return id_; }
 
     void setTexels(GLubyte* texels) { texels_ = texels; }
@@ -45,6 +46,7 @@ public:
     int getHeight() const{ return dimensions_.y; }
     void setWidth(int x) { dimensions_.x = x; }
     void setHeight(int y) { dimensions_.y = y; }
+    void resize(uvec2 dimension);
 
 private:
     uvec2 dimensions_;

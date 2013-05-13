@@ -29,6 +29,14 @@ ImageGL::ImageGL(Texture2D* colorTexture, uvec2 dimensions)
     initialize();
 }
 
+ImageGL::ImageGL(Texture2D* colorTexture, Texture2D* depthTexture, uvec2 dimensions)
+: ImageRepresentation(dimensions, DataVec4UINT8())
+{
+    colorTexture_ = colorTexture;
+    depthTexture_ = depthTexture;
+    initialize();
+}
+
 ImageGL::~ImageGL() {}
 
 void ImageGL::initialize() {
@@ -62,7 +70,9 @@ void ImageGL::deinitialize() {
 
 DataRepresentation* ImageGL::clone() const
 {
-    ImageGL* newImageGL = new ImageGL(dimensions_);  
+    Texture2D* colorTexture = colorTexture_->clone();
+    Texture2D* depthTexture = depthTexture_->clone();
+    ImageGL* newImageGL = new ImageGL(colorTexture, depthTexture, dimensions_);
 
     if (getColorTexture()->getTexels()) {
         memcpy(newImageGL->getColorTexture()->getTexels(), getColorTexture()->getTexels(), 
@@ -110,16 +120,14 @@ void ImageGL::unbindColorTexture() const {
 void ImageGL::resize(uvec2 dimensions) {
     dimensions_ = dimensions;        
     colorTexture_->unbind();
-    colorTexture_->setWidth(dimensions_.x);
-    colorTexture_->setHeight(dimensions_.y);
+    colorTexture_->resize(dimensions_);    
     colorTexture_->upload();
     colorTexture_->unbind();
 
     depthTexture_->unbind();
-    depthTexture_->setWidth(dimensions_.x);
-    depthTexture_->setHeight(dimensions_.y);
+    depthTexture_->resize(dimensions_);
     depthTexture_->upload();
-    depthTexture_->unbind();
+    depthTexture_->unbind();    
 }
 
 void ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {

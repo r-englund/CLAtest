@@ -44,6 +44,7 @@ void CanvasQt::resizeGL(int width, int height) {
     if(processorNetworkEvaluator_) {
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
         processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
+        processorNetworkEvaluator_->evaluate();
     }
 }
 

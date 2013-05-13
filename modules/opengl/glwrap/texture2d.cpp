@@ -16,6 +16,19 @@ namespace inviwo {
         glDeleteTextures(1, &id_);
     }
 
+    Texture2D* Texture2D::clone() const {
+        Texture2D* cloneTexture = new Texture2D(dimensions_, format_, internalformat_, dataType_, filtering_);
+        if (texels_) {
+            GLubyte* texels = new GLubyte[dimensions_.x*dimensions_.y*getSizeInBytes()];        
+            memcpy(texels, texels_, dimensions_.x*dimensions_.y*getSizeInBytes());
+            cloneTexture->setTexels(texels);
+        }
+        else 
+            cloneTexture->setTexels(0);
+        
+        return cloneTexture;
+    }
+
     void Texture2D::bind() const{
         glBindTexture(GL_TEXTURE_2D, id_);
         LGL_ERROR;
@@ -109,6 +122,33 @@ namespace inviwo {
                 LogError("Invalid format: " << format_);
         }
         return channels;
+    }
+
+    void Texture2D::resize(uvec2 dimension) {
+        //Warning: Resize texture will corrupt existing texel
+        //TODO: Requires efficient up/down sampling
+        if (texels_) {
+            GLubyte* newTexel = new GLubyte[dimension.x*dimension.y*getSizeInBytes()];
+            delete texels_;
+            texels_ = newTexel;
+            size_t pixelOffsetInBytes = getSizeInBytes();
+            for (size_t i=0; i<dimension.x; i++) {
+                 for (size_t j=0; j<dimension.y; j++) {                        
+                        //check pattern
+                        if ( ( ((i+1)/8)%2 == 0 && ((j+1)/8)%2 == 0) || ( ((i+1)/8)%2 == 1 && ((j+1)/8)%2 == 1) ) {                        
+                            for (size_t k=0; k<pixelOffsetInBytes; k++)
+                                texels_[(j*dimension.x+i)*pixelOffsetInBytes+k] = 128;                            
+                        }
+                        else {
+                            for (size_t k=0; k<pixelOffsetInBytes; k++)
+                                texels_[(j*dimension.x+i)*pixelOffsetInBytes+k] = 255; 
+                        }
+                                               
+                 }
+            }
+        }
+        setWidth(dimension.x);
+        setHeight(dimension.y);
     }
 
 } // namespace
