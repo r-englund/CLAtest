@@ -23,18 +23,17 @@ uvec3 VolumeInport::getColorCode() const {
 // Volume Outport
 VolumeOutport::VolumeOutport(std::string identifier)
 : DataOutport<Volume>(identifier)
-{}
-
-VolumeOutport::~VolumeOutport() {
-}
-
-void VolumeOutport::initialize() {
+{
     data_ = new StandardVolume();
 }
 
-void VolumeOutport::deinitialize() {
+VolumeOutport::~VolumeOutport() {
     delete data_;
 }
+
+void VolumeOutport::initialize() {}
+
+void VolumeOutport::deinitialize() {}
 
 uvec3 VolumeOutport::getColorCode() const { 
     return uvec3(188,101,101); 
