@@ -45,7 +45,7 @@ namespace inviwo {
             return *this;
         };
         virtual ~ImageRAMPrecision() {};
-        using ImageRAM::initialize;
+        virtual void initialize();
         virtual void initialize(void*);
         virtual void deinitialize();
         virtual DataRepresentation* clone() const;
@@ -53,7 +53,7 @@ namespace inviwo {
 
     template<typename T>
     ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, DataFormatBase format) : ImageRAM(dimensions, format) {
-        initialize(0);
+        initialize();
     }
     template<typename T>
     ImageRAMPrecision<T>::ImageRAMPrecision(T* data, uvec2 dimensions, DataFormatBase format) : ImageRAM(dimensions, format) {
@@ -61,11 +61,14 @@ namespace inviwo {
     }
 
     template<typename T>
+    void ImageRAMPrecision<T>::initialize() {
+        data_ = new T[dimensions_.x*dimensions_.y*sizeof(T)];
+        ImageRAM::initialize();
+    }
+
+    template<typename T>
     void ImageRAMPrecision<T>::initialize(void* data) {
-        if (!data)
-            data_ = new T[dimensions_.x*dimensions_.y*sizeof(T)];
-        else
-            data_ = data;
+        data_ = data;
         ImageRAM::initialize();
     }
 
