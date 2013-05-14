@@ -67,6 +67,13 @@ public:
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
     void initializeResources() {} // TODO: reload shaders etc. here
 
+    void showProgressBar() { showProgressBar_ = true; }
+    void hideProgressBar() { showProgressBar_ = false; }
+    bool hasProgressBar() const { return showProgressBar_; }
+    float getProgress() const { return progress_; }
+    void resetProgress() { progress_ = 0.0f; }
+    void finishProgress() { progress_ = 1.0f; }
+
     void addInteractionHandler(InteractionHandler* interactionHandler);
     void removeInteractionHandler(InteractionHandler* interactionHandler);
     inline bool hasInteractionHandler() { return (interactionHandlers_.size() != 0); }
@@ -82,6 +89,9 @@ protected:
 
     void addPort(Outport* port, std::string groupName="default");
     void addPort(Outport& port, std::string groupName="default");  
+
+    void updateProgress(float progress);
+    void updateProgressLoop(size_t loopVar, size_t maxLoopVar, float endProgress);
 
     ProcessorWidget* processorWidget_;
 
@@ -99,6 +109,10 @@ private:
     Group<std::string,Port*> portGroup_;
 
     InvalidationLevel invalidationLevel_;
+
+    bool showProgressBar_;
+    float progress_;
+    float beginLoopProgress_;
 };
 
 } // namespace

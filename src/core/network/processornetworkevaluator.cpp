@@ -388,9 +388,17 @@ void ProcessorNetworkEvaluator::evaluate() {
             if (processorsSorted_[i]->getInvalidationLevel() >= Processor::INVALID_RESOURCES)
                 processorsSorted_[i]->initializeResources();
 
+            // reset the progress indicator
+            if (processorsSorted_[i]->hasProgressBar())
+                processorsSorted_[i]->resetProgress();
+
             // do the actual processing
             processorsSorted_[i]->process();
             repaintRequired = true;
+
+            // set the progress indicator to finished
+            if (processorsSorted_[i]->hasProgressBar())
+                processorsSorted_[i]->finishProgress();
         }
     }
 

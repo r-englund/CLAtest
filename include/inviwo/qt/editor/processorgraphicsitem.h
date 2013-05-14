@@ -50,6 +50,7 @@ public:
 protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     void paintStatusIndicator(QPainter* p, QPointF offset, bool status, QColor baseColor);
+    void paintProgressBar(QPainter* p, float progress);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:

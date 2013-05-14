@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -232,6 +233,39 @@ void ProcessorGraphicsItem::paintStatusIndicator(QPainter* p, QPointF offset,
     p->restore();
 }
 
+void ProcessorGraphicsItem::paintProgressBar(QPainter* p, float progress) {
+    QPointF position(-(width/2.0f)+7.0f, 9.0f);
+    QSize dimensions(width-14.0f, 5.0f);
+    p->save();
+
+    QColor progressColor = Qt::darkGray;
+    QRectF progressBarRect(position, dimensions);
+    QLinearGradient progressGrad(progressBarRect.topLeft(),
+        progressBarRect.topRight());
+    progressGrad.setColorAt(0.0f, progressColor);
+    progressGrad.setColorAt(progress-0.001f, progressColor);
+    progressGrad.setColorAt(progress+0.001f, Qt::black);
+    progressGrad.setColorAt(1.0f, Qt::black);
+    p->setPen(Qt::black);
+    p->setBrush(progressGrad);
+    p->drawRoundedRect(progressBarRect, 2.0, 2.0);
+
+    QColor shadeColor(128,128,128);
+    QLinearGradient shadingGrad(progressBarRect.topLeft(),
+        progressBarRect.bottomLeft());
+    shadingGrad.setColorAt(0.0f, QColor(shadeColor.red()*0.6,
+        shadeColor.green()*0.6, shadeColor.blue()*0.6, 120));
+    shadingGrad.setColorAt(0.3f, QColor(shadeColor.red(),
+        shadeColor.green(), shadeColor.blue(), 120));
+    shadingGrad.setColorAt(1.0f, QColor(shadeColor.red(),
+        shadeColor.green(), shadeColor.blue(), 120));
+    p->setPen(Qt::NoPen);
+    p->setBrush(shadingGrad);
+    p->drawRoundedRect(progressBarRect, 2.0, 2.0);
+
+    p->restore();
+}
+
 void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
@@ -329,6 +363,9 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     paintStatusIndicator(p, QPointF(57.0f, -20.0f),
                          processor_->allInportsConnected(), QColor(0,170,0));
 
+    if (processor_->hasProgressBar())
+        paintProgressBar(p, processor_->getProgress());
+
     p->restore();
 }
 
@@ -372,7 +409,14 @@ void ProcessorGraphicsItem::updateMetaData() {
 }
 
 void ProcessorGraphicsItem::notify() {
-    update();
+    if (processor_->hasProgressBar()) {
+        //std::cout << processor_->getProgress() << std::endl;
+        //QGraphicsItem::update();
+        update();
+        //if (scene()) scene()->invalidate();
+        qApp->processEvents();
+    } else
+        update();
 }
 
 } // namespace
