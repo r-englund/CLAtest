@@ -12,6 +12,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     registeredCanvases_.clear();
     initializeNetwork();
     defaultContext_ = 0;
+    eventInitiator_ = 0;
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
@@ -136,19 +137,20 @@ void ProcessorNetworkEvaluator::propagateMouseEvent(Processor* processor, MouseE
 
 void ProcessorNetworkEvaluator::propagateMouseEvent(Canvas* canvas, MouseEvent* mouseEvent) {
     // find the canvas processor from which the event was emitted
-    Processor* eventInitiator=0; 
+    eventInitiator_=0; 
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++) {
         if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
             (dynamic_cast<CanvasProcessor*>(processors[i])->getCanvas()==canvas)) {
-                eventInitiator = processors[i];
+                eventInitiator_ = processors[i];
                 i = processors.size();
         }
     }
 
-    if(!eventInitiator) return;
+    if(!eventInitiator_) return;
     processorsVisited_.clear();
-    propagateMouseEvent(eventInitiator, mouseEvent);
+    propagateMouseEvent(eventInitiator_, mouseEvent);
+    eventInitiator_ = 0;
     //eventInitiator->invalidate(); //TODO: Check if this is needed
 }
 
@@ -205,7 +207,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                 ImageOutport* imagePort = dynamic_cast<ImageOutport*>(outports[j]);
                 if (imagePort) {
                     if (isPortConnectedToProcessor(imagePort, processor)) {
-                        imagePort->changeDimensions(resizeEvent->canvasSize());
+                        imagePort->changeDataDimensions(resizeEvent->canvasSize(), eventInitiator_);
                         invalidate = true;
                     }
                 }
@@ -247,23 +249,23 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
 
 void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent) {
     // find the canvas processor from which the event was emitted
-    Processor* eventInitiator=0; 
+    eventInitiator_=0; 
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++) {
         if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
             (dynamic_cast<CanvasProcessor*>(processors[i])->getCanvas()==canvas)) {
-                eventInitiator = processors[i];
+                eventInitiator_ = processors[i];
                 i = processors.size();
         }
     }
 
-    if(!eventInitiator) return;
+    if(!eventInitiator_) return;
 
     processorsVisited_.clear();
-    propagateResizeEvent(eventInitiator, resizeEvent);
+    propagateResizeEvent(eventInitiator_, resizeEvent);
 
     bool invalidate=false;
-    std::vector<Inport*> inports = eventInitiator->getInports();
+    std::vector<Inport*> inports = eventInitiator_->getInports();
     for (size_t j=0; j<inports.size(); j++) {
         ImageInport* imagePort = dynamic_cast<ImageInport*>(inports[j]);
         if (imagePort) {
@@ -271,7 +273,8 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
             invalidate = true;
         }
     }
-    if (invalidate) eventInitiator->invalidate();
+    if (invalidate) eventInitiator_->invalidate();
+    eventInitiator_ = 0;
 }
 
 std::vector<PropertyLink*> ProcessorNetworkEvaluator::getConnectedPropertyLinks(Property* property) {

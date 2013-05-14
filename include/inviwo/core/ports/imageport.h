@@ -40,16 +40,20 @@ public:
     void deinitialize();
 
     void changeDimensions(uvec2 dimensions);
+    void changeDataDimensions(uvec2 dimensions, Processor* eventInitiatorProcessor);
     uvec2 getDimensions() const;
 
     uvec3 getColorCode() const;
 
 protected:
     Image* resizeImageData(uvec2 dimensions);
+    void setLargestImageData();
 
 private:
     uvec2 dimensions_;
-    std::map<std::string, Image*> imageDataMap_;
+    typedef std::map<Processor*, Image*> ImagePortMap;
+    ImagePortMap imageDataMap_;
+
 
 };
 
