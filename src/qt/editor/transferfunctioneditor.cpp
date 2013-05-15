@@ -68,6 +68,8 @@ namespace inviwo {
             lines_[i]->setStart(transferFunction_->getPoint(i));
             lines_[i]->setFinish(transferFunction_->getPoint(i+1));
         }
+        parent_->updateFromProperty();
+        this->update();
     }
 
     void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){

@@ -69,10 +69,12 @@ namespace inviwo {
     }
 
     void TransferFunctionPropertyWidgetQt::setPropertyValue() {
+        vec3* newRgb;
         QColor color = colorDialog_->currentColor();
         for (int i = 0; i < (int)points_.size() ; i++){
             if (points_[i]->isSelected()){
-                points_[i]->getPoint()->setRgb(new vec3(color.redF(),color.greenF(),color.blueF()));
+                newRgb = new vec3(color.redF(),color.greenF(),color.blueF());
+                points_[i]->getPoint()->setRgb(newRgb);
             }
         }
         editor_->update();

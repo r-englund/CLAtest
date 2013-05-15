@@ -21,8 +21,10 @@ namespace inviwo{
     void TransferFunctionDataPoint::setRgba( vec4* rgba ){
         rgba_ = rgba;
     }
-    void TransferFunctionDataPoint::setRgb( vec3* rgb ){
-        rgba_->rgb = *rgb;
+    void TransferFunctionDataPoint::setRgb(vec3* rgb){
+        rgba_->r = rgb->r;
+        rgba_->g = rgb->g;
+        rgba_->b = rgb->b;
     }
 
     void TransferFunctionDataPoint::setA( float alpha ){

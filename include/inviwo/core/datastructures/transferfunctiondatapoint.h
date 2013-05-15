@@ -14,7 +14,6 @@ namespace inviwo {
 
     class IVW_CORE_API TransferFunctionDataPoint {
 
-
     public:
         TransferFunctionDataPoint();
         TransferFunctionDataPoint(vec2* pos);
@@ -25,7 +24,7 @@ namespace inviwo {
         void setPos(vec2* pos);
         const vec4* getRgba();
         void setRgba(vec4* rgba);
-        void setRgb(vec3* rgba);
+        void setRgb(vec3* rgb);
         void setA(float alpha);
 
     private:
