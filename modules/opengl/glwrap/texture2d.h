@@ -18,10 +18,6 @@ public:
     Texture2D* clone() const;
     unsigned int getID() const { return id_; }
 
-    void setTexels(GLubyte* texels) { texels_ = texels; }
-    GLubyte* getTexels() { return texels_; }
-    const GLubyte* getTexels() const { return texels_; }
-
     size_t getSizeInBytes() const;
 
     unsigned int getNChannels() const;
@@ -30,7 +26,8 @@ public:
     GLenum getDataType() const { return dataType_; }
 
     void bind() const;
-    void upload();
+
+    void upload(const void* data);
     
     /**
      * Download texture data to preallocated memory.
@@ -56,7 +53,6 @@ private:
     GLenum filtering_;
 
     GLuint id_;
-    GLubyte* texels_;
 };
 
 } // namespace

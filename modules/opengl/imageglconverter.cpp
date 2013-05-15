@@ -17,10 +17,9 @@ namespace inviwo {
         uvec2 dim = imageRepresentation->getDimension();
 
         Texture2D* texture = new Texture2D(uvec2(dim.x, dim.y), GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_NEAREST);
-	    texture->setTexels(data);
 	    texture->setWidth(dim.x);
 	    texture->setHeight(dim.y);
-        texture->upload();
+        texture->upload(data);
 
         if (imageRepresentation){       
             return new ImageGL(texture, dim);

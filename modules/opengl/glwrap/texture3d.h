@@ -21,21 +21,21 @@ public:
     void loadTexture(std::string fileName, uvec3 dimensions) {
         bind();
 
-        texels_ = new GLubyte[dimensions.x*dimensions.y*dimensions.z];
+        GLubyte* texels = new GLubyte[dimensions.x*dimensions.y*dimensions.z];
 
         std::fstream fin(fileName.c_str(), std::ios::in | std::ios::binary);
         ivwAssert(fin.good(), "cannot open volume file");
-        fin.read((char*)texels_, dimensions.x*dimensions.y*dimensions.z);
+        fin.read((char*)texels, dimensions.x*dimensions.y*dimensions.z);
         fin.close();
         dimensions_ = dimensions;
-        upload();
+        upload(texels);
+        delete[] texels;
     }
 
-    void setTexels(void* texels) { texels_ = texels; }
 
     void bind() const;
     void unbind() const;
-    void upload();
+    void upload(const void* data);
 
 private:
     uvec3 dimensions_;
@@ -45,7 +45,6 @@ private:
     GLenum filtering_;
 
     GLuint id_;
-    void* texels_;
 };
 
 } // namespace

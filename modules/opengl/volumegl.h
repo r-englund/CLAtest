@@ -150,8 +150,7 @@ void VolumeGLPrecision<T>::initialize(void* texels) {
     }
     else {
         volumeTexture_->bind();
-        volumeTexture_->setTexels(texels);
-        volumeTexture_->upload();
+        volumeTexture_->upload(texels);
     }
 
     VolumeGL::initialize();

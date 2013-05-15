@@ -9,7 +9,6 @@ namespace inviwo {
           dataType_(dataType),
           filtering_(filtering) {
         glGenTextures(1, &id_);
-        texels_ = 0;
     }
 
     Texture2D::~Texture2D() {
@@ -18,13 +17,8 @@ namespace inviwo {
 
     Texture2D* Texture2D::clone() const {
         Texture2D* cloneTexture = new Texture2D(dimensions_, format_, internalformat_, dataType_, filtering_);
-        if (texels_) {
-            GLubyte* texels = new GLubyte[dimensions_.x*dimensions_.y*getSizeInBytes()];        
-            memcpy(texels, texels_, dimensions_.x*dimensions_.y*getSizeInBytes());
-            cloneTexture->setTexels(texels);
-        }
-        else 
-            cloneTexture->setTexels(0);
+        // TODO: Copy texture content
+        // glCopyTexImage2D(
         
         return cloneTexture;
     }
@@ -34,9 +28,9 @@ namespace inviwo {
         LGL_ERROR;
     }
 
-    void Texture2D::upload() {
+    void Texture2D::upload(const void* data) {
         bind();
-        glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, texels_);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, data);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -127,28 +121,27 @@ namespace inviwo {
     void Texture2D::resize(uvec2 dimension) {
         //Warning: Resize texture will corrupt existing texel
         //TODO: Requires efficient up/down sampling
-        if (texels_) {
-            GLubyte* newTexel = new GLubyte[dimension.x*dimension.y*getSizeInBytes()];
-            delete texels_;
-            texels_ = newTexel;
-            size_t pixelOffsetInBytes = getSizeInBytes();
-            for (size_t i=0; i<dimension.x; i++) {
-                 for (size_t j=0; j<dimension.y; j++) {                        
-                        //check pattern
-                        if ( ( ((i+1)/8)%2 == 0 && ((j+1)/8)%2 == 0) || ( ((i+1)/8)%2 == 1 && ((j+1)/8)%2 == 1) ) {                        
-                            for (size_t k=0; k<pixelOffsetInBytes; k++)
-                                texels_[(j*dimension.x+i)*pixelOffsetInBytes+k] = 128;                            
-                        }
-                        else {
-                            for (size_t k=0; k<pixelOffsetInBytes; k++)
-                                texels_[(j*dimension.x+i)*pixelOffsetInBytes+k] = 255; 
-                        }
+        GLubyte* newTexel = new GLubyte[dimension.x*dimension.y*getSizeInBytes()];
+        size_t pixelOffsetInBytes = getSizeInBytes();
+        for (size_t i=0; i<dimension.x; i++) {
+                for (size_t j=0; j<dimension.y; j++) {                        
+                    //check pattern
+                    if ( ( ((i+1)/8)%2 == 0 && ((j+1)/8)%2 == 0) || ( ((i+1)/8)%2 == 1 && ((j+1)/8)%2 == 1) ) {                        
+                        for (size_t k=0; k<pixelOffsetInBytes; k++)
+                            newTexel[(j*dimension.x+i)*pixelOffsetInBytes+k] = 128;                            
+                    }
+                    else {
+                        for (size_t k=0; k<pixelOffsetInBytes; k++)
+                            newTexel[(j*dimension.x+i)*pixelOffsetInBytes+k] = 255; 
+                    }
                                                
-                 }
-            }
+                }
         }
         setWidth(dimension.x);
         setHeight(dimension.y);
+        upload(newTexel);
+        delete[] newTexel;
+
     }
 
 } // namespace

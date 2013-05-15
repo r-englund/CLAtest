@@ -43,10 +43,10 @@ void ImageGL::initialize() {
     frameBufferObject_ = new FrameBufferObject();
     frameBufferObject_->activate();
     colorTexture_->bind();
-    colorTexture_->upload();
+    colorTexture_->upload(NULL);
     frameBufferObject_->attachTexture(colorTexture_);
     depthTexture_->bind();
-    depthTexture_->upload();
+    depthTexture_->upload(NULL);
     frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT);
     frameBufferObject_->deactivate();
     frameBufferObject_->checkStatus();
@@ -74,14 +74,6 @@ DataRepresentation* ImageGL::clone() const
     Texture2D* depthTexture = depthTexture_->clone();
     ImageGL* newImageGL = new ImageGL(colorTexture, depthTexture, dimensions_);
 
-    if (getColorTexture()->getTexels()) {
-        memcpy(newImageGL->getColorTexture()->getTexels(), getColorTexture()->getTexels(), 
-               dimensions_.x*dimensions_.y*sizeof(GLubyte));
-    }
-    if (getDepthTexture()->getTexels()) {
-        memcpy(newImageGL->getDepthTexture()->getTexels(), getDepthTexture()->getTexels(),
-               dimensions_.x*dimensions_.y*sizeof(GLubyte));
-    }
     return newImageGL;
 }
 
@@ -121,12 +113,12 @@ void ImageGL::resize(uvec2 dimensions) {
     dimensions_ = dimensions;        
     colorTexture_->unbind();
     colorTexture_->resize(dimensions_);    
-    colorTexture_->upload();
+    colorTexture_->upload(NULL);
     colorTexture_->unbind();
 
     depthTexture_->unbind();
     depthTexture_->resize(dimensions_);
-    depthTexture_->upload();
+    depthTexture_->upload(NULL);
     depthTexture_->unbind();    
 }
 
