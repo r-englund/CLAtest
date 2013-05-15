@@ -69,7 +69,6 @@ namespace inviwo {
         TransferFunction* transferFunction_; ///< Pointer to widget's member variable
         PropertyWidgetQt *parent_; ///< Pointer to widget so it can be updated from the editor
         vec4* data_;
-        //IntVec4Property colorpicker_;
 
 
     };

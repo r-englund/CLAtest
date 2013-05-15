@@ -50,8 +50,6 @@ namespace inviwo {
         */
         const int getId();
         void setId(int id);
-        //void setPosition(QPointF *);
-        //const QPointF* getPosition();
 
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -61,9 +59,7 @@ namespace inviwo {
     private:
         int id_; ///< id to identify edge points
         int size_; ///< size for drawing the points
-        //QPointF* pos_;///< position
-        //vec4* data_;///< Pointer to where the controlpoint gets its color value
-        TransferFunctionDataPoint* datapoint_;
+        TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
     };
 
 }// namespace

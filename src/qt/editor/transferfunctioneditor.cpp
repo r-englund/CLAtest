@@ -73,7 +73,6 @@ namespace inviwo {
     void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
         vec2* pos = new vec2(e->scenePos().x(), e->scenePos().y());
         vec4* rgba = new vec4(e->scenePos().y()/100.0f);
-        //rgba->g = 1.0f;
         TransferFunctionDataPoint* newPoint = new TransferFunctionDataPoint(pos, rgba);
         transferFunction_->addPoint(newPoint);
         points_->push_back(new TransferFunctionEditorControlPoint(newPoint));

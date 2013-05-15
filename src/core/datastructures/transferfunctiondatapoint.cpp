@@ -6,8 +6,7 @@ namespace inviwo{
     TransferFunctionDataPoint::TransferFunctionDataPoint(vec2* pos, vec4* rgba):pos_(pos), rgba_(rgba){}
     TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
 
-    const vec2* TransferFunctionDataPoint::getPos()
-    {
+    const vec2* TransferFunctionDataPoint::getPos(){
         return pos_;
     }
 

@@ -64,17 +64,11 @@ namespace inviwo {
     }
 
     void TransferFunction::calcTransferValues(){
-        vec4* newValues;
-        std::stringstream ss;
         float factor;
         float start;
         float stop;
         const vec4* startValues;
         const vec4* stopValues;
-        float newR;
-        float newB;
-        float newG;
-        float newA;
 
         if ((int)dataPoints_.size() == 0){} 
         else if ((int)dataPoints_.size () == 1){
@@ -99,14 +93,7 @@ namespace inviwo {
                 //Interpolates the function values for all intermediate positions
                 for (int j = (int)start; j <=  (int)stop; j++){
                     factor = (j - start)/(stop - start);
-
-                    newR = myLerp(startValues->r, stopValues->r, factor);
-                    newG = myLerp(startValues->g, stopValues->g, factor);
-                    newB = myLerp(startValues->b, stopValues->b, factor);
-                    newA = myLerp(startValues->a, stopValues->a, factor);
-
-                    newValues = new vec4(newR, newG, newB, newA);
-                    dataArray_[j] = *newValues;
+                    dataArray_[j] = *myLerp(startValues, stopValues, factor);
                 }
             }
             for (int i = (int)dataPoints_.back()->getPos()->x; i < 256; i++)
@@ -116,17 +103,20 @@ namespace inviwo {
         }
     }
 
-    float TransferFunction::myLerp(float a, float b, float t){
-        return a*(1.0f-t) + t*b;
+    vec4* TransferFunction::myLerp(const vec4* startValues, const vec4* stopValues, float t){
+        vec4* newColor = new vec4();
+        newColor->r = startValues->r*(1.0f-t)+t*stopValues->r;
+        newColor->g = startValues->g*(1.0f-t)+t*stopValues->g;
+        newColor->b = startValues->b*(1.0f-t)+t*stopValues->b;
+        newColor->a = startValues->a*(1.0f-t)+t*stopValues->a;
+        return newColor;
     }
 
     bool myPointCompare (TransferFunctionDataPoint * a, TransferFunctionDataPoint* b){
         return a->getPos()->x < b->getPos()->x;
     }
 
-    void TransferFunction::sortDataPoints()
-    {
+    void TransferFunction::sortDataPoints(){
         std::sort(dataPoints_.begin(), dataPoints_.end(), myPointCompare);
     }
-
 };
