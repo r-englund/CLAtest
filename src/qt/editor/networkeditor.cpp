@@ -750,6 +750,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // then we deserialize into an intermediate processor network
     IvwDeserializer xmlDeserializer(fileName);
     processorNetwork_->deserialize(xmlDeserializer);
+    processorNetwork_->lock();
 
     // add processors
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
@@ -781,7 +782,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
             addLinkGraphicsItem(outProcessorItem, inProcessorItem);
         }
         */
-    
+    processorNetwork_->unlock();
     // flag the network's modified flag to initiate evaluation
     processorNetwork_->setModified(true);
 

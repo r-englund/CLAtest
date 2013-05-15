@@ -30,10 +30,10 @@ void CanvasProcessorWidgetQt::initialize() {
     
     QGridLayout* gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 0, 0, 0);
-    gridLayout->addWidget(dynamic_cast<QWidget*>(canvas_), 0, 0);
+    gridLayout->addWidget(static_cast<QWidget*>(canvas_), 0, 0);
     setLayout(gridLayout);
 
-    canvasProcessor->setCanvas(dynamic_cast<Canvas*>(canvas_));
+    canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_));
     uvec2 csize = canvasProcessor->getCanvas()->size();
     resize(static_cast<int>(csize[0]), static_cast<int>(csize[1]));
 

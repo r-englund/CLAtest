@@ -45,8 +45,7 @@ void CanvasProcessor::deinitialize() {
 
 void CanvasProcessor::process() {
     Processor::process();
-
-    if (canvas_) canvas_->activate();
+    canvas_->activate();
 }
 
 } // namespace
