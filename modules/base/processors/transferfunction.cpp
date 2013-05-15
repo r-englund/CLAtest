@@ -48,4 +48,9 @@ namespace inviwo {
         deactivateCurrentTarget();
     }
 
+    bool TransferFunction::getSize()
+    {
+        throw std::exception("The method or operation is not implemented.");
+    }
+
 } // namespace

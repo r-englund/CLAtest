@@ -14,10 +14,11 @@
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/qt/editor/transferfunctioneditor.h>
 #include <inviwo/core/properties/scalarproperties.h>
-#include <inviwo/qt/widgets/properties/intvec4propertywidgetqt.h>
+//#include <inviwo/qt/widgets/properties/intvec4propertywidgetqt.h>
+#include <QColorDialog>
 
 namespace inviwo {
-
+ 
 class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidgetQt {
 
     Q_OBJECT;
@@ -31,6 +32,7 @@ public:
     *      Redraws it fully every time, to be optimized if it is allowed to stay
     */
     void updateFromProperty();
+    void logStuff();
 
 private:
     int zoom_;
@@ -44,6 +46,11 @@ private:
     TransferFunctionProperty* property_; ///< Pointer to property, for get and invalidation in the widget
     TransferFunctionEditor* editor_; ///< TransferFunctionEditor inherited from QGraphicsScene
     std::vector<TransferFunctionEditorControlPoint*> points_; ///< Control points used for calculating transferfunction-values
+    vec4* data;
+
+    //QPushButton* btnColor_;
+    QColorDialog* colorDialog_;
+
     //IntVec4Property intColor_;
 
     /** \Mousewheel zoom functionality

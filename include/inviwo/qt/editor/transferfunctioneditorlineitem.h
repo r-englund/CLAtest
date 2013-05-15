@@ -22,11 +22,11 @@ namespace inviwo {
     class IVW_QTEDITOR_API TransferFunctionEditorLineItem : public QGraphicsItem {
 
     public:
-        TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint*, TransferFunctionEditorControlPoint*);
+        TransferFunctionEditorLineItem(TransferFunctionDataPoint*, TransferFunctionDataPoint*);
         TransferFunctionEditorLineItem();
 		~TransferFunctionEditorLineItem();
-		void setStart(TransferFunctionEditorControlPoint* start);
-		void setFinish(TransferFunctionEditorControlPoint* finish);
+		void setStart(TransferFunctionDataPoint* start);
+		void setFinish(TransferFunctionDataPoint* finish);
         const QPointF* getStart();
         const QPointF* getFinish();
 
@@ -49,8 +49,8 @@ namespace inviwo {
 
 
     private:
-        TransferFunctionEditorControlPoint* start_;
-        TransferFunctionEditorControlPoint* finish_;
+        TransferFunctionDataPoint* start_;
+        TransferFunctionDataPoint* finish_;
     };
 
 }// namespace

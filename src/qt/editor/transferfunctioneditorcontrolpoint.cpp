@@ -5,24 +5,18 @@
 
 namespace inviwo {
 
-    TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(QPointF* position, vec4* data){
+    TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint):datapoint_(datapoint){
         setFlag(QGraphicsItem::ItemIsMovable, true);
         setFlag(QGraphicsItem::ItemIsSelectable);
         setFlag(QGraphicsItem::ItemIsMovable);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges);
         setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-        this->setPosition(new QPointF((*position)));
-        data_ = data;
+        setPos(datapoint_->getPos()->x, datapoint_->getPos()->y);
+        setZValue(1);
     }
 
-    TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(float x, float y, vec4* data){
-        setFlag(QGraphicsItem::ItemIsMovable, true);
-        setFlag(QGraphicsItem::ItemIsSelectable);
-        setFlag(QGraphicsItem::ItemIsMovable);
-        setFlag(QGraphicsItem::ItemSendsGeometryChanges);
-        setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-        this->setPosition(new QPointF(x, y));
-        data_ = data;
+    TransferFunctionDataPoint* TransferFunctionEditorControlPoint::getPoint(){
+        return datapoint_;
     }
 
     void TransferFunctionEditorControlPoint::setId(int id){
@@ -35,61 +29,47 @@ namespace inviwo {
 
     TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(){};
 
-    TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint() {};
+    TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint(){};
 
     void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
         IVW_UNUSED_PARAM(options);
         IVW_UNUSED_PARAM(widget);
-
+        setFlag(QGraphicsItem::ItemIsMovable, true);
         painter->setRenderHint(QPainter::Antialiasing, true);
-
+        QPen* pen;
         float size = 10.0f;
 
-        setFlag(QGraphicsItem::ItemIsMovable, true);
-
-        std::stringstream ss;
-        vec4 col = data_[(int)pos_->x()];
-        
-        QPen* pen = new QPen(Qt::black, 2.5, Qt::SolidLine, Qt::RoundCap);
-        painter->setPen(*pen);
-        painter->drawEllipse(getPosition()->x() - size/2, getPosition()->y() - size/2, size, size);
-
-        pen = new QPen(QColor::fromRgbF(col.r, col.b, col.g), 1.0, Qt::SolidLine, Qt::RoundCap);
-        painter->setPen(*pen);
-        painter->drawEllipse(pos_->x() - size/2, pos_->y() - size/2, size, size);
-
-        //Draw the bounding rectangle
-        if (false)
-        {
-	        float left = pos_->x() - size/2;
-	        float top = pos_->y() - size/2;
-	        painter->drawRect(left, top, size, size);
+        const vec4* col = datapoint_->getRgba();
+        if (this->isSelected()){
+            pen = new QPen(Qt::red, 2.5, Qt::SolidLine, Qt::RoundCap);
+        } 
+        else{
+            pen = new QPen(Qt::black, 2.5, Qt::SolidLine, Qt::RoundCap);
         }
+        painter->setPen(*pen);
+        painter->drawEllipse(-size/2, -size/2, size, size);
+
+        pen = new QPen(QColor::fromRgbF(col->r, col->g, col->b), 5.0, Qt::SolidLine, Qt::RoundCap);
+        painter->setPen(*pen);
+        painter->drawEllipse(-size/2,-size/2, size, size);
     }
 
     QRectF TransferFunctionEditorControlPoint::boundingRect() const {
         float size = 12.0f;
-        float left = pos_->x() - size/2;
-        float top = pos_->y() - size/2;
-        return QRectF(left, top, size, size);
+        float left = pos().x() - size/2;
+        float top = pos().y() - size/2;
+        return QRectF(-size/2, -size/2, size, size);
     }
 
-    void TransferFunctionEditorControlPoint::mousePressEvent ( QGraphicsSceneMouseEvent *e ){}
+    void TransferFunctionEditorControlPoint::mousePressEvent ( QGraphicsSceneMouseEvent *e ){
+        this->setSelected(true);
+    }
 
     void TransferFunctionEditorControlPoint::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
 
     void TransferFunctionEditorControlPoint::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
     {
         QPointF* pos = new QPointF(e->scenePos());
-
-        if (id_ == 0){
-            pos->setX(0.0f);
-            pos->setY(e->scenePos().y());
-        }
-        if (id_ == 1){
-            pos->setX(255.0f);
-            pos->setY(e->scenePos().y());
-        }
         if (pos->x() <= 0.0f){
             pos->setX(0);
         } 
@@ -102,14 +82,9 @@ namespace inviwo {
         if (pos->y() >= 100.0f){
             pos->setY(100.0f);
         }
-        setPosition(pos);
-    }
 
-    void TransferFunctionEditorControlPoint::setPosition(QPointF* pos){
-        pos_ =  new QPointF(pos->x(), pos->y());
-    }
-
-    const QPointF* TransferFunctionEditorControlPoint::getPosition(){
-        return new QPointF(pos_->x(), pos_->y());
+        this->setPos(*pos);
+        this->datapoint_->setPos(new vec2(pos->x(), pos->y()));
+        this->datapoint_->setA(pos->y()/100.0f);
     }
 } // namespace

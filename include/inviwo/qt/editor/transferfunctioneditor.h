@@ -7,20 +7,17 @@
 #ifndef IVW_TRANSFERFUNCTIONEDITOR_H
 #define IVW_TRANSFERFUNCTIONEDITOR_H
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QPointF>
-
-#include<vector>
-
 #include <inviwo/core/network/processornetworkevaluator.h>
-#include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/ports/port.h>
-
+#include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/transferfunctioneditorcontrolpoint.h>
 #include <inviwo/qt/editor/transferfunctioneditorlineitem.h>
+#include <QPointF>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <vector>
 
 namespace inviwo {
     class TransferFunctionEditor : public QGraphicsScene {
@@ -65,12 +62,6 @@ namespace inviwo {
         */
         void addPoint(QGraphicsSceneMouseEvent *e);
         void removePoint(QGraphicsSceneMouseEvent *e);
-
-        /** \Calculates the transfer function values
-        *   Extracts the Image data to a float array,
-        *   Loops through the controlpoints and sets the array to the calculated values
-        */
-        void calcTransferValues();
 
     private :
         std::vector<TransferFunctionEditorControlPoint*>* points_; ///< Control points in the transfer function graph

@@ -1,85 +1,132 @@
 #include <inviwo/core/datastructures/transferfunction.h>
 
 namespace inviwo {
-
     TransferFunction::TransferFunction(){
-        //data_.addRepresentation(new ImageRAMfloat32(uvec2(256,1)));
-        data_.addRepresentation(new ImageRAMVec4float32 (uvec2(256,1)));
-        pointPositions_.push_back(new vec2(0.0f, 0.0f));
-        pointPositions_.push_back(new vec2(255.0f, 100.0f));
-        pointValues_.push_back(new vec4(0.0f, 0.0f, 0.0f, 1.0f));
-        pointValues_.push_back(new vec4(1.0f, 0.0f, 0.0f, 1.0f));
-
-        dataArray_ = static_cast<vec4*>(data_.getEditableRepresentation<ImageRAMVec4float32>()->getData());
-        //dataArray_ = static_cast<vec4*>(imgRam->getData());
+        data_ = new Image();
+        dataArray_ = new vec4();
+        data_->addRepresentation(new ImageRAMVec4float32 (uvec2(256,1)));
+        dataArray_ = static_cast<vec4*>(data_->getEditableRepresentation<ImageRAMVec4float32>()->getData());
     }
 
-    TransferFunction::~TransferFunction() {
-    }
-
-    void TransferFunction::setData(Image data){
-        data_ = data;
-    }
+    TransferFunction::~TransferFunction(){}
 
     Image* TransferFunction::getData() const{
-        return const_cast<Image*>(&data_);
+        return const_cast<Image*>(data_);
     }
 
-    vec2* TransferFunction::getPosition(int i){     
-        return pointPositions_[i];
-    };
+    int TransferFunction::getSize(){
+        return dataPoints_.size();
+    }
+    TransferFunctionDataPoint* TransferFunction::getPoint(int i){
+        return dataPoints_[i];
+    }
 
-    void TransferFunction::setPosition(int i, vec2* val){     
-        pointPositions_[i] = val;
-    };
+    void TransferFunction::addPoint(vec2* pos, vec4* rgba){
+        this->addPoint(new TransferFunctionDataPoint(pos, rgba));
+    }
 
-    vec4* TransferFunction::getValue(int i){
-        return pointValues_[i];
-    };
+    void TransferFunction::addPoint(TransferFunctionDataPoint* newPoint){
+        std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin();
 
-    void TransferFunction::setValue(int i, vec4* val){
-        dataArray_[i] = *val;
-    };
+        float pointpos = newPoint->getPos()->x;
+        float iterpos;
 
-    void TransferFunction::createPoint(vec2* pos, vec4* val){
-        
+        if (dataPoints_.size() == 0){
+            dataPoints_.push_back(newPoint);
+        }
+        else{
+            if (pointpos > dataPoints_.back()->getPos()->x){
+                dataPoints_.push_back(newPoint);
+            }
+            else{
+                for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++){
+                    iterpos = (*iter)->getPos()->x;
+                    if (iterpos > pointpos){
+                        dataPoints_.insert(iter, newPoint);
+                        break;
+                    }
+                }
+            }
+        }
+        calcTransferValues();
+    }
+
+
+    void TransferFunction::removePoint(TransferFunctionDataPoint* p){
+        std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin();
+        for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++){
+            if (p->getPos()->x == (*iter)->getPos()->x && p->getPos()->y == (*iter)->getPos()->y){
+                dataPoints_.erase(iter);
+                break;
+            }
+        }
+        calcTransferValues();
     }
 
     void TransferFunction::calcTransferValues(){
         vec4* newValues;
         std::stringstream ss;
-        glm::quat startQuat;
-        glm::quat stopQuat;
         float factor;
+        float start;
+        float stop;
+        const vec4* startValues;
+        const vec4* stopValues;
+        float newR;
+        float newB;
+        float newG;
+        float newA;
 
-        //Loops through all point to point intervals
-        for (int i = 0; i < (int)pointPositions_.size() - 1; i++){
+        if ((int)dataPoints_.size() == 0){} 
+        else if ((int)dataPoints_.size () == 1){
+            for (int i = 0; i < 256 ; i++){
+                dataArray_[i] = *dataPoints_[0]->getRgba();
+            }
+        }
+        else{
+            for (int i = 0; i < (int)dataPoints_.front()->getPos()->x ; i++)
+            {
+                dataArray_[i] = *dataPoints_.front()->getRgba();
+            }
+            //Loops through all point to point intervals
+            for (int i = 0; i < getSize() - 1; i++){
 
-            vec2* start = pointPositions_[i];
-            vec2* stop = pointPositions_[i + 1];
+                start = dataPoints_[i]->getPos()->x;
+                stop = dataPoints_[i + 1]->getPos()->x;
 
-            vec4* startValues = pointValues_[i];
-            vec4* stopValues = pointValues_[i + 1];
+                startValues = dataPoints_[i]->getRgba();
+                stopValues = dataPoints_[i + 1]->getRgba();
 
-            //Interpolates the function values for all intermediate positions
-            for (int j = (int)start->x; j <=  (int)stop->x; j++){
-                factor = (j - start->x)/(stop->x - start->x);
+                //Interpolates the function values for all intermediate positions
+                for (int j = (int)start; j <=  (int)stop; j++){
+                    factor = (j - start)/(stop - start);
 
-                startQuat.x = startValues->a;
-                stopQuat.x = stopValues->a;
-                float newA = glm::lerp(startQuat, stopQuat, factor).x;
-                startQuat.x = startValues->r;
-                stopQuat.x = stopValues->r;
-                float newR = glm::lerp(startQuat, stopQuat, factor).x; 
-                startQuat.x = startValues->b;
-                stopQuat.x = stopValues->b;
-                float newB = glm::lerp(startQuat, stopQuat, factor).x;
-                startQuat.x = startValues->g;
-                stopQuat.x = stopValues->g;
-                float newG = glm::lerp(startQuat, stopQuat, factor).x;
-                newValues = new vec4(newR, newB, newG, newA);
-                dataArray_[j] = *newValues;
+                    newR = myLerp(startValues->r, stopValues->r, factor);
+                    newG = myLerp(startValues->g, stopValues->g, factor);
+                    newB = myLerp(startValues->b, stopValues->b, factor);
+                    newA = myLerp(startValues->a, stopValues->a, factor);
+
+                    newValues = new vec4(newR, newG, newB, newA);
+                    dataArray_[j] = *newValues;
+                }
+            }
+            for (int i = (int)dataPoints_.back()->getPos()->x; i < 256; i++)
+            {
+                dataArray_[i] = *dataPoints_.back()->getRgba();
             }
         }
     }
-}
+
+    float TransferFunction::myLerp(float a, float b, float t){
+        return a*(1.0f-t) + t*b;
+    }
+
+    bool myPointCompare (TransferFunctionDataPoint * a, TransferFunctionDataPoint* b){
+        return a->getPos()->x < b->getPos()->x;
+    }
+
+    void TransferFunction::sortDataPoints()
+    {
+        std::sort(dataPoints_.begin(), dataPoints_.end(), myPointCompare);
+    }
+
+};

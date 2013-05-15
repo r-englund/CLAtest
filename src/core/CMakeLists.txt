@@ -23,6 +23,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunction.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunctiondatapoint.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeoperation.h
@@ -148,6 +149,7 @@ set(SOURCE_FILES
     datastructures/representationconverter.cpp
     datastructures/representationconverterfactory.cpp
     datastructures/transferfunction.cpp
+    datastructures/transferfunctiondatapoint.cpp
     datastructures/volume.cpp
     datastructures/volumedisk.cpp
     datastructures/volumeram.cpp

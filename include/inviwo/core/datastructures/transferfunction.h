@@ -11,30 +11,29 @@
 #include <inviwo/core/datastructures/imagedisk.h>
 #include <inviwo/core/datastructures/imageram.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 
 namespace inviwo {
 
     class IVW_CORE_API TransferFunction {
-
     public:
         TransferFunction();
         virtual ~TransferFunction();
         void setData(Image);
         Image* getData() const;
+        int getSize();
+        TransferFunctionDataPoint* getPoint(int i);
 
-        vec2* getPosition(int);
-        void setPosition(int, vec2*);
-
-        vec4* getValue(int);
-        void setValue(int, vec4*);
-
+        void addPoint(vec2* pos, vec4* rgba);
+        void addPoint(TransferFunctionDataPoint* newPoint);
+        void removePoint(TransferFunctionDataPoint* newPoint);
+        
+        void sortDataPoints();
         void calcTransferValues();
-        void createPoint(vec2* pos, vec4* val);
-
+        float TransferFunction::myLerp(float, float, float);
     private:
-        Image data_;
-        std::vector<vec2*> pointPositions_;
-        std::vector<vec4*> pointValues_;
+        Image* data_;
+        std::vector<TransferFunctionDataPoint*> dataPoints_;
         vec4* dataArray_;
     };
 

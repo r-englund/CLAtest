@@ -22,14 +22,9 @@ namespace inviwo {
     public:
         /** \TransferFunctionEditorControlPoint constructor  
         *      Creates a TransferFunctionEditorControlPoint at a QPointF
-        */
-        TransferFunctionEditorControlPoint(QPointF* pos, vec4* val);
-
-        /** \TransferFunctionEditorControlPoint constructor  
-        *      Creates a TransferFunctionEditorControlPoint at a point from x and y float coordinates
-        */
-        TransferFunctionEditorControlPoint(float x, float y, vec4* val);
-
+        */        
+        TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint);
+        
         /** \TransferFunctionEditorControlPoint constructor  
         *      Default constructor
         */
@@ -49,13 +44,14 @@ namespace inviwo {
         virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
         QRectF boundingRect() const;
 
+        TransferFunctionDataPoint* getPoint();
         /**
         * get/set functions for id and position
         */
         const int getId();
         void setId(int id);
-        void setPosition(QPointF *);
-        const QPointF* getPosition();
+        //void setPosition(QPointF *);
+        //const QPointF* getPosition();
 
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -65,8 +61,9 @@ namespace inviwo {
     private:
         int id_; ///< id to identify edge points
         int size_; ///< size for drawing the points
-        QPointF* pos_;///< position
-        vec4* data_;///< Pointer to where the controlpoint gets its color value
+        //QPointF* pos_;///< position
+        //vec4* data_;///< Pointer to where the controlpoint gets its color value
+        TransferFunctionDataPoint* datapoint_;
     };
 
 }// namespace

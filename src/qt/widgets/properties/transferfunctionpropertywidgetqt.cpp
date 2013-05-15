@@ -2,17 +2,23 @@
 #include <QWheelEvent>
 
 
+
 namespace inviwo {
 
-    TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property)
-    /*intColor_("IntColor","IntColor", ivec4(20),ivec4(0), ivec4(10),ivec4(1),PropertyOwner::INVALID_OUTPUT,PropertySemantics::Color)*/
-    {
+    TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property){
         generateWidget();
         updateFromProperty();
-        
     }
 
     void TransferFunctionPropertyWidgetQt::generateWidget() {
+
+        colorDialog_ = new QColorDialog();
+        //btnColor_ = new QPushButton();
+        //btnColor_->setFixedWidth(100);
+        //btnColor_->setFixedHeight(30);
+        //connect(btnColor_,SIGNAL(clicked()),this,SLOT(setPropertyValue()));
+        connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
+
         zoom_ = 0;
         QVBoxLayout* vLayout = new QVBoxLayout();
 
@@ -37,14 +43,14 @@ namespace inviwo {
         checkBox_ = new QCheckBox();
         connect(checkBox_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
 
-        //intColor_ = IntVec4Property("IntColor","IntColor", ivec4(20),ivec4(0), ivec4(10),ivec4(1),PropertyOwner::INVALID_OUTPUT,PropertySemantics::Color);
-        //IntVec4PropertyWidgetQt* wigget = new IntVec4PropertyWidgetQt(intColor_);
-
         setLayout(vLayout);
-        
+
         vLayout->addWidget(checkBox_);
         vLayout->addWidget(editorview_);
         vLayout->addWidget(paintview_);
+        vLayout->addWidget(colorDialog_);
+
+        data = static_cast<vec4*>(transferFunction_->getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
     }
 
 
@@ -63,22 +69,24 @@ namespace inviwo {
     }
 
     void TransferFunctionPropertyWidgetQt::setPropertyValue() {
-        LogInfo("setPropertyValue");
+        QColor color = colorDialog_->currentColor();
+        for (int i = 0; i < points_.size() ; i++){
+            if (points_[i]->isSelected()){
+                points_[i]->getPoint()->setRgb(new vec3(color.redF(),color.greenF(),color.blueF()));
+            }
+        }
+        editor_->update();
+        updateFromProperty();
+        transferFunction_->calcTransferValues();
+        property_->invalidate();
     }
 
 
     void TransferFunctionPropertyWidgetQt::updateFromProperty() {
         QPen pen;
-
-        Image* img = transferFunction_->getData();
-        ImageRAMVec4float32 * imgRam = img->getEditableRepresentation<ImageRAMVec4float32>();
-        vec4* data = static_cast<vec4*>(imgRam->getData());
-
-        if (checkBox_->isChecked())
-        {
-            for (int i = 0; i < 256 ; i++)
-            {
-                pen.setColor(QColor::fromRgbF(data[i].a, data[i].a, data[i].a, 1.0f));
+        if (checkBox_->isChecked()){
+            for (int i = 0; i < 256 ; i++){
+                pen.setColor(QColor::fromRgbF(data[i].r, data[i].g, data[i].b, 1.0f));
                 paintscene_->addLine(i, 0, i, 50, pen);
             }
         }
