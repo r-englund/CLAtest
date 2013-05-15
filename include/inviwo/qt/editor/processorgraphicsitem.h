@@ -3,6 +3,7 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsRectItem>
+#include <QTime>
 
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/qt/editor/labelgraphicsitem.h>
@@ -57,6 +58,8 @@ private:
     Processor* processor_;
     LabelGraphicsItem* nameLabel_;
     LabelGraphicsItem* classLabel_;
+
+    QTime progressBarTimer_;
 };
 
 } // namespace

@@ -24,7 +24,7 @@ CanvasProcessor::~CanvasProcessor() {
 void CanvasProcessor::takeSnapshot(const char *filePath){
     const Image* img = inport_.getData();
     snapshot_.setImage(inport_.getData());
-    if(img != NULL)
+    if (img)
         snapshot_.saveSnapshot(filePath, img);
 }
 
@@ -46,6 +46,12 @@ void CanvasProcessor::deinitialize() {
 void CanvasProcessor::process() {
     Processor::process();
     canvas_->activate();
+}
+
+void CanvasProcessor::invalidate() {
+    PropertyOwner::invalidate();
+    if (canvas_)
+        canvas_->update();
 }
 
 } // namespace

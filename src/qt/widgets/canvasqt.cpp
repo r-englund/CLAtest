@@ -25,7 +25,6 @@ CanvasQt::~CanvasQt() {
 
 void CanvasQt::initialize() {
     CanvasGL::initialize();
-    QObject::startTimer(16);
     show();
 }
 
@@ -58,18 +57,13 @@ void CanvasQt::repaint() {
 }
 
 
-void CanvasQt::timerEvent(QTimerEvent* e) {
-    IVW_UNUSED_PARAM(e);
-    if (processorNetworkEvaluator_)
-        processorNetworkEvaluator_->evaluate();
-}
-
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if(!processorNetworkEvaluator_) return;
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
         eventConverter_->getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
         eventConverter_->getModifier(e), dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
+    processorNetworkEvaluator_->evaluate();
 }
 
 void CanvasQt::mouseReleaseEvent (QMouseEvent* e) {
@@ -78,6 +72,7 @@ void CanvasQt::mouseReleaseEvent (QMouseEvent* e) {
         eventConverter_->getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE, 
         eventConverter_->getModifier(e), dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
+    processorNetworkEvaluator_->evaluate();
 }
 
 void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
@@ -95,5 +90,7 @@ void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
             eventConverter_->getModifier(e), dimensions_);
     }
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
+    processorNetworkEvaluator_->evaluate();
 }
+
 } // namespace

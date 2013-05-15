@@ -95,7 +95,7 @@ void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF po
     addPropertyWidgets(processor);
     addProcessorWidget(processor);
 
-    // TODO: Generalize by registering output processors (can also be e.g. VolumeSave)
+    // TODO: Generalize by registering output/end processors (can also be e.g. VolumeSave)
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
     if (canvasProcessor)
         processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
@@ -103,7 +103,7 @@ void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF po
 
 void NetworkEditor::removeProcessorRepresentations(Processor* processor) {
     // deregister processors which act as initiation points for the network evaluation
-    // TODO: generalize, should be done for all output processors
+    // TODO: generalize, should be done for all output/end processors
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
     if (canvasProcessor)
         processorNetworkEvaluator_->deregisterCanvas(canvasProcessor->getCanvas());
@@ -268,7 +268,6 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
         processor->setIdentifier(port->getProcessor()->getIdentifier()+":"+port->getIdentifier()+":"+processor->getIdentifier());
         dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"))->setVisibile(false);
         processorNetwork_->addProcessor(processor);
-        //processor->initialize();
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
         if (canvasProcessor) {
             processor->setIdentifier("PortInspector "+port->getProcessor()->getIdentifier()+":"+port->getIdentifier());
@@ -747,6 +746,9 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // first we clean the current network
     clearNetwork();
 
+    // then we lock the network that no evaluations are triggered during the deserialization
+    processorNetwork_->lock();
+
     // then we deserialize into an intermediate processor network
     IvwDeserializer xmlDeserializer(fileName);
     processorNetwork_->deserialize(xmlDeserializer);
@@ -764,9 +766,6 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     std::vector<PortConnection*> connections = processorNetwork_->getPortConnections();
     for (size_t i=0; i<connections.size(); i++)
         addConnectionGraphicsItem(connections[i]->getOutport(), connections[i]->getInport());
-        //addConnectionGraphicsItem(connections[i]);
-        //ConnectionGraphicsItem* connectionGraphicsItem = new ConnectionGraphicsItem(processor1, port1,
-                                                                            //processor2, port2);
 
     // add link graphics items
     std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
@@ -783,8 +782,10 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
         }
         */
     processorNetwork_->unlock();
-    // flag the network's modified flag to initiate evaluation
+    // flag the network's modified flag, unlock it and initiate evaluation
     processorNetwork_->setModified(true);
+    processorNetwork_->unlock();
+    processorNetworkEvaluator_->evaluate();
 
     return true;
 }

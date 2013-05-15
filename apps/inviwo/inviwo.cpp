@@ -1,5 +1,9 @@
 #ifdef _MSC_VER
-#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+    #ifdef _DEBUG
+        #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+    #elif
+        #pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+    #endif
 #endif
 
 #include <QFile>

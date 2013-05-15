@@ -68,7 +68,6 @@ void ImageOutport::changeDimensions(uvec2 dimensions) {
 }
 
 void ImageOutport::changeDataDimensions(uvec2 requiredDimensions, Processor* eventInitiatorProcessor) {
-
     Image* resultImage = 0;  
 
     std::string processorName = getProcessor()->getClassName();

@@ -51,15 +51,15 @@ void DataInport<T>::deinitialize(){}
 template <typename T>
 void DataInport<T>::connectTo(Outport* port) {
     DataOutport<T>* dataPort = dynamic_cast<DataOutport<T>*>(port);
-    ivwAssert(dataPort!=NULL, "Trying to connect different port types.")
-    Inport::connectTo(port);
+    ivwAssert(dataPort!=NULL, "Trying to connect incompatible ports.")
     dataOutport_ = dataPort;
+    Inport::connectTo(port);
 }
 
 template <typename T>
 void DataInport<T>::disconnectFrom(Outport* port) {
-    Inport::disconnectFrom(port);
     dataOutport_ = NULL;
+    Inport::disconnectFrom(port);
 }
 
 template <typename T>

@@ -19,5 +19,4 @@ void LabelGraphicsItem::focusOutEvent(QFocusEvent* event) {
     //if (processorGraphicsItem) processorGraphicsItem->getProcessor()->setIdentifier(toPlainText().toLocal8Bit().constData());
 }
 
-
 } // namespace

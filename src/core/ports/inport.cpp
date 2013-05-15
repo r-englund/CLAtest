@@ -13,16 +13,16 @@ Inport::~Inport() {}
 //Inport should determine if we can connect to the outport
 void Inport::connectTo(Outport* outport) {
     connectedOutport_ = outport;
-    invalidate();
     outport->connectTo(this);
+    invalidate();
 }
 
 void Inport::disconnectFrom(Outport* outport) {
     // TODO: check if ports are connected
     ivwAssert(connectedOutport_==outport, "Ports are not connected.");
     connectedOutport_ = NULL;
-    invalidate();
     outport->disconnectFrom(this);
+    invalidate();
 }
 
 bool Inport::isConnected() const { 

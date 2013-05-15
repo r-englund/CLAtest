@@ -22,6 +22,7 @@ public:
 
     void setCanvas(Canvas* canvas) { canvas_ = canvas; }
     Canvas* getCanvas() const { return canvas_; }
+    virtual void invalidate();
 
     bool isEndProcessor() { return true; }
     

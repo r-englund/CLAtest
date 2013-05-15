@@ -190,7 +190,7 @@ public:
     VoidObservable(): Observable<VoidObserver>() {};
 
 
-    void notifyObservers() {
+    void notifyObservers() const {
         // Notify observers
         ObserverSet::iterator endIt = observers_->end();
         for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {

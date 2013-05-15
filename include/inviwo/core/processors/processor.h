@@ -45,9 +45,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    virtual void beforeProcess();
     virtual void process();
-    virtual void afterProcess();
 
     virtual bool isEndProcessor() { return false; }
 
@@ -67,8 +65,8 @@ public:
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
     void initializeResources() {} // TODO: reload shaders etc. here
 
-    void showProgressBar() { showProgressBar_ = true; }
-    void hideProgressBar() { showProgressBar_ = false; }
+    void showProgressBar() { showProgressBar_ = true; resetProgress(); }
+    void hideProgressBar() { showProgressBar_ = false; resetProgress(); }
     bool hasProgressBar() const { return showProgressBar_; }
     float getProgress() const { return progress_; }
     void resetProgress() { progress_ = 0.0f; }

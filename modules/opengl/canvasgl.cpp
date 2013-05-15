@@ -58,6 +58,7 @@ void CanvasGL::resize(uvec2 size) {
 }
 
 void CanvasGL::update() {
+    Canvas::update();
     if (image_) {
         renderImage();
     } else {

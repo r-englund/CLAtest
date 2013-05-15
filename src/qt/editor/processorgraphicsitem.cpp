@@ -41,11 +41,11 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     classLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight*2.5);
     classLabel_->setBrush(Qt::lightGray);
     classLabel_->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
+
+    progressBarTimer_.start();
 }
 
 ProcessorGraphicsItem::~ProcessorGraphicsItem() {
-    delete nameLabel_;
-    delete classLabel_;
 }
 
 void ProcessorGraphicsItem::setProcessor(Processor* processor) {
@@ -240,25 +240,22 @@ void ProcessorGraphicsItem::paintProgressBar(QPainter* p, float progress) {
 
     QColor progressColor = Qt::darkGray;
     QRectF progressBarRect(position, dimensions);
-    QLinearGradient progressGrad(progressBarRect.topLeft(),
-        progressBarRect.topRight());
+    QLinearGradient progressGrad(progressBarRect.topLeft(), progressBarRect.topRight());
     progressGrad.setColorAt(0.0f, progressColor);
-    progressGrad.setColorAt(progress-0.001f, progressColor);
-    progressGrad.setColorAt(progress+0.001f, Qt::black);
+    float left = std::max(0.0f, progress-0.001f);
+    float right = std::min(1.0f, progress+0.001f);
+    progressGrad.setColorAt(left, progressColor);
+    progressGrad.setColorAt(right, Qt::black);
     progressGrad.setColorAt(1.0f, Qt::black);
     p->setPen(Qt::black);
     p->setBrush(progressGrad);
     p->drawRoundedRect(progressBarRect, 2.0, 2.0);
 
     QColor shadeColor(128,128,128);
-    QLinearGradient shadingGrad(progressBarRect.topLeft(),
-        progressBarRect.bottomLeft());
-    shadingGrad.setColorAt(0.0f, QColor(shadeColor.red()*0.6,
-        shadeColor.green()*0.6, shadeColor.blue()*0.6, 120));
-    shadingGrad.setColorAt(0.3f, QColor(shadeColor.red(),
-        shadeColor.green(), shadeColor.blue(), 120));
-    shadingGrad.setColorAt(1.0f, QColor(shadeColor.red(),
-        shadeColor.green(), shadeColor.blue(), 120));
+    QLinearGradient shadingGrad(progressBarRect.topLeft(), progressBarRect.bottomLeft());
+    shadingGrad.setColorAt(0.0f, QColor(shadeColor.red()*0.6, shadeColor.green()*0.6, shadeColor.blue()*0.6, 120));
+    shadingGrad.setColorAt(0.3f, QColor(shadeColor.red(), shadeColor.green(), shadeColor.blue(), 120));
+    shadingGrad.setColorAt(1.0f, QColor(shadeColor.red(), shadeColor.green(), shadeColor.blue(), 120));
     p->setPen(Qt::NoPen);
     p->setBrush(shadingGrad);
     p->drawRoundedRect(progressBarRect, 2.0, 2.0);
@@ -410,13 +407,13 @@ void ProcessorGraphicsItem::updateMetaData() {
 
 void ProcessorGraphicsItem::notify() {
     if (processor_->hasProgressBar()) {
-        //std::cout << processor_->getProgress() << std::endl;
-        //QGraphicsItem::update();
-        update();
-        //if (scene()) scene()->invalidate();
-        qApp->processEvents();
-    } else
-        update();
+        if (progressBarTimer_.elapsed() > 500 ||
+            processor_->getProgress()==0.0f || processor_->getProgress()==1.0f) {
+            progressBarTimer_.restart();
+            update();
+            //QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+        }
+    }
 }
 
 } // namespace

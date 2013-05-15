@@ -89,9 +89,8 @@ void Processor::invalidate() {
     notifyObservers();
 }
 
-void Processor::beforeProcess() {}
-void Processor::process() {}
-void Processor::afterProcess() {}
+void Processor::process() {
+}
 
 
 void Processor::addInteractionHandler(InteractionHandler* interactionHandler) {
@@ -113,20 +112,24 @@ void Processor::invokeInteractionEvent(Event* event) {
 
 
 void Processor::updateProgress(float progress) {
-    ivwAssert(progress>=progress_, "Progress should always increase");
-    ivwAssert(progress>=0.0f&&progress<=1.0, "Progress out of bounds.");
-    progress_ = progress;
-    notifyObservers();
+    if (showProgressBar_) {
+        ivwAssert(progress>=progress_, "Progress should always increase");
+        ivwAssert(progress>=0.0f&&progress<=1.0, "Progress out of bounds.");
+        progress_ = progress;
+        notifyObservers();
+    }
 }
 
 void Processor::updateProgressLoop(size_t loopVar, size_t maxLoopVar, float endLoopProgress) {
-    if (beginLoopProgress_<=0.0f)
-        beginLoopProgress_ = progress_;
-    float normalizedLoopVar = static_cast<float>(loopVar)/static_cast<float>(maxLoopVar);
-    progress_ = beginLoopProgress_+normalizedLoopVar*(endLoopProgress-beginLoopProgress_);
-    if (loopVar == maxLoopVar)
-        beginLoopProgress_ = -1.0f;
-    notifyObservers();
+    if (showProgressBar_) {
+        if (beginLoopProgress_<=0.0f)
+            beginLoopProgress_ = progress_;
+        float normalizedLoopVar = static_cast<float>(loopVar)/static_cast<float>(maxLoopVar);
+        progress_ = beginLoopProgress_+normalizedLoopVar*(endLoopProgress-beginLoopProgress_);
+        if (loopVar == maxLoopVar)
+            beginLoopProgress_ = -1.0f;
+        notifyObservers();
+    }
 }
 
 
