@@ -29,21 +29,18 @@ void CommandLineParser::initialize() {
             false,
             "",
             "Output path");
-        snapshotArg_ = new TCLAP::SwitchArg("s", "snapshot", 
-            "Pass this flag if you want to take snapshots on all canvases.");
-        snapshotNameArg_ = new TCLAP::ValueArg<std::string>("sn",
-            "snapshotName",
-            "Specify default name of each snapshot",
+        snapshotArg_ = new TCLAP::ValueArg<std::string>("s",
+            "snapshot",
+            "Specify default name of each snapshot, or empty string for processor name",
             false,
             "",
-            "Snapshot name");
+            "Snapshot on all canvases.");
         quitValueArg_ = new TCLAP::SwitchArg("q", "quit", 
             "Pass this flag if you want to close inviwo after startup.");
         
         cmd_->add(*workspaceValueArg_);
         cmd_->add(*outputValueArg_);
         cmd_->add(*snapshotArg_);
-        cmd_->add(*snapshotNameArg_);
         cmd_->add(*quitValueArg_);
     } catch (TCLAP::ArgException &e)  // catch exceptions
     { std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
@@ -76,12 +73,12 @@ void CommandLineParser::parse(){
 }
 
 bool CommandLineParser::getCaptureAfterStartup() const{
-    return snapshotArg_->getValue();
+    return snapshotArg_->isSet();
 }
 
 const std::string CommandLineParser::getSnapshotName() const{
-    if(snapshotNameArg_->isSet()){
-        return (snapshotNameArg_->getValue());
+    if(snapshotArg_->isSet()){
+        return (snapshotArg_->getValue());
     }
     return "";
 }

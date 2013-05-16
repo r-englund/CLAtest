@@ -58,8 +58,7 @@ private:
     TCLAP::CmdLine *cmd_;
     TCLAP::ValueArg<std::string> *workspaceValueArg_;
     TCLAP::ValueArg<std::string> *outputValueArg_;
-    TCLAP::SwitchArg *snapshotArg_;
-    TCLAP::ValueArg<std::string> *snapshotNameArg_;
+    TCLAP::ValueArg<std::string> *snapshotArg_;
     TCLAP::SwitchArg *quitValueArg_;
     std::string workspaceName_;
 
