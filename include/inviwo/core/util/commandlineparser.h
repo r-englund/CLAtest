@@ -44,6 +44,7 @@ public:
     const std::string getOutputPath() const;
     const std::string getWorkspacePath() const;
     bool getCaptureAfterStartup() const;
+    const std::string getSnapshotName() const;
     bool getQuitApplicationAfterStartup() const;
     bool getLoadWorkspaceFromArg() const;
     // TODO: No need to serialize the parser, right?
@@ -57,7 +58,8 @@ private:
     TCLAP::CmdLine *cmd_;
     TCLAP::ValueArg<std::string> *workspaceValueArg_;
     TCLAP::ValueArg<std::string> *outputValueArg_;
-    TCLAP::SwitchArg *snapshotCloseArg_;
+    TCLAP::SwitchArg *snapshotArg_;
+    TCLAP::ValueArg<std::string> *snapshotNameArg_;
     TCLAP::SwitchArg *quitValueArg_;
     std::string workspaceName_;
 

@@ -89,7 +89,7 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
         std::string path = cmdparser->getOutputPath();
         if(path.empty())
             path = IVW_DIR+"data/images/";
-        networkEvaluator->saveSnapshotAllCanvases(path);
+        networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
 
     if(cmdparser->getQuitApplicationAfterStartup())
