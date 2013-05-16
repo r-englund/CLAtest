@@ -27,7 +27,7 @@
                           * change this if your application uses non-POSIX
                           * extensions. */
 
-#include "png.h"
+#include "../libpng/png.h"
 
  /* The png_jmpbuf() macro, used in error handling, became available in
   * libpng version 1.0.6.  If you want to be able to run your code with older

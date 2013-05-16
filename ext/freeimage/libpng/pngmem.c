@@ -17,7 +17,7 @@
  * identify the replacement functions.
  */
 
-#include "pngpriv.h"
+#include "../libpng/pngpriv.h"
 
 #if defined(PNG_READ_SUPPORTED) || defined(PNG_WRITE_SUPPORTED)
 

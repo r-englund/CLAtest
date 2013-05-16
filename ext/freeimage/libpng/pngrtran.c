@@ -16,7 +16,7 @@
  * in pngtrans.c.
  */
 
-#include "pngpriv.h"
+#include "../libpng/pngpriv.h"
 
 #ifdef PNG_READ_SUPPORTED
 

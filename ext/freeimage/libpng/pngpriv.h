@@ -124,9 +124,9 @@
 #  define PNG_PRIVATE
 #endif
 
-#include "png.h"
-#include "pnginfo.h"
-#include "pngstruct.h"
+#include "../libpng/png.h"
+#include "../libpng/pnginfo.h"
+#include "../libpng/pngstruct.h"
 
 /* pngconf.h does not set PNG_DLL_EXPORT unless it is required, so: */
 #ifndef PNG_DLL_EXPORT
@@ -1666,7 +1666,7 @@ PNG_EXTERN void png_build_gamma_table PNGARG((png_structp png_ptr,
 
 /* Maintainer: Put new private prototypes here ^ and in libpngpf.3 */
 
-#include "pngdebug.h"
+#include "../libpng/pngdebug.h"
 
 #ifdef __cplusplus
 }

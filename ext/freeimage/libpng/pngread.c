@@ -14,7 +14,7 @@
  * read a PNG file or stream.
  */
 
-#include "pngpriv.h"
+#include "../libpng/pngpriv.h"
 
 #ifdef PNG_READ_SUPPORTED
 
