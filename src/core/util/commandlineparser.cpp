@@ -34,7 +34,7 @@ void CommandLineParser::initialize() {
             "Specify default name of each snapshot, or empty string for processor name",
             false,
             "",
-            "Snapshot on all canvases.");
+            "Snapshot default name: UPN=Use Processor name.");
         quitValueArg_ = new TCLAP::SwitchArg("q", "quit", 
             "Pass this flag if you want to close inviwo after startup.");
         
