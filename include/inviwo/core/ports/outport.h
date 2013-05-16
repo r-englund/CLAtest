@@ -25,8 +25,6 @@ public:
 protected:
     void connectTo(Inport* port);
     void disconnectFrom(Inport* port);
-
-private:
     std::vector<Inport*> connectedInports_;
 };
 

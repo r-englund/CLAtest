@@ -213,6 +213,23 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                 ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outports[j]);
                 if (imageOutport) {
                     if (isPortConnectedToProcessor(imageOutport, processor)) {
+                        
+                        std::vector<Processor*> descendantProcessors;
+                        imageOutport->getDescendantProcessors(descendantProcessors);
+
+                        std::vector<uvec2> validDescendantCanvasSizes;
+                        for (size_t i=0; i<descendantProcessors.size(); i++) {
+                            CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(descendantProcessors[i]);
+                            if (canvasProcessor) {
+                                uvec2 dimensions = canvasProcessor->getCanvas()->size();
+                                validDescendantCanvasSizes.push_back(dimensions);
+                            }
+                        }
+
+                        //set only descendant canvas sizes
+                        resizeEvent->setRegisteredCanvasSizes(validDescendantCanvasSizes);
+                        
+                        //imageOutport->changeDataDimensions(resizeEvent);
                         imageOutport->changeDataDimensions(resizeEvent->size(), eventInitiator_);
                         invalidate = true;
                     }

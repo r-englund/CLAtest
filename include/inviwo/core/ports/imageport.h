@@ -5,8 +5,11 @@
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/datastructures/image.h>
+#include <inviwo/core/interaction/events/resizeevent.h>
 
 namespace inviwo {
+
+class CanvasProcessor;
 
 class IVW_CORE_API ImageInport : public DataInport<Image> {
 
@@ -41,7 +44,10 @@ public:
 
     void changeDimensions(uvec2 dimensions);
     void changeDataDimensions(uvec2 dimensions, Processor* eventInitiatorProcessor);
+    void changeDataDimensions(ResizeEvent* resizeEvent);
     uvec2 getDimensions() const;
+
+    void getDescendantProcessors(std::vector<Processor*>& decendantProcessors);
 
     uvec3 getColorCode() const;
 

@@ -67,6 +67,43 @@ void ImageOutport::changeDimensions(uvec2 dimensions) {
     invalidate();
 }
 
+void ImageOutport::getDescendantProcessors(std::vector<Processor*>& descendantProcessors) {
+    for (size_t i=0; i<connectedInports_.size(); i++) {
+        Processor* decendantProcessor = connectedInports_[i]->getProcessor();
+        
+        if (std::find(descendantProcessors.begin(), descendantProcessors.end(), decendantProcessor)== descendantProcessors.end())
+            descendantProcessors.push_back(connectedInports_[i]->getProcessor());
+        
+        std::vector<Outport*> outports = decendantProcessor->getOutports();
+        for (size_t j=0; j<outports.size(); j++) {
+            ImageOutport* imageOutPort = dynamic_cast<ImageOutport*>(outports[j]);
+            if (imageOutPort)
+                imageOutPort->getDescendantProcessors(descendantProcessors);            
+        }
+    }
+}
+
+void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
+    uvec2 requiredDimensions = resizeEvent->size();
+    uvec2 previousDimensions = resizeEvent->previousSize();
+    std::vector<uvec2> validDimensions = resizeEvent->getRegisteredCanvasSizes();
+
+    std::vector<std::string> validDimensionsString;    
+    for (size_t i=0; i<validDimensions.size(); i++) {
+        uvec2 dimensions = validDimensions[i];            
+        std::ostringstream dimensionString;
+        dimensionString << dimensions.x << "x" << dimensions.y;        
+        validDimensionsString.push_back(dimensionString.str());
+    }
+
+    //Clean up unwanted image data based on validDimensions    
+    //If image data with previousDimensions exists in map and 
+    //   does not exist in validDimensions
+    //      Resize map data to required dimension
+    //Else
+    //      Clone the current data and resize
+}
+
 void ImageOutport::changeDataDimensions(uvec2 requiredDimensions, Processor* eventInitiatorProcessor) {
     Image* resultImage = 0;  
 
