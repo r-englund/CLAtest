@@ -205,7 +205,7 @@ png_user_version_check(png_structp png_ptr, png_const_charp user_png_ver)
          pos = png_safecat(m, sizeof m, pos, " but running with ");
          pos = png_safecat(m, sizeof m, pos, png_libpng_ver);
 
-         png_warning(png_ptr, m);
+         //png_warning(png_ptr, m);
 #endif
 
 #ifdef PNG_ERROR_NUMBERS_SUPPORTED
