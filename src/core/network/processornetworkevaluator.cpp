@@ -58,7 +58,7 @@ void ProcessorNetworkEvaluator::deregisterCanvas(Canvas *canvas) {
 }
 
 
-void ProcessorNetworkEvaluator::saveSnapshotAllCanvases(std::string dir, std::string ext, std::string default_name){
+void ProcessorNetworkEvaluator::saveSnapshotAllCanvases(std::string dir, std::string default_name, std::string ext){
     std::vector<inviwo::CanvasProcessor*> pv = processorNetwork_->getProcessorsByType<inviwo::CanvasProcessor>();
     std::cout << "Number of canvases: " << pv.size() << std::endl;
     int i = 0;

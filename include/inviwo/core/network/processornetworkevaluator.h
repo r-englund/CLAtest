@@ -21,7 +21,7 @@ public:
 
     void registerCanvas(Canvas* canvas, std::string associatedProcessName="CanvasProcessorGL");
     void deregisterCanvas(Canvas* canvas);
-    void saveSnapshotAllCanvases(std::string dir, std::string ext = ".png", std::string default_name = "");
+    void saveSnapshotAllCanvases(std::string dir, std::string default_name = "", std::string ext = ".png");
     void setDefaultRenderContext(Canvas* canvas) { defaultContext_ = canvas; }
     void activateDefaultRenderContext();
     void initializeNetwork();
