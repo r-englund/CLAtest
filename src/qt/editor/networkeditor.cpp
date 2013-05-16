@@ -781,7 +781,6 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
             addLinkGraphicsItem(outProcessorItem, inProcessorItem);
         }
         */
-    processorNetwork_->unlock();
     // flag the network's modified flag, unlock it and initiate evaluation
     processorNetwork_->setModified(true);
     processorNetwork_->unlock();

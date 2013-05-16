@@ -55,7 +55,7 @@ void InviwoMainWindow::initializeAndShow() {
     restoreState(settings.value("state", saveState()).toByteArray());
     move(settings.value("pos", pos()).toPoint());
     resize(settings.value("size", size()).toSize());
-    bool maximized = settings.value("maximized", isMaximized()).toBool();
+    bool maximized = settings.value("maximized", true).toBool();
     recentFileList_ = settings.value("recentFileList").toStringList();
     settings.endGroup();
 
