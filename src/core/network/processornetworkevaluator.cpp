@@ -252,6 +252,8 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
 }
 
 void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent) {
+    if (processorNetwork_->islocked()) return;
+
     // avoid continues evaluation when port change
     processorNetwork_->lock();
     // find the canvas processor from which the event was emitted
