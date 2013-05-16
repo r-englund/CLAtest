@@ -83,15 +83,17 @@ void InviwoMainWindow::initializeWorkspace(){
 
 bool InviwoMainWindow::processEndCommandLineArgs(){
     const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
-    if(cmdparser->getExitWithCapture()){
+    if(cmdparser->getCaptureAfterStartup()){
         ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
         networkEvaluator->evaluate();
         std::string path = cmdparser->getOutputPath();
         if(path.empty())
             path = IVW_DIR+"data/images/";
         networkEvaluator->saveSnapshotAllCanvases(path);
-        return false;
     }
+
+    if(cmdparser->getQuitApplicationAfterStartup())
+        return false;
 
     return true;
 }

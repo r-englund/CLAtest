@@ -30,10 +30,14 @@ void CommandLineParser::initialize() {
             "",
             "Output path");
         snapshotCloseArg_ = new TCLAP::SwitchArg("s", "snapshot", 
-            "Pass this flag if you want to take snapshots on all canvases and then close inviwo.");
-        cmd_->add(*snapshotCloseArg_);
-        cmd_->add(*outputValueArg_);
+            "Pass this flag if you want to take snapshots on all canvases.");
+        quitValueArg_ = new TCLAP::SwitchArg("q", "quit", 
+            "Pass this flag if you want to close inviwo after startup.");
+        
         cmd_->add(*workspaceValueArg_);
+        cmd_->add(*outputValueArg_);
+        cmd_->add(*snapshotCloseArg_);
+        cmd_->add(*quitValueArg_);
     } catch (TCLAP::ArgException &e)  // catch exceptions
     { std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
 }
@@ -64,8 +68,12 @@ void CommandLineParser::parse(){
     parse(argc_, argv_);
 }
 
-bool CommandLineParser::getExitWithCapture() const{
+bool CommandLineParser::getCaptureAfterStartup() const{
     return snapshotCloseArg_->getValue();
+}
+
+bool CommandLineParser::getQuitApplicationAfterStartup() const{
+    return quitValueArg_->getValue();
 }
 
 bool CommandLineParser::getLoadWorkspaceFromArg() const{

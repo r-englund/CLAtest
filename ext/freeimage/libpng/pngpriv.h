@@ -50,7 +50,7 @@
 #define PNGLIB_BUILD /*libpng is being built, not used*/
 
 #ifdef PNG_USER_CONFIG
-#  include "pngusr.h"
+#  include "../libpng/pngusr.h"
    /* These should have been defined in pngusr.h */
 #  ifndef PNG_USER_PRIVATEBUILD
 #    define PNG_USER_PRIVATEBUILD "Custom libpng build"

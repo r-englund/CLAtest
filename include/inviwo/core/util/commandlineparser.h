@@ -43,7 +43,8 @@ public:
     }
     const std::string getOutputPath() const;
     const std::string getWorkspacePath() const;
-    bool getExitWithCapture() const;
+    bool getCaptureAfterStartup() const;
+    bool getQuitApplicationAfterStartup() const;
     bool getLoadWorkspaceFromArg() const;
     // TODO: No need to serialize the parser, right?
     //virtual void serialize(IvwSerializer& s) const;
@@ -57,6 +58,7 @@ private:
     TCLAP::ValueArg<std::string> *workspaceValueArg_;
     TCLAP::ValueArg<std::string> *outputValueArg_;
     TCLAP::SwitchArg *snapshotCloseArg_;
+    TCLAP::SwitchArg *quitValueArg_;
     std::string workspaceName_;
 
 };
