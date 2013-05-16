@@ -254,22 +254,34 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
     }
 }
 
+Processor* ProcessorNetworkEvaluator::retrieveCanvasProcessor(Canvas* canvas) {
+
+    // find the canvas processor which contains the canvas
+    Processor* canvasProcessor = 0;
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    for (size_t i=0; i<processors.size(); i++) {
+        if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
+            (dynamic_cast<CanvasProcessor*>(processors[i])->getCanvas()==canvas)) {
+                canvasProcessor = processors[i];
+                i = processors.size();
+        }
+    }
+    
+    return canvasProcessor;
+}
+
 void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent) {
     if (processorNetwork_->islocked()) return;
 
     // avoid continues evaluation when port change
     processorNetwork_->lock();
+    
+    eventInitiator_= 0;
+
     // find the canvas processor from which the event was emitted
-    eventInitiator_=0; 
-    std::vector<Processor*> processors = processorNetwork_->getProcessors();
-    for (size_t i=0; i<processors.size(); i++) {
-        if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
-            (dynamic_cast<CanvasProcessor*>(processors[i])->getCanvas()==canvas)) {
-                eventInitiator_ = processors[i];
-                i = processors.size();
-        }
-    }
-    if (eventInitiator_==0) return;
+    eventInitiator_= retrieveCanvasProcessor(canvas);
+
+    ivwAssert(eventInitiator_!=0,"Invalid resize event encountered.");
 
     // propagate size of canvas to all preceding processors
     processorsVisited_.clear();
