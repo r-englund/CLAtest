@@ -229,8 +229,8 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                         //set only descendant canvas sizes
                         resizeEvent->setRegisteredCanvasSizes(validDescendantCanvasSizes);
                         
-                        //imageOutport->changeDataDimensions(resizeEvent);
-                        imageOutport->changeDataDimensions(resizeEvent->size(), eventInitiator_);
+                        imageOutport->changeDataDimensions(resizeEvent);
+                        
                         invalidate = true;
                     }
                 }

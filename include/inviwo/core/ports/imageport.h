@@ -43,7 +43,6 @@ public:
     void deinitialize();
 
     void changeDimensions(uvec2 dimensions);
-    void changeDataDimensions(uvec2 dimensions, Processor* eventInitiatorProcessor);
     void changeDataDimensions(ResizeEvent* resizeEvent);
     uvec2 getDimensions() const;
 
@@ -57,7 +56,7 @@ protected:
 
 private:
     uvec2 dimensions_;
-    typedef std::map<Processor*, Image*> ImagePortMap;
+    typedef std::map<std::string, Image*> ImagePortMap;
     ImagePortMap imageDataMap_;
 
 

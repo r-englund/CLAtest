@@ -41,12 +41,11 @@ uvec3 ImageInport::getColorCode() const {
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier)
     : DataOutport<Image>(identifier), dimensions_(uvec2(256,256))
-{ 
-    //TODO: a. Default data is un-neccessary
-    //      b. Also getProcessor() not working since processor 
-    //         for this port is not yet set in the constructor
+{     
     data_ = new Image(dimensions_);
-    imageDataMap_.insert(std::make_pair(getProcessor(), data_));
+    std::ostringstream dimensionString;
+    dimensionString << dimensions_.x << "x" << dimensions_.y;
+    imageDataMap_.insert(std::make_pair(dimensionString.str(), data_));
 }
 
 ImageOutport::~ImageOutport() {
@@ -84,58 +83,76 @@ void ImageOutport::getDescendantProcessors(std::vector<Processor*>& descendantPr
 }
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
+    //Allocates space holder, sets largest data, cleans up un-used data 
+    
     uvec2 requiredDimensions = resizeEvent->size();
     uvec2 previousDimensions = resizeEvent->previousSize();
-    std::vector<uvec2> validDimensions = resizeEvent->getRegisteredCanvasSizes();
+    std::ostringstream prevDimensionString;
+    prevDimensionString << previousDimensions.x << "x" << previousDimensions.y;
+    std::ostringstream reqDimensionString;
+    reqDimensionString << requiredDimensions.x << "x" << requiredDimensions.y;
 
-    std::vector<std::string> validDimensionsString;    
-    for (size_t i=0; i<validDimensions.size(); i++) {
-        uvec2 dimensions = validDimensions[i];            
+    std::vector<uvec2> registeredDimensions = resizeEvent->getRegisteredCanvasSizes();
+    std::vector<std::string> registeredDimensionsStrings;    
+    for (size_t i=0; i<registeredDimensions.size(); i++) {
+        uvec2 dimensions = registeredDimensions[i];
         std::ostringstream dimensionString;
         dimensionString << dimensions.x << "x" << dimensions.y;        
-        validDimensionsString.push_back(dimensionString.str());
+        registeredDimensionsStrings.push_back(dimensionString.str());
+    }
+ 
+    
+
+    //If requiredDimension does not exist then do the following:
+    //  If image data with previousDimensions exists in map and 
+    //  also does not exist in validDimensions
+    //      Resize map data to required dimension
+    //  Else
+    //      Clone the current data, resize it and make new entry in map
+
+    Image* resultImage = 0;
+    if ( imageDataMap_.find(reqDimensionString.str())!= imageDataMap_.end() )
+        resultImage = imageDataMap_[reqDimensionString.str()];
+
+    //requiredDimension does not exist
+    if (!resultImage) {
+        //Decide whether to resize data with previousDimensions
+        bool canResize = false;
+        if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), prevDimensionString.str()) == registeredDimensionsStrings.end())
+            canResize = true;    
+
+        //Does data with previousDimensions exist
+        if ( imageDataMap_.find(prevDimensionString.str())!= imageDataMap_.end() )
+            resultImage = imageDataMap_[prevDimensionString.str()];
+
+        if (canResize && resultImage) {
+            //previousDimensions exist. It is no longer needed. So it can be resized.            
+            //Remove old entry in map( later make new entry)
+            imageDataMap_.erase(prevDimensionString.str());
+        }
+        else {
+            //previousDimensions does not exist. So allocate space holder
+            resultImage = dynamic_cast<Image*>(data_->clone());            
+        }
+        //Resize the result image
+        resultImage->resize(requiredDimensions);
+        //Make new entry
+        imageDataMap_.insert(std::make_pair(reqDimensionString.str(), resultImage));
     }
 
-    //Clean up unwanted image data based on validDimensions    
-    //If image data with previousDimensions exists in map and 
-    //   does not exist in validDimensions
-    //      Resize map data to required dimension
-    //Else
-    //      Clone the current data and resize
-}
-
-void ImageOutport::changeDataDimensions(uvec2 requiredDimensions, Processor* eventInitiatorProcessor) {
-    Image* resultImage = 0;  
-
-    std::string processorName = getProcessor()->getClassName();
-    std::string portName = getIdentifier();
-
-    if (imageDataMap_.find(eventInitiatorProcessor) == imageDataMap_.end()) {        
-        for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
-            uvec2 mapDataDimensions = it->second->size();
-            if (mapDataDimensions == requiredDimensions) {
-                resultImage = it->second;
-            }
+    //Remove unwanted map data
+    for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
+        if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), it->first) == registeredDimensionsStrings.end()) {
+            //discard other data
+            if (it->second) delete it->second;
+            imageDataMap_.erase(it);
+            it=imageDataMap_.begin();
         }
+    }
 
-        if (!resultImage)
-            resultImage = dynamic_cast<Image*>(data_->clone());
-
-        // This is okay, because multiple eventInitiatorProcessor 
-        // can be associated with single resultImage.
-        // Also updates existing associations
-
-        // TODO: Cleanup the map
-        imageDataMap_.insert(std::make_pair(eventInitiatorProcessor, resultImage));
-        
-    } else 
-        resultImage = imageDataMap_[eventInitiatorProcessor];
-
-    if (resultImage->size()!=requiredDimensions)
-        resultImage->resize(requiredDimensions);
-
+    //Set largest data
     setLargestImageData();
-    invalidate();
+    invalidate();    
 }
 
 uvec2 ImageOutport::getDimensions() const{ 
@@ -160,19 +177,19 @@ Image* ImageOutport::resizeImageData(uvec2 requiredDimensions){
 
 void ImageOutport::setLargestImageData() {
     uvec2 maxDimensions(0);
-    Image* defaultImage = 0;
+    Image* largestImage = 0;
     for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
         uvec2 mapDataDimensions = it->second->size();
         if ( (maxDimensions.x*maxDimensions.y)<(mapDataDimensions.x*mapDataDimensions.y) ) {
             maxDimensions = mapDataDimensions;
-            defaultImage = it->second;
+            largestImage = it->second;
         }
     }
     
-    if (defaultImage && data_!=defaultImage)
-        data_ = defaultImage;
+    if (largestImage && data_!=largestImage)
+        data_ = largestImage;
 
-    dimensions_ = data_->size();    
+    dimensions_ = data_->size();
 }
 
 uvec3 ImageOutport::getColorCode() const { 
