@@ -20,7 +20,9 @@ ShaderObject::ShaderObject(GLenum shaderType, std::string fileName) :
     initialize();
 }
 
-ShaderObject::~ShaderObject() {}
+ShaderObject::~ShaderObject() {
+    glDeleteShader(id_);
+}
 
 bool ShaderObject::initialize() {
     id_ = glCreateShader(shaderType_);

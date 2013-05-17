@@ -179,6 +179,7 @@ void NetworkEditor::addProcessorWidget(Processor* processor) {
     if (processorWidgetQt) {
         processor->setProcessorWidget(processorWidgetQt);
         processor->getProcessorWidget()->initialize();
+        //TODO: Serialize if visible and check this on network load
         processor->getProcessorWidget()->show();
     }
 }
@@ -743,16 +744,15 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
 }
 
 bool NetworkEditor::loadNetwork(std::string fileName) {
-    // first we clean the current network
-    clearNetwork();
-
     // then we lock the network that no evaluations are triggered during the deserialization
     processorNetwork_->lock();
+
+    // first we clean the current network
+    clearNetwork();
 
     // then we deserialize into an intermediate processor network
     IvwDeserializer xmlDeserializer(fileName);
     processorNetwork_->deserialize(xmlDeserializer);
-    processorNetwork_->lock();
 
     // add processors
     std::vector<Processor*> processors = processorNetwork_->getProcessors();

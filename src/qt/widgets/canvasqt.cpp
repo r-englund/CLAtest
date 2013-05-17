@@ -20,11 +20,12 @@ CanvasQt::CanvasQt(QWidget* parent)
 }
 
 CanvasQt::~CanvasQt() {
-    QGLContext::currentContext();
+    //QGLContext::currentContext();
     delete eventConverter_;
 }
 
 void CanvasQt::initialize() {
+    activate();
     CanvasGL::initialize();
     show();
 }

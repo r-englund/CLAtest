@@ -38,8 +38,8 @@ void CanvasProcessor::initialize() {
 
 void CanvasProcessor::deinitialize() {
     processorWidget_->hide();
-    delete processorWidget_;
-    processorWidget_ = 0;
+    //delete processorWidget_;
+    //processorWidget_ = 0;
     Processor::deinitialize();
 }
 
@@ -50,8 +50,8 @@ void CanvasProcessor::process() {
 
 void CanvasProcessor::invalidate() {
     PropertyOwner::invalidate();
-    if (canvas_)
-        canvas_->update();
+    //if (canvas_)
+      //  canvas_->update();
 }
 
 } // namespace
