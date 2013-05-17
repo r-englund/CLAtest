@@ -31,7 +31,7 @@ public:
 	/**
 	 * Stop observing object by removing it from observation list.
 	 * 
-	 * \param observable (ObservableInterface *) The observable to stop observing.
+	 * @param observable (ObservableInterface *) The observable to stop observing.
 	 */
     void removeObservation(ObservableInterface* observable);
 

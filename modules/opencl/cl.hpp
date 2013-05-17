@@ -174,7 +174,7 @@
 //#define CL_USE_DEPRECATED_OPENCL_1_1_APIS 
 //#endif // #if !defined(CL_USE_DEPRECATED_OPENCL_1_1_APIS)
 
-
+#include <modules/opengl/ext/glew/include/GL/glew.h> //TODO: Why is <GL/glew.h> not working
 #if defined(__APPLE__) || defined(__MACOSX)
 #include <OpenGL/OpenGL.h>
 #include <OpenCL/opencl.h>

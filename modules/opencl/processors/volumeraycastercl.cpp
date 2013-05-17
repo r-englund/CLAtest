@@ -2,6 +2,7 @@
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/imagecl.h>
 #include <modules/opencl/volumecl.h>
+#include <modules/opencl/kernelmanager.h>
 
 namespace inviwo {
 
@@ -35,8 +36,10 @@ Processor* VolumeRaycasterCL::create() const {
 void VolumeRaycasterCL::initialize() {
     Processor::initialize();
     try {
-        cl::Program program = OpenCL::buildProgram(IVW_DIR+"modules/opencl/cl/volumeraycaster.cl");
-        kernel_ = new cl::Kernel(program, "raycaster");
+        cl::Program* program = KernelManager::getRef().buildProgram(IVW_DIR+"modules/opencl/cl/volumeraycaster.cl");
+        kernel_ = KernelManager::getRef().getKernel(program, "raycaster");
+        //cl::Program program = OpenCL::buildProgram(IVW_DIR+"modules/opencl/cl/volumeraycaster.cl");
+        //kernel_ = new cl::Kernel(program, "raycaster");
 
     } catch (cl::Error&) {
         

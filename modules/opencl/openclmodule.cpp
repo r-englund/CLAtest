@@ -4,13 +4,14 @@
 #include <modules/opencl/openclinfo.h>
 #include <modules/opencl/processors/volumeraycastercl.h>
 #include <modules/opencl/volumeclconverter.h>
-
+#include <modules/opencl/kernelmanager.h>
 
 
 
 namespace inviwo {
 
 OpenCLModule::OpenCLModule() : InviwoModule() {
+    KernelManager::init();
     setIdentifier("OpenCL");
     setXMLFileName("opencl/openclmodule.xml");
     addRepresentationConverter(new ImageDisk2CLConverter());
