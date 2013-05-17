@@ -145,7 +145,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), it->first) == registeredDimensionsStrings.end()) {
             //discard other data
             if (it->second) delete it->second;
-            imageDataMap_.erase(it);
+            imageDataMap_.erase(it->first);
             it=imageDataMap_.begin();
         }
     }
