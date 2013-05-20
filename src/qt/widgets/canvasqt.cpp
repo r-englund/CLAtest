@@ -43,7 +43,7 @@ void CanvasQt::initializeGL() {
 void CanvasQt::resizeGL(int width, int height) {
     uvec2 previousDimensions = dimensions_;
     CanvasGL::resize(uvec2(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));
-    if(processorNetworkEvaluator_) {
+    if (processorNetworkEvaluator_) {
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
         resizeEvent->setPreviousSize(previousDimensions);        
         std::vector<Canvas*> registeredCanvases = processorNetworkEvaluator_->getRegisteredCanvases();

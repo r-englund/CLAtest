@@ -37,9 +37,11 @@ public:
      * Before the processor is added to the network, its identifier is analyzed and
      * if necessary changed, such that the processor names within each network are unique.
      * 
-     * @param Processor * processor The processor to be added
+     * @param Processor* processor The processor to be added
+     * @param pos Position in the network editor, wher ethe graphical representation should be located
+     * @param visible Shall the graphical representation be visible
      */
-    void addProcessor(Processor* processor, QPointF pos);
+    void addProcessor(Processor* processor, QPointF pos, bool visible=true);
     void removeProcessor(Processor* processor);
 
     void addConnection(Outport* outport, Inport* inport);
@@ -93,9 +95,9 @@ private:
     bool gridSnapping_;
     static const int GRID_SPACING;
 
-    void addProcessorRepresentations(Processor* processor, QPointF pos);
+    void addProcessorRepresentations(Processor* processor, QPointF pos, bool visible=true);
     void removeProcessorRepresentations(Processor* processor);
-    void addProcessorGraphicsItem(Processor* processor, QPointF pos);
+    void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true);
     void removeProcessorGraphicsItem(Processor* processor);
     void addPropertyWidgets(Processor* processor);
     void removePropertyWidgets(Processor* processor);

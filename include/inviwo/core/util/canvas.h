@@ -28,10 +28,10 @@ public:
 
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };
 
-    static ProcessorNetworkEvaluator* processorNetworkEvaluator_; //TODO: should this rather be private?
-
 protected:
     uvec2 dimensions_;
+
+    ProcessorNetworkEvaluator* processorNetworkEvaluator_;
 };
 
 } // namespace

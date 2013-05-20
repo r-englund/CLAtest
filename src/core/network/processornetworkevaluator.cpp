@@ -34,7 +34,7 @@ void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string assoc
     registeredCanvases_.push_back(canvas);
     std::vector<CanvasProcessor*> canvasProcessors = processorNetwork_->getProcessorsByType<CanvasProcessor>();
     for (size_t i=0; i<canvasProcessors.size(); i++) {
-        if(canvasProcessors[i]->getIdentifier() == associatedProcessName) {
+        if (canvasProcessors[i]->getIdentifier() == associatedProcessName) {
             canvasProcessors[i]->setCanvas(canvas);
         }
     }
