@@ -29,7 +29,7 @@ const std::string IvwSerializeConstants::PROCESSOR_ATTRIBUTE_1="identifier";
 const std::string IvwSerializeConstants::PROCESSOR_ATTRIBUTE_2="displayName";
 
 bool IvwSerializeConstants::isReversvedAttribute(const std::string key) {
-    if(    key == PROPERTY_ATTRIBUTE_1
+    if (    key == PROPERTY_ATTRIBUTE_1
         || key == PROPERTY_ATTRIBUTE_2
         || key == PROCESSOR_ATTRIBUTE_1
         || key == PROCESSOR_ATTRIBUTE_2 ) {

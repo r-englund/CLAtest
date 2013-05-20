@@ -14,7 +14,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API InviwoApplication : public Singleton<InviwoApplication> {
+class IVW_CORE_API InviwoApplication : public Singleton<InviwoApplication>, public VoidObserver {
 
 public:
     InviwoApplication(std::string displayName, std::string basePath);
@@ -34,7 +34,12 @@ public:
     void registerModule(InviwoModule* module) { modules_.push_back(module); }
     const std::vector<InviwoModule*> getModules() const { return modules_; }
 
-    void setProcessorNetwork(ProcessorNetwork* processorNetwork) { processorNetwork_ = processorNetwork; }
+    void setProcessorNetwork(ProcessorNetwork* processorNetwork) {
+        processorNetwork_ = processorNetwork;
+        addObservation(processorNetwork_);
+        processorNetwork_->addObserver(this);             
+
+    }
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
     Settings* getSettings() { return settings_; }
     const CommandLineParser* getCommandLineParser() const { return commandLineParser_; } 
@@ -49,8 +54,13 @@ public:
     };
     virtual void playSound(unsigned int soundID) { /*LogWarn("This Inviwo application does not support sound feedback.");*/ }
 
+    bool hasNetworkChanged() const { return networkChanged_; }
+    void setNetworkChanged(bool networkChanged) { networkChanged_ = networkChanged; }
+
 protected:
     void printApplicationInfo();
+
+    bool networkChanged_;
 
 private:
     std::string displayName_;

@@ -42,9 +42,7 @@ void TemplateProperty<T>::set(const T& value) {
     value_ = value;
     onChangeCallback_.invoke();
     getOwner()->invalidate();
-    //invalidate();
     updatePropertyWidgets();
-    //notifyObservers();
 }
 
 } // namespace

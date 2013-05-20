@@ -48,12 +48,12 @@ void OpenGLInfo::printInfo(){
     LogInfo("Version: " << glVersionStr_);
 
     //GLSL
-    if(isShadersSupported()){
+    if (isShadersSupported()){
         LogInfo("GLSL version: " << glslVersionStr_);
         LogInfo("Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
         LogInfo("Shaders supported: YES");
     }
-    else if(isShadersSupportedARB()){
+    else if (isShadersSupportedARB()){
         LogInfo("GLSL version: " << glslVersionStr_);
         LogInfo("Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
         LogInfo("Shaders supported: YES(ARB)");
@@ -68,21 +68,21 @@ void OpenGLInfo::printInfo(){
     LogInfo("3D textures supported: " << (is3DTexturesSupported() ? "YES" : "NO "));
     LogInfo("Array textures supported: " << (isTextureArraysSupported() ? "YES" : "NO "));
     
-    if(isTexturesSupported()){
+    if (isTexturesSupported()){
         LogInfo("Max 1D/2D texture size: " << getMaxTexSize());
     }
-    if(is3DTexturesSupported()){
+    if (is3DTexturesSupported()){
         LogInfo("Max 3D texture size: " << getMax3DTexSize());
     }
-    if(isTextureArraysSupported()){
+    if (isTextureArraysSupported()){
         LogInfo("Max array texture size: " << getMaxArrayTexSize());
     }
-    if(isFboSupported()){
+    if (isFboSupported()){
         LogInfo("Max color attachments: " << getMaxColorAttachments());
     }
 
 
-    if(isTexturesSupported()){
+    if (isTexturesSupported()){
         LogInfo("Max number of texture units: " << getNumTexUnits());
         int totalMem = getTotalAvailableTextureMem();
         LogInfo("Total available texture memory: " << (totalMem>0 ? formatBytesToString(totalMem) : "UNKNOWN"));
@@ -153,7 +153,7 @@ OpenGLInfo::GLSLShaderVersion OpenGLInfo::getCurrentShaderVersion(){
 }
 
 std::string OpenGLInfo::getCurrentGlobalGLSLHeader(){
-    if(currentGlobalGLSLHeader_ == "")
+    if (currentGlobalGLSLHeader_ == "")
         rebuildGLSLHeader();
 
     return currentGlobalGLSLHeader_;
@@ -164,12 +164,12 @@ int OpenGLInfo::getCurrentAvailableTextureMem() throw (Exception) {
 
     try{
         GLint nCurAvailMemoryInKB = 0;
-        if(glVendor_ == NVIDIA) {
+        if (glVendor_ == NVIDIA) {
 #ifdef GL_NVX_gpu_memory_info
             glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &nCurAvailMemoryInKB);
 #endif
         }
-        else if(glVendor_ == AMD) {
+        else if (glVendor_ == AMD) {
 #ifdef GL_ATI_meminfo
             glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, &nCurAvailMemoryInKB);
 #endif
@@ -189,7 +189,7 @@ int OpenGLInfo::getTotalAvailableTextureMem() throw (Exception) {
 
     try{
         GLint nTotalAvailMemoryInKB = 0;
-        if(glVendor_ == NVIDIA) {
+        if (glVendor_ == NVIDIA) {
 #ifdef GL_NVX_gpu_memory_info
             glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &nTotalAvailMemoryInKB);
 #endif
@@ -257,18 +257,18 @@ void OpenGLInfo::retrieveStaticInfo(){
         parseAndAddShaderVersion(toString<const GLubyte*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
     }
 #endif
-    if(numberOfSupportedVersions == 0){
+    if (numberOfSupportedVersions == 0){
         const GLubyte *glslStrByte = NULL;
-        if(isShadersSupported())
+        if (isShadersSupported())
             glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
-        else if(isShadersSupportedARB())
+        else if (isShadersSupportedARB())
             glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION_ARB);
 
         glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
 
         int glslVersion = parseAndRetrieveShaderVersion(glslVersionStr_);
 
-        if(glslVersion != 0){
+        if (glslVersion != 0){
 #ifdef GLEW_VERSION_4_3
             addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "core"), glslVersion);
             addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "compatibility"), glslVersion);
@@ -309,7 +309,7 @@ void OpenGLInfo::retrieveStaticInfo(){
     }
 
     //Set current used GLSL version to highest(i.e. 1st in vector) with preferred profile (or no profile)
-    if(isShadersSupported() || isShadersSupportedARB()){
+    if (isShadersSupported() || isShadersSupportedARB()){
         size_t i = 0;
         while(i<supportedShaderVersions_.size() && (supportedShaderVersions_[i].hasProfile() && supportedShaderVersions_[i].getProfile() != preferredGLSLProfile_))
             i++;
@@ -339,7 +339,7 @@ void OpenGLInfo::retrieveStaticInfo(){
     glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, (GLint*)&max3DTexSize_);
 #else
     tex3DSupported_ = isExtensionSupported("GL_EXT_texture3D");
-    if(is3DTexturesSupported())
+    if (is3DTexturesSupported())
         glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE_EXT, (GLint*)&max3DTexSize_);
     else
         max3DTexSize_ = 0;
@@ -349,16 +349,16 @@ void OpenGLInfo::retrieveStaticInfo(){
     glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&maxArrayTexSize_);
 #else
     texArraySupported_ = isExtensionSupported("GL_EXT_texture_array");
-    if(isTextureArraysSupported())
+    if (isTextureArraysSupported())
         glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS_EXT, (GLint*)&maxArrayTexSize_);
     else
         maxArrayTexSize_ = 0;
 #endif
 
     numTexUnits_ = -1;
-    if(isShadersSupported())
+    if (isShadersSupported())
         glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS_ARB, (GLint*)&numTexUnits_);
-    if(getNumTexUnits() < 0)
+    if (getNumTexUnits() < 0)
         glGetIntegerv(GL_MAX_TEXTURE_UNITS, (GLint*)&numTexUnits_);
 
 
@@ -366,7 +366,7 @@ void OpenGLInfo::retrieveStaticInfo(){
     fboSupported_ = isExtensionSupported("GL_EXT_framebuffer_object");
     
     maxColorAttachments_ = 0;
-    if(isFboSupported())
+    if (isFboSupported())
         glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachments_);
 }
 
@@ -377,22 +377,22 @@ void OpenGLInfo::retrieveDynamicInfo(){
 void OpenGLInfo::rebuildGLSLHeader(){
     currentGlobalGLSLHeader_ = "#version " + supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersionAndProfileAsString() + "\n";
 
-    if(supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() == 140 && preferredGLSLProfile_ == "compatibility")
+    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() == 140 && preferredGLSLProfile_ == "compatibility")
         currentGlobalGLSLHeader_ += "#extension GL_ARB_compatibility : enable\n";
 
-    if(supportedShaderVersions_[currentGlobalGLSLVersionIdx_].hasProfile()){
+    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].hasProfile()){
         currentGlobalGLSLHeader_ += "#define GLSL_PROFILE_" + toUpper(supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getProfile()) + "\n";
     }
 
     int lastVersion = -1;
     for(size_t i=currentGlobalGLSLVersionIdx_; i<supportedShaderVersions_.size(); i++){
-        if(lastVersion != supportedShaderVersions_[i].getVersion()){
+        if (lastVersion != supportedShaderVersions_[i].getVersion()){
             currentGlobalGLSLHeader_ += "#define GLSL_VERSION_" + supportedShaderVersions_[i].getVersionAsString() + "\n";
             lastVersion = supportedShaderVersions_[i].getVersion();
         }
     }
 
-    if(getMaxProgramLoopCount() > 0){
+    if (getMaxProgramLoopCount() > 0){
         currentGlobalGLSLHeader_ += "#define MAX_PROGRAM_LOOP_COUNT " + toString(getMaxProgramLoopCount()) + "\n";
     }
 }
@@ -402,15 +402,15 @@ void OpenGLInfo::addShaderVersion(GLSLShaderVersion version){
 }
 
 void OpenGLInfo::addShaderVersionIfEqualOrLower(GLSLShaderVersion version, int compVersion){
-    if(version.getVersion() <= compVersion)
+    if (version.getVersion() <= compVersion)
         addShaderVersion(version);
 }
 
 void OpenGLInfo::parseAndAddShaderVersion(std::string versionStr){
     //Assumes <version><space><profile> or <version>, example 420 core or 140
-    if(!versionStr.empty()){
+    if (!versionStr.empty()){
         std::vector<std::string> versionSplit = splitString(versionStr);
-        if(versionSplit.size() > 1)
+        if (versionSplit.size() > 1)
             addShaderVersion(GLSLShaderVersion(stringTo<int>(versionSplit[0]), versionSplit[1]));
         else
             addShaderVersion(GLSLShaderVersion(stringTo<int>(versionSplit[0])));
@@ -419,7 +419,7 @@ void OpenGLInfo::parseAndAddShaderVersion(std::string versionStr){
 
 int OpenGLInfo::parseAndRetrieveShaderVersion(std::string versionStr){
     //Assumes <version><space><desc>
-    if(!versionStr.empty()){
+    if (!versionStr.empty()){
         std::vector<std::string> versionSplit = splitString(versionStr);
         return stringTo<int>(removeFromString(versionSplit[0], '.'));
     }

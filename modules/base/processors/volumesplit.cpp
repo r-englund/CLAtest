@@ -240,15 +240,15 @@ void VolumeSplit::process(){
 void VolumeSplit::initialize() {
     Processor::initialize();
 
-    if(!openGLInfoRef_){
+    if (!openGLInfoRef_){
         OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
-        if(openGLModule)
+        if (openGLModule)
             openGLInfoRef_ = getTypeFromVector<OpenGLInfo>(openGLModule->getResourceInfos());
     }
 
-    if(!systemInfoRef_){
+    if (!systemInfoRef_){
         InviwoCore* inviwoCoreModule = getTypeFromVector<InviwoCore>(InviwoApplication::getRef().getModules());
-        if(inviwoCoreModule)
+        if (inviwoCoreModule)
             systemInfoRef_ = getTypeFromVector<SystemInfo>(inviwoCoreModule->getResourceInfos());
     }
 

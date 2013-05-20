@@ -84,7 +84,7 @@ void VolumeGLPrecision<T>::setTypeAndFormat() {
         dataType_ = GL_UNSIGNED_SHORT;
         format_ = GL_ALPHA;
 
-        if(dataFormatBase_.getBitsStored() == DataUINT12::bits){
+        if (dataFormatBase_.getBitsStored() == DataUINT12::bits){
             internalFormat_ = GL_ALPHA12;
         }
         else{
@@ -95,7 +95,7 @@ void VolumeGLPrecision<T>::setTypeAndFormat() {
     else if (typeid(this) == typeid(VolumeGLPrecision<DataINT16::type>*)) {
         dataType_ = GL_SHORT;
         format_ = GL_ALPHA;
-        if(dataFormatBase_.getBitsStored() == DataINT12::bits){
+        if (dataFormatBase_.getBitsStored() == DataINT12::bits){
             internalFormat_ = GL_ALPHA12;
         }
         else{

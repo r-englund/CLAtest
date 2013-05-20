@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
     mainWin.openLastNetwork();
 
     // process last arguments
-    if(mainWin.processEndCommandLineArgs())
+    if (mainWin.processEndCommandLineArgs())
         return inviwoApp.exec();
     else
         return 0;

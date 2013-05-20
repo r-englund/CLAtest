@@ -97,9 +97,9 @@ const T* Data::getRepresentation() const{
     RepresentationConverterPackage<T>* converterPackage = NULL;
     for (size_t i=0; i<representations_.size(); i++) {                
         RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(representations_[i]);
-        if(currentConverterPackage){
-            if(converterPackage){
-                if(currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()){
+        if (currentConverterPackage){
+            if (converterPackage){
+                if (currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()){
                     converterPackage = currentConverterPackage;
                     result = representations_[i];
                 }
@@ -126,7 +126,7 @@ const T* Data::getRepresentation() const{
 template<class T>
 T* Data::getEditableRepresentation() {
     T* result = const_cast<T*>(getRepresentation<T>());
-    if(representations_.size()>1)
+    if (representations_.size()>1)
         invalidateAllOther<T>();
     return result;
 }

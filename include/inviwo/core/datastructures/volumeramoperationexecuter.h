@@ -9,7 +9,7 @@ namespace inviwo {
     template<typename T, size_t B>
     static IVW_CORE_API inline void executeOperationOnVolumeRAMPrecision(DataOperation* dop){
         VolumeRAMSubSet* volSubSetDop = dynamic_cast<VolumeRAMSubSet*>(dop);
-        if(volSubSetDop){
+        if (volSubSetDop){
             volSubSetDop->evaluate<T, B>();
         }
     };

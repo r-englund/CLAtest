@@ -64,8 +64,8 @@ void InviwoCore::setupModuleSettings(){
 void InviwoCore::allocationTest(){
     if (getSettings()){
         SystemInfo* sysInfo = getTypeFromVector<SystemInfo>(getResourceInfos());
-        if(sysInfo){
-            if(allocTest_){
+        if (sysInfo){
+            if (allocTest_){
                 delete allocTest_;
                 LogInfo("Deleted previous test allocation");
             }

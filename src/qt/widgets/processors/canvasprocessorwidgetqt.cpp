@@ -15,7 +15,7 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt(Processor* processor, QWidget* 
 }
 
 CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
-    if(canvas_) {
+    if (canvas_) {
         canvas_->hide();
         ProcessorWidgetQt::hide();
         delete canvas_;

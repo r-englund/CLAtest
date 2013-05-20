@@ -64,7 +64,7 @@ void ProcessorNetworkEvaluator::saveSnapshotAllCanvases(std::string dir, std::st
     int i = 0;
     for(std::vector<inviwo::CanvasProcessor*>::iterator it = pv.begin(); it != pv.end(); it++){
         std::stringstream ss;
-        if(default_name == "" || default_name == "UPN")
+        if (default_name == "" || default_name == "UPN")
             ss << (*it)->getIdentifier();
         else
             ss << default_name << i+1;
@@ -151,7 +151,7 @@ void ProcessorNetworkEvaluator::propagateMouseEvent(Canvas* canvas, MouseEvent* 
         }
     }
 
-    if(!eventInitiator_) return;
+    if (!eventInitiator_) return;
     processorsVisited_.clear();
     propagateMouseEvent(eventInitiator_, mouseEvent);
     processorNetwork_->unlock();

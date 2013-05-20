@@ -11,13 +11,13 @@ namespace inviwo {
 SnapshotProperty::~SnapshotProperty() {}
 
 void SnapshotProperty::saveSnapshot() {
-    if(value_.size() != 0)
+    if (value_.size() != 0)
         saveSnapshot(value_.c_str(), image_);
 
 }
 
 void SnapshotProperty::saveSnapshot(const char* path, const Image* image){
-    if(sizeof(path) != 0){
+    if (sizeof(path) != 0){
         ImageLoader::saveImage(path, image);
     } else {
         std::cout << "No filename specified..." << std::endl;

@@ -10,6 +10,7 @@
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QList>
+#include <QMessageBox>
 #include <QSettings>
 #include <QUrl>
 
@@ -85,16 +86,16 @@ void InviwoMainWindow::initializeWorkspace(){
 
 bool InviwoMainWindow::processEndCommandLineArgs(){
     const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
-    if(cmdparser->getCaptureAfterStartup()){
+    if (cmdparser->getCaptureAfterStartup()){
         ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
         networkEvaluator->evaluate();
         std::string path = cmdparser->getOutputPath();
-        if(path.empty())
+        if (path.empty())
             path = IVW_DIR+"data/images/";
         networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
 
-    if(cmdparser->getQuitApplicationAfterStartup())
+    if (cmdparser->getQuitApplicationAfterStartup())
         return false;
 
     return true;
@@ -169,8 +170,6 @@ void InviwoMainWindow::addMenuActions() {
 void InviwoMainWindow::updateWindowTitle() {
     QString windowTitle = QString("Inviwo - Interactive Visualization Workshop - ");
     windowTitle.append(currentNetworkFileName_);
-    if (networkEditorView_->getNetworkEditor()->getProcessorNetwork()->isModified())
-        windowTitle.append("*");
     setWindowTitle(windowTitle);
 }
 
@@ -212,6 +211,7 @@ void InviwoMainWindow::openNetwork(QString networkFileName) {
     
     networkEditorView_->getNetworkEditor()->loadNetwork(networkFileName.toLocal8Bit().constData());
     setCurrentNetwork(networkFileName);
+    InviwoApplication::getPtr()->setNetworkChanged(false);
     addToRecentNetworks(networkFileName);
 }
 
@@ -295,6 +295,26 @@ void InviwoMainWindow::saveNetworkAs() {
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
+
+    if (InviwoApplication::getPtr()->hasNetworkChanged()) {
+        QMessageBox msgBox;
+        msgBox.setText("Network Modified");
+        msgBox.setInformativeText("Do you want to save your changes?");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        int answer = msgBox.exec();
+        switch (answer) {
+            case QMessageBox::Yes:
+                saveNetwork();
+                break;
+            case QMessageBox::No:
+                break;
+            case QMessageBox::Cancel:
+                event->ignore();
+                return;
+        }
+    }
+
     networkEditorView_->getNetworkEditor()->clearNetwork();
 
     // save window state

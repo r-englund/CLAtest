@@ -132,7 +132,7 @@ int TemplatedOptionProperty<T>::getSelectedOption() {
     std::vector< std::string > tmp = getOptionKeys();
     int size = static_cast<int>(tmp.size());
     for (int i=0; i<size;i++) {
-        if(getOptionKeys().at(i)== value_)
+        if (getOptionKeys().at(i)== value_)
             return i;
     }
     return 0;

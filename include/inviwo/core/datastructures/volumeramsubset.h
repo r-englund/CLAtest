@@ -37,13 +37,13 @@ namespace inviwo {
     template<typename T, size_t B>
     void VolumeRAMSubSet::evaluate(){
         const VolumeRAMPrecision<T>* volume = dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
-        if(!volume){
+        if (!volume){
             setOutputVolume(NULL);
             return;
         }
 
         uvec3 dataDims = volume->getDimensions();
-        if(newOffset_.x > dataDims.x && newOffset_.y > dataDims.y && newOffset_.z > dataDims.z){
+        if (newOffset_.x > dataDims.x && newOffset_.y > dataDims.y && newOffset_.z > dataDims.z){
             setOutputVolume(NULL);
             return;
         }
@@ -54,7 +54,7 @@ namespace inviwo {
         VolumeRepresentation::VolumeBorders trueBorder = VolumeRepresentation::VolumeBorders();
         VolumeRepresentation::VolumeBorders correctBorder = newBorder_;
 
-        if(clampBorderOutsideVolume_){
+        if (clampBorderOutsideVolume_){
             correctBorder.llf += static_cast<uvec3>(-glm::min(newOffset_Dims, ivec3(0,0,0)));
             correctBorder.urb += static_cast<uvec3>(-glm::min(static_cast<ivec3>(dataDims)-static_cast<ivec3>(newOffset_+copyDataDims+correctBorder.urb), ivec3(0,0,0)));
             newOffset_Dims = static_cast<ivec3>(newOffset_-correctBorder.llf);
@@ -74,7 +74,7 @@ namespace inviwo {
 
         //allocate space
         VolumeRAMPrecision<T>* newVolume;
-        if(volume->getDataFormat().getBitsAllocated() != B)
+        if (volume->getDataFormat().getBitsAllocated() != B)
             newVolume = new VolumeRAMCustomPrecision<T, B>(newDim_, correctBorder);
         else
             newVolume = new VolumeRAMPrecision<T>(newDim_, correctBorder);

@@ -20,7 +20,7 @@ namespace inviwo {
     **/
     DataRepresentation* ImageDisk2RAMConverter::convert(DataRepresentation* source) {
         ImageDisk* imageDisk = dynamic_cast<ImageDisk*>(source);
-        if(imageDisk){
+        if (imageDisk){
 
             switch (imageDisk->getDataFormatId()) {
             case Vec4UINT8:

@@ -7,7 +7,7 @@
 namespace inviwo {
 
 InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
-                                     : displayName_(displayName), basePath_(basePath)
+                                     : VoidObserver(), displayName_(displayName), basePath_(basePath)
 {
     init(this);
 }
@@ -42,6 +42,8 @@ void InviwoApplication::initialize() {
     MetaDataFactory::init();
     RepresentationConverterFactory::init();
 
+    networkChanged_ = false;
+
     initialized_ = true;
 }
 
@@ -74,7 +76,7 @@ void InviwoApplication::printApplicationInfo(){
 #elif defined(CMAKE_INTDIR)
     config += " [" + std::string(CMAKE_INTDIR) + "]";
 #endif
-    if(config != "")
+    if (config != "")
         LogInfoCustom("InviwoInfo", "Config: " << config);
 }
 

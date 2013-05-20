@@ -70,13 +70,13 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
 }
 
 std::string ShaderManager::getGlobalGLSLHeader(){
-    if(!openGLInfoRef_){
+    if (!openGLInfoRef_){
         OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
-        if(openGLModule)
+        if (openGLModule)
             openGLInfoRef_ = getTypeFromVector<OpenGLInfo>(openGLModule->getResourceInfos());
     }
 
-    if(openGLInfoRef_){
+    if (openGLInfoRef_){
         return openGLInfoRef_->getCurrentGlobalGLSLHeader();
     }
 

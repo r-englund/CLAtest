@@ -17,7 +17,7 @@ void PortConnection::SlimPort::deserialize(IvwDeserializer& s) {
    s.deserialize("identifier", name, true);
    s.deserialize("Processor", processor);   
 
-   if(processor) {
+   if (processor) {
        port_ = processor->getPort(name);       
    }
 }

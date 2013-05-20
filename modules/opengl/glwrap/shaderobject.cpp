@@ -105,7 +105,7 @@ bool ShaderObject::loadSource(std::string fileName) {
             len = ftell(file);
             fseek(file, 0L, SEEK_SET);
             fileContent = (char*)malloc(sizeof(char)*(len));
-            if(fileContent != NULL){
+            if (fileContent != NULL){
                 fread(fileContent, sizeof(char), len, file);
                 fileContent[len] = '\0';
             }

@@ -68,7 +68,7 @@ namespace inviwo {
 
     template<typename T>
     void ImageRAMPrecision<T>::initialize(void* data) {
-        if(data == NULL) {
+        if (data == NULL) {
             data_ = new T[dimensions_.x*dimensions_.y*sizeof(T)];
         } else {
             data_ = data;

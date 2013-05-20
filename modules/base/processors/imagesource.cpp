@@ -30,9 +30,9 @@ void ImageSource::deinitialize() {
 **/
 void ImageSource::process() {
 	Image* outImage = outport_.getData(); 
-    if(outImage){
+    if (outImage){
         ImageDisk *outImageDisk_ = outImage->getEditableRepresentation<ImageDisk>();
-        if(!outImageDisk_ || outImageDisk_->getSourceFile() != imageFileName_.get()){ 
+        if (!outImageDisk_ || outImageDisk_->getSourceFile() != imageFileName_.get()){ 
             outImageDisk_ = new ImageDisk(imageFileName_.get());
         }
         outImage->clearRepresentations();

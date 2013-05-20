@@ -666,7 +666,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
                 Processor* processor = processorGraphicsItem->getProcessor();
                 removeProcessor(processor);
             } else if (showAction && result == showAction) {
-                if(showAction->isChecked())
+                if (showAction->isChecked())
                     processorGraphicsItem->getProcessor()->getProcessorWidget()->show();
                 else
                     processorGraphicsItem->getProcessor()->getProcessorWidget()->hide();

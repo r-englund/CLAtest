@@ -134,7 +134,7 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
         //glEnd();
 
         // obtain rotation axis
-        if(rotationAngle > pixelWidth_) {
+        if (rotationAngle > pixelWidth_) {
             //rotation axis
             vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);
 

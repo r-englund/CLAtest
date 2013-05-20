@@ -27,13 +27,13 @@ static IVW_CORE_API inline std::string formatBytesToString(uint64_t bytes) {
     stream.precision(2);
     stream.setf(std::ios::fixed, std::ios::floatfield);
 
-    if(bytes > TERA_BYTE_SIZE)
+    if (bytes > TERA_BYTE_SIZE)
         stream << static_cast<float>(bytes/GIGA_BYTE_SIZE)*BYTE_DIV << " TB";
-    else if(bytes > GIGA_BYTE_SIZE)
+    else if (bytes > GIGA_BYTE_SIZE)
         stream << static_cast<float>(bytes/MEGA_BYTE_SIZE)*BYTE_DIV << " GB";
-    else if(bytes > MEGA_BYTE_SIZE)
+    else if (bytes > MEGA_BYTE_SIZE)
         stream << static_cast<float>(bytes/KILO_BYTE_SIZE)*BYTE_DIV << " MB";
-    else if(bytes > KILO_BYTE_SIZE)
+    else if (bytes > KILO_BYTE_SIZE)
         stream << static_cast<float>(bytes)*BYTE_DIV << " KB";
     else
         stream << static_cast<float>(bytes) << " B";

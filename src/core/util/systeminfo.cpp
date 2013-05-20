@@ -45,9 +45,9 @@ namespace inviwo {
 
         status = sigar_sys_info_get(sigar, &systeminfo);
         bool SUCCESS = (status == SIGAR_OK);
-        if(SUCCESS) {
+        if (SUCCESS) {
             infoOS_.description = std::string(systeminfo.description);
-            if(strcmp(systeminfo.arch, "x86") == 0)
+            if (strcmp(systeminfo.arch, "x86") == 0)
                 infoOS_.platform = 32;
             else
                 infoOS_.platform = 64;
@@ -66,7 +66,7 @@ namespace inviwo {
         status = sigar_cpu_info_list_get(sigar, &cpulinfolist);
 
         bool SUCCESS = (status == SIGAR_OK);
-        if(SUCCESS) {
+        if (SUCCESS) {
             infoCPUs_.resize(cpulinfolist.number);
             for (unsigned long i=0; i<cpulinfolist.number; i++) {
                 sigar_cpu_info_t cpu_info = cpulinfolist.data[i];
@@ -89,7 +89,7 @@ namespace inviwo {
 
         status = sigar_mem_get(sigar, &meminfo);
         bool SUCCESS = (status == SIGAR_OK);
-        if(SUCCESS) {
+        if (SUCCESS) {
             infoRAM_.total = MEGABYTES_TO_BYTES(static_cast<uint64_t>(meminfo.ram));
             infoRAM_.available = static_cast<uint64_t>(meminfo.free);
         }
@@ -108,15 +108,15 @@ namespace inviwo {
 
         status = sigar_file_system_list_get(sigar, &diskinfolist);
         bool SUCCESS = (status == SIGAR_OK);
-        if(SUCCESS) {
+        if (SUCCESS) {
             for (unsigned long i=0; i<diskinfolist.number; i++) {
                 sigar_file_system_t disk_info = diskinfolist.data[i];
                 status = sigar_file_system_usage_get(sigar, disk_info.dir_name, &diskusageinfo);
-                if(status == SIGAR_OK){
+                if (status == SIGAR_OK){
                     DiskInfo currentDiskInfo;
                     currentDiskInfo.diskType = std::string(disk_info.type_name);
                     currentDiskInfo.diskType[0] = toupper(currentDiskInfo.diskType[0]);
-                    if(currentDiskInfo.diskType == "Local"){
+                    if (currentDiskInfo.diskType == "Local"){
                         currentDiskInfo.diskName = std::string(disk_info.dev_name);
                         currentDiskInfo.total = KILOBYTES_TO_BYTES(static_cast<uint64_t>(diskusageinfo.total));
                         currentDiskInfo.free = KILOBYTES_TO_BYTES(static_cast<uint64_t>(diskusageinfo.free));
@@ -139,7 +139,7 @@ namespace inviwo {
 
         status = sigar_proc_mem_get(sigar, sigar_pid_get(sigar), &meminfo);
         bool SUCCESS = (status == SIGAR_OK);
-        if(SUCCESS) {
+        if (SUCCESS) {
             infoProcRAM_.residentMem = static_cast<uint64_t>(meminfo.resident);
             infoProcRAM_.sharedMem = static_cast<uint64_t>(meminfo.share);
             infoProcRAM_.virtualMem = static_cast<uint64_t>(meminfo.size);
@@ -153,7 +153,7 @@ namespace inviwo {
         retrieveDynamicInfo();
 
         // Try to retrieve operating system information
-        if(successOSInfo_){
+        if (successOSInfo_){
             LogInfo("OS: " << infoOS_.description << " " << infoOS_.platform << "-bit");
         }
         else{
@@ -161,7 +161,7 @@ namespace inviwo {
         }
 
         // Try to retrieve CPU information
-        if(successCPUInfo_){
+        if (successCPUInfo_){
             for(unsigned long i=0; i<infoCPUs_.size(); i++){
                 LogInfo("CPU " << i+1 << ": " << infoCPUs_[i].vendor << " " << infoCPUs_[i].model << " " << infoCPUs_[i].mhz << " Mhz");
             }
@@ -171,7 +171,7 @@ namespace inviwo {
         }
 
         // Try to retrieve memory information
-        if(successMemoryInfo_){
+        if (successMemoryInfo_){
             LogInfo("RAM: Total - " << formatBytesToString(infoRAM_.total) << ", Available - " << formatBytesToString(infoRAM_.available));
         }
         else{
@@ -179,7 +179,7 @@ namespace inviwo {
         }
 
         // Try to retrieve Disk information
-        if(successDiskInfo_){
+        if (successDiskInfo_){
             for(unsigned long i=0; i<infoDisks_.size(); i++){
                 LogInfo("Disk: " << infoDisks_[i].diskName << " Total - " << formatBytesToString(infoDisks_[i].total) << ", Free - " << formatBytesToString(infoDisks_[i].free));
             }
@@ -189,7 +189,7 @@ namespace inviwo {
         }
 
         // Try to retrieve this process memory information
-        /*if(successProcessMemoryInfo_){
+        /*if (successProcessMemoryInfo_){
         LogInfo("Processor Memory: Resident - " << formatBytes(infoProcRAM_.residentMem) << ", Shared - " << formatBytes(infoProcRAM_.sharedMem) << ", Virtual - " << formatBytes(infoProcRAM_.virtualMem));
         }
         else{
@@ -200,7 +200,7 @@ namespace inviwo {
     uint64_t SystemInfo::getAvailableMemory(){
         successMemoryInfo_ = lookupMemoryInfo();
 
-        if(successMemoryInfo_){
+        if (successMemoryInfo_){
             return infoRAM_.available;
         }
 

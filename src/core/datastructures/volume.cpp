@@ -40,9 +40,9 @@ ivec3 Volume::getOffset() const{
 
 DataFormatBase Volume::getDataFormat() const{
     DataFormatBase format = DataUINT8();
-    if(representations_[0]){
+    if (representations_[0]){
         VolumeRepresentation* volRep = dynamic_cast<VolumeRepresentation*>(representations_[0]);
-        if(volRep)
+        if (volRep)
             format = volRep->getDataFormat();
     }
     return format;

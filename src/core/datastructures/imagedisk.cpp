@@ -15,13 +15,13 @@ namespace inviwo {
     }
 
     void ImageDisk::initialize(){
-        if(hasSourceFile()){
+        if (hasSourceFile()){
             dimensions_ = ImageLoader::imageDimensions(getSourceFile());
         }
     }
 
     void* ImageDisk::loadFileData(){
-        if(hasSourceFile())
+        if (hasSourceFile())
             
             return ImageLoader::loadImageToData(getSourceFile());
 

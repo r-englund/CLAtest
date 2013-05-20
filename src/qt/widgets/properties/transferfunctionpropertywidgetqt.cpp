@@ -56,10 +56,10 @@ namespace inviwo {
 
     void TransferFunctionPropertyWidgetQt::wheelEvent(QWheelEvent* e) {
         double scaleFactor = 1.05; ///< Zoom in/out by 5%
-        if(e->delta() > 0) {
+        if (e->delta() > 0) {
             zoom_++;
             editorview_->scale(scaleFactor, scaleFactor);
-        } else if(zoom_ > 0){
+        } else if (zoom_ > 0){
             zoom_--;
             editorview_->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
         }

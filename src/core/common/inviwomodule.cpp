@@ -72,7 +72,7 @@ std::vector<ResourceInfo*>& InviwoModule::getResourceInfos() {
 }
 
 void InviwoModule::setGlobalSettings(Settings* settings){
-    if(settings){
+    if (settings){
         applicationSettings_ = settings;
         setupModuleSettings();
     }

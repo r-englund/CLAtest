@@ -6,7 +6,7 @@ uvec2 ImageLoader::imageDimensions(std::string filename){
     initLoader();
     FIBITMAP *bitmap = new FIBITMAP(); 
     readInImage(filename, &bitmap);
-    if(bitmap != NULL){
+    if (bitmap != NULL){
 	    unsigned int width = FreeImage_GetWidth(bitmap);
 	    unsigned int height = FreeImage_GetHeight(bitmap);
         return uvec2(width, height);
@@ -82,7 +82,7 @@ void ImageLoader::saveImage(const char* filename, const Image* inputImage)
     initLoader();
     FREE_IMAGE_FORMAT imageFormat = FreeImage_GetFIFFromFilename(filename);
     
-    if(imageFormat != FIF_UNKNOWN && inputImage != NULL){
+    if (imageFormat != FIF_UNKNOWN && inputImage != NULL){
 	    const ImageRAM *imageRam = inputImage->getRepresentation<ImageRAM>();
 
         assert(imageRam != NULL);
@@ -112,17 +112,17 @@ bool ImageLoader::readInImage(std::string filename, FIBITMAP **bitmap){
 	//Get file format of input file
 	imageFormat = FreeImage_GetFileType(file_name_char, 10);
 	
-	if(imageFormat == FIF_UNKNOWN){
+	if (imageFormat == FIF_UNKNOWN){
 		imageFormat = FreeImage_GetFIFFromFilename(file_name_char);
 
 		//Raw image files conflicting with raw 3d volumes.
-		if(imageFormat == FIF_RAW){
+		if (imageFormat == FIF_RAW){
 			return false;
 		}
 	}
 
 	//Load image if format is supported
-	if(imageFormat != FIF_UNKNOWN){
+	if (imageFormat != FIF_UNKNOWN){
 		*bitmap = FreeImage_Load(imageFormat, file_name_char, 0);
 	}
 	//Return if format was found.
@@ -150,7 +150,7 @@ T* ImageLoader::fiBitmapToDataArray(FIBITMAP *bitmap){
 void* ImageLoader::loadImageToData(std::string filename){
     initLoader();
     FIBITMAP *freeimage_bitmap = new FIBITMAP();
-    if(readInImage(filename, &freeimage_bitmap)){
+    if (readInImage(filename, &freeimage_bitmap)){
         return (void*)fiBitmapToDataArray<DataUINT8::type>(freeimage_bitmap);
     }
     return NULL;
@@ -158,7 +158,7 @@ void* ImageLoader::loadImageToData(std::string filename){
 
 
 void ImageLoader::initLoader(){
-    if(!loader_initialized){
+    if (!loader_initialized){
 		loader_initialized = true;
 		FreeImage_Initialise(1);
 	}

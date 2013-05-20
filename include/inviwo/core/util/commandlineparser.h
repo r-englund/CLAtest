@@ -72,7 +72,7 @@ private:
     parser.initialize();
     parser.parse(argc, argv);
 
-   if(parser.getExitWithCapture()){
+   if (parser.getExitWithCapture()){
         std::string workspacePath = parser.getWorkspace();
         std::cout << "Capturing workspaces!" << std::endl << "Desired workspace: " << workspacePath << std::endl;
         mainWin.openLastNetwork();

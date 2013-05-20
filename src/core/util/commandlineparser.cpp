@@ -47,14 +47,14 @@ void CommandLineParser::initialize() {
 }
 
 const std::string CommandLineParser::getOutputPath() const{
-    if(outputValueArg_->isSet()){
+    if (outputValueArg_->isSet()){
         return (outputValueArg_->getValue());
     }
     return "";
 }
 
 const std::string CommandLineParser::getWorkspacePath() const{
-    if(workspaceValueArg_->isSet()){
+    if (workspaceValueArg_->isSet()){
         return (workspaceValueArg_->getValue());
     }
     return "";
@@ -77,7 +77,7 @@ bool CommandLineParser::getCaptureAfterStartup() const{
 }
 
 const std::string CommandLineParser::getSnapshotName() const{
-    if(snapshotArg_->isSet()){
+    if (snapshotArg_->isSet()){
         return (snapshotArg_->getValue());
     }
     return "";
@@ -88,7 +88,7 @@ bool CommandLineParser::getQuitApplicationAfterStartup() const{
 }
 
 bool CommandLineParser::getLoadWorkspaceFromArg() const{
-    if(workspaceValueArg_->isSet()){
+    if (workspaceValueArg_->isSet()){
         std::string values = workspaceValueArg_->getValue();
 
         assert(values.size() != 0);

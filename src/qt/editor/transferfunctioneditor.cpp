@@ -50,9 +50,9 @@ namespace inviwo {
                 QGraphicsScene::mousePressEvent(e); // this forwards the event to the item
             }
         }
-        if(e->button() == Qt::RightButton){
+        if (e->button() == Qt::RightButton){
             if (itemAt(e->scenePos()) == NULL){}
-            else if(itemAt(e->scenePos())->type() == TransferFunctionEditorControlPoint::Type) {
+            else if (itemAt(e->scenePos())->type() == TransferFunctionEditorControlPoint::Type) {
                 removePoint(e);
             }
         }

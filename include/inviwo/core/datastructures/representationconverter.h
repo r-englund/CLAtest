@@ -30,14 +30,14 @@ namespace inviwo {
         }
         bool canConvert(DataRepresentation* source){
             for (std::vector<RepresentationConverter*>::iterator it = converters_.begin() ; it != converters_.end(); ++it){
-                if((*it)->canConvert(source))
+                if ((*it)->canConvert(source))
                     return true;
             }
             return false;
         }
         DataRepresentation* convert(DataRepresentation* source){
             for (std::vector<RepresentationConverter*>::iterator it = converters_.begin() ; it != converters_.end(); ++it){
-                if((*it)->canConvert(source))
+                if ((*it)->canConvert(source))
                     return (*it)->convert(source);
             }
             return NULL;

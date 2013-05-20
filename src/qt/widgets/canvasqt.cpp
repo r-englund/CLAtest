@@ -68,7 +68,7 @@ void CanvasQt::repaint() {
 
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
-    if(!processorNetworkEvaluator_) return;
+    if (!processorNetworkEvaluator_) return;
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
         eventConverter_->getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
         eventConverter_->getModifier(e), dimensions_);
@@ -77,7 +77,7 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
 }
 
 void CanvasQt::mouseReleaseEvent (QMouseEvent* e) {
-    if(!processorNetworkEvaluator_) return;
+    if (!processorNetworkEvaluator_) return;
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
         eventConverter_->getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE, 
         eventConverter_->getModifier(e), dimensions_);
@@ -86,10 +86,10 @@ void CanvasQt::mouseReleaseEvent (QMouseEvent* e) {
 }
 
 void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
-    if(!processorNetworkEvaluator_) return;
+    if (!processorNetworkEvaluator_) return;
 
     MouseEvent* mouseEvent = 0;
-    if(e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
+    if (e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
         mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
             eventConverter_->getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
             eventConverter_->getModifier(e), dimensions_);
