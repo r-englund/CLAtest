@@ -22,10 +22,9 @@ public:
 
     void changeDimensions(uvec2 dimensions);
     uvec2 getDimensions() const;
-
     const Image* getData() const;
-
     uvec3 getColorCode() const;
+    virtual std::vector<Processor*> getAscendantProcessors();
 
 private:
     uvec2 dimensions_;
@@ -45,10 +44,8 @@ public:
     void changeDimensions(uvec2 dimensions);
     void changeDataDimensions(ResizeEvent* resizeEvent);
     uvec2 getDimensions() const;
-
-    void getDescendantProcessors(std::vector<Processor*>& decendantProcessors);
-
     uvec3 getColorCode() const;
+    virtual std::vector<Processor*> getDescendantProcessors();
 
 protected:
     Image* resizeImageData(uvec2 dimensions);

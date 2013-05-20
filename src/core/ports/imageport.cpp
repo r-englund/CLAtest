@@ -38,6 +38,12 @@ uvec3 ImageInport::getColorCode() const {
     return uvec3(90,127,183); 
 }
 
+std::vector<Processor*> ImageInport::getAscendantProcessors() {
+    std::vector<Processor*> ascendantProcessors;
+    getAscendantProcessorsUsingPortType<ImageInport>(ascendantProcessors);
+    return ascendantProcessors;
+}
+
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier)
     : DataOutport<Image>(identifier), dimensions_(uvec2(256,256))
@@ -64,22 +70,6 @@ void ImageOutport::changeDimensions(uvec2 dimensions) {
         data_->resize(dimensions_);
     
     invalidate();
-}
-
-void ImageOutport::getDescendantProcessors(std::vector<Processor*>& descendantProcessors) {
-    for (size_t i=0; i<connectedInports_.size(); i++) {
-        Processor* decendantProcessor = connectedInports_[i]->getProcessor();
-        
-        if (std::find(descendantProcessors.begin(), descendantProcessors.end(), decendantProcessor)== descendantProcessors.end())
-            descendantProcessors.push_back(connectedInports_[i]->getProcessor());
-        
-        std::vector<Outport*> outports = decendantProcessor->getOutports();
-        for (size_t j=0; j<outports.size(); j++) {
-            ImageOutport* imageOutPort = dynamic_cast<ImageOutport*>(outports[j]);
-            if (imageOutPort)
-                imageOutPort->getDescendantProcessors(descendantProcessors);            
-        }
-    }
 }
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
@@ -194,6 +184,12 @@ void ImageOutport::setLargestImageData() {
 
 uvec3 ImageOutport::getColorCode() const { 
     return uvec3(90,127,183); 
+}
+
+std::vector<Processor*> ImageOutport::getDescendantProcessors() {
+    std::vector<Processor*> descendantProcessors;
+    getDescendantProcessorsUsingPortType<ImageOutport>(descendantProcessors);
+    return descendantProcessors;
 }
 
 } // namespace

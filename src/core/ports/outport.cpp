@@ -23,6 +23,12 @@ void Outport::invalidate() {
         connectedInports_[i]->invalidate();
 }
 
+std::vector<Processor*> Outport::getDescendantProcessors() {
+    std::vector<Processor*> descendantProcessors;
+    getDescendantProcessorsUsingPortType<Outport>(descendantProcessors);
+    return descendantProcessors;
+}
+
 //Is called exclusively by Inport, which means a connection has been made.
 void Outport::connectTo(Inport* inport) {
     if (std::find(connectedInports_.begin(), connectedInports_.end(), inport) == connectedInports_.end()) {

@@ -215,7 +215,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                     if (isPortConnectedToProcessor(imageOutport, processor)) {
                         
                         std::vector<Processor*> descendantProcessors;
-                        imageOutport->getDescendantProcessors(descendantProcessors);
+                        descendantProcessors = imageOutport->getDescendantProcessors();
 
                         std::vector<uvec2> validDescendantCanvasSizes;
                         for (size_t i=0; i<descendantProcessors.size(); i++) {

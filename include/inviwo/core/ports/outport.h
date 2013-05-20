@@ -21,10 +21,30 @@ public:
     bool isConnectedTo(Inport* port) const;
 
     void invalidate();
+    virtual std::vector<Processor*> getDescendantProcessors();
 
 protected:
     void connectTo(Inport* port);
     void disconnectFrom(Inport* port);
+    
+    template <typename T>
+    void getDescendantProcessorsUsingPortType(std::vector<Processor*>& descendantProcessors) {
+        for (size_t i=0; i<connectedInports_.size(); i++) {
+            Processor* decendantProcessor = connectedInports_[i]->getProcessor();
+
+            if (std::find(descendantProcessors.begin(), descendantProcessors.end(), decendantProcessor)== descendantProcessors.end())
+                descendantProcessors.push_back(connectedInports_[i]->getProcessor());
+
+            std::vector<Outport*> outports = decendantProcessor->getOutports();
+            for (size_t j=0; j<outports.size(); j++) {
+                T* imageOutPort = dynamic_cast<T*>(outports[j]);
+                if (imageOutPort)
+                    imageOutPort->getDescendantProcessorsUsingPortType<T>(descendantProcessors);            
+            }
+        }
+    }
+
+private:
     std::vector<Inport*> connectedInports_;
 };
 

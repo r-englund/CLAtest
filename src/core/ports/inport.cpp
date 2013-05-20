@@ -37,4 +37,10 @@ void Inport::invalidate() {
     Port::invalidate();
 }
 
+std::vector<Processor*> Inport::getAscendantProcessors() {
+    std::vector<Processor*> ascendantProcessors;
+    getAscendantProcessorsUsingPortType<Inport>(ascendantProcessors);
+    return ascendantProcessors;
+}
+
 } // namespace
