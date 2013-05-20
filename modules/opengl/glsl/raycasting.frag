@@ -33,7 +33,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
         vec4 voxel = getVoxel(volume_, samplePos);
         voxel = gradientForwardDiff(voxel.a, volume_, samplePos);
         //FIXME: texture data from transfer function is broken
-        vec4 colorClassified = voxel*1.5; //applyTF(transferFunction_, voxel);
+        vec4 colorClassified = applyTF(transferFunction_, voxel);
         vec4 color = colorClassified;
         if (enableShading_) {
             color.rgb = shadeDiffuse(colorClassified.rgb, vec3(2.5), voxel.xyz, lightSourcePos_);
