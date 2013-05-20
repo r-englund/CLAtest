@@ -85,6 +85,9 @@ private:
     QAction* consoleWidgetViewAction_;
     QAction* mappingwidgetviewAction_;
 
+    // settings
+    bool lastExitWithoutErrors_;
+
     // paths
     QString rootDir_;
     QString networkFileDir_;

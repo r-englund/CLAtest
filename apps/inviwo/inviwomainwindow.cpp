@@ -57,6 +57,8 @@ void InviwoMainWindow::initializeAndShow() {
     resize(settings.value("size", size()).toSize());
     bool maximized = settings.value("maximized", true).toBool();
     recentFileList_ = settings.value("recentFileList").toStringList();
+    lastExitWithoutErrors_ = settings.value("lastExitWithoutErrors", true).toBool();
+    settings.setValue("lastExitWithoutErrors", false);
     settings.endGroup();
 
     rootDir_ = QString::fromStdString(IVW_DIR+"data/");
@@ -218,7 +220,7 @@ void InviwoMainWindow::openLastNetwork() {
     const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
     if (cmdparser->getLoadWorkspaceFromArg())
         openNetwork(static_cast<const QString>(cmdparser->getWorkspacePath().c_str()));
-    else if (!recentFileList_.isEmpty())
+    else if (!recentFileList_.isEmpty() && lastExitWithoutErrors_)
         openNetwork(recentFileList_[0]);
 }
 
@@ -304,6 +306,7 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     settings.setValue("pos", pos());
     settings.setValue("size", size());
     settings.setValue("recentFileList", recentFileList_);
+    settings.setValue("lastExitWithoutErrors", true);
     settings.endGroup();
 
     QMainWindow::closeEvent(event);
