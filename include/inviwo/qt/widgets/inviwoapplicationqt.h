@@ -18,7 +18,7 @@ public:
     InviwoApplicationQt(std::string displayName_, std::string basePath_,
                         int& argc, char** argv);
 
-    void InviwoApplicationQt::notify();
+    void notify();
 
     void setMainWindow(QMainWindow* mainWindow) { mainWindow_ = mainWindow; }
     QMainWindow* getMainWindow() { return mainWindow_; }
