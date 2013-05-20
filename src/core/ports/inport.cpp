@@ -37,6 +37,24 @@ void Inport::invalidate() {
     Port::invalidate();
 }
 
+template <typename T>
+void Inport::getAscendantProcessorsUsingPortType(std::vector<Processor*>& ascendantProcessors) {
+    Port* connectedOutport = dynamic_cast<Port*>(connectedOutport_);
+    if (connectedOutport) {
+        Processor* ascendantProcessor = connectedOutport->getProcessor();
+
+        if (std::find(ascendantProcessors.begin(), ascendantProcessors.end(), ascendantProcessor)== ascendantProcessors.end())
+            ascendantProcessors.push_back(ascendantProcessor);
+
+        std::vector<Inport*> inports = ascendantProcessor->getInports();
+        for (size_t j=0; j<inports.size(); j++) {
+            T* inPort = dynamic_cast<T*>(inports[j]);
+            if (inPort)
+                inPort->getAscendantProcessorsUsingPortType<T>(ascendantProcessors);            
+        }
+    }
+}
+
 std::vector<Processor*> Inport::getAscendantProcessors() {
     std::vector<Processor*> ascendantProcessors;
     getAscendantProcessorsUsingPortType<Inport>(ascendantProcessors);

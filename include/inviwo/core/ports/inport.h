@@ -23,24 +23,9 @@ public:
 
     void invalidate();
     virtual std::vector<Processor*> getAscendantProcessors();
-
-protected:
     template <typename T>
-    void getAscendantProcessorsUsingPortType(std::vector<Processor*>& ascendantProcessors) {
-        if (connectedOutport_) {
-            Processor* ascendantProcessor = connectedOutport_->getProcessor();
+    void getAscendantProcessorsUsingPortType(std::vector<Processor*>& ascendantProcessors);
 
-            if (std::find(ascendantProcessors.begin(), ascendantProcessors.end(), ascendantProcessor)== ascendantProcessors.end())
-                ascendantProcessors.push_back(ascendantProcessor);
-
-            std::vector<Inport*> inports = ascendantProcessor->getInports();
-            for (size_t j=0; j<inports.size(); j++) {
-                T* inPort = dynamic_cast<T*>(inports[j]);
-                if (inPort)
-                    inPort->getAscendantProcessorsUsingPortType<T>(ascendantProcessors);            
-            }
-        }
-    }
 private:
     Outport* connectedOutport_;
 };
