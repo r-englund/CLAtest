@@ -21,7 +21,7 @@ class NetworkEditorView;
 class NetworkEditor;
 class CanvasQt;
 
-class InviwoMainWindow : public QMainWindow {
+class InviwoMainWindow : public QMainWindow, public VoidObserver {
 Q_OBJECT
 public:
     static const unsigned int maxNumRecentFiles_ = 10;
@@ -35,6 +35,8 @@ public:
 
     void openLastNetwork();
     bool processEndCommandLineArgs();
+
+    virtual void notify();
 
 public slots:
     void newNetwork();
@@ -87,6 +89,8 @@ private:
 
     // settings
     bool lastExitWithoutErrors_;
+
+    bool networkModified_;
 
     // paths
     QString rootDir_;

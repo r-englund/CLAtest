@@ -31,11 +31,13 @@ void IntPropertyWidgetQt::updateFromProperty() {
 void IntPropertyWidgetQt::setPropertyValueFromSpinBox() {
     sliderWidget_->updateValueSlider();
     property_->set(sliderWidget_->getValue());
+    emit modified();
 }
 
 void IntPropertyWidgetQt::setPropertyValueFromSlider() {
     sliderWidget_->updateValueSpinBox();
     property_->set(sliderWidget_->getValue());
+    emit modified();
 }
 
 void IntPropertyWidgetQt::showContextMenu( const QPoint& pos ) {

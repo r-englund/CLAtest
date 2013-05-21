@@ -10,7 +10,9 @@
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget {
+class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
+
+    Q_OBJECT
 
 public:
     static PropertyListWidget* instance();
@@ -22,6 +24,9 @@ public:
     void removeProcessorProperties(Processor* processor);
     void showProcessorProperties(std::vector<Processor*> processors);
     void removeAllProcessorProperties();
+
+protected slots:
+    void propertyModified();
 
 private:
     QWidget* createNewProcessorPropertiesItem(Processor* processor);

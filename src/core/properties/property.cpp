@@ -2,13 +2,13 @@
 
 namespace inviwo {
 
-    Property::Property(std::string identifier, std::string displayName, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
-    : identifier_(identifier),
-      displayName_(displayName),
-      invalid_(true),
-      invalidationLevel_(invalidationLevel),
-      semantics_(semantics),
-      VoidObservable()
+Property::Property(std::string identifier, std::string displayName, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
+: identifier_(identifier),
+  displayName_(displayName),
+  invalid_(true),
+  invalidationLevel_(invalidationLevel),
+  semantics_(semantics),
+  VoidObservable()
 {}
 
 

@@ -61,10 +61,7 @@ void IntVec4PropertyWidgetQt::generatesSettingsWidget() {
     connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));
     connect(sliderZ_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuZ(const QPoint&)));
     connect(sliderW_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuW(const QPoint&)));
-
-
 }
-
 
 
 void IntVec4PropertyWidgetQt::updateFromProperty() {
@@ -107,7 +104,7 @@ void IntVec4PropertyWidgetQt::setPropertyValueFromSlider() {
     valueVec_.z = sliderZ_->getValue();
     valueVec_.w = sliderW_->getValue();
     property_->set(valueVec_);
-
+    emit modified();
 }
 
 void IntVec4PropertyWidgetQt::setPropertyValueFromSpinBox() {
@@ -122,7 +119,7 @@ void IntVec4PropertyWidgetQt::setPropertyValueFromSpinBox() {
     valueVec_.z = sliderZ_->getValue();
     valueVec_.w = sliderW_->getValue();
     property_->set(valueVec_);
-
+    emit modified();
 }
 
 void IntVec4PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {

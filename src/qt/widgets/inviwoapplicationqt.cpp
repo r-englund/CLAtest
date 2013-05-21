@@ -24,11 +24,6 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 }
 
-void InviwoApplicationQt::notify() {
-    networkChanged_ = true;
-    mainWindow_->setWindowTitle(mainWindow_->windowTitle()+" *");
-}
-
 void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {
     ivwAssert(std::find(fileObservers_.begin(),fileObservers_.end(),fileObserver)==fileObservers_.end(),
               "File observer already registered.");

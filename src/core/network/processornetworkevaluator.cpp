@@ -204,10 +204,6 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
         for (size_t i=0; i<directPredecessors.size(); i++) {
             bool invalidate=false;
             
-            //FIXME: should this be here?
-            if (directPredecessors[i]->hasInteractionHandler())
-                directPredecessors[i]->invokeInteractionEvent(resizeEvent);
-            
             std::vector<Outport*> outports = directPredecessors[i]->getOutports();
             for (size_t j=0; j<outports.size(); j++) {
                 ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outports[j]);

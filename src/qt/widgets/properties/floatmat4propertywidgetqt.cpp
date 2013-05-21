@@ -93,96 +93,127 @@ void FloatMat4PropertyWidgetQt::set0x0Value() {
     mat4 valueMat4 =property_->get();
     valueMat4[0][0] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set0x1Value() {
     float valuef =(mat0x1_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[0][1] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set0x2Value() {
     float valuef =(mat0x2_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[0][2] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set0x3Value() {
     float valuef =(mat0x3_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[0][3] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set1x0Value() {
     float valuef =(mat1x0_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[1][0] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set1x1Value() {
     float valuef =(mat1x1_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[1][1] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set1x2Value() {
     float valuef =(mat1x0_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[1][2] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set1x3Value() {
     float valuef =(mat1x3_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[1][3] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set2x0Value() {
     float valuef =(mat2x0_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[2][0] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set2x1Value() {
     float valuef =(mat2x1_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[2][1] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set2x2Value() {
     float valuef =(mat2x2_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[2][2] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set2x3Value() {
     float valuef =(mat2x3_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[2][3] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set3x0Value() {
     float valuef =(mat3x0_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[3][0] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set3x1Value() {
     float valuef =(mat3x1_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[3][1] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set3x2Value() {
     float valuef =(mat3x2_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[3][2] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
+
 void FloatMat4PropertyWidgetQt::set3x3Value() {
     float valuef =(mat3x3_->text()).toFloat();
     mat4 valueMat4 =property_->get();
     valueMat4[3][3] = valuef;
     property_->set(valueMat4);
+    emit modified();
 }
 
 void FloatMat4PropertyWidgetQt::setPropertyValue() {

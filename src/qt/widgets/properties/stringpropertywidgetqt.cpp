@@ -20,6 +20,7 @@ void StringPropertyWidgetQt::generateWidget() {
 void StringPropertyWidgetQt::setPropertyValue() {
     std::string valueStr = lineEdit_->text().toLocal8Bit().constData();
     property_->set(valueStr);
+    emit modified();
 }
 
 void StringPropertyWidgetQt::updateFromProperty() {

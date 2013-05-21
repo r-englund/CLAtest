@@ -10,11 +10,16 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API PropertyWidgetQt : public PropertyWidget, public QWidget {
+class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget {
+
+Q_OBJECT
 
 public:
     PropertyWidgetQt();
     PropertyWidgetQt* create();
+
+signals:
+    void modified();
 };
 
 } // namespace

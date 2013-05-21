@@ -18,7 +18,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorpropertywidget.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorcontrolpoint.h
@@ -32,6 +31,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
 )
 qt4_wrap_cpp(MOC_FILES ${MOC_FILES})

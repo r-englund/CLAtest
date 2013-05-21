@@ -18,7 +18,7 @@
 
 namespace inviwo { 
 
-InviwoMainWindow::InviwoMainWindow() {
+InviwoMainWindow::InviwoMainWindow() : VoidObserver() {
     NetworkEditor::init();
 
     // initialize console widget first to receive log messages
@@ -46,6 +46,8 @@ void InviwoMainWindow::initializeAndShow() {
 
     propertyListWidget_ = new PropertyListWidget(this);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
+    addObservation(propertyListWidget_);
+    propertyListWidget_->addObserver(this);
 
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
 
@@ -82,6 +84,15 @@ void InviwoMainWindow::initializeWorkspace(){
     ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
     networkEvaluator->setDefaultRenderContext(defaultRenderContext_);
     defaultRenderContext_->setFixedSize(0,0);
+
+    ProcessorNetwork* processorNetwork = const_cast<ProcessorNetwork*>(networkEditorView_->getNetworkEditor()->getProcessorNetwork());
+    addObservation(processorNetwork);
+    processorNetwork->addObserver(this);
+}
+
+void InviwoMainWindow::notify() {
+    networkModified_ = true;
+    updateWindowTitle();
 }
 
 bool InviwoMainWindow::processEndCommandLineArgs(){
@@ -170,6 +181,8 @@ void InviwoMainWindow::addMenuActions() {
 void InviwoMainWindow::updateWindowTitle() {
     QString windowTitle = QString("Inviwo - Interactive Visualization Workshop - ");
     windowTitle.append(currentNetworkFileName_);
+    if (networkModified_)
+        windowTitle.append("*");
     setWindowTitle(windowTitle);
 }
 
@@ -201,7 +214,9 @@ void InviwoMainWindow::setCurrentNetwork(QString networkFileName) {
 
 void InviwoMainWindow::newNetwork() {
     networkEditorView_->getNetworkEditor()->clearNetwork();
+    networkModified_ = true;
     setCurrentNetwork(rootDir_ + "workspaces/untitled.inv");
+    updateWindowTitle();
 }
 
 void InviwoMainWindow::openNetwork(QString networkFileName) {
@@ -210,8 +225,8 @@ void InviwoMainWindow::openNetwork(QString networkFileName) {
         return;
     
     networkEditorView_->getNetworkEditor()->loadNetwork(networkFileName.toLocal8Bit().constData());
+    networkModified_ = false;
     setCurrentNetwork(networkFileName);
-    InviwoApplication::getPtr()->setNetworkChanged(false);
     addToRecentNetworks(networkFileName);
 }
 
@@ -253,6 +268,7 @@ void InviwoMainWindow::openRecentNetwork() {
 
 void InviwoMainWindow::saveNetwork() {
     networkEditorView_->getNetworkEditor()->saveNetwork(currentNetworkFileName_.toLocal8Bit().constData());
+    networkModified_ = false;
     updateWindowTitle();
 
     /*
@@ -288,6 +304,7 @@ void InviwoMainWindow::saveNetworkAs() {
         QString path = saveFileDialog.selectedFiles().at(0);
         if (!path.endsWith(".inv")) path.append(".inv");
         networkEditorView_->getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
+        networkModified_ = false;
         setCurrentNetwork(path);
         addToRecentNetworks(path);
     }
@@ -296,7 +313,7 @@ void InviwoMainWindow::saveNetworkAs() {
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
 
-    if (InviwoApplication::getPtr()->hasNetworkChanged()) {
+    if (networkModified_) {
         QMessageBox msgBox;
         msgBox.setText("Network Modified");
         msgBox.setInformativeText("Do you want to save your changes?");

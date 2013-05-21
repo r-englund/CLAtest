@@ -81,6 +81,7 @@ namespace inviwo {
         updateFromProperty();
         transferFunction_->calcTransferValues();
         property_->invalidate();
+        emit modified();
     }
 
 

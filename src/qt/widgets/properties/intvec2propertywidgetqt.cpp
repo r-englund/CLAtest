@@ -80,7 +80,7 @@ void IntVec2PropertyWidgetQt::setPropertyValueFromSlider() {
     valueVec_.x = sliderX_->getValue();
     valueVec_.y = sliderY_->getValue();
     property_->set(valueVec_);
-
+    emit modified();
 }
 
 void IntVec2PropertyWidgetQt::setPropertyValueFromSpinBox() {
@@ -91,6 +91,7 @@ void IntVec2PropertyWidgetQt::setPropertyValueFromSpinBox() {
     valueVec_.x = sliderX_->getValue();
     valueVec_.y = sliderY_->getValue();
     property_->set(valueVec_);
+    emit modified();
 }
 
 void IntVec2PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {

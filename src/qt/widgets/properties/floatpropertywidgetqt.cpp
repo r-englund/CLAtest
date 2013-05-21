@@ -21,6 +21,7 @@ void FloatPropertyWidgetQt::generateWidget() {
 
 void FloatPropertyWidgetQt::setPropertyValue(float value) {
     property_->set(value);
+    emit modified();
 }
 
 void FloatPropertyWidgetQt::updateFromProperty() {

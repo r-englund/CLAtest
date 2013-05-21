@@ -43,24 +43,31 @@ void FloatMat2PropertyWidgetQt::set0x0Value() {
    mat2 valueMat2 =property_->get();
    valueMat2[0][0] = valuef;
    property_->set(valueMat2);
+   emit modified();
 }
+
 void FloatMat2PropertyWidgetQt::set0x1Value() {
     float valuef =(mat0x1_->text()).toFloat();
     mat2 valueMat2 =property_->get();
     valueMat2[0][1] = valuef;
     property_->set(valueMat2);
+    emit modified();
 }
+
 void FloatMat2PropertyWidgetQt::set1x0Value() {
     float valuef =(mat1x0_->text()).toFloat();
     mat2 valueMat2 =property_->get();
     valueMat2[1][0] = valuef;
     property_->set(valueMat2);
+    emit modified();
 }
+
 void FloatMat2PropertyWidgetQt::set1x1Value() {
     float valuef =(mat1x1_->text()).toFloat();
     mat2 valueMat2 =property_->get();
     valueMat2[1][1] = valuef;
     property_->set(valueMat2);
+    emit modified();
 }
 
 void FloatMat2PropertyWidgetQt::setPropertyValue() {
@@ -68,7 +75,6 @@ void FloatMat2PropertyWidgetQt::setPropertyValue() {
     set0x1Value();
     set1x0Value();
     set1x1Value();
-
 }
 
 void FloatMat2PropertyWidgetQt::updateFromProperty() {

@@ -125,6 +125,7 @@ void FloatVec2PropertyWidgetQt::setPropertyValue() {
     valueVec2_.x = sliderX_->getValue();
     valueVec2_.y = sliderY_->getValue();
     property_->set(valueVec2_);
+    emit modified();
 }
 
 } //namespace

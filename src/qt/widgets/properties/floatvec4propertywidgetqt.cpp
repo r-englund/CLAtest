@@ -49,6 +49,7 @@ void FloatVec4PropertyWidgetQt::generateWidget() {
 void FloatVec4PropertyWidgetQt::setPropertyValue() {
     vec4 valueVec4(sliderX_->getValue(),sliderY_->getValue(),sliderZ_->getValue(),sliderW_->getValue());
     property_->set(valueVec4);
+    emit modified();
 }
 
 

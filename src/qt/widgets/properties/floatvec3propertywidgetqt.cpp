@@ -163,6 +163,7 @@ void FloatVec3PropertyWidgetQt::setPropertyValue() {
     valueVec3_.y = sliderY_->getValue();
     valueVec3_.z = sliderZ_->getValue();
     property_->set(valueVec3_);
+    emit modified();
 }
 
 } // namespace

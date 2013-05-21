@@ -7,7 +7,7 @@
 namespace inviwo {
 
 InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
-                                     : VoidObserver(), displayName_(displayName), basePath_(basePath)
+                                     : displayName_(displayName), basePath_(basePath)
 {
     init(this);
 }
@@ -41,8 +41,6 @@ void InviwoApplication::initialize() {
     ProcessorFactory::init();
     MetaDataFactory::init();
     RepresentationConverterFactory::init();
-
-    networkChanged_ = false;
 
     initialized_ = true;
 }

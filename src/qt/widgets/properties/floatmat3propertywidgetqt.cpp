@@ -65,54 +65,71 @@ void FloatMat3PropertyWidgetQt::set0x0Value() {
     mat3 valueMat3 =property_->get();
     valueMat3[0][0] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
+
 void FloatMat3PropertyWidgetQt::set0x1Value() {
     float valuef =(mat0x1_->text()).toFloat();
     mat3 valueMat3 =property_->get();
     valueMat3[0][1] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
+
 void FloatMat3PropertyWidgetQt::set0x2Value() {
     float valuef =(mat0x2_->text()).toFloat();
     mat3 valueMat3 =property_->get();
     valueMat3[0][2] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
+
 void FloatMat3PropertyWidgetQt::set1x0Value() {
     float valuef =(mat1x0_->text()).toFloat();
     mat3 valueMat3 =property_->get();
     valueMat3[1][0] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
+
 void FloatMat3PropertyWidgetQt::set1x1Value() {
     float valuef =(mat1x1_->text()).toFloat();
     mat3 valueMat3 =property_->get();
     valueMat3[1][1] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
+
 void FloatMat3PropertyWidgetQt::set1x2Value() {
     float valuef =(mat1x0_->text()).toFloat();
     mat3 valueMat3 =property_->get();
     valueMat3[1][2] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
+
 void FloatMat3PropertyWidgetQt::set2x0Value() {
     float valuef =(mat2x0_->text()).toFloat();
     mat3 valueMat3 =property_->get();
     valueMat3[2][0] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
+
 void FloatMat3PropertyWidgetQt::set2x1Value() {
     float valuef =(mat2x1_->text()).toFloat();
     mat3 valueMat3 =property_->get();
     valueMat3[2][1] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
+
 void FloatMat3PropertyWidgetQt::set2x2Value() {
     float valuef =(mat2x2_->text()).toFloat();
     mat3 valueMat3 =property_->get();
     valueMat3[2][2] = valuef;
     property_->set(valueMat3);
+    emit modified();
 }
 
 void FloatMat3PropertyWidgetQt::setPropertyValue() {

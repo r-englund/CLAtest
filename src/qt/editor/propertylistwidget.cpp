@@ -8,7 +8,7 @@ namespace inviwo {
 
 PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 
-PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent) {
+PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent), VoidObservable() {
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     setMinimumWidth(300);
@@ -90,6 +90,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
         PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
         vLayout->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
+        connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
     } 
     vLayout->addStretch(1);
     propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
@@ -106,6 +107,10 @@ void PropertyListWidget::removeProcessorProperties(Processor* processor) {
         propertyWidgetMap_.erase(processor->getIdentifier());
         delete processorPropertyWidget;
     }
+}
+
+void PropertyListWidget::propertyModified() {
+    notifyObservers();
 }
 
 PropertyListWidget* PropertyListWidget::instance() {

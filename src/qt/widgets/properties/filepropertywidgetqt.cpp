@@ -49,6 +49,7 @@ void FilePropertyWidgetQt::setPropertyValue() {
         property_->set(path.toLocal8Bit().constData());
     }
     updateFromProperty();
+    emit modified();
 }
 
 void FilePropertyWidgetQt::updateFromProperty() {
