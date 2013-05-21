@@ -35,6 +35,9 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     processorNetwork_ = new ProcessorNetwork();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
+
+    hoverTimer_.setSingleShot(true);
+    connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(hoverPortTimeOut()));
 }
 
 
@@ -351,6 +354,10 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
     */
 }
 
+void NetworkEditor::hoverPortTimeOut() {
+    addPortInspector(inspectedPort_, QCursor::pos());
+}
+
 
 
 ////////////////////////////////////////////
@@ -505,14 +512,15 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         if (processor) port = processor->getSelectedPort(e->scenePos());
 
         if (port) {
-            if (inspectedPort_!=port) {
-                if (inspectedPort_!=0)
+            if (inspectedPort_ != port) {
+                if (inspectedPort_)
                     removeInspectorNetwork(inspectedPort_);
                 inspectedPort_ = port;
-                addPortInspector(port, e->screenPos());            
+                hoverTimer_.start(500);
             }
         } else {
             if (inspectedPort_) {
+                hoverTimer_.stop();
                 removeInspectorNetwork(inspectedPort_);
                 inspectedPort_ = 0;
             }

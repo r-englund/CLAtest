@@ -13,10 +13,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwoqteditordefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/labelgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditorview.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorpropertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditor.h
@@ -30,6 +28,8 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h

@@ -3,6 +3,7 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsScene>
+#include <QTimer>
 
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
@@ -26,6 +27,8 @@ namespace inviwo {
  */
 class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
                                        public Singleton<NetworkEditor>  {
+
+    Q_OBJECT
 public:
     NetworkEditor(QObject* parent=0);
 
@@ -95,6 +98,8 @@ private:
     bool gridSnapping_;
     static const int GRID_SPACING;
 
+    QTimer hoverTimer_;
+
     void addProcessorRepresentations(Processor* processor, QPointF pos, bool visible=true);
     void removeProcessorRepresentations(Processor* processor);
     void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true);
@@ -128,6 +133,9 @@ private:
     QPointF snapToGrid(QPointF pos);
     void drawBackground(QPainter* painter, const QRectF& rect);
     std::string obtainUniqueProcessorID(Processor* processor) const;
+
+public slots:
+    void hoverPortTimeOut();
 };
 
 } // namespace
