@@ -48,9 +48,10 @@ void ProcessorNetwork::addConnection(Outport* sourcePort, Inport* destPort) {
 void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
     for (size_t i=0; i<portConnections_.size(); i++) {
         if (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort) {                
-                destPort->disconnectFrom(sourcePort);
-                portConnections_.erase(portConnections_.begin()+i);
-                break;
+            destPort->disconnectFrom(sourcePort);
+            delete portConnections_[i];
+            portConnections_.erase(portConnections_.begin()+i);
+            break;
         }
     }
     modified();

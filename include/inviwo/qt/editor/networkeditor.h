@@ -44,7 +44,7 @@ public:
      * @param pos Position in the network editor, wher ethe graphical representation should be located
      * @param visible Shall the graphical representation be visible
      */
-    void addProcessor(Processor* processor, QPointF pos, bool visible=true);
+    void addProcessor(Processor* processor, QPointF pos, bool showProcessor=true, bool showProcessorWidget=true);
     void removeProcessor(Processor* processor);
 
     void addConnection(Outport* outport, Inport* inport);
@@ -99,13 +99,13 @@ private:
     static const int GRID_SPACING;
     QTimer hoverTimer_;
 
-    bool addProcessorRepresentations(Processor* processor, QPointF pos, bool visible=true, bool networkLoad=false);
+    void addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor=true, bool showProcessorWidget=true);
     void removeProcessorRepresentations(Processor* processor);
     void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true);
     void removeProcessorGraphicsItem(Processor* processor);
-    void addPropertyWidgets(Processor* processor);
+    void addPropertyWidgets(Processor* processor, bool visible=true);
     void removePropertyWidgets(Processor* processor);
-    void addProcessorWidget(Processor* processor, bool show=true);
+    void addProcessorWidget(Processor* processor, bool visible=true);
 
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
     void addConnectionGraphicsItem(Outport* outport, Inport* inport);

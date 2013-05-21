@@ -40,9 +40,9 @@ void CanvasGL::deinitialize() {
 
 void CanvasGL::activate() {}
 
-void CanvasGL::render(const Image* im){
-    if (im) {
-        image_ = im->getRepresentation<ImageGL>();
+void CanvasGL::render(const Image* image){
+    if (image) {
+        image_ = image->getRepresentation<ImageGL>();
         renderImage();
     } else {
         image_ = NULL;

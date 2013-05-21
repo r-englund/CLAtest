@@ -13,6 +13,7 @@ public:
     ProcessorWidgetQt(Processor* processor, QWidget* parent);
     virtual ~ProcessorWidgetQt();
 
+    virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();
     virtual void move(ivec2 pos);

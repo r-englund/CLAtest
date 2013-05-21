@@ -14,6 +14,10 @@ ProcessorWidget::~ProcessorWidget() {}
 
 void ProcessorWidget::initialize() {}
 
+void ProcessorWidget::setVisible(bool visible) {
+    metaData_->setVisibile(visible);
+}
+
 void ProcessorWidget::show() {
     metaData_->setVisibile(true);
 }

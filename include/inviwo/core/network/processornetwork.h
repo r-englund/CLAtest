@@ -104,9 +104,11 @@ public:
 
     ProcessorLink* getProcessorLink(Processor* sourceProcessor, Processor* destProcessor) const;    
     
-    inline void modified() { modified_ = true; notifyObservers(); }
+    inline void modified() { modified_ = true; if (broadcastModification_) notifyObservers(); }
     void setModified(bool modified) { modified_ = modified; }
     bool isModified() const { return modified_; }
+
+    void setBroadcastModification(bool broadcastModification) { broadcastModification_ = broadcastModification; }
 
     void lock() { locked_ = true; }
     void unlock() { locked_ = false; }
@@ -117,6 +119,7 @@ public:
 
 private:
     bool modified_;
+    bool broadcastModification_; //< shall observers be notified when the network has been modified
     bool locked_;
 
     std::vector<Processor*> processors_;

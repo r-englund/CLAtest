@@ -15,6 +15,7 @@ public:
     virtual ~ProcessorWidget();
 
     virtual void initialize();
+    virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();    
     virtual void setDimensions(ivec2);

@@ -20,6 +20,8 @@ public:
     bool isConnected() const;
     bool isConnectedTo(Inport* port) const;
 
+    std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
+
     void invalidate();
     virtual std::vector<Processor*> getDescendantProcessors();
 

@@ -21,6 +21,8 @@ public:
     bool isConnected() const;
     bool isConnectedTo(Outport* outport) const;
 
+    Outport* getConnectedOutport() const { return connectedOutport_; }
+
     void invalidate();
     virtual std::vector<Processor*> getAscendantProcessors();
     template <typename T>

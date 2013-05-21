@@ -22,6 +22,11 @@ ProcessorWidgetQt::ProcessorWidgetQt(Processor* processor, QWidget* parent)
 
 ProcessorWidgetQt::~ProcessorWidgetQt() {}
 
+void ProcessorWidgetQt::setVisible(bool visible) {
+    ProcessorWidget::setVisible(visible);
+    QWidget::setVisible(visible);
+}
+
 void ProcessorWidgetQt::show() {
     ProcessorWidget::show();
     QWidget::show();
