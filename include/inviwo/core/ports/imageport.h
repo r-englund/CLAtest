@@ -24,6 +24,7 @@ public:
     uvec2 getDimensions() const;
     const Image* getData() const;
     uvec3 getColorCode() const;
+    std::vector<Processor*> getDirectPredecessors();
 
 private:
     uvec2 dimensions_;
@@ -44,6 +45,7 @@ public:
     void changeDataDimensions(ResizeEvent* resizeEvent);
     uvec2 getDimensions() const;
     uvec3 getColorCode() const;
+    std::vector<Processor*> getDirectSuccessors();
 
 protected:
     Image* resizeImageData(uvec2 dimensions);
@@ -56,6 +58,10 @@ private:
 
 
 };
+
+// explicit instantiation
+template void Outport::getSuccessorsUsingPortType<ImageOutport>(std::vector<Processor*>&);  
+template void Inport::getPredecessorsUsingPortType<ImageInport>(std::vector<Processor*>&);
 
 } // namespace
 

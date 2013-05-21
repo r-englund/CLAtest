@@ -42,7 +42,7 @@
         </Processor>
     </Processors>
     <Connections>
-        <Connection connection="inport">
+        <Connection>
             <OutPort identifier="outport">
                 <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref1" />
             </OutPort>

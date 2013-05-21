@@ -8,7 +8,7 @@ namespace inviwo {
 
 class Processor;
 
-class IVW_CORE_API Port {
+class IVW_CORE_API Port : public IvwSerializable {
 
 friend class Processor;
 
@@ -54,6 +54,9 @@ public:
     virtual bool isConnected() const = 0;
 
     virtual void invalidate();
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& s);
 
 protected:
     std::string identifier_;

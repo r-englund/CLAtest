@@ -5,7 +5,8 @@
 namespace inviwo {
 
 Port::Port(std::string identifier)
-    : identifier_(identifier)
+    : identifier_(identifier),
+      processor_(0)
 {}
 
 Port::~Port() {}
@@ -32,6 +33,16 @@ void Port::setProcessor(Processor* processor) {
 
 void Port::invalidate() { 
     processor_->invalidate(); 
+}
+
+void Port::serialize(IvwSerializer& s) const {
+    s.serialize("identifier", identifier_, true);
+    s.serialize("Processor", processor_);
+}
+
+void Port::deserialize(IvwDeserializer& d) {
+    d.deserialize("identifier", identifier_, true);
+    d.deserialize("Processor", processor_);
 }
 
 } // namespace

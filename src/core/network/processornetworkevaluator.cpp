@@ -210,12 +210,12 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                 if (imageOutport) {
                     if (isPortConnectedToProcessor(imageOutport, processor)) {
                         
-                        std::vector<Processor*> descendantProcessors;
-                        descendantProcessors = imageOutport->getDescendantProcessors();
+                        std::vector<Processor*> directSuccessors;
+                        directSuccessors = imageOutport->getDirectSuccessors();
 
                         std::vector<uvec2> validDescendantCanvasSizes;
-                        for (size_t i=0; i<descendantProcessors.size(); i++) {
-                            CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(descendantProcessors[i]);
+                        for (size_t i=0; i<directSuccessors.size(); i++) {
+                            CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(directSuccessors[i]);
                             if (canvasProcessor) {
                                 uvec2 dimensions = canvasProcessor->getCanvas()->size();
                                 validDescendantCanvasSizes.push_back(dimensions);

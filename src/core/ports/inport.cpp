@@ -38,27 +38,27 @@ void Inport::invalidate() {
 }
 
 template <typename T>
-void Inport::getAscendantProcessorsUsingPortType(std::vector<Processor*>& ascendantProcessors) {
+void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsProcessors) {
     Port* connectedOutport = dynamic_cast<Port*>(connectedOutport_);
     if (connectedOutport) {
-        Processor* ascendantProcessor = connectedOutport->getProcessor();
+        Processor* predecessorsProcessor = connectedOutport->getProcessor();
 
-        if (std::find(ascendantProcessors.begin(), ascendantProcessors.end(), ascendantProcessor)== ascendantProcessors.end())
-            ascendantProcessors.push_back(ascendantProcessor);
+        if (std::find(predecessorsProcessors.begin(), predecessorsProcessors.end(), predecessorsProcessor)== predecessorsProcessors.end())
+            predecessorsProcessors.push_back(predecessorsProcessor);
 
-        std::vector<Inport*> inports = ascendantProcessor->getInports();
+        std::vector<Inport*> inports = predecessorsProcessor->getInports();
         for (size_t j=0; j<inports.size(); j++) {
             T* inPort = dynamic_cast<T*>(inports[j]);
             if (inPort)
-                inPort->getAscendantProcessorsUsingPortType<T>(ascendantProcessors);            
+                inPort->getPredecessorsUsingPortType<T>(predecessorsProcessors);            
         }
     }
 }
 
-std::vector<Processor*> Inport::getAscendantProcessors() {
-    std::vector<Processor*> ascendantProcessors;
-    getAscendantProcessorsUsingPortType<Inport>(ascendantProcessors);
-    return ascendantProcessors;
+std::vector<Processor*> Inport::getPredecessors() {
+    std::vector<Processor*> predecessorsProcessors;
+    getPredecessorsUsingPortType<Inport>(predecessorsProcessors);
+    return predecessorsProcessors;
 }
 
 } // namespace

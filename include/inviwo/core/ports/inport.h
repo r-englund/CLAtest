@@ -15,6 +15,10 @@ public:
     Inport(std::string identifier);
     virtual ~Inport();
 
+    //FIXME: Temporary fix. Remove this to make Inport abstract class
+    virtual void initialize() {}
+    virtual void deinitialize() {}
+
     virtual void connectTo(Outport* outport);
     virtual void disconnectFrom(Outport* outport);
 
@@ -24,13 +28,18 @@ public:
     Outport* getConnectedOutport() const { return connectedOutport_; }
 
     void invalidate();
-    virtual std::vector<Processor*> getAscendantProcessors();
+    virtual std::vector<Processor*> getPredecessors();
+
+protected:
     template <typename T>
-    void getAscendantProcessorsUsingPortType(std::vector<Processor*>& ascendantProcessors);
+    void getPredecessorsUsingPortType(std::vector<Processor*>&);
 
 private:
     Outport* connectedOutport_;
 };
+
+// explicit instantiation
+template void Inport::getPredecessorsUsingPortType<Inport>(std::vector<Processor*>&);
 
 } // namespace
 
