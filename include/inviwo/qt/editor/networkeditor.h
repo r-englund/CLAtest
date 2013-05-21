@@ -97,16 +97,15 @@ private:
 
     bool gridSnapping_;
     static const int GRID_SPACING;
-
     QTimer hoverTimer_;
 
-    void addProcessorRepresentations(Processor* processor, QPointF pos, bool visible=true);
+    bool addProcessorRepresentations(Processor* processor, QPointF pos, bool visible=true, bool networkLoad=false);
     void removeProcessorRepresentations(Processor* processor);
     void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true);
     void removeProcessorGraphicsItem(Processor* processor);
     void addPropertyWidgets(Processor* processor);
     void removePropertyWidgets(Processor* processor);
-    void addProcessorWidget(Processor* processor);
+    void addProcessorWidget(Processor* processor, bool show=true);
 
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
     void addConnectionGraphicsItem(Outport* outport, Inport* inport);

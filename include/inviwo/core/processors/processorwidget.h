@@ -20,6 +20,8 @@ public:
     virtual void setDimensions(ivec2);
     virtual void move(ivec2);
 
+    bool getVisibilityMetaData();
+
 private:
     ProcessorWidgetMetaData* metaData_;
 
@@ -27,7 +29,6 @@ protected:
     Processor* processor_;
     bool initialized_; 
 
-    bool getVisibilityMetaData();
     ivec2 getPositionMetaData();
     ivec2 getDimensionMetaData();
 };

@@ -92,17 +92,23 @@ void NetworkEditor::removeLink(Processor* processor1, Processor* processor2) {
 ////////////////////////////////////////////////////////
 //   PRIVATE METHODS FOR ADDING/REMOVING PROCESSORS   //
 ////////////////////////////////////////////////////////
-void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos, bool visible) {
+bool NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos, bool visible, bool networkLoad) {
     // generate GUI representations (graphics item, property widget, processor widget)
     addProcessorGraphicsItem(processor, pos, visible);
     if (visible)
         addPropertyWidgets(processor);
-    addProcessorWidget(processor);
 
     // TODO: Generalize by registering output/end processors (can also be e.g. VolumeSave)
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
-    if (canvasProcessor)
+    if (canvasProcessor){
+        addProcessorWidget(processor, !networkLoad);
         processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
+        return !processor->getProcessorWidget()->getVisibilityMetaData();
+    }
+    else{
+        addProcessorWidget(processor);
+        return true;
+    }
 }
 
 void NetworkEditor::removeProcessorRepresentations(Processor* processor) {
@@ -179,13 +185,14 @@ void NetworkEditor::removePropertyWidgets(Processor* processor) {
 }
 
 // remove processor widget unnecessary as processor widget is removed when processor is destroyed
-void NetworkEditor::addProcessorWidget(Processor* processor) {
+void NetworkEditor::addProcessorWidget(Processor* processor, bool show) {
     ProcessorWidgetQt* processorWidgetQt = ProcessorWidgetFactoryQt::getRef().create(processor);
     if (processorWidgetQt) {
         processor->setProcessorWidget(processorWidgetQt);
         processor->getProcessorWidget()->initialize();
         //TODO: Serialize if visible and check this on network load
-        processor->getProcessorWidget()->show();
+        if(processorWidgetQt->isVisible())
+            processor->getProcessorWidget()->show();
     }
 }
 
@@ -770,10 +777,12 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
 
     // add processors
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    std::vector<ProcessorWidget*> processorWidgetsToShow;
     for (size_t i=0; i<processors.size(); i++) {
         //processors[i]->invalidate();
         ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
-        addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y));
+        if(!addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), true, true))
+            processorWidgetsToShow.push_back(processors[i]->getProcessorWidget());
     }
 
     // add connections
@@ -789,7 +798,11 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // flag the network's modified flag, unlock it and initiate evaluation
     processorNetwork_->setModified(true);
     processorNetwork_->unlock();
-    processorNetworkEvaluator_->evaluate();
+
+    // show all processor widgets that where hidden on network load
+    for (size_t i=0; i<processorWidgetsToShow.size(); i++) {
+        processorWidgetsToShow[i]->show();
+    }
 
     return true;
 }
