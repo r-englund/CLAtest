@@ -7,6 +7,7 @@ ivw_module(OpenGL)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/canvasgl.h
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/glformats.h
     ${IVW_MODULE_DIR}/opengl/imagegl.h
     ${IVW_MODULE_DIR}/opengl/imageglconverter.h
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.h

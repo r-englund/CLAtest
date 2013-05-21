@@ -19,6 +19,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "glformats.h"
+
 IVW_MODULE_OPENGL_API void LogGLError(const char* fileName, const char* functionName, int lineNumber);
 
 #if defined(IVW_DEBUG)

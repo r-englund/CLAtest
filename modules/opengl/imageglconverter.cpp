@@ -16,7 +16,7 @@ namespace inviwo {
         const void *data = imageRepresentation->getData();
         uvec2 dim = imageRepresentation->getDimension();
 
-        Texture2D* texture = new Texture2D(uvec2(dim.x, dim.y), GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_NEAREST);
+        Texture2D* texture = new Texture2D(uvec2(dim.x, dim.y), getGLFormats()->getGLFormat(imageRepresentation->getDataFormatId()), GL_LINEAR);
 	    texture->setWidth(dim.x);
 	    texture->setHeight(dim.y);
         texture->upload(data);
@@ -35,7 +35,7 @@ namespace inviwo {
 
     DataRepresentation* ImageGL2RAMConverter::convert(DataRepresentation* source) {
         ImageGL* imageRepresentation = dynamic_cast<ImageGL*>(source);
-        unsigned int nChannels = imageRepresentation->getColorTexture()->getNChannels();
+        GLuint nChannels = imageRepresentation->getColorTexture()->getNChannels();
         uvec2 dim = imageRepresentation->getDimension();
         ImageRAM* image = NULL;
         switch (imageRepresentation->getColorTexture()->getDataType()) {

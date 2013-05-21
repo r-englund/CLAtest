@@ -15,6 +15,7 @@
 
 namespace inviwo {
 
+    //Do not set enums specifically, as NUMBER_OF_FORMATS is used to count the number of enums
     enum DataFormatId{
         NOT_SPECIALIZED,
         FLOAT16,
@@ -30,8 +31,46 @@ namespace inviwo {
         UINT16,
         UINT32,
         UINT64,
+        Vec2FLOAT16,
+        Vec2FLOAT32,
+        Vec2FLOAT64,
+        Vec2INT8,
+        Vec2INT12,
+        Vec2INT16,
+        Vec2INT32,
+        Vec2INT64,
+        Vec2UINT8,
+        Vec2UINT12,
+        Vec2UINT16,
+        Vec2UINT32,
+        Vec2UINT64,
+        Vec3FLOAT16,
+        Vec3FLOAT32,
+        Vec3FLOAT64,
+        Vec3INT8,
+        Vec3INT12,
+        Vec3INT16,
+        Vec3INT32,
+        Vec3INT64,
+        Vec3UINT8,
+        Vec3UINT12,
+        Vec3UINT16,
+        Vec3UINT32,
+        Vec3UINT64,
+        Vec4FLOAT16,
+        Vec4FLOAT32,
+        Vec4FLOAT64,
+        Vec4INT8,
+        Vec4INT12,
+        Vec4INT16,
+        Vec4INT32,
+        Vec4INT64,
         Vec4UINT8,
-        Vec4FLOAT32
+        Vec4UINT12,
+        Vec4UINT16,
+        Vec4UINT32,
+        Vec4UINT64,
+        NUMBER_OF_FORMATS
     };
 
 class DataFormatBase
