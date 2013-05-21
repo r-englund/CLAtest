@@ -10,33 +10,31 @@
 
 namespace inviwo {
 
-    class IVW_MODULE_OPENGL_API VolumeRAM2GLConverter : public RepresentationConverterType<VolumeGL> {
+class IVW_MODULE_OPENGL_API VolumeRAM2GLConverter : public RepresentationConverterType<VolumeGL> {
 
-    public:
-        VolumeRAM2GLConverter();
-        virtual ~VolumeRAM2GLConverter();
+public:
+    VolumeRAM2GLConverter();
+    virtual ~VolumeRAM2GLConverter();
 
-        inline bool canConvert(DataRepresentation* source) {
-            if (!dynamic_cast<VolumeRAM*>(source)) {
-                return false;
-            }
-            return true;
+    inline bool canConvert(DataRepresentation* source) {
+        if (!dynamic_cast<VolumeRAM*>(source)) {
+            return false;
         }
+        return true;
+    }
 
-        DataRepresentation* convert(DataRepresentation* source);
+    DataRepresentation* convert(DataRepresentation* source);
+};
+
+class IVW_MODULE_OPENGL_API VolumeDisk2GLConverter : public RepresentationConverterPackage<VolumeGL> {
+
+public:
+    VolumeDisk2GLConverter() : RepresentationConverterPackage<VolumeGL>(){
+        addConverter(new VolumeDisk2RAMConverter());
+        addConverter(new VolumeRAM2GLConverter());
     };
-
-    class IVW_MODULE_OPENGL_API VolumeDisk2GLConverter : public RepresentationConverterPackage<VolumeGL> {
-    
-    public:
-        VolumeDisk2GLConverter() : RepresentationConverterPackage<VolumeGL>(){
-            addConverter(new VolumeDisk2RAMConverter());
-            addConverter(new VolumeRAM2GLConverter());
-        };
-        virtual ~VolumeDisk2GLConverter() {};
-    };
-
-
+    virtual ~VolumeDisk2GLConverter() {};
+};
 
 } // namespace
 
