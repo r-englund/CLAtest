@@ -38,12 +38,6 @@ uvec3 ImageInport::getColorCode() const {
     return uvec3(90,127,183); 
 }
 
-std::vector<Processor*> ImageInport::getDirectPredecessors() {
-    std::vector<Processor*> predecessorProcessors;
-    getPredecessorsUsingPortType<ImageInport>(predecessorProcessors);
-    return predecessorProcessors;
-}
-
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier)
     : DataOutport<Image>(identifier), dimensions_(uvec2(256,256))
@@ -184,12 +178,6 @@ void ImageOutport::setLargestImageData() {
 
 uvec3 ImageOutport::getColorCode() const { 
     return uvec3(90,127,183); 
-}
-
-std::vector<Processor*> ImageOutport::getDirectSuccessors() {
-    std::vector<Processor*> successorProcessors;
-    getSuccessorsUsingPortType<ImageOutport>(successorProcessors);
-    return successorProcessors;
 }
 
 } // namespace

@@ -38,9 +38,6 @@ private:
     Outport* connectedOutport_;
 };
 
-// explicit instantiation
-template void Inport::getPredecessorsUsingPortType<Inport>(std::vector<Processor*>&);
-
 } // namespace
 
 #endif // IVW_INPORT_H
