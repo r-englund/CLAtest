@@ -513,7 +513,6 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 
     if (e->button()==Qt::NoButton) {
         // port inspector hover effect
-
         Port* port = 0;
         ProcessorGraphicsItem* processor = getProcessorGraphicsItemAt(e->scenePos());
         if (processor) {
@@ -527,12 +526,6 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
             if (connection)
                 port = connection->getOutport();
         }
-
-        /*
-        ProcessorGraphicsItem* processor = getProcessorGraphicsItemAt(e->scenePos());
-        Port* port = 0;
-        if (processor) port = processor->getSelectedPort(e->scenePos());
-        */
 
         if (port) {
             if (inspectedPort_ != port) {
