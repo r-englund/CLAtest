@@ -10,6 +10,7 @@ include(cmake/globalconfig.cmake)
 # Modules
 build_module(Base)
 build_module(OpenGL)
+build_module(OpenglQt)
 
 # Applications/Qt
 option(IVW_QT_APPLICATION "Build Inviwo Qt Application" ON)
