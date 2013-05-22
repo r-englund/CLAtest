@@ -20,7 +20,7 @@ void FilePropertyWidgetQt::generateWidget() {
     lineEdit_ = new QLineEdit();
     lineEdit_->setReadOnly(true);
     openButton_ = new QToolButton();
-    openButton_->setIcon(QIcon(":/icons/network_open.png"));
+    openButton_->setIcon(QIcon(":/icons/open.png"));
     connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
     hLayout->addWidget(lineEdit_);
     hLayout->addWidget(openButton_);

@@ -36,8 +36,8 @@ int main(int argc, char** argv) {
     mainWin.initializeAndShow();
     mainWin.initializeWorkspace();
 
-    // open last network
-    mainWin.openLastNetwork();
+    // open last worksapce
+    mainWin.openLastWorkspace();
 
     // process last arguments
     if (mainWin.processEndCommandLineArgs())

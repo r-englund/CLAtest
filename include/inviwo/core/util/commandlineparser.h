@@ -75,7 +75,7 @@ private:
    if (parser.getExitWithCapture()){
         std::string workspacePath = parser.getWorkspace();
         std::cout << "Capturing workspaces!" << std::endl << "Desired workspace: " << workspacePath << std::endl;
-        mainWin.openLastNetwork();
+        mainWin.openLastWorkspace();
         std::vector<inviwo::CanvasProcessorGL*> pv = inviwoApp.getProcessorNetwork()->getProcessorsByType<inviwo::CanvasProcessorGL>();
         std::cout << "Number of canvases: " << pv.size() << std::endl;
 

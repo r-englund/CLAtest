@@ -65,13 +65,13 @@ void InviwoMainWindow::initializeAndShow() {
     settings.endGroup();
 
     rootDir_ = QString::fromStdString(IVW_DIR+"data/");
-    networkFileDir_ = rootDir_ + "workspaces/";
+    workspaceFileDir_ = rootDir_ + "workspaces/";
     settingsWidget_->loadSettings();
 
     // initialize menus
     addMenus();
     addMenuActions();
-    updateRecentNetworks();
+    updateRecentWorkspaces();
 
     if (maximized) showMaximized();
     else show();
@@ -91,7 +91,7 @@ void InviwoMainWindow::initializeWorkspace(){
 }
 
 void InviwoMainWindow::notify() {
-    networkModified_ = true;
+    workspaceModified_ = true;
     updateWindowTitle();
 }
 
@@ -120,30 +120,30 @@ void InviwoMainWindow::addMenus() {
 }
 
 void InviwoMainWindow::addMenuActions() {
-    newFileAction_ = new QAction(QIcon(":/icons/network_new.png"), tr("&New Network"), this);
+    newFileAction_ = new QAction(QIcon(":/icons/new.png"), tr("&New Workspace"), this);
     newFileAction_->setShortcut(QKeySequence::New);
-    connect(newFileAction_, SIGNAL(triggered()), this, SLOT(newNetwork()));
+    connect(newFileAction_, SIGNAL(triggered()), this, SLOT(newWorkspace()));
     fileMenuItem_->addAction(newFileAction_);
 
-    openFileAction_ = new QAction(QIcon(":/icons/network_open.png"), tr("&Open Network"), this);
+    openFileAction_ = new QAction(QIcon(":/icons/open.png"), tr("&Open Workspace"), this);
     openFileAction_->setShortcut(QKeySequence::Open);
-    connect(openFileAction_, SIGNAL(triggered()), this, SLOT(openNetwork()));
+    connect(openFileAction_, SIGNAL(triggered()), this, SLOT(openWorkspace()));
     fileMenuItem_->addAction(openFileAction_);
 
-    saveFileAction_ = new QAction(QIcon(":/icons/network_save.png"), tr("&Save Network"), this);
+    saveFileAction_ = new QAction(QIcon(":/icons/save.png"), tr("&Save Workspace"), this);
     saveFileAction_->setShortcut(QKeySequence::Save);
-    connect(saveFileAction_, SIGNAL(triggered()), this, SLOT(saveNetwork()));
+    connect(saveFileAction_, SIGNAL(triggered()), this, SLOT(saveWorkspace()));
     fileMenuItem_->addAction(saveFileAction_);
 
-    saveAsFileAction_ = new QAction(QIcon(":/icons/network_saveas.png"), tr("&Save Network As"), this);
-    connect(saveAsFileAction_, SIGNAL(triggered()), this, SLOT(saveNetworkAs()));
+    saveAsFileAction_ = new QAction(QIcon(":/icons/saveas.png"), tr("&Save Workspace As"), this);
+    connect(saveAsFileAction_, SIGNAL(triggered()), this, SLOT(saveWorkspaceAs()));
     fileMenuItem_->addAction(saveAsFileAction_);
 
     recentFileSeparator_ = fileMenuItem_->addSeparator();
     for (int i=0; i<maxNumRecentFiles_; i++) {
         recentFileActions_[i] = new QAction(this);
         recentFileActions_[i]->setVisible(false);
-        connect(recentFileActions_[i], SIGNAL(triggered()), this, SLOT(openRecentNetwork()));
+        connect(recentFileActions_[i], SIGNAL(triggered()), this, SLOT(openRecentWorkspace()));
         fileMenuItem_->addAction(recentFileActions_[i]);
     }
     
@@ -180,13 +180,13 @@ void InviwoMainWindow::addMenuActions() {
 
 void InviwoMainWindow::updateWindowTitle() {
     QString windowTitle = QString("Inviwo - Interactive Visualization Workshop - ");
-    windowTitle.append(currentNetworkFileName_);
-    if (networkModified_)
+    windowTitle.append(currentWorkspaceFileName_);
+    if (workspaceModified_)
         windowTitle.append("*");
     setWindowTitle(windowTitle);
 }
 
-void InviwoMainWindow::updateRecentNetworks() {
+void InviwoMainWindow::updateRecentWorkspaces() {
     for (int i=0; i<recentFileList_.size(); i++) {
         if (!recentFileList_[i].isEmpty()) {
             QString menuEntry = tr("&%1 %2").arg(i + 1).arg(QFileInfo(recentFileList_[i]).fileName());
@@ -198,79 +198,83 @@ void InviwoMainWindow::updateRecentNetworks() {
     recentFileSeparator_->setVisible(recentFileList_.size() > 0);
 }
 
-void InviwoMainWindow::addToRecentNetworks(QString networkFileName) {
-    recentFileList_.removeAll(networkFileName);
-    recentFileList_.prepend(networkFileName);
+void InviwoMainWindow::addToRecentWorkspaces(QString workspaceFileName) {
+    recentFileList_.removeAll(workspaceFileName);
+    recentFileList_.prepend(workspaceFileName);
     if (recentFileList_.size() > maxNumRecentFiles_)
         recentFileList_.removeLast();
-    updateRecentNetworks();
+    updateRecentWorkspaces();
 }
 
-void InviwoMainWindow::setCurrentNetwork(QString networkFileName) {
-    networkFileDir_ = QFileInfo(networkFileName).absolutePath();
-    currentNetworkFileName_ = networkFileName;
+void InviwoMainWindow::setCurrentWorkspace(QString workspaceFileName) {
+    workspaceFileDir_ = QFileInfo(workspaceFileName).absolutePath();
+    currentWorkspaceFileName_ = workspaceFileName;
     updateWindowTitle();
 }
 
-void InviwoMainWindow::newNetwork() {
+void InviwoMainWindow::newWorkspace() {
     networkEditorView_->getNetworkEditor()->clearNetwork();
-    networkModified_ = true;
-    setCurrentNetwork(rootDir_ + "workspaces/untitled.inv");
+    workspaceModified_ = true;
+    setCurrentWorkspace(rootDir_ + "workspaces/untitled.inv");
     updateWindowTitle();
 }
 
-void InviwoMainWindow::openNetwork(QString networkFileName) {
-    QFile file(networkFileName);
+void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
+    QFile file(workspaceFileName);
     if (!file.exists())
         return;
     
-    networkEditorView_->getNetworkEditor()->loadNetwork(networkFileName.toLocal8Bit().constData());
-    networkModified_ = false;
-    setCurrentNetwork(networkFileName);
-    addToRecentNetworks(networkFileName);
+    networkEditorView_->getNetworkEditor()->loadNetwork(workspaceFileName.toLocal8Bit().constData());
+    workspaceModified_ = false;
+    setCurrentWorkspace(workspaceFileName);
+    addToRecentWorkspaces(workspaceFileName);
 }
 
-void InviwoMainWindow::openLastNetwork() {
-    //If a network is defined by an argument, that network is opened, otherwise, the last opened network is opened.
+void InviwoMainWindow::openLastWorkspace() {
+    // if a workspace is defined by an argument, that workspace is opened, otherwise, the last opened workspace is used
     const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
     if (cmdparser->getLoadWorkspaceFromArg())
-        openNetwork(static_cast<const QString>(cmdparser->getWorkspacePath().c_str()));
+        openWorkspace(static_cast<const QString>(cmdparser->getWorkspacePath().c_str()));
     else if (!recentFileList_.isEmpty() && lastExitWithoutErrors_)
-        openNetwork(recentFileList_[0]);
+        openWorkspace(recentFileList_[0]);
+    else
+        newWorkspace();
 }
 
-void InviwoMainWindow::openNetwork() {
+void InviwoMainWindow::openWorkspace() {
     // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
 
     QList<QUrl> sidebarURLs;
-    sidebarURLs << QUrl::fromLocalFile(QDir(networkFileDir_).absolutePath());
+    sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 
-    QFileDialog openFileDialog(this, tr("Open Network ..."), QDir(networkFileDir_).absolutePath());
+    QFileDialog openFileDialog(this, tr("Open Workspace ..."), QDir(workspaceFileDir_).absolutePath());
     openFileDialog.setFileMode(QFileDialog::AnyFile);
     openFileDialog.setNameFilters(extension);
     openFileDialog.setSidebarUrls(sidebarURLs);
 
     if (openFileDialog.exec()) {
         QString path = openFileDialog.selectedFiles().at(0);
-        openNetwork(path);
+        openWorkspace(path);
     }
 }
 
-void InviwoMainWindow::openRecentNetwork() {
+void InviwoMainWindow::openRecentWorkspace() {
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
-        openNetwork(action->data().toString());
+        openWorkspace(action->data().toString());
 }
 
-void InviwoMainWindow::saveNetwork() {
-    networkEditorView_->getNetworkEditor()->saveNetwork(currentNetworkFileName_.toLocal8Bit().constData());
-    networkModified_ = false;
-    updateWindowTitle();
-
+void InviwoMainWindow::saveWorkspace() {
+    if (currentWorkspaceFileName_.contains("untitled.inv")) saveWorkspaceAs();
+    else {
+        networkEditorView_->getNetworkEditor()->saveNetwork(currentWorkspaceFileName_.toLocal8Bit().constData());
+        workspaceModified_ = false;
+        updateWindowTitle();
+    }
     /*
     // FIXME: the following code snippet allows to reload the Qt style sheets during runtime,
     // which is handy while we change them. once the style hseets have been finalized,
@@ -283,17 +287,17 @@ void InviwoMainWindow::saveNetwork() {
     */
 }
 
-void InviwoMainWindow::saveNetworkAs() {
+void InviwoMainWindow::saveWorkspaceAs() {
     // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
 
     QList<QUrl> sidebarURLs;
-    sidebarURLs << QUrl::fromLocalFile(QDir(networkFileDir_).absolutePath());
+    sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 
-    QFileDialog saveFileDialog(this, tr("Save Network ..."), QDir(networkFileDir_).absolutePath());
+    QFileDialog saveFileDialog(this, tr("Save Workspace ..."), QDir(workspaceFileDir_).absolutePath());
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
@@ -304,25 +308,25 @@ void InviwoMainWindow::saveNetworkAs() {
         QString path = saveFileDialog.selectedFiles().at(0);
         if (!path.endsWith(".inv")) path.append(".inv");
         networkEditorView_->getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
-        networkModified_ = false;
-        setCurrentNetwork(path);
-        addToRecentNetworks(path);
+        workspaceModified_ = false;
+        setCurrentWorkspace(path);
+        addToRecentWorkspaces(path);
     }
 }
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
 
-    if (networkModified_) {
+    if (workspaceModified_) {
         QMessageBox msgBox;
-        msgBox.setText("Network Modified");
+        msgBox.setText("Workspace Modified");
         msgBox.setInformativeText("Do you want to save your changes?");
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Yes);
         int answer = msgBox.exec();
         switch (answer) {
             case QMessageBox::Yes:
-                saveNetwork();
+                saveWorkspace();
                 break;
             case QMessageBox::No:
                 break;

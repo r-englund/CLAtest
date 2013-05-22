@@ -24,7 +24,7 @@ void ModifiedWidget::generateWidget(){
     toolBar_ = new QToolBar();
 
     saveButton_ = new QToolButton();
-    saveButton_->setIcon(QIcon(":/icons/network_save.png")); // Temporary icon
+    saveButton_->setIcon(QIcon(":/icons/save.png")); // Temporary icon
     saveButton_->setToolTip("Save file");
     unDoButton_ = new QToolButton();
     unDoButton_->setIcon(QIcon(":/icons/arrow_left.png")); // Temporary icon

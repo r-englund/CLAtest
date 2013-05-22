@@ -33,27 +33,28 @@ public:
     virtual void deinitialize();
     virtual void initializeWorkspace();
 
-    void openLastNetwork();
+    void openLastWorkspace();
     bool processEndCommandLineArgs();
 
     virtual void notify();
 
 public slots:
-    void newNetwork();
-    void openNetwork();
-    void openRecentNetwork();
-    void saveNetwork();
-    void saveNetworkAs();
+    void newWorkspace();
+    void openWorkspace();
+    void openRecentWorkspace();
+    void saveWorkspace();
+    void saveWorkspaceAs();
 
 private:
-    void openNetwork(QString networkFileName);
+    void openWorkspace(QString workspaceFileName);
     void addMenus();
     void addMenuActions();
     void closeEvent(QCloseEvent *event);
 
-    void addToRecentNetworks(QString networkFileName);
-    void updateRecentNetworks();
-    void setCurrentNetwork(QString currentNetworkFileName);
+    void addToRecentWorkspaces(QString workspaceFileName);
+    void updateRecentWorkspaces();
+    void setCurrentWorkspace(QString workspaceFileName);
+
     void updateWindowTitle();
 
     NetworkEditorView* networkEditorView_;
@@ -90,12 +91,12 @@ private:
     // settings
     bool lastExitWithoutErrors_;
 
-    bool networkModified_;
+    bool workspaceModified_;
 
     // paths
     QString rootDir_;
-    QString networkFileDir_;
-    QString currentNetworkFileName_;
+    QString workspaceFileDir_;
+    QString currentWorkspaceFileName_;
     QStringList recentFileList_;
 
     // the default render context for managing render sates
