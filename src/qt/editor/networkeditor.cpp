@@ -428,6 +428,7 @@ LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItemAt(const QPointF p
 //   EVENT HANDLING METHODS   //
 ////////////////////////////////
 void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
+    hoverTimer_.stop();
     if (e->button() == Qt::LeftButton) {
         startProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
         if (startProcessor_) {
@@ -501,8 +502,9 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         connectionCurve_->setEndPoint(e->scenePos());
         connectionCurve_->update();
         e->accept();
-
-    } else if (linkCurve_) {
+    }
+    
+    else if (linkCurve_) {
         // link drag mode
         QPointF center = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
         linkCurve_->setStartPoint(center) ;
@@ -510,6 +512,7 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         linkCurve_->update();
         e->accept();
     }
+
     else if (e->button()==Qt::NoButton) {
         // port inspector hover effect
         Port* port = 0;

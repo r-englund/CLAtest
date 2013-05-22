@@ -1,16 +1,22 @@
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/io/imageloader.h>
 #include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/core/util/datetime.h>
+#include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {
 
 CanvasProcessor::CanvasProcessor()
     : Processor(),
     inport_("inport"),
-	snapshot_("snapshot", "Create Snapshot"),
+    snapshotButton_("snapshot", "Create Snapshot", PropertyOwner::VALID),
     canvas_(0)
 {
     addPort(inport_);
-	addProperty(snapshot_);
+
+    //snapshotButton_.onChange(this, &CanvasProcessor::createSnapshot);
+    snapshotButton_.registerClassMemberFunction(this, &CanvasProcessor::createSnapshot);
+	addProperty(snapshotButton_);
 }
 
 
@@ -21,11 +27,15 @@ CanvasProcessor::~CanvasProcessor() {
     }
 }
 
-void CanvasProcessor::takeSnapshot(const char *filePath){
-    const Image* img = inport_.getData();
-    snapshot_.setImage(inport_.getData());
-    if (img)
-        snapshot_.saveSnapshot(filePath, img);
+void CanvasProcessor::createSnapshot() {
+    std::string snapshotPath(IVW_DIR+"data/images/" + toLower(getIdentifier()) + "-" + currentDateTime() + ".png");
+    createSnapshot(snapshotPath.c_str());
+}
+    
+void CanvasProcessor::createSnapshot(const char* snapshotPath) {
+    const Image* image = inport_.getData();
+    ImageLoader::saveImage(snapshotPath, image);
+    InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
 }
 
 Processor* CanvasProcessor::create() const {

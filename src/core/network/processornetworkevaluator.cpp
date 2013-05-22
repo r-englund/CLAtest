@@ -70,7 +70,7 @@ void ProcessorNetworkEvaluator::saveSnapshotAllCanvases(std::string dir, std::st
             ss << default_name << i+1;
         std::string path(dir + ss.str() + ext);
         std::cout << "Saving canvas to: " << path << std::endl;
-        (*it)->takeSnapshot((path).c_str());
+        (*it)->createSnapshot((path).c_str());
         ++i;
     }
 }

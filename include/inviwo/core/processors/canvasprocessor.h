@@ -5,7 +5,6 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/util/canvas.h>
-#include "inviwo/core/properties/snapshotproperty.h"
 
 namespace inviwo {
 
@@ -26,11 +25,12 @@ public:
 
     bool isEndProcessor() { return true; }
     
-    void takeSnapshot(const char* filePath);
+    void createSnapshot();
+    void createSnapshot(const char* filePath);
 
 protected:
     ImageInport inport_;
-    SnapshotProperty snapshot_;
+    ButtonProperty snapshotButton_;
 
 private:
     Canvas* canvas_;

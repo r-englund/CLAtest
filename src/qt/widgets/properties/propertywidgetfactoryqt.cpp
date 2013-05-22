@@ -9,7 +9,6 @@
 #include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
-#include <inviwo/core/properties/snapshotproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/texteditorproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
@@ -35,7 +34,6 @@
 #include <inviwo/qt/widgets/properties/intvec3propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intvec4propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/snapshotpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
@@ -44,9 +42,8 @@
 namespace inviwo {
 
 PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
+
 PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
-
-
     if (property->getSemantics()!=PropertySemantics::Default){
         if (dynamic_cast<FloatVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {
             return new ColorPropertyWidgetQt(static_cast<FloatVec4Property*>(property));
@@ -60,9 +57,7 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         if (dynamic_cast<StringProperty*>(property)&& property->getSemantics() == PropertySemantics::Editor) {
             return new TextEditorWidgetQt(static_cast<StringProperty*>(property));
         }
-
     }
-
     if (dynamic_cast<BoolProperty*>(property))
         return new BoolPropertyWidgetQt(static_cast<BoolProperty*>(property));
     if (dynamic_cast<ButtonProperty*>(property))
@@ -103,13 +98,10 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new OptionPropertyWidgetQt(static_cast<OptionPropertyInt*>(property));
     if (dynamic_cast<OptionPropertyString*>(property))
         return new OptionPropertyWidgetQt(static_cast<OptionPropertyString*>(property));
-    if (dynamic_cast<SnapshotProperty*>(property))
-        return new SnapshotPropertyWidgetQt(static_cast<SnapshotProperty*>(property));
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
     if (dynamic_cast<TransferFunctionProperty*>(property))
         return new TransferFunctionPropertyWidgetQt(static_cast<TransferFunctionProperty*>(property));
-
 
     LogWarn("No widget for property " + property->getIdentifier() + " found.")
         return 0;
