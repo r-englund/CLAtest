@@ -276,6 +276,7 @@ endmacro()
 # Sort directories based on dependencies inside directories
 macro(generate_unset_mod_options_and_depend_sort retval)
     file(GLOB sub-dir RELATIVE ${IVW_MODULE_DIR} ${IVW_MODULE_DIR}/*)
+    list(REMOVE_ITEM sub-dir .svn)
 	set(sorted_dirs ${sub-dir})
     foreach(dir ${sub-dir})
         if(IS_DIRECTORY ${IVW_MODULE_DIR}/${dir})
