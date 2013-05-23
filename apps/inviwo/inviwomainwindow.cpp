@@ -27,6 +27,8 @@ InviwoMainWindow::InviwoMainWindow() : VoidObserver() {
     // the default render context managing the rendering state
     defaultRenderContext_ = new CanvasQt(this);    
     defaultRenderContext_->activate();
+
+    currentWorkspaceFileName_ = "";
 }
 
 InviwoMainWindow::~InviwoMainWindow() {}
@@ -213,7 +215,8 @@ void InviwoMainWindow::setCurrentWorkspace(QString workspaceFileName) {
 }
 
 void InviwoMainWindow::newWorkspace() {
-    askToSaveWorkspaceChanges();
+    if (currentWorkspaceFileName_ != "")
+        askToSaveWorkspaceChanges();
     networkEditorView_->getNetworkEditor()->clearNetwork();
     workspaceModified_ = true;
     setCurrentWorkspace(rootDir_ + "workspaces/untitled.inv");
