@@ -24,6 +24,8 @@ public:
     void unbindColorTexture(const ImageInport& inport);
     void bindDepthTexture(const ImageInport& inport, GLenum texUnit);
     void unbindDepthTexture(const ImageInport& inport);
+    void bindColorDepthTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit);
+    void unbindColorDepthTextures(const ImageInport& inport);
 
     void renderImagePlaneQuad() const;
 
