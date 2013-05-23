@@ -1,5 +1,6 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processorfactory.h>
+#include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <modules/moduleregistration.h>
@@ -40,6 +41,7 @@ void InviwoApplication::initialize() {
     // initialize singleton factories
     ProcessorFactory::init();
     MetaDataFactory::init();
+    ProcessorWidgetFactory::init();
     RepresentationConverterFactory::init();
 
     initialized_ = true;

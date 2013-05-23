@@ -10,9 +10,11 @@ namespace inviwo {
 class IVW_QTWIDGETS_API ProcessorWidgetQt : public ProcessorWidget, public QWidget {
 
 public:
-    ProcessorWidgetQt(Processor* processor, QWidget* parent);
+    ProcessorWidgetQt(QWidget* parent);    
     virtual ~ProcessorWidgetQt();
 
+    virtual ProcessorWidget* create() const = 0;
+    virtual void initialize() = 0;    
     virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();

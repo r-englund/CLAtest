@@ -3,7 +3,10 @@
 namespace inviwo {
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData() 
-    : CompositeMetaData()
+    : positionMetaData_(ivec2(0)),
+      dimensionMetaData_(ivec2(256)),
+      visiblityMetaData_(false),
+      CompositeMetaData()
 {
     addMetaData(positionMetaData_);
     addMetaData(dimensionMetaData_);

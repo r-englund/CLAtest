@@ -8,19 +8,19 @@
 
 namespace inviwo {
 
-class IVW_CORE_API ProcessorWidgetFactory : public Factory,
-                                           public Singleton<ProcessorWidgetFactory> {
+class IVW_CORE_API ProcessorWidgetFactory : public Singleton<ProcessorWidgetFactory> {
 
 public:
     ProcessorWidgetFactory();
     ~ProcessorWidgetFactory();
 
-    virtual void initialize();
-    virtual void deinitialize();
+    void initialize();
+    void deinitialize();
 
     void registerProcessorWidget(ProcessorWidget* processorWidget);
-    virtual IvwSerializable* create(std::string className) const;
-    virtual bool isValidType(std::string className) const;
+    ProcessorWidget* create(std::string processorClassName) const;
+    ProcessorWidget* create(Processor* processor) const;
+    bool isValidType(std::string className) const;
 
 private:
     mutable std::map<std::string, ProcessorWidget*> processorWidgetMap_;

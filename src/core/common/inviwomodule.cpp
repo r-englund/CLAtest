@@ -18,6 +18,10 @@ InviwoModule::~InviwoModule() {
         delete processors_[i];
     processors_.clear();
 
+    for (size_t i=0; i<processorWidgets_.size(); i++)
+        delete processorWidgets_[i];
+    processorWidgets_.clear();
+
     for (size_t i=0; i<properties_.size(); i++)
         delete properties_[i];
     properties_.clear();
@@ -45,6 +49,10 @@ std::string InviwoModule::getPath(const std::string& suffix) const {
 
 const std::vector<Processor*>& InviwoModule::getProcessors() const {
     return processors_;
+}
+
+const std::vector<ProcessorWidget*>& InviwoModule::getProcessorWidgets() const {
+    return processorWidgets_;
 }
 
 const std::vector<Property*>& InviwoModule::getProperties() const {
@@ -105,6 +113,10 @@ void InviwoModule::addProcessor(Processor* processor) {
     // FIXME: check processor pointer and module's name
     //processor->setModuleIdentifier(identifier_);
     processors_.push_back(processor);
+}
+
+void InviwoModule::addProcessorWidget(ProcessorWidget* processorWidget) {
+    processorWidgets_.push_back(processorWidget);
 }
 
 void InviwoModule::addMetaData(MetaData* meta) {

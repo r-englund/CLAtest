@@ -11,16 +11,18 @@ class Processor;
 class IVW_CORE_API ProcessorWidget {
 
 public:
-    ProcessorWidget(Processor* processor);
+    ProcessorWidget();
     virtual ~ProcessorWidget();
 
-    virtual void initialize() = 0;
+    virtual ProcessorWidget* create() const = 0;
+    virtual void initialize() = 0;    
     virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();    
     virtual void setDimensions(ivec2);
     virtual void move(ivec2);
     virtual void setProcessor(Processor* processor) {processor_ = processor;}
+    virtual Processor* getProcessor() {return processor_;}
 
     bool getVisibilityMetaData();
 

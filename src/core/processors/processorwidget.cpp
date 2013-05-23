@@ -3,12 +3,11 @@
 
 namespace inviwo {
 
-ProcessorWidget::ProcessorWidget(Processor* processor)
-    : processor_(processor)
-{
-    initialized_ = false;
-    metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(MetaDataFactory::getRef().create("ProcessorWidgetMetaData"));
-}
+ProcessorWidget::ProcessorWidget()
+    : processor_(0),
+      initialized_(false),
+      metaData_(0)
+{}
 
 ProcessorWidget::~ProcessorWidget() {}
 

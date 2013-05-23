@@ -10,7 +10,8 @@
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/qt/editor/propertylistwidget.h>
-#include <inviwo/qt/widgets/processors/processorwidgetfactoryqt.h>
+#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
+#include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 
@@ -175,10 +176,10 @@ void NetworkEditor::removePropertyWidgets(Processor* processor) {
 
 // remove processor widget unnecessary as processor widget is removed when processor is destroyed
 void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
-    ProcessorWidgetQt* processorWidgetQt = ProcessorWidgetFactoryQt::getRef().create(processor);
-    if (processorWidgetQt) {
-        processorWidgetQt->setProcessor(processor);
-        processor->setProcessorWidget(processorWidgetQt);
+    ProcessorWidget* processorWidget = ProcessorWidgetFactory::getRef().create(processor);
+    if (processorWidget) {
+        processorWidget->setProcessor(processor);
+        processor->setProcessorWidget(processorWidget);
         processor->getProcessorWidget()->initialize();
         //TODO: Serialize if visible and check this on network load
         processor->getProcessorWidget()->setVisible(visible);
@@ -276,13 +277,13 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
         if (canvasProcessor) {
             // show processor widget as tool window
             processor->setIdentifier("PortInspector "+port->getProcessor()->getIdentifier()+":"+port->getIdentifier());
-            ProcessorWidgetQt* processorWidgetQt = ProcessorWidgetFactoryQt::getRef().create(processor);
+            ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(ProcessorWidgetFactory::getRef().create(processor));            
+            processorWidgetQt->initialize();
+            processor->setProcessorWidget(processorWidgetQt);
             processorWidgetQt->setMinimumSize(128, 128);
             processorWidgetQt->setMaximumSize(128, 128);
-            processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
-            processor->setProcessorWidget(processorWidgetQt);
-            processorWidgetQt->move(pos);
-            processorWidgetQt->initialize();
+            processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);            
+            processorWidgetQt->move(pos);            
             processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
         }
     }

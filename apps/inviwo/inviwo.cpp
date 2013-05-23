@@ -28,8 +28,8 @@ int main(int argc, char** argv) {
     inviwo::InviwoMainWindow mainWin;
 
     // setup core application
-    inviwoApp.initialize();
     inviwoApp.setMainWindow(&mainWin);
+    inviwoApp.initialize();
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
 
     // setup main window

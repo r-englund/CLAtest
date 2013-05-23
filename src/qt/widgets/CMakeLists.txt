@@ -5,16 +5,13 @@ ivw_project(inviwo-qtwidgets)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/canvasqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventconverterqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/floatsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/canvasprocessorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetfactoryqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/buttonpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/camerapropertywidgetqt.h
@@ -51,7 +48,6 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/canvasprocessorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/buttonpropertywidgetqt.h
@@ -86,15 +82,13 @@ source_group("MOC Files" FILES ${MOC_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    canvasqt.cpp
+
     eventconverterqt.cpp
     floatsliderwidgetqt.cpp
     intsliderwidgetqt.cpp
     inviwoapplicationqt.cpp
     mappingpopup.cpp
-    processors/canvasprocessorwidgetqt.cpp
     processors/processorwidgetqt.cpp
-    processors/processorwidgetfactoryqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
     properties/collapsivegroupboxwidgetqt.cpp

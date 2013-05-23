@@ -5,8 +5,8 @@
 
 namespace inviwo {
 
-CanvasProcessorWidgetQt::CanvasProcessorWidgetQt(Processor* processor, QWidget* parent)
-    : ProcessorWidgetQt(processor, parent),
+CanvasProcessorWidgetQt::CanvasProcessorWidgetQt(QWidget* parent)
+    : ProcessorWidgetQt(parent),
       canvas_(0)
 {
     setMinimumSize(32, 32);
@@ -22,8 +22,11 @@ CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
     }
 }
 
-void CanvasProcessorWidgetQt::initialize() {
-    ProcessorWidget::initialize();
+ProcessorWidget* CanvasProcessorWidgetQt::create() const {
+    return new CanvasProcessorWidgetQt(parentWidget());
+}
+
+void CanvasProcessorWidgetQt::initialize() {    
     setWindowTitle(QString::fromStdString(processor_->getIdentifier())); 
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
     canvas_ = new CanvasQt(this);
@@ -35,10 +38,11 @@ void CanvasProcessorWidgetQt::initialize() {
     gridLayout->addWidget(static_cast<QWidget*>(canvas_), 0, 0);
     setLayout(gridLayout);
 
-    canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_));
+    canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_));    
     uvec2 csize = canvasProcessor->getCanvas()->size();
     resize(static_cast<int>(csize[0]), static_cast<int>(csize[1]));
-
+    
+    ProcessorWidgetQt::initialize();
     initialized_ = true;
 }
 
