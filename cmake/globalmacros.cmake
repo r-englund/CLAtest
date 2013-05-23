@@ -275,7 +275,7 @@ endmacro()
 # Generate module options (which was not specifed before) and,
 # Sort directories based on dependencies inside directories
 macro(generate_unset_mod_options_and_depend_sort retval)
-    file(GLOB sub-dir RELATIVE ${IVW_MODULE_DIR} ${IVW_MODULE_DIR}/[^.svn]*)
+    file(GLOB sub-dir RELATIVE ${IVW_MODULE_DIR} ${IVW_MODULE_DIR}/*)
 	set(sorted_dirs ${sub-dir})
     foreach(dir ${sub-dir})
         if(IS_DIRECTORY ${IVW_MODULE_DIR}/${dir})
