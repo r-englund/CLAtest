@@ -18,7 +18,7 @@ ProcessorWidgetQt* ProcessorWidgetFactoryQt::create(Processor* processor) {
         QWidget* parent = app->getMainWindow();
 
         if (dynamic_cast<CanvasProcessor*>(processor))
-            return new CanvasProcessorWidgetQt(static_cast<CanvasProcessor*>(processor), parent);
+            return new CanvasProcessorWidgetQt(0, parent);
 
         return NULL;
     }

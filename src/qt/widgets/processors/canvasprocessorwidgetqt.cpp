@@ -11,7 +11,7 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt(Processor* processor, QWidget* 
 {
     setMinimumSize(32, 32);
     setWindowFlags(windowFlags() | Qt::Tool | Qt::CustomizeWindowHint);
-    setWindowTitle(QString::fromStdString(processor->getIdentifier())); 
+    setWindowTitle(QString::fromStdString("untitled canvas")); 
 }
 
 CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
@@ -23,6 +23,8 @@ CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
 }
 
 void CanvasProcessorWidgetQt::initialize() {
+    ProcessorWidget::initialize();
+    setWindowTitle(QString::fromStdString(processor_->getIdentifier())); 
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
     canvas_ = new CanvasQt(this);
     canvas_->initialize();

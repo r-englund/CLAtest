@@ -7,12 +7,14 @@ ProcessorWidget::ProcessorWidget(Processor* processor)
     : processor_(processor)
 {
     initialized_ = false;
-    metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(processor_->getMetaData("ProcessorWidgetMetaData"));
+    metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(MetaDataFactory::getRef().create("ProcessorWidgetMetaData"));
 }
 
 ProcessorWidget::~ProcessorWidget() {}
 
-void ProcessorWidget::initialize() {}
+void ProcessorWidget::initialize() {    
+     metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(processor_->getMetaData("ProcessorWidgetMetaData"));
+}
 
 void ProcessorWidget::setVisible(bool visible) {
     metaData_->setVisibile(visible);

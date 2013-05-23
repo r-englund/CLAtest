@@ -177,6 +177,7 @@ void NetworkEditor::removePropertyWidgets(Processor* processor) {
 void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
     ProcessorWidgetQt* processorWidgetQt = ProcessorWidgetFactoryQt::getRef().create(processor);
     if (processorWidgetQt) {
+        processorWidgetQt->setProcessor(processor);
         processor->setProcessorWidget(processorWidgetQt);
         processor->getProcessorWidget()->initialize();
         //TODO: Serialize if visible and check this on network load

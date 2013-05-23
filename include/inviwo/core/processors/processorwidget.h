@@ -14,12 +14,13 @@ public:
     ProcessorWidget(Processor* processor);
     virtual ~ProcessorWidget();
 
-    virtual void initialize();
+    virtual void initialize() = 0;
     virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();    
     virtual void setDimensions(ivec2);
     virtual void move(ivec2);
+    virtual void setProcessor(Processor* processor) {processor_ = processor;}
 
     bool getVisibilityMetaData();
 
