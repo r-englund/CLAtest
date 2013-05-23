@@ -15,14 +15,13 @@ class IVW_MODULE_BASE_API CubeProxygeometry : public ProcessorGL {
 public:
     CubeProxygeometry();
     ~CubeProxygeometry();
+
+    GenericProcessorHeaderDeclarations();
+    
     virtual Processor* create() const;
 
     void initialize();
     void deinitialize();
-
-    virtual std::string getClassName() const { return "CubeProxygeometry"; }
-    virtual std::string getCategory() const  { return "Proxy Geometry"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_BROKEN; }
 
 protected:
     virtual void process();

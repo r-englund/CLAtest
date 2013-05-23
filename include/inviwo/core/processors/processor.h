@@ -16,6 +16,19 @@
 
 namespace inviwo {
 
+#define GenericProcessorHeaderDeclarations() \
+        virtual std::string getClassName() const { return CLASS_NAME; } \
+        virtual std::string getCategory() const { return CATEGORY; } \
+        virtual CodeState getCodeState() const { return CODE_STATE; } \
+        static const std::string CLASS_NAME; \
+        static const std::string CATEGORY; \
+        static const CodeState CODE_STATE;
+
+#define SetProcessorInfo(T, className, category, codeState) \
+    const std::string T::CLASS_NAME = className; \
+    const std::string T::CATEGORY = category; \
+    const Processor::CodeState T::CODE_STATE = Processor::codeState;
+
 class IVW_CORE_API Processor : public PropertyOwner, public VoidObservable {
 
 public:
@@ -27,10 +40,8 @@ public:
         CODE_STATE_EXPERIMENTAL,
         CODE_STATE_STABLE
     };
-
-    virtual std::string getClassName() const { return "Processor"; }
-    virtual std::string getCategory() const { return "undefined"; }
-    virtual CodeState getCodeState() const { return CODE_STATE_EXPERIMENTAL; }
+    GenericProcessorHeaderDeclarations();
+    
     virtual Processor* create() const;
 
     void setIdentifier(const std::string& identifier) { identifier_ = identifier; }

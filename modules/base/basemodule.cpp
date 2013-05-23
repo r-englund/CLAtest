@@ -15,13 +15,17 @@
 #include <modules/base/processors/volumesplitcompositor.h>
 #include <modules/base/processors/volumesplitimagecompositor.h>
 
+#include <inviwo/core/processors/processorfactoryobject.h>
+
 namespace inviwo {
 
 BaseModule::BaseModule() : InviwoModule() {
     setIdentifier("Base");
     setXMLFileName("base/basemodule.xml");
 
-    addProcessor(new CubeProxygeometry());
+    ProcessorFactoryObject* test = addProcessorObject(CubeProxygeometry);
+    addProcessor(test->create());
+    LogInfo("Output from factory object: " << test->getIdentifier());
     addProcessor(new EntryExitPoints());
 	addProcessor(new FindEdges());
 	addProcessor(new FirstIvwProcessor());

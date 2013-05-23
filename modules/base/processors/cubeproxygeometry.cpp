@@ -2,6 +2,8 @@
 
 namespace inviwo {
 
+SetProcessorInfo(CubeProxygeometry, "CubeProxygeometry", "Proxy Geometry", CODE_STATE_BROKEN)
+
 CubeProxygeometry::CubeProxygeometry()
     : ProcessorGL(),
       inport_("image.inport")

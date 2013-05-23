@@ -4,6 +4,8 @@
 
 namespace inviwo {
 
+SetProcessorInfo(Processor, "Processor", "undefined", CODE_STATE_EXPERIMENTAL)
+
 Processor::Processor() : VoidObservable(),
     processorWidget_(0), identifier_("undefined"), invalidationLevel_(PropertyOwner::INVALID_OUTPUT), showProgressBar_(false), progress_(0.0f), beginLoopProgress_(-1.0f)
 {}
