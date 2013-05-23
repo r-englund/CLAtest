@@ -8,6 +8,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 
 #include <QDesktopServices>
+#include <QDesktopWidget>
 #include <QFileDialog>
 #include <QList>
 #include <QMessageBox>
@@ -58,8 +59,20 @@ void InviwoMainWindow::initializeAndShow() {
     settings.beginGroup("mainwindow");
     restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
     restoreState(settings.value("state", saveState()).toByteArray());
-    move(settings.value("pos", pos()).toPoint());
-    resize(settings.value("size", size()).toSize());
+    QPoint newPos = settings.value("pos", pos()).toPoint();
+    QSize newSize = settings.value("size", size()).toSize();
+    move(newPos);
+    resize(newSize);
+
+    QRect screenGeometry = QApplication::desktop()->screen()->geometry();
+    screenGeometry.setRect(screenGeometry.x()-10, screenGeometry.y()-10,
+                           screenGeometry.width()+20, screenGeometry.height()+20);
+    if (!screenGeometry.contains(newPos) ||
+        !screenGeometry.contains(QPoint(newPos.x()+newSize.width(), newPos.x()+newSize.height()))) {
+            move(QPoint(0,0));
+            resize(screenGeometry.width()-20, screenGeometry.height()-20);
+    }
+
     bool maximized = settings.value("maximized", true).toBool();
     recentFileList_ = settings.value("recentFileList").toStringList();
     lastExitWithoutErrors_ = settings.value("lastExitWithoutErrors", true).toBool();
