@@ -27,6 +27,7 @@ public:
     virtual void update();
 
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };
+    ProcessorNetworkEvaluator* getNetworkEvaluator() const { return processorNetworkEvaluator_; };
 
 protected:
     uvec2 dimensions_;

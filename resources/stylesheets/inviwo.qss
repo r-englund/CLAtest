@@ -23,6 +23,13 @@ QPushButton:pressed {
                                 stop:0 #383838, stop:0.1 #4d4d4d,
                                 stop: 0.9 #4d4d4d, stop:1 #b6b6b6);
 }
+QPushButton:focus{
+    color: #bbbbbb;
+    border: 1px solid #660000;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #b6b6b6, stop: 0.1 #4d4d4d, 
+                                stop:0.9 #4d4d4d, stop:1 #383838);
+}
 
 
 /* QDockWidget styles */

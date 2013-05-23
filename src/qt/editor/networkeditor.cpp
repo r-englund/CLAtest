@@ -582,9 +582,12 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 
     } else {
         // move processor
-        ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItemAt(e->scenePos());
-        if (processorGraphicsItem)
-            if (gridSnapping_) processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
+        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
+        for (int i=0; i<selectedGraphicsItems.size(); i++) {
+            ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+            if (processorGraphicsItem && gridSnapping_)
+                processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
+        }
         QGraphicsScene::mouseReleaseEvent(e);
     }
 }

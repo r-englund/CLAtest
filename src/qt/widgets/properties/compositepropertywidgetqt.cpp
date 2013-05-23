@@ -26,6 +26,8 @@ void CompositePropertyWidgetQt::generateWidget() {
         subPropertyWidgets_.push_back(propertyWidget);
         vLayout->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
+        connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
+
     } 
     frame->setLayout(vLayout);
     setLayout(hLayout);
@@ -34,6 +36,10 @@ void CompositePropertyWidgetQt::generateWidget() {
 void CompositePropertyWidgetQt::updateFromProperty() {
     for (size_t i=0; i<subPropertyWidgets_.size(); i++)
         subPropertyWidgets_[i]->updateFromProperty();
+}
+
+void CompositePropertyWidgetQt::propertyModified() {
+    emit modified();
 }
 
 } // namespace

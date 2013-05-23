@@ -154,7 +154,6 @@ void FloatVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
         property_->setMaxValue(valueVec3Max_);
         updateFromProperty();
     }
-
 }
 
 void FloatVec3PropertyWidgetQt::setPropertyValue() {

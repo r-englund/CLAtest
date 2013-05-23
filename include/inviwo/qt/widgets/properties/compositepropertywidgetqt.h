@@ -20,6 +20,9 @@ public:
 
     void updateFromProperty();
 
+protected slots:
+    void propertyModified();
+
 private:
     CompositeProperty* property_;
 

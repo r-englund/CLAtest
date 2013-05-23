@@ -27,5 +27,4 @@ void Canvas::resize(uvec2 size) {
 
 void Canvas::update() {}
 
-
 } // namespace
