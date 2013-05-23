@@ -51,6 +51,8 @@ private:
     void addMenuActions();
     void closeEvent(QCloseEvent *event);
 
+    bool askToSaveWorkspaceChanges();
+
     void addToRecentWorkspaces(QString workspaceFileName);
     void updateRecentWorkspaces();
     void setCurrentWorkspace(QString workspaceFileName);

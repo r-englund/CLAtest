@@ -213,6 +213,7 @@ void InviwoMainWindow::setCurrentWorkspace(QString workspaceFileName) {
 }
 
 void InviwoMainWindow::newWorkspace() {
+    askToSaveWorkspaceChanges();
     networkEditorView_->getNetworkEditor()->clearNetwork();
     workspaceModified_ = true;
     setCurrentWorkspace(rootDir_ + "workspaces/untitled.inv");
@@ -242,6 +243,8 @@ void InviwoMainWindow::openLastWorkspace() {
 }
 
 void InviwoMainWindow::openWorkspace() {
+    askToSaveWorkspaceChanges();
+
     // dialog window settings
     QStringList extension;
     extension << "Inviwo File (*.inv)";
@@ -264,8 +267,10 @@ void InviwoMainWindow::openWorkspace() {
 
 void InviwoMainWindow::openRecentWorkspace() {
     QAction* action = qobject_cast<QAction*>(sender());
-    if (action)
+    if (action) {
+        askToSaveWorkspaceChanges();
         openWorkspace(action->data().toString());
+    }
 }
 
 void InviwoMainWindow::saveWorkspace() {
@@ -317,25 +322,7 @@ void InviwoMainWindow::saveWorkspaceAs() {
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
 
-    if (workspaceModified_) {
-        QMessageBox msgBox;
-        msgBox.setText("Workspace Modified");
-        msgBox.setInformativeText("Do you want to save your changes?");
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Yes);
-        int answer = msgBox.exec();
-        switch (answer) {
-            case QMessageBox::Yes:
-                saveWorkspace();
-                break;
-            case QMessageBox::No:
-                break;
-            case QMessageBox::Cancel:
-                event->ignore();
-                return;
-        }
-    }
-
+    if (!askToSaveWorkspaceChanges()) event->ignore();
     networkEditorView_->getNetworkEditor()->clearNetwork();
 
     // save window state
@@ -351,6 +338,29 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     settings.endGroup();
 
     QMainWindow::closeEvent(event);
+}
+
+bool InviwoMainWindow::askToSaveWorkspaceChanges() {
+    bool continueOperation = true;
+    if (workspaceModified_) {
+        QMessageBox msgBox;
+        msgBox.setText("Workspace Modified");
+        msgBox.setInformativeText("Do you want to save your changes?");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        int answer = msgBox.exec();
+        switch (answer) {
+                case QMessageBox::Yes:
+                    saveWorkspace();
+                    break;
+                case QMessageBox::No:
+                    break;
+                case QMessageBox::Cancel:
+                    continueOperation = false;
+                    break;
+        }
+    }
+    return continueOperation;
 }
 
 } // namespace

@@ -22,6 +22,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -44,6 +45,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
