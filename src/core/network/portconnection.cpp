@@ -13,8 +13,8 @@ PortConnection::PortConnection(Outport* outport, Inport* inport)
 PortConnection::~PortConnection() {}
 
 void PortConnection::serialize(IvwSerializer& s) const {  
-    s.serialize("OutPort", getOutport());
-    s.serialize("InPort", getInport());
+    s.serialize("OutPort", *getOutport());
+    s.serialize("InPort", *getInport());
 }
 
 void PortConnection::deserialize(IvwDeserializer& d) {    

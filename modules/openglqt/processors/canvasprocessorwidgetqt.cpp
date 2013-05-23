@@ -1,7 +1,7 @@
 #include <QGridLayout>
 
 #include <inviwo/core/processors/canvasprocessor.h>
-#include <inviwo/qt/widgets/processors/canvasprocessorwidgetqt.h>
+#include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
 
 namespace inviwo {
 

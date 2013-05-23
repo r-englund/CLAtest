@@ -3,7 +3,7 @@
 #include "inviwomainwindow.h"
 
 #include <inviwo/qt/editor/networkeditorview.h>
-#include <inviwo/qt/widgets/canvasqt.h>
+#include <modules/openglqt/canvasqt.h>
 
 #include <inviwo/core/network/processornetworkevaluator.h>
 

@@ -4,8 +4,6 @@
 #include <inviwo/core/io/serialization/ivwdeserializer.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/qt/editor/propertylistwidget.h>
-#include <inviwo/qt/widgets/processors/processorwidgetfactoryqt.h>
-#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/core/metadata/positionmetadata.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/qt/editor/transferfunctioneditor.h>

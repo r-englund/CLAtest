@@ -1,4 +1,4 @@
-#include <inviwo/qt/widgets/canvasqt.h>
+#include <modules/openglqt/canvasqt.h>
 
 namespace inviwo {
 
