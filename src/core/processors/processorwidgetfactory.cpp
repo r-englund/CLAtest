@@ -15,7 +15,7 @@ void ProcessorWidgetFactory::initialize() {
     //TODO: check that inviwoapp is initialized
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<std::pair<std::string, ProcessorWidget*>> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessorWidgets();
+        std::vector< std::pair<std::string, ProcessorWidget*> > curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessorWidgets();
         for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
             registerProcessorWidget(curProcessorList[curProcessorId].first, curProcessorList[curProcessorId].second);
     }

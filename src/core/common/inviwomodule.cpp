@@ -51,7 +51,7 @@ const std::vector<ProcessorFactoryObject*>& InviwoModule::getProcessors() const 
     return processors_;
 }
 
-const std::vector<std::pair<std::string, ProcessorWidget*>>& InviwoModule::getProcessorWidgets() const {
+const std::vector< std::pair<std::string, ProcessorWidget*> >& InviwoModule::getProcessorWidgets() const {
     return processorWidgets_;
 }
 
