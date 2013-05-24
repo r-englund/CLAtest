@@ -60,7 +60,7 @@ void VolumeRaycasterCL::process() {
     Image* outImage = outport_.getData();
     const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
     outImage->resize(entryCL->getDimension());
-    uvec2 outportDim = outImage->size();
+    uvec2 outportDim = outImage->getDimension();
     //uvec2 outportDim = uvec2(4, 4);
     //Image* outImage = new Image(outportDim);
     //outImage->clearRepresentations();

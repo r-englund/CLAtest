@@ -87,7 +87,7 @@ void ImageLoader::saveImage(const char* filename, const Image* inputImage)
 
         assert(imageRam != NULL);
 
-        uvec2 dim = inputImage->size();
+        uvec2 dim = inputImage->getDimension();
     
         DataFormatBase dataformat = imageRam->getDataFormat();
         size_t bitsPerPixel = dataformat.getBitsAllocated();

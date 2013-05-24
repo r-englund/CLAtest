@@ -163,7 +163,7 @@ void VolumeSplit::calculateCameraBrickDistance(std::vector<VolumeSplit::Brick>& 
 // calculates the bricking division and initializes the bricks_ data structure
 void VolumeSplit::performBricking() {
     // determine brick size based on property values
-    ivec3 originalVolDim = inport_.getData()->getDimension();
+    ivec3 originalVolDim = static_cast<ivec3>(inport_.getData()->getDimension());
     ivec3 brickDim = originalVolDim;
 
     if (limitingMemory_.getSelectedValue() == GPU) {

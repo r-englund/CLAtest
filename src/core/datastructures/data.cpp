@@ -43,12 +43,12 @@ Data3D::Data3D(Data::TYPE3D dim) : PARENT() {
 
 Data3D::~Data3D() {}
 
-ivec3 Data3D::getDimension() const {
-    return Data3D::PARENT::getDimension<ivec3,IVec3MetaData>(ivec3(0));
+uvec3 Data3D::getDimension() const {
+    return Data3D::PARENT::getDimension<uvec3,UVec3MetaData>(uvec3(0));
 }
 
-void Data3D::setDimension(ivec3 dim) {
-     Data3D::PARENT::setDimension<ivec3,IVec3MetaData>(dim);
+void Data3D::setDimension(uvec3 dim) {
+     Data3D::PARENT::setDimension<uvec3,UVec3MetaData>(dim);
 }
 
 
@@ -64,12 +64,12 @@ Data2D::Data2D(Data::TYPE2D dim) : PARENT() {
 
 Data2D::~Data2D() {}
 
-ivec2 Data2D::getDimension() const {
-    return Data2D::PARENT::getDimension<ivec2,IVec2MetaData>(ivec2(0));
+uvec2 Data2D::getDimension() const {
+    return Data2D::PARENT::getDimension<uvec2,UVec2MetaData>(uvec2(0));
 }
 
-void Data2D::setDimension(ivec2 dim) {
-    Data2D::PARENT::setDimension<ivec2,IVec2MetaData>(dim);
+void Data2D::setDimension(uvec2 dim) {
+    Data2D::PARENT::setDimension<uvec2,UVec2MetaData>(dim);
 }
 
 

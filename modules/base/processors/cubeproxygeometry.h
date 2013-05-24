@@ -16,7 +16,7 @@ public:
     CubeProxygeometry();
     ~CubeProxygeometry();
 
-    GenericProcessorHeaderDeclarations();
+    InviwoProcessorInfo();
     
     virtual Processor* create() const;
 

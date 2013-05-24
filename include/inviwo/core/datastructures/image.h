@@ -6,20 +6,17 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API Image : public Data {
+    class IVW_CORE_API Image : public Data2D {
 
     public:
         Image();
         Image(uvec2 dimensions);
         virtual ~Image();
         void resize(uvec2 dimensions);
-        uvec2 size() const {return dimensions_;}
         virtual Data* clone() const;
         void resizeImageRepresentations(Image* targetImage, uvec2 targetDim);
     protected:
         void createDefaultRepresentation() const;
-    private:
-        uvec2 dimensions_;
     };
 
 

@@ -147,7 +147,7 @@ Image* ImageOutport::resizeImageData(uvec2 requiredDimensions){
     Image* resultImage = 0;
     // TODO: Map travese is expensive. Optimize
     for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
-        uvec2 mapDataDimensions = it->second->size();
+        uvec2 mapDataDimensions = it->second->getDimension();
         if (mapDataDimensions == requiredDimensions) {
             resultImage = it->second;
         }
@@ -163,7 +163,7 @@ void ImageOutport::setLargestImageData() {
     uvec2 maxDimensions(0);
     Image* largestImage = 0;
     for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
-        uvec2 mapDataDimensions = it->second->size();
+        uvec2 mapDataDimensions = it->second->getDimension();
         if ( (maxDimensions.x*maxDimensions.y)<(mapDataDimensions.x*mapDataDimensions.y) ) {
             maxDimensions = mapDataDimensions;
             largestImage = it->second;
@@ -173,7 +173,7 @@ void ImageOutport::setLargestImageData() {
     if (largestImage && data_!=largestImage)
         data_ = largestImage;
 
-    dimensions_ = data_->size();
+    dimensions_ = data_->getDimension();
 }
 
 uvec3 ImageOutport::getColorCode() const { 

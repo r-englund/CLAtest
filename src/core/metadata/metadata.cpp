@@ -126,6 +126,56 @@ void IVec3MetaData::deserialize(IvwDeserializer& ) {
 
 /*---------------------------------------------------------------------*/
 
+UVec2MetaData::UVec2MetaData() 
+: MetaDataPrimitiveType<uvec2>(uvec2(0)) 
+{ }
+
+UVec2MetaData::UVec2MetaData(uvec2 value) 
+: MetaDataPrimitiveType<uvec2>(value) 
+{ }
+
+std::string UVec2MetaData::getClassName() const {
+    return "UVec2MetaData";
+}
+
+MetaData* UVec2MetaData::create() const {
+    return new UVec2MetaData();
+}
+
+void UVec2MetaData::serialize(IvwSerializer& ) const {
+}
+
+void UVec2MetaData::deserialize(IvwDeserializer& ) {
+
+}
+
+/*---------------------------------------------------------------------*/
+
+UVec3MetaData::UVec3MetaData() 
+: MetaDataPrimitiveType<uvec3>(uvec3(0)) 
+{ }
+
+UVec3MetaData::UVec3MetaData(uvec3 value) 
+: MetaDataPrimitiveType<uvec3>(value) 
+{ }
+
+std::string UVec3MetaData::getClassName() const {
+    return "UVec3MetaData";
+}
+
+MetaData* UVec3MetaData::create() const {
+    return new UVec3MetaData();
+}
+
+void UVec3MetaData::serialize(IvwSerializer& ) const {
+}
+
+void UVec3MetaData::deserialize(IvwDeserializer& ) {
+
+}
+
+/*---------------------------------------------------------------------*/
+
 FloatMetaData::FloatMetaData() 
 : MetaDataPrimitiveType<float>(0.0f) 
 { }

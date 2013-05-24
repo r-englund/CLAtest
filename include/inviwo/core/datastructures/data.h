@@ -51,10 +51,10 @@ public:
     //Others
     virtual Data* clone() const = 0;
 
-    typedef int   TYPE1D;
-    typedef ivec2 TYPE2D;
-    typedef ivec3 TYPE3D;
-    typedef ivec4 TYPE4D;
+    typedef unsigned int TYPE1D;
+    typedef uvec2 TYPE2D;
+    typedef uvec3 TYPE3D;
+    typedef uvec4 TYPE4D;
 
 protected:
     virtual void createDefaultRepresentation() const = 0;
@@ -236,8 +236,8 @@ public :
     Data3D();
     Data3D(Data::TYPE3D dimension);
     virtual ~Data3D();
-    ivec3 getDimension() const;
-    void setDimension(ivec3 dim);
+    uvec3 getDimension() const;
+    void setDimension(uvec3 dim);
 };
 
 /*---------------------------------------------------------------*/
@@ -248,8 +248,8 @@ public :
     Data2D();
     Data2D(Data::TYPE2D dimension);
     virtual ~Data2D();
-    ivec2 getDimension() const;
-    void setDimension(ivec2 dim);
+    uvec2 getDimension() const;
+    void setDimension(uvec2 dim);
 };
 
 } // namespace

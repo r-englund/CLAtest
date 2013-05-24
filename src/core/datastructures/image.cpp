@@ -3,16 +3,12 @@
 #include <inviwo/core/datastructures/imagedisk.h>
 namespace inviwo {
 
-Image::Image() : Data() {
-    dimensions_ = uvec2(256,256);
-}
+Image::Image() : Data2D(uvec2(256,256)) {}
 
-Image::Image(uvec2 dimensions)
-    : Data(), dimensions_(dimensions) {
-}
+Image::Image(uvec2 dimensions) : Data2D(dimensions) {}
 
 Data* Image::clone() const {
-    Image* newImage = new Image(dimensions_);
+    Image* newImage = new Image(getDimension());
     copyRepresentations(newImage);
     return newImage;
 }
@@ -25,11 +21,11 @@ Image::~Image() {
 }
 
 void Image::resize(uvec2 dimensions) {
-    dimensions_ = dimensions;
+    setDimension(dimensions);
     for (size_t i=0; i<representations_.size(); i++) {
         ImageRepresentation* imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;
         if ( imageRepresentation ) {
-            imageRepresentation->resize(dimensions_);
+            imageRepresentation->resize(dimensions);
         }
     }
 }

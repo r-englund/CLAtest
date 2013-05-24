@@ -98,6 +98,30 @@ public:
 
 /*---------------------------------------------------------------------*/
 
+class IVW_CORE_API UVec2MetaData : public MetaDataPrimitiveType<uvec2> {
+public:
+    UVec2MetaData();
+    UVec2MetaData(uvec2 value);
+    virtual std::string getClassName() const;
+    virtual MetaData* create() const;
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+};
+
+/*---------------------------------------------------------------------*/
+
+class IVW_CORE_API UVec3MetaData : public MetaDataPrimitiveType<uvec3> {
+public:
+    UVec3MetaData();
+    UVec3MetaData(uvec3 value);
+    virtual std::string getClassName() const;
+    virtual MetaData* create() const;
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+};
+
+/*---------------------------------------------------------------------*/
+
 class IVW_CORE_API FloatMetaData : public MetaDataPrimitiveType<float> {
 public:
     FloatMetaData();
