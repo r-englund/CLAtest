@@ -17,14 +17,11 @@ class IVW_MODULE_OPENCL_API VolumeRaycasterCL : public Processor {
 public:
     VolumeRaycasterCL();
     ~VolumeRaycasterCL();
-    virtual Processor* create() const;
+    
+    InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
-
-    virtual std::string getClassName() const { return "VolumeRaycasterCL"; }
-    virtual std::string getCategory() const  { return "Ray Caster"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     virtual void process();

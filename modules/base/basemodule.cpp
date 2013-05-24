@@ -15,30 +15,26 @@
 #include <modules/base/processors/volumesplitcompositor.h>
 #include <modules/base/processors/volumesplitimagecompositor.h>
 
-#include <inviwo/core/processors/processorfactoryobject.h>
-
 namespace inviwo {
 
 BaseModule::BaseModule() : InviwoModule() {
     setIdentifier("Base");
     setXMLFileName("base/basemodule.xml");
 
-    ProcessorFactoryObject* test = addProcessorObject(CubeProxygeometry);
-    addProcessor(test->create());
-    LogInfo("Output from factory object: " << test->getIdentifier());
-    addProcessor(new EntryExitPoints());
-	addProcessor(new FindEdges());
-	addProcessor(new FirstIvwProcessor());
-	addProcessor(new ImageGrayscale());
-    addProcessor(new ImageMixer());
-    addProcessor(new ImageSource());
-    addProcessor(new RedGreenProcessor());
-    addProcessor(new SimpleRaycaster());
-    addProcessor(new TestProcessor());
-    addProcessor(new TransferFunctiontionTestProcessor());
-    addProcessor(new VolumeSplit());
-    addProcessor(new VolumeSplitCompositor());
-    addProcessor(new VolumeSplitImageCompositor());
+    addProcessorFactoryObject(CubeProxygeometry);
+    addProcessorFactoryObject(EntryExitPoints);
+	addProcessorFactoryObject(FindEdges);
+	addProcessorFactoryObject(FirstIvwProcessor);
+	addProcessorFactoryObject(ImageGrayscale);
+    addProcessorFactoryObject(ImageMixer);
+    addProcessorFactoryObject(ImageSource);
+    addProcessorFactoryObject(RedGreenProcessor);
+    addProcessorFactoryObject(SimpleRaycaster);
+    addProcessorFactoryObject(TestProcessor);
+    addProcessorFactoryObject(TransferFunctiontionTestProcessor);
+    addProcessorFactoryObject(VolumeSplit);
+    addProcessorFactoryObject(VolumeSplitCompositor);
+    addProcessorFactoryObject(VolumeSplitImageCompositor);
 }
 
 } // namespace

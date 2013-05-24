@@ -16,19 +16,19 @@ void ProcessorFactory::initialize() {
     //TODO: check that inviwoapp is initialized
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
+        std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
         for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
             registerProcessor(curProcessorList[curProcessorId]);
     }
 }
 
-void ProcessorFactory::registerProcessor(Processor* processor) {
+void ProcessorFactory::registerProcessor(ProcessorFactoryObject* processor) {
     if (processorClassMap_.find(processor->getClassName()) == processorClassMap_.end())
         processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));
 }
 
 IvwSerializable* ProcessorFactory::create(std::string className) const {
-    std::map<std::string, Processor*>::iterator it = processorClassMap_.find(className);
+    std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(className);
     if (it != processorClassMap_.end())
         return it->second->create();
     else
@@ -36,7 +36,7 @@ IvwSerializable* ProcessorFactory::create(std::string className) const {
 }
 
 bool ProcessorFactory::isValidType(std::string className) const {
-    std::map<std::string, Processor*>::iterator it = processorClassMap_.find(className);
+    std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(className);
     if (it != processorClassMap_.end())
         return true;
     else

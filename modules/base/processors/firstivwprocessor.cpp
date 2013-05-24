@@ -2,6 +2,11 @@
 
 namespace inviwo {
 
+ProcessorClassName(FirstIvwProcessor, "FirstIVWProcessor"); 
+ProcessorCategory(FirstIvwProcessor, "Dummy Processors");
+ProcessorCodeState(FirstIvwProcessor, CODE_STATE_STABLE);
+
+
 FirstIvwProcessor::FirstIvwProcessor()
     : ProcessorGL(),
       outport_("outport"),
@@ -12,10 +17,6 @@ FirstIvwProcessor::FirstIvwProcessor()
 }
 
 FirstIvwProcessor::~FirstIvwProcessor() {}
-
-Processor* FirstIvwProcessor::create() const {
-    return new FirstIvwProcessor();
-}
 
 void FirstIvwProcessor::initialize() {
     ProcessorGL::initialize();

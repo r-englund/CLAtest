@@ -47,7 +47,7 @@ std::string InviwoModule::getPath(const std::string& suffix) const {
     return InviwoApplication::getRef().getPath(InviwoApplication::PATH_MODULES, suffix);
 }
 
-const std::vector<Processor*>& InviwoModule::getProcessors() const {
+const std::vector<ProcessorFactoryObject*>& InviwoModule::getProcessors() const {
     return processors_;
 }
 
@@ -109,7 +109,7 @@ void InviwoModule::setXMLFileName(const std::string& xmlFileName) {
     xmlDocuFileName_ = getPath() + "/" + xmlFileName;
 }
 
-void InviwoModule::addProcessor(Processor* processor) {
+void InviwoModule::addProcessor(ProcessorFactoryObject* processor) {
     // FIXME: check processor pointer and module's name
     //processor->setModuleIdentifier(identifier_);
     processors_.push_back(processor);

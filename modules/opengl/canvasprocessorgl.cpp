@@ -3,16 +3,16 @@
 
 namespace inviwo {
 
+ProcessorClassName(CanvasProcessorGL, "CanvasProcessorGL"); 
+ProcessorCategory(CanvasProcessorGL, "Canvas Processor");
+ProcessorCodeState(CanvasProcessorGL, CODE_STATE_STABLE);
+
 CanvasProcessorGL::CanvasProcessorGL()
     : CanvasProcessor(),
       dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
 {
     dimensions_.onChange(this, &CanvasProcessorGL::resizeCanvas);
     addProperty(dimensions_);
-}
-
-Processor* CanvasProcessorGL::create() const {
-    return new CanvasProcessorGL();
 }
 
 void CanvasProcessorGL::resizeCanvas() {

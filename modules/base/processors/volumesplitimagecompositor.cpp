@@ -2,6 +2,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(VolumeSplitImageCompositor, "VolumeSplitImageCompositor"); 
+ProcessorCategory(VolumeSplitImageCompositor, "Network");
+ProcessorCodeState(VolumeSplitImageCompositor, CODE_STATE_EXPERIMENTAL);
+
 VolumeSplitImageCompositor::VolumeSplitImageCompositor()
     : ProcessorGL(),
       inport_("image.in"),
@@ -14,10 +18,6 @@ VolumeSplitImageCompositor::VolumeSplitImageCompositor()
 }
 
 VolumeSplitImageCompositor::~VolumeSplitImageCompositor() {
-}
-
-Processor* VolumeSplitImageCompositor::create() const {
-    return new VolumeSplitImageCompositor();
 }
 
 void VolumeSplitImageCompositor::process() {

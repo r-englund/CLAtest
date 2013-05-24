@@ -2,6 +2,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(RedGreenProcessor, "RedGreenProcessor"); 
+ProcessorCategory(RedGreenProcessor, "Dummy Processors");
+ProcessorCodeState(RedGreenProcessor, CODE_STATE_STABLE);
+
 RedGreenProcessor::RedGreenProcessor()
     : ProcessorGL(),
     outportRed_("outportRed"),
@@ -12,10 +16,6 @@ RedGreenProcessor::RedGreenProcessor()
 }
 
 RedGreenProcessor::~RedGreenProcessor() {}
-
-Processor* RedGreenProcessor::create() const {
-    return new RedGreenProcessor();
-}
 
 void RedGreenProcessor::initialize() {
     Processor::initialize();

@@ -17,14 +17,11 @@ class IVW_MODULE_BASE_API SimpleRaycaster : public ProcessorGL {
 public:
     SimpleRaycaster();
     ~SimpleRaycaster();
-    virtual Processor* create() const;
+    
+    InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
-
-    virtual std::string getClassName() const { return "SimpleRaycaster"; }
-    virtual std::string getCategory() const  { return "Ray Caster"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     virtual void process();

@@ -26,7 +26,7 @@ OpenCLModule::OpenCLModule() : InviwoModule() {
     
     addResourceInfo(new OpenCLInfo());
 
-    addProcessor(new VolumeRaycasterCL());
+    addProcessorFactoryObject(VolumeRaycasterCL);
 }
 
 void OpenCLModule::initialize() {

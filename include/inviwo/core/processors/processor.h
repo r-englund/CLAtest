@@ -45,8 +45,6 @@ public:
         CODE_STATE_STABLE
     };
     InviwoProcessorInfo();
-    
-    virtual Processor* create() const;
 
     void setIdentifier(const std::string& identifier) { identifier_ = identifier; }
     std::string getIdentifier() const { return identifier_; }

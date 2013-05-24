@@ -3,6 +3,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(FindEdges, "FindEdges"); 
+ProcessorCategory(FindEdges, "Compositer");
+ProcessorCodeState(FindEdges, CODE_STATE_EXPERIMENTAL);
+
 FindEdges::FindEdges()
     : ProcessorGL(),
       inport0_("inport0"),
@@ -15,10 +19,6 @@ FindEdges::FindEdges()
 }
 
 FindEdges::~FindEdges() {}
-
-Processor* FindEdges::create() const {
-    return new FindEdges();
-}
 
 void FindEdges::initialize() {
     ProcessorGL::initialize();

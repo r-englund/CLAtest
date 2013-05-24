@@ -15,7 +15,6 @@ class IVW_MODULE_OPENGL_API ProcessorGL : public Processor {
 public:
     ProcessorGL();
     virtual ~ProcessorGL();
-    virtual Processor* create() const;
 
     void activateTarget(ImageOutport& outport);
     void deactivateCurrentTarget();

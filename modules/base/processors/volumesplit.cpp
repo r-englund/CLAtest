@@ -7,6 +7,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(VolumeSplit, "VolumeSplit"); 
+ProcessorCategory(VolumeSplit, "Network");
+ProcessorCodeState(VolumeSplit, CODE_STATE_EXPERIMENTAL);
+
 VolumeSplit::VolumeSplit()
     : Processor(),
       limitingMemory_("memoryResource", "Limiting Memory Resource", "GPU (TextureGL)"),
@@ -69,10 +73,6 @@ VolumeSplit::VolumeSplit()
 
     openGLInfoRef_ = NULL;
     systemInfoRef_ = NULL;
-}
-
-Processor* VolumeSplit::create() const {
-    return new VolumeSplit();
 }
 
 uint64_t VolumeSplit::getVolumeMemorySizeInBytes(ivec3 dims, size_t bits){

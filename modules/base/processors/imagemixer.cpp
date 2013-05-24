@@ -5,6 +5,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(ImageMixer, "ImageMixer"); 
+ProcessorCategory(ImageMixer, "Compositer");
+ProcessorCodeState(ImageMixer, CODE_STATE_EXPERIMENTAL); 
+
 ImageMixer::ImageMixer()
     : ProcessorGL(),
       inport0_("inport0"),
@@ -19,10 +23,6 @@ ImageMixer::ImageMixer()
 }
 
 ImageMixer::~ImageMixer() {}
-
-Processor* ImageMixer::create() const {
-    return new ImageMixer();
-}
 
 void ImageMixer::initialize() {
     ProcessorGL::initialize();

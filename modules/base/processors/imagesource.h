@@ -13,14 +13,11 @@ class IVW_MODULE_BASE_API ImageSource : public Processor {
 public:
     ImageSource();
     ~ImageSource();
-    virtual Processor* create() const;
+    
+    InviwoProcessorInfo();
 
     virtual void initialize();
     virtual void deinitialize();
-
-    virtual std::string getClassName() const { return "ImageSource"; }
-    virtual std::string getCategory() const  { return "Data Source Processor"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     virtual void process();

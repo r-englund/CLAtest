@@ -9,18 +9,18 @@ namespace inviwo {
 class IVW_CORE_API ProcessorFactoryObject  {
 
 public:
-    ProcessorFactoryObject(std::string identifier, std::string category, Processor::CodeState codeState)
-        : identifier_(identifier), category_(category), codeState_(codeState) {}
+    ProcessorFactoryObject(std::string className, std::string category, Processor::CodeState codeState)
+        : className_(className), category_(category), codeState_(codeState) {}
     virtual ~ProcessorFactoryObject() {}
 
     virtual Processor* create() = 0;
 
-    std::string getIdentifier() const { return identifier_; }
+    std::string getClassName() const { return className_; }
     std::string getCategory() const { return category_; }
     Processor::CodeState getCodeState() const { return codeState_; } 
 
 private:
-    std::string identifier_;
+    std::string className_;
     std::string category_;
     Processor::CodeState codeState_;
 };
@@ -29,14 +29,14 @@ template<typename T>
 class IVW_CORE_API ProcessorFactoryObjectTemplate : public ProcessorFactoryObject  {
 
 public:
-    ProcessorFactoryObjectTemplate(std::string identifier, std::string category, Processor::CodeState codeState) 
-        : ProcessorFactoryObject(identifier, category, codeState) {}
+    ProcessorFactoryObjectTemplate(std::string className, std::string category, Processor::CodeState codeState) 
+        : ProcessorFactoryObject(className, category, codeState) {}
     virtual ~ProcessorFactoryObjectTemplate() {}
 
     virtual Processor* create() { return static_cast<Processor*>(new T()); }
 };
 
-#define addProcessorObject(T) { new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE) }
+#define createProcessorFactoryObject(T) { new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE) }
 
 } // namespace
 

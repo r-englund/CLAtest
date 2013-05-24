@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/processors/processorfactoryobject.h>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/io/datareader.h>
 #include <inviwo/core/io/datawriter.h>
@@ -24,7 +25,7 @@ public:
 
     bool isInitialized() const;
 
-    const std::vector<Processor*>& getProcessors() const;
+    const std::vector<ProcessorFactoryObject*>& getProcessors() const;
     const std::vector<std::pair<std::string, ProcessorWidget*>>& getProcessorWidgets() const;
     const std::vector<Property*>& getProperties() const;
     const std::vector<DataReader*>& getDataReaders() const;
@@ -46,7 +47,7 @@ protected:
 
     void setIdentifier(const std::string& identifier);
 
-    void addProcessor(Processor* processor);
+    void addProcessor(ProcessorFactoryObject* processor);
     void addProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
     void addProperty(Property* property);
     void addDataReader(DataReader* reader);
@@ -66,7 +67,7 @@ private:
 
     bool initialized_;
 
-    std::vector<Processor*> processors_;
+    std::vector<ProcessorFactoryObject*> processors_;
     std::vector<std::pair<std::string, ProcessorWidget*>> processorWidgets_;
     std::vector<Property*> properties_;
     std::vector<DataReader*> dataReaders_;
@@ -79,6 +80,8 @@ private:
 
     std::string xmlDocuFileName_;
 };
+
+#define addProcessorFactoryObject(T) { addProcessor(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
 
 } // namespace
 

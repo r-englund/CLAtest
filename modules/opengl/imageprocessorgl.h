@@ -16,7 +16,6 @@ public:
     ImageProcessorGL();
     ImageProcessorGL(std::string programFileName);
     virtual ~ImageProcessorGL();
-    virtual Processor* create() const;
 
     void initialize();
     void deinitialize();

@@ -7,10 +7,6 @@ ProcessorGL::ProcessorGL()
 {}
 ProcessorGL::~ProcessorGL() {}
 
-Processor* ProcessorGL::create() const {
-    return new ProcessorGL();
-}
-
 void ProcessorGL::activateTarget(ImageOutport& outport){
     Image* outImage = outport.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();

@@ -31,7 +31,7 @@ ProcessorListWidget::ProcessorListWidget(QWidget* parent) : InviwoDockWidget(tr(
 
 ProcessorListWidget::~ProcessorListWidget() {}
 
-bool ProcessorListWidget::processorFits(Processor* processor, const QString& filter) {
+bool ProcessorListWidget::processorFits(ProcessorFactoryObject* processor, const QString& filter) {
     return (QString::fromStdString(processor->getClassName()).contains(filter, Qt::CaseInsensitive));
 }
 
@@ -40,7 +40,7 @@ void ProcessorListWidget::addProcessorsToList(const QString& text) {
     // add processors from all modules to the list
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
+        std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
         for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
             if (text.isEmpty() || processorFits(curProcessorList[curProcessorId], text)) {
                 QString iconName = ":/icons/processor_experimental.png";

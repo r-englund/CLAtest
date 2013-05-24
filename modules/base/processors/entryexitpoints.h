@@ -18,15 +18,11 @@ class IVW_MODULE_BASE_API EntryExitPoints : public ProcessorGL {
 public:
     EntryExitPoints();
     ~EntryExitPoints();
-    virtual Processor* create() const;
+    
+    InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
-    
-
-    virtual std::string getClassName() const { return "EntryExitPoints"; }
-    virtual std::string getCategory() const  { return "Entry Exit Points"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
 
 protected:
     virtual void process();

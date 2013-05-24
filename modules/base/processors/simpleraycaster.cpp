@@ -2,6 +2,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(SimpleRaycaster, "SimpleRaycaster"); 
+ProcessorCategory(SimpleRaycaster, "Ray Caster");
+ProcessorCodeState(SimpleRaycaster, CODE_STATE_EXPERIMENTAL);
+
 SimpleRaycaster::SimpleRaycaster()
     : ProcessorGL(),
     volumePort_("volume"),
@@ -27,10 +31,6 @@ SimpleRaycaster::SimpleRaycaster()
 }
 
 SimpleRaycaster::~SimpleRaycaster() {}
-
-Processor* SimpleRaycaster::create() const {
-    return new SimpleRaycaster();
-}
 
 void SimpleRaycaster::initialize() {
     ProcessorGL::initialize();

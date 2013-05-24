@@ -2,6 +2,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(EntryExitPoints, "EntryExitPoints"); 
+ProcessorCategory(EntryExitPoints, "Entry Exit Points");
+ProcessorCodeState(EntryExitPoints, CODE_STATE_STABLE);
+
 EntryExitPoints::EntryExitPoints()
     : ProcessorGL(),
     volumePort_("volume"),
@@ -17,10 +21,6 @@ EntryExitPoints::EntryExitPoints()
 }
 
 EntryExitPoints::~EntryExitPoints() {}
-
-Processor* EntryExitPoints::create() const {
-    return new EntryExitPoints();
-}
 
 void EntryExitPoints::initialize() {
     ProcessorGL::initialize();

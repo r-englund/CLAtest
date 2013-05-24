@@ -4,6 +4,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(ImageGrayscale, "ImageGrayscale"); 
+ProcessorCategory(ImageGrayscale, "Image Converter");
+ProcessorCodeState(ImageGrayscale, CODE_STATE_EXPERIMENTAL); 
+
 ImageGrayscale::ImageGrayscale()
     : ProcessorGL(),
       inport0_("inport0"),
@@ -16,10 +20,6 @@ ImageGrayscale::ImageGrayscale()
 }
 
 ImageGrayscale::~ImageGrayscale() {}
-
-Processor* ImageGrayscale::create() const {
-    return new ImageGrayscale();
-}
 
 void ImageGrayscale::initialize() {
     ProcessorGL::initialize();

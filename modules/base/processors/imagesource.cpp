@@ -2,6 +2,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(ImageSource, "ImageSource"); 
+ProcessorCategory(ImageSource, "Data Source Processor");
+ProcessorCodeState(ImageSource, CODE_STATE_EXPERIMENTAL);
+
 ImageSource::ImageSource()
     : Processor(),
     outport_("image.outport"),
@@ -12,10 +16,6 @@ ImageSource::ImageSource()
 }
 
 ImageSource::~ImageSource() {}
-
-Processor* ImageSource::create() const {
-    return new ImageSource();
-}
 
 void ImageSource::initialize() {
     Processor::initialize();

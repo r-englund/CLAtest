@@ -14,14 +14,11 @@ class IVW_MODULE_BASE_API VolumeSplitImageCompositor : public ProcessorGL {
 public:
     VolumeSplitImageCompositor();
     ~VolumeSplitImageCompositor();
-    virtual Processor* create() const;
+    
+    InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
-
-    virtual std::string getClassName() const { return "VolumeSplitImageCompositor"; }
-    virtual std::string getCategory() const  { return "Network"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     virtual void process();

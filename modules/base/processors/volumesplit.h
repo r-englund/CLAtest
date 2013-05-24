@@ -28,14 +28,11 @@ class IVW_MODULE_BASE_API VolumeSplit : public Processor {
 
 public:
     VolumeSplit();
-    virtual Processor* create() const;
+    
+    InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
-
-    virtual std::string getClassName() const { return "VolumeSplit"; }
-    virtual std::string getCategory() const  { return "Network"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     // struct Brick.

@@ -13,7 +13,6 @@ class IVW_MODULE_OPENGL_API VolumeProcessorGL : public ProcessorGL {
 public:
     VolumeProcessorGL();
     virtual ~VolumeProcessorGL();
-    virtual Processor* create() const;
 
     void initialize();
     void deinitialize();

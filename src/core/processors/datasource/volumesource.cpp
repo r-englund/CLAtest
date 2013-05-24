@@ -3,6 +3,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(VolumeSource, "VolumeSource"); 
+ProcessorCategory(VolumeSource, "Data Source Processor");
+ProcessorCodeState(VolumeSource, CODE_STATE_EXPERIMENTAL);
+
 VolumeSource::VolumeSource()
     : Processor(),
       volumePort_("volume"),
@@ -13,10 +17,6 @@ VolumeSource::VolumeSource()
 }
 
 VolumeSource::~VolumeSource() {}
-
-Processor* VolumeSource::create() const {
-    return new VolumeSource();
-}
 
 void VolumeSource::initialize() {
     Processor::initialize();

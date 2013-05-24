@@ -38,10 +38,6 @@ void CanvasProcessor::createSnapshot(const char* snapshotPath) {
     InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
 }
 
-Processor* CanvasProcessor::create() const {
-    return new CanvasProcessor();
-}
-
 void CanvasProcessor::initialize() {
     Processor::initialize();
 }

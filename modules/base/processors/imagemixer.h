@@ -14,14 +14,11 @@ class IVW_MODULE_BASE_API ImageMixer : public ProcessorGL {
 public:
     ImageMixer();
     ~ImageMixer();
-    virtual Processor* create() const;
+    
+    InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
-
-    virtual std::string getClassName() const { return "ImageMixer"; }
-    virtual std::string getCategory() const  { return "Compositer"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_EXPERIMENTAL; }
 
 protected:
     virtual void process();

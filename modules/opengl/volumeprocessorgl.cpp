@@ -7,10 +7,6 @@ VolumeProcessorGL::VolumeProcessorGL()
 {}
 VolumeProcessorGL::~VolumeProcessorGL() {}
 
-Processor* VolumeProcessorGL::create() const {
-    return new VolumeProcessorGL();
-}
-
 void VolumeProcessorGL::initialize() {
     ProcessorGL::initialize();
 }

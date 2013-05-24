@@ -12,7 +12,6 @@ class IVW_CORE_API CanvasProcessor : public Processor {
 public:
     CanvasProcessor();
     ~CanvasProcessor();
-    virtual Processor* create() const;
 
     virtual void initialize();
     virtual void deinitialize();

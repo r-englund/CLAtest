@@ -6,6 +6,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(VolumeRaycasterCL, "VolumeRaycasterCL"); 
+ProcessorCategory(VolumeRaycasterCL, "Ray Caster");
+ProcessorCodeState(VolumeRaycasterCL, CODE_STATE_EXPERIMENTAL);
+
 VolumeRaycasterCL::VolumeRaycasterCL()
     : Processor(),
     volumePort_("volume"),
@@ -28,10 +32,6 @@ VolumeRaycasterCL::VolumeRaycasterCL()
 }
 
 VolumeRaycasterCL::~VolumeRaycasterCL() {}
-
-Processor* VolumeRaycasterCL::create() const {
-    return new VolumeRaycasterCL();
-}
 
 void VolumeRaycasterCL::initialize() {
     Processor::initialize();

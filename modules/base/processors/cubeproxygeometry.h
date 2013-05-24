@@ -17,8 +17,6 @@ public:
     ~CubeProxygeometry();
 
     InviwoProcessorInfo();
-    
-    virtual Processor* create() const;
 
     void initialize();
     void deinitialize();

@@ -8,7 +8,7 @@
 
 #include <inviwo/qt/editor/inviwodockwidget.h>
 
-#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/processors/processorfactoryobject.h>
 
 namespace inviwo {
 
@@ -37,7 +37,7 @@ private:
     ProcessorList* processorList_;
     QPoint dragStartPosition_;
 
-    bool processorFits(Processor* processor, const QString& filter);
+    bool processorFits(ProcessorFactoryObject* processor, const QString& filter);
 
 private slots:
     void addProcessorsToList(const QString& text="");

@@ -14,14 +14,11 @@ class IVW_MODULE_BASE_API FirstIvwProcessor : public ProcessorGL {
 public:
     FirstIvwProcessor();
     ~FirstIvwProcessor();
-    virtual Processor* create() const;
+    
+    InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
-
-    virtual std::string getClassName() const { return "FirstIVWProcessor"; }
-    virtual std::string getCategory() const  { return "Dummy Processors"; }
-    virtual CodeState getCodeState() const   { return CODE_STATE_STABLE; }
 
 protected:
     virtual void process();

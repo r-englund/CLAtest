@@ -22,7 +22,7 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     addRepresentationConverter(new VolumeRAM2GLConverter());
     addRepresentationConverter(new VolumeDisk2GLConverter());
 
-    addProcessor(new CanvasProcessorGL());
+    addProcessorFactoryObject(CanvasProcessorGL);
 
     addResourceInfo(new OpenGLInfo());
 }

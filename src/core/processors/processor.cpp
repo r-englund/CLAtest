@@ -14,10 +14,6 @@ Processor::Processor() : VoidObservable(),
 
 Processor::~Processor() {}
 
-Processor* Processor::create() const {
-    return new Processor();
-}
-
 void Processor::addPort(Inport* port, std::string groupName) {
     // TODO: check if port with same name has been added before
     port->setProcessor(this);

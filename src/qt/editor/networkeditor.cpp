@@ -179,6 +179,7 @@ void NetworkEditor::removePropertyWidgets(Processor* processor) {
 void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
     ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(ProcessorWidgetFactory::getRef().create(processor));
     if (processorWidgetQt) {
+        processorWidgetQt->setProcessor(processor);
         InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
         processorWidgetQt->setParent(app->getMainWindow());
         processor->setProcessorWidget(processorWidgetQt);

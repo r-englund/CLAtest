@@ -14,10 +14,6 @@ ImageProcessorGL::ImageProcessorGL(std::string programFileName)
 
 ImageProcessorGL::~ImageProcessorGL() {}
 
-Processor* ImageProcessorGL::create() const {
-    return new ImageProcessorGL();
-}
-
 void ImageProcessorGL::initialize() {
     ProcessorGL::initialize();
     program_ = new Shader(programFileName_);
