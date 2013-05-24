@@ -21,6 +21,17 @@ void ProcessorGL::deactivateCurrentTarget() {
     FrameBufferObject::deactivate();
 }
 
+void ProcessorGL::clearCurrentTarget() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void ProcessorGL::activateAndClearTarget(ImageOutport& outport){
+    Image* outImage = outport.getData();
+    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
+    outImageGL->activateBuffer();
+    clearCurrentTarget();
+}
+
 void ProcessorGL::bindColorTexture(const ImageInport& inport, GLenum texUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
@@ -77,14 +88,6 @@ void ProcessorGL::renderImagePlaneQuad() const {
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
-}
-
-void ProcessorGL::serialize(IvwSerializer& s) const {
-     Processor::serialize(s);
-}
-
-void ProcessorGL::deserialize(IvwDeserializer& d) {
-     Processor::deserialize(d);
 }
 
 } // namespace

@@ -20,6 +20,9 @@ public:
     void activateTarget(ImageOutport& outport);
     void deactivateCurrentTarget();
 
+    void activateAndClearTarget(ImageOutport& outport);
+    void clearCurrentTarget();
+
     void bindColorTexture(const ImageInport& inport, GLenum texUnit);
     void unbindColorTexture(const ImageInport& inport);
     void bindDepthTexture(const ImageInport& inport, GLenum texUnit);
@@ -28,9 +31,6 @@ public:
     void unbindColorDepthTextures(const ImageInport& inport);
 
     void renderImagePlaneQuad() const;
-
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
 };
 
 } // namespace
