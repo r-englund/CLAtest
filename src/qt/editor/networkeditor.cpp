@@ -6,12 +6,13 @@
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/processors/processorwidgetfactory.h>
 
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/qt/editor/propertylistwidget.h>
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
-#include <inviwo/core/processors/processorwidgetfactory.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 
@@ -176,10 +177,11 @@ void NetworkEditor::removePropertyWidgets(Processor* processor) {
 
 // remove processor widget unnecessary as processor widget is removed when processor is destroyed
 void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
-    ProcessorWidget* processorWidget = ProcessorWidgetFactory::getRef().create(processor);
-    if (processorWidget) {
-        processorWidget->setProcessor(processor);
-        processor->setProcessorWidget(processorWidget);
+    ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(ProcessorWidgetFactory::getRef().create(processor));
+    if (processorWidgetQt) {
+        InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+        processorWidgetQt->setParent(app->getMainWindow());
+        processor->setProcessorWidget(processorWidgetQt);
         processor->getProcessorWidget()->initialize();
         //TODO: Serialize if visible and check this on network load
         processor->getProcessorWidget()->setVisible(visible);

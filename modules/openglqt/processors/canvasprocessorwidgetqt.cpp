@@ -5,6 +5,15 @@
 
 namespace inviwo {
 
+CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
+    : ProcessorWidgetQt(0),
+      canvas_(0)
+{
+    setMinimumSize(32, 32);
+    setWindowFlags(windowFlags() | Qt::Tool | Qt::CustomizeWindowHint);
+    setWindowTitle(QString::fromStdString("untitled canvas")); 
+}
+
 CanvasProcessorWidgetQt::CanvasProcessorWidgetQt(QWidget* parent)
     : ProcessorWidgetQt(parent),
       canvas_(0)

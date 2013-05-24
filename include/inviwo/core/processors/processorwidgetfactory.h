@@ -17,7 +17,7 @@ public:
     void initialize();
     void deinitialize();
 
-    void registerProcessorWidget(ProcessorWidget* processorWidget);
+    void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
     ProcessorWidget* create(std::string processorClassName) const;
     ProcessorWidget* create(Processor* processor) const;
     bool isValidType(std::string className) const;

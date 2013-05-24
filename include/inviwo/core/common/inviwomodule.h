@@ -25,7 +25,7 @@ public:
     bool isInitialized() const;
 
     const std::vector<Processor*>& getProcessors() const;
-    const std::vector<ProcessorWidget*>& getProcessorWidgets() const;
+    const std::vector<std::pair<std::string, ProcessorWidget*>>& getProcessorWidgets() const;
     const std::vector<Property*>& getProperties() const;
     const std::vector<DataReader*>& getDataReaders() const;
     const std::vector<DataWriter*>& getDataWriters() const;
@@ -47,7 +47,7 @@ protected:
     void setIdentifier(const std::string& identifier);
 
     void addProcessor(Processor* processor);
-    void addProcessorWidget(ProcessorWidget* processorWidget);
+    void addProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
     void addProperty(Property* property);
     void addDataReader(DataReader* reader);
     void addDataWriter(DataWriter* writer);
@@ -67,7 +67,7 @@ private:
     bool initialized_;
 
     std::vector<Processor*> processors_;
-    std::vector<ProcessorWidget*> processorWidgets_;
+    std::vector<std::pair<std::string, ProcessorWidget*>> processorWidgets_;
     std::vector<Property*> properties_;
     std::vector<DataReader*> dataReaders_;
     std::vector<DataWriter*> dataWriters_;

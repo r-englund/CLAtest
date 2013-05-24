@@ -13,6 +13,11 @@ public:
 
 protected:
     void setupGlobalSystemSettings();
+    template <typename T>
+    void addProcessorWidgetAndAssociate(ProcessorWidget* processorWidget) {
+        Processor* processor = dynamic_cast<Processor*>(new T());        
+        addProcessorWidget(processor->getClassName(), dynamic_cast<ProcessorWidget*>(processorWidget));       
+    }
 };
 
 } // namespace

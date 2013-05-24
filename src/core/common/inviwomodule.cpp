@@ -19,7 +19,7 @@ InviwoModule::~InviwoModule() {
     processors_.clear();
 
     for (size_t i=0; i<processorWidgets_.size(); i++)
-        delete processorWidgets_[i];
+        delete processorWidgets_[i].second;
     processorWidgets_.clear();
 
     for (size_t i=0; i<properties_.size(); i++)
@@ -51,7 +51,7 @@ const std::vector<Processor*>& InviwoModule::getProcessors() const {
     return processors_;
 }
 
-const std::vector<ProcessorWidget*>& InviwoModule::getProcessorWidgets() const {
+const std::vector<std::pair<std::string, ProcessorWidget*>>& InviwoModule::getProcessorWidgets() const {
     return processorWidgets_;
 }
 
@@ -115,8 +115,8 @@ void InviwoModule::addProcessor(Processor* processor) {
     processors_.push_back(processor);
 }
 
-void InviwoModule::addProcessorWidget(ProcessorWidget* processorWidget) {
-    processorWidgets_.push_back(processorWidget);
+void InviwoModule::addProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) {
+    processorWidgets_.push_back(std::make_pair(processorClassName, processorWidget));
 }
 
 void InviwoModule::addMetaData(MetaData* meta) {
