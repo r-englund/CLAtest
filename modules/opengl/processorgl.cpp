@@ -66,6 +66,20 @@ void ProcessorGL::unbindColorDepthTextures(const ImageInport& inport) {
     inImageGL->unbindDepthTexture();
 }
 
+void ProcessorGL::setGlobalShaderParameters(Shader* shader) {
+    vec2 screenDimensions = vec2(0.0f,0.0f);
+    std::vector<Outport*> outports = getOutports();
+    for (size_t i=0; i<outports.size(); i++) {
+        ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outports[i]);
+        if (imageOutport) {
+            screenDimensions = imageOutport->getDimensions();
+            continue;
+        }
+    }
+    shader->setUniform("screenDim_", screenDimensions);
+    shader->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/screenDimensions);
+}
+
 void ProcessorGL::renderImagePlaneQuad() const {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();

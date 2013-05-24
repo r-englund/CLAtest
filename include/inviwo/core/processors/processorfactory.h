@@ -18,7 +18,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    void registerProcessor(ProcessorFactoryObject* processor);
+    void registerFactoryObject(ProcessorFactoryObject* processor);
     virtual IvwSerializable* create(std::string className) const;
     virtual bool isValidType(std::string className) const;
 

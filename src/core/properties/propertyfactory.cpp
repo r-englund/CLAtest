@@ -18,11 +18,11 @@ void PropertyFactory::initialize() {
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
         std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
         for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
-            registerProcessor(curProcessorList[curProcessorId]);
+            registerFactoryObject(curProcessorList[curProcessorId]);
     }*/
 }
 
-void PropertyFactory::registerProcessor(Property* property) {
+void PropertyFactory::registerFactoryObject(Property* property) {
    /* if (processorClassMap_.find(processor->getClassName()) == processorClassMap_.end())
         processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));*/
 }

@@ -180,4 +180,17 @@ bool ShaderObject::compile() {
     return true;
 }
 
+void ShaderObject::addShaderDefine(std::string name, std::string value) {
+    // FIXME: check that define not already set
+    shaderDefines_.push_back(std::pair<std::string,std::string>(name, value));
+}
+
+void ShaderObject::removeShaderDefine(std::string name) {
+    for (size_t i=0; i<shaderDefines_.size(); i++)
+        if (shaderDefines_[i].first == name) {
+            shaderDefines_.erase(shaderDefines_.begin()+i);
+            i = shaderDefines_.size();
+        }
+}
+
 } // namespace

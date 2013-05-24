@@ -21,20 +21,20 @@ BaseModule::BaseModule() : InviwoModule() {
     setIdentifier("Base");
     setXMLFileName("base/basemodule.xml");
 
-    addProcessorFactoryObject(CubeProxygeometry);
-    addProcessorFactoryObject(EntryExitPoints);
-	addProcessorFactoryObject(FindEdges);
-	addProcessorFactoryObject(FirstIvwProcessor);
-	addProcessorFactoryObject(ImageGrayscale);
-    addProcessorFactoryObject(ImageMixer);
-    addProcessorFactoryObject(ImageSource);
-    addProcessorFactoryObject(RedGreenProcessor);
-    addProcessorFactoryObject(SimpleRaycaster);
-    addProcessorFactoryObject(TestProcessor);
-    addProcessorFactoryObject(TransferFunctiontionTestProcessor);
-    addProcessorFactoryObject(VolumeSplit);
-    addProcessorFactoryObject(VolumeSplitCompositor);
-    addProcessorFactoryObject(VolumeSplitImageCompositor);
+    registerProcessor(CubeProxygeometry);
+    registerProcessor(EntryExitPoints);
+	registerProcessor(FindEdges);
+	registerProcessor(FirstIvwProcessor);
+	registerProcessor(ImageGrayscale);
+    registerProcessor(ImageMixer);
+    registerProcessor(ImageSource);
+    registerProcessor(RedGreenProcessor);
+    registerProcessor(SimpleRaycaster);
+    registerProcessor(TestProcessor);
+    registerProcessor(TransferFunctiontionTestProcessor);
+    registerProcessor(VolumeSplit);
+    registerProcessor(VolumeSplitCompositor);
+    registerProcessor(VolumeSplitImageCompositor);
 }
 
 } // namespace

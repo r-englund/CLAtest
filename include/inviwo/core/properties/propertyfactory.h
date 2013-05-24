@@ -18,7 +18,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    void registerProcessor(Property* property);
+    void registerFactoryObject(Property* property);
     virtual IvwSerializable* create(std::string className) const;
 
 private:

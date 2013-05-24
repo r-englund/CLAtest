@@ -63,7 +63,7 @@ void InviwoMainWindow::initializeAndShow() {
     QSize newSize = settings.value("size", size()).toSize();
     move(newPos);
     resize(newSize);
-
+    /*
     QRect screenGeometry = QApplication::desktop()->screen()->geometry();
     screenGeometry.setRect(screenGeometry.x()-10, screenGeometry.y()-10,
                            screenGeometry.width()+20, screenGeometry.height()+20);
@@ -72,7 +72,7 @@ void InviwoMainWindow::initializeAndShow() {
             move(QPoint(0,0));
             resize(screenGeometry.width()-20, screenGeometry.height()-20);
     }
-
+    */
     bool maximized = settings.value("maximized", true).toBool();
     recentFileList_ = settings.value("recentFileList").toStringList();
     lastExitWithoutErrors_ = settings.value("lastExitWithoutErrors", true).toBool();
@@ -338,7 +338,10 @@ void InviwoMainWindow::saveWorkspaceAs() {
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     IVW_UNUSED_PARAM(event);
 
-    if (!askToSaveWorkspaceChanges()) event->ignore();
+    if (!askToSaveWorkspaceChanges()) {
+        event->ignore();
+        return;
+    }
     networkEditorView_->getNetworkEditor()->clearNetwork();
 
     // save window state

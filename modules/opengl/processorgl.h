@@ -4,6 +4,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include "inviwoopengl.h"
 #include "imagegl.h"
+#include "glwrap/shader.h"
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/processors/processor.h>
@@ -28,6 +29,8 @@ public:
     void unbindDepthTexture(const ImageInport& inport);
     void bindColorDepthTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit);
     void unbindColorDepthTextures(const ImageInport& inport);
+
+    void setGlobalShaderParameters(Shader* shader);
 
     void renderImagePlaneQuad() const;
 };

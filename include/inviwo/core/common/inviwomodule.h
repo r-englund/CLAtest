@@ -81,7 +81,7 @@ private:
     std::string xmlDocuFileName_;
 };
 
-#define addProcessorFactoryObject(T) { addProcessor(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
+#define registerProcessor(T) { addProcessor(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
 
 } // namespace
 

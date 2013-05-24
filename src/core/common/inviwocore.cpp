@@ -26,7 +26,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
     setIdentifier("Core");
     //setXMLFileName(InviwoApplication::app()->getRootPath() + "/src/core/core.xml", true);
 
-    addProcessorFactoryObject(VolumeSource);
+    registerProcessor(VolumeSource);
 
     addRepresentationConverter(new VolumeDisk2RAMConverter());
     addRepresentationConverter(new ImageDisk2RAMConverter());

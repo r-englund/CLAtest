@@ -24,6 +24,9 @@ public:
     std::string getCompileLog();
     bool rebuild();
 
+    void addShaderDefine(std::string name, std::string value="");
+    void removeShaderDefine(std::string name);
+
 private:
     bool initialize();
     void deinitialize();
