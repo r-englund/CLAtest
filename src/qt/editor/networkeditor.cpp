@@ -181,7 +181,7 @@ void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
     if (processorWidgetQt) {
         processorWidgetQt->setProcessor(processor);
         InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-        processorWidgetQt->setParent(app->getMainWindow());
+        processorWidgetQt->setParent(app->getMainWindow(), app->getMainWindow()->windowFlags());
         processor->setProcessorWidget(processorWidgetQt);
         processor->getProcessorWidget()->initialize();
         //TODO: Serialize if visible and check this on network load

@@ -11,7 +11,6 @@ class IVW_QTWIDGETS_API ProcessorWidgetQt : public ProcessorWidget, public QWidg
 
 public:
     ProcessorWidgetQt();
-    ProcessorWidgetQt(QWidget* parent);    
     virtual ~ProcessorWidgetQt();
 
     virtual ProcessorWidget* create() const = 0;

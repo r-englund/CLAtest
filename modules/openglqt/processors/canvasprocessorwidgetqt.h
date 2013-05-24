@@ -11,7 +11,6 @@ class IVW_QTWIDGETS_API CanvasProcessorWidgetQt : public ProcessorWidgetQt {
 
 public:
     CanvasProcessorWidgetQt();
-    CanvasProcessorWidgetQt(QWidget* parent);
     virtual ~CanvasProcessorWidgetQt();
 
     virtual void initialize();
