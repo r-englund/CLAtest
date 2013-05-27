@@ -13,6 +13,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     initializeNetwork();
     defaultContext_ = 0;
     eventInitiator_ = 0;
+    linkEvaluator_  = 0;
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
@@ -27,6 +28,7 @@ void ProcessorNetworkEvaluator::initializeNetwork() {
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++)
         processors[i]->initialize();
+    linkEvaluator_  = new LinkEvaluator();
 }
 
 void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string associatedProcessName) {
@@ -386,7 +388,7 @@ void ProcessorNetworkEvaluator::evaluate() {
     std::vector<Property*> sourceProperties; 
     for (size_t i=0; i<processorLinks.size(); i++) { 
         if (!processorLinks[i]->isValid()) { 
-            //processorLinks[i]->evaluate(linkEvaluator_); 
+            processorLinks[i]->evaluate(linkEvaluator_); 
             sourceProperties = processorLinks[i]->getSourceProperties(); 
             for (size_t j=0; j<sourceProperties.size(); j++) { 
                 if (!sourceProperties[j]->isValid()) { 

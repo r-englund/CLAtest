@@ -238,8 +238,7 @@ void NetworkEditor::addLinkGraphicsItem(Processor* processor1, Processor* proces
                                                                                   processorGraphicsItem2);
     linkGraphicsItems_.push_back(linkGraphicsItem);
     addItem(linkGraphicsItem);
-    linkGraphicsItem->setVisible(processorGraphicsItem1->isVisible() && processorGraphicsItem2->isVisible());
-    showLinkDialog(linkGraphicsItem);
+    linkGraphicsItem->setVisible(processorGraphicsItem1->isVisible() && processorGraphicsItem2->isVisible());    
 }
 
 void NetworkEditor::removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem) {
@@ -576,11 +575,14 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         removeItem(linkCurve_);
         delete linkCurve_;
         linkCurve_ = 0;
-        /*
+        
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
-        if (endProcessor_)
+        if (endProcessor_) {
             addLink(startProcessor_->getProcessor(), endProcessor_->getProcessor());
-            */
+            LinkConnectionGraphicsItem* linkGraphicsItem = getLinkGraphicsItem(startProcessor_->getProcessor(), endProcessor_->getProcessor());
+            showLinkDialog(linkGraphicsItem);
+        }
+
         startProcessor_ = 0; 
         endProcessor_ = 0;
         e->accept();
