@@ -33,13 +33,9 @@ namespace inviwo {
         virtual uvec3 getBorderURB() const {return borders_.urb;}
         virtual uvec3 getDimensions() const {return dimensions_;}
         virtual uvec3 getDimensionsWithBorder() const { return dimensions_+getBorderLLF()+getBorderURB(); }
-        virtual DataFormatBase getDataFormat() const {return dataFormatBase_;}
-        virtual std::string getDataFormatString() const {return dataFormatBase_.getString();}
-        virtual DataFormatId getDataFormatId() const {return dataFormatBase_.getId();}
         virtual bool hasBorder() const {return borders_.hasBorder;}
     protected:
         uvec3 dimensions_;
-        DataFormatBase dataFormatBase_;
         VolumeBorders borders_;
     };
 

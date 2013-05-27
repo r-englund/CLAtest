@@ -17,14 +17,11 @@ namespace inviwo {
         virtual void performOperation(DataOperation*) const {};
         virtual void resize(uvec2 dimensions);
         virtual uvec2 getDimension() const {return dimensions_;}
-        virtual DataFormatBase getDataFormat() const {return dataFormatBase_;}
-        virtual DataFormatId getDataFormatId() const {return dataFormatBase_.getId();}
         virtual void copyAndResizeImage(DataRepresentation*)=0;
         virtual DataRepresentation* clone() const = 0;
         virtual std::string getClassName() const { return "ImageRepresentation"; }
    protected:
         uvec2 dimensions_;
-        DataFormatBase dataFormatBase_;
    };
 
 } // namespace

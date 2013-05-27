@@ -15,6 +15,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometryrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imagedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imageram.h
@@ -142,6 +144,8 @@ set(SOURCE_FILES
     common/inviwomodule.cpp
     datastructures/data.cpp
     datastructures/datarepresentation.cpp
+    datastructures/geometry.cpp
+    datastructures/geometryrepresentation.cpp
     datastructures/image.cpp
     datastructures/imagedisk.cpp
     datastructures/imageram.cpp

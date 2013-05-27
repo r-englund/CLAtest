@@ -12,7 +12,7 @@ namespace inviwo {
 
     }
     ImageRepresentation::ImageRepresentation(uvec2 dimensions, DataFormatBase format)
-        : DataRepresentation(), dimensions_(dimensions), dataFormatBase_(format)
+        : DataRepresentation(format), dimensions_(dimensions)
     {
 
     }
