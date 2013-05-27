@@ -280,14 +280,13 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
         if (canvasProcessor) {
             // show processor widget as tool window
             processor->setIdentifier("PortInspector "+port->getProcessor()->getIdentifier()+":"+port->getIdentifier());
-            ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(ProcessorWidgetFactory::getRef().create(processor));       
-            processorWidgetQt->setProcessor(processor);
-            processorWidgetQt->initialize();
-            processor->setProcessorWidget(processorWidgetQt);
+            ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processor->getProcessorWidget());
+            ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.")
             processorWidgetQt->setMinimumSize(128, 128);
             processorWidgetQt->setMaximumSize(128, 128);
             processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);            
-            processorWidgetQt->move(pos);            
+            processorWidgetQt->move(pos);
+            processorWidgetQt->show();
             processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
         }
     }
