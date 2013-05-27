@@ -40,7 +40,7 @@ void ProcessorGL::bindDepthTexture(const ImageInport& inport, GLenum texUnit) {
     inImageGL->bindDepthTexture(texUnit);
 }
 
-void ProcessorGL::bindColorDepthTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit) {
+void ProcessorGL::bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     inImageGL->bindColorTexture(colorTexUnit);

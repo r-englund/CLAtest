@@ -22,6 +22,7 @@ Shader::~Shader() {
     deinitialize();
 }
 
+
 void Shader::initialize() {
     id_ = glCreateProgram();
     LGL_ERROR;
@@ -43,6 +44,7 @@ void Shader::deinitialize() {
     LGL_ERROR;
 }
 
+
 void Shader::attachShaderObject(ShaderObject* shaderObject) {
     glAttachShader(id_, shaderObject->getID());
     LGL_ERROR;
@@ -53,10 +55,12 @@ void Shader::detachShaderObject(ShaderObject* shaderObject) {
     LGL_ERROR;
 }
 
+
 void Shader::link() {
     glLinkProgram(id_);
     LGL_ERROR;
 }
+
 
 void Shader::activate() {
     glUseProgram(id_);
@@ -67,6 +71,7 @@ void Shader::deactivate() {
     glUseProgram(0);
     LGL_ERROR;
 }
+
 
 void Shader::setUniform(const std::string name, GLint value) {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
@@ -123,14 +128,11 @@ void Shader::setUniform(const std::string name, GLfloat* value, int count) {
         LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
-
-
 void Shader::setUniform(const std::string name, mat4 value) {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
     if (uniformLocation != -1) glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
     else
         LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
-
 
 } // namespace

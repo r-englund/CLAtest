@@ -23,9 +23,14 @@ public:
 
     std::string getGlobalGLSLHeader();
 
+    void addShaderSearchPath(std::string shaderSearchPath) {
+        shaderSearchPaths_.push_back(shaderSearchPath);
+    }
+
 private:
     std::vector<Shader*> shaders_;
     OpenGLInfo* openGLInfoRef_;
+    std::vector<std::string> shaderSearchPaths_;
 };
 
 } // namespace
