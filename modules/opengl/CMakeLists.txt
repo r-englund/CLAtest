@@ -68,8 +68,8 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/img_transferfunction.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_classification.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_filtering.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_gradients.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_normdepth.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_sampler2d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_sampler3d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_shading.frag
