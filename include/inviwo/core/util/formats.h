@@ -4,7 +4,7 @@
 #include <inviwo/core/util/pstdint.h>
 #include <glm/glm.hpp>
 #include <limits>
-#include <inviwo/core/util/stringconversion.h>
+#include <string>
 
 /*! \brief Defines general useful formats and new data types
  * Non-virtual, meaning no dynamic_cast as string comparison is as fast/faster
