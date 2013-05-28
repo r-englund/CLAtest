@@ -255,6 +255,10 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
 
     LinkDialog* linkDialog = new LinkDialog(inProcessor, outProcessor, processorNetwork_, 0);
     linkDialog->exec();
+
+    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(inProcessor, outProcessor);
+    if (!processorLink->getPropertyLinks().size())
+        removeLink(inProcessor, outProcessor);
 }
 
 
@@ -389,10 +393,13 @@ ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(Outport* outpor
 }
 
 LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItem(Processor* processor1, Processor* processor2) const {
-    for (size_t i=0; i<linkGraphicsItems_.size(); i++)
-        if (linkGraphicsItems_[i]->getOutProcessor()->getProcessor() == processor1 &&
-            linkGraphicsItems_[i]->getInProcessor()->getProcessor() == processor2)
-            return linkGraphicsItems_[i];
+    for (size_t i=0; i<linkGraphicsItems_.size(); i++) {
+        Processor* outProcessor = linkGraphicsItems_[i]->getOutProcessor()->getProcessor();
+        Processor* inProcessor = linkGraphicsItems_[i]->getInProcessor()->getProcessor();
+        if ((outProcessor == processor1 && inProcessor == processor2)  ||
+            (outProcessor == processor2 && inProcessor == processor1))
+           return linkGraphicsItems_[i];
+    }
     return 0;
 }
 
