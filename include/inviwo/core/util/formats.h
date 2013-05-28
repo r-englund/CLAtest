@@ -118,46 +118,61 @@ public:
     static DataFormatId id() { return DataFormatBase::id(); }
 };
 
-template<typename T, size_t B, size_t C>
-class DataVecFormat : public DataFormatBase
+template<typename T, size_t B>
+class DataVec2Format : public DataFormatBase
 {
 public:
-    static const size_t bits = DataFormat<T, B>::bits*C;
+    typedef glm::detail::tvec2<T> type;
+    static const size_t bits = DataFormat<T, B>::bits*2;
 
-    DataVecFormat() : DataFormatBase(id(), bitsAllocated(), bitsStored(), str()){}
+    DataVec2Format() : DataFormatBase(id(), bitsAllocated(), bitsStored(), str()){}
 
-    static size_t bitsAllocated() { return DataFormat<T, B>::bitsAllocated()*C; }
-    static size_t bitsStored() { return DataFormat<T, B>::bitsStored()*C; }
+    static size_t bitsAllocated() { return DataFormat<T, B>::bitsAllocated()*2; }
+    static size_t bitsStored() { return DataFormat<T, B>::bitsStored()*2; }
 
     static T max() { return DataFormat<T, B>::max(); }
     static T min() { return DataFormat<T, B>::min(); }
 
-    static std::string str() { return "Vec"+toString<size_t>(C)+DataFormat<T, B>::str(); }
+    static std::string str() { return "Vec2"+DataFormat<T, B>::str(); }
     static DataFormatId id() { return DataFormat<T, B>::id(); }
 };
 
 template<typename T, size_t B>
-class DataVec2Format : public DataVecFormat<T, B, 2>
-{
-public:
-    typedef glm::detail::tvec2<T> type;
-    DataVec2Format() : DataVecFormat(){}
-};
-
-template<typename T, size_t B>
-class DataVec3Format : public DataVecFormat<T, B, 3>
+class DataVec3Format : public DataFormatBase
 {
 public:
     typedef glm::detail::tvec3<T> type;
-    DataVec3Format() : DataVecFormat(){}
+    static const size_t bits = DataFormat<T, B>::bits*3;
+
+    DataVec3Format() : DataFormatBase(id(), bitsAllocated(), bitsStored(), str()){}
+
+    static size_t bitsAllocated() { return DataFormat<T, B>::bitsAllocated()*3; }
+    static size_t bitsStored() { return DataFormat<T, B>::bitsStored()*3; }
+
+    static T max() { return DataFormat<T, B>::max(); }
+    static T min() { return DataFormat<T, B>::min(); }
+
+    static std::string str() { return "Vec3"+DataFormat<T, B>::str(); }
+    static DataFormatId id() { return DataFormat<T, B>::id(); }
 };
 
 template<typename T, size_t B>
-class DataVec4Format : public DataVecFormat<T, B, 4>
+class DataVec4Format : public DataFormatBase
 {
 public:
     typedef glm::detail::tvec4<T> type;
-    DataVec4Format() : DataVecFormat(){}
+    static const size_t bits = DataFormat<T, B>::bits*4;
+
+    DataVec4Format() : DataFormatBase(id(), bitsAllocated(), bitsStored(), str()){}
+
+    static size_t bitsAllocated() { return DataFormat<T, B>::bitsAllocated()*4; }
+    static size_t bitsStored() { return DataFormat<T, B>::bitsStored()*4; }
+
+    static T max() { return DataFormat<T, B>::max(); }
+    static T min() { return DataFormat<T, B>::min(); }
+
+    static std::string str() { return "Vec4"+DataFormat<T, B>::str(); }
+    static DataFormatId id() { return DataFormat<T, B>::id(); }
 };
 
 /*---------------Generic Defines-----------------------*/
@@ -261,7 +276,7 @@ typedef GenericDataVec2Format(uint32_t)       DataVec2UINT32;
 typedef GenericDataVec2Format(uint64_t)       DataVec2UINT64;
 
 // Type Function Specializations
-/*template<> inline DataFormatId DataVec2FLOAT16::id() { return Vec2FLOAT16; }
+template<> inline DataFormatId DataVec2FLOAT16::id() { return Vec2FLOAT16; }
 template<> inline DataFormatId DataVec2FLOAT32::id() { return Vec2FLOAT32; }
 template<> inline DataFormatId DataVec2FLOAT64::id() { return Vec2FLOAT64; }
 
@@ -275,7 +290,7 @@ template<> inline DataFormatId DataVec2UINT8::id() { return Vec2UINT8; }
 template<> inline DataFormatId DataVec2UINT12::id() { return Vec2UINT12; }
 template<> inline DataFormatId DataVec2UINT16::id() { return Vec2UINT16; }
 template<> inline DataFormatId DataVec2UINT32::id() { return Vec2UINT32; }
-template<> inline DataFormatId DataVec2UINT64::id() { return Vec2UINT64; }*/
+template<> inline DataFormatId DataVec2UINT64::id() { return Vec2UINT64; }
 
 /*---------------Vec3 Formats------------------*/
 
@@ -299,7 +314,7 @@ typedef GenericDataVec3Format(uint32_t)       DataVec3UINT32;
 typedef GenericDataVec3Format(uint64_t)       DataVec3UINT64;
 
 // Type Function Specializations
-/*template<> inline DataFormatId DataVec3FLOAT16::id() { return Vec3FLOAT16; }
+template<> inline DataFormatId DataVec3FLOAT16::id() { return Vec3FLOAT16; }
 template<> inline DataFormatId DataVec3FLOAT32::id() { return Vec3FLOAT32; }
 template<> inline DataFormatId DataVec3FLOAT64::id() { return Vec3FLOAT64; }
 
@@ -313,7 +328,7 @@ template<> inline DataFormatId DataVec3UINT8::id() { return Vec3UINT8; }
 template<> inline DataFormatId DataVec3UINT12::id() { return Vec3UINT12; }
 template<> inline DataFormatId DataVec3UINT16::id() { return Vec3UINT16; }
 template<> inline DataFormatId DataVec3UINT32::id() { return Vec3UINT32; }
-template<> inline DataFormatId DataVec3UINT64::id() { return Vec3UINT64; }*/
+template<> inline DataFormatId DataVec3UINT64::id() { return Vec3UINT64; }
 
 /*---------------Vec4 Formats------------------*/
 
@@ -337,7 +352,7 @@ typedef GenericDataVec4Format(uint32_t)       DataVec4UINT32;
 typedef GenericDataVec4Format(uint64_t)       DataVec4UINT64;
 
 // Type Function Specializations
-/*template<> inline DataFormatId DataVec4FLOAT16::id() { return Vec4FLOAT16; }
+template<> inline DataFormatId DataVec4FLOAT16::id() { return Vec4FLOAT16; }
 template<> inline DataFormatId DataVec4FLOAT32::id() { return Vec4FLOAT32; }
 template<> inline DataFormatId DataVec4FLOAT64::id() { return Vec4FLOAT64; }
 
@@ -351,7 +366,7 @@ template<> inline DataFormatId DataVec4UINT8::id() { return Vec4UINT8; }
 template<> inline DataFormatId DataVec4UINT12::id() { return Vec4UINT12; }
 template<> inline DataFormatId DataVec4UINT16::id() { return Vec4UINT16; }
 template<> inline DataFormatId DataVec4UINT32::id() { return Vec4UINT32; }
-template<> inline DataFormatId DataVec4UINT64::id() { return Vec4UINT64; }*/
+template<> inline DataFormatId DataVec4UINT64::id() { return Vec4UINT64; }
 
 }
 
