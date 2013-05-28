@@ -261,7 +261,7 @@ typedef GenericDataVec2Format(uint32_t)       DataVec2UINT32;
 typedef GenericDataVec2Format(uint64_t)       DataVec2UINT64;
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec2FLOAT16::id() { return Vec2FLOAT16; }
+/*template<> inline DataFormatId DataVec2FLOAT16::id() { return Vec2FLOAT16; }
 template<> inline DataFormatId DataVec2FLOAT32::id() { return Vec2FLOAT32; }
 template<> inline DataFormatId DataVec2FLOAT64::id() { return Vec2FLOAT64; }
 
@@ -275,7 +275,7 @@ template<> inline DataFormatId DataVec2UINT8::id() { return Vec2UINT8; }
 template<> inline DataFormatId DataVec2UINT12::id() { return Vec2UINT12; }
 template<> inline DataFormatId DataVec2UINT16::id() { return Vec2UINT16; }
 template<> inline DataFormatId DataVec2UINT32::id() { return Vec2UINT32; }
-template<> inline DataFormatId DataVec2UINT64::id() { return Vec2UINT64; }
+template<> inline DataFormatId DataVec2UINT64::id() { return Vec2UINT64; }*/
 
 /*---------------Vec3 Formats------------------*/
 
@@ -299,7 +299,7 @@ typedef GenericDataVec3Format(uint32_t)       DataVec3UINT32;
 typedef GenericDataVec3Format(uint64_t)       DataVec3UINT64;
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec3FLOAT16::id() { return Vec3FLOAT16; }
+/*template<> inline DataFormatId DataVec3FLOAT16::id() { return Vec3FLOAT16; }
 template<> inline DataFormatId DataVec3FLOAT32::id() { return Vec3FLOAT32; }
 template<> inline DataFormatId DataVec3FLOAT64::id() { return Vec3FLOAT64; }
 
@@ -313,7 +313,7 @@ template<> inline DataFormatId DataVec3UINT8::id() { return Vec3UINT8; }
 template<> inline DataFormatId DataVec3UINT12::id() { return Vec3UINT12; }
 template<> inline DataFormatId DataVec3UINT16::id() { return Vec3UINT16; }
 template<> inline DataFormatId DataVec3UINT32::id() { return Vec3UINT32; }
-template<> inline DataFormatId DataVec3UINT64::id() { return Vec3UINT64; }
+template<> inline DataFormatId DataVec3UINT64::id() { return Vec3UINT64; }*/
 
 /*---------------Vec4 Formats------------------*/
 
@@ -337,7 +337,7 @@ typedef GenericDataVec4Format(uint32_t)       DataVec4UINT32;
 typedef GenericDataVec4Format(uint64_t)       DataVec4UINT64;
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec4FLOAT16::id() { return Vec4FLOAT16; }
+/*template<> inline DataFormatId DataVec4FLOAT16::id() { return Vec4FLOAT16; }
 template<> inline DataFormatId DataVec4FLOAT32::id() { return Vec4FLOAT32; }
 template<> inline DataFormatId DataVec4FLOAT64::id() { return Vec4FLOAT64; }
 
@@ -351,7 +351,7 @@ template<> inline DataFormatId DataVec4UINT8::id() { return Vec4UINT8; }
 template<> inline DataFormatId DataVec4UINT12::id() { return Vec4UINT12; }
 template<> inline DataFormatId DataVec4UINT16::id() { return Vec4UINT16; }
 template<> inline DataFormatId DataVec4UINT32::id() { return Vec4UINT32; }
-template<> inline DataFormatId DataVec4UINT64::id() { return Vec4UINT64; }
+template<> inline DataFormatId DataVec4UINT64::id() { return Vec4UINT64; }*/
 
 }
 

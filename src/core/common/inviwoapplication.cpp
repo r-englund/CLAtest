@@ -66,6 +66,8 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
 }
 
 void InviwoApplication::printApplicationInfo(){
+    //TODO: Remove line below!!!!!!!!
+    LogInfo(DataVec3UINT8::str() << ":BA-" << DataVec3UINT8::bitsAllocated() << ":ID-" << DataVec3UINT8::id());
     LogInfoCustom("InviwoInfo", "Version: " << IVW_VERSION);
     std::string config = "";
 #ifdef CMAKE_GENERATOR
