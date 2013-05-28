@@ -5,15 +5,15 @@
 namespace inviwo {
 
 Shader::Shader(std::string fragmentFilename) :
-    vertexFilename_(IVW_DIR+"modules/opengl/glsl/img_identity.vert"),
-    fragmentFilename_(IVW_DIR+"modules/opengl/glsl/"+fragmentFilename)
+    vertexFilename_("img_identity.vert"),
+    fragmentFilename_(fragmentFilename)
 {
     initialize();
 }
 
 Shader::Shader(std::string vertexFilename, std::string fragmentFilename) :
-    vertexFilename_(IVW_DIR+"modules/opengl/glsl/"+vertexFilename),
-    fragmentFilename_(IVW_DIR+"modules/opengl/glsl/"+fragmentFilename)
+    vertexFilename_(vertexFilename),
+    fragmentFilename_(fragmentFilename)
 {
     initialize();
 }
@@ -76,15 +76,15 @@ void Shader::deactivate() {
 void Shader::setUniform(const std::string name, GLint value) {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
     if (uniformLocation != -1) glUniform1i(uniformLocation, value);
-    else
-        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
 void Shader::setUniform(const std::string name, GLfloat value) {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
     if (uniformLocation != -1) glUniform1f(uniformLocation, value);
-    else
-        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
 void Shader::setUniform(const std::string name, vec2 value) {
@@ -93,8 +93,8 @@ void Shader::setUniform(const std::string name, vec2 value) {
     glvalues[0] = value[0];
     glvalues[1] = value[1];
     if (uniformLocation != -1) glUniform2fv(uniformLocation, 1, glm::value_ptr(value));
-    else
-        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
 void Shader::setUniform(const std::string name, vec3 value) {
@@ -104,8 +104,8 @@ void Shader::setUniform(const std::string name, vec3 value) {
     glvalues[1] = value[1];
     glvalues[2] = value[2];
     if (uniformLocation != -1) glUniform3fv(uniformLocation, 1, glm::value_ptr(value));
-    else
-        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
 void Shader::setUniform(const std::string name, vec4 value) {
@@ -116,23 +116,56 @@ void Shader::setUniform(const std::string name, vec4 value) {
     glvalues[2] = value[2];
     glvalues[3] = value[3];
     if (uniformLocation != -1) glUniform4fv(uniformLocation, 1, glm::value_ptr(value));
-    else
-        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
+
+void Shader::setUniform(const std::string name, ivec2 value) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+    GLint* glvalues = new GLint[2];
+    glvalues[0] = value[0];
+    glvalues[1] = value[1];
+    if (uniformLocation != -1) glUniform2iv(uniformLocation, 1, glm::value_ptr(value));
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
+
+void Shader::setUniform(const std::string name, ivec3 value) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+    GLint* glvalues = new GLint[3];
+    glvalues[0] = value[0];
+    glvalues[1] = value[1];
+    glvalues[2] = value[2];
+    if (uniformLocation != -1) glUniform3iv(uniformLocation, 1, glm::value_ptr(value));
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
+
+void Shader::setUniform(const std::string name, ivec4 value) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+    GLint* glvalues = new GLint[4];
+    glvalues[0] = value[0];
+    glvalues[1] = value[1];
+    glvalues[2] = value[2];
+    glvalues[3] = value[3];
+    if (uniformLocation != -1) glUniform4iv(uniformLocation, 1, glm::value_ptr(value));
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
 void Shader::setUniform(const std::string name, GLfloat* value, int count) {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
     GLfloat* glvalues = new GLfloat[4];
     if (uniformLocation != -1) glUniform1fv(uniformLocation, count, value);
-    else
-        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
 void Shader::setUniform(const std::string name, mat4 value) {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
     if (uniformLocation != -1) glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
-    else
-        LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    //else
+        //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
 } // namespace

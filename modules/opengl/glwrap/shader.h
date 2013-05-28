@@ -29,6 +29,9 @@ public:
     void setUniform(const std::string name, vec2 value);
     void setUniform(const std::string name, vec3 value);
     void setUniform(const std::string name, vec4 value);
+    void setUniform(const std::string name, ivec2 value);
+    void setUniform(const std::string name, ivec3 value);
+    void setUniform(const std::string name, ivec4 value);
     void setUniform(const std::string name, mat4 value);
 
 private:

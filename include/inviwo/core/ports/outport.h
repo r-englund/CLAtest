@@ -24,6 +24,8 @@ public:
     bool isConnected() const;
     bool isConnectedTo(Inport* port) const;
 
+    bool isReady() const { ivwDeprecatedMethod("isConnected()"); return isConnected(); }
+
     std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
 
     void invalidate();

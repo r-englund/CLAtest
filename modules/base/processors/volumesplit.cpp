@@ -24,14 +24,14 @@ VolumeSplit::VolumeSplit()
       inport_("volume.in"),
       outport_("volumebrick.out")
 {
-    limitingMemory_.addOption("CPU (Main Memory)", CPU);
-    limitingMemory_.addOption("GPU (TextureGL)", GPU);
+    limitingMemory_.addOption("CPU", "CPU (Main Memory)", CPU);
+    limitingMemory_.addOption("GPU", "GPU (TextureGL)", GPU);
     //limitingMemory_.setSelectedOption("GPU (TextureGL)");
     addProperty(limitingMemory_);
     //limitingMemory_.onChange(CallMemberAction<VolumeSplit>(this, &VolumeSplit::invalidateBricking));
 
-    memUsageStrategy_.addOption("Percentage of Available Memory", MEM_PERCENTAGE);
-    memUsageStrategy_.addOption("Fixed Memory Size", MEM_FIXED);
+    memUsageStrategy_.addOption("percentage", "Percentage of Available Memory", MEM_PERCENTAGE);
+    memUsageStrategy_.addOption("fixed", "Fixed Memory Size", MEM_FIXED);
     //memUsageStrategy_.setSelectedOption("Percentage of Available Memory");
     addProperty(memUsageStrategy_);
     //memUsageStrategy_.onChange(CallMemberAction<VolumeSplit>(this, &VolumeSplit::invalidateBricking));
@@ -47,18 +47,18 @@ VolumeSplit::VolumeSplit()
 
     // TODO: query maximum volume dimensions
     //Add values which have a power of two
-    brickSizeVoxel_.addOption("1", 1);
-    brickSizeVoxel_.addOption("2", 2);
-    brickSizeVoxel_.addOption("4", 4);
-    brickSizeVoxel_.addOption("8", 8);
-    brickSizeVoxel_.addOption("16", 16);
-    brickSizeVoxel_.addOption("32", 32);
-    brickSizeVoxel_.addOption("64", 64);
-    brickSizeVoxel_.addOption("128", 128);
-    brickSizeVoxel_.addOption("256", 256);
-    brickSizeVoxel_.addOption("512", 512);
-    brickSizeVoxel_.addOption("1024", 1024);
-    brickSizeVoxel_.addOption("2048", 2048);
+    brickSizeVoxel_.addOption("1", "1", 1);
+    brickSizeVoxel_.addOption("2", "2", 2);
+    brickSizeVoxel_.addOption("4", "4", 4);
+    brickSizeVoxel_.addOption("8", "8", 8);
+    brickSizeVoxel_.addOption("16", "16", 16);
+    brickSizeVoxel_.addOption("32", "32", 32);
+    brickSizeVoxel_.addOption("64", "64", 64);
+    brickSizeVoxel_.addOption("128", "128", 128);
+    brickSizeVoxel_.addOption("256", "256", 256);
+    brickSizeVoxel_.addOption("512", "512", 512);
+    brickSizeVoxel_.addOption("1024", "1024", 1024);
+    brickSizeVoxel_.addOption("2048", "2048", 2048);
     addProperty(brickSizeVoxel_);
     //brickSizeVoxel_.onChange(CallMemberAction<VolumeSplit>(this, &VolumeSplit::invalidateBricking));
 

@@ -358,7 +358,7 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     }
 
     paintStatusIndicator(p, QPointF(57.0f, -20.0f),
-                         processor_->allInportsConnected(), QColor(0,170,0));
+                         processor_->isReady(), QColor(0,170,0));
 
     if (processor_->hasProgressBar())
         paintProgressBar(p, processor_->getProgress());

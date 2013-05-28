@@ -5,8 +5,7 @@ namespace inviwo {
 bool CanvasGL::glewInitialized_ = false;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
-    : Canvas(dimensions)
-{
+    : Canvas(dimensions) {
     image_ = NULL;
     shader_ = NULL;
     noiseShader_ = NULL;
@@ -92,10 +91,10 @@ void CanvasGL::renderImagePlaneQuad() {
     glLoadIdentity();
     glDepthFunc(GL_ALWAYS);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.f, 0.f); glVertex2f(-1.f, -1.f);
-    glTexCoord2f(1.f, 0.f); glVertex2f( 1.f, -1.f);
-    glTexCoord2f(1.f, 1.f); glVertex2f( 1.f,  1.f);
-    glTexCoord2f(0.f, 1.f); glVertex2f(-1.f,  1.f);
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex2f( 1.0f, -1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex2f( 1.0f,  1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f,  1.0f);
     glEnd();
     glDepthFunc(GL_LESS);
     glPopMatrix();

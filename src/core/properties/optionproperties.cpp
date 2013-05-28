@@ -63,6 +63,10 @@ OptionPropertyString::OptionPropertyString(std::string identifier, std::string d
     : TemplatedOptionProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
+void OptionPropertyString::addOption(std::string optionIdentifier, std::string optionDisplayName) {
+    TemplatedOptionProperty<std::string>::addOption(optionIdentifier, optionDisplayName, optionIdentifier);
+}
+
 void OptionPropertyString::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
     s.serialize("value", get());
@@ -74,8 +78,5 @@ void OptionPropertyString::deserialize(IvwDeserializer& d) {
     d.deserialize("value", value);
     set(value);
 }
-
-
-
 
 } // namespace

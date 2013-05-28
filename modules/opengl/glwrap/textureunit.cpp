@@ -51,6 +51,10 @@ void TextureUnit::activate() {
     glActiveTexture(getEnum());
 }
 
+void TextureUnit::setZeroUnit() {
+    glActiveTexture(GL_TEXTURE0);
+}
+
 void TextureUnit::requestUnit() {
     ivwAssert(numRequestedUnits_<requestedUnits_.size(), "Exceeding number of available texture units.");
     for (size_t i=0; i<requestedUnits_.size(); i++) {

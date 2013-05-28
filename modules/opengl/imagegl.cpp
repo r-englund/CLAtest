@@ -68,12 +68,10 @@ void ImageGL::deinitialize() {
     shader_=0;
 }
 
-DataRepresentation* ImageGL::clone() const
-{
+DataRepresentation* ImageGL::clone() const {
     Texture2D* colorTexture = colorTexture_->clone();
     Texture2D* depthTexture = depthTexture_->clone();
     ImageGL* newImageGL = new ImageGL(colorTexture, depthTexture, dimensions_);
-
     return newImageGL;
 }
 

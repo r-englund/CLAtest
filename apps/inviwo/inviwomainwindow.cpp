@@ -26,8 +26,7 @@ InviwoMainWindow::InviwoMainWindow() : VoidObserver() {
     consoleWidget_ = new ConsoleWidget(this);
 
     // the default render context managing the rendering state
-    defaultRenderContext_ = new CanvasQt(this);    
-    defaultRenderContext_->activate();
+    defaultRenderContext_ = new CanvasQt(this);
 
     currentWorkspaceFileName_ = "";
 }
@@ -99,6 +98,8 @@ void InviwoMainWindow::initializeWorkspace(){
     ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
     networkEvaluator->setDefaultRenderContext(defaultRenderContext_);
     defaultRenderContext_->setFixedSize(0,0);
+    defaultRenderContext_->initialize();
+    defaultRenderContext_->activate();
 
     ProcessorNetwork* processorNetwork = const_cast<ProcessorNetwork*>(networkEditorView_->getNetworkEditor()->getProcessorNetwork());
     addObservation(processorNetwork);
@@ -231,9 +232,12 @@ void InviwoMainWindow::newWorkspace() {
     if (currentWorkspaceFileName_ != "")
         askToSaveWorkspaceChanges();
     networkEditorView_->getNetworkEditor()->clearNetwork();
-    workspaceModified_ = true;
     setCurrentWorkspace(rootDir_ + "workspaces/untitled.inv");
+    // set workspaceModified_ to true to get a * indicator in the window title
+    workspaceModified_ = true;
     updateWindowTitle();
+    // set it back to false to not ask to save an unmodified new workspace on exit
+    workspaceModified_ = false;
 }
 
 void InviwoMainWindow::openWorkspace(QString workspaceFileName) {

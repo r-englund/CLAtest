@@ -10,7 +10,7 @@
 namespace inviwo {
 
 class IVW_QTEDITOR_API ConsoleWidget : public InviwoDockWidget, public Logger {
-
+    Q_OBJECT
 public:
     ConsoleWidget(QWidget* parent);
     ~ConsoleWidget();
@@ -23,6 +23,9 @@ private:
     QColor infoTextColor_;
     QColor warnTextColor_;
     QColor errorTextColor_;
+
+public slots:
+    void showContextMenu(const QPoint& pos);
 };
 
 } // namespace

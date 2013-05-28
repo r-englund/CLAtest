@@ -20,6 +20,8 @@ public:
     void requestUnit();
     void activate();
 
+    static void setZeroUnit();
+
 private:
     static bool initialized_;
     static unsigned int numRequestedUnits_;

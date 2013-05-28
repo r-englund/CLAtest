@@ -25,8 +25,8 @@ public:
 
     virtual std::vector< std::string > getOptionKeys()=0;
     virtual int getSelectedOption()=0;
-    virtual void setSelectedOption( std::string )=0;
-    virtual void updateValue( std::string )=0;
+    virtual void setSelectedOption(std::string)=0;
+    virtual void updateValue(std::string)=0;
 
 };
 
@@ -55,7 +55,7 @@ public:
      * @See optionpropertywidgetqt
      * @param std::string optionName identifier name
      * @param T optionValue the value of the option
-     */virtual void addOption(std::string optionName,T optionValue);
+     */virtual void addOption(std::string optionIdentifier, std::string optionDisplayName, T optionValue);
 
 
     /** 
@@ -63,7 +63,7 @@ public:
      *
      * 
      * @return std::vector< std::pair<std::string, T> > <DESCRIBE ME>
-     */virtual std::vector< std::pair<std::string, T> > getOptions();
+     */virtual std::vector< std::pair<std::pair<std::string, std::string>, T> > getOptions();
 
     /** 
      * \brief returns a vector of keys from the option vector
@@ -92,11 +92,11 @@ public:
      * <DESCRIBE THE METHOD>
      * 
      * @param std::string the key to the desiered value
-     */void setSelectedOption( std::string );
-    virtual void updateValue( std::string);
+     */void setSelectedOption(std::string);
+    virtual void updateValue(std::string);
 
 private:
-    std::vector< std::pair<std::string, T> > optionVector_;
+    std::vector< std::pair<std::pair<std::string, std::string>, T> > optionVector_;
 };
 
 
@@ -108,21 +108,21 @@ TemplatedOptionProperty<T>::TemplatedOptionProperty(std::string identifier, std:
 {}
 
 template<typename T>
-void TemplatedOptionProperty<T>::addOption(std::string optionName,T optionValue) {
-    optionVector_.push_back(std::make_pair(optionName,optionValue));
+void TemplatedOptionProperty<T>::addOption(std::string optionIdentifier, std::string optionDisplayName, T optionValue) {
+    optionVector_.push_back(std::make_pair(std::make_pair(optionIdentifier, optionDisplayName), optionValue));
 }
 template<typename T>
-std::vector< std::pair<std::string, T> > TemplatedOptionProperty< T >::getOptions() {
+std::vector< std::pair<std::pair<std::string, std::string>, T> > TemplatedOptionProperty< T >::getOptions() {
     return optionVector_;
 }
 
 template<typename T>
-std::vector< std::string > TemplatedOptionProperty<T>::getOptionKeys(){
+std::vector<std::string> TemplatedOptionProperty<T>::getOptionKeys(){
     
-    std::vector< std::string > ret;
+    std::vector<std::string> ret;
     size_t size = optionVector_.size();
     for (size_t i=0; i<size;i++) {
-        ret.push_back(optionVector_.at(i).first);
+        ret.push_back(optionVector_.at(i).first.second);
     }
     return ret;
 }

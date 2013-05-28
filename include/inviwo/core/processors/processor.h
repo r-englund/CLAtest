@@ -65,11 +65,13 @@ public:
     Port* getPort(std::string identifier) const;
     std::vector<Inport*> getInports() { return inports_; }
     std::vector<Outport*> getOutports() { return outports_; }
-    std::vector<std::string> getPortGroupNames();
-    std::vector<Port*> getPortsByGroup(std::string groupName);
-    std::string getPortGroupName(Port* port);
+    std::vector<std::string> getPortDependencySets();
+    std::vector<Port*> getPortsByDependencySet(std::string portDependencySet);
+    std::string getPortDependencySet(Port* port);
 
     bool allInportsConnected() const;
+
+    virtual bool isReady() { return allInportsConnected(); }
 
     // TODO: should validation mechanism be moved into PropertyOwner?
     void invalidate();
@@ -95,11 +97,11 @@ public:
 
 protected:
 
-    void addPort(Inport* port, std::string groupName="default");
-    void addPort(Inport& port, std::string groupName="default");  
+    void addPort(Inport* port, std::string portDependencySet="default");
+    void addPort(Inport& port, std::string portDependencySet="default");
 
-    void addPort(Outport* port, std::string groupName="default");
-    void addPort(Outport& port, std::string groupName="default");  
+    void addPort(Outport* port, std::string portDependencySet="default");
+    void addPort(Outport& port, std::string portDependencySet="default");
 
     void updateProgress(float progress);
     void updateProgressLoop(size_t loopVar, size_t maxLoopVar, float endProgress);
@@ -117,7 +119,7 @@ private:
     //TODO: Use map
     std::vector<MetaData*> metaData_; 
 
-    Group<std::string,Port*> portGroup_;
+    Group<std::string, Port*> portDependencySets_;
 
     InvalidationLevel invalidationLevel_;
 

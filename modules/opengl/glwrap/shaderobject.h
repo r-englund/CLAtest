@@ -15,6 +15,7 @@ public:
 
     GLuint getID() { return id_; }
     std::string getFileName() { return fileName_; }
+    std::string getAbsoluteFileName() { return absoluteFileName_; }
     std::vector<std::string> getIncludeFileNames() { return includeFileNames_; }
 
     bool loadSource(std::string fileName);
@@ -39,6 +40,7 @@ private:
 
     GLenum shaderType_;
     std::string fileName_;
+    std::string absoluteFileName_;
     std::vector<std::string> includeFileNames_;
 
     GLuint id_;

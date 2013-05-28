@@ -21,7 +21,13 @@ void ImageProcessorGL::initialize() {
 
 void ImageProcessorGL::deinitialize() {
     delete program_;
+    program_ = 0;
     ProcessorGL::deinitialize();
+}
+
+vec2 ImageProcessorGL::computeDepthRange(ImageInport* inport) {
+    // FIXME: implement this fucntion
+    return vec2(0.0f, 1.0f);
 }
 
 } // namespace

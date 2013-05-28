@@ -655,8 +655,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             /*
             // Port context menu
             QMenu menu;
-            QAction* inspectorAction = 0;
-            inspectorAction = menu.addAction("Pin inspector");
+            QAction* inspectorAction = menu.addAction("Pin inspector");
             inspectorAction->setCheckable(true);
             bool inspectorShown = false;
             if (selectedPort->isConnected()) {

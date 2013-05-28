@@ -25,6 +25,8 @@ public:
     bool isConnected() const;
     bool isConnectedTo(Outport* outport) const;
 
+    bool isReady() const { ivwDeprecatedMethod("isConnected()"); return isConnected(); }
+
     Outport* getConnectedOutport() const { return connectedOutport_; }
 
     void invalidate();

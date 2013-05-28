@@ -18,6 +18,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/volumegl.h
     ${IVW_MODULE_DIR}/opengl/volumeglconverter.h
     ${IVW_MODULE_DIR}/opengl/volumeprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/volumeraycastergl.h
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.h
@@ -43,6 +44,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/volumegl.cpp
     ${IVW_MODULE_DIR}/opengl/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/volumeprocessorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/volumeraycastergl.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.cpp
@@ -64,12 +66,13 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/img_mix.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_transferfunction.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/mod_classification.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/mod_gradients.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/mod_sampler2d.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/mod_sampler3d.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/mod_shading.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_classification.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_filtering.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_gradients.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_sampler2d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_sampler3d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_shading.frag
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 

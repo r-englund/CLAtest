@@ -6,7 +6,6 @@ ivw_project(inviwo-qteditor)
 # Add header files
 set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/connectiongraphicsitem.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/consolewidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwodockwidget.h
@@ -26,6 +25,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add MOC files
 set(MOC_FILES
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/consolewidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h

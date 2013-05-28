@@ -23,6 +23,7 @@ public:
 
     std::string getGlobalGLSLHeader();
 
+    std::vector<std::string> getShaderSearchPaths() { return shaderSearchPaths_; }
     void addShaderSearchPath(std::string shaderSearchPath) {
         shaderSearchPaths_.push_back(shaderSearchPath);
     }

@@ -3,29 +3,23 @@
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
-#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
 class IVW_MODULE_BASE_API FirstIvwProcessor : public ProcessorGL {
 public:
     FirstIvwProcessor();
-    ~FirstIvwProcessor();
     
     InviwoProcessorInfo();
-
-    void initialize();
-    void deinitialize();
 
 protected:
     virtual void process();
 
 private:
-    ImageOutport outport_;
     FloatVec3Property color_;
+    ImageOutport outport_;
 };
 
 } // namespace

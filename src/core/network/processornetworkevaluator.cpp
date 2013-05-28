@@ -1,7 +1,4 @@
-
 #include <inviwo/core/network/processornetworkevaluator.h>
-
-//#include <modules/opengl/canvasprocessorgl.h>
 
 #include <inviwo/core/processors/canvasprocessor.h>
 
@@ -234,11 +231,11 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                 }
             }
             
-            std::vector<std::string> portGroups = directPredecessors[i]->getPortGroupNames();
+            std::vector<std::string> portDependencySets = directPredecessors[i]->getPortDependencySets();
             std::vector<Port*> ports;
-            for (size_t j=0; j<portGroups.size(); j++) {
+            for (size_t j=0; j<portDependencySets.size(); j++) {
                 ports.clear();
-                ports = directPredecessors[i]->getPortsByGroup(portGroups[j]);
+                ports = directPredecessors[i]->getPortsByDependencySet(portDependencySets[j]);
 
                 uvec2 dimMax(0);
                 bool hasImageOutport = false;
@@ -270,7 +267,6 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
 }
 
 Processor* ProcessorNetworkEvaluator::retrieveCanvasProcessor(Canvas* canvas) {
-
     // find the canvas processor which contains the canvas
     Processor* canvasProcessor = 0;
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
@@ -339,7 +335,7 @@ std::vector<Property*> ProcessorNetworkEvaluator::getLinkedProperties(Property* 
         std::vector<PropertyLink*> plinks = links[i]->getPropertyLinks();
         for (size_t j=0; j<plinks.size(); j++) {
             if (plinks[j]->getSourceProperty()==property) {
-                connectedProperties.push_back( plinks[j]->getDestinationProperty());
+                connectedProperties.push_back(plinks[j]->getDestinationProperty());
             }            
         }
     }
@@ -411,7 +407,7 @@ void ProcessorNetworkEvaluator::evaluate() {
     bool inValidTopology = false;
     for (size_t i=0; i<processorsSorted_.size(); i++)
         if (!processorsSorted_[i]->isValid())
-            if (!processorsSorted_[i]->allInportsConnected())
+            if (!processorsSorted_[i]->isReady())
                 if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
                     inValidTopology = true;
     if (inValidTopology) {

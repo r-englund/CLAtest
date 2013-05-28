@@ -24,12 +24,19 @@ public:
     void clearCurrentTarget();
 
     void bindColorTexture(const ImageInport& inport, GLenum texUnit);
+    void bindColorTexture(const ImageOutport& outport, GLenum texUnit);
     void unbindColorTexture(const ImageInport& inport);
+    void unbindColorTexture(const ImageOutport& outport);
     void bindDepthTexture(const ImageInport& inport, GLenum texUnit);
+    void bindDepthTexture(const ImageOutport& outport, GLenum texUnit);
     void unbindDepthTexture(const ImageInport& inport);
+    void unbindDepthTexture(const ImageOutport& outport);
     void bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit);
-    void unbindColorDepthTextures(const ImageInport& inport);
+    void bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit);
+    void unbindTextures(const ImageInport& inport);
+    void unbindTextures(const ImageOutport& outport);
 
+    void setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID);
     void setGlobalShaderParameters(Shader* shader);
 
     void renderImagePlaneQuad() const;

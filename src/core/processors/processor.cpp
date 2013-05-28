@@ -14,26 +14,26 @@ Processor::Processor() : VoidObservable(),
 
 Processor::~Processor() {}
 
-void Processor::addPort(Inport* port, std::string groupName) {
+void Processor::addPort(Inport* port, std::string portDependencySet) {
     // TODO: check if port with same name has been added before
     port->setProcessor(this);
     inports_.push_back(port);
-    portGroup_.insert(groupName, port);
+    portDependencySets_.insert(portDependencySet, port);
 }
 
-void Processor::addPort(Inport& port, std::string groupName) {
-    addPort(&port, groupName);
+void Processor::addPort(Inport& port, std::string portDependencySet) {
+    addPort(&port, portDependencySet);
 }
 
-void Processor::addPort(Outport* port, std::string groupName) {
+void Processor::addPort(Outport* port, std::string portDependencySet) {
     // TODO: check if port with same name has been added before
     port->setProcessor(this);
     outports_.push_back(port);
-    portGroup_.insert(groupName, port);
+    portDependencySets_.insert(portDependencySet, port);
 }
 
-void Processor::addPort(Outport& port, std::string groupName) {
-    addPort(&port, groupName);
+void Processor::addPort(Outport& port, std::string portDependencySet) {
+    addPort(&port, portDependencySet);
 }
 
 Port* Processor::getPort(std::string identifier) const {
@@ -46,16 +46,16 @@ Port* Processor::getPort(std::string identifier) const {
     return NULL;
 }
 
-std::vector<Port*> Processor::getPortsByGroup(std::string groupName) {
-     return portGroup_.getGroupedData(groupName);
+std::vector<Port*> Processor::getPortsByDependencySet(std::string portDependencySet) {
+     return portDependencySets_.getGroupedData(portDependencySet);
 }
 
-std::vector<std::string> Processor::getPortGroupNames() {
-    return portGroup_.getGroupKeys();
+std::vector<std::string> Processor::getPortDependencySets() {
+    return portDependencySets_.getGroupKeys();
 }
 
-std::string Processor::getPortGroupName(Port* port) {
-    return portGroup_.getKey(port);
+std::string Processor::getPortDependencySet(Port* port) {
+    return portDependencySets_.getKey(port);
 
 }
 
@@ -79,7 +79,7 @@ void Processor::deinitialize() {
     for (size_t i=0; i<outports_.size(); i++)
         outports_[i]->deinitialize();
 
-    portGroup_.deinitialize();
+    portDependencySets_.deinitialize();
 }
 
 void Processor::invalidate() {

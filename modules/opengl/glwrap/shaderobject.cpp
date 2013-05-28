@@ -15,7 +15,6 @@ namespace inviwo {
 ShaderObject::ShaderObject(GLenum shaderType, std::string fileName) :
     shaderType_(shaderType),
     fileName_(fileName)
-    
 {
     initialize();
 }
@@ -75,15 +74,23 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
             std::string::size_type pathEnd = curLine.find("\"", pathBegin+1);
             std::string includeFileName(curLine, pathBegin+1, pathEnd-pathBegin-1);
 
-            // TODO: remove absolute path
-            includeFileName = IVW_DIR+"modules/opengl/glsl/"+includeFileName;
-            includeFileNames_.push_back(includeFileName);
-            std::ifstream includeFileStream(includeFileName.c_str());
-            std::stringstream buffer;
-            buffer << includeFileStream.rdbuf();
-            std::string includeSource = buffer.str();            
-            if (!includeSource.empty())
-                result << embeddIncludes(includeSource, includeFileName) << "\n";
+            FILE* file = 0;
+            std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
+            for (size_t i=0; i<shaderSearchPaths.size(); i++) {
+                OPEN_FILE(file, (shaderSearchPaths[i]+"/"+includeFileName).c_str(), "rb");
+                if (file) {
+                    includeFileName = shaderSearchPaths[i]+"/"+includeFileName;
+                    includeFileNames_.push_back(includeFileName);
+                    std::ifstream includeFileStream(includeFileName.c_str());
+                    std::stringstream buffer;
+                    buffer << includeFileStream.rdbuf();
+                    std::string includeSource = buffer.str();            
+                    if (!includeSource.empty())
+                        result << embeddIncludes(includeSource, includeFileName) << "\n";
+                    break;
+                }
+            }
+
         }
         else
             result << curLine << "\n";
@@ -94,13 +101,20 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
 }
 
 bool ShaderObject::loadSource(std::string fileName) {
-    FILE* file;
-    char* fileContent = NULL;
+    FILE* file = 0;
+    char* fileContent = 0;
     long len;
 
     if (fileName.length() > 0) {
-        OPEN_FILE(file, fileName.c_str(), "rb");
-        if (file != NULL) {
+        std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
+        for (size_t i=0; i<shaderSearchPaths.size(); i++) {
+            OPEN_FILE(file, (shaderSearchPaths[i]+"/"+fileName).c_str(), "rb");
+            if (file) {
+                absoluteFileName_ = shaderSearchPaths[i]+"/"+fileName;
+                break;
+            }
+        }
+        if (file) {
             fseek(file, 0L, SEEK_END);
             len = ftell(file);
             fseek(file, 0L, SEEK_SET);

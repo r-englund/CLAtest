@@ -17,7 +17,9 @@ public:
     enum InvalidationLevel {
         VALID,
         INVALID_OUTPUT,
-        INVALID_RESOURCES
+        INVALID_RESOURCES,
+        INVALID_PROGRAM=INVALID_RESOURCES, // deprecated
+        INVALID_RENDERING=INVALID_OUTPUT // deprecated
     };
 
     void addProperty(Property* property);

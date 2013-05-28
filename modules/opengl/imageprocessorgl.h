@@ -23,6 +23,8 @@ public:
 protected:
     std::string programFileName_;
     Shader* program_;
+
+    vec2 computeDepthRange(ImageInport* inport);
 };
 
 } // namespace

@@ -54,6 +54,7 @@ public:
     OptionPropertyString(std::string identifier, std::string displayName, std::string value,
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
+    void addOption(std::string optionIdentifier, std::string optionDisplayName);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };

@@ -371,7 +371,6 @@ void OpenGLInfo::retrieveStaticInfo(){
 }
 
 void OpenGLInfo::retrieveDynamicInfo(){
-
 }
 
 void OpenGLInfo::rebuildGLSLHeader(){
@@ -394,6 +393,12 @@ void OpenGLInfo::rebuildGLSLHeader(){
 
     if (getMaxProgramLoopCount() > 0){
         currentGlobalGLSLHeader_ += "#define MAX_PROGRAM_LOOP_COUNT " + toString(getMaxProgramLoopCount()) + "\n";
+    }
+
+    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 130) {
+        currentGlobalGLSLHeader_ += "out vec4 FragData0;\n";
+    } else {
+        currentGlobalGLSLHeader_ += "#define FragData0 gl_FragColor\n";
     }
 }
 

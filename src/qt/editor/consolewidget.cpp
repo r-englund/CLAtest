@@ -1,3 +1,5 @@
+#include <QMenu>
+#include <QTextCursor>
 #include <QVBoxLayout>
 
 #include <inviwo/qt/editor/consolewidget.h>
@@ -14,10 +16,22 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : InviwoDockWidget(tr("Console"), 
     textField_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setWidget(textField_);
 
+    textField_->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(textField_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+
     LogCentral::instance()->registerLogger(this);
 }
 
 ConsoleWidget::~ConsoleWidget() {}
+
+void ConsoleWidget::showContextMenu(const QPoint& pos) {
+    QMenu* menu = textField_->createStandardContextMenu();
+    QAction* clearAction = menu->addAction("Clear console");
+    menu->addAction(clearAction);
+    QAction* result = menu->exec(QCursor::pos());
+    if (result == clearAction) textField_->clear();
+    delete menu;
+}
 
 void ConsoleWidget::log(std::string logSource, unsigned int logLevel, const char* fileName,
                         const char* functionName, int lineNumber, std::string logMsg) {
@@ -37,16 +51,17 @@ void ConsoleWidget::log(std::string logSource, unsigned int logLevel, const char
             std::ostringstream lineNumberStr;
             lineNumberStr << lineNumber;
             message = QString::fromStdString("(" + logSource + ") [" + std::string(fileName) +
-                ", " + lineNumberStr.str() + "]: " + logMsg);
+                                             ", " + lineNumberStr.str() + "]: " + logMsg);
             break;
         }
         default:
             textField_->setTextColor(infoTextColor_);
             message = QString::fromStdString("(" + logSource + ") " + logMsg);
-            //textField_->append(QString::fromStdString(logSource + ": " + logMsg)); 
     }
-    textField_->append(message); 
-
+    textField_->append(message);
+    QTextCursor c =  textField_->textCursor();
+    c.movePosition(QTextCursor::End);
+    textField_->setTextCursor(c);
 }
 
 } // namespace

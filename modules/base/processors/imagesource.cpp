@@ -31,12 +31,12 @@ void ImageSource::deinitialize() {
 void ImageSource::process() {
 	Image* outImage = outport_.getData(); 
     if (outImage){
-        ImageDisk *outImageDisk_ = outImage->getEditableRepresentation<ImageDisk>();
-        if (!outImageDisk_ || outImageDisk_->getSourceFile() != imageFileName_.get()){ 
-            outImageDisk_ = new ImageDisk(imageFileName_.get());
+        ImageDisk* outImageDisk = outImage->getEditableRepresentation<ImageDisk>();
+        if (!outImageDisk || outImageDisk->getSourceFile() != imageFileName_.get()){ 
+            outImageDisk = new ImageDisk(imageFileName_.get());
         }
         outImage->clearRepresentations();
-        outImage->addRepresentation(outImageDisk_);
+        outImage->addRepresentation(outImageDisk);
     }
 }
 
