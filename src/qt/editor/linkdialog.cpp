@@ -36,14 +36,20 @@ static const int propertyLabelHeight = 12;
 DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color) :
                          CurveGraphicsItem(startPoint, endPoint, color) {
      setZValue(LINKDIALOG_CONNECTION_GRAPHICSITEM_DEPTH);
-
-     QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
-     shadowEffect->setOffset(3.0);
-     shadowEffect->setBlurRadius(3.0);    
-     setGraphicsEffect(shadowEffect);
 }
 
 DialogCurveGraphicsItem::~DialogCurveGraphicsItem() { }
+
+QPainterPath DialogCurveGraphicsItem::obtainCurvePath() const {    
+    float delta = endPoint_.x()-startPoint_.x();
+    QPointF ctrlPoint1 = QPointF(startPoint_.x()+delta/4.0, startPoint_.y());
+    QPointF ctrlPoint2 = QPointF(endPoint_.x()-delta/4.0, endPoint_.y());    
+
+    QPainterPath bezierCurve;
+    bezierCurve.moveTo(startPoint_);
+    bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint_);
+    return bezierCurve;
+}
 
 void DialogCurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
     CurveGraphicsItem::paint(p, options, widget);

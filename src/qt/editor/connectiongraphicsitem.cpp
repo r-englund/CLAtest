@@ -24,13 +24,7 @@ QPainterPath CurveGraphicsItem::obtainCurvePath() const {
     float delta = endPoint_.y()-startPoint_.y();
     
     QPointF ctrlPoint1 = QPointF(startPoint_.x(), endPoint_.y()-delta/4.0);
-    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y()+delta/4.0);
-
-    if (1==2) {//!verticalLayout_) {
-        delta = endPoint_.x()-startPoint_.x();
-        ctrlPoint1 = QPointF(startPoint_.x()+delta/4.0, startPoint_.y());
-        ctrlPoint2 = QPointF(endPoint_.x()-delta/4.0, endPoint_.y());
-    }
+    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y()+delta/4.0);    
 
     QPainterPath bezierCurve;
     bezierCurve.moveTo(startPoint_);

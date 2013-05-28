@@ -38,8 +38,6 @@ public:
 
 protected:
     virtual QPainterPath obtainCurvePath() const;
-
-private:
     QPointF startPoint_;
     QPointF endPoint_;
 

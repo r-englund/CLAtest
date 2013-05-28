@@ -39,7 +39,8 @@ public:
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkDialogCurveGraphicsItemType };
     int type() const  {return Type; }
-
+protected:
+    virtual QPainterPath obtainCurvePath() const;
 };
 
 class LinkDialogPropertyGraphicsItem;
