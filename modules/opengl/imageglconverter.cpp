@@ -17,8 +17,6 @@ DataRepresentation* ImageRAM2GLConverter::convert(DataRepresentation* source) {
     uvec2 dim = imageRepresentation->getDimension();
 
     Texture2D* texture = new Texture2D(uvec2(dim.x, dim.y), getGLFormats()->getGLFormat(imageRepresentation->getDataFormatId()), GL_LINEAR);
-    texture->setWidth(dim.x);
-    texture->setHeight(dim.y);
     texture->upload(data);
 
     if (imageRepresentation){       

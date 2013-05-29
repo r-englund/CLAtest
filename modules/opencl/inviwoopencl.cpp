@@ -91,168 +91,305 @@ namespace cl {
 
 namespace inviwo {
 
-    OpenCL::OpenCL() {
-        initialize(true);
-    }
+OpenCL::OpenCL() {
+    initialize(true);
+}
 
-    void OpenCL::initialize(bool glSharing) {
-        cl_int error = CL_SUCCESS;
-        try {
-            std::vector<cl::Platform> platforms;
-            cl::Platform::get(&platforms);
-            if (platforms.size() == 0) {
-                std::cout << "No OpenCL platforms found" << std::endl;
-                return;
-            }
-
-            cl::Platform platform;
-            getBestGPUDevice(gpuDevice_, platform);
-            std::vector<cl_context_properties> properties;
-            if(glSharing) 
-                properties = getGLSharingContextProperties();
-            cl_context_properties platformProperties[] = {CL_CONTEXT_PLATFORM, (cl_context_properties)platform(), 0};
-            properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
-            try
-            {
-                gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
-            }
-            catch (cl::Error&)
-            {
-                LogError("ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
-                properties.clear();
-                properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
-                gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
-                LogError("Succeeded creating OpenCL without OpenGL sharing. ");
-
-            }
-
-            //OpenCLInfo::printDeviceInfo(gpuDevice_);
-
-            cl_command_queue_properties queueProperties = 0;
-            cl_command_queue_properties supportedQueueProperties;
-            gpuDevice_.getInfo(CL_DEVICE_QUEUE_PROPERTIES, &supportedQueueProperties);
-            #if IVW_PROFILING
-                if ( supportedQueueProperties & CL_QUEUE_PROFILING_ENABLE)
-                    queueProperties |= CL_QUEUE_PROFILING_ENABLE;
-            #endif
-            synchronosGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
-            if ( supportedQueueProperties & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE)
-                queueProperties |= CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
-            asyncGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
-
-        } catch (cl::Error& err) {
-            
-            LogError("ERROR: " << err.what() << "(" << err.err() << "), " << cl::errorCodeToString(err.err()) << std::endl);
-            
-        }
-    }
-    bool OpenCL::isValidImageFormat(const cl::Context& context, const cl::ImageFormat& format) {
-        std::vector<cl::ImageFormat> formats;
-        context.getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
-        for(::size_t i = 0; i < formats.size(); ++i) {
-            if ( formats[i].image_channel_order == format.image_channel_order && formats[i].image_channel_data_type == format.image_channel_data_type) {
-                return true;
-            }
-        }
-        return false;
-    }
-    bool OpenCL::isValidVolumeFormat(const cl::Context& context, const cl::ImageFormat& format) {
-        std::vector<cl::ImageFormat> formats;
-        context.getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
-        for(::size_t i = 0; i < formats.size(); ++i) {
-            if ( formats[i].image_channel_order == format.image_channel_order && formats[i].image_channel_data_type == format.image_channel_data_type) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /*! \brief Get the device that has most compute units.
-     *  
-     *  @param bestDevice Set to found device, if found.
-     *  @param onPlatform Set to platform that device exist on, if found.
-     *  \return True if any device found, false otherwise. 
-     */
-    bool OpenCL::getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform) {
-        bool foundDevice = false;
+void OpenCL::initialize(bool glSharing) {
+    cl_int error = CL_SUCCESS;
+    try {
         std::vector<cl::Platform> platforms;
         cl::Platform::get(&platforms);
-        cl_uint maxComputeUnits = 0;
-        // Search for best device
-        for(::size_t i = 0; i < platforms.size(); ++i) {
-            std::vector<cl::Device> devices;
-            platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
-            for(::size_t j = 0; j < devices.size(); ++j) {
-                cl_uint tmpMaxComputeUnits;
-                devices[j].getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &tmpMaxComputeUnits);
-                if( maxComputeUnits < tmpMaxComputeUnits ) {
-                    bestDevice = devices[j];
-                    onPlatform = platforms[i];
-                    maxComputeUnits = tmpMaxComputeUnits;
-                    foundDevice = true;
-                }
+        if (platforms.size() == 0) {
+            std::cout << "No OpenCL platforms found" << std::endl;
+            return;
+        }
+
+        cl::Platform platform;
+        getBestGPUDevice(gpuDevice_, platform);
+        std::vector<cl_context_properties> properties;
+        if(glSharing) 
+            properties = getGLSharingContextProperties();
+        cl_context_properties platformProperties[] = {CL_CONTEXT_PLATFORM, (cl_context_properties)platform(), 0};
+        properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
+        try
+        {
+            gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
+        }
+        catch (cl::Error&)
+        {
+            LogError("ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
+            properties.clear();
+            properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
+            gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
+            LogError("Succeeded creating OpenCL without OpenGL sharing. ");
+
+        }
+
+        //OpenCLInfo::printDeviceInfo(gpuDevice_);
+
+        cl_command_queue_properties queueProperties = 0;
+        cl_command_queue_properties supportedQueueProperties;
+        gpuDevice_.getInfo(CL_DEVICE_QUEUE_PROPERTIES, &supportedQueueProperties);
+        #if IVW_PROFILING
+            if ( supportedQueueProperties & CL_QUEUE_PROFILING_ENABLE)
+                queueProperties |= CL_QUEUE_PROFILING_ENABLE;
+        #endif
+        synchronosGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
+        if ( supportedQueueProperties & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE)
+            queueProperties |= CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
+        asyncGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
+
+    } catch (cl::Error& err) {
+            
+        LogError("ERROR: " << err.what() << "(" << err.err() << "), " << cl::errorCodeToString(err.err()) << std::endl);
+            
+    }
+}
+bool OpenCL::isValidImageFormat(const cl::Context& context, const cl::ImageFormat& format) {
+    std::vector<cl::ImageFormat> formats;
+    context.getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
+    for(::size_t i = 0; i < formats.size(); ++i) {
+        if ( formats[i].image_channel_order == format.image_channel_order && formats[i].image_channel_data_type == format.image_channel_data_type) {
+            return true;
+        }
+    }
+    return false;
+}
+bool OpenCL::isValidVolumeFormat(const cl::Context& context, const cl::ImageFormat& format) {
+    std::vector<cl::ImageFormat> formats;
+    context.getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
+    for(::size_t i = 0; i < formats.size(); ++i) {
+        if ( formats[i].image_channel_order == format.image_channel_order && formats[i].image_channel_data_type == format.image_channel_data_type) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/*! \brief Get the device that has most compute units.
+    *  
+    *  @param bestDevice Set to found device, if found.
+    *  @param onPlatform Set to platform that device exist on, if found.
+    *  \return True if any device found, false otherwise. 
+    */
+bool OpenCL::getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform) {
+    bool foundDevice = false;
+    std::vector<cl::Platform> platforms;
+    cl::Platform::get(&platforms);
+    cl_uint maxComputeUnits = 0;
+    // Search for best device
+    for(::size_t i = 0; i < platforms.size(); ++i) {
+        std::vector<cl::Device> devices;
+        platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
+        for(::size_t j = 0; j < devices.size(); ++j) {
+            cl_uint tmpMaxComputeUnits;
+            devices[j].getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &tmpMaxComputeUnits);
+            if( maxComputeUnits < tmpMaxComputeUnits ) {
+                bestDevice = devices[j];
+                onPlatform = platforms[i];
+                maxComputeUnits = tmpMaxComputeUnits;
+                foundDevice = true;
             }
         }
-        return foundDevice;
     }
-    void OpenCL::printBuildError(const std::vector<cl::Device>& devices, const cl::Program& program, const std::string& filename) {
-        for(::size_t i = 0; i < devices.size(); ++i) {
-             cl_build_status status = program.getBuildInfo<CL_PROGRAM_BUILD_STATUS>(devices[i]);
-             // Houston, we have a problem
-             if(status == CL_BUILD_ERROR) {
-                 std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[i]);
-                LogErrorCustom("OpenCL", filename << " build error:" << std::endl << buildLog);
-             }
-        }
+    return foundDevice;
+}
+void OpenCL::printBuildError(const std::vector<cl::Device>& devices, const cl::Program& program, const std::string& filename) {
+    for(::size_t i = 0; i < devices.size(); ++i) {
+            cl_build_status status = program.getBuildInfo<CL_PROGRAM_BUILD_STATUS>(devices[i]);
+            // Houston, we have a problem
+            if(status == CL_BUILD_ERROR) {
+                std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[i]);
+            LogErrorCustom("OpenCL", filename << " build error:" << std::endl << buildLog);
+            }
     }
-    void OpenCL::printBuildError(const cl::Device& device, const cl::Program& program, const std::string& filename) {
-        printBuildError(std::vector<cl::Device>(1, device), program, filename);
-    }
+}
+void OpenCL::printBuildError(const cl::Device& device, const cl::Program& program, const std::string& filename) {
+    printBuildError(std::vector<cl::Device>(1, device), program, filename);
+}
 
-    std::vector<cl_context_properties> OpenCL::getGLSharingContextProperties() {
+std::vector<cl_context_properties> OpenCL::getGLSharingContextProperties() {
 #if WIN32
-        cl_context_properties props[] = {
-            CL_GL_CONTEXT_KHR, (cl_context_properties) wglGetCurrentContext(), 
-            CL_WGL_HDC_KHR, (cl_context_properties) wglGetCurrentDC()};
+    cl_context_properties props[] = {
+        CL_GL_CONTEXT_KHR, (cl_context_properties) wglGetCurrentContext(), 
+        CL_WGL_HDC_KHR, (cl_context_properties) wglGetCurrentDC()};
 #elif __APPLE__
-        CGLContextObj glContext = CGLGetCurrentContext();
-        CGLShareGroupObj shareGroup = CGLGetShareGroup(glContext);
-        cl_context_properties props[] = {
-            CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE, (cl_context_properties)shareGroup};
+    CGLContextObj glContext = CGLGetCurrentContext();
+    CGLShareGroupObj shareGroup = CGLGetShareGroup(glContext);
+    cl_context_properties props[] = {
+        CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE, (cl_context_properties)shareGroup};
 #else // LINUX
-        cl_context_properties props[] = {
-            CL_GL_CONTEXT_KHR, (cl_context_properties) glXGetCurrentContext(),
-            CL_GLX_DISPLAY_KHR, (cl_context_properties) glXGetCurrentDisplay()};
+    cl_context_properties props[] = {
+        CL_GL_CONTEXT_KHR, (cl_context_properties) glXGetCurrentContext(),
+        CL_GLX_DISPLAY_KHR, (cl_context_properties) glXGetCurrentDisplay()};
 #endif
-        return std::vector<cl_context_properties>(props, props + sizeof(props)/sizeof(cl_context_properties));
+    return std::vector<cl_context_properties>(props, props + sizeof(props)/sizeof(cl_context_properties));
+}
+
+cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string& defines, const cl::CommandQueue& queue) 
+{
+    cl::Context context = queue.getInfo<CL_QUEUE_CONTEXT>();
+    cl::Device device = queue.getInfo<CL_QUEUE_DEVICE>();
+    // build the program from the source in the file
+    std::ifstream file(fileName.c_str());
+    std::string prog(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+    cl::Program::Sources source( 1, std::make_pair(prog.c_str(), prog.length()+1));
+    cl::Program program(context, source);
+    try {
+        program.build(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()));
+        std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device);
+        // Output log if it contains any info
+        if(buildLog.size() > 1)
+            LogInfoCustom("OpenCL", fileName << " build info:" << std::endl << buildLog);
+    } catch (cl::Error& e) {
+        OpenCL::printBuildError(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()), program);
+        throw e;
     }
+    return program;
+}
 
-    cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string& defines, const cl::CommandQueue& queue) 
-    {
-        cl::Context context = queue.getInfo<CL_QUEUE_CONTEXT>();
-        cl::Device device = queue.getInfo<CL_QUEUE_DEVICE>();
-        // build the program from the source in the file
-        std::ifstream file(fileName.c_str());
-        std::string prog(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
-        cl::Program::Sources source( 1, std::make_pair(prog.c_str(), prog.length()+1));
-        cl::Program program(context, source);
-        try {
-            program.build(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()));
-            std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device);
-            // Output log if it contains any info
-            if(buildLog.size() > 1)
-                LogInfoCustom("OpenCL", fileName << " build info:" << std::endl << buildLog);
-        } catch (cl::Error& e) {
-            OpenCL::printBuildError(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()), program);
-            throw e;
-        }
-        return program;
+cl::Program OpenCL::buildProgram( const std::string& fileName, const std::string& defines /*= ""*/ )
+{
+    return OpenCL::buildProgram(fileName, defines, OpenCL::getInstance()->getQueue());
+}
+
+
+cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
+{   
+    // Difference between SNORM/UNORM and SIGNED/UNSIGNED INT
+    // SNORM/UNORM:
+    // Each channel component is a normalized integer value
+    // SIGNED/UNSIGNED:
+    // Each channel component is an unnormalized integer value
+
+    // From the specification (note that CL_Rx, CL_RGx and CL_RGBx are optional):
+    // If the image channel order is CL_A, CL_INTENSITY, CL_Rx, CL_RA, CL_RGx, 
+    // CL_RGBx, CL_ARGB, CL_BGRA, or CL_RGBA, the border color is (0.0f, 0.0f, 
+    // 0.0f, 0.0f).
+    // If the image channel order is CL_R, CL_RG, CL_RGB, or CL_LUMINANCE, the border 
+    // color is (0.0f, 0.0f, 0.0f, 1.0f).
+
+    // CL_INTENSITY maps single value I to (I, I, I, I)
+
+    cl::ImageFormat clFormat;
+    switch (format) {
+    case NOT_SPECIALIZED:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case FLOAT16:
+        clFormat = cl::ImageFormat(CL_INTENSITY, CL_HALF_FLOAT);  break;
+    case FLOAT32:
+        clFormat = cl::ImageFormat(CL_INTENSITY, CL_FLOAT); break;
+    case FLOAT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case INT8:
+        clFormat = cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT8); break;
+    case INT12:
+        clFormat = cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT16); break;
+    case INT16:
+        clFormat = cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT16); break;
+    case INT32:
+        clFormat = cl::ImageFormat(CL_R, CL_SIGNED_INT32); break;
+    case INT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case UINT8:
+        clFormat = cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT8);  break;
+    case UINT12:
+        clFormat = cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT16); break;
+    case UINT16:
+        clFormat = cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT16); break;
+    case UINT32:
+        clFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32); break;
+    case UINT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec2FLOAT16:
+        clFormat = cl::ImageFormat(CL_RG, CL_HALF_FLOAT);  break;
+    case Vec2FLOAT32:
+        clFormat = cl::ImageFormat(CL_RG, CL_FLOAT);  break;
+    case Vec2FLOAT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec2INT8:
+        clFormat = cl::ImageFormat(CL_RG, CL_SNORM_INT8);  break;
+    case Vec2INT12:
+        clFormat = cl::ImageFormat(CL_RG, CL_SNORM_INT16);  break;
+    case Vec2INT16:
+        clFormat = cl::ImageFormat(CL_RG, CL_SNORM_INT16);  break;
+    case Vec2INT32:
+        clFormat = cl::ImageFormat(CL_RG, CL_SIGNED_INT32);  break;
+    case Vec2INT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec2UINT8:
+        clFormat = cl::ImageFormat(CL_RG, CL_UNORM_INT8);  break;
+    case Vec2UINT12:
+        clFormat = cl::ImageFormat(CL_RG, CL_UNORM_INT16);  break;
+    case Vec2UINT16:
+        clFormat = cl::ImageFormat(CL_RG, CL_UNORM_INT16);  break;
+    case Vec2UINT32:
+        clFormat = cl::ImageFormat(CL_RG, CL_UNSIGNED_INT32);  break;
+    case Vec2UINT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3FLOAT16:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3FLOAT32:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3FLOAT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3INT8:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3INT12:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3INT16:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3INT32:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3INT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3UINT8:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3UINT12:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3UINT16:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3UINT32:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3UINT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec4FLOAT16:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_HALF_FLOAT);  break;
+    case Vec4FLOAT32:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_FLOAT);  break;
+    case Vec4FLOAT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec4INT8:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_SNORM_INT8);  break;
+    case Vec4INT12:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_SNORM_INT16);  break;
+    case Vec4INT16:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_SNORM_INT16);  break;
+    case Vec4INT32:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_SIGNED_INT32);  break;
+    case Vec4INT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec4UINT8:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_UNORM_INT8);  break; // TODO: Find out why CL_UNORM_INT8 does not work
+    case Vec4UINT12:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_UNORM_INT16);  break;
+    case Vec4UINT16:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_UNORM_INT16);  break;
+    case Vec4UINT32:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_UNSIGNED_INT32);  break;
+    case Vec4UINT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    default:
+        // Should not be able to reach here
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Format not implmented yet"); break;
     }
+#ifdef DEBUG
+    if (!inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::getInstance()->getContext(), clFormat)) {
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "OpenCL device does not support format");
+    };
+#endif 
 
-    cl::Program OpenCL::buildProgram( const std::string& fileName, const std::string& defines /*= ""*/ )
-    {
-        return OpenCL::buildProgram(fileName, defines, OpenCL::getInstance()->getQueue());
-    }
-
-
+    return clFormat;
+}
 }

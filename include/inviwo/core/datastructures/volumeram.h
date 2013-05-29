@@ -22,6 +22,17 @@ protected:
     void* data_;
 };
 
+
+/**
+ * Factory for volumes.
+ * Creates an VolumeRAM with data type specified by format. 
+ * 
+ * @param dimension of volume to create.
+ * @param format of volume to create.
+ * @return NULL if no valid format was specified.
+ */
+IVW_CORE_API VolumeRAM* createVolume(const uvec3& dimension, const DataFormatBase& format);
+
 } // namespace
 
 #endif // IVW_VOLUMERAM_H

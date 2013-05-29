@@ -35,7 +35,6 @@ void OpenCLModule::initialize() {
 }
 
 void OpenCLModule::deinitialize() {
-    // Initialize OpenCL
     
 }
 

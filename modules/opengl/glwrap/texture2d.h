@@ -33,8 +33,8 @@ public:
     /**
      * Download texture data to preallocated memory.
      * 
-     * \param data (void *) Preallocated pointer that will contain texture data after function returns.
-     * \return (void)
+     * @param data (void *) Preallocated pointer that will contain texture data after function returns.
+     * @return (void)
      */
     void download(void* data); 
 

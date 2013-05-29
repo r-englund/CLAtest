@@ -4,7 +4,10 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
+#include <inviwo/core/util/formats.h>
+
 #include <modules/opencl/cl.hpp>
+#include <modules/opencl/glmcl.h>
 #include <modules/opencl/openclmoduledefine.h>
 
 namespace cl{
@@ -134,7 +137,8 @@ private:
 };
 
 
-
+// Image formats for OpenCL
+cl::ImageFormat dataFormatToCLImageFormat(DataFormatId format);
 
 
 }
