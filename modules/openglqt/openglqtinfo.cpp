@@ -13,7 +13,6 @@ OpenglQtInfo::~OpenglQtInfo() {}
 
 void OpenglQtInfo::printInfo(){
     //Qt General Info
-    LogInfo("Qt Version: " << "0.0.0");
 }
 
 } // namespace
