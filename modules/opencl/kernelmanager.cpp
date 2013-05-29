@@ -12,7 +12,17 @@ KernelManager::KernelManager() {
 
 KernelManager::~KernelManager()
 {
-
+    for(ProgramMap::iterator programIt = programs_.begin(); programIt != programs_.end(); ++programIt) {
+        InviwoApplication::getRef().stopFileObservation(programIt->first);
+    }
+    for(KernelMap::iterator kernelIt = kernels_.begin(); kernelIt != kernels_.end(); ++kernelIt) {
+        delete kernelIt->second; 
+        kernelIt->second = NULL;
+    }
+    for(ProgramMap::iterator programIt = programs_.begin(); programIt != programs_.end(); ++programIt) {
+        delete programIt->second.program;
+        programIt->second.program = NULL;
+    }
 }
 
 cl::Program* KernelManager::buildProgram( const std::string& fileName, const std::string& defines /*= ""*/ )

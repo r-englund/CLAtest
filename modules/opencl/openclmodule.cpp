@@ -2,6 +2,7 @@
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmodule.h>
 #include <modules/opencl/openclinfo.h>
+#include <modules/opencl/processors/grayscalecl.h>
 #include <modules/opencl/processors/volumeraycastercl.h>
 #include <modules/opencl/volumeclconverter.h>
 #include <modules/opencl/kernelmanager.h>
@@ -26,7 +27,9 @@ OpenCLModule::OpenCLModule() : InviwoModule() {
     
     addResourceInfo(new OpenCLInfo());
 
+    registerProcessor(GrayscaleCL);
     registerProcessor(VolumeRaycasterCL);
+    
 }
 
 void OpenCLModule::initialize() {

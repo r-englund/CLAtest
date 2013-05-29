@@ -1,6 +1,8 @@
 #include <inviwo/core/datastructures/image.h>
 #include <inviwo/core/datastructures/imagerepresentation.h>
 #include <inviwo/core/datastructures/imagedisk.h>
+#include <inviwo/core/datastructures/imageram.h>
+
 namespace inviwo {
 
 Image::Image() : Data2D(uvec2(256,256)) {}
@@ -52,7 +54,8 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
 }
 
 void Image::createDefaultRepresentation() const{
-    representations_.push_back(new ImageDisk());
+    //representations_.push_back(new ImageDisk());
+    representations_.push_back(new ImageRAMVec4uint8());
 }
 
 } // namespace

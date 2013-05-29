@@ -9,7 +9,9 @@ ImageGL::ImageGL()
     : ImageRepresentation(uvec2(256,256), DataVec4UINT8())
 {
     colorTexture_ = new Texture2D(dimensions_, GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
+    colorTexture_->upload(NULL);
     depthTexture_ = new Texture2D(dimensions_, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT16, GL_FLOAT, GL_LINEAR);
+    depthTexture_->upload(NULL);
     initialize();
 }
 
@@ -17,7 +19,9 @@ ImageGL::ImageGL(uvec2 dimensions)
     : ImageRepresentation(dimensions, DataVec4UINT8())
 {
     colorTexture_ = new Texture2D(dimensions_, GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
+    colorTexture_->upload(NULL);
     depthTexture_ = new Texture2D(dimensions_, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT16, GL_FLOAT, GL_LINEAR);
+    depthTexture_->upload(NULL);
     initialize();
 }
 
@@ -26,6 +30,7 @@ ImageGL::ImageGL(Texture2D* colorTexture, uvec2 dimensions)
 {
     colorTexture_ = colorTexture;
     depthTexture_ = new Texture2D(dimensions_, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT16, GL_FLOAT, GL_LINEAR);
+    depthTexture_->upload(NULL);
     initialize();
 }
 
@@ -43,10 +48,8 @@ void ImageGL::initialize() {
     frameBufferObject_ = new FrameBufferObject();
     frameBufferObject_->activate();
     colorTexture_->bind();
-    colorTexture_->upload(NULL);
     frameBufferObject_->attachTexture(colorTexture_);
     depthTexture_->bind();
-    depthTexture_->upload(NULL);
     frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT);
     frameBufferObject_->deactivate();
     frameBufferObject_->checkStatus();
