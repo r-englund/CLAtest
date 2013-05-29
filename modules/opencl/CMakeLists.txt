@@ -18,6 +18,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.h
     ${IVW_MODULE_DIR}/opencl/volumecl.h
     ${IVW_MODULE_DIR}/opencl/volumeclconverter.h
+	${IVW_MODULE_DIR}/opencl/cl/grayscale.cl
 	${IVW_MODULE_DIR}/opencl/cl/img_resize.cl
 	${IVW_MODULE_DIR}/opencl/cl/volumeraycaster.cl
 )

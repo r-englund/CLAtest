@@ -1,4 +1,4 @@
-#include "GrayscaleCL.h"
+#include "grayscalecl.h"
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/imagecl.h>
 #include <modules/opencl/volumecl.h>
@@ -7,7 +7,7 @@
 namespace inviwo {
 
 ProcessorClassName(GrayscaleCL, "GrayscaleCL"); 
-ProcessorCategory(GrayscaleCL, "Ray Caster");
+ProcessorCategory(GrayscaleCL, "Image");
 ProcessorCodeState(GrayscaleCL, CODE_STATE_EXPERIMENTAL);
 
 GrayscaleCL::GrayscaleCL()
