@@ -11,7 +11,7 @@
 #include <inviwo/qt/editor/transferfunctioneditor.h>
 
 #include <QCheckBox>
-#include <qcolordialog>
+#include <QColorDialog>
 #include <QGradientStops>
 #include <QGraphicsScene>
 #include <QGraphicsView>

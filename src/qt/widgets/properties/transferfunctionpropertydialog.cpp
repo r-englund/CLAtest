@@ -27,6 +27,8 @@ namespace inviwo {
 		editorview_->setFixedSize(257, 102);
 		editorview_->scale(1, -1);
 		editorview_->setScene(editor_);
+		editorview_->setDragMode(QGraphicsView::RubberBandDrag);
+
 
 		paintscene_ = new QGraphicsScene(this);
 		paintview_ = new QGraphicsView(this);
