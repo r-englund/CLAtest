@@ -1,7 +1,7 @@
-#include "mod_sampler3d.frag"
-#include "mod_gradients.frag"
-#include "mod_classification.frag"
-#include "mod_shading.frag"
+#include "modules/mod_sampler3d.frag"
+#include "modules/mod_gradients.frag"
+#include "modules/mod_classification.frag"
+#include "modules/mod_shading.frag"
 
 uniform sampler2D entryTex_;
 uniform sampler2D exitTex_;
