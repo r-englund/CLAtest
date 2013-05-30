@@ -109,7 +109,6 @@ bool ShaderObject::loadSource(std::string fileName) {
         std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
         for (size_t i=0; i<shaderSearchPaths.size(); i++) {
             OPEN_FILE(file, (shaderSearchPaths[i]+"/"+fileName).c_str(), "rb");
-            LogInfo("Trying to open: " << shaderSearchPaths[i] << "/" << fileName);
             if (file) {
                 absoluteFileName_ = shaderSearchPaths[i]+"/"+fileName;
                 break;
