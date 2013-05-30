@@ -16,6 +16,7 @@ public:
     virtual ~Shader();
 
     void link();
+    void rebuild();
 
     ShaderObject* getVertexShaderObject() { return vertexShaderObject_; }
     ShaderObject* getFragmentShaderObject() { return fragmentShaderObject_; }

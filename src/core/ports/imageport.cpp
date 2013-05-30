@@ -63,7 +63,7 @@ void ImageOutport::changeDimensions(uvec2 dimensions) {
     if (data_) 
         data_->resize(dimensions_);
     
-    invalidate();
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
@@ -136,7 +136,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
 
     //Set largest data
     setLargestImageData();
-    invalidate();    
+    invalidate(PropertyOwner::INVALID_OUTPUT);    
 }
 
 uvec2 ImageOutport::getDimensions() const{ 

@@ -30,8 +30,8 @@ public:
      * @return 
      */
     StringProperty(std::string identifier, std::string displayName, std::string value,
-                   PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                   PropertySemantics::Type semantics = PropertySemantics::Default);
+                   PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                   PropertySemantics::Type semantics=PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };

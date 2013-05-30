@@ -18,9 +18,9 @@ bool Outport::isConnectedTo(Inport* port) const {
     return !(std::find(connectedInports_.begin(),connectedInports_.end(),port)==connectedInports_.end());
 }
 
-void Outport::invalidate() {
+void Outport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     for (size_t i=0; i<connectedInports_.size(); i++)
-        connectedInports_[i]->invalidate();
+        connectedInports_[i]->invalidate(invalidationLevel);
 }
 
 template <typename T>

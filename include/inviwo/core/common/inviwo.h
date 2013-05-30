@@ -60,14 +60,14 @@ typedef glm::quat quat;
 
 #include <inviwo/core/io/serialization/ivwserialization.h>
 
-#if defined(IVW_DEBUG)
-#define ivwDeprecatedMethod(newFunction) \
-    std::cout << __FILE__ << "(" << __LINE__ << "): " << __FUNCTION__ << " is deprecated."; \
-    std::cout << "Use " << newFunction << " instead.";
-#else
-#define ivwDeprecationWarning()
-#endif
+//#define IVW_DEPRECATION_WARNINGS
 
-//using namespace voreen;
+#if defined(IVW_DEPRECATION_WARNINGS)
+#define ivwDeprecatedMethod(newFunction) \
+    std::cout << __FUNCTION__ << " is deprecated. Use " << newFunction << " instead." << std::endl; \
+    std::cout << "(" << __FILE__ << " - Line " << __LINE__ << ")." << std::endl;
+#else
+#define ivwDeprecatedMethod(newFunction)
+#endif
 
 #endif // IVW_INVIWO_H

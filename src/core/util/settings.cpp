@@ -13,7 +13,7 @@ void Settings::deinitialize() {
 }
 
 void Settings::invalidate() {
-    PropertyOwner::invalidate();
+    PropertyOwner::invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void Settings::serialize(IvwSerializer& s) const {

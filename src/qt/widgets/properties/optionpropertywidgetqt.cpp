@@ -19,13 +19,12 @@ void OptionPropertyWidgetQt::generateWidget() {
 }
 
 void OptionPropertyWidgetQt::fillComboBox() {
-    size_t size = property_->getOptionKeys().size();
-    for (size_t i=0; i < size; i++) {
-        comboBox_->addItem(QString::fromStdString(property_->getOptionKeys().at(i)));
+    for (int i=0; i<property_->numOptions(); i++) {
+        comboBox_->addItem(QString::fromStdString(property_->getOptionDisplayNames()[i]));
     }
 }
 void OptionPropertyWidgetQt::optionChanged() {
-    property_->setSelectedOption(comboBox_->currentText().toLocal8Bit().constData());
+    property_->setSelectedOption(comboBox_->currentIndex());
     emit modified();
 }
 
@@ -33,6 +32,5 @@ void OptionPropertyWidgetQt::updateFromProperty() {
     int index = property_->getSelectedOption();
     comboBox_->setCurrentIndex(index);
 }
-
 
 } // namespace

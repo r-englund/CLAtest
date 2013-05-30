@@ -64,10 +64,10 @@ protected:
     virtual void showAndHideProperties();
 
     /// Property defining where the output volume is to be stored.
-    TemplatedOptionProperty<VolumeLocation> limitingMemory_;
+    TemplateOptionProperty<VolumeLocation> limitingMemory_;
 
     /// Property defining maximum memory condition.
-    TemplatedOptionProperty<MaximumMemoryCondition> memUsageStrategy_;
+    TemplateOptionProperty<MaximumMemoryCondition> memUsageStrategy_;
 
     IntProperty memPercentage_;
     IntProperty brickSizeMem_;

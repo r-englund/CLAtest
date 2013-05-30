@@ -20,6 +20,8 @@ public:
     void initialize();
     void deinitialize();
 
+    virtual void initializeResources(); // reload shaders etc. here
+
 protected:
     std::string programFileName_;
     Shader* program_;

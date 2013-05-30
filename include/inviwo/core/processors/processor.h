@@ -71,14 +71,10 @@ public:
 
     bool allInportsConnected() const;
 
-    virtual bool isReady() { return allInportsConnected(); }
+    virtual bool isReady() const { return allInportsConnected(); }
 
-    // TODO: should validation mechanism be moved into PropertyOwner?
-    void invalidate();
-    bool isValid() { return PropertyOwner::isValid(); }
-    void setValid() { PropertyOwner::setValid(); }
-    InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
-    void initializeResources() {} // TODO: reload shaders etc. here
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void initializeResources() {} // reload shaders etc. here
 
     void showProgressBar() { showProgressBar_ = true; resetProgress(); }
     void hideProgressBar() { showProgressBar_ = false; resetProgress(); }
@@ -120,8 +116,6 @@ private:
     std::vector<MetaData*> metaData_; 
 
     Group<std::string, Port*> portDependencySets_;
-
-    InvalidationLevel invalidationLevel_;
 
     bool showProgressBar_;
     float progress_;

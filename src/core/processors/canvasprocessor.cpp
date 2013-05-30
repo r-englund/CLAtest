@@ -14,7 +14,6 @@ CanvasProcessor::CanvasProcessor()
 {
     addPort(inport_);
 
-    //snapshotButton_.onChange(this, &CanvasProcessor::createSnapshot);
     snapshotButton_.registerClassMemberFunction(this, &CanvasProcessor::createSnapshot);
 	addProperty(snapshotButton_);
 }
@@ -54,8 +53,8 @@ void CanvasProcessor::process() {
     canvas_->activate();
 }
 
-void CanvasProcessor::invalidate() {
-    PropertyOwner::invalidate();
+void CanvasProcessor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+    PropertyOwner::invalidate(invalidationLevel);
     if (canvas_ && canvas_->getNetworkEvaluator())
         canvas_->getNetworkEvaluator()->evaluate();
 }

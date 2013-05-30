@@ -31,7 +31,7 @@ public:
     mat4 projectionMatrix() const { return projectionMatrix_; }
     void setProjectionMatrix(float fovy, float aspect, float farPlane, float nearPlane);
 
-    void invalidate();
+    void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

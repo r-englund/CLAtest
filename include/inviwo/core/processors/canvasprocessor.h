@@ -20,7 +20,7 @@ public:
 
     void setCanvas(Canvas* canvas) { canvas_ = canvas; }
     Canvas* getCanvas() const { return canvas_; }
-    virtual void invalidate();
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     bool isEndProcessor() { return true; }
     

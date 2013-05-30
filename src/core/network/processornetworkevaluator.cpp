@@ -260,7 +260,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, Resiz
                 }                
                 
             }
-            if (invalidate) directPredecessors[i]->invalidate();
+            if (invalidate) directPredecessors[i]->invalidate(PropertyOwner::INVALID_OUTPUT);
             propagateResizeEvent(directPredecessors[i], resizeEvent);
         }
     }
@@ -310,7 +310,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     }
     // enable network evaluation again
     processorNetwork_->unlock();
-    if (invalidate) eventInitiator_->invalidate();
+    if (invalidate) eventInitiator_->invalidate(PropertyOwner::INVALID_OUTPUT);
     eventInitiator_ = 0;
 }
 
@@ -367,8 +367,8 @@ void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty, 
 
 void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty) {
     propertiesVisited_.clear();
-    //sourceProperty is considered to have the value already set. this value needs to be propagated.
-    //Transfer values from sourceProperty to its connected properties recursively
+    // sourceProperty is considered to have the value already set. this value needs to be propagated.
+    // transfer values from sourceProperty to its connected properties recursively
     propertiesVisited_.push_back(sourceProperty);
     evaluatePropertyLinks(sourceProperty, sourceProperty);
 }
@@ -420,7 +420,7 @@ void ProcessorNetworkEvaluator::evaluate() {
     for (size_t i=0; i<processorsSorted_.size(); i++) {
         if (!processorsSorted_[i]->isValid()) {
             // re-initialize resources (e.g., shaders) if necessary
-            if (processorsSorted_[i]->getInvalidationLevel() >= Processor::INVALID_RESOURCES)
+            if (processorsSorted_[i]->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
                 processorsSorted_[i]->initializeResources();
 
             // reset the progress indicator

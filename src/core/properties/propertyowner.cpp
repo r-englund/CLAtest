@@ -5,7 +5,7 @@
 namespace inviwo {
 
 PropertyOwner::PropertyOwner()
-    : invalid_(true) {}
+    : invalidationLevel_(PropertyOwner::VALID) {}
 
 PropertyOwner::~PropertyOwner() {
     properties_.clear();
@@ -28,16 +28,8 @@ Property* PropertyOwner::getPropertyByIdentifier(std::string identifier) {
     return 0;
 }
 
-void PropertyOwner::invalidate() {
-    invalid_ = true;
-}
-
-void PropertyOwner::setValid() {
-    invalid_ = false;
-}
-
-bool PropertyOwner::isValid() {
-    return (invalid_ == false);
+void PropertyOwner::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+    invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
 }
 
 void PropertyOwner::serialize(IvwSerializer& s) const {
@@ -50,13 +42,12 @@ void PropertyOwner::serialize(IvwSerializer& s) const {
 }
 
 void PropertyOwner::deserialize(IvwDeserializer& d) {
-
     /* 1) Vector deserialization does not allow
-    *     specification of comparision attribute string.
+    *     specification of comparison attribute string.
     *  2) But Map deserialization does allow 
     *     specification of comparision attribute string.
     *     (eg. "identifier" in this case).
-    *  3) Hence map deserialization is prefered here.
+    *  3) Hence map deserialization is preferred here.
     *  4) TODO: Vector can be made to behave like Map.
     *           But then it necessitates passing of two extra arguments.
     *           And they are list of attribute values, comparison attribute string.

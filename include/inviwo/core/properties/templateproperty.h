@@ -41,7 +41,8 @@ template <typename T>
 void TemplateProperty<T>::set(const T& value) {
     value_ = value;
     onChangeCallback_.invoke();
-    getOwner()->invalidate();
+    //FIXME: if set() is called before addProperty(), getOwner() will be 0
+    getOwner()->invalidate(getInvalidationLevel());
     updatePropertyWidgets();
 }
 

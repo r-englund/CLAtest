@@ -1,9 +1,10 @@
-uniform float depthMin_;
-uniform float depthMax_;
+uniform float minDepth_;
+uniform float maxDepth_;
 
 float normalizeDepth(float depth) {
-    float result = depth - depthMin_;
-    result /= (depthMax_ - depthMin_);
+    return depth;
+    float result = depth - minDepth_;
+    result /= (maxDepth_ - minDepth_);
     return result;
 }
 

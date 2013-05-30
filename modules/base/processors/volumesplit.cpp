@@ -13,12 +13,12 @@ ProcessorCodeState(VolumeSplit, CODE_STATE_EXPERIMENTAL);
 
 VolumeSplit::VolumeSplit()
     : Processor(),
-      limitingMemory_("memoryResource", "Limiting Memory Resource", "GPU (TextureGL)"),
-      memUsageStrategy_("maxMemCondition", "Memory Usage Strategy", "Percentage of Available Memory"),
+      limitingMemory_("memoryResource", "Limiting Memory Resource"),
+      memUsageStrategy_("maxMemCondition", "Memory Usage Strategy"),
       memPercentage_("percentageOfMem", "Percentage of Available Memory", 60, 1, 100),
       brickSizeMem_("brickSizeMem", "Brick Size (MB)", 100, 1, 10000),
       numBricks_("numBricks", "Number of Bricks (per Dim)", ivec3(1), ivec3(1), ivec3(64)),
-      brickSizeVoxel_("brickSizeVoxel", "Brick Size (Voxel)", "32"), //TODO: set min and max for this and bricks per dim based on volume dimensions
+      brickSizeVoxel_("brickSizeVoxel", "Brick Size (Voxel)"), //TODO: set min and max for this and bricks per dim based on volume dimensions
       borderWidth_("borderWidth", "Border Width", 2, 0, 16),
       camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f)),
       inport_("volume.in"),
@@ -96,7 +96,7 @@ ivec3 VolumeSplit::calculateBestBrickDimension(MaximumMemoryCondition memCond, u
             currentBrickDims[theMaxDim]++; //Make the dim we are dividing even
         currentBrickDims[theMaxDim] /= 2;
     }
-    if (limitingMemory_.getSelectedValue() == GPU) {
+    if (limitingMemory_.getValue() == GPU) {
         // adapt brick size according to maximum texture dimension
         int maxGPUTextureDim = (openGLInfoRef_ ? openGLInfoRef_->getMax3DTexSize() : 1);
         while (currentBrickDims.x>maxGPUTextureDim || currentBrickDims.y>maxGPUTextureDim || currentBrickDims.z>maxGPUTextureDim) {
@@ -166,13 +166,13 @@ void VolumeSplit::performBricking() {
     ivec3 originalVolDim = static_cast<ivec3>(inport_.getData()->getDimension());
     ivec3 brickDim = originalVolDim;
 
-    if (limitingMemory_.getSelectedValue() == GPU) {
+    if (limitingMemory_.getValue() == GPU) {
         uint64_t gpuMemInBytes = (openGLInfoRef_ ? static_cast<uint64_t>(openGLInfoRef_->getCurrentAvailableTextureMem()) : 0);
-        brickDim = calculateBestBrickDimension(memUsageStrategy_.getSelectedValue(), gpuMemInBytes, brickDim, inport_.getData()->getDataFormat().getBitsStored());
+        brickDim = calculateBestBrickDimension(memUsageStrategy_.getValue(), gpuMemInBytes, brickDim, inport_.getData()->getDataFormat().getBitsStored());
     }
     else{
         uint64_t physMemInBytes = (systemInfoRef_ ? systemInfoRef_->getAvailableMemory() : 0);
-        brickDim = calculateBestBrickDimension(memUsageStrategy_.getSelectedValue(), physMemInBytes, brickDim, inport_.getData()->getDataFormat().getBitsStored());
+        brickDim = calculateBestBrickDimension(memUsageStrategy_.getValue(), physMemInBytes, brickDim, inport_.getData()->getDataFormat().getBitsStored());
     }
 
     // bound brick size by maximal volume size
@@ -216,7 +216,7 @@ void VolumeSplit::performBricking() {
 
 void VolumeSplit::invalidateBricking() {
     updateBricks_ = true;
-    invalidate();
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void VolumeSplit::process(){ 

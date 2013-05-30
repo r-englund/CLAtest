@@ -15,8 +15,8 @@ class IVW_CORE_API Property : public IvwSerializable, public VoidObservable {
 
 public:
     Property(std::string identifier, std::string displayName,
-        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
-        PropertySemantics::Type semantics = PropertySemantics::Default);
+             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+             PropertySemantics::Type semantics=PropertySemantics::Default);
     Property();
     
     virtual std::string getIdentifier() const;
@@ -41,6 +41,8 @@ public:
     bool isValid();
     void setValid();
 
+    void setVisible(bool visible) { visible_ = visible; };
+
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();
@@ -59,11 +61,14 @@ protected:
 private:
     std::string identifier_;
     std::string displayName_;
+    PropertyOwner::InvalidationLevel invalidationLevel_;
+    PropertySemantics::Type semantics_;
+
+    bool invalid_;
     PropertyOwner* owner_;
     std::vector<PropertyWidget*> propertyWidgets_;
-    bool invalid_;
-    PropertySemantics::Type semantics_;
-    PropertyOwner::InvalidationLevel invalidationLevel_;
+
+    bool visible_;
 };
 
 } // namespace

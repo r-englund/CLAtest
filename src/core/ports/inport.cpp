@@ -14,7 +14,7 @@ Inport::~Inport() {}
 void Inport::connectTo(Outport* outport) {
     connectedOutport_ = outport;
     outport->connectTo(this);
-    invalidate();
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void Inport::disconnectFrom(Outport* outport) {
@@ -22,7 +22,7 @@ void Inport::disconnectFrom(Outport* outport) {
     ivwAssert(connectedOutport_==outport, "Ports are not connected.");
     connectedOutport_ = NULL;
     outport->disconnectFrom(this);
-    invalidate();
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 bool Inport::isConnected() const { 
@@ -33,8 +33,8 @@ bool Inport::isConnectedTo(Outport* outport) const {
     return connectedOutport_==outport;
 }
 
-void Inport::invalidate() {
-    Port::invalidate();
+void Inport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+    Port::invalidate(invalidationLevel);
 }
 
 template <typename T>

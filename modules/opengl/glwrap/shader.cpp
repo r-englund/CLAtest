@@ -61,6 +61,12 @@ void Shader::link() {
     LGL_ERROR;
 }
 
+void Shader::rebuild() {
+    vertexShaderObject_->rebuild();
+    fragmentShaderObject_->rebuild();
+    link();
+}
+
 
 void Shader::activate() {
     glUseProgram(id_);

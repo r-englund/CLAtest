@@ -27,6 +27,7 @@ public:
 
     void addShaderDefine(std::string name, std::string value="");
     void removeShaderDefine(std::string name);
+    void clearShaderDefines();
 
 private:
     bool initialize();

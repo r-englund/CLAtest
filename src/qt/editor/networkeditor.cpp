@@ -805,7 +805,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // add processors
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++) {
-        processors[i]->invalidate();
+        processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
         ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
         addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), meta->isVisible(), false);
     }
@@ -823,6 +823,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // flag the network's modified flag, unlock it and initiate evaluation
     processorNetwork_->setModified(true);
     processorNetwork_->unlock();
+    processorNetworkEvaluator_->evaluate();
 
     // show all processor widgets that where hidden on network load
     for (size_t i=0; i<processors.size(); i++) {

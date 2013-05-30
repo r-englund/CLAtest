@@ -51,7 +51,7 @@ std::string ShaderObject::embeddDefines(std::string source) {
     std::ostringstream result;
     for (size_t i=0; i<shaderDefines_.size(); i++) {
         std::pair<std::string, std::string> curDefine = shaderDefines_[i];
-        result << "#define" << curDefine.first << " " << curDefine.second << "\n";
+        result << "#define " << curDefine.first << " " << curDefine.second << "\n";
     }
     std::string curLine;
     std::istringstream shaderSource(source);
@@ -195,7 +195,7 @@ bool ShaderObject::compile() {
 }
 
 void ShaderObject::addShaderDefine(std::string name, std::string value) {
-    // FIXME: check that define not already set
+    removeShaderDefine(name);
     shaderDefines_.push_back(std::pair<std::string,std::string>(name, value));
 }
 
@@ -205,6 +205,10 @@ void ShaderObject::removeShaderDefine(std::string name) {
             shaderDefines_.erase(shaderDefines_.begin()+i);
             i = shaderDefines_.size();
         }
+}
+
+void ShaderObject::clearShaderDefines() {
+    shaderDefines_.clear();
 }
 
 } // namespace

@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/properties/propertyowner.h>
 
 namespace inviwo {
 
@@ -53,7 +54,7 @@ public:
 
     virtual bool isConnected() const = 0;
 
-    virtual void invalidate();
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);

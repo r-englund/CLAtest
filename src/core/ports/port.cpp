@@ -31,8 +31,8 @@ void Port::setProcessor(Processor* processor) {
     processor_ = processor; 
 }
 
-void Port::invalidate() { 
-    processor_->invalidate(); 
+void Port::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) { 
+    processor_->invalidate(invalidationLevel);
 }
 
 void Port::serialize(IvwSerializer& s) const {

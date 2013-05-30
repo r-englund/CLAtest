@@ -11,80 +11,94 @@ namespace inviwo {
 /** class BaseOptionProperty
 *   Base class for the option properties
 * 
-* @see TemplatedOptionProperty
+* @see TemplateOptionProperty
 */
-
-class IVW_CORE_API BaseOptionProperty : public StringProperty{
+class IVW_CORE_API BaseOptionProperty : public Property {
 public:
 
-    BaseOptionProperty(std::string identifier, std::string displayName, std::string value,
-        PropertyOwner::InvalidationLevel invalidationLevel,
-        PropertySemantics::Type semantics = PropertySemantics::Default)
-        :StringProperty(identifier,displayName,value,invalidationLevel,semantics)
+    BaseOptionProperty(std::string identifier, std::string displayName,
+        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics::Type semantics=PropertySemantics::Default)
+        : Property(identifier, displayName, invalidationLevel, semantics)
     {}
 
-    virtual std::vector< std::string > getOptionKeys()=0;
-    virtual int getSelectedOption()=0;
-    virtual void setSelectedOption(std::string)=0;
-    virtual void updateValue(std::string)=0;
+    virtual int numOptions() const = 0;
+    virtual int getSelectedOption() const = 0;
+    virtual void setSelectedOption(int option) = 0;
 
+    virtual std::vector<std::string> getOptionDisplayNames() const = 0;
 };
 
 
-/** class TemplatedOptionProperty
+/** class TemplateOptionProperty
 *   Template class for option properties
 * 
 * @see OptionProperties
 * @see BaseOptionProperty
 */
-
 template<typename T>
-class IVW_CORE_API TemplatedOptionProperty : public BaseOptionProperty {
+class IVW_CORE_API TemplateOptionProperty : public BaseOptionProperty {
+
+//FIXME: use struct instead of std::pair combination for options
+template <typename T> 
+struct Option { 
+    std::string identifier;
+    std::string displayName;
+    T value;
+}; 
 
 public:
-    TemplatedOptionProperty(std::string identifier, std::string displayName, std::string value,
-                            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                            PropertySemantics::Type semantics = PropertySemantics::Default);
+    TemplateOptionProperty(std::string identifier, std::string displayName,
+                           PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                           PropertySemantics::Type semantics=PropertySemantics::Default);
+    TemplateOptionProperty(std::string identifier, std::string displayName, T value,
+                           PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                           PropertySemantics::Type semantics=PropertySemantics::Default);
+
 
     /** 
      * \brief Adds a option to the property
      *
-     * Adds a option to the property and stores it as a pair in the optionVector_
+     * Adds a option to the property and stores it as a pair in the options_
      * The option name is the name of the option that will be displayed in the widget.
      * 
-     * @See optionpropertywidgetqt
-     * @param std::string optionName identifier name
-     * @param T optionValue the value of the option
-     */virtual void addOption(std::string optionIdentifier, std::string optionDisplayName, T optionValue);
+     * @param std::string identifier identifier name
+     * @param T value the value of the option
+     */
+    virtual void addOption(std::string identifier, std::string displayName, T value);
 
-
-    /** 
-     * \brief Returns the vector of options
-     *
-     * 
-     * @return std::vector< std::pair<std::string, T> > <DESCRIBE ME>
-     */virtual std::vector< std::pair<std::pair<std::string, std::string>, T> > getOptions();
 
     /** 
      * \brief returns a vector of keys from the option vector
      *
      * 
      * @return std::vector< std::string > <DESCRIBE ME>
-     */std::vector< std::string > getOptionKeys();
+     */
+    virtual std::vector<std::string> getOptionDisplayNames() const;
+
+    virtual int numOptions() const;
 
     /** 
      * \brief Returns the current selected option of the property
      *
      * 
      * @return int the index of the selected option
-     */int getSelectedOption();
+     */
+    virtual int getSelectedOption() const;
+
+
+    virtual void setSelectedOption(int option);
+
+    bool isSelected(T value) const;
 
     /** 
-     * \brief returns the value of the currently seleceted option
+     * \brief returns the value of the currently selected option
      *
      * 
      * @return T <DESCRIBE ME>
-     */T getSelectedValue();
+     */
+    T getValue() const; // deprecated
+    T get() const;
 
     /** 
      * \brief Set the currently selected option
@@ -92,67 +106,87 @@ public:
      * <DESCRIBE THE METHOD>
      * 
      * @param std::string the key to the desiered value
-     */void setSelectedOption(std::string);
-    virtual void updateValue(std::string);
+     */
+    void set(T value);
 
 private:
-    std::vector< std::pair<std::pair<std::string, std::string>, T> > optionVector_;
+    T value_;
+    std::vector< std::pair<std::pair<std::string, std::string>, T> > options_;
 };
 
 
 template <typename T>
-TemplatedOptionProperty<T>::TemplatedOptionProperty(std::string identifier, std::string displayName, std::string value,
+TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName,
                                                     PropertyOwner::InvalidationLevel invalidationLevel,
                                                     PropertySemantics::Type semantics )
-    : BaseOptionProperty(identifier, displayName, value, invalidationLevel, semantics)
+    : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics)
+{}
+
+template <typename T>
+TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName, T value,
+                                                    PropertyOwner::InvalidationLevel invalidationLevel,
+                                                    PropertySemantics::Type semantics )
+    : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics),
+      value_(value)
 {}
 
 template<typename T>
-void TemplatedOptionProperty<T>::addOption(std::string optionIdentifier, std::string optionDisplayName, T optionValue) {
-    optionVector_.push_back(std::make_pair(std::make_pair(optionIdentifier, optionDisplayName), optionValue));
-}
-template<typename T>
-std::vector< std::pair<std::pair<std::string, std::string>, T> > TemplatedOptionProperty< T >::getOptions() {
-    return optionVector_;
+void TemplateOptionProperty<T>::addOption(std::string optionIdentifier, std::string optionDisplayName, T optionValue) {
+    options_.push_back(std::make_pair(std::make_pair(optionIdentifier, optionDisplayName), optionValue));
 }
 
 template<typename T>
-std::vector<std::string> TemplatedOptionProperty<T>::getOptionKeys(){
-    
-    std::vector<std::string> ret;
-    size_t size = optionVector_.size();
-    for (size_t i=0; i<size;i++) {
-        ret.push_back(optionVector_.at(i).first.second);
+int TemplateOptionProperty<T>::numOptions() const {
+    return options_.size();
+}
+
+template<typename T>
+std::vector<std::string> TemplateOptionProperty<T>::getOptionDisplayNames() const {
+    std::vector<std::string> result;
+    for (size_t i=0; i<options_.size(); i++) {
+        result.push_back(options_[i].first.second);
     }
-    return ret;
+    return result;
 }
 
 template<typename T>
-int TemplatedOptionProperty<T>::getSelectedOption() {
-    std::vector< std::string > tmp = getOptionKeys();
-    int size = static_cast<int>(tmp.size());
-    for (int i=0; i<size;i++) {
-        if (getOptionKeys().at(i)== value_)
+int TemplateOptionProperty<T>::getSelectedOption() const {
+    for (size_t i=0; i<options_.size(); i++) {
+        if (options_[i].second == value_)
             return i;
     }
     return 0;
 }
 
 template<typename T>
-T TemplatedOptionProperty<T>::getSelectedValue() {
-    return optionVector_[getSelectedOption()].second;
+void TemplateOptionProperty<T>::setSelectedOption(int option) {
+    set(options_[option].second);
 }
 
 template<typename T>
-void TemplatedOptionProperty<T>::setSelectedOption(std::string tmpStr) {
-    set(tmpStr);
+bool TemplateOptionProperty<T>::isSelected(T value) const {
+    return (value_ == value);
 }
 
 template<typename T>
-void TemplatedOptionProperty<T>::updateValue(std::string tmpStr) {
-    set(tmpStr);
+T TemplateOptionProperty<T>::getValue() const {
+    ivwDeprecatedMethod("get");
+    return get();
 }
 
-} // namespace
+template<typename T>
+T TemplateOptionProperty<T>::get() const {
+    return value_;
+}
+
+template<typename T>
+void TemplateOptionProperty<T>::set(T value) {
+    value_ = value;
+    onChangeCallback_.invoke();
+    if (getOwner()) getOwner()->invalidate(getInvalidationLevel());
+    updatePropertyWidgets();
+}
+
+} // namespace inviwo
 
 #endif // IVW_BASEOPTIONPROPERTY_H

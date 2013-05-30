@@ -29,7 +29,7 @@ public:
 
     Outport* getConnectedOutport() const { return connectedOutport_; }
 
-    void invalidate();
+    void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     virtual std::vector<Processor*> getPredecessors();
 
 protected:

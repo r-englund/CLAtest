@@ -7,13 +7,13 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
                                vec3 center, vec3 eye, vec3 lookUp,
                                PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics),
-    lookFrom_("lookFrom", "Look from", center, vec3(0.0f), vec3(10.0f), vec3(0.1f)),
-    lookTo_("lookTo", "Look to", eye, vec3(0.0f), vec3(10.0f), vec3(0.1f)),
-    lookUp_("lookUp", "Look up", lookUp, vec3(0.0f), vec3(10.0f), vec3(0.1f)),
-    fovy_("fov", "FOV", 60.0f, 30.0f, 360.0f, 0.1f),
-    aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 1.0f, 0.1f),
-    nearPlane_("near", "Near Plane", 0.0001f, 0.0f, 1000.0f, 0.1f),
-    farPlane_("far", "Far Plane", 100.0f, 0.0f, 1000.0f, 0.1f)
+    lookFrom_("lookFrom", "Look from", center, vec3(0.0f), vec3(10.0f), vec3(0.1f), invalidationLevel),
+    lookTo_("lookTo", "Look to", eye, vec3(0.0f), vec3(10.0f), vec3(0.1f), invalidationLevel),
+    lookUp_("lookUp", "Look up", lookUp, vec3(0.0f), vec3(10.0f), vec3(0.1f), invalidationLevel),
+    fovy_("fov", "FOV", 60.0f, 30.0f, 360.0f, 0.1f, invalidationLevel),
+    aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 1.0f, 0.1f, invalidationLevel),
+    nearPlane_("near", "Near Plane", 0.0001f, 0.0f, 1000.0f, 0.1f, invalidationLevel),
+    farPlane_("far", "Far Plane", 100.0f, 0.0f, 1000.0f, 0.1f, invalidationLevel)
 
 {
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
@@ -69,9 +69,9 @@ void CameraProperty::updateViewMatrix() {
     viewMatrix_ = glm::lookAt(lookTo_.get(), lookFrom_.get(), lookUp_.get());
 }
 
-void CameraProperty::invalidate() {
+void CameraProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     Processor* owner = dynamic_cast<Processor*>(getOwner());
-    if (owner) owner->invalidate();
+    if (owner) owner->invalidate(invalidationLevel);
 }
 
 void CameraProperty::serialize(IvwSerializer& s) const {

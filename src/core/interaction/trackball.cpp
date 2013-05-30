@@ -154,7 +154,7 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
                 camera_->setLookTo(camera_->lookTo()*diff);
             }
 
-            camera_->invalidate();
+            camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
 
             //update mouse positions
             lastMousePos_ = curMousePos;
@@ -190,7 +190,7 @@ void Trackball::zoomCamera(MouseEvent* mouseEvent) {
 
         // zoom by moving the camera
         camera_->setLookTo(camera_->lookTo()+direction*diff);
-        camera_->invalidate();
+        camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
         lastMousePos_ = curMousePos;
         lastTrackballPos_ = curTrackballPos;
     }
@@ -222,7 +222,7 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     if (curMousePos != lastMousePos_) {
         camera_->setLookTo(camera_->lookTo() + mappedTrackBallOffsetVector);
         camera_->setLookFrom(camera_->lookFrom() + mappedTrackBallOffsetVector);
-        camera_->invalidate();
+        camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
         lastMousePos_ = curMousePos;
         lastTrackballPos_ = curTrackballPos;
     }

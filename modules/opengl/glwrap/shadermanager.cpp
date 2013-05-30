@@ -61,7 +61,7 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
                 std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
                 for (size_t i=0;i<processors.size();i++)
                     if (dynamic_cast<ProcessorGL*>(processors[i]))
-                        processors[i]->invalidate();
+                        processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
             } else InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
         }
     }
