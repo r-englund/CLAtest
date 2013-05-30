@@ -7,16 +7,28 @@
 #ifndef IVW_TRANSFERFUNCTIONEDITOR_H
 #define IVW_TRANSFERFUNCTIONEDITOR_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/io/serialization/ivwserializer.h>
+#include <inviwo/core/io/serialization/ivwdeserializer.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
-#include <inviwo/core/ports/port.h>
 #include <inviwo/core/processors/processorfactory.h>
-#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/core/util/inviwofactorybase.h>
+
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/transferfunctioneditorcontrolpoint.h>
 #include <inviwo/qt/editor/transferfunctioneditorlineitem.h>
-#include <QPointF>
+
+#include <inviwo/qt/editor/propertylistwidget.h>
+
+#include <QBrush>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
+#include <QLineF>
+#include <QPainter>
+#include <QPen>
+#include <QPointF>
 #include <vector>
 
 namespace inviwo {
@@ -36,21 +48,11 @@ namespace inviwo {
         TransferFunctionEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunction_, std::vector<TransferFunctionEditorControlPoint*>* points_);
         ~TransferFunctionEditor();
 
-        /** \Custom sort
-        *         
-        *  A sorter that uses myPointCompare to sort points by position x-component
-        */
-        void sortPoints();
-
-        /** \Custom sort
-        *         
-        *  A sorter that uses myLineCompare to sort lines by position x-component
-        */
-        void sortLines();
-
     protected :
         void mousePressEvent(QGraphicsSceneMouseEvent *e);
         void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
+		
+
         //void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
 
         /** \Add new control point
@@ -62,6 +64,7 @@ namespace inviwo {
         */
         void addPoint(QGraphicsSceneMouseEvent *e);
         void removePoint(QGraphicsSceneMouseEvent *e);
+		void sortLines();
 
     private :
         std::vector<TransferFunctionEditorControlPoint*>* points_; ///< Control points in the transfer function graph
@@ -69,8 +72,6 @@ namespace inviwo {
         TransferFunction* transferFunction_; ///< Pointer to widget's member variable
         PropertyWidgetQt *parent_; ///< Pointer to widget so it can be updated from the editor
         vec4* data_;
-
-
     };
 
 } // namespace

@@ -77,13 +77,11 @@ namespace inviwo {
             }
         }
         else{
-            for (int i = 0; i < (int)dataPoints_.front()->getPos()->x ; i++)
-            {
+            for (int i = 0; i < (int)dataPoints_.front()->getPos()->x ; i++){
                 dataArray_[i] = *dataPoints_.front()->getRgba();
             }
             //Loops through all point to point intervals
             for (int i = 0; i < getSize() - 1; i++){
-
                 start = dataPoints_[i]->getPos()->x;
                 stop = dataPoints_[i + 1]->getPos()->x;
 
@@ -96,8 +94,7 @@ namespace inviwo {
                     dataArray_[j] = *myLerp(startValues, stopValues, factor);
                 }
             }
-            for (int i = (int)dataPoints_.back()->getPos()->x; i < 256; i++)
-            {
+            for (int i = (int)dataPoints_.back()->getPos()->x; i < 256; i++){
                 dataArray_[i] = *dataPoints_.back()->getRgba();
             }
         }

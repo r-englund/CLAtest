@@ -7,7 +7,12 @@ namespace inviwo {
 
     TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(TransferFunctionDataPoint* start, TransferFunctionDataPoint* finish)
     {
-        start_ = start;
+		setFlag(QGraphicsItem::ItemIsMovable,false);
+		setFlag(QGraphicsItem::ItemIsSelectable,false);
+		setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+		setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
+		setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
+		start_ = start;
         finish_ = finish;
         setZValue(0);
     };
@@ -25,18 +30,20 @@ namespace inviwo {
 
         painter->setRenderHint(QPainter::Antialiasing, true);
 
-        QPen* pen = new QPen(Qt::black, 2.5, Qt::SolidLine, Qt::RoundCap);
+        QPen* pen = new QPen(Qt::black, 3.0f, Qt::SolidLine, Qt::RoundCap);
         painter->setPen(*pen);
         painter->drawLine(start->x, start->y, finish->x, finish->y);
 
-        pen = new QPen(Qt::cyan, 1.0, Qt::SolidLine, Qt::RoundCap);
+        pen = new QPen(Qt::cyan, 2.0, Qt::SolidLine, Qt::RoundCap);
         painter->setPen(*pen);
         painter->drawLine(start->x, start->y, finish->x, finish->y);
     }
 
 
     QRectF TransferFunctionEditorLineItem::boundingRect() const {
-        return QRectF(0,0,0,0);
+		const vec2* start = start_->getPos();
+		const vec2* finish = finish_->getPos();
+        return QRectF(start->x, start->y, finish->x - start->x, finish->y - start->y);
     }
     void TransferFunctionEditorLineItem::mousePressEvent ( QGraphicsSceneMouseEvent *e ){}
 

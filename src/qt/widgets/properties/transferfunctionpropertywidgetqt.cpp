@@ -1,99 +1,33 @@
-#include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
-#include <QWheelEvent>
-
-
+#include <inviwo/qt/widgets/properties/TransferFunctionPropertyWidgetQt.h>
 
 namespace inviwo {
 
-    TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property){
-        generateWidget();
-        updateFromProperty();
-    }
+TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property){
+    generateWidget();
+    updateFromProperty();
+}
 
-    void TransferFunctionPropertyWidgetQt::generateWidget() {
+void TransferFunctionPropertyWidgetQt::generateWidget(){
+    QHBoxLayout* hLayout = new QHBoxLayout();
+	
+	transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_);
 
-        colorDialog_ = new QColorDialog();
-        //btnColor_ = new QPushButton();
-        //btnColor_->setFixedWidth(100);
-        //btnColor_->setFixedHeight(30);
-        //connect(btnColor_,SIGNAL(clicked()),this,SLOT(setPropertyValue()));
-        connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
+    btnOpenDialog_ = new QPushButton();
+    btnOpenDialog_->setFixedWidth(300);
+    btnOpenDialog_->setFixedHeight(30);
+	btnOpenDialog_->setText("Open TransferFunctionEditor");
+    
+	connect(btnOpenDialog_,SIGNAL(clicked()),this,SLOT(openTransferFunctionDialog()));
+    hLayout->addWidget(btnOpenDialog_);
+    setLayout(hLayout);
+}
 
-        zoom_ = 0;
-        QVBoxLayout* vLayout = new QVBoxLayout();
+void TransferFunctionPropertyWidgetQt::updateFromProperty(){}
 
-        transferFunction_ = &property_->get();
-        editor_ = new TransferFunctionEditor(this, transferFunction_, &points_);
-        editor_->setSceneRect(0,0,255,100);
-        editor_->setBackgroundBrush(Qt::transparent);
+void TransferFunctionPropertyWidgetQt::setPropertyValue() {}
 
-        editorview_ = new QGraphicsView(this);
-        editorview_->setFixedSize(257, 102);
-        editorview_->scale(1, -1);
-        editorview_->setScene(editor_);
-        editorview_->show();
+void TransferFunctionPropertyWidgetQt::openTransferFunctionDialog() {
+	transferFunctionDialog_->show();
+}
 
-        paintscene_ = new QGraphicsScene(this);
-        paintview_ = new QGraphicsView(this);
-        paintview_->setFixedSize(257, 52);
-        paintview_->scale(1, -1);
-        paintview_->setScene(paintscene_); 
-        paintview_->show();
-
-        checkBox_ = new QCheckBox();
-        connect(checkBox_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
-
-        setLayout(vLayout);
-
-        vLayout->addWidget(checkBox_);
-        vLayout->addWidget(editorview_);
-        vLayout->addWidget(paintview_);
-        vLayout->addWidget(colorDialog_);
-
-        data = static_cast<vec4*>(transferFunction_->getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
-    }
-
-
-    void TransferFunctionPropertyWidgetQt::wheelEvent(QWheelEvent* e) {
-        double scaleFactor = 1.05; ///< Zoom in/out by 5%
-        if (e->delta() > 0) {
-            zoom_++;
-            editorview_->scale(scaleFactor, scaleFactor);
-        } else if (zoom_ > 0){
-            zoom_--;
-            editorview_->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
-        }
-        editorview_->update();
-        editorview_->setSceneRect(0,0,20,20);
-        e->accept();
-    }
-
-    void TransferFunctionPropertyWidgetQt::setPropertyValue() {
-        vec3* newRgb;
-        QColor color = colorDialog_->currentColor();
-        for (int i = 0; i < (int)points_.size() ; i++){
-            if (points_[i]->isSelected()){
-                newRgb = new vec3(color.redF(),color.greenF(),color.blueF());
-                points_[i]->getPoint()->setRgb(newRgb);
-            }
-        }
-        editor_->update();
-        updateFromProperty();
-        transferFunction_->calcTransferValues();
-        property_->invalidate();
-        emit modified();
-    }
-
-
-    void TransferFunctionPropertyWidgetQt::updateFromProperty(){
-        QPen pen;
-        if (checkBox_->isChecked()){
-            for (int i = 0; i < 256 ; i++){
-                pen.setColor(QColor::fromRgbF(data[i].r, data[i].g, data[i].b, 1.0f));
-                paintscene_->addLine(i, 0, i, 50, pen);
-            }
-        }
-        this->update();
-        property_->invalidate();
-    }
-} // namespace
+}//namespace

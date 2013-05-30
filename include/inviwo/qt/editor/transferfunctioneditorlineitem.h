@@ -32,7 +32,7 @@ namespace inviwo {
 
 
         //override for qgraphicsitem_cast (refer qt documentation)
-        enum { Type = UserType + ConnectionGraphicsType };
+        enum { Type = UserType + ConnectionGraphicsType + 1};
         int type() const  {return Type; }
 
         virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);

@@ -58,7 +58,7 @@ namespace inviwo {
 
     private:
         int id_; ///< id to identify edge points
-        int size_; ///< size for drawing the points
+        float size_; ///< size for drawing the points
         TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
     };
 

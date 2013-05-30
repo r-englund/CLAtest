@@ -5,7 +5,6 @@
 
 namespace inviwo {
 
-
 ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(property) {
     generateWidget();
     updateFromProperty();
@@ -15,6 +14,9 @@ void ColorPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     currentColor_ = new QColor();
     colorDialog_ = new QColorDialog();
+	
+	traprop_ = new TransferFunctionProperty("trans","trans", TransferFunction());
+	trafu_ = new TransferFunctionPropertyWidgetQt(traprop_);
 
     btnColor_ = new QPushButton();
     btnColor_->setFixedWidth(100);
@@ -80,7 +82,8 @@ void ColorPropertyWidgetQt::setPropertyValue() {
 }
 
 void ColorPropertyWidgetQt::openColorDialog() {
-    colorDialog_->open();
+    //colorDialog_->open();
+	trafu_->show();
 }
 
 }//namespace
