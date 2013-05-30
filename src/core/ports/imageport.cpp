@@ -144,18 +144,18 @@ uvec2 ImageOutport::getDimensions() const{
 }
 
 Image* ImageOutport::resizeImageData(uvec2 requiredDimensions){
-    Image* resultImage = 0;
     // TODO: Map travese is expensive. Optimize
     for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
-        uvec2 mapDataDimensions = it->second->getDimension();
-        if (mapDataDimensions == requiredDimensions) {
-            resultImage = it->second;
+        if (it->second->getDimension() == requiredDimensions) {
+            return it->second;
         }
     }
-     
-    if (resultImage && resultImage!=data_)
-        data_->resizeImageRepresentations(resultImage, requiredDimensions);
 
+    Image* resultImage = dynamic_cast<Image*>(data_->clone());
+    resultImage->resize(requiredDimensions);
+    std::ostringstream dimensionString;
+    dimensionString << requiredDimensions.x << "x" << requiredDimensions.y;
+    imageDataMap_.insert(std::make_pair(dimensionString.str(), resultImage));
     return resultImage;
 }
 

@@ -82,6 +82,8 @@ DataRepresentation* ImageRAMPrecision<T>::clone() const {
 
 typedef ImageRAMPrecision<DataUINT8::type>     ImageRAMuint8;
 typedef ImageRAMPrecision<DataINT8::type>      ImageRAMint8;
+typedef ImageRAMPrecision<DataUINT12::type>    ImageRAMuint12;
+typedef ImageRAMPrecision<DataINT12::type>     ImageRAMint12;
 typedef ImageRAMPrecision<DataUINT16::type>    ImageRAMuint16;
 typedef ImageRAMPrecision<DataINT16::type>     ImageRAMint16;
 typedef ImageRAMPrecision<DataUINT32::type>    ImageRAMuint32;
