@@ -28,6 +28,7 @@ private:
     QPushButton* btnColor_;
     QColorDialog* colorDialog_;
     QColor* currentColor_;
+
     void generateWidget();
     
 public slots:
