@@ -12,6 +12,7 @@ CanvasGL::CanvasGL(uvec2 dimensions)
 }
 
 void CanvasGL::initialize() {
+    LGL_ERROR;
     glShadeModel(GL_SMOOTH);
     glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
     glClearDepth(1.0f);
@@ -28,6 +29,7 @@ void CanvasGL::initializeGL() {
     if (!glewInitialized_) {
         LogInfo("Initializing GLEW");
         glewInit();
+        LGL_ERROR;
         glewInitialized_ = true;
     }
 }
