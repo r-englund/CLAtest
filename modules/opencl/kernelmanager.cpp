@@ -77,10 +77,9 @@ void KernelManager::fileChanged( std::string fileName )
             InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
             std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
             for (size_t i=0;i<processors.size();i++)
-                processors[i]->invalidate();
+                processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
         } catch (cl::Error&) {
             InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
-
         }
     }
 }
