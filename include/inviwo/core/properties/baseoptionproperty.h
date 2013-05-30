@@ -40,12 +40,14 @@ template<typename T>
 class IVW_CORE_API TemplateOptionProperty : public BaseOptionProperty {
 
 //FIXME: use struct instead of std::pair combination for options
+/*
 template <typename T> 
 struct Option { 
     std::string identifier;
     std::string displayName;
     T value;
-}; 
+};
+*/
 
 public:
     TemplateOptionProperty(std::string identifier, std::string displayName,
