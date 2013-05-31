@@ -2,185 +2,30 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref2">
+        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-650" y="-625" />
+                    <position x="-600" y="-625" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
                 <Property identifier="color" displayName="Color">
-                    <value x="0.1788" y="0.32679999" z="0.486" />
+                    <value x="1" y="0.55309999" z="1" />
                     <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.1" y="0.1" z="0.1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="ImageMasking" identifier="ImageMasking" id="ref1">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-450" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="maskColor" displayName="Mask Color">
-                    <value x="0.66666669" y="0.66666669" z="0.66666669" w="1" />
-                    <minvalue x="0" y="0" z="0" w="0" />
-                    <maxvalue x="1" y="1" z="1" w="1" />
-                    <increment x="0.1" y="0.1" z="0.1" w="0.1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="Gabor" identifier="Gabor" id="ref3">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-450" y="-625" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="angle" displayName="Angle">
-                    <value content="121.77" />
-                    <minvalue content="0" />
-                    <maxvalue content="180" />
-                    <increment content="0.1" />
-                </Property>
-                <Property identifier="aspectratio" displayName="Aspect ratio">
-                    <value content="3.645" />
-                    <minvalue content="0" />
-                    <maxvalue content="50" />
-                    <increment content="0.1" />
-                </Property>
-                <Property identifier="offset" displayName="Offset">
-                    <value content="2.527" />
-                    <minvalue content="0" />
-                    <maxvalue content="5" />
-                    <increment content="0.1" />
-                </Property>
-                <Property identifier="resolution_" displayName="Resolution">
-                    <value content="69" />
-                    <minvalue content="3" />
-                    <maxvalue content="512" />
-                    <increment content="1" />
-                </Property>
-                <Property identifier="sigma" displayName="Sigma">
-                    <value content="0.05" />
-                    <minvalue content="0.05" />
-                    <maxvalue content="5" />
-                    <increment content="0.1" />
-                </Property>
-                <Property identifier="wavelength" displayName="Wavelength">
-                    <value content="0.05" />
-                    <minvalue content="0.05" />
-                    <maxvalue content="5" />
-                    <increment content="0.1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref4">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-275" />
+                    <position x="-650" y="-425" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="-901" y="490" />
-                    <dimension x="361" y="346" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property identifier="snapshot" displayName="Create Snapshot" />
-            </Properties>
-        </Processor>
-        <Processor type="EdgeDetect" identifier="EdgeDetect" id="ref5">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-350" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="backgroundColor" displayName="Background color">
-                    <value x="0" y="0" z="0" w="1" />
-                    <minvalue x="0" y="0" z="0" w="0" />
-                    <maxvalue x="1" y="1" z="1" w="1" />
-                    <increment x="0.1" y="0.1" z="0.1" w="0.1" />
-                </Property>
-                <Property identifier="blendMode" displayName="Blend mode">
-                    <value content="0" />
-                </Property>
-                <Property identifier="edgeColor" displayName="Edge color">
-                    <value x="1" y="0.019607844" z="0.035294119" w="1" />
-                    <minvalue x="0" y="0" z="0" w="0" />
-                    <maxvalue x="1" y="1" z="1" w="1" />
-                    <increment x="0.1" y="0.1" z="0.1" w="0.1" />
-                </Property>
-                <Property identifier="edgeStyle" displayName="Edge style">
-                    <value content="0" />
-                </Property>
-                <Property identifier="edgeThreshold" displayName="Edge threshold">
-                    <value content="0.001" />
-                    <minvalue content="0.001" />
-                    <maxvalue content="1" />
-                    <increment content="0.1" />
-                </Property>
-                <Property identifier="showImage" displayName="Show image">
-                    <value content="1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="Compositor" identifier="Compositor" id="ref0">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-725" y="-475" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="addDepth" displayName="Add Depth">
-                    <value content="0" />
-                </Property>
-                <Property identifier="blendMode" displayName="Blend mode">
-                    <value content="MODE_TAKE_FIRST" />
-                </Property>
-                <Property identifier="weightFirst" displayName="Weight (First Image)">
-                    <value content="0.2152" />
-                    <minvalue content="0" />
-                    <maxvalue content="1" />
-                    <increment content="0.1" />
-                </Property>
-                <Property identifier="weightSecond" displayName="Weight (Second Image)">
-                    <value content="0.3785" />
-                    <minvalue content="0" />
-                    <maxvalue content="1" />
-                    <increment content="0.1" />
-                </Property>
-                <Property identifier="weightingFactor" displayName="Weighting factor">
-                    <value content="0.5234" />
-                    <minvalue content="0" />
-                    <maxvalue content="1" />
-                    <increment content="0.1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref6">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-725" y="-375" />
-                    <visibility content="1" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="-1460" y="340" />
+                    <position x="979" y="352" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -199,58 +44,10 @@
     <Connections>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref2" />
-            </OutPort>
-            <InPort identifier="image.input">
-                <Processor type="ImageMasking" identifier="ImageMasking" reference="ref1" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="Gabor" identifier="Gabor" reference="ref3" />
-            </OutPort>
-            <InPort identifier="image.mask">
-                <Processor type="ImageMasking" identifier="ImageMasking" reference="ref1" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="image.output">
-                <Processor type="ImageMasking" identifier="ImageMasking" reference="ref1" />
-            </OutPort>
-            <InPort identifier="image.inport">
-                <Processor type="EdgeDetect" identifier="EdgeDetect" reference="ref5" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="image.outport">
-                <Processor type="EdgeDetect" identifier="EdgeDetect" reference="ref5" />
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref4" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref2" />
-            </OutPort>
-            <InPort identifier="image.inport1">
-                <Processor type="Compositor" identifier="Compositor" reference="ref0" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="Gabor" identifier="Gabor" reference="ref3" />
-            </OutPort>
-            <InPort identifier="image.inport0">
-                <Processor type="Compositor" identifier="Compositor" reference="ref0" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="image.outport">
-                <Processor type="Compositor" identifier="Compositor" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref6" />
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
