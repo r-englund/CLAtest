@@ -241,13 +241,13 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Optimize compilation with pre-compilied headers
 set(PCH_PATH_FILES
-#    ${IVW_INCLUDE_DIR}/inviwo/core/common
-#    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization
-#    ${IVW_INCLUDE_DIR}/inviwo/core/metadata
-#    ${IVW_INCLUDE_DIR}/inviwo/core/ports
-#    ${IVW_INCLUDE_DIR}/inviwo/core/util
+    ${IVW_INCLUDE_DIR}/inviwo/core/common
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports
+    ${IVW_INCLUDE_DIR}/inviwo/core/util
 )
-#ivw_add_pch_path(${PCH_PATH_FILES})
+ivw_add_pch_path(${PCH_PATH_FILES})
 
 #--------------------------------------------------------------------
 # Define standard defintions

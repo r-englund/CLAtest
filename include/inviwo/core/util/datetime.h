@@ -8,7 +8,7 @@
 
 namespace inviwo {
 
-const std::string currentDateTime() {
+static const std::string currentDateTime() {
     time_t currentDateTime = time(0);
     struct tm dateTimeStruct;
     char dateTimeBuffer[20];
