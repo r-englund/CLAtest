@@ -2,13 +2,9 @@
 #include <stdio.h>
 #include <fstream>
 
+#include <inviwo/core/util/filedirectory.h>
 #include <modules/opengl/glwrap/shadermanager.h>
 
-#ifdef WIN32
-#define OPEN_FILE(a,b,c) fopen_s(&a, b, c);
-#else
-#define OPEN_FILE(a,b,c) a = fopen(b, c);
-#endif
 
 namespace inviwo {
 
@@ -74,11 +70,9 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
             std::string::size_type pathEnd = curLine.find("\"", pathBegin+1);
             std::string includeFileName(curLine, pathBegin+1, pathEnd-pathBegin-1);
 
-            FILE* file = 0;
             std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
             for (size_t i=0; i<shaderSearchPaths.size(); i++) {
-                OPEN_FILE(file, (shaderSearchPaths[i]+"/"+includeFileName).c_str(), "rb");
-                if (file) {
+                if (fileExists(shaderSearchPaths[i]+"/"+includeFileName)) {
                     includeFileName = shaderSearchPaths[i]+"/"+includeFileName;
                     includeFileNames_.push_back(includeFileName);
                     std::ifstream includeFileStream(includeFileName.c_str());
@@ -101,33 +95,21 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
 }
 
 bool ShaderObject::loadSource(std::string fileName) {
-    FILE* file = 0;
-    char* fileContent = 0;
-    long len;
-
+    source_ = "";
     if (fileName.length() > 0) {
         std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
         for (size_t i=0; i<shaderSearchPaths.size(); i++) {
-            OPEN_FILE(file, (shaderSearchPaths[i]+"/"+fileName).c_str(), "rb");
-            if (file) {
+            if (fileExists(shaderSearchPaths[i]+"/"+fileName)) {
                 absoluteFileName_ = shaderSearchPaths[i]+"/"+fileName;
                 break;
             }
         }
-        if (file) {
-            fseek(file, 0L, SEEK_END);
-            len = ftell(file);
-            fseek(file, 0L, SEEK_SET);
-            fileContent = (char*)malloc(sizeof(char)*(len));
-            if (fileContent != NULL){
-                fread(fileContent, sizeof(char), len, file);
-                fileContent[len] = '\0';
-            }
-            fclose(file);
-        } else return false;
+        std::ifstream fileStream(absoluteFileName_.c_str());
+        std::stringstream buffer;
+        buffer << fileStream.rdbuf();
+        source_ = buffer.str();
+        return true;
     } else return false;
-    source_ = std::string(fileContent);
-    return true;
 }
 
 void ShaderObject::upload() {

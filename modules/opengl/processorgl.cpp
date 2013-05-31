@@ -143,4 +143,9 @@ void ProcessorGL::renderImagePlaneQuad() const {
     glPopMatrix();
 }
 
+void ProcessorGL::renderQuad() const {
+    ivwDeprecatedMethod("renderImagePlaneQuad()");
+    renderImagePlaneQuad();
+}
+
 } // namespace

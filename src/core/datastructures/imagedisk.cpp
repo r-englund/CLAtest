@@ -7,7 +7,7 @@ namespace inviwo {
         : ImageRepresentation(uvec2(256,256), DataVec4UINT8()), DiskRepresentation(){}
 
 	ImageDisk::ImageDisk(std::string url)
-        : ImageRepresentation(uvec2(128,128), DataVec4UINT8()), DiskRepresentation(url){
+        : ImageRepresentation(uvec2(256,256), DataVec4UINT8()), DiskRepresentation(url){
         initialize();
 	}
 

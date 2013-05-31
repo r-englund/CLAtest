@@ -4,7 +4,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include "inviwoopengl.h"
 #include <inviwo/core/common/inviwo.h>
-#include <modules/opengl//processorgl.h>
+#include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 
@@ -15,12 +15,12 @@ class IVW_MODULE_OPENGL_API ImageProcessorGL : public ProcessorGL {
 public:
     ImageProcessorGL();
     ImageProcessorGL(std::string programFileName);
-    virtual ~ImageProcessorGL();
 
     void initialize();
     void deinitialize();
 
-    virtual void initializeResources(); // reload shaders etc. here
+    // overloaded method called when INVALID_RESOURCE property is set
+    virtual void initializeResources();
 
 protected:
     std::string programFileName_;

@@ -40,6 +40,7 @@ public:
     void setGlobalShaderParameters(Shader* shader);
 
     void renderImagePlaneQuad() const;
+    void renderQuad() const; // deprecated
 };
 
 } // namespace

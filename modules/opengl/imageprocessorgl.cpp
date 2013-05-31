@@ -4,15 +4,13 @@ namespace inviwo {
 
 ImageProcessorGL::ImageProcessorGL()
     : ProcessorGL(),
-    programFileName_("passthrough")
+    programFileName_("pipethrough.frag")
 {}
 
 ImageProcessorGL::ImageProcessorGL(std::string programFileName)
     : ProcessorGL(),
     programFileName_(programFileName)
 {}
-
-ImageProcessorGL::~ImageProcessorGL() {}
 
 void ImageProcessorGL::initialize() {
     ProcessorGL::initialize();

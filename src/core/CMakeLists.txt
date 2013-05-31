@@ -117,6 +117,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/datetime.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/filedirectory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formats.h
@@ -228,6 +229,7 @@ set(SOURCE_FILES
     util/canvas.cpp
     util/commandlineparser.cpp
     util/exception.cpp
+    util/filedirectory.cpp
     util/fileobserver.cpp
     util/logdistributor.cpp
     util/observer.cpp
