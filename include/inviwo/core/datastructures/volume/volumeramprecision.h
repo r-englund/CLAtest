@@ -1,8 +1,8 @@
 #ifndef IVW_VOLUMERAMPRECISION_H
 #define IVW_VOLUMERAMPRECISION_H
 
-#include <inviwo/core/datastructures/volumeram.h>
-#include <inviwo/core/datastructures/volumeramoperationexecuter.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/datastructures/volume/volumeramoperationexecuter.h>
 
 namespace inviwo {
 

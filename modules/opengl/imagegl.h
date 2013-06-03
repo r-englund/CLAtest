@@ -3,7 +3,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/imagerepresentation.h>
+#include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include "glwrap/framebufferobject.h"
 #include "glwrap/texture2d.h"
 

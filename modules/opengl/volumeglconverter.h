@@ -3,9 +3,9 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/datastructures/representationconverter.h>
-#include <inviwo/core/datastructures/volumeram.h>
-#include <inviwo/core/datastructures/volumeramconverter.h>
-#include <inviwo/core/datastructures/volumedisk.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/datastructures/volume/volumeramconverter.h>
+#include <inviwo/core/datastructures/volume/volumedisk.h>
 #include "volumegl.h"
 
 namespace inviwo {

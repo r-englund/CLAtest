@@ -1,5 +1,5 @@
 #include <inviwo/core/processors/datasource/volumesource.h>
-#include <inviwo/core/datastructures/volumedisk.h>
+#include <inviwo/core/datastructures/volume/volumedisk.h>
 
 namespace inviwo {
 

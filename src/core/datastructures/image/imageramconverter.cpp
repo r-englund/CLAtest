@@ -1,5 +1,5 @@
-#include <inviwo/core/datastructures/imageramconverter.h>
-#include <inviwo/core/datastructures/imagerepresentation.h>
+#include <inviwo/core/datastructures/image/imageramconverter.h>
+#include <inviwo/core/datastructures/image/imagerepresentation.h>
 
 namespace inviwo {
 

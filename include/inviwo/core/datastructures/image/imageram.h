@@ -2,7 +2,7 @@
 #define IVW_IMAGERAM_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/imagerepresentation.h>
+#include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <inviwo/core/util/formats.h>
 
 namespace inviwo {

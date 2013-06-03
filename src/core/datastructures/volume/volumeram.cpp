@@ -1,5 +1,5 @@
-#include <inviwo/core/datastructures/volumeram.h>
-#include <inviwo/core/datastructures/volumeramprecision.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/util/typetostring.h>
 
 namespace inviwo {

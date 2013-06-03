@@ -1,8 +1,8 @@
 #include <inviwo/core/common/inviwocore.h>
 
 //Data Structures
-#include <inviwo/core/datastructures/volumeramconverter.h>
-#include <inviwo/core/datastructures/imageramconverter.h>
+#include <inviwo/core/datastructures/volume/volumeramconverter.h>
+#include <inviwo/core/datastructures/image/imageramconverter.h>
 
 //Meta Data
 #include <inviwo/core/metadata/processormetadata.h>

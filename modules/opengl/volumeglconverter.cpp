@@ -1,5 +1,5 @@
 #include "volumeglconverter.h"
-#include <inviwo/core/datastructures/volumerepresentation.h>
+#include <inviwo/core/datastructures/volume/volumerepresentation.h>
 
 namespace inviwo {
 

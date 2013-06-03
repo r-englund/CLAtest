@@ -1,5 +1,5 @@
 #include "findedges.h"
-#include <inviwo/core/datastructures/imageram.h>
+#include <inviwo/core/datastructures/image/imageram.h>
 
 namespace inviwo {
 

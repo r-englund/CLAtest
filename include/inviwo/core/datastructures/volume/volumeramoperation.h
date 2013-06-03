@@ -1,8 +1,8 @@
 #ifndef IVW_VOLUMERAMOPERATION_H
 #define IVW_VOLUMERAMOPERATION_H
 
-#include <inviwo/core/datastructures/volumeoperation.h>
-#include <inviwo/core/datastructures/volumeram.h>
+#include <inviwo/core/datastructures/volume/volumeoperation.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 
 namespace inviwo {
 

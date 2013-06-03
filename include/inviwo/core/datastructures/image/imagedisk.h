@@ -3,7 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/diskrepresentation.h>
-#include <inviwo/core/datastructures/imagerepresentation.h>
+#include <inviwo/core/datastructures/image/imagerepresentation.h>
 
 namespace inviwo {
 

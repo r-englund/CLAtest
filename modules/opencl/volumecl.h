@@ -2,7 +2,7 @@
 #define IVW_VOLUMECL_H
 
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/volumerepresentation.h>
+#include <inviwo/core/datastructures/volume/volumerepresentation.h>
 #include <inviwo/core/util/typetostring.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>

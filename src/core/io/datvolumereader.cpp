@@ -1,6 +1,6 @@
 #include "inviwo/core/io/datvolumereader.h"
-#include "inviwo/core/datastructures/volumeramprecision.h"
-#include "inviwo/core/datastructures/volumetypeclassification.h"
+#include "inviwo/core/datastructures/volume/volumeramprecision.h"
+#include "inviwo/core/datastructures/volume/volumetypeclassification.h"
 
 namespace inviwo {
 

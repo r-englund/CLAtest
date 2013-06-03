@@ -1,5 +1,5 @@
 #include <modules/opencl/imageclconverter.h>
-#include <inviwo/core/datastructures/imagerepresentation.h>
+#include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <modules/opencl/inviwoopencl.h>
 
 namespace inviwo {

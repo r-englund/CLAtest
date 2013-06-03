@@ -1,5 +1,5 @@
 #include "volumesplit.h"
-#include <inviwo/core/datastructures/volumeramsubset.h>
+#include <inviwo/core/datastructures/volume/volumeramsubset.h>
 #include <inviwo/core/common/inviwocore.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>

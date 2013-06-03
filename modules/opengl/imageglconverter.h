@@ -3,8 +3,8 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/datastructures/representationconverter.h>
-#include <inviwo/core/datastructures/imageram.h>
-#include <inviwo/core/datastructures/imageramconverter.h>
+#include <inviwo/core/datastructures/image/imageram.h>
+#include <inviwo/core/datastructures/image/imageramconverter.h>
 #include "imagegl.h"
 
 namespace inviwo {

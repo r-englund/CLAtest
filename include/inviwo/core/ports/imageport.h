@@ -4,7 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/ports/dataoutport.h>
-#include <inviwo/core/datastructures/image.h>
+#include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
 
 namespace inviwo {

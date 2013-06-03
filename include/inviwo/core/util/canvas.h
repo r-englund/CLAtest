@@ -3,7 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/image.h>
+#include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/interaction/events/eventhandler.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>

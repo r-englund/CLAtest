@@ -2,7 +2,7 @@
 #define IVW_VOLUMERAMOPERATIONEXECUTER_H
 
 #include <inviwo/core/datastructures/dataoperation.h>
-#include <inviwo/core/datastructures/volumeramsubset.h>
+#include <inviwo/core/datastructures/volume/volumeramsubset.h>
 
 namespace inviwo {
 

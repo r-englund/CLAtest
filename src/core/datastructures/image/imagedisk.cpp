@@ -1,4 +1,4 @@
-#include <inviwo/core/datastructures/imagedisk.h>
+#include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/io/imageloader.h>
 
 namespace inviwo {

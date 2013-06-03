@@ -5,10 +5,10 @@
 #include <inviwo/core/common/inviwo.h>
 #include <ext/freeimage/FreeImage.h>
 
-#include <inviwo/core/datastructures/image.h>
+#include <inviwo/core/datastructures/image/image.h>
 
 #include <inviwo/core/util/formats.h>
-#include <inviwo/core/datastructures/imageram.h>
+#include <inviwo/core/datastructures/image/imageram.h>
 using namespace inviwo;
 
 class IVW_CORE_API ImageLoader{

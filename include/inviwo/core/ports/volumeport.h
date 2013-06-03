@@ -4,7 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/ports/dataoutport.h>
-#include <inviwo/core/datastructures/volume.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 

@@ -15,28 +15,28 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometryrepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imagedisk.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imageram.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imageramconverter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/imagerepresentation.h 
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryrepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/image.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagedisk.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramconverter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagerepresentation.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunctiondatapoint.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumedisk.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeoperation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeram.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramoperation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramoperationexecuter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramprecision.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramsubset.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumerepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumeramconverter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volumetypeclassification.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volume.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumedisk.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeoperation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramoperation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramoperationexecuter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramprecision.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramsubset.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramconverter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumetypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
@@ -145,23 +145,23 @@ set(SOURCE_FILES
     common/inviwomodule.cpp
     datastructures/data.cpp
     datastructures/datarepresentation.cpp
-    datastructures/geometry.cpp
-    datastructures/geometryrepresentation.cpp
-    datastructures/image.cpp
-    datastructures/imagedisk.cpp
-    datastructures/imageram.cpp
-    datastructures/imageramconverter.cpp
-    datastructures/imagerepresentation.cpp
+    datastructures/geometry/geometry.cpp
+    datastructures/geometry/geometryrepresentation.cpp
+    datastructures/image/image.cpp
+    datastructures/image/imagedisk.cpp
+    datastructures/image/imageram.cpp
+    datastructures/image/imageramconverter.cpp
+    datastructures/image/imagerepresentation.cpp
     datastructures/representationconverter.cpp
     datastructures/representationconverterfactory.cpp
     datastructures/transferfunction.cpp
     datastructures/transferfunctiondatapoint.cpp
-    datastructures/volume.cpp
-    datastructures/volumedisk.cpp
-    datastructures/volumeram.cpp
-    datastructures/volumerepresentation.cpp
-    datastructures/volumeramconverter.cpp
-    datastructures/volumetypeclassification.cpp
+    datastructures/volume/volume.cpp
+    datastructures/volume/volumedisk.cpp
+    datastructures/volume/volumeram.cpp
+    datastructures/volume/volumerepresentation.cpp
+    datastructures/volume/volumeramconverter.cpp
+    datastructures/volume/volumetypeclassification.cpp
     interaction/action.cpp
     interaction/interactionhandler.cpp
     interaction/trackball.cpp

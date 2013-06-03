@@ -1,5 +1,5 @@
 #include "imageglconverter.h"
-#include <inviwo/core/datastructures/imagerepresentation.h>
+#include <inviwo/core/datastructures/image/imagerepresentation.h>
 
 namespace inviwo {
 

@@ -1,4 +1,4 @@
-#include <inviwo/core/datastructures/geometryrepresentation.h>
+#include <inviwo/core/datastructures/geometry/geometryrepresentation.h>
 
 namespace inviwo {
 

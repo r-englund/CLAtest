@@ -3,8 +3,8 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/representationconverter.h>
-#include <inviwo/core/datastructures/volumeram.h>
-#include <inviwo/core/datastructures/volumedisk.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/datastructures/volume/volumedisk.h>
 
 namespace inviwo {
 

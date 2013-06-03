@@ -1,4 +1,4 @@
-#include <inviwo/core/datastructures/volumetypeclassification.h>
+#include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 
 namespace inviwo { 
 
