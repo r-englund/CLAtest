@@ -241,7 +241,6 @@ public :
     virtual ~Data3D();
     uvec3 getDimension() const;
     void setDimension(uvec3 dim);
-    DataFormatBase getDataFormat() const;
 };
 
 /*---------------------------------------------------------------*/
@@ -253,7 +252,6 @@ public :
     virtual ~Data2D();
     uvec2 getDimension() const;
     void setDimension(uvec2 dim);
-    DataFormatBase getDataFormat() const;
 };
 
 } // namespace
