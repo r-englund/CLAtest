@@ -45,7 +45,7 @@ DataFormatBase Data::getDataFormat() const{
 
 Data3D::Data3D(Data::TYPE3D dim, DataFormatBase format) : PARENT() {
     setDimension(dim);
-    setDataFormat(format);
+    Data::setDataFormat(format);
 }
 
 Data3D::~Data3D() {}
@@ -58,12 +58,16 @@ void Data3D::setDimension(uvec3 dim) {
      Data3D::PARENT::setDimension<uvec3,UVec3MetaData>(dim);
 }
 
+DataFormatBase Data3D::getDataFormat() const {
+    return Data::getDataFormat();
+}
+
 
 /*---------------------------------------------------------------*/
 
 Data2D::Data2D(Data::TYPE2D dim, DataFormatBase format) : PARENT() {
     setDimension(dim);
-    setDataFormat(format);
+    Data::setDataFormat(format);
 }
 
 Data2D::~Data2D() {}
@@ -74,6 +78,10 @@ uvec2 Data2D::getDimension() const {
 
 void Data2D::setDimension(uvec2 dim) {
     Data2D::PARENT::setDimension<uvec2,UVec2MetaData>(dim);
+}
+
+DataFormatBase Data2D::getDataFormat() const {
+    return Data::getDataFormat();
 }
 
 
