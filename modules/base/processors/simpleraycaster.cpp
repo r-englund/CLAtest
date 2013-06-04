@@ -1,5 +1,5 @@
 #include "simpleraycaster.h"
-
+#include "modules/opengl/glwrap/textureunit.h"
 namespace inviwo {
 
 ProcessorClassName(SimpleRaycaster, "SimpleRaycaster"); 
@@ -43,6 +43,9 @@ void SimpleRaycaster::deinitialize() {
 }
 
 void SimpleRaycaster::process() {
+    ivwAssert(entryPort_.getData()!=0, "Entry port empty.");
+    ivwAssert(exitPort_.getData()!=0, "Exit port empty.");  
+
     const Volume* volume = volumePort_.getData();
     const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
     uvec3 volumeDim = volumeGL->getDimensions();
@@ -51,10 +54,10 @@ void SimpleRaycaster::process() {
     volumeGL->bindTexture(GL_TEXTURE2);
     const ImageGL* transferFunctionGL = transferFunction_.get().getData()->getRepresentation<ImageGL>();
     transferFunctionGL->bindColorTexture(GL_TEXTURE3);
-    activateTarget(outport_);
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     uvec2 outportDim = outImageGL->getDimension();
+    activateTarget(outport_);
     shader_->activate();
     shader_->setUniform("entryTex_", 0);
     shader_->setUniform("exitTex_", 1);

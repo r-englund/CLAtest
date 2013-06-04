@@ -22,6 +22,8 @@ public:
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);
 
+    virtual std::string getClassName()  const { return "undefined"; }    
+
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
 

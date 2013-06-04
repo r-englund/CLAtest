@@ -20,10 +20,13 @@ public:
     void initialize();
     void deinitialize();
 
-    void changeDimensions(uvec2 dimensions);
+    void changeDataDimensions(ResizeEvent* resizeEvent);    
     uvec2 getDimensions() const;
     const Image* getData() const;
     uvec3 getColorCode() const;
+
+protected:
+    void propagateResizeToPredecessor(ResizeEvent* resizeEvent);
 
 private:
     uvec2 dimensions_;
@@ -39,20 +42,22 @@ public:
 
     void initialize();
     void deinitialize();
-
-    void changeDimensions(uvec2 dimensions);
-    void changeDataDimensions(ResizeEvent* resizeEvent);
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    
+    void changeDataDimensions(ResizeEvent* resizeEvent);    
     uvec2 getDimensions() const;
     uvec3 getColorCode() const;
-
+    typedef std::map<std::string, Image*> ImagePortMap;
+    ImagePortMap imageDataMap_;
+    
 protected:
-    Image* resizeImageData(uvec2 dimensions);
+    Image* getResizedImageData(uvec2 dimensions);
     void setLargestImageData();
+    void propagateResizeEventToPredecessor(ResizeEvent* resizeEvent);
 
 private:
     uvec2 dimensions_;
-    typedef std::map<std::string, Image*> ImagePortMap;
-    ImagePortMap imageDataMap_;
+    bool mapDataInvalid_;
 
 
 };

@@ -196,76 +196,6 @@ bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor
 
 }
 
-void ProcessorNetworkEvaluator::propagateResizeEvent(Processor* processor, ResizeEvent* resizeEvent) {
-    if (!hasBeenVisited(processor)) {
-        processorsVisited_.push_back(processor);
-        std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
-        for (size_t i=0; i<directPredecessors.size(); i++) {
-            bool invalidate=false;
-            
-            std::vector<Outport*> outports = directPredecessors[i]->getOutports();
-            for (size_t j=0; j<outports.size(); j++) {
-                ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outports[j]);
-                if (imageOutport) {
-                    if (isPortConnectedToProcessor(imageOutport, processor)) {
-                        
-                        std::vector<Processor*> directSuccessors;
-                        directSuccessors = imageOutport->getDirectSuccessors();
-
-                        std::vector<uvec2> validDescendantCanvasSizes;
-                        for (size_t i=0; i<directSuccessors.size(); i++) {
-                            CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(directSuccessors[i]);
-                            if (canvasProcessor) {
-                                uvec2 dimensions = canvasProcessor->getCanvas()->size();
-                                validDescendantCanvasSizes.push_back(dimensions);
-                            }
-                        }
-
-                        //set only descendant canvas sizes
-                        resizeEvent->setRegisteredCanvasSizes(validDescendantCanvasSizes);
-                        
-                        imageOutport->changeDataDimensions(resizeEvent);
-                        
-                        invalidate = true;
-                    }
-                }
-            }
-            
-            std::vector<std::string> portDependencySets = directPredecessors[i]->getPortDependencySets();
-            std::vector<Port*> ports;
-            for (size_t j=0; j<portDependencySets.size(); j++) {
-                ports.clear();
-                ports = directPredecessors[i]->getPortsByDependencySet(portDependencySets[j]);
-
-                uvec2 dimMax(0);
-                bool hasImageOutport = false;
-                for (size_t j=0; j<ports.size(); j++) {
-                    ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(ports[j]);
-                    if (imageOutport) {
-                        hasImageOutport = true;
-                        uvec2 dim = imageOutport->getDimensions();
-                        //TODO: determine max dimension based on aspect ratio?
-                        if ((dimMax.x<dim.x) || (dimMax.y<dim.y)) {
-                            dimMax = imageOutport->getDimensions();
-                        }
-                    }
-                }
-
-                if (hasImageOutport) {
-                    for (size_t j=0; j<ports.size(); j++) {
-                        ImageInport* imageInport = dynamic_cast<ImageInport*>(ports[j]);
-                        if (imageInport)
-                            imageInport->changeDimensions(dimMax);
-                    }
-                }                
-                
-            }
-            if (invalidate) directPredecessors[i]->invalidate(PropertyOwner::INVALID_OUTPUT);
-            propagateResizeEvent(directPredecessors[i], resizeEvent);
-        }
-    }
-}
-
 Processor* ProcessorNetworkEvaluator::retrieveCanvasProcessor(Canvas* canvas) {
     // find the canvas processor which contains the canvas
     Processor* canvasProcessor = 0;
@@ -294,23 +224,14 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
 
     ivwAssert(eventInitiator_!=0,"Invalid resize event encountered.");
 
-    // propagate size of canvas to all preceding processors
-    processorsVisited_.clear();
-    propagateResizeEvent(eventInitiator_, resizeEvent);
+    //propagate size of canvas to all preceding processors through port
+    //event initiator is a canvas processor, hence one ImageInport should exist
+    ImageInport* imageInport = dynamic_cast<ImageInport*>(eventInitiator_->getInports()[0]);    
+    imageInport->changeDataDimensions(resizeEvent);
 
-    // change inports of processor which has initiated resize event
-    bool invalidate=false;
-    std::vector<Inport*> inports = eventInitiator_->getInports();
-    for (size_t j=0; j<inports.size(); j++) {
-        ImageInport* imagePort = dynamic_cast<ImageInport*>(inports[j]);
-        if (imagePort) {
-            imagePort->changeDimensions(resizeEvent->size());
-            invalidate = true;
-        }
-    }
     // enable network evaluation again
     processorNetwork_->unlock();
-    if (invalidate) eventInitiator_->invalidate(PropertyOwner::INVALID_OUTPUT);
+    eventInitiator_->invalidate(PropertyOwner::INVALID_OUTPUT);
     eventInitiator_ = 0;
 }
 

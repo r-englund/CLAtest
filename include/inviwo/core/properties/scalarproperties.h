@@ -12,6 +12,7 @@ public:
                   float minValue=0.0f, float maxValue=1.0f, float increment=0.1f,
                   PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                   PropertySemantics::Type semantics=PropertySemantics::Default);
+    virtual std::string getClassName()  const { return "FloatProperty"; }
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();
@@ -25,6 +26,7 @@ public:
                 int minValue=0, int maxValue=4096, int increment=1,
                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                 PropertySemantics::Type semantics=PropertySemantics::Default);
+    virtual std::string getClassName()  const { return "IntProperty"; }
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();

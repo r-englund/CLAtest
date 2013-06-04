@@ -1,7 +1,7 @@
 #include "imagemixer.h"
 
 #include <inviwo/core/datastructures/image/imageram.h>
-
+#include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {
 
@@ -35,31 +35,24 @@ void ImageMixer::deinitialize() {
 }
 
 void ImageMixer::process() {    
-    Image* outImage = outport_.getData();
-    const Image* inputImage0 = inport0_.getData();
-    const Image* inputImage1 = inport1_.getData();
-    
-    const ImageGL* inImage0GL = inputImage0->getRepresentation<ImageGL>();
-    const ImageGL* inImage1GL = inputImage1->getRepresentation<ImageGL>();
-
-    uvec2 csize = inImage0GL->getDimension();
-
-    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
-    outImageGL->resize(csize);
-
+    //ivwAssert(inport0_.getData()!=0, "Inport0 empty.");
+    //ivwAssert(inport1_.getData()!=0, "Inport1 empty.");
+    TextureUnit inportTexture0;
+    TextureUnit inportTexture1;
+    uvec2 csize = outport_.getData()->getDimension();    
+    bindColorTexture(inport0_, inportTexture0.getEnum());
+    bindColorTexture(inport1_, inportTexture1.getEnum());    
     activateTarget(outport_);
-    bindColorTexture(inport0_, GL_TEXTURE0);
-    bindColorTexture(inport1_, GL_TEXTURE1);
-
     shader_->activate();
-    shader_->setUniform("inport0_", 0);
-    shader_->setUniform("inport1_", 1);
+    shader_->setUniform("inport0_", inportTexture0.getUnitNumber());
+    shader_->setUniform("inport1_", inportTexture1.getUnitNumber());
     shader_->setUniform("alpha_", alpha_.get());
     shader_->setUniform("dimension_", vec2(1.f / csize[0], 1.f / csize[1]) );
     renderImagePlaneQuad();
     shader_->deactivate();
-
     deactivateCurrentTarget();
+    unbindColorTexture(inport0_);
+    unbindColorTexture(inport1_);
 }
 
 } // namespace

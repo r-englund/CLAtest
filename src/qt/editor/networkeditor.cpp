@@ -70,8 +70,21 @@ void NetworkEditor::removeProcessor(Processor* processor) {
 
 
 void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
+    processorNetwork_->lock();
     processorNetwork_->addConnection(outport, inport);
     addConnectionGraphicsItem(outport, inport);
+    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(inport->getProcessor());
+    ImageInport* imageInport = dynamic_cast<ImageInport*>(inport);
+    ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outport);
+    if (canvasProcessor && imageInport) {                    
+        ResizeEvent resizeEvent(canvasProcessor->getCanvas()->size());
+        imageInport->changeDataDimensions(&resizeEvent);
+    }
+    else if (!canvasProcessor && imageInport) {
+        ResizeEvent resizeEvent(imageOutport->getDimensions());
+        imageInport->changeDataDimensions(&resizeEvent);
+    }
+    processorNetwork_->unlock();
 }
 
 void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
@@ -285,7 +298,7 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
             // show processor widget as tool window
             processor->setIdentifier("PortInspector "+port->getProcessor()->getIdentifier()+":"+port->getIdentifier());
             ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processor->getProcessorWidget());
-            ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.")
+            ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
             processorWidgetQt->setMinimumSize(128, 128);
             processorWidgetQt->setMaximumSize(128, 128);
             processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);            
@@ -458,12 +471,25 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                     addItem(connectionCurve_);
                     connectionCurve_->show();
                     e->accept();
+                    ImageOutport* imageOutPort = dynamic_cast<ImageOutport*>(startPort_);
+                    if (imageOutPort) {
+                        Image* imageData = imageOutPort->getData();
+                        LogInfo("Outport ImageDataMap count: " << (dynamic_cast<ImageOutport*>(startPort_))->imageDataMap_.size());                        
+                        LogInfo("Current Data dim : " << imageData->getDimension().x <<" "<<imageData->getDimension().y);
+                    }
+                    
 
                 } else if (startPort_ && dynamic_cast<Inport*>(startPort_)) {
                     // click on inport: disconnect if connected
                     // FIXME: delete operation in release event handling results in a crash when
                     //        disconnecting two ports through drag and drop
                     if (startPort_->isConnected()) {
+                        ImageInport* imageInPort = dynamic_cast<ImageInport*>(startPort_);
+                        if (imageInPort) {
+                            const Image* imageData = imageInPort->getData();                                      
+                            LogInfo("Current Data dim : " << imageData->getDimension().x <<" "<<imageData->getDimension().y);
+                        }
+
                         // first remove existing connection, and remember start port
                         std::vector<PortConnection*> portConnections = processorNetwork_->getPortConnections();
                         for (size_t i=0; i<portConnections.size(); i++) {
@@ -484,6 +510,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                         connectionCurve_->show();
 
                         e->accept();
+                        
                     }
 
                 } else {
@@ -572,8 +599,9 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
         if (endProcessor_) {
             endPort_ = endProcessor_->getSelectedPort(e->scenePos());
-            if (endPort_ && dynamic_cast<Inport*>(endPort_) && !endPort_->isConnected())
-                addConnection(dynamic_cast<Outport*>(startPort_), dynamic_cast<Inport*>(endPort_));
+            if (endPort_ && dynamic_cast<Inport*>(endPort_) && !endPort_->isConnected()) {
+                addConnection(dynamic_cast<Outport*>(startPort_), dynamic_cast<Inport*>(endPort_));                
+            }
         }
 
         startProcessor_ = 0;

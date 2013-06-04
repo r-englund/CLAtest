@@ -40,8 +40,7 @@ private:
     void traversePredecessors(Processor* processor);
     void determineProcessingOrder();
 
-    void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);
-    void propagateResizeEvent(Processor* processor, ResizeEvent* resizeEvent);
+    void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);    
 
     bool isPortConnectedToProcessor(Port* port, Processor *processor);
 

@@ -8,7 +8,8 @@ IVW_CORE_API void ivwAssertion(const char* fileName, const char* functionName, l
 
 #if defined(IVW_DEBUG)
 #define ivwAssert(condition, message) \
-    IVW_CORE_API if (!(bool(condition))) ivwAssertion(__FILE__, __FUNCTION__, __LINE__, (message));
+{   std::ostringstream stream__; stream__ << message; \
+    IVW_CORE_API if (!(bool(condition))) ivwAssertion(__FILE__, __FUNCTION__, __LINE__, (stream__.str()));}
 #else
 #define ivwAssert(condition, message)
 #endif

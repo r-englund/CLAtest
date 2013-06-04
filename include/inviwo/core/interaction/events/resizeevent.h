@@ -14,6 +14,7 @@ namespace inviwo {
         ~ResizeEvent();
         inline uvec2 size() const {return size_; }
         inline uvec2 previousSize() const {return previousSize_; }
+        inline void setSize(uvec2 csize) {size_ = csize;} 
         inline void setPreviousSize(uvec2 previousSize) {previousSize_ = previousSize;} 
         inline void setRegisteredCanvasSizes(std::vector<uvec2> registeredCanvasSizes) {registeredCanvasSizes_ = registeredCanvasSizes;}
         inline std::vector<uvec2> getRegisteredCanvasSizes() const {return registeredCanvasSizes_; }
