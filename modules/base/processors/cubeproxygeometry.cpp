@@ -8,9 +8,11 @@ ProcessorCodeState(CubeProxygeometry, CODE_STATE_BROKEN);
 
 CubeProxygeometry::CubeProxygeometry()
     : ProcessorGL(),
-      inport_("image.inport")
+      inport_("volume.inport"),
+      outport_("geometry.outport")
 {
     addPort(inport_);
+    addPort(outport_);
 }
 
 CubeProxygeometry::~CubeProxygeometry() {}

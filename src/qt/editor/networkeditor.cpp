@@ -3,6 +3,7 @@
 #include <inviwo/core/io/serialization/ivwserializer.h>
 #include <inviwo/core/io/serialization/ivwdeserializer.h>
 #include <inviwo/core/metadata/processormetadata.h>
+#include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/util/inviwofactorybase.h>
@@ -323,6 +324,8 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
                     processorNetwork_->addConnection(outport, inports[i]);
                 else if (dynamic_cast<VolumeOutport*>(outport) && dynamic_cast<VolumeInport*>(inports[i]))
                         processorNetwork_->addConnection(outport, inports[i]);
+                else if (dynamic_cast<GeometryOutport*>(outport) && dynamic_cast<GeometryInport*>(inports[i]))
+                    processorNetwork_->addConnection(outport, inports[i]);
             }
         }
     }

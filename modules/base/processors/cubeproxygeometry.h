@@ -3,7 +3,7 @@
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
@@ -26,6 +26,7 @@ protected:
 
 private:
     VolumeInport inport_;
+    GeometryOutport outport_;
 
     Shader* shader_;
 };

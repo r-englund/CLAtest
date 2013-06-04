@@ -2,11 +2,11 @@
 
 namespace inviwo {
 
-    GeometryRepresentation::GeometryRepresentation()
-        : DataRepresentation()
-    {}
+GeometryRepresentation::GeometryRepresentation()
+    : DataRepresentation()
+{}
 
-    GeometryRepresentation::~GeometryRepresentation() {}
+GeometryRepresentation::~GeometryRepresentation() {}
 
 
 } // namespace

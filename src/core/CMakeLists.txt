@@ -17,6 +17,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/attributes.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/image.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagedisk.h
@@ -62,10 +63,11 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processorwidgetmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/datainport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataoutport.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/geometryport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/imageport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/inport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/outport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/volumeport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processor.h
@@ -147,6 +149,7 @@ set(SOURCE_FILES
     datastructures/data.cpp
     datastructures/datarepresentation.cpp
     datastructures/geometry/geometry.cpp
+    datastructures/geometry/geometryram.cpp
     datastructures/geometry/geometryrepresentation.cpp
     datastructures/image/image.cpp
     datastructures/image/imagedisk.cpp
@@ -185,10 +188,11 @@ set(SOURCE_FILES
     metadata/positionmetadata.cpp
     metadata/processormetadata.cpp
     metadata/processorwidgetmetadata.cpp
-    ports/port.cpp
+    ports/geometryport.cpp
     ports/imageport.cpp
     ports/inport.cpp
     ports/outport.cpp
+    ports/port.cpp
     ports/volumeport.cpp
     processors/canvasprocessor.cpp
     processors/processor.cpp

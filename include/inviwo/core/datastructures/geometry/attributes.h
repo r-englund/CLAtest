@@ -12,27 +12,44 @@ enum AttributeType{
     CURVATURE
 };
 
+class IVW_CORE_API AttributesBase {
+public:
+    AttributesBase(){}
+    virtual ~AttributesBase(){}
+
+    virtual void* getAttributes() const = 0;  
+    virtual AttributeType getAttributeType() const = 0;
+};
+
 template<typename T, AttributeType A>
-class IVW_CORE_API Attributes {
+class IVW_CORE_API Attributes : public AttributesBase {
 
 public:
-    Attributes(){}
+    Attributes() : AttributesBase() {}
     virtual ~Attributes(){}
     
-    T* getAttributes() const;
+    void* getAttributes() const;
+    AttributeType getAttributeType() const;
     
 private:
     std::vector<T> attributes_;
 };
 
 template<typename T, AttributeType A>
-T* Attributes<T,A>::getAttributes() const{
+void* Attributes<T,A>::getAttributes() const{
     &attributes_[0];
+}
+
+template<typename T, AttributeType A>
+AttributeType Attributes<T,A>::getAttributeType() const{
+    return A;
 }
 
 } // namespace
 
-typedef Attributes<glm::vec3, POSITION> VertexPositions;
-typedef Attributes<glm::vec3, COLOR> VertexColors;
+typedef Attributes<glm::vec3, AttributeType::POSITION> PositionAttributes;
+typedef Attributes<glm::vec3, AttributeType::COLOR> ColorAttributes;
+typedef Attributes<glm::vec3, AttributeType::NORMAL> NormalAttribute;
+typedef Attributes<float, AttributeType::CURVATURE> CurvatureAttributes;
 
 #endif // IVW_ATTRIBUTES_H
