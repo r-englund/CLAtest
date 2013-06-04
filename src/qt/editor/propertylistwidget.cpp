@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
+
 namespace inviwo {
 
 PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
@@ -13,11 +14,16 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     setMinimumWidth(300);
     propertyListWidget_ = this;
+    
+    scrollArea_ = new QScrollArea(propertyListWidget_);
+    scrollArea_->setWidgetResizable(true);
 
-    listWidget_ = new QWidget(propertyListWidget_);
+    listWidget_ = new QWidget();
     listWidgetLayout_ = new QVBoxLayout(listWidget_);
     listWidgetLayout_->setAlignment(Qt::AlignTop);
-    setWidget(listWidget_);
+
+    scrollArea_->setWidget(listWidget_);
+    setWidget(scrollArea_);
 }
 
 PropertyListWidget::~PropertyListWidget() {}

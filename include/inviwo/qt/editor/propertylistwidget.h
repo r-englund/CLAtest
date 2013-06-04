@@ -7,6 +7,7 @@
 #include <inviwo/qt/editor/inviwodockwidget.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <QScrollArea>
 
 namespace inviwo {
 
@@ -34,6 +35,7 @@ private:
 
     QVBoxLayout* listWidgetLayout_;
     QWidget* listWidget_;
+    QScrollArea* scrollArea_;
 
 protected:
     static PropertyListWidget* propertyListWidget_;
