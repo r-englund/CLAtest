@@ -823,12 +823,14 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // flag the network's modified flag, unlock it and initiate evaluation
     processorNetwork_->setModified(true);
     processorNetwork_->unlock();
-    processorNetworkEvaluator_->evaluate();
 
     // show all processor widgets that where hidden on network load
     for (size_t i=0; i<processors.size(); i++) {
-        if (processors[i]->hasProcessorWidget())
-            processors[i]->getProcessorWidget()->show();
+        if (processors[i]->hasProcessorWidget()){
+            ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
+            if(meta->isVisible())
+                processors[i]->getProcessorWidget()->show();
+        }
     }
 
     return true;

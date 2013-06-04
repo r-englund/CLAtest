@@ -33,12 +33,19 @@ void Data::copyMetaData(Data* targetData) const{
     targetData->metaData_ = metaData_;
 }
 
+void Data::setDataFormat(DataFormatBase format){
+    dataFormatBase_ = format;
+}
+
+DataFormatBase Data::getDataFormat() const{
+    return dataFormatBase_;
+}
+
 /*---------------------------------------------------------------*/
 
-Data3D::Data3D() : PARENT() { }
-
-Data3D::Data3D(Data::TYPE3D dim) : PARENT() {
+Data3D::Data3D(Data::TYPE3D dim, DataFormatBase format) : PARENT() {
     setDimension(dim);
+    setDataFormat(format);
 }
 
 Data3D::~Data3D() {}
@@ -54,12 +61,9 @@ void Data3D::setDimension(uvec3 dim) {
 
 /*---------------------------------------------------------------*/
 
-Data2D::Data2D() : PARENT() {
-
-}
-
-Data2D::Data2D(Data::TYPE2D dim) : PARENT() {
+Data2D::Data2D(Data::TYPE2D dim, DataFormatBase format) : PARENT() {
     setDimension(dim);
+    setDataFormat(format);
 }
 
 Data2D::~Data2D() {}

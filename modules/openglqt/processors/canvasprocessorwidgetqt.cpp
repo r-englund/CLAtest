@@ -38,11 +38,11 @@ void CanvasProcessorWidgetQt::initialize() {
     gridLayout->addWidget(static_cast<QWidget*>(canvas_), 0, 0);
     setLayout(gridLayout);
 
-    canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_));    
-    uvec2 csize = canvasProcessor->getCanvas()->size();
-    resize(static_cast<int>(csize[0]), static_cast<int>(csize[1]));
+    canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_)); 
     
     ProcessorWidgetQt::initialize();
+    ivec2 dim = getDimensionMetaData();
+    resize(static_cast<int>(dim[0]), static_cast<int>(dim[1]));
     initialized_ = true;
 }
 

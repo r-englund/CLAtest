@@ -3,12 +3,12 @@
 
 namespace inviwo {
 
-    VolumeDisk::VolumeDisk()
-        : VolumeRepresentation(uvec3(128,128,128), DataUINT8()), DiskRepresentation()
+    VolumeDisk::VolumeDisk(uvec3 dimensions, DataFormatBase format)
+        : VolumeRepresentation(dimensions, format), DiskRepresentation()
     {}
 
-    VolumeDisk::VolumeDisk(std::string srcFile)
-        : VolumeRepresentation(uvec3(128,128,128), DataUINT8()), DiskRepresentation(srcFile)
+    VolumeDisk::VolumeDisk(std::string srcFile, uvec3 dimensions, DataFormatBase format)
+        : VolumeRepresentation(dimensions, format), DiskRepresentation(srcFile)
     {
         initialize();
     }

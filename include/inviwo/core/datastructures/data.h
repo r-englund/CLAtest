@@ -48,6 +48,9 @@ public:
 
     void copyMetaData(Data* targetData) const;
 
+    void setDataFormat(DataFormatBase format);
+    DataFormatBase getDataFormat() const;
+
     //Others
     virtual Data* clone() const = 0;
 
@@ -64,6 +67,7 @@ protected:
 
     mutable std::vector<DataRepresentation*> representations_;
     MetaDataMap metaData_;
+    DataFormatBase dataFormatBase_;
 };
 
 template<class T>
@@ -233,8 +237,7 @@ U DataDimension<T>::getDimension(U dimension) const {
 class Data3D : public DataDimension<Data::TYPE3D> {
 public :
     typedef DataDimension<Data::TYPE3D> PARENT;
-    Data3D();
-    Data3D(Data::TYPE3D dimension);
+    Data3D(Data::TYPE3D dimension, DataFormatBase format);
     virtual ~Data3D();
     uvec3 getDimension() const;
     void setDimension(uvec3 dim);
@@ -245,8 +248,7 @@ public :
 class Data2D : public DataDimension<Data::TYPE2D> {
 public :
     typedef DataDimension<Data::TYPE2D> PARENT;
-    Data2D();
-    Data2D(Data::TYPE2D dimension);
+    Data2D(Data::TYPE2D dimension, DataFormatBase format);
     virtual ~Data2D();
     uvec2 getDimension() const;
     void setDimension(uvec2 dim);

@@ -9,8 +9,7 @@ namespace inviwo {
     class IVW_CORE_API Image : public Data2D {
 
     public:
-        Image();
-        Image(uvec2 dimensions);
+        Image(uvec2 dimensions = uvec2(256,256), DataFormatBase format = DataVec4UINT8());
         virtual ~Image();
         void resize(uvec2 dimensions);
         virtual Data* clone() const;
@@ -18,9 +17,6 @@ namespace inviwo {
     protected:
         void createDefaultRepresentation() const;
     };
-
-
-
 
 } // namespace
 

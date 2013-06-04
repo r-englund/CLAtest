@@ -3,18 +3,18 @@
 
 namespace inviwo {
 
-Volume::Volume() : Data3D() {
+Volume::Volume(uvec3 dimensions, DataFormatBase format) : Data3D(dimensions, format) {
     representations_.clear();
     metaData_.removeAll();
 }
 
-Volume::Volume(VolumeRepresentation* in) : Data3D() {
+Volume::Volume(VolumeRepresentation* in) : Data3D(in->getDimensions(), in->getDataFormat()) {
     representations_.clear();
     representations_.push_back(in);
     metaData_.removeAll();
 }
 
-Volume::Volume(VolumeRepresentation* in, const Volume* src) : Data3D() {
+Volume::Volume(VolumeRepresentation* in, const Volume* src) : Data3D(in->getDimensions(), in->getDataFormat()) {
     representations_.clear();
     representations_.push_back(in);
     metaData_.removeAll();
@@ -38,18 +38,8 @@ ivec3 Volume::getOffset() const{
     return getMetaData<IVec3MetaData>("offset", ivec3(0,0,0));
 }
 
-DataFormatBase Volume::getDataFormat() const{
-    DataFormatBase format = DataUINT8();
-    if (representations_[0]){
-        VolumeRepresentation* volRep = dynamic_cast<VolumeRepresentation*>(representations_[0]);
-        if (volRep)
-            format = volRep->getDataFormat();
-    }
-    return format;
-}
-
 void Volume::createDefaultRepresentation() const{
-    representations_.push_back(new VolumeDisk());
+    representations_.push_back(new VolumeDisk(getDimension(), getDataFormat()));
 }
 
 

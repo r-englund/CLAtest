@@ -5,9 +5,7 @@
 
 namespace inviwo {
 
-Image::Image() : Data2D(uvec2(256,256)) {}
-
-Image::Image(uvec2 dimensions) : Data2D(dimensions) {}
+Image::Image(uvec2 dimensions, DataFormatBase format) : Data2D(dimensions, format) {}
 
 Data* Image::clone() const {
     Image* newImage = new Image(getDimension());
@@ -54,7 +52,7 @@ void Image::resizeImageRepresentations(uvec2 targetDim) {
 
 void Image::createDefaultRepresentation() const{
     //representations_.push_back(new ImageDisk());
-    representations_.push_back(new ImageRAMVec4uint8());
+    representations_.push_back(createImage(getDimension(), getDataFormat()));
 }
 
 } // namespace

@@ -6,15 +6,15 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API Geometry : public Data {
+class IVW_CORE_API Geometry : public Data {
 
-    public:
-        Geometry();
-        virtual ~Geometry();
-        virtual Data* clone() const;
-    protected:
-        void createDefaultRepresentation() const;
-    };
+public:
+    Geometry();
+    virtual ~Geometry();
+    virtual Data* clone() const;
+protected:
+    void createDefaultRepresentation() const;
+};
 
 } // namespace
 

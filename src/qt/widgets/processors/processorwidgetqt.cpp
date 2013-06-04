@@ -19,14 +19,6 @@ void ProcessorWidgetQt::initialize() {
     ProcessorWidget::initialize();
     ivec2 pos = ProcessorWidget::getPositionMetaData();
     QWidget::move(pos.x, pos.y);
-
-    ivec2 dim = ProcessorWidget::getDimensionMetaData();
-    QWidget::resize(dim.x, dim.y);
-
-    if (ProcessorWidget::getVisibilityMetaData())
-        setVisible(true);
-    else
-        setVisible(false);
 }
 
 void ProcessorWidgetQt::setVisible(bool visible) {
