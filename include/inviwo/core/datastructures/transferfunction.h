@@ -35,7 +35,6 @@ namespace inviwo {
     private:
         Image* data_;
         std::vector<TransferFunctionDataPoint*> dataPoints_;
-        vec4* dataArray_;
     };
 
 } // namespace

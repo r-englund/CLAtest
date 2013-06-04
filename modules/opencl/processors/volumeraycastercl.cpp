@@ -44,8 +44,7 @@ void VolumeRaycasterCL::initialize() {
     } catch (cl::Error&) {
         
     }
-    
-    
+
 }
 
 void VolumeRaycasterCL::deinitialize() {
@@ -77,7 +76,7 @@ void VolumeRaycasterCL::process() {
     kernel_->setArg(arg++, *volumeCL);
     kernel_->setArg(arg++, *entryCL);
     kernel_->setArg(arg++, *exitPort_.getData()->getRepresentation<ImageCL>());
-    //kernel_->setArg(arg++, *transferFunctionCL);
+    kernel_->setArg(arg++, *transferFunctionCL);
     kernel_->setArg(arg++, samplingRate_.get());// / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
     kernel_->setArg(arg++, volumeDim);
     kernel_->setArg(arg++, *outImageCL);

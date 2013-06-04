@@ -8,7 +8,7 @@ __constant float REF_SAMPLING_INTERVAL = 150.f;
 __kernel void raycaster(read_only image3d_t volume
                         , read_only image2d_t entryPoints
                         , read_only image2d_t exitPoints
-                        //, read_only image2d_t transferFunction
+                        , read_only image2d_t transferFunction
                         , float stepSize
                         , uint3 volumeDimension
                         , write_only image2d_t output) 
@@ -33,8 +33,8 @@ __kernel void raycaster(read_only image3d_t volume
         while(t <= tEnd) {
             float3 pos = entry.xyz+t*direction;
             volumeSample = read_imagef(volume, smpNormClampLinear, as_float4(pos)).w; 
-            //float4 color = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
-            float4 color = (float4)(volumeSample);
+            float4 color = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
+            //float4 color = (float4)(volumeSample);
             color.w = 1.f - pow(1.f - color.w, tIncr * REF_SAMPLING_INTERVAL);
 			result.xyz = result.xyz + (1.0 - result.w) * color.w * color.xyz;
 			result.w = result.w + (1.0 - result.w) * color.w;	

@@ -7,9 +7,7 @@ namespace inviwo {
 		parent_(parent),
 		points_(points)
 	{
-		Image* img = transferFunction_->getData();
-		ImageRAMVec4float32 * imgRam = img->getEditableRepresentation<ImageRAMVec4float32>();
-		data_ = static_cast<vec4*>(imgRam->getData());
+
 	}
 
 	TransferFunctionEditor::~TransferFunctionEditor(){}

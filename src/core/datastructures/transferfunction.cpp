@@ -3,9 +3,8 @@
 namespace inviwo {
     TransferFunction::TransferFunction(){
         data_ = new Image();
-        dataArray_ = new vec4();
         data_->addRepresentation(new ImageRAMVec4float32 (uvec2(256,1)));
-        dataArray_ = static_cast<vec4*>(data_->getEditableRepresentation<ImageRAMVec4float32>()->getData());
+        
     }
 
     TransferFunction::~TransferFunction(){}
@@ -64,6 +63,7 @@ namespace inviwo {
     }
 
     void TransferFunction::calcTransferValues(){
+        vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<ImageRAMVec4float32>()->getData());
         float factor;
         float start;
         float stop;
@@ -73,12 +73,12 @@ namespace inviwo {
         if ((int)dataPoints_.size() == 0){} 
         else if ((int)dataPoints_.size () == 1){
             for (int i = 0; i < 256 ; i++){
-                dataArray_[i] = *dataPoints_[0]->getRgba();
+                dataArray[i] = *dataPoints_[0]->getRgba();
             }
         }
         else{
             for (int i = 0; i < (int)dataPoints_.front()->getPos()->x ; i++){
-                dataArray_[i] = *dataPoints_.front()->getRgba();
+                dataArray[i] = *dataPoints_.front()->getRgba();
             }
             //Loops through all point to point intervals
             for (int i = 0; i < getSize() - 1; i++){
@@ -91,11 +91,11 @@ namespace inviwo {
                 //Interpolates the function values for all intermediate positions
                 for (int j = (int)start; j <=  (int)stop; j++){
                     factor = (j - start)/(stop - start);
-                    dataArray_[j] = *myLerp(startValues, stopValues, factor);
+                    dataArray[j] = *myLerp(startValues, stopValues, factor);
                 }
             }
             for (int i = (int)dataPoints_.back()->getPos()->x; i < 256; i++){
-                dataArray_[i] = *dataPoints_.back()->getRgba();
+                dataArray[i] = *dataPoints_.back()->getRgba();
             }
         }
     }

@@ -71,7 +71,6 @@ namespace inviwo {
         std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
         TransferFunction* transferFunction_; ///< Pointer to widget's member variable
         PropertyWidgetQt *parent_; ///< Pointer to widget so it can be updated from the editor
-        vec4* data_;
     };
 
 } // namespace
