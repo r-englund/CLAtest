@@ -778,9 +778,11 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
 //   SERIALIZATION METHODS   //
 ///////////////////////////////
 void NetworkEditor::clearNetwork() {
+    processorNetwork_->lock();
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++)
         removeProcessor(processors[i]);
+    processorNetwork_->unlock();
 }
 
 bool NetworkEditor::saveNetwork(std::string fileName) {
