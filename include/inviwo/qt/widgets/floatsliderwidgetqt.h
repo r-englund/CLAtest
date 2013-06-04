@@ -6,6 +6,7 @@
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
 #include <math.h>
+#include <sstream>
 
 namespace inviwo {
 
@@ -76,7 +77,7 @@ public:
      * @return void <DESCRIBE ME>
      */void setIncrement(float increment);
 
-    void setDecimals(int numberOfDecimals);
+
 
 private slots:
     void updateFromSlider();
@@ -114,6 +115,8 @@ private:
      */
 
     void updateSlider();
+
+    void setSpinboxDecimals(float increment);
 };
 
 }//namespace

@@ -22,8 +22,6 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
 	QVBoxLayout* vLayout = new QVBoxLayout();
 	sliderWidget->setLayout(vLayout);
 
-    //sliderX_ = new FloatSliderWidgetQt(valueVec2Min_.x,valueVec2Max_.x,valueIncrement_.x);
-    //sliderY_ = new FloatSliderWidgetQt(valueVec2Min_.y,valueVec2Max_.y,valueIncrement_.y);
     
     sliderX_ = new FloatSliderWidgetQt();
     sliderY_ = new FloatSliderWidgetQt();
@@ -33,10 +31,8 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
 	hLayout->addWidget(sliderWidget);
 	setLayout(hLayout);
 
-
     connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
     connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-
 }
 
 void FloatVec2PropertyWidgetQt::updateFromProperty() {

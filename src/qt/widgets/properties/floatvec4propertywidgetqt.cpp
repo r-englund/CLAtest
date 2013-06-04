@@ -21,10 +21,6 @@ void FloatVec4PropertyWidgetQt::generateWidget() {
     vec4 valueVec4Max = property_->getMaxValue();
     vec4 valueVec4Min = property_->getMinValue();
     vec4 valueIncrement = property_->getIncrement();
- //   sliderX_ = new FloatSliderWidgetQt(valueVec4Min.x,valueVec4Max.x,valueIncrement.x);  
- //   sliderY_ = new FloatSliderWidgetQt(valueVec4Min.y,valueVec4Max.y,valueIncrement.y);
- //   sliderZ_ = new FloatSliderWidgetQt(valueVec4Min.z,valueVec4Max.z,valueIncrement.z);
-	//sliderW_ = new FloatSliderWidgetQt(valueVec4Min.z,valueVec4Max.z,valueIncrement.z);
 
     sliderX_ = new FloatSliderWidgetQt();  
     sliderY_ = new FloatSliderWidgetQt();

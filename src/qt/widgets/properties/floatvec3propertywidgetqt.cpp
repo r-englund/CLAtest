@@ -22,10 +22,6 @@ void FloatVec3PropertyWidgetQt::generateWidget() {
     QVBoxLayout* vLayout = new QVBoxLayout();
     sliderWidget->setLayout(vLayout);
 
- /*   sliderX_ = new FloatSliderWidgetQt(valueVec3Min_.x,valueVec3Max_.x,valueIncrement_.x);
-    sliderY_ = new FloatSliderWidgetQt(valueVec3Min_.y,valueVec3Max_.y,valueIncrement_.y);
-    sliderZ_ = new FloatSliderWidgetQt(valueVec3Min_.z,valueVec3Max_.z,valueIncrement_.z);*/
-
     sliderX_ = new FloatSliderWidgetQt();
     sliderY_ = new FloatSliderWidgetQt();
     sliderZ_ = new FloatSliderWidgetQt();

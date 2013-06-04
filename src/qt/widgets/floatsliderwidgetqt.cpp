@@ -12,7 +12,7 @@ void FloatSliderWidgetQt::generateWidget() {
     slider_->setMaximum(SLIDER_MAX);
     spinBox_ = new QDoubleSpinBox();
     spinBox_->setFixedWidth(50);
-    spinBox_->setDecimals(3);
+    //spinBox_->setDecimals(3);
     hLayout->addWidget(slider_);
     hLayout->addWidget(spinBox_);
     setLayout(hLayout);
@@ -56,7 +56,7 @@ void FloatSliderWidgetQt::setIncrement(float increment) {
     increment_ = increment;
     spinBox_->setSingleStep(static_cast<double>(increment));
     slider_->setSingleStep(10);
-
+    setSpinboxDecimals(increment);
 }
 
 
@@ -94,11 +94,15 @@ void FloatSliderWidgetQt::updateSpinBox() {
     spinBox_->blockSignals(false);
 }
 
+void FloatSliderWidgetQt::setSpinboxDecimals( float increment ) {
 
-void FloatSliderWidgetQt::setDecimals( int numberOfDecimals ) {
-    spinBox_->setDecimals(numberOfDecimals);
-    float newIcrement = pow(10.0f,-numberOfDecimals);
-    std::cout << "newIcrement:   " << newIcrement << std::endl;
+    std::ostringstream buff;
+    buff<<increment;
+
+    std::string str2 = buff.str().substr(buff.str().find(".")+1,buff.str().length());
+
+    spinBox_->setDecimals(str2.length());
+
 }
 
 } // namespace inviwo
