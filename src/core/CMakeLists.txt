@@ -19,6 +19,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryrepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/meshram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/trianglemeshram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/image.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageram.h
@@ -151,6 +153,8 @@ set(SOURCE_FILES
     datastructures/geometry/geometry.cpp
     datastructures/geometry/geometryram.cpp
     datastructures/geometry/geometryrepresentation.cpp
+    datastructures/geometry/meshram.cpp
+    datastructures/geometry/trianglemeshram.cpp
     datastructures/image/image.cpp
     datastructures/image/imagedisk.cpp
     datastructures/image/imageram.cpp
