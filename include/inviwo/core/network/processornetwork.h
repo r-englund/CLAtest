@@ -76,6 +76,7 @@ public:
      */
     void removeConnection(Outport* sourcePort, Inport* destPort);
 
+    void addLink(ProcessorLink* processorLink);
     void addLink(Processor* sourceProcessor, Processor* destProcessor);
     void removeLink(Processor* sourceProcessor, Processor* destProcessor);
 

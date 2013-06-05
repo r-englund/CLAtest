@@ -1,5 +1,5 @@
 #include "canvasgl.h"
-
+#include "glwrap/textureunit.h"
 namespace inviwo {
 
 bool CanvasGL::glewInitialized_ = false;
@@ -70,10 +70,13 @@ void CanvasGL::update() {
 }
 
 void CanvasGL::renderImage() {
-    image_->bindColorTexture(GL_TEXTURE0);
+    TextureUnit textureUnit;
+    image_->bindColorTexture(textureUnit.getEnum());
     shader_->activate();
-    shader_->setUniform("colorTex_", 0);
+    shader_->setUniform("colorTex_", textureUnit.getUnitNumber());
     shader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
+    //FIXME: glViewport should not be here, which indicates this context is not active.
+    glViewport(0, 0, dimensions_.x, dimensions_.y);
     renderImagePlaneQuad();
     shader_->deactivate();
     image_->unbindColorTexture();

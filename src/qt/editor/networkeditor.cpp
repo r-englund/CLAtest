@@ -471,25 +471,11 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                     addItem(connectionCurve_);
                     connectionCurve_->show();
                     e->accept();
-                    ImageOutport* imageOutPort = dynamic_cast<ImageOutport*>(startPort_);
-                    if (imageOutPort) {
-                        Image* imageData = imageOutPort->getData();
-                        LogInfo("Outport ImageDataMap count: " << (dynamic_cast<ImageOutport*>(startPort_))->imageDataMap_.size());                        
-                        LogInfo("Current Data dim : " << imageData->getDimension().x <<" "<<imageData->getDimension().y);
-                    }
-                    
-
                 } else if (startPort_ && dynamic_cast<Inport*>(startPort_)) {
                     // click on inport: disconnect if connected
                     // FIXME: delete operation in release event handling results in a crash when
                     //        disconnecting two ports through drag and drop
                     if (startPort_->isConnected()) {
-                        ImageInport* imageInPort = dynamic_cast<ImageInport*>(startPort_);
-                        if (imageInPort) {
-                            const Image* imageData = imageInPort->getData();                                      
-                            LogInfo("Current Data dim : " << imageData->getDimension().x <<" "<<imageData->getDimension().y);
-                        }
-
                         // first remove existing connection, and remember start port
                         std::vector<PortConnection*> portConnections = processorNetwork_->getPortConnections();
                         for (size_t i=0; i<portConnections.size(); i++) {

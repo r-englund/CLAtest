@@ -35,8 +35,8 @@ void ImageMixer::deinitialize() {
 }
 
 void ImageMixer::process() {    
-    //ivwAssert(inport0_.getData()!=0, "Inport0 empty.");
-    //ivwAssert(inport1_.getData()!=0, "Inport1 empty.");
+    ivwAssert(inport0_.getData()!=0, "Inport0 empty.");
+    ivwAssert(inport1_.getData()!=0, "Inport1 empty.");
     TextureUnit inportTexture0;
     TextureUnit inportTexture1;
     uvec2 csize = outport_.getData()->getDimension();    

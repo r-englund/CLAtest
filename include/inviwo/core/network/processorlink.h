@@ -38,11 +38,11 @@ public:
     ProcessorLink(Processor* outProcessor, Processor* inProcessor);
     virtual ~ProcessorLink();
 
-    Processor* getInProcessor() const{ return inProcessor_.getProcessor(); }
-    Processor* getOutProcessor() const{ return outProcessor_.getProcessor(); }
+    Processor* getInProcessor() const{ return inProcessor_; }
+    Processor* getOutProcessor() const{ return outProcessor_; }
 
     bool involvesProcessor(Processor* processor) const {
-        return (inProcessor_.getProcessor()==processor || outProcessor_.getProcessor()==processor);
+        return (inProcessor_==processor || outProcessor_==processor);
     }
 
     void autoLinkPropertiesByType();
@@ -62,22 +62,9 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 
-private:
-    //TODO: This is just for serialization/deserialization
-    //This is temporary fix. Serialization needs improvement.
-    class SlimProcessor : public IvwSerializable {
-    public:
-        SlimProcessor();
-        SlimProcessor(Processor*);
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& s);
-        Processor* getProcessor() const;
-    private:
-        Processor* processor_;
-    };
-
-   SlimProcessor inProcessor_;
-   SlimProcessor outProcessor_;
+private:    
+   Processor* inProcessor_;
+   Processor* outProcessor_;
    std::vector<PropertyLink*> propertyLinks_;
 };
 

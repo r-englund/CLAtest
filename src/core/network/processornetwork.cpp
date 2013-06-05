@@ -57,10 +57,13 @@ void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
     modified();
 }
 
-void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {        
-    //FIXME: link processors
-    processorLinks_.push_back(new ProcessorLink(sourceProcessor, destProcessor));
+void ProcessorNetwork::addLink(ProcessorLink* processorLink) {        
+    processorLinks_.push_back(processorLink);
     modified();
+}
+
+void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {        
+    addLink(new ProcessorLink(sourceProcessor, destProcessor));
 }
 
 void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destProcessor) {
@@ -118,7 +121,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) {
         addConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());
 
     for (size_t i=0; i<processorLinks.size(); i++)
-        addLink(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor());
+        addLink(processorLinks[i]);
 }
 
 } // namespace

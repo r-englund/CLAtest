@@ -46,9 +46,7 @@ public:
     
     void changeDataDimensions(ResizeEvent* resizeEvent);    
     uvec2 getDimensions() const;
-    uvec3 getColorCode() const;
-    typedef std::map<std::string, Image*> ImagePortMap;
-    ImagePortMap imageDataMap_;
+    uvec3 getColorCode() const;    
     
 protected:
     Image* getResizedImageData(uvec2 dimensions);
@@ -58,8 +56,8 @@ protected:
 private:
     uvec2 dimensions_;
     bool mapDataInvalid_;
-
-
+    typedef std::map<std::string, Image*> ImagePortMap;
+    ImagePortMap imageDataMap_;
 };
 
 } // namespace

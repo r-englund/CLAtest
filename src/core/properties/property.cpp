@@ -80,11 +80,14 @@ int Property::getVariantType() {
 }
 
 void Property::serialize(IvwSerializer& s) const {
+    s.serialize("type", getClassName(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("displayName", displayName_, true);
 }
 
 void Property::deserialize(IvwDeserializer& d) {
+    std::string className;
+    d.deserialize("type", className, true);
     d.deserialize("identifier", identifier_, true);
     d.deserialize("displayName", displayName_, true);
 }

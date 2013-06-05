@@ -338,7 +338,8 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
         if (data) refDataContainer_.insert(data, rootCopy);
     }
     else {
-        (*data).deserialize(*this);
+         refDataContainer_.insert(data, rootCopy);
+         (*data).deserialize(*this);
          rootElement_ = nextRootNode;
     }    
     
