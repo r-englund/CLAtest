@@ -131,37 +131,36 @@ void ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
 
     if (!target) return;
 
-    //TODO: Fix FBO blit
-
     //Resize by FBO blit
-    /*FrameBufferObject* srcFBO = source->getFBO();
+    FrameBufferObject* srcFBO = source->getFBO();
     FrameBufferObject* tgtFBO = target->getFBO();
     Texture2D* sTex = source->getColorTexture();
     Texture2D* tTex = target->getColorTexture();
     
-    FrameBufferObject::deactivate();
-    source->activateBuffer();
+    //FrameBufferObject::deactivate();
+    //source->activateBuffer();
     srcFBO->setRead_Blit(); 
     //glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
 
-    FrameBufferObject::deactivate();
-    target->activateBuffer();
+    //FrameBufferObject::deactivate();
+    //target->activateBuffer();
     tgtFBO->setDraw_Blit();
     //glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);        
             
     //srcFBO->attachTexture(sTex);
     //tgtFBO->attachTexture(tTex);        
-    FrameBufferObject::deactivate();
-    glDisable(GL_SCISSOR_TEST);
+    //FrameBufferObject::deactivate();
+    //glDisable(GL_SCISSOR_TEST);
     glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
-                         0, 0, tTex->getWidth()/2, tTex->getHeight()/2,
+                         0, 0, tTex->getWidth(), tTex->getHeight(),
                          GL_COLOR_BUFFER_BIT, GL_LINEAR);
          
     srcFBO->setRead_Blit(false); 
     tgtFBO->setDraw_Blit(false);        
     FrameBufferObject::deactivate();
-    */         
+             
     
+    /*
     //Resize by rendering
     TextureUnit resizeTextureUnit;
     uvec2 csize = target->getDimension();        
@@ -174,6 +173,7 @@ void ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
     shader_->deactivate();
     FrameBufferObject::deactivate();
     source->unbindColorTexture();        
+    */
 }
 
 void ImageGL::renderImagePlaneQuad() const {
