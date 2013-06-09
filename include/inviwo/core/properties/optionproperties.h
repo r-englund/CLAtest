@@ -6,7 +6,8 @@
 namespace inviwo {
 
 /** class OptionPropertyInt
-* 
+*   \brief  The OptionPropertyInt is a property holding different options stored with a display name and the integer value
+*   The widget for the property consist of a combobox with the display names for each mapped value
 * @see TemplateOptionProperty
 */
 class IVW_CORE_API OptionPropertyInt : public TemplateOptionProperty<int> {
@@ -24,7 +25,9 @@ public:
 
 
 /** class OptionPropertyFloat
-* 
+* \brief The OptionPropertyFloat is a property holding different options stored with a display name and the float value
+*  
+*  The widget for the property consist of a combobox with the display names for each mapped value
 * @see TemplateOptionProperty
 */
 class IVW_CORE_API OptionPropertyFloat : public TemplateOptionProperty<float> {
@@ -42,7 +45,9 @@ public:
 
 
 /** class OptionPropertyDouble
+* \brief The OptionPropertyDouble is a property holding different options stored with a display name and the double value
 * 
+*  The widget for the property consist of a combobox with the display names for each mapped value
 * @see TemplateOptionProperty
 */
 class IVW_CORE_API OptionPropertyDouble : public TemplateOptionProperty<double> {
@@ -60,7 +65,8 @@ public:
 
 
 /** class OptionPropertyString
-* 
+* \brief The OptionPropertyString is a property holding different options stored with a display name and the string value
+* The widget for the property consist of a combobox with the display names for each mapped value
 * @see TemplateOptionProperty
 */
 class IVW_CORE_API OptionPropertyString : public TemplateOptionProperty<std::string> {

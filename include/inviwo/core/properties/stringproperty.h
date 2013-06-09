@@ -6,7 +6,11 @@
 namespace inviwo {
 
     /** class StringProperty
-    *   A property that holds a string as value, can use TextEditorWidget or StringPropertyWidget
+    * \brief  The StringProperty holds a string as value.
+    * 
+    * The string property has 2 different widgets, one that just displays the value of the string.
+    * The other one makes it possible to edit the string.
+    * To use the editor widget you must specify it in the constructor and set the property semantics to Editor.
     * 
     * @see StringPropertyWidgetQt
     * @see TextEditorWidgetQt
@@ -26,7 +30,7 @@ public:
      * @param std::string identifier identifier for the property
      * @param std::string displayName displayName for the property
      * @param std::string value value of the property
-     * @param PropertySemantics::Type semantics Semantics of the property, if nothing is specified it will be the Default. The semantics can be specified as Editor
+     * @param PropertySemantics::Type semantics Semantics of the property, if nothing is specified it will set to the Default. The semantics can be specified as Editor
      * @return 
      */
     StringProperty(std::string identifier, std::string displayName, std::string value,

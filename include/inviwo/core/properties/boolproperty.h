@@ -6,8 +6,11 @@
 
 namespace inviwo {
     /** class BoolProperty
-    *  Property for boolean values, the widget consist of a checkbox
-    *  
+    *\brief The BoolProperty class provides a property holding boolean values
+    * 
+    * A bool property are normally used by a processor.
+    * The bool property is created and added in the constructor of the processor.
+    * The propertys widget consist of a checkbox that sets the value of the property.
     * @see TemplateProperty
     * @see BoolPropertyWidgetQt
     */
@@ -15,7 +18,18 @@ namespace inviwo {
 class IVW_CORE_API BoolProperty : public TemplateProperty<bool> {
 
 public:
-    BoolProperty(std::string identifier, std::string displayName, bool value,
+    /** 
+     * \brief Constructs a bool property
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @param std::string identifier <DESCRIBE ME>
+     * @param std::string displayName <DESCRIBE ME>
+     * @param bool value <DESCRIBE ME>
+     * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
+     * @param PropertySemantics::Type semantics <DESCRIBE ME>
+     * @return  <DESCRIBE ME>
+     */BoolProperty(std::string identifier, std::string displayName, bool value,
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                  PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;

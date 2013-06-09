@@ -7,15 +7,33 @@
 
 namespace inviwo {    
 /** class ButtonProperty
-*  Property for buttons where you are able to assign functions to the property
-*  Its only possible to register 1 function for each property.
+* \brief  The Button property class provides buttons that you can bind functions to buttons.
+* 
+* The button property has a widget witch creates a button and register a function to it.
+* You can only assign one function to the property.
+* To bind a function to a button property use the registerClassMemberFunction.
+* Example usage
+* myButton_.registerClassMemberFunction(this, &MyButton::doSomethingFunction);
+* A button property are normally used by a processor.
+* The button property is created and added in the constructor of the processor.
+*  
 *  
 * @see ButtonPropertyWidgetQt
 */
 class IVW_CORE_API ButtonProperty : public Property {
 
 public:
-	ButtonProperty(std::string identifier, std::string displayName,
+	/** 
+	 * \brief Constructs a button property
+	 *
+	 * <DESCRIBE THE METHOD>
+	 * 
+	 * @param std::string identifier <DESCRIBE ME>
+	 * @param std::string displayName <DESCRIBE ME>
+	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
+	 * @param PropertySemantics::Type semantics <DESCRIBE ME>
+	 * @return  <DESCRIBE ME>
+	 */ButtonProperty(std::string identifier, std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
                    PropertySemantics::Type semantics = PropertySemantics::Default);
     
@@ -29,8 +47,13 @@ public:
         callBack_.addMemberFunction(o,m);
     }
 
-    //invokes all functions
-    void invokeMemberFunctions() {
+    /** 
+     * \brief invokes all functions
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @return void <DESCRIBE ME>
+     */void invokeMemberFunctions() {
         callBack_.invoke();
     }
 
