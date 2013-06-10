@@ -19,18 +19,22 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
     uvec2 dimensions = resizeEvent->size();
 
     //set dimension based on port groups
-    std::vector<std::string> portGroups = getProcessor()->getPortDependencySets();
-    std::vector<Port*> ports;
+    std::vector<std::string> portDependencySets = getProcessor()->getPortDependencySets();
+    std::vector<Port*> portSet;
     uvec2 dimMax(0);
     bool hasImageOutport = false;
 
-    for (size_t j=0; j<portGroups.size(); j++) {
-        ports.clear();
-        ports = getProcessor()->getPortsByDependencySet(portGroups[j]);
+    for (size_t i=0; i<portDependencySets.size(); i++) {
+        portSet.clear();
+        //get ports that belong to the dependency set portDependencySets[i]
+        portSet = getProcessor()->getPortsByDependencySet(portDependencySets[i]);        
 
-        if (std::find(ports.begin(), ports.end(), this) != ports.end()) {            
-            for (size_t j=0; j<ports.size(); j++) {
-                ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(ports[j]);
+        //check if current port belong to portSet
+        if (std::find(portSet.begin(), portSet.end(), this) != portSet.end()) {
+
+            //Find the image port with largest dimension
+            for (size_t j=0; j<portSet.size(); j++) {
+                ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(portSet[j]);
                 if (imageOutport) {  
                     hasImageOutport = true;
                     uvec2 dim = imageOutport->getDimensions();
@@ -49,7 +53,7 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
 
     invalidate(PropertyOwner::INVALID_OUTPUT);
     resizeEvent->setSize(dimensions_);
-    propagateResizeToPredecessor(resizeEvent);    
+    propagateResizeToPredecessor(resizeEvent);
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {    

@@ -54,8 +54,6 @@ void ImageGL::initialize() {
     frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT);
     frameBufferObject_->deactivate();
     frameBufferObject_->checkStatus();
-
-    shader_ = new Shader("img_texturequad.frag");
 }
 
 void ImageGL::deinitialize() {
@@ -68,8 +66,6 @@ void ImageGL::deinitialize() {
     depthTexture_->unbind();
     delete depthTexture_;
     depthTexture_ = 0;
-    delete shader_;
-    shader_=0;
 }
 
 DataRepresentation* ImageGL::clone() const {
@@ -158,43 +154,6 @@ void ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
     srcFBO->setRead_Blit(false); 
     tgtFBO->setDraw_Blit(false);        
     FrameBufferObject::deactivate();
-             
-    
-    /*
-    //Resize by rendering
-    TextureUnit resizeTextureUnit;
-    uvec2 csize = target->getDimension();        
-    source->bindColorTexture(resizeTextureUnit.getEnum());
-    target->activateBuffer();
-    shader_->activate();
-    shader_->setUniform("colorTex_", resizeTextureUnit.getUnitNumber());
-    shader_->setUniform("dimension_", vec2( 1.f / csize[0],  1.f / csize[1]) );
-    renderImagePlaneQuad();
-    shader_->deactivate();
-    FrameBufferObject::deactivate();
-    source->unbindColorTexture();        
-    */
-}
-
-void ImageGL::renderImagePlaneQuad() const {
-    glDisable(GL_CULL_FACE);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glDepthFunc(GL_ALWAYS);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.f, 0.f); glVertex2f(-1.f, -1.f);
-    glTexCoord2f(1.f, 0.f); glVertex2f( 1.f, -1.f);
-    glTexCoord2f(1.f, 1.f); glVertex2f( 1.f,  1.f);
-    glTexCoord2f(0.f, 1.f); glVertex2f(-1.f,  1.f);
-    glEnd();
-    glDepthFunc(GL_LESS);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
 }
 
 } // namespace

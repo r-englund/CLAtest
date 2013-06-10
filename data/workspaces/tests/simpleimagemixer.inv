@@ -1,0 +1,163 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref3">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-700" y="-650" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="undefined" identifier="color" displayName="Color">
+                    <value x="1" y="0" z="0" />
+                    <minvalue x="0" y="0" z="0" />
+                    <maxvalue x="1" y="1" z="1" />
+                    <increment x="0.1" y="0.1" z="0.1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor1" id="ref0">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-475" y="-650" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="undefined" identifier="color" displayName="Color">
+                    <value x="0" y="0" z="1" />
+                    <minvalue x="0" y="0" z="0" />
+                    <maxvalue x="1" y="1" z="1" />
+                    <increment x="0.1" y="0.1" z="0.1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="ImageMixer" identifier="ImageMixer" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-575" y="-550" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatProperty" identifier="alpha" displayName="Alpha">
+                    <value content="0.4973" />
+                    <minvalue content="0" />
+                    <maxvalue content="1" />
+                    <increment content="0.1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref2">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-575" y="-475" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="37" y="113" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="undefined" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="128" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="undefined" identifier="snapshot" displayName="Create Snapshot" />
+            </Properties>
+        </Processor>
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref4">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-350" y="-475" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="43" y="506" />
+                    <dimension x="512" y="512" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="undefined" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="128" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="undefined" identifier="snapshot" displayName="Create Snapshot" />
+            </Properties>
+        </Processor>
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL2" id="ref5">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-775" y="-475" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="672" y="126" />
+                    <dimension x="640" y="640" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="undefined" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="128" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="undefined" identifier="snapshot" displayName="Create Snapshot" />
+            </Properties>
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref3" />
+            </OutPort>
+            <InPort identifier="inport0">
+                <Processor type="ImageMixer" identifier="ImageMixer" reference="ref1" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor1" reference="ref0" />
+            </OutPort>
+            <InPort identifier="inport1">
+                <Processor type="ImageMixer" identifier="ImageMixer" reference="ref1" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="ImageMixer" identifier="ImageMixer" reference="ref1" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor1" reference="ref0" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref4" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref3" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL2" reference="ref5" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <ProcessorLinks />
+</InviwoTreeData>

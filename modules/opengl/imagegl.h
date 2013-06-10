@@ -34,7 +34,6 @@ namespace inviwo {
         void unbindColorTexture() const;
         virtual void resize(uvec2 dimensions);
         virtual void copyAndResizeImage(DataRepresentation* target) ;
-        void renderImagePlaneQuad() const;
     //private:
         FrameBufferObject* getFBO() {return frameBufferObject_;}
         Texture2D* getColorTexture() {return colorTexture_;}
@@ -46,7 +45,6 @@ namespace inviwo {
         Texture2D* colorTexture_;
         Texture2D* depthTexture_;
         FrameBufferObject* frameBufferObject_;
-        Shader* shader_;
     };
 
 } // namespace

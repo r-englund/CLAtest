@@ -7,14 +7,6 @@
 
 namespace inviwo {
 
-struct ReaderSettings {            
-    std::string rawFileAbsolutePath_;
-    uvec3 dimensions_;
-    std::string dataFormat_;
-    ReaderSettings(std::string rawFile, ivec3 resolution=ivec3(0), std::string format="UCHAR");
-    ReaderSettings() {}
-};
-
 class IVW_CORE_API RawVolumeReader {
 public:
     RawVolumeReader();

@@ -40,21 +40,8 @@ void CanvasQt::initializeGL() {
     QGLWidget::initializeGL();
 }
 
-void CanvasQt::resizeGL(int width, int height) {
-    uvec2 previousDimensions = dimensions_;
-    CanvasGL::resize(uvec2(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));
-    if (processorNetworkEvaluator_) {
-        ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
-        resizeEvent->setPreviousSize(previousDimensions);        
-        std::vector<Canvas*> registeredCanvases = processorNetworkEvaluator_->getRegisteredCanvases();
-        std::vector<uvec2> registeredCanvasSize;
-        for (size_t i=0; i<registeredCanvases.size(); i++)
-            registeredCanvasSize.push_back(registeredCanvases[i]->size());
-        resizeEvent->setRegisteredCanvasSizes(registeredCanvasSize);
-
-        processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
-        processorNetworkEvaluator_->evaluate();
-    }
+void CanvasQt::resizeGL(int width, int height) {    
+    CanvasGL::resize(uvec2(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));    
 }
 
 void CanvasQt::update() {
