@@ -16,6 +16,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/attributes.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/basemeshcreator.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryrepresentation.h
@@ -150,6 +151,7 @@ set(SOURCE_FILES
     common/inviwomodule.cpp
     datastructures/data.cpp
     datastructures/datarepresentation.cpp
+    datastructures/geometry/basemeshcreator.cpp
     datastructures/geometry/geometry.cpp
     datastructures/geometry/geometryram.cpp
     datastructures/geometry/geometryrepresentation.cpp

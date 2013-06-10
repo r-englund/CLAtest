@@ -1,7 +1,7 @@
 #ifdef _MSC_VER
     #ifdef _DEBUG
         #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
-    #elif
+    #else
         #pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
     #endif
 #endif
