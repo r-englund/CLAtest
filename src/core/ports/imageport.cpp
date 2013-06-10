@@ -181,16 +181,20 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     }
 
     //Remove unwanted map data
-   ImagePortMap::iterator it=imageDataMap_.begin();
-   while (it!=imageDataMap_.end()) {
-        if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), it->first) == registeredDimensionsStrings.end()) {
-            //discard other data but leave atleast one data
-            if (it->second && imageDataMap_.size()>1) {
-                delete it->second;
-                imageDataMap_.erase(it);
-            }            
+    std::vector<std::string> invalidImageDataStrings;
+    for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
+        if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), it->first) == registeredDimensionsStrings.end()) {            
+            invalidImageDataStrings.push_back(it->first);
         }
-        it++;
+    }
+
+    //leave at least one data and discard others
+    if (imageDataMap_.size()>1) {
+        for (size_t i=0; i<invalidImageDataStrings.size(); i++) {
+            Image* invalidImage = imageDataMap_[invalidImageDataStrings[i]];
+            imageDataMap_.erase(invalidImageDataStrings[i]);
+            delete invalidImage;
+        }
     }
 
     //Set largest data
