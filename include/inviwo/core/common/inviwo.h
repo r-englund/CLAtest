@@ -29,6 +29,7 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 typedef glm::ivec2 ivec2;
 typedef glm::ivec3 ivec3;

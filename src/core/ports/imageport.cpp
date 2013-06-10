@@ -84,9 +84,8 @@ ImageOutport::ImageOutport(std::string identifier)
     : DataOutport<Image>(identifier), dimensions_(uvec2(256,256))
 {     
     data_ = new Image(dimensions_);
-    std::ostringstream dimensionString;
-    dimensionString << dimensions_.x << "x" << dimensions_.y;
-    imageDataMap_.insert(std::make_pair(dimensionString.str(), data_));    
+    std::string dimensionString = glm::to_string(dimensions_);
+    imageDataMap_.insert(std::make_pair(dimensionString, data_));    
     mapDataInvalid_ = true;
 }
 
@@ -122,10 +121,8 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     
     uvec2 requiredDimensions = resizeEvent->size();
     uvec2 previousDimensions = resizeEvent->previousSize();
-    std::ostringstream prevDimensionString;
-    prevDimensionString << previousDimensions.x << "x" << previousDimensions.y;
-    std::ostringstream reqDimensionString;
-    reqDimensionString << requiredDimensions.x << "x" << requiredDimensions.y;
+    std::string prevDimensionString = glm::to_string(previousDimensions);
+    std::string reqDimensionString = glm::to_string(requiredDimensions);
 
     std::vector<Processor*> directSuccessors;
     directSuccessors = getDirectSuccessors();
@@ -142,12 +139,9 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     std::vector<std::string> registeredDimensionsStrings;    
     for (size_t i=0; i<registeredDimensions.size(); i++) {
         uvec2 dimensions = registeredDimensions[i];
-        std::ostringstream dimensionString;
-        dimensionString << dimensions.x << "x" << dimensions.y;        
-        registeredDimensionsStrings.push_back(dimensionString.str());
-    }
- 
-    
+        std::string dimensionString = glm::to_string(dimensions);        
+        registeredDimensionsStrings.push_back(dimensionString);
+    }    
 
     //If requiredDimension does not exist then do the following:
     //  If image data with previousDimensions exists in map and 
@@ -157,24 +151,24 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     //      Clone the current data, resize it and make new entry in map
 
     Image* resultImage = 0;
-    if ( imageDataMap_.find(reqDimensionString.str())!= imageDataMap_.end() )
-        resultImage = imageDataMap_[reqDimensionString.str()];
+    if ( imageDataMap_.find(reqDimensionString)!= imageDataMap_.end() )
+        resultImage = imageDataMap_[reqDimensionString];
 
     //requiredDimension does not exist
     if (!resultImage) {
         //Decide whether to resize data with previousDimensions
         bool canResize = false;
-        if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), prevDimensionString.str()) == registeredDimensionsStrings.end())
+        if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), prevDimensionString) == registeredDimensionsStrings.end())
             canResize = true;    
 
         //Does data with previousDimensions exist
-        if ( imageDataMap_.find(prevDimensionString.str())!= imageDataMap_.end() )
-            resultImage = imageDataMap_[prevDimensionString.str()];
+        if ( imageDataMap_.find(prevDimensionString)!= imageDataMap_.end() )
+            resultImage = imageDataMap_[prevDimensionString];
 
         if (canResize && resultImage) {
             //previousDimensions exist. It is no longer needed. So it can be resized.            
             //Remove old entry in map( later make new entry)
-            imageDataMap_.erase(prevDimensionString.str());            
+            imageDataMap_.erase(prevDimensionString);
         }
         else {
             //previousDimensions does not exist. So allocate space holder
@@ -183,20 +177,23 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         //Resize the result image
         resultImage->resize(requiredDimensions);
         //Make new entry
-        imageDataMap_.insert(std::make_pair(reqDimensionString.str(), resultImage));        
+        imageDataMap_.insert(std::make_pair(reqDimensionString, resultImage));        
     }
 
     //Remove unwanted map data
-    for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
+   ImagePortMap::iterator it=imageDataMap_.begin();
+   while (it!=imageDataMap_.end()) {
         if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), it->first) == registeredDimensionsStrings.end()) {
-            //discard other data
-            if (it->second) delete it->second;
-            imageDataMap_.erase(it->first);
-            it=imageDataMap_.begin();
+            //discard other data but leave atleast one data
+            if (it->second && imageDataMap_.size()>1) {
+                delete it->second;
+                imageDataMap_.erase(it);
+            }            
         }
+        it++;
     }
 
-    //Set largest data    
+    //Set largest data
     setLargestImageData();
     invalidate(PropertyOwner::INVALID_OUTPUT);
 
@@ -232,9 +229,8 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions){
     //FIXME: Should not enter this region. Port inspectors needs this.
     Image* resultImage = dynamic_cast<Image*>(data_->clone());
     resultImage->resize(requiredDimensions);
-    std::ostringstream dimensionString;
-    dimensionString << requiredDimensions.x << "x" << requiredDimensions.y;
-    imageDataMap_.insert(std::make_pair(dimensionString.str(), resultImage));
+    std::string dimensionString = glm::to_string(requiredDimensions);
+    imageDataMap_.insert(std::make_pair(dimensionString, resultImage));
     data_->resizeImageRepresentations(resultImage, requiredDimensions);
     return resultImage;
 }
