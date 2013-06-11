@@ -3,7 +3,8 @@
 namespace inviwo {
 
 ProcessorNetwork::ProcessorNetwork() : VoidObservable(),
-    modified_(true) {}
+    modified_(true),
+	broadcastModification_(false) {}
 
 ProcessorNetwork::~ProcessorNetwork() {}
 
@@ -12,6 +13,7 @@ void ProcessorNetwork::addProcessor(Processor* processor) {
     ivwAssert(std::find(processors_.begin(), processors_.end(), processor)==processors_.end(),
               "Processor instance already contained in processor network.");
     processors_.push_back(processor);
+	setBroadcastModification(true);
     modified();
 }
 
@@ -34,6 +36,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     // remove processor itself
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
 
+	setBroadcastModification(true);
     modified();
 }
 
@@ -102,6 +105,13 @@ ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* processor1, Process
     return 0;
 }
 
+inline void ProcessorNetwork::modified() {
+	modified_ = true; 
+	if (broadcastModification_) {
+		notifyObservers();
+		setBroadcastModification(false);
+	}
+}
 
 void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("Processors", processors_, "Processor");

@@ -105,7 +105,7 @@ public:
 
     ProcessorLink* getProcessorLink(Processor* sourceProcessor, Processor* destProcessor) const;    
     
-    inline void modified() { modified_ = true; if (broadcastModification_) notifyObservers(); }
+    inline void modified();
     void setModified(bool modified) { modified_ = modified; }
     bool isModified() const { return modified_; }
 
