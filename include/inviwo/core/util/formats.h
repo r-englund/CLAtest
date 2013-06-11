@@ -131,14 +131,14 @@ typedef GenericDataFormat(glm::detail::float64) DataFLOAT64;
 typedef GenericDataFormat(int8_t)         DataINT8;
 typedef DataFormat<int16_t, 12>           DataINT12;
 typedef GenericDataFormat(int16_t)        DataINT16;
-typedef GenericDataFormat(int32_t)        DataINT32;
+typedef GenericDataFormat(int)            DataINT32;
 typedef GenericDataFormat(int64_t)        DataINT64;
 
 // Unsigned Integers
 typedef GenericDataFormat(uint8_t)        DataUINT8;
 typedef DataFormat<uint16_t, 12>          DataUINT12;
 typedef GenericDataFormat(uint16_t)       DataUINT16;
-typedef GenericDataFormat(uint32_t)       DataUINT32;
+typedef GenericDataFormat(unsigned int)   DataUINT32;
 typedef GenericDataFormat(uint64_t)       DataUINT64;
 
 // Bit Specializations

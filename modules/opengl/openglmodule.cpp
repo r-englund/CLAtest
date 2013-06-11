@@ -1,6 +1,7 @@
 #include <modules/opengl/openglmodule.h>
 
 #include <modules/opengl/canvasprocessorgl.h>
+#include <modules/opengl/geometry/trianglemeshgl.h>
 #include <modules/opengl/image/imageglconverter.h>
 #include <modules/opengl/openglinfo.h>
 #include <modules/opengl/volume/volumeglconverter.h>
@@ -24,6 +25,8 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
 
     addRepresentationConverter(new VolumeRAM2GLConverter());
     addRepresentationConverter(new VolumeDisk2GLConverter());
+
+    addRepresentationConverter(new TriangleMeshRAM2GLConverter());
 
     registerProcessor(CanvasProcessorGL);
 

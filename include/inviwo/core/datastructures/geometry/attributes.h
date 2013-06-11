@@ -2,6 +2,7 @@
 #define IVW_ATTRIBUTES_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <vector>
 
 namespace inviwo {
@@ -24,9 +25,10 @@ public:
     virtual AttributeType getAttributeType() const = 0;
     virtual unsigned int getElementSize() const = 0;
     virtual unsigned int getNumberOfAttributes() const = 0;
+    virtual unsigned int getDataSize() const = 0;
 };
 
-template<typename T, AttributeType A>
+template<typename T, size_t B, AttributeType A>
 class IVW_CORE_API Attributes : public AttributesBase {
 
 public:
@@ -39,42 +41,50 @@ public:
     AttributeType getAttributeType() const;
     unsigned int getElementSize() const;
     unsigned int getNumberOfAttributes() const;
+    unsigned int getDataSize() const;
     
 private:
     std::vector<T> attributes_;
 };
 
-template<typename T, AttributeType A>
-void Attributes<T,A>::add(T& v){
+template<typename T, size_t B, AttributeType A>
+void Attributes<T,B,A>::add(T& v){
     attributes_.push_back(v);
 }
 
-template<typename T, AttributeType A>
-const void* Attributes<T,A>::getAttributes() const{
+template<typename T, size_t B, AttributeType A>
+const void* Attributes<T,B,A>::getAttributes() const{
     return static_cast<const void*>(&attributes_[0]);
 }
 
-template<typename T, AttributeType A>
-AttributeType Attributes<T,A>::getAttributeType() const{
+template<typename T, size_t B, AttributeType A>
+AttributeType Attributes<T,B,A>::getAttributeType() const{
     return A;
 }
 
-template<typename T, AttributeType A>
-unsigned int Attributes<T,A>::getElementSize() const{
+template<typename T, size_t B, AttributeType A>
+unsigned int Attributes<T,B,A>::getElementSize() const{
     return sizeof(T);
 }
 
-template<typename T, AttributeType A>
-unsigned int Attributes<T,A>::getNumberOfAttributes() const{
+template<typename T, size_t B, AttributeType A>
+unsigned int Attributes<T,B,A>::getNumberOfAttributes() const{
     return attributes_.size();
 }
 
-typedef Attributes<glm::vec4, COLOR> ColorAttributes;
-typedef Attributes<float, CURVATURE> CurvatureAttributes;
-typedef Attributes<unsigned int, INDEX> IndexAttributes;
-typedef Attributes<glm::vec3, NORMAL> NormalAttributes;
-typedef Attributes<glm::vec3, POSITION> PositionAttributes;
-typedef Attributes<glm::vec3, TEXCOORD> TexCoordAttributes;
+template<typename T, size_t B, AttributeType A>
+unsigned int Attributes<T,B,A>::getDataSize() const{
+    return getElementSize()*getNumberOfAttributes();
+}
+
+#define DataFormatAttribute(D, A) Attributes<D::type, D::bits, A>
+
+typedef DataFormatAttribute(DataVec4FLOAT32, COLOR) ColorAttributes;
+typedef DataFormatAttribute(DataFLOAT32, CURVATURE) CurvatureAttributes;
+typedef DataFormatAttribute(DataUINT32, INDEX) IndexAttributes;
+typedef DataFormatAttribute(DataVec3FLOAT32, NORMAL) NormalAttributes;
+typedef DataFormatAttribute(DataVec3FLOAT32, POSITION) PositionAttributes;
+typedef DataFormatAttribute(DataVec3FLOAT32, TEXCOORD) TexCoordAttributes;
 
 } // namespace
 
