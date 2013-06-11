@@ -5,10 +5,14 @@
 #include <inviwo/qt/editor/inviwodockwidget.h>
 #include <inviwo/core/util/observer.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/properties/eventproperty.h>
+#include <inviwo/qt/editor/eventpropertymanager.h>
+#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QScrollArea>
 
 namespace inviwo {
 
@@ -20,10 +24,18 @@ public:
     void notify();
 
 private:
-    InviwoApplication* inviwoApp_;
-    QLabel* label_;
+	ProcessorNetwork* processorNetwork_;
+	EventPropertyManager* eventPropertyManager_;
+	std::vector<Processor*> curProcessorList_;
 
+    QLabel* label_;
+	QVBoxLayout* vLayout_;
+	QFrame* frame_;
+
+	void drawEventPropertyWidgets();
     void updateWidget();
+	void emptyLayout();
+
     QString intToQString(int num); // For testing
 };
 

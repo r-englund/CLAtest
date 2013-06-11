@@ -10,13 +10,13 @@ Trackball::Trackball(CameraProperty* camera) : InteractionHandler(), PropertyOwn
       lastTrackballPos_(vec3(0.5f)),
       pixelWidth_(0.007f),
       isMouseBeingPressedAndHold_(false) { 
-    rotateEventProperty_ = new EventProperty("rotate", "Rotate", 
+    rotateEventProperty_ = new EventProperty("eventproperty", "Rotate", 
         MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, Event::MODIFIER_NONE), 
         TrackballAction(TrackballAction::TRACKBALL_ROTATE));
-    zoomEventProperty_ = new EventProperty("zoom", "Zoom", 
+    zoomEventProperty_ = new EventProperty("eventproperty", "Zoom", 
         MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, Event::MODIFIER_NONE), 
         TrackballAction(TrackballAction::TRACKBALL_ZOOM));
-    panEventProperty_ = new EventProperty("pan", "Pan", 
+    panEventProperty_ = new EventProperty("eventproperty", "Pan", 
         MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, Event::MODIFIER_NONE), 
         TrackballAction(TrackballAction::TRACKBALL_PAN));
 

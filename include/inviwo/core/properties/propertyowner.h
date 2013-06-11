@@ -31,6 +31,7 @@ public:
 
     Property* getPropertyByIdentifier(std::string identifier);
     std::vector<Property*> getProperties() { return properties_; }
+	template<class T> std::vector<T*> getPropertiesByType() const;
 
     bool isValid() { return (invalidationLevel_ == PropertyOwner::VALID); }
     void setValid() { invalidationLevel_ = PropertyOwner::VALID; }
@@ -46,6 +47,16 @@ protected:
 private:    
     InvalidationLevel invalidationLevel_;
 };
+
+template<class T>
+std::vector<T*> PropertyOwner::getPropertiesByType() const {
+	std::vector<T*> foundProperties;
+	for (size_t i=0; i<properties_.size(); i++) {
+		T* property_ = dynamic_cast<T*>(properties_[i]);
+		if (property_) foundProperties.push_back(property_);
+	}
+	return foundProperties;
+}
 
 } // namespace
 

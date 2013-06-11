@@ -6,6 +6,7 @@ ivw_project(inviwo-qteditor)
 # Add header files
 set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/connectiongraphicsitem.h
+	${IVW_INCLUDE_DIR}/inviwo/qt/editor/eventpropertymanager.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwodockwidget.h
@@ -42,6 +43,7 @@ source_group("MOC Files" FILES ${MOC_FILES})
 set(SOURCE_FILES
     connectiongraphicsitem.cpp
     consolewidget.cpp
+	eventpropertymanager.cpp
     inviwodockwidget.cpp
     labelgraphicsitem.cpp
     linkdialog.cpp

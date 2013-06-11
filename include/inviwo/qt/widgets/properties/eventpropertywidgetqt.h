@@ -3,6 +3,7 @@
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/eventproperty.h>
+#include <inviwo/qt/editor/eventpropertymanager.h>
 #include <inviwo/qt/widgets/mappingpopup.h>
 
 #include <QLabel>

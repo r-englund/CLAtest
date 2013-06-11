@@ -86,6 +86,7 @@ public:
     void addInteractionHandler(InteractionHandler* interactionHandler);
     void removeInteractionHandler(InteractionHandler* interactionHandler);
     inline bool hasInteractionHandler() { return (interactionHandlers_.size() != 0); }
+	std::vector<InteractionHandler*> getInteractionHandlers() const { return interactionHandlers_; }
     void invokeInteractionEvent(Event* event);
 
     virtual void serialize(IvwSerializer& s) const;
