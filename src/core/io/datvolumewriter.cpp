@@ -1,4 +1,5 @@
 #include "inviwo/core/io/datvolumewriter.h"
+#include "inviwo/core/io/rawvolumewriter.h"
 
 namespace inviwo {
 
