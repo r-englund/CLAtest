@@ -1,5 +1,6 @@
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include "inviwo/core/io/datvolumereader.h"
+#include "inviwo/core/io/ivfvolumereader.h"
 
 namespace inviwo {
 
@@ -37,7 +38,12 @@ namespace inviwo {
             if (fileExtension=="dat") {
                 ReaderSettings readerSettings;
                 DatVolumeReader::readDatFileSettings(getSourceFile(), readerSettings);
-                return RawVolumeReader::loadRawData(readerSettings);                
+                return RawVolumeReader::loadRawData(readerSettings);
+            }
+            else if (fileExtension=="ivf") {
+                IvfReaderSettings readerSettings;
+                IvfVolumeReader::readIvfFileSettings(getSourceFile(), readerSettings);
+                return RawVolumeReader::loadRawData(readerSettings);
             }
         }
 

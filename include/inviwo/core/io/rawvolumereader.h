@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API RawVolumeReader {
+class IVW_CORE_API RawVolumeReader : public VolumeReader {
 public:
     RawVolumeReader();
     virtual ~RawVolumeReader() {}
@@ -20,7 +20,7 @@ protected:
         T* texels = new T[dimensions.x * dimensions.y * dimensions.z];
         std::fstream fin(rawFileAbsolutePath.c_str(), std::ios::in | std::ios::binary);
         ivwAssert(fin.good(), "cannot open volume file");
-        fin.read((char*)texels, dimensions.x*dimensions.y*dimensions.z);
+        fin.read((char*)texels, dimensions.x*dimensions.y*dimensions.z*sizeof(T));
         fin.close();
         return texels;
     }

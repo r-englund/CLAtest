@@ -16,6 +16,7 @@
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/processors/datasource/volumesource.h>
+#include <inviwo/core/processors/datasource/volumeexport.h>
 
 //Properties
 #include <inviwo/core/properties/buttonproperty.h>
@@ -27,6 +28,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
     //setXMLFileName(InviwoApplication::app()->getRootPath() + "/src/core/core.xml", true);
 
     registerProcessor(VolumeSource);
+    registerProcessor(VolumeExport);
 
     addRepresentationConverter(new VolumeDisk2RAMConverter());
     addRepresentationConverter(new ImageDisk2RAMConverter());

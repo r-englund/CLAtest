@@ -3,24 +3,26 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include "inviwo/core/datastructures/data.h"
 
 namespace inviwo {
 
-    class IVW_CORE_API DataWriter {
+class IVW_CORE_API DataWriter {
 
-    public:
-        DataWriter();
-        virtual ~DataWriter();
+public:
+    DataWriter();
+    virtual ~DataWriter();
 
-        std::string getIdentifier() const;
+    std::string getIdentifier() const;
+    virtual void writeData()=0;
 
-    protected:
+protected:
 
-        void setIdentifier(const std::string& name);
+    void setIdentifier(const std::string& name);
 
-    private:
-        std::string identifier_;
-    };
+private:
+    std::string identifier_;
+};
 
 } // namespace
 

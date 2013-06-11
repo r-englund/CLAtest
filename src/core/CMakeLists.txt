@@ -79,6 +79,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/datasourceprocessor.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumeexport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/baseoptionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/boolproperty.h
@@ -107,9 +108,14 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h   
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumewriter.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumewriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumewriter.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializableinterface.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h	
@@ -206,6 +212,7 @@ set(SOURCE_FILES
     processors/processorwidget.cpp
     processors/processorwidgetfactory.cpp
     processors/datasource/datasourceprocessor.cpp
+    processors/datasource/volumeexport.cpp
     processors/datasource/volumesource.cpp
     properties/boolproperty.cpp
     properties/buttonproperty.cpp
@@ -229,9 +236,14 @@ set(SOURCE_FILES
     io/datareader.cpp
     io/datvolumereader.cpp
     io/imageloader.cpp
+    io/ivfvolumereader.cpp 
     io/rawvolumereader.cpp
     io/volumereader.cpp
     io/datawriter.cpp
+    io/datvolumewriter.cpp 
+    io/ivfvolumewriter.cpp 
+    io/rawvolumewriter.cpp    
+    io/volumewriter.cpp
     io/serialization/ivwserializebase.cpp
     io/serialization/ivwserializer.cpp
     io/serialization/ivwdeserializer.cpp

@@ -18,6 +18,7 @@ public:
     virtual DataRepresentation* clone() const = 0;
     virtual void* getData();
     virtual const void* getData() const;
+    virtual void saveData(std::string url) const;
 protected:
     void* data_;
 };

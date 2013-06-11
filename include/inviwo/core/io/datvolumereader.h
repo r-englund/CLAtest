@@ -5,27 +5,9 @@
 #include "inviwo/core/common/inviwo.h"
 #include "inviwo/core/io/volumereader.h"
 #include "inviwo/core/io/rawvolumereader.h"
+#include "inviwo/core/util/filedirectory.h"
 
 namespace inviwo {
-
-    
-//Move this to util
-class IVW_CORE_API UrlParser {
-public:
-    UrlParser() {}
-
-    static std::string getFileDirectory(const std::string url) {
-        size_t pos = url.find_last_of("\\/") + 1;
-        std::string fileDirectory = url.substr(0, pos);
-        return fileDirectory;
-    }
-
-    static std::string getFileExtension(const std::string url) {
-        size_t pos = url.rfind(".") + 1;
-        std::string fileExtension = url.substr( pos, url.length());
-        return fileExtension;
-    }
-};
 
 class IVW_CORE_API DatVolumeReader : public VolumeReader {
 public:        
@@ -60,6 +42,7 @@ public:
                 getline(*f, textLine);
                 std::stringstream ss(textLine);
                 transform(textLine.begin(), textLine.end(), textLine.begin(), (int (*)(int))tolower);
+                key = "";
                 ss >> key;            
                 if (key=="ObjectFileName:") {
                     ss >> readerSettings.rawFileAbsolutePath_;

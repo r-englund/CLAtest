@@ -6,4 +6,8 @@ namespace inviwo {
         : identifier_("undefined")
     {}
 
+    DataReader::DataReader(std::string identifier)
+        : identifier_(identifier)
+    {}
+
 } // namespace

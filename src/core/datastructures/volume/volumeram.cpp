@@ -1,6 +1,9 @@
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/util/typetostring.h>
+#include <inviwo/core/io/rawvolumewriter.h>
+#include <inviwo/core/io/datvolumewriter.h>
+#include <inviwo/core/io/ivfvolumewriter.h>
 
 namespace inviwo {
 
@@ -27,6 +30,24 @@ void* VolumeRAM::getData() {
 
 const void* VolumeRAM::getData() const {
     return const_cast<void*>(data_);
+}
+
+void VolumeRAM::saveData(std::string url) const {
+    std::string fileExtension = UrlParser::getFileExtension(url);
+    if (!fileExtension.empty()) {
+        //TODO: better pattern for automatic data writer selection
+        if (fileExtension=="dat") {
+            WriterSettings writerSettings;
+            writerSettings.rawFileAbsolutePath_ = UrlParser::replaceFileExtension(url, "raw");
+            writerSettings.dimensions_ = dimensions_;
+            writerSettings.dataFormat_ = getDataFormat().getString();
+            writerSettings.texels_ = getData();
+            DatVolumeWriter::writeDatFileSettings(url, writerSettings);
+            RawVolumeWriter::saveRawData(writerSettings);
+        }
+        else if (fileExtension=="ivf") {
+        }
+    }
 }
 
 VolumeRAM* createVolume(const uvec3& dimension, const DataFormatBase& format) {

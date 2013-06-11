@@ -6,7 +6,7 @@
 
 namespace inviwo {
 
-class ReaderSettings {            
+class IVW_CORE_API ReaderSettings { 
 public:
     ReaderSettings() {}
     std::string rawFileAbsolutePath_;
@@ -29,4 +29,4 @@ protected:
 
 } // namespace
 
-#endif // IVW_DATAREADER_H
+#endif // IVW_VOLUMEREADER_H

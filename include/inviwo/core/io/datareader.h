@@ -11,7 +11,8 @@ class IVW_CORE_API DataReader {
 
 public:
     DataReader();
-    virtual ~DataReader();
+    DataReader(std::string identifier);
+    virtual ~DataReader() {}
 
     std::string getIdentifier() const;
     virtual Data* readData(const std::string filePath)=0;
