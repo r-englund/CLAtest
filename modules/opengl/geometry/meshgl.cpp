@@ -16,6 +16,7 @@ void MeshGL::deinitialize() {}
 
 void MeshGL::createNewBuffer(AttributesBase* attribute){
     GLuint vboId;
+    GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(attribute->getDataFormat().getId());
 
     //Generate a new VBO
     glGenBuffersARB(1, &vboId);
@@ -30,8 +31,17 @@ void MeshGL::createNewBuffer(AttributesBase* attribute){
     switch(attribute->getAttributeType())
     {
     case COLOR:
-        glColorPointer(attribute->getElementSize(), GL_FLOAT, 0, 0);
+        glColorPointer(glFormat.channels, glFormat.type, 0, attribute->getAttributes());
     	break;
+    case NORMAL:
+        glNormalPointer(glFormat.type, 0, attribute->getAttributes());
+        break;
+    case TEXCOORD:
+        glTexCoordPointer(glFormat.channels, glFormat.type, 0, attribute->getAttributes());
+        break;
+    case POSITION:
+        glVertexPointer(glFormat.channels, glFormat.type, 0, attribute->getAttributes());
+        break;
     }
 
     vertexBufferIds_.push_back(vboId);

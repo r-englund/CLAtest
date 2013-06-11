@@ -24,5 +24,21 @@ unsigned int MeshRAM::addVertex(const glm::vec3& pos, const glm::vec3& texCoord,
     return 0;
 }
 
+AttributesBase* MeshRAM::getVertexAttribute(size_t idx) const{
+    return vertexAttributes_[idx];
+}
+
+AttributesBase* MeshRAM::getFaceAttribute(size_t idx) const{
+    return faceAttributes_[idx];
+}
+
+size_t MeshRAM::getNumberOfVertexAttributes() const{
+    return vertexAttributes_.size();
+}
+
+size_t MeshRAM::getNumberOfFaceAttributes() const{
+    return faceAttributes_.size();
+}
+
 } // namespace
 

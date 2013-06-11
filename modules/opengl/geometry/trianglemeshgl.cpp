@@ -27,9 +27,11 @@ TriangleMeshRAM2GLConverter::~TriangleMeshRAM2GLConverter() {}
 DataRepresentation* TriangleMeshRAM2GLConverter::convert(DataRepresentation* source) {     
     TriangleMeshRAM* triangleMeshRAM = dynamic_cast<TriangleMeshRAM*>(source);
     if (triangleMeshRAM) {
-        TriangleMeshGL* meshGL = new TriangleMeshGL();
-
-        return meshGL;
+        TriangleMeshGL* triangleMeshGL = new TriangleMeshGL();
+        for (size_t i=0; i < triangleMeshRAM->getNumberOfVertexAttributes(); ++i) {
+            triangleMeshGL->createNewBuffer(triangleMeshRAM->getVertexAttribute(i));
+        }
+        return triangleMeshGL;
     }
     return NULL;
 }

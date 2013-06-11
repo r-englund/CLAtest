@@ -23,6 +23,7 @@ public:
 
     virtual const void* getAttributes() const = 0;  
     virtual AttributeType getAttributeType() const = 0;
+    virtual DataFormatBase getDataFormat() const = 0;
     virtual unsigned int getElementSize() const = 0;
     virtual unsigned int getNumberOfAttributes() const = 0;
     virtual unsigned int getDataSize() const = 0;
@@ -32,18 +33,20 @@ template<typename T, size_t B, AttributeType A>
 class IVW_CORE_API Attributes : public AttributesBase {
 
 public:
-    Attributes() : AttributesBase() {}
+    Attributes() : AttributesBase(), dataFormat_(DataFormat<T,B>()) {}
     virtual ~Attributes(){}
 
     void add(T&);
     
     const void* getAttributes() const;
     AttributeType getAttributeType() const;
+    DataFormatBase getDataFormat() const;
     unsigned int getElementSize() const;
     unsigned int getNumberOfAttributes() const;
     unsigned int getDataSize() const;
     
 private:
+    DataFormat<T,B> dataFormat_;
     std::vector<T> attributes_;
 };
 
@@ -63,6 +66,11 @@ AttributeType Attributes<T,B,A>::getAttributeType() const{
 }
 
 template<typename T, size_t B, AttributeType A>
+DataFormatBase Attributes<T,B,A>::getDataFormat() const{
+    return dataFormat_;
+}
+
+template<typename T, size_t B, AttributeType A>
 unsigned int Attributes<T,B,A>::getElementSize() const{
     return sizeof(T);
 }
@@ -77,14 +85,14 @@ unsigned int Attributes<T,B,A>::getDataSize() const{
     return getElementSize()*getNumberOfAttributes();
 }
 
-#define DataFormatAttribute(D, A) Attributes<D::type, D::bits, A>
+#define DataFormatAttributes(D, A) Attributes<D::type, D::bits, A>
 
-typedef DataFormatAttribute(DataVec4FLOAT32, COLOR) ColorAttributes;
-typedef DataFormatAttribute(DataFLOAT32, CURVATURE) CurvatureAttributes;
-typedef DataFormatAttribute(DataUINT32, INDEX) IndexAttributes;
-typedef DataFormatAttribute(DataVec3FLOAT32, NORMAL) NormalAttributes;
-typedef DataFormatAttribute(DataVec3FLOAT32, POSITION) PositionAttributes;
-typedef DataFormatAttribute(DataVec3FLOAT32, TEXCOORD) TexCoordAttributes;
+typedef DataFormatAttributes(DataVec4FLOAT32, COLOR) ColorAttributes;
+typedef DataFormatAttributes(DataFLOAT32, CURVATURE) CurvatureAttributes;
+typedef DataFormatAttributes(DataUINT32, INDEX) IndexAttributes;
+typedef DataFormatAttributes(DataVec3FLOAT32, NORMAL) NormalAttributes;
+typedef DataFormatAttributes(DataVec3FLOAT32, POSITION) PositionAttributes;
+typedef DataFormatAttributes(DataVec3FLOAT32, TEXCOORD) TexCoordAttributes;
 
 } // namespace
 

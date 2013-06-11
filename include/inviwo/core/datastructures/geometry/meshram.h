@@ -21,6 +21,12 @@ public:
 
     virtual unsigned int addVertex(const glm::vec3& pos, const glm::vec3& texCoord, const glm::vec3& color);
 
+    AttributesBase* getVertexAttribute(size_t idx) const;
+    AttributesBase* getFaceAttribute(size_t idx) const;
+
+    size_t getNumberOfVertexAttributes() const;
+    size_t getNumberOfFaceAttributes() const;
+
 protected:
     std::vector<AttributesBase*> vertexAttributes_;
     std::vector<AttributesBase*> faceAttributes_;
