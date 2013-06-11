@@ -15,7 +15,7 @@ class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidget
 
 public:
 	TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property);
-	TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt();
+	~TransferFunctionPropertyWidgetQt();
 
 	void updateFromProperty();
 
