@@ -6,7 +6,13 @@ GeometryRepresentation::GeometryRepresentation()
     : DataRepresentation()
 {}
 
-GeometryRepresentation::~GeometryRepresentation() {}
+GeometryRepresentation::~GeometryRepresentation(){}
+
+void GeometryRepresentation::performOperation(DataOperation*) const {}
+
+std::string GeometryRepresentation::getClassName() const { 
+    return "GeometryRepresentation"; 
+}
 
 
 } // namespace

@@ -8,17 +8,17 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/canvasgl.h
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/glformats.h
-    ${IVW_MODULE_DIR}/opengl/imagegl.h
-    ${IVW_MODULE_DIR}/opengl/imageglconverter.h
-    ${IVW_MODULE_DIR}/opengl/imageprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/image/imagegl.h
+    ${IVW_MODULE_DIR}/opengl/image/imageglconverter.h
+    ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
     ${IVW_MODULE_DIR}/opengl/processorgl.h
     ${IVW_MODULE_DIR}/opengl/openglinfo.h
     ${IVW_MODULE_DIR}/opengl/openglmodule.h
-    ${IVW_MODULE_DIR}/opengl/volumegl.h
-    ${IVW_MODULE_DIR}/opengl/volumeglconverter.h
-    ${IVW_MODULE_DIR}/opengl/volumeprocessorgl.h
-    ${IVW_MODULE_DIR}/opengl/volumeraycastergl.h
+    ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
+    ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
+    ${IVW_MODULE_DIR}/opengl/volume/volumeprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.h
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.h
@@ -34,17 +34,17 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/imagegl.cpp
-    ${IVW_MODULE_DIR}/opengl/imageglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/imageprocessorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/image/imagegl.cpp
+    ${IVW_MODULE_DIR}/opengl/image/imageglconverter.cpp
+    ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
     ${IVW_MODULE_DIR}/opengl/processorgl.cpp
     ${IVW_MODULE_DIR}/opengl/openglinfo.cpp
     ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
-    ${IVW_MODULE_DIR}/opengl/volumegl.cpp
-    ${IVW_MODULE_DIR}/opengl/volumeglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/volumeprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/volumeraycastergl.cpp
+    ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
+    ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
+    ${IVW_MODULE_DIR}/opengl/volume/volumeprocessorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.cpp

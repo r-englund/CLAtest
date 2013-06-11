@@ -15,8 +15,10 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual DataRepresentation* clone() const { return NULL; };
+    virtual void render(RenderType = NOT_SPECIFIED);
 
     virtual unsigned int addVertex(glm::vec3& pos, glm::vec3& texCoord, glm::vec4& color);
+    virtual unsigned int addIndex(unsigned int& idx);
 
 protected:
     PositionAttributes* vertexPositions_;

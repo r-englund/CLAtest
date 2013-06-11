@@ -17,6 +17,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual DataRepresentation* clone() const = 0;
+    virtual void render(RenderType = NOT_SPECIFIED) = 0;
 
     virtual unsigned int addVertex(const glm::vec3& pos, const glm::vec3& texCoord, const glm::vec3& color);
 

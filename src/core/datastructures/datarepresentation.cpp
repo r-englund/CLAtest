@@ -2,32 +2,32 @@
 
 namespace inviwo {
 
-    DataRepresentation::DataRepresentation() : valid_(true), dataFormatBase_(DataUINT8()) {}
-    DataRepresentation::DataRepresentation(DataFormatBase format) : valid_(true), dataFormatBase_(format) {}
-    DataRepresentation::~DataRepresentation() {}
+DataRepresentation::DataRepresentation() : valid_(true), dataFormatBase_(DataUINT8()) {}
+DataRepresentation::DataRepresentation(DataFormatBase format) : valid_(true), dataFormatBase_(format) {}
+DataRepresentation::~DataRepresentation() {}
 
-    std::string DataRepresentation::getClassName() const { 
-        return "DataRepresentation"; 
-    }
+std::string DataRepresentation::getClassName() const { 
+    return "DataRepresentation"; 
+}
 
-    bool DataRepresentation::isValid() const{
-        return valid_;
-    }
+bool DataRepresentation::isValid() const{
+    return valid_;
+}
 
-    void DataRepresentation::invalidate(){
-        valid_ = false;
-    }
+void DataRepresentation::invalidate(){
+    valid_ = false;
+}
 
-    DataFormatBase DataRepresentation::getDataFormat() const { 
-        return dataFormatBase_; 
-    }
-    
-    std::string DataRepresentation::getDataFormatString() const { 
-        return dataFormatBase_.getString(); 
-    }
+DataFormatBase DataRepresentation::getDataFormat() const { 
+    return dataFormatBase_; 
+}
 
-    DataFormatId DataRepresentation::getDataFormatId() const { 
-        return dataFormatBase_.getId(); 
-    }
+std::string DataRepresentation::getDataFormatString() const { 
+    return dataFormatBase_.getString(); 
+}
+
+DataFormatId DataRepresentation::getDataFormatId() const { 
+    return dataFormatBase_.getId(); 
+}
 
 } // namespace

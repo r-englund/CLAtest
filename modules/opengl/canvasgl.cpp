@@ -1,5 +1,5 @@
 #include "canvasgl.h"
-#include "glwrap/textureunit.h"
+#include <modules/opengl/glwrap/textureunit.h>
 namespace inviwo {
 
 bool CanvasGL::glewInitialized_ = false;

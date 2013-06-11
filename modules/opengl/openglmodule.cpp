@@ -1,9 +1,9 @@
 #include <modules/opengl/openglmodule.h>
 
 #include <modules/opengl/canvasprocessorgl.h>
-#include <modules/opengl/imageglconverter.h>
+#include <modules/opengl/image/imageglconverter.h>
 #include <modules/opengl/openglinfo.h>
-#include <modules/opengl/volumeglconverter.h>
+#include <modules/opengl/volume/volumeglconverter.h>
 #include <modules/opengl/glwrap/shadermanager.h>
 
 #include <inviwo/core/common/inviwoapplication.h>

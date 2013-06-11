@@ -5,7 +5,7 @@
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/datastructures/image/imageramconverter.h>
-#include "imagegl.h"
+#include <modules/opengl/image/imagegl.h>
 
 namespace inviwo {
 

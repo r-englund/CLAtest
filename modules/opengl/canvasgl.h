@@ -2,10 +2,10 @@
 #define IVW_CANVASGL_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include "inviwoopengl.h"
+#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/util/canvas.h>
-#include "glwrap/shader.h"
-#include "imagegl.h"
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/image/imagegl.h>
 
 namespace inviwo {
 

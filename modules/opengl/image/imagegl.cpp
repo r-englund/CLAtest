@@ -1,7 +1,7 @@
 #include <inviwo/core/util/formats.h>
-#include "imagegl.h"
-#include "glwrap/shader.h"
-#include "glwrap/textureunit.h"
+#include <modules/opengl/image/imagegl.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/glwrap/textureunit.h>
 
 
 namespace inviwo {

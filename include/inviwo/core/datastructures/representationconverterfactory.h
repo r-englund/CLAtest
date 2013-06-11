@@ -31,7 +31,7 @@ public:
                 }
             }
         }
-        return NULL; //TODO: throw an exception here
+        return NULL;
     }
 
     template <typename T>
@@ -49,7 +49,7 @@ public:
                 }
             }
         }
-        return currentConverterPackage; //TODO: throw an exception here
+        return currentConverterPackage;
     }
 
 private:

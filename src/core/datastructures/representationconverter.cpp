@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-    RepresentationConverter::RepresentationConverter() {}
-    RepresentationConverter::~RepresentationConverter() {}
+RepresentationConverter::RepresentationConverter() {}
+RepresentationConverter::~RepresentationConverter() {}
 
 } // namespace

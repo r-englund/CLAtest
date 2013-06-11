@@ -26,6 +26,15 @@ set(FREETYPE_INCLUDE_DIRS "${FREETYPE_SRC_FOLDER}/include" CACHE STRING "FT2 inc
 
 set(FREETYPE_LIBRARIES freetype CACHE STRING "FT2 libraries" FORCE)
 set(FREETYPE_LIBRARY freetype CACHE STRING "FREETYPE libraries" FORCE)
+
+mark_as_advanced(FREETYPE_SRC_FOLDER)
+mark_as_advanced(FREETYPE_INCLUDE_DIRS)
+mark_as_advanced(FREETYPE_LIBRARIES)
+mark_as_advanced(FREETYPE_LIBRARY)
+mark_as_advanced(FREETYPE_SOURCE_NAME)
+mark_as_advanced(FREETYPE_STATICLIB_OUTPUT_PATH)
+mark_as_advanced(FREETYPE_STATICLIB_OUTPUT_NAME)
+
 set(FREETYPE_src
         ${FREETYPE_SRC_FOLDER}/src/autofit/autofit.c
         ${FREETYPE_SRC_FOLDER}/src/bdf/bdf.c

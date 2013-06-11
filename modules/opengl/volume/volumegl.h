@@ -4,7 +4,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
-#include "glwrap/texture3d.h"
+#include <modules/opengl/glwrap/texture3d.h>
 
 namespace inviwo {
 

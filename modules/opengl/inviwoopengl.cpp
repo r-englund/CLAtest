@@ -1,4 +1,4 @@
-#include "inviwoopengl.h"
+#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/util/logdistributor.h>
 
 void LogGLError(const char* fileName, const char* functionName, int lineNumber) {

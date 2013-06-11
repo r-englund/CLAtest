@@ -8,7 +8,7 @@
 #include <inviwo/core/properties/properties.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
-#include <modules/opengl/volumegl.h>
+#include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {

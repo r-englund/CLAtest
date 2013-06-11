@@ -2,7 +2,7 @@
 #define IVW_IMAGEPROCESSORGL_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include "inviwoopengl.h"
+#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>

@@ -4,8 +4,8 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
-#include "glwrap/framebufferobject.h"
-#include "glwrap/texture2d.h"
+#include <modules/opengl/glwrap/framebufferobject.h>
+#include <modules/opengl/glwrap/texture2d.h>
 
 namespace inviwo {
 

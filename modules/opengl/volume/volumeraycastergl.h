@@ -2,11 +2,11 @@
 #define IVW_VOLUMERAYCASTERGL_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include "inviwoopengl.h"
+#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/processorgl.h>
-#include <modules/opengl/volumegl.h>
+#include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 
