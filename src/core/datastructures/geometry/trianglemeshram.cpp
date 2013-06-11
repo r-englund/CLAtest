@@ -30,14 +30,14 @@ void TriangleMeshRAM::render(RenderType renderType){
 
 }
 
-unsigned int TriangleMeshRAM::addVertex(glm::vec3& pos, glm::vec3& texCoord, glm::vec4& color){
+unsigned int TriangleMeshRAM::addVertex(glm::vec3 pos, glm::vec3 texCoord, glm::vec4 color){
     vertexPositions_->add(pos);
     vertexTexCoords_->add(texCoord);
     vertexColors_->add(color);
     return vertexPositions_->getNumberOfAttributes()-1;
 }
 
-unsigned int TriangleMeshRAM::addIndex(unsigned int& idx){
+unsigned int TriangleMeshRAM::addIndex(unsigned int idx){
     faceIndices_->add(idx);
     return faceIndices_->getNumberOfAttributes()-1;
 }
