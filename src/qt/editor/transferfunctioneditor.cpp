@@ -10,13 +10,12 @@ namespace inviwo {
 	}
 
 	TransferFunctionEditor::~TransferFunctionEditor(){
-		std::vector<TransferFunctionEditorLineItem*>::iterator iter = lines_.begin();
+		LogInfo("Editor destructor");
 
-		for (iter = lines_.begin(); iter != lines_.end(); iter++){
-			delete *iter;
-			iter = lines_.erase(iter);
+		for (std::vector<TransferFunctionEditorControlPoint*>::iterator p_itr = points_->begin(); p_itr != points_->end(); p_itr++){
+			delete (*p_itr);
 		}
-
+		points_->clear();
 	}
 
 	void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent *e){
@@ -69,12 +68,11 @@ namespace inviwo {
 	void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
 		if (e->key() == Qt::Key_Delete && points_->size() > 0){
 			std::vector<TransferFunctionEditorControlPoint*>::iterator iter = points_->begin();
-
 			while (iter != points_->end()){
 				if ((*iter)->isSelected()){
 					iter = removePoint(*iter);
 				} 
-				else {
+				else{
 					++iter;
 				}
 			}
@@ -101,9 +99,6 @@ namespace inviwo {
 		this->update();
 	}	
 
-
-	
-	
 	std::vector<TransferFunctionEditorControlPoint*>::iterator TransferFunctionEditor::removePoint(TransferFunctionEditorControlPoint *target){
 		std::vector<TransferFunctionEditorControlPoint*>::iterator iter;
 		if (!lines_.empty()){		

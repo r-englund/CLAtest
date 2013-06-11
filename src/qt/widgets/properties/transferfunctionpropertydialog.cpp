@@ -10,6 +10,38 @@ namespace inviwo {
 		updateFromProperty();
 	}
 
+	TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog(){
+
+		LogInfo("Dialog destructor");
+
+		//if (editorview_)
+		//	delete editorview_;
+
+		//if (paintview_)
+		//	delete paintview_;
+
+		//if (paintscene_)
+		//	delete paintscene_;
+
+		//if(transferFunction_)
+		//	delete transferFunction_;
+
+		//if (property_)
+		//	delete property_;
+
+		//if(editor_)		
+		//	delete editor_;
+
+		//points_.clear();
+
+		delete editor_;
+
+		delete gradient_;
+		stops_->clear();
+		delete stops_;
+		delete colorDialog_;
+	}
+
 	void TransferFunctionPropertyDialog::generateWidget(){
 		colorDialog_ = new QColorDialog();
 		colorDialog_->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
@@ -28,8 +60,6 @@ namespace inviwo {
 		editorview_->scale(1, -1);
 		editorview_->setScene(editor_);
 		editorview_->setDragMode(QGraphicsView::RubberBandDrag);
-
-		//editorview_->installEventFilter();
 		
 		paintscene_ = new QGraphicsScene(this);
 		paintview_ = new QGraphicsView(this);
@@ -86,20 +116,21 @@ namespace inviwo {
 	}
 
 	void TransferFunctionPropertyDialog::updateFromProperty(){
-
+	QGradientStop* temp = new QGradientStop();
 		stops_->clear();
 		if (points_.size() > 0){
 			for (int i = 0; i < (int)points_.size(); i++){
 				const vec4* col = points_[i]->getPoint()->getRgba();
-				temp_ = new QGradientStop();
-				temp_->first = points_[i]->getPoint()->getPos()->x / 255.01f;
-				temp_->second = QColor::fromRgbF(col->r, col->g, col->b, 1.0f);
-				stops_->push_front(*temp_);
-				delete temp_;
+				//temp_ = new QGradientStop();
+				temp->first = points_[i]->getPoint()->getPos()->x / 255.01f;
+				temp->second = QColor::fromRgbF(col->r, col->g, col->b, 1.0f);
+				stops_->push_front(*temp);
+				
 			}
 			gradient_->setStops(*stops_);
 			paintscene_->setForegroundBrush(*gradient_);
 		}
+		delete temp;
 		this->update();
 		property_->invalidate();
 		property_->getOwner()->invalidate(property_->getOwner()->getInvalidationLevel());

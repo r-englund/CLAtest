@@ -26,6 +26,7 @@ class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyWidgetQt
 
 public:
 	TransferFunctionPropertyDialog(TransferFunctionProperty* property);
+	TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog();
 
     /** \Updates and draws the visual transferfunction
     *         
@@ -49,8 +50,7 @@ private:
 
 	QLinearGradient* gradient_;
 	QVector<QGradientStop>* stops_;
-	QGradientStop* temp_;
-	const vec4* color_;
+
     QColorDialog* colorDialog_;
 
     /** \Mousewheel zoom functionality

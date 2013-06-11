@@ -7,6 +7,15 @@ TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunct
     updateFromProperty();
 }
 
+
+TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt(){
+	LogInfo("Widget destructor");
+
+	delete btnOpenDialog_;
+	delete transferFunctionDialog_;
+}
+
+
 void TransferFunctionPropertyWidgetQt::generateWidget(){
     QHBoxLayout* hLayout = new QHBoxLayout();
 	

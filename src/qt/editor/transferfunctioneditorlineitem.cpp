@@ -45,7 +45,6 @@ namespace inviwo {
 		delete pen;
     }
 
-
     QRectF TransferFunctionEditorLineItem::boundingRect() const {
         return QRectF(start_->getPos()->x, start_->getPos()->y, finish_->getPos()->x - start_->getPos()->x, finish_->getPos()->y - start_->getPos()->y);
     }

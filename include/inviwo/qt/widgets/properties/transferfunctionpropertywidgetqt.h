@@ -15,14 +15,15 @@ class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidget
 
 public:
 	TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property);
+	TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt();
 
 	void updateFromProperty();
 
 private:
 	TransferFunctionProperty* property_;
 	QPushButton* btnOpenDialog_;
-	QColorDialog* colorDialog_;
-	QColor* currentColor_;
+	//QColorDialog* colorDialog_;
+	//QColor* currentColor_;
 
 	TransferFunctionPropertyDialog* transferFunctionDialog_;
 
