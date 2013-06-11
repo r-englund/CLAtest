@@ -26,7 +26,7 @@ class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyWidgetQt
 
 public:
 	TransferFunctionPropertyDialog(TransferFunctionProperty* property);
-	TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog();
+	~TransferFunctionPropertyDialog();
 
     /** \Updates and draws the visual transferfunction
     *         
