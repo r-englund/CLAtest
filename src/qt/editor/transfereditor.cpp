@@ -97,9 +97,10 @@ namespace inviwo {
     void TransferEditor::calcTransferValues(){
         //float* data = static_cast<float*>(transferFunc->getAlpha()->getData());
 		
-		Image* img = transferFunc_->getData();
-		ImageRAMfloat32* imgRam = img->getEditableRepresentation<ImageRAMfloat32>();
-		float* data = static_cast<float*>(imgRam->getData());
+		//Image* img = transferFunc_->getData();
+		//ImageRAMfloat32* imgRam = img->getEditableRepresentation<ImageRAMfloat32>();
+		//float* data = static_cast<float*>(imgRam->getData());
+		float* data = static_cast<float*>transferFunc_->getData()->getEditableRepresentation<ImageRAMfloat32>()->getData();
 
 		glm::quat startQuat;
         glm::quat stopQuat;

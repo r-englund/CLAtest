@@ -4,7 +4,6 @@ namespace inviwo {
     TransferFunction::TransferFunction(){
         data_ = new Image();
         data_->addRepresentation(new ImageRAMVec4float32 (uvec2(256,1)));
-        
     }
 
     TransferFunction::~TransferFunction(){}
@@ -91,7 +90,7 @@ namespace inviwo {
                 //Interpolates the function values for all intermediate positions
                 for (int j = (int)start; j <=  (int)stop; j++){
                     factor = (j - start)/(stop - start);
-                    dataArray[j] = *myLerp(startValues, stopValues, factor);
+					dataArray[j] = (*startValues) * (1.0f-factor) + factor * (*stopValues);
                 }
             }
             for (int i = (int)dataPoints_.back()->getPos()->x; i < 256; i++){
@@ -100,14 +99,6 @@ namespace inviwo {
         }
     }
 
-    vec4* TransferFunction::myLerp(const vec4* startValues, const vec4* stopValues, float t){
-        vec4* newColor = new vec4();
-        newColor->r = startValues->r*(1.0f-t)+t*stopValues->r;
-        newColor->g = startValues->g*(1.0f-t)+t*stopValues->g;
-        newColor->b = startValues->b*(1.0f-t)+t*stopValues->b;
-        newColor->a = startValues->a*(1.0f-t)+t*stopValues->a;
-        return newColor;
-    }
 
     bool myPointCompare (TransferFunctionDataPoint * a, TransferFunctionDataPoint* b){
         return a->getPos()->x < b->getPos()->x;

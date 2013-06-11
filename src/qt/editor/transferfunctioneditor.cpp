@@ -7,12 +7,20 @@ namespace inviwo {
 		parent_(parent),
 		points_(points)
 	{
+	}
+
+	TransferFunctionEditor::~TransferFunctionEditor(){
+		std::vector<TransferFunctionEditorLineItem*>::iterator iter = lines_.begin();
+
+		for (iter = lines_.begin(); iter != lines_.end(); iter++){
+			delete *iter;
+			iter = lines_.erase(iter);
+		}
 
 	}
 
-	TransferFunctionEditor::~TransferFunctionEditor(){}
-
 	void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent *e){
+		mouseDownPos_ = e->scenePos();
 		std::vector<TransferFunctionEditorControlPoint*>::iterator iter = points_->begin();
 
 		if (e->button() == Qt::LeftButton){
@@ -21,17 +29,14 @@ namespace inviwo {
 					(*iter)->setSelected(false);
 				}
 			}
-			if (itemAt(e->scenePos()) == NULL || itemAt(e->scenePos())->type() == TransferFunctionEditorLineItem::Type){
-				addPoint(e);
-			}
-			else{
+			if (itemAt(e->scenePos()) != NULL && itemAt(e->scenePos())->type() == TransferFunctionEditorControlPoint::Type){
 				QGraphicsScene::mousePressEvent(e); // this forwards the event to the item
 			}
 		}
 		else if (e->button() == Qt::RightButton){
 			if (itemAt(e->scenePos()) == NULL){}
 			else if (itemAt(e->scenePos())->type() == TransferFunctionEditorControlPoint::Type){
-				removePoint(e);
+				removePoint((TransferFunctionEditorControlPoint*)itemAt(e->scenePos()));
 			}
 			for (iter = points_->begin(); iter != points_->end(); iter++){
 				(*iter)->setSelected(false);
@@ -46,7 +51,34 @@ namespace inviwo {
 		transferFunction_->calcTransferValues();
 		parent_->updateFromProperty();
 		sortLines();
-		this->update();	
+		this->update();
+	}
+
+	void TransferFunctionEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent *e){
+		float dist = sqrt( pow(e->scenePos().x() - mouseDownPos_.x(), 2) + pow(e->scenePos().y() - mouseDownPos_.y(), 2));
+
+		if (e->button() == Qt::LeftButton && dist < 10.0f){
+			if (itemAt(mouseDownPos_) == NULL || itemAt(mouseDownPos_)->type() == TransferFunctionEditorLineItem::Type){
+				addPoint(e);
+			}
+		}
+		QGraphicsScene::mouseReleaseEvent(e);
+	}
+
+
+	void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
+		if (e->key() == Qt::Key_Delete && points_->size() > 0){
+			std::vector<TransferFunctionEditorControlPoint*>::iterator iter = points_->begin();
+
+			while (iter != points_->end()){
+				if ((*iter)->isSelected()){
+					iter = removePoint(*iter);
+				} 
+				else {
+					++iter;
+				}
+			}
+		}
 	}
 
 	void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
@@ -67,28 +99,37 @@ namespace inviwo {
 		points_->back()->setSelected(true);
 		parent_->updateFromProperty();
 		this->update();
-	}
+	}	
 
-	void TransferFunctionEditor::removePoint(QGraphicsSceneMouseEvent *e){
-		TransferFunctionEditorControlPoint* target = (TransferFunctionEditorControlPoint*)itemAt(e->scenePos());
-		std::vector<TransferFunctionEditorControlPoint*>::iterator iter = points_->begin();
+
+	
+	
+	std::vector<TransferFunctionEditorControlPoint*>::iterator TransferFunctionEditor::removePoint(TransferFunctionEditorControlPoint *target){
+		std::vector<TransferFunctionEditorControlPoint*>::iterator iter;
 		if (!lines_.empty()){		
 			lines_.back()->setVisible(false);
+			delete lines_.back();
 			lines_.pop_back();
 		}
-		for (iter = points_->begin(); iter != points_->end(); iter++){
-			if (target->pos() == (*iter)->pos()){
-				transferFunction_->removePoint((*iter)->getPoint());
-				(*iter)->setVisible(false);
-				points_->erase(iter);
+
+		transferFunction_->removePoint(target->getPoint());
+		target->setVisible(false);
+		delete target;
+
+		for (iter = points_->begin() ; iter != points_->end(); iter++){
+			if ((*iter) == target){
+				iter = points_->erase(iter);
 				break;
 			}
 		}
+
 		transferFunction_->sortDataPoints();
 		transferFunction_->calcTransferValues();
 		sortLines();
 		parent_->updateFromProperty();
 		this->update();
+
+		return iter;
 	}
 
 	void TransferFunctionEditor::sortLines(){

@@ -29,7 +29,8 @@ namespace inviwo {
 		editorview_->setScene(editor_);
 		editorview_->setDragMode(QGraphicsView::RubberBandDrag);
 
-
+		//editorview_->installEventFilter();
+		
 		paintscene_ = new QGraphicsScene(this);
 		paintview_ = new QGraphicsView(this);
 		paintview_->setScene(paintscene_);
@@ -85,6 +86,7 @@ namespace inviwo {
 	}
 
 	void TransferFunctionPropertyDialog::updateFromProperty(){
+
 		stops_->clear();
 		if (points_.size() > 0){
 			for (int i = 0; i < (int)points_.size(); i++){
@@ -93,11 +95,14 @@ namespace inviwo {
 				temp_->first = points_[i]->getPoint()->getPos()->x / 255.01f;
 				temp_->second = QColor::fromRgbF(col->r, col->g, col->b, 1.0f);
 				stops_->push_front(*temp_);
+				delete temp_;
 			}
 			gradient_->setStops(*stops_);
 			paintscene_->setForegroundBrush(*gradient_);
 		}
 		this->update();
 		property_->invalidate();
+		property_->getOwner()->invalidate(property_->getOwner()->getInvalidationLevel());
+		//LogInfo("Invalidated?");
 	}
 } // namespace

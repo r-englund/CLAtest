@@ -31,7 +31,10 @@ namespace inviwo {
 
     TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(){};
 
-    TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint(){};
+    TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint(){
+		LogInfo("ControlPoint Destructor");
+		delete datapoint_;
+	};
 
     void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
         IVW_UNUSED_PARAM(options);
@@ -40,8 +43,7 @@ namespace inviwo {
         QPen* pen;
 		QBrush* brush;
 
-        const vec4* col = datapoint_->getRgba();
-		brush = new QBrush(QColor::fromRgbF(col->r, col->g, col->b));
+		brush = new QBrush(QColor::fromRgbF(datapoint_->getRgba()->r, datapoint_->getRgba()->g, datapoint_->getRgba()->b));
 		
         if (this->isSelected()){
             pen = new QPen(Qt::red, 2.5, Qt::SolidLine, Qt::RoundCap);
@@ -52,6 +54,9 @@ namespace inviwo {
         painter->setPen(*pen);
 		painter->setBrush(*brush);
 		painter->drawEllipse(-size_/2, -size_/2, size_, size_);
+
+		delete pen;
+		delete brush;
     }
 
     QRectF TransferFunctionEditorControlPoint::boundingRect() const {
@@ -88,5 +93,7 @@ namespace inviwo {
         this->setPos(*pos);
         this->datapoint_->setPos(new vec2(pos->x(), pos->y()));
         this->datapoint_->setA(pos->y()/100.0f);
+
+		delete pos;
     }
 } // namespace

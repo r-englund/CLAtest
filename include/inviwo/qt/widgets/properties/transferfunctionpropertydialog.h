@@ -51,8 +51,6 @@ private:
 	QVector<QGradientStop>* stops_;
 	QGradientStop* temp_;
 	const vec4* color_;
-    
-
     QColorDialog* colorDialog_;
 
     /** \Mousewheel zoom functionality

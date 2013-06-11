@@ -25,6 +25,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
+#include <QKeyEvent>
 #include <QLineF>
 #include <QPainter>
 #include <QPen>
@@ -48,10 +49,11 @@ namespace inviwo {
         TransferFunctionEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunction_, std::vector<TransferFunctionEditorControlPoint*>* points_);
         ~TransferFunctionEditor();
 
-    protected :
-        void mousePressEvent(QGraphicsSceneMouseEvent *e);
+	protected :
+		void mousePressEvent(QGraphicsSceneMouseEvent *e);
+		void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
         void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
-		
+		void keyPressEvent(QKeyEvent *e);
 
         //void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
 
@@ -62,8 +64,9 @@ namespace inviwo {
         *      sorts the points_ array and updates the line items to go to and from the correct points.
         *      Runs CalcTransferValues to update the TransferFunction datamember Image
         */
-        void addPoint(QGraphicsSceneMouseEvent *e);
-        void removePoint(QGraphicsSceneMouseEvent *e);
+		void addPoint(QGraphicsSceneMouseEvent *e);
+		//void removePoint(QGraphicsSceneMouseEvent *e);
+		std::vector<TransferFunctionEditorControlPoint*>::iterator removePoint(TransferFunctionEditorControlPoint* p);
 		void sortLines();
 
     private :
@@ -71,6 +74,8 @@ namespace inviwo {
         std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
         TransferFunction* transferFunction_; ///< Pointer to widget's member variable
         PropertyWidgetQt *parent_; ///< Pointer to widget so it can be updated from the editor
+
+		QPointF mouseDownPos_;
     };
 
 } // namespace

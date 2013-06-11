@@ -19,7 +19,9 @@ namespace inviwo {
 
     TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(){};
 
-    TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem() {};
+    TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem(){
+		LogInfo("Line Destructor");
+	};
 
 
     void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
@@ -37,13 +39,15 @@ namespace inviwo {
         pen = new QPen(Qt::cyan, 2.0, Qt::SolidLine, Qt::RoundCap);
         painter->setPen(*pen);
         painter->drawLine(start->x, start->y, finish->x, finish->y);
+
+		//delete start;
+		//delete finish;
+		delete pen;
     }
 
 
     QRectF TransferFunctionEditorLineItem::boundingRect() const {
-		const vec2* start = start_->getPos();
-		const vec2* finish = finish_->getPos();
-        return QRectF(start->x, start->y, finish->x - start->x, finish->y - start->y);
+        return QRectF(start_->getPos()->x, start_->getPos()->y, finish_->getPos()->x - start_->getPos()->x, finish_->getPos()->y - start_->getPos()->y);
     }
     void TransferFunctionEditorLineItem::mousePressEvent ( QGraphicsSceneMouseEvent *e ){}
 
