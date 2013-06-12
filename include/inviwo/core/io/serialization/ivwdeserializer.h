@@ -72,6 +72,7 @@ public:
     void deserialize(const std::string &key, float &data);
     void deserialize(const std::string &key, double &data);
     void deserialize(const std::string &key, int &data);
+    void deserialize(const std::string &key, unsigned int &data);
     void deserialize(const std::string &key, long &data);
     void deserialize(const std::string &key, vec2 &data);
     void deserialize(const std::string &key, vec3 &data);
@@ -79,6 +80,9 @@ public:
     void deserialize(const std::string &key, ivec2 &data);
     void deserialize(const std::string &key, ivec3 &data);
     void deserialize(const std::string &key, ivec4 &data); 
+    void deserialize(const std::string &key, uvec2 &data);
+    void deserialize(const std::string &key, uvec3 &data);
+    void deserialize(const std::string &key, uvec4 &data); 
     void deserialize(const std::string &key, dvec2 &data);
     void deserialize(const std::string &key, dvec3 &data);
     void deserialize(const std::string &key, dvec4 &data); 

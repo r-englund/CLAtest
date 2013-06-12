@@ -4,30 +4,41 @@
 
 namespace inviwo {
 
-IvfReaderSettings::IvfReaderSettings() 
-    : ReaderSettings()    
-{}
-
-
-void IvfReaderSettings::serialize(IvwSerializer& s) const {
-
-}
-
-void IvfReaderSettings::deserialize(IvwDeserializer& d) {
-
-}
-
-
-///////////////////////////////////////////////
-
 IvfVolumeReader::IvfVolumeReader(const std::string filePath) 
     : VolumeReader()
     , sourceFileAbsolutePath_(filePath)
 {}
 
 Data* IvfVolumeReader::readData() {    
-    ivwAssert(1!=0, "Not implemented");
-    return 0;
+    IvfReaderSettings ivfReaderSettings;
+
+    //Get reader settings
+    IvfVolumeReader::readIvfFileSettings(sourceFileAbsolutePath_, ivfReaderSettings);
+
+    //read raw data
+    void* rawData = RawVolumeReader::loadRawData(ivfReaderSettings);
+    ivwAssert(rawData!=0, "Unable to read raw file data");
+
+    //Allocate volume handle
+    Volume* data = new StandardVolume();
+    DataRepresentation* dataRepresentation = 0;
+
+    //Allocate representation
+    if (ivfReaderSettings.dataFormat_ == "UINT8") {
+        dataRepresentation = new VolumeRAMuint8(static_cast<uint8_t*>(rawData), ivfReaderSettings.dimensions_);            
+    }
+    else if (ivfReaderSettings.dataFormat_ == "UINT16") {
+        dataRepresentation = new VolumeRAMuint16(static_cast<uint16_t*>(rawData), ivfReaderSettings.dimensions_);            
+    }
+    else {
+        delete data;
+        data = 0;
+        return data;
+    }
+
+    //add representation to handle
+    data->addRepresentation(dataRepresentation);
+    return data;   
 }    
 
 } // namespace

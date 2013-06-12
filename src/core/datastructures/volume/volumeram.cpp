@@ -46,6 +46,13 @@ void VolumeRAM::saveData(std::string url) const {
             RawVolumeWriter::saveRawData(writerSettings);
         }
         else if (fileExtension=="ivf") {
+            IvfWriterSettings writerSettings;
+            writerSettings.rawFileAbsolutePath_ = UrlParser::replaceFileExtension(url, "raw");
+            writerSettings.dimensions_ = dimensions_;
+            writerSettings.dataFormat_ = getDataFormat().getString();
+            writerSettings.texels_ = getData();
+            IvfVolumeWriter::writeIvfFileSettings(url, writerSettings);
+            RawVolumeWriter::saveRawData(writerSettings);
         }
     }
 }

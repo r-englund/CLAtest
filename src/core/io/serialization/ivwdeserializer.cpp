@@ -133,6 +133,9 @@ void IvwDeserializer::deserialize(const std::string &key, int &data) {
     deserializePrimitives<int>(key, data);
 }
 
+void IvwDeserializer::deserialize(const std::string &key, unsigned int &data) {
+    deserializePrimitives<unsigned int>(key, data);
+}
 
 void IvwDeserializer::deserialize(const std::string &key, double &data) {
     deserializePrimitives<double>(key, data);
@@ -151,6 +154,17 @@ void IvwDeserializer::deserialize(const std::string &key, ivec3 &data) {
 }
 
 void IvwDeserializer::deserialize(const std::string &key, ivec4 &data) {
+    deserializeVector(key, data);
+}
+
+void IvwDeserializer::deserialize(const std::string &key, uvec2 &data) {
+    deserializeVector(key, data);
+}
+void IvwDeserializer::deserialize(const std::string &key, uvec3 &data) {
+    deserializeVector(key, data);
+}
+
+void IvwDeserializer::deserialize(const std::string &key, uvec4 &data) {
     deserializeVector(key, data);
 }
 

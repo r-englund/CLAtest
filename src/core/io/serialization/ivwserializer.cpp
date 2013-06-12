@@ -115,6 +115,10 @@ void IvwSerializer::serialize(const std::string &key, const int &data) {
     serializePrimitives<int>(key, data);
 }
 
+void IvwSerializer::serialize(const std::string &key, const unsigned int &data) {
+    serializePrimitives<unsigned int>(key, data);
+}
+
 void IvwSerializer::serialize(const std::string &key, const long &data) {
     serializePrimitives<long>(key, data);
 }
@@ -131,6 +135,17 @@ void IvwSerializer::serialize(const std::string &key, const ivec3 &data) {
 }
 
 void IvwSerializer::serialize(const std::string &key, const ivec4 &data) {
+    serializeVector(key, data);
+}
+
+void IvwSerializer::serialize(const std::string &key, const uvec2 &data) {
+    serializeVector(key, data);
+}
+void IvwSerializer::serialize(const std::string &key, const uvec3 &data) {
+    serializeVector(key, data);
+}
+
+void IvwSerializer::serialize(const std::string &key, const uvec4 &data) {
     serializeVector(key, data);
 }
 

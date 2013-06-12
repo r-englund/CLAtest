@@ -27,6 +27,11 @@ namespace inviwo {
                 //dataFormat_ = readerSettings.dataFormat_;
                 dimensions_ = readerSettings.dimensions_;
             }
+            else if (fileExtension=="ivf") {
+                IvfReaderSettings readerSettings;
+                IvfVolumeReader::readIvfFileSettings(getSourceFile(), readerSettings);
+                dimensions_ = readerSettings.dimensions_;               
+            }
         }
 
     }
@@ -38,12 +43,14 @@ namespace inviwo {
             if (fileExtension=="dat") {
                 ReaderSettings readerSettings;
                 DatVolumeReader::readDatFileSettings(getSourceFile(), readerSettings);
+                dimensions_ = readerSettings.dimensions_;
                 return RawVolumeReader::loadRawData(readerSettings);
             }
             else if (fileExtension=="ivf") {
                 IvfReaderSettings readerSettings;
                 IvfVolumeReader::readIvfFileSettings(getSourceFile(), readerSettings);
-                return RawVolumeReader::loadRawData(readerSettings);
+                dimensions_ = readerSettings.dimensions_;
+                return RawVolumeReader::loadRawData(readerSettings);                
             }
         }
 

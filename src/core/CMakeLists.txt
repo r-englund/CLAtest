@@ -108,6 +108,9 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfbasesettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfreadersettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfwritersettings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
@@ -236,6 +239,9 @@ set(SOURCE_FILES
     io/datareader.cpp
     io/datvolumereader.cpp
     io/imageloader.cpp
+    io/ivfbasesettings.cpp 
+    io/ivfreadersettings.cpp 
+    io/ivfwritersettings.cpp 
     io/ivfvolumereader.cpp 
     io/rawvolumereader.cpp
     io/volumereader.cpp

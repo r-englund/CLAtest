@@ -32,6 +32,7 @@ public:
     void serialize(const std::string &key, const double &data);
     void serialize(const std::string &key, const bool &data);
     void serialize(const std::string &key, const int &data);
+    void serialize(const std::string &key, const unsigned int &data);
     void serialize(const std::string &key, const long &data);
     void serialize(const std::string &key, const long long &data);
     void serialize(const std::string &key, const vec2 &data);
@@ -40,6 +41,9 @@ public:
     void serialize(const std::string &key, const ivec2 &data);
     void serialize(const std::string &key, const ivec3 &data);
     void serialize(const std::string &key, const ivec4 &data);
+    void serialize(const std::string &key, const uvec2 &data);
+    void serialize(const std::string &key, const uvec3 &data);
+    void serialize(const std::string &key, const uvec4 &data);
     void serialize(const std::string &key, const dvec2 &data);
     void serialize(const std::string &key, const dvec3 &data);
     void serialize(const std::string &key, const dvec4 &data);

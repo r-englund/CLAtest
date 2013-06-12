@@ -6,48 +6,9 @@
 #include "inviwo/core/io/volumereader.h"
 #include "inviwo/core/io/rawvolumereader.h"
 #include "inviwo/core/util/filedirectory.h"
+#include "inviwo/core/io/ivfreadersettings.h"
 
 namespace inviwo {
-
-class IVW_CORE_API IvfReaderSettings : public ReaderSettings, public IvwSerializable {
-public:
-    IvfReaderSettings();
-
-    //get functions
-    std::string getRawFileAbsolutePath() {return rawFileAbsolutePath_;}
-    std::string getDataFormat() {return dataFormat_;}
-    uvec3 getDimensions() {return dimensions_;}
-    vec3 getSliceThickness() {return sliceThickness_;}
-    float getTimeStep() {return timeStep_;}
-    std::string getUnit() {return unit_;}
-    std::string getModality() {return modality_;}
-    mat4 getTransformationMatrix() {return transformationMatrix_;}
-
-    //set functions
-    void setRawFileAbsolutePath(const std::string &absolutePath) { rawFileAbsolutePath_ = absolutePath;}
-    void setDataFormat(const std::string& format) {dataFormat_ = format;}
-    void setDimensions(const uvec3& dimensions) {dimensions_ = dimensions;}
-    void setSliceThickness(const vec3& thickness) {sliceThickness_ = thickness;}
-    void setTimeStep(const float& timeStep) {timeStep_ = timeStep;}
-    void setUnit(const std::string& unit) {unit_ = unit;}
-    void setModality(const std::string& modality) {modality_ = modality;}
-    void setTransformationMatrix(const mat4& tfMat) {transformationMatrix_ = tfMat;}
-
-
-    //serialization
-    virtual void serialize(IvwSerializer& s) const;
-
-    //de-serialization
-    virtual void deserialize(IvwDeserializer& d);
-private:
-    std::vector<std::string> xmlTags_;
-
-    vec3 sliceThickness_;
-    float timeStep_;
-    std::string unit_;
-    std::string modality_;
-    mat4 transformationMatrix_;
-};
 
 class IVW_CORE_API IvfVolumeReader : public VolumeReader {
 public:        
@@ -76,7 +37,18 @@ public:
             //Read the ivf file content
             IvwDeserializer d(filePath);
             ivfReaderSettings.deserialize(d);
-        }       
+
+            //translate
+            ivfReaderSettings.rawFileAbsolutePath_ = fileDirectory + ivfReaderSettings.rawFileAbsolutePath_ ;
+            if (ivfReaderSettings.dataFormat_=="UCHAR") {
+                ivfReaderSettings.dataFormat_ = DataUINT8::str();
+            }
+            else if (ivfReaderSettings.dataFormat_=="USHORT") {
+                ivfReaderSettings.dataFormat_ = DataUINT16::str();
+            }
+            else
+                ivfReaderSettings.dataFormat_="";
+        }        
     }
 
 private:               
