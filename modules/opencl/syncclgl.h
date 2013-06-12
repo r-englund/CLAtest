@@ -4,11 +4,11 @@
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opencl/inviwoopencl.h>
 
-#ifdef __APPLE__
-#include <OpenCL/cl_gl_ext.h>
-#else
-#include <CL/cl_gl_ext.h>
-#endif
+//#ifdef __APPLE__
+//#include <OpenCL/cl_gl_ext.h>
+//#else
+//#include <CL/cl_gl_ext.h>
+//#endif
 
 namespace inviwo {
 
