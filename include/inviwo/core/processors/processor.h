@@ -57,6 +57,7 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
+    bool isInitialized() { return initialized_; }
 
     virtual void process();
 
@@ -121,6 +122,8 @@ private:
     bool showProgressBar_;
     float progress_;
     float beginLoopProgress_;
+
+    bool initialized_;
 };
 
 } // namespace

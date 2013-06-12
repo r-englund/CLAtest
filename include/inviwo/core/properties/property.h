@@ -39,6 +39,9 @@ public:
     void registerPropertyWidget(PropertyWidget* propertyWidget);
     void updatePropertyWidgets();
 
+    void setGroupID(std::string groupID) { groupID_ = groupID; }
+    std::string getGroupID() { return groupID_; }
+
     void invalidate();
     bool isValid();
     void setValid();
@@ -71,6 +74,7 @@ private:
     std::vector<PropertyWidget*> propertyWidgets_;
 
     bool visible_;
+    std::string groupID_;
 };
 
 } // namespace

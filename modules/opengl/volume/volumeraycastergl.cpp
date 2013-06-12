@@ -85,6 +85,8 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
 
 void VolumeRaycasterGL::initialize() {
     ProcessorGL::initialize();
+    raycastPrg_ = new Shader(programFileName_, false);
+    initializeResources();
 }
 
 void VolumeRaycasterGL::deinitialize() {
@@ -95,8 +97,6 @@ void VolumeRaycasterGL::deinitialize() {
 
 
 void VolumeRaycasterGL::initializeResources() {
-    if (!raycastPrg_) raycastPrg_ = new Shader(programFileName_, false);
-
     // add some empty defines for Voreen compatibility
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_BEGIN_COMPOSITING");
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_END_COMPOSITING");

@@ -39,11 +39,7 @@ void SimpleRaycaster::process() {
     bindColorTexture(exitPort_, exitUnit.getEnum());
 
     TextureUnit volUnit;
-
-	const Volume* volume = volumePort_.getData();
-    const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
-    uvec3 volumeDim = volumeGL->getDimensions();
-    volumeGL->bindTexture(volUnit.getEnum());
+    bindVolume(volumePort_, volUnit.getEnum());
 
     TextureUnit transFuncUnit;
     const ImageGL* transferFunctionGL = transferFunction_.get().getData()->getRepresentation<ImageGL>();
@@ -71,9 +67,7 @@ void SimpleRaycaster::process() {
 
     raycastPrg_->setUniform("enableShading_", enableShading_.get());
     raycastPrg_->setUniform("lightSourcePos_", lightSourcePos_.get());
-	raycastPrg_->setUniform("enableMIP_", enableMIP_.get());
-    raycastPrg_->setUniform("volumeDimension_", vec3(volumeDim.x, volumeDim.y, volumeDim.z));
-    
+	raycastPrg_->setUniform("enableMIP_", enableMIP_.get());   
 
     renderImagePlaneQuad();
     
@@ -81,7 +75,6 @@ void SimpleRaycaster::process() {
     deactivateCurrentTarget();
     unbindColorTexture(entryPort_);
     unbindColorTexture(exitPort_);
-    volumeGL->unbindTexture();
     transferFunctionGL->unbindColorTexture();
 }
 

@@ -8,6 +8,8 @@ Property::Property(std::string identifier, std::string displayName, PropertyOwne
   invalidationLevel_(invalidationLevel),
   semantics_(semantics),
   owner_(0),
+  visible_(true),
+  groupID_(""),
   VoidObservable()
 {}
 

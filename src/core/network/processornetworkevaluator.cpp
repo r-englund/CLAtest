@@ -24,7 +24,8 @@ void ProcessorNetworkEvaluator::initializeNetwork() {
     // initialize network
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++)
-        processors[i]->initialize();
+        if (!processors[i]->isInitialized())
+            processors[i]->initialize();
     linkEvaluator_  = new LinkEvaluator();
 }
 

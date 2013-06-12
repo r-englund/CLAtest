@@ -59,7 +59,7 @@ public:
 
 
     /** 
-     * \brief Adds a option to the property
+     * \brief Adds an option to the property
      *
      * Adds a option to the property and stores it as a pair in the options_
      * The option name is the name of the option that will be displayed in the widget.
@@ -91,7 +91,7 @@ public:
 
     virtual void setSelectedOption(int option);
 
-    bool isSelected(T value) const;
+    bool isSelected(std::string identifier) const;
 
     /** 
      * \brief returns the value of the currently selected option
@@ -110,6 +110,9 @@ public:
      * @param std::string the key to the desiered value
      */
     void set(T value);
+
+    void setToID(std::string identifier);
+    void selectByKey(std::string identifier);
 
 private:
     T value_;
@@ -168,8 +171,12 @@ void TemplateOptionProperty<T>::setSelectedOption(int option) {
 }
 
 template<typename T>
-bool TemplateOptionProperty<T>::isSelected(T value) const {
-    return (value_ == value);
+bool TemplateOptionProperty<T>::isSelected(std::string identifier) const {
+    for (size_t i=0; i<options_.size(); i++)
+        if (options_[i].first.second == identifier)
+            return (options_[i].second == value_);
+    LogWarn("Querying non-existent option.");
+    return false;
 }
 
 template<typename T>
@@ -189,6 +196,21 @@ void TemplateOptionProperty<T>::set(T value) {
     onChangeCallback_.invoke();
     if (getOwner()) getOwner()->invalidate(getInvalidationLevel());
     updatePropertyWidgets();
+}
+
+template<typename T>
+void TemplateOptionProperty<T>::setToID(std::string identifier) {
+    for (size_t i=0; i<options_.size(); i++)
+        if (options_[i].first.second == identifier) {
+            set(options_[i].second);
+            return;
+        }
+}
+
+template<typename T>
+void TemplateOptionProperty<T>::selectByKey(std::string identifier) {
+    ivwDeprecatedMethod("setToID");
+    setToID(identifier);
 }
 
 } // namespace inviwo

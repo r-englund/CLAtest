@@ -9,7 +9,8 @@ ProcessorCategory(Processor, "undefined");
 ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL); 
 
 Processor::Processor() : VoidObservable(),
-    processorWidget_(0), identifier_("undefined"), showProgressBar_(false), progress_(0.0f), beginLoopProgress_(-1.0f)
+    initialized_(false), processorWidget_(0), identifier_("undefined"),
+    showProgressBar_(false), progress_(0.0f), beginLoopProgress_(-1.0f)
 {}
 
 Processor::~Processor() {}
@@ -71,6 +72,7 @@ void Processor::initialize() {
         inports_[i]->initialize();
     for (size_t i=0; i<outports_.size(); i++)
         outports_[i]->initialize();
+    initialized_ = true;
 }
 
 void Processor::deinitialize() {
@@ -80,6 +82,7 @@ void Processor::deinitialize() {
         outports_[i]->deinitialize();
 
     portDependencySets_.deinitialize();
+    initialized_ = false;
 }
 
 void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {

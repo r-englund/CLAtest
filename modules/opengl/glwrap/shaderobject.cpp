@@ -56,7 +56,6 @@ std::string ShaderObject::embeddDefines(std::string source) {
         std::pair<std::string, std::string> curDefine = shaderDefines_[i];
         result << "#define " << curDefine.first << " " << curDefine.second << "\n";
     }
-    std::cout << result.str() << std::endl;
     std::string curLine;
     std::istringstream shaderSource(source);
     while (std::getline(shaderSource, curLine))
