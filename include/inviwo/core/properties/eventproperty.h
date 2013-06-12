@@ -48,9 +48,6 @@ public:
      */
     void setEvent(Event e) { event_ = e; }
 
-    // FOR TESTING //FIXME: remove
-    void tmpTest(MouseEvent::MouseButton i) const { std::cout << "Mousebutton: " << i << std::endl; }
-
 private:
     Event event_;
     Action action_;

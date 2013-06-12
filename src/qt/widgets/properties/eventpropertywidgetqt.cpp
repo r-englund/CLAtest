@@ -28,12 +28,12 @@ void EventPropertyWidgetQt::updateFromProperty() {
 }
 
 void EventPropertyWidgetQt::clickedSlot() {
-    MappingPopup* popup_ = new MappingPopup(eventproperty_);        
+    MappingPopup* popup_ = new MappingPopup(eventproperty_, eventPropertyManager_);        
     popup_->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup );
     popup_->setFixedSize(1,1); // I am so sorry //FIX ME: Do it better
     popup_->show();
 
-    button_->setText("ENTER NEW KEYBINDING");
+    button_->setText("PRESS A BUTTON");
     button_->setEnabled(false);
 }
 

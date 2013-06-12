@@ -13,11 +13,11 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), 
 	
     frame_ = new QFrame();    
     vLayout_ = new QVBoxLayout();
-	QScrollArea* scrollArea_ = new QScrollArea();
+	QScrollArea* scrollArea = new QScrollArea();
     frame_->setLayout(vLayout_);
-	scrollArea_->setWidgetResizable(true);
-	scrollArea_->setWidget(frame_);
-    setWidget(scrollArea_);
+	scrollArea->setWidgetResizable(true);
+	scrollArea->setWidget(frame_);
+    setWidget(scrollArea);
 
     updateWidget();
 }
@@ -36,23 +36,24 @@ void MappingWidget::updateWidget() {
     label_->setText("Size of processor network: " + intToQString(curProcessorList_.size()));
 	vLayout_->addWidget(label_);
 
-	std::vector<EventProperty*> eventProperties_, tmp;
-	std::vector<InteractionHandler*> interactionHandlers_;
-	PropertyOwner* eventPropertyOwner_;
+	std::vector<EventProperty*> eventProperties, tmp;
+	std::vector<InteractionHandler*> interactionHandlers;
+	PropertyOwner* eventPropertyOwner;
 
 	for (size_t i = 0; i < curProcessorList_.size(); ++i) {
 		if (curProcessorList_.at(i)->hasInteractionHandler()) {			
-			interactionHandlers_ = curProcessorList_.at(i)->getInteractionHandlers();
-			for (size_t j = 0; j < interactionHandlers_.size(); ++j) {
-				eventPropertyOwner_ = dynamic_cast<PropertyOwner*>(interactionHandlers_.at(j));
-				if (eventPropertyOwner_) /* Check if interactionhandlar has properties */{
-					tmp = eventPropertyOwner_->getPropertiesByType<EventProperty>();
-					eventProperties_.insert(eventProperties_.end(), tmp.begin(), tmp.end());
+			interactionHandlers = curProcessorList_.at(i)->getInteractionHandlers();
+			for (size_t j = 0; j < interactionHandlers.size(); ++j) {
+				eventPropertyOwner = dynamic_cast<PropertyOwner*>(interactionHandlers.at(j));
+				if (eventPropertyOwner) /* Check if interactionhandlar has properties */{
+					tmp = eventPropertyOwner->getPropertiesByType<EventProperty>();
+					eventProperties.insert(eventProperties.end(), tmp.begin(), tmp.end());
 				}
 			}			
 		}
-	}
-	eventPropertyManager_->setEventProperties(eventProperties_);
+	}	
+	
+	eventPropertyManager_->setEventProperties(eventProperties);
 	drawEventPropertyWidgets(); 
 }
 
@@ -60,17 +61,18 @@ void MappingWidget::updateWidget() {
 void MappingWidget::drawEventPropertyWidgets() {
 	std::vector<EventProperty*> properties = eventPropertyManager_->getEventProperties();
 	for (size_t i=0; i<properties.size(); i++) {
-		Property* curProperty = properties[i];
+		EventProperty* curProperty = properties[i];
 		PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
 		vLayout_->addWidget(propertyWidget);
 		curProperty->registerPropertyWidget(propertyWidget);
+		dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager_);
 	}
 }
 
 // Clears the layout of all widgets
 void MappingWidget::emptyLayout() {
 	while(!vLayout_->layout()->isEmpty()) {
-		QWidget *w =  vLayout_->layout()->takeAt(0)->widget();
+		QWidget* w =  vLayout_->layout()->takeAt(0)->widget();
 		vLayout_->layout()->removeWidget(w);
 		delete w;
 	}

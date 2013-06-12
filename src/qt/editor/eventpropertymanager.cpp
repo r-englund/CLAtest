@@ -13,12 +13,20 @@ void EventPropertyManager::setEventProperties( std::vector<EventProperty*> event
 	eventProperties_ = eventProperties;
 }
 
-// For testing
-void EventPropertyManager::print(){
-	if (eventProperties_.size() > 0) {
-		std::cout << "----" << std::endl;	
-		for (size_t i = 0; i < eventProperties_.size(); ++i)
-			std::cout << eventProperties_.at(i)->getDisplayName() << std::endl;
+void EventPropertyManager::changeKeybinding( EventProperty* eventProperty, MouseEvent::MouseButton button ) {
+	// Look for event conflicts
+	for (size_t i = 0; i < eventProperties_.size(); ++i) {
+		if (eventProperties_.at(i)->getEvent().button() == button) {
+			eventProperties_.at(i)->setEvent(MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, Event::MODIFIER_NONE));
+		}
+	}
+	
+	// Do the remapping
+	for (size_t i = 0; i < eventProperties_.size(); ++i) {
+		if (eventProperty->getIdentifier() == eventProperties_.at(i)->getIdentifier()) {
+			eventProperties_.at(i)->setEvent(MouseEvent(button, Event::MODIFIER_NONE));
+			break;
+		}
 	}
 }
 

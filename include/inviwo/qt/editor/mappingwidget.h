@@ -4,10 +4,10 @@
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/inviwodockwidget.h>
 #include <inviwo/core/util/observer.h>
-#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/qt/editor/eventpropertymanager.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
+#include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 
 #include <QFrame>
 #include <QVBoxLayout>

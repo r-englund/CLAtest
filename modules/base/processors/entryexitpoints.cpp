@@ -18,16 +18,15 @@ EntryExitPoints::EntryExitPoints()
     addPort(exitPort_);
 
     addProperty(camera_);
+
+	addInteractionHandler(new Trackball(&camera_));
 }
 
 EntryExitPoints::~EntryExitPoints() {}
 
 void EntryExitPoints::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("eepgeneration.frag");
-    
-    Trackball *trackball = new Trackball(&camera_);
-    addInteractionHandler(trackball);
+    shader_ = new Shader("eepgeneration.frag");    
         
     // compute bounding box dimensions
     // TODO: change upon volume change

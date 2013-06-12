@@ -18,10 +18,12 @@ class EventPropertyWidgetQt : public PropertyWidgetQt {
 public:
     EventPropertyWidgetQt(EventProperty* eventproperty);
     void updateFromProperty();
+	void setManager(EventPropertyManager* eventPropertyManager) { eventPropertyManager_ = eventPropertyManager; };
 
 private:
     EventProperty* eventproperty_;
     QPushButton* button_;
+	EventPropertyManager* eventPropertyManager_;
 
     void generateWidget();
 

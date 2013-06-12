@@ -11,6 +11,7 @@ MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
           buttonNames_[MOUSE_BUTTON_LEFT] = "Left mouse button";
           buttonNames_[MOUSE_BUTTON_RIGHT] = "Right mouse button";
           buttonNames_[MOUSE_BUTTON_MIDDLE] = "Middle mouse button";
+		  buttonNames_[MOUSE_BUTTON_NONE] = "Unbound";
 
           modifierName_ = modifierNames_[modifier];
           modifier_ = modifier;
@@ -23,6 +24,7 @@ MouseEvent::MouseEvent( MouseEvent::MouseButton button, Event::Modifier modifier
     buttonNames_[MOUSE_BUTTON_LEFT] = "Left mouse button";
     buttonNames_[MOUSE_BUTTON_RIGHT] = "Right mouse button";
     buttonNames_[MOUSE_BUTTON_MIDDLE] = "Middle mouse button";
+	buttonNames_[MOUSE_BUTTON_NONE] = "Unbound";
 
     modifierName_ = modifierNames_[modifier];
     modifier_ = modifier;
