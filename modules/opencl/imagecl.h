@@ -34,7 +34,7 @@ public:
     virtual void copyAndResizeImage(DataRepresentation* target);
     cl::ImageFormat getFormat() const { return imageFormat_;}
     cl::Image2D getEditableImage() { return *image2D_; }
-    const cl::Image2D getImage() const { return *const_cast<const cl::Image2D*>(image2D_); }
+    const cl::Image2D& getImage() const { return *const_cast<const cl::Image2D*>(image2D_); }
 
 protected:
     cl::Image2D* image2D_;
@@ -46,7 +46,7 @@ protected:
 namespace cl {
 
 // Kernel argument specializations for ImageCL type 
-// (enables calling cl::Queue::setArg with ImageCL
+// (enables calling cl::Queue::setArg with ImageCL)
 template <>
 cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCL& value);
 

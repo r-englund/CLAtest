@@ -20,7 +20,7 @@ __kernel void raycaster(read_only image3d_t volume
     //}
     float4 entry = read_imagef(entryPoints, smpUNormNoClampNearest, globalId); 
     
-    float4 result = 0.f;
+    float4 result = (float4)(0.f);
     if(entry.w != 0) {
         float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId); 
         float3 direction = exit.xyz - entry.xyz;
@@ -30,34 +30,29 @@ __kernel void raycaster(read_only image3d_t volume
         float3 p = entry.xyz;
         float t = 0;
         float volumeSample;
+        float extinction = 0.f;
         while(t <= tEnd) {
             float3 pos = entry.xyz+t*direction;
             volumeSample = read_imagef(volume, smpNormClampLinear, as_float4(pos)).w; 
-            float4 color = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
-            //float4 color = (float4)(volumeSample);
-            color.w = 1.f - pow(1.f - color.w, tIncr * REF_SAMPLING_INTERVAL);
-			result.xyz = result.xyz + (1.0 - result.w) * color.w * color.xyz;
-			result.w = result.w + (1.0 - result.w) * color.w;	
+            // xyz == emission, w = absorption
+            float4 emissionAbsorption = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
+            // Taylor expansion approximation
+            emissionAbsorption.w = 1.f - pow(1.f - emissionAbsorption.w, tIncr * REF_SAMPLING_INTERVAL);
+			result.w = result.w + (1.0 - result.w) * emissionAbsorption.w;	
+            result.xyz = result.xyz + (1.0 - result.w) * emissionAbsorption.w * emissionAbsorption.xyz;
+            
+            //emissionAbsorption.xyz *= emissionAbsorption.w;
+            //extinction += 1.f-pow(1.f - emissionAbsorption.w, tIncr * REF_SAMPLING_INTERVAL);
+            ////extinction += emissionAbsorption.w*tIncr*REF_SAMPLING_INTERVAL;
+            //result.w = native_exp(-extinction);
+            //result.xyz += emissionAbsorption.xyz*result.w;
+            
             t += tIncr;
 
         }
-        // Riemann sum
-        //result *= tIncr; 
-        // Remove last part due to steppping too far. 
-        //result -= (t-tEnd)*volumeSample;
-        //result.w = 1.f;
-        //result.xy = exit.xy;
-        //result.xy = entry.xy;
-        //result.x = 1.f;
-        //result.xyz *= 1000.f;
     }
     
-    //float4 result = read_imagef(entryPoints, smpUNormNoClampNearest, globalId) + convert_float(globalId.x)/255.f; 
-    //float4 result = convert_float4(read_imageui(entryPoints, smpUNormNoClampNearest, globalId)) + convert_float(globalId.x)/255.f;
-    //float4 result = (float4)(0.5f, 0.5f, 0.f, 1.f);
-    //result += read_imagef(volume, smpNormClampLinear, (float4)(0.5f)).w; 
     write_imagef(output, globalId,  result);    
-    //write_imageh(output, globalId,  (half4)(0.5f, 0.5f, 0.f, 1.f));    
-    //write_imageui(output, globalId,  convert_uint4(255.f*result));    
+  
 }
 

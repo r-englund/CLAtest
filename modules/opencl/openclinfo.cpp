@@ -25,22 +25,22 @@ namespace inviwo {
         }
         std::string type;
         switch (format.image_channel_data_type) {
-            case CL_SNORM_INT8: type = "CL_SNORM_INT8"; break;
-            case CL_SNORM_INT16: type = "CL_SNORM_INT16"; break;
-            case CL_UNORM_INT8: type = "CL_UNORM_INT8"; break;
-            case CL_UNORM_INT16: type = "CL_UNORM_INT16"; break;    
-            case CL_UNORM_SHORT_565: type = "CL_UNORM_SHORT_565"; break;   
-            case CL_UNORM_SHORT_555: type = "CL_UNORM_SHORT_555"; break;
-            case CL_UNORM_INT_101010: type = "CL_UNORM_INT_101010"; break;
-            case CL_SIGNED_INT8: type = "CL_SIGNED_INT8"; break;
-            case CL_SIGNED_INT16: type = "CL_SIGNED_INT16"; break;
-            case CL_SIGNED_INT32: type = "CL_SIGNED_INT32"; break;
-            case CL_UNSIGNED_INT8: type = "CL_UNSIGNED_INT8"; break;
-            case CL_UNSIGNED_INT16: type = "CL_UNSIGNED_INT16"; break; 
-            case CL_UNSIGNED_INT32: type = "CL_UNSIGNED_INT32"; break; 
-            case CL_HALF_FLOAT: type = "CL_HALF_FLOAT"; break; 
-            case CL_FLOAT: type = "CL_FLOAT"; break;                 
-            default: type = "unkown data type"; break;
+            case CL_SNORM_INT8: type =          "CL_SNORM_INT8"; break;
+            case CL_SNORM_INT16: type =         "CL_SNORM_INT16"; break;
+            case CL_UNORM_INT8: type =          "CL_UNORM_INT8"; break;
+            case CL_UNORM_INT16: type =         "CL_UNORM_INT16"; break;    
+            case CL_UNORM_SHORT_565: type =     "CL_UNORM_SHORT_565"; break;   
+            case CL_UNORM_SHORT_555: type =     "CL_UNORM_SHORT_555"; break;
+            case CL_UNORM_INT_101010: type =    "CL_UNORM_INT_101010"; break;
+            case CL_SIGNED_INT8: type =         "CL_SIGNED_INT8"; break;
+            case CL_SIGNED_INT16: type =        "CL_SIGNED_INT16"; break;
+            case CL_SIGNED_INT32: type =        "CL_SIGNED_INT32"; break;
+            case CL_UNSIGNED_INT8: type =       "CL_UNSIGNED_INT8"; break;
+            case CL_UNSIGNED_INT16: type =      "CL_UNSIGNED_INT16"; break; 
+            case CL_UNSIGNED_INT32: type =      "CL_UNSIGNED_INT32"; break; 
+            case CL_HALF_FLOAT: type =          "CL_HALF_FLOAT"; break; 
+            case CL_FLOAT: type =               "CL_FLOAT"; break;                 
+            default: type =                     "unkown data type"; break;
         }     
         
         std::ostringstream stream;

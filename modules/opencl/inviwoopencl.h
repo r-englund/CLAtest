@@ -10,18 +10,7 @@
 #include <modules/opencl/glmcl.h>
 #include <modules/opencl/openclmoduledefine.h>
 
-namespace cl{
 
-
-void LogOpenCLError(cl_int err, const char* fileName, const char* functionName, int lineNumber);
-/** \brief Get string representation of error code according to definitions in CL/cl.h
- *
- *  \return The error code string.
- */
-std::string errorCodeToString(cl_int err);
-
-
-};
 
 using cl::CommandQueue;
 using cl::Context;
@@ -32,14 +21,6 @@ using cl::ImageFormat;
 
 
 namespace inviwo {
-
-
-#if defined(IVW_DEBUG)
-#define LogCLError cl::LogOpenCLError(error, __FILE__, __FUNCTION__, __LINE__)
-#else
-#define LCL_ERROR
-#endif
-
 
 /** \class OpenCL 
 *
@@ -136,6 +117,19 @@ private:
 
 };
 
+
+void LogOpenCLError(cl_int err, const char* message = NULL);
+/** \brief Get string representation of error code according to definitions in CL/cl.h
+ *
+ *  \return The error code string.
+ */
+std::string errorCodeToString(cl_int err);
+
+#if defined(IVW_DEBUG)
+#define LogCLError #if defined(__CL_ENABLE_EXCEPTIONS) \\LogOpenCLError(error)
+#else
+#define LogCLError
+#endif
 
 // Image formats for OpenCL
 cl::ImageFormat dataFormatToCLImageFormat(DataFormatId format);

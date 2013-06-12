@@ -36,7 +36,7 @@ public:
      * @param data (void *) Preallocated pointer that will contain texture data after function returns.
      * @return (void)
      */
-    void download(void* data); 
+    void download(void* data) const; 
 
     void unbind() const;
 

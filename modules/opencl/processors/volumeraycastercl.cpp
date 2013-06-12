@@ -1,6 +1,8 @@
 #include "volumeraycastercl.h"
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/syncclgl.h>
 #include <modules/opencl/imagecl.h>
+#include <modules/opencl/imageclgl.h>
 #include <modules/opencl/volumecl.h>
 #include <modules/opencl/kernelmanager.h>
 
@@ -56,9 +58,14 @@ void VolumeRaycasterCL::process() {
         return;
     }
     Image* outImage = outport_.getData();
-    const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
-    outImage->resize(entryCL->getDimension());
+    //const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
+    const ImageCLGL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCLGL>();
+    //outImage->resize(entryCLGL->getDimension());
     uvec2 outportDim = outImage->getDimension();
+
+    SyncCLGL glSync;
+
+    entryCLGL->aquireGLObject(glSync.getGLSyncEvent());
     //uvec2 outportDim = uvec2(4, 4);
     //Image* outImage = new Image(outportDim);
     //outImage->clearRepresentations();
@@ -74,7 +81,7 @@ void VolumeRaycasterCL::process() {
     
     cl_uint arg = 0;
     kernel_->setArg(arg++, *volumeCL);
-    kernel_->setArg(arg++, *entryCL);
+    kernel_->setArg(arg++, *entryCLGL);
     kernel_->setArg(arg++, *exitPort_.getData()->getRepresentation<ImageCL>());
     kernel_->setArg(arg++, *transferFunctionCL);
     kernel_->setArg(arg++, samplingRate_.get());// / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
@@ -82,7 +89,11 @@ void VolumeRaycasterCL::process() {
     kernel_->setArg(arg++, *outImageCL);
     // 
     OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+    
+    entryCLGL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
 
+
+   
     //ImageRAM* testImage = outImage->getRepresentation<ImageRAM>();
     // Texture2D* colorTexture_;
     //colorTexture_->bind();

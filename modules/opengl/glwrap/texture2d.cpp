@@ -51,7 +51,7 @@ void Texture2D::upload(const void* data) {
     LGL_ERROR;
 }
 
-void Texture2D::download(void* data) {
+void Texture2D::download(void* data) const {
     bind();
     glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, data);
     // Using FBO

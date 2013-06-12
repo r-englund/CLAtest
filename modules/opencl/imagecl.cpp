@@ -73,6 +73,7 @@ void ImageCL::resize(uvec2 dimensions)
     ImageCLResizer::resize(*image2D_, *resizedImage2D, dimensions);
     delete image2D_;
     image2D_ = resizedImage2D;
+    ImageRepresentation::resize(dimensions);
 
 }
 

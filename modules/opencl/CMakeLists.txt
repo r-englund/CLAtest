@@ -8,7 +8,9 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/cl.hpp
     ${IVW_MODULE_DIR}/opencl/glmcl.h
     ${IVW_MODULE_DIR}/opencl/imagecl.h
+    ${IVW_MODULE_DIR}/opencl/imageclgl.h
     ${IVW_MODULE_DIR}/opencl/imageclconverter.h
+	${IVW_MODULE_DIR}/opencl/imageclglconverter.h
     ${IVW_MODULE_DIR}/opencl/imageclresizer.h
 	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
 	${IVW_MODULE_DIR}/opencl/kernelmanager.h
@@ -18,6 +20,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.h
     ${IVW_MODULE_DIR}/opencl/volumecl.h
     ${IVW_MODULE_DIR}/opencl/volumeclconverter.h
+    ${IVW_MODULE_DIR}/opencl/syncclgl.h
 	${IVW_MODULE_DIR}/opencl/cl/grayscale.cl
 	${IVW_MODULE_DIR}/opencl/cl/img_resize.cl
 	${IVW_MODULE_DIR}/opencl/cl/volumeraycaster.cl
@@ -30,7 +33,9 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/cl.cpp
     ${IVW_MODULE_DIR}/opencl/glmcl.cpp
     ${IVW_MODULE_DIR}/opencl/imagecl.cpp
+    ${IVW_MODULE_DIR}/opencl/imageclgl.cpp
 	${IVW_MODULE_DIR}/opencl/imageclconverter.cpp
+	${IVW_MODULE_DIR}/opencl/imageclglconverter.cpp
 	${IVW_MODULE_DIR}/opencl/imageclresizer.cpp
     ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
 	${IVW_MODULE_DIR}/opencl/kernelmanager.cpp
