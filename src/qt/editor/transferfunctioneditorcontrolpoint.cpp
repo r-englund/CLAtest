@@ -10,7 +10,7 @@ namespace inviwo {
 		setFlag(QGraphicsItem::ItemIsSelectable);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges);
         setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-		setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+		setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
 
         setPos(datapoint_->getPos()->x, datapoint_->getPos()->y);
         setZValue(1);
@@ -72,28 +72,27 @@ namespace inviwo {
 
     void TransferFunctionEditorControlPoint::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
 
-    void TransferFunctionEditorControlPoint::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
-    {
-        QPointF* pos = new QPointF(e->scenePos());
-        if (pos->x() <= 0.0f){
-            pos->setX(0);
-        } 
-        if (pos->x() >= 255.0f){
-            pos->setX(255.0f);
-        }
-        if (pos->y() <= 0.0f){
-            pos->setY(0.0f);
-        } 
-        if (pos->y() >= 100.0f){
-            pos->setY(100.0f);
-        }
-		
-		pos->setX(floor(pos->x() + 0.5));
+	void TransferFunctionEditorControlPoint::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
+	{
+		vec2 pos = vec2(e->scenePos().x(), e->scenePos().y());
 
-        this->setPos(*pos);
-        this->datapoint_->setPos(new vec2(pos->x(), pos->y()));
-        this->datapoint_->setA(pos->y()/100.0f);
+		if (pos.x <= 0.0f){
+			pos.x = 0.0f;
+		} 
+		if (pos.x >= 255.0f){
+			pos.x = 255.0f;
+		}
+		if (pos.y <= 0.0f){
+			pos.y = 0.0f;
+		} 
+		if (pos.y >= 100.0f){
+			pos.y = 100.0f;
+		}
 
-		delete pos;
-    }
+		pos.x = floor(pos.x + 0.5);
+
+		this->setPos(QPointF(pos.x, pos.y));
+		this->datapoint_->setPos(pos);
+		this->datapoint_->setA(pos.y/100.0f);
+	}
 } // namespace

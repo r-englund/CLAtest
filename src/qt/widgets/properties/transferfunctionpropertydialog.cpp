@@ -4,38 +4,21 @@ namespace inviwo {
 
 	TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* property) : property_(property){
 		zoom_ = 0;
+		width  = 255.0f;
+		height = 100.0f;
+
 		transferFunction_ = &property_->get();
 		data_ = static_cast<vec4*>(transferFunction_->getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
 		generateWidget();
 		updateFromProperty();
+
+		
 	}
 
 	TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog(){
-
 		LogInfo("Dialog destructor");
 
-		//if (editorview_)
-		//	delete editorview_;
-
-		//if (paintview_)
-		//	delete paintview_;
-
-		//if (paintscene_)
-		//	delete paintscene_;
-
-		//if(transferFunction_)
-		//	delete transferFunction_;
-
-		//if (property_)
-		//	delete property_;
-
-		//if(editor_)		
-		//	delete editor_;
-
-		//points_.clear();
-
 		delete editor_;
-
 		delete gradient_;
 		stops_->clear();
 		delete stops_;
@@ -51,20 +34,22 @@ namespace inviwo {
 		setLayout(vLayout);
 
 		editor_ = new TransferFunctionEditor(this, transferFunction_, &points_);
-		editor_->setSceneRect(0,0,255,100);
+		editor_->setSceneRect(0,0,width,height);
 		editor_->setBackgroundBrush(Qt::transparent);
 
 		editorview_ = new QGraphicsView(this);
 		editorview_ = new QGraphicsView();
-		editorview_->setFixedSize(257, 102);
+		editorview_->setFixedSize(width + 2, height + 2);
 		editorview_->scale(1, -1);
 		editorview_->setScene(editor_);
 		editorview_->setDragMode(QGraphicsView::RubberBandDrag);
+		editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		
 		paintscene_ = new QGraphicsScene(this);
 		paintview_ = new QGraphicsView(this);
 		paintview_->setScene(paintscene_);
-		paintview_->setFixedSize(257, 52);
+		paintview_->setFixedSize(width + 2, 52);
 		paintview_->scale(1, -1);
 
 		vLayout->addWidget(editorview_);
@@ -73,31 +58,10 @@ namespace inviwo {
 
 		gradient_ = new QLinearGradient(-128.0f, 0.0f, 127.0f, 0.0f);
 		stops_ = new QVector<QGradientStop>();
+
+		editorview_->viewport()->installEventFilter(this);
 	}
 
-	void TransferFunctionPropertyDialog::wheelEvent(QWheelEvent* e) {
-		double scaleFactor = 1.10; ///< Zoom in/out by 10%
-		if (e->delta() > 0){
-			zoom_++;
-			editorview_->scale(scaleFactor, scaleFactor);
-		} else if (zoom_ > 0){
-			zoom_--;
-			editorview_->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
-		}
-		if(zoom_ == 0){
-			editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-			editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		}
-		else{
-			editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-			editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-		}
-
-		editorview_->setSceneRect(0,0,255,100);
-		e->accept();
-		this->update();
-		editorview_->update();
-	}
 
 	void TransferFunctionPropertyDialog::setPropertyValue(){
 		vec3* newRgb;
@@ -121,11 +85,9 @@ namespace inviwo {
 		if (points_.size() > 0){
 			for (int i = 0; i < (int)points_.size(); i++){
 				const vec4* col = points_[i]->getPoint()->getRgba();
-				//temp_ = new QGradientStop();
 				temp->first = points_[i]->getPoint()->getPos()->x / 255.01f;
 				temp->second = QColor::fromRgbF(col->r, col->g, col->b, 1.0f);
 				stops_->push_front(*temp);
-				
 			}
 			gradient_->setStops(*stops_);
 			paintscene_->setForegroundBrush(*gradient_);
@@ -134,6 +96,43 @@ namespace inviwo {
 		this->update();
 		property_->invalidate();
 		property_->getOwner()->invalidate(property_->getOwner()->getInvalidationLevel());
-		//LogInfo("Invalidated?");
+	}
+
+
+	bool TransferFunctionPropertyDialog::eventFilter(QObject *object, QEvent *e)
+	{
+		std::stringstream ss;
+		if (e->type() == QEvent::Wheel){
+			const QPoint pos = static_cast<QWheelEvent*>(e)->pos();
+
+			double scaleFactor = 1.20; ///< Zoom in/out by 10%
+			if (static_cast<QWheelEvent*>(e)->delta() > 0){
+				zoom_++;
+				editorview_->scale(scaleFactor, scaleFactor);
+			} 
+			else if (zoom_ > 0){
+				zoom_--;
+				editorview_->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+			}
+
+			QPointF focus = editorview_->mapToScene(pos);
+			//focus.setX(editorview_->mapToScene(editorview_->viewport()->rect().center()).x());
+			//focus.setY(editorview_->mapToScene(editorview_->viewport()->rect().center()).y());
+			//focus.setX(editorview_->mapToScene(pos).x());
+			//focus.setY(editorview_->mapToScene(pos).y());
+			editorview_->centerOn(focus);
+
+			ss << focus.x();
+			ss << "   ";
+			ss << focus.y();
+			ss << "\n";
+			LogInfo(ss.str());
+
+			e->accept();
+			this->update();
+			editorview_->update();
+			return true;
+		}
+		return false;
 	}
 } // namespace

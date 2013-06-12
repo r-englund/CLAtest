@@ -38,6 +38,8 @@ public:
 
 private:
     int zoom_;
+	float width;
+	float height;
 	vec4* data_;
     static const std::string logSource_;
     QGraphicsView*	editorview_; ///< View that contains the editor
@@ -53,11 +55,13 @@ private:
 
     QColorDialog* colorDialog_;
 
+	bool eventFilter(QObject *object, QEvent *event);
+
     /** \Mousewheel zoom functionality
     *         Enables zooming in and out with mousescroll
     *         Begining of zoom implementation, currently in early stages
     */
-    void wheelEvent(QWheelEvent * e);
+    //void wheelEvent(QWheelEvent * e);
     void generateWidget();
 
     public slots:

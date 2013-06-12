@@ -30,7 +30,6 @@ namespace inviwo {
         
         void sortDataPoints();
         void calcTransferValues();
-        //vec4* myLerp(const vec4* start, const vec4* stop, float factor);
 
     private:
         Image* data_;

@@ -22,8 +22,6 @@ public:
 private:
 	TransferFunctionProperty* property_;
 	QPushButton* btnOpenDialog_;
-	//QColorDialog* colorDialog_;
-	//QColor* currentColor_;
 
 	TransferFunctionPropertyDialog* transferFunctionDialog_;
 

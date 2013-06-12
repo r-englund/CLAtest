@@ -76,6 +76,7 @@ namespace inviwo {
             }
         }
         else{
+			//This loop fills out the values before the first point
             for (int i = 0; i < (int)dataPoints_.front()->getPos()->x ; i++){
                 dataArray[i] = *dataPoints_.front()->getRgba();
             }
@@ -93,6 +94,8 @@ namespace inviwo {
 					dataArray[j] = (*startValues) * (1.0f-factor) + factor * (*stopValues);
                 }
             }
+
+			//This loop fills out the values after the last point
             for (int i = (int)dataPoints_.back()->getPos()->x; i < 256; i++){
                 dataArray[i] = *dataPoints_.back()->getRgba();
             }
