@@ -10,11 +10,11 @@ namespace inviwo {
 class IVW_CORE_API GeometryRepresentation : public DataRepresentation {
 
 public:
-    enum RenderType{
-        NOT_SPECIFIED,
-        POINTS,
-        LINES,
-        POLYGON
+    enum Connectivity{
+        NONE,
+        STRIP,
+        LOOP,
+        FAN
     };
 
     GeometryRepresentation();
@@ -22,7 +22,7 @@ public:
     virtual void performOperation(DataOperation*) const;
     virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const;
-    virtual void render(RenderType = NOT_SPECIFIED) = 0;
+    virtual void render() = 0;
 };
 
 } // namespace

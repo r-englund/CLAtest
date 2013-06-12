@@ -13,23 +13,20 @@ class IVW_CORE_API MeshRAM : public GeometryRAM {
 public:
     MeshRAM();
     virtual ~MeshRAM();
-    virtual void performOperation(DataOperation*) const = 0;
+    virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const = 0;
-    virtual void render(RenderType = NOT_SPECIFIED) = 0;
+    virtual DataRepresentation* clone() const { return NULL; };
+    virtual void render(){};
 
-    virtual unsigned int addVertex(const glm::vec3& pos, const glm::vec3& texCoord, const glm::vec3& color);
+    AttributesBase* getAttribute(size_t idx) const;
+    AttributesBase* getIndicies() const;
 
-    AttributesBase* getVertexAttribute(size_t idx) const;
-    AttributesBase* getFaceAttribute(size_t idx) const;
-
-    size_t getNumberOfVertexAttributes() const;
-    size_t getNumberOfFaceAttributes() const;
+    size_t getNumberOfAttributes() const;
 
 protected:
-    std::vector<AttributesBase*> vertexAttributes_;
-    std::vector<AttributesBase*> faceAttributes_;
+    std::vector<AttributesBase*> attributes_;
+    IndexAttributes* indices_;
 
 };
 
