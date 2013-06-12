@@ -66,7 +66,6 @@ void SimpleRaycaster::process() {
 
     raycastPrg_->setUniform("transferFunction_", transFuncUnit.getUnitNumber());
 
-    std::cout << "explicit: " << 1.f/outportDim[0] << ", "<< 1.f/outportDim[1] << " (" << outportDim.x << "," << outportDim.y << ")" << std::endl;
     raycastPrg_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
     raycastPrg_->setUniform("samplingRate_", samplingRate_.get());
 
