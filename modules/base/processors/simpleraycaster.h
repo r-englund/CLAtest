@@ -7,7 +7,7 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/properties.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/volumeraycastergl.h>
+#include <modules/opengl/volume/volumeraycastergl.h>
 #include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>
 
