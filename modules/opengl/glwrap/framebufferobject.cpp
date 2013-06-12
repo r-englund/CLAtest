@@ -18,8 +18,23 @@ void FrameBufferObject::deactivate() {
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 }
 
-void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementType) {
-    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementType, GL_TEXTURE_2D, texture->getID(), 0);
+void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) {
+    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
+    attachedTextures_.push_back(attachementID);
+}
+
+void FrameBufferObject::detachTexture(GLenum attachementID) {
+    for (size_t i=0; i<attachedTextures_.size(); i++) {
+        if (attachedTextures_[i] == attachementID) {
+            attachedTextures_.erase(attachedTextures_.begin()+i);
+            return;
+        }
+    }
+}
+
+void FrameBufferObject::detachAllTextures() {
+    while (!attachedTextures_.empty())
+        detachTexture(attachedTextures_[0]);
 }
 
 void FrameBufferObject::checkStatus() {

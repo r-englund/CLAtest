@@ -21,11 +21,15 @@ void ProcessorGL::clearCurrentTarget() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void ProcessorGL::activateAndClearTarget(ImageOutport& outport){
+void ProcessorGL::activateAndClearTarget(ImageOutport& outport) {
     Image* outImage = outport.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     outImageGL->activateBuffer();
     clearCurrentTarget();
+}
+
+void ProcessorGL::activateAndClearTargets(PortGroup& portGroup) {
+    std::cout << "IMPLEMENT ME!!!" << std::endl;
 }
 
 void ProcessorGL::bindColorTexture(const ImageInport& inport, GLenum texUnit) {
@@ -105,8 +109,9 @@ void ProcessorGL::unbindTextures(const ImageOutport& outport) {
 }
 
 void ProcessorGL::setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID) {
-    shader->setUniform(samplerID + ".dimensions_", vec2(inport.getDimensions()));
-    shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f,1.0f)/vec2(inport.getDimensions()));
+    vec2 dimensions = vec2(inport.getDimensions());
+    shader->setUniform(samplerID + ".dimensions_", dimensions);
+    shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f)/dimensions);
 }
 
 void ProcessorGL::setGlobalShaderParameters(Shader* shader) {

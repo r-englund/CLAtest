@@ -12,3 +12,8 @@ float normDepth(float depth) {
     // deprecated
     return normalizeDepth(depth);
 }
+
+float calculateDepthValue(float t, float minDepth, float maxDepth) {
+    // FIXME: implement correct depth value caluclation
+    return (minDepth + (t*(maxDepth-minDepth)));
+}

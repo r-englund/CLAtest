@@ -28,6 +28,12 @@ bool ShaderObject::initialize() {
     return compile();
 }
 
+bool ShaderObject::build() {
+    preprocess();
+    upload();
+    return compile();
+}
+
 bool ShaderObject::rebuild() {
     if (loadSource(fileName_)) {
         preprocess();
@@ -38,6 +44,7 @@ bool ShaderObject::rebuild() {
 
 void ShaderObject::preprocess() {
     sourceProcessed_ = embeddDefines(source_);
+    sourceProcessed_ = embeddOutDeclarations(sourceProcessed_);
     includeFileNames_.clear();
     lineNumberResolver_.clear();
     sourceProcessed_ = embeddIncludes(sourceProcessed_, fileName_);
@@ -49,12 +56,27 @@ std::string ShaderObject::embeddDefines(std::string source) {
         std::pair<std::string, std::string> curDefine = shaderDefines_[i];
         result << "#define " << curDefine.first << " " << curDefine.second << "\n";
     }
+    std::cout << result.str() << std::endl;
     std::string curLine;
     std::istringstream shaderSource(source);
     while (std::getline(shaderSource, curLine))
         result << curLine << "\n";
 
     return ShaderManager::getRef().getGlobalGLSLHeader() + result.str();
+}
+
+std::string ShaderObject::embeddOutDeclarations(std::string source) {
+    std::ostringstream result;
+    for (size_t i=0; i<outDeclarations_.size(); i++) {
+        std::string curDeclaration = outDeclarations_[i];
+        result << "out vec4 " << curDeclaration << ";\n";
+    }
+    std::string curLine;
+    std::istringstream shaderSource(source);
+    while (std::getline(shaderSource, curLine))
+        result << curLine << "\n";
+
+    return result.str();
 }
 
 std::string ShaderObject::embeddIncludes(std::string source, std::string fileName) {
@@ -70,6 +92,7 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
             std::string::size_type pathEnd = curLine.find("\"", pathBegin+1);
             std::string includeFileName(curLine, pathBegin+1, pathEnd-pathBegin-1);
 
+            bool includeFileFound = false;
             std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
             for (size_t i=0; i<shaderSearchPaths.size(); i++) {
                 if (fileExists(shaderSearchPaths[i]+"/"+includeFileName)) {
@@ -81,10 +104,12 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
                     std::string includeSource = buffer.str();            
                     if (!includeSource.empty())
                         result << embeddIncludes(includeSource, includeFileName) << "\n";
+                    includeFileFound = true;
                     break;
                 }
             }
-
+            if (!includeFileFound)
+                LogWarn("Include file " << includeFileName << " not found in shader search paths.");
         }
         else
             result << curLine << "\n";
@@ -118,18 +143,18 @@ void ShaderObject::upload() {
     LGL_ERROR;
 }
 
-std::string ShaderObject::getCompileLog() {
+std::string ShaderObject::getShaderInfoLog() {
     GLint maxLogLength;
     glGetShaderiv(id_, GL_INFO_LOG_LENGTH , &maxLogLength);
     LGL_ERROR;
     if (maxLogLength > 1) {
-        GLchar* compileLog = new GLchar[maxLogLength];
-        ivwAssert(compileLog!=0, "could not allocate memory for compiler log");
+        GLchar* shaderInfoLog = new GLchar[maxLogLength];
+        ivwAssert(shaderInfoLog!=0, "could not allocate memory for compiler log");
         GLsizei logLength;
-        glGetShaderInfoLog(id_, maxLogLength, &logLength, compileLog);
-        std::istringstream compileLogStr(compileLog);
-        delete[] compileLog;
-        return compileLogStr.str();
+        glGetShaderInfoLog(id_, maxLogLength, &logLength, shaderInfoLog);
+        std::istringstream shaderInfoLogStr(shaderInfoLog);
+        delete[] shaderInfoLog;
+        return shaderInfoLogStr.str();
     } else return "";
 }
 
@@ -149,11 +174,11 @@ int ShaderObject::getLogLineNumber(const std::string& compileLogLine) {
     return result;
 }
 
-std::string ShaderObject::reformatCompileLog(const std::string compileLog) {
+std::string ShaderObject::reformatShaderInfoLog(const std::string shaderInfoLog) {
     std::ostringstream result;
     std::string curLine;
-    std::istringstream origCompileLog(compileLog);
-    while (std::getline(origCompileLog, curLine)) {
+    std::istringstream origShaderInfoLog(shaderInfoLog);
+    while (std::getline(origShaderInfoLog, curLine)) {
         unsigned int origLineNumber = getLogLineNumber(curLine);
         unsigned int lineNumber = lineNumberResolver_[origLineNumber].second;
         std::string fileName = lineNumberResolver_[origLineNumber].first;
@@ -168,8 +193,8 @@ bool ShaderObject::compile() {
     GLint compiledOk = 0;
     glGetShaderiv(id_, GL_COMPILE_STATUS, &compiledOk);
     if (!compiledOk) {
-        std::string compilerLog = getCompileLog();
-        compilerLog = reformatCompileLog(compilerLog);
+        std::string compilerLog = getShaderInfoLog();
+        compilerLog = reformatShaderInfoLog(compilerLog);
         LogError(compilerLog);
         return false;
     }
@@ -191,6 +216,10 @@ void ShaderObject::removeShaderDefine(std::string name) {
 
 void ShaderObject::clearShaderDefines() {
     shaderDefines_.clear();
+}
+
+void ShaderObject::addOutDeclaration(std::string name) {
+    outDeclarations_.push_back(name);
 }
 
 } // namespace

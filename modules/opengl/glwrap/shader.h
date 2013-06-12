@@ -11,11 +11,12 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API Shader {
 
 public:
-    Shader(std::string fragmentFilename);
-    Shader(std::string vertexFilename, std::string fragmentFilename);
+    Shader(std::string fragmentFilename, bool linkShader=true);
+    Shader(std::string vertexFilename, std::string fragmentFilename, bool linkShader=true);
     virtual ~Shader();
 
     void link();
+    void build();
     void rebuild();
 
     ShaderObject* getVertexShaderObject() { return vertexShaderObject_; }
@@ -43,7 +44,7 @@ private:
     ShaderObject* vertexShaderObject_;
     ShaderObject* fragmentShaderObject_;
 
-    void initialize();
+    void initialize(bool linkShader);
     void deinitialize();
 
     void attachShaderObject(ShaderObject* shaderObject);

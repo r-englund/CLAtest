@@ -43,7 +43,6 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 };
 
-
 /** class OptionPropertyDouble
 * \brief The OptionPropertyDouble is a property holding different options stored with a display name and the double value
 * 
@@ -83,6 +82,11 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };
+
+typedef OptionPropertyDouble DoubleOptionProperty; // deprecated
+typedef OptionPropertyFloat  FloatOptionProperty;  // deprecated
+typedef OptionPropertyInt    IntOptionProperty;    // deprecated
+typedef OptionPropertyString StringOptionProperty; // deprecated
 
 } // namespace
 

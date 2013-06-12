@@ -25,11 +25,30 @@ public:
     virtual void initializeResources();
 
     void bindVolume(const VolumeInport& inport, GLenum volTexUnit);
+    void setVolumeParameters(const VolumeInport& inport, Shader* shader, const std::string samplerID);
 
 protected:
-    std::string programFileName_;
     Shader* raycastPrg_;
+    std::string programFileName_;
 
+    FloatProperty samplingRate_;
+    FloatProperty isoValue_;
+
+    OptionPropertyString classificationMode_;
+    OptionPropertyString gradientComputationMode_;
+    OptionPropertyString shadingMode_;
+    OptionPropertyString compositingMode_;
+
+    FloatVec3Property lightPosition_;
+    FloatVec3Property lightColorAmbient_;
+    FloatVec3Property lightColorDiffuse_;
+    FloatVec3Property lightColorSpecular_;
+    IntProperty lightSpecularExponent_;
+
+    BoolProperty applyLightAttenuation_;
+    FloatVec3Property lightAttenuation_;
+
+    CameraProperty camera_;
 };
 
 } // namespace

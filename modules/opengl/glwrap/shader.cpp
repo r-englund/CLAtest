@@ -4,18 +4,18 @@
 
 namespace inviwo {
 
-Shader::Shader(std::string fragmentFilename) :
+Shader::Shader(std::string fragmentFilename, bool linkShader) :
     vertexFilename_("img_identity.vert"),
     fragmentFilename_(fragmentFilename)
 {
-    initialize();
+    initialize(linkShader);
 }
 
-Shader::Shader(std::string vertexFilename, std::string fragmentFilename) :
+Shader::Shader(std::string vertexFilename, std::string fragmentFilename, bool linkShader) :
     vertexFilename_(vertexFilename),
     fragmentFilename_(fragmentFilename)
 {
-    initialize();
+    initialize(linkShader);
 }
 
 Shader::~Shader() {
@@ -23,14 +23,14 @@ Shader::~Shader() {
 }
 
 
-void Shader::initialize() {
+void Shader::initialize(bool linkShader) {
     id_ = glCreateProgram();
     LGL_ERROR;
     vertexShaderObject_ = new ShaderObject(GL_VERTEX_SHADER , vertexFilename_);
     fragmentShaderObject_ = new ShaderObject(GL_FRAGMENT_SHADER , fragmentFilename_);
     attachShaderObject(vertexShaderObject_);
     attachShaderObject(fragmentShaderObject_);
-    link();
+    if (linkShader) link();
     ShaderManager::getRef().registerShader(this);
 }
 
@@ -59,6 +59,12 @@ void Shader::detachShaderObject(ShaderObject* shaderObject) {
 void Shader::link() {
     glLinkProgram(id_);
     LGL_ERROR;
+}
+
+void Shader::build() {
+    vertexShaderObject_->build();
+    fragmentShaderObject_->build();
+    link();
 }
 
 void Shader::rebuild() {

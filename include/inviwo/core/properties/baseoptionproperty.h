@@ -135,6 +135,8 @@ TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::s
 template<typename T>
 void TemplateOptionProperty<T>::addOption(std::string optionIdentifier, std::string optionDisplayName, T optionValue) {
     options_.push_back(std::make_pair(std::make_pair(optionIdentifier, optionDisplayName), optionValue));
+    // in case we add the first option, we also select it
+    if (options_.size() == 1) setSelectedOption(0);
 }
 
 template<typename T>

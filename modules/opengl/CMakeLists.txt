@@ -15,9 +15,10 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/image/imageglconverter.h
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
-    ${IVW_MODULE_DIR}/opengl/processorgl.h
     ${IVW_MODULE_DIR}/opengl/openglinfo.h
     ${IVW_MODULE_DIR}/opengl/openglmodule.h
+    ${IVW_MODULE_DIR}/opengl/portgroup.h
+    ${IVW_MODULE_DIR}/opengl/processorgl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeprocessorgl.h
@@ -44,9 +45,10 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/image/imageglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
-    ${IVW_MODULE_DIR}/opengl/processorgl.cpp
     ${IVW_MODULE_DIR}/opengl/openglinfo.cpp
     ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
+    ${IVW_MODULE_DIR}/opengl/portgroup.cpp
+    ${IVW_MODULE_DIR}/opengl/processorgl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeprocessorgl.cpp

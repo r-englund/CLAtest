@@ -28,7 +28,6 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
         portSet.clear();
         //get ports that belong to the dependency set portDependencySets[i]
         portSet = getProcessor()->getPortsByDependencySet(portDependencySets[i]);        
-
         //check if current port belong to portSet
         if (std::find(portSet.begin(), portSet.end(), this) != portSet.end()) {
 

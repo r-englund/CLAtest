@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/processors/processor.h>
+#include <modules/opengl/portgroup.h>
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/shader.h>
@@ -21,6 +22,7 @@ public:
     void deactivateCurrentTarget();
 
     void activateAndClearTarget(ImageOutport& outport);
+    void activateAndClearTargets(PortGroup& portGroup);
     void clearCurrentTarget();
 
     void bindColorTexture(const ImageInport& inport, GLenum texUnit);

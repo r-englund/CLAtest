@@ -1,5 +1,6 @@
 #include "simpleraycaster.h"
-#include "modules/opengl/glwrap/textureunit.h"
+#include <modules/opengl/glwrap/textureunit.h>
+
 namespace inviwo {
 
 ProcessorClassName(SimpleRaycaster, "SimpleRaycaster"); 
@@ -7,7 +8,7 @@ ProcessorCategory(SimpleRaycaster, "Ray Caster");
 ProcessorCodeState(SimpleRaycaster, CODE_STATE_EXPERIMENTAL);
 
 SimpleRaycaster::SimpleRaycaster()
-    : ProcessorGL(),
+    : VolumeRaycasterGL("raycasting.frag"),
     volumePort_("volume"),
     entryPort_("entry-points"),
     exitPort_("exit-points"),
@@ -23,54 +24,61 @@ SimpleRaycaster::SimpleRaycaster()
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
 
-    addProperty(samplingRate_);
     addProperty(enableShading_);
     addProperty(lightSourcePos_);
 	addProperty(enableMIP_);
     addProperty(transferFunction_);
 }
 
-SimpleRaycaster::~SimpleRaycaster() {}
-
-void SimpleRaycaster::initialize() {
-    ProcessorGL::initialize();
-    shader_ = new Shader("raycasting.frag");
-}
-
-void SimpleRaycaster::deinitialize() {
-    delete shader_;
-    ProcessorGL::deinitialize();
-}
-
 void SimpleRaycaster::process() {
     ivwAssert(entryPort_.getData()!=0, "Entry port empty.");
     ivwAssert(exitPort_.getData()!=0, "Exit port empty.");  
+    
+    TextureUnit entryUnit, exitUnit;
+    bindColorTexture(entryPort_, entryUnit.getEnum());
+    bindColorTexture(exitPort_, exitUnit.getEnum());
 
-    const Volume* volume = volumePort_.getData();
+    TextureUnit volUnit;
+
+	const Volume* volume = volumePort_.getData();
     const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
     uvec3 volumeDim = volumeGL->getDimensions();
-    bindColorTexture(entryPort_, GL_TEXTURE0);
-    bindColorTexture(exitPort_, GL_TEXTURE1);
-    volumeGL->bindTexture(GL_TEXTURE2);
+    volumeGL->bindTexture(volUnit.getEnum());
+
+    TextureUnit transFuncUnit;
     const ImageGL* transferFunctionGL = transferFunction_.get().getData()->getRepresentation<ImageGL>();
-    transferFunctionGL->bindColorTexture(GL_TEXTURE3);
+    transferFunctionGL->bindColorTexture(transFuncUnit.getEnum());
+
+    activateAndClearTarget(outport_);
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     uvec2 outportDim = outImageGL->getDimension();
-    activateTarget(outport_);
-    shader_->activate();
-    shader_->setUniform("entryTex_", 0);
-    shader_->setUniform("exitTex_", 1);
-    shader_->setUniform("volume_", 2);
-    shader_->setUniform("transferFunction_", 3);
-    shader_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
-    shader_->setUniform("samplingRate_", samplingRate_.get());
-    shader_->setUniform("enableShading_", enableShading_.get());
-    shader_->setUniform("lightSourcePos_", lightSourcePos_.get());
-	shader_->setUniform("enableMIP_", enableMIP_.get());
-    shader_->setUniform("volumeDimension_", vec3(volumeDim.x, volumeDim.y, volumeDim.z));
+    
+    raycastPrg_->activate();
+    setGlobalShaderParameters(raycastPrg_);
+    raycastPrg_->setUniform("entryTex_", entryUnit.getUnitNumber());
+    setTextureParameters(entryPort_, raycastPrg_, "entryParameters_");
+    raycastPrg_->setUniform("exitTex_", exitUnit.getUnitNumber());
+    setTextureParameters(exitPort_, raycastPrg_, "exitParameters_");
+
+    raycastPrg_->setUniform("volume_", volUnit.getUnitNumber());
+    setVolumeParameters(volumePort_, raycastPrg_, "volumeParameters_");
+
+    raycastPrg_->setUniform("transferFunction_", transFuncUnit.getUnitNumber());
+
+    std::cout << "explicit: " << 1.f/outportDim[0] << ", "<< 1.f/outportDim[1] << " (" << outportDim.x << "," << outportDim.y << ")" << std::endl;
+    raycastPrg_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
+    raycastPrg_->setUniform("samplingRate_", samplingRate_.get());
+
+    raycastPrg_->setUniform("enableShading_", enableShading_.get());
+    raycastPrg_->setUniform("lightSourcePos_", lightSourcePos_.get());
+	raycastPrg_->setUniform("enableMIP_", enableMIP_.get());
+    raycastPrg_->setUniform("volumeDimension_", vec3(volumeDim.x, volumeDim.y, volumeDim.z));
+    
+
     renderImagePlaneQuad();
-    shader_->deactivate();
+    
+    raycastPrg_->deactivate();
     deactivateCurrentTarget();
     unbindColorTexture(entryPort_);
     unbindColorTexture(exitPort_);

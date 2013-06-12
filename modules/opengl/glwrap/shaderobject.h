@@ -22,22 +22,27 @@ public:
     void preprocess();
     void upload();
     bool compile();
-    std::string getCompileLog();
+    std::string getShaderInfoLog();
+
+    bool build();
     bool rebuild();
 
     void addShaderDefine(std::string name, std::string value="");
     void removeShaderDefine(std::string name);
     void clearShaderDefines();
 
+    void addOutDeclaration(std::string name);
+
 private:
     bool initialize();
     void deinitialize();
 
     std::string embeddDefines(std::string source);
+    std::string embeddOutDeclarations(std::string source);
     std::string embeddIncludes(std::string source, std::string fileName);
 
     int getLogLineNumber(const std::string& compileLogLine);
-    std::string reformatCompileLog(const std::string compileLog);
+    std::string reformatShaderInfoLog(const std::string compileLog);
 
     GLenum shaderType_;
     std::string fileName_;
@@ -48,7 +53,9 @@ private:
     std::string source_;
     std::string sourceProcessed_;
 
+    std::vector<std::string> outDeclarations_;
     std::vector<std::pair<std::string, std::string> > shaderDefines_;
+
     std::vector<std::pair<std::string, unsigned int> > lineNumberResolver_;
 };
 
