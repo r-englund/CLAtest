@@ -40,12 +40,10 @@ private:
     int zoom_;
 	float width;
 	float height;
-	vec4* data_;
     static const std::string logSource_;
     QGraphicsView*	editorview_; ///< View that contains the editor
     QGraphicsView* paintview_; ///< View that contains the scene for the painted transferfunction
     QGraphicsScene* paintscene_; ///< Scene where the transferfunction is painted
-    TransferFunction* transferFunction_; ///< The TransferFunction property
     TransferFunctionProperty* property_; ///< Pointer to property, for get and invalidation in the widget
     TransferFunctionEditor* editor_; ///< TransferFunctionEditor inherited from QGraphicsScene
     std::vector<TransferFunctionEditorControlPoint*> points_; ///< Control points used for calculating transferfunction-values

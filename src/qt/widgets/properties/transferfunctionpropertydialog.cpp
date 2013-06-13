@@ -7,16 +7,13 @@ namespace inviwo {
 		width  = 255.0f;
 		height = 100.0f;
 
-		transferFunction_ = &property_->get();
-		data_ = static_cast<vec4*>(transferFunction_->getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
+		//static_cast<vec4*>(transferFunction_->getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
 		generateWidget();
 		updateFromProperty();
-
-		
 	}
 
 	TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog(){
-		LogInfo("Dialog destructor");
+		//LogInfo("Dialog destructor");
 
 		delete editor_;
 		delete gradient_;
@@ -33,11 +30,10 @@ namespace inviwo {
 		QVBoxLayout* vLayout = new QVBoxLayout();
 		setLayout(vLayout);
 
-		editor_ = new TransferFunctionEditor(this, transferFunction_, &points_);
+		editor_ = new TransferFunctionEditor(this, &property_->get(), &points_);
 		editor_->setSceneRect(0,0,width,height);
 		editor_->setBackgroundBrush(Qt::transparent);
 
-		editorview_ = new QGraphicsView(this);
 		editorview_ = new QGraphicsView();
 		editorview_->setFixedSize(width + 2, height + 2);
 		editorview_->scale(1, -1);
@@ -45,6 +41,9 @@ namespace inviwo {
 		editorview_->setDragMode(QGraphicsView::RubberBandDrag);
 		editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		editorview_->viewport()->installEventFilter(this);
+
+		//editorview_->fitInView(editor_->sceneRect(), Qt::KeepAspectRatio);
 		
 		paintscene_ = new QGraphicsScene(this);
 		paintview_ = new QGraphicsView(this);
@@ -58,8 +57,6 @@ namespace inviwo {
 
 		gradient_ = new QLinearGradient(-128.0f, 0.0f, 127.0f, 0.0f);
 		stops_ = new QVector<QGradientStop>();
-
-		editorview_->viewport()->installEventFilter(this);
 	}
 
 
@@ -74,9 +71,9 @@ namespace inviwo {
 		}
 		editor_->update();
 		updateFromProperty();
-		transferFunction_->calcTransferValues();
-		property_->invalidate();
-		emit modified();
+		(&property_->get())->calcTransferValues();
+
+		//emit modified();
 	}
 
 	void TransferFunctionPropertyDialog::updateFromProperty(){
@@ -84,9 +81,9 @@ namespace inviwo {
 		stops_->clear();
 		if (points_.size() > 0){
 			for (int i = 0; i < (int)points_.size(); i++){
-				const vec4* col = points_[i]->getPoint()->getRgba();
+				//const vec4* col = points_[i]->getPoint()->getRgba();
 				temp->first = points_[i]->getPoint()->getPos()->x / 255.01f;
-				temp->second = QColor::fromRgbF(col->r, col->g, col->b, 1.0f);
+				temp->second = QColor::fromRgbF(points_[i]->getPoint()->getRgba()->r, points_[i]->getPoint()->getRgba()->g, points_[i]->getPoint()->getRgba()->b, 1.0f);
 				stops_->push_front(*temp);
 			}
 			gradient_->setStops(*stops_);
@@ -94,8 +91,13 @@ namespace inviwo {
 		}
 		delete temp;
 		this->update();
+
 		property_->invalidate();
-		property_->getOwner()->invalidate(property_->getOwner()->getInvalidationLevel());
+		property_->customSet();
+		//property_->getOwner()->invalidate(property_->getOwner()->getInvalidationLevel());
+		//property_->getOwner()->invalidate(property_->getInvalidationLevel());
+
+		//emit modified();
 	}
 
 
@@ -116,17 +118,7 @@ namespace inviwo {
 			}
 
 			QPointF focus = editorview_->mapToScene(pos);
-			//focus.setX(editorview_->mapToScene(editorview_->viewport()->rect().center()).x());
-			//focus.setY(editorview_->mapToScene(editorview_->viewport()->rect().center()).y());
-			//focus.setX(editorview_->mapToScene(pos).x());
-			//focus.setY(editorview_->mapToScene(pos).y());
 			editorview_->centerOn(focus);
-
-			ss << focus.x();
-			ss << "   ";
-			ss << focus.y();
-			ss << "\n";
-			LogInfo(ss.str());
 
 			e->accept();
 			this->update();

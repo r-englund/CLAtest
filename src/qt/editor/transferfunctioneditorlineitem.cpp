@@ -19,9 +19,7 @@ namespace inviwo {
 
     TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(){};
 
-    TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem(){
-		LogInfo("Line Destructor");
-	};
+    TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem(){};
 
 
     void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {

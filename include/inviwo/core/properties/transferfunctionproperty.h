@@ -14,6 +14,8 @@ namespace inviwo {
                                  PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
+
+		void customSet();
     private:
     };
 } // namespace

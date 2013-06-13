@@ -65,7 +65,7 @@ namespace inviwo {
         *      Runs CalcTransferValues to update the TransferFunction datamember Image
         */
 		void addPoint(QGraphicsSceneMouseEvent *e);
-		//void removePoint(QGraphicsSceneMouseEvent *e);
+		void removePoint(QGraphicsSceneMouseEvent *e);
 		std::vector<TransferFunctionEditorControlPoint*>::iterator removePoint(TransferFunctionEditorControlPoint* p);
 		void sortLines();
 
@@ -74,8 +74,7 @@ namespace inviwo {
         std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
         TransferFunction* transferFunction_; ///< Pointer to widget's member variable
         PropertyWidgetQt *parent_; ///< Pointer to widget so it can be updated from the editor
-
-		QPointF mouseDownPos_;
+		QPointF mouseDownPos_; ///< Stores the mouseDown position to distinguish between mouse-click and mouse-drag
     };
 
 } // namespace

@@ -10,7 +10,7 @@ namespace inviwo {
 	}
 
 	TransferFunctionEditor::~TransferFunctionEditor(){
-		LogInfo("Editor destructor");
+		//LogInfo("Editor destructor");
 
 		for (std::vector<TransferFunctionEditorControlPoint*>::iterator p_itr = points_->begin(); p_itr != points_->end(); p_itr++){
 			delete (*p_itr);
@@ -41,7 +41,6 @@ namespace inviwo {
 				(*iter)->setSelected(false);
 			}
 		}
-		parent_->updateFromProperty();
 	}
 
 	void TransferFunctionEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
@@ -123,7 +122,6 @@ namespace inviwo {
 		sortLines();
 		parent_->updateFromProperty();
 		this->update();
-
 		return iter;
 	}
 

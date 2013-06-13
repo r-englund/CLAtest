@@ -9,8 +9,6 @@ TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunct
 
 
 TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt(){
-	LogInfo("Widget destructor");
-
 	delete btnOpenDialog_;
 	delete transferFunctionDialog_;
 }
@@ -33,7 +31,7 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty(){}
 
-void TransferFunctionPropertyWidgetQt::setPropertyValue() {}
+void TransferFunctionPropertyWidgetQt::setPropertyValue(){}
 
 void TransferFunctionPropertyWidgetQt::openTransferFunctionDialog() {
 	transferFunctionDialog_->show();

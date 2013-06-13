@@ -10,4 +10,11 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {}
 
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {}
 
+void TransferFunctionProperty::customSet(){
+	onChangeCallback_.invoke();
+	//FIXME: if set() is called before addProperty(), getOwner() will be 0
+	getOwner()->invalidate(getInvalidationLevel());
+	updatePropertyWidgets();
+}
+
 } // namespace

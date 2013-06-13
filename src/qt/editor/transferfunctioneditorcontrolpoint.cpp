@@ -32,7 +32,6 @@ namespace inviwo {
     TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(){};
 
     TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint(){
-		LogInfo("ControlPoint Destructor");
 		delete datapoint_;
 	};
 
