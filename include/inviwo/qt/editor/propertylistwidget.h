@@ -5,6 +5,7 @@
 #include <inviwo/core/processors/processor.h>
 
 #include <inviwo/qt/editor/inviwodockwidget.h>
+#include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <QScrollArea>

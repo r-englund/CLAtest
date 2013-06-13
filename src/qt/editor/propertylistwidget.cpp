@@ -91,12 +91,35 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
 
     vLayout->addWidget(processorLabel);
     std::vector<Property*> properties = processor->getProperties();
+    std::vector<Property*> addedProperties;
     for (size_t i=0; i<properties.size(); i++) {
         Property* curProperty = properties[i];
-        PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
-        vLayout->addWidget(propertyWidget);
-        curProperty->registerPropertyWidget(propertyWidget);
-        connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
+        //Check if the property is already added 
+        if(std::find(addedProperties.begin(),addedProperties.end(),curProperty) != addedProperties.end()) {
+            continue;
+        }
+        //Add to group box if one is assigned to the property
+        else if (curProperty->getGroupID()!="") {
+            CollapsiveGroupBoxWidgetQt* group = new CollapsiveGroupBoxWidgetQt(curProperty->getGroupID());
+            //Add all the properties with the same group assigned
+            for (size_t k=0; k<properties.size(); k++){
+                Property* tmpProperty = properties[k];
+                if (curProperty->getGroupID() == tmpProperty->getGroupID()) {
+                        group->addProperty(tmpProperty);
+                        addedProperties.push_back(tmpProperty);
+                }
+            }
+            group->generatePropertyWidgets();
+            vLayout->addWidget(group);
+        }
+        else {
+            PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
+            vLayout->addWidget(propertyWidget);
+            curProperty->registerPropertyWidget(propertyWidget);
+            connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
+            addedProperties.push_back(curProperty);
+        }
+
     } 
     vLayout->addStretch(1);
     propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));

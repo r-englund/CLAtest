@@ -4,7 +4,8 @@
 
 namespace inviwo {
 
-CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt() {
+CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt(std::string name) {
+    name_=name;
     generateWidget();
     updateFromProperty();
 }
@@ -75,6 +76,14 @@ void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
         vLayout_->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
     }
+}
+
+std::string CollapsiveGroupBoxWidgetQt::getName(){
+    return name_;
+}
+
+std::vector<Property*> CollapsiveGroupBoxWidgetQt::getProperties() {
+    return properties_;
 }
 
 } // namespace

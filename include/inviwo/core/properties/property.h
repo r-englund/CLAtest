@@ -55,6 +55,8 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 
+    bool operator== (Property* prop);
+
     template <typename T>
     void onChange(T* o, void (T::*m)()) {
         onChangeCallback_.addMemberFunction(o,m);

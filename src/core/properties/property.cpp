@@ -94,4 +94,11 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("displayName", displayName_, true);
 }
 
+bool Property::operator==( Property* prop){
+    if (this->getIdentifier()==prop->getIdentifier()) {
+        return true;
+    }
+    return false;
+}
+
 } // namespace
