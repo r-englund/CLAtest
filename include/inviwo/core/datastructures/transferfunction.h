@@ -24,6 +24,7 @@ namespace inviwo {
         int getSize();
         TransferFunctionDataPoint* getPoint(int i);
 
+		void addPoint(vec2 pos, vec4 rgba);
         void addPoint(vec2* pos, vec4* rgba);
         void addPoint(TransferFunctionDataPoint* newPoint);
         void removePoint(TransferFunctionDataPoint* newPoint);

@@ -6,7 +6,8 @@ namespace inviwo {
         data_->addRepresentation(new ImageRAMVec4float32 (uvec2(256,1)));
     }
 
-    TransferFunction::~TransferFunction(){}
+    TransferFunction::~TransferFunction(){
+	}
 
     Image* TransferFunction::getData() const{
         return const_cast<Image*>(data_);
@@ -19,9 +20,13 @@ namespace inviwo {
         return dataPoints_[i];
     }
 
-    void TransferFunction::addPoint(vec2* pos, vec4* rgba){
-        this->addPoint(new TransferFunctionDataPoint(pos, rgba));
-    }
+	void TransferFunction::addPoint(vec2* pos, vec4* rgba){
+		this->addPoint(new TransferFunctionDataPoint(pos, rgba));
+	}
+
+	void TransferFunction::addPoint(vec2 pos, vec4 rgba){
+		this->addPoint(new TransferFunctionDataPoint(pos, rgba));
+	}
 
     void TransferFunction::addPoint(TransferFunctionDataPoint* newPoint){
         std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin();
@@ -69,7 +74,12 @@ namespace inviwo {
         const vec4* startValues;
         const vec4* stopValues;
 
-        if ((int)dataPoints_.size() == 0){} 
+        if ((int)dataPoints_.size() == 0){
+			for (int i = 0; i < 256 ; i++){
+				dataArray[i] = vec4(i/255.0f * 100.0f, i/255.0f * 100.0f, i/255.0f * 100.0f, 1.0f);
+			}
+		}
+
         else if ((int)dataPoints_.size () == 1){
             for (int i = 0; i < 256 ; i++){
                 dataArray[i] = *dataPoints_[0]->getRgba();
@@ -100,6 +110,7 @@ namespace inviwo {
                 dataArray[i] = *dataPoints_.back()->getRgba();
             }
         }
+
     }
 
 

@@ -7,11 +7,20 @@ namespace inviwo {
 		parent_(parent),
 		points_(points)
 	{
+		//if the editor is loaded from a saved state this adds the graphicsitems to the editor
+		for (int i = 0; i < transferFunction_->getSize(); i++){
+			points_->push_back(new TransferFunctionEditorControlPoint(transferFunction_->getPoint(i)));
+			addItem(points_->back());
+			if (i > 0){
+				lines_.push_back(new TransferFunctionEditorLineItem(
+					transferFunction_->getPoint(i - 1), 
+					transferFunction_->getPoint(i)));
+				addItem(lines_.back());
+			}
+		}
 	}
 
 	TransferFunctionEditor::~TransferFunctionEditor(){
-		//LogInfo("Editor destructor");
-
 		for (std::vector<TransferFunctionEditorControlPoint*>::iterator p_itr = points_->begin(); p_itr != points_->end(); p_itr++){
 			delete (*p_itr);
 		}

@@ -17,7 +17,9 @@ namespace inviwo {
     public:
 		TransferFunctionDataPoint();
 		TransferFunctionDataPoint(vec2* pos);
+		TransferFunctionDataPoint(vec2 pos, vec4 rgba);
 		TransferFunctionDataPoint(vec2* pos, vec4* rgba);
+
         virtual ~TransferFunctionDataPoint();
 
         const vec2* getPos();

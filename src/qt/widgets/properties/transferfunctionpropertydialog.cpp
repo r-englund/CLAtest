@@ -13,8 +13,6 @@ namespace inviwo {
 	}
 
 	TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog(){
-		//LogInfo("Dialog destructor");
-
 		delete editor_;
 		delete gradient_;
 		stops_->clear();
@@ -38,11 +36,10 @@ namespace inviwo {
 		editorview_->setFixedSize(width + 2, height + 2);
 		editorview_->scale(1, -1);
 		editorview_->setScene(editor_);
+		editorview_->viewport()->installEventFilter(this);
 		editorview_->setDragMode(QGraphicsView::RubberBandDrag);
 		editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		editorview_->viewport()->installEventFilter(this);
-
 		//editorview_->fitInView(editor_->sceneRect(), Qt::KeepAspectRatio);
 		
 		paintscene_ = new QGraphicsScene(this);
@@ -72,8 +69,6 @@ namespace inviwo {
 		editor_->update();
 		updateFromProperty();
 		(&property_->get())->calcTransferValues();
-
-		//emit modified();
 	}
 
 	void TransferFunctionPropertyDialog::updateFromProperty(){
@@ -81,7 +76,6 @@ namespace inviwo {
 		stops_->clear();
 		if (points_.size() > 0){
 			for (int i = 0; i < (int)points_.size(); i++){
-				//const vec4* col = points_[i]->getPoint()->getRgba();
 				temp->first = points_[i]->getPoint()->getPos()->x / 255.01f;
 				temp->second = QColor::fromRgbF(points_[i]->getPoint()->getRgba()->r, points_[i]->getPoint()->getRgba()->g, points_[i]->getPoint()->getRgba()->b, 1.0f);
 				stops_->push_front(*temp);
@@ -91,13 +85,8 @@ namespace inviwo {
 		}
 		delete temp;
 		this->update();
-
 		property_->invalidate();
 		property_->customSet();
-		//property_->getOwner()->invalidate(property_->getOwner()->getInvalidationLevel());
-		//property_->getOwner()->invalidate(property_->getInvalidationLevel());
-
-		//emit modified();
 	}
 
 
