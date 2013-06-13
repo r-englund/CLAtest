@@ -240,25 +240,21 @@ public:
 namespace detail
 {
 #if defined(__CL_ENABLE_EXCEPTIONS)
-    inline cl_int errHandler (
-        cl_int err,
-        const char * errStr = NULL); // Let inviwo handle errors (cl.cpp)
-//static inline cl_int errHandler (
-//    cl_int err,
-//    const char * errStr = NULL)
-//{
-//    if (err != CL_SUCCESS) {
-//        throw Error(err, errStr);
-//    }
-//    return err;
-//}
+static inline cl_int errHandler (
+    cl_int err,
+    const char * errStr = NULL)
+{
+    if (err != CL_SUCCESS) {
+        throw Error(err, errStr);
+    }
+    return err;
+}
 #else
-static inline cl_int errHandler (cl_int err, const char * errStr = NULL); // Let inviwo handle errors (cl.cpp)
-//static inline cl_int errHandler (cl_int err, const char * errStr = NULL)
-//{
-//    (void) errStr; // suppress unused variable warning
-//    return err;
-//}
+static inline cl_int errHandler (cl_int err, const char * errStr = NULL)
+{
+    (void) errStr; // suppress unused variable warning
+    return err;
+}
 #endif // __CL_ENABLE_EXCEPTIONS
 }
 
