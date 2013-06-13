@@ -14,11 +14,12 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
 
     btnCollapse_ = new QPushButton("-");
     btnCollapse_->setFixedSize(15,15);
+    btnCollapse_->setStyleSheet("min-height: 10px; min-width: 10px;");
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     QHBoxLayout* boxLayout = new QHBoxLayout();
     QGridLayout* gridLayout = new QGridLayout();
-
+    
     groupBox_ = new QGroupBox();
     groupBox_->setFlat(true);
 
@@ -38,6 +39,7 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setSpacing(0);
     gridLayout->addWidget(btnCollapse_,1,1,1,1,Qt::AlignLeft);
+    gridLayout->addWidget(new QLabel(QString::fromStdString(name_)),1,2,1,1,Qt::AlignLeft);
     gridLayout->addWidget(groupBox_,1,2,4,4,Qt::AlignTop);
 
     frame->setLayout(gridLayout);
@@ -60,7 +62,7 @@ void CollapsiveGroupBoxWidgetQt::show() {
 
 void CollapsiveGroupBoxWidgetQt::hide() {
     groupBox_->hide();
-    btnCollapse_->setText("-");
+    btnCollapse_->setText("+");
     connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
 }
 
@@ -69,6 +71,7 @@ void CollapsiveGroupBoxWidgetQt::addProperty( Property* tmpProperty ) {
 }
 
 void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
+    vLayout_->addWidget(new QLabel(QString::fromStdString(name_)));
     PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
     for (size_t i=0; i<properties_.size(); i++) {
         Property* curProperty = properties_[i];
