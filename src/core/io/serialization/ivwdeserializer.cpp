@@ -191,14 +191,62 @@ void IvwDeserializer::deserialize(const std::string &key, dvec4 &data) {
 }
 
 void IvwDeserializer::deserialize(const std::string &key, mat2 &data) {
-    
+    TxElement* keyNode = new TxElement(key);
+    try {
+        keyNode = rootElement_->FirstChildElement(key);
+        keyNode->FirstChildElement();
+    } catch (TxException&) {
+        return;
+    }
+
+    NodeSwitch tempNodeSwitch(*this, keyNode);
+
+    vec2 rowVec;
+    for (size_t i=0; i<2; i++) {
+        std::stringstream key;
+        key << "row" << i;        
+        deserializeVector(key.str(), rowVec);
+        data[i][0] = rowVec[0]; data[i][1] = rowVec[1];
+    }    
 }
 void IvwDeserializer::deserialize(const std::string &key, mat3 &data) {
-    
+    TxElement* keyNode = new TxElement(key);
+    try {
+        keyNode = rootElement_->FirstChildElement(key);
+        keyNode->FirstChildElement();
+    } catch (TxException&) {
+        return;
+    }
+
+    NodeSwitch tempNodeSwitch(*this, keyNode);
+
+    vec3 rowVec;
+    for (size_t i=0; i<3; i++) {
+        std::stringstream key;
+        key << "row" << i;        
+        deserializeVector(key.str(), rowVec);
+        data[i][0] = rowVec[0]; data[i][1] = rowVec[1]; data[i][2] = rowVec[2];
+    }   
 }
 
 void IvwDeserializer::deserialize(const std::string &key, mat4 &data) {
-    
+    TxElement* keyNode = new TxElement(key);
+    try {
+        keyNode = rootElement_->FirstChildElement(key);
+        keyNode->FirstChildElement();
+    } catch (TxException&) {
+        return;
+    }
+
+    NodeSwitch tempNodeSwitch(*this, keyNode);
+
+    vec4 rowVec;
+    for (size_t i=0; i<4; i++) {
+        std::stringstream key;
+        key << "row" << i;        
+        deserializeVector(key.str(), rowVec);
+        data[i][0] = rowVec[0]; data[i][1] = rowVec[1]; data[i][2] = rowVec[2]; data[i][3] = rowVec[3];
+    }     
 }
 
 void IvwDeserializer::readFile() {

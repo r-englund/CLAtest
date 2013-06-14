@@ -173,40 +173,43 @@ void IvwSerializer::serialize(const std::string &key, const dvec4 &data) {
 
 void IvwSerializer::serialize(const std::string &key, const mat2 &data) {
     vec2 rowVec;
+    TxElement* newNode = new TxElement(key);
+    rootElement_->LinkEndChild(newNode);
+    NodeSwitch tempNodeSwitch(*this, newNode);
 
-    rowVec = vec2(data[0][0], data[0][1]);
-    serializeVector(key, rowVec);
-
-    rowVec = vec2(data[1][0], data[1][1]);
-    serializeVector(key, rowVec);
+    for (size_t i=0; i<2; i++) {
+        std::stringstream key;
+        key << "row" << i;
+        rowVec = vec2(data[i][0], data[i][1]);
+        serializeVector(key.str(), rowVec);
+    }
 }
 void IvwSerializer::serialize(const std::string &key, const mat3 &data) {
     vec3 rowVec;
+    TxElement* newNode = new TxElement(key);
+    rootElement_->LinkEndChild(newNode);
+    NodeSwitch tempNodeSwitch(*this, newNode);
 
-    rowVec = vec3(data[0][0], data[0][1], data[0][2]);
-    serializeVector(key, rowVec);
-
-    rowVec = vec3(data[1][0], data[1][1], data[1][2]);
-    serializeVector(key, rowVec);
-
-    rowVec = vec3(data[2][0], data[2][1], data[2][2]);
-    serializeVector(key, rowVec);
+    for (size_t i=0; i<3; i++) {
+        std::stringstream key;
+        key << "row" << i;
+        rowVec = vec3(data[i][0], data[i][1], data[i][2]);
+        serializeVector(key.str(), rowVec);
+    }
 }
 
 void IvwSerializer::serialize(const std::string &key, const mat4 &data) {
     vec4 rowVec;
+    TxElement* newNode = new TxElement(key);
+    rootElement_->LinkEndChild(newNode);
+    NodeSwitch tempNodeSwitch(*this, newNode);
 
-    rowVec = vec4(data[0][0], data[0][1], data[0][2], data[0][3]);
-    serializeVector(key, rowVec);
-
-    rowVec = vec4(data[1][0], data[1][1], data[1][2], data[1][3]);
-    serializeVector(key, rowVec);
-
-    rowVec = vec4(data[2][0], data[2][1], data[2][2], data[2][3]);
-    serializeVector(key, rowVec);
-
-    rowVec = vec4(data[3][0], data[3][1], data[3][2], data[3][3]);
-    serializeVector(key, rowVec);
+    for (size_t i=0; i<4; i++) {
+        std::stringstream key;
+        key << "row" << i;
+        rowVec = vec4(data[i][0], data[i][1], data[i][2], data[i][3]);
+        serializeVector(key.str(), rowVec);
+    }    
 }
 
 void IvwSerializer::writeFile() {
