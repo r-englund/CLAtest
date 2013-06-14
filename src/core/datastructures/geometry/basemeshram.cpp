@@ -1,4 +1,4 @@
-#include <inviwo/core/datastructures/geometry/trianglemeshram.h>
+#include <inviwo/core/datastructures/geometry/basemeshram.h>
 
 namespace inviwo {
 

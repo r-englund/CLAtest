@@ -1,5 +1,5 @@
-#ifndef IVW_TRIANGLEMESHRAM_H
-#define IVW_TRIANGLEMESHRAM_H
+#ifndef IVW_BASEMESHRAM_H
+#define IVW_BASEMESHRAM_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/geometry/meshram.h>
@@ -30,4 +30,4 @@ protected:
 
 } // namespace
 
-#endif // IVW_TRIANGLEMESHRAM_H
+#endif // IVW_BASEMESHRAM_H
