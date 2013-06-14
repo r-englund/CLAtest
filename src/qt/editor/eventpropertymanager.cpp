@@ -28,7 +28,7 @@ void EventPropertyManager::setEventPropertyMap(std::map<std::string, std::vector
 }
 
 std::vector<EventProperty*> EventPropertyManager::getEventPropertiesFromMap() {
-	std::map<std::string, std::vector<EventProperty*>>::iterator it;
+	std::map<std::string, std::vector<EventProperty*> >::iterator it;
 	it = eventPropertyMap_.find(activeProcessor_);
 	return it->second;
 }
