@@ -20,6 +20,7 @@ namespace inviwo {
         }
 
         DataRepresentation* createFrom(const DataRepresentation* source);
+        void update(const DataRepresentation* source, DataRepresentation* destination);
     };
 
 } // namespace

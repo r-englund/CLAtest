@@ -17,4 +17,12 @@ DataRepresentation* VolumeRAM2GLConverter::createFrom(const DataRepresentation* 
     return NULL;
 }
 
+void VolumeRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const VolumeRAM* volumeSrc = dynamic_cast<const VolumeRAM*>(source);
+    VolumeGL* volumeDst = dynamic_cast<VolumeGL*>(destination);
+    if(volumeSrc && volumeDst) {
+        volumeDst->upload(volumeSrc->getData());
+    }
+}
+
 } // namespace

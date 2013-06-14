@@ -24,6 +24,7 @@ namespace inviwo {
         }
 
         DataRepresentation* createFrom(const DataRepresentation* source);
+        void update(const DataRepresentation* source, DataRepresentation* destination);
     };
 
     class IVW_MODULE_OPENCL_API ImageDisk2CLConverter : public RepresentationConverterPackage<ImageCL> {
@@ -50,6 +51,7 @@ namespace inviwo {
         }
 
         DataRepresentation* createFrom(const DataRepresentation* source);
+        void update(const DataRepresentation* source, DataRepresentation* destination);
     };
 
     class IVW_MODULE_OPENCL_API ImageGL2CLConverter : public RepresentationConverterPackage<ImageCL> {

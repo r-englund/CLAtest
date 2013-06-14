@@ -42,6 +42,14 @@ DataRepresentation* ImageRAM2CLConverter::createFrom(const DataRepresentation* s
     }        
     return destination;
 }
+void ImageRAM2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const ImageRAM* imageSrc = dynamic_cast<const ImageRAM*>(source);
+    ImageCL* imageDst = dynamic_cast<ImageCL*>(destination);
+    if(imageSrc && imageDst) {
+        imageDst->upload(imageSrc->getData());
+    }
+
+}
 
 ImageCL2RAMConverter::ImageCL2RAMConverter()
     : RepresentationConverterType<ImageRAM>()
@@ -65,6 +73,15 @@ DataRepresentation* ImageCL2RAMConverter::createFrom(const DataRepresentation* s
         }
     }        
     return destination;
+}
+
+void ImageCL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const ImageCL* imageSrc = dynamic_cast<const ImageCL*>(source);
+    ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
+    if(imageSrc && imageDst) {
+        imageSrc->download(imageDst->getData());
+    }
+
 }
 
 } // namespace

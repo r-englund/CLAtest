@@ -48,6 +48,7 @@ public:
         return true;
     }
     DataRepresentation* createFrom(const DataRepresentation* source);
+    void update(const DataRepresentation* source, DataRepresentation* destination);
 };
 
 } // namespace

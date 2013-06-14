@@ -50,8 +50,7 @@ void VolumeGL::initialize(const void* texels) {
         //volumeTexture_->loadTexture(IVW_DIR+"data/volumes/aneurysm.raw", dimensions_=ivec3(256,256,256));
     }
     else {
-        volumeTexture_->bind();
-        volumeTexture_->upload(texels);
+        upload(texels);
     }
 
     VolumeGL::initialize();
@@ -93,6 +92,17 @@ void VolumeGL::bindTexture(GLenum texUnit) const{
 
 void VolumeGL::unbindTexture() const{
     volumeTexture_->unbind();
+}
+
+void VolumeGL::upload( const void* data )
+{
+    volumeTexture_->upload(data);
+}
+
+void VolumeGL::download( void* data ) const
+{
+    volumeTexture_->download(data);
+
 }
 
 } // namespace

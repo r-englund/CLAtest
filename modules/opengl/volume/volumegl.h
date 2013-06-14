@@ -27,6 +27,9 @@ public:
     virtual void bindTexture(GLenum texUnit) const;
     virtual void unbindTexture() const;
 
+    void upload(const void* data);
+    void download(void* data) const;
+
 protected:
     GLint format_;
     GLint internalFormat_;

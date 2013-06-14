@@ -85,6 +85,14 @@ DataRepresentation* MeshRAM2GLConverter::createFrom(const DataRepresentation* so
     }
     return NULL;
 }
+void MeshRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const MeshRAM* meshSrc = dynamic_cast<const MeshRAM*>(source);
+    MeshGL* meshDst = dynamic_cast<MeshGL*>(destination);
+    if(meshSrc && meshDst) {
+        // FIXME: Implement update operation
+    }
+
+}
 
 } // namespace
 

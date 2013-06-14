@@ -18,6 +18,14 @@ namespace inviwo {
         }        
         return destination;
     }
+    void VolumeRAM2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+        const VolumeRAM* volumeSrc = dynamic_cast<const VolumeRAM*>(source);
+        VolumeCL* volumeDst = dynamic_cast<VolumeCL*>(destination);
+        if(volumeSrc && volumeDst) {
+            volumeDst->upload(volumeSrc->getData());
+        }
+
+    }
 
     VolumeCL2RAMConverter::VolumeCL2RAMConverter()
         : RepresentationConverterType<VolumeRAM>()
@@ -39,6 +47,14 @@ namespace inviwo {
             }
         }        
         return destination;
+    }
+    void VolumeCL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+        const VolumeCL* volumeSrc = dynamic_cast<const VolumeCL*>(source);
+        VolumeRAM* volumeDst = dynamic_cast<VolumeRAM*>(destination);
+        if(volumeSrc && volumeDst) {
+            volumeSrc->download(volumeDst->getData());
+        }
+
     }
 
 } // namespace

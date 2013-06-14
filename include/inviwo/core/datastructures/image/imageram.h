@@ -23,6 +23,10 @@ public:
     void copyAndResizeImage(DataRepresentation*){}
     virtual void* getData() {return data_;};
     virtual const void* getData() const {return data_;};
+    // Takes ownership of data pointer
+    void setData(void* data) {
+        delete[] data_; data_ = data;
+    }
 protected:
     void* data_;
 };

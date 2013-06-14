@@ -35,4 +35,10 @@ void Texture3D::upload(const void* data) {
     LGL_ERROR;
 }
 
+void Texture3D::download( void* data ) const
+{
+    bind();
+    glGetTexImage(GL_TEXTURE_3D, 0, format_, dataType_, data);
+}
+
 } // namespace

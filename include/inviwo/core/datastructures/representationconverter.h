@@ -14,14 +14,14 @@ public:
 
     virtual bool canConvert(const DataRepresentation* source) = 0;
     virtual DataRepresentation* createFrom(const DataRepresentation* source) = 0;    
-    //virtual void update(const DataRepresentation* source, DataRepresentation* destination) = 0;
+    virtual void update(const DataRepresentation* source, DataRepresentation* destination) = 0;
 };
 
 template <typename T>
-class IVW_CORE_API RepresentationConverterType : public RepresentationConverter{};
+class IVW_CORE_API RepresentationConverterType : public RepresentationConverter {};
 
 template <typename T>
-class RepresentationConverterPackage : public RepresentationConverter{
+class RepresentationConverterPackage : public RepresentationConverter {
 public:
     RepresentationConverterPackage() : RepresentationConverter() {};
     ~RepresentationConverterPackage() {
@@ -43,6 +43,13 @@ public:
         }
         return NULL;
     }  
+    virtual void update(const DataRepresentation* source, DataRepresentation* destination) {
+        for (std::vector<RepresentationConverter*>::iterator it = converters_.begin() ; it != converters_.end(); ++it){
+            if ((*it)->canConvert(source))
+                (*it)->update(source, destination);
+        }
+    }  
+
     void addConverter(RepresentationConverter* converter) { converters_.push_back(converter); }
     size_t getNumberOfConverters() { return converters_.size(); }
 private:

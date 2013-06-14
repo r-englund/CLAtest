@@ -36,6 +36,7 @@ public:
     void bind() const;
     void unbind() const;
     void upload(const void* data);
+    void download(void* data) const;
 
 private:
     uvec3 dimensions_;

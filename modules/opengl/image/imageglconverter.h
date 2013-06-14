@@ -21,6 +21,7 @@ namespace inviwo {
         }
 
          DataRepresentation* createFrom(const DataRepresentation* source);
+         void update(const DataRepresentation* source, DataRepresentation* destination);
     };
 
     class IVW_MODULE_OPENGL_API ImageGL2RAMConverter : public RepresentationConverterType<ImageRAM> {
@@ -35,6 +36,7 @@ namespace inviwo {
         }
 
         DataRepresentation* createFrom(const DataRepresentation* source);
+        void update(const DataRepresentation* source, DataRepresentation* destination);
     };
 
     class IVW_MODULE_OPENGL_API ImageDisk2GLConverter : public RepresentationConverterPackage<ImageGL> {

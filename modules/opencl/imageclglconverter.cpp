@@ -1,4 +1,5 @@
 #include <modules/opencl/imageclglconverter.h>
+#include <modules/opencl/syncclgl.h>
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <modules/opencl/inviwoopencl.h>
 
@@ -36,6 +37,15 @@ DataRepresentation* ImageCLGL2RAMConverter::createFrom(const DataRepresentation*
     return destination;
 }
 
+void ImageCLGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const ImageCLGL* imageSrc = dynamic_cast<const ImageCLGL*>(source);
+    ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
+    if(imageSrc && imageDst) {
+        // FIXME: The file loader should have a function that loads data into a preallocated location.
+        imageSrc->getTexture()->download(imageDst->getData());
+    }
+}
+
 
 DataRepresentation* ImageGL2CLGLConverter::createFrom(const DataRepresentation* source )
 {
@@ -49,6 +59,11 @@ DataRepresentation* ImageGL2CLGLConverter::createFrom(const DataRepresentation* 
     return destination;
 }
 
+void ImageGL2CLGLConverter::update(const DataRepresentation*, DataRepresentation*) {
+     // Do nothing since they are sharing data
+
+}
+
 
 DataRepresentation* ImageCLGL2CLConverter::createFrom(const DataRepresentation* source )
 {
@@ -58,16 +73,25 @@ DataRepresentation* ImageCLGL2CLConverter::createFrom(const DataRepresentation* 
         uvec2 dimension = imageCLGL->getDimension();;
         const cl::Image2DGL data = imageCLGL->getImage();
         destination = new ImageCL(dimension, imageCLGL->getDataFormat());
-        glFinish();
-        std::vector<cl::Memory> syncImages(1, imageCLGL->getImage());  
-        OpenCL::getInstance()->getQueue().enqueueAcquireGLObjects(&syncImages);
+        SyncCLGL glSync;
+        imageCLGL->aquireGLObject(glSync.getGLSyncEvent());
         OpenCL::getInstance()->getQueue().enqueueCopyImage(data, static_cast<ImageCL*>(destination)->getImage(), glm::svec3(0), glm::svec3(0), glm::svec3(dimension, 1));
-        OpenCL::getInstance()->getQueue().enqueueReleaseGLObjects(&syncImages);
-        OpenCL::getInstance()->getQueue().finish();
+        imageCLGL->releaseGLObject(glSync.getGLSyncEvent());
 
 
     }        
     return destination;
+}
+void ImageCLGL2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const ImageCLGL* imageSrc = dynamic_cast<const ImageCLGL*>(source);
+    ImageCL* imageDst = dynamic_cast<ImageCL*>(destination);
+    if(imageSrc && imageDst) {
+        SyncCLGL glSync;
+        imageSrc->aquireGLObject(glSync.getGLSyncEvent());
+        OpenCL::getInstance()->getQueue().enqueueCopyImage(imageSrc->getImage(), imageDst->getImage(), glm::svec3(0), glm::svec3(0), glm::svec3(imageSrc->getDimension(), 1));
+        imageSrc->releaseGLObject(glSync.getGLSyncEvent());
+    }
+
 }
 
 } // namespace

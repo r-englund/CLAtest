@@ -24,6 +24,15 @@ DataRepresentation* ImageRAM2GLConverter::createFrom(const DataRepresentation* s
     }
     return NULL;
 }
+void ImageRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const ImageRAM* imageSrc = dynamic_cast<const ImageRAM*>(source);
+    ImageGL* imageDst = dynamic_cast<ImageGL*>(destination);
+    if(imageSrc && imageDst) {
+        // FIXME: OpenGL color should not have both depth and color
+        imageDst->getColorTexture()->upload(imageSrc->getData());
+    }
+
+}
 
 ImageGL2RAMConverter::ImageGL2RAMConverter()
     : RepresentationConverterType<ImageRAM>()
@@ -93,6 +102,14 @@ DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* s
         LogError("Invalid conversion");
     }
     return NULL;
+}
+void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const ImageGL* imageSrc = dynamic_cast<const ImageGL*>(source);
+    ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
+    if(imageSrc && imageDst) {
+        // FIXME: OpenGL color should not have both depth and color
+        imageSrc->getColorTexture()->download(imageDst->getData());
+    }
 }
 
 } // namespace
