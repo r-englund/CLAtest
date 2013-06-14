@@ -20,7 +20,7 @@ void MeshRAM::deinitialize() {
     for (std::vector<AttributesBase*>::iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
         delete (*it);
 
-    for (std::vector<std::pair<AttributesInfo, IndexAttributes*>>::iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
+    for (std::vector<std::pair<AttributesInfo, IndexAttributes*> >::iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
         delete it->second;
 }
 
