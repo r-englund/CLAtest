@@ -3,6 +3,7 @@
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/inviwoopengl.h>
@@ -28,17 +29,11 @@ protected:
     virtual void process();
 
 private:
-    VolumeInport volumePort_;
+    GeometryInport geometryPort_;
     ImageOutport entryPort_;
     ImageOutport exitPort_;
 
     CameraProperty camera_;
-
-    Shader* shader_;
-
-    GLuint listID_;
-
-    void renderBoundingBox(vec3 llf, vec3 urb);
 };
 
 } // namespace

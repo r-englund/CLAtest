@@ -19,21 +19,23 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual DataRepresentation* clone() const { return NULL; };
-    virtual void render();
+    virtual void render() const;
 
     void createArrayBuffer(const AttributesBase*);
-    void createElementBuffer(const AttributesBase*);
+    void createElementBuffer(const AttributesBase*, Connectivity);
 
     void setRenderer(bool element = true);
 
 protected:
-    void renderArray();
-    void renderElements();
-    void emptyFunc(){};
+    void renderArray() const;
+    void renderElements() const;
+    void emptyFunc() const{};
 
     std::vector<AttributeBufferGL*> arrayBuffers_;
-    AttributeBufferGL* elementBuffer_;
-    void (MeshGL::*drawFunc)();
+    std::vector<std::pair<Connectivity, AttributeBufferGL*>> elementBuffers_;
+    AttributeBufferGL* defaultElementBuffer_;
+    GLenum elementDrawMode_;
+    void (MeshGL::*drawFunc)() const;
 };
 
 class IVW_MODULE_OPENGL_API MeshRAM2GLConverter : public RepresentationConverterType<GeometryGL> {

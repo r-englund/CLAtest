@@ -54,23 +54,23 @@ const AttributesBase* AttributeBufferGL::getAttribute() const {
     return attrib_;
 }
 
-GLenum AttributeBufferGL::getFormatType(){
+GLenum AttributeBufferGL::getFormatType() const {
     return glFormat_.type;
 }
 
-void AttributeBufferGL::enable(){
+void AttributeBufferGL::enable() const {
     (this->*enableFunc_)();
 }
 
-void AttributeBufferGL::disable(){
+void AttributeBufferGL::disable() const {
     (this->*disableFunc_)();
 }
 
-void AttributeBufferGL::bind(){
+void AttributeBufferGL::bind() const {
     glBindBuffer(target_, id_);
 }
 
-void AttributeBufferGL::specifyLocation(){
+void AttributeBufferGL::specifyLocation() const {
     (this->*locationPointerFunc_)();
 }
 
@@ -80,37 +80,37 @@ void AttributeBufferGL::upload(GLenum usage){
     specifyLocation();
 }
 
-void AttributeBufferGL::enableArray(){
+void AttributeBufferGL::enableArray() const {
     glEnableClientState(state_);
     bind();
     specifyLocation();
 }
 
-void AttributeBufferGL::disableArray(){
+void AttributeBufferGL::disableArray() const {
     glDisableClientState(state_);
 }
 
-void AttributeBufferGL::enableElementArray(){
+void AttributeBufferGL::enableElementArray() const {
     bind();
 }
 
-void AttributeBufferGL::colorPointer(){
+void AttributeBufferGL::colorPointer() const {
     glColorPointer(glFormat_.channels, glFormat_.type, 0, 0);
 }
 
-void AttributeBufferGL::normalPointer(){
+void AttributeBufferGL::normalPointer() const {
     glNormalPointer(glFormat_.type, 0, 0);
 }
 
-void AttributeBufferGL::texCoordPointer(){
+void AttributeBufferGL::texCoordPointer() const {
     glTexCoordPointer(glFormat_.channels, glFormat_.type, 0, 0);
 }
 
-void AttributeBufferGL::vertexPointer(){
+void AttributeBufferGL::vertexPointer() const {
     glVertexPointer(glFormat_.channels, glFormat_.type, 0, 0);
 }
 
-void AttributeBufferGL::emptyFunc(){}
+void AttributeBufferGL::emptyFunc() const {}
 
 } // namespace
 

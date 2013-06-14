@@ -13,27 +13,27 @@ public:
     AttributeBufferGL(const AttributesBase*, GLenum target = GL_ARRAY_BUFFER, bool element = false);
     virtual ~AttributeBufferGL();
     const AttributesBase* getAttribute() const;
-    GLenum getFormatType();
+    GLenum getFormatType() const;
 
-    void enable();
-    void disable();
+    void enable() const;
+    void disable() const;
 
-    void bind();
-    void specifyLocation();
+    void bind() const;
+    void specifyLocation() const;
     void upload(GLenum usage = GL_STATIC_DRAW);
 
 protected:
-    void enableArray();
-    void disableArray();
+    void enableArray() const;
+    void disableArray() const;
 
-    void enableElementArray();
+    void enableElementArray() const;
 
-    void colorPointer();
-    void normalPointer();
-    void texCoordPointer();
-    void vertexPointer();
+    void colorPointer() const;
+    void normalPointer() const;
+    void texCoordPointer() const;
+    void vertexPointer() const;
 
-    void emptyFunc();
+    void emptyFunc() const;
 
 private:
     const AttributesBase* attrib_;
@@ -41,9 +41,9 @@ private:
     GLenum state_;
     GLenum target_;
     GLFormats::GLFormat glFormat_;
-    void (AttributeBufferGL::*locationPointerFunc_)();
-    void (AttributeBufferGL::*enableFunc_)();
-    void (AttributeBufferGL::*disableFunc_)();
+    void (AttributeBufferGL::*locationPointerFunc_)() const;
+    void (AttributeBufferGL::*enableFunc_)() const;
+    void (AttributeBufferGL::*disableFunc_)() const;
 
 };
 

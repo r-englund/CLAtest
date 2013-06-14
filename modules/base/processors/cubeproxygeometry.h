@@ -11,10 +11,10 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API CubeProxygeometry : public ProcessorGL {
+class IVW_MODULE_BASE_API CubeProxyGeometry : public ProcessorGL {
 public:
-    CubeProxygeometry();
-    ~CubeProxygeometry();
+    CubeProxyGeometry();
+    ~CubeProxyGeometry();
 
     InviwoProcessorInfo();
 

@@ -2,81 +2,14 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref1">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-675" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="volumeFileName" displayName="Volume file name">
-                    <url content="D:/inviwo/data/volumes/hydrogenatom.dat" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref0">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-525" y="-575" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="camera" displayName="Camera">
-                    <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookFrom>
-                    <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="-0.15846655" y="-2.0237448" z="-3.092515" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookTo>
-                    <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="-0.69104487" y="0.64573824" z="-0.39532378" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookUp>
-                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="30" />
-                        <minvalue content="30" />
-                        <maxvalue content="360" />
-                        <increment content="0.1" />
-                    </fovy>
-                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <value content="1" />
-                        <minvalue content="0" />
-                        <maxvalue content="1" />
-                        <increment content="0.1" />
-                    </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref2">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-375" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="-952" y="430" />
+                    <position x="937" y="476" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -91,10 +24,10 @@
                 <Property type="undefined" identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref3">
+        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-475" />
+                    <position x="-600" y="-500" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -165,97 +98,67 @@
                     <increment x="0.1" y="0.1" z="0.1" />
                 </Property>
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate">
-                    <value content="1.6426" />
+                    <value content="1" />
                     <minvalue content="1" />
                     <maxvalue content="10" />
                     <increment content="0.1" />
                 </Property>
-                <Property />
-            </Properties>
-        </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints1" id="ref4">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-1250" y="175" />
-                    <visibility content="0" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="camera" displayName="Camera">
-                    <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookFrom>
-                    <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="1.9056296" y="0.60528338" z="-0.047044884" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookTo>
-                    <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="-0.26745006" y="0.80031276" z="-0.53662825" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookUp>
-                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="60" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </fovy>
-                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <value content="1" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </farPlane>
+                <Property type="undefined" identifier="transferFunction" displayName="Transfer function">
+                    <size content="0" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster1" id="ref5">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-1250" y="175" />
-                    <visibility content="0" />
+                    <position x="-500" y="-675" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties />
+        </Processor>
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref3">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-600" y="-750" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="undefined" identifier="volumeFileName" displayName="Volume file name">
+                    <url content="C:/Inviwo/trunk/data/volumes/hydrogenatom.dat" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref4">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-525" y="-600" />
+                    <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
                 <Property type="undefined" identifier="camera" displayName="Camera">
                     <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="3.5" />
+                        <value x="0" y="0" z="0" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="0" y="0" z="0" />
+                        <value x="1.7" y="-3.8461316" z="-4.0139437" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="0" y="1" z="0" />
+                        <value x="0.5" y="-0.53296316" z="0.69999999" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="60" />
+                        <value content="30" />
                         <minvalue content="30" />
                         <maxvalue content="360" />
                         <increment content="0.1" />
@@ -279,444 +182,56 @@
                         <increment content="0.1" />
                     </farPlane>
                 </Property>
-                <Property type="undefined" identifier="classificationMode" displayName="Classification">
-                    <value content="transFunc" />
-                </Property>
-                <Property type="undefined" identifier="compositingMode" displayName="Compositing">
-                    <value content="dvr" />
-                </Property>
-                <Property type="undefined" identifier="enableMIP" displayName="MIP">
-                    <value content="1" />
-                </Property>
-                <Property type="undefined" identifier="enableShading" displayName="Shading">
-                    <value content="0" />
-                </Property>
-                <Property type="undefined" identifier="gradientComputationMode" displayName="Gradient computation">
-                    <value content="forward" />
-                </Property>
-                <Property type="undefined" identifier="lightSourcePos" displayName="Light source position">
-                    <value x="1" y="1" z="1" />
-                    <minvalue x="-1" y="-1" z="-1" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.1" y="0.1" z="0.1" />
-                </Property>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate">
-                    <value content="1" />
-                    <minvalue content="0.1" />
-                    <maxvalue content="15" />
-                    <increment content="0.1" />
-                </Property>
-                <Property />
-            </Properties>
-        </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints2" id="ref6">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-1250" y="175" />
-                    <visibility content="0" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="camera" displayName="Camera">
-                    <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookFrom>
-                    <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="0" y="0" z="-2" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookTo>
-                    <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="0" y="1" z="0" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookUp>
-                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="60" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </fovy>
-                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <value content="1" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </farPlane>
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster2" id="ref7">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-1250" y="175" />
-                    <visibility content="0" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="camera" displayName="Camera">
-                    <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="3.5" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookFrom>
-                    <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookTo>
-                    <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="0" y="1" z="0" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookUp>
-                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="60" />
-                        <minvalue content="30" />
-                        <maxvalue content="360" />
-                        <increment content="0.1" />
-                    </fovy>
-                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <value content="1" />
-                        <minvalue content="0" />
-                        <maxvalue content="1" />
-                        <increment content="0.1" />
-                    </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
-                </Property>
-                <Property type="undefined" identifier="classificationMode" displayName="Classification">
-                    <value content="transFunc" />
-                </Property>
-                <Property type="undefined" identifier="compositingMode" displayName="Compositing">
-                    <value content="dvr" />
-                </Property>
-                <Property type="undefined" identifier="enableMIP" displayName="MIP">
-                    <value content="1" />
-                </Property>
-                <Property type="undefined" identifier="enableShading" displayName="Shading">
-                    <value content="0" />
-                </Property>
-                <Property type="undefined" identifier="gradientComputationMode" displayName="Gradient computation">
-                    <value content="forward" />
-                </Property>
-                <Property type="undefined" identifier="lightSourcePos" displayName="Light source position">
-                    <value x="1" y="1" z="1" />
-                    <minvalue x="-1" y="-1" z="-1" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.1" y="0.1" z="0.1" />
-                </Property>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate">
-                    <value content="1" />
-                    <minvalue content="0.1" />
-                    <maxvalue content="15" />
-                    <increment content="0.1" />
-                </Property>
-                <Property />
-            </Properties>
-        </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints3" id="ref8">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-1250" y="400" />
-                    <visibility content="0" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="camera" displayName="Camera">
-                    <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookFrom>
-                    <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="0" y="0" z="-2" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookTo>
-                    <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="0" y="1" z="0" />
-                        <minvalue x="1.1754944e-038" y="1.1754944e-038" z="1.1754944e-038" />
-                        <maxvalue x="3.4028235e+038" y="3.4028235e+038" z="3.4028235e+038" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookUp>
-                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="60" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </fovy>
-                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <value content="1" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="1.17549e-038" />
-                        <maxvalue content="3.40282e+038" />
-                        <increment content="0.1" />
-                    </farPlane>
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster3" id="ref9">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-1250" y="400" />
-                    <visibility content="0" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="camera" displayName="Camera">
-                    <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="3.5" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookFrom>
-                    <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookTo>
-                    <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="0" y="1" z="0" />
-                        <minvalue x="0" y="0" z="0" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookUp>
-                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="60" />
-                        <minvalue content="30" />
-                        <maxvalue content="360" />
-                        <increment content="0.1" />
-                    </fovy>
-                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <value content="1" />
-                        <minvalue content="0" />
-                        <maxvalue content="1" />
-                        <increment content="0.1" />
-                    </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
-                </Property>
-                <Property type="undefined" identifier="classificationMode" displayName="Classification">
-                    <value content="transFunc" />
-                </Property>
-                <Property type="undefined" identifier="compositingMode" displayName="Compositing">
-                    <value content="dvr" />
-                </Property>
-                <Property type="undefined" identifier="enableMIP" displayName="MIP">
-                    <value content="1" />
-                </Property>
-                <Property type="undefined" identifier="enableShading" displayName="Shading">
-                    <value content="0" />
-                </Property>
-                <Property type="undefined" identifier="gradientComputationMode" displayName="Gradient computation">
-                    <value content="forward" />
-                </Property>
-                <Property type="undefined" identifier="lightSourcePos" displayName="Light source position">
-                    <value x="1" y="1" z="1" />
-                    <minvalue x="-1" y="-1" z="-1" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.1" y="0.1" z="0.1" />
-                </Property>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate">
-                    <value content="1" />
-                    <minvalue content="0.1" />
-                    <maxvalue content="15" />
-                    <increment content="0.1" />
-                </Property>
-                <Property />
             </Properties>
         </Processor>
     </Processors>
     <Connections>
         <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-            </OutPort>
-            <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-            </OutPort>
-            <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection>
             <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref2" />
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref1" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="volume">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="volume">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+            </OutPort>
+            <InPort identifier="volume">
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="geometry.outport">
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+            </OutPort>
+            <InPort identifier="geometry">
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints1" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster1" reference="ref5" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints1" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster1" reference="ref5" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints1" reference="ref4" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster1" reference="ref5" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints2" reference="ref6" />
-            </OutPort>
-            <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster2" reference="ref7" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints2" reference="ref6" />
-            </OutPort>
-            <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster2" reference="ref7" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints2" reference="ref6" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster2" reference="ref7" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints3" reference="ref8" />
-            </OutPort>
-            <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster3" reference="ref9" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints3" reference="ref8" />
-            </OutPort>
-            <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster3" reference="ref9" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints3" reference="ref8" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
-            </OutPort>
-            <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster3" reference="ref9" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>

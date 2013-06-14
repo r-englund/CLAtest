@@ -4,7 +4,8 @@ namespace inviwo {
 
 TriangleMeshRAM* BaseMeshCreator::rectangularPrism(glm::vec3 posLlf, glm::vec3 posUrb, glm::vec3 texCoordLlf, 
                                                    glm::vec3 texCoordUrb, glm::vec4 colorLlf, glm::vec4 colorUrb) {
-    TriangleMeshRAM* recPrism = new TriangleMeshRAM();
+    TriangleMeshRAM* recPrism = new TriangleMeshRAM(GeometryRepresentation::STRIP);
+    recPrism->initialize();
 
     //8 corners
     unsigned int LLF = recPrism->addVertex(posLlf, texCoordLlf, colorLlf);

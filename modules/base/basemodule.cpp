@@ -21,7 +21,7 @@ BaseModule::BaseModule() : InviwoModule() {
     setIdentifier("Base");
     setXMLFileName("base/basemodule.xml");
 
-    registerProcessor(CubeProxygeometry);
+    registerProcessor(CubeProxyGeometry);
     registerProcessor(EntryExitPoints);
 	registerProcessor(FindEdges);
 	registerProcessor(FirstIvwProcessor);

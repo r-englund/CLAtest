@@ -1,12 +1,13 @@
 #include "cubeproxygeometry.h"
+#include <inviwo/core/datastructures/geometry/basemeshcreator.h>
 
 namespace inviwo {
 
-ProcessorClassName(CubeProxygeometry, "CubeProxygeometry"); 
-ProcessorCategory(CubeProxygeometry, "Proxy Geometry");
-ProcessorCodeState(CubeProxygeometry, CODE_STATE_BROKEN); 
+ProcessorClassName(CubeProxyGeometry, "CubeProxyGeometry"); 
+ProcessorCategory(CubeProxyGeometry, "Proxy Geometry");
+ProcessorCodeState(CubeProxyGeometry, CODE_STATE_BROKEN); 
 
-CubeProxygeometry::CubeProxygeometry()
+CubeProxyGeometry::CubeProxyGeometry()
     : ProcessorGL(),
       inport_("volume.inport"),
       outport_("geometry.outport")
@@ -15,19 +16,21 @@ CubeProxygeometry::CubeProxygeometry()
     addPort(outport_);
 }
 
-CubeProxygeometry::~CubeProxygeometry() {}
+CubeProxyGeometry::~CubeProxyGeometry() {}
 
-void CubeProxygeometry::initialize() {
+void CubeProxyGeometry::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader("img_identity.frag");
 }
 
-void CubeProxygeometry::deinitialize() {
+void CubeProxyGeometry::deinitialize() {
     delete shader_;
     ProcessorGL::deinitialize();
 }
 
-void CubeProxygeometry::process() {
+void CubeProxyGeometry::process() {
+    TriangleMeshRAM* prism = BaseMeshCreator::rectangularPrism(glm::vec3(-1.f), glm::vec3(1.f), glm::vec3(0.f), glm::vec3(1.f), glm::vec4(0.f, 0.f, 0.f, 1.f), glm::vec4(1.f));
+    outport_.getData()->addRepresentation(prism);
 }
 
 } // namespace

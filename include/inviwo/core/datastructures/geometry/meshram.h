@@ -17,16 +17,18 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual DataRepresentation* clone() const { return NULL; };
-    virtual void render(){};
+    virtual void render() const{};
 
-    AttributesBase* getAttribute(size_t idx) const;
-    AttributesBase* getIndicies() const;
+    AttributesBase* getAttributes(size_t idx) const;
+    AttributesBase* getIndicies(size_t idx) const;
+    Connectivity getIndexConnectivity(size_t idx) const;
 
     size_t getNumberOfAttributes() const;
+    size_t getNumberOfIndicies() const;
 
 protected:
     std::vector<AttributesBase*> attributes_;
-    IndexAttributes* indices_;
+    std::vector<std::pair<Connectivity, IndexAttributes*>> indices_;
 
 };
 
