@@ -29,6 +29,8 @@ public:
         PATH_MODULES,
         PATH_PROJECT
     };
+
+    std::string getBasePath() { return basePath_; }
     std::string getPath(PathType pathType, const std::string& suffix = "");
 
     void registerModule(InviwoModule* module) { modules_.push_back(module); }

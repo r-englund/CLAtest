@@ -12,7 +12,62 @@ DatVolumeReader::DatVolumeReader(const std::string filePath)
 
 Data* DatVolumeReader::readData() {    
     return readRawVolumeData();
-}    
+}
+
+void DatVolumeReader::readDatFileSettings(std::string filePath, ReaderSettings& readerSettings)  {
+    readerSettings.rawFileAbsolutePath_ = "";
+    readerSettings.dataFormat_ = "";
+    readerSettings.dimensions_ = ivec3(0,0,0);
+
+    if(!UrlParser::fileExists(filePath)){
+        filePath = UrlParser::addBasePath(filePath);
+        if(!UrlParser::fileExists(filePath))
+            return;
+    }
+
+    std::string fileDirectory = UrlParser::getFileDirectory(filePath);
+
+    std::string fileExtension = UrlParser::getFileExtension(filePath);
+
+    ivwAssert(fileExtension=="dat", "should be a *.dat file");
+
+    if (fileExtension=="dat") {
+
+        //Read the dat file content
+        std::istream* f = new std::ifstream(filePath.c_str());
+        std::string textLine; 
+
+        std::string key;
+        while (!f->eof()) {
+            getline(*f, textLine);
+            std::stringstream ss(textLine);
+            transform(textLine.begin(), textLine.end(), textLine.begin(), (int (*)(int))tolower);
+            key = "";
+            ss >> key;            
+            if (key=="ObjectFileName:") {
+                ss >> readerSettings.rawFileAbsolutePath_;
+                readerSettings.rawFileAbsolutePath_ = fileDirectory + readerSettings.rawFileAbsolutePath_;
+            }
+            else if (key=="Resolution:") {
+                ss >> readerSettings.dimensions_.x;
+                ss >> readerSettings.dimensions_.y;
+                ss >> readerSettings.dimensions_.z;
+            }
+            else if (key=="Format:") {
+                ss >> readerSettings.dataFormat_;
+
+                if (readerSettings.dataFormat_=="UCHAR") {
+                    readerSettings.dataFormat_ = DataUINT8::str();
+                }
+                else if (readerSettings.dataFormat_=="USHORT") {
+                    readerSettings.dataFormat_ = DataUINT16::str();
+                }
+                else
+                    readerSettings.dataFormat_="";
+            }                    
+        };
+    }       
+}
 
 Data* DatVolumeReader::readRawVolumeData() {
 

@@ -94,7 +94,7 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
             bool includeFileFound = false;
             std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
             for (size_t i=0; i<shaderSearchPaths.size(); i++) {
-                if (fileExists(shaderSearchPaths[i]+"/"+includeFileName)) {
+                if (UrlParser::fileExists(shaderSearchPaths[i]+"/"+includeFileName)) {
                     includeFileName = shaderSearchPaths[i]+"/"+includeFileName;
                     includeFileNames_.push_back(includeFileName);
                     std::ifstream includeFileStream(includeFileName.c_str());
@@ -123,7 +123,7 @@ bool ShaderObject::loadSource(std::string fileName) {
     if (fileName.length() > 0) {
         std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
         for (size_t i=0; i<shaderSearchPaths.size(); i++) {
-            if (fileExists(shaderSearchPaths[i]+"/"+fileName)) {
+            if (UrlParser::fileExists(shaderSearchPaths[i]+"/"+fileName)) {
                 absoluteFileName_ = shaderSearchPaths[i]+"/"+fileName;
                 break;
             }

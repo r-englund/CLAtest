@@ -54,7 +54,7 @@ void InviwoApplication::deinitialize() {
 }
 
 std::string InviwoApplication::getPath(PathType pathType, const std::string& suffix) {
-    std::string result = basePath_;
+    std::string result = getBasePath();
     if (pathType == InviwoApplication::PATH_PROJECT)
         result += "data/workspaces/";
     else if (pathType == InviwoApplication::PATH_DATA)
