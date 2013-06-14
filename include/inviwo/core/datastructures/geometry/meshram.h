@@ -40,7 +40,7 @@ public:
 protected:
     std::vector<AttributesBase*> attributes_;
     AttributesInfo attributesInfo_;
-    std::vector<std::pair<AttributesInfo, IndexAttributes*>> indexAttributes_;
+    std::vector<std::pair<AttributesInfo, IndexAttributes*> > indexAttributes_;
 
 };
 
