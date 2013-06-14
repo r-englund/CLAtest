@@ -3,9 +3,12 @@
 namespace inviwo {
 
 MeshRAM::MeshRAM()
-    : GeometryRAM()
-{
-}
+    : GeometryRAM(), attributesInfo_(AttributesInfo())
+{}
+
+MeshRAM::MeshRAM(RenderType rt, ConnectivityType ct)
+    : GeometryRAM(), attributesInfo_(AttributesInfo(rt, ct))
+{}
 
 MeshRAM::~MeshRAM() {
     deinitialize();
@@ -17,7 +20,7 @@ void MeshRAM::deinitialize() {
     for (std::vector<AttributesBase*>::iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
         delete (*it);
 
-    for (std::vector<std::pair<Connectivity, IndexAttributes*>>::iterator it = indices_.begin() ; it != indices_.end(); ++it)
+    for (std::vector<std::pair<AttributesInfo, IndexAttributes*>>::iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
         delete it->second;
 }
 
@@ -26,11 +29,15 @@ AttributesBase* MeshRAM::getAttributes(size_t idx) const{
 }
 
 AttributesBase* MeshRAM::getIndicies(size_t idx) const{
-    return indices_[idx].second;
+    return indexAttributes_[idx].second;
 }
 
-GeometryRepresentation::Connectivity MeshRAM::getIndexConnectivity(size_t idx) const{
-    return indices_[idx].first;
+MeshRAM::AttributesInfo MeshRAM::getAttributesInfo() const{
+    return attributesInfo_;
+}
+
+MeshRAM::AttributesInfo MeshRAM::getIndexAttributesInfo(size_t idx) const{
+    return indexAttributes_[idx].first;
 }
 
 size_t MeshRAM::getNumberOfAttributes() const{
@@ -38,7 +45,7 @@ size_t MeshRAM::getNumberOfAttributes() const{
 }
 
 size_t MeshRAM::getNumberOfIndicies() const{
-    return indices_.size();
+    return indexAttributes_.size();
 }
 
 } // namespace

@@ -14,28 +14,37 @@ class IVW_MODULE_OPENGL_API MeshGL : public GeometryGL {
 
 public:
     MeshGL();
+    MeshGL(MeshRAM::AttributesInfo);
     virtual ~MeshGL();
     virtual void performOperation(DataOperation*) const {};
-    virtual void initialize();
+    virtual void initialize(MeshRAM::AttributesInfo);
     virtual void deinitialize();
     virtual DataRepresentation* clone() const { return NULL; };
-    virtual void render() const;
+    virtual void render(RenderType = GeometryRepresentation::NOT_SPECIFIED) const;
 
+    //Create and add Vertex Buffer with data
     void createArrayBuffer(const AttributesBase*);
-    void createElementBuffer(const AttributesBase*, Connectivity);
 
-    void setRenderer(bool element = true);
+    //Create and add Element Array Buffer for rendering using indices
+    void createElementBuffer(const AttributesBase*, MeshRAM::AttributesInfo);
+
+    GLenum getDrawMode(RenderType, ConnectivityType);
 
 protected:
-    void renderArray() const;
-    void renderElements() const;
-    void emptyFunc() const{};
+    void renderArray(RenderType) const;
+    void renderElements(RenderType) const;
+    void emptyFunc(RenderType rt) const{};
 
     std::vector<AttributeBufferGL*> arrayBuffers_;
-    std::vector<std::pair<Connectivity, AttributeBufferGL*>> elementBuffers_;
-    AttributeBufferGL* defaultElementBuffer_;
-    GLenum elementDrawMode_;
-    void (MeshGL::*drawFunc)() const;
+    
+    typedef void (MeshGL::*DrawFunc)(RenderType) const;
+    struct DrawMethod{
+        DrawFunc drawFunc;
+        GLenum drawMode;
+        AttributeBufferGL* elementBuffer;
+    };
+
+    DrawMethod drawMethods_[GeometryRepresentation::NUMBER_OF_RENDER_TYPES];
 };
 
 class IVW_MODULE_OPENGL_API MeshRAM2GLConverter : public RepresentationConverterType<GeometryGL> {

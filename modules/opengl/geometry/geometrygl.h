@@ -16,7 +16,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual DataRepresentation* clone() const = 0;
-    virtual void render() const = 0;
+    virtual void render(RenderType = GeometryRepresentation::NOT_SPECIFIED) const = 0;
 };
 
 } // namespace

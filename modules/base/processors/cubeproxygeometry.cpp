@@ -29,7 +29,7 @@ void CubeProxyGeometry::deinitialize() {
 }
 
 void CubeProxyGeometry::process() {
-    TriangleMeshRAM* prism = BaseMeshCreator::rectangularPrism(glm::vec3(-1.f), glm::vec3(1.f), glm::vec3(0.f), glm::vec3(1.f), glm::vec4(0.f, 0.f, 0.f, 1.f), glm::vec4(1.f));
+    BaseMeshRAM* prism = BaseMeshCreator::rectangularPrism(glm::vec3(-1.f), glm::vec3(1.f), glm::vec3(0.f), glm::vec3(1.f), glm::vec4(0.f, 0.f, 0.f, 1.f), glm::vec4(1.f));
     outport_.getData()->addRepresentation(prism);
 }
 

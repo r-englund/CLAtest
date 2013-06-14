@@ -6,28 +6,26 @@
 
 namespace inviwo {
 
-class IVW_CORE_API TriangleMeshRAM : public MeshRAM {
+class IVW_CORE_API BaseMeshRAM : public MeshRAM {
 
 public:
-    TriangleMeshRAM(Connectivity);
-    virtual ~TriangleMeshRAM();
+    BaseMeshRAM(RenderType rt = GeometryRepresentation::POINTS, ConnectivityType ct = GeometryRepresentation::NONE);
+    virtual ~BaseMeshRAM();
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
     virtual DataRepresentation* clone() const { return NULL; };
     virtual void render() const;
 
-    unsigned int addVertex(glm::vec3 pos, glm::vec3 texCoord, glm::vec4 color);
-    unsigned int addIndex(unsigned int idx);
-    void setIndexConnectivity(Connectivity ct);
+    void addVertex(glm::vec3 pos, glm::vec3 texCoord, glm::vec4 color);
+    void addIndex(unsigned int idx);
+    void setIndicesInfo(RenderType, ConnectivityType);
 
 protected:
     PositionAttributes* vertexPositions_;
     TexCoordAttributes* vertexTexCoords_;
     ColorAttributes* vertexColors_;
-    IndexAttributes* faceIndices_;
-
-    Connectivity indexConnectivity_;
+    IndexAttributes* indices_;
 };
 
 } // namespace

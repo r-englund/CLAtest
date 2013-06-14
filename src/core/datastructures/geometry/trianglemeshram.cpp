@@ -2,17 +2,16 @@
 
 namespace inviwo {
 
-TriangleMeshRAM::TriangleMeshRAM(Connectivity ct)
-    : MeshRAM()
+BaseMeshRAM::BaseMeshRAM(RenderType rt, ConnectivityType ct)
+: MeshRAM(rt, ct)
 {
-    indexConnectivity_ = ct;
 }
 
-TriangleMeshRAM::~TriangleMeshRAM() {
+BaseMeshRAM::~BaseMeshRAM() {
     deinitialize();
 }
 
-void TriangleMeshRAM::initialize() {
+void BaseMeshRAM::initialize() {
     vertexPositions_ = new PositionAttributes();
     attributes_.push_back(vertexPositions_);
 
@@ -22,24 +21,26 @@ void TriangleMeshRAM::initialize() {
     vertexColors_ = new ColorAttributes();
     attributes_.push_back(vertexColors_);
 
-    faceIndices_ = new IndexAttributes();
-    indices_.push_back(std::make_pair(indexConnectivity_, faceIndices_));
+    indices_ = new IndexAttributes();
+    indexAttributes_.push_back(std::make_pair(MeshRAM::AttributesInfo(), indices_));
 }
 
-void TriangleMeshRAM::deinitialize() {}
+void BaseMeshRAM::deinitialize() {}
 
-void TriangleMeshRAM::render() const {}
+void BaseMeshRAM::render() const {}
 
-unsigned int TriangleMeshRAM::addVertex(glm::vec3 pos, glm::vec3 texCoord, glm::vec4 color){
+void BaseMeshRAM::addVertex(glm::vec3 pos, glm::vec3 texCoord, glm::vec4 color){
     vertexPositions_->add(pos);
     vertexTexCoords_->add(texCoord);
     vertexColors_->add(color);
-    return vertexPositions_->getNumberOfAttributes()-1;
 }
 
-unsigned int TriangleMeshRAM::addIndex(unsigned int idx){
-    faceIndices_->add(idx);
-    return faceIndices_->getNumberOfAttributes()-1;
+void BaseMeshRAM::addIndex(unsigned int idx){
+    indices_->add(idx);
+}
+
+void BaseMeshRAM::setIndicesInfo(RenderType rt, ConnectivityType ct){
+    indexAttributes_[0].first = MeshRAM::AttributesInfo(rt, ct);
 }
 
 } // namespace
