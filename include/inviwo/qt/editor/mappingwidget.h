@@ -13,6 +13,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QScrollArea>
+#include <QComboBox>
 
 namespace inviwo {
 
@@ -29,14 +30,22 @@ private:
 	std::vector<Processor*> curProcessorList_;
 
     QLabel* label_;
-	QVBoxLayout* vLayout_;
+	QVBoxLayout *botLayout_;
 	QFrame* frame_;
+	QComboBox* comboBox_;
+
+	int currentIndex_;
 
 	void drawEventPropertyWidgets();
     void updateWidget();
-	void emptyLayout();
+	void emptyLayout(QVBoxLayout* layout);
+	void removeEventPropertyWidgets();
 
     QString intToQString(int num); // For testing
+
+public slots:
+	void comboBoxChange();
+
 };
 
 } // namespace

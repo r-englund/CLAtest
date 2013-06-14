@@ -11,13 +11,27 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), 
     addObservation(processorNetwork_);
     processorNetwork_->addObserver(this);             
 	
-    frame_ = new QFrame();    
-    vLayout_ = new QVBoxLayout();
+    frame_ = new QFrame();
+	botLayout_ = new QVBoxLayout();
+	comboBox_ = new QComboBox();
+	label_ = new QLabel();
+	QVBoxLayout* mainLayout = new QVBoxLayout();
+	QVBoxLayout* topLayout = new QVBoxLayout();
 	QScrollArea* scrollArea = new QScrollArea();
-    frame_->setLayout(vLayout_);
+	QWidget* area = new QWidget();
+
+	topLayout->addWidget(label_);
+	topLayout->addWidget(comboBox_);
+	area->setLayout(botLayout_);
+	scrollArea->setWidget(area);
 	scrollArea->setWidgetResizable(true);
-	scrollArea->setWidget(frame_);
-    setWidget(scrollArea);
+	mainLayout->addLayout(topLayout);
+	mainLayout->addWidget(scrollArea);
+	frame_->setLayout(mainLayout);
+	setWidget(frame_);
+
+	currentIndex_ = 0;
+	QObject::connect(comboBox_, SIGNAL(activated(int)), this, SLOT(comboBoxChange()));
 
     updateWidget();
 }
@@ -29,17 +43,19 @@ void MappingWidget::notify() {
 }
 
 void MappingWidget::updateWidget() {
-	if (!vLayout_->isEmpty()) emptyLayout(); // Clear layout of widgets
-    
+	if (comboBox_->count() > 0)	{
+		currentIndex_ =  comboBox_->currentIndex();
+	}
+
 	curProcessorList_ = processorNetwork_->getProcessors();
-	label_ = new QLabel();
-    label_->setText("Size of processor network: " + intToQString(curProcessorList_.size()));
-	vLayout_->addWidget(label_);
+	comboBox_->clear();
 
 	std::vector<EventProperty*> eventProperties, tmp;
 	std::vector<InteractionHandler*> interactionHandlers;
+	std::map<std::string, std::vector<EventProperty*>> eventPropertyMap;
 	PropertyOwner* eventPropertyOwner;
 
+	// Get all eventproperties from the processornetwork
 	for (size_t i = 0; i < curProcessorList_.size(); ++i) {
 		if (curProcessorList_.at(i)->hasInteractionHandler()) {			
 			interactionHandlers = curProcessorList_.at(i)->getInteractionHandlers();
@@ -49,31 +65,49 @@ void MappingWidget::updateWidget() {
 					tmp = eventPropertyOwner->getPropertiesByType<EventProperty>();
 					eventProperties.insert(eventProperties.end(), tmp.begin(), tmp.end());
 				}
-			}			
+			}
+			// Add vector of eventproperties to map with processor identifier as key
+			eventPropertyMap[curProcessorList_.at(i)->getIdentifier()] = eventProperties;
+			comboBox_->addItem(curProcessorList_.at(i)->getIdentifier().c_str());
+			eventProperties.clear();
 		}
-	}	
+	}
+
+	if (currentIndex_ > comboBox_->count()-1) currentIndex_ = 0;
 	
-	eventPropertyManager_->setEventProperties(eventProperties);
-	drawEventPropertyWidgets(); 
+	label_->setText("Size of processor network: " + intToQString(curProcessorList_.size()));	
+	eventPropertyManager_->setEventPropertyMap(eventPropertyMap);
+	if (!botLayout_->isEmpty()) emptyLayout(botLayout_); // Clear layout of widgets
+	
+	// Draw eventpropertywidgets
+	if (comboBox_->count() > 0) {
+		comboBox_->setCurrentIndex(currentIndex_);
+		drawEventPropertyWidgets(); 
+	}
 }
 
 // Draw the widgets for all EventProperties in EventPropertyManager
-void MappingWidget::drawEventPropertyWidgets() {
-	std::vector<EventProperty*> properties = eventPropertyManager_->getEventProperties();
+void MappingWidget::drawEventPropertyWidgets() {	
+
+	std::string identifier = (const char *)comboBox_->currentText().toAscii();
+	eventPropertyManager_->setActiveProcessor(identifier.c_str());
+	std::vector<EventProperty*> properties = eventPropertyManager_->getEventPropertiesFromMap();
+	
 	for (size_t i=0; i<properties.size(); i++) {
 		EventProperty* curProperty = properties[i];
 		PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
-		vLayout_->addWidget(propertyWidget);
+		botLayout_->addWidget(propertyWidget);
 		curProperty->registerPropertyWidget(propertyWidget);
 		dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager_);
 	}
 }
 
 // Clears the layout of all widgets
-void MappingWidget::emptyLayout() {
-	while(!vLayout_->layout()->isEmpty()) {
-		QWidget* w =  vLayout_->layout()->takeAt(0)->widget();
-		vLayout_->layout()->removeWidget(w);
+void MappingWidget::emptyLayout(QVBoxLayout* layout) {
+	QObject::disconnect(this, SLOT(comboBoxChange()));
+	while(!layout->layout()->isEmpty()) {
+		QWidget* w =  layout->layout()->takeAt(0)->widget();
+		layout->layout()->removeWidget(w);
 		delete w;
 	}
 }
@@ -83,6 +117,12 @@ QString MappingWidget::intToQString(int num ) {
     std::stringstream convert;
     convert << num;
     return convert.str().c_str();
+}
+
+void MappingWidget::comboBoxChange() {
+	emptyLayout(botLayout_);
+	drawEventPropertyWidgets();
+	//updateWidget();
 }
 
 } // namespace
