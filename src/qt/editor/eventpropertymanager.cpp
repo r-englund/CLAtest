@@ -5,14 +5,6 @@ namespace inviwo {
 EventPropertyManager::EventPropertyManager() {}
 EventPropertyManager::~EventPropertyManager() {}
 
-std::vector<EventProperty*> EventPropertyManager::getEventProperties() {
-	return eventProperties_;
-}
-
-void EventPropertyManager::setEventProperties( std::vector<EventProperty*> eventProperties ) {
-	eventProperties_ = eventProperties;
-}
-
 void EventPropertyManager::changeKeybinding( EventProperty* eventProperty, MouseEvent::MouseButton button ) {
 	// Look for event conflicts
 	std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
