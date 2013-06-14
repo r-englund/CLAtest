@@ -33,13 +33,13 @@ namespace inviwo {
     public:
         ImageCLGL2RAMConverter();
         virtual ~ImageCLGL2RAMConverter(){};
-        inline bool canConvert(DataRepresentation* source) {
-            if (!dynamic_cast<ImageCLGL*>(source)) {
+        inline bool canConvert(const DataRepresentation* source) {
+            if (!dynamic_cast<const ImageCLGL*>(source)) {
                 return false;
             }
             return true;
         }
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
     class IVW_MODULE_OPENCL_API ImageGL2CLGLConverter : public RepresentationConverterType<ImageCLGL> {
@@ -48,14 +48,14 @@ namespace inviwo {
         ImageGL2CLGLConverter() : RepresentationConverterType<ImageCLGL>() {};
         virtual ~ImageGL2CLGLConverter() {};
 
-        inline bool canConvert(DataRepresentation* source) {
-            if (!dynamic_cast<ImageGL*>(source)) {
+        inline bool canConvert(const DataRepresentation* source) {
+            if (!dynamic_cast<const ImageGL*>(source)) {
                 return false;
             }
             return true;
         }
 
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
     class IVW_MODULE_OPENCL_API ImageCLGL2CLConverter : public RepresentationConverterType<ImageCL> {
@@ -63,14 +63,14 @@ namespace inviwo {
     public:
         ImageCLGL2CLConverter() : RepresentationConverterType<ImageCL>() {};
         virtual ~ImageCLGL2CLConverter() {};
-        inline bool canConvert(DataRepresentation* source) {
-            if (!dynamic_cast<ImageCLGL*>(source)) {
+        inline bool canConvert(const DataRepresentation* source) {
+            if (!dynamic_cast<const ImageCLGL*>(source)) {
                 return false;
             }
             return true;
         }
 
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
 

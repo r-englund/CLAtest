@@ -41,13 +41,13 @@ class IVW_MODULE_OPENGL_API MeshRAM2GLConverter : public RepresentationConverter
 public:
     MeshRAM2GLConverter();
     virtual ~MeshRAM2GLConverter();
-    inline bool canConvert(DataRepresentation* source) {
-        if (!dynamic_cast<MeshRAM*>(source)) {
+    inline bool canConvert(const DataRepresentation* source) {
+        if (!dynamic_cast<const MeshRAM*>(source)) {
             return false;
         }
         return true;
     }
-    DataRepresentation* convert(DataRepresentation* source);
+    DataRepresentation* createFrom(const DataRepresentation* source);
 };
 
 } // namespace

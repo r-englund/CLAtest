@@ -20,12 +20,12 @@ namespace inviwo {
         * @param source is the DataRepresentation to test for convertion possibility.
         * @return boolean value stating if a convertion is possible.
         **/
-        inline bool canConvert(DataRepresentation* source) {
-            if (dynamic_cast<ImageDisk*>(source)) return true;
+        inline bool canConvert(const DataRepresentation* source) {
+            if (dynamic_cast<const ImageDisk*>(source)) return true;
             return false;
         }
 
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
 } // namespace

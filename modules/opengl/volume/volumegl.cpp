@@ -18,7 +18,7 @@ VolumeGL::VolumeGL(uvec3 dimensions, GLint format, GLint internalFormat, GLenum 
     initialize();
 }
 
-VolumeGL::VolumeGL(void* texels, uvec3 dimensions, DataFormatBase format)
+VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, DataFormatBase format)
 : VolumeRepresentation(dimensions, format), volumeTexture_(0)
 {
     GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format.getId());
@@ -28,7 +28,7 @@ VolumeGL::VolumeGL(void* texels, uvec3 dimensions, DataFormatBase format)
     initialize(texels);
 }
 
-VolumeGL::VolumeGL(void* texels, uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType)
+VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType)
 : VolumeRepresentation(dimensions, DataFormatBase()), format_(format), internalFormat_(internalFormat), dataType_(dataType), volumeTexture_(0)
 {
     initialize(texels);
@@ -38,7 +38,7 @@ VolumeGL::~VolumeGL() {}
 
 void VolumeGL::initialize() {}
 
-void VolumeGL::initialize(void* texels) {
+void VolumeGL::initialize(const void* texels) {
     volumeTexture_ = new Texture3D(dimensions_, getFormat(), getInternalFormat(), getDataType(), GL_LINEAR);
 
     if (!texels) {

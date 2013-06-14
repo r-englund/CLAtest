@@ -57,21 +57,20 @@ void VolumeRaycasterCL::process() {
     if( kernel_ == NULL) {
         return;
     }
-    Image* outImage = outport_.getData();
-    //const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
+    
     const ImageCLGL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCLGL>();
-    //outImage->resize(entryCLGL->getDimension());
-    uvec2 outportDim = outImage->getDimension();
-
+    // Will synchronize with OpenGL upon creation and destruction
     SyncCLGL glSync;
-
     entryCLGL->aquireGLObject(glSync.getGLSyncEvent());
-    //uvec2 outportDim = uvec2(4, 4);
-    //Image* outImage = new Image(outportDim);
-    //outImage->clearRepresentations();
-    //outImage->addRepresentation(new ImageCLuint8vec4(outportDim));
-    //outImage->addRepresentation(new ImageCLvec4float32(outportDim));
+
+    const ImageCLGL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCLGL>();
+    exitCLGL->aquireGLObject();
+
+    Image* outImage = outport_.getData();
     ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
+    //ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
+    uvec2 outportDim = outImage->getDimension();
+    //outImageCL->aquireGLObject();
 
 
     const Volume* volume = volumePort_.getData();
@@ -82,7 +81,7 @@ void VolumeRaycasterCL::process() {
     cl_uint arg = 0;
     kernel_->setArg(arg++, *volumeCL);
     kernel_->setArg(arg++, *entryCLGL);
-    kernel_->setArg(arg++, *exitPort_.getData()->getRepresentation<ImageCL>());
+    kernel_->setArg(arg++, *exitCLGL);
     kernel_->setArg(arg++, *transferFunctionCL);
     kernel_->setArg(arg++, samplingRate_.get());// / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
     kernel_->setArg(arg++, volumeDim);
@@ -90,27 +89,11 @@ void VolumeRaycasterCL::process() {
     // 
     OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
     
+
+    //outImageCL->releaseGLObject();
+    exitCLGL->releaseGLObject();
     entryCLGL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
 
-
-   
-    //ImageRAM* testImage = outImage->getRepresentation<ImageRAM>();
-    // Texture2D* colorTexture_;
-    //colorTexture_->bind();
-    //colorTexture_->upload();
-    //ImageRAM* testImage = entryPort_.getData()->getRepresentation<ImageRAM>();
-    //glm::detail::tvec4<uint8_t>* data = static_cast<glm::detail::tvec4<uint8_t>*>(testImage->getData());
-    ////glm::detail::tvec4<float>* data = static_cast<glm::detail::tvec4<float>*>(testImage->getData());
-    //for(unsigned int y = 0; y < outportDim.y; ++y) {
-    //    for(unsigned int x = 0; x < outportDim.x; ++x) {
-    //        unsigned int index = outportDim.x*y + x;
-    //        glm::detail::tvec4<int> dd(data[index]);
-    //        //glm::detail::tvec4<float> dd(data[index]);
-    //        std::cerr << "(" << x << ", " << y << ")" << dd.x  << ", " << dd.y << ", " << dd.z << ", " << dd.w << std::endl;
-
-    //        //std::cerr << "(" << x << ", " << y << ")" << data[index] << std::endl;
-    //    }
-    //}
 }
 
 } // namespace

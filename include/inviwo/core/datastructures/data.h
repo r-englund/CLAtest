@@ -92,7 +92,7 @@ const T* Data::getRepresentation() const{
     for (size_t i=0; i<representations_.size(); i++) {                
         RepresentationConverter* converter = representationConverterFactory->getRepresentationConverter<T>(representations_[i]);
         if (converter) {
-            result = converter->convert(representations_[i]);
+            result = converter->createFrom(representations_[i]);
             representations_.push_back(result);
             return dynamic_cast<T*>(result);
         }
@@ -118,7 +118,7 @@ const T* Data::getRepresentation() const{
     //Go-through the conversion package
     if (converterPackage) {
         for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
-            result = converterPackage->convert(result);
+            result = converterPackage->createFrom(result);
             representations_.push_back(result);
         }
         return dynamic_cast<T*>(result);

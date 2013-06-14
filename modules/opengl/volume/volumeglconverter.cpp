@@ -9,8 +9,8 @@ VolumeRAM2GLConverter::VolumeRAM2GLConverter()
 
 VolumeRAM2GLConverter::~VolumeRAM2GLConverter() {}
 
-DataRepresentation* VolumeRAM2GLConverter::convert(DataRepresentation* source) {     
-    VolumeRAM* volumeRAM = dynamic_cast<VolumeRAM*>(source);
+DataRepresentation* VolumeRAM2GLConverter::createFrom(const DataRepresentation* source) {     
+    const VolumeRAM* volumeRAM = dynamic_cast<const VolumeRAM*>(source);
     if (volumeRAM) {
         return new VolumeGL(volumeRAM->getData(), volumeRAM->getDimensions(), volumeRAM->getDataFormat());
     }

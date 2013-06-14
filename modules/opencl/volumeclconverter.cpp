@@ -8,12 +8,12 @@ namespace inviwo {
         : RepresentationConverterType<VolumeCL>()
     {}
 
-    DataRepresentation* VolumeRAM2CLConverter::convert(DataRepresentation* source) {     
+    DataRepresentation* VolumeRAM2CLConverter::createFrom(const DataRepresentation* source) {     
         DataRepresentation* destination = 0;
-        VolumeRAM* volumeRAM = dynamic_cast<VolumeRAM*>(source);
+        const VolumeRAM* volumeRAM = dynamic_cast<const VolumeRAM*>(source);
         if (volumeRAM) {
             uvec3 dimension = volumeRAM->getDimensions();
-            void* data = volumeRAM->getData();
+            const void* data = volumeRAM->getData();
             destination = new VolumeCL(dimension, volumeRAM->getDataFormat(), data);
         }        
         return destination;
@@ -24,9 +24,9 @@ namespace inviwo {
     {}
 
 
-    DataRepresentation* VolumeCL2RAMConverter::convert(DataRepresentation* source) {     
+    DataRepresentation* VolumeCL2RAMConverter::createFrom(const DataRepresentation* source) {     
         DataRepresentation* destination = 0;
-        VolumeCL* volumeCL = dynamic_cast<VolumeCL*>(source);
+        const VolumeCL* volumeCL = dynamic_cast<const VolumeCL*>(source);
         if (volumeCL) {
             uvec3 dimension = volumeCL->getDimensions();
             destination = createVolume(dimension, volumeCL->getDataFormat());

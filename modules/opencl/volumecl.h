@@ -28,7 +28,7 @@ public:
      * @param data (void *) Preallocated pointer that will contain data after function returns.
      * @return (void)
      */
-    void download(void* data);
+    void download(void* data) const;
     cl::ImageFormat getFormat() const { return imageFormat_;}
     cl::Image3D getVolume() const { return *image3D_; }
 

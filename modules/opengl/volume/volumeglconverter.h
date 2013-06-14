@@ -16,14 +16,14 @@ public:
     VolumeRAM2GLConverter();
     virtual ~VolumeRAM2GLConverter();
 
-    inline bool canConvert(DataRepresentation* source) {
-        if (!dynamic_cast<VolumeRAM*>(source)) {
+    inline bool canConvert(const DataRepresentation* source) {
+        if (!dynamic_cast<const VolumeRAM*>(source)) {
             return false;
         }
         return true;
     }
 
-    DataRepresentation* convert(DataRepresentation* source);
+    DataRepresentation* createFrom(const DataRepresentation* source);
 };
 
 class IVW_MODULE_OPENGL_API VolumeDisk2GLConverter : public RepresentationConverterPackage<VolumeGL> {

@@ -15,14 +15,14 @@ namespace inviwo {
         VolumeRAM2CLConverter();
         virtual ~VolumeRAM2CLConverter() {};
 
-        inline bool canConvert(DataRepresentation* source) {
-            if (!dynamic_cast<VolumeRAM*>(source)) {
+        inline bool canConvert(const DataRepresentation* source) {
+            if (!dynamic_cast<const VolumeRAM*>(source)) {
                 return false;
             }
             return true;
         }
 
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
     class IVW_MODULE_OPENCL_API VolumeDisk2CLConverter : public RepresentationConverterPackage<VolumeCL> {
@@ -41,14 +41,14 @@ namespace inviwo {
         VolumeCL2RAMConverter();
         virtual ~VolumeCL2RAMConverter(){};
 
-        inline bool canConvert(DataRepresentation* source) {
-            if (!dynamic_cast<VolumeCL*>(source)) {
+        inline bool canConvert(const DataRepresentation* source) {
+            if (!dynamic_cast<const VolumeCL*>(source)) {
                 return false;
             }
             return true;
         }
 
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
 

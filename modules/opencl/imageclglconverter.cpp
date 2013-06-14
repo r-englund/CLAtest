@@ -17,11 +17,11 @@ ImageCLGL2RAMConverter::ImageCLGL2RAMConverter()
 }
 
 
-DataRepresentation* ImageCLGL2RAMConverter::convert(DataRepresentation* source) {     
+DataRepresentation* ImageCLGL2RAMConverter::createFrom(const DataRepresentation* source) {     
     DataRepresentation* destination = 0;
-    ImageCLGL* imageCL = dynamic_cast<ImageCLGL*>(source);
+    const ImageCLGL* imageCL = dynamic_cast<const ImageCLGL*>(source);
     if (imageCL) {
-        uvec2 dimension = imageCL->dimension();
+        uvec2 dimension = imageCL->getDimension();
         destination = createImage(dimension, imageCL->getDataFormat()); 
         const Texture2D* texture = imageCL->getTexture();
         if (destination) {
@@ -37,29 +37,29 @@ DataRepresentation* ImageCLGL2RAMConverter::convert(DataRepresentation* source) 
 }
 
 
-DataRepresentation* ImageGL2CLGLConverter::convert( DataRepresentation* source )
+DataRepresentation* ImageGL2CLGLConverter::createFrom(const DataRepresentation* source )
 {
     DataRepresentation* destination = 0;
-    ImageGL* imageGL = dynamic_cast<ImageGL*>(source);
+    const ImageGL* imageGL = dynamic_cast<const ImageGL*>(source);
     if (imageGL) {
         uvec2 dimension = imageGL->getDimension();;
-        Texture2D* data = imageGL->getColorTexture();
+        const Texture2D* data = imageGL->getColorTexture();
         destination = new ImageCLGL(dimension, imageGL->getDataFormat(), data);
     }        
     return destination;
 }
 
 
-DataRepresentation* ImageCLGL2CLConverter::convert( DataRepresentation* source )
+DataRepresentation* ImageCLGL2CLConverter::createFrom(const DataRepresentation* source )
 {
     DataRepresentation* destination = 0;
-    ImageCLGL* imageCLGL = dynamic_cast<ImageCLGL*>(source);
+    const ImageCLGL* imageCLGL = dynamic_cast<const ImageCLGL*>(source);
     if (imageCLGL) {
         uvec2 dimension = imageCLGL->getDimension();;
         const cl::Image2DGL data = imageCLGL->getImage();
         destination = new ImageCL(dimension, imageCLGL->getDataFormat());
         glFinish();
-        std::vector<cl::Memory> syncImages(1); syncImages[0] = imageCLGL->getImage()(); 
+        std::vector<cl::Memory> syncImages(1, imageCLGL->getImage());  
         OpenCL::getInstance()->getQueue().enqueueAcquireGLObjects(&syncImages);
         OpenCL::getInstance()->getQueue().enqueueCopyImage(data, static_cast<ImageCL*>(destination)->getImage(), glm::svec3(0), glm::svec3(0), glm::svec3(dimension, 1));
         OpenCL::getInstance()->getQueue().enqueueReleaseGLObjects(&syncImages);

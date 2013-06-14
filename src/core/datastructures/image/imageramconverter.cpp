@@ -18,8 +18,8 @@ namespace inviwo {
     * @return the imageRAM representation of the file. Returns NULL if source is not a
     * ImageDisk object.
     **/
-    DataRepresentation* ImageDisk2RAMConverter::convert(DataRepresentation* source) {
-        ImageDisk* imageDisk = dynamic_cast<ImageDisk*>(source);
+    DataRepresentation* ImageDisk2RAMConverter::createFrom(const DataRepresentation* source) {
+        const ImageDisk* imageDisk = dynamic_cast<const ImageDisk*>(source);
         if (imageDisk){
 
             switch (imageDisk->getDataFormatId()) {

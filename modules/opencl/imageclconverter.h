@@ -16,14 +16,14 @@ namespace inviwo {
         ImageRAM2CLConverter();
         virtual ~ImageRAM2CLConverter() {};
 
-        inline bool canConvert(DataRepresentation* source) {
-            if (!dynamic_cast<ImageRAM*>(source)) {
+        inline bool canConvert(const DataRepresentation* source) {
+            if (!dynamic_cast<const ImageRAM*>(source)) {
                 return false;
             }
             return true;
         }
 
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
     class IVW_MODULE_OPENCL_API ImageDisk2CLConverter : public RepresentationConverterPackage<ImageCL> {
@@ -42,14 +42,14 @@ namespace inviwo {
         ImageCL2RAMConverter();
         virtual ~ImageCL2RAMConverter(){};
 
-        inline bool canConvert(DataRepresentation* source) {
-            if (!dynamic_cast<ImageCL*>(source)) {
+        inline bool canConvert(const DataRepresentation* source) {
+            if (!dynamic_cast<const ImageCL*>(source)) {
                 return false;
             }
             return true;
         }
 
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
     class IVW_MODULE_OPENCL_API ImageGL2CLConverter : public RepresentationConverterPackage<ImageCL> {

@@ -9,8 +9,8 @@ ImageRAM2GLConverter::ImageRAM2GLConverter()
 
 ImageRAM2GLConverter::~ImageRAM2GLConverter() {}
 
-DataRepresentation* ImageRAM2GLConverter::convert(DataRepresentation* source) {
-    ImageRAM* imageRepresentation = dynamic_cast<ImageRAM*>(source);
+DataRepresentation* ImageRAM2GLConverter::createFrom(const DataRepresentation* source) {
+    const ImageRAM* imageRepresentation = dynamic_cast<const ImageRAM*>(source);
     
     //This creates a texture from the defined input ImageRAM.
     const void *data = imageRepresentation->getData();
@@ -31,8 +31,8 @@ ImageGL2RAMConverter::ImageGL2RAMConverter()
 
 ImageGL2RAMConverter::~ImageGL2RAMConverter() {}
 
-DataRepresentation* ImageGL2RAMConverter::convert(DataRepresentation* source) {
-    ImageGL* imageRepresentation = dynamic_cast<ImageGL*>(source);
+DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* source) {
+    const ImageGL* imageRepresentation = dynamic_cast<const ImageGL*>(source);
     GLuint nChannels = imageRepresentation->getColorTexture()->getNChannels();
     uvec2 dim = imageRepresentation->getDimension();
     ImageRAM* image = NULL;

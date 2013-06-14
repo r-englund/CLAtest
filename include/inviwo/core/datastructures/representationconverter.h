@@ -12,8 +12,9 @@ public:
     RepresentationConverter();
     virtual ~RepresentationConverter();
 
-    virtual bool canConvert(DataRepresentation* source) = 0;
-    virtual DataRepresentation* convert(DataRepresentation* source) = 0;        
+    virtual bool canConvert(const DataRepresentation* source) = 0;
+    virtual DataRepresentation* createFrom(const DataRepresentation* source) = 0;    
+    //virtual void update(const DataRepresentation* source, DataRepresentation* destination) = 0;
 };
 
 template <typename T>
@@ -28,17 +29,17 @@ public:
             delete (*it);
         }
     }
-    bool canConvert(DataRepresentation* source){
+    bool canConvert(const DataRepresentation* source){
         for (std::vector<RepresentationConverter*>::iterator it = converters_.begin() ; it != converters_.end(); ++it){
             if ((*it)->canConvert(source))
                 return true;
         }
         return false;
     }
-    DataRepresentation* convert(DataRepresentation* source){
+    DataRepresentation* createFrom(const DataRepresentation* source){
         for (std::vector<RepresentationConverter*>::iterator it = converters_.begin() ; it != converters_.end(); ++it){
             if ((*it)->canConvert(source))
-                return (*it)->convert(source);
+                return (*it)->createFrom(source);
         }
         return NULL;
     }  

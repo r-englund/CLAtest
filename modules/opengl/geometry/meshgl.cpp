@@ -71,8 +71,8 @@ MeshRAM2GLConverter::MeshRAM2GLConverter()
 
 MeshRAM2GLConverter::~MeshRAM2GLConverter() {}
 
-DataRepresentation* MeshRAM2GLConverter::convert(DataRepresentation* source) {     
-    MeshRAM* meshRAM = dynamic_cast<MeshRAM*>(source);
+DataRepresentation* MeshRAM2GLConverter::createFrom(const DataRepresentation* source) {     
+    const MeshRAM* meshRAM = dynamic_cast<const MeshRAM*>(source);
     if (meshRAM) {
         MeshGL* meshGL = new MeshGL();
         for (size_t i=0; i < meshRAM->getNumberOfAttributes(); ++i) {

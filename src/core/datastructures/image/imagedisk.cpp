@@ -20,7 +20,7 @@ namespace inviwo {
         }
     }
 
-    void* ImageDisk::loadFileData(){
+    void* ImageDisk::loadFileData() const {
         if (hasSourceFile())
             
             return ImageLoader::loadImageToData(getSourceFile());

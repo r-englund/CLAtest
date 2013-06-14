@@ -4,13 +4,13 @@
 
 namespace inviwo {
 
-ImageCLGL::ImageCLGL(DataFormatBase format, Texture2D* data)
+ImageCLGL::ImageCLGL(DataFormatBase format, const Texture2D* data)
     : ImageRepresentation(uvec2(data->getWidth(), data->getHeight()), format), image2D_(0), texture_(data) 
 {
     initialize(data);
 }
 
-ImageCLGL::ImageCLGL(uvec2 dimensions, DataFormatBase format, Texture2D* data)
+ImageCLGL::ImageCLGL(uvec2 dimensions, DataFormatBase format, const Texture2D* data)
     : ImageRepresentation(dimensions, format), texture_(data)
 {
     initialize(data);
@@ -44,7 +44,7 @@ void ImageCLGL::resize(uvec2 dimensions) {
     }
     // Make sure that the OpenCL image is deleted before resizing the texture
     delete image2D_;
-    texture_->resize(dimensions);
+    const_cast<Texture2D*>(texture_)->resize(dimensions);
     image2D_ = new cl::Image2DGL(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
     ImageRepresentation::resize(dimensions);
 }

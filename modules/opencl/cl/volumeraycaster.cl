@@ -31,11 +31,14 @@ __kernel void raycaster(read_only image3d_t volume
         float t = 0;
         float volumeSample;
         float extinction = 0.f;
-        while(t <= tEnd) {
+        while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
             volumeSample = read_imagef(volume, smpNormClampLinear, as_float4(pos)).w; 
             // xyz == emission, w = absorption
             float4 emissionAbsorption = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
+            //emissionAbsorption.xyz *= 10.f;
+            //float4 emissionAbsorption2 = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
+            //float4 emissionAbsorption = (float4)((float3)(volumeSample*10.f), volumeSample)+0.00000001f*emissionAbsorption2;
             // Taylor expansion approximation
             emissionAbsorption.w = 1.f - pow(1.f - emissionAbsorption.w, tIncr * REF_SAMPLING_INTERVAL);
 			result.w = result.w + (1.0 - result.w) * emissionAbsorption.w;	

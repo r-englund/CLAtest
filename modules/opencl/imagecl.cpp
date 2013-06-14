@@ -59,7 +59,7 @@ void ImageCL::upload( const void* data )
     OpenCL::getInstance()->getQueue().enqueueWriteImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, const_cast<void*>(data));
 }
 
-void ImageCL::download( void* data )
+void ImageCL::download( void* data ) const
 {
     OpenCL::getInstance()->getQueue().enqueueReadImage(*image2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, data);
 }
@@ -82,7 +82,7 @@ void ImageCL::copyAndResizeImage(DataRepresentation* target) {
 
     if (!targetCL) return;
 
-    ImageCLResizer::resize(*image2D_, (targetCL->getImage()), targetCL->dimension());
+    ImageCLResizer::resize(*image2D_, (targetCL->getImage()), targetCL->getDimension());
 
 }
 

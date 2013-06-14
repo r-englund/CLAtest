@@ -41,7 +41,7 @@ void VolumeCL::upload( const void* data )
     OpenCL::getInstance()->getQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(data));
 }
 
-void VolumeCL::download( void* data )
+void VolumeCL::download( void* data ) const
 {
     OpenCL::getInstance()->getQueue().enqueueReadImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, data);
 }

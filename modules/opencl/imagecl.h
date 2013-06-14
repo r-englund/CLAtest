@@ -28,9 +28,8 @@ public:
      * @param data (void *) Preallocated pointer that will contain data after function returns.
      * @return (void)
      */
-    void download(void* data); 
+    void download(void* data) const; 
     virtual void resize(uvec2 dimensions);
-    virtual uvec2 dimension() { return dimensions_;}
     virtual void copyAndResizeImage(DataRepresentation* target);
     cl::ImageFormat getFormat() const { return imageFormat_;}
     cl::Image2D getEditableImage() { return *image2D_; }

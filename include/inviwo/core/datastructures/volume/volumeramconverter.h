@@ -14,12 +14,12 @@ namespace inviwo {
         VolumeDisk2RAMConverter();
         virtual ~VolumeDisk2RAMConverter();
 
-        inline bool canConvert(DataRepresentation* source) {
-            if (dynamic_cast<VolumeDisk*>(source)) return true;
+        inline bool canConvert(const DataRepresentation* source) {
+            if (dynamic_cast<const VolumeDisk*>(source)) return true;
             return false;
         }
 
-        DataRepresentation* convert(DataRepresentation* source);
+        DataRepresentation* createFrom(const DataRepresentation* source);
     };
 
 } // namespace
