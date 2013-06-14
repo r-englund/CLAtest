@@ -17,13 +17,13 @@ public:
 
 	std::vector<EventProperty*> getEventPropertiesFromMap();
 
-	void setEventPropertyMap(std::map<std::string, std::vector<EventProperty*>> eventPropertyMap);
+	void setEventPropertyMap(std::map<std::string, std::vector<EventProperty*> > eventPropertyMap);
 	void setActiveProcessor(std::string processorIdentifier){ activeProcessor_ = processorIdentifier; };
 
 	void changeKeybinding(EventProperty* eventProperty, MouseEvent::MouseButton button);
 
 private:
-	std::map<std::string, std::vector<EventProperty*>> eventPropertyMap_;
+	std::map<std::string, std::vector<EventProperty*> > eventPropertyMap_;
 	std::string activeProcessor_;
 };
 

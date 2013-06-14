@@ -23,7 +23,7 @@ void EventPropertyManager::changeKeybinding( EventProperty* eventProperty, Mouse
 	}
 }
 
-void EventPropertyManager::setEventPropertyMap(std::map<std::string, std::vector<EventProperty*>> eventPropertyMap) {
+void EventPropertyManager::setEventPropertyMap(std::map<std::string, std::vector<EventProperty*> > eventPropertyMap) {
 	eventPropertyMap_ = eventPropertyMap;
 }
 

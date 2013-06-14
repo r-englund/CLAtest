@@ -52,7 +52,7 @@ void MappingWidget::updateWidget() {
 
 	std::vector<EventProperty*> eventProperties, tmp;
 	std::vector<InteractionHandler*> interactionHandlers;
-	std::map<std::string, std::vector<EventProperty*>> eventPropertyMap;
+	std::map<std::string, std::vector<EventProperty*> > eventPropertyMap;
 	PropertyOwner* eventPropertyOwner;
 
 	// Get all eventproperties from the processornetwork
