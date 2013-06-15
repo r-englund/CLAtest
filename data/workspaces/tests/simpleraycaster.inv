@@ -9,7 +9,7 @@
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="937" y="476" />
+                    <position x="765" y="254" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -126,7 +126,7 @@
             </MetaDataList>
             <Properties>
                 <Property type="undefined" identifier="volumeFileName" displayName="Volume file name">
-                    <url content="C:/Inviwo/trunk/data/volumes/hydrogenatom.dat" />
+                    <url content="data/volumes/hydrogenatom.dat" />
                 </Property>
             </Properties>
         </Processor>
@@ -146,13 +146,13 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="1.7" y="-3.8461316" z="-4.0139437" />
+                        <value x="-0.1289462" y="-3.1931305" z="-4.8561058" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="0.5" y="-0.53296316" z="0.69999999" />
+                        <value x="-0.30532128" y="-0.81089526" z="0.52276003" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
