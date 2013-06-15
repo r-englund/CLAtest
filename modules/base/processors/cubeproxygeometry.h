@@ -7,7 +7,6 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
-#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
@@ -27,8 +26,6 @@ protected:
 private:
     VolumeInport inport_;
     GeometryOutport outport_;
-
-    Shader* shader_;
 };
 
 } // namespace

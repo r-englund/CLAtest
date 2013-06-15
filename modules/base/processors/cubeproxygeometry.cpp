@@ -20,11 +20,9 @@ CubeProxyGeometry::~CubeProxyGeometry() {}
 
 void CubeProxyGeometry::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("img_identity.frag");
 }
 
 void CubeProxyGeometry::deinitialize() {
-    delete shader_;
     ProcessorGL::deinitialize();
 }
 

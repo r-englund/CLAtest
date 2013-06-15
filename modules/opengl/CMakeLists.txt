@@ -66,7 +66,6 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add shaders
 set(SHADER_FILES
-    ${IVW_MODULE_DIR}/opengl/glsl/eepgeneration.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_findedges.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_graysc.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_identity.frag
