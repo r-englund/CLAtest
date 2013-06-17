@@ -9,7 +9,7 @@ namespace inviwo {
 class IVW_CORE_API FloatProperty : public OrdinalProperty<float> {
 public:
     FloatProperty(std::string identifier, std::string displayName, float value,
-                  float minValue=0.0f, float maxValue=1.0f, float increment=0.1f,
+                  float minValue=0.0f, float maxValue=1.0f, float increment=0.01f,
                   PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                   PropertySemantics::Type semantics=PropertySemantics::Default);
     virtual std::string getClassName()  const { return "FloatProperty"; }

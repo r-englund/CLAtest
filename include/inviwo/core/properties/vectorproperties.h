@@ -29,7 +29,7 @@ public:
      * @param PropertySemantics::Type semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
      */FloatVec2Property(std::string identifier, std::string displayName, vec2 value, 
-		vec2 minValue=vec2(0.0f), vec2 maxValue= vec2(1.0f), vec2 increment=vec2(0.1f),
+		vec2 minValue=vec2(0.0f), vec2 maxValue= vec2(1.0f), vec2 increment=vec2(0.01f),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
@@ -61,7 +61,7 @@ public:
      * @param PropertySemantics::Type semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
      */FloatVec3Property(std::string identifier, std::string displayName, vec3 value, 
-		vec3 minValue=vec3(0.0f), vec3 maxValue=vec3(1.0f), vec3 increment=vec3(0.1f),
+		vec3 minValue=vec3(0.0f), vec3 maxValue=vec3(1.0f), vec3 increment=vec3(0.01f),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
@@ -91,7 +91,7 @@ public:
 	 * @param PropertySemantics::Type semantics <DESCRIBE ME>
 	 * @return  <DESCRIBE ME>
 	 */FloatVec4Property(std::string identifier, std::string displayName, vec4 value, 
-		vec4 minValue=vec4(0.0f), vec4 maxValue= vec4(1.0f), vec4 increment=vec4(0.1f),
+		vec4 minValue=vec4(0.0f), vec4 maxValue= vec4(1.0f), vec4 increment=vec4(0.01f),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
