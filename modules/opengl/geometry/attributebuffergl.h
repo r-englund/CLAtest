@@ -10,7 +10,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API AttributeBufferGL {
 
 public:
-    AttributeBufferGL(const AttributesBase*, GLenum target = GL_ARRAY_BUFFER, bool element = false);
+    AttributeBufferGL();
     virtual ~AttributeBufferGL();
     const AttributesBase* getAttribute() const;
     GLenum getFormatType() const;
@@ -20,7 +20,8 @@ public:
 
     void bind() const;
     void specifyLocation() const;
-    void upload(GLenum usage = GL_STATIC_DRAW);
+
+    void upload(const AttributesBase*, GLenum usage = GL_STATIC_DRAW, GLenum target = GL_ARRAY_BUFFER, bool element = false);
 
 protected:
     void enableArray() const;

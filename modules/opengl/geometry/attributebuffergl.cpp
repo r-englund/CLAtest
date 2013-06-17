@@ -2,16 +2,50 @@
 
 namespace inviwo {
 
-AttributeBufferGL::AttributeBufferGL(const AttributesBase* attrib, GLenum target, bool element) : attrib_(attrib), target_(target)
+AttributeBufferGL::AttributeBufferGL()
 {
     //Generate a new buffer
     glGenBuffers(1, &id_);
+}
+
+AttributeBufferGL::~AttributeBufferGL() {
+    glDeleteBuffers(1, &id_);
+}
+
+const AttributesBase* AttributeBufferGL::getAttribute() const {
+    return attrib_;
+}
+
+GLenum AttributeBufferGL::getFormatType() const {
+    return glFormat_.type;
+}
+
+void AttributeBufferGL::enable() const {
+    (this->*enableFunc_)();
+}
+
+void AttributeBufferGL::disable() const {
+    (this->*disableFunc_)();
+}
+
+void AttributeBufferGL::bind() const {
+    glBindBuffer(target_, id_);
+}
+
+void AttributeBufferGL::specifyLocation() const {
+    (this->*locationPointerFunc_)();
+}
+
+void AttributeBufferGL::upload(const AttributesBase* attrib, GLenum usage, GLenum target, bool element){
+    //Set global variables
+    attrib_ = attrib;
+    target_ = target;
 
     //Get GL Format
-    glFormat_ = getGLFormats()->getGLFormat(attrib_->getDataFormat().getId());
-    
+    glFormat_ = getGLFormats()->getGLFormat(attrib->getDataFormat().getId());
+
     //Specify location and state
-    switch(attrib_->getAttributeType())
+    switch(attrib->getAttributeType())
     {
     case COLOR:
         locationPointerFunc_ = &AttributeBufferGL::colorPointer;
@@ -44,39 +78,9 @@ AttributeBufferGL::AttributeBufferGL(const AttributesBase* attrib, GLenum target
         enableFunc_ = &AttributeBufferGL::enableArray; 
         disableFunc_ = &AttributeBufferGL::disableArray;
     }
-}
 
-AttributeBufferGL::~AttributeBufferGL() {
-    glDeleteBuffers(1, &id_);
-}
-
-const AttributesBase* AttributeBufferGL::getAttribute() const {
-    return attrib_;
-}
-
-GLenum AttributeBufferGL::getFormatType() const {
-    return glFormat_.type;
-}
-
-void AttributeBufferGL::enable() const {
-    (this->*enableFunc_)();
-}
-
-void AttributeBufferGL::disable() const {
-    (this->*disableFunc_)();
-}
-
-void AttributeBufferGL::bind() const {
-    glBindBuffer(target_, id_);
-}
-
-void AttributeBufferGL::specifyLocation() const {
-    (this->*locationPointerFunc_)();
-}
-
-void AttributeBufferGL::upload(GLenum usage){
     bind();
-    glBufferData(target_, attrib_->getDataSize(), attrib_->getAttributes(), usage);
+    glBufferData(target_, attrib->getDataSize(), attrib->getAttributes(), usage);
     specifyLocation();
 }
 

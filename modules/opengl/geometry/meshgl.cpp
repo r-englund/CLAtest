@@ -54,18 +54,18 @@ void MeshGL::render(RenderType rt) const{
 }
 
 void MeshGL::createArrayBuffer(const AttributesBase* attrib){
-    AttributeBufferGL* ab = new AttributeBufferGL(attrib);
-    ab->upload();
+    AttributeBufferGL* ab = new AttributeBufferGL();
+    ab->upload(attrib);
     arrayBuffers_.push_back(ab);
 }
 
 void MeshGL::createElementBuffer(const AttributesBase* attrib, MeshRAM::AttributesInfo ai){
-    AttributeBufferGL* element = new AttributeBufferGL(attrib, GL_ELEMENT_ARRAY_BUFFER, true);
+    AttributeBufferGL* element = new AttributeBufferGL();
     drawMethods_[ai.rt].drawFunc = &MeshGL::renderElements;
     drawMethods_[ai.rt].drawMode = getDrawMode(ai.rt, ai.ct);
     delete drawMethods_[ai.rt].elementBuffer;
     drawMethods_[ai.rt].elementBuffer = element;
-    element->upload();
+    element->upload(attrib, GL_STATIC_DRAW, GL_ELEMENT_ARRAY_BUFFER, true);
 
     //Specify first element buffer as default rendering method
     if(!drawMethods_[GeometryRepresentation::NOT_SPECIFIED].elementBuffer){
