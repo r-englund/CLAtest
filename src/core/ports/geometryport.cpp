@@ -26,9 +26,7 @@ GeometryOutport::GeometryOutport(std::string identifier)
     data_ = new Geometry();
 }
 
-GeometryOutport::~GeometryOutport() {
-    delete data_;
-}
+GeometryOutport::~GeometryOutport() {}
 
 void GeometryOutport::initialize() {}
 

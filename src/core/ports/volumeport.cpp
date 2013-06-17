@@ -27,9 +27,7 @@ VolumeOutport::VolumeOutport(std::string identifier)
     data_ = new StandardVolume();
 }
 
-VolumeOutport::~VolumeOutport() {
-    delete data_;
-}
+VolumeOutport::~VolumeOutport() {}
 
 void VolumeOutport::initialize() {}
 

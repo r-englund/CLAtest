@@ -35,7 +35,9 @@ DataOutport<T>::DataOutport(std::string identifier)
 }
 
 template <typename T>
-DataOutport<T>::~DataOutport() {}
+DataOutport<T>::~DataOutport() {
+    delete data_;
+}
 
 template <typename T>
 void DataOutport<T>::initialize(){}
@@ -55,6 +57,9 @@ const T* DataOutport<T>::getConstData() const{
 
 template <typename T>
 void DataOutport<T>::setData(T* data) {
+    //Delete old data
+    delete data_;
+    //Add reference to new data
     data_ = data;
 }
 

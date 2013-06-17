@@ -93,8 +93,9 @@ ImageOutport::ImageOutport(std::string identifier)
 }
 
 ImageOutport::~ImageOutport() {
-    for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it)
+    for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it)
         delete it->second;
+    data_ = NULL; //As data_ is referenced in imageDataMap_.
 }
 
 void ImageOutport::initialize() {}
@@ -185,7 +186,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
 
     //Remove unwanted map data
     std::vector<std::string> invalidImageDataStrings;
-    for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
+    for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
         if (std::find(registeredDimensionsStrings.begin(), registeredDimensionsStrings.end(), it->first) == registeredDimensionsStrings.end()) {            
             invalidImageDataStrings.push_back(it->first);
         }
@@ -216,7 +217,7 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions){
 
     if (mapDataInvalid_) {
         //Resize all map data once
-        for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
+        for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
             if (it->second != data_) { 
                 uvec2 mapDataDimensions = it->second->getDimension();
                 data_->resizeImageRepresentations(it->second, mapDataDimensions);
@@ -226,7 +227,7 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions){
     }
 
     //TODO: Map traverse is expensive. Optimize
-    for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
+    for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
         if (it->second->getDimension() == requiredDimensions) {
             return it->second;
         }
@@ -245,7 +246,7 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions){
 void ImageOutport::setLargestImageData() {
     uvec2 maxDimensions(0);
     Image* largestImage = 0;
-    for (ImagePortMap::const_iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
+    for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
         uvec2 mapDataDimensions = it->second->getDimension();
         if ( (maxDimensions.x*maxDimensions.y)<(mapDataDimensions.x*mapDataDimensions.y) ) {
             maxDimensions = mapDataDimensions;
