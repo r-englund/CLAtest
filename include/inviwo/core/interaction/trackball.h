@@ -6,6 +6,7 @@
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/eventlistener.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
+#include <inviwo/core/io/serialization/ivwserializable.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/propertyowner.h>
 
@@ -24,6 +25,9 @@ public:
     virtual void invokeEvent(Event* event);
     void addProperty(Property& property);
     void addProperty(Property* property);
+
+	void serialize(IvwSerializer &s) const;
+	void deserialize(IvwDeserializer &s);
 
 private:
     float pixelWidth_;

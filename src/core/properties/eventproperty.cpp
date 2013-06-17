@@ -11,13 +11,15 @@ EventProperty::EventProperty(std::string identifier, std::string displayName, Ev
 }
 
 void EventProperty::serialize( IvwSerializer& s ) const {
-    // TODO
     Property::serialize(s);
+	s.serialize(getIdentifier(), event_);
+	s.serialize(getIdentifier(), action_);
 }
 
 void EventProperty::deserialize( IvwDeserializer& d ) {
-    // TODO
     Property::deserialize(d);
+	d.deserialize(getIdentifier(), event_);
+	d.deserialize(getIdentifier(), action_);
 }
 
 } // namespace

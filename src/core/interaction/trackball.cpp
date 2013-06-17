@@ -242,4 +242,13 @@ void Trackball::addProperty( Property* property ) {
     }
 }
 
+void Trackball::serialize( IvwSerializer &s ) const {
+	s.serialize("type", "Trackball", true);
+	PropertyOwner::serialize(s);
+}
+
+void Trackball::deserialize( IvwDeserializer &s ) {
+	PropertyOwner::deserialize(s);
+}
+
 } // namespace

@@ -33,8 +33,10 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 
-    virtual void serialize(IvwSerializer& s) const; //TODO
-    virtual void deserialize(IvwDeserializer& d); //TODO
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+
+	std::string getClassName()  const { return "EventProperty"; }
 
     Event getEvent() const { return event_; }    
     Action getAction() const { return action_; }
