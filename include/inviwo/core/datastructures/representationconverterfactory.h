@@ -26,7 +26,7 @@ public:
         for (size_t i=0; i<representationConverters_.size(); i++) {
             RepresentationConverterType<T>* repConverterTyped = dynamic_cast<RepresentationConverterType<T>*>(representationConverters_[i]);
             if (repConverterTyped){
-                if (repConverterTyped->canConvert(source)){
+                if (repConverterTyped->canConvertFrom(source)){
                     return representationConverters_[i];
                 }
             }
@@ -41,7 +41,7 @@ public:
         for (size_t i=0; i<representationConverters_.size(); i++) {
             RepresentationConverterPackage<T>* repConverterPackage = dynamic_cast<RepresentationConverterPackage<T>*>(representationConverters_[i]);
             if (repConverterPackage){
-                if (repConverterPackage->canConvert(source)){
+                if (repConverterPackage->canConvertFrom(source)){
                     if (currentConverterPackage)
                         currentConverterPackage = (repConverterPackage->getNumberOfConverters() < currentConverterPackage->getNumberOfConverters() ? repConverterPackage : currentConverterPackage);
                     else

@@ -19,7 +19,7 @@ VolumeRaycasterCL::VolumeRaycasterCL()
     exitPort_("exit-points"),
     outport_("outport"),
     lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
-    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 15.0f),
+    samplingRate_("samplingRate", "Sampling rate", 1.0f, 1.0f, 15.0f),
     transferFunction_("transferFunction", "Transfer function", TransferFunction()),
     kernel_(NULL)
 {
@@ -67,10 +67,10 @@ void VolumeRaycasterCL::process() {
     exitCLGL->aquireGLObject();
 
     Image* outImage = outport_.getData();
-    ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
-    //ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
+    //ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
+    ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
     uvec2 outportDim = outImage->getDimension();
-    //outImageCL->aquireGLObject();
+    outImageCL->aquireGLObject();
 
 
     const Volume* volume = volumePort_.getData();
@@ -90,7 +90,7 @@ void VolumeRaycasterCL::process() {
     OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
     
 
-    //outImageCL->releaseGLObject();
+    outImageCL->releaseGLObject();
     exitCLGL->releaseGLObject();
     entryCLGL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
 

@@ -14,9 +14,8 @@ namespace inviwo {
         VolumeDisk2RAMConverter();
         virtual ~VolumeDisk2RAMConverter();
 
-        inline bool canConvert(const DataRepresentation* source) {
-            if (dynamic_cast<const VolumeDisk*>(source)) return true;
-            return false;
+        inline bool canConvertFrom(const DataRepresentation* source) const {
+            return dynamic_cast<const VolumeDisk*>(source) != NULL;
         }
 
         DataRepresentation* createFrom(const DataRepresentation* source);

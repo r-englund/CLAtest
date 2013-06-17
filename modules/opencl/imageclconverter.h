@@ -16,13 +16,9 @@ namespace inviwo {
         ImageRAM2CLConverter();
         virtual ~ImageRAM2CLConverter() {};
 
-        inline bool canConvert(const DataRepresentation* source) {
-            if (!dynamic_cast<const ImageRAM*>(source)) {
-                return false;
-            }
-            return true;
+        inline bool canConvertFrom(const DataRepresentation* source) const {
+            return dynamic_cast<const ImageRAM*>(source) != NULL;
         }
-
         DataRepresentation* createFrom(const DataRepresentation* source);
         void update(const DataRepresentation* source, DataRepresentation* destination);
     };
@@ -43,13 +39,9 @@ namespace inviwo {
         ImageCL2RAMConverter();
         virtual ~ImageCL2RAMConverter(){};
 
-        inline bool canConvert(const DataRepresentation* source) {
-            if (!dynamic_cast<const ImageCL*>(source)) {
-                return false;
-            }
-            return true;
+        inline bool canConvertFrom(const DataRepresentation* source) const {
+            return dynamic_cast<const ImageCL*>(source) != NULL;
         }
-
         DataRepresentation* createFrom(const DataRepresentation* source);
         void update(const DataRepresentation* source, DataRepresentation* destination);
     };

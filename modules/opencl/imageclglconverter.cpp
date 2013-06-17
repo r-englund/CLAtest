@@ -1,3 +1,4 @@
+#include <modules/opencl/imageclconverter.h>
 #include <modules/opencl/imageclglconverter.h>
 #include <modules/opencl/syncclgl.h>
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
@@ -92,6 +93,15 @@ void ImageCLGL2CLConverter::update(const DataRepresentation* source, DataReprese
         imageSrc->releaseGLObject(glSync.getGLSyncEvent());
     }
 
+}
+
+
+
+ImageCL2CLGLConverter::ImageCL2CLGLConverter() : RepresentationConverterPackage<ImageCLGL>()
+{
+    addConverter(new ImageCL2RAMConverter());
+    addConverter(new ImageRAM2GLConverter());
+    addConverter(new ImageGL2CLGLConverter());
 }
 
 } // namespace

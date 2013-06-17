@@ -2,10 +2,11 @@
 
 namespace inviwo {
 
-Data::Data() {}
+Data::Data(): validRepresentations_(~0), lastValidRepresentation_(NULL) {}
 Data::~Data() { clearRepresentations(); }
 
 void Data::clearRepresentations() {
+    setAllRepresentationsAsValid();
     while (hasRepresentations()) {
         delete representations_.back();
         representations_.pop_back();

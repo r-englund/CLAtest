@@ -13,18 +13,10 @@ namespace inviwo {
     public:
         ImageDisk2RAMConverter();
         virtual ~ImageDisk2RAMConverter();
-        
-        /**
-        * Checks if it is possible to convert the data representation by testing if a
-        * cast is possible.
-        * @param source is the DataRepresentation to test for convertion possibility.
-        * @return boolean value stating if a convertion is possible.
-        **/
-        inline bool canConvert(const DataRepresentation* source) {
-            if (dynamic_cast<const ImageDisk*>(source)) return true;
-            return false;
-        }
 
+        inline bool canConvertFrom(const DataRepresentation* source) const {
+            return dynamic_cast<const ImageDisk*>(source) != NULL;
+        }
         DataRepresentation* createFrom(const DataRepresentation* source);
         void update(const DataRepresentation* source, DataRepresentation* destination);
     };

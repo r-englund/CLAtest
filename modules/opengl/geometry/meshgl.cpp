@@ -137,6 +137,7 @@ void MeshRAM2GLConverter::update(const DataRepresentation* source, DataRepresent
     MeshGL* meshDst = dynamic_cast<MeshGL*>(destination);
     if(meshSrc && meshDst) {
         // FIXME: Implement update operation
+
     }
 
 }

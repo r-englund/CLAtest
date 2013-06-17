@@ -16,11 +16,8 @@ public:
     VolumeRAM2GLConverter();
     virtual ~VolumeRAM2GLConverter();
 
-    inline bool canConvert(const DataRepresentation* source) {
-        if (!dynamic_cast<const VolumeRAM*>(source)) {
-            return false;
-        }
-        return true;
+    inline bool canConvertFrom(const DataRepresentation* source) const {
+        return dynamic_cast<const VolumeRAM*>(source) != NULL;
     }
 
     DataRepresentation* createFrom(const DataRepresentation* source);
