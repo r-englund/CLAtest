@@ -5,6 +5,8 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/vectorproperties.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 
@@ -26,6 +28,12 @@ protected:
 private:
     VolumeInport inport_;
     GeometryOutport outport_;
+
+    BoolProperty clippingEnabled_;
+
+    FloatVec2Property clipX_;
+    FloatVec2Property clipY_;
+    FloatVec2Property clipZ_;
 };
 
 } // namespace
