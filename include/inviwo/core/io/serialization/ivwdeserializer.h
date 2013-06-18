@@ -423,7 +423,7 @@ inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& da
 }
 
 template<class T>
-inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) {
+inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) throw (SerializationException) {
 
     TxElement* keyNode = rootElement_->FirstChildElement(key); 
     if (!keyNode) {
