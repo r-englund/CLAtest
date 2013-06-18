@@ -77,12 +77,14 @@ void ImageCL::resize(uvec2 dimensions)
 
 }
 
-void ImageCL::copyAndResizeImage(DataRepresentation* target) {
+bool ImageCL::copyAndResizeImage(DataRepresentation* target) {
     ImageCL* targetCL = dynamic_cast<ImageCL*>(target);
 
-    if (!targetCL) return;
+    if (!targetCL) return false;
 
     ImageCLResizer::resize(*image2D_, (targetCL->getImage()), targetCL->getDimension());
+	
+	return true;
 
 }
 

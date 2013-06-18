@@ -30,7 +30,7 @@ public:
      */
     void download(void* data) const; 
     virtual void resize(uvec2 dimensions);
-    virtual void copyAndResizeImage(DataRepresentation* target);
+    virtual bool copyAndResizeImage(DataRepresentation* target);
     cl::ImageFormat getFormat() const { return imageFormat_;}
     cl::Image2D getEditableImage() { return *image2D_; }
     const cl::Image2D& getImage() const { return *const_cast<const cl::Image2D*>(image2D_); }
