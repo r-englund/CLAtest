@@ -33,7 +33,7 @@ namespace inviwo {
         void unbindDepthTexture() const;
         void unbindColorTexture() const;
         virtual void resize(uvec2 dimensions);
-        virtual void copyAndResizeImage(DataRepresentation* target) ;
+        virtual bool copyAndResizeImage(DataRepresentation* target) ;
     //private:
         FrameBufferObject* getFBO() {return frameBufferObject_;}
         Texture2D* getColorTexture() {return colorTexture_;}

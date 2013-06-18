@@ -20,7 +20,8 @@ public:
     void deinitialize();
     DataRepresentation* clone() const;
     virtual std::string getClassName() const { return "ImageRAM"; }
-    void copyAndResizeImage(DataRepresentation*){}
+    virtual void resize(uvec2 dimensions);
+    virtual bool copyAndResizeImage(DataRepresentation*);
     virtual void* getData() {return data_;};
     virtual const void* getData() const {return data_;};
     // Takes ownership of data pointer

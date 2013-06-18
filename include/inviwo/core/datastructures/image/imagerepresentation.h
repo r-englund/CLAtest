@@ -17,7 +17,7 @@ namespace inviwo {
         virtual void performOperation(DataOperation*) const {};
         virtual void resize(uvec2 dimensions);
         virtual uvec2 getDimension() const {return dimensions_;}
-        virtual void copyAndResizeImage(DataRepresentation*)=0;
+        virtual bool copyAndResizeImage(DataRepresentation*)=0;
         virtual DataRepresentation* clone() const = 0;
         virtual std::string getClassName() const { return "ImageRepresentation"; }
    protected:

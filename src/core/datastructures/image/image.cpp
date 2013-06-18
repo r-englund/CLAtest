@@ -28,6 +28,7 @@ void Image::resize(uvec2 dimensions) {
             imageRepresentation->resize(dimensions);
         }
     }
+    setAllRepresentationsAsInvalid();
 }
 
 void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
@@ -39,13 +40,18 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
     ImageRepresentation* targetRepresentation = 0;
     std::vector<DataRepresentation*> &targetRepresentations = targetImage->representations_;
     for (size_t i=0; i<representations_.size(); i++) {
-        imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;
+        imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;        
         ivwAssert(imageRepresentation!=0, "Only image representations should be used here.");
-        for (size_t j=0; j<targetRepresentations.size(); j++) {                
-            targetRepresentation = dynamic_cast<ImageRepresentation*>(targetRepresentations[j]) ;
-            ivwAssert(targetRepresentation!=0, "Only image representations should be used here.");
-            if (imageRepresentation->getClassName()==targetRepresentation->getClassName()) {
-                imageRepresentation->copyAndResizeImage(targetRepresentation);
+        if (isRepresentationValid(i)) {
+            for (size_t j=0; j<targetRepresentations.size(); j++) {                
+                targetRepresentation = dynamic_cast<ImageRepresentation*>(targetRepresentations[j]) ;
+                ivwAssert(targetRepresentation!=0, "Only image representations should be used here.");
+                if (imageRepresentation->getClassName()==targetRepresentation->getClassName()) {
+                    if (imageRepresentation->copyAndResizeImage(targetRepresentation)) {
+                        targetImage->setRepresentationAsValid(j);
+                        targetImage->lastValidRepresentation_ = targetRepresentations[j];
+                    }
+                }
             }
         }
     }

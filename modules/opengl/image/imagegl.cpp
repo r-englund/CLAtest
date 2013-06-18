@@ -120,12 +120,12 @@ void ImageGL::resize(uvec2 dimensions) {
     depthTexture_->unbind();    
 }
 
-void ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
+bool ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
     
     ImageGL* source = this;
     ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
 
-    if (!target) return;
+    if (!target) return false;
 
     //Resize by FBO blit
     FrameBufferObject* srcFBO = source->getFBO();
@@ -154,6 +154,8 @@ void ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
     srcFBO->setRead_Blit(false); 
     tgtFBO->setDraw_Blit(false);        
     FrameBufferObject::deactivate();
+
+    return true;
 }
 
 } // namespace
