@@ -17,6 +17,25 @@ protected:
     std::string message_;
 };
 
+
+class IgnoreException : public Exception {
+public:
+    IgnoreException(const std::string& message = "");
+    virtual ~IgnoreException() throw() {}
+};
+
+class AbortException : public Exception {
+public:
+    AbortException(const std::string& message = "");
+    virtual ~AbortException() throw() {}
+};
+
+class SerializationException : public Exception {
+public:
+    SerializationException(const std::string& message = "");
+    virtual ~SerializationException() throw() {}
+};
+
 } // namespace
 
 #endif // IVW_EXCEPTION_H

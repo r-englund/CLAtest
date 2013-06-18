@@ -10,6 +10,7 @@
 #include <inviwo/core/io/serialization/ivwserializeconstants.h>
 #include <inviwo/core/io/serialization/ivwserializebase.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/util/exception.h>
 
 namespace inviwo {
 
@@ -20,10 +21,10 @@ public:
     IvwDeserializer(IvwDeserializer &s, bool allowReference=true);
     IvwDeserializer(std::string fileName, bool allowReference=true);
     virtual ~IvwDeserializer();
-    virtual void readFile();
+    virtual void readFile() throw (SerializationException);
 
     template <typename T>
-    void deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey);
+    void deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) throw (SerializationException);
 
     /* 
      * Deserialize a map, which can have 
@@ -65,40 +66,40 @@ public:
      *       eg., <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
      */
     template <typename K, typename V, typename C>
-    void deserialize(const std::string &key, std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute);
+    void deserialize(const std::string &key, std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute) throw (SerializationException);
 
-    void deserialize(const std::string &key, std::string &data, const bool asAttribute=false);    
-    void deserialize(const std::string &key, bool &data);
-    void deserialize(const std::string &key, float &data);
-    void deserialize(const std::string &key, double &data);
-    void deserialize(const std::string &key, int &data);
-    void deserialize(const std::string &key, unsigned int &data);
-    void deserialize(const std::string &key, long &data);
-    void deserialize(const std::string &key, vec2 &data);
-    void deserialize(const std::string &key, vec3 &data);
-    void deserialize(const std::string &key, vec4 &data);
-    void deserialize(const std::string &key, ivec2 &data);
-    void deserialize(const std::string &key, ivec3 &data);
-    void deserialize(const std::string &key, ivec4 &data); 
-    void deserialize(const std::string &key, uvec2 &data);
-    void deserialize(const std::string &key, uvec3 &data);
-    void deserialize(const std::string &key, uvec4 &data); 
-    void deserialize(const std::string &key, dvec2 &data);
-    void deserialize(const std::string &key, dvec3 &data);
-    void deserialize(const std::string &key, dvec4 &data); 
-    void deserialize(const std::string &key, mat2 &data);
-    void deserialize(const std::string &key, mat3 &data);
-    void deserialize(const std::string &key, mat4 &data); 
-    void deserialize(const std::string &key, IvwSerializable &sObj);
+    void deserialize(const std::string &key, std::string &data, const bool asAttribute=false) throw (SerializationException);    
+    void deserialize(const std::string &key, bool &data) throw (SerializationException);
+    void deserialize(const std::string &key, float &data) throw (SerializationException);
+    void deserialize(const std::string &key, double &data) throw (SerializationException);
+    void deserialize(const std::string &key, int &data) throw (SerializationException);
+    void deserialize(const std::string &key, unsigned int &data) throw (SerializationException);
+    void deserialize(const std::string &key, long &data) throw (SerializationException);
+    void deserialize(const std::string &key, vec2 &data) throw (SerializationException);
+    void deserialize(const std::string &key, vec3 &data) throw (SerializationException);
+    void deserialize(const std::string &key, vec4 &data) throw (SerializationException);
+    void deserialize(const std::string &key, ivec2 &data) throw (SerializationException);
+    void deserialize(const std::string &key, ivec3 &data) throw (SerializationException);
+    void deserialize(const std::string &key, ivec4 &data) throw (SerializationException); 
+    void deserialize(const std::string &key, uvec2 &data) throw (SerializationException);
+    void deserialize(const std::string &key, uvec3 &data) throw (SerializationException);
+    void deserialize(const std::string &key, uvec4 &data) throw (SerializationException); 
+    void deserialize(const std::string &key, dvec2 &data) throw (SerializationException);
+    void deserialize(const std::string &key, dvec3 &data) throw (SerializationException);
+    void deserialize(const std::string &key, dvec4 &data) throw (SerializationException); 
+    void deserialize(const std::string &key, mat2 &data) throw (SerializationException);
+    void deserialize(const std::string &key, mat3 &data) throw (SerializationException);
+    void deserialize(const std::string &key, mat4 &data) throw (SerializationException); 
+    void deserialize(const std::string &key, IvwSerializable &sObj) throw (SerializationException);
     template <class T>
-    void deserialize(const std::string& key, T* & data);
+    void deserialize(const std::string& key, T* & data) throw (SerializationException);
     
 protected:
     friend class NodeSwitch;
 private:
     //void deserialize(const std::string& key, IvwSerializable* & data);
     template <typename T>
-    void deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey);
+    void deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) throw (SerializationException);
 
     /* 
      * Deserialize a map, which can have keys of type K, values of type V* (pointers) 
@@ -108,35 +109,38 @@ private:
      * @ param refer void deserialize()
      */
     template <typename T>
-    void deserializeSTL_Map(const std::string &key, T &sMap, const std::string &itemKey, const std::string &comparisionAttribute);
+    void deserializeSTL_Map(const std::string &key, T &sMap, const std::string &itemKey, const std::string &comparisionAttribute) throw (SerializationException);
 
-    void deserializePrimitives(const std::string &key, std::string &data);
+    void deserializePrimitives(const std::string &key, std::string &data) throw (SerializationException);
 
-    void deserializeAttributes(const std::string &key, std::string &data);
+    void deserializeAttributes(const std::string &key, std::string &data) throw (SerializationException);
     
     template <typename T>
-    void deserializePrimitives(const std::string& key, T& data);
+    void deserializePrimitives(const std::string& key, T& data) throw (SerializationException);
     
     template <class T>
-    void deserializeVector(const std::string& key, T& vector, const bool& isColor=false);
+    void deserializeVector(const std::string& key, T& vector, const bool& isColor=false) throw (SerializationException);
 
     template <class T>
-    void deserializePointer(const std::string& key, T* & data);
+    void deserializePointer(const std::string& key, T* & data) throw (SerializationException);
 
 };
 
 template <typename T>
-inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) {
+inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) 
+        throw (SerializationException){
     deserializeSTL_Vector(key, sVector, itemKey);
 }
 
 template <typename K, typename V, typename C>
-inline void IvwDeserializer::deserialize(const std::string &key,std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute) {
+inline void IvwDeserializer::deserialize(const std::string &key,std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute)
+        throw (SerializationException){
     deserializeSTL_Map(key, sMap, itemKey, comparisionAttribute);
 }
 
 template <typename T>
-inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) {
+inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey)
+        throw (SerializationException) {
     
     TxElement* keyNode;
 
@@ -177,7 +181,8 @@ template <typename T>
 inline void IvwDeserializer::deserializeSTL_Map(const std::string &key, 
                                                 T &sMap, 
                                                 const std::string &itemKey, 
-                                                const std::string &comparisionAttribute) {
+                                                const std::string &comparisionAttribute) 
+        throw (SerializationException) {
 
     TxElement* keyNode;
 
@@ -233,7 +238,7 @@ inline void IvwDeserializer::deserializeSTL_Map(const std::string &key,
 }
 
 template<class T>
-inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) {
+inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) throw (SerializationException) {
     
     TxElement* nextRootNode;
     TxElement* rootCopy = rootElement_;
@@ -352,7 +357,7 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
 }
 
 template<class T>
-inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
+inline void IvwDeserializer::deserialize(const std::string& key, T* & data) throw (SerializationException) {
     TxElement* keyNode;
 
     try {
@@ -411,7 +416,7 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
 
 
 template<class T>
-inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {
+inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) throw (SerializationException) {
     TxElement* keyNode = rootElement_->FirstChildElement(key); 
     //if (!keyNode) return;
     keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);

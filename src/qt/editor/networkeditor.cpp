@@ -163,8 +163,8 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
     // remove link graphics items
     std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = linkGraphicsItems_;
     for (size_t i=0; i<linkGraphicsItems.size(); i++) {
-        if (linkGraphicsItems[i]->getOutProcessor() == processorGraphicsItem ||
-            linkGraphicsItems[i]->getInProcessor() == processorGraphicsItem) {
+        if (linkGraphicsItems[i]->getOutProcessorGraphicsItem() == processorGraphicsItem ||
+            linkGraphicsItems[i]->getInProcessorGraphicsItem() == processorGraphicsItem) {
             removeLinkGraphicsItem(linkGraphicsItems[i]);
         }
     }
@@ -239,8 +239,8 @@ void NetworkEditor::removeConnectionGraphicsItem(ConnectionGraphicsItem* connect
 //   PRIVATE METHODS FOR ADDING/REMOVING LINKS   //
 ///////////////////////////////////////////////////
 void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
-    Processor* processor1 = linkGraphicsItem->getOutProcessor()->getProcessor();
-    Processor* processor2 = linkGraphicsItem->getInProcessor()->getProcessor();
+    Processor* processor1 = linkGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
+    Processor* processor2 = linkGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
     removeLinkGraphicsItem(linkGraphicsItem);
     processorNetwork_->removeLink(processor1, processor2);
 }
@@ -264,8 +264,8 @@ void NetworkEditor::removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraph
 }
 
 void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem) {
-    Processor* inProcessor = linkConnectionGraphicsItem->getInProcessor()->getProcessor();
-    Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessor()->getProcessor();
+    Processor* inProcessor = linkConnectionGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
+    Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
 
     LinkDialog* linkDialog = new LinkDialog(inProcessor, outProcessor, processorNetwork_, 0);
     linkDialog->exec();
@@ -412,8 +412,8 @@ ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(Outport* outpor
 
 LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItem(Processor* processor1, Processor* processor2) const {
     for (size_t i=0; i<linkGraphicsItems_.size(); i++) {
-        Processor* outProcessor = linkGraphicsItems_[i]->getOutProcessor()->getProcessor();
-        Processor* inProcessor = linkGraphicsItems_[i]->getInProcessor()->getProcessor();
+        Processor* outProcessor = linkGraphicsItems_[i]->getOutProcessorGraphicsItem()->getProcessor();
+        Processor* inProcessor = linkGraphicsItems_[i]->getInProcessorGraphicsItem()->getProcessor();
         if ((outProcessor == processor1 && inProcessor == processor2)  ||
             (outProcessor == processor2 && inProcessor == processor1))
            return linkGraphicsItems_[i];
@@ -750,8 +750,8 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             removeLink(linkGraphicsItem);
 
         else if (result == linkAction) {
-            Processor* inProcessor = linkGraphicsItem->getInProcessor()->getProcessor();
-            Processor* outProcessor = linkGraphicsItem->getOutProcessor()->getProcessor();
+            Processor* inProcessor = linkGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
+            Processor* outProcessor = linkGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
             ProcessorLink* processorLink = processorNetwork_->getProcessorLink(inProcessor, outProcessor);
             if (processorLink)
                 processorLink->autoLinkPropertiesByType();
@@ -819,9 +819,20 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // first we clean the current network
     clearNetwork();
 
-    // then we deserialize into an intermediate processor network
+    // then we deserialize processor network
     IvwDeserializer xmlDeserializer(fileName);
-    processorNetwork_->deserialize(xmlDeserializer);
+    try {
+        processorNetwork_->deserialize(xmlDeserializer);
+    }
+    catch (const AbortException& exception) {
+        LogInfo("Unable to load network " + fileName + " due to " + exception.getMessage());
+        clearNetwork();
+        return false;
+    }
+    catch (const IgnoreException& exception) {
+        LogInfo("Incomplete network loading " + fileName + " due to " + exception.getMessage());
+    }
+    
 
     // add processors
     std::vector<Processor*> processors = processorNetwork_->getProcessors();

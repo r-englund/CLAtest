@@ -384,9 +384,9 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
 
         std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = NetworkEditor::getRef().linkGraphicsItems_;
         for (size_t i=0; i<linkGraphicsItems.size(); i++) {
-             if (linkGraphicsItems[i]->getOutProcessor() == this || linkGraphicsItems[i]->getInProcessor() == this) {
-                 QPointF startPoint = linkGraphicsItems[i]->getOutProcessor()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getInProcessor());
-                 QPointF endPoint = linkGraphicsItems[i]->getInProcessor()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getOutProcessor());
+             if (linkGraphicsItems[i]->getOutProcessorGraphicsItem() == this || linkGraphicsItems[i]->getInProcessorGraphicsItem() == this) {
+                 QPointF startPoint = linkGraphicsItems[i]->getOutProcessorGraphicsItem()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getInProcessorGraphicsItem());
+                 QPointF endPoint = linkGraphicsItems[i]->getInProcessorGraphicsItem()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getOutProcessorGraphicsItem());
                  linkGraphicsItems[i]->setStartPoint(startPoint);
                  linkGraphicsItems[i]->setEndPoint(endPoint);
                  linkGraphicsItems[i]->update();

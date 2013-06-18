@@ -50,7 +50,7 @@ void ProcessorNetwork::addConnection(Outport* sourcePort, Inport* destPort) {
 
 void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
     for (size_t i=0; i<portConnections_.size(); i++) {
-        if (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort) {                
+        if (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort) {
             destPort->disconnectFrom(sourcePort);
             delete portConnections_[i];
             portConnections_.erase(portConnections_.begin()+i);
@@ -83,6 +83,20 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
     modified();
 }
 
+void ProcessorNetwork::clear() {
+    std::vector<Processor*> processors = processors_;   
+
+    for (size_t i=0; i<processors.size(); i++)
+        removeProcessor(processors[i]);
+
+    std::vector<PortConnection*> connections = portConnections_;
+    for (size_t i=0; i<connections.size(); i++)
+        removeConnection(connections[i]->getOutport(), connections[i]->getInport());
+
+    std::vector<ProcessorLink*> processorLinks = processorLinks_;
+    for (size_t i=0; i<processorLinks_.size(); i++)
+        removeLink(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor() );
+}
 
 Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
     for (size_t i=0; i<processors_.size(); i++)
@@ -119,19 +133,60 @@ void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("ProcessorLinks", processorLinks_, "ProcessorLink");
 }
 
-void ProcessorNetwork::deserialize(IvwDeserializer& d) {
+void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     std::vector<PortConnection*> portConnections;
     std::vector<ProcessorLink*> processorLinks;
 
-    d.deserialize("Processors", processors_, "Processor");
-    d.deserialize("Connections", portConnections, "Connection");
-    d.deserialize("ProcessorLinks", processorLinks, "ProcessorLink");
+    //Processors
+    try {
+        d.deserialize("Processors", processors_, "Processor");
+    }
+    catch (const SerializationException& exception) {
+        //Abort and clear all processors
+        clear();
+        throw AbortException("DeSerialization exception " + exception.getMessage());
+    }
+    catch (...) {
+        //Remove all processors
+        clear();
+        throw AbortException("Unknown Exception.");        
+    }
 
-    for (size_t i=0; i<portConnections.size(); i++)
-        addConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());
+    //Connections
+    try {
+        d.deserialize("Connections", portConnections, "Connection");
+        for (size_t i=0; i<portConnections.size(); i++)
+            addConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());
+    }
+    catch (const SerializationException& exception) {
+        //Remove all connections. But processors are still valid.
+        for (size_t i=0; i<portConnections.size(); i++)
+            removeConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());        
+        throw IgnoreException("DeSerialization Exception " + exception.getMessage());
+    }
+    catch (...) {
+        //Abort and clear network in case of unknown exception
+        clear();
+        throw AbortException("Unknown Exception."); 
+    }
 
-    for (size_t i=0; i<processorLinks.size(); i++)
-        addLink(processorLinks[i]);
+    //Links
+    try {        
+        d.deserialize("ProcessorLinks", processorLinks, "ProcessorLink");        
+        for (size_t i=0; i<processorLinks.size(); i++)
+            addLink(processorLinks[i]);
+    }
+    catch (const SerializationException& exception) {
+        //Remove all links. But processors, connections are still valid.
+        for (size_t i=0; i<processorLinks.size(); i++)
+            removeLink(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor());
+        throw IgnoreException("DeSerialization Exception " + exception.getMessage());
+    }
+    catch (...) {
+        //Abort and clear network in case of unknown exception
+        clear();
+        throw AbortException("Unknown Exception.");        
+    }
 }
 
 } // namespace

@@ -8,6 +8,7 @@
 #include <inviwo/core/network/portconnection.h>
 #include <inviwo/core/network/processorlink.h>
 #include <inviwo/core/util/observer.h>
+#include <inviwo/core/util/exception.h>
 
 namespace inviwo {
 
@@ -116,7 +117,7 @@ public:
     bool islocked() const { return (locked_==true); }
 
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& s) throw (Exception);
 
 private:
     bool modified_;
@@ -127,6 +128,12 @@ private:
     std::vector<PortConnection*> portConnections_;
     std::vector<ProcessorLink*> processorLinks_;
 
+    /**
+     * Clears the network objects processors, port connections, processor links etc.,
+     * This function clears only the core objects and mainly used to abort any
+     * further operation. 
+     */
+    void clear();
 };
 
 template<class T>

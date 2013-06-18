@@ -51,8 +51,8 @@ public:
     LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
     ~LinkConnectionGraphicsItem();
     
-    ProcessorGraphicsItem* getOutProcessor() const { return outProcessor_; }    
-    ProcessorGraphicsItem* getInProcessor() const { return inProcessor_; }
+    ProcessorGraphicsItem* getOutProcessorGraphicsItem() const { return outProcessor_; }    
+    ProcessorGraphicsItem* getInProcessorGraphicsItem() const { return inProcessor_; }
 
 private:
     ProcessorGraphicsItem* outProcessor_; ///< Processor representation from which the connection starts

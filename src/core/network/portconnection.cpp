@@ -18,11 +18,11 @@ void PortConnection::serialize(IvwSerializer& s) const {
 }
 
 void PortConnection::deserialize(IvwDeserializer& d) {    
-    Outport outport("");    
-    d.deserialize("OutPort", outport);    
+    Outport outport("");
+    d.deserialize("OutPort", outport);
     outport_ = dynamic_cast<Outport*>(outport.getProcessor()->getPort(outport.getIdentifier()));
     
-    Inport inport("");    
+    Inport inport("");
     d.deserialize("InPort", inport);
     inport_ = dynamic_cast<Inport*>(inport.getProcessor()->getPort(inport.getIdentifier()));
 }
