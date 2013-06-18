@@ -157,10 +157,13 @@ void Processor::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassName(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("MetaDataList", metaData_, "MetaData") ;
+
+	if (interactionHandlers_.size() != 0) 
+		s.serialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
+
     PropertyOwner::serialize(s);
 
-	//if (interactionHandlers_.size() != 0) 
-	//	s.serialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
+
 }
 
 void Processor::deserialize(IvwDeserializer& d) {
@@ -168,10 +171,13 @@ void Processor::deserialize(IvwDeserializer& d) {
     d.deserialize("type", className, true);
     d.deserialize("identifier", identifier_, true);
     d.deserialize("MetaDataList", metaData_, "MetaData") ;
+
+	if (interactionHandlers_.size() != 0)
+		d.deserialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
+
     PropertyOwner::deserialize(d);
 
-	//if (interactionHandlers_.size() != 0)
-	//	d.deserialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
+
 }
 
 } // namespace

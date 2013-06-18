@@ -28,8 +28,8 @@ public:
      */
     EventProperty(std::string identifier, 
         std::string displayName,
-        Event e,
-        Action action,
+        Event* e,
+        Action* action,
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 
@@ -38,8 +38,8 @@ public:
 
 	std::string getClassName()  const { return "EventProperty"; }
 
-    Event getEvent() const { return event_; }    
-    Action getAction() const { return action_; }
+    Event* getEvent() const { return event_; }    
+    Action* getAction() const { return action_; }
 
     /** 
      * \brief Maps action to new event.
@@ -48,11 +48,11 @@ public:
      * 
      * @param Event e The new event
      */
-    void setEvent(Event e) { event_ = e; }
+    void setEvent(Event* e) { event_ = e; }
 
 private:
-    Event event_;
-    Action action_;
+    Event* event_;
+    Action* action_;
 };
 
 } // namespace

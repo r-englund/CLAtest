@@ -11,14 +11,14 @@ Trackball::Trackball(CameraProperty* camera) : InteractionHandler(), PropertyOwn
       pixelWidth_(0.007f),
       isMouseBeingPressedAndHold_(false) { 
     rotateEventProperty_ = new EventProperty("trackballRotate", "Rotate", 
-        MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, Event::MODIFIER_NONE), 
-        TrackballAction(TrackballAction::TRACKBALL_ROTATE));
+        new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, Event::MODIFIER_NONE), 
+        new TrackballAction(TrackballAction::TRACKBALL_ROTATE));
     zoomEventProperty_ = new EventProperty("trackballZoom", "Zoom", 
-        MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, Event::MODIFIER_NONE), 
-        TrackballAction(TrackballAction::TRACKBALL_ZOOM));
+        new MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, Event::MODIFIER_NONE), 
+        new TrackballAction(TrackballAction::TRACKBALL_ZOOM));
     panEventProperty_ = new EventProperty("trackballPan", "Pan", 
-        MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, Event::MODIFIER_NONE), 
-        TrackballAction(TrackballAction::TRACKBALL_PAN));
+        new MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, Event::MODIFIER_NONE), 
+        new TrackballAction(TrackballAction::TRACKBALL_PAN));
 
     addProperty(rotateEventProperty_);
     addProperty(zoomEventProperty_);
@@ -72,13 +72,13 @@ void Trackball::invokeEvent(Event* event) {
     //    glVertex3f(camera_->lookFrom().x, camera_->lookFrom().y, camera_->lookFrom().z);
     //glEnd();
     if (mouseEvent) {
-        if (mouseEvent->button() == rotateEventProperty_->getEvent().button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+        if (mouseEvent->button() == rotateEventProperty_->getEvent()->button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform rotation
             rotateCamera(mouseEvent);
-        } else if (mouseEvent->button() == zoomEventProperty_->getEvent().button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+        } else if (mouseEvent->button() == zoomEventProperty_->getEvent()->button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform zoom
             zoomCamera(mouseEvent);
-	    } else if (mouseEvent->button() == panEventProperty_->getEvent().button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+	    } else if (mouseEvent->button() == panEventProperty_->getEvent()->button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform pan
             panCamera(mouseEvent);  
         } else if (mouseEvent->state() == MouseEvent::MOUSE_STATE_RELEASE) {
@@ -243,7 +243,7 @@ void Trackball::addProperty( Property* property ) {
 }
 
 void Trackball::serialize( IvwSerializer &s ) const {
-	s.serialize("type", "Trackball", true);
+	InteractionHandler::serialize(s);
 	PropertyOwner::serialize(s);
 }
 

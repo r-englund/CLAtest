@@ -122,7 +122,6 @@ QString MappingWidget::intToQString(int num ) {
 void MappingWidget::comboBoxChange() {
 	emptyLayout(botLayout_);
 	drawEventPropertyWidgets();
-	//updateWidget();
 }
 
 } // namespace

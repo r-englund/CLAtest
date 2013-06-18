@@ -5,7 +5,9 @@ namespace inviwo {
     InteractionHandler::InteractionHandler() : EventListener() {}
     InteractionHandler::~InteractionHandler() {}
 
-	void InteractionHandler::serialize( IvwSerializer &s ) const {}
+	void InteractionHandler::serialize( IvwSerializer &s ) const {
+		s.serialize("type", getClassName(), true);
+	}
 	void InteractionHandler::deserialize( IvwDeserializer &s ) {}
 
 } // namespace

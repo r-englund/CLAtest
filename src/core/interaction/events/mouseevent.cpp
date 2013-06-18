@@ -34,4 +34,15 @@ MouseEvent::MouseEvent( MouseEvent::MouseButton button, Event::Modifier modifier
 
 MouseEvent::~MouseEvent() {}
 
+void MouseEvent::serialize( IvwSerializer& s ) const {
+	Event::serialize(s);
+	s.serialize("button", button_);
+}
+
+void MouseEvent::deserialize( IvwDeserializer& s ) {
+	Event::deserialize(s);
+	s.deserialize("button", button_);
+	buttonName_ = buttonNames_[button_];
+}
+
 } // namespace

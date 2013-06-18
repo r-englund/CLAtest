@@ -9,15 +9,15 @@ void EventPropertyManager::changeKeybinding( EventProperty* eventProperty, Mouse
 	// Look for event conflicts
 	std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
 	for (size_t i = 0; i < eventProperties.size(); ++i) {
-		if (eventProperties.at(i)->getEvent().button() == button) {
-			eventProperties.at(i)->setEvent(MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, Event::MODIFIER_NONE));
+		if (eventProperties.at(i)->getEvent()->button() == button) {
+			eventProperties.at(i)->setEvent(new MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, Event::MODIFIER_NONE));
 		}
 	}
 	
 	// Do the remapping
 	for (size_t i = 0; i < eventProperties.size(); ++i) {
 		if (eventProperty->getIdentifier() == eventProperties.at(i)->getIdentifier()) {
-			eventProperties.at(i)->setEvent(MouseEvent(button, Event::MODIFIER_NONE));
+			eventProperties.at(i)->setEvent(new MouseEvent(button, Event::MODIFIER_NONE));
 			break;
 		}
 	}

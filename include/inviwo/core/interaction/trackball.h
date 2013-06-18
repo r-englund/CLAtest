@@ -26,6 +26,8 @@ public:
     void addProperty(Property& property);
     void addProperty(Property* property);
 
+	virtual std::string getClassName() const { return "Trackball"; }
+
 	void serialize(IvwSerializer &s) const;
 	void deserialize(IvwDeserializer &s);
 

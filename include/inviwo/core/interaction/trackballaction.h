@@ -19,6 +19,9 @@ public:
     TrackballAction(TrackballAction::Action action);
     ~TrackballAction();
 
+	virtual void serialize(IvwSerializer& s) const;
+	virtual void deserialize(IvwDeserializer& s);
+
 private:
     std::string actionNames_[COUNT];
 };

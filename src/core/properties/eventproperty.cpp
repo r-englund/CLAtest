@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-EventProperty::EventProperty(std::string identifier, std::string displayName, Event e, Action action,
+EventProperty::EventProperty(std::string identifier, std::string displayName, Event* e, Action* action,
                              PropertyOwner::InvalidationLevel invalidationLevel,
                              PropertySemantics::Type semantics  )
     : Property(identifier, displayName, invalidationLevel, semantics) {
@@ -12,14 +12,14 @@ EventProperty::EventProperty(std::string identifier, std::string displayName, Ev
 
 void EventProperty::serialize( IvwSerializer& s ) const {
     Property::serialize(s);
-	s.serialize(getIdentifier(), event_);
-	s.serialize(getIdentifier(), action_);
+	s.serialize("Event", event_);
+	s.serialize("Action", action_);
 }
 
 void EventProperty::deserialize( IvwDeserializer& d ) {
     Property::deserialize(d);
-	d.deserialize(getIdentifier(), event_);
-	d.deserialize(getIdentifier(), action_);
+	d.deserialize("Event", event_);
+	d.deserialize("Action", action_);
 }
 
 } // namespace

@@ -13,6 +13,8 @@ namespace inviwo {
         InteractionHandler();
         virtual ~InteractionHandler();
 
+		virtual std::string getClassName() const { return "undefined"; }
+
 		void serialize(IvwSerializer &s) const;
 		void deserialize(IvwDeserializer &s);
     };
