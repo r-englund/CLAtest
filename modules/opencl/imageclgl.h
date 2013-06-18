@@ -24,7 +24,7 @@ public:
     void initialize(const Texture2D* texture);
 
     virtual void resize(uvec2 dimensions);
-    virtual void copyAndResizeImage(DataRepresentation* target);
+    virtual bool copyAndResizeImage(DataRepresentation* target);
     cl::Image2DGL getEditableImage() { return *image2D_; }
     const cl::Image2DGL& getImage() const { return *(image2D_); }
     const Texture2D* getTexture() const { return texture_; }

@@ -49,10 +49,10 @@ void ImageCLGL::resize(uvec2 dimensions) {
     ImageRepresentation::resize(dimensions);
 }
 
-void ImageCLGL::copyAndResizeImage(DataRepresentation* target) {
+bool ImageCLGL::copyAndResizeImage(DataRepresentation* target) {
     ivwAssert(false, "Not implemented");
 
-
+	return false;
 }
 
 
