@@ -28,11 +28,6 @@ bool Data::hasRepresentations() const {
     return !representations_.empty();
 }
 
-void Data::copyMetaData(Data* targetData) const{
-    targetData->metaData_.removeAll();
-    targetData->metaData_ = metaData_;
-}
-
 void Data::setDataFormat(DataFormatBase format){
     dataFormatBase_ = format;
 }

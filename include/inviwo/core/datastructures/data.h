@@ -20,6 +20,16 @@ public:
     Data& operator=(const Data& rhs) {
         if (this != &rhs) {
             rhs.copyRepresentations(this);
+            this->metaData_ = rhs.getMetaDataMap();
+            this->setDataFormat(rhs.getDataFormat());
+            for(size_t i = 0; i < this->representations_.size(); ++i) {
+                if(rhs.isRepresentationValid(i)) {
+                    this->setRepresentationAsValid(i);
+                    this->lastValidRepresentation_ = this->representations_[i];
+                } else {
+                    this->setRepresentationAsInvalid(i);
+                }
+            }
         }
         return *this;
     };
@@ -46,7 +56,7 @@ public:
     template<typename T, typename U>
     U getMetaData(std::string key, U val) const;
 
-    void copyMetaData(Data* targetData) const;
+    const MetaDataMap& getMetaDataMap() const { return metaData_; }
 
     void setDataFormat(DataFormatBase format);
     DataFormatBase getDataFormat() const;

@@ -17,8 +17,7 @@ Volume::Volume(VolumeRepresentation* in) : Data3D(in->getDimensions(), in->getDa
 Volume::Volume(VolumeRepresentation* in, const Volume* src) : Data3D(in->getDimensions(), in->getDataFormat()) {
     representations_.clear();
     representations_.push_back(in);
-    metaData_.removeAll();
-    src->copyMetaData(this);
+    this->metaData_ = src->getMetaDataMap();
 }
 
 Volume::~Volume() {}
