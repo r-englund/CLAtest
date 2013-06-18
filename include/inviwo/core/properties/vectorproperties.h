@@ -37,6 +37,38 @@ public:
 
 };
 
+    /** class FloatMinMaxProperty
+    *   \brief The FloatMinMaxProperty class provides a property holding a 2-D vector containing float values, where x is always less then y.
+    *   
+    *   A FloatMinMax property are normally used by a processor.
+    *   The property has a widget consisting of 1 range slider for setting the float values.
+    * @see OrdinalProperty
+    */
+class IVW_CORE_API FloatMinMaxProperty : public FloatVec2Property {
+public:	
+    /** 
+     * \brief Constructs a FloatMinMaxProperty.
+     *
+     * <DESCRIBE THE METHOD>
+     * 
+     * @param std::string identifier <DESCRIBE ME>
+     * @param std::string displayName <DESCRIBE ME>
+     * @param vec2 value <DESCRIBE ME>
+     * @param vec2 minValue <DESCRIBE ME>
+     * @param vec2 maxValue <DESCRIBE ME>
+     * @param vec2 increment <DESCRIBE ME>
+     * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
+     * @param PropertySemantics::Type semantics <DESCRIBE ME>
+     * @return  <DESCRIBE ME>
+     */FloatMinMaxProperty(std::string identifier, std::string displayName, vec2 value, 
+		vec2 minValue=vec2(0.0f), vec2 maxValue= vec2(1.0f), vec2 increment=vec2(0.01f),
+        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics::Type semantics = PropertySemantics::Default);
+	virtual void serialize(IvwSerializer& s) const;
+	virtual void deserialize(IvwDeserializer& s);
+
+};
+
     /** class FloatVec3Property
     *   \brief The FloatVec3Property class provides a property holding a 3-D vector containing float values.
     *   

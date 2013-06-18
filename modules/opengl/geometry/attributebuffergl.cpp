@@ -79,8 +79,12 @@ void AttributeBufferGL::upload(const AttributesBase* attrib, GLenum usage, GLenu
         disableFunc_ = &AttributeBufferGL::disableArray;
     }
 
+    reupload(usage);
+}
+
+void AttributeBufferGL::reupload(GLenum usage){
     bind();
-    glBufferData(target_, attrib->getDataSize(), attrib->getAttributes(), usage);
+    glBufferData(target_, attrib_->getDataSize(), attrib_->getAttributes(), usage);
     specifyLocation();
 }
 

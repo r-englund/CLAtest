@@ -31,6 +31,7 @@ private:
 
     BoolProperty clippingEnabled_;
 
+    FloatMinMaxProperty test_;
     FloatVec2Property clipX_;
     FloatVec2Property clipY_;
     FloatVec2Property clipZ_;

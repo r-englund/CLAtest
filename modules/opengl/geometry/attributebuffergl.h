@@ -22,6 +22,7 @@ public:
     void specifyLocation() const;
 
     void upload(const AttributesBase*, GLenum usage = GL_STATIC_DRAW, GLenum target = GL_ARRAY_BUFFER, bool element = false);
+    void reupload(GLenum usage = GL_STATIC_DRAW);
 
 protected:
     void enableArray() const;

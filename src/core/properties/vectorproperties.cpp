@@ -2,10 +2,16 @@
 
 namespace inviwo {
 
-	FloatVec2Property::FloatVec2Property(std::string identifier, std::string displayName, vec2 value,
-        vec2 minValue, vec2 maxValue, vec2 increment, PropertyOwner::InvalidationLevel invalidationLevel,
-        PropertySemantics::Type semantics )
+FloatVec2Property::FloatVec2Property(std::string identifier, std::string displayName, vec2 value,
+                                    vec2 minValue, vec2 maxValue, vec2 increment, PropertyOwner::InvalidationLevel invalidationLevel,
+                                    PropertySemantics::Type semantics )
 	: OrdinalProperty<vec2>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
+{}
+
+FloatMinMaxProperty::FloatMinMaxProperty(std::string identifier, std::string displayName, vec2 value,
+                                     vec2 minValue, vec2 maxValue, vec2 increment, PropertyOwner::InvalidationLevel invalidationLevel,
+                                     PropertySemantics::Type semantics )
+                                     : FloatVec2Property(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 FloatVec3Property::FloatVec3Property(std::string identifier, std::string displayName, vec3 value,
@@ -65,6 +71,14 @@ void FloatVec2Property::deserialize(IvwDeserializer& d){
 
 	d.deserialize("increment", value);
 	OrdinalProperty<vec2>::setIncrement(value);
+}
+
+void FloatMinMaxProperty::serialize(IvwSerializer& s) const {
+    FloatVec2Property::serialize(s);
+}
+
+void FloatMinMaxProperty::deserialize(IvwDeserializer& d){
+    FloatVec2Property::deserialize(d);
 }
 
 void FloatVec3Property::serialize(IvwSerializer& s) const {

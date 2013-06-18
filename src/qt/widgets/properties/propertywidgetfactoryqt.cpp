@@ -22,6 +22,7 @@
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatmat2propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatmat3propertywidgetqt.h>
@@ -77,6 +78,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new FloatMat4PropertyWidgetQt(static_cast<FloatMat4Property*>(property));
     if (dynamic_cast<FloatProperty*>(property))
         return new FloatPropertyWidgetQt(static_cast<FloatProperty*>(property));
+    if (dynamic_cast<FloatMinMaxProperty*>(property))
+        return new FloatMinMaxPropertyWidgetQt(static_cast<FloatMinMaxProperty*>(property));
     if (dynamic_cast<FloatVec2Property*>(property))
         return new FloatVec2PropertyWidgetQt(static_cast<FloatVec2Property*>(property));
     if (dynamic_cast<FloatVec3Property*>(property))
