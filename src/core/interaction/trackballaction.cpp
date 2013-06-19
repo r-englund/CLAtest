@@ -6,7 +6,6 @@ TrackballAction::TrackballAction( TrackballAction::Action action ) {
     actionNames_[TRACKBALL_ROTATE] = "Trackball rotate";
     actionNames_[TRACKBALL_ZOOM] = "Trackball zoom";
     actionNames_[TRACKBALL_PAN] = "Trackball pan";
-	actionNames_[TEST] = "Test";
 
     action_ = action;
     actionName_ = actionNames_[action];
