@@ -17,11 +17,11 @@ public:
     MappingPopup(EventProperty* eventProperty, EventPropertyManager* parentManager);
 
 //protected:
-    void  mousePressEvent ( QMouseEvent * event );
+	void keyReleaseEvent(QKeyEvent * event);
+	void mousePressEvent( QMouseEvent * event );
 
 private:
 	EventProperty* eventProperty_;
-    EventConverterQt* eventConverter_;
 	EventPropertyManager* parentManager_;
 };
 

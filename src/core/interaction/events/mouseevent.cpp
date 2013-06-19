@@ -11,7 +11,7 @@ MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
           buttonNames_[MOUSE_BUTTON_LEFT] = "Left mouse button";
           buttonNames_[MOUSE_BUTTON_RIGHT] = "Right mouse button";
           buttonNames_[MOUSE_BUTTON_MIDDLE] = "Middle mouse button";
-		  buttonNames_[MOUSE_BUTTON_NONE] = "Unbound";
+		  buttonNames_[MOUSE_BUTTON_NONE] = "";
 
           modifierName_ = modifierNames_[modifier];
           modifier_ = modifier;
@@ -24,7 +24,7 @@ MouseEvent::MouseEvent( MouseEvent::MouseButton button, Event::Modifier modifier
     buttonNames_[MOUSE_BUTTON_LEFT] = "Left mouse button";
     buttonNames_[MOUSE_BUTTON_RIGHT] = "Right mouse button";
     buttonNames_[MOUSE_BUTTON_MIDDLE] = "Middle mouse button";
-	buttonNames_[MOUSE_BUTTON_NONE] = "Unbound";
+	buttonNames_[MOUSE_BUTTON_NONE] = "";
 
     modifierName_ = modifierNames_[modifier];
     modifier_ = modifier;
@@ -36,13 +36,18 @@ MouseEvent::~MouseEvent() {}
 
 void MouseEvent::serialize( IvwSerializer& s ) const {
 	Event::serialize(s);
-	s.serialize("button", button_);
+	s.serialize("button", buttonName_);
 }
 
-void MouseEvent::deserialize(IvwDeserializer& d) {
+void MouseEvent::deserialize( IvwDeserializer& d ) {
 	Event::deserialize(d);
-	d.deserialize("button", button_);
-	buttonName_ = buttonNames_[button_];
+	d.deserialize("button", buttonName_);
+	for (size_t i = 0; i < COUNT; ++i) {
+		if (buttonNames_[i] == buttonName_) {
+			button_ = i;
+			break;
+		}
+	}
 }
 
 } // namespace

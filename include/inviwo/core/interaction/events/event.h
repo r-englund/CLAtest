@@ -11,9 +11,9 @@ class IVW_CORE_API Event : public IvwSerializable {
 public:
     enum Modifier {
         MODIFIER_NONE  =      0,
-        MODIFIER_ALT   = 1 << 1,
-        MODIFIER_CTRL  = 1 << 2,
-        MODIFIER_SHIFT = 1 << 3,
+        MODIFIER_ALT,
+        MODIFIER_CTRL,
+        MODIFIER_SHIFT,
         COUNT
     };
 

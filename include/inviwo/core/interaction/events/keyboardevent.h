@@ -8,8 +8,11 @@ namespace inviwo {
 
 class IVW_CORE_API KeyboardEvent : public Event {
 public:
-    KeyboardEvent();
+    KeyboardEvent(char ascii, Event::Modifier modifier);
     ~KeyboardEvent();
+
+	virtual void serialize(IvwSerializer& s) const;
+	virtual void deserialize(IvwDeserializer& d);
 };
 
 } // namespace

@@ -72,13 +72,19 @@ void Trackball::invokeEvent(Event* event) {
     //    glVertex3f(camera_->lookFrom().x, camera_->lookFrom().y, camera_->lookFrom().z);
     //glEnd();
     if (mouseEvent) {
-        if (mouseEvent->button() == rotateEventProperty_->getEvent()->button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+        if (mouseEvent->button() == rotateEventProperty_->getEvent()->button() 
+			&& mouseEvent->modifier() == rotateEventProperty_->getEvent()->modifier() 
+			&& mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform rotation
             rotateCamera(mouseEvent);
-        } else if (mouseEvent->button() == zoomEventProperty_->getEvent()->button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+        } else if (mouseEvent->button() == zoomEventProperty_->getEvent()->button()
+			&& mouseEvent->modifier() == zoomEventProperty_->getEvent()->modifier()
+			&& mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform zoom
             zoomCamera(mouseEvent);
-	    } else if (mouseEvent->button() == panEventProperty_->getEvent()->button() && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+	    } else if (mouseEvent->button() == panEventProperty_->getEvent()->button() 
+			&& mouseEvent->modifier() == panEventProperty_->getEvent()->modifier()
+			&& mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
             //perform pan
             panCamera(mouseEvent);  
         } else if (mouseEvent->state() == MouseEvent::MOUSE_STATE_RELEASE) {

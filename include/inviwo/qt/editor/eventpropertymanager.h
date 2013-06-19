@@ -2,14 +2,14 @@
 #define IVW_EVENTPROPERTYMANAGER_H
 
 #include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QWidget>
 #include <vector>
 
 namespace inviwo {
 
-class EventPropertyManager : public QWidget {
+class EventPropertyManager {
 
 public:
 	EventPropertyManager();
@@ -20,7 +20,8 @@ public:
 	void setEventPropertyMap(std::map<std::string, std::vector<EventProperty*> > eventPropertyMap);
 	void setActiveProcessor(std::string processorIdentifier){ activeProcessor_ = processorIdentifier; };
 
-	void changeKeybinding(EventProperty* eventProperty, MouseEvent::MouseButton button);
+	void changeMouseMapping(EventProperty* eventProperty, MouseEvent::MouseButton button, Event::Modifier modifier);
+	void changeKeyMapping(EventProperty* eventProperty, char button, Event::Modifier modifier);
 
 private:
 	std::map<std::string, std::vector<EventProperty*> > eventPropertyMap_;

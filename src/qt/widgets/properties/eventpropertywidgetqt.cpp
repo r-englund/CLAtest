@@ -9,7 +9,10 @@ inviwo::EventPropertyWidgetQt::EventPropertyWidgetQt( EventProperty* eventproper
 
 void inviwo::EventPropertyWidgetQt::generateWidget() {
     delete layout(); // Make sure there is no previous layout
-    std::string eventName = eventproperty_->getEvent()->modifierName() + eventproperty_->getEvent()->buttonName();
+	std::string modifierName = eventproperty_->getEvent()->modifierName();
+	if (modifierName != "") modifierName.append("-");
+
+    std::string eventName = modifierName + eventproperty_->getEvent()->buttonName();
     std::string actionName = eventproperty_->getAction()->name();
 
     QHBoxLayout* hLayout = new QHBoxLayout();

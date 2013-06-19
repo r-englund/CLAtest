@@ -5,11 +5,12 @@ namespace inviwo {
 EventPropertyManager::EventPropertyManager() {}
 EventPropertyManager::~EventPropertyManager() {}
 
-void EventPropertyManager::changeKeybinding( EventProperty* eventProperty, MouseEvent::MouseButton button ) {
+// Remap with a mouse event
+void EventPropertyManager::changeMouseMapping( EventProperty* eventProperty, MouseEvent::MouseButton button, Event::Modifier modifier) {
 	// Look for event conflicts
 	std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
 	for (size_t i = 0; i < eventProperties.size(); ++i) {
-		if (eventProperties.at(i)->getEvent()->button() == button) {
+		if (eventProperties.at(i)->getEvent()->button() == button && eventProperties.at(i)->getEvent()->modifier() == modifier) {
 			eventProperties.at(i)->setEvent(new MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, Event::MODIFIER_NONE));
 		}
 	}
@@ -17,7 +18,26 @@ void EventPropertyManager::changeKeybinding( EventProperty* eventProperty, Mouse
 	// Do the remapping
 	for (size_t i = 0; i < eventProperties.size(); ++i) {
 		if (eventProperty->getIdentifier() == eventProperties.at(i)->getIdentifier()) {
-			eventProperties.at(i)->setEvent(new MouseEvent(button, Event::MODIFIER_NONE));
+			eventProperties.at(i)->setEvent(new MouseEvent(button, modifier));
+			break;
+		}
+	}
+}
+
+// Remap with a keyboard event
+void EventPropertyManager::changeKeyMapping( EventProperty* eventProperty, char button, Event::Modifier modifier) {
+	// Look for event conflicts
+	std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
+	for (size_t i = 0; i < eventProperties.size(); ++i) {
+		if (eventProperties.at(i)->getEvent()->button() == button && eventProperties.at(i)->getEvent()->modifier() == modifier) {
+			eventProperties.at(i)->setEvent(new KeyboardEvent(0, Event::MODIFIER_NONE));
+		}
+	}
+
+	// Do the remapping
+	for (size_t i = 0; i < eventProperties.size(); ++i) {
+		if (eventProperty->getIdentifier() == eventProperties.at(i)->getIdentifier()) {
+			eventProperties.at(i)->setEvent(new KeyboardEvent(button, modifier));
 			break;
 		}
 	}

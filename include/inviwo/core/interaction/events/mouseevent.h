@@ -11,17 +11,17 @@ class IVW_CORE_API MouseEvent : public Event {
 public:
     enum MouseButton {
         MOUSE_BUTTON_NONE   =      0,
-        MOUSE_BUTTON_LEFT   = 1 << 1,
-        MOUSE_BUTTON_MIDDLE = 1 << 2,
-        MOUSE_BUTTON_RIGHT  = 1 << 3,
+        MOUSE_BUTTON_LEFT,
+        MOUSE_BUTTON_MIDDLE,
+        MOUSE_BUTTON_RIGHT,
         COUNT
     };
 
     enum MouseState {
         MOUSE_STATE_NONE    =      0,
-        MOUSE_STATE_MOVE    = 1 << 1,
-        MOUSE_STATE_PRESS   = 1 << 2,
-        MOUSE_STATE_RELEASE = 1 << 3
+        MOUSE_STATE_MOVE,
+        MOUSE_STATE_PRESS,
+        MOUSE_STATE_RELEASE
     };
 
     MouseEvent(ivec2 position, MouseEvent::MouseButton button,

@@ -16,12 +16,10 @@ CanvasQt::CanvasQt(QWidget* parent)
         QGLWidget::glInit();
     }
     //setAutoBufferSwap(false);
-    eventConverter_ = new EventConverterQt();
 }
 
 CanvasQt::~CanvasQt() {
     //QGLContext::currentContext();
-    delete eventConverter_;
 }
 
 void CanvasQt::initialize() {
@@ -57,8 +55,8 @@ void CanvasQt::repaint() {
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
-        eventConverter_->getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
-        eventConverter_->getModifier(e), dimensions_);
+        EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
+        EventConverterQt::getModifier(e), dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
     processorNetworkEvaluator_->evaluate();
 }
@@ -66,8 +64,8 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
 void CanvasQt::mouseReleaseEvent (QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
-        eventConverter_->getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE, 
-        eventConverter_->getModifier(e), dimensions_);
+        EventConverterQt::getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE, 
+        EventConverterQt::getModifier(e), dimensions_);
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
     processorNetworkEvaluator_->evaluate();
 }
@@ -78,13 +76,13 @@ void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
     MouseEvent* mouseEvent = 0;
     if (e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
         mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
-            eventConverter_->getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
-            eventConverter_->getModifier(e), dimensions_);
+            EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
+            EventConverterQt::getModifier(e), dimensions_);
     }
     else {
         mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
             MouseEvent::MOUSE_BUTTON_NONE, MouseEvent::MOUSE_STATE_NONE, 
-            eventConverter_->getModifier(e), dimensions_);
+            EventConverterQt::getModifier(e), dimensions_);
     }
     processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
     processorNetworkEvaluator_->evaluate();

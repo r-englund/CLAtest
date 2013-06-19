@@ -31,7 +31,6 @@ public:
     void mouseMoveEvent(QMouseEvent* e);
 
 private:
-    EventConverterQt* eventConverter_;
     static QGLWidget* sharedWidget_; //For rendering-context sharing
 };
 
