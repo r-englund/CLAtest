@@ -155,13 +155,18 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     //Connections
     try {
         d.deserialize("Connections", portConnections, "Connection");
-        for (size_t i=0; i<portConnections.size(); i++)
-            addConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());
+        for (size_t i=0; i<portConnections.size(); i++) {
+            Outport* outPort = portConnections[i]->getOutport();
+            Inport* inPort = portConnections[i]->getInport();
+            if (outPort && inPort) {
+                addConnection(outPort, inPort);
+            }
+            else {
+                LogWarn("Unable to establish port connection.");
+            }
+        }
     }
-    catch (const SerializationException& exception) {
-        //Remove all connections. But processors are still valid.
-        for (size_t i=0; i<portConnections.size(); i++)
-            removeConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());        
+    catch (const SerializationException& exception) {             
         throw IgnoreException("DeSerialization Exception " + exception.getMessage());
     }
     catch (...) {
@@ -173,13 +178,30 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     //Links
     try {        
         d.deserialize("ProcessorLinks", processorLinks, "ProcessorLink");        
-        for (size_t i=0; i<processorLinks.size(); i++)
-            addLink(processorLinks[i]);
+        for (size_t i=0; i<processorLinks.size(); i++) {
+            Processor* inProcessor = processorLinks[i]->getInProcessor();
+            Processor* outProcessor = processorLinks[i]->getOutProcessor();
+            if (inProcessor && outProcessor) {
+                std::vector<PropertyLink*> propertyLinks = processorLinks[i]->getPropertyLinks();
+                for (size_t j=0; j<propertyLinks.size(); j++) {
+                    Property* srcProperty = propertyLinks[j]->getSourceProperty();
+                    Property* dstProperty = propertyLinks[j]->getDestinationProperty();
+                    if (!( srcProperty && dstProperty)) {
+                        processorLinks[i]->removePropertyLinks(srcProperty, dstProperty);
+                        LogWarn("Unable to establish property link.");
+                    }
+                }
+                
+                if (processorLinks[i]->getPropertyLinks().size())
+                    addLink(processorLinks[i]);
+            }
+            else {
+                LogWarn("Unable to establish processor link.");
+            }
+        }
+            
     }
-    catch (const SerializationException& exception) {
-        //Remove all links. But processors, connections are still valid.
-        for (size_t i=0; i<processorLinks.size(); i++)
-            removeLink(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor());
+    catch (const SerializationException& exception) {       
         throw IgnoreException("DeSerialization Exception " + exception.getMessage());
     }
     catch (...) {

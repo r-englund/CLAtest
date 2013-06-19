@@ -396,15 +396,16 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) thro
 
            data=static_cast<T*>(refDataContainer_.find(type_attr, ref_attr));
 
-            if (!data) {
-                if (!type_attr.empty()) {
-                    data = IvwSerializeBase::getRegisteredType<T>(type_attr);
-                }
-                else {
-                    data = IvwSerializeBase::getNonRegisteredType<T>();
-                }
-                if (data) refDataContainer_.insert(data, keyNode);
-            }
+           //Do not allocate new data
+           //if (!data) {
+           //   if (!type_attr.empty()) {
+           //        data = IvwSerializeBase::getRegisteredType<T>(type_attr);
+           //   }
+           //   else {
+           //       data = IvwSerializeBase::getNonRegisteredType<T>();
+           //     }
+           //     if (data) refDataContainer_.insert(data, keyNode);
+           //}
 
             return;
 

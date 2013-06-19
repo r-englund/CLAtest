@@ -20,11 +20,19 @@ void PortConnection::serialize(IvwSerializer& s) const {
 void PortConnection::deserialize(IvwDeserializer& d) {    
     Outport outport("");
     d.deserialize("OutPort", outport);
-    outport_ = dynamic_cast<Outport*>(outport.getProcessor()->getPort(outport.getIdentifier()));
+    Processor* outPortProcessor = outport.getProcessor();
+    ivwAssert(outPortProcessor!=0, "Unable to load processor.")
+    
+    if (outPortProcessor)
+        outport_ = dynamic_cast<Outport*>(outPortProcessor->getPort(outport.getIdentifier()));
     
     Inport inport("");
     d.deserialize("InPort", inport);
-    inport_ = dynamic_cast<Inport*>(inport.getProcessor()->getPort(inport.getIdentifier()));
+    Processor* inPortProcessor = inport.getProcessor();
+    ivwAssert(outPortProcessor!=0, "Unable to load processor.")
+
+    if (inPortProcessor)
+        inport_ = dynamic_cast<Inport*>(inPortProcessor->getPort(inport.getIdentifier()));
 }
 
 } // namespace
