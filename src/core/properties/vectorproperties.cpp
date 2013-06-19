@@ -35,6 +35,13 @@ IntVec2Property::IntVec2Property(std::string identifier, std::string displayName
 	: OrdinalProperty<ivec2>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
+IntMinMaxProperty::IntMinMaxProperty(std::string identifier, std::string displayName, ivec2 value,
+                                 ivec2 minValue, ivec2 maxValue, ivec2 increment,
+                                 PropertyOwner::InvalidationLevel invalidationLevel,
+                                 PropertySemantics::Type semantics )
+                                 : IntVec2Property(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
+{}
+
 IntVec3Property::IntVec3Property(std::string identifier, std::string displayName, ivec3 value,
 								 ivec3 minValue, ivec3 maxValue, ivec3 increment,
                                  PropertyOwner::InvalidationLevel invalidationLevel,
@@ -151,6 +158,14 @@ void IntVec2Property::deserialize(IvwDeserializer& d){
 
 	d.deserialize("increment", value);
 	OrdinalProperty<ivec2>::setIncrement(value);
+}
+
+void IntMinMaxProperty::serialize(IvwSerializer& s) const {
+    IntVec2Property::serialize(s);
+}
+
+void IntMinMaxProperty::deserialize(IvwDeserializer& d){
+    IntVec2Property::deserialize(d);
 }
 
 void IntVec3Property::serialize(IvwSerializer& s) const {

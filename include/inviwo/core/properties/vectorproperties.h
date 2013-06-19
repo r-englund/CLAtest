@@ -161,6 +161,37 @@ public:
 	virtual void deserialize(IvwDeserializer& d);
 
 };
+    /** class IntMinMaxProperty
+    *   \brief The IntMinMaxProperty class provides a property holding a 2-D vector containing int values, where x is always less then y.
+    *   
+    *   A IntMinMax property are normally used by a processor.
+    *   The property has a widget consisting of 1 range slider for setting the float values.
+    * @see OrdinalProperty
+    */
+class IVW_CORE_API IntMinMaxProperty : public IntVec2Property {
+public:
+	/** 
+	 * \brief Constructs a IntMinMaxProperty
+	 *
+	 * <DESCRIBE THE METHOD>
+	 * 
+	 * @param std::string identifier <DESCRIBE ME>
+	 * @param std::string displayName <DESCRIBE ME>
+	 * @param ivec2 value <DESCRIBE ME>
+	 * @param ivec2 minValue <DESCRIBE ME>
+	 * @param ivec2 maxValue <DESCRIBE ME>
+	 * @param ivec2 increment <DESCRIBE ME>
+	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
+	 * @param PropertySemantics::Type semantics <DESCRIBE ME>
+	 * @return  <DESCRIBE ME>
+	 */IntMinMaxProperty(std::string identifier, std::string displayName, ivec2 value, 
+		ivec2 minValue=ivec2(0), ivec2 maxValue= ivec2(10), ivec2 increment=ivec2(1),
+        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics::Type semantics = PropertySemantics::Default);
+	virtual void serialize(IvwSerializer& s) const;
+	virtual void deserialize(IvwDeserializer& s);
+
+};
     /** class IntVec3Property
     *   \brief The IntVec2Property class provides a property holding a 3-D vector containing integer values.
     *   

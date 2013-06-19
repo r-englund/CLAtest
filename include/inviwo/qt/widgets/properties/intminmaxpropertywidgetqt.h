@@ -1,37 +1,37 @@
-#ifndef IVW_FLOATMINMAXPROPERTYWIDGETQT_H
-#define IVW_FLOATMINMAXPROPERTYWIDGETQT_H
+#ifndef IVW_INTMINMAXPROPERTYWIDGETQT_H
+#define IVW_INTMINMAXPROPERTYWIDGETQT_H
 //Qt
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <QMenu>
-#include <QDoubleSpinBox>
+#include <QSpinBox>
 //Core
 #include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API FloatMinMaxPropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API IntMinMaxPropertyWidgetQt : public PropertyWidgetQt {
 
 Q_OBJECT;
 
 public:
-    FloatMinMaxPropertyWidgetQt(FloatMinMaxProperty* property);
+    IntMinMaxPropertyWidgetQt(IntMinMaxProperty* property);
 
     void updateFromProperty();
 
 private:
-    FloatMinMaxProperty* property_;
+    IntMinMaxProperty* property_;
     RangeSliderQt* slider_;
-    QDoubleSpinBox* spinBoxMin_;
-    QDoubleSpinBox* spinBoxMax_;
+    QSpinBox* spinBoxMin_;
+    QSpinBox* spinBoxMax_;
     PropertySettingsWidgetQt* settingsWidget_;
     QMenu* settingsMenu_;
-    vec2 valueMinMaxMax_;
-    vec2 valueMinMaxMin_;
-    vec2 valueIncrement_;
-    vec2 valueMinMax_;
+    ivec2 valueMinMaxMax_;
+    ivec2 valueMinMaxMin_;
+    ivec2 valueIncrement_;
+    ivec2 valueMinMax_;
 
     void generateWidget();
     void generatesSettingsWidget();

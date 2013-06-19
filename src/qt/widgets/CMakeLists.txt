@@ -11,7 +11,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangefloatsliderqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangesliderqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/buttonpropertywidgetqt.h
@@ -29,6 +29,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec2propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec3propertywidgetqt.h
@@ -51,7 +52,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangefloatsliderqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangesliderqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/buttonpropertywidgetqt.h
@@ -69,6 +70,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec2propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec3propertywidgetqt.h
@@ -94,7 +96,7 @@ set(SOURCE_FILES
     intsliderwidgetqt.cpp
     inviwoapplicationqt.cpp
     mappingpopup.cpp
-    rangefloatsliderqt.cpp
+    rangesliderqt.cpp
     processors/processorwidgetqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
@@ -112,6 +114,7 @@ set(SOURCE_FILES
     properties/floatvec2propertywidgetqt.cpp
     properties/floatvec3propertywidgetqt.cpp
     properties/floatvec4propertywidgetqt.cpp
+    properties/intminmaxpropertywidgetqt.cpp
     properties/intpropertywidgetqt.cpp
     properties/intvec2propertywidgetqt.cpp
     properties/intvec3propertywidgetqt.cpp

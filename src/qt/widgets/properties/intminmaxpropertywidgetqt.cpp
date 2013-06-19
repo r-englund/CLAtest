@@ -1,10 +1,10 @@
-#include <inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h>
 #include <QHBoxLayout>
 #include <QLabel>
 
 namespace inviwo {
 
-FloatMinMaxPropertyWidgetQt::FloatMinMaxPropertyWidgetQt(FloatMinMaxProperty *property) : property_(property),
+IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty *property) : property_(property),
 valueMinMaxMin_(property->getMinValue()),
 valueMinMaxMax_(property->getMaxValue()),
 valueIncrement_(property->getIncrement()) {
@@ -14,26 +14,26 @@ valueIncrement_(property->getIncrement()) {
 	}
 
 
-void FloatMinMaxPropertyWidgetQt::generateWidget() {
+void IntMinMaxPropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
 	hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
 
-    spinBoxMin_ = new QDoubleSpinBox(this);
+    spinBoxMin_ = new QSpinBox(this);
     spinBoxMin_->setFixedWidth(50);
     hLayout->addWidget(spinBoxMin_);
 
     slider_ = new RangeSliderQt(Qt::Horizontal, this);
 	hLayout->addWidget(slider_);
 
-    spinBoxMax_ = new QDoubleSpinBox(this);
+    spinBoxMax_ = new QSpinBox(this);
     spinBoxMax_->setFixedWidth(50);
     hLayout->addWidget(spinBoxMax_);
 	setLayout(hLayout);
 
-    connect(slider_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
 }
 
-void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
+void IntMinMaxPropertyWidgetQt::updateFromProperty() {
     valueMinMaxMax_ = property_->getMaxValue();
     valueMinMaxMin_ = property_->getMinValue();
     valueIncrement_ = property_->getIncrement();
@@ -52,7 +52,7 @@ void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
 }
 
 
-void FloatMinMaxPropertyWidgetQt::generatesSettingsWidget() {
+void IntMinMaxPropertyWidgetQt::generatesSettingsWidget() {
     settingsWidget_ = new PropertySettingsWidgetQt(property_);
 
     settingsMenu_ = new QMenu();
@@ -67,7 +67,7 @@ void FloatMinMaxPropertyWidgetQt::generatesSettingsWidget() {
     connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));*/
 }
 
-void FloatMinMaxPropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
+void IntMinMaxPropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
     /*QPoint globalPos = sliderX_->mapToGlobal(pos);
     QAction* selecteditem = settingsMenu_->exec(globalPos);
     if (selecteditem == settingsMenu_->actions().at(0)) {
@@ -90,7 +90,7 @@ void FloatMinMaxPropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
     }*/
 }
 
-void FloatMinMaxPropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
+void IntMinMaxPropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
     /*QPoint globalPos = sliderY_->mapToGlobal(pos);
 
     QAction* selecteditem = settingsMenu_->exec(globalPos);
@@ -114,7 +114,7 @@ void FloatMinMaxPropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
     }*/
 }
 
-void FloatMinMaxPropertyWidgetQt::setPropertyValue() {
+void IntMinMaxPropertyWidgetQt::setPropertyValue() {
     valueMinMax_ = property_->get();
     //valueMinMax_.x = sliderX_->getValue();
     //valueMinMax_.y = sliderY_->getValue();

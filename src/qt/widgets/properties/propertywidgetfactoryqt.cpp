@@ -30,6 +30,7 @@
 #include <inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intvec2propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intvec3propertywidgetqt.h>
@@ -86,6 +87,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new FloatVec3PropertyWidgetQt(static_cast<FloatVec3Property*>(property));
     if (dynamic_cast<FloatVec4Property*>(property))
         return new FloatVec4PropertyWidgetQt(static_cast<FloatVec4Property*>(property));
+    if (dynamic_cast<IntMinMaxProperty*>(property))
+        return new IntMinMaxPropertyWidgetQt(static_cast<IntMinMaxProperty*>(property));
     if (dynamic_cast<IntVec2Property*>(property))
         return new IntVec2PropertyWidgetQt(static_cast<IntVec2Property*>(property));
     if (dynamic_cast<IntVec3Property*>(property))
