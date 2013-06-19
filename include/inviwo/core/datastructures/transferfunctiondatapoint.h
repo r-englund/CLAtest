@@ -22,16 +22,21 @@ namespace inviwo {
 
         virtual ~TransferFunctionDataPoint();
 
-        const vec2* getPos();
-        void setPos(vec2 pos);
-        const vec4* getRgba();
-        void setRgba(vec4* rgba);
+		const vec2* getPos();
+		void setPos(vec2 pos);
+		void setPos(vec2* pos);
+		const vec4* getRgba();
+		void setRgba(vec4 rgba);
+		void setRgba(vec4* rgba);
         void setRgb(const vec3* rgb);
         void setA(const float alpha);
+		const bool isSelected();
+		void setSelected(bool);
 
     private:
 		vec2 pos_;
         vec4 rgba_;
+		bool selected_;
     };
 
 } // namespace

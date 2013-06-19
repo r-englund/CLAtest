@@ -32,6 +32,8 @@
 #include <QPointF>
 #include <vector>
 
+//#include "vld.h"
+
 namespace inviwo {
     class TransferFunctionEditor : public QGraphicsScene {
 
@@ -46,7 +48,7 @@ namespace inviwo {
         *         
         *  Main constructor, creates edge control points and corresponding line
         */
-        TransferFunctionEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunction_, std::vector<TransferFunctionEditorControlPoint*>* points_);
+        TransferFunctionEditor(PropertyWidgetQt *parent_, TransferFunction* transferFunction_);
         ~TransferFunctionEditor();
 
 	protected :
@@ -68,12 +70,14 @@ namespace inviwo {
 		void removePoint(QGraphicsSceneMouseEvent *e);
 		std::vector<TransferFunctionEditorControlPoint*>::iterator removePoint(TransferFunctionEditorControlPoint* p);
 		void sortLines();
+		void sortControlPoints();
+		void setControlPointNeighbours();
 
     private :
-        std::vector<TransferFunctionEditorControlPoint*>* points_; ///< Control points in the transfer function graph
+        std::vector<TransferFunctionEditorControlPoint*> points_; ///< Control points in the transfer function graph
         std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
         TransferFunction* transferFunction_; ///< Pointer to widget's member variable
-        PropertyWidgetQt *parent_; ///< Pointer to widget so it can be updated from the editor
+        PropertyWidgetQt* parent_; ///< Pointer to widget so it can be updated from the editor
 		QPointF mouseDownPos_; ///< Stores the mouseDown position to distinguish between mouse-click and mouse-drag
     };
 

@@ -43,10 +43,9 @@ namespace inviwo {
 
 
     protected:
-        void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
-        void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-
+        void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent);
+        void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent);
 
     private:
         TransferFunctionDataPoint* start_;

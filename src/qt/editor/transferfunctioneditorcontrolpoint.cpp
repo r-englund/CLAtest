@@ -15,19 +15,11 @@ namespace inviwo {
         setPos(datapoint_->getPos()->x, datapoint_->getPos()->y);
         setZValue(1);
 		size_ = 12.0f;
+		leftNeighbour_ = NULL;
+		rightNeighbour_ = NULL;
     }
 
-    TransferFunctionDataPoint* TransferFunctionEditorControlPoint::getPoint(){
-        return datapoint_;
-    }
 
-    void TransferFunctionEditorControlPoint::setId(int id){
-        id_ = id;
-    }
-
-    const int TransferFunctionEditorControlPoint::getId(){
-        return id_;
-    }
 
     TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(){};
 
@@ -44,7 +36,10 @@ namespace inviwo {
 
 		brush = new QBrush(QColor::fromRgbF(datapoint_->getRgba()->r, datapoint_->getRgba()->g, datapoint_->getRgba()->b));
 		
-        if (this->isSelected()){
+		if(this->isSelected()){datapoint_->setSelected(true);}
+		else{datapoint_->setSelected(false);}
+
+        if (datapoint_->isSelected()){
             pen = new QPen(Qt::red, 2.5, Qt::SolidLine, Qt::RoundCap);
         } 
         else{
@@ -66,27 +61,25 @@ namespace inviwo {
     }
 
     void TransferFunctionEditorControlPoint::mousePressEvent ( QGraphicsSceneMouseEvent *e ){
-        this->setSelected(true);
+        datapoint_->setSelected(true);
+		this->setSelected(true);
     }
 
     void TransferFunctionEditorControlPoint::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
 
-	void TransferFunctionEditorControlPoint::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
-	{
+	void TransferFunctionEditorControlPoint::mouseMoveEvent(QGraphicsSceneMouseEvent * e){
 		vec2 pos = vec2(e->scenePos().x(), e->scenePos().y());
 
-		if (pos.x <= 0.0f){
-			pos.x = 0.0f;
-		} 
-		if (pos.x >= 255.0f){
-			pos.x = 255.0f;
-		}
-		if (pos.y <= 0.0f){
-			pos.y = 0.0f;
-		} 
-		if (pos.y >= 100.0f){
-			pos.y = 100.0f;
-		}
+		float min = (this->getLeftNeighbour()) ? getLeftNeighbour()->getPoint()->getPos()->x : 0.0f;
+		float max = (this->getRightNeighbour()) ? getRightNeighbour()->getPoint()->getPos()->x : 255.0f;
+
+		LogInfo(min);
+		LogInfo(max);
+
+		pos.x = (pos.x <= min) ? min + 1.0f : pos.x; 
+		pos.x = (pos.x >= max) ? max - 1.0f : pos.x; 
+		pos.y = (pos.y <= 0.0f) ? 0.0f : pos.y; 
+		pos.y = (pos.y >= 100.0f) ? 100.0f : pos.y; 
 
 		pos.x = floor(pos.x + 0.5);
 
@@ -94,4 +87,14 @@ namespace inviwo {
 		this->datapoint_->setPos(pos);
 		this->datapoint_->setA(pos.y/100.0f);
 	}
+
+	TransferFunctionDataPoint* TransferFunctionEditorControlPoint::getPoint() const {return datapoint_;}
+
+	TransferFunctionEditorControlPoint* TransferFunctionEditorControlPoint::getLeftNeighbour() const{return leftNeighbour_;}
+
+	TransferFunctionEditorControlPoint* TransferFunctionEditorControlPoint::getRightNeighbour() const{return rightNeighbour_;}
+
+	void TransferFunctionEditorControlPoint::setLeftNeighbour(TransferFunctionEditorControlPoint* point){leftNeighbour_ = point;}
+	void TransferFunctionEditorControlPoint::setRightNeighbour(TransferFunctionEditorControlPoint* point){rightNeighbour_ = point;}
+
 } // namespace

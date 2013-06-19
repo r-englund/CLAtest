@@ -10,9 +10,9 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 	Property::serialize(s) ;
 	TransferFunction temp = get();
 	std::stringstream stream;
-	s.serialize("size", temp.getSize());
+	s.serialize("size", temp.getNumberOfDataPoints());
 
-	for (int i = 0; i < temp.getSize(); i++){
+	for (size_t i = 0; i < temp.getNumberOfDataPoints(); i++){
 		stream << "pos" << i;
 		s.serialize(stream.str(), temp.getPoint(i)->getPos());
 		stream.clear();

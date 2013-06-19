@@ -26,7 +26,7 @@ public:
 
 protected:
     virtual void process();
-    bool getSize();
+    bool getNumberOfDataPoints();
 private:
 	TransferProperty trans_;
     ImagePort outport_;

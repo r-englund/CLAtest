@@ -18,22 +18,26 @@ namespace inviwo {
     class IVW_CORE_API TransferFunction {
     public:
         TransferFunction();
+		
+		TransferFunction(const TransferFunction& rhs);
+		TransferFunction& operator=(const TransferFunction& rhs);
         virtual ~TransferFunction();
         void setData(Image);
         Image* getData() const;
-        int getSize();
-        TransferFunctionDataPoint* getPoint(int i);
+        size_t getNumberOfDataPoints() const;
+        TransferFunctionDataPoint* getPoint(int i) const;
 
 		void addPoint(vec2 pos, vec4 rgba);
         void addPoint(vec2* pos, vec4* rgba);
         void addPoint(TransferFunctionDataPoint* newPoint);
         void removePoint(TransferFunctionDataPoint* newPoint);
+		void clearPoints();
         
         void sortDataPoints();
         void calcTransferValues();
 
     private:
-        Image* data_;
+        Image data_;
         std::vector<TransferFunctionDataPoint*> dataPoints_;
     };
 

@@ -6,8 +6,6 @@ namespace inviwo {
 		zoom_ = 0;
 		width  = 255.0f;
 		height = 100.0f;
-
-		//static_cast<vec4*>(transferFunction_->getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
 		generateWidget();
 		updateFromProperty();
 	}
@@ -28,7 +26,7 @@ namespace inviwo {
 		QVBoxLayout* vLayout = new QVBoxLayout();
 		setLayout(vLayout);
 
-		editor_ = new TransferFunctionEditor(this, &property_->get(), &points_);
+		editor_ = new TransferFunctionEditor(this, &property_->get());
 		editor_->setSceneRect(0,0,width,height);
 		editor_->setBackgroundBrush(Qt::transparent);
 
@@ -41,7 +39,7 @@ namespace inviwo {
 		editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		//editorview_->fitInView(editor_->sceneRect(), Qt::KeepAspectRatio);
-		
+
 		paintscene_ = new QGraphicsScene(this);
 		paintview_ = new QGraphicsView(this);
 		paintview_->setScene(paintscene_);
@@ -60,10 +58,12 @@ namespace inviwo {
 	void TransferFunctionPropertyDialog::setPropertyValue(){
 		vec3* newRgb;
 		QColor color = colorDialog_->currentColor();
-		for (int i = 0; i < (int)points_.size() ; i++){
-			if (points_[i]->isSelected()){
+
+		for (int i = 0; i < (int)property_->get().getNumberOfDataPoints() ; i++){
+			if (property_->get().getPoint(i)->isSelected()){
+				LogInfo(property_->get().getPoint(i)->getPos()->x);
 				newRgb = new vec3(color.redF(),color.greenF(),color.blueF());
-				points_[i]->getPoint()->setRgb(newRgb);
+				property_->get().getPoint(i)->setRgb(newRgb);
 			}
 		}
 		editor_->update();
@@ -72,17 +72,33 @@ namespace inviwo {
 	}
 
 	void TransferFunctionPropertyDialog::updateFromProperty(){
-	QGradientStop* temp = new QGradientStop();
+		QGradientStop* temp = new QGradientStop();
 		stops_->clear();
-		if (points_.size() > 0){
-			for (int i = 0; i < (int)points_.size(); i++){
-				temp->first = points_[i]->getPoint()->getPos()->x / 255.01f;
-				temp->second = QColor::fromRgbF(points_[i]->getPoint()->getRgba()->r, points_[i]->getPoint()->getRgba()->g, points_[i]->getPoint()->getRgba()->b, 1.0f);
+		const vec4* col;
+		vec4 hej;
+		if (property_->get().getNumberOfDataPoints() > 0){
+			for (int i = 0; i < (int)property_->get().getNumberOfDataPoints(); i++){
+				col = property_->get().getPoint(i)->getRgba();
+				temp->first = property_->get().getPoint(i)->getPos()->x / 255.0f;
+				temp->second = QColor::fromRgbF(col->r, col->g, col->b, 1.0f);
 				stops_->push_front(*temp);
 			}
-			gradient_->setStops(*stops_);
-			paintscene_->setForegroundBrush(*gradient_);
 		}
+		else{
+			vec4* dataArray = static_cast<vec4*>(property_->get().getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
+			hej = dataArray[0];
+			temp->first = 0.0f;
+			temp->second = QColor::fromRgbF(hej.r, hej.g, hej.b, 1.0f);
+			LogInfo(hej.r);
+			stops_->push_front(*temp);
+			hej = dataArray[255];
+			temp->first = 1.0f;
+			temp->second = QColor::fromRgbF(hej.r, hej.g, hej.b, 1.0f);
+			stops_->push_front(*temp);
+			LogInfo(hej.r);
+		}
+		gradient_->setStops(*stops_);
+		paintscene_->setForegroundBrush(*gradient_);
 		delete temp;
 		this->update();
 		property_->invalidate();

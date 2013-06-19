@@ -48,7 +48,7 @@ namespace inviwo {
         deactivateCurrentTarget();
     }
 
-    bool TransferFunction::getSize()
+    bool TransferFunction::getNumberOfDataPoints()
     {
         throw std::exception("The method or operation is not implemented.");
     }

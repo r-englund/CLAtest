@@ -5,15 +5,15 @@
 
 namespace inviwo {
 
-    TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(TransferFunctionDataPoint* start, TransferFunctionDataPoint* finish)
+	TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(TransferFunctionDataPoint* start, TransferFunctionDataPoint* finish):
+	start_(start),
+	finish_(finish)
     {
 		setFlag(QGraphicsItem::ItemIsMovable,false);
 		setFlag(QGraphicsItem::ItemIsSelectable,false);
-		setFlag(QGraphicsItem::ItemSendsGeometryChanges);
-		setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
+		setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+		setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
 		setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
-		start_ = start;
-        finish_ = finish;
         setZValue(0);
     };
 
@@ -38,8 +38,6 @@ namespace inviwo {
         painter->setPen(*pen);
         painter->drawLine(start->x, start->y, finish->x, finish->y);
 
-		//delete start;
-		//delete finish;
 		delete pen;
     }
 

@@ -44,12 +44,12 @@ namespace inviwo {
         virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
         QRectF boundingRect() const;
 
-        TransferFunctionDataPoint* getPoint();
-        /**
-        * get/set functions for id and position
-        */
-        const int getId();
-        void setId(int id);
+        TransferFunctionDataPoint* getPoint() const;
+		TransferFunctionEditorControlPoint* getLeftNeighbour() const;
+		TransferFunctionEditorControlPoint* getRightNeighbour() const;
+
+		void setLeftNeighbour(TransferFunctionEditorControlPoint*);
+		void setRightNeighbour(TransferFunctionEditorControlPoint*);
 
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -57,9 +57,10 @@ namespace inviwo {
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
     private:
-        int id_; ///< id to identify edge points
         float size_; ///< size for drawing the points
         TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
+		TransferFunctionEditorControlPoint* leftNeighbour_;
+		TransferFunctionEditorControlPoint* rightNeighbour_;
     };
 
 }// namespace

@@ -46,7 +46,6 @@ private:
     QGraphicsScene* paintscene_; ///< Scene where the transferfunction is painted
     TransferFunctionProperty* property_; ///< Pointer to property, for get and invalidation in the widget
     TransferFunctionEditor* editor_; ///< TransferFunctionEditor inherited from QGraphicsScene
-    std::vector<TransferFunctionEditorControlPoint*> points_; ///< Control points used for calculating transferfunction-values
 
 	QLinearGradient* gradient_;
 	QVector<QGradientStop>* stops_;
