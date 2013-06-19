@@ -57,7 +57,7 @@ public:
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 
 protected:
     std::string identifier_;

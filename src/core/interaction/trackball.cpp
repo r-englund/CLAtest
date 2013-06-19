@@ -242,13 +242,13 @@ void Trackball::addProperty( Property* property ) {
     }
 }
 
-void Trackball::serialize( IvwSerializer &s ) const {
+void Trackball::serialize(IvwSerializer &s) const {
 	InteractionHandler::serialize(s);
 	PropertyOwner::serialize(s);
 }
 
-void Trackball::deserialize( IvwDeserializer &s ) {
-	PropertyOwner::deserialize(s);
+void Trackball::deserialize(IvwDeserializer &d) {
+	PropertyOwner::deserialize(d);
 }
 
 } // namespace

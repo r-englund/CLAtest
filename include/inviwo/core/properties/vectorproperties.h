@@ -33,7 +33,7 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+	virtual void deserialize(IvwDeserializer& d);
 
 };
 
@@ -65,7 +65,7 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+	virtual void deserialize(IvwDeserializer& d);
 
 };
 
@@ -97,7 +97,7 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 };
     /** class FloatVec4Property
     *   \brief The FloatVec4Property class provides a property holding a 4-D vector containing float values.
@@ -127,7 +127,7 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+	virtual void deserialize(IvwDeserializer& d);
 
 };
     /** class IntVec2Property
@@ -158,7 +158,7 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+	virtual void deserialize(IvwDeserializer& d);
 
 };
     /** class IntVec3Property
@@ -189,7 +189,7 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+	virtual void deserialize(IvwDeserializer& d);
 
 };
     /** class IntVec4Property
@@ -220,7 +220,7 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+	virtual void deserialize(IvwDeserializer& d);
 
 };
 

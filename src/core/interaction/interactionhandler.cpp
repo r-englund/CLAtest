@@ -8,6 +8,9 @@ namespace inviwo {
 	void InteractionHandler::serialize( IvwSerializer &s ) const {
 		s.serialize("type", getClassName(), true);
 	}
-	void InteractionHandler::deserialize( IvwDeserializer &s ) {}
+
+	void InteractionHandler::deserialize( IvwDeserializer &d ) {
+        IVW_UNUSED_PARAM(d);  
+    }
 
 } // namespace

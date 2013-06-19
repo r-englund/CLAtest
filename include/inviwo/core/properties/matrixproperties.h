@@ -34,7 +34,7 @@ public:
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+	virtual void deserialize(IvwDeserializer& d);
 	};
 /** class FloatMat3Property
 *  \brief  The FloatMat3Property provides a property holding a 3 by 3 matrix of float values
@@ -65,7 +65,7 @@ public:
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 };
 /** class FloatMat4Property
 *  \brief  The FloatMat4Property provides a property holding a 4 by 4 matrix of float values
@@ -96,7 +96,7 @@ public:
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 };
  
 }//namespace

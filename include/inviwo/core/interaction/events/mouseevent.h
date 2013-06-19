@@ -37,7 +37,7 @@ public:
     inline uvec2 canvasSize() const {return canvasSize_; }
 
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+	virtual void deserialize(IvwDeserializer& d);
 
 private:
     ivec2 position_;

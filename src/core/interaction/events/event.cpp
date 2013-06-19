@@ -10,13 +10,13 @@ Event::Event() {
 }
 Event::~Event() {}
 
-void Event::serialize( IvwSerializer& s ) const {
+void Event::serialize(IvwSerializer& s) const {
 	s.serialize("modifier", modifier_);
 }
 
-void Event::deserialize( IvwDeserializer& s ) {
+void Event::deserialize(IvwDeserializer& d) {
 	int modifier;
-	s.deserialize("modifier", modifier);
+	d.deserialize("modifier", modifier);
 	modifier_ = static_cast<Event::Modifier>(modifier);
 	modifierName_ = modifierNames_[modifier_];
 }

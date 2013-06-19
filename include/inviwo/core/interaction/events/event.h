@@ -26,7 +26,7 @@ public:
     inline std::string buttonName() const { return buttonName_; }
 
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 
 protected:
     Event::Modifier modifier_;

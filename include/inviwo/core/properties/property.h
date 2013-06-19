@@ -53,7 +53,7 @@ public:
     virtual int getVariantType();
 
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 
     bool operator== (Property* prop);
 

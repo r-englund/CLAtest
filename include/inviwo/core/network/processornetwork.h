@@ -117,7 +117,7 @@ public:
     bool islocked() const { return (locked_==true); }
 
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s) throw (Exception);
+    virtual void deserialize(IvwDeserializer& d) throw (Exception);
 
 private:
     bool modified_;

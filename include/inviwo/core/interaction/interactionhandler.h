@@ -16,7 +16,7 @@ namespace inviwo {
 		virtual std::string getClassName() const { return "undefined"; }
 
 		void serialize(IvwSerializer &s) const;
-		void deserialize(IvwDeserializer &s);
+		void deserialize(IvwDeserializer &d);
     };
 
 } // namespace

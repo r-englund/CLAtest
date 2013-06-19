@@ -16,7 +16,7 @@ public:
     int action() const { return action_; }
 
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 
 protected:
     std::string actionName_;

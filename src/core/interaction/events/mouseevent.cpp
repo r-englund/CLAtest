@@ -39,9 +39,9 @@ void MouseEvent::serialize( IvwSerializer& s ) const {
 	s.serialize("button", button_);
 }
 
-void MouseEvent::deserialize( IvwDeserializer& s ) {
-	Event::deserialize(s);
-	s.deserialize("button", button_);
+void MouseEvent::deserialize(IvwDeserializer& d) {
+	Event::deserialize(d);
+	d.deserialize("button", button_);
 	buttonName_ = buttonNames_[button_];
 }
 

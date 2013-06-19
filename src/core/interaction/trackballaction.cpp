@@ -16,8 +16,8 @@ TrackballAction::~TrackballAction() {}
 void TrackballAction::serialize( IvwSerializer& s ) const {
 	s.serialize("action", action_);
 }
-void TrackballAction::deserialize( IvwDeserializer& s ) {
-	s.deserialize("action", action_);
+void TrackballAction::deserialize(IvwDeserializer& d) {
+	d.deserialize("action", action_);
 	actionName_ = actionNames_[action_];
 }
 

@@ -17,7 +17,7 @@ public:
     virtual void setVariant(const Variant&);
     virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 };
 
 class IVW_CORE_API IntProperty : public OrdinalProperty<int> {
@@ -31,7 +31,7 @@ public:
     virtual void setVariant(const Variant&);
     virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 };
 
 } // namespace

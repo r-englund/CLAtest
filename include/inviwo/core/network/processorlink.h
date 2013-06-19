@@ -21,7 +21,7 @@ public :
     Property* getDestinationProperty() const{ return dstProperty_; }  
 
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 
     void switchDirection();
 
@@ -60,7 +60,7 @@ public:
     PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty);
 
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& d);
 
 private:    
    Processor* inProcessor_;

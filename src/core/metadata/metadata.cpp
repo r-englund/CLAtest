@@ -14,12 +14,12 @@ MetaData* MetaData::create() const {
     return 0;
 }
 
-void MetaData::serialize(IvwSerializer& ) const{
-
+void MetaData::serialize(IvwSerializer& s) const{
+    IVW_UNUSED_PARAM(s);
 }
 
-void MetaData::deserialize(IvwDeserializer& ) {
-
+void MetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 
@@ -42,11 +42,12 @@ MetaData* BoolMetaData::create() const {
     return new BoolMetaData();
 }
 
-void BoolMetaData::serialize(IvwSerializer& ) const {
+void BoolMetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void BoolMetaData::deserialize(IvwDeserializer& ) {
-
+void BoolMetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -67,11 +68,12 @@ MetaData* IntMetaData::create() const {
     return new BoolMetaData();
 }
 
-void IntMetaData::serialize(IvwSerializer& ) const {
+void IntMetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void IntMetaData::deserialize(IvwDeserializer& ) {
-
+void IntMetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -92,11 +94,12 @@ MetaData* IVec2MetaData::create() const {
     return new IVec2MetaData();
 }
 
-void IVec2MetaData::serialize(IvwSerializer& ) const {
+void IVec2MetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void IVec2MetaData::deserialize(IvwDeserializer& ) {
-
+void IVec2MetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -117,11 +120,12 @@ MetaData* IVec3MetaData::create() const {
     return new IVec3MetaData();
 }
 
-void IVec3MetaData::serialize(IvwSerializer& ) const {
+void IVec3MetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void IVec3MetaData::deserialize(IvwDeserializer& ) {
-
+void IVec3MetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -142,11 +146,12 @@ MetaData* UVec2MetaData::create() const {
     return new UVec2MetaData();
 }
 
-void UVec2MetaData::serialize(IvwSerializer& ) const {
+void UVec2MetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void UVec2MetaData::deserialize(IvwDeserializer& ) {
-
+void UVec2MetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -167,11 +172,12 @@ MetaData* UVec3MetaData::create() const {
     return new UVec3MetaData();
 }
 
-void UVec3MetaData::serialize(IvwSerializer& ) const {
+void UVec3MetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void UVec3MetaData::deserialize(IvwDeserializer& ) {
-
+void UVec3MetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -192,11 +198,12 @@ MetaData* FloatMetaData::create() const {
     return new FloatMetaData();
 }
 
-void FloatMetaData::serialize(IvwSerializer& ) const {
+void FloatMetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void FloatMetaData::deserialize(IvwDeserializer& ) {
-
+void FloatMetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -217,11 +224,12 @@ MetaData* Vec2MetaData::create() const {
     return new Vec2MetaData();
 }
 
-void Vec2MetaData::serialize(IvwSerializer& ) const {
+void Vec2MetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void Vec2MetaData::deserialize(IvwDeserializer& ) {
-
+void Vec2MetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -242,11 +250,12 @@ MetaData* Vec3MetaData::create() const {
     return new Vec3MetaData();
 }
 
-void Vec3MetaData::serialize(IvwSerializer& ) const {
+void Vec3MetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void Vec3MetaData::deserialize(IvwDeserializer& ) {
-
+void Vec3MetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
@@ -267,11 +276,12 @@ MetaData* StringMetaData::create() const {
     return new StringMetaData();
 }
 
-void StringMetaData::serialize(IvwSerializer& ) const {
+void StringMetaData::serialize(IvwSerializer& s) const {
+    IVW_UNUSED_PARAM(s);
 }
 
-void StringMetaData::deserialize(IvwDeserializer& ) {
-
+void StringMetaData::deserialize(IvwDeserializer& d) {
+    IVW_UNUSED_PARAM(d);
 }
 
 /*---------------------------------------------------------------------*/
