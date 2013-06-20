@@ -18,8 +18,8 @@ void EventProperty::serialize( IvwSerializer& s ) const {
 
 void EventProperty::deserialize( IvwDeserializer& d ) {
     Property::deserialize(d);
-	d.deserialize("Event", event_);
-	d.deserialize("Action", action_);
+	d.deserialize("Event", *event_);
+	d.deserialize("Action", *action_);
 }
 
 } // namespace
