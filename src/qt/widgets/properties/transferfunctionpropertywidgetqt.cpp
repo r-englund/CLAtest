@@ -20,7 +20,7 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
 
 	InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
 	transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_, app->getMainWindow());
-	
+	transferFunctionDialog_->setVisible(false);
 	app->getMainWindow()->addDockWidget(Qt::BottomDockWidgetArea, transferFunctionDialog_);
 	
 
