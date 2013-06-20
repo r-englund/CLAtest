@@ -11,6 +11,7 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), 
     addObservation(processorNetwork_);
     processorNetwork_->addObserver(this);             
 	
+	// Components needed for layout
     frame_ = new QFrame();
 	botLayout_ = new QVBoxLayout();
 	comboBox_ = new QComboBox();
@@ -20,6 +21,9 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), 
 	QScrollArea* scrollArea = new QScrollArea();
 	QWidget* area = new QWidget();
 
+	// mainLayout contains topLayout and scrollArea.
+	// scrollArea contains a widget with the botLayout.
+	// Eventpropertywidgets will be added to the botlayout.
 	topLayout->addWidget(label_);
 	topLayout->addWidget(comboBox_);
 	area->setLayout(botLayout_);

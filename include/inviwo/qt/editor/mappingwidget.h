@@ -25,6 +25,12 @@ public:
     void notify();
 
 private:
+	void drawEventPropertyWidgets();
+	void updateWidget();
+	void emptyLayout(QVBoxLayout* layout);
+	void removeEventPropertyWidgets();
+	QString intToQString(int num); // For testing
+
 	ProcessorNetwork* processorNetwork_;
 	EventPropertyManager* eventPropertyManager_;
 	std::vector<Processor*> curProcessorList_;
@@ -35,14 +41,6 @@ private:
 	QComboBox* comboBox_;
 
 	int currentIndex_;
-
-	void drawEventPropertyWidgets();
-    void updateWidget();
-	void emptyLayout(QVBoxLayout* layout);
-	void removeEventPropertyWidgets();
-
-    QString intToQString(int num); // For testing
-
 public slots:
 	void comboBoxChange();
 

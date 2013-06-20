@@ -209,6 +209,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
         clear();
         throw AbortException("Unknown Exception.");        
     }
+	notifyObservers();
 }
 
 } // namespace
