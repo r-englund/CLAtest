@@ -48,12 +48,12 @@ MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayNam
 
 template <typename T>
 T MinMaxProperty<T>::getValueMin() const { 
-    return value_.x; 
+    return get().x; 
 }
 
 template <typename T>
 T MinMaxProperty<T>::getValueMax() const { 
-    return value_.y; 
+    return get().y; 
 }
 
 template <typename T>
@@ -78,12 +78,12 @@ glm::detail::tvec2<T> MinMaxProperty<T>::getRange() const{
 
 template <typename T>
 void MinMaxProperty<T>::setValueMin(const T &value) {
-    value_.x = value;
+    set(glm::detail::tvec2<T>(value, get().y));
 }
 
 template <typename T>
 void MinMaxProperty<T>::setValueMax(const T &value) {
-    value_.y = value;
+    set(glm::detail::tvec2<T>(get().x, value));
 }
 
 template <typename T>
