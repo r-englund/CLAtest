@@ -8,7 +8,7 @@ namespace inviwo {
 
 class IVW_CORE_API KeyboardEvent : public Event {
 public:
-    KeyboardEvent(char ascii, Event::Modifier modifier);
+    KeyboardEvent(char ascii='0', Event::Modifier modifier=Event::MODIFIER_NONE);
     ~KeyboardEvent();
 
 	virtual std::string getClassName() const { return "KeyboardEvent"; }
