@@ -2,7 +2,7 @@
 #include <QFrame>
 
 namespace inviwo {
-     
+    
 RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent) {
     QFrame *left = new QFrame(this);
     QFrame *middle = new QFrame(this);
@@ -25,15 +25,17 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget *parent) : QSp
         "}"
         ));
 
-    if(orientation == Qt::Horizontal)
+    if(orientation == Qt::Horizontal){
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    else
+    }
+    else{
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+    }
 
     connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateSplitterPosition(int, int)));
 
-    getRange(1, &range_[0], &value_[1]);
-    getRange(2, &value_[0], &range_[1]);
+    getRange(1, &internalRange_[0], &internalValue_[1]);
+    getRange(2, &internalValue_[0], &internalRange_[1]);
 }
 
 RangeSliderQt::~RangeSliderQt() {}
@@ -60,11 +62,19 @@ void RangeSliderQt::setValue(int minVal, int maxVal){
 }
 
 void RangeSliderQt::setMinValue(int minVal){
-    value_[0] = minVal;
+    if(value_[0] != minVal){
+        value_[0] = minVal;
+        internalValue_[0] = closestLegalPosition(fromExternalToInternal(minVal), 1);
+        moveSplitter(internalValue_[0], 1);
+    }
 }
 
 void RangeSliderQt::setMaxValue(int maxVal){
-    value_[1] = maxVal;
+    if(value_[1] != maxVal){
+        value_[1] = maxVal;
+        internalValue_[1] = closestLegalPosition(fromExternalToInternal(maxVal)+getHandleWidth(), 2);
+        moveSplitter(internalValue_[1], 2);
+    }
 }
 
 void RangeSliderQt::setRange(int minR, int maxR){
@@ -80,23 +90,78 @@ void RangeSliderQt::setMaxRange(int maxR){
     range_[1] = maxR;
 }
 
-//Index 1 = Min Handle, Index 2 = Max Handle
-void RangeSliderQt::calculateInternalToExternalConversion(){
-    getRange(1, &internalRange_[0], &internalValue_[1]);
-    getRange(2, &internalValue_[0], &internalRange_[1]);
-
-    fromInternalToExternal_ = (internalRange_[1]-internalRange_[0])/(range_[1]-range_[0]);
+//Index 1 = Min, Index 2 = Max
+int RangeSliderQt::constrainValues(int lastIdxChanged){
+    if(lastIdxChanged == 2){
+        internalValue_[1] -= getHandleWidth();
+        if(internalValue_[0] > internalValue_[1]){
+            internalValue_[0] = internalValue_[1];
+            return 1;
+        }
+    }
+    else if(internalValue_[0] > internalValue_[1]){
+        internalValue_[1] = internalValue_[0];
+        return 2;
+    }
+    return -1;
 }
 
 void RangeSliderQt::resizeEvent(QResizeEvent *event) {
     QSplitter::resizeEvent(event);
     getRange(1, &internalRange_[0], &internalValue_[1]);
     getRange(2, &internalValue_[0], &internalRange_[1]);
+    if(internalValue_[0]<0 || internalValue_[1]<0)
+        return;
+    internalRange_[1] -= getHandleWidth();
+    internalValue_[0] = closestLegalPosition(fromExternalToInternal(value_[0]), 1);
+    moveSplitter(internalValue_[0], 1);
+    internalValue_[1] = closestLegalPosition(fromExternalToInternal(value_[1])+getHandleWidth(), 2);
+    moveSplitter(internalValue_[1], 2);
 }
 
+int RangeSliderQt::fromInternalToExternal(int val){
+    return (val*((static_cast<float>(maxRange()-minRange()))/(static_cast<float>(internalRange_[1]-internalRange_[0]))))+minRange();
+}
+
+int RangeSliderQt::fromExternalToInternal(int val){
+    return (val-minRange())*((static_cast<float>(internalRange_[1]-internalRange_[0]))/(static_cast<float>(maxRange()-minRange())));
+}
+
+int RangeSliderQt::getHandleWidth(){
+    return handleWidth();
+}
+
+//Index 1 = Min, Index 2 = Max
 void RangeSliderQt::updateSplitterPosition(int pos, int idx){
-    internalValue_[idx-1] = pos;
-    value_[idx-1] = pos*((internalRange_[1]-internalRange_[0])/(range_[1]-range_[0]));
+    //Return if invalid position
+    if(pos<0)
+        return;
+
+    int loc = idx-1;
+    //Check if interaction came from handle
+    bool changedFromHandle = (internalValue_[loc] == pos ? false : true);
+    
+    internalValue_[loc] = pos;
+
+    //Constrain min/max values against each other
+    int otherIdx = constrainValues(idx);
+    int otherLoc = otherIdx-1;
+
+    //Change value if it was changed from handle
+    if(changedFromHandle){
+        value_[loc] = fromInternalToExternal(internalValue_[loc]);
+    }
+
+    //Perform change of other handle if constrain was performed
+    if(otherIdx > 0){
+        value_[otherLoc] = fromInternalToExternal(internalValue_[otherLoc]);
+    }
+    else{
+        internalValue_[otherLoc] = closestLegalPosition(fromExternalToInternal(value_[otherLoc]), otherIdx);
+    }
+
+    //Emit
+    emit valuesChanged(value_[0], value_[1]);
 }
 
 } // namespace inviwo

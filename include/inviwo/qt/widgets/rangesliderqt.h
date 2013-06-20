@@ -29,12 +29,17 @@ public slots:
     void setMaxRange(int);
 
 signals:
-    void currentRangeChanged(int min, int max);
-    void valueChanged(int value);
+    void valuesChanged(int min, int max);
+    void valuesSet(int min, int max);
 
 protected:
-    void calculateInternalToExternalConversion();
+    int constrainValues(int idx);
     void resizeEvent(QResizeEvent *event);
+
+    int fromInternalToExternal(int val);
+    int fromExternalToInternal(int val);
+
+    int getHandleWidth();
 
 protected slots:
     void updateSplitterPosition(int pos, int idx);
@@ -45,8 +50,6 @@ private:
 
     int range_[2];
     int value_[2];
-
-    float fromInternalToExternal_;
 };
 
 }//namespace

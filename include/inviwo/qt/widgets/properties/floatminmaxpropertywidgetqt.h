@@ -4,8 +4,6 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
-#include <QMenu>
 #include <QDoubleSpinBox>
 //Core
 #include <inviwo/core/properties/vectorproperties.h>
@@ -26,21 +24,23 @@ private:
     RangeSliderQt* slider_;
     QDoubleSpinBox* spinBoxMin_;
     QDoubleSpinBox* spinBoxMax_;
-    PropertySettingsWidgetQt* settingsWidget_;
-    QMenu* settingsMenu_;
-    vec2 valueMinMaxMax_;
-    vec2 valueMinMaxMin_;
-    vec2 valueIncrement_;
-    vec2 valueMinMax_;
 
     void generateWidget();
-    void generatesSettingsWidget();
 
-public slots:
+protected slots:
     void setPropertyValue();
 
-    void showContextMenuX(const QPoint& pos);
-    void showContextMenuY(const QPoint& pos);
+    void updateFromSlider(int valMin, int valMax);
+    void updateFromSpinBoxMin(double val);
+    void updateFromSpinBoxMax(double val);
+
+protected:
+    void setSpinBoxDecimals(float increment);
+
+private:
+    float maxNumberOfValues_;
+    int sliderMin_;
+    int sliderMax_;
 };
 
 } // namespace

@@ -116,7 +116,7 @@ private:
 
     void updateSlider();
 
-    void setSpinboxDecimals(float increment);
+    void setSpinBoxDecimals(float increment);
 };
 
 }//namespace

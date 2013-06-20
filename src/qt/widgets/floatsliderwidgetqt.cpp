@@ -56,7 +56,7 @@ void FloatSliderWidgetQt::setIncrement(float increment) {
     increment_ = increment;
     spinBox_->setSingleStep(static_cast<double>(increment));
     slider_->setSingleStep(10);
-    setSpinboxDecimals(increment);
+    setSpinBoxDecimals(increment);
 }
 
 
@@ -94,7 +94,7 @@ void FloatSliderWidgetQt::updateSpinBox() {
     spinBox_->blockSignals(false);
 }
 
-void FloatSliderWidgetQt::setSpinboxDecimals( float increment ) {
+void FloatSliderWidgetQt::setSpinBoxDecimals( float increment ) {
 
     std::ostringstream buff;
     buff<<increment;

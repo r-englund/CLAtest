@@ -2,16 +2,17 @@
 
 namespace inviwo {
 
+FloatMinMaxProperty::FloatMinMaxProperty(std::string identifier, std::string displayName, 
+                                        float valueMin, float valueMax, float rangeMin, float rangeMax, float increment,
+                                        PropertyOwner::InvalidationLevel invalidationLevel,
+                                        PropertySemantics::Type semantics )
+    : MinMaxProperty<glm::mediump_float>(identifier, displayName, valueMin, valueMax, rangeMin, rangeMax, increment, invalidationLevel, semantics)
+{}
+
 FloatVec2Property::FloatVec2Property(std::string identifier, std::string displayName, vec2 value,
                                     vec2 minValue, vec2 maxValue, vec2 increment, PropertyOwner::InvalidationLevel invalidationLevel,
                                     PropertySemantics::Type semantics )
 	: OrdinalProperty<vec2>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
-{}
-
-FloatMinMaxProperty::FloatMinMaxProperty(std::string identifier, std::string displayName, vec2 value,
-                                     vec2 minValue, vec2 maxValue, vec2 increment, PropertyOwner::InvalidationLevel invalidationLevel,
-                                     PropertySemantics::Type semantics )
-                                     : FloatVec2Property(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 FloatVec3Property::FloatVec3Property(std::string identifier, std::string displayName, vec3 value,
@@ -28,18 +29,18 @@ FloatVec4Property::FloatVec4Property(std::string identifier, std::string display
     : OrdinalProperty<vec4>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
+IntMinMaxProperty::IntMinMaxProperty(std::string identifier, std::string displayName, 
+                                     int valueMin, int valueMax, int rangeMin, int rangeMax, int increment,
+                                     PropertyOwner::InvalidationLevel invalidationLevel,
+                                     PropertySemantics::Type semantics )
+    : MinMaxProperty<int>(identifier, displayName, valueMin, valueMax, rangeMin, rangeMax, increment, invalidationLevel, semantics)
+{}
+
 IntVec2Property::IntVec2Property(std::string identifier, std::string displayName, ivec2 value,
 								 ivec2 minValue, ivec2 maxValue, ivec2 increment,
                                  PropertyOwner::InvalidationLevel invalidationLevel,
                                  PropertySemantics::Type semantics )
 	: OrdinalProperty<ivec2>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
-{}
-
-IntMinMaxProperty::IntMinMaxProperty(std::string identifier, std::string displayName, ivec2 value,
-                                 ivec2 minValue, ivec2 maxValue, ivec2 increment,
-                                 PropertyOwner::InvalidationLevel invalidationLevel,
-                                 PropertySemantics::Type semantics )
-                                 : IntVec2Property(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 IntVec3Property::IntVec3Property(std::string identifier, std::string displayName, ivec3 value,
@@ -55,6 +56,28 @@ IntVec4Property::IntVec4Property(std::string identifier, std::string displayName
                                  PropertySemantics::Type semantics )
 	: OrdinalProperty<ivec4>(identifier, displayName, value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
+
+void FloatMinMaxProperty::serialize(IvwSerializer& s) const {
+    Property::serialize(s);
+    s.serialize("value", get());
+    s.serialize("range", MinMaxProperty<glm::mediump_float>::getRange());
+    s.serialize("increment", MinMaxProperty<glm::mediump_float>::getIncrement());
+}
+
+void FloatMinMaxProperty::deserialize(IvwDeserializer& d){
+    Property::deserialize(d);
+
+    vec2 value;
+    d.deserialize("value",value);
+    set(value);
+
+    d.deserialize("range", value);
+    MinMaxProperty<glm::mediump_float>::setRange(value);
+
+    float increment;
+    d.deserialize("increment", increment);
+    MinMaxProperty<glm::mediump_float>::setIncrement(increment);
+}
 
 void FloatVec2Property::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
@@ -78,14 +101,6 @@ void FloatVec2Property::deserialize(IvwDeserializer& d){
 
 	d.deserialize("increment", value);
 	OrdinalProperty<vec2>::setIncrement(value);
-}
-
-void FloatMinMaxProperty::serialize(IvwSerializer& s) const {
-    FloatVec2Property::serialize(s);
-}
-
-void FloatMinMaxProperty::deserialize(IvwDeserializer& d){
-    FloatVec2Property::deserialize(d);
 }
 
 void FloatVec3Property::serialize(IvwSerializer& s) const {
@@ -136,6 +151,28 @@ void FloatVec4Property::deserialize(IvwDeserializer& d) {
     OrdinalProperty<vec4>::setIncrement(value);
 }
 
+void IntMinMaxProperty::serialize(IvwSerializer& s) const {
+    Property::serialize(s);
+    s.serialize("value", get());
+    s.serialize("range", MinMaxProperty<int>::getRange());
+    s.serialize("increment", MinMaxProperty<int>::getIncrement());
+}
+
+void IntMinMaxProperty::deserialize(IvwDeserializer& d){
+    Property::deserialize(d);
+
+    glm::detail::tvec2<int> value;
+    d.deserialize("value",value);
+    set(value);
+
+    d.deserialize("range", value);
+    MinMaxProperty<int>::setRange(value);
+
+    int increment;
+    d.deserialize("increment", increment);
+    MinMaxProperty<int>::setIncrement(increment);
+}
+
 void IntVec2Property::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
 	s.serialize("value", get());
@@ -158,14 +195,6 @@ void IntVec2Property::deserialize(IvwDeserializer& d){
 
 	d.deserialize("increment", value);
 	OrdinalProperty<ivec2>::setIncrement(value);
-}
-
-void IntMinMaxProperty::serialize(IvwSerializer& s) const {
-    IntVec2Property::serialize(s);
-}
-
-void IntMinMaxProperty::deserialize(IvwDeserializer& d){
-    IntVec2Property::deserialize(d);
 }
 
 void IntVec3Property::serialize(IvwSerializer& s) const {

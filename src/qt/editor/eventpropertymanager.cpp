@@ -30,7 +30,7 @@ void EventPropertyManager::changeKeyMapping( EventProperty* eventProperty, char 
 	std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
 	for (size_t i = 0; i < eventProperties.size(); ++i) {
 		if (eventProperties.at(i)->getEvent()->button() == button && eventProperties.at(i)->getEvent()->modifier() == modifier) {
-			eventProperties.at(i)->setEvent(new KeyboardEvent(0, Event::MODIFIER_NONE));
+			eventProperties.at(i)->setEvent(new KeyboardEvent());
 		}
 	}
 

@@ -12,8 +12,8 @@ CubeProxyGeometry::CubeProxyGeometry()
       inport_("volume.inport"),
       outport_("geometry.outport"),
       clippingEnabled_("clippingEnabled", "Enable Clipping", true),
-      testI_("testInt", "Min Max Test", glm::ivec2(0, 512)),
-      testF_("testFloat", "Min Max Test", glm::vec2(0.0f, 1.0f)),
+      testI_("testInt", "Min Max Test", 4, 7),
+      testF_("testFloat", "Min Max Test", 0.0f, 1.0),
       clipX_("clipX", "Clip X Axis", glm::vec2(0.0f, 1.0f)),
       clipY_("clipY", "Clip Y Axis", glm::vec2(0.0f, 1.0f)),
       clipZ_("clipZ", "Clip Z Axis", glm::vec2(0.0f, 1.0f))

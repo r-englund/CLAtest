@@ -2,7 +2,6 @@
 #define IVW_ORDINALPROPERTY_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <limits>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/templateproperty.h>
 
@@ -16,33 +15,13 @@ public:
         T minValue, T maxValue, T increment, PropertyOwner::InvalidationLevel invalidationLevel,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 
-    T getMinValue()const;
+    T getMinValue() const;
     T getMaxValue() const;
     T getIncrement() const;
 
-    void setMinValue(const T &value) {
-        minValue_ = value;
-    }
-
-    void setMaxValue(const T &value) {
-        maxValue_ = value;
-    }
-
-    void setIncrement(const T &value) {
-        increment_ = value;
-    }
-
-    void increase() {
-        this->value_ += increment_;
-        if (this->value_ > maxValue_) this->value_ = maxValue_;
-        this->getOwner()->invalidate();
-    }
-
-    void decrease() {
-        this->value_ -= increment_;
-        if (this->value_ < minValue_) this->value_ = minValue_;
-        this->getOwner()->invalidate();
-    }
+    void setMinValue(const T &value);
+    void setMaxValue(const T &value);
+    void setIncrement(const T &value);
 
 private:
     T minValue_;
@@ -63,13 +42,34 @@ OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayN
 {}
 
 template <typename T>
-T OrdinalProperty<T>::getMinValue() const { return minValue_; }
+T OrdinalProperty<T>::getMinValue() const { 
+    return minValue_; 
+}
 
 template <typename T>
-T OrdinalProperty<T>::getMaxValue() const { return maxValue_; }
+T OrdinalProperty<T>::getMaxValue() const { 
+    return maxValue_; 
+}
 
 template <typename T>
-T OrdinalProperty<T>::getIncrement() const { return increment_; }
+T OrdinalProperty<T>::getIncrement() const { 
+    return increment_; 
+}
+
+template <typename T>
+void OrdinalProperty<T>::setMinValue(const T &value) {
+    minValue_ = value;
+}
+
+template <typename T>
+void OrdinalProperty<T>::setMaxValue(const T &value) {
+    maxValue_ = value;
+}
+
+template <typename T>
+void OrdinalProperty<T>::setIncrement(const T &value) {
+    increment_ = value;
+}
 
 } // namespace
 

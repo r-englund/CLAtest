@@ -4,15 +4,10 @@
 
 namespace inviwo {
 
-IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty *property) : property_(property),
-valueMinMaxMin_(property->getMinValue()),
-valueMinMaxMax_(property->getMaxValue()),
-valueIncrement_(property->getIncrement()) {
+IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty *property) : property_(property) {
 	generateWidget();
-    generatesSettingsWidget();
 	updateFromProperty();
-	}
-
+}
 
 void IntMinMaxPropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
@@ -23,6 +18,7 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(spinBoxMin_);
 
     slider_ = new RangeSliderQt(Qt::Horizontal, this);
+    slider_->setRange(0, 99);
 	hLayout->addWidget(slider_);
 
     spinBoxMax_ = new QSpinBox(this);
@@ -30,95 +26,51 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(spinBoxMax_);
 	setLayout(hLayout);
 
-    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+    connect(slider_, SIGNAL(valuesChanged(int,int)), this, SLOT(updateFromSlider(int,int)));
+    connect(spinBoxMin_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMin(int)));
+    connect(spinBoxMax_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMax(int)));
 }
 
 void IntMinMaxPropertyWidgetQt::updateFromProperty() {
-    valueMinMaxMax_ = property_->getMaxValue();
-    valueMinMaxMin_ = property_->getMinValue();
-    valueIncrement_ = property_->getIncrement();
-    valueMinMax_ = property_->get();
-    /*sliderX_->initValue(valueMinMax_.x);
-    sliderY_->initValue(valueMinMax_.y);
+    slider_->setRange(property_->getRangeMin(), property_->getRangeMax());
+    spinBoxMin_->setRange(property_->getRangeMin(), property_->getRangeMax());
+    spinBoxMax_->setRange(property_->getRangeMin(), property_->getRangeMax());
 
-    sliderX_->setRange(valueMinMaxMin_.x,valueMinMaxMax_.x);
-    sliderY_->setRange(valueMinMaxMin_.y,valueMinMaxMax_.y);
-    
-    sliderX_->setValue(valueMinMax_.x);
-    sliderY_->setValue(valueMinMax_.y);
+    spinBoxMin_->setSingleStep(property_->getIncrement());
+    spinBoxMax_->setSingleStep(property_->getIncrement());
 
-    sliderX_->setIncrement(valueIncrement_.x);
-    sliderY_->setIncrement(valueIncrement_.y);*/
+    slider_->setValue(property_->getValueMin(), property_->getValueMax());
+    spinBoxMin_->setValue(property_->getValueMin());
+    spinBoxMax_->setValue(property_->getValueMax());
 }
 
 
-void IntMinMaxPropertyWidgetQt::generatesSettingsWidget() {
-    settingsWidget_ = new PropertySettingsWidgetQt(property_);
-
-    settingsMenu_ = new QMenu();
-    settingsMenu_->addAction("Property settings");
-    settingsMenu_->addAction("Set as Min");
-    settingsMenu_->addAction("Set as Max");
-
-    /*sliderX_->setContextMenuPolicy(Qt::CustomContextMenu);
-    sliderY_->setContextMenuPolicy(Qt::CustomContextMenu);
-
-    connect(sliderX_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuX(const QPoint&)));
-    connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));*/
+void IntMinMaxPropertyWidgetQt::updateFromSlider(int valMin, int valMax){
+    bool changed = false;
+    if(valMin != spinBoxMin_->value()){
+        spinBoxMin_->setValue(valMin);
+        changed = true;
+    }
+    if(valMax != spinBoxMax_->value()){
+        spinBoxMax_->setValue(valMax);
+        changed = true;
+    }
+    if(changed)
+        setPropertyValue();
 }
 
-void IntMinMaxPropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
-    /*QPoint globalPos = sliderX_->mapToGlobal(pos);
-    QAction* selecteditem = settingsMenu_->exec(globalPos);
-    if (selecteditem == settingsMenu_->actions().at(0)) {
-        settingsWidget_->reload();
-        settingsWidget_->show();
-    }
-    else if (selecteditem == settingsMenu_->actions().at(1)) {
-        //Set current value of the slider to min value of the property
-        valueMinMaxMin_ = property_->getMinValue();
-        valueMinMaxMin_.x = sliderX_->getValue();
-        property_->setMinValue(valueMinMaxMin_);
-        updateFromProperty();
-    }
-    else if (selecteditem == settingsMenu_->actions().at(2)){
-        //Set current value of the slider to max value of the property
-        valueMinMaxMax_ = property_->getMaxValue();
-        valueMinMaxMax_.x = sliderX_->getValue();
-        property_->setMaxValue(valueMinMaxMax_);
-        updateFromProperty();
-    }*/
+void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMin(int val){
+    slider_->setMinValue(val);
+    setPropertyValue();
 }
 
-void IntMinMaxPropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
-    /*QPoint globalPos = sliderY_->mapToGlobal(pos);
-
-    QAction* selecteditem = settingsMenu_->exec(globalPos);
-    if (selecteditem == settingsMenu_->actions().at(0)) {
-        settingsWidget_->reload();
-        settingsWidget_->show();
-    }
-    else if (selecteditem == settingsMenu_->actions().at(1)) {
-        //Set current value of the slider to min value of the property
-        valueMinMaxMin_ = property_->getMinValue();
-        valueMinMaxMin_.y = sliderY_->getValue();
-        property_->setMinValue(valueMinMaxMin_);
-        updateFromProperty();
-    }
-    else if (selecteditem == settingsMenu_->actions().at(2)){
-        //Set current value of the slider to max value of the property
-        valueMinMaxMax_ = property_->getMaxValue();
-        valueMinMaxMax_.y = sliderY_->getValue();
-        property_->setMaxValue(valueMinMaxMax_);
-        updateFromProperty();
-    }*/
+void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMax(int val){
+    slider_->setMaxValue(val);
+    setPropertyValue();
 }
 
 void IntMinMaxPropertyWidgetQt::setPropertyValue() {
-    valueMinMax_ = property_->get();
-    //valueMinMax_.x = sliderX_->getValue();
-    //valueMinMax_.y = sliderY_->getValue();
-    property_->set(valueMinMax_);
+    property_->set(ivec2(spinBoxMin_->value(), spinBoxMax_->value()));
     emit modified();
 }
 
