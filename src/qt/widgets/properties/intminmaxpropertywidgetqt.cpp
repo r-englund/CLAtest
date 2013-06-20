@@ -39,9 +39,10 @@ void IntMinMaxPropertyWidgetQt::updateFromProperty() {
     spinBoxMin_->setSingleStep(property_->getIncrement());
     spinBoxMax_->setSingleStep(property_->getIncrement());
 
-    slider_->setValue(property_->getValueMin(), property_->getValueMax());
-    spinBoxMin_->setValue(property_->getValueMin());
-    spinBoxMax_->setValue(property_->getValueMax());
+    glm::ivec2 value = property_->get();
+    slider_->setValue(value.x, value.y);
+    spinBoxMin_->setValue(value.x);
+    spinBoxMax_->setValue(value.y);
 }
 
 
