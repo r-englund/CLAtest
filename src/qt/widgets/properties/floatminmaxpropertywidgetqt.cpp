@@ -45,42 +45,44 @@ void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
     sliderMax_ = static_cast<int>((property_->getValueMax()-property_->getRangeMin())*maxNumberOfValues_);
 
     slider_->setValue(sliderMin_, sliderMax_);
+    blockSignals(true);
     spinBoxMin_->setValue(property_->getValueMin());
     spinBoxMax_->setValue(property_->getValueMax());
+    blockSignals(false);
 }
 
 void FloatMinMaxPropertyWidgetQt::updateFromSlider(int valMin, int valMax){
     bool changed = false;
     blockSignals(true);
+    double valMinDouble = static_cast<double>(valMin)/static_cast<double>(maxNumberOfValues_);
+    double valMaxDouble = static_cast<double>(valMax)/static_cast<double>(maxNumberOfValues_);
     if(sliderMin_ != valMin){
-        double valMinDouble = static_cast<double>(valMin)/static_cast<double>(maxNumberOfValues_);
         sliderMin_ = valMin;
         spinBoxMin_->setValue(valMinDouble);
         changed = true;
     }
     if(sliderMax_ != valMax){
-        double valMaxDouble = static_cast<double>(valMax)/static_cast<double>(maxNumberOfValues_);
         sliderMax_ = valMax;
         spinBoxMax_->setValue(valMaxDouble);
         changed = true;
     }
     blockSignals(false);
     if(changed)
-        setPropertyValue();
+        setPropertyValue(valMinDouble, valMaxDouble);
 }
 
 void FloatMinMaxPropertyWidgetQt::updateFromSpinBoxMin(double val){
     slider_->setMinValue(static_cast<int>((val-property_->getRangeMin())*maxNumberOfValues_));
-    setPropertyValue();
+    setPropertyValue(static_cast<float>(val), static_cast<float>(spinBoxMax_->value()));
 }
 
 void FloatMinMaxPropertyWidgetQt::updateFromSpinBoxMax(double val){
     slider_->setMaxValue(static_cast<int>((val-property_->getRangeMin())*maxNumberOfValues_));
-    setPropertyValue();
+    setPropertyValue(static_cast<float>(spinBoxMin_->value()), static_cast<float>(val));
 }
 
-void FloatMinMaxPropertyWidgetQt::setPropertyValue() {
-    property_->set(vec2(static_cast<float>(spinBoxMin_->value()), static_cast<float>(spinBoxMax_->value())));
+void FloatMinMaxPropertyWidgetQt::setPropertyValue(float minVal, float maxVal) {
+    property_->set(vec2(minVal, maxVal));
     emit modified();
 }
 

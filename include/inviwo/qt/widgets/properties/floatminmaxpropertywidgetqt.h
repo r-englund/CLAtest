@@ -28,7 +28,7 @@ private:
     void generateWidget();
 
 protected slots:
-    void setPropertyValue();
+    void setPropertyValue(float, float);
 
     void updateFromSlider(int valMin, int valMax);
     void updateFromSpinBoxMin(double val);
