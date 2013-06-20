@@ -9,6 +9,7 @@
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/ports/imageport.h>
+//#include <inviwo/qt/editor/transferfunctioneditorcontrolpoint.h>
 
 namespace inviwo {
 

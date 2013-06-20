@@ -4,6 +4,7 @@
 #include <inviwo/core/properties/properties.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 #include <QHBoxLayout>
 #include <QPushButton>

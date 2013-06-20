@@ -2,31 +2,37 @@
 
 namespace inviwo {
 
-	TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* property) : property_(property){
+	//TransferFunctionPropertyDialog::TransferFunctionPropertyDialog();
+
+	TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent) : 
+	InviwoDockWidget(tr("TransferFun"), parent),
+	property_(property)
+	{
 		zoom_ = 0;
 		width  = 255.0f;
 		height = 100.0f;
+
+		setObjectName("TransferFun");
+		setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
 		generateWidget();
 		updateFromProperty();
 	}
 
-	TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog(){
-		delete editor_;
-		delete gradient_;
-		stops_->clear();
-		delete stops_;
-		delete colorDialog_;
-	}
-
 	void TransferFunctionPropertyDialog::generateWidget(){
+
 		colorDialog_ = new QColorDialog();
 		colorDialog_->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
-		connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
+		QDockWidget::connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
+
+		QFrame* frame = new QFrame();
+		setWidget(frame);
 
 		QVBoxLayout* vLayout = new QVBoxLayout();
-		setLayout(vLayout);
 
-		editor_ = new TransferFunctionEditor(this, &property_->get());
+		editor_ = new TransferFunctionEditor(&property_->get());
+		addObservation(editor_);
+		editor_->addObserver(this);
 		editor_->setSceneRect(0,0,width,height);
 		editor_->setBackgroundBrush(Qt::transparent);
 
@@ -50,10 +56,19 @@ namespace inviwo {
 		vLayout->addWidget(paintview_);
 		vLayout->addWidget(colorDialog_);
 
+		frame->setLayout(vLayout);
+
 		gradient_ = new QLinearGradient(-128.0f, 0.0f, 127.0f, 0.0f);
 		stops_ = new QVector<QGradientStop>();
 	}
 
+	TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog(){
+		delete editor_;
+		delete gradient_;
+		stops_->clear();
+		delete stops_;
+		delete colorDialog_;
+	}
 
 	void TransferFunctionPropertyDialog::setPropertyValue(){
 		vec3* newRgb;
@@ -61,7 +76,6 @@ namespace inviwo {
 
 		for (int i = 0; i < (int)property_->get().getNumberOfDataPoints() ; i++){
 			if (property_->get().getPoint(i)->isSelected()){
-				LogInfo(property_->get().getPoint(i)->getPos()->x);
 				newRgb = new vec3(color.redF(),color.greenF(),color.blueF());
 				property_->get().getPoint(i)->setRgb(newRgb);
 			}
@@ -89,13 +103,11 @@ namespace inviwo {
 			hej = dataArray[0];
 			temp->first = 0.0f;
 			temp->second = QColor::fromRgbF(hej.r, hej.g, hej.b, 1.0f);
-			LogInfo(hej.r);
 			stops_->push_front(*temp);
 			hej = dataArray[255];
 			temp->first = 1.0f;
 			temp->second = QColor::fromRgbF(hej.r, hej.g, hej.b, 1.0f);
 			stops_->push_front(*temp);
-			LogInfo(hej.r);
 		}
 		gradient_->setStops(*stops_);
 		paintscene_->setForegroundBrush(*gradient_);
@@ -132,4 +144,9 @@ namespace inviwo {
 		}
 		return false;
 	}
+
+	void TransferFunctionPropertyDialog::notify(){
+		updateFromProperty();
+	}
+
 } // namespace

@@ -50,5 +50,4 @@ namespace inviwo{
 	void TransferFunctionDataPoint::setSelected( bool selected ){
 		selected_ = selected;
 	}
-
 };

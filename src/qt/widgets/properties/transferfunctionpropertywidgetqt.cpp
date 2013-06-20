@@ -17,7 +17,12 @@ TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt(){
 void TransferFunctionPropertyWidgetQt::generateWidget(){
     QHBoxLayout* hLayout = new QHBoxLayout();
 	
-	transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_);
+
+	InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+	transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_, app->getMainWindow());
+	
+	app->getMainWindow()->addDockWidget(Qt::BottomDockWidgetArea, transferFunctionDialog_);
+	
 
     btnOpenDialog_ = new QPushButton();
     btnOpenDialog_->setFixedWidth(300);
@@ -34,7 +39,9 @@ void TransferFunctionPropertyWidgetQt::updateFromProperty(){}
 void TransferFunctionPropertyWidgetQt::setPropertyValue(){}
 
 void TransferFunctionPropertyWidgetQt::openTransferFunctionDialog() {
-	transferFunctionDialog_->show();
+	//transferFunctionDialog_->show();
+
+	transferFunctionDialog_->setVisible(true);
 }
 
 }//namespace

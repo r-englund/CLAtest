@@ -22,13 +22,48 @@ namespace inviwo {
     class IVW_QTEDITOR_API TransferFunctionEditorLineItem : public QGraphicsItem {
 
     public:
-        TransferFunctionEditorLineItem(TransferFunctionDataPoint*, TransferFunctionDataPoint*);
+        /** 
+         * \brief TransferFunctionEditorLineItem Constructor
+         *
+         * Constructor for TransferFunctionEditorLineItem
+         * 
+         * @param TransferFunctionDataPoint * Pointer to the point where the line starts
+         * @param TransferFunctionDataPoint * Pointer to the point where the line ends
+         */
+        TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint*, TransferFunctionEditorControlPoint*);
+        /** 
+         * \brief TransferFunctionEditorLineItem Constructor
+         *
+         * TransferFunctionEditorLineItem default constructor
+         */
         TransferFunctionEditorLineItem();
 		~TransferFunctionEditorLineItem();
-		void setStart(TransferFunctionDataPoint* start);
-		void setFinish(TransferFunctionDataPoint* finish);
-        const QPointF* getStart();
-        const QPointF* getFinish();
+		/** 
+		 * \brief Sets the lines starting point
+		 *
+		 * Changes the point where the line starts
+		 * 
+		 * @param TransferFunctionDataPoint * start the new start-point
+		 */
+		void setStart(TransferFunctionEditorControlPoint* start);
+
+		/** 
+		 * \brief Sets the lines ending point
+		 *
+		 * Changes the point where the line ends
+		 * 
+		 * @param TransferFunctionDataPoint * finish the new end-point
+		 */
+		void setFinish(TransferFunctionEditorControlPoint* finish);
+        /** 
+         * \brief returns the start-position
+         *
+         * Returns the position of the start-point as a QPointF
+         * 
+         * @return const QPointF position of start-point
+         */
+        //const QPointF getStart();
+        //const QPointF getFinish();
 
 
         //override for qgraphicsitem_cast (refer qt documentation)
@@ -48,8 +83,9 @@ namespace inviwo {
         void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent);
 
     private:
-        TransferFunctionDataPoint* start_;
-        TransferFunctionDataPoint* finish_;
+        TransferFunctionEditorControlPoint* start_;
+        TransferFunctionEditorControlPoint* finish_;
+		QPointF mouseDownPos_;
     };
 
 }// namespace

@@ -1,6 +1,4 @@
-#include <QPainter>
-#include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
+
 #include <inviwo/qt/editor/transferfunctioneditorcontrolpoint.h>
 
 namespace inviwo {
@@ -19,12 +17,10 @@ namespace inviwo {
 		rightNeighbour_ = NULL;
     }
 
-
-
     TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(){};
 
     TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint(){
-		delete datapoint_;
+		LogInfo("Controlpoint Destructor");
 	};
 
     void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
@@ -73,9 +69,6 @@ namespace inviwo {
 		float min = (this->getLeftNeighbour()) ? getLeftNeighbour()->getPoint()->getPos()->x : 0.0f;
 		float max = (this->getRightNeighbour()) ? getRightNeighbour()->getPoint()->getPos()->x : 255.0f;
 
-		LogInfo(min);
-		LogInfo(max);
-
 		pos.x = (pos.x <= min) ? min + 1.0f : pos.x; 
 		pos.x = (pos.x >= max) ? max - 1.0f : pos.x; 
 		pos.y = (pos.y <= 0.0f) ? 0.0f : pos.y; 
@@ -97,4 +90,5 @@ namespace inviwo {
 	void TransferFunctionEditorControlPoint::setLeftNeighbour(TransferFunctionEditorControlPoint* point){leftNeighbour_ = point;}
 	void TransferFunctionEditorControlPoint::setRightNeighbour(TransferFunctionEditorControlPoint* point){rightNeighbour_ = point;}
 
+	void notify(){};
 } // namespace

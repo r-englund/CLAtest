@@ -23,7 +23,8 @@ namespace inviwo {
 	};
 
     TransferFunction::~TransferFunction(){
-		this->clearPoints();
+		LogInfo("Transferfunction Destructor");
+		clearPoints();
 	}
 
 
@@ -78,8 +79,8 @@ namespace inviwo {
 
     void TransferFunction::removePoint(TransferFunctionDataPoint* p){
         std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin();
-        for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++){
-            if (p->getPos()->x == (*iter)->getPos()->x && p->getPos()->y == (*iter)->getPos()->y){
+		for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++){
+            if ((*iter) == p){
                 dataPoints_.erase(iter);
                 break;
             }
@@ -88,13 +89,25 @@ namespace inviwo {
     }
 
 	void TransferFunction::clearPoints(){
-		for (int i = 0; i < (int)dataPoints_.size(); ++i){
-			removePoint(dataPoints_[i]);
+		if (dataPoints_.size() > 0){
+
+			for (std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++){
+				//std::cout << "XPOS: " << (*iter)->getPos()->x << std::endl;
+			}
+
+			for (std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin(); iter != dataPoints_.end();){
+				delete *iter;
+				iter = dataPoints_.erase(iter);
+			}
+			dataPoints_.clear();
+			calcTransferValues();
+			
 		}
-		dataPoints_.clear();
 	}
 
     void TransferFunction::calcTransferValues(){
+		//std::cout << "POINTS: " << dataPoints_.size() << std::endl;
+
         vec4* dataArray = static_cast<vec4*>(data_.getEditableRepresentation<ImageRAMVec4float32>()->getData());
         float factor;
         float start;

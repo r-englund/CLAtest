@@ -10,6 +10,8 @@
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
+#include <QGraphicsSceneEvent>
+#include <QPainter>
 #include <QPainterPath>
 
 #include <inviwo/core/ports/port.h>
@@ -50,6 +52,8 @@ namespace inviwo {
 
 		void setLeftNeighbour(TransferFunctionEditorControlPoint*);
 		void setRightNeighbour(TransferFunctionEditorControlPoint*);
+
+		void notify();
 
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);

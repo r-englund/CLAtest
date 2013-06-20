@@ -17,15 +17,19 @@
 #include <QGraphicsView>
 #include <QPainter>
 #include <QWheelEvent>
+#include <inviwo/core/util/observer.h>
+
+
 
 namespace inviwo {
  
-class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver {
 
     Q_OBJECT;
 
 public:
-	TransferFunctionPropertyDialog(TransferFunctionProperty* property);
+	//TransferFunctionPropertyDialog();
+	TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent);
 	~TransferFunctionPropertyDialog();
 
     /** \Updates and draws the visual transferfunction
@@ -35,6 +39,7 @@ public:
     */
     void updateFromProperty();
     void logStuff();
+	void notify();
 
 private:
     int zoom_;
