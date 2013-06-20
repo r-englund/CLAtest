@@ -11,6 +11,8 @@ public:
     KeyboardEvent(char ascii, Event::Modifier modifier);
     ~KeyboardEvent();
 
+	virtual std::string getClassName() const { return "KeyboardEvent"; }
+
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& d);
 };

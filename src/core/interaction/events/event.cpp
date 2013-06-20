@@ -11,6 +11,7 @@ Event::Event() {
 Event::~Event() {}
 
 void Event::serialize(IvwSerializer& s) const {
+	s.serialize("type", getClassName(), true);
 	s.serialize("modifier", modifierName_);
 }
 
@@ -22,7 +23,6 @@ void Event::deserialize(IvwDeserializer& d) {
 			break;
 		}
 	}
-
 }
 
 } // namespace

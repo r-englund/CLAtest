@@ -25,6 +25,8 @@ public:
     inline std::string modifierName() const { return modifierName_; }
     inline std::string buttonName() const { return buttonName_; }
 
+	virtual std::string getClassName() const { return "Undefined"; }
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 

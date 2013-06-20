@@ -15,6 +15,8 @@ public:
     std::string name() const { return actionName_; }
     int action() const { return action_; }
 
+	virtual std::string getClassName() const { return "Undefined"; }
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 

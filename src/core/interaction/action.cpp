@@ -6,7 +6,7 @@ Action::Action() {};
 Action::~Action() {};
 
 void Action::serialize(IvwSerializer& s) const {
-    IVW_UNUSED_PARAM(s);
+    s.serialize("type", getClassName(), true);
 }
 
 void Action::deserialize(IvwDeserializer& d) {

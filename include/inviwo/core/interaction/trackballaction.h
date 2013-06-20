@@ -9,15 +9,17 @@ namespace inviwo {
 
 class IVW_CORE_API TrackballAction : public Action {
 public:
-    enum Action {
+    enum Actions {
         TRACKBALL_ROTATE  =      0,
         TRACKBALL_ZOOM    ,
         TRACKBALL_PAN     ,
         COUNT
     };
 
-    TrackballAction(TrackballAction::Action action);
+    TrackballAction(TrackballAction::Actions action);
     ~TrackballAction();
+
+	virtual std::string getClassName() const { return "TrackballAction"; }
 
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& d);

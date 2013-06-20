@@ -36,6 +36,8 @@ public:
     inline MouseEvent::MouseState state() const { return state_; }
     inline uvec2 canvasSize() const {return canvasSize_; }
 
+	virtual std::string getClassName() const { return "MouseEvent"; }
+
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& d);
 
