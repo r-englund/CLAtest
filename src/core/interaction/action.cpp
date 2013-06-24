@@ -10,7 +10,8 @@ void Action::serialize(IvwSerializer& s) const {
 }
 
 void Action::deserialize(IvwDeserializer& d) {
-    IVW_UNUSED_PARAM(d);
+    std::string className;
+    d.deserialize("type", className, true);
 }
 
 } // namespace

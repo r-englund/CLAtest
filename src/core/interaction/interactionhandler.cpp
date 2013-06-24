@@ -10,7 +10,8 @@ namespace inviwo {
 	}
 
 	void InteractionHandler::deserialize(IvwDeserializer &d) {
-        IVW_UNUSED_PARAM(d);  
+        std::string className;
+        d.deserialize("type", className, true);
     }
 
 } // namespace

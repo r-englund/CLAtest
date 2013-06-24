@@ -254,6 +254,7 @@ void Trackball::serialize(IvwSerializer &s) const {
 }
 
 void Trackball::deserialize(IvwDeserializer &d) {
+    InteractionHandler::deserialize(d);
 	PropertyOwner::deserialize(d);
 }
 
