@@ -8,14 +8,14 @@ namespace inviwo {
 Image::Image(uvec2 dimensions, DataFormatBase format) : Data2D(dimensions, format) {}
 
 Data* Image::clone() const {
-    Image* newImage = new Image(getDimension());
+    Image* newImage = new Image(getDimension(), getDataFormat());
     copyRepresentations(newImage);
     return newImage;
 }
 
 Image::~Image() {
     for (size_t i=0; i<representations_.size(); i++) {
-        representations_[i]->deinitialize();
+        delete representations_[i];
     }
     representations_.clear();
 }

@@ -15,7 +15,7 @@ ImageRAM::ImageRAM(uvec2 dimension)
 }
 
 ImageRAM::ImageRAM(uvec2 dimension, DataFormatBase format)
-    : ImageRepresentation(dimension, format), data_(NULL)
+    : ImageRepresentation(dimension, format)
 {
     ImageRAM::initialize();
 
@@ -26,7 +26,7 @@ ImageRAM::~ImageRAM() {
 }  
 
 void ImageRAM::initialize() {
-
+    data_ = NULL;
 }
 
 void ImageRAM::deinitialize() {

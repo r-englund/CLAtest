@@ -37,7 +37,7 @@ namespace inviwo {
         void calcTransferValues();
 
     private:
-        Image data_;
+        Image* data_;
         std::vector<TransferFunctionDataPoint*> dataPoints_;
     };
 

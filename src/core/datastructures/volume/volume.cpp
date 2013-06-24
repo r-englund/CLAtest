@@ -23,10 +23,9 @@ Volume::Volume(VolumeRepresentation* in, const Volume* src) : Data3D(in->getDime
 Volume::~Volume() {}
 
 Data* Volume::clone() const {
-    //Volume* newVolume = new Volume();
-    //copyRepresentations(newVolume);
-    //return newVolume;
-    return 0;
+    Volume* newVolume = new Volume(getDimension(), getDataFormat());
+    copyRepresentations(newVolume);
+    return newVolume;
 }
 
 void Volume::setOffset(ivec3 offset) {

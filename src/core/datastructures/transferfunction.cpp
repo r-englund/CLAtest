@@ -1,17 +1,17 @@
 #include <inviwo/core/datastructures/transferfunction.h>
 
 namespace inviwo {
-    TransferFunction::TransferFunction(){
-        data_ = Image();
-        data_.addRepresentation(new ImageRAMVec4float32 (uvec2(256,1)));
+    TransferFunction::TransferFunction() {
+        data_ = new Image(uvec2(256,1), DataVec4FLOAT32());
     }
+
 	TransferFunction::TransferFunction(const TransferFunction& rhs) {
 		*this = rhs;
 	}
 
 	TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
 		if (this != &rhs) {
-			this->data_ = rhs.data_;
+			this->data_ = static_cast<Image*>(rhs.data_->clone());
 			this->clearPoints();
 			
 			for (size_t i = 0; i < rhs.getNumberOfDataPoints(); ++i){
@@ -20,15 +20,15 @@ namespace inviwo {
 		}
 		this->calcTransferValues();
 		return *this;
-	};
+	}
 
     TransferFunction::~TransferFunction(){
 		clearPoints();
+        delete data_;
 	}
 
-
     Image* TransferFunction::getData() const{
-		return const_cast<Image*>(&data_);
+		return data_;
     }
 
     size_t TransferFunction::getNumberOfDataPoints() const{
@@ -99,15 +99,13 @@ namespace inviwo {
 				iter = dataPoints_.erase(iter);
 			}
 			dataPoints_.clear();
-			calcTransferValues();
-			
 		}
 	}
 
     void TransferFunction::calcTransferValues(){
 		//std::cout << "POINTS: " << dataPoints_.size() << std::endl;
 
-        vec4* dataArray = static_cast<vec4*>(data_.getEditableRepresentation<ImageRAMVec4float32>()->getData());
+        vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<ImageRAM>()->getData());
         float factor;
         float start;
         float stop;
