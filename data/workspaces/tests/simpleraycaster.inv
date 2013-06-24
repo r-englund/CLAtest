@@ -103,9 +103,6 @@
                     <maxvalue content="10" />
                     <increment content="0.1" />
                 </Property>
-                <Property type="undefined" identifier="transferFunction" displayName="Transfer function">
-                    <size content="0" />
-                </Property>
             </Properties>
         </Processor>
         <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref4">

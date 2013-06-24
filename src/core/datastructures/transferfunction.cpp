@@ -23,7 +23,6 @@ namespace inviwo {
 	};
 
     TransferFunction::~TransferFunction(){
-		LogInfo("Transferfunction Destructor");
 		clearPoints();
 	}
 
