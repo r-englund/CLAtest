@@ -9,7 +9,7 @@
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="765" y="254" />
+                    <position x="1071" y="298" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -27,7 +27,7 @@
         <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-600" y="-500" />
+                    <position x="-600" y="-450" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -108,19 +108,51 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref2">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-500" y="-675" />
+                    <position x="-525" y="-625" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
-            <Properties />
+            <Properties>
+                <Property type="undefined" identifier="clipX" displayName="Clip X Axis">
+                    <value x="0" y="1" />
+                    <minvalue x="0" y="0" />
+                    <maxvalue x="1" y="1" />
+                    <increment x="0.0099999998" y="0.0099999998" />
+                </Property>
+                <Property type="undefined" identifier="clipY" displayName="Clip Y Axis">
+                    <value x="0" y="1" />
+                    <minvalue x="0" y="0" />
+                    <maxvalue x="1" y="1" />
+                    <increment x="0.0099999998" y="0.0099999998" />
+                </Property>
+                <Property type="undefined" identifier="clipZ" displayName="Clip Z Axis">
+                    <value x="0" y="1" />
+                    <minvalue x="0" y="0" />
+                    <maxvalue x="1" y="1" />
+                    <increment x="0.0099999998" y="0.0099999998" />
+                </Property>
+                <Property type="undefined" identifier="clippingEnabled" displayName="Enable Clipping">
+                    <value content="1" />
+                </Property>
+                <Property type="undefined" identifier="testFloat" displayName="Min Max Test">
+                    <value x="0.33000001" y="0.62" />
+                    <range x="0" y="1" />
+                    <increment content="0.01" />
+                </Property>
+                <Property type="undefined" identifier="testInt" displayName="Min Max Test">
+                    <value x="3" y="8" />
+                    <range x="0" y="10" />
+                    <increment content="1" />
+                </Property>
+            </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref3">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-600" y="-750" />
+                    <position x="-650" y="-725" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -130,13 +162,46 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref4">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-525" y="-600" />
+                    <position x="-550" y="-525" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
+            <InteractonHandlers>
+                <InteractionHandler type="Trackball">
+                    <Properties>
+                        <Property type="EventProperty" identifier="trackballPan" displayName="Pan">
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Middle mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball pan" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="trackballRotate" displayName="Rotate">
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Left mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball rotate" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="trackballZoom" displayName="Zoom">
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Right mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball zoom" />
+                            </Action>
+                        </Property>
+                    </Properties>
+                </InteractionHandler>
+            </InteractonHandlers>
             <Properties>
                 <Property type="undefined" identifier="camera" displayName="Camera">
                     <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
@@ -146,13 +211,13 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="-0.1289462" y="-3.1931305" z="-4.8561058" />
+                        <value x="-2.0744667" y="5.42981" z="0.090870582" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="-0.30532128" y="-0.81089526" z="0.52276003" />
+                        <value x="0.49760905" y="0.24101092" z="-0.83370864" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -196,15 +261,15 @@
         </Connection>
         <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
@@ -212,15 +277,15 @@
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </OutPort>
             <InPort identifier="entry-points">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
@@ -228,7 +293,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </OutPort>
             <InPort identifier="exit-points">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
