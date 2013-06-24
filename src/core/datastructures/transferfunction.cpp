@@ -36,6 +36,7 @@ namespace inviwo {
     size_t TransferFunction::getNumberOfDataPoints() const{
         return dataPoints_.size();
     }
+
     TransferFunctionDataPoint* TransferFunction::getPoint(int i) const{
 		if (getNumberOfDataPoints() == 0){
 			return NULL;

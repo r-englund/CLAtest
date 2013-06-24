@@ -19,6 +19,7 @@ public:
     virtual T& get();
 	virtual const T& get() const { return value_; };
     virtual void set(const T& value);
+    void callChanged();
 
 protected:
     T value_;
@@ -40,6 +41,11 @@ T& TemplateProperty<T>::get() {
 template <typename T>
 void TemplateProperty<T>::set(const T& value) {
     value_ = value;
+    callChanged();
+}
+
+template <typename T>
+void TemplateProperty<T>::callChanged(){
     onChangeCallback_.invoke();
     //FIXME: if set() is called before addProperty(), getOwner() will be 0
     getOwner()->invalidate(getInvalidationLevel());

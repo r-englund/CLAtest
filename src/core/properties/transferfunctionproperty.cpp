@@ -7,19 +7,18 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::
 {}
 
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
-	Property::serialize(s) ;
-	TransferFunction tf = get();
+	Property::serialize(s);
 	std::stringstream stream;
-	s.serialize("size", (int)tf.getNumberOfDataPoints());
+	s.serialize("size", (int)value_.getNumberOfDataPoints());
 
-	for (size_t i = 0; i < tf.getNumberOfDataPoints(); i++){
+	for (size_t i = 0; i < value_.getNumberOfDataPoints(); i++){
 		stream << "pos" << i;
-		s.serialize(stream.str(), tf.getPoint(i)->getPos());
+		s.serialize(stream.str(), value_.getPoint(i)->getPos());
 		stream.clear();
 		stream.str(std::string());
 
 		stream << "rgba" << i;
-		s.serialize(stream.str(), tf.getPoint(i)->getRgba());
+		s.serialize(stream.str(), value_.getPoint(i)->getRgba());
 		stream.clear();
 		stream.str(std::string());
 	}
@@ -28,7 +27,6 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 	Property::deserialize(d);
 	int size;
-	TransferFunction* tf = &get();
 	vec2 pos;
 	vec4 rgba;
 	std::stringstream stream;
@@ -45,8 +43,10 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 		stream.clear();
 		stream.str(std::string());
 
-		tf->addPoint(pos, rgba);
+		value_.addPoint(pos, rgba);
 	}
+
+    callChanged();
 }
 
 void TransferFunctionProperty::customSet(){
