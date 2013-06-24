@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
-project(freetype)
+ivw_project(freetype)
   
 #--------------------------------------------------------------------
 # Set source- and library name variables
@@ -22,7 +21,8 @@ set(FREETYPE_SRC_FOLDER "${CMAKE_CURRENT_SOURCE_DIR}")
 
 #--------------------------------------------------------------------
 # Create variables for include and library
-set(FREETYPE_INCLUDE_DIRS "${FREETYPE_SRC_FOLDER}/include" CACHE STRING "FT2 include directory" FORCE)
+set(FREETYPE_INCLUDE_DIRS "${FREETYPE_SRC_FOLDER}/include" CACHE STRING "FT2 include directory" FORCE
+    "${CMAKE_CURRENT_SOURCE_DIR}/fonts" CACHE STRING "Location of font files" FORCE)
 
 set(FREETYPE_LIBRARIES freetype CACHE STRING "FT2 libraries" FORCE)
 set(FREETYPE_LIBRARY freetype CACHE STRING "FREETYPE libraries" FORCE)
@@ -40,30 +40,36 @@ set(FREETYPE_src
         ${FREETYPE_SRC_FOLDER}/src/bdf/bdf.c
         ${FREETYPE_SRC_FOLDER}/src/cff/cff.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftbase.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftbbox.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftbitmap.c
         ${FREETYPE_SRC_FOLDER}/src/cache/ftcache.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftcid.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftdebug.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftfstype.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftgasp.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftglyph.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftgxval.c
         ${FREETYPE_SRC_FOLDER}/src/gzip/ftgzip.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftinit.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftlcdfil.c
         ${FREETYPE_SRC_FOLDER}/src/lzw/ftlzw.c
-        ${FREETYPE_SRC_FOLDER}/src/base/ftstroke.c
-        ${FREETYPE_SRC_FOLDER}/src/base/ftsystem.c
-        ${FREETYPE_SRC_FOLDER}/src/smooth/smooth.c
-        ${FREETYPE_SRC_FOLDER}/src/base/ftbbox.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftmm.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftotval.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftpatent.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftpfr.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftstroke.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftsynth.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftsystem.c
         ${FREETYPE_SRC_FOLDER}/src/base/fttype1.c
         ${FREETYPE_SRC_FOLDER}/src/base/ftwinfnt.c
+        ${FREETYPE_SRC_FOLDER}/src/base/ftxf86.c
         ${FREETYPE_SRC_FOLDER}/src/pcf/pcf.c
         ${FREETYPE_SRC_FOLDER}/src/pfr/pfr.c
         ${FREETYPE_SRC_FOLDER}/src/psaux/psaux.c
         ${FREETYPE_SRC_FOLDER}/src/pshinter/pshinter.c
         ${FREETYPE_SRC_FOLDER}/src/psnames/psmodule.c
         ${FREETYPE_SRC_FOLDER}/src/raster/raster.c
+        ${FREETYPE_SRC_FOLDER}/src/smooth/smooth.c        
         ${FREETYPE_SRC_FOLDER}/src/sfnt/sfnt.c
         ${FREETYPE_SRC_FOLDER}/src/truetype/truetype.c
         ${FREETYPE_SRC_FOLDER}/src/type1/type1.c
@@ -79,11 +85,12 @@ SET(freetype_HDRS
     ${FREETYPE_SRC_FOLDER}/include/freetype/config/ftmodule.h
     ${FREETYPE_SRC_FOLDER}/include/freetype/config/ftoption.h
     ${FREETYPE_SRC_FOLDER}/include/freetype/config/ftstdlib.h
+    ${FREETYPE_SRC_FOLDER}/include/freetype/freetype.h
 )
   
 #--------------------------------------------------------------------
 # Add /include and subfolders as includes
-include_directories(${FREETYPE_INCLUDE_DIRS})
+ivw_include_directories(${FREETYPE_INCLUDE_DIRS})
 
 add_library(freetype ${FREETYPE_src} ${freetype_HDRS})
 
@@ -94,3 +101,7 @@ set_target_properties(${FREETYPE_LIBRARIES} PROPERTIES
 # Creates VS folder structure
 ivw_define_standard_definitions(freetype)
 ivw_vs_folder(freetype ext)
+
+#--------------------------------------------------------------------
+# Make package (for other projects to find)
+ivw_make_package(Freetype freetype)

@@ -7,8 +7,11 @@ endif(IVW_MODULE_FONTRENDERING)
 ivw_module(Fontrendering)
 
 #--------------------------------------------------------------------
+# Set include directories
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/freetype/include)
+
+#--------------------------------------------------------------------
 # Add header files
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/freetype/include)
 set(HEADER_FILES
 	${IVW_MODULE_DIR}/fontrendering/fontrenderingmodule.h
 	${IVW_MODULE_DIR}/fontrendering/fontrenderingmoduledefine.h

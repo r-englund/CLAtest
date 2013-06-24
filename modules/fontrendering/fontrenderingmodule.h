@@ -10,6 +10,7 @@ class IVW_MODULE_FONTRENDERING_API FontrenderingModule : public InviwoModule {
 
 public:
     FontrenderingModule();
+
 };
 
 } // namespace
