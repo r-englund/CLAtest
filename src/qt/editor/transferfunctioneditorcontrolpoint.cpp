@@ -19,9 +19,7 @@ namespace inviwo {
 
     TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(){};
 
-    TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint(){
-		LogInfo("Controlpoint Destructor");
-	};
+    TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint(){};
 
     void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
         IVW_UNUSED_PARAM(options);

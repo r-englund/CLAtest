@@ -34,6 +34,16 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget *parent) : QSp
 
     connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateSplitterPosition(int, int)));
 
+    range_[0] = 0;
+    range_[1] = 0;
+    value_[0] = 0;
+    value_[1] = 0;
+
+    internalRange_[0] = 0;
+    internalRange_[1] = 0;
+    internalValue_[0] = 0;
+    internalValue_[1] = 0;
+
     getRange(1, &internalRange_[0], &internalValue_[1]);
     getRange(2, &internalValue_[0], &internalRange_[1]);
 }
