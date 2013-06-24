@@ -23,11 +23,10 @@ namespace inviwo {
 	}
 
 	TransferFunctionEditor::~TransferFunctionEditor(){
-		LogInfo("Editor destructor");
 		for (std::vector<TransferFunctionEditorControlPoint*>::iterator p_itr = points_.begin(); p_itr != points_.end(); p_itr++){
-		}
+            delete *p_itr;		
+        }
 		points_.clear();
-		//VLDDisable;
 	}
 
 	void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent *e){
