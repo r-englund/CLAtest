@@ -28,7 +28,7 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 	Property::deserialize(d);
 	int size;
-	TransferFunction tf = get();
+	TransferFunction* tf = &get();
 	vec2 pos;
 	vec4 rgba;
 	std::stringstream stream;
@@ -45,7 +45,7 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 		stream.clear();
 		stream.str(std::string());
 
-		tf.addPoint(pos, rgba);
+		tf->addPoint(pos, rgba);
 	}
 }
 

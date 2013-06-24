@@ -9,7 +9,7 @@
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1079" y="328" />
+                    <position x="1087" y="358" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -104,11 +104,15 @@
                     <increment content="0.1" />
                 </Property>
                 <Property type="undefined" identifier="transferFunction" displayName="Transfer function">
-                    <size content="0" />
+                    <size content="2" />
+                    <pos0 x="1" y="0" />
+                    <rgba0 x="0.78823531" y="1" z="0.69803923" w="0" />
+                    <pos1 x="6" y="100" />
+                    <rgba1 x="1" y="0.61176473" z="0.06666667" w="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref2">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-625" />
@@ -136,7 +140,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref3">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-725" />
@@ -149,7 +153,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref4">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-525" />
@@ -198,13 +202,13 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="-2.0744667" y="5.4000001" z="0.1" />
+                        <value x="-1.9355885" y="-3.3855674" z="-4.2737417" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="undefined" identifier="lookUp" displayName="Look up">
-                        <value x="0.49760905" y="0.2" z="-0.83370864" />
+                        <value x="0.52166224" y="0.53479397" z="-0.65157348" />
                         <minvalue x="0" y="0" z="0" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -248,15 +252,15 @@
         </Connection>
         <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
@@ -264,15 +268,15 @@
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </OutPort>
             <InPort identifier="entry-points">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
@@ -280,7 +284,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </OutPort>
             <InPort identifier="exit-points">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
