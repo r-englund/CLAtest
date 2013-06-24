@@ -6,11 +6,13 @@ namespace inviwo {
     }
 
 	TransferFunction::TransferFunction(const TransferFunction& rhs) {
+        data_ = NULL;
 		*this = rhs;
 	}
 
 	TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
 		if (this != &rhs) {
+            delete data_;
 			this->data_ = static_cast<Image*>(rhs.data_->clone());
 			this->clearPoints();
 			
