@@ -31,11 +31,11 @@ private:
 
     BoolProperty clippingEnabled_;
 
-    IntMinMaxProperty testI_;
-    FloatMinMaxProperty testF_;
-    FloatVec2Property clipX_;
-    FloatVec2Property clipY_;
-    FloatVec2Property clipZ_;
+    IntMinMaxProperty clipX_;
+    IntMinMaxProperty clipY_;
+    IntMinMaxProperty clipZ_;
+
+    glm::uvec3 dims_;
 };
 
 } // namespace

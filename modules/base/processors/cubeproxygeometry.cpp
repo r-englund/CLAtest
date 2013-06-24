@@ -12,21 +12,19 @@ CubeProxyGeometry::CubeProxyGeometry()
       inport_("volume.inport"),
       outport_("geometry.outport"),
       clippingEnabled_("clippingEnabled", "Enable Clipping", true),
-      testI_("testInt", "Min Max Test", 4, 7),
-      testF_("testFloat", "Min Max Test", 0.0f, 1.0),
-      clipX_("clipX", "Clip X Axis", glm::vec2(0.0f, 1.0f)),
-      clipY_("clipY", "Clip Y Axis", glm::vec2(0.0f, 1.0f)),
-      clipZ_("clipZ", "Clip Z Axis", glm::vec2(0.0f, 1.0f))
+      clipX_("clipX", "Clip X Slices", 0, 256, 0, 256),
+      clipY_("clipY", "Clip Y Slices", 0, 256, 0, 256),
+      clipZ_("clipZ", "Clip Z Slices", 0, 256, 0, 256)
 {
     addPort(inport_);
     addPort(outport_);
 
     addProperty(clippingEnabled_);
-    addProperty(testI_);
-    addProperty(testF_);
     addProperty(clipX_);
     addProperty(clipY_);
     addProperty(clipZ_);
+
+    dims_ = glm::uvec3(1,1,1);
 }
 
 CubeProxyGeometry::~CubeProxyGeometry() {}
@@ -40,6 +38,16 @@ void CubeProxyGeometry::deinitialize() {
 }
 
 void CubeProxyGeometry::process() {
+    if(dims_ != inport_.getData()->getDimension()){
+        dims_ = inport_.getData()->getDimension();
+        clipX_.setRangeMax(static_cast<int>(dims_.x));
+        clipY_.setRangeMax(static_cast<int>(dims_.y));
+        clipZ_.setRangeMax(static_cast<int>(dims_.z));
+        clipX_.set(glm::ivec2(0, static_cast<int>(dims_.x)));
+        clipY_.set(glm::ivec2(0, static_cast<int>(dims_.y)));
+        clipZ_.set(glm::ivec2(0, static_cast<int>(dims_.z)));
+    }
+
     glm::vec3 posLLF = glm::vec3(-1.f);
     glm::vec3 posURB = glm::vec3(1.f);
     glm::vec3 texLLF = glm::vec3(0.f);
@@ -49,20 +57,20 @@ void CubeProxyGeometry::process() {
 
     if(clippingEnabled_.get()){
         //Vertex positions
-        posLLF.x = (clipX_.get().x*2.f)-1.f;
-        posLLF.y = (clipY_.get().x*2.f)-1.f;
-        posLLF.z = (clipZ_.get().x*2.f)-1.f;
-        posURB.x = (clipX_.get().y*2.f)-1.f;
-        posURB.y = (clipY_.get().y*2.f)-1.f;
-        posURB.z = (clipZ_.get().y*2.f)-1.f;
+        posLLF.x = ((static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x))*2.f)-1.f;
+        posLLF.y = ((static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y))*2.f)-1.f;
+        posLLF.z = ((static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z))*2.f)-1.f;
+        posURB.x = ((static_cast<float>(clipX_.get().y)/static_cast<float>(dims_.x))*2.f)-1.f;
+        posURB.y = ((static_cast<float>(clipY_.get().y)/static_cast<float>(dims_.y))*2.f)-1.f;
+        posURB.z = ((static_cast<float>(clipZ_.get().y)/static_cast<float>(dims_.z))*2.f)-1.f;
 
         //Texture Coordinates and Colors
-        texLLF.x = colLLF.x = clipX_.get().x;
-        texLLF.y = colLLF.y = clipY_.get().x;
-        texLLF.z = colLLF.z = clipZ_.get().x;
-        texURB.x = colURB.x = clipX_.get().y;
-        texURB.y = colURB.y = clipY_.get().y;
-        texURB.z = colURB.z = clipZ_.get().y;
+        texLLF.x = colLLF.x = static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x);
+        texLLF.y = colLLF.y = static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y);
+        texLLF.z = colLLF.z = static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
+        texURB.x = colURB.x = static_cast<float>(clipX_.get().y)/static_cast<float>(dims_.x);
+        texURB.y = colURB.y = static_cast<float>(clipY_.get().y)/static_cast<float>(dims_.y);
+        texURB.z = colURB.z = static_cast<float>(clipZ_.get().y)/static_cast<float>(dims_.z);
     }
 
     //Create Rectangular Prism and set it to the outport
