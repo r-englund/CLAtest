@@ -21,11 +21,10 @@ set(FREETYPE_SRC_FOLDER "${CMAKE_CURRENT_SOURCE_DIR}")
 
 #--------------------------------------------------------------------
 # Create variables for include and library
-set(FREETYPE_INCLUDE_DIRS "${FREETYPE_SRC_FOLDER}/include" CACHE STRING "FT2 include directory" FORCE
-    "${CMAKE_CURRENT_SOURCE_DIR}/fonts" CACHE STRING "Location of font files" FORCE)
+set(FREETYPE_INCLUDE_DIRS "${FREETYPE_SRC_FOLDER}/include")
 
-set(FREETYPE_LIBRARIES freetype CACHE STRING "FT2 libraries" FORCE)
-set(FREETYPE_LIBRARY freetype CACHE STRING "FREETYPE libraries" FORCE)
+set(FREETYPE_LIBRARIES freetype)
+set(FREETYPE_LIBRARY freetype)
 
 mark_as_advanced(FREETYPE_SRC_FOLDER)
 mark_as_advanced(FREETYPE_INCLUDE_DIRS)
