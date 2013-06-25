@@ -3,7 +3,7 @@
 namespace inviwo {
 
 ProcessorClassName(ImageSource, "ImageSource"); 
-ProcessorCategory(ImageSource, "Data Source Processor");
+ProcessorCategory(ImageSource, "Data Input");
 ProcessorCodeState(ImageSource, CODE_STATE_EXPERIMENTAL);
 
 ImageSource::ImageSource()

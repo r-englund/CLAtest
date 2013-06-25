@@ -3,7 +3,7 @@
 namespace inviwo {
 
 ProcessorClassName(FirstIvwProcessor, "FirstIVWProcessor"); 
-ProcessorCategory(FirstIvwProcessor, "Dummy Processors");
+ProcessorCategory(FirstIvwProcessor, "Various");
 ProcessorCodeState(FirstIvwProcessor, CODE_STATE_STABLE);
 
 

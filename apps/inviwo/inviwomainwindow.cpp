@@ -43,8 +43,8 @@ void InviwoMainWindow::initializeAndShow() {
     settingsWidget_ = new SettingsWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
 
-    processorListWidget_ = new ProcessorListWidget(this);
-    addDockWidget(Qt::LeftDockWidgetArea, processorListWidget_);
+    processorTreeWidget_ = new ProcessorTreeWidget(this);
+    addDockWidget(Qt::LeftDockWidgetArea, processorTreeWidget_);
 
     propertyListWidget_ = new PropertyListWidget(this);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
@@ -177,8 +177,8 @@ void InviwoMainWindow::addMenuActions() {
 
     processorListWidgetViewAction_ = new QAction(tr("&Processor List"), this);
     processorListWidgetViewAction_->setCheckable(true);
-    processorListWidgetViewAction_->setChecked(processorListWidget_->isVisible());
-    connect(processorListWidgetViewAction_, SIGNAL(triggered(bool)), processorListWidget_, SLOT(setVisible(bool)));
+    processorListWidgetViewAction_->setChecked(processorTreeWidget_->isVisible());
+    connect(processorListWidgetViewAction_, SIGNAL(triggered(bool)), processorTreeWidget_, SLOT(setVisible(bool)));
     viewMenuItem_->addAction(processorListWidgetViewAction_);
 
     propertyListWidgetViewAction_ = new QAction(tr("&Property List"), this);

@@ -4,7 +4,7 @@
 namespace inviwo {
 
 ProcessorClassName(FindEdges, "FindEdges"); 
-ProcessorCategory(FindEdges, "Compositer");
+ProcessorCategory(FindEdges, "Image Operation");
 ProcessorCodeState(FindEdges, CODE_STATE_EXPERIMENTAL);
 
 FindEdges::FindEdges()

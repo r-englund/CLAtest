@@ -4,7 +4,7 @@
 namespace inviwo {
 
 ProcessorClassName(SimpleRaycaster, "SimpleRaycaster"); 
-ProcessorCategory(SimpleRaycaster, "Ray Caster");
+ProcessorCategory(SimpleRaycaster, "Volume Rendering");
 ProcessorCodeState(SimpleRaycaster, CODE_STATE_EXPERIMENTAL);
 
 SimpleRaycaster::SimpleRaycaster()

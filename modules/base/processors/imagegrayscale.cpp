@@ -5,7 +5,7 @@
 namespace inviwo {
 
 ProcessorClassName(ImageGrayscale, "ImageGrayscale"); 
-ProcessorCategory(ImageGrayscale, "Image Converter");
+ProcessorCategory(ImageGrayscale, "Image Operation");
 ProcessorCodeState(ImageGrayscale, CODE_STATE_EXPERIMENTAL); 
 
 ImageGrayscale::ImageGrayscale()

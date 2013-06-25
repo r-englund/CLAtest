@@ -6,7 +6,7 @@
 namespace inviwo {
 
 ProcessorClassName(ImageMixer, "ImageMixer"); 
-ProcessorCategory(ImageMixer, "Compositer");
+ProcessorCategory(ImageMixer, "Image Operation");
 ProcessorCodeState(ImageMixer, CODE_STATE_EXPERIMENTAL); 
 
 ImageMixer::ImageMixer()

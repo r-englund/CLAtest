@@ -8,7 +8,7 @@
 namespace inviwo {
 
 ProcessorClassName(VolumeSplit, "VolumeSplit"); 
-ProcessorCategory(VolumeSplit, "Network");
+ProcessorCategory(VolumeSplit, "Volume Operation");
 ProcessorCodeState(VolumeSplit, CODE_STATE_EXPERIMENTAL);
 
 VolumeSplit::VolumeSplit()

@@ -3,7 +3,7 @@
 namespace inviwo {
 
 ProcessorClassName(RedGreenProcessor, "RedGreenProcessor"); 
-ProcessorCategory(RedGreenProcessor, "Dummy Processors");
+ProcessorCategory(RedGreenProcessor, "Various");
 ProcessorCodeState(RedGreenProcessor, CODE_STATE_STABLE);
 
 RedGreenProcessor::RedGreenProcessor()

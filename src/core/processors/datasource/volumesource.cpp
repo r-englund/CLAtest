@@ -4,7 +4,7 @@
 namespace inviwo {
 
 ProcessorClassName(VolumeSource, "VolumeSource"); 
-ProcessorCategory(VolumeSource, "Data Source Processor");
+ProcessorCategory(VolumeSource, "Data Input");
 ProcessorCodeState(VolumeSource, CODE_STATE_EXPERIMENTAL);
 
 VolumeSource::VolumeSource()

@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMouseEvent>
+#include <QTreeWidget>
 
 #include <inviwo/qt/editor/inviwodockwidget.h>
 
@@ -26,7 +27,6 @@ private:
     QPoint dragStartPosition_;
 };
 
-
 class IVW_QTEDITOR_API ProcessorListWidget : public InviwoDockWidget {
 Q_OBJECT
 public:
@@ -43,6 +43,41 @@ private slots:
     void addProcessorsToList(const QString& text="");
 };
 
+class IVW_QTEDITOR_API ProcessorTree : public QTreeWidget {
+
+public:
+    ProcessorTree(QWidget* parent) : QTreeWidget(parent) {};
+    ~ProcessorTree() {};
+
+protected:
+    void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+
+private:
+    QPoint dragStartPosition_;
+};
+
+class IVW_QTEDITOR_API ProcessorTreeWidget : public InviwoDockWidget {
+    Q_OBJECT
+public:
+    ProcessorTreeWidget(QWidget* parent);
+    ~ProcessorTreeWidget();
+
+private:
+    ProcessorTree* processorTree_;
+    QPoint dragStartPosition_;
+
+    bool processorFits(ProcessorFactoryObject* processor, const QString& filter);
+    QIcon* getCodeStateIcon(Processor::CodeState);
+
+private slots:
+    void addProcessorsToTree(const QString& text="");
+
+private:
+    QIcon iconStable_;
+    QIcon iconExperimental_;
+    QIcon iconBroken_;
+};
 
 class IVW_QTEDITOR_API ProcessorDragObject : public QDrag {
 public:

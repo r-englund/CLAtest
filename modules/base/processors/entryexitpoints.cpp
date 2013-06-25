@@ -4,7 +4,7 @@
 namespace inviwo {
 
 ProcessorClassName(EntryExitPoints, "EntryExitPoints"); 
-ProcessorCategory(EntryExitPoints, "Entry Exit Points");
+ProcessorCategory(EntryExitPoints, "Geometry Rendering");
 ProcessorCodeState(EntryExitPoints, CODE_STATE_STABLE);
 
 EntryExitPoints::EntryExitPoints()
@@ -19,7 +19,6 @@ EntryExitPoints::EntryExitPoints()
     addPort(exitPort_);
 
     addProperty(camera_);
-
 	addInteractionHandler(new Trackball(&camera_));
 }
 

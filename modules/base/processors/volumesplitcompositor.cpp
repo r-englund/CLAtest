@@ -2,6 +2,10 @@
 
 namespace inviwo {
 
+ProcessorClassName(VolumeSplitCompositor, "VolumeSplitCompositor"); 
+ProcessorCategory(VolumeSplitCompositor, "Volume Operation");
+ProcessorCodeState(VolumeSplitCompositor, CODE_STATE_BROKEN);
+
 VolumeSplitCompositor::VolumeSplitCompositor()
     : Processor(),
       inport_("volumebrick.in"),
@@ -14,10 +18,6 @@ VolumeSplitCompositor::VolumeSplitCompositor()
 
 VolumeSplitCompositor::~VolumeSplitCompositor() {
     delete volume_;
-}
-
-Processor* VolumeSplitCompositor::create() const {
-    return new VolumeSplitCompositor();
 }
 
 void VolumeSplitCompositor::process() {

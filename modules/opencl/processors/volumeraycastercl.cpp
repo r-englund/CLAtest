@@ -9,7 +9,7 @@
 namespace inviwo {
 
 ProcessorClassName(VolumeRaycasterCL, "VolumeRaycasterCL"); 
-ProcessorCategory(VolumeRaycasterCL, "Ray Caster");
+ProcessorCategory(VolumeRaycasterCL, "Volume Rendering");
 ProcessorCodeState(VolumeRaycasterCL, CODE_STATE_EXPERIMENTAL);
 
 VolumeRaycasterCL::VolumeRaycasterCL()

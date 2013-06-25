@@ -4,8 +4,8 @@
 namespace inviwo {
 
 ProcessorClassName(CubeProxyGeometry, "CubeProxyGeometry"); 
-ProcessorCategory(CubeProxyGeometry, "Proxy Geometry");
-ProcessorCodeState(CubeProxyGeometry, CODE_STATE_BROKEN); 
+ProcessorCategory(CubeProxyGeometry, "Geometry Creation");
+ProcessorCodeState(CubeProxyGeometry, CODE_STATE_STABLE); 
 
 CubeProxyGeometry::CubeProxyGeometry()
     : ProcessorGL(),

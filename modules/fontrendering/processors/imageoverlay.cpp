@@ -3,7 +3,7 @@
 namespace inviwo {
 
 ProcessorClassName(ImageOverlay, "ImageOverlay"); 
-ProcessorCategory(ImageOverlay, "Compositor");
+ProcessorCategory(ImageOverlay, "Image Operation");
 ProcessorCodeState(ImageOverlay, CODE_STATE_EXPERIMENTAL);
 
 ImageOverlay::ImageOverlay() 

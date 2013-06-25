@@ -3,8 +3,8 @@
 namespace inviwo {
 
 ProcessorClassName(VolumeSplitImageCompositor, "VolumeSplitImageCompositor"); 
-ProcessorCategory(VolumeSplitImageCompositor, "Network");
-ProcessorCodeState(VolumeSplitImageCompositor, CODE_STATE_EXPERIMENTAL);
+ProcessorCategory(VolumeSplitImageCompositor, "Volume Operation");
+ProcessorCodeState(VolumeSplitImageCompositor, CODE_STATE_BROKEN);
 
 VolumeSplitImageCompositor::VolumeSplitImageCompositor()
     : ProcessorGL(),

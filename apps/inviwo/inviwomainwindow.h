@@ -66,7 +66,7 @@ private:
 
     // dock widgets
     SettingsWidget* settingsWidget_;
-    ProcessorListWidget* processorListWidget_;
+    ProcessorTreeWidget* processorTreeWidget_;
     PropertyListWidget* propertyListWidget_;
     ConsoleWidget* consoleWidget_;
     MappingWidget* mappingwidget_;

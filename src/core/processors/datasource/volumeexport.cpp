@@ -4,7 +4,7 @@
 namespace inviwo {
 
 ProcessorClassName(VolumeExport, "VolumeExport"); 
-ProcessorCategory(VolumeExport, "Data Save Processor");
+ProcessorCategory(VolumeExport, "Data Output");
 ProcessorCodeState(VolumeExport, CODE_STATE_EXPERIMENTAL);
 
 VolumeExport::VolumeExport()

@@ -7,7 +7,7 @@
 namespace inviwo {
 
 ProcessorClassName(GrayscaleCL, "GrayscaleCL"); 
-ProcessorCategory(GrayscaleCL, "Image");
+ProcessorCategory(GrayscaleCL, "Image Operation");
 ProcessorCodeState(GrayscaleCL, CODE_STATE_EXPERIMENTAL);
 
 GrayscaleCL::GrayscaleCL()

@@ -91,7 +91,26 @@ QListView::item:selected {
     color: #111111;
 }
 
+/* QTreeView styles */
+QTreeView::item:hover {
+    background-color: darkgrey;
+    color: black;
+}
+QTreeView::branch:hover{
+    background-color: darkgrey;
+}
+QTreeView::branch:has-children:!has-siblings:closed,
+ QTreeView::branch:closed:has-children:has-siblings {
+    border-image: none;
+    image: url(:/stylesheets/images/arrow_darker_right.png);
+ }
 
+ QTreeView::branch:open:has-children:!has-siblings,
+ QTreeView::branch:open:has-children:has-siblings  {
+    border-image: none;
+    image: url(:/stylesheets/images/arrow_darker_down.png);
+ }
+ 
 /* QRadioButton and QCheckBox styles */
 QRadioButton::indicator, QCheckBox::indicator {
 	width: 13px;

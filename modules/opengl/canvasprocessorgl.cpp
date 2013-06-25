@@ -4,7 +4,7 @@
 namespace inviwo {
 
 ProcessorClassName(CanvasProcessorGL, "CanvasProcessorGL"); 
-ProcessorCategory(CanvasProcessorGL, "Canvas Processor");
+ProcessorCategory(CanvasProcessorGL, "Data Output");
 ProcessorCodeState(CanvasProcessorGL, CODE_STATE_STABLE);
 
 CanvasProcessorGL::CanvasProcessorGL()

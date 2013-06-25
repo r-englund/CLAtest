@@ -1,14 +1,12 @@
-#include <modules/opengl/openglmodule.h>
-
+#include <inviwo/core/common/inviwoapplication.h>
 #include <modules/opengl/canvasprocessorgl.h>
+#include <modules/opengl/geometry/geometryrenderprocessorgl.h>
 #include <modules/opengl/geometry/meshgl.h>
+#include <modules/opengl/glwrap/shadermanager.h>
 #include <modules/opengl/image/imageglconverter.h>
+#include <modules/opengl/openglmodule.h>
 #include <modules/opengl/openglinfo.h>
 #include <modules/opengl/volume/volumeglconverter.h>
-#include <modules/opengl/glwrap/shadermanager.h>
-
-#include <inviwo/core/common/inviwoapplication.h>
-
 
 namespace inviwo {
 
@@ -29,6 +27,7 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     addRepresentationConverter(new MeshRAM2GLConverter());
 
     registerProcessor(CanvasProcessorGL);
+    registerProcessor(GeometryRenderProcessorGL);
 
     addResourceInfo(new OpenGLInfo());
 }
