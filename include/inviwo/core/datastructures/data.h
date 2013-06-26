@@ -75,6 +75,9 @@ protected:
     template<typename T> 
     void updateRepresentation(T* representation, int index) const; 
 
+    template<typename T> 
+    const T* createNewRepresentationUsingConverters() const;
+
     template<class T>
     void invalidateAllOther();
 
@@ -118,32 +121,47 @@ const T* Data::getRepresentation() const {
             
         }
     }
+
+    //no representation exists, so we try to create one
+    const T* result = 0;
+    result = createNewRepresentationUsingConverters<T>();
+    ivwAssert(result!=0, "Required representation does not exist.");
+    return result;    
+}
+
+template<typename T> 
+const T* Data::createNewRepresentationUsingConverters() const
+{
     // no representation exists, so we try to create one
     DataRepresentation* result = 0;
     RepresentationConverterFactory* representationConverterFactory = RepresentationConverterFactory::getPtr();
-    for (size_t i=0; i<representations_.size(); ++i) {                
-        RepresentationConverter* converter = representationConverterFactory->getRepresentationConverter<T>(representations_[i]);
-        if (converter) {
-            result = converter->createFrom(representations_[i]);
-            representations_.push_back(result);
-            lastValidRepresentation_ = result;
-            return dynamic_cast<T*>(result);
+    for (size_t i=0; i<representations_.size(); ++i) {
+        if (isRepresentationValid(i)) {
+            RepresentationConverter* converter = representationConverterFactory->getRepresentationConverter<T>(representations_[i]);
+            if (converter) {
+                result = converter->createFrom(representations_[i]);
+                representations_.push_back(result);
+                lastValidRepresentation_ = result;
+                return dynamic_cast<T*>(result);
+            }
         }
     }
     //A one-2-one converter could not be found, thus we want to find the smallest package of converters to get to our destination
     RepresentationConverterPackage<T>* converterPackage = NULL;
     for (size_t i=0; i<representations_.size(); ++i) {                
         RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(representations_[i]);
-        if (currentConverterPackage){
-            if (converterPackage){
-                if (currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()){
+        if (isRepresentationValid(i)) {
+            if (currentConverterPackage){
+                if (converterPackage){
+                    if (currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()){
+                        converterPackage = currentConverterPackage;
+                        result = representations_[i];
+                    }
+                }
+                else{
                     converterPackage = currentConverterPackage;
                     result = representations_[i];
                 }
-            }
-            else{
-                converterPackage = currentConverterPackage;
-                result = representations_[i];
             }
         }
 
