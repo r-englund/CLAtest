@@ -38,7 +38,7 @@ class IVW_CORE_API ImageRAMPrecision : public ImageRAM {
 public:
     ImageRAMPrecision(uvec2 dimensions = uvec2(128,128), DataFormatBase format = GenericDataFormat(T)());
     ImageRAMPrecision(T* data, uvec2 dimensions = uvec2(128,128), DataFormatBase format = GenericDataFormat(T)());
-    ImageRAMPrecision(const ImageRAMPrecision<T>& rhs) {
+    ImageRAMPrecision(const ImageRAMPrecision<T>& rhs): data_(NULL) {
         *this = rhs;
     }
     ImageRAMPrecision<T>& operator=(const ImageRAMPrecision<T>& rhs) {
