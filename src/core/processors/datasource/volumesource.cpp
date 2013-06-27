@@ -23,8 +23,11 @@ void VolumeSource::initialize() {
     Volume* volume = volumePort_.getData();
     if (volume){
         VolumeDisk* vd = new VolumeDisk(volumeFileName_.get());
+        //Clear all existing representations if volumeDisk representation is to be removed
+        volume->clearRepresentations();
         volume->addRepresentation(vd);
         volume->setDimension(vd->getDimensions());
+        vd = volume->getEditableRepresentation<VolumeDisk>();
     }
 }
 
@@ -44,6 +47,7 @@ void VolumeSource::process() {
             volume->addRepresentation(vd);
             volume->setDimension(vd->getDimensions());
         }
+        volumeDisk = volume->getEditableRepresentation<VolumeDisk>();
     }
 }
 

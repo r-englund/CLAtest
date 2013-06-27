@@ -149,7 +149,7 @@
             </MetaDataList>
             <Properties>
                 <Property type="undefined" identifier="volumeFileName" displayName="Volume file name">
-                    <url content="data/volumes/hydrogenatom.dat" />
+                    <url content="../../volumes/hydrogenatom.dat" />
                 </Property>
             </Properties>
         </Processor>

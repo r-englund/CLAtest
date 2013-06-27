@@ -37,4 +37,55 @@ std::string UrlParser::replaceFileExtension(const std::string url, const std::st
     return newUrl;
 }
 
+std::string UrlParser::getRelativePath(const std::string& bPath, const std::string absolutePath) {
+    std::string basePath(getFileDirectory(bPath));
+    std::string absPath(getFileDirectory(absolutePath));
+    std::string fileName(getFileNameWithExtension(absolutePath));
+
+    std::string relativePath("");
+    //if given base path is empty use system base path
+    if (basePath.empty())
+        basePath = InviwoApplication::getPtr()->getBasePath();
+
+    //TODO: Optimize or use qt/boost
+
+    //path as string tokens
+    std::vector<std::string> basePathTokens;
+    std::vector<std::string> absolutePathTokens;
+
+    size_t pos = 0, pos1 = std::string::npos;
+    while(pos != std::string::npos) {
+        pos1 = basePath.find_first_of("\\/", pos);
+        if(pos1 != pos)            
+            basePathTokens.push_back(basePath.substr(pos, pos1-pos));        
+        pos = basePath.find_first_not_of("\\/", pos1);
+    }
+
+    pos = 0, pos1 = std::string::npos;
+    while(pos != std::string::npos) {
+        pos1 = absPath.find_first_of("\\/", pos);
+        if(pos1 != pos)            
+            absolutePathTokens.push_back(absPath.substr(pos, pos1-pos));        
+        pos = absPath.find_first_not_of("\\/", pos1);
+    }
+
+    //discard matching tokens
+    for (size_t i=0; (i<basePathTokens.size() && i<absolutePathTokens.size()); i++) {
+        if (basePathTokens[i] == absolutePathTokens[i])
+            basePathTokens[i] = absolutePathTokens[i] = "";
+        else
+            break;
+    }
+
+    //handle non-matching tokens
+    for (size_t i=0; i<basePathTokens.size(); i++)
+        if (basePathTokens[i]!="") relativePath+="../";    
+
+    for (size_t i=0; i<absolutePathTokens.size(); i++)
+        if (absolutePathTokens[i]!="") relativePath+=(absolutePathTokens[i]+"/");    
+
+    return relativePath+fileName;
+    
+}
+
 }

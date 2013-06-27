@@ -21,8 +21,10 @@ void DatVolumeReader::readDatFileSettings(std::string filePath, ReaderSettings& 
 
     if(!UrlParser::fileExists(filePath)){
         filePath = UrlParser::addBasePath(filePath);
-        if(!UrlParser::fileExists(filePath))
+        if(!UrlParser::fileExists(filePath)) {
+            ivwAssert(NULL, "File " + filePath + " does not exist.");     
             return;
+        }
     }
 
     std::string fileDirectory = UrlParser::getFileDirectory(filePath);

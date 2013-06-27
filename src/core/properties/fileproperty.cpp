@@ -24,14 +24,25 @@ void  FileProperty::setVariant(const Variant& val) {
 
 void FileProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
-    s.serialize("url", get());
+    std::string basePath = s.getFileName();
+    std::string absoluteFilePath = get();
+
+    ivwAssert(!basePath.empty(), "File name cannot be empty.");
+    
+    std::string relativePath = UrlParser::getRelativePath(basePath, absoluteFilePath);
+    s.serialize("url", relativePath);
 }
 
 void FileProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d) ;
-    std::string value;
-    d.deserialize("url", value);
-    set(value);
+    std::string relativePath;
+    d.deserialize("url", relativePath);
+
+    std::string basePath = d.getFileName();
+    ivwAssert(!basePath.empty(), "File name cannot be empty.")
+    
+    basePath = UrlParser::getFileDirectory(basePath);
+    set(basePath+relativePath);
 }
 
 } // namespace

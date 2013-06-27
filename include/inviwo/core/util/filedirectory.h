@@ -25,6 +25,7 @@ public:
     static std::string getFileNameWithExtension(const std::string url);
     static std::string getFileExtension(const std::string url);
     static std::string replaceFileExtension(const std::string url, const std::string newFileExtension);
+    static std::string getRelativePath(const std::string& basePath, const std::string absolutePath);
 };
 
 } // namespace
