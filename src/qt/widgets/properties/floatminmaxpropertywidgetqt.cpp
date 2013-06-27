@@ -4,7 +4,7 @@
 
 namespace inviwo {
 
-FloatMinMaxPropertyWidgetQt::FloatMinMaxPropertyWidgetQt(FloatMinMaxProperty *property) : property_(property) {
+FloatMinMaxPropertyWidgetQt::FloatMinMaxPropertyWidgetQt(FloatMinMaxProperty *property) : property_(property), updatingFromProperty_(false) {
 	generateWidget();
 	updateFromProperty();
 }
@@ -31,6 +31,8 @@ void FloatMinMaxPropertyWidgetQt::generateWidget() {
 }
 
 void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
+    updatingFromProperty_ = true;
+
     maxNumberOfValues_ = (property_->getRangeMax()-property_->getRangeMin())/property_->getIncrement();
     slider_->setRange(0, static_cast<int>(maxNumberOfValues_));
 
@@ -50,36 +52,44 @@ void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
     spinBoxMin_->setValue(value.x);
     spinBoxMax_->setValue(value.y);
     blockSignals(false);
+
+    updatingFromProperty_ = false;
 }
 
 void FloatMinMaxPropertyWidgetQt::updateFromSlider(int valMin, int valMax){
-    bool changed = false;
-    blockSignals(true);
-    double valMinDouble = static_cast<double>(valMin)/static_cast<double>(maxNumberOfValues_);
-    double valMaxDouble = static_cast<double>(valMax)/static_cast<double>(maxNumberOfValues_);
-    if(sliderMin_ != valMin){
-        sliderMin_ = valMin;
-        spinBoxMin_->setValue(valMinDouble);
-        changed = true;
+    if(!updatingFromProperty_){
+        bool changed = false;
+        blockSignals(true);
+        double valMinDouble = static_cast<double>(valMin)/static_cast<double>(maxNumberOfValues_);
+        double valMaxDouble = static_cast<double>(valMax)/static_cast<double>(maxNumberOfValues_);
+        if(sliderMin_ != valMin){
+            sliderMin_ = valMin;
+            spinBoxMin_->setValue(valMinDouble);
+            changed = true;
+        }
+        if(sliderMax_ != valMax){
+            sliderMax_ = valMax;
+            spinBoxMax_->setValue(valMaxDouble);
+            changed = true;
+        }
+        blockSignals(false);
+        if(changed)
+            setPropertyValue(valMinDouble, valMaxDouble);
     }
-    if(sliderMax_ != valMax){
-        sliderMax_ = valMax;
-        spinBoxMax_->setValue(valMaxDouble);
-        changed = true;
-    }
-    blockSignals(false);
-    if(changed)
-        setPropertyValue(valMinDouble, valMaxDouble);
 }
 
 void FloatMinMaxPropertyWidgetQt::updateFromSpinBoxMin(double val){
-    slider_->setMinValue(static_cast<int>((val-property_->getRangeMin())*maxNumberOfValues_));
-    setPropertyValue(static_cast<float>(val), static_cast<float>(spinBoxMax_->value()));
+    if(!updatingFromProperty_){
+        slider_->setMinValue(static_cast<int>((val-property_->getRangeMin())*maxNumberOfValues_));
+        setPropertyValue(static_cast<float>(val), static_cast<float>(spinBoxMax_->value()));
+    }
 }
 
 void FloatMinMaxPropertyWidgetQt::updateFromSpinBoxMax(double val){
-    slider_->setMaxValue(static_cast<int>((val-property_->getRangeMin())*maxNumberOfValues_));
-    setPropertyValue(static_cast<float>(spinBoxMin_->value()), static_cast<float>(val));
+    if(!updatingFromProperty_){
+        slider_->setMaxValue(static_cast<int>((val-property_->getRangeMin())*maxNumberOfValues_));
+        setPropertyValue(static_cast<float>(spinBoxMin_->value()), static_cast<float>(val));
+    }
 }
 
 void FloatMinMaxPropertyWidgetQt::setPropertyValue(float minVal, float maxVal) {

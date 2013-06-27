@@ -94,10 +94,14 @@ void RangeSliderQt::setRange(int minR, int maxR){
 
 void RangeSliderQt::setMinRange(int minR){
     range_[0] = minR;
+    if(minR>value_[0])
+        setMinValue(minR);
 }
 
 void RangeSliderQt::setMaxRange(int maxR){
     range_[1] = maxR;
+    if(maxR<value_[1])
+        setMaxValue(maxR);
 }
 
 //Index 1 = Min, Index 2 = Max
@@ -165,9 +169,6 @@ void RangeSliderQt::updateSplitterPosition(int pos, int idx){
     //Perform change of other handle if constrain was performed
     if(otherIdx > 0){
         value_[otherLoc] = fromInternalToExternal(internalValue_[otherLoc]);
-    }
-    else{
-        internalValue_[otherLoc] = closestLegalPosition(fromExternalToInternal(value_[otherLoc]), otherIdx);
     }
 
     //Emit

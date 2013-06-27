@@ -68,15 +68,15 @@ void FloatMinMaxProperty::deserialize(IvwDeserializer& d){
     Property::deserialize(d);
 
     vec2 value;
-    d.deserialize("value",value);
-    set(value);
-
     d.deserialize("range", value);
     MinMaxProperty<glm::mediump_float>::setRange(value);
 
     float increment;
     d.deserialize("increment", increment);
     MinMaxProperty<glm::mediump_float>::setIncrement(increment);
+
+    d.deserialize("value",value);
+    set(value);
 }
 
 void FloatVec2Property::serialize(IvwSerializer& s) const {
@@ -162,15 +162,15 @@ void IntMinMaxProperty::deserialize(IvwDeserializer& d){
     Property::deserialize(d);
 
     glm::detail::tvec2<int> value;
-    d.deserialize("value",value);
-    set(value);
-
     d.deserialize("range", value);
     MinMaxProperty<int>::setRange(value);
 
     int increment;
     d.deserialize("increment", increment);
     MinMaxProperty<int>::setIncrement(increment);
+
+    d.deserialize("value",value);
+    set(value);
 }
 
 void IntVec2Property::serialize(IvwSerializer& s) const {

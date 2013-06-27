@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref0">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-550" />
@@ -11,7 +11,7 @@
             </MetaDataList>
             <Properties>
                 <Property type="undefined" identifier="clipX" displayName="Clip X Slices">
-                    <value x="0" y="128" />
+                    <value x="29" y="109" />
                     <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
@@ -30,7 +30,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref4">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-625" />
@@ -43,7 +43,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref1">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-475" />
@@ -130,14 +130,14 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref2">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-725" y="-400" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="387" y="595" />
+                    <position x="395" y="625" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -152,14 +152,14 @@
                 <Property type="undefined" identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref3">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-400" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="698" y="594" />
+                    <position x="706" y="624" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -178,34 +178,34 @@
     <Connections>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref2" />
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref3" />
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref4" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>

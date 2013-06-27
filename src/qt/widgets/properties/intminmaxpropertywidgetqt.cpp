@@ -4,8 +4,8 @@
 
 namespace inviwo {
 
-IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty *property) : property_(property) {
-	generateWidget();
+IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty *property) : property_(property), updatingFromProperty_(false) {
+    generateWidget();
 	updateFromProperty();
 }
 
@@ -32,6 +32,8 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
 }
 
 void IntMinMaxPropertyWidgetQt::updateFromProperty() {
+    updatingFromProperty_ = true;
+
     slider_->setRange(property_->getRangeMin(), property_->getRangeMax());
     spinBoxMin_->setRange(property_->getRangeMin(), property_->getRangeMax());
     spinBoxMax_->setRange(property_->getRangeMin(), property_->getRangeMax());
@@ -43,31 +45,39 @@ void IntMinMaxPropertyWidgetQt::updateFromProperty() {
     slider_->setValue(value.x, value.y);
     spinBoxMin_->setValue(value.x);
     spinBoxMax_->setValue(value.y);
+
+    updatingFromProperty_ = false;
 }
 
 
 void IntMinMaxPropertyWidgetQt::updateFromSlider(int valMin, int valMax){
-    bool changed = false;
-    if(valMin != spinBoxMin_->value()){
-        spinBoxMin_->setValue(valMin);
-        changed = true;
+    if(!updatingFromProperty_){
+        bool changed = false;
+        if(valMin != spinBoxMin_->value()){
+            spinBoxMin_->setValue(valMin);
+            changed = true;
+        }
+        if(valMax != spinBoxMax_->value()){
+            spinBoxMax_->setValue(valMax);
+            changed = true;
+        }
+        if(changed)
+            setPropertyValue();
     }
-    if(valMax != spinBoxMax_->value()){
-        spinBoxMax_->setValue(valMax);
-        changed = true;
-    }
-    if(changed)
-        setPropertyValue();
 }
 
 void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMin(int val){
-    slider_->setMinValue(val);
-    setPropertyValue();
+    if(!updatingFromProperty_){
+        slider_->setMinValue(val);
+        setPropertyValue();
+    }
 }
 
 void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMax(int val){
-    slider_->setMaxValue(val);
-    setPropertyValue();
+    if(!updatingFromProperty_){
+        slider_->setMaxValue(val);
+        setPropertyValue();
+    }
 }
 
 void IntMinMaxPropertyWidgetQt::setPropertyValue() {

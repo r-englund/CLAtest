@@ -25,6 +25,8 @@ private:
     QSpinBox* spinBoxMin_;
     QSpinBox* spinBoxMax_;
 
+    bool updatingFromProperty_;
+
     void generateWidget();
 
 protected slots:

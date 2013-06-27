@@ -43,9 +43,6 @@ void CubeProxyGeometry::process() {
         clipX_.setRangeMax(static_cast<int>(dims_.x));
         clipY_.setRangeMax(static_cast<int>(dims_.y));
         clipZ_.setRangeMax(static_cast<int>(dims_.z));
-        clipX_.set(glm::ivec2(0, static_cast<int>(dims_.x)));
-        clipY_.set(glm::ivec2(0, static_cast<int>(dims_.y)));
-        clipZ_.set(glm::ivec2(0, static_cast<int>(dims_.z)));
     }
 
     glm::vec3 posLLF = glm::vec3(-1.f);

@@ -25,6 +25,8 @@ private:
     QDoubleSpinBox* spinBoxMin_;
     QDoubleSpinBox* spinBoxMax_;
 
+    bool updatingFromProperty_;
+
     void generateWidget();
 
 protected slots:
