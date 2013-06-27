@@ -22,6 +22,8 @@ void Data::copyRepresentations( Data* targetData ) const{
 
 void Data::addRepresentation(DataRepresentation* representation) {
     representations_.push_back(representation);
+    lastValidRepresentation_ = representation;
+    setRepresentationAsValid(representations_.size()-1);
 }
 
 bool Data::hasRepresentations() const {

@@ -111,7 +111,7 @@ typedef ImageRAMPrecision<DataVec4FLOAT32::type>    ImageRAMVec4float32;
  * @param format of image to create.
  * @return NULL if no valid format was specified. 
  */
-IVW_CORE_API ImageRAM* createImage(const uvec2& dimension, const DataFormatBase& format);
+IVW_CORE_API ImageRAM* createImageRAM(const uvec2& dimension, const DataFormatBase& format);
 
 } // namespace
 

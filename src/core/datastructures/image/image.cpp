@@ -58,8 +58,7 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
 }
 
 void Image::createDefaultRepresentation() const{
-    //representations_.push_back(new ImageDisk());
-    representations_.push_back(createImage(getDimension(), getDataFormat()));
+    representations_.push_back(createImageRAM(getDimension(), getDataFormat()));
 }
 
 } // namespace

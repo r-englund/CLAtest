@@ -52,12 +52,12 @@ bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {
     return false;
 }
 
-ImageRAM* createImage(const uvec2& dimension, const DataFormatBase& format) {
+ImageRAM* createImageRAM(const uvec2& dimension, const DataFormatBase& format) {
     // TODO: Add more formats
     switch (format.getId())
     {
     case NOT_SPECIALIZED:
-        LogErrorCustom("createImage", "Invalid format");
+        LogErrorCustom("createImageRAM", "Invalid format");
         return NULL;
     case FLOAT16:
         return new ImageRAMfloat16(dimension); break;
@@ -84,7 +84,7 @@ ImageRAM* createImage(const uvec2& dimension, const DataFormatBase& format) {
     case Vec4UINT8:
         return new ImageRAMVec4uint8(dimension); break;
     default:
-        LogErrorCustom("createImage", "Invalid format or not implemented");
+        LogErrorCustom("createImageRAM", "Invalid format or not implemented");
         return NULL;
     }
     return NULL;

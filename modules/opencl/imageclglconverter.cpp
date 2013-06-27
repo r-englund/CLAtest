@@ -24,7 +24,7 @@ DataRepresentation* ImageCLGL2RAMConverter::createFrom(const DataRepresentation*
     const ImageCLGL* imageCL = dynamic_cast<const ImageCLGL*>(source);
     if (imageCL) {
         uvec2 dimension = imageCL->getDimension();
-        destination = createImage(dimension, imageCL->getDataFormat()); 
+        destination = createImageRAM(dimension, imageCL->getDataFormat()); 
         const Texture2D* texture = imageCL->getTexture();
         if (destination) {
             ImageRAM* imageRAM = static_cast<ImageRAM*>(destination);

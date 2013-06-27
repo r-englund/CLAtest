@@ -55,7 +55,7 @@ __kernel void raycaster(read_only image3d_t volume
         }
     }
     
-    write_imagef(output, globalId,  result);    
+    write_imagef(output, globalId,  result);     
   
 }
 

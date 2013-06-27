@@ -97,7 +97,7 @@ protected:
 
     mutable std::vector<DataRepresentation*> representations_;
     mutable int validRepresentations_; ///< Bit representation of valid representation. A maximum of 32 representations are supported.
-    mutable DataRepresentation* lastValidRepresentation_; ///< A pointer to the the most recently updated representation. Makes updates faster.
+    mutable DataRepresentation* lastValidRepresentation_; ///< A pointer to the the most recently updated representation. Makes updates and creation faster.
     MetaDataMap metaData_;
     DataFormatBase dataFormatBase_;
 
@@ -107,6 +107,8 @@ template<typename T>
 const T* Data::getRepresentation() const {
     if (!hasRepresentations()) {
         createDefaultRepresentation();
+        lastValidRepresentation_ = representations_[0];
+        setRepresentationAsValid(representations_.size()-1);
     }
     // check if a representation exists and return it
     for (size_t i=0; i<representations_.size(); ++i) {
@@ -125,7 +127,7 @@ const T* Data::getRepresentation() const {
     //no representation exists, so we try to create one
     const T* result = 0;
     result = createNewRepresentationUsingConverters<T>();
-    ivwAssert(result!=0, "Required representation does not exist.");
+    ivwAssert(result!=0, "Required representation converter does not exist.");
     return result;    
 }
 
@@ -135,42 +137,45 @@ const T* Data::createNewRepresentationUsingConverters() const
     // no representation exists, so we try to create one
     DataRepresentation* result = 0;
     RepresentationConverterFactory* representationConverterFactory = RepresentationConverterFactory::getPtr();
-    for (size_t i=0; i<representations_.size(); ++i) {
-        if (isRepresentationValid(i)) {
-            RepresentationConverter* converter = representationConverterFactory->getRepresentationConverter<T>(representations_[i]);
-            if (converter) {
-                result = converter->createFrom(representations_[i]);
-                representations_.push_back(result);
-                lastValidRepresentation_ = result;
-                return dynamic_cast<T*>(result);
-            }
-        }
+    RepresentationConverter* converter = representationConverterFactory->getRepresentationConverter<T>(lastValidRepresentation_);
+    if (converter) {
+        result = converter->createFrom(lastValidRepresentation_);
+        representations_.push_back(result);
+        setRepresentationAsValid(representations_.size()-1);
+        lastValidRepresentation_ = result;
+        return dynamic_cast<T*>(result);
     }
     //A one-2-one converter could not be found, thus we want to find the smallest package of converters to get to our destination
-    RepresentationConverterPackage<T>* converterPackage = NULL;
-    for (size_t i=0; i<representations_.size(); ++i) {                
-        RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(representations_[i]);
-        if (isRepresentationValid(i)) {
-            if (currentConverterPackage){
-                if (converterPackage){
-                    if (currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()){
-                        converterPackage = currentConverterPackage;
-                        result = representations_[i];
-                    }
-                }
-                else{
-                    converterPackage = currentConverterPackage;
-                    result = representations_[i];
+    RepresentationConverterPackage<T>* converterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(lastValidRepresentation_);
+
+    if (converterPackage) {
+        result = lastValidRepresentation_;
+    } else {
+        // Not possible to convert from last valid representation.
+        // Check if it is possible to convert from another valid representation.
+        for (size_t i=0; i<representations_.size(); ++i) {     
+            if(isRepresentationValid(i)) {
+                RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(representations_[i]); 
+                if (currentConverterPackage) { 
+                    if (converterPackage) {
+                        if(currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()) { 
+                            converterPackage = currentConverterPackage; 
+                            result = representations_[i]; 
+                        }
+                    } else { 
+                        converterPackage = currentConverterPackage; 
+                        result = representations_[i]; 
+                    } 
                 }
             }
-        }
-
+        } 
     }
-    //Go-through the conversion package
+
     if (converterPackage) {
         for (size_t i=0; i<converterPackage->getNumberOfConverters(); ++i) { 
             result = converterPackage->createFrom(result);
             representations_.push_back(result);
+            setRepresentationAsValid(representations_.size()-1);
         }
         lastValidRepresentation_ = result;
         return dynamic_cast<T*>(result);
@@ -211,62 +216,6 @@ void Data::updateRepresentation(T* representation, int index) const {
             }
         }
     }
-    
-    
-    // This can be done if last valid representation is not stored
-
-
-    //// Iterate backwards, higher probability of retrieving an up to date representation.
-    //// Use int instead of size_t since it is unsigned.
-    //for (int i=static_cast<int>(representations_.size())-1; i>=0 ; --i) {
-    //    // Check if it is up to date.
-    //    if(isRepresentationValid(i)) {
-    //        RepresentationConverter* converter = representationConverterFactory->getRepresentationConverter<T>(representations_[i]);
-    //        if (converter) { 
-    //            converter->update(representations_[i], representation);
-    //            setRepresentationAsValid(index);
-    //            return;
-    //        }
-    //    }
-    //}
-    ////A one-2-one converter could not be found, thus we want to find the smallest package of converters to get to our destination
-    //RepresentationConverterPackage<T>* converterPackage = NULL;
-    //DataRepresentation* updateFrom = 0;
-    //for (int i=static_cast<int>(representations_.size())-1; i>=0 ; --i) { 
-    //    if(isRepresentationValid(i)) {
-    //        RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(representations_[i]);
-    //        if (currentConverterPackage){
-    //            if (converterPackage){
-    //                if (currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()){
-    //                    converterPackage = currentConverterPackage;
-    //                    updateFrom = representations_[i];
-    //                }
-    //            }
-    //            else{
-    //                converterPackage = currentConverterPackage;
-    //                updateFrom = representations_[i];
-    //            }
-    //        }   
-    //    }
-
-
-    //}
-    ////Go-through the conversion package
-    //if (converterPackage) {
-    //    for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
-    //        const std::vector<RepresentationConverter*>& converters = converterPackage->getConverters();
-    //        for (size_t j=0; j<converters.size(); ++j) { 
-    //            for (size_t k=0; k<representations_.size(); ++k) { 
-    //                if(converters[j]->canConvertTo(representations_[k])) {
-    //                    converters[j]->update(updateFrom, representations_[k]);
-    //                    setRepresentationAsValid(k);
-    //                    updateFrom = representations_[k];
-    //                    break;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 }
 
 
@@ -275,9 +224,8 @@ T* Data::getEditableRepresentation() {
     T* result = const_cast<T*>(getRepresentation<T>());
     if (representations_.size()>1) {
         invalidateAllOther<T>();
-        lastValidRepresentation_ = result;
     }
-        
+    lastValidRepresentation_ = result;
     return result;
 }
 
