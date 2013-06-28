@@ -19,6 +19,11 @@ public:
     virtual void* getData();
     virtual const void* getData() const;
     virtual void saveData(std::string url) const;
+    // Takes ownership of data pointer
+    void setData(void* data) {
+        delete[] data_; 
+        data_ = data;
+    }
 protected:
     void* data_;
 };

@@ -1,4 +1,5 @@
 #include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/util/filedirectory.h>
 
 namespace inviwo {
 

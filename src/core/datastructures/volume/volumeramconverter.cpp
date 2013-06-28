@@ -1,5 +1,6 @@
 #include <inviwo/core/datastructures/volume/volumeramconverter.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 
 namespace inviwo {
 
@@ -22,11 +23,11 @@ namespace inviwo {
         return NULL;
     }
     void VolumeDisk2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-        const ImageDisk* imageSrc = dynamic_cast<const ImageDisk*>(source);
-        ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
-        if(imageSrc && imageDst) {
+        const VolumeDisk* volumeSrc = dynamic_cast<const VolumeDisk*>( source );
+        VolumeRAM* volumeDst = dynamic_cast<VolumeRAM*>(destination);
+        if(volumeSrc && volumeDst) {
             // FIXME: The file loader should have a function that loads data into a preallocated location.
-            imageDst->setData(imageSrc->loadFileData());
+			volumeDst->setData(volumeSrc->loadRawData());
         }
 
     }

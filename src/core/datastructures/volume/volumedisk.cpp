@@ -36,20 +36,20 @@ namespace inviwo {
 
     }
 
-    void* VolumeDisk::loadRawData() {
+    void* VolumeDisk::loadRawData() const {
         std::string fileExtension = UrlParser::getFileExtension(getSourceFile());
         if (!fileExtension.empty()) {
             //TODO: better pattern for automatic data reader selection
             if (fileExtension=="dat") {
                 ReaderSettings readerSettings;
                 DatVolumeReader::readDatFileSettings(getSourceFile(), readerSettings);
-                dimensions_ = readerSettings.dimensions_;
+                ivwAssert(dimensions_ != readerSettings.dimensions_, "Dimension is invalid.");
                 return RawVolumeReader::loadRawData(readerSettings);
             }
             else if (fileExtension=="ivf") {
                 IvfReaderSettings readerSettings;
                 IvfVolumeReader::readIvfFileSettings(getSourceFile(), readerSettings);
-                dimensions_ = readerSettings.dimensions_;
+                ivwAssert(dimensions_ != readerSettings.dimensions_, "Dimension is invalid.");
                 return RawVolumeReader::loadRawData(readerSettings);                
             }
         }

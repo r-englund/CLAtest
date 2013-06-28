@@ -18,7 +18,7 @@ namespace inviwo {
         virtual void initialize();
         virtual void deinitialize();
         virtual DataRepresentation* clone() const;
-        void* loadRawData();
+        void* loadRawData() const;
     };
 
 } // namespace
