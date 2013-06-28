@@ -43,13 +43,13 @@ namespace inviwo {
             if (fileExtension=="dat") {
                 ReaderSettings readerSettings;
                 DatVolumeReader::readDatFileSettings(getSourceFile(), readerSettings);
-                ivwAssert(dimensions_ != readerSettings.dimensions_, "Dimension is invalid.");
+                ivwAssert(dimensions_==readerSettings.dimensions_, "Dimension is invalid.");
                 return RawVolumeReader::loadRawData(readerSettings);
             }
             else if (fileExtension=="ivf") {
                 IvfReaderSettings readerSettings;
                 IvfVolumeReader::readIvfFileSettings(getSourceFile(), readerSettings);
-                ivwAssert(dimensions_ != readerSettings.dimensions_, "Dimension is invalid.");
+                ivwAssert(dimensions_==readerSettings.dimensions_, "Dimension is invalid.");
                 return RawVolumeReader::loadRawData(readerSettings);                
             }
         }
