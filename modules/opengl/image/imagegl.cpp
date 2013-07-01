@@ -125,7 +125,7 @@ bool ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
     ImageGL* source = this;
     ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
 
-    if (!target) return false;
+    ivwAssert(target!=0, "Target representation missing.");
 
     //Resize by FBO blit
     FrameBufferObject* srcFBO = source->getFBO();

@@ -20,9 +20,20 @@ public:
     /**
     * Loads an image to bitmap.
     * @param filename is the file that is to be loaded
-    * @return bitmap
+    * @return raw data which has format DataUINT8::type by default
     */ 
      static void* loadImageToData(std::string filename);
+
+    
+     /** 
+      * \brief Loads an image to bitmap and rescale
+      *
+      * @param std::string filename is the file that is to be loaded
+      * @param int dst_width destination width
+      * @param int dst_height destination height
+      * @return raw data which has format DataUINT8::type by default
+      */
+     static void* loadImageToDataAndRescale(std::string filename, int dst_width, int dst_height);
     
     /**
     * Saves an image to a specified filename.
@@ -37,6 +48,26 @@ public:
     * @return dimensions of image
     */
     static uvec2 imageDimensions(std::string filename);
+
+    /** 
+     * \brief Rescales ImageRAM representation of given image data
+     * 
+     * @param Image * inputImage image data that needs to be rescaled
+     * @param int dst_width destination width or new width
+     * @param int dst_height destination height or new height     
+     * @param void* rescaled raw data
+     */
+    static void* rescaleImage(Image* inputImage, int dst_width, int dst_height);
+
+    /** 
+     * \brief Rescales ImageRAM representation uses FILTER_BILINEAR by default.
+     * 
+     * @param ImageRAM * imageRam representation that needs rescaling
+     * @param int dst_width destination width or new width
+     * @param int dst_height destination height or new height
+     * @param void* rescaled raw data
+     */
+    static void* rescaleImageRAM(ImageRAM* imageRam, int dst_width, int dst_height);
 private:
     /**
     * Internal function to load a image 
@@ -81,6 +112,17 @@ template<typename T>
     **/
 template<typename T>
     static T* fiBitmapToDataArray(FIBITMAP *bitmap);
+
+    /** 
+     * \brief fits the bitmap into data array which is readable by representations such as ImageRAM that uses FILTER_BILINEAR
+     * 
+     * @param FIBITMAP * bitmap is the bitmap to convert
+     * @param int dst_width destination width
+     * @param int dst_height destination height
+     * @return T* converted bitmap in required format
+     */
+    template<typename T>
+    static T* fiBitmapToDataArrayAndRescale(FIBITMAP *bitmap, int dst_width, int dst_height);
 
 	static bool loader_initialized;
 };

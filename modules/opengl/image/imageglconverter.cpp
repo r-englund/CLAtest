@@ -108,6 +108,7 @@ void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresen
     ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
     if(imageSrc && imageDst) {
         // FIXME: OpenGL color should not have both depth and color
+        if (imageDst->getDimension()==imageSrc->getDimension(),"GL and Ram representations are expected to have same dimensions.")
         imageSrc->getColorTexture()->download(imageDst->getData());
     }
 }

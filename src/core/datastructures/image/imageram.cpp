@@ -1,4 +1,5 @@
 #include <inviwo/core/datastructures/image/imageram.h>
+#include <inviwo/core/io/imageloader.h>
 
 namespace inviwo {
 
@@ -48,8 +49,19 @@ void ImageRAM::resize(uvec2 dimensions) {
 }
 
 bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {
-    IVW_UNUSED_PARAM(targetImageRam);
-    return false;
+    ImageRAM* source = this;
+    ImageRAM* target = dynamic_cast<ImageRAM*>(targetImageRam);
+    ivwAssert(target!=0, "Target representation missing.");
+
+    //CPU image rescaling using image loader
+    uvec2 targetDimensions  = target->getDimension();
+    void* rawData = ImageLoader::rescaleImageRAM(source, targetDimensions.x, targetDimensions.y);
+
+    if (!rawData) return false;
+
+    target->setData(rawData);
+
+    return true;
 }
 
 ImageRAM* createImageRAM(const uvec2& dimension, const DataFormatBase& format) {

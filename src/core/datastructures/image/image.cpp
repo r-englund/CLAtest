@@ -9,7 +9,23 @@ Image::Image(uvec2 dimensions, DataFormatBase format) : Data2D(dimensions, forma
 
 Data* Image::clone() const {
     Image* newImage = new Image(getDimension(), getDataFormat());
-    copyRepresentations(newImage);
+    
+    //Do not copy all representations.
+    //copyRepresentations(newImage);
+
+    //make sure default representation is created.
+    newImage->getRepresentation<ImageRAM>();
+    
+    //also clone last valid representation.
+    for(size_t i=0; i<representations_.size(); i++) {
+        if (lastValidRepresentation_==representations_[i]) {
+            newImage->representations_.push_back(representations_[i]->clone());
+        }            
+    }
+    
+    //set valid dimensions to new image data.
+    newImage->resize(getDimension());
+
     return newImage;
 }
 

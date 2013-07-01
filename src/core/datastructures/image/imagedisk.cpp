@@ -21,14 +21,25 @@ namespace inviwo {
     }
 
     void* ImageDisk::loadFileData() const {
-        if (hasSourceFile())
-            
+        if (hasSourceFile())            
             return ImageLoader::loadImageToData(getSourceFile());
 
         return NULL;
     }
 
+    void* ImageDisk::loadFileDataAndRescale(uvec2 dst_dimesion) const {
+        if (hasSourceFile())
+            return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dst_dimesion.x, dst_dimesion.y);
+
+        return NULL;
+    }
+
     void ImageDisk::deinitialize() {}
+
+    void ImageDisk::resize(uvec2 dimensions){ 
+        //Preserve the original dimension.        
+        IVW_UNUSED_PARAM(dimensions); 
+    } 
 
     DataRepresentation* ImageDisk::clone() const {
         return new ImageDisk(getSourceFile());

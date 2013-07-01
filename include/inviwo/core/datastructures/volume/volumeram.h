@@ -19,7 +19,12 @@ public:
     virtual void* getData();
     virtual const void* getData() const;
     virtual void saveData(std::string url) const;
-    // Takes ownership of data pointer
+    /** 
+     * \brief Takes ownership of data pointer
+     * 
+     * @param void * data is raw volume data pointer
+     * @return void none
+     */
     void setData(void* data) {
         delete[] data_; 
         data_ = data;

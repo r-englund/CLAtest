@@ -58,7 +58,16 @@ namespace inviwo {
         ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
         if(imageSrc && imageDst) {
             // FIXME: The file loader should have a function that loads data into a preallocated location.
-            imageDst->setData(imageSrc->loadFileData());
+            if (imageSrc->getDimension()==imageDst->getDimension())
+                imageDst->setData(imageSrc->loadFileData());
+            else {
+                //Image disk and ram vary in dimension sometimes
+                //  Disk dimension (original dimension) is always preserved.
+                //see ImageDisk::resize()
+
+                //TODO: Avoid this condition. Needs investigation.
+                imageDst->setData(imageSrc->loadFileDataAndRescale(imageDst->getDimension())); 
+            }
         }
 
     }

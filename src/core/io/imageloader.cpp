@@ -156,6 +156,61 @@ void* ImageLoader::loadImageToData(std::string filename){
     return NULL;
 }
 
+template<typename T>
+T* ImageLoader::fiBitmapToDataArrayAndRescale(FIBITMAP *bitmap, int dst_width, int dst_height){
+    int width = FreeImage_GetWidth(bitmap);
+    int height = FreeImage_GetHeight(bitmap);
+    uvec2 dim(width, height);
+    uvec2 dst_dim(dst_width, dst_height);
+
+    if (dim==dst_dim)
+        return fiBitmapToDataArray<T>(bitmap);
+
+    FIBITMAP *bitmap2 = FreeImage_Allocate(width, height, 32);
+    FreeImage_Paste(bitmap2, bitmap, 0, 0, 255);
+
+    bitmap2 = FreeImage_Rescale(bitmap2, dst_width, dst_height, FILTER_BILINEAR);
+
+    T *pixelValues = (T*)FreeImage_GetBits(bitmap2);
+
+    ////Fill in the texture, a shift is needed to convert from BGRA to RGBA
+    T* data = switchChannels<T>(pixelValues, dst_dim);
+
+    return data;
+}
+
+void* ImageLoader::loadImageToDataAndRescale(std::string filename, int dst_width, int dst_height){
+    initLoader();
+    FIBITMAP *freeimage_bitmap = new FIBITMAP();
+    if (readInImage(filename, &freeimage_bitmap)){
+        return (void*)fiBitmapToDataArrayAndRescale<DataUINT8::type>(freeimage_bitmap, dst_width, dst_height);
+    }
+    return NULL;
+}
+
+void* ImageLoader::rescaleImage(Image* srcImage, int dst_width, int dst_height) {
+    const ImageRAM *imageRam = srcImage->getRepresentation<ImageRAM>();
+    return rescaleImageRAM(const_cast<ImageRAM*>(imageRam), dst_width, dst_height);
+}
+
+void* ImageLoader::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst_height) {
+    ivwAssert(srcImageRam!=NULL, "ImageRAM representation does not exist.");
+
+    initLoader();
+    uvec2 dim = srcImageRam->getDimension();
+
+    DataFormatBase dataformat = srcImageRam->getDataFormat();
+    size_t bitsPerPixel = dataformat.getBitsAllocated();
+    ivwAssert(bitsPerPixel!=0, "Invalid data format.");
+
+    FIBITMAP* bitmap = convertToByte(srcImageRam, dim, bitsPerPixel);
+    if (bitmap) {
+        void* rawData = (void*)fiBitmapToDataArrayAndRescale<DataUINT8::type>(bitmap, dst_width, dst_height);
+        ivwAssert(rawData!=NULL, "Unable to rescale image ram representation.");
+        return rawData;
+    }
+    return NULL;
+}
 
 void ImageLoader::initLoader(){
     if (!loader_initialized){
