@@ -18,9 +18,9 @@ Data* Image::clone() const {
     
     //also clone last valid representation.
     for(size_t i=0; i<representations_.size(); i++) {
-        if (lastValidRepresentation_==representations_[i]) {
+        if (lastValidRepresentation_==representations_[i] && (!dynamic_cast<ImageRAM*>(lastValidRepresentation_))) {
             newImage->representations_.push_back(representations_[i]->clone());
-        }            
+        }
     }
     
     //set valid dimensions to new image data.
