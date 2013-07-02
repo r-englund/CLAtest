@@ -127,7 +127,7 @@ const T* Data::getRepresentation() const {
     //no representation exists, so we try to create one
     const T* result = 0;
     result = createNewRepresentationUsingConverters<T>();
-    ivwAssert(result!=0, "Required representation converter does not exist.");
+    //ivwAssert(result!=0, "Required representation converter does not exist.");
     return result;    
 }
 

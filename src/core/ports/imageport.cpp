@@ -89,6 +89,7 @@ ImageOutport::ImageOutport(std::string identifier)
     data_ = new Image(dimensions_);
     std::string dimensionString = glm::to_string(dimensions_);
     imageDataMap_.insert(std::make_pair(dimensionString, data_));    
+    //data_->getRepresentation<ImageRAM>();
     mapDataInvalid_ = true;
 }
 

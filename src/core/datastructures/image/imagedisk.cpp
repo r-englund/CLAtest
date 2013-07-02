@@ -22,7 +22,7 @@ namespace inviwo {
 
     void* ImageDisk::loadFileData() const {
         if (hasSourceFile())            
-            return ImageLoader::loadImageToData(getSourceFile());
+            return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dimensions_.x, dimensions_.y);
 
         return NULL;
     }
@@ -36,13 +36,14 @@ namespace inviwo {
 
     void ImageDisk::deinitialize() {}
 
-    void ImageDisk::resize(uvec2 dimensions){ 
-        //Preserve the original dimension.        
-        IVW_UNUSED_PARAM(dimensions); 
+    void ImageDisk::resize(uvec2 dimensions){        
+        dimensions_ = dimensions;
     } 
 
     DataRepresentation* ImageDisk::clone() const {
-        return new ImageDisk(getSourceFile());
+        ImageDisk* imageDiskClone = new ImageDisk(getSourceFile());
+        imageDiskClone->resize(dimensions_);
+        return imageDiskClone;
     }
 
 } // namespace

@@ -31,22 +31,24 @@ void ImageSource::deinitialize() {
 void ImageSource::process() {
 	Image* outImage = outport_.getData(); 
     if (outImage){
-
-        //FIXME: Image disk representation is causing lot of inconsistency. Investigate.
-        /*
+                
         ImageDisk* outImageDisk = outImage->getEditableRepresentation<ImageDisk>();
         if (!outImageDisk || outImageDisk->getSourceFile() != imageFileName_.get()){ 
             outImageDisk = new ImageDisk(imageFileName_.get());
+            outImage->clearRepresentations();
+            outImage->addRepresentation(outImageDisk);
         }
-        outImage->clearRepresentations();
-        outImage->addRepresentation(outImageDisk);
-        */
 
+        //Original image dimension loaded from disk may differ from requested dimension.
+        outImageDisk->resize(outImage->getDimension());
+        
+        /*
         ImageDisk* outImageDisk = new ImageDisk(imageFileName_.get());
         void* rawData = outImageDisk->loadFileDataAndRescale(outImage->getDimension());
         ImageRAM* outImageRAM = outImage->getEditableRepresentation<ImageRAM>();
         outImageRAM->setData(rawData);
         delete outImageDisk;
+        */
     }
 }
 

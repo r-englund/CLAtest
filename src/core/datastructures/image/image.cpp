@@ -13,17 +13,6 @@ Data* Image::clone() const {
     //Do not copy all representations.
     //copyRepresentations(newImage);
 
-    //make sure default representation is created.
-    newImage->getRepresentation<ImageRAM>();
-    
-    //also clone last valid representation.
-    for(size_t i=0; i<representations_.size(); i++) {
-        if (lastValidRepresentation_==representations_[i] && (!dynamic_cast<ImageRAM*>(lastValidRepresentation_))) {
-            newImage->representations_.push_back(representations_[i]->clone());
-        }
-    }
-    
-    //set valid dimensions to new image data.
     newImage->resize(getDimension());
 
     return newImage;
@@ -55,21 +44,39 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
     ImageRepresentation* imageRepresentation = 0;
     ImageRepresentation* targetRepresentation = 0;
     std::vector<DataRepresentation*> &targetRepresentations = targetImage->representations_;
-    for (size_t i=0; i<representations_.size(); i++) {
-        imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;        
-        ivwAssert(imageRepresentation!=0, "Only image representations should be used here.");
-        if (isRepresentationValid(i)) {
-            for (size_t j=0; j<targetRepresentations.size(); j++) {                
-                targetRepresentation = dynamic_cast<ImageRepresentation*>(targetRepresentations[j]) ;
-                ivwAssert(targetRepresentation!=0, "Only image representations should be used here.");
-                if (imageRepresentation->getClassName()==targetRepresentation->getClassName()) {
-                    if (imageRepresentation->copyAndResizeImage(targetRepresentation)) {
-                        targetImage->setRepresentationAsValid(j);
-                        targetImage->lastValidRepresentation_ = targetRepresentations[j];
+
+    if (targetRepresentations.size()) {
+        for (size_t i=0; i<representations_.size(); i++) {
+            imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;        
+            ivwAssert(imageRepresentation!=0, "Only image representations should be used here.");
+            if (isRepresentationValid(i)) {
+                size_t numberOfTargets = targetRepresentations.size();
+                for (size_t j=0; j<numberOfTargets; j++) {
+                    targetRepresentation = dynamic_cast<ImageRepresentation*>(targetRepresentations[j]) ;
+                    ivwAssert(targetRepresentation!=0, "Only image representations should be used here.");
+                    if (imageRepresentation->getClassName()==targetRepresentation->getClassName()) {
+                        if (imageRepresentation->copyAndResizeImage(targetRepresentation)) {
+                            targetImage->setRepresentationAsValid(j);
+                            targetImage->lastValidRepresentation_ = targetRepresentations[j];
+                        }
                     }
                 }
             }
         }
+    }
+    else {
+        ivwAssert(lastValidRepresentation_!=0, "Last valid representation is expected.");
+        targetImage->setAllRepresentationsAsInvalid();
+        targetImage->createDefaultRepresentation();
+        ImageRepresentation* lastValidRepresentation = dynamic_cast<ImageRepresentation*>(lastValidRepresentation_);
+        ImageRepresentation* cloneOfLastValidRepresentation = dynamic_cast<ImageRepresentation*>(lastValidRepresentation->clone());        
+        targetImage->addRepresentation(cloneOfLastValidRepresentation);        
+
+       targetImage->resize(targetDim);
+       if (lastValidRepresentation->copyAndResizeImage(cloneOfLastValidRepresentation)) {
+            targetImage->setRepresentationAsValid(targetImage->representations_.size()-1);
+            targetImage->lastValidRepresentation_ = cloneOfLastValidRepresentation;
+       }
     }
 }
 
