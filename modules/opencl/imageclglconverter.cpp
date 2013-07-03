@@ -42,7 +42,6 @@ void ImageCLGL2RAMConverter::update(const DataRepresentation* source, DataRepres
     const ImageCLGL* imageSrc = dynamic_cast<const ImageCLGL*>(source);
     ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
     if(imageSrc && imageDst) {
-        // FIXME: The file loader should have a function that loads data into a preallocated location.
         imageSrc->getTexture()->download(imageDst->getData());
     }
 }

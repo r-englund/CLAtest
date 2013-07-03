@@ -47,12 +47,12 @@ cl::Program* KernelManager::buildProgram( const std::string& fileName, const std
 
 cl::Kernel* KernelManager::getKernel( cl::Program* program, const std::string& kernelName )
 {
-    // TODO: Make sure that this works even if the kernel does not exist
     cl::Kernel* kernel = NULL;
     try {
         kernel = new cl::Kernel(*program, kernelName.c_str());
         kernels_.insert(std::pair<cl::Program*, cl::Kernel*>(program, kernel));
     } catch (cl::Error&) {
+        delete kernel; kernel = NULL;
         LogError("Failed to create kernel");
     }
      

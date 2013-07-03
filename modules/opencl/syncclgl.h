@@ -19,7 +19,7 @@ class IVW_MODULE_OPENCL_API SyncCLGL {
 public:
     SyncCLGL(): releaseEvent_(NULL), syncEvents_(NULL) {
 #if defined(CL_VERSION_1_1) && defined(GL_ARB_cl_event) && defined(CL_COMMAND_GL_FENCE_SYNC_OBJECT_KHR)
-        //// FIXME: Get unresolved symbol from clCreateEventFromGLsyncKHR, why?
+        //// FIXME: Get unresolved symbol from clCreateEventFromGLsyncKHR, why? This has been reported as a bug to NVIDIA.
         //glFenceSync_ = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
         //cl_int err;
         //glSync_ = clCreateEventFromGLsyncKHR(OpenCL::getInstance()->getContext()(), glFenceSync_, &err);
