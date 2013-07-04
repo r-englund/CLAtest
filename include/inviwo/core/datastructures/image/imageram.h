@@ -44,7 +44,7 @@ public:
     ImageRAMPrecision<T>& operator=(const ImageRAMPrecision<T>& rhs) {
         if (this != &rhs) {
             delete[] data_;
-            dimensions_ = rhs.getDimension();
+            dimensions_ = rhs.getDimensions();
             initialize();
             std::copy(rhs.getData(), rhs.getData()+dimensions_.x*dimensions_.y*sizeof(T), data_);
         }
@@ -81,7 +81,7 @@ void ImageRAMPrecision<T>::initialize(void* data) {
 
 template<typename T>
 DataRepresentation* ImageRAMPrecision<T>::clone() const {
-    ImageRAMPrecision* newImageRAM = new ImageRAMPrecision<T>(getDimension());
+    ImageRAMPrecision* newImageRAM = new ImageRAMPrecision<T>(getDimensions());
     //*newImageRAM = *this;
     return newImageRAM;
 }

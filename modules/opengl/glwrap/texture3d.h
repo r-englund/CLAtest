@@ -38,6 +38,8 @@ public:
     void upload(const void* data);
     void download(void* data) const;
 
+    const uvec3& getDimension() const { return dimensions_; }
+
 private:
     uvec3 dimensions_;
     GLenum format_;

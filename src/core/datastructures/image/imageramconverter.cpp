@@ -24,27 +24,27 @@ namespace inviwo {
 
             switch (imageDisk->getDataFormatId()) {
             case Vec4UINT8:
-                return new ImageRAMVec4uint8(static_cast<DataVec4UINT8::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMVec4uint8(static_cast<DataVec4UINT8::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case FLOAT16:
-                return new ImageRAMfloat16(static_cast<DataFLOAT16::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMfloat16(static_cast<DataFLOAT16::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case FLOAT32:
-                return new ImageRAMfloat32(static_cast<DataFLOAT32::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMfloat32(static_cast<DataFLOAT32::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case FLOAT64:
-                return new ImageRAMfloat64(static_cast<DataFLOAT64::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMfloat64(static_cast<DataFLOAT64::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case INT8:
-                return new ImageRAMint8(static_cast<DataINT8::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMint8(static_cast<DataINT8::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case INT16:
-                return new ImageRAMint16(static_cast<DataINT16::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMint16(static_cast<DataINT16::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case INT32:
-                return new ImageRAMint32(static_cast<DataINT32::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMint32(static_cast<DataINT32::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case UINT8:
-                return new ImageRAMuint8(static_cast<DataUINT8::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMuint8(static_cast<DataUINT8::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case UINT16:
-                return new ImageRAMuint16(static_cast<DataUINT16::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMuint16(static_cast<DataUINT16::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case UINT32:
-                return new ImageRAMuint32(static_cast<DataUINT32::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMuint32(static_cast<DataUINT32::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             case UINT64:
-                return new ImageRAMuint64(static_cast<DataUINT64::type*>(imageDisk->loadFileData()), imageDisk->getDimension());
+                return new ImageRAMuint64(static_cast<DataUINT64::type*>(imageDisk->loadFileData()), imageDisk->getDimensions());
             default: 
                 LogError("Cannot convert format from disk to RAM:" << imageDisk->getDataFormat().getString());
             } 
@@ -58,13 +58,13 @@ namespace inviwo {
         ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
         if(imageSrc && imageDst) {
             // FIXME: The file loader should have a function that loads data into a preallocated location.
-            if (imageSrc->getDimension()==imageDst->getDimension())
+            if (imageSrc->getDimensions()==imageDst->getDimensions())
                 imageDst->setData(imageSrc->loadFileData());
             else {
                 //Image disk and ram vary in dimension sometimes              
 
                 //TODO: Avoid this condition. Needs investigation.
-                imageDst->setData(imageSrc->loadFileDataAndRescale(imageDst->getDimension())); 
+                imageDst->setData(imageSrc->loadFileDataAndRescale(imageDst->getDimensions())); 
             }
         }
 

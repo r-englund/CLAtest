@@ -42,7 +42,7 @@ protected:
  * @param format of volume to create.
  * @return NULL if no valid format was specified.
  */
-IVW_CORE_API VolumeRAM* createVolume(const uvec3& dimension, const DataFormatBase& format);
+IVW_CORE_API VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase& format);
 
 } // namespace
 

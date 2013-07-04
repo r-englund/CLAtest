@@ -38,7 +38,7 @@ void FindEdges::process() {
     const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
 
-    uvec2 csize = inImageGL->getDimension();
+    uvec2 csize = inImageGL->getDimensions();
     outImageGL->resize(csize);
 
     activateTarget(outport_);

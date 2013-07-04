@@ -19,15 +19,7 @@ public:
     virtual ~ImageRAM2CLGLConverter() {};
 };
 
-class IVW_MODULE_OPENCL_API ImageDisk2CLGLConverter : public RepresentationConverterPackage<ImageCLGL> {
 
-public:
-    ImageDisk2CLGLConverter() : RepresentationConverterPackage<ImageCLGL>() {
-        addConverter(new ImageDisk2RAMConverter());
-        addConverter(new ImageRAM2CLGLConverter());
-    };
-    virtual ~ImageDisk2CLGLConverter() {};
-};
 
 class IVW_MODULE_OPENCL_API ImageCLGL2RAMConverter : public RepresentationConverterType<ImageRAM> {
 
@@ -73,7 +65,16 @@ public:
     virtual ~ImageCL2CLGLConverter() {};
 };
 
+class IVW_MODULE_OPENCL_API ImageDisk2CLGLConverter : public RepresentationConverterPackage<ImageCLGL> {
 
+public:
+    ImageDisk2CLGLConverter() : RepresentationConverterPackage<ImageCLGL>() {
+        addConverter(new ImageDisk2RAMConverter());
+        addConverter(new ImageRAM2GLConverter());
+        addConverter(new ImageGL2CLGLConverter());
+    };
+    virtual ~ImageDisk2CLGLConverter() {};
+};
 
 } // namespace
 

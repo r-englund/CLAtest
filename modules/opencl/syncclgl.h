@@ -4,13 +4,13 @@
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opencl/inviwoopencl.h>
 
-//#ifdef CL_VERSION_1_1
-//#ifdef __APPLE__
-//#include <OpenCL/cl_gl_ext.h>
-//#else
-//#include <CL/cl_gl_ext.h>
-//#endif
-//#endif
+#ifdef CL_VERSION_1_1
+#ifdef __APPLE__
+#include <OpenCL/cl_gl_ext.h>
+#else
+#include <CL/cl_gl_ext.h>
+#endif
+#endif
 
 namespace inviwo {
 
@@ -19,7 +19,7 @@ class IVW_MODULE_OPENCL_API SyncCLGL {
 public:
     SyncCLGL(): releaseEvent_(NULL), syncEvents_(NULL) {
 #if defined(CL_VERSION_1_1) && defined(GL_ARB_cl_event) && defined(CL_COMMAND_GL_FENCE_SYNC_OBJECT_KHR)
-        //// FIXME: Get unresolved symbol from clCreateEventFromGLsyncKHR, why? This has been reported as a bug to NVIDIA.
+        // FIXME: Get unresolved symbol from clCreateEventFromGLsyncKHR, why? This has been reported as a bug to NVIDIA.
         //glFenceSync_ = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
         //cl_int err;
         //glSync_ = clCreateEventFromGLsyncKHR(OpenCL::getInstance()->getContext()(), glFenceSync_, &err);
@@ -27,7 +27,7 @@ public:
         //if(err != CL_SUCCESS) {
         //    LogError("Failed to create sync event");
         //}
-        // releaseEvent_ = new cl::Event();
+        //releaseEvent_ = new cl::Event();
         glFinish();
 #else
         glFinish();
@@ -38,8 +38,8 @@ public:
         //GLsync clSync = glCreateSyncFromCLeventARB(OpenCL::getInstance()->getContext()(), (*releaseEvent_)(), 0);
         //glWaitSync(clSync, 0, GL_TIMEOUT_IGNORED);
         //glDeleteSync(glFenceSync_);
-        // delete syncEvents_;
-        // delete releaseEvent_;
+        //delete syncEvents_;
+        //delete releaseEvent_;
         OpenCL::getInstance()->getQueue().finish();
 #else 
         OpenCL::getInstance()->getQueue().finish();

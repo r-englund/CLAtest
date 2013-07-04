@@ -197,7 +197,7 @@ void* ImageLoader::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst
     ivwAssert(srcImageRam!=NULL, "ImageRAM representation does not exist.");
 
     initLoader();
-    uvec2 dim = srcImageRam->getDimension();
+    uvec2 dim = srcImageRam->getDimensions();
 
     DataFormatBase dataformat = srcImageRam->getDataFormat();
     size_t bitsPerPixel = dataformat.getBitsAllocated();

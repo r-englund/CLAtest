@@ -48,7 +48,7 @@ void SimpleRaycaster::process() {
     activateAndClearTarget(outport_);
     Image* outImage = outport_.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
-    uvec2 outportDim = outImageGL->getDimension();
+    uvec2 outportDim = outImageGL->getDimensions();
     
     raycastPrg_->activate();
     setGlobalShaderParameters(raycastPrg_);

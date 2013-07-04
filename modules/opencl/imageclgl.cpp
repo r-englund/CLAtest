@@ -5,9 +5,11 @@
 namespace inviwo {
 
 ImageCLGL::ImageCLGL(DataFormatBase format, const Texture2D* data)
-    : ImageRepresentation(uvec2(data->getWidth(), data->getHeight()), format), image2D_(0), texture_(data) 
+    : ImageRepresentation(data != NULL ? data->getDimension(): uvec2(64), format), image2D_(0), texture_(data) 
 {
-    initialize(data);
+    if(data) {
+        initialize(data);
+    }
 }
 
 ImageCLGL::ImageCLGL(uvec2 dimensions, DataFormatBase format, const Texture2D* data)

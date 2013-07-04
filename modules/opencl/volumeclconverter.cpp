@@ -37,7 +37,7 @@ namespace inviwo {
         const VolumeCL* volumeCL = dynamic_cast<const VolumeCL*>(source);
         if (volumeCL) {
             uvec3 dimension = volumeCL->getDimensions();
-            destination = createVolume(dimension, volumeCL->getDataFormat());
+            destination = createVolumeRAM(dimension, volumeCL->getDataFormat());
 
             if (destination) {
                 VolumeRAM* volumeRAM = static_cast<VolumeRAM*>(destination);

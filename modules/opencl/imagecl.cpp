@@ -82,7 +82,7 @@ bool ImageCL::copyAndResizeImage(DataRepresentation* target) {
 
     if (!targetCL) return false;
 
-    ImageCLResizer::resize(*image2D_, (targetCL->getImage()), targetCL->getDimension());
+    ImageCLResizer::resize(*image2D_, (targetCL->getImage()), targetCL->getDimensions());
 	
 	return true;
 

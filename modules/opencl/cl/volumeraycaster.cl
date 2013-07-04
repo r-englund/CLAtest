@@ -22,7 +22,7 @@ __kernel void raycaster(read_only image3d_t volume
     
     float4 result = (float4)(0.f);
     if(entry.w != 0) {
-        float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId); 
+        float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId);  
         float3 direction = exit.xyz - entry.xyz;
         float tEnd = length(direction);
         float tIncr = 1.f/(stepSize*length(direction*convert_float3(volumeDimension)));
@@ -33,7 +33,7 @@ __kernel void raycaster(read_only image3d_t volume
         float extinction = 0.f;
         while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
-            volumeSample = read_imagef(volume, smpNormClampLinear, as_float4(pos)).w; 
+            volumeSample = read_imagef(volume, smpNormClampLinear, as_float4(pos)).x; 
             // xyz == emission, w = absorption
             float4 emissionAbsorption = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
             //emissionAbsorption.xyz *= 10.f;

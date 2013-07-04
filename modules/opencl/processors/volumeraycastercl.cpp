@@ -3,7 +3,7 @@
 #include <modules/opencl/syncclgl.h>
 #include <modules/opencl/imagecl.h>
 #include <modules/opencl/imageclgl.h>
-#include <modules/opencl/volumecl.h>
+#include <modules/opencl/volumeclgl.h>
 #include <modules/opencl/kernelmanager.h>
 
 namespace inviwo {
@@ -74,8 +74,9 @@ void VolumeRaycasterCL::process() {
 
 
     const Volume* volume = volumePort_.getData();
-    const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
+    const VolumeCLGL* volumeCL = volume->getRepresentation<VolumeCLGL>();
     uvec3 volumeDim = volumeCL->getDimensions();
+    volumeCL->aquireGLObject();
     const ImageCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<ImageCL>();
     
     cl_uint arg = 0;
@@ -89,7 +90,7 @@ void VolumeRaycasterCL::process() {
     // 
     OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
     
-
+    volumeCL->releaseGLObject();
     outImageCL->releaseGLObject();
     exitCLGL->releaseGLObject();
     entryCLGL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());

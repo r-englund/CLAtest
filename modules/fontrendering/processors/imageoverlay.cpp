@@ -116,7 +116,7 @@ void ImageOverlay::process() {
 	const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
 	ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
 
-	uvec2 imageSize = inImageGL->getDimension();
+	uvec2 imageSize = inImageGL->getDimensions();
 	outImageGL->resize(imageSize);
 
 	activateTarget(outport_);
@@ -148,8 +148,8 @@ void ImageOverlay::process() {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
-	float sx = 2.0 / imageSize[0];
-	float sy = 2.0 / imageSize[1];
+	float sx = 2.f / imageSize[0];
+	float sy = 2.f / imageSize[1];
 	font_size_ = optionPropertyIntFontSize_.getValue();
 	xpos_ = floatVec2FontPos_.get().x * imageSize[0];
 	ypos_ = floatVec2FontPos_.get().y * imageSize[1] + float(font_size_);

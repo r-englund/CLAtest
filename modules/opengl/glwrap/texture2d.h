@@ -40,6 +40,7 @@ public:
 
     void unbind() const;
 
+    const uvec2& getDimension() const { return dimensions_;}
     int getWidth() const{ return dimensions_.x; }
     int getHeight() const{ return dimensions_.y; }
     void setWidth(int x) { dimensions_.x = x; }

@@ -14,7 +14,7 @@ DataRepresentation* ImageRAM2GLConverter::createFrom(const DataRepresentation* s
     
     //This creates a texture from the defined input ImageRAM.
     const void *data = imageRepresentation->getData();
-    uvec2 dim = imageRepresentation->getDimension();
+    uvec2 dim = imageRepresentation->getDimensions();
 
     Texture2D* texture = new Texture2D(uvec2(dim.x, dim.y), getGLFormats()->getGLFormat(imageRepresentation->getDataFormatId()), GL_LINEAR);
     texture->upload(data);
@@ -43,7 +43,7 @@ ImageGL2RAMConverter::~ImageGL2RAMConverter() {}
 DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* source) {
     const ImageGL* imageRepresentation = dynamic_cast<const ImageGL*>(source);
     GLuint nChannels = imageRepresentation->getColorTexture()->getNChannels();
-    uvec2 dim = imageRepresentation->getDimension();
+    uvec2 dim = imageRepresentation->getDimensions();
     ImageRAM* image = NULL;
     switch (imageRepresentation->getColorTexture()->getDataType()) {
         case GL_UNSIGNED_BYTE: {
@@ -108,7 +108,7 @@ void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresen
     ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
     if(imageSrc && imageDst) {
         // FIXME: OpenGL color should not have both depth and color
-        if (imageDst->getDimension()==imageSrc->getDimension(),"GL and Ram representations are expected to have same dimensions.")
+        if (imageDst->getDimensions()==imageSrc->getDimensions(),"GL and Ram representations are expected to have same dimensions.")
         imageSrc->getColorTexture()->download(imageDst->getData());
     }
 }

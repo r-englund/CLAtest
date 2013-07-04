@@ -57,13 +57,13 @@ void VolumeRAM::saveData(std::string url) const {
     }
 }
 
-VolumeRAM* createVolume(const uvec3& dimension, const DataFormatBase& format) {
+VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase& format) {
     // TODO: Add more formats
     VolumeRAM* result = 0;
     switch (format.getId())
     {
     case NOT_SPECIALIZED:
-        LogErrorCustom("createVolume", "Invalid format");
+        LogErrorCustom("createVolumeRAM", "Invalid format");
     case FLOAT16:
         result = new VolumeRAMfloat16(dimension); break;
     case FLOAT32:
@@ -87,7 +87,7 @@ VolumeRAM* createVolume(const uvec3& dimension, const DataFormatBase& format) {
     case UINT32:
         result = new VolumeRAMuint32(dimension); break;
     default:
-        LogErrorCustom("createVolume", "Invalid format or not implemented");
+        LogErrorCustom("createVolumeRAM", "Invalid format or not implemented");
         break;
     }
     return result;

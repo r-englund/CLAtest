@@ -21,14 +21,17 @@ public:
     virtual void initialize(const void* texels);
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
-    virtual GLint getFormat();
-    virtual GLint getInternalFormat();
-    virtual GLenum getDataType();
+    GLint getFormat();
+    GLint getInternalFormat();
+    GLenum getDataType();
+ 
     virtual void bindTexture(GLenum texUnit) const;
     virtual void unbindTexture() const;
 
     void upload(const void* data);
     void download(void* data) const;
+
+    const Texture3D* getTexture() const { return volumeTexture_; }
 
 protected:
     GLint format_;

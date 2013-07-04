@@ -22,6 +22,7 @@ void DatVolumeReader::readDatFileSettings(std::string filePath, ReaderSettings& 
     if(!UrlParser::fileExists(filePath)){
         filePath = UrlParser::addBasePath(filePath);
         if(!UrlParser::fileExists(filePath)) {
+            // FIXME: Do not use assert for non-existing file
             ivwAssert(NULL, "File " + filePath + " does not exist.");     
             return;
         }

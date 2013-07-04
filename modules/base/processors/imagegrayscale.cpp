@@ -39,7 +39,7 @@ void ImageGrayscale::process() {
     const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
 
-    uvec2 imageSize = inImageGL->getDimension();
+    uvec2 imageSize = inImageGL->getDimensions();
     outImageGL->resize(imageSize);
 
     activateTarget(outport_);

@@ -42,7 +42,7 @@ void GrayscaleCL::process() {
     }
     Image* outImage = outport_.getData();
     const ImageCL* colorImageCL = inputPort_.getData()->getRepresentation<ImageCL>();
-    outImage->resize(colorImageCL->getDimension());
+    outImage->resize(colorImageCL->getDimensions());
     uvec2 outportDim = outImage->getDimension();
     ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
 

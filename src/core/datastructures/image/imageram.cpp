@@ -54,7 +54,7 @@ bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {
     ivwAssert(target!=0, "Target representation missing.");
 
     //CPU image rescaling using image loader
-    uvec2 targetDimensions  = target->getDimension();
+    uvec2 targetDimensions  = target->getDimensions();
     void* rawData = ImageLoader::rescaleImageRAM(source, targetDimensions.x, targetDimensions.y);
 
     if (!rawData) return false;

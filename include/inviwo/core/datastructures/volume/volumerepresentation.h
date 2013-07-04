@@ -28,12 +28,12 @@ namespace inviwo {
         VolumeRepresentation(uvec3 dimension, DataFormatBase format, VolumeBorders border);
         virtual ~VolumeRepresentation();
         virtual void performOperation(DataOperation*) const {};
-        virtual VolumeBorders getBorder() const {return borders_;}
+        const VolumeBorders& getBorder() const {return borders_;}
         virtual uvec3 getBorderLLF() const {return borders_.llf;}
         virtual uvec3 getBorderURB() const {return borders_.urb;}
-        virtual uvec3 getDimensions() const {return dimensions_;}
-        virtual uvec3 getDimensionsWithBorder() const { return dimensions_+getBorderLLF()+getBorderURB(); }
-        virtual bool hasBorder() const {return borders_.hasBorder;}
+        const uvec3& getDimensions() const {return dimensions_;}
+        uvec3 getDimensionsWithBorder() const { return dimensions_+getBorderLLF()+getBorderURB(); }
+        bool hasBorder() const {return borders_.hasBorder;}
     protected:
         uvec3 dimensions_;
         VolumeBorders borders_;
