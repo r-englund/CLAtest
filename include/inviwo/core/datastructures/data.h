@@ -196,12 +196,12 @@ void Data::updateRepresentation(T* representation, int index) const {
             lastValidRepresentation_ = representation;
             return;
         }
-        //A one-2-one converter could not be found, thus we want to find the smallest package of converters to get to our destination
+        //A one-2-one converter could not be found
         RepresentationConverterPackage<T>* converterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(lastValidRepresentation_);
         DataRepresentation* updateFrom = lastValidRepresentation_;
         //Go-through the conversion package
         if (converterPackage) {
-            for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
+            //for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
                 const std::vector<RepresentationConverter*>& converters = converterPackage->getConverters();
                 for (size_t j=0; j<converters.size(); ++j) { 
                     for (size_t k=0; k<representations_.size(); ++k) { 
@@ -213,7 +213,7 @@ void Data::updateRepresentation(T* representation, int index) const {
                         }
                     }
                 }
-            }
+            //}
         }
     }
 }

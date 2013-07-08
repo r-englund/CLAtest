@@ -28,6 +28,8 @@ public:
     };
     typedef std::multimap<std::string, ProgramIdentifier> ProgramMap; ///< File name and unique identifier for program
     typedef std::multimap<cl::Program*, cl::Kernel*> KernelMap;
+    //typedef std::map<cl::Program*, std::vector<cl::Kernel>> KernelMap;
+
     KernelManager();
     virtual ~KernelManager();
     /**

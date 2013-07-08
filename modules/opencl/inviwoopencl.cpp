@@ -17,6 +17,8 @@
 #define OPEN_FILE(a,b,c) a = fopen(b, c);
 #endif
 
+#include <stdlib.h>
+#include <stdio.h>
 
 namespace cl {
 
@@ -30,6 +32,7 @@ OpenCL::OpenCL() {
 }
 
 void OpenCL::initialize(bool glSharing) {
+
     cl_int error = CL_SUCCESS;
     try {
         std::vector<cl::Platform> platforms;

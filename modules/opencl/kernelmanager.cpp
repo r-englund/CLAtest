@@ -36,6 +36,16 @@ cl::Program* KernelManager::buildProgram( const std::string& fileName, const std
     cl::Program *program = new cl::Program();
     try {
         *program = cl::Program(OpenCL::buildProgram(fileName, defines));
+        try {
+            std::vector<cl::Kernel> kernels;
+            program->createKernels(&kernels);
+            for(std::vector<cl::Kernel>::iterator kernelIt = kernels.begin(); kernelIt != kernels.end(); ++kernelIt) {
+                kernels_.insert(std::pair<cl::Program*, cl::Kernel*>(program, new cl::Kernel(*kernelIt)));
+            }
+            
+        } catch(cl::Error& err) {
+            LogError(fileName << " Failed to create kernels, Error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl);
+        }
     } catch (cl::Error&) {
 
     }
@@ -47,45 +57,84 @@ cl::Program* KernelManager::buildProgram( const std::string& fileName, const std
 
 cl::Kernel* KernelManager::getKernel( cl::Program* program, const std::string& kernelName )
 {
-    cl::Kernel* kernel = NULL;
-    try {
-        kernel = new cl::Kernel(*program, kernelName.c_str());
-        kernels_.insert(std::pair<cl::Program*, cl::Kernel*>(program, kernel));
-    } catch (cl::Error&) {
-        delete kernel; kernel = NULL;
-        LogError("Failed to create kernel");
+    std::pair <KernelMap::iterator, KernelMap::iterator> kernelRange = kernels_.equal_range(program);
+    for(KernelMap::iterator kernelIt = kernelRange.first; kernelIt != kernelRange.second; ++kernelIt) {
+        std::string thisKernelName;
+        kernelIt->second->getInfo(CL_KERNEL_FUNCTION_NAME, &thisKernelName);
+        if(thisKernelName == kernelName) {
+            return kernelIt->second;
+        }
     }
-     
+
     
-    return kernel;
+    return NULL;
 }
 
 void KernelManager::fileChanged( std::string fileName )
 {
     std::pair <ProgramMap::iterator, ProgramMap::iterator> programRange = programs_.equal_range(fileName);
     for(ProgramMap::iterator programIt = programRange.first; programIt != programRange.second; ++programIt) {
-        cl::Program* program = programIt->second.program;   
-        std::pair <KernelMap::iterator, KernelMap::iterator> range = kernels_.equal_range(program);
+        cl::Program* program = programIt->second.program; 
+        // Get all kernels associated with the program
+
+        std::pair <KernelMap::iterator, KernelMap::iterator> kernelRange = kernels_.equal_range(program);
         std::vector<std::string> kernelNames;
-        for(KernelMap::iterator kernelIt = range.first; kernelIt != range.second; ++kernelIt) {
-            std::string kernelName;
-            kernelIt->second->getInfo(CL_KERNEL_FUNCTION_NAME, &kernelName);
-            kernelNames.push_back(kernelName);
-            //cl::ReferenceHandler<cl::Kernel>::release(*it->second);
+        for(KernelMap::iterator kernelIt = kernelRange.first; kernelIt != kernelRange.second; ++kernelIt) {
+            std::string thisKernelName;
+            try {
+                kernelIt->second->getInfo(CL_KERNEL_FUNCTION_NAME, &thisKernelName);
+            } catch(cl::Error&) {
+
+            }
+            kernelNames.push_back(thisKernelName);
         }
 
         try {
+            LogInfo(fileName + " building program");
+            // FIXME: For some reason zero Kernels are created if we do not wait a bit here. (GF 570, CUDA RC 5.5, Windows x64) 
+            #ifdef WIN32
+                Sleep(100);
+            #endif
             *program = OpenCL::buildProgram(fileName, programIt->second.defines);
-            int i = 0;
-            for(KernelMap::iterator kernelIt = range.first; kernelIt != range.second; ++kernelIt, ++i) {
-                *(kernelIt->second) = cl::Kernel(*kernelIt->first, kernelNames[i].c_str());
+
+            LogInfo(fileName + " finished building program");
+            std::vector<cl::Kernel> newKernels;
+            try {
+                LogInfo(fileName + " creating kernels");
+                program->createKernels(&newKernels);
+            } catch (cl::Error& err) {
+                LogError(fileName << " Failed to create kernels, error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl);
+                throw err;
             }
-            LogInfo(fileName + " successfuly reloaded");
+            // Find corresponding old kernel for each newly compiled kernel.
+            // Add kernel if it was not found
+            for(std::vector<cl::Kernel>::iterator newKernelIt = newKernels.begin(); newKernelIt != newKernels.end(); ++newKernelIt) {
+                std::string newKernelName;
+                newKernelIt->getInfo(CL_KERNEL_FUNCTION_NAME, &newKernelName);
+                std::vector<std::string>::iterator kernelNameIt = std::find(kernelNames.begin(), kernelNames.end(), newKernelName);
+
+                if(kernelNameIt != kernelNames.end()) {
+                    size_t index = kernelNameIt - kernelNames.begin();
+                    KernelMap::iterator oldKernelIt(kernelRange.first);
+                    for(size_t j = 0; j < index; ++j, ++oldKernelIt) {};
+
+                    *(oldKernelIt->second) = *newKernelIt;
+                    //(*programKernels)[index] = *newKernelIt;
+                } else {
+                    kernels_.insert(std::pair<cl::Program*, cl::Kernel*>(program, new cl::Kernel(*newKernelIt)));
+                    //programKernels->push_back(*newKernelIt);
+                }
+            }
+
             InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
             std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
-            for (size_t i=0;i<processors.size();i++)
+            for (size_t i=0;i<processors.size();i++) {
                 processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
-        } catch (cl::Error&) {
+            }
+
+
+        } catch (cl::Error& err) {
+            LogError(fileName << " Failed to create kernels, error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl);
             InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
         }
     }
