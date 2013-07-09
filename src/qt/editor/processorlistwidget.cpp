@@ -2,6 +2,8 @@
 #include <QLayout>
 #include <QLineEdit>
 #include <QVBoxLayout>
+#include <QWidget>
+#include <QMimeData>
 
 #include <inviwo/core/common/inviwoapplication.h>
 
@@ -167,7 +169,7 @@ ProcessorDragObject::ProcessorDragObject(QWidget* source, const QString classNam
 
     QMimeData *mimeData = new QMimeData;
     mimeData->setData(mimeType, byteData);
-    mimeData->setData("text/plain", className.toAscii().data());
+    mimeData->setData("text/plain", className.toLatin1().data());
     setMimeData(mimeData);
 
     start(Qt::MoveAction);

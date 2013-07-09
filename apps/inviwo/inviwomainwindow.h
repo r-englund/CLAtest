@@ -22,7 +22,7 @@ class NetworkEditor;
 class CanvasQt;
 
 class InviwoMainWindow : public QMainWindow, public VoidObserver {
-Q_OBJECT
+Q_OBJECT;
 public:
     static const unsigned int maxNumRecentFiles_ = 10;
 

@@ -196,12 +196,6 @@ void IvwSerializeBase::registerFactories(void) {
     registeredFactories_.push_back(MetaDataFactory::getPtr());
 }
 
-template <typename T>
-T* IvwSerializeBase::allocateMemory(std::string className) {
-    T* data = 0;
-    return data;
-}
-
 std::string IvwSerializeBase::getFileName() {
     return fileName_;
 }

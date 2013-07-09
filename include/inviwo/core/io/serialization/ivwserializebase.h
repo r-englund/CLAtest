@@ -51,27 +51,82 @@ class IvwSerializable;
 
 class IvwSerializeBase {
 public:
+    /** 
+     * \brief Base class for IvwSerializer and IvwDeserializer.
+     *
+     * This class consists of features that are common to both serializer
+     * and de-serializer. Some of them are reference data manager,
+     * (ticpp::Node) node switch and factory registration.
+     * 
+     * @param IvwSerializeBase & s object of similar type.
+     * @param bool allowReference disables or enables reference management schemes.
+     */
     IvwSerializeBase(IvwSerializeBase &s, bool allowReference=true);
+    /** 
+     * \brief Base class for IvwSerializer and IvwDeserializer.
+     *
+     * This class consists of features that are common to both serializer
+     * and de-serializer. Some of them are reference data manager,
+     * (ticpp::Node) node switch and factory registration.
+     * 
+     * @param std::string fileName full path to xml file (for reading or writing).
+     * @param bool allowReference disables or enables reference management schemes.
+     */
     IvwSerializeBase(std::string fileName, bool allowReference=true);
+    /** 
+     * \brief Destructor    
+     */
     virtual ~IvwSerializeBase();
-    virtual std::string getFileName();
-    
+    /** 
+     * \brief gets the xml file name.
+     */
+    virtual std::string getFileName();    
+    /** 
+     * \brief Checks whether the given type is a primitive type.
+     *
+     * return true if type is one of following type:
+     * bool, char, signed int, unsigned int, float, double, long double, std::string
+     * 
+     * @param const std::type_info & type can be one of  bool, char, signed int, unsigned int, float, double, long double, std::string
+     * @return bool true or false
+     */
     bool isPrimitiveType(const std::type_info& type) const;
+    /** 
+     * \brief Checks whether the given type is a primitive pointer type.
+     *
+     * return true if type is one of following type:
+     * bool*, char*, signed int*, unsigned int*, float*, double*, long double*, std::string*
+     * 
+     * @param const std::type_info & type can be one of  bool, char, signed int, unsigned int, float, double, long double, std::string.
+     * @return bool true or false.
+     */
     bool isPrimitivePointerType(const std::type_info& type) const;
-
+    /** 
+     * \brief Enable or disable reference flag.
+     */
     void setAllowReference(const bool &allowReference);
-
+    /** 
+     * \brief Registers all factories from all modules.     
+     */
     virtual void registerFactories(void);
 
+    /** 
+     * \brief For allocating objects such as processors, properties.. using registered factories.
+     *
+     * @param const std::string & className is used by registered factories to allocate the required object.
+     * @return T* NULL if allocation fails or className does not exist in any factories.
+     */
     template <typename T>
     T* getRegisteredType(const std::string &className);
 
+    /** 
+     * \brief For allocating objects that do not belong to any registered factories.          
+     * 
+     * @return T* Pointer to object of type T.
+     */
     template <typename T>
     T* getNonRegisteredType();
-
-    template <typename T>
-    T* allocateMemory(std::string className);    
-
+    
     virtual void setFileName(const std::string fileName);
 
     class NodeSwitch {

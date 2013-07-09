@@ -47,14 +47,14 @@ namespace inviwo {
 					(*iter)->setSelected(false);
 				}
 			}
-				if (itemAt(e->scenePos()) != NULL){
+			if (!items(e->scenePos()).isEmpty()){
 				QGraphicsScene::mousePressEvent(e); // this forwards the event to the item
 			}
 		}
 		else if (e->button() == Qt::RightButton){
-			if (itemAt(e->scenePos()) == NULL){}
-			else if (itemAt(e->scenePos())->type() == TransferFunctionEditorControlPoint::Type){
-				removePoint((TransferFunctionEditorControlPoint*)itemAt(e->scenePos()));
+			if (items(e->scenePos()).isEmpty()){}
+			else if (items(e->scenePos()).first()->type() == TransferFunctionEditorControlPoint::Type){
+				removePoint((TransferFunctionEditorControlPoint*)items(e->scenePos()).first());
 			}
 			for (iter = points_.begin(); iter != points_.end(); iter++){
 				(*iter)->getPoint()->setSelected(false);
@@ -77,7 +77,7 @@ namespace inviwo {
 		float dist = sqrt( pow(e->scenePos().x() - mouseDownPos_.x(), 2) + pow(e->scenePos().y() - mouseDownPos_.y(), 2));
 
 		if (e->button() == Qt::LeftButton && dist < 10.0f){
-			if (itemAt(mouseDownPos_) == NULL){
+			if (items(mouseDownPos_).isEmpty()){
 				//if (itemAt(mouseDownPos_) == NULL || itemAt(mouseDownPos_)->type() == TransferFunctionEditorLineItem::Type){
 				addPoint(e);
 			}

@@ -6,6 +6,7 @@
 #include <QListWidget>
 #include <QMouseEvent>
 #include <QTreeWidget>
+#include <QDrag>
 
 #include <inviwo/qt/editor/inviwodockwidget.h>
 

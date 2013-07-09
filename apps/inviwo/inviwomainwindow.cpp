@@ -7,7 +7,11 @@
 
 #include <inviwo/core/network/processornetworkevaluator.h>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+#include <QStandardPaths>
+#else
 #include <QDesktopServices>
+#endif
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QList>
@@ -271,8 +275,14 @@ void InviwoMainWindow::openWorkspace() {
 
     QList<QUrl> sidebarURLs;
     sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
+    //TODO: create InviwoFileDialog to avoid frequent version checks
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+#else
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+#endif
 
     QFileDialog openFileDialog(this, tr("Open Workspace ..."), QDir(workspaceFileDir_).absolutePath());
     openFileDialog.setFileMode(QFileDialog::AnyFile);
@@ -319,8 +329,14 @@ void InviwoMainWindow::saveWorkspaceAs() {
 
     QList<QUrl> sidebarURLs;
     sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
+    //TODO: create InviwoFileDialog to avoid frequent version checks
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+#else
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+#endif
 
     QFileDialog saveFileDialog(this, tr("Save Workspace ..."), QDir(workspaceFileDir_).absolutePath());
     saveFileDialog.setFileMode(QFileDialog::AnyFile);

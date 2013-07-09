@@ -93,7 +93,7 @@ void MappingWidget::updateWidget() {
 // Draw the widgets for all EventProperties in EventPropertyManager
 void MappingWidget::drawEventPropertyWidgets() {	
 
-	std::string identifier = (const char *)comboBox_->currentText().toAscii();
+	std::string identifier = (const char *)comboBox_->currentText().toLatin1();
 	eventPropertyManager_->setActiveProcessor(identifier.c_str());
 	std::vector<EventProperty*> properties = eventPropertyManager_->getEventPropertiesFromMap();
 	

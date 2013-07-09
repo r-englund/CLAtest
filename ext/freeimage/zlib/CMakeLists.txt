@@ -3,7 +3,14 @@ ivw_project(zlib)
 #--------------------------------------------------------------------
 # Supress warnings
 if(WIN32)
-add_definitions( "/W0 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo /IGNORE:4006 /DZ_PREFIX" )
+
+add_definitions( "/W0 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo /IGNORE:4006" )
+
+if(NOT DESIRED_QT_VERSION MATCHES 5)    
+    # Certain zlib functions conflict with Qt4 or less. Hence Z_PREFIX is requried.
+    add_definitions( "/DZ_PREFIX" )
+endif()
+
 endif()
 
 #--------------------------------------------------------------------

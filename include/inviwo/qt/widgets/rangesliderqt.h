@@ -2,7 +2,7 @@
 #define IVW_RANGESLIDERQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QtGui/QSplitter>
+#include <QSplitter>
 #include <QResizeEvent>
 
 namespace inviwo {

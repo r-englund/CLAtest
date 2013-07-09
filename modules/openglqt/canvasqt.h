@@ -7,7 +7,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/common/inviwo.h>
 
-#include <QtOpenGL/QGLWidget>
+#include <QGLWidget>
 #include <QInputEvent>
 #include <QMouseEvent>
 

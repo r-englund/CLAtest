@@ -1,6 +1,11 @@
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+#include <QStandardPaths>
+#else
 #include <QDesktopServices>
+#endif
+
 #include <QDir>
 #include <QFileDialog>
 #include <QList>
@@ -36,9 +41,16 @@ void FilePropertyWidgetQt::setPropertyValue() {
 
     QList<QUrl> sidebarURLs;
     sidebarURLs << QUrl::fromLocalFile(QDir(dataDir_).absolutePath());
+
+    //TODO: create InviwoFileDialog to avoid frequent version checks
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+#else
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-
+#endif
+    
     QFileDialog openFileDialog(this, tr("Open File ..."), QDir(dataDir_).absolutePath());
     openFileDialog.setFileMode(QFileDialog::AnyFile);
     openFileDialog.setNameFilters(extension);

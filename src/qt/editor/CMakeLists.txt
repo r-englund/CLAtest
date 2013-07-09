@@ -35,7 +35,13 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
 )
-qt4_wrap_cpp(MOC_FILES ${MOC_FILES})
+
+if(DESIRED_QT_VERSION MATCHES 5)
+    qt5_wrap_cpp(MOC_FILES ${MOC_FILES})     
+else()
+    qt4_wrap_cpp(MOC_FILES ${MOC_FILES})
+endif()
+
 source_group("MOC Files" FILES ${MOC_FILES})
 
 #--------------------------------------------------------------------
@@ -71,10 +77,16 @@ ivw_define_qt_definitions()
 # Create library
 add_library(inviwo-qteditor ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
+# Add qt dependencies to this list
+if(DESIRED_QT_VERSION MATCHES 5)
+    ivw_add_dependencies(Qt5Core)    
+else()
+    ivw_add_dependencies(Qt)
+endif()
+
 # Add core dependencies to this list
 ivw_add_dependencies(
     InviwoCore
-    Qt
     InviwoQtWidgets
 )
 
@@ -85,3 +97,7 @@ ivw_compile_optimize_inviwo_core()
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
 ivw_make_package(InviwoQtEditor inviwo-qteditor)
+
+if(DESIRED_QT_VERSION MATCHES 5)
+    qt5_use_modules(inviwo-qteditor Widgets)    
+endif()

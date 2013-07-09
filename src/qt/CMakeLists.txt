@@ -9,7 +9,12 @@ if(IVW_QT_EDITOR AND NOT IVW_QT_WIDGETS)
 endif()
 
 if(IVW_QT_EDITOR OR IVW_QT_WIDGETS)
-    find_package(Qt QUIET REQUIRED)
+    # Find the QtWidgets library
+    if(DESIRED_QT_VERSION MATCHES 5)
+        find_package(Qt5Widgets QUIET REQUIRED)     
+    else()
+        find_package(Qt QUIET REQUIRED)
+    endif()	    
 
     set(QT_DONT_USE_QTCORE FALSE)
     set(QT_DONT_USE_QTGUI FALSE)
