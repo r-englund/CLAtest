@@ -171,6 +171,14 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
     // build the program from the source in the file
     std::ifstream file(fileName.c_str());
     std::string prog(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+    if(prog.empty()) {
+        // When editing files using Visual Studio it may happen that the file is empty.
+        // Wait a bit and hope that the content is there later. 
+        #ifdef WIN32
+            Sleep(400);
+        #endif
+        prog = std::string(std::istreambuf_iterator<char>(std::ifstream(fileName.c_str())), (std::istreambuf_iterator<char>()));
+    }
     cl::Program::Sources source( 1, std::make_pair(prog.c_str(), prog.length()+1));
     cl::Program program(context, source);
     try {

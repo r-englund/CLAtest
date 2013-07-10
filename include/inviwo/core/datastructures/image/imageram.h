@@ -17,7 +17,7 @@ public:
     virtual ~ImageRAM();
 
     virtual void initialize();
-    void deinitialize();
+    virtual void deinitialize();
     DataRepresentation* clone() const;
     virtual std::string getClassName() const { return "ImageRAM"; }
     virtual void resize(uvec2 dimensions);
@@ -26,7 +26,7 @@ public:
     virtual const void* getData() const {return data_;};
     // Takes ownership of data pointer
     void setData(void* data) {
-        delete[] data_; 
+        deinitialize();
         data_ = data;
     }
 protected:
@@ -53,8 +53,11 @@ public:
     virtual ~ImageRAMPrecision() {};
     virtual void initialize();
     virtual void initialize(void*);
+    virtual void deinitialize();
     virtual DataRepresentation* clone() const;
 };
+
+
 
 template<typename T>
 ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, DataFormatBase format) : ImageRAM(dimensions, format) {
@@ -67,15 +70,24 @@ ImageRAMPrecision<T>::ImageRAMPrecision(T* data, uvec2 dimensions, DataFormatBas
 
 template<typename T>
 void ImageRAMPrecision<T>::initialize() {
-    data_ = new T[dimensions_.x*dimensions_.y*sizeof(T)];
+    data_ = new T[dimensions_.x*dimensions_.y];
 }
 
 template<typename T>
 void ImageRAMPrecision<T>::initialize(void* data) {
     if (data == NULL) {
-        data_ = new T[dimensions_.x*dimensions_.y*sizeof(T)];
+        data_ = new T[dimensions_.x*dimensions_.y];
     } else {
         data_ = data;
+    }
+}
+
+template<typename T>
+void inviwo::ImageRAMPrecision<T>::deinitialize()
+{
+    if(data_) {
+        delete[] static_cast<T*>(data_);
+        data_ = NULL;
     }
 }
 

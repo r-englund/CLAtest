@@ -10,7 +10,7 @@ __constant float REF_SAMPLING_INTERVAL = 150.f;
 __kernel void raycaster(read_only image3d_t volume
                         , read_only image2d_t entryPoints
                         , read_only image2d_t exitPoints
-                        , read_only image2d_t transferFunction
+                        , read_only image2d_t transferFunction 
                         , float stepSize
                         , uint3 volumeDimension
                         , write_only image2d_t output) 
@@ -20,12 +20,12 @@ __kernel void raycaster(read_only image3d_t volume
     //if( any(globalId >= get_image_dim(output)) ) {
     //    return;
     //}
-    float4 entry = read_imagef(entryPoints, smpUNormNoClampNearest, globalId); 
+    float4 entry = read_imagef(entryPoints, smpUNormNoClampNearest, globalId);  
     
     float4 result = (float4)(0.f); 
-    if(any(entry.xyz != 0.f)) { 
-        float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId);  
-        float3 direction = exit.xyz - entry.xyz;
+    if(any(entry.xyz != 0.f)) {     
+        float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId);   
+        float3 direction = exit.xyz - entry.xyz;   
         float tEnd = length(direction);
         float tIncr = 1.f/(stepSize*length(direction*convert_float3(volumeDimension)));
         direction = normalize(direction);
@@ -33,7 +33,7 @@ __kernel void raycaster(read_only image3d_t volume
         float t = 0.0f; 
         //float t = 0.5f*tIncr; 
         float volumeSample;
-        float extinction = 0.f;
+        float extinction = 0.f;  
         while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
             volumeSample = read_imagef(volume, smpNormClampEdgeLinear, as_float4(pos)).x; 

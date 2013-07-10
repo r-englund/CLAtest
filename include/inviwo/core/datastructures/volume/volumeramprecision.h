@@ -27,6 +27,7 @@ public:
     virtual void performOperation(DataOperation* dop) const;
     using VolumeRAM::initialize;
     virtual void initialize(void*);
+    virtual void deinitialize();
     virtual DataRepresentation* clone() const;
 };
 
@@ -65,10 +66,19 @@ VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, uvec3 dimensions, VolumeRepre
 template<typename T>
 void VolumeRAMPrecision<T>::initialize(void* data) {
     if (!data)
-        data_ = new T[dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T)];
+        data_ = new T[dimensions_.x*dimensions_.y*dimensions_.z];
     else
         data_ = data;
     VolumeRAM::initialize();
+}
+
+template<typename T>
+void inviwo::VolumeRAMPrecision<T>::deinitialize()
+{
+    if(data_) {
+        delete[] static_cast<T*>(data_);
+        data_ = NULL;
+    }
 }
 
 template<typename T>

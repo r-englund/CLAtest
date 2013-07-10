@@ -18,10 +18,9 @@ VolumeRAM::~VolumeRAM() {
 void VolumeRAM::initialize() {}
 
 void VolumeRAM::deinitialize() {
-    if(data_) {
-        delete[] data_;
-        data_ = NULL;
-    }
+    // Make sure that data is deinitialized in
+    // child class (should not delete void pointer 
+    // since destructor will not be called for object.
 }
 
 void* VolumeRAM::getData() {

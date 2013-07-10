@@ -26,7 +26,7 @@ public:
      * @return void none
      */
     void setData(void* data) {
-        delete[] data_; 
+        deinitialize();
         data_ = data;
     }
 protected:

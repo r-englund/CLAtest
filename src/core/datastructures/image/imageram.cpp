@@ -31,10 +31,9 @@ void ImageRAM::initialize() {
 }
 
 void ImageRAM::deinitialize() {
-    if(data_) {
-        delete[] data_;
-        data_ = NULL;
-    }
+    // Make sure that data is deinitialized in
+    // child class (should not delete void pointer 
+    // since destructor will not be called for object.
 }
 
 DataRepresentation* ImageRAM::clone() const {

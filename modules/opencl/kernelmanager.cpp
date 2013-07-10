@@ -91,10 +91,7 @@ void KernelManager::fileChanged( std::string fileName )
 
         try {
             LogInfo(fileName + " building program");
-            // FIXME: For some reason zero Kernels are created if we do not wait a bit here. (GF 570, CUDA RC 5.5, Windows x64) 
-            #ifdef WIN32
-                Sleep(100);
-            #endif
+
             *program = OpenCL::buildProgram(fileName, programIt->second.defines);
 
             LogInfo(fileName + " finished building program");
