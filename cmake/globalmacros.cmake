@@ -205,6 +205,8 @@ macro(add_modules)
             list(APPEND IVW_MODULE_CLASS_PATHS ${IVW_MODULE_CLASS_PATH})
         endif()
     endforeach()
+	list(REMOVE_DUPLICATES IVW_MODULE_CLASSES)
+	list(REMOVE_DUPLICATES IVW_MODULE_CLASS_PATHS)
     #Generate moduule registration file
     generate_module_registration_file("${IVW_MODULE_CLASSES}" "${IVW_MODULE_CLASS_PATHS}")
     create_module_package_list(${IVW_MODULE_CLASSES})

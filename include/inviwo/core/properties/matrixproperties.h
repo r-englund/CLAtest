@@ -35,6 +35,7 @@ public:
                       PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "FloatMat2Property"; }
 	};
 /** class FloatMat3Property
 *  \brief  The FloatMat3Property provides a property holding a 3 by 3 matrix of float values
@@ -66,6 +67,7 @@ public:
                       PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "FloatMat3Property"; }
 };
 /** class FloatMat4Property
 *  \brief  The FloatMat4Property provides a property holding a 4 by 4 matrix of float values
@@ -97,6 +99,7 @@ public:
                       PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "FloatMat4Property"; }
 };
  
 }//namespace

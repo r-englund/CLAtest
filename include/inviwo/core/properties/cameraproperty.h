@@ -35,6 +35,7 @@ public:
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "CameraProperty"; }
 
 private:
     FloatVec3Property lookFrom_;

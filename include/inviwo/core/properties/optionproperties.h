@@ -21,6 +21,7 @@ public:
                       PropertySemantics::Type semantics=PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "OptionPropertyInt"; }
 };
 
 
@@ -41,6 +42,7 @@ public:
                         PropertySemantics::Type semantics=PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "OptionPropertyFloat"; }
 };
 
 /** class OptionPropertyDouble
@@ -60,6 +62,7 @@ public:
                          PropertySemantics::Type semantics=PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "OptionPropertyDouble"; }
 };
 
 
@@ -81,6 +84,7 @@ public:
     void addOption(std::string identifier, std::string displayName, std::string value);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "OptionPropertyString"; }
 };
 
 typedef OptionPropertyDouble DoubleOptionProperty; // deprecated

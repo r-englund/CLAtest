@@ -14,6 +14,7 @@ namespace inviwo {
                                  PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
 
 		void customSet();
     private:

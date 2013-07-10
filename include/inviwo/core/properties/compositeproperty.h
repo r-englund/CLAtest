@@ -21,6 +21,7 @@ public:
     std::vector<Property*> getSubProperties() { return subProperties_; }
     void setOwner(PropertyOwner* owner);
     void notify();
+    virtual std::string getClassName()  const { return "CompositeProperty"; }
 
 private:
     std::vector<Property*> subProperties_;

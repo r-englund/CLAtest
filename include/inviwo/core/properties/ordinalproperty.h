@@ -23,6 +23,11 @@ public:
     void setMaxValue(const T &value);
     void setIncrement(const T &value);
 
+    virtual Variant getVariant();
+    virtual void setVariant(const Variant& v);
+    virtual int getVariantType();
+
+
 private:
     T minValue_;
     T maxValue_;
@@ -70,6 +75,25 @@ template <typename T>
 void OrdinalProperty<T>::setIncrement(const T &value) {
     increment_ = value;
 }
+
+template <typename T>
+Variant OrdinalProperty<T>::getVariant(){
+    return Variant(value_);
+}
+
+template <typename T>
+void OrdinalProperty<T>::setVariant(const Variant& v){
+    if (v.canConvert(getVariantType())) {
+        set(v.get<T>());
+    }
+}
+
+template <typename T>
+int OrdinalProperty<T>::getVariantType(){
+    Variant v(value_);
+    return v.getType();
+}
+
 
 } // namespace
 

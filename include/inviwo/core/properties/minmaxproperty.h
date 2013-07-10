@@ -27,6 +27,11 @@ public:
 
     void setRange(const glm::detail::tvec2<T> &value);
 
+
+    virtual Variant getVariant();
+    virtual void setVariant(const Variant& v);
+    virtual int getVariantType();
+
 private:
     glm::detail::tvec2<T> range_;
     T increment_;
@@ -80,6 +85,23 @@ void MinMaxProperty<T>::setIncrement(const T &value) {
 template <typename T>
 void MinMaxProperty<T>::setRange(const glm::detail::tvec2<T> &value){
     range_ = value;
+}
+
+template <typename T> 
+Variant MinMaxProperty<T>::getVariant(){
+    return Variant(range_);
+}
+
+template <typename T> 
+void MinMaxProperty<T>::setVariant(const Variant& v){
+    if (v.canConvert(getVariantType())) {
+        set(v.get<glm::detail::tvec2<T>>());
+    }
+}
+
+template <typename T> 
+int MinMaxProperty<T>::getVariantType(){
+    return getVariant().getType();
 }
 
 } // namespace

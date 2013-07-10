@@ -23,7 +23,7 @@ public:
        PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& s);
-
+    virtual std::string getClassName()  const { return "FloatMinMaxProperty"; }
 };
     /** class FloatVec2Property
     *   \brief The FloatVec2Property class provides a property holding a 2-D vector containing float values.
@@ -54,6 +54,7 @@ public:
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "FloatVec2Property"; }
 
 };
     /** class FloatVec3Property
@@ -85,6 +86,7 @@ public:
         PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "FloatVec3Property"; }
 };
     /** class FloatVec4Property
     *   \brief The FloatVec4Property class provides a property holding a 4-D vector containing float values.
@@ -114,7 +116,8 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& d);
+    virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "FloatVec4Property"; }
 
 };
     /** class IntMinMaxProperty
@@ -133,7 +136,8 @@ public:
        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
        PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& s);
+    virtual void deserialize(IvwDeserializer& s);
+    virtual std::string getClassName()  const { return "IntMinMaxProperty"; }
 
 };
     /** class IntVec2Property
@@ -164,7 +168,8 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& d);
+    virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "IntVec2Property"; }
 
 };
     /** class IntVec3Property
@@ -195,7 +200,8 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& d);
+    virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "IntVec3Property"; }
 
 };
     /** class IntVec4Property
@@ -225,8 +231,9 @@ public:
 		ivec4 minValue=ivec4(0), ivec4 maxValue= ivec4(10), ivec4 increment=ivec4(1),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
-	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& d);
+      virtual void serialize(IvwSerializer& s) const;
+      virtual void deserialize(IvwDeserializer& d);
+      virtual std::string getClassName()  const { return "IntVec4Property"; }
 
 };
 

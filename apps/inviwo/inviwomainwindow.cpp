@@ -134,8 +134,16 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
 
 void InviwoMainWindow::addMenus() {
     basicMenuBar = menuBar();
-    fileMenuItem_ = basicMenuBar->addMenu(tr("&File"));
-    viewMenuItem_ = basicMenuBar->addMenu(tr("&View"));
+    
+    QAction *first = 0;
+    if(basicMenuBar->actions().size()>0)
+        first = basicMenuBar->actions()[0];
+
+    fileMenuItem_ = new QMenu(tr("&File"));
+    viewMenuItem_ = new QMenu(tr("&View"));
+    basicMenuBar->insertMenu(first,fileMenuItem_);
+    basicMenuBar->insertMenu(first,viewMenuItem_);
+
     helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
 }
 

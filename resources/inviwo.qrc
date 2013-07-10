@@ -12,9 +12,10 @@
     <file>icons/arrow_bidirectional.png</file>
     <file>icons/processor_broken.png</file>
     <file>icons/processor_experimental.png</file>
-    <file>icons/processor_stable.png</file>	
+   <file>icons/processor_stable.png</file>
+   <file>icons/python.png</file>
 
-    <file>stylesheets/inviwo.qss</file>
+   <file>stylesheets/inviwo.qss</file>
     <file>stylesheets/images/arrow_down.png</file>
     <file>stylesheets/images/arrow_up.png</file>
     <file>stylesheets/images/arrow_darker_down.png</file>

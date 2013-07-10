@@ -58,7 +58,8 @@ public:
     }
 
 	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& d);
+    virtual void deserialize(IvwDeserializer& d);
+    virtual std::string getClassName()  const { return "ButtonProperty"; }
 
 private:
     SingleCallBack callBack_;

@@ -299,6 +299,18 @@ QSplitter::handle:horizontal {
 	margin-bottom: -2px;
 }
 
+QSplitter QFrame#pythonEditor{
+	font-family: "Calibra";
+    background-color: #888888;
+    color: #111111;
+}
+
+QSplitter QFrame#pythonConsole{
+	font-family: "Calibra";
+    color: #999999;
+    background-color: #4d4d4d;
+}
+
 /* QComboBox styles */
 QComboBox {
 	border: 1px solid black;

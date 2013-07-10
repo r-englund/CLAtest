@@ -27,6 +27,7 @@ public:
     virtual void setSelectedOption(int option) = 0;
 
     virtual std::vector<std::string> getOptionDisplayNames() const = 0;
+    virtual std::string getClassName()  const { return "BaseOptionProperty"; }
 };
 
 

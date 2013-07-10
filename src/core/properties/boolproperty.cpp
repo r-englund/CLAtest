@@ -20,4 +20,20 @@ void BoolProperty::deserialize(IvwDeserializer& d) {
     set(value);
 }
 
+
+int BoolProperty::getVariantType() {
+    return Variant::VariantTypeBool;
+}
+
+Variant BoolProperty::getVariant() {
+    return Variant(get());
+}
+
+void  BoolProperty::setVariant(const Variant& val) {
+    if (val.canConvert(getVariantType())) {
+        set(val.getFloat());
+    }
+}
+
+
 } // namespace

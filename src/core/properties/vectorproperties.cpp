@@ -246,4 +246,6 @@ void IntVec4Property::deserialize(IvwDeserializer& d){
 	OrdinalProperty<ivec4>::setIncrement(value);
 }
 
+
+
 } // namespace

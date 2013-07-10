@@ -21,6 +21,7 @@ public:
     virtual void set(const T& value);
     void callChanged();
 
+
 protected:
     T value_;
 };
@@ -51,6 +52,7 @@ void TemplateProperty<T>::callChanged(){
     getOwner()->invalidate(getInvalidationLevel());
     updatePropertyWidgets();
 }
+
 
 } // namespace
 
