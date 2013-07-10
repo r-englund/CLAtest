@@ -180,17 +180,17 @@ static PyObject* inviwo_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 
-    auto ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
-    auto ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
-    auto ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
-    auto ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
-    auto ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
-    auto ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
-    auto ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
-    auto ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
-    auto ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
-    auto ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
-    auto ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
+    OrdinalProperty<float>* ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
+    OrdinalProperty<int>* ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
+    OrdinalProperty<ivec2>* ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
+    OrdinalProperty<ivec3>* ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
+    OrdinalProperty<ivec4>*  ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
+    OrdinalProperty<mat2>*  ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
+    OrdinalProperty<mat3>*  ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
+    OrdinalProperty<mat4>*  ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
+    OrdinalProperty<vec2>*  ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
+    OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
+    OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
     Variant parameterVariant(parameter, theProperty->getVariantType());
     if(ordinalFloat){
@@ -257,17 +257,17 @@ static PyObject* inviwo_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 
-    auto ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
-    auto ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
-    auto ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
-    auto ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
-    auto ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
-    auto ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
-    auto ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
-    auto ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
-    auto ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
-    auto ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
-    auto ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
+    OrdinalProperty<float>* ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
+    OrdinalProperty<int>* ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
+    OrdinalProperty<ivec2>* ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
+    OrdinalProperty<ivec3>* ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
+    OrdinalProperty<ivec4>* ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
+    OrdinalProperty<mat2>* ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
+    OrdinalProperty<mat3>* ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
+    OrdinalProperty<mat4>* ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
+    OrdinalProperty<vec2>* ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
+    OrdinalProperty<vec3>* ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
+    OrdinalProperty<vec4>* ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
     Variant parameterVariant(parameter, theProperty->getVariantType());
     if(ordinalFloat){
@@ -322,8 +322,8 @@ static PyObject* inviwo_listProperties(PyObject* /*self*/, PyObject* args){
         errStr << "listProperties(): no processor with name " << processorName << " could be found";
         PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
     }else{
-        auto props = processor->getProperties();
-        for(auto p = props.begin(); p != props.end();++p){
+        std::vector<Property*> props = processor->getProperties();
+        for(std::vector<Property*>::const_iterator p = props.begin(); p != props.end();++p){
             std::string name = (*p)->getIdentifier();
             std::string type  = (*p)->getClassName();
             PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
@@ -338,18 +338,24 @@ static PyObject* inviwo_listProperties(PyObject* /*self*/, PyObject* args){
 
 
 static PyObject* inviwo_listProcessors(PyObject* /*self*/, PyObject* /*args*/){
-    auto processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
-    for(auto processor = processors.begin();processor!=processors.end();++processor){
-        std::string name = (*processor)->getIdentifier();
-        std::string type  = (*processor)->getClassName();
-        PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
+    if(InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()){
+        std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
+        for(std::vector<Processor*>::const_iterator processor = processors.begin();processor!=processors.end();++processor){
+            std::string name = (*processor)->getIdentifier();
+            std::string type  = (*processor)->getClassName();
+            PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
+        }
     }
     Py_RETURN_NONE;
 }
 
 static PyObject* inviwo_canvas_count(PyObject* /*self*/, PyObject* /*args*/){
-    auto canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
-    return Py_BuildValue("i",canvases.size());
+    if(InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()){
+        std::vector<CanvasProcessor*> canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
+        return Py_BuildValue("i",canvases.size());
+    }
+    Py_RETURN_NONE;
+    
 }
 
 
@@ -382,9 +388,11 @@ static PyObject* inviwo_snapshot(PyObject* /*self*/, PyObject* args){
     if(canvasName.size()!=0){
         canvas = dynamic_cast<CanvasProcessor*>(InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(canvasName));
     }else{
-        auto canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
-        if(canvases.size()!=0)
-            canvas = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>()[0];
+        if(InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()){
+            std::vector<CanvasProcessor*> canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
+            if(canvases.size()!=0)
+                canvas = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>()[0];
+        }
     }
 
     if(!canvas){
@@ -421,7 +429,8 @@ static PyObject* inviwo_snapshotCanvas(PyObject* /*self*/, PyObject* args){
     const char* filename = 0;
     if (!PyArg_ParseTuple(args, "is:canvasSnapshot", &index, &filename))
         return 0;
-    auto canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
+    
+    std::vector<CanvasProcessor*> canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
     if(index>=canvases.size()){
         std::string msg = std::string("snapshotCanvas() index out of range with index: ") + toString(index) + " ,canvases avilable: " + toString(canvases.size());
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -450,8 +459,8 @@ static PyObject* inviwo_setViewport(PyObject* /*self*/, PyObject* args){
 
 
     if(InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()){
-        auto canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
-        for(auto canvas = canvases.begin(); canvas != canvases.end();++canvas){
+        std::vector<CanvasProcessor*> canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
+        for(std::vector<CanvasProcessor*>::const_iterator canvas = canvases.begin(); canvas != canvases.end();++canvas){
             static_cast<ProcessorWidgetQt*>((*canvas)->getProcessorWidget())->resize(w,h);
         }
         Py_RETURN_NONE;
@@ -466,10 +475,15 @@ static PyObject* ricen76_test(PyObject* /*self*/, PyObject* args){
 }
 
 static PyObject* inviwo_redrawOrRenderOrWhatever(PyObject* /*self*/, PyObject* /*args*/){
-    auto qtApp = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    auto mainW = static_cast<InviwoMainWindow*>(qtApp->getMainWindow());
+    InviwoApplicationQt* qtApp = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+    if(qtApp){
+        InviwoMainWindow* mainW = static_cast<InviwoMainWindow*>(qtApp->getMainWindow());
+        if(mainW){
+            mainW->repaint();
+        }
+    }
+    Py_RETURN_NONE;
     
-    mainW->repaint();
 }
 
 static PyMethodDef inviwo_methods[] = {

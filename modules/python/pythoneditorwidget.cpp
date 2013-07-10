@@ -84,7 +84,7 @@ namespace inviwo{
         horizontalLayout->addWidget(line);
         horizontalLayout->addWidget(clearOutputButton);
 
-        auto horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        QSpacerItem* horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
         horizontalLayout->addItem(horizontalSpacer);
 
         
@@ -135,7 +135,7 @@ namespace inviwo{
 
     void PythonEditorWidget::fileChanged(std::string fileName){
         std::string msg = "The file " + UrlParser::getFileNameWithExtension(scriptFileName_) + " has been modified outside of Inwivo, do you want to reload its contents";
-        auto ret = QMessageBox::question(this,"Python Editor",msg.c_str(),"Yes","No");
+        int ret = QMessageBox::question(this,"Python Editor",msg.c_str(),"Yes","No");
         if(ret == 0){//yes
             readFile();
         }else{
@@ -201,7 +201,7 @@ namespace inviwo{
 
     void PythonEditorWidget::open(){
         if(codeChanged_){
-            auto ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard","Cancel");
+            int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard","Cancel");
             if(ret == 0)
                 save();
             if(ret == 2) //Cancel
@@ -249,7 +249,7 @@ namespace inviwo{
 
     void PythonEditorWidget::setDefaultText(){
         if(codeChanged_){
-            auto ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard Changes","Cancel");
+            int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard Changes","Cancel");
             if(ret == 0)
                 save();
             else if(ret == 2) //cancel
