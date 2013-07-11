@@ -127,21 +127,33 @@ public:
     template <typename T>
     T* getNonRegisteredType();
     
+    /** 
+     * \brief To set file name with full path which will be later serialized or deserialzied     
+     */
     virtual void setFileName(const std::string fileName);
 
     class NodeSwitch {
     public:
+         /** 
+          * \brief NodeSwitch helps track parent node during recursive/nested function calls.
+          * 
+          * @param IvwSerializeBase & serializer reference to serializer or deserializer
+          * @param TxElement * node //Parent (Ticpp Node) element.
+          */
          NodeSwitch(IvwSerializeBase& serializer, TxElement* node);
+        /** 
+         * \brief Destructor         
+         */
         ~NodeSwitch();
 
     private:  
-        IvwSerializeBase& _serializer;
-        TxElement* _storedNode;
+        IvwSerializeBase& _serializer;  //reference to serializer or deserializer
+        TxElement* _storedNode; //Parent (Ticpp Node) element.
     };
 
     struct ReferenceData {            
-        TxElement* _node;
-        bool _isPointer;
+        TxElement* _node; //Ticpp Node element.
+        bool _isPointer; //Used to differentiate pointer and object.
     };
 
     typedef std::pair<const void *, IvwSerializeBase::ReferenceData> RefDataPair;

@@ -18,26 +18,62 @@ class IvwSerializable;
 
 class IVW_CORE_API IvwDeserializer : public  IvwSerializeBase {
 public:
+    /** 
+     * \brief Deserializer constructor
+     * 
+     * @param IvwDeserializer & s optional reference to existing deserializer.
+     * @param bool allowReference flag to manage references to avoid multiple object creation.     
+     */
     IvwDeserializer(IvwDeserializer &s, bool allowReference=true);
+    /** 
+     * \brief Deserializer constructor
+     *     
+     * 
+     * @param std::string fileName path to file that is to be deserialized.
+     * @param bool allowReference flag to manage references to avoid multiple object creation.     
+     */
     IvwDeserializer(std::string fileName, bool allowReference=true);
+    /** 
+     * \brief Destructor
+     */
     virtual ~IvwDeserializer();
+    /** 
+     * \brief parses file on demand     
+     */
     virtual void readFile() throw (SerializationException);
 
+    /** 
+     * \brief Deserialize a vector
+     *
+     * Deserialize the vector that has pre-allocated objects of type T or allocated by deserializer.
+     * A vector is identified by key and vector items are identified by itemKey
+     *
+     * eg. xml tree with key=Properties and itemKey=Property
+     *
+     * <Properties>
+     *      <Property identifier="enableMIP" displayName="MIP">
+     *          <value content="0" />
+     *      </Property>
+     *      <Property identifier="enableShading" displayName="Shading">
+     *          <value content="0" />
+     *      </Property>
+     * <Properties>
+     * 
+     * @param const std::string & key vector key.
+     * @param std::vector<T * > & sVector vector to be deserialized.
+     * @param const std::string & itemKey vector item key     
+     */
     template <typename T>
     void deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) throw (SerializationException);
-
-    /* 
+    /** 
+     * \brief  Deserialize a map
+     *
      * Deserialize a map, which can have 
      * keys of type K, 
      * values of type V* (pointers) 
      * and compare function C ( optional if 
      * K primitive type, i.e., std::string, int, etc.,)
      * eg., std::map<std::string, Property*>
-     * 
-     * @param key - parent node of itemKey.
-     * @param sMap - source / input map.
-     * @param itemKey - children nodes.
-     * @param comparisionAttribute - forced comparison attribute.
      *
      * eg. xml tree
      *
@@ -52,10 +88,10 @@ public:
      *
      * In the above xml tree,
      *
-     * @ param key                   = "Properties"
-     * @ param itemKey               = "Property"
-     * @ param comparisionAttribute  = "identifier"
-     * @ param sMap["enableMIP"]     = address of a property
+     * key                   = "Properties"
+     * itemKey               = "Property"
+     * param comparisionAttribute  = "identifier"
+     * param sMap["enableMIP"]     = address of a property
      *         sMap["enableShading"] = address of a property
      *         where, "enableMIP" & "enableShading" are keys.
      *         address of a property is a value
@@ -64,63 +100,255 @@ public:
      *       Because deserializer always allocates a new instance of type using registered factories.
      *
      *       eg., <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
-     */
+     *
+     * @param const std::string & key Map key or parent node of itemKey.
+     * @param std::map<K    
+     * @param V * 
+     * @param C> & sMap  map to be deserialized - source / input map. 
+     * @param const std::string & itemKey map item key of childeren nodes.
+     * @param const std::string & comparisionAttribute  - forced comparison attribute.     
+     */    
     template <typename K, typename V, typename C>
     void deserialize(const std::string &key, std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute) throw (SerializationException);
-
+    /** 
+     * \brief Deserialize string data.
+     * 
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param std::string & data string data to be deserialized
+     * @param const bool asAttribute if attribute is true the xml node is formatted as <Key data="this is an attribute"\>, otherwise <Key> <data="this is non-attribute"> <Key\>     
+     */
     void deserialize(const std::string &key, std::string &data, const bool asAttribute=false) throw (SerializationException);    
+    /** 
+     * \brief  Deserialize bool data.
+     *
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param bool & data string bool to be deserialized     
+     */
     void deserialize(const std::string &key, bool &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize float data.
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param float & string float to be deserialized     
+     */
     void deserialize(const std::string &key, float &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize double data.
+     * 
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param double & data double to be deserialized    
+     */
     void deserialize(const std::string &key, double &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize int data.
+     *           
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param int & data int data to be deserialized
+     */
     void deserialize(const std::string &key, int &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize unsigned int data.
+     *
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param unsigned int & data Data to be deserialized
+     */
     void deserialize(const std::string &key, unsigned int &data) throw (SerializationException);
+    /** 
+     * \brief Deserialize long data.
+     *     
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param long & data Data to be deserialized    
+     */
     void deserialize(const std::string &key, long &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize vec2 data
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param vec2 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, vec2 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize vec3 data.
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param vec3 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, vec3 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize vec4 data.
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param vec4 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, vec4 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize ivec2 data.
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param ivec2 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, ivec2 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize ivec3 data.
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param ivec3 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, ivec3 &data) throw (SerializationException);
+    /** 
+     * \brief Deserialize ivec3 data.  
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param ivec4 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, ivec4 &data) throw (SerializationException); 
+    /** 
+     * \brief  Deserialize uvec2 data.
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param uvec2 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, uvec2 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize uvec3 data.
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param uvec3 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, uvec3 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize uvec4 data.
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param uvec4 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, uvec4 &data) throw (SerializationException); 
+    /** 
+     * \brief  Deserialize dvec2 data.
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param dvec2 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, dvec2 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize dvec3 data.
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param dvec3 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, dvec3 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize dvec4 data.
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param dvec4 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, dvec4 &data) throw (SerializationException); 
+    /** 
+     * \brief  Deserialize mat2 data.
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param mat2 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, mat2 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize mat3 data.
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param mat3 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, mat3 &data) throw (SerializationException);
+    /** 
+     * \brief  Deserialize mat4 data.
+     *
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param mat4 & data Data to be deserialized
+     */
     void deserialize(const std::string &key, mat4 &data) throw (SerializationException); 
+    /** 
+     * \brief  Deserialize any serializable object
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param IvwSerializable & sObj object to be deserialzied
+     */
     void deserialize(const std::string &key, IvwSerializable &sObj) throw (SerializationException);
+    /** 
+     * \brief  Deserialize pointer data of type T, which is of type serializeble object or primitive data
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param T *  & data pointer to be deserialized which is of type T which is usally serializable object or primitive data
+     */
     template <class T>
     void deserialize(const std::string& key, T* & data) throw (SerializationException);
     
 protected:
     friend class NodeSwitch;
 private:
-    //void deserialize(const std::string& key, IvwSerializable* & data);
+    //void deserialize(const std::string& key, IvwSerializable* & data);    
+    /** 
+     * \brief Deserialize a stl vector
+     *
+     * Deserialize the vector that has pre-allocated objects of type T or allocated by deserializer.
+     * A vector is identified by key and vector items are identified by itemKey
+     * 
+     * @param const std::string & key vector key.
+     * @param std::vector<T * > & sVector vector to be deserialized.
+     * @param const std::string & itemKey vector item key     
+     */
     template <typename T>
     void deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) throw (SerializationException);
-
-    /* 
-     * Deserialize a map, which can have keys of type K, values of type V* (pointers) 
-     * and an optional compare function C.
-     * eg., std::map<std::string, Property*>
+    /** 
+     * \brief Deserialize a map, which can have keys of type K, values of type V* (pointers) and an optional compare function C. eg., std::map<std::string, Property*>
      *
-     * @ param refer void deserialize()
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param T & sMap map source / input map
+     * @param const std::string & itemKey item key of childeren nodes.
+     * @param const std::string & comparisionAttribute - forced comparison attribute.
      */
     template <typename T>
     void deserializeSTL_Map(const std::string &key, T &sMap, const std::string &itemKey, const std::string &comparisionAttribute) throw (SerializationException);
 
+    /** 
+     * \brief Deserialize primitive string data type which is not an attribute that is formatted as <Key> <data="this is non-attribute"> <Key\>     
+     * 
+     * @param const std::string & key  Parent node key e.g, "Property"
+     * @param std::string & data Data to be deserialized
+     */
     void deserializePrimitives(const std::string &key, std::string &data) throw (SerializationException);
 
+    /** 
+     * \brief Deserialize primitive data type which string data which is an attribute that is formatted as <Key data="this is an attribute"\>     
+     *
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param std::string & data Data to be deserialized
+     */
     void deserializeAttributes(const std::string &key, std::string &data) throw (SerializationException);
     
+    /** 
+     * \brief Deserialize primitive data type such as int, long, float, etc., (except string data) which is not an attribute that is formatted as <Key> <stepValue=1.0> <Key\>
+     *
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param T & data Data to be deserialized of type int, long, float, etc., (except string)
+     */
     template <typename T>
     void deserializePrimitives(const std::string& key, T& data) throw (SerializationException);
     
+    /** 
+     * \brief Deserialize vector data sturcture vec2, ive2, vec3, ivec3, etc.,
+     *
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param T & vector Glm data structures such as vec2, ive2, vec3, ivec3, etc.,
+     * @param const bool & isColor If (isColor==true) x="0" y="0" z="0" , If (isColor==false) isColor r="0" g="0" b="0"
+     */
     template <class T>
     void deserializeVector(const std::string& key, T& vector, const bool& isColor=false) throw (SerializationException);
 
+    /** 
+     * \brief Derserialize pointer
+     *
+     * @param const std::string & key Parent node key e.g, "Property"
+     * @param T *  & data If data==NULL then deserializer tried to allocated data, otherwise pre-allocated data should be passed.
+     */
     template <class T>
     void deserializePointer(const std::string& key, T* & data) throw (SerializationException);
 
