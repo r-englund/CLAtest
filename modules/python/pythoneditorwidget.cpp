@@ -30,8 +30,6 @@ namespace inviwo{
         buildWidget();
         resize(500,700);
 
-        show(); //TODO remove this to not show by default
-
         pythonEditorWidget_ = this;
     }
 
