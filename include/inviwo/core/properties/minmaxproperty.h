@@ -95,7 +95,7 @@ Variant MinMaxProperty<T>::getVariant(){
 template <typename T> 
 void MinMaxProperty<T>::setVariant(const Variant& v){
     if (v.canConvert(getVariantType())) {
-        set(v.get<glm::detail::tvec2<T>>());
+        set(v.get<glm::detail::tvec2<T> >());
     }
 }
 

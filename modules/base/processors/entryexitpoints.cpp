@@ -12,7 +12,7 @@ EntryExitPoints::EntryExitPoints()
     geometryPort_("geometry"),
     entryPort_("entry-points"),
     exitPort_("exit-points"),
-    camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f))
+    camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     addPort(geometryPort_);
     addPort(entryPort_);
