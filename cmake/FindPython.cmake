@@ -8,25 +8,20 @@
 # 
 
 if(WIN32)
-	foreach(_VERSION 2.7 2.6 2.5 2.4)
-		find_path(PYTHON_BASE_DIR 
-			python.exe
-			[HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${_VERSION}\\InstallPath]
-			)
-		
-		if(PYTHON_BASE_DIR)
-			message(STATUS "Tada")
-			set(PYTHON_VERSION ${_VERSION})
-			STRING(REPLACE "." "" PYTHON_VERSION_NO_DOTS ${_VERSION})
-			break()
-		endif(PYTHON_BASE_DIR)
-		
-	endforeach(_VERSION)
+	set(MS_PATHS   
+		[HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\2.7\\InstallPath]
+		[HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\2.6\\InstallPath]
+		[HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\2.5\\InstallPath]
+		[HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\2.4\\InstallPath] )
+		  
+	find_path(PYTHON_BASE_DIR python.exe ${MS_PATHS})
 
-	message(STATUS  ${PYTHON_VERSION_NO_DOTS})
+	set(PYTHON_LIBS python27.lib python26.lib python25.lib python24.lib python.lib)
 
-	find_path(PYTHON_INCLUDE_DIR Python.h ${PYTHON_BASE_DIR}\\include)
-	find_path(PYTHON_LIBRARY_DIR python${PYTHON_VERSION_NO_DOTS}.lib ${PYTHON_BASE_DIR}\\libs)
+	if(PYTHON_BASE_DIR)
+		find_path(PYTHON_INCLUDE_DIR Python.h ${PYTHON_BASE_DIR}\\include)
+		find_path(PYTHON_LIBRARY_DIR NAMES ${PYTHON_LIBS}  PATHS ${PYTHON_BASE_DIR}\\libs)
+	endif(PYTHON_BASE_DIR)
 
 else(WIN32)
 	message(FATAL_ERROR "Python not yet supported for non-windows platforms")
