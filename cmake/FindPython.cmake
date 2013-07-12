@@ -8,14 +8,26 @@
 # 
 
 if(WIN32)
-	find_path( PYTHON_INCLUDE_DIR Python.h
-		C:/Python27/include
-		${PYTHON_BASE_DIR}/include
-		DOC "The directory where Python.h resides")
-	find_path( PYTHON_LIBRARY_DIR python27.lib
-		C:/Python27/libs
-		${PYTHON_BASE_DIR}/libs
-		DOC "The directory where Python27.lib resides")
+	foreach(_VERSION 2.7 2.6 2.5 2.4)
+		find_path(PYTHON_BASE_DIR 
+			python.exe
+			[HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${_VERSION}\\InstallPath]
+			)
+		
+		if(PYTHON_BASE_DIR)
+			message(STATUS "Tada")
+			set(PYTHON_VERSION ${_VERSION})
+			STRING(REPLACE "." "" PYTHON_VERSION_NO_DOTS ${_VERSION})
+			break()
+		endif(PYTHON_BASE_DIR)
+		
+	endforeach(_VERSION)
+
+	message(STATUS  ${PYTHON_VERSION_NO_DOTS})
+
+	find_path(PYTHON_INCLUDE_DIR Python.h ${PYTHON_BASE_DIR}\\include)
+	find_path(PYTHON_LIBRARY_DIR python${PYTHON_VERSION_NO_DOTS}.lib ${PYTHON_BASE_DIR}\\libs)
+
 else(WIN32)
 	message(FATAL_ERROR "Python not yet supported for non-windows platforms")
 endif(WIN32)
@@ -27,6 +39,7 @@ else(PYTHON_INCLUDE_DIR AND PYTHON_LIBRARY_DIR)
 endif(PYTHON_INCLUDE_DIR AND PYTHON_LIBRARY_DIR)
 
 mark_as_advanced(PYTHON_FOUND)
+mark_as_advanced(PYTHON_VERSION)
 mark_as_advanced(PYTHON_INCLUDE_DIR)
 mark_as_advanced(PYTHON_LIBRARY_DIR)
 
@@ -37,5 +50,6 @@ mark_as_advanced(PYTHON_LIBRARY_DIR)
 # Build PYTHON lib
 if(NOT PYTHON_FOUND)
 	set(PYTHON_BASE_DIR CACHE PATH "")
+	message(FATAL_ERROR "No Python found")
 endif(NOT PYTHON_FOUND)
 
