@@ -89,13 +89,13 @@ void MinMaxProperty<T>::setRange(const glm::detail::tvec2<T> &value){
 
 template <typename T> 
 Variant MinMaxProperty<T>::getVariant(){
-    return Variant(range_);
+    return Variant(TemplateProperty<glm::detail::tvec2<T> >::value_);
 }
 
 template <typename T> 
 void MinMaxProperty<T>::setVariant(const Variant& v){
     if (v.canConvert(getVariantType())) {
-        set(v.get<glm::detail::tvec2<T> >());
+        this->set(v.get<glm::detail::tvec2<T> >());
     }
 }
 

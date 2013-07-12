@@ -78,20 +78,19 @@ void OrdinalProperty<T>::setIncrement(const T &value) {
 
 template <typename T>
 Variant OrdinalProperty<T>::getVariant(){
-    return Variant(value_);
+    return Variant(TemplateProperty<T>::value_);
 }
 
 template <typename T>
 void OrdinalProperty<T>::setVariant(const Variant& v){
     if (v.canConvert(getVariantType())) {
-        set(v.get<T>());
+        this->set(v.get<T>());
     }
 }
 
 template <typename T>
 int OrdinalProperty<T>::getVariantType(){
-    Variant v(value_);
-    return v.getType();
+    return getVariant().getType();
 }
 
 

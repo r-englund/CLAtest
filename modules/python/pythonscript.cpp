@@ -38,7 +38,7 @@ bool PythonScript::load(const std::string& filename, bool pCompile) {
         return false;
     }
     
-    std::ifstream file(filename);
+    std::ifstream file(filename.c_str());
   
     if (!file.is_open()){
         LogError("Could not open file: " << filename );

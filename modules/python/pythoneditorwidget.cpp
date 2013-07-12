@@ -149,7 +149,7 @@ namespace inviwo{
             saveAs();
         }else if(unsavedChanges_){
             stopFileObservation(scriptFileName_);
-            std::ofstream file(scriptFileName_);
+            std::ofstream file(scriptFileName_.c_str());
             file << pythonCode_->toPlainText().toLocal8Bit().constData();
             file.close();
             startFileObservation(scriptFileName_);
@@ -160,7 +160,7 @@ namespace inviwo{
     }
 
     void PythonEditorWidget::readFile(){
-        std::ifstream file(scriptFileName_);
+        std::ifstream file(scriptFileName_.c_str());
         
         std::string text((std::istreambuf_iterator<char>(file)),
             std::istreambuf_iterator<char>());
