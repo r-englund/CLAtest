@@ -135,12 +135,30 @@ static PyObject* inviwo_setPropertyValue(PyObject* /*self*/, PyObject* args){
     }
 
     const std::string className = theProperty->getClassName();
-    if(className == "ButtonProperty"){
-        ButtonProperty* button = dynamic_cast<ButtonProperty*>(theProperty);
+    if(className == "CameraProperty"){
+        vec3 from,to,up;
+        float fovy,nearP,farP;
+        char *dummy1,*dummy2;
+        int d1,d2;
+        if(!PyArg_ParseTuple(args,"s#s#((fff)(fff)(fff))", &dummy1,&d1,&dummy2,&d2,
+                                                            &from.x,&from.y,&from.z,
+                                                            &to.x,&to.y,&to.z,
+                                                            &up.x,&up.y,&up.z
+                                                            //,&fovy,&nearP,&farP
+                                                            )){
+            std::string msg = std::string("setPropertyValue() Failed to parse values for camera, needs to be on the format: ((posX,posY,posZ),(focusX,focusy,focusZ),(upX,upY,upZ)) ") + propertyID;
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+        CameraProperty* cam = static_cast<CameraProperty*>(theProperty);
+        cam->setLookFrom(from);
+        cam->setLookTo(to);
+        cam->setLookUp(up);
+
     }else{
         Variant parameterVariant(parameter, theProperty->getVariantType());
-        theProperty->setVariant(parameterVariant);
-        
+        theProperty->setVariant(parameterVariant);        
     }
 
 
@@ -181,10 +199,10 @@ static PyObject* inviwo_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     }
 
     OrdinalProperty<float>* ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
-    OrdinalProperty<int>* ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
+    OrdinalProperty<int>*   ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
     OrdinalProperty<ivec2>* ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
     OrdinalProperty<ivec3>* ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
-    OrdinalProperty<ivec4>*  ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
+    OrdinalProperty<ivec4>* ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
     OrdinalProperty<mat2>*  ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
     OrdinalProperty<mat3>*  ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
     OrdinalProperty<mat4>*  ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
@@ -258,16 +276,16 @@ static PyObject* inviwo_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
     }
 
     OrdinalProperty<float>* ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
-    OrdinalProperty<int>* ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
+    OrdinalProperty<int>*   ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
     OrdinalProperty<ivec2>* ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
     OrdinalProperty<ivec3>* ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
     OrdinalProperty<ivec4>* ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
-    OrdinalProperty<mat2>* ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
-    OrdinalProperty<mat3>* ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
-    OrdinalProperty<mat4>* ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
-    OrdinalProperty<vec2>* ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
-    OrdinalProperty<vec3>* ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
-    OrdinalProperty<vec4>* ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
+    OrdinalProperty<mat2>*  ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
+    OrdinalProperty<mat3>*  ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
+    OrdinalProperty<mat4>*  ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
+    OrdinalProperty<vec2>*  ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
+    OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
+    OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
     Variant parameterVariant(parameter, theProperty->getVariantType());
     if(ordinalFloat){
