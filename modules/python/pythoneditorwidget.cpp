@@ -16,7 +16,11 @@ namespace inviwo{
     }
 
 
-    PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* mainWindow): InviwoDockWidget(tr("Python Editor"),mainWindow), script_(){
+    PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* mainWindow): 
+            InviwoDockWidget(tr("Python Editor"),mainWindow), 
+            script_(),
+            unsavedChanges_(false),
+            needRecompile_(false){
         setObjectName("PythonEditor");
         setAllowedAreas(Qt::AllDockWidgetAreas);
         InviwoApplication::getRef().registerFileObserver(this);
@@ -95,7 +99,6 @@ namespace inviwo{
         pythonCode_ = new QTextEdit(content);
         pythonCode_->setObjectName("pythonEditor");
         
-        codeChanged_ = false;
         setDefaultText();       
 
         pythonOutput_ = new QTextEdit(content);
@@ -137,30 +140,22 @@ namespace inviwo{
         if(ret == 0){//yes
             readFile();
         }else{
-            codeChanged_ = true; //set code change to true so that we can quick save without making more changes
+            unsavedChanges_ = true; //set code change to true so that we can quick save without making more changes
         }
     }
 
     void PythonEditorWidget::save(){
         if(scriptFileName_.size()==0){
             saveAs();
-        }else{
+        }else if(unsavedChanges_){
             stopFileObservation(scriptFileName_);
             std::ofstream file(scriptFileName_);
             file << pythonCode_->toPlainText().toLocal8Bit().constData();
             file.close();
             startFileObservation(scriptFileName_);
-
-            std::string logMsg = "Python Script saved("+scriptFileName_+")";
             LogInfo("Python Script saved("<<scriptFileName_<<")");
 
-            if(codeChanged_){
-                const std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
-                script_.setSource(source);
-                clearOutput();
-                script_.compile();
-            }
-            codeChanged_ = false;
+            unsavedChanges_ = false;
         }
     }
 
@@ -172,7 +167,8 @@ namespace inviwo{
         file.close();
 
         pythonCode_->setText(text.c_str());
-        codeChanged_ = true;
+        unsavedChanges_ = false;
+        needRecompile_ = true;
     }
 
     void PythonEditorWidget::saveAs(){
@@ -198,7 +194,7 @@ namespace inviwo{
     }
 
     void PythonEditorWidget::open(){
-        if(codeChanged_){
+        if(unsavedChanges_){
             int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard","Cancel");
             if(ret == 0)
                 save();
@@ -224,15 +220,16 @@ namespace inviwo{
     }
 
     void PythonEditorWidget::run(){
-        if(codeChanged_){ //save and recompile
-            if(scriptFileName_.size()!=0)
-                save();
+        if(unsavedChanges_ && scriptFileName_.size()!=0) //save if needed
+            save();
+        if(needRecompile_){ //recompile if needed
             const std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
             script_.setSource(source);
             if(!script_.compile()){
                 appendToOutput(script_.getLog());
                 return;
             }
+            needRecompile_ = false;
         }
         clearOutput();
         if(!script_.run()){
@@ -246,7 +243,7 @@ namespace inviwo{
     }
 
     void PythonEditorWidget::setDefaultText(){
-        if(codeChanged_){
+        if(unsavedChanges_){
             int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard Changes","Cancel");
             if(ret == 0)
                 save();
@@ -256,7 +253,8 @@ namespace inviwo{
         pythonCode_->setText("# Inviwo Python script \nimport inviwo \n\ninviwo.info() \n");
         stopFileObservation(scriptFileName_);
         scriptFileName_ = "";
-        codeChanged_ = true;
+        unsavedChanges_ = false;
+        needRecompile_ = true;
     }
 
     void PythonEditorWidget::clearOutput(){
@@ -264,7 +262,8 @@ namespace inviwo{
     }
 
     void PythonEditorWidget::onTextChange(){
-        codeChanged_ = true;
+        unsavedChanges_ = true;
+        needRecompile_ = true;
     }
 
 

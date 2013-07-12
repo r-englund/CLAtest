@@ -31,7 +31,8 @@ private:
     PythonScript script_;
     std::string scriptFileName_;
 
-    bool codeChanged_;
+    bool unsavedChanges_;
+    bool needRecompile_;
     void readFile();
 
 public slots:
