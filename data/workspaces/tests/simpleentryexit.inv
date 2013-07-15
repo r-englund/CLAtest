@@ -10,27 +10,27 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="undefined" identifier="clipX" displayName="Clip X Slices">
+                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices">
                     <value x="29" y="109" />
                     <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
-                <Property type="undefined" identifier="clipY" displayName="Clip Y Slices">
+                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices">
                     <value x="0" y="128" />
                     <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
-                <Property type="undefined" identifier="clipZ" displayName="Clip Z Slices">
+                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices">
                     <value x="0" y="128" />
                     <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
-                <Property type="undefined" identifier="clippingEnabled" displayName="Enable Clipping">
+                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping">
                     <value content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-625" />
@@ -38,12 +38,56 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="undefined" identifier="volumeFileName" displayName="Volume file name">
+                <Property type="FileProperty" identifier="volumeFileName" displayName="Volume file name">
                     <url content="../../volumes/hydrogenatom.dat" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref2">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref3">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-725" y="-400" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="403" y="655" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="128" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
+            </Properties>
+        </Processor>
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref4">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-525" y="-400" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="714" y="654" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="128" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
+            </Properties>
+        </Processor>
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-475" />
@@ -84,22 +128,22 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="undefined" identifier="camera" displayName="Camera">
-                    <lookFrom type="undefined" identifier="lookFrom" displayName="Look from">
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="0" y="0" z="0" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera">
+                    <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
+                        <value x="0" y="0" z="4" />
+                        <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
-                    <lookTo type="undefined" identifier="lookTo" displayName="Look to">
-                        <value x="0" y="0" z="-5.6627131" />
-                        <minvalue x="0" y="0" z="0" />
+                    <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
+                        <value x="0" y="0" z="0" />
+                        <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
-                    <lookUp type="undefined" identifier="lookUp" displayName="Look up">
+                    <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <value x="0" y="1" z="0" />
-                        <minvalue x="0" y="0" z="0" />
+                        <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookUp>
@@ -130,66 +174,14 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref3">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-725" y="-400" />
-                    <visibility content="1" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="395" y="625" />
-                    <dimension x="256" y="256" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property type="undefined" identifier="snapshot" displayName="Create Snapshot" />
-            </Properties>
-        </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref4">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-525" y="-400" />
-                    <visibility content="1" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="706" y="624" />
-                    <dimension x="256" y="256" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="undefined" identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property type="undefined" identifier="snapshot" displayName="Create Snapshot" />
-            </Properties>
-        </Processor>
     </Processors>
     <Connections>
         <Connection>
-            <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+            <OutPort identifier="volume">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref4" />
+            <InPort identifier="volume.inport">
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
@@ -197,15 +189,23 @@
                 <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+            <OutPort identifier="entry-points">
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </OutPort>
-            <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
+            <InPort identifier="inport">
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref3" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="exit-points">
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref4" />
             </InPort>
         </Connection>
     </Connections>
