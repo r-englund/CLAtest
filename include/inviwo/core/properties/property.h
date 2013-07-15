@@ -47,6 +47,7 @@ public:
     void setValid();
 
     void setVisible(bool visible) { visible_ = visible; };
+    bool getVisible(){ return visible_; };
 
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);

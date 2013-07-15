@@ -46,6 +46,11 @@ namespace inviwo {
 PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
 
 PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
+    
+    //Check if the property is visible
+    if (!property->getVisible()) {
+        return 0;
+    }
 
     if (property->getSemantics()!=PropertySemantics::Default){
         if (dynamic_cast<FloatVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {

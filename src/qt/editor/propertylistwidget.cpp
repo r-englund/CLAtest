@@ -94,7 +94,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
     std::vector<Property*> addedProperties;
     for (size_t i=0; i<properties.size(); i++) {
         Property* curProperty = properties[i];
-        //Check if the property is already added 
+        //Check if the property is already added
         if(std::find(addedProperties.begin(),addedProperties.end(),curProperty) != addedProperties.end()) {
             continue;
         }
