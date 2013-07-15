@@ -2,10 +2,11 @@
 
 #include <inviwo/core/util/logdistributor.h>
 
-#include <Qt\qcommandlinkbutton.h>
-#include <Qt\qsplitter.h>
-#include <Qt\qfiledialog.h>
-#include <Qt\qmessagebox.h>
+#include <QCommandLinkButton>
+#include <QSplitter>
+#include <QFileDialog>
+#include <QMessageBox>
+
 
 namespace inviwo{
 

@@ -53,7 +53,7 @@ FIND_PATH(OPENCL_INCLUDE_DIR
           
 	
 # Add quotes to paths to make sure it works on windows (at least Visual Studio complains)
-string(REPLACE " " "\\ " OPENCL_LIBRARIES ${OPENCL_LIBRARIES})
+#string(REPLACE " " "\\ " OPENCL_LIBRARIES ${OPENCL_LIBRARIES})
 	
 
 
