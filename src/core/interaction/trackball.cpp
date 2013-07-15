@@ -150,9 +150,9 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
             rotationAxis = glm::normalize(rotationAxis);                
             quat quaternion = glm::angleAxis(rotationAngle, rotationAxis);
             lookLength = glm::length(camera_->getLookFrom()-camera_->getLookTo());
-            vec3 offset = camera_->getLookFrom();
+            vec3 offset = camera_->getLookTo();
             vec3 rotation = glm::rotate(quaternion, offset);
-            //camera_->setLookFrom(rotation);
+            camera_->setLookTo(rotation);
             camera_->setLookFrom(glm::rotate(quaternion, camera_->getLookFrom()));
             camera_->setLookUp(glm::rotate(quaternion, camera_->getLookUp()));
 
