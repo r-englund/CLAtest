@@ -22,6 +22,7 @@ public:
     static PythonEditorWidget* getPythonEditorWidget();
     void appendToOutput(std::string msg);
     virtual void fileChanged(std::string fileName);
+    void loadFile(std::string fileName,bool askForSave = true);
 private:
     void buildWidget();
 

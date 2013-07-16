@@ -29,6 +29,12 @@ void CommandLineParser::initialize() {
             false,
             "",
             "Output path");
+        pythonScriptArg_ = new TCLAP::ValueArg<std::string>("p",
+                                                            "pythonScript",
+                                                            "Specify a python script to run at startup",
+                                                            false,
+                                                            "",
+                                                            "Path to the file containing the script");
         snapshotArg_ = new TCLAP::ValueArg<std::string>("s",
             "snapshot",
             "Specify default name of each snapshot, or empty string for processor name",
@@ -39,6 +45,7 @@ void CommandLineParser::initialize() {
             "Pass this flag if you want to close inviwo after startup.");
         
         cmd_->add(*workspaceValueArg_);
+        cmd_->add(*pythonScriptArg_);
         cmd_->add(*outputValueArg_);
         cmd_->add(*snapshotArg_);
         cmd_->add(*quitValueArg_);
@@ -81,6 +88,19 @@ const std::string CommandLineParser::getSnapshotName() const{
         return (snapshotArg_->getValue());
     }
     return "";
+}
+
+
+bool CommandLineParser::getRunPythonScriptAfterStartup() const{
+    return pythonScriptArg_->isSet();
+}
+
+const std::string CommandLineParser::getPythonScirptName() const{
+    if(pythonScriptArg_->isSet()){
+        return (pythonScriptArg_->getValue());
+    }
+    return "";
+        
 }
 
 bool CommandLineParser::getQuitApplicationAfterStartup() const{

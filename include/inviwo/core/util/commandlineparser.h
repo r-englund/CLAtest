@@ -45,6 +45,8 @@ public:
     const std::string getWorkspacePath() const;
     bool getCaptureAfterStartup() const;
     const std::string getSnapshotName() const;
+    bool getRunPythonScriptAfterStartup() const;
+    const std::string getPythonScirptName() const;
     bool getQuitApplicationAfterStartup() const;
     bool getLoadWorkspaceFromArg() const;
     // TODO: No need to serialize the parser, right?
@@ -59,6 +61,7 @@ private:
     TCLAP::ValueArg<std::string> *workspaceValueArg_;
     TCLAP::ValueArg<std::string> *outputValueArg_;
     TCLAP::ValueArg<std::string> *snapshotArg_;
+    TCLAP::ValueArg<std::string> *pythonScriptArg_;
     TCLAP::SwitchArg *quitValueArg_;
     std::string workspaceName_;
 

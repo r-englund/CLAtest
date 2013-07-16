@@ -21,6 +21,10 @@
 
 #include <inviwo/core/util/commandlineparser.h>
 
+#ifdef IVW_HAS_PYTHON
+#include <modules/python/pythoneditorwidget.h>
+#endif
+
 namespace inviwo { 
 
 InviwoMainWindow::InviwoMainWindow() : VoidObserver() {
@@ -117,6 +121,15 @@ void InviwoMainWindow::notify() {
 
 bool InviwoMainWindow::processEndCommandLineArgs(){
     const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
+
+#ifdef IVW_HAS_PYTHON
+    if(cmdparser->getRunPythonScriptAfterStartup()){
+        PythonEditorWidget *py = PythonEditorWidget::getPythonEditorWidget();
+        py->show();
+        py->loadFile(cmdparser->getPythonScirptName(),false);
+        py->run();
+    }
+#endif
     if (cmdparser->getCaptureAfterStartup()){
         ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
         networkEvaluator->evaluate();

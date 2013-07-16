@@ -145,6 +145,18 @@ namespace inviwo{
         }
     }
 
+    void PythonEditorWidget::loadFile(std::string fileName,bool askForSave){
+        if(askForSave && unsavedChanges_){
+            int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard","Cancel");
+            if(ret == 0)
+                save();
+            if(ret == 2) //Cancel
+                return;
+        }
+        scriptFileName_ = fileName;
+        readFile();
+    }
+
     void PythonEditorWidget::save(){
         if(scriptFileName_.size()==0){
             saveAs();
