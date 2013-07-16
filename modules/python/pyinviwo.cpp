@@ -13,7 +13,7 @@
 
 #include <modules/opengl/canvasprocessorgl.h>
 
-#include <inviwo/core/util/variant.h>
+#include "pyvariant.h"
 
 using namespace inviwo;
 
@@ -137,7 +137,7 @@ static PyObject* inviwo_setPropertyValue(PyObject* /*self*/, PyObject* args){
     const std::string className = theProperty->getClassName();
     if(className == "CameraProperty"){
         vec3 from,to,up;
-        float fovy,nearP,farP;
+        //float fovy,nearP,farP;
         char *dummy1,*dummy2;
         int d1,d2;
         if(!PyArg_ParseTuple(args,"s#s#((fff)(fff)(fff))", &dummy1,&d1,&dummy2,&d2,
@@ -157,12 +157,183 @@ static PyObject* inviwo_setPropertyValue(PyObject* /*self*/, PyObject* args){
         cam->setLookUp(up);
 
     }else{
-        Variant parameterVariant(parameter, theProperty->getVariantType());
+        PyVariant parameterVariant(parameter, theProperty->getVariantType());
         theProperty->setVariant(parameterVariant);        
     }
 
 
     Py_RETURN_NONE;
+}
+
+
+static PyObject* inviwo_setCameraPosition(PyObject* /*self*/, PyObject* args){
+    if (PyTuple_Size(args) != 3) {
+        std::ostringstream errStr;
+        errStr << "setCameraPosition() takes exactly 3 arguments: processor name, property id, value";
+        errStr << " (" << PyTuple_Size(args) << " given)";
+        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+        return 0;
+    }
+
+    // check parameter 1 and 2, if they are strings
+    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
+        PyErr_SetString(PyExc_TypeError, "setCameraPosition() arguments 1 and 2 must be strings");
+        return 0;
+    }
+
+    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    PyObject* parameter = PyTuple_GetItem(args, 2);
+
+    Processor* processor = getProcessor(processorName);
+    if(!processor){
+        std::string msg = std::string("setCameraPosition() no processor with name: ") + processorName;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+    if(!theProperty){
+        std::string msg = std::string("setCameraPosition() no property with id: ") + propertyID;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    const std::string className = theProperty->getClassName();
+    if(className == "CameraProperty"){
+        vec3 from;
+        char *dummy1,*dummy2;
+        int d1,d2;
+        if(!PyArg_ParseTuple(args,"s#s#(fff)", &dummy1,&d1,&dummy2,&d2,
+            &from.x,&from.y,&from.z
+            )){
+                std::string msg = std::string("setPropertyValue() Failed to parse values for camera, needs to be on the format: (posX,posY,posZ) ") + propertyID;
+                PyErr_SetString(PyExc_TypeError, msg.c_str());
+                return 0;
+        }
+
+        CameraProperty* cam = static_cast<CameraProperty*>(theProperty);
+        cam->setLookFrom(from);
+        Py_RETURN_NONE;
+    }else{
+        std::string msg = std::string("setCameraPosition() not a cmera property: ") + className;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+}
+
+
+
+static PyObject* inviwo_setCameraFocus(PyObject* /*self*/, PyObject* args){
+    if (PyTuple_Size(args) != 3) {
+        std::ostringstream errStr;
+        errStr << "setCameraFocus() takes exactly 3 arguments: processor name, property id, value";
+        errStr << " (" << PyTuple_Size(args) << " given)";
+        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+        return 0;
+    }
+
+    // check parameter 1 and 2, if they are strings
+    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
+        PyErr_SetString(PyExc_TypeError, "setCameraFocus() arguments 1 and 2 must be strings");
+        return 0;
+    }
+
+    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    PyObject* parameter = PyTuple_GetItem(args, 2);
+
+    Processor* processor = getProcessor(processorName);
+    if(!processor){
+        std::string msg = std::string("setCameraFocus() no processor with name: ") + processorName;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+    if(!theProperty){
+        std::string msg = std::string("setCameraFocus() no property with id: ") + propertyID;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    const std::string className = theProperty->getClassName();
+    if(className == "CameraProperty"){
+        vec3 focus;
+        char *dummy1,*dummy2;
+        int d1,d2;
+        if(!PyArg_ParseTuple(args,"s#s#(fff)", &dummy1,&d1,&dummy2,&d2,
+            &focus.x,&focus.y,&focus.z
+            )){
+                std::string msg = std::string("setCameraFocus() Failed to parse values for camera, needs to be on the format: (posX,posY,posZ) ") + propertyID;
+                PyErr_SetString(PyExc_TypeError, msg.c_str());
+                return 0;
+        }
+
+        CameraProperty* cam = static_cast<CameraProperty*>(theProperty);
+        cam->setLookTo(focus);
+        Py_RETURN_NONE;
+    }else{
+        std::string msg = std::string("setCameraFocus() not a cmera property: ") + className;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+}
+
+static PyObject* inviwo_setCameraUp(PyObject* /*self*/, PyObject* args){
+    if (PyTuple_Size(args) != 3) {
+        std::ostringstream errStr;
+        errStr << "setCameraUp() takes exactly 3 arguments: processor name, property id, value";
+        errStr << " (" << PyTuple_Size(args) << " given)";
+        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+        return 0;
+    }
+
+    // check parameter 1 and 2, if they are strings
+    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
+        PyErr_SetString(PyExc_TypeError, "setCameraUp() arguments 1 and 2 must be strings");
+        return 0;
+    }
+
+    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    PyObject* parameter = PyTuple_GetItem(args, 2);
+
+    Processor* processor = getProcessor(processorName);
+    if(!processor){
+        std::string msg = std::string("setCameraUp() no processor with name: ") + processorName;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+    if(!theProperty){
+        std::string msg = std::string("setCameraUp() no property with id: ") + propertyID;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    const std::string className = theProperty->getClassName();
+    if(className == "CameraProperty"){
+        vec3 up;
+        char *dummy1,*dummy2;
+        int d1,d2;
+        if(!PyArg_ParseTuple(args,"s#s#(fff)", &dummy1,&d1,&dummy2,&d2,
+            &up.x,&up.y,&up.z
+            )){
+                std::string msg = std::string("setCameraUp() Failed to parse values for camera, needs to be on the format: (dirX,dirY,dirZ) ") + propertyID;
+                PyErr_SetString(PyExc_TypeError, msg.c_str());
+                return 0;
+        }
+
+        CameraProperty* cam = static_cast<CameraProperty*>(theProperty);
+        cam->setLookUp(up);
+        Py_RETURN_NONE;
+    }else{
+        std::string msg = std::string("setCameraUp() not a cmera property: ") + className;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
 }
 
 static PyObject* inviwo_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
@@ -210,7 +381,7 @@ static PyObject* inviwo_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
     OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
-    Variant parameterVariant(parameter, theProperty->getVariantType());
+    PyVariant parameterVariant(parameter, theProperty->getVariantType());
     if(ordinalFloat){
         ordinalFloat->setMaxValue(parameterVariant.getFloat());
     }else if(ordinalInt){
@@ -287,7 +458,7 @@ static PyObject* inviwo_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
     OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
     OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
-    Variant parameterVariant(parameter, theProperty->getVariantType());
+    PyVariant parameterVariant(parameter, theProperty->getVariantType());
     if(ordinalFloat){
         ordinalFloat->setMinValue(parameterVariant.getFloat());
     }else if(ordinalInt){
@@ -312,6 +483,257 @@ static PyObject* inviwo_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
         ordinalVec4->setMinValue(parameterVariant.getVec4());
     }else{
         LogErrorCustom("inviwo_setPropertyMinValue","Unknown parameter type" );
+    }
+
+    Py_RETURN_NONE;
+}
+
+
+
+
+static PyObject* inviwo_getPropertyValue(PyObject* /*self*/, PyObject* args){
+    if (PyTuple_Size(args) != 2) {
+        std::ostringstream errStr;
+        errStr << "getPropertyValue() takes exactly 2 arguments: processor name, property id";
+        errStr << " (" << PyTuple_Size(args) << " given)";
+        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+        return 0;
+    }
+
+    // check parameter 1 and 2, if they are strings
+    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
+        PyErr_SetString(PyExc_TypeError, "getPropertyValue() arguments 1 and 2 must be strings");
+        return 0;
+    }
+
+    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    
+    Processor* processor = getProcessor(processorName);
+    if(!processor){
+        std::string msg = std::string("getPropertyValue() no processor with name: ") + processorName;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+    if(!theProperty){
+        std::string msg = std::string("getPropertyValue() no property with id: ") + propertyID;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    CameraProperty *cam = dynamic_cast<CameraProperty*>(theProperty);
+    if(cam){
+        const vec3 &eye = cam->getLookFrom();
+        const vec3 &focus = cam->getLookTo();
+        const vec3 &up = cam->getLookUp();
+        return Py_BuildValue("((fff)(fff)(fff))",eye.x,eye.y,eye.z,focus.x,focus.y,focus.z,up.x,up.y,up.z);
+    }else{
+
+        try{
+            PyVariant variant(theProperty->getVariant());
+            if(variant.isValid())
+                return variant.getAsPythonObject();
+            else{
+                LogWarnCustom("inviwo_getPropertyValue", "getPropertyValue() reading from property of unsupported type: " << theProperty->getClassName());
+                Py_RETURN_NONE;
+            }
+        }catch (...) {
+            LogErrorCustom("inviwo_getPropertyValue","Could not convert property to a variant");
+            return 0;
+        }
+    }
+    Py_RETURN_NONE;
+}
+
+static PyObject* inviwo_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
+    if (PyTuple_Size(args) != 2) {
+        std::ostringstream errStr;
+        errStr << "getPropertyMaxValue() takes exactly 2 arguments: processor name, property id";
+        errStr << " (" << PyTuple_Size(args) << " given)";
+        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+        return 0;
+    }
+
+    // check parameter 1 and 2, if they are strings
+    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
+        PyErr_SetString(PyExc_TypeError, "getPropertyMaxValue() arguments 1 and 2 must be strings");
+        return 0;
+    }
+
+    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+
+    Processor* processor = getProcessor(processorName);
+    if(!processor){
+        std::string msg = std::string("getPropertyMaxValue() no processor with name: ") + processorName;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+    if(!theProperty){
+        std::string msg = std::string("getPropertyMaxValue() no property with id: ") + propertyID;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    OrdinalProperty<float>* ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
+    OrdinalProperty<int>*   ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
+    OrdinalProperty<ivec2>* ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
+    OrdinalProperty<ivec3>* ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
+    OrdinalProperty<ivec4>* ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
+    OrdinalProperty<mat2>*  ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
+    OrdinalProperty<mat3>*  ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
+    OrdinalProperty<mat4>*  ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
+    OrdinalProperty<vec2>*  ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
+    OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
+    OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
+
+    if(ordinalFloat){
+        PyVariant v(ordinalFloat->getVariantType());
+        v.setFloat(ordinalFloat->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalInt){
+        PyVariant v(ordinalInt->getVariantType());
+        v.setInt(ordinalInt->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalIvec2){
+        PyVariant v(ordinalIvec2->getVariantType());
+        v.setIVec2(ordinalIvec2->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalIvec3){
+        PyVariant v(ordinalIvec3->getVariantType());
+        v.setIVec3(ordinalIvec3->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalIvec4){
+        PyVariant v(ordinalIvec4->getVariantType());
+        v.setIVec4(ordinalIvec4->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalMat2){
+        PyVariant v(ordinalMat2->getVariantType());
+        v.setMat2(ordinalMat2->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalMat3){
+        PyVariant v(ordinalMat3->getVariantType());
+        v.setMat3(ordinalMat3->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalMat4){
+        PyVariant v(ordinalMat4->getVariantType());
+        v.setMat4(ordinalMat4->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalVec2){
+        PyVariant v(ordinalVec2->getVariantType());
+        v.setVec2(ordinalVec2->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalVec3){
+        PyVariant v(ordinalVec3->getVariantType());
+        v.setVec3(ordinalVec3->getMaxValue());
+        return v.getAsPythonObject();
+    }else if(ordinalVec4){
+        PyVariant v(ordinalVec4->getVariantType());
+        v.setVec4(ordinalVec4->getMaxValue());
+        return v.getAsPythonObject();
+    }else{
+        LogErrorCustom("inviwo_getPropertyMaxValue","Unknown parameter type");
+    }
+
+    Py_RETURN_NONE;
+}
+
+
+
+static PyObject* inviwo_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
+    if (PyTuple_Size(args) != 2) {
+        std::ostringstream errStr;
+        errStr << "getPropertyMinValue() takes exactly 2 arguments: processor name, property id";
+        errStr << " (" << PyTuple_Size(args) << " given)";
+        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+        return 0;
+    }
+
+    // check parameter 1 and 2, if they are strings
+    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
+        PyErr_SetString(PyExc_TypeError, "getPropertyMinValue() arguments 1 and 2 must be strings");
+        return 0;
+    }
+
+    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+
+    Processor* processor = getProcessor(processorName);
+    if(!processor){
+        std::string msg = std::string("getPropertyMinValue() no processor with name: ") + processorName;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+    if(!theProperty){
+        std::string msg = std::string("getPropertyMinValue() no property with id: ") + propertyID;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    OrdinalProperty<float>* ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
+    OrdinalProperty<int>*   ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
+    OrdinalProperty<ivec2>* ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
+    OrdinalProperty<ivec3>* ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
+    OrdinalProperty<ivec4>* ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
+    OrdinalProperty<mat2>*  ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
+    OrdinalProperty<mat3>*  ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
+    OrdinalProperty<mat4>*  ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
+    OrdinalProperty<vec2>*  ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
+    OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
+    OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
+
+    if(ordinalFloat){
+        PyVariant v(ordinalFloat->getVariantType());
+        v.setFloat(ordinalFloat->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalInt){
+        PyVariant v(ordinalInt->getVariantType());
+        v.setInt(ordinalInt->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalIvec2){
+        PyVariant v(ordinalIvec2->getVariantType());
+        v.setIVec2(ordinalIvec2->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalIvec3){
+        PyVariant v(ordinalIvec3->getVariantType());
+        v.setIVec3(ordinalIvec3->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalIvec4){
+        PyVariant v(ordinalIvec4->getVariantType());
+        v.setIVec4(ordinalIvec4->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalMat2){
+        PyVariant v(ordinalMat2->getVariantType());
+        v.setMat2(ordinalMat2->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalMat3){
+        PyVariant v(ordinalMat3->getVariantType());
+        v.setMat3(ordinalMat3->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalMat4){
+        PyVariant v(ordinalMat4->getVariantType());
+        v.setMat4(ordinalMat4->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalVec2){
+        PyVariant v(ordinalVec2->getVariantType());
+        v.setVec2(ordinalVec2->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalVec3){
+        PyVariant v(ordinalVec3->getVariantType());
+        v.setVec3(ordinalVec3->getMinValue());
+        return v.getAsPythonObject();
+    }else if(ordinalVec4){
+        PyVariant v(ordinalVec4->getVariantType());
+        v.setVec4(ordinalVec4->getMinValue());
+        return v.getAsPythonObject();
+    }else{
+        LogErrorCustom("inviwo_getPropertyMinValue","Unknown parameter type");
     }
 
     Py_RETURN_NONE;
@@ -488,10 +910,6 @@ static PyObject* inviwo_setViewport(PyObject* /*self*/, PyObject* args){
 }
 
 
-static PyObject* ricen76_test(PyObject* /*self*/, PyObject* args){
-    Py_RETURN_NONE;
-}
-
 static PyObject* inviwo_redrawOrRenderOrWhatever(PyObject* /*self*/, PyObject* /*args*/){
     InviwoApplicationQt* qtApp = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     if(qtApp){
@@ -518,6 +936,24 @@ static PyMethodDef inviwo_methods[] = {
             "setPropertyValue(processor name, property id, scalar or tuple). Assigns a value to a processor property. The value has to be passed as scalar or tuple, depending on the property's cardinality. Camera properties take a 3-tuple of 3-tuples, containing the position, focus and up vectors. Option properties expect an option key."
     },
     {
+        "setCameraPosition",
+            inviwo_setCameraPosition,
+            METH_VARARGS,
+            "setCameraPosition(processor name, property id, tuple). Function to set the cameras position."
+    },
+    {
+        "setCameraFocus",
+            inviwo_setCameraFocus,
+            METH_VARARGS,
+            "setCameraFocus(processor name, property id, tuple). Function to set the cameras focal point"
+    },
+    {
+        "setCameraUp",
+            inviwo_setCameraUp,
+            METH_VARARGS,
+            "setCameraUpDirection(processor name, property id, tuple). Function to set the cameras up direction"
+    },
+    {
         "setPropertyMaxValue",
             inviwo_setPropertyMaxValue,
             METH_VARARGS,
@@ -528,6 +964,24 @@ static PyMethodDef inviwo_methods[] = {
             inviwo_setPropertyMinValue,
             METH_VARARGS,
             "setPropertyMinValue(processor name, property id, scalar or tuple). Defines the min value for a property."
+    },
+    {
+        "getPropertyValue",
+            inviwo_getPropertyValue,
+            METH_VARARGS,
+            "setPropertyValue(processor name, property id).Returns the current value of a processor property (scalar or tuple)."
+    },
+    {
+        "getPropertyMaxValue",
+            inviwo_getPropertyMaxValue,
+            METH_VARARGS,
+            "setPropertyValue(processor name, property id). Returns the max value for a property (scalar or tuple)."
+    },
+    {
+        "getPropertyMinValue",
+            inviwo_getPropertyMinValue,
+            METH_VARARGS,
+            "setPropertyMinValue(processor name, property id). Returns the min value for a property (scalar or tuple)."
     },
     {
         "listProperties",
@@ -565,12 +1019,6 @@ static PyMethodDef inviwo_methods[] = {
             METH_VARARGS,
             "setViewport(width,height). Resizes all the canvases in the network to the given size."
     },
-    // {
-        // "test",
-            // ricen76_test,
-            // METH_VARARGS,
-            // "test(). This should be removed"
-    // },
     { NULL, NULL, 0, NULL} // sentinal
 };
 

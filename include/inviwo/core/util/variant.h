@@ -8,10 +8,6 @@
 #include <vector>
 #include <string>
 
-#ifdef IVW_PYTHON
-#include <modules/python/pythonscript.h>
-#endif
-
 namespace inviwo {
 
 class IVW_CORE_API Variant : public IvwSerializable {
@@ -62,11 +58,7 @@ public:
     explicit Variant(const mat2& value) ;
     explicit Variant(const mat3& value) ;
     explicit Variant(const mat4& value) ;    
-
-#ifdef IVW_PYTHON
-    explicit Variant(PyObject *obj, VariantType type);
-    explicit Variant(PyObject *obj, int type);
-#endif IVW_PYTHON
+    explicit Variant(const VariantType &type);
 
     Variant deepCopy() const;
     ~Variant();
@@ -122,10 +114,6 @@ public:
     void setMat3(const mat3& value);
     void setMat4(const mat4& value);  
 
-#ifdef IVW_PYTHON
-    void setPython(PyObject *obj, VariantType type);
-#endif IVW_PYTHON
-
     template<class T>
     inline void set(const T& value, VariantType type);
 
@@ -161,7 +149,7 @@ public:
     bool operator==(const Variant& rhs) const;
     bool operator!=(const Variant& rhs) const;
 
-private:    
+protected:
     void deleteValue();
     template<class T>
     const std::string toString(const T& value) const;

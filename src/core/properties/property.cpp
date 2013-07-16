@@ -72,7 +72,7 @@ bool Property::isValid() {
 }
 
 Variant Property::getVariant() {
-    return Variant(0);
+    return Variant(getVariantType());
 }
 
 void Property::setVariant(const Variant&) {}

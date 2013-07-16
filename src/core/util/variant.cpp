@@ -255,6 +255,9 @@ Variant::Variant(const mat4& value) : value_(0), currentType_(VariantTypeMat4) {
     set<mat4>(value, VariantTypeMat4);
 }
 
+Variant::Variant(const VariantType& type) : value_(0), currentType_(type) {
+}
+
 Variant Variant::deepCopy() const {
     switch (currentType_) { 
         case VariantTypeInvalid:
