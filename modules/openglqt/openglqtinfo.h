@@ -3,6 +3,7 @@
 
 #include <modules/openglqt/openglqtmoduledefine.h>
 #include <inviwo/core/util/resourceinfo.h>
+#include <modules/opengl/openglinfo.h>
 
 namespace inviwo {
 
@@ -13,6 +14,7 @@ public:
     void printInfo();
     virtual void retrieveStaticInfo() {};
     virtual void retrieveDynamicInfo() {};
+    std::vector<int> getGLVersion();
 };
 
 } // namespace

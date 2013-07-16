@@ -4,6 +4,18 @@ namespace inviwo {
 
 QGLWidget* CanvasQt::sharedWidget_ = 0;
 
+CanvasQt::CanvasQt(QWidget* parent, QGLFormat glFormat)
+    : QGLWidget(glFormat, parent, sharedWidget_),
+    CanvasGL(uvec2(256,256))
+{ 
+    if (!sharedWidget_){
+        sharedWidget_ = this;
+        QGLWidget::glInit();
+        //LogInfo("GL Major: "<< format().majorVersion() <<" GL Minor: "<< format().minorVersion());     
+    }
+
+}
+
 CanvasQt::CanvasQt(QWidget* parent)
 : QGLWidget(QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
   CanvasGL(uvec2(256,256))

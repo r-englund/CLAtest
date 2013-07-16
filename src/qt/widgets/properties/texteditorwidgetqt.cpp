@@ -152,8 +152,7 @@ void TextEditorWidgetQt::loadString(){
     tmpPropertyValue_ = static_cast<StringProperty*>(property_)->get();
     textEditorWidget_->textEditor_->setPlainText(QString::fromStdString(tmpPropertyValue_));
 }
-bool TextEditorWidgetQt::writeToString()
-{
+bool TextEditorWidgetQt::writeToString() {
     static_cast<StringProperty*>(property_)->set(textEditorWidget_->textEditor_->toPlainText().toLocal8Bit().constData());
     stringWidget_->updateFromProperty();
     return true;
@@ -181,7 +180,14 @@ bool TextEditorWidgetQt::saveDialog(){
 
 
 
-void TextEditorWidgetQt::updateFromProperty() {}
+void TextEditorWidgetQt::updateFromProperty() {
+    StringProperty* stringProp = dynamic_cast<StringProperty*>(property_);
+    FileProperty* fileProp = dynamic_cast<FileProperty*>(property_);
+    if (stringProp)
+       stringWidget_->updateFromProperty();
+    else if (fileProp)
+        fileWidget_->updateFromProperty();
+}
 
 
 
