@@ -69,5 +69,7 @@ ivw_add_dependencies(${package_list})
 ivw_compile_optimize_inviwo_core()
 
 if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_use_modules(inviwo Widgets Gui OpenGL Multimedia)    
+    qt5_use_modules(inviwo Widgets Gui OpenGL Multimedia Network Script)    
+else()
+    qt4_use_modules(inviwo Core Gui Network Script)    
 endif()
