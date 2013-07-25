@@ -88,6 +88,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
@@ -224,6 +225,7 @@ set(SOURCE_FILES
     properties/compositeproperty.cpp
     properties/eventproperty.cpp
     properties/fileproperty.cpp
+    properties/imageeditorproperty.cpp
     properties/matrixproperties.cpp
     properties/optionproperties.cpp
     properties/property.cpp

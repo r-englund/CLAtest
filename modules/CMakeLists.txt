@@ -15,6 +15,11 @@ endif()
 
 if(IVW_MODULE_OPENGLQT)
     set(QT_USE_QTOPENGL TRUE)    
+endif()
+
+if(IVW_MODULE_HUMANCOMPUTATIONENGINE)
+    set(QT_USE_QTNETWORK TRUE)
+    set(QT_USE_QTSCRIPT TRUE)
 endif()	
 
 #Add modules based on user config file and dependcy resolve

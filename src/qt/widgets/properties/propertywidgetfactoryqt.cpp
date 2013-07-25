@@ -6,6 +6,7 @@
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/imageeditorproperty.h>
 #include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
@@ -38,6 +39,7 @@
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
+#include <inviwo/qt/widgets/properties/imageeditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 
 
@@ -57,7 +59,10 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
             return new ColorPropertyWidgetQt(static_cast<FloatVec4Property*>(property));
         }
         if (dynamic_cast<FileProperty*>(property)&& property->getSemantics() == PropertySemantics::Editor) {
-            return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
+             if (dynamic_cast<ImageEditorProperty*>(property))
+                 return new ImageEditorWidgetQt(static_cast<FileProperty*>(property));
+             else
+                return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
         }
         if (dynamic_cast<IntVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {
             return new ColorPropertyWidgetQt(static_cast<IntVec4Property*>(property));
