@@ -1,5 +1,5 @@
 # Interactive Visualization Workshop (Inviwo)
-cmake_minimum_required(VERSION 2.8.4)
+cmake_minimum_required(VERSION 2.8.10)
 project(inviwo-projects)
 set(IVW_VERSION 0.1)
 include(cmake/globalconfig.cmake)
