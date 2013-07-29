@@ -177,7 +177,9 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
         #ifdef WIN32
             Sleep(400);
         #endif
-        prog = std::string(std::istreambuf_iterator<char>(std::ifstream(fileName.c_str())), (std::istreambuf_iterator<char>()));
+        std::ifstream srcFile(fileName.c_str());
+        std::string srcPrg(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+        prog = srcPrg;
     }
     cl::Program::Sources source( 1, std::make_pair(prog.c_str(), prog.length()+1));
     cl::Program program(context, source);
