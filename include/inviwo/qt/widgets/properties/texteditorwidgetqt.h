@@ -3,6 +3,7 @@
 
 //QT includes
 #include <QFile>
+#include <QFileInfo>
 #include <QCheckBox>
 #include <QGridLayout>
 #include <QLineEdit>
@@ -30,6 +31,7 @@
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/htmleditorwidgetqt.h>
 
 //Inviwo
 #include <inviwo/core/common/inviwoapplication.h>
@@ -84,6 +86,7 @@ private:
     Property* property_;
     QFile* file_;
     ModifiedWidget* textEditorWidget_;
+    HtmlEditorWidgetQt* htmlEditorWidget_;
     StringPropertyWidgetQt* stringWidget_;
     std::string tmpPropertyValue_;
     QCheckBox* checkBox_;

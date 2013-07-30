@@ -299,13 +299,13 @@ QSplitter::handle:horizontal {
 	margin-bottom: -2px;
 }
 
-QSplitter QFrame#pythonEditor{
+QSplitter QFrame#pythonEditor, QFrame#htmlEditor, QTreeWidget#htmlTree {
 	font-family: "Calibra";
     background-color: #888888;
     color: #111111;
 }
 
-QSplitter QFrame#pythonConsole{
+QSplitter QFrame#pythonConsole, QFrame#htmlEditorOutput{
 	font-family: "Calibra";
     color: #999999;
     background-color: #4d4d4d;

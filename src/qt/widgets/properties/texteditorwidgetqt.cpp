@@ -89,8 +89,12 @@ void TextEditorWidgetQt::generateWidget() {
     hLayout->addWidget(btnEdit_);
     setLayout(hLayout);
     hLayout->setContentsMargins(QMargins(0,0,0,0));
+
     textEditorWidget_= new ModifiedWidget();
     textEditorWidget_->setParent(this);
+
+    htmlEditorWidget_ = new HtmlEditorWidgetQt();
+    htmlEditorWidget_->setParent(this);
 }
 
 void TextEditorWidgetQt::setPropertyValue() {}
@@ -116,17 +120,37 @@ void TextEditorWidgetQt::editFile(){
         }
         connect(textEditorWidget_->saveButton_, SIGNAL(pressed()), this, SLOT(writeToFile()));
         connect(textEditorWidget_->reLoadButton_, SIGNAL(pressed()), this, SLOT(loadFile()));
+
+        connect(htmlEditorWidget_->saveButton_, SIGNAL(pressed()), this, SLOT(writeToFile()));
+        connect(htmlEditorWidget_->reLoadButton_, SIGNAL(pressed()), this, SLOT(loadFile()));
+
         loadFile();
-        textEditorWidget_->show();
+
+        std::string fileName = static_cast<StringProperty*>(property_)->get();
+        std::string extension = UrlParser::getFileExtension(fileName);
+        if (extension=="html" || extension=="htm")
+            htmlEditorWidget_->show();
+        else
+            textEditorWidget_->show();
     }
 }
 
 void TextEditorWidgetQt::loadFile(){
     tmpPropertyValue_ = static_cast<StringProperty*>(property_)->get();
-        file_ = new QFile(QString::fromStdString(tmpPropertyValue_));
-        file_->open(QIODevice::ReadWrite);
-        QTextStream textStream_(file_);
+
+    file_ = new QFile(QString::fromStdString(tmpPropertyValue_));
+    file_->open(QIODevice::ReadWrite);
+    QTextStream textStream_(file_);
+
+    std::string extension = UrlParser::getFileExtension(tmpPropertyValue_);
+
+    if (extension == "html" || extension == "htm") {
+        htmlEditorWidget_->htmlEditor_->setHtml(textStream_.readAll());
+    }
+    else {
         textEditorWidget_->textEditor_->setPlainText(textStream_.readAll());
+    }   
+    
 }
 
 //Function writes content of the textEditor_ to the file
@@ -134,8 +158,21 @@ bool TextEditorWidgetQt::writeToFile(){
     //Close the file to open it with new flags
     file_->close();
     file_->open(QIODevice::WriteOnly|QIODevice::Truncate);
-    QTextStream textStream_(file_);
-    textStream_ << textEditorWidget_->textEditor_->toPlainText();
+    QTextStream textStream(file_);
+
+    QFileInfo qfileInfo(file_->fileName());
+    QString qfilename(qfileInfo.fileName());
+
+    std::string fileName = qfilename.toStdString();
+    std::string extension = UrlParser::getFileExtension(fileName);
+
+    if (extension == "html" || extension == "htm") {
+        textStream <<  htmlEditorWidget_->htmlOutput_->toPlainText();
+    }
+    else {
+        textStream << textEditorWidget_->textEditor_->toPlainText();
+    }
+    
     file_->close();
 
     return true;
@@ -146,8 +183,8 @@ void TextEditorWidgetQt::editString(){
     connect(textEditorWidget_->reLoadButton_, SIGNAL(pressed()), this, SLOT(loadString()));
     loadString();
     textEditorWidget_->show();
-
 }
+
 void TextEditorWidgetQt::loadString(){
     tmpPropertyValue_ = static_cast<StringProperty*>(property_)->get();
     textEditorWidget_->textEditor_->setPlainText(QString::fromStdString(tmpPropertyValue_));
@@ -159,7 +196,8 @@ bool TextEditorWidgetQt::writeToString() {
 }
 
 bool TextEditorWidgetQt::saveDialog(){
-    if (textEditorWidget_->textEditor_->document()->isModified()) {
+    if (textEditorWidget_->textEditor_->document()->isModified() ||
+        htmlEditorWidget_->htmlEditor_->document()->isModified()) {
         QMessageBox::StandardButton ret;
         ret = QMessageBox::warning(this, tr("Application"),
             tr("The document has been modified.\n"
