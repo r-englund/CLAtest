@@ -6,7 +6,15 @@
 
 namespace inviwo {
 
+SettingsWidget::SettingsWidget(QString title, QWidget* parent) : InviwoDockWidget(title, parent) {
+    generateWidget();
+}
+
 SettingsWidget::SettingsWidget(QWidget* parent) : InviwoDockWidget(tr("Settings"), parent) {
+    generateWidget();
+}
+
+void SettingsWidget::generateWidget() {
     setObjectName("SettingsWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 

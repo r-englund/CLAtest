@@ -13,12 +13,13 @@ class IVW_QTEDITOR_API SettingsWidget : public InviwoDockWidget {
 Q_OBJECT
 public:
     SettingsWidget(QWidget* parent);
+    SettingsWidget(QString title, QWidget* parent);
     ~SettingsWidget();
+    virtual void generateWidget();
+    virtual void loadSettings();
+    virtual void saveSettings();
 
-    void loadSettings();
-    void saveSettings();
-
-private:
+protected:
     QVBoxLayout* vLayout_;
 };
 

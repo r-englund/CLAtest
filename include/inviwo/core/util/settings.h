@@ -17,9 +17,9 @@ namespace inviwo {
         virtual void initialize();
         virtual void deinitialize();
 
-        void invalidate();
-        bool isValid() { return PropertyOwner::isValid(); }
-        void setValid() { PropertyOwner::setValid(); }
+        virtual void invalidate();
+        virtual bool isValid() { return PropertyOwner::isValid(); }
+        virtual void setValid() { PropertyOwner::setValid(); }
 
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);

@@ -145,7 +145,7 @@ void TextEditorWidgetQt::loadFile(){
     std::string extension = UrlParser::getFileExtension(tmpPropertyValue_);
 
     if (extension == "html" || extension == "htm") {
-        htmlEditorWidget_->htmlEditor_->setHtml(textStream_.readAll());
+        htmlEditorWidget_->htmlEditor_->setPlainText(textStream_.readAll());
     }
     else {
         textEditorWidget_->textEditor_->setPlainText(textStream_.readAll());
@@ -209,7 +209,6 @@ bool TextEditorWidgetQt::saveDialog(){
             if (dynamic_cast<StringProperty*>(property_))
                 return TextEditorWidgetQt::writeToString();
         }
-
         else if (ret == QMessageBox::Cancel)
             return false;
     }
