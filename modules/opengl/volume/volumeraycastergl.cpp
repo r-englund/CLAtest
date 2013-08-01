@@ -22,7 +22,7 @@ VolumeRaycasterGL::VolumeRaycasterGL()
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(0.5f, 0.5f, 0.5f))
 
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+   // , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     VolumeRaycasterGL("rc_simple.frag");
 }
@@ -48,7 +48,7 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(0.5f, 0.5f, 0.5f))
 
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+  //  , camera_("camera", "Camera", vec3(0.0f, 0.0f, -3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     addProperty(samplingRate_);
 
@@ -79,8 +79,8 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     compositingMode_.set("dvr");
     addProperty(compositingMode_);
 
-    camera_.setVisible(false);
-    addProperty(camera_);
+  //  camera_.setVisible(false);
+ //   addProperty(camera_);
 }
 
 void VolumeRaycasterGL::initialize() {

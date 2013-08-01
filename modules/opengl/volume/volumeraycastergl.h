@@ -48,7 +48,7 @@ protected:
     BoolProperty applyLightAttenuation_;
     FloatVec3Property lightAttenuation_;
 
-    CameraProperty camera_;
+   // CameraProperty camera_;
 };
 
 } // namespace

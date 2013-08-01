@@ -945,21 +945,21 @@ static PyMethodDef inviwo_methods[] = {
         "setCameraFocus",
             inviwo_setCameraFocus,
             METH_VARARGS,
-            "setCameraFocus(processor name, property id, tuple). Function to set the cameras focal point"
+            "setCameraFocus(processor name, property id, tuple). Function to set the cameras focal point."
     },
     {
         "setCameraUp",
             inviwo_setCameraUp,
             METH_VARARGS,
-            "setCameraUpDirection(processor name, property id, tuple). Function to set the cameras up direction"
+            "setCameraUpDirection(processor name, property id, tuple). Function to set the cameras up direction."
     },
     {
         "setPropertyMaxValue",
             inviwo_setPropertyMaxValue,
             METH_VARARGS,
             "setPropertyValue(processor name, property id, scalar or tuple). Defines the max value for a property."
-    },
-    {
+        },
+        { 
         "setPropertyMinValue",
             inviwo_setPropertyMinValue,
             METH_VARARGS,

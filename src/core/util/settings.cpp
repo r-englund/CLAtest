@@ -4,7 +4,8 @@ namespace inviwo {
 
 Settings::Settings(){}
 
-Settings::~Settings() {}
+Settings::~Settings() {
+}
 
 void Settings::initialize() {
 }
