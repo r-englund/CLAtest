@@ -269,6 +269,10 @@ void OpenGLInfo::retrieveStaticInfo(){
         int glslVersion = parseAndRetrieveShaderVersion(glslVersionStr_);
 
         if (glslVersion != 0){
+#ifdef GLEW_VERSION_4_4
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(440, "core"), glslVersion);
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(440, "compatibility"), glslVersion);
+#endif
 #ifdef GLEW_VERSION_4_3
             addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "core"), glslVersion);
             addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "compatibility"), glslVersion);
