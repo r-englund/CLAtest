@@ -67,8 +67,7 @@ TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property)
     updateFromProperty();
 }
 
-void TextEditorWidgetQt::generateWidget() {
-
+void TextEditorWidgetQt::generateWidget() {    
     QHBoxLayout* hLayout = new QHBoxLayout();
     btnEdit_ = new QToolButton();
     btnEdit_->setIcon(QIcon(":/icons/edit.png"));
@@ -77,6 +76,7 @@ void TextEditorWidgetQt::generateWidget() {
 
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
         connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editFile()));
+        fileWidget_->layout()->addWidget(btnEdit_);
         hLayout->addWidget(fileWidget_);
 
     }
@@ -84,9 +84,10 @@ void TextEditorWidgetQt::generateWidget() {
 
         stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
         connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editString()));
+        stringWidget_->layout()->addWidget(btnEdit_);
         hLayout->addWidget(stringWidget_);
     }
-    hLayout->addWidget(btnEdit_);
+    //hLayout->addWidget(btnEdit_);
     setLayout(hLayout);
     hLayout->setContentsMargins(QMargins(0,0,0,0));
 

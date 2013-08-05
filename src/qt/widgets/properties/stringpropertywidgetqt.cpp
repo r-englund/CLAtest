@@ -9,6 +9,7 @@ StringPropertyWidgetQt::StringPropertyWidgetQt(StringProperty* property) : prope
 }
 
 void StringPropertyWidgetQt::generateWidget() {
+    setObjectName("StringPropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
     lineEdit_ = new QLineEdit;
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));

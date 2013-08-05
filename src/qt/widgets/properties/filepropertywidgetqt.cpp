@@ -20,6 +20,7 @@ FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property) : property_(p
 }
 
 void FilePropertyWidgetQt::generateWidget() {
+    setObjectName("FilePropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     lineEdit_ = new QLineEdit();
