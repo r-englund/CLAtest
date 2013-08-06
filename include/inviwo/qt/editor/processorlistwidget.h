@@ -2,6 +2,7 @@
 #define IVW_PROCESSORLISTWIDGET_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMouseEvent>
@@ -64,17 +65,20 @@ public:
     ProcessorTreeWidget(QWidget* parent);
     ~ProcessorTreeWidget();
 
-private:
-    ProcessorTree* processorTree_;
-    QPoint dragStartPosition_;
-
+protected:
     bool processorFits(ProcessorFactoryObject* processor, const QString& filter);
     QIcon* getCodeStateIcon(Processor::CodeState);
 
 private slots:
-    void addProcessorsToTree(const QString& text="");
+    void addProcessorsToTree();
 
 private:
+    ProcessorTree* processorTree_;
+    QComboBox* listView_;
+    QLineEdit* lineEdit_;
+
+    QPoint dragStartPosition_;
+
     QIcon iconStable_;
     QIcon iconExperimental_;
     QIcon iconBroken_;

@@ -22,18 +22,18 @@ public:
 
     GLFormats(){
         //1 channel
-        glFormatArray_[FLOAT16] = GLFormat(GL_RED, GL_R16F, GL_HALF_FLOAT, 1, 2);
-        glFormatArray_[FLOAT32] = GLFormat(GL_RED, GL_R32F, GL_FLOAT, 1, 4);
+        glFormatArray_[FLOAT16] = GLFormat(GL_ALPHA, GL_ALPHA16F_ARB, GL_HALF_FLOAT, 1, 2);
+        glFormatArray_[FLOAT32] = GLFormat(GL_ALPHA, GL_ALPHA32F_ARB, GL_FLOAT, 1, 4);
 
-        glFormatArray_[INT8] = GLFormat(GL_RED, GL_R8, GL_BYTE, 1, 1);
-        glFormatArray_[INT12] = GLFormat(GL_RED, GL_R16, GL_SHORT, 1, 2);
-        glFormatArray_[INT16] = GLFormat(GL_RED, GL_R16, GL_SHORT, 1, 2);
-        glFormatArray_[INT32] = GLFormat(GL_RED, GL_R, GL_INT, 1, 4);
+        glFormatArray_[INT8] = GLFormat(GL_ALPHA, GL_ALPHA8, GL_BYTE, 1, 1);
+        glFormatArray_[INT12] = GLFormat(GL_ALPHA, GL_ALPHA16, GL_SHORT, 1, 2);
+        glFormatArray_[INT16] = GLFormat(GL_ALPHA, GL_ALPHA16, GL_SHORT, 1, 2);
+        glFormatArray_[INT32] = GLFormat(GL_ALPHA, GL_ALPHA, GL_INT, 1, 4);
 
-        glFormatArray_[UINT8] = GLFormat(GL_RED, GL_R8, GL_UNSIGNED_BYTE, 1, 1);
-        glFormatArray_[UINT12] = GLFormat(GL_RED, GL_R16, GL_UNSIGNED_SHORT, 1, 2);
-        glFormatArray_[UINT16] = GLFormat(GL_RED, GL_R16, GL_UNSIGNED_SHORT, 1, 2);
-        glFormatArray_[UINT32] = GLFormat(GL_RED, GL_R, GL_UNSIGNED_INT, 1, 4);
+        glFormatArray_[UINT8] = GLFormat(GL_ALPHA, GL_ALPHA8, GL_UNSIGNED_BYTE, 1, 1);
+        glFormatArray_[UINT12] = GLFormat(GL_ALPHA, GL_ALPHA16, GL_UNSIGNED_SHORT, 1, 2);
+        glFormatArray_[UINT16] = GLFormat(GL_ALPHA, GL_ALPHA16, GL_UNSIGNED_SHORT, 1, 2);
+        glFormatArray_[UINT32] = GLFormat(GL_ALPHA, GL_ALPHA, GL_UNSIGNED_INT, 1, 4);
         
         //2 channels
         glFormatArray_[Vec2FLOAT16] = GLFormat(GL_RG, GL_RG16F, GL_HALF_FLOAT, 2, 2);
