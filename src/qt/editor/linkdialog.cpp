@@ -185,12 +185,12 @@ LinkDialogProcessorGraphicsItem::LinkDialogProcessorGraphicsItem() : GraphicsIte
 
     nameLabel_ = new LabelGraphicsItem(this);
     nameLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight);
-    nameLabel_->setBrush(Qt::white);
+    nameLabel_->setDefaultTextColor(Qt::white);
     nameLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Black, false));
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight*2.5);
-    classLabel_->setBrush(Qt::lightGray);
+    classLabel_->setDefaultTextColor(Qt::lightGray);
     classLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
 }
 
@@ -286,7 +286,7 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight*2.5);
-    classLabel_->setBrush(Qt::darkGray);
+    classLabel_->setDefaultTextColor(Qt::darkGray);
     classLabel_->setFont(QFont("Segoe", propertyLabelHeight, QFont::Normal, true));
 
     processorGraphicsItem_ = processor;

@@ -2,17 +2,21 @@
 #define IVW_LABELGRAPHICSITEM_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <QGraphicsSimpleTextItem>
+#include <QGraphicsTextItem>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API LabelGraphicsItem : public QGraphicsSimpleTextItem {
+class IVW_QTEDITOR_API LabelGraphicsItem : public QGraphicsTextItem {
 
 public:
     LabelGraphicsItem(QGraphicsItem* parent);
     ~LabelGraphicsItem();
 
+    QString text() const;
+    void setText(const QString &);
+
 protected:
+    void keyPressEvent(QKeyEvent* event);
     void focusOutEvent(QFocusEvent* event);
 
     unsigned int labelHeight_;

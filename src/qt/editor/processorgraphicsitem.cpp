@@ -33,13 +33,12 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
 
     nameLabel_ = new LabelGraphicsItem(this);
     nameLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight);
-    nameLabel_->setBrush(Qt::white);
+    nameLabel_->setDefaultTextColor(Qt::white);
     nameLabel_->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
-    //nameLabel_->setTextInteractionFlags(Qt::TextEditable);
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight*2.5);
-    classLabel_->setBrush(Qt::lightGray);
+    classLabel_->setDefaultTextColor(Qt::lightGray);
     classLabel_->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
 
     progressBarTimer_.start();
@@ -51,8 +50,18 @@ ProcessorGraphicsItem::~ProcessorGraphicsItem() {
 void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     processor_ = processor;
     if (processor) {
-        nameLabel_->setText(QString::fromStdString(processor_->getIdentifier()));
-        classLabel_->setText(QString::fromStdString(processor_->getClassName()));
+        QString name = QString::fromStdString(processor_->getIdentifier());
+        if(name.length()>17){
+            nameLabel_->setToolTip(name);
+            name = name.left(8) + "..." + name.right(7);
+        }
+        nameLabel_->setText(name);
+        QString className = QString::fromStdString(processor_->getClassName());
+        if(className.length()>17){
+            classLabel_->setToolTip(className);
+            className = className.left(8) + "..." + className.right(7);
+        }
+        classLabel_->setText(className);
         addObservation(processor_);
         processor_->addObserver(this);
     } else {
@@ -63,7 +72,7 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
 
 void ProcessorGraphicsItem::editProcessorName() {
     nameLabel_->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
-    //nameLabel_->setTextInteractionFlags(Qt::TextEditorInteraction);
+    nameLabel_->setTextInteractionFlags(Qt::TextEditorInteraction);
     nameLabel_->setFocus();
 }
 
