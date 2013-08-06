@@ -1,5 +1,7 @@
 #include <QApplication>
 #include <QLayout>
+#include <QLabel>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QMimeData>
@@ -98,12 +100,16 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     QFrame* frame = new QFrame();
     QVBoxLayout* vLayout = new QVBoxLayout(frame);
 
+    QHBoxLayout* listViewLayout = new QHBoxLayout();
+    listViewLayout->addWidget(new QLabel("List processors by"));
     listView_ = new QComboBox();
-    listView_->addItem("List processors by category");
-    listView_->addItem("List processors by module");
-    listView_->addItem("List processors by stability");
+    listView_->addItem("Category");
+    listView_->addItem("Module");
+    listView_->addItem("Code State");
     connect(listView_, SIGNAL(currentIndexChanged(int)), this, SLOT(addProcessorsToTree()));
-    vLayout->addWidget(listView_);
+    listView_->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    listViewLayout->addWidget(listView_);
+    vLayout->addLayout(listViewLayout);
 
     lineEdit_ = new QLineEdit();
     lineEdit_->setPlaceholderText("Filter processor list...");
