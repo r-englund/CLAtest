@@ -100,6 +100,11 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     QFrame* frame = new QFrame();
     QVBoxLayout* vLayout = new QVBoxLayout(frame);
 
+    lineEdit_ = new QLineEdit();
+    lineEdit_->setPlaceholderText("Filter processor list...");
+    connect(lineEdit_, SIGNAL(textChanged(const QString&)), this, SLOT(addProcessorsToTree()));
+    vLayout->addWidget(lineEdit_);
+
     QHBoxLayout* listViewLayout = new QHBoxLayout();
     listViewLayout->addWidget(new QLabel("Group processors by"));
     listView_ = new QComboBox();
@@ -110,11 +115,6 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     listView_->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     listViewLayout->addWidget(listView_);
     vLayout->addLayout(listViewLayout);
-
-    lineEdit_ = new QLineEdit();
-    lineEdit_->setPlaceholderText("Filter processor list...");
-    connect(lineEdit_, SIGNAL(textChanged(const QString&)), this, SLOT(addProcessorsToTree()));
-    vLayout->addWidget(lineEdit_);
 
     iconStable_ = QIcon(":/icons/processor_stable.png");
     iconExperimental_ = QIcon(":/icons/processor_experimental.png");

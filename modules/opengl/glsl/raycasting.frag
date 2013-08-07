@@ -44,10 +44,10 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
         vec4 colorClassified = applyTF(transferFunction_, voxel);
         vec4 color = colorClassified;
         if (enableShading_) {
-            color.rgb = shadeDiffuse(colorClassified.rgb, vec3(2.5), voxel.rgb, lightSourcePos_);
+            color.rgb = shadeDiffuse(colorClassified.rgb, voxel.rgb, lightSourcePos_);
             vec3 cameraPos_ = vec3(0.0);
-            color.rgb += shadeSpecular(vec3(1.0,1.0,1.0), vec3(0.5), 0.5, voxel.rgb, lightSourcePos_, cameraPos_);
-            color.rgb += shadeAmbient(colorClassified.rgb, vec3(0.1));
+            color.rgb += shadeSpecular(vec3(1.0,1.0,1.0), voxel.rgb, lightSourcePos_, cameraPos_);
+            color.rgb += shadeAmbient(colorClassified.rgb);
         }
 
         if (enableMIP_) {

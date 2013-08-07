@@ -22,7 +22,7 @@ VolumeRaycasterGL::VolumeRaycasterGL()
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(0.5f, 0.5f, 0.5f))
 
-   // , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     VolumeRaycasterGL("rc_simple.frag");
 }
@@ -48,13 +48,13 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(0.5f, 0.5f, 0.5f))
 
-  //  , camera_("camera", "Camera", vec3(0.0f, 0.0f, -3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     addProperty(samplingRate_);
 
     classificationMode_.addOption("none", "None");
-    classificationMode_.addOption("transFunc", "Transfer function");
-    classificationMode_.set("transFunc");
+    classificationMode_.addOption("transfer-function", "Transfer function");
+    classificationMode_.set("transfer-function");
     addProperty(classificationMode_);
 
     gradientComputationMode_.addOption("none", "None");
@@ -80,8 +80,8 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     compositingMode_.set("dvr");
     addProperty(compositingMode_);
 
-  //  camera_.setVisible(false);
- //   addProperty(camera_);
+    camera_.setVisible(false);
+    addProperty(camera_);
 }
 
 void VolumeRaycasterGL::initialize() {
@@ -105,14 +105,14 @@ void VolumeRaycasterGL::initializeResources() {
     // basic loop defines
     std::string beginLoop = "while (t < tEnd)";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_BEGIN_LOOP", beginLoop);
-    std::string endLoop = "";
+    std::string endLoop = "if (tDepth == -1.0) tDepth = 1.0; gl_FragDepth = tDepth;";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_END_LOOP(result)", endLoop);
 
     // gradient computation defines
     std::string gradientComputationKey = "RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeStruct_, t, rayDirection, entryPoints_, entryParameters_)";
     std::string gradientComputationValue = "";
     if (gradientComputationMode_.isSelected("none"))
-        gradientComputationValue = "voxel;";
+        gradientComputationValue = "voxel.xyz;";
     if (gradientComputationMode_.isSelected("forward"))
         gradientComputationValue = "gradientForwardDiff(voxel.a, volume_, volumeStruct_, samplePos);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(gradientComputationKey, gradientComputationValue);
@@ -120,37 +120,38 @@ void VolumeRaycasterGL::initializeResources() {
     // classification defines
     std::string classificationKey = "RC_APPLY_CLASSIFICATION(transferFunc_, voxel)";
     std::string classificationValue = "";
-    if (classificationMode_.get() == "none")
+    if (classificationMode_.isSelected("none"))
         classificationValue = "vec4(voxel.a);";
-    if (classificationMode_.get() == "transFunc")
+    if (classificationMode_.isSelected("transfer-function"))
         classificationValue = "applyTF(transferFunc_, voxel);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(classificationKey, classificationValue);
 
     // shading defines
-    std::string shadingKey = "RC_APPLY_SHADING(gradient, samplePos, volumeStruct, ka, kd, ks)";
+    std::string shadingKey = "RC_APPLY_SHADING(colorAmb, colorDiff, colorSpec, gradient, lightPos, cameraPos)";
     std::string shadingValue = "";
-    if (shadingMode_.get() == "ambient")
-        shadingValue = "shadeAmbient(ka, ka);";
-    if (shadingMode_.get() == "diffuse")
-        shadingValue = "shadeDiffuse(kd, kd, gradient, vec3(0.5));";
-    if (shadingMode_.get() == "specular")
-        //FIXME: use variable values for shininess etc.
-        shadingValue = "shadeSpecular(ks, ks, 0.5, gradient, vec3(0.5), vec3(0.0));";
+    if (shadingMode_.isSelected("none"))
+        shadingValue = "colorAmb;";
+    if (shadingMode_.isSelected("ambient"))
+        shadingValue = "shadeAmbient(colorAmb);";
+    if (shadingMode_.isSelected("diffuse"))
+        shadingValue = "shadeDiffuse(colorDiff, gradient, lightPos);";
+    if (shadingMode_.isSelected("specular"))
+        shadingValue = "shadeSpecular(colorSpec, gradient, lightPos, cameraPos);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 
     // compositing defines
-    std::string compositingKey = "RC_APPLY_COMPOSITING(result, color, samplePos, gradient, tIncr, tDepth)";
+    std::string compositingKey = "RC_APPLY_COMPOSITING(result, color, samplePos, gradient, t, tDepth, tIncr)";
     std::string compositingValue = "";
-    if (compositingMode_.get() == "dvr")
-        compositingValue = "compositeDVR(result, color, tIncr, tDepth);";
-    else if (compositingMode_.get() == "mip")
-        compositingValue = "compositeMIP(result, color, tIncr, tDepth);";
-    else if (compositingMode_.get() == "iso")
-        compositingValue = "compositeISO(result, color, tIncr, tDepth, isoValue_);";
-    else if (compositingMode_.get() == "fhp")
-        compositingValue = "compositeFHP(samplePos, result, tIncr, tDepth);";
-    else if (compositingMode_.get() == "fhn")
-        compositingValue = "compositeFHN(gradient, result, tIncr, tDepth);";
+    if (compositingMode_.isSelected("dvr"))
+        compositingValue = "compositeDVR(result, color, t, tDepth, tIncr);";
+    else if (compositingMode_.isSelected("mip"))
+        compositingValue = "compositeMIP(result, color, t, tDepth);";
+    else if (compositingMode_.isSelected("fhp"))
+        compositingValue = "compositeFHP(result, samplePos, t, tDepth);";
+    else if (compositingMode_.isSelected("fhn"))
+        compositingValue = "compositeFHN(result, gradient, t, tDepth);";
+    else if (compositingMode_.isSelected("iso"))
+        compositingValue = "compositeISO(result, color, t, tDepth, tIncr, isoValue_);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
 
     raycastPrg_->build();
@@ -168,6 +169,20 @@ void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* 
     vec3 dimensions = vec3(inport.getData()->getRepresentation<VolumeGL>()->getDimensions());
     shader->setUniform(samplerID + ".dimensions_", dimensions);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.0f)/dimensions);
+}
+
+void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
+    ProcessorGL::setGlobalShaderParameters(shader);
+    shader->setUniform("samplingRate_", samplingRate_.get());
+
+    shader->setUniform("cameraPosition_", camera_.getLookFrom());
+
+    // illumination uniforms
+    shader->setUniform("lightPosition_", lightPosition_.get());
+    shader->setUniform("lightColorAmbient_", lightColorAmbient_.get());
+    shader->setUniform("lightColorDiffuse_", lightColorDiffuse_.get());
+    shader->setUniform("lightColorSpecular_", lightColorSpecular_.get());
+    shader->setUniform("lightSpecularExponent_", lightSpecularExponent_.get());
 }
 
 } // namespace

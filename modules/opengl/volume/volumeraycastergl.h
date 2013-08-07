@@ -26,6 +26,7 @@ public:
 
     void bindVolume(const VolumeInport& inport, GLenum volTexUnit);
     void setVolumeParameters(const VolumeInport& inport, Shader* shader, const std::string samplerID);
+    void setGlobalShaderParameters(Shader* shader);
 
 protected:
     Shader* raycastPrg_;
@@ -48,7 +49,7 @@ protected:
     BoolProperty applyLightAttenuation_;
     FloatVec3Property lightAttenuation_;
 
-   // CameraProperty camera_;
+    CameraProperty camera_;
 };
 
 } // namespace
