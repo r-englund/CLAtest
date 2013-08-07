@@ -825,11 +825,11 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
 }
 
 bool NetworkEditor::loadNetwork(std::string fileName) {
-    // then we lock the network that no evaluations are triggered during the deserialization
-    processorNetwork_->lock();
-
     // first we clean the current network
     clearNetwork();
+
+    // then we lock the network that no evaluations are triggered during the deserialization
+    processorNetwork_->lock();
 
     // then we deserialize processor network
     IvwDeserializer xmlDeserializer(fileName);
