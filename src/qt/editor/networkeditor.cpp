@@ -524,8 +524,12 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         }
     }
     else if (e->button() == Qt::RightButton) {
-        e->accept();
-        return;
+        startProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
+        if (startProcessor_) {
+            PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+            propertyListWidget_->showProcessorProperties(startProcessor_->getProcessor());
+            QGraphicsScene::mousePressEvent(e);
+        }
     }
 }
 

@@ -63,6 +63,7 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
 }
 
 void ProcessorGraphicsItem::editProcessorName() {
+    setFocus();
     nameLabel_->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
     nameLabel_->setTextInteractionFlags(Qt::TextEditorInteraction);
     nameLabel_->setFocus();
