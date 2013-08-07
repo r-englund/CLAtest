@@ -19,18 +19,18 @@ void DatVolumeReader::readDatFileSettings(std::string filePath, ReaderSettings& 
     readerSettings.dataFormat_ = "";
     readerSettings.dimensions_ = ivec3(0,0,0);
 
-    if(!UrlParser::fileExists(filePath)){
-        filePath = UrlParser::addBasePath(filePath);
-        if(!UrlParser::fileExists(filePath)) {
+    if(!URLParser::fileExists(filePath)){
+        filePath = URLParser::addBasePath(filePath);
+        if(!URLParser::fileExists(filePath)) {
             // FIXME: Do not use assert for non-existing file
             ivwAssert(NULL, "File " + filePath + " does not exist.");     
             return;
         }
     }
 
-    std::string fileDirectory = UrlParser::getFileDirectory(filePath);
+    std::string fileDirectory = URLParser::getFileDirectory(filePath);
 
-    std::string fileExtension = UrlParser::getFileExtension(filePath);
+    std::string fileExtension = URLParser::getFileExtension(filePath);
 
     ivwAssert(fileExtension=="dat", "should be a *.dat file");
 

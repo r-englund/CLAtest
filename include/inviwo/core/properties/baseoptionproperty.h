@@ -174,7 +174,7 @@ void TemplateOptionProperty<T>::setSelectedOption(int option) {
 template<typename T>
 bool TemplateOptionProperty<T>::isSelected(std::string identifier) const {
     for (size_t i=0; i<options_.size(); i++)
-        if (options_[i].first.second == identifier)
+        if (options_[i].first.first == identifier)
             return (options_[i].second == value_);
     LogWarn("Querying non-existent option.");
     return false;

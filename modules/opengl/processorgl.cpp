@@ -29,7 +29,8 @@ void ProcessorGL::activateAndClearTarget(ImageOutport& outport) {
 }
 
 void ProcessorGL::activateAndClearTargets(PortGroup& portGroup) {
-    std::cout << "IMPLEMENT ME!!!" << std::endl;
+    portGroup.activate();
+    clearCurrentTarget();
 }
 
 void ProcessorGL::bindColorTexture(const ImageInport& inport, GLenum texUnit) {

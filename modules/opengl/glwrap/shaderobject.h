@@ -34,6 +34,7 @@ public:
     void addOutDeclaration(std::string name);
 
 private:
+
     bool initialize();
     void deinitialize();
 

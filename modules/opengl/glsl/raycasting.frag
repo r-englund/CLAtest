@@ -39,7 +39,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
     while (t < tEnd) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getVoxel(volume_, volumeParameters_, samplePos);
-        voxel.rgb = gradientForwardDiff(voxel.r, volume_, volumeParameters_, samplePos);
+        voxel.xyz = gradientForwardDiff(voxel.r, volume_, volumeParameters_, samplePos);
 
         vec4 colorClassified = applyTF(transferFunction_, voxel);
         vec4 color = colorClassified;

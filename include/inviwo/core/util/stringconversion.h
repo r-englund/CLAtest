@@ -35,6 +35,8 @@ IVW_CORE_API std::string parseTypeIdName(std::string str) ;
 IVW_CORE_API std::string toUpper(std::string str);
 IVW_CORE_API std::string toLower(std::string str);
 
+IVW_CORE_API unsigned int countLines(std::string str);
+
 } // namespace
 
 #endif // IVW_STRINGCONVERSION_H

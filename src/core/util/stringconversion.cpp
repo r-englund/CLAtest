@@ -42,4 +42,15 @@ std::string toLower(std::string str) {
     return str;
 }
 
+unsigned int countLines(std::string str) {
+    unsigned int lineCount = 1;
+    int position = 0;
+    while (position < str.length()) {
+        if (str.substr(position,1) == "\n")
+            lineCount++;
+        position++;
+    }
+    return lineCount;
+}
+
 } // namespace

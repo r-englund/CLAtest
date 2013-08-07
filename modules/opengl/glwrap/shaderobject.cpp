@@ -43,11 +43,11 @@ bool ShaderObject::rebuild() {
 }
 
 void ShaderObject::preprocess() {
-    sourceProcessed_ = embeddDefines(source_);
-    sourceProcessed_ = embeddOutDeclarations(sourceProcessed_);
-    includeFileNames_.clear();
     lineNumberResolver_.clear();
-    sourceProcessed_ = embeddIncludes(sourceProcessed_, fileName_);
+    includeFileNames_.clear();
+    std::string shaderHeader = embeddDefines(source_);
+    shaderHeader += embeddOutDeclarations(source_);
+    sourceProcessed_ = shaderHeader + embeddIncludes(source_, fileName_);
 }
 
 std::string ShaderObject::embeddDefines(std::string source) {
@@ -55,13 +55,14 @@ std::string ShaderObject::embeddDefines(std::string source) {
     for (size_t i=0; i<shaderDefines_.size(); i++) {
         std::pair<std::string, std::string> curDefine = shaderDefines_[i];
         result << "#define " << curDefine.first << " " << curDefine.second << "\n";
+        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("Define", 0));
     }
     std::string curLine;
-    std::istringstream shaderSource(source);
-    while (std::getline(shaderSource, curLine))
-        result << curLine << "\n";
-
-    return ShaderManager::getRef().getGlobalGLSLHeader() + result.str();
+    std::string globalGLSLHeader = ShaderManager::getRef().getGlobalGLSLHeader();
+    std::istringstream globalGLSLHeaderStream(globalGLSLHeader);
+    while (std::getline(globalGLSLHeaderStream, curLine))
+        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("GlobalGLSLSHEader", 0));
+    return globalGLSLHeader + result.str();
 }
 
 std::string ShaderObject::embeddOutDeclarations(std::string source) {
@@ -69,12 +70,8 @@ std::string ShaderObject::embeddOutDeclarations(std::string source) {
     for (size_t i=0; i<outDeclarations_.size(); i++) {
         std::string curDeclaration = outDeclarations_[i];
         result << "out vec4 " << curDeclaration << ";\n";
+        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("Out Declaration", 0));
     }
-    std::string curLine;
-    std::istringstream shaderSource(source);
-    while (std::getline(shaderSource, curLine))
-        result << curLine << "\n";
-
     return result.str();
 }
 
@@ -82,7 +79,7 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
     std::ostringstream result;
     std::string curLine;
     std::istringstream shaderSource(source);
-    unsigned int localLineNumber = 0;
+    int localLineNumber = 1;
     while (std::getline(shaderSource, curLine)) {
         std::string::size_type posInclude = curLine.find("#include");
         std::string::size_type posComment = curLine.find("//");
@@ -94,7 +91,7 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
             bool includeFileFound = false;
             std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
             for (size_t i=0; i<shaderSearchPaths.size(); i++) {
-                if (UrlParser::fileExists(shaderSearchPaths[i]+"/"+includeFileName)) {
+                if (URLParser::fileExists(shaderSearchPaths[i]+"/"+includeFileName)) {
                     includeFileName = shaderSearchPaths[i]+"/"+includeFileName;
                     includeFileNames_.push_back(includeFileName);
                     std::ifstream includeFileStream(includeFileName.c_str());
@@ -102,19 +99,19 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
                     buffer << includeFileStream.rdbuf();
                     std::string includeSource = buffer.str();            
                     if (!includeSource.empty())
-                        result << embeddIncludes(includeSource, includeFileName) << "\n";
+                        result << embeddIncludes(includeSource, includeFileName);// << "\n";
                     includeFileFound = true;
                     break;
                 }
             }
             if (!includeFileFound)
                 LogWarn("Include file " << includeFileName << " not found in shader search paths.");
-        }
-        else
+        } else {
             result << curLine << "\n";
-        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>(fileName, localLineNumber));
+            lineNumberResolver_.push_back(std::pair<std::string, unsigned int>(fileName, localLineNumber));
+        }
         localLineNumber++;
-    }
+    } 
     return result.str();
 }
 
@@ -123,7 +120,7 @@ bool ShaderObject::loadSource(std::string fileName) {
     if (fileName.length() > 0) {
         std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
         for (size_t i=0; i<shaderSearchPaths.size(); i++) {
-            if (UrlParser::fileExists(shaderSearchPaths[i]+"/"+fileName)) {
+            if (URLParser::fileExists(shaderSearchPaths[i]+"/"+fileName)) {
                 absoluteFileName_ = shaderSearchPaths[i]+"/"+fileName;
                 break;
             }
@@ -179,8 +176,8 @@ std::string ShaderObject::reformatShaderInfoLog(const std::string shaderInfoLog)
     std::istringstream origShaderInfoLog(shaderInfoLog);
     while (std::getline(origShaderInfoLog, curLine)) {
         unsigned int origLineNumber = getLogLineNumber(curLine);
-        unsigned int lineNumber = lineNumberResolver_[origLineNumber].second;
-        std::string fileName = lineNumberResolver_[origLineNumber].first;
+        unsigned int lineNumber = lineNumberResolver_[origLineNumber-1].second;
+        std::string fileName = lineNumberResolver_[origLineNumber-1].first;
         // TODO: adapt substr call to ATI compile log syntax
         result << "\n" << fileName << " (" << lineNumber << "): " << curLine.substr(curLine.find(":")+1);
     }

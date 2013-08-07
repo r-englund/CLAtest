@@ -30,7 +30,7 @@ void FileProperty::serialize(IvwSerializer& s) const {
 
     ivwAssert(!basePath.empty(), "File name cannot be empty.");
     
-    std::string relativePath = UrlParser::getRelativePath(basePath, absoluteFilePath);
+    std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("url", relativePath);
 }
 
@@ -42,7 +42,7 @@ void FileProperty::deserialize(IvwDeserializer& d) {
     std::string basePath = d.getFileName();
     ivwAssert(!basePath.empty(), "File name cannot be empty.")
     
-    basePath = UrlParser::getFileDirectory(basePath);
+    basePath = URLParser::getFileDirectory(basePath);
     set(basePath+relativePath);
 }
 

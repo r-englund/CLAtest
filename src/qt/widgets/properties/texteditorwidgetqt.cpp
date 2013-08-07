@@ -128,7 +128,7 @@ void TextEditorWidgetQt::editFile(){
         loadFile();
 
         std::string fileName = static_cast<StringProperty*>(property_)->get();
-        std::string extension = UrlParser::getFileExtension(fileName);
+        std::string extension = URLParser::getFileExtension(fileName);
         if (extension=="html" || extension=="htm")
             htmlEditorWidget_->show();
         else
@@ -143,7 +143,7 @@ void TextEditorWidgetQt::loadFile(){
     file_->open(QIODevice::ReadWrite);
     QTextStream textStream_(file_);
 
-    std::string extension = UrlParser::getFileExtension(tmpPropertyValue_);
+    std::string extension = URLParser::getFileExtension(tmpPropertyValue_);
 
     if (extension == "html" || extension == "htm") {
         htmlEditorWidget_->htmlEditor_->setPlainText(textStream_.readAll());
@@ -165,7 +165,7 @@ bool TextEditorWidgetQt::writeToFile(){
     QString qfilename(qfileInfo.fileName());
 
     std::string fileName = qfilename.toStdString();
-    std::string extension = UrlParser::getFileExtension(fileName);
+    std::string extension = URLParser::getFileExtension(fileName);
 
     if (extension == "html" || extension == "htm") {
         textStream <<  htmlEditorWidget_->htmlOutput_->toPlainText();

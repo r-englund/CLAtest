@@ -63,6 +63,7 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     addProperty(gradientComputationMode_);
 
     // light properties are only initialized here and need to be added by derived raycasters
+    shadingMode_.addOption("none", "No Shading");
     shadingMode_.addOption("ambient", "Ambient");
     shadingMode_.addOption("diffuse", "Diffuse");
     shadingMode_.addOption("specular", "Specular");
@@ -86,7 +87,7 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
 void VolumeRaycasterGL::initialize() {
     ProcessorGL::initialize();
     raycastPrg_ = new Shader(programFileName_, false);
-    initializeResources();
+    //initializeResources();
 }
 
 void VolumeRaycasterGL::deinitialize() {
@@ -97,15 +98,24 @@ void VolumeRaycasterGL::deinitialize() {
 
 
 void VolumeRaycasterGL::initializeResources() {
-    // add some empty defines for Voreen compatibility
+    // DEPRECATED: add some empty defines for Voreen compatibility
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_BEGIN_COMPOSITING");
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_END_COMPOSITING");
 
     // basic loop defines
-    std::string beginLoop = "for (int sampleNum=0; sampleNum<1024; sampleNum++)";
+    std::string beginLoop = "while (t < tEnd)";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_BEGIN_LOOP", beginLoop);
     std::string endLoop = "";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_END_LOOP(result)", endLoop);
+
+    // gradient computation defines
+    std::string gradientComputationKey = "RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeStruct_, t, rayDirection, entryPoints_, entryParameters_)";
+    std::string gradientComputationValue = "";
+    if (gradientComputationMode_.isSelected("none"))
+        gradientComputationValue = "voxel;";
+    if (gradientComputationMode_.isSelected("forward"))
+        gradientComputationValue = "gradientForwardDiff(voxel.a, volume_, volumeStruct_, samplePos);";
+    raycastPrg_->getFragmentShaderObject()->addShaderDefine(gradientComputationKey, gradientComputationValue);
 
     // classification defines
     std::string classificationKey = "RC_APPLY_CLASSIFICATION(transferFunc_, voxel)";
@@ -129,18 +139,18 @@ void VolumeRaycasterGL::initializeResources() {
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 
     // compositing defines
-    std::string compositingKey = "RC_APPLY_COMPOSITING(result, color, samplePos, gradient, t, tDepth)";
+    std::string compositingKey = "RC_APPLY_COMPOSITING(result, color, samplePos, gradient, tIncr, tDepth)";
     std::string compositingValue = "";
     if (compositingMode_.get() == "dvr")
-        compositingValue = "compositeDVR(result, color, t, tDepth);";
+        compositingValue = "compositeDVR(result, color, tIncr, tDepth);";
     else if (compositingMode_.get() == "mip")
-        compositingValue = "compositeMIP(result, color, t, tDepth);";
+        compositingValue = "compositeMIP(result, color, tIncr, tDepth);";
     else if (compositingMode_.get() == "iso")
-        compositingValue = "compositeISO(result, color, t, tDepth, isoValue_);";
+        compositingValue = "compositeISO(result, color, tIncr, tDepth, isoValue_);";
     else if (compositingMode_.get() == "fhp")
-        compositingValue = "compositeFHP(samplePos, result, t, tDepth);";
+        compositingValue = "compositeFHP(samplePos, result, tIncr, tDepth);";
     else if (compositingMode_.get() == "fhn")
-        compositingValue = "compositeFHN(gradient, result, t, tDepth);";
+        compositingValue = "compositeFHN(gradient, result, tIncr, tDepth);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
 
     raycastPrg_->build();

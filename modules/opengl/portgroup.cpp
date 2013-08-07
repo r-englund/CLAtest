@@ -21,6 +21,7 @@ void PortGroup::deinitialize() {
 
 void PortGroup::activate() {
     ivwAssert(fbo_!=0, "PortGroup not initialized.");
+    //fbo_->activate();
     GLenum* attachementIDs = new GLenum[ports_.size()];
     std::vector<GLenum> attachementIDVector = fbo_->getAttachementIDs();
     for (size_t i=0; i<ports_.size(); i++)
@@ -37,7 +38,7 @@ void PortGroup::deactivate() {
 
 void PortGroup::addPort(ImageOutport port) {
     ports_.push_back(&port);
-    reattachTargets();
+    //reattachTargets();
 }
 
 void PortGroup::reattachTargets() {

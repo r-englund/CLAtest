@@ -24,7 +24,7 @@ public:
         std::string textLine; 
         
         std::stringstream ss;
-        std::string rawFileNameWithExtension = UrlParser::getFileNameWithExtension(writerSettings.rawFileAbsolutePath_);
+        std::string rawFileNameWithExtension = URLParser::getFileNameWithExtension(writerSettings.rawFileAbsolutePath_);
         
         ss << "ObjectFileName: "<< rawFileNameWithExtension << std::endl;
         ss << "Resolution: ";

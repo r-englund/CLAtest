@@ -18,7 +18,7 @@ namespace inviwo {
 
     void VolumeDisk::initialize() {
 
-        std::string fileExtension = UrlParser::getFileExtension(getSourceFile());
+        std::string fileExtension = URLParser::getFileExtension(getSourceFile());
         if (!fileExtension.empty()) {
             //TODO: better pattern for automatic data reader selection
             if (fileExtension=="dat") {
@@ -37,7 +37,7 @@ namespace inviwo {
     }
 
     void* VolumeDisk::loadRawData() const {
-        std::string fileExtension = UrlParser::getFileExtension(getSourceFile());
+        std::string fileExtension = URLParser::getFileExtension(getSourceFile());
         if (!fileExtension.empty()) {
             //TODO: better pattern for automatic data reader selection
             if (fileExtension=="dat") {

@@ -101,7 +101,7 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     QVBoxLayout* vLayout = new QVBoxLayout(frame);
 
     QHBoxLayout* listViewLayout = new QHBoxLayout();
-    listViewLayout->addWidget(new QLabel("List processors by"));
+    listViewLayout->addWidget(new QLabel("Group processors by"));
     listView_ = new QComboBox();
     listView_->addItem("Category");
     listView_->addItem("Module");

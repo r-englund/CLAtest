@@ -18,8 +18,8 @@ public:
     VolumeRaycasterGL();
     VolumeRaycasterGL(std::string programFileName);
 
-    void initialize();
-    void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
 
     // overloaded method called when INVALID_RESOURCE property is set
     virtual void initializeResources();

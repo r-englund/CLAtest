@@ -25,9 +25,9 @@ public:
         std::string rawFileAbsolutePath = ivfWriterSettings.rawFileAbsolutePath_;
 
         //for serialization absolute path is not needed, so replace absolute path
-        ivfWriterSettings.rawFileAbsolutePath_ = UrlParser::getFileNameWithExtension(ivfWriterSettings.rawFileAbsolutePath_);        
+        ivfWriterSettings.rawFileAbsolutePath_ = URLParser::getFileNameWithExtension(ivfWriterSettings.rawFileAbsolutePath_);        
 
-        std::string fileExtension = UrlParser::getFileExtension(filePath);
+        std::string fileExtension = URLParser::getFileExtension(filePath);
 
         ivwAssert(fileExtension=="ivf", "should be a *.ivf file");
 

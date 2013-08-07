@@ -27,7 +27,6 @@ void CompositePropertyWidgetQt::generateWidget() {
         vLayout->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
         connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
-
     } 
     frame->setLayout(vLayout);
     setLayout(hLayout);

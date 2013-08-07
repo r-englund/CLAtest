@@ -32,12 +32,12 @@ const void* VolumeRAM::getData() const {
 }
 
 void VolumeRAM::saveData(std::string url) const {
-    std::string fileExtension = UrlParser::getFileExtension(url);
+    std::string fileExtension = URLParser::getFileExtension(url);
     if (!fileExtension.empty()) {
         //TODO: better pattern for automatic data writer selection
         if (fileExtension=="dat") {
             WriterSettings writerSettings;
-            writerSettings.rawFileAbsolutePath_ = UrlParser::replaceFileExtension(url, "raw");
+            writerSettings.rawFileAbsolutePath_ = URLParser::replaceFileExtension(url, "raw");
             writerSettings.dimensions_ = dimensions_;
             writerSettings.dataFormat_ = getDataFormat().getString();
             writerSettings.texels_ = getData();
@@ -46,7 +46,7 @@ void VolumeRAM::saveData(std::string url) const {
         }
         else if (fileExtension=="ivf") {
             IvfWriterSettings writerSettings;
-            writerSettings.rawFileAbsolutePath_ = UrlParser::replaceFileExtension(url, "raw");
+            writerSettings.rawFileAbsolutePath_ = URLParser::replaceFileExtension(url, "raw");
             writerSettings.dimensions_ = dimensions_;
             writerSettings.dataFormat_ = getDataFormat().getString();
             writerSettings.texels_ = getData();

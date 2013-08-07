@@ -94,19 +94,18 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
     std::vector<Property*> addedProperties;
     for (size_t i=0; i<properties.size(); i++) {
         Property* curProperty = properties[i];
-        //Check if the property is already added
-        if(std::find(addedProperties.begin(),addedProperties.end(),curProperty) != addedProperties.end()) {
+        // check if the property is already added
+        if(std::find(addedProperties.begin(),addedProperties.end(),curProperty) != addedProperties.end())
             continue;
-        }
-        //Add to group box if one is assigned to the property
+        // add to group box if one is assigned to the property
         else if (curProperty->getGroupID()!="") {
             CollapsiveGroupBoxWidgetQt* group = new CollapsiveGroupBoxWidgetQt(curProperty->getGroupID());
-            //Add all the properties with the same group assigned
+            // add all the properties with the same group assigned
             for (size_t k=0; k<properties.size(); k++){
                 Property* tmpProperty = properties[k];
                 if (curProperty->getGroupID() == tmpProperty->getGroupID()) {
-                        group->addProperty(tmpProperty);
-                        addedProperties.push_back(tmpProperty);
+                    group->addProperty(tmpProperty);
+                    addedProperties.push_back(tmpProperty);
                 }
             }
             group->generatePropertyWidgets();
@@ -114,10 +113,12 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
         }
         else {
             PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
-            vLayout->addWidget(propertyWidget);
-            curProperty->registerPropertyWidget(propertyWidget);
-            connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
-            addedProperties.push_back(curProperty);
+            if (propertyWidget) {
+                vLayout->addWidget(propertyWidget);
+                curProperty->registerPropertyWidget(propertyWidget);
+                connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
+                addedProperties.push_back(curProperty);
+            }
         }
 
     } 

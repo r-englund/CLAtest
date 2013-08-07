@@ -26,9 +26,9 @@ public:
         ivfReaderSettings.dataFormat_ = "";
         ivfReaderSettings.dimensions_ = ivec3(0,0,0);
        
-        std::string fileDirectory = UrlParser::getFileDirectory(filePath);
+        std::string fileDirectory = URLParser::getFileDirectory(filePath);
         
-        std::string fileExtension = UrlParser::getFileExtension(filePath);
+        std::string fileExtension = URLParser::getFileExtension(filePath);
 
         ivwAssert(fileExtension=="ivf", "should be a *.ivf file");
 

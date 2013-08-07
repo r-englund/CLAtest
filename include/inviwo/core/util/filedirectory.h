@@ -4,7 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
-#include <stdio.h>  /* defines FILENAME_MAX */
+#include <stdio.h>  // defines FILENAME_MAX
 #ifdef WIN32
 #include <direct.h>
 #define GetCurrentDir _getcwd
@@ -15,9 +15,9 @@
 
 namespace inviwo {
 
-class IVW_CORE_API UrlParser {
+class IVW_CORE_API URLParser {
 public:
-    UrlParser() {}
+    URLParser() {}
 
     static std::string addBasePath(const std::string url);
     static bool fileExists(std::string fileName);

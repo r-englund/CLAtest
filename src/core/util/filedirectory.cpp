@@ -4,40 +4,40 @@
 
 namespace inviwo {
 
-std::string UrlParser::addBasePath(const std::string url){
+std::string URLParser::addBasePath(const std::string url){
     return InviwoApplication::getPtr()->getBasePath()+url;
 }
 
-bool UrlParser::fileExists(std::string fileName) {
+bool URLParser::fileExists(std::string fileName) {
     std::ifstream inputFile(fileName.c_str());
     return (inputFile != 0);
 }
 
-std::string UrlParser::getFileDirectory(const std::string url) {
+std::string URLParser::getFileDirectory(const std::string url) {
     size_t pos = url.find_last_of("\\/") + 1;
     std::string fileDirectory = url.substr(0, pos);
     return fileDirectory;
 }
 
-std::string UrlParser::getFileNameWithExtension(const std::string url) {
+std::string URLParser::getFileNameWithExtension(const std::string url) {
     size_t pos = url.find_last_of("\\/") + 1;
     std::string fileNameWithExtension = url.substr(pos, url.length());
     return fileNameWithExtension;
 }
 
-std::string UrlParser::getFileExtension(const std::string url) {
+std::string URLParser::getFileExtension(const std::string url) {
     size_t pos = url.rfind(".") + 1;
     std::string fileExtension = url.substr( pos, url.length());
     return fileExtension;
 }
 
-std::string UrlParser::replaceFileExtension(const std::string url, const std::string newFileExtension) {
+std::string URLParser::replaceFileExtension(const std::string url, const std::string newFileExtension) {
     size_t pos = url.find_last_of(".") + 1;
     std::string newUrl = url.substr(0, pos) + newFileExtension;
     return newUrl;
 }
 
-std::string UrlParser::getRelativePath(const std::string& bPath, const std::string absolutePath) {
+std::string URLParser::getRelativePath(const std::string& bPath, const std::string absolutePath) {
     std::string basePath(getFileDirectory(bPath));
     std::string absPath(getFileDirectory(absolutePath));
     std::string fileName(getFileNameWithExtension(absolutePath));
