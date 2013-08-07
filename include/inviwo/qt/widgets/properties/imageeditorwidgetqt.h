@@ -63,6 +63,8 @@ public:
     SimpleGraphicsView(QWidget* parent=0);
     ~SimpleGraphicsView();
     void setDialogScene(QGraphicsScene* scene);
+    void addRectangle(QPointF mstartPoint, QPointF mendPoint);
+    std::vector<QRectF> getRectList();
 protected:
     void mousePressEvent(QMouseEvent* e);
     void mouseDoubleClickEvent(QMouseEvent* e);
@@ -85,9 +87,9 @@ public:
     void setParent(ImageEditorWidgetQt*);
     QGraphicsScene *getScene() {return scene_;}
     QGraphicsView *getView() {return view_;}
-    void addRectangle();
+    void addRectangleTest();
     void addBackGroundImage(std::string imagePath);
-    void generateWidget();
+    void generateWidget();    
     ImageEditorWidgetQt* mainParentWidget_;
     QToolBar* toolBar_;
     QToolButton *reDoButton_;

@@ -22,6 +22,14 @@ void SimpleGraphicsView::setDialogScene(QGraphicsScene* scene) {
     scene_ = scene;
 }
 
+void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint) {
+    QAbstractGraphicsShapeItem *i = scene_->addRect( mStartPoint.x(), mStartPoint.y(),  deltaPoint.x(), deltaPoint.y() );
+    i->setFlag(QGraphicsItem::ItemIsMovable);        
+    i->setBrush( QColor(0,0,128,0) );
+    i->setPen( QPen(QColor(255, 0, 0), 2) );
+    i->setZValue(255);
+}
+
 void SimpleGraphicsView::mouseDoubleClickEvent(QMouseEvent* e) {    
     QGraphicsView::mouseDoubleClickEvent(e);
 }
@@ -33,14 +41,38 @@ void SimpleGraphicsView::mousePressEvent(QMouseEvent* e) {
     QPoint currentPoint = e->pos();
     QList<QGraphicsItem*> graphicsItems =items(e->pos());    
     //graphicsItems.size()==1 because of background pixmap item
-    if(e->button()==Qt::LeftButton && graphicsItems.size()==1) {
+    if(e->button()==Qt::LeftButton && graphicsItems.size()<2) {
+        //Left click on canvas region, where there is no rectangle item
         startPoint_ = currentPoint;
         rubberBandActive_ = true;
     }
-    else
+    else {
         rubberBandActive_ = false;
+        if (e->modifiers() == Qt::ControlModifier) {
+            //Delete rectangle             
+            for (int i=0; i<graphicsItems.size(); i++) {
+                QGraphicsRectItem *rectItem = qgraphicsitem_cast<QGraphicsRectItem*>(graphicsItems[i]);
+                if (rectItem) {                    
+                    scene_->removeItem(rectItem);                    
+                }
+            }
+        }
+    }
     //e->accept();
     QGraphicsView::mousePressEvent(e);    
+}
+
+std::vector<QRectF> SimpleGraphicsView::getRectList() {
+     std::vector<QRectF> rectList;
+     QList<QGraphicsItem*> graphicsItems = items(); 
+     for (int i=0; i<graphicsItems.size(); i++) {
+         QGraphicsRectItem *rectItem = qgraphicsitem_cast<QGraphicsRectItem*>(graphicsItems[i]);
+         if (rectItem) {
+            rectList.push_back(QRectF(rectItem->mapRectToScene(rectItem->rect()))) ;             
+         }
+     }
+
+     return rectList;
 }
 
 void SimpleGraphicsView::mouseReleaseEvent(QMouseEvent *e)
@@ -50,11 +82,7 @@ void SimpleGraphicsView::mouseReleaseEvent(QMouseEvent *e)
     QPointF deltaPoint = mendPoint - mStartPoint;
 
     if (rubberBandActive_ && ( deltaPoint.x()>5 && deltaPoint.y()>5) ) {
-        QAbstractGraphicsShapeItem *i = scene_->addRect( mStartPoint.x(), mStartPoint.y(),  deltaPoint.x(), deltaPoint.y() );
-        i->setFlag(QGraphicsItem::ItemIsMovable);        
-        i->setBrush( QColor(0,0,128,0) );
-        i->setPen( QPen(QColor(255, 0, 0), 2) );
-        i->setZValue(255);
+        addRectangle(mStartPoint, deltaPoint);
     }
     rubberBandActive_ = false;
     //e->accept();
@@ -114,13 +142,13 @@ void ImageLabelWidget::generateWidget(){
     setLayout(editorLayout);
  
     //test rectangle
-    //addRectangle();
+    //addRectangleTest();
 
     //connect(unDoButton_,SIGNAL(pressed()),editor_,SLOT(undo()));
     //connect(reDoButton_,SIGNAL(pressed()),editor_,SLOT(redo()));
 }
 
-void ImageLabelWidget::addRectangle() {    
+void ImageLabelWidget::addRectangleTest() {
     QAbstractGraphicsShapeItem *i = scene_->addRect( 0, 0 , 25, 25 );
     i->setFlag(QGraphicsItem::ItemIsMovable);
     i->setBrush( QColor(0,0,128,0) );
@@ -195,13 +223,39 @@ void ImageEditorWidgetQt::editImageLabel(){
 void ImageEditorWidgetQt::loadImageLabel(){
     if (tmpPropertyValue_!=static_cast<FileProperty*>(property_)->get()) {
         tmpPropertyValue_ = static_cast<FileProperty*>(property_)->get();
-        imageLabelWidget_->addBackGroundImage(tmpPropertyValue_);        
+        imageLabelWidget_->addBackGroundImage(tmpPropertyValue_);
+        
+        ImageEditorProperty* imageProperty  = static_cast<ImageEditorProperty*>(property_);
+        const std::vector<ImageLabel*> labels = imageProperty->getLabels();
+
+        for (size_t i=0; i<labels.size(); i++) {
+            QPointF topLeft(labels[i]->getTopLeft()[0], labels[i]->getTopLeft()[1]);
+            QPointF rectSize(labels[i]->getSize()[0], labels[i]->getSize()[1]);
+            imageLabelWidget_->view_->addRectangle(topLeft, rectSize);
+        }
     }
 }
 
 //Function writes content of the textEditor_ to the file
 bool ImageEditorWidgetQt::writeImageLabel(){
     //Close the file to open it with new flags
+    ImageEditorProperty* imageEditorProperty = dynamic_cast<ImageEditorProperty*>(property_);
+    if (imageEditorProperty) {
+        //Save labels
+        std::stringstream ss;               
+        std::vector<QRectF> rectList = imageLabelWidget_->view_->getRectList(); 
+
+        if (rectList.size()) 
+            imageEditorProperty->clearLabels();
+
+        for (size_t i=0; i<rectList.size(); i++) {
+            glm::vec2 topLeft(rectList[i].topLeft().x(), rectList[i].topLeft().y());
+            glm::vec2 rectSize(rectList[i].size().width(), rectList[i].size().height());
+            ss.str("");
+            ss<<"Label"<<i+1;
+            imageEditorProperty->addLabel(topLeft, rectSize, ss.str());
+        }                    
+    }
     return true;
 }
 
@@ -213,9 +267,7 @@ bool ImageEditorWidgetQt::saveDialog(){
             "Do you want to save your changes?"),
             QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         if (ret == QMessageBox::Save){
-            if (dynamic_cast<ImageEditorProperty*>(property_)) {
-                //Save labels
-            }            
+            writeImageLabel();              
         }
         else if (ret == QMessageBox::Cancel)
             return false;
@@ -226,8 +278,10 @@ bool ImageEditorWidgetQt::saveDialog(){
 void ImageEditorWidgetQt::updateFromProperty() {
     StringProperty* stringProp = dynamic_cast<StringProperty*>(property_);
     FileProperty* fileProp = dynamic_cast<FileProperty*>(property_);
-    if (fileProp)
+    if (fileProp) {
         fileWidget_->updateFromProperty();
+        loadImageLabel();
+    }    
 }
 
 

@@ -4,6 +4,22 @@
 #include <inviwo/core/properties/fileproperty.h>
 
 namespace inviwo {
+
+class ImageLabel : public IvwSerializable {
+public :
+    ImageLabel();
+    ImageLabel(glm::vec2 startPoint, glm::vec2 rectSize, std::string name);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+    std::string getName() const {return name_;}
+    glm::vec2 getTopLeft() const {return startPoint_;}
+    glm::vec2 getSize() const {return rectSize_;}
+private:
+    std::string name_;
+    glm::vec2 startPoint_;
+    glm::vec2 rectSize_;
+};
+
 /** class ImageEditorProperty
 *  A class for file representations.
 *  Holds the value of the path to a file as a string.
@@ -13,8 +29,7 @@ namespace inviwo {
 
 class ImageEditorProperty : public FileProperty {
 
-public:
-
+public:    
     /** 
      * \brief Constructor for the ImageFileProperty
      *
@@ -29,6 +44,13 @@ public:
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
                  PropertySemantics::Type semantics = PropertySemantics::Editor);
     virtual std::string getClassName()  const { return "ImageEditorProperty"; }
+    void addLabel(glm::vec2 start, glm::vec2 end, std::string name="");
+    std::vector<ImageLabel*> getLabels() const;
+    void clearLabels();
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);    
+private:
+    std::vector<ImageLabel*> labels_;
 };
 
 } // namespace
