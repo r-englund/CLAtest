@@ -523,6 +523,10 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
             QGraphicsScene::mousePressEvent(e);
         }
     }
+    else if (e->button() == Qt::RightButton) {
+        e->accept();
+        return;
+    }
 }
 
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
@@ -660,7 +664,7 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
         selectedGraphicsItems = selectedItems();
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
             ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
-            if (processorGraphicsItem) {
+            if (processorGraphicsItem && !processorGraphicsItem->isEditingProcessorName()) {
                 Processor* processor = processorGraphicsItem->getProcessor();
                 removeProcessor(processor);
             }
@@ -707,6 +711,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
                     removeInspectorNetwork(selectedPort);
             */
         } else {
+            processorGraphicsItem->setSelected(true);
             // Processor context menu
             QMenu menu;
             QAction* renameAction = menu.addAction(tr("Rename"));
@@ -785,6 +790,9 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
             // create processor, add it to processor network, and generate it's widgets
             Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
             addProcessor(processor, e->scenePos());
+            ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(processor->getIdentifier());
+            if (processorGraphicsItem)
+                processorGraphicsItem->setSelected(true);        
             e->setAccepted(true);
             e->acceptProposedAction();
         }
@@ -868,7 +876,16 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     return true;
 }
 
-
+void NetworkEditor::updatePropertyListWidget(){
+    QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
+    PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+    for (int i=0; i<selectedGraphicsItems.size(); i++) {
+        ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+        if (processorGraphicsItem) {
+            propertyListWidget_->showProcessorProperties(processorGraphicsItem->getProcessor());
+        }
+    }
+}
 
 ////////////////////////
 //   HELPER METHODS   //

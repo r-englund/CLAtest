@@ -43,6 +43,8 @@ public:
     QPointF getShortestBoundaryPointTo(QPointF inPos);
 
     void notify();
+    void updatePropertyListWidget();
+    bool isEditingProcessorName();
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ProcessorGraphicsType };

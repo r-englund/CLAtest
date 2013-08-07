@@ -32,11 +32,13 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     setGraphicsEffect(processorShadowEffect);
 
     nameLabel_ = new LabelGraphicsItem(this);
+    nameLabel_->setCrop(8,7);
     nameLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight);
     nameLabel_->setDefaultTextColor(Qt::white);
     nameLabel_->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
 
     classLabel_ = new LabelGraphicsItem(this);
+    classLabel_->setCrop(8,7);
     classLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight*2.5);
     classLabel_->setDefaultTextColor(Qt::lightGray);
     classLabel_->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
@@ -50,18 +52,8 @@ ProcessorGraphicsItem::~ProcessorGraphicsItem() {
 void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     processor_ = processor;
     if (processor) {
-        QString name = QString::fromStdString(processor_->getIdentifier());
-        if(name.length()>17){
-            nameLabel_->setToolTip(name);
-            name = name.left(8) + "..." + name.right(7);
-        }
-        nameLabel_->setText(name);
-        QString className = QString::fromStdString(processor_->getClassName());
-        if(className.length()>17){
-            classLabel_->setToolTip(className);
-            className = className.left(8) + "..." + className.right(7);
-        }
-        classLabel_->setText(className);
+        nameLabel_->setText(QString::fromStdString(processor_->getIdentifier()));
+        classLabel_->setText(QString::fromStdString(processor_->getClassName()));
         addObservation(processor_);
         processor_->addObserver(this);
     } else {
@@ -373,6 +365,14 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
         paintProgressBar(p, processor_->getProgress());
 
     p->restore();
+}
+
+void ProcessorGraphicsItem::updatePropertyListWidget(){
+    NetworkEditor::getRef().updatePropertyListWidget();
+}
+
+bool ProcessorGraphicsItem::isEditingProcessorName(){
+    return (nameLabel_->textInteractionFlags() == Qt::TextEditorInteraction);
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {

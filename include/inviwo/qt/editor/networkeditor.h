@@ -57,6 +57,8 @@ public:
     bool saveNetwork(std::string fileName);
     bool loadNetwork(std::string fileName);
 
+    void updatePropertyListWidget();
+
     const ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() const { return processorNetworkEvaluator_; }
 

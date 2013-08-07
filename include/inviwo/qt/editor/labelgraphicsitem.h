@@ -15,11 +15,24 @@ public:
     QString text() const;
     void setText(const QString &);
 
+    QString croppedText() const;
+    void setCrop(int, int);
+    bool isCropped() const;
+
 protected:
+    bool doCrop(const QString &str);
+    void updateCrop();
+    void updateGraphicsItem();
+
     void keyPressEvent(QKeyEvent* event);
+    void focusInEvent(QFocusEvent* event);
     void focusOutEvent(QFocusEvent* event);
 
+private:
+    int maxBefore_;
+    int maxAfter_;
     unsigned int labelHeight_;
+    QString orgText_;
 };
 
 } // namespace
