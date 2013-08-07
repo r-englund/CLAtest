@@ -136,7 +136,7 @@ namespace inviwo{
     }
 
     void PythonEditorWidget::fileChanged(std::string fileName){
-        std::string msg = "The file " + UrlParser::getFileNameWithExtension(scriptFileName_) + " has been modified outside of Inwivo, do you want to reload its contents";
+        std::string msg = "The file " + URLParser::getFileNameWithExtension(scriptFileName_) + " has been modified outside of Inwivo, do you want to reload its contents";
         int ret = QMessageBox::question(this,"Python Editor",msg.c_str(),"Yes","No");
         if(ret == 0){//yes
             readFile();

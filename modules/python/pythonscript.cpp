@@ -33,7 +33,7 @@ std::string PythonScript::getLog() const {
 }
 
 bool PythonScript::load(const std::string& filename, bool pCompile) {
-    if(!UrlParser::fileExists(filename)){
+    if(!URLParser::fileExists(filename)){
         LogError("File could not be found: " << filename );
         return false;
     }
