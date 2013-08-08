@@ -48,10 +48,9 @@ void ImageOverlay::initialize() {
 	if( FT_Init_FreeType(&fontlib_) )
 		std::cout << "Major FT error.\n";
 
-	error = FT_New_Face( fontlib_, 
-		"../modules/fontrendering/fonts/arial.ttf",
-		0,
-		&fontface_);
+    std::string arialfont = IVW_DIR + "modules/fontrendering/fonts/arial.ttf";
+
+	error = FT_New_Face( fontlib_, arialfont.c_str(), 0, &fontface_);
 
 	if(error == FT_Err_Unknown_File_Format)
 		std::cout << "FT2 File opened and read, format unsupported.\n";
