@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref0">
+        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-700" />
@@ -18,14 +18,14 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref2">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-425" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="995" y="412" />
+                    <position x="1003" y="442" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -40,7 +40,7 @@
                 <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
-        <Processor type="ImageOverlay" identifier="ImageOverlay" id="ref1">
+        <Processor type="ImageOverlay" identifier="ImageOverlay" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-600" />
@@ -86,13 +86,13 @@
                     <value content="24" />
                 </Property>
                 <Property type="FloatVec2Property" identifier="Position" displayName="Position">
-                    <value x="0.063100003" y="0" />
+                    <value x="0.2087" y="0" />
                     <minvalue x="0" y="0" />
                     <maxvalue x="1" y="1" />
                     <increment x="0.0099999998" y="0.0099999998" />
                 </Property>
                 <Property type="StringProperty" identifier="Text" displayName="Text">
-                    <value content="PURPLE     AREA" />
+                    <value content="PINK     AREA" />
                 </Property>
             </Properties>
         </Processor>
@@ -100,15 +100,15 @@
     <Connections>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref1" />
             </OutPort>
             <InPort identifier="inport0">
-                <Processor type="ImageOverlay" identifier="ImageOverlay" reference="ref1" />
+                <Processor type="ImageOverlay" identifier="ImageOverlay" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="ImageOverlay" identifier="ImageOverlay" reference="ref1" />
+                <Processor type="ImageOverlay" identifier="ImageOverlay" reference="ref2" />
             </OutPort>
             <InPort identifier="inport0">
                 <Processor type="ImageOverlay" identifier="ImageOverlay1" reference="ref3" />
@@ -119,7 +119,7 @@
                 <Processor type="ImageOverlay" identifier="ImageOverlay1" reference="ref3" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref2" />
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>
