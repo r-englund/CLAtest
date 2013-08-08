@@ -6,7 +6,7 @@
 #include <inviwo/core/util/stringconversion.h>
 
 #include "pythoneditorwidget.h"
-#include "pyinviwo.h"
+#include "pythoninterface/pyinviwo.h"
 
 namespace inviwo {
 

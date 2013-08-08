@@ -12,7 +12,7 @@ ivw_module(Python)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/python/pyinviwo.h
+    ${IVW_MODULE_DIR}/python/pythoninterface/pyinviwo.h
     ${IVW_MODULE_DIR}/python/pyvariant.h
     ${IVW_MODULE_DIR}/python/pythonmodule.h
     ${IVW_MODULE_DIR}/python/pythonscript.h
@@ -32,7 +32,7 @@ source_group("MOC Files" FILES ${MOC_FILES})
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/python/pythoneditorwidget.cpp
-    ${IVW_MODULE_DIR}/python/pyinviwo.cpp
+    ${IVW_MODULE_DIR}/python/pythoninterface/pyinviwo.cpp
     ${IVW_MODULE_DIR}/python/pythonscript.cpp
     ${IVW_MODULE_DIR}/python/pythonmodule.cpp
     ${IVW_MODULE_DIR}/python/pyvariant.cpp
