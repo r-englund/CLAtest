@@ -23,22 +23,23 @@ public:
     MappingWidget(QWidget* parent);
     ~MappingWidget();
     void notify();
+	void updateWidget();
 
 private:
-	void drawEventPropertyWidgets();
-	void updateWidget();
+	void drawEventPropertyWidgets();	
 	void emptyLayout(QVBoxLayout* layout);
 	void removeEventPropertyWidgets();
-	QString intToQString(int num); // For testing
+	void buildLayout();
+	std::vector<Processor*> findProcessorsWithInteractionHandlers(std::vector<Processor*> processors);
 
 	ProcessorNetwork* processorNetwork_;
 	EventPropertyManager* eventPropertyManager_;
-	std::vector<Processor*> curProcessorList_;
+	std::vector<Processor*> processorsWithInteractionHandlers_;
+	std::vector<Processor*> prevProcessorsWithInteractionHandlers_;
 
-    QLabel* label_;
 	QVBoxLayout *botLayout_;
-	QFrame* frame_;
 	QComboBox* comboBox_;
+	QVBoxLayout* mainLayout;
 
 	int currentIndex_;
 public slots:

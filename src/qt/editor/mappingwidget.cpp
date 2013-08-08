@@ -11,12 +11,21 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), 
     addObservation(processorNetwork_);
     processorNetwork_->addObserver(this);             
 	
+	buildLayout();	
+	currentIndex_ = 0;
+
+	processorsWithInteractionHandlers_ = findProcessorsWithInteractionHandlers(processorNetwork_->getProcessors());
+    updateWidget();
+}
+
+MappingWidget::~MappingWidget() {}
+
+void MappingWidget::buildLayout() {
 	// Components needed for layout
-    frame_ = new QFrame();
+	QFrame* frame_ = new QFrame();
 	botLayout_ = new QVBoxLayout();
 	comboBox_ = new QComboBox();
-	label_ = new QLabel();
-	QVBoxLayout* mainLayout = new QVBoxLayout();
+	mainLayout = new QVBoxLayout();
 	QVBoxLayout* topLayout = new QVBoxLayout();
 	QScrollArea* scrollArea = new QScrollArea();
 	QWidget* area = new QWidget();
@@ -24,7 +33,6 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), 
 	// mainLayout contains topLayout and scrollArea.
 	// scrollArea contains a widget with the botLayout.
 	// Eventpropertywidgets will be added to the botlayout.
-	topLayout->addWidget(label_);
 	topLayout->addWidget(comboBox_);
 	area->setLayout(botLayout_);
 	scrollArea->setWidget(area);
@@ -33,17 +41,15 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), 
 	mainLayout->addWidget(scrollArea);
 	frame_->setLayout(mainLayout);
 	setWidget(frame_);
-
-	currentIndex_ = 0;
+	
 	QObject::connect(comboBox_, SIGNAL(activated(int)), this, SLOT(comboBoxChange()));
-
-    updateWidget();
 }
 
-MappingWidget::~MappingWidget() {}
-
 void MappingWidget::notify() {
-    updateWidget();      
+	processorsWithInteractionHandlers_ = findProcessorsWithInteractionHandlers(processorNetwork_->getProcessors());
+	if (processorsWithInteractionHandlers_.size() != prevProcessorsWithInteractionHandlers_.size()) {
+		updateWidget();
+	} 
 }
 
 void MappingWidget::updateWidget() {
@@ -51,8 +57,8 @@ void MappingWidget::updateWidget() {
 		currentIndex_ =  comboBox_->currentIndex();
 	}
 
-	curProcessorList_ = processorNetwork_->getProcessors();
-	comboBox_->clear();
+	emptyLayout(mainLayout); // Clear layout of widgets
+	buildLayout();
 
 	std::vector<EventProperty*> eventProperties, tmp;
 	std::vector<InteractionHandler*> interactionHandlers;
@@ -60,39 +66,36 @@ void MappingWidget::updateWidget() {
 	PropertyOwner* eventPropertyOwner;
 
 	// Get all eventproperties from the processornetwork
-	for (size_t i = 0; i < curProcessorList_.size(); ++i) {
-		if (curProcessorList_.at(i)->hasInteractionHandler()) {			
-			interactionHandlers = curProcessorList_.at(i)->getInteractionHandlers();
-			for (size_t j = 0; j < interactionHandlers.size(); ++j) {
-				eventPropertyOwner = dynamic_cast<PropertyOwner*>(interactionHandlers.at(j));
-				if (eventPropertyOwner) /* Check if interactionhandlar has properties */{
-					tmp = eventPropertyOwner->getPropertiesByType<EventProperty>();
-					eventProperties.insert(eventProperties.end(), tmp.begin(), tmp.end());
-				}
+	for (size_t i = 0; i < processorsWithInteractionHandlers_.size(); ++i) {	
+		interactionHandlers = processorsWithInteractionHandlers_.at(i)->getInteractionHandlers();
+		for (size_t j = 0; j < interactionHandlers.size(); ++j) {
+			eventPropertyOwner = dynamic_cast<PropertyOwner*>(interactionHandlers.at(j));
+			if (eventPropertyOwner) /* Check if interactionhandlar has properties */{
+				tmp = eventPropertyOwner->getPropertiesByType<EventProperty>();
+				eventProperties.insert(eventProperties.end(), tmp.begin(), tmp.end());
 			}
-			// Add vector of eventproperties to map with processor identifier as key
-			eventPropertyMap[curProcessorList_.at(i)->getIdentifier()] = eventProperties;
-			comboBox_->addItem(curProcessorList_.at(i)->getIdentifier().c_str());
-			eventProperties.clear();
 		}
+		// Add vector of eventproperties to map with processor identifier as key
+		eventPropertyMap[processorsWithInteractionHandlers_.at(i)->getIdentifier()] = eventProperties;
+		comboBox_->addItem(processorsWithInteractionHandlers_.at(i)->getIdentifier().c_str());
+		eventProperties.clear();		
 	}
 
 	if (currentIndex_ > comboBox_->count()-1) currentIndex_ = 0;
 	
-	label_->setText("Size of processor network: " + intToQString(curProcessorList_.size()));	
 	eventPropertyManager_->setEventPropertyMap(eventPropertyMap);
-	if (!botLayout_->isEmpty()) emptyLayout(botLayout_); // Clear layout of widgets
-	
+
 	// Draw eventpropertywidgets
 	if (comboBox_->count() > 0) {
 		comboBox_->setCurrentIndex(currentIndex_);
 		drawEventPropertyWidgets(); 
 	}
+
+	prevProcessorsWithInteractionHandlers_ = processorsWithInteractionHandlers_;
 }
 
 // Draw the widgets for all EventProperties in EventPropertyManager
 void MappingWidget::drawEventPropertyWidgets() {	
-
 	std::string identifier = (const char *)comboBox_->currentText().toLatin1();
 	eventPropertyManager_->setActiveProcessor(identifier.c_str());
 	std::vector<EventProperty*> properties = eventPropertyManager_->getEventPropertiesFromMap();
@@ -116,16 +119,19 @@ void MappingWidget::emptyLayout(QVBoxLayout* layout) {
 	}
 }
 
-// For testing
-QString MappingWidget::intToQString(int num ) {
-    std::stringstream convert;
-    convert << num;
-    return convert.str().c_str();
-}
-
 void MappingWidget::comboBoxChange() {
 	emptyLayout(botLayout_);
 	drawEventPropertyWidgets();
+}
+
+std::vector<Processor*> MappingWidget::findProcessorsWithInteractionHandlers(std::vector<Processor*> processors) {
+	std::vector<Processor*> processorsWithInteractionHandlers;
+	for (size_t i = 0; i < processors.size(); ++i) {
+		if (processors.at(i)->hasInteractionHandler()) {
+			processorsWithInteractionHandlers.push_back(processors.at(i));
+		}
+	}
+	return processorsWithInteractionHandlers;
 }
 
 } // namespace
