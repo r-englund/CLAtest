@@ -15,7 +15,7 @@ namespace inviwo {
     class PyInfoMethod : public PythonMethod{
     public:
         char *getName(){return "info";}
-        char *getDesc(){return "info() Prints documentation of the module's functions.";}
+        char *getDesc(){return "info()\tPrints documentation of the module's functions.";}
         virtual PyCFunction getFunc(){return py_info;}
 
         static void printAllDescriptions(){
@@ -23,12 +23,9 @@ namespace inviwo {
             for(int i = 0;i<methods_.size();i++){
                 std::string msg = "print \"";
                 msg += methods_[i]->getDesc();
-                msg += "\"";
+                msg += "\" ";
                 PyRun_SimpleString(msg.c_str());
-                /* ss << methods_[i]->getName();
-                ss << ": ";
-                ss << methods_[i]->getDesc();
-                ss<< std::endl;*/
+                PyRun_SimpleString("print \" \"");
             }
             //return ss.str();
         }

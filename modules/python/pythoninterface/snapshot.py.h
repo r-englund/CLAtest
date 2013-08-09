@@ -16,14 +16,14 @@ namespace inviwo {
     class PySnapshotMethod : public PythonMethod{
     public:
         char *getName(){return "snapshot";}
-        char *getDesc(){return "snapshot(filename, [canvas]). Saves a snapshot of the specified canvas to the given file. If no canvas name is passed, the first canvas in the network is chosen.";}
+        char *getDesc(){return "snapshot(filename, [canvas])\tSaves a snapshot of the specified canvas to the given file. If no canvas name is passed, the first canvas in the network is chosen.";}
         virtual PyCFunction getFunc(){return py_snapshot;}
     };
 
     class PySnapshotCanvasMethod : public PythonMethod{
     public:
         char *getName(){return "snapshotCanvas";}
-        char *getDesc(){return "snapshotCanvas(i, filename). Saves a snapshot of the ith canvas to the given file.";}
+        char *getDesc(){return "snapshotCanvas(i, filename)\tSaves a snapshot of the ith canvas to the given file.";}
         virtual PyCFunction getFunc(){return py_snapshotCanvas;}
     };
 

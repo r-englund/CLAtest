@@ -35,9 +35,9 @@ static PyObject* py_print(PyObject* /*self*/, PyObject* args) {
         LogWarnCustom("inviwo.Python.py_print", "failed to parse log message");
     }
     else {
-        std::string message(msg);
-        if(message.size()!=0){
-            inviwo::PythonEditorWidget::getPythonEditorWidget()->appendToOutput(msg);
+        if(len!=0){
+            if(!(len==1 && (msg[0] == '\n' || msg[0] == '\r' || msg[0] == '\0')))
+                inviwo::PythonEditorWidget::getPythonEditorWidget()->appendToOutput(msg);
         }
     }
     Py_RETURN_NONE;
@@ -81,6 +81,22 @@ namespace inviwo{
             if(!Py_InitModule("inviwo",inviwo_methods)){
                 LogWarn("Failed to init python module 'inviwo'");
             }
+
+
+            std::vector<PyMethodDef> defs;
+            defs.push_back(inviwo_methods[0]);
+            defs.push_back(inviwo_methods[1]);
+            defs.push_back(inviwo_methods[2]);
+            defs.push_back(inviwo_methods[3]);
+            defs.push_back(inviwo_methods[4]);
+            defs.push_back(inviwo_methods[5]);
+            defs.push_back(inviwo_methods[6]);
+            defs.push_back(inviwo_methods[16]);
+
+            if(!Py_InitModule("inviwo_test",defs.data())){
+                LogWarn("Failed to init python module 'inviwo_test'");
+            }
+
             LogInfo("Python module 'inviwo' initialized");
             
 

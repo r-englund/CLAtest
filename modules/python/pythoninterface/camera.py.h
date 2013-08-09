@@ -17,7 +17,7 @@ namespace inviwo {
     class PySetCameraFocusMethod : public PythonMethod{
     public:
         char *getName(){return "setCameraFocus";}
-        char *getDesc(){return "setCameraFocus(processor name, property id, tuple). Function to set the cameras focal point.";}
+        char *getDesc(){return "setCameraFocus(processor name, property id, tuple)\tFunction to set the cameras focal point.";}
         virtual PyCFunction getFunc(){return py_setCameraFocus;}
 
     };
@@ -25,7 +25,7 @@ namespace inviwo {
     class PySetCameraUpMethod : public PythonMethod{
     public:
         char *getName(){return "setCameraUp";}
-        char *getDesc(){return "setCameraUpDirection(processor name, property id, tuple). Function to set the cameras up direction.";}
+        char *getDesc(){return "setCameraUpDirection(processor name, property id, tuple)\tFunction to set the cameras up direction.";}
         virtual PyCFunction getFunc(){return py_setCameraUp;}
 
     };
@@ -33,7 +33,7 @@ namespace inviwo {
     class PySetCameraPosMethod : public PythonMethod{
     public:
         char *getName(){return "setCameraPosition";}
-        char *getDesc(){return "setCameraUpDirection(processor name, property id, tuple). Function to set the cameras position.";}
+        char *getDesc(){return "setCameraUpDirection(processor name, property id, tuple)\tFunction to set the cameras position.";}
         virtual PyCFunction getFunc(){return py_setCameraPos;}
 
     };

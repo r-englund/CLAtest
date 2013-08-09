@@ -16,14 +16,14 @@ namespace inviwo {
     class PyListPropertiesMethod : public PythonMethod{
     public:
         char *getName(){return "listProperties";}
-        char *getDesc(){return "listProperties(processor name). List all properties for a processor.";}
+        char *getDesc(){return "listProperties(processor name)\tList all properties for a processor.";}
         virtual PyCFunction getFunc(){return py_listProperties;}
 
     };
     class PyListProcessorsMethod : public PythonMethod{
     public:
         char *getName(){return "listProcessors";}
-        char *getDesc(){return "listProcessors(). Lists all processors in the current network.";}
+        char *getDesc(){return "listProcessors()\tLists all processors in the current network.";}
         virtual PyCFunction getFunc(){return py_listProcesoors;}
 
     };

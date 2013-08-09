@@ -16,14 +16,14 @@ namespace inviwo {
     class PyCanvasCountMethod : public PythonMethod{
     public:
         char *getName(){return "canvasCount";}
-        char *getDesc(){return "canvasCount(). returns the number of canvases in the current network.";}
+        char *getDesc(){return "canvasCount()\tReturns the number of canvases in the current network.";}
         virtual PyCFunction getFunc(){return py_canvascount;}
     };
 
     class PySetViewportMethod : public PythonMethod{
     public:
         char *getName(){return "setViewport";}
-        char *getDesc(){return "setViewport(width,height). Resizes all the canvases in the network to the given size.";}
+        char *getDesc(){return "setViewport(width,height)\tResizes all the canvases in the network to the given size.";}
         virtual PyCFunction getFunc(){return py_setViewport;}
     };
 
