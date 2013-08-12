@@ -82,21 +82,6 @@ namespace inviwo{
                 LogWarn("Failed to init python module 'inviwo'");
             }
 
-
-            std::vector<PyMethodDef> defs;
-            defs.push_back(inviwo_methods[0]);
-            defs.push_back(inviwo_methods[1]);
-            defs.push_back(inviwo_methods[2]);
-            defs.push_back(inviwo_methods[3]);
-            defs.push_back(inviwo_methods[4]);
-            defs.push_back(inviwo_methods[5]);
-            defs.push_back(inviwo_methods[6]);
-            defs.push_back(inviwo_methods[16]);
-
-            if(!Py_InitModule("inviwo_test",defs.data())){
-                LogWarn("Failed to init python module 'inviwo_test'");
-            }
-
             LogInfo("Python module 'inviwo' initialized");
             
 
