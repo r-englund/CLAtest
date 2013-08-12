@@ -29,8 +29,11 @@ namespace inviwo {
          * 
          * @param TransferFunctionDataPoint * Pointer to the point where the line starts
          * @param TransferFunctionDataPoint * Pointer to the point where the line ends
-         */
-        TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint*, TransferFunctionEditorControlPoint*);
+		 */
+		TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, TransferFunctionEditorControlPoint* finish);
+
+
+		TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, int dir);
         /** 
          * \brief TransferFunctionEditorLineItem Constructor
          *
@@ -38,6 +41,9 @@ namespace inviwo {
          */
         TransferFunctionEditorLineItem();
 		~TransferFunctionEditorLineItem();
+
+		TransferFunctionEditorControlPoint* getStart();
+		TransferFunctionEditorControlPoint* getFinish();
 		/** 
 		 * \brief Sets the lines starting point
 		 *
@@ -55,16 +61,8 @@ namespace inviwo {
 		 * @param TransferFunctionDataPoint * finish the new end-point
 		 */
 		void setFinish(TransferFunctionEditorControlPoint* finish);
-        /** 
-         * \brief returns the start-position
-         *
-         * Returns the position of the start-point as a QPointF
-         * 
-         * @return const QPointF position of start-point
-         */
-        //const QPointF getStart();
-        //const QPointF getFinish();
 
+		void setDirection(int dir);
 
         //override for qgraphicsitem_cast (refer qt documentation)
         enum { Type = UserType + ConnectionGraphicsType + 1};
@@ -72,10 +70,6 @@ namespace inviwo {
 
         virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
         QRectF boundingRect() const;
-
-        int getId();
-        void setId(int id);
-
 
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent);
@@ -86,6 +80,7 @@ namespace inviwo {
         TransferFunctionEditorControlPoint* start_;
         TransferFunctionEditorControlPoint* finish_;
 		QPointF mouseDownPos_;
+		int direction_;
     };
 
 }// namespace

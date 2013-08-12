@@ -4,6 +4,16 @@ namespace inviwo {
 	TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunc)
 		:transferFunction_(transferFunc)
 	{
+
+		leftEdgeLine_ = new TransferFunctionEditorLineItem();
+		rightEdgeLine_ = new TransferFunctionEditorLineItem();
+
+		leftEdgeLine_->setZValue(0);
+		leftEdgeLine_->setDirection(1);
+
+		rightEdgeLine_->setZValue(0);
+		rightEdgeLine_->setDirection(2);
+		
 		//VLDEnable;
 
 		//if the editor is loaded from a saved state this adds graphicsitems to the editor for each datapoint in the Transferfunction
@@ -17,6 +27,20 @@ namespace inviwo {
 				addItem(lines_.back());
 			}
 		}
+	
+		if (transferFunction_->getNumberOfDataPoints() == 0){
+			addPoint(new vec2(0.0, 0.0));
+			addPoint(new vec2(255.0, 100.0));
+		}
+
+		leftEdgeLine_->setStart(points_.front());
+		leftEdgeLine_->setFinish(points_.front());
+		rightEdgeLine_->setStart(points_.back());
+		rightEdgeLine_->setFinish(points_.back());
+
+		addItem(leftEdgeLine_);
+		addItem(rightEdgeLine_);
+
 		sortControlPoints();
 		sortLines();
 		update();
@@ -78,7 +102,6 @@ namespace inviwo {
 
 		if (e->button() == Qt::LeftButton && dist < 10.0f){
 			if (items(mouseDownPos_).isEmpty()){
-				//if (itemAt(mouseDownPos_) == NULL || itemAt(mouseDownPos_)->type() == TransferFunctionEditorLineItem::Type){
 				addPoint(e);
 			}
 		}
@@ -100,10 +123,9 @@ namespace inviwo {
 		}
 	}
 
-	void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
-		vec2* pos = new vec2(e->scenePos().x(), e->scenePos().y());
+	void TransferFunctionEditor::addPoint(vec2* pos){
 		pos->x = floor(pos->x + 0.5f);
-		vec4* rgba = new vec4(e->scenePos().y()/100.0f);
+		vec4* rgba = new vec4(pos->y/100.0f);
 		TransferFunctionDataPoint* newPoint = new TransferFunctionDataPoint(pos, rgba);
 		transferFunction_->addPoint(newPoint);
 		points_.push_back(new TransferFunctionEditorControlPoint(newPoint));
@@ -119,11 +141,27 @@ namespace inviwo {
 		points_.back()->setSelected(true);
 		sortControlPoints();
 		sortLines();
+
+		leftEdgeLine_->setStart(points_.front());
+		leftEdgeLine_->setFinish(points_.front());
+		leftEdgeLine_->setVisible(true);
+
+		rightEdgeLine_->setStart(points_.back());
+		rightEdgeLine_->setFinish(points_.back());
+		rightEdgeLine_->setVisible(true);
+
+
+
 		setControlPointNeighbours();
 		//parent_->updateFromProperty();
 		notifyObservers();
 		this->update();
-	}	
+	}
+
+	void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
+		vec2* pos = new vec2(e->scenePos().x(), e->scenePos().y());
+		addPoint(pos);
+	}
 
 	std::vector<TransferFunctionEditorControlPoint*>::iterator TransferFunctionEditor::removePoint(TransferFunctionEditorControlPoint* target){
 		std::vector<TransferFunctionEditorControlPoint*>::iterator iter;
@@ -142,6 +180,17 @@ namespace inviwo {
 				iter = points_.erase(iter);
 				break;
 			}
+		}
+		
+		if (points_.size() != 0){
+			leftEdgeLine_->setStart(points_.front());
+			leftEdgeLine_->setFinish(points_.front());
+			rightEdgeLine_->setStart(points_.back());
+			rightEdgeLine_->setFinish(points_.back());
+		}
+		else{
+			leftEdgeLine_->setVisible(false);
+			rightEdgeLine_->setVisible(false);
 		}
 
 		setControlPointNeighbours();

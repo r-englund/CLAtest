@@ -7,7 +7,8 @@ namespace inviwo {
 
 	TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, TransferFunctionEditorControlPoint* finish):
 	start_(start),
-	finish_(finish)
+	finish_(finish),
+	direction_(0)
     {
 		setFlag(QGraphicsItem::ItemIsMovable);
 		setFlag(QGraphicsItem::ItemIsSelectable);
@@ -16,6 +17,19 @@ namespace inviwo {
 		setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
         setZValue(0);
     };
+
+	TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, int dir):
+	start_(start),
+	finish_(start),
+	direction_(dir)
+	{
+		setFlag(QGraphicsItem::ItemIsMovable);
+		setFlag(QGraphicsItem::ItemIsSelectable);
+		setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+		setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
+		setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
+		setZValue(0);
+	};
 
     TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(){};
 
@@ -26,7 +40,23 @@ namespace inviwo {
         IVW_UNUSED_PARAM(options);
         IVW_UNUSED_PARAM(widget);
         const vec2* start = start_->getPoint()->getPos();
-        const vec2* finish = finish_->getPoint()->getPos();
+		const vec2* finish;
+		switch (direction_)
+		{
+			case 0:
+				finish = finish_->getPoint()->getPos();
+			break;
+			case 1:
+				finish = new vec2(start_->getPoint()->getPos()->x - 255.0, start_->getPoint()->getPos()->y);
+			break;
+			case 2:
+				finish = new vec2(start_->getPoint()->getPos()->x + 255.0, start_->getPoint()->getPos()->y);
+			break;
+			default:
+				finish = finish_->getPoint()->getPos();
+			break;
+		}
+		
 		QPen* pen;
 
         painter->setRenderHint(QPainter::Antialiasing, true);
@@ -45,7 +75,6 @@ namespace inviwo {
         painter->setPen(*pen);
         painter->drawLine(start->x, start->y, finish->x, finish->y);
 
-		//painter->drawRect(start_->getPoint()->getPos()->x, start_->getPoint()->getPos()->y, finish_->getPoint()->getPos()->x - start_->getPoint()->getPos()->x, finish_->getPoint()->getPos()->y - start_->getPoint()->getPos()->y);
 		delete pen;
     }
 
@@ -65,6 +94,17 @@ namespace inviwo {
 		vec2 newStartPos = *start_->getPoint()->getPos() + deltaPos;
 		vec2 newFinishPos = *finish_->getPoint()->getPos() + deltaPos;
 
+		float min = (start_->getLeftNeighbour()) ? start_->getLeftNeighbour()->getPoint()->getPos()->x + 1.0 : 0.0f;
+		float max = (finish_->getRightNeighbour()) ? finish_->getRightNeighbour()->getPoint()->getPos()->x - 1.0 : 255.0f;
+
+		if (newStartPos.x < min || newFinishPos.x > max){deltaPos.x = 0.0;}
+		if (newStartPos.y <  0.0 || newStartPos.y > 100.0){deltaPos.y = 0.0;}
+		if (newFinishPos.y <  0.0 || newFinishPos.y > 100.0){deltaPos.y = 0.0;}
+
+		deltaPos.x = floor(deltaPos.x + 0.5);
+
+		newStartPos = *start_->getPoint()->getPos() + deltaPos;
+		newFinishPos = *finish_->getPoint()->getPos() + deltaPos;
 
 		start_->setPos(QPointF(newStartPos.x, newStartPos.y));
 		finish_->setPos(QPointF(newFinishPos.x, newFinishPos.y));
@@ -73,14 +113,11 @@ namespace inviwo {
 		mouseDownPos_ = e->pos();
 	}
 
-    //const QPointF TransferFunctionEditorLineItem::getStart(){
-    //    return QPointF(start_->getPoint()->getPos()->x,start_->getPoint()->getPos()->y);
-    //}
 
-    //const QPointF TransferFunctionEditorLineItem::getFinish(){
-    //    return QPointF(start_->getPoint()->getPos()->x,start_->getPoint()->getPos()->y);
-    //}
+	TransferFunctionEditorControlPoint* TransferFunctionEditorLineItem::getStart(){return start_;}
+	TransferFunctionEditorControlPoint* TransferFunctionEditorLineItem::getFinish(){return finish_;}
 
-    void TransferFunctionEditorLineItem::setStart(TransferFunctionEditorControlPoint* start){start_ = start;}
-    void TransferFunctionEditorLineItem::setFinish(TransferFunctionEditorControlPoint* finish){finish_ = finish;}
+	void TransferFunctionEditorLineItem::setStart(TransferFunctionEditorControlPoint* start){start_ = start;}
+	void TransferFunctionEditorLineItem::setFinish(TransferFunctionEditorControlPoint* finish){finish_ = finish;}
+	void TransferFunctionEditorLineItem::setDirection(int dir){direction_ = dir;}
 } // namespace

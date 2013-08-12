@@ -89,7 +89,6 @@ namespace inviwo {
 		QGradientStop* temp = new QGradientStop();
 		stops_->clear();
 		const vec4* col;
-		vec4 hej;
 		if (property_->get().getNumberOfDataPoints() > 0){
 			for (int i = 0; i < (int)property_->get().getNumberOfDataPoints(); i++){
 				col = property_->get().getPoint(i)->getRgba();
@@ -100,13 +99,11 @@ namespace inviwo {
 		}
 		else{
 			vec4* dataArray = static_cast<vec4*>(property_->get().getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
-			hej = dataArray[0];
 			temp->first = 0.0f;
-			temp->second = QColor::fromRgbF(hej.r, hej.g, hej.b, 1.0f);
+			temp->second = QColor::fromRgbF(dataArray[0].r, dataArray[0].g, dataArray[0].b, 1.0f);
 			stops_->push_front(*temp);
-			hej = dataArray[255];
 			temp->first = 1.0f;
-			temp->second = QColor::fromRgbF(hej.r, hej.g, hej.b, 1.0f);
+			temp->second = QColor::fromRgbF(dataArray[255].r, dataArray[255].g, dataArray[255].b, 1.0f);
 			stops_->push_front(*temp);
 		}
 		gradient_->setStops(*stops_);
