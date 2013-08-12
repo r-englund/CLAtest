@@ -19,18 +19,21 @@
 
 namespace inviwo {
 
-static const int linkDialogWidth = 1024;
-static const int linkDialogHeight = 768;
+static const int processorItemWidth = 175; //all other parameters depends on processor width.
+static const int processorItemHeight = 50;
+static const int processorRoundedCorners = 9;
+static const int processorLabelHeight = 8;
 
-static const int processorItemWidth = 240;
-static const int processorItemHeight = 120;
-static const int processorRoundedCorners = 10;
-static const int processorLabelHeight = 15;
+static const int linkDialogWidth = processorItemWidth*4;
+static const int linkDialogHeight = processorItemHeight*12;
 
-static const int propertyItemWidth = 180;
-static const int propertyItemHeight = 90;
+static const int propertyItemWidth = processorItemWidth*3/4;
+static const int propertyItemHeight = processorItemHeight;
 static const int propertyRoundedCorners = 0;
-static const int propertyLabelHeight = 12;
+static const int propertyLabelHeight = 8;
+
+static const int arrowDimensionWidth = propertyItemWidth/10;
+static const int arrowDimensionHeight =arrowDimensionWidth/2;
 
 
 DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color) :
@@ -90,7 +93,7 @@ void DialogConnectionGraphicsItem::deinitialize() {
 }
 
 void DialogConnectionGraphicsItem::updateStartEndPoint() {
-    QPoint arrowDim(20, 10);
+    QPoint arrowDim(arrowDimensionWidth, arrowDimensionHeight);
 
     //Start Property
     QPointF aCenterR = startPropertyGraphicsItem_->calculateArrowCenter(startArrowHeadIndex_, true);
@@ -187,11 +190,13 @@ LinkDialogProcessorGraphicsItem::LinkDialogProcessorGraphicsItem() : GraphicsIte
     nameLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight);
     nameLabel_->setDefaultTextColor(Qt::white);
     nameLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Black, false));
+    nameLabel_->setCrop(8, 7);
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight*2.5);
     classLabel_->setDefaultTextColor(Qt::lightGray);
     classLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
+    classLabel_->setCrop(8, 7);
 }
 
 LinkDialogProcessorGraphicsItem::~LinkDialogProcessorGraphicsItem() {}
@@ -285,9 +290,16 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
     setGraphicsEffect(processorShadowEffect);
 
     classLabel_ = new LabelGraphicsItem(this);
-    classLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight*2.5);
-    classLabel_->setDefaultTextColor(Qt::darkGray);
-    classLabel_->setFont(QFont("Segoe", propertyLabelHeight, QFont::Normal, true));
+    classLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight);
+    classLabel_->setDefaultTextColor(Qt::black);
+    classLabel_->setFont(QFont("Segoe", propertyLabelHeight, QFont::Black, false));
+    classLabel_->setCrop(8, 7);    
+
+    typeLabel_ = new LabelGraphicsItem(this);
+    typeLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight*2.5);
+    typeLabel_->setDefaultTextColor(Qt::black);
+    typeLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
+    typeLabel_->setCrop(8, 7);    
 
     processorGraphicsItem_ = processor;
 
@@ -375,7 +387,7 @@ DialogConnectionGraphicsItem* LinkDialogPropertyGraphicsItem::getArrowConnection
 }
 
 QRectF LinkDialogPropertyGraphicsItem::calculateArrowRect(size_t curPort, bool computeRight) const {
-    QPointF arrowDim(20.0f, 10.0f);
+    QPointF arrowDim(arrowDimensionWidth, arrowDimensionHeight);
     QPointF rectDim(0, rect().height()/(getConnectionGraphicsItemCount()+1));
 
     qreal x = rect().right()-arrowDim.x();
@@ -458,7 +470,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     p->restore();
 
     p->save();
-    QPoint arrowDim(20, 10);
+    QPoint arrowDim(arrowDimensionWidth, arrowDimensionHeight);
     for (size_t i=0; i<connectionItems_.size(); i++) {
         //Determine if arrow need to be drawn pointing left or right side
         bool right = isArrowPointedRight(connectionItems_[i]);
@@ -507,12 +519,47 @@ QVariant LinkDialogPropertyGraphicsItem::itemChange(GraphicsItemChange change, c
     return QGraphicsItem::itemChange(change, value);
 }
 
+std::string LinkDialogPropertyGraphicsItem::variantTypeAsString(int variantType) {
+    std::string variantTypeAsString;
+    switch (variantType) {
+        case Variant::VariantType::VariantTypeInvalid : { variantTypeAsString = "VariantTypeInvalid"; break; }
+        case Variant::VariantType::VariantTypeBool : { variantTypeAsString = "Bool"; break; }
+        case Variant::VariantType::VariantTypeDouble : { variantTypeAsString = "VariantTypeDouble"; break; }
+        case Variant::VariantType::VariantTypeFloat : { variantTypeAsString = "VariantTypeFloat"; break; }
+        case Variant::VariantType::VariantTypeInteger : { variantTypeAsString = "VariantTypeInteger"; break; }
+        case Variant::VariantType::VariantTypeLong : { variantTypeAsString = "VariantTypeLong"; break; }
+        case Variant::VariantType::VariantTypeString : { variantTypeAsString = "VariantTypeString"; break; }
+        case Variant::VariantType::VariantTypeIVec2 : { variantTypeAsString = "VariantTypeIVec2"; break; }
+        case Variant::VariantType::VariantTypeIVec3 : { variantTypeAsString = "VariantTypeIVec3"; break; }
+        case Variant::VariantType::VariantTypeIVec4 : { variantTypeAsString = "VariantTypeIVec4"; break; }
+        case Variant::VariantType::VariantTypeVec2 : { variantTypeAsString = "VariantTypeVec2"; break; }
+        case Variant::VariantType::VariantTypeVec3 : { variantTypeAsString = "VariantTypeVec3"; break; }
+        case Variant::VariantType::VariantTypeVec4 : { variantTypeAsString = "VariantTypeVec4"; break; }
+        case Variant::VariantType::VariantTypeDVec2 : { variantTypeAsString = "VariantTypeDVec2"; break; }
+        case Variant::VariantType::VariantTypeDVec3 : { variantTypeAsString = "VariantTypeDVec3"; break; }
+        case Variant::VariantType::VariantTypeDVec4 : { variantTypeAsString = "VariantTypeDVec4"; break; }
+        case Variant::VariantType::VariantTypeMat2 : { variantTypeAsString = "VariantTypeMat2"; break; }
+        case Variant::VariantType::VariantTypeMat3 : { variantTypeAsString = "VariantTypeMat3"; break; }
+        case Variant::VariantType::VariantTypeMat4 : { variantTypeAsString = "VariantTypeMat4"; break; }
+        case Variant::VariantType::VariantTypeLastBaseType : { variantTypeAsString = "VariantTypeLastBaseType"; break; }
+        case Variant::VariantType::VariantTypeUserType : { variantTypeAsString = "VariantTypeUserType"; break; }
+        default : variantTypeAsString="";
+    }
+
+    return variantTypeAsString;
+}
+
 void LinkDialogPropertyGraphicsItem::setProperty(Property* prop) {
     setGraphicsItemData(prop);    
-    if (prop) {
-        classLabel_->setText(QString::fromStdString(prop->getDisplayName()));
+    if (prop) {        
+        std::string variantType = variantTypeAsString(prop->getVariantType());
+        QString label = QString::fromStdString(prop->getDisplayName());
+        classLabel_->setText(label);
+        typeLabel_->setText( QString::fromStdString(variantType));
+        
     } else {        
         classLabel_->setText("");
+        typeLabel_->setText("");
     }
 }
 
@@ -916,7 +963,7 @@ void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e
 }
 
 void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList) {
-
+    
     int xPosition = linkDialogWidth/4;
     int yPosition = processorItemHeight;
     int xIncrement = linkDialogWidth/2;
@@ -961,7 +1008,7 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
                 if (pair) pairList.push_back(pair);
             }
         }
-    }
+    }   
 }
 
 void LinkDialogGraphicsScene::addProcessorsItemsToScene(Processor *prcoessor, int xPosition, int yPosition) {

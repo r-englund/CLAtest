@@ -30,6 +30,10 @@ PropertySemantics::Type semantics)
     : FileProperty(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
+void ImageEditorProperty::setDimensions(glm::ivec2 imgSize) {    
+   dimensions_ = imgSize;
+}
+
 void ImageEditorProperty::addLabel(glm::vec2 startPoint, glm::vec2 rectSize, std::string name) {    
     labels_.push_back(new ImageLabel(startPoint, rectSize, name));
 }
@@ -46,11 +50,13 @@ void ImageEditorProperty::clearLabels() {
 
 void ImageEditorProperty::serialize(IvwSerializer& s) const {
     FileProperty::serialize(s);
+    s.serialize("Dimension", dimensions_);
     s.serialize("Labels", labels_, "Label");
 }
 
 void ImageEditorProperty::deserialize(IvwDeserializer& d) {
     FileProperty::deserialize(d);
+    d.deserialize("Dimension", dimensions_);
     d.deserialize("Labels", labels_, "Label");
 }
 

@@ -9,7 +9,42 @@ SimpleGraphicsScene::SimpleGraphicsScene(QWidget* parent) : QGraphicsScene(paren
 
 
 /////////////////////////////////////////////////
+// Simple Graphics Rectangle Item with label 
+// used by Simple Graphics View
+
+SimpleWithRectangleLabel::SimpleWithRectangleLabel(QPointF rectSize, QGraphicsScene* scene) 
+    : QGraphicsRectItem(), label_(0) {
+    setRect(0, 0, rectSize.x(), rectSize.y());
+    label_ = new LabelGraphicsItem(this);
+    label_->setPos(0, 0);
+    label_->setDefaultTextColor(Qt::black);
+    label_->setFont(QFont("Segoe", 10, QFont::Black, false));
+    label_->setCrop(8, 7);
+}
+
+SimpleWithRectangleLabel::~SimpleWithRectangleLabel() {}
+
+void SimpleWithRectangleLabel::updateLabelPosition() {
+   //set offset
+}
+
+void SimpleWithRectangleLabel::setLabel(std::string label) {
+    label_->setText(QString::fromStdString(label));
+}
+
+std::string SimpleWithRectangleLabel::getLabel() { return label_->text().toStdString(); }
+
+void SimpleWithRectangleLabel::editLabel() {
+    setFocus();
+    label_->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+    label_->setTextInteractionFlags(Qt::TextEditorInteraction);
+    label_->setFocus();
+}
+
+
+/////////////////////////////////////////////////
 // Simple Graphics view
+
 SimpleGraphicsView::SimpleGraphicsView(QWidget* parent) : QGraphicsView(parent), scene_(0), rubberBandActive_(false) {    
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
@@ -23,14 +58,34 @@ void SimpleGraphicsView::setDialogScene(QGraphicsScene* scene) {
 }
 
 void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint) {
-    QAbstractGraphicsShapeItem *i = scene_->addRect( mStartPoint.x(), mStartPoint.y(),  deltaPoint.x(), deltaPoint.y() );
-    i->setFlag(QGraphicsItem::ItemIsMovable);        
+    //QAbstractGraphicsShapeItem *i = scene_->addRect( mStartPoint.x(), mStartPoint.y(),  deltaPoint.x(), deltaPoint.y() );    
+    SimpleWithRectangleLabel *i = new SimpleWithRectangleLabel(deltaPoint, scene_);
+    i->setPos(mStartPoint.x(), mStartPoint.y());
+    scene_->addItem(i);
+    i->setLabel("Box");
+    i->updateLabelPosition();
+    i->setFlag(QGraphicsItem::ItemIsMovable);
     i->setBrush( QColor(0,0,128,0) );
     i->setPen( QPen(QColor(255, 0, 0), 2) );
     i->setZValue(255);
 }
 
-void SimpleGraphicsView::mouseDoubleClickEvent(QMouseEvent* e) {    
+void SimpleGraphicsView::mouseDoubleClickEvent(QMouseEvent* e) {
+
+    QPoint currentPoint = e->pos();
+    QList<QGraphicsItem*> graphicsItems =items(e->pos()); 
+
+    //graphicsItems.size()==1 because of background pixmap item
+    if(e->button()==Qt::LeftButton && graphicsItems.size()>1) {
+        //Delete rectangle             
+        for (int i=0; i<graphicsItems.size(); i++) {
+            SimpleWithRectangleLabel *rectItem = qgraphicsitem_cast<SimpleWithRectangleLabel*>(graphicsItems[i]);
+            if (rectItem) {                    
+                rectItem->editLabel(); 
+            }
+        }
+    }
+
     QGraphicsView::mouseDoubleClickEvent(e);
 }
 
@@ -62,13 +117,16 @@ void SimpleGraphicsView::mousePressEvent(QMouseEvent* e) {
     QGraphicsView::mousePressEvent(e);    
 }
 
-std::vector<QRectF> SimpleGraphicsView::getRectList() {
-     std::vector<QRectF> rectList;
+std::vector<ImgRect> SimpleGraphicsView::getRectList() {
+     std::vector<ImgRect> rectList;
      QList<QGraphicsItem*> graphicsItems = items(); 
      for (int i=0; i<graphicsItems.size(); i++) {
-         QGraphicsRectItem *rectItem = qgraphicsitem_cast<QGraphicsRectItem*>(graphicsItems[i]);
+         SimpleWithRectangleLabel *rectItem = qgraphicsitem_cast<SimpleWithRectangleLabel*>(graphicsItems[i]);
          if (rectItem) {
-            rectList.push_back(QRectF(rectItem->mapRectToScene(rectItem->rect()))) ;             
+            ImgRect r;
+            r.rect_ = QRectF(rectItem->mapRectToScene(rectItem->rect()));
+            r.label_ = rectItem->getLabel();
+            rectList.push_back(r) ;             
          }
      }
 
@@ -158,12 +216,12 @@ void ImageLabelWidget::addRectangleTest() {
 
 void ImageLabelWidget::addBackGroundImage(std::string imagePath) {
     scene_->clear();
-    QImage image(imagePath.c_str());
+    backGroundImage_ = new QImage(imagePath.c_str());
     QGraphicsPixmapItem *i = scene_->addPixmap( QPixmap(imagePath.c_str()) );    
-    i->setZValue(1);
-    scene_->setSceneRect(0, 0, image.width(), image.height());
+    i->setZValue(1);    
+    scene_->setSceneRect(0, 0, backGroundImage_->width(), backGroundImage_->height());
     //resize(image.size()*4/3);
-    setFixedSize(image.size()*1.1f);
+    setFixedSize(backGroundImage_->size()*1.1f);
 }
 
 void ImageLabelWidget::setParent(ImageEditorWidgetQt* tmp){
@@ -243,17 +301,18 @@ bool ImageEditorWidgetQt::writeImageLabel(){
     if (imageEditorProperty) {
         //Save labels
         std::stringstream ss;               
-        std::vector<QRectF> rectList = imageLabelWidget_->view_->getRectList(); 
+        std::vector<ImgRect> rectList = imageLabelWidget_->view_->getRectList(); 
 
-        if (rectList.size()) 
+        QSize dim = imageLabelWidget_->backGroundImage_->size();
+        imageEditorProperty->setDimensions(ivec2(dim.width(), dim.height()) );
+
+        //if (rectList.size()) 
             imageEditorProperty->clearLabels();
 
         for (size_t i=0; i<rectList.size(); i++) {
-            glm::vec2 topLeft(rectList[i].topLeft().x(), rectList[i].topLeft().y());
-            glm::vec2 rectSize(rectList[i].size().width(), rectList[i].size().height());
-            ss.str("");
-            ss<<"Label"<<i+1;
-            imageEditorProperty->addLabel(topLeft, rectSize, ss.str());
+            glm::vec2 topLeft(rectList[i].rect_.topLeft().x(), rectList[i].rect_.topLeft().y());
+            glm::vec2 rectSize(rectList[i].rect_.size().width(), rectList[i].rect_.size().height());
+            imageEditorProperty->addLabel(topLeft, rectSize, rectList[i].label_);            
         }                    
     }
     return true;

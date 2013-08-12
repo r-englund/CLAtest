@@ -45,12 +45,14 @@ public:
                  PropertySemantics::Type semantics = PropertySemantics::Editor);
     virtual std::string getClassName()  const { return "ImageEditorProperty"; }
     void addLabel(glm::vec2 start, glm::vec2 end, std::string name="");
+    void setDimensions(glm::ivec2 imgSize);
     std::vector<ImageLabel*> getLabels() const;
     void clearLabels();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);    
 private:
     std::vector<ImageLabel*> labels_;
+    glm::ivec2 dimensions_;
 };
 
 } // namespace

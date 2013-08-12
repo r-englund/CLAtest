@@ -41,6 +41,7 @@
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
+#include <inviwo/qt/editor/labelgraphicsitem.h>
 
 
 namespace inviwo{
@@ -56,15 +57,38 @@ signals:
 };
 
 
+
+/////////////////////////////////////////////////
+// Simple Graphics Rectangle Item with label 
+// used by Simple Graphics View
+class SimpleWithRectangleLabel : public QGraphicsRectItem {
+public:
+    SimpleWithRectangleLabel(QPointF mendPoint, QGraphicsScene* scene);
+    SimpleWithRectangleLabel();
+    ~SimpleWithRectangleLabel();
+    void updateLabelPosition();
+    void setLabel(std::string label);
+    std::string getLabel();
+    void editLabel();
+private:
+    LabelGraphicsItem* label_;
+};
+
 /////////////////////////////////////////////////
 // Simple Graphics view
+
+struct ImgRect {
+    QRectF rect_;
+    std::string label_;
+};
+
 class SimpleGraphicsView : public QGraphicsView {
 public:
     SimpleGraphicsView(QWidget* parent=0);
     ~SimpleGraphicsView();
     void setDialogScene(QGraphicsScene* scene);
     void addRectangle(QPointF mstartPoint, QPointF mendPoint);
-    std::vector<QRectF> getRectList();
+    std::vector<ImgRect> getRectList();
 protected:
     void mousePressEvent(QMouseEvent* e);
     void mouseDoubleClickEvent(QMouseEvent* e);
