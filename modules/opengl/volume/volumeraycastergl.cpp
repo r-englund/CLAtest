@@ -84,6 +84,28 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     addProperty(camera_);
 }
 
+void VolumeRaycasterGL::addShadingProperties() {
+    // shading
+    addProperty(shadingMode_);
+    addProperty(lightPosition_);
+    addProperty(lightColorAmbient_);
+    addProperty(lightColorDiffuse_);
+    addProperty(lightColorSpecular_);
+    addProperty(lightSpecularExponent_);
+    addProperty(applyLightAttenuation_);
+    addProperty(lightAttenuation_);
+
+    // assign lighting properties to property group
+    lightPosition_.setGroupID("lighting");
+    lightColorAmbient_.setGroupID("lighting");
+    lightColorDiffuse_.setGroupID("lighting");
+    lightColorSpecular_.setGroupID("lighting");
+    lightSpecularExponent_.setGroupID("lighting");
+    applyLightAttenuation_.setGroupID("lighting");
+    lightAttenuation_.setGroupID("lighting");
+    //setPropertyGroupGuiName("lighting", "Lighting Parameters");
+}
+
 void VolumeRaycasterGL::initialize() {
     ProcessorGL::initialize();
     raycastPrg_ = new Shader(programFileName_, false);
@@ -106,7 +128,7 @@ void VolumeRaycasterGL::initializeResources() {
     std::string beginLoop = "while (t < tEnd)";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_BEGIN_LOOP", beginLoop);
     std::string endLoop = "if (tDepth == -1.0) tDepth = 1.0; gl_FragDepth = tDepth;";
-    raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_END_LOOP(result)", endLoop);
+    raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_END_LOOP", endLoop);
 
     // gradient computation defines
     std::string gradientComputationKey = "RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeStruct_, t, rayDirection, entryPoints_, entryParameters_)";
@@ -147,9 +169,9 @@ void VolumeRaycasterGL::initializeResources() {
     else if (compositingMode_.isSelected("mip"))
         compositingValue = "compositeMIP(result, color, t, tDepth);";
     else if (compositingMode_.isSelected("fhp"))
-        compositingValue = "compositeFHP(result, samplePos, t, tDepth);";
+        compositingValue = "compositeFHP(result, color, samplePos, t, tDepth);";
     else if (compositingMode_.isSelected("fhn"))
-        compositingValue = "compositeFHN(result, gradient, t, tDepth);";
+        compositingValue = "compositeFHN(result, color, gradient, t, tDepth);";
     else if (compositingMode_.isSelected("iso"))
         compositingValue = "compositeISO(result, color, t, tDepth, tIncr, isoValue_);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);

@@ -50,6 +50,8 @@ protected:
     FloatVec3Property lightAttenuation_;
 
     CameraProperty camera_;
+
+    void addShadingProperties();
 };
 
 } // namespace

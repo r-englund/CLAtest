@@ -28,10 +28,6 @@ private:
     ImageInport exitPort_;
     ImageOutport outport_;
 
-    BoolProperty enableShading_;
-    FloatVec3Property lightSourcePos_;
-	BoolProperty enableMIP_;
-    FloatProperty samplingRate_;
     TransferFunctionProperty transferFunction_;
 };
 

@@ -13,10 +13,6 @@ SimpleRaycaster::SimpleRaycaster()
     entryPort_("entry-points"),
     exitPort_("exit-points"),
     outport_("outport"),
-    enableShading_("enableShading", "Shading", false),
-    lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
-	enableMIP_("enableMIP", "MIP", false),
-    samplingRate_("samplingRate", "Sampling rate", 1.0f, 0.1f, 10.0f),
     transferFunction_("transferFunction", "Transfer function", TransferFunction())
 {
     addPort(volumePort_, "VolumePortGroup");
@@ -24,10 +20,11 @@ SimpleRaycaster::SimpleRaycaster()
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
 
-    addProperty(enableShading_);
-    addProperty(lightSourcePos_);
-	addProperty(enableMIP_);
     addProperty(transferFunction_);
+
+    addProperty(isoValue_);
+
+    addShadingProperties();
 }
 
 void SimpleRaycaster::process() {
@@ -64,10 +61,7 @@ void SimpleRaycaster::process() {
 
     raycastPrg_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
     raycastPrg_->setUniform("samplingRate_", samplingRate_.get());
-
-    raycastPrg_->setUniform("enableShading_", enableShading_.get());
-    raycastPrg_->setUniform("lightSourcePos_", lightSourcePos_.get());
-	raycastPrg_->setUniform("enableMIP_", enableMIP_.get());   
+    raycastPrg_->setUniform("isoValue_", isoValue_.get());
 
     renderImagePlaneQuad();
     
