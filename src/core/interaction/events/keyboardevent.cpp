@@ -9,6 +9,10 @@ KeyboardEvent::KeyboardEvent(char ascii, Event::Modifier modifier) : Event() {
 	modifierName_ = modifierNames_[modifier_];	
 }
 
+KeyboardEvent::KeyboardEvent() {
+	buttonName_ = "";
+}
+
 KeyboardEvent::~KeyboardEvent() {}
 
 void KeyboardEvent::serialize( IvwSerializer& s ) const {
