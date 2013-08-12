@@ -10,6 +10,8 @@
 #include <QGLWidget>
 #include <QInputEvent>
 #include <QMouseEvent>
+#include <QKeyEvent>
+#include <QEvent>
 
 namespace inviwo {
 
@@ -29,6 +31,10 @@ public:
     void mousePressEvent(QMouseEvent* e);
     void mouseReleaseEvent (QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
+
+	void keyPressEvent(QKeyEvent* e);
+	void keyReleaseEvent(QKeyEvent* e);
+	
 
 private:
     static QGLWidget* sharedWidget_; //For rendering-context sharing

@@ -1,10 +1,12 @@
 #ifndef IVW_EVENTPROPERTYWIDGETQT_H
 #define IVW_EVENTPROPERTYWIDGETQT_H
 
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/qt/editor/eventpropertymanager.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/mappingpopup.h>
+#include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
 #include <QLabel>
 #include <QPushButton>
@@ -12,7 +14,7 @@
 
 namespace inviwo {
 
-class EventPropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTEDITOR_API EventPropertyWidgetQt : public PropertyWidgetQt {
     Q_OBJECT;
 
 public:

@@ -10,9 +10,10 @@ CanvasQt::CanvasQt(QWidget* parent, QGLFormat glFormat)
 { 
     if (!sharedWidget_){
         sharedWidget_ = this;
-        QGLWidget::glInit();
+        QGLWidget::glInit();		
         //LogInfo("GL Major: "<< format().majorVersion() <<" GL Minor: "<< format().minorVersion());     
     }
+	setFocusPolicy(Qt::StrongFocus);
 
 }
 
@@ -28,6 +29,7 @@ CanvasQt::CanvasQt(QWidget* parent)
         QGLWidget::glInit();
     }
     //setAutoBufferSwap(false);
+	setFocusPolicy(Qt::StrongFocus);
 }
 
 CanvasQt::~CanvasQt() {
@@ -69,7 +71,7 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
         EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
         EventConverterQt::getModifier(e), dimensions_);
-    processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
+    processorNetworkEvaluator_->propagateInteractionEvent(this, mouseEvent);
     processorNetworkEvaluator_->evaluate();
 }
 
@@ -78,7 +80,7 @@ void CanvasQt::mouseReleaseEvent (QMouseEvent* e) {
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
         EventConverterQt::getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE, 
         EventConverterQt::getModifier(e), dimensions_);
-    processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
+    processorNetworkEvaluator_->propagateInteractionEvent(this, mouseEvent);
     processorNetworkEvaluator_->evaluate();
 }
 
@@ -96,8 +98,21 @@ void CanvasQt::mouseMoveEvent(QMouseEvent*  e) {
             MouseEvent::MOUSE_BUTTON_NONE, MouseEvent::MOUSE_STATE_NONE, 
             EventConverterQt::getModifier(e), dimensions_);
     }
-    processorNetworkEvaluator_->propagateMouseEvent(this, mouseEvent);
+    processorNetworkEvaluator_->propagateInteractionEvent(this, mouseEvent);
     processorNetworkEvaluator_->evaluate();
+}
+
+void CanvasQt::keyPressEvent(QKeyEvent* e) {
+	if (!processorNetworkEvaluator_) return;
+	KeyboardEvent* keyEvent = new KeyboardEvent( 
+		EventConverterQt::getKeyButton(e),  
+		EventConverterQt::getModifier(e));
+	processorNetworkEvaluator_->propagateInteractionEvent(this, keyEvent);
+	processorNetworkEvaluator_->evaluate();
+}
+
+void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
+
 }
 
 } // namespace

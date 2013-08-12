@@ -1,6 +1,7 @@
 #ifndef IVW_EVENTPROPERTYMANAGER_H
 #define IVW_EVENTPROPERTYMANAGER_H
 
+#include <inviwo/core/util/observer.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/properties/eventproperty.h>
@@ -19,7 +20,7 @@ namespace inviwo {
 * @see MappingWidget
 * @see MappingPopup
 */
-class EventPropertyManager {
+class EventPropertyManager : public VoidObservable {
 
 public:
 	EventPropertyManager();
@@ -55,7 +56,7 @@ public:
 	 * @param std::string processorIdentifier The identifier of the selected processor
 	 * @return void
 	 */
-	void setActiveProcessor(std::string processorIdentifier){ activeProcessor_ = processorIdentifier; };
+	void setActiveProcessor(std::string processorIdentifier);
 
 	/** 
 	 * \brief Remaps an eventproperty with a mouseevent
@@ -84,6 +85,8 @@ public:
 	 * @return void
 	 */
 	void changeKeyMapping(EventProperty* eventProperty, char button, Event::Modifier modifier);
+
+	bool isEmpty();
 
 private:
 	std::map<std::string, std::vector<EventProperty*> > eventPropertyMap_; ///< map<Processor identifier, vector of the processors eventproperties>

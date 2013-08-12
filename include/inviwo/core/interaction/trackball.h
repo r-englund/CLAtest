@@ -3,7 +3,9 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/interaction/interactionhandler.h>
+#include <inviwo/core/interaction/events/event.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/eventlistener.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
@@ -44,11 +46,17 @@ private:
     EventProperty* zoomEventProperty_;
     EventProperty* panEventProperty_;
 
+	EventProperty* stepRotateUp_;
+	EventProperty* stepRotateLeft_;
+	EventProperty* stepRotateDown_;
+	EventProperty* stepRotateRight_;	
+
     vec3 mapNormalizedMousePosToTrackball(vec2 mousePos);
     vec3 mapToCamera(vec3 pos);
     void rotateCamera(MouseEvent* mouseEvent);
     void zoomCamera(MouseEvent* mouseEvent);
     void panCamera(MouseEvent* mouseEvent);
+	void stepRotateCamera(KeyboardEvent* keyEvent);
 };
 
 } // namespace

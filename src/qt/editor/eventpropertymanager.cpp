@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-EventPropertyManager::EventPropertyManager() {}
+EventPropertyManager::EventPropertyManager() : VoidObservable() {}
 EventPropertyManager::~EventPropertyManager() {}
 
 // Remap with a mouse event
@@ -22,6 +22,8 @@ void EventPropertyManager::changeMouseMapping( EventProperty* eventProperty, Mou
 			break;
 		}
 	}
+
+	notifyObservers();
 }
 
 // Remap with a keyboard event
@@ -41,6 +43,8 @@ void EventPropertyManager::changeKeyMapping( EventProperty* eventProperty, char 
 			break;
 		}
 	}
+
+	notifyObservers();
 }
 
 void EventPropertyManager::setEventPropertyMap(std::map<std::string, std::vector<EventProperty*> > eventPropertyMap) {
@@ -51,6 +55,19 @@ std::vector<EventProperty*> EventPropertyManager::getEventPropertiesFromMap() {
 	std::map<std::string, std::vector<EventProperty*> >::iterator it;
 	it = eventPropertyMap_.find(activeProcessor_);
 	return it->second;
+}
+
+void EventPropertyManager::setActiveProcessor(std::string processorIdentifier) {
+	activeProcessor_ = processorIdentifier;
+	notifyObservers();
+}
+
+bool EventPropertyManager::isEmpty() {
+	if (eventPropertyMap_.size() > 0) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 } // namespace

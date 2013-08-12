@@ -123,40 +123,42 @@ void ProcessorNetworkEvaluator::determineProcessingOrder() {
         traversePredecessors(endProcessors[i]);
 }
 
-void ProcessorNetworkEvaluator::propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent) {
-    if (!hasBeenVisited(processor)) {
-        processorsVisited_.push_back(processor);
-        std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
-        for (size_t i=0; i<directPredecessors.size(); i++) {
-            if (directPredecessors[i]->hasInteractionHandler())
-                directPredecessors[i]->invokeInteractionEvent(mouseEvent);
-            // TODO: transform positions based on subcanvas arrangement
-            //directPredecessors[i]->invalidate();  //TODO: Check if this is needed
-            propagateMouseEvent(directPredecessors[i], mouseEvent);
-        }
-    }
+void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, Event* event) {
+	if (!hasBeenVisited(processor)) {
+		processorsVisited_.push_back(processor);
+		std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
+		for (size_t i=0; i<directPredecessors.size(); i++) {
+			if (directPredecessors[i]->hasInteractionHandler())
+				directPredecessors[i]->invokeInteractionEvent(event);
+			// TODO: transform positions based on subcanvas arrangement
+			//directPredecessors[i]->invalidate();  //TODO: Check if this is needed
+			propagateInteractionEvent(directPredecessors[i], event);
+		}
+	}
 }
 
-void ProcessorNetworkEvaluator::propagateMouseEvent(Canvas* canvas, MouseEvent* mouseEvent) {
-    // find the canvas processor from which the event was emitted
-    eventInitiator_=0;
-    processorNetwork_->lock();
-    std::vector<Processor*> processors = processorNetwork_->getProcessors();
-    for (size_t i=0; i<processors.size(); i++) {
-        if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
-            (dynamic_cast<CanvasProcessor*>(processors[i])->getCanvas()==canvas)) {
-                eventInitiator_ = processors[i];
-                i = processors.size();
-        }
-    }
+void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, Event* event) {
+	// find the canvas processor from which the event was emitted
+	eventInitiator_=0;
+	processorNetwork_->lock();
+	std::vector<Processor*> processors = processorNetwork_->getProcessors();
+	for (size_t i=0; i<processors.size(); i++) {
+		if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
+			(dynamic_cast<CanvasProcessor*>(processors[i])->getCanvas()==canvas)) {
+				eventInitiator_ = processors[i];
+				i = processors.size();
+		}
+	}
 
-    if (!eventInitiator_) return;
-    processorsVisited_.clear();
-    propagateMouseEvent(eventInitiator_, mouseEvent);
-    processorNetwork_->unlock();
-    eventInitiator_ = 0;
-    //eventInitiator->invalidate(); //TODO: Check if this is needed
+	if (!eventInitiator_) return;
+	processorsVisited_.clear();
+	propagateInteractionEvent(eventInitiator_, event);
+	processorNetwork_->unlock();
+	eventInitiator_ = 0;
+	//eventInitiator->invalidate(); //TODO: Check if this is needed
 }
+
+/// /NEW ------------------------------------------------------------
 
 bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor *processor) {
     bool isConnected = false;

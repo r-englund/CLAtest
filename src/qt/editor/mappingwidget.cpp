@@ -6,7 +6,7 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), 
     setObjectName("MappingWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);   
 	processorNetwork_ = InviwoApplication::getPtr()->getProcessorNetwork();
-	eventPropertyManager_ = new EventPropertyManager();
+	eventPropertyManager_ = new EventPropertyManager();	
 
     addObservation(processorNetwork_);
     processorNetwork_->addObserver(this);             
@@ -23,19 +23,18 @@ MappingWidget::~MappingWidget() {}
 void MappingWidget::buildLayout() {
 	// Components needed for layout
 	QFrame* frame_ = new QFrame();
-	botLayout_ = new QVBoxLayout();
 	comboBox_ = new QComboBox();
-	mainLayout = new QVBoxLayout();
+	QVBoxLayout* mainLayout = new QVBoxLayout();
 	QVBoxLayout* topLayout = new QVBoxLayout();
 	QScrollArea* scrollArea = new QScrollArea();
 	QWidget* area = new QWidget();
+	EventPropertyManagerWidget* eventPropertyManagerWidget_ = new EventPropertyManagerWidget(eventPropertyManager_);
 
 	// mainLayout contains topLayout and scrollArea.
 	// scrollArea contains a widget with the botLayout.
 	// Eventpropertywidgets will be added to the botlayout.
 	topLayout->addWidget(comboBox_);
-	area->setLayout(botLayout_);
-	scrollArea->setWidget(area);
+	scrollArea->setWidget(eventPropertyManagerWidget_);
 	scrollArea->setWidgetResizable(true);
 	mainLayout->addLayout(topLayout);
 	mainLayout->addWidget(scrollArea);
@@ -57,8 +56,7 @@ void MappingWidget::updateWidget() {
 		currentIndex_ =  comboBox_->currentIndex();
 	}
 
-	emptyLayout(mainLayout); // Clear layout of widgets
-	buildLayout();
+	comboBox_->clear();
 
 	std::vector<EventProperty*> eventProperties, tmp;
 	std::vector<InteractionHandler*> interactionHandlers;
@@ -85,43 +83,21 @@ void MappingWidget::updateWidget() {
 	
 	eventPropertyManager_->setEventPropertyMap(eventPropertyMap);
 
-	// Draw eventpropertywidgets
+	// Set selected processor and draw eventpropertywidgets
 	if (comboBox_->count() > 0) {
 		comboBox_->setCurrentIndex(currentIndex_);
-		drawEventPropertyWidgets(); 
+		std::string identifier = (const char *)comboBox_->currentText().toLatin1();
+		eventPropertyManager_->setActiveProcessor(identifier.c_str());
+	} else {
+		eventPropertyManager_->notifyObservers();
 	}
 
 	prevProcessorsWithInteractionHandlers_ = processorsWithInteractionHandlers_;
 }
 
-// Draw the widgets for all EventProperties in EventPropertyManager
-void MappingWidget::drawEventPropertyWidgets() {	
+void MappingWidget::comboBoxChange() {
 	std::string identifier = (const char *)comboBox_->currentText().toLatin1();
 	eventPropertyManager_->setActiveProcessor(identifier.c_str());
-	std::vector<EventProperty*> properties = eventPropertyManager_->getEventPropertiesFromMap();
-	
-	for (size_t i=0; i<properties.size(); i++) {
-		EventProperty* curProperty = properties[i];
-		PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
-		botLayout_->addWidget(propertyWidget);
-		curProperty->registerPropertyWidget(propertyWidget);
-		dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager_);
-	}
-}
-
-// Clears the layout of all widgets
-void MappingWidget::emptyLayout(QVBoxLayout* layout) {
-	QObject::disconnect(this, SLOT(comboBoxChange()));
-	while(!layout->layout()->isEmpty()) {
-		QWidget* w =  layout->layout()->takeAt(0)->widget();
-		layout->layout()->removeWidget(w);
-		delete w;
-	}
-}
-
-void MappingWidget::comboBoxChange() {
-	emptyLayout(botLayout_);
-	drawEventPropertyWidgets();
 }
 
 std::vector<Processor*> MappingWidget::findProcessorsWithInteractionHandlers(std::vector<Processor*> processors) {
