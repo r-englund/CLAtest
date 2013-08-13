@@ -59,6 +59,8 @@ private:
     QColorDialog* colorDialog_;
     ColorWheel* colorWheel_;
 
+    bool colorChange_;
+
 	bool eventFilter(QObject *object, QEvent *event);
 
     /** \Mousewheel zoom functionality

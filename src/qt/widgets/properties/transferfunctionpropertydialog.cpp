@@ -35,6 +35,8 @@ namespace inviwo {
         QDockWidget::connect(editor_,SIGNAL(selectionChanged()),this,SLOT(updateColorWheel()));
         QDockWidget::connect(editor_,SIGNAL(doubleClick()),this,SLOT(showColorDialog()));
 
+
+        colorChange_ = false;
         colorWheel_ = new ColorWheel();
         colorDialog_ = new QColorDialog();
         colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
@@ -87,7 +89,9 @@ namespace inviwo {
     void TransferFunctionPropertyDialog::setPropertyValueColorDialog(){
         QColor color = colorDialog_->currentColor();
         setPointColor(color);
+        colorChange_ =true;
         updateColorWheel();
+        colorChange_ = false;
     }
 
 
@@ -174,7 +178,8 @@ namespace inviwo {
         if (selection.size()==1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
            const vec4* pointColor = dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))->getPoint()->getRgba();
            colorWheel_->setColor(QColor(pointColor->x*255, pointColor->y*255, pointColor->z*255, pointColor->w*255));
-           colorDialog_->setCurrentColor(QColor(pointColor->x*255, pointColor->y*255, pointColor->z*255, pointColor->w*255));
+           if (!colorChange_)
+            colorDialog_->setCurrentColor(QColor(pointColor->x*255, pointColor->y*255, pointColor->z*255, pointColor->w*255));
         }
     }
 
