@@ -20,7 +20,7 @@ public:
     void activate();
     void deactivate();
 
-    void addPort(ImageOutport port);
+    void addPort(ImageOutport& port);
 
     void reattachTargets();
 

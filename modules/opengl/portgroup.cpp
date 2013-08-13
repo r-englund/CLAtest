@@ -36,7 +36,7 @@ void PortGroup::deactivate() {
     fbo_->deactivate();
 }
 
-void PortGroup::addPort(ImageOutport port) {
+void PortGroup::addPort(ImageOutport& port) {
     ports_.push_back(&port);
     //reattachTargets();
 }
