@@ -25,7 +25,7 @@ private:
 
 	EventPropertyManager* eventPropertyManager_;
 	QVBoxLayout* mainLayout_;
-	std::map<std::string,boolean> groupCollapsed;
+	std::map<std::string, bool> groupCollapsed;
 };
 
 } //namespace
