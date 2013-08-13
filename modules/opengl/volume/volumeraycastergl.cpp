@@ -109,7 +109,7 @@ void VolumeRaycasterGL::addShadingProperties() {
 void VolumeRaycasterGL::initialize() {
     ProcessorGL::initialize();
     raycastPrg_ = new Shader(programFileName_, false);
-    //initializeResources();
+    initializeResources();
 }
 
 void VolumeRaycasterGL::deinitialize() {

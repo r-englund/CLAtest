@@ -26,8 +26,8 @@ Shader::~Shader() {
 void Shader::initialize(bool linkShader) {
     id_ = glCreateProgram();
     LGL_ERROR;
-    vertexShaderObject_ = new ShaderObject(GL_VERTEX_SHADER , vertexFilename_);
-    fragmentShaderObject_ = new ShaderObject(GL_FRAGMENT_SHADER , fragmentFilename_);
+    vertexShaderObject_ = new ShaderObject(GL_VERTEX_SHADER , vertexFilename_, linkShader);
+    fragmentShaderObject_ = new ShaderObject(GL_FRAGMENT_SHADER , fragmentFilename_, linkShader);
     attachShaderObject(vertexShaderObject_);
     attachShaderObject(fragmentShaderObject_);
     if (linkShader) link();
