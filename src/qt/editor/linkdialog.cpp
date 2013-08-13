@@ -16,6 +16,7 @@
 #include <QMenu>
 
 #include <inviwo/qt/editor/linkdialog.h>
+#include <inviwo/core/util/variant.h>
 
 namespace inviwo {
 
@@ -519,8 +520,9 @@ QVariant LinkDialogPropertyGraphicsItem::itemChange(GraphicsItemChange change, c
     return QGraphicsItem::itemChange(change, value);
 }
 
-std::string LinkDialogPropertyGraphicsItem::variantTypeAsString(int variantType) {
-    std::string variantTypeAsString;
+std::string LinkDialogPropertyGraphicsItem::variantTypeAsString(int variantType) {    
+    std::string variantTypeAsString("");
+    /* Temporarily disabled
     switch (variantType) {
         case Variant::VariantType::VariantTypeInvalid : { variantTypeAsString = "VariantTypeInvalid"; break; }
         case Variant::VariantType::VariantTypeBool : { variantTypeAsString = "Bool"; break; }
@@ -545,7 +547,7 @@ std::string LinkDialogPropertyGraphicsItem::variantTypeAsString(int variantType)
         case Variant::VariantType::VariantTypeUserType : { variantTypeAsString = "VariantTypeUserType"; break; }
         default : variantTypeAsString="";
     }
-
+    */
     return variantTypeAsString;
 }
 
