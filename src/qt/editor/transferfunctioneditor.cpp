@@ -4,16 +4,14 @@ namespace inviwo {
 	TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunc)
 		:transferFunction_(transferFunc)
 	{
-
 		leftEdgeLine_ = new TransferFunctionEditorLineItem();
 		rightEdgeLine_ = new TransferFunctionEditorLineItem();
 
 		leftEdgeLine_->setZValue(0);
 		leftEdgeLine_->setDirection(1);
-
 		rightEdgeLine_->setZValue(0);
 		rightEdgeLine_->setDirection(2);
-		
+
 		//VLDEnable;
 
 		//if the editor is loaded from a saved state this adds graphicsitems to the editor for each datapoint in the Transferfunction
@@ -27,7 +25,7 @@ namespace inviwo {
 				addItem(lines_.back());
 			}
 		}
-	
+
 		if (transferFunction_->getNumberOfDataPoints() == 0){
 			addPoint(new vec2(0.0, 0.0));
 			addPoint(new vec2(255.0, 100.0));
@@ -37,19 +35,19 @@ namespace inviwo {
 		leftEdgeLine_->setFinish(points_.front());
 		rightEdgeLine_->setStart(points_.back());
 		rightEdgeLine_->setFinish(points_.back());
-
 		addItem(leftEdgeLine_);
 		addItem(rightEdgeLine_);
-
+		
 		sortControlPoints();
+		setControlPointNeighbours();
 		sortLines();
 		update();
 	}
 
 	TransferFunctionEditor::~TransferFunctionEditor(){
 		for (std::vector<TransferFunctionEditorControlPoint*>::iterator p_itr = points_.begin(); p_itr != points_.end(); p_itr++){
-            delete *p_itr;		
-        }
+			delete *p_itr;		
+		}
 		points_.clear();
 	}
 
@@ -150,10 +148,7 @@ namespace inviwo {
 		rightEdgeLine_->setFinish(points_.back());
 		rightEdgeLine_->setVisible(true);
 
-
-
 		setControlPointNeighbours();
-		//parent_->updateFromProperty();
 		notifyObservers();
 		this->update();
 	}
@@ -181,7 +176,7 @@ namespace inviwo {
 				break;
 			}
 		}
-		
+
 		if (points_.size() != 0){
 			leftEdgeLine_->setStart(points_.front());
 			leftEdgeLine_->setFinish(points_.front());

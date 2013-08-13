@@ -22,6 +22,7 @@ namespace inviwo {
     class IVW_QTEDITOR_API TransferFunctionEditorLineItem : public QGraphicsItem {
 
     public:
+		TransferFunctionEditorLineItem();
         /** 
          * \brief TransferFunctionEditorLineItem Constructor
          *
@@ -39,7 +40,7 @@ namespace inviwo {
          *
          * TransferFunctionEditorLineItem default constructor
          */
-        TransferFunctionEditorLineItem();
+        //TransferFunctionEditorLineItem();
 		~TransferFunctionEditorLineItem();
 
 		TransferFunctionEditorControlPoint* getStart();
@@ -63,6 +64,7 @@ namespace inviwo {
 		void setFinish(TransferFunctionEditorControlPoint* finish);
 
 		void setDirection(int dir);
+		QPainterPath shape() const;
 
         //override for qgraphicsitem_cast (refer qt documentation)
         enum { Type = UserType + ConnectionGraphicsType + 1};
