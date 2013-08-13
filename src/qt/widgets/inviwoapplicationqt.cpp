@@ -1,6 +1,7 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
-
+#include <QFile>
+#include <QFileInfo>
 #include <QSound>
 
 namespace inviwo {
@@ -18,8 +19,9 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
     //ProcessorWidgetFactory::init();
     PropertyWidgetFactoryQt::init();
 
-    reloadingFile_ = false;
     fileWatcher_ = new QFileSystemWatcher();
+    filesChanged_ = QStringList();
+    connect(fileWatcher_, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)));
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 }
 
@@ -30,8 +32,13 @@ void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {
 }
 
 void InviwoApplicationQt::startFileObservation(std::string fileName) {
-    if (!fileWatcher_->files().contains(QString::fromStdString(fileName)))
-        fileWatcher_->addPath(QString::fromStdString(fileName));
+    QString qFileName = QString::fromStdString(fileName);
+    if (!fileWatcher_->files().contains(qFileName)){
+        fileWatcher_->addPath(qFileName);
+        QFileInfo info(qFileName);
+        QString test = info.absolutePath();
+        fileWatcher_->addPath(test);
+    }
 }
 
 void InviwoApplicationQt::stopFileObservation(std::string fileName) {
@@ -41,20 +48,22 @@ void InviwoApplicationQt::stopFileObservation(std::string fileName) {
         fileWatcher_->removePath(QString::fromStdString(fileName));
 }
 
-void InviwoApplicationQt::fileChanged(QString fileName) {
-    // FIXME: When using visual studio for file editing, the file is renamed, deleted, and copied over
-    // therefore the filesystemwatcher might 'forget' about the file
-    if (!reloadingFile_) {
-        reloadingFile_ = true;
-        std::string fileNameStd = fileName.toLocal8Bit().constData();
-        for (size_t i=0; i<fileObservers_.size(); i++) {
-            std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
-            if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
-                fileObservers_[i]->fileChanged(fileNameStd);
+void InviwoApplicationQt::directoryChanged(QString dirName){
+    if(!filesChanged_.isEmpty()){
+        if(QFile::exists(filesChanged_.first())){
+            std::string fileNameStd = filesChanged_.first().toLocal8Bit().constData();
+            for (size_t i=0; i<fileObservers_.size(); i++) {
+                std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
+                if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
+                    fileObservers_[i]->fileChanged(fileNameStd);
+            }
         }
-        startFileObservation(fileNameStd);
-        reloadingFile_ = false;
+        filesChanged_.removeAt(0);
     }
+}
+
+void InviwoApplicationQt::fileChanged(QString fileName) {
+    filesChanged_.append(fileName);
 }
 
 void InviwoApplicationQt::playSound(unsigned int soundID) {

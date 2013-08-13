@@ -179,13 +179,17 @@ void VolumeRaycasterGL::initializeResources() {
     raycastPrg_->build();
 }
 
+void VolumeRaycasterGL::bindTransferFunction(const TransferFunction& tf, GLenum tfTexUnit) {
+    const Image* tfImage = tf.getData();
+    const ImageGL* transferFunctionGL = tfImage->getRepresentation<ImageGL>();
+    transferFunctionGL->bindColorTexture(tfTexUnit);
+}
 
 void VolumeRaycasterGL::bindVolume(const VolumeInport& inport, GLenum volTexUnit) {
     const Volume* volume = inport.getData();
     const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
     volumeGL->bindTexture(volTexUnit);
 }
-
 
 void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* shader, const std::string samplerID) {
     vec3 dimensions = vec3(inport.getData()->getRepresentation<VolumeGL>()->getDimensions());

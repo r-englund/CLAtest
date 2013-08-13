@@ -124,7 +124,7 @@ namespace inviwo {
 			}
 		}
 		else{
-			vec4* dataArray = static_cast<vec4*>(property_->get().getData()->getEditableRepresentation<ImageRAMVec4float32>()->getData());
+			const vec4* dataArray = static_cast<const vec4*>(property_->get().getData()->getRepresentation<ImageRAM>()->getData());
 			temp->first = 0.0f;
 			temp->second = QColor::fromRgbF(dataArray[0].r, dataArray[0].g, dataArray[0].b, 1.0f);
 			stops_->push_front(*temp);

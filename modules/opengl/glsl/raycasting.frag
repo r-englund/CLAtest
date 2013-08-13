@@ -14,8 +14,6 @@ uniform TEXTURE_PARAMETERS exitParameters_;
 uniform VOLUME_TYPE volume_;
 uniform VOLUME_PARAMETERS volumeParameters_;
 
-uniform sampler2D transferFunction_;
-
 uniform vec2 dimension_;
 uniform vec3 volumeDimension_;
 
@@ -37,7 +35,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
         vec4 voxel = getVoxel(volume_, volumeParameters_, samplePos);
         voxel.xyz = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
 
-        vec4 color = RC_APPLY_CLASSIFICATION(transferFunction_, voxel);
+        vec4 color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
 
         color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0,1.0,1.0), voxel.xyz, lightPosition_, cameraPosition_);
 

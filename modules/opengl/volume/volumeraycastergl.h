@@ -24,6 +24,7 @@ public:
     // overloaded method called when INVALID_RESOURCE property is set
     virtual void initializeResources();
 
+    void bindTransferFunction(const TransferFunction& tf, GLenum tfTexUnit);
     void bindVolume(const VolumeInport& inport, GLenum volTexUnit);
     void setVolumeParameters(const VolumeInport& inport, Shader* shader, const std::string samplerID);
     void setGlobalShaderParameters(Shader* shader);

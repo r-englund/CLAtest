@@ -35,12 +35,11 @@ void SimpleRaycaster::process() {
     bindColorTexture(entryPort_, entryUnit.getEnum());
     bindColorTexture(exitPort_, exitUnit.getEnum());
 
+    TextureUnit transFuncUnit;
+    bindTransferFunction(transferFunction_.get(), transFuncUnit.getEnum());
+
     TextureUnit volUnit;
     bindVolume(volumePort_, volUnit.getEnum());
-
-    TextureUnit transFuncUnit;
-    const ImageGL* transferFunctionGL = transferFunction_.get().getData()->getRepresentation<ImageGL>();
-    transferFunctionGL->bindColorTexture(transFuncUnit.getEnum());
 
     activateAndClearTarget(outport_);
     Image* outImage = outport_.getData();
@@ -57,7 +56,7 @@ void SimpleRaycaster::process() {
     raycastPrg_->setUniform("volume_", volUnit.getUnitNumber());
     setVolumeParameters(volumePort_, raycastPrg_, "volumeParameters_");
 
-    raycastPrg_->setUniform("transferFunction_", transFuncUnit.getUnitNumber());
+    raycastPrg_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
 
     raycastPrg_->setUniform("dimension_", vec2(1.f/outportDim[0], 1.f/outportDim[1]));
     raycastPrg_->setUniform("samplingRate_", samplingRate_.get());
@@ -67,9 +66,9 @@ void SimpleRaycaster::process() {
     
     raycastPrg_->deactivate();
     deactivateCurrentTarget();
-    unbindColorTexture(entryPort_);
+    /*unbindColorTexture(entryPort_);
     unbindColorTexture(exitPort_);
-    transferFunctionGL->unbindColorTexture();
+    transferFunctionGL->unbindColorTexture();*/
 }
 
 } // namespace

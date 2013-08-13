@@ -2,28 +2,6 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-600" y="-325" />
-                    <visibility content="1" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="-1628" y="492" />
-                    <dimension x="256" y="256" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
-            </Properties>
-        </Processor>
         <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
@@ -131,7 +109,7 @@
                     <increment content="1" />
                 </Property>
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate">
-                    <value content="2" />
+                    <value content="1" />
                     <minvalue content="1" />
                     <maxvalue content="10" />
                     <increment content="0.1" />
@@ -148,7 +126,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref2">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-625" />
@@ -176,7 +154,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref3">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-725" />
@@ -189,7 +167,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref4">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-525" />
@@ -268,7 +246,7 @@
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <value x="-1.9380221" y="-4.2530203" z="-1.7764603" />
+                        <value x="2.5999999" y="-0.5" z="-4.1999998" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -280,7 +258,7 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <value x="-0.60200113" y="0.52545542" z="-0.60124123" />
+                        <value x="0.1" y="1" z="-0.1" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -312,27 +290,76 @@
                 </Property>
             </Properties>
         </Processor>
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref4">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-600" y="-325" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="1002" y="541" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="128" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
+            </Properties>
+        </Processor>
+        <Processor type="ImageSource" identifier="ImageSource" id="ref5">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-300" y="-700" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FileProperty" identifier="imageFileName" displayName="Image file name">
+                    <url content="../../images/swirl.tga" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref6">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-325" y="-600" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="658" y="647" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="128" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
+            </Properties>
+        </Processor>
     </Processors>
     <Connections>
         <Connection>
-            <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref1" />
-            </InPort>
-        </Connection>
-        <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
@@ -340,15 +367,15 @@
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref3" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="entry-points">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
@@ -356,10 +383,26 @@
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="exit-points">
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref4" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="ImageSource" identifier="ImageSource" reference="ref5" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref6" />
             </InPort>
         </Connection>
     </Connections>

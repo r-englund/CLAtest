@@ -36,6 +36,8 @@ public:
     void openLastWorkspace();
     bool processEndCommandLineArgs();
 
+    bool isSoundsOn();
+
     virtual void notify();
 
 public slots:
@@ -76,6 +78,7 @@ private:
     QMenu* fileMenuItem_;
     QMenu* helpMenuItem_;
     QMenu* viewMenuItem_;
+    QMenu* optionMenuItem_;
     
     // mainwindow menuactions
     QAction* newFileAction_;
@@ -89,10 +92,11 @@ private:
     QAction* propertyListWidgetViewAction_;
     QAction* consoleWidgetViewAction_;
     QAction* mappingwidgetviewAction_;
+    QAction* soundOnOffAction_;
 
     // settings
     bool lastExitWithoutErrors_;
-
+    bool soundsOn_;
     bool workspaceModified_;
 
     // paths
