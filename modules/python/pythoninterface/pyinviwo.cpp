@@ -26,6 +26,7 @@ using namespace inviwo;
 #include "canvas.py.h"
 #include "list.py.h"
 #include "snapshot.py.h"
+#include "hcemodule.py.h"
 
 static PyObject* py_print(PyObject* /*self*/, PyObject* args) {
     char* msg;
@@ -70,34 +71,45 @@ static PyMethodDef internal_methods[] = {
     { NULL, NULL, 0, NULL} // null termination
 };
 
+static PyMethodDef inviwo_hce_methods[] = {
+    (new PySetCrowdFlowerSettingFileMethod())->getDef(),
+    (new PySubmitJobMethod())->getDef(),
+    { NULL, NULL, 0, NULL} // null termination
+};
+
+
 namespace inviwo{
     PyInviwo::PyInviwo(){
+
+        initPyModule("inviwo", inviwo_methods);
+        initPyModule("inviwo_internal", internal_methods);
+        initPyModule("inviwo_hce", inviwo_hce_methods);
+
+        LogInfo("Python module 'inviwo' initialized");
+        performTest();
+    }
+
+    void PyInviwo::performTest() {
+        PythonScript *outputCatcher = new PythonScript();
+        inviwo::InviwoApplicationQt* appQt = dynamic_cast<inviwo::InviwoApplicationQt*>(inviwo::InviwoApplication::getPtr());  
+        if(!outputCatcher->load(appQt->getBasePath() +"modules/python/scripts/outputredirector.py",false)){
+            LogWarn("Python init script failed to load");
+        }
+        else if(!outputCatcher->run()){
+            LogWarn("Python init script failed to run");
+            LogWarn(outputCatcher->getLog());
+        }
+    }
+
+    void PyInviwo::initPyModule(char* moduleName, PyMethodDef* module) {
         if (Py_IsInitialized()) {
-            if(!Py_InitModule("inviwo_internal",internal_methods)){
-                LogWarn("Failed to init python module 'inviwo_internal'");
+            if(!Py_InitModule(moduleName, module)){
+                LogWarn("Failed to init python module '" << moduleName <<"' ");
             }
-            LogInfo("Python module 'inviwo_internal' initialized");
-
-            if(!Py_InitModule("inviwo",inviwo_methods)){
-                LogWarn("Failed to init python module 'inviwo'");
-            }
-
-            LogInfo("Python module 'inviwo' initialized");
-            
-
-            PythonScript *outputCatcher = new PythonScript();
-            inviwo::InviwoApplicationQt* appQt = dynamic_cast<inviwo::InviwoApplicationQt*>(inviwo::InviwoApplication::getPtr());  
-            if(!outputCatcher->load(appQt->getBasePath() +"modules/python/scripts/outputredirector.py",false)){
-                LogWarn("Pythin init script failed to load");
-            }
-            else if(!outputCatcher->run()){
-                LogWarn("Pythin init script failed to run");
-                LogWarn(outputCatcher->getLog());
-            }
+            LogInfo("Python module '" << moduleName <<"' initialized");            
         }else{
             LogError("Python environment not initialized");
         }
-
     }
 
 

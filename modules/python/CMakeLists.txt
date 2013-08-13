@@ -15,6 +15,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/python/pythoninterface/pyinviwo.h
     ${IVW_MODULE_DIR}/python/pythoninterface/camera.py.h
     ${IVW_MODULE_DIR}/python/pythoninterface/canvas.py.h
+	${IVW_MODULE_DIR}/python/pythoninterface/hcemodule.py.h
     ${IVW_MODULE_DIR}/python/pythoninterface/info.py.h
     ${IVW_MODULE_DIR}/python/pythoninterface/list.py.h
     ${IVW_MODULE_DIR}/python/pythoninterface/properties.py.h

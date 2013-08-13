@@ -28,6 +28,15 @@ public:
      * @return  DESCRIBE_ME
      */
     virtual ~PythonModule();
+
+    /** 
+     * \brief get PyInviwo object manages default registration of default modules
+     *
+     * gets PyInviwo used by python module
+     * 
+     * @return PyInviwo* address of PyInviwo instance
+     */
+    PyInviwo* getPyInviwo() {return pyInviwo_;}
     
 protected:
     /** 
