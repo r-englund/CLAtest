@@ -2,7 +2,8 @@
 
 namespace inviwo {
 
-KeyboardEvent::KeyboardEvent(char ascii, Event::Modifier modifier) : Event() {
+KeyboardEvent::KeyboardEvent(char ascii, Event::Modifier modifier, KeyboardEvent::KeyState state) : Event() {
+	state_ = state;
 	button_ = ascii;
 	buttonName_ = ascii;
 	modifier_ = modifier;

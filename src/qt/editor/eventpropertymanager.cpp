@@ -43,7 +43,7 @@ void EventPropertyManager::changeKeyMapping( EventProperty* eventProperty, char 
 		// Do the remapping
 		for (size_t i = 0; i < eventProperties.size(); ++i) {
 			if (eventProperty->getIdentifier() == eventProperties.at(i)->getIdentifier()) {
-				eventProperties.at(i)->setEvent(new KeyboardEvent(button, modifier));
+				eventProperties.at(i)->setEvent(new KeyboardEvent(button, modifier, KeyboardEvent::KEY_STATE_PRESS));
 				break;
 			}
 		}		

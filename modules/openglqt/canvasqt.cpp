@@ -106,13 +106,20 @@ void CanvasQt::keyPressEvent(QKeyEvent* e) {
 	if (!processorNetworkEvaluator_) return;
 	KeyboardEvent* keyEvent = new KeyboardEvent( 
 		EventConverterQt::getKeyButton(e),  
-		EventConverterQt::getModifier(e));
+		EventConverterQt::getModifier(e),
+		KeyboardEvent::KEY_STATE_PRESS);
 	processorNetworkEvaluator_->propagateInteractionEvent(this, keyEvent);
 	processorNetworkEvaluator_->evaluate();
 }
 
 void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
-
+	if (!processorNetworkEvaluator_) return;
+	KeyboardEvent* keyEvent = new KeyboardEvent( 
+		EventConverterQt::getKeyButton(e),  
+		EventConverterQt::getModifier(e),
+		KeyboardEvent::KEY_STATE_RELEASE);
+	processorNetworkEvaluator_->propagateInteractionEvent(this, keyEvent);
+	processorNetworkEvaluator_->evaluate();
 }
 
 } // namespace

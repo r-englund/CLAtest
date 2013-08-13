@@ -34,6 +34,13 @@ public:
 	void deserialize(IvwDeserializer &d);
 
 private:
+	enum Direction {
+		UP = 0,
+		LEFT,
+		DOWN,
+		RIGHT
+	};
+
     float pixelWidth_;
     bool isMouseBeingPressedAndHold_;
 
@@ -49,14 +56,23 @@ private:
 	EventProperty* stepRotateUp_;
 	EventProperty* stepRotateLeft_;
 	EventProperty* stepRotateDown_;
-	EventProperty* stepRotateRight_;	
+	EventProperty* stepRotateRight_;
+
+	EventProperty* stepZoomIn_;
+	EventProperty* stepZoomOut_;
+	EventProperty* stepPanUp_;
+	EventProperty* stepPanLeft_;
+	EventProperty* stepPanDown_;
+	EventProperty* stepPanRight_;
 
     vec3 mapNormalizedMousePosToTrackball(vec2 mousePos);
     vec3 mapToCamera(vec3 pos);
     void rotateCamera(MouseEvent* mouseEvent);
     void zoomCamera(MouseEvent* mouseEvent);
     void panCamera(MouseEvent* mouseEvent);
-	void stepRotateCamera(KeyboardEvent* keyEvent);
+	void stepRotateCamera(Direction dir);
+	void stepZoomCamera(Direction dir);
+	void stepPanCamera(Direction dir);
 };
 
 } // namespace

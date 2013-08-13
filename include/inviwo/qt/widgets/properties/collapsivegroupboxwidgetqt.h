@@ -9,9 +9,10 @@
 #include <QPushButton>
 
 //Widgets
+#include <inviwo/qt/editor/eventpropertymanager.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/core/properties/property.h>
 
+#include <inviwo/core/properties/property.h>
 
 namespace inviwo {
 
@@ -26,14 +27,17 @@ public:
     void addProperty(Property* tmpProperty);
     QVBoxLayout* vLayout_;
     void generatePropertyWidgets();
+	void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
     std::vector<Property*> getProperties();
     std::string getName();
+	bool isCollapsed() { return collapsed_; };
 
 private:
     QPushButton* btnCollapse_;
     std::string name_;
     QGroupBox* groupBox_;
     std::vector<Property*> properties_;
+	bool collapsed_;
 
     void generateWidget();
 

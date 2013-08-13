@@ -1,11 +1,12 @@
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
-
+#include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 namespace inviwo {
 
 CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt(std::string name) {
     name_=name;
+	collapsed_ = false;
     generateWidget();
     updateFromProperty();
 }
@@ -55,12 +56,14 @@ void CollapsiveGroupBoxWidgetQt::updateFromProperty() {
 }
 
 void CollapsiveGroupBoxWidgetQt::show() {
+	collapsed_ = false;
     groupBox_->show();
     btnCollapse_->setText("-");
     connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(hide()));
 }
 
 void CollapsiveGroupBoxWidgetQt::hide() {
+	collapsed_= true;
     groupBox_->hide();
     btnCollapse_->setText("+");
     connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
@@ -80,6 +83,19 @@ void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
         curProperty->registerPropertyWidget(propertyWidget);
     }
 }
+
+void CollapsiveGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager) {
+	vLayout_->addWidget(new QLabel(QString::fromStdString(name_)));
+	PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
+	for (size_t i=0; i<properties_.size(); i++) {
+		Property* curProperty = properties_[i];
+		PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
+		vLayout_->addWidget(propertyWidget);
+		curProperty->registerPropertyWidget(propertyWidget);
+		dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager);
+	}
+}
+
 
 std::string CollapsiveGroupBoxWidgetQt::getName(){
     return name_;
