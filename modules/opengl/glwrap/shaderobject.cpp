@@ -8,24 +8,26 @@
 
 namespace inviwo {
 
-ShaderObject::ShaderObject(GLenum shaderType, std::string fileName) :
+ShaderObject::ShaderObject(GLenum shaderType, std::string fileName, bool compileShader) :
     shaderType_(shaderType),
     fileName_(fileName)
 {
-    initialize();
+    initialize(compileShader);
 }
 
 ShaderObject::~ShaderObject() {
     glDeleteShader(id_);
 }
 
-bool ShaderObject::initialize() {
+bool ShaderObject::initialize(bool compileShader) {
     id_ = glCreateShader(shaderType_);
     LGL_ERROR;
     loadSource(fileName_);
     preprocess();
     upload();
-    return compile();
+    bool result = true;
+    if (compileShader) result = compile();
+    return result;
 }
 
 bool ShaderObject::build() {

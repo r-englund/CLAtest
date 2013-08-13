@@ -10,7 +10,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API ShaderObject {
 
 public:
-    ShaderObject(GLenum shaderType, std::string fileName);
+    ShaderObject(GLenum shaderType, std::string fileName, bool compileShader=true);
     ~ShaderObject();
 
     GLuint getID() { return id_; }
@@ -35,7 +35,7 @@ public:
 
 private:
 
-    bool initialize();
+    bool initialize(bool compileShader);
     void deinitialize();
 
     std::string embeddDefines(std::string source);
