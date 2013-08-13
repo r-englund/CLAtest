@@ -85,6 +85,10 @@ namespace inviwo {
 		update();
 	}
 
+    void TransferFunctionEditor::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *e ){
+        emit doubleClick();
+    }
+
 	void TransferFunctionEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
 		QGraphicsScene::mouseMoveEvent(e);
 		transferFunction_->sortDataPoints();
@@ -240,4 +244,7 @@ namespace inviwo {
 	void TransferFunctionEditor::sortControlPoints(){
 		std::sort(points_.begin(), points_.end(), myPointCompare);
 	}
+
+ 
+
 };

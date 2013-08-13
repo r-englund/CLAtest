@@ -37,7 +37,9 @@
 //#include <vld.h>
 
 namespace inviwo {
-    class TransferFunctionEditor : public QGraphicsScene, public VoidObservable {
+    class TransferFunctionEditor :public QGraphicsScene, public VoidObservable{
+
+        Q_OBJECT
 
     public :
         /** \TransferFunctionEditor constructor
@@ -52,8 +54,13 @@ namespace inviwo {
         */
         TransferFunctionEditor(TransferFunction* transferFunction_);
         ~TransferFunctionEditor();
+    
+    signals:
+        void doubleClick();
+
 
 	protected :
+        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *e);
 		void mousePressEvent(QGraphicsSceneMouseEvent *e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
         void mouseMoveEvent(QGraphicsSceneMouseEvent *e);

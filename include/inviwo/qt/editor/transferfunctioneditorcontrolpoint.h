@@ -19,8 +19,8 @@
 
 namespace inviwo {
 
-    class IVW_QTEDITOR_API TransferFunctionEditorControlPoint : public QGraphicsItem {
-
+    class IVW_QTEDITOR_API TransferFunctionEditorControlPoint :public QObject, public QGraphicsItem {
+            Q_OBJECT
     public:
         /** \TransferFunctionEditorControlPoint constructor  
         *      Creates a TransferFunctionEditorControlPoint at a QPointF
@@ -65,6 +65,7 @@ namespace inviwo {
         TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
 		TransferFunctionEditorControlPoint* leftNeighbour_;
 		TransferFunctionEditorControlPoint* rightNeighbour_;
+
     };
 
 }// namespace

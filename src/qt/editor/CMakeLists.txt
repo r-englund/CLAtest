@@ -36,6 +36,8 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditor.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorcontrolpoint.h
 )
 
 if(DESIRED_QT_VERSION MATCHES 5)

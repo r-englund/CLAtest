@@ -9,6 +9,7 @@
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/editor/transferfunctioneditor.h>
+#include <inviwo/qt/widgets/colorwheel.h>
 
 #include <QCheckBox>
 #include <QColorDialog>
@@ -56,6 +57,7 @@ private:
 	QVector<QGradientStop>* stops_;
 
     QColorDialog* colorDialog_;
+    ColorWheel* colorWheel_;
 
 	bool eventFilter(QObject *object, QEvent *event);
 
@@ -66,8 +68,13 @@ private:
     //void wheelEvent(QWheelEvent * e);
     void generateWidget();
 
+    void setPointColor(QColor color);
+
     public slots:
         void setPropertyValue();
+        void setPropertyValueColorDialog();
+        void updateColorWheel();
+        void showColorDialog();
 };
 
 } // namespace

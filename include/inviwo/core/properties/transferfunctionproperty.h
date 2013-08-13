@@ -3,6 +3,7 @@
 
 #include <inviwo/core/properties/templateproperty.h>
 #include <inviwo/core/datastructures/transferfunction.h>
+//#include <inviwo/qt/widgets/colorwheel.h>
 
 namespace inviwo {
 

@@ -20,21 +20,26 @@ namespace inviwo {
 	}
 
 	void TransferFunctionPropertyDialog::generateWidget(){
-
-		colorDialog_ = new QColorDialog();
-		colorDialog_->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
-		QDockWidget::connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
-
+        
 		QFrame* frame = new QFrame();
 		setWidget(frame);
 
 		QVBoxLayout* vLayout = new QVBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout();
 
 		editor_ = new TransferFunctionEditor(&property_->get());
 		addObservation(editor_);
 		editor_->addObserver(this);
 		editor_->setSceneRect(0,0,width,height);
 		editor_->setBackgroundBrush(Qt::transparent);
+        QDockWidget::connect(editor_,SIGNAL(selectionChanged()),this,SLOT(updateColorWheel()));
+        QDockWidget::connect(editor_,SIGNAL(doubleClick()),this,SLOT(showColorDialog()));
+
+        colorWheel_ = new ColorWheel();
+        colorDialog_ = new QColorDialog();
+        colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
+        QDockWidget::connect(colorWheel_,SIGNAL(colorChange(QColor)),this, SLOT(setPropertyValue()));
+        QDockWidget::connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this,SLOT(setPropertyValueColorDialog()));
 
 		editorview_ = new QGraphicsView();
 		editorview_->setFixedSize(width + 2, height + 2);
@@ -54,9 +59,11 @@ namespace inviwo {
 
 		vLayout->addWidget(editorview_);
 		vLayout->addWidget(paintview_);
-		vLayout->addWidget(colorDialog_);
+		//vLayout->addWidget(colorDialog_);
+        hLayout->addLayout(vLayout);
+        hLayout->addWidget(colorWheel_);
 
-		frame->setLayout(vLayout);
+		frame->setLayout(hLayout);
 
 		gradient_ = new QLinearGradient(-128.0f, 0.0f, 127.0f, 0.0f);
 		stops_ = new QVector<QGradientStop>();
@@ -68,22 +75,37 @@ namespace inviwo {
 		stops_->clear();
 		delete stops_;
 		delete colorDialog_;
+        delete colorWheel_;
 	}
 
 	void TransferFunctionPropertyDialog::setPropertyValue(){
-		vec3* newRgb;
-		QColor color = colorDialog_->currentColor();
-
-		for (int i = 0; i < (int)property_->get().getNumberOfDataPoints() ; i++){
-			if (property_->get().getPoint(i)->isSelected()){
-				newRgb = new vec3(color.redF(),color.greenF(),color.blueF());
-				property_->get().getPoint(i)->setRgb(newRgb);
-			}
-		}
-		editor_->update();
-		updateFromProperty();
-		(&property_->get())->calcTransferValues();
+		QColor color = colorWheel_->color();
+        setPointColor(color);
 	}
+
+
+    void TransferFunctionPropertyDialog::setPropertyValueColorDialog(){
+        QColor color = colorDialog_->currentColor();
+        setPointColor(color);
+        updateColorWheel();
+    }
+
+
+    void TransferFunctionPropertyDialog::setPointColor( QColor color ){
+        vec3* newRgb;
+        QList<QGraphicsItem *> selection = editor_->selectedItems();
+
+        for (int i=0; i< selection.size(); i++) {
+            if (dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))) {
+                newRgb = new vec3(color.redF(),color.greenF(),color.blueF());
+                dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))->getPoint()->setRgb(newRgb);
+            }
+        }
+
+        editor_->update();
+        updateFromProperty();
+        (&property_->get())->calcTransferValues();
+    }
 
 	void TransferFunctionPropertyDialog::updateFromProperty(){
 		QGradientStop* temp = new QGradientStop();
@@ -145,5 +167,24 @@ namespace inviwo {
 	void TransferFunctionPropertyDialog::notify(){
 		updateFromProperty();
 	}
+
+    void TransferFunctionPropertyDialog::updateColorWheel(){
+        QList<QGraphicsItem *> selection = editor_->selectedItems();
+
+        if (selection.size()==1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
+           const vec4* pointColor = dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))->getPoint()->getRgba();
+           colorWheel_->setColor(QColor(pointColor->x*255, pointColor->y*255, pointColor->z*255, pointColor->w*255));
+           colorDialog_->setCurrentColor(QColor(pointColor->x*255, pointColor->y*255, pointColor->z*255, pointColor->w*255));
+        }
+    }
+
+    void TransferFunctionPropertyDialog::showColorDialog(){
+         QList<QGraphicsItem *> selection = editor_->selectedItems();
+         if (selection.size()==1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))){
+               colorDialog_->show();
+         }     
+    }
+
+
 
 } // namespace

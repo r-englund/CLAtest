@@ -88,5 +88,6 @@ namespace inviwo {
 	void TransferFunctionEditorControlPoint::setLeftNeighbour(TransferFunctionEditorControlPoint* point){leftNeighbour_ = point;}
 	void TransferFunctionEditorControlPoint::setRightNeighbour(TransferFunctionEditorControlPoint* point){rightNeighbour_ = point;}
 
+
 	void notify(){};
 } // namespace
