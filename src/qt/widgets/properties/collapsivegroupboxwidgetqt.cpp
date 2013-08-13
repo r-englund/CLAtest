@@ -59,6 +59,7 @@ void CollapsiveGroupBoxWidgetQt::show() {
 	collapsed_ = false;
     groupBox_->show();
     btnCollapse_->setText("-");
+    disconnect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
     connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(hide()));
 }
 
@@ -66,6 +67,7 @@ void CollapsiveGroupBoxWidgetQt::hide() {
 	collapsed_= true;
     groupBox_->hide();
     btnCollapse_->setText("+");
+    disconnect(btnCollapse_,SIGNAL(clicked()),this,SLOT(hide()));
     connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
 }
 
