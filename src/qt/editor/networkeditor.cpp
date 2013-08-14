@@ -795,6 +795,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
             Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
             addProcessor(processor, e->scenePos());
             ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(processor->getIdentifier());
+            clearSelection();
             if (processorGraphicsItem)
                 processorGraphicsItem->setSelected(true);        
             e->setAccepted(true);

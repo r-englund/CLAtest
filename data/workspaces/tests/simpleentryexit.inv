@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref1">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-550" />
@@ -11,7 +11,7 @@
             </MetaDataList>
             <Properties>
                 <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices">
-                    <value x="29" y="109" />
+                    <value x="0" y="128" />
                     <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
@@ -43,14 +43,14 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref3">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-725" y="-400" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="403" y="655" />
+                    <position x="366" y="687" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -65,14 +65,14 @@
                 <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref4">
+        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-400" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="714" y="654" />
+                    <position x="722" y="684" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -87,7 +87,7 @@
                 <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref0">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-475" />
@@ -97,6 +97,96 @@
             <InteractonHandlers>
                 <InteractionHandler type="Trackball">
                     <Properties>
+                        <Property type="EventProperty" identifier="stepPanDown" displayName="Step pan down">
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="S" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan down" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanLeft" displayName="Step pan left">
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="A" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan left" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanRight" displayName="Step pan right">
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="D" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan right" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanUp" displayName="Step pan up">
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="W" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan up" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateDown" displayName="Step rotate down">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="S" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate down" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateLeft" displayName="Step rotate left">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="A" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate left" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateRight" displayName="Step rotate right">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="D" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate right" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateUp" displayName="Step rotate up">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="W" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate up" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepZoomIn" displayName="Step zoom in">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="R" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step zoom in" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepZoomOut" displayName="Step zoom out">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="F" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step zoom out" />
+                            </Action>
+                        </Property>
                         <Property type="EventProperty" identifier="trackballPan" displayName="Pan">
                             <Event type="MouseEvent">
                                 <modifier content="" />
@@ -181,31 +271,31 @@
                 <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref3" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref3" />
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref4" />
+                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>

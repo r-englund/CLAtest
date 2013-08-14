@@ -35,16 +35,14 @@ void SimpleRaycaster::process() {
     bindColorTexture(entryPort_, entryUnit.getEnum());
     bindColorTexture(exitPort_, exitUnit.getEnum());
 
-    TextureUnit transFuncUnit;
-    bindTransferFunction(transferFunction_.get(), transFuncUnit.getEnum());
-
     TextureUnit volUnit;
     bindVolume(volumePort_, volUnit.getEnum());
 
+    TextureUnit transFuncUnit;
+    bindTransferFunction(transferFunction_.get(), transFuncUnit.getEnum());
+
     activateAndClearTarget(outport_);
-    Image* outImage = outport_.getData();
-    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
-    uvec2 outportDim = outImageGL->getDimensions();
+    uvec2 outportDim = outport_.getDimensions();
     
     raycastPrg_->activate();
     setGlobalShaderParameters(raycastPrg_);
@@ -66,9 +64,6 @@ void SimpleRaycaster::process() {
     
     raycastPrg_->deactivate();
     deactivateCurrentTarget();
-    /*unbindColorTexture(entryPort_);
-    unbindColorTexture(exitPort_);
-    transferFunctionGL->unbindColorTexture();*/
 }
 
 } // namespace
