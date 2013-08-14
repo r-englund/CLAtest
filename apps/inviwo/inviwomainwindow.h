@@ -36,9 +36,9 @@ public:
     void openLastWorkspace();
     bool processEndCommandLineArgs();
 
-    bool isSoundsOn();
-
     virtual void notify();
+
+    bool soundOn();
 
 public slots:
     void newWorkspace();
@@ -46,6 +46,9 @@ public slots:
     void openRecentWorkspace();
     void saveWorkspace();
     void saveWorkspaceAs();
+
+private slots:
+    void setSoundOnOff(bool);
 
 private:
     void openWorkspace(QString workspaceFileName);
@@ -96,7 +99,6 @@ private:
 
     // settings
     bool lastExitWithoutErrors_;
-    bool soundsOn_;
     bool workspaceModified_;
 
     // paths

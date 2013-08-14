@@ -49,6 +49,8 @@ public:
         IVW_OK,
         IVW_ERROR
     };
+    void setSoundOn(bool on) { soundOn_ = on; }
+    bool soundOn() { return soundOn_; }
     virtual void playSound(unsigned int soundID) { /*LogWarn("This Inviwo application does not support sound feedback.");*/ }
 
 protected:
@@ -68,6 +70,8 @@ private:
     Settings* settings_;
 
     bool initialized_;
+
+    bool soundOn_;
 };
 
 } // namespace

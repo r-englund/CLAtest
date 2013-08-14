@@ -368,4 +368,4 @@ QProgressBar::chunk {
 /* QToolButton */
 QToolButton {
     border: none;
-} */
+}

@@ -20,7 +20,6 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
     PropertyWidgetFactoryQt::init();
 
     fileWatcher_ = new QFileSystemWatcher();
-    filesChanged_ = QStringList();
     connect(fileWatcher_, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)));
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 }
@@ -34,18 +33,28 @@ void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {
 void InviwoApplicationQt::startFileObservation(std::string fileName) {
     QString qFileName = QString::fromStdString(fileName);
     if (!fileWatcher_->files().contains(qFileName)){
-        fileWatcher_->addPath(qFileName);
+        fileWatcher_->addPath(qFileName); 
         QFileInfo info(qFileName);
-        QString test = info.absolutePath();
-        fileWatcher_->addPath(test);
+        QString path = info.absolutePath();
+        if(!fileWatcher_->directories().contains(path)){
+            fileWatcher_->addPath(path);
+        }
     }
 }
 
 void InviwoApplicationQt::stopFileObservation(std::string fileName) {
-    ivwAssert(fileWatcher_->files().contains(QString::fromStdString(fileName)),
+    QString qFileName = QString::fromStdString(fileName);
+    ivwAssert(fileWatcher_->files().contains(qFileName),
               "trying to stop observation of an unobserved file: "+fileName);
-    if (fileWatcher_->files().contains(QString::fromStdString(fileName)))
-        fileWatcher_->removePath(QString::fromStdString(fileName));
+    if (fileWatcher_->files().contains(qFileName)){
+        fileWatcher_->removePath(qFileName);
+        QFileInfo info(qFileName);
+        QString path = info.absolutePath();
+        QStringList result = fileWatcher_->files().filter(path);
+        if(result.isEmpty()){
+            fileWatcher_->removePath(path);
+        }
+    }
 }
 
 void InviwoApplicationQt::directoryChanged(QString dirName){
@@ -68,8 +77,10 @@ void InviwoApplicationQt::fileChanged(QString fileName) {
 
 void InviwoApplicationQt::playSound(unsigned int soundID) {
     // Qt currently does not support playing sounds from resources
-    if (soundID == IVW_OK) QSound::play(QString::fromStdString(IVW_DIR+"resources/sounds/ok.wav"));
-    else if (soundID == IVW_ERROR) QSound::play(QString::fromStdString(IVW_DIR+"resources/sounds/error.wav"));
+    if(soundOn()){
+        if (soundID == IVW_OK) QSound::play(QString::fromStdString(IVW_DIR+"resources/sounds/ok.wav"));
+        else if (soundID == IVW_ERROR) QSound::play(QString::fromStdString(IVW_DIR+"resources/sounds/error.wav"));
+    }
 }
 
 } // namespace

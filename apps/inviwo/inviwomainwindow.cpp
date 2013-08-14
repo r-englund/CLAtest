@@ -83,7 +83,7 @@ void InviwoMainWindow::initializeAndShow() {
     bool maximized = settings.value("maximized", true).toBool();
     recentFileList_ = settings.value("recentFileList").toStringList();
     lastExitWithoutErrors_ = settings.value("lastExitWithoutErrors", true).toBool();
-    soundsOn_ = settings.value("soundsOn", true).toBool();
+    setSoundOnOff(settings.value("soundsOn", true).toBool());
     settings.setValue("lastExitWithoutErrors", false);
     settings.endGroup();
 
@@ -158,6 +158,7 @@ void InviwoMainWindow::addMenus() {
     optionMenuItem_ = new QMenu(tr("&Options"));
     basicMenuBar->insertMenu(first,fileMenuItem_);
     basicMenuBar->insertMenu(first,viewMenuItem_);
+    basicMenuBar->insertMenu(first,optionMenuItem_);
 
     helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
 }
@@ -222,7 +223,8 @@ void InviwoMainWindow::addMenuActions() {
 
     soundOnOffAction_ = new QAction(tr("&Sounds On"), this);
     soundOnOffAction_->setCheckable(true);
-    soundOnOffAction_->setChecked(soundsOn_);
+    soundOnOffAction_->setChecked(soundOn());
+    connect(soundOnOffAction_, SIGNAL(triggered(bool)), this, SLOT(setSoundOnOff(bool)));
     optionMenuItem_->addAction(soundOnOffAction_);
 }
 
@@ -402,7 +404,7 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     settings.setValue("size", size());
     settings.setValue("recentFileList", recentFileList_);
     settings.setValue("lastExitWithoutErrors", true);
-    settings.setValue("soundsOn", true);
+    settings.setValue("soundsOn", soundOn());
     settings.endGroup();
 
     QMainWindow::closeEvent(event);
@@ -431,8 +433,12 @@ bool InviwoMainWindow::askToSaveWorkspaceChanges() {
     return continueOperation;
 }
 
-bool InviwoMainWindow::isSoundsOn(){
-    return soundOnOffAction_->isChecked();
+bool InviwoMainWindow::soundOn(){
+    return inviwo::InviwoApplicationQt::getRef().soundOn();
+}
+
+void InviwoMainWindow::setSoundOnOff(bool on){
+    inviwo::InviwoApplicationQt::getRef().setSoundOn(on);
 }
 
 } // namespace

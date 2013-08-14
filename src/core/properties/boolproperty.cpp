@@ -31,7 +31,7 @@ Variant BoolProperty::getVariant() {
 
 void  BoolProperty::setVariant(const Variant& val) {
     if (val.canConvert(getVariantType())) {
-        set(val.getFloat());
+        set(val.getBool());
     }
 }
 
