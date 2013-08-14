@@ -13,49 +13,49 @@ Trackball::Trackball(CameraProperty* camera) : InteractionHandler(), PropertyOwn
       isMouseBeingPressedAndHold_(false) {
 	// Eventproperties for continuous movement
     rotateEventProperty_ = new EventProperty("trackballRotate", "Rotate", 
-        new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, Event::MODIFIER_NONE), 
+        new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE), 
         new TrackballAction(TrackballAction::TRACKBALL_ROTATE));
     zoomEventProperty_ = new EventProperty("trackballZoom", "Zoom", 
-        new MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, Event::MODIFIER_NONE), 
+        new MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE), 
         new TrackballAction(TrackballAction::TRACKBALL_ZOOM));
     panEventProperty_ = new EventProperty("trackballPan", "Pan", 
-        new MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, Event::MODIFIER_NONE), 
+        new MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE), 
         new TrackballAction(TrackballAction::TRACKBALL_PAN));
 
 	// Eventproperties for step rotate
 	stepRotateUp_ = new EventProperty("stepRotateUp", "Step rotate up",
-		new KeyboardEvent('W', Event::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_UP));
 	stepRotateLeft_ = new EventProperty("stepRotateLeft", "Step rotate left",
-		new KeyboardEvent('A', Event::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('A', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_LEFT));
 	stepRotateDown_ = new EventProperty("stepRotateDown", "Step rotate down",
-		new KeyboardEvent('S', Event::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_DOWN));
 	stepRotateRight_ = new EventProperty("stepRotateRight", "Step rotate right",
-		new KeyboardEvent('D', Event::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('D', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_RIGHT));
 
 	// Eventproperties for step zoom
 	stepZoomIn_ = new EventProperty("stepZoomIn", "Step zoom in",
-		new KeyboardEvent('R', Event::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('R', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_IN));
 	stepZoomOut_ = new EventProperty("stepZoomOut", "Step zoom out",
-		new KeyboardEvent('F', Event::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('F', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_OUT));
 
 	// Eventproperties for step pan
 	stepPanUp_ = new EventProperty("stepPanUp", "Step pan up",
-		new KeyboardEvent('W', Event::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('W', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_UP));
 	stepPanLeft_ = new EventProperty("stepPanLeft", "Step pan left",
-		new KeyboardEvent('A', Event::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('A', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_LEFT));
 	stepPanDown_ = new EventProperty("stepPanDown", "Step pan down",
-		new KeyboardEvent('S', Event::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('S', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_DOWN));
 	stepPanRight_ = new EventProperty("stepPanRight", "Step pan right",
-		new KeyboardEvent('D', Event::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+		new KeyboardEvent('D', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
 		new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_RIGHT));
 
 
@@ -140,7 +140,7 @@ void Trackball::invokeEvent(Event* event) {
 	if (keyEvent) {
 		int button = keyEvent->button();
 		KeyboardEvent::KeyState state = keyEvent->state();
-		Event::Modifier modifier = keyEvent->modifier();
+		InteractionEvent::Modifier modifier = keyEvent->modifier();
 
 		if (button == stepRotateUp_->getEvent()->button() 
 			&& modifier == stepRotateUp_->getEvent()->modifier() 
@@ -188,7 +188,7 @@ void Trackball::invokeEvent(Event* event) {
     if (mouseEvent) {
 		int button = mouseEvent->button();
 		MouseEvent::MouseState state = mouseEvent->state();
-		Event::Modifier modifier = mouseEvent->modifier();
+		InteractionEvent::Modifier modifier = mouseEvent->modifier();
 
         if (button == rotateEventProperty_->getEvent()->button() 
 			&& modifier == rotateEventProperty_->getEvent()->modifier() 

@@ -2,11 +2,11 @@
 #define IVW_KEYBOARDEVENT_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/interaction/events/event.h>
+#include <inviwo/core/interaction/events/interactionevent.h>
 
 namespace inviwo {
 
-class IVW_CORE_API KeyboardEvent : public Event {
+class IVW_CORE_API KeyboardEvent : public InteractionEvent {
 public:
 	enum KeyState {
 		KEY_STATE_NONE = 0,
@@ -15,7 +15,7 @@ public:
 	};
 
 	KeyboardEvent();
-    KeyboardEvent(char ascii, Event::Modifier modifier=Event::MODIFIER_NONE, KeyboardEvent::KeyState state=KeyboardEvent::KEY_STATE_PRESS);
+    KeyboardEvent(char ascii, InteractionEvent::Modifier modifier=InteractionEvent::MODIFIER_NONE, KeyboardEvent::KeyState state=KeyboardEvent::KEY_STATE_PRESS);
     ~KeyboardEvent();
 
 	inline KeyboardEvent::KeyState state() const { return state_; }

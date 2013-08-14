@@ -123,7 +123,7 @@ void ProcessorNetworkEvaluator::determineProcessingOrder() {
         traversePredecessors(endProcessors[i]);
 }
 
-void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, Event* event) {
+void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, InteractionEvent* event) {
 	if (!hasBeenVisited(processor)) {
 		processorsVisited_.push_back(processor);
 		std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
@@ -137,7 +137,7 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, 
 	}
 }
 
-void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, Event* event) {
+void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, InteractionEvent* event) {
 	// find the canvas processor from which the event was emitted
 	eventInitiator_=0;
 	processorNetwork_->lock();

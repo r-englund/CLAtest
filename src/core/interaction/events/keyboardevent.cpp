@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-KeyboardEvent::KeyboardEvent(char ascii, Event::Modifier modifier, KeyboardEvent::KeyState state) : Event() {
+KeyboardEvent::KeyboardEvent(char ascii, InteractionEvent::Modifier modifier, KeyboardEvent::KeyState state) : InteractionEvent() {
 	state_ = state;
 	button_ = ascii;
 	buttonName_ = ascii;
@@ -17,12 +17,12 @@ KeyboardEvent::KeyboardEvent() {
 KeyboardEvent::~KeyboardEvent() {}
 
 void KeyboardEvent::serialize( IvwSerializer& s ) const {
-	Event::serialize(s);
+	InteractionEvent::serialize(s);
 	s.serialize("button", buttonName_);
 }
 
 void KeyboardEvent::deserialize( IvwDeserializer& s ) {
-	Event::deserialize(s);
+	InteractionEvent::deserialize(s);
 	s.deserialize("button", buttonName_);
 	button_ = buttonName_[0];
 }

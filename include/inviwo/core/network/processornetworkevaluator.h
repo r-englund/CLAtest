@@ -31,7 +31,7 @@ public:
     void evaluate();
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
-	void propagateInteractionEvent(Canvas* canvas, Event* event);
+	void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
 
     Processor* retrieveCanvasProcessor(Canvas* canvas);
 
@@ -43,7 +43,7 @@ private:
     void determineProcessingOrder();
 
     void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);    
-	void propagateInteractionEvent(Processor* processor, Event* event);
+	void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
 
     bool isPortConnectedToProcessor(Port* port, Processor *processor);
 

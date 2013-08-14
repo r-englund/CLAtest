@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-EventProperty::EventProperty(std::string identifier, std::string displayName, Event* e, Action* action,
+EventProperty::EventProperty(std::string identifier, std::string displayName, InteractionEvent* e, Action* action,
                              PropertyOwner::InvalidationLevel invalidationLevel,
                              PropertySemantics::Type semantics  )
     : Property(identifier, displayName, invalidationLevel, semantics) {

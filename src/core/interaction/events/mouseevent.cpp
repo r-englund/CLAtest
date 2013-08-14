@@ -3,8 +3,8 @@
 namespace inviwo {
 
 MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
-                       MouseEvent::MouseState state, Event::Modifier modifier, uvec2 canvasSize)
-    : Event(),
+                       MouseEvent::MouseState state, InteractionEvent::Modifier modifier, uvec2 canvasSize)
+    : InteractionEvent(),
       position_(position),
       state_(state),
       canvasSize_(canvasSize) {
@@ -19,8 +19,8 @@ MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
           button_ = button;
 }
 
-MouseEvent::MouseEvent( MouseEvent::MouseButton button, Event::Modifier modifier )
-    : Event() {
+MouseEvent::MouseEvent( MouseEvent::MouseButton button, InteractionEvent::Modifier modifier )
+    : InteractionEvent() {
     buttonNames_[MOUSE_BUTTON_LEFT] = "Left mouse button";
     buttonNames_[MOUSE_BUTTON_RIGHT] = "Right mouse button";
     buttonNames_[MOUSE_BUTTON_MIDDLE] = "Middle mouse button";
@@ -35,12 +35,12 @@ MouseEvent::MouseEvent( MouseEvent::MouseButton button, Event::Modifier modifier
 MouseEvent::~MouseEvent() {}
 
 void MouseEvent::serialize( IvwSerializer& s ) const {
-	Event::serialize(s);
+	InteractionEvent::serialize(s);
 	s.serialize("button", buttonName_);
 }
 
 void MouseEvent::deserialize( IvwDeserializer& d ) {
-	Event::deserialize(d);
+	InteractionEvent::deserialize(d);
 	d.deserialize("button", buttonName_);
 	for (size_t i = 0; i < COUNT; ++i) {
 		if (buttonNames_[i] == buttonName_) {

@@ -13,7 +13,7 @@ public:
     ~EventConverterQt();
 
     static MouseEvent::MouseButton getMouseButton(QMouseEvent* e);
-    static Event::Modifier getModifier(QInputEvent* e);
+    static InteractionEvent::Modifier getModifier(QInputEvent* e);
 	static char getKeyButton(QKeyEvent* e);
 };
 } // namespace

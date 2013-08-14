@@ -3,11 +3,11 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/interaction/events/event.h>
+#include <inviwo/core/interaction/events/interactionevent.h>
 
 namespace inviwo {
 
-class IVW_CORE_API MouseEvent : public Event {
+class IVW_CORE_API MouseEvent : public InteractionEvent {
 public:
     enum MouseButton {
         MOUSE_BUTTON_NONE   =      0,
@@ -25,8 +25,8 @@ public:
     };
 
     MouseEvent(ivec2 position, MouseEvent::MouseButton button,
-               MouseEvent::MouseState state, Event::Modifier modifier, uvec2 canvasSize);
-    MouseEvent(MouseEvent::MouseButton button, Event::Modifier modifier);
+               MouseEvent::MouseState state, InteractionEvent::Modifier modifier, uvec2 canvasSize);
+    MouseEvent(MouseEvent::MouseButton button, InteractionEvent::Modifier modifier);
     ~MouseEvent();
 
     inline ivec2 pos() const { return position_; }

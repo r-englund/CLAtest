@@ -2,8 +2,7 @@
 #define IVW_EVENTPROPERTY_H
 
 #include <inviwo/core/interaction/action.h>
-#include <inviwo/core/interaction/events/event.h>
-#include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/interactionevent.h>
 #include <inviwo/core/properties/property.h>
 
 namespace inviwo {
@@ -28,7 +27,7 @@ public:
      */
     EventProperty(std::string identifier, 
         std::string displayName,
-        Event* e,
+        InteractionEvent* e,
         Action* action,
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
@@ -38,7 +37,7 @@ public:
 
 	std::string getClassName()  const { return "EventProperty"; }
 
-    Event* getEvent() const { return event_; }    
+    InteractionEvent* getEvent() const { return event_; }    
     Action* getAction() const { return action_; }
 
     /** 
@@ -48,10 +47,10 @@ public:
      * 
      * @param Event e The new event
      */
-    void setEvent(Event* e) { event_ = e; }
+    void setEvent(InteractionEvent* e) { event_ = e; }
 
 private:
-    Event* event_;
+    InteractionEvent* event_;
     Action* action_;
 };
 

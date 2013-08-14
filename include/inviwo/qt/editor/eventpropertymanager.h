@@ -70,7 +70,7 @@ public:
 	 * @param Event::Modifier modifier The modifier for the new mouseevent
 	 * @return void
 	 */
-	void changeMouseMapping(EventProperty* eventProperty, MouseEvent::MouseButton button, Event::Modifier modifier);
+	void changeMouseMapping(EventProperty* eventProperty, MouseEvent::MouseButton button, InteractionEvent::Modifier modifier);
 	
 	/** 
 	 * \brief Remaps an eventproperty with a keyboardevent
@@ -84,7 +84,7 @@ public:
 	 * @param Event::Modifier modifier The modifier for the new keyboardevent
 	 * @return void
 	 */
-	void changeKeyMapping(EventProperty* eventProperty, char button, Event::Modifier modifier);
+	void changeKeyMapping(EventProperty* eventProperty, char button, InteractionEvent::Modifier modifier);
 
 	bool isEmpty();
 
