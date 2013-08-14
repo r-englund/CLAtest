@@ -64,6 +64,9 @@ public:
         onChangeCallback_.addMemberFunction(o,m);
     }
 
+    void hidePropertyWidgets();
+    void showPropertyWidgets();
+
 protected:
     SingleCallBack onChangeCallback_;
 

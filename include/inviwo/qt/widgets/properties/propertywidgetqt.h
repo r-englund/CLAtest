@@ -17,6 +17,9 @@ Q_OBJECT
 public:
     PropertyWidgetQt();
     PropertyWidgetQt* create();
+    
+    void showWidget();
+    void hideWidget();
 
 signals:
     void modified();

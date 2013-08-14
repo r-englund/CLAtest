@@ -12,6 +12,8 @@ public:
 
     //virtual PropertyWidget* create();
     virtual void updateFromProperty() = 0;
+    virtual void showWidget() = 0;
+    virtual void hideWidget() = 0;
 };
 
 } // namespace

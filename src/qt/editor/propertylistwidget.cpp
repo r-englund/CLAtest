@@ -95,6 +95,8 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
     for (size_t i=0; i<properties.size(); i++) {
         Property* curProperty = properties[i];
         // check if the property is already added
+        if (!curProperty->getVisible())
+            continue;
         if(std::find(addedProperties.begin(),addedProperties.end(),curProperty) != addedProperties.end())
             continue;
         // add to group box if one is assigned to the property
@@ -103,7 +105,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
             // add all the properties with the same group assigned
             for (size_t k=0; k<properties.size(); k++){
                 Property* tmpProperty = properties[k];
-                if (curProperty->getGroupID() == tmpProperty->getGroupID()) {
+                if (curProperty->getGroupID() == tmpProperty->getGroupID() && tmpProperty->getVisible()) {
                     group->addProperty(tmpProperty);
                     addedProperties.push_back(tmpProperty);
                 }
@@ -113,7 +115,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
         }
         else {
             PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
-            if (propertyWidget) {
+            if (propertyWidget && curProperty->getVisible()) {
                 vLayout->addWidget(propertyWidget);
                 curProperty->registerPropertyWidget(propertyWidget);
                 connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
