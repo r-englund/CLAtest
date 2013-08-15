@@ -4,8 +4,9 @@
 
 namespace inviwo {
 
-CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt(std::string name) {
-    name_=name;
+    CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt(std::string identifier, std::string displayName):
+    identifier_(identifier),
+    displayName_(displayName){
 	collapsed_ = false;
     generateWidget();
     updateFromProperty();
@@ -13,16 +14,18 @@ CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt(std::string name) {
 
 void CollapsiveGroupBoxWidgetQt::generateWidget() {
 
-    btnCollapse_ = new QPushButton("-");
-    btnCollapse_->setFixedSize(15,15);
-    btnCollapse_->setStyleSheet("min-height: 10px; min-width: 10px;");
+    btnCollapse_ = new QToolButton();
+    btnCollapse_->setStyleSheet("QToolButton::hover { background-color: gray }");
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     QHBoxLayout* boxLayout = new QHBoxLayout();
     QGridLayout* gridLayout = new QGridLayout();
+
+    QHBoxLayout* H2 = new QHBoxLayout();
     
     groupBox_ = new QGroupBox();
     groupBox_->setFlat(true);
+    groupBox_->setStyleSheet("border:0;");
 
     QFrame* frame = new QFrame();
     frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
@@ -30,18 +33,23 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
     hLayout->addWidget(frame);
 
     vLayout_ = new QVBoxLayout();
+    vLayout_->setAlignment(Qt::AlignRight);
     vLayout_->setAlignment(Qt::AlignTop);
-    
+    vLayout_->setMargin(0);
+    vLayout_->setSpacing(0);
     
     groupBox_->setLayout(vLayout_);
-    groupBox_->layout()->setContentsMargins(0,0,0,0);
-    groupBox_->setStyleSheet("border:0;");
-    
+
+    //groupBox_->setAlignment(Qt::AlignHCenter);
+    //groupBox_->layout()->setContentsMargins(0,0,0,0);
+     
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setSpacing(0);
-    gridLayout->addWidget(btnCollapse_,1,1,1,1,Qt::AlignLeft);
-    gridLayout->addWidget(new QLabel(QString::fromStdString(name_)),1,2,1,1,Qt::AlignLeft);
-    gridLayout->addWidget(groupBox_,1,2,4,4,Qt::AlignTop);
+    H2->addWidget(btnCollapse_);
+    H2->addWidget(new QLabel(QString::fromStdString(displayName_)));
+    gridLayout->addLayout(H2,1,0,Qt::AlignLeft);
+    gridLayout->addWidget(groupBox_,2,0);
+
 
     frame->setLayout(gridLayout);
 
@@ -58,7 +66,7 @@ void CollapsiveGroupBoxWidgetQt::updateFromProperty() {
 void CollapsiveGroupBoxWidgetQt::show() {
 	collapsed_ = false;
     groupBox_->show();
-    btnCollapse_->setText("-");
+    btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
     disconnect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
     connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(hide()));
 }
@@ -66,7 +74,7 @@ void CollapsiveGroupBoxWidgetQt::show() {
 void CollapsiveGroupBoxWidgetQt::hide() {
 	collapsed_= true;
     groupBox_->hide();
-    btnCollapse_->setText("+");
+    btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_right.png"));
     disconnect(btnCollapse_,SIGNAL(clicked()),this,SLOT(hide()));
     connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
 }
@@ -76,7 +84,6 @@ void CollapsiveGroupBoxWidgetQt::addProperty( Property* tmpProperty ) {
 }
 
 void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
-    vLayout_->addWidget(new QLabel(QString::fromStdString(name_)));
     PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
     for (size_t i=0; i<properties_.size(); i++) {
         Property* curProperty = properties_[i];
@@ -87,7 +94,7 @@ void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
 }
 
 void CollapsiveGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager) {
-	vLayout_->addWidget(new QLabel(QString::fromStdString(name_)));
+	vLayout_->addWidget(new QLabel(QString::fromStdString(displayName_)));
 	PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
 	for (size_t i=0; i<properties_.size(); i++) {
 		Property* curProperty = properties_[i];
@@ -99,8 +106,20 @@ void CollapsiveGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyManag
 }
 
 
-std::string CollapsiveGroupBoxWidgetQt::getName(){
-    return name_;
+std::string CollapsiveGroupBoxWidgetQt::getIdentifier() const {
+    return identifier_;
+}
+
+void CollapsiveGroupBoxWidgetQt::setIdentifier(const std::string& identifier) {
+    identifier_ = identifier;
+}
+
+std::string CollapsiveGroupBoxWidgetQt::getDisplayName() const {
+    return displayName_;
+}
+
+void CollapsiveGroupBoxWidgetQt::setDisplayName(const std::string& displayName) {
+    displayName_ = displayName;
 }
 
 std::vector<Property*> CollapsiveGroupBoxWidgetQt::getProperties() {

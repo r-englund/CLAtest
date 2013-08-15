@@ -40,8 +40,13 @@ public:
     void updatePropertyWidgets();
     bool hasProcessorWidgets() { return (propertyWidgets_.size()!= 0); }
 
-    void setGroupID(std::string groupID) { groupID_ = groupID; }
+    void setGroupID(std::string groupID, std::string groupDisplayName = "") { 
+        groupID_ = groupID;
+        groupDisplayName_ = groupDisplayName;
+    }
+
     std::string getGroupID() { return groupID_; }
+    std::string getGroupDisplayName(){ return groupDisplayName_; }
 
     void invalidate();
     bool isValid();
@@ -82,6 +87,7 @@ private:
 
     bool visible_;
     std::string groupID_;
+    std::string groupDisplayName_;
 };
 
 } // namespace

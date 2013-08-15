@@ -101,7 +101,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
             continue;
         // add to group box if one is assigned to the property
         else if (curProperty->getGroupID()!="") {
-            CollapsiveGroupBoxWidgetQt* group = new CollapsiveGroupBoxWidgetQt(curProperty->getGroupID());
+            CollapsiveGroupBoxWidgetQt* group = new CollapsiveGroupBoxWidgetQt(curProperty->getGroupID(),curProperty->getGroupDisplayName());
             // add all the properties with the same group assigned
             for (size_t k=0; k<properties.size(); k++){
                 Property* tmpProperty = properties[k];

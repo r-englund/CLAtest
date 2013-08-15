@@ -21,7 +21,14 @@ class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt {
     Q_OBJECT;
 
 public:
-    CollapsiveGroupBoxWidgetQt(std::string name);
+    CollapsiveGroupBoxWidgetQt(std::string identifier, std::string displayName= "");
+
+    virtual std::string getIdentifier() const;
+    virtual void setIdentifier(const std::string& identifier);
+
+    virtual std::string getDisplayName() const;
+    virtual void setDisplayName(const std::string& displayName);
+
 
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
@@ -29,12 +36,13 @@ public:
     void generatePropertyWidgets();
 	void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
     std::vector<Property*> getProperties();
-    std::string getName();
 	bool isCollapsed() { return collapsed_; };
 
 private:
-    QPushButton* btnCollapse_;
-    std::string name_;
+    //QPushButton* btnCollapse_;
+    QToolButton* btnCollapse_;
+    std::string identifier_;
+    std::string displayName_;
     QGroupBox* groupBox_;
     std::vector<Property*> properties_;
 	bool collapsed_;

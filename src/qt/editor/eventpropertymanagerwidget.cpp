@@ -33,7 +33,7 @@ void EventPropertyManagerWidget::emptyLayout(QVBoxLayout* layout) {
 		QWidget* w =  layout->layout()->takeAt(0)->widget();
 		CollapsiveGroupBoxWidgetQt* box = dynamic_cast<CollapsiveGroupBoxWidgetQt*>(w);
 		if (box)
-			groupCollapsed[box->getName()] = box->isCollapsed();
+			groupCollapsed[box->getIdentifier()] = box->isCollapsed();
 
 		layout->layout()->removeWidget(w);
 		delete w;
@@ -60,7 +60,7 @@ void EventPropertyManagerWidget::drawEventPropertyWidgets() {
 				}
 			}
 			group->generateEventPropertyWidgets(eventPropertyManager_);
-			if (groupCollapsed[group->getName()])
+			if (groupCollapsed[group->getIdentifier()])
 				group->hide();
 
 			mainLayout_->addWidget(group);
