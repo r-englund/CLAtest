@@ -23,6 +23,8 @@ public:
 private:
 	TransferFunctionProperty* property_;
 	QPushButton* btnOpenDialog_;
+    QToolButton* btnOpenTF_;
+
 
 	TransferFunctionPropertyDialog* transferFunctionDialog_;
 

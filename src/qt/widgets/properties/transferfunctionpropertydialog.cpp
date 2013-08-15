@@ -262,4 +262,10 @@ void TransferFunctionPropertyDialog::setPointColor( QColor color ){
 	updateFromProperty();
 	(&property_->get())->calcTransferValues();
 }
+
+
+QGraphicsView* TransferFunctionPropertyDialog::getGradient(){
+    return paintview_;
+}
+
 } // namespace

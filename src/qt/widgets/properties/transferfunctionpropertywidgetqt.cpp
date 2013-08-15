@@ -23,25 +23,32 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
 	transferFunctionDialog_->setVisible(false);
 	app->getMainWindow()->addDockWidget(Qt::BottomDockWidgetArea, transferFunctionDialog_);
 	
-
-    btnOpenDialog_ = new QPushButton();
-    btnOpenDialog_->setFixedWidth(300);
-    btnOpenDialog_->setFixedHeight(30);
-	btnOpenDialog_->setText("Open TransferFunctionEditor");
     
-	connect(btnOpenDialog_,SIGNAL(clicked()),this,SLOT(openTransferFunctionDialog()));
-    hLayout->addWidget(btnOpenDialog_);
+    btnOpenDialog_ = new QPushButton();
+    btnOpenTF_ = new QToolButton();
+    btnOpenTF_->setIcon(QIcon(QPixmap::grabWidget(transferFunctionDialog_->getGradient())));
+    
+    
+    btnOpenTF_->setIconSize(QSize(300, 50));
+    btnOpenTF_->setFixedSize(300,50);
+
+	connect(btnOpenTF_,SIGNAL(clicked()),this,SLOT(openTransferFunctionDialog()));
+    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    hLayout->addWidget(btnOpenTF_);
     setLayout(hLayout);
 }
 
-void TransferFunctionPropertyWidgetQt::updateFromProperty(){}
+void TransferFunctionPropertyWidgetQt::updateFromProperty(){
+    btnOpenTF_->setIcon(QIcon(QPixmap::grabWidget(transferFunctionDialog_->getGradient())));
+}
+
 
 void TransferFunctionPropertyWidgetQt::setPropertyValue(){}
 
 void TransferFunctionPropertyWidgetQt::openTransferFunctionDialog() {
-	//transferFunctionDialog_->show();
-
 	transferFunctionDialog_->setVisible(true);
 }
+
+
 
 }//namespace

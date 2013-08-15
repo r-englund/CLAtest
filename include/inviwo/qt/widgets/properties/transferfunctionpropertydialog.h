@@ -18,6 +18,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QPainter>
+#include <QPixmap>
 #include <QSpinBox>
 #include <QWheelEvent>
 #include <inviwo/core/util/observer.h>
@@ -43,6 +44,8 @@ public:
     void updateFromProperty();
     void logStuff();
 	void notify();
+    QGraphicsView* getGradient();
+
 
 private:
     int zoom_;
