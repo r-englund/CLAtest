@@ -6,40 +6,35 @@
 
 namespace inviwo {
 
-	TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(){
-	setFlag(QGraphicsItem::ItemIsMovable);
-	setFlag(QGraphicsItem::ItemIsSelectable);
-	setFlag(QGraphicsItem::ItemSendsGeometryChanges);
-	setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-	setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
-	setZValue(0);
+TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(){
+	initiateLineItem();
 };
 
 TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, TransferFunctionEditorControlPoint* finish):
 start_(start),
-finish_(finish),
-direction_(0)
+	finish_(finish),
+	direction_(0)
 {
-	setFlag(QGraphicsItem::ItemIsMovable);
-	setFlag(QGraphicsItem::ItemIsSelectable);
-	setFlag(QGraphicsItem::ItemSendsGeometryChanges);
-	setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-	setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
-	setZValue(0);
+	initiateLineItem();
 };
 
 TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, int dir):
 start_(start),
-finish_(start),
-direction_(dir)
+	finish_(start),
+	direction_(dir)
 {
+	initiateLineItem();
+};
+
+void TransferFunctionEditorLineItem::initiateLineItem(){
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setFlag(QGraphicsItem::ItemIsSelectable);
 	setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 	setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
 	setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
+
 	setZValue(0);
-};
+}
 
 TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem(){};
 
@@ -47,6 +42,8 @@ TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem(){};
 void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
 	IVW_UNUSED_PARAM(options);
 	IVW_UNUSED_PARAM(widget);
+	painter->setRenderHint(QPainter::Antialiasing, true);
+
 	const vec2* start = start_->getPoint()->getPos();
 	const vec2* finish;
 	switch (direction_)
@@ -64,26 +61,20 @@ void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOption
 		finish = finish_->getPoint()->getPos();
 		break;	
 	}
-	QPen* pen;
-
-	painter->setRenderHint(QPainter::Antialiasing, true);
-
-	if (this->isSelected()){
-		pen = new QPen(Qt::red, 3.0f, Qt::SolidLine, Qt::RoundCap);
-	} 
-	else{
-		pen = new QPen(Qt::black, 3.0f, Qt::SolidLine, Qt::RoundCap);
-	}
-
+	QPen* pen = new QPen();
+	pen->setStyle(Qt::SolidLine);
+	pen->setCapStyle(Qt::RoundCap);
+	pen->setWidth(6.0);
+	this->isSelected() ? pen->setColor(Qt::red) : pen->setColor(Qt::black);
+	
 	painter->setPen(*pen);
 	painter->drawLine(start->x, start->y, finish->x, finish->y);
 
-	pen = new QPen(Qt::cyan, 1.0, Qt::SolidLine, Qt::RoundCap);
+	pen->setWidth(2.0);
+	pen->setColor(Qt::cyan);
+
 	painter->setPen(*pen);
 	painter->drawLine(start->x, start->y, finish->x, finish->y);
-
-	//Draws the lineItem boundingbox
-	//painter->drawPath(this->shape());
 
 	delete pen;
 }
@@ -103,23 +94,21 @@ QPainterPath TransferFunctionEditorLineItem::shape() const {
 		<< QPointF(fPos.x + size, fPos.y + size);
 
 	path.addPolygon(poly);
+
 	path.closeSubpath();
 	return path; 
 } 
 
 QRectF TransferFunctionEditorLineItem::boundingRect() const {
-	const vec2* startPos = start_->getPoint()->getPos();
-	const vec2* finishPos = finish_->getPoint()->getPos();
-	QRectF bound = QRectF(QPointF(startPos->x, startPos->y), QPointF(finishPos->x, finishPos->y));
-	return bound;
+	return shape().boundingRect();
 }
+
 void TransferFunctionEditorLineItem::mousePressEvent ( QGraphicsSceneMouseEvent *e ){
 	mouseDownPos_ = e->scenePos();
 	this->setSelected(true);
 }
 
-void TransferFunctionEditorLineItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){
-}
+void TransferFunctionEditorLineItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
 
 void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e){
 	vec2 deltaPos = vec2(e->pos().x()- mouseDownPos_.x() , e->pos().y() - mouseDownPos_.y()); 
@@ -158,7 +147,7 @@ void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e
 		newFinishPos.y = maxY;
 		newStartPos = newFinishPos - lineVector;
 	}
-	
+
 	deltaPos.x = floor(deltaPos.x + 0.5);
 
 	start_->setPos(QPointF(newStartPos.x, newStartPos.y));
@@ -167,7 +156,6 @@ void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e
 	finish_->getPoint()->setPos(newFinishPos);
 	mouseDownPos_ = e->pos();
 }
-
 
 TransferFunctionEditorControlPoint* TransferFunctionEditorLineItem::getStart(){return start_;}
 TransferFunctionEditorControlPoint* TransferFunctionEditorLineItem::getFinish(){return finish_;}

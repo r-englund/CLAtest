@@ -66,8 +66,6 @@ namespace inviwo {
         void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
 		void keyPressEvent(QKeyEvent *e);
 
-        //void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
-
         /** \Add new control point
         *      Adds a new control point at the event position
         *

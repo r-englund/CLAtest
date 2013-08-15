@@ -65,6 +65,7 @@ namespace inviwo {
 
 		void setDirection(int dir);
 		QPainterPath shape() const;
+		void initiateLineItem();
 
         //override for qgraphicsitem_cast (refer qt documentation)
         enum { Type = UserType + ConnectionGraphicsType + 1};

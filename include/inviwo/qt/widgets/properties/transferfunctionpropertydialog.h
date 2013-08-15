@@ -10,6 +10,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/editor/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/colorwheel.h>
+#include <inviwo/qt/widgets/rangesliderqt.h>
 
 #include <QCheckBox>
 #include <QColorDialog>
@@ -17,6 +18,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QPainter>
+#include <QSpinBox>
 #include <QWheelEvent>
 #include <inviwo/core/util/observer.h>
 
@@ -59,8 +61,11 @@ private:
     QColorDialog* colorDialog_;
     ColorWheel* colorWheel_;
 
-    bool colorChange_;
+	RangeSliderQt* zoomSlider_;
+	QSpinBox* spinBoxMin_;
+	QSpinBox* spinBoxMax_;
 
+    bool colorChange_;
 	bool eventFilter(QObject *object, QEvent *event);
 
     /** \Mousewheel zoom functionality
@@ -72,11 +77,17 @@ private:
 
     void setPointColor(QColor color);
 
+	int zoomMin; 
+	int zoomMax;
+
     public slots:
         void setPropertyValue();
         void setPropertyValueColorDialog();
         void updateColorWheel();
         void showColorDialog();
+		void updateFromSlider(int valMin, int valMax);
+		void updateFromSpinBoxMin(int val);
+		void updateFromSpinBoxMax(int val);
 };
 
 } // namespace
