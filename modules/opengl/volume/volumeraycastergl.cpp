@@ -1,4 +1,5 @@
 #include "volumeraycastergl.h"
+#include <inviwo/core/interaction/trackball.h>
 
 namespace inviwo {
 
@@ -25,6 +26,9 @@ VolumeRaycasterGL::VolumeRaycasterGL()
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     VolumeRaycasterGL("rc_simple.frag");
+
+    addProperty(camera_);
+    addInteractionHandler(new Trackball(&camera_));
 }
 
 VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
@@ -80,8 +84,9 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     compositingMode_.set("dvr");
     addProperty(compositingMode_);
 
-    camera_.setVisible(false);
+    //camera_.setVisible(false);
     addProperty(camera_);
+    addInteractionHandler(new Trackball(&camera_));
 }
 
 void VolumeRaycasterGL::addShadingProperties() {

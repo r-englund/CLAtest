@@ -23,7 +23,7 @@ namespace inviwo {
 		TransferFunction& operator=(const TransferFunction& rhs);
         virtual ~TransferFunction();
         void setData(Image);
-        Image* getData() const;
+        const Image* getData() const;
         size_t getNumberOfDataPoints() const;
         TransferFunctionDataPoint* getPoint(int i) const;
 

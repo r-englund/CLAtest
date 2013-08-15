@@ -29,7 +29,7 @@ namespace inviwo {
         delete data_;
 	}
 
-    Image* TransferFunction::getData() const{
+    const Image* TransferFunction::getData() const{
 		return data_;
     }
 

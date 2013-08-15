@@ -1,5 +1,6 @@
 #include "entryexitpoints.h"
 #include <modules/opengl/geometry/geometrygl.h>
+#include <inviwo/core/interaction/trackball.h>
 
 namespace inviwo {
 
