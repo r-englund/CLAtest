@@ -82,6 +82,13 @@ uvec3 ImageInport::getColorCode() const {
     return uvec3(90,127,183); 
 }
 
+bool ImageInport::canConnectTo(Port* port) const {
+	if (dynamic_cast<ImageOutport*>(port))
+		return true;
+	else
+		return false;
+}
+
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier)
     : DataOutport<Image>(identifier), dimensions_(uvec2(256,256))
@@ -265,6 +272,13 @@ void ImageOutport::setLargestImageData() {
 
 uvec3 ImageOutport::getColorCode() const { 
     return uvec3(90,127,183); 
+}
+
+bool ImageOutport::canConnectTo(Port* port) const {
+	if (dynamic_cast<ImageInport*>(port))
+		return true;
+	else
+		return false;
 }
 
 } // namespace

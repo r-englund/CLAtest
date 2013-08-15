@@ -9,8 +9,12 @@ namespace inviwo {
 CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color)
                                      : color_(color.r, color.g, color.b) {
     setStartPoint(startPoint);
+	setMidPoint(startPoint);
     setEndPoint(endPoint);
     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
+
+	hoverInputColor_ = QColor();
+	hoverOutputColor_ = QColor();
 
     QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
     shadowEffect->setOffset(3.0);
@@ -32,19 +36,42 @@ QPainterPath CurveGraphicsItem::obtainCurvePath() const {
     return bezierCurve;
 }
 
+QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endPoint) {
+	float delta = endPoint.y()-startPoint.y();
+
+	QPointF ctrlPoint1 = QPointF(startPoint.x(), endPoint.y()-delta/4.0);
+	QPointF ctrlPoint2 = QPointF(endPoint.x(), startPoint.y()+delta/4.0);    
+
+	QPainterPath bezierCurve;
+	bezierCurve.moveTo(startPoint);
+	bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint);
+	return bezierCurve;
+}
+
 void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
     IVW_UNUSED_PARAM(options);
-    IVW_UNUSED_PARAM(widget);
+    IVW_UNUSED_PARAM(widget);    
 
-    if (isSelected()) 
-        p->setPen(QPen(Qt::darkRed, 4.0, Qt::SolidLine, Qt::RoundCap));        
-    else
-        p->setPen(QPen(Qt::black, 3.0, Qt::SolidLine, Qt::RoundCap));
+	if (midPoint_ == startPoint_) {
+		if (isSelected()) 
+			p->setPen(QPen(Qt::darkRed, 4.0, Qt::SolidLine, Qt::RoundCap));        
+		else
+			p->setPen(QPen(Qt::black, 3.0, Qt::SolidLine, Qt::RoundCap));
 
-    p->drawPath(obtainCurvePath());
+		p->drawPath(obtainCurvePath());
+		p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
+		p->drawPath(obtainCurvePath());
+	} else if (midPoint_ != startPoint_) {
+		p->setPen(QPen(hoverInputColor_, 4.0, Qt::SolidLine, Qt::RoundCap)); //< Shadow
+		p->drawPath(obtainCurvePath(startPoint_,midPoint_));
+		p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
+		p->drawPath(obtainCurvePath(startPoint_,midPoint_));
 
-    p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
-    p->drawPath(obtainCurvePath());
+		p->setPen(QPen(hoverOutputColor_, 4.0, Qt::SolidLine, Qt::RoundCap)); //< Shadow
+		p->drawPath(obtainCurvePath(midPoint_, endPoint_));
+		p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
+		p->drawPath(obtainCurvePath(midPoint_, endPoint_));
+	}
 }
 
 QPainterPath CurveGraphicsItem::shape() const {

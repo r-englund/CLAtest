@@ -59,12 +59,12 @@ void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
     modified();
 }
 
-void ProcessorNetwork::addLink(ProcessorLink* processorLink) {        
+void ProcessorNetwork::addLink(ProcessorLink* processorLink) {
     processorLinks_.push_back(processorLink);
     modified();
 }
 
-void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {        
+void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {      
     addLink(new ProcessorLink(sourceProcessor, destProcessor));
 }
 

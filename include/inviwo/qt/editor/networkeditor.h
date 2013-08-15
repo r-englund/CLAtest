@@ -76,6 +76,8 @@ protected:
     void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
     void dropEvent(QGraphicsSceneDragDropEvent* de);
 
+	void placeProcessorOnConnection(ProcessorGraphicsItem* processorItem, ConnectionGraphicsItem* connectionItem);
+
 private:
     friend class ProcessorGraphicsItem;
     friend class ConnectionGraphicsItem;
@@ -86,6 +88,8 @@ private:
 
     ProcessorNetwork* processorNetwork_;
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
+
+	ConnectionGraphicsItem* oldDragTarget_;
 
     CurveGraphicsItem* connectionCurve_;
     LinkGraphicsItem* linkCurve_;

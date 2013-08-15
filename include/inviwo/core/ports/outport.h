@@ -31,6 +31,8 @@ public:
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     std::vector<Processor*> getDirectSuccessors();
 
+	//virtual bool canConnectTo(Port* port);
+
 protected:
     void connectTo(Inport* port);
     void disconnectFrom(Inport* port);

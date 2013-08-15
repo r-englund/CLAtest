@@ -20,11 +20,20 @@ public:
 
     virtual QPainterPath shape() const;
 
-    void setStartPoint(QPointF startPoint) { prepareGeometryChange(); startPoint_ = startPoint; }
+    void setStartPoint(QPointF startPoint) { prepareGeometryChange(); startPoint_ = startPoint; midPoint_ = startPoint; }
     QPointF getStartPoint() const { return startPoint_; }
  
     void setEndPoint(QPointF endPoint) { prepareGeometryChange(); endPoint_ = endPoint; }
     QPointF getEndPoint() const { return endPoint_; }
+
+	void setMidPoint(QPointF midPoint) { prepareGeometryChange(); midPoint_ = midPoint; }
+	void clearMidPoint() { prepareGeometryChange(); midPoint_ = startPoint_; }
+	QPointF getMidPoint() const { return midPoint_; }
+
+	void setColor(QColor color) { color_ = color; }
+	QColor getColor() { return color_; }
+
+	void setBorderColors(QColor hoverInputColor, QColor hoverOutputColor) {hoverInputColor_ = hoverInputColor; hoverOutputColor_ = hoverOutputColor; }
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ConnectionGraphicsType };
@@ -36,12 +45,16 @@ public:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     QRectF boundingRect() const;
 
+	virtual QPainterPath obtainCurvePath() const;
+	QPainterPath obtainCurvePath(QPointF startPoint, QPointF endPoint);
+
 protected:
-    virtual QPainterPath obtainCurvePath() const;
+    
     QPointF startPoint_;
     QPointF endPoint_;
+	QPointF midPoint_;
 
-    QColor color_;
+    QColor color_, hoverInputColor_, hoverOutputColor_;
 };
 
 

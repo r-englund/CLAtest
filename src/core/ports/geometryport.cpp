@@ -19,6 +19,13 @@ uvec3 GeometryInport::getColorCode() const {
     return uvec3(188,188,101); 
 }
 
+bool GeometryInport::canConnectTo(Port* port) const {
+	if (dynamic_cast<GeometryOutport*>(port))
+		return true;
+	else
+		return false;
+}
+
 // Geometry Outport
 GeometryOutport::GeometryOutport(std::string identifier)
 : DataOutport<Geometry>(identifier)
@@ -34,6 +41,13 @@ void GeometryOutport::deinitialize() {}
 
 uvec3 GeometryOutport::getColorCode() const { 
     return uvec3(188,188,101); 
+}
+
+bool GeometryOutport::canConnectTo(Port* port) const {
+	if (dynamic_cast<GeometryInport*>(port))
+		return true;
+	else
+		return false;
 }
 
 } // namespace

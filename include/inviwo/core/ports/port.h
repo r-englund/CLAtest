@@ -49,6 +49,8 @@ public:
      */
     virtual uvec3 getColorCode() const;
 
+	virtual bool canConnectTo(Port* port) const { return false; };
+
     Processor* getProcessor() const;
     std::string getIdentifier() const;
 

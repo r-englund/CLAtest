@@ -21,6 +21,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 #include <QVarLengthArray>
+#include <QGraphicsItem>
 
 namespace inviwo {
 
@@ -34,6 +35,8 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     inspectedPort_ = 0;
     gridSnapping_ = true;
     setSceneRect(-1000,-1000,1000,1000);
+
+	oldDragTarget_ = nullptr;;
 
     processorNetwork_ = new ProcessorNetwork();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
@@ -89,18 +92,19 @@ void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
 
 void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
     removeConnectionGraphicsItem(getConnectionGraphicsItem(outport, inport));
-    processorNetwork_->removeConnection(outport, inport);
+    processorNetwork_->removeConnection(outport, inport);	
 }
 
 
 void NetworkEditor::addLink(Processor* processor1, Processor* processor2) {
     processorNetwork_->addLink(processor1, processor2);
     addLinkGraphicsItem(processor1, processor2);
+	
 }
 
 void NetworkEditor::removeLink(Processor* processor1, Processor* processor2) {
     removeLinkGraphicsItem(getLinkGraphicsItem(processor1, processor2));
-    processorNetwork_->removeLink(processor1, processor2);
+    processorNetwork_->removeLink(processor1, processor2);	
 }
 
 
@@ -621,14 +625,14 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         endProcessor_ = 0;
         e->accept();
 
-    } else {
+    } else if (startProcessor_){
         // move processor
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
             ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
             if (processorGraphicsItem && gridSnapping_)
-                processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
-        }
+                processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));				
+		}
         QGraphicsScene::mouseReleaseEvent(e);
     }
 }
@@ -783,10 +787,41 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
     if (ProcessorDragObject::canDecode(e->mimeData())) {
         e->setAccepted(true);
         e->acceptProposedAction();
-    }
+
+		ConnectionGraphicsItem* connectionItem = getConnectionGraphicsItemAt(e->scenePos());
+		if (connectionItem && !oldDragTarget_){
+			QString className;
+			ProcessorDragObject::decode(e->mimeData(), className);
+			Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
+			QColor inputColor = Qt::red, outputColor = Qt::red;
+
+			for (size_t i = 0; i < processor->getInports().size(); ++i) {
+				if(connectionItem->getOutport()->canConnectTo(processor->getInports().at(i))) {
+					inputColor = Qt::green;
+					break;
+				}
+			}
+
+			for (size_t i = 0; i < processor->getOutports().size(); ++i) {
+				if(connectionItem->getInport()->canConnectTo(processor->getOutports().at(i))) {
+					outputColor = Qt::green;
+					break;
+				}
+			}
+
+			connectionItem->setBorderColors(inputColor, outputColor);		
+			oldDragTarget_ = connectionItem;
+		} else if (connectionItem) {
+			connectionItem->setMidPoint(e->scenePos());
+		} else if (oldDragTarget_ && !connectionItem){
+			oldDragTarget_->clearMidPoint();
+			oldDragTarget_ = nullptr;
+		}
+	}
 }
 
 void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
+	
     if (ProcessorDragObject::canDecode(e->mimeData())) {
         QString className;
         ProcessorDragObject::decode(e->mimeData(), className);
@@ -800,8 +835,44 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
                 processorGraphicsItem->setSelected(true);        
             e->setAccepted(true);
             e->acceptProposedAction();
-        }
-    }
+
+			// Check for curve collisions
+			ConnectionGraphicsItem* connectionItem = getConnectionGraphicsItemAt(e->scenePos());
+			if (connectionItem)
+				placeProcessorOnConnection(processorGraphicsItem, connectionItem);
+		}
+	}
+}
+
+void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorGraphicsItem, ConnectionGraphicsItem* connectionItem) {
+	std::vector<Inport*> inports = processorGraphicsItem->getProcessor()->getInports();
+	std::vector<Outport*> outports = processorGraphicsItem->getProcessor()->getOutports();
+	Inport* connectionInport = connectionItem->getInport();
+	Outport* connectionOutport = connectionItem->getOutport();
+
+	// Clear oldDragTarget
+	oldDragTarget_->clearMidPoint();
+	oldDragTarget_ = nullptr;
+
+	// Remove old connection
+	removeConnection(connectionItem);
+
+	for (size_t i = 0; i < inports.size(); ++i) {
+		if(connectionOutport->canConnectTo(inports.at(i))) {
+			// Create new connection connectionOutport-processorInport
+			addConnection(connectionOutport, inports.at(i));
+			break;
+		}
+	}
+
+	for (size_t i = 0; i < outports.size(); ++i) {
+		if(connectionInport->canConnectTo(outports.at(i))) {
+			// Create new connection processorOutport-connectionInport
+			addConnection(outports.at(i), connectionInport);
+			break;
+		}
+	}
+	
 }
 
 
