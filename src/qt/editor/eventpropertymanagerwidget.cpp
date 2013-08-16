@@ -23,19 +23,19 @@ EventPropertyManagerWidget::~EventPropertyManagerWidget(){}
 
 void EventPropertyManagerWidget::notify() {
 	emptyLayout(mainLayout_);
-	if (!eventPropertyManager_->isEmpty()) {
+	
+	if (!eventPropertyManager_->isEmpty())
 		drawEventPropertyWidgets();
-	}
 }
 
 void EventPropertyManagerWidget::emptyLayout(QVBoxLayout* layout) {
-	while(!layout->layout()->isEmpty()) {
-		QWidget* w =  layout->layout()->takeAt(0)->widget();
+	while(!layout->isEmpty()) {
+		QWidget* w =  layout->takeAt(0)->widget();
 		CollapsiveGroupBoxWidgetQt* box = dynamic_cast<CollapsiveGroupBoxWidgetQt*>(w);
 		if (box)
 			groupCollapsed[box->getIdentifier()] = box->isCollapsed();
 
-		layout->layout()->removeWidget(w);
+		layout->removeWidget(w);
 		delete w;
 	}
 }

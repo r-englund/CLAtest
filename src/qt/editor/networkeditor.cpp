@@ -154,7 +154,10 @@ void NetworkEditor::addProcessorGraphicsItem(Processor* processor, QPointF pos, 
 void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
     // obtain processor graphics item through processor
     ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(processor->getIdentifier());
-    ivwAssert(processorGraphicsItem, "ProcessorGraphicsItem to be removed does not exist.")
+    ivwAssert(processorGraphicsItem, "ProcessorGraphicsItem to be removed does not exist.");
+	if (oldProcessorTarget_ == processorGraphicsItem)
+		oldProcessorTarget_ = NULL;
+
 
     // remove connection graphics items
     std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = connectionGraphicsItems_;
@@ -231,6 +234,9 @@ void NetworkEditor::addConnectionGraphicsItem(Outport* outport, Inport* inport) 
 }
 
 void NetworkEditor::removeConnectionGraphicsItem(ConnectionGraphicsItem* connectionGraphicsItem) {
+	if (oldConnectionTarget_ == connectionGraphicsItem)
+		oldConnectionTarget_ = NULL;
+
     connectionGraphicsItem->hide();
     removeItem(connectionGraphicsItem);
     connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(),
