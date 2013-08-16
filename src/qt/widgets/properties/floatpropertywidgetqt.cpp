@@ -24,11 +24,11 @@ void FloatPropertyWidgetQt::setPropertyValue(float value) {
 }
 
 void FloatPropertyWidgetQt::updateFromProperty() {
-    sliderWidget_->initValue(property_->get());
+    float value = property_->get();
+    sliderWidget_->initValue(value);
     sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
-    sliderWidget_->setValue(property_->get());
+    sliderWidget_->setValue(value);
     sliderWidget_->setIncrement(property_->getIncrement());
-
 }
 
 void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
