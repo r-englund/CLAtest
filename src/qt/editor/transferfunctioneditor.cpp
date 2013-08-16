@@ -7,9 +7,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunc)
 	leftEdgeLine_ = new TransferFunctionEditorLineItem();
 	rightEdgeLine_ = new TransferFunctionEditorLineItem();
 
-	leftEdgeLine_->setZValue(0);
 	leftEdgeLine_->setDirection(1);
-	rightEdgeLine_->setZValue(0);
 	rightEdgeLine_->setDirection(2);
 
 	//VLDEnable;
@@ -37,7 +35,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunc)
 	rightEdgeLine_->setFinish(points_.back());
 	addItem(leftEdgeLine_);
 	addItem(rightEdgeLine_);
-	
+
 	sortControlPoints();
 	setControlPointNeighbours();
 	sortLines();
@@ -54,59 +52,55 @@ TransferFunctionEditor::~TransferFunctionEditor(){
 void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent *e){
 	mouseDownPos_ = e->scenePos();
 
-	if (points_.size() > 0){}
 	std::vector<TransferFunctionEditorControlPoint*>::iterator iter = points_.begin();
 
-	if (e->button() == Qt::LeftButton){
+	if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ControlModifier)){
+		this->views().front()->setDragMode(QGraphicsView::RubberBandDrag);
+	}
 
-		for (std::vector<TransferFunctionEditorLineItem*>::iterator lineiter = lines_.begin(); lineiter != lines_.end(); lineiter++){
-			(*lineiter)->setSelected(false);
+	if (e->button() == Qt::LeftButton && !e->modifiers().testFlag(Qt::ControlModifier)){
+		if (items(e->scenePos()).isEmpty()){
+			clearSelection();
+			addPoint(e);
+			QGraphicsScene::mousePressEvent(e);
 		}
-
-		if(!e->modifiers().testFlag(Qt::ControlModifier)){
-			for (iter = points_.begin(); iter != points_.end(); iter++){
-				(*iter)->getPoint()->setSelected(false);
-				(*iter)->setSelected(false);
-			}
-		}
-		if (!items(e->scenePos()).isEmpty()){
-			QGraphicsScene::mousePressEvent(e); // this forwards the event to the item
+		else{
+			clearSelection();
+			QGraphicsScene::mousePressEvent(e);
 		}
 	}
 	else if (e->button() == Qt::RightButton){
-		if (items(e->scenePos()).isEmpty()){}
+		if (items(e->scenePos()).isEmpty()){
+			clearSelection();
+		}
 		else if (items(e->scenePos()).first()->type() == TransferFunctionEditorControlPoint::Type){
 			removePoint((TransferFunctionEditorControlPoint*)items(e->scenePos()).first());
-		}
-		for (iter = points_.begin(); iter != points_.end(); iter++){
-			(*iter)->getPoint()->setSelected(false);
 		}
 	}
 	update();
 }
 
 void TransferFunctionEditor::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *e ){
-    emit doubleClick();
+	emit doubleClick();
 }
 
 void TransferFunctionEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
 	QGraphicsScene::mouseMoveEvent(e);
 	transferFunction_->sortDataPoints();
 	transferFunction_->calcTransferValues();
-	//(parent_)->updateFromProperty();
 	notifyObservers();
 	sortLines();
 	update();
 }
 
 void TransferFunctionEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent *e){
-	float dist = sqrt( pow(e->scenePos().x() - mouseDownPos_.x(), 2) + pow(e->scenePos().y() - mouseDownPos_.y(), 2));
+	//float dist = sqrt( pow(e->scenePos().x() - mouseDownPos_.x(), 2) + pow(e->scenePos().y() - mouseDownPos_.y(), 2));
 
-	if (e->button() == Qt::LeftButton && dist < 10.0f){
-		if (items(mouseDownPos_).isEmpty()){
-			addPoint(e);
-		}
-	}
+	//if (e->button() == Qt::LeftButton && dist < 10.0f){
+	//	if (items(mouseDownPos_).isEmpty()){
+	//		addPoint(e);
+	//	}
+	//}
 	QGraphicsScene::mouseReleaseEvent(e);
 }
 
@@ -115,7 +109,7 @@ void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
 	if (e->key() == Qt::Key_Delete && points_.size() > 0){
 		std::vector<TransferFunctionEditorControlPoint*>::iterator iter = points_.begin();
 		while (iter != points_.end()){
-			if ((*iter)->getPoint()->isSelected()){
+			if ((*iter)->isSelected()){
 				iter = removePoint(*iter);
 			} 
 			else{
@@ -126,21 +120,24 @@ void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
 }
 
 void TransferFunctionEditor::addPoint(vec2* pos){
+	//pos->x = (pos->x < 0.0) ? 0.0 : pos->x;
+	//pos->y = (pos->y < 0.0) ? 0.0 : pos->y;
+	//pos->x = (pos->x > 255.0) ? 255.0 : pos->x;
+	//pos->y = (pos->y > 100.0) ? 100.0 : pos->y;
+
 	pos->x = floor(pos->x + 0.5f);
 	vec4* rgba = new vec4(pos->y/100.0f);
 	TransferFunctionDataPoint* newPoint = new TransferFunctionDataPoint(pos, rgba);
 	transferFunction_->addPoint(newPoint);
 	points_.push_back(new TransferFunctionEditorControlPoint(newPoint));
 	addItem(points_.back());
+	points_.back()->setSelected(true);
 	if (transferFunction_->getNumberOfDataPoints() > 1){
 		lines_.push_back(new TransferFunctionEditorLineItem(
 			points_[transferFunction_->getNumberOfDataPoints()-2], 
 			points_[transferFunction_->getNumberOfDataPoints()-1]));
 		addItem(lines_.back());
 	}
-
-	points_.back()->getPoint()->setSelected(true);
-	points_.back()->setSelected(true);
 	sortControlPoints();
 	sortLines();
 
@@ -197,7 +194,6 @@ std::vector<TransferFunctionEditorControlPoint*>::iterator TransferFunctionEdito
 	transferFunction_->calcTransferValues();
 	sortControlPoints();
 	sortLines();
-	//parent_->updateFromProperty();
 	notifyObservers();
 	update();
 	return iter;

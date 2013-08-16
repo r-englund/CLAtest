@@ -28,11 +28,10 @@ start_(start),
 
 void TransferFunctionEditorLineItem::initiateLineItem(){
 	setFlag(QGraphicsItem::ItemIsMovable);
-	setFlag(QGraphicsItem::ItemIsSelectable);
+	setFlag(QGraphicsItem::ItemIsSelectable, false);
 	setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 	setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
 	setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
-
 	setZValue(0);
 }
 
@@ -86,7 +85,7 @@ QPainterPath TransferFunctionEditorLineItem::shape() const {
 	vec2 sPos = vec2(start_->getPoint()->getPos()->x, start_->getPoint()->getPos()->y);
 	vec2 fPos = vec2(finish_->getPoint()->getPos()->x, finish_->getPoint()->getPos()->y);
 
-	float size = 10.0;
+	float size = 10.0f;
 
 	poly<< QPointF(sPos.x - size, sPos.y + size)
 		<< QPointF(sPos.x - size, sPos.y - size)

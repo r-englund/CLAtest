@@ -2,9 +2,7 @@
 
 namespace inviwo {
 
-	//TransferFunctionPropertyDialog::TransferFunctionPropertyDialog();
-
-	TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent) : 
+TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent) : 
 InviwoDockWidget(tr("TransferFun"), parent),
 property_(property)
 {
@@ -32,8 +30,8 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	editor_->addObserver(this);
 	editor_->setSceneRect(0,0,width,height);
 	editor_->setBackgroundBrush(Qt::transparent);
-	QDockWidget::connect(editor_,SIGNAL(selectionChanged()),this,SLOT(updateColorWheel()));
 	QDockWidget::connect(editor_,SIGNAL(doubleClick()),this,SLOT(showColorDialog()));
+	QDockWidget::connect(editor_,SIGNAL(selectionChanged()),this,SLOT(updateColorWheel()));
 
 	colorChange_ = false;
 	colorWheel_ = new ColorWheel();
@@ -43,26 +41,25 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	QDockWidget::connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this,SLOT(setPropertyValueColorDialog()));
 
 	editorview_ = new QGraphicsView(this);
-	//editorview_->setFixedSize(width + 2, height + 2);
+	editorview_->setFixedSize(width + 2, height + 2);
 	editorview_->resize(width + 2, height + 2);
 	editorview_->scale(1.0, -1.0);
 	editorview_->setScene(editor_);
 	editorview_->viewport()->installEventFilter(this);
-	editorview_->setDragMode(QGraphicsView::RubberBandDrag);
+	editorview_->setDragMode(QGraphicsView::NoDrag);
 	editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	//editorview_->fitInView(editor_->sceneRect(), Qt::KeepAspectRatio);
 
 	paintscene_ = new QGraphicsScene(this);
 	paintview_ = new QGraphicsView(this);
 	paintview_->setScene(paintscene_);
-	paintview_->setFixedSize(width + 2, 52);
+	paintview_->setFixedSize(width + 2, 10.0);
 	paintview_->scale(1.0, -1.0);
 
 
 	QHBoxLayout* hSliderLayout = new QHBoxLayout();
 	spinBoxMin_ = new QSpinBox(this);
-	spinBoxMin_->setFixedWidth(50);
+	spinBoxMin_->setFixedWidth(40);
 	spinBoxMin_->setMaximum(255);
 	hSliderLayout->addWidget(spinBoxMin_);
 
@@ -73,7 +70,7 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	hSliderLayout->addWidget(zoomSlider_);
 
 	spinBoxMax_ = new QSpinBox(this);
-	spinBoxMax_->setFixedWidth(50);
+	spinBoxMax_->setFixedWidth(40);
 	spinBoxMax_->setMaximum(255);
 	hSliderLayout->addWidget(spinBoxMax_);
 
@@ -82,8 +79,8 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	connect(spinBoxMax_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMax(int)));
 
 	vLayout->addWidget(editorview_);
-	vLayout->addLayout(hSliderLayout);
 	vLayout->addWidget(paintview_);
+	vLayout->addLayout(hSliderLayout);
 	hLayout->addLayout(vLayout);
 	hLayout->addWidget(colorWheel_);
 
@@ -91,7 +88,6 @@ void TransferFunctionPropertyDialog::generateWidget(){
 
 	gradient_ = new QLinearGradient(-128.0f, 0.0f, 127.0f, 0.0f);
 	stops_ = new QVector<QGradientStop>();
-
 }
 
 TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog(){
@@ -108,25 +104,23 @@ void TransferFunctionPropertyDialog::setPropertyValue(){
 	setPointColor(color);
 }
 
-
 void TransferFunctionPropertyDialog::setPropertyValueColorDialog(){
 	QColor color = colorDialog_->currentColor();
 	setPointColor(color);
-	colorChange_ =true;
+	colorChange_ = true;
 	updateColorWheel();
 	colorChange_ = false;
 }
 
-
 void TransferFunctionPropertyDialog::updateFromProperty(){
 	QGradientStop* temp = new QGradientStop();
 	stops_->clear();
-	const vec4* col;
+	const vec4* color;
 	if (property_->get().getNumberOfDataPoints() > 0){
 		for (int i = 0; i < (int)property_->get().getNumberOfDataPoints(); i++){
-			col = property_->get().getPoint(i)->getRgba();
+			color = property_->get().getPoint(i)->getRgba();
 			temp->first = property_->get().getPoint(i)->getPos()->x / 255.0f;
-			temp->second = QColor::fromRgbF(col->r, col->g, col->b, 1.0f);
+			temp->second = QColor::fromRgbF(color->r, color->g, color->b, 1.0f);
 			stops_->push_front(*temp);
 		}
 	}
@@ -150,6 +144,30 @@ void TransferFunctionPropertyDialog::updateFromProperty(){
 bool TransferFunctionPropertyDialog::eventFilter(QObject *object, QEvent *e)
 {
 	std::stringstream ss;
+
+	//if (e->type() == QEvent::MouseButtonPress){
+	//	QMouseEvent *k = (QMouseEvent *)e;
+	//	if(k->modifiers().testFlag(Qt::ControlModifier)){
+	//		LogInfo("CONTROLCLICK");
+	//		editorview_->setDragMode(QGraphicsView::RubberBandDrag);
+	//	}
+	//	else{
+	//		LogInfo("NORMALCLICK");
+	//		editorview_->setDragMode(QGraphicsView::NoDrag);
+	//	}
+	//}
+
+	//if (e->type() == QEvent::MouseMove){
+	//	LogInfo("MOVE");
+	//}
+
+	//if (e->type() == QEvent::MouseButtonRelease){
+	//	LogInfo("UP");
+	//	editorview_->update();
+	//	editorview_->setDragMode(QGraphicsView::RubberBandDrag);
+	//	return true;
+	//}
+
 	if (e->type() == QEvent::Wheel){
 		const QPoint pos = static_cast<QWheelEvent*>(e)->pos();
 
@@ -182,11 +200,11 @@ void TransferFunctionPropertyDialog::notify(){
 void TransferFunctionPropertyDialog::updateColorWheel(){
 	QList<QGraphicsItem *> selection = editor_->selectedItems();
 
-	if (selection.size()==1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
+	if (selection.size()== 1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
 		const vec4* pointColor = dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))->getPoint()->getRgba();
-		colorWheel_->setColor(QColor(pointColor->x*255, pointColor->y*255, pointColor->z*255, pointColor->w*255));
+		colorWheel_->setColor(QColor(pointColor->r * 255.0, pointColor->g * 255.0, pointColor->b * 255.0, pointColor->a * 255.0));
 		if (!colorChange_)
-			colorDialog_->setCurrentColor(QColor(pointColor->x*255, pointColor->y*255, pointColor->z*255, pointColor->w*255));
+			colorDialog_->setCurrentColor(QColor(pointColor->r * 255.0, pointColor->g * 255.0, pointColor->b * 255.0, pointColor->a * 255.0));
 	}
 }
 
@@ -211,8 +229,6 @@ void TransferFunctionPropertyDialog::updateFromSlider(int valMin, int valMax){
 	if(valMax != spinBoxMax_->value()){
 		spinBoxMax_->setValue(valMax);
 	}
-
-
 }
 
 void TransferFunctionPropertyDialog::updateFromSpinBoxMin(int val){

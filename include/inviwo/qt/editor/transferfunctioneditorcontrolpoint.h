@@ -53,19 +53,19 @@ namespace inviwo {
 		void setLeftNeighbour(TransferFunctionEditorControlPoint*);
 		void setRightNeighbour(TransferFunctionEditorControlPoint*);
 
+		QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change, const QVariant &value);
 		void notify();
 
     protected:
         void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
         void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-
+	
     private:
         float size_; ///< size for drawing the points
         TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
 		TransferFunctionEditorControlPoint* leftNeighbour_;
 		TransferFunctionEditorControlPoint* rightNeighbour_;
-
     };
 
 }// namespace
