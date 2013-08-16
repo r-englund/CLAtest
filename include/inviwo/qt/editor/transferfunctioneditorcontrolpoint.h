@@ -53,7 +53,7 @@ namespace inviwo {
 		void setLeftNeighbour(TransferFunctionEditorControlPoint*);
 		void setRightNeighbour(TransferFunctionEditorControlPoint*);
 
-		QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change, const QVariant &value);
+		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 		void notify();
 
     protected:
