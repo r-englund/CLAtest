@@ -36,8 +36,8 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     gridSnapping_ = true;
     setSceneRect(-1000,-1000,1000,1000);
 
-	//oldDragTarget_ = nullptr;
-	oldDragTarget_ = 0L;
+	oldConnectionTarget_ = NULL;
+	oldProcessorTarget_ = NULL;
 
     processorNetwork_ = new ProcessorNetwork();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
@@ -790,39 +790,50 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
         e->acceptProposedAction();
 
 		ConnectionGraphicsItem* connectionItem = getConnectionGraphicsItemAt(e->scenePos());
-		if (connectionItem && !oldDragTarget_){
+		if (connectionItem && !oldConnectionTarget_){ //< New connection found
 			QString className;
 			ProcessorDragObject::decode(e->mimeData(), className);
 			Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
 			QColor inputColor = Qt::red, outputColor = Qt::red;
-
-			for (size_t i = 0; i < processor->getInports().size(); ++i) {
+			// Try to find a match between connection outport and one of the new processors inports
+			for (size_t i = 0; i < processor->getInports().size(); ++i) { 
 				if(connectionItem->getOutport()->canConnectTo(processor->getInports().at(i))) {
 					inputColor = Qt::green;
 					break;
 				}
 			}
-
+			// Try to find a match between connection inport and one of the new processors outports
 			for (size_t i = 0; i < processor->getOutports().size(); ++i) {
 				if(connectionItem->getInport()->canConnectTo(processor->getOutports().at(i))) {
 					outputColor = Qt::green;
 					break;
 				}
 			}
-
 			connectionItem->setBorderColors(inputColor, outputColor);		
-			oldDragTarget_ = connectionItem;
-		} else if (connectionItem) {
-			connectionItem->setMidPoint(e->scenePos());
-		} else if (oldDragTarget_ && !connectionItem){
-			oldDragTarget_->clearMidPoint();
-			oldDragTarget_ = 0L;
+			oldConnectionTarget_ = connectionItem;
+		} else if (connectionItem) { //< Move event on active connection
+			oldConnectionTarget_->setMidPoint(e->scenePos());
+		} else if (oldConnectionTarget_ && !connectionItem){ //< Connection no longer targeted
+			oldConnectionTarget_->clearMidPoint();
+			oldConnectionTarget_ = NULL;
+		} else if (!connectionItem) { //< Processor replacement
+			ProcessorGraphicsItem* processorItem = getProcessorGraphicsItemAt(e->scenePos());
+			if (processorItem && !oldProcessorTarget_) { //< New processor found
+				QString className;
+				ProcessorDragObject::decode(e->mimeData(), className);
+				Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
+				bool inportsMatch = true, outportsMatch = true;
+				processorItem->setSelected(true);
+				oldProcessorTarget_ = processorItem;
+			} else if ( !processorItem && oldProcessorTarget_) { //< Processor no longer targeted
+				oldProcessorTarget_->setSelected(false);
+				oldProcessorTarget_ = NULL;
+			}
 		}
 	}
 }
 
 void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
-	
     if (ProcessorDragObject::canDecode(e->mimeData())) {
         QString className;
         ProcessorDragObject::decode(e->mimeData(), className);
@@ -852,8 +863,8 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 	Outport* connectionOutport = connectionItem->getOutport();
 
 	// Clear oldDragTarget
-	oldDragTarget_->clearMidPoint();
-	oldDragTarget_ = 0L;
+	oldConnectionTarget_->clearMidPoint();
+	oldConnectionTarget_ = NULL;
 
 	// Remove old connection
 	removeConnection(connectionItem);

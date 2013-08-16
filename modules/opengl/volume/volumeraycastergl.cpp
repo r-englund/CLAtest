@@ -28,7 +28,6 @@ VolumeRaycasterGL::VolumeRaycasterGL()
     VolumeRaycasterGL("rc_simple.frag");
 
     addProperty(camera_);
-    addInteractionHandler(new Trackball(&camera_));
 }
 
 VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
@@ -86,7 +85,6 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
 
     //camera_.setVisible(false);
     addProperty(camera_);
-    addInteractionHandler(new Trackball(&camera_));
 }
 
 void VolumeRaycasterGL::addShadingProperties() {

@@ -89,7 +89,8 @@ private:
     ProcessorNetwork* processorNetwork_;
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
 
-	ConnectionGraphicsItem* oldDragTarget_;
+	ConnectionGraphicsItem* oldConnectionTarget_;
+	ProcessorGraphicsItem* oldProcessorTarget_;
 
     CurveGraphicsItem* connectionCurve_;
     LinkGraphicsItem* linkCurve_;

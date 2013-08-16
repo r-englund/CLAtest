@@ -87,7 +87,6 @@ void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
 }
 
 void CollapsiveGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager) {
-	vLayout_->addWidget(new QLabel(QString::fromStdString(displayName_)));
 	PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
 	for (size_t i=0; i<properties_.size(); i++) {
 		Property* curProperty = properties_[i];
