@@ -101,14 +101,19 @@ bool Property::operator==( Property* prop){
     return false;
 }
 
-void Property::showPropertyWidgets(){
-    for (size_t i=0; i<propertyWidgets_.size(); i++)
-        propertyWidgets_[i]->showWidget();
-}
 
-void Property::hidePropertyWidgets(){
-    for (size_t i=0; i<propertyWidgets_.size(); i++)
-        propertyWidgets_[i]->hideWidget();
+void Property::setVisible( bool visible ){
+   visible_ = visible;
+    notifyObservers();
+   if (visible_) {
+       for (size_t i=0; i<propertyWidgets_.size(); i++){
+           propertyWidgets_[i]->showWidget();
+       }
+   }
+   if (!visible_) {
+       for (size_t i=0; i<propertyWidgets_.size(); i++)
+           propertyWidgets_[i]->hideWidget();
+   }
 }
 
 } // namespace

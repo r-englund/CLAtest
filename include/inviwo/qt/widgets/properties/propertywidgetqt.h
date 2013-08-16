@@ -21,6 +21,7 @@ public:
     void showWidget();
     void hideWidget();
 
+
 signals:
     void modified();
 };

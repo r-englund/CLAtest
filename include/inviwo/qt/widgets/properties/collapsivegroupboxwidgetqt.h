@@ -16,7 +16,7 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt, public VoidObserver {
 
     Q_OBJECT;
 
@@ -37,6 +37,8 @@ public:
 	void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
     std::vector<Property*> getProperties();
 	bool isCollapsed() { return collapsed_; };
+
+    void notify();
 
 private:
     //QPushButton* btnCollapse_;

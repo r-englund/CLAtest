@@ -39,9 +39,6 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
     vLayout_->setSpacing(0);
     
     groupBox_->setLayout(vLayout_);
-
-    //groupBox_->setAlignment(Qt::AlignHCenter);
-    //groupBox_->layout()->setContentsMargins(0,0,0,0);
      
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setSpacing(0);
@@ -50,18 +47,12 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
     gridLayout->addLayout(H2,1,0,Qt::AlignLeft);
     gridLayout->addWidget(groupBox_,2,0);
 
-
     frame->setLayout(gridLayout);
-
     setLayout(hLayout);
-   
     show();
 }
 
-void CollapsiveGroupBoxWidgetQt::updateFromProperty() {
-    //for (size_t i=0; i<subPropertyWidgets_.size(); i++)
-    //    subPropertyWidgets_[i]->updateFromProperty();
-}
+void CollapsiveGroupBoxWidgetQt::updateFromProperty() {}
 
 void CollapsiveGroupBoxWidgetQt::show() {
 	collapsed_ = false;
@@ -81,6 +72,8 @@ void CollapsiveGroupBoxWidgetQt::hide() {
 
 void CollapsiveGroupBoxWidgetQt::addProperty( Property* tmpProperty ) {
     properties_.push_back(tmpProperty);
+    addObservation(tmpProperty);
+    tmpProperty->addObserver(this);
 }
 
 void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
@@ -124,6 +117,18 @@ void CollapsiveGroupBoxWidgetQt::setDisplayName(const std::string& displayName) 
 
 std::vector<Property*> CollapsiveGroupBoxWidgetQt::getProperties() {
     return properties_;
+}
+
+void CollapsiveGroupBoxWidgetQt::notify(){
+    int count = 0;
+    for (size_t i=0; i<properties_.size(); i++)
+        if(properties_.at(i)->getVisible())
+            count++;
+    std::cout << count << std::endl;
+    if (count==0) {
+        this->setVisible(false);
+    }else
+        this->setVisible(true);
 }
 
 } // namespace

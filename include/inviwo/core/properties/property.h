@@ -52,7 +52,7 @@ public:
     bool isValid();
     void setValid();
 
-    void setVisible(bool visible) { visible_ = visible; };
+    void setVisible(bool visible);
     bool getVisible(){ return visible_; };
 
     virtual Variant getVariant();
@@ -69,8 +69,6 @@ public:
         onChangeCallback_.addMemberFunction(o,m);
     }
 
-    void hidePropertyWidgets();
-    void showPropertyWidgets();
 
 protected:
     SingleCallBack onChangeCallback_;
