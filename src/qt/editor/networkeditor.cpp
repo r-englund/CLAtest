@@ -36,7 +36,8 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     gridSnapping_ = true;
     setSceneRect(-1000,-1000,1000,1000);
 
-	oldDragTarget_ = nullptr;;
+	//oldDragTarget_ = nullptr;
+	oldDragTarget_ = 0L;
 
     processorNetwork_ = new ProcessorNetwork();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
@@ -815,7 +816,7 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
 			connectionItem->setMidPoint(e->scenePos());
 		} else if (oldDragTarget_ && !connectionItem){
 			oldDragTarget_->clearMidPoint();
-			oldDragTarget_ = nullptr;
+			oldDragTarget_ = 0L;
 		}
 	}
 }
@@ -852,7 +853,7 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 
 	// Clear oldDragTarget
 	oldDragTarget_->clearMidPoint();
-	oldDragTarget_ = nullptr;
+	oldDragTarget_ = 0L;
 
 	// Remove old connection
 	removeConnection(connectionItem);
