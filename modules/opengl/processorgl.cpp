@@ -22,9 +22,7 @@ void ProcessorGL::clearCurrentTarget() {
 }
 
 void ProcessorGL::activateAndClearTarget(ImageOutport& outport) {
-    Image* outImage = outport.getData();
-    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
-    outImageGL->activateBuffer();
+    activateTarget(outport);
     clearCurrentTarget();
 }
 

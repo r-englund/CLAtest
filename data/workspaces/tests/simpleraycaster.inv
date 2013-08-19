@@ -300,7 +300,7 @@
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <value x="2.5999999" y="-0.5" z="-4.1999998" />
+                        <value x="2.0261328" y="-4.2852917" z="1.4768451" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -312,7 +312,7 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <value x="0.1" y="1" z="-0.1" />
+                        <value x="0.78679806" y="0.11543802" z="-0.62259316" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -351,7 +351,7 @@
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="994" y="521" />
+                    <position x="1002" y="551" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
