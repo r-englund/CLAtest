@@ -627,8 +627,10 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
             endPort_ = endProcessor_->getSelectedPort(e->scenePos());
             if(endPort_){
                 Inport* inport = dynamic_cast<Inport*>(endPort_);
-                if (inport && inport->canConnectTo(startPort_) && !endPort_->isConnected()) {
-                    addConnection(dynamic_cast<Outport*>(startPort_), dynamic_cast<Inport*>(endPort_));                
+                if (inport && inport->canConnectTo(startPort_)) {
+                    if(inport->isConnected())
+                        removeConnection(inport->getConnectedOutport(), inport);
+                    addConnection(dynamic_cast<Outport*>(startPort_), inport);                
                 }
             }
         }
