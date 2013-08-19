@@ -33,7 +33,10 @@ public:
 	void setColor(QColor color) { color_ = color; }
 	QColor getColor() { return color_; }
 
-	void setBorderColors(QColor hoverInputColor, QColor hoverOutputColor) {hoverInputColor_ = hoverInputColor; hoverOutputColor_ = hoverOutputColor; }
+    void resetBorderColors();
+    void setBorderColor(QColor borderColor) { borderColor_ = borderColor; }
+    void setSelectedBorderColor(QColor selectedBorderColor) { selectedBorderColor_ = selectedBorderColor; }
+	void setBorderColors(QColor hoverInputColor, QColor hoverOutputColor) { hoverInputColor_ = hoverInputColor; hoverOutputColor_ = hoverOutputColor; }
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ConnectionGraphicsType };
@@ -54,7 +57,7 @@ protected:
     QPointF endPoint_;
 	QPointF midPoint_;
 
-    QColor color_, hoverInputColor_, hoverOutputColor_;
+    QColor color_, borderColor_, selectedBorderColor_, hoverInputColor_, hoverOutputColor_;
 };
 
 

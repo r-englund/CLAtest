@@ -74,7 +74,6 @@ void NetworkEditor::removeProcessor(Processor* processor) {
 
 
 void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
-    processorNetwork_->lock();
     processorNetwork_->addConnection(outport, inport);
     addConnectionGraphicsItem(outport, inport);
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(inport->getProcessor());
@@ -88,7 +87,6 @@ void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
         ResizeEvent resizeEvent(imageOutport->getDimensions());
         imageInport->changeDataDimensions(&resizeEvent);
     }
-    processorNetwork_->unlock();
 }
 
 void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
@@ -379,20 +377,22 @@ void NetworkEditor::removeInspectorNetwork(Port* port) {
 
 void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
     //TODO: allow to define inspectors in module
-    if (port->getProcessor()->isInitialized()) {
-        if (dynamic_cast<ImageOutport*>(port)) {
-            addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
-                                IVW_DIR+"data/workspaces/portinspectors/imageportinspector.inv");
-            processorNetwork_->setModified(true);
-            processorNetworkEvaluator_->evaluate();
-            return;
-        }
-        if (dynamic_cast<VolumeOutport*>(port)) {
-            addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
-                                IVW_DIR+"data/workspaces/portinspectors/volumeportinspector.inv");
-            processorNetwork_->setModified(true);
-            processorNetworkEvaluator_->evaluate();
-            return;
+    if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("portInspectorOn"))->get())){
+        if (port->getProcessor()->isInitialized()) {
+            if (dynamic_cast<ImageOutport*>(port)) {
+                addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
+                                    IVW_DIR+"data/workspaces/portinspectors/imageportinspector.inv");
+                processorNetwork_->setModified(true);
+                processorNetworkEvaluator_->evaluate();
+                return;
+            }
+            if (dynamic_cast<VolumeOutport*>(port)) {
+                addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
+                                    IVW_DIR+"data/workspaces/portinspectors/volumeportinspector.inv");
+                processorNetwork_->setModified(true);
+                processorNetworkEvaluator_->evaluate();
+                return;
+            }
         }
     }
 }
@@ -548,6 +548,25 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
     if (connectionCurve_) {
         // connection drag mode
         connectionCurve_->setEndPoint(e->scenePos());
+
+        endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
+        if (endProcessor_) {
+            Port* port = endProcessor_->getSelectedPort(e->scenePos());
+            if (port && port!=startPort_) {
+                Inport* inport = dynamic_cast<Inport*>(port);
+                if(inport && inport->canConnectTo(startPort_) && !inport->isConnectedTo(dynamic_cast<Outport*>(startPort_)))
+                    connectionCurve_->setBorderColor(Qt::green);	
+                else
+                    connectionCurve_->setBorderColor(Qt::red);	
+            }
+            else
+                connectionCurve_->resetBorderColors();
+        }
+        else
+            connectionCurve_->resetBorderColors();
+
+        endProcessor_ = NULL;
+
         connectionCurve_->update();
         e->accept();
     }
@@ -606,8 +625,11 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
         if (endProcessor_) {
             endPort_ = endProcessor_->getSelectedPort(e->scenePos());
-            if (endPort_ && dynamic_cast<Inport*>(endPort_) && !endPort_->isConnected()) {
-                addConnection(dynamic_cast<Outport*>(startPort_), dynamic_cast<Inport*>(endPort_));                
+            if(endPort_){
+                Inport* inport = dynamic_cast<Inport*>(endPort_);
+                if (inport && inport->canConnectTo(startPort_) && !endPort_->isConnected()) {
+                    addConnection(dynamic_cast<Outport*>(startPort_), dynamic_cast<Inport*>(endPort_));                
+                }
             }
         }
 
@@ -803,7 +825,7 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
 			QColor inputColor = Qt::red, outputColor = Qt::red;
 			// Try to find a match between connection outport and one of the new processors inports
 			for (size_t i = 0; i < processor->getInports().size(); ++i) { 
-				if(connectionItem->getOutport()->canConnectTo(processor->getInports().at(i))) {
+				if(processor->getInports().at(i)->canConnectTo(connectionItem->getOutport())) {
 					inputColor = Qt::green;
 					break;
 				}
@@ -876,7 +898,7 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 	removeConnection(connectionItem);
 
 	for (size_t i = 0; i < inports.size(); ++i) {
-		if(connectionOutport->canConnectTo(inports.at(i))) {
+		if(inports.at(i)->canConnectTo(connectionOutport)) {
 			// Create new connection connectionOutport-processorInport
 			addConnection(connectionOutport, inports.at(i));
 			break;

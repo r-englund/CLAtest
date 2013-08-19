@@ -59,6 +59,10 @@ void InviwoCore::setupModuleSettings(){
             getSettings()->addProperty(new BoolProperty("txtEditor", "Use system text editor", true));
 
             getSettings()->addProperty(new BoolProperty("shaderReloading", "Automatically reload shaders", true));
+
+            getSettings()->addProperty(new BoolProperty("portInspectorOn", "Port Inspector On", true));
+
+            getSettings()->addProperty(new BoolProperty("soundsOn", "Sounds On", true));
         }           
     }
 }

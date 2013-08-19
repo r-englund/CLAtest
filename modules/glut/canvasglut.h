@@ -26,7 +26,7 @@ public:
 
     static MouseEvent::MouseButton mapMouseButton(const int mouseButtonGLUT);
     static MouseEvent::MouseState mapMouseState(const int mouseStateGLUT);
-    static Event::Modifier mapModifiers(const int modifiersGLUT);
+    static InteractionEvent::Modifier mapModifiers(const int modifiersGLUT);
 
     static void keyboard(unsigned char key, int x, int y);
     static void keyboardSpecial(int key, int x, int y);
@@ -39,7 +39,7 @@ private:
 
     MouseEvent::MouseButton mouseButton_;
     MouseEvent::MouseState mouseState_;
-    Event::Modifier mouseModifiers_;
+    InteractionEvent::Modifier mouseModifiers_;
 
     // these members are used to deal with the static
     // callback functions available through GLUT

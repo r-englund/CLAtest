@@ -24,7 +24,6 @@ public:
     uvec2 getDimensions() const;
     const Image* getData() const;
     uvec3 getColorCode() const;
-	bool canConnectTo(Port* port) const;
 
 protected:
     void propagateResizeToPredecessor(ResizeEvent* resizeEvent);
@@ -47,8 +46,7 @@ public:
     
     void changeDataDimensions(ResizeEvent* resizeEvent);    
     uvec2 getDimensions() const;
-    uvec3 getColorCode() const;    
-	bool canConnectTo(Port* port) const;
+    uvec3 getColorCode() const;
 
 protected:
     Image* getResizedImageData(uvec2 dimensions);

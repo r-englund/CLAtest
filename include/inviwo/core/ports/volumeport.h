@@ -18,7 +18,6 @@ public:
     void deinitialize();
 
     uvec3 getColorCode() const;
-	bool canConnectTo(Port* port) const;
 };
 
 class IVW_CORE_API VolumeOutport : public DataOutport<Volume> {
@@ -31,7 +30,6 @@ public:
     void deinitialize();
 
     uvec3 getColorCode() const;
-	bool canConnectTo(Port* port) const;
 };
 
 } // namespace

@@ -38,17 +38,12 @@ public:
 
     virtual void notify();
 
-    bool soundOn();
-
 public slots:
     void newWorkspace();
     void openWorkspace();
     void openRecentWorkspace();
     void saveWorkspace();
     void saveWorkspaceAs();
-
-private slots:
-    void setSoundOnOff(bool);
 
 private:
     void openWorkspace(QString workspaceFileName);
@@ -81,7 +76,6 @@ private:
     QMenu* fileMenuItem_;
     QMenu* helpMenuItem_;
     QMenu* viewMenuItem_;
-    QMenu* optionMenuItem_;
     
     // mainwindow menuactions
     QAction* newFileAction_;
@@ -95,7 +89,6 @@ private:
     QAction* propertyListWidgetViewAction_;
     QAction* consoleWidgetViewAction_;
     QAction* mappingwidgetviewAction_;
-    QAction* soundOnOffAction_;
 
     // settings
     bool lastExitWithoutErrors_;

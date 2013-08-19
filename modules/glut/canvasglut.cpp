@@ -14,7 +14,7 @@ CanvasGLUT::CanvasGLUT(std::string windowTitle, uvec2 dimensions)
     : CanvasGL(dimensions),
     mouseButton_(MouseEvent::MOUSE_BUTTON_NONE),
     mouseState_(MouseEvent::MOUSE_STATE_NONE),
-    mouseModifiers_(Event::MODIFIER_NONE)
+    mouseModifiers_(InteractionEvent::MODIFIER_NONE)
 {}
 
 CanvasGLUT::~CanvasGLUT() {
@@ -99,12 +99,12 @@ MouseEvent::MouseState CanvasGLUT::mapMouseState(int mouseStateGLUT) {
     else return MouseEvent::MOUSE_STATE_NONE;
 }
 
-Event::Modifier CanvasGLUT::mapModifiers(int modifiersGLUT) {
+InteractionEvent::Modifier CanvasGLUT::mapModifiers(int modifiersGLUT) {
     int result = KeyboardEvent::MODIFIER_NONE;
-    if (modifiersGLUT & GLUT_ACTIVE_ALT) result |= KeyboardEvent::MODIFIER_ALT;
-    if (modifiersGLUT & GLUT_ACTIVE_CTRL) result |= KeyboardEvent::MODIFIER_CTRL;
-    if (modifiersGLUT & GLUT_ACTIVE_SHIFT) result |= KeyboardEvent::MODIFIER_SHIFT;
-    return static_cast<Event::Modifier>(result);
+    if (modifiersGLUT & GLUT_ACTIVE_ALT) result |= InteractionEvent::MODIFIER_ALT;
+    if (modifiersGLUT & GLUT_ACTIVE_CTRL) result |= InteractionEvent::MODIFIER_CTRL;
+    if (modifiersGLUT & GLUT_ACTIVE_SHIFT) result |= InteractionEvent::MODIFIER_SHIFT;
+    return static_cast<InteractionEvent::Modifier>(result);
 }
 
 void CanvasGLUT::mouse(int button, int state, int x, int y) {

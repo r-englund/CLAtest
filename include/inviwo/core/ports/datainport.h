@@ -20,6 +20,7 @@ public:
     void initialize();
     void deinitialize();
 
+    virtual bool canConnectTo(Port* port) const;
     virtual void connectTo(Outport* port);
     virtual void disconnectFrom(Outport* port);
 
@@ -47,6 +48,14 @@ void DataInport<T>::initialize(){}
 
 template <typename T>
 void DataInport<T>::deinitialize(){}
+
+template <typename T>
+bool DataInport<T>::canConnectTo(Port* port) const {
+    if (dynamic_cast<DataOutport<T>*>(port))
+        return true;
+    else
+        return false;
+}
 
 template <typename T>
 void DataInport<T>::connectTo(Outport* port) {

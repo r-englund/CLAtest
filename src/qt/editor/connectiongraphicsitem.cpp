@@ -20,6 +20,8 @@ CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3
     shadowEffect->setOffset(3.0);
     shadowEffect->setBlurRadius(3.0);    
     setGraphicsEffect(shadowEffect);
+
+    resetBorderColors();
 }
 
 CurveGraphicsItem::~CurveGraphicsItem() {}
@@ -54,9 +56,9 @@ void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* optio
 
 	if (midPoint_ == startPoint_) {
 		if (isSelected()) 
-			p->setPen(QPen(Qt::darkRed, 4.0, Qt::SolidLine, Qt::RoundCap));        
+			p->setPen(QPen(selectedBorderColor_, 4.0, Qt::SolidLine, Qt::RoundCap));        
 		else
-			p->setPen(QPen(Qt::black, 3.0, Qt::SolidLine, Qt::RoundCap));
+			p->setPen(QPen(borderColor_, 3.0, Qt::SolidLine, Qt::RoundCap));
 
 		p->drawPath(obtainCurvePath());
 		p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
@@ -78,6 +80,11 @@ QPainterPath CurveGraphicsItem::shape() const {
     QPainterPathStroker pathStrocker;
     pathStrocker.setWidth(10.0);
     return pathStrocker.createStroke(obtainCurvePath());
+}
+
+void CurveGraphicsItem::resetBorderColors(){
+    setBorderColor(Qt::black);
+    setSelectedBorderColor(Qt::darkRed);
 }
 
 QRectF CurveGraphicsItem::boundingRect() const {

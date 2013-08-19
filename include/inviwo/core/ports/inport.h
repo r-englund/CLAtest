@@ -19,6 +19,7 @@ public:
     virtual void initialize() {}
     virtual void deinitialize() {}
 
+    virtual bool canConnectTo(Port* port) const { return false; };
     virtual void connectTo(Outport* outport);
     virtual void disconnectFrom(Outport* outport);
 
