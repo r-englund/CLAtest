@@ -6,7 +6,7 @@ void LogGLError(const char* fileName, const char* functionName, int lineNumber) 
     if (err != GL_NO_ERROR) {
         const GLubyte* errorString = gluErrorString(err);
         std::ostringstream errorMessage;
-        errorMessage << "GL Error (" << fileName << ", " << functionName << ", Ln " << lineNumber << "): ";
+        errorMessage << "OpenGL Error (" << fileName << ", " << functionName << ", Ln " << lineNumber << "): ";
         errorMessage << (errorString ? (const char*)errorString : "undefined");
         inviwo::LogCentral::instance()->log("OpenGL", inviwo::Error, __FILE__, __FUNCTION__, __LINE__, (errorMessage.str()));
     }

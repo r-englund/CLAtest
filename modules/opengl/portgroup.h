@@ -27,7 +27,7 @@ public:
     void addShaderDefines(Shader* shader);
 
 private:
-    FrameBufferObject* fbo_;
+    FrameBufferObject* frameBufferObject_;
 
     std::vector<ImageOutport*> ports_;
 };

@@ -20,7 +20,7 @@ public:
     void attachTexture(Texture2D* texture, GLenum attachementID=GL_COLOR_ATTACHMENT0_EXT);
     void detachTexture(GLenum attachementID);
     void detachAllTextures();
-    std::vector<GLenum> getAttachementIDs() { return attachedTextures_; }
+    std::vector<GLenum> getColorAttachementIDs() { return attachedColorTextures_; }
 
     void checkStatus();
 
@@ -29,7 +29,7 @@ public:
 
 private:
     unsigned int id_;
-    std::vector<GLenum> attachedTextures_;
+    std::vector<GLenum> attachedColorTextures_;
 };
 
 } // namespace

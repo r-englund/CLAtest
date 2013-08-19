@@ -63,7 +63,7 @@ std::string ShaderObject::embeddDefines(std::string source) {
     std::string globalGLSLHeader = ShaderManager::getRef().getGlobalGLSLHeader();
     std::istringstream globalGLSLHeaderStream(globalGLSLHeader);
     while (std::getline(globalGLSLHeaderStream, curLine))
-        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("GlobalGLSLSHEader", 0));
+        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("GlobalGLSLSHeader", 0));
     return globalGLSLHeader + result.str();
 }
 
@@ -217,7 +217,12 @@ void ShaderObject::clearShaderDefines() {
 }
 
 void ShaderObject::addOutDeclaration(std::string name) {
-    outDeclarations_.push_back(name);
+    bool outExists = false;
+    for (size_t i=0; i<outDeclarations_.size(); i++)
+        if (outDeclarations_[i] == name)
+            outExists = true;
+    if (!outExists)
+        outDeclarations_.push_back(name);
 }
 
 } // namespace

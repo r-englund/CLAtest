@@ -7,7 +7,7 @@ FrameBufferObject::FrameBufferObject() {
 }
 
 FrameBufferObject::~FrameBufferObject() {
-    glDeleteFramebuffers(1, &id_);
+    glDeleteFramebuffersEXT(1, &id_);
 }
 
 void FrameBufferObject::activate() {
@@ -20,27 +20,50 @@ void FrameBufferObject::deactivate() {
 
 void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) {
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
-    attachedTextures_.push_back(attachementID);
+    GLint maxColorAttachements;
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachements);
+    if (attachedColorTextures_.size() < (unsigned int)maxColorAttachements) {
+        // manage color textures in dedicated vector
+        if (attachementID >= GL_COLOR_ATTACHMENT0_EXT && attachementID <= GL_COLOR_ATTACHMENT15_EXT)
+            attachedColorTextures_.push_back(attachementID);
+    } else
+        LogError("Maximum number of " << maxColorAttachements << " color textures attached.");
 }
 
 void FrameBufferObject::detachTexture(GLenum attachementID) {
-    for (size_t i=0; i<attachedTextures_.size(); i++) {
-        if (attachedTextures_[i] == attachementID) {
-            attachedTextures_.erase(attachedTextures_.begin()+i);
+    for (size_t i=0; i<attachedColorTextures_.size(); i++) {
+        if (attachedColorTextures_[i] == attachementID) {
+            attachedColorTextures_.erase(attachedColorTextures_.begin()+i);
             return;
         }
     }
 }
 
 void FrameBufferObject::detachAllTextures() {
-    while (!attachedTextures_.empty())
-        detachTexture(attachedTextures_[0]);
+    while (!attachedColorTextures_.empty())
+        detachTexture(attachedColorTextures_[0]);
 }
 
 void FrameBufferObject::checkStatus() {
     GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-    if (status != GL_FRAMEBUFFER_COMPLETE_EXT)
-        LogWarn("incomplete framebuffer object");
+    switch (status) {
+        case GL_FRAMEBUFFER_UNDEFINED :
+            LogWarn("GL_FRAMEBUFFER_UNDEFINED"); break;
+        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT :
+            LogWarn("GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT"); break;
+        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT :
+            LogWarn("GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT"); break;
+        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT :
+            LogWarn("GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER"); break;
+        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT :
+            LogWarn("GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER"); break;
+        case GL_FRAMEBUFFER_UNSUPPORTED_EXT :
+            LogWarn("GL_FRAMEBUFFER_UNSUPPORTED"); break;
+        case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT :
+            LogWarn("GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS"); break;
+        case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT :
+            LogWarn("GL_FRAMEBUFFER_INCOMPLETE_FORMATS"); break;
+    }
 }
 
 void FrameBufferObject::setRead_Blit(bool set) {
