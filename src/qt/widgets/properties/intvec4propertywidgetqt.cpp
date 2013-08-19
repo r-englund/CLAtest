@@ -34,14 +34,11 @@ void IntVec4PropertyWidgetQt::generateWidget() {
     hLayout->addWidget(sliderWidget);
 	setLayout(hLayout);
 
-    connect(sliderX_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderY_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderZ_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderW_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect (sliderX_->getSpinBox(),SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderY_->getSpinBox(),SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderZ_->getSpinBox(),SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderW_->getSpinBox(),SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSpinBox()));
+    connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+    connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+    connect(sliderZ_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+    connect(sliderW_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+   
 }
 
 void IntVec4PropertyWidgetQt::generatesSettingsWidget() {
@@ -86,33 +83,9 @@ void IntVec4PropertyWidgetQt::updateFromProperty() {
 	sliderZ_->setValue(valueVec_.z);
 	sliderW_->setValue(valueVec_.w);
 
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
-    sliderZ_->updateValueSpinBox();
-    sliderW_->updateValueSpinBox();
 };
 
-void IntVec4PropertyWidgetQt::setPropertyValueFromSlider() {
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
-    sliderZ_->updateValueSpinBox();
-    sliderW_->updateValueSpinBox();
-
-    valueVec_ = property_->get();
-    valueVec_.x = sliderX_->getValue();
-    valueVec_.y = sliderY_->getValue();
-    valueVec_.z = sliderZ_->getValue();
-    valueVec_.w = sliderW_->getValue();
-    property_->set(valueVec_);
-    emit modified();
-}
-
-void IntVec4PropertyWidgetQt::setPropertyValueFromSpinBox() {
-    sliderX_->updateValueSlider();
-    sliderY_->updateValueSlider();
-    sliderZ_->updateValueSlider();
-    sliderW_->updateValueSlider();
-
+void IntVec4PropertyWidgetQt::setPropertyValue(){
     valueVec_ = property_->get();
     valueVec_.x = sliderX_->getValue();
     valueVec_.y = sliderY_->getValue();

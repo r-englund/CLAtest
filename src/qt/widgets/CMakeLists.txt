@@ -6,6 +6,7 @@ ivw_project(inviwo-qtwidgets)
 # Add header files
 set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/colorwheel.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/customsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventconverterqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/floatsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
@@ -53,6 +54,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add MOC files
 set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/colorwheel.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/customsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/floatsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
@@ -105,6 +107,7 @@ source_group("MOC Files" FILES ${MOC_FILES})
 # Add source files
 set(SOURCE_FILES
     colorwheel.cpp
+    customsliderwidgetqt.cpp
     eventconverterqt.cpp
     floatsliderwidgetqt.cpp
     intsliderwidgetqt.cpp

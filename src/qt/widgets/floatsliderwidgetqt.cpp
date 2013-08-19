@@ -8,13 +8,15 @@ FloatSliderWidgetQt::FloatSliderWidgetQt() {
 
 void FloatSliderWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    slider_ = new QSlider(Qt::Horizontal);
+    slider_ = new CustomSliderWidgetQt();
+    slider_->setOrientation(Qt::Horizontal);
     slider_->setMaximum(SLIDER_MAX);
     spinBox_ = new QDoubleSpinBox();
     spinBox_->setFixedWidth(50);
-    //spinBox_->setDecimals(3);
     hLayout->addWidget(slider_);
     hLayout->addWidget(spinBox_);
+    hLayout->setContentsMargins(0,0,0,0);
+    hLayout->setSpacing(0);
     setLayout(hLayout);
 
     connect(slider_,  SIGNAL(valueChanged(int)),    this, SLOT(updateFromSlider()));

@@ -2,7 +2,7 @@
 #define IVW_INTSLIDERQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QSlider>
+#include <inviwo/qt/widgets/customsliderwidgetqt.h>
 #include <QSpinBox>
 #include <QHBoxLayout>
 #include <math.h>
@@ -90,16 +90,28 @@ public:
     QSlider* getSlider();
     QSpinBox* getSpinBox();
 
+    void updateSlider();
+
+    private slots:
+        void updateFromSlider();
+        void updateFromSpinBox();
+
+
+signals:
+        void valueChanged(int value);
+
 
 
 private:
+    int value_;
     int sliderValue_;
     int maxValue_;
     int minValue_;
     int increment_;
     QSpinBox* spinBox_;
-    QSlider* slider_;
+    CustomSliderWidgetQt* slider_;
     void generateWidget();
+    static const int SLIDER_MAX = 10000; 
 
 };
 

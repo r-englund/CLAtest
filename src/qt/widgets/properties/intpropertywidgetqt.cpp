@@ -14,9 +14,10 @@ void IntPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
     sliderWidget_ = new IntSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
-    connect(sliderWidget_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderWidget_->getSpinBox(), SIGNAL(valueChanged(int)),this,SLOT(setPropertyValueFromSpinBox()));
+    connect(sliderWidget_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     hLayout->addWidget(sliderWidget_);
+    hLayout->setContentsMargins(0,0,0,0);
+    hLayout->setSpacing(0);
     setLayout(hLayout);
     generatesSettingsWidget();
 }
@@ -25,20 +26,8 @@ void IntPropertyWidgetQt::updateFromProperty() {
     sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
     sliderWidget_->setValue(property_->get());
     sliderWidget_->setIncrement(property_->getIncrement());
-    sliderWidget_->updateValueSpinBox();
 }
 
-void IntPropertyWidgetQt::setPropertyValueFromSpinBox() {
-    sliderWidget_->updateValueSlider();
-    property_->set(sliderWidget_->getValue());
-    emit modified();
-}
-
-void IntPropertyWidgetQt::setPropertyValueFromSlider() {
-    sliderWidget_->updateValueSpinBox();
-    property_->set(sliderWidget_->getValue());
-    emit modified();
-}
 
 void IntPropertyWidgetQt::showContextMenu( const QPoint& pos ) {
     
@@ -69,6 +58,11 @@ void IntPropertyWidgetQt::generatesSettingsWidget() {
     settingsMenu_->addAction("Set as Max");
     sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(sliderWidget_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
+}
+
+void IntPropertyWidgetQt::setPropertyValue(){
+   property_->set(sliderWidget_->getValue());
+   emit modified();
 }
 
 } // namespace

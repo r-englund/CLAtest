@@ -31,12 +31,10 @@ void IntVec3PropertyWidgetQt::generateWidget() {
     hLayout->addWidget(sliderWidget);
     setLayout(hLayout);
 
-    connect(sliderX_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderY_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect(sliderZ_->getSlider(), SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSlider()));
-    connect (sliderX_->getSpinBox(),SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderY_->getSpinBox(),SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSpinBox()));
-    connect (sliderZ_->getSpinBox(),SIGNAL(valueChanged(int)), this, SLOT(setPropertyValueFromSpinBox()));
+    connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+    connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+    connect(sliderZ_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+    
 }
 
 void IntVec3PropertyWidgetQt::generatesSettingsWidget(){
@@ -81,32 +79,32 @@ void IntVec3PropertyWidgetQt::updateFromProperty() {
 };
 
 
-void IntVec3PropertyWidgetQt::setPropertyValueFromSlider() {
-    sliderX_->updateValueSpinBox();
-    sliderY_->updateValueSpinBox();
-    sliderZ_->updateValueSpinBox();
-
-
-    valueVec_ = property_->get();
-    valueVec_.x = sliderX_->getValue();
-    valueVec_.y = sliderY_->getValue();
-    valueVec_.z = sliderZ_->getValue();;
-    property_->set(valueVec_);
-    emit modified();
-}
-
-void IntVec3PropertyWidgetQt::setPropertyValueFromSpinBox() {
-    sliderX_->updateValueSlider();
-    sliderY_->updateValueSlider();
-    sliderZ_->updateValueSlider();
-
-    valueVec_ = property_->get();
-    valueVec_.x = sliderX_->getValue();
-    valueVec_.y = sliderY_->getValue();
-    valueVec_.z = sliderZ_->getValue();
-    property_->set(valueVec_);
-    emit modified();
-}
+//void IntVec3PropertyWidgetQt::setPropertyValueFromSlider() {
+//    sliderX_->updateValueSpinBox();
+//    sliderY_->updateValueSpinBox();
+//    sliderZ_->updateValueSpinBox();
+//
+//
+//    valueVec_ = property_->get();
+//    valueVec_.x = sliderX_->getValue();
+//    valueVec_.y = sliderY_->getValue();
+//    valueVec_.z = sliderZ_->getValue();;
+//    property_->set(valueVec_);
+//    emit modified();
+//}
+//
+//void IntVec3PropertyWidgetQt::setPropertyValueFromSpinBox() {
+//    sliderX_->updateValueSlider();
+//    sliderY_->updateValueSlider();
+//    sliderZ_->updateValueSlider();
+//
+//    valueVec_ = property_->get();
+//    valueVec_.x = sliderX_->getValue();
+//    valueVec_.y = sliderY_->getValue();
+//    valueVec_.z = sliderZ_->getValue();
+//    property_->set(valueVec_);
+//    emit modified();
+//}
 
 void IntVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
     QPoint globalPos = sliderX_->mapToGlobal(pos);
@@ -180,6 +178,15 @@ void IntVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
         property_->setMaxValue(valueVecMax_);
         updateFromProperty();
     }
+}
+
+void IntVec3PropertyWidgetQt::setPropertyValue(){
+    valueVec_ = property_->get();
+    valueVec_.x = sliderX_->getValue();
+    valueVec_.y = sliderY_->getValue();
+    valueVec_.z = sliderZ_->getValue();
+    property_->set(valueVec_);
+    emit modified();
 }
 
 
