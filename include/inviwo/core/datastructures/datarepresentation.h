@@ -25,7 +25,7 @@ namespace inviwo {
         bool isValid() const;
         void invalidate();
 
-    private:
+    protected:
         bool valid_;
         DataFormatBase dataFormatBase_;
     };

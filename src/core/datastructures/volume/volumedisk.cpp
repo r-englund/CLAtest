@@ -21,16 +21,27 @@ namespace inviwo {
         std::string fileExtension = URLParser::getFileExtension(getSourceFile());
         if (!fileExtension.empty()) {
             //TODO: better pattern for automatic data reader selection
+            ReaderSettings* readerSettings = 0;
             if (fileExtension=="dat") {
-                ReaderSettings readerSettings;
-                DatVolumeReader::readDatFileSettings(getSourceFile(), readerSettings);
-                //dataFormat_ = readerSettings.dataFormat_;
-                dimensions_ = readerSettings.dimensions_;
+                ReaderSettings* datReaderSettings = new ReaderSettings();
+                DatVolumeReader::readDatFileSettings(getSourceFile(), *datReaderSettings);
+                readerSettings = datReaderSettings;
             }
             else if (fileExtension=="ivf") {
-                IvfReaderSettings readerSettings;
-                IvfVolumeReader::readIvfFileSettings(getSourceFile(), readerSettings);
-                dimensions_ = readerSettings.dimensions_;               
+                IvfReaderSettings* ivfReaderSettings = new IvfReaderSettings();                
+                IvfVolumeReader::readIvfFileSettings(getSourceFile(), *ivfReaderSettings); 
+                readerSettings = ivfReaderSettings;
+            }
+
+            if (readerSettings) {
+                dimensions_ = readerSettings->dimensions_;
+                if (readerSettings->dataFormat_== DataUINT8::str()) {
+                    dataFormatBase_ = DataUINT8();
+                }
+                else if(readerSettings->dataFormat_== DataUINT16::str()) {
+                    dataFormatBase_ = DataUINT16();
+                }
+                delete readerSettings;
             }
         }
 
