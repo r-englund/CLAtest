@@ -75,11 +75,15 @@ void ProcessorLink::evaluate(LinkEvaluator *leval) {
 
     Property* startProperty;
     Property* endProperty;
-
     for (size_t i=0; i<propertyLinks_.size(); i++) {
         startProperty = propertyLinks_[i]->getSourceProperty();
-        endProperty = propertyLinks_[i]->getDestinationProperty();
-        leval->evaluate(startProperty, endProperty);
+        endProperty = propertyLinks_[i]->getDestinationProperty();        
+        Processor* srcProc = dynamic_cast<Processor*>(startProperty->getOwner());
+        Processor* dstProc = dynamic_cast<Processor*>(endProperty->getOwner());
+        //TODO: validation check per property is not working yet.
+        if (!srcProc->isValid()) {
+            leval->evaluate(startProperty, endProperty);
+        }
     }
 }
 

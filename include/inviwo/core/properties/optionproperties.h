@@ -19,6 +19,22 @@ public:
     OptionPropertyInt(std::string identifier, std::string displayName, int value,
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics::Type semantics=PropertySemantics::Default);
+    /** 
+     * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     *  values must have overloaded streaming operator <<
+     * 
+     * @return inviwo::Variant variant
+     */
+    virtual Variant getVariant();
+    /** 
+     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     * values must have overloaded streaming operator >>
+     * 
+     * @param const Variant & input source variant
+     */
+    virtual void setVariant(const Variant& inVariant);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "OptionPropertyInt"; }
@@ -40,6 +56,22 @@ public:
     OptionPropertyFloat(std::string identifier, std::string displayName, float value,
                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                         PropertySemantics::Type semantics=PropertySemantics::Default);
+    /** 
+     * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     *  values must have overloaded streaming operator <<
+     * 
+     * @return inviwo::Variant variant
+     */
+    virtual Variant getVariant();
+    /** 
+     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     * values must have overloaded streaming operator >>
+     * 
+     * @param const Variant & input source variant
+     */
+    virtual void setVariant(const Variant& inVariant);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "OptionPropertyFloat"; }
@@ -60,6 +92,22 @@ public:
     OptionPropertyDouble(std::string identifier, std::string displayName, double value,
                          PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                          PropertySemantics::Type semantics=PropertySemantics::Default);
+    /** 
+     * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     *  values must have overloaded streaming operator <<
+     * 
+     * @return inviwo::Variant variant
+     */
+    virtual Variant getVariant();
+    /** 
+     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     * values must have overloaded streaming operator >>
+     * 
+     * @param const Variant & input source variant
+     */
+    virtual void setVariant(const Variant& inVariant);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "OptionPropertyDouble"; }
@@ -80,6 +128,22 @@ public:
     OptionPropertyString(std::string identifier, std::string displayName,
                          PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                          PropertySemantics::Type semantics=PropertySemantics::Default);
+    /** 
+     * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     *  values must have overloaded streaming operator <<
+     * 
+     * @return inviwo::Variant variant
+     */
+    virtual Variant getVariant();
+    /** 
+     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     * values must have overloaded streaming operator >>
+     * 
+     * @param const Variant & input source variant
+     */
+    virtual void setVariant(const Variant& inVariant);
     void addOption(std::string identifier, std::string displayName);
     void addOption(std::string identifier, std::string displayName, std::string value);
     virtual void serialize(IvwSerializer& s) const;

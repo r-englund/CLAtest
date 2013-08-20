@@ -114,8 +114,17 @@ public:
 
     void setToID(std::string identifier);
     void selectByKey(std::string identifier);
+    
+    /** 
+     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.         
+     * 
+     * @return int VariantType as integer
+     */
+    virtual int getVariantType() {
+        return Variant::VariantTypeString;
+    }
 
-private:
+protected:
     T value_;
     std::vector< std::pair<std::pair<std::string, std::string>, T> > options_;
 };

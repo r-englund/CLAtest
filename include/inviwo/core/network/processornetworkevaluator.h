@@ -34,6 +34,7 @@ public:
 	void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
 
     Processor* retrieveCanvasProcessor(Canvas* canvas);
+    std::vector<ProcessorLink*> getSortedProcessorLinks();
 
 private:
     bool hasBeenVisited(Processor* processor);

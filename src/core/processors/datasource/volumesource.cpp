@@ -10,7 +10,7 @@ ProcessorCodeState(VolumeSource, CODE_STATE_EXPERIMENTAL);
 VolumeSource::VolumeSource()
     : Processor(),
       volumePort_("volume"),
-      volumeFileName_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/hydrogenatom.dat")
+      volumeFileName_("volumeFileName", "Volume file name", "")
 {
     addPort(volumePort_);
     addProperty(volumeFileName_);

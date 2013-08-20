@@ -14,6 +14,30 @@ OptionPropertyInt::OptionPropertyInt(std::string identifier, std::string display
     : TemplateOptionProperty<int>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
+Variant OptionPropertyInt::getVariant() {
+    std::stringstream ss;
+    ss << " " << getSelectedOption() ;
+    for (size_t i=0; i<options_.size(); i++) {
+        ss << " " << options_[i].first.first << " " << options_[i].first.second;
+    }    
+    return Variant(ss.str());
+}
+
+void OptionPropertyInt::setVariant(const Variant& inVariant) {
+    std::istringstream ss(inVariant.getString());
+    int seletctedOption=0;
+    ss >> seletctedOption ;
+    options_.clear();
+    while(!ss.eof()) {
+        std::string identifier, displayName;
+        int val=0;
+        ss >> identifier;
+        ss >> displayName;            
+        addOption(identifier, displayName, val);
+    }
+    setSelectedOption(seletctedOption);
+}
+
 void OptionPropertyInt::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
     s.serialize("value", get());
@@ -37,6 +61,30 @@ OptionPropertyFloat::OptionPropertyFloat(std::string identifier, std::string dis
                                          PropertySemantics::Type semantics )
     : TemplateOptionProperty<float>(identifier, displayName, value, invalidationLevel, semantics)
 {}
+
+Variant OptionPropertyFloat::getVariant() {
+    std::stringstream ss;
+    ss << " " << getSelectedOption() ;
+    for (size_t i=0; i<options_.size(); i++) {
+        ss << " " << options_[i].first.first << " " << options_[i].first.second <<" " << options_[i].second;
+    }    
+    return Variant(ss.str());
+}
+
+void OptionPropertyFloat::setVariant(const Variant& inVariant) {
+    std::istringstream ss(inVariant.getString());
+    int seletctedOption=0;
+    ss >> seletctedOption ;
+    options_.clear();
+    while(!ss.eof()) {
+        std::string identifier, displayName;
+        float val=0.0f;
+        ss >> identifier;
+        ss >> displayName;            
+        addOption(identifier, displayName, val);
+    }
+    setSelectedOption(seletctedOption);
+}
 
 void OptionPropertyFloat::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
@@ -62,6 +110,30 @@ OptionPropertyDouble::OptionPropertyDouble(std::string identifier, std::string d
                                            PropertySemantics::Type semantics)
     : TemplateOptionProperty<double>(identifier, displayName, value, invalidationLevel, semantics)
 {}
+
+Variant OptionPropertyDouble::getVariant() {
+    std::stringstream ss;
+    ss << " " << getSelectedOption() ;
+    for (size_t i=0; i<options_.size(); i++) {
+        ss << " " << options_[i].first.first << " " << options_[i].first.second <<" " << options_[i].second;
+    }    
+    return Variant(ss.str());
+}
+
+void OptionPropertyDouble::setVariant(const Variant& inVariant) {
+    std::istringstream ss(inVariant.getString());
+    int seletctedOption=0;
+    ss >> seletctedOption ;
+    options_.clear();
+    while(!ss.eof()) {
+        std::string identifier, displayName;
+        double val=0.0;
+        ss >> identifier;
+        ss >> displayName;            
+        addOption(identifier, displayName, val);
+    }
+    setSelectedOption(seletctedOption);
+}
 
 void OptionPropertyDouble::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
@@ -94,6 +166,31 @@ void OptionPropertyString::addOption(std::string identifier, std::string display
 
 void OptionPropertyString::addOption(std::string identifier, std::string displayName, std::string value) {
     TemplateOptionProperty<std::string>::addOption(identifier, displayName, value);
+}
+
+Variant OptionPropertyString::getVariant() {
+    std::stringstream ss;
+    ss << " " << getSelectedOption() ;
+    for (size_t i=0; i<options_.size(); i++) {
+        ss << " " << options_[i].first.first << " " << options_[i].first.second <<" " << options_[i].second;
+    }    
+    return Variant(ss.str());
+}
+
+void OptionPropertyString::setVariant(const Variant& inVariant) {
+    std::istringstream ss(inVariant.getString());
+    int seletctedOption=0;
+    ss >> seletctedOption ;
+    options_.clear();
+    while(!ss.eof()) {
+        std::string identifier, displayName, val;        
+        ss >> identifier;
+        ss >> displayName;  
+        ss >> val;
+       addOption(identifier, displayName, val);
+    }    
+    setSelectedOption(seletctedOption);
+    
 }
 
 void OptionPropertyString::serialize(IvwSerializer& s) const {
