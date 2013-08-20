@@ -37,6 +37,9 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	editorview_->setDragMode(QGraphicsView::NoDrag);
 	editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+	//QDockWidget::connect(editorview_, SIGNAL(resized()), this, SLOT(updateFromProperty()));
+
 	vLayout->addWidget(editorview_);
 
 	editor_ = new TransferFunctionEditor(&property_->get(), editorview_);
@@ -187,8 +190,9 @@ void TransferFunctionPropertyDialog::updateColorWheel(){
 	if (selection.size()== 1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
 		const vec4* pointColor = dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))->getPoint()->getRgba();
 		colorWheel_->setColor(QColor(pointColor->r * 255.0, pointColor->g * 255.0, pointColor->b * 255.0, pointColor->a * 255.0));
-		if (!colorChange_)
+		if (!colorChange_){
 			colorDialog_->setCurrentColor(QColor(pointColor->r * 255.0, pointColor->g * 255.0, pointColor->b * 255.0, pointColor->a * 255.0));
+		}
 	}
 }
 

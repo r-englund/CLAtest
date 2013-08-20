@@ -33,7 +33,7 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="60" />
+                        <value content="58.6" />
                         <minvalue content="30" />
                         <maxvalue content="360" />
                         <increment content="0.1" />
@@ -109,7 +109,7 @@
                     <increment content="1" />
                 </Property>
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate">
-                    <value content="1" />
+                    <value content="2" />
                     <minvalue content="1" />
                     <maxvalue content="10" />
                     <increment content="0.1" />
@@ -118,11 +118,15 @@
                     <value content="none" />
                 </Property>
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function">
-                    <size content="2" />
-                    <pos0 x="1" y="0" />
-                    <rgba0 x="0.78823531" y="1" z="0.69803923" w="0" />
-                    <pos1 x="6" y="100" />
-                    <rgba1 x="1" y="0.61176473" z="0.06666667" w="1" />
+                    <size content="4" />
+                    <pos0 x="0.003508772" y="0" />
+                    <rgba0 x="0" y="0" z="0" w="0" />
+                    <pos1 x="0.01754386" y="0.13284133" />
+                    <rgba1 x="0" y="0.95294118" z="0.44470894" w="0.13284133" />
+                    <pos2 x="0.073684208" y="0.0055350554" />
+                    <rgba2 x="0.97254902" y="0" z="0" w="0.0055350554" />
+                    <pos3 x="0.99649125" y="1" />
+                    <rgba3 x="0.97254902" y="0.97254902" z="0.97254902" w="1" />
                 </Property>
             </Properties>
         </Processor>
@@ -300,7 +304,7 @@
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <value x="2.0261328" y="-4.2852917" z="1.4768451" />
+                        <value x="2.3087416" y="-4.1601758" z="1.4500536" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -312,7 +316,7 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <value x="0.78679806" y="0.11543802" z="-0.62259316" />
+                        <value x="0.73944646" y="0.11143785" z="-0.67141688" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -351,7 +355,7 @@
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1002" y="551" />
+                    <position x="2158" y="470" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>

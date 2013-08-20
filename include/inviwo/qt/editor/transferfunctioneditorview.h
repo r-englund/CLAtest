@@ -9,10 +9,14 @@
 
 
 namespace inviwo {
-class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView{
+class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, public VoidObservable{
+	
+signals:
+	//void resized();
+
 protected:
 	void resizeEvent ( QResizeEvent * event ){
-		std::cout << "resizeEvent" << std::endl;
+		//emit resized();
 		static_cast<TransferFunctionEditor*>(scene())->repositionPoints();
 		QGraphicsView::resizeEvent( event );
 	}
