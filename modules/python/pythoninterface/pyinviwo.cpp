@@ -26,7 +26,10 @@ using namespace inviwo;
 #include "canvas.py.h"
 #include "list.py.h"
 #include "snapshot.py.h"
+
+#ifdef IVW_HAS_HUMANCOMPUTATION
 #include "hcemodule.py.h"
+#endif
 
 static PyObject* py_print(PyObject* /*self*/, PyObject* args) {
     char* msg;
@@ -71,11 +74,13 @@ static PyMethodDef internal_methods[] = {
     { NULL, NULL, 0, NULL} // null termination
 };
 
+#ifdef IVW_HAS_HUMANCOMPUTATION
 static PyMethodDef inviwo_hce_methods[] = {
     (new PySetCrowdFlowerSettingFileMethod())->getDef(),
     (new PySubmitJobMethod())->getDef(),
     { NULL, NULL, 0, NULL} // null termination
 };
+#endif
 
 
 namespace inviwo{
@@ -83,7 +88,10 @@ namespace inviwo{
 
         initPyModule("inviwo", inviwo_methods);
         initPyModule("inviwo_internal", internal_methods);
+
+#ifdef IVW_HAS_HUMANCOMPUTATION
         initPyModule("inviwo_hce", inviwo_hce_methods);
+#endif
 
         LogInfo("Python module 'inviwo' initialized");
         performTest();

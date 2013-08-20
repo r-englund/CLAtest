@@ -29,6 +29,7 @@ if (IVW_MODULE_HUMANCOMPUTATIONENGINE)
 LIST(APPEND HEADER_FILES
     ${IVW_MODULE_DIR}/python/pythoninterface/hcemodule.py.h
 )
+add_definitions(-DIVW_HAS_HUMANCOMPUTATION)
 endif (IVW_MODULE_HUMANCOMPUTATIONENGINE)
 
 ivw_group("Header Files" ${HEADER_FILES})
