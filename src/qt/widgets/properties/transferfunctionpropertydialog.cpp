@@ -93,7 +93,6 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	frame->setLayout(hLayout);
 
 	gradient_ = new QLinearGradient(0.0f, 0.0f, editorview_->width(), 0.0f);
-	//gradient_->setCoordinateMode(QGradient::ObjectBoundingMode);
 	stops_ = new QVector<QGradientStop>();
 }
 
@@ -239,14 +238,15 @@ void TransferFunctionPropertyDialog::updateFromSpinBoxMax(int val){
 	}
 	zoomSlider_->setMaxValue(val);
 
-	float min = zoomSlider_->minValue();
-	float max = zoomSlider_->maxValue();
+	float minValue = zoomSlider_->minValue();
+	float maxValue = zoomSlider_->maxValue();
 
 	editorview_->resetMatrix();
-	editorview_->scale(255.0/(max - min), -1.0);
+	editorview_->scale(255.0/(maxValue - minValue), -1.0);
 
-	editorview_->centerOn((max-min)/2.0, 0.0);
+	editorview_->centerOn((maxValue - minValue)/2.0, 0.0);
 }
+
 void TransferFunctionPropertyDialog::setPointColor( QColor color ){
 	vec3* newRgb;
 	QList<QGraphicsItem *> selection = editor_->selectedItems();
@@ -262,7 +262,6 @@ void TransferFunctionPropertyDialog::setPointColor( QColor color ){
 	updateFromProperty();
 	(&property_->get())->calcTransferValues();
 }
-
 
 QGraphicsView* TransferFunctionPropertyDialog::getGradient(){
     return paintview_;
