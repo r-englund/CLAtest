@@ -14,7 +14,8 @@ class IVW_CORE_API Outport : public Port {
 friend class Inport;
 
 public:
-    Outport(std::string identifier);
+    Outport(std::string identifier,
+            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~Outport();
 
     //TODO: Temporary fix. Remove this to make Outport abstract class

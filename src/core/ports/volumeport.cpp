@@ -4,8 +4,8 @@
 namespace inviwo {
 
 // Volume Inport
-VolumeInport::VolumeInport(std::string identifier)
-: DataInport<Volume>(identifier)
+VolumeInport::VolumeInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+: DataInport<Volume>(identifier, invalidationLevel)
 {}
 
 VolumeInport::~VolumeInport() {
@@ -21,8 +21,8 @@ uvec3 VolumeInport::getColorCode() const {
 }
 
 // Volume Outport
-VolumeOutport::VolumeOutport(std::string identifier)
-: DataOutport<Volume>(identifier)
+VolumeOutport::VolumeOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+: DataOutport<Volume>(identifier, invalidationLevel)
 {
     data_ = new StandardVolume();
 }

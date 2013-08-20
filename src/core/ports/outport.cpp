@@ -4,8 +4,8 @@
 
 namespace inviwo {
 
-Outport::Outport(std::string identifier)
-: Port(identifier)
+Outport::Outport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+    : Port(identifier, invalidationLevel)
 {}
 
 Outport::~Outport() {}
@@ -50,6 +50,7 @@ std::vector<Processor*> Outport::getDirectSuccessors() {
 void Outport::connectTo(Inport* inport) {
     if (std::find(connectedInports_.begin(), connectedInports_.end(), inport) == connectedInports_.end()) {
         connectedInports_.push_back(inport);
+        Port::invalidate(invalidationLevel_);
     }
 }
 
@@ -58,6 +59,7 @@ void Outport::disconnectFrom(Inport* inport) {
     if (std::find(connectedInports_.begin(), connectedInports_.end(), inport) != connectedInports_.end()) {
         connectedInports_.erase(std::remove(connectedInports_.begin(), connectedInports_.end(), inport),
             connectedInports_.end());
+        Port::invalidate(invalidationLevel_);
     }
 }
 

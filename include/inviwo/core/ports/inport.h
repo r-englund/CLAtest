@@ -12,7 +12,8 @@ class Outport;
 class IVW_CORE_API Inport : public Port {
 
 public:
-    Inport(std::string identifier);
+    Inport(std::string identifier,
+           PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~Inport();
 
     //FIXME: Temporary fix. Remove this to make Inport abstract class

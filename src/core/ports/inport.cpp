@@ -4,8 +4,9 @@
 
 namespace inviwo {
 
-Inport::Inport(std::string identifier)
-: Port(identifier), connectedOutport_(NULL)
+Inport::Inport(std::string identifier,
+               PropertyOwner::InvalidationLevel invalidationLevel)
+: Port(identifier, invalidationLevel), connectedOutport_(NULL)
 {}
 
 Inport::~Inport() {}
@@ -14,7 +15,7 @@ Inport::~Inport() {}
 void Inport::connectTo(Outport* outport) {
     connectedOutport_ = outport;
     outport->connectTo(this);
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(invalidationLevel_);
 }
 
 void Inport::disconnectFrom(Outport* outport) {
@@ -22,7 +23,7 @@ void Inport::disconnectFrom(Outport* outport) {
     ivwAssert(connectedOutport_==outport, "Ports are not connected.");
     connectedOutport_ = NULL;
     outport->disconnectFrom(this);
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(invalidationLevel_);
 }
 
 bool Inport::isConnected() const { 

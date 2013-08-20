@@ -3,8 +3,8 @@
 namespace inviwo {
 
 // Geometry Inport
-GeometryInport::GeometryInport(std::string identifier)
-: DataInport<Geometry>(identifier)
+GeometryInport::GeometryInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+: DataInport<Geometry>(identifier, invalidationLevel)
 {}
 
 GeometryInport::~GeometryInport() {
@@ -20,8 +20,8 @@ uvec3 GeometryInport::getColorCode() const {
 }
 
 // Geometry Outport
-GeometryOutport::GeometryOutport(std::string identifier)
-: DataOutport<Geometry>(identifier)
+GeometryOutport::GeometryOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+: DataOutport<Geometry>(identifier, invalidationLevel)
 {
     data_ = new Geometry();
 }

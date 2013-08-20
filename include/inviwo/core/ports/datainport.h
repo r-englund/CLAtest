@@ -14,7 +14,7 @@ template<typename T>
 class IVW_CORE_API DataInport : public Inport {
 
 public:
-    DataInport(std::string identifier);
+    DataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~DataInport();
 
     void initialize();
@@ -34,8 +34,8 @@ protected:
 
 
 template <typename T>
-DataInport<T>::DataInport(std::string identifier)
-    : Inport(identifier),
+DataInport<T>::DataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+    : Inport(identifier, invalidationLevel),
       dataOutport_(NULL)
 {
 }

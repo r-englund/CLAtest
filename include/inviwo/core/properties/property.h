@@ -31,7 +31,9 @@ public:
     virtual void setSemantics(const PropertySemantics::Type& semantics);
 
     PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
-    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) { invalidationLevel_ = invalidationLevel; }
+    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
+        invalidationLevel_ = invalidationLevel;
+    }
 
     PropertyOwner* getOwner();
     virtual void setOwner(PropertyOwner* owner);

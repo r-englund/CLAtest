@@ -4,8 +4,10 @@
 
 namespace inviwo {
 
-Port::Port(std::string identifier)
+Port::Port(std::string identifier,
+           PropertyOwner::InvalidationLevel invalidationLevel)
     : identifier_(identifier),
+      invalidationLevel_(invalidationLevel),
       processor_(0)
 {}
 

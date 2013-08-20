@@ -14,7 +14,7 @@ class CanvasProcessor;
 class IVW_CORE_API ImageInport : public DataInport<Image> {
 
 public:
-    ImageInport(std::string identifier);
+    ImageInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~ImageInport();
 
     void initialize();
@@ -37,7 +37,7 @@ class IVW_CORE_API ImageOutport : public DataOutport<Image> {
 friend class ImageInport;
 
 public:
-    ImageOutport(std::string identifier);
+    ImageOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~ImageOutport();
 
     void initialize();

@@ -5,8 +5,9 @@
 namespace inviwo {
 
 // Image Inport
-ImageInport::ImageInport(std::string identifier)
-    : DataInport<Image>(identifier), dimensions_(uvec2(256,256))
+ImageInport::ImageInport(std::string identifier,
+                         PropertyOwner::InvalidationLevel invalidationLevel)
+    : DataInport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {}
 
 ImageInport::~ImageInport() {}
@@ -83,8 +84,9 @@ uvec3 ImageInport::getColorCode() const {
 }
 
 // Image Outport
-ImageOutport::ImageOutport(std::string identifier)
-    : DataOutport<Image>(identifier), dimensions_(uvec2(256,256))
+ImageOutport::ImageOutport(std::string identifier,
+                           PropertyOwner::InvalidationLevel invalidationLevel)
+    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {     
     data_ = new Image(dimensions_);
     std::string dimensionString = glm::to_string(dimensions_);

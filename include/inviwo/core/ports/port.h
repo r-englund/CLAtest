@@ -18,12 +18,13 @@ public:
      * Constructor for creating port instances. As this class is abstract, the constructor is not
      * called directly. Instead, constructors of the derived classes call this constructor.
      *
-     * @param direction Defines if this is an INPORT or an OUTPORT.
      * @param identifier Port identifier used for serialization. Should be unique within the scope
-                         of a processor.
-     * @see Processor::addPort()
+     *                   of a processor.
+     * @param invalidationLevel Defines the level of invalidation used upon connection/deconnection.
+     * @see Processor::addPort(), PropertyOwner::InvalidationLevel
      */
-    Port(std::string identifier);
+    Port(std::string identifier,
+         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~Port();
 
     /**
@@ -56,11 +57,17 @@ public:
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
+    PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
+    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
+        invalidationLevel_ = invalidationLevel;
+    }
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 protected:
     std::string identifier_;
+    PropertyOwner::InvalidationLevel invalidationLevel_;
 
     void setIdentifier(const std::string& name);
     void setProcessor(Processor* processor);
