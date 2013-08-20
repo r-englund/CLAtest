@@ -14,8 +14,7 @@ ivw_module(Python)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/python/pythoninterface/pyinviwo.h
     ${IVW_MODULE_DIR}/python/pythoninterface/camera.py.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/canvas.py.h
-	${IVW_MODULE_DIR}/python/pythoninterface/hcemodule.py.h
+    ${IVW_MODULE_DIR}/python/pythoninterface/canvas.py.h	
     ${IVW_MODULE_DIR}/python/pythoninterface/info.py.h
     ${IVW_MODULE_DIR}/python/pythoninterface/list.py.h
     ${IVW_MODULE_DIR}/python/pythoninterface/properties.py.h
@@ -25,6 +24,13 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/python/pythonscript.h
     ${IVW_MODULE_DIR}/python/pythonmoduledefine.h
 )
+
+if (IVW_MODULE_HUMANCOMPUTATIONENGINE)
+LIST(APPEND HEADER_FILES
+    ${IVW_MODULE_DIR}/python/pythoninterface/hcemodule.py.h
+)
+endif (IVW_MODULE_HUMANCOMPUTATIONENGINE)
+
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------

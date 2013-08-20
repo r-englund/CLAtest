@@ -30,6 +30,8 @@ build_module_dependency(DICOM IVW_DICOM_APPLICATION)
 
 option(TEST_APPLICATIONS "Build All Test Application" OFF)
 
+option(IVW_MODULE_PYTHON "Enable python module" OFF)
+
 #--------------------------------------------------------------------
 # Add subdirectories
 
