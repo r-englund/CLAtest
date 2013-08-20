@@ -14,6 +14,9 @@
 
 static PyObject* py_setCrowdFlowerSettingFile(PyObject* /*self*/, PyObject* /*args*/);
 static PyObject* py_submitJob(PyObject* /*self*/, PyObject* /*args*/);
+static PyObject* py_addUnitFile(PyObject* /*self*/, PyObject* /*args*/);
+
+std::vector<std::string> fileNames_;
 
 namespace inviwo {
     class PySetCrowdFlowerSettingFileMethod : public PythonMethod{
@@ -28,6 +31,13 @@ namespace inviwo {
         char *getName(){return "submitJob";}
         char *getDesc(){return "submitJob(unit_file, question_file, job_title, description, instruction)\tSubmits a job to crowdflower platform";}
         virtual PyCFunction getFunc(){return py_submitJob;}
+    };
+
+    class PyAddUnitFileMethod : public PythonMethod{
+    public:
+        char *getName(){return "addUnitFile";}
+        char *getDesc(){return "addUnitFile(unit_file)\tAdds Unit file to a job";}
+        virtual PyCFunction getFunc(){return py_addUnitFile;}
     };
 
 } //namespace
@@ -113,15 +123,49 @@ static PyObject* py_submitJob(PyObject* /*self*/, PyObject* args){
         }       
 
         IvwCrowdEngineJob* crowdJob = new IvwCrowdEngineJob();
+        
         crowdJob->data_.set(unitFile);
         crowdJob->question_.set(questionFile);
         crowdJob->title_.set(jobTitle);
         crowdJob->description_.set(jobDescription);
         crowdJob->instructions_.set(jobInstruction);
-        crowdJob->submitJob();
+        if (uintFileLen>1)
+            crowdJob->submitJob();
+        else if (fileNames_.size())
+            crowdJob->submitJob(fileNames_);
     }
     else
         return 0;
+
+    Py_RETURN_NONE;
+}
+
+
+static PyObject* py_addUnitFile(PyObject* /*self*/, PyObject* args){
+
+    if (PyTuple_Size(args) != 1) {
+        std::ostringstream errStr;
+        errStr << "py_addUnitFile(fileName) takes exactly 1 argument: unit_file";
+        errStr << " (" << PyTuple_Size(args) << " given)";
+        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+        return 0;
+    }
+
+    
+    char* unitFile; int uintFileLen;
+    
+    if(!PyArg_ParseTuple(args,"s#", &unitFile, &uintFileLen)) {
+            std::ostringstream errStr;
+            errStr << "submitJob(fileName) takes exactly 1 argument: unit_file";
+            PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+            return 0;
+    }       
+
+    if (uintFileLen<=1)
+        fileNames_.clear();
+    else
+        fileNames_.push_back(std::string(unitFile));    
+    
 
     Py_RETURN_NONE;
 }

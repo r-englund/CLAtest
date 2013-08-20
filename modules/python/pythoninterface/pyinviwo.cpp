@@ -78,6 +78,7 @@ static PyMethodDef internal_methods[] = {
 static PyMethodDef inviwo_hce_methods[] = {
     (new PySetCrowdFlowerSettingFileMethod())->getDef(),
     (new PySubmitJobMethod())->getDef(),
+    (new PyAddUnitFileMethod())->getDef(),
     { NULL, NULL, 0, NULL} // null termination
 };
 #endif
