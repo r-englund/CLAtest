@@ -10,7 +10,9 @@
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
+//#include <inviwo/qt/editor/transferfunctioneditorview.h>
 #include <QGraphicsSceneEvent>
+#include <QGraphicsView>
 #include <QPainter>
 #include <QPainterPath>
 
@@ -66,6 +68,8 @@ namespace inviwo {
         TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
 		TransferFunctionEditorControlPoint* leftNeighbour_;
 		TransferFunctionEditorControlPoint* rightNeighbour_;
+		float viewWidth_;
+		float viewHeight_;
     };
 
 }// namespace

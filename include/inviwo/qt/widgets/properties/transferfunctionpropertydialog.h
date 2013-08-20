@@ -9,6 +9,7 @@
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/editor/transferfunctioneditor.h>
+#include <inviwo/qt/editor/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/colorwheel.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 
@@ -52,7 +53,7 @@ private:
 	float width;
 	float height;
     static const std::string logSource_;
-    QGraphicsView*	editorview_; ///< View that contains the editor
+    TransferFunctionEditorView*	editorview_; ///< View that contains the editor
     QGraphicsView* paintview_; ///< View that contains the scene for the painted transferfunction
     QGraphicsScene* paintscene_; ///< Scene where the transferfunction is painted
     TransferFunctionProperty* property_; ///< Pointer to property, for get and invalidation in the widget

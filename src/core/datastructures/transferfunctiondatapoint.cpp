@@ -19,6 +19,10 @@ namespace inviwo{
 		pos_ = *pos;
 	}
 
+	void TransferFunctionDataPoint::setPos( float x, float y ){
+		pos_ = vec2(x, y);
+	}
+
     const vec4* TransferFunctionDataPoint::getRgba(){
         return &rgba_;
     }

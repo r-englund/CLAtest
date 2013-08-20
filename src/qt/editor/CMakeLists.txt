@@ -21,6 +21,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorcontrolpoint.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorlineitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorview.h
+    
 )
 ivw_group("Header Files" ${HEADER_FILES})
 

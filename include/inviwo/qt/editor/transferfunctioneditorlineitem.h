@@ -17,6 +17,8 @@
 #include <inviwo/qt/editor/processorgraphicsitem.h>
 #include <inviwo/qt/editor/transferfunctioneditorcontrolpoint.h>
 
+//#include <inviwo/qt/editor/transferfunctioneditor.h>
+
 namespace inviwo {
 
     class IVW_QTEDITOR_API TransferFunctionEditorLineItem : public QGraphicsItem {

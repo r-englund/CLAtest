@@ -1,8 +1,9 @@
 #include <inviwo/qt/editor/transferfunctioneditor.h>
 
 namespace inviwo {
-TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunc)
-	:transferFunction_(transferFunc)
+TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view)
+	:transferFunction_(transferFunction),
+	view_(view)
 {
 	leftEdgeLine_ = new TransferFunctionEditorLineItem();
 	rightEdgeLine_ = new TransferFunctionEditorLineItem();
@@ -26,7 +27,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunc)
 
 	if (transferFunction_->getNumberOfDataPoints() == 0){
 		addPoint(new vec2(0.0, 0.0));
-		addPoint(new vec2(255.0, 100.0));
+		addPoint(new vec2(1.0, 1.0));
 	}
 
 	leftEdgeLine_->setStart(points_.front());
@@ -94,16 +95,8 @@ void TransferFunctionEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
 }
 
 void TransferFunctionEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent *e){
-	//float dist = sqrt( pow(e->scenePos().x() - mouseDownPos_.x(), 2) + pow(e->scenePos().y() - mouseDownPos_.y(), 2));
-
-	//if (e->button() == Qt::LeftButton && dist < 10.0f){
-	//	if (items(mouseDownPos_).isEmpty()){
-	//		addPoint(e);
-	//	}
-	//}
 	QGraphicsScene::mouseReleaseEvent(e);
 }
-
 
 void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
 	if (e->key() == Qt::Key_Delete && points_.size() > 0){
@@ -120,13 +113,13 @@ void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
 }
 
 void TransferFunctionEditor::addPoint(vec2* pos){
-	//pos->x = (pos->x < 0.0) ? 0.0 : pos->x;
-	//pos->y = (pos->y < 0.0) ? 0.0 : pos->y;
-	//pos->x = (pos->x > 255.0) ? 255.0 : pos->x;
-	//pos->y = (pos->y > 100.0) ? 100.0 : pos->y;
+	pos->x = (pos->x < 0.0) ? 0.0 : pos->x;
+	pos->y = (pos->y < 0.0) ? 0.0 : pos->y;
+	pos->x = (pos->x > view_->width()) ? view_->width() : pos->x;
+	pos->y = (pos->y > view_->height()) ? view_->height() : pos->y;
 
-	pos->x = floor(pos->x + 0.5f);
-	vec4* rgba = new vec4(pos->y/100.0f);
+	vec4* rgba = new vec4(pos->y);
+
 	TransferFunctionDataPoint* newPoint = new TransferFunctionDataPoint(pos, rgba);
 	transferFunction_->addPoint(newPoint);
 	points_.push_back(new TransferFunctionEditorControlPoint(newPoint));
@@ -155,7 +148,8 @@ void TransferFunctionEditor::addPoint(vec2* pos){
 }
 
 void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
-	vec2* pos = new vec2(e->scenePos().x(), e->scenePos().y());
+
+	vec2* pos = new vec2(e->scenePos().x() / view_->width(), e->scenePos().y() / view_->height());
 	addPoint(pos);
 }
 
@@ -239,5 +233,17 @@ bool myPointCompare (TransferFunctionEditorControlPoint* a, TransferFunctionEdit
 
 void TransferFunctionEditor::sortControlPoints(){
 	std::sort(points_.begin(), points_.end(), myPointCompare);
+}
+
+QGraphicsView* TransferFunctionEditor::getView(){
+	return view_;
+}
+
+void TransferFunctionEditor::repositionPoints(){
+	for (size_t i = 0; i < points_.size(); ++i){
+		points_[i]->setPos(points_[i]->getPoint()->getPos()->x * getView()->width(),points_[i]->getPoint()->getPos()->y * getView()->height());
+	}
+	this->update();
+	this->invalidate();
 }
 };

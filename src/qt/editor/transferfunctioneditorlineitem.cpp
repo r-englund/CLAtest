@@ -3,6 +3,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
 #include <inviwo/qt/editor/transferfunctioneditorlineitem.h>
+#include <inviwo/qt/editor/transferfunctioneditor.h>
 
 namespace inviwo {
 
@@ -43,21 +44,22 @@ void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOption
 	IVW_UNUSED_PARAM(widget);
 	painter->setRenderHint(QPainter::Antialiasing, true);
 
-	const vec2* start = start_->getPoint()->getPos();
+	const vec2* start = new vec2(start_->x(), start_->y());
 	const vec2* finish;
+
 	switch (direction_)
 	{
 	case 0:
-		finish = finish_->getPoint()->getPos();
+		finish = new vec2(finish_->x(), finish_->y());
 		break;
 	case 1:
-		finish = new vec2(start_->getPoint()->getPos()->x - 255.0, start_->getPoint()->getPos()->y);
+		finish = new vec2(start_->x() - 255.0, start_->y());
 		break;
 	case 2:
-		finish = new vec2(start_->getPoint()->getPos()->x + 255.0, start_->getPoint()->getPos()->y);
+		finish = new vec2(start_->x() + 255.0, start_->y());
 		break;
 	default:
-		finish = finish_->getPoint()->getPos();
+		finish = new vec2(finish_->x(), finish_->y());
 		break;	
 	}
 	QPen* pen = new QPen();
@@ -149,8 +151,11 @@ void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e
 
 	deltaPos.x = floor(deltaPos.x + 0.5);
 
-	start_->setPos(QPointF(newStartPos.x, newStartPos.y));
-	finish_->setPos(QPointF(newFinishPos.x, newFinishPos.y));
+	float scaleX_ = static_cast<TransferFunctionEditor*>(this->scene())->getView()->width();
+	float scaleY_ = static_cast<TransferFunctionEditor*>(this->scene())->getView()->height();
+
+	start_->setPos(QPointF(newStartPos.x / scaleX_, newStartPos.y / scaleY_));
+	finish_->setPos(QPointF(newFinishPos.x / scaleX_, newFinishPos.y / scaleY_));
 	start_->getPoint()->setPos(newStartPos);
 	finish_->getPoint()->setPos(newFinishPos);
 	mouseDownPos_ = e->pos();

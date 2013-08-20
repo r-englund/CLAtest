@@ -25,13 +25,30 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	QVBoxLayout* vLayout = new QVBoxLayout();
 	QHBoxLayout* hLayout = new QHBoxLayout();
 
-	editor_ = new TransferFunctionEditor(&property_->get());
+	editorview_ = new TransferFunctionEditorView();
+	editorview_->setParent(this);
+	
+	editorview_->scale(1.0, -1.0);
+	editorview_->setMinimumSize(255.0, 100.0);
+
+	editorview_->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+
+	editorview_->viewport()->installEventFilter(this);
+	editorview_->setDragMode(QGraphicsView::NoDrag);
+	editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	vLayout->addWidget(editorview_);
+
+	editor_ = new TransferFunctionEditor(&property_->get(), editorview_);
 	addObservation(editor_);
 	editor_->addObserver(this);
+
 	editor_->setSceneRect(0,0,width,height);
+
 	editor_->setBackgroundBrush(Qt::transparent);
 	QDockWidget::connect(editor_,SIGNAL(doubleClick()),this,SLOT(showColorDialog()));
 	QDockWidget::connect(editor_,SIGNAL(selectionChanged()),this,SLOT(updateColorWheel()));
+	editorview_->setScene(editor_);
 
 	colorChange_ = false;
 	colorWheel_ = new ColorWheel();
@@ -40,22 +57,12 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	QDockWidget::connect(colorWheel_,SIGNAL(colorChange(QColor)),this, SLOT(setPropertyValue()));
 	QDockWidget::connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this,SLOT(setPropertyValueColorDialog()));
 
-	editorview_ = new QGraphicsView(this);
-	editorview_->setFixedSize(width + 2, height + 2);
-	editorview_->resize(width + 2, height + 2);
-	editorview_->scale(1.0, -1.0);
-	editorview_->setScene(editor_);
-	editorview_->viewport()->installEventFilter(this);
-	editorview_->setDragMode(QGraphicsView::NoDrag);
-	editorview_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	editorview_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
 	paintscene_ = new QGraphicsScene(this);
 	paintview_ = new QGraphicsView(this);
 	paintview_->setScene(paintscene_);
-	paintview_->setFixedSize(width + 2, 10.0);
+	paintview_->setFixedHeight(10.0);
+	paintview_->setAlignment(Qt::AlignLeft);
 	paintview_->scale(1.0, -1.0);
-
 
 	QHBoxLayout* hSliderLayout = new QHBoxLayout();
 	spinBoxMin_ = new QSpinBox(this);
@@ -78,7 +85,6 @@ void TransferFunctionPropertyDialog::generateWidget(){
 	connect(spinBoxMin_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMin(int)));
 	connect(spinBoxMax_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMax(int)));
 
-	vLayout->addWidget(editorview_);
 	vLayout->addWidget(paintview_);
 	vLayout->addLayout(hSliderLayout);
 	hLayout->addLayout(vLayout);
@@ -86,7 +92,8 @@ void TransferFunctionPropertyDialog::generateWidget(){
 
 	frame->setLayout(hLayout);
 
-	gradient_ = new QLinearGradient(-128.0f, 0.0f, 127.0f, 0.0f);
+	gradient_ = new QLinearGradient(0.0f, 0.0f, editorview_->width(), 0.0f);
+	//gradient_->setCoordinateMode(QGradient::ObjectBoundingMode);
 	stops_ = new QVector<QGradientStop>();
 }
 
@@ -119,7 +126,7 @@ void TransferFunctionPropertyDialog::updateFromProperty(){
 	if (property_->get().getNumberOfDataPoints() > 0){
 		for (int i = 0; i < (int)property_->get().getNumberOfDataPoints(); i++){
 			color = property_->get().getPoint(i)->getRgba();
-			temp->first = property_->get().getPoint(i)->getPos()->x / 255.0f;
+			temp->first = property_->get().getPoint(i)->getPos()->x;
 			temp->second = QColor::fromRgbF(color->r, color->g, color->b, 1.0f);
 			stops_->push_front(*temp);
 		}
@@ -135,6 +142,7 @@ void TransferFunctionPropertyDialog::updateFromProperty(){
 	}
 	gradient_->setStops(*stops_);
 	paintscene_->setForegroundBrush(*gradient_);
+	gradient_->setFinalStop(editorview_->width(), 0.0);
 	delete temp;
 	this->update();
 	property_->invalidate();
@@ -144,29 +152,6 @@ void TransferFunctionPropertyDialog::updateFromProperty(){
 bool TransferFunctionPropertyDialog::eventFilter(QObject *object, QEvent *e)
 {
 	std::stringstream ss;
-
-	//if (e->type() == QEvent::MouseButtonPress){
-	//	QMouseEvent *k = (QMouseEvent *)e;
-	//	if(k->modifiers().testFlag(Qt::ControlModifier)){
-	//		LogInfo("CONTROLCLICK");
-	//		editorview_->setDragMode(QGraphicsView::RubberBandDrag);
-	//	}
-	//	else{
-	//		LogInfo("NORMALCLICK");
-	//		editorview_->setDragMode(QGraphicsView::NoDrag);
-	//	}
-	//}
-
-	//if (e->type() == QEvent::MouseMove){
-	//	LogInfo("MOVE");
-	//}
-
-	//if (e->type() == QEvent::MouseButtonRelease){
-	//	LogInfo("UP");
-	//	editorview_->update();
-	//	editorview_->setDragMode(QGraphicsView::RubberBandDrag);
-	//	return true;
-	//}
 
 	if (e->type() == QEvent::Wheel){
 		const QPoint pos = static_cast<QWheelEvent*>(e)->pos();
@@ -260,8 +245,7 @@ void TransferFunctionPropertyDialog::updateFromSpinBoxMax(int val){
 	editorview_->resetMatrix();
 	editorview_->scale(255.0/(max - min), -1.0);
 
-	editorview_->centerOn((max-min)/2.0, 50.0);
-	editorview_->setSceneRect(min, 0.0, max - min, 100.0);
+	editorview_->centerOn((max-min)/2.0, 0.0);
 }
 void TransferFunctionPropertyDialog::setPointColor( QColor color ){
 	vec3* newRgb;

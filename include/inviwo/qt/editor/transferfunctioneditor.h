@@ -52,12 +52,13 @@ namespace inviwo {
         *         
         *  Main constructor, creates edge control points and corresponding line
         */
-        TransferFunctionEditor(TransferFunction* transferFunction_);
+        TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view);
         ~TransferFunctionEditor();
+		QGraphicsView* getView();
+		void repositionPoints();
     
     signals:
         void doubleClick();
-
 
 	protected :
         void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *e);
@@ -65,6 +66,7 @@ namespace inviwo {
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
         void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
 		void keyPressEvent(QKeyEvent *e);
+		void ResizeEvent(QResizeEvent * e);
 
         /** \Add new control point
         *      Adds a new control point at the event position
@@ -80,8 +82,8 @@ namespace inviwo {
 		void sortLines();
 		void sortControlPoints();
 		void setControlPointNeighbours();
-
     private :
+		QGraphicsView* view_;
         std::vector<TransferFunctionEditorControlPoint*> points_; ///< Control points in the transfer function graph
         std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
         TransferFunction* transferFunction_; ///< Pointer to widget's member variable

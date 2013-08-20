@@ -26,6 +26,7 @@ namespace inviwo {
 		const vec2* getPos();
 		void setPos(vec2 pos);
 		void setPos(vec2* pos);
+		void setPos(float x, float y);
 		const vec4* getRgba();
 		void setRgba(vec4 rgba);
 		void setRgba(vec4* rgba);
