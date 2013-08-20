@@ -47,19 +47,19 @@ void AttributeBufferGL::upload(const AttributesBase* attrib, GLenum usage, GLenu
     //Specify location and state
     switch(attrib->getAttributeType())
     {
-    case COLOR:
+    case COLOR_ATTRIB:
         locationPointerFunc_ = &AttributeBufferGL::colorPointer;
         state_ = GL_COLOR_ARRAY;
         break;
-    case NORMAL:
+    case NORMAL_ATTRIB:
         locationPointerFunc_ = &AttributeBufferGL::normalPointer;
         state_ = GL_NORMAL_ARRAY;
         break;
-    case TEXCOORD:
+    case TEXCOORD_ATTRIB:
         locationPointerFunc_ = &AttributeBufferGL::texCoordPointer;
         state_ = GL_TEXTURE_COORD_ARRAY;
         break;
-    case POSITION:
+    case POSITION_ATTRIB:
         locationPointerFunc_ = &AttributeBufferGL::vertexPointer;
         state_ = GL_VERTEX_ARRAY;
         break;

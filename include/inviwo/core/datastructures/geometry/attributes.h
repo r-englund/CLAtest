@@ -8,12 +8,12 @@
 namespace inviwo {
 
 enum AttributeType{
-    COLOR,
-    CURVATURE,
-    INDEX,
-    NORMAL,
-    POSITION,
-    TEXCOORD
+    COLOR_ATTRIB,
+    CURVATURE_ATTRIB,
+    INDEX_ATTRIB,
+    NORMAL_ATTRIB,
+    POSITION_ATTRIB,
+    TEXCOORD_ATTRIB
 };
 
 class IVW_CORE_API AttributesBase {
@@ -87,12 +87,12 @@ unsigned int Attributes<T,B,A>::getDataSize() const{
 
 #define DataFormatAttributes(D, A) Attributes<D::type, D::bits, A>
 
-typedef DataFormatAttributes(DataVec4FLOAT32, COLOR) ColorAttributes;
-typedef DataFormatAttributes(DataFLOAT32, CURVATURE) CurvatureAttributes;
-typedef DataFormatAttributes(DataUINT32, INDEX) IndexAttributes;
-typedef DataFormatAttributes(DataVec3FLOAT32, NORMAL) NormalAttributes;
-typedef DataFormatAttributes(DataVec3FLOAT32, POSITION) PositionAttributes;
-typedef DataFormatAttributes(DataVec3FLOAT32, TEXCOORD) TexCoordAttributes;
+typedef DataFormatAttributes(DataVec4FLOAT32, COLOR_ATTRIB) ColorAttributes;
+typedef DataFormatAttributes(DataFLOAT32, CURVATURE_ATTRIB) CurvatureAttributes;
+typedef DataFormatAttributes(DataUINT32, INDEX_ATTRIB) IndexAttributes;
+typedef DataFormatAttributes(DataVec3FLOAT32, NORMAL_ATTRIB) NormalAttributes;
+typedef DataFormatAttributes(DataVec3FLOAT32, POSITION_ATTRIB) PositionAttributes;
+typedef DataFormatAttributes(DataVec3FLOAT32, TEXCOORD_ATTRIB) TexCoordAttributes;
 
 } // namespace
 

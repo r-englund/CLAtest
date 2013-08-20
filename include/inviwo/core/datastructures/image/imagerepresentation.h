@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/datarepresentation.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/image/imagetypes.h>
 
 namespace inviwo {
 
@@ -22,6 +23,7 @@ namespace inviwo {
         virtual std::string getClassName() const { return "ImageRepresentation"; }
    protected:
         uvec2 dimensions_;
+        ImageType imageType_;
    };
 
 } // namespace

@@ -5,7 +5,7 @@
 
 namespace inviwo {
 
-Image::Image(uvec2 dimensions, DataFormatBase format) : Data2D(dimensions, format) {}
+    Image::Image(uvec2 dimensions, DataFormatBase format, ImageType comb) : Data2D(dimensions, format), imageType_(comb) {}
 
 Data* Image::clone() const {
     Image* newImage = new Image(getDimension(), getDataFormat());

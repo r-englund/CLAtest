@@ -26,7 +26,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramconverter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagerepresentation.h 
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagerepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagetypes.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunction.h
