@@ -13,8 +13,7 @@ namespace inviwo {
 class IVW_MODULE_OPENCL_API ImageCLGL : public ImageRepresentation {
 
 public:
-    ImageCLGL(DataFormatBase format = DataFormatBase(), const Texture2D* data = NULL);
-    ImageCLGL(uvec2 dimensions, DataFormatBase format, const Texture2D* data);
+    ImageCLGL(uvec2 dimensions = uvec2(64), ImageType type = COLOR_DEPTH, DataFormatBase format = DataFormatBase(), const Texture2D* data = NULL);
     virtual ~ImageCLGL();
     virtual std::string getClassName() const { return "ImageCLGL"; }
     virtual void initialize(){};

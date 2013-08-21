@@ -3,14 +3,8 @@
 #include <inviwo/core/util/assertion.h>
 namespace inviwo {
 
-ImageCL::ImageCL(DataFormatBase format, const void* data)
-    : ImageRepresentation(uvec2(128,128), format), imageFormat_(dataFormatToCLImageFormat(format.getId())), image2D_(0) 
-{
-    initialize(data);
-}
-
-ImageCL::ImageCL(uvec2 dimensions, DataFormatBase format, const void* data)
-    : ImageRepresentation(dimensions, format), imageFormat_(dataFormatToCLImageFormat(format.getId()))
+ImageCL::ImageCL(uvec2 dimensions, ImageType type, DataFormatBase format, const void* data)
+    : ImageRepresentation(dimensions, type, format), imageFormat_(dataFormatToCLImageFormat(format.getId()))
 {
     initialize(data);
 }
@@ -44,7 +38,7 @@ void ImageCL::initialize(const void* texels) {
 }
 
 DataRepresentation* ImageCL::clone() const {
-    ImageCL* newImageCL = new ImageCL(dimensions_, getDataFormat());
+    ImageCL* newImageCL = new ImageCL(dimensions_, getImageType(), getDataFormat());
     OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, (newImageCL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
     return newImageCL;
 }

@@ -3,20 +3,8 @@
 
 namespace inviwo {
 
-ImageRAM::ImageRAM()
-    : ImageRepresentation()
-{
-    ImageRAM::initialize();
-}
-
-ImageRAM::ImageRAM(uvec2 dimension)
-    : ImageRepresentation(dimension)
-{
-    ImageRAM::initialize();
-}
-
-ImageRAM::ImageRAM(uvec2 dimension, DataFormatBase format)
-    : ImageRepresentation(dimension, format)
+ImageRAM::ImageRAM(uvec2 dimension, ImageType type, DataFormatBase format)
+    : ImageRepresentation(dimension, type, format)
 {
     ImageRAM::initialize();
 
@@ -37,7 +25,7 @@ void ImageRAM::deinitialize() {
 }
 
 DataRepresentation* ImageRAM::clone() const {
-    return new ImageRAM();
+    return new ImageRAM(getDimensions(), getImageType(), getDataFormat());
 }
 
 void ImageRAM::resize(uvec2 dimensions) {
@@ -63,7 +51,7 @@ bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {
     return true;
 }
 
-ImageRAM* createImageRAM(const uvec2& dimension, const DataFormatBase& format) {
+ImageRAM* createImageRAM(const uvec2& dimension, ImageType type, const DataFormatBase& format) {
     // TODO: Add more formats
     switch (format.getId())
     {
@@ -71,29 +59,29 @@ ImageRAM* createImageRAM(const uvec2& dimension, const DataFormatBase& format) {
         LogErrorCustom("createImageRAM", "Invalid format");
         return NULL;
     case FLOAT16:
-        return new ImageRAMfloat16(dimension); break;
+        return new ImageRAMfloat16(dimension, type); break;
     case FLOAT32:
-        return new ImageRAMfloat32(dimension); break;
+        return new ImageRAMfloat32(dimension, type); break;
     case FLOAT64:
-        return new ImageRAMfloat64(dimension); break;
+        return new ImageRAMfloat64(dimension, type); break;
     case INT8:
-        return new ImageRAMint8(dimension); break;
+        return new ImageRAMint8(dimension, type); break;
     case INT12:
-        return new ImageRAMint12(dimension); break;
+        return new ImageRAMint12(dimension, type); break;
     case INT16:
-        return new ImageRAMint16(dimension); break;
+        return new ImageRAMint16(dimension, type); break;
     case INT32:
-        return new ImageRAMint32(dimension); break;
+        return new ImageRAMint32(dimension, type); break;
     case UINT8:
-        return new ImageRAMuint8(dimension); break;
+        return new ImageRAMuint8(dimension, type); break;
     case UINT12:
-        return new ImageRAMuint12(dimension); break;
+        return new ImageRAMuint12(dimension, type); break;
     case UINT16:
-        return new ImageRAMuint16(dimension); break;
+        return new ImageRAMuint16(dimension, type); break;
     case Vec4FLOAT32:
-        return new ImageRAMVec4float32(dimension); break;
+        return new ImageRAMVec4float32(dimension, type); break;
     case Vec4UINT8:
-        return new ImageRAMVec4uint8(dimension); break;
+        return new ImageRAMVec4uint8(dimension, type); break;
     default:
         LogErrorCustom("createImageRAM", "Invalid format or not implemented");
         return NULL;

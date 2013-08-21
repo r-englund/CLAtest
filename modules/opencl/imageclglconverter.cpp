@@ -24,7 +24,7 @@ DataRepresentation* ImageCLGL2RAMConverter::createFrom(const DataRepresentation*
     const ImageCLGL* imageCLGL = dynamic_cast<const ImageCLGL*>(source);
     if (imageCLGL) {
         uvec2 dimension = imageCLGL->getDimensions();
-        destination = createImageRAM(dimension, imageCLGL->getDataFormat()); 
+        destination = createImageRAM(dimension, imageCLGL->getImageType(), imageCLGL->getDataFormat()); 
         const Texture2D* texture = imageCLGL->getTexture();
         if (destination) {
             ImageRAM* imageRAM = static_cast<ImageRAM*>(destination);
@@ -54,7 +54,7 @@ DataRepresentation* ImageGL2CLGLConverter::createFrom(const DataRepresentation* 
     if (imageGL) {
         uvec2 dimension = imageGL->getDimensions();;
         const Texture2D* data = imageGL->getColorTexture();
-        destination = new ImageCLGL(dimension, imageGL->getDataFormat(), data);
+        destination = new ImageCLGL(dimension, imageGL->getImageType(), imageGL->getDataFormat(), data);
     }        
     return destination;
 }
@@ -71,7 +71,7 @@ DataRepresentation* ImageCLGL2CLConverter::createFrom(const DataRepresentation* 
     const ImageCLGL* imageCLGL = dynamic_cast<const ImageCLGL*>(source);
     if (imageCLGL) {
         uvec2 dimension = imageCLGL->getDimensions();;
-        destination = new ImageCL(dimension, imageCLGL->getDataFormat());
+        destination = new ImageCL(dimension, imageCLGL->getImageType(), imageCLGL->getDataFormat());
         SyncCLGL glSync;
         imageCLGL->aquireGLObject(glSync.getGLSyncEvent());
         OpenCL::getInstance()->getQueue().enqueueCopyImage(imageCLGL->getImage(), static_cast<ImageCL*>(destination)->getImage(), glm::svec3(0), glm::svec3(0), glm::svec3(dimension, 1));

@@ -14,7 +14,7 @@ DataRepresentation* ImageRAM2CLConverter::createFrom(const DataRepresentation* s
     if (imageRAM) {
         uvec2 dimension = imageRAM->getDimensions();;
         const void* data = imageRAM->getData();
-        destination = new ImageCL(dimension, imageRAM->getDataFormat(), data);        
+        destination = new ImageCL(dimension, imageRAM->getImageType(), imageRAM->getDataFormat(), data);        
     }        
     return destination;
 }
@@ -37,7 +37,7 @@ DataRepresentation* ImageCL2RAMConverter::createFrom(const DataRepresentation* s
     const ImageCL* imageCL = dynamic_cast<const ImageCL*>(source);
     if (imageCL) {
         uvec2 dimension = imageCL->getDimensions();
-        destination = createImageRAM(dimension, imageCL->getDataFormat()); 
+        destination = createImageRAM(dimension, imageCL->getImageType(), imageCL->getDataFormat()); 
         
         if (destination) {
             ImageRAM* imageRAM = static_cast<ImageRAM*>(destination);

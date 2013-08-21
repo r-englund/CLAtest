@@ -4,18 +4,12 @@
 
 namespace inviwo {
 
-ImageCLGL::ImageCLGL(DataFormatBase format, const Texture2D* data)
-    : ImageRepresentation(data != NULL ? data->getDimension(): uvec2(64), format), image2D_(0), texture_(data) 
+ImageCLGL::ImageCLGL(uvec2 dimensions, ImageType type, DataFormatBase format, const Texture2D* data)
+    : ImageRepresentation(dimensions, type, format), texture_(data)
 {
     if(data) {
         initialize(data);
     }
-}
-
-ImageCLGL::ImageCLGL(uvec2 dimensions, DataFormatBase format, const Texture2D* data)
-    : ImageRepresentation(dimensions, format), texture_(data)
-{
-    initialize(data);
 }
 
 ImageCLGL::~ImageCLGL() { 
@@ -29,7 +23,7 @@ void ImageCLGL::initialize(const Texture2D* texture) {
 }
 
 DataRepresentation* ImageCLGL::clone() const {
-    ImageCLGL* newImageCLGL = new ImageCLGL(dimensions_, getDataFormat(), NULL);
+    ImageCLGL* newImageCLGL = new ImageCLGL(dimensions_, getImageType(), getDataFormat(), NULL);
     OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, (newImageCLGL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
     return newImageCLGL;
 }

@@ -11,16 +11,15 @@ namespace inviwo {
     class IVW_CORE_API ImageRepresentation : public DataRepresentation {
 
     public:
-        ImageRepresentation();
-        ImageRepresentation(uvec2 dimensions);
-        ImageRepresentation(uvec2 dimensions, DataFormatBase format);
+        ImageRepresentation(uvec2 dimensions, ImageType type, DataFormatBase format);
         virtual ~ImageRepresentation();
         virtual void performOperation(DataOperation*) const {};
         virtual void resize(uvec2 dimensions);
         const uvec2& getDimensions() const {return dimensions_;}
-        virtual bool copyAndResizeImage(DataRepresentation*)=0;
+        virtual bool copyAndResizeImage(DataRepresentation*) = 0;
         virtual DataRepresentation* clone() const = 0;
         virtual std::string getClassName() const { return "ImageRepresentation"; }
+        ImageType getImageType() const { return imageType_; }
    protected:
         uvec2 dimensions_;
         ImageType imageType_;

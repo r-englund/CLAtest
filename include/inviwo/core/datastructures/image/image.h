@@ -15,6 +15,7 @@ public:
     void resize(uvec2 dimensions);
     virtual Data* clone() const;
     void resizeImageRepresentations(Image* targetImage, uvec2 targetDim);
+    ImageType getImageType() const { return imageType_; }
 protected:
     void createDefaultRepresentation() const;
 private:

@@ -6,40 +6,9 @@
 
 namespace inviwo {
 
-ImageGL::ImageGL()
-    : ImageRepresentation(uvec2(256,256), DataVec4UINT8())
+ImageGL::ImageGL(uvec2 dimensions, ImageType type, DataFormatBase format, Texture2D* colorTexture, Texture2D* depthTexture)
+: ImageRepresentation(dimensions, type, format), colorTexture_(colorTexture), depthTexture_(depthTexture)
 {
-    colorTexture_ = new Texture2D(dimensions_, GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
-    colorTexture_->upload(NULL);
-    depthTexture_ = new Texture2D(dimensions_, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT16, GL_FLOAT, GL_LINEAR);
-    depthTexture_->upload(NULL);
-    initialize();
-}
-
-ImageGL::ImageGL(uvec2 dimensions)
-    : ImageRepresentation(dimensions, DataVec4UINT8())
-{
-    colorTexture_ = new Texture2D(dimensions_, GL_RGBA, GL_RGBA8, GL_UNSIGNED_BYTE, GL_LINEAR);
-    colorTexture_->upload(NULL);
-    depthTexture_ = new Texture2D(dimensions_, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT16, GL_FLOAT, GL_LINEAR);
-    depthTexture_->upload(NULL);
-    initialize();
-}
-
-ImageGL::ImageGL(Texture2D* colorTexture, uvec2 dimensions)
-    : ImageRepresentation(dimensions, DataVec4UINT8())
-{
-    colorTexture_ = colorTexture;
-    depthTexture_ = new Texture2D(dimensions_, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT16, GL_FLOAT, GL_LINEAR);
-    depthTexture_->upload(NULL);
-    initialize();
-}
-
-ImageGL::ImageGL(Texture2D* colorTexture, Texture2D* depthTexture, uvec2 dimensions)
-: ImageRepresentation(dimensions, DataVec4UINT8())
-{
-    colorTexture_ = colorTexture;
-    depthTexture_ = depthTexture;
     initialize();
 }
 
@@ -48,10 +17,31 @@ ImageGL::~ImageGL() {}
 void ImageGL::initialize() {
     frameBufferObject_ = new FrameBufferObject();
     frameBufferObject_->activate();
-    colorTexture_->bind();
-    frameBufferObject_->attachTexture(colorTexture_);
-    depthTexture_->bind();
-    frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT);
+    switch(getImageType()){
+        case COLOR_ONLY:
+        case COLOR_DEPTH:
+        case COLOR_PICKING:
+        case COLOR_DEPTH_PICKING:
+            if(!colorTexture_){
+                colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
+                colorTexture_->upload(NULL);
+            }
+            else
+                colorTexture_->bind();
+            frameBufferObject_->attachTexture(colorTexture_);
+    }
+    switch(getImageType()){
+        case DEPTH_ONLY:
+        case COLOR_DEPTH:
+        case COLOR_DEPTH_PICKING:
+            if(!depthTexture_){
+                depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_LINEAR);
+                depthTexture_->upload(NULL);
+            }
+            else
+                depthTexture_->bind();
+            frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT); 
+    }
     frameBufferObject_->deactivate();
     frameBufferObject_->checkStatus();
 }
@@ -71,7 +61,7 @@ void ImageGL::deinitialize() {
 DataRepresentation* ImageGL::clone() const {
     Texture2D* colorTexture = colorTexture_->clone();
     Texture2D* depthTexture = depthTexture_->clone();
-    ImageGL* newImageGL = new ImageGL(colorTexture, depthTexture, dimensions_);
+    ImageGL* newImageGL = new ImageGL(dimensions_, getImageType(), getDataFormat(), colorTexture, depthTexture);
     return newImageGL;
 }
 

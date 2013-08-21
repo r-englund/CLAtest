@@ -15,12 +15,11 @@ DataRepresentation* ImageRAM2GLConverter::createFrom(const DataRepresentation* s
     //This creates a texture from the defined input ImageRAM.
     const void *data = imageRepresentation->getData();
     uvec2 dim = imageRepresentation->getDimensions();
-
-    Texture2D* texture = new Texture2D(uvec2(dim.x, dim.y), getGLFormats()->getGLFormat(imageRepresentation->getDataFormatId()), GL_LINEAR);
+    Texture2D* texture = new Texture2D(dim, getGLFormats()->getGLFormat(imageRepresentation->getDataFormatId()), GL_LINEAR);
     texture->upload(data);
 
     if (imageRepresentation){       
-        return new ImageGL(texture, dim);
+        return new ImageGL(dim, imageRepresentation->getImageType(), imageRepresentation->getDataFormat(), texture);
     }
     return NULL;
 }
@@ -44,18 +43,19 @@ DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* s
     const ImageGL* imageRepresentation = dynamic_cast<const ImageGL*>(source);
     GLuint nChannels = imageRepresentation->getColorTexture()->getNChannels();
     uvec2 dim = imageRepresentation->getDimensions();
+    ImageType type = imageRepresentation->getImageType();
     ImageRAM* image = NULL;
     switch (imageRepresentation->getColorTexture()->getDataType()) {
         case GL_UNSIGNED_BYTE: {
             switch (nChannels) {
                 case 1:
-                    image = new ImageRAMPrecision<uint8_t>(dim); break;
+                    image = new ImageRAMPrecision<uint8_t>(dim, type); break;
                 case 2:
-                    image = new ImageRAMPrecision< glm::detail::tvec2<uint8_t> >(dim); break;
+                    image = new ImageRAMPrecision< glm::detail::tvec2<uint8_t> >(dim, type); break;
                 case 3:
-                    image = new ImageRAMPrecision< glm::detail::tvec3<uint8_t> >(dim); break;
+                    image = new ImageRAMPrecision< glm::detail::tvec3<uint8_t> >(dim, type); break;
                 case 4:
-                    image = new ImageRAMPrecision< glm::detail::tvec4<uint8_t> >(dim); break;
+                    image = new ImageRAMPrecision< glm::detail::tvec4<uint8_t> >(dim, type); break;
                 default:
                     image = NULL;
                 }
@@ -75,13 +75,13 @@ DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* s
         case GL_FLOAT: {
             switch (nChannels) {
                 case 1:
-                    image = new ImageRAMPrecision<float>(dim); break;
+                    image = new ImageRAMPrecision<float>(dim, type); break;
                 case 2:
-                    image = new ImageRAMPrecision< glm::detail::tvec2<float> >(dim); break;
+                    image = new ImageRAMPrecision< glm::detail::tvec2<float> >(dim, type); break;
                 case 3:
-                    image = new ImageRAMPrecision< glm::detail::tvec3<float> >(dim); break;
+                    image = new ImageRAMPrecision< glm::detail::tvec3<float> >(dim, type); break;
                 case 4:
-                    image = new ImageRAMPrecision< glm::detail::tvec4<float> >(dim); break;
+                    image = new ImageRAMPrecision< glm::detail::tvec4<float> >(dim, type); break;
                 default:
                     image = NULL;
             }

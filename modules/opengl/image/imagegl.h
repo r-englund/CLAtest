@@ -13,10 +13,8 @@ namespace inviwo {
     class IVW_MODULE_OPENGL_API ImageGL : public ImageRepresentation {
 
     public:
-        ImageGL();
-        ImageGL(uvec2 dimensions);
-        ImageGL(Texture2D* colorTexture, uvec2 dimensions);
-        ImageGL(Texture2D* colorTexture, Texture2D* depthTexture, uvec2 dimensions);
+        ImageGL(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, DataFormatBase format = DataVec4UINT8(), 
+            Texture2D* colorTexture = NULL, Texture2D* depthTexture = NULL);
         virtual ~ImageGL();
 
         void initialize();
@@ -33,8 +31,8 @@ namespace inviwo {
         void unbindDepthTexture() const;
         void unbindColorTexture() const;
         virtual void resize(uvec2 dimensions);
-        virtual bool copyAndResizeImage(DataRepresentation* target) ;
-    //private:
+        virtual bool copyAndResizeImage(DataRepresentation* target);
+
         FrameBufferObject* getFBO() {return frameBufferObject_;}
         Texture2D* getColorTexture() {return colorTexture_;}
         Texture2D* getDepthTexture() {return depthTexture_;}

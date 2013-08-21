@@ -5,10 +5,10 @@
 
 namespace inviwo {
 
-    Image::Image(uvec2 dimensions, DataFormatBase format, ImageType comb) : Data2D(dimensions, format), imageType_(comb) {}
+Image::Image(uvec2 dimensions, DataFormatBase format, ImageType comb) : Data2D(dimensions, format), imageType_(comb) {}
 
 Data* Image::clone() const {
-    Image* newImage = new Image(getDimension(), getDataFormat());
+    Image* newImage = new Image(getDimension(), getDataFormat(), getImageType());
     
     //Do not copy all representations.
     //copyRepresentations(newImage);
@@ -81,7 +81,7 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
 }
 
 void Image::createDefaultRepresentation() const{
-    representations_.push_back(createImageRAM(getDimension(), getDataFormat()));
+    representations_.push_back(createImageRAM(getDimension(), getImageType(), getDataFormat()));
 }
 
 } // namespace
