@@ -16,7 +16,6 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
 
     btnCollapse_ = new QToolButton();
     btnCollapse_->setStyleSheet("QToolButton::hover { background-color: gray }");
-
     QHBoxLayout* hLayout = new QHBoxLayout();
     QHBoxLayout* boxLayout = new QHBoxLayout();
     QGridLayout* gridLayout = new QGridLayout();
@@ -39,11 +38,12 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
     vLayout_->setSpacing(0);
     
     groupBox_->setLayout(vLayout_);
-     
+         
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setSpacing(0);
     H2->addWidget(btnCollapse_);
     H2->addWidget(new QLabel(QString::fromStdString(displayName_)));
+    H2->setSpacing(7);
     gridLayout->addLayout(H2,1,0,Qt::AlignLeft);
     gridLayout->addWidget(groupBox_,2,0);
 

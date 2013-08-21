@@ -52,6 +52,7 @@ private:
     void drawPicker(const QColor &color);
     void drawSquareImage(const int &hue);
     void composeWheel();
+    double PI;
     private slots:
         void hueChanged(const int &hue);
         void svChanged(const QColor &newcolor);

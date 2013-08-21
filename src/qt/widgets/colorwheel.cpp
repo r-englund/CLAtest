@@ -17,6 +17,7 @@ current(Qt::red),
 inWheel(false),
 inSquare(false)
 {
+    PI  =3.141592653589793238462;
     //    resize(initSize);
     current = current.toHsv();
     //    setMinimumSize(200,200);
@@ -129,21 +130,52 @@ void ColorWheel::mouseMoveEvent(QMouseEvent *event)
         QColor color = posColor(lastPos);
         svChanged(color);
     }else{
-        // TODO: due with cursor out of region after press
-        //        int length = qMin(width(), height());
-        //        QPoint center(length/2, length/2);
-        //        int R = qSqrt(qPow(qAbs(lastPos.x()), 2)
-        //                      + qPow(qAbs(lastPos.y()), 2));
-        //        if(inWheel){
-        //            int r =  length / 2;
-        //            r += qSqrt(qPow(center.x(), 2) + qPow(center.y(), 2));
-        //            int x0 = r/R * qAbs(lastPos.x());
-        //            int y0 = r/R * qAbs(lastPos.y());
-        //            QColor color = posColor(QPoint(x0, y0));
-        //            hueChanged(color.hue());
-        //        }else if(inSquare){
-        //            //
-        //        }
+                int length = qMin(width(), height());
+                QPoint center(length/2, length/2);
+                
+                if(inWheel){
+                    int r =  length / 2;
+                    double x0 = lastPos.x()-center.x();
+                    double y0 = lastPos.y()-center.y();
+                    double vNorm = qSqrt(qPow(x0,2)+qPow(y0,2));
+                    double x1 = r*(x0/vNorm);
+                    double y1 = r*(y0/vNorm);
+                    x1 += center.x();
+                    y1 += center.y();
+                    QColor color = posColor(QPoint(x1, y1));
+                    hueChanged(color.hue());
+                }else if(inSquare){
+                    int w = qMin(width(), height());
+                    // radius of outer circle
+                    qreal r = w/2-margin;
+                    // radius of inner circle
+                    qreal ir = r-wheelWidth;
+                    // left corner of square
+                    qreal m = w/2.0-ir/qSqrt(2);
+
+                    float x0 = 0.0f;
+                    float y0 = 0.0f;
+                    float w0 = squareRegion.boundingRect().width();
+
+                    if (lastPos.x() > m + w0) {
+                        x0 = m + w0;
+                    }else if (lastPos.x() < m) {
+                        x0 = m;
+                    } else{
+                        x0 = lastPos.x();
+                    }
+                    if (lastPos.y() > m + w0) {
+                        y0 = m + w0;
+                    }else if (lastPos.y() < m) {
+                        y0 = m;
+                    } else{
+                        y0 = lastPos.y();
+                    }
+                    
+                    
+                    QColor color = posColor(QPoint(x0, y0));
+                    svChanged(color);
+                }
     }
 }
 

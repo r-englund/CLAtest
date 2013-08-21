@@ -101,11 +101,11 @@ void TransferFunctionPropertyDialog::generateWidget(){
 
 TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog(){
 	delete editor_;
+    delete colorWheel_;
 	delete gradient_;
 	stops_->clear();
 	delete stops_;
 	delete colorDialog_;
-	delete colorWheel_;
 }
 
 void TransferFunctionPropertyDialog::setPropertyValue(){
