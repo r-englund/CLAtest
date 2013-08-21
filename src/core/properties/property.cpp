@@ -104,7 +104,6 @@ bool Property::operator==( Property* prop){
 
 void Property::setVisible( bool visible ){
    visible_ = visible;
-    notifyObservers();
    if (visible_) {
        for (size_t i=0; i<propertyWidgets_.size(); i++){
            propertyWidgets_[i]->showWidget();

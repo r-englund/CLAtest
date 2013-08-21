@@ -119,7 +119,7 @@ std::vector<Property*> CollapsiveGroupBoxWidgetQt::getProperties() {
 }
 
 void CollapsiveGroupBoxWidgetQt::notify(){
-    int count = 0;
+ /*   int count = 0;
     for (size_t i=0; i<properties_.size(); i++)
         if(properties_.at(i)->getVisible())
             count++;
@@ -127,7 +127,14 @@ void CollapsiveGroupBoxWidgetQt::notify(){
     if (count==0) {
         this->setVisible(false);
     }else
+        this->setVisible(true);*/
+    std::cout << "Notify " << std::endl;
+    if (!this->isHidden()) {
+        this->setVisible(false);
+    }
+    else{
         this->setVisible(true);
+    }
 }
 
 } // namespace

@@ -51,6 +51,8 @@ public:
 
     std::string getGroupID() { return groupID_; }
     std::string getGroupDisplayName(){ return groupDisplayName_; }
+    void hidePropertyGroup() { notifyObservers(); };
+    void showPropertyGroup() { notifyObservers(); };
 
     void invalidate();
     bool isValid();
