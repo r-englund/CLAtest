@@ -38,6 +38,8 @@ friend class ImageInport;
 
 public:
     ImageOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    ImageOutport(std::string identifier, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    ImageOutport(std::string identifier, ImageType type, ImageInport* src, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~ImageOutport();
 
     void initialize();
@@ -47,6 +49,8 @@ public:
     void changeDataDimensions(ResizeEvent* resizeEvent);    
     uvec2 getDimensions() const;
     uvec3 getColorCode() const;
+
+    void setInputSource(ImageLayerType, ImageInport*);
 
 protected:
     Image* getResizedImageData(uvec2 dimensions);

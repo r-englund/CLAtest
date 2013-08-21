@@ -21,6 +21,7 @@ namespace inviwo {
         void deinitialize();
         virtual DataRepresentation* clone() const;
         virtual std::string getClassName() const { return "ImageGL"; }
+        void useInputSource(ImageLayerType, const Image*);
 
         void activateBuffer();
         void deactivateBuffer();

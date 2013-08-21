@@ -2,17 +2,17 @@
 
 namespace inviwo {
 
-    ImageRepresentation::ImageRepresentation(uvec2 dimensions, ImageType type, DataFormatBase format)
-        : DataRepresentation(format), imageType_(type), dimensions_(dimensions)
-    {
+ImageRepresentation::ImageRepresentation(uvec2 dimensions, ImageType type, DataFormatBase format)
+    : DataRepresentation(format), imageType_(type), dimensions_(dimensions)
+{
 
-    }
+}
 
-    ImageRepresentation::~ImageRepresentation() {}
+ImageRepresentation::~ImageRepresentation() {}
 
-    void ImageRepresentation::resize(uvec2 dimensions){
-        dimensions_ = dimensions;
-    }    
+void ImageRepresentation::resize(uvec2 dimensions){
+    dimensions_ = dimensions;
+}    
 
 
 } // namespace

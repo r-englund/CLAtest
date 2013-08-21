@@ -5,10 +5,10 @@
 
 namespace inviwo {
 
-Image::Image(uvec2 dimensions, DataFormatBase format, ImageType comb) : Data2D(dimensions, format), imageType_(comb) {}
+Image::Image(uvec2 dimensions, ImageType comb, DataFormatBase format) : Data2D(dimensions, format), imageType_(comb) {}
 
 Data* Image::clone() const {
-    Image* newImage = new Image(getDimension(), getDataFormat(), getImageType());
+    Image* newImage = new Image(getDimension(), getImageType(), getDataFormat());
     
     //Do not copy all representations.
     //copyRepresentations(newImage);
@@ -80,8 +80,32 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
     }
 }
 
+void Image::setInputSource(ImageLayerType layer, const Image* src){
+    inputSources_[layer] = src;
+}
+
 void Image::createDefaultRepresentation() const{
     representations_.push_back(createImageRAM(getDimension(), getImageType(), getDataFormat()));
+}
+
+void Image::editableRepresentationCreated() const{
+    ImageRepresentation* lastValidRepresentation = dynamic_cast<ImageRepresentation*>(lastValidRepresentation_);
+    ImageSourceMap::const_iterator it;
+    if(!typeContainsColor(getImageType())){
+        it = inputSources_.find(COLOR_LAYER);
+        if(it != inputSources_.end())
+            lastValidRepresentation->useInputSource(COLOR_LAYER, it->second);
+    }
+    if(!typeContainsDepth(getImageType())){
+        it = inputSources_.find(DEPTH_LAYER);
+        if(it != inputSources_.end())
+            lastValidRepresentation->useInputSource(DEPTH_LAYER, it->second);
+    }
+    if(!typeContainsPicking(getImageType())){
+        it = inputSources_.find(PICKING_LAYER);
+        if(it != inputSources_.end())
+            lastValidRepresentation->useInputSource(PICKING_LAYER, it->second);
+    }
 }
 
 } // namespace

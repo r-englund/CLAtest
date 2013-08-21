@@ -2,7 +2,7 @@
 
 namespace inviwo {
 TransferFunction::TransferFunction() {
-	data_ = new Image(uvec2(256,1), DataVec4FLOAT32());
+	data_ = new Image(uvec2(256,1), COLOR_ONLY, DataVec4FLOAT32());
 }
 
 TransferFunction::TransferFunction(const TransferFunction& rhs) {

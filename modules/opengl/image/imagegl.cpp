@@ -17,30 +17,23 @@ ImageGL::~ImageGL() {}
 void ImageGL::initialize() {
     frameBufferObject_ = new FrameBufferObject();
     frameBufferObject_->activate();
-    switch(getImageType()){
-        case COLOR_ONLY:
-        case COLOR_DEPTH:
-        case COLOR_PICKING:
-        case COLOR_DEPTH_PICKING:
-            if(!colorTexture_){
-                colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
-                colorTexture_->upload(NULL);
-            }
-            else
-                colorTexture_->bind();
-            frameBufferObject_->attachTexture(colorTexture_);
+    if(typeContainsColor(getImageType())){
+        if(!colorTexture_){
+            colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
+            colorTexture_->upload(NULL);
+        }
+        else
+            colorTexture_->bind();
+        frameBufferObject_->attachTexture(colorTexture_);
     }
-    switch(getImageType()){
-        case DEPTH_ONLY:
-        case COLOR_DEPTH:
-        case COLOR_DEPTH_PICKING:
-            if(!depthTexture_){
-                depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_LINEAR);
-                depthTexture_->upload(NULL);
-            }
-            else
-                depthTexture_->bind();
-            frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT); 
+    if(typeContainsDepth(getImageType())){
+        if(!depthTexture_){
+            depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_LINEAR);
+            depthTexture_->upload(NULL);
+        }
+        else
+            depthTexture_->bind();
+        frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT); 
     }
     frameBufferObject_->deactivate();
     frameBufferObject_->checkStatus();
@@ -50,12 +43,14 @@ void ImageGL::deinitialize() {
     frameBufferObject_->deactivate();
     delete frameBufferObject_;
     frameBufferObject_ = 0;
-    colorTexture_->unbind();
-    delete colorTexture_;
-    colorTexture_ = 0;
-    depthTexture_->unbind();
-    delete depthTexture_;
-    depthTexture_ = 0;
+    if(typeContainsColor(getImageType())){
+        delete colorTexture_;
+        colorTexture_ = 0;
+    }
+    if(typeContainsDepth(getImageType())){
+        delete depthTexture_;
+        depthTexture_ = 0;
+    }
 }
 
 DataRepresentation* ImageGL::clone() const {
@@ -63,6 +58,10 @@ DataRepresentation* ImageGL::clone() const {
     Texture2D* depthTexture = depthTexture_->clone();
     ImageGL* newImageGL = new ImageGL(dimensions_, getImageType(), getDataFormat(), colorTexture, depthTexture);
     return newImageGL;
+}
+
+void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
+    const ImageGL* srcGL = src->getRepresentation<ImageGL>();
 }
 
 void ImageGL::activateBuffer() {

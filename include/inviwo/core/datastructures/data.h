@@ -72,6 +72,8 @@ public:
 protected:
     virtual void createDefaultRepresentation() const = 0;
 
+    virtual void editableRepresentationCreated() const { }
+
     template<typename T> 
     void updateRepresentation(T* representation, int index) const; 
 
@@ -226,6 +228,7 @@ T* Data::getEditableRepresentation() {
         invalidateAllOther<T>();
     }
     lastValidRepresentation_ = result;
+    editableRepresentationCreated();
     return result;
 }
 

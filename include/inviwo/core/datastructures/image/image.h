@@ -10,16 +10,19 @@ namespace inviwo {
 class IVW_CORE_API Image : public Data2D {
 
 public:
-    Image(uvec2 dimensions = uvec2(256,256), DataFormatBase format = DataVec4UINT8(), ImageType type = COLOR_DEPTH);
+    Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, DataFormatBase format = DataVec4UINT8());
     virtual ~Image();
     void resize(uvec2 dimensions);
     virtual Data* clone() const;
     void resizeImageRepresentations(Image* targetImage, uvec2 targetDim);
     ImageType getImageType() const { return imageType_; }
+    void setInputSource(ImageLayerType, const Image*);
 protected:
     void createDefaultRepresentation() const;
+    void editableRepresentationCreated() const;
 private:
-    const Image* src_;
+    typedef std::map<ImageLayerType, const Image*>  ImageSourceMap;
+    ImageSourceMap inputSources_;
     ImageType imageType_;
 };
 

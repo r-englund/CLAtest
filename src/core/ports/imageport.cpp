@@ -90,8 +90,25 @@ ImageOutport::ImageOutport(std::string identifier,
 {     
     data_ = new Image(dimensions_);
     std::string dimensionString = glm::to_string(dimensions_);
-    imageDataMap_.insert(std::make_pair(dimensionString, data_));    
-    //data_->getRepresentation<ImageRAM>();
+    imageDataMap_.insert(std::make_pair(dimensionString, data_));
+    mapDataInvalid_ = true;
+}
+
+ImageOutport::ImageOutport(std::string identifier, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
+    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
+{
+    data_ = new Image(dimensions_, type);
+    std::string dimensionString = glm::to_string(dimensions_);
+    imageDataMap_.insert(std::make_pair(dimensionString, data_));
+    mapDataInvalid_ = true;
+}
+
+ImageOutport::ImageOutport(std::string identifier, ImageType type, ImageInport* src, PropertyOwner::InvalidationLevel invalidationLevel)
+    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
+{
+    data_ = new Image(dimensions_, type);
+    std::string dimensionString = glm::to_string(dimensions_);
+    imageDataMap_.insert(std::make_pair(dimensionString, data_));
     mapDataInvalid_ = true;
 }
 
@@ -267,6 +284,11 @@ void ImageOutport::setLargestImageData() {
 
 uvec3 ImageOutport::getColorCode() const { 
     return uvec3(90,127,183); 
+}
+
+void ImageOutport::setInputSource(ImageLayerType layer, ImageInport* src){
+    Image* im = static_cast<Image*>(data_);
+    im->setInputSource(layer, src->getData());
 }
 
 } // namespace
