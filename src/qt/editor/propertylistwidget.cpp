@@ -105,7 +105,6 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
                 Property* tmpProperty = properties[k];
                 if (curProperty->getGroupID() == tmpProperty->getGroupID()) {
                     group->addProperty(tmpProperty);
-                    tmpProperty->setGroupDisplayName(curProperty->getGroupDisplayName());
                     addedProperties.push_back(tmpProperty);
                 }
             }

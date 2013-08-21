@@ -2,6 +2,8 @@
 
 namespace inviwo {
 
+    std::map<std::string,std::string> Property::groupDisplayNames_;
+
 Property::Property(std::string identifier, std::string displayName, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
 : identifier_(identifier),
   displayName_(displayName),
@@ -113,6 +115,23 @@ void Property::setVisible( bool visible ){
        for (size_t i=0; i<propertyWidgets_.size(); i++)
            propertyWidgets_[i]->hideWidget();
    }
+}
+
+void Property::setGroupDisplayName( std::string groupID,std::string groupDisplayName ){
+    std::pair<std::map<std::string,std::string>::iterator,bool> ret;
+    ret = Property::groupDisplayNames_.insert( std::pair<std::string,std::string>(groupID,groupDisplayName));
+    if (!ret.second) {
+        //LogWarn("Groupname already set");
+        //std::cout << "Name already set." << std::endl;
+    }
+    else{
+        Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID,groupDisplayName));
+    }
+    
+}
+
+std::string Property::getGroupDisplayName(){
+    return groupDisplayNames_[groupID_];
 }
 
 } // namespace

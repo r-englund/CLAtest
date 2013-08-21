@@ -46,13 +46,12 @@ public:
         groupID_ = groupID;
     }
 
-    void setGroupDisplayName(std::string groupDisplayName){
-        groupDisplayName_ = groupDisplayName; }
+    static void setGroupDisplayName(std::string groupID,std::string groupDisplayName);
 
     std::string getGroupID() { return groupID_; }
-    std::string getGroupDisplayName(){ return groupDisplayName_; }
-    void hidePropertyGroup() { notifyObservers(); };
-    void showPropertyGroup() { notifyObservers(); };
+    std::string getGroupDisplayName();
+    void hidePropertyGroup() { notifyObservers(); }
+    void showPropertyGroup() { notifyObservers(); }
 
     void invalidate();
     bool isValid();
@@ -92,6 +91,8 @@ private:
     bool visible_;
     std::string groupID_;
     std::string groupDisplayName_;
+
+    static std::map<std::string,std::string> groupDisplayNames_;
 };
 
 } // namespace
