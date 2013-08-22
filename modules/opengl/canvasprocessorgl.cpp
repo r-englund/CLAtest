@@ -30,7 +30,7 @@ void CanvasProcessorGL::deinitialize() {
 
 void CanvasProcessorGL::process() {
     CanvasProcessor::process();
-    static_cast<CanvasGL*>(getCanvas())->render(inport_.getData());
+    static_cast<CanvasGL*>(getCanvas())->render(inport_.getData(), displayedLayer_.get());
 }
 
 } // namespace

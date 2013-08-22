@@ -103,13 +103,16 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, PropertyOwner
     mapDataInvalid_ = true;
 }
 
-ImageOutport::ImageOutport(std::string identifier, ImageType type, ImageInport* src, PropertyOwner::InvalidationLevel invalidationLevel)
+ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
     data_ = new Image(dimensions_, type);
     std::string dimensionString = glm::to_string(dimensions_);
     imageDataMap_.insert(std::make_pair(dimensionString, data_));
     mapDataInvalid_ = true;
+    inputSources_[COLOR_LAYER] = src;
+    inputSources_[DEPTH_LAYER] = src;
+    inputSources_[PICKING_LAYER] = src;
 }
 
 ImageOutport::~ImageOutport() {
@@ -138,6 +141,11 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
 void ImageOutport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     mapDataInvalid_ = true;
     Outport::invalidate(invalidationLevel);
+}
+
+Image* ImageOutport::getData(){
+    updateInputSources();
+    return DataOutport<Image>::getData();
 }
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
@@ -287,8 +295,14 @@ uvec3 ImageOutport::getColorCode() const {
 }
 
 void ImageOutport::setInputSource(ImageLayerType layer, ImageInport* src){
+    inputSources_[layer] = src;
+}
+
+void ImageOutport::updateInputSources(){
     Image* im = static_cast<Image*>(data_);
-    im->setInputSource(layer, src->getData());
+    for(ImageInSourceMap::iterator it = inputSources_.begin(); it != inputSources_.end(); it++) { 
+        im->setInputSource(it->first, it->second->getData());
+    }
 }
 
 } // namespace

@@ -102,14 +102,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new IntVec4PropertyWidgetQt(static_cast<IntVec4Property*>(property));
     if (dynamic_cast<IntProperty*>(property))
         return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
-    if (dynamic_cast<OptionPropertyDouble*>(property))
-        return new OptionPropertyWidgetQt(static_cast<OptionPropertyDouble*>(property));
-    if (dynamic_cast<OptionPropertyFloat*>(property))
-        return new OptionPropertyWidgetQt(static_cast<OptionPropertyFloat*>(property));
-    if (dynamic_cast<OptionPropertyInt*>(property))
-        return new OptionPropertyWidgetQt(static_cast<OptionPropertyInt*>(property));
-    if (dynamic_cast<OptionPropertyString*>(property))
-        return new OptionPropertyWidgetQt(static_cast<OptionPropertyString*>(property));
+    if (dynamic_cast<BaseOptionProperty*>(property))
+        return new OptionPropertyWidgetQt(static_cast<BaseOptionProperty*>(property));
     if (dynamic_cast<StringProperty*>(property))
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
     if (dynamic_cast<TransferFunctionProperty*>(property))

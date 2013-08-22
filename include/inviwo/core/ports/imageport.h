@@ -39,12 +39,14 @@ friend class ImageInport;
 public:
     ImageOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     ImageOutport(std::string identifier, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
-    ImageOutport(std::string identifier, ImageType type, ImageInport* src, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    ImageOutport(std::string identifier, ImageInport* src, ImageType type = COLOR_DEPTH, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~ImageOutport();
 
     void initialize();
     void deinitialize();
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+
+    Image* getData();
     
     void changeDataDimensions(ResizeEvent* resizeEvent);    
     uvec2 getDimensions() const;
@@ -57,11 +59,15 @@ protected:
     void setLargestImageData();
     void propagateResizeEventToPredecessor(ResizeEvent* resizeEvent);
 
+    void updateInputSources();
+
 private:
     uvec2 dimensions_;
     bool mapDataInvalid_;
     typedef std::map<std::string, Image*> ImagePortMap;
     ImagePortMap imageDataMap_;
+    typedef std::map<ImageLayerType, const ImageInport*> ImageInSourceMap;
+    ImageInSourceMap inputSources_;
 };
 
 } // namespace

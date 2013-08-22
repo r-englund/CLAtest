@@ -13,7 +13,7 @@ ImageMixer::ImageMixer()
     : ProcessorGL(),
       inport0_("inport0"),
       inport1_("inport1"),
-      outport_("outport"),
+      outport_("outport", &inport0_, COLOR_ONLY),
       alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
 {
     addPort(inport0_);

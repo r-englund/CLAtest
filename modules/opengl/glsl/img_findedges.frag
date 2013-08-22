@@ -1,10 +1,10 @@
-uniform sampler2D inport0_;
+uniform sampler2D inport_;
 uniform float alpha_;
 uniform vec2 dimension_;
 
 void main() {
     vec2 texCoordsM = vec2(gl_FragCoord.x, gl_FragCoord.y) * dimension_;
-    vec3 colorM		= texture2D(inport0_, texCoordsM).rgb;
+    vec3 colorM		= texture2D(inport_, texCoordsM).rgb;
         
     vec2 texCoordsR		= vec2(gl_FragCoord.x + 1.0	, gl_FragCoord.y)		* dimension_;
 	vec2 texCoordsL		= vec2(gl_FragCoord.x - 1.0	, gl_FragCoord.y)		* dimension_;
@@ -15,14 +15,14 @@ void main() {
     vec2 texCoordsDL	= vec2(gl_FragCoord.x - 1.0, gl_FragCoord.y - 1.0)	* dimension_;
     vec2 texCoordsDR	= vec2(gl_FragCoord.x - 1.0, gl_FragCoord.y + 1.0)	* dimension_;
 
-    vec3 colorR  = texture2D(inport0_, texCoordsR).rgb;
-    vec3 colorL  = texture2D(inport0_, texCoordsL).rgb;
-    vec3 colorU  = texture2D(inport0_, texCoordsU).rgb;
-    vec3 colorD  = texture2D(inport0_, texCoordsD).rgb;
-    vec3 colorUL = texture2D(inport0_, texCoordsUL).rgb;
-    vec3 colorUR = texture2D(inport0_, texCoordsUR).rgb;
-    vec3 colorDL = texture2D(inport0_, texCoordsDL).rgb;
-    vec3 colorDR = texture2D(inport0_, texCoordsDR).rgb;
+    vec3 colorR  = texture2D(inport_, texCoordsR).rgb;
+    vec3 colorL  = texture2D(inport_, texCoordsL).rgb;
+    vec3 colorU  = texture2D(inport_, texCoordsU).rgb;
+    vec3 colorD  = texture2D(inport_, texCoordsD).rgb;
+    vec3 colorUL = texture2D(inport_, texCoordsUL).rgb;
+    vec3 colorUR = texture2D(inport_, texCoordsUR).rgb;
+    vec3 colorDL = texture2D(inport_, texCoordsDL).rgb;
+    vec3 colorDR = texture2D(inport_, texCoordsDR).rgb;
 
 	float valR	 = (colorR.r + colorR.g + colorR.b)/3.0;
 	float valL	 = (colorL.r + colorL.g + colorL.b)/3.0;
@@ -41,5 +41,4 @@ void main() {
     vec4 color = vec4(vec3(val) * alpha_ + colorM * (1 - alpha_), 1.0);
         
     gl_FragColor = color;
-    gl_FragDepth = 0.0;
 }

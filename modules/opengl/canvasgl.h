@@ -17,14 +17,16 @@ public:
     virtual void initializeGL();
     virtual void deinitialize();
     virtual void activate();
-    void render(const Image*);
+    void render(const Image* im, ImageLayerType layer = COLOR_LAYER);
     virtual void repaint();
     virtual void resize(uvec2 size);
     virtual void update();
 
 protected:
-    void renderImage();
+    void renderColor();
+    void renderDepth();
     void renderNoise();
+    void renderTexture(GLint);
     void renderImagePlaneQuad();
 
 private:

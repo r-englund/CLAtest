@@ -21,9 +21,9 @@ protected:
     void createDefaultRepresentation() const;
     void editableRepresentationCreated() const;
 private:
-    typedef std::map<ImageLayerType, const Image*>  ImageSourceMap;
-    ImageSourceMap inputSources_;
     ImageType imageType_;
+    typedef std::map<ImageLayerType, const Image*> ImageSourceMap;
+    ImageSourceMap inputSources_;
 };
 
 } // namespace

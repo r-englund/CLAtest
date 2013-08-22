@@ -11,6 +11,8 @@ namespace inviwo {
 
 class IVW_CORE_API ImageRepresentation : public DataRepresentation {
 
+friend class Image;
+
 public:
     ImageRepresentation(uvec2 dimensions, ImageType type, DataFormatBase format);
     virtual ~ImageRepresentation();
@@ -21,8 +23,9 @@ public:
     virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "ImageRepresentation"; }
     ImageType getImageType() const { return imageType_; }
-    virtual void useInputSource(ImageLayerType, const Image*) {}
 protected:
+    virtual void useInputSource(ImageLayerType, const Image*) {}
+
     uvec2 dimensions_;
     ImageType imageType_;
 };

@@ -43,10 +43,19 @@ void CanvasGL::deinitialize() {
 
 void CanvasGL::activate() {}
 
-void CanvasGL::render(const Image* image){
+void CanvasGL::render(const Image* image, ImageLayerType layer){
     if (image) {
         image_ = image->getRepresentation<ImageGL>();
-        renderImage();
+        switch(layer){
+            case COLOR_LAYER:
+                renderColor();
+                break;
+            case DEPTH_LAYER:
+                renderDepth();
+                break;
+            default:
+                renderNoise();
+        }
     } else {
         image_ = NULL;
         renderNoise();
@@ -63,23 +72,24 @@ void CanvasGL::resize(uvec2 size) {
 void CanvasGL::update() {
     Canvas::update();
     if (image_) {
-        renderImage();
+        renderColor();
     } else {
         renderNoise();
     }
 }
 
-void CanvasGL::renderImage() {
+void CanvasGL::renderColor() {
     TextureUnit textureUnit;
     image_->bindColorTexture(textureUnit.getEnum());
-    shader_->activate();
-    shader_->setUniform("colorTex_", textureUnit.getUnitNumber());
-    shader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
-    //FIXME: glViewport should not be here, which indicates this context is not active.
-    glViewport(0, 0, dimensions_.x, dimensions_.y);
-    renderImagePlaneQuad();
-    shader_->deactivate();
+    renderTexture(textureUnit.getUnitNumber());
     image_->unbindColorTexture();
+}
+
+void CanvasGL::renderDepth() {
+    TextureUnit textureUnit;
+    image_->bindDepthTexture(textureUnit.getEnum());
+    renderTexture(textureUnit.getUnitNumber());
+    image_->unbindDepthTexture();
 }
 
 void CanvasGL::renderNoise() {
@@ -87,6 +97,16 @@ void CanvasGL::renderNoise() {
     noiseShader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
     renderImagePlaneQuad();
     noiseShader_->deactivate();
+}
+
+void CanvasGL::renderTexture(GLint unitNumber) {
+    shader_->activate();
+    shader_->setUniform("tex_", unitNumber);
+    shader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
+    //FIXME: glViewport should not be here, which indicates this context is not active.
+    glViewport(0, 0, dimensions_.x, dimensions_.y);
+    renderImagePlaneQuad();
+    shader_->deactivate();
 }
 
 void CanvasGL::renderImagePlaneQuad() {

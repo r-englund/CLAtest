@@ -19,15 +19,15 @@ enum ImageLayerType{
 };
 
 static bool typeContainsColor(ImageType type){
-    return (type == COLOR_ONLY || type ==COLOR_DEPTH || type ==COLOR_PICKING || type ==COLOR_DEPTH_PICKING);
+    return (type == COLOR_ONLY || type == COLOR_DEPTH || type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);
 }
 
 static bool typeContainsDepth(ImageType type){
-    return (type ==DEPTH_ONLY || type ==COLOR_DEPTH || type ==COLOR_DEPTH_PICKING);
+    return (type == DEPTH_ONLY || type == COLOR_DEPTH || type == COLOR_DEPTH_PICKING);
 }
 
 static bool typeContainsPicking(ImageType type){
-    return (type ==COLOR_PICKING || type ==COLOR_DEPTH_PICKING);
+    return (type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);
 }
 
 } // namespace

@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/util/canvas.h>
 
 namespace inviwo {
@@ -29,6 +30,7 @@ public:
 
 protected:
     ImageInport inport_;
+    TemplateOptionProperty<ImageLayerType> displayedLayer_;
     ButtonProperty snapshotButton_;
 
 private:

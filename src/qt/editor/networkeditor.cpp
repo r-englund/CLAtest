@@ -896,6 +896,8 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 	oldConnectionTarget_->clearMidPoint();
 	oldConnectionTarget_ = NULL;
 
+    processorNetwork_->lock();
+
 	// Remove old connection
 	removeConnection(connectionItem);
 
@@ -914,7 +916,11 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 			break;
 		}
 	}
-	
+
+    processorNetwork_->unlock();
+
+    if(processorNetwork_->isModified())
+        processorNetworkEvaluator_->evaluate();	
 }
 
 

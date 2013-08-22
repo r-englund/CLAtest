@@ -24,6 +24,7 @@ void ImageGL::initialize() {
         }
         else
             colorTexture_->bind();
+        colorConstTexture_ = colorTexture_;
         frameBufferObject_->attachTexture(colorTexture_);
     }
     if(typeContainsDepth(getImageType())){
@@ -33,6 +34,7 @@ void ImageGL::initialize() {
         }
         else
             depthTexture_->bind();
+        depthConstTexture_ = depthTexture_;
         frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT); 
     }
     frameBufferObject_->deactivate();
@@ -42,31 +44,39 @@ void ImageGL::initialize() {
 void ImageGL::deinitialize() {
     frameBufferObject_->deactivate();
     delete frameBufferObject_;
-    frameBufferObject_ = 0;
-    if(typeContainsColor(getImageType())){
+    frameBufferObject_ = NULL;
+    if(colorTexture_){
         delete colorTexture_;
-        colorTexture_ = 0;
+        colorTexture_ = NULL;
     }
-    if(typeContainsDepth(getImageType())){
+    colorConstTexture_ = NULL;
+    if(depthTexture_){
         delete depthTexture_;
-        depthTexture_ = 0;
+        depthTexture_ = NULL;
     }
+    depthConstTexture_ = NULL;
 }
 
 DataRepresentation* ImageGL::clone() const {
-    Texture2D* colorTexture = colorTexture_->clone();
-    Texture2D* depthTexture = depthTexture_->clone();
+    Texture2D* colorTexture = colorConstTexture_->clone();
+    Texture2D* depthTexture = depthConstTexture_->clone();
     ImageGL* newImageGL = new ImageGL(dimensions_, getImageType(), getDataFormat(), colorTexture, depthTexture);
     return newImageGL;
 }
 
 void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
     const ImageGL* srcGL = src->getRepresentation<ImageGL>();
+    if(!typeContainsColor(getImageType()) && !colorTexture_){
+        colorConstTexture_ = srcGL->getColorTexture();
+    }
+    if(!typeContainsDepth(getImageType()) && !depthTexture_){
+        depthConstTexture_ = srcGL->getDepthTexture();
+    }
 }
 
 void ImageGL::activateBuffer() {
     frameBufferObject_->activate();
-    glViewport(0, 0, colorTexture_->getWidth(), colorTexture_->getHeight());
+    glViewport(0, 0, colorConstTexture_->getWidth(), colorConstTexture_->getHeight());
 }
 
 void ImageGL::deactivateBuffer() {
@@ -75,12 +85,12 @@ void ImageGL::deactivateBuffer() {
 
 void ImageGL::bindColorTexture(GLenum texUnit) const {
     glActiveTexture(texUnit);
-    colorTexture_->bind();
+    colorConstTexture_->bind();
 }
 
 void ImageGL::bindDepthTexture(GLenum texUnit) const {
     glActiveTexture(texUnit);
-    depthTexture_->bind();
+    depthConstTexture_->bind();
 }
 
 void ImageGL::bindTextures(GLenum colorTexUnit, GLenum depthTexUnit) const {
@@ -89,24 +99,28 @@ void ImageGL::bindTextures(GLenum colorTexUnit, GLenum depthTexUnit) const {
 }
 
 void ImageGL::unbindDepthTexture() const {
-    depthTexture_->unbind();
+    depthConstTexture_->unbind();
 }
 
 void ImageGL::unbindColorTexture() const {
-    colorTexture_->unbind();
+    colorConstTexture_->unbind();
 }
 
 void ImageGL::resize(uvec2 dimensions) {
-    dimensions_ = dimensions;        
-    colorTexture_->unbind();
-    colorTexture_->resize(dimensions_);    
-    colorTexture_->upload(NULL);
-    colorTexture_->unbind();
-
-    depthTexture_->unbind();
-    depthTexture_->resize(dimensions_);
-    depthTexture_->upload(NULL);
-    depthTexture_->unbind();    
+    dimensions_ = dimensions;
+    if(colorTexture_){
+        colorTexture_->unbind();
+        colorTexture_->resize(dimensions_);    
+        colorTexture_->upload(NULL);
+        colorTexture_->unbind();
+    }
+    
+    if(depthTexture_){
+        depthTexture_->unbind();
+        depthTexture_->resize(dimensions_);
+        depthTexture_->upload(NULL);
+        depthTexture_->unbind();
+    }
 }
 
 bool ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {

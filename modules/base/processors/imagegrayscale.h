@@ -24,7 +24,7 @@ protected:
     virtual void process();
 
 private:
-    ImageInport inport0_;
+    ImageInport inport_;
     ImageOutport outport_;
 
     Shader* shader_;
