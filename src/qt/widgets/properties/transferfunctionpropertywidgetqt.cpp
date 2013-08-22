@@ -9,11 +9,11 @@ TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunct
 
 
 TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt(){
+    delete transferFunctionDialog_;
+    delete gradient_;
     delete gradientView_;
     delete gradientScene_;
-    delete gradient_;
     delete btnOpenTF_;
-	delete transferFunctionDialog_;
 }
 
 
@@ -48,10 +48,12 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty(){
+    if (gradientView_) {
     gradient_->setFinalStop(gradientView_->width(), 0.0);
     gradient_->setStops(*transferFunctionDialog_->getGradientStops());
     gradientView_->setForegroundBrush(*gradient_);
     btnOpenTF_->setIcon(QIcon(QPixmap::grabWidget(gradientView_)));
+    }
 }
 
 
