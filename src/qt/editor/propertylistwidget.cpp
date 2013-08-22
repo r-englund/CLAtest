@@ -12,11 +12,12 @@ PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent), VoidObservable() {
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    setMinimumWidth(100);
     propertyListWidget_ = this;
     
     scrollArea_ = new QScrollArea(propertyListWidget_);
     scrollArea_->setWidgetResizable(true);
+    scrollArea_->setMinimumWidth(300);
+    scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     listWidget_ = new QWidget();
     listWidgetLayout_ = new QVBoxLayout(listWidget_);

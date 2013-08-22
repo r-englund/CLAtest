@@ -2,7 +2,8 @@
 
 namespace inviwo {
 
-PropertyWidgetQt::PropertyWidgetQt() {}
+PropertyWidgetQt::PropertyWidgetQt() {
+}
 
 void PropertyWidgetQt::showWidget() {
     this->show();
