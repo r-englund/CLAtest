@@ -2,6 +2,7 @@
 #define IVW_COMPOSITEPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 #include <QLineEdit>
 #include <QToolButton>
 
@@ -25,7 +26,8 @@ protected slots:
 
 private:
     CompositeProperty* property_;
-
+    CollapsiveGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
+    
     void generateWidget();
 
     std::vector<PropertyWidgetQt*> subPropertyWidgets_;

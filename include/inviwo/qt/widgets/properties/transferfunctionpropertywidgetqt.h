@@ -7,7 +7,9 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 #include <QHBoxLayout>
-#include <QPushButton>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGradient>
 
 namespace inviwo {
 
@@ -22,9 +24,11 @@ public:
 
 private:
 	TransferFunctionProperty* property_;
-	QPushButton* btnOpenDialog_;
     QToolButton* btnOpenTF_;
-
+    
+    QGraphicsView* gradientView_; 
+    QGraphicsScene* gradientScene_;
+    QLinearGradient* gradient_;
 
 	TransferFunctionPropertyDialog* transferFunctionDialog_;
 

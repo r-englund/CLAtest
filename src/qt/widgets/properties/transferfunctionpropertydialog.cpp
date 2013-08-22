@@ -267,8 +267,9 @@ void TransferFunctionPropertyDialog::setPointColor( QColor color ){
 	(&property_->get())->calcTransferValues();
 }
 
-QGraphicsView* TransferFunctionPropertyDialog::getGradient(){
-    return paintview_;
+
+QVector<QGradientStop>* TransferFunctionPropertyDialog::getGradientStops(){
+    return stops_;
 }
 
 } // namespace

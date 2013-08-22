@@ -10,26 +10,20 @@ CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property
 }
 
 void CompositePropertyWidgetQt::generateWidget() {
-    QHBoxLayout* hLayout = new QHBoxLayout();
-    QFrame* frame = new QFrame();
-    frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-    frame->setLineWidth(2);
-    hLayout->addWidget(frame);
-
     QVBoxLayout* vLayout = new QVBoxLayout();
-    vLayout->setAlignment(Qt::AlignTop);
+    collapsiveGroupBoxWidget_ = new CollapsiveGroupBoxWidgetQt(property_->getIdentifier(),property_->getDisplayName());
     std::vector<Property*> subProperties = property_->getSubProperties();
-    PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
     for (size_t i=0; i<subProperties.size(); i++) {
         Property* curProperty = subProperties[i];
-        PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
-        subPropertyWidgets_.push_back(propertyWidget);
-        vLayout->addWidget(propertyWidget);
-        curProperty->registerPropertyWidget(propertyWidget);
-        connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
-    } 
-    frame->setLayout(vLayout);
-    setLayout(hLayout);
+        collapsiveGroupBoxWidget_->addProperty(curProperty);
+    }
+    collapsiveGroupBoxWidget_->generatePropertyWidgets();
+    vLayout->addWidget(collapsiveGroupBoxWidget_);
+    
+    vLayout->setContentsMargins(0,0,0,0);
+    vLayout->setSpacing(0);
+    setLayout(vLayout);
+    
 }
 
 void CompositePropertyWidgetQt::updateFromProperty() {

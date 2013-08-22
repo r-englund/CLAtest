@@ -24,8 +24,6 @@
 #include <QWheelEvent>
 #include <inviwo/core/util/observer.h>
 
-
-
 namespace inviwo {
  
 class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver {
@@ -45,7 +43,7 @@ public:
     void updateFromProperty();
     void logStuff();
 	void notify();
-    QGraphicsView* getGradient();
+    QVector<QGradientStop>* getGradientStops();
 
 
 private:

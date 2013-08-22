@@ -83,6 +83,7 @@ void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
         PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
         vLayout_->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
+        connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
     }
 }
 
@@ -119,22 +120,16 @@ std::vector<Property*> CollapsiveGroupBoxWidgetQt::getProperties() {
 }
 
 void CollapsiveGroupBoxWidgetQt::notify(){
- /*   int count = 0;
-    for (size_t i=0; i<properties_.size(); i++)
-        if(properties_.at(i)->getVisible())
-            count++;
-    std::cout << count << std::endl;
-    if (count==0) {
-        this->setVisible(false);
-    }else
-        this->setVisible(true);*/
-    std::cout << "Notify " << std::endl;
     if (!this->isHidden()) {
         this->setVisible(false);
     }
     else{
         this->setVisible(true);
     }
+}
+
+void CollapsiveGroupBoxWidgetQt::propertyModified(){
+    emit modified();
 }
 
 } // namespace

@@ -41,7 +41,6 @@ public:
     void notify();
 
 private:
-    //QPushButton* btnCollapse_;
     QToolButton* btnCollapse_;
     std::string identifier_;
     std::string displayName_;
@@ -54,6 +53,8 @@ private:
     public slots:
         void hide();
         void show();
+    protected slots:
+        void propertyModified();
 };
 
 } // namespace
