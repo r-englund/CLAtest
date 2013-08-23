@@ -88,7 +88,9 @@ ImageOutport::ImageOutport(std::string identifier,
                            PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {     
-    data_ = new Image(dimensions_);
+    Image* im = new Image(dimensions_);
+    im->setAllowMissingLayers(false);
+    data_ = im;
     std::string dimensionString = glm::to_string(dimensions_);
     imageDataMap_.insert(std::make_pair(dimensionString, data_));
     mapDataInvalid_ = true;
@@ -97,7 +99,9 @@ ImageOutport::ImageOutport(std::string identifier,
 ImageOutport::ImageOutport(std::string identifier, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
-    data_ = new Image(dimensions_, type);
+    Image* im = new Image(dimensions_, type);
+    im->setAllowMissingLayers(false);
+    data_ = im;
     std::string dimensionString = glm::to_string(dimensions_);
     imageDataMap_.insert(std::make_pair(dimensionString, data_));
     mapDataInvalid_ = true;
@@ -106,7 +110,9 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, PropertyOwner
 ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
-    data_ = new Image(dimensions_, type);
+    Image* im = new Image(dimensions_, type);
+    im->setAllowMissingLayers(false);
+    data_ = im;
     std::string dimensionString = glm::to_string(dimensions_);
     imageDataMap_.insert(std::make_pair(dimensionString, data_));
     mapDataInvalid_ = true;

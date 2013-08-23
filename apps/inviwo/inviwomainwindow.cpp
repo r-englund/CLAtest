@@ -100,6 +100,7 @@ void InviwoMainWindow::initializeAndShow() {
 }
 
 void InviwoMainWindow::deinitialize() {
+    
 }
 
 void InviwoMainWindow::initializeWorkspace(){
@@ -188,35 +189,14 @@ void InviwoMainWindow::addMenuActions() {
         fileMenuItem_->addAction(recentFileActions_[i]);
     }
     
-    mappingwidgetviewAction_ = new QAction(tr("&Mapping"), this);
-    mappingwidgetviewAction_->setCheckable(true);
-    mappingwidgetviewAction_->setChecked(mappingwidget_->isVisibleTo(this));
-    connect(mappingwidgetviewAction_, SIGNAL(triggered(bool)), mappingwidget_, SLOT(setVisible(bool)));
-    viewMenuItem_->addAction(mappingwidgetviewAction_);
-
-    settingsWidgetViewAction_ = new QAction(tr("&Settings"), this);
-    settingsWidgetViewAction_->setCheckable(true);
-    settingsWidgetViewAction_->setChecked(settingsWidget_->isVisibleTo(this));
-    connect(settingsWidgetViewAction_, SIGNAL(triggered(bool)), settingsWidget_, SLOT(setVisible(bool)));
-    viewMenuItem_->addAction(settingsWidgetViewAction_);
-
-    processorListWidgetViewAction_ = new QAction(tr("&Processor List"), this);
-    processorListWidgetViewAction_->setCheckable(true);
-    processorListWidgetViewAction_->setChecked(processorTreeWidget_->isVisibleTo(this));
-    connect(processorListWidgetViewAction_, SIGNAL(triggered(bool)), processorTreeWidget_, SLOT(setVisible(bool)));
-    viewMenuItem_->addAction(processorListWidgetViewAction_);
-
-    propertyListWidgetViewAction_ = new QAction(tr("&Property List"), this);
-    propertyListWidgetViewAction_->setCheckable(true);
-    propertyListWidgetViewAction_->setChecked(propertyListWidget_->isVisibleTo(this));
-    connect(propertyListWidgetViewAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setVisible(bool)));
-    viewMenuItem_->addAction(propertyListWidgetViewAction_);
-
-    consoleWidgetViewAction_ = new QAction(tr("&Output Console"), this);
-    consoleWidgetViewAction_->setCheckable(true);
-    consoleWidgetViewAction_->setChecked(consoleWidget_->isVisibleTo(this));
-    connect(consoleWidgetViewAction_, SIGNAL(triggered(bool)), consoleWidget_, SLOT(setVisible(bool)));
-    viewMenuItem_->addAction(consoleWidgetViewAction_);
+    viewMenuItem_->addAction(mappingwidget_->toggleViewAction());
+    viewMenuItem_->addAction(settingsWidget_->toggleViewAction());
+    processorTreeWidget_->toggleViewAction()->setText(tr("&Processor List"));
+    viewMenuItem_->addAction(processorTreeWidget_->toggleViewAction());
+    propertyListWidget_->toggleViewAction()->setText(tr("&Property List"));
+    viewMenuItem_->addAction(propertyListWidget_->toggleViewAction());
+    consoleWidget_->toggleViewAction()->setText(tr("&Output Console"));
+    viewMenuItem_->addAction(consoleWidget_->toggleViewAction());
 }
 
 void InviwoMainWindow::updateWindowTitle() {
@@ -396,6 +376,8 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     settings.setValue("recentFileList", recentFileList_);
     settings.setValue("lastExitWithoutErrors", true);
     settings.endGroup();
+
+    settingsWidget_->saveSettings();
 
     QMainWindow::closeEvent(event);
 }

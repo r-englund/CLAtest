@@ -41,6 +41,7 @@ namespace inviwo {
 
     protected:
         void useInputSource(ImageLayerType, const Image*);
+        void createAndAddLayer(ImageLayerType);
 
     private:
         Texture2D* colorTexture_;

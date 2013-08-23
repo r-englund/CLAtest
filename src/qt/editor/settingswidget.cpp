@@ -3,6 +3,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 #include <QFrame>
+#include <QSettings>
 
 namespace inviwo {
 
@@ -30,19 +31,37 @@ SettingsWidget::~SettingsWidget() {}
 
 //Load settings from QSettings
 void SettingsWidget::loadSettings() {
-    Settings* settings = InviwoApplication::getRef().getSettings();
-    std::vector<Property*> properties = settings->getProperties();
+    Settings* mainsettings = InviwoApplication::getRef().getSettings();
+    std::vector<Property*> properties = mainsettings->getProperties();
+    QSettings qmainsettings("Inviwo", "Inviwo");
+    qmainsettings.beginGroup("mainsettings");
+    QStringList keys = qmainsettings.allKeys();
     for (size_t i=0; i<properties.size(); i++) {
         Property* curProperty = properties[i];
+        QString name = QString::fromStdString(curProperty->getIdentifier());
+        if(keys.contains(name)){
+            QVariant qval = qmainsettings.value(name);
+            Variant val(std::string(qval.toString().toLocal8Bit().constData()));
+            curProperty->setVariant(val);
+        }
         PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
         vLayout_->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
     }
-    vLayout_->addStretch(1);
+    qmainsettings.endGroup();
 }
 
 //Save application settings to QSettings
 void SettingsWidget::saveSettings() {
+    Settings* mainsettings = InviwoApplication::getRef().getSettings();
+    std::vector<Property*> properties = mainsettings->getProperties();
+    QSettings qmainsettings("Inviwo", "Inviwo");
+    qmainsettings.beginGroup("mainsettings");
+    for (size_t i=0; i<properties.size(); i++) {
+        Property* curProperty = properties[i];
+        qmainsettings.setValue(QString::fromStdString(curProperty->getIdentifier()), QVariant(QString::fromStdString(curProperty->getVariant().getString())));
+    }
+    qmainsettings.endGroup();
 }
 
 } // namespace

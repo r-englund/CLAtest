@@ -12,7 +12,7 @@ SimpleRaycaster::SimpleRaycaster()
     volumePort_("volume"),
     entryPort_("entry-points"),
     exitPort_("exit-points"),
-    outport_("outport"),
+    outport_("outport", &entryPort_),
     transferFunction_("transferFunction", "Transfer function", TransferFunction())
 {
     addPort(volumePort_, "VolumePortGroup");

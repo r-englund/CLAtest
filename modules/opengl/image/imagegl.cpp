@@ -19,22 +19,22 @@ void ImageGL::initialize() {
     frameBufferObject_->activate();
     if(typeContainsColor(getImageType())){
         if(!colorTexture_){
-            colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
-            colorTexture_->upload(NULL);
+            createAndAddLayer(COLOR_LAYER);
         }
-        else
+        else{
             colorTexture_->bind();
-        colorConstTexture_ = colorTexture_;
+            colorConstTexture_ = colorTexture_;
+        }
         frameBufferObject_->attachTexture(colorTexture_);
     }
     if(typeContainsDepth(getImageType())){
         if(!depthTexture_){
-            depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_LINEAR);
-            depthTexture_->upload(NULL);
+            createAndAddLayer(DEPTH_LAYER);
         }
-        else
+        else{
             depthTexture_->bind();
-        depthConstTexture_ = depthTexture_;
+            depthConstTexture_ = depthTexture_;
+        }  
         frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT); 
     }
     frameBufferObject_->deactivate();
@@ -71,6 +71,22 @@ void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
     }
     if(!typeContainsDepth(getImageType()) && !depthTexture_){
         depthConstTexture_ = srcGL->getDepthTexture();
+    }
+}
+
+void ImageGL::createAndAddLayer(ImageLayerType layer){
+    if(layer == COLOR_LAYER){
+        colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
+        colorTexture_->upload(NULL);
+        colorConstTexture_ = colorTexture_;
+    }
+    else if(layer == DEPTH_LAYER){
+        depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_LINEAR);
+        depthTexture_->upload(NULL);
+        depthConstTexture_ = depthTexture_;
+    }
+    else if(layer == PICKING_LAYER){
+
     }
 }
 

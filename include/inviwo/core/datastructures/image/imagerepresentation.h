@@ -25,6 +25,7 @@ public:
     ImageType getImageType() const { return imageType_; }
 protected:
     virtual void useInputSource(ImageLayerType, const Image*) {}
+    virtual void createAndAddLayer(ImageLayerType) {}
 
     uvec2 dimensions_;
     ImageType imageType_;

@@ -84,11 +84,6 @@ private:
     QAction* saveAsFileAction_;
     QAction* recentFileSeparator_;
     QAction* recentFileActions_[maxNumRecentFiles_];
-    QAction* settingsWidgetViewAction_;
-    QAction* processorListWidgetViewAction_;
-    QAction* propertyListWidgetViewAction_;
-    QAction* consoleWidgetViewAction_;
-    QAction* mappingwidgetviewAction_;
 
     // settings
     bool lastExitWithoutErrors_;
