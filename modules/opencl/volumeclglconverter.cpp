@@ -29,7 +29,7 @@ DataRepresentation* VolumeCLGL2RAMConverter::createFrom(const DataRepresentation
         if (destination) {
             VolumeRAM* volumeRAM = static_cast<VolumeRAM*>(destination);
             texture->download(volumeRAM->getData());
-            //const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
+            //const cl::CommandQueue& queue = OpenCL::instance()->getQueue();
             //queue.enqueueReadVolume(volumeCL->getVolume(), true, glm::svec3(0), glm::svec3(dimension, 1), 0, 0, volumeRAM->getData());
         } else {
             LogError("Invalid conversion or not implemented");
@@ -73,7 +73,7 @@ DataRepresentation* VolumeCLGL2CLConverter::createFrom(const DataRepresentation*
         destination = new VolumeCL(dimension, volumeCLGL->getDataFormat());
         SyncCLGL glSync;
         volumeCLGL->aquireGLObject(glSync.getGLSyncEvent());
-        OpenCL::getInstance()->getQueue().enqueueCopyImage(volumeCLGL->getVolume(), static_cast<VolumeCL*>(destination)->getVolume(), glm::svec3(0), glm::svec3(0), glm::svec3(dimension));
+        OpenCL::instance()->getQueue().enqueueCopyImage(volumeCLGL->getVolume(), static_cast<VolumeCL*>(destination)->getVolume(), glm::svec3(0), glm::svec3(0), glm::svec3(dimension));
         volumeCLGL->releaseGLObject(glSync.getGLSyncEvent());
 
 
@@ -86,7 +86,7 @@ void VolumeCLGL2CLConverter::update(const DataRepresentation* source, DataRepres
     if(volumeSrc && volumeDst) {
         SyncCLGL glSync;
         volumeSrc->aquireGLObject(glSync.getGLSyncEvent());
-        OpenCL::getInstance()->getQueue().enqueueCopyImage(volumeSrc->getVolume(), volumeDst->getVolume(), glm::svec3(0), glm::svec3(0), glm::svec3(volumeSrc->getDimensions()));
+        OpenCL::instance()->getQueue().enqueueCopyImage(volumeSrc->getVolume(), volumeDst->getVolume(), glm::svec3(0), glm::svec3(0), glm::svec3(volumeSrc->getDimensions()));
         volumeSrc->releaseGLObject(glSync.getGLSyncEvent());
     }
 

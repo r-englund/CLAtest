@@ -18,13 +18,13 @@ ImageCLGL::~ImageCLGL() {
 
 void ImageCLGL::initialize(const Texture2D* texture) {
     ivwAssert(texture != 0, "Cannot initialize with null OpenGL texture");
-    image2D_ = new cl::Image2DGL(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture->getID());
+    image2D_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture->getID());
     ImageCLGL::initialize();
 }
 
 DataRepresentation* ImageCLGL::clone() const {
     ImageCLGL* newImageCLGL = new ImageCLGL(dimensions_, getImageType(), getDataFormat(), NULL);
-    OpenCL::getInstance()->getQueue().enqueueCopyImage(*image2D_, (newImageCLGL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
+    OpenCL::instance()->getQueue().enqueueCopyImage(*image2D_, (newImageCLGL->getImage()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
     return newImageCLGL;
 }
 
@@ -41,7 +41,7 @@ void ImageCLGL::resize(uvec2 dimensions) {
     // Make sure that the OpenCL image is deleted before resizing the texture
     delete image2D_;
     const_cast<Texture2D*>(texture_)->resize(dimensions);
-    image2D_ = new cl::Image2DGL(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
+    image2D_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
     ImageRepresentation::resize(dimensions);
 }
 

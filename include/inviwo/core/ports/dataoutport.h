@@ -19,24 +19,26 @@ public:
 
     virtual T* getData();
     virtual const T* getConstData() const;
-    void setData(T* data);
+    void setData(T* data, bool ownsData = true);
 
     bool hasData() const;
 
 protected:
     T* data_;
+    bool ownsData_;
 };
 
 template <typename T>
 DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
     : Outport(identifier, invalidationLevel),
-      data_(NULL)
+      data_(NULL), ownsData_(true)
 {
 }
 
 template <typename T>
 DataOutport<T>::~DataOutport() {
-    delete data_;
+    if(ownsData_)
+        delete data_;
 }
 
 template <typename T>
@@ -56,9 +58,12 @@ const T* DataOutport<T>::getConstData() const{
 }
 
 template <typename T>
-void DataOutport<T>::setData(T* data) {
-    //Delete old data
-    delete data_;
+void DataOutport<T>::setData(T* data, bool ownsData) {
+    if(ownsData_) {
+        //Delete old data
+        delete data_;
+    }
+    ownsData_ = ownsData;
     //Add reference to new data
     data_ = data;
 }

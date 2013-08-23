@@ -25,13 +25,13 @@ VolumeCLGL::~VolumeCLGL() {
 
 void VolumeCLGL::initialize(const Texture3D* texture) {
     ivwAssert(texture != 0, "Cannot initialize with null OpenGL texture");
-    image3D_ = new cl::Image3DGL(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture->getID());
+    image3D_ = new cl::Image3DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture->getID());
     VolumeCLGL::initialize();
 }
 
 DataRepresentation* VolumeCLGL::clone() const {
     VolumeCLGL* newVolumeCLGL = new VolumeCLGL(dimensions_, getDataFormat(), NULL);
-    OpenCL::getInstance()->getQueue().enqueueCopyImage(*image3D_, (newVolumeCLGL->getVolume()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
+    OpenCL::instance()->getQueue().enqueueCopyImage(*image3D_, (newVolumeCLGL->getVolume()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
     return newVolumeCLGL;
 }
 

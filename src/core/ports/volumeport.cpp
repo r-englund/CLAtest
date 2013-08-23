@@ -1,5 +1,5 @@
 #include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/datastructures/volume/volumetypeclassification.h>
+
 
 namespace inviwo {
 
@@ -24,7 +24,6 @@ uvec3 VolumeInport::getColorCode() const {
 VolumeOutport::VolumeOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
 : DataOutport<Volume>(identifier, invalidationLevel)
 {
-    data_ = new StandardVolume();
 }
 
 VolumeOutport::~VolumeOutport() {}

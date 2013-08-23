@@ -31,7 +31,7 @@ class IVW_MODULE_OPENCL_API OpenCL {
 public:
 
 
-    static OpenCL* getInstance() {
+    static OpenCL* instance() {
         static OpenCL instance;// Guaranteed to be destroyed. Instantiated on first use.
         return &instance;
     }

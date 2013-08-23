@@ -88,7 +88,7 @@ void VolumeRaycasterCL::process() {
     kernel_->setArg(arg++, volumeDim);
     kernel_->setArg(arg++, *outImageCL);
     // 
-    OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+    OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
     
     volumeCL->releaseGLObject();
     outImageCL->releaseGLObject();

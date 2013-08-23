@@ -20,7 +20,7 @@ OpenCLModule::OpenCLModule() : InviwoModule() {
 
 void OpenCLModule::initialize() {
     
-    OpenCL::getInstance();
+    OpenCL::instance();
     KernelManager::init();
     // ImageCL
     addRepresentationConverter(new ImageDisk2CLConverter());

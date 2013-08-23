@@ -21,6 +21,8 @@ public:
 protected:
     virtual void process();
 
+    void loadVolume(const std::string& filePath);
+
 private:
     VolumeOutport volumePort_;
     FileProperty volumeFileName_;

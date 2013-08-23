@@ -19,16 +19,16 @@ VolumeCL::~VolumeCL() {
 }
 
 void VolumeCL::initialize(const void* voxels) {
-    image3D_ = new cl::Image3D(OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y, dimensions_.z);
+    image3D_ = new cl::Image3D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y, dimensions_.z);
     if (voxels != NULL) {
-        OpenCL::getInstance()->getQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(voxels));
+        OpenCL::instance()->getQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(voxels));
     }
     VolumeCL::initialize();
 }
 
 DataRepresentation* VolumeCL::clone() const {
     VolumeCL* newVolumeCL = new VolumeCL(dimensions_, getDataFormat());
-    OpenCL::getInstance()->getQueue().enqueueCopyImage(*image3D_, (newVolumeCL->getVolume()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
+    OpenCL::instance()->getQueue().enqueueCopyImage(*image3D_, (newVolumeCL->getVolume()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
     return newVolumeCL;
 }
 
@@ -38,12 +38,12 @@ void VolumeCL::deinitialize() {
 }
 void VolumeCL::upload( const void* data )
 {
-    OpenCL::getInstance()->getQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(data));
+    OpenCL::instance()->getQueue().enqueueWriteImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(data));
 }
 
 void VolumeCL::download( void* data ) const
 {
-    OpenCL::getInstance()->getQueue().enqueueReadImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, data);
+    OpenCL::instance()->getQueue().enqueueReadImage(*image3D_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, data);
 }
 
 } // namespace

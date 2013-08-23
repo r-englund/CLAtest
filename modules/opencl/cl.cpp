@@ -8,13 +8,13 @@
 
 inline Device Device::getDefault(cl_int *)
 {
-    return inviwo::OpenCL::getInstance()->getDevice();
+    return inviwo::OpenCL::instance()->getDevice();
 }
 
 Context Context::getDefault(cl_int *) {
-    return inviwo::OpenCL::getInstance()->getContext();
+    return inviwo::OpenCL::instance()->getContext();
 }
 
 CommandQueue CommandQueue::getDefault(cl_int *) {
-    return inviwo::OpenCL::getInstance()->getQueue();
+    return inviwo::OpenCL::instance()->getQueue();
 }

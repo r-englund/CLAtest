@@ -184,13 +184,13 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
     cl::Program::Sources source( 1, std::make_pair(prog.c_str(), prog.length()+1));
     cl::Program program(context, source);
     try {
-        program.build(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()));
+        program.build(std::vector<cl::Device>(1, OpenCL::instance()->getDevice()));
         std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device);
         // Output log if it contains any info
         if(buildLog.size() > 1)
             LogInfoCustom("OpenCL", fileName << " build info:" << std::endl << buildLog);
     } catch (cl::Error& e) {
-        OpenCL::printBuildError(std::vector<cl::Device>(1, OpenCL::getInstance()->getDevice()), program);
+        OpenCL::printBuildError(std::vector<cl::Device>(1, OpenCL::instance()->getDevice()), program);
         throw e;
     }
     return program;
@@ -198,7 +198,7 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
 
 cl::Program OpenCL::buildProgram( const std::string& fileName, const std::string& defines /*= ""*/ )
 {
-    return OpenCL::buildProgram(fileName, defines, OpenCL::getInstance()->getQueue());
+    return OpenCL::buildProgram(fileName, defines, OpenCL::instance()->getQueue());
 }
 
 
@@ -402,7 +402,7 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Format not implmented yet"); break;
     }
 #ifdef DEBUG
-    if (!inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::getInstance()->getContext(), clFormat)) {
+    if (!inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::instance()->getContext(), clFormat)) {
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "OpenCL device does not support format");
     };
 #endif 

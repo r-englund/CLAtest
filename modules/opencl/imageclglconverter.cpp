@@ -29,7 +29,7 @@ DataRepresentation* ImageCLGL2RAMConverter::createFrom(const DataRepresentation*
         if (destination) {
             ImageRAM* imageRAM = static_cast<ImageRAM*>(destination);
             texture->download(imageRAM->getData());
-            //const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
+            //const cl::CommandQueue& queue = OpenCL::instance()->getQueue();
             //queue.enqueueReadImage(imageCL->getImage(), true, glm::svec3(0), glm::svec3(dimension, 1), 0, 0, imageRAM->getData());
         } else {
             LogError("Invalid conversion or not implemented");
@@ -74,7 +74,7 @@ DataRepresentation* ImageCLGL2CLConverter::createFrom(const DataRepresentation* 
         destination = new ImageCL(dimension, imageCLGL->getImageType(), imageCLGL->getDataFormat());
         SyncCLGL glSync;
         imageCLGL->aquireGLObject(glSync.getGLSyncEvent());
-        OpenCL::getInstance()->getQueue().enqueueCopyImage(imageCLGL->getImage(), static_cast<ImageCL*>(destination)->getImage(), glm::svec3(0), glm::svec3(0), glm::svec3(dimension, 1));
+        OpenCL::instance()->getQueue().enqueueCopyImage(imageCLGL->getImage(), static_cast<ImageCL*>(destination)->getImage(), glm::svec3(0), glm::svec3(0), glm::svec3(dimension, 1));
         imageCLGL->releaseGLObject(glSync.getGLSyncEvent());
 
 
@@ -87,7 +87,7 @@ void ImageCLGL2CLConverter::update(const DataRepresentation* source, DataReprese
     if(imageSrc && imageDst) {
         SyncCLGL glSync;
         imageSrc->aquireGLObject(glSync.getGLSyncEvent());
-        OpenCL::getInstance()->getQueue().enqueueCopyImage(imageSrc->getImage(), imageDst->getImage(), glm::svec3(0), glm::svec3(0), glm::svec3(imageSrc->getDimensions(), 1));
+        OpenCL::instance()->getQueue().enqueueCopyImage(imageSrc->getImage(), imageDst->getImage(), glm::svec3(0), glm::svec3(0), glm::svec3(imageSrc->getDimensions(), 1));
         imageSrc->releaseGLObject(glSync.getGLSyncEvent());
     }
 

@@ -20,7 +20,7 @@ ImageCLResizer::ImageCLResizer() {
     instance.getResizeKernel()->setArg(0, src);
     instance.resizeKernel_.setArg(1, dst);
     cl::Event event;
-    OpenCL::getInstance()->getQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0], resizeToDimension[1]),
+    OpenCL::instance()->getQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0], resizeToDimension[1]),
         cl::NullRange, NULL, &event);
     
     event.wait();

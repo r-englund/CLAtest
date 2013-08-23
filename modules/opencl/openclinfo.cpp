@@ -62,11 +62,11 @@ namespace inviwo {
     }
 
     void OpenCLInfo::printInfo(){
-        OpenCLInfo::printDeviceInfo(OpenCL::getInstance()->getDevice());
+        OpenCLInfo::printDeviceInfo(OpenCL::instance()->getDevice());
         
         //// Supported image 2D formats
         //std::vector<cl::ImageFormat> formats;
-        //OpenCL::getInstance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
+        //OpenCL::instance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
         //std::ostringstream stream;
         ////stream << "Supported 2D READ_WRITE formats: " << imageFormatToString(formats[0]);
         ////for(::size_t i = 1; i < formats.size(); ++i) {
@@ -78,7 +78,7 @@ namespace inviwo {
         //}
         //LogInfo(stream.str())
         //formats.clear();
-        //OpenCL::getInstance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
+        //OpenCL::instance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
         //stream.clear();
         ////stream << "Supported 3D READ_WRITE formats: " << imageFormatToString(formats[0]);
         ////for(::size_t i = 1; i < formats.size(); ++i) {

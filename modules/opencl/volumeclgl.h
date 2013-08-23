@@ -28,11 +28,11 @@ public:
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL) const {
         std::vector<cl::Memory> syncImages(1, *image3D_); 
-        OpenCL::getInstance()->getQueue().enqueueAcquireGLObjects(&syncImages, syncEvents);
+        OpenCL::instance()->getQueue().enqueueAcquireGLObjects(&syncImages, syncEvents);
     }
     void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL) const {
         std::vector<cl::Memory> syncImages(1, *image3D_); 
-        OpenCL::getInstance()->getQueue().enqueueReleaseGLObjects(&syncImages, syncEvents, event);
+        OpenCL::instance()->getQueue().enqueueReleaseGLObjects(&syncImages, syncEvents, event);
     }
 
 protected:
