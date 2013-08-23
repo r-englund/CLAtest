@@ -15,6 +15,9 @@ public:
     void initialize();
     void deinitialize();
 
+protected:
+    void setupModuleSettings();
+
 };
 
 } // namespace

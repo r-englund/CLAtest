@@ -12,7 +12,6 @@ public:
     OpenglQtModule();
 
 protected:
-    void setupGlobalSystemSettings();
     template <typename T>
     void addProcessorWidgetAndAssociate(ProcessorWidget* processorWidget) {      
         addProcessorWidget(T::CLASS_NAME, processorWidget);       

@@ -21,8 +21,6 @@ void SettingsWidget::generateWidget() {
 
     QFrame* frame = new QFrame();
     vLayout_ = new QVBoxLayout(frame);
-    vLayout_->setSpacing(0);
-
     frame->setLayout(vLayout_);
     setWidget(frame);
 }
@@ -49,6 +47,7 @@ void SettingsWidget::loadSettings() {
         curProperty->registerPropertyWidget(propertyWidget);
     }
     qmainsettings.endGroup();
+    vLayout_->addStretch(0);
 }
 
 //Save application settings to QSettings

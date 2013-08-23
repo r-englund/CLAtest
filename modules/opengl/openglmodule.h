@@ -12,7 +12,7 @@ public:
     OpenGLModule();
 
 protected:
-    void setupGlobalSystemSettings();
+    void setupModuleSettings();
 
 };
 

@@ -63,4 +63,15 @@ void OpenCLModule::deinitialize() {
     
 }
 
+void OpenCLModule::setupModuleSettings(){
+    if (getSettings()){
+        OpenCLInfo* openclInfo = getTypeFromVector<OpenCLInfo>(getResourceInfos());
+        if (openclInfo){
+            ButtonProperty* btnOpenCLInfo = new ButtonProperty("printOpenCLInfo", "Print OpenCL Info");
+            btnOpenCLInfo->registerClassMemberFunction(openclInfo, &OpenCLInfo::printInfo);
+            getSettings()->addProperty(btnOpenCLInfo);
+        }           
+    }
+}
+
 } // namespace

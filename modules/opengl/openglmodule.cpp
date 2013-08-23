@@ -32,4 +32,15 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     addResourceInfo(new OpenGLInfo());
 }
 
+void OpenGLModule::setupModuleSettings(){
+    if (getSettings()){
+        OpenGLInfo* openglInfo = getTypeFromVector<OpenGLInfo>(getResourceInfos());
+        if (openglInfo){
+            ButtonProperty* btnOpenGLInfo = new ButtonProperty("printOpenGLInfo", "Print OpenGL Info");
+            btnOpenGLInfo->registerClassMemberFunction(openglInfo, &OpenGLInfo::printInfo);
+            getSettings()->addProperty(btnOpenGLInfo);
+        }           
+    }
+}
+
 } // namespace

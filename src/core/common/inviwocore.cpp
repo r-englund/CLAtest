@@ -43,26 +43,26 @@ InviwoCore::InviwoCore() : InviwoModule() {
 }
 
 void InviwoCore::setupModuleSettings(){
-    if (getSettings()){
+    if (getSettings()){     
+        getSettings()->addProperty(new BoolProperty("txtEditor", "Use system text editor", true));
+
+        getSettings()->addProperty(new BoolProperty("shaderReloading", "Automatically reload shaders", true));
+
+        getSettings()->addProperty(new BoolProperty("portInspectorOn", "Port Inspector On", true));
+
+        getSettings()->addProperty(new BoolProperty("soundsOn", "Sounds On", true));
+
+        getSettings()->addProperty(new IntProperty("useRAMPercent", "Max Use Mem %", 50, 1, 100));
+
+        ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");
+        btnAllocTest->registerClassMemberFunction(this, &InviwoCore::allocationTest);
+        getSettings()->addProperty(btnAllocTest);
+
         SystemInfo* sysInfo = getTypeFromVector<SystemInfo>(getResourceInfos());
         if (sysInfo){
             ButtonProperty* btnSysInfo = new ButtonProperty("printSysInfo", "Print System Info");
             btnSysInfo->registerClassMemberFunction(sysInfo, &SystemInfo::printInfo);
-            getSettings()->addProperty(btnSysInfo);
-
-            getSettings()->addProperty(new IntProperty("useRAMPercent", "Max Use Mem %", 50, 1, 100));
-
-            ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");
-            btnAllocTest->registerClassMemberFunction(this, &InviwoCore::allocationTest);
-            getSettings()->addProperty(btnAllocTest);
-
-            getSettings()->addProperty(new BoolProperty("txtEditor", "Use system text editor", true));
-
-            getSettings()->addProperty(new BoolProperty("shaderReloading", "Automatically reload shaders", true));
-
-            getSettings()->addProperty(new BoolProperty("portInspectorOn", "Port Inspector On", true));
-
-            getSettings()->addProperty(new BoolProperty("soundsOn", "Sounds On", true));
+            getSettings()->addProperty(btnSysInfo);  
         }           
     }
 }

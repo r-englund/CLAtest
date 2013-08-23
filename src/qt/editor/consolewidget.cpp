@@ -27,6 +27,7 @@ ConsoleWidget::~ConsoleWidget() {}
 void ConsoleWidget::showContextMenu(const QPoint& pos) {
     QMenu* menu = textField_->createStandardContextMenu();
     QAction* clearAction = menu->addAction("Clear console");
+    clearAction->setShortcut(Qt::ControlModifier + Qt::Key_E);
     menu->addAction(clearAction);
     QAction* result = menu->exec(QCursor::pos());
     if (result == clearAction) textField_->clear();
@@ -62,6 +63,11 @@ void ConsoleWidget::log(std::string logSource, unsigned int logLevel, const char
     QTextCursor c =  textField_->textCursor();
     c.movePosition(QTextCursor::End);
     textField_->setTextCursor(c);
+}
+
+void ConsoleWidget::keyPressEvent(QKeyEvent* e) {
+    if (e->key() == Qt::Key_E && e->modifiers() == Qt::ControlModifier)
+        textField_->clear();
 }
 
 } // namespace
