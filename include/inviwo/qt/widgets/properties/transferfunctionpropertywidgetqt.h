@@ -5,7 +5,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
-
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QHBoxLayout>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -25,7 +25,7 @@ public:
 private:
 	TransferFunctionProperty* property_;
     QToolButton* btnOpenTF_;
-    
+    EditableLabelQt* label_;
     QGraphicsView* gradientView_; 
     QGraphicsScene* gradientScene_;
     QLinearGradient* gradient_;
@@ -37,6 +37,7 @@ private:
 	public slots:
 		void setPropertyValue();
 		void openTransferFunctionDialog();
+        void setPropertyDisplayName();
 };
 
 }//namespace

@@ -2,6 +2,7 @@
 #define IVW_FLOATVEC4PROPERTYWIDGETQT_H
 //Qt
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/floatsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
@@ -29,12 +30,14 @@ private:
 	FloatSliderWidgetQt* sliderW_;
     PropertySettingsWidgetQt* settingsWidget_;
     QMenu* settingsMenu_;
+    EditableLabelQt* label_;
 
     void generateWidget();
     void generatesSettingsWidget();
 
 public slots:
     void setPropertyValue();
+    void setPropertyDisplayName();
 
     void showContextMenuX(const QPoint& pos);
     void showContextMenuY(const QPoint& pos);

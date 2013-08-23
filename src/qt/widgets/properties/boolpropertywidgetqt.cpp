@@ -9,8 +9,10 @@ BoolPropertyWidgetQt::BoolPropertyWidgetQt(BoolProperty* property) : property_(p
 
 void BoolPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
     checkBox_ = new QCheckBox();
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(checkBox_, SIGNAL(clicked()), this, SLOT(setPropertyValue()));
     hLayout->addWidget(checkBox_);
     setLayout(hLayout);
@@ -23,6 +25,10 @@ void BoolPropertyWidgetQt::setPropertyValue() {
 
 void BoolPropertyWidgetQt::updateFromProperty() {
     checkBox_->setChecked(property_->get());
+}
+
+void BoolPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 } // namespace

@@ -10,11 +10,13 @@ FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property
 
 void FloatPropertyWidgetQt::generateWidget() {    
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
     sliderWidget_ = new FloatSliderWidgetQt();    
     hLayout->addWidget(sliderWidget_);
     setLayout(hLayout);
 
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(sliderWidget_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue(float)));
 }
 
@@ -58,6 +60,10 @@ void FloatPropertyWidgetQt::generatesSettingsWidget() {
     sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(sliderWidget_, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(showContextMenu(const QPoint&)));
+}
+
+void FloatPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 } // namespace

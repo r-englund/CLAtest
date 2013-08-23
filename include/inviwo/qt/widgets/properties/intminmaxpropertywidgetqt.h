@@ -2,6 +2,7 @@
 #define IVW_INTMINMAXPROPERTYWIDGETQT_H
 //Qt
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <QSpinBox>
@@ -24,6 +25,7 @@ private:
     RangeSliderQt* slider_;
     QSpinBox* spinBoxMin_;
     QSpinBox* spinBoxMax_;
+    EditableLabelQt* label_;
 
     bool updatingFromProperty_;
 
@@ -31,6 +33,7 @@ private:
 
 protected slots:
     void setPropertyValue();
+    void setPropertyDisplayName();
 
     void updateFromSlider(int valMin, int valMax);
     void updateFromSpinBoxMin(int val);

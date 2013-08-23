@@ -11,7 +11,8 @@ FloatMinMaxPropertyWidgetQt::FloatMinMaxPropertyWidgetQt(FloatMinMaxProperty *pr
 
 void FloatMinMaxPropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
-	hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
 
     spinBoxMin_ = new QDoubleSpinBox(this);
     spinBoxMin_->setFixedWidth(50);
@@ -25,6 +26,7 @@ void FloatMinMaxPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(spinBoxMax_);
 	setLayout(hLayout);
 
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(slider_, SIGNAL(valuesChanged(int,int)), this, SLOT(updateFromSlider(int,int)));
     connect(spinBoxMin_, SIGNAL(valueChanged(double)), this, SLOT(updateFromSpinBoxMin(double)));
     connect(spinBoxMax_, SIGNAL(valueChanged(double)), this, SLOT(updateFromSpinBoxMax(double)));
@@ -105,6 +107,10 @@ void FloatMinMaxPropertyWidgetQt::setSpinBoxDecimals(float increment) {
 
     spinBoxMin_->setDecimals(str2.length());
     spinBoxMax_->setDecimals(str2.length());
+}
+
+void FloatMinMaxPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 } //namespace

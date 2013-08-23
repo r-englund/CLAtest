@@ -5,7 +5,7 @@
 
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/core/properties/matrixproperties.h>
 
 namespace inviwo {
@@ -25,6 +25,7 @@ private:
     QLineEdit* mat0x1_;
     QLineEdit* mat1x0_;
     QLineEdit* mat1x1_;///< coordinates 1,1 of the matrix equals lower right corner
+    EditableLabelQt* label_;
     
 
     void generateWidget();
@@ -35,6 +36,7 @@ private:
         void set1x0Value();
         void set1x1Value();
         void setPropertyValue();
+        void setPropertyDisplayName();
 };
 
 } // namespace

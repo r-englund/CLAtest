@@ -17,7 +17,6 @@ current(Qt::red),
 inWheel(false),
 inSquare(false)
 {
-    PI  =3.141592653589793238462;
     //    resize(initSize);
     current = current.toHsv();
     //    setMinimumSize(200,200);

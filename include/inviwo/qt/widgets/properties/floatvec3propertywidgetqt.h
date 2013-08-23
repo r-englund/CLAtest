@@ -2,6 +2,7 @@
 #define IVW_FLOATVEC3PROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/floatsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <QMenu>
@@ -33,12 +34,14 @@ private:
     vec3 valueIncrement_;
     vec3 valueVec3_;
     QMenu* settingsMenu_;
+    EditableLabelQt* label_;
 
     void generateWidget();
     void generatesSettingsWidget();
 
 public slots:
     void setPropertyValue();
+    void setPropertyDisplayName();
 
     void showContextMenuX(const QPoint& pos);
     void showContextMenuY(const QPoint& pos);

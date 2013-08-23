@@ -3,6 +3,7 @@
 
 //Qt
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QLineEdit>
 #include <QToolButton>
 #include <QGroupBox>
@@ -47,6 +48,7 @@ private:
     QGroupBox* groupBox_;
     std::vector<Property*> properties_;
 	bool collapsed_;
+    EditableLabelQt* label_;
 
     void generateWidget();
 
@@ -54,6 +56,7 @@ private:
         void hide();
         void show();
     protected slots:
+        void setGroupDisplayName();
         void propertyModified();
 };
 

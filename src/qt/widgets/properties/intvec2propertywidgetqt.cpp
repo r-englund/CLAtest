@@ -24,10 +24,12 @@ void IntVec2PropertyWidgetQt::generateWidget() {
     vLayout->addWidget(sliderX_);
     vLayout->addWidget(sliderY_);
     
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
     hLayout->addWidget(sliderWidget);
     setLayout(hLayout);
 
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
    
@@ -121,6 +123,10 @@ void IntVec2PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
         updateFromProperty();
     }
 
+}
+
+void IntVec2PropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 

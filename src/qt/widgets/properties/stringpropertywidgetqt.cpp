@@ -12,8 +12,10 @@ void StringPropertyWidgetQt::generateWidget() {
     setObjectName("StringPropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
     lineEdit_ = new QLineEdit;
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
     connect(lineEdit_, SIGNAL(editingFinished()), this, SLOT(setPropertyValue()));
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     hLayout->addWidget(lineEdit_);
     setLayout(hLayout);
 }
@@ -27,6 +29,10 @@ void StringPropertyWidgetQt::setPropertyValue() {
 void StringPropertyWidgetQt::updateFromProperty() {
    lineEdit_->setText(QString::fromStdString(property_->get()));
 
+}
+
+void StringPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 } // namespace

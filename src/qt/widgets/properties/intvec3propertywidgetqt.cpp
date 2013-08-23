@@ -13,7 +13,8 @@ IntVec3PropertyWidgetQt::IntVec3PropertyWidgetQt(IntVec3Property *property) : pr
 
 void IntVec3PropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
-	hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
 
 	QWidget* sliderWidget = new QWidget();
 	QVBoxLayout* vLayout = new QVBoxLayout();
@@ -30,7 +31,8 @@ void IntVec3PropertyWidgetQt::generateWidget() {
     vLayout->addWidget(sliderZ_);
     hLayout->addWidget(sliderWidget);
     setLayout(hLayout);
-
+    
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     connect(sliderZ_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
@@ -78,33 +80,6 @@ void IntVec3PropertyWidgetQt::updateFromProperty() {
     sliderZ_->updateValueSpinBox();
 };
 
-
-//void IntVec3PropertyWidgetQt::setPropertyValueFromSlider() {
-//    sliderX_->updateValueSpinBox();
-//    sliderY_->updateValueSpinBox();
-//    sliderZ_->updateValueSpinBox();
-//
-//
-//    valueVec_ = property_->get();
-//    valueVec_.x = sliderX_->getValue();
-//    valueVec_.y = sliderY_->getValue();
-//    valueVec_.z = sliderZ_->getValue();;
-//    property_->set(valueVec_);
-//    emit modified();
-//}
-//
-//void IntVec3PropertyWidgetQt::setPropertyValueFromSpinBox() {
-//    sliderX_->updateValueSlider();
-//    sliderY_->updateValueSlider();
-//    sliderZ_->updateValueSlider();
-//
-//    valueVec_ = property_->get();
-//    valueVec_.x = sliderX_->getValue();
-//    valueVec_.y = sliderY_->getValue();
-//    valueVec_.z = sliderZ_->getValue();
-//    property_->set(valueVec_);
-//    emit modified();
-//}
 
 void IntVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
     QPoint globalPos = sliderX_->mapToGlobal(pos);
@@ -187,6 +162,10 @@ void IntVec3PropertyWidgetQt::setPropertyValue(){
     valueVec_.z = sliderZ_->getValue();
     property_->set(valueVec_);
     emit modified();
+}
+
+void IntVec3PropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 

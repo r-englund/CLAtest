@@ -2,6 +2,7 @@
 #define IVW_CAMERAPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QSlider>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
@@ -20,10 +21,12 @@ public:
 
 public slots:
     void setPropertyValue();
+    void setPropertyDisplayName();
 
 private:
     CameraProperty* property_;
     QSlider* slider_;
+    EditableLabelQt* label_;
 
     void generateWidget();
 };

@@ -12,7 +12,7 @@ FloatMat3PropertyWidgetQt::FloatMat3PropertyWidgetQt(FloatMat3Property *property
 
 void FloatMat3PropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    QGroupBox* matrixgroup = new QGroupBox(QString::fromStdString(property_->getDisplayName()));
+    QGroupBox* matrixgroup = new QGroupBox();
     mat0x0_ = new QLineEdit;
     mat0x1_ = new QLineEdit;
     mat0x2_ = new QLineEdit;
@@ -56,6 +56,9 @@ void FloatMat3PropertyWidgetQt::generateWidget() {
     gridLayout->addWidget(mat2x2_,2,2);
 
     matrixgroup->setLayout(gridLayout);
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     hLayout->addWidget(matrixgroup);
     setLayout(hLayout);
 }
@@ -156,6 +159,10 @@ void FloatMat3PropertyWidgetQt::updateFromProperty() {
     mat2x1_->setText(QString::number(value[2][1]));
     mat2x2_->setText(QString::number(value[2][2]));
 };
+
+void FloatMat3PropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
+}
 
 
 } //namespace

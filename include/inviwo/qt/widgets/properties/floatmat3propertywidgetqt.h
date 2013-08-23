@@ -5,6 +5,7 @@
 
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 
 #include <inviwo/core/properties/matrixproperties.h>
 
@@ -31,6 +32,8 @@ private:
     QLineEdit* mat2x1_;
     QLineEdit* mat2x2_;
 
+    EditableLabelQt* label_;
+
     void generateWidget();
 
     public slots:
@@ -45,6 +48,7 @@ private:
         void set2x2Value();
 
         void setPropertyValue();
+        void setPropertyDisplayName();
 };
 
 } // namespace

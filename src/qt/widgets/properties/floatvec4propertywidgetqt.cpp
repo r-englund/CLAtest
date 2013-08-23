@@ -13,7 +13,8 @@ FloatVec4PropertyWidgetQt::FloatVec4PropertyWidgetQt(FloatVec4Property* property
 
 void FloatVec4PropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
 
     QWidget* sliderWidget = new QWidget();
     QVBoxLayout* vLayout = new QVBoxLayout();
@@ -34,7 +35,7 @@ void FloatVec4PropertyWidgetQt::generateWidget() {
     hLayout->addWidget(sliderWidget);
     setLayout(hLayout);
 
-    
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
     connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
     connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
@@ -193,6 +194,10 @@ void FloatVec4PropertyWidgetQt::showContextMenuW( const QPoint& pos ) {
         property_->setMaxValue(vec4MaxValue);
         updateFromProperty();
     }
+}
+void FloatVec4PropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
+
 }
 
 } // namespace

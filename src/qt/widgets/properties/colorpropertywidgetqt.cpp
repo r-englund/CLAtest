@@ -22,7 +22,9 @@ void ColorPropertyWidgetQt::generateWidget() {
     
     connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
 
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     hLayout->addWidget(btnColor_);
     setLayout(hLayout);
 }
@@ -80,6 +82,10 @@ void ColorPropertyWidgetQt::setPropertyValue() {
 
 void ColorPropertyWidgetQt::openColorDialog() {
     colorDialog_->open();
+}
+
+void ColorPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 }//namespace

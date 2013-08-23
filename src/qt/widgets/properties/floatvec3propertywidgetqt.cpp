@@ -16,7 +16,8 @@ valueIncrement_(property->getIncrement()){
 
 void FloatVec3PropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
 
     QWidget* sliderWidget = new QWidget();
     QVBoxLayout* vLayout = new QVBoxLayout();
@@ -32,7 +33,7 @@ void FloatVec3PropertyWidgetQt::generateWidget() {
     hLayout->addWidget(sliderWidget);
     setLayout(hLayout);
 
-    
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
     connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
     connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
@@ -159,6 +160,10 @@ void FloatVec3PropertyWidgetQt::setPropertyValue() {
     valueVec3_.z = sliderZ_->getValue();
     property_->set(valueVec3_);
     emit modified();
+}
+
+void FloatVec3PropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 } // namespace

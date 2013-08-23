@@ -12,8 +12,10 @@ IntPropertyWidgetQt::IntPropertyWidgetQt(IntProperty* property) : property_(prop
 
 void IntPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
     sliderWidget_ = new IntSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(sliderWidget_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     hLayout->addWidget(sliderWidget_);
     hLayout->setContentsMargins(0,0,0,0);
@@ -63,6 +65,10 @@ void IntPropertyWidgetQt::generatesSettingsWidget() {
 void IntPropertyWidgetQt::setPropertyValue(){
    property_->set(sliderWidget_->getValue());
    emit modified();
+}
+
+void IntPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 } // namespace

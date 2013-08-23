@@ -11,7 +11,8 @@ IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty *property
 
 void IntMinMaxPropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
-	hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
 
     spinBoxMin_ = new QSpinBox(this);
     spinBoxMin_->setFixedWidth(50);
@@ -25,7 +26,8 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
     spinBoxMax_->setFixedWidth(50);
     hLayout->addWidget(spinBoxMax_);
 	setLayout(hLayout);
-
+    
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(slider_, SIGNAL(valuesChanged(int,int)), this, SLOT(updateFromSlider(int,int)));
     connect(spinBoxMin_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMin(int)));
     connect(spinBoxMax_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMax(int)));
@@ -83,6 +85,10 @@ void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMax(int val){
 void IntMinMaxPropertyWidgetQt::setPropertyValue() {
     property_->set(ivec2(spinBoxMin_->value(), spinBoxMax_->value()));
     emit modified();
+}
+
+void IntMinMaxPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 } //namespace

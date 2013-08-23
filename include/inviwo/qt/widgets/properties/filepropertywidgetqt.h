@@ -2,6 +2,7 @@
 #define IVW_FILEPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QLineEdit>
 #include <QToolButton>
 
@@ -24,11 +25,13 @@ private:
     FileProperty* property_;
     QLineEdit* lineEdit_;
     QToolButton* openButton_;
+    EditableLabelQt* label_;
 
     void generateWidget();
 
 public slots:
     void setPropertyValue();
+    void setPropertyDisplayName();
 };
 
 } // namespace

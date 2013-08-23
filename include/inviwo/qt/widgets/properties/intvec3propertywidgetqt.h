@@ -3,6 +3,7 @@
 
 #include <QMenu>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/intsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
@@ -22,6 +23,7 @@ public:
 private:
     IntVec3Property* property_;
     PropertySettingsWidgetQt* settingsWidget_;
+    EditableLabelQt* label_;
     QMenu* settingsMenu_;
     IntSliderWidgetQt* sliderX_;
     IntSliderWidgetQt* sliderY_;
@@ -36,8 +38,7 @@ private:
 
 public slots:
     void setPropertyValue();
-    //void setPropertyValueFromSlider();
-    //void setPropertyValueFromSpinBox();
+    void setPropertyDisplayName();
 
     void showContextMenuX(const QPoint& pos);
     void showContextMenuY(const QPoint& pos);

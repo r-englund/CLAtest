@@ -42,7 +42,8 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setSpacing(0);
     H2->addWidget(btnCollapse_);
-    H2->addWidget(new QLabel(QString::fromStdString(displayName_)));
+    label_ = new EditableLabelQt(displayName_);
+    H2->addWidget(label_);
     H2->setSpacing(7);
     gridLayout->addLayout(H2,1,0,Qt::AlignLeft);
     gridLayout->addWidget(groupBox_,2,0);
@@ -130,6 +131,10 @@ void CollapsiveGroupBoxWidgetQt::notify(){
 
 void CollapsiveGroupBoxWidgetQt::propertyModified(){
     emit modified();
+}
+
+void CollapsiveGroupBoxWidgetQt::setGroupDisplayName(){
+    displayName_ = label_->getText();
 }
 
 } // namespace

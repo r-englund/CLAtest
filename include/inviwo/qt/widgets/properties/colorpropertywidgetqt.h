@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <inviwo/core/properties/properties.h>
@@ -28,12 +29,14 @@ private:
     QPushButton* btnColor_;
     QColorDialog* colorDialog_;
     QColor* currentColor_;
+    EditableLabelQt* label_;
 
     void generateWidget();
     
 public slots:
     void setPropertyValue();
     void openColorDialog();
+    void setPropertyDisplayName();
 };
 
 }//namespace

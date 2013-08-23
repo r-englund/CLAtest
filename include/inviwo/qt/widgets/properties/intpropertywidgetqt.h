@@ -2,6 +2,7 @@
 #define IVW_INTPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/intsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
@@ -23,6 +24,7 @@ private:
     IntProperty* property_;
     IntSliderWidgetQt* sliderWidget_;
     PropertySettingsWidgetQt* settingsWidget_;
+    EditableLabelQt* label_;
     QMenu* settingsMenu_;
 
     void generateWidget();
@@ -30,6 +32,7 @@ private:
 
 public slots:
     void setPropertyValue();
+    void setPropertyDisplayName();
 
     void showContextMenu(const QPoint& pos);
 };

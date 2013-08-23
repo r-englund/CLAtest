@@ -2,6 +2,7 @@
 #define IVW_BOOLPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QCheckBox>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
@@ -22,11 +23,12 @@ public:
 private:
     BoolProperty* property_;
     QCheckBox* checkBox_;
-
+    EditableLabelQt* label_;
     void generateWidget();
 
 public slots:
     void setPropertyValue();
+    void setPropertyDisplayName();
 };
 
 } // namespace

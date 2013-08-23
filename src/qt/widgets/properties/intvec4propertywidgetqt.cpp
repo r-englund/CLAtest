@@ -14,7 +14,8 @@ IntVec4PropertyWidgetQt::IntVec4PropertyWidgetQt(IntVec4Property *property) : pr
 
 void IntVec4PropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
-	hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
 
 	QWidget* sliderWidget = new QWidget();
 	QVBoxLayout* vLayout = new QVBoxLayout();
@@ -33,7 +34,8 @@ void IntVec4PropertyWidgetQt::generateWidget() {
     vLayout->addWidget(sliderW_);
     hLayout->addWidget(sliderWidget);
 	setLayout(hLayout);
-
+    
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     connect(sliderZ_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
@@ -191,6 +193,10 @@ void IntVec4PropertyWidgetQt::showContextMenuW( const QPoint& pos ) {
         updateFromProperty();
     }
 
+}
+
+void IntVec4PropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 

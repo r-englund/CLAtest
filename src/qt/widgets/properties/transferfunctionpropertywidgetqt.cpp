@@ -19,6 +19,9 @@ TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt(){
 
 void TransferFunctionPropertyWidgetQt::generateWidget(){
     QHBoxLayout* hLayout = new QHBoxLayout();
+
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
 	
 	InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
 	transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_, app->getMainWindow());
@@ -41,7 +44,7 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
     btnOpenTF_->setIconSize(QSize(150,25));
 
 	connect(btnOpenTF_,SIGNAL(clicked()),this,SLOT(openTransferFunctionDialog()));
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     hLayout->addWidget(btnOpenTF_);
 
     setLayout(hLayout);
@@ -62,6 +65,11 @@ void TransferFunctionPropertyWidgetQt::setPropertyValue(){}
 void TransferFunctionPropertyWidgetQt::openTransferFunctionDialog() {
 	transferFunctionDialog_->setVisible(true);
 }
+
+void TransferFunctionPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
+}
+
 
 
 

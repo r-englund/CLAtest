@@ -5,6 +5,7 @@
 #include <inviwo/qt/widgets/floatsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QMenu>
 //Core
 #include <inviwo/core/properties/vectorproperties.h>
@@ -25,6 +26,7 @@ private:
     FloatSliderWidgetQt* sliderX_;
     FloatSliderWidgetQt* sliderY_;
     PropertySettingsWidgetQt* settingsWidget_;
+    EditableLabelQt* label_;
     QMenu* settingsMenu_;
     vec2 valueVec2Max_;
     vec2 valueVec2Min_;
@@ -36,7 +38,7 @@ private:
 
 public slots:
     void setPropertyValue();
-
+    void setPropertyDisplayName();
     void showContextMenuX(const QPoint& pos);
     void showContextMenuY(const QPoint& pos);
 };

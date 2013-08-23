@@ -12,9 +12,11 @@ CameraPropertyWidgetQt::CameraPropertyWidgetQt(CameraProperty* property) : prope
 
 void CameraPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
     slider_ = new QSlider();
     slider_->setOrientation(Qt::Horizontal);
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     hLayout->addWidget(slider_);
     setLayout(hLayout);
@@ -25,5 +27,9 @@ void CameraPropertyWidgetQt::setPropertyValue() {
 
 void CameraPropertyWidgetQt::updateFromProperty() {
 };
+
+void CameraPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
+}
 
 } // namespace

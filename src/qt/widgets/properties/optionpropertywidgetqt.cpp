@@ -12,10 +12,12 @@ void OptionPropertyWidgetQt::generateWidget() {
     comboBox_ = new QComboBox();
     fillComboBox();
     updateFromProperty();
-    hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+    label_ = new EditableLabelQt(property_->getDisplayName());
+    hLayout->addWidget(label_);
     hLayout->addWidget(comboBox_);
     setLayout(hLayout);
     connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
 }
 
 void OptionPropertyWidgetQt::fillComboBox() {
@@ -31,6 +33,10 @@ void OptionPropertyWidgetQt::optionChanged() {
 void OptionPropertyWidgetQt::updateFromProperty() {
     int index = property_->getSelectedOption();
     comboBox_->setCurrentIndex(index);
+}
+
+void OptionPropertyWidgetQt::setPropertyDisplayName(){
+    property_->setDisplayName(label_->getText());
 }
 
 } // namespace
