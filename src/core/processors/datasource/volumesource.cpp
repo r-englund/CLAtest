@@ -36,18 +36,18 @@ void VolumeSource::process() {
     loadVolume(volumeFileName_.get());
 }
 
-void VolumeSource::loadVolume( const std::string& filePath )
+void VolumeSource::loadVolume( const std::string& filename )
 {
     // TODO: We need to remove resources at some point, how?
-    TemplateResource<Volume>* volumeResource = ResourceManager::instance()->getResourceAs<TemplateResource<Volume>>(filePath);
+    TemplateResource<Volume>* volumeResource = ResourceManager::instance()->getResourceAs< TemplateResource<Volume> >(filename);
     if(volumeResource) {
         volumePort_.setData(volumeResource->getData(), false);
     } else {
         Volume* volume = new UniformRectiLinearVolume();
-        VolumeDisk* vd = new VolumeDisk(filePath);
+        VolumeDisk* vd = new VolumeDisk(filename);
         volume->setDimension(vd->getDimensions());
         volume->addRepresentation(vd);
-        ResourceManager::instance()->addResource(new TemplateResource<Volume>(filePath, volume));
+        ResourceManager::instance()->addResource(new TemplateResource<Volume>(filename, volume));
         volumePort_.setData(volume, false);
     }      
 }
