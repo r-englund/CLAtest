@@ -15,9 +15,9 @@
 #include <vector>
 
 
-namespace IVW_MODULE_PYTHON_API inviwo {
+namespace inviwo {
     
-  class PyMethod{
+  class IVW_MODULE_PYTHON_API PyMethod{
   protected:
       PyMethodDef def_;
   public:

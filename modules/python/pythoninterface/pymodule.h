@@ -12,7 +12,7 @@ PyObject* py_info(PyObject* /*self*/, PyObject* /*args*/);
 
 namespace inviwo {
 
-    class PyInfoMethod : public PyMethod{
+    class IVW_MODULE_PYTHON_API PyInfoMethod : public PyMethod{
     public:
         char *getName(){return "info";}
         char *getDesc(){return "info()\tPrints documentation of the module's functions.";}

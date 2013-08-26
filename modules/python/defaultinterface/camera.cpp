@@ -3,7 +3,8 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/processors/processor.h>
 
-using namespace inviwo;
+
+namespace inviwo {
 
 PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 3) {
@@ -176,4 +177,5 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
+}
 }

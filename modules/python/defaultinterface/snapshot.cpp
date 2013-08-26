@@ -6,7 +6,8 @@
 #include <modules/opengl/canvasprocessorgl.h>
 
 
-using namespace inviwo;
+
+namespace inviwo {
 
 PyObject* py_snapshot(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 1 && PyTuple_Size(args) != 2) {
@@ -89,4 +90,6 @@ PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* args){
     }
     canvases[index]->createSnapshot(filename);
     Py_RETURN_NONE;
+}
+
 }

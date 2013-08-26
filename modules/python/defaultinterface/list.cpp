@@ -3,7 +3,8 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/processors/processor.h>
 
-using namespace inviwo;
+
+namespace inviwo {
 
 
 PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
@@ -55,3 +56,5 @@ PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/){
     Py_RETURN_NONE;
 }
 
+
+}

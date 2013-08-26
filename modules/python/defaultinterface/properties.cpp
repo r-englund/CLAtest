@@ -5,7 +5,8 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/processors/processor.h>
 
-using namespace inviwo;
+
+namespace inviwo {
 
 PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
     if (PyTuple_Size(args) != 3) {
@@ -485,3 +486,5 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
 }
 
 
+
+}

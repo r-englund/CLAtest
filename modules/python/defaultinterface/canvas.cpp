@@ -4,7 +4,8 @@
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 #include <modules/opengl/canvasprocessorgl.h>
 
-using namespace inviwo;
+
+namespace inviwo {
 
 
 
@@ -45,5 +46,7 @@ PyObject* py_setViewport(PyObject* /*self*/, PyObject* args){
         Py_RETURN_NONE;
     }
     return 0;
+
+}
 
 }

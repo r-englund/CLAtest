@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-    class PyVariant : public Variant{
+    class IVW_MODULE_PYTHON_API PyVariant : public Variant{
     public:
         explicit PyVariant(PyObject *obj, VariantType type);
         explicit PyVariant(PyObject *obj, int type);
