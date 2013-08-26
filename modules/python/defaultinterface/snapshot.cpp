@@ -1,40 +1,14 @@
-#ifndef IVW_PYSNAPSHOTMEHTODINVIWO_H
-#define IVW_PYSNAPSHOTMEHTODINVIWO_H
-
-#ifndef IVW_PYINVIWO_CPP
-    #error This file should only be included from pyinviwo.cpp
-#endif
-
-#include <modules/python/pythonmoduledefine.h>
-
-#include "pythonMethod.h"
-
-static PyObject* py_snapshot(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* /*args*/);
-
-namespace inviwo {
-    class PySnapshotMethod : public PythonMethod{
-    public:
-        char *getName(){return "snapshot";}
-        char *getDesc(){return "snapshot(filename, [canvas])\tSaves a snapshot of the specified canvas to the given file. If no canvas name is passed, the first canvas in the network is chosen.";}
-        virtual PyCFunction getFunc(){return py_snapshot;}
-    };
-
-    class PySnapshotCanvasMethod : public PythonMethod{
-    public:
-        char *getName(){return "snapshotCanvas";}
-        char *getDesc(){return "snapshotCanvas(i, filename)\tSaves a snapshot of the ith canvas to the given file.";}
-        virtual PyCFunction getFunc(){return py_snapshotCanvas;}
-    };
-
-} //namespace
+#include "snapshot.h"
 
 
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/processors/processor.h>
+#include <modules/opengl/canvasprocessorgl.h>
 
 
+using namespace inviwo;
 
-
-static PyObject* py_snapshot(PyObject* /*self*/, PyObject* args){
+PyObject* py_snapshot(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 1 && PyTuple_Size(args) != 2) {
         std::ostringstream errStr;
         errStr << "snapshot() takes 1 or 2 argument: filename, canvas name";
@@ -81,7 +55,7 @@ static PyObject* py_snapshot(PyObject* /*self*/, PyObject* args){
 
 
 
-static PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* args){
+PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 2) {
         std::ostringstream errStr;
         errStr << "snapshotCanvas() takes exactly 2 argument: canvas ID, filename";
@@ -116,7 +90,3 @@ static PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* args){
     canvases[index]->createSnapshot(filename);
     Py_RETURN_NONE;
 }
-
-#endif // IVW_PYSNAPSHOTMEHTODINVIWO_H
-
-

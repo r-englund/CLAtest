@@ -1,16 +1,14 @@
 #ifndef IVW_HCEMODULEINVIWO_H
 #define IVW_HCEMODULEINVIWO_H
 
-#ifndef IVW_PYINVIWO_CPP
-    #error This file should only be included from pyinviwo.cpp
-#endif
+
 
 #include <modules/python/pythonmoduledefine.h>
 #include <modules/humancomputationengine/humancomputationenginemodule.h>
 #include <modules/humancomputationengine/crowdflowersettings.h>
 #include <modules/humancomputationengine/crowdflowerjob.h>
 
-#include "pythonMethod.h"
+#include "../pythoninterface/pymethod.h"
 
 static PyObject* py_setCrowdFlowerSettingFile(PyObject* /*self*/, PyObject* /*args*/);
 static PyObject* py_submitJob(PyObject* /*self*/, PyObject* /*args*/);
@@ -19,21 +17,21 @@ static PyObject* py_addUnitFile(PyObject* /*self*/, PyObject* /*args*/);
 std::vector<std::string> fileNames_;
 
 namespace inviwo {
-    class PySetCrowdFlowerSettingFileMethod : public PythonMethod{
+    class PySetCrowdFlowerSettingFileMethod : public PyMethod{
     public:
         char *getName(){return "setCrowdFlowerSettingFile";}
         char *getDesc(){return "setCrowdFlowerSettingFile()\tTake setting files with key as input";}
         virtual PyCFunction getFunc(){return py_setCrowdFlowerSettingFile;}
     };
 
-    class PySubmitJobMethod : public PythonMethod{
+    class PySubmitJobMethod : public PyMethod{
     public:
         char *getName(){return "submitJob";}
         char *getDesc(){return "submitJob(unit_file, question_file, job_title, description, instruction)\tSubmits a job to crowdflower platform";}
         virtual PyCFunction getFunc(){return py_submitJob;}
     };
 
-    class PyAddUnitFileMethod : public PythonMethod{
+    class PyAddUnitFileMethod : public PyMethod{
     public:
         char *getName(){return "addUnitFile";}
         char *getDesc(){return "addUnitFile(unit_file)\tAdds Unit file to a job";}

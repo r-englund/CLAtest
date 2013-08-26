@@ -1,37 +1,12 @@
-#ifndef IVW_PYLISTMEHTODSINVIWO_H
-#define IVW_PYLISTMEHTODSINVIWO_H
+#include "list.h"
 
-#ifndef IVW_PYINVIWO_CPP
-    #error This file should only be included from pyinviwo.cpp
-#endif
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/processors/processor.h>
 
-#include <modules/python/pythonmoduledefine.h>
-
-#include "pythonMethod.h"
-
-static PyObject* py_listProperties(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/);
-
-namespace inviwo {
-    class PyListPropertiesMethod : public PythonMethod{
-    public:
-        char *getName(){return "listProperties";}
-        char *getDesc(){return "listProperties(processor name)\tList all properties for a processor.";}
-        virtual PyCFunction getFunc(){return py_listProperties;}
-
-    };
-    class PyListProcessorsMethod : public PythonMethod{
-    public:
-        char *getName(){return "listProcessors";}
-        char *getDesc(){return "listProcessors()\tLists all processors in the current network.";}
-        virtual PyCFunction getFunc(){return py_listProcesoors;}
-
-    };
-
-} //namespace
+using namespace inviwo;
 
 
-static PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
+PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 1) {
         std::ostringstream errStr;
         errStr << "listProperties() takes exactly 1 argument: processor name";
@@ -48,7 +23,8 @@ static PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
 
     std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::ostringstream errStr;
         errStr << "listProperties(): no processor with name " << processorName << " could be found";
@@ -67,7 +43,7 @@ static PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
 
 
 
-static PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/){
+PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/){
     if(InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()){
         std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
         for(std::vector<Processor*>::const_iterator processor = processors.begin();processor!=processors.end();++processor){
@@ -78,8 +54,4 @@ static PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/){
     }
     Py_RETURN_NONE;
 }
-
-
-#endif // IVW_PYLISTMEHTODSINVIWO_H
-
 

@@ -19,9 +19,6 @@ PythonScript::PythonScript()
     : source_("")
     , byteCode_(0)
     , compiled_(false)
-    , errorLine_(-1)
-    , errorCol_(-1)
-    , printErrorsToStdOut_(false)
 {}
 
 PythonScript::~PythonScript() {
@@ -128,8 +125,8 @@ bool PythonScript::checkCompileError(bool logErrors) {
     using std::string;
 
     log_ = "";
-    errorLine_ = -1;
-    errorCol_ = -1;
+    int errorLine_ = -1;
+    int errorCol_ = -1;
     if (!PyErr_Occurred())
         return true;
 
@@ -160,15 +157,10 @@ bool PythonScript::checkCompileError(bool logErrors) {
         }
     }
 
-    if (printErrorsToStdOut_) {
-        PyErr_Restore(errtype, errvalue, traceback);
-        PyErr_Print();
-    }
-    else {
-        Py_XDECREF(errtype);
-        Py_XDECREF(errvalue);
-        Py_XDECREF(traceback);
-    }
+   
+    Py_XDECREF(errtype);
+    Py_XDECREF(errvalue);
+    Py_XDECREF(traceback);
 
     if (logErrors)
         LogError(log_);
@@ -180,8 +172,8 @@ bool PythonScript::checkRuntimeError(bool logErrors) {
     using std::string;
 
     log_ = "";
-    errorLine_ = -1;
-    errorCol_ = -1;
+    int errorLine_ = -1;
+    int errorCol_ = -1;
     if (!PyErr_Occurred())
         return true;
 
@@ -241,15 +233,9 @@ bool PythonScript::checkRuntimeError(bool logErrors) {
             LogWarn("Failed to parse traceback");
     }
 
-    if (printErrorsToStdOut_) {
-        PyErr_Restore(pyError_type, pyError_value, pyError_traceback);
-        PyErr_Print();
-    }
-    else {
-        Py_XDECREF(pyError_type);
-        Py_XDECREF(pyError_value);
-        Py_XDECREF(pyError_traceback);
-    }
+    Py_XDECREF(pyError_type);
+    Py_XDECREF(pyError_value);
+    Py_XDECREF(pyError_traceback);
 
     log_ = pyException;
 

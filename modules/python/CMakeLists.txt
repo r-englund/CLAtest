@@ -2,23 +2,18 @@
 # Inviwo Python Module
 ivw_module(Python)
 
-#find_package(Python REQUIRED)
-
-# if(BUILD_PYTHON)	
-	# add_subdirectory(ext/python27)
-# endif(BUILD_PYTHON)
-
 
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/python/pythoninterface/pyinviwo.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/camera.py.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/canvas.py.h	
-    ${IVW_MODULE_DIR}/python/pythoninterface/info.py.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/list.py.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/properties.py.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/snapshot.py.h
+    ${IVW_MODULE_DIR}/python/pyinviwo.h
+    ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.h
+    ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.h
+    ${IVW_MODULE_DIR}/python/defaultinterface/camera.h
+    ${IVW_MODULE_DIR}/python/defaultinterface/canvas.h	
+    ${IVW_MODULE_DIR}/python/defaultinterface/list.h
+    ${IVW_MODULE_DIR}/python/defaultinterface/properties.h
+    ${IVW_MODULE_DIR}/python/defaultinterface/snapshot.h
     ${IVW_MODULE_DIR}/python/pyvariant.h
     ${IVW_MODULE_DIR}/python/pythonmodule.h
     ${IVW_MODULE_DIR}/python/pythonscript.h
@@ -27,7 +22,7 @@ set(HEADER_FILES
 
 if (IVW_MODULE_HUMANCOMPUTATIONENGINE)
 LIST(APPEND HEADER_FILES
-    ${IVW_MODULE_DIR}/python/pythoninterface/hcemodule.py.h
+    ${IVW_MODULE_DIR}/python/pythoninterface/hcemodule.h
 )
 add_definitions(-DIVW_HAS_HUMANCOMPUTATION)
 endif (IVW_MODULE_HUMANCOMPUTATIONENGINE)
@@ -46,20 +41,23 @@ source_group("MOC Files" FILES ${MOC_FILES})
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/python/pythoneditorwidget.cpp
-    ${IVW_MODULE_DIR}/python/pythoninterface/pyinviwo.cpp
+    ${IVW_MODULE_DIR}/python/pyinviwo.cpp
+    ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.cpp
+    ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/camera.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/canvas.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/list.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/properties.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/snapshot.cpp
     ${IVW_MODULE_DIR}/python/pythonscript.cpp
     ${IVW_MODULE_DIR}/python/pythonmodule.cpp
     ${IVW_MODULE_DIR}/python/pyvariant.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
-#include_directories(${PYTHON_INCLUDE_DIR})
-#link_directories(${PYTHON_LIBRARY_DIR})
 
-#ivw_define_qt_definitions()
 #--------------------------------------------------------------------
 # Define defintions
-#ivw_add_definition(IVW_PYTHON)
 add_definitions(-DIVW_PYTHON)
 ivw_define_qt_definitions()
 

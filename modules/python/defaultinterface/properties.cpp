@@ -1,72 +1,13 @@
-#ifndef IVW_PROPERTIESMEHTODSINVIWO_H
-#define IVW_PROPERTIESMEHTODSINVIWO_H
+#include "properties.h"
 
-#ifndef IVW_PYINVIWO_CPP
-    #error This file should only be included from pyinviwo.cpp
-#endif
+#include "../pyvariant.h"
 
-#include <modules/python/pythonmoduledefine.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/processors/processor.h>
 
-#include "pythonMethod.h"
+using namespace inviwo;
 
-
-
-static PyObject* py_setPropertyValue(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* /*args*/);
-
-namespace inviwo {
-    class PySetPropertyValueMethod : public PythonMethod{
-    public:
-        char *getName(){return "setPropertyValue";}
-        char *getDesc(){return "setPropertyValue(processor name, property id, scalar or tuple)\tAssigns a value to a processor property. The value has to be passed as scalar or tuple, depending on the property's cardinality. Camera properties take a 3-tuple of 3-tuples, containing the position, focus and up vectors. Option properties expect an option key.";}
-        virtual PyCFunction getFunc(){return py_setPropertyValue;}
-    };
-
-    class PySetPropertyMaxValueMethod : public PythonMethod{
-    public:
-        char *getName(){return "setPropertyMaxValue";}
-        char *getDesc(){return "setPropertyValue(processor name, property id, scalar or tuple)\tDefines the max value for a property.";}
-        virtual PyCFunction getFunc(){return py_setPropertyMaxValue;}
-    };
-
-    class PySetPropertyMinValueMethod : public PythonMethod{
-    public:
-        char *getName(){return "setPropertyMinValue";}
-        char *getDesc(){return "setPropertyMinValue(processor name, property id, scalar or tuple)\tDefines the min value for a property.";}
-        virtual PyCFunction getFunc(){return py_setPropertyMinValue;}
-    };
-
-    class PyGetPropertyValueMethod : public PythonMethod{
-    public:
-        char *getName(){return "getPropertyValue";}
-        char *getDesc(){return "getPropertyValue(processor name, property id)\tReturns the current value of a processor property (scalar or tuple).";}
-        virtual PyCFunction getFunc(){return py_getPropertyValue;}
-    };
-
-    class PyGetPropertyMaxValueMethod : public PythonMethod{
-    public:
-        char *getName(){return "getPropertyMaxValue";}
-        char *getDesc(){return "getPropertyValue(processor name, property id)\tReturns the max value for a property (scalar or tuple).";}
-        virtual PyCFunction getFunc(){return py_getPropertyMaxValue;}
-    };
-
-    class PyGetPropertyMinValueMethod : public PythonMethod{
-    public:
-        char *getName(){return "getPropertyMinValue";}
-        char *getDesc(){return "getPropertyValue(processor name, property id)\tReturns the min value for a property (scalar or tuple).";}
-        virtual PyCFunction getFunc(){return py_getPropertyMinValue;}
-    };
-
-} //namespace
-
-
-
-
-static PyObject* py_setPropertyValue(PyObject* /*self*/, PyObject* args){
+PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
     if (PyTuple_Size(args) != 3) {
         std::ostringstream errStr;
         errStr << "setPropertyValue() takes exactly 3 arguments: processor name, property id, value";
@@ -85,7 +26,8 @@ static PyObject* py_setPropertyValue(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setPropertyValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -134,7 +76,7 @@ static PyObject* py_setPropertyValue(PyObject* /*self*/, PyObject* args){
 
 
 
-static PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
+PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 3) {
         std::ostringstream errStr;
         errStr << "setPropertyMaxValue() takes exactly 3 arguments: processor name, property id, value";
@@ -153,7 +95,8 @@ static PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setPropertyMaxValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -211,7 +154,7 @@ static PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
 
 
 
-static PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
+PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 3) {
         std::ostringstream errStr;
         errStr << "setPropertyMinValue() takes exactly 3 arguments: processor name, property id, value";
@@ -230,7 +173,8 @@ static PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setPropertyMinValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -289,7 +233,7 @@ static PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
 
 
 
-static PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args){
+PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 2) {
         std::ostringstream errStr;
         errStr << "getPropertyValue() takes exactly 2 arguments: processor name, property id";
@@ -307,7 +251,8 @@ static PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args){
     std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("getPropertyValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -345,7 +290,7 @@ static PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args){
     Py_RETURN_NONE;
 }
 
-static PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
+PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 2) {
         std::ostringstream errStr;
         errStr << "getPropertyMaxValue() takes exactly 2 arguments: processor name, property id";
@@ -363,7 +308,8 @@ static PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("getPropertyMaxValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -442,7 +388,7 @@ static PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
 
 
 
-static PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
+PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 2) {
         std::ostringstream errStr;
         errStr << "getPropertyMinValue() takes exactly 2 arguments: processor name, property id";
@@ -460,7 +406,8 @@ static PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
     std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("getPropertyMinValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -536,9 +483,5 @@ static PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
 
     Py_RETURN_NONE;
 }
-
-
-
-#endif // IVW_PROPERTIESMEHTODSINVIWO_H
 
 

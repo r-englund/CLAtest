@@ -1,48 +1,11 @@
-#ifndef IVW_PYCAMERAMEHTODINVIWO_H
-#define IVW_PYCAMERAMEHTODINVIWO_H
+#include "camera.h"
 
-#ifndef IVW_PYINVIWO_CPP
-    #error This file should only be included from pyinviwo.cpp
-#endif
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/processors/processor.h>
 
-#include <modules/python/pythonmoduledefine.h>
+using namespace inviwo;
 
-#include "pythonMethod.h"
-
-static PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* /*args*/);
-
-namespace inviwo {
-    class PySetCameraFocusMethod : public PythonMethod{
-    public:
-        char *getName(){return "setCameraFocus";}
-        char *getDesc(){return "setCameraFocus(processor name, property id, tuple)\tFunction to set the cameras focal point.";}
-        virtual PyCFunction getFunc(){return py_setCameraFocus;}
-
-    };
-
-    class PySetCameraUpMethod : public PythonMethod{
-    public:
-        char *getName(){return "setCameraUp";}
-        char *getDesc(){return "setCameraUpDirection(processor name, property id, tuple)\tFunction to set the cameras up direction.";}
-        virtual PyCFunction getFunc(){return py_setCameraUp;}
-
-    };
-
-    class PySetCameraPosMethod : public PythonMethod{
-    public:
-        char *getName(){return "setCameraPosition";}
-        char *getDesc(){return "setCameraUpDirection(processor name, property id, tuple)\tFunction to set the cameras position.";}
-        virtual PyCFunction getFunc(){return py_setCameraPos;}
-
-    };
-
-} //namespace
-
-
-
-static PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
+PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 3) {
         std::ostringstream errStr;
         errStr << "setCameraFocus() takes exactly 3 arguments: processor name, property id, value";
@@ -61,7 +24,8 @@ static PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setCameraFocus() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -98,7 +62,7 @@ static PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
     }
 }
 
-static PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args){
+PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 3) {
         std::ostringstream errStr;
         errStr << "setCameraUp() takes exactly 3 arguments: processor name, property id, value";
@@ -117,7 +81,8 @@ static PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setCameraUp() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -156,7 +121,7 @@ static PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args){
 
 
 
-static PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
+PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 3) {
         std::ostringstream errStr;
         errStr << "setCameraPosition() takes exactly 3 arguments: processor name, property id, value";
@@ -175,7 +140,8 @@ static PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-    Processor* processor = getProcessor(processorName);
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setCameraPosition() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -211,9 +177,3 @@ static PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 }
-
-
-
-#endif // IVW_PYCAMERAMEHTODINVIWO_H
-
-

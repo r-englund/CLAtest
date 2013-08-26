@@ -96,10 +96,8 @@ private:
     PyObject*       byteCode_;
     bool            compiled_;
     std::string     log_;
-    int             errorLine_;
-    int             errorCol_;
-
-    bool printErrorsToStdOut_;  //< only for debugging
+    //int             errorLine_;
+    //int             errorCol_;
 };
 
 }

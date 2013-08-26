@@ -1,36 +1,14 @@
-#ifndef IVW_PYCANVASMEHTODSINVIWO_H
-#define IVW_PYCANVASMEHTODSINVIWO_H
+#include "canvas.h"
 
-#ifndef IVW_PYINVIWO_CPP
-    #error This file should only be included from pyinviwo.cpp
-#endif
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
+#include <modules/opengl/canvasprocessorgl.h>
 
-#include <modules/python/pythonmoduledefine.h>
-
-#include "pythonMethod.h"
-
-static PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/);
-static PyObject* py_setViewport(PyObject* /*self*/, PyObject* /*args*/);
-
-namespace inviwo {
-    class PyCanvasCountMethod : public PythonMethod{
-    public:
-        char *getName(){return "canvasCount";}
-        char *getDesc(){return "canvasCount()\tReturns the number of canvases in the current network.";}
-        virtual PyCFunction getFunc(){return py_canvascount;}
-    };
-
-    class PySetViewportMethod : public PythonMethod{
-    public:
-        char *getName(){return "setViewport";}
-        char *getDesc(){return "setViewport(width,height)\tResizes all the canvases in the network to the given size.";}
-        virtual PyCFunction getFunc(){return py_setViewport;}
-    };
-
-} //namespace
+using namespace inviwo;
 
 
-static PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/){
+
+PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/){
     if(InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()){
         std::vector<CanvasProcessor*> canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
         return Py_BuildValue("i",canvases.size());
@@ -41,7 +19,7 @@ static PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/){
 
 
 
-static PyObject* py_setViewport(PyObject* /*self*/, PyObject* args){
+PyObject* py_setViewport(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 2) {
         std::ostringstream errStr;
         errStr << "setViewport(width,height) takes exactly 2 argument: width and height";
@@ -69,7 +47,3 @@ static PyObject* py_setViewport(PyObject* /*self*/, PyObject* args){
     return 0;
 
 }
-
-#endif // IVW_PYCANVASMEHTODSINVIWO_H
-
-
