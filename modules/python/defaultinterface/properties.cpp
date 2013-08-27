@@ -1,12 +1,15 @@
 #include "properties.h"
 
-#include "../pyvariant.h"
+#include "../pythoninterface/pyvalueparser.h"
 
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/processors/processor.h>
 
 
 namespace inviwo {
+
+
+
 
 PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
     if (PyTuple_Size(args) != 3) {
@@ -42,33 +45,8 @@ PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
         return 0;
     }
 
-    const std::string className = theProperty->getClassName();
-    if(className == "CameraProperty"){
-        vec3 from,to,up;
-        //float fovy,nearP,farP;
-        char *dummy1,*dummy2;
-        int d1,d2;
-        if(!PyArg_ParseTuple(args,"s#s#((fff)(fff)(fff))", &dummy1,&d1,&dummy2,&d2,
-            &from.x,&from.y,&from.z,
-            &to.x,&to.y,&to.z,
-            &up.x,&up.y,&up.z
-            //,&fovy,&nearP,&farP
-            )){
-                std::string msg = std::string("setPropertyValue() Failed to parse values for camera, needs to be on the format: ((posX,posY,posZ),(focusX,focusy,focusZ),(upX,upY,upZ)) ") + propertyID;
-                PyErr_SetString(PyExc_TypeError, msg.c_str());
-                return 0;
-        }
-
-        CameraProperty* cam = static_cast<CameraProperty*>(theProperty);
-        cam->setLookFrom(from);
-        cam->setLookTo(to);
-        cam->setLookUp(up);
-
-    }else{
-        PyVariant parameterVariant(parameter, theProperty->getVariantType());
-        theProperty->setVariant(parameterVariant);        
-    }
-
+    PyValueParser pyValueParser;
+    pyValueParser.setProperty(theProperty,args);
 
     Py_RETURN_NONE;
 }
@@ -123,29 +101,30 @@ PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
     OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
-    PyVariant parameterVariant(parameter, theProperty->getVariantType());
+    PyValueParser parser;
+
     if(ordinalFloat){
-        ordinalFloat->setMaxValue(parameterVariant.getFloat());
+        ordinalFloat->setMaxValue(parser.parse<float>(args));
     }else if(ordinalInt){
-        ordinalInt->setMaxValue(parameterVariant.getInt());
+        ordinalInt->setMaxValue(parser.parse<int>(args));
     }else if(ordinalIvec2){
-        ordinalIvec2->setMaxValue(parameterVariant.getIVec2());
+        ordinalIvec2->setMaxValue(parser.parse<ivec2>(args));
     }else if(ordinalIvec3){
-        ordinalIvec3->setMaxValue(parameterVariant.getIVec3());
+        ordinalIvec3->setMaxValue(parser.parse<ivec3>(args));
     }else if(ordinalIvec4){
-        ordinalIvec4->setMaxValue(parameterVariant.getIVec4());
+        ordinalIvec4->setMaxValue(parser.parse<ivec4>(args));
     }else if(ordinalMat2){
-        ordinalMat2->setMaxValue(parameterVariant.getMat2());
+        ordinalMat2->setMaxValue(parser.parse<mat2>(args));
     }else if(ordinalMat3){
-        ordinalMat3->setMaxValue(parameterVariant.getMat3());
+        ordinalMat3->setMaxValue(parser.parse<mat3>(args));
     }else if(ordinalMat4){
-        ordinalMat4->setMaxValue(parameterVariant.getMat4());
+        ordinalMat4->setMaxValue(parser.parse<mat4>(args));
     }else if(ordinalVec2){
-        ordinalVec2->setMaxValue(parameterVariant.getVec2());
+        ordinalVec2->setMaxValue(parser.parse<vec2>(args));
     }else if(ordinalVec3){
-        ordinalVec3->setMaxValue(parameterVariant.getVec3());
+        ordinalVec3->setMaxValue(parser.parse<vec3>(args));
     }else if(ordinalVec4){
-        ordinalVec4->setMaxValue(parameterVariant.getVec4());
+        ordinalVec4->setMaxValue(parser.parse<vec4>(args));
     }else{
         LogErrorCustom("inviwo_setPropertyMaxValue","Unknown parameter type");
     }
@@ -201,29 +180,30 @@ PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
     OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
     OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
-    PyVariant parameterVariant(parameter, theProperty->getVariantType());
+    PyValueParser parser;
+
     if(ordinalFloat){
-        ordinalFloat->setMinValue(parameterVariant.getFloat());
+        ordinalFloat->setMinValue(parser.parse<float>(args));
     }else if(ordinalInt){
-        ordinalInt->setMinValue(parameterVariant.getInt());
+        ordinalInt->setMinValue(parser.parse<int>(args));
     }else if(ordinalIvec2){
-        ordinalIvec2->setMinValue(parameterVariant.getIVec2());
+        ordinalIvec2->setMinValue(parser.parse<ivec2>(args));
     }else if(ordinalIvec3){
-        ordinalIvec3->setMinValue(parameterVariant.getIVec3());
+        ordinalIvec3->setMinValue(parser.parse<ivec3>(args));
     }else if(ordinalIvec4){
-        ordinalIvec4->setMinValue(parameterVariant.getIVec4());
+        ordinalIvec4->setMinValue(parser.parse<ivec4>(args));
     }else if(ordinalMat2){
-        ordinalMat2->setMinValue(parameterVariant.getMat2());
+        ordinalMat2->setMinValue(parser.parse<mat2>(args));
     }else if(ordinalMat3){
-        ordinalMat3->setMinValue(parameterVariant.getMat3());
+        ordinalMat3->setMinValue(parser.parse<mat3>(args));
     }else if(ordinalMat4){
-        ordinalMat4->setMinValue(parameterVariant.getMat4());
+        ordinalMat4->setMinValue(parser.parse<mat4>(args));
     }else if(ordinalVec2){
-        ordinalVec2->setMinValue(parameterVariant.getVec2());
+        ordinalVec2->setMinValue(parser.parse<vec2>(args));
     }else if(ordinalVec3){
-        ordinalVec3->setMinValue(parameterVariant.getVec3());
+        ordinalVec3->setMinValue(parser.parse<vec3>(args));
     }else if(ordinalVec4){
-        ordinalVec4->setMinValue(parameterVariant.getVec4());
+        ordinalVec4->setMinValue(parser.parse<vec4>(args));
     }else{
         LogErrorCustom("inviwo_setPropertyMinValue","Unknown parameter type" );
     }
@@ -267,29 +247,11 @@ PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 
-    CameraProperty *cam = dynamic_cast<CameraProperty*>(theProperty);
-    if(cam){
-        const vec3 &eye = cam->getLookFrom();
-        const vec3 &focus = cam->getLookTo();
-        const vec3 &up = cam->getLookUp();
-        return Py_BuildValue("((fff)(fff)(fff))",eye.x,eye.y,eye.z,focus.x,focus.y,focus.z,up.x,up.y,up.z);
-    }else{
-
-        try{
-            PyVariant variant(theProperty->getVariant());
-            if(variant.isValid())
-                return variant.getAsPythonObject();
-            else{
-                LogWarnCustom("inviwo_getPropertyValue", "getPropertyValue() reading from property of unsupported type: " << theProperty->getClassName());
-                Py_RETURN_NONE;
-            }
-        }catch (...) {
-            LogErrorCustom("inviwo_getPropertyValue","Could not convert property to a variant");
-            return 0;
-        }
-    }
-    Py_RETURN_NONE;
+    return PyValueParser().getProperty(theProperty);
 }
+
+#define CAST_N_GETMAX(PropType,prop,parser) {PropType* casted = dynamic_cast<PropType*>(prop); if(casted) {return parser.toPyObject(casted->getMaxValue());}}
+#define CAST_N_GETMIN(PropType,prop,parser) {PropType* casted = dynamic_cast<PropType*>(prop); if(casted) {return parser.toPyObject(casted->getMinValue());}}
 
 PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     if (PyTuple_Size(args) != 2) {
@@ -324,65 +286,21 @@ PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 
-    OrdinalProperty<float>* ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
-    OrdinalProperty<int>*   ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
-    OrdinalProperty<ivec2>* ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
-    OrdinalProperty<ivec3>* ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
-    OrdinalProperty<ivec4>* ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
-    OrdinalProperty<mat2>*  ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
-    OrdinalProperty<mat3>*  ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
-    OrdinalProperty<mat4>*  ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
-    OrdinalProperty<vec2>*  ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
-    OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
-    OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
+    PyValueParser parser;
 
-    if(ordinalFloat){
-        PyVariant v(ordinalFloat->getVariantType());
-        v.setFloat(ordinalFloat->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalInt){
-        PyVariant v(ordinalInt->getVariantType());
-        v.setInt(ordinalInt->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalIvec2){
-        PyVariant v(ordinalIvec2->getVariantType());
-        v.setIVec2(ordinalIvec2->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalIvec3){
-        PyVariant v(ordinalIvec3->getVariantType());
-        v.setIVec3(ordinalIvec3->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalIvec4){
-        PyVariant v(ordinalIvec4->getVariantType());
-        v.setIVec4(ordinalIvec4->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalMat2){
-        PyVariant v(ordinalMat2->getVariantType());
-        v.setMat2(ordinalMat2->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalMat3){
-        PyVariant v(ordinalMat3->getVariantType());
-        v.setMat3(ordinalMat3->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalMat4){
-        PyVariant v(ordinalMat4->getVariantType());
-        v.setMat4(ordinalMat4->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalVec2){
-        PyVariant v(ordinalVec2->getVariantType());
-        v.setVec2(ordinalVec2->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalVec3){
-        PyVariant v(ordinalVec3->getVariantType());
-        v.setVec3(ordinalVec3->getMaxValue());
-        return v.getAsPythonObject();
-    }else if(ordinalVec4){
-        PyVariant v(ordinalVec4->getVariantType());
-        v.setVec4(ordinalVec4->getMaxValue());
-        return v.getAsPythonObject();
-    }else{
-        LogErrorCustom("inviwo_getPropertyMaxValue","Unknown parameter type");
-    }
+    CAST_N_GETMAX(FloatProperty,theProperty,parser);
+    CAST_N_GETMAX(IntProperty,theProperty,parser);
+    CAST_N_GETMAX(IntVec2Property,theProperty,parser);
+    CAST_N_GETMAX(IntVec3Property,theProperty,parser);
+    CAST_N_GETMAX(IntVec4Property,theProperty,parser);
+    CAST_N_GETMAX(FloatMat2Property,theProperty,parser);
+    CAST_N_GETMAX(FloatMat3Property,theProperty,parser);
+    CAST_N_GETMAX(FloatMat4Property,theProperty,parser);
+    CAST_N_GETMAX(FloatVec2Property,theProperty,parser);
+    CAST_N_GETMAX(FloatVec3Property,theProperty,parser);
+    CAST_N_GETMAX(FloatVec4Property,theProperty,parser);
+
+    LogErrorCustom("inviwo_getPropertyMaxValue","Unknown parameter type");
 
     Py_RETURN_NONE;
 }
@@ -422,65 +340,21 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 
-    OrdinalProperty<float>* ordinalFloat = dynamic_cast<OrdinalProperty<float>*>(theProperty);
-    OrdinalProperty<int>*   ordinalInt   = dynamic_cast<OrdinalProperty<int>  *>(theProperty);
-    OrdinalProperty<ivec2>* ordinalIvec2 = dynamic_cast<OrdinalProperty<ivec2>*>(theProperty);
-    OrdinalProperty<ivec3>* ordinalIvec3 = dynamic_cast<OrdinalProperty<ivec3>*>(theProperty);
-    OrdinalProperty<ivec4>* ordinalIvec4 = dynamic_cast<OrdinalProperty<ivec4>*>(theProperty);
-    OrdinalProperty<mat2>*  ordinalMat2  = dynamic_cast<OrdinalProperty<mat2> *>(theProperty);
-    OrdinalProperty<mat3>*  ordinalMat3  = dynamic_cast<OrdinalProperty<mat3> *>(theProperty);
-    OrdinalProperty<mat4>*  ordinalMat4  = dynamic_cast<OrdinalProperty<mat4> *>(theProperty);
-    OrdinalProperty<vec2>*  ordinalVec2  = dynamic_cast<OrdinalProperty<vec2> *>(theProperty);
-    OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
-    OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
+    PyValueParser parser;
 
-    if(ordinalFloat){
-        PyVariant v(ordinalFloat->getVariantType());
-        v.setFloat(ordinalFloat->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalInt){
-        PyVariant v(ordinalInt->getVariantType());
-        v.setInt(ordinalInt->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalIvec2){
-        PyVariant v(ordinalIvec2->getVariantType());
-        v.setIVec2(ordinalIvec2->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalIvec3){
-        PyVariant v(ordinalIvec3->getVariantType());
-        v.setIVec3(ordinalIvec3->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalIvec4){
-        PyVariant v(ordinalIvec4->getVariantType());
-        v.setIVec4(ordinalIvec4->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalMat2){
-        PyVariant v(ordinalMat2->getVariantType());
-        v.setMat2(ordinalMat2->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalMat3){
-        PyVariant v(ordinalMat3->getVariantType());
-        v.setMat3(ordinalMat3->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalMat4){
-        PyVariant v(ordinalMat4->getVariantType());
-        v.setMat4(ordinalMat4->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalVec2){
-        PyVariant v(ordinalVec2->getVariantType());
-        v.setVec2(ordinalVec2->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalVec3){
-        PyVariant v(ordinalVec3->getVariantType());
-        v.setVec3(ordinalVec3->getMinValue());
-        return v.getAsPythonObject();
-    }else if(ordinalVec4){
-        PyVariant v(ordinalVec4->getVariantType());
-        v.setVec4(ordinalVec4->getMinValue());
-        return v.getAsPythonObject();
-    }else{
-        LogErrorCustom("inviwo_getPropertyMinValue","Unknown parameter type");
-    }
+    CAST_N_GETMIN(FloatProperty,theProperty,parser);
+    CAST_N_GETMIN(IntProperty,theProperty,parser);
+    CAST_N_GETMIN(IntVec2Property,theProperty,parser);
+    CAST_N_GETMIN(IntVec3Property,theProperty,parser);
+    CAST_N_GETMIN(IntVec4Property,theProperty,parser);
+    CAST_N_GETMIN(FloatMat2Property,theProperty,parser);
+    CAST_N_GETMIN(FloatMat3Property,theProperty,parser);
+    CAST_N_GETMIN(FloatMat4Property,theProperty,parser);
+    CAST_N_GETMIN(FloatVec2Property,theProperty,parser);
+    CAST_N_GETMIN(FloatVec3Property,theProperty,parser);
+    CAST_N_GETMIN(FloatVec4Property,theProperty,parser);
+
+    LogErrorCustom("inviwo_getPropertyMaxValue","Unknown parameter type");
 
     Py_RETURN_NONE;
 }

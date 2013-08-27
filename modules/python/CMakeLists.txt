@@ -8,6 +8,7 @@ ivw_module(Python)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/python/pyinviwo.h
     ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.h
+    ${IVW_MODULE_DIR}/python/pythoninterface/pyvalueparser.h
     ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.h
     ${IVW_MODULE_DIR}/python/defaultinterface/camera.h
     ${IVW_MODULE_DIR}/python/defaultinterface/canvas.h	
@@ -36,6 +37,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/python/pythoneditorwidget.cpp
     ${IVW_MODULE_DIR}/python/pyinviwo.cpp
     ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.cpp
+    ${IVW_MODULE_DIR}/python/pythoninterface/pyvalueparser.cpp
     ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.cpp
     ${IVW_MODULE_DIR}/python/defaultinterface/camera.cpp
     ${IVW_MODULE_DIR}/python/defaultinterface/canvas.cpp
