@@ -15,8 +15,6 @@
 
 #include <modules/opengl/canvasprocessorgl.h>
 
-#include "pyvariant.h"
-
 using namespace inviwo;
 
 #include "defaultinterface/properties.h"
