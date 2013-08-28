@@ -34,7 +34,6 @@ private:
 protected slots:
     void setPropertyValue(float, float);
     void setPropertyDisplayName();
-    void visibilityModified(int mode){property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));};
 
     void updateFromSlider(int valMin, int valMax);
     void updateFromSpinBoxMin(double val);

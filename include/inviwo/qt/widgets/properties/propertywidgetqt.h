@@ -20,12 +20,10 @@ public:
     
     void showWidget();
     void hideWidget();
-public slots:
-   void visibilityModified(int mode);
-    
+
+
 signals:
     void modified();
-    void visibilityChange();
 };
 
 } // namespace

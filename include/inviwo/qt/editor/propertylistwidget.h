@@ -8,12 +8,11 @@
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <QCheckBox>
 #include <QScrollArea>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget, public VoidObservable{
+class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
 
     Q_OBJECT
 
@@ -27,34 +26,17 @@ public:
     void removeProcessorProperties(Processor* processor);
     void showProcessorProperties(std::vector<Processor*> processors);
     void removeAllProcessorProperties();
-    void saveState();
-    PropertyVisibility::VisibilityMode getVisibilityMode();
-
-public slots:
-    void setDeveloperViewMode(bool value);
-    void setApplicationViewMode(bool value);
 
 protected slots:
     void propertyModified();
 
-private slots:
-    void checkBoxStateChange(int state);
-
 private:
     QWidget* createNewProcessorPropertiesItem(Processor* processor);
     void addProcessorPropertiesToLayout(Processor* processor);
-    void hideViewModeWidgets();
-    void showViewModeWidgets();
 
-    bool developerViewMode_;
-    bool applicationViewMode_;
-    
-    Qt::CheckState checkBoxState_;
     QVBoxLayout* listWidgetLayout_;
     QWidget* listWidget_;
     QScrollArea* scrollArea_;
-    QCheckBox* checkBoxVisibility_;
-    std::vector<PropertyWidgetQt*> viewModeWidgets_;
 
 protected:
     static PropertyListWidget* propertyListWidget_;

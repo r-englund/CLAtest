@@ -36,7 +36,6 @@ private:
 public slots:
      void optionChanged();
      void setPropertyDisplayName();
-     void visibilityModified(int mode);
 };
 
 } // namespace

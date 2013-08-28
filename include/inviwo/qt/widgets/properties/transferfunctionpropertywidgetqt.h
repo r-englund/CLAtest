@@ -38,7 +38,6 @@ private:
 		void setPropertyValue();
 		void openTransferFunctionDialog();
         void setPropertyDisplayName();
-        void visibilityModified(int mode);
 };
 
 }//namespace

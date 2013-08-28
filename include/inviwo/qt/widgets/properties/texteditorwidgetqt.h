@@ -101,7 +101,6 @@ public slots:
     void setPropertyValue();
     bool writeToFile();
     bool writeToString();
-    void visibilityModified(int mode){property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));};
 
 };
 

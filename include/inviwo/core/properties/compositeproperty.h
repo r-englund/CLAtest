@@ -8,7 +8,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API CompositeProperty : public Property{
+class IVW_CORE_API CompositeProperty : public Property, public VoidObserver {
 
 public:
     CompositeProperty(std::string identifier, std::string displayName,

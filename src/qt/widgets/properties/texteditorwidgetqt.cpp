@@ -24,16 +24,16 @@ void ModifiedWidget::generateWidget(){
     toolBar_ = new QToolBar();
 
     saveButton_ = new QToolButton();
-    saveButton_->setIcon(QIcon(":/icons/save.png")); // FIX ME Temporary icon
+    saveButton_->setIcon(QIcon(":/icons/save.png")); // Temporary icon
     saveButton_->setToolTip("Save file");
     unDoButton_ = new QToolButton();
-    unDoButton_->setIcon(QIcon(":/icons/arrow_left.png")); // FIX ME Temporary icon
+    unDoButton_->setIcon(QIcon(":/icons/arrow_left.png")); // Temporary icon
     unDoButton_->setToolTip("Undo");
     reDoButton_ = new QToolButton();
-    reDoButton_->setIcon(QIcon(":/icons/arrow_right.png")); //FIX ME Temporary icon
+    reDoButton_->setIcon(QIcon(":/icons/arrow_right.png")); // Temporary icon
     reDoButton_->setToolTip("Redo");
     reLoadButton_ = new QToolButton();
-    reLoadButton_->setIcon(QIcon(":/icons/inviwo_tmp.png")); //FIX ME Temporary icon
+    reLoadButton_->setIcon(QIcon(":/icons/inviwo_tmp.png")); // Temporary icon
     reLoadButton_->setToolTip("Reload");
 
     toolBar_->addWidget(saveButton_);

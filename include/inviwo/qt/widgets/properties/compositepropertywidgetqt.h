@@ -20,8 +20,6 @@ public:
     CompositePropertyWidgetQt(CompositeProperty* property);
 
     void updateFromProperty();
-public slots:
-    void visibilityModified(int mode);
 
 protected slots:
     void propertyModified();

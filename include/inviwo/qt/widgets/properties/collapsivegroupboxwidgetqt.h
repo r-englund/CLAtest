@@ -38,7 +38,7 @@ public:
 	void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
     std::vector<Property*> getProperties();
 	bool isCollapsed() { return collapsed_; };
-    std::vector<PropertyWidgetQt*> getPropertyWidgets(){return propertyWidgets_; };
+
     void notify();
 
 private:
@@ -47,7 +47,6 @@ private:
     std::string displayName_;
     QGroupBox* groupBox_;
     std::vector<Property*> properties_;
-    std::vector<PropertyWidgetQt*> propertyWidgets_;
 	bool collapsed_;
     EditableLabelQt* label_;
 
@@ -56,7 +55,6 @@ private:
     public slots:
         void hide();
         void show();
-        void changeVisibility();
     protected slots:
         void setGroupDisplayName();
         void propertyModified();

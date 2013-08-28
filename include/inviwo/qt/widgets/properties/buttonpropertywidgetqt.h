@@ -30,7 +30,6 @@ private:
 
 public slots:
 	void handleButton();
-    void visibilityModified(int mode){property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));};
 };
 
 } //namespace
