@@ -5,13 +5,15 @@
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/properties/propertysemantics.h>
+#include <inviwo/core/properties/propertyvisibility.h>
+#include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/util/callback.h>
 #include <inviwo/core/util/variant.h>
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
-class IVW_CORE_API Property : public IvwSerializable, public VoidObservable {
+class IVW_CORE_API Property : public IvwSerializable, public VoidObservable, public VoidObserver {
 
 public:
     Property(std::string identifier, std::string displayName,
@@ -57,8 +59,8 @@ public:
     bool isValid();
     void setValid();
 
-    void setVisible(bool visible);
-    bool getVisible(){ return visible_; };
+    //void setVisibility(PropertyVisibility::VisibilityMode visibilityMode);
+    PropertyVisibility::VisibilityMode getVisible(){ return visibilityMode_; };
 
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
@@ -73,12 +75,16 @@ public:
     void onChange(T* o, void (T::*m)()) {
         onChangeCallback_.addMemberFunction(o,m);
     }
-
+    
+    void setVisibility(PropertyVisibility::VisibilityMode visibilityMode);
+    PropertyVisibility::VisibilityMode getVisibilityMode(){return visibilityMode_;};
 
 protected:
     SingleCallBack onChangeCallback_;
 
 private:
+    void notify();
+    void updateVisibility();
     std::string identifier_;
     std::string displayName_;
     PropertyOwner::InvalidationLevel invalidationLevel_;
@@ -88,9 +94,10 @@ private:
     PropertyOwner* owner_;
     std::vector<PropertyWidget*> propertyWidgets_;
 
-    bool visible_;
     std::string groupID_;
     std::string groupDisplayName_;
+
+    PropertyVisibility::VisibilityMode visibilityMode_;
 
     static std::map<std::string,std::string> groupDisplayNames_;
 };

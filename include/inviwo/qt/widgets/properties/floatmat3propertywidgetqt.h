@@ -49,6 +49,7 @@ private:
 
         void setPropertyValue();
         void setPropertyDisplayName();
+        void visibilityModified(int mode){property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));};
 };
 
 } // namespace

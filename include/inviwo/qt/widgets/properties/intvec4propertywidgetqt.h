@@ -40,6 +40,7 @@ private:
 public slots:
     void setPropertyValue();
     void setPropertyDisplayName();
+    void visibilityModified(int mode){property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));};
 
     void showContextMenuX(const QPoint& pos);
     void showContextMenuY(const QPoint& pos);

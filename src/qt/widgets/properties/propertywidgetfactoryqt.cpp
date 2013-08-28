@@ -41,6 +41,7 @@
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/imageeditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/visibilitywidgetqt.h>
 
 
 namespace inviwo {
@@ -64,6 +65,9 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         }
         if (dynamic_cast<StringProperty*>(property)&& property->getSemantics() == PropertySemantics::Editor) {
             return new TextEditorWidgetQt(static_cast<StringProperty*>(property));
+        }
+        if (dynamic_cast<BaseOptionProperty*>(property) && property->getSemantics() == PropertySemantics::Custom) {
+            return new VisibilityWidgetQt(static_cast<BaseOptionProperty*>(property));
         }
     }
     if (dynamic_cast<BoolProperty*>(property))

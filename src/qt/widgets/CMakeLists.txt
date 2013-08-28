@@ -48,6 +48,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/texteditorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertydialog.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/visibilitywidgetqt.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -95,6 +96,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/texteditorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertydialog.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/visibilitywidgetqt.h
 )
 
 if(DESIRED_QT_VERSION MATCHES 5)
@@ -150,7 +152,8 @@ set(SOURCE_FILES
     properties/stringpropertywidgetqt.cpp
     properties/texteditorwidgetqt.cpp
     properties/transferfunctionpropertydialog.cpp
-    properties/transferfunctionpropertywidgetqt.cpp 
+    properties/transferfunctionpropertywidgetqt.cpp
+    properties/visibilitywidgetqt.cpp 
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

@@ -35,4 +35,12 @@ void CompositePropertyWidgetQt::propertyModified() {
     emit modified();
 }
 
+void CompositePropertyWidgetQt::visibilityModified( int mode ){
+    property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));
+    std::vector<Property*> subProperties = property_->getSubProperties();
+    for (size_t i=0; i<subProperties.size(); i++)
+        subProperties[i]->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));
+
+}
+
 } // namespace

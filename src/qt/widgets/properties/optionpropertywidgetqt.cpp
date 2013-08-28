@@ -39,4 +39,8 @@ void OptionPropertyWidgetQt::setPropertyDisplayName(){
     property_->setDisplayName(label_->getText());
 }
 
+void OptionPropertyWidgetQt::visibilityModified( int mode ){
+    property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));
+}
+
 } // namespace

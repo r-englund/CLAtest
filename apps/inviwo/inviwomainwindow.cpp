@@ -12,12 +12,14 @@
 #else
 #include <QDesktopServices>
 #endif
+#include <QActionGroup>
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QList>
 #include <QMessageBox>
 #include <QSettings>
 #include <QUrl>
+
 
 #include <inviwo/core/util/commandlineparser.h>
 
@@ -155,8 +157,10 @@ void InviwoMainWindow::addMenus() {
 
     fileMenuItem_ = new QMenu(tr("&File"));
     viewMenuItem_ = new QMenu(tr("&View"));
+    viewModeItem_ = new QMenu(tr("&View mode"));
     basicMenuBar->insertMenu(first,fileMenuItem_);
     basicMenuBar->insertMenu(first,viewMenuItem_);
+    viewMenuItem_->addMenu(viewModeItem_);
 
     helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
 }
@@ -188,6 +192,23 @@ void InviwoMainWindow::addMenuActions() {
         connect(recentFileActions_[i], SIGNAL(triggered()), this, SLOT(openRecentWorkspace()));
         fileMenuItem_->addAction(recentFileActions_[i]);
     }
+    
+    developerViewModeAction_ = new QAction(tr("&Developer"),this);
+    developerViewModeAction_->setCheckable(true);
+    //developerViewModeAction_->setChecked(true);         //FIX ME where to store view mode?
+    //propertyListWidget_->setDeveloperViewMode(true);    //-------------------------------
+    viewModeItem_->addAction(developerViewModeAction_);
+
+    applicationViewModeAction_ = new QAction(tr("&Application"),this);
+    applicationViewModeAction_->setCheckable(true);
+    viewModeItem_->addAction(applicationViewModeAction_);
+    
+    QActionGroup* actionGroup = new QActionGroup(this);
+    actionGroup->addAction(developerViewModeAction_);
+    actionGroup->addAction(applicationViewModeAction_);
+
+    connect(developerViewModeAction_,SIGNAL(triggered(bool)),propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
+    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),propertyListWidget_, SLOT(setApplicationViewMode(bool)));
     
     viewMenuItem_->addAction(mappingwidget_->toggleViewAction());
     viewMenuItem_->addAction(settingsWidget_->toggleViewAction());

@@ -70,6 +70,10 @@ void TransferFunctionPropertyWidgetQt::setPropertyDisplayName(){
     property_->setDisplayName(label_->getText());
 }
 
+void TransferFunctionPropertyWidgetQt::visibilityModified( int mode ){
+    property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));
+}
+
 
 
 

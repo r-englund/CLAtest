@@ -11,46 +11,55 @@
             </MetaDataList>
             <Properties>
                 <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation">
+                    <visibilityMode content="1" />
                     <value content="0" />
                 </Property>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera">
+                    <visibilityMode content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
+                        <visibilityMode content="1" />
                         <value x="0" y="0" z="-3.5" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
+                        <visibilityMode content="1" />
                         <value x="0" y="0" z="0" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
+                        <visibilityMode content="1" />
                         <value x="0" y="1" z="0" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="58.6" />
+                        <visibilityMode content="1" />
+                        <value content="60" />
                         <minvalue content="30" />
                         <maxvalue content="360" />
                         <increment content="0.1" />
                     </fovy>
                     <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
+                        <visibilityMode content="1" />
                         <value content="1" />
                         <minvalue content="0" />
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
                     <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
+                        <visibilityMode content="1" />
                         <value content="0.0001" />
                         <minvalue content="0" />
                         <maxvalue content="1000" />
                         <increment content="0.1" />
                     </nearPlane>
                     <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
+                        <visibilityMode content="1" />
                         <value content="100" />
                         <minvalue content="0" />
                         <maxvalue content="1000" />
@@ -58,75 +67,84 @@
                     </farPlane>
                 </Property>
                 <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification">
+                    <visibilityMode content="1" />
                     <value content="transfer-function" />
                 </Property>
                 <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing">
+                    <visibilityMode content="1" />
                     <value content="dvr" />
                 </Property>
                 <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation">
+                    <visibilityMode content="1" />
                     <value content="forward" />
                 </Property>
                 <Property type="FloatProperty" identifier="isoValue" displayName="Iso value">
+                    <visibilityMode content="1" />
                     <value content="0.5" />
                     <minvalue content="0" />
                     <maxvalue content="1" />
                     <increment content="0.01" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values">
+                    <visibilityMode content="1" />
                     <value x="0.5" y="0.5" z="0.5" />
                     <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color">
+                    <visibilityMode content="1" />
                     <value x="0.5" y="0.5" z="0.5" />
                     <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color">
+                    <visibilityMode content="1" />
                     <value x="0.5" y="0.5" z="0.5" />
                     <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color">
+                    <visibilityMode content="1" />
                     <value x="0.5" y="0.5" z="0.5" />
                     <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position">
+                    <visibilityMode content="1" />
                     <value x="0.5" y="0.5" z="0.5" />
                     <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
                 </Property>
                 <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess">
+                    <visibilityMode content="1" />
                     <value content="110" />
                     <minvalue content="0" />
                     <maxvalue content="180" />
                     <increment content="1" />
                 </Property>
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate">
+                    <visibilityMode content="1" />
                     <value content="2" />
                     <minvalue content="1" />
                     <maxvalue content="10" />
-                    <increment content="0.1" />
+                    <increment content="0.01" />
                 </Property>
                 <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading">
-                    <value content="none" />
+                    <visibilityMode content="1" />
+                    <value content="diffuse" />
                 </Property>
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function">
-                    <size content="4" />
-                    <pos0 x="0.003508772" y="0" />
+                    <visibilityMode content="1" />
+                    <size content="2" />
+                    <pos0 x="0" y="0" />
                     <rgba0 x="0" y="0" z="0" w="0" />
-                    <pos1 x="0.01754386" y="0.13284133" />
-                    <rgba1 x="0" y="0.95294118" z="0.44470894" w="0.13284133" />
-                    <pos2 x="0.073684208" y="0.0055350554" />
-                    <rgba2 x="0.97254902" y="0" z="0" w="0.0055350554" />
-                    <pos3 x="0.99649125" y="1" />
-                    <rgba3 x="0.97254902" y="0.97254902" z="0.97254902" w="1" />
+                    <pos1 x="1" y="1" />
+                    <rgba1 x="1" y="1" z="1" w="1" />
                 </Property>
             </Properties>
         </Processor>
@@ -139,21 +157,25 @@
             </MetaDataList>
             <Properties>
                 <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices">
+                    <visibilityMode content="1" />
                     <value x="0" y="128" />
                     <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices">
+                    <visibilityMode content="1" />
                     <value x="0" y="128" />
                     <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices">
+                    <visibilityMode content="1" />
                     <value x="0" y="128" />
                     <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping">
+                    <visibilityMode content="1" />
                     <value content="1" />
                 </Property>
             </Properties>
@@ -167,6 +189,7 @@
             </MetaDataList>
             <Properties>
                 <Property type="FileProperty" identifier="volumeFileName" displayName="Volume file name">
+                    <visibilityMode content="1" />
                     <url content="../../volumes/hydrogenatom.dat" />
                 </Property>
             </Properties>
@@ -182,6 +205,7 @@
                 <InteractionHandler type="Trackball">
                     <Properties>
                         <Property type="EventProperty" identifier="stepPanDown" displayName="Step pan down">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="S" />
@@ -191,6 +215,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanLeft" displayName="Step pan left">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="A" />
@@ -200,6 +225,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanRight" displayName="Step pan right">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="D" />
@@ -209,6 +235,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanUp" displayName="Step pan up">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="W" />
@@ -218,6 +245,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateDown" displayName="Step rotate down">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="S" />
@@ -227,6 +255,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateLeft" displayName="Step rotate left">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="A" />
@@ -236,6 +265,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateRight" displayName="Step rotate right">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="D" />
@@ -245,6 +275,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateUp" displayName="Step rotate up">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="W" />
@@ -254,6 +285,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepZoomIn" displayName="Step zoom in">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="R" />
@@ -263,6 +295,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepZoomOut" displayName="Step zoom out">
+                            <visibilityMode content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="F" />
@@ -272,6 +305,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballPan" displayName="Pan">
+                            <visibilityMode content="1" />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Middle mouse button" />
@@ -281,6 +315,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballRotate" displayName="Rotate">
+                            <visibilityMode content="1" />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Left mouse button" />
@@ -290,6 +325,7 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballZoom" displayName="Zoom">
+                            <visibilityMode content="1" />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Right mouse button" />
@@ -303,43 +339,51 @@
             </InteractonHandlers>
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera">
+                    <visibilityMode content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <value x="2.3087416" y="-4.1601758" z="1.4500536" />
+                        <visibilityMode content="1" />
+                        <value x="0" y="0" z="-2" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
+                        <visibilityMode content="1" />
                         <value x="0" y="0" z="0" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <value x="0.73944646" y="0.11143785" z="-0.67141688" />
+                        <visibilityMode content="1" />
+                        <value x="0" y="1" z="0" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <value content="30" />
+                        <visibilityMode content="1" />
+                        <value content="60" />
                         <minvalue content="30" />
                         <maxvalue content="360" />
                         <increment content="0.1" />
                     </fovy>
                     <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
+                        <visibilityMode content="1" />
                         <value content="1" />
                         <minvalue content="0" />
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
                     <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
+                        <visibilityMode content="1" />
                         <value content="0.0001" />
                         <minvalue content="0" />
                         <maxvalue content="1000" />
                         <increment content="0.1" />
                     </nearPlane>
                     <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
+                        <visibilityMode content="1" />
                         <value content="100" />
                         <minvalue content="0" />
                         <maxvalue content="1000" />
@@ -355,19 +399,252 @@
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2158" y="470" />
+                    <position x="2170" y="539" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
                 <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
+                    <visibilityMode content="1" />
+                    <value x="256" y="256" />
                     <minvalue x="128" y="128" />
                     <maxvalue x="4096" y="4096" />
                     <increment x="1" y="1" />
                 </Property>
-                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
+                <Property type="BaseOptionProperty" identifier="displayedLayer_" displayName="Display Layer">
+                    <visibilityMode content="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot">
+                    <visibilityMode content="1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="TestProcessor" identifier="TestProcessor">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-425" y="-400" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="BoolProperty" identifier="boolProperty" displayName="boolProperty">
+                    <visibilityMode content="1" />
+                    <value content="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="btnProperty" displayName="btnProperty">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="CameraProperty" identifier="cameraProperty" displayName="cameraProperty">
+                    <visibilityMode content="1" />
+                    <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
+                        <visibilityMode content="1" />
+                        <value x="0" y="0" z="-2" />
+                        <minvalue x="-10" y="-10" z="-10" />
+                        <maxvalue x="10" y="10" z="10" />
+                        <increment x="0.1" y="0.1" z="0.1" />
+                    </lookFrom>
+                    <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
+                        <visibilityMode content="1" />
+                        <value x="0" y="0" z="0" />
+                        <minvalue x="-10" y="-10" z="-10" />
+                        <maxvalue x="10" y="10" z="10" />
+                        <increment x="0.1" y="0.1" z="0.1" />
+                    </lookTo>
+                    <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
+                        <visibilityMode content="1" />
+                        <value x="0" y="1" z="0" />
+                        <minvalue x="-10" y="-10" z="-10" />
+                        <maxvalue x="10" y="10" z="10" />
+                        <increment x="0.1" y="0.1" z="0.1" />
+                    </lookUp>
+                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
+                        <visibilityMode content="1" />
+                        <value content="60" />
+                        <minvalue content="30" />
+                        <maxvalue content="360" />
+                        <increment content="0.1" />
+                    </fovy>
+                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
+                        <visibilityMode content="1" />
+                        <value content="1" />
+                        <minvalue content="0" />
+                        <maxvalue content="1" />
+                        <increment content="0.1" />
+                    </aspectRatio>
+                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
+                        <visibilityMode content="1" />
+                        <value content="0.0001" />
+                        <minvalue content="0" />
+                        <maxvalue content="1000" />
+                        <increment content="0.1" />
+                    </nearPlane>
+                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
+                        <visibilityMode content="1" />
+                        <value content="100" />
+                        <minvalue content="0" />
+                        <maxvalue content="1000" />
+                        <increment content="0.1" />
+                    </farPlane>
+                </Property>
+                <Property type="CompositeProperty" identifier="compositeProperty" displayName="compoSitepropert">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="FloatMat2Property" identifier="floatMat2Property_" displayName="floatMat2Property_">
+                    <visibilityMode content="1" />
+                    <value>
+                        <row0 x="0" y="0" />
+                        <row1 x="0" y="0" />
+                    </value>
+                    <minvalue>
+                        <row0 x="0" y="0" />
+                        <row1 x="0" y="0" />
+                    </minvalue>
+                    <maxvalue>
+                        <row0 x="1" y="0" />
+                        <row1 x="0" y="1" />
+                    </maxvalue>
+                    <increment>
+                        <row0 x="0.1" y="0" />
+                        <row1 x="0" y="0.1" />
+                    </increment>
+                </Property>
+                <Property type="FloatMat3Property" identifier="floatMat3Property_" displayName="floatMat3Property_">
+                    <visibilityMode content="1" />
+                    <value>
+                        <row0 x="0" y="0" z="0" />
+                        <row1 x="0" y="0" z="0" />
+                        <row2 x="0" y="0" z="0" />
+                    </value>
+                    <minvalue>
+                        <row0 x="0" y="0" z="0" />
+                        <row1 x="0" y="0" z="0" />
+                        <row2 x="0" y="0" z="0" />
+                    </minvalue>
+                    <maxvalue>
+                        <row0 x="1" y="0" z="0" />
+                        <row1 x="0" y="1" z="0" />
+                        <row2 x="0" y="0" z="1" />
+                    </maxvalue>
+                    <increment>
+                        <row0 x="0.1" y="0" z="0" />
+                        <row1 x="0" y="0.1" z="0" />
+                        <row2 x="0" y="0" z="0.1" />
+                    </increment>
+                </Property>
+                <Property type="FloatMat4Property" identifier="floatMat4Property" displayName="floatMat4Property">
+                    <visibilityMode content="1" />
+                    <value>
+                        <row0 x="0" y="0" z="0" w="0" />
+                        <row1 x="0" y="0" z="0" w="0" />
+                        <row2 x="0" y="0" z="0" w="0" />
+                        <row3 x="0" y="0" z="0" w="0" />
+                    </value>
+                    <minvalue>
+                        <row0 x="0" y="0" z="0" w="0" />
+                        <row1 x="0" y="0" z="0" w="0" />
+                        <row2 x="0" y="0" z="0" w="0" />
+                        <row3 x="0" y="0" z="0" w="0" />
+                    </minvalue>
+                    <maxvalue>
+                        <row0 x="1" y="0" z="0" w="0" />
+                        <row1 x="0" y="1" z="0" w="0" />
+                        <row2 x="0" y="0" z="1" w="0" />
+                        <row3 x="0" y="0" z="0" w="1" />
+                    </maxvalue>
+                    <increment>
+                        <row0 x="0.1" y="0" z="0" w="0" />
+                        <row1 x="0" y="0.1" z="0" w="0" />
+                        <row2 x="0" y="0" z="0.1" w="0" />
+                        <row3 x="0" y="0" z="0" w="0.1" />
+                    </increment>
+                </Property>
+                <Property type="FloatMinMaxProperty" identifier="floatMinMax" displayName="floatMinMax">
+                    <visibilityMode content="1" />
+                    <value x="0" y="1" />
+                    <range x="0" y="1" />
+                    <increment content="0.01" />
+                </Property>
+                <Property type="FloatProperty" identifier="floatProperty" displayName="floatProperty">
+                    <visibilityMode content="1" />
+                    <value content="0.5" />
+                    <minvalue content="0" />
+                    <maxvalue content="1" />
+                    <increment content="0.01" />
+                </Property>
+                <Property type="FloatVec2Property" identifier="floatVec2Property" displayName="floatVec2Property">
+                    <visibilityMode content="1" />
+                    <value x="1" y="1" />
+                    <minvalue x="0" y="0" />
+                    <maxvalue x="1" y="1" />
+                    <increment x="0.0099999998" y="0.0099999998" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="floatVec4Property" displayName="floatVec4Property">
+                    <visibilityMode content="1" />
+                    <value x="1" y="1" z="1" w="1" />
+                    <minvalue x="0" y="0" z="0" w="0" />
+                    <maxvalue x="1" y="1" z="1" w="1" />
+                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" w="0.0099999998" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="floatvec3Property" displayName="floatVec3Property">
+                    <visibilityMode content="1" />
+                    <value x="1" y="1" z="1" />
+                    <minvalue x="0" y="0" z="0" />
+                    <maxvalue x="1" y="1" z="1" />
+                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
+                </Property>
+                <Property type="ImageEditorProperty" identifier="imageEditorProperty" displayName="imageEditorProperty">
+                    <visibilityMode content="1" />
+                    <url content="../../../../../" />
+                    <Dimension x="0" y="0" />
+                    <Labels />
+                </Property>
+                <Property type="IntMinMaxProperty" identifier="intMinMax" displayName="intMinMax">
+                    <visibilityMode content="1" />
+                    <value x="0" y="10" />
+                    <range x="0" y="10" />
+                    <increment content="1" />
+                </Property>
+                <Property type="IntProperty" identifier="intProperty" displayName="intProperty">
+                    <visibilityMode content="1" />
+                    <value content="5" />
+                    <minvalue content="0" />
+                    <maxvalue content="4096" />
+                    <increment content="1" />
+                </Property>
+                <Property type="IntVec2Property" identifier="intVec2Property" displayName="intVec2Property">
+                    <visibilityMode content="1" />
+                    <value x="1" y="1" />
+                    <minvalue x="0" y="0" />
+                    <maxvalue x="10" y="10" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="IntVec3Property" identifier="intVec3Property" displayName="intVec3Property">
+                    <visibilityMode content="1" />
+                    <value x="1" y="1" z="1" />
+                    <minvalue x="0" y="0" z="0" />
+                    <maxvalue x="10" y="10" z="10" />
+                    <increment x="1" y="1" z="1" />
+                </Property>
+                <Property type="IntVec4Property" identifier="intVec4Property" displayName="intVec4Property">
+                    <visibilityMode content="1" />
+                    <value x="1" y="1" z="1" w="1" />
+                    <minvalue x="0" y="0" z="0" w="0" />
+                    <maxvalue x="10" y="10" z="10" w="10" />
+                    <increment x="1" y="1" z="1" w="1" />
+                </Property>
+                <Property type="OptionPropertyDouble" identifier="optionPropertDouble" displayName="optionPropertDouble">
+                    <visibilityMode content="0" />
+                    <value content="1" />
+                </Property>
+                <Property type="StringProperty" identifier="stringProperty" displayName="stringProperty">
+                    <visibilityMode content="1" />
+                    <value content="string" />
+                </Property>
+                <Property type="StringProperty" identifier="stringProperty2_" displayName="stringProperty2_">
+                    <visibilityMode content="1" />
+                    <value content="Lorem ipsum" />
+                </Property>
             </Properties>
         </Processor>
     </Processors>

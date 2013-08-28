@@ -7,12 +7,14 @@ PropertyWidgetQt::PropertyWidgetQt() {
 
 void PropertyWidgetQt::showWidget() {
     this->show();
+    emit visibilityChange();
 }
 void PropertyWidgetQt::hideWidget(){
     this->hide();
+    emit visibilityChange();
 }
 
-
+void PropertyWidgetQt::visibilityModified( int mode ){}
 
 
 } // namespace

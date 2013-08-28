@@ -31,6 +31,7 @@ private:
 
 public slots:
     void clickedSlot();
+    void visibilityModified(int mode){eventproperty_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));};
 };
 
 } //namespace

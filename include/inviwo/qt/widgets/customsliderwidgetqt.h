@@ -7,25 +7,25 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API CustomSliderWidgetQt : public QSlider
+class IVW_QTWIDGETS_API CustomSliderWidgetQt : public QSlider
+{
+
+protected:
+    void mousePressEvent ( QMouseEvent * event )
     {
-
-    protected:
-        void mousePressEvent ( QMouseEvent * event )
+        if (event->button() == Qt::LeftButton)
         {
-            if (event->button() == Qt::LeftButton)
-            {
-                if (orientation() == Qt::Vertical)
-                    setValue(minimum() + ((this->maximum()-this->minimum()) * (this->height()-event->y())) / this->height() ) ;
-                else
-                    setValue(this->minimum() + ((this->maximum()-this->minimum()) * event->x()) / this->width() ) ;
+            if (orientation() == Qt::Vertical)
+                setValue(minimum() + ((this->maximum()-this->minimum()) * (this->height()-event->y())) / this->height() ) ;
+            else
+                setValue(this->minimum() + ((this->maximum()-this->minimum()) * event->x()) / this->width() ) ;
 
-                event->accept();
-            }
-            QSlider::mousePressEvent(event);
+            event->accept();
         }
-    };
+        QSlider::mousePressEvent(event);
+    }
+};
 
-}
+}//namespace
 
 #endif //IVW_CUSTOMSLIDERWIDGETQT_H

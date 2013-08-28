@@ -84,7 +84,9 @@ void CollapsiveGroupBoxWidgetQt::generatePropertyWidgets() {
         PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
         vLayout_->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
+        propertyWidgets_.push_back(propertyWidget);
         connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
+        connect(propertyWidget, SIGNAL(visibilityChange()),this, SLOT(changeVisibility()));
     }
 }
 
@@ -127,6 +129,8 @@ void CollapsiveGroupBoxWidgetQt::notify(){
     else{
         this->setVisible(true);
     }
+
+
 }
 
 void CollapsiveGroupBoxWidgetQt::propertyModified(){
@@ -135,6 +139,20 @@ void CollapsiveGroupBoxWidgetQt::propertyModified(){
 
 void CollapsiveGroupBoxWidgetQt::setGroupDisplayName(){
     displayName_ = label_->getText();
+    Property::setGroupDisplayName(identifier_,displayName_);
+}
+
+void CollapsiveGroupBoxWidgetQt::changeVisibility(){
+    if (this->isHidden()) {
+        this->setVisible(true);
+    }
+    for (size_t i= 0; i<propertyWidgets_.size();i++) {
+        if(propertyWidgets_[i]->isVisible()){
+            this->setVisible(true);
+            break;
+        }
+        this->setVisible(false);
+    }
 }
 
 } // namespace

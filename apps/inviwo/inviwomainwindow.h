@@ -8,6 +8,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QAction>
+#include <QActionGroup>
 
 #include <inviwo/qt/editor/mappingwidget.h>
 #include <inviwo/qt/editor/settingswidget.h>
@@ -76,6 +77,7 @@ private:
     QMenu* fileMenuItem_;
     QMenu* helpMenuItem_;
     QMenu* viewMenuItem_;
+    QMenu* viewModeItem_;
     
     // mainwindow menuactions
     QAction* newFileAction_;
@@ -84,6 +86,9 @@ private:
     QAction* saveAsFileAction_;
     QAction* recentFileSeparator_;
     QAction* recentFileActions_[maxNumRecentFiles_];
+    QAction* developerViewModeAction_;
+    QAction* applicationViewModeAction_;
+    QActionGroup* viewModeActionGroup_;
 
     // settings
     bool lastExitWithoutErrors_;

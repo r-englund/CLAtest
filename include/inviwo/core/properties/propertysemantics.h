@@ -9,7 +9,8 @@ public:
                 Color =1,
                 LightPosition =2,
                 Editor=3,
-                Collapsible=4};
+                Collapsible=4,
+                Custom};
 };
 } //Namespace
 
