@@ -44,12 +44,12 @@ public:
     void logStuff();
 	void notify();
     QVector<QGradientStop>* getGradientStops();
+	void setDataArrayWidth(int bits);
 
 
 private:
     int zoom_;
-	float width;
-	float height;
+	int arrayWidth_;
     static const std::string logSource_;
     TransferFunctionEditorView*	editorview_; ///< View that contains the editor
     QGraphicsView* paintview_; ///< View that contains the scene for the painted transferfunction
@@ -64,8 +64,8 @@ private:
     ColorWheel* colorWheel_;
 
 	RangeSliderQt* zoomSlider_;
-	QSpinBox* spinBoxMin_;
-	QSpinBox* spinBoxMax_;
+	QSpinBox* zoomSpinBoxMin_;
+	QSpinBox* zoomSpinBoxMax_;
 
     bool colorChange_;
 	bool eventFilter(QObject *object, QEvent *event);
@@ -76,11 +76,7 @@ private:
     */
     //void wheelEvent(QWheelEvent * e);
     void generateWidget();
-
     void setPointColor(QColor color);
-
-	int zoomMin; 
-	int zoomMax;
 
     public slots:
         void setPropertyValue();
@@ -90,6 +86,8 @@ private:
 		void updateFromSlider(int valMin, int valMax);
 		void updateFromSpinBoxMin(int val);
 		void updateFromSpinBoxMax(int val);
+		void editorViewResized();
+		void arrayWidthChanged(int index);
 };
 
 } // namespace

@@ -22,7 +22,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorcontrolpoint.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorlineitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorview.h
-    
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -40,6 +39,8 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorcontrolpoint.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorlineitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorview.h
 )
 
 if(DESIRED_QT_VERSION MATCHES 5)
@@ -72,6 +73,8 @@ set(SOURCE_FILES
     transferfunctioneditor.cpp
     transferfunctioneditorcontrolpoint.cpp
     transferfunctioneditorlineitem.cpp
+    transferfunctioneditorview.cpp
+    
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

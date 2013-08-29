@@ -99,6 +99,14 @@ void TransferFunctionEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent *e){
 }
 
 void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
+	LogInfo(this->selectedItems().size());
+	if (e->key() == 'A' && e->modifiers().testFlag(Qt::ControlModifier)){
+		QList<QGraphicsItem *> itemList = this->items();
+		foreach( QGraphicsItem *item, itemList ){
+			item->setSelected(true);
+		}
+	}
+
 	if (e->key() == Qt::Key_Delete && points_.size() > 0){
 		std::vector<TransferFunctionEditorControlPoint*>::iterator iter = points_.begin();
 		while (iter != points_.end()){
@@ -132,6 +140,7 @@ void TransferFunctionEditor::addPoint(vec2* pos){
 		addItem(lines_.back());
 	}
 	sortControlPoints();
+	setControlPointNeighbours();
 	sortLines();
 
 	leftEdgeLine_->setStart(points_.front());
@@ -142,13 +151,11 @@ void TransferFunctionEditor::addPoint(vec2* pos){
 	rightEdgeLine_->setFinish(points_.back());
 	rightEdgeLine_->setVisible(true);
 
-	setControlPointNeighbours();
 	notifyObservers();
-	this->update();
+	update();
 }
 
 void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
-
 	vec2* pos = new vec2(e->scenePos().x() / view_->width(), e->scenePos().y() / view_->height());
 	addPoint(pos);
 }
@@ -203,7 +210,6 @@ void TransferFunctionEditor::sortLines(){
 }
 
 void TransferFunctionEditor::setControlPointNeighbours(){
-
 	if (points_.size() == 0){}
 	else if (points_.size() == 1){
 		points_.front()->setLeftNeighbour(NULL);
@@ -217,7 +223,7 @@ void TransferFunctionEditor::setControlPointNeighbours(){
 		(*curr)->setRightNeighbour(NULL);
 		curr++;
 
-		while (curr != points_.end()){
+		while(curr != points_.end()){
 			(*prev)->setRightNeighbour(*curr);
 			(*curr)->setLeftNeighbour(*prev);
 			prev = curr;

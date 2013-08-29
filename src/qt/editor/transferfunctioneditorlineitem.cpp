@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+
 #include <QPainter>
 #include <math.h>
 #include <QGraphicsScene>
@@ -6,6 +8,8 @@
 #include <inviwo/qt/editor/transferfunctioneditor.h>
 
 namespace inviwo {
+	const int LEFT = 1;
+	const int RIGHT = 2;
 
 TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(){
 	initiateLineItem();
@@ -38,66 +42,62 @@ void TransferFunctionEditorLineItem::initiateLineItem(){
 
 TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem(){};
 
-
 void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
 	IVW_UNUSED_PARAM(options);
 	IVW_UNUSED_PARAM(widget);
 	painter->setRenderHint(QPainter::Antialiasing, true);
+	float viewScale = static_cast<TransferFunctionEditor*>(this->scene())->getView()->transform().m11();
+	float viewWidth = static_cast<TransferFunctionEditor*>(this->scene())->getView()->width();
+	float viewHeight = static_cast<TransferFunctionEditor*>(this->scene())->getView()->height();
+	QPointF start = start_->pos();
+	QPointF finish = finish_->pos();
+	//QPointF start = QPointF(start_->getPoint()->getPos()->x * viewWidth, start_->getPoint()->getPos()->y * viewWidth);
+	//QPointF finish = QPointF(finish_->getPoint()->getPos()->x * viewHeight, finish_->getPoint()->getPos()->y * viewHeight);
 
-	const vec2* start = new vec2(start_->x(), start_->y());
-	const vec2* finish;
-
-	switch (direction_)
-	{
-	case 0:
-		finish = new vec2(finish_->x(), finish_->y());
-		break;
-	case 1:
-		finish = new vec2(start_->x() - 255.0, start_->y());
-		break;
-	case 2:
-		finish = new vec2(start_->x() + 255.0, start_->y());
-		break;
-	default:
-		finish = new vec2(finish_->x(), finish_->y());
-		break;	
+	if (direction_ == LEFT){
+		finish = start;
+		finish.setX(start.x() - viewWidth);
 	}
-	QPen* pen = new QPen();
-	pen->setStyle(Qt::SolidLine);
-	pen->setCapStyle(Qt::RoundCap);
-	pen->setWidth(6.0);
-	this->isSelected() ? pen->setColor(Qt::red) : pen->setColor(Qt::black);
-	
-	painter->setPen(*pen);
-	painter->drawLine(start->x, start->y, finish->x, finish->y);
 
-	pen->setWidth(2.0);
-	pen->setColor(Qt::cyan);
-
-	painter->setPen(*pen);
-	painter->drawLine(start->x, start->y, finish->x, finish->y);
-
-	delete pen;
+	if (direction_ == RIGHT){
+		finish = start;
+		finish.setX(start.x() + viewWidth);
+	}
+	viewScale = (viewScale > 10.0) ? 10.0 : viewScale;
+	QPen pen = QPen();
+	pen.setStyle(Qt::SolidLine);
+	pen.setCapStyle(Qt::RoundCap);
+	pen.setWidth(4.0/viewScale);
+	isSelected() ? pen.setColor(Qt::red) : pen.setColor(Qt::black);
+	painter->setPen(pen);
+	painter->drawLine(start, finish);
+	pen.setWidth(2.0/viewScale);
+	pen.setColor(Qt::cyan);
+	painter->setPen(pen);
+	painter->drawLine(start, finish);
+	painter->drawPath(shape());
 }
 
 QPainterPath TransferFunctionEditorLineItem::shape() const { 
-	QPainterPath path;
-	QPolygonF poly;
+	QPolygonF boundingPolygon;
+	QPainterPath boundingPath;
+	float viewScale = static_cast<TransferFunctionEditor*>(this->scene())->getView()->transform().m11();
+	float boxWidth = 20.0f / viewScale;
 
-	vec2 sPos = vec2(start_->getPoint()->getPos()->x, start_->getPoint()->getPos()->y);
-	vec2 fPos = vec2(finish_->getPoint()->getPos()->x, finish_->getPoint()->getPos()->y);
+	QPointF startPos = start_->pos();
+	QPointF finishPos = finish_->pos();
+	QPointF deltaPos = finishPos - startPos;
+	float angle = atan2(deltaPos.y(), deltaPos.x());
+	QPointF rotatedSize = QPointF(sin(angle), -cos(angle)) * boxWidth/2;
 
-	float size = 10.0f;
-
-	poly<< QPointF(sPos.x - size, sPos.y + size)
-		<< QPointF(sPos.x - size, sPos.y - size)
-		<< QPointF(fPos.x + size, fPos.y - size)
-		<< QPointF(fPos.x + size, fPos.y + size);
-
-	path.addPolygon(poly);
-
-	path.closeSubpath();
-	return path; 
+	boundingPolygon	<< startPos - rotatedSize	//Lower left
+		<< startPos + rotatedSize	//Upper left
+		<< finishPos + rotatedSize	//Upper right
+		<< finishPos - rotatedSize;	//Lower right
+	
+	boundingPath.addPolygon(boundingPolygon);
+	boundingPath.closeSubpath();
+	return boundingPath; 
 } 
 
 QRectF TransferFunctionEditorLineItem::boundingRect() const {
@@ -112,52 +112,52 @@ void TransferFunctionEditorLineItem::mousePressEvent ( QGraphicsSceneMouseEvent 
 void TransferFunctionEditorLineItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
 
 void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e){
-	vec2 deltaPos = vec2(e->pos().x()- mouseDownPos_.x() , e->pos().y() - mouseDownPos_.y()); 
-	vec2 newStartPos = *start_->getPoint()->getPos() + deltaPos;
-	vec2 newFinishPos = *finish_->getPoint()->getPos() + deltaPos;
-	vec2 lineVector = *finish_->getPoint()->getPos() - *start_->getPoint()->getPos();
+	float viewWidth = static_cast<TransferFunctionEditor*>(this->scene())->getView()->width();
+	float viewHeight = static_cast<TransferFunctionEditor*>(this->scene())->getView()->height();
 
-	float minX = (start_->getLeftNeighbour()) ? start_->getLeftNeighbour()->getPoint()->getPos()->x + 1.0 : 0.0f;
-	float maxX = (finish_->getRightNeighbour()) ? finish_->getRightNeighbour()->getPoint()->getPos()->x - 1.0 : 255.0f;
+	QPointF delta = e->pos() - mouseDownPos_;
+	QPointF startPos = start_->pos() + delta;
+	QPointF finishPos = finish_->pos() + delta;
+	QPointF startToFinish = finishPos - startPos;
+
+	float minX = (start_->getLeftNeighbour()) ? start_->getLeftNeighbour()->x() + 0.001f : 0.0f;
+	float maxX = (finish_->getRightNeighbour()) ? finish_->getRightNeighbour()->x() - 0.001f : viewWidth;
 	float minY = 0.0;
-	float maxY = 100.0;
+	float maxY = viewHeight;
 
-	if (newStartPos.x < minX){
-		newStartPos.x = minX;
-		newFinishPos = newStartPos + lineVector;
+	if (startPos.x() < minX){
+		startPos.setX(minX);
+		finishPos = startPos + startToFinish;
 	}
-	if (newFinishPos.x > maxX){
-		newFinishPos.x = maxX;
-		newStartPos = newFinishPos - lineVector;
-	}
-
-	if (newStartPos.y < minY){
-		newStartPos.y = minY;
-		newFinishPos = newStartPos + lineVector;
-	}
-	if (newStartPos.y > maxY){
-		newStartPos.y = maxY;
-		newFinishPos = newStartPos + lineVector;
+	if (finishPos.x() > maxX){
+		finishPos.setX(maxX);
+		startPos = finishPos - startToFinish;
 	}
 
-	if (newFinishPos.y < minY){
-		newFinishPos.y = minY;
-		newStartPos = newFinishPos - lineVector;
+	if (startPos.y() < minY){
+		startPos.setY(minY);
+		finishPos = startPos + startToFinish;
 	}
-	if (newFinishPos.y > maxY){
-		newFinishPos.y = maxY;
-		newStartPos = newFinishPos - lineVector;
+	if (startPos.y() > maxY){
+		startPos.setY(maxY);
+		finishPos = startPos + startToFinish;
 	}
 
-	deltaPos.x = floor(deltaPos.x + 0.5);
+	if (finishPos.y() < minY){
+		finishPos.setY(minY);
+		startPos = finishPos - startToFinish;
+	}
+	if (finishPos.y() > maxY){
+		finishPos.setY(maxY);
+		startPos = finishPos - startToFinish;
+	}
 
-	float scaleX_ = static_cast<TransferFunctionEditor*>(this->scene())->getView()->width();
-	float scaleY_ = static_cast<TransferFunctionEditor*>(this->scene())->getView()->height();
+	//startToFinish.setX(floor(startToFinish.x() + 0.5));
 
-	start_->setPos(QPointF(newStartPos.x / scaleX_, newStartPos.y / scaleY_));
-	finish_->setPos(QPointF(newFinishPos.x / scaleX_, newFinishPos.y / scaleY_));
-	start_->getPoint()->setPos(newStartPos);
-	finish_->getPoint()->setPos(newFinishPos);
+	start_->setPos(startPos);
+	finish_->setPos(finishPos);
+	start_->getPoint()->setPos(vec2(startPos.x()/viewWidth, startPos.y()/viewHeight));
+	finish_->getPoint()->setPos(vec2(finishPos.x()/viewWidth, finishPos.y()/viewHeight));
 	mouseDownPos_ = e->pos();
 }
 

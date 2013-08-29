@@ -28,21 +28,18 @@ void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOp
 	IVW_UNUSED_PARAM(options);
 	IVW_UNUSED_PARAM(widget);
 	painter->setRenderHint(QPainter::Antialiasing, true);
-	QPen* pen = new QPen();
+	QPen pen = QPen();
 
-	pen->setCapStyle(Qt::RoundCap);
-	pen->setStyle(Qt::SolidLine);
-	pen->setWidth(2.5);
-	isSelected() ? pen->setColor(Qt::red) : pen->setColor(Qt::black);
+	pen.setCapStyle(Qt::RoundCap);
+	pen.setStyle(Qt::SolidLine);
+	pen.setWidth(2.5);
+	isSelected() ? pen.setColor(Qt::red) : pen.setColor(Qt::black);
 
-	QBrush* brush = new QBrush(QColor::fromRgbF(datapoint_->getRgba()->r, datapoint_->getRgba()->g, datapoint_->getRgba()->b));
+	QBrush brush = QBrush(QColor::fromRgbF(datapoint_->getRgba()->r, datapoint_->getRgba()->g, datapoint_->getRgba()->b));
 
-	painter->setPen(*pen);
-	painter->setBrush(*brush);
+	painter->setPen(pen);
+	painter->setBrush(brush);
 	painter->drawEllipse(-size_/2.0, -size_/2.0, size_, size_);
-
-	delete pen;
-	delete brush;
 }
 
 QRectF TransferFunctionEditorControlPoint::boundingRect() const {
@@ -64,17 +61,15 @@ void TransferFunctionEditorControlPoint::mouseMoveEvent(QGraphicsSceneMouseEvent
 	viewHeight_ = static_cast<TransferFunctionEditor*>(this->scene())->getView()->height();
 	vec2 pos = vec2(e->scenePos().x(), e->scenePos().y());
 
-	float minX = (this->getLeftNeighbour()) ? getLeftNeighbour()->x() : 0.0f;
-	float maxX = (this->getRightNeighbour()) ? getRightNeighbour()->x() : viewWidth_;
+	float minX = (getLeftNeighbour()) ? getLeftNeighbour()->x() : 0.0f;
+	float maxX = (getRightNeighbour()) ? getRightNeighbour()->x() : viewWidth_;
 	float minY = 0.0;
 	float maxY = viewHeight_;
 
-	pos.x = (pos.x <= minX) ? minX + 1.0f : pos.x;
-	pos.x = (pos.x >= maxX) ? maxX - 1.0f : pos.x;
+	pos.x = (pos.x <= minX) ? minX + 0.001f : pos.x;
+	pos.x = (pos.x >= maxX) ? maxX - 0.001f : pos.x;
 	pos.y = (pos.y <= minY) ? minY : pos.y;
 	pos.y = (pos.y >= maxY) ? maxY : pos.y;
-
-	pos.x = floor(pos.x + 0.5);
 
 	this->setPos(QPointF(pos.x, pos.y));
 	this->datapoint_->setPos(pos.x / viewWidth_, pos.y / viewHeight_);
