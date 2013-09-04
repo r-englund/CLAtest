@@ -1,6 +1,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 
 #include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/core/processors/progressbarowner.h>
 
 namespace inviwo {
 
@@ -395,16 +396,17 @@ void ProcessorNetworkEvaluator::evaluate() {
                 processorsSorted_[i]->initializeResources();
 
             // reset the progress indicator
-            if (processorsSorted_[i]->hasProgressBar())
-                processorsSorted_[i]->resetProgress();
+            ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processorsSorted_[i]);
+            if (progressBarOwner)
+                progressBarOwner->getProgressBar().resetProgress();
 
             // do the actual processing
             processorsSorted_[i]->process();
             repaintRequired = true;
 
             // set the progress indicator to finished
-            if (processorsSorted_[i]->hasProgressBar())
-                processorsSorted_[i]->finishProgress();
+            if (progressBarOwner)
+                progressBarOwner->getProgressBar().finishProgress();
 
             // validate processor
             processorsSorted_[i]->setValid();

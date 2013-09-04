@@ -9,8 +9,7 @@ ProcessorCategory(Processor, "undefined");
 ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL); 
 
 Processor::Processor() : VoidObservable(),
-    initialized_(false), processorWidget_(0), identifier_("undefined"),
-    showProgressBar_(false), progress_(0.0f), beginLoopProgress_(-1.0f)
+    initialized_(false), processorWidget_(0), identifier_("undefined")
 {}
 
 Processor::~Processor() {}
@@ -112,29 +111,6 @@ void Processor::invokeInteractionEvent(Event* event) {
     for (size_t i=0; i<interactionHandlers_.size(); i++)
         interactionHandlers_[i]->invokeEvent(event);
 }
-
-
-void Processor::updateProgress(float progress) {
-    if (showProgressBar_) {
-        ivwAssert(progress>=progress_, "Progress should always increase");
-        ivwAssert(progress>=0.0f&&progress<=1.0, "Progress out of bounds.");
-        progress_ = progress;
-        notifyObservers();
-    }
-}
-
-void Processor::updateProgressLoop(size_t loopVar, size_t maxLoopVar, float endLoopProgress) {
-    if (showProgressBar_) {
-        if (beginLoopProgress_<=0.0f)
-            beginLoopProgress_ = progress_;
-        float normalizedLoopVar = static_cast<float>(loopVar)/static_cast<float>(maxLoopVar);
-        progress_ = beginLoopProgress_+normalizedLoopVar*(endLoopProgress-beginLoopProgress_);
-        if (loopVar == maxLoopVar)
-            beginLoopProgress_ = -1.0f;
-        notifyObservers();
-    }
-}
-
 
 
 MetaData* Processor::getMetaData(std::string className) {

@@ -80,6 +80,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
+	${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
+	${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbarowner.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/datasourceprocessor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumeexport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
@@ -222,6 +224,7 @@ set(SOURCE_FILES
     processors/processorfactory.cpp
     processors/processorwidget.cpp
     processors/processorwidgetfactory.cpp
+	processors/progressbar.cpp
     processors/datasource/datasourceprocessor.cpp
     processors/datasource/volumeexport.cpp
     processors/datasource/volumesource.cpp

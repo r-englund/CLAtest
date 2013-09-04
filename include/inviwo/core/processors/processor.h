@@ -77,13 +77,6 @@ public:
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     virtual void initializeResources() {} // reload shaders etc. here
 
-    void showProgressBar() { showProgressBar_ = true; resetProgress(); }
-    void hideProgressBar() { showProgressBar_ = false; resetProgress(); }
-    bool hasProgressBar() const { return showProgressBar_; }
-    float getProgress() const { return progress_; }
-    void resetProgress() { progress_ = 0.0f; }
-    void finishProgress() { progress_ = 1.0f; }
-
     void addInteractionHandler(InteractionHandler* interactionHandler);
     void removeInteractionHandler(InteractionHandler* interactionHandler);
     inline bool hasInteractionHandler() { return (interactionHandlers_.size() != 0); }
@@ -101,9 +94,6 @@ protected:
     void addPort(Outport* port, std::string portDependencySet="default");
     void addPort(Outport& port, std::string portDependencySet="default");
 
-    void updateProgress(float progress);
-    void updateProgressLoop(size_t loopVar, size_t maxLoopVar, float endProgress);
-
     ProcessorWidget* processorWidget_;
 
 private:
@@ -118,10 +108,6 @@ private:
     std::vector<MetaData*> metaData_; 
 
     Group<std::string, Port*> portDependencySets_;
-
-    bool showProgressBar_;
-    float progress_;
-    float beginLoopProgress_;
 
     bool initialized_;
 };

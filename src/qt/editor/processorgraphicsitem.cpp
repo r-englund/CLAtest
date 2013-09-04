@@ -6,6 +6,7 @@
 
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/ports/outport.h>
+#include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/metadata/processormetadata.h>
 
 #include <inviwo/qt/editor/networkeditor.h>
@@ -362,8 +363,10 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     paintStatusIndicator(p, QPointF(57.0f, -20.0f),
                          processor_->isReady(), QColor(0,170,0));
 
-    if (processor_->hasProgressBar())
-        paintProgressBar(p, processor_->getProgress());
+    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    if (progressBarOwner != NULL) {
+        paintProgressBar(p, progressBarOwner->getProgressBar().getProgress());
+    }
 
     p->restore();
 }
@@ -416,9 +419,10 @@ void ProcessorGraphicsItem::updateMetaData() {
 }
 
 void ProcessorGraphicsItem::notify() {
-    if (processor_->hasProgressBar()) {
+    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    if (progressBarOwner != NULL) {
         if (progressBarTimer_.elapsed() > 500 ||
-            processor_->getProgress()==0.0f || processor_->getProgress()==1.0f) {
+            progressBarOwner->getProgressBar().getProgress()==0.0f || progressBarOwner->getProgressBar().getProgress()==1.0f) {
             progressBarTimer_.restart();
             update();
             //QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
