@@ -30,6 +30,9 @@ public:
 public slots:
     void fileChanged(QString fileName);
 
+protected:
+    void wait(int);
+
 private:
     QMainWindow* mainWindow_;
     std::vector<FileObserver*> fileObservers_;

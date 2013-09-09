@@ -1,9 +1,13 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <QFile>
-#include <QFileInfo>
-#include <QDateTime>
 #include <QSound>
+
+#ifdef Q_OS_WIN
+#include <windows.h> // for Sleep
+#else
+#include <time.h>
+#endif
 
 namespace inviwo {
 
@@ -47,7 +51,7 @@ void InviwoApplicationQt::stopFileObservation(std::string fileName) {
 }
 
 void InviwoApplicationQt::fileChanged(QString fileName) {
-    Sleep(200);
+    wait(200);
     if(QFile::exists(fileName)){
         std::string fileNameStd = fileName.toLocal8Bit().constData();
         for (size_t i=0; i<fileObservers_.size(); i++) {
@@ -64,6 +68,18 @@ void InviwoApplicationQt::playSound(unsigned int soundID) {
         if (soundID == IVW_OK) QSound::play(QString::fromStdString(IVW_DIR+"resources/sounds/ok.wav"));
         else if (soundID == IVW_ERROR) QSound::play(QString::fromStdString(IVW_DIR+"resources/sounds/error.wav"));
     }
+}
+
+void InviwoApplicationQt::wait(int ms){
+    if(ms <= 0)
+        return
+
+#ifdef Q_OS_WIN
+        Sleep(uint(ms));
+#else
+    struct timespec ts = { ms / 1000, (ms % 1000) * 1000 * 1000 };
+    nanosleep(&ts, NULL);
+#endif
 }
 
 } // namespace
