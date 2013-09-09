@@ -28,14 +28,12 @@ public:
     virtual void playSound(unsigned int soundID);
 
 public slots:
-    void directoryChanged(QString dirName);
     void fileChanged(QString fileName);
 
 private:
     QMainWindow* mainWindow_;
     std::vector<FileObserver*> fileObservers_;
     QFileSystemWatcher* fileWatcher_;
-    QStringList filesChanged_;
 };
 
 } // namespace

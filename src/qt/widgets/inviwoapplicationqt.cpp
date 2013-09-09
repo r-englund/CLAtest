@@ -2,6 +2,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <QFile>
 #include <QFileInfo>
+#include <QDateTime>
 #include <QSound>
 
 namespace inviwo {
@@ -20,7 +21,6 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
     PropertyWidgetFactoryQt::init();
 
     fileWatcher_ = new QFileSystemWatcher();
-    connect(fileWatcher_, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)));
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 }
 
@@ -34,11 +34,6 @@ void InviwoApplicationQt::startFileObservation(std::string fileName) {
     QString qFileName = QString::fromStdString(fileName);
     if (!fileWatcher_->files().contains(qFileName)){
         fileWatcher_->addPath(qFileName); 
-        QFileInfo info(qFileName);
-        QString path = info.absolutePath();
-        if(!fileWatcher_->directories().contains(path)){
-            fileWatcher_->addPath(path);
-        }
     }
 }
 
@@ -48,31 +43,19 @@ void InviwoApplicationQt::stopFileObservation(std::string fileName) {
               "trying to stop observation of an unobserved file: "+fileName);
     if (fileWatcher_->files().contains(qFileName)){
         fileWatcher_->removePath(qFileName);
-        QFileInfo info(qFileName);
-        QString path = info.absolutePath();
-        QStringList result = fileWatcher_->files().filter(path);
-        if(result.isEmpty()){
-            fileWatcher_->removePath(path);
-        }
-    }
-}
-
-void InviwoApplicationQt::directoryChanged(QString dirName){
-    if(!filesChanged_.isEmpty()){
-        if(QFile::exists(filesChanged_.first())){
-            std::string fileNameStd = filesChanged_.first().toLocal8Bit().constData();
-            for (size_t i=0; i<fileObservers_.size(); i++) {
-                std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
-                if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
-                    fileObservers_[i]->fileChanged(fileNameStd);
-            }
-        }
-        filesChanged_.removeAt(0);
     }
 }
 
 void InviwoApplicationQt::fileChanged(QString fileName) {
-    filesChanged_.append(fileName);
+    Sleep(200);
+    if(QFile::exists(fileName)){
+        std::string fileNameStd = fileName.toLocal8Bit().constData();
+        for (size_t i=0; i<fileObservers_.size(); i++) {
+            std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
+            if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
+                fileObservers_[i]->fileChanged(fileNameStd);
+        }
+    }
 }
 
 void InviwoApplicationQt::playSound(unsigned int soundID) {
