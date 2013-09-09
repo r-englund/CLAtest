@@ -72,7 +72,7 @@ void InviwoApplicationQt::playSound(unsigned int soundID) {
 
 void InviwoApplicationQt::wait(int ms){
     if(ms <= 0)
-        return
+        return;
 
 #ifdef Q_OS_WIN
         Sleep(uint(ms));
