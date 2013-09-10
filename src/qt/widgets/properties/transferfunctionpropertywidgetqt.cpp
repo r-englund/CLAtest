@@ -40,7 +40,10 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
     gradient_->setFinalStop(gradientView_->width(),0);
 
     btnOpenTF_ = new QToolButton();
-    btnOpenTF_->setIcon(QIcon(QPixmap::grabWidget(gradientView_)));
+    QPixmap pixmap(gradientView_->size());
+    QPainter painter(&pixmap);
+    gradientView_->render(&painter);
+    btnOpenTF_->setIcon(QIcon(pixmap));
     btnOpenTF_->setIconSize(QSize(150,25));
 
 	connect(btnOpenTF_,SIGNAL(clicked()),this,SLOT(openTransferFunctionDialog()));
@@ -55,7 +58,10 @@ void TransferFunctionPropertyWidgetQt::updateFromProperty(){
     gradient_->setFinalStop(gradientView_->width(), 0.0);
     gradient_->setStops(*transferFunctionDialog_->getGradientStops());
     gradientView_->setForegroundBrush(*gradient_);
-    btnOpenTF_->setIcon(QIcon(QPixmap::grabWidget(gradientView_)));
+    QPixmap pixmap(gradientView_->size());
+    QPainter painter(&pixmap);
+    gradientView_->render(&painter);
+    btnOpenTF_->setIcon(QIcon(pixmap));
     }
 }
 

@@ -44,7 +44,7 @@ void EditableLabelQt::mouseDoubleClickEvent( QMouseEvent* e ){
 
 void EditableLabelQt::editingOff(){
     lineEdit_->hide();
-    text_ = (std::string)lineEdit_->text().toAscii();
+    text_ = lineEdit_->text().toLocal8Bit().constData();
     label_->setText(QString::fromStdString(shortenText()));    
     label_->show();
     emit textChanged();
