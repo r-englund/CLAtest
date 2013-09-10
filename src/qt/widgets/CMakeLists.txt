@@ -169,7 +169,7 @@ ivw_add_dependencies(InviwoCore)
 
 # Add qt dependencies to this list
 if(DESIRED_QT_VERSION MATCHES 5)
-    ivw_add_dependencies(Qt5Core)    
+    ivw_add_dependencies(Qt5Core Qt5Gui Qt5Widgets Qt5Multimedia)    
 else()
     ivw_add_dependencies(Qt)
 endif()
@@ -184,5 +184,5 @@ ivw_compile_optimize_inviwo_core()
 ivw_make_package(InviwoQtWidgets inviwo-qtwidgets)
 
 if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_use_modules(inviwo-qtwidgets Core Widgets Gui OpenGL Multimedia)    
+    qt5_use_modules(inviwo-qtwidgets Core Gui Widgets Multimedia)    
 endif()

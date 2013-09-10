@@ -89,7 +89,7 @@ add_library(inviwo-qteditor ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
 # Add qt dependencies to this list
 if(DESIRED_QT_VERSION MATCHES 5)
-    ivw_add_dependencies(Qt5Core)    
+    ivw_add_dependencies(Qt5Core Qt5Gui Qt5Widgets Qt5Multimedia)    
 else()
     ivw_add_dependencies(Qt)
 endif()
@@ -109,5 +109,5 @@ ivw_compile_optimize_inviwo_core()
 ivw_make_package(InviwoQtEditor inviwo-qteditor)
 
 if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_use_modules(inviwo-qteditor Widgets)    
+    qt5_use_modules(inviwo-qteditor Core Gui Widgets Multimedia)    
 endif()
