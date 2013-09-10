@@ -1,21 +1,9 @@
 #include <modules/openglqt/canvasqt.h>
 
+
 namespace inviwo {
 
 QGLWidget* CanvasQt::sharedWidget_ = 0;
-
-CanvasQt::CanvasQt(QWidget* parent, QGLFormat glFormat)
-    : QGLWidget(glFormat, parent, sharedWidget_),
-    CanvasGL(uvec2(256,256))
-{ 
-    if (!sharedWidget_){
-        sharedWidget_ = this;
-        QGLWidget::glInit();		
-        //LogInfo("GL Major: "<< format().majorVersion() <<" GL Minor: "<< format().minorVersion());     
-    }
-	setFocusPolicy(Qt::StrongFocus);
-
-}
 
 CanvasQt::CanvasQt(QWidget* parent)
 : QGLWidget(QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
@@ -25,6 +13,11 @@ CanvasQt::CanvasQt(QWidget* parent)
     //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
     //But Following objects, will share the context of initial object
     if (!sharedWidget_){
+        QGLFormat f = this->format();
+        f.setVersion(10, 0);  //Will choose highest available version
+        f.setProfile(QGLFormat::CompatibilityProfile);
+        setFormat(f);
+
         sharedWidget_ = this;
         QGLWidget::glInit();
     }

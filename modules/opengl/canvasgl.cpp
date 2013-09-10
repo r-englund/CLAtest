@@ -8,7 +8,7 @@ CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions) {
     image_ = NULL;
     shader_ = NULL;
-    noiseShader_ = NULL;
+    noiseShader_ = NULL;  
 }
 
 void CanvasGL::initialize() {

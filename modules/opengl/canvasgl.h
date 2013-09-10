@@ -31,6 +31,7 @@ protected:
 
 private:
     static bool glewInitialized_;
+
     const ImageGL* image_;
     Shader* shader_;
     Shader* noiseShader_;

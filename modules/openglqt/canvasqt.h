@@ -17,8 +17,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API CanvasQt : public QGLWidget, public CanvasGL {
 public:
-    CanvasQt(QWidget* parent, QGLFormat glFormat);
-    CanvasQt(QWidget* parent);
+    CanvasQt(QWidget* parent = NULL);
     ~CanvasQt();
 
     void initialize();
