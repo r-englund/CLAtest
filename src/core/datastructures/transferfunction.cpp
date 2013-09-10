@@ -18,7 +18,7 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
 		this->data_ = static_cast<Image*>(rhs.data_->clone());
 		this->clearPoints();
 		textureSize_ = rhs.textureSize_;
-		for (size_t i = 0; i < rhs.getNumberOfDataPoints(); ++i){
+		for (int i = 0; i < static_cast<int>(rhs.getNumberOfDataPoints()); ++i){
 			this->dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(i)));
 		}
 	}

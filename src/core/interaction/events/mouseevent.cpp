@@ -42,7 +42,7 @@ void MouseEvent::serialize( IvwSerializer& s ) const {
 void MouseEvent::deserialize( IvwDeserializer& d ) {
 	InteractionEvent::deserialize(d);
 	d.deserialize("button", buttonName_);
-	for (size_t i = 0; i < COUNT; ++i) {
+	for (int i = 0; i < COUNT; ++i) {
 		if (buttonNames_[i] == buttonName_) {
 			button_ = i;
 			break;

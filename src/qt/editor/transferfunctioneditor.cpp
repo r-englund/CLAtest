@@ -14,7 +14,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
 	//VLDEnable;
 
 	//if the editor is loaded from a saved state this adds graphicsitems to the editor for each datapoint in the Transferfunction
-	for (size_t i = 0; i < transferFunction_->getNumberOfDataPoints(); i++){
+	for (int i = 0; i < transferFunction_->getNumberOfDataPoints(); i++){
 		points_.push_back(new TransferFunctionEditorControlPoint(transferFunction_->getPoint(i)));
 		addItem(points_.back());
 		if (i > 0){

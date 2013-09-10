@@ -46,12 +46,12 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
     std::vector<DataRepresentation*> &targetRepresentations = targetImage->representations_;
 
     if (targetRepresentations.size()) {
-        for (size_t i=0; i<representations_.size(); i++) {
+        for (int i=0; i<static_cast<int>(representations_.size()); i++) {
             imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;        
             ivwAssert(imageRepresentation!=0, "Only image representations should be used here.");
             if (isRepresentationValid(i)) {
-                size_t numberOfTargets = targetRepresentations.size();
-                for (size_t j=0; j<numberOfTargets; j++) {
+                int numberOfTargets = static_cast<int>(targetRepresentations.size());
+                for (int j=0; j<numberOfTargets; j++) {
                     targetRepresentation = dynamic_cast<ImageRepresentation*>(targetRepresentations[j]) ;
                     ivwAssert(targetRepresentation!=0, "Only image representations should be used here.");
                     if (imageRepresentation->getClassName()==targetRepresentation->getClassName()) {
@@ -74,7 +74,7 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
 
        targetImage->resize(targetDim);
        if (lastValidRepresentation->copyAndResizeImage(cloneOfLastValidRepresentation)) {
-            targetImage->setRepresentationAsValid(targetImage->representations_.size()-1);
+            targetImage->setRepresentationAsValid(static_cast<int>(targetImage->representations_.size())-1);
             targetImage->lastValidRepresentation_ = cloneOfLastValidRepresentation;
        }
     }

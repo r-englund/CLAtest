@@ -28,7 +28,7 @@ T* ImageLoader::switchChannels(const T *inputImage, uvec2 dim){
 
 template<typename T>
 FIBITMAP* ImageLoader::convertToBitmap(T *data, uvec2 dim, size_t bitsPerPixel){
-    FIBITMAP *dib = FreeImage_Allocate(dim.x, dim.y, bitsPerPixel, FI_RGBA_RED_MASK,
+    FIBITMAP *dib = FreeImage_Allocate(dim.x, dim.y, static_cast<int>(bitsPerPixel), FI_RGBA_RED_MASK,
                                         FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
 
     unsigned int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
@@ -95,7 +95,7 @@ void ImageLoader::saveImage(const char* filename, const Image* inputImage)
 
         FIBITMAP* bitmap = convertToByte(imageRam, dim, bitsPerPixel);
  
-        FreeImage_Save(imageFormat, bitmap, filename, bitsPerPixel);
+        FreeImage_Save(imageFormat, bitmap, filename, static_cast<int>(bitsPerPixel));
 
     }
     else{

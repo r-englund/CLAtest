@@ -154,7 +154,7 @@ void TemplateOptionProperty<T>::addOption(std::string optionIdentifier, std::str
 
 template<typename T>
 int TemplateOptionProperty<T>::numOptions() const {
-    return options_.size();
+    return static_cast<int>(options_.size());
 }
 
 template<typename T>
@@ -168,7 +168,7 @@ std::vector<std::string> TemplateOptionProperty<T>::getOptionDisplayNames() cons
 
 template<typename T>
 int TemplateOptionProperty<T>::getSelectedOption() const {
-    for (size_t i=0; i<options_.size(); i++) {
+    for (int i=0; i<static_cast<int>(options_.size()); i++) {
         if (options_[i].second == value_)
             return i;
     }

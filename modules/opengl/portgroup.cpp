@@ -25,7 +25,7 @@ void PortGroup::activate() {
     GLenum* attachementIDs = new GLenum[attachementIDVector.size()];
     for (size_t i=0; i<attachementIDVector.size(); i++)
         attachementIDs[i] = attachementIDVector[i];
-    glDrawBuffers(attachementIDVector.size(), attachementIDs);
+    glDrawBuffers(static_cast<GLsizei>(attachementIDVector.size()), attachementIDs);
     delete attachementIDs;
     LGL_ERROR;
 }

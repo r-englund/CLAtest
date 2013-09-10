@@ -22,7 +22,7 @@ public:
             rhs.copyRepresentations(this);
             this->metaData_ = rhs.getMetaDataMap();
             this->setDataFormat(rhs.getDataFormat());
-            for(size_t i = 0; i < this->representations_.size(); ++i) {
+            for(int i = 0; i < static_cast<int>(this->representations_.size()); ++i) {
                 if(rhs.isRepresentationValid(i)) {
                     this->setRepresentationAsValid(i);
                     this->lastValidRepresentation_ = this->representations_[i];
@@ -110,10 +110,10 @@ const T* Data::getRepresentation() const {
     if (!hasRepresentations()) {
         createDefaultRepresentation();
         lastValidRepresentation_ = representations_[0];
-        setRepresentationAsValid(representations_.size()-1);
+        setRepresentationAsValid(static_cast<int>(representations_.size())-1);
     }
     // check if a representation exists and return it
-    for (size_t i=0; i<representations_.size(); ++i) {
+    for (int i=0; i<static_cast<int>(representations_.size()); ++i) {
         T* representation = dynamic_cast<T*>(representations_[i]);
         if (representation) {
             if (isRepresentationValid(i)) {
@@ -143,7 +143,7 @@ const T* Data::createNewRepresentationUsingConverters() const
     if (converter) {
         result = converter->createFrom(lastValidRepresentation_);
         representations_.push_back(result);
-        setRepresentationAsValid(representations_.size()-1);
+        setRepresentationAsValid(static_cast<int>(representations_.size())-1);
         lastValidRepresentation_ = result;
         return dynamic_cast<T*>(result);
     }
@@ -155,7 +155,7 @@ const T* Data::createNewRepresentationUsingConverters() const
     } else {
         // Not possible to convert from last valid representation.
         // Check if it is possible to convert from another valid representation.
-        for (size_t i=0; i<representations_.size(); ++i) {     
+        for (int i=0; i<static_cast<int>(representations_.size()); ++i) {     
             if(isRepresentationValid(i)) {
                 RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(representations_[i]); 
                 if (currentConverterPackage) { 
@@ -174,10 +174,10 @@ const T* Data::createNewRepresentationUsingConverters() const
     }
 
     if (converterPackage) {
-        for (size_t i=0; i<converterPackage->getNumberOfConverters(); ++i) { 
+        for (int i=0; i<static_cast<int>(converterPackage->getNumberOfConverters()); ++i) { 
             result = converterPackage->createFrom(result);
             representations_.push_back(result);
-            setRepresentationAsValid(representations_.size()-1);
+            setRepresentationAsValid(static_cast<int>(representations_.size())-1);
         }
         lastValidRepresentation_ = result;
         return dynamic_cast<T*>(result);
@@ -205,8 +205,8 @@ void Data::updateRepresentation(T* representation, int index) const {
         if (converterPackage) {
             //for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
                 const std::vector<RepresentationConverter*>& converters = converterPackage->getConverters();
-                for (size_t j=0; j<converters.size(); ++j) { 
-                    for (size_t k=0; k<representations_.size(); ++k) { 
+                for (int j=0; j<static_cast<int>(converters.size()); ++j) { 
+                    for (int k=0; k<static_cast<int>(representations_.size()); ++k) { 
                         if(converters[j]->canConvertTo(representations_[k])) {
                             converters[j]->update(lastValidRepresentation_, representations_[k]);
                             setRepresentationAsValid(k);
@@ -234,7 +234,7 @@ T* Data::getEditableRepresentation() {
 
 template<typename T>
 bool Data::hasRepresentation() const {
-    for (size_t i=0; i<representations_.size(); i++) {
+    for (int i=0; i<representations_.size(); i++) {
         T* representation = dynamic_cast<T*>(representations_[i]);
         if (representation) return true;
     }
@@ -245,7 +245,7 @@ template<typename T>
 void Data::invalidateAllOther(){
 
     std::vector<DataRepresentation*>::iterator it = representations_.begin();
-    for(size_t i = 0; i < representations_.size(); ++i ) {
+    for(int i = 0; i < static_cast<int>(representations_.size()); ++i ) {
         T* representation = dynamic_cast<T*>(representations_[i]);
         if (representation) {
             setAllOtherRepresentationsAsInvalid(i);

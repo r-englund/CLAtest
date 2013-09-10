@@ -105,8 +105,8 @@ void FloatMinMaxPropertyWidgetQt::setSpinBoxDecimals(float increment) {
 
     std::string str2 = buff.str().substr(buff.str().find(".")+1,buff.str().length());
 
-    spinBoxMin_->setDecimals(str2.length());
-    spinBoxMax_->setDecimals(str2.length());
+    spinBoxMin_->setDecimals(static_cast<int>(str2.length()));
+    spinBoxMax_->setDecimals(static_cast<int>(str2.length()));
 }
 
 void FloatMinMaxPropertyWidgetQt::setPropertyDisplayName(){

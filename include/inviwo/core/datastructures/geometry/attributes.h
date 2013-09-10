@@ -77,7 +77,7 @@ unsigned int Attributes<T,B,A>::getElementSize() const{
 
 template<typename T, size_t B, AttributeType A>
 unsigned int Attributes<T,B,A>::getNumberOfAttributes() const{
-    return attributes_.size();
+    return static_cast<unsigned int>(attributes_.size());
 }
 
 template<typename T, size_t B, AttributeType A>

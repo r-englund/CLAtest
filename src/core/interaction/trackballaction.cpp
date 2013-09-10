@@ -29,7 +29,7 @@ void TrackballAction::serialize( IvwSerializer& s ) const {
 }
 void TrackballAction::deserialize(IvwDeserializer& d) {
 	d.deserialize("action", actionName_);
-	for (size_t i = 0; i < COUNT; ++i) {
+	for (int i = 0; i < COUNT; ++i) {
 		if (actionNames_[i] == actionName_) {
 			action_ = i;
 			break;

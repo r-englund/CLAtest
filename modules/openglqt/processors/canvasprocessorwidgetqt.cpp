@@ -29,7 +29,7 @@ ProcessorWidget* CanvasProcessorWidgetQt::create() const {
 void CanvasProcessorWidgetQt::initialize() {    
     setWindowTitle(QString::fromStdString(processor_->getIdentifier())); 
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
-    canvas_ = new CanvasQt(this);
+    canvas_ = new CanvasQt(NULL);
     canvas_->initialize();
     canvas_->setMouseTracking(true);
     
