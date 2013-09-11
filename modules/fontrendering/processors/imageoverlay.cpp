@@ -99,7 +99,7 @@ void ImageOverlay::render_text(const char *text, float x, float y, float sx, flo
 
 		shader_->setUniform("texture", 0);
 		shader_->setUniform("color", floatColor_.get());
-		glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_STREAM_DRAW);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		x += (fontface_->glyph->advance.x >> 6) * sx;
@@ -164,6 +164,7 @@ void ImageOverlay::process() {
 	
 	deactivateCurrentTarget();
 
+    glDisableVertexAttribArray(attribute_location);
 }
 
 } // namespace

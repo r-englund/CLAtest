@@ -36,8 +36,7 @@ public:
     Attributes() : AttributesBase(), dataFormat_(DataFormat<T,B>()) {}
     virtual ~Attributes(){}
 
-    void addC(T);
-    void add(T&);
+    void add(T);
     
     const void* getAttributes() const;
     AttributeType getAttributeType() const;
@@ -52,12 +51,7 @@ private:
 };
 
 template<typename T, size_t B, AttributeType A>
-void Attributes<T,B,A>::addC(T v){
-    attributes_.push_back(v);
-}
-
-template<typename T, size_t B, AttributeType A>
-void Attributes<T,B,A>::add(T& v){
+void Attributes<T,B,A>::add(T v){
     attributes_.push_back(v);
 }
 
