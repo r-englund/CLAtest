@@ -28,7 +28,7 @@ void MeshRAM::addAttribute(AttributesBase* att){
     attributes_.push_back(att);
 }
 
-void MeshRAM::addIndicies(AttributesInfo& info, IndexAttributes* ind){
+void MeshRAM::addIndicies(AttributesInfo info, IndexAttributes* ind){
     indexAttributes_.push_back(std::make_pair(info, ind));
 }
 

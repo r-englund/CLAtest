@@ -29,7 +29,7 @@ public:
     virtual void render(RenderType = GeometryRepresentation::NOT_SPECIFIED) const{};
 
     void addAttribute(AttributesBase*);
-    void addIndicies(AttributesInfo& info, IndexAttributes* ind);
+    void addIndicies(AttributesInfo info, IndexAttributes* ind);
 
     AttributesBase* getAttributes(size_t idx) const;
     AttributesBase* getIndicies(size_t idx) const;
