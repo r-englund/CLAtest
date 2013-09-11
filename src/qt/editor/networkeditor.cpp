@@ -8,6 +8,7 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
+#include <inviwo/core/resources/resourcemanager.h>
 
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
@@ -930,6 +931,7 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 ///////////////////////////////
 void NetworkEditor::clearNetwork() {
     processorNetwork_->lock();
+    ResourceManager::instance()->clearAllResources();
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++)
         removeProcessor(processors[i]);

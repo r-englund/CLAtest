@@ -34,7 +34,9 @@ VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, GLint format, GLint int
     initialize(texels);
 }
 
-VolumeGL::~VolumeGL() {}
+VolumeGL::~VolumeGL() {
+    deinitialize();
+}
 
 void VolumeGL::initialize() {}
 

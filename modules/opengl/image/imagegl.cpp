@@ -12,7 +12,9 @@ ImageGL::ImageGL(uvec2 dimensions, ImageType type, DataFormatBase format, Textur
     initialize();
 }
 
-ImageGL::~ImageGL() {}
+ImageGL::~ImageGL() {
+    deinitialize();
+}
 
 void ImageGL::initialize() {
     frameBufferObject_ = new FrameBufferObject();

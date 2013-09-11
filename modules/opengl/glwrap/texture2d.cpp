@@ -11,6 +11,7 @@ Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filt
     glGenTextures(1, &id_);
     numChannels_ = glFormat.channels;
     byteSize_ = numChannels_*glFormat.typeSize;
+    LGL_ERROR;
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
@@ -22,10 +23,12 @@ Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenu
     glGenTextures(1, &id_);
     setNChannels();
     setSizeInBytes();
+    LGL_ERROR;
 }
 
 Texture2D::~Texture2D() {
     glDeleteTextures(1, &id_);
+    LGL_ERROR;
 }
 
 Texture2D* Texture2D::clone() const {

@@ -33,6 +33,11 @@ public:
     void addResource(Resource *resource) { resources_.push_back(resource); }
 
     /**
+     * Clear all resource in ResourceManager.
+     */
+    void clearAllResources();
+
+    /**
      * Get Resource using identifier. 
      * 
      * @param identifier Resource identifier.
@@ -71,7 +76,6 @@ public:
     }
 
 protected:
-
     
 private:
     ResourceManager() {};

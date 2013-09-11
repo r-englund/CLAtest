@@ -11,10 +11,7 @@ struct ResourceComparer {
 };
 
 ResourceManager::~ResourceManager() {
-    // Deallocate resources
-    for(std::vector<Resource*>::iterator it = resources_.begin(); it != resources_.end(); ++it) {
-        delete *it;
-    }
+    clearAllResources();
 }
 
 Resource* ResourceManager::getResource( const std::string& identifier )
@@ -25,6 +22,14 @@ Resource* ResourceManager::getResource( const std::string& identifier )
     } else {
         return NULL;
     }
+}
+
+void ResourceManager::clearAllResources(){
+    // Deallocate resources
+    for(std::vector<Resource*>::iterator it = resources_.begin(); it != resources_.end(); ++it) {
+        delete *it;
+    }
+    resources_.clear();
 }
 
 

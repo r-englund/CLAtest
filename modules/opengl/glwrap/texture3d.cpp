@@ -9,9 +9,13 @@ Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenu
       dataType_(dataType),
       filtering_(filtering) {
     glGenTextures(1, &id_);
+    LGL_ERROR;
 }
 
-Texture3D::~Texture3D() {}
+Texture3D::~Texture3D() {
+    glDeleteTextures(1, &id_);
+    LGL_ERROR;
+}
 
 void Texture3D::bind() const{
     glBindTexture(GL_TEXTURE_3D, id_);
@@ -36,8 +40,7 @@ void Texture3D::upload(const void* data) {
     LGL_ERROR;
 }
 
-void Texture3D::download( void* data ) const
-{
+void Texture3D::download( void* data ) const{
     bind();
     glGetTexImage(GL_TEXTURE_3D, 0, format_, dataType_, data);
 }
