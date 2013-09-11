@@ -28,8 +28,8 @@ void MeshRAM::addAttribute(AttributesBase* att){
     attributes_.push_back(att);
 }
 
-void MeshRAM::addIndicies(std::pair<AttributesInfo, IndexAttributes*>& ind){
-    indexAttributes_.push_back(ind);
+void MeshRAM::addIndicies(AttributesInfo& info, IndexAttributes* ind){
+    indexAttributes_.push_back(std::make_pair(info, ind));
 }
 
 AttributesBase* MeshRAM::getAttributes(size_t idx) const{

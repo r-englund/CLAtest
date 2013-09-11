@@ -22,7 +22,7 @@ void BaseMeshRAM::initialize() {
     addAttribute(vertexColors_);
 
     indices_ = new IndexAttributes();
-    addIndicies(std::make_pair(MeshRAM::AttributesInfo(), indices_));
+    addIndicies(MeshRAM::AttributesInfo(), indices_);
 }
 
 void BaseMeshRAM::deinitialize() {}
