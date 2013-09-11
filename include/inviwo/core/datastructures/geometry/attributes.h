@@ -90,9 +90,11 @@ unsigned int Attributes<T,B,A>::getDataSize() const{
 typedef DataFormatAttributes(DataVec4FLOAT32, COLOR_ATTRIB) ColorAttributes;
 typedef DataFormatAttributes(DataFLOAT32, CURVATURE_ATTRIB) CurvatureAttributes;
 typedef DataFormatAttributes(DataUINT32, INDEX_ATTRIB) IndexAttributes;
+typedef DataFormatAttributes(DataVec2FLOAT32, POSITION_ATTRIB) Position2dAttributes;
+typedef DataFormatAttributes(DataVec2FLOAT32, TEXCOORD_ATTRIB) TexCoord2dAttributes;
+typedef DataFormatAttributes(DataVec3FLOAT32, POSITION_ATTRIB) Position3dAttributes;
+typedef DataFormatAttributes(DataVec3FLOAT32, TEXCOORD_ATTRIB) TexCoord3dAttributes;
 typedef DataFormatAttributes(DataVec3FLOAT32, NORMAL_ATTRIB) NormalAttributes;
-typedef DataFormatAttributes(DataVec3FLOAT32, POSITION_ATTRIB) PositionAttributes;
-typedef DataFormatAttributes(DataVec3FLOAT32, TEXCOORD_ATTRIB) TexCoordAttributes;
 
 } // namespace
 

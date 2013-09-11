@@ -124,7 +124,7 @@ void ImageOverlay::process() {
 	shader_passthrough_->activate();
 	shader_passthrough_->setUniform("inport0_",0);
 	shader_passthrough_->setUniform("dimension_", vec2(1.f / imageSize[0], 1.f / imageSize[1]) );
-	renderImagePlaneQuad();
+	renderImagePlaneSquare();
 	shader_passthrough_->deactivate();
 
 	glEnable(GL_BLEND);

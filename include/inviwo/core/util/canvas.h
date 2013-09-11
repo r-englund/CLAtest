@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/image.h>
+#include <inviwo/core/datastructures/geometry/geometry.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/interaction/events/eventhandler.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
@@ -30,6 +31,9 @@ public:
     ProcessorNetworkEvaluator* getNetworkEvaluator() const { return processorNetworkEvaluator_; };
 
 protected:
+    static Geometry* screenAlignedSquare_;
+
+    bool shared;
     uvec2 dimensions_;
 
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;

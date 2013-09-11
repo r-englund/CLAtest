@@ -24,6 +24,14 @@ void MeshRAM::deinitialize() {
         delete it->second;
 }
 
+void MeshRAM::addAttribute(AttributesBase* att){
+    attributes_.push_back(att);
+}
+
+void MeshRAM::addIndicies(std::pair<AttributesInfo, IndexAttributes*>& ind){
+    indexAttributes_.push_back(ind);
+}
+
 AttributesBase* MeshRAM::getAttributes(size_t idx) const{
     return attributes_[idx];
 }

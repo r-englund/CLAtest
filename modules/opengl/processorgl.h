@@ -9,6 +9,7 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/image/imagegl.h>
+#include <modules/opengl/canvasgl.h>
 
 namespace inviwo {
 
@@ -41,7 +42,7 @@ public:
     void setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID);
     void setGlobalShaderParameters(Shader* shader);
 
-    void renderImagePlaneQuad() const;
+    void renderImagePlaneSquare() const;
     void renderQuad() const; // deprecated
 };
 

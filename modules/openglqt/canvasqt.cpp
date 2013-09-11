@@ -21,6 +21,7 @@ CanvasQt::CanvasQt(QWidget* parent)
         sharedWidget_ = this;
         QGLWidget::glInit();
     }
+
     //setAutoBufferSwap(false);
 	setFocusPolicy(Qt::StrongFocus);
 }

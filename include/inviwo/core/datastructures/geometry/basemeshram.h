@@ -22,8 +22,8 @@ public:
     void setIndicesInfo(RenderType, ConnectivityType);
 
 protected:
-    PositionAttributes* vertexPositions_;
-    TexCoordAttributes* vertexTexCoords_;
+    Position3dAttributes* vertexPositions_;
+    TexCoord3dAttributes* vertexTexCoords_;
     ColorAttributes* vertexColors_;
     IndexAttributes* indices_;
 };

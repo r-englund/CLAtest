@@ -39,7 +39,7 @@ void FindEdges::process() {
     shader_->setUniform("inport_", 0);
     shader_->setUniform("alpha_", alpha_.get());
     shader_->setUniform("dimension_", vec2(1.f / outport_.getDimensions()[0], 1.f / outport_.getDimensions()[1]));
-    renderImagePlaneQuad();
+    renderImagePlaneSquare();
     shader_->deactivate();
 
     deactivateCurrentTarget();

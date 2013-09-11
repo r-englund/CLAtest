@@ -6,6 +6,7 @@
 #include <inviwo/core/util/canvas.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/image/imagegl.h>
+#include <modules/opengl/geometry/geometrygl.h>
 
 namespace inviwo {
 
@@ -22,15 +23,19 @@ public:
     virtual void resize(uvec2 size);
     virtual void update();
 
+    static void renderImagePlaneSquare(){
+        screenAlignedSquareGL_->render();
+    }
+
 protected:
     void renderColor();
     void renderDepth();
     void renderNoise();
     void renderTexture(GLint);
-    void renderImagePlaneQuad();
 
 private:
     static bool glewInitialized_;
+    static const GeometryGL* screenAlignedSquareGL_;
 
     const ImageGL* image_;
     Shader* shader_;

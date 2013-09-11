@@ -127,7 +127,7 @@ void ProcessorGL::setGlobalShaderParameters(Shader* shader) {
     shader->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/screenDimensions);
 }
 
-void ProcessorGL::renderImagePlaneQuad() const {
+void ProcessorGL::renderImagePlaneSquare() const {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
@@ -135,12 +135,7 @@ void ProcessorGL::renderImagePlaneQuad() const {
     glPushMatrix();
     glLoadIdentity();
     glDepthFunc(GL_ALWAYS);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0.f, 0.f); glVertex2f(-1.f, -1.f);
-        glTexCoord2f(1.f, 0.f); glVertex2f( 1.f, -1.f);
-        glTexCoord2f(1.f, 1.f); glVertex2f( 1.f,  1.f);
-        glTexCoord2f(0.f, 1.f); glVertex2f(-1.f,  1.f);
-    glEnd();
+    CanvasGL::renderImagePlaneSquare();
     glDepthFunc(GL_LESS);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
@@ -148,8 +143,8 @@ void ProcessorGL::renderImagePlaneQuad() const {
 }
 
 void ProcessorGL::renderQuad() const {
-    ivwDeprecatedMethod("renderImagePlaneQuad()");
-    renderImagePlaneQuad();
+    ivwDeprecatedMethod("renderImagePlaneSquare()");
+    renderImagePlaneSquare();
 }
 
 } // namespace

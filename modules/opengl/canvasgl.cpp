@@ -1,14 +1,16 @@
 #include "canvasgl.h"
 #include <modules/opengl/glwrap/textureunit.h>
+
 namespace inviwo {
 
 bool CanvasGL::glewInitialized_ = false;
+const GeometryGL* CanvasGL::screenAlignedSquareGL_ = NULL;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions) {
     image_ = NULL;
     shader_ = NULL;
-    noiseShader_ = NULL;  
+    noiseShader_ = NULL;
 }
 
 void CanvasGL::initialize() {
@@ -25,6 +27,10 @@ void CanvasGL::initialize() {
     LGL_ERROR;
     noiseShader_ = new Shader("img_noise.frag");
     LGL_ERROR;
+    if (!screenAlignedSquareGL_) {
+        screenAlignedSquareGL_ = screenAlignedSquare_->getRepresentation<GeometryGL>();
+        LGL_ERROR;
+    }
 }
 
 void CanvasGL::initializeGL() {
@@ -95,7 +101,7 @@ void CanvasGL::renderDepth() {
 void CanvasGL::renderNoise() {
     noiseShader_->activate();
     noiseShader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
-    renderImagePlaneQuad();
+    renderImagePlaneSquare();
     noiseShader_->deactivate();
 }
 
@@ -105,28 +111,8 @@ void CanvasGL::renderTexture(GLint unitNumber) {
     shader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
     //FIXME: glViewport should not be here, which indicates this context is not active.
     glViewport(0, 0, dimensions_.x, dimensions_.y);
-    renderImagePlaneQuad();
+    renderImagePlaneSquare();
     shader_->deactivate();
-}
-
-void CanvasGL::renderImagePlaneQuad() {
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glDepthFunc(GL_ALWAYS);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex2f( 1.0f, -1.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex2f( 1.0f,  1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f,  1.0f);
-    glEnd();
-    glDepthFunc(GL_LESS);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
 }
 
 } // namespace

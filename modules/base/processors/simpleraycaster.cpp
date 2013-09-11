@@ -61,7 +61,7 @@ void SimpleRaycaster::process() {
     raycastPrg_->setUniform("samplingRate_", samplingRate_.get());
     raycastPrg_->setUniform("isoValue_", isoValue_.get());
 
-    renderImagePlaneQuad();
+    renderImagePlaneSquare();
     
     raycastPrg_->deactivate();
     deactivateCurrentTarget();

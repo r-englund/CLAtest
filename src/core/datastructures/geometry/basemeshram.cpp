@@ -12,17 +12,17 @@ BaseMeshRAM::~BaseMeshRAM() {
 }
 
 void BaseMeshRAM::initialize() {
-    vertexPositions_ = new PositionAttributes();
-    attributes_.push_back(vertexPositions_);
+    vertexPositions_ = new Position3dAttributes();
+    addAttribute(vertexPositions_);
 
-    vertexTexCoords_ = new TexCoordAttributes();
-    attributes_.push_back(vertexTexCoords_);
+    vertexTexCoords_ = new TexCoord3dAttributes();
+    addAttribute(vertexTexCoords_);
 
     vertexColors_ = new ColorAttributes();
-    attributes_.push_back(vertexColors_);
+    addAttribute(vertexColors_);
 
     indices_ = new IndexAttributes();
-    indexAttributes_.push_back(std::make_pair(MeshRAM::AttributesInfo(), indices_));
+    addIndicies(std::make_pair(MeshRAM::AttributesInfo(), indices_));
 }
 
 void BaseMeshRAM::deinitialize() {}

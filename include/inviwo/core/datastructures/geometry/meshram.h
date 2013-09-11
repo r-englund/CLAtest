@@ -28,6 +28,9 @@ public:
     virtual DataRepresentation* clone() const { return NULL; };
     virtual void render(RenderType = GeometryRepresentation::NOT_SPECIFIED) const{};
 
+    void addAttribute(AttributesBase*);
+    void addIndicies(std::pair<AttributesInfo, IndexAttributes*>&);
+
     AttributesBase* getAttributes(size_t idx) const;
     AttributesBase* getIndicies(size_t idx) const;
 
