@@ -1,5 +1,4 @@
 #include <inviwo/core/util/canvas.h>
-#include <inviwo/core/datastructures/geometry/meshram.h>
 
 namespace inviwo {
 

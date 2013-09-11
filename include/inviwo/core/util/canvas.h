@@ -5,6 +5,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
+#include <inviwo/core/datastructures/geometry/meshram.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/interaction/events/eventhandler.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
@@ -12,6 +13,8 @@
 #include <inviwo/core/interaction/events/timerevent.h>
 
 namespace inviwo {
+
+class MeshRAM; 
 
 class IVW_CORE_API Canvas {
 public:
