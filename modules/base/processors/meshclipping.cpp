@@ -198,7 +198,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 		std::cout << "Vertex indices: " << outputIndexList.at(i) << std::endl;
 
 	for(int i=0; i<outputList.size(); ++i)
-		std::cout << "Clipped verts, " << i << ": ("+std::to_string(outputList.at(i)[0])+", "+std::to_string(outputList.at(i)[1])+", "+std::to_string(outputList.at(i)[2])+")\n";
+		//std::cout << "Clipped verts, " << i << ": ("+std::to_string(outputList.at(i)[0])+", "+std::to_string(outputList.at(i)[1])+", "+std::to_string(outputList.at(i)[2])+")\n";
 
 
 	// Bygg ny BaseMeshRAM här från outputList-vektor
