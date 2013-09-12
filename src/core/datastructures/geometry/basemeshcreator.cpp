@@ -37,5 +37,31 @@ BaseMeshRAM* BaseMeshCreator::rectangularPrism(glm::vec3 posLlf, glm::vec3 posUr
     return recPrism;
 }
 
+BaseMeshRAM* BaseMeshCreator::rectangle(glm::vec3 posLl, glm::vec3 posUr) {
+	BaseMeshRAM* rec = new BaseMeshRAM();
+	rec->initialize();
+
+	glm::vec3 texCoordLl(0,0,0);
+	glm::vec3 texCoordUr(1,1,0);
+
+	glm::vec4 colorLl(1,1,1,1);
+	glm::vec4 colorUr(0,1,0,1);
+
+	// 4 corners
+	rec->addVertex(posLl, texCoordLl, colorLl);
+    rec->addVertex(glm::vec3(posLl.x, posUr.y, posLl.z), glm::vec3(texCoordLl.x, texCoordUr.y, texCoordLl.z), glm::vec4(colorLl.x, colorUr.y, colorLl.z, colorLl.w));
+    rec->addVertex(glm::vec3(posUr.x, posLl.y, posUr.z), glm::vec3(texCoordLl.x, texCoordUr.y, texCoordUr.z), glm::vec4(colorLl.x, colorUr.y, colorUr.z, colorLl.w));
+    rec->addVertex(posUr, texCoordUr, colorUr);
+
+	// 4 indices (?)
+	rec->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
+	rec->addIndex(1);
+	rec->addIndex(3);
+	rec->addIndex(0);
+	rec->addIndex(2);
+
+	return rec;
+}
+
 } // namespace
 

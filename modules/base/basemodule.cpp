@@ -7,6 +7,7 @@
 #include <modules/base/processors/imagegrayscale.h>
 #include <modules/base/processors/imagemixer.h>
 #include <modules/base/processors/imagesource.h>
+#include <modules/base/processors/meshclipping.h>
 #include <modules/base/processors/redgreenprocessor.h>
 #include <modules/base/processors/simpleraycaster.h>
 #include <modules/base/processors/testprocessor.h>
@@ -28,6 +29,7 @@ BaseModule::BaseModule() : InviwoModule() {
 	registerProcessor(ImageGrayscale);
     registerProcessor(ImageMixer);
     registerProcessor(ImageSource);
+    registerProcessor(MeshClipping);
     registerProcessor(RedGreenProcessor);
     registerProcessor(SimpleRaycaster);
     registerProcessor(TestProcessor);

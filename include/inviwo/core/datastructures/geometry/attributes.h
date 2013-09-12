@@ -39,6 +39,7 @@ public:
     void add(T);
     
     const void* getAttributes() const;
+	std::vector<T> getAttributeContainer();
     AttributeType getAttributeType() const;
     DataFormatBase getDataFormat() const;
     unsigned int getElementSize() const;
@@ -58,6 +59,11 @@ void Attributes<T,B,A>::add(T v){
 template<typename T, size_t B, AttributeType A>
 const void* Attributes<T,B,A>::getAttributes() const{
     return static_cast<const void*>(&attributes_[0]);
+}
+
+template<typename T, size_t B, AttributeType A>
+std::vector<T> Attributes<T,B,A>::getAttributeContainer() {
+    return attributes_;
 }
 
 template<typename T, size_t B, AttributeType A>

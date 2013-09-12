@@ -43,5 +43,13 @@ void BaseMeshRAM::setIndicesInfo(RenderType rt, ConnectivityType ct){
     indexAttributes_[0].first = MeshRAM::AttributesInfo(rt, ct);
 }
 
+Position3dAttributes* BaseMeshRAM::getVertexList() {
+	return this->vertexPositions_;
+}
+
+IndexAttributes* BaseMeshRAM::getIndexList() {
+	return this->indices_;
+}
+
 } // namespace
 

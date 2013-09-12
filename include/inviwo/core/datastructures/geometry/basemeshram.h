@@ -20,6 +20,8 @@ public:
     void addVertex(glm::vec3 pos, glm::vec3 texCoord, glm::vec4 color);
     void addIndex(unsigned int idx);
     void setIndicesInfo(RenderType, ConnectivityType);
+	Position3dAttributes* getVertexList();
+	IndexAttributes* getIndexList();
 
 protected:
     Position3dAttributes* vertexPositions_;

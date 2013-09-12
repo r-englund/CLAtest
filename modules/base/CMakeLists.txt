@@ -12,6 +12,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/imagegrayscale.h
     ${IVW_MODULE_DIR}/base/processors/imagemixer.h
     ${IVW_MODULE_DIR}/base/processors/imagesource.h
+    ${IVW_MODULE_DIR}/base/processors/meshclipping.h
     ${IVW_MODULE_DIR}/base/processors/redgreenprocessor.h
     ${IVW_MODULE_DIR}/base/processors/simpleraycaster.h
     ${IVW_MODULE_DIR}/base/processors/testprocessor.h
@@ -32,6 +33,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/imagegrayscale.cpp
     ${IVW_MODULE_DIR}/base/processors/imagemixer.cpp
     ${IVW_MODULE_DIR}/base/processors/imagesource.cpp
+    ${IVW_MODULE_DIR}/base/processors/meshclipping.cpp
     ${IVW_MODULE_DIR}/base/processors/redgreenprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/simpleraycaster.cpp
     ${IVW_MODULE_DIR}/base/processors/testprocessor.cpp
