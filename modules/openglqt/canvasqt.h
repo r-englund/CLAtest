@@ -21,8 +21,7 @@ public:
     ~CanvasQt();
 
     void initialize();
-    void initializeGL();
-    void resizeGL(int w, int h);
+    void initializeSquare();
     virtual void activate();   
     virtual void update();
     void repaint();
@@ -33,10 +32,15 @@ public:
 
 	void keyPressEvent(QKeyEvent* e);
 	void keyReleaseEvent(QKeyEvent* e);
-	
+
+protected:
+	void initializeGL();
+    void resizeGL(int w, int h);
+    void paintGL() {}
 
 private:
     static QGLWidget* sharedWidget_; //For rendering-context sharing
+    static QGLFormat sharedFormat_;
 };
 
 } // namespace

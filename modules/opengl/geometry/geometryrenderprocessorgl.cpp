@@ -20,21 +20,21 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 }
 
 void GeometryRenderProcessorGL::process() {
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
-
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glLoadIdentity();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
 
-    activateTarget(outport_);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    activateAndClearTarget(outport_);
 
     inport_.getData()->getRepresentation<GeometryGL>()->render();
 
     deactivateCurrentTarget();
 
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
 }
 

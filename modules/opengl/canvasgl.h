@@ -13,9 +13,9 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API CanvasGL : public Canvas {
 public:
     CanvasGL(uvec2 dimensions);
+    virtual ~CanvasGL();
 
     virtual void initialize();
-    virtual void initializeGL();
     virtual void deinitialize();
     virtual void activate();
     void render(const Image* im, ImageLayerType layer = COLOR_LAYER);
@@ -28,6 +28,9 @@ public:
     }
 
 protected:
+    virtual void initializeGL();
+    virtual void initializeSquare();
+
     void renderColor();
     void renderDepth();
     void renderNoise();

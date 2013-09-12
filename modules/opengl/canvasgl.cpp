@@ -13,6 +13,8 @@ CanvasGL::CanvasGL(uvec2 dimensions)
     noiseShader_ = NULL;
 }
 
+CanvasGL::~CanvasGL() {}
+
 void CanvasGL::initialize() {
     glShadeModel(GL_SMOOTH);
     glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
@@ -27,10 +29,6 @@ void CanvasGL::initialize() {
     LGL_ERROR;
     noiseShader_ = new Shader("img_noise.frag");
     LGL_ERROR;
-    if (!screenAlignedSquareGL_) {
-        screenAlignedSquareGL_ = screenAlignedSquare_->getRepresentation<GeometryGL>();
-        LGL_ERROR;
-    }
 }
 
 void CanvasGL::initializeGL() {
@@ -42,9 +40,18 @@ void CanvasGL::initializeGL() {
     }
 }
 
+void CanvasGL::initializeSquare(){
+    if (!screenAlignedSquareGL_) {
+        screenAlignedSquareGL_ = screenAlignedSquare_->getRepresentation<GeometryGL>();
+        LGL_ERROR;
+    }
+}
+
 void CanvasGL::deinitialize() {
     delete shader_;
+    shader_ = NULL;
     delete noiseShader_;
+    noiseShader_ = NULL;
 }
 
 void CanvasGL::activate() {}
@@ -68,7 +75,9 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
     }
 }
 
-void CanvasGL::repaint() {}
+void CanvasGL::repaint() {
+    update();
+}
 
 void CanvasGL::resize(uvec2 size) {
     Canvas::resize(size);

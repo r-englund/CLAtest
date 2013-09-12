@@ -43,6 +43,9 @@ private:
 
 	Shader* shader_;
 	Shader* shader_passthrough_;
+
+    GLuint vboCharacter_;
+    GLuint texCharacter_;
 };
 
 } // namespace

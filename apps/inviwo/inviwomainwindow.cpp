@@ -39,7 +39,9 @@ InviwoMainWindow::InviwoMainWindow() : VoidObserver() {
     currentWorkspaceFileName_ = "";
 }
 
-InviwoMainWindow::~InviwoMainWindow() {}
+InviwoMainWindow::~InviwoMainWindow() {
+    deinitialize();
+}
 
 void InviwoMainWindow::initializeAndShow() {
     networkEditorView_ = new NetworkEditorView(this);
@@ -100,14 +102,13 @@ void InviwoMainWindow::initializeAndShow() {
 }
 
 void InviwoMainWindow::deinitialize() {
-    
 }
 
 void InviwoMainWindow::initializeWorkspace(){
     ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
     networkEvaluator->setDefaultRenderContext(defaultRenderContext_);
     defaultRenderContext_->setFixedSize(0,0);
-    defaultRenderContext_->initialize();
+    defaultRenderContext_->initializeSquare();
     defaultRenderContext_->activate();
 
     ProcessorNetwork* processorNetwork = const_cast<ProcessorNetwork*>(networkEditorView_->getNetworkEditor()->getProcessorNetwork());

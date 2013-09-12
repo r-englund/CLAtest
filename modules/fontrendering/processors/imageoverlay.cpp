@@ -56,10 +56,17 @@ void ImageOverlay::initialize() {
 		std::cout << "FT2 File opened and read, format unsupported.\n";
 	else if(error)
 		std::cout << "FT2 Could not read/open the font file.\n";
+
+    glGenTextures(1, &texCharacter_);
+    glGenBuffers(1, &vboCharacter_);
 }
 void ImageOverlay::deinitialize() {
 	delete shader_passthrough_;
 	delete shader_;
+
+    glDeleteTextures(1, &texCharacter_);
+    glDeleteBuffers(1, &vboCharacter_);
+
 	ProcessorGL::deinitialize();
 }
 
@@ -130,21 +137,18 @@ void ImageOverlay::process() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	GLuint tex;
 	glActiveTexture(GL_TEXTURE0);
-	glGenTextures(1, &tex);
-	glBindTexture(GL_TEXTURE_2D, tex);
+	
+	glBindTexture(GL_TEXTURE_2D, texCharacter_);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
 	GLuint attribute_location = 0;
 	glEnableVertexAttribArray(attribute_location);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vboCharacter_);
 	glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
 	float sx = 2.f / imageSize[0];

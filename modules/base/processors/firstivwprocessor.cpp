@@ -19,6 +19,11 @@ FirstIvwProcessor::FirstIvwProcessor()
 void FirstIvwProcessor::process() {
     activateAndClearTarget(outport_);
 
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
     glLoadIdentity();
     glColor4f(color_.get().x, color_.get().y, color_.get().z, 1.0);
     glBegin(GL_QUADS);
@@ -34,6 +39,9 @@ void FirstIvwProcessor::process() {
         glVertex3f(-1.0f, -1.0f, 0.0f);
         glVertex3f( 1.0f, -1.0f, 0.0f);
     glEnd();
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
     
     deactivateCurrentTarget();
 }

@@ -38,29 +38,28 @@ void EntryExitPoints::process() {
 
     glEnable(GL_CULL_FACE);    
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
-
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glLoadIdentity();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
 
     // generate entry points
-    activateTarget(entryPort_);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    activateAndClearTarget(entryPort_);
     glCullFace(GL_BACK);
     geom->render();
     deactivateCurrentTarget();
 
     // generate exit points
-    activateTarget(exitPort_);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    activateAndClearTarget(exitPort_);
     glCullFace(GL_FRONT);
     geom->render();
     deactivateCurrentTarget();
 
-    glPopMatrix();    
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();   
     
     glDisable(GL_CULL_FACE);
 }

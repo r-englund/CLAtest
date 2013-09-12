@@ -4,9 +4,10 @@
 namespace inviwo {
 
 QGLWidget* CanvasQt::sharedWidget_ = 0;
+QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::DepthBuffer);
 
 CanvasQt::CanvasQt(QWidget* parent)
-: QGLWidget(QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::DepthBuffer), parent, sharedWidget_),
+: QGLWidget(sharedFormat_, parent, sharedWidget_),
   CanvasGL(uvec2(256,256))
 {
     //This is our default rendering context
@@ -17,7 +18,7 @@ CanvasQt::CanvasQt(QWidget* parent)
         f.setVersion(10, 0);  //Will choose highest available version
         f.setProfile(QGLFormat::CompatibilityProfile);
         setFormat(f);
-
+        sharedFormat_ = f;
         sharedWidget_ = this;
         QGLWidget::glInit();
     }
@@ -27,6 +28,7 @@ CanvasQt::CanvasQt(QWidget* parent)
 }
 
 CanvasQt::~CanvasQt() {
+    CanvasGL::deinitialize();
     //QGLContext::currentContext();
 }
 
@@ -34,6 +36,10 @@ void CanvasQt::initialize() {
     activate();
     CanvasGL::initialize();
     show();
+}
+
+void CanvasQt::initializeSquare(){
+    CanvasGL::initializeSquare();
 }
 
 void CanvasQt::activate() {
