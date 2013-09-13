@@ -53,6 +53,29 @@ macro(ivw_dir_to_mod_prefix retval)
 endmacro()
 
 #--------------------------------------------------------------------
+# Convert name to upper (if not certain string)
+macro(ivw_depend_name retval)
+    set(result ${ARGN})
+    string(REGEX MATCH "(^Qt5)" found_item ${result})
+    if(NOT found_item)
+        string(TOUPPER ${result} result)
+   endif()
+    set(${retval} ${result})
+endmacro()
+
+#--------------------------------------------------------------------
+# Wrap Qt CPP to create MOC files
+macro(ivw_qt_wrap_cpp retval)
+    set(the_list "")
+if(DESIRED_QT_VERSION MATCHES 5)
+    qt5_wrap_cpp(the_list ${ARGN})    
+else()
+    qt4_wrap_cpp(the_list ${ARGN})
+endif()
+    set(${retval} ${the_list})
+endmacro()
+
+#--------------------------------------------------------------------
 # Convert module prefix to directory name
 macro(ivw_mod_prefix_to_dir retval)
     set(the_list "")
@@ -408,8 +431,7 @@ endmacro()
 # Define QT defintions
 macro(ivw_define_qt_definitions)
 	add_definitions(-DQT_CORE_LIB
-                      -DQT_GUI_LIB
-                      -DQT_OPENGL_LIB)
+                      -DQT_GUI_LIB)
 endmacro()
 
 #--------------------------------------------------------------------
@@ -594,7 +616,8 @@ macro(ivw_add_dependency_directories)
       
       #--------------------------------------------------------------------
       # Make string upper case
-      string(TOUPPER ${package} u_package)
+      #string(TOUPPER ${package} u_package)
+      ivw_depend_name(u_package ${package})
       
       #--------------------------------------------------------------------
       # Add dependcy package variables to this package if shared build
@@ -644,7 +667,8 @@ macro(ivw_add_dependencies)
       
       #--------------------------------------------------------------------
       # Make string upper case
-      string(TOUPPER ${package} u_package)
+      #string(TOUPPER ${package} u_package)
+      ivw_depend_name(u_package ${package})
       
       #--------------------------------------------------------------------
       # Set includes and append to list

@@ -43,12 +43,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorview.h
 )
 
-if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_wrap_cpp(MOC_FILES ${MOC_FILES})     
-else()
-    qt4_wrap_cpp(MOC_FILES ${MOC_FILES})
-endif()
-
+ivw_qt_wrap_cpp(MOC_FILES ${MOC_FILES})
 source_group("MOC Files" FILES ${MOC_FILES})
 
 #--------------------------------------------------------------------
@@ -87,13 +82,6 @@ ivw_define_qt_definitions()
 # Create library
 add_library(inviwo-qteditor ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
-# Add qt dependencies to this list
-if(DESIRED_QT_VERSION MATCHES 5)
-    ivw_add_dependencies(Qt5Core Qt5Gui Qt5Widgets Qt5Multimedia)    
-else()
-    ivw_add_dependencies(Qt)
-endif()
-
 # Add core dependencies to this list
 ivw_add_dependencies(
     InviwoCore
@@ -107,7 +95,3 @@ ivw_compile_optimize_inviwo_core()
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
 ivw_make_package(InviwoQtEditor inviwo-qteditor)
-
-if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_use_modules(inviwo-qteditor Core Gui Widgets Multimedia)    
-endif()

@@ -1,18 +1,14 @@
 #--------------------------------------------------------------------
 # Dependencies for OpenglQt module
-# Add qt dependencies to this list
+set(dependencies 
+    InviwoOpenGLModule
+    InviwoQtWidgets
+)
+
 if(DESIRED_QT_VERSION MATCHES 5)
-    set(dependencies 
-        InviwoOpenGLModule
-        InviwoQtWidgets
-        Qt5Core
-    )
+    list(APPEND dependencies Qt5OpenGL)
 else()
-    set(dependencies 
-        InviwoOpenGLModule
-        InviwoQtWidgets
-        Qt
-    )
+    list(APPEND dependencies Qt)
 endif()
 
 

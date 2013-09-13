@@ -44,13 +44,13 @@ float MeshClipping::degreeToRad(float degree) {
 
 std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
 	std::vector<Edge> result;
-	std::cout << "Sixe of tri list: " << triList.size()-1 << std::endl;
-	for (int i=0; i<triList.size(); ++i) {
+	std::cout << "Sixe of tri list: " << static_cast<int>(triList.size())-1 << std::endl;
+	for (int i=0; i<static_cast<int>(triList.size()); ++i) {
 		std::cout << "i =" << i << std::endl;
 		Edge e1;
 		if(i==0 || i%3 == 0)  {
 
-			if(i+1<triList.size()) {
+			if(i+1<static_cast<int>(triList.size())) {
 				e1.v1 = triList.at(i);
 				e1.v2 = triList.at(i+1);
 				if (!result.empty() && std::find(result.begin(),result.end(),e1) != result.end()) {
@@ -59,7 +59,7 @@ std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
 					result.push_back(e1);
 				}
 			}
-			if(i+2<triList.size()) {
+			if(i+2<static_cast<int>(triList.size())) {
 				e1.v1 = triList.at(i);
 				e1.v2 = triList.at(i+2);
 				if (!result.empty() && std::find(result.begin(),result.end(),e1) != result.end()) {
@@ -69,7 +69,7 @@ std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
 				}
 			}
 		} else if((i-1)%3 == 0) { // +2
-			if(i+2<triList.size()) {
+			if(i+2<static_cast<int>(triList.size())) {
 				e1.v1 = triList.at(i);
 				e1.v2 = triList.at(i+2);
 				if (!result.empty() && std::find(result.begin(),result.end(),e1) != result.end()) {
@@ -80,7 +80,7 @@ std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
 				
 			}
 		} else if((i+1)%3 == 0) { //+1
-			if(i+1<triList.size()) {
+			if(i+1<static_cast<int>(triList.size())) {
 				e1.v1 = triList.at(i);
 				e1.v2 = triList.at(i+1);
 				if (!result.empty() && std::find(result.begin(),result.end(),e1) != result.end()) {
@@ -93,7 +93,7 @@ std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
 	}
 
 	std::cout << "Size of edge list: " << result.size() << std::endl;
-	for(int i=0; i<result.size();++i) {
+	for(int i=0; i<static_cast<int>(result.size());++i) {
 		std::cout << "Edge, " << i << " = " << result.at(i).v1 << "->" << result.at(i).v2 << std::endl;
 	}
 	return result;
@@ -148,7 +148,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 	std::vector<glm::vec3> inputList = outputList;
 	outputList.clear();
 	std::vector<unsigned int> outputIndexList;
-	for(int i=0; i<edgeList.size(); ++i) {
+	for(int i=0; i<static_cast<int>(edgeList.size()); ++i) {
 		unsigned int Sind = edgeList.at(i).v1;
 		unsigned int Eind = edgeList.at(i).v2;
 		glm::vec3 S = inputList.at( Sind );
@@ -194,10 +194,10 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 	// End, for each clip plane
 	*/
 
-	for(int i=0; i<outputIndexList.size(); ++i) 
+	for(int i=0; i<static_cast<int>(outputIndexList.size()); ++i) 
 		std::cout << "Vertex indices: " << outputIndexList.at(i) << std::endl;
 
-	for(int i=0; i<outputList.size(); ++i)
+	for(int i=0; i<static_cast<int>(outputList.size()); ++i)
 		//std::cout << "Clipped verts, " << i << ": ("+std::to_string(outputList.at(i)[0])+", "+std::to_string(outputList.at(i)[1])+", "+std::to_string(outputList.at(i)[2])+")\n";
 
 
@@ -206,7 +206,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 	BaseMeshRAM* outputMesh = new BaseMeshRAM();
 	outputMesh->initialize();
 
-	for(int i=0; i<outputList.size(); ++i) {
+	for(int i=0; i<static_cast<int>(outputList.size()); ++i) {
 		outputMesh->addVertex(outputList.at(i), glm::vec3(1.f), glm::vec4(1.,i/(float)outputList.size(),0.,1.0f));
 	}
 

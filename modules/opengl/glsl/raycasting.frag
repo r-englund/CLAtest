@@ -41,10 +41,16 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
 
         result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel.xyz, t, tDepth, tIncr);
 
+        // save depth
+        if (tDepth < 0.0 && result.a > 0.0)
+            tDepth = 1.0;
+
         // early ray termination
         if (result.a > ERT_THRESHOLD) t = tEnd;
         else t += tIncr;
     } RC_END_LOOP;
+
+    gl_FragDepth = max(0.0, tDepth);
 
     return result;
 }

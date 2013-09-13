@@ -7,6 +7,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/common/inviwo.h>
 
+#define QT_NO_OPENGL_ES_2
 #include <QGLWidget>
 #include <QInputEvent>
 #include <QMouseEvent>
@@ -36,7 +37,6 @@ public:
 protected:
 	void initializeGL();
     void resizeGL(int w, int h);
-    void paintGL() {}
 
 private:
     static QGLWidget* sharedWidget_; //For rendering-context sharing

@@ -1,7 +1,6 @@
 if(DESIRED_QT_VERSION MATCHES 5)
         string(REGEX REPLACE "bin\\\\qmake([^ ]*)$" "lib\\\\cmake" QT5_PATH "${QT_QMAKE_EXECUTABLE}")
         set(CMAKE_PREFIX_PATH "${QT5_PATH}")
-        find_package(Qt5OpenGL QUIET REQUIRED)
 else()
         set(QT_USE_QTOPENGL TRUE)
 endif()
@@ -22,6 +21,14 @@ set(HEADER_FILES
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
+# Add MOC files
+set(MOC_FILES
+    ${IVW_MODULE_DIR}/openglqt/processors/canvasprocessorwidgetqt.h
+)
+ivw_qt_wrap_cpp(MOC_FILES ${MOC_FILES})
+source_group("MOC Files" FILES ${MOC_FILES})
+
+#--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/openglqt/canvasqt.cpp
@@ -31,9 +38,8 @@ set(SOURCE_FILES
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
-# Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+ivw_define_qt_definitions()
+ivw_add_definition(QT_OPENGL_LIB)
 
-if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_use_modules(inviwo-module-openglqt Core Widgets Gui OpenGL)
-endif()
+# Create module
+ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES} ${SHADER_FILES})

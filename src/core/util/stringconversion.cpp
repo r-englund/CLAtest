@@ -29,6 +29,9 @@ std::string parseTypeIdName(std::string str) {
     replaceInString(str, "class", "");
     replaceInString(str, "const", "");
     replaceInString(str, "inviwo::", "");
+#if defined(_WIN64) || defined(__x86_64__) || defined(__ppc64)
+    replaceInString(str, "__ptr64", "");
+#endif
     return removeFromString(removeFromString(str, '*'), ' ');
 }
 
