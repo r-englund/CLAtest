@@ -35,7 +35,6 @@ CanvasQt::~CanvasQt() {
 void CanvasQt::initialize() {
     activate();
     CanvasGL::initialize();
-    show();
 }
 
 void CanvasQt::initializeSquare(){
@@ -64,7 +63,6 @@ void CanvasQt::repaint() {
     //CanvasGL::repaint();
     QGLWidget::repaint();
 }
-
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;

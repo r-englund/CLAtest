@@ -27,16 +27,16 @@ public:
     virtual void update();
     void repaint();
 
+protected:
+	void initializeGL();
+    void resizeGL(int w, int h);
+
     void mousePressEvent(QMouseEvent* e);
     void mouseReleaseEvent (QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
 
-	void keyPressEvent(QKeyEvent* e);
-	void keyReleaseEvent(QKeyEvent* e);
-
-protected:
-	void initializeGL();
-    void resizeGL(int w, int h);
+    void keyPressEvent(QKeyEvent* e);
+    void keyReleaseEvent(QKeyEvent* e);
 
 private:
     static QGLWidget* sharedWidget_; //For rendering-context sharing
