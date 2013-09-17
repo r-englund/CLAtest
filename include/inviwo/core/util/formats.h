@@ -458,6 +458,107 @@ template<> inline std::string DataVec4UINT16::str() { return "Vec4UINT16"; }
 template<> inline std::string DataVec4UINT32::str() { return "Vec4UINT32"; }
 template<> inline std::string DataVec4UINT64::str() { return "Vec4UINT64"; }
 
+
+template <unsigned int N, typename T>
+class Matrix {};
+template <typename T>
+class Matrix<4, T> : public glm::detail::tmat4x4<T> {
+public:
+	Matrix<4, T>() : glm::detail::tmat4x4<T>(){};
+	Matrix<4, T>(const Matrix<4, T>& m) : glm::detail::tmat4x4<T>(
+		m[0][0], m[0][1], m[0][2], m[0][3], 
+		m[1][0], m[1][1], m[1][2], m[1][3],
+		m[2][0], m[2][1], m[2][2], m[2][3],
+		m[3][0], m[3][1], m[3][2], m[3][3]){};
+	Matrix<4, T>(const glm::detail::tmat4x4<T>& m) : glm::detail::tmat4x4<T>(m){};
+	Matrix<4, T>(T m) : glm::detail::tmat4x4<T>(m){};
+	Matrix<4, T>(T x1, T y1, T z1, T w1, 
+				 T x2, T y2, T z2, T w2,
+				 T x3, T y3, T z3, T w3,
+				 T x4, T y4, T z4, T w4) : 
+	glm::detail::tmat4x4<T>(x1, y1, z1, w1, 
+							x2, y2, z2, w2,
+							x3, y3, z3, w3,
+							x4, y4, z4, w4){};
+};
+template <typename T>
+class Matrix<3, T> : public glm::detail::tmat3x3<T> {
+public:
+	Matrix<3, T>() : glm::detail::tmat3x3<T>(){};
+	Matrix<3, T>(const Matrix<3, T>& m) : glm::detail::tmat3x3<T>(
+		m[0][0], m[0][1], m[0][2], 
+		m[1][0], m[1][1], m[1][2],
+		m[2][0], m[2][1], m[2][2]){};
+	Matrix<3, T>(const glm::detail::tmat3x3<T>& m) : glm::detail::tmat3x3<T>(m){};
+	Matrix<3, T>(T m) : glm::detail::tmat3x3<T>(m){};
+	Matrix<3, T>(T x1, T y1, T z1, 
+				 T x2, T y2, T z2,
+				 T x3, T y3, T z3) : 
+	glm::detail::tmat3x3<T>(x1, y1, z1, 
+							x2, y2, z2,
+							x3, y3, z3){};
+
+};
+template <typename T>
+class Matrix<2, T> : public glm::detail::tmat2x2<T> {
+public:
+	Matrix<2, T>() : glm::detail::tmat2x2<T>(){};
+	Matrix<2, T>(const Matrix<2, T>& m) : glm::detail::tmat2x2<T>(
+		m[0][0], m[0][1], 
+		m[1][0], m[1][1]){};
+	Matrix<2, T>(const glm::detail::tmat2x2<T>& m) : glm::detail::tmat2x2<T>(m){};
+	Matrix<2, T>(T m) : glm::detail::tmat2x2<T>(m){};
+	Matrix<2, T>(T x1, T y1, 
+				 T x2, T y2) : 
+	glm::detail::tmat2x2<T>(x1, y1, 
+							x2, y2){};
+
+};
+
+
+
+template <unsigned int N, typename T>
+class Vector {};
+
+template <typename T>
+class Vector<4, T> : public glm::detail::tvec4<T> {
+public:
+	Vector<4, T>() : glm::detail::tvec4<T>(){};
+	Vector<4, T>(const Vector<4, T>& v) : glm::detail::tvec4<T>(v.x, v.y, v.z, v.w){};
+	Vector<4, T>(const glm::detail::tvec4<T>& v) : glm::detail::tvec4<T>(v){};
+	Vector<4, T>(T v) : glm::detail::tvec4<T>(v){};
+	Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3 v4){};
+};
+template <typename T>
+class Vector<3, T> : public glm::detail::tvec3<T> {
+public:
+	Vector<3, T>() : glm::detail::tvec3<T>(){};
+	Vector<3, T>(const Vector<3, T>& v) : glm::detail::tvec3<T>(v.x, v.y, v.z){};
+	Vector<3, T>(const glm::detail::tvec3<T>& v) : glm::detail::tvec3<T>(v){};
+	Vector<3, T>(T v) : glm::detail::tvec3<T>(v){};
+	Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T>(v1, v2, v3){};
+};
+
+template <typename T>
+class Vector<2, T> : public glm::detail::tvec2<T> {
+public:
+	Vector<2, T>() : glm::detail::tvec2<T>(){};
+	Vector<2, T>(const Vector<2, T>& v) : glm::detail::tvec2<T>(v.x, v.y){};
+	Vector<2, T>(const glm::detail::tvec2<T>& v) : glm::detail::tvec2<T>(v){};
+	Vector<2, T>(T v) : glm::detail::tvec2<T>(v){};
+	Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T>(v1, v2){};
+};
+
+template <typename T>
+class Vector<1, T> : public glm::detail::tvec1<T> {public:
+	Vector<1, T>() : glm::detail::tvec1<T>(){};
+	Vector<1, T>(const Vector<1, T>& v) : glm::detail::tvec1<T>(v.x){};
+	Vector<1, T>(const glm::detail::tvec1<T>& v) : glm::detail::tvec1<T>(v){};
+	Vector<1, T>(T v) : glm::detail::tvec1<T>(v){};
+};
+
+
+
 }
 
 #endif

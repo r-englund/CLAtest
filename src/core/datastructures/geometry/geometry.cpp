@@ -3,9 +3,9 @@
 
 namespace inviwo {
 
-Geometry::Geometry() : Data() {}
+Geometry::Geometry() : SpatialData<3>() {}
 
-Geometry::Geometry(GeometryRepresentation* rep) : Data() {
+Geometry::Geometry(GeometryRepresentation* rep) : SpatialData<3>() {
     addRepresentation(rep);
 }
 

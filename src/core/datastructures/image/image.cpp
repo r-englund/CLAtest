@@ -5,7 +5,11 @@
 
 namespace inviwo {
 
-Image::Image(uvec2 dimensions, ImageType comb, DataFormatBase format, bool allowMissingLayers) : Data2D(dimensions, format), imageType_(comb), allowMissingLayers_(allowMissingLayers) {}
+	
+Image::Image(uvec2 dimensions, ImageType comb, DataFormatBase format, bool allowMissingLayers) : 
+	StructuredData<2>(dimensions, format),
+	imageType_(comb), 
+	allowMissingLayers_(allowMissingLayers) {}
 
 Data* Image::clone() const {
     Image* newImage = new Image(getDimension(), getImageType(), getDataFormat());
@@ -14,7 +18,6 @@ Data* Image::clone() const {
     //copyRepresentations(newImage);
 
     newImage->resize(getDimension());
-
     return newImage;
 }
 
@@ -35,6 +38,16 @@ void Image::resize(uvec2 dimensions) {
     }
     setAllRepresentationsAsInvalid();
 }
+
+
+uvec2 Image::getDimension() const{
+	return StructuredData<2>::getDimension();
+}
+void  Image::setDimension(const uvec2& dim){
+	StructuredData<2>::setDimension(dim);
+}
+
+
 
 void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
     //TODO: check if getClassName() is necessary.
@@ -89,7 +102,7 @@ void Image::setAllowMissingLayers(bool allowMissingLayers){
 }
 
 void Image::createDefaultRepresentation() const{
-    representations_.push_back(createImageRAM(getDimension(), getImageType(), getDataFormat()));
+	representations_.push_back(createImageRAM((uvec2)getDimension(), getImageType(), getDataFormat()));
 }
 
 void Image::editableRepresentationCreated() const{

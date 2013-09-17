@@ -8,23 +8,7 @@
 
 namespace inviwo {
 
-    template <typename T, typename U>
-    class IVW_CORE_API StructuredData : public U {
-    public:
-        StructuredData() {}
-        virtual ~StructuredData(){}
-        virtual Data* clone()=0;
-    };    
-
-    template <typename T, typename U>
-    class IVW_CORE_API UnStructuredData : public U {
-    public:
-        UnStructuredData(){}
-        virtual ~UnStructuredData(){}
-        virtual Data* clone()=0;
-    };
-
-    template <typename T, typename U>
+    template <unsigned int N, typename U>
     class IVW_CORE_API RectiLinearData : public U {
     public:
         RectiLinearData(){}
@@ -32,7 +16,7 @@ namespace inviwo {
         virtual Data* clone()=0;
     }; 
 
-    template <typename T, typename U>
+    template <unsigned int N, typename U>
     class IVW_CORE_API CurviLinearData : public U {
     public:
         CurviLinearData(){}
@@ -40,7 +24,7 @@ namespace inviwo {
         virtual Data* clone()=0;
     };
 
-    template <typename T, typename U>
+    template <unsigned int N, typename U>
     class IVW_CORE_API UniformData : public U {
     public:
         UniformData(){}
@@ -48,7 +32,7 @@ namespace inviwo {
         virtual Data* clone()=0;
     }; 
 
-    template <typename T, typename U>
+    template <unsigned int N, typename U>
     class IVW_CORE_API NonUniformData : public U {
     public:
         NonUniformData(){}

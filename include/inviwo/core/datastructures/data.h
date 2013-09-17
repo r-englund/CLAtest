@@ -64,11 +64,6 @@ public:
     //Others
     virtual Data* clone() const = 0;
 
-    typedef unsigned int TYPE1D;
-    typedef uvec2 TYPE2D;
-    typedef uvec3 TYPE3D;
-    typedef uvec4 TYPE4D;
-
 protected:
     virtual void createDefaultRepresentation() const = 0;
 
@@ -297,55 +292,177 @@ U Data::getMetaData(std::string key, U val) const {
 
 /*---------------------------------------------------------------*/
 
-/*
-* T represents template argument of class
-* U, V represents template arguments of member functions
-*/
-
-template <typename T>
-class IVW_CORE_API DataDimension : public Data {
+template <unsigned int N>
+class IVW_CORE_API SpatialData : public Data {
 public:
-    DataDimension(){}
-    virtual ~DataDimension(){}
-protected:
-    template<typename U, typename V>
-    U getDimension(U dimension) const;
+	SpatialData();
+	SpatialData(const Vector<N,float>& offset);
+	SpatialData(const Matrix<N,float>& basis);
+	SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset);
 
-    template<typename U, typename V>
-    void setDimension(U dimension);
+	virtual ~SpatialData(){}
+
+	Vector<N,float> getOffset() const;
+	void setOffset(const Vector<N,float>& offset);
+
+	Matrix<N,float> getBasis() const;
+	void setBasis(const Matrix<N,float>& basis);
+
+	Matrix<N+1,float> getBasisAndOffset() const;
+	void setBasisAndOffset(const Matrix<N+1,float>& mat);
 };
 
-template <typename T> template<typename U, typename V>
-void DataDimension<T>::setDimension(U dim) {
-    Data::setMetaData<V>("dimension", dim);
+template <unsigned int N>
+SpatialData<N>::SpatialData() : Data() {
+	Vector<N,float> offset(0.0f);
+	Matrix<N,float> basis(1.0f);
+	setBasis(basis);
+	setOffset(offset);
 }
 
-template <typename T> template<typename U, typename V>
-U DataDimension<T>::getDimension(U dimension) const {
-    return Data::getMetaData<V>("dimension", dimension);
+template <unsigned int N>
+SpatialData<N>::SpatialData(const Vector<N,float>& offset) : Data() {
+	Matrix<N,float> basis(1.0f);
+	setBasis(basis);
+	setOffset(offset);
+}
+template <unsigned int N>
+SpatialData<N>::SpatialData(const Matrix<N,float>& basis) : Data() {
+	Vector<N,float> offset(0.0f);
+	setBasis(basis);
+	setOffset(offset);
+}
+template <unsigned int N>
+SpatialData<N>::SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset) : Data() {
+	setBasis(basis);
+	setOffset(offset);
+}
+
+template <unsigned int N>
+Vector<N,float> SpatialData<N>::getOffset() const {	
+	Vector<N,float> offset;
+	return Data::getMetaData<VectorMetaData<N,float>>("offset", offset);
+}
+template <unsigned int N>
+void SpatialData<N>::setOffset(const Vector<N,float>& offset) {
+	Data::setMetaData<VectorMetaData<N,float>>("offset", offset);
+}
+
+template <unsigned int N>
+Matrix<N,float> SpatialData<N>::getBasis() const {
+	Matrix<N,float> basis(1.0f);
+	return Data::getMetaData<MatrixMetaData<N,float>>("basis", basis);
+}
+
+template <unsigned int N>
+void SpatialData<N>::setBasis(const Matrix<N,float>& basis) {
+	Data::setMetaData<MatrixMetaData<N,float>>("basis", basis);
+}
+
+template <unsigned int N>
+Matrix<N+1,float> SpatialData<N>::getBasisAndOffset() const {
+	Matrix<N+1,float> mat(0.0f);
+	Matrix<N,float> basis = getBasis();
+	Vector<N,float> offset = getOffset();
+	for(int i=0;i<N+1;i++){
+		for(int j=0;j<N+1;j++){
+			if(i<N && j<N){
+				mat[i][j]=basis[i][j];
+			}else if(i<N && j==N){
+				mat[i][j]=offset[i];
+			}else if(i==N && j==N){
+				mat[i][j] = 1.0f;
+			}else{
+				mat[i][j] = 0.0f;
+			}
+		}
+	}
+	return mat;
+}
+template <unsigned int N>
+void SpatialData<N>::setBasisAndOffset(const Matrix<N+1,float>& mat) {
+	Matrix<N,float> basis(1.0f);
+	Vector<N,float> offset(0.0f);
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			basis[i][j] = mat[i][j];
+		}
+		offset[i] = mat[i][N+1];
+	}
+	setBasis(basis);
+	setOffset(offset);
 }
 
 /*---------------------------------------------------------------*/
 
-class Data3D : public DataDimension<Data::TYPE3D> {
-public :
-    typedef DataDimension<Data::TYPE3D> PARENT;
-    Data3D(Data::TYPE3D dimension, DataFormatBase format);
-    virtual ~Data3D();
-    uvec3 getDimension() const;
-    void setDimension(uvec3 dim);
+template <unsigned int N>
+class IVW_CORE_API StructuredData : public SpatialData<N> {
+public:
+	StructuredData(const Vector<N, unsigned int>& dimension, 
+				   DataFormatBase format);
+	StructuredData(const Vector<N,float>& offset, 
+				   const Vector<N, unsigned int>& dimension, 
+				   DataFormatBase format);
+	StructuredData(const Matrix<N,float>& basis, 
+				   const Vector<N, unsigned int>& dimension, 
+				   DataFormatBase format);
+	StructuredData(const Matrix<N,float>& basis, 
+				   const Vector<N,float>& offset, 
+				   const Vector<N, unsigned int>& dimension, 
+				   DataFormatBase format);
+
+	virtual ~StructuredData(){}
+
+	Vector<N, unsigned int> getDimension() const;
+	void setDimension(const Vector<N, unsigned int>& dimension);
+
 };
 
-/*---------------------------------------------------------------*/
+template <unsigned int N>
+StructuredData<N>::StructuredData(const Vector<N, unsigned int>& dimension, 
+								  DataFormatBase format) :
+	SpatialData<N>() {
+	setDimension(dimension);
+	setDataFormat(format);
+}
 
-class Data2D : public DataDimension<Data::TYPE2D> {
-public :
-    typedef DataDimension<Data::TYPE2D> PARENT;
-    Data2D(Data::TYPE2D dimension, DataFormatBase format);
-    virtual ~Data2D();
-    uvec2 getDimension() const;
-    void setDimension(uvec2 dim);
-};
+template <unsigned int N>
+StructuredData<N>::StructuredData(const Vector<N,float>& offset, 
+								  const Vector<N, unsigned int>& 
+								  dimension, DataFormatBase format) : 
+	SpatialData<N>(offset) {
+	setDimension(dimension);
+	setDataFormat(format);
+}
+
+template <unsigned int N>
+StructuredData<N>::StructuredData(const Matrix<N,float>& basis, 
+								  const Vector<N, unsigned int>& dimension, 
+								  DataFormatBase format) : 
+	SpatialData<N>(basis) {
+	setDimension(dimension);
+	setDataFormat(format);
+}
+template <unsigned int N>
+StructuredData<N>::StructuredData(const Matrix<N,float>& basis, 
+								  const Vector<N,float>& offset, 
+								  const Vector<N, unsigned int>& dimension,
+								  DataFormatBase format) : 
+	SpatialData<N>(basis, offset) {
+	setDimension(dimension);
+	setDataFormat(format);
+}
+
+template <unsigned int N>
+Vector<N, unsigned int> StructuredData<N>::getDimension() const {
+	Vector<N, unsigned int> dimension;
+	return Data::getMetaData<VectorMetaData<N, unsigned int>>("dimension", dimension);
+}
+template <unsigned int N>
+void StructuredData<N>::setDimension(const Vector<N, unsigned int>& dimension) {
+	Data::setMetaData<VectorMetaData<N, unsigned int>>("dimension", dimension);
+}
+
 
 } // namespace
 

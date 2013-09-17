@@ -2,7 +2,7 @@
 
 namespace inviwo { 
 
-UniformRectiLinearVolume::UniformRectiLinearVolume() : UniformData<Data::TYPE3D, RectiLinearVolume>() {
+UniformRectiLinearVolume::UniformRectiLinearVolume() : UniformData<3, RectiLinearVolume>() {
 }
 
 UniformRectiLinearVolume::~UniformRectiLinearVolume() {}
@@ -13,7 +13,7 @@ Data* UniformRectiLinearVolume::clone() {
 
 /*----------------------------------------------------------------------*/
 
-UniformCurviLinearVolume::UniformCurviLinearVolume() : UniformData<Data::TYPE3D, CurviLinearVolume>() {
+UniformCurviLinearVolume::UniformCurviLinearVolume() : UniformData<3, CurviLinearVolume>() {
 }
 
 UniformCurviLinearVolume::~UniformCurviLinearVolume() {}
@@ -24,7 +24,7 @@ Data* UniformCurviLinearVolume::clone() {
 
 /*----------------------------------------------------------------------*/
 
-NonUniformRectiLinearVolume::NonUniformRectiLinearVolume() : NonUniformData<Data::TYPE3D, RectiLinearVolume>() {
+NonUniformRectiLinearVolume::NonUniformRectiLinearVolume() : NonUniformData<3, RectiLinearVolume>() {
 }
 
 NonUniformRectiLinearVolume::~NonUniformRectiLinearVolume() {}
@@ -35,7 +35,7 @@ Data* NonUniformRectiLinearVolume::clone() {
 
 /*----------------------------------------------------------------------*/
 
-NonUniformCurviLinearVolume::NonUniformCurviLinearVolume() : NonUniformData<Data::TYPE3D, CurviLinearVolume>() {
+NonUniformCurviLinearVolume::NonUniformCurviLinearVolume() : NonUniformData<3, CurviLinearVolume>() {
 }
 
 NonUniformCurviLinearVolume::~NonUniformCurviLinearVolume() {}

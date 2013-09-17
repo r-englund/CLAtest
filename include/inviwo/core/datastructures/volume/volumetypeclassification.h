@@ -21,21 +21,15 @@ namespace inviwo {
     */
 
     //TODO: So for now use classes are used instead of typedefs
-    class StructuredVolume : public StructuredData<Data::TYPE3D, Volume> {
-    public:
-        StructuredVolume() {}
-        ~StructuredVolume() {}
-        virtual Data* clone()=0;
-    };
 
-    class RectiLinearVolume : public RectiLinearData<Data::TYPE3D, StructuredVolume> {  
+    class RectiLinearVolume : public RectiLinearData<3, Volume> {  
     public:
         RectiLinearVolume() {}
         ~RectiLinearVolume() {}
         virtual Data* clone()=0;
     };
 
-    class CurviLinearVolume : public CurviLinearData<Data::TYPE3D, StructuredVolume> {
+    class CurviLinearVolume : public CurviLinearData<3, Volume> {
     public:
         CurviLinearVolume() {}
         ~CurviLinearVolume() {}
@@ -44,28 +38,28 @@ namespace inviwo {
 
     /*----------------------------------------------------------------------*/
 
-    class UniformRectiLinearVolume : public UniformData<Data::TYPE3D, RectiLinearVolume> {
+    class UniformRectiLinearVolume : public UniformData<3, RectiLinearVolume> {
     public:
         UniformRectiLinearVolume();
         ~UniformRectiLinearVolume();
         virtual Data* clone();
     };
 
-    class UniformCurviLinearVolume : public UniformData<Data::TYPE3D, CurviLinearVolume> {
+    class UniformCurviLinearVolume : public UniformData<3, CurviLinearVolume> {
     public:
         UniformCurviLinearVolume();
         ~UniformCurviLinearVolume();
         virtual Data* clone();
     };
 
-    class NonUniformRectiLinearVolume : public NonUniformData<Data::TYPE3D, RectiLinearVolume> {
+    class NonUniformRectiLinearVolume : public NonUniformData<3, RectiLinearVolume> {
     public:
         NonUniformRectiLinearVolume();
         ~NonUniformRectiLinearVolume();
         virtual Data* clone();
     };
 
-    class NonUniformCurviLinearVolume : public NonUniformData<Data::TYPE3D, CurviLinearVolume> {
+    class NonUniformCurviLinearVolume : public NonUniformData<3, CurviLinearVolume> {
     public:
         NonUniformCurviLinearVolume();
         ~NonUniformCurviLinearVolume();

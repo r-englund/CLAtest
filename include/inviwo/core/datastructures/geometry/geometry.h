@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API Geometry : public Data {
+class IVW_CORE_API Geometry : public SpatialData<3> {
 
 public:
     Geometry();

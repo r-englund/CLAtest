@@ -7,8 +7,7 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API Volume : public Data3D {
-
+    class IVW_CORE_API Volume : public StructuredData<3> {
     public:
         Volume(uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataUINT8());
         Volume(VolumeRepresentation*);
@@ -16,7 +15,11 @@ namespace inviwo {
         virtual ~Volume();
         Data* clone() const;        
         void setOffset(ivec3); 
-        ivec3 getOffset() const;
+		ivec3 getOffset() const;
+	
+		uvec3 getDimension() const;
+		void setDimension(const uvec3& dim);
+
     protected:
         void createDefaultRepresentation() const;
     };

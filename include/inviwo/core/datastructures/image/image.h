@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API Image : public Data2D {
+class IVW_CORE_API Image : public StructuredData<2> {
 
 public:
     Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, DataFormatBase format = DataVec4UINT8(), bool allowMissingLayers = true);
@@ -18,6 +18,10 @@ public:
     ImageType getImageType() const { return imageType_; }
     void setInputSource(ImageLayerType, const Image*);
     void setAllowMissingLayers(bool);
+
+	uvec2 getDimension() const;
+	void setDimension(const uvec2& dim);
+
 protected:
     void createDefaultRepresentation() const;
     void editableRepresentationCreated() const;
