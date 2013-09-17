@@ -341,22 +341,22 @@ SpatialData<N>::SpatialData(const Matrix<N,float>& basis, const Vector<N,float>&
 template <unsigned int N>
 Vector<N,float> SpatialData<N>::getOffset() const {	
 	Vector<N,float> offset;
-	return Data::getMetaData<VectorMetaData<N,float>>("offset", offset);
+	return Data::getMetaData<VectorMetaData<N,float> >("offset", offset);
 }
 template <unsigned int N>
 void SpatialData<N>::setOffset(const Vector<N,float>& offset) {
-	Data::setMetaData<VectorMetaData<N,float>>("offset", offset);
+	Data::setMetaData<VectorMetaData<N,float> >("offset", offset);
 }
 
 template <unsigned int N>
 Matrix<N,float> SpatialData<N>::getBasis() const {
 	Matrix<N,float> basis(1.0f);
-	return Data::getMetaData<MatrixMetaData<N,float>>("basis", basis);
+	return Data::getMetaData<MatrixMetaData<N,float> >("basis", basis);
 }
 
 template <unsigned int N>
 void SpatialData<N>::setBasis(const Matrix<N,float>& basis) {
-	Data::setMetaData<MatrixMetaData<N,float>>("basis", basis);
+	Data::setMetaData<MatrixMetaData<N,float> >("basis", basis);
 }
 
 template <unsigned int N>
@@ -423,7 +423,7 @@ StructuredData<N>::StructuredData(const Vector<N, unsigned int>& dimension,
 								  DataFormatBase format) :
 	SpatialData<N>() {
 	setDimension(dimension);
-	setDataFormat(format);
+	Data::setDataFormat(format);
 }
 
 template <unsigned int N>
@@ -432,7 +432,7 @@ StructuredData<N>::StructuredData(const Vector<N,float>& offset,
 								  dimension, DataFormatBase format) : 
 	SpatialData<N>(offset) {
 	setDimension(dimension);
-	setDataFormat(format);
+	Data::setDataFormat(format);
 }
 
 template <unsigned int N>
@@ -441,7 +441,7 @@ StructuredData<N>::StructuredData(const Matrix<N,float>& basis,
 								  DataFormatBase format) : 
 	SpatialData<N>(basis) {
 	setDimension(dimension);
-	setDataFormat(format);
+	Data::setDataFormat(format);
 }
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Matrix<N,float>& basis, 
@@ -450,17 +450,17 @@ StructuredData<N>::StructuredData(const Matrix<N,float>& basis,
 								  DataFormatBase format) : 
 	SpatialData<N>(basis, offset) {
 	setDimension(dimension);
-	setDataFormat(format);
+	Data::setDataFormat(format);
 }
 
 template <unsigned int N>
 Vector<N, unsigned int> StructuredData<N>::getDimension() const {
 	Vector<N, unsigned int> dimension;
-	return Data::getMetaData<VectorMetaData<N, unsigned int>>("dimension", dimension);
+	return Data::getMetaData<VectorMetaData<N, unsigned int> >("dimension", dimension);
 }
 template <unsigned int N>
 void StructuredData<N>::setDimension(const Vector<N, unsigned int>& dimension) {
-	Data::setMetaData<VectorMetaData<N, unsigned int>>("dimension", dimension);
+	Data::setMetaData<VectorMetaData<N, unsigned int> >("dimension", dimension);
 }
 
 

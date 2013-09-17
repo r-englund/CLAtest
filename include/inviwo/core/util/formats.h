@@ -527,7 +527,7 @@ public:
 	Vector<4, T>(const Vector<4, T>& v) : glm::detail::tvec4<T>(v.x, v.y, v.z, v.w){};
 	Vector<4, T>(const glm::detail::tvec4<T>& v) : glm::detail::tvec4<T>(v){};
 	Vector<4, T>(T v) : glm::detail::tvec4<T>(v){};
-	Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3 v4){};
+	Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3, v4){};
 };
 template <typename T>
 class Vector<3, T> : public glm::detail::tvec3<T> {
