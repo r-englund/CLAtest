@@ -17,6 +17,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditorview.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorpropertywidget.h
+	${IVW_INCLUDE_DIR}/inviwo/qt/editor/resourcemanagerwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorcontrolpoint.h
@@ -36,6 +37,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/propertylistwidget.h
+	${IVW_INCLUDE_DIR}/inviwo/qt/editor/resourcemanagerwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/transferfunctioneditorcontrolpoint.h
@@ -64,6 +66,7 @@ set(SOURCE_FILES
     processorgraphicsitem.cpp
     processorpropertywidget.cpp
     propertylistwidget.cpp
+	resourcemanagerwidget.cpp
     settingswidget.cpp
     transferfunctioneditor.cpp
     transferfunctioneditorcontrolpoint.cpp

@@ -136,6 +136,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h
 	${IVW_INCLUDE_DIR}/inviwo/core/resources/resource.h
 	${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanager.h
+	${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanagerobserver.h
 	${IVW_INCLUDE_DIR}/inviwo/core/resources/templateresource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h

@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/resources/resource.h>
+#include <inviwo/core/resources/resourcemanagerobserver.h>
 #include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
@@ -14,7 +15,7 @@ namespace inviwo {
 */
 // TODO: Should we add resource counting?
 // TODO: How do we generate identifiers for different resources?
-class IVW_CORE_API ResourceManager {
+    class IVW_CORE_API ResourceManager: public ResourceManagerObservable {
 
 public:
     static ResourceManager* instance() {
@@ -30,7 +31,7 @@ public:
      * 
      * @param resource Resource to add.
      */
-    void addResource(Resource *resource) { resources_.push_back(resource); }
+    void addResource(Resource *resource) { resources_.push_back(resource); notifyResourceAdded(resource); }
 
     /**
      * Clear all resource in ResourceManager.
@@ -75,10 +76,12 @@ public:
         return typedResources;
     }
 
+    std::vector<Resource*>* getResources() { return &resources_; }
+
 protected:
     
 private:
-    ResourceManager() {};
+    ResourceManager(): ResourceManagerObservable() {};
     ResourceManager(ResourceManager const&) {};
     void operator=(ResourceManager const&) {};
 

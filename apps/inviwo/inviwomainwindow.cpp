@@ -47,6 +47,9 @@ void InviwoMainWindow::initializeAndShow() {
     networkEditorView_ = new NetworkEditorView(this);
     setCentralWidget(networkEditorView_);
 
+    resourceManagerWidget_ = new ResourceManagerWidget(this);
+    addDockWidget(Qt::LeftDockWidgetArea, resourceManagerWidget_);
+
     mappingwidget_ = new MappingWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, mappingwidget_);
 

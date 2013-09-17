@@ -27,7 +27,7 @@ void MappingWidget::buildLayout() {
 	QVBoxLayout* mainLayout = new QVBoxLayout();
 	QVBoxLayout* topLayout = new QVBoxLayout();
 	QScrollArea* scrollArea = new QScrollArea();
-	QWidget* area = new QWidget();
+	
 	EventPropertyManagerWidget* eventPropertyManagerWidget_ = new EventPropertyManagerWidget(eventPropertyManager_);
 
 	// mainLayout contains topLayout and scrollArea.

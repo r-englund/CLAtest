@@ -27,6 +27,7 @@ Resource* ResourceManager::getResource( const std::string& identifier )
 void ResourceManager::clearAllResources(){
     // Deallocate resources
     for(std::vector<Resource*>::iterator it = resources_.begin(); it != resources_.end(); ++it) {
+        notifyResourceRemoved(*it);
         delete *it;
     }
     resources_.clear();

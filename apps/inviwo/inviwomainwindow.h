@@ -14,6 +14,7 @@
 #include <inviwo/qt/editor/consolewidget.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/qt/editor/resourcemanagerwidget.h>
 
 namespace inviwo {
 
@@ -70,6 +71,7 @@ private:
     PropertyListWidget* propertyListWidget_;
     ConsoleWidget* consoleWidget_;
     MappingWidget* mappingwidget_;
+    ResourceManagerWidget* resourceManagerWidget_;
 
     // mainwindow menus
     QMenuBar* basicMenuBar;
