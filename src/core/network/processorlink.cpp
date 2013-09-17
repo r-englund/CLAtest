@@ -36,20 +36,20 @@ void PropertyLink::deserialize(IvwDeserializer& d) {
 
 
 ProcessorLink::ProcessorLink()   
-    : inProcessor_(0),
-      outProcessor_(0){}
+    : sourceProcessor_(0),
+      destinationProcessor_(0){}
 
 ProcessorLink::ProcessorLink(Processor* outProecessor, Processor* inProecessor)
-    : inProcessor_(inProecessor),
-      outProcessor_(outProecessor){}
+    : sourceProcessor_(inProecessor),
+      destinationProcessor_(outProecessor){}
 
 ProcessorLink::~ProcessorLink() {}
 
 void ProcessorLink::autoLinkPropertiesByType() {    
     //This is just for testing. Best to use if processors are of same type
     //This links all the properties of source processor to destination processor
-    Processor* outProcessor = outProcessor_;
-    Processor* inProcessor = inProcessor_;
+    Processor* outProcessor = destinationProcessor_;
+    Processor* inProcessor = sourceProcessor_;
     std::vector<Property*> srcProperties = outProcessor->getProperties();
     Property* dstProperty=0;
     LinkEvaluator leval;
@@ -60,8 +60,8 @@ void ProcessorLink::autoLinkPropertiesByType() {
 }
 
 bool ProcessorLink::isValid() {
-    Processor* outProcessor = outProcessor_;
-    Processor* inProcessor = inProcessor_;
+    Processor* outProcessor = destinationProcessor_;
+    Processor* inProcessor = sourceProcessor_;
 
     if (outProcessor->isValid() && inProcessor->isValid())
         return true;
@@ -75,14 +75,28 @@ void ProcessorLink::evaluate(LinkEvaluator *leval) {
 
     Property* startProperty;
     Property* endProperty;
+
+    //pre fetch the validity flags    
+    std::vector<PropertyLink*> propertyLinks;
+
     for (size_t i=0; i<propertyLinks_.size(); i++) {
         startProperty = propertyLinks_[i]->getSourceProperty();
-        endProperty = propertyLinks_[i]->getDestinationProperty();        
+        if (startProperty->isPropertyModified())
+            propertyLinks.push_back(propertyLinks_[i]);
+    }
+
+    //LogInfo("Total Links: " << propertyLinks_.size() << "Invalid Links: " << propertyLinks.size());
+    for (size_t i=0; i<propertyLinks.size(); i++) {
+        startProperty = propertyLinks[i]->getSourceProperty();
+        endProperty = propertyLinks[i]->getDestinationProperty();        
+       
         Processor* srcProc = dynamic_cast<Processor*>(startProperty->getOwner());
-        Processor* dstProc = dynamic_cast<Processor*>(endProperty->getOwner());
-        //TODO: validation check per property is not working yet.
-        if (!srcProc->isValid()) {
-            leval->evaluate(startProperty, endProperty);
+        Processor* dstProc = dynamic_cast<Processor*>(endProperty->getOwner()); 
+        //is change due to property modification?
+        if (startProperty->isPropertyModified()) {
+                leval->evaluate(startProperty, endProperty);
+                //LogInfo("Src Prop of " << srcProc->getIdentifier() << ":" << startProperty->getIdentifier());
+                //LogInfo("Dst Prop of " << dstProc->getIdentifier() << ":" << endProperty->getIdentifier());
         }
     }
 }
@@ -108,8 +122,8 @@ bool ProcessorLink::isLinked(Property* startProperty, Property* endProperty) {
 
 void ProcessorLink::addPropertyLinks(Property* startProperty, Property* endProperty) {
     //do assertion     
-    Processor* outProcessor = outProcessor_;
-    Processor* inProcessor = inProcessor_;
+    Processor* outProcessor = destinationProcessor_;
+    Processor* inProcessor = sourceProcessor_;
 
     if (isLinked(startProperty, endProperty)) return;
 
@@ -127,8 +141,8 @@ void ProcessorLink::addPropertyLinks(Property* startProperty, Property* endPrope
 
 void ProcessorLink::removeBidirectionalPair(Property* startProperty, Property* endProperty) {
 
-    Processor* outProcessor = outProcessor_;
-    Processor* inProcessor = inProcessor_;
+    Processor* outProcessor = destinationProcessor_;
+    Processor* inProcessor = sourceProcessor_;
 
     //if (!isLinked(startProperty, endProperty)) return;
 
@@ -153,8 +167,8 @@ void ProcessorLink::removeBidirectionalPair(Property* startProperty, Property* e
 
 void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endProperty) {
     //do assertion     
-    Processor* outProcessor = outProcessor_;
-    Processor* inProcessor = inProcessor_;
+    Processor* outProcessor = destinationProcessor_;
+    Processor* inProcessor = sourceProcessor_;
 
     //if (!isLinked(startProperty, endProperty)) return;
 
@@ -175,8 +189,8 @@ void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endPr
 }
 
 PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* endProperty) {
-    Processor* outProcessor = outProcessor_;
-    Processor* inProcessor = inProcessor_;
+    Processor* outProcessor = destinationProcessor_;
+    Processor* inProcessor = sourceProcessor_;
 
     //if (!isLinked(startProperty, endProperty)) return;
     PropertyLink* plink=0;
@@ -210,8 +224,8 @@ void ProcessorLink::serialize(IvwSerializer& s) const {
 void ProcessorLink::deserialize(IvwDeserializer& d) {
     propertyLinks_.clear();
     d.deserialize("PropertyLinks", propertyLinks_, "PropertyLink");
-    outProcessor_ = dynamic_cast<Processor*>(propertyLinks_[0]->getSourceProperty()->getOwner());
-    inProcessor_ = dynamic_cast<Processor*>(propertyLinks_[0]->getDestinationProperty()->getOwner());
+    destinationProcessor_ = dynamic_cast<Processor*>(propertyLinks_[0]->getSourceProperty()->getOwner());
+    sourceProcessor_ = dynamic_cast<Processor*>(propertyLinks_[0]->getDestinationProperty()->getOwner());
 }
 
 } // namespace

@@ -70,7 +70,7 @@ void CameraProperty::updateViewMatrix() {
    viewMatrix_ = glm::lookAt(lookFrom_.get(), lookTo_.get(), lookUp_.get());
 }
 
-void CameraProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+void CameraProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {    
     Processor* owner = dynamic_cast<Processor*>(getOwner());
     if (owner) owner->invalidate(invalidationLevel);
 }

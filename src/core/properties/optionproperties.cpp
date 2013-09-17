@@ -16,23 +16,27 @@ OptionPropertyInt::OptionPropertyInt(std::string identifier, std::string display
 
 Variant OptionPropertyInt::getVariant() {
     std::stringstream ss;
-    ss << " " << getSelectedOption() ;
+    ss << getSelectedOption() << std::endl;
     for (size_t i=0; i<options_.size(); i++) {
-        ss << " " << options_[i].first.first << " " << options_[i].first.second;
+        ss << options_[i].first.first  << std::endl;
+        ss << options_[i].first.second  << std::endl;
     }    
     return Variant(ss.str());
 }
 
 void OptionPropertyInt::setVariant(const Variant& inVariant) {
+    std::string textLine;    
     std::istringstream ss(inVariant.getString());
     int seletctedOption=0;
-    ss >> seletctedOption ;
+    getline(ss, textLine);
+    seletctedOption = atoi(textLine.c_str());
     options_.clear();
-    while(!ss.eof()) {
-        std::string identifier, displayName;
-        int val=0;
-        ss >> identifier;
-        ss >> displayName;            
+    while(!ss.eof()) { 
+        std::string identifier, displayName, valStr;
+        getline(ss, identifier);        
+        getline(ss, displayName);  
+        getline(ss, valStr);
+        int val = atoi(valStr.c_str());     
         addOption(identifier, displayName, val);
     }
     setSelectedOption(seletctedOption);
@@ -64,23 +68,28 @@ OptionPropertyFloat::OptionPropertyFloat(std::string identifier, std::string dis
 
 Variant OptionPropertyFloat::getVariant() {
     std::stringstream ss;
-    ss << " " << getSelectedOption() ;
+    ss << getSelectedOption() << std::endl;
     for (size_t i=0; i<options_.size(); i++) {
-        ss << " " << options_[i].first.first << " " << options_[i].first.second <<" " << options_[i].second;
+        ss << options_[i].first.first << std::endl;
+        ss << options_[i].first.second << std::endl;
+        ss << options_[i].second << std::endl;;
     }    
     return Variant(ss.str());
 }
 
 void OptionPropertyFloat::setVariant(const Variant& inVariant) {
+    std::string textLine;    
     std::istringstream ss(inVariant.getString());
     int seletctedOption=0;
-    ss >> seletctedOption ;
+    getline(ss, textLine);
+    seletctedOption = atoi(textLine.c_str());
     options_.clear();
-    while(!ss.eof()) {
-        std::string identifier, displayName;
-        float val=0.0f;
-        ss >> identifier;
-        ss >> displayName;            
+    while(!ss.eof()) { 
+        std::string identifier, displayName, valStr;
+        getline(ss, identifier);        
+        getline(ss, displayName);  
+        getline(ss, valStr);
+        float val = static_cast<float>(atof(valStr.c_str()));
         addOption(identifier, displayName, val);
     }
     setSelectedOption(seletctedOption);
@@ -113,23 +122,28 @@ OptionPropertyDouble::OptionPropertyDouble(std::string identifier, std::string d
 
 Variant OptionPropertyDouble::getVariant() {
     std::stringstream ss;
-    ss << " " << getSelectedOption() ;
+    ss << getSelectedOption() << std::endl;;
     for (size_t i=0; i<options_.size(); i++) {
-        ss << " " << options_[i].first.first << " " << options_[i].first.second <<" " << options_[i].second;
+        ss << options_[i].first.first << std::endl;
+        ss << options_[i].first.second << std::endl;
+        ss << options_[i].second << std::endl;
     }    
     return Variant(ss.str());
 }
 
 void OptionPropertyDouble::setVariant(const Variant& inVariant) {
+    std::string textLine;    
     std::istringstream ss(inVariant.getString());
     int seletctedOption=0;
-    ss >> seletctedOption ;
+    getline(ss, textLine);
+    seletctedOption = atoi(textLine.c_str());
     options_.clear();
-    while(!ss.eof()) {
-        std::string identifier, displayName;
-        double val=0.0;
-        ss >> identifier;
-        ss >> displayName;            
+    while(!ss.eof()) { 
+        std::string identifier, displayName, valStr;
+        getline(ss, identifier);        
+        getline(ss, displayName);  
+        getline(ss, valStr);
+        double val = atof(valStr.c_str());
         addOption(identifier, displayName, val);
     }
     setSelectedOption(seletctedOption);
@@ -170,23 +184,27 @@ void OptionPropertyString::addOption(std::string identifier, std::string display
 
 Variant OptionPropertyString::getVariant() {
     std::stringstream ss;
-    ss << " " << getSelectedOption() ;
+    ss << getSelectedOption() << std::endl;
     for (size_t i=0; i<options_.size(); i++) {
-        ss << " " << options_[i].first.first << " " << options_[i].first.second <<" " << options_[i].second;
+        ss << options_[i].first.first << std::endl;
+        ss << options_[i].first.second << std::endl;
+        ss << options_[i].second << std::endl;
     }    
     return Variant(ss.str());
 }
 
 void OptionPropertyString::setVariant(const Variant& inVariant) {
+    std::string textLine;    
     std::istringstream ss(inVariant.getString());
     int seletctedOption=0;
-    ss >> seletctedOption ;
+    getline(ss, textLine);
+    seletctedOption = atoi(textLine.c_str());
     options_.clear();
-    while(!ss.eof()) {
+    while(!ss.eof()) { 
         std::string identifier, displayName, val;        
-        ss >> identifier;
-        ss >> displayName;  
-        ss >> val;
+        getline(ss, identifier);
+        getline(ss, displayName);
+        getline(ss, val);        
        addOption(identifier, displayName, val);
     }    
     setSelectedOption(seletctedOption);

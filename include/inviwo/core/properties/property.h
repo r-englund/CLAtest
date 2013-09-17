@@ -53,9 +53,9 @@ public:
     void hidePropertyGroup() { notifyObservers(); }
     void showPropertyGroup() { notifyObservers(); }
 
-    void invalidate();
-    bool isValid();
-    void setValid();
+    virtual inline void propertyModified() { setPropertyModified(true); }
+    virtual void setPropertyModified(bool modified) { propertyModified_ = modified; }
+    virtual bool isPropertyModified() const { return propertyModified_; }
 
     void setVisible(bool visible);
     bool getVisible(){ return visible_; };
@@ -84,7 +84,7 @@ private:
     PropertyOwner::InvalidationLevel invalidationLevel_;
     PropertySemantics::Type semantics_;
 
-    bool invalid_;
+    bool propertyModified_;
     PropertyOwner* owner_;
     std::vector<PropertyWidget*> propertyWidgets_;
 

@@ -112,9 +112,9 @@ public:
 
     void setBroadcastModification(bool broadcastModification) { broadcastModification_ = broadcastModification; }
 
-    void lock() { locked_ = true; }
-    void unlock() { locked_ = false; }
-    bool islocked() const { return (locked_==true); }
+    inline void lock() { locked_ = true; }
+    inline void unlock() { locked_ = false; }
+    inline bool islocked() const { return (locked_==true); }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d) throw (Exception);

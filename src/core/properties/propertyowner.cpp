@@ -28,6 +28,12 @@ Property* PropertyOwner::getPropertyByIdentifier(std::string identifier) {
     return 0;
 }
 
+void PropertyOwner::setValid() { 
+    for (size_t i=0; i<properties_.size(); i++)
+       properties_[i]->setPropertyModified(false);
+    invalidationLevel_ = PropertyOwner::VALID; 
+}
+
 void PropertyOwner::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
 }

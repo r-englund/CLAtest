@@ -204,7 +204,8 @@ template<typename T>
 void TemplateOptionProperty<T>::set(T value) {
     value_ = value;
     onChangeCallback_.invoke();
-    if (getOwner()) getOwner()->invalidate(getInvalidationLevel());
+    propertyModified();
+    if (getOwner()) getOwner()->invalidate(getInvalidationLevel());    
     updatePropertyWidgets();
 }
 

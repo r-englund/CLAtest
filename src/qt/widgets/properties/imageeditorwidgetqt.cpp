@@ -139,7 +139,11 @@ void SimpleGraphicsView::mouseReleaseEvent(QMouseEvent *e)
     QPointF mStartPoint = mapToScene(startPoint_);
     QPointF deltaPoint = mendPoint - mStartPoint;
 
-    if (rubberBandActive_ && ( deltaPoint.x()>5 && deltaPoint.y()>5) ) {
+    if (rubberBandActive_ && ( deltaPoint.x()>5 && deltaPoint.y()>5) ) {        
+        if (e->modifiers() == Qt::ShiftModifier) {
+            //add a square
+            (deltaPoint.x()>deltaPoint.y())?deltaPoint.setY(deltaPoint.x()):deltaPoint.setX(deltaPoint.y());
+        }
         addRectangle(mStartPoint, deltaPoint);
     }
     rubberBandActive_ = false;
@@ -313,7 +317,7 @@ bool ImageEditorWidgetQt::writeImageLabel(){
             glm::vec2 topLeft(rectList[i].rect_.topLeft().x(), rectList[i].rect_.topLeft().y());
             glm::vec2 rectSize(rectList[i].rect_.size().width(), rectList[i].rect_.size().height());
             imageEditorProperty->addLabel(topLeft, rectSize, rectList[i].label_);            
-        }                    
+        }
     }
     return true;
 }

@@ -31,7 +31,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     std::vector<ProcessorLink*> processorLinks = processorLinks_;
     for (size_t i=0; i<processorLinks.size(); i++)
         if (processorLinks[i]->involvesProcessor(processor))
-            removeLink(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor());
+            removeLink(processorLinks[i]->getDestinationProcessor(), processorLinks[i]->getSourceProcessor());
 
     // remove processor itself
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
@@ -70,10 +70,10 @@ void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProces
 
 void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destProcessor) {
     for (size_t i=0; i<processorLinks_.size(); i++) {            
-        if ((processorLinks_[i]->getInProcessor()==sourceProcessor &&
-             processorLinks_[i]->getOutProcessor()==destProcessor) ||
-            (processorLinks_[i]->getOutProcessor()==sourceProcessor &&
-             processorLinks_[i]->getInProcessor()==destProcessor)) {
+        if ((processorLinks_[i]->getSourceProcessor()==sourceProcessor &&
+             processorLinks_[i]->getDestinationProcessor()==destProcessor) ||
+            (processorLinks_[i]->getDestinationProcessor()==sourceProcessor &&
+             processorLinks_[i]->getSourceProcessor()==destProcessor)) {
                 //FIXME: unlink processors
                 processorLinks_.erase(processorLinks_.begin()+i);
                 break;
@@ -94,7 +94,7 @@ void ProcessorNetwork::clear() {
 
     std::vector<ProcessorLink*> processorLinks = processorLinks_;
     for (size_t i=0; i<processorLinks_.size(); i++)
-        removeLink(processorLinks[i]->getOutProcessor(), processorLinks[i]->getInProcessor() );
+        removeLink(processorLinks[i]->getDestinationProcessor(), processorLinks[i]->getSourceProcessor() );
 }
 
 Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
@@ -106,10 +106,10 @@ Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
 
 ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* processor1, Processor* processor2) const {
     for (size_t i=0; i<processorLinks_.size(); i++) { 
-        if ((processorLinks_[i]->getInProcessor()==processor1 &&
-             processorLinks_[i]->getOutProcessor()==processor2) ||
-            (processorLinks_[i]->getOutProcessor()==processor1 &&
-             processorLinks_[i]->getInProcessor()==processor2)) {
+        if ((processorLinks_[i]->getSourceProcessor()==processor1 &&
+             processorLinks_[i]->getDestinationProcessor()==processor2) ||
+            (processorLinks_[i]->getDestinationProcessor()==processor1 &&
+             processorLinks_[i]->getSourceProcessor()==processor2)) {
             return processorLinks_[i];
         }
     }
@@ -177,8 +177,8 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     try {        
         d.deserialize("ProcessorLinks", processorLinks, "ProcessorLink");        
         for (size_t i=0; i<processorLinks.size(); i++) {
-            Processor* inProcessor = processorLinks[i]->getInProcessor();
-            Processor* outProcessor = processorLinks[i]->getOutProcessor();
+            Processor* inProcessor = processorLinks[i]->getSourceProcessor();
+            Processor* outProcessor = processorLinks[i]->getDestinationProcessor();
             if (inProcessor && outProcessor) {
                 std::vector<PropertyLink*> propertyLinks = processorLinks[i]->getPropertyLinks();
                 for (size_t j=0; j<propertyLinks.size(); j++) {

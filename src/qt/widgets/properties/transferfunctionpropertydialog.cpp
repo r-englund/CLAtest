@@ -161,7 +161,7 @@ void TransferFunctionPropertyDialog::updateFromProperty(){
 	gradient_->setFinalStop(editorview_->width(), 0.0);
 	delete temp;
 	this->update();
-	property_->invalidate();
+	property_->propertyModified();
 	property_->customSet();
 }
 

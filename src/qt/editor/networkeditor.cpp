@@ -984,7 +984,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     // add link graphics items
     std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
     for (size_t i=0; i<links.size(); i++)
-        addLinkGraphicsItem(links[i]->getOutProcessor(), links[i]->getInProcessor());
+        addLinkGraphicsItem(links[i]->getDestinationProcessor(), links[i]->getSourceProcessor());
 
     // flag the network's modified flag, unlock it and initiate evaluation
     processorNetwork_->setModified(true);

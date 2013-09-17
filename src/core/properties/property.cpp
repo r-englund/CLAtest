@@ -61,18 +61,6 @@ void Property::updatePropertyWidgets() {
         propertyWidgets_[i]->updateFromProperty();
 }
 
-void Property::invalidate() {
-    invalid_ = true;
-}
-
-void Property::setValid() {
-    invalid_ = false;
-}
-
-bool Property::isValid() {
-    return (invalid_ == false);
-}
-
 Variant Property::getVariant() {
     return Variant(getVariantType());
 }

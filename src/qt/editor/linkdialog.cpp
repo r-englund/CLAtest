@@ -985,16 +985,16 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
 
     std::vector<ProcessorLink*> processorLinks = processorNetwork_->getProcessorLinks();
     for (size_t i=0; i<processorLinks.size(); i++) {
-        Processor* inProcessor = processorLinks[i]->getInProcessor();
-        Processor* outProcessor = processorLinks[i]->getOutProcessor();
+        Processor* srcProcessor = processorLinks[i]->getSourceProcessor();
+        Processor* dstProcessor = processorLinks[i]->getDestinationProcessor();
 
-        if (std::find(srcProcessorList.begin(), srcProcessorList.end(), inProcessor) == srcProcessorList.end() &&
-            std::find(dstProcessorList.begin(), dstProcessorList.end(), inProcessor) == dstProcessorList.end()) {
+        if (std::find(srcProcessorList.begin(), srcProcessorList.end(), srcProcessor) == srcProcessorList.end() &&
+            std::find(dstProcessorList.begin(), dstProcessorList.end(), srcProcessor) == dstProcessorList.end()) {
                 continue;
         }
 
-        if (std::find(srcProcessorList.begin(), srcProcessorList.end(), outProcessor) == srcProcessorList.end() &&
-            std::find(dstProcessorList.begin(), dstProcessorList.end(), outProcessor) == dstProcessorList.end()) {
+        if (std::find(srcProcessorList.begin(), srcProcessorList.end(), dstProcessor) == srcProcessorList.end() &&
+            std::find(dstProcessorList.begin(), dstProcessorList.end(), dstProcessor) == dstProcessorList.end()) {
                 continue;
         }
 
@@ -1094,8 +1094,9 @@ void LinkDialog::initDialog() {
     linkDialogScene_ = new LinkDialogGraphicsScene(this);
 
     linkDialogView_->setDialogScene(linkDialogScene_);
-    linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height());
-    linkDialogView_->fitInView(linkDialogView_->rect());    
+    linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*2);
+    linkDialogView_->fitInView(linkDialogView_->rect());
+    linkDialogView_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     mainLayout->addWidget(linkDialogView_);
 

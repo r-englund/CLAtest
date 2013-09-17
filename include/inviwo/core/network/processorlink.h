@@ -38,17 +38,17 @@ public:
     ProcessorLink(Processor* outProcessor, Processor* inProcessor);
     virtual ~ProcessorLink();
 
-    Processor* getInProcessor() const{ return inProcessor_; }
-    Processor* getOutProcessor() const{ return outProcessor_; }
+    Processor* getSourceProcessor() const{ return sourceProcessor_; }
+    Processor* getDestinationProcessor() const{ return destinationProcessor_; }
 
     bool involvesProcessor(Processor* processor) const {
-        return (inProcessor_==processor || outProcessor_==processor);
+        return (sourceProcessor_==processor || destinationProcessor_==processor);
     }
 
     void autoLinkPropertiesByType();
     void evaluate(LinkEvaluator *leval);
     bool isLinked(Property* startProperty, Property* endProperty);
-    bool isValid();
+    inline bool isValid();
     std::vector<Property*> getSourceProperties();
 
     void addPropertyLinks(Property* startProperty, Property* endProperty);
@@ -63,8 +63,8 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
 private:    
-   Processor* inProcessor_;
-   Processor* outProcessor_;
+   Processor* sourceProcessor_;
+   Processor* destinationProcessor_;
    std::vector<PropertyLink*> propertyLinks_;
 };
 
