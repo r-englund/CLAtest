@@ -20,7 +20,7 @@ public:
 
     static PythonEditorWidget* pythonEditorWidget_;
     static PythonEditorWidget* getPythonEditorWidget();
-    void appendToOutput(std::string msg);
+    void appendToOutput(const std::string &msg);
     virtual void fileChanged(std::string fileName);
     void loadFile(std::string fileName,bool askForSave = true);
 private:
@@ -33,7 +33,6 @@ private:
     std::string scriptFileName_;
 
     bool unsavedChanges_;
-    bool needRecompile_;
     void readFile();
 
 public slots:

@@ -20,8 +20,7 @@ namespace inviwo{
     PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* mainWindow): 
             InviwoDockWidget(tr("Python Editor"),mainWindow), 
             script_(),
-            unsavedChanges_(false),
-            needRecompile_(false){
+            unsavedChanges_(false){
         setObjectName("PythonEditor");
         setAllowedAreas(Qt::AllDockWidgetAreas);
         InviwoApplication::getRef().registerFileObserver(this);
@@ -131,7 +130,7 @@ namespace inviwo{
 
     PythonEditorWidget::~PythonEditorWidget(){}
 
-    void PythonEditorWidget::appendToOutput(std::string msg){
+    void PythonEditorWidget::appendToOutput(const std::string &msg){
         pythonOutput_->append(msg.c_str());
     }
 
@@ -180,8 +179,8 @@ namespace inviwo{
         file.close();
 
         pythonCode_->setText(text.c_str());
+		script_.setSource(text);
         unsavedChanges_ = false;
-        needRecompile_ = true;
     }
 
     void PythonEditorWidget::saveAs(){
@@ -235,23 +234,14 @@ namespace inviwo{
     void PythonEditorWidget::run(){
         if(unsavedChanges_ && scriptFileName_.size()!=0) //save if needed
             save();
-        if(needRecompile_){ //recompile if needed
-            const std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
-            script_.setSource(source);
-            if(!script_.compile()){
-                appendToOutput(script_.getLog());
-                return;
-            }
-            needRecompile_ = false;
-        }
         clearOutput();
-        if(!script_.run()){
-            appendToOutput(script_.getLog());
+        if(script_.run()){
+            LogInfo("Python Script Executed succesfully");
         }
     }
     
     void PythonEditorWidget::show(){
-        setFloating(true);
+        //setFloating(true);
         setVisible(true);
     }
 
@@ -263,11 +253,12 @@ namespace inviwo{
             else if(ret == 2) //cancel
                 return;
         }
-        pythonCode_->setText("# Inviwo Python script \nimport inviwo \n\ninviwo.info() \n");
+		const static std::string defaultSource = "# Inviwo Python script \nimport inviwo \n\ninviwo.info() \n";
+        pythonCode_->setText(defaultSource.c_str());
+		script_.setSource(defaultSource);
         stopFileObservation(scriptFileName_);
         scriptFileName_ = "";
         unsavedChanges_ = false;
-        needRecompile_ = true;
     }
 
     void PythonEditorWidget::clearOutput(){
@@ -276,7 +267,8 @@ namespace inviwo{
 
     void PythonEditorWidget::onTextChange(){
         unsavedChanges_ = true;
-        needRecompile_ = true;
+		const std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
+		script_.setSource(source);
     }
 
 

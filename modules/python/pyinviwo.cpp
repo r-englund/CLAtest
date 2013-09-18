@@ -84,14 +84,17 @@ namespace inviwo{
         
         initDefaultInterfaces();
 
-        PythonScript *outputCatcher = new PythonScript();
-        if(!outputCatcher->load(InviwoApplication::getPtr()->getBasePath() +"modules/python/scripts/outputredirector.py",false)){
-            LogWarn("Python init script failed to load");
-        }
-        else if(!outputCatcher->run()){
+        PythonScript outputCatcher = PythonScript();
+		
+		std::ifstream file(InviwoApplication::getPtr()->getBasePath() +"modules/python/scripts/outputredirector.py");
+		std::string text((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
+		file.close();
+        outputCatcher.setSource(text);
+        if(!outputCatcher.run()){
             LogWarn("Python init script failed to run");
-            LogWarn(outputCatcher->getLog());
         }
+
+		LogInfo("Python interface initialized");
     }
 
 
