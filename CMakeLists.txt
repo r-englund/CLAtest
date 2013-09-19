@@ -34,6 +34,8 @@ option(TEST_APPLICATIONS "Build All Test Application" OFF)
 
 option(IVW_MODULE_PYTHON "Enable python module" OFF)
 
+option(IVW_MODULE_MATLAB "Enable matlab module" OFF)
+
 #--------------------------------------------------------------------
 # Add subdirectories
 

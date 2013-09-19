@@ -276,35 +276,6 @@ bool ProcessorNetworkEvaluator::hasBeenVisited(Property* property) {
     return true;
 }
 
-/*
-
-void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty, Property* curProperty) {
-    std::vector<Property*> linkedProperties = getLinkedProperties(curProperty);
-
-    //Set current properties and its connected properties
-    for (size_t i=0; i<linkedProperties.size(); i++) {
-        if (!hasBeenVisited(linkedProperties[i])) {
-            propertiesVisited_.push_back(linkedProperties[i]);
-            linkEvaluator_->evaluate(sourceProperty, linkedProperties[i]);
-            // TODO: Assumed that only one property can be invalid which is sourceProperty, 
-            //       meaning user interacts with only one property at a time which is sourceProperty
-            //       other properties should be assumed to be valid. hence setValid() is used.
-            linkedProperties[i]->propertyModified(false);
-            evaluatePropertyLinks(sourceProperty, linkedProperties[i]);
-        }
-    }
-}
-
-void ProcessorNetworkEvaluator::evaluatePropertyLinks(Property* sourceProperty) {
-    propertiesVisited_.clear();
-    // sourceProperty is considered to have the value already set. this value needs to be propagated.
-    // transfer values from sourceProperty to its connected properties recursively
-    propertiesVisited_.push_back(sourceProperty);
-    evaluatePropertyLinks(sourceProperty, sourceProperty);
-}
-
-*/
-
 std::vector<ProcessorLink*> ProcessorNetworkEvaluator::getSortedProcessorLinks() {
     std::vector<ProcessorLink*> unsortedProcessorLinks = processorNetwork_->getProcessorLinks();
     std::vector<ProcessorLink*> sortedProcessorLinks;
@@ -365,73 +336,63 @@ std::vector<ProcessorLink*> ProcessorNetworkEvaluator::getSortedProcessorLinks()
 
 
 void ProcessorNetworkEvaluator::evaluate() {
-    if (processorNetwork_->islocked()) {
-        //count missed evaluation while network is locked
-        //evaluateLater();
-        return;
-    }
+    if (processorNetwork_->islocked())
+        return;    
     
     // lock processor network to avoid concurrent evaluation
     processorNetwork_->lock();    
     bool repaintRequired = false;
 
-    // repeat until there is no evaluation miss
-    //do {
-        //reset re-evaluation hit
-        //resetEvaluationHits();
-
-        //perform linking
-        std::vector<ProcessorLink*> processorLinks = getSortedProcessorLinks();        
-        for (size_t i=0; i<processorLinks.size(); i++) {         
-            if (!processorLinks[i]->isValid())
-                processorLinks[i]->evaluate(linkEvaluator_);
-        } 
-      
-        // if the processor network has changed determine the new processor order
-        if (processorNetwork_->isModified()) {
-            defaultContext_->activate();
-            initializeNetwork();
-            determineProcessingOrder();
-            processorNetwork_->setModified(false);
-        }
-
-        bool inValidTopology = false;
-        for (size_t i=0; i<processorsSorted_.size(); i++)
-            if (!processorsSorted_[i]->isValid())
-                if (!processorsSorted_[i]->isReady())
-                    if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
-                        inValidTopology = true;
-        if (inValidTopology) {
-            processorNetwork_->unlock();
-            return;
-        }
-       
+    //perform linking
+    std::vector<ProcessorLink*> processorLinks = getSortedProcessorLinks();        
+    for (size_t i=0; i<processorLinks.size(); i++) {         
+        if (!processorLinks[i]->isValid())
+            processorLinks[i]->evaluate(linkEvaluator_);
+    } 
+  
+    // if the processor network has changed determine the new processor order
+    if (processorNetwork_->isModified()) {
         defaultContext_->activate();
-        for (size_t i=0; i<processorsSorted_.size(); i++) {
-            if (!processorsSorted_[i]->isValid()) {
-                // re-initialize resources (e.g., shaders) if necessary
-                if (processorsSorted_[i]->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
-                    processorsSorted_[i]->initializeResources();                
-                
-                // reset the progress indicator
-                ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processorsSorted_[i]);
-                if (progressBarOwner)
-                    progressBarOwner->getProgressBar().resetProgress();
+        initializeNetwork();
+        determineProcessingOrder();
+        processorNetwork_->setModified(false);
+    }
 
-                // do the actual processing
-                processorsSorted_[i]->process();
-                repaintRequired = true;
+    bool inValidTopology = false;
+    for (size_t i=0; i<processorsSorted_.size(); i++)
+        if (!processorsSorted_[i]->isValid())
+            if (!processorsSorted_[i]->isReady())
+                if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
+                    inValidTopology = true;
+    if (inValidTopology) {
+        processorNetwork_->unlock();
+        return;
+    }
+   
+    defaultContext_->activate();
+    for (size_t i=0; i<processorsSorted_.size(); i++) {
+        if (!processorsSorted_[i]->isValid()) {
+            // re-initialize resources (e.g., shaders) if necessary
+            if (processorsSorted_[i]->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
+                processorsSorted_[i]->initializeResources();                
+            
+            // reset the progress indicator
+            ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processorsSorted_[i]);
+            if (progressBarOwner)
+                progressBarOwner->getProgressBar().resetProgress();
 
-                // set the progress indicator to finished
-                if (progressBarOwner)
-                    progressBarOwner->getProgressBar().finishProgress();
+            // do the actual processing
+            processorsSorted_[i]->process();
+            repaintRequired = true;
 
-                // validate processor
-                processorsSorted_[i]->setValid();
-            }
-        }       
-    //} while(isEvaluationRequired());
+            // set the progress indicator to finished
+            if (progressBarOwner)
+                progressBarOwner->getProgressBar().finishProgress();
 
+            // validate processor
+            processorsSorted_[i]->setValid();
+        }
+    }       
 
     // unlock processor network to allow next evaluation
     processorNetwork_->unlock();

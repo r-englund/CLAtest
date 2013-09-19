@@ -84,8 +84,7 @@ void ProcessorLink::evaluate(LinkEvaluator *leval) {
         if (startProperty->isPropertyModified())
             propertyLinks.push_back(propertyLinks_[i]);
     }
-
-    //LogInfo("Total Links: " << propertyLinks_.size() << "Invalid Links: " << propertyLinks.size());
+    
     for (size_t i=0; i<propertyLinks.size(); i++) {
         startProperty = propertyLinks[i]->getSourceProperty();
         endProperty = propertyLinks[i]->getDestinationProperty();        
@@ -93,11 +92,8 @@ void ProcessorLink::evaluate(LinkEvaluator *leval) {
         Processor* srcProc = dynamic_cast<Processor*>(startProperty->getOwner());
         Processor* dstProc = dynamic_cast<Processor*>(endProperty->getOwner()); 
         //is change due to property modification?
-        if (startProperty->isPropertyModified()) {
+        if (startProperty->isPropertyModified())
                 leval->evaluate(startProperty, endProperty);
-                //LogInfo("Src Prop of " << srcProc->getIdentifier() << ":" << startProperty->getIdentifier());
-                //LogInfo("Dst Prop of " << dstProc->getIdentifier() << ":" << endProperty->getIdentifier());
-        }
     }
 }
 
