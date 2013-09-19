@@ -12,6 +12,9 @@ Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filt
     numChannels_ = glFormat.channels;
     byteSize_ = numChannels_*glFormat.typeSize;
     LGL_ERROR;
+    glGenBuffers(1, &pboBack_);
+    setupAsyncReadBackPBO();
+    LGL_ERROR;
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
@@ -24,10 +27,14 @@ Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenu
     setNChannels();
     setSizeInBytes();
     LGL_ERROR;
+    glGenBuffers(1, &pboBack_);
+    setupAsyncReadBackPBO();
+    LGL_ERROR;
 }
 
 Texture2D::~Texture2D() {
     glDeleteTextures(1, &id_);
+    glDeleteBuffers(1, &pboBack_);
     LGL_ERROR;
 }
 
@@ -55,24 +62,31 @@ void Texture2D::upload(const void* data) {
 }
 
 void Texture2D::download(void* data) const {
-    bind();
-    glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, data);
-    // Using FBO
-    //glReadBuffer((GLenum)GL_COLOR_ATTACHMENT0_EXT);
-    //glReadPixels(0, 0, dimensions_.x, dimensions_.y, format_, dataType_, (GLvoid*)data);
+    if(dataInReadBackPBO_){
+        // Copy from PBO
+        glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
+        void* mem = glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY);   
+        assert(mem);
+        memcpy(data, mem, dimensions_.x*dimensions_.y*getSizeInBytes());
+
+        //Release PBO data
+        glUnmapBuffer(GL_PIXEL_PACK_BUFFER_ARB);
+        glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+        dataInReadBackPBO_ = false;
+    }
+    else{
+        bind();
+        glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, data);
+    }
     LGL_ERROR;
-    //// Using PBO ( could be performed asynchronos
-    //glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, id_);
-    //// Yet to be implemented
-    //GLuint dataSize = getSizeInBytes();
-    //glBufferData(GL_PIXEL_PACK_BUFFER_ARB, dataSize, NULL, GL_STREAM_READ);
-    //glReadPixels (0, 0, dimensions_.x, dimensions_.y, format_, dataType_, 
-    //    static_cast<char*>(NULL));
-    //void* mem = glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY);   
-    //assert(mem);
-    //std::copy(mem, mem+dataSize, data);
-    //glUnmapBuffer(GL_PIXEL_PACK_BUFFER_ARB);
-    //glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0); 
+}
+
+void Texture2D::downloadToPBO() const{
+    bind();
+    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
+    glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, 0);
+    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+    dataInReadBackPBO_ = true;
 }
 
 void Texture2D::unbind() const{
@@ -81,29 +95,17 @@ void Texture2D::unbind() const{
 }
 
 void Texture2D::resize(uvec2 dimension) {
-    //Warning: Resize texture will corrupt existing texel
-    //TODO: Requires efficient up/down sampling
-    GLubyte* newTexel = new GLubyte[dimension.x*dimension.y*getSizeInBytes()];
-    size_t pixelOffsetInBytes = getSizeInBytes();
-    for (size_t i=0; i<dimension.x; i++) {
-            for (size_t j=0; j<dimension.y; j++) {                        
-                //check pattern
-                if ( ( ((i+1)/8)%2 == 0 && ((j+1)/8)%2 == 0) || ( ((i+1)/8)%2 == 1 && ((j+1)/8)%2 == 1) ) {                        
-                    for (size_t k=0; k<pixelOffsetInBytes; k++)
-                        newTexel[(j*dimension.x+i)*pixelOffsetInBytes+k] = 128;                            
-                }
-                else {
-                    for (size_t k=0; k<pixelOffsetInBytes; k++)
-                        newTexel[(j*dimension.x+i)*pixelOffsetInBytes+k] = 255; 
-                }
-                                           
-            }
-    }
     setWidth(dimension.x);
     setHeight(dimension.y);
-    upload(newTexel);
-    delete[] newTexel;
+    upload(NULL);
+    setupAsyncReadBackPBO();
+}
 
+void Texture2D::setupAsyncReadBackPBO(){
+    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
+    glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, dimensions_.x*dimensions_.y*getSizeInBytes(), NULL, GL_STREAM_READ_ARB);
+    glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
+    dataInReadBackPBO_ = false;
 }
 
 void Texture2D::setNChannels(){

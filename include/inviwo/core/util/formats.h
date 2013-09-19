@@ -15,6 +15,98 @@
 
 namespace inviwo {
 
+    template <unsigned int N, typename T>
+    class Matrix {};
+    template <typename T>
+    class Matrix<4, T> : public glm::detail::tmat4x4<T> {
+    public:
+        Matrix<4, T>() : glm::detail::tmat4x4<T>(){};
+        Matrix<4, T>(const Matrix<4, T>& m) : glm::detail::tmat4x4<T>(
+            m[0][0], m[0][1], m[0][2], m[0][3], 
+            m[1][0], m[1][1], m[1][2], m[1][3],
+            m[2][0], m[2][1], m[2][2], m[2][3],
+            m[3][0], m[3][1], m[3][2], m[3][3]){};
+        Matrix<4, T>(const glm::detail::tmat4x4<T>& m) : glm::detail::tmat4x4<T>(m){};
+        Matrix<4, T>(T m) : glm::detail::tmat4x4<T>(m){};
+        Matrix<4, T>(T x1, T y1, T z1, T w1, 
+            T x2, T y2, T z2, T w2,
+            T x3, T y3, T z3, T w3,
+            T x4, T y4, T z4, T w4) : 
+        glm::detail::tmat4x4<T>(x1, y1, z1, w1, 
+            x2, y2, z2, w2,
+            x3, y3, z3, w3,
+            x4, y4, z4, w4){};
+    };
+    template <typename T>
+    class Matrix<3, T> : public glm::detail::tmat3x3<T> {
+    public:
+        Matrix<3, T>() : glm::detail::tmat3x3<T>(){};
+        Matrix<3, T>(const Matrix<3, T>& m) : glm::detail::tmat3x3<T>(
+            m[0][0], m[0][1], m[0][2], 
+            m[1][0], m[1][1], m[1][2],
+            m[2][0], m[2][1], m[2][2]){};
+        Matrix<3, T>(const glm::detail::tmat3x3<T>& m) : glm::detail::tmat3x3<T>(m){};
+        Matrix<3, T>(T m) : glm::detail::tmat3x3<T>(m){};
+        Matrix<3, T>(T x1, T y1, T z1, 
+            T x2, T y2, T z2,
+            T x3, T y3, T z3) : 
+        glm::detail::tmat3x3<T>(x1, y1, z1, 
+            x2, y2, z2,
+            x3, y3, z3){};
+    };
+    template <typename T>
+    class Matrix<2, T> : public glm::detail::tmat2x2<T> {
+    public:
+        Matrix<2, T>() : glm::detail::tmat2x2<T>(){};
+        Matrix<2, T>(const Matrix<2, T>& m) : glm::detail::tmat2x2<T>(
+            m[0][0], m[0][1], 
+            m[1][0], m[1][1]){};
+        Matrix<2, T>(const glm::detail::tmat2x2<T>& m) : glm::detail::tmat2x2<T>(m){};
+        Matrix<2, T>(T m) : glm::detail::tmat2x2<T>(m){};
+        Matrix<2, T>(T x1, T y1, 
+            T x2, T y2) : 
+        glm::detail::tmat2x2<T>(x1, y1, 
+            x2, y2){};
+    };
+    template <unsigned int N, typename T>
+    class Vector {};
+    template <typename T>
+    class Vector<4, T> : public glm::detail::tvec4<T> {
+    public:
+        Vector<4, T>() : glm::detail::tvec4<T>(){};
+        Vector<4, T>(const Vector<4, T>& v) : glm::detail::tvec4<T>(v.x, v.y, v.z, v.w){};
+        Vector<4, T>(const glm::detail::tvec4<T>& v) : glm::detail::tvec4<T>(v){};
+        Vector<4, T>(T v) : glm::detail::tvec4<T>(v){};
+        Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3, v4){};
+    };
+    template <typename T>
+    class Vector<3, T> : public glm::detail::tvec3<T> {
+    public:
+        Vector<3, T>() : glm::detail::tvec3<T>(){};
+        Vector<3, T>(const Vector<3, T>& v) : glm::detail::tvec3<T>(v.x, v.y, v.z){};
+        Vector<3, T>(const glm::detail::tvec3<T>& v) : glm::detail::tvec3<T>(v){};
+        Vector<3, T>(T v) : glm::detail::tvec3<T>(v){};
+        Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T>(v1, v2, v3){};
+    };
+    template <typename T>
+    class Vector<2, T> : public glm::detail::tvec2<T> {
+    public:
+        Vector<2, T>() : glm::detail::tvec2<T>(){};
+        Vector<2, T>(const Vector<2, T>& v) : glm::detail::tvec2<T>(v.x, v.y){};
+        Vector<2, T>(const glm::detail::tvec2<T>& v) : glm::detail::tvec2<T>(v){};
+        Vector<2, T>(T v) : glm::detail::tvec2<T>(v){};
+        Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T>(v1, v2){};
+    };
+    template <typename T>
+    class Vector<1, T> : public glm::detail::tvec1<T> {
+    public:
+        Vector<1, T>() : glm::detail::tvec1<T>(){};
+        Vector<1, T>(const Vector<1, T>& v) : glm::detail::tvec1<T>(v.x){};
+        Vector<1, T>(const glm::detail::tvec1<T>& v) : glm:
+        :detail::tvec1<T>(v){};
+        Vector<1, T>(T v) : glm::detail::tvec1<T>(v){};
+    };
+
     //Do not set enums specifically, as NUMBER_OF_FORMATS is used to count the number of enums
     enum DataFormatId{
         NOT_SPECIALIZED,
@@ -84,6 +176,11 @@ public:
     static std::string str() { return "Error, type specialization not implemented"; }
     static DataFormatId id() { return NOT_SPECIALIZED; }
 
+    virtual float convertToNormalizedFloat(void*){ return 0.f; }
+    virtual glm::vec2 convertToNormalizedVec2Float(void*){ return glm::vec2(0.f); }
+    virtual glm::vec3 convertToNormalizedVec3Float(void*){ return glm::vec3(0.f); }
+    virtual glm::vec4 convertToNormalizedVec4Float(void*){ return glm::vec4(0.f); }
+
     size_t getBitsAllocated() const { return bitsAllocated_; }
     size_t getBitsStored() const { return bitsStored_; }
     size_t getBytesAllocated() const { return static_cast<size_t>(glm::ceil(BITS_TO_BYTES(static_cast<float>(getBitsAllocated())))); }
@@ -114,6 +211,98 @@ public:
 
     static std::string str() { return DataFormatBase::str(); }
     static DataFormatId id() { return DataFormatBase::id(); }
+
+    //typename D = dest, typename S = src
+
+    /*template<typename D, typename S> 
+    inline D normalizeSigned(S val){
+        if(val >= 0)
+            return static_cast<D>(val) / static_cast<D>(DataFormat<S, B>::max());
+        else
+            return static_cast<D>(val) / -static_cast<D>(DataFormat<S, B>::min());
+    }
+
+    template<typename D, typename S>
+    inline D normalizeUnsigned(S val){
+        return static_cast<D>(val) / static_cast<D>(DataFormat<S, B>::max());
+    }
+
+    template<typename D, typename S> 
+    inline D normalizeSignedSingle(void* val){
+        S valT = *static_cast<S*>(val);
+        return normalizeSigned<D, S>(valT);
+    }
+
+    template<typename D, typename S>
+    inline D normalizeUnsignedSingle(void* val){
+        S valT = *static_cast<S*>(val);
+        return normalizeUnsigned<D, S>(valT);
+    }
+
+    template<typename D, typename S>
+    inline glm::detail::tvec2<D> normalizeSignedVec2(void* val){
+        glm::detail::tvec2<S> valT = *static_cast<glm::detail::tvec2<S>*>(val);
+        glm::detail::tvec2<D> result;
+        result.x = normalizeSigned<D, S>(valT.x);
+        result.y = normalizeSigned<D, S>(valT.y);
+        return result;
+    }
+
+    template<typename D, typename S>
+    inline glm::detail::tvec2<D> normalizeUnsignedVec2(void* val){
+        glm::detail::tvec2<S> valT = *static_cast<glm::detail::tvec2<S>*>(val);
+        glm::detail::tvec2<D> result;
+        result.x = normalizeUnsigned<D, S>(valT.x);
+        result.y = normalizeUnsigned<D, S>(valT.y);
+        return result;
+    }
+
+    template<typename D, typename S>
+    inline glm::detail::tvec3<D> normalizeSignedVec3(void* val){
+        glm::detail::tvec3<S> valT = *static_cast<glm::detail::tvec3<S>*>(val);
+        glm::detail::tvec3<D> result;
+        result.x = normalizeSigned<D, S>(valT.x);
+        result.y = normalizeSigned<D, S>(valT.y);
+        result.y = normalizeSigned<D, S>(valT.y);
+        return result;
+    }
+
+    template<typename D, typename S>
+    inline glm::detail::tvec3<D> normalizeUnsignedVec3(void* val){
+        glm::detail::tvec3<S> valT = *static_cast<glm::detail::tvec3<S>*>(val);
+        glm::detail::tvec3<D> result;
+        result.x = normalizeUnsigned<D, S>(valT.x);
+        result.y = normalizeUnsigned<D, S>(valT.y);
+        result.z = normalizeUnsigned<D, S>(valT.z);
+        return result;
+    }
+
+    template<typename D, typename S>
+    inline glm::detail::tvec4<D> normalizeSignedVec4(void* val){
+        glm::detail::tvec4<S> valT = *static_cast<glm::detail::tvec4<S>*>(val);
+        glm::detail::tvec4<D> result;
+        result.x = normalizeSigned<D, S>(valT.x);
+        result.y = normalizeSigned<D, S>(valT.y);
+        result.y = normalizeSigned<D, S>(valT.y);
+        result.w = normalizeSigned<D, S>(valT.w);
+        return result;
+    }
+
+    template<typename D, typename S>
+    inline glm::detail::tvec4<D> normalizeUnsignedVec4(void* val){
+        glm::detail::tvec4<S> valT = *static_cast<glm::detail::tvec4<S>*>(val);
+        glm::detail::tvec4<D> result;
+        result.x = normalizeUnsigned<D, S>(valT.x);
+        result.y = normalizeUnsigned<D, S>(valT.y);
+        result.z = normalizeUnsigned<D, S>(valT.z);
+        result.w = normalizeUnsigned<D, S>(valT.w);
+        return result;
+    }*/
+
+    float convertToNormalizedFloat(void* val){ return DataFormatBase::convertToNormalizedFloat(val); }
+    glm::vec2 convertToNormalizedVec2Float(void* val){ return DataFormatBase::convertToNormalizedVec2Float(val); }
+    glm::vec3 convertToNormalizedVec3Float(void* val){ return DataFormatBase::convertToNormalizedVec3Float(val); }
+    glm::vec4 convertToNormalizedVec4Float(void* val){ return DataFormatBase::convertToNormalizedVec4Float(val); }
 };
 
 #define GenericDataBits(T) BYTES_TO_BITS(sizeof(T))
@@ -140,6 +329,109 @@ typedef DataFormat<uint16_t, 12>          DataUINT12;
 typedef GenericDataFormat(uint16_t)       DataUINT16;
 typedef GenericDataFormat(unsigned int)   DataUINT32;
 typedef GenericDataFormat(uint64_t)       DataUINT64;
+
+/*---------------Vec2 Formats--------------------*/
+
+// Floats
+typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float16>)  DataVec2FLOAT16;
+typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float32>)  DataVec2FLOAT32;
+typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float64>)  DataVec2FLOAT64;
+
+// Integers
+typedef GenericDataFormat(glm::detail::tvec2<int8_t>)   DataVec2INT8;
+typedef DataFormat<glm::detail::tvec2<int16_t>, 24>     DataVec2INT12;
+typedef GenericDataFormat(glm::detail::tvec2<int16_t>)  DataVec2INT16;
+typedef GenericDataFormat(glm::detail::tvec2<int32_t>)  DataVec2INT32;
+typedef GenericDataFormat(glm::detail::tvec2<int64_t>)  DataVec2INT64;
+
+// Unsigned Integers
+typedef GenericDataFormat(glm::detail::tvec2<uint8_t>)  DataVec2UINT8;
+typedef DataFormat<glm::detail::tvec2<uint16_t>, 24>    DataVec2UINT12;
+typedef GenericDataFormat(glm::detail::tvec2<uint16_t>) DataVec2UINT16;
+typedef GenericDataFormat(glm::detail::tvec2<uint32_t>) DataVec2UINT32;
+typedef GenericDataFormat(glm::detail::tvec2<uint64_t>) DataVec2UINT64;
+
+/*---------------Vec3 Formats--------------------*/
+
+// Floats
+typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float16>)  DataVec3FLOAT16;
+typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float32>)  DataVec3FLOAT32;
+typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float64>)  DataVec3FLOAT64;
+
+// Integers
+typedef GenericDataFormat(glm::detail::tvec3<int8_t>)   DataVec3INT8;
+typedef DataFormat<glm::detail::tvec3<int16_t>, 36>     DataVec3INT12;
+typedef GenericDataFormat(glm::detail::tvec3<int16_t>)  DataVec3INT16;
+typedef GenericDataFormat(glm::detail::tvec3<int32_t>)  DataVec3INT32;
+typedef GenericDataFormat(glm::detail::tvec3<int64_t>)  DataVec3INT64;
+
+// Unsigned Integers
+typedef GenericDataFormat(glm::detail::tvec3<uint8_t>)  DataVec3UINT8;
+typedef DataFormat<glm::detail::tvec3<uint16_t>, 36>    DataVec3UINT12;
+typedef GenericDataFormat(glm::detail::tvec3<uint16_t>) DataVec3UINT16;
+typedef GenericDataFormat(glm::detail::tvec3<uint32_t>) DataVec3UINT32;
+typedef GenericDataFormat(glm::detail::tvec3<uint64_t>) DataVec3UINT64;
+
+/*---------------Vec4 Value Formats------------------*/
+
+// Floats
+typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float16>)  DataVec4FLOAT16;
+typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float32>)  DataVec4FLOAT32;
+typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float64>)  DataVec4FLOAT64;
+
+// Integers
+typedef GenericDataFormat(glm::detail::tvec4<int8_t>)   DataVec4INT8;
+typedef DataFormat<glm::detail::tvec4<int16_t>, 48>     DataVec4INT12;
+typedef GenericDataFormat(glm::detail::tvec4<int16_t>)  DataVec4INT16;
+typedef GenericDataFormat(glm::detail::tvec4<int32_t>)  DataVec4INT32;
+typedef GenericDataFormat(glm::detail::tvec4<int64_t>)  DataVec4INT64;
+
+// Unsigned Integers
+typedef GenericDataFormat(glm::detail::tvec4<uint8_t>)  DataVec4UINT8;
+typedef DataFormat<glm::detail::tvec4<uint16_t>, 48>    DataVec4UINT12;
+typedef GenericDataFormat(glm::detail::tvec4<uint16_t>) DataVec4UINT16;
+typedef GenericDataFormat(glm::detail::tvec4<uint32_t>) DataVec4UINT32;
+typedef GenericDataFormat(glm::detail::tvec4<uint64_t>) DataVec4UINT64;
+
+/*--------------- Conversions------------------*/
+
+/*template<typename T>
+IVW_CORE_API glm::detail::tvec2<T> singleToVec2(T val) {
+    return glm::detail::tvec2<T>(val);
+}
+
+template<typename T>
+IVW_CORE_API glm::detail::tvec3<T> singleToVec3(T val) {
+    return glm::detail::tvec3<T>(val);
+}
+
+template<typename T>
+IVW_CORE_API glm::detail::tvec4<T> singleToVec4(T val) {
+    return glm::detail::tvec4<T>(val);
+}
+
+template<typename T>
+IVW_CORE_API glm::detail::tvec3<T> vec2ToVec3(glm::detail::tvec2<T> val) {
+    glm::detail::tvec3<T> result = glm::detail::tvec3<T>(0.f);
+    result.xy = val;
+    return result;
+}
+
+template<typename T>
+IVW_CORE_API glm::detail::tvec4<T> vec2ToVec4(glm::detail::tvec2<T> val) {
+    glm::detail::tvec4<T> result = glm::detail::tvec4<T>(0.f);
+    result.xy = val;
+    return result;
+}
+
+template<typename T>
+IVW_CORE_API glm::detail::tvec4<T> vec3ToVec4(glm::detail::tvec3<T> val) {
+    glm::detail::tvec4<T> result = glm::detail::tvec4<T>(0.f);
+    result.xyz = val;
+    return result;
+}*/
+
+/*---------------Single Value Formats------------------*/
 
 // Bit Specializations
 template<> inline size_t DataINT12::bitsAllocated() { return DataINT16::bitsAllocated(); }
@@ -189,28 +481,36 @@ template<> inline std::string DataUINT16::str() { return "UINT16"; }
 template<> inline std::string DataUINT32::str() { return "UINT32"; }
 template<> inline std::string DataUINT64::str() { return "UINT64"; }
 
-/*-----------------------------------------------*/
+// Type Conversion Specializations
+/*#define DataNormalizedSignedSingle(F) \
+    template<> inline float F::convertToNormalizedFloat(void* val){ return normalizeSignedSingle<float, F::type>(val); } \
+    template<> inline glm::vec2 F::convertToNormalizedVec2Float(void* val){ return singleToVec2<float>(normalizeSignedSingle<float, F::type>(val)); } \
+    template<> inline glm::vec3 F::convertToNormalizedVec3Float(void* val){ return singleToVec3<float>(normalizeSignedSingle<float, F::type>(val)); } \
+    template<> inline glm::vec4 F::convertToNormalizedVec4Float(void* val){ return singleToVec4<float>(normalizeSignedSingle<float, F::type>(val)); }
+
+#define DataNormalizedUnsignedSingle(F) \
+    template<> inline float F::convertToNormalizedFloat(void* val){ return normalizeUnsignedSingle<float, F::type>(val); } \
+    template<> inline glm::vec2 F::convertToNormalizedVec2Float(void* val){ return singleToVec2<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
+    template<> inline glm::vec3 F::convertToNormalizedVec3Float(void* val){ return singleToVec3<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
+    template<> inline glm::vec4 F::convertToNormalizedVec4Float(void* val){ return singleToVec4<float>(normalizeUnsignedSingle<float, F::type>(val)); }
+
+DataNormalizedSignedSingle(DataFLOAT16)
+DataNormalizedSignedSingle(DataFLOAT32)
+DataNormalizedSignedSingle(DataFLOAT64)
+
+DataNormalizedSignedSingle(DataINT8)
+DataNormalizedSignedSingle(DataINT12)
+DataNormalizedSignedSingle(DataINT16)
+DataNormalizedSignedSingle(DataINT32)
+DataNormalizedSignedSingle(DataINT64)
+
+DataNormalizedUnsignedSingle(DataUINT8)
+DataNormalizedUnsignedSingle(DataUINT12)
+DataNormalizedUnsignedSingle(DataUINT16)
+DataNormalizedUnsignedSingle(DataUINT32)
+DataNormalizedUnsignedSingle(DataUINT64)*/
 
 /*---------------Vec2 Formats--------------------*/
-
-// Floats
-typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float16>)  DataVec2FLOAT16;
-typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float32>)  DataVec2FLOAT32;
-typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float64>)  DataVec2FLOAT64;
-
-// Integers
-typedef GenericDataFormat(glm::detail::tvec2<int8_t>)   DataVec2INT8;
-typedef DataFormat<glm::detail::tvec2<int16_t>, 24>     DataVec2INT12;
-typedef GenericDataFormat(glm::detail::tvec2<int16_t>)  DataVec2INT16;
-typedef GenericDataFormat(glm::detail::tvec2<int32_t>)  DataVec2INT32;
-typedef GenericDataFormat(glm::detail::tvec2<int64_t>)  DataVec2INT64;
-
-// Unsigned Integers
-typedef GenericDataFormat(glm::detail::tvec2<uint8_t>)  DataVec2UINT8;
-typedef DataFormat<glm::detail::tvec2<uint16_t>, 24>    DataVec2UINT12;
-typedef GenericDataFormat(glm::detail::tvec2<uint16_t>) DataVec2UINT16;
-typedef GenericDataFormat(glm::detail::tvec2<uint32_t>) DataVec2UINT32;
-typedef GenericDataFormat(glm::detail::tvec2<uint64_t>) DataVec2UINT64;
 
 // Bit Specializations
 template<> inline size_t DataVec2INT12::bitsAllocated() { return DataVec2INT16::bitsAllocated(); }
@@ -280,26 +580,36 @@ template<> inline std::string DataVec2UINT16::str() { return "Vec2UINT16"; }
 template<> inline std::string DataVec2UINT32::str() { return "Vec2UINT32"; }
 template<> inline std::string DataVec2UINT64::str() { return "Vec2UINT64"; }
 
+// Type Conversion Specializations
+/*#define DataNormalizedSignedVec2(F, G) \
+    template<> inline float F::convertToNormalizedFloat(void* val){ return normalizeSignedVec2<float, G::type>(val).x; } \
+    template<> inline glm::vec2 F::convertToNormalizedVec2Float(void* val){ return normalizeSignedVec2<float, G::type>(val); } \
+    template<> inline glm::vec3 F::convertToNormalizedVec3Float(void* val){ return vec2ToVec3<float>(normalizeSignedVec2<float, G::type>(val)); } \
+    template<> inline glm::vec4 F::convertToNormalizedVec4Float(void* val){ return vec2ToVec4<float>(normalizeSignedVec2<float, G::type>(val)); }
+
+#define DataNormalizedUnsignedVec2(F, G) \
+    template<> inline float F::convertToNormalizedFloat(void* val){ return normalizeUnsignedVec2<float, G::type>(val).x; } \
+    template<> inline glm::vec2 F::convertToNormalizedVec2Float(void* val){ return normalizeUnsignedVec2<float, G::type>(val); } \
+    template<> inline glm::vec3 F::convertToNormalizedVec3Float(void* val){ return vec2ToVec3<float>(normalizeUnsignedVec2<float, G::type>(val)); } \
+    template<> inline glm::vec4 F::convertToNormalizedVec4Float(void* val){ return vec2ToVec4<float>(normalizeUnsignedVec2<float, G::type>(val)); }
+
+DataNormalizedSignedVec2(DataVec2FLOAT16, DataFLOAT16)
+DataNormalizedSignedVec2(DataVec2FLOAT32, DataFLOAT32)
+DataNormalizedSignedVec2(DataVec2FLOAT64, DataFLOAT64)
+
+DataNormalizedSignedVec2(DataVec2INT8, DataINT8)
+DataNormalizedSignedVec2(DataVec2INT12, DataINT12)
+DataNormalizedSignedVec2(DataVec2INT16, DataINT16)
+DataNormalizedSignedVec2(DataVec2INT32, DataINT32)
+DataNormalizedSignedVec2(DataVec2INT64, DataINT64)
+
+DataNormalizedUnsignedVec2(DataVec2UINT8, DataUINT8)
+DataNormalizedUnsignedVec2(DataVec2UINT12, DataUINT12)
+DataNormalizedUnsignedVec2(DataVec2UINT16, DataUINT16)
+DataNormalizedUnsignedVec2(DataVec2UINT32, DataUINT32)
+DataNormalizedUnsignedVec2(DataVec2UINT64, DataUINT64)*/
+
 /*---------------Vec3 Formats--------------------*/
-
-// Floats
-typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float16>)  DataVec3FLOAT16;
-typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float32>)  DataVec3FLOAT32;
-typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float64>)  DataVec3FLOAT64;
-
-// Integers
-typedef GenericDataFormat(glm::detail::tvec3<int8_t>)   DataVec3INT8;
-typedef DataFormat<glm::detail::tvec3<int16_t>, 36>     DataVec3INT12;
-typedef GenericDataFormat(glm::detail::tvec3<int16_t>)  DataVec3INT16;
-typedef GenericDataFormat(glm::detail::tvec3<int32_t>)  DataVec3INT32;
-typedef GenericDataFormat(glm::detail::tvec3<int64_t>)  DataVec3INT64;
-
-// Unsigned Integers
-typedef GenericDataFormat(glm::detail::tvec3<uint8_t>)  DataVec3UINT8;
-typedef DataFormat<glm::detail::tvec3<uint16_t>, 36>    DataVec3UINT12;
-typedef GenericDataFormat(glm::detail::tvec3<uint16_t>) DataVec3UINT16;
-typedef GenericDataFormat(glm::detail::tvec3<uint32_t>) DataVec3UINT32;
-typedef GenericDataFormat(glm::detail::tvec3<uint64_t>) DataVec3UINT64;
 
 // Bit Specializations
 template<> inline size_t DataVec3INT12::bitsAllocated() { return DataVec3INT16::bitsAllocated(); }
@@ -369,26 +679,36 @@ template<> inline std::string DataVec3UINT16::str() { return "Vec3UINT16"; }
 template<> inline std::string DataVec3UINT32::str() { return "Vec3UINT32"; }
 template<> inline std::string DataVec3UINT64::str() { return "Vec3UINT64"; }
 
-/*---------------Vec4 Value Formats------------------*/
+// Type Conversion Specializations
+/*#define DataNormalizedSignedVec3(F, G) \
+    template<> inline float F::convertToNormalizedFloat(void* val){ return normalizeSignedVec3<float, G::type>(val).x; } \
+    template<> inline glm::vec2 F::convertToNormalizedVec2Float(void* val){ return normalizeSignedVec2<float, G::type>(val).xy; } \
+    template<> inline glm::vec3 F::convertToNormalizedVec3Float(void* val){ return normalizeSignedVec3<float, G::type>(val); } \
+    template<> inline glm::vec4 F::convertToNormalizedVec4Float(void* val){ return vec3ToVec4<float>(normalizeSignedVec3<float, G::type>(val)); }
 
-// Floats
-typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float16>)  DataVec4FLOAT16;
-typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float32>)  DataVec4FLOAT32;
-typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float64>)  DataVec4FLOAT64;
+#define DataNormalizedUnsignedVec3(F, G) \
+    template<> inline float F::convertToNormalizedFloat(void* val){ return normalizeUnsignedVec3<float, G::type>(val).x; } \
+    template<> inline glm::vec2 F::convertToNormalizedVec2Float(void* val){ return normalizeUnsignedVec3<float, G::type>(val).xy; } \
+    template<> inline glm::vec3 F::convertToNormalizedVec3Float(void* val){ return normalizeUnsignedVec3<float, G::type>(val); } \
+    template<> inline glm::vec4 F::convertToNormalizedVec4Float(void* val){ return vec3ToVec4<float>(normalizeUnsignedVec3<float, G::type>(val)); }
 
-// Integers
-typedef GenericDataFormat(glm::detail::tvec4<int8_t>)   DataVec4INT8;
-typedef DataFormat<glm::detail::tvec4<int16_t>, 48>     DataVec4INT12;
-typedef GenericDataFormat(glm::detail::tvec4<int16_t>)  DataVec4INT16;
-typedef GenericDataFormat(glm::detail::tvec4<int32_t>)  DataVec4INT32;
-typedef GenericDataFormat(glm::detail::tvec4<int64_t>)  DataVec4INT64;
+DataNormalizedSignedVec3(DataVec3FLOAT16, DataFLOAT16)
+DataNormalizedSignedVec3(DataVec3FLOAT32, DataFLOAT32)
+DataNormalizedSignedVec3(DataVec3FLOAT64, DataFLOAT64)
 
-// Unsigned Integers
-typedef GenericDataFormat(glm::detail::tvec4<uint8_t>)  DataVec4UINT8;
-typedef DataFormat<glm::detail::tvec4<uint16_t>, 48>    DataVec4UINT12;
-typedef GenericDataFormat(glm::detail::tvec4<uint16_t>) DataVec4UINT16;
-typedef GenericDataFormat(glm::detail::tvec4<uint32_t>) DataVec4UINT32;
-typedef GenericDataFormat(glm::detail::tvec4<uint64_t>) DataVec4UINT64;
+DataNormalizedSignedVec3(DataVec3INT8, DataINT8)
+DataNormalizedSignedVec3(DataVec3INT12, DataINT12)
+DataNormalizedSignedVec3(DataVec3INT16, DataINT16)
+DataNormalizedSignedVec3(DataVec3INT32, DataINT32)
+DataNormalizedSignedVec3(DataVec3INT64, DataINT64)
+
+DataNormalizedUnsignedVec3(DataVec3UINT8, DataUINT8)
+DataNormalizedUnsignedVec3(DataVec3UINT12, DataUINT12)
+DataNormalizedUnsignedVec3(DataVec3UINT16, DataUINT16)
+DataNormalizedUnsignedVec3(DataVec3UINT32, DataUINT32)
+DataNormalizedUnsignedVec3(DataVec3UINT64, DataUINT64)*/
+
+/*---------------Vec4 Formats--------------------*/
 
 // Bit Specializations
 template<> inline size_t DataVec4INT12::bitsAllocated() { return DataVec4INT16::bitsAllocated(); }
@@ -458,106 +778,34 @@ template<> inline std::string DataVec4UINT16::str() { return "Vec4UINT16"; }
 template<> inline std::string DataVec4UINT32::str() { return "Vec4UINT32"; }
 template<> inline std::string DataVec4UINT64::str() { return "Vec4UINT64"; }
 
+// Type Conversion Specializations
+/*#define DataNormalizedSignedVec4(F, G) \
+    template<> inline float F::convertToNormalizedFloat(void* val){ return normalizeSignedVec4<float, G::type>(val).x; } \
+    template<> inline glm::vec2 F::convertToNormalizedVec2Float(void* val){ return normalizeSignedVec4<float, G::type>(val).xy; } \
+    template<> inline glm::vec3 F::convertToNormalizedVec3Float(void* val){ return normalizeSignedVec4<float, G::type>(val).xyz; } \
+    template<> inline glm::vec4 F::convertToNormalizedVec4Float(void* val){ return normalizeSignedVec4<float, G::type>(val); }
 
-template <unsigned int N, typename T>
-class Matrix {};
-template <typename T>
-class Matrix<4, T> : public glm::detail::tmat4x4<T> {
-public:
-	Matrix<4, T>() : glm::detail::tmat4x4<T>(){};
-	Matrix<4, T>(const Matrix<4, T>& m) : glm::detail::tmat4x4<T>(
-		m[0][0], m[0][1], m[0][2], m[0][3], 
-		m[1][0], m[1][1], m[1][2], m[1][3],
-		m[2][0], m[2][1], m[2][2], m[2][3],
-		m[3][0], m[3][1], m[3][2], m[3][3]){};
-	Matrix<4, T>(const glm::detail::tmat4x4<T>& m) : glm::detail::tmat4x4<T>(m){};
-	Matrix<4, T>(T m) : glm::detail::tmat4x4<T>(m){};
-	Matrix<4, T>(T x1, T y1, T z1, T w1, 
-				 T x2, T y2, T z2, T w2,
-				 T x3, T y3, T z3, T w3,
-				 T x4, T y4, T z4, T w4) : 
-	glm::detail::tmat4x4<T>(x1, y1, z1, w1, 
-							x2, y2, z2, w2,
-							x3, y3, z3, w3,
-							x4, y4, z4, w4){};
-};
-template <typename T>
-class Matrix<3, T> : public glm::detail::tmat3x3<T> {
-public:
-	Matrix<3, T>() : glm::detail::tmat3x3<T>(){};
-	Matrix<3, T>(const Matrix<3, T>& m) : glm::detail::tmat3x3<T>(
-		m[0][0], m[0][1], m[0][2], 
-		m[1][0], m[1][1], m[1][2],
-		m[2][0], m[2][1], m[2][2]){};
-	Matrix<3, T>(const glm::detail::tmat3x3<T>& m) : glm::detail::tmat3x3<T>(m){};
-	Matrix<3, T>(T m) : glm::detail::tmat3x3<T>(m){};
-	Matrix<3, T>(T x1, T y1, T z1, 
-				 T x2, T y2, T z2,
-				 T x3, T y3, T z3) : 
-	glm::detail::tmat3x3<T>(x1, y1, z1, 
-							x2, y2, z2,
-							x3, y3, z3){};
+#define DataNormalizedUnsignedVec4(F, G) \
+    template<> inline float F::convertToNormalizedFloat(void* val){ return normalizeUnsignedVec4<float, G::type>(val).x; } \
+    template<> inline glm::vec2 F::convertToNormalizedVec2Float(void* val){ return normalizeUnsignedVec4<float, G::type>(val).xy; } \
+    template<> inline glm::vec3 F::convertToNormalizedVec3Float(void* val){ return normalizeUnsignedVec4<float, G::type>(val).xyz; } \
+    template<> inline glm::vec4 F::convertToNormalizedVec4Float(void* val){ return normalizeUnsignedVec4<float, G::type>(val); }
 
-};
-template <typename T>
-class Matrix<2, T> : public glm::detail::tmat2x2<T> {
-public:
-	Matrix<2, T>() : glm::detail::tmat2x2<T>(){};
-	Matrix<2, T>(const Matrix<2, T>& m) : glm::detail::tmat2x2<T>(
-		m[0][0], m[0][1], 
-		m[1][0], m[1][1]){};
-	Matrix<2, T>(const glm::detail::tmat2x2<T>& m) : glm::detail::tmat2x2<T>(m){};
-	Matrix<2, T>(T m) : glm::detail::tmat2x2<T>(m){};
-	Matrix<2, T>(T x1, T y1, 
-				 T x2, T y2) : 
-	glm::detail::tmat2x2<T>(x1, y1, 
-							x2, y2){};
+DataNormalizedSignedVec4(DataVec4FLOAT16, DataFLOAT16)
+DataNormalizedSignedVec4(DataVec4FLOAT32, DataFLOAT32)
+DataNormalizedSignedVec4(DataVec4FLOAT64, DataFLOAT64)
 
-};
+DataNormalizedSignedVec4(DataVec4INT8, DataINT8)
+DataNormalizedSignedVec4(DataVec4INT12, DataINT12)
+DataNormalizedSignedVec4(DataVec4INT16, DataINT16)
+DataNormalizedSignedVec4(DataVec4INT32, DataINT32)
+DataNormalizedSignedVec4(DataVec4INT64, DataINT64)
 
-
-
-template <unsigned int N, typename T>
-class Vector {};
-
-template <typename T>
-class Vector<4, T> : public glm::detail::tvec4<T> {
-public:
-	Vector<4, T>() : glm::detail::tvec4<T>(){};
-	Vector<4, T>(const Vector<4, T>& v) : glm::detail::tvec4<T>(v.x, v.y, v.z, v.w){};
-	Vector<4, T>(const glm::detail::tvec4<T>& v) : glm::detail::tvec4<T>(v){};
-	Vector<4, T>(T v) : glm::detail::tvec4<T>(v){};
-	Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3, v4){};
-};
-template <typename T>
-class Vector<3, T> : public glm::detail::tvec3<T> {
-public:
-	Vector<3, T>() : glm::detail::tvec3<T>(){};
-	Vector<3, T>(const Vector<3, T>& v) : glm::detail::tvec3<T>(v.x, v.y, v.z){};
-	Vector<3, T>(const glm::detail::tvec3<T>& v) : glm::detail::tvec3<T>(v){};
-	Vector<3, T>(T v) : glm::detail::tvec3<T>(v){};
-	Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T>(v1, v2, v3){};
-};
-
-template <typename T>
-class Vector<2, T> : public glm::detail::tvec2<T> {
-public:
-	Vector<2, T>() : glm::detail::tvec2<T>(){};
-	Vector<2, T>(const Vector<2, T>& v) : glm::detail::tvec2<T>(v.x, v.y){};
-	Vector<2, T>(const glm::detail::tvec2<T>& v) : glm::detail::tvec2<T>(v){};
-	Vector<2, T>(T v) : glm::detail::tvec2<T>(v){};
-	Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T>(v1, v2){};
-};
-
-template <typename T>
-class Vector<1, T> : public glm::detail::tvec1<T> {public:
-	Vector<1, T>() : glm::detail::tvec1<T>(){};
-	Vector<1, T>(const Vector<1, T>& v) : glm::detail::tvec1<T>(v.x){};
-	Vector<1, T>(const glm::detail::tvec1<T>& v) : glm::detail::tvec1<T>(v){};
-	Vector<1, T>(T v) : glm::detail::tvec1<T>(v){};
-};
-
-
+DataNormalizedUnsignedVec4(DataVec4UINT8, DataUINT8)
+DataNormalizedUnsignedVec4(DataVec4UINT12, DataUINT12)
+DataNormalizedUnsignedVec4(DataVec4UINT16, DataUINT16)
+DataNormalizedUnsignedVec4(DataVec4UINT32, DataUINT32)
+DataNormalizedUnsignedVec4(DataVec4UINT64, DataUINT64)*/
 
 }
 

@@ -114,14 +114,15 @@ void CanvasGLUT::mouse(int button, int state, int x, int y) {
     thisCanvas->mouseModifiers_ = mapModifiers(glutGetModifiers());
     MouseEvent* mouseEvent = new MouseEvent(ivec2(x, thisCanvas->dimensions_.y-y), thisCanvas->mouseButton_,
         thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
-    canvases_[glutGetWindow()]->processorNetworkEvaluator_->propagateMouseEvent(canvases_[glutGetWindow()], mouseEvent);
+    if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_PRESS) canvases_[glutGetWindow()]->mousePressEvent(mouseEvent);
+    else if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_RELEASE) canvases_[glutGetWindow()]->mouseReleaseEvent(mouseEvent);
 }
 
 void CanvasGLUT::mouseMotion(int x, int y) {
     CanvasGLUT* thisCanvas = canvases_[glutGetWindow()];
     MouseEvent* mouseEvent = new MouseEvent(ivec2(x, thisCanvas->dimensions_.y-y), thisCanvas->mouseButton_,
                                             thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
-    canvases_[glutGetWindow()]->processorNetworkEvaluator_->propagateMouseEvent(canvases_[glutGetWindow()], mouseEvent);
+    canvases_[glutGetWindow()]->mouseMoveEvent(mouseEvent);
 }
 
 } // namespace

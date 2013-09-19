@@ -47,6 +47,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumetypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingcontainer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickinghandler.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingmanager.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
@@ -57,10 +61,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mouseevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/timerevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/resizeevent.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/network/portconnection.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/network/processorlink.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetwork.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/compositemetadata.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatafactory.h
@@ -68,6 +68,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/positionmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processormetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processorwidgetmetadata.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/portconnection.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/processorlink.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetwork.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/datainport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataoutport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/geometryport.h
@@ -197,6 +201,9 @@ set(SOURCE_FILES
     datastructures/volume/volumetypeclassification.cpp
     interaction/action.cpp
     interaction/interactionhandler.cpp
+    interaction/pickinghandler.cpp
+    interaction/pickingmanager.cpp
+    interaction/pickingobject.cpp
     interaction/trackball.cpp
     interaction/trackballaction.cpp
     interaction/events/event.cpp
@@ -207,10 +214,6 @@ set(SOURCE_FILES
     interaction/events/mouseevent.cpp
     interaction/events/timerevent.cpp
     interaction/events/resizeevent.cpp
-    network/portconnection.cpp
-    network/processorlink.cpp
-    network/processornetwork.cpp
-    network/processornetworkevaluator.cpp
     metadata/compositemetadata.cpp	
     metadata/metadata.cpp
     metadata/metadatafactory.cpp
@@ -218,6 +221,10 @@ set(SOURCE_FILES
     metadata/positionmetadata.cpp
     metadata/processormetadata.cpp
     metadata/processorwidgetmetadata.cpp
+    network/portconnection.cpp
+    network/processorlink.cpp
+    network/processornetwork.cpp
+    network/processornetworkevaluator.cpp
     ports/geometryport.cpp
     ports/imageport.cpp
     ports/inport.cpp

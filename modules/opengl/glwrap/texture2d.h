@@ -21,7 +21,6 @@ public:
 
     GLuint getNChannels() const { return numChannels_; }
     GLuint getSizeInBytes() const { return byteSize_; }
-    
 
     GLenum getFormat() const { return format_; }
     GLenum getDataType() const { return dataType_; }
@@ -36,18 +35,22 @@ public:
      * @param data (void *) Preallocated pointer that will contain texture data after function returns.
      * @return (void)
      */
-    void download(void* data) const; 
+    void download(void* data) const;
+    void downloadToPBO() const; 
 
     void unbind() const;
 
     const uvec2& getDimension() const { return dimensions_;}
     int getWidth() const{ return dimensions_.x; }
     int getHeight() const{ return dimensions_.y; }
-    void setWidth(int x) { dimensions_.x = x; }
-    void setHeight(int y) { dimensions_.y = y; }
     void resize(uvec2 dimension);
 
 protected:
+    void setWidth(int x) { dimensions_.x = x; }
+    void setHeight(int y) { dimensions_.y = y; }
+
+    void setupAsyncReadBackPBO();
+
     void setNChannels();
     void setSizeInBytes();
 
@@ -59,9 +62,12 @@ private:
     GLenum filtering_;
 
     GLuint id_;
+    GLuint pboBack_; //For asynchronous readback to CPU 
 
     GLuint byteSize_;
     GLuint numChannels_;
+
+    mutable bool dataInReadBackPBO_;
 };
 
 } // namespace

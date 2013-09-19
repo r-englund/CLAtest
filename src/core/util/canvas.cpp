@@ -12,6 +12,7 @@ Canvas::Canvas(uvec2 dimensions)
                  processorNetworkEvaluator_(0)
 {
     shared = true;
+    pickingContainer_ = new PickingContainer();
     if(!screenAlignedSquare_){
         shared = false;
         Position2dAttributes* vertices_ = new Position2dAttributes();
@@ -34,9 +35,13 @@ Canvas::Canvas(uvec2 dimensions)
 Canvas::~Canvas() {
     if(!shared)
         delete screenAlignedSquare_;
+    delete pickingContainer_;
 }
 
-void Canvas::initialize() {}
+void Canvas::initialize() {
+    if(!pickingContainer_)
+        pickingContainer_ = new PickingContainer();
+}
 
 void Canvas::deinitialize() {}
 
@@ -58,5 +63,32 @@ void Canvas::resize(uvec2 size) {
 }
 
 void Canvas::update() {}
+
+void Canvas::interactionEvent(InteractionEvent* e) {
+    processorNetworkEvaluator_->propagateInteractionEvent(this, e);
+    processorNetworkEvaluator_->evaluate();
+}
+
+void Canvas::mousePressEvent(MouseEvent* e) {
+    if(e->button() == MouseEvent::MOUSE_BUTTON_MIDDLE)
+        pickingContainer_->checkPickable(e->pos());
+    interactionEvent(e);
+}
+
+void Canvas::mouseReleaseEvent(MouseEvent* e) {
+    interactionEvent(e);
+}
+
+void Canvas::mouseMoveEvent(MouseEvent* e) {
+    interactionEvent(e);
+}
+
+void Canvas::keyPressEvent(KeyboardEvent* e) {
+	interactionEvent(e);
+}
+
+void Canvas::keyReleaseEvent(KeyboardEvent* e) {
+	interactionEvent(e);
+}
 
 } // namespace

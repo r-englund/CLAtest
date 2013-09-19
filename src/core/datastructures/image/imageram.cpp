@@ -24,10 +24,6 @@ void ImageRAM::deinitialize() {
     // since destructor will not be called for object.
 }
 
-DataRepresentation* ImageRAM::clone() const {
-    return new ImageRAM(getDimensions(), getImageType(), getDataFormat());
-}
-
 void ImageRAM::resize(uvec2 dimensions) {
     dimensions_ = dimensions;
     //Delete and reallocate data_ to new size

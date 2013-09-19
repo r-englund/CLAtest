@@ -30,6 +30,13 @@ void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) 
         LogError("Maximum number of " << maxColorAttachements << " color textures attached.");
 }
 
+void FrameBufferObject::attachTexture(Texture2D* texture, int attachementNumber, bool attachFromRear) {
+    GLint maxColorAttachements;
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachements);
+    GLenum attachementID = (attachFromRear ? static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+maxColorAttachements-attachementNumber-1) : static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber));
+    attachTexture(texture, attachementID);
+}
+
 void FrameBufferObject::detachTexture(GLenum attachementID) {
     for (size_t i=0; i<attachedColorTextures_.size(); i++) {
         if (attachedColorTextures_[i] == attachementID) {

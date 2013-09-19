@@ -14,7 +14,7 @@ namespace inviwo {
 
     public:
         ImageGL(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, DataFormatBase format = DataVec4UINT8(), 
-            Texture2D* colorTexture = NULL, Texture2D* depthTexture = NULL);
+            Texture2D* colorTexture = NULL, Texture2D* depthTexture = NULL, Texture2D* pickingTexture = NULL);
         virtual ~ImageGL();
 
         void initialize();
@@ -27,17 +27,21 @@ namespace inviwo {
 
         void bindColorTexture(GLenum texUnit) const;
         void bindDepthTexture(GLenum texUnit) const;
+        void bindPickingTexture(GLenum texUnit) const;
         void bindTextures(GLenum colorTexUnit, GLenum depthTexUnit) const;
         void unbindDepthTexture() const;
         void unbindColorTexture() const;
+        void unbindPickingTexture() const;
         virtual void resize(uvec2 dimensions);
         virtual bool copyAndResizeImage(DataRepresentation* target);
 
         FrameBufferObject* getFBO() {return frameBufferObject_;}
         Texture2D* getColorTexture() {return colorTexture_;}
         Texture2D* getDepthTexture() {return depthTexture_;}
+        Texture2D* getPickingTexture() {return depthTexture_;}
         const Texture2D* getColorTexture() const {return colorConstTexture_;}
         const Texture2D* getDepthTexture() const {return depthConstTexture_;}
+        const Texture2D* getPickingTexture() const {return depthConstTexture_;}
 
     protected:
         void useInputSource(ImageLayerType, const Image*);
@@ -46,8 +50,10 @@ namespace inviwo {
     private:
         Texture2D* colorTexture_;
         Texture2D* depthTexture_;
+        Texture2D* pickingTexture_;
         const Texture2D* colorConstTexture_;
         const Texture2D* depthConstTexture_;
+        const Texture2D* pickingConstTexture_;
         FrameBufferObject* frameBufferObject_;
     };
 

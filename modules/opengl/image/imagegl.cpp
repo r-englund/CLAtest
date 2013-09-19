@@ -6,8 +6,8 @@
 
 namespace inviwo {
 
-ImageGL::ImageGL(uvec2 dimensions, ImageType type, DataFormatBase format, Texture2D* colorTexture, Texture2D* depthTexture)
-: ImageRepresentation(dimensions, type, format), colorTexture_(colorTexture), depthTexture_(depthTexture)
+ImageGL::ImageGL(uvec2 dimensions, ImageType type, DataFormatBase format, Texture2D* colorTexture, Texture2D* depthTexture, Texture2D* pickingTexture)
+: ImageRepresentation(dimensions, type, format), colorTexture_(colorTexture), depthTexture_(depthTexture), pickingTexture_(pickingTexture)
 {
     initialize();
 }
@@ -39,6 +39,17 @@ void ImageGL::initialize() {
         }  
         frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT); 
     }
+    if(typeContainsPicking(getImageType())){
+        if(!pickingTexture_){
+            createAndAddLayer(PICKING_LAYER);
+        }
+        else{
+            pickingTexture_->bind();
+            pickingConstTexture_ = pickingTexture_;
+        }
+        //Attach to last color attachment
+        frameBufferObject_->attachTexture(pickingTexture_, 0, true); 
+    }
     frameBufferObject_->deactivate();
     frameBufferObject_->checkStatus();
 }
@@ -57,12 +68,18 @@ void ImageGL::deinitialize() {
         depthTexture_ = NULL;
     }
     depthConstTexture_ = NULL;
+    if(pickingTexture_){
+        delete pickingTexture_;
+        pickingTexture_ = NULL;
+    }
+    pickingConstTexture_ = NULL;
 }
 
 DataRepresentation* ImageGL::clone() const {
     Texture2D* colorTexture = colorConstTexture_->clone();
     Texture2D* depthTexture = depthConstTexture_->clone();
-    ImageGL* newImageGL = new ImageGL(dimensions_, getImageType(), getDataFormat(), colorTexture, depthTexture);
+    Texture2D* pickingTexture = pickingTexture_->clone();
+    ImageGL* newImageGL = new ImageGL(dimensions_, getImageType(), getDataFormat(), colorTexture, depthTexture, pickingTexture);
     return newImageGL;
 }
 
@@ -73,6 +90,9 @@ void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
     }
     if(!typeContainsDepth(getImageType()) && !depthTexture_){
         depthConstTexture_ = srcGL->getDepthTexture();
+    }
+    if(!typeContainsPicking(getImageType()) && !pickingTexture_){
+        pickingConstTexture_ = srcGL->getPickingTexture();
     }
 }
 
@@ -88,7 +108,9 @@ void ImageGL::createAndAddLayer(ImageLayerType layer){
         depthConstTexture_ = depthTexture_;
     }
     else if(layer == PICKING_LAYER){
-
+        pickingTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
+        pickingTexture_->upload(NULL);
+        pickingConstTexture_ = pickingTexture_;
     }
 }
 
@@ -111,6 +133,11 @@ void ImageGL::bindDepthTexture(GLenum texUnit) const {
     depthConstTexture_->bind();
 }
 
+void ImageGL::bindPickingTexture(GLenum texUnit) const {
+    glActiveTexture(texUnit);
+    pickingConstTexture_->bind();
+}
+
 void ImageGL::bindTextures(GLenum colorTexUnit, GLenum depthTexUnit) const {
     bindColorTexture(colorTexUnit);
     bindDepthTexture(depthTexUnit);
@@ -124,20 +151,28 @@ void ImageGL::unbindColorTexture() const {
     colorConstTexture_->unbind();
 }
 
+void ImageGL::unbindPickingTexture() const {
+    pickingConstTexture_->unbind();
+}
+
 void ImageGL::resize(uvec2 dimensions) {
     dimensions_ = dimensions;
     if(colorTexture_){
         colorTexture_->unbind();
         colorTexture_->resize(dimensions_);    
-        colorTexture_->upload(NULL);
         colorTexture_->unbind();
     }
     
     if(depthTexture_){
         depthTexture_->unbind();
         depthTexture_->resize(dimensions_);
-        depthTexture_->upload(NULL);
         depthTexture_->unbind();
+    }
+
+    if(pickingTexture_){
+        pickingTexture_->unbind();
+        pickingTexture_->resize(dimensions_);
+        pickingTexture_->unbind();
     }
 }
 

@@ -16,12 +16,14 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
-    DataRepresentation* clone() const;
+    DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "ImageRAM"; }
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeImage(DataRepresentation*);
     virtual void* getData() {return data_;};
     virtual const void* getData() const {return data_;};
+    virtual glm::vec4 getValueAsVec4Float(const glm::uvec2& pos) const = 0;
+
     // Takes ownership of data pointer
     void setData(void* data) {
         deinitialize();
@@ -53,9 +55,8 @@ public:
     virtual void initialize(void*);
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
+    virtual glm::vec4 getValueAsVec4Float(const glm::uvec2& pos) const;
 };
-
-
 
 template<typename T>
 ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, ImageType type, DataFormatBase format) : ImageRAM(dimensions, type, format) {
@@ -94,6 +95,15 @@ DataRepresentation* ImageRAMPrecision<T>::clone() const {
     ImageRAMPrecision* newImageRAM = new ImageRAMPrecision<T>(getDimensions());
     //*newImageRAM = *this;
     return newImageRAM;
+}
+
+template<typename T>
+glm::vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const glm::uvec2& pos) const{
+    glm::vec4 result;
+    T* data = static_cast<T*>(data_);
+    T val = data[pos.x+(pos.y*(dimensions_.x-1))];
+    result = getDataFormat().convertToNormalizedVec4Float(&val);
+    return result;
 }
 
 typedef ImageRAMPrecision<DataUINT8::type>     ImageRAMuint8;

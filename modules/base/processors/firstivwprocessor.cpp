@@ -9,7 +9,7 @@ ProcessorCodeState(FirstIvwProcessor, CODE_STATE_STABLE);
 
 FirstIvwProcessor::FirstIvwProcessor()
     : ProcessorGL(),
-      outport_("outport"),
+      outport_("outport", COLOR_ONLY),
       color_("color", "Color", vec3(1.0f), vec3(0.0f), vec3(1.0f), vec3(0.1f))
 {
     addProperty(color_);

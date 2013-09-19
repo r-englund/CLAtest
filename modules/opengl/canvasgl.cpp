@@ -8,7 +8,7 @@ const GeometryGL* CanvasGL::screenAlignedSquareGL_ = NULL;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions) {
-    image_ = NULL;
+    imageGL_ = NULL;
     shader_ = NULL;
     noiseShader_ = NULL;
 }
@@ -58,7 +58,8 @@ void CanvasGL::activate() {}
 
 void CanvasGL::render(const Image* image, ImageLayerType layer){
     if (image) {
-        image_ = image->getRepresentation<ImageGL>();
+        imageGL_ = image->getRepresentation<ImageGL>();
+        pickingContainer_->setPickingSource(image);
         switch(layer){
             case COLOR_LAYER:
                 renderColor();
@@ -69,8 +70,10 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
             default:
                 renderNoise();
         }
+        //Pre-download incoming image (for Picking etc)
+        imageGL_->getColorTexture()->downloadToPBO();
     } else {
-        image_ = NULL;
+        imageGL_ = NULL;
         renderNoise();
     }
 }
@@ -86,7 +89,7 @@ void CanvasGL::resize(uvec2 size) {
 
 void CanvasGL::update() {
     Canvas::update();
-    if (image_) {
+    if (imageGL_) {
         renderColor();
     } else {
         renderNoise();
@@ -95,16 +98,16 @@ void CanvasGL::update() {
 
 void CanvasGL::renderColor() {
     TextureUnit textureUnit;
-    image_->bindColorTexture(textureUnit.getEnum());
+    imageGL_->bindColorTexture(textureUnit.getEnum());
     renderTexture(textureUnit.getUnitNumber());
-    image_->unbindColorTexture();
+    imageGL_->unbindColorTexture();
 }
 
 void CanvasGL::renderDepth() {
     TextureUnit textureUnit;
-    image_->bindDepthTexture(textureUnit.getEnum());
+    imageGL_->bindDepthTexture(textureUnit.getEnum());
     renderTexture(textureUnit.getUnitNumber());
-    image_->unbindDepthTexture();
+    imageGL_->unbindDepthTexture();
 }
 
 void CanvasGL::renderNoise() {

@@ -40,7 +40,7 @@ private:
     static bool glewInitialized_;
     static const GeometryGL* screenAlignedSquareGL_;
 
-    const ImageGL* image_;
+    const ImageGL* imageGL_;
     Shader* shader_;
     Shader* noiseShader_;
 

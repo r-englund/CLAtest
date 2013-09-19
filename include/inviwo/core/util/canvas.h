@@ -6,6 +6,7 @@
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/interaction/pickingcontainer.h>
 #include <inviwo/core/interaction/events/eventhandler.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
@@ -31,10 +32,21 @@ public:
     ProcessorNetworkEvaluator* getNetworkEvaluator() const { return processorNetworkEvaluator_; };
 
 protected:
+    void interactionEvent(InteractionEvent* e);
+
+    void mousePressEvent(MouseEvent* e);
+    void mouseReleaseEvent(MouseEvent* e);
+    void mouseMoveEvent(MouseEvent* e);
+    
+    void keyPressEvent(KeyboardEvent* e);
+    void keyReleaseEvent(KeyboardEvent* e);
+
     static Geometry* screenAlignedSquare_;
 
     bool shared;
     uvec2 dimensions_;
+
+    PickingContainer* pickingContainer_;
 
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
 };
