@@ -52,8 +52,6 @@ namespace inviwo {
 
         std::string getGroupID() { return groupID_; }
         std::string getGroupDisplayName();
-        //void hidePropertyGroup() { notifyObservers(); }
-        //void showPropertyGroup() { notifyObservers(); }
 
     virtual inline void propertyModified() { setPropertyModified(true); }
     virtual void setPropertyModified(bool modified) { propertyModified_ = modified; }

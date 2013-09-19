@@ -54,7 +54,8 @@ void Property::setOwner(PropertyOwner* owner) {
 
 void Property::registerPropertyWidget(PropertyWidget* propertyWidget) {
     propertyWidgets_.push_back(propertyWidget);
-    updateVisibility();
+    if(this->visibilityMode_ == PropertyVisibility::INVISIBLE)
+        updateVisibility();
 }
 
 void Property::updatePropertyWidgets() {

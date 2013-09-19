@@ -31,6 +31,7 @@ void CanvasProcessorWidgetQt::initialize() {
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
     canvas_ = new CanvasQt(NULL);
     canvas_->initialize();
+    canvas_->initializeSquare();
     canvas_->setMouseTracking(true);
     
     QGridLayout* gridLayout = new QGridLayout;
