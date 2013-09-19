@@ -3,17 +3,19 @@
 
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QSignalMapper>
+#include <QSettings>
 
 
 namespace inviwo {
 
 PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 
-PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent), VoidObservable() {
+PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent), VoidObservable(),VoidObserver() {
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     propertyListWidget_ = this;
-    
+
     scrollArea_ = new QScrollArea(propertyListWidget_);
     scrollArea_->setWidgetResizable(true);
     scrollArea_->setMinimumWidth(300);
@@ -25,6 +27,12 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
 
     scrollArea_->setWidget(listWidget_);
     setWidget(scrollArea_);
+
+    QSettings settings("Inviwo", "Inviwo");
+    settings.beginGroup("PropertyListwidget");
+    developerViewMode_ = settings.value("developerViewMode",true).toBool();
+    applicationViewMode_ = settings.value("applicationViewMode",false).toBool();
+    settings.endGroup();
 }
 
 PropertyListWidget::~PropertyListWidget() {}
@@ -33,6 +41,10 @@ void PropertyListWidget::showProcessorProperties(std::vector<Processor*> process
     for (size_t i=0; i<processors.size(); i++) {
         addProcessorPropertiesToLayout(processors[i]);
     }
+    if (developerViewMode_)
+        setDeveloperViewMode(true);
+    if (applicationViewMode_)
+        setApplicationViewMode(true);
 }
 
 void PropertyListWidget::showProcessorProperties(Processor* processor) {
@@ -45,7 +57,6 @@ void PropertyListWidget::showProcessorProperties(Processor* processor) {
     } else {
         processorPropertyWidget = createNewProcessorPropertiesItem(processor);
     }
-
     if (processorPropertyWidget) {
         removeAllProcessorProperties();
         processorPropertyWidget->setVisible(true);
@@ -81,9 +92,12 @@ void PropertyListWidget::removeAllProcessorProperties() {
 QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* processor) {
     // create property widget and store it in the map
     QWidget* processorPropertyWidget = new QWidget(this, Qt::WindowStaysOnBottomHint);
+
     QVBoxLayout* vLayout = new QVBoxLayout(processorPropertyWidget);
     vLayout->setAlignment(Qt::AlignTop);
     vLayout->setSpacing(0);
+    vLayout->setMargin(0);
+    vLayout->setContentsMargins(0,0,0,0);
 
     QLabel* processorLabel = new QLabel(QString::fromStdString(processor->getIdentifier()));
     processorLabel->setAlignment(Qt::AlignCenter);
@@ -91,10 +105,10 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
     processorLabel->setFrameStyle(QFrame::StyledPanel);
 
     vLayout->addWidget(processorLabel);
-    std::vector<Property*> properties = processor->getProperties();
+    properties_ = processor->getProperties();
     std::vector<Property*> addedProperties;
-    for (size_t i=0; i<properties.size(); i++) {
-        Property* curProperty = properties[i];
+    for (size_t i=0; i<properties_.size(); i++) {
+        Property* curProperty = properties_[i];
         // check if the property is already added
         if(std::find(addedProperties.begin(),addedProperties.end(),curProperty) != addedProperties.end())
             continue;
@@ -102,29 +116,34 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
         else if (curProperty->getGroupID()!="") {
             CollapsiveGroupBoxWidgetQt* group = new CollapsiveGroupBoxWidgetQt(curProperty->getGroupID(),curProperty->getGroupDisplayName());
             // add all the properties with the same group assigned
-            for (size_t k=0; k<properties.size(); k++){
-                Property* tmpProperty = properties[k];
+            for (size_t k=0; k<properties_.size(); k++){
+                Property* tmpProperty = properties_[k];
                 if (curProperty->getGroupID() == tmpProperty->getGroupID()) {
                     group->addProperty(tmpProperty);
                     addedProperties.push_back(tmpProperty);
                 }
             }
             group->generatePropertyWidgets();
+
             vLayout->addWidget(group);
+
         }
         else {
             PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
             if (propertyWidget) {
-                vLayout->addWidget(propertyWidget);
+              
                 curProperty->registerPropertyWidget(propertyWidget);
+                vLayout->addWidget(propertyWidget);
+
                 connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
                 addedProperties.push_back(curProperty);
             }
         }
-
     } 
+
     vLayout->addStretch(1);
     propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
+    setApplicationViewMode(applicationViewMode_);
 
     return processorPropertyWidget;
 }
@@ -146,6 +165,55 @@ void PropertyListWidget::propertyModified() {
 
 PropertyListWidget* PropertyListWidget::instance() {
     return propertyListWidget_;
+}
+
+void PropertyListWidget::setDeveloperViewMode( bool value  ){
+    if (value) {
+        InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+        static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->set(0);
+        
+        developerViewMode_ = value;
+        applicationViewMode_ = !value;
+
+        for (size_t i = 0; i < properties_.size(); i++ ) {
+            properties_[i]->updateVisibility();
+        }
+        
+    }
+}
+
+void PropertyListWidget::setApplicationViewMode( bool value ){
+    if (value) { 
+        InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+        dynamic_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->set(1);
+       
+        applicationViewMode_ = value;
+        developerViewMode_ = !value;
+        for (size_t i = 0; i < properties_.size(); i++ ) {
+            properties_[i]->updateVisibility();
+        }
+    }
+}
+
+
+
+void PropertyListWidget::saveState(){
+    QSettings settings("Inviwo", "Inviwo");
+    settings.beginGroup("PropertyListwidget");
+    settings.setValue("developerViewMode", developerViewMode_);
+    settings.setValue("applicationViewMode",applicationViewMode_);
+    settings.endGroup();
+}
+
+PropertyVisibility::VisibilityMode PropertyListWidget::getVisibilityMode(){
+    if (developerViewMode_) 
+        return PropertyVisibility::DEVELOPMENT;
+    else
+        return PropertyVisibility::APPLICATION;
+}
+
+void PropertyListWidget::notify(){ 
+
 }
 
 } // namespace

@@ -5,6 +5,8 @@
 namespace inviwo {
 
 IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty *property) : property_(property), updatingFromProperty_(false) {
+    PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
     generateWidget();
 	updateFromProperty();
 }

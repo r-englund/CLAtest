@@ -6,8 +6,10 @@
 namespace inviwo {
 
 ButtonPropertyWidgetQt::ButtonPropertyWidgetQt(ButtonProperty *property) : property_(property){
+    PropertyWidgetQt::setProperty(property_);
 	generateWidget();
     updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 	}
 
 void ButtonPropertyWidgetQt::generateWidget() {

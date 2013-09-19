@@ -43,7 +43,13 @@ InviwoCore::InviwoCore() : InviwoModule() {
 }
 
 void InviwoCore::setupModuleSettings(){
-    if (getSettings()){     
+    if (getSettings()){
+
+        OptionPropertyInt* viewMode_ = new OptionPropertyInt("viewMode","",0);
+        viewMode_->addOption("developerMode","developerMode",0);
+        viewMode_->addOption("applicationMode","applicationMode",1);
+        getSettings()->addProperty(viewMode_);
+        viewMode_->setVisibility(PropertyVisibility::INVISIBLE);
         getSettings()->addProperty(new BoolProperty("txtEditor", "Use system text editor", true));
 
         getSettings()->addProperty(new BoolProperty("shaderReloading", "Automatically reload shaders", true));

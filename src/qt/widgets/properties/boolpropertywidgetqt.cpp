@@ -3,8 +3,10 @@
 namespace inviwo {
 
 BoolPropertyWidgetQt::BoolPropertyWidgetQt(BoolProperty* property) : property_(property) {
+    PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 }
 
 void BoolPropertyWidgetQt::generateWidget() {

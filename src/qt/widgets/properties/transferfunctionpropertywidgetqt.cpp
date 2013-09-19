@@ -3,8 +3,10 @@
 namespace inviwo {
 
 TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property){
+    PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 }
 
 

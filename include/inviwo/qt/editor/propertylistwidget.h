@@ -1,4 +1,4 @@
-#ifndef IVW_PROPERTYLISTWIDGET_H
+ #ifndef IVW_PROPERTYLISTWIDGET_H
 #define IVW_PROPERTYLISTWIDGET_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
@@ -8,40 +8,55 @@
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <QCheckBox>
 #include <QScrollArea>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
+    class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget, public VoidObservable, public VoidObserver{
 
-    Q_OBJECT
+        Q_OBJECT
 
-public:
-    static PropertyListWidget* instance();
+    public:
 
-    PropertyListWidget(QWidget* parent);
-    ~PropertyListWidget();
+        static PropertyListWidget* instance();
 
-    void showProcessorProperties(Processor* processor);
-    void removeProcessorProperties(Processor* processor);
-    void showProcessorProperties(std::vector<Processor*> processors);
-    void removeAllProcessorProperties();
+        PropertyListWidget(QWidget* parent);
+        ~PropertyListWidget();
 
-protected slots:
-    void propertyModified();
+        void showProcessorProperties(Processor* processor);
+        void removeProcessorProperties(Processor* processor);
+        void showProcessorProperties(std::vector<Processor*> processors);
+        void removeAllProcessorProperties();
+        void saveState();
+        void notify();
+        PropertyVisibility::VisibilityMode getVisibilityMode();
 
-private:
-    QWidget* createNewProcessorPropertiesItem(Processor* processor);
-    void addProcessorPropertiesToLayout(Processor* processor);
+        public slots:
+            void setDeveloperViewMode(bool value);
+            void setApplicationViewMode(bool value);
 
-    QVBoxLayout* listWidgetLayout_;
-    QWidget* listWidget_;
-    QScrollArea* scrollArea_;
+            protected slots:
+                void propertyModified();
 
-protected:
-    static PropertyListWidget* propertyListWidget_;
-    mutable std::map<std::string, QWidget*> propertyWidgetMap_;
-};
+    private:
+        QWidget* createNewProcessorPropertiesItem(Processor* processor);
+        void addProcessorPropertiesToLayout(Processor* processor);
+ 
+
+        bool developerViewMode_;
+        bool applicationViewMode_;
+
+        QVBoxLayout* listWidgetLayout_;
+        QWidget* listWidget_;
+        QScrollArea* scrollArea_;
+
+        std::vector<Property*> properties_;
+
+    protected:
+        static PropertyListWidget* propertyListWidget_;
+        mutable std::map<std::string, QWidget*> propertyWidgetMap_;
+    };
 
 } // namespace
 

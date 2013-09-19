@@ -12,7 +12,7 @@ property_(property)
 
 	setObjectName("TransferFun");
 	setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
+    
 	generateWidget();
 	updateFromProperty();
 }

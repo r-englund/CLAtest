@@ -12,12 +12,14 @@
 #else
 #include <QDesktopServices>
 #endif
+#include <QActionGroup>
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QList>
 #include <QMessageBox>
 #include <QSettings>
 #include <QUrl>
+
 
 #include <inviwo/core/util/commandlineparser.h>
 
@@ -39,9 +41,7 @@ InviwoMainWindow::InviwoMainWindow() : VoidObserver() {
     currentWorkspaceFileName_ = "";
 }
 
-InviwoMainWindow::~InviwoMainWindow() {
-    deinitialize();
-}
+InviwoMainWindow::~InviwoMainWindow() {}
 
 void InviwoMainWindow::initializeAndShow() {
     networkEditorView_ = new NetworkEditorView(this);
@@ -100,18 +100,20 @@ void InviwoMainWindow::initializeAndShow() {
     addMenuActions();
     updateRecentWorkspaces();
 
+
     if (maximized) showMaximized();
     else show();
 }
 
 void InviwoMainWindow::deinitialize() {
+    
 }
 
 void InviwoMainWindow::initializeWorkspace(){
     ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
     networkEvaluator->setDefaultRenderContext(defaultRenderContext_);
     defaultRenderContext_->setFixedSize(0,0);
-    defaultRenderContext_->initializeSquare();
+    defaultRenderContext_->initialize();
     defaultRenderContext_->activate();
 
     ProcessorNetwork* processorNetwork = const_cast<ProcessorNetwork*>(networkEditorView_->getNetworkEditor()->getProcessorNetwork());
@@ -159,8 +161,10 @@ void InviwoMainWindow::addMenus() {
 
     fileMenuItem_ = new QMenu(tr("&File"));
     viewMenuItem_ = new QMenu(tr("&View"));
+    viewModeItem_ = new QMenu(tr("&View mode"));
     basicMenuBar->insertMenu(first,fileMenuItem_);
     basicMenuBar->insertMenu(first,viewMenuItem_);
+    viewMenuItem_->addMenu(viewModeItem_);
 
     helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
 }
@@ -193,6 +197,21 @@ void InviwoMainWindow::addMenuActions() {
         fileMenuItem_->addAction(recentFileActions_[i]);
     }
     
+    developerViewModeAction_ = new QAction(tr("&Developer"),this);
+    developerViewModeAction_->setCheckable(true);
+    viewModeItem_->addAction(developerViewModeAction_);
+
+    applicationViewModeAction_ = new QAction(tr("&Application"),this);
+    applicationViewModeAction_->setCheckable(true);
+    viewModeItem_->addAction(applicationViewModeAction_);
+    
+    QActionGroup* actionGroup = new QActionGroup(this);
+    actionGroup->addAction(developerViewModeAction_);
+    actionGroup->addAction(applicationViewModeAction_);
+
+    connect(developerViewModeAction_,SIGNAL(triggered(bool)),propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
+    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),propertyListWidget_, SLOT(setApplicationViewMode(bool)));
+    
     viewMenuItem_->addAction(mappingwidget_->toggleViewAction());
     viewMenuItem_->addAction(settingsWidget_->toggleViewAction());
     processorTreeWidget_->toggleViewAction()->setText(tr("&Processor List"));
@@ -201,6 +220,17 @@ void InviwoMainWindow::addMenuActions() {
     viewMenuItem_->addAction(propertyListWidget_->toggleViewAction());
     consoleWidget_->toggleViewAction()->setText(tr("&Output Console"));
     viewMenuItem_->addAction(consoleWidget_->toggleViewAction());
+
+    PropertyVisibility::VisibilityMode visibilityMode = propertyListWidget_->getVisibilityMode();
+    if (visibilityMode == PropertyVisibility::DEVELOPMENT){
+        developerViewModeAction_->setChecked(true);
+        //propertyListWidget_->setDeveloperViewMode(true);
+    }
+    if (visibilityMode == PropertyVisibility::APPLICATION) {
+        applicationViewModeAction_->setChecked(true);
+        //propertyListWidget_->setApplicationViewMode(true);
+    }
+    
 }
 
 void InviwoMainWindow::updateWindowTitle() {
@@ -382,6 +412,7 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     settings.endGroup();
 
     settingsWidget_->saveSettings();
+    propertyListWidget_->saveState();
 
     QMainWindow::closeEvent(event);
 }
@@ -408,5 +439,6 @@ bool InviwoMainWindow::askToSaveWorkspaceChanges() {
     }
     return continueOperation;
 }
+
 
 } // namespace

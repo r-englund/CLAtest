@@ -32,7 +32,6 @@ public:
     void setProjectionMatrix(float fovy, float aspect, float farPlane, float nearPlane);
 
     void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
-
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "CameraProperty"; }

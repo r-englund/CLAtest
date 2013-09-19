@@ -5,8 +5,10 @@
 namespace inviwo {
 
 FloatMinMaxPropertyWidgetQt::FloatMinMaxPropertyWidgetQt(FloatMinMaxProperty *property) : property_(property), updatingFromProperty_(false) {
+    PropertyWidgetQt::setProperty(property_);
 	generateWidget();
 	updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 }
 
 void FloatMinMaxPropertyWidgetQt::generateWidget() {

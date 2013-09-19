@@ -10,9 +10,9 @@ Property::Property(std::string identifier, std::string displayName, PropertyOwne
   invalidationLevel_(invalidationLevel),
   semantics_(semantics),
   owner_(0),
-  visible_(true),
   groupID_(""),
-  VoidObservable()
+  VoidObservable(),
+  visibilityMode_(PropertyVisibility::APPLICATION)
 {}
 
 Property::Property()
@@ -54,11 +54,13 @@ void Property::setOwner(PropertyOwner* owner) {
 
 void Property::registerPropertyWidget(PropertyWidget* propertyWidget) {
     propertyWidgets_.push_back(propertyWidget);
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
 }
 
 void Property::updatePropertyWidgets() {
     for (size_t i=0; i<propertyWidgets_.size(); i++)
-        propertyWidgets_[i]->updateFromProperty();
+        if (propertyWidgets_[i] != 0)
+            propertyWidgets_[i]->updateFromProperty();
 }
 
 Variant Property::getVariant() {
@@ -91,35 +93,46 @@ bool Property::operator==( Property* prop){
     return false;
 }
 
-
-void Property::setVisible( bool visible ){
-   visible_ = visible;
-   if (visible_) {
-       for (size_t i=0; i<propertyWidgets_.size(); i++){
-           propertyWidgets_[i]->showWidget();
-       }
-   }
-   if (!visible_) {
-       for (size_t i=0; i<propertyWidgets_.size(); i++)
-           propertyWidgets_[i]->hideWidget();
-   }
-}
-
 void Property::setGroupDisplayName( std::string groupID,std::string groupDisplayName ){
-    std::pair<std::map<std::string,std::string>::iterator,bool> ret;
-    ret = Property::groupDisplayNames_.insert( std::pair<std::string,std::string>(groupID,groupDisplayName));
-    if (!ret.second) {
-        //LogWarn("Groupname already set");
-        //std::cout << "Name already set." << std::endl;
-    }
-    else{
         Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID,groupDisplayName));
-    }
-    
 }
 
 std::string Property::getGroupDisplayName(){
     return groupDisplayNames_[groupID_];
+}
+
+void Property::setVisibility( PropertyVisibility::VisibilityMode visibilityMode ){
+    this->visibilityMode_ = visibilityMode;
+    updateVisibility();
+}
+
+
+void Property::updateVisibility() {
+
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+    PropertyVisibility::VisibilityMode appMode = static_cast<PropertyVisibility::VisibilityMode>(
+        static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
+
+    if (visibilityMode_ == PropertyVisibility::INVISIBLE) {
+        for (size_t i=0; i<propertyWidgets_.size(); i++){
+            propertyWidgets_[i]->hideWidget();
+        }
+    }
+    if (visibilityMode_ == PropertyVisibility::APPLICATION) {
+        for (size_t i=0; i<propertyWidgets_.size(); i++){
+            propertyWidgets_[i]->showWidget();
+        }
+    }
+    else if (visibilityMode_ == PropertyVisibility::DEVELOPMENT  && appMode == PropertyVisibility::DEVELOPMENT) {
+        for (size_t i=0; i<propertyWidgets_.size(); i++){
+            propertyWidgets_[i]->showWidget();
+        }
+    }
+    else if (visibilityMode_ == PropertyVisibility::DEVELOPMENT && appMode == PropertyVisibility::APPLICATION ) {
+        for (size_t i=0; i<propertyWidgets_.size(); i++)
+            propertyWidgets_[i]->hideWidget();
+    }
+
 }
 
 } // namespace

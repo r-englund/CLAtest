@@ -5,9 +5,13 @@
 namespace inviwo {
 
 CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property) : property_(property) {
+    PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 }
+
+
 
 void CompositePropertyWidgetQt::generateWidget() {
     QVBoxLayout* vLayout = new QVBoxLayout();
@@ -23,7 +27,7 @@ void CompositePropertyWidgetQt::generateWidget() {
     vLayout->setContentsMargins(0,0,0,0);
     vLayout->setSpacing(0);
     setLayout(vLayout);
-    
+    connect(collapsiveGroupBoxWidget_,SIGNAL(visibilityModified()),SLOT(setDisplayModeFromGroupBox()));
 }
 
 void CompositePropertyWidgetQt::updateFromProperty() {
@@ -34,5 +38,19 @@ void CompositePropertyWidgetQt::updateFromProperty() {
 void CompositePropertyWidgetQt::propertyModified() {
     emit modified();
 }
+
+void CompositePropertyWidgetQt::showWidget() {
+    this->show();
+}
+
+void CompositePropertyWidgetQt::hideWidget() {
+    this->hide();
+}
+
+void CompositePropertyWidgetQt::setDisplayModeFromGroupBox() {
+    property_->setVisibility(collapsiveGroupBoxWidget_->getVisibilityMode());
+}
+
+
 
 } // namespace

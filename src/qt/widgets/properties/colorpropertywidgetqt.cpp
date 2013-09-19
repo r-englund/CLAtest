@@ -6,8 +6,10 @@
 namespace inviwo {
 
 ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(property) {
+    PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 }
 
 void ColorPropertyWidgetQt::generateWidget() {

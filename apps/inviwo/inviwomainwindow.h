@@ -78,6 +78,7 @@ private:
     QMenu* fileMenuItem_;
     QMenu* helpMenuItem_;
     QMenu* viewMenuItem_;
+    QMenu* viewModeItem_;
     
     // mainwindow menuactions
     QAction* newFileAction_;
@@ -86,6 +87,8 @@ private:
     QAction* saveAsFileAction_;
     QAction* recentFileSeparator_;
     QAction* recentFileActions_[maxNumRecentFiles_];
+    QAction* developerViewModeAction_;
+    QAction* applicationViewModeAction_;
 
     // settings
     bool lastExitWithoutErrors_;

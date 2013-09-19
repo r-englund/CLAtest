@@ -28,7 +28,13 @@ void CompositeProperty::setOwner(PropertyOwner* owner) {
 }
 
 void CompositeProperty::notify() {
-    updatePropertyWidgets();
+    updateVisibility();
 }
+
+void CompositeProperty::updateVisibility(){
+    for (size_t i=0; i<subProperties_.size(); i++)
+        subProperties_[i]->updateVisibility();
+}
+
 
 } // namespace

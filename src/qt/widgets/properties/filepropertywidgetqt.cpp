@@ -15,8 +15,10 @@
 namespace inviwo {
 
 FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property) : property_(property) {
+    PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 }
 
 void FilePropertyWidgetQt::generateWidget() {

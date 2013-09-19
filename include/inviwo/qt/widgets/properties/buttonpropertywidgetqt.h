@@ -23,8 +23,7 @@ public:
     QPushButton* getButton();
 private:
 	ButtonProperty* property_;
-        QPushButton* button_;
-
+    QPushButton* button_;
 
 	void generateWidget();
 

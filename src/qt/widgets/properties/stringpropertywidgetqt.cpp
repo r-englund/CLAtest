@@ -4,8 +4,10 @@
 namespace inviwo {
 
 StringPropertyWidgetQt::StringPropertyWidgetQt(StringProperty* property) : property_(property) {
+    PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 }
 
 void StringPropertyWidgetQt::generateWidget() {

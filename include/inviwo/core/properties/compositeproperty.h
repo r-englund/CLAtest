@@ -8,7 +8,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API CompositeProperty : public Property, public VoidObserver {
+class IVW_CORE_API CompositeProperty : public Property{
 
 public:
     CompositeProperty(std::string identifier, std::string displayName,
@@ -22,6 +22,7 @@ public:
     void setOwner(PropertyOwner* owner);
     void notify();
     virtual std::string getClassName()  const { return "CompositeProperty"; }
+    void updateVisibility();
 
 private:
     std::vector<Property*> subProperties_;

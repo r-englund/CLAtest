@@ -18,12 +18,14 @@ class IVW_QTWIDGETS_API CompositePropertyWidgetQt : public PropertyWidgetQt {
 
 public:
     CompositePropertyWidgetQt(CompositeProperty* property);
-
     void updateFromProperty();
+    void showWidget();
+    void hideWidget();
+
 
 protected slots:
     void propertyModified();
-
+    void setDisplayModeFromGroupBox();
 private:
     CompositeProperty* property_;
     CollapsiveGroupBoxWidgetQt* collapsiveGroupBoxWidget_;

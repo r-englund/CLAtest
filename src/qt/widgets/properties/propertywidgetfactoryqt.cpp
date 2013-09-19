@@ -48,6 +48,10 @@ namespace inviwo {
 PropertyWidgetFactoryQt::PropertyWidgetFactoryQt() {}
 
 PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
+
+    if (property->getVisibilityMode()== PropertyVisibility::INVISIBLE) {
+        return 0;
+    }
     
     if (property->getSemantics()!=PropertySemantics::Default){
         if (dynamic_cast<FloatVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {

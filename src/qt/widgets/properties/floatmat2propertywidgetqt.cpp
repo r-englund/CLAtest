@@ -6,8 +6,10 @@
 namespace inviwo {
 
 FloatMat2PropertyWidgetQt::FloatMat2PropertyWidgetQt(FloatMat2Property *property) : property_(property) {
+    PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
+    PropertyWidgetQt::generateContextMenu();
 }
 
 void FloatMat2PropertyWidgetQt::generateWidget() {
