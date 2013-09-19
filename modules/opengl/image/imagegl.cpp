@@ -19,13 +19,15 @@ ImageGL::~ImageGL() {
 void ImageGL::initialize() {
     frameBufferObject_ = new FrameBufferObject();
     frameBufferObject_->activate();
+    colorConstTexture_ = colorTexture_;
+    depthConstTexture_ = depthTexture_;
+    pickingConstTexture_ = pickingTexture_;
     if(typeContainsColor(getImageType())){
         if(!colorTexture_){
             createAndAddLayer(COLOR_LAYER);
         }
         else{
             colorTexture_->bind();
-            colorConstTexture_ = colorTexture_;
         }
         frameBufferObject_->attachTexture(colorTexture_);
     }
@@ -35,7 +37,6 @@ void ImageGL::initialize() {
         }
         else{
             depthTexture_->bind();
-            depthConstTexture_ = depthTexture_;
         }  
         frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT); 
     }
@@ -45,7 +46,6 @@ void ImageGL::initialize() {
         }
         else{
             pickingTexture_->bind();
-            pickingConstTexture_ = pickingTexture_;
         }
         //Attach to last color attachment
         frameBufferObject_->attachTexture(pickingTexture_, 0, true); 
@@ -76,9 +76,15 @@ void ImageGL::deinitialize() {
 }
 
 DataRepresentation* ImageGL::clone() const {
-    Texture2D* colorTexture = colorConstTexture_->clone();
-    Texture2D* depthTexture = depthConstTexture_->clone();
-    Texture2D* pickingTexture = pickingTexture_->clone();
+    Texture2D* colorTexture = NULL;
+    Texture2D* depthTexture = NULL;
+    Texture2D* pickingTexture = NULL;
+    if(colorConstTexture_)
+        colorTexture = colorConstTexture_->clone();
+    if(depthConstTexture_)
+        depthTexture = depthConstTexture_->clone();
+    if(pickingConstTexture_)
+        pickingTexture = pickingConstTexture_->clone();
     ImageGL* newImageGL = new ImageGL(dimensions_, getImageType(), getDataFormat(), colorTexture, depthTexture, pickingTexture);
     return newImageGL;
 }
