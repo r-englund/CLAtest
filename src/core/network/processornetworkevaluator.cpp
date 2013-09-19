@@ -1,5 +1,5 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
-
+#include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/processors/progressbarowner.h>
 

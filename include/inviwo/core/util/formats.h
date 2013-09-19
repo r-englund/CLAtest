@@ -102,8 +102,7 @@ namespace inviwo {
     public:
         Vector<1, T>() : glm::detail::tvec1<T>(){};
         Vector<1, T>(const Vector<1, T>& v) : glm::detail::tvec1<T>(v.x){};
-        Vector<1, T>(const glm::detail::tvec1<T>& v) : glm:
-        :detail::tvec1<T>(v){};
+        Vector<1, T>(const glm::detail::tvec1<T>& v) : glm::detail::tvec1<T>(v){};
         Vector<1, T>(T v) : glm::detail::tvec1<T>(v){};
     };
 
