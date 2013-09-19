@@ -54,7 +54,7 @@ void Property::setOwner(PropertyOwner* owner) {
 
 void Property::registerPropertyWidget(PropertyWidget* propertyWidget) {
     propertyWidgets_.push_back(propertyWidget);
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+    updateVisibility();
 }
 
 void Property::updatePropertyWidgets() {

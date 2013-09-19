@@ -42,6 +42,7 @@ void SettingsWidget::loadSettings() {
             Variant val(std::string(qval.toString().toLocal8Bit().constData()));
             curProperty->setVariant(val);
         }
+
         PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
         vLayout_->addWidget(propertyWidget);
         curProperty->registerPropertyWidget(propertyWidget);
