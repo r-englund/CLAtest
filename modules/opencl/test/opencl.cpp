@@ -56,7 +56,7 @@ int test_image() {
     try {
         inviwo::ImageCL *imageCL = image.getRepresentation<inviwo::ImageCL>();
         inviwo::OpenCL::getInstance()->getQueue().enqueueWriteImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(imageSize, 1), 0, 0, &imageData[0]);
-        glm::uvec2 resizeTo(212, 103);
+        uvec2 resizeTo(212, 103);
         imageCL->resize(resizeTo);
         std::vector<uint8_t> resizedImageData(resizeTo.x*resizeTo.y);
         inviwo::OpenCL::getInstance()->getQueue().enqueueReadImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(resizeTo, 1), 0, 0, &resizedImageData[0]);

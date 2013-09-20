@@ -22,7 +22,7 @@ public:
     virtual bool copyAndResizeImage(DataRepresentation*);
     virtual void* getData() {return data_;};
     virtual const void* getData() const {return data_;};
-    virtual glm::vec4 getValueAsVec4Float(const glm::uvec2& pos) const = 0;
+    virtual vec4 getValueAsVec4Float(const uvec2& pos) const = 0;
 
     // Takes ownership of data pointer
     void setData(void* data) {
@@ -55,7 +55,7 @@ public:
     virtual void initialize(void*);
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
-    virtual glm::vec4 getValueAsVec4Float(const glm::uvec2& pos) const;
+    virtual vec4 getValueAsVec4Float(const uvec2& pos) const;
 };
 
 template<typename T>
@@ -98,8 +98,8 @@ DataRepresentation* ImageRAMPrecision<T>::clone() const {
 }
 
 template<typename T>
-glm::vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
-    glm::vec4 result;
+vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
+    vec4 result;
     T* data = static_cast<T*>(data_);
     T val = data[pos.x+(pos.y*dimensions_.x)];
     result = getDataFormat()->convertToNormalizedVec4Float(&val);

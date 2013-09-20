@@ -21,10 +21,10 @@ public:
      * 
      * \param src (const cl::Image2D &) Image to get data from
      * \param dst (const cl::Image2D &) Image containing resized src image. Note that this should same dimension as resizeToDimension 
-     * \param resizeToDimension (const glm::ivec2 &) Size to resize to
+     * \param resizeToDimension (const ivec2 &) Size to resize to
      * \return (void)
      */
-    static void resize(const cl::Image2D& src, const cl::Image2D& dst, const glm::uvec2& resizeToDimension);
+    static void resize(const cl::Image2D& src, const cl::Image2D& dst, const uvec2& resizeToDimension);
 
 private:
     ImageCLResizer();

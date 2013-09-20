@@ -13,7 +13,7 @@ ImageCLResizer::ImageCLResizer() {
     resizeKernel_ = cl::Kernel(program, "resizeImage");
 }
 
- void ImageCLResizer::resize(const cl::Image2D& src, const cl::Image2D& dst, const glm::uvec2& resizeToDimension)
+ void ImageCLResizer::resize(const cl::Image2D& src, const cl::Image2D& dst, const uvec2& resizeToDimension)
  {
     static ImageCLResizer instance;
 

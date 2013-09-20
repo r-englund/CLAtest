@@ -14,16 +14,16 @@ float DataFormatBase::convertToNormalizedFloat(void*) const {
     return 0.f; 
 }
 
-glm::vec2 DataFormatBase::convertToNormalizedVec2Float(void*) const { 
-    return glm::vec2(0.f); 
+vec2 DataFormatBase::convertToNormalizedVec2Float(void*) const { 
+    return vec2(0.f); 
 }
 
-glm::vec3 DataFormatBase::convertToNormalizedVec3Float(void*) const { 
-    return glm::vec3(0.f); 
+vec3 DataFormatBase::convertToNormalizedVec3Float(void*) const { 
+    return vec3(0.f); 
 }
 
-glm::vec4 DataFormatBase::convertToNormalizedVec4Float(void*) const { 
-    return glm::vec4(0.f); 
+vec4 DataFormatBase::convertToNormalizedVec4Float(void*) const { 
+    return vec4(0.f); 
 }
 
 size_t DataFormatBase::getBitsAllocated() const { 

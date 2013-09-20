@@ -6,7 +6,7 @@ ImageLabel::ImageLabel() : startPoint_(0), rectSize_(0), name_("") {
 
 }
 
-ImageLabel::ImageLabel(glm::vec2 startPoint, glm::vec2 rectSize, std::string name) :
+ImageLabel::ImageLabel(vec2 startPoint, vec2 rectSize, std::string name) :
     startPoint_(startPoint), 
     rectSize_(rectSize), 
     name_(name) {
@@ -30,11 +30,11 @@ PropertySemantics::Type semantics)
     : FileProperty(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
-void ImageEditorProperty::setDimensions(glm::ivec2 imgSize) {    
+void ImageEditorProperty::setDimensions(ivec2 imgSize) {    
    dimensions_ = imgSize;
 }
 
-void ImageEditorProperty::addLabel(glm::vec2 startPoint, glm::vec2 rectSize, std::string name) {    
+void ImageEditorProperty::addLabel(vec2 startPoint, vec2 rectSize, std::string name) {    
     labels_.push_back(new ImageLabel(startPoint, rectSize, name));
 }
 

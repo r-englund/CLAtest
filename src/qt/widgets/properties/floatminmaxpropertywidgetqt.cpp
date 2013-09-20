@@ -47,7 +47,7 @@ void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
     spinBoxMax_->setSingleStep(property_->getIncrement());
     setSpinBoxDecimals(property_->getIncrement());
 
-    glm::vec2 value = property_->get();
+    vec2 value = property_->get();
     sliderMin_ = static_cast<int>((value.x-property_->getRangeMin())*maxNumberOfValues_);
     sliderMax_ = static_cast<int>((value.y-property_->getRangeMin())*maxNumberOfValues_);
 

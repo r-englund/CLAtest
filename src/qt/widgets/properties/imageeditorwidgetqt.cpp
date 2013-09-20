@@ -314,8 +314,8 @@ bool ImageEditorWidgetQt::writeImageLabel(){
             imageEditorProperty->clearLabels();
 
         for (size_t i=0; i<rectList.size(); i++) {
-            glm::vec2 topLeft(rectList[i].rect_.topLeft().x(), rectList[i].rect_.topLeft().y());
-            glm::vec2 rectSize(rectList[i].rect_.size().width(), rectList[i].rect_.size().height());
+            vec2 topLeft(rectList[i].rect_.topLeft().x(), rectList[i].rect_.topLeft().y());
+            vec2 rectSize(rectList[i].rect_.size().width(), rectList[i].rect_.size().height());
             imageEditorProperty->addLabel(topLeft, rectSize, rectList[i].label_);            
         }
     }

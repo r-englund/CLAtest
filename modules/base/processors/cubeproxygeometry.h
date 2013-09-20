@@ -35,7 +35,7 @@ private:
     IntMinMaxProperty clipY_;
     IntMinMaxProperty clipZ_;
 
-    glm::uvec3 dims_;
+    uvec3 dims_;
 };
 
 } // namespace

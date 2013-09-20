@@ -16,15 +16,15 @@ Canvas::Canvas(uvec2 dimensions)
     if(!screenAlignedSquare_){
         shared = false;
         Position2dAttributes* vertices_ = new Position2dAttributes();
-        vertices_->add(glm::vec2(-1.0f, -1.0f));
-        vertices_->add(glm::vec2(1.0f, -1.0f));
-        vertices_->add(glm::vec2(-1.0f, 1.0f));
-        vertices_->add(glm::vec2(1.0f, 1.0f));
+        vertices_->add(vec2(-1.0f, -1.0f));
+        vertices_->add(vec2(1.0f, -1.0f));
+        vertices_->add(vec2(-1.0f, 1.0f));
+        vertices_->add(vec2(1.0f, 1.0f));
         TexCoord2dAttributes* texCoords_ = new TexCoord2dAttributes();
-        texCoords_->add(glm::vec2(0.0f, 0.0f));
-        texCoords_->add(glm::vec2(1.0f, 0.0f));
-        texCoords_->add(glm::vec2(0.0f, 1.0f));
-        texCoords_->add(glm::vec2(1.0f, 1.0f));
+        texCoords_->add(vec2(0.0f, 0.0f));
+        texCoords_->add(vec2(1.0f, 0.0f));
+        texCoords_->add(vec2(0.0f, 1.0f));
+        texCoords_->add(vec2(1.0f, 1.0f));
         MeshRAM* screenAlignedSquareMesh = new MeshRAM(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
         screenAlignedSquareMesh->addAttribute(vertices_);
         screenAlignedSquareMesh->addAttribute(texCoords_);
@@ -92,7 +92,7 @@ void Canvas::keyReleaseEvent(KeyboardEvent* e) {
 }
 
 uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos){
-    glm::uvec2 pos(mpos.x, mpos.y);
+    uvec2 pos(mpos.x, mpos.y);
     pos.y = dimensions_.y-(pos.y-1);
     return pos;
 }

@@ -7,16 +7,16 @@ class IVW_CORE_API Plane {
 
 public:
 	Plane();
-	Plane(glm::vec3 point, glm::vec3 normal);
+	Plane(vec3 point, vec3 normal);
 	virtual ~Plane();
 
-	glm::vec3 getIntersection(const glm::vec3&, const glm::vec3&);
-	bool isInside(const glm::vec3&);
-	void setPoint(const glm::vec3);
-	void setNormal(const glm::vec3&);
+	vec3 getIntersection(const vec3&, const vec3&);
+	bool isInside(const vec3&);
+	void setPoint(const vec3);
+	void setNormal(const vec3&);
 private:
-	glm::vec3 point_;
-	glm::vec3 normal_;
+	vec3 point_;
+	vec3 normal_;
 
 };
 

@@ -17,7 +17,7 @@ public:
     virtual DataRepresentation* clone() const { return NULL; };
     virtual void render() const;
 
-    void addVertex(glm::vec3 pos, glm::vec3 texCoord, glm::vec4 color);
+    void addVertex(vec3 pos, vec3 texCoord, vec4 color);
     void addIndex(unsigned int idx);
     void setIndicesInfo(RenderType, ConnectivityType);
 	Position3dAttributes* getVertexList();

@@ -10,9 +10,9 @@ namespace inviwo {
 class IVW_CORE_API BaseMeshCreator {
 
 public:
-    static BaseMeshRAM* rectangularPrism(glm::vec3 posLlf, glm::vec3 posUrb, glm::vec3 texCoordLlf, 
-                                        glm::vec3 texCoordUrb, glm::vec4 colorLlf, glm::vec4 colorUrb);
-	static BaseMeshRAM* rectangle(glm::vec3 posLl, glm::vec3 posUr);
+    static BaseMeshRAM* rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 texCoordLlf, 
+                                        vec3 texCoordUrb, vec4 colorLlf, vec4 colorUrb);
+	static BaseMeshRAM* rectangle(vec3 posLl, vec3 posUr);
 };
 
 } // namespace

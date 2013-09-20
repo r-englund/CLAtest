@@ -16,15 +16,15 @@ ImageOverlay::ImageOverlay()
 	ypos_(0),
 	floatColor_("FloatColor","FloatColor", vec4(0.2),vec4(0.0),vec4(0.1),vec4(1.0),PropertyOwner::INVALID_OUTPUT,PropertySemantics::Color),
 	optionPropertyIntFontSize_("Font size","Font size"),
-	floatVec2FontPos_("Position","Position",glm::vec2(0.0f))
+	floatVec2FontPos_("Position","Position",vec2(0.0f))
 {
 	addPort(inport0_);
 	addPort(outport_);
 	addProperty(textStringProperty_);
 	addProperty(floatColor_);
 	addProperty(floatVec2FontPos_);
-	floatVec2FontPos_.setMinValue(glm::vec2(0.0f));
-	floatVec2FontPos_.setMaxValue(glm::vec2(1.0f));
+	floatVec2FontPos_.setMinValue(vec2(0.0f));
+	floatVec2FontPos_.setMaxValue(vec2(1.0f));
 	addProperty(optionPropertyIntFontSize_);
 	optionPropertyIntFontSize_.addOption("10","10",10);
 	optionPropertyIntFontSize_.addOption("12","12",12);

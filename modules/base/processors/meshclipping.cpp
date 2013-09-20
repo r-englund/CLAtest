@@ -16,7 +16,7 @@ MeshClipping::MeshClipping()
 	floatPropertyRotY_("Rotation Y", "Rotation Y", 0.0f, 0.0f, 360.0f, 0.1f),
 	floatPropertyRotZ_("Rotation Z", "Rotation Z", 0.0f, 0.0f, 360.0f, 0.1f),
 	floatPropertyPlaneHeight("Cutting plane y coord.", "Cutting plane Y", 0.0f,-1.2f,1.2f,0.1f),
-	plane_(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, -0.5f)),
+	plane_(vec3(0.0f,0.0f,0.0f), vec3(0.0f, 1.0f, -0.5f)),
 	clippingEnabled_("clippingEnabled", "Enable clipping", false)
 {
 	addPort(inport_);
@@ -134,7 +134,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 	*/
 
 	std::cout << "Fetching vertex- and triangle lists.\n";
-	std::vector<glm::vec3> outputList = inputMesh->getVertexList()->getAttributeContainer();
+	std::vector<vec3> outputList = inputMesh->getVertexList()->getAttributeContainer();
 	std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getAttributeContainer();
 	std::vector<Edge> edgeList = triangleListtoEdgeList(triangleList);
 	/*for(int i=0; i<outputList.size(); ++i)
@@ -145,14 +145,14 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 
 	// For each clip plane, do:
 	std::cout << "Running clipping algorithm.\n";
-	std::vector<glm::vec3> inputList = outputList;
+	std::vector<vec3> inputList = outputList;
 	outputList.clear();
 	std::vector<unsigned int> outputIndexList;
 	for(int i=0; i<static_cast<int>(edgeList.size()); ++i) {
 		unsigned int Sind = edgeList.at(i).v1;
 		unsigned int Eind = edgeList.at(i).v2;
-		glm::vec3 S = inputList.at( Sind );
-		glm::vec3 E = inputList.at( Eind );
+		vec3 S = inputList.at( Sind );
+		vec3 E = inputList.at( Eind );
 		if(plane.isInside(E)) {
 			if(!plane.isInside(S)) { // Going in
 				outputIndexList.push_back(999);
@@ -176,11 +176,11 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 
 	// Old algorithm - DO NOT USE
 	// For each clip plane, do:
-	/*std::vector<glm::vec3> inputList = outputList;
+	/*std::vector<vec3> inputList = outputList;
 	outputList.clear();
-	glm::vec3 S = inputList.at(customIndexList.back());
+	vec3 S = inputList.at(customIndexList.back());
 	for(int i=0; i<customIndexList.size(); ++i) {
-		glm::vec3 E = inputList.at(customIndexList.at(i));
+		vec3 E = inputList.at(customIndexList.at(i));
 		if(plane.isInside(E)) {
 			if(!plane.isInside(S)) { // Going in
 				outputList.push_back(plane.getIntersection(S,E));
@@ -207,7 +207,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 	outputMesh->initialize();
 
 	for(int i=0; i<static_cast<int>(outputList.size()); ++i) {
-		outputMesh->addVertex(outputList.at(i), glm::vec3(1.f), glm::vec4(1.,i/(float)outputList.size(),0.,1.0f));
+		outputMesh->addVertex(outputList.at(i), vec3(1.f), vec4(1.,i/(float)outputList.size(),0.,1.0f));
 	}
 
 	std::cout << "Number of verts in output mesh: " << 
@@ -246,8 +246,8 @@ void MeshClipping::process() {
 
 	/*
 	// 2. Skappa klipp-plans-meshen (rektangel)
-	glm::vec3 posLl(-1.,-1.,0.);
-	glm::vec3 posUr(1.,1.,0.);
+	vec3 posLl(-1.,-1.,0.);
+	vec3 posUr(1.,1.,0.);
 	
 	BaseMeshRAM* rec = BaseMeshCreator::rectangle(posLl, posUr);
 	
@@ -255,7 +255,7 @@ void MeshClipping::process() {
 	GeometryRAM *clippedGeom = clipGeometry(geom, rec);*/
 	if(clippingEnabled_.get()) {
 		std::cout << "Setting plane point from property.\n";
-		//plane_.setPoint(glm::vec3(0.0f,floatPropertyPlaneHeight.get(),0.0f));
+		//plane_.setPoint(vec3(0.0f,floatPropertyPlaneHeight.get(),0.0f));
 		std::cout << "Calling clipping method.\n";
 		GeometryRAM *clippedPlaneGeom = clipGeometryAgainstPlane(geom, plane_);
 

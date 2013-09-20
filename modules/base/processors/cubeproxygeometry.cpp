@@ -24,7 +24,7 @@ CubeProxyGeometry::CubeProxyGeometry()
     addProperty(clipY_);
     addProperty(clipZ_);
 
-    dims_ = glm::uvec3(1,1,1);
+    dims_ = uvec3(1,1,1);
 }
 
 CubeProxyGeometry::~CubeProxyGeometry() {}
@@ -43,17 +43,17 @@ void CubeProxyGeometry::process() {
         clipX_.setRangeMax(static_cast<int>(dims_.x));
         clipY_.setRangeMax(static_cast<int>(dims_.y));
         clipZ_.setRangeMax(static_cast<int>(dims_.z));
-        clipX_.set(glm::ivec2(0, static_cast<int>(dims_.x)));
-        clipY_.set(glm::ivec2(0, static_cast<int>(dims_.y)));
-        clipZ_.set(glm::ivec2(0, static_cast<int>(dims_.z)));
+        clipX_.set(ivec2(0, static_cast<int>(dims_.x)));
+        clipY_.set(ivec2(0, static_cast<int>(dims_.y)));
+        clipZ_.set(ivec2(0, static_cast<int>(dims_.z)));
     }
 
-    glm::vec3 posLLF = glm::vec3(-1.f);
-    glm::vec3 posURB = glm::vec3(1.f);
-    glm::vec3 texLLF = glm::vec3(0.f);
-    glm::vec3 texURB = glm::vec3(1.f);
-    glm::vec4 colLLF = glm::vec4(0.f, 0.f, 0.f, 1.f);
-    glm::vec4 colURB = glm::vec4(1.f);
+    vec3 posLLF = vec3(-1.f);
+    vec3 posURB = vec3(1.f);
+    vec3 texLLF = vec3(0.f);
+    vec3 texURB = vec3(1.f);
+    vec4 colLLF = vec4(0.f, 0.f, 0.f, 1.f);
+    vec4 colURB = vec4(1.f);
 
     if(clippingEnabled_.get()){
         //Vertex positions

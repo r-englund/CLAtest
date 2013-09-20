@@ -8,16 +8,16 @@ namespace inviwo {
 class ImageLabel : public IvwSerializable {
 public :
     ImageLabel();
-    ImageLabel(glm::vec2 startPoint, glm::vec2 rectSize, std::string name);
+    ImageLabel(vec2 startPoint, vec2 rectSize, std::string name);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     std::string getName() const {return name_;}
-    glm::vec2 getTopLeft() const {return startPoint_;}
-    glm::vec2 getSize() const {return rectSize_;}
+    vec2 getTopLeft() const {return startPoint_;}
+    vec2 getSize() const {return rectSize_;}
 private:
     std::string name_;
-    glm::vec2 startPoint_;
-    glm::vec2 rectSize_;
+    vec2 startPoint_;
+    vec2 rectSize_;
 };
 
 /** class ImageEditorProperty
@@ -44,15 +44,15 @@ public:
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
                  PropertySemantics::Type semantics = PropertySemantics::Editor);
     virtual std::string getClassName()  const { return "ImageEditorProperty"; }
-    void addLabel(glm::vec2 start, glm::vec2 end, std::string name="");
-    void setDimensions(glm::ivec2 imgSize);
+    void addLabel(vec2 start, vec2 end, std::string name="");
+    void setDimensions(ivec2 imgSize);
     std::vector<ImageLabel*> getLabels() const;
     void clearLabels();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);    
 private:
     std::vector<ImageLabel*> labels_;
-    glm::ivec2 dimensions_;
+    ivec2 dimensions_;
 };
 
 } // namespace

@@ -29,7 +29,7 @@ void BaseMeshRAM::deinitialize() {}
 
 void BaseMeshRAM::render() const {}
 
-void BaseMeshRAM::addVertex(glm::vec3 pos, glm::vec3 texCoord, glm::vec4 color){
+void BaseMeshRAM::addVertex(vec3 pos, vec3 texCoord, vec4 color){
     vertexPositions_->add(pos);
     vertexTexCoords_->add(texCoord);
     vertexColors_->add(color);
