@@ -49,17 +49,18 @@ namespace inviwo {
         }
 
         static void setGroupDisplayName(std::string groupID,std::string groupDisplayName);
-
+        
         std::string getGroupID() { return groupID_; }
         std::string getGroupDisplayName();
 
-    virtual inline void propertyModified() { setPropertyModified(true); }
-    virtual void setPropertyModified(bool modified) { propertyModified_ = modified; }
-    virtual bool isPropertyModified() const { return propertyModified_; }
-
+        virtual void propertyModified();
+        virtual void setPropertyModified(bool modified) { propertyModified_ = modified; }
+        virtual bool isPropertyModified() const { return propertyModified_; }
         virtual Variant getVariant();
         virtual void setVariant(const Variant&);
         virtual int getVariantType();
+        virtual void set(const Property* src) { IVW_UNUSED_PARAM(src); }
+    
 
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);

@@ -20,6 +20,7 @@ public:
 	virtual const T& get() const { return value_; };
     virtual void set(const T& value);
     void callChanged();
+    virtual void set(const Property* srcProperty);
 
 
 protected:
@@ -46,12 +47,18 @@ void TemplateProperty<T>::set(const T& value) {
 }
 
 template <typename T>
-void TemplateProperty<T>::callChanged(){
-    onChangeCallback_.invoke();
-    propertyModified();
-    //FIXME: if set() is called before addProperty(), getOwner() will be 0
-    getOwner()->invalidate(getInvalidationLevel());    
-    updatePropertyWidgets();
+void TemplateProperty<T>::callChanged(){   
+    propertyModified();    
+}
+
+template <typename T>
+void TemplateProperty<T>::set(const Property* srcProperty) {
+    const TemplateProperty<T>* templatedSrcProp = dynamic_cast<const TemplateProperty<T>*>(srcProperty);
+    if (templatedSrcProp) 
+        this->value_ = templatedSrcProp->get();
+    else        
+        this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
+    TemplateProperty<T>::callChanged();
 }
 
 

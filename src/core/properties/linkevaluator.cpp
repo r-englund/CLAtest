@@ -9,7 +9,7 @@ void LinkEvaluator::evaluate(Property* src, Property *dst) {
     ivwAssert(src!=0, "source property expected");
     ivwAssert(dst!=0, "destination property expected");
     if (canLink(src, dst)) {
-        dst->setVariant(src->getVariant());
+        dst->set(src);
     }
 }
 

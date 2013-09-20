@@ -64,6 +64,14 @@ void Property::updatePropertyWidgets() {
             propertyWidgets_[i]->updateFromProperty();
 }
 
+void Property::propertyModified() { 
+    onChangeCallback_.invoke();
+    setPropertyModified(true); 
+    //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )    
+    if (getOwner()) getOwner()->invalidate(getInvalidationLevel());    
+    updatePropertyWidgets();
+}
+
 Variant Property::getVariant() {
     return Variant(getVariantType());
 }

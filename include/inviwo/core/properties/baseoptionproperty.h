@@ -203,10 +203,7 @@ T TemplateOptionProperty<T>::get() const {
 template<typename T>
 void TemplateOptionProperty<T>::set(T value) {
     value_ = value;
-    onChangeCallback_.invoke();
     propertyModified();
-    if (getOwner()) getOwner()->invalidate(getInvalidationLevel());    
-    updatePropertyWidgets();
 }
 
 template<typename T>

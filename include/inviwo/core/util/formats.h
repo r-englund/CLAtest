@@ -442,25 +442,21 @@ IVW_CORE_API inline glm::detail::tvec4<T> singleToVec4(T val) {
 template<typename T>
 IVW_CORE_API glm::detail::tvec3<T> vec2ToVec3(glm::detail::tvec2<T> val) {
     glm::detail::tvec3<T> result = glm::detail::tvec3<T>(0.f);
-    result.x = val.x;
-    result.y = val.y;
+    result.xy() = val;
     return result;
 }
 
 template<typename T>
 IVW_CORE_API glm::detail::tvec4<T> vec2ToVec4(glm::detail::tvec2<T> val) {
     glm::detail::tvec4<T> result = glm::detail::tvec4<T>(0.f);
-    result.x = val.x;
-    result.y = val.y;
+    result.xy() = val;
     return result;
 }
 
 template<typename T>
 IVW_CORE_API inline glm::detail::tvec4<T> vec3ToVec4(glm::detail::tvec3<T> val) {
     glm::detail::tvec4<T> result = glm::detail::tvec4<T>(0.f);
-    result.x = val.x;
-    result.y = val.y;
-    result.z = val.z;
+    result.xyz() = val;
     return result;
 }
 
