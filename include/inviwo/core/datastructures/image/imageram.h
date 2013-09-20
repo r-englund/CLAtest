@@ -98,10 +98,10 @@ DataRepresentation* ImageRAMPrecision<T>::clone() const {
 }
 
 template<typename T>
-glm::vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const glm::uvec2& pos) const{
+glm::vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
     glm::vec4 result;
     T* data = static_cast<T*>(data_);
-    T val = data[pos.x+(pos.y*(dimensions_.x-1))];
+    T val = data[pos.x+(pos.y*dimensions_.x)];
     result = getDataFormat()->convertToNormalizedVec4Float(&val);
     return result;
 }

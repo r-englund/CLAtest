@@ -70,8 +70,8 @@ void Canvas::interactionEvent(InteractionEvent* e) {
 }
 
 void Canvas::mousePressEvent(MouseEvent* e) {
-    if(e->button() == MouseEvent::MOUSE_BUTTON_MIDDLE)
-        pickingContainer_->checkPickable(e->pos());
+    if(e->button() == MouseEvent::MOUSE_BUTTON_RIGHT)
+        pickingContainer_->checkPickable(mousePosToPixelCoordinates(e->pos()));
     interactionEvent(e);
 }
 
@@ -89,6 +89,12 @@ void Canvas::keyPressEvent(KeyboardEvent* e) {
 
 void Canvas::keyReleaseEvent(KeyboardEvent* e) {
 	interactionEvent(e);
+}
+
+uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos){
+    glm::uvec2 pos(mpos.x, mpos.y);
+    pos.y = dimensions_.y-(pos.y-1);
+    return pos;
 }
 
 } // namespace

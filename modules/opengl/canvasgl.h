@@ -33,6 +33,7 @@ protected:
 
     void renderColor();
     void renderDepth();
+    void renderPicking();
     void renderNoise();
     void renderTexture(GLint);
 

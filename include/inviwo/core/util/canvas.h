@@ -41,6 +41,8 @@ protected:
     void keyPressEvent(KeyboardEvent* e);
     void keyReleaseEvent(KeyboardEvent* e);
 
+    uvec2 mousePosToPixelCoordinates(ivec2 mpos);
+
     static Geometry* screenAlignedSquare_;
 
     bool shared;

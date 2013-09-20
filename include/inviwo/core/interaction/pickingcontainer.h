@@ -13,9 +13,9 @@ public:
 
     inline bool isPickableSelected() { return selected_; }
 
-    inline void checkPickable(ivec2 coords) {
+    inline void checkPickable(const uvec2& coords) {
         const ImageRAM* colorImage = src_->getRepresentation<ImageRAM>();
-        glm::vec4 value = colorImage->getValueAsVec4Float(glm::uvec2(coords.x, coords.y));
+        glm::vec4 value = colorImage->getValueAsVec4Float(coords);
         LogInfo("Picked Pixel Value : (" << value.x << "," << value.y << "," << value.z << ")");
     }
 

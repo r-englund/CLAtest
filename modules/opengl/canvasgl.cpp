@@ -67,6 +67,9 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
             case DEPTH_LAYER:
                 renderDepth();
                 break;
+            case PICKING_LAYER:
+                renderPicking();
+                break;
             default:
                 renderNoise();
         }
@@ -106,6 +109,13 @@ void CanvasGL::renderColor() {
 void CanvasGL::renderDepth() {
     TextureUnit textureUnit;
     imageGL_->bindDepthTexture(textureUnit.getEnum());
+    renderTexture(textureUnit.getUnitNumber());
+    imageGL_->unbindDepthTexture();
+}
+
+void CanvasGL::renderPicking() {
+    TextureUnit textureUnit;
+    imageGL_->bindPickingTexture(textureUnit.getEnum());
     renderTexture(textureUnit.getUnitNumber());
     imageGL_->unbindDepthTexture();
 }
