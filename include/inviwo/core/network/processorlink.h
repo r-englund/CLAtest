@@ -48,7 +48,7 @@ public:
     void autoLinkPropertiesByType();
     void evaluate(LinkEvaluator *leval);
     bool isLinked(Property* startProperty, Property* endProperty);
-    inline bool isValid();
+    bool isValid();
     std::vector<Property*> getSourceProperties();
 
     void addPropertyLinks(Property* startProperty, Property* endProperty);

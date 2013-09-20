@@ -59,7 +59,7 @@ void ProcessorLink::autoLinkPropertiesByType() {
     }
 }
 
-inline bool ProcessorLink::isValid() {
+bool ProcessorLink::isValid() {
     Processor* outProcessor = destinationProcessor_;
     Processor* inProcessor = sourceProcessor_;
 
