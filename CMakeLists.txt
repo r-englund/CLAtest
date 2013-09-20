@@ -10,8 +10,6 @@ project(inviwo-projects)
 set(IVW_VERSION 0.1)
 include(cmake/globalconfig.cmake)
 
-string (REPLACE "/Zm1000" "/Zm500 " CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-
 #--------------------------------------------------------------------
 # Default setup of options for the build
 
