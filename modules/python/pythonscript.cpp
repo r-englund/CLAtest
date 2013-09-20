@@ -49,7 +49,7 @@ bool PythonScript::run() {
 		return false;
 	}
 
-	ivwAssert(byteCode_, "No byte code");
+	ivwAssert(byteCode_!=0, "No byte code");
 	LogInfo("Running compiled script ...");
 
 	PyObject* ret = PyEval_EvalCode((PyCodeObject*)byteCode_, glb, glb);

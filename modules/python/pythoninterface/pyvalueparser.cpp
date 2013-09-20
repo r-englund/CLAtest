@@ -21,7 +21,7 @@ namespace inviwo{
     PARSEVEC3(vec3,int,parseVec3,"fff");
     PARSEVEC4(vec4,int,parseVec4,"ffff");
 
-    bool        parseBool(PyObject* args){return PyObject_IsTrue(args);};
+    bool        parseBool(PyObject* args){return PyObject_IsTrue(args) != 0;};
     std::string parseStr(PyObject* args){char* c;int l;PyArg_ParseTuple(args,"s#",&c,&l);return std::string(c);};
 
     mat2 parseMat2(PyObject* args){

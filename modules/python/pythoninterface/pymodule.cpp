@@ -36,7 +36,7 @@ void PyModule::addMethod(PyMethod* method){
 const char* PyModule::getModuleName(){return moduleName_.c_str();}
 
 void PyModule::printInfo(){
-    for(int i = 0;i<methods_.size();i++){
+    for(unsigned int i = 0;i<methods_.size();i++){
         std::string msg = "print \"";
         msg += methods_[i]->getDesc();
         msg += "\" ";

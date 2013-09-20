@@ -49,6 +49,8 @@ void ProcessorMetaData::deserialize(IvwDeserializer& d) {
     d.deserialize("position", position);
     d.deserialize("visibility", visibility);
 
+	//TODO check if position is within current monitors
+
     positionMetaData_.set(position);
     visiblityMetaData_.set(visibility);    
 }
