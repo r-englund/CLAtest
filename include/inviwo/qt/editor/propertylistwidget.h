@@ -13,7 +13,7 @@
 
 namespace inviwo {
 
-    class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget, public VoidObservable, public VoidObserver{
+    class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
 
         Q_OBJECT
 

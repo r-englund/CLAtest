@@ -86,7 +86,8 @@ namespace inviwo{
 
         PythonScript outputCatcher = PythonScript();
 		
-		std::ifstream file(InviwoApplication::getPtr()->getBasePath() +"modules/python/scripts/outputredirector.py");
+        std::string directorFileName = InviwoApplication::getPtr()->getBasePath() +"modules/python/scripts/outputredirector.py";
+		std::ifstream file(directorFileName.c_str());
 		std::string text((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
 		file.close();
         outputCatcher.setSource(text);

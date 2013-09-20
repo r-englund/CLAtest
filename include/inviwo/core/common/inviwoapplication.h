@@ -23,6 +23,7 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
+    virtual bool isInitialized() { return initialized_; }
 
     enum PathType {
         PATH_DATA,
