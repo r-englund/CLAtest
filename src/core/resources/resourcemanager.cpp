@@ -33,5 +33,25 @@ void ResourceManager::clearAllResources(){
     resources_.clear();
 }
 
+void ResourceManager::removeResource( Resource *resource )
+{
+    std::vector<Resource*>::iterator it = std::find(resources_.begin(), resources_.end(), resource);
+    if( it != resources_.end() ) {
+        notifyResourceRemoved(resource); 
+        delete *it;
+        resources_.erase(it);
+    }
+}
+
+void ResourceManager::removeResource( const std::string& identifier )
+{
+    std::vector<Resource*>::iterator it = std::find_if(resources_.begin(), resources_.end(), ResourceComparer(identifier));
+    if(it != resources_.end()) {
+        notifyResourceRemoved(*it); 
+        delete *it;
+        resources_.erase(it);
+    }
+}
+
 
 } // namespace

@@ -10,6 +10,7 @@
 #include <QVBoxLayout>
 #include <QListView>
 #include <QStandardItemModel>
+#include <QKeyEvent>
 
 namespace inviwo {
 
@@ -20,9 +21,10 @@ public:
     ~ResourceManagerWidget();
     void resourceAdded(const Resource* resource);	
     void resourceRemoved(const Resource* resource);	
-
+    void keyPressEvent(QKeyEvent *event);
 private:
 	void buildLayout();
+    void removeSelectedItems();
 
     QListView* listView_;
     QStandardItemModel *model_;

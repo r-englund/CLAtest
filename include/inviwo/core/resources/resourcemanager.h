@@ -27,11 +27,27 @@ public:
 
     /**
      * Add resource to ResourceManager.
-     * Will take ownership of Resource.
+     * Will take ownership of the resource.
      * 
      * @param resource Resource to add.
      */
     void addResource(Resource *resource) { resources_.push_back(resource); notifyResourceAdded(resource); }
+
+    /**
+     * Remove resource from ResourceManager.
+     * This will delete the resource.
+     * 
+     * @param resource Resource to remove.
+     */
+    void removeResource(Resource *resource);
+
+    /**
+     * Remove resource from ResourceManager using the identifier.
+     * This will delete the resource.
+     * 
+     * @param identifier Identifier of resource to remove.
+     */
+    void removeResource(const std::string& identifier);
 
     /**
      * Clear all resource in ResourceManager.
