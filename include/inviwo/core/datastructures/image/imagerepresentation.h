@@ -14,7 +14,7 @@ class IVW_CORE_API ImageRepresentation : public DataRepresentation {
 friend class Image;
 
 public:
-    ImageRepresentation(uvec2 dimensions, ImageType type, DataFormatBase format);
+    ImageRepresentation(uvec2 dimensions, ImageType type, const DataFormatBase* format);
     virtual ~ImageRepresentation();
     virtual void performOperation(DataOperation*) const {};
     virtual void resize(uvec2 dimensions);

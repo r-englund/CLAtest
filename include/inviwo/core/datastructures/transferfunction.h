@@ -41,7 +41,6 @@ public:
 private:
 int textureSize_;
 Image* data_;
-DataFormatBase dataFormat_;
 std::vector<TransferFunctionDataPoint*> dataPoints_;
 };
 

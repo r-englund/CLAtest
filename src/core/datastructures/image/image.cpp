@@ -6,7 +6,7 @@
 namespace inviwo {
 
 	
-Image::Image(uvec2 dimensions, ImageType comb, DataFormatBase format, bool allowMissingLayers) : 
+Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers) : 
 	StructuredData<2>(dimensions, format),
 	imageType_(comb), 
 	allowMissingLayers_(allowMissingLayers) {}

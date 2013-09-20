@@ -3,7 +3,9 @@
 namespace inviwo {
 
 Data::Data(): validRepresentations_(0), lastValidRepresentation_(NULL) {}
-Data::~Data() { clearRepresentations(); }
+Data::~Data() { 
+    clearRepresentations();
+}
 
 void Data::clearRepresentations() {
     setAllRepresentationsAsInvalid();
@@ -30,11 +32,11 @@ bool Data::hasRepresentations() const {
     return !representations_.empty();
 }
 
-void Data::setDataFormat(DataFormatBase format){
+void Data::setDataFormat(const DataFormatBase* format){
     dataFormatBase_ = format;
 }
 
-DataFormatBase Data::getDataFormat() const{
+const DataFormatBase* Data::getDataFormat() const{
     return dataFormatBase_;
 }
 

@@ -10,7 +10,7 @@ namespace inviwo {
 class IVW_CORE_API VolumeRAM : public VolumeRepresentation {
 
 public:
-    VolumeRAM(uvec3 dimension = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = DataFormatBase());
+    VolumeRAM(uvec3 dimension = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = DataFormatBase::get());
     virtual ~VolumeRAM();
     virtual void performOperation(DataOperation*) const = 0;
     virtual void initialize();
@@ -42,7 +42,7 @@ protected:
  * @param format of volume to create.
  * @return NULL if no valid format was specified.
  */
-IVW_CORE_API VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase& format);
+IVW_CORE_API VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format);
 
 } // namespace
 

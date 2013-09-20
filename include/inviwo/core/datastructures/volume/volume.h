@@ -9,7 +9,7 @@ namespace inviwo {
 
     class IVW_CORE_API Volume : public StructuredData<3> {
     public:
-        Volume(uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataUINT8());
+        Volume(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataUINT8::get());
         Volume(VolumeRepresentation*);
         Volume(VolumeRepresentation*, const Volume*);
         virtual ~Volume();

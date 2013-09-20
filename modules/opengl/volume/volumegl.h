@@ -11,9 +11,9 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API VolumeGL : public VolumeRepresentation {
 
 public:
-    VolumeGL(uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormatBase());
+    VolumeGL(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataFormatBase::get());
     VolumeGL(uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType);
-    VolumeGL(const void* texels, uvec3 dimensions = uvec3(128,128,128), DataFormatBase format = DataFormatBase());
+    VolumeGL(const void* texels, uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataFormatBase::get());
     VolumeGL(const void* texels, uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType);
     virtual ~VolumeGL();
 

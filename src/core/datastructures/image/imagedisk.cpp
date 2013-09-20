@@ -4,10 +4,10 @@
 namespace inviwo {
 
     ImageDisk::ImageDisk()
-        : ImageRepresentation(uvec2(256,256), COLOR_DEPTH_PICKING, DataVec4UINT8()), DiskRepresentation(){}
+        : ImageRepresentation(uvec2(256,256), COLOR_DEPTH_PICKING, DataVec4UINT8::get()), DiskRepresentation(){}
 
 	ImageDisk::ImageDisk(std::string url)
-        : ImageRepresentation(uvec2(256,256), COLOR_DEPTH_PICKING, DataVec4UINT8()), DiskRepresentation(url){
+        : ImageRepresentation(uvec2(256,256), COLOR_DEPTH_PICKING, DataVec4UINT8::get()), DiskRepresentation(url){
         initialize();
 	}
 

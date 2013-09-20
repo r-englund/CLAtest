@@ -11,7 +11,7 @@ namespace inviwo {
 
     public:
         DataRepresentation();
-        DataRepresentation(DataFormatBase format);
+        DataRepresentation(const DataFormatBase* format);
         virtual ~DataRepresentation();
         virtual void performOperation(DataOperation*) const = 0;
 
@@ -19,15 +19,17 @@ namespace inviwo {
         virtual void deinitialize() = 0;
         virtual DataRepresentation* clone() const = 0;
         virtual std::string getClassName() const;
-        DataFormatBase getDataFormat() const;
+        const DataFormatBase* getDataFormat() const;
         std::string getDataFormatString() const;
         DataFormatId getDataFormatId() const;
         bool isValid() const;
         void invalidate();
 
     protected:
+        void setDataFormat(const DataFormatBase* format);
+
         bool valid_;
-        DataFormatBase dataFormatBase_;
+        const DataFormatBase* dataFormatBase_;
     };
 
 } // namespace

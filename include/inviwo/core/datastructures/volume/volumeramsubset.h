@@ -70,11 +70,11 @@ namespace inviwo {
         uvec3 copyDimsWithoutBorder = static_cast<uvec3>(glm::max(static_cast<ivec3>(copyDataDims+correctBorder.llf+correctBorder.urb)-static_cast<ivec3>(trueBorder.llf)-static_cast<ivec3>(trueBorder.urb), ivec3(1,1,1)));
 
         // per row
-        size_t dataSize = copyDimsWithoutBorder.x*static_cast<size_t>(volume->getDataFormat().getBytesAllocated());
+        size_t dataSize = copyDimsWithoutBorder.x*static_cast<size_t>(volume->getDataFormat()->getBytesAllocated());
 
         //allocate space
         VolumeRAMPrecision<T>* newVolume;
-        if (volume->getDataFormat().getBitsAllocated() != B)
+        if (volume->getDataFormat()->getBitsAllocated() != B)
             newVolume = new VolumeRAMCustomPrecision<T, B>(newDim_, correctBorder);
         else
             newVolume = new VolumeRAMPrecision<T>(newDim_, correctBorder);

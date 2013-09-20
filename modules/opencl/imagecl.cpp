@@ -3,8 +3,8 @@
 #include <inviwo/core/util/assertion.h>
 namespace inviwo {
 
-ImageCL::ImageCL(uvec2 dimensions, ImageType type, DataFormatBase format, const void* data)
-    : ImageRepresentation(dimensions, type, format), imageFormat_(dataFormatToCLImageFormat(format.getId()))
+ImageCL::ImageCL(uvec2 dimensions, ImageType type, const DataFormatBase* format, const void* data)
+    : ImageRepresentation(dimensions, type, format), imageFormat_(dataFormatToCLImageFormat(format->getId()))
 {
     initialize(data);
 }

@@ -9,8 +9,8 @@ namespace inviwo {
 template<typename T>
 class IVW_CORE_API VolumeRAMPrecision : public VolumeRAM {
 public:
-    VolumeRAMPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = GenericDataFormat(T)());
-    VolumeRAMPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = GenericDataFormat(T)());
+    VolumeRAMPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = GenericDataFormat(T)::get());
+    VolumeRAMPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = GenericDataFormat(T)::get());
     virtual ~VolumeRAMPrecision() {};
     VolumeRAMPrecision(const VolumeRAMPrecision<T>& rhs) {
         *this = rhs;
@@ -34,8 +34,8 @@ public:
 template<typename T, size_t B>
 class IVW_CORE_API VolumeRAMCustomPrecision : public VolumeRAMPrecision<T> {
 public:
-    VolumeRAMCustomPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = DataFormat<T, B>()) : VolumeRAMPrecision<T>(dimensions, border, format) {};
-    VolumeRAMCustomPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), DataFormatBase format = DataFormat<T, B>()) : VolumeRAMPrecision<T>(data, dimensions, border, format) {};
+    VolumeRAMCustomPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format =  DataFormat<T, B>::get()) : VolumeRAMPrecision<T>(dimensions, border, format) {};
+    VolumeRAMCustomPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format =  DataFormat<T, B>::get()) : VolumeRAMPrecision<T>(data, dimensions, border, format) {};
     virtual ~VolumeRAMCustomPrecision() {};
     void performOperation(DataOperation*) const;
 };
@@ -54,12 +54,12 @@ typedef VolumeRAMCustomPrecision<DataUINT12::type, DataUINT12::bits>    VolumeRA
 typedef VolumeRAMCustomPrecision<DataINT12::type, DataINT12::bits>      VolumeRAMint12;
 
 template<typename T>
-VolumeRAMPrecision<T>::VolumeRAMPrecision(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, DataFormatBase format) : VolumeRAM(dimensions, border, format) {
+VolumeRAMPrecision<T>::VolumeRAMPrecision(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format) : VolumeRAM(dimensions, border, format) {
     initialize(0);
 }
 
 template<typename T>
-VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, uvec3 dimensions, VolumeRepresentation::VolumeBorders border, DataFormatBase format) : VolumeRAM(dimensions, border, format) { 
+VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format) : VolumeRAM(dimensions, border, format) { 
     initialize(data);
 }
 

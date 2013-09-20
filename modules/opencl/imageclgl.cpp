@@ -4,7 +4,7 @@
 
 namespace inviwo {
 
-ImageCLGL::ImageCLGL(uvec2 dimensions, ImageType type, DataFormatBase format, const Texture2D* data)
+ImageCLGL::ImageCLGL(uvec2 dimensions, ImageType type, const DataFormatBase* format, const Texture2D* data)
     : ImageRepresentation(dimensions, type, format), texture_(data)
 {
     if(data) {

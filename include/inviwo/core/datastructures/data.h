@@ -58,8 +58,8 @@ public:
 
     const MetaDataMap& getMetaDataMap() const { return metaData_; }
 
-    void setDataFormat(DataFormatBase format);
-    DataFormatBase getDataFormat() const;
+    void setDataFormat(const DataFormatBase* format);
+    const DataFormatBase* getDataFormat() const;
 
     //Others
     virtual Data* clone() const = 0;
@@ -96,7 +96,7 @@ protected:
     mutable int validRepresentations_; ///< Bit representation of valid representation. A maximum of 32 representations are supported.
     mutable DataRepresentation* lastValidRepresentation_; ///< A pointer to the the most recently updated representation. Makes updates and creation faster.
     MetaDataMap metaData_;
-    DataFormatBase dataFormatBase_;
+    const DataFormatBase* dataFormatBase_;
 
 };
 
@@ -399,17 +399,17 @@ template <unsigned int N>
 class IVW_CORE_API StructuredData : public SpatialData<N> {
 public:
 	StructuredData(const Vector<N, unsigned int>& dimension, 
-				   DataFormatBase format);
+				   const DataFormatBase* format);
 	StructuredData(const Vector<N,float>& offset, 
 				   const Vector<N, unsigned int>& dimension, 
-				   DataFormatBase format);
+				   const DataFormatBase* format);
 	StructuredData(const Matrix<N,float>& basis, 
 				   const Vector<N, unsigned int>& dimension, 
-				   DataFormatBase format);
+				   const DataFormatBase* format);
 	StructuredData(const Matrix<N,float>& basis, 
 				   const Vector<N,float>& offset, 
 				   const Vector<N, unsigned int>& dimension, 
-				   DataFormatBase format);
+				   const DataFormatBase* format);
 
 	virtual ~StructuredData(){}
 
@@ -420,7 +420,7 @@ public:
 
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Vector<N, unsigned int>& dimension, 
-								  DataFormatBase format) :
+								  const DataFormatBase* format) :
 	SpatialData<N>() {
 	setDimension(dimension);
 	Data::setDataFormat(format);
@@ -429,7 +429,7 @@ StructuredData<N>::StructuredData(const Vector<N, unsigned int>& dimension,
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Vector<N,float>& offset, 
 								  const Vector<N, unsigned int>& 
-								  dimension, DataFormatBase format) : 
+								  dimension, const DataFormatBase* format) : 
 	SpatialData<N>(offset) {
 	setDimension(dimension);
 	Data::setDataFormat(format);
@@ -438,7 +438,7 @@ StructuredData<N>::StructuredData(const Vector<N,float>& offset,
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Matrix<N,float>& basis, 
 								  const Vector<N, unsigned int>& dimension, 
-								  DataFormatBase format) : 
+								  const DataFormatBase* format) : 
 	SpatialData<N>(basis) {
 	setDimension(dimension);
 	Data::setDataFormat(format);
@@ -447,7 +447,7 @@ template <unsigned int N>
 StructuredData<N>::StructuredData(const Matrix<N,float>& basis, 
 								  const Vector<N,float>& offset, 
 								  const Vector<N, unsigned int>& dimension,
-								  DataFormatBase format) : 
+								  const DataFormatBase* format) : 
 	SpatialData<N>(basis, offset) {
 	setDimension(dimension);
 	Data::setDataFormat(format);

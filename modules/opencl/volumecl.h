@@ -12,8 +12,8 @@ namespace inviwo {
 class IVW_MODULE_OPENCL_API VolumeCL : public VolumeRepresentation {
 
 public:
-    VolumeCL(DataFormatBase format = DataFormatBase(), const void* data = NULL);
-    VolumeCL(uvec3 dimensions, DataFormatBase format = DataFormatBase(), const void* data = NULL);
+    VolumeCL(const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
+    VolumeCL(uvec3 dimensions, const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
     virtual ~VolumeCL();
     
     virtual void initialize() {};

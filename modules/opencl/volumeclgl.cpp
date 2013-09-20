@@ -4,7 +4,7 @@
 
 namespace inviwo {
 
-VolumeCLGL::VolumeCLGL(DataFormatBase format, const Texture3D* data)
+VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
 : VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format), image3D_(0), texture_(data) 
 {
     if(data) {
@@ -13,7 +13,7 @@ VolumeCLGL::VolumeCLGL(DataFormatBase format, const Texture3D* data)
     
 }
 
-VolumeCLGL::VolumeCLGL(const uvec3& dimensions, DataFormatBase format, const Texture3D* data)
+VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, const Texture3D* data)
     : VolumeRepresentation(dimensions, format), texture_(data)
 {
     initialize(data);

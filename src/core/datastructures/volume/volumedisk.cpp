@@ -4,11 +4,11 @@
 
 namespace inviwo {
 
-    VolumeDisk::VolumeDisk(uvec3 dimensions, DataFormatBase format)
+    VolumeDisk::VolumeDisk(uvec3 dimensions, const DataFormatBase* format)
         : VolumeRepresentation(dimensions, format), DiskRepresentation()
     {}
 
-    VolumeDisk::VolumeDisk(std::string srcFile, uvec3 dimensions, DataFormatBase format)
+    VolumeDisk::VolumeDisk(std::string srcFile, uvec3 dimensions, const DataFormatBase* format)
         : VolumeRepresentation(dimensions, format), DiskRepresentation(srcFile)
     {
         initialize();
@@ -36,10 +36,10 @@ namespace inviwo {
             if (readerSettings) {
                 dimensions_ = readerSettings->dimensions_;
                 if (readerSettings->dataFormat_== DataUINT8::str()) {
-                    dataFormatBase_ = DataUINT8();
+                    setDataFormat(DataUINT8::get());
                 }
                 else if(readerSettings->dataFormat_== DataUINT16::str()) {
-                    dataFormatBase_ = DataUINT16();
+                    setDataFormat(DataUINT8::get());
                 }
                 delete readerSettings;
             }

@@ -285,6 +285,7 @@ set(SOURCE_FILES
     util/exception.cpp
     util/filedirectory.cpp
     util/fileobserver.cpp
+    util/formats.cpp
     util/logdistributor.cpp
     util/observer.cpp
     util/settings.cpp

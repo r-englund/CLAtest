@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, DataFormatBase format)
+VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format)
     : VolumeRepresentation(dimensions, format, border), data_(0)
 {}
 
@@ -39,7 +39,7 @@ void VolumeRAM::saveData(std::string url) const {
             WriterSettings writerSettings;
             writerSettings.rawFileAbsolutePath_ = URLParser::replaceFileExtension(url, "raw");
             writerSettings.dimensions_ = dimensions_;
-            writerSettings.dataFormat_ = getDataFormat().getString();
+            writerSettings.dataFormat_ = getDataFormat()->getString();
             writerSettings.texels_ = getData();
             DatVolumeWriter::writeDatFileSettings(url, writerSettings);
             RawVolumeWriter::saveRawData(writerSettings);
@@ -48,7 +48,7 @@ void VolumeRAM::saveData(std::string url) const {
             IvfWriterSettings writerSettings;
             writerSettings.rawFileAbsolutePath_ = URLParser::replaceFileExtension(url, "raw");
             writerSettings.dimensions_ = dimensions_;
-            writerSettings.dataFormat_ = getDataFormat().getString();
+            writerSettings.dataFormat_ = getDataFormat()->getString();
             writerSettings.texels_ = getData();
             IvfVolumeWriter::writeIvfFileSettings(url, writerSettings);
             RawVolumeWriter::saveRawData(writerSettings);
@@ -56,10 +56,10 @@ void VolumeRAM::saveData(std::string url) const {
     }
 }
 
-VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase& format) {
+VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format) {
     // TODO: Add more formats
     VolumeRAM* result = 0;
-    switch (format.getId())
+    switch (format->getId())
     {
     case NOT_SPECIALIZED:
         LogErrorCustom("createVolumeRAM", "Invalid format");

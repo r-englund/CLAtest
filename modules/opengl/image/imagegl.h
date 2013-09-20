@@ -13,7 +13,7 @@ namespace inviwo {
     class IVW_MODULE_OPENGL_API ImageGL : public ImageRepresentation {
 
     public:
-        ImageGL(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, DataFormatBase format = DataVec4UINT8(), 
+        ImageGL(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(), 
             Texture2D* colorTexture = NULL, Texture2D* depthTexture = NULL, Texture2D* pickingTexture = NULL);
         virtual ~ImageGL();
 

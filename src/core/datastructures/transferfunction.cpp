@@ -4,7 +4,7 @@
 namespace inviwo {
 TransferFunction::TransferFunction() {
 	textureSize_ = 1024;
-	data_ = new Image(uvec2(textureSize_, 1), COLOR_ONLY, DataVec4FLOAT32());
+    data_ = new Image(uvec2(textureSize_, 1), COLOR_ONLY, DataVec4FLOAT32::get());
 }
 
 TransferFunction::TransferFunction(const TransferFunction& rhs) {

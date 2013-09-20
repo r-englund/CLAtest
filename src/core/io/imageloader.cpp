@@ -70,7 +70,7 @@ FIBITMAP* ImageLoader::convertToByte(const ImageRAM* inputImage, uvec2 dim, size
         break;
         }
     default: 
-        //LogErrorS("ImageExporter", "Cannot save format:" + (inputImage->getDataFormat().getString()) );
+        //LogErrorS("ImageExporter", "Cannot save format:" + (inputImage->getDataFormat()->getString()) );
         break;
     }
     return NULL;
@@ -89,8 +89,8 @@ void ImageLoader::saveImage(const char* filename, const Image* inputImage)
 
         uvec2 dim = inputImage->getDimension();
     
-        DataFormatBase dataformat = imageRam->getDataFormat();
-        size_t bitsPerPixel = dataformat.getBitsAllocated();
+        const DataFormatBase* dataformat = imageRam->getDataFormat();
+        size_t bitsPerPixel = dataformat->getBitsAllocated();
         assert(bitsPerPixel != 0);
 
         FIBITMAP* bitmap = convertToByte(imageRam, dim, bitsPerPixel);
@@ -199,8 +199,8 @@ void* ImageLoader::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst
     initLoader();
     uvec2 dim = srcImageRam->getDimensions();
 
-    DataFormatBase dataformat = srcImageRam->getDataFormat();
-    size_t bitsPerPixel = dataformat.getBitsAllocated();
+    const DataFormatBase* dataformat = srcImageRam->getDataFormat();
+    size_t bitsPerPixel = dataformat->getBitsAllocated();
     ivwAssert(bitsPerPixel!=0, "Invalid data format.");
 
     FIBITMAP* bitmap = convertToByte(srcImageRam, dim, bitsPerPixel);

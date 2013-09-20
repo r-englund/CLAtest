@@ -2,14 +2,14 @@
 
 namespace inviwo {
 
-VolumeCL::VolumeCL(DataFormatBase format, const void* data)
-    :  VolumeRepresentation(uvec3(128,128,128), format), imageFormat_(dataFormatToCLImageFormat(format.getId())), image3D_(0)
+VolumeCL::VolumeCL(const DataFormatBase* format, const void* data)
+    :  VolumeRepresentation(uvec3(128,128,128), format), imageFormat_(dataFormatToCLImageFormat(format->getId())), image3D_(0)
 {
     initialize(data);
 }
 
-VolumeCL::VolumeCL(uvec3 dimensions, DataFormatBase format, const void* data)
-    : image3D_(0), VolumeRepresentation(dimensions, format), imageFormat_(dataFormatToCLImageFormat(format.getId()))
+VolumeCL::VolumeCL(uvec3 dimensions, const DataFormatBase* format, const void* data)
+    : image3D_(0), VolumeRepresentation(dimensions, format), imageFormat_(dataFormatToCLImageFormat(format->getId()))
 {
     initialize(data);
 }

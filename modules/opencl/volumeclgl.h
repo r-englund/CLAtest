@@ -13,8 +13,8 @@ namespace inviwo {
 class IVW_MODULE_OPENCL_API VolumeCLGL : public VolumeRepresentation {
 
 public:
-    VolumeCLGL(DataFormatBase format = DataFormatBase(), const Texture3D* data = NULL);
-    VolumeCLGL(const uvec3& dimensions, DataFormatBase format, const Texture3D* data);
+    VolumeCLGL(const DataFormatBase* format = DataFormatBase::get(), const Texture3D* data = NULL);
+    VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, const Texture3D* data);
     virtual ~VolumeCLGL();
     virtual std::string getClassName() const { return "VolumeCLGL"; }
     virtual void initialize(){};

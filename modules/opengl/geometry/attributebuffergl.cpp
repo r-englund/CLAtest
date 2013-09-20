@@ -42,7 +42,7 @@ void AttributeBufferGL::upload(const AttributesBase* attrib, GLenum usage, GLenu
     target_ = target;
 
     //Get GL Format
-    glFormat_ = getGLFormats()->getGLFormat(attrib->getDataFormat().getId());
+    glFormat_ = getGLFormats()->getGLFormat(attrib->getDataFormat()->getId());
 
     //Specify location and state
     switch(attrib->getAttributeType())

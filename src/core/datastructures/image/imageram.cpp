@@ -3,7 +3,7 @@
 
 namespace inviwo {
 
-ImageRAM::ImageRAM(uvec2 dimension, ImageType type, DataFormatBase format)
+ImageRAM::ImageRAM(uvec2 dimension, ImageType type, const DataFormatBase* format)
     : ImageRepresentation(dimension, type, format)
 {
     ImageRAM::initialize();
@@ -47,9 +47,9 @@ bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {
     return true;
 }
 
-ImageRAM* createImageRAM(const uvec2& dimension, ImageType type, const DataFormatBase& format) {
+ImageRAM* createImageRAM(const uvec2& dimension, ImageType type, const DataFormatBase* format) {
     // TODO: Add more formats
-    switch (format.getId())
+    switch (format->getId())
     {
     case NOT_SPECIALIZED:
         LogErrorCustom("createImageRAM", "Invalid format");

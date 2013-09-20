@@ -3,7 +3,7 @@
 
 namespace inviwo {
 
-Volume::Volume(uvec3 dimensions, DataFormatBase format) : StructuredData<3>(dimensions, format) {
+Volume::Volume(uvec3 dimensions, const DataFormatBase* format) : StructuredData<3>(dimensions, format) {
 	representations_.clear();
     metaData_.removeAll();
 }

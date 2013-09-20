@@ -2,10 +2,10 @@
 
 namespace inviwo {
 
-VolumeGL::VolumeGL(uvec3 dimensions, DataFormatBase format)
+VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format)
     : VolumeRepresentation(dimensions, format), volumeTexture_(0)
 {
-    GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format.getId());
+    GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format->getId());
     format_ = glFormat.format;
     internalFormat_ = glFormat.internalFormat;
     dataType_ = glFormat.type;
@@ -13,15 +13,15 @@ VolumeGL::VolumeGL(uvec3 dimensions, DataFormatBase format)
 }
 
 VolumeGL::VolumeGL(uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType)
-: VolumeRepresentation(dimensions, DataFormatBase()), format_(format), internalFormat_(internalFormat), dataType_(dataType), volumeTexture_(0)
+: VolumeRepresentation(dimensions, DataFormatBase::get()), format_(format), internalFormat_(internalFormat), dataType_(dataType), volumeTexture_(0)
 {
     initialize();
 }
 
-VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, DataFormatBase format)
+VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, const DataFormatBase* format)
 : VolumeRepresentation(dimensions, format), volumeTexture_(0)
 {
-    GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format.getId());
+    GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format->getId());
     format_ = glFormat.format;
     internalFormat_ = glFormat.internalFormat;
     dataType_ = glFormat.type;
@@ -29,7 +29,7 @@ VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, DataFormatBase format)
 }
 
 VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType)
-: VolumeRepresentation(dimensions, DataFormatBase()), format_(format), internalFormat_(internalFormat), dataType_(dataType), volumeTexture_(0)
+: VolumeRepresentation(dimensions, DataFormatBase::get()), format_(format), internalFormat_(internalFormat), dataType_(dataType), volumeTexture_(0)
 {
     initialize(texels);
 }

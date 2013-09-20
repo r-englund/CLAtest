@@ -8,13 +8,13 @@ namespace inviwo {
         borders_(VolumeBorders())
     {}
 
-    VolumeRepresentation::VolumeRepresentation(uvec3 dimension, DataFormatBase format)
+    VolumeRepresentation::VolumeRepresentation(uvec3 dimension, const DataFormatBase* format)
         : DataRepresentation(format),
         dimensions_(dimension),
         borders_(VolumeBorders())
     {}
 
-    VolumeRepresentation::VolumeRepresentation(uvec3 dimension, DataFormatBase format, VolumeBorders border)
+    VolumeRepresentation::VolumeRepresentation(uvec3 dimension, const DataFormatBase* format, VolumeBorders border)
         : DataRepresentation(format),
         dimensions_(dimension),
         borders_(border)

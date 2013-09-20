@@ -168,11 +168,11 @@ void VolumeSplit::performBricking() {
 
     if (limitingMemory_.getValue() == GPU) {
         uint64_t gpuMemInBytes = (openGLInfoRef_ ? static_cast<uint64_t>(openGLInfoRef_->getCurrentAvailableTextureMem()) : 0);
-        brickDim = calculateBestBrickDimension(memUsageStrategy_.getValue(), gpuMemInBytes, brickDim, inport_.getData()->getDataFormat().getBitsStored());
+        brickDim = calculateBestBrickDimension(memUsageStrategy_.getValue(), gpuMemInBytes, brickDim, inport_.getData()->getDataFormat()->getBitsStored());
     }
     else{
         uint64_t physMemInBytes = (systemInfoRef_ ? systemInfoRef_->getAvailableMemory() : 0);
-        brickDim = calculateBestBrickDimension(memUsageStrategy_.getValue(), physMemInBytes, brickDim, inport_.getData()->getDataFormat().getBitsStored());
+        brickDim = calculateBestBrickDimension(memUsageStrategy_.getValue(), physMemInBytes, brickDim, inport_.getData()->getDataFormat()->getBitsStored());
     }
 
     // bound brick size by maximal volume size

@@ -10,7 +10,7 @@ namespace inviwo {
 class IVW_CORE_API ImageRAM : public ImageRepresentation {
 
 public:
-    ImageRAM(uvec2 dimension, ImageType type, DataFormatBase format = DataFormatBase());
+    ImageRAM(uvec2 dimension, ImageType type, const DataFormatBase* format = DataFormatBase::get());
 
     virtual ~ImageRAM();
 
@@ -36,8 +36,8 @@ protected:
 template<typename T>
 class IVW_CORE_API ImageRAMPrecision : public ImageRAM {
 public:
-    ImageRAMPrecision(uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, DataFormatBase format = GenericDataFormat(T)());
-    ImageRAMPrecision(T* data, uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, DataFormatBase format = GenericDataFormat(T)());
+    ImageRAMPrecision(uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = GenericDataFormat(T)::get());
+    ImageRAMPrecision(T* data, uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = GenericDataFormat(T)::get());
     ImageRAMPrecision(const ImageRAMPrecision<T>& rhs): ImageRAM() {
         *this = rhs;
     }
@@ -59,11 +59,11 @@ public:
 };
 
 template<typename T>
-ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, ImageType type, DataFormatBase format) : ImageRAM(dimensions, type, format) {
+ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, ImageType type, const DataFormatBase* format) : ImageRAM(dimensions, type, format) {
     initialize();
 }
 template<typename T>
-ImageRAMPrecision<T>::ImageRAMPrecision(T* data, uvec2 dimensions, ImageType type, DataFormatBase format) : ImageRAM(dimensions, type, format) {
+ImageRAMPrecision<T>::ImageRAMPrecision(T* data, uvec2 dimensions, ImageType type, const DataFormatBase* format) : ImageRAM(dimensions, type, format) {
     initialize(data);
 }
 
@@ -102,7 +102,7 @@ glm::vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const glm::uvec2& pos) const
     glm::vec4 result;
     T* data = static_cast<T*>(data_);
     T val = data[pos.x+(pos.y*(dimensions_.x-1))];
-    result = getDataFormat().convertToNormalizedVec4Float(&val);
+    result = getDataFormat()->convertToNormalizedVec4Float(&val);
     return result;
 }
 
@@ -131,7 +131,7 @@ typedef ImageRAMPrecision<DataVec4FLOAT32::type>    ImageRAMVec4float32;
  * @param format of image to create.
  * @return NULL if no valid format was specified. 
  */
-IVW_CORE_API ImageRAM* createImageRAM(const uvec2& dimension, ImageType type, const DataFormatBase& format);
+IVW_CORE_API ImageRAM* createImageRAM(const uvec2& dimension, ImageType type, const DataFormatBase* format);
 
 } // namespace
 
