@@ -7,8 +7,7 @@ namespace inviwo {
 
 ResourceManagerWidget::ResourceManagerWidget(QWidget* parent) : InviwoDockWidget(tr("Resources"), parent), ResourceManagerObserver() {
     setObjectName("ResourceManagerWidget");
-    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);   
-         
+    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	ResourceManager::instance()->addObserver(this);
 	buildLayout();	
 }
@@ -43,8 +42,7 @@ void ResourceManagerWidget::resourceRemoved( const Resource* resource )
     QList<QStandardItem *> foundItem = model_->findItems( QString::fromStdString( resource->getIdentifier() ) );
     for(QList<QStandardItem *>::iterator it = foundItem.begin(); it != foundItem.end(); ++it) {
         model_->removeRow(model_->indexFromItem(*it).row());
-    }
-    
+    }    
 }
 
 void ResourceManagerWidget::keyPressEvent( QKeyEvent *event )
@@ -55,17 +53,21 @@ void ResourceManagerWidget::keyPressEvent( QKeyEvent *event )
 }
 
 void ResourceManagerWidget::removeSelectedItems()
-{
-    // Destruction of QModelIndexList creates a segmentation error for some reason (Qt 4.8.1)
+{    
     listView_->setUpdatesEnabled(false);
+    
+    //Destruction of QModelIndexList creates a segmentation error for some reason (Qt 4.8.1)
+    //QModelIndexList indexes = listView_->selectionModel()->selectedIndexes();
+    std::vector<int> rows;    
+    for (size_t i=0; i<(size_t)model_->rowCount(); i++)
+        if (listView_->selectionModel()->isRowSelected(i, QModelIndex())) rows.push_back(i);   
+    
+    qSort(rows.begin(), rows.end(), qGreater<int>());
 
-
-    QModelIndexList indexes = listView_->selectionModel()->selectedIndexes();
-    qSort(indexes.begin(), indexes.end(), qGreater<QModelIndex>());
-
-    for(QModelIndexList::const_iterator iter = indexes.constBegin(); iter != indexes.constEnd(); ++iter){
-        ResourceManager::instance()->removeResource(model_->item(iter->row())->text().toStdString());
-        //model_->removeRow(iter->row());
+    for (size_t i=0; i<rows.size(); i++) {
+        //FIXME:: QString::toStdString() crashes hence toLatin1() used.
+        std::string resrcIdentifier = model_->item(rows[i])->text().toLatin1();
+        ResourceManager::instance()->removeResource(resrcIdentifier);        
     }
     listView_->setUpdatesEnabled(true);
 }
