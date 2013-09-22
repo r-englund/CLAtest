@@ -66,7 +66,7 @@ void ResourceManagerWidget::removeSelectedItems()
 
     for (size_t i=0; i<rows.size(); i++) {
         //FIXME:: QString::toStdString() crashes hence toLatin1() used.
-        std::string resrcIdentifier = model_->item(rows[i])->text().toLatin1();
+        std::string resrcIdentifier(model_->item(rows[i])->text().toLatin1().data());
         ResourceManager::instance()->removeResource(resrcIdentifier);        
     }
     listView_->setUpdatesEnabled(true);
