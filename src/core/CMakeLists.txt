@@ -27,6 +27,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/image.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagetypes.h 
@@ -153,6 +154,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formats.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/formatsdefinefunc.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/inviwofactorybase.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h

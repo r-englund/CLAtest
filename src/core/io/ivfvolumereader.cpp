@@ -1,6 +1,6 @@
-#include "inviwo/core/io/ivfvolumereader.h"
-#include "inviwo/core/datastructures/volume/volumeramprecision.h"
-#include "inviwo/core/datastructures/volume/volumetypeclassification.h"
+#include <inviwo/core/io/ivfvolumereader.h>
+#include <inviwo/core/datastructures/volume/volumeramprecision.h>
+#include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 
 namespace inviwo {
 
@@ -24,12 +24,13 @@ Data* IvfVolumeReader::readData() {
     DataRepresentation* dataRepresentation = 0;
 
     //Allocate representation
-    if (ivfReaderSettings.dataFormat_ == "UINT8") {
-        dataRepresentation = new VolumeRAMuint8(static_cast<uint8_t*>(rawData), ivfReaderSettings.dimensions_);            
+    if (ivfReaderSettings.dataFormat_ == "") {
+        delete data;
+        data = 0;
+        return data;    
     }
-    else if (ivfReaderSettings.dataFormat_ == "UINT16") {
-        dataRepresentation = new VolumeRAMuint16(static_cast<uint16_t*>(rawData), ivfReaderSettings.dimensions_);            
-    }
+    #define DataFormatIdMacro(i) else if (ivfReaderSettings.dataFormat_ == "##i") { dataRepresentation = new VolumeRAM_##i(static_cast<Data##i::type*>(rawData), ivfReaderSettings.dimensions_); }
+    #include <inviwo/core/util/formatsdefinefunc.h>
     else {
         delete data;
         data = 0;

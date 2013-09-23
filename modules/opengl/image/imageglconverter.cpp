@@ -40,69 +40,22 @@ ImageGL2RAMConverter::ImageGL2RAMConverter()
 ImageGL2RAMConverter::~ImageGL2RAMConverter() {}
 
 DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* source) {
-    const ImageGL* imageRepresentation = dynamic_cast<const ImageGL*>(source);
-    GLuint nChannels = imageRepresentation->getColorTexture()->getNChannels();
-    uvec2 dim = imageRepresentation->getDimensions();
-    ImageType type = imageRepresentation->getImageType();
-    ImageRAM* image = NULL;
-    switch (imageRepresentation->getColorTexture()->getDataType()) {
-        case GL_UNSIGNED_BYTE: {
-            switch (nChannels) {
-                case 1:
-                    image = new ImageRAMPrecision<uint8_t>(dim, type); break;
-                case 2:
-                    image = new ImageRAMPrecision< glm::detail::tvec2<uint8_t> >(dim, type); break;
-                case 3:
-                    image = new ImageRAMPrecision< glm::detail::tvec3<uint8_t> >(dim, type); break;
-                case 4:
-                    image = new ImageRAMPrecision< glm::detail::tvec4<uint8_t> >(dim, type); break;
-                default:
-                    image = NULL;
-                }
-            break;
+    const ImageGL* imageGL = dynamic_cast<const ImageGL*>(source);
+    if(imageGL){
+        ImageRAM* image = createImageRAM(imageGL->getDimensions(), imageGL->getImageType(), imageGL->getDataFormat()); 
+        if (image) {
+            imageGL->getColorTexture()->download(image->getData());
+            return image;
+        } else {
+            LogError("Cannot convert format from GL to RAM:" << imageGL->getDataFormat()->getString());
         }
-        //    
-        //case GL_BYTE:
-        //    dataTypeSize = 1;
-        //    break;
-        //case GL_UNSIGNED_SHORT:
-        //case GL_SHORT:
-        //case GL_HALF_FLOAT:
-        //    dataTypeSize = 2;
-        //    break;
-        //case GL_UNSIGNED_INT:
-        //case GL_INT:
-        case GL_FLOAT: {
-            switch (nChannels) {
-                case 1:
-                    image = new ImageRAMPrecision<float>(dim, type); break;
-                case 2:
-                    image = new ImageRAMPrecision< glm::detail::tvec2<float> >(dim, type); break;
-                case 3:
-                    image = new ImageRAMPrecision< glm::detail::tvec3<float> >(dim, type); break;
-                case 4:
-                    image = new ImageRAMPrecision< glm::detail::tvec4<float> >(dim, type); break;
-                default:
-                    image = NULL;
-            }
-            break;
-        }     
-        //    dataTypeSize = 4;
-        //    break;
-        //default:
-        //    dataTypeSize = 0;
-        //    LogErrorS("ImageGL2RAMConverter::convert()", "Invalid data type: " << dataTypeSize);
     }
-    if (image) {
-        //imageRepresentation->activateBuffer();
-        imageRepresentation->getColorTexture()->download(image->getData());
-        //imageRepresentation->deactivateBuffer();
-        return image;
-    } else {
-        LogError("Invalid conversion");
+    else {
+        LogError("Source could not be cast to ImageGL");
     }
     return NULL;
 }
+
 void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const ImageGL* imageSrc = dynamic_cast<const ImageGL*>(source);
     ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);

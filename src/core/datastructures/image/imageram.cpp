@@ -1,4 +1,5 @@
 #include <inviwo/core/datastructures/image/imageram.h>
+#include <inviwo/core/datastructures/image/imageramprecision.h>
 #include <inviwo/core/io/imageloader.h>
 
 namespace inviwo {
@@ -54,30 +55,8 @@ ImageRAM* createImageRAM(const uvec2& dimension, ImageType type, const DataForma
     case NOT_SPECIALIZED:
         LogErrorCustom("createImageRAM", "Invalid format");
         return NULL;
-    case FLOAT16:
-        return new ImageRAMfloat16(dimension, type); break;
-    case FLOAT32:
-        return new ImageRAMfloat32(dimension, type); break;
-    case FLOAT64:
-        return new ImageRAMfloat64(dimension, type); break;
-    case INT8:
-        return new ImageRAMint8(dimension, type); break;
-    case INT12:
-        return new ImageRAMint12(dimension, type); break;
-    case INT16:
-        return new ImageRAMint16(dimension, type); break;
-    case INT32:
-        return new ImageRAMint32(dimension, type); break;
-    case UINT8:
-        return new ImageRAMuint8(dimension, type); break;
-    case UINT12:
-        return new ImageRAMuint12(dimension, type); break;
-    case UINT16:
-        return new ImageRAMuint16(dimension, type); break;
-    case Vec4FLOAT32:
-        return new ImageRAMVec4float32(dimension, type); break;
-    case Vec4UINT8:
-        return new ImageRAMVec4uint8(dimension, type); break;
+    #define DataFormatIdMacro(i) case i: return new ImageRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension, type); break;
+    #include <inviwo/core/util/formatsdefinefunc.h>
     default:
         LogErrorCustom("createImageRAM", "Invalid format or not implemented");
         return NULL;

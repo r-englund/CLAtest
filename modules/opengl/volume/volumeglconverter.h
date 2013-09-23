@@ -24,6 +24,20 @@ public:
     void update(const DataRepresentation* source, DataRepresentation* destination);
 };
 
+class IVW_MODULE_OPENGL_API VolumeGL2RAMConverter : public RepresentationConverterType<VolumeRAM> {
+
+public:
+    VolumeGL2RAMConverter();
+    virtual ~VolumeGL2RAMConverter();
+
+    inline bool canConvertFrom(const DataRepresentation* source) const {
+        return dynamic_cast<const VolumeGL*>(source) != NULL;
+    }
+
+    DataRepresentation* createFrom(const DataRepresentation* source);
+    void update(const DataRepresentation* source, DataRepresentation* destination);
+};
+
 class IVW_MODULE_OPENGL_API VolumeDisk2GLConverter : public RepresentationConverterPackage<VolumeGL> {
 
 public:

@@ -40,19 +40,6 @@ public:
     void performOperation(DataOperation*) const;
 };
 
-typedef VolumeRAMPrecision<DataUINT8::type>     VolumeRAMuint8;
-typedef VolumeRAMPrecision<DataINT8::type>      VolumeRAMint8;
-typedef VolumeRAMPrecision<DataUINT16::type>    VolumeRAMuint16;
-typedef VolumeRAMPrecision<DataINT16::type>     VolumeRAMint16;
-typedef VolumeRAMPrecision<DataUINT32::type>    VolumeRAMuint32;
-typedef VolumeRAMPrecision<DataINT32::type>     VolumeRAMint32;
-typedef VolumeRAMPrecision<DataFLOAT16::type>   VolumeRAMfloat16;
-typedef VolumeRAMPrecision<DataFLOAT32::type>   VolumeRAMfloat32;
-typedef VolumeRAMPrecision<DataFLOAT64::type>   VolumeRAMfloat64;
-
-typedef VolumeRAMCustomPrecision<DataUINT12::type, DataUINT12::bits>    VolumeRAMuint12;
-typedef VolumeRAMCustomPrecision<DataINT12::type, DataINT12::bits>      VolumeRAMint12;
-
 template<typename T>
 VolumeRAMPrecision<T>::VolumeRAMPrecision(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format) : VolumeRAM(dimensions, border, format) {
     initialize(0);
@@ -98,7 +85,8 @@ void VolumeRAMCustomPrecision<T,B>::performOperation(DataOperation* dop) const{
     executeOperationOnVolumeRAMPrecision<T, B>(dop); 
 }
 
-
+#define DataFormatIdMacro(i) typedef VolumeRAMCustomPrecision<Data##i::type, Data##i::bits> VolumeRAM_##i;
+#include <inviwo/core/util/formatsdefinefunc.h>
 
 } // namespace
 

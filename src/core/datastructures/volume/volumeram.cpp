@@ -62,28 +62,8 @@ VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format)
     {
     case NOT_SPECIALIZED:
         LogErrorCustom("createVolumeRAM", "Invalid format");
-    case FLOAT16:
-        result = new VolumeRAMfloat16(dimension); break;
-    case FLOAT32:
-        result = new VolumeRAMfloat32(dimension); break;
-    case FLOAT64:
-        result = new VolumeRAMfloat64(dimension); break;
-    case INT8:
-        result = new VolumeRAMint8(dimension); break;
-    case INT12:
-        result = new VolumeRAMint12(dimension); break;
-    case INT16:
-        result = new VolumeRAMint16(dimension); break;
-    case INT32:
-        result = new VolumeRAMint32(dimension); break;
-    case UINT8:
-        result = new VolumeRAMuint8(dimension); break;
-    case UINT12:
-        result = new VolumeRAMuint12(dimension); break;
-    case UINT16:
-        result = new VolumeRAMuint16(dimension); break;
-    case UINT32:
-        result = new VolumeRAMuint32(dimension); break;
+    #define DataFormatIdMacro(i) case i: return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); break;
+    #include <inviwo/core/util/formatsdefinefunc.h>
     default:
         LogErrorCustom("createVolumeRAM", "Invalid format or not implemented");
         break;
