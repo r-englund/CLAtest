@@ -10,20 +10,36 @@ DataFormatBase::DataFormatBase()
 DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, std::string s) 
     : formatId_(t), bitsAllocated_(bA), bitsStored_(bS), formatStr_(s){}
 
-float DataFormatBase::convertToNormalizedFloat(void*) const { 
+float DataFormatBase::valueToNormalizedFloat(void*) const { 
     return 0.f; 
 }
 
-vec2 DataFormatBase::convertToNormalizedVec2Float(void*) const { 
+vec2 DataFormatBase::valueToNormalizedVec2Float(void*) const { 
     return vec2(0.f); 
 }
 
-vec3 DataFormatBase::convertToNormalizedVec3Float(void*) const { 
+vec3 DataFormatBase::valueToNormalizedVec3Float(void*) const { 
     return vec3(0.f); 
 }
 
-vec4 DataFormatBase::convertToNormalizedVec4Float(void*) const { 
+vec4 DataFormatBase::valueToNormalizedVec4Float(void*) const { 
     return vec4(0.f); 
+}
+
+void DataFormatBase::floatToValue(float val, void* loc) const { 
+    loc = &val;
+}
+
+void DataFormatBase::vec2ToValue(vec2 val, void* loc) const { 
+    loc = &val;
+}
+
+void DataFormatBase::vec3ToValue(vec3 val, void* loc) const { 
+    loc = &val;
+}
+
+void DataFormatBase::vec4ToValue(vec4 val, void* loc) const { 
+    loc = &val; 
 }
 
 size_t DataFormatBase::getBitsAllocated() const { 

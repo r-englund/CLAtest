@@ -22,6 +22,15 @@ public:
     virtual bool copyAndResizeImage(DataRepresentation*);
     virtual void* getData() {return data_;};
     virtual const void* getData() const {return data_;};
+
+    virtual void setValueFromSingleFloat(const uvec2& pos, float val) = 0;
+    virtual void setValueFromVec2Float(const uvec2& pos, vec2 val) = 0;
+    virtual void setValueFromVec3Float(const uvec2& pos, vec3 val) = 0;
+    virtual void setValueFromVec4Float(const uvec2& pos, vec4 val) = 0;
+
+    virtual float getValueAsSingleFloat(const uvec2& pos) const = 0;
+    virtual vec2 getValueAsVec2Float(const uvec2& pos) const = 0;
+    virtual vec3 getValueAsVec3Float(const uvec2& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec2& pos) const = 0;
 
     // Takes ownership of data pointer
@@ -29,6 +38,11 @@ public:
         deinitialize();
         data_ = data;
     }
+
+    static inline unsigned int posToIndex(const uvec2& pos, const uvec2& dim){
+        return pos.x+(pos.y*dim.x);
+    }
+
 protected:
     void* data_;
 };

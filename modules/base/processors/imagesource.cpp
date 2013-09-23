@@ -41,14 +41,6 @@ void ImageSource::process() {
 
         //Original image dimension loaded from disk may differ from requested dimension.
         outImageDisk->resize(outImage->getDimension());
-        
-        /*
-        ImageDisk* outImageDisk = new ImageDisk(imageFileName_.get());
-        void* rawData = outImageDisk->loadFileDataAndRescale(outImage->getDimension());
-        ImageRAM* outImageRAM = outImage->getEditableRepresentation<ImageRAM>();
-        outImageRAM->setData(rawData);
-        delete outImageDisk;
-        */
     }
 }
 

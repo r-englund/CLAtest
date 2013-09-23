@@ -29,6 +29,21 @@ public:
         deinitialize();
         data_ = data;
     }
+
+    virtual void setValueFromSingleFloat(const uvec3& pos, float val) = 0;
+    virtual void setValueFromVec2Float(const uvec3& pos, vec2 val) = 0;
+    virtual void setValueFromVec3Float(const uvec3& pos, vec3 val) = 0;
+    virtual void setValueFromVec4Float(const uvec3& pos, vec4 val) = 0;
+
+    virtual float getValueAsSingleFloat(const uvec3& pos) const = 0;
+    virtual vec2 getValueAsVec2Float(const uvec3& pos) const = 0;
+    virtual vec3 getValueAsVec3Float(const uvec3& pos) const = 0;
+    virtual vec4 getValueAsVec4Float(const uvec3& pos) const = 0;
+
+    static inline unsigned int posToIndex(const uvec3& pos, const uvec3& dim){
+        return pos.x+(pos.y*dim.x)+(pos.z*dim.x *dim.y);
+    }
+
 protected:
     void* data_;
 };

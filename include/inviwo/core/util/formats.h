@@ -186,10 +186,15 @@ public:
     static std::string str() { return "Error, type specialization not implemented"; }
     static DataFormatId id() { return NOT_SPECIALIZED; }
 
-    virtual float convertToNormalizedFloat(void*) const;
-    virtual vec2 convertToNormalizedVec2Float(void*) const;
-    virtual vec3 convertToNormalizedVec3Float(void*) const;
-    virtual vec4 convertToNormalizedVec4Float(void*) const;
+    virtual float valueToNormalizedFloat(void*) const;
+    virtual vec2 valueToNormalizedVec2Float(void*) const;
+    virtual vec3 valueToNormalizedVec3Float(void*) const;
+    virtual vec4 valueToNormalizedVec4Float(void*) const;
+
+    virtual void floatToValue(float, void*) const;
+    virtual void vec2ToValue(vec2, void*) const;
+    virtual void vec3ToValue(vec3, void*) const;
+    virtual void vec4ToValue(vec4, void*) const;
 
     size_t getBitsAllocated() const;
     size_t getBitsStored() const;
@@ -239,6 +244,16 @@ public:
 
     static std::string str() { return DataFormatBase::str(); }
     static DataFormatId id() { return DataFormatBase::id(); }
+
+    inline float valueToNormalizedFloat(void* val) const { return DataFormatBase::valueToNormalizedFloat(val); }
+    inline vec2 valueToNormalizedVec2Float(void* val) const { return DataFormatBase::valueToNormalizedVec2Float(val); }
+    inline vec3 valueToNormalizedVec3Float(void* val) const { return DataFormatBase::valueToNormalizedVec3Float(val); }
+    inline vec4 valueToNormalizedVec4Float(void* val) const { return DataFormatBase::valueToNormalizedVec4Float(val); }
+
+    inline void floatToValue(float val, void* loc) const { DataFormatBase::floatToValue(val, loc); }
+    inline void vec2ToValue(vec2 val, void* loc) const { DataFormatBase::vec2ToValue(val, loc); }
+    inline void vec3ToValue(vec3 val, void* loc) const { DataFormatBase::vec3ToValue(val, loc); }
+    inline void vec4ToValue(vec4 val, void* loc) const { DataFormatBase::vec4ToValue(val, loc); }
 
     //typename D = dest, typename S = src
 
@@ -326,11 +341,6 @@ public:
         result.w = normalizeUnsigned<D, S>(valT.w);
         return result;
     }
-
-    inline float convertToNormalizedFloat(void* val) const { return DataFormatBase::convertToNormalizedFloat(val); }
-    inline vec2 convertToNormalizedVec2Float(void* val) const { return DataFormatBase::convertToNormalizedVec2Float(val); }
-    inline vec3 convertToNormalizedVec3Float(void* val) const { return DataFormatBase::convertToNormalizedVec3Float(val); }
-    inline vec4 convertToNormalizedVec4Float(void* val) const { return DataFormatBase::convertToNormalizedVec4Float(val); }
 
 };
 
@@ -511,17 +521,25 @@ template<> inline std::string DataUINT32::str() { return "UINT32"; }
 template<> inline std::string DataUINT64::str() { return "UINT64"; }
 
 // Type Conversion Specializations
-#define DataNormalizedSignedSingle(F) \
-    template<> inline float F::convertToNormalizedFloat(void* val) const { return normalizeSignedSingle<float, F::type>(val); } \
-    template<> inline vec2 F::convertToNormalizedVec2Float(void* val) const { return singleToVec2<float>(normalizeSignedSingle<float, F::type>(val)); } \
-    template<> inline vec3 F::convertToNormalizedVec3Float(void* val) const { return singleToVec3<float>(normalizeSignedSingle<float, F::type>(val)); } \
-    template<> inline vec4 F::convertToNormalizedVec4Float(void* val) const { return singleToVec4<float>(normalizeSignedSingle<float, F::type>(val)); }
+#define DatatoFloat(F) \
+    template<> inline void F::floatToValue(float val, void* loc) const { *static_cast<F::type*>(loc) = static_cast<F::type>(val); } \
+    template<> inline void F::vec2ToValue(vec2 val, void* loc) const { *static_cast<F::type*>(loc) = static_cast<F::type>(val.x); } \
+    template<> inline void F::vec3ToValue(vec3 val, void* loc) const { *static_cast<F::type*>(loc) = static_cast<F::type>(val.x); } \
+    template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = static_cast<F::type>(val.x); }
 
+#define DataNormalizedSignedSingle(F) \
+    template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeSignedSingle<float, F::type>(val); } \
+    template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return singleToVec2<float>(normalizeSignedSingle<float, F::type>(val)); } \
+    template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return singleToVec3<float>(normalizeSignedSingle<float, F::type>(val)); } \
+    template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return singleToVec4<float>(normalizeSignedSingle<float, F::type>(val)); } \
+    DatatoFloat(F)
+    
 #define DataNormalizedUnsignedSingle(F) \
-    template<> inline float F::convertToNormalizedFloat(void* val) const { return normalizeUnsignedSingle<float, F::type>(val); } \
-    template<> inline vec2 F::convertToNormalizedVec2Float(void* val) const { return singleToVec2<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
-    template<> inline vec3 F::convertToNormalizedVec3Float(void* val) const { return singleToVec3<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
-    template<> inline vec4 F::convertToNormalizedVec4Float(void* val) const { return singleToVec4<float>(normalizeUnsignedSingle<float, F::type>(val)); }
+    template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedSingle<float, F::type>(val); } \
+    template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return singleToVec2<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
+    template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return singleToVec3<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
+    template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return singleToVec4<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
+    DatatoFloat(F)
 
 DataNormalizedSignedSingle(DataFLOAT16)
 DataNormalizedSignedSingle(DataFLOAT32)
@@ -610,17 +628,25 @@ template<> inline std::string DataVec2UINT32::str() { return "Vec2UINT32"; }
 template<> inline std::string DataVec2UINT64::str() { return "Vec2UINT64"; }
 
 // Type Conversion Specializations
+#define DatatoVec2t(F, G) \
+    template<> inline void F::floatToValue(float val, void* loc) const { *static_cast<F::type*>(loc) = singleToVec2<G::type>(static_cast<G::type>(val)); } \
+    template<> inline void F::vec2ToValue(vec2 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y)); } \
+    template<> inline void F::vec3ToValue(vec3 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y)); } \
+    template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y)); }
+
 #define DataNormalizedSignedVec2(F, G) \
-    template<> inline float F::convertToNormalizedFloat(void* val) const { return normalizeSignedVec2<float, G::type>(val).x; } \
-    template<> inline vec2 F::convertToNormalizedVec2Float(void* val) const { return normalizeSignedVec2<float, G::type>(val); } \
-    template<> inline vec3 F::convertToNormalizedVec3Float(void* val) const { return vec2ToVec3<float>(normalizeSignedVec2<float, G::type>(val)); } \
-    template<> inline vec4 F::convertToNormalizedVec4Float(void* val) const { return vec2ToVec4<float>(normalizeSignedVec2<float, G::type>(val)); }
+    template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeSignedVec2<float, G::type>(val).x; } \
+    template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeSignedVec2<float, G::type>(val); } \
+    template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return vec2ToVec3<float>(normalizeSignedVec2<float, G::type>(val)); } \
+    template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return vec2ToVec4<float>(normalizeSignedVec2<float, G::type>(val)); } \
+    DatatoVec2t(F, G)
 
 #define DataNormalizedUnsignedVec2(F, G) \
-    template<> inline float F::convertToNormalizedFloat(void* val) const { return normalizeUnsignedVec2<float, G::type>(val).x; } \
-    template<> inline vec2 F::convertToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec2<float, G::type>(val); } \
-    template<> inline vec3 F::convertToNormalizedVec3Float(void* val) const { return vec2ToVec3<float>(normalizeUnsignedVec2<float, G::type>(val)); } \
-    template<> inline vec4 F::convertToNormalizedVec4Float(void* val) const { return vec2ToVec4<float>(normalizeUnsignedVec2<float, G::type>(val)); }
+    template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedVec2<float, G::type>(val).x; } \
+    template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec2<float, G::type>(val); } \
+    template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return vec2ToVec3<float>(normalizeUnsignedVec2<float, G::type>(val)); } \
+    template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return vec2ToVec4<float>(normalizeUnsignedVec2<float, G::type>(val)); } \
+    DatatoVec2t(F, G)
 
 DataNormalizedSignedVec2(DataVec2FLOAT16, DataFLOAT16)
 DataNormalizedSignedVec2(DataVec2FLOAT32, DataFLOAT32)
@@ -709,17 +735,25 @@ template<> inline std::string DataVec3UINT32::str() { return "Vec3UINT32"; }
 template<> inline std::string DataVec3UINT64::str() { return "Vec3UINT64"; }
 
 // Type Conversion Specializations
+#define DataToVec3t(F, G) \
+    template<> inline void F::floatToValue(float val, void* loc) const { *static_cast<F::type*>(loc) = singleToVec3<G::type>(static_cast<G::type>(val)); } \
+    template<> inline void F::vec2ToValue(vec2 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), 0.f); } \
+    template<> inline void F::vec3ToValue(vec3 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), static_cast<G::type>(val.z)); } \
+    template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), static_cast<G::type>(val.z)); }
+
 #define DataNormalizedSignedVec3(F, G) \
-    template<> inline float F::convertToNormalizedFloat(void* val) const { return normalizeSignedVec3<float, G::type>(val).x; } \
-    template<> inline vec2 F::convertToNormalizedVec2Float(void* val) const { return normalizeSignedVec2<float, G::type>(val).xy(); } \
-    template<> inline vec3 F::convertToNormalizedVec3Float(void* val) const { return normalizeSignedVec3<float, G::type>(val); } \
-    template<> inline vec4 F::convertToNormalizedVec4Float(void* val) const { return vec3ToVec4<float>(normalizeSignedVec3<float, G::type>(val)); }
+    template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeSignedVec3<float, G::type>(val).x; } \
+    template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeSignedVec2<float, G::type>(val).xy(); } \
+    template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return normalizeSignedVec3<float, G::type>(val); } \
+    template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return vec3ToVec4<float>(normalizeSignedVec3<float, G::type>(val)); } \
+    DataToVec3t(F, G)
 
 #define DataNormalizedUnsignedVec3(F, G) \
-    template<> inline float F::convertToNormalizedFloat(void* val) const { return normalizeUnsignedVec3<float, G::type>(val).x; } \
-    template<> inline vec2 F::convertToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec3<float, G::type>(val).xy(); } \
-    template<> inline vec3 F::convertToNormalizedVec3Float(void* val) const { return normalizeUnsignedVec3<float, G::type>(val); } \
-    template<> inline vec4 F::convertToNormalizedVec4Float(void* val) const { return vec3ToVec4<float>(normalizeUnsignedVec3<float, G::type>(val)); }
+    template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedVec3<float, G::type>(val).x; } \
+    template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec3<float, G::type>(val).xy(); } \
+    template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return normalizeUnsignedVec3<float, G::type>(val); } \
+    template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return vec3ToVec4<float>(normalizeUnsignedVec3<float, G::type>(val)); } \
+    DataToVec3t(F, G)
 
 DataNormalizedSignedVec3(DataVec3FLOAT16, DataFLOAT16)
 DataNormalizedSignedVec3(DataVec3FLOAT32, DataFLOAT32)
@@ -808,17 +842,25 @@ template<> inline std::string DataVec4UINT32::str() { return "Vec4UINT32"; }
 template<> inline std::string DataVec4UINT64::str() { return "Vec4UINT64"; }
 
 // Type Conversion Specializations
+#define DataToVec4t(F, G) \
+    template<> inline void F::floatToValue(float val, void* loc) const { *static_cast<F::type*>(loc) = singleToVec4<G::type>(static_cast<G::type>(val)); } \
+    template<> inline void F::vec2ToValue(vec2 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), 0.f, 1.f); } \
+    template<> inline void F::vec3ToValue(vec3 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), static_cast<G::type>(val.z), 1.f); } \
+    template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), static_cast<G::type>(val.z), static_cast<G::type>(val.w)); }
+
 #define DataNormalizedSignedVec4(F, G) \
-    template<> inline float F::convertToNormalizedFloat(void* val) const { return normalizeSignedVec4<float, G::type>(val).x; } \
-    template<> inline vec2 F::convertToNormalizedVec2Float(void* val) const { return normalizeSignedVec4<float, G::type>(val).xy(); } \
-    template<> inline vec3 F::convertToNormalizedVec3Float(void* val) const { return normalizeSignedVec4<float, G::type>(val).xyz(); } \
-    template<> inline vec4 F::convertToNormalizedVec4Float(void* val) const { return normalizeSignedVec4<float, G::type>(val); }
+    template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeSignedVec4<float, G::type>(val).x; } \
+    template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeSignedVec4<float, G::type>(val).xy(); } \
+    template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return normalizeSignedVec4<float, G::type>(val).xyz(); } \
+    template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return normalizeSignedVec4<float, G::type>(val); } \
+    DataToVec4t(F, G)
 
 #define DataNormalizedUnsignedVec4(F, G) \
-    template<> inline float F::convertToNormalizedFloat(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).x; } \
-    template<> inline vec2 F::convertToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).xy(); } \
-    template<> inline vec3 F::convertToNormalizedVec3Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).xyz(); } \
-    template<> inline vec4 F::convertToNormalizedVec4Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val); }
+    template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).x; } \
+    template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).xy(); } \
+    template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).xyz(); } \
+    template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val); } \
+    DataToVec4t(F, G)
 
 DataNormalizedSignedVec4(DataVec4FLOAT16, DataFLOAT16)
 DataNormalizedSignedVec4(DataVec4FLOAT32, DataFLOAT32)

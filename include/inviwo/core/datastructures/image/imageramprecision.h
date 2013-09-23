@@ -28,6 +28,11 @@ public:
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
 
+    void setValueFromSingleFloat(const uvec2& pos, float val);
+    void setValueFromVec2Float(const uvec2& pos, vec2 val);
+    void setValueFromVec3Float(const uvec2& pos, vec3 val);
+    void setValueFromVec4Float(const uvec2& pos, vec4 val);
+
     float getValueAsSingleFloat(const uvec2& pos) const;
     vec2 getValueAsVec2Float(const uvec2& pos) const;
     vec3 getValueAsVec3Float(const uvec2& pos) const;
@@ -84,11 +89,35 @@ DataRepresentation* ImageRAMPrecision<T>::clone() const {
 }
 
 template<typename T>
+void ImageRAMPrecision<T>::setValueFromSingleFloat(const uvec2& pos, float val){
+    T* data = static_cast<T*>(data_);
+    getDataFormat()->floatToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
+void ImageRAMPrecision<T>::setValueFromVec2Float(const uvec2& pos, vec2 val){
+    T* data = static_cast<T*>(data_);
+    getDataFormat()->vec2ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
+void ImageRAMPrecision<T>::setValueFromVec3Float(const uvec2& pos, vec3 val){
+    T* data = static_cast<T*>(data_);
+    getDataFormat()->vec3ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
+void ImageRAMPrecision<T>::setValueFromVec4Float(const uvec2& pos, vec4 val){
+    T* data = static_cast<T*>(data_);
+    getDataFormat()->vec4ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
 float ImageRAMPrecision<T>::getValueAsSingleFloat(const uvec2& pos) const{
     float result;
     T* data = static_cast<T*>(data_);
-    T val = data[pos.x+(pos.y*dimensions_.x)];
-    result = getDataFormat()->convertToNormalizedFloat(&val);
+    T val = data[posToIndex(pos, dimensions_)];
+    result = getDataFormat()->valueToNormalizedFloat(&val);
     return result;
 }
 
@@ -96,8 +125,8 @@ template<typename T>
 vec2 ImageRAMPrecision<T>::getValueAsVec2Float(const uvec2& pos) const{
     vec2 result;
     T* data = static_cast<T*>(data_);
-    T val = data[pos.x+(pos.y*dimensions_.x)];
-    result = getDataFormat()->convertToNormalizedVec2Float(&val);
+    T val = data[posToIndex(pos, dimensions_)];
+    result = getDataFormat()->valueToNormalizedVec2Float(&val);
     return result;
 }
 
@@ -105,8 +134,8 @@ template<typename T>
 vec3 ImageRAMPrecision<T>::getValueAsVec3Float(const uvec2& pos) const{
     vec3 result;
     T* data = static_cast<T*>(data_);
-    T val = data[pos.x+(pos.y*dimensions_.x)];
-    result = getDataFormat()->convertToNormalizedVec3Float(&val);
+    T val = data[posToIndex(pos, dimensions_)];
+    result = getDataFormat()->valueToNormalizedVec3Float(&val);
     return result;
 }
 
@@ -114,8 +143,8 @@ template<typename T>
 vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
     vec4 result;
     T* data = static_cast<T*>(data_);
-    T val = data[pos.x+(pos.y*dimensions_.x)];
-    result = getDataFormat()->convertToNormalizedVec4Float(&val);
+    T val = data[posToIndex(pos, dimensions_)];
+    result = getDataFormat()->valueToNormalizedVec4Float(&val);
     return result;
 }
 

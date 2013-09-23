@@ -29,6 +29,16 @@ public:
     virtual void initialize(void*);
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
+
+    void setValueFromSingleFloat(const uvec3& pos, float val);
+    void setValueFromVec2Float(const uvec3& pos, vec2 val);
+    void setValueFromVec3Float(const uvec3& pos, vec3 val);
+    void setValueFromVec4Float(const uvec3& pos, vec4 val);
+
+    float getValueAsSingleFloat(const uvec3& pos) const;
+    vec2 getValueAsVec2Float(const uvec3& pos) const;
+    vec3 getValueAsVec3Float(const uvec3& pos) const;
+    vec4 getValueAsVec4Float(const uvec3& pos) const;
 };
 
 template<typename T, size_t B>
@@ -83,6 +93,66 @@ void VolumeRAMPrecision<T>::performOperation(DataOperation* dop) const{
 template<typename T, size_t B>
 void VolumeRAMCustomPrecision<T,B>::performOperation(DataOperation* dop) const{ 
     executeOperationOnVolumeRAMPrecision<T, B>(dop); 
+}
+
+template<typename T>
+void VolumeRAMPrecision<T>::setValueFromSingleFloat(const uvec3& pos, float val){
+    T* data = static_cast<T*>(data_);
+    getDataFormat()->floatToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
+void VolumeRAMPrecision<T>::setValueFromVec2Float(const uvec3& pos, vec2 val){
+    T* data = static_cast<T*>(data_);
+    getDataFormat()->vec2ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
+void VolumeRAMPrecision<T>::setValueFromVec3Float(const uvec3& pos, vec3 val){
+    T* data = static_cast<T*>(data_);
+    getDataFormat()->vec3ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
+void VolumeRAMPrecision<T>::setValueFromVec4Float(const uvec3& pos, vec4 val){
+    T* data = static_cast<T*>(data_);
+    getDataFormat()->vec4ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
+float VolumeRAMPrecision<T>::getValueAsSingleFloat(const uvec3& pos) const{
+    float result;
+    T* data = static_cast<T*>(data_);
+    T val = data[posToIndex(pos, dimensions_)];
+    result = getDataFormat()->valueToNormalizedFloat(&val);
+    return result;
+}
+
+template<typename T>
+vec2 VolumeRAMPrecision<T>::getValueAsVec2Float(const uvec3& pos) const{
+    vec2 result;
+    T* data = static_cast<T*>(data_);
+    T val = data[posToIndex(pos, dimensions_)];
+    result = getDataFormat()->valueToNormalizedVec2Float(&val);
+    return result;
+}
+
+template<typename T>
+vec3 VolumeRAMPrecision<T>::getValueAsVec3Float(const uvec3& pos) const{
+    vec3 result;
+    T* data = static_cast<T*>(data_);
+    T val = data[posToIndex(pos, dimensions_)];
+    result = getDataFormat()->valueToNormalizedVec3Float(&val);
+    return result;
+}
+
+template<typename T>
+vec4 VolumeRAMPrecision<T>::getValueAsVec4Float(const uvec3& pos) const{
+    vec4 result;
+    T* data = static_cast<T*>(data_);
+    T val = data[posToIndex(pos, dimensions_)];
+    result = getDataFormat()->valueToNormalizedVec4Float(&val);
+    return result;
 }
 
 #define DataFormatIdMacro(i) typedef VolumeRAMCustomPrecision<Data##i::type, Data##i::bits> VolumeRAM_##i;
