@@ -45,7 +45,7 @@ void Canvas::initialize() {
 
 void Canvas::deinitialize() {}
 
-void Canvas::render(const Image* im){}
+void Canvas::render(const Image* im) {}
 
 void Canvas::repaint() {}
 

@@ -10,12 +10,12 @@ namespace inviwo {
     class IVW_CORE_API TransferFunctionProperty : public TemplateProperty<TransferFunction> {
 
     public:
-        TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value,
+        TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value = TransferFunction(),
                                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                                  PropertySemantics::Type semantics = PropertySemantics::Default);
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
+        virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
 
 		void customSet();
     private:

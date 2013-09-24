@@ -42,7 +42,7 @@ public:
     void setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID);
     void setGlobalShaderParameters(Shader* shader);
 
-    static inline void renderImagePlaneSquare() {
+    static inline void renderImagePlaneRect() {
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
@@ -50,7 +50,7 @@ public:
         glPushMatrix();
         glLoadIdentity();
         glDepthFunc(GL_ALWAYS);
-        CanvasGL::renderImagePlaneSquare();
+        CanvasGL::renderImagePlaneRect();
         glDepthFunc(GL_LESS);
         glPopMatrix();
         glMatrixMode(GL_MODELVIEW);
@@ -59,8 +59,8 @@ public:
 
     // deprecated
     static inline void renderQuad() {
-        ivwDeprecatedMethod("renderImagePlaneSquare()");
-        renderImagePlaneSquare();
+        ivwDeprecatedMethod("renderImagePlaneRect()");
+        renderImagePlaneRect();
     }
 };
 

@@ -33,7 +33,7 @@ void CanvasGL::initialize() {
 
 void CanvasGL::initializeGL() {
     if (!glewInitialized_) {
-        //LogInfo("Initializing GLEW");
+        LogInfo("Initializing GLEW");
         glewInit();
         LGL_ERROR;
         glewInitialized_ = true;
@@ -123,7 +123,7 @@ void CanvasGL::renderPicking() {
 void CanvasGL::renderNoise() {
     noiseShader_->activate();
     noiseShader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
-    renderImagePlaneSquare();
+    renderImagePlaneRect();
     noiseShader_->deactivate();
 }
 
@@ -133,7 +133,7 @@ void CanvasGL::renderTexture(GLint unitNumber) {
     shader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
     //FIXME: glViewport should not be here, which indicates this context is not active.
     glViewport(0, 0, dimensions_.x, dimensions_.y);
-    renderImagePlaneSquare();
+    renderImagePlaneRect();
     shader_->deactivate();
 }
 

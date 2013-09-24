@@ -48,7 +48,7 @@ void ImageMixer::process() {
     shader_->setUniform("inport1_", inportTexture1.getUnitNumber());
     shader_->setUniform("alpha_", alpha_.get());
     shader_->setUniform("dimension_", vec2(1.f / csize[0], 1.f / csize[1]) );
-    renderImagePlaneSquare();
+    renderImagePlaneRect();
     shader_->deactivate();
     deactivateCurrentTarget();
     unbindColorTexture(inport0_);

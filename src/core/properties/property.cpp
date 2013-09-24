@@ -102,7 +102,7 @@ bool Property::operator==( Property* prop){
     return false;
 }
 
-void Property::setGroupDisplayName( std::string groupID,std::string groupDisplayName ){
+void Property::setGroupDisplayName(std::string groupID, std::string groupDisplayName) {
         Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID,groupDisplayName));
 }
 
@@ -110,14 +110,12 @@ std::string Property::getGroupDisplayName(){
     return groupDisplayNames_[groupID_];
 }
 
-void Property::setVisibility( PropertyVisibility::VisibilityMode visibilityMode ){
+void Property::setVisibility(PropertyVisibility::VisibilityMode visibilityMode) {
     this->visibilityMode_ = visibilityMode;
     updateVisibility();
 }
 
-
 void Property::updateVisibility() {
-
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     PropertyVisibility::VisibilityMode appMode = static_cast<PropertyVisibility::VisibilityMode>(
         static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());

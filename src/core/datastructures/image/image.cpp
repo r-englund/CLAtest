@@ -40,7 +40,7 @@ void Image::resize(uvec2 dimensions) {
 }
 
 
-uvec2 Image::getDimension() const{
+uvec2 Image::getDimension() const {
 	return StructuredData<2>::getDimension();
 }
 void  Image::setDimension(const uvec2& dim){
@@ -93,20 +93,20 @@ void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
     }
 }
 
-void Image::setInputSource(ImageLayerType layer, const Image* src){
+void Image::setInputSource(ImageLayerType layer, const Image* src) {
     inputSources_[layer] = src;
 }
 
-void Image::setAllowMissingLayers(bool allowMissingLayers){
+void Image::setAllowMissingLayers(bool allowMissingLayers) {
     allowMissingLayers_ = allowMissingLayers;
 }
 
-void Image::createDefaultRepresentation() const{
+void Image::createDefaultRepresentation() const {
 	representations_.push_back(createImageRAM((uvec2)getDimension(), getImageType(), getDataFormat()));
 }
 
-void Image::editableRepresentationCreated() const{
-    if(!allowMissingLayers_){
+void Image::editableRepresentationCreated() const {
+    if (!allowMissingLayers_) {
         ImageRepresentation* lastValidRepresentation = dynamic_cast<ImageRepresentation*>(lastValidRepresentation_);
         ImageSourceMap::const_iterator it;
         if(!typeContainsColor(getImageType())){

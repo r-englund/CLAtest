@@ -23,7 +23,7 @@ public:
     virtual void resize(uvec2 size);
     virtual void update();
 
-    static inline void renderImagePlaneSquare(){
+    static inline void renderImagePlaneRect(){
         screenAlignedSquareGL_->render();
     }
 
