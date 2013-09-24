@@ -1,4 +1,4 @@
-#include "ParallelepipedProxyGeometry.h"
+#include "parallelepipedproxygeometry.h"
 #include <inviwo/core/datastructures/geometry/basemeshcreator.h>
 
 namespace inviwo {
