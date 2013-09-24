@@ -24,7 +24,7 @@ public:
 
 protected:
     void createDefaultRepresentation() const;
-    void editableRepresentationCreated() const;
+    void newEditableRepresentationCreated() const;
 private:
     bool allowMissingLayers_;
     ImageType imageType_;

@@ -67,7 +67,7 @@ public:
 protected:
     virtual void createDefaultRepresentation() const = 0;
 
-    virtual void editableRepresentationCreated() const { }
+    virtual void newEditableRepresentationCreated() const { }
 
     template<typename T> 
     void updateRepresentation(T* representation, int index) const; 
@@ -218,12 +218,14 @@ void Data::updateRepresentation(T* representation, int index) const {
 
 template<typename T>
 T* Data::getEditableRepresentation() {
+    bool hasRep = hasRepresentation<T>();
     T* result = const_cast<T*>(getRepresentation<T>());
     if (representations_.size()>1) {
         invalidateAllOther<T>();
     }
     lastValidRepresentation_ = result;
-    editableRepresentationCreated();
+    if(!hasRep)
+        newEditableRepresentationCreated();
     return result;
 }
 
