@@ -18,7 +18,7 @@ public:
     static void deactivate();
 
     void attachTexture(Texture2D* texture, GLenum attachementID = GL_COLOR_ATTACHMENT0_EXT);
-    void attachTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear = false);
+    void attachTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear);
     void detachTexture(GLenum attachementID);
     void detachAllTextures();
     std::vector<GLenum> getColorAttachementIDs() { return attachedColorTextures_; }
