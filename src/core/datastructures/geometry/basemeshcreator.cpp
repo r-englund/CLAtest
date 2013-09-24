@@ -37,6 +37,45 @@ BaseMeshRAM* BaseMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 te
     return recPrism;
 }
 
+BaseMeshRAM* BaseMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, 	
+											 glm::vec3 tex, glm::vec3 t1, glm::vec3 t2, glm::vec3 t3, 	
+											 glm::vec4 col, glm::vec4 c1, glm::vec4 c2, glm::vec4 c3){
+   
+	BaseMeshRAM* ppd = new BaseMeshRAM();
+    ppd->initialize();
+
+	//8 corners
+	ppd->addVertex(pos               , tex               , col               ); // (0,0,0)
+	ppd->addVertex(pos      + p2     , tex      + t2     , col      + c2     ); // (0,1,0)
+	ppd->addVertex(pos      + p2 + p3, tex      + t2 + t3, col      + c2 + c3); // (0,1,1)
+	ppd->addVertex(pos           + p3, tex           + t3, col           + c3); // (0,0,1)
+	ppd->addVertex(pos + p1      + p3, tex + t1      + t3, col + c1      + c3); // (1,0,1)
+	ppd->addVertex(pos + p1          , tex + t1          , col + c1          ); // (1,0,0)
+	ppd->addVertex(pos + p1 + p2     , tex + t1 + t2     , col + c1 + c2     ); // (1,1,0)
+	ppd->addVertex(pos + p1 + p2 + p3, tex + t1 + t2 + t3, col + c1 + c2 + c3); // (1,1,1)
+
+    //14 indices (Triangle Strip)
+    ppd->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
+    ppd->addIndex(3);
+    ppd->addIndex(4);
+    ppd->addIndex(2);
+    ppd->addIndex(7);
+    ppd->addIndex(6);
+    ppd->addIndex(4);
+    ppd->addIndex(5);
+    ppd->addIndex(0);
+    ppd->addIndex(6);
+    ppd->addIndex(1);
+    ppd->addIndex(2);
+    ppd->addIndex(0);
+    ppd->addIndex(3);
+    ppd->addIndex(4);
+
+    return ppd;
+
+
+}
+
 BaseMeshRAM* BaseMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
 	BaseMeshRAM* rec = new BaseMeshRAM();
 	rec->initialize();
