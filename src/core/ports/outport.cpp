@@ -35,7 +35,7 @@ void Outport::getSuccessorsUsingPortType(std::vector<Processor*>& successorProce
         for (size_t j=0; j<outports.size(); j++) {
             T* outPort = dynamic_cast<T*>(outports[j]);
             if (outPort)
-                outPort->getSuccessorsUsingPortType<T>(successorProcessors);
+                outPort->template getSuccessorsUsingPortType<T>(successorProcessors);
         }
     }
 }

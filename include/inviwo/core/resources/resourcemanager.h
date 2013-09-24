@@ -84,7 +84,7 @@ public:
      */
     template<typename T> std::vector<T*> getResourcesByType() const {
         std::vector<T*> typedResources;
-        for(std::vector<Resource*>::iterator it = resources_.begin(); it != resources_.end(); ++it) {
+        for(std::vector<Resource*>::const_iterator it = resources_.begin(); it != resources_.end(); ++it) {
             if(dynamic_cast<T*>(*it)) {
                 typedResources.push_back(*it);
             }

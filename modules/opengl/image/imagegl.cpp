@@ -37,8 +37,8 @@ void ImageGL::initialize() {
         }
         else{
             depthTexture_->bind();
-        }  
-        frameBufferObject_->attachTexture(depthTexture_, GL_DEPTH_ATTACHMENT); 
+        }
+        frameBufferObject_->attachTexture(depthTexture_, static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
     }
     if(typeContainsPicking(getImageType())){
         if(!pickingTexture_){
