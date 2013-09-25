@@ -2,6 +2,7 @@
 #define IVW_PICKINGOBJECT_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 
@@ -10,12 +11,16 @@ namespace inviwo {
 class IVW_CORE_API PickingObject {
 
 public:
-    PickingObject();
+    PickingObject(size_t, vec3);
 
     virtual ~PickingObject();
 
+    const size_t& getPickingId() const{ return id_; }
+    const vec3& getPickingColor() const{ return color_; }
+
 private:
-    
+    size_t id_;
+    vec3 color_;
 
 };
 

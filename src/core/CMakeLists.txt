@@ -147,6 +147,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/callback.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/colorconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/datetime.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h

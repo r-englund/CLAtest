@@ -10,6 +10,18 @@ namespace inviwo {
 * Manager for picking objects. 
 */
 
+class FindPickingObject
+{
+public:
+    FindPickingObject(const vec3& c) : color_(c) {}
+
+    bool operator()(PickingObject* obj){ 
+        return obj->getPickingColor() == color_; 
+    }
+private:
+    vec3 color_;
+};
+
 class IVW_CORE_API PickingManager {
 
 public:
@@ -18,12 +30,19 @@ public:
         return &instance;
     }
     ~PickingManager();
+
+    const PickingObject* registerPickingCallback();
+
+    void handlePickedColor(const vec3&);
    
-private:
+protected:
     PickingManager() {};
     PickingManager(PickingManager const&) {};
     void operator=(PickingManager const&) {};
 
+    PickingObject* generatePickingObject(size_t);
+
+private:
     std::vector<PickingObject*> pickingObjects_;
 };
 

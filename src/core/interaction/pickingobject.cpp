@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-PickingObject::PickingObject() {};
+PickingObject::PickingObject(size_t id, vec3 c) : id_(id), color_(c) {};
 
 PickingObject::~PickingObject() {}
 

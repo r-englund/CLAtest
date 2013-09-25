@@ -13,6 +13,10 @@
 #define BYTES_TO_BITS(bytes) (bytes*8)
 #define BITS_TO_BYTES(bytes) (bytes/8)
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 namespace inviwo {
 
     template <unsigned int N, typename T>
