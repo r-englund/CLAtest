@@ -46,9 +46,6 @@ namespace inviwo {
 			clipX_.setRangeMax(static_cast<int>(dims_.x));
 			clipY_.setRangeMax(static_cast<int>(dims_.y));
 			clipZ_.setRangeMax(static_cast<int>(dims_.z));
-			clipX_.set(glm::ivec2(0, static_cast<int>(dims_.x)));
-			clipY_.set(glm::ivec2(0, static_cast<int>(dims_.y)));
-			clipZ_.set(glm::ivec2(0, static_cast<int>(dims_.z)));
 		}
 
 		// Using column vectors in basis
@@ -92,9 +89,6 @@ namespace inviwo {
 			c2 = c2*(static_cast<float>(clipY_.get().y)-static_cast<float>(clipY_.get().x))/static_cast<float>(dims_.y);
 			c3 = c3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
 		}
-		LogInfo("Dim " << glm::to_string(dims_));
-		LogInfo("Bas " << glm::to_string(basis_));
-		LogInfo("Pos " << glm::to_string(pos));
 
 		//Create parallelepiped and set it to the outport
 		outport_.setData(new Geometry(
