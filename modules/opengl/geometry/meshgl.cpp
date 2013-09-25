@@ -103,6 +103,13 @@ GLenum MeshGL::getDrawMode(RenderType rt, ConnectivityType ct){
     }
 }
 
+const AttributeBufferGL* MeshGL::getArrayBufferGL(size_t idx) const{
+    if(idx < arrayBuffers_.size())
+        return arrayBuffers_[idx];
+
+    return NULL;
+}
+
 void MeshGL::renderArray(RenderType rt) const{
     glDrawArrays(drawMethods_[rt].drawMode, 0, arrayBuffers_[0]->getAttribute()->getNumberOfAttributes());
 }

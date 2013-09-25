@@ -14,6 +14,7 @@ public:
     virtual ~AttributeBufferGL();
     const AttributesBase* getAttribute() const;
     GLenum getFormatType() const;
+    GLuint getId() const;
 
     void enable() const;
     void disable() const;

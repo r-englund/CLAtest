@@ -4,7 +4,9 @@
 namespace inviwo {
 
 bool CanvasGL::glewInitialized_ = false;
-const GeometryGL* CanvasGL::screenAlignedSquareGL_ = NULL;
+const MeshGL* CanvasGL::screenAlignedRectGL_ = NULL;
+GLuint CanvasGL::screenAlignedVerticesId_ = 0;
+GLuint CanvasGL::screenAlignedTexCoordsId_ = 1;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions) {
@@ -16,14 +18,7 @@ CanvasGL::CanvasGL(uvec2 dimensions)
 CanvasGL::~CanvasGL() {}
 
 void CanvasGL::initialize() {
-    glShadeModel(GL_SMOOTH);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-    glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-    glEnable(GL_COLOR_MATERIAL);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     LGL_ERROR;
     shader_ = new Shader("img_texturequad.frag");
     LGL_ERROR;
@@ -41,8 +36,10 @@ void CanvasGL::initializeGL() {
 }
 
 void CanvasGL::initializeSquare(){
-    if (!screenAlignedSquareGL_) {
-        screenAlignedSquareGL_ = screenAlignedSquare_->getRepresentation<GeometryGL>();
+    if (!screenAlignedRectGL_) {
+        screenAlignedRectGL_ = dynamic_cast<const MeshGL*>(screenAlignedRect_->getRepresentation<GeometryGL>());
+        screenAlignedVerticesId_ = screenAlignedRectGL_->getArrayBufferGL(0)->getId();
+        screenAlignedTexCoordsId_ = screenAlignedRectGL_->getArrayBufferGL(1)->getId();
         LGL_ERROR;
     }
 }

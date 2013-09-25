@@ -5,7 +5,7 @@ namespace inviwo {
 
 EventHandler* eventHandler_();
 
-Geometry* Canvas::screenAlignedSquare_ = NULL;
+Geometry* Canvas::screenAlignedRect_ = NULL;
 
 Canvas::Canvas(uvec2 dimensions)
                : dimensions_(dimensions),
@@ -13,7 +13,7 @@ Canvas::Canvas(uvec2 dimensions)
 {
     shared = true;
     pickingContainer_ = new PickingContainer();
-    if(!screenAlignedSquare_){
+    if(!screenAlignedRect_){
         shared = false;
         Position2dAttributes* vertices_ = new Position2dAttributes();
         vertices_->add(vec2(-1.0f, -1.0f));
@@ -25,16 +25,16 @@ Canvas::Canvas(uvec2 dimensions)
         texCoords_->add(vec2(1.0f, 0.0f));
         texCoords_->add(vec2(0.0f, 1.0f));
         texCoords_->add(vec2(1.0f, 1.0f));
-        MeshRAM* screenAlignedSquareMesh = new MeshRAM(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
-        screenAlignedSquareMesh->addAttribute(vertices_);
-        screenAlignedSquareMesh->addAttribute(texCoords_);
-        screenAlignedSquare_ = new Geometry(screenAlignedSquareMesh);
+        MeshRAM* screenAlignedRectMesh = new MeshRAM(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
+        screenAlignedRectMesh->addAttribute(vertices_);
+        screenAlignedRectMesh->addAttribute(texCoords_);
+        screenAlignedRect_ = new Geometry(screenAlignedRectMesh);
     }
 }
 
 Canvas::~Canvas() {
     if(!shared)
-        delete screenAlignedSquare_;
+        delete screenAlignedRect_;
     delete pickingContainer_;
 }
 

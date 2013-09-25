@@ -20,6 +20,10 @@ GLenum AttributeBufferGL::getFormatType() const {
     return glFormat_.type;
 }
 
+GLuint AttributeBufferGL::getId() const {
+    return id_;
+}
+
 void AttributeBufferGL::enable() const {
     (this->*enableFunc_)();
 }

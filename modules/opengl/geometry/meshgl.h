@@ -30,6 +30,8 @@ public:
 
     GLenum getDrawMode(RenderType, ConnectivityType);
 
+    const AttributeBufferGL* getArrayBufferGL(size_t) const;
+
 protected:
     void renderArray(RenderType) const;
     void renderElements(RenderType) const;

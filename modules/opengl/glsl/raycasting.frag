@@ -37,13 +37,9 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
 
         vec4 color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
 
-        color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0,1.0,1.0), voxel.xyz, lightPosition_, cameraPosition_);
+        color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), voxel.xyz, lightPosition_, cameraPosition_);
 
         result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel.xyz, t, tDepth, tIncr);
-
-        // save depth
-        if (tDepth < 0.0 && result.a > 0.0)
-            tDepth = 1.0;
 
         // early ray termination
         if (result.a > ERT_THRESHOLD) t = tEnd;

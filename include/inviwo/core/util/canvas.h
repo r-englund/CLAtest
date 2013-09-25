@@ -43,7 +43,7 @@ protected:
 
     uvec2 mousePosToPixelCoordinates(ivec2 mpos);
 
-    static Geometry* screenAlignedSquare_;
+    static Geometry* screenAlignedRect_;
 
     bool shared;
     uvec2 dimensions_;

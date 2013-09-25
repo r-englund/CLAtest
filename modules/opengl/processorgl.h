@@ -49,9 +49,9 @@ public:
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
         glLoadIdentity();
-        glDepthFunc(GL_ALWAYS);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
         CanvasGL::renderImagePlaneRect();
-        glDepthFunc(GL_LESS);
         glPopMatrix();
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
