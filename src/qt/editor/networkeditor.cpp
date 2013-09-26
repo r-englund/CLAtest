@@ -386,14 +386,21 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
                 processorNetwork_->setModified(true);
                 processorNetworkEvaluator_->evaluate();
                 return;
-            }
-            if (dynamic_cast<VolumeOutport*>(port)) {
-                addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
-                                    IVW_DIR+"data/workspaces/portinspectors/volumeportinspector.inv");
-                processorNetwork_->setModified(true);
-                processorNetworkEvaluator_->evaluate();
-                return;
-            }
+			} 
+			if (dynamic_cast<VolumeOutport*>(port)) {
+				addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
+					IVW_DIR+"data/workspaces/portinspectors/volumeportinspector.inv");
+				processorNetwork_->setModified(true);
+				processorNetworkEvaluator_->evaluate();
+				return;
+			} 
+			if (dynamic_cast<GeometryOutport*>(port)) {
+				addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
+					IVW_DIR+"data/workspaces/portinspectors/geometryportinspector.inv");
+				processorNetwork_->setModified(true);
+				processorNetworkEvaluator_->evaluate();
+				return;
+			}
         }
     }
 }
