@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/util/callback.h>
 
 namespace inviwo {
 
@@ -15,13 +16,17 @@ public:
 
     virtual ~PickingObject();
 
-    const size_t& getPickingId() const{ return id_; }
-    const vec3& getPickingColor() const{ return color_; }
+    const size_t& getPickingId() const;
+    const vec3& getPickingColor() const;
+
+    void picked() const;
+
+    SingleCallBack* getCallbackContainer();
 
 private:
     size_t id_;
     vec3 color_;
-
+    SingleCallBack* onPickedCallback_;
 };
 
 } // namespace

@@ -9,16 +9,11 @@ PickingManager::~PickingManager() {
     }
 }
 
-const PickingObject* PickingManager::registerPickingCallback(){
-    PickingObject* pickObj = generatePickingObject(pickingObjects_.size());
-    pickingObjects_.push_back(pickObj);
-    return pickObj;
-}
-
 void PickingManager::handlePickedColor(const vec3& c){
     std::vector<PickingObject*>::iterator it = std::find_if(pickingObjects_.begin(), pickingObjects_.end(), FindPickingObject(c));
     if (it != pickingObjects_.end()){
         LogInfo("Found Picking Object with ID : (" << (*it)->getPickingId() << ")");
+        (*it)->picked();
     }
 }
 

@@ -31,7 +31,13 @@ public:
     }
     ~PickingManager();
 
-    const PickingObject* registerPickingCallback();
+    template <typename T>
+    const PickingObject* registerPickingCallback(T* o, void (T::*m)()){
+        PickingObject* pickObj = generatePickingObject(pickingObjects_.size());
+        pickObj->getCallbackContainer()->addMemberFunction(o,m);
+        pickingObjects_.push_back(pickObj);
+        return pickObj;
+    }
 
     void handlePickedColor(const vec3&);
    

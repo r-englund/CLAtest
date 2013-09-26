@@ -8,7 +8,7 @@ namespace inviwo {
 
 class IVW_CORE_API BaseCallBack {
 public:
-    virtual void invoke()=0;
+    virtual void invoke() const=0;
 };
 
 
@@ -21,7 +21,7 @@ public:
         : functionPtr1_(functionPtr)
         , obj_(obj){}
 
-    virtual void invoke() {
+    virtual void invoke() const{
         if (functionPtr1_) (*obj_.*functionPtr1_)();
     }
 
@@ -38,10 +38,9 @@ private:
 //TODO: Use map that uses string as keys : CallBackMap
 class IVW_CORE_API CallBackList {
 public:
-    typedef std::vector<BaseCallBack*>::iterator cblIt;
     CallBackList() {}
-    void invokeAll() { 
-        for (cblIt it=callBackList_.begin(); it!=callBackList_.end(); ++it)
+    void invokeAll() const{ 
+        for (std::vector<BaseCallBack*>::const_iterator it=callBackList_.begin(); it!=callBackList_.end(); ++it)
             (*it)->invoke();        
     }
 
@@ -59,7 +58,7 @@ class IVW_CORE_API SingleCallBack {
 public:
     SingleCallBack() : callBack_(0) {}
 
-    void invoke(){
+    void invoke() const{
         if (callBack_)
             callBack_->invoke();
     }
