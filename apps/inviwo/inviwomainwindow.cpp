@@ -75,18 +75,23 @@ void InviwoMainWindow::initializeAndShow() {
     restoreState(settings.value("state", saveState()).toByteArray());
     QPoint newPos = settings.value("pos", pos()).toPoint();
     QSize newSize = settings.value("size", size()).toSize();
-    move(newPos);
-    resize(newSize);
-    /*
-    QRect screenGeometry = QApplication::desktop()->screen()->geometry();
-    screenGeometry.setRect(screenGeometry.x()-10, screenGeometry.y()-10,
-                           screenGeometry.width()+20, screenGeometry.height()+20);
-    if (!screenGeometry.contains(newPos) ||
-        !screenGeometry.contains(QPoint(newPos.x()+newSize.width(), newPos.x()+newSize.height()))) {
-            move(QPoint(0,0));
-            resize(screenGeometry.width()-20, screenGeometry.height()-20);
-    }
-    */
+
+	QDesktopWidget* desktop = QApplication::desktop();
+	QRect wholeScreenGeometry = desktop->screenGeometry(0);
+	for (int i=1; i<desktop->screenCount(); i++)
+		wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
+	wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
+		wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
+
+	QPoint bottomRight = QPoint(newPos.x()+newSize.width(), newPos.y()+newSize.height());
+	if (!wholeScreenGeometry.contains(newPos) || !wholeScreenGeometry.contains(bottomRight)) {
+		move(QPoint(0,0));
+		resize(wholeScreenGeometry.width()-20, wholeScreenGeometry.height()-20);
+	} else {
+		move(newPos);
+		resize(newSize);
+	}
+
     bool maximized = settings.value("maximized", true).toBool();
     recentFileList_ = settings.value("recentFileList").toStringList();
     lastExitWithoutErrors_ = settings.value("lastExitWithoutErrors", true).toBool();

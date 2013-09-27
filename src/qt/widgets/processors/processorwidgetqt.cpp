@@ -1,4 +1,7 @@
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
+
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QResizeEvent>
 #include <QMoveEvent>
 #include <inviwo/core/common/inviwo.h>
@@ -18,7 +21,20 @@ ProcessorWidgetQt::~ProcessorWidgetQt() {}
 void ProcessorWidgetQt::initialize() {
     ProcessorWidget::initialize();
     ivec2 pos = ProcessorWidget::getPositionMetaData();
-    QWidget::move(pos.x, pos.y);
+
+	// check if geometry is on screen and alter otherwise
+	QDesktopWidget* desktop = QApplication::desktop();
+	QRect wholeScreenGeometry = desktop->screenGeometry(0);
+	for (int i=1; i<desktop->screenCount(); i++)
+		wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
+	wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
+		wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
+
+	QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
+	if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight))
+		QWidget::move(QPoint(0,0));
+	else
+		QWidget::move(pos.x, pos.y);
 }
 
 void ProcessorWidgetQt::setVisible(bool visible) {
