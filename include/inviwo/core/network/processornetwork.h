@@ -84,6 +84,7 @@ public:
     std::vector<Processor*> getProcessors() const { return processors_; }
     std::vector<PortConnection*> getPortConnections() const { return portConnections_; }
     std::vector<ProcessorLink*> getProcessorLinks() const { return processorLinks_; }
+    bool isLinked(Processor* src, Processor* dst);
 
 
     /**

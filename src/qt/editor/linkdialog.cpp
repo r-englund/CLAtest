@@ -11,6 +11,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QButtonGroup>
+#include <QPushButton>
 #include <QVector2D>
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
@@ -727,6 +728,16 @@ void LinkDialogGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e)
         QGraphicsScene::mouseDoubleClickEvent(e);
 }
 
+void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp, bool bidirectional) {
+    LinkDialogPropertyGraphicsItem* startProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(sProp));
+    LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(eProp));
+    addPropertyLink(startProperty, endProperty);
+    DialogConnectionGraphicsItem* propertyLinkItem = getConnectionGraphicsItem(startProperty, endProperty);
+    if (bidirectional)
+        makePropertyLinkBidirectional(propertyLinkItem, true);
+    addConnectionToCurrentList(propertyLinkItem);
+}
+
 void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
     //For adding representations for existing links in the network
     //LogInfo("Adding Property Link.");
@@ -1079,6 +1090,8 @@ LinkDialog::LinkDialog(Processor* src, Processor *dest, ProcessorNetwork* networ
     initDialog();
     linkDialogScene_->setNetwork(network); //Network is required to add property links created in dialog (or remove )
     linkDialogScene_->initScene(srcList, dstList);
+    src_ = src;
+    dest_ = dest;
 }
 
 void LinkDialog::initDialog() {
@@ -1100,15 +1113,29 @@ void LinkDialog::initDialog() {
 
     mainLayout->addWidget(linkDialogView_);
 
+    QHBoxLayout* commonButtonLayout = new QHBoxLayout;
+    
+    //auto link button
+    QHBoxLayout* autoLinkPushButtonLayout = new QHBoxLayout;
+    autoLinkPushButtonLayout->setAlignment(Qt::AlignLeft);
+    //qt documentation
+    autoLinkPushButton_ = new QPushButton("AutoLink", this);
+    connect(autoLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedAutoLinkPushButton()));    
+    autoLinkPushButtonLayout->addWidget(autoLinkPushButton_);
+    commonButtonLayout->addLayout(autoLinkPushButtonLayout);
+
+    //okay cancel button
     QHBoxLayout* okayCancelButtonLayout = new QHBoxLayout;
     okayCancelButtonLayout->setAlignment(Qt::AlignRight);
-
     //qt documentation
     okayCancelbuttonBox_ = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(okayCancelbuttonBox_, SIGNAL(accepted()), this, SLOT(clickedOkayButton()));
     connect(okayCancelbuttonBox_, SIGNAL(rejected()), this, SLOT(clickedCancelButton()));
     okayCancelButtonLayout->addWidget(okayCancelbuttonBox_);
-    mainLayout->addLayout(okayCancelButtonLayout);
+    commonButtonLayout->addLayout(okayCancelButtonLayout);
+    
+
+    mainLayout->addLayout(commonButtonLayout);
   
 }
 
@@ -1121,6 +1148,18 @@ void LinkDialog::clickedCancelButton() {
     accept();
 }
 
+void LinkDialog::clickedAutoLinkPushButton() {    
+    std::vector<Property*> srcProperties = src_->getProperties();
+    std::vector<Property*> dstProperties = dest_->getProperties();
+
+    for (size_t i=0; i<srcProperties.size(); i++) {
+        for (size_t j=0; j<dstProperties.size(); j++) {
+            if (*srcProperties[i] == *dstProperties[j]) {
+                linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[j], true);
+            }            
+        }
+    }
+}
 
 /*---------------------------------------------------------------------------------------*/
 

@@ -65,7 +65,7 @@ namespace inviwo {
         virtual void serialize(IvwSerializer& s) const;
         virtual void deserialize(IvwDeserializer& d);
 
-        bool operator== (Property* prop);
+        bool operator== (const Property& prop);
 
         template <typename T>
         void onChange(T* o, void (T::*m)()) {

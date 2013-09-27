@@ -13,7 +13,8 @@ void LinkEvaluator::evaluate(Property* src, Property *dst) {
     }
 }
 
-bool LinkEvaluator::canLink(Property* src, Property *dst) {     
+bool LinkEvaluator::canLink(Property* src, Property *dst) {
+    if (*src == *dst) return true;
     return canConvert(src->getVariant(), dst->getVariant());
 }
 

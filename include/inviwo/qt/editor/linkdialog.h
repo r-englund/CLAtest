@@ -11,6 +11,7 @@
 #include <QGraphicsPolygonItem>
 #include <QPainterPath>
 #include <QDialogButtonBox>
+#include <QPushButton>
 
 #include <inviwo/core/network/processorlink.h>
 #include <inviwo/core/network/processornetwork.h>
@@ -205,6 +206,7 @@ public:
 
     void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
     void removeCurrentPropertyLinks();
+    void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);    
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
@@ -264,13 +266,17 @@ public:
 private slots:
    void clickedOkayButton();
    void clickedCancelButton();
+   void clickedAutoLinkPushButton();
 
 private:   
     void initDialog();
 
     LinkDialogGraphicsView* linkDialogView_;
     LinkDialogGraphicsScene* linkDialogScene_;
-    QDialogButtonBox* okayCancelbuttonBox_;    
+    QDialogButtonBox* okayCancelbuttonBox_;
+    QPushButton* autoLinkPushButton_;  
+    Processor* src_;
+    Processor* dest_;
 };
 
 /*---------------------------------------------------------------------------------------*/

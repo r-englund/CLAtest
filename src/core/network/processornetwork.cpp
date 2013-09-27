@@ -59,6 +59,12 @@ void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
     modified();
 }
 
+bool ProcessorNetwork::isLinked(Processor* src, Processor* dst) {
+    if (getProcessorLink(src, dst))
+        return true;
+    return false;
+}
+
 void ProcessorNetwork::addLink(ProcessorLink* processorLink) {
     processorLinks_.push_back(processorLink);
     modified();

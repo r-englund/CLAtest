@@ -95,8 +95,8 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("displayName", displayName_, true);
 }
 
-bool Property::operator==( Property* prop){
-    if (this->getIdentifier()==prop->getIdentifier()) {
+bool Property::operator==(const Property& prop){
+    if (this->getClassName()==prop.getClassName()) {
         return true;
     }
     return false;
