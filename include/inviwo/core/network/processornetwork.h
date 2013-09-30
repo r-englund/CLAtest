@@ -113,9 +113,9 @@ public:
 
     void setBroadcastModification(bool broadcastModification) { broadcastModification_ = broadcastModification; }
 
-    inline void lock() { locked_ = true; }
-    inline void unlock() { locked_ = false; }
-    inline bool islocked() const { return (locked_==true); }
+    inline void lock() { locked_++; }
+    inline void unlock() { (locked_>0)?locked_--:locked_=0; }
+    inline bool islocked() const { return (locked_!=0); }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d) throw (Exception);
@@ -123,7 +123,7 @@ public:
 private:
     bool modified_;
     bool broadcastModification_; //< shall observers be notified when the network has been modified
-    bool locked_;
+    unsigned int locked_;
 
     std::vector<Processor*> processors_;
     std::vector<PortConnection*> portConnections_;

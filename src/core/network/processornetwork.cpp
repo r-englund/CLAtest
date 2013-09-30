@@ -4,7 +4,8 @@ namespace inviwo {
 
 ProcessorNetwork::ProcessorNetwork() : VoidObservable(),
     modified_(true),
-	broadcastModification_(true) {}
+	broadcastModification_(true),
+    locked_(0) {}
 
 ProcessorNetwork::~ProcessorNetwork() {}
 

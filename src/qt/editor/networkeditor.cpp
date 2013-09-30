@@ -300,13 +300,13 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
 
     std::vector<Processor*> processors = processorNetwork->getProcessors();
     for (size_t i=0; i<processors.size(); i++) {
-        Processor* processor = processors[i];
-        processor->setIdentifier(port->getProcessor()->getIdentifier()+":"+port->getIdentifier()+":"+processor->getIdentifier());
-        addProcessor(processor, QPointF(pos.x, pos.y), false, false);
+        Processor* processor = processors[i];                
+        addProcessor(processor, QPointF(pos.x, pos.y), false, false);        
+        processor->setIdentifier(port->getProcessor()->getIdentifier()+":"+port->getIdentifier()+":"+processor->getIdentifier());        
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
         if (canvasProcessor) {
             // show processor widget as tool window
-            processor->setIdentifier("PortInspector "+port->getProcessor()->getIdentifier()+":"+port->getIdentifier());
+            processor->setIdentifier("PortInspector "+port->getProcessor()->getIdentifier()+":"+port->getIdentifier());            
             ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processor->getProcessorWidget());
             ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
             processorWidgetQt->setMinimumSize(128, 128);
@@ -365,14 +365,17 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string fileN
 }
 
 void NetworkEditor::removeInspectorNetwork(Port* port) {
-    processorNetwork_->setBroadcastModification(false);
+    processorNetwork_->lock();
+    processorNetwork_->setBroadcastModification(false);    
     std::string portPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    LogInfo("Number of Processors: " << processors.size());
     for (size_t i=0;i<processors.size();i++) {
         if (processors[i]->getIdentifier().find(portPrefix)!=std::string::npos) {
             removeProcessor(processors[i]);
         }
     }
+    processorNetwork_->unlock();
     processorNetwork_->setBroadcastModification(true);
 }
 
@@ -968,6 +971,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     catch (const AbortException& exception) {
         LogInfo("Unable to load network " + fileName + " due to " + exception.getMessage());
         clearNetwork();
+        processorNetwork_->unlock();
         return false;
     }
     catch (const IgnoreException& exception) {

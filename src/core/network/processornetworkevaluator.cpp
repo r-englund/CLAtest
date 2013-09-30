@@ -151,7 +151,10 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, Intera
 		}
 	}
 
-	if (!eventInitiator_) return;
+    if (!eventInitiator_) {
+        processorNetwork_->unlock();
+        return;
+    }
 	processorsVisited_.clear();
 	propagateInteractionEvent(eventInitiator_, event);
 	processorNetwork_->unlock();
