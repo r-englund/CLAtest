@@ -225,7 +225,7 @@ void ImageLabelWidget::addBackGroundImage(std::string imagePath) {
     i->setZValue(1);    
     scene_->setSceneRect(0, 0, backGroundImage_->width(), backGroundImage_->height());
     //resize(image.size()*4/3);
-    setFixedSize(backGroundImage_->size()*1.1f);
+    setFixedSize(backGroundImage_->size()*1.7f);
 }
 
 void ImageLabelWidget::setParent(ImageEditorWidgetQt* tmp){
