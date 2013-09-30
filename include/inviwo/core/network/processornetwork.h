@@ -120,6 +120,13 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d) throw (Exception);
 
+     /**
+     * Clears the network objects processors, port connections, processor links etc.,
+     * This function clears only the core objects and mainly used to abort any
+     * further operation. 
+     */
+    void clear();
+
 private:
     bool modified_;
     bool broadcastModification_; //< shall observers be notified when the network has been modified
@@ -129,12 +136,6 @@ private:
     std::vector<PortConnection*> portConnections_;
     std::vector<ProcessorLink*> processorLinks_;
 
-    /**
-     * Clears the network objects processors, port connections, processor links etc.,
-     * This function clears only the core objects and mainly used to abort any
-     * further operation. 
-     */
-    void clear();
 };
 
 template<class T>

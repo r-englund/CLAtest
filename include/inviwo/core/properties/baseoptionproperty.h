@@ -25,6 +25,7 @@ public:
     virtual int numOptions() const = 0;
     virtual int getSelectedOption() const = 0;
     virtual void setSelectedOption(int option) = 0;
+    virtual void clearOptions() = 0;
 
     virtual std::vector<std::string> getOptionDisplayNames() const = 0;
     virtual std::string getClassName()  const { return "BaseOptionProperty"; }
@@ -91,6 +92,9 @@ public:
 
 
     virtual void setSelectedOption(int option);
+
+    
+    virtual void clearOptions();
 
     bool isSelected(std::string identifier) const;
 
@@ -178,6 +182,11 @@ int TemplateOptionProperty<T>::getSelectedOption() const {
 template<typename T>
 void TemplateOptionProperty<T>::setSelectedOption(int option) {
     set(options_[option].second);
+}
+
+template<typename T>
+void TemplateOptionProperty<T>::clearOptions() {
+    options_.clear();
 }
 
 template<typename T>

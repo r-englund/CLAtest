@@ -62,6 +62,8 @@ public:
     const ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() const { return processorNetworkEvaluator_; }
 
+    std::vector<std::string> getSnapshotsOfExternalNetwork(std::string fileName);
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
@@ -135,6 +137,10 @@ private:
     void addInspectorNetwork(Port* port, ivec2 pos, std::string fileName);
     void removeInspectorNetwork(Port* port);
     void addPortInspector(Port* port, QPointF pos);
+
+    void addExternalNetwork(std::string processorPrefix, ivec2 pos, std::string fileName);
+    void removeExternalNetwork(std::string identifierPrefix);
+    std::vector<std::string> saveSnapshotsInExternalNetwork(std::string externalNetworkFile, std::string identifierPrefix);
 
     QPointF snapToGrid(QPointF pos);
     void drawBackground(QPainter* painter, const QRectF& rect);

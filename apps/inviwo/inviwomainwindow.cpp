@@ -159,6 +159,10 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
     return true;
 }
 
+std::vector<std::string> InviwoMainWindow::getWorkspaceSnapshots(std::string workspaceFileName) {
+    return networkEditorView_->getNetworkEditor()->getSnapshotsOfExternalNetwork(workspaceFileName);
+}
+
 void InviwoMainWindow::addMenus() {
     basicMenuBar = menuBar();
     
