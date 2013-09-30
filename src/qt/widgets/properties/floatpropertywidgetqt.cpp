@@ -5,21 +5,29 @@ namespace inviwo {
 FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
     generateWidget();
-    generatesSettingsWidget();
     updateFromProperty();
     PropertyWidgetQt::generateContextMenu();
 }
 
 void FloatPropertyWidgetQt::generateWidget() {    
     QHBoxLayout* hLayout = new QHBoxLayout();
-    label_ = new EditableLabelQt(property_->getDisplayName());
-    hLayout->addWidget(label_);
-    sliderWidget_ = new FloatSliderWidgetQt();    
-    hLayout->addWidget(sliderWidget_);
-    setLayout(hLayout);
+    if (property_->getReadOnly()) {
+        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+        labelX_ = new QLabel("Value: " +QString::number(property_->get()));
+        hLayout->addWidget(labelX_);
+        setLayout(hLayout);
+    }
+    else {
+        label_ = new EditableLabelQt(property_->getDisplayName());
+        hLayout->addWidget(label_);
+        sliderWidget_ = new FloatSliderWidgetQt();    
+        hLayout->addWidget(sliderWidget_);
+        setLayout(hLayout);
 
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-    connect(sliderWidget_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue(float)));
+        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+        connect(sliderWidget_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue(float)));
+        generatesSettingsWidget();
+    }
 }
 
 void FloatPropertyWidgetQt::setPropertyValue(float value) {
@@ -29,10 +37,15 @@ void FloatPropertyWidgetQt::setPropertyValue(float value) {
 
 void FloatPropertyWidgetQt::updateFromProperty() {
     float value = property_->get();
-    sliderWidget_->initValue(value);
-    sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());    
-    sliderWidget_->setIncrement(property_->getIncrement());
-    sliderWidget_->setValue(value);
+    if (property_->getReadOnly()) {
+        labelX_->setText("Value: " +QString::number(property_->get()));
+    }
+    else{
+        sliderWidget_->initValue(value);
+        sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());    
+        sliderWidget_->setIncrement(property_->getIncrement());
+        sliderWidget_->setValue(value);
+    }
 }
 
 void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {

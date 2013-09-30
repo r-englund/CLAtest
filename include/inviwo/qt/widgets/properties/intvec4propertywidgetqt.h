@@ -29,6 +29,10 @@ private:
     IntSliderWidgetQt* sliderY_;
 	IntSliderWidgetQt* sliderZ_;
 	IntSliderWidgetQt* sliderW_;
+    QLabel* labelX_;
+    QLabel* labelY_;
+    QLabel* labelZ_;
+    QLabel* labelW_;
     ivec4 valueVecMax_;
     ivec4 valueVecMin_;
     ivec4 valueIncrement_;

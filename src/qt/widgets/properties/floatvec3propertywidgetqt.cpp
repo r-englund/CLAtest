@@ -12,57 +12,80 @@ valueIncrement_(property->getIncrement()){
     PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
-    generatesSettingsWidget();
+
     PropertyWidgetQt::generateContextMenu();
 }
 
 void FloatVec3PropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    label_ = new EditableLabelQt(property_->getDisplayName());
-    hLayout->addWidget(label_);
+    if (property_->getReadOnly()) {
+        valueVec_ = property_->get();
+        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+        labelX_ = new QLabel("X: " +QString::number(valueVec_.x));
+        labelY_ = new QLabel("Y: " +QString::number(valueVec_.y));
+        labelZ_ = new QLabel("Z: " +QString::number(valueVec_.z));
 
-    QWidget* sliderWidget = new QWidget();
-    QVBoxLayout* vLayout = new QVBoxLayout();
-    sliderWidget->setLayout(vLayout);
+        hLayout->addWidget(labelX_);
+        hLayout->addWidget(labelY_);
+        hLayout->addWidget(labelZ_);
 
-    sliderX_ = new FloatSliderWidgetQt();
-    sliderY_ = new FloatSliderWidgetQt();
-    sliderZ_ = new FloatSliderWidgetQt();
+        setLayout(hLayout);
+    }
+    else {
+        label_ = new EditableLabelQt(property_->getDisplayName());
+        hLayout->addWidget(label_);
 
-    vLayout->addWidget(sliderX_);
-    vLayout->addWidget(sliderY_);
-    vLayout->addWidget(sliderZ_);
-    hLayout->addWidget(sliderWidget);
-    setLayout(hLayout);
+        QWidget* sliderWidget = new QWidget();
+        QVBoxLayout* vLayout = new QVBoxLayout();
+        sliderWidget->setLayout(vLayout);
 
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-    connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-    connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-    connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-    
+        sliderX_ = new FloatSliderWidgetQt();
+        sliderY_ = new FloatSliderWidgetQt();
+        sliderZ_ = new FloatSliderWidgetQt();
+
+        vLayout->addWidget(sliderX_);
+        vLayout->addWidget(sliderY_);
+        vLayout->addWidget(sliderZ_);
+        hLayout->addWidget(sliderWidget);
+        setLayout(hLayout);
+
+        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+        connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        generatesSettingsWidget();
+    }  
 }
 
 void FloatVec3PropertyWidgetQt::updateFromProperty() {
-    valueVec3Max_ = property_->getMaxValue();
-    valueVec3Min_ = property_->getMinValue();
-    valueIncrement_ = property_->getIncrement();
-    valueVec3_ = property_->get();
+    valueVec_ = property_->get();
+    if (property_->getReadOnly()) {
+        labelX_->setText("X: " +QString::number(valueVec_.x));
+        labelY_->setText("Y: " +QString::number(valueVec_.y));
+        labelZ_->setText("Z: " +QString::number(valueVec_.z));
+    }
+    else {
+        valueVec3Max_ = property_->getMaxValue();
+        valueVec3Min_ = property_->getMinValue();
+        valueIncrement_ = property_->getIncrement();
 
-    sliderX_->initValue(valueVec3_.x);
-    sliderY_->initValue(valueVec3_.y);
-    sliderZ_->initValue(valueVec3_.z);
 
-    sliderX_->setRange(valueVec3Min_.x,valueVec3Max_.x);
-    sliderY_->setRange(valueVec3Min_.y,valueVec3Max_.y);
-    sliderZ_->setRange(valueVec3Min_.z,valueVec3Max_.z);
+        sliderX_->initValue(valueVec_.x);
+        sliderY_->initValue(valueVec_.y);
+        sliderZ_->initValue(valueVec_.z);
 
-    sliderX_->setValue(valueVec3_.x);
-    sliderY_->setValue(valueVec3_.y);
-    sliderZ_->setValue(valueVec3_.z);
+        sliderX_->setRange(valueVec3Min_.x,valueVec3Max_.x);
+        sliderY_->setRange(valueVec3Min_.y,valueVec3Max_.y);
+        sliderZ_->setRange(valueVec3Min_.z,valueVec3Max_.z);
 
-    sliderX_->setIncrement(valueIncrement_.x);
-    sliderY_->setIncrement(valueIncrement_.y);
-    sliderZ_->setIncrement(valueIncrement_.z);
+        sliderX_->setValue(valueVec_.x);
+        sliderY_->setValue(valueVec_.y);
+        sliderZ_->setValue(valueVec_.z);
+
+        sliderX_->setIncrement(valueIncrement_.x);
+        sliderY_->setIncrement(valueIncrement_.y);
+        sliderZ_->setIncrement(valueIncrement_.z);
+    }
 }
 
 
@@ -172,11 +195,11 @@ void FloatVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
 }
 
 void FloatVec3PropertyWidgetQt::setPropertyValue() {
-    valueVec3_ = property_->get();
-    valueVec3_.x = sliderX_->getValue();
-    valueVec3_.y = sliderY_->getValue();
-    valueVec3_.z = sliderZ_->getValue();
-    property_->set(valueVec3_);
+    valueVec_ = property_->get();
+    valueVec_.x = sliderX_->getValue();
+    valueVec_.y = sliderY_->getValue();
+    valueVec_.z = sliderZ_->getValue();
+    property_->set(valueVec_);
     emit modified();
 }
 

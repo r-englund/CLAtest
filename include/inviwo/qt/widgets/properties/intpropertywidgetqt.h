@@ -23,6 +23,7 @@ public:
 private:
     IntProperty* property_;
     IntSliderWidgetQt* sliderWidget_;
+    QLabel* labelX_;
     PropertySettingsWidgetQt* settingsWidget_;
     EditableLabelQt* label_;
     QMenu* settingsMenu_;

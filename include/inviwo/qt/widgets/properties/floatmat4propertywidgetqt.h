@@ -20,7 +20,7 @@ public:
 
     void updateFromProperty();
 
-private:
+private:    
     FloatMat4Property* property_;
     QLineEdit* mat0x0_;
     QLineEdit* mat0x1_;

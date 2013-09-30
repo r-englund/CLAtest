@@ -20,6 +20,8 @@ void StringPropertyWidgetQt::generateWidget() {
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     hLayout->addWidget(lineEdit_);
     setLayout(hLayout);
+    if (property_->getReadOnly()) 
+        label_->editingOff();
 }
 
 void StringPropertyWidgetQt::setPropertyValue() {

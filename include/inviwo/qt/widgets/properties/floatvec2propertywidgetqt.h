@@ -25,13 +25,15 @@ private:
     FloatVec2Property* property_;
     FloatSliderWidgetQt* sliderX_;
     FloatSliderWidgetQt* sliderY_;
+    QLabel* labelX_;
+    QLabel* labelY_;
     PropertySettingsWidgetQt* settingsWidget_;
     EditableLabelQt* label_;
     QMenu* settingsMenu_;
     vec2 valueVec2Max_;
     vec2 valueVec2Min_;
     vec2 valueIncrement_;
-    vec2 valueVec2_;
+    vec2 valueVec_;
 
     void generateWidget();
     void generatesSettingsWidget();

@@ -46,6 +46,10 @@ namespace inviwo {
         bool isCollapsed() { return collapsed_; };
         std::vector<PropertyWidgetQt*> getPropertyWidgets(){return propertyWidgets_; };
 
+        virtual void serialize(IvwSerializer& s) const;
+        virtual void deserialize(IvwDeserializer& d);
+
+
 signals:
         void visibilityModified();
 

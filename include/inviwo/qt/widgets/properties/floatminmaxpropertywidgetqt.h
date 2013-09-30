@@ -22,6 +22,9 @@ public:
 
 private:
     FloatMinMaxProperty* property_;
+    vec2 valueVec_;
+    QLabel* labelMin_;
+    QLabel* labelMax_;
     RangeSliderQt* slider_;
     QDoubleSpinBox* spinBoxMin_;
     QDoubleSpinBox* spinBoxMax_;

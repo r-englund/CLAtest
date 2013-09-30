@@ -32,6 +32,9 @@ namespace inviwo {
         virtual PropertySemantics::Type getSemantics() const;
         virtual void setSemantics(const PropertySemantics::Type& semantics);
 
+        virtual void setReadOnly(bool value){readOnly_ = value;};
+        virtual bool getReadOnly(){return readOnly_;};
+
         PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
         void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
             invalidationLevel_ = invalidationLevel;
@@ -74,6 +77,8 @@ namespace inviwo {
 
         void setVisibility(PropertyVisibility::VisibilityMode visibilityMode);
         PropertyVisibility::VisibilityMode getVisibilityMode(){return visibilityMode_;};
+
+        virtual void setVisible(bool val);
         virtual void updateVisibility();
 
 
@@ -87,6 +92,7 @@ namespace inviwo {
         std::string displayName_;
         PropertyOwner::InvalidationLevel invalidationLevel_;
         PropertySemantics::Type semantics_;
+        bool readOnly_;
 
     bool propertyModified_;
         PropertyOwner* owner_;

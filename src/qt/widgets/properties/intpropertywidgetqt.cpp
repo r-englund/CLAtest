@@ -14,22 +14,36 @@ IntPropertyWidgetQt::IntPropertyWidgetQt(IntProperty* property) : property_(prop
 
 void IntPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    label_ = new EditableLabelQt(property_->getDisplayName());
-    hLayout->addWidget(label_);
-    sliderWidget_ = new IntSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-    connect(sliderWidget_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
-    hLayout->addWidget(sliderWidget_);
-    hLayout->setContentsMargins(0,0,0,0);
-    hLayout->setSpacing(0);
-    setLayout(hLayout);
-    generatesSettingsWidget();
+
+    if (property_->getReadOnly()) {
+        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+        labelX_ = new QLabel("Value: " +QString::number(property_->get()));
+        hLayout->addWidget(labelX_);
+        setLayout(hLayout);
+    }
+    else {
+        label_ = new EditableLabelQt(property_->getDisplayName());
+        hLayout->addWidget(label_);
+        sliderWidget_ = new IntSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
+        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+        connect(sliderWidget_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
+        hLayout->addWidget(sliderWidget_);
+        hLayout->setContentsMargins(0,0,0,0);
+        hLayout->setSpacing(0);
+        setLayout(hLayout);
+        generatesSettingsWidget();
+    }
 }
 
 void IntPropertyWidgetQt::updateFromProperty() {
-    sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
-    sliderWidget_->setValue(property_->get());
-    sliderWidget_->setIncrement(property_->getIncrement());
+    if (property_->getReadOnly()) {
+        labelX_->setText("Value: " +QString::number(property_->get()));
+    }
+    else{
+        sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
+        sliderWidget_->setValue(property_->get());
+        sliderWidget_->setIncrement(property_->getIncrement());
+    }
 }
 
 

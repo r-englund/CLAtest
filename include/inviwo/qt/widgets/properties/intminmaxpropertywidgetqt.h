@@ -22,6 +22,9 @@ public:
 
 private:
     IntMinMaxProperty* property_;
+    ivec2 valueVec_;
+    QLabel* labelMin_;
+    QLabel* labelMax_;
     RangeSliderQt* slider_;
     QSpinBox* spinBoxMin_;
     QSpinBox* spinBoxMax_;

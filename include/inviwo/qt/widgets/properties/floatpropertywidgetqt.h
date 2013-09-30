@@ -24,6 +24,7 @@ public:
 private:
     FloatProperty* property_;
     FloatSliderWidgetQt* sliderWidget_;
+    QLabel* labelX_;
     PropertySettingsWidgetQt* settingsWidget_;
     QMenu* settingsMenu_;
     EditableLabelQt* label_;

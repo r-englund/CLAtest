@@ -15,12 +15,21 @@ void OptionPropertyWidgetQt::generateWidget() {
     comboBox_ = new QComboBox();
     fillComboBox();
     updateFromProperty();
-    label_ = new EditableLabelQt(property_->getDisplayName());
-    hLayout->addWidget(label_);
-    hLayout->addWidget(comboBox_);
-    setLayout(hLayout);
-    connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    if (property_->getReadOnly()) {
+        comboBox_->setDisabled(true);
+        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+        hLayout->addWidget(comboBox_);
+        setLayout(hLayout);
+    }
+    else{
+
+        label_ = new EditableLabelQt(property_->getDisplayName());
+        hLayout->addWidget(label_);
+        hLayout->addWidget(comboBox_);
+        setLayout(hLayout);
+        connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
+        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    }
 }
 
 void OptionPropertyWidgetQt::fillComboBox() {

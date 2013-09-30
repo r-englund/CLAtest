@@ -23,6 +23,8 @@ public:
     void notify();
     virtual std::string getClassName()  const { return "CompositeProperty"; }
     void updateVisibility();
+    void setVisible(bool val);
+    void setReadOnly(bool value);
 
 private:
     std::vector<Property*> subProperties_;

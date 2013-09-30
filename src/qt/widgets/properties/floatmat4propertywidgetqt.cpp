@@ -32,39 +32,64 @@ void FloatMat4PropertyWidgetQt::generateWidget() {
     mat3x2_ = new QLineEdit;
     mat3x3_ = new QLineEdit;
 
-    connect(mat0x0_, SIGNAL(editingFinished ()),
-        this, SLOT(set0x0Value()));
-    connect(mat0x1_, SIGNAL(editingFinished ()),
-        this, SLOT(set0x1Value()));
-    connect(mat0x2_, SIGNAL(editingFinished ()),
-        this, SLOT(set0x2Value()));
-    connect(mat0x3_, SIGNAL(editingFinished ()),
-        this, SLOT(set0x3Value()));
-    connect(mat1x0_, SIGNAL(editingFinished ()),
-        this, SLOT(set1x0Value()));
-    connect(mat1x1_, SIGNAL(editingFinished ()),
-        this, SLOT(set1x1Value()));
-    connect(mat1x2_, SIGNAL(editingFinished ()),
-        this, SLOT(set1x2Value()));
-    connect(mat1x3_, SIGNAL(editingFinished ()),
-        this, SLOT(set1x3Value()));
-    connect(mat2x0_, SIGNAL(editingFinished ()),
-        this, SLOT(set2x0Value()));
-    connect(mat2x1_, SIGNAL(editingFinished ()),
-        this, SLOT(set2x1Value()));
-    connect(mat2x2_, SIGNAL(editingFinished ()),
-        this, SLOT(set2x2Value()));
-    connect(mat2x3_, SIGNAL(editingFinished ()),
-        this, SLOT(set2x3Value()));
-    connect(mat3x0_, SIGNAL(editingFinished ()),
-        this, SLOT(set3x0Value()));
-    connect(mat3x1_, SIGNAL(editingFinished ()),
-        this, SLOT(set3x1Value()));
-    connect(mat3x2_, SIGNAL(editingFinished ()),
-        this, SLOT(set3x2Value()));
-    connect(mat3x3_, SIGNAL(editingFinished ()),
-        this, SLOT(set3x3Value()));
-
+    if (property_->getReadOnly()) {
+        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+         mat0x0_->setDisabled(true);
+         mat0x1_->setDisabled(true);
+         mat0x2_->setDisabled(true);
+         mat0x3_->setDisabled(true);
+         mat1x0_->setDisabled(true);
+         mat1x1_->setDisabled(true);
+         mat1x2_->setDisabled(true); 
+         mat1x3_->setDisabled(true); 
+         mat2x0_->setDisabled(true); 
+         mat2x1_->setDisabled(true); 
+         mat2x2_->setDisabled(true);
+         mat2x3_->setDisabled(true);
+         mat3x0_->setDisabled(true);
+         mat3x1_->setDisabled(true);
+         mat3x2_->setDisabled(true);
+         mat3x3_->setDisabled(true); 
+               
+    }           
+    else        
+    {          
+        connect(mat0x0_, SIGNAL(editingFinished ()),
+            this, SLOT(set0x0Value()));
+        connect(mat0x1_, SIGNAL(editingFinished ()),
+            this, SLOT(set0x1Value()));
+        connect(mat0x2_, SIGNAL(editingFinished ()),
+            this, SLOT(set0x2Value()));
+        connect(mat0x3_, SIGNAL(editingFinished ()),
+            this, SLOT(set0x3Value()));
+        connect(mat1x0_, SIGNAL(editingFinished ()),
+            this, SLOT(set1x0Value()));
+        connect(mat1x1_, SIGNAL(editingFinished ()),
+            this, SLOT(set1x1Value()));
+        connect(mat1x2_, SIGNAL(editingFinished ()),
+            this, SLOT(set1x2Value()));
+        connect(mat1x3_, SIGNAL(editingFinished ()),
+            this, SLOT(set1x3Value()));
+        connect(mat2x0_, SIGNAL(editingFinished ()),
+            this, SLOT(set2x0Value()));
+        connect(mat2x1_, SIGNAL(editingFinished ()),
+            this, SLOT(set2x1Value()));
+        connect(mat2x2_, SIGNAL(editingFinished ()),
+            this, SLOT(set2x2Value()));
+        connect(mat2x3_, SIGNAL(editingFinished ()),
+            this, SLOT(set2x3Value()));
+        connect(mat3x0_, SIGNAL(editingFinished ()),
+            this, SLOT(set3x0Value()));
+        connect(mat3x1_, SIGNAL(editingFinished ()),
+            this, SLOT(set3x1Value()));
+        connect(mat3x2_, SIGNAL(editingFinished ()),
+            this, SLOT(set3x2Value()));
+        connect(mat3x3_, SIGNAL(editingFinished ()),
+            this, SLOT(set3x3Value()));
+        label_ = new EditableLabelQt(property_->getDisplayName());
+        hLayout->addWidget(label_);
+        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    }
 
     QGridLayout *gridLayout = new QGridLayout;
 
@@ -86,9 +111,6 @@ void FloatMat4PropertyWidgetQt::generateWidget() {
     gridLayout->addWidget(mat3x3_,3,3);
 
     matrixgroup->setLayout(gridLayout);
-    label_ = new EditableLabelQt(property_->getDisplayName());
-    hLayout->addWidget(label_);
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     hLayout->addWidget(matrixgroup);
     setLayout(hLayout);
 }

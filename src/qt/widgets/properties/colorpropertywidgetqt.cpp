@@ -20,13 +20,20 @@ void ColorPropertyWidgetQt::generateWidget() {
     btnColor_ = new QPushButton();
     btnColor_->setFixedWidth(100);
     btnColor_->setFixedHeight(30);
-    connect(btnColor_,SIGNAL(clicked()),this,SLOT(openColorDialog()));
-    
-    connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
 
-    label_ = new EditableLabelQt(property_->getDisplayName());
-    hLayout->addWidget(label_);
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    if (property_->getReadOnly()) {
+        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));    
+        btnColor_->setDisabled(true);
+    }
+    else{
+        connect(btnColor_,SIGNAL(clicked()),this,SLOT(openColorDialog()));
+        connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
+
+        label_ = new EditableLabelQt(property_->getDisplayName());
+        hLayout->addWidget(label_);
+            connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    }
+
     hLayout->addWidget(btnColor_);
     setLayout(hLayout);
 }

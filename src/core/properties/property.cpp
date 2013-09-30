@@ -12,7 +12,8 @@ Property::Property(std::string identifier, std::string displayName, PropertyOwne
   owner_(0),
   groupID_(""),
   VoidObservable(),
-  visibilityMode_(PropertyVisibility::APPLICATION)
+  visibilityMode_(PropertyVisibility::APPLICATION),
+  readOnly_(false)
 {}
 
 Property::Property()
@@ -140,6 +141,13 @@ void Property::updateVisibility() {
             propertyWidgets_[i]->hideWidget();
     }
 
+}
+
+void Property::setVisible( bool val ) {
+    if (val)
+        setVisibility(PropertyVisibility::APPLICATION);
+    else
+        setVisibility(PropertyVisibility::INVISIBLE);
 }
 
 } // namespace

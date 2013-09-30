@@ -240,4 +240,18 @@ void CollapsiveGroupBoxWidgetQt::updateWidgets() {
     }
 }
 
+void CollapsiveGroupBoxWidgetQt::serialize(IvwSerializer& s) const {
+    s.serialize("collapsed", collapsed_);
+    s.serialize("displayName",displayName_);
+}
+
+void CollapsiveGroupBoxWidgetQt::deserialize(IvwDeserializer& d) {
+    bool value;
+    std::string dispName;
+    d.deserialize("collapsed", value);
+    d.deserialize("displayName",dispName);
+    displayName_ = dispName;
+    collapsed_ = value;
+}
+
 } // namespace

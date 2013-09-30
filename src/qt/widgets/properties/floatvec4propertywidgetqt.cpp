@@ -8,40 +8,58 @@ namespace inviwo {
 FloatVec4PropertyWidgetQt::FloatVec4PropertyWidgetQt(FloatVec4Property* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
     generateWidget();
-    generatesSettingsWidget();
     updateFromProperty();
     PropertyWidgetQt::generateContextMenu();
 }
 
 void FloatVec4PropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    label_ = new EditableLabelQt(property_->getDisplayName());
-    hLayout->addWidget(label_);
 
-    QWidget* sliderWidget = new QWidget();
-    QVBoxLayout* vLayout = new QVBoxLayout();
-    sliderWidget->setLayout(vLayout);
-    vec4 valueVec4Max = property_->getMaxValue();
-    vec4 valueVec4Min = property_->getMinValue();
-    vec4 valueIncrement = property_->getIncrement();
+    if (property_->getReadOnly()) {
+        valueVec_ = property_->get();
+        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
+        labelX_ = new QLabel("X: " +QString::number(valueVec_.x));
+        labelY_ = new QLabel("Y: " +QString::number(valueVec_.y));
+        labelZ_ = new QLabel("Z: " +QString::number(valueVec_.z));
+        labelW_ = new QLabel("W: " +QString::number(valueVec_.w));
 
-    sliderX_ = new FloatSliderWidgetQt();  
-    sliderY_ = new FloatSliderWidgetQt();
-    sliderZ_ = new FloatSliderWidgetQt();
-    sliderW_ = new FloatSliderWidgetQt();
-   
-    vLayout->addWidget(sliderX_);
-    vLayout->addWidget(sliderY_);
-    vLayout->addWidget(sliderZ_);
-    vLayout->addWidget(sliderW_);
-    hLayout->addWidget(sliderWidget);
-    setLayout(hLayout);
+        hLayout->addWidget(labelX_);
+        hLayout->addWidget(labelY_);
+        hLayout->addWidget(labelZ_);
+        hLayout->addWidget(labelW_);
 
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-    connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-    connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-    connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-    connect(sliderW_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        setLayout(hLayout);
+    }
+    else {
+        label_ = new EditableLabelQt(property_->getDisplayName());
+        hLayout->addWidget(label_);
+
+        QWidget* sliderWidget = new QWidget();
+        QVBoxLayout* vLayout = new QVBoxLayout();
+        sliderWidget->setLayout(vLayout);
+        vec4 valueVec4Max = property_->getMaxValue();
+        vec4 valueVec4Min = property_->getMinValue();
+        vec4 valueIncrement = property_->getIncrement();
+
+        sliderX_ = new FloatSliderWidgetQt();  
+        sliderY_ = new FloatSliderWidgetQt();
+        sliderZ_ = new FloatSliderWidgetQt();
+        sliderW_ = new FloatSliderWidgetQt();
+       
+        vLayout->addWidget(sliderX_);
+        vLayout->addWidget(sliderY_);
+        vLayout->addWidget(sliderZ_);
+        vLayout->addWidget(sliderW_);
+        hLayout->addWidget(sliderWidget);
+        setLayout(hLayout);
+
+        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+        connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        connect(sliderW_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        generatesSettingsWidget();
+    }
    
 }
 
@@ -53,30 +71,38 @@ void FloatVec4PropertyWidgetQt::setPropertyValue() {
 
 
 void FloatVec4PropertyWidgetQt::updateFromProperty() {
+    valueVec_ = property_->get();
+    if (property_->getReadOnly()) {
+        labelX_->setText("X: " +QString::number(valueVec_.x));
+        labelY_->setText("Y: " +QString::number(valueVec_.y));
+        labelZ_->setText("Z: " +QString::number(valueVec_.z));
+        labelW_->setText("W: " +QString::number(valueVec_.w));
+    }
+    else {
+        vec4 valueVec4Max = property_->getMaxValue();
+        vec4 valueVec4Min = property_->getMinValue();
 
-    vec4 valueVec4Max = property_->getMaxValue();
-    vec4 valueVec4Min = property_->getMinValue();
-    vec4 valueVec4 = property_->get();
-    sliderX_->initValue(valueVec4.x);
-    sliderY_->initValue(valueVec4.y);
-    sliderZ_->initValue(valueVec4.z);
-    sliderW_->initValue(valueVec4.w);
+        sliderX_->initValue(valueVec_.x);
+        sliderY_->initValue(valueVec_.y);
+        sliderZ_->initValue(valueVec_.z);
+        sliderW_->initValue(valueVec_.w);
 
-    sliderX_->setRange(valueVec4Min.x,valueVec4Max.x);
-    sliderY_->setRange(valueVec4Min.y,valueVec4Max.y);
-    sliderZ_->setRange(valueVec4Min.z,valueVec4Max.z);
-    sliderW_->setRange(valueVec4Min.w,valueVec4Max.w);
-    
-    sliderX_->setValue(valueVec4.x);
-    sliderY_->setValue(valueVec4.y);
-    sliderZ_->setValue(valueVec4.z);
-    sliderW_->setValue(valueVec4.w);
+        sliderX_->setRange(valueVec4Min.x,valueVec4Max.x);
+        sliderY_->setRange(valueVec4Min.y,valueVec4Max.y);
+        sliderZ_->setRange(valueVec4Min.z,valueVec4Max.z);
+        sliderW_->setRange(valueVec4Min.w,valueVec4Max.w);
+        
+        sliderX_->setValue(valueVec_.x);
+        sliderY_->setValue(valueVec_.y);
+        sliderZ_->setValue(valueVec_.z);
+        sliderW_->setValue(valueVec_.w);
 
-    vec4 valueIncrement = property_->getIncrement();
-    sliderX_->setIncrement(valueIncrement.x);
-    sliderY_->setIncrement(valueIncrement.y);
-    sliderZ_->setIncrement(valueIncrement.z);
-    sliderW_->setIncrement(valueIncrement.w);
+        vec4 valueIncrement = property_->getIncrement();
+        sliderX_->setIncrement(valueIncrement.x);
+        sliderY_->setIncrement(valueIncrement.y);
+        sliderZ_->setIncrement(valueIncrement.z);
+        sliderW_->setIncrement(valueIncrement.w);
+    }
 }
 
 void FloatVec4PropertyWidgetQt::generatesSettingsWidget() {
