@@ -1,6 +1,9 @@
 #ifndef IVW_FORMATS_H
 #define IVW_FORMATS_H
 
+#pragma warning(disable : 4723)
+#pragma warning(disable : 4756)
+
 #include <inviwo/core/util/pstdint.h>
 #include <glm/glm.hpp>
 #include <limits>

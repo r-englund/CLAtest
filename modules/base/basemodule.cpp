@@ -1,7 +1,6 @@
 #include <modules/base/basemodule.h>
 
 #include <modules/base/processors/cubeproxygeometry.h>
-#include <modules/base/processors/parallelepipedproxygeometry.h>
 #include <modules/base/processors/entryexitpoints.h>
 #include <modules/base/processors/findedges.h>
 #include <modules/base/processors/firstivwprocessor.h>
@@ -9,6 +8,8 @@
 #include <modules/base/processors/imagemixer.h>
 #include <modules/base/processors/imagesource.h>
 #include <modules/base/processors/meshclipping.h>
+#include <modules/base/processors/parallelepipedproxygeometry.h>
+#include <modules/base/processors/positionwidgetprocessor.h>
 #include <modules/base/processors/redgreenprocessor.h>
 #include <modules/base/processors/simpleraycaster.h>
 #include <modules/base/processors/testprocessor.h>
@@ -24,7 +25,6 @@ BaseModule::BaseModule() : InviwoModule() {
     setXMLFileName("base/basemodule.xml");
 
     registerProcessor(CubeProxyGeometry);
-	registerProcessor(ParallelepipedProxyGeometry);
     registerProcessor(EntryExitPoints);
 	registerProcessor(FindEdges);
 	registerProcessor(FirstIvwProcessor);
@@ -32,6 +32,8 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(ImageMixer);
     registerProcessor(ImageSource);
     registerProcessor(MeshClipping);
+    registerProcessor(ParallelepipedProxyGeometry);
+    registerProcessor(PositionWidgetProcessor);
     registerProcessor(RedGreenProcessor);
     registerProcessor(SimpleRaycaster);
     registerProcessor(TestProcessor);

@@ -1,5 +1,6 @@
 #include "geometryrenderprocessorgl.h"
 #include <modules/opengl/geometry/geometrygl.h>
+#include <inviwo/core/interaction/trackball.h>
 
 namespace inviwo {
 
@@ -17,6 +18,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     addPort(outport_);
 
     addProperty(camera_);
+    addInteractionHandler(new Trackball(&camera_));
 }
 
 void GeometryRenderProcessorGL::process() {

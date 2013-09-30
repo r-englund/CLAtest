@@ -86,6 +86,8 @@ if(CMAKE_COMPILER_2005)
   add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE)
 endif(CMAKE_COMPILER_2005)
 
+add_definitions( "/W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo" )
+
 # Check if MAC
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_definitions(-DDARWIN)
