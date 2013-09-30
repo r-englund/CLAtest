@@ -368,8 +368,7 @@ void NetworkEditor::removeInspectorNetwork(Port* port) {
     processorNetwork_->lock();
     processorNetwork_->setBroadcastModification(false);    
     std::string portPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();
-    std::vector<Processor*> processors = processorNetwork_->getProcessors();
-    LogInfo("Number of Processors: " << processors.size());
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();    
     for (size_t i=0;i<processors.size();i++) {
         if (processors[i]->getIdentifier().find(portPrefix)!=std::string::npos) {
             removeProcessor(processors[i]);
@@ -411,6 +410,125 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
 void NetworkEditor::hoverPortTimeOut() {
     addPortInspector(inspectedPort_, QCursor::pos());
 }
+
+////////////////////////////////////////////////////////
+//   LOAD AND GET SNAPSHOT FROM EXTERNAL NETWORK      //
+////////////////////////////////////////////////////////
+void NetworkEditor::loadExternalNetwork(std::string fileName) {
+    processorNetwork_->lock();LogInfoCustom(__FUNCTION__, "Locking");
+    processorNetwork_->setBroadcastModification(false);
+
+    IvwDeserializer xmlDeserializer(fileName);
+    ProcessorNetwork* processorNetwork = new ProcessorNetwork();
+    processorNetwork->deserialize(xmlDeserializer);
+
+    std::string externalNetworkPrefix = "temporaryExternalNetworkSnapshot";
+
+    QRectF rect = sceneRect();
+
+    ivec2 pos(rect.width()/2, rect.height()/2);
+
+    std::vector<Processor*> processors = processorNetwork->getProcessors();
+    for (size_t i=0; i<processors.size(); i++) {
+        Processor* processor = processors[i];        
+        std::string originalName = processor->getIdentifier();
+        addProcessor(processor, QPointF(pos.x, pos.y), false, false);
+        //processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
+        processor->setIdentifier(externalNetworkPrefix+"_"+originalName+"_"+processor->getIdentifier());        
+        CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
+        if (canvasProcessor) {
+            // show processor widget as tool window
+            processor->setIdentifier(externalNetworkPrefix+"_"+processor->getIdentifier());
+            ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processor->getProcessorWidget());
+            ivwAssert(processorWidgetQt, "Processor widget not found in external network.");
+            processorWidgetQt->setMinimumSize(128, 128);
+            processorWidgetQt->setMaximumSize(128, 128);
+            processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);            
+            processorWidgetQt->move(pos);
+            processorWidgetQt->show();
+            processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
+        }
+    }
+
+    std::vector<PortConnection*> connections = processorNetwork->getPortConnections();
+    for (size_t i=0; i<connections.size(); i++) {
+        PortConnection* connection = connections[i];
+        Outport* outport = connection->getOutport();
+        Inport* inport = connection->getInport();
+        // first remove the connection from the loaded network to avoid an already connected warning
+        processorNetwork->removeConnection(outport, inport);
+        addConnection(outport, inport);
+    }
+
+    /*
+    //TODO: establish links
+    std::vector<ProcessorLink*> links = processorNetwork->getProcessorLinks();
+    for (size_t i=0; i<links.size(); i++) {
+        PropertyLink* propertyLink = links[i];
+        addLink(propertyLink->getSourceProperty())
+    }
+    */
+
+    processorNetwork_->unlock();LogInfoCustom(__FUNCTION__, "UnLocking");
+
+    processors = processorNetwork->getProcessors();
+    for (size_t i=0; i<processors.size(); i++) {
+        Processor* processor = processors[i];
+        if (processor->hasProcessorWidget())
+            processor->getProcessorWidget()->show();
+    }
+    processorNetwork_->setBroadcastModification(true);
+}
+
+void NetworkEditor::removeExternalNetwork() {
+    processorNetwork_->setBroadcastModification(false);
+    std::string externalNetworkPrefix = "temporaryExternalNetworkSnapshot";
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    for (size_t i=0;i<processors.size();i++) {
+        if (processors[i]->getIdentifier().find(externalNetworkPrefix)!=std::string::npos) {
+            removeProcessor(processors[i]);
+        }
+    }
+    processorNetwork_->setBroadcastModification(true);
+}
+
+void NetworkEditor::saveSnapshotOfAllCanvasInExternalNetwork(std::string externalNetworkFile, std::string snapshotPrefix) { 
+    std::string directory = URLParser::getFileDirectory(externalNetworkFile);
+    std::string workSpaceName = URLParser::getFileNameWithExtension(externalNetworkFile);
+    std::string newFileName = URLParser::replaceFileExtension(workSpaceName, "png");   
+    processorNetwork_->setBroadcastModification(false);
+    std::string externalNetworkPrefix = "temporaryExternalNetworkSnapshot";
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    for (size_t i=0;i<processors.size();i++) {
+        if (processors[i]->getIdentifier().find(externalNetworkPrefix)!=std::string::npos) {
+            CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processors[i]);
+            if (canvasProcessor) {
+                std::string snapShotFilePath = directory + "snapshotPrefix" + canvasProcessor->getIdentifier() + newFileName;
+                canvasProcessor->createSnapshot(snapShotFilePath.c_str());
+            }
+        }
+    }
+    processorNetwork_->setBroadcastModification(true);
+}
+
+void NetworkEditor::getSnapshotsOfExternalNetwork(std::string fileName, std::string snapshotPrefix) {
+   // //TODO: allow to define inspectors in module
+   if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("portInspectorOn"))->get())){
+        //load external network
+        loadExternalNetwork(fileName);
+        processorNetwork_->setModified(true);
+        processorNetworkEvaluator_->evaluate();
+
+        //save snapshot         
+        saveSnapshotOfAllCanvasInExternalNetwork(fileName, snapshotPrefix);
+
+        //unload external network
+        //clearNetwork();
+        removeExternalNetwork();
+               
+   }
+}
+
 
 
 
@@ -907,7 +1025,7 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 	oldConnectionTarget_->clearMidPoint();
 	oldConnectionTarget_ = NULL;
 
-    processorNetwork_->lock();
+    processorNetwork_->lock();LogInfoCustom(__FUNCTION__, "Locking");
 
 	// Remove old connection
 	removeConnection(connectionItem);
@@ -928,7 +1046,7 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 		}
 	}
 
-    processorNetwork_->unlock();
+    processorNetwork_->unlock();LogInfoCustom(__FUNCTION__, "UnLocking");
 
     if(processorNetwork_->isModified())
         processorNetworkEvaluator_->evaluate();	
@@ -940,12 +1058,12 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
 //   SERIALIZATION METHODS   //
 ///////////////////////////////
 void NetworkEditor::clearNetwork() {
-    processorNetwork_->lock();
+    processorNetwork_->lock();LogInfoCustom(__FUNCTION__, "Locking");
     ResourceManager::instance()->clearAllResources();
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     for (size_t i=0; i<processors.size(); i++)
         removeProcessor(processors[i]);
-    processorNetwork_->unlock();
+    processorNetwork_->unlock();LogInfoCustom(__FUNCTION__, "UnLocking");
 }
 
 bool NetworkEditor::saveNetwork(std::string fileName) {
@@ -957,11 +1075,16 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
 }
 
 bool NetworkEditor::loadNetwork(std::string fileName) {
+
+    //getSnapshotsOfExternalNetwork(fileName, "testSnapShot");
+    //clearNetwork();
+    //return true;
+
     // first we clean the current network
     clearNetwork();
 
     // then we lock the network that no evaluations are triggered during the deserialization
-    processorNetwork_->lock();
+    processorNetwork_->lock();LogInfoCustom(__FUNCTION__, "Locking");
 
     // then we deserialize processor network
     IvwDeserializer xmlDeserializer(fileName);
@@ -971,7 +1094,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     catch (const AbortException& exception) {
         LogInfo("Unable to load network " + fileName + " due to " + exception.getMessage());
         clearNetwork();
-        processorNetwork_->unlock();
+        processorNetwork_->unlock();LogInfoCustom(__FUNCTION__, "UnLocking");
         return false;
     }
     catch (const IgnoreException& exception) {
@@ -999,7 +1122,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
 
     // flag the network's modified flag, unlock it and initiate evaluation
     processorNetwork_->setModified(true);
-    processorNetwork_->unlock();
+    processorNetwork_->unlock();LogInfoCustom(__FUNCTION__, "UnLocking");
 
     // show all processor widgets that where hidden on network load
     for (size_t i=0; i<processors.size(); i++) {
