@@ -31,6 +31,13 @@ void ProcessorGL::activateAndClearTargets(PortGroup& portGroup) {
     clearCurrentTarget();
 }
 
+void ProcessorGL::updateAndActivateTarget(ImageOutport& outport, ImageInport& inport){
+    Image* outImage = outport.getData();
+    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
+    outImageGL->updateFrom(inport.getData()->getRepresentation<ImageGL>());
+    outImageGL->activateBuffer();
+}
+
 void ProcessorGL::bindColorTexture(const ImageInport& inport, GLenum texUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();

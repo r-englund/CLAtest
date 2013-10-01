@@ -1,4 +1,6 @@
 #include "positionwidgetprocessor.h"
+#include <inviwo/core/interaction/pickingmanager.h>
+#include <inviwo/core/datastructures/geometry/basemeshcreator.h>
 
 namespace inviwo {
 
@@ -9,7 +11,7 @@ ProcessorCodeState(PositionWidgetProcessor, CODE_STATE_EXPERIMENTAL);
 PositionWidgetProcessor::PositionWidgetProcessor()
     : ProcessorGL(),
       inport_("inport"),
-      outport_("outport", &inport_, COLOR_DEPTH_PICKING),
+      outport_("outport", COLOR_DEPTH_PICKING),
       widgetType_("widgetType", "Widget Type"),
       position_("position", "Position", vec3(0.0f), vec3(-1.f), vec3(1.f))      
 {
@@ -22,6 +24,13 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     addProperty(widgetType_);
 
     addProperty(position_);
+
+    widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
+
+    vec3 posLLF = vec3(0.5f);
+    vec3 posURB = vec3(1.5f);
+
+    widget_ = new Geometry(BaseMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(1.0f), vec4(1.0f)));
 }
 
 PositionWidgetProcessor::~PositionWidgetProcessor() {}
@@ -34,10 +43,14 @@ void PositionWidgetProcessor::deinitialize() {
     ProcessorGL::deinitialize();
 }
 
-void PositionWidgetProcessor::process() {    
-    activateTarget(outport_);
+void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
+    LogInfo("Found Picking Object with ID : (" << widgetPickingObject_->getPickingId() << ")");
+}
 
-    renderImagePlaneRect();
+void PositionWidgetProcessor::process() {    
+    updateAndActivateTarget(outport_, inport_);
+
+    //widget_->getRepresentation<GeometryGL>()->render();
 
     deactivateCurrentTarget();
     

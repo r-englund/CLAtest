@@ -26,6 +26,8 @@ public:
     void activateAndClearTargets(PortGroup& portGroup);
     void clearCurrentTarget();
 
+    void updateAndActivateTarget(ImageOutport& outport, ImageInport& inport);
+
     void bindColorTexture(const ImageInport& inport, GLenum texUnit);
     void bindColorTexture(const ImageOutport& outport, GLenum texUnit);
     void unbindColorTexture(const ImageInport& inport);

@@ -34,6 +34,7 @@ namespace inviwo {
         void unbindPickingTexture() const;
         virtual void resize(uvec2 dimensions);
         virtual bool copyAndResizeImage(DataRepresentation* target);
+        void updateFrom(const ImageGL* srcGL);
 
         FrameBufferObject* getFBO() {return frameBufferObject_;}
         Texture2D* getColorTexture() {return colorTexture_;}

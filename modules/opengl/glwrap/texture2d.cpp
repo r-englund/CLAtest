@@ -51,6 +51,19 @@ void Texture2D::bind() const{
     LGL_ERROR;
 }
 
+void Texture2D::bindFromPBO() const{
+    if(!dataInReadBackPBO_){
+        downloadToPBO();
+    }
+    glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, pboBack_);
+    LGL_ERROR;
+}
+
+void Texture2D::bindToPBO() const{
+    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
+    LGL_ERROR;
+}
+
 void Texture2D::upload(const void* data) {
     bind();
     glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, data);
@@ -61,17 +74,25 @@ void Texture2D::upload(const void* data) {
     LGL_ERROR;
 }
 
+void Texture2D::uploadFromPBO(const Texture2D* src){
+    bind();
+    src->bindFromPBO();
+    glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, 0);
+    src->unbindFromPBO();
+    LGL_ERROR;
+}
+
 void Texture2D::download(void* data) const {
     if(dataInReadBackPBO_){
         // Copy from PBO
-        glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
+        bindToPBO();
         void* mem = glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY);   
         assert(mem);
         memcpy(data, mem, dimensions_.x*dimensions_.y*getSizeInBytes());
 
         //Release PBO data
         glUnmapBuffer(GL_PIXEL_PACK_BUFFER_ARB);
-        glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+        unbindToPBO();
         dataInReadBackPBO_ = false;
     }
     else{
@@ -83,15 +104,29 @@ void Texture2D::download(void* data) const {
 
 void Texture2D::downloadToPBO() const{
     bind();
-    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
+    bindToPBO();
     glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, 0);
-    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+    unbindToPBO();
     dataInReadBackPBO_ = true;
 }
 
 void Texture2D::unbind() const{
     glBindTexture(GL_TEXTURE_2D, 0);
     LGL_ERROR;
+}
+
+void Texture2D::unbindFromPBO() const{
+    glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+    LGL_ERROR;
+}
+
+void Texture2D::unbindToPBO() const{
+    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+    LGL_ERROR;
+}
+
+void Texture2D::invalidatePBO(){
+    dataInReadBackPBO_ = false;
 }
 
 void Texture2D::resize(uvec2 dimension) {

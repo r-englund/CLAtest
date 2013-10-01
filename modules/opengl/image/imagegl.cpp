@@ -91,14 +91,26 @@ DataRepresentation* ImageGL::clone() const {
 
 void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
     const ImageGL* srcGL = src->getRepresentation<ImageGL>();
-    if(!typeContainsColor(getImageType()) && !colorTexture_){
+    if(layer == COLOR_LAYER && !typeContainsColor(getImageType()) && !colorTexture_){
         colorConstTexture_ = srcGL->getColorTexture();
     }
-    if(!typeContainsDepth(getImageType()) && !depthTexture_){
+    if(layer == DEPTH_LAYER &&!typeContainsDepth(getImageType()) && !depthTexture_){
         depthConstTexture_ = srcGL->getDepthTexture();
     }
-    if(!typeContainsPicking(getImageType()) && !pickingTexture_){
+    if(layer == PICKING_LAYER &&!typeContainsPicking(getImageType()) && !pickingTexture_){
         pickingConstTexture_ = srcGL->getPickingTexture();
+    }
+}
+
+void ImageGL::updateFrom(const ImageGL* srcGL){
+    if(colorTexture_){
+        colorTexture_->uploadFromPBO(srcGL->getColorTexture());
+    }
+    if(depthTexture_){
+        depthTexture_->uploadFromPBO(srcGL->getDepthTexture());
+    }
+    if(pickingTexture_){
+        pickingTexture_->uploadFromPBO(srcGL->getPickingTexture());
     }
 }
 
@@ -121,12 +133,25 @@ void ImageGL::createAndAddLayer(ImageLayerType layer){
 }
 
 void ImageGL::activateBuffer() {
+    if(colorTexture_)
+        colorTexture_->invalidatePBO();
+    if(depthTexture_)
+        depthTexture_->invalidatePBO();
+    if(pickingTexture_)
+        pickingTexture_->invalidatePBO();
     frameBufferObject_->activate();
     glViewport(0, 0, colorConstTexture_->getWidth(), colorConstTexture_->getHeight());
 }
 
 void ImageGL::deactivateBuffer() {
     frameBufferObject_->deactivate();
+    //Put data into PBO for fast copy and CPU retrieval
+    if(colorTexture_)
+        colorTexture_->downloadToPBO();
+    if(depthTexture_)
+        depthTexture_->downloadToPBO();
+    if(pickingTexture_)
+        pickingTexture_->downloadToPBO();
 }
 
 void ImageGL::bindColorTexture(GLenum texUnit) const {

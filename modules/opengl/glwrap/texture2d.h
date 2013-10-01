@@ -26,8 +26,11 @@ public:
     GLenum getDataType() const { return dataType_; }
 
     void bind() const;
+    void bindFromPBO() const;
+    void bindToPBO() const;
 
     void upload(const void* data);
+    void uploadFromPBO(const Texture2D*);
     
     /**
      * Download texture data to preallocated memory.
@@ -39,6 +42,10 @@ public:
     void downloadToPBO() const; 
 
     void unbind() const;
+    void unbindFromPBO() const;
+    void unbindToPBO() const;
+
+    void invalidatePBO(); 
 
     const uvec2& getDimension() const { return dimensions_;}
     int getWidth() const{ return dimensions_.x; }
