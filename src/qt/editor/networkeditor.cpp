@@ -54,8 +54,8 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
 //   PUBLIC METHODS FOR CHANGING NETWORK   //
 /////////////////////////////////////////////
 void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showProcessor, bool showProcessorWidget) {
-    // add the processor to the network
-    processor->setIdentifier(obtainUniqueProcessorID(processor));
+    // add the processor to the network    
+    processor->setIdentifier(obtainUniqueProcessorID(processor->getClassName()));
     processor->initialize();
     processorNetwork_->addProcessor(processor);
     // add processor representations
@@ -292,12 +292,10 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
 //////////////////////////////////////
 void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string inspectorNetworkFileName) {
 
-    std::string identifierPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();
-
-    LogInfo("Before Add inspector: "<<processorNetwork_->getProcessors().size());
+    std::string identifierPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();   
 
     processorNetwork_->lock();
-    addExternalNetwork(identifierPrefix, pos, inspectorNetworkFileName);    
+    addExternalNetwork(inspectorNetworkFileName, identifierPrefix, pos);    
     processorNetwork_->setBroadcastModification(false);
     
     //connect input port to appropriate port in inspector network
@@ -325,8 +323,7 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string inspe
 
 void NetworkEditor::removeInspectorNetwork(Port* port) {   
     std::string portPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();
-    removeExternalNetwork(portPrefix);
-    LogInfo("After Add inspector: "<<processorNetwork_->getProcessors().size());
+    removeExternalNetwork(portPrefix);    
 }
 
 void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
@@ -367,7 +364,7 @@ void NetworkEditor::hoverPortTimeOut() {
 //   LOAD AND GET SNAPSHOT FROM EXTERNAL NETWORK      //
 ////////////////////////////////////////////////////////
 
-void NetworkEditor::addExternalNetwork(std::string identifierPrefix, ivec2 pos, std::string fileName) {
+void NetworkEditor::addExternalNetwork(std::string fileName, std::string identifierPrefix, ivec2 pos, bool useOriginalCanvasSize, ivec2 canvasSize) {
     processorNetwork_->lock();
     processorNetwork_->setBroadcastModification(false);
 
@@ -377,20 +374,23 @@ void NetworkEditor::addExternalNetwork(std::string identifierPrefix, ivec2 pos, 
 
     std::vector<Processor*> processors = processorNetwork->getProcessors();
     for (size_t i=0; i<processors.size(); i++) {
-        Processor* processor = processors[i];                
-        processor->setIdentifier(identifierPrefix+"_"+processor->getIdentifier());
-        addProcessor(processor, QPointF(pos.x, pos.y), false, false);                
+        Processor* processor = processors[i];
+        std::string newIdentifier = identifierPrefix+"_"+processor->getIdentifier();        
+        addProcessor(processor, QPointF(pos.x, pos.y), false, false);
+        processor->setIdentifier(obtainUniqueProcessorID(newIdentifier));
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
         if (canvasProcessor) {
             // show processor widget as tool window              
             ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processor->getProcessorWidget());
             ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
-            processorWidgetQt->setMinimumSize(128, 128);
-            processorWidgetQt->setMaximumSize(128, 128);
+            if (!useOriginalCanvasSize) {
+                processorWidgetQt->setMinimumSize(canvasSize[0], canvasSize[1]);
+                processorWidgetQt->setMaximumSize(canvasSize[0], canvasSize[1]);
+            }
             processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);            
             processorWidgetQt->move(pos);
-            processorWidgetQt->show();
-            processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
+            processorWidgetQt->show(); 
+            processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier()); //register is required because identifier is modifed.
         }
     }
 
@@ -467,7 +467,7 @@ std::vector<std::string> NetworkEditor::getSnapshotsOfExternalNetwork(std::strin
         QRectF rect = sceneRect();
         ivec2 pos(rect.width()/2, rect.height()/2);
         std::string identifierPrefix = "TemporaryExternalNetwork";
-        addExternalNetwork(identifierPrefix, pos, fileName);
+        addExternalNetwork(fileName, identifierPrefix, pos, true);
         processorNetwork_->setModified(true);
         processorNetworkEvaluator_->evaluate();
 
@@ -1125,18 +1125,19 @@ void NetworkEditor::drawBackground(QPainter* painter, const QRectF & rect) {
     painter->drawLines(linesY.data(), linesY.size());
 }
 
-std::string NetworkEditor::obtainUniqueProcessorID(Processor* processor) const {
-    // if identifier already exists in the network, generate a new identifier
-    std::string identifier = processor->getIdentifier();
-    if (processorNetwork_->getProcessorByName(identifier)) {
-        unsigned int idNumber = 1;
-        do {
-            std::stringstream stringStream;
-            stringStream << idNumber++;            
-            identifier = processor->getClassName() + stringStream.str();
-        } while (processorNetwork_->getProcessorByName(identifier));
-    }
-    return identifier;
-}
+std::string NetworkEditor::obtainUniqueProcessorID(std::string identifierPrefix) const {  
+    if (!processorNetwork_->getProcessorByName(identifierPrefix))
+        return identifierPrefix;
 
+    unsigned int idNumber = 1;
+    std::string validProcessorID;
+    validProcessorID = identifierPrefix;
+    do {
+        std::stringstream stringStream;
+        stringStream << idNumber++;
+        validProcessorID = identifierPrefix + stringStream.str();
+    } while (processorNetwork_->getProcessorByName(validProcessorID));
+
+    return validProcessorID;
+}
 } // namespace

@@ -138,13 +138,13 @@ private:
     void removeInspectorNetwork(Port* port);
     void addPortInspector(Port* port, QPointF pos);
 
-    void addExternalNetwork(std::string processorPrefix, ivec2 pos, std::string fileName);
+    void addExternalNetwork(std::string fileName, std::string processorPrefix, ivec2 pos, bool useOriginalCanvasSize=false, ivec2 canvasSize=ivec2(128));
     void removeExternalNetwork(std::string identifierPrefix);
     std::vector<std::string> saveSnapshotsInExternalNetwork(std::string externalNetworkFile, std::string identifierPrefix);
 
     QPointF snapToGrid(QPointF pos);
     void drawBackground(QPainter* painter, const QRectF& rect);
-    std::string obtainUniqueProcessorID(Processor* processor) const;
+    std::string obtainUniqueProcessorID(std::string) const;
 
 public slots:
     void hoverPortTimeOut();

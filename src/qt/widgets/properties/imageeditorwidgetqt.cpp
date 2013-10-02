@@ -225,7 +225,7 @@ void ImageLabelWidget::addBackGroundImage(std::string imagePath) {
     i->setZValue(1);    
     scene_->setSceneRect(0, 0, backGroundImage_->width(), backGroundImage_->height());
     //resize(image.size()*4/3);
-    setFixedSize(backGroundImage_->size()*1.7f);
+    setFixedSize(backGroundImage_->size()*1.2f);
 }
 
 void ImageLabelWidget::setParent(ImageEditorWidgetQt* tmp){
@@ -269,7 +269,7 @@ void ImageEditorWidgetQt::generateWidget() {
 
 void ImageEditorWidgetQt::setPropertyValue() {}
 
-void ImageEditorWidgetQt::editImageLabel(){
+void ImageEditorWidgetQt::editImageLabel() {
     
     ImageEditorProperty* imageEditorProperty = static_cast<ImageEditorProperty*>(property_);
     if (imageEditorProperty) {
@@ -282,7 +282,7 @@ void ImageEditorWidgetQt::editImageLabel(){
     }    
 }
 
-void ImageEditorWidgetQt::loadImageLabel(){
+void ImageEditorWidgetQt::loadImageLabel() {
     if (tmpPropertyValue_!=static_cast<FileProperty*>(property_)->get()) {
         tmpPropertyValue_ = static_cast<FileProperty*>(property_)->get();
         imageLabelWidget_->addBackGroundImage(tmpPropertyValue_);
@@ -299,7 +299,7 @@ void ImageEditorWidgetQt::loadImageLabel(){
 }
 
 //Function writes content of the textEditor_ to the file
-bool ImageEditorWidgetQt::writeImageLabel(){
+bool ImageEditorWidgetQt::writeImageLabel() {
     //Close the file to open it with new flags
     ImageEditorProperty* imageEditorProperty = dynamic_cast<ImageEditorProperty*>(property_);
     if (imageEditorProperty) {
@@ -322,7 +322,7 @@ bool ImageEditorWidgetQt::writeImageLabel(){
     return true;
 }
 
-bool ImageEditorWidgetQt::saveDialog(){
+bool ImageEditorWidgetQt::saveDialog() {
     if (imageLabelWidget_->getView()) {
         QMessageBox::StandardButton ret;
         ret = QMessageBox::warning(this, tr("Application"),
