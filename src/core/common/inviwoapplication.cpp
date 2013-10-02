@@ -66,7 +66,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
 }
 
 void InviwoApplication::printApplicationInfo(){
-    LogInfoCustom("InviwoInfo", "Version: " << IVW_VERSION);
+    LogInfoCustom("InviwoInfo", "Inviwo Version: " << IVW_VERSION);
     std::string config = "";
 #ifdef CMAKE_GENERATOR
     config += std::string(CMAKE_GENERATOR);

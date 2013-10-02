@@ -27,6 +27,8 @@ public:
 
     virtual void playSound(unsigned int soundID);
 
+	virtual void initialize();
+
 public slots:
     void fileChanged(QString fileName);
 

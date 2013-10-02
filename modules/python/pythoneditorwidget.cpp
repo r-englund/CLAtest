@@ -23,6 +23,7 @@ namespace inviwo{
             unsavedChanges_(false){
         setObjectName("PythonEditor");
         setAllowedAreas(Qt::AllDockWidgetAreas);
+		setFloating(true);
         InviwoApplication::getRef().registerFileObserver(this);
 
         QMenu *menu = mainWindow->menuBar()->addMenu("&Python");
