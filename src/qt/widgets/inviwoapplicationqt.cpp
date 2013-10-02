@@ -74,6 +74,12 @@ void InviwoApplicationQt::playSound(unsigned int soundID) {
 #endif
 }
 
+
+void InviwoApplicationQt::initialize(){
+	LogInfoCustom("InviwoInfo","QT Version " << QT_VERSION_STR);
+	InviwoApplication::initialize();
+}
+
 void InviwoApplicationQt::wait(int ms){
     if(ms <= 0)
         return;

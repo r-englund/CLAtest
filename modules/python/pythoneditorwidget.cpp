@@ -36,6 +36,7 @@ namespace inviwo{
         resize(500,700);
 
         pythonEditorWidget_ = this;
+		setVisible(false);
     }
 
     void PythonEditorWidget::buildWidget(){
