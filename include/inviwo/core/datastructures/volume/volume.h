@@ -14,11 +14,21 @@ namespace inviwo {
         Volume(VolumeRepresentation*, const Volume*);
         virtual ~Volume();
         Data* clone() const;        
-        void setOffset(ivec3); 
-		ivec3 getOffset() const;
+    
+        uvec3 getDimension() const;
+        void setDimension(const uvec3& dim);
+
+        void setOffset(const vec3& offset); 
+		vec3 getOffset() const;
 	
-		uvec3 getDimension() const;
-		void setDimension(const uvec3& dim);
+        mat3 getBasis() const;
+        void setBasis(const mat3& basis);
+
+        mat4 getBasisAndOffset() const;
+        void setBasisAndOffset(const mat4& mat);
+
+        mat4 getWorldTransform() const;
+        void setWorldTransform(const mat4& mat);
 
     protected:
         void createDefaultRepresentation() const;

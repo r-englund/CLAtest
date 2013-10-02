@@ -300,6 +300,7 @@ public:
 	SpatialData();
 	SpatialData(const Vector<N,float>& offset);
 	SpatialData(const Matrix<N,float>& basis);
+    SpatialData(const Matrix<N+1,float>& mat);
 	SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset);
 
 	virtual ~SpatialData(){}
@@ -307,32 +308,41 @@ public:
 	Vector<N,float> getOffset() const;
 	void setOffset(const Vector<N,float>& offset);
 
+	// Using column vectors in basis
 	Matrix<N,float> getBasis() const;
 	void setBasis(const Matrix<N,float>& basis);
 
 	Matrix<N+1,float> getBasisAndOffset() const;
 	void setBasisAndOffset(const Matrix<N+1,float>& mat);
+
+    Matrix<N+1,float> getWorldTransform() const;
+    void SetWorldTransform(const Matrix<N+1,float>& mat);
+
 };
 
 template <unsigned int N>
 SpatialData<N>::SpatialData() : Data() {
-	Vector<N,float> offset(0.0f);
-	Matrix<N,float> basis(1.0f);
+	Vector<N,float> offset(-1.0f);
+	Matrix<N,float> basis(2.0f);
 	setBasis(basis);
 	setOffset(offset);
 }
 
 template <unsigned int N>
 SpatialData<N>::SpatialData(const Vector<N,float>& offset) : Data() {
-	Matrix<N,float> basis(1.0f);
+	Matrix<N,float> basis(2.0f);
 	setBasis(basis);
 	setOffset(offset);
 }
 template <unsigned int N>
 SpatialData<N>::SpatialData(const Matrix<N,float>& basis) : Data() {
-	Vector<N,float> offset(0.0f);
+	Vector<N,float> offset(-1.0f);
 	setBasis(basis);
 	setOffset(offset);
+}
+template <unsigned int N>
+SpatialData<N>::SpatialData(const Matrix<N+1,float>& mat) : Data() {
+    setBasisAndOffset(mat);
 }
 template <unsigned int N>
 SpatialData<N>::SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset) : Data() {
@@ -341,59 +351,70 @@ SpatialData<N>::SpatialData(const Matrix<N,float>& basis, const Vector<N,float>&
 }
 
 template <unsigned int N>
-Vector<N,float> SpatialData<N>::getOffset() const {	
-	Vector<N,float> offset;
-	return Data::getMetaData<VectorMetaData<N,float> >("offset", offset);
+Vector<N,float> SpatialData<N>::getOffset() const {
+    Vector<N,float> offset(0.0f);
+    Matrix<N+1,float> mat = getBasisAndOffset();
+    for(int i=0;i<N;i++){
+        offset[i] = mat[i][N];
+    }
+	return offset;
 }
 template <unsigned int N>
 void SpatialData<N>::setOffset(const Vector<N,float>& offset) {
-	Data::setMetaData<VectorMetaData<N,float> >("offset", offset);
+	 Matrix<N+1,float> mat = getBasisAndOffset();
+     for(int i=0;i<N;i++){
+        mat[i][N] = offset[i];
+     }
+     setBasisAndOffset(mat);
 }
 
 template <unsigned int N>
 Matrix<N,float> SpatialData<N>::getBasis() const {
 	Matrix<N,float> basis(1.0f);
-	return Data::getMetaData<MatrixMetaData<N,float> >("basis", basis);
+    Matrix<N+1,float> mat = getBasisAndOffset();
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            basis[i][j] = mat[i][j];
+        }
+    }
+    return basis;
 }
 
 template <unsigned int N>
 void SpatialData<N>::setBasis(const Matrix<N,float>& basis) {
-	Data::setMetaData<MatrixMetaData<N,float> >("basis", basis);
+    Matrix<N+1,float> mat = getBasisAndOffset();
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            mat[i][j] = basis[i][j];
+        }
+    }
+    setBasisAndOffset(mat);
 }
 
 template <unsigned int N>
 Matrix<N+1,float> SpatialData<N>::getBasisAndOffset() const {
-	Matrix<N+1,float> mat(0.0f);
-	Matrix<N,float> basis = getBasis();
-	Vector<N,float> offset = getOffset();
-	for(int i=0;i<N+1;i++){
-		for(int j=0;j<N+1;j++){
-			if(i<N && j<N){
-				mat[i][j]=basis[i][j];
-			}else if(i<N && j==N){
-				mat[i][j]=offset[i];
-			}else if(i==N && j==N){
-				mat[i][j] = 1.0f;
-			}else{
-				mat[i][j] = 0.0f;
-			}
-		}
-	}
-	return mat;
+    Matrix<N+1,float> mat(2.0f);
+    for(int i=0;i<N;i++){
+        mat[i][N] = -1.0f;
+    }
+    mat[N][N]=1.0f;
+    return Data::getMetaData<MatrixMetaData<N+1,float> >("basisAndOffset", mat);
 }
 template <unsigned int N>
 void SpatialData<N>::setBasisAndOffset(const Matrix<N+1,float>& mat) {
-	Matrix<N,float> basis(1.0f);
-	Vector<N,float> offset(0.0f);
-	for(int i=0;i<N;i++){
-		for(int j=0;j<N;j++){
-			basis[i][j] = mat[i][j];
-		}
-		offset[i] = mat[i][N+1];
-	}
-	setBasis(basis);
-	setOffset(offset);
+    Data::setMetaData<MatrixMetaData<N+1,float> >("basisAndOffset", mat);
 }
+
+template <unsigned int N>
+Matrix<N+1,float> SpatialData<N>::getWorldTransform() const {
+    Matrix<N+1,float> mat(1.0f);
+    return Data::getMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
+}
+template <unsigned int N>
+void SpatialData<N>::SetWorldTransform(const Matrix<N+1,float>& mat) {
+    Data::setMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
+}
+
 
 /*---------------------------------------------------------------*/
 

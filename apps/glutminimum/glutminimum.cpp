@@ -10,8 +10,8 @@
 #include <GL/glut.h>
 #include <modules/glut/canvasglut.h>
 
-#include <inviwo/core/inviwo.h>
-#include <inviwo/core/inviwoapplication.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
@@ -45,13 +45,13 @@ void keyPressed(unsigned char key, int /*x*/, int /*y*/) {
         case '1': {
             Processor* processor = processorNetwork->getProcessorByName("EntryExitPoints");
             FloatProperty* distance = dynamic_cast<FloatProperty*>(processor->getPropertyByIdentifier("viewDist"));
-            distance->increase();
+            distance->set(distance->get()+distance->getIncrement());
             break;
         }
         case '2': {
             Processor* processor = processorNetwork->getProcessorByName("EntryExitPoints");
             FloatProperty* distance = dynamic_cast<FloatProperty*>(processor->getPropertyByIdentifier("viewDist"));
-            distance->decrease();            
+            distance->set(distance->get()-distance->getIncrement());     
             break;
         }
     }

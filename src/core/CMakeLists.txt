@@ -14,10 +14,11 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatransformer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/attributes.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/basemeshcreator.h
-	${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/basemeshram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/basemeshram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/edge.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryram.h
