@@ -70,6 +70,10 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
             default:
                 renderNoise();
         }
+        //Pre-download incoming image (for Picking etc)
+        imageGL_->getColorTexture()->downloadToPBO();
+        //imageGL_->getDepthTexture()->downloadToPBO();
+        //imageGL_->getPickingTexture()->downloadToPBO();
     } else {
         imageGL_ = NULL;
         renderNoise();

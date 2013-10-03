@@ -22,6 +22,7 @@ void ImageGL::initialize() {
     colorConstTexture_ = colorTexture_;
     depthConstTexture_ = depthTexture_;
     pickingConstTexture_ = pickingTexture_;
+    pickingAttachmentID_ = 0;
     if(typeContainsColor(getImageType())){
         if(!colorTexture_){
             createAndAddLayer(COLOR_LAYER);
@@ -48,7 +49,7 @@ void ImageGL::initialize() {
             pickingTexture_->bind();
         }
         //Attach to last color attachment
-        frameBufferObject_->attachTexture(pickingTexture_, 0, true); 
+        pickingAttachmentID_ = frameBufferObject_->attachTexture(pickingTexture_, 0, true); 
     }
     frameBufferObject_->deactivate();
     frameBufferObject_->checkStatus();
@@ -102,18 +103,6 @@ void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
     }
 }
 
-void ImageGL::updateFrom(const ImageGL* srcGL){
-    if(colorTexture_){
-        colorTexture_->uploadFromPBO(srcGL->getColorTexture());
-    }
-    if(depthTexture_){
-        depthTexture_->uploadFromPBO(srcGL->getDepthTexture());
-    }
-    if(pickingTexture_){
-        pickingTexture_->uploadFromPBO(srcGL->getPickingTexture());
-    }
-}
-
 void ImageGL::createAndAddLayer(ImageLayerType layer){
     if(layer == COLOR_LAYER){
         colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
@@ -133,25 +122,13 @@ void ImageGL::createAndAddLayer(ImageLayerType layer){
 }
 
 void ImageGL::activateBuffer() {
-    if(colorTexture_)
-        colorTexture_->invalidatePBO();
-    if(depthTexture_)
-        depthTexture_->invalidatePBO();
-    if(pickingTexture_)
-        pickingTexture_->invalidatePBO();
+    invalidatePBOs();
     frameBufferObject_->activate();
     glViewport(0, 0, colorConstTexture_->getWidth(), colorConstTexture_->getHeight());
 }
 
 void ImageGL::deactivateBuffer() {
     frameBufferObject_->deactivate();
-    //Put data into PBO for fast copy and CPU retrieval
-    if(colorTexture_)
-        colorTexture_->downloadToPBO();
-    if(depthTexture_)
-        depthTexture_->downloadToPBO();
-    if(pickingTexture_)
-        pickingTexture_->downloadToPBO();
 }
 
 void ImageGL::bindColorTexture(GLenum texUnit) const {
@@ -207,40 +184,111 @@ void ImageGL::resize(uvec2 dimensions) {
     }
 }
 
-bool ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
-    
-    ImageGL* source = this;
-    ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
+void ImageGL::invalidatePBOs(){
+    if(colorTexture_)
+        colorTexture_->invalidatePBO();
+    if(depthTexture_)
+        depthTexture_->invalidatePBO();
+    if(pickingTexture_)
+        pickingTexture_->invalidatePBO();
+}
 
-    ivwAssert(target!=0, "Target representation missing.");
+bool ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
+    ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
+    ImageGL* source = this;
+
+    //Need to render to screen, as DEPTH attachment can't be linearly sampled using blitting.
 
     //Resize by FBO blit
-    FrameBufferObject* srcFBO = source->getFBO();
+    const FrameBufferObject* srcFBO = source->getFBO();
     FrameBufferObject* tgtFBO = target->getFBO();
-    Texture2D* sTex = source->getColorTexture();
+    const Texture2D* sTex = source->getColorTexture();
     Texture2D* tTex = target->getColorTexture();
-    
-    //FrameBufferObject::deactivate();
-    //source->activateBuffer();
-    srcFBO->setRead_Blit(); 
-    //glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
 
-    //FrameBufferObject::deactivate();
-    //target->activateBuffer();
+    srcFBO->setRead_Blit(); 
     tgtFBO->setDraw_Blit();
-    //glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);        
-            
-    //srcFBO->attachTexture(sTex);
-    //tgtFBO->attachTexture(tTex);        
-    //FrameBufferObject::deactivate();
-    //glDisable(GL_SCISSOR_TEST);
+
     glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
                          0, 0, tTex->getWidth(), tTex->getHeight(),
                          GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
          
     srcFBO->setRead_Blit(false); 
     tgtFBO->setDraw_Blit(false);        
     FrameBufferObject::deactivate();
+
+    LGL_ERROR;
+
+    return true;
+}
+
+bool ImageGL::updateFrom(const ImageGL* source) {
+    ImageGL* target = this;
+
+    //Primarily Copy by FBO blitting, all from source FBO to target FBO
+    const FrameBufferObject* srcFBO = source->getFBO();
+    FrameBufferObject* tgtFBO = target->getFBO();
+    const Texture2D* sTex = source->getColorTexture();
+    Texture2D* tTex = target->getColorTexture();
+
+    std::vector<GLenum> srcIDs = srcFBO->getColorAttachementIDs();
+    std::vector<GLenum> targetIDs = tgtFBO->getColorAttachementIDs();
+
+    size_t colorIDS = std::min(srcIDs.size(), targetIDs.size());
+
+    srcFBO->setRead_Blit(); 
+    tgtFBO->setDraw_Blit();
+
+    GLbitfield mask = GL_COLOR_BUFFER_BIT;
+    if(srcFBO->hasDepthAttachment() && tgtFBO->hasDepthAttachment())
+        mask |= GL_DEPTH_BUFFER_BIT;
+    if(srcFBO->hasStencilAttachment() && tgtFBO->hasStencilAttachment())
+        mask |= GL_STENCIL_BUFFER_BIT;
+
+    if(colorIDS > 0){
+        glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
+                             0, 0, tTex->getWidth(), tTex->getHeight(),
+                             mask, GL_NEAREST);
+
+        for(size_t i = 1; i < colorIDS; i++){
+            glReadBuffer(srcIDs[i]);
+            glDrawBuffer(targetIDs[i]);
+            glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
+                                 0, 0, tTex->getWidth(), tTex->getHeight(),
+                                 GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        }
+        glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
+        glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+    }
+
+    srcFBO->setRead_Blit(false); 
+    tgtFBO->setDraw_Blit(false);        
+    FrameBufferObject::deactivate();
+    LGL_ERROR;
+
+    //Secondary copy using PBO
+
+    //Depth texture
+    if((mask & GL_DEPTH_BUFFER_BIT) == 0){
+        sTex = source->getDepthTexture();
+        tTex = target->getDepthTexture();
+
+        if(sTex && tTex)
+            tTex->uploadFromPBO(sTex);
+    }
+    LGL_ERROR;
+
+    //Picking texture
+    if (pickingAttachmentID_ != 0){
+        if(std::find(srcIDs.begin(), srcIDs.end(), pickingAttachmentID_) != srcIDs.end()){
+            sTex = source->getPickingTexture();
+            tTex = target->getPickingTexture();
+
+            if(sTex && tTex)
+                tTex->uploadFromPBO(sTex);
+        }
+    }
+    LGL_ERROR;
 
     return true;
 }

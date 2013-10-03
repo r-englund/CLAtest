@@ -4,6 +4,8 @@ namespace inviwo {
 
 FrameBufferObject::FrameBufferObject() {
     glGenFramebuffersEXT(1, &id_);
+    hasDepthAttachment_ = false;
+    hasStencilAttachment_ = false;
 }
 
 FrameBufferObject::~FrameBufferObject() {
@@ -22,7 +24,11 @@ void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) 
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
     GLint maxColorAttachements;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachements);
-    if (attachedColorTextures_.size() < (unsigned int)maxColorAttachements) {
+    if(attachementID == GL_DEPTH_ATTACHMENT)
+        hasDepthAttachment_ = true;
+    else if(attachementID == GL_STENCIL_ATTACHMENT)
+        hasStencilAttachment_ = true;
+    else if (attachedColorTextures_.size() < (unsigned int)maxColorAttachements) {
         // manage color textures in dedicated vector
         if (attachementID >= GL_COLOR_ATTACHMENT0_EXT && attachementID <= GL_COLOR_ATTACHMENT15_EXT)
             attachedColorTextures_.push_back(attachementID);
@@ -30,11 +36,12 @@ void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) 
         LogError("Maximum number of " << maxColorAttachements << " color textures attached.");
 }
 
-void FrameBufferObject::attachTexture(Texture2D* texture, int attachementNumber, bool attachFromRear) {
+GLenum FrameBufferObject::attachTexture(Texture2D* texture, int attachementNumber, bool attachFromRear) {
     GLint maxColorAttachements;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachements);
     GLenum attachementID = (attachFromRear ? static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+maxColorAttachements-attachementNumber-1) : static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber));
     attachTexture(texture, attachementID);
+    return attachementID;
 }
 
 void FrameBufferObject::detachTexture(GLenum attachementID) {
@@ -44,6 +51,10 @@ void FrameBufferObject::detachTexture(GLenum attachementID) {
             return;
         }
     }
+    if(attachementID == GL_DEPTH_ATTACHMENT)
+        hasDepthAttachment_ = false;
+    else if(attachementID == GL_STENCIL_ATTACHMENT)
+        hasStencilAttachment_ = false;
 }
 
 void FrameBufferObject::detachAllTextures() {
@@ -73,18 +84,18 @@ void FrameBufferObject::checkStatus() {
     }
 }
 
-void FrameBufferObject::setRead_Blit(bool set) {
+void FrameBufferObject::setRead_Blit(bool set) const {
     if (set)
-        glBindFramebufferEXT(GL_READ_FRAMEBUFFER, id_ );
+        glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, id_ );
     else
-        glBindFramebufferEXT(GL_READ_FRAMEBUFFER, 0 );
+        glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, 0 );
 }
 
 void FrameBufferObject::setDraw_Blit(bool set) {
     if (set)
-        glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER, id_ );
+        glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, id_ );
     else
-        glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER, 0 );
+        glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0 );
 }
 
 

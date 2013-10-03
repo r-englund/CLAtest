@@ -33,20 +33,24 @@ namespace inviwo {
         void unbindColorTexture() const;
         void unbindPickingTexture() const;
         virtual void resize(uvec2 dimensions);
-        virtual bool copyAndResizeImage(DataRepresentation* target);
-        void updateFrom(const ImageGL* srcGL);
+        virtual bool copyAndResizeImage(DataRepresentation*);
+        bool updateFrom(const ImageGL*);
 
         FrameBufferObject* getFBO() {return frameBufferObject_;}
+        const FrameBufferObject* getFBO() const {return frameBufferObject_;}
+
         Texture2D* getColorTexture() {return colorTexture_;}
         Texture2D* getDepthTexture() {return depthTexture_;}
-        Texture2D* getPickingTexture() {return depthTexture_;}
+        Texture2D* getPickingTexture() {return pickingTexture_;}
         const Texture2D* getColorTexture() const {return colorConstTexture_;}
         const Texture2D* getDepthTexture() const {return depthConstTexture_;}
-        const Texture2D* getPickingTexture() const {return depthConstTexture_;}
+        const Texture2D* getPickingTexture() const {return pickingConstTexture_;}
 
     protected:
         void useInputSource(ImageLayerType, const Image*);
         void createAndAddLayer(ImageLayerType);
+
+        void invalidatePBOs();
 
     private:
         Texture2D* colorTexture_;
@@ -56,6 +60,7 @@ namespace inviwo {
         const Texture2D* depthConstTexture_;
         const Texture2D* pickingConstTexture_;
         FrameBufferObject* frameBufferObject_;
+        GLenum pickingAttachmentID_;
     };
 
 } // namespace

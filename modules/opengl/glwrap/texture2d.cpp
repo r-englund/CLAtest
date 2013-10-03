@@ -75,9 +75,10 @@ void Texture2D::upload(const void* data) {
 }
 
 void Texture2D::uploadFromPBO(const Texture2D* src){
-    bind();
     src->bindFromPBO();
+    bind();
     glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, 0);
+    unbind();
     src->unbindFromPBO();
     LGL_ERROR;
 }
@@ -103,11 +104,13 @@ void Texture2D::download(void* data) const {
 }
 
 void Texture2D::downloadToPBO() const{
-    bind();
-    bindToPBO();
-    glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, 0);
-    unbindToPBO();
-    dataInReadBackPBO_ = true;
+    if(!dataInReadBackPBO_){
+        bind();
+        bindToPBO();
+        glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, 0);
+        unbindToPBO();
+        dataInReadBackPBO_ = true;
+    }
 }
 
 void Texture2D::unbind() const{

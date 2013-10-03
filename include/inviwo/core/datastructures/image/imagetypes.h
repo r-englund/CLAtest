@@ -5,8 +5,6 @@ namespace inviwo {
 
 enum ImageType{
     COLOR_ONLY,
-    DEPTH_ONLY,
-    PICKING_ONLY,
     COLOR_DEPTH,
     COLOR_PICKING,
     COLOR_DEPTH_PICKING
@@ -23,7 +21,7 @@ static bool typeContainsColor(ImageType type){
 }
 
 static bool typeContainsDepth(ImageType type){
-    return (type == DEPTH_ONLY || type == COLOR_DEPTH || type == COLOR_DEPTH_PICKING);
+    return (type == COLOR_DEPTH || type == COLOR_DEPTH_PICKING);
 }
 
 static bool typeContainsPicking(ImageType type){

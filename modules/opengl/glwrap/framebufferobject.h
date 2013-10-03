@@ -18,18 +18,23 @@ public:
     static void deactivate();
 
     void attachTexture(Texture2D* texture, GLenum attachementID = GL_COLOR_ATTACHMENT0_EXT);
-    void attachTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear);
+    GLenum attachTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear);
     void detachTexture(GLenum attachementID);
     void detachAllTextures();
-    std::vector<GLenum> getColorAttachementIDs() { return attachedColorTextures_; }
+    std::vector<GLenum> getColorAttachementIDs() const { return attachedColorTextures_; }
+
+    bool hasDepthAttachment() const { return hasDepthAttachment_; }
+    bool hasStencilAttachment() const { return hasStencilAttachment_; }
 
     void checkStatus();
 
-    void setRead_Blit(bool set=true);
+    void setRead_Blit(bool set=true) const;
     void setDraw_Blit(bool set=true);
 
 private:
     unsigned int id_;
+    bool hasDepthAttachment_;
+    bool hasStencilAttachment_;
     std::vector<GLenum> attachedColorTextures_;
 };
 

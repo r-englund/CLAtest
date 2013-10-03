@@ -44,8 +44,6 @@ void  Image::setDimension(const uvec2& dim){
 	StructuredData<2>::setDimension(dim);
 }
 
-
-
 void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
     //TODO: check if getClassName() is necessary.
     //TODO: And also need to be tested on multiple representations_ such as ImageRAM, ImageDisk etc.,
