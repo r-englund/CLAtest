@@ -10,6 +10,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocore.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocoredefine.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwomodule.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/buffer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/bufferram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/bufferramprecision.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/bufferrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
@@ -178,6 +182,9 @@ set(SOURCE_FILES
     common/inviwoapplication.cpp
     common/inviwocore.cpp
     common/inviwomodule.cpp
+    datastructures/buffer/buffer.cpp
+    datastructures/buffer/bufferram.cpp
+    datastructures/buffer/bufferrepresentation.cpp
     datastructures/data.cpp
     datastructures/datarepresentation.cpp
     datastructures/geometry/basemeshcreator.cpp

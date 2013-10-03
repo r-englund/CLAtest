@@ -22,7 +22,7 @@ void ImageRAM::initialize() {
 void ImageRAM::deinitialize() {
     // Make sure that data is deinitialized in
     // child class (should not delete void pointer 
-    // since destructor will not be called for object.
+    // since destructor will not be called for object).
 }
 
 void ImageRAM::resize(uvec2 dimensions) {

@@ -22,10 +22,7 @@ Data* Image::clone() const {
 }
 
 Image::~Image() {
-    for (size_t i=0; i<representations_.size(); i++) {
-        delete representations_[i];
-    }
-    representations_.clear();
+    // Representations are deleted by Data destructor.
 }
 
 void Image::resize(uvec2 dimensions) {
