@@ -37,6 +37,7 @@ private:
 	FloatProperty floatPropertyPlaneHeight;
 	BoolProperty clippingEnabled_;
 	Plane plane_;
+	const float EPSILON;
 };
 } // namespace
 
