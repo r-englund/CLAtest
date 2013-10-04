@@ -23,12 +23,12 @@ public:
 	void updateFromProperty();
 
 private:
-	TransferFunctionProperty* property_;
     QToolButton* btnOpenTF_;
     EditableLabelQt* label_;
+    QLinearGradient* gradient_;
     QGraphicsView* gradientView_; 
     QGraphicsScene* gradientScene_;
-    QLinearGradient* gradient_;
+    TransferFunctionProperty* property_;
 
 	TransferFunctionPropertyDialog* transferFunctionDialog_;
 

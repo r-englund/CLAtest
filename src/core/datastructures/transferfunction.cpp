@@ -4,6 +4,8 @@
 namespace inviwo {
 TransferFunction::TransferFunction() {
 	textureSize_ = 1024;
+    maskMin_ = 0;
+    maskMax_ = 1;
     data_ = new Image(uvec2(textureSize_, 1), COLOR_ONLY, DataVec4FLOAT32::get());
 }
 
@@ -17,7 +19,9 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
 		delete data_;
 		this->data_ = static_cast<Image*>(rhs.data_->clone());
 		this->clearPoints();
-		textureSize_ = rhs.textureSize_;
+        textureSize_ = rhs.textureSize_;
+        maskMin_ = rhs.maskMin_;
+        maskMax_ = rhs.maskMax_;
 		for (int i = 0; i < static_cast<int>(rhs.getNumberOfDataPoints()); ++i){
 			this->dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(i)));
 		}
@@ -102,33 +106,30 @@ void TransferFunction::clearPoints(){
 }
 
 void TransferFunction::calcTransferValues(){
-	//int dataArraySize = (int)pow(2.0f, databits_) - 1;
-	int dataArraySize = 1023;
-	data_->resize(uvec2(textureSize_, 1));
 	vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<ImageRAM>()->getData());
 
 	//In case of 0 points
 	if ((int)dataPoints_.size() == 0){
-		for (int i = 0; i <= dataArraySize; i++){
-			dataArray[i] = vec4((float)i/dataArraySize, (float)i/dataArraySize, (float)i/dataArraySize, 1.0f);
+		for (int i = 0; i <= (textureSize_ - 1); i++){
+			dataArray[i] = vec4((float)i/(textureSize_ - 1.0), (float)i/(textureSize_ - 1.0), (float)i/(textureSize_ - 1.0), 1.0);
 		}
 	}
 	//In case of 1 point
 	else if ((int)dataPoints_.size () == 1){ 
-		for (size_t i = 0; i <= (size_t)dataArraySize ; ++i){
+		for (size_t i = 0; i <= (size_t)(textureSize_ - 1) ; ++i){
 			dataArray[i] = *dataPoints_[0]->getRgba();
 		}
 	}
 
 	//In case of >1 points
 	else{
-		int frontX = (int)ceil(dataPoints_.front()->getPos()->x * dataArraySize);
-		int backX = (int)ceil(dataPoints_.back()->getPos()->x * dataArraySize);
+		int frontX = (int)ceil(dataPoints_.front()->getPos()->x * (textureSize_ - 1));
+		int backX = (int)ceil(dataPoints_.back()->getPos()->x * (textureSize_ - 1));
 
 		for (size_t i = 0; i <= (size_t)frontX; ++i){
 			dataArray[i] = *dataPoints_.front()->getRgba();
 		}
-		for (size_t i = backX; i <= (size_t)dataArraySize; ++i){
+		for (size_t i = backX; i <= (size_t)(textureSize_ - 1); ++i){
 			dataArray[i] = *dataPoints_.back()->getRgba();
 		}
 
@@ -136,13 +137,13 @@ void TransferFunction::calcTransferValues(){
 		std::vector<TransferFunctionDataPoint*>::iterator pRight = dataPoints_.begin() + 1;
 
 		while(pRight != dataPoints_.end()){
-			int n = (int)ceil((*pLeft)->getPos()->x * dataArraySize);
+			int n = (int)ceil((*pLeft)->getPos()->x * (textureSize_ - 1));
 
-			while (n < ceil((*pRight)->getPos()->x * dataArraySize)){
+			while (n < ceil((*pRight)->getPos()->x * (textureSize_ - 1))){
 				vec4 lrgba = *(*pLeft)->getRgba();
 				vec4 rrgba = *(*pRight)->getRgba();
-				float lx = (*pLeft)->getPos()->x * dataArraySize;
-				float rx = (*pRight)->getPos()->x * dataArraySize;
+				float lx = (*pLeft)->getPos()->x * (textureSize_ - 1);
+				float rx = (*pRight)->getPos()->x * (textureSize_ - 1);
 				dataArray[n] = (n - lx)/(rx - lx)*(rrgba - lrgba) + lrgba;
 				n++;
 			}
@@ -150,7 +151,13 @@ void TransferFunction::calcTransferValues(){
 			pRight++;
 		}
 	}
-	//std::cout << data_->getDimension().x << " " << data_->getDimension().y << std::endl;
+    
+    for (int i = 0; i < maskMin_ * textureSize_ ; i++){
+        dataArray[i].a = 0.0;
+    }    
+    for (int i = maskMax_ * textureSize_; i < textureSize_ - 1 ; i++){
+        dataArray[i].a = 0.0;
+    }
 }
 
 bool myPointCompare (TransferFunctionDataPoint* a, TransferFunctionDataPoint* b){
@@ -165,4 +172,11 @@ int TransferFunction::getTextureSize(){
 	return textureSize_;
 };
 
+float TransferFunction::getMaskMin() { return maskMin_; }
+
+float TransferFunction::getMaskMax() { return maskMax_; }
+
+void TransferFunction::setMaskMin(float maskMin) { maskMin_ = maskMin; }
+
+void TransferFunction::setMaskMax(float maskMax) { maskMax_ = maskMax; }
 };

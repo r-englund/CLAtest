@@ -51,8 +51,6 @@ void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOption
 	float viewHeight = static_cast<TransferFunctionEditor*>(this->scene())->getView()->height();
 	QPointF start = start_->pos();
 	QPointF finish = finish_->pos();
-	//QPointF start = QPointF(start_->getPoint()->getPos()->x * viewWidth, start_->getPoint()->getPos()->y * viewWidth);
-	//QPointF finish = QPointF(finish_->getPoint()->getPos()->x * viewHeight, finish_->getPoint()->getPos()->y * viewHeight);
 
 	if (direction_ == LEFT){
 		finish = start;
@@ -75,7 +73,9 @@ void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOption
 	pen.setColor(Qt::cyan);
 	painter->setPen(pen);
 	painter->drawLine(start, finish);
-	painter->drawPath(shape());
+
+    //Paint the boundingrect
+	//painter->drawPath(shape());
 }
 
 QPainterPath TransferFunctionEditorLineItem::shape() const { 
@@ -152,12 +152,20 @@ void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e
 		startPos = finishPos - startToFinish;
 	}
 
-	//startToFinish.setX(floor(startToFinish.x() + 0.5));
-
 	start_->setPos(startPos);
 	finish_->setPos(finishPos);
-	start_->getPoint()->setPos(vec2(startPos.x()/viewWidth, startPos.y()/viewHeight));
-	finish_->getPoint()->setPos(vec2(finishPos.x()/viewWidth, finishPos.y()/viewHeight));
+
+    float zoomRangeMin = static_cast<TransferFunctionEditor*>(this->scene())->getZoomRangeMin();
+    float zoomRangeMax = static_cast<TransferFunctionEditor*>(this->scene())->getZoomRangeMax();
+
+    float mappedStartXpos = startPos.x() / viewWidth * (zoomRangeMax - zoomRangeMin) + zoomRangeMin;
+    float mappedFinishXpos = finishPos.x() / viewWidth * (zoomRangeMax - zoomRangeMin) + zoomRangeMin;
+
+    start_->getPoint()->setPos(vec2(mappedStartXpos, startPos.y()/viewHeight));
+    finish_->getPoint()->setPos(vec2(mappedFinishXpos, finishPos.y()/viewHeight));
+
+    //start_->getPoint()->setPos(vec2(startPos.x()/viewWidth, startPos.y()/viewHeight));
+    //finish_->getPoint()->setPos(vec2(finishPos.x()/viewWidth, finishPos.y()/viewHeight));
 	mouseDownPos_ = e->pos();
 }
 

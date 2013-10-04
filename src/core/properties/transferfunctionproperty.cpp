@@ -9,7 +9,9 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
 	std::stringstream stream;
-	s.serialize("size", (int)value_.getNumberOfDataPoints());
+    s.serialize("size", (int)value_.getNumberOfDataPoints());
+    //s.serialize("maskMin", (int)value_.getMaskMin());
+    //s.serialize("maskMax", (int)value_.getMaskMax());
 
 	for (int i = 0; i < static_cast<int>(value_.getNumberOfDataPoints()); i++){
 		stream << "pos" << i;
@@ -27,11 +29,19 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 	Property::deserialize(d);
 	int size;
+    //float maskMin;
+    //float maskMax;
 	vec2 pos;
 	vec4 rgba;
 	std::stringstream stream;
 
 	d.deserialize("size", size);
+    //d.deserialize("maskMin", maskMin);
+    //d.deserialize("maskMax", maskMax);
+
+    //value_.setMaskMin(maskMin);
+    //value_.setMaskMax(maskMax);
+
 	for (int i = 0; i < size; i++){
 		stream << "pos" << i;
 		d.deserialize(stream.str(), pos);

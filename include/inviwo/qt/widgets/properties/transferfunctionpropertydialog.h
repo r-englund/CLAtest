@@ -12,6 +12,7 @@
 #include <inviwo/qt/editor/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/colorwheel.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
+#include <inviwo/qt/widgets/spinboxrangesliderwidgetqt.h>
 
 #include <QCheckBox>
 #include <QColorDialog>
@@ -34,6 +35,8 @@ public:
 	//TransferFunctionPropertyDialog();
 	TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent);
 	~TransferFunctionPropertyDialog();
+	
+	float zoomFactor_;
 
     /** \Updates and draws the visual transferfunction
     *         
@@ -41,14 +44,11 @@ public:
     *      Redraws it fully every time, to be optimized if it is allowed to stay
     */
     void updateFromProperty();
-    void logStuff();
+    const int getArrayWidth();
 	void notify();
     QVector<QGradientStop>* getGradientStops();
-	void setDataArrayWidth(int bits);
-
 
 private:
-    int zoom_;
 	int arrayWidth_;
     static const std::string logSource_;
     TransferFunctionEditorView*	editorview_; ///< View that contains the editor
@@ -63,31 +63,26 @@ private:
     QColorDialog* colorDialog_;
     ColorWheel* colorWheel_;
 
-	RangeSliderQt* zoomSlider_;
-	QSpinBox* zoomSpinBoxMin_;
-	QSpinBox* zoomSpinBoxMax_;
+	SpinBoxRangeSliderQt* zoomSpinBoxSlider_;
+	SpinBoxRangeSliderQt* maskSpinBoxSlider_;
 
     bool colorChange_;
-	bool eventFilter(QObject *object, QEvent *event);
-
-    /** \Mousewheel zoom functionality
-    *         Enables zooming in and out with mousescroll
-    *         Begining of zoom implementation, currently in early stages
-    */
-    //void wheelEvent(QWheelEvent * e);
+    int zoom_;
+    bool eventFilter(QObject *object, QEvent *event);
     void generateWidget();
     void setPointColor(QColor color);
+    RangeSliderQt* zoomSlider_;
+
 
     public slots:
         void setPropertyValue();
         void setPropertyValueColorDialog();
         void updateColorWheel();
         void showColorDialog();
-		void updateFromSlider(int valMin, int valMax);
-		void updateFromSpinBoxMin(int val);
-		void updateFromSpinBoxMax(int val);
 		void editorViewResized();
-		void arrayWidthChanged(int index);
+		void bitRangeChanged(int index);
+		void zoomChanged();
+		void maskChanged();
 };
 
 } // namespace

@@ -35,13 +35,20 @@ public:
 
 	void sortDataPoints();
 	void calcTransferValues();
-	void setDataBits(int bits);
 	int getTextureSize();
 
+    float getMaskMin();
+    float getMaskMax();
+    void setMaskMin(float maskMin);
+    void setMaskMax(float maskMax);
+
 private:
-int textureSize_;
-Image* data_;
-std::vector<TransferFunctionDataPoint*> dataPoints_;
+    float maskMin_;
+    float maskMax_;
+    int textureSize_;
+    Image* data_;
+    std::vector<TransferFunctionDataPoint*> dataPoints_;
+
 };
 
 } // namespace

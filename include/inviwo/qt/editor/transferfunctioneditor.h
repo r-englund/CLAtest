@@ -56,6 +56,10 @@ namespace inviwo {
         ~TransferFunctionEditor();
 		QGraphicsView* getView();
 		void repositionPoints();
+        const float getZoomRangeMin();
+        void setZoomRangeMin(float min);
+        const float getZoomRangeMax();
+        void setZoomRangeMax(float max);
     
     signals:
         void doubleClick();
@@ -90,6 +94,8 @@ namespace inviwo {
 		QPointF mouseDownPos_; ///< Stores the mouseDown position to distinguish between mouse-click and mouse-drag
 		TransferFunctionEditorLineItem* leftEdgeLine_;
 		TransferFunctionEditorLineItem*	rightEdgeLine_;
+        float zoomRangeMin_;
+        float zoomRangeMax_;
     };
 
 } // namespace
