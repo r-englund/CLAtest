@@ -154,7 +154,7 @@ public:
     struct ReferenceData {            
         TxElement* _node; //Ticpp Node element.
         bool _isPointer; //Used to differentiate pointer and object.
-    };
+    };    
 
     typedef std::pair<const void *, IvwSerializeBase::ReferenceData> RefDataPair;
     typedef std::multimap<const void*,ReferenceData> RefMap;
@@ -174,17 +174,24 @@ public:
     private:  
         RefMap _allReferenceMap;
         int _refCount;
-    };
-
-    
+    };    
     
 protected:
     friend class NodeSwitch;
 
+    //stream operators
+#ifdef TIXML_USE_STL
+
+    friend std::istream& operator >> (std::istream& in, IvwSerializeBase& base);
+
+    friend std::ostream& operator<< (std::ostream& out, const IvwSerializeBase& base);
+
+#endif   
+
     //TODO: These are static factory objects. But still storing them in vectors can be useful??? 
     std::vector<Factory*> registeredFactories_;
     std::string fileName_;
-    TxDocument doc_;
+    TxDocument doc_;    
     TxElement* rootElement_;
     bool allowRef_;
     ReferenceDataContainer refDataContainer_;
