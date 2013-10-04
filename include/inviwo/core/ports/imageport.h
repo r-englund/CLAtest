@@ -5,6 +5,7 @@
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/datastructures/image/image.h>
+#include <inviwo/core/interaction/events/eventhandler.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
 
 namespace inviwo {
@@ -32,7 +33,7 @@ private:
     uvec2 dimensions_;
 };
 
-class IVW_CORE_API ImageOutport : public DataOutport<Image> {
+class IVW_CORE_API ImageOutport : public DataOutport<Image>, public EventHandler {
 
 friend class ImageInport;
 
@@ -52,11 +53,14 @@ public:
     uvec2 getDimensions() const;
     uvec3 getColorCode() const;
 
+    bool addResizeEventListener(EventListener*);
+    bool removeResizeEventListener(EventListener*);
+
     void setInputSource(ImageLayerType, ImageInport*);
 
 protected:
     Image* getResizedImageData(uvec2 dimensions);
-    void setLargestImageData();
+    void setLargestImageData(ResizeEvent* resizeEvent);
     void propagateResizeEventToPredecessor(ResizeEvent* resizeEvent);
 
     void updateInputSources();

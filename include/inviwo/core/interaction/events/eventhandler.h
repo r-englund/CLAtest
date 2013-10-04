@@ -7,17 +7,21 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API EventHandler {
+class IVW_CORE_API EventHandler {
 
-    public:
-        EventHandler();
-        virtual ~EventHandler();
+public:
+    EventHandler();
+    virtual ~EventHandler();
 
-        void broadcast(Event* event);
+    void broadcast(Event* event);
 
-    private:
-        std::vector<EventListener*> eventListeners_;        
-    };
+protected:
+    bool addEventListener(EventListener*);
+    bool removeEventListener(EventListener*);
+
+private:
+    std::vector<EventListener*> eventListeners_;        
+};
 
 } // namespace
 

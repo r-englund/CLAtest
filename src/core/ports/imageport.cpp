@@ -108,7 +108,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, PropertyOwner
 }
 
 ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
-    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
+    : DataOutport<Image>(identifier, invalidationLevel), EventHandler(), dimensions_(uvec2(256,256))
 {
     Image* im = new Image(dimensions_, type);
     im->setAllowMissingLayers(false);
@@ -236,7 +236,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     }
 
     //Set largest data
-    setLargestImageData();
+    setLargestImageData(resizeEvent);
     invalidate(PropertyOwner::INVALID_OUTPUT);
 
     //Propagate the resize event
@@ -277,7 +277,7 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions){
     return resultImage;
 }
 
-void ImageOutport::setLargestImageData() {
+void ImageOutport::setLargestImageData(ResizeEvent* resizeEvent) {
     uvec2 maxDimensions(0);
     Image* largestImage = 0;
     for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {            
@@ -288,16 +288,29 @@ void ImageOutport::setLargestImageData() {
         }
     }
     
+    //Check if data_ is not longer largest image.
     if (largestImage && data_!=largestImage) {
         data_ = largestImage;
         mapDataInvalid_ = true;
     }
+
+    //Send update to listeners
+    if(data_->getDimension() != dimensions_)
+        broadcast(resizeEvent);
 
     dimensions_ = data_->getDimension();
 }
 
 uvec3 ImageOutport::getColorCode() const { 
     return uvec3(90,127,183); 
+}
+
+bool ImageOutport::addResizeEventListener(EventListener* el){
+    return addEventListener(el);
+}
+
+bool ImageOutport::removeResizeEventListener(EventListener* el){
+    return removeEventListener(el);
 }
 
 void ImageOutport::setInputSource(ImageLayerType layer, ImageInport* src){

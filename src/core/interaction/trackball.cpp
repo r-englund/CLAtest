@@ -209,17 +209,7 @@ void Trackball::invokeEvent(Event* event) {
             isMouseBeingPressedAndHold_ = false;
         } 
         return;
-    }    
-
-    //FIXME: should this be here?
-    ResizeEvent* resizeEvent = dynamic_cast<ResizeEvent*>(event);
-    if (resizeEvent) {
-        uvec2 canvasSize = resizeEvent->size();
-        float width = (float) canvasSize[0];
-        float height = (float) canvasSize[1];
-        camera_->setProjectionMatrix(60.f, width/height, 0.0001f, 100.0f );
-        return;
-    }    
+    }
 }
 
 void Trackball::rotateCamera(MouseEvent* mouseEvent) {

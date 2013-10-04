@@ -6,7 +6,7 @@ namespace inviwo {
 CameraProperty::CameraProperty(std::string identifier, std::string displayName, 
                                vec3 eye, vec3 center, vec3 lookUp,
                                PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
-    : CompositeProperty(identifier, displayName, invalidationLevel, semantics),
+    : CompositeProperty(identifier, displayName, invalidationLevel, semantics), EventListener(),
     lookFrom_("lookFrom", "Look from", eye, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel),
     lookTo_("lookTo", "Look to", center, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel),
     lookUp_("lookUp", "Look up", lookUp, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel),
@@ -52,7 +52,6 @@ void CameraProperty::setLookUp(vec3 lookUp) {
     updateViewMatrix();
 }
 
-
 void CameraProperty::setProjectionMatrix(float fovy, float aspect, float nearPlane, float farPlane) {
     fovy_.set(fovy);
     aspectRatio_.set(aspect);
@@ -62,7 +61,7 @@ void CameraProperty::setProjectionMatrix(float fovy, float aspect, float nearPla
 }
 
 void CameraProperty::updateProjectionMatrix() {
-    projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), nearPlane_.get(), farPlane_.get());
+   projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), nearPlane_.get(), farPlane_.get());
 }
 
 void CameraProperty::updateViewMatrix() {
@@ -72,6 +71,17 @@ void CameraProperty::updateViewMatrix() {
 void CameraProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {    
     Processor* owner = dynamic_cast<Processor*>(getOwner());
     if (owner) owner->invalidate(invalidationLevel);
+}
+
+void CameraProperty::invokeEvent(Event* event) {
+    ResizeEvent* resizeEvent = dynamic_cast<ResizeEvent*>(event);
+    if (resizeEvent) {
+        uvec2 canvasSize = resizeEvent->size();
+        float width = (float)canvasSize[0];
+        float height = (float)canvasSize[1];
+        setProjectionMatrix(fovy_.get(), width/height, nearPlane_.get(), farPlane_.get());
+        invalidate(PropertyOwner::INVALID_OUTPUT);
+    }    
 }
 
 void CameraProperty::serialize(IvwSerializer& s) const {

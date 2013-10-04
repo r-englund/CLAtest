@@ -6,10 +6,11 @@
 #include <inviwo/core/properties/vectorproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/interaction/events/eventlistener.h>
 
 namespace inviwo {
 
-class IVW_CORE_API CameraProperty : public CompositeProperty {
+class IVW_CORE_API CameraProperty : public CompositeProperty, public EventListener {
 
 public:
     CameraProperty(std::string identifier, std::string displayName,
@@ -30,6 +31,8 @@ public:
     mat4 viewMatrix() const { return viewMatrix_; }
     mat4 projectionMatrix() const { return projectionMatrix_; }
     void setProjectionMatrix(float fovy, float aspect, float farPlane, float nearPlane);
+
+    void invokeEvent(Event* event);
 
     void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     virtual void serialize(IvwSerializer& s) const;
