@@ -160,8 +160,9 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 				clippedVertInd.push_back(outputList.size()-1);
 				edge.v1=outputList.size()-1;
 
-				std::vector<glm::vec3>::iterator it = std::find_if(outputList.begin(),outputList.end(),
-					[=](const glm::vec3&v) {return std::fabs(E.x-v.x)<EPSILON && std::fabs(E.y-v.y)<EPSILON && std::fabs(E.z-v.z)<EPSILON;});
+				//FIXME Need to perform check for duplicates in vector outputList here, but Jenkins won't allow lambda expressions.
+				std::vector<glm::vec3>::iterator it;/* = std::find_if(outputList.begin(),outputList.end(),
+					[=](const glm::vec3&v) {return std::fabs(E.x-v.x)<EPSILON && std::fabs(E.y-v.y)<EPSILON && std::fabs(E.z-v.z)<EPSILON;});*/
 
 				if(it != outputList.end()) { // Duplicate end vertex found
 					edge.v2 = std::distance(outputList.begin(),it);
@@ -178,9 +179,10 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 
 			} else { // S and E both inside
 				//std::cout<<"Both inside! S = "<<glm::to_string(S)<<std::endl;
-				// Kontrollera om S eller E vardera redan finns i outputList, om dom gör det lägg endast till edgen mellan dem.
-				std::vector<glm::vec3>::iterator it = std::find_if(outputList.begin(),outputList.end(),
-					[=](const glm::vec3&v) {return std::fabs(S.x-v.x)<EPSILON && std::fabs(S.y-v.y)<EPSILON && std::fabs(S.z-v.z)<EPSILON;});
+
+				//FIXME Need to perform check for duplicates in vector outputList here, but Jenkins won't allow lambda expressions.
+				std::vector<glm::vec3>::iterator it;/* = std::find_if(outputList.begin(),outputList.end(),
+					[=](const glm::vec3&v) {return std::fabs(S.x-v.x)<EPSILON && std::fabs(S.y-v.y)<EPSILON && std::fabs(S.z-v.z)<EPSILON;});*/
 
 				if(it != outputList.end()) { // Duplicate start vertex found
 					//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<", position "<<glm::to_string(*it)<<std::endl;
@@ -191,8 +193,9 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 					edge.v1 = outputList.size()-1;
 				}
 
-				it = std::find_if(outputList.begin(),outputList.end(),
-					[=](const glm::vec3&v) {return std::fabs(E.x-v.x)<EPSILON && std::fabs(E.y-v.y)<EPSILON && std::fabs(E.z-v.z)<EPSILON;});
+				//FIXME Need to perform check for duplicates in vector outputList here, but Jenkins won't allow lambda expressions.
+				/*it = std::find_if(outputList.begin(),outputList.end(),
+					[=](const glm::vec3&v) {return std::fabs(E.x-v.x)<EPSILON && std::fabs(E.y-v.y)<EPSILON && std::fabs(E.z-v.z)<EPSILON;});*/
 
 				if(it != outputList.end()) { // No duplicate end vertex found
 					//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<std::endl;
@@ -213,8 +216,10 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 		} else if(plane.isInside(S)) { // Going out (S inside, E outside) ( fungerar ej atm, skapar ingen S),
 			//std::cout<<"Going out!\n";
 			// Check if S aldready in outputList, otherwise add it. Add clippedVert between S->E
-			std::vector<glm::vec3>::iterator it = std::find_if(outputList.begin(),outputList.end(),
-				[=](const glm::vec3&v) {return std::fabs(S.x-v.x)<EPSILON && std::fabs(S.y-v.y)<EPSILON && std::fabs(S.z-v.z)<EPSILON;});
+
+			//FIXME Need to perform check for duplicates in vector outputList here, but Jenkins won't allow lambda expressions.
+			std::vector<glm::vec3>::iterator it;/* = std::find_if(outputList.begin(),outputList.end(),
+				[=](const glm::vec3&v) {return std::fabs(S.x-v.x)<EPSILON && std::fabs(S.y-v.y)<EPSILON && std::fabs(S.z-v.z)<EPSILON;});*/
 										
 			if(it != outputList.end()) { //Duplicate start vertex found
 				//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<std::endl;
