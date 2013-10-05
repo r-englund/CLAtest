@@ -44,6 +44,11 @@ float MeshClipping::degreeToRad(float degree) {
 	return degree * (glm::pi<float>() / 180.f);
 }
 
+std::vector<unsigned int> edgeListtoTriangleList(std::vector<Edge>& edges) {
+	// Traverse edge list and construct correctly sorted triangle strip list.
+	return std::vector<unsigned int>();
+}
+
 // Extract edges from triangle strip list
 std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
 	std::vector<Edge> result;
@@ -283,7 +288,6 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 
 		if(std::find(outputEdgeList.begin(), outputEdgeList.end(), edge) == outputEdgeList.end() ) {
 			outputEdgeList.push_back(edge);
-
 		}
 	}
 
