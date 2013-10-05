@@ -16,7 +16,7 @@ MeshClipping::MeshClipping()
 	floatPropertyRotY_("Rotation Y", "Rotation Y", 0.0f, 0.0f, 360.0f, 0.1f),
 	floatPropertyRotZ_("Rotation Z", "Rotation Z", 0.0f, 0.0f, 360.0f, 0.1f),
 	floatPropertyPlaneHeight("Cutting plane y coord.", "Cutting plane Y", 0.0f,-1.2f,1.2f,0.1f),
-	plane_(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+	plane_(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 0.0f, -1.0f)),
 	clippingEnabled_("clippingEnabled", "Enable clipping", false),
 	EPSILON(0.00001f) // For float comparison
 {
@@ -148,6 +148,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 		glm::vec3 E = inputList.at( Eind );
 
 		Edge edge;
+		int duplicate = -1;
 
 		// For each clip plane
 		if(plane.isInside(E)) {
@@ -160,12 +161,17 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 				clippedVertInd.push_back(outputList.size()-1);
 				edge.v1=outputList.size()-1;
 
-				//FIXME Need to perform check for duplicates in vector outputList here, but Jenkins won't allow lambda expressions.
-				std::vector<glm::vec3>::iterator it;/* = std::find_if(outputList.begin(),outputList.end(),
-					[=](const glm::vec3&v) {return std::fabs(E.x-v.x)<EPSILON && std::fabs(E.y-v.y)<EPSILON && std::fabs(E.z-v.z)<EPSILON;});*/
 
-				if(it != outputList.end()) { // Duplicate end vertex found
-					edge.v2 = std::distance(outputList.begin(),it);
+
+				for (size_t j=0; j<outputList.size(); ++j) {
+					if (std::fabs(E.x-outputList.at(j).x)<EPSILON && std::fabs(E.y-outputList.at(j).y)<EPSILON && std::fabs(E.z-outputList.at(j).z)<EPSILON) {
+						duplicate = j;
+					}
+				}
+
+				if(duplicate != -1) { // Duplicate found
+					edge.v2 = duplicate;
+					duplicate = -1;
 				} else { // No duplicate end vertex found
 					outputList.push_back(E);
 					outputIndexList.push_back(outputList.size()-1);
@@ -179,27 +185,33 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 
 			} else { // S and E both inside
 				//std::cout<<"Both inside! S = "<<glm::to_string(S)<<std::endl;
+				
+				for (size_t j=0; j<outputList.size(); ++j) {
+					if (std::fabs(S.x-outputList.at(j).x)<EPSILON && std::fabs(S.y-outputList.at(j).y)<EPSILON && std::fabs(S.z-outputList.at(j).z)<EPSILON) {
+						duplicate = j;
+					}
+				}
 
-				//FIXME Need to perform check for duplicates in vector outputList here, but Jenkins won't allow lambda expressions.
-				std::vector<glm::vec3>::iterator it;/* = std::find_if(outputList.begin(),outputList.end(),
-					[=](const glm::vec3&v) {return std::fabs(S.x-v.x)<EPSILON && std::fabs(S.y-v.y)<EPSILON && std::fabs(S.z-v.z)<EPSILON;});*/
-
-				if(it != outputList.end()) { // Duplicate start vertex found
+				if(duplicate != -1) {
 					//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<", position "<<glm::to_string(*it)<<std::endl;
-					edge.v1 = std::distance(outputList.begin(),it);
+					edge.v1 = duplicate;
+					duplicate = -1;
 				} else { // No duplicate found
 					outputList.push_back(S);
 					outputIndexList.push_back(outputList.size()-1);
 					edge.v1 = outputList.size()-1;
 				}
 
-				//FIXME Need to perform check for duplicates in vector outputList here, but Jenkins won't allow lambda expressions.
-				/*it = std::find_if(outputList.begin(),outputList.end(),
-					[=](const glm::vec3&v) {return std::fabs(E.x-v.x)<EPSILON && std::fabs(E.y-v.y)<EPSILON && std::fabs(E.z-v.z)<EPSILON;});*/
+				for (size_t j=0; j<outputList.size(); ++j) {
+					if (std::fabs(E.x-outputList.at(j).x)<EPSILON && std::fabs(E.y-outputList.at(j).y)<EPSILON && std::fabs(E.z-outputList.at(j).z)<EPSILON) {
+						duplicate = j;
+					}
+				}
 
-				if(it != outputList.end()) { // No duplicate end vertex found
+				if(duplicate != -1) {
 					//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<std::endl;
-					edge.v2 = std::distance(outputList.begin(), it);
+					edge.v2 = duplicate;
+					duplicate = -1;
 				} else { // Duplicate found
 					outputList.push_back(E);
 					outputIndexList.push_back(outputList.size()-1);
@@ -216,14 +228,17 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 		} else if(plane.isInside(S)) { // Going out (S inside, E outside) ( fungerar ej atm, skapar ingen S),
 			//std::cout<<"Going out!\n";
 			// Check if S aldready in outputList, otherwise add it. Add clippedVert between S->E
+		
+			for (size_t j=0; j<outputList.size(); ++j) {
+				if (std::fabs(S.x-outputList.at(j).x)<EPSILON && std::fabs(S.y-outputList.at(j).y)<EPSILON && std::fabs(S.z-outputList.at(j).z)<EPSILON) {
+					duplicate = j;
+				}
+			}
 
-			//FIXME Need to perform check for duplicates in vector outputList here, but Jenkins won't allow lambda expressions.
-			std::vector<glm::vec3>::iterator it;/* = std::find_if(outputList.begin(),outputList.end(),
-				[=](const glm::vec3&v) {return std::fabs(S.x-v.x)<EPSILON && std::fabs(S.y-v.y)<EPSILON && std::fabs(S.z-v.z)<EPSILON;});*/
-										
-			if(it != outputList.end()) { //Duplicate start vertex found
+			if(duplicate != -1) {
 				//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<std::endl;
-				edge.v1 = std::distance(outputList.begin(), it);
+				edge.v1 = duplicate;
+				duplicate = -1;
 			} else { // No duplicate found
 				outputList.push_back(S);
 				outputIndexList.push_back(outputList.size()-1);
