@@ -61,6 +61,8 @@ std::string ShaderObject::embeddDefines(std::string source) {
     }
     std::string curLine;
     std::string globalGLSLHeader = ShaderManager::getRef().getGlobalGLSLHeader();
+    if(shaderType_ == GL_FRAGMENT_SHADER)
+        globalGLSLHeader += ShaderManager::getRef().getGlobalGLSLFragmentDefines();
     std::istringstream globalGLSLHeaderStream(globalGLSLHeader);
     while (std::getline(globalGLSLHeaderStream, curLine))
         lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("GlobalGLSLSHeader", 0));

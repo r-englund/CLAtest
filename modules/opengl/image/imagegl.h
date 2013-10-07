@@ -6,6 +6,8 @@
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <modules/opengl/glwrap/framebufferobject.h>
 #include <modules/opengl/glwrap/texture2d.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {
 
@@ -61,6 +63,7 @@ namespace inviwo {
         const Texture2D* pickingConstTexture_;
         FrameBufferObject* frameBufferObject_;
         GLenum pickingAttachmentID_;
+        Shader* program_;
     };
 
 } // namespace

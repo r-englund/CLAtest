@@ -20,13 +20,6 @@ void PortGroup::deinitialize() {
 void PortGroup::activate() {
     ivwAssert(frameBufferObject_!=0, "PortGroup not initialized.");
     frameBufferObject_->activate();
-
-    std::vector<GLenum> attachementIDVector = frameBufferObject_->getColorAttachementIDs();
-    GLenum* attachementIDs = new GLenum[attachementIDVector.size()];
-    for (size_t i=0; i<attachementIDVector.size(); i++)
-        attachementIDs[i] = attachementIDVector[i];
-    glDrawBuffers(static_cast<GLsizei>(attachementIDVector.size()), attachementIDs);
-    delete attachementIDs;
     LGL_ERROR;
 }
 
@@ -56,7 +49,7 @@ void PortGroup::reattachTargets() {
     frameBufferObject_->activate();
     frameBufferObject_->detachAllTextures();
     for (size_t i=0; i<images.size(); i++) {
-        frameBufferObject_->attachTexture(images[i]->getColorTexture(), static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+i));
+        frameBufferObject_->attachColorTexture(images[i]->getColorTexture(), i);
         if (i==0)
             // depth values only valid for the first render target
             frameBufferObject_->attachTexture(images[i]->getDepthTexture(), static_cast<GLenum>(GL_DEPTH_ATTACHMENT_EXT));

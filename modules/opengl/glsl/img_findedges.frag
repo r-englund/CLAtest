@@ -40,5 +40,5 @@ void main() {
     
     vec4 color = vec4(vec3(val) * alpha_ + colorM * (1 - alpha_), 1.0);
         
-    gl_FragColor = color;
+    FragData0 = color;
 }

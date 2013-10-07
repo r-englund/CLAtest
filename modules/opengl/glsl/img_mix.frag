@@ -8,6 +8,6 @@ void main() {
     vec3 color0 = texture2D(inport0_, texCoords).rgb;
     vec3 color1 = texture2D(inport1_, texCoords).rgb;
     vec4 color = vec4(mix(color0, color1, alpha_), 1.0);
-    gl_FragColor = color;
+    FragData0 = color;
     gl_FragDepth = 0.0;
 }

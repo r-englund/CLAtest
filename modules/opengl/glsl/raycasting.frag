@@ -56,5 +56,5 @@ void main() {
     vec3 entryPoint = texture2D(entryTex_, texCoords).rgb;
     vec3 exitPoint = texture2D(exitTex_, texCoords).rgb;
     vec4 color = rayTraversal(entryPoint, exitPoint);
-    gl_FragColor = color;
+    FragData0 = color;
 }

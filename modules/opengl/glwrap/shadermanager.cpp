@@ -81,4 +81,18 @@ std::string ShaderManager::getGlobalGLSLHeader() {
     return "";
 }
 
+std::string ShaderManager::getGlobalGLSLFragmentDefines() {
+    if (!openGLInfoRef_){
+        OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
+        if (openGLModule)
+            openGLInfoRef_ = getTypeFromVector<OpenGLInfo>(openGLModule->getResourceInfos());
+    }
+
+    if (openGLInfoRef_){
+        return openGLInfoRef_->getCurrentGlobalGLSLFragmentDefines();
+    }
+
+    return "";
+}
+
 } // namespace

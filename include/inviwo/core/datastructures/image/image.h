@@ -10,7 +10,7 @@ namespace inviwo {
 class IVW_CORE_API Image : public StructuredData<2> {
 
 public:
-    Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(), bool allowMissingLayers = true);
+    Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(), bool allowMissingLayers = false);
     virtual ~Image();
     void resize(uvec2 dimensions);
     virtual Data* clone() const;

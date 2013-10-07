@@ -2,18 +2,32 @@
 
 namespace inviwo {
 
+const GLenum FrameBufferObject::colorAttachmentEnums_[] = {
+    GL_COLOR_ATTACHMENT0_EXT,GL_COLOR_ATTACHMENT1_EXT,GL_COLOR_ATTACHMENT2_EXT, GL_COLOR_ATTACHMENT3_EXT, GL_COLOR_ATTACHMENT4_EXT,GL_COLOR_ATTACHMENT5_EXT,
+    GL_COLOR_ATTACHMENT6_EXT,GL_COLOR_ATTACHMENT7_EXT,GL_COLOR_ATTACHMENT8_EXT, GL_COLOR_ATTACHMENT9_EXT,GL_COLOR_ATTACHMENT10_EXT,
+    GL_COLOR_ATTACHMENT11_EXT,GL_COLOR_ATTACHMENT12_EXT,GL_COLOR_ATTACHMENT13_EXT, GL_COLOR_ATTACHMENT14_EXT,GL_COLOR_ATTACHMENT15_EXT};
+
 FrameBufferObject::FrameBufferObject() {
     glGenFramebuffersEXT(1, &id_);
     hasDepthAttachment_ = false;
     hasStencilAttachment_ = false;
+
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachements_);
+
+    drawBuffers_ = new GLenum[maxColorAttachements_];
+
+    for(int i=0; i < maxColorAttachements_; i++)
+        drawBuffers_[i] = GL_NONE;
 }
 
 FrameBufferObject::~FrameBufferObject() {
     glDeleteFramebuffersEXT(1, &id_);
+    delete drawBuffers_;
 }
 
 void FrameBufferObject::activate() {
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, id_);
+    glDrawBuffers(static_cast<GLsizei>(maxColorAttachements_), drawBuffers_);
 }
 
 void FrameBufferObject::deactivate() {
@@ -21,45 +35,93 @@ void FrameBufferObject::deactivate() {
 }
 
 void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) {
-    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
-    GLint maxColorAttachements;
-    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachements);
     if(attachementID == GL_DEPTH_ATTACHMENT)
         hasDepthAttachment_ = true;
     else if(attachementID == GL_STENCIL_ATTACHMENT)
         hasStencilAttachment_ = true;
-    else if (attachedColorTextures_.size() < (unsigned int)maxColorAttachements) {
-        // manage color textures in dedicated vector
-        if (attachementID >= GL_COLOR_ATTACHMENT0_EXT && attachementID <= GL_COLOR_ATTACHMENT15_EXT)
-            attachedColorTextures_.push_back(attachementID);
-    } else
-        LogError("Maximum number of " << maxColorAttachements << " color textures attached.");
+    else{
+        int attachementNumber = -1;
+        for(int i=0; i<maxColorAttachements_; i++)
+            if(colorAttachmentEnums_[i] == attachementID)
+                attachementNumber = i;
+
+        if(attachementNumber>=0){
+            drawBuffers_[attachementNumber] = attachementID;
+        }
+        else{
+            LogError("Attachments ID " << attachementID << " exceeds maximum amount of color attachments");
+            return;
+        }
+    }
+
+    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
 }
 
-GLenum FrameBufferObject::attachTexture(Texture2D* texture, int attachementNumber, bool attachFromRear) {
-    GLint maxColorAttachements;
-    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachements);
-    GLenum attachementID = (attachFromRear ? static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+maxColorAttachements-attachementNumber-1) : static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber));
-    attachTexture(texture, attachementID);
+GLenum FrameBufferObject::attachColorTexture(Texture2D* texture) {
+    int attachementNumber = -1;
+    for(int i=0; i<maxColorAttachements_; i++)
+        if(drawBuffers_[i] == GL_NONE)
+            attachementNumber = i;
+
+    if(attachementNumber>=0){
+        drawBuffers_[attachementNumber] = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, drawBuffers_[attachementNumber], GL_TEXTURE_2D, texture->getID(), 0);
+        return drawBuffers_[attachementNumber];
+    }
+    else{
+        LogError("Attachments number exceeds maximum amount of color attachments");
+        return GL_COLOR_ATTACHMENT15_EXT;
+    }
+}
+
+GLenum FrameBufferObject::attachColorTexture(Texture2D* texture, int attachementNumber, bool attachFromRear) {
+    attachementNumber = (attachFromRear ? maxColorAttachements_-attachementNumber-1 : attachementNumber);
+    GLenum attachementID = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
+    
+    if(attachementNumber<maxColorAttachements_ && attachementNumber>=0){
+        drawBuffers_[attachementNumber] = attachementID;
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
+    }
+    else{
+        LogError("AttachmentID " << attachementID << " exceeds maximum amount of color attachments");
+    }
+
     return attachementID;
 }
 
 void FrameBufferObject::detachTexture(GLenum attachementID) {
-    for (size_t i=0; i<attachedColorTextures_.size(); i++) {
-        if (attachedColorTextures_[i] == attachementID) {
-            attachedColorTextures_.erase(attachedColorTextures_.begin()+i);
-            return;
-        }
-    }
     if(attachementID == GL_DEPTH_ATTACHMENT)
         hasDepthAttachment_ = false;
     else if(attachementID == GL_STENCIL_ATTACHMENT)
         hasStencilAttachment_ = false;
+    else{
+        int attachementNumber = -1;
+        for(int i=0; i<maxColorAttachements_; i++)
+            if(colorAttachmentEnums_[i] == attachementID)
+                attachementNumber = i;
+
+        if(attachementNumber>=0){
+            drawBuffers_[attachementNumber] = GL_NONE;
+        }
+        else{
+            LogError("Could not detach " << attachementID << " from framebuffer");
+            return;
+        }
+    }
+
+    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, 0, 0);    
 }
 
 void FrameBufferObject::detachAllTextures() {
-    while (!attachedColorTextures_.empty())
-        detachTexture(attachedColorTextures_[0]);
+    detachTexture(GL_DEPTH_ATTACHMENT);
+    detachTexture(GL_STENCIL_ATTACHMENT);
+
+    for(int i=0; i<maxColorAttachements_; i++){
+        if(drawBuffers_[i] != GL_NONE){
+            glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, drawBuffers_[i], GL_TEXTURE_2D, 0, 0);  
+            drawBuffers_[i] = GL_NONE;
+        }
+    }
 }
 
 void FrameBufferObject::checkStatus() {

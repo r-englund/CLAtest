@@ -270,6 +270,7 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions){
     //ivwAssert(1==0, "Required dimension " << requiredDimensions.x << " x " << requiredDimensions.y << "does not exist in outport.");    
     //FIXME: Should not enter this region. Port inspectors needs this.
     Image* resultImage = dynamic_cast<Image*>(data_->clone());
+    resultImage->setAllowMissingLayers(false);
     resultImage->resize(requiredDimensions);
     std::string dimensionString = glm::to_string(requiredDimensions);
     imageDataMap_.insert(std::make_pair(dimensionString, resultImage));

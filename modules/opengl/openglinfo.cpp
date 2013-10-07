@@ -36,6 +36,7 @@ bool OpenGLInfo::GLSLShaderVersion::hasProfile() {
 OpenGLInfo::OpenGLInfo() {
     supportedShaderVersions_.clear();
     currentGlobalGLSLHeader_ = "";
+    currentGlobalGLSLFragmentDefines_ = "";
     preferredGLSLProfile_ = "compatibility";
 }
 
@@ -157,6 +158,13 @@ std::string OpenGLInfo::getCurrentGlobalGLSLHeader(){
         rebuildGLSLHeader();
 
     return currentGlobalGLSLHeader_;
+}
+
+std::string OpenGLInfo::getCurrentGlobalGLSLFragmentDefines(){
+    if (currentGlobalGLSLFragmentDefines_ == "")
+        rebuildGLSLFragmentDefines();
+
+    return currentGlobalGLSLFragmentDefines_;
 }
 
 int OpenGLInfo::getCurrentAvailableTextureMem() throw (Exception) {
@@ -400,11 +408,17 @@ void OpenGLInfo::rebuildGLSLHeader(){
     if (getMaxProgramLoopCount() > 0){
         currentGlobalGLSLHeader_ += "#define MAX_PROGRAM_LOOP_COUNT " + toString(getMaxProgramLoopCount()) + "\n";
     }
+}
+
+void OpenGLInfo::rebuildGLSLFragmentDefines(){
+    currentGlobalGLSLFragmentDefines_ = "";
 
     if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 130) {
-        currentGlobalGLSLHeader_ += "out vec4 FragData0;\n";
+        currentGlobalGLSLFragmentDefines_ += "layout(location = 0) out vec4 FragData0;\n";
+        currentGlobalGLSLFragmentDefines_ += "layout(location = " + toString(getMaxColorAttachments()-1) + ") out vec4 PickingData;\n";
     } else {
-        currentGlobalGLSLHeader_ += "#define FragData0 gl_FragColor\n";
+        currentGlobalGLSLFragmentDefines_ += "#define FragData0 gl_FragColor\n";
+        currentGlobalGLSLFragmentDefines_ += "#define PickingData gl_FragData[" + toString(getMaxColorAttachments()-1) + "]\n";
     }
 }
 

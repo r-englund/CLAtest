@@ -22,6 +22,7 @@ public:
     virtual void fileChanged(std::string shaderFilename);
 
     std::string getGlobalGLSLHeader();
+    std::string getGlobalGLSLFragmentDefines();
 
     std::vector<std::string> getShaderSearchPaths() { return shaderSearchPaths_; }
     void addShaderSearchPath(std::string shaderSearchPath) {

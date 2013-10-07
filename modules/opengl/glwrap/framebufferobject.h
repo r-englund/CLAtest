@@ -17,11 +17,13 @@ public:
     void activate();
     static void deactivate();
 
-    void attachTexture(Texture2D* texture, GLenum attachementID = GL_COLOR_ATTACHMENT0_EXT);
-    GLenum attachTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear);
+    void attachTexture(Texture2D* texture, GLenum attachementID);
+    GLenum attachColorTexture(Texture2D* texture);
+    GLenum attachColorTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear = false);
     void detachTexture(GLenum attachementID);
     void detachAllTextures();
-    std::vector<GLenum> getColorAttachementIDs() const { return attachedColorTextures_; }
+    const GLenum* getDrawBuffers() const { return drawBuffers_; }
+    int getMaxColorAttachments() const { return maxColorAttachements_; }
 
     bool hasDepthAttachment() const { return hasDepthAttachment_; }
     bool hasStencilAttachment() const { return hasStencilAttachment_; }
@@ -35,7 +37,11 @@ private:
     unsigned int id_;
     bool hasDepthAttachment_;
     bool hasStencilAttachment_;
-    std::vector<GLenum> attachedColorTextures_;
+
+    GLenum* drawBuffers_;
+    int maxColorAttachements_;
+
+    const static GLenum colorAttachmentEnums_[];
 };
 
 } // namespace

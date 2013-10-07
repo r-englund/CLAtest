@@ -6,5 +6,5 @@ void main() {
     vec3 inputColor = texture2D(inport_, texCoords).rgb;
     float gray = 0.2989*inputColor.r + 0.5870*inputColor.g + 0.1140*inputColor.b;
     vec4 color = vec4(gray, gray, gray, 1.0);
-    gl_FragColor = color;
+    FragData0 = color;
 }
