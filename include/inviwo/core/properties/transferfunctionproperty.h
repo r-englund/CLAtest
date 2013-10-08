@@ -2,6 +2,7 @@
 #define IVW_TRANSFERFUNCTIONPROPERTY_H
 
 #include <inviwo/core/properties/templateproperty.h>
+#include <inviwo/core/properties/vectorproperties.h>
 #include <inviwo/core/datastructures/transferfunction.h>
 //#include <inviwo/qt/widgets/colorwheel.h>
 
@@ -18,7 +19,10 @@ namespace inviwo {
         virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
 
 		void customSet();
+
     private:
+        IntMinMaxProperty maskProperty_;
+        IntMinMaxProperty zoomProperty_;
     };
 } // namespace
 

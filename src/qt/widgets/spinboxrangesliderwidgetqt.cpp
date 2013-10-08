@@ -26,10 +26,9 @@ SpinBoxRangeSliderQt::SpinBoxRangeSliderQt(){
 	connect(spinBoxMin_, SIGNAL(editingFinished()), this, SLOT(updateFromSpinBoxMin()));
 	connect(spinBoxMax_, SIGNAL(editingFinished()), this, SLOT(updateFromSpinBoxMax()));
 
-	setMinValue(17);
-	setMaxValue(28);
-	LogInfo(getMinValue());
-	LogInfo(getMaxValue());
+	setMinValue(0);
+	setMaxValue(255);
+    updateFromSlider(0, 255);
 }
 
 SpinBoxRangeSliderQt::~SpinBoxRangeSliderQt(){}

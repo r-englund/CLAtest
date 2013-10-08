@@ -3,13 +3,15 @@
 namespace inviwo {
 
 TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics )
-    : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
+: TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics), maskProperty_("mask_", "Mask", 0, 255, 0, 255), zoomProperty_("zoom_", "Zoom", 0, 255, 0, 255)
 {}
 
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
 	std::stringstream stream;
     s.serialize("size", (int)value_.getNumberOfDataPoints());
+    //zoomProperty_.serialize(s);
+    //maskProperty_.serialize(s);
     //s.serialize("maskMin", (int)value_.getMaskMin());
     //s.serialize("maskMax", (int)value_.getMaskMax());
 
@@ -36,6 +38,8 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 	std::stringstream stream;
 
 	d.deserialize("size", size);
+    //zoomProperty_.deserialize(d);
+    //maskProperty_.deserialize(d);
     //d.deserialize("maskMin", maskMin);
     //d.deserialize("maskMax", maskMax);
 
