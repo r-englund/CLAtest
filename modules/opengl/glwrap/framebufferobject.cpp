@@ -75,7 +75,7 @@ GLenum FrameBufferObject::attachColorTexture(Texture2D* texture) {
 }
 
 GLenum FrameBufferObject::attachColorTexture(Texture2D* texture, int attachementNumber, bool attachFromRear) {
-    attachementNumber = (attachFromRear ? maxColorAttachements_-attachementNumber-1 : attachementNumber);
+    attachementNumber = (attachFromRear ? maxColorAttachements_-attachementNumber-2 : attachementNumber);
     GLenum attachementID = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
     
     if(attachementNumber<maxColorAttachements_ && attachementNumber>=0){

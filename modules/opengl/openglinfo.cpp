@@ -415,10 +415,10 @@ void OpenGLInfo::rebuildGLSLFragmentDefines(){
 
     if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 130) {
         currentGlobalGLSLFragmentDefines_ += "layout(location = 0) out vec4 FragData0;\n";
-        currentGlobalGLSLFragmentDefines_ += "layout(location = " + toString(getMaxColorAttachments()-1) + ") out vec4 PickingData;\n";
+        currentGlobalGLSLFragmentDefines_ += "layout(location = " + toString(getMaxColorAttachments()-2) + ") out vec4 PickingData;\n";
     } else {
         currentGlobalGLSLFragmentDefines_ += "#define FragData0 gl_FragColor\n";
-        currentGlobalGLSLFragmentDefines_ += "#define PickingData gl_FragData[" + toString(getMaxColorAttachments()-1) + "]\n";
+        currentGlobalGLSLFragmentDefines_ += "#define PickingData gl_FragData[" + toString(getMaxColorAttachments()-2) + "]\n";
     }
 }
 

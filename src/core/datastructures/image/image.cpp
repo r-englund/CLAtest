@@ -104,26 +104,28 @@ void Image::newEditableRepresentationCreated() const {
     if (!allowMissingLayers_) {
         ImageRepresentation* lastValidRepresentation = dynamic_cast<ImageRepresentation*>(lastValidRepresentation_);
         ImageSourceMap::const_iterator it;
-        if(!typeContainsColor(getImageType())){
-            it = inputSources_.find(COLOR_LAYER);
-            if(it != inputSources_.end())
-                lastValidRepresentation->useInputSource(COLOR_LAYER, it->second);
-            else
-                lastValidRepresentation->createAndAddLayer(COLOR_LAYER);
-        }
-        if(!typeContainsDepth(getImageType())){
-            it = inputSources_.find(DEPTH_LAYER);
-            if(it != inputSources_.end())
-                lastValidRepresentation->useInputSource(DEPTH_LAYER, it->second);
-            else
-                lastValidRepresentation->createAndAddLayer(DEPTH_LAYER);
-        }
-        if(!typeContainsPicking(getImageType())){
-            it = inputSources_.find(PICKING_LAYER);
-            if(it != inputSources_.end())
-                lastValidRepresentation->useInputSource(PICKING_LAYER, it->second);
-            else
-                lastValidRepresentation->createAndAddLayer(PICKING_LAYER);
+        if(lastValidRepresentation){
+            if(!typeContainsColor(getImageType())){
+                it = inputSources_.find(COLOR_LAYER);
+                if(it != inputSources_.end())
+                    lastValidRepresentation->useInputSource(COLOR_LAYER, it->second);
+                else
+                    lastValidRepresentation->createAndAddLayer(COLOR_LAYER);
+            }
+            if(!typeContainsDepth(getImageType())){
+                it = inputSources_.find(DEPTH_LAYER);
+                if(it != inputSources_.end())
+                    lastValidRepresentation->useInputSource(DEPTH_LAYER, it->second);
+                else
+                    lastValidRepresentation->createAndAddLayer(DEPTH_LAYER);
+            }
+            if(!typeContainsPicking(getImageType())){
+                it = inputSources_.find(PICKING_LAYER);
+                if(it != inputSources_.end())
+                    lastValidRepresentation->useInputSource(PICKING_LAYER, it->second);
+                else
+                    lastValidRepresentation->createAndAddLayer(PICKING_LAYER);
+            }
         }
     }
 }

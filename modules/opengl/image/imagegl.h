@@ -50,6 +50,9 @@ namespace inviwo {
 
     protected:
         void useInputSource(ImageLayerType, const Image*);
+        void createColorLayer();
+        void createDepthLayer();
+        void createPickingLayer();
         void createAndAddLayer(ImageLayerType);
 
         void invalidatePBOs();

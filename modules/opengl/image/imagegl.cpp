@@ -27,7 +27,7 @@ void ImageGL::initialize() {
     pickingAttachmentID_ = 0;
     if(typeContainsColor(getImageType())){
         if(!colorTexture_){
-            createAndAddLayer(COLOR_LAYER);
+            createColorLayer();
         }
         else{
             colorTexture_->bind();
@@ -36,7 +36,7 @@ void ImageGL::initialize() {
     }
     if(typeContainsDepth(getImageType())){
         if(!depthTexture_){
-            createAndAddLayer(DEPTH_LAYER);
+            createDepthLayer();
         }
         else{
             depthTexture_->bind();
@@ -45,13 +45,12 @@ void ImageGL::initialize() {
     }
     if(typeContainsPicking(getImageType())){
         if(!pickingTexture_){
-            createAndAddLayer(PICKING_LAYER);
+            createPickingLayer();
         }
         else{
             pickingTexture_->bind();
         }
-        //Attach to last color attachment
-        pickingAttachmentID_ = frameBufferObject_->attachColorTexture(pickingTexture_, 0, true); 
+        pickingAttachmentID_ = frameBufferObject_->attachColorTexture(pickingTexture_, 0, true);
     }
     frameBufferObject_->deactivate();
     frameBufferObject_->checkStatus();
@@ -107,22 +106,40 @@ void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
     }
 }
 
+void ImageGL::createColorLayer(){
+    colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
+    colorTexture_->upload(NULL);
+    colorConstTexture_ = colorTexture_;
+}
+
+void ImageGL::createDepthLayer(){
+    depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT32, GL_FLOAT, GL_NEAREST);
+    depthTexture_->upload(NULL);
+    depthConstTexture_ = depthTexture_;
+}
+
+void ImageGL::createPickingLayer(){
+    pickingTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
+    pickingTexture_->upload(NULL);
+    pickingConstTexture_ = pickingTexture_;
+}
+
 void ImageGL::createAndAddLayer(ImageLayerType layer){
+    frameBufferObject_->activate();
     if(layer == COLOR_LAYER){
-        colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
-        colorTexture_->upload(NULL);
-        colorConstTexture_ = colorTexture_;
+        createColorLayer();
+        frameBufferObject_->attachColorTexture(colorTexture_);
     }
     else if(layer == DEPTH_LAYER){
-        depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_LINEAR);
-        depthTexture_->upload(NULL);
-        depthConstTexture_ = depthTexture_;
+        createDepthLayer();
+        frameBufferObject_->attachTexture(depthTexture_, static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
     }
     else if(layer == PICKING_LAYER){
-        pickingTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
-        pickingTexture_->upload(NULL);
-        pickingConstTexture_ = pickingTexture_;
+        createPickingLayer();
+        pickingAttachmentID_ = frameBufferObject_->attachColorTexture(pickingTexture_, 0, true);
     }
+    frameBufferObject_->deactivate();
+    frameBufferObject_->checkStatus();
 }
 
 void ImageGL::activateBuffer() {
@@ -203,72 +220,44 @@ bool ImageGL::copyAndResizeImage(DataRepresentation* targetRep) {
 
     //Render to FBO, with correct scaling
     target->activateBuffer();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    TextureUnit colorUnit;//, depthUnit, pickingUnit;
+    TextureUnit colorUnit, depthUnit, pickingUnit;
     source->bindColorTexture(colorUnit.getEnum());
-    //source->bindDepthTexture(depthUnit.getEnum());
-    //source->bindPickingTexture(pickingUnit.getEnum());
-
-    uvec2 targetSize = target->getDimensions();
-    uvec2 sourceSize = source->getDimensions();
-
-    program_->activate();
-    program_->setUniform("color_", colorUnit.getUnitNumber());
-    //program_->setUniform("depth_", depthUnit.getUnitNumber());
-    //program_->setUniform("picking_", pickingUnit.getUnitNumber());
-    program_->setUniform("dimension_", vec2(1.f / targetSize[0], 1.f / targetSize[1]));
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
+    source->bindDepthTexture(depthUnit.getEnum());
+    source->bindPickingTexture(pickingUnit.getEnum());
 
     float ratioSource = (float)source->getDimensions().x / (float)source->getDimensions().y;
     float ratioTarget = (float)target->getDimensions().x / (float)target->getDimensions().y;
 
-    if (ratioTarget < ratioSource) {
-        glScalef(1.0f, ratioTarget/ratioSource, 1.0f);
-    }
-    else {
-        glScalef(ratioSource/ratioTarget, 1.0f, 1.0f);
-    }
+    glm::mat4 scale;
+    if (ratioTarget < ratioSource)
+        scale = glm::scale(1.0f, ratioTarget/ratioSource, 1.0f);
+    else
+        scale = glm::scale(ratioSource/ratioTarget, 1.0f, 1.0f);
 
-    glMatrixMode(GL_PROJECTION);
+    program_->activate();
+    program_->setUniform("color_", colorUnit.getUnitNumber());
+    program_->setUniform("depth_", depthUnit.getUnitNumber());
+    program_->setUniform("picking_", pickingUnit.getUnitNumber());
+
+    glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glLoadIdentity();
-    //glEnable(GL_DEPTH_TEST);
+    glLoadMatrixf(glm::value_ptr(scale));
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
     glDepthFunc(GL_ALWAYS);
     CanvasGL::renderImagePlaneRect();
     glDepthFunc(GL_LESS);
-    glLoadIdentity();
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
+    glDisable(GL_DEPTH_TEST);
     glPopMatrix();
 
     program_->deactivate();
 
     target->deactivateBuffer();
     source->unbindColorTexture();
-    //source->unbindDepthTexture();
-    //source->unbindPickingTexture();
-
-    //Resize by FBO blit
-    /*const FrameBufferObject* srcFBO = source->getFBO();
-    FrameBufferObject* tgtFBO = target->getFBO();
-    const Texture2D* sTex = source->getColorTexture();
-    Texture2D* tTex = target->getColorTexture();
-
-    srcFBO->setRead_Blit(); 
-    tgtFBO->setDraw_Blit();
-
-    glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
-                         0, 0, tTex->getWidth(), tTex->getHeight(),
-                         GL_COLOR_BUFFER_BIT, GL_LINEAR);
-
-         
-    srcFBO->setRead_Blit(false); 
-    tgtFBO->setDraw_Blit(false);        
-    FrameBufferObject::deactivate();*/
+    source->unbindDepthTexture();
+    source->unbindPickingTexture();
 
     LGL_ERROR;
 
