@@ -18,15 +18,8 @@ void IntVec3PropertyWidgetQt::generateWidget() {
     if (property_->getReadOnly()) {
         valueVec_ = property_->get();
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-        labelX_ = new QLabel("X: " +QString::number(valueVec_.x));
-        labelY_ = new QLabel("Y: " +QString::number(valueVec_.y));
-        labelZ_ = new QLabel("Z: " +QString::number(valueVec_.z));
-
-        hLayout->addWidget(labelX_);
-        hLayout->addWidget(labelY_);
-        hLayout->addWidget(labelZ_);
-
-
+        readOnlyLabel_ = new QLabel();
+        hLayout->addWidget(readOnlyLabel_);
         setLayout(hLayout);
     }
     else{
@@ -37,6 +30,7 @@ void IntVec3PropertyWidgetQt::generateWidget() {
         QWidget* sliderWidget = new QWidget();
         QVBoxLayout* vLayout = new QVBoxLayout();
         sliderWidget->setLayout(vLayout);
+        vLayout->setContentsMargins(0,0,0,0);
         valueVecMax_ = property_->getMaxValue();
         valueVecMin_ = property_->getMinValue();
         valueIncrement_ = property_->getIncrement();
@@ -49,6 +43,15 @@ void IntVec3PropertyWidgetQt::generateWidget() {
         vLayout->addWidget(sliderZ_);
         hLayout->addWidget(sliderWidget);
         setLayout(hLayout);
+
+        QSizePolicy labelPol = label_->sizePolicy();
+        labelPol.setHorizontalStretch(1);
+        labelPol.setControlType(QSizePolicy::Label);
+        label_->setSizePolicy(labelPol);
+
+        QSizePolicy slidersPol = sliderWidget->sizePolicy();
+        slidersPol.setHorizontalStretch(3);
+        sliderWidget->setSizePolicy(slidersPol);
 
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
@@ -86,9 +89,18 @@ void IntVec3PropertyWidgetQt::updateFromProperty() {
     valueVec_ = property_->get();
 
     if (property_->getReadOnly()) {
-        labelX_->setText("X: " +QString::number(valueVec_.x));
-        labelY_->setText("Y: " +QString::number(valueVec_.y));
-        labelZ_->setText("Z: " +QString::number(valueVec_.z));
+        readOnlyLabel_->setText(QString::number(valueVec_.x)+","
+            +QString::number(valueVec_.y)+","
+            +QString::number(valueVec_.z));
+
+
+        readOnlyLabel_->setToolTip("Min: [" +QString::number((property_->getMinValue()).x)+
+            ","+QString::number((property_->getMinValue()).y)+
+            ","+QString::number((property_->getMinValue()).z)+
+            "] Max: [" +QString::number((property_->getMaxValue()).x)+
+            ","+QString::number((property_->getMaxValue()).y)+
+            ","+QString::number((property_->getMinValue()).z)+"]");
+
     }
     else{
         valueVecMax_ = property_->getMaxValue();

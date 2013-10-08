@@ -28,8 +28,6 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
     }
     else
     {
-        hLayout->addWidget(label_);
-        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(mat0x0_, SIGNAL(editingFinished ()),
             this, SLOT(set0x0Value()));
         connect(mat0x1_, SIGNAL(editingFinished ()),
@@ -38,6 +36,10 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
             this, SLOT(set1x0Value()));
         connect(mat1x1_, SIGNAL(editingFinished ()),
             this, SLOT(set1x1Value()));
+
+        label_ = new EditableLabelQt(property_->getDisplayName());
+        hLayout->addWidget(label_);
+        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     }
     QGridLayout *gridLayout = new QGridLayout;
 

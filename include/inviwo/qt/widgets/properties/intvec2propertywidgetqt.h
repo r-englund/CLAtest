@@ -25,8 +25,7 @@ private:
     PropertySettingsWidgetQt* settingsWidget_;
     EditableLabelQt* label_;
     QMenu* settingsMenu_;
-    QLabel* labelX_;
-    QLabel* labelY_;
+    QLabel* readOnlyLabel_;
     IntSliderWidgetQt* sliderX_;
     IntSliderWidgetQt* sliderY_;
     ivec2 valueVecMax_;

@@ -21,10 +21,8 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
     if (property_->getReadOnly()) {
         valueVec_ = property_->get();
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-        labelX_ = new QLabel("X: " +QString::number(valueVec_.x));
-        labelY_ = new QLabel("Y: " +QString::number(valueVec_.y));
-        hLayout->addWidget(labelX_);
-        hLayout->addWidget(labelY_);
+        readOnlyLabel_ = new QLabel();
+        hLayout->addWidget(readOnlyLabel_);
         setLayout(hLayout);
     }
     else{
@@ -41,8 +39,18 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
 
 	    vLayout->addWidget(sliderX_);
 	    vLayout->addWidget(sliderY_);
+        vLayout->setContentsMargins(0,0,0,0);
 	    hLayout->addWidget(sliderWidget);
 	    setLayout(hLayout);
+
+        QSizePolicy labelPol = label_->sizePolicy();
+        labelPol.setHorizontalStretch(1);
+        labelPol.setControlType(QSizePolicy::Label);
+        label_->setSizePolicy(labelPol);
+
+        QSizePolicy slidersPol = sliderWidget->sizePolicy();
+        slidersPol.setHorizontalStretch(3);
+        sliderWidget->setSizePolicy(slidersPol);
 
         connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
         connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
@@ -54,8 +62,10 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
 void FloatVec2PropertyWidgetQt::updateFromProperty() {
     valueVec_ = property_->get();
     if (property_->getReadOnly()) {
-        labelX_->setText("X: " +QString::number(valueVec_.x));
-        labelY_->setText("Y: " +QString::number(valueVec_.y));
+        readOnlyLabel_->setText(QString::number(valueVec_.x)+ " , " +QString::number(valueVec_.y));
+        readOnlyLabel_->setToolTip("Min: [" +QString::number((property_->getMinValue()).x)+","+QString::number((property_->getMinValue()).y)+
+            "] Max: [" +QString::number((property_->getMaxValue()).x)+","+QString::number((property_->getMaxValue()).y)+"]");
+       
     }
     else {
         valueVec2Max_ = property_->getMaxValue();

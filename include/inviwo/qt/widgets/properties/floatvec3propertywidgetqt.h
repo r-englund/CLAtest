@@ -28,9 +28,7 @@ private:
     FloatSliderWidgetQt* sliderX_;
     FloatSliderWidgetQt* sliderY_;
     FloatSliderWidgetQt* sliderZ_;
-    QLabel* labelX_;
-    QLabel* labelY_;
-    QLabel* labelZ_;
+    QLabel* readOnlyLabel_;
     PropertySettingsWidgetQt* settingsWidget_;
     vec3 valueVec3Max_;
     vec3 valueVec3Min_;

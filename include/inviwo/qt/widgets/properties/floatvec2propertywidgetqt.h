@@ -25,8 +25,7 @@ private:
     FloatVec2Property* property_;
     FloatSliderWidgetQt* sliderX_;
     FloatSliderWidgetQt* sliderY_;
-    QLabel* labelX_;
-    QLabel* labelY_;
+    QLabel* readOnlyLabel_;
     PropertySettingsWidgetQt* settingsWidget_;
     EditableLabelQt* label_;
     QMenu* settingsMenu_;

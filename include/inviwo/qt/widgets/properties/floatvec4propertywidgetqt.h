@@ -28,10 +28,7 @@ private:
     FloatSliderWidgetQt* sliderY_;
     FloatSliderWidgetQt* sliderZ_;
 	FloatSliderWidgetQt* sliderW_;
-    QLabel* labelX_;
-    QLabel* labelY_;
-    QLabel* labelZ_;
-    QLabel* labelW_;
+    QLabel* readOnlyLabel_;
     PropertySettingsWidgetQt* settingsWidget_;
     QMenu* settingsMenu_;
     EditableLabelQt* label_;

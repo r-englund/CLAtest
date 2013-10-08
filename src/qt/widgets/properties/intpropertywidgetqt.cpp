@@ -17,8 +17,8 @@ void IntPropertyWidgetQt::generateWidget() {
 
     if (property_->getReadOnly()) {
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-        labelX_ = new QLabel("Value: " +QString::number(property_->get()));
-        hLayout->addWidget(labelX_);
+        readOnlyLabel_ = new QLabel();
+        hLayout->addWidget(readOnlyLabel_);
         setLayout(hLayout);
     }
     else {
@@ -28,16 +28,25 @@ void IntPropertyWidgetQt::generateWidget() {
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(sliderWidget_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
         hLayout->addWidget(sliderWidget_);
-        hLayout->setContentsMargins(0,0,0,0);
-        hLayout->setSpacing(0);
         setLayout(hLayout);
+
+        QSizePolicy labelPol = label_->sizePolicy();
+        labelPol.setHorizontalStretch(1);
+        label_->setSizePolicy(labelPol);
+
+        QSizePolicy sliderPol = sliderWidget_->sizePolicy();
+        sliderPol.setHorizontalStretch(3);
+        sliderWidget_->setSizePolicy(sliderPol);
+
         generatesSettingsWidget();
     }
 }
 
 void IntPropertyWidgetQt::updateFromProperty() {
     if (property_->getReadOnly()) {
-        labelX_->setText("Value: " +QString::number(property_->get()));
+        readOnlyLabel_->setText(QString::number(property_->get()));
+        readOnlyLabel_->setToolTip("Min: " +QString::number(property_->getMinValue())+
+            "  Max: " +QString::number(property_->getMaxValue()));
     }
     else{
         sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());

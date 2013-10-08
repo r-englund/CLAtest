@@ -18,29 +18,41 @@ void FloatMinMaxPropertyWidgetQt::generateWidget() {
         valueVec_ = property_->get();
         valueVec_ = property_->get();
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-        labelMin_ = new QLabel("Min:  "+QString::number(valueVec_.x));
-        labelMax_ = new QLabel("Max: " +QString::number(valueVec_.y));
+        readOnlyLabel_ = new QLabel(QString::number(valueVec_.x)+","+QString::number(valueVec_.y));
 
-        hLayout->addWidget(labelMin_);
-        hLayout->addWidget(labelMax_);
+        hLayout->addWidget(readOnlyLabel_);
         setLayout(hLayout);
     }
     else{
  
     label_ = new EditableLabelQt(property_->getDisplayName());
     hLayout->addWidget(label_);
-
+    QHBoxLayout* hSliderLayout = new QHBoxLayout();
+    QWidget* sliderWidget = new QWidget();
+    sliderWidget->setLayout(hSliderLayout);
+    hSliderLayout->setContentsMargins(0,0,0,0);
     spinBoxMin_ = new QDoubleSpinBox(this);
     spinBoxMin_->setFixedWidth(50);
-    hLayout->addWidget(spinBoxMin_);
+    hSliderLayout->addWidget(spinBoxMin_);
 
     slider_ = new RangeSliderQt(Qt::Horizontal, this);
-	hLayout->addWidget(slider_);
+	hSliderLayout->addWidget(slider_);
 
     spinBoxMax_ = new QDoubleSpinBox(this);
     spinBoxMax_->setFixedWidth(50);
-    hLayout->addWidget(spinBoxMax_);
+    hSliderLayout->addWidget(spinBoxMax_);
+
+    hLayout->addWidget(sliderWidget);
 	setLayout(hLayout);
+
+    QSizePolicy labelPol = label_->sizePolicy();
+    labelPol.setHorizontalStretch(1);
+    labelPol.setControlType(QSizePolicy::Label);
+    label_->setSizePolicy(labelPol);
+
+    QSizePolicy slidersPol = sliderWidget->sizePolicy();
+    slidersPol.setHorizontalStretch(3);
+    sliderWidget->setSizePolicy(slidersPol);
 
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(slider_, SIGNAL(valuesChanged(int,int)), this, SLOT(updateFromSlider(int,int)));
@@ -54,8 +66,7 @@ void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
 
     valueVec_ = property_->get();
     if (property_->getReadOnly()) {
-        labelMin_->setText("Min: " +QString::number(valueVec_.x));
-        labelMax_->setText("Max: " +QString::number(valueVec_.y));
+        readOnlyLabel_->setText(QString::number(valueVec_.x)+","+QString::number(valueVec_.y));
 
         updatingFromProperty_ = false;
     }
