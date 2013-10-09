@@ -4,7 +4,7 @@
 namespace inviwo {
 
 QGLWidget* CanvasQt::sharedWidget_ = 0;
-QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::DepthBuffer);
+QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
 
 CanvasQt::CanvasQt(QWidget* parent)
 : QGLWidget(sharedFormat_, parent, sharedWidget_),

@@ -1,7 +1,5 @@
 uniform sampler2D tex_;
-uniform vec2 dimension_;
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * dimension_;
-    FragData0 = texture2D(tex_, texCoords);
+    FragData0 = texture2D(tex_, gl_TexCoord[0].st);
 }

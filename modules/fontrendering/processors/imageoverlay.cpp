@@ -169,6 +169,8 @@ void ImageOverlay::process() {
 	deactivateCurrentTarget();
 
     glDisableVertexAttribArray(attribute_location);
+
+    glDisable(GL_BLEND);
 }
 
 } // namespace

@@ -41,9 +41,12 @@ void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) 
         hasStencilAttachment_ = true;
     else{
         int attachementNumber = -1;
-        for(int i=0; i<maxColorAttachements_; i++)
-            if(colorAttachmentEnums_[i] == attachementID)
+        for(int i=0; i<maxColorAttachements_; i++){
+            if(colorAttachmentEnums_[i] == attachementID){
                 attachementNumber = i;
+                break;
+            }
+        }
 
         if(attachementNumber>=0){
             drawBuffers_[attachementNumber] = attachementID;
@@ -59,9 +62,12 @@ void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) 
 
 GLenum FrameBufferObject::attachColorTexture(Texture2D* texture) {
     int attachementNumber = -1;
-    for(int i=0; i<maxColorAttachements_; i++)
-        if(drawBuffers_[i] == GL_NONE)
+    for(int i=0; i<maxColorAttachements_; i++){
+        if(drawBuffers_[i] == GL_NONE){
             attachementNumber = i;
+            break;
+        }
+    }
 
     if(attachementNumber>=0){
         drawBuffers_[attachementNumber] = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
@@ -75,7 +81,7 @@ GLenum FrameBufferObject::attachColorTexture(Texture2D* texture) {
 }
 
 GLenum FrameBufferObject::attachColorTexture(Texture2D* texture, int attachementNumber, bool attachFromRear) {
-    attachementNumber = (attachFromRear ? maxColorAttachements_-attachementNumber-2 : attachementNumber);
+    attachementNumber = (attachFromRear ? maxColorAttachements_-attachementNumber-1 : attachementNumber);
     GLenum attachementID = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
     
     if(attachementNumber<maxColorAttachements_ && attachementNumber>=0){
@@ -96,9 +102,12 @@ void FrameBufferObject::detachTexture(GLenum attachementID) {
         hasStencilAttachment_ = false;
     else{
         int attachementNumber = -1;
-        for(int i=0; i<maxColorAttachements_; i++)
-            if(colorAttachmentEnums_[i] == attachementID)
+        for(int i=0; i<maxColorAttachements_; i++){
+            if(colorAttachmentEnums_[i] == attachementID){
                 attachementNumber = i;
+                break;
+            }
+        }
 
         if(attachementNumber>=0){
             drawBuffers_[attachementNumber] = GL_NONE;

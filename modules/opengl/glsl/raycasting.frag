@@ -57,5 +57,5 @@ void main() {
     vec3 exitPoint = texture2D(exitTex_, texCoords).rgb;
     vec4 color = rayTraversal(entryPoint, exitPoint);
     FragData0 = color;
-    //PickingData = vec4(entryPoint, 1.0);
+    PickingData = vec4(1.0, 0.0, 0.0, color.a);
 }

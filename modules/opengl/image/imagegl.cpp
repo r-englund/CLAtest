@@ -125,21 +125,21 @@ void ImageGL::createPickingLayer(){
 }
 
 void ImageGL::createAndAddLayer(ImageLayerType layer){
-    frameBufferObject_->activate();
+    //frameBufferObject_->activate();
     if(layer == COLOR_LAYER){
         createColorLayer();
-        frameBufferObject_->attachColorTexture(colorTexture_);
+        //frameBufferObject_->attachColorTexture(colorTexture_);
     }
     else if(layer == DEPTH_LAYER){
         createDepthLayer();
-        frameBufferObject_->attachTexture(depthTexture_, static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
+        //frameBufferObject_->attachTexture(depthTexture_, static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
     }
     else if(layer == PICKING_LAYER){
         createPickingLayer();
-        pickingAttachmentID_ = frameBufferObject_->attachColorTexture(pickingTexture_, 0, true);
+        //pickingAttachmentID_ = frameBufferObject_->attachColorTexture(pickingTexture_, 0, true);
     }
-    frameBufferObject_->deactivate();
-    frameBufferObject_->checkStatus();
+    //frameBufferObject_->deactivate();
+    //frameBufferObject_->checkStatus();
 }
 
 void ImageGL::activateBuffer() {

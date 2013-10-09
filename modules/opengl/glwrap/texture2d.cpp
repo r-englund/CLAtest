@@ -140,9 +140,11 @@ void Texture2D::resize(uvec2 dimension) {
 }
 
 void Texture2D::setupAsyncReadBackPBO(){
+    bind();
     glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
     glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, dimensions_.x*dimensions_.y*getSizeInBytes(), NULL, GL_STREAM_READ_ARB);
     glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
+    unbind();
     dataInReadBackPBO_ = false;
 }
 

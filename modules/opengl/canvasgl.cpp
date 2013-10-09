@@ -18,7 +18,14 @@ CanvasGL::CanvasGL(uvec2 dimensions)
 CanvasGL::~CanvasGL() {}
 
 void CanvasGL::initialize() {
+    glShadeModel(GL_SMOOTH);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_COLOR_MATERIAL);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     LGL_ERROR;
     shader_ = new Shader("img_texturequad.frag");
     LGL_ERROR;
@@ -57,6 +64,9 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
     if (image) {
         imageGL_ = image->getRepresentation<ImageGL>();
         pickingContainer_->setPickingSource(image);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         switch(layer){
             case COLOR_LAYER:
                 renderColor();
@@ -70,8 +80,9 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
             default:
                 renderNoise();
         }
+        glDisable(GL_BLEND);
         //Pre-download incoming image (for Picking etc)
-        imageGL_->getColorTexture()->downloadToPBO();
+        //imageGL_->getColorTexture()->downloadToPBO();
         //imageGL_->getDepthTexture()->downloadToPBO();
         //imageGL_->getPickingTexture()->downloadToPBO();
     } else {
@@ -116,12 +127,11 @@ void CanvasGL::renderPicking() {
     TextureUnit textureUnit;
     imageGL_->bindPickingTexture(textureUnit.getEnum());
     renderTexture(textureUnit.getUnitNumber());
-    imageGL_->unbindDepthTexture();
+    imageGL_->unbindPickingTexture();
 }
 
 void CanvasGL::renderNoise() {
     noiseShader_->activate();
-    noiseShader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
     renderImagePlaneRect();
     noiseShader_->deactivate();
 }
@@ -129,7 +139,6 @@ void CanvasGL::renderNoise() {
 void CanvasGL::renderTexture(GLint unitNumber) {
     shader_->activate();
     shader_->setUniform("tex_", unitNumber);
-    shader_->setUniform("dimension_", vec2( 1.f / dimensions_[0],  1.f / dimensions_[1]) );
     //FIXME: glViewport should not be here, which indicates this context is not active.
     glViewport(0, 0, dimensions_.x, dimensions_.y);
     renderImagePlaneRect();

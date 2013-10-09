@@ -39,9 +39,9 @@ void PortGroup::reattachTargets() {
     // acquire all images to be attached
     std::vector<ImageGL*> images;
     for (size_t i=0; i<ports_.size(); i++) {
-        const Image* image = ports_[i]->getConstData();
+        Image* image = ports_[i]->getData();
         if (image)
-            images.push_back(const_cast<ImageGL*>(image->getRepresentation<ImageGL>()));
+            images.push_back(image->getEditableRepresentation<ImageGL>());
         else LogWarn("Empty image in outport.");
     }
 
