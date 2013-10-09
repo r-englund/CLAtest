@@ -16,7 +16,7 @@ public:
     inline void checkPickable(const uvec2& coords) {
         const ImageRAM* imageRAM = src_->getRepresentation<ImageRAM>();
         vec4 value = imageRAM->getPickingValue(coords);
-        vec3 pickedColor = (value.w > 0 ? value.xyz : vec3(0.f));
+        vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
         LogInfo("Picked Pixel Value : (" << pickedColor.x << "," << pickedColor.y << "," << pickedColor.z << ")");
     }
 
