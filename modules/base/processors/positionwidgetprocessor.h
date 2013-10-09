@@ -38,6 +38,8 @@ private:
     const PickingObject* widgetPickingObject_;
 
     Geometry* widget_;
+
+    Shader* program_;
 };
 
 } // namespace

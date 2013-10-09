@@ -20,8 +20,9 @@ public:
     virtual std::string getClassName() const { return "ImageRAM"; }
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeImage(DataRepresentation*);
-    virtual void* getData() {return data_;};
-    virtual const void* getData() const {return data_;};
+    void* getData() {return data_;};
+    const void* getData() const {return data_;};
+    void* getPickingData();
 
     virtual void setValueFromSingleFloat(const uvec2& pos, float val) = 0;
     virtual void setValueFromVec2Float(const uvec2& pos, vec2 val) = 0;
@@ -32,6 +33,8 @@ public:
     virtual vec2 getValueAsVec2Float(const uvec2& pos) const = 0;
     virtual vec3 getValueAsVec3Float(const uvec2& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec2& pos) const = 0;
+
+    virtual vec4 getPickingValue(const uvec2& pos) const = 0;
 
     // Takes ownership of data pointer
     void setData(void* data) {
@@ -44,7 +47,10 @@ public:
     }
 
 protected:
+    virtual void allocatePickingData() = 0;
+
     void* data_;
+    void* pickingData_;
 };
 
 /**

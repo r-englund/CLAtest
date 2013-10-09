@@ -45,6 +45,7 @@ DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* s
         ImageRAM* image = createImageRAM(imageGL->getDimensions(), imageGL->getImageType(), imageGL->getDataFormat()); 
         if (image) {
             imageGL->getColorTexture()->download(image->getData());
+            imageGL->getPickingTexture()->download(image->getPickingData());
             return image;
         } else {
             LogError("Cannot convert format from GL to RAM:" << imageGL->getDataFormat()->getString());
@@ -63,6 +64,7 @@ void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresen
         // FIXME: OpenGL color should not have both depth and color
         if (imageDst->getDimensions()==imageSrc->getDimensions(),"GL and Ram representations are expected to have same dimensions.")
         imageSrc->getColorTexture()->download(imageDst->getData());
+        imageSrc->getPickingTexture()->download(imageDst->getPickingData());
     }
 }
 

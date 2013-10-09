@@ -78,6 +78,7 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/img_identity.vert
     ${IVW_MODULE_DIR}/opengl/glsl/img_mix.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_classification.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_gradients.frag

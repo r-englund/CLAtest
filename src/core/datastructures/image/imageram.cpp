@@ -17,6 +17,7 @@ ImageRAM::~ImageRAM() {
 
 void ImageRAM::initialize() {
     data_ = NULL;
+    pickingData_ = NULL;
 }
 
 void ImageRAM::deinitialize() {
@@ -30,6 +31,13 @@ void ImageRAM::resize(uvec2 dimensions) {
     //Delete and reallocate data_ to new size
     ImageRAM::deinitialize();
     initialize();
+}
+
+void* ImageRAM::getPickingData() {
+    if(!pickingData_)
+        allocatePickingData();
+
+    return pickingData_;
 }
 
 bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {

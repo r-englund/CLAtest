@@ -37,6 +37,11 @@ public:
     vec2 getValueAsVec2Float(const uvec2& pos) const;
     vec3 getValueAsVec3Float(const uvec2& pos) const;
     vec4 getValueAsVec4Float(const uvec2& pos) const;
+
+    vec4 getPickingValue(const uvec2& pos) const;
+
+protected:
+    void allocatePickingData();
     
 private:
     static const DataFormatBase* defaultformat(){
@@ -88,6 +93,10 @@ void inviwo::ImageRAMPrecision<T>::deinitialize()
     if(data_) {
         delete[] static_cast<T*>(data_);
         data_ = NULL;
+    }
+    if(pickingData_) {
+        delete[] static_cast<T*>(pickingData_);
+        pickingData_ = NULL;
     }
 }
 
@@ -156,6 +165,22 @@ vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
     T val = data[posToIndex(pos, dimensions_)];
     result = getDataFormat()->valueToNormalizedVec4Float(&val);
     return result;
+}
+
+template<typename T>
+vec4 ImageRAMPrecision<T>::getPickingValue(const uvec2& pos) const{
+    vec4 result = vec4(0.f);
+    if(pickingData_){
+        T* pickData = static_cast<T*>(pickingData_);
+        T val = pickData[posToIndex(pos, dimensions_)];
+        result = getDataFormat()->valueToNormalizedVec4Float(&val);
+    }
+    return result;
+}
+
+template<typename T>
+void ImageRAMPrecision<T>::allocatePickingData(){
+    pickingData_ = new T[dimensions_.x*dimensions_.y];
 }
 
 #define DataFormatIdMacro(i) typedef ImageRAMCustomPrecision<Data##i::type, Data##i::bits> ImageRAM_##i;

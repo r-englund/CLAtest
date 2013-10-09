@@ -14,9 +14,10 @@ public:
     inline bool isPickableSelected() { return selected_; }
 
     inline void checkPickable(const uvec2& coords) {
-        const ImageRAM* colorImage = src_->getRepresentation<ImageRAM>();
-        vec4 value = colorImage->getValueAsVec4Float(coords);
-        LogInfo("Picked Pixel Value : (" << value.x << "," << value.y << "," << value.z << ")");
+        const ImageRAM* imageRAM = src_->getRepresentation<ImageRAM>();
+        vec4 value = imageRAM->getPickingValue(coords);
+        vec3 pickedColor = (value.a > 0 ? value.xyz : vec3(0.f));
+        LogInfo("Picked Pixel Value : (" << pickedColor.x << "," << pickedColor.y << "," << pickedColor.z << ")");
     }
 
     inline void setPickingSource(const Image* src) { src_ = src; }

@@ -37,10 +37,16 @@ PositionWidgetProcessor::~PositionWidgetProcessor() {}
 
 void PositionWidgetProcessor::initialize() {
     ProcessorGL::initialize();
+
+    program_ = new Shader("picking.frag");
+    program_->build();
 }
 
 void PositionWidgetProcessor::deinitialize() {
     ProcessorGL::deinitialize();
+
+    delete program_;
+    program_ = 0;
 }
 
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
@@ -50,7 +56,12 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
 void PositionWidgetProcessor::process() {    
     updateAndActivateTarget(outport_, inport_);
 
-    //widget_->getRepresentation<GeometryGL>()->render();
+    program_->activate();
+    program_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());
+
+    widget_->getRepresentation<GeometryGL>()->render();
+
+    program_->deactivate();
 
     deactivateCurrentTarget();
     
