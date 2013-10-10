@@ -12,12 +12,13 @@ namespace inviwo {
 class IVW_CORE_API PickingObject {
 
 public:
-    PickingObject(size_t, vec3);
+    PickingObject(size_t, DataVec3UINT8::type);
 
     virtual ~PickingObject();
 
     const size_t& getPickingId() const;
     const vec3& getPickingColor() const;
+    const DataVec3UINT8::type& getPickingColorAsUINT8() const;
 
     void picked() const;
 
@@ -25,6 +26,7 @@ public:
 
 private:
     size_t id_;
+    DataVec3UINT8::type colorUINT8_;
     vec3 color_;
     SingleCallBack* onPickedCallback_;
 };

@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/interaction/pickingmanager.h>
 
 namespace inviwo {
 
@@ -17,6 +18,9 @@ public:
         const ImageRAM* imageRAM = src_->getRepresentation<ImageRAM>();
         vec4 value = imageRAM->getPickingValue(coords);
         vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
+        DataVec3UINT8::type pickedColorUINT8;
+        DataVec3UINT8::get()->vec3ToValue(pickedColor*255.f, &pickedColorUINT8);
+        PickingManager::instance()->handlePickedColor(pickedColorUINT8);
         LogInfo("Picked Pixel Value : (" << pickedColor.x << "," << pickedColor.y << "," << pickedColor.z << ")");
     }
 

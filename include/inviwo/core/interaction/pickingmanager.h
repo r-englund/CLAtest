@@ -13,13 +13,13 @@ namespace inviwo {
 class FindPickingObject
 {
 public:
-    FindPickingObject(const vec3& c) : color_(c) {}
+    FindPickingObject(const DataVec3UINT8::type& c) : color_(c) {}
 
     bool operator()(PickingObject* obj){ 
-        return obj->getPickingColor() == color_; 
+        return obj->getPickingColorAsUINT8() == color_; 
     }
 private:
-    vec3 color_;
+    DataVec3UINT8::type color_;
 };
 
 class IVW_CORE_API PickingManager {
@@ -39,14 +39,18 @@ public:
         return pickObj;
     }
 
-    void handlePickedColor(const vec3&);
+    void handlePickedColor(const DataVec3UINT8::type&);
    
 protected:
-    PickingManager() {};
+    PickingManager() {
+        //PickingManager::instance()->performUniqueColorGenerationTest(2000);
+    };
     PickingManager(PickingManager const&) {};
     void operator=(PickingManager const&) {};
 
     PickingObject* generatePickingObject(size_t);
+
+    void performUniqueColorGenerationTest(int iterations);
 
 private:
     std::vector<PickingObject*> pickingObjects_;

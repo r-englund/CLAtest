@@ -59,7 +59,12 @@ void PositionWidgetProcessor::process() {
     program_->activate();
     program_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     widget_->getRepresentation<GeometryGL>()->render();
+
+    glDisable(GL_BLEND);
 
     program_->deactivate();
 
