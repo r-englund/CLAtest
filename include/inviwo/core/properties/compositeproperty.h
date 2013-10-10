@@ -18,13 +18,18 @@ public:
 
     void addProperty(Property* property);
     void addProperty(Property& property);
-    std::vector<Property*> getSubProperties() { return subProperties_; }
+    std::vector<Property*> getSubProperties() const { return subProperties_; }
     void setOwner(PropertyOwner* owner);
     void notify();
     virtual std::string getClassName()  const { return "CompositeProperty"; }
     void updateVisibility();
     void setVisible(bool val);
     void setReadOnly(bool value);
+
+    //override original function in property
+    virtual void set(const Property* src);
+    virtual void setPropertyModified(bool modified);
+    virtual bool isPropertyModified() const;
 
 private:
     std::vector<Property*> subProperties_;

@@ -34,7 +34,7 @@ public:
 
     void invokeEvent(Event* event);
 
-    void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    void invalidate();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "CameraProperty"; }

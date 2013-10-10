@@ -268,7 +268,7 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
                 camera_->setLookTo(camera_->getLookTo()*diff);
             }
 
-            camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
+            camera_->invalidate();
 
             //update mouse positions
             lastMousePos_ = curMousePos;
@@ -304,7 +304,7 @@ void Trackball::zoomCamera(MouseEvent* mouseEvent) {
 
         // zoom by moving the camera
         camera_->setLookFrom(camera_->getLookFrom()-direction*diff);
-        camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
+        camera_->invalidate();
         lastMousePos_ = curMousePos;
         lastTrackballPos_ = curTrackballPos;
     }
@@ -336,7 +336,7 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     if (curMousePos != lastMousePos_) {
         camera_->setLookTo(camera_->getLookTo()     + mappedTrackBallOffsetVector);
         camera_->setLookFrom(camera_->getLookFrom() + mappedTrackBallOffsetVector);
-        camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
+        camera_->invalidate();
         lastMousePos_ = curMousePos;
         lastTrackballPos_ = curTrackballPos;
     }
@@ -400,7 +400,7 @@ void Trackball::stepRotateCamera(Direction dir) {
 			camera_->setLookTo(camera_->getLookTo()*diff);
 		}
 
-		camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
+		camera_->invalidate();
 	}
 	return;
 }
@@ -416,7 +416,7 @@ void Trackball::stepZoomCamera(Direction dir) {
 
 	// zoom by moving the camera
 	camera_->setLookFrom(camera_->getLookFrom()-direction*STEPSIZE);
-	camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
+	camera_->invalidate();
 
 	return;
 }
@@ -452,7 +452,7 @@ void Trackball::stepPanCamera(Direction dir) {
 	vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
 	camera_->setLookTo(camera_->getLookTo()     + mappedTrackBallOffsetVector);
 	camera_->setLookFrom(camera_->getLookFrom() + mappedTrackBallOffsetVector);
-	camera_->invalidate(PropertyOwner::INVALID_OUTPUT);
+	camera_->invalidate();
 
 	return;
 }

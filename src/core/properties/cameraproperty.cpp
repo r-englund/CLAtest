@@ -68,9 +68,9 @@ void CameraProperty::updateViewMatrix() {
    viewMatrix_ = glm::lookAt(lookFrom_.get(), lookTo_.get(), lookUp_.get());
 }
 
-void CameraProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {    
-    Processor* owner = dynamic_cast<Processor*>(getOwner());
-    if (owner) owner->invalidate(invalidationLevel);
+void CameraProperty::invalidate() {
+    //TODO:: How to handle subproperties?
+    propertyModified();
 }
 
 void CameraProperty::invokeEvent(Event* event) {
@@ -80,7 +80,7 @@ void CameraProperty::invokeEvent(Event* event) {
         float width = (float)canvasSize[0];
         float height = (float)canvasSize[1];
         setProjectionMatrix(fovy_.get(), width/height, nearPlane_.get(), farPlane_.get());
-        invalidate(PropertyOwner::INVALID_OUTPUT);
+        invalidate();
     }    
 }
 

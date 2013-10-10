@@ -46,5 +46,35 @@ void CompositeProperty::setReadOnly( bool value ) {
         subProperties_[i]->setReadOnly(value);
 }
 
+void CompositeProperty::setPropertyModified(bool modified) { 
+    for (size_t i=0; i<subProperties_.size(); i++)
+        subProperties_[i]->setPropertyModified(modified);
+}
+
+bool CompositeProperty::isPropertyModified() const {
+    for (size_t i=0; i<subProperties_.size(); i++)
+        if (subProperties_[i]->isPropertyModified()) return true;
+
+    return false;
+}
+
+void CompositeProperty::set(const Property* srcProperty) {
+    const CompositeProperty* compositeSrcProp = dynamic_cast<const CompositeProperty*>(srcProperty);
+    if (compositeSrcProp) {
+        std::vector<Property*> subProperties = compositeSrcProp->getSubProperties();
+        if (subProperties.size()!=this->subProperties_.size()) {
+            LogWarn("CompositeProperty mismatch. Unable to link");
+            return;
+        }
+
+        for (size_t i=0; i<subProperties.size(); i++) {
+            this->subProperties_[i]->set(subProperties[i]);
+        }
+    }
+    else        
+        this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
+    propertyModified();
+}
+
 
 } // namespace
