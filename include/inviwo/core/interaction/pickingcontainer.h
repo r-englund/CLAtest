@@ -9,29 +9,54 @@ namespace inviwo {
 
 class IVW_CORE_API PickingContainer {
 public:
-    PickingContainer() {};
+    PickingContainer() {
+        src_ = NULL;
+        selected_ = false;
+        currentPickObj_ = NULL;
+        prevCoord_ = uvec2(0,0);
+    };
     virtual ~PickingContainer() {};
 
     inline bool isPickableSelected() { return selected_; }
 
-    inline void checkPickable(const uvec2& coords) {
+    inline bool performPick(const uvec2& coord) {
+        prevCoord_ = coord;
         const ImageRAM* imageRAM = src_->getRepresentation<ImageRAM>();
-        vec4 value = imageRAM->getPickingValue(coords);
+        vec4 value = imageRAM->getPickingValue(coord);
         vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
         DataVec3UINT8::type pickedColorUINT8;
         DataVec3UINT8::get()->vec3ToValue(pickedColor*255.f, &pickedColorUINT8);
-        PickingManager::instance()->handlePickedColor(pickedColorUINT8);
-        LogInfo("Picked Pixel Value : (" << pickedColor.x << "," << pickedColor.y << "," << pickedColor.z << ")");
+        currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
+        if(currentPickObj_){
+            setPickableSelected(true);
+            currentPickObj_->setPickingMove(ivec2(0,0));
+            currentPickObj_->picked();
+            return true;
+        }
+        else{
+            setPickableSelected(false);
+            return false;
+        }
     }
 
+    inline void movePicked(const uvec2& coord){
+        currentPickObj_->setPickingMove(pixelMoveVector(prevCoord_, coord));
+        prevCoord_ = coord;
+        currentPickObj_->picked();
+    }
+
+    inline void setPickableSelected(bool selected){ selected_ = selected; }
     inline void setPickingSource(const Image* src) { src_ = src; }
 
 protected:
-    inline void setPickableSelected(bool selected){selected_ = selected; }
+    inline ivec2 pixelMoveVector(const uvec2& previous, const uvec2& current){
+        return ivec2(static_cast<int>(current.x-previous.x), static_cast<int>(current.y-previous.y));
+    }
 
 private:
     const Image* src_;
-
+    PickingObject* currentPickObj_;
+    uvec2 prevCoord_;
     bool selected_;
 };
 

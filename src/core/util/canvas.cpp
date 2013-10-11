@@ -70,17 +70,25 @@ void Canvas::interactionEvent(InteractionEvent* e) {
 }
 
 void Canvas::mousePressEvent(MouseEvent* e) {
-    if(e->button() == MouseEvent::MOUSE_BUTTON_RIGHT)
-        pickingContainer_->checkPickable(mousePosToPixelCoordinates(e->pos()));
-    interactionEvent(e);
+    if(e->button() == MouseEvent::MOUSE_BUTTON_LEFT){
+        bool picked = pickingContainer_->performPick(mousePosToPixelCoordinates(e->pos()));
+        if(!picked)
+            interactionEvent(e);
+    }
+    else
+        interactionEvent(e);
 }
 
 void Canvas::mouseReleaseEvent(MouseEvent* e) {
+    pickingContainer_->setPickableSelected(false);
     interactionEvent(e);
 }
 
 void Canvas::mouseMoveEvent(MouseEvent* e) {
-    interactionEvent(e);
+    if(pickingContainer_->isPickableSelected())
+        pickingContainer_->movePicked(mousePosToPixelCoordinates(e->pos()));
+    else
+        interactionEvent(e);
 }
 
 void Canvas::keyPressEvent(KeyboardEvent* e) {

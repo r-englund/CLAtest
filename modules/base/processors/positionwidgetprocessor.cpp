@@ -9,11 +9,12 @@ ProcessorCategory(PositionWidgetProcessor, "Geometry Rendering");
 ProcessorCodeState(PositionWidgetProcessor, CODE_STATE_EXPERIMENTAL); 
 
 PositionWidgetProcessor::PositionWidgetProcessor()
-    : ProcessorGL(),
+    : CompositeProcessorGL(),
       inport_("inport"),
       outport_("outport", COLOR_DEPTH_PICKING),
       widgetType_("widgetType", "Widget Type"),
-      position_("position", "Position", vec3(0.0f), vec3(-1.f), vec3(1.f))      
+      position_("position", "Position", vec3(0.0f), vec3(-1.f), vec3(1.f)),
+      camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     addPort(inport_);
     addPort(outport_);
@@ -24,6 +25,7 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     addProperty(widgetType_);
 
     addProperty(position_);
+    addProperty(camera_);
 
     widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
 
@@ -36,40 +38,51 @@ PositionWidgetProcessor::PositionWidgetProcessor()
 PositionWidgetProcessor::~PositionWidgetProcessor() {}
 
 void PositionWidgetProcessor::initialize() {
-    ProcessorGL::initialize();
+    CompositeProcessorGL::initialize();
 
     program_ = new Shader("picking.frag");
     program_->build();
 }
 
 void PositionWidgetProcessor::deinitialize() {
-    ProcessorGL::deinitialize();
+    CompositeProcessorGL::deinitialize();
 
     delete program_;
     program_ = 0;
 }
 
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
-    LogInfo("Found Picking Object with ID : (" << widgetPickingObject_->getPickingId() << ")");
+    ivec2 move = widgetPickingObject_->getPickingMove();
+    LogInfo("Picking Object with ID : " << widgetPickingObject_->getPickingId() << " moved with 2D vector (" << move.x << "," << move.y << ")");
 }
 
 void PositionWidgetProcessor::process() {    
-    updateAndActivateTarget(outport_, inport_);
+    activateAndClearTarget(outport_);
 
     program_->activate();
     program_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
 
     widget_->getRepresentation<GeometryGL>()->render();
 
-    glDisable(GL_BLEND);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glLoadIdentity();
 
     program_->deactivate();
 
     deactivateCurrentTarget();
-    
+
+    compositePortsToOutport(outport_, inport_);
 }
 
 } // namespace

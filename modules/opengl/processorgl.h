@@ -32,16 +32,27 @@ public:
     void bindColorTexture(const ImageOutport& outport, GLenum texUnit);
     void unbindColorTexture(const ImageInport& inport);
     void unbindColorTexture(const ImageOutport& outport);
+
     void bindDepthTexture(const ImageInport& inport, GLenum texUnit);
     void bindDepthTexture(const ImageOutport& outport, GLenum texUnit);
     void unbindDepthTexture(const ImageInport& inport);
     void unbindDepthTexture(const ImageOutport& outport);
+
+    void bindPickingTexture(const ImageInport& inport, GLenum texUnit);
+    void bindPickingTexture(const ImageOutport& outport, GLenum texUnit);
+    void unbindPickingTexture(const ImageInport& inport);
+    void unbindPickingTexture(const ImageOutport& outport);
+
     void bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit);
     void bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit);
+    void bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit);
+    void bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit);
     void unbindTextures(const ImageInport& inport);
     void unbindTextures(const ImageOutport& outport);
 
     void setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID);
+    void setTextureParameters(const ImageOutport& outport, Shader* shader, const std::string samplerID);
+
     void setGlobalShaderParameters(Shader* shader);
 
     static inline void renderImagePlaneRect() {

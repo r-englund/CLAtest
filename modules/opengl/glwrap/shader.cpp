@@ -22,7 +22,6 @@ Shader::~Shader() {
     deinitialize();
 }
 
-
 void Shader::initialize(bool linkShader) {
     id_ = glCreateProgram();
     LGL_ERROR;
@@ -44,7 +43,6 @@ void Shader::deinitialize() {
     LGL_ERROR;
 }
 
-
 void Shader::attachShaderObject(ShaderObject* shaderObject) {
     glAttachShader(id_, shaderObject->getID());
     LGL_ERROR;
@@ -54,7 +52,6 @@ void Shader::detachShaderObject(ShaderObject* shaderObject) {
     glDetachShader(id_, shaderObject->getID());
     LGL_ERROR;
 }
-
 
 void Shader::link() {
     glLinkProgram(id_);
@@ -73,7 +70,6 @@ void Shader::rebuild() {
     link();
 }
 
-
 void Shader::activate() {
     glUseProgram(id_);
     LGL_ERROR;
@@ -83,7 +79,6 @@ void Shader::deactivate() {
     glUseProgram(0);
     LGL_ERROR;
 }
-
 
 void Shader::setUniform(const std::string name, GLint value) {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());

@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/interaction/pickingobject.h>
 #include <inviwo/core/util/singleton.h>
+#include <inviwo/core/interaction/pickingcontainer.h>
 
 namespace inviwo {
 /** \class PickingManager 
@@ -24,6 +25,8 @@ private:
 
 class IVW_CORE_API PickingManager {
 
+friend class PickingContainer;
+
 public:
     static PickingManager* instance() {
         static PickingManager instance;// Guaranteed to be destroyed. Instantiated on first use.
@@ -39,8 +42,6 @@ public:
         return pickObj;
     }
 
-    void handlePickedColor(const DataVec3UINT8::type&);
-   
 protected:
     PickingManager() {
         //PickingManager::instance()->performUniqueColorGenerationTest(2000);
@@ -49,6 +50,8 @@ protected:
     void operator=(PickingManager const&) {};
 
     PickingObject* generatePickingObject(size_t);
+
+    PickingObject* getPickingObjectFromColor(const DataVec3UINT8::type&);
 
     void performUniqueColorGenerationTest(int iterations);
 

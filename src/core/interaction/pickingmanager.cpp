@@ -9,11 +9,12 @@ PickingManager::~PickingManager() {
     }
 }
 
-void PickingManager::handlePickedColor(const DataVec3UINT8::type& c){
+PickingObject* PickingManager::getPickingObjectFromColor(const DataVec3UINT8::type& c){
     std::vector<PickingObject*>::iterator it = std::find_if(pickingObjects_.begin(), pickingObjects_.end(), FindPickingObject(c));
     if (it != pickingObjects_.end()){
-        (*it)->picked();
+        return (*it);
     }
+    return NULL;
 }
 
 PickingObject* PickingManager::generatePickingObject(size_t id){

@@ -15,6 +15,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/image/imagegl.h
     ${IVW_MODULE_DIR}/opengl/image/imageglconverter.h
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
     ${IVW_MODULE_DIR}/opengl/openglinfo.h
     ${IVW_MODULE_DIR}/opengl/openglmodule.h
@@ -46,6 +47,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/image/imagegl.cpp
     ${IVW_MODULE_DIR}/opengl/image/imageglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
     ${IVW_MODULE_DIR}/opengl/openglinfo.cpp
     ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
@@ -68,6 +70,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add shaders
 set(SHADER_FILES
+    ${IVW_MODULE_DIR}/opengl/glsl/composite.frag
     ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_freetype.frag
     ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_freetype.vert
     ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_passthrough.frag

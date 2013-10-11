@@ -23,8 +23,16 @@ const DataVec3UINT8::type& PickingObject::getPickingColorAsUINT8() const{
     return colorUINT8_; 
 }
 
+const ivec2& PickingObject::getPickingMove() const{
+    return move_;
+}
+
 void PickingObject::picked() const{
     onPickedCallback_->invoke();
+}
+
+void PickingObject::setPickingMove(ivec2 move){
+    move_ = move;
 }
 
 SingleCallBack* PickingObject::getCallbackContainer(){

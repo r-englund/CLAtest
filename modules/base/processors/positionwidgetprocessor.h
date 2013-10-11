@@ -5,14 +5,14 @@
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/ports/imageport.h>
-#include <modules/opengl/processorgl.h>
+#include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/interaction/pickingobject.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API PositionWidgetProcessor : public ProcessorGL {
+class IVW_MODULE_BASE_API PositionWidgetProcessor : public CompositeProcessorGL {
 public:
     PositionWidgetProcessor();
     ~PositionWidgetProcessor();
@@ -21,6 +21,8 @@ public:
 
     void initialize();
     void deinitialize();
+
+    bool isReady() const { return true; }
 
     void updateWidgetPositionFromPicking();
 
@@ -32,8 +34,9 @@ private:
     ImageOutport outport_;
 
     OptionPropertyString widgetType_;
-
     FloatVec3Property position_;
+
+    CameraProperty camera_;
 
     const PickingObject* widgetPickingObject_;
 
