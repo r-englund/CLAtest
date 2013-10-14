@@ -220,7 +220,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref3">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-350" />
@@ -718,7 +718,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="GeometryRenderProcessorGL" identifier="GeometryRenderProcessorGL" id="ref8">
+        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref8">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-1100" y="225" />
@@ -772,7 +772,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref9">
+        <Processor type="CanvasGL" identifier="CanvasGL1" id="ref9">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-500" y="-350" />
@@ -795,7 +795,7 @@
                 <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL2" id="ref10">
+        <Processor type="CanvasGL" identifier="CanvasGL2" id="ref10">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-325" y="-350" />
@@ -889,7 +889,7 @@
                 <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="GeometryRenderProcessorGL" identifier="GeometryRenderProcessorGL" reference="ref8" />
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref8" />
             </InPort>
         </Connection>
         <Connection>
@@ -897,7 +897,7 @@
                 <Processor type="SingleVolumeRaycaster" identifier="SingleVolumeRaycaster" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref3" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
@@ -905,7 +905,7 @@
                 <Processor type="SingleVolumeRaycaster" identifier="SingleVolumeRaycaster" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref9" />
+                <Processor type="CanvasGL" identifier="CanvasGL1" reference="ref9" />
             </InPort>
         </Connection>
         <Connection>
@@ -913,7 +913,7 @@
                 <Processor type="SingleVolumeRaycaster" identifier="SingleVolumeRaycaster" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL2" reference="ref10" />
+                <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref10" />
             </InPort>
         </Connection>
     </Connections>

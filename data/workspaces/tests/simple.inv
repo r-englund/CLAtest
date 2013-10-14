@@ -18,7 +18,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-425" />
@@ -47,7 +47,7 @@
                 <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref1" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>

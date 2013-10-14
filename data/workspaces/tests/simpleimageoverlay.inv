@@ -18,7 +18,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref0">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-425" />
@@ -119,7 +119,7 @@
                 <Processor type="ImageOverlay" identifier="ImageOverlay1" reference="ref3" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref0" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>

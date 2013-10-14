@@ -43,7 +43,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref1">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-725" y="-400" />
@@ -65,7 +65,7 @@
                 <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref0">
+        <Processor type="CanvasGL" identifier="CanvasGL1" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-400" />
@@ -287,7 +287,7 @@
                 <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref1" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
@@ -295,7 +295,7 @@
                 <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref0" />
+                <Processor type="CanvasGL" identifier="CanvasGL1" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>

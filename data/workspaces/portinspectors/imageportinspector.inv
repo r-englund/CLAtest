@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL">
+        <Processor type="CanvasGL" identifier="CanvasGL">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-450" y="-450" />

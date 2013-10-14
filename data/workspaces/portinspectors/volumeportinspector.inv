@@ -331,7 +331,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" id="ref3">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-350" />
@@ -385,7 +385,7 @@
                 <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL" reference="ref3" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref3" />
             </InPort>
         </Connection>
     </Connections>

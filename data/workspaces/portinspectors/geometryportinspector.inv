@@ -331,7 +331,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="GeometryRenderProcessorGL" identifier="GeometryRenderProcessorGL" id="ref3">
+        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-550" />
@@ -385,7 +385,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" id="ref1">
+        <Processor type="CanvasGL" identifier="CanvasGL1" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-450" />
@@ -436,10 +436,10 @@
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="GeometryRenderProcessorGL" identifier="GeometryRenderProcessorGL" reference="ref3" />
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref3" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasProcessorGL" identifier="CanvasProcessorGL1" reference="ref1" />
+                <Processor type="CanvasGL" identifier="CanvasGL1" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
