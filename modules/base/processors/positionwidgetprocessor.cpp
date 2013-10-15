@@ -66,7 +66,7 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
     startWorld /= startWorld.w;
     vec4 endWorld = inv*((endWin*2.f)-1.f);
     endWorld /= endWorld.w;
-    modelMatrix_ *= glm::translate(endWorld.xyz()-startWorld.xyz());
+    modelMatrix_ *= glm::translate(vec3(endWorld.x-startWorld.x, endWorld.y-startWorld.y, endWorld.z-startWorld.z));
     invalidate(INVALID_OUTPUT);
 }
 
