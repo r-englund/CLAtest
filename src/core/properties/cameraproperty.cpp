@@ -54,6 +54,14 @@ void CameraProperty::setLookUp(vec3 lookUp) {
     updateViewMatrix();
 }
 
+float CameraProperty::getDistanceFromOrigin() const{
+    return glm::distance(lookFrom_.get(), lookTo_.get());
+}
+
+vec3 CameraProperty::getWorldPosFromWindowCoords(vec3 windowCoords, ivec2 windowSize, mat4 modelMatrix) const{
+    return glm::unProject(windowCoords, viewMatrix_*modelMatrix, projectionMatrix_, ivec4(0,0,windowSize.x, windowSize.y));
+}
+
 void CameraProperty::setProjectionMatrix(float fovy, float aspect, float nearPlane, float farPlane) {
     fovy_.set(fovy);
     aspectRatio_.set(aspect);
@@ -66,15 +74,17 @@ void CameraProperty::updateProjectionMatrix() {
    float nearP = nearPlane_.get();
    float farP = farPlane_.get();
    if(useNearFarDistFromOrigin_.get()){
-        float dist = glm::distance(lookFrom_.get(), lookTo_.get());
+        float dist = getDistanceFromOrigin();
         nearP = glm::max(nearPlane_.getMinValue(), dist-nearP);
         farP += dist;
    }
    projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), nearP, farP);
+   inverseProjectionMatrix_ = glm::inverse(projectionMatrix_);
 }
 
 void CameraProperty::updateViewMatrix() {
    viewMatrix_ = glm::lookAt(lookFrom_.get(), lookTo_.get(), lookUp_.get());
+   inverseViewMatrix_ = glm::inverse(viewMatrix_);
    if(useNearFarDistFromOrigin_.get())
        updateProjectionMatrix();
 }

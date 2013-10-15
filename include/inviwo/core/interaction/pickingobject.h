@@ -19,11 +19,11 @@ public:
     const size_t& getPickingId() const;
     const vec3& getPickingColor() const;
     const DataVec3UINT8::type& getPickingColorAsUINT8() const;
-    const ivec2& getPickingMove() const;
+    const vec2& getPickingMove() const;
 
     void picked() const;
 
-    void setPickingMove(ivec2);
+    void setPickingMove(vec2);
 
     SingleCallBack* getCallbackContainer();
 
@@ -31,7 +31,7 @@ private:
     size_t id_;
     DataVec3UINT8::type colorUINT8_;
     vec3 color_;
-    ivec2 move_;
+    vec2 move_;
     SingleCallBack* onPickedCallback_;
 };
 

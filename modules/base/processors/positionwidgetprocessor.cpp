@@ -56,9 +56,17 @@ void PositionWidgetProcessor::deinitialize() {
 }
 
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
-    ivec2 move = widgetPickingObject_->getPickingMove();
-    LogInfo("Picking Object with ID : " << widgetPickingObject_->getPickingId() << " moved with 2D vector (" << move.x << "," << move.y << ")");
-    modelMatrix_ = glm::translate(vec3(0.01,0.0,0.0));
+    vec2 move = widgetPickingObject_->getPickingMove();
+    //LogInfo("Picking Object with ID : " << widgetPickingObject_->getPickingId() << " moved with 2D vector (" << move.x << "," << move.y << ")");
+    mat4 inv = camera_.inverseProjectionMatrix()*camera_.inverseViewMatrix();
+    float depth = camera_.getDistanceFromOrigin();
+    vec4 startWin = vec4(0.5f, 0.5f, depth, 1.f);
+    vec4 endWin = startWin + vec4(move.x, move.y, 0.f, 0.f); 
+    vec4 startWorld = inv*((startWin*2.f)-1.f);
+    startWorld /= startWorld.w;
+    vec4 endWorld = inv*((endWin*2.f)-1.f);
+    endWorld /= endWorld.w;
+    modelMatrix_ *= glm::translate(endWorld.xyz()-startWorld.xyz());
     invalidate(INVALID_OUTPUT);
 }
 

@@ -29,7 +29,7 @@ public:
         currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
         if(currentPickObj_){
             setPickableSelected(true);
-            currentPickObj_->setPickingMove(ivec2(0,0));
+            currentPickObj_->setPickingMove(vec2(0.f,0.f));
             currentPickObj_->picked();
             return true;
         }
@@ -49,8 +49,9 @@ public:
     inline void setPickingSource(const Image* src) { src_ = src; }
 
 protected:
-    inline ivec2 pixelMoveVector(const uvec2& previous, const uvec2& current){
-        return ivec2(static_cast<int>(current.x-previous.x), static_cast<int>(current.y-previous.y));
+    inline vec2 pixelMoveVector(const uvec2& previous, const uvec2& current){
+        return vec2(static_cast<float>(current.x-previous.x)/static_cast<float>(src_->getDimension().x), 
+            static_cast<int>(current.y-previous.y)/static_cast<float>(src_->getDimension().y));
     }
 
 private:

@@ -27,10 +27,16 @@ public:
     vec3 getLookUp() const { return lookUp_.get(); }
     void setLookUp(vec3 lookUp);
 
+    float getDistanceFromOrigin() const;
+    vec3 getWorldPosFromWindowCoords(vec3 windowCoords, ivec2 windowSize, mat4 modelMatrix = mat4(1.f)) const;
+
     void updateViewMatrix();
     void updateProjectionMatrix();
     mat4 viewMatrix() const { return viewMatrix_; }
     mat4 projectionMatrix() const { return projectionMatrix_; }
+    mat4 inverseViewMatrix() const { return inverseViewMatrix_; }
+    mat4 inverseProjectionMatrix() const { return inverseProjectionMatrix_; }
+
     void setProjectionMatrix(float fovy, float aspect, float farPlane, float nearPlane);
 
     void invokeEvent(Event* event);
@@ -52,6 +58,8 @@ private:
 
     mat4 viewMatrix_;
     mat4 projectionMatrix_;
+    mat4 inverseViewMatrix_;
+    mat4 inverseProjectionMatrix_;
 };
 
 } // namespace
