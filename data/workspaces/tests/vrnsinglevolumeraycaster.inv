@@ -205,18 +205,6 @@
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
                 </Property>
             </Properties>
         </Processor>
@@ -285,18 +273,6 @@
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
                 </Property>
                 <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification">
                     <value content="transfer-function" />
@@ -431,18 +407,6 @@
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
                 </Property>
                 <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification">
                     <value content="none" />
@@ -703,18 +667,6 @@
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
                 </Property>
             </Properties>
         </Processor>
@@ -757,18 +709,6 @@
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.0001" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="100" />
-                        <minvalue content="0" />
-                        <maxvalue content="1000" />
-                        <increment content="0.1" />
-                    </farPlane>
                 </Property>
             </Properties>
         </Processor>
