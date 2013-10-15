@@ -113,7 +113,7 @@ void ImageGL::createColorLayer(){
 }
 
 void ImageGL::createDepthLayer(){
-    depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT32F, GL_FLOAT, GL_NEAREST);
+    depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_NEAREST);
     depthTexture_->upload(NULL);
     depthConstTexture_ = depthTexture_;
 }

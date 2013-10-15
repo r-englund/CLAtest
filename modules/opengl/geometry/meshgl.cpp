@@ -131,9 +131,11 @@ DataRepresentation* MeshRAM2GLConverter::createFrom(const DataRepresentation* so
         MeshGL* meshGL = new MeshGL(meshRAM->getAttributesInfo());
         for (size_t i=0; i < meshRAM->getNumberOfAttributes(); ++i) {
             meshGL->createArrayBuffer(meshRAM->getAttributes(i));
+            LGL_ERROR;
         }
         for (size_t i=0; i < meshRAM->getNumberOfIndicies(); ++i) {
             meshGL->createElementBuffer(meshRAM->getIndicies(i), meshRAM->getIndexAttributesInfo(i));
+            LGL_ERROR;
         }
         return meshGL;
     }

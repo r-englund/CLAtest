@@ -6,6 +6,7 @@ AttributeBufferGL::AttributeBufferGL()
 {
     //Generate a new buffer
     glGenBuffers(1, &id_);
+    LGL_ERROR_SUPPRESS;
 }
 
 AttributeBufferGL::~AttributeBufferGL() {

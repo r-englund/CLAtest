@@ -11,10 +11,9 @@ Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filt
     glGenTextures(1, &id_);
     numChannels_ = glFormat.channels;
     byteSize_ = numChannels_*glFormat.typeSize;
-    LGL_ERROR;
     glGenBuffers(1, &pboBack_);
+    LGL_ERROR_SUPPRESS;
     setupAsyncReadBackPBO();
-    LGL_ERROR;
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
@@ -26,10 +25,9 @@ Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenu
     glGenTextures(1, &id_);
     setNChannels();
     setSizeInBytes();
-    LGL_ERROR;
     glGenBuffers(1, &pboBack_);
+    LGL_ERROR_SUPPRESS;
     setupAsyncReadBackPBO();
-    LGL_ERROR;
 }
 
 Texture2D::~Texture2D() {
@@ -146,6 +144,7 @@ void Texture2D::setupAsyncReadBackPBO(){
     glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
     unbind();
     dataInReadBackPBO_ = false;
+    LGL_ERROR;
 }
 
 void Texture2D::setNChannels(){
