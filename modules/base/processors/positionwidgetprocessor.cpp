@@ -1,4 +1,5 @@
 #include "positionwidgetprocessor.h"
+#include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/datastructures/geometry/basemeshcreator.h>
 
@@ -26,13 +27,16 @@ PositionWidgetProcessor::PositionWidgetProcessor()
 
     addProperty(position_);
     addProperty(camera_);
+    addInteractionHandler(new Trackball(&camera_));
 
     widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
 
-    vec3 posLLF = vec3(0.5f);
-    vec3 posURB = vec3(1.5f);
+    vec3 posLLF = vec3(0.0f);
+    vec3 posURB = vec3(0.5f);
 
     widget_ = new Geometry(BaseMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(1.0f), vec4(1.0f)));
+
+    modelMatrix_ = glm::mat4(1.0);
 }
 
 PositionWidgetProcessor::~PositionWidgetProcessor() {}
@@ -54,6 +58,8 @@ void PositionWidgetProcessor::deinitialize() {
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
     ivec2 move = widgetPickingObject_->getPickingMove();
     LogInfo("Picking Object with ID : " << widgetPickingObject_->getPickingId() << " moved with 2D vector (" << move.x << "," << move.y << ")");
+    modelMatrix_ = glm::translate(vec3(0.01,0.0,0.0));
+    invalidate(INVALID_OUTPUT);
 }
 
 void PositionWidgetProcessor::process() {    
@@ -64,12 +70,21 @@ void PositionWidgetProcessor::process() {
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
+    glLoadIdentity();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
+    glLoadIdentity();
+    glLoadMatrixf(glm::value_ptr(modelMatrix_*camera_.viewMatrix()));
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_ALWAYS);
+    //glDepthRangef(0.0001f, 100.f);
+    //glDepthRange(0.0, 1.0);
 
     widget_->getRepresentation<GeometryGL>()->render();
+
+    glDepthFunc(GL_LESS);
 
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();

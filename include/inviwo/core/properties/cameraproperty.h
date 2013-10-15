@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/compositeproperty.h>
@@ -45,6 +46,7 @@ private:
     FloatVec3Property lookUp_;
     FloatProperty fovy_;
     FloatProperty aspectRatio_;
+    BoolProperty useNearFarDistFromOrigin_;
     FloatProperty farPlane_;
     FloatProperty nearPlane_;
 

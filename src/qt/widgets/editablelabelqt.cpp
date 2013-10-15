@@ -2,7 +2,7 @@
 
 namespace inviwo{
 
-    EditableLabelQt::EditableLabelQt(std::string text){
+EditableLabelQt::EditableLabelQt(std::string text){
     text_ = text;
     generateWidget();
 }
@@ -59,8 +59,8 @@ void EditableLabelQt::showContextMenu( const QPoint& pos ){
 }
 
 std::string EditableLabelQt::shortenText(){
-    if (text_.length()>20) {
-        std::string shortText = text_.substr(0,10)+"..."+text_.substr(text_.length()-7,7);
+    if (text_.length()>25) {
+        std::string shortText = text_.substr(0,15)+"..."+text_.substr(text_.length()-7,7);
         label_->setToolTip(QString::fromStdString(text_));
         return shortText;
     }else{

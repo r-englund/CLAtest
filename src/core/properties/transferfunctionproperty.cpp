@@ -10,8 +10,8 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
 	std::stringstream stream;
     s.serialize("size", (int)value_.getNumberOfDataPoints());
-    //zoomProperty_.serialize(s);
-    //maskProperty_.serialize(s);
+    s.serialize("zoom_", zoomProperty_);
+    s.serialize("mask_", maskProperty_);
     //s.serialize("maskMin", (int)value_.getMaskMin());
     //s.serialize("maskMax", (int)value_.getMaskMax());
 
@@ -38,8 +38,7 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 	std::stringstream stream;
 
 	d.deserialize("size", size);
-    //zoomProperty_.deserialize(d);
-    //maskProperty_.deserialize(d);
+    d.deserialize("zoom_", zoomProperty_);
     //d.deserialize("maskMin", maskMin);
     //d.deserialize("maskMax", maskMax);
 

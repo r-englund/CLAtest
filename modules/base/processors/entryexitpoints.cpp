@@ -41,10 +41,15 @@ void EntryExitPoints::process() {
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
+    glLoadIdentity();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
+    glLoadIdentity();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_ALWAYS);
 
     // generate entry points
     activateAndClearTarget(entryPort_);
@@ -57,6 +62,8 @@ void EntryExitPoints::process() {
     glCullFace(GL_FRONT);
     geom->render();
     deactivateCurrentTarget();
+
+    glDepthFunc(GL_LESS);
 
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();

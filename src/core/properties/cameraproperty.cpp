@@ -12,8 +12,9 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     lookUp_("lookUp", "Look up", lookUp, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel),
     fovy_("fov", "FOV", 60.0f, 30.0f, 360.0f, 0.1f, invalidationLevel),
     aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 1.0f, 0.1f, invalidationLevel),
-    nearPlane_("near", "Near Plane", 0.0001f, 0.0f, 1000.0f, 0.1f, invalidationLevel),
-    farPlane_("far", "Far Plane", 100.0f, 0.0f, 1000.0f, 0.1f, invalidationLevel)
+    useNearFarDistFromOrigin_("useNearFarDistFromOrigin", "Near/Far Plane Relative to Distance from Origin", true),
+    nearPlane_("near", "Near Plane", 2.0f, 0.001f, 10.f, 0.001f, invalidationLevel),
+    farPlane_("far", "Far Plane", 10.0f, 0.1f, 100.0f, 0.1f, invalidationLevel)
 {
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
     lookTo_.onChange(this, &CameraProperty::updateViewMatrix);
@@ -28,6 +29,7 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     farPlane_.onChange(this, &CameraProperty::updateProjectionMatrix);
     addProperty(fovy_);
     addProperty(aspectRatio_);
+    addProperty(useNearFarDistFromOrigin_);
     addProperty(nearPlane_);
     addProperty(farPlane_);
 
@@ -61,11 +63,20 @@ void CameraProperty::setProjectionMatrix(float fovy, float aspect, float nearPla
 }
 
 void CameraProperty::updateProjectionMatrix() {
-   projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), nearPlane_.get(), farPlane_.get());
+   float nearP = nearPlane_.get();
+   float farP = farPlane_.get();
+   if(useNearFarDistFromOrigin_.get()){
+        float dist = glm::distance(lookFrom_.get(), lookTo_.get());
+        nearP = glm::max(nearPlane_.getMinValue(), dist-nearP);
+        farP += dist;
+   }
+   projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), nearP, farP);
 }
 
 void CameraProperty::updateViewMatrix() {
    viewMatrix_ = glm::lookAt(lookFrom_.get(), lookTo_.get(), lookUp_.get());
+   if(useNearFarDistFromOrigin_.get())
+       updateProjectionMatrix();
 }
 
 void CameraProperty::invalidate() {
@@ -91,6 +102,7 @@ void CameraProperty::serialize(IvwSerializer& s) const {
     s.serialize("lookUp", lookUp_);
     s.serialize("fovy", fovy_);
     s.serialize("aspectRatio", aspectRatio_);
+    s.serialize("useNearFarDistFromOrigin", useNearFarDistFromOrigin_);
     s.serialize("nearPlane", nearPlane_);
     s.serialize("farPlane", farPlane_);
 }
@@ -102,6 +114,7 @@ void CameraProperty::deserialize(IvwDeserializer& d) {
     d.deserialize("lookUp", lookUp_);
     d.deserialize("fovy", fovy_);
     d.deserialize("aspectRatio", aspectRatio_);
+    d.deserialize("useNearFarDistFromOrigin", useNearFarDistFromOrigin_);
     d.deserialize("nearPlane", nearPlane_);
     d.deserialize("farPlane", farPlane_);
     updateViewMatrix();

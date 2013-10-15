@@ -5,10 +5,13 @@
 #include "modules/mod_gradients.frag"
 #include "modules/mod_shading.frag"
 #include "modules/mod_compositing.frag"
+#include "modules/mod_depth.frag"
 
-uniform TEXTURE_TYPE entryTex_;
+uniform TEXTURE_TYPE entryColorTex_;
+uniform TEXTURE_TYPE entryDepthTex_;
 uniform TEXTURE_PARAMETERS entryParameters_;
-uniform TEXTURE_TYPE exitTex_;
+uniform TEXTURE_TYPE exitColorTex_;
+uniform TEXTURE_TYPE exitDepthTex_;
 uniform TEXTURE_PARAMETERS exitParameters_;
 
 uniform VOLUME_TYPE volume_;
@@ -18,9 +21,9 @@ uniform vec2 dimension_;
 uniform vec3 volumeDimension_;
 
 // set threshold for early ray termination
-#define ERT_THRESHOLD 1.0
+#define ERT_THRESHOLD 0.95
 
-vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
+vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 result = vec4(0.0);
 
     float t = 0.0;
@@ -30,7 +33,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
     rayDirection = normalize(rayDirection);
     float tDepth = -1.0;
 
-    RC_BEGIN_LOOP {
+    while (t < tEnd) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getVoxel(volume_, volumeParameters_, samplePos);
         voxel.xyz = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
@@ -44,17 +47,24 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint) {
         // early ray termination
         if (result.a > ERT_THRESHOLD) t = tEnd;
         else t += tIncr;
-    } RC_END_LOOP;
+    }
 
-    gl_FragDepth = max(0.0, tDepth);
+    if(tDepth != -1.0)
+        tDepth = calculateDepthValue(tDepth/tEnd, texture2D(entryDepthTex_, texCoords).z, texture2D(exitDepthTex_, texCoords).z);
+    else
+        tDepth = 1.0;
+
+    gl_FragDepth = tDepth;
 
     return result;
 }
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-    vec3 entryPoint = texture2D(entryTex_, texCoords).rgb;
-    vec3 exitPoint = texture2D(exitTex_, texCoords).rgb;
-    vec4 color = rayTraversal(entryPoint, exitPoint);
+    vec3 entryPoint = texture2D(entryColorTex_, texCoords).rgb;
+    vec3 exitPoint = texture2D(exitColorTex_, texCoords).rgb;
+    if(entryPoint == exitPoint)
+        discard;
+    vec4 color = rayTraversal(entryPoint, exitPoint, texCoords);
     FragData0 = color;
 }

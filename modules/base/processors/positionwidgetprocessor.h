@@ -40,6 +40,8 @@ private:
 
     const PickingObject* widgetPickingObject_;
 
+    mat4 modelMatrix_;
+
     Geometry* widget_;
 
     Shader* program_;

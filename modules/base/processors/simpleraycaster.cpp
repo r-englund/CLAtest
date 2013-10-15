@@ -34,9 +34,9 @@ void SimpleRaycaster::process() {
     TextureUnit transFuncUnit;
     bindTransferFunction(transferFunction_.get(), transFuncUnit.getEnum());
 
-    TextureUnit entryUnit, exitUnit;
-    bindColorTexture(entryPort_, entryUnit.getEnum());
-    bindColorTexture(exitPort_, exitUnit.getEnum());
+    TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
+    bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
+    bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
 
     TextureUnit volUnit;
     bindVolume(volumePort_, volUnit.getEnum());
@@ -49,9 +49,11 @@ void SimpleRaycaster::process() {
 
     raycastPrg_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
 
-    raycastPrg_->setUniform("entryTex_", entryUnit.getUnitNumber());
+    raycastPrg_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
+    raycastPrg_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
     setTextureParameters(entryPort_, raycastPrg_, "entryParameters_");
-    raycastPrg_->setUniform("exitTex_", exitUnit.getUnitNumber());
+    raycastPrg_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
+    raycastPrg_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
     setTextureParameters(exitPort_, raycastPrg_, "exitParameters_");
 
     raycastPrg_->setUniform("volume_", volUnit.getUnitNumber());
