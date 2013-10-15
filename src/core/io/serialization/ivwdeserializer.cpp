@@ -63,14 +63,18 @@ void IvwDeserializer::deserialize(const std::string &key, IvwSerializable &sObj)
     }
     catch (TxException& ) {
         try {
+            //do not throw anymore exceptions, return silently if key not found
             keyNode = 0;
             std::string rootKey("");
-            keyNode = rootElement_->FirstChildElement();
-            rootKey = keyNode->Value();
-            while(rootKey!=key) {      
-                keyNode = keyNode->NextSiblingElement();
+            keyNode = rootElement_->FirstChildElement(false);
+            if (keyNode) {
                 rootKey = keyNode->Value();
-            };
+                while(rootKey!=key) {      
+                    keyNode = keyNode->NextSiblingElement(false);
+                    if (!keyNode) break;
+                    rootKey = keyNode->Value(); 
+                };
+            }
         }
         catch (TxException& ) {
             keyNode = 0;

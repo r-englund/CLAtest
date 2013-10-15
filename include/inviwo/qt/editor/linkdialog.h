@@ -206,6 +206,7 @@ public:
 
     void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
     void removeCurrentPropertyLinks();
+    void removeAllPropertyLinks();
     void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);    
 
 protected:
@@ -267,6 +268,7 @@ private slots:
    void clickedOkayButton();
    void clickedCancelButton();
    void clickedAutoLinkPushButton();
+   void clickedDeleteAllLinksPushButton();
 
 private:   
     void initDialog();
@@ -275,6 +277,7 @@ private:
     LinkDialogGraphicsScene* linkDialogScene_;
     QDialogButtonBox* okayCancelbuttonBox_;
     QPushButton* autoLinkPushButton_;  
+    QPushButton* deleteAllLinkPushButton_;  
     Processor* src_;
     Processor* dest_;
 };

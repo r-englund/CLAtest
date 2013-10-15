@@ -685,14 +685,9 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 
         endProperty_ = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
         if (endProperty_ && (endProperty_!=startProperty_)) {
-            LinkDialogPropertyGraphicsItem* start = startProperty_;
-            LinkDialogPropertyGraphicsItem* end = endProperty_;
-            startProperty_ = 0;
-            endProperty_ = 0;
-            addPropertyLink(start, end);
-            DialogConnectionGraphicsItem* propLink = getConnectionGraphicsItem(start, end);
-            if (propLink)
-                addConnectionToCurrentList(propLink);
+            Property* sProp = startProperty_->getGraphicsItemData();
+            Property* eProp = endProperty_->getGraphicsItemData();
+            addPropertyLink(sProp, eProp, true);
         }
         startProperty_ = 0;
         endProperty_ = 0;
@@ -771,6 +766,17 @@ void LinkDialogGraphicsScene::removeCurrentPropertyLinks() {
     std::vector<DialogConnectionGraphicsItem*> tempList = currentConnectionGraphicsItems_;
 
     foreach (propertyLink, currentConnectionGraphicsItems_)
+        removeConnectionFromCurrentList(propertyLink);
+
+    foreach (propertyLink, tempList)
+        removePropertyLink(propertyLink);
+}
+
+void LinkDialogGraphicsScene::removeAllPropertyLinks() {
+    DialogConnectionGraphicsItem* propertyLink=0;
+    std::vector<DialogConnectionGraphicsItem*> tempList = connectionGraphicsItems_;
+
+    foreach (propertyLink, connectionGraphicsItems_)
         removeConnectionFromCurrentList(propertyLink);
 
     foreach (propertyLink, tempList)
@@ -892,7 +898,8 @@ void LinkDialogGraphicsScene::switchPropertyLinkDirection(DialogConnectionGraphi
 }
 
 void LinkDialogGraphicsScene::addConnectionToCurrentList(DialogConnectionGraphicsItem* propertyLink) {
-    currentConnectionGraphicsItems_.push_back(propertyLink);    
+    if (std::find(currentConnectionGraphicsItems_.begin(), currentConnectionGraphicsItems_.end(), propertyLink)==currentConnectionGraphicsItems_.end())
+        currentConnectionGraphicsItems_.push_back(propertyLink);
 }
 
 void LinkDialogGraphicsScene::removeConnectionFromCurrentList(DialogConnectionGraphicsItem* propertyLink) {
@@ -1116,12 +1123,15 @@ void LinkDialog::initDialog() {
     QHBoxLayout* commonButtonLayout = new QHBoxLayout;
     
     //auto link button
-    QHBoxLayout* autoLinkPushButtonLayout = new QHBoxLayout;
+    QHBoxLayout* autoLinkPushButtonLayout = new QHBoxLayout;    
     autoLinkPushButtonLayout->setAlignment(Qt::AlignLeft);
     //qt documentation
     autoLinkPushButton_ = new QPushButton("AutoLink", this);
     connect(autoLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedAutoLinkPushButton()));    
     autoLinkPushButtonLayout->addWidget(autoLinkPushButton_);
+    deleteAllLinkPushButton_ = new QPushButton("Delete All", this);
+    connect(deleteAllLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedDeleteAllLinksPushButton()));
+    autoLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_);    
     commonButtonLayout->addLayout(autoLinkPushButtonLayout);
 
     //okay cancel button
@@ -1152,13 +1162,61 @@ void LinkDialog::clickedAutoLinkPushButton() {
     std::vector<Property*> srcProperties = src_->getProperties();
     std::vector<Property*> dstProperties = dest_->getProperties();
 
+    if (src_->getClassName() == dest_->getClassName()) {
+        //processor of same type can be linked one to one
+        if (srcProperties.size() == dstProperties.size()) {
+            for (size_t i=0; i<srcProperties.size(); i++)
+                if (*srcProperties[i] == *dstProperties[i])
+                    linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[i], true);            
+            return;
+        }
+    }
+
     for (size_t i=0; i<srcProperties.size(); i++) {
         for (size_t j=0; j<dstProperties.size(); j++) {
-            if (*srcProperties[i] == *dstProperties[j]) {
-                linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[j], true);
+            //does properties have same class names
+            if (*srcProperties[i] == *dstProperties[j]) {                
+                bool canLink = false;
+                //does properties have same identifiers
+                if (srcProperties[i]->getIdentifier() == dstProperties[j]->getIdentifier()) {                    
+                    canLink = true;
+                }
+                else {
+
+                    //conversion to lower case
+                    std::string srcIdentifier = srcProperties[i]->getIdentifier();
+                    std::transform(srcIdentifier.begin(), srcIdentifier.end(), srcIdentifier.begin(), tolower);
+
+                    std::string dstIdentifier = dstProperties[j]->getIdentifier();
+                    std::transform(dstIdentifier.begin(), dstIdentifier.end(), dstIdentifier.begin(), tolower);
+
+                    std::string srcClassName = srcProperties[i]->getClassName();
+                    std::transform(srcClassName.begin(), srcClassName.end(), srcClassName.begin(), tolower);
+
+                    std::string dstClassName = dstProperties[j]->getClassName();
+                    std::transform(dstClassName.begin(), dstClassName.end(), dstClassName.begin(), tolower);
+
+                    //does class name occurs in identifiers
+                    if (srcIdentifier.find(dstClassName)!=std::string::npos &&
+                        dstIdentifier.find(srcClassName)!=std::string::npos)
+                        canLink = true;
+
+                    //does identifier occur in other identifier
+                    if (srcIdentifier.find(dstIdentifier)!=std::string::npos ||
+                        dstIdentifier.find(srcIdentifier)!=std::string::npos)
+                        canLink = true;
+                }   
+                    
+                if (canLink)
+                    linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[j], true);
+
             }            
         }
     }
+}
+
+void LinkDialog::clickedDeleteAllLinksPushButton() { 
+    linkDialogScene_->removeAllPropertyLinks();
 }
 
 /*---------------------------------------------------------------------------------------*/
