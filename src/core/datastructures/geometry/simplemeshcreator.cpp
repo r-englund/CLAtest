@@ -1,10 +1,10 @@
-#include <inviwo/core/datastructures/geometry/basemeshcreator.h>
+#include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
 
-BaseMeshRAM* BaseMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 texCoordLlf, 
+SimpleMeshRAM* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 texCoordLlf, 
                                                vec3 texCoordUrb, vec4 colorLlf, vec4 colorUrb) {
-    BaseMeshRAM* recPrism = new BaseMeshRAM();
+    SimpleMeshRAM* recPrism = new SimpleMeshRAM();
     recPrism->initialize();
 
     //8 corners
@@ -37,11 +37,11 @@ BaseMeshRAM* BaseMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 te
     return recPrism;
 }
 
-BaseMeshRAM* BaseMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, 	
+SimpleMeshRAM* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, 	
 											 glm::vec3 tex, glm::vec3 t1, glm::vec3 t2, glm::vec3 t3, 	
 											 glm::vec4 col, glm::vec4 c1, glm::vec4 c2, glm::vec4 c3){
    
-	BaseMeshRAM* ppd = new BaseMeshRAM();
+	SimpleMeshRAM* ppd = new SimpleMeshRAM();
     ppd->initialize();
 
 	//8 corners
@@ -76,8 +76,8 @@ BaseMeshRAM* BaseMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::v
 
 }
 
-BaseMeshRAM* BaseMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
-	BaseMeshRAM* rec = new BaseMeshRAM();
+SimpleMeshRAM* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
+	SimpleMeshRAM* rec = new SimpleMeshRAM();
 	rec->initialize();
 
 	vec3 texCoordLl(0,0,0);

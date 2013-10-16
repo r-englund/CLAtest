@@ -1,5 +1,5 @@
 #include "cubeproxygeometry.h"
-#include <inviwo/core/datastructures/geometry/basemeshcreator.h>
+#include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
 
@@ -71,7 +71,7 @@ void CubeProxyGeometry::process() {
     }
 
     //Create Rectangular Prism and set it to the outport
-    outport_.setData(new Geometry(BaseMeshCreator::rectangularPrism(posLLF, posURB, texLLF, texURB, colLLF, colURB)));
+    outport_.setData(new Geometry(SimpleMeshCreator::rectangularPrism(posLLF, posURB, texLLF, texURB, colLLF, colURB)));
 }
 
 } // namespace

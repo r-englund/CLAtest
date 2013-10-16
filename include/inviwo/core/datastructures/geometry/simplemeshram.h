@@ -1,16 +1,16 @@
-#ifndef IVW_BASEMESHRAM_H
-#define IVW_BASEMESHRAM_H
+#ifndef IVW_SIMPLEMESHRAM_H
+#define IVW_SIMPLEMESHRAM_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/geometry/meshram.h>
 
 namespace inviwo {
 
-class IVW_CORE_API BaseMeshRAM : public MeshRAM {
+class IVW_CORE_API SimpleMeshRAM : public MeshRAM {
 
 public:
-    BaseMeshRAM(RenderType rt = GeometryRepresentation::POINTS, ConnectivityType ct = GeometryRepresentation::NONE);
-    virtual ~BaseMeshRAM();
+    SimpleMeshRAM(RenderType rt = GeometryRepresentation::POINTS, ConnectivityType ct = GeometryRepresentation::NONE);
+    virtual ~SimpleMeshRAM();
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
@@ -32,4 +32,4 @@ protected:
 
 } // namespace
 
-#endif // IVW_BASEMESHRAM_H
+#endif // IVW_SIMPLEMESHRAM_H

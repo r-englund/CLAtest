@@ -6,7 +6,7 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
-#include <inviwo/core/datastructures/geometry/basemeshram.h>
+#include <inviwo/core/datastructures/geometry/simplemeshram.h>
 #include <inviwo/core/datastructures/geometry/plane.h>
 
 namespace inviwo {
@@ -24,7 +24,7 @@ public:
 protected:
 	virtual void process();
 
-	GeometryRAM* clipGeometry(GeometryRAM*,BaseMeshRAM*);
+	GeometryRAM* clipGeometry(GeometryRAM*,SimpleMeshRAM*);
 	GeometryRAM* clipGeometryAgainstPlane(GeometryRAM*,Plane&);
 	float degreeToRad(float);
 

@@ -1,5 +1,5 @@
 #include "parallelepipedproxygeometry.h"
-#include <inviwo/core/datastructures/geometry/basemeshcreator.h>
+#include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
 
@@ -92,7 +92,7 @@ namespace inviwo {
 
 		//Create parallelepiped and set it to the outport
 		outport_.setData(new Geometry(
-			BaseMeshCreator::parallelepiped(pos, p1, p2, p3, 	
+			SimpleMeshCreator::parallelepiped(pos, p1, p2, p3, 	
 											tex, t1, t2, t3, 	
 											col, c1, c2, c3)));										
 	}

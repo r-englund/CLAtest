@@ -1,6 +1,6 @@
 #include "meshclipping.h"
 #include <inviwo/core/datastructures/geometry/edge.h>
-#include <inviwo/core/datastructures/geometry/basemeshcreator.h>
+#include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
 
@@ -98,11 +98,11 @@ std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
 	return result;
 }
 
-GeometryRAM* MeshClipping::clipGeometry(GeometryRAM* in, BaseMeshRAM* clip) {
+GeometryRAM* MeshClipping::clipGeometry(GeometryRAM* in, SimpleMeshRAM* clip) {
 	// STUB
 	// For clipping against qudrilateral (finite plane)
-	if(!dynamic_cast<BaseMeshRAM*>(in)) {
-		std::cerr << "Can only clip a BaseMeshRAM";
+	if(!dynamic_cast<SimpleMeshRAM*>(in)) {
+		std::cerr << "Can only clip a SimpleMeshRAM";
 		return NULL;
 	}
 	return in;
@@ -113,13 +113,13 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 	if(!clippingEnabled_.get())
 		return in;
 	
-	if(!dynamic_cast<BaseMeshRAM*>(in)) {
-		std::cerr << "Can only clip a BaseMeshRAM*";
+	if(!dynamic_cast<SimpleMeshRAM*>(in)) {
+		std::cerr << "Can only clip a SimpleMeshRAM*";
 		return NULL;
 	}
 
 	//std::cout << "Casting inputMesh.\n";
-	BaseMeshRAM *inputMesh = dynamic_cast<BaseMeshRAM*>(in);
+	SimpleMeshRAM *inputMesh = dynamic_cast<SimpleMeshRAM*>(in);
 
 	/* ---TODO / bugs
 		-	Create correct outputEdgeList while running clipping algorithm, currently edges between clipped verts
@@ -296,9 +296,9 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 		std::cout << "Edge, " << i << " = " << outputEdgeList.at(i).v1 << "->" << outputEdgeList.at(i).v2 << std::endl;
 	}*/
 
-	// Bygg ny BaseMeshRAM här från outputList-vektor
+	// Bygg ny SimpleMeshRAM här från outputList-vektor
 	//std::cout << "Buildning new mesh from clipped vertices.\n";
-	BaseMeshRAM* outputMesh = new BaseMeshRAM();
+	SimpleMeshRAM* outputMesh = new SimpleMeshRAM();
 	outputMesh->initialize();
 
 	for(size_t i=0; i<outputList.size(); ++i) {

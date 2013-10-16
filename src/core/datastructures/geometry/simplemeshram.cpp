@@ -1,17 +1,17 @@
-#include <inviwo/core/datastructures/geometry/basemeshram.h>
+#include <inviwo/core/datastructures/geometry/simplemeshram.h>
 
 namespace inviwo {
 
-BaseMeshRAM::BaseMeshRAM(RenderType rt, ConnectivityType ct)
+SimpleMeshRAM::SimpleMeshRAM(RenderType rt, ConnectivityType ct)
 : MeshRAM(rt, ct)
 {
 }
 
-BaseMeshRAM::~BaseMeshRAM() {
+SimpleMeshRAM::~SimpleMeshRAM() {
     deinitialize();
 }
 
-void BaseMeshRAM::initialize() {
+void SimpleMeshRAM::initialize() {
     vertexPositions_ = new Position3dAttributes();
     addAttribute(vertexPositions_);
 
@@ -25,29 +25,29 @@ void BaseMeshRAM::initialize() {
     addIndicies(MeshRAM::AttributesInfo(), indices_);
 }
 
-void BaseMeshRAM::deinitialize() {}
+void SimpleMeshRAM::deinitialize() {}
 
-void BaseMeshRAM::render() const {}
+void SimpleMeshRAM::render() const {}
 
-void BaseMeshRAM::addVertex(vec3 pos, vec3 texCoord, vec4 color){
+void SimpleMeshRAM::addVertex(vec3 pos, vec3 texCoord, vec4 color){
     vertexPositions_->add(pos);
     vertexTexCoords_->add(texCoord);
     vertexColors_->add(color);
 }
 
-void BaseMeshRAM::addIndex(unsigned int idx){
+void SimpleMeshRAM::addIndex(unsigned int idx){
     indices_->add(idx);
 }
 
-void BaseMeshRAM::setIndicesInfo(RenderType rt, ConnectivityType ct){
+void SimpleMeshRAM::setIndicesInfo(RenderType rt, ConnectivityType ct){
     indexAttributes_[0].first = MeshRAM::AttributesInfo(rt, ct);
 }
 
-Position3dAttributes* BaseMeshRAM::getVertexList() {
+Position3dAttributes* SimpleMeshRAM::getVertexList() {
 	return this->vertexPositions_;
 }
 
-IndexAttributes* BaseMeshRAM::getIndexList() {
+IndexAttributes* SimpleMeshRAM::getIndexList() {
 	return this->indices_;
 }
 

@@ -1,7 +1,7 @@
 #include "positionwidgetprocessor.h"
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/interaction/pickingmanager.h>
-#include <inviwo/core/datastructures/geometry/basemeshcreator.h>
+#include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
 
@@ -14,7 +14,7 @@ PositionWidgetProcessor::PositionWidgetProcessor()
       inport_("inport"),
       outport_("outport", COLOR_DEPTH_PICKING),
       widgetType_("widgetType", "Widget Type"),
-      position_("position", "Position", vec3(0.0f), vec3(-1.f), vec3(1.f)),
+      position_("position", "Position", vec3(0.0f), vec3(-100.f), vec3(100.f)),
       camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
     addPort(inport_);
@@ -26,6 +26,7 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     addProperty(widgetType_);
 
     addProperty(position_);
+    position_.setVisible(false);
     addProperty(camera_);
     addInteractionHandler(new Trackball(&camera_));
 
@@ -34,10 +35,7 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     vec3 posLLF = vec3(0.0f);
     vec3 posURB = vec3(1.0f);
 
-    widget_ = new Geometry(BaseMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f)));
-
-    modelTranslation_ = vec3(0.f);
-    modelMatrix_ = mat4(1.0);
+    widget_ = new Geometry(SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f)));
 }
 
 PositionWidgetProcessor::~PositionWidgetProcessor() {}
@@ -67,8 +65,7 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
     vec3 endNdc = vec3((2.f*(pos.x+move.x))-1.f, (2.f*(pos.y+move.y))-1.f, depth);
     vec3 startWorld = camera_.getWorldPosFromNormalizedDeviceCoords(startNdc);
     vec3 endWorld = camera_.getWorldPosFromNormalizedDeviceCoords(endNdc);
-    modelTranslation_ += (endWorld-startWorld);
-    modelMatrix_ = glm::translate(modelTranslation_);
+    position_.set(position_.get() + (endWorld-startWorld));
     invalidate(INVALID_OUTPUT);
 }
 
@@ -83,7 +80,7 @@ void PositionWidgetProcessor::process() {
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()*modelMatrix_));
+    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()*glm::translate(position_.get())));
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_ALWAYS);
