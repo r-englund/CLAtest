@@ -26,9 +26,13 @@ public:
     void setLookTo(vec3 lookTo);
     vec3 getLookUp() const { return lookUp_.get(); }
     void setLookUp(vec3 lookUp);
+    vec3 getLookRight() const { return lookRight_; }
+
+    float getNearPlaneDist() const;
+    float getFarPlaneDist() const;
 
     float getDistanceFromOrigin() const;
-    vec3 getWorldPosFromWindowCoords(vec3 windowCoords, ivec2 windowSize, mat4 modelMatrix = mat4(1.f)) const;
+    vec3 getWorldPosFromNormalizedDeviceCoords(vec3 ndcCoords) const;
 
     void updateViewMatrix();
     void updateProjectionMatrix();
@@ -56,6 +60,7 @@ private:
     FloatProperty farPlane_;
     FloatProperty nearPlane_;
 
+    vec3 lookRight_;
     mat4 viewMatrix_;
     mat4 projectionMatrix_;
     mat4 inverseViewMatrix_;

@@ -29,6 +29,8 @@ public:
         currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
         if(currentPickObj_){
             setPickableSelected(true);
+            currentPickObj_->setPickingPosition(normalizedCoordinates(coord));
+            currentPickObj_->setPickingDepth(imageRAM->getDepthValue(coord));
             currentPickObj_->setPickingMove(vec2(0.f,0.f));
             currentPickObj_->picked();
             return true;
@@ -50,8 +52,13 @@ public:
 
 protected:
     inline vec2 pixelMoveVector(const uvec2& previous, const uvec2& current){
-        return vec2(static_cast<float>(current.x-previous.x)/static_cast<float>(src_->getDimension().x), 
-            static_cast<int>(current.y-previous.y)/static_cast<float>(src_->getDimension().y));
+        return vec2((static_cast<float>(current.x)-static_cast<float>(previous.x))/static_cast<float>(src_->getDimension().x), 
+            (static_cast<float>(current.y)-static_cast<float>(previous.y))/static_cast<float>(src_->getDimension().y));
+    }
+
+    inline vec2 normalizedCoordinates(const uvec2& coord){
+        return vec2(static_cast<float>(coord.x)/static_cast<float>(src_->getDimension().x), 
+            static_cast<float>(coord.y)/static_cast<float>(src_->getDimension().y));
     }
 
 private:

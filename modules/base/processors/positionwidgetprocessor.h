@@ -41,6 +41,7 @@ private:
     const PickingObject* widgetPickingObject_;
 
     mat4 modelMatrix_;
+    vec3 modelTranslation_;
 
     Geometry* widget_;
 

@@ -32,11 +32,12 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
 
     vec3 posLLF = vec3(0.0f);
-    vec3 posURB = vec3(0.5f);
+    vec3 posURB = vec3(1.0f);
 
-    widget_ = new Geometry(BaseMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(1.0f), vec4(1.0f)));
+    widget_ = new Geometry(BaseMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f)));
 
-    modelMatrix_ = glm::mat4(1.0);
+    modelTranslation_ = vec3(0.f);
+    modelMatrix_ = mat4(1.0);
 }
 
 PositionWidgetProcessor::~PositionWidgetProcessor() {}
@@ -57,16 +58,17 @@ void PositionWidgetProcessor::deinitialize() {
 
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
     vec2 move = widgetPickingObject_->getPickingMove();
-    //LogInfo("Picking Object with ID : " << widgetPickingObject_->getPickingId() << " moved with 2D vector (" << move.x << "," << move.y << ")");
-    mat4 inv = camera_.inverseProjectionMatrix()*camera_.inverseViewMatrix();
-    float depth = camera_.getDistanceFromOrigin();
-    vec4 startWin = vec4(0.5f, 0.5f, depth, 1.f);
-    vec4 endWin = startWin + vec4(move.x, move.y, 0.f, 0.f); 
-    vec4 startWorld = inv*((startWin*2.f)-1.f);
-    startWorld /= startWorld.w;
-    vec4 endWorld = inv*((endWin*2.f)-1.f);
-    endWorld /= endWorld.w;
-    modelMatrix_ *= glm::translate(vec3(endWorld.x-startWorld.x, endWorld.y-startWorld.y, endWorld.z-startWorld.z));
+    if(move.x == 0.f && move.y == 0.f){
+        return;
+    }
+    vec2 pos = widgetPickingObject_->getPickingPosition();
+    float depth = widgetPickingObject_->getPickingDepth();
+    vec3 startNdc = vec3((2.f*pos.x)-1.f, (2.f*pos.y)-1.f, depth);
+    vec3 endNdc = vec3((2.f*(pos.x+move.x))-1.f, (2.f*(pos.y+move.y))-1.f, depth);
+    vec3 startWorld = camera_.getWorldPosFromNormalizedDeviceCoords(startNdc);
+    vec3 endWorld = camera_.getWorldPosFromNormalizedDeviceCoords(endNdc);
+    modelTranslation_ += (endWorld-startWorld);
+    modelMatrix_ = glm::translate(modelTranslation_);
     invalidate(INVALID_OUTPUT);
 }
 
@@ -78,17 +80,13 @@ void PositionWidgetProcessor::process() {
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
-    glLoadIdentity();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glLoadIdentity();
-    glLoadMatrixf(glm::value_ptr(modelMatrix_*camera_.viewMatrix()));
+    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()*modelMatrix_));
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_ALWAYS);
-    //glDepthRangef(0.0001f, 100.f);
-    //glDepthRange(0.0, 1.0);
 
     widget_->getRepresentation<GeometryGL>()->render();
 

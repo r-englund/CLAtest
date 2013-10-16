@@ -82,6 +82,8 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
         }
         glDisable(GL_BLEND);
         //Pre-download picking image
+        imageGL_->getColorTexture()->downloadToPBO();
+        imageGL_->getDepthTexture()->downloadToPBO();
         imageGL_->getPickingTexture()->downloadToPBO();
     } else {
         imageGL_ = NULL;

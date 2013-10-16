@@ -22,6 +22,7 @@ public:
     virtual bool copyAndResizeImage(DataRepresentation*);
     void* getData() {return data_;};
     const void* getData() const {return data_;};
+    float* getDepthData();
     void* getPickingData();
 
     virtual void setValueFromSingleFloat(const uvec2& pos, float val) = 0;
@@ -34,6 +35,7 @@ public:
     virtual vec3 getValueAsVec3Float(const uvec2& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec2& pos) const = 0;
 
+    float getDepthValue(const uvec2& pos) const;
     virtual vec4 getPickingValue(const uvec2& pos) const = 0;
 
     // Takes ownership of data pointer
@@ -47,9 +49,11 @@ public:
     }
 
 protected:
+    void allocateDepthData();
     virtual void allocatePickingData() = 0;
 
     void* data_;
+    float* depthData_;
     void* pickingData_;
 };
 

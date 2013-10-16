@@ -54,12 +54,34 @@ void CameraProperty::setLookUp(vec3 lookUp) {
     updateViewMatrix();
 }
 
+float CameraProperty::getNearPlaneDist() const{
+    float nearP = nearPlane_.get();
+    if(useNearFarDistFromOrigin_.get())
+        nearP = glm::max(nearPlane_.getMinValue(), getDistanceFromOrigin()-nearP);
+    
+    return nearP;
+}
+
+float CameraProperty::getFarPlaneDist() const{
+    float farP = farPlane_.get();
+    if(useNearFarDistFromOrigin_.get())
+        farP += getDistanceFromOrigin();
+    
+    return farP;
+}
+
 float CameraProperty::getDistanceFromOrigin() const{
     return glm::distance(lookFrom_.get(), lookTo_.get());
 }
 
-vec3 CameraProperty::getWorldPosFromWindowCoords(vec3 windowCoords, ivec2 windowSize, mat4 modelMatrix) const{
-    return glm::unProject(windowCoords, viewMatrix_*modelMatrix, projectionMatrix_, ivec4(0,0,windowSize.x, windowSize.y));
+//XY between -1 -> 1, Z between 0 -> 1
+vec3 CameraProperty::getWorldPosFromNormalizedDeviceCoords(vec3 ndcCoords) const{
+    float clipW = projectionMatrix_[2][3] / (ndcCoords.z - (projectionMatrix_[2][2] / projectionMatrix_[3][2]));
+    vec4 clipCoords = vec4(ndcCoords * clipW, clipW);
+    vec4 eyeCoords = inverseProjectionMatrix()*clipCoords;
+    vec4 worldCoords = inverseViewMatrix()*eyeCoords;
+    worldCoords /= worldCoords.w;
+    return worldCoords.xyz();
 }
 
 void CameraProperty::setProjectionMatrix(float fovy, float aspect, float nearPlane, float farPlane) {
@@ -71,19 +93,13 @@ void CameraProperty::setProjectionMatrix(float fovy, float aspect, float nearPla
 }
 
 void CameraProperty::updateProjectionMatrix() {
-   float nearP = nearPlane_.get();
-   float farP = farPlane_.get();
-   if(useNearFarDistFromOrigin_.get()){
-        float dist = getDistanceFromOrigin();
-        nearP = glm::max(nearPlane_.getMinValue(), dist-nearP);
-        farP += dist;
-   }
-   projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), nearP, farP);
+   projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), getNearPlaneDist(), getFarPlaneDist());
    inverseProjectionMatrix_ = glm::inverse(projectionMatrix_);
 }
 
 void CameraProperty::updateViewMatrix() {
-   viewMatrix_ = glm::lookAt(lookFrom_.get(), lookTo_.get(), lookUp_.get());
+   lookRight_ = glm::cross(lookUp_.get(), glm::normalize(lookTo_.get()-lookFrom_.get()));
+   viewMatrix_ = glm::lookAt(lookFrom_.get(), lookTo_.get(), glm::normalize(lookUp_.get()));
    inverseViewMatrix_ = glm::inverse(viewMatrix_);
    if(useNearFarDistFromOrigin_.get())
        updateProjectionMatrix();

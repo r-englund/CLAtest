@@ -17,6 +17,7 @@ ImageRAM::~ImageRAM() {
 
 void ImageRAM::initialize() {
     data_ = NULL;
+    depthData_ = NULL;
     pickingData_ = NULL;
 }
 
@@ -24,6 +25,10 @@ void ImageRAM::deinitialize() {
     // Make sure that data is deinitialized in
     // child class (should not delete void pointer 
     // since destructor will not be called for object).
+    if(depthData_) {
+        delete[] depthData_;
+        depthData_ = NULL;
+    }
 }
 
 void ImageRAM::resize(uvec2 dimensions) {
@@ -31,6 +36,13 @@ void ImageRAM::resize(uvec2 dimensions) {
     //Delete and reallocate data_ to new size
     ImageRAM::deinitialize();
     initialize();
+}
+
+float* ImageRAM::getDepthData() {
+    if(!depthData_)
+        allocateDepthData();
+
+    return depthData_;
 }
 
 void* ImageRAM::getPickingData() {
@@ -54,6 +66,17 @@ bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {
     target->setData(rawData);
 
     return true;
+}
+
+float ImageRAM::getDepthValue(const uvec2& pos) const{
+    if(depthData_)
+        return depthData_[posToIndex(pos, dimensions_)];
+    else
+        return 1.f;
+}
+
+void ImageRAM::allocateDepthData(){
+    depthData_ = new float[dimensions_.x*dimensions_.y];
 }
 
 ImageRAM* createImageRAM(const uvec2& dimension, ImageType type, const DataFormatBase* format) {
