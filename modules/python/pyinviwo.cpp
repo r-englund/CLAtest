@@ -109,6 +109,7 @@ namespace inviwo{
         inviwoPyModule->addMethod(new PyGetPropertyValueMethod());
         inviwoPyModule->addMethod(new PyGetPropertyMaxValueMethod());
         inviwoPyModule->addMethod(new PyGetPropertyMinValueMethod());
+        inviwoPyModule->addMethod(new PyClickButtonMethod());
         inviwoPyModule->addMethod(new PySetCameraFocusMethod());
         inviwoPyModule->addMethod(new PySetCameraUpMethod());
         inviwoPyModule->addMethod(new PySetCameraPosMethod());
