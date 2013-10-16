@@ -16,6 +16,7 @@ PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* /*args*/);
+PyObject* py_clickButton(PyObject* /*self*/, PyObject* /*args*/);
 
     class IVW_MODULE_PYTHON_API PySetPropertyValueMethod : public PyMethod{
     public:
@@ -59,6 +60,13 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* /*args*/);
         virtual PyCFunction getFunc(){return py_getPropertyMinValue;}
     };
 
+    class IVW_MODULE_PYTHON_API PyClickButtonMethod : public PyMethod{
+    public:
+        char *getName(){return "clickButton";}
+        char *getDesc(){return "clickButton(processor name, buttonProperty id)\t Simulates a click on a button property.";}
+        virtual PyCFunction getFunc(){return py_clickButton;}
+    };
+    
 } //namespace
 
 

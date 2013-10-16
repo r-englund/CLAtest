@@ -361,4 +361,50 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
 
 
 
+PyObject* py_clickButton(PyObject* /*self*/, PyObject* args){
+    if (PyTuple_Size(args) != 2) {
+        std::ostringstream errStr;
+        errStr << "clickButton() takes exactly 2 arguments: processor name, property id";
+        errStr << " (" << PyTuple_Size(args) << " given)";
+        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+        return 0;
+    }
+
+    // check parameter 1 and 2, if they are strings
+    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
+        PyErr_SetString(PyExc_TypeError, "clickButton() arguments 1 and 2 must be strings");
+        return 0;
+    }
+
+    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+
+    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
+    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
+    if(!processor){
+        std::string msg = std::string("clickButton() no processor with name: ") + processorName;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+    if(!theProperty){
+        std::string msg = std::string("clickButton() no property with id: ") + propertyID;
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    ButtonProperty* button = dynamic_cast<ButtonProperty*>(theProperty);
+    if(!button){
+        std::string msg = std::string("clickButton() no button property with id: ") + propertyID + ", ("+propertyID  +" is of type "+ theProperty->getClassName() +  ")";
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+    }
+
+    button->invokeMemberFunctions();
+
+    Py_RETURN_NONE;
+}
+
+
 }
