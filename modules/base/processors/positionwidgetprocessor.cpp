@@ -23,6 +23,7 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     widgetType_.addOption("cube", "Cube");
     widgetType_.addOption("sphere", "Sphere");
     widgetType_.set("sphere");
+    widgetType_.onChange(this, &PositionWidgetProcessor::updateMeshWidget);
     addProperty(widgetType_);
 
     addProperty(position_);
@@ -32,10 +33,7 @@ PositionWidgetProcessor::PositionWidgetProcessor()
 
     widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
 
-    vec3 posLLF = vec3(0.0f);
-    vec3 posURB = vec3(1.0f);
-
-    widget_ = new Geometry(SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f)));
+    widget_ = NULL;
 }
 
 PositionWidgetProcessor::~PositionWidgetProcessor() {}
@@ -51,7 +49,23 @@ void PositionWidgetProcessor::deinitialize() {
     CompositeProcessorGL::deinitialize();
 
     delete program_;
-    program_ = 0;
+    program_ = NULL;
+
+    delete widget_;
+    widget_ = NULL;
+}
+
+void PositionWidgetProcessor::updateMeshWidget(){
+    delete widget_;
+
+    if(widgetType_.get() == "sphere"){
+        widget_ = new Geometry(SimpleMeshCreator::sphere(0.5f, 8, 16));
+    }
+    else{
+        vec3 posLLF = vec3(0.0f);
+        vec3 posURB = vec3(1.0f);
+        widget_ = new Geometry(SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f)));
+    }
 }
 
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
@@ -69,7 +83,10 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
     invalidate(INVALID_OUTPUT);
 }
 
-void PositionWidgetProcessor::process() {    
+void PositionWidgetProcessor::process() {  
+    if(!widget_)
+        updateMeshWidget();
+
     activateAndClearTarget(outport_);
 
     program_->activate();

@@ -17,6 +17,8 @@ public:
 									   glm::vec4 col, glm::vec4 c1, glm::vec4 c2, glm::vec4 c3); 	
 
 	static SimpleMeshRAM* rectangle(glm::vec3 posLl, glm::vec3 posUr);
+
+    static SimpleMeshRAM* sphere(float radius, size_t numLoops, size_t segmentsPerLoop);
 };
 
 } // namespace

@@ -24,6 +24,7 @@ public:
 
     bool isReady() const { return true; }
 
+    void updateMeshWidget();
     void updateWidgetPositionFromPicking();
 
 protected:
