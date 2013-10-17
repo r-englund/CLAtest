@@ -56,7 +56,7 @@ private:
 template<typename T, size_t B, AttributeType A>
 AttributesBase* Attributes<T,B,A>::clone() const{
     Attributes<T,B,A>* newAttributes = new Attributes<T,B,A>();
-    for (std::vector<T>::const_iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
+    for(typename std::vector<T>::const_iterator it = getAttributeContainer().begin(); it != getAttributeContainer().end(); ++it)
         newAttributes->add(*it);
     return newAttributes;
 }

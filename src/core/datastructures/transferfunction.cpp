@@ -152,10 +152,10 @@ void TransferFunction::calcTransferValues(){
 		}
 	}
     
-    for (int i = 0; i < maskMin_ * textureSize_ ; i++){
+    for (int i = 0; i < static_cast<int>(maskMin_ * static_cast<float>(textureSize_)) ; i++){
         dataArray[i].a = 0.0;
     }    
-    for (int i = maskMax_ * textureSize_; i < textureSize_ - 1 ; i++){
+    for (int i = static_cast<int>(maskMax_ * static_cast<float>(textureSize_)); i < textureSize_ - 1 ; i++){
         dataArray[i].a = 0.0;
     }
 }
