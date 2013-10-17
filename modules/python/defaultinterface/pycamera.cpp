@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "pycamera.h"
 
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/processors/processor.h>

@@ -1,4 +1,4 @@
-#include "properties.h"
+#include "pyproperties.h"
 
 #include "../pythoninterface/pyvalueparser.h"
 

@@ -1,4 +1,4 @@
-#include "canvas.h"
+#include "pycanvas.h"
 
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>

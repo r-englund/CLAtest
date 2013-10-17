@@ -17,11 +17,11 @@
 
 using namespace inviwo;
 
-#include "defaultinterface/properties.h"
-#include "defaultinterface/camera.h"
-#include "defaultinterface/canvas.h"
-#include "defaultinterface/list.h"
-#include "defaultinterface/util.h"
+#include "defaultinterface/pyproperties.h"
+#include "defaultinterface/pycamera.h"
+#include "defaultinterface/pycanvas.h"
+#include "defaultinterface/pylist.h"
+#include "defaultinterface/pyutil.h"
 
 static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
     char* msg;

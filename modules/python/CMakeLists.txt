@@ -10,11 +10,11 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.h
     ${IVW_MODULE_DIR}/python/pythoninterface/pyvalueparser.h
     ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/camera.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/canvas.h	
-    ${IVW_MODULE_DIR}/python/defaultinterface/list.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/properties.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/util.h
+    ${IVW_MODULE_DIR}/python/defaultinterface/pycamera.h
+    ${IVW_MODULE_DIR}/python/defaultinterface/pycanvas.h	
+    ${IVW_MODULE_DIR}/python/defaultinterface/pylist.h
+    ${IVW_MODULE_DIR}/python/defaultinterface/pyproperties.h
+    ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.h
     ${IVW_MODULE_DIR}/python/pythonmodule.h
     ${IVW_MODULE_DIR}/python/pythonscript.h
     ${IVW_MODULE_DIR}/python/pythonmoduledefine.h
@@ -38,11 +38,11 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.cpp
     ${IVW_MODULE_DIR}/python/pythoninterface/pyvalueparser.cpp
     ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/camera.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/canvas.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/list.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/properties.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/util.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/pycamera.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/pycanvas.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/pylist.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/pyproperties.cpp
+    ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.cpp
     ${IVW_MODULE_DIR}/python/pythonscript.cpp
     ${IVW_MODULE_DIR}/python/pythonmodule.cpp
 )
