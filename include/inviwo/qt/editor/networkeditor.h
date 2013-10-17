@@ -79,6 +79,7 @@ protected:
     void dropEvent(QGraphicsSceneDragDropEvent* de);
 
 	void placeProcessorOnConnection(ProcessorGraphicsItem* processorItem, ConnectionGraphicsItem* connectionItem);
+    void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);
 
 private:
     friend class ProcessorGraphicsItem;

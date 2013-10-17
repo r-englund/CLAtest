@@ -957,17 +957,18 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
             e->setAccepted(true);
             e->acceptProposedAction();
 
-			// Check for curve collisions
-			ConnectionGraphicsItem* connectionItem = getConnectionGraphicsItemAt(e->scenePos());
-			if (connectionItem)
-				placeProcessorOnConnection(processorGraphicsItem, connectionItem);
+			// Check for collisions
+			if(oldConnectionTarget_)
+				placeProcessorOnConnection(processorGraphicsItem, oldConnectionTarget_);
+            else if(oldProcessorTarget_)
+                placeProcessorOnProcessor(processorGraphicsItem, oldProcessorTarget_);
 		}
 	}
 }
 
-void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorGraphicsItem, ConnectionGraphicsItem* connectionItem) {
-	std::vector<Inport*> inports = processorGraphicsItem->getProcessor()->getInports();
-	std::vector<Outport*> outports = processorGraphicsItem->getProcessor()->getOutports();
+void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorItem, ConnectionGraphicsItem* connectionItem) {
+	std::vector<Inport*> inports = processorItem->getProcessor()->getInports();
+	std::vector<Outport*> outports = processorItem->getProcessor()->getOutports();
 	Inport* connectionInport = connectionItem->getInport();
 	Outport* connectionOutport = connectionItem->getOutport();
 
@@ -1002,7 +1003,47 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorG
         processorNetworkEvaluator_->evaluate();	
 }
 
+void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem){
+    std::vector<Inport*> inports = processorItem->getProcessor()->getInports();
+    std::vector<Outport*> outports = processorItem->getProcessor()->getOutports();
 
+    std::vector<Inport*> oldInports = oldProcessorItem->getProcessor()->getInports();
+    std::vector<Outport*> oldOutports = oldProcessorItem->getProcessor()->getOutports();
+    
+    processorNetwork_->lock();
+
+    std::vector<std::pair<Outport*, Inport*> > newConnections;
+
+    for (size_t i = 0; i < std::min(inports.size(), oldInports.size()); ++i) {
+        if(inports.at(i)->canConnectTo(oldInports.at(i)->getConnectedOutport())) {
+            // Save new connection connectionOutportoldInport-processorInport
+            newConnections.push_back(std::make_pair(oldInports.at(i)->getConnectedOutport(), inports.at(i)));
+        }
+    }
+
+    for (size_t i = 0; i < std::min(outports.size(), oldOutports.size()); ++i) {
+        std::vector<Inport*> connectionInports = oldOutports.at(i)->getConnectedInports();
+        for (size_t j = 0; j < connectionInports.size(); ++j) {
+            if(connectionInports.at(j)->canConnectTo(outports.at(i))) {
+                // Save new connection processorOutport-connectionInport
+                newConnections.push_back(std::make_pair(outports.at(i), connectionInports.at(j)));
+            }
+        }
+    }
+
+    //Remove old processor
+    removeProcessor(oldProcessorItem->getProcessor());
+
+    //Create all new connections
+    for (size_t i = 0; i < newConnections.size(); ++i) {
+        addConnection(newConnections.at(i).first, newConnections.at(i).second);
+    }
+
+    processorNetwork_->unlock();
+
+    if(processorNetwork_->isModified())
+        processorNetworkEvaluator_->evaluate();	
+}
 
 ///////////////////////////////
 //   SERIALIZATION METHODS   //

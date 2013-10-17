@@ -43,15 +43,20 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
 
 void ProcessorNetwork::addConnection(Outport* sourcePort, Inport* destPort) {
     ivwAssert(!sourcePort->isConnectedTo(destPort), "Ports already connected.");
-    lock();
+    bool locked = islocked();
+    if(!locked)
+        lock();
     destPort->connectTo(sourcePort);
     portConnections_.push_back(new PortConnection(sourcePort, destPort));
-    unlock();
+    if(!locked)
+        unlock();
     modified();
 }
 
 void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
-    lock();
+    bool locked = islocked();
+    if(!locked)
+        lock();
     for (size_t i=0; i<portConnections_.size(); i++) {
         if (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort) {
             destPort->disconnectFrom(sourcePort);
@@ -60,7 +65,8 @@ void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
             break;
         }
     }
-    unlock();
+    if(!locked)
+        unlock();
     modified();
 }
 
