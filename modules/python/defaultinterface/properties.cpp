@@ -46,7 +46,7 @@ PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
     }
 
     PyValueParser pyValueParser;
-    pyValueParser.setProperty(theProperty,args);
+    pyValueParser.setProperty(theProperty,parameter);
 
     Py_RETURN_NONE;
 }

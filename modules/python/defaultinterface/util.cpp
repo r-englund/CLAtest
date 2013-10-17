@@ -1,5 +1,6 @@
-#include "snapshot.h"
+#include "util.h"
 
+#include "../pythoninterface/pyvalueparser.h"
 
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/processors/processor.h>
@@ -89,6 +90,36 @@ PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* args){
         return 0;
     }
     canvases[index]->createSnapshot(filename);
+    Py_RETURN_NONE;
+}
+
+
+PyObject* py_getBasePath(PyObject* /*self*/, PyObject* /*args*/){
+    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getBasePath());
+
+}
+
+PyObject* py_getDataPath(PyObject* /*self*/, PyObject* /*args*/){
+    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
+}
+
+PyObject* py_getWorkspaceSavePath(PyObject* /*self*/, PyObject* /*args*/){
+    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT));
+}
+PyObject* py_getVolumePath(PyObject* /*self*/, PyObject* /*args*/){
+    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_VOLUMES));
+}
+PyObject* py_getImagePath(PyObject* /*self*/, PyObject* /*args*/){
+    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES));
+}
+PyObject* py_getModulePath(PyObject* /*self*/, PyObject* /*args*/){
+    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES));
+}
+
+
+
+PyObject* py_closeInviwo(PyObject* /*self*/, PyObject* /*args*/){
+    static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->quit();
     Py_RETURN_NONE;
 }
 

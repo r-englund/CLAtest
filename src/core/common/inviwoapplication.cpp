@@ -58,7 +58,11 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
     if (pathType == InviwoApplication::PATH_PROJECT)
         result += "data/workspaces/";
     else if (pathType == InviwoApplication::PATH_DATA)
+        result += "data/";
+    else if (pathType == InviwoApplication::PATH_VOLUMES)
         result += "data/volumes/";
+    else if (pathType == InviwoApplication::PATH_IMAGES)
+        result += "data/images/";
     else if (pathType == InviwoApplication::PATH_MODULES)
         result += "modules/";
     result += suffix;

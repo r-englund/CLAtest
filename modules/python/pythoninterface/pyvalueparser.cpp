@@ -22,7 +22,8 @@ namespace inviwo{
     PARSEVEC4(vec4,int,parseVec4,"ffff");
 
     bool        parseBool(PyObject* args){return PyObject_IsTrue(args) != 0;};
-    std::string parseStr(PyObject* args){char* c;int l;PyArg_ParseTuple(args,"s#",&c,&l);return std::string(c);};
+    std::string parseStr(PyObject* args){return std::string(PyString_AsString(args));};
+    //std::string parseStr(PyObject* args){char* c;int l;PyArg_ParseTuple(args,"s#",&c,&l);return std::string(c);};
 
     mat2 parseMat2(PyObject* args){
         mat2 m;
@@ -66,9 +67,9 @@ namespace inviwo{
 
 #if (PY_MAJOR_VERSION == 3  && PY_MINOR_VERSION >= 3) ||  PY_MAJOR_VERSION > 3
     //if python version is 3.3 or larger, use "p", eg parse a real bool obj, else treat it as an int
-    template <> PyObject* PyValueParser::toPyObject(bool &b){return toPyPy_BuildValueObject("p",b);}
+    template <> PyObject* PyValueParser::toPyObject(bool b){return toPyPy_BuildValueObject("p",b);}
 #else
-    template <> PyObject* PyValueParser::toPyObject(bool &b){return Py_BuildValue("i",b);}
+    template <> PyObject* PyValueParser::toPyObject(bool b){return Py_BuildValue("i",b);}
 #endif
     
     template <> PyObject* PyValueParser::toPyObject(double d){return Py_BuildValue("d",d);}
@@ -107,6 +108,9 @@ namespace inviwo{
 
         else if(className == "StringProperty")
             static_cast<StringProperty*>(p)->set(parse<std::string>(args));
+
+        else if(className == "FileProperty")
+            static_cast<FileProperty*>(p)->set(parse<std::string>(args));
 
         else if(className == "IntVec2Property")
             static_cast<IntVec2Property*>(p)->set(parse<ivec2>(args));
@@ -147,7 +151,7 @@ namespace inviwo{
             //float fovy,nearP,farP;
             char *dummy1,*dummy2;
             int d1,d2;
-            if(!PyArg_ParseTuple(args,"s#s#((fff)(fff)(fff))", &dummy1,&d1,&dummy2,&d2,
+            if(!PyArg_ParseTuple(args,"(fff)(fff)(fff)",
                 &from.x,&from.y,&from.z,
                 &to.x,&to.y,&to.z,
                 &up.x,&up.y,&up.z
@@ -172,11 +176,27 @@ namespace inviwo{
     }
 
 
+#define CAST_DO_STUFF(PropType,prop) {PropType* casted = dynamic_cast<PropType*>(prop); if(casted) {return toPyObject(casted->get());}}
 
     PyObject* PyValueParser::getProperty(Property *p){
+        CAST_DO_STUFF(BoolProperty,p);
+        CAST_DO_STUFF(FloatProperty,p);
+        CAST_DO_STUFF(IntProperty,p);
+        CAST_DO_STUFF(StringProperty,p);
+        CAST_DO_STUFF(FileProperty,p);
+        CAST_DO_STUFF(IntVec2Property,p);
+        CAST_DO_STUFF(IntVec3Property,p);
+        CAST_DO_STUFF(IntVec4Property,p);
+        CAST_DO_STUFF(FloatVec2Property,p);
+        CAST_DO_STUFF(FloatVec3Property,p);
+        CAST_DO_STUFF(FloatVec4Property,p);
+        CAST_DO_STUFF(FloatMat2Property,p);
+        CAST_DO_STUFF(FloatMat3Property,p);
+        CAST_DO_STUFF(FloatMat4Property,p);
+        CAST_DO_STUFF(FloatMinMaxProperty,p);
+        CAST_DO_STUFF(IntMinMaxProperty,p);
+        
         return 0;
     }
-
-
 
 }//namespace

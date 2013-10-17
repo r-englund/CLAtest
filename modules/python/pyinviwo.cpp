@@ -21,7 +21,7 @@ using namespace inviwo;
 #include "defaultinterface/camera.h"
 #include "defaultinterface/canvas.h"
 #include "defaultinterface/list.h"
-#include "defaultinterface/snapshot.h"
+#include "defaultinterface/util.h"
 
 static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
     char* msg;
@@ -119,6 +119,14 @@ namespace inviwo{
         inviwoPyModule->addMethod(new PySetViewportMethod());
         inviwoPyModule->addMethod(new PySnapshotMethod());
         inviwoPyModule->addMethod(new PySnapshotCanvasMethod());
+        inviwoPyModule->addMethod(new PyGetBasePathMethod());
+        inviwoPyModule->addMethod(new PyGetDataPathMethod());
+        inviwoPyModule->addMethod(new PyCloseInviwoMethod());
+
+        inviwoPyModule->addMethod(new PyGetWorkspaceSavePathMethod());
+        inviwoPyModule->addMethod(new PyGetVolumePathMethod());
+        inviwoPyModule->addMethod(new PyGetImagePathMethod());
+        inviwoPyModule->addMethod(new PyGetModulePathMethod());
 
         inviwoInternalPyModule->addMethod(new PyStdOutCatcher());
 

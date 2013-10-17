@@ -27,8 +27,10 @@ public:
 
     enum PathType {
         PATH_DATA,
+        PATH_VOLUMES,
         PATH_MODULES,
-        PATH_PROJECT
+        PATH_PROJECT,
+        PATH_IMAGES
     };
 
     std::string getBasePath() { return basePath_; }
