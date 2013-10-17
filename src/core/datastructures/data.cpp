@@ -15,10 +15,12 @@ void Data::clearRepresentations() {
     }
 }
 
-void Data::copyRepresentations( Data* targetData ) const{
-    targetData->representations_.clear();
+void Data::copyRepresentations(Data* targetData) const{
+    targetData->clearRepresentations();
     for(size_t i=0; i<representations_.size(); i++) {
-        targetData->representations_.push_back(representations_[i]->clone());
+        DataRepresentation* rep = representations_[i]->clone();
+        if(rep)
+            targetData->addRepresentation(rep);
     }
 }
 

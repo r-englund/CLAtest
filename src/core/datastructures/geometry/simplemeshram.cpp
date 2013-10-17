@@ -43,11 +43,11 @@ void SimpleMeshRAM::setIndicesInfo(RenderType rt, ConnectivityType ct){
     indexAttributes_[0].first = MeshRAM::AttributesInfo(rt, ct);
 }
 
-Position3dAttributes* SimpleMeshRAM::getVertexList() {
+const Position3dAttributes* SimpleMeshRAM::getVertexList() const {
 	return this->vertexPositions_;
 }
 
-IndexAttributes* SimpleMeshRAM::getIndexList() {
+const IndexAttributes* SimpleMeshRAM::getIndexList() const {
 	return this->indices_;
 }
 

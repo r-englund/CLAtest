@@ -14,14 +14,13 @@ public:
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const { return NULL; };
     virtual void render() const;
 
     void addVertex(vec3 pos, vec3 texCoord, vec4 color);
     void addIndex(unsigned int idx);
     void setIndicesInfo(RenderType, ConnectivityType);
-	Position3dAttributes* getVertexList();
-	IndexAttributes* getIndexList();
+	const Position3dAttributes* getVertexList() const;
+	const IndexAttributes* getIndexList() const;
 
 protected:
     Position3dAttributes* vertexPositions_;

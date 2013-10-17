@@ -24,6 +24,18 @@ void MeshRAM::deinitialize() {
         delete it->second;
 }
 
+DataRepresentation* MeshRAM::clone() const {
+    MeshRAM* newMeshRAM = new MeshRAM(attributesInfo_.rt, attributesInfo_.ct);
+
+    for(std::vector<AttributesBase*>::const_iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
+        newMeshRAM->addAttribute((*it)->clone());
+
+    for(std::vector<std::pair<AttributesInfo, IndexAttributes*> >::const_iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
+        newMeshRAM->addIndicies(it->first, static_cast<IndexAttributes*>(it->second->clone()));
+
+    return newMeshRAM;
+}
+
 void MeshRAM::addAttribute(AttributesBase* att){
     attributes_.push_back(att);
 }

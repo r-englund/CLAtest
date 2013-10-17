@@ -3,9 +3,8 @@
 
 #include <modules/opengl/geometry/geometrygl.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
-#include <modules/opengl/geometry/attributebuffergl.h>
 #include <inviwo/core/datastructures/geometry/meshram.h>
-#include <inviwo/core/datastructures/representationconverter.h>
+#include <modules/opengl/geometry/attributebuffergl.h>
 #include <vector>
 
 namespace inviwo {
@@ -47,19 +46,6 @@ protected:
     };
 
     DrawMethod drawMethods_[GeometryRepresentation::NUMBER_OF_RENDER_TYPES];
-};
-
-class IVW_MODULE_OPENGL_API MeshRAM2GLConverter : public RepresentationConverterType<GeometryGL> {
-
-public:
-    MeshRAM2GLConverter();
-    virtual ~MeshRAM2GLConverter();
-
-    inline bool canConvertFrom(const DataRepresentation* source) const {
-        return dynamic_cast<const MeshRAM*>(source) != NULL;
-    }
-    DataRepresentation* createFrom(const DataRepresentation* source);
-    void update(const DataRepresentation* source, DataRepresentation* destination);
 };
 
 } // namespace

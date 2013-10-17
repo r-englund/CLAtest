@@ -10,7 +10,9 @@ Geometry::Geometry(GeometryRepresentation* rep) : SpatialData<3>() {
 }
 
 Data* Geometry::clone() const {
-    return NULL;
+    Geometry* newGeometry = new Geometry();
+    copyRepresentations(newGeometry);
+    return newGeometry;
 }
 
 Geometry::~Geometry() {

@@ -25,7 +25,7 @@ public:
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const { return NULL; };
+    virtual DataRepresentation* clone() const;
     virtual void render(RenderType = GeometryRepresentation::NOT_SPECIFIED) const{};
 
     void addAttribute(AttributesBase*);

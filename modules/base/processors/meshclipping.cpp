@@ -22,10 +22,10 @@ MeshClipping::MeshClipping()
 {
 	addPort(inport_);
 	addPort(outport_);
-	/*addProperty(floatPropertyRotX_);
+	addProperty(floatPropertyRotX_);
 	addProperty(floatPropertyRotY_);
 	addProperty(floatPropertyRotZ_);
-	addProperty(floatPropertyPlaneHeight);*/
+	addProperty(floatPropertyPlaneHeight);
 	addProperty(clippingEnabled_);
 }
 
@@ -50,7 +50,7 @@ std::vector<unsigned int> edgeListtoTriangleList(std::vector<Edge>& edges) {
 }
 
 // Extract edges from triangle strip list
-std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
+std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int> triList) {
 	std::vector<Edge> result;
 	//std::cout << "Size of tri list: " << triList.size()-1 << std::endl;
 	for (size_t i=0; i<triList.size(); ++i) {
@@ -98,28 +98,25 @@ std::vector<Edge> triangleListtoEdgeList(std::vector<unsigned int> triList) {
 	return result;
 }
 
-GeometryRAM* MeshClipping::clipGeometry(GeometryRAM* in, SimpleMeshRAM* clip) {
+GeometryRAM* MeshClipping::clipGeometry(const GeometryRAM* in, SimpleMeshRAM* clip) {
 	// STUB
 	// For clipping against qudrilateral (finite plane)
-	if(!dynamic_cast<SimpleMeshRAM*>(in)) {
+    const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
+	if(!inputMesh) {
 		std::cerr << "Can only clip a SimpleMeshRAM";
 		return NULL;
 	}
-	return in;
+	return NULL;
 }
 
-GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plane) {
+GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane &plane) {
 	//std::cout << "Entered clipGeometryAgainstPlane(...).\n";
-	if(!clippingEnabled_.get())
-		return in;
 	
-	if(!dynamic_cast<SimpleMeshRAM*>(in)) {
+    const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
+	if(!inputMesh) {
 		std::cerr << "Can only clip a SimpleMeshRAM*";
 		return NULL;
 	}
-
-	//std::cout << "Casting inputMesh.\n";
-	SimpleMeshRAM *inputMesh = dynamic_cast<SimpleMeshRAM*>(in);
 
 	/* ---TODO / bugs
 		-	Create correct outputEdgeList while running clipping algorithm, currently edges between clipped verts
@@ -129,15 +126,13 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(GeometryRAM* in, Plane &plan
 	*/
 
 	//std::cout << "Fetching vertex- and triangle lists.\n";
-	std::vector<glm::vec3> outputList = inputMesh->getVertexList()->getAttributeContainer(); // Vertex list
-	std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getAttributeContainer(); // Triangle list
+	const std::vector<glm::vec3> inputList = inputMesh->getVertexList()->getAttributeContainer(); // Vertex list
+	const std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getAttributeContainer(); // Triangle list
 	std::vector<Edge> edgeList = triangleListtoEdgeList(triangleList);
 	std::vector<unsigned int> clippedVertInd;
 
 	// For each clip plane, do:
-	std::vector<glm::vec3> inputList = outputList;
-	outputList.clear();
-
+	std::vector<glm::vec3> outputList;
 	std::vector<unsigned int> outputIndexList; // vertex index list
 	std::vector<Edge> outputEdgeList; // output edge list
 
@@ -333,11 +328,9 @@ void MeshClipping::process() {
 		- Build new mesh from the triangle strip list and return it.
 	*/
 	
-	// This cast works once, throws qt event exception otherwise.
-	GeometryRAM *geom = const_cast<GeometryRAM*>(inport_.getData()->getRepresentation<GeometryRAM>());
-
-
 	if(clippingEnabled_.get()) {
+        const GeometryRAM *geom = inport_.getData()->getRepresentation<GeometryRAM>();
+
 		//std::cout << "Calling clipping method.\n";
 		GeometryRAM *clippedPlaneGeom = clipGeometryAgainstPlane(geom, plane_);
 
@@ -345,7 +338,7 @@ void MeshClipping::process() {
 		outport_.setData(new Geometry(clippedPlaneGeom));
 		//std::cout << "Done.\n";
 	} else {
-		outport_.setData(new Geometry(geom));
+		outport_.setData(const_cast<Geometry*>(inport_.getData()), false);
 	}
 }
 

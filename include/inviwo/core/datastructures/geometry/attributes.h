@@ -20,6 +20,7 @@ class IVW_CORE_API AttributesBase {
 public:
     AttributesBase(){}
     virtual ~AttributesBase(){}
+    virtual AttributesBase* clone() const = 0;
 
     virtual const void* getAttributes() const = 0;  
     virtual AttributeType getAttributeType() const = 0;
@@ -35,11 +36,12 @@ class IVW_CORE_API Attributes : public AttributesBase {
 public:
     Attributes() : AttributesBase(), dataFormat_(DataFormat<T,B>::get()) {}
     virtual ~Attributes(){ }
+    AttributesBase* clone() const;
 
     void add(T);
     
     const void* getAttributes() const;
-	std::vector<T> getAttributeContainer();
+    const std::vector<T>& getAttributeContainer() const;
     AttributeType getAttributeType() const;
     const DataFormatBase* getDataFormat() const;
     unsigned int getElementSize() const;
@@ -52,6 +54,14 @@ private:
 };
 
 template<typename T, size_t B, AttributeType A>
+AttributesBase* Attributes<T,B,A>::clone() const{
+    Attributes<T,B,A>* newAttributes = new Attributes<T,B,A>();
+    for (std::vector<T>::const_iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
+        newAttributes->add(*it);
+    return newAttributes;
+}
+
+template<typename T, size_t B, AttributeType A>
 void Attributes<T,B,A>::add(T v){
     attributes_.push_back(v);
 }
@@ -62,7 +72,7 @@ const void* Attributes<T,B,A>::getAttributes() const{
 }
 
 template<typename T, size_t B, AttributeType A>
-std::vector<T> Attributes<T,B,A>::getAttributeContainer() {
+const std::vector<T>& Attributes<T,B,A>::getAttributeContainer() const {
     return attributes_;
 }
 
