@@ -68,7 +68,10 @@ void Attributes<T,B,A>::add(T v){
 
 template<typename T, size_t B, AttributeType A>
 const void* Attributes<T,B,A>::getAttributes() const{
-    return static_cast<const void*>(&attributes_[0]);
+    if(!attributes_.empty())
+        return static_cast<const void*>(&attributes_[0]);
+    else
+        return NULL;
 }
 
 template<typename T, size_t B, AttributeType A>

@@ -3,11 +3,13 @@
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/geometryport.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
+#include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/datastructures/geometry/simplemeshram.h>
 #include <inviwo/core/datastructures/geometry/plane.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
 
@@ -31,13 +33,13 @@ protected:
 private:
 	GeometryInport inport_;
 	GeometryOutport outport_;
-	FloatProperty floatPropertyRotX_;
-	FloatProperty floatPropertyRotY_;
-	FloatProperty floatPropertyRotZ_;
-	FloatProperty floatPropertyPlaneHeight;
+	
 	BoolProperty clippingEnabled_;
-	Plane plane_;
-	const float EPSILON;
+    FloatVec3Property planePoint_;
+    FloatVec3Property planeNormal_;
+    BoolProperty renderAsPoints_;
+	
+	static const float EPSILON;
 };
 } // namespace
 

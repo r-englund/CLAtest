@@ -8,25 +8,24 @@ ProcessorClassName(MeshClipping, "MeshClipping");
 ProcessorCategory(MeshClipping, "Geometry Creation");
 ProcessorCodeState(MeshClipping, CODE_STATE_EXPERIMENTAL);
 
+const float MeshClipping::EPSILON = 0.00001f;
+
 MeshClipping::MeshClipping()
 	: ProcessorGL(),
 	inport_("geometry.input"),
-	outport_("geomtry.output"),
-	floatPropertyRotX_("Rotation X", "Rotation X", 0.0f, 0.0f, 360.0f, 0.1f),
-	floatPropertyRotY_("Rotation Y", "Rotation Y", 0.0f, 0.0f, 360.0f, 0.1f),
-	floatPropertyRotZ_("Rotation Z", "Rotation Z", 0.0f, 0.0f, 360.0f, 0.1f),
-	floatPropertyPlaneHeight("Cutting plane y coord.", "Cutting plane Y", 0.0f,-1.2f,1.2f,0.1f),
-	plane_(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 0.0f, -1.0f)),
+	outport_("geometry.output"),
 	clippingEnabled_("clippingEnabled", "Enable clipping", false),
-	EPSILON(0.00001f) // For float comparison
+    planePoint_("planePoint", "Plane Point", vec3(0.0f), vec3(-10.0f), vec3(10.0f), vec3(0.1f)),
+    planeNormal_("planeNormal", "Plane Normal", vec3(0.0f, 0.0f, -1.0f), vec3(-1.0f), vec3(1.0f), vec3(0.1f)),
+    renderAsPoints_("renderAsPoints", "Render As Points by Default", false)
 {
 	addPort(inport_);
 	addPort(outport_);
-	addProperty(floatPropertyRotX_);
-	addProperty(floatPropertyRotY_);
-	addProperty(floatPropertyRotZ_);
-	addProperty(floatPropertyPlaneHeight);
-	addProperty(clippingEnabled_);
+
+    addProperty(clippingEnabled_);
+	addProperty(planePoint_);
+	addProperty(planeNormal_);
+    addProperty(renderAsPoints_);
 }
 
 MeshClipping::~MeshClipping() {}
@@ -37,6 +36,33 @@ void MeshClipping::initialize() {
 
 void MeshClipping::deinitialize() {
 	ProcessorGL::deinitialize();
+}
+
+void MeshClipping::process() {
+	/* Processor overview
+		- Take axis-aligned boudning box (AABB) mesh as input.
+		- Call clipGeometryAgainstPlane(...) with input and plane_ as arguments
+		- Extract and store an edge list from the input mesh's triangle list
+		- Start with an empty outputList and empty outputEdgeList. Iterate over the edge list
+		  extracted from the triangle list and check each edge against the clip plane. Store verts
+		  and edges in outputList and outputEdgeList as you go.
+		- Use outputEdgeList and, indirectly, outputList to rebuild a correctly sorted
+		  triangle strip list.
+		- Build new mesh from the triangle strip list and return it.
+	*/
+	
+	if(clippingEnabled_.get()) {
+        const GeometryRAM *geom = inport_.getData()->getRepresentation<GeometryRAM>();
+
+		//LogInfo("Calling clipping method.");
+		GeometryRAM *clippedPlaneGeom = clipGeometryAgainstPlane(geom, Plane(planePoint_.get(), planeNormal_.get()));
+
+		//LogInfo("Setting new mesh as outport data.");
+		outport_.setData(new Geometry(clippedPlaneGeom));
+		//LogInfo("Done.");
+	} else {
+		outport_.setData(const_cast<Geometry*>(inport_.getData()), false);
+	}
 }
 
 // Convert degrees to radians
@@ -52,7 +78,7 @@ std::vector<unsigned int> edgeListtoTriangleList(std::vector<Edge>& edges) {
 // Extract edges from triangle strip list
 std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int> triList) {
 	std::vector<Edge> result;
-	//std::cout << "Size of tri list: " << triList.size()-1 << std::endl;
+	LogInfoCustom("MeshClipping", "Size of tri list: " << triList.size()-1);
 	for (size_t i=0; i<triList.size(); ++i) {
 		Edge e1;
 		if(i==0 || i%3 == 0)  {
@@ -90,11 +116,11 @@ std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int> triList
 		}
 	}
 
-	//std::cout << "Size of edge list: " << result.size() << std::endl;
+	LogInfoCustom("MeshClipping", "Size of edge list: " << result.size());
 
-	/*for(size_t i=0; i<result.size();++i) {
-		std::cout << "Edge, " << i << " = " << result.at(i).v1 << "->" << result.at(i).v2 << std::endl;
-	}*/
+	for(size_t i=0; i<result.size();++i) {
+		LogInfoCustom("MeshClipping", "Edge, " << i << " = " << result.at(i).v1 << "->" << result.at(i).v2);
+	}
 	return result;
 }
 
@@ -103,18 +129,18 @@ GeometryRAM* MeshClipping::clipGeometry(const GeometryRAM* in, SimpleMeshRAM* cl
 	// For clipping against qudrilateral (finite plane)
     const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
 	if(!inputMesh) {
-		std::cerr << "Can only clip a SimpleMeshRAM";
+		LogError("Can only clip a SimpleMeshRAM");
 		return NULL;
 	}
 	return NULL;
 }
 
 GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane &plane) {
-	//std::cout << "Entered clipGeometryAgainstPlane(...).\n";
+	//LogInfo("Entered clipGeometryAgainstPlane(...).");
 	
     const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
 	if(!inputMesh) {
-		std::cerr << "Can only clip a SimpleMeshRAM*";
+		LogError("Can only clip a SimpleMeshRAM*");
 		return NULL;
 	}
 
@@ -122,10 +148,9 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 		-	Create correct outputEdgeList while running clipping algorithm, currently edges between clipped verts
 			sometimes end up in incorrect order.
 		-	Use correct outputEdgeList to create a correctly sorted triangle strip list
-		-	If entire mesh is outside of clip plane, empty mesh is returned causing crash.
 	*/
 
-	//std::cout << "Fetching vertex- and triangle lists.\n";
+	//LogInfo("Fetching vertex- and triangle lists.");
 	const std::vector<glm::vec3> inputList = inputMesh->getVertexList()->getAttributeContainer(); // Vertex list
 	const std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getAttributeContainer(); // Triangle list
 	std::vector<Edge> edgeList = triangleListtoEdgeList(triangleList);
@@ -139,7 +164,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 	// Iterate over edges extracted from triangle strip list, and perform clipping against plane
 	for(size_t i=0; i<edgeList.size(); ++i) {
 
-		//std::cout << "i = "<<i<<std::endl;
+		//LogInfo("i = "<<i);
 
 		unsigned int Sind = edgeList.at(i).v1;
 		unsigned int Eind = edgeList.at(i).v2;
@@ -153,7 +178,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 		// For each clip plane
 		if(plane.isInside(E)) {
 			if(!plane.isInside(S)) { // Going in
-				//std::cout<<"Going in!\n";
+				//LogInfo("Going in!");
 				//Måste stoppa in alla verts till edges i rätt ordning för att inte mucka upp vert-id:n
 				glm::vec3 clippedVert = plane.getIntersection(S,E);
 				outputList.push_back(clippedVert);
@@ -179,12 +204,12 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				}
 
 				if( std::find(outputEdgeList.begin(), outputEdgeList.end(),edge) == outputEdgeList.end() ) {
-					//std::cout << "Going in, Before: "<<Sind<<"->"<<Eind<<", after: "<<edge.v1<<"->"<<edge.v2<<std::endl;
+					//LogInfo("Going in, Before: "<<Sind<<"->"<<Eind<<", after: "<<edge.v1<<"->"<<edge.v2);
 					outputEdgeList.push_back(edge);
 				}
 
 			} else { // S and E both inside
-				//std::cout<<"Both inside! S = "<<glm::to_string(S)<<std::endl;
+				//LogInfo("Both inside! S = "<<glm::to_string(S));
 				
 				for (size_t j=0; j<outputList.size(); ++j) {
 					if (std::fabs(S.x-outputList.at(j).x)<EPSILON && std::fabs(S.y-outputList.at(j).y)<EPSILON && std::fabs(S.z-outputList.at(j).z)<EPSILON) {
@@ -193,7 +218,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				}
 
 				if(duplicate != -1) {
-					//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<", position "<<glm::to_string(*it)<<std::endl;
+					//LogInfo("Duplicate found at index "<<std::distance(outputList.begin(),it)<<", position "<<glm::to_string(*it));
 					edge.v1 = duplicate;
 					duplicate = -1;
 				} else { // No duplicate found
@@ -209,7 +234,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				}
 
 				if(duplicate != -1) {
-					//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<std::endl;
+					//LogInfo("Duplicate found at index "<<std::distance(outputList.begin(),it));
 					edge.v2 = duplicate;
 					duplicate = -1;
 				} else { // Duplicate found
@@ -219,14 +244,14 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				}
 
 				if( std::find(outputEdgeList.begin(), outputEdgeList.end(),edge) == outputEdgeList.end() ) {
-					//std::cout << "Both inside, Before: "<<Sind<<"->"<<Eind<<", after: "<<edge.v1<<"->"<<edge.v2<<std::endl;
+					//LogInfo("Both inside, Before: "<<Sind<<"->"<<Eind<<", after: "<<edge.v1<<"->"<<edge.v2);
 					outputEdgeList.push_back(edge);
 				}
 			}			
 			
 
 		} else if(plane.isInside(S)) { // Going out (S inside, E outside) ( fungerar ej atm, skapar ingen S),
-			//std::cout<<"Going out!\n";
+			//LogInfo("Going out!");
 			// Check if S aldready in outputList, otherwise add it. Add clippedVert between S->E
 		
 			for (size_t j=0; j<outputList.size(); ++j) {
@@ -236,7 +261,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 			}
 
 			if(duplicate != -1) {
-				//std::cout<<"Duplicate found at index "<<std::distance(outputList.begin(),it)<<std::endl;
+				//LogInfo("Duplicate found at index "<<std::distance(outputList.begin(),it));
 				edge.v1 = duplicate;
 				duplicate = -1;
 			} else { // No duplicate found
@@ -252,7 +277,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 			edge.v2 = outputList.size()-1;
 
 			if( std::find(outputEdgeList.begin(), outputEdgeList.end(),edge) == outputEdgeList.end() ) {
-				//std::cout << "Going out, Before: "<<Sind<<"->"<<Eind<<", after: "<<edge.v1<<"->"<<edge.v2<<std::endl;
+				//LogInfo("Going out, Before: "<<Sind<<"->"<<Eind<<", after: "<<edge.v1<<"->"<<edge.v2);
 				outputEdgeList.push_back(edge);
 			}
 		} else {
@@ -261,14 +286,14 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 	}
 	// End, for each clip plane
 
-	/*std::cout<<"outputList.size() = "<<outputList.size()<<", std::distance = "<<std::distance(outputList.begin(), outputList.end())<<std::endl;
+	LogInfo("outputList.size() = "<<outputList.size()<<", std::distance = "<<std::distance(outputList.begin(), outputList.end()));
 	for(size_t i=0; i<outputIndexList.size(); ++i) 
-		std::cout << "Vertex indices: " << outputIndexList.at(i) << std::endl;*/
+		LogInfo("Vertex indices: " << outputIndexList.at(i));
 
-	/*for(size_t i=0; i<outputList.size(); ++i)
-		std::cout << "Output verts, " << i << ": ("+glm::to_string(outputList.at(i)[0])+", "+glm::to_string(outputList.at(i)[1])+", "+glm::to_string(outputList.at(i)[2])+")\n";*/
+	for(size_t i=0; i<outputList.size(); ++i)
+		LogInfo("Output verts, " << i << ": ("+glm::to_string(outputList.at(i)[0])+", "+glm::to_string(outputList.at(i)[1])+", "+glm::to_string(outputList.at(i)[2])+")");
 
-	//std::cout << "Size of clipped verts vector:" << clippedVertInd.size()<<std::endl;
+	LogInfo("Size of clipped verts vector:" << clippedVertInd.size());
 
 	// Create edges between new (clipped) vertices
 	for (size_t i=0; i<clippedVertInd.size(); ++i) {
@@ -286,13 +311,13 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 		}
 	}
 
-	/*std::cout << "Size of clipped edge list: " << outputEdgeList.size() << std::endl;
+	/*LogInfo("Size of clipped edge list: " << outputEdgeList.size());
 	for(size_t i=0; i<outputEdgeList.size();++i) {
-		std::cout << "Edge, " << i << " = " << outputEdgeList.at(i).v1 << "->" << outputEdgeList.at(i).v2 << std::endl;
+		LogInfo("Edge, " << i << " = " << outputEdgeList.at(i).v1 << "->" << outputEdgeList.at(i).v2);
 	}*/
 
 	// Bygg ny SimpleMeshRAM här från outputList-vektor
-	//std::cout << "Buildning new mesh from clipped vertices.\n";
+	//LogInfo("Buildning new mesh from clipped vertices.");
 	SimpleMeshRAM* outputMesh = new SimpleMeshRAM();
 	outputMesh->initialize();
 
@@ -300,46 +325,22 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 		outputMesh->addVertex(outputList.at(i), glm::vec3(1.f), glm::vec4(1.,i/(float)outputList.size(),0.,1.0f));
 	}
 
-	//std::cout << "Number of verts in output mesh: " << 
-	//	outputList.size() << std::endl;
+	//LogInfo("Number of verts in output mesh: " << 
+	//	outputList.size());
+    if(renderAsPoints_.get())
+  	    outputMesh->setIndicesInfo(GeometryRepresentation::POINTS, GeometryRepresentation::NONE);
+    else
+        outputMesh->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
 
-  	outputMesh->setIndicesInfo(GeometryRepresentation::POINTS, GeometryRepresentation::NONE);
    	for(size_t i=0; i<outputList.size(); ++i) {
    		outputMesh->addIndex(i);
-   		//std::cout << "Adding to index list, vertex no.: " << i << std::endl;
+   		//LogInfo("Adding to index list, vertex no.: " << i);
    	}
 
 
-	//std::cout << "Returning new mesh.\n";
+	//LogInfo("Returning new mesh.");
 
 	return outputMesh;
-}
-
-void MeshClipping::process() {
-	/* Processor overview
-		- Take axis-aligned boudning box (AABB) mesh as input.
-		- Call clipGeometryAgainstPlane(...) with input and plane_ as arguments
-		- Extract and store an edge list from the input mesh's triangle list
-		- Start with an empty outputList and empty outputEdgeList. Iterate over the edge list
-		  extracted from the triangle list and check each edge against the clip plane. Store verts
-		  and edges in outputList and outputEdgeList as you go.
-		- Use outputEdgeList and, indirectly, outputList to rebuild a correctly sorted
-		  triangle strip list.
-		- Build new mesh from the triangle strip list and return it.
-	*/
-	
-	if(clippingEnabled_.get()) {
-        const GeometryRAM *geom = inport_.getData()->getRepresentation<GeometryRAM>();
-
-		//std::cout << "Calling clipping method.\n";
-		GeometryRAM *clippedPlaneGeom = clipGeometryAgainstPlane(geom, plane_);
-
-		//std::cout << "Setting new mesh as outport data.\n";
-		outport_.setData(new Geometry(clippedPlaneGeom));
-		//std::cout << "Done.\n";
-	} else {
-		outport_.setData(const_cast<Geometry*>(inport_.getData()), false);
-	}
 }
 
 } // namespace
