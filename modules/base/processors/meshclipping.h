@@ -26,8 +26,8 @@ public:
 protected:
 	virtual void process();
 
-	GeometryRAM* clipGeometry(const GeometryRAM*,SimpleMeshRAM*);
-	GeometryRAM* clipGeometryAgainstPlane(const GeometryRAM*,Plane&);
+	GeometryRAM* clipGeometry(const GeometryRAM*, SimpleMeshRAM*);
+	GeometryRAM* clipGeometryAgainstPlane(const GeometryRAM*, Plane);
 	float degreeToRad(float);
 
 private:

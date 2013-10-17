@@ -135,7 +135,7 @@ GeometryRAM* MeshClipping::clipGeometry(const GeometryRAM* in, SimpleMeshRAM* cl
 	return NULL;
 }
 
-GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane &plane) {
+GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane plane) {
 	//LogInfo("Entered clipGeometryAgainstPlane(...).");
 	
     const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
