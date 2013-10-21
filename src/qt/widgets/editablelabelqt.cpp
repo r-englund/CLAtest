@@ -50,6 +50,12 @@ void EditableLabelQt::editingOff(){
     emit textChanged();
 }
 
+void EditableLabelQt::setText(std::string txt) {
+    text_ = txt; 
+    edit(); 
+    editingOff();
+}
+
 void EditableLabelQt::showContextMenu( const QPoint& pos ){
     QPoint globalPos = label_->mapToGlobal(pos);
     QAction* selecteditem = contextMenu_->exec(globalPos);
@@ -69,6 +75,7 @@ std::string EditableLabelQt::shortenText(){
     }
     
 }
+
 
 
 }//namespace

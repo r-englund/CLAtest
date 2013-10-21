@@ -15,7 +15,7 @@ public:
     EditableLabelQt(std::string text);
     void edit();
     std::string getText(){return text_;};
-
+    void setText(std::string txt);
 public slots:
     void editingOff();
     void showContextMenu(const QPoint& pos);
