@@ -1,4 +1,3 @@
-
 ivw_project(half)
 
 #--------------------------------------------------------------------
@@ -16,14 +15,19 @@ ivw_group("Half Header Files" ${HEADER_FILES} )
 
 #--------------------------------------------------------------------
 # Add source files
-
-file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
-
+set(SOURCE_FILES
+    eLut.cpp
+    half.cpp
+    toFloat.cpp
+)
 ivw_group("Half Source Files" ${SOURCE_FILES} )
 
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(half)
+if(BUILD_SHARED_LIBS)
+    ivw_add_definition(OPENEXR_DLL)
+endif()
 
 #--------------------------------------------------------------------
 # Create library

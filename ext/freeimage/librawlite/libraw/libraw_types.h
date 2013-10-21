@@ -88,9 +88,9 @@ typedef unsigned short ushort;
 # define DllDef
 #else
 # ifdef LIBRAW_BUILDLIB
-#    define DllDef   //__declspec( dllexport )
+#    define DllDef __declspec( dllexport )
 # else
-#    define DllDef   //__declspec( dllimport )
+#    define DllDef __declspec( dllimport )
 # endif
 #endif
 #else

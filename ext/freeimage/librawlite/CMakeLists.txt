@@ -1,3 +1,4 @@
+#set(BUILD_SHARED_LIBS OFF)
 
 ivw_project(librawlite)
 
@@ -6,9 +7,6 @@ ivw_project(librawlite)
 if(WIN32)
 add_definitions( "/W0 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo /IGNORE:4006" )
 endif()
-
-add_definitions( -DNODEPS)
-
 
 #--------------------------------------------------------------------
 # Add header files
@@ -27,6 +25,12 @@ ivw_group("Source Files" ${SOURCE_FILES} )
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(librawlite)
+if(BUILD_SHARED_LIBS)
+   add_definitions(-DLIBRAW_BUILDLIB)
+else()
+   ivw_add_definition(LIBRAW_NODLL)
+endif()
+add_definitions( -DNODEPS)
 
 #--------------------------------------------------------------------
 # Create library

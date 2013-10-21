@@ -1,4 +1,3 @@
-
 ivw_project(ilmthread)
 
 #--------------------------------------------------------------------
@@ -19,6 +18,16 @@ ivw_group("Iex Header Files" ${HEADER_FILES} )
 
 #--------------------------------------------------------------------
 # Add source files
+if(WIN32)
+set(SOURCE_FILES
+    IlmThreadPool.cpp
+    IlmThreadPosix.cpp
+    IlmThreadPool.cpp
+    IlmThreadMutexWin32.cpp
+    IlmThreadSemaphoreWin32.cpp
+    IlmThreadWin32.cpp
+)
+else()
 set(SOURCE_FILES
     IlmThread.cpp
     IlmThreadMutex.cpp
@@ -30,13 +39,6 @@ set(SOURCE_FILES
     IlmThreadSemaphorePosix.cpp
     IlmThreadSemaphorePosixCompat.cpp
 )
-if(WIN32)
-    set(WIN32_FILES
-        IlmThreadMutexWin32.cpp
-        IlmThreadSemaphoreWin32.cpp
-        IlmThreadWin32.cpp
-    )
-    list(APPEND SOURCE_FILES ${WIN32_FILES})
 endif()
 
 ivw_group("Iex Source Files" ${SOURCE_FILES} )
@@ -44,6 +46,9 @@ ivw_group("Iex Source Files" ${SOURCE_FILES} )
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(ilmthread)
+if(BUILD_SHARED_LIBS)
+    ivw_add_definition(OPENEXR_DLL)
+endif()
 
 #--------------------------------------------------------------------
 # Create library

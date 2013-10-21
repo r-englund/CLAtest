@@ -41,25 +41,17 @@
 */
 
 #if defined(OPJ_STATIC) || !defined(_WIN32)
-#define OPJ_API
-#define OPJ_CALLCONV
+	#define OPJ_API
+	#define OPJ_CALLCONV
 #else
-#define OPJ_CALLCONV __stdcall
-/*
-The following ifdef block is the standard way of creating macros which make exporting 
-from a DLL simpler. All files within this DLL are compiled with the OPJ_EXPORTS
-symbol defined on the command line. this symbol should not be defined on any project
-that uses this DLL. This way any other project whose source files include this file see 
-OPJ_API functions as being imported from a DLL, wheras this DLL sees symbols
-defined with this macro as being exported.
-*/
-#if defined(OPJ_EXPORTS) || defined(DLL_EXPORT)
-#define OPJ_API //__declspec(dllexport)
-#define OPJ_CALLCONV
-#else
-#define OPJ_API //__declspec(dllimport)
-#define OPJ_CALLCONV
-#endif /* OPJ_EXPORTS */
+	#define OPJ_CALLCONV __stdcall
+	#if defined(OPJ_EXPORTS) || defined(DLL_EXPORT)
+		#define OPJ_API __declspec(dllexport)
+		#define OPJ_CALLCONV
+	#else
+		#define OPJ_API __declspec(dllimport)
+		#define OPJ_CALLCONV
+	#endif /* OPJ_EXPORTS */
 #endif /* !OPJ_STATIC || !_WIN32 */
 
 typedef int opj_bool;

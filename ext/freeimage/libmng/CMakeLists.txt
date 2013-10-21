@@ -1,3 +1,4 @@
+#set(BUILD_SHARED_LIBS OFF)
 
 ivw_project(libmng)
 
@@ -24,6 +25,10 @@ ivw_group("Source Files" ${SOURCE_FILES} )
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(libmng)
+if(BUILD_SHARED_LIBS)
+    add_definitions(-DMNG_BUILD_DLL)
+    ivw_add_definition_to_list(MNG_USE_DLL)
+endif()
 
 #--------------------------------------------------------------------
 # Create library

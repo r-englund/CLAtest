@@ -1,5 +1,5 @@
-#ifndef IVW_OPENGL_QT_INFO_H
-#define IVW_OPENGL_QT_INFO_H
+#ifndef IVW_OPENGLQT_INFO_H
+#define IVW_OPENGLQT_INFO_H
 
 #include <modules/openglqt/openglqtmoduledefine.h>
 #include <inviwo/core/util/resourceinfo.h>
@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_QT_API OpenglQtInfo : public ResourceInfo {
+class IVW_MODULE_OPENGLQT_API OpenglQtInfo : public ResourceInfo {
 public:    
     OpenglQtInfo();
     virtual ~OpenglQtInfo();
@@ -19,4 +19,4 @@ public:
 
 } // namespace
 
-#endif // IVW_OPENGL_QT_INFO_H
+#endif // IVW_OPENGLQT_INFO_H

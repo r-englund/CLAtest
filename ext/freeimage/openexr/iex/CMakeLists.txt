@@ -1,4 +1,3 @@
-
 ivw_project(iex)
 
 #--------------------------------------------------------------------
@@ -24,6 +23,9 @@ ivw_group("Iex Source Files" ${SOURCE_FILES} )
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(iex)
+if(BUILD_SHARED_LIBS)
+    ivw_add_definition(OPENEXR_DLL)
+endif()
 
 #--------------------------------------------------------------------
 # Create library

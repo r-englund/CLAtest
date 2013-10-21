@@ -131,7 +131,7 @@ halfToFloat (unsigned short y)
 // Main - prints the half-to-float lookup table
 //---------------------------------------------
 
-int
+/*int
 main ()
 {
     cout.precision (9);
@@ -161,4 +161,4 @@ main ()
 
     cout << "};\n";
     return 0;
-}
+}*/

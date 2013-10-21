@@ -49,9 +49,9 @@
 		// DLL_API functions as being imported from a DLL, wheras this DLL sees symbols
 		// defined with this macro as being exported.
 		#ifdef FREEIMAGE_EXPORTS
-			#define DLL_API //__declspec(dllexport)
+			#define DLL_API __declspec(dllexport)
 		#else
-			#define DLL_API //__declspec(dllimport)
+			#define DLL_API __declspec(dllimport)
 		#endif // FREEIMAGE_EXPORTS
 	#else 
 		// try the gcc visibility support (see http://gcc.gnu.org/wiki/Visibility)

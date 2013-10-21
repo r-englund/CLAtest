@@ -20,4 +20,4 @@
     #define IVW_MODULE_PYTHON_API
 #endif
 
-#endif /* _IVW_MODULE_OPENGL_QT_DEFINE_H_ */
+#endif /* _IVW_MODULE_PYTHON_DEFINE_H_ */

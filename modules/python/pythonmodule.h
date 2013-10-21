@@ -51,4 +51,4 @@ protected:
 
 } // namespace
 
-#endif // IVW_OPENGL_QT_MODULE_H
+#endif // IVW_OPENGLQT_MODULE_H

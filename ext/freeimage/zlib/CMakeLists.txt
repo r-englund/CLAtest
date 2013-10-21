@@ -1,3 +1,5 @@
+#set(BUILD_SHARED_LIBS OFF)
+
 ivw_project(zlib)
 
 #--------------------------------------------------------------------
@@ -30,6 +32,10 @@ ivw_group("Source Files" ${SOURCE_FILES} )
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(zlib)
+if(BUILD_SHARED_LIBS)
+    add_definitions(-DZLIB_INTERNAL)
+    ivw_add_definition(ZLIB_DLL)
+endif()
 
 #--------------------------------------------------------------------
 # Create library

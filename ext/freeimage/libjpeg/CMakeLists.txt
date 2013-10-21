@@ -1,3 +1,4 @@
+#set(BUILD_SHARED_LIBS OFF)
 
 ivw_project(libjpeg)
 
@@ -23,8 +24,6 @@ file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "(Darwin|FreeBSD)")
   list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/jmemmac.c)
 endif()
-list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/jmemdos.c)
-
 
 ivw_group("Source Files" ${SOURCE_FILES} )
 

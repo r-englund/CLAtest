@@ -1,3 +1,4 @@
+#set(BUILD_SHARED_LIBS OFF)
 
 ivw_project(libtiff4)
 
