@@ -1,4 +1,4 @@
-set(NAME glm)
+ivw_project(glm)
 
 file(GLOB ROOT_SOURCE *.cpp)
 file(GLOB ROOT_INLINE *.inl)
@@ -20,24 +20,39 @@ file(GLOB_RECURSE VIRTREV_SOURCE ./virtrev/*.cpp)
 file(GLOB_RECURSE VIRTREV_INLINE ./virtrev/*.inl)
 file(GLOB_RECURSE VIRTREV_HEADER ./virtrev/*.hpp)
 
-source_group("Core Files" FILES ${CORE_SOURCE})
-source_group("Core Files" FILES ${CORE_INLINE})
-source_group("Core Files" FILES ${CORE_HEADER})
-source_group("GTC Files" FILES ${GTC_SOURCE})
-source_group("GTC Files" FILES ${GTC_INLINE})
-source_group("GTC Files" FILES ${GTC_HEADER})
-source_group("GTX Files" FILES ${GTX_SOURCE})
-source_group("GTX Files" FILES ${GTX_INLINE})
-source_group("GTX Files" FILES ${GTX_HEADER})
-source_group("VIRTREV Files" FILES ${VIRTREV_SOURCE})
-source_group("VIRTREV Files" FILES ${VIRTREV_INLINE})
-source_group("VIRTREV Files" FILES ${VIRTREV_HEADER})
+ivw_group("Core Files" ${CORE_SOURCE})
+ivw_group("Core Files" ${CORE_INLINE})
+ivw_group("Core Files" ${CORE_HEADER})
+ivw_group("GTC Files" ${GTC_SOURCE})
+ivw_group("GTC Files" ${GTC_INLINE})
+ivw_group("GTC Files" ${GTC_HEADER})
+ivw_group("GTX Files" ${GTX_SOURCE})
+ivw_group("GTX Files" ${GTX_INLINE})
+ivw_group("GTX Files" ${GTX_HEADER})
+ivw_group("VIRTREV Files" ${VIRTREV_SOURCE})
+ivw_group("VIRTREV Files" ${VIRTREV_INLINE})
+ivw_group("VIRTREV Files" ${VIRTREV_HEADER})
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-add_executable(${NAME} 
+#--------------------------------------------------------------------
+# Define defintions
+ivw_define_standard_definitions(glm)
+if(BUILD_SHARED_LIBS)
+    ivw_add_definition(GLM_SHARED_BUILD)
+endif()
+
+add_library(glm 
 	${ROOT_SOURCE}    ${ROOT_INLINE}    ${ROOT_HEADER} 
 	${CORE_SOURCE}    ${CORE_INLINE}    ${CORE_HEADER}
 	${GTC_SOURCE}     ${GTC_INLINE}     ${GTC_HEADER} 
 	${GTX_SOURCE}     ${GTX_INLINE}     ${GTX_HEADER} 
 	${VIRTREV_SOURCE} ${VIRTREV_INLINE} ${VIRTREV_HEADER})
+    
+#--------------------------------------------------------------------
+# Creates VS folder structure
+ivw_vs_folder(glm ext)
+
+#--------------------------------------------------------------------
+# Make package (for other projects to find)
+ivw_make_package(GLM glm)

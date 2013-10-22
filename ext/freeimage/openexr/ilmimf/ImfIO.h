@@ -42,6 +42,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfInt64.h>
 #include <string>
 
@@ -51,7 +52,7 @@ namespace Imf {
 // class IStream -- an abstract base class for input streams.
 //-----------------------------------------------------------
 
-class IStream
+class IMF_EXPORT IStream
 {
   public:
 
@@ -148,7 +149,7 @@ class IStream
 // class OStream -- an abstract base class for output streams
 //-----------------------------------------------------------
 
-class OStream
+class IMF_EXPORT OStream
 {
   public:
 

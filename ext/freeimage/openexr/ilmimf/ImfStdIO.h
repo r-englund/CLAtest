@@ -43,6 +43,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfIO.h>
 #include <fstream>
 #include <sstream>
@@ -54,7 +55,7 @@ namespace Imf {
 // class IStream based on class std::ifstream
 //-------------------------------------------
 
-class StdIFStream: public IStream
+class IMF_EXPORT StdIFStream: public IStream
 {
   public:
 
@@ -94,7 +95,7 @@ class StdIFStream: public IStream
 // class OStream based on class std::ofstream
 //-------------------------------------------
 
-class StdOFStream: public OStream
+class IMF_EXPORT StdOFStream: public OStream
 {
   public:
 
@@ -133,7 +134,7 @@ class StdOFStream: public OStream
 // OStream, based on class std::ostringstream
 //------------------------------------------------
 
-class StdOSStream: public OStream
+class IMF_EXPORT StdOSStream: public OStream
 {
   public:
 

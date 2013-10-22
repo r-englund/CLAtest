@@ -1,5 +1,3 @@
-#set(BUILD_SHARED_LIBS OFF)
-
 ivw_project(libtiff4)
 
 #--------------------------------------------------------------------
@@ -20,13 +18,10 @@ ivw_group("Header Files" ${HEADER_FILES} )
 
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 
-list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_msdos.c)
 list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_config.wince.h)
 list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_wince.c)
 list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_win3.c)
 list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_vms.c)
-list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_atari.c)
-list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_acorn.c)
 
 if(WIN32)
     list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tif_apple.c)
@@ -55,6 +50,10 @@ add_library(libtiff4 ${SOURCE_FILES} ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Creates VS folder structure
 ivw_vs_folder(libtiff4 ext/freeimagelib)
+
+#--------------------------------------------------------------------
+# Add dependencies
+ivw_add_dependencies(InternalZLib LibJPEG)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)

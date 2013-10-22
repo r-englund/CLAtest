@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
+// Copyright (c) 2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
 // 
 // All rights reserved.
@@ -32,64 +32,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-
-#ifndef INCLUDED_IMF_RATIONAL_H
-#define INCLUDED_IMF_RATIONAL_H
-
-//-----------------------------------------------------------------------------
-//
-//	Rational numbers
-//
-//	A rational number is represented as pair of integers, n and d.
-//	The value of of the rational number is
-// 
-//		n/d			for d > 0
-//		positive infinity	for n > 0, d == 0
-//		negative infinity	for n < 0, d == 0
-//		not a number (NaN)	for n == 0, d == 0
-//
-//-----------------------------------------------------------------------------
-
-#include "ImfExport.h"
-
-namespace Imf {
-
-class IMF_EXPORT Rational
-{
-  public:
-
-    int			n;		// numerator
-    unsigned int	d;		// denominator
-
-
-    //----------------------------------------
-    // Default constructor, sets value to zero
-    //----------------------------------------
-
-    Rational (): n (0), d (1) {}
-
-
-    //-------------------------------------
-    // Constructor, explicitly sets n and d
-    //-------------------------------------
-
-    Rational (int n, int d): n (n), d (d) {}
-
-
-    //----------------------------
-    // Constructor, approximates x
-    //----------------------------
-
-    explicit Rational (double x);
-
-
-    //---------------------------------
-    // Approximate conversion to double
-    //---------------------------------
-
-    operator double () const {return double (n) / double (d);}
-};
-
-} // namespace Imf
-
+#if defined(OPENEXR_DLL)
+#if defined(ILMIMF_EXPORTS)
+#define IMF_EXPORT __declspec(dllexport)
+#define IMF_EXPORT_CONST extern __declspec(dllexport)
+#else
+#define IMF_EXPORT __declspec(dllimport)
+#define IMF_EXPORT_CONST extern __declspec(dllimport)
+#endif
+#else
+#define IMF_EXPORT
+#define IMF_EXPORT_CONST extern const
 #endif

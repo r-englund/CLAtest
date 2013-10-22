@@ -87,8 +87,8 @@ namespace Iex {
 //
 //--------------------------------------------------------------------------
 
-void throwErrnoExc (const std::string &txt, int errnum);
-void throwErrnoExc (const std::string &txt = "%T." /*, int errnum = oserror() */);
+IEX_EXPORT void throwErrnoExc (const std::string &txt, int errnum);
+IEX_EXPORT void throwErrnoExc (const std::string &txt = "%T." /*, int errnum = oserror() */);
 
 
 } // namespace Iex

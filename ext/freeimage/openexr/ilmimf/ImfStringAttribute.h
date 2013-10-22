@@ -43,6 +43,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfAttribute.h>
 #include <string>
 
@@ -51,9 +52,9 @@ namespace Imf {
 
 
 typedef TypedAttribute<std::string> StringAttribute;
-template <> const char *StringAttribute::staticTypeName ();
-template <> void StringAttribute::writeValueTo (OStream &, int) const;
-template <> void StringAttribute::readValueFrom (IStream &, int, int);
+template <> IMF_EXPORT const char *StringAttribute::staticTypeName ();
+template <> IMF_EXPORT void StringAttribute::writeValueTo (OStream &, int) const;
+template <> IMF_EXPORT void StringAttribute::readValueFrom (IStream &, int, int);
 
 
 } // namespace Imf

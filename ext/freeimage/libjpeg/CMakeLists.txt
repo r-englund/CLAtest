@@ -1,5 +1,3 @@
-#set(BUILD_SHARED_LIBS OFF)
-
 ivw_project(libjpeg)
 
 #--------------------------------------------------------------------
@@ -31,12 +29,15 @@ ivw_group("Source Files" ${SOURCE_FILES} )
 # Define defintions
 ivw_define_standard_definitions(libjpeg)
 remove_definitions(-DHAVE_CONFIG_H)
+if(BUILD_SHARED_LIBS)
+    add_definitions(-DJPEG_DLL)
+else()
+    ivw_add_definition(JPEG_STATIC)
+endif()
 
 #--------------------------------------------------------------------
 # Create library
 add_library(libjpeg ${SOURCE_FILES} ${HEADER_FILES})
-
-# ivw_add_dependencies(InternalZLib)
 
 #--------------------------------------------------------------------
 # Creates VS folder structure

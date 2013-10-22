@@ -674,7 +674,29 @@
 #   define GLM_INLINE inline
 #endif//defined(GLM_FORCE_INLINE)
 
-#define GLM_FUNC_DECL GLM_CUDA_FUNC_DECL
+#ifdef GLM_SHARED_BUILD
+    #ifdef GLM_EXPORTS
+        #ifdef _WIN32
+            #define GLM_FUNC_DECL __declspec(dllexport) GLM_CUDA_FUNC_DECL
+			#define GLM_FUNC_QUALIFIER __declspec(dllexport) GLM_CUDA_FUNC_DEF GLM_INLINE
+        #else //UNIX (GCC)
+            #define GLM_FUNC_DECL __attribute__ ((visibility ("default"))) GLM_CUDA_FUNC_DECL
+			#define GLM_FUNC_QUALIFIER __attribute__ ((visibility ("default"))) GLM_CUDA_FUNC_DEF GLM_INLINE
+        #endif
+    #else
+        #ifdef _WIN32
+            #define GLM_FUNC_DECL __declspec(dllimport) GLM_CUDA_FUNC_DECL
+			#define GLM_FUNC_QUALIFIER __declspec(dllimport) GLM_CUDA_FUNC_DEF GLM_INLINE
+        #else
+            #define GLM_FUNC_DECL GLM_CUDA_FUNC_DECL
+			#define GLM_FUNC_QUALIFIER GLM_CUDA_FUNC_DEF GLM_INLINE
+        #endif
+    #endif
+#else //STATIC
+    #define GLM_FUNC_DECL GLM_CUDA_FUNC_DECL
+	#define GLM_FUNC_QUALIFIER GLM_CUDA_FUNC_DEF GLM_INLINE
+#endif
+
 #define GLM_FUNC_QUALIFIER GLM_CUDA_FUNC_DEF GLM_INLINE
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

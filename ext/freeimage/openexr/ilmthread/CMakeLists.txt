@@ -14,7 +14,7 @@ set(HEADER_FILES
     IlmThreadPool.h
     IlmThreadSemaphore.h
 )
-ivw_group("Iex Header Files" ${HEADER_FILES} )
+ivw_group("IlmThread Header Files" ${HEADER_FILES} )
 
 #--------------------------------------------------------------------
 # Add source files
@@ -41,7 +41,7 @@ set(SOURCE_FILES
 )
 endif()
 
-ivw_group("Iex Source Files" ${SOURCE_FILES} )
+ivw_group("IlmThread Source Files" ${SOURCE_FILES} )
 
 #--------------------------------------------------------------------
 # Define defintions
@@ -58,10 +58,16 @@ add_library(ilmthread ${SOURCE_FILES} ${HEADER_FILES})
 # Creates VS folder structure
 ivw_vs_folder(ilmthread ext/freeimagelib/openexrlib)
 
-ivw_add_dependencies(Iex)
-ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/)
-ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/iex)
+#--------------------------------------------------------------------
+# Add dependencies
+ivw_add_dependencies(Half
+					Iex
+                    Imath)
+#ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/)
+#ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/iex)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/ilmthread)
 ivw_make_package(IlmThread ilmthread)

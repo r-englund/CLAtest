@@ -42,6 +42,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfHeader.h>
 #include <ImfFrameBuffer.h>
 #include "ImathBox.h"
@@ -55,7 +56,7 @@ class InputFile;
 struct PreviewRgba;
 
 
-class TiledOutputFile
+class IMF_EXPORT TiledOutputFile
 {
   public:
 

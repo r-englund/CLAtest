@@ -45,15 +45,15 @@
 
 #include <ImfAttribute.h>
 #include <ImfCompression.h>
-
+#include "ImfExport.h"
 
 namespace Imf {
 
 
 typedef TypedAttribute<Compression> CompressionAttribute;
-template <> const char *CompressionAttribute::staticTypeName ();
-template <> void CompressionAttribute::writeValueTo (OStream &, int) const;
-template <> void CompressionAttribute::readValueFrom (IStream &, int, int);
+template <> IMF_EXPORT const char *CompressionAttribute::staticTypeName ();
+template <> IMF_EXPORT void CompressionAttribute::writeValueTo (OStream &, int) const;
+template <> IMF_EXPORT void CompressionAttribute::readValueFrom (IStream &, int, int);
 
 
 } // namespace Imf

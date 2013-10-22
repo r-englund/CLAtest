@@ -35,9 +35,12 @@ add_library(iex ${SOURCE_FILES} ${HEADER_FILES})
 # Creates VS folder structure
 ivw_vs_folder(iex ext/freeimagelib/openexrlib)
 
-ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/half)
-ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/ilmimf)
+#--------------------------------------------------------------------
+# Add dependencies
+ivw_add_dependencies(Half)
+#ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/ilmimf)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/iex)
 ivw_make_package(Iex iex)

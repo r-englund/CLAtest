@@ -43,6 +43,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfHeader.h>
 #include <ImfFrameBuffer.h>
 #include <ImfThreading.h>
@@ -53,7 +54,7 @@ class InputFile;
 struct PreviewRgba;
 
 
-class OutputFile
+class IMF_EXPORT OutputFile
 {
   public:
 

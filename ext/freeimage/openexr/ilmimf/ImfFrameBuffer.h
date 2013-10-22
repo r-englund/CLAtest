@@ -44,11 +44,11 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfName.h>
 #include <ImfPixelType.h>
 #include <map>
 #include <string>
-
 
 namespace Imf {
 
@@ -62,7 +62,7 @@ namespace Imf {
 // component is called a "slice".
 //-------------------------------------------------------
 
-struct Slice
+struct IMF_EXPORT Slice
 {
     //------------------------------
     // Data type; see ImfPixelType.h
@@ -147,7 +147,7 @@ struct Slice
 };
 
 
-class FrameBuffer
+class IMF_EXPORT FrameBuffer
 {
   public:
 

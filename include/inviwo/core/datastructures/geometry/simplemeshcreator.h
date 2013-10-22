@@ -18,7 +18,7 @@ public:
 
 	static SimpleMeshRAM* rectangle(glm::vec3 posLl, glm::vec3 posUr);
 
-    static SimpleMeshRAM* sphere(float radius, size_t numLoops, size_t segmentsPerLoop);
+    static SimpleMeshRAM* sphere(float radius, unsigned int numLoops, unsigned int segmentsPerLoop);
 };
 
 } // namespace

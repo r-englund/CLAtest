@@ -44,6 +44,7 @@
 //-----------------------------------------------------------------------------
 
 #include "IexBaseExc.h"
+#include "ImfExport.h"
 #include <ImfIO.h>
 #include <ImfXdr.h>
 
@@ -400,7 +401,7 @@ TypedAttribute<T>::unRegisterAttributeType ()
 
 } // namespace Imf
 
-#if defined(OPENEXR_DLL) && defined(_MSC_VER)
+/*#if defined(OPENEXR_DLL) && defined(_MSC_VER)
     // Tell MS VC++ to disable "non dll-interface class used as base
     // for dll-interface class" and "no suitable definition provided
     // for explicit template"
@@ -417,7 +418,7 @@ TypedAttribute<T>::unRegisterAttributeType ()
 
     #pragma warning(default : 4251)
     #undef EXTERN_TEMPLATE
-#endif
+#endif*/
 
 // Metrowerks compiler wants the .cpp file inlined, too
 #ifdef __MWERKS__

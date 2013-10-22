@@ -35,6 +35,7 @@
 #ifndef INCLUDED_IMF_MULTIVIEW_H
 #define INCLUDED_IMF_MULTIVIEW_H
 
+#include "ImfExport.h"
 #include <ImfChannelList.h>
 #include <ImfStringVectorAttribute.h>
 
@@ -88,7 +89,7 @@ namespace Imf {
 // vector is empty, return "".
 //
 
-std::string defaultViewName (const StringVector &multiView);
+IMF_EXPORT std::string defaultViewName (const StringVector &multiView);
 
 
 //
@@ -97,7 +98,7 @@ std::string defaultViewName (const StringVector &multiView);
 // is not a member of any named view.
 //
 
-std::string viewFromChannelName (const std::string &channel,
+IMF_EXPORT std::string viewFromChannelName (const std::string &channel,
                                  const StringVector &multiView);
 
 
@@ -107,7 +108,7 @@ std::string viewFromChannelName (const std::string &channel,
 // belongs to no view or if both channels belong to the same view.)
 //
 
-bool areCounterparts (const std::string &channel1,
+IMF_EXPORT bool areCounterparts (const std::string &channel1,
                       const std::string &channel2,
                       const StringVector &multiView);
 
@@ -115,7 +116,7 @@ bool areCounterparts (const std::string &channel1,
 // Return a list of all channels belonging to view viewName.
 //
 
-ChannelList channelsInView (const std::string &viewName,
+IMF_EXPORT ChannelList channelsInView (const std::string &viewName,
                             const ChannelList &channelList,
                             const StringVector &multiView);
 
@@ -123,7 +124,7 @@ ChannelList channelsInView (const std::string &viewName,
 // Return a list of channels not associated with any view.
 //
 
-ChannelList channelsInNoView (const ChannelList &channelList,
+IMF_EXPORT ChannelList channelsInNoView (const ChannelList &channelList,
                               const StringVector &multiView);
 
 //
@@ -132,7 +133,7 @@ ChannelList channelsInNoView (const ChannelList &channelList,
 // X.right.Y, X.centre.Y, etc.).
 //
 
-ChannelList channelInAllViews (const std::string &channame,
+IMF_EXPORT ChannelList channelInAllViews (const std::string &channame,
                                const ChannelList &channelList,
                                const StringVector &multiView);
 
@@ -143,7 +144,7 @@ ChannelList channelInAllViews (const std::string &channame,
 // exist.
 //
 
-std::string channelInOtherView (const std::string &channel,
+IMF_EXPORT std::string channelInOtherView (const std::string &channel,
                                 const ChannelList &channelList,
                                 const StringVector &multiView,
                                 const std::string &otherViewName);
@@ -155,7 +156,7 @@ std::string channelInOtherView (const std::string &channel,
 // not insert the view name.
 //
 
-std::string insertViewName (const std::string &channel,
+IMF_EXPORT std::string insertViewName (const std::string &channel,
 			    const StringVector &multiView,
 			    int i);
 

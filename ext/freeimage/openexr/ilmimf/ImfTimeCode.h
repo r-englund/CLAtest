@@ -112,8 +112,9 @@
 
 namespace Imf {
 
-   
-class TimeCode
+#include "ImfExport.h"
+
+class IMF_EXPORT TimeCode
 {
   public:
 

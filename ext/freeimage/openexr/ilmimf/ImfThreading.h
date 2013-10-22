@@ -69,6 +69,8 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
+
 namespace Imf {
 
 
@@ -77,14 +79,14 @@ namespace Imf {
 // compression and decompression of OpenEXR files.
 //-----------------------------------------------------------------------------
     
-int     globalThreadCount ();
+IMF_EXPORT int     globalThreadCount ();
 
 
 //-----------------------------------------------------------------------------
 // Change the number of Imf-global worker threads
 //-----------------------------------------------------------------------------
 
-void    setGlobalThreadCount (int count);
+IMF_EXPORT void    setGlobalThreadCount (int count);
 
 
 } // namespace Imf

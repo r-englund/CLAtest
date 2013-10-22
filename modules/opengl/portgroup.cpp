@@ -48,7 +48,7 @@ void PortGroup::reattachTargets() {
     // attach textures to FBO
     frameBufferObject_->activate();
     frameBufferObject_->detachAllTextures();
-    for (size_t i=0; i<images.size(); i++) {
+    for (unsigned int i=0; i<static_cast<unsigned int>(images.size()); i++) {
         frameBufferObject_->attachColorTexture(images[i]->getColorTexture(), i);
         if (i==0)
             // depth values only valid for the first render target

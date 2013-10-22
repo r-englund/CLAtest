@@ -51,13 +51,13 @@ namespace Imf {
 
 typedef TypedAttribute<PreviewImage> PreviewImageAttribute;
 
-template <>
+template <> IMF_EXPORT
 const char *PreviewImageAttribute::staticTypeName ();
 
-template <>
+template <> IMF_EXPORT
 void PreviewImageAttribute::writeValueTo (OStream &, int) const;
 
-template <>
+template <> IMF_EXPORT
 void PreviewImageAttribute::readValueFrom (IStream &, int, int);
 
 

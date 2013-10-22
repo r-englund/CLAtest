@@ -96,10 +96,12 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
+
 namespace Imf {
 
    
-class KeyCode
+class IMF_EXPORT KeyCode
 {
   public:
 

@@ -42,28 +42,29 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include "ImathBox.h"
 #include <ImfHeader.h>
 #include <stdio.h>
 
 namespace Imf {
 
-int levelSize (int min, int max, int l, LevelRoundingMode rmode);
+IMF_EXPORT int levelSize (int min, int max, int l, LevelRoundingMode rmode);
 
-Imath::Box2i dataWindowForLevel (const TileDescription &tileDesc,
+IMF_EXPORT Imath::Box2i dataWindowForLevel (const TileDescription &tileDesc,
 				 int minX, int maxX,
 				 int minY, int maxY,
 				 int lx, int ly);
 
-Imath::Box2i dataWindowForTile (const TileDescription &tileDesc,
+IMF_EXPORT Imath::Box2i dataWindowForTile (const TileDescription &tileDesc,
 				int minX, int maxX,
 				int minY, int maxY,
 				int dx, int dy,
 				int lx, int ly);
 
-size_t calculateBytesPerPixel (const Header &header);
+IMF_EXPORT size_t calculateBytesPerPixel (const Header &header);
 
-void precalculateTileInfo (const TileDescription& tileDesc,
+IMF_EXPORT void precalculateTileInfo (const TileDescription& tileDesc,
 			   int minX, int maxX,
 			   int minY, int maxY,
 			   int *&numXTiles, int *&numYTiles,

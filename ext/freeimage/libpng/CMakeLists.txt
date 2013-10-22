@@ -1,5 +1,3 @@
-#set(BUILD_SHARED_LIBS OFF)
-
 ivw_project(internallibpng)
 
 #--------------------------------------------------------------------
@@ -42,7 +40,7 @@ ivw_vs_folder(internallibpng ext/freeimagelib)
 #--------------------------------------------------------------------
 # Add dependencies
 
-ivw_add_dependency_directories(InternalZLib)
+ivw_add_dependencies(InternalZLib)
 
 
 INCLUDE_DIRECTORIES("${IVW_EXTENSIONS_DIR}/freeimage/zlib/")

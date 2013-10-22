@@ -53,14 +53,29 @@ namespace Iex {
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 // Tell MS VC++ to suppress exception specification warnings
-#pragma warning(disable:4290)
+    #pragma warning(disable:4290)
+    #if defined(OPENEXR_DLL)
+        #if defined(IEX_EXPORTS)
+            #define IEX_EXPORT __declspec(dllexport)
+            #define IEX_EXPORT_CONST extern __declspec(dllexport)
+        #else
+            #define IEX_EXPORT __declspec(dllimport)
+            #define IEX_EXPORT_CONST extern __declspec(dllimport)
+        #endif
+    #else
+        #define IEX_EXPORT
+        #define IEX_EXPORT_CONST extern const
+    #endif
+#else
+    #define IEX_EXPORT
+    #define IEX_EXPORT_CONST extern const
 #endif
 
 //-------------------------------
 // Our most basic exception class
 //-------------------------------
 
-class BaseExc: public std::string, public std::exception
+class IEX_EXPORT BaseExc: public std::string, public std::exception
 {
   public:
 
@@ -126,7 +141,7 @@ class BaseExc: public std::string, public std::exception
 //-----------------------------------------------------
 
 #define DEFINE_EXC(name, base)				        \
-    class name: public base				        \
+    class IEX_EXPORT name: public base				        \
     {							        \
       public:                                                   \
 	name (const char* text=0)      throw(): base (text) {}	\
@@ -199,8 +214,8 @@ DEFINE_EXC (TypeExc, BaseExc) 	 // An object is an inappropriate type,
 
 typedef std::string (* StackTracer) ();
 
-void		setStackTracer (StackTracer stackTracer);
-StackTracer	stackTracer ();
+IEX_EXPORT void		setStackTracer (StackTracer stackTracer);
+IEX_EXPORT StackTracer	stackTracer ();
 
 
 //-----------------

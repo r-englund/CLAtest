@@ -45,6 +45,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfHeader.h>
 #include <ImfFrameBuffer.h>
 #include "ImathVec.h"
@@ -66,7 +67,7 @@ struct PreviewRgba;
 // Tiled RGBA output file.
 //
 
-class TiledRgbaOutputFile
+class IMF_EXPORT TiledRgbaOutputFile
 {
   public:
 
@@ -295,7 +296,7 @@ class TiledRgbaOutputFile
 // Tiled RGBA input file
 //
 
-class TiledRgbaInputFile
+class IMF_EXPORT TiledRgbaInputFile
 {
   public:
 

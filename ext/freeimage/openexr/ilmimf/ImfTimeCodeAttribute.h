@@ -43,6 +43,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfAttribute.h>
 #include <ImfTimeCode.h>
 
@@ -52,13 +53,13 @@ namespace Imf {
 
 typedef TypedAttribute<TimeCode> TimeCodeAttribute;
 
-template <>
+template <> IMF_EXPORT
 const char *TimeCodeAttribute::staticTypeName ();
 
-template <>
+template <> IMF_EXPORT
 void TimeCodeAttribute::writeValueTo (OStream &, int) const;
 
-template <>
+template <> IMF_EXPORT
 void TimeCodeAttribute::readValueFrom (IStream &, int, int);
 
 

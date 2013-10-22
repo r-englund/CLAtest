@@ -42,6 +42,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 
 namespace Imf {
 
@@ -112,7 +113,7 @@ inline bool  supportsFlags (int flags)	{return !(flags & ~ALL_FLAGS);}
 // file is probably an OpenEXR image file, false if not.
 //
 
-bool	     isImfMagic (const char bytes[4]);
+IMF_EXPORT bool	     isImfMagic (const char bytes[4]);
 
 
 } // namespace Imf

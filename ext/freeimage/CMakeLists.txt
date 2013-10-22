@@ -1,14 +1,14 @@
 #--------------------------------------------------------------------
 # Add subdirectories
-add_subdirectory(zlib)
-add_subdirectory(libjpeg)
-add_subdirectory(libmng)
-add_subdirectory(libopenjpeg)
-add_subdirectory(libpng)
-add_subdirectory(librawlite)
-add_subdirectory(libtiff)
-add_subdirectory(libtiff4)
-add_subdirectory(openexr)
+#add_subdirectory(zlib)
+#add_subdirectory(libjpeg)
+#add_subdirectory(libmng)
+#add_subdirectory(libopenjpeg)
+#add_subdirectory(libpng)
+#add_subdirectory(librawlite)
+#add_subdirectory(libtiff)
+#add_subdirectory(libtiff4)
+#add_subdirectory(openexr)
 #--------------------------------------------------------------------
 # FreeImage Package
 ivw_project(freeimage)
@@ -19,6 +19,112 @@ ivw_project(freeimage)
 if(WIN32)
 add_definitions( "/W0 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo /IGNORE:4006" )
 endif()
+#if(NOT DESIRED_QT_VERSION MATCHES 5)    
+    # Certain zlib functions conflict with Qt4 or less. Hence Z_PREFIX is requried.
+    #add_definitions( "/DZ_PREFIX" )
+#endif()
+
+
+#--------------------------------------------------------------------
+# Add LIBJPEG files
+file(GLOB_RECURSE LIBJPEG_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/*.h)
+file(GLOB_RECURSE LIBJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/*.c)
+list(REMOVE_ITEM LIBJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/ckconfig.c)
+## macosx
+if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "(Darwin|FreeBSD)")
+  list(REMOVE_ITEM LIBJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/jmemmac.c)
+endif()
+
+#--------------------------------------------------------------------
+# Add LIBOpenJPEG files
+file(GLOB_RECURSE LIBOPENJPEG_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libopenjpeg/*.h)
+file(GLOB_RECURSE LIBOPENJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libopenjpeg/*.c)
+list(REMOVE_ITEM LIBOPENJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libopenjpeg/t1_generate_luts.c)
+
+#--------------------------------------------------------------------
+# Add LIBPNG files
+file(GLOB_RECURSE LIBPNG_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.h)
+file(GLOB_RECURSE LIBPNG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.c)
+
+#--------------------------------------------------------------------
+# Add LIBRawLite files
+file(GLOB_RECURSE LIBRAWLITE_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/librawlite/*.h)
+list(REMOVE_ITEM LIBRAWLITE_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/librawlite/internal/libraw_internal_funcs.h)
+file(GLOB_RECURSE LIBRAWLITE_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/librawlite/*.cpp)
+
+#--------------------------------------------------------------------
+# Add LIBTIFF4 files
+file(GLOB_RECURSE LIBTIFF4_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/*.h)
+file(GLOB_RECURSE LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/*.c)
+list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tif_config.wince.h)
+list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tif_wince.c)
+list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tif_win3.c)
+list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tif_vms.c)
+list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tif_win32.c)
+list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tif_apple.c)
+list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tif_unix.c)
+
+if(NOT WIN32)
+    list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tiffconf.vc.h)
+    list(REMOVE_ITEM LIBTIFF4_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libtiff4/tif_config.vc.h)
+endif()
+
+#--------------------------------------------------------------------
+# Add OpenEXR files
+file(GLOB_RECURSE HALF_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/half/*.h)
+set(HALF_SOURCE_FILES
+    openexr/half/eLut.cpp
+    openexr/half/half.cpp
+    openexr/half/toFloat.cpp
+)
+
+file(GLOB_RECURSE IEX_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/iex/*.h)
+file(GLOB_RECURSE IEX_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/iex/*.cpp)
+
+file(GLOB_RECURSE ILLMIMF_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/ilmimf/*.h)
+file(GLOB_RECURSE ILLMIMF_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/ilmimf/*.cpp)
+list(REMOVE_ITEM ILLMIMF_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/ilmimf/b44ExpLogTable.cpp)
+
+set(ILMTHREAD_HEADER_FILES
+    openexr/ilmthread/IlmThread.h
+    openexr/ilmthread/IlmThreadMutex.h
+    openexr/ilmthread/IlmThreadPool.h
+    openexr/ilmthread/IlmThreadSemaphore.h
+)
+if(WIN32)
+set(ILMTHREAD_SOURCE_FILES
+    openexr/ilmthread/IlmThreadPool.cpp
+    openexr/ilmthread/IlmThreadPosix.cpp
+    openexr/ilmthread/IlmThreadPool.cpp
+    openexr/ilmthread/IlmThreadMutexWin32.cpp
+    openexr/ilmthread/IlmThreadSemaphoreWin32.cpp
+    openexr/ilmthread/IlmThreadWin32.cpp
+)
+else()
+set(ILMTHREAD_SOURCE_FILES
+    openexr/ilmthread/IlmThread.cpp
+    openexr/ilmthread/IlmThreadMutex.cpp
+    openexr/ilmthread/IlmThreadMutexPosix.cpp
+    openexr/ilmthread/IlmThreadPool.cpp
+    openexr/ilmthread/IlmThreadPosix.cpp
+    openexr/ilmthread/IlmThreadPool.cpp
+    openexr/ilmthread/IlmThreadSemaphore.cpp
+    openexr/ilmthread/IlmThreadSemaphorePosix.cpp
+    openexr/ilmthread/IlmThreadSemaphorePosixCompat.cpp
+)
+endif()
+
+file(GLOB_RECURSE IMATH_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/imath/*.h)
+file(GLOB_RECURSE IMATH_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/imath/*.cpp)
+
+set(OPENEXR_HEADER_FILES ${HALF_HEADER_FILES} ${IEX_HEADER_FILES} ${ILLMIMF_HEADER_FILES} ${ILMTHREAD_HEADER_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBaseConfig.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/openexr/OpenEXRConfig.h)
+set(OPENEXR_SOURCE_FILES ${HALF_SOURCE_FILES} ${IEX_SOURCE_FILES} ${ILLMIMF_SOURCE_FILES} ${ILMTHREAD_SOURCE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/openexr/asd.cpp)
+
+#--------------------------------------------------------------------
+# Add ZLib files
+file(GLOB_RECURSE ZLIB_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/zlib/*.h)
+file(GLOB_RECURSE ZLIB_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/zlib/*.c)
 
 #--------------------------------------------------------------------
 # Add header files
@@ -45,7 +151,7 @@ LIST(APPEND HEADER_FILES 	${DeprecationManager_HEADER_FILES}
 							${General_HEADER_FILES}	)
 
 
-ivw_group("Header Files" ${HEADER_FILES})
+ivw_group("Header Files" ${HEADER_FILES} ${LIBJPEG_HEADER_FILES} ${LIBOPENJPEG_HEADER_FILES} ${LIBPNG_HEADER_FILES} ${LIBRAWLITE_HEADER_FILES} ${LIBTIFF4_HEADER_FILES} ${OPENEXR_HEADER_FILES} ${ZLIB_HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
@@ -63,7 +169,7 @@ LIST(APPEND SOURCE_FILES
 					${Metadata_SOURCE_FILES}
 		)
 
-ivw_group("Source Files" ${SOURCE_FILES} )
+ivw_group("Source Files" ${SOURCE_FILES} ${LIBJPEG_SOURCE_FILES} ${LIBOPENJPEG_SOURCE_FILES} ${LIBPNG_SOURCE_FILES} ${LIBRAWLITE_SOURCE_FILES} ${LIBTIFF4_SOURCE_FILES} ${OPENEXR_SOURCE_FILES} ${ZLIB_SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Add all folders as includes
@@ -74,30 +180,48 @@ include_directories(${FREEIMAGE_DIRS})
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(freeimage)
+remove_definitions(-DHAVE_CONFIG_H)
 if(NOT BUILD_SHARED_LIBS)
     ivw_add_definition(FREEIMAGE_LIB)
+    ivw_add_definition(JPEG_STATIC)
+    ivw_add_definition(OPJ_STATIC)
+    ivw_add_definition(LIBRAW_NODLL)
+else()
+    add_definitions(-DJPEG_DLL)
+    add_definitions(-DLIBRAW_BUILDLIB)
+    add_definitions(-DOPJ_EXPORTS)
 endif()
 
 #--------------------------------------------------------------------
 # Create library
-add_library(freeimage ${SOURCE_FILES} ${HEADER_FILES})
+add_library(freeimage ${SOURCE_FILES} ${LIBJPEG_SOURCE_FILES} ${LIBOPENJPEG_SOURCE_FILES} ${LIBPNG_SOURCE_FILES} ${LIBRAWLITE_SOURCE_FILES} ${LIBTIFF4_SOURCE_FILES} ${OPENEXR_SOURCE_FILES} ${ZLIB_SOURCE_FILES} ${HEADER_FILES} ${LIBJPEG_HEADER_FILES} ${LIBOPENJPEG_HEADER_FILES} ${LIBPNG_HEADER_FILES} ${LIBRAWLITE_HEADER_FILES} ${LIBTIFF4_HEADER_FILES} ${OPENEXR_HEADER_FILES} ${ZLIB_HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add dependencies
-ivw_add_dependencies(
-	LibJPEG 
-	LibMNG 
-	LibOpenJPEG
-	InternalLibPNG  
-	LibRawLite 
-	LibTiff4 
-	LibTiff 
-	OpenEXR
-	InternalZLib
-	)
+#ivw_add_dependencies(
+#	LibJPEG
+#	LibOpenJPEG
+#	InternalLibPNG  
+#	LibRawLite 
+#	LibTiff4
+#	OpenEXR
+#	InternalZLib
+#	)
 
 ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/)
 ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/FreeImage)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/libjpeg)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/libopenjpeg)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/libpng)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/librawlite)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/libtiff4)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/half)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/imath)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/ilmimf)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/ilmthread)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/iex)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/zlib)
 
 #--------------------------------------------------------------------
 # This is to use .lib file, should be deleted when real linker is working 
@@ -114,7 +238,8 @@ ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/FreeImage)
 
 #--------------------------------------------------------------------
 # Creates VS folder structure
-ivw_vs_folder(freeimage ext/freeimagelib)
+#ivw_vs_folder(freeimage ext/freeimagelib)
+ivw_vs_folder(freeimage ext)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)

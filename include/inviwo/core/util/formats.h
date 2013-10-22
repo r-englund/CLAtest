@@ -4,6 +4,7 @@
 #pragma warning(disable : 4723)
 #pragma warning(disable : 4756)
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/util/pstdint.h>
 #include <glm/glm.hpp>
 #include <limits>
@@ -171,7 +172,7 @@ namespace inviwo {
         NUMBER_OF_FORMATS
     };
 
-class DataFormatBase
+class IVW_CORE_API DataFormatBase
 {
 public:
     DataFormatBase();
@@ -225,7 +226,7 @@ protected:
 };
 
 template<typename T, size_t B>
-class DataFormat : public DataFormatBase
+class IVW_CORE_API DataFormat : public DataFormatBase
 {
 public:
     typedef T type;

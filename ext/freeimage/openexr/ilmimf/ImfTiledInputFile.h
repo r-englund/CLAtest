@@ -42,6 +42,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfHeader.h>
 #include <ImfFrameBuffer.h>
 #include "ImathBox.h"
@@ -51,7 +52,7 @@
 namespace Imf {
 
 
-class TiledInputFile
+class IMF_EXPORT TiledInputFile
 {
   public:
 

@@ -27,7 +27,7 @@
 // LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 // DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE<> IMF_EXPORT
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 ///////////////////////////////////////////////////////////////////////////
@@ -44,18 +44,19 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 
 namespace Imf {
 
 class IStream;
 
 
-bool isOpenExrFile (const char fileName[], bool &isTiled);
-bool isOpenExrFile (const char fileName[]);
-bool isTiledOpenExrFile (const char fileName[]);
-bool isOpenExrFile (IStream &is, bool &isTiled);
-bool isOpenExrFile (IStream &is);
-bool isTiledOpenExrFile (IStream &is);
+IMF_EXPORT bool isOpenExrFile (const char fileName[], bool &isTiled);
+IMF_EXPORT bool isOpenExrFile (const char fileName[]);
+IMF_EXPORT bool isTiledOpenExrFile (const char fileName[]);
+IMF_EXPORT bool isOpenExrFile (IStream &is, bool &isTiled);
+IMF_EXPORT bool isOpenExrFile (IStream &is);
+IMF_EXPORT bool isTiledOpenExrFile (IStream &is);
 
 
 } // namespace Imf

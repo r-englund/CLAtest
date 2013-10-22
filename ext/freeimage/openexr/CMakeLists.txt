@@ -84,6 +84,7 @@ ivw_define_standard_definitions(openexr)
 if(BUILD_SHARED_LIBS)
     ivw_add_definition(OPENEXR_DLL)
 	add_definitions(-DHALF_EXPORTS)
+    add_definitions(-DIEX_EXPORTS)
 	add_definitions(-DILMIMF_EXPORTS)
 	add_definitions(-DILMTHREAD_EXPORTS)
 	add_definitions(-DIMATH_EXPORTS)
@@ -92,7 +93,7 @@ endif()
 #--------------------------------------------------------------------
 # Create library
 #add_library(openexr ${SOURCE_FILES} ${HEADER_FILES})
-add_library(openexr ${SOURCE_FILES} ${HEADER_FILES} ${HALF_SOURCE_FILES} ${HALF_HEADER_FILES} ${IEX_HEADER_FILES} ${IEX_SOURCE_FILES} ${ILLMIMF_HEADER_FILES} ${ILLMIMF_SOURCE_FILES} ${ILMTHREAD_HEADER_FILES} ${ILMTHREAD_SOURCE_FILES} ${IMATH_HEADER_FILES} ${IMATH_SOURCE_FILES})
+add_library(openexr ${HEADER_FILES} ${SOURCE_FILES} ${HALF_HEADER_FILES} ${HALF_SOURCE_FILES} ${IEX_HEADER_FILES} ${IEX_SOURCE_FILES} ${ILLMIMF_HEADER_FILES} ${ILLMIMF_SOURCE_FILES} ${ILMTHREAD_HEADER_FILES} ${ILMTHREAD_SOURCE_FILES} ${IMATH_HEADER_FILES} ${IMATH_SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Creates VS folder structure
@@ -100,7 +101,8 @@ ivw_vs_folder(openexr ext/freeimagelib)
 
 #--------------------------------------------------------------------
 # Add dependencies
-#ivw_add_dependencies(Half
+ivw_add_dependencies(InternalZLib)
+#                  Half
 #					Iex
 #					IlmImf
 #					IlmThread
@@ -111,7 +113,6 @@ ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/ilmimf)
 ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/ilmthread)
 ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/iex)
 ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr)
-ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/zlib)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)

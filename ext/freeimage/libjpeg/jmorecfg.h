@@ -11,6 +11,62 @@
  * optimizations.  Most users will not need to touch this file.
  */
 
+/* The following magic (and the EXTERN_1() macro) were previously
+    * used on cygwin to enable building libjpeg as a DLL, as a static
+    * lib, and to support linking to the DLL or to the static lib.
+    * The magic is no longer necessary on cygwin (or mingw) due to
+    * the new auto-import capabilities of binutils.  HOWEVER, the
+    * magic may be helpful if someone wanted to update makefile.vc
+    * to support building/linking to a DLL...so I left it in this
+    * patch, even though it is not strictly necessary for cygwin 
+    * anymore, and I haven't "followed thru" with the complete msvc
+    * makefile...
+    */
+#if defined(_WIN32) && ! defined(__CYGWIN__)
+#  if defined(ALL_STATIC)
+#    if defined(JPEG_DLL)
+#      undef JPEG_DLL
+#    endif
+#    if !defined(JPEG_STATIC)
+#      define JPEG_STATIC
+#    endif
+#  endif
+#  if defined(JPEG_DLL)
+#    if defined(JPEG_STATIC)
+#      undef JPEG_STATIC
+#    endif
+#  endif
+#  if defined(JPEG_DLL)
+    /* building a DLL */
+#    define JPEG_IMPEXP __declspec(dllexport)
+#  elif defined(JPEG_STATIC)
+    /* building or linking to a static library */
+#    define JPEG_IMPEXP
+#  else
+    /* linking to the DLL */
+#    define JPEG_IMPEXP __declspec(dllimport)
+#  endif
+#  if !defined(JPEG_API)
+#    define JPEG_API __cdecl
+#  endif
+    /* The only remaining magic that is necessary for cygwin */
+#elif defined(__CYGWIN__)
+#  if !defined(JPEG_IMPEXP)
+#    define JPEG_IMPEXP
+#  endif
+#  if !defined(JPEG_API)
+#    define JPEG_API __cdecl
+#  endif
+#endif
+
+/* Ensure our magic doesn't hurt other platforms */
+#if !defined(JPEG_IMPEXP)
+#  define JPEG_IMPEXP
+#endif
+#if !defined(JPEG_API)
+#  define JPEG_API
+#endif
+
 
 /*
  * Define BITS_IN_JSAMPLE as either
@@ -192,10 +248,9 @@ typedef unsigned int JDIMENSION;
 /* a function used only in its module: */
 #define LOCAL(type)		static type
 /* a function referenced thru EXTERNs: */
-#define GLOBAL(type)		type
+#define GLOBAL(type)		type JPEG_API
 /* a reference to a GLOBAL function: */
-#define EXTERN(type)		extern type
-
+#define EXTERN(type)		extern JPEG_IMPEXP type JPEG_API
 
 /* This macro is used to declare a "method", that is, a function pointer.
  * We want to supply prototype parameters if the compiler can cope.

@@ -49,7 +49,7 @@ namespace Imf {
 class ChannelList;
 
 
-class B44Compressor: public Compressor
+class IMF_EXPORT B44Compressor: public Compressor
 {
   public:
 

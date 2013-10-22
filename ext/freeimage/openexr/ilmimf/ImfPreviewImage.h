@@ -45,10 +45,12 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
+
 namespace Imf {
 
 
-struct PreviewRgba
+struct IMF_EXPORT PreviewRgba
 {
     unsigned char	r;	// Red, green and blue components of
     unsigned char	g;	// the pixel's color; intensity is
@@ -66,7 +68,7 @@ struct PreviewRgba
 };
 
 
-class PreviewImage
+class IMF_EXPORT PreviewImage
 {
   public:
 

@@ -42,6 +42,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfAttribute.h>
 #include <ImfTileDescription.h>
 
@@ -50,15 +51,15 @@ namespace Imf {
 
 typedef TypedAttribute<TileDescription> TileDescriptionAttribute;
 
-template <>
+template <> IMF_EXPORT
 const char *
 TileDescriptionAttribute::staticTypeName ();
 
-template <>
+template <> IMF_EXPORT
 void
 TileDescriptionAttribute::writeValueTo (OStream &, int) const;
 
-template <>
+template <> IMF_EXPORT
 void
 TileDescriptionAttribute::readValueFrom (IStream &, int, int);
 

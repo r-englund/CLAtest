@@ -403,6 +403,7 @@ macro(ivw_define_standard_definitions project_name)
    string(TOUPPER ${project_name} u_project_name)
     if(WIN32)
       add_definitions(-D${u_project_name}_EXPORTS)
+	  add_definitions(-DGLM_EXPORTS)
           
     #--------------------------------------------------------------------          
     # Large memory support
@@ -438,6 +439,12 @@ endmacro()
 # Add defintion
 macro(ivw_add_definition def)
     add_definitions(-D${def})
+    list(APPEND _allDefinitions -D${def})
+endmacro()
+
+#--------------------------------------------------------------------
+# Add defintion to list only 
+macro(ivw_add_definition_to_list def)
     list(APPEND _allDefinitions -D${def})
 endmacro()
 
@@ -559,7 +566,11 @@ macro(ivw_make_package package_name project_name)
   #  list(APPEND _allIncludeDirs ${ARGN})
   #endif()
   list(APPEND _allLibsDir "${IVW_LIBRARY_DIR}")
-  set(PROJECT_LIBRARIES optimized ${project_name} debug ${project_name}${CMAKE_DEBUG_POSTFIX})
+  if(WIN32 AND BUILD_SHARED_LIBS)
+	set(PROJECT_LIBRARIES optimized ${IVW_LIBRARY_DIR}/Release/${project_name}.lib debug ${IVW_LIBRARY_DIR}/Debug/${project_name}${CMAKE_DEBUG_POSTFIX}.lib)
+  else()
+	set(PROJECT_LIBRARIES optimized ${project_name} debug ${project_name}${CMAKE_DEBUG_POSTFIX})
+  endif()
   list(APPEND _allLibs ${PROJECT_LIBRARIES})
   
   remove_duplicates(uniqueIncludes ${_allIncludes})

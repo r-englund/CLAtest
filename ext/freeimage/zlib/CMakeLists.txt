@@ -1,5 +1,3 @@
-#set(BUILD_SHARED_LIBS OFF)
-
 ivw_project(zlib)
 
 #--------------------------------------------------------------------
@@ -47,4 +45,5 @@ ivw_vs_folder(zlib ext/freeimagelib)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/zlib)
 ivw_make_package(InternalZLib zlib)

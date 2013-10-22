@@ -46,25 +46,52 @@
 
 #include "IexBaseExc.h"
 
+#ifdef OPENEXR_DLL
+    #ifdef IMATH_EXPORTS
+        #define IMATH_EXPORT __declspec(dllexport)
+        #define IMATH_EXPORT_CONST extern __declspec(dllexport)
+    #else
+        #define IMATH_EXPORT __declspec(dllimport)
+        #define IMATH_EXPORT_CONST extern __declspec(dllimport)
+    #endif
+#else
+    #define IMATH_EXPORT
+    #define IMATH_EXPORT_CONST extern const
+#endif
+
+//-----------------------------------------------------
+// A macro to save typing when declararing an exception
+// class derived directly or indirectly from BaseExc:
+//-----------------------------------------------------
+
+#define DEFINE_IMATH_EXC(name, base)				        \
+class IMATH_EXPORT name: public base				        \
+    {							        \
+    public:                                                   \
+    name (const char* text=0)      throw(): base (text) {}	\
+    name (const std::string &text) throw(): base (text) {}	\
+    name (std::stringstream &text) throw(): base (text) {}	\
+    };
+
 namespace Imath {
 
 
-DEFINE_EXC (NullVecExc, ::Iex::MathExc)		// Attempt to normalize
+DEFINE_IMATH_EXC (NullVecExc, ::Iex::MathExc)		// Attempt to normalize
 						// null vector
 
-DEFINE_EXC (InfPointExc, ::Iex::MathExc)	// Attempt to normalize
+DEFINE_IMATH_EXC (InfPointExc, ::Iex::MathExc)	// Attempt to normalize
                                                 // a point at infinity
 
-DEFINE_EXC (NullQuatExc, ::Iex::MathExc) 	// Attempt to normalize
+DEFINE_IMATH_EXC (NullQuatExc, ::Iex::MathExc) 	// Attempt to normalize
 						// null quaternion
 
-DEFINE_EXC (SingMatrixExc, ::Iex::MathExc)	// Attempt to invert
+DEFINE_IMATH_EXC (SingMatrixExc, ::Iex::MathExc)	// Attempt to invert
 						// singular matrix
 
-DEFINE_EXC (ZeroScaleExc, ::Iex::MathExc)	// Attempt to remove zero
+DEFINE_IMATH_EXC (ZeroScaleExc, ::Iex::MathExc)	// Attempt to remove zero
 						// scaling from matrix
 
-DEFINE_EXC (IntVecNormalizeExc, ::Iex::MathExc)	// Attempt to normalize
+DEFINE_IMATH_EXC (IntVecNormalizeExc, ::Iex::MathExc)	// Attempt to normalize
 						// a vector of whose elements
                                                 // are an integer type
 

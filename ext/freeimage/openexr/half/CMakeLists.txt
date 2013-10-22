@@ -39,4 +39,5 @@ ivw_vs_folder(half ext/freeimagelib/openexrlib)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/half)
 ivw_make_package(Half half)

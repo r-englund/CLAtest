@@ -103,7 +103,7 @@ const Chromaticities &	acesChromaticities ();
 // ACES output file.
 //
 
-class AcesOutputFile
+class IMF_EXPORT AcesOutputFile
 {
   public:
 
@@ -230,7 +230,7 @@ class AcesOutputFile
 // ACES input file
 //
 
-class AcesInputFile
+class IMF_EXPORT AcesInputFile
 {
   public:
 

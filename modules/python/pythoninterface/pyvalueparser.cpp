@@ -149,8 +149,6 @@ namespace inviwo{
         else if(className == "CameraProperty"){
             vec3 from,to,up;
             //float fovy,nearP,farP;
-            char *dummy1,*dummy2;
-            int d1,d2;
             if(!PyArg_ParseTuple(args,"(fff)(fff)(fff)",
                 &from.x,&from.y,&from.z,
                 &to.x,&to.y,&to.z,

@@ -42,6 +42,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfHeader.h>
 #include <ImfFrameBuffer.h>
 #include <ImfThreading.h>
@@ -49,7 +50,7 @@
 namespace Imf {
 
 
-class ScanLineInputFile
+class IMF_EXPORT ScanLineInputFile
 {
   public:
 

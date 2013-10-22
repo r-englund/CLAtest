@@ -43,6 +43,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
 #include <ImfPixelType.h>
 #include <vector>
 #include <ImfCompressor.h>
@@ -56,7 +57,7 @@ class Header;
 // in the machine's native format.
 //
 
-int	pixelTypeSize (PixelType type);
+IMF_EXPORT int	pixelTypeSize (PixelType type);
 
 
 //
@@ -67,7 +68,7 @@ int	pixelTypeSize (PixelType type);
 // interval [2, 6].
 //
 
-int	numSamples (int s, int a, int b);
+IMF_EXPORT int	numSamples (int s, int a, int b);
 
 
 //
@@ -77,7 +78,7 @@ int	numSamples (int s, int a, int b);
 // the pixel data are tightly packed).
 //
 
-size_t	bytesPerLineTable (const Header &header,
+IMF_EXPORT size_t	bytesPerLineTable (const Header &header,
 		           std::vector<size_t> &bytesPerLine);
 
 //
@@ -90,7 +91,7 @@ size_t	bytesPerLineTable (const Header &header,
 // relative to the beginning of the line buffer.
 //
 
-void	offsetInLineBufferTable (const std::vector<size_t> &bytesPerLine,
+IMF_EXPORT void	offsetInLineBufferTable (const std::vector<size_t> &bytesPerLine,
 				 int linesInLineBuffer,
 				 std::vector<size_t> &offsetInLineBuffer);
 
@@ -100,8 +101,8 @@ void	offsetInLineBufferTable (const std::vector<size_t> &bytesPerLine,
 // (minY is the minimum y coordinate of the file's data window.)
 //
 
-int	lineBufferMinY (int y, int minY, int linesInLineBuffer);
-int	lineBufferMaxY (int y, int minY, int linesInLineBuffer);
+IMF_EXPORT int	lineBufferMinY (int y, int minY, int linesInLineBuffer);
+IMF_EXPORT int	lineBufferMaxY (int y, int minY, int linesInLineBuffer);
 
 
 //
@@ -109,7 +110,7 @@ int	lineBufferMaxY (int y, int minY, int linesInLineBuffer);
 // If compressor is 0, return Compressor::XDR.
 //
 
-Compressor::Format defaultFormat (Compressor *compressor);
+IMF_EXPORT Compressor::Format defaultFormat (Compressor *compressor);
 
 
 //
@@ -117,7 +118,7 @@ Compressor::Format defaultFormat (Compressor *compressor);
 // or uncompress at once.  If compressor is 0, return 1.
 //
 
-int     numLinesInBuffer (Compressor *compressor);
+IMF_EXPORT int     numLinesInBuffer (Compressor *compressor);
 
 
 //
@@ -146,7 +147,7 @@ int     numLinesInBuffer (Compressor *compressor);
 //    typeInFile        the pixel data type in the input file's channel
 //
 
-void    copyIntoFrameBuffer (const char *&readPtr,
+IMF_EXPORT void    copyIntoFrameBuffer (const char *&readPtr,
 			     char *writePtr,
                              char *endPtr,
 			     size_t xStride,
@@ -164,7 +165,7 @@ void    copyIntoFrameBuffer (const char *&readPtr,
 // skipped data.
 //
 
-void    skipChannel (const char *&readPtr,
+IMF_EXPORT void    skipChannel (const char *&readPtr,
 		     PixelType typeInFile,
 		     size_t xSize);
 
@@ -187,7 +188,7 @@ void    skipChannel (const char *&readPtr,
 //    numPixels		number of pixels in the input and output arrays
 // 
 
-void    convertInPlace (char *&toPtr,
+IMF_EXPORT void    convertInPlace (char *&toPtr,
 			const char *&fromPtr,
 			PixelType type,
                         size_t numPixels);
@@ -218,7 +219,7 @@ void    convertInPlace (char *&toPtr,
 //			data type conversion)
 //
 
-void    copyFromFrameBuffer (char *&writePtr,
+IMF_EXPORT void    copyFromFrameBuffer (char *&writePtr,
 			     const char *&readPtr,
                              const char *endPtr,
 			     size_t xStride,
@@ -245,7 +246,7 @@ void    copyFromFrameBuffer (char *&writePtr,
 //    xSize             number of pixels to be filled with zeroes.
 //
 
-void    fillChannelWithZeroes (char *&writePtr,
+IMF_EXPORT void    fillChannelWithZeroes (char *&writePtr,
 			       Compressor::Format format,
 			       PixelType type,
 			       size_t xSize);

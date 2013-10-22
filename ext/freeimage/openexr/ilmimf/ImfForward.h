@@ -1,7 +1,11 @@
+
+
 ///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
+// Copyright (c) 2011, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
+//
+// Portions (c) 2012 Weta Digital Ltd
 // 
 // All rights reserved.
 // 
@@ -32,64 +36,52 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
+#ifndef INCLUDED_IMF_FORWARD_H
+#define INCLUDED_IMF_FORWARD_H
 
-#ifndef INCLUDED_IMF_RATIONAL_H
-#define INCLUDED_IMF_RATIONAL_H
-
-//-----------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////
 //
-//	Rational numbers
+// Forward declarations for OpenEXR - correctly declares namespace
 //
-//	A rational number is represented as pair of integers, n and d.
-//	The value of of the rational number is
-// 
-//		n/d			for d > 0
-//		positive infinity	for n > 0, d == 0
-//		negative infinity	for n < 0, d == 0
-//		not a number (NaN)	for n == 0, d == 0
-//
-//-----------------------------------------------------------------------------
-
-#include "ImfExport.h"
+////////////////////////////////////////////////////////////////////
 
 namespace Imf {
 
-class IMF_EXPORT Rational
-{
-  public:
+// classes for basic types;
+template<class T> class Array;
+template<class T> class Array2D;
+struct Channel;
+class  ChannelList;
+struct Chromaticities;
 
-    int			n;		// numerator
-    unsigned int	d;		// denominator
+// attributes used in headers are TypedAttributes
+class Attribute;
+class Header;
 
+// file handling classes
+class OutputFile;
+class TiledInputFile;
+class ScanLineInputFile;
+class InputFile;
+class TiledOutputFile;
+class AcesInputFile;
+class AcesOutputFile;
+class TiledInputFile;
+class TileOffsets;
 
-    //----------------------------------------
-    // Default constructor, sets value to zero
-    //----------------------------------------
+// frame buffers
+class FrameBuffer;
 
-    Rational (): n (0), d (1) {}
+// preview image
+class PreviewImage;
+struct PreviewRgba;
 
+// streams
+class OStream;
+class IStream;
 
-    //-------------------------------------
-    // Constructor, explicitly sets n and d
-    //-------------------------------------
-
-    Rational (int n, int d): n (n), d (d) {}
-
-
-    //----------------------------
-    // Constructor, approximates x
-    //----------------------------
-
-    explicit Rational (double x);
-
-
-    //---------------------------------
-    // Approximate conversion to double
-    //---------------------------------
-
-    operator double () const {return double (n) / double (d);}
-};
 
 } // namespace Imf
 
-#endif
+
+#endif // include guard

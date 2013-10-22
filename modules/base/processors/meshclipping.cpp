@@ -162,7 +162,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 	std::vector<Edge> outputEdgeList; // output edge list
 
 	// Iterate over edges extracted from triangle strip list, and perform clipping against plane
-	for(size_t i=0; i<edgeList.size(); ++i) {
+	for(unsigned int i=0; i<edgeList.size(); ++i) {
 
 		//LogInfo("i = "<<i);
 
@@ -182,13 +182,13 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				//Måste stoppa in alla verts till edges i rätt ordning för att inte mucka upp vert-id:n
 				glm::vec3 clippedVert = plane.getIntersection(S,E);
 				outputList.push_back(clippedVert);
-				outputIndexList.push_back(outputList.size()-1); // Ny vertex, uppdatera edge-listan
-				clippedVertInd.push_back(outputList.size()-1);
+				outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1)); // Ny vertex, uppdatera edge-listan
+				clippedVertInd.push_back(static_cast<unsigned int>(outputList.size()-1));
 				edge.v1=outputList.size()-1;
 
 
 
-				for (size_t j=0; j<outputList.size(); ++j) {
+				for (unsigned int j=0; j<outputList.size(); ++j) {
 					if (std::fabs(E.x-outputList.at(j).x)<EPSILON && std::fabs(E.y-outputList.at(j).y)<EPSILON && std::fabs(E.z-outputList.at(j).z)<EPSILON) {
 						duplicate = j;
 					}
@@ -199,7 +199,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 					duplicate = -1;
 				} else { // No duplicate end vertex found
 					outputList.push_back(E);
-					outputIndexList.push_back(outputList.size()-1);
+					outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1));
 					edge.v2 = outputList.size()-1;
 				}
 
@@ -211,7 +211,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 			} else { // S and E both inside
 				//LogInfo("Both inside! S = "<<glm::to_string(S));
 				
-				for (size_t j=0; j<outputList.size(); ++j) {
+				for (unsigned int j=0; j<outputList.size(); ++j) {
 					if (std::fabs(S.x-outputList.at(j).x)<EPSILON && std::fabs(S.y-outputList.at(j).y)<EPSILON && std::fabs(S.z-outputList.at(j).z)<EPSILON) {
 						duplicate = j;
 					}
@@ -223,7 +223,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 					duplicate = -1;
 				} else { // No duplicate found
 					outputList.push_back(S);
-					outputIndexList.push_back(outputList.size()-1);
+					outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1));
 					edge.v1 = outputList.size()-1;
 				}
 
@@ -239,7 +239,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 					duplicate = -1;
 				} else { // Duplicate found
 					outputList.push_back(E);
-					outputIndexList.push_back(outputList.size()-1);
+					outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1));
 					edge.v2 = outputList.size()-1;
 				}
 
@@ -254,7 +254,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 			//LogInfo("Going out!");
 			// Check if S aldready in outputList, otherwise add it. Add clippedVert between S->E
 		
-			for (size_t j=0; j<outputList.size(); ++j) {
+			for (unsigned int j=0; j<outputList.size(); ++j) {
 				if (std::fabs(S.x-outputList.at(j).x)<EPSILON && std::fabs(S.y-outputList.at(j).y)<EPSILON && std::fabs(S.z-outputList.at(j).z)<EPSILON) {
 					duplicate = j;
 				}
@@ -266,14 +266,14 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				duplicate = -1;
 			} else { // No duplicate found
 				outputList.push_back(S);
-				outputIndexList.push_back(outputList.size()-1);
+				outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1));
 				edge.v1 = outputList.size()-1;
 			}
 
 			glm::vec3 clippedVert = plane.getIntersection(S,E);
 			outputList.push_back(clippedVert);
-			outputIndexList.push_back(outputList.size());
-			clippedVertInd.push_back(outputList.size()-1);
+			outputIndexList.push_back(static_cast<unsigned int>(outputList.size()));
+			clippedVertInd.push_back(static_cast<unsigned int>(outputList.size()-1));
 			edge.v2 = outputList.size()-1;
 
 			if( std::find(outputEdgeList.begin(), outputEdgeList.end(),edge) == outputEdgeList.end() ) {
@@ -296,7 +296,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 	LogInfo("Size of clipped verts vector:" << clippedVertInd.size());
 
 	// Create edges between new (clipped) vertices
-	for (size_t i=0; i<clippedVertInd.size(); ++i) {
+	for (unsigned int i=0; i<clippedVertInd.size(); ++i) {
 		Edge edge;
 		unsigned int idx1,idx2,idx3;
 		idx1 = clippedVertInd.at(i % clippedVertInd.size());
@@ -321,7 +321,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 	SimpleMeshRAM* outputMesh = new SimpleMeshRAM();
 	outputMesh->initialize();
 
-	for(size_t i=0; i<outputList.size(); ++i) {
+	for(unsigned int i=0; i<outputList.size(); ++i) {
 		outputMesh->addVertex(outputList.at(i), glm::vec3(1.f), glm::vec4(1.,i/(float)outputList.size(),0.,1.0f));
 	}
 
@@ -332,7 +332,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
     else
         outputMesh->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
 
-   	for(size_t i=0; i<outputList.size(); ++i) {
+   	for(unsigned int i=0; i<outputList.size(); ++i) {
    		outputMesh->addIndex(i);
    		//LogInfo("Adding to index list, vertex no.: " << i);
    	}

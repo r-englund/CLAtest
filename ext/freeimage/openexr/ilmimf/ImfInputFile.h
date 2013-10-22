@@ -56,7 +56,7 @@ class TiledInputFile;
 class ScanLineInputFile;
 
 
-class InputFile
+class IMF_EXPORT InputFile
 {
   public:
 

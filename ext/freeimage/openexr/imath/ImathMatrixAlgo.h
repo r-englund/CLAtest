@@ -56,18 +56,6 @@
 #include "ImathLimits.h"
 #include <math.h>
 
-
-#ifdef OPENEXR_DLL
-    #ifdef IMATH_EXPORTS
-        #define IMATH_EXPORT_CONST extern __declspec(dllexport)
-    #else
-	#define IMATH_EXPORT_CONST extern __declspec(dllimport)
-    #endif
-#else
-    #define IMATH_EXPORT_CONST extern const
-#endif
-
-
 namespace Imath {
 
 //------------------

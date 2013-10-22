@@ -59,7 +59,7 @@ void ResourceManagerWidget::removeSelectedItems()
     //Destruction of QModelIndexList creates a segmentation error for some reason (Qt 4.8.1)
     //QModelIndexList indexes = listView_->selectionModel()->selectedIndexes();
     std::vector<int> rows;    
-    for (size_t i=0; i<(size_t)model_->rowCount(); i++)
+    for (int i=0; i<model_->rowCount(); i++)
         if (listView_->selectionModel()->isRowSelected(i, QModelIndex())) rows.push_back(i);   
     
     qSort(rows.begin(), rows.end(), qGreater<int>());

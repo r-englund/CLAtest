@@ -36,9 +36,11 @@ add_library(imath ${SOURCE_FILES} ${HEADER_FILES})
 ivw_vs_folder(imath ext/freeimagelib/openexrlib)
 
 #--------------------------------------------------------------------
-# Add dependancies
-ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/half)
-ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/iex)
+# Add dependencies
+ivw_add_dependencies(Half
+					Iex)
+#ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/half)
+#ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/iex)
 
 
 
@@ -46,4 +48,5 @@ ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/iex)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_include_directories(${IVW_EXTENSIONS_DIR}/freeimage/openexr/imath)
 ivw_make_package(IMath imath)

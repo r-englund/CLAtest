@@ -102,12 +102,12 @@ SimpleMeshRAM* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
 	return rec;
 }
 
-SimpleMeshRAM* SimpleMeshCreator::sphere(float radius, size_t numLoops, size_t segmentsPerLoop){
+SimpleMeshRAM* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsigned int segmentsPerLoop){
     SimpleMeshRAM* spheremesh = new SimpleMeshRAM();
     spheremesh->initialize();
 
     //Create Vertices
-    for (size_t i = 0; i < segmentsPerLoop; ++i){
+    for (unsigned int i = 0; i < segmentsPerLoop; ++i){
         float theta = 0.f;
         float phi = i * 2.f * static_cast<float>(M_PI) / segmentsPerLoop;
         float sinTheta = std::sin(theta);
@@ -135,12 +135,12 @@ SimpleMeshRAM* SimpleMeshCreator::sphere(float radius, size_t numLoops, size_t s
 
     //Create Indices
     spheremesh->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
-    for (size_t j = 0; j < segmentsPerLoop; ++j){
+    for (unsigned int j = 0; j < segmentsPerLoop; ++j){
         spheremesh->addIndex(j);
         spheremesh->addIndex(segmentsPerLoop + j);
     }
-    for (size_t i = 0; i < numLoops; ++i){
-        for (size_t j = 0; j < segmentsPerLoop; ++j){
+    for (unsigned int i = 0; i < numLoops; ++i){
+        for (unsigned int j = 0; j < segmentsPerLoop; ++j){
             spheremesh->addIndex(((i + 1) * segmentsPerLoop) + j);
             spheremesh->addIndex(((i + 2) * segmentsPerLoop) + j);
         }

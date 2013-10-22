@@ -58,16 +58,18 @@
 //
 //-----------------------------------------------------------------------------
 
+#include "ImfExport.h"
+
 namespace Imf {
 
 
-int
+IMF_EXPORT int
 hufCompress (const unsigned short raw[/*nRaw*/],
 	     int nRaw,
 	     char compressed[/*2 * nRaw + 65536*/]);
 
 
-void
+IMF_EXPORT void
 hufUncompress (const char compressed[/*nCompressed*/],
 	       int nCompressed,
 	       unsigned short raw[/*nRaw*/],
