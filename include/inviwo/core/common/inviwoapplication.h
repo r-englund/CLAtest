@@ -9,7 +9,6 @@
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/core/util/settings.h>
 #include <inviwo/core/util/singleton.h>
-
 #include <inviwo/core/util/commandlineparser.h>
 
 namespace inviwo {
@@ -17,12 +16,14 @@ namespace inviwo {
 class IVW_CORE_API InviwoApplication : public Singleton<InviwoApplication> {
 
 public:
+    typedef void (*registerModuleFuncPtr)(InviwoApplication*);
+
     InviwoApplication();
     InviwoApplication(std::string displayName, std::string basePath);
     InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath);
     virtual ~InviwoApplication();
 
-    virtual void initialize();
+    virtual void initialize(registerModuleFuncPtr);
     virtual void deinitialize();
     virtual bool isInitialized() { return initialized_; }
 

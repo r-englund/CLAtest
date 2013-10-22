@@ -170,8 +170,8 @@ endmacro()
 #--------------------------------------------------------------------
 # Retrieve all modules as a list
 macro(ivw_retrieve_all_modules module_list)
-    if(EXISTS "${IVW_MODULE_DIR}/modules.cmake")
-        include(${IVW_MODULE_DIR}/modules.cmake)
+    if(EXISTS "${CMAKE_BINARY_DIR}/modules/_generated/modules.cmake")
+        include(${CMAKE_BINARY_DIR}/modules/_generated/modules.cmake)
         foreach(exclude_module ${ARGN})
             list(REMOVE_ITEM module_packages ${exclude_module})
         endforeach()
@@ -186,7 +186,7 @@ macro(create_module_package_list)
     foreach(module ${ARGN})
         list(APPEND ALL_MODULE_PACKAGES Inviwo${module}Module)
     endforeach()
-    configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/modules_template.cmake ${IVW_MODULE_DIR}/modules.cmake @ONLY)
+    configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/modules_template.cmake ${CMAKE_BINARY_DIR}/modules/_generated/modules.cmake @ONLY)
 endmacro()
 
 #--------------------------------------------------------------------
@@ -203,14 +203,14 @@ macro(generate_module_registration_file module_classes modules_class_paths)
         list(GET modules_class_paths ${val} current_path)
         #Apperance: #include "modules/base/basemodule.h" 
         #Apperance: (*app).registerModule(new BaseModule());
-        list(APPEND headers "#include \"modules/${current_path}.h\"")
+        list(APPEND headers "#include <modules/${current_path}.h>")
         list(APPEND functions "(*app).registerModule(new ${current_name}Module())")
     endforeach()
     set(headers ${headers})
     set(functions ${functions})
     join(";" "\n" MODULE_HEADERS ${headers})
     join(";" ";\n" MODULE_CLASS_FUNCTIONS ${functions})
-    configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_registration_template.h ${IVW_MODULE_DIR}/moduleregistration.h @ONLY)
+    configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_registration_template.h ${CMAKE_BINARY_DIR}/modules/_generated/moduleregistration.h @ONLY)
 endmacro()
 
 #--------------------------------------------------------------------

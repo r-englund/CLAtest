@@ -1,18 +1,19 @@
 #include <inviwo/core/datastructures/buffer/buffer.h>
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
 
+namespace inviwo {
 
-inviwo::Buffer::Buffer( size_t size, const DataFormatBase* format /*= DataFormatBase::get()*/ ): size_(size)
+Buffer::Buffer( size_t size, const DataFormatBase* format /*= DataFormatBase::get()*/ ): size_(size)
 {
 
 }
 
-inviwo::Buffer::~Buffer()
+Buffer::~Buffer()
 {
 
 }
 
-void inviwo::Buffer::resize( size_t size )
+void Buffer::resize( size_t size )
 {
     setSize(size);
     for (size_t i=0; i<representations_.size(); i++) {
@@ -23,4 +24,5 @@ void inviwo::Buffer::resize( size_t size )
     setAllRepresentationsAsInvalid();
 }
 
+} // namespace
 

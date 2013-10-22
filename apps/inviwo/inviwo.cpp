@@ -10,6 +10,8 @@
 
 #include "inviwomainwindow.h"
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <moduleregistration.h>
 
 int main(int argc, char** argv) {
 #ifdef __unix__
@@ -29,7 +31,10 @@ int main(int argc, char** argv) {
 
     // setup core application
     inviwoApp.setMainWindow(&mainWin);
-    inviwoApp.initialize();
+
+    //Initialize application and register modules
+    inviwoApp.initialize(&inviwo::registerAllModules);
+
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
 
     // setup main window

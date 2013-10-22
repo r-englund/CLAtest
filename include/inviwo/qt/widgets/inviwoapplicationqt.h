@@ -27,7 +27,7 @@ public:
 
     virtual void playSound(unsigned int soundID);
 
-	virtual void initialize();
+	virtual void initialize(registerModuleFuncPtr);
 
 public slots:
     void fileChanged(QString fileName);

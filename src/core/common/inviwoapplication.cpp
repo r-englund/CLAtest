@@ -3,7 +3,6 @@
 #include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
-#include <modules/moduleregistration.h>
 
 namespace inviwo {
 
@@ -28,8 +27,7 @@ InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayN
 
 InviwoApplication::~InviwoApplication() {}
 
-void InviwoApplication::initialize() {
-
+void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     commandLineParser_->initialize();
     commandLineParser_->parse();
     settings_ = new Settings();
@@ -38,7 +36,7 @@ void InviwoApplication::initialize() {
     printApplicationInfo();
 
     registerModule(new InviwoCore());
-    registerAllModules(this);
+    (*regModuleFunc)(this);
     for (size_t i=0; i<modules_.size(); i++){
         modules_[i]->initialize();
         modules_[i]->setGlobalSettings(settings_);

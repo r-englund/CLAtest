@@ -57,6 +57,10 @@ list(APPEND package_list InviwoCore )
 ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
+# Include generation directory to register modules etc
+include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
+
+#--------------------------------------------------------------------
 # Create application
 add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE})
 
