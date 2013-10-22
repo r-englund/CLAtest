@@ -40,6 +40,7 @@ option(IVW_MODULE_MATLAB "Enable matlab module" OFF)
 # Add subdirectories
 
 add_subdirectory(ext/ticpp)
+add_subdirectory(ext/tinythread) 
 add_subdirectory(ext/sigar)
 add_subdirectory(ext/freeimage)
 add_subdirectory(src/core)
