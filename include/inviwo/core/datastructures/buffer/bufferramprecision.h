@@ -18,7 +18,7 @@ public:
             delete[] data_;
             size_ = rhs.getSize();
             initialize();
-            std::copy(rhs.getData(), rhs.getData()+size_*sizeof(T), data_);
+            memcpy(data_, rhs.getData(), size_*sizeof(T));
         }
         return *this;
     };

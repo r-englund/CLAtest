@@ -8,7 +8,7 @@
 namespace inviwo {
 
 template<typename T>
-class IVW_CORE_API TemplateProperty : public Property {
+class TemplateProperty : public Property {
 
 public:
 

@@ -24,7 +24,7 @@ public:
 /*---------------------------------------------------------------------*/
 
 template <typename T>
-class IVW_CORE_API MetaDataPrimitiveType : public MetaData {
+class MetaDataPrimitiveType : public MetaData {
 public:
     MetaDataPrimitiveType(T value);
     void set(T value);

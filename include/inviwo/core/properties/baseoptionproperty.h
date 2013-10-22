@@ -39,7 +39,7 @@ public:
 * @see BaseOptionProperty
 */
 template<typename T>
-class IVW_CORE_API TemplateOptionProperty : public BaseOptionProperty {
+class TemplateOptionProperty : public BaseOptionProperty {
 
 //FIXME: use struct instead of std::pair combination for options
 /*

@@ -11,14 +11,14 @@
 namespace inviwo {
 
 template<class T>
-IVW_CORE_API std::string toString(T value) {
+std::string toString(T value) {
     std::ostringstream stream;
     stream << value;
     return stream.str();
 }
 
 template<class T>
-IVW_CORE_API T stringTo(const std::string& str) {
+T stringTo(const std::string& str) {
     T result;
     std::istringstream stream;
     stream.str(str);

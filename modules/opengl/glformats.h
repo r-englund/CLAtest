@@ -1,12 +1,13 @@
 #ifndef IVW_GLFORMATS_H
 #define IVW_GLFORMATS_H
 
+#include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/util/formats.h>
 #include <inviwo/core/util/assertion.h>
 
 namespace inviwo {
 
-class GLFormats{
+class IVW_MODULE_OPENGL_API GLFormats{
 
 public:
     struct GLFormat{

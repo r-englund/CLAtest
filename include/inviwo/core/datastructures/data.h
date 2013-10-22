@@ -295,7 +295,7 @@ U Data::getMetaData(std::string key, U val) const {
 /*---------------------------------------------------------------*/
 
 template <unsigned int N>
-class IVW_CORE_API SpatialData : public Data {
+class SpatialData : public Data {
 public:
 	SpatialData();
 	SpatialData(const Vector<N,float>& offset);
@@ -419,7 +419,7 @@ void SpatialData<N>::SetWorldTransform(const Matrix<N+1,float>& mat) {
 /*---------------------------------------------------------------*/
 
 template <unsigned int N>
-class IVW_CORE_API StructuredData : public SpatialData<N> {
+class StructuredData : public SpatialData<N> {
 public:
 	StructuredData(const Vector<N, unsigned int>& dimension, 
 				   const DataFormatBase* format);

@@ -18,9 +18,9 @@ public:
     VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& rhs) {
         if (this != &rhs) {
             delete[] data_;
-            dimensions_ = rhs.getDimension();
+            dimensions_ = rhs.getDimensions();
             initialize();
-            std::copy(rhs.getData(), rhs.getData()+dimensions_.x*dimensions_.y*sizeof(T), data_);
+            memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
         }
         return *this;
     };

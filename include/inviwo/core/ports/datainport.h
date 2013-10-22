@@ -11,7 +11,7 @@ template<typename T>
 class DataOutport;
 
 template<typename T>
-class IVW_CORE_API DataInport : public Inport {
+class DataInport : public Inport {
 
 public:
     DataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);

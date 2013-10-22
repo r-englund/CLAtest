@@ -92,10 +92,17 @@ typedef long long sigar_int64_t;
 #endif
 
 #ifdef WIN32
-#   define SIGAR_DECLARE(type) \
+    #ifdef SIGAR_EXPORTS
+    #define SIGAR_DECLARE(type) \
         __declspec(dllexport) type __stdcall
+    #elif SIGAR_SHARED
+    #define SIGAR_DECLARE(type) \
+        __declspec(dllimport) type __stdcall
+    #else
+    #define SIGAR_DECLARE(type) type
+    #endif
 #else
-#   define SIGAR_DECLARE(type) type
+    #define SIGAR_DECLARE(type) type
 #endif
 
 #if defined(PATH_MAX)

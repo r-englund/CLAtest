@@ -6,6 +6,7 @@ ivw_project(ticpp)
 # Add header files
 set(HEADER_FILES
     ${IVW_EXTENSIONS_DIR}/ticpp/ticpp.h
+    ${IVW_EXTENSIONS_DIR}/ticpp/ticppapi.h
     ${IVW_EXTENSIONS_DIR}/ticpp/ticpprc.h
     ${IVW_EXTENSIONS_DIR}/ticpp/tinystr.h
     ${IVW_EXTENSIONS_DIR}/ticpp/tinyxml.h
@@ -27,6 +28,10 @@ ivw_group("Source Files" ${SOURCE_FILES})
 # Define defintions
 ivw_define_standard_definitions(ticpp)
 ivw_add_definition(TIXML_USE_TICPP)
+if(WIN32)
+    ivw_add_definition_to_list(TICPP_DLL)
+    add_definitions(-DBUILD_TICPP_DLL)
+endif()
 
 #--------------------------------------------------------------------
 # Create library

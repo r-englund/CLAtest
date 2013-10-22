@@ -22,7 +22,7 @@ static const float BYTE_DIV = 1.f/BYTE_SWAP;
 #define KILOBYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP)
 #define MEGABYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP*BYTE_SWAP)
 
-static IVW_CORE_API inline std::string formatBytesToString(uint64_t bytes) {
+static std::string formatBytesToString(uint64_t bytes) {
     std::ostringstream stream;
     stream.precision(2);
     stream.setf(std::ios::fixed, std::ios::floatfield);

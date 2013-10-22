@@ -17,6 +17,7 @@ namespace inviwo {
 class IVW_CORE_API InviwoApplication : public Singleton<InviwoApplication> {
 
 public:
+    InviwoApplication();
     InviwoApplication(std::string displayName, std::string basePath);
     InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath);
     virtual ~InviwoApplication();

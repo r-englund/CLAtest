@@ -7,7 +7,7 @@
 namespace inviwo {
 
     template<class T, class U>
-    IVW_CORE_API T* getTypeFromVector(std::vector<U> vec) {
+    T* getTypeFromVector(std::vector<U> vec) {
         if (vec.size() > 0) {
             for (size_t i=0; i<vec.size(); i++) {
                 T* item = dynamic_cast<T*>(vec[i]);
@@ -20,7 +20,7 @@ namespace inviwo {
     }
 
     template<class T, class U>
-    IVW_CORE_API bool hasTypeInVector(const std::vector<U> vec) {
+    bool hasTypeInVector(const std::vector<U> vec) {
         for (size_t i=0; i<vec.size(); i++) {
             T* item = dynamic_cast<T*>(vec[i]);
             if (item){

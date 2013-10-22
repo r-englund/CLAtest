@@ -8,7 +8,7 @@
 namespace inviwo {
 
 template<typename T>
-class IVW_CORE_API OrdinalProperty : public TemplateProperty<T> {
+class OrdinalProperty : public TemplateProperty<T> {
 
 public:
     OrdinalProperty(std::string identifier, std::string displayName, T value,

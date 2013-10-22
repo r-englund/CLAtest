@@ -184,7 +184,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				outputList.push_back(clippedVert);
 				outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1)); // Ny vertex, uppdatera edge-listan
 				clippedVertInd.push_back(static_cast<unsigned int>(outputList.size()-1));
-				edge.v1=outputList.size()-1;
+				edge.v1=static_cast<unsigned int>(outputList.size()-1);
 
 
 
@@ -200,7 +200,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				} else { // No duplicate end vertex found
 					outputList.push_back(E);
 					outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1));
-					edge.v2 = outputList.size()-1;
+					edge.v2 = static_cast<unsigned int>(outputList.size()-1);
 				}
 
 				if( std::find(outputEdgeList.begin(), outputEdgeList.end(),edge) == outputEdgeList.end() ) {
@@ -224,10 +224,10 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				} else { // No duplicate found
 					outputList.push_back(S);
 					outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1));
-					edge.v1 = outputList.size()-1;
+					edge.v1 = static_cast<unsigned int>(outputList.size()-1);
 				}
 
-				for (size_t j=0; j<outputList.size(); ++j) {
+				for (int j=0; j<outputList.size(); ++j) {
 					if (std::fabs(E.x-outputList.at(j).x)<EPSILON && std::fabs(E.y-outputList.at(j).y)<EPSILON && std::fabs(E.z-outputList.at(j).z)<EPSILON) {
 						duplicate = j;
 					}
@@ -240,7 +240,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 				} else { // Duplicate found
 					outputList.push_back(E);
 					outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1));
-					edge.v2 = outputList.size()-1;
+					edge.v2 = static_cast<unsigned int>(outputList.size()-1);
 				}
 
 				if( std::find(outputEdgeList.begin(), outputEdgeList.end(),edge) == outputEdgeList.end() ) {
@@ -267,14 +267,14 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 			} else { // No duplicate found
 				outputList.push_back(S);
 				outputIndexList.push_back(static_cast<unsigned int>(outputList.size()-1));
-				edge.v1 = outputList.size()-1;
+				edge.v1 = static_cast<unsigned int>(outputList.size()-1);
 			}
 
 			glm::vec3 clippedVert = plane.getIntersection(S,E);
 			outputList.push_back(clippedVert);
 			outputIndexList.push_back(static_cast<unsigned int>(outputList.size()));
 			clippedVertInd.push_back(static_cast<unsigned int>(outputList.size()-1));
-			edge.v2 = outputList.size()-1;
+			edge.v2 = static_cast<unsigned int>(outputList.size()-1);
 
 			if( std::find(outputEdgeList.begin(), outputEdgeList.end(),edge) == outputEdgeList.end() ) {
 				//LogInfo("Going out, Before: "<<Sind<<"->"<<Eind<<", after: "<<edge.v1<<"->"<<edge.v2);

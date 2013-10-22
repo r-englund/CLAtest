@@ -31,7 +31,7 @@ public:
 };
 
 template<typename T, size_t B, AttributeType A>
-class IVW_CORE_API Attributes : public AttributesBase {
+class Attributes : public AttributesBase {
 
 public:
     Attributes() : AttributesBase(), dataFormat_(DataFormat<T,B>::get()) {}

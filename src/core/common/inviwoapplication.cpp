@@ -7,6 +7,12 @@
 
 namespace inviwo {
 
+InviwoApplication::InviwoApplication()
+    : displayName_("Inviwo"), basePath_("")
+{
+    init(this);
+}
+
 InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
                                      : displayName_(displayName), basePath_(basePath)
 {

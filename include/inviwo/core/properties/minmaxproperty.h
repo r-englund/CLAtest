@@ -8,7 +8,7 @@
 namespace inviwo {
 
 template<typename T>
-class IVW_CORE_API MinMaxProperty : public TemplateProperty<glm::detail::tvec2<T> > {
+class MinMaxProperty : public TemplateProperty<glm::detail::tvec2<T> > {
 
 public:
     MinMaxProperty(std::string identifier, std::string displayName, T value, T valueMax,
