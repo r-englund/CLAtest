@@ -29,8 +29,10 @@ ivw_group("Source Files" ${SOURCE_FILES})
 ivw_define_standard_definitions(ticpp)
 ivw_add_definition(TIXML_USE_TICPP)
 if(WIN32)
-    ivw_add_definition_to_list(TICPP_DLL)
-    add_definitions(-DBUILD_TICPP_DLL)
+    if(BUILD_SHARED_LIBS)
+        ivw_add_definition_to_list(TICPP_DLL)
+        add_definitions(-DBUILD_TICPP_DLL)
+    endif()
 endif()
 
 #--------------------------------------------------------------------
