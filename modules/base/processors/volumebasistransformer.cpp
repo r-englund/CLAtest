@@ -1,5 +1,4 @@
 #include "volumebasistransformer.h"
-#include "inviwo\core\datastructures\volume\volumeram.h"
 
 namespace inviwo {
 
