@@ -3,15 +3,17 @@
 #include "pythonmodule.h"
 #include "pyinviwo.h"
 
-#include "pythoneditorwidget.h"
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include "pythonscript.h"
+
+//#include <inviwo/qt/widgets/pythoneditorwidget.h>
+//#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/boolproperty.h>
 
-#include <inviwo/qt/editor/networkeditor.h>
-#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
+//#include <inviwo/qt/editor/networkeditor.h>
+//#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 
 #include <modules/opengl/canvasprocessorgl.h>
 
@@ -33,7 +35,8 @@ static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
     else {
         if(len!=0){
             if(!(len==1 && (msg[0] == '\n' || msg[0] == '\r' || msg[0] == '\0')))
-                inviwo::PythonEditorWidget::getPythonEditorWidget()->appendToOutput(msg);
+                std::cout << msg << std::endl;
+				//inviwo::PythonEditorWidget::getPythonEditorWidget()->appendToOutput(msg);
         }
     }
     Py_RETURN_NONE;
@@ -116,12 +119,12 @@ namespace inviwo{
         inviwoPyModule->addMethod(new PyListPropertiesMethod());
         inviwoPyModule->addMethod(new PyListProcessorsMethod());
         inviwoPyModule->addMethod(new PyCanvasCountMethod());
-        inviwoPyModule->addMethod(new PySetViewportMethod());
+        //inviwoPyModule->addMethod(new PySetViewportMethod());
         inviwoPyModule->addMethod(new PySnapshotMethod());
         inviwoPyModule->addMethod(new PySnapshotCanvasMethod());
         inviwoPyModule->addMethod(new PyGetBasePathMethod());
         inviwoPyModule->addMethod(new PyGetDataPathMethod());
-        inviwoPyModule->addMethod(new PyCloseInviwoMethod());
+       // inviwoPyModule->addMethod(new PyCloseInviwoMethod());
 
         inviwoPyModule->addMethod(new PyGetWorkspaceSavePathMethod());
         inviwoPyModule->addMethod(new PyGetVolumePathMethod());

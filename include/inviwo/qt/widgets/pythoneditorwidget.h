@@ -8,18 +8,19 @@
 
 #include <inviwo/core/util/fileobserver.h>
 
-#include "pythonscript.h"
+#include <modules/python/pythonscript.h>
 
 namespace inviwo{
     
-class IVW_MODULE_PYTHON_API PythonEditorWidget : public InviwoDockWidget , public FileObserver {
+class IVW_MODULE_PYTHON_API PythonEditorWidget : public InviwoDockWidget , public FileObserver, public inviwo::Singleton<PythonEditorWidget> {
     Q_OBJECT;
+
+	PythonEditorWidget(InviwoMainWindow* mainWindow);
 public:
-    PythonEditorWidget(InviwoMainWindow* mainWindow);
     virtual ~PythonEditorWidget();
 
-    static PythonEditorWidget* pythonEditorWidget_;
-    static PythonEditorWidget* getPythonEditorWidget();
+	static void init(InviwoMainWindow* mainWindow);
+
     void appendToOutput(const std::string &msg);
     virtual void fileChanged(std::string fileName);
     void loadFile(std::string fileName,bool askForSave = true);

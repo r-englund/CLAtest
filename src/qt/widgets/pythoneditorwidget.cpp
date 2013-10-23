@@ -1,4 +1,4 @@
-#include "pythoneditorwidget.h"
+#include <inviwo/qt/widgets/pythoneditorwidget.h>
 
 #include <inviwo/core/util/logdistributor.h>
 
@@ -10,12 +10,9 @@
 
 namespace inviwo{
 
-    PythonEditorWidget* PythonEditorWidget::pythonEditorWidget_ = 0;
-    PythonEditorWidget* PythonEditorWidget::getPythonEditorWidget(){
-        return pythonEditorWidget_;
-
-    }
-
+	void PythonEditorWidget::init(InviwoMainWindow* mainWindow){
+		Singleton<PythonEditorWidget>::init (new PythonEditorWidget(mainWindow));
+	}
 
     PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* mainWindow): 
             InviwoDockWidget(tr("Python Editor"),mainWindow), 
@@ -35,7 +32,6 @@ namespace inviwo{
         buildWidget();
         resize(500,700);
 
-        pythonEditorWidget_ = this;
 		setVisible(false);
     }
 

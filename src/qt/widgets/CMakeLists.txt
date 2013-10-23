@@ -50,6 +50,11 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertydialog.h
 )
+
+if(IVW_MODULE_PYTHON)
+	list(APPEND HEADER_FILES  ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/pythoneditorwidget.h)
+endif()
+
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
@@ -98,6 +103,11 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertydialog.h
 )
+
+
+if(IVW_MODULE_PYTHON)
+	list(APPEND MOC_FILES  ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/pythoneditorwidget.h)
+endif()
 
 ivw_qt_wrap_cpp(MOC_FILES ${MOC_FILES})
 source_group("MOC Files" FILES ${MOC_FILES})
@@ -150,6 +160,11 @@ set(SOURCE_FILES
     properties/transferfunctionpropertydialog.cpp
     properties/transferfunctionpropertywidgetqt.cpp 
 )
+
+if(IVW_MODULE_PYTHON)
+	list(APPEND SOURCE_FILES  pythoneditorwidget.cpp)
+endif()
+
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------

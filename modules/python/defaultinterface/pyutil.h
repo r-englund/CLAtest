@@ -18,7 +18,7 @@ PyObject* py_getVolumePath(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getImagePath(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getModulePath(PyObject* /*self*/, PyObject* /*args*/);
 
-PyObject* py_closeInviwo(PyObject* /*self*/, PyObject* /*args*/);
+//PyObject* py_closeInviwo(PyObject* /*self*/, PyObject* /*args*/);
 
 
 class IVW_MODULE_PYTHON_API PySnapshotMethod : public PyMethod{
@@ -79,13 +79,13 @@ public:
 };
 
 
-
-class IVW_MODULE_PYTHON_API PyCloseInviwoMethod : public PyMethod{
-public:
-    char *getName(){return "closeInviwo";}
-    char *getDesc(){return "closeInviwo()\tMethod to close Inviwo.";}
-    virtual PyCFunction getFunc(){return py_closeInviwo;}
-};
+//
+//class IVW_MODULE_PYTHON_API PyCloseInviwoMethod : public PyMethod{
+//public:
+//    char *getName(){return "closeInviwo";}
+//    char *getDesc(){return "closeInviwo()\tMethod to close Inviwo.";}
+//    virtual PyCFunction getFunc(){return py_closeInviwo;}
+//};
 
 } //namespace
 

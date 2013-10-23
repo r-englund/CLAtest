@@ -61,3 +61,4 @@ endif()
 if(IVW_QT_EDITOR)
     add_subdirectory(editor)
 endif()
+

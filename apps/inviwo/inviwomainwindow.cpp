@@ -24,7 +24,7 @@
 #include <inviwo/core/util/commandlineparser.h>
 
 #ifdef IVW_HAS_PYTHON
-#include <modules/python/pythoneditorwidget.h>
+#include <inviwo/qt/widgets/pythoneditorwidget.h>
 #endif
 
 namespace inviwo { 
@@ -67,6 +67,10 @@ void InviwoMainWindow::initializeAndShow() {
     propertyListWidget_->addObserver(this);
 
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
+
+#ifdef HAS_PYTHON
+	PythonEditorWidget::init(this);
+#endif
 
     // load settings and restore window state
     QSettings settings("Inviwo", "Inviwo");
@@ -138,7 +142,7 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
 
 #ifdef IVW_HAS_PYTHON
     if(cmdparser->getRunPythonScriptAfterStartup()){
-        PythonEditorWidget *py = PythonEditorWidget::getPythonEditorWidget();
+        PythonEditorWidget *py = PythonEditorWidget::getPtr();
         py->show();
         py->loadFile(cmdparser->getPythonScirptName(),false);
         py->run();

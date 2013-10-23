@@ -1,6 +1,6 @@
 #include "pycamera.h"
 
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
 
 
@@ -25,8 +25,7 @@ PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
-    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setCameraFocus() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -81,9 +80,7 @@ PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args){
     std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
-
-    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
-    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setCameraUp() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -141,8 +138,7 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-    InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());  
-    Processor* processor = appQt->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setCameraPosition() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());

@@ -61,6 +61,12 @@ ivw_add_dependency_directories(${package_list})
 include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
 
 #--------------------------------------------------------------------
+# If python is used, add define
+if(IVW_MODULE_PYTHON)
+	add_definitions(-DHAS_PYTHON)
+endif()
+
+#--------------------------------------------------------------------
 # Create application
 add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE})
 

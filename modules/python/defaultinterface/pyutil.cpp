@@ -2,7 +2,7 @@
 
 #include "../pythoninterface/pyvalueparser.h"
 
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
 #include <modules/opengl/canvasprocessorgl.h>
 
@@ -118,9 +118,9 @@ PyObject* py_getModulePath(PyObject* /*self*/, PyObject* /*args*/){
 
 
 
-PyObject* py_closeInviwo(PyObject* /*self*/, PyObject* /*args*/){
-    static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->quit();
-    Py_RETURN_NONE;
-}
+//PyObject* py_closeInviwo(PyObject* /*self*/, PyObject* /*args*/){
+//	static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->quit();
+//    Py_RETURN_NONE;
+//}
 
 }

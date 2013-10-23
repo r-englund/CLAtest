@@ -23,17 +23,8 @@ set(HEADER_FILES
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
-# Add MOC files
-set(MOC_FILES
-    ${IVW_MODULE_DIR}/python/pythoneditorwidget.h
-)
-qt4_wrap_cpp(MOC_FILES ${MOC_FILES})
-source_group("MOC Files" FILES ${MOC_FILES})
-
-#--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/python/pythoneditorwidget.cpp
     ${IVW_MODULE_DIR}/python/pyinviwo.cpp
     ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.cpp
     ${IVW_MODULE_DIR}/python/pythoninterface/pyvalueparser.cpp
@@ -52,7 +43,6 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Define defintions
 add_definitions(-DIVW_PYTHON)
-ivw_define_qt_definitions()
 
 
 # Create module
