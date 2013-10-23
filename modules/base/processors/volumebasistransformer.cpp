@@ -1,4 +1,5 @@
 #include "volumebasistransformer.h"
+#include <inviwo/core/datastructures/coordinatetransformer.h>
 
 namespace inviwo {
 
@@ -47,7 +48,7 @@ void VolumeBasisTransformer::process() {
             angels_.set(vec3(alpha, beta, gamma));
             offset_.set(offset);
         }
-        
+
         // TODO
         // This should be changed to make some kind of shallow copy of the representations
         // and update if the inport changes the representations

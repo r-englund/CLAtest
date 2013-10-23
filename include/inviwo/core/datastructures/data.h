@@ -292,6 +292,9 @@ U Data::getMetaData(std::string key, U val) const {
 
 /*---------------------------------------------------------------*/
 
+
+
+              
 template <unsigned int N>
 class SpatialData : public Data {
 public:
@@ -316,6 +319,32 @@ public:
 
     Matrix<N+1,float> getWorldTransform() const;
     void setWorldTransform(const Matrix<N+1,float>& mat);
+
+    //virtual CoordinateTransformer<N>* getCoordinateTransformer() const;
+
+};
+
+template <unsigned int N>
+class StructuredData : public SpatialData<N> {
+public:
+    StructuredData(const Vector<N, unsigned int>& dimension, 
+        const DataFormatBase* format);
+    StructuredData(const Vector<N,float>& offset, 
+        const Vector<N, unsigned int>& dimension, 
+        const DataFormatBase* format);
+    StructuredData(const Matrix<N,float>& basis, 
+        const Vector<N, unsigned int>& dimension, 
+        const DataFormatBase* format);
+    StructuredData(const Matrix<N,float>& basis, 
+        const Vector<N,float>& offset, 
+        const Vector<N, unsigned int>& dimension, 
+        const DataFormatBase* format);
+
+    virtual ~StructuredData(){}
+    virtual StructuredData<N>* clone() const;
+
+    Vector<N, unsigned int> getDimension() const;
+    void setDimension(const Vector<N, unsigned int>& dimension);
 
 };
 
@@ -419,32 +448,14 @@ void SpatialData<N>::setWorldTransform(const Matrix<N+1,float>& mat) {
     Data::setMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
 }
 
+/*
+template <unsigned int N>
+CoordinateTransformer<N>* SpatialData<N>::getCoordinateTransformer() const {
+    return new SpatialCoordinateTransformer<N>(this); 
+}
+*/
 
 /*---------------------------------------------------------------*/
-
-template <unsigned int N>
-class StructuredData : public SpatialData<N> {
-public:
-	StructuredData(const Vector<N, unsigned int>& dimension, 
-				   const DataFormatBase* format);
-	StructuredData(const Vector<N,float>& offset, 
-				   const Vector<N, unsigned int>& dimension, 
-				   const DataFormatBase* format);
-	StructuredData(const Matrix<N,float>& basis, 
-				   const Vector<N, unsigned int>& dimension, 
-				   const DataFormatBase* format);
-	StructuredData(const Matrix<N,float>& basis, 
-				   const Vector<N,float>& offset, 
-				   const Vector<N, unsigned int>& dimension, 
-				   const DataFormatBase* format);
-
-	virtual ~StructuredData(){}
-    virtual StructuredData<N>* clone() const;
-
-	Vector<N, unsigned int> getDimension() const;
-	void setDimension(const Vector<N, unsigned int>& dimension);
-
-};
 
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Vector<N, unsigned int>& dimension, 
