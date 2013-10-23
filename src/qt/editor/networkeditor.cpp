@@ -1067,10 +1067,6 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
 
 bool NetworkEditor::loadNetwork(std::string fileName) {
 
-    //getSnapshotsOfExternalNetwork(fileName, "testSnapShot");
-    //clearNetwork();
-    //return true;
-
     // first we clean the current network
     clearNetwork();
 
