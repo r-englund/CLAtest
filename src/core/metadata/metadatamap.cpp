@@ -6,10 +6,16 @@ namespace inviwo {
 MetaDataMap::MetaDataMap() {}
 
 MetaDataMap::MetaDataMap(const MetaDataMap& inMap) {
-    this->metaData_ = inMap.metaData_;
+    for (cItreator cIt = inMap.metaData_.begin(); cIt!=inMap.metaData_.end(); ++cIt) {
+        metaData_[cIt->first] = cIt->second->clone();
+    }
 }
 
 MetaDataMap::~MetaDataMap() {}
+
+MetaDataMap* MetaDataMap::clone() const {
+    return new MetaDataMap(*this);
+}
 
 void MetaDataMap::add(std::string key, MetaData* metaData) {
     remove(key);
@@ -17,29 +23,23 @@ void MetaDataMap::add(std::string key, MetaData* metaData) {
 }
 
 void MetaDataMap::remove(std::string key) {
-    if (!get(key)) return;
-    metaData_.erase(metaData_.find(key));
+    cItreator it = metaData_.find(key);
+    if (it != metaData_.end()){
+        delete it->second;
+        metaData_.erase(it);
+    }
 }
 
 void MetaDataMap::removeAll() {
+    for (cItreator cIt = metaData_.begin(); cIt!=metaData_.end(); ++cIt)
+        delete cIt->second;
     metaData_.clear();
-}
-
-void MetaDataMap::rename(std::string newKey, MetaData* metaData) {
-    for (cItreator cIt = metaData_.begin(); cIt!=metaData_.end(); ++cIt) {
-        if (cIt->second == metaData) {
-            std::string oldKey = cIt->first;
-            remove(oldKey);
-            break;
-        }
-    }
-    add(newKey, metaData);
 }
 
 void MetaDataMap::rename(std::string newKey, std::string oldKey) {
     MetaData* data = get(oldKey);
     if (data) {
-        remove(oldKey);
+        metaData_.erase(oldKey);
         add(newKey, data);
     }
 }
@@ -52,14 +52,14 @@ std::vector<std::string> MetaDataMap::getKeys() {
 }
 
 MetaData* MetaDataMap::get(std::string key) {
-    std::map<std::string, MetaData*>::const_iterator it = metaData_.find(key);
+    cItreator it = metaData_.find(key);
     if (it!=metaData_.end())
         return it->second;
     return NULL;
 }
 
 const MetaData* MetaDataMap::get(std::string key) const{
-    std::map<std::string, MetaData*>::const_iterator it = metaData_.find(key);
+    cItreator it = metaData_.find(key);
     if (it!=metaData_.end())
         return const_cast<const MetaData*>(it->second);
     return NULL;
@@ -68,7 +68,7 @@ const MetaData* MetaDataMap::get(std::string key) const{
 MetaDataMap& MetaDataMap::operator=(const MetaDataMap& map) {
     removeAll();
     for (cItreator cIt = map.metaData_.begin(); cIt!=map.metaData_.end(); ++cIt)
-        add(cIt->first, cIt->second);
+        metaData_[cIt->first] = cIt->second->clone();
     return *this;
 }
 

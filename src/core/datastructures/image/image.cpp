@@ -11,14 +11,14 @@ Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, boo
 	imageType_(comb), 
 	allowMissingLayers_(allowMissingLayers) {}
 
-Data* Image::clone() const {
-    Image* newImage = new Image(getDimension(), getImageType(), getDataFormat());
-    
-    //Do not copy all representations.
-    //copyRepresentations(newImage);
+Image::Image(const Image& rhs) : StructuredData<2>(rhs)
+    , allowMissingLayers_(rhs.allowMissingLayers_)
+    , imageType_(rhs.imageType_)
+    , inputSources_(rhs.inputSources_) {
+}
 
-    newImage->resize(getDimension());
-    return newImage;
+Image* Image::clone() const {
+    return new Image(*this);
 }
 
 Image::~Image() {

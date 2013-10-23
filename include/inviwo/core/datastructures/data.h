@@ -15,24 +15,19 @@ public:
     Data();
     virtual ~Data();
     Data(const Data& rhs) {
-        *this = rhs;
-    }
-    Data& operator=(const Data& rhs) {
-        if (this != &rhs) {
-            rhs.copyRepresentations(this);
-            this->metaData_ = rhs.getMetaDataMap();
-            this->setDataFormat(rhs.getDataFormat());
-            for(int i = 0; i < static_cast<int>(this->representations_.size()); ++i) {
-                if(rhs.isRepresentationValid(i)) {
-                    this->setRepresentationAsValid(i);
-                    this->lastValidRepresentation_ = this->representations_[i];
-                } else {
-                    this->setRepresentationAsInvalid(i);
-                }
+        rhs.copyRepresentations(this);
+        metaData_ = rhs.metaData_->clone();
+        dataFormatBase_ = rhs.dataFormatBase_;
+        for(int i = 0; i < static_cast<int>(this->representations_.size()); ++i) {
+            if(rhs.isRepresentationValid(i)) {
+                this->setRepresentationAsValid(i);
+                this->lastValidRepresentation_ = this->representations_[i];
+            } else {
+                this->setRepresentationAsInvalid(i);
             }
         }
-        return *this;
-    };
+    }
+
     //Representations
     template<typename T>
     const T* getRepresentation() const;
@@ -56,16 +51,18 @@ public:
     template<typename T, typename U>
     U getMetaData(std::string key, U val) const;
 
-    const MetaDataMap& getMetaDataMap() const { return metaData_; }
+    MetaDataMap* getMetaDataMap() const { return metaData_; }
 
     void setDataFormat(const DataFormatBase* format);
     const DataFormatBase* getDataFormat() const;
 
     //Others
-    virtual Data* clone() const = 0;
+    virtual Data* clone() const{
+        return new Data(*this);
+    };
 
 protected:
-    virtual void createDefaultRepresentation() const = 0;
+    virtual void createDefaultRepresentation() const { };
 
     virtual void newEditableRepresentationCreated() const { }
 
@@ -95,7 +92,8 @@ protected:
     mutable std::vector<DataRepresentation*> representations_;
     mutable int validRepresentations_; ///< Bit representation of valid representation. A maximum of 32 representations are supported.
     mutable DataRepresentation* lastValidRepresentation_; ///< A pointer to the the most recently updated representation. Makes updates and creation faster.
-    MetaDataMap metaData_;
+
+    MetaDataMap* metaData_;
     const DataFormatBase* dataFormatBase_;
 
 };
@@ -253,22 +251,22 @@ void Data::invalidateAllOther(){
 
 template<typename T, typename U>
 void Data::setMetaData(std::string key, U value) {
-    MetaData* baseMetaData = metaData_.get(key);
+    MetaData* baseMetaData = metaData_->get(key);
 
     T* derivedMetaData = 0;
     if (baseMetaData) {
         derivedMetaData = dynamic_cast<T*>(baseMetaData);
         //if not an instance of valid meta data, forcefully replace with valid one
         if (!derivedMetaData) {
-            metaData_.remove(key);
+            metaData_->remove(key);
             derivedMetaData = new T();
-            metaData_.add(key, derivedMetaData);
+            metaData_->add(key, derivedMetaData);
         }
         derivedMetaData->set(value);
     }
     else {
         derivedMetaData = new T();
-        metaData_.add(key, derivedMetaData);
+        metaData_->add(key, derivedMetaData);
         derivedMetaData->set(value);
     }
 }
@@ -276,7 +274,7 @@ void Data::setMetaData(std::string key, U value) {
 //param val is required to deduce the template argument
 template<typename T, typename U>
 U Data::getMetaData(std::string key, U val) const {
-    const MetaData* baseMetaData = metaData_.get(key);
+    const MetaData* baseMetaData = metaData_->get(key);
 
     const T* derivedMetaData = 0;
     if (baseMetaData) {
@@ -304,6 +302,7 @@ public:
 	SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset);
 
 	virtual ~SpatialData(){}
+    virtual SpatialData<N>* clone() const;
 
 	Vector<N,float> getOffset() const;
 	void setOffset(const Vector<N,float>& offset);
@@ -316,7 +315,7 @@ public:
 	void setBasisAndOffset(const Matrix<N+1,float>& mat);
 
     Matrix<N+1,float> getWorldTransform() const;
-    void SetWorldTransform(const Matrix<N+1,float>& mat);
+    void setWorldTransform(const Matrix<N+1,float>& mat);
 
 };
 
@@ -348,6 +347,11 @@ template <unsigned int N>
 SpatialData<N>::SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset) : Data() {
 	setBasis(basis);
 	setOffset(offset);
+}
+
+template <unsigned int N>
+SpatialData<N>* SpatialData<N>::clone() const {
+    return new SpatialData<N>(*this);
 }
 
 template <unsigned int N>
@@ -411,7 +415,7 @@ Matrix<N+1,float> SpatialData<N>::getWorldTransform() const {
     return Data::getMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
 }
 template <unsigned int N>
-void SpatialData<N>::SetWorldTransform(const Matrix<N+1,float>& mat) {
+void SpatialData<N>::setWorldTransform(const Matrix<N+1,float>& mat) {
     Data::setMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
 }
 
@@ -435,6 +439,7 @@ public:
 				   const DataFormatBase* format);
 
 	virtual ~StructuredData(){}
+    virtual StructuredData<N>* clone() const;
 
 	Vector<N, unsigned int> getDimension() const;
 	void setDimension(const Vector<N, unsigned int>& dimension);
@@ -474,6 +479,11 @@ StructuredData<N>::StructuredData(const Matrix<N,float>& basis,
 	SpatialData<N>(basis, offset) {
 	setDimension(dimension);
 	Data::setDataFormat(format);
+}
+
+template <unsigned int N>
+StructuredData<N>* StructuredData<N>::clone() const {
+    return new StructuredData<N>(*this);
 }
 
 template <unsigned int N>

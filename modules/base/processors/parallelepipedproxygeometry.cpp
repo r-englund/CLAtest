@@ -39,14 +39,16 @@ namespace inviwo {
 	}
 
 	void ParallelepipedProxyGeometry::process() {
-		if(dims_ != inport_.getData()->getDimension() ||
-			basis_ != inport_.getData()->getBasisAndOffset()){
+		if(inport_.hasData() && dims_ != inport_.getData()->getDimension() ||
+			basis_ != inport_.getData()->getBasisAndOffset()) {
 			dims_ = inport_.getData()->getDimension();
 			basis_ = inport_.getData()->getBasisAndOffset();
 			clipX_.setRangeMax(static_cast<int>(dims_.x));
 			clipY_.setRangeMax(static_cast<int>(dims_.y));
 			clipZ_.setRangeMax(static_cast<int>(dims_.z));
 		}
+
+      
 
 		// Using column vectors in basis
 		glm::vec3 pos(basis_[0][3],basis_[1][3],basis_[2][3]);
@@ -90,10 +92,20 @@ namespace inviwo {
 			c3 = c3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
 		}
 
-		//Create parallelepiped and set it to the outport
-		outport_.setData(new Geometry(
-			SimpleMeshCreator::parallelepiped(pos, p1, p2, p3, 	
-											tex, t1, t2, t3, 	
-											col, c1, c2, c3)));										
+
+        //Create parallelepiped and set it to the outport
+        Geometry* geom = new Geometry(
+            SimpleMeshCreator::parallelepiped(pos, p1, p2, p3, 	
+                                            tex, t1, t2, t3, 	
+                                            col, c1, c2, c3));
+
+        // This would be easier, use unit box to make geom instead...
+        // geom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
+
+        // Does not do anything yet @1116... but will
+        // geom->setWorldTransform(inport_.getData()->getWorldTransform());
+
+        outport_.setData(geom);
+        
 	}
 } // namespace

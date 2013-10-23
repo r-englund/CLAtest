@@ -64,7 +64,7 @@ void VolumeGL::deinitialize() {
 }
 
 DataRepresentation* VolumeGL::clone() const {
-    VolumeGL* newVolumeGL = new VolumeGL(dimensions_);
+    VolumeGL* newVolumeGL = new VolumeGL(dimensions_, dataFormatBase_);
     //TODO:: Copy volume textures if necessary
     return newVolumeGL;
 }

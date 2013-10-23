@@ -2,8 +2,11 @@
 
 namespace inviwo {
 
-Data::Data(): validRepresentations_(0), lastValidRepresentation_(NULL) {}
-Data::~Data() { 
+Data::Data(): validRepresentations_(0), lastValidRepresentation_(NULL) {
+    metaData_ = new MetaDataMap();
+}
+Data::~Data() {
+    delete metaData_;
     clearRepresentations();
 }
 

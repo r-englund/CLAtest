@@ -18,7 +18,7 @@ public:
     virtual MetaData* create() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-
+    virtual MetaData* clone() const;
 };
 
 /*---------------------------------------------------------------------*/
@@ -27,6 +27,7 @@ template <typename T>
 class MetaDataPrimitiveType : public MetaData {
 public:
     MetaDataPrimitiveType(T value);
+    virtual MetaDataPrimitiveType<T>* clone() const; 
     void set(T value);
     T get() const;    
 protected:
@@ -36,6 +37,11 @@ protected:
 template <typename T>
 MetaDataPrimitiveType<T>::MetaDataPrimitiveType(T value) : value_(value) {
 
+}
+
+template <typename T>
+MetaDataPrimitiveType<T>* MetaDataPrimitiveType<T>::clone() const {
+    return new MetaDataPrimitiveType<T>(*this);
 }
 
 template <typename T>
@@ -56,8 +62,9 @@ public:
     BoolMetaData(bool value);
     virtual std::string getClassName() const;
     virtual MetaData* create() const;
+    virtual BoolMetaData* clone() const;
     virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+    virtual void deserialize(IvwDeserializer& d); 
 };
 
 /*---------------------------------------------------------------------*/
@@ -68,6 +75,7 @@ public:
     IntMetaData(int value);
     virtual std::string getClassName() const;
     virtual MetaData* create() const;
+    virtual IntMetaData* clone() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };
@@ -80,6 +88,7 @@ public:
     IVec2MetaData(ivec2 value);
     virtual std::string getClassName() const;
     virtual MetaData* create() const;
+    virtual IVec2MetaData* clone() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 };
@@ -94,6 +103,7 @@ public:
     virtual MetaData* create() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual IVec3MetaData* clone() const;
 };
 
 /*---------------------------------------------------------------------*/
@@ -106,6 +116,7 @@ public:
     virtual MetaData* create() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual UVec2MetaData* clone() const;
 };
 
 /*---------------------------------------------------------------------*/
@@ -118,6 +129,7 @@ public:
     virtual MetaData* create() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual UVec3MetaData* clone() const;
 };
 
 /*---------------------------------------------------------------------*/
@@ -130,6 +142,7 @@ public:
     virtual MetaData* create() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual FloatMetaData* clone() const;
 };
 
 /*---------------------------------------------------------------------*/
@@ -142,6 +155,7 @@ public:
     virtual MetaData* create() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual Vec2MetaData* clone() const;
 };
 
 /*---------------------------------------------------------------------*/
@@ -154,6 +168,7 @@ public:
     virtual MetaData* create() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual Vec3MetaData* clone() const;
 };
 
 /*---------------------------------------------------------------------*/
@@ -166,6 +181,7 @@ public:
     virtual MetaData* create() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual StringMetaData* clone() const;
 };
 
 /*---------------------------------------------------------------------*/
@@ -185,6 +201,11 @@ public:
 	virtual MetaData* create() const {
 		return new VectorMetaData<4,T>();
 	};
+
+    virtual VectorMetaData<4,T>* clone() const {
+        return new VectorMetaData<4,T>(*this);
+    }
+
 	virtual void serialize(IvwSerializer& s) const {
 		Vector<4,T> v = MetaDataPrimitiveType<Vector<4,T> >::get();
 		glm::detail::tvec4<T> u(v.x, v.y, v.z, v.w);
@@ -212,6 +233,9 @@ public:
 	virtual MetaData* create() const {
 		return new VectorMetaData<3,T>();
 	};
+    virtual VectorMetaData<3,T>* clone() const{
+        return new VectorMetaData<3,T>(*this);
+    };
 	virtual void serialize(IvwSerializer& s) const {
 		Vector<3,T> v = MetaDataPrimitiveType<Vector<3,T> >::get();
 		glm::detail::tvec3<T> u(v.x, v.y, v.z);
@@ -238,6 +262,9 @@ public:
 	virtual MetaData* create() const {
 		return new VectorMetaData<2,T>();
 	};
+    virtual VectorMetaData<2,T>* clone() const{
+        return new VectorMetaData<2,T>(*this);
+    };
 	virtual void serialize(IvwSerializer& s) const {
 		Vector<2,T> v = MetaDataPrimitiveType<Vector<2,T> >::get();
 		glm::detail::tvec2<T> u(v.x, v.y);
@@ -263,6 +290,9 @@ public:
 	virtual MetaData* create() const {
 		return new VectorMetaData<1,T>();
 	};
+    virtual VectorMetaData<1,T>* clone() const{
+        return new VectorMetaData<1,T>(*this);
+    };
 	virtual void serialize(IvwSerializer& s) const {
 		Vector<1,T> v = MetaDataPrimitiveType<Vector<1,T> >::get();
 		T u(v.x);
@@ -293,6 +323,9 @@ public:
 	virtual MetaData* create() const {
 		return new MatrixMetaData<4,T>();
 	};
+    virtual MatrixMetaData<4,T>* clone() const{
+        return new MatrixMetaData<4,T>(*this);
+    };
 	virtual void serialize(IvwSerializer& s) const {
 		Matrix<4,T> m = MetaDataPrimitiveType<Matrix<4,T> >::get();
 		glm::detail::tmat4x4<T> u(m[0][0], m[0][1], m[0][2], m[0][3], 
@@ -321,6 +354,9 @@ public:
 	virtual MetaData* create() const {
 		return new MatrixMetaData<3,T>();
 	};
+    virtual MatrixMetaData<3,T>* clone() const{
+        return new MatrixMetaData<3,T>(*this);
+    };
 	virtual void serialize(IvwSerializer& s) const {
 		Matrix<3,T> m = MetaDataPrimitiveType<Matrix<3,T> >::get();
 		glm::detail::tmat3x3<T> u(m[0][0], m[0][1], m[0][2], 
@@ -348,6 +384,9 @@ public:
 	virtual MetaData* create() const {
 		return new MatrixMetaData<2,T>();
 	};
+    virtual MatrixMetaData<2,T>* clone() const{
+        return new MatrixMetaData<2,T>(*this);
+    };
 	virtual void serialize(IvwSerializer& s) const {
 		Matrix<2,T> m = MetaDataPrimitiveType<Matrix<2,T> >::get();
 		glm::detail::tmat2x2<T> u(m[0][0], m[0][1], 

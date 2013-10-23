@@ -13,7 +13,7 @@ namespace inviwo {
         Volume(VolumeRepresentation*);
         Volume(VolumeRepresentation*, const Volume*);
         virtual ~Volume();
-        Data* clone() const;        
+        virtual Volume* clone() const;        
     
         uvec3 getDimension() const;
         void setDimension(const uvec3& dim);

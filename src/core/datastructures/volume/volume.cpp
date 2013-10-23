@@ -5,13 +5,11 @@ namespace inviwo {
 
 Volume::Volume(uvec3 dimensions, const DataFormatBase* format) : StructuredData<3>(dimensions, format) {
 	representations_.clear();
-    //metaData_.removeAll(); // why!?! deletes metadata created by parent? /Peter
 }
 
 Volume::Volume(VolumeRepresentation* in) : StructuredData<3>(in->getDimensions(), in->getDataFormat()) {
     representations_.clear();
     representations_.push_back(in);
-    //metaData_.removeAll();
 }
 
 Volume::Volume(VolumeRepresentation* in, const Volume* src) : StructuredData<3>(in->getDimensions(), in->getDataFormat()) {
@@ -22,12 +20,8 @@ Volume::Volume(VolumeRepresentation* in, const Volume* src) : StructuredData<3>(
 
 Volume::~Volume() {}
 
-Data* Volume::clone() const {
-	Volume* newVolume = new Volume(getDimension(), getDataFormat());
-	copyRepresentations(newVolume);
-	newVolume->dataFormatBase_ = dataFormatBase_;
-	newVolume->metaData_ = metaData_;
-    return newVolume;
+Volume* Volume::clone() const {
+    return new Volume(*this);
 }
 
 
@@ -63,7 +57,7 @@ mat4 Volume::getWorldTransform() const{
     return SpatialData<3>::getWorldTransform();
 }
 void Volume::setWorldTransform(const mat4& mat){
-    SpatialData<3>::SetWorldTransform(Matrix<4,float>(mat));
+    SpatialData<3>::setWorldTransform(Matrix<4,float>(mat));
 }
 
 void Volume::createDefaultRepresentation() const{

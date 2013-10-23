@@ -9,10 +9,8 @@ Geometry::Geometry(GeometryRepresentation* rep) : SpatialData<3>() {
     addRepresentation(rep);
 }
 
-Data* Geometry::clone() const {
-    Geometry* newGeometry = new Geometry();
-    copyRepresentations(newGeometry);
-    return newGeometry;
+Geometry* Geometry::clone() const {
+    return new Geometry(*this);
 }
 
 Geometry::~Geometry() {

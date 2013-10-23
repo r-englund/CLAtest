@@ -1,5 +1,5 @@
-#ifndef IVW_SPATIALDATATRANSFORMER_H
-#define IVW_SPATIALDATATRANSFORMER_H
+#ifndef IVW_COORDINATETRANSFORMER_H
+#define IVW_COORDINATETRANSFORMER_H
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/data.h>
@@ -7,10 +7,10 @@
 namespace inviwo {
 
 template<unsigned int N>
-class SpatialDataTransformer {
+class SpatialCoordinateTransformer {
 public:
-	SpatialDataTransformer(SpatialData<N>* spatialData) : spatialData_(spatialData) {};
-	virtual ~SpatialDataTransformer(){};
+	SpatialCoordinateTransformer(SpatialData<N>* spatialData) : spatialData_(spatialData) {};
+	virtual ~SpatialCoordinateTransformer(){};
 
 	/**
 	 * Returns the matrix transformation mapping from texture coordinates
@@ -155,10 +155,10 @@ Matrix<N, float> SpatialData<N>::getWorldToModelMatrix() const {
 
 
 template<unsigned int N>
-class StructuredDataTransformer : public SpatialDataTransformer<N>(){
+class StructuredCoordinateTransformer : public SpatialCoordinateTransformer<N> {
 public:
-	StructuredDataTransformer(StructuredData<N>* structuredData) : SpatialDataTransformer<N>(structuredData), structuredData_(structuredData) {};
-	virtual ~StructuredDataTransformer(){};
+	StructuredCoordinateTransformer(StructuredData<N>* structuredData) : SpatialCoordinateTransformer<N>(structuredData), structuredData_(structuredData) {};
+	virtual ~StructuredCoordinateTransformer(){};
 
 protected:
 	virtual Matrix<N+1,float> getDimensionMatrix(){
@@ -175,6 +175,5 @@ private:
 
 };
 
-
 } // namespace
-#endif //IVW_SATIALDATATRANSFORMER_H	
+#endif //IVW_COORDINATETRANSFORMER_H	

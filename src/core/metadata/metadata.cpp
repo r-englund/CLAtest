@@ -6,6 +6,10 @@ MetaData::MetaData() {}
 
 MetaData::~MetaData() {}
 
+MetaData* MetaData::clone() const {
+    return new MetaData(*this);
+}
+
 std::string MetaData::getClassName() const {
     return "MetaData";
 }
@@ -42,6 +46,10 @@ MetaData* BoolMetaData::create() const {
     return new BoolMetaData();
 }
 
+BoolMetaData* BoolMetaData::clone() const{
+    return new BoolMetaData(*this);
+}
+
 void BoolMetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }
@@ -66,6 +74,10 @@ std::string IntMetaData::getClassName() const {
 
 MetaData* IntMetaData::create() const {
     return new BoolMetaData();
+}
+
+IntMetaData* IntMetaData::clone() const{
+    return new IntMetaData(*this);
 }
 
 void IntMetaData::serialize(IvwSerializer& s) const {
@@ -94,6 +106,10 @@ MetaData* IVec2MetaData::create() const {
     return new IVec2MetaData();
 }
 
+IVec2MetaData* IVec2MetaData::clone() const{
+    return new IVec2MetaData(*this);
+}
+
 void IVec2MetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }
@@ -119,8 +135,10 @@ std::string IVec3MetaData::getClassName() const {
 MetaData* IVec3MetaData::create() const {
     return new IVec3MetaData();
 }
-
-void IVec3MetaData::serialize(IvwSerializer& s) const {
+IVec3MetaData* IVec3MetaData::clone() const{
+    return new IVec3MetaData(*this);
+}
+ void IVec3MetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }
 
@@ -145,7 +163,9 @@ std::string UVec2MetaData::getClassName() const {
 MetaData* UVec2MetaData::create() const {
     return new UVec2MetaData();
 }
-
+UVec2MetaData* UVec2MetaData::clone() const{
+    return new UVec2MetaData(*this);
+}
 void UVec2MetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }
@@ -171,7 +191,9 @@ std::string UVec3MetaData::getClassName() const {
 MetaData* UVec3MetaData::create() const {
     return new UVec3MetaData();
 }
-
+UVec3MetaData* UVec3MetaData::clone() const{
+    return new UVec3MetaData(*this);
+}
 void UVec3MetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }
@@ -197,7 +219,9 @@ std::string FloatMetaData::getClassName() const {
 MetaData* FloatMetaData::create() const {
     return new FloatMetaData();
 }
-
+FloatMetaData* FloatMetaData::clone() const{
+    return new FloatMetaData(*this);
+}
 void FloatMetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }
@@ -223,7 +247,9 @@ std::string Vec2MetaData::getClassName() const {
 MetaData* Vec2MetaData::create() const {
     return new Vec2MetaData();
 }
-
+Vec2MetaData* Vec2MetaData::clone() const{
+    return new Vec2MetaData(*this);
+}
 void Vec2MetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }
@@ -249,7 +275,9 @@ std::string Vec3MetaData::getClassName() const {
 MetaData* Vec3MetaData::create() const {
     return new Vec3MetaData();
 }
-
+Vec3MetaData* Vec3MetaData::clone() const{
+    return new Vec3MetaData(*this);
+}
 void Vec3MetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }
@@ -275,7 +303,9 @@ std::string StringMetaData::getClassName() const {
 MetaData* StringMetaData::create() const {
     return new StringMetaData();
 }
-
+StringMetaData* StringMetaData::clone() const{
+    return new StringMetaData(*this);
+}
 void StringMetaData::serialize(IvwSerializer& s) const {
     IVW_UNUSED_PARAM(s);
 }

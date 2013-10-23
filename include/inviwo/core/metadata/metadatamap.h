@@ -13,10 +13,10 @@ public:
     MetaDataMap();
     MetaDataMap(const MetaDataMap& );   
     virtual ~MetaDataMap();
+    virtual MetaDataMap* clone() const; 
     void add(std::string key, MetaData* metaData);
     void remove(std::string key);
     void removeAll();
-    void rename(std::string newKey, MetaData* metaData);
     void rename(std::string newKey, std::string oldKey);
     std::vector<std::string> getKeys();
     MetaData* get(std::string key);

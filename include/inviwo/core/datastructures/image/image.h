@@ -11,9 +11,10 @@ class IVW_CORE_API Image : public StructuredData<2> {
 
 public:
     Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(), bool allowMissingLayers = false);
+    Image(const Image&);
     virtual ~Image();
     void resize(uvec2 dimensions);
-    virtual Data* clone() const;
+    virtual Image* clone() const;
     void resizeImageRepresentations(Image* targetImage, uvec2 targetDim);
     ImageType getImageType() const { return imageType_; }
     void setInputSource(ImageLayerType, const Image*);

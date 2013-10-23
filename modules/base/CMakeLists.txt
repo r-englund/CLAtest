@@ -19,6 +19,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/simpleraycaster.h
     ${IVW_MODULE_DIR}/base/processors/testprocessor.h
     ${IVW_MODULE_DIR}/base/processors/transferfunctiontestprocessor.h
+	${IVW_MODULE_DIR}/base/processors/volumebasistransformer.h
     ${IVW_MODULE_DIR}/base/processors/volumesplit.h
     ${IVW_MODULE_DIR}/base/processors/volumesplitcompositor.h
     ${IVW_MODULE_DIR}/base/processors/volumesplitimagecompositor.h
@@ -42,6 +43,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/simpleraycaster.cpp
     ${IVW_MODULE_DIR}/base/processors/testprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/transferfunctiontestprocessor.cpp
+	${IVW_MODULE_DIR}/base/processors/volumebasistransformer.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesplit.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesplitcompositor.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesplitimagecompositor.cpp
