@@ -60,11 +60,6 @@ ivw_add_dependency_directories(${package_list})
 # Include generation directory to register modules etc
 include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
 
-#--------------------------------------------------------------------
-# If python is used, add define
-if(IVW_MODULE_PYTHON)
-	add_definitions(-DHAS_PYTHON)
-endif()
 
 #--------------------------------------------------------------------
 # Create application

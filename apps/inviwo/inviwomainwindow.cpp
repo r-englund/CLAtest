@@ -68,7 +68,7 @@ void InviwoMainWindow::initializeAndShow() {
 
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
 
-#ifdef HAS_PYTHON
+#ifdef IVW_HAS_PYTHON
 	PythonEditorWidget::init(this);
 #endif
 
