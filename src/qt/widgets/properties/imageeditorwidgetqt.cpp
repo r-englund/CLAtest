@@ -124,6 +124,8 @@ std::vector<ImgRect> SimpleGraphicsView::getRectList() {
          SimpleWithRectangleLabel *rectItem = qgraphicsitem_cast<SimpleWithRectangleLabel*>(graphicsItems[i]);
          if (rectItem) {
             ImgRect r;
+            vec2 pos(rectItem->scenePos().x(), rectItem->scenePos().y());
+            vec2 pos1(rectItem->pos().x(), rectItem->pos().y());
             r.rect_ = QRectF(rectItem->mapRectToScene(rectItem->rect()));
             r.label_ = rectItem->getLabel();
             rectList.push_back(r) ;             
@@ -158,7 +160,8 @@ ImageLabelWidget::ImageLabelWidget() : scene_(0), view_(0) {
 }
 
 void ImageLabelWidget::closeEvent(QCloseEvent *event) {
-    mainParentWidget_->saveDialog();
+    if (mainParentWidget_)
+        mainParentWidget_->saveDialog();
     if (QWidget::isVisible())
         QWidget::hide();
     event->ignore();
@@ -210,6 +213,15 @@ void ImageLabelWidget::generateWidget(){
     //connect(reDoButton_,SIGNAL(pressed()),editor_,SLOT(redo()));
 }
 
+void ImageLabelWidget::setToolBarVisible(bool visible) {
+    if (toolBar_) {
+        if (visible)
+            toolBar_->setVisible(true);
+        else
+            toolBar_->setVisible(false);
+    }
+}
+
 void ImageLabelWidget::addRectangleTest() {
     QAbstractGraphicsShapeItem *i = scene_->addRect( 0, 0 , 25, 25 );
     i->setFlag(QGraphicsItem::ItemIsMovable);
@@ -220,12 +232,17 @@ void ImageLabelWidget::addRectangleTest() {
 
 void ImageLabelWidget::addBackGroundImage(std::string imagePath) {
     scene_->clear();
+    float sceneScaleFactor = 1.2f;
     backGroundImage_ = new QImage(imagePath.c_str());
-    QGraphicsPixmapItem *i = scene_->addPixmap( QPixmap(imagePath.c_str()) );    
+    QGraphicsPixmapItem *i = scene_->addPixmap( QPixmap(imagePath.c_str()) );
+    vec2 unscaledSize(backGroundImage_->width(), backGroundImage_->height());
+    vec2 scaledSceneSize(backGroundImage_->width()*sceneScaleFactor, backGroundImage_->height()*sceneScaleFactor);
+    vec2 centralPos = (scaledSceneSize - unscaledSize)/2.0f ;    
+    //i->setPos(centralPos.x, centralPos.y);
     i->setZValue(1);    
-    scene_->setSceneRect(0, 0, backGroundImage_->width(), backGroundImage_->height());
+    scene_->setSceneRect(0, 0, unscaledSize.x, unscaledSize.y);
     //resize(image.size()*4/3);
-    setFixedSize(backGroundImage_->size()*1.2f);
+    setFixedSize(QSize(scaledSceneSize.x, scaledSceneSize.y));
 }
 
 void ImageLabelWidget::setParent(ImageEditorWidgetQt* tmp){

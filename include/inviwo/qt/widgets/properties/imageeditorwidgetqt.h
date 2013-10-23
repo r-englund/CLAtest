@@ -123,7 +123,8 @@ public:
     std::string tmpPropertyValue_;   
     SimpleGraphicsScene* scene_;
     SimpleGraphicsView* view_;
-    QImage* backGroundImage_;  
+    QImage* backGroundImage_;
+    void setToolBarVisible(bool visible);
 protected:
     void closeEvent(QCloseEvent *);
     /*void showEvent(QShowEvent *);*/
