@@ -6,6 +6,7 @@
 #endif
 
 #include <ticpp/ticpp.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/io/serialization/ivwserializeconstants.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <map>
@@ -49,7 +50,7 @@ typedef ticpp::Iterator<TxAttribute> TxAIt;
 
 class IvwSerializable;
 
-class IvwSerializeBase {
+class IVW_CORE_API IvwSerializeBase {
 public:
     /** 
      * \brief Base class for IvwSerializer and IvwDeserializer.
@@ -182,9 +183,9 @@ protected:
     //stream operators
 #ifdef TIXML_USE_STL
 
-    friend std::istream& operator >> (std::istream& in, IvwSerializeBase& base);
+    //friend std::istream& operator >> (std::istream& in, IvwSerializeBase& base);
 
-    friend std::ostream& operator<< (std::ostream& out, const IvwSerializeBase& base);
+    //friend std::ostream& operator<< (std::ostream& out, const IvwSerializeBase& base);
 
 #endif   
 

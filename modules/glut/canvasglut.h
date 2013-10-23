@@ -18,6 +18,7 @@ public:
 
     virtual void initialize();
     virtual void initializeGL();
+    void initializeSquare();
     virtual void deinitialize();
 
     static void display(void);

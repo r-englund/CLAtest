@@ -5,10 +5,16 @@ namespace inviwo {
 DataFormatBase* DataFormatBase::instance_[] = {NULL};
 
 DataFormatBase::DataFormatBase() 
-    : formatId_(id()), bitsAllocated_(bitsAllocated()), bitsStored_(bitsStored()), formatStr_(str()){}
+    : formatId_(id()), bitsAllocated_(bitsAllocated()), bitsStored_(bitsStored())
+{
+    formatStr_ = new std::string(str());
+}
 
 DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, std::string s) 
-    : formatId_(t), bitsAllocated_(bA), bitsStored_(bS), formatStr_(s){}
+    : formatId_(t), bitsAllocated_(bA), bitsStored_(bS)
+{
+    formatStr_ = new std::string(s);
+}
 
 float DataFormatBase::valueToNormalizedFloat(void*) const { 
     return 0.f; 
@@ -58,8 +64,8 @@ size_t DataFormatBase::getBytesStored() const {
     return static_cast<size_t>(glm::ceil(BITS_TO_BYTES(static_cast<float>(getBitsStored())))); 
 }
 
-std::string DataFormatBase::getString() const { 
-    return formatStr_; 
+const char* DataFormatBase::getString() const { 
+    return formatStr_->c_str(); 
 }
 
 DataFormatId DataFormatBase::getId() const { 

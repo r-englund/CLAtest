@@ -2,8 +2,21 @@
 
 namespace inviwo {
 
-    DataSourceProcessor::DataSourceProcessor()
-        : Processor()
-    {}
+DataSourceProcessor::DataSourceProcessor()
+    : Processor()
+{}
+
+void DataSourceProcessor::initialize(){
+
+}
+
+void DataSourceProcessor::deinitialize(){
+
+}
+
+void DataSourceProcessor::process(){
+
+}
+
 
 } // namespace

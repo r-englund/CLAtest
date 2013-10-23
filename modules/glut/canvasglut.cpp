@@ -22,7 +22,11 @@ CanvasGLUT::~CanvasGLUT() {
     glutDestroyWindow(canvasID_);
 }
 
-void CanvasGLUT::initialize() {
+void CanvasGLUT::initialize() {   
+    CanvasGL::initialize();
+}
+
+void CanvasGLUT::initializeGL() {
     glutInitWindowSize(dimensions_.x, dimensions_.y);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     glutCreateWindow(windowTitle_.c_str());
@@ -39,13 +43,11 @@ void CanvasGLUT::initialize() {
     glutMotionFunc(mouseMotion);
     glutPassiveMotionFunc(mouseMotion);
 
-    initializeGL();
-    
-    CanvasGL::initialize();
+    CanvasGL::initializeGL();
 }
 
-void CanvasGLUT::initializeGL() {
-    CanvasGL::initializeGL();
+void CanvasGLUT::initializeSquare(){
+    CanvasGL::initializeSquare();
 }
 
 void CanvasGLUT::deinitialize() {

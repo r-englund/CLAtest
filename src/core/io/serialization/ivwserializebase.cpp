@@ -240,7 +240,7 @@ void IvwSerializeBase::setAllowReference(const bool& allowReference) {
     allowRef_ = allowReference;
 }
 
-std::ostream& operator<< (std::ostream & out, const IvwSerializeBase & base) {
+/*std::ostream& operator<< (std::ostream & out, const IvwSerializeBase & base) {
     out << *base.rootElement_;
     return out;
 }
@@ -248,6 +248,6 @@ std::ostream& operator<< (std::ostream & out, const IvwSerializeBase & base) {
 std::istream& operator>> (std::istream & in, IvwSerializeBase & base) {
     in >> *base.rootElement_;
     return in;
-}
+}*/
 
 } //namespace

@@ -23,7 +23,7 @@ const DataFormatBase* DataRepresentation::getDataFormat() const {
 }
 
 std::string DataRepresentation::getDataFormatString() const { 
-    return dataFormatBase_->getString(); 
+    return std::string(dataFormatBase_->getString()); 
 }
 
 DataFormatId DataRepresentation::getDataFormatId() const { 

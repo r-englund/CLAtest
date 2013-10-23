@@ -4,7 +4,7 @@ generate_unset_mod_options_and_depend_sort(IVW_SORTED_MODULES)
 #Resolve dependencies for selected modules
 resolve_module_dependencies(${IVW_SORTED_MODULES})
 
-if(IVW_MODULE_HUMANCOMPUTATIONENGINE OR IVW_MODULE_PYTHON OR IVW_MODULE_OPENGLQT)
+if(IVW_MODULE_HUMANCOMPUTATIONENGINE OR IVW_MODULE_OPENGLQT)
     # Find the QtWidgets library
     if(DESIRED_QT_VERSION MATCHES 5)
         find_package(Qt5Widgets QUIET REQUIRED)     

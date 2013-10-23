@@ -44,6 +44,8 @@ public:
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) = 0;
 };
 
+IVW_CORE_EXT template class IVW_CORE_API std::vector<Logger*>;
+
 class IVW_CORE_API ConsoleLogger : public Logger{
 
 public:

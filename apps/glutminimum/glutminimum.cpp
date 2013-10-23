@@ -16,6 +16,8 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 
+#include <moduleregistration.h>
+
 
 using namespace inviwo;
 
@@ -63,14 +65,14 @@ void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
 
 
 int main(int argc, char** argv) {
-    InviwoApplication inviwoApp("glutminimum "+IVW_VERSION, IVW_DIR);
+    InviwoApplication inviwoApp(argc, argv, "glutminimum "+IVW_VERSION, IVW_DIR);
 
     glutInit(&argc, argv);
 
     canvas = new CanvasGLUT("glutminimum", uvec2(256,256));//, GLCanvas::RGBAD);
-    canvas->initialize();
+    canvas->initializeGL();
 
-    inviwoApp.initialize();
+    inviwoApp.initialize(&inviwo::registerAllModules);
 
     // Create process network
     processorNetwork = new ProcessorNetwork();
@@ -80,9 +82,11 @@ int main(int argc, char** argv) {
     processorNetworkEvaluator = new ProcessorNetworkEvaluator(processorNetwork);
     processorNetworkEvaluator->setDefaultRenderContext(canvas);
     canvas->setNetworkEvaluator(processorNetworkEvaluator);
+    canvas->initializeSquare();
+    canvas->activate();
 
     // Load simple scene
-    IvwDeserializer xmlDeserializer(inviwoApp.getPath(InviwoApplication::PATH_PROJECT, "simple.inv"));
+    IvwDeserializer xmlDeserializer(inviwoApp.getPath(InviwoApplication::PATH_PROJECT, "tests/simple.inv"));
     processorNetwork->deserialize(xmlDeserializer);
     std::vector<Processor*> processors = processorNetwork->getProcessors();
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {

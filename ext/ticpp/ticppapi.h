@@ -31,11 +31,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     // define BUILD_TICPP_DLL when building TiCPP dll.
     #ifdef BUILD_TICPP_DLL
         #define TICPP_API __declspec(dllexport)
+        #define TICPP_EXT
     #endif
     
     // define TICPP_DLL when linking TiCPP dll.
     #ifdef TICPP_DLL
         #define TICPP_API __declspec(dllimport)
+        #define TICPP_EXT extern
     #endif
     
     // Disable dll-interface warning
@@ -50,6 +52,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef TICPP_API
     //linux or windows-static library defines
     #define TICPP_API
+    #define TICPP_EXT extern
 #endif
 
 #endif	// TICPP_API_INCLUDED

@@ -38,7 +38,7 @@ void VolumeRAM::saveData(std::string url) const {
             WriterSettings writerSettings;
             writerSettings.rawFileAbsolutePath_ = URLParser::replaceFileExtension(url, "raw");
             writerSettings.dimensions_ = dimensions_;
-            writerSettings.dataFormat_ = getDataFormat()->getString();
+            writerSettings.dataFormat_ = std::string(getDataFormat()->getString());
             writerSettings.texels_ = getData();
             DatVolumeWriter::writeDatFileSettings(url, writerSettings);
             RawVolumeWriter::saveRawData(writerSettings);
@@ -47,7 +47,7 @@ void VolumeRAM::saveData(std::string url) const {
             IvfWriterSettings writerSettings;
             writerSettings.rawFileAbsolutePath_ = URLParser::replaceFileExtension(url, "raw");
             writerSettings.dimensions_ = dimensions_;
-            writerSettings.dataFormat_ = getDataFormat()->getString();
+            writerSettings.dataFormat_ = std::string(getDataFormat()->getString());
             writerSettings.texels_ = getData();
             IvfVolumeWriter::writeIvfFileSettings(url, writerSettings);
             RawVolumeWriter::saveRawData(writerSettings);

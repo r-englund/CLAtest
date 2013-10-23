@@ -48,9 +48,13 @@ ivw_define_standard_definitions(inviwo)
 #--------------------------------------------------------------------
 # Define libraries that should be linked
 ivw_retrieve_all_modules(package_list)
-list(APPEND package_list InviwoQtEditor )
-list(APPEND package_list InviwoOpenglQtModule )
-list(APPEND package_list InviwoCore )
+list(APPEND package_list InviwoQtEditor)
+list(APPEND package_list InviwoOpenglQtModule)
+list(APPEND package_list InviwoCore)
+
+#--------------------------------------------------------------------
+# Register the use of modules
+ivw_register_use_of_modules(${package_list})
 
 #--------------------------------------------------------------------
 # Need to add dependent directories before creating application

@@ -180,6 +180,15 @@ macro(ivw_retrieve_all_modules module_list)
 endmacro()
 
 #--------------------------------------------------------------------
+# Register the use of modules
+macro(ivw_register_use_of_modules)
+    foreach(module ${ARGN})
+        string(TOUPPER ${module} u_module)
+        ivw_add_definition(REG_${u_module})
+    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
 # Generate a list of all available module packages
 macro(create_module_package_list)
     set(ALL_MODULE_PACKAGES "")
@@ -200,16 +209,22 @@ macro(generate_module_registration_file module_classes modules_class_paths)
     set(functions "")
     foreach(val RANGE ${len0})
         list(GET module_classes ${val} current_name)
+        string(TOUPPER ${current_name} u_current_name)
         list(GET modules_class_paths ${val} current_path)
         #Apperance: #include "modules/base/basemodule.h" 
         #Apperance: (*app).registerModule(new BaseModule());
+        list(APPEND headers "#ifdef REG_INVIWO${u_current_name}MODULE")
         list(APPEND headers "#include <modules/${current_path}.h>")
-        list(APPEND functions "(*app).registerModule(new ${current_name}Module())")
+        list(APPEND headers "#endif")
+        list(APPEND functions "#ifdef REG_INVIWO${u_current_name}MODULE:")
+        list(APPEND functions "(*app).registerModule(new ${current_name}Module());:")
+        list(APPEND functions "#endif:")
     endforeach()
+    list(APPEND functions "}")
     set(headers ${headers})
     set(functions ${functions})
     join(";" "\n" MODULE_HEADERS ${headers})
-    join(";" ";\n" MODULE_CLASS_FUNCTIONS ${functions})
+    join(":;" "\n" MODULE_CLASS_FUNCTIONS ${functions})
     configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_registration_template.h ${CMAKE_BINARY_DIR}/modules/_generated/moduleregistration.h @ONLY)
 endmacro()
 
@@ -632,14 +647,14 @@ macro(ivw_add_dependency_directories)
       
       #--------------------------------------------------------------------
       # Add dependcy package variables to this package if shared build
-      if(NOT BUILD_SHARED_LIBS)
+      #if(NOT BUILD_SHARED_LIBS)
           #--------------------------------------------------------------------
           # Append library directories to project list
           set(uniqueNewLibDirs ${${u_package}_LIBRARY_DIR})
           remove_from_list(uniqueNewLibDirs "${${u_package}_LIBRARY_DIR}" ${_allLibsDir})
           set(${u_package}_LIBRARY_DIR ${uniqueNewLibDirs})
           list(APPEND _allLibsDir ${${u_package}_LIBRARY_DIR})
-      endif()
+      #endif()
 
       #--------------------------------------------------------------------
       # Set directory links
@@ -653,14 +668,14 @@ macro(ivw_add_dependency_libraries)
     foreach (package ${ARGN})
       #--------------------------------------------------------------------
       # Add dependcy package variables to this package if shared build
-      if(NOT BUILD_SHARED_LIBS)         
+      #if(NOT BUILD_SHARED_LIBS)         
           #--------------------------------------------------------------------
           # Append includes to project list
           set(uniqueNewLibs ${package})
           remove_library_list(uniqueNewLibs "${package}" ${_allLibs})
           set(${package} ${uniqueNewLibs})
           list (APPEND _allLibs ${package})
-      endif()
+      #endif()
     
       #--------------------------------------------------------------------
       # Link library
@@ -692,7 +707,7 @@ macro(ivw_add_dependencies)
            
       #--------------------------------------------------------------------
       # Add dependcy package variables to this package if shared build
-      if(NOT BUILD_SHARED_LIBS)
+      #if(NOT BUILD_SHARED_LIBS)
           #--------------------------------------------------------------------
           # Append library directories to project list
           set(uniqueNewLibDirs ${${u_package}_LIBRARY_DIR})
@@ -722,7 +737,7 @@ macro(ivw_add_dependencies)
           if(NOT "${${u_package}_LINK_FLAGS}" STREQUAL "")
               list (APPEND _allLinkFlags "\"${${u_package}_LINK_FLAGS}\"")
           endif()
-      endif()
+      #endif()
 
       #--------------------------------------------------------------------
       # Set includes and append to list

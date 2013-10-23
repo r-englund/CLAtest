@@ -7,16 +7,16 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API DataSourceProcessor : public Processor {
-    public:
-        DataSourceProcessor();
+class IVW_CORE_API DataSourceProcessor : public Processor {
+public:
+    DataSourceProcessor();
 
-        virtual void initialize();
-        virtual void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
 
-    protected:
-        virtual void process();
-    };
+protected:
+    virtual void process();
+};
 
 } // namespace
 
