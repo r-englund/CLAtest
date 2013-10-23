@@ -23,7 +23,7 @@ void MetaDataMap::add(std::string key, MetaData* metaData) {
 }
 
 void MetaDataMap::remove(std::string key) {
-    cItreator it = metaData_.find(key);
+    itreator it = metaData_.find(key);
     if (it != metaData_.end()){
         delete it->second;
         metaData_.erase(it);
