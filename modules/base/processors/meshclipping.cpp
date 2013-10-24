@@ -227,7 +227,7 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 					edge.v1 = static_cast<unsigned int>(outputList.size()-1);
 				}
 
-				for (int j=0; j<outputList.size(); ++j) {
+				for (int j=0; j<static_cast<int>(outputList.size()); ++j) {
 					if (std::fabs(E.x-outputList.at(j).x)<EPSILON && std::fabs(E.y-outputList.at(j).y)<EPSILON && std::fabs(E.z-outputList.at(j).z)<EPSILON) {
 						duplicate = j;
 					}
