@@ -102,6 +102,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/buttonproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/cameraproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/compositeproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/directoryproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h
@@ -253,6 +254,7 @@ set(SOURCE_FILES
     properties/boolproperty.cpp
     properties/buttonproperty.cpp
     properties/cameraproperty.cpp
+    properties/directoryproperty.cpp    
     properties/compositeproperty.cpp
     properties/eventproperty.cpp
     properties/fileproperty.cpp

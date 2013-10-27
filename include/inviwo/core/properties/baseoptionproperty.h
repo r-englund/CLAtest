@@ -93,6 +93,7 @@ public:
 
     virtual void setSelectedOption(int option);
 
+    void getAllOptions(std::vector<T>& allValues) const;
     
     virtual void clearOptions();
 
@@ -178,6 +179,14 @@ int TemplateOptionProperty<T>::getSelectedOption() const {
     }
     return 0;
 }
+
+template<typename T>
+void TemplateOptionProperty<T>::getAllOptions(std::vector<T>& allValues) const {
+    for (int i=0; i<static_cast<int>(options_.size()); i++) {
+       allValues.push_back(options_[i].second);
+    }
+}
+
 
 template<typename T>
 void TemplateOptionProperty<T>::setSelectedOption(int option) {

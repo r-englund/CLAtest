@@ -21,6 +21,7 @@
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/colorpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/directorypropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h>
@@ -72,6 +73,8 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new ButtonPropertyWidgetQt(static_cast<ButtonProperty*>(property));
     if (dynamic_cast<CompositeProperty*>(property))
         return new CompositePropertyWidgetQt(static_cast<CompositeProperty*>(property));
+    if (dynamic_cast<DirectoryProperty*>(property))
+        return new DirectoryPropertyWidgetQt(static_cast<DirectoryProperty*>(property));
     if (dynamic_cast<EventProperty*>(property))
         return new EventPropertyWidgetQt(static_cast<EventProperty*>(property));
     if (dynamic_cast<FileProperty*>(property))
