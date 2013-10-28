@@ -55,7 +55,7 @@ void MeshClipping::process() {
         const Geometry *geom = inport_.getData();
 
 		//LogInfo("Calling clipping method.");
-		Geometry *clippedPlaneGeom = clipGeometryAgainstPlane(geom, Plane(planePoint_.get(), planeNormal_.get()));
+		Geometry *clippedPlaneGeom = clipGeometryAgainstPlaneRevised(geom, Plane(planePoint_.get(), planeNormal_.get()));
 
 		//LogInfo("Setting new mesh as outport data.");
 		outport_.setData(clippedPlaneGeom);
@@ -133,7 +133,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
     std::vector<vec3> inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
     std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
 
-    SimpleMeshRAM* outputMesh = new SimpleMeshRAM();
+    SimpleMeshRAM* outputMesh = new SimpleMeshRAM(Mesh::TRIANGLES);
     outputMesh->initialize();
 
     //Check if we are using indicies
@@ -158,17 +158,50 @@ void MeshClipping::clipAndAddTriangle(Triangle3D& poly, Plane& plane, SimpleMesh
     /* Sutherland-Hodgman Clipping
        1) Traverse each edge by edge, such as successive vertex pairs make up edges
        2) For each edge with vertices [v1, v2]
-          2.1) If v1 and v2 is inside, add v2
-          2.2) If v1 inside and v2 outside, add intersection
-          2.3) If v1 and v2 is outside, add nothing
-          2.4) If v1 outside and v2 inside, add intersection and then add v2
+          Case 1: If v1 and v2 is inside, add v2
+          Case 2: If v1 inside and v2 outside, add intersection
+          Case 3: If v1 outside and v2 inside, add intersection and then add v2
+          Case 4: If v1 and v2 is outside, add nothing
        Observation: A clipped triangle can either contain 
-          3 points (if only 2.1 and 2.3 occurred) or                                  
-          4 points (if 2.2 and 2.4 occurred) or
-          0 points (if only 2.3 occurred, thus no points)
-       3) If 4 points, make two triangles, where first and third point is used in both triangles, total 6 points.
+          3 points (if only case 1 and 4 occurred) or                                  
+          4 points (if case 2 and 3 occurred) or
+          0 points (if only case 4 occurred, thus no points)
+       3) If 4 points, make two triangles, 0 1 2 and 0 3 2, total 6 points.
     */
-    output->addVertex(poly.at(0), poly.at(0), glm::vec4(poly.at(0), 1.0f));
+    std::vector<vec3> newVertices;
+    for(size_t i=0; i<3; ++i){ 
+        size_t j = (i==2 ? 0 : i+1);
+        if(plane.isInside(poly.at(i))) {
+            if(plane.isInside(poly.at(j))) { // Case 1
+                newVertices.push_back(poly.at(j));
+            }
+            else{ //Case 2
+                newVertices.push_back(plane.getIntersection(poly.at(i),poly.at(j)));
+            }
+        }
+        else{
+            if(plane.isInside(poly.at(j))) { // Case 3
+                newVertices.push_back(plane.getIntersection(poly.at(i),poly.at(j))); 
+                newVertices.push_back(poly.at(j));
+            }
+            // Case 4
+        }
+    }
+
+    //Handle more then 3 vertices
+    if(newVertices.size() > 3){
+        ivwAssert(newVertices.size() < 5, "Can't handle " << newVertices.size() << " vertices after clipping");
+        vec3 last = newVertices.at(3);
+        newVertices.pop_back();
+        newVertices.push_back(newVertices.at(0));
+        newVertices.push_back(last);
+        newVertices.push_back(newVertices.at(2));
+    }
+
+    //Add vertices to mesh
+    for(size_t i=0; i<newVertices.size(); ++i){
+        output->addVertex(newVertices.at(i), newVertices.at(i), glm::vec4(newVertices.at(i), 1.0f));
+    }
 }
 
 Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane) {

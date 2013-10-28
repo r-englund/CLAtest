@@ -7,7 +7,7 @@ namespace inviwo {
 
 MeshRenderer::MeshRenderer( const Mesh* mesh ): meshToRender_(mesh)
 {
-    initialize();
+    initialize(mesh->getAttributesInfo());
 }
 
 MeshRenderer::MeshRenderer( const Mesh* mesh, Mesh::AttributesInfo ai): meshToRender_(mesh)
@@ -25,8 +25,7 @@ MeshRenderer::~MeshRenderer()
 
 }
 
-void MeshRenderer::render( Mesh::RenderType rt ) const
-{
+void MeshRenderer::render( Mesh::RenderType rt ) const{
     std::vector<Buffer*>::const_iterator it;
     for (it = meshToRender_->getBuffers().begin() ; it != meshToRender_->getBuffers().end(); ++it) {
         (*it)->getRepresentation<BufferGL>()->enable();
@@ -96,7 +95,8 @@ void MeshRenderer::initialize( Mesh::AttributesInfo ai )
     drawMethods_[Mesh::POINTS].drawMode = GL_POINTS;
 
     for (size_t i=0; i < meshToRender_->getNumberOfIndicies(); ++i) {
-        initializeIndexBuffer( meshToRender_->getIndicies(i), meshToRender_->getIndexAttributesInfo(i));
+        if(meshToRender_->getIndicies(i)->getSize() > 0)
+            initializeIndexBuffer( meshToRender_->getIndicies(i), meshToRender_->getIndexAttributesInfo(i));
     }
 }
 void MeshRenderer::initializeIndexBuffer( const Buffer* indexBuffer, Mesh::AttributesInfo ai ) {
