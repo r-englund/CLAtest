@@ -62,15 +62,24 @@ void DirectoryPropertyWidgetQt::setPropertyValue() {
     openFileDialog.setFileMode(QFileDialog::Directory);
     openFileDialog.setSidebarUrls(sidebarURLs);
 
-    QString path = openFileDialog.getExistingDirectory();
-    if (!path.isEmpty())
-        property_->set(path.toLocal8Bit().constData());
-    updateFromProperty();
-    emit modified();
+    QString existingDir = openFileDialog.getExistingDirectory();
+    std::string dir = existingDir.toLocal8Bit().constData();
+
+    if (!dir.empty()) {       
+        setPropertyTreeInfo(dir);
+        property_->set(dir);
+        emit modified();
+    }    
 }
 
 void DirectoryPropertyWidgetQt::updateFromProperty() {
     QDir currentDir = QDir(QString::fromStdString(property_->get()));
+    lineEdit_->setText(currentDir.dirName());
+    setPropertyTreeInfo(property_->get());
+}
+
+void DirectoryPropertyWidgetQt::setPropertyTreeInfo(std::string path) {
+    QDir currentDir = QDir(QString::fromStdString(path));
     lineEdit_->setText(currentDir.dirName());
     QStringList files;
     QString filter = "*.*";

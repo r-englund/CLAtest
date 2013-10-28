@@ -207,6 +207,7 @@ void IvwSerializeBase::setFileName(const std::string fileName) {
 bool IvwSerializeBase::isPrimitivePointerType(const std::type_info& type) const {
     if (type == typeid(bool *)
         || type == typeid(char *)
+        || type == typeid(int *)
         || type == typeid(signed int *)
         || type == typeid(unsigned int *)
         || type == typeid(float *)
@@ -223,6 +224,7 @@ bool IvwSerializeBase::isPrimitivePointerType(const std::type_info& type) const 
 bool IvwSerializeBase::isPrimitiveType(const std::type_info& type) const {
     if (type == typeid(bool)
         || type == typeid(char)
+        || type == typeid(int)
         || type == typeid(signed int)
         || type == typeid(unsigned int)
         || type == typeid(float)

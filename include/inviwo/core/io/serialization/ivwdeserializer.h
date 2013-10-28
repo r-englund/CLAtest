@@ -441,7 +441,7 @@ inline void IvwDeserializer::deserializeSTL_Map(const std::string &key,
             for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {                
                 rootElement = &(*child);            
                 try { 
-                    nextRootNode = rootElement->FirstChildElement();
+                    //nextRootNode = rootElement->FirstChildElement();
                     typename T::key_type keyTypeAttr;
                     rootElement->GetAttribute(comparisionAttribute, &keyTypeAttr);
                     //keyCompare returns false if first argument is less than second.

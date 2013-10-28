@@ -7,11 +7,27 @@ namespace inviwo {
 DirectoryProperty::DirectoryProperty(std::string identifier, std::string displayName,std::string value, PropertyOwner::InvalidationLevel invalidationLevel, 
     PropertySemantics::Type semantics)
     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics)
-{}
+{    
+}
 
 
 std::vector<std::string> DirectoryProperty::getDirectoryTree()  const  {    
     return directoryTree_;
+}
+
+std::vector<std::string> DirectoryProperty::getFiles(std::string filters)  const {
+    std::vector<std::string> validFilesWithExtension;
+    for (size_t i=0; i<directoryTree_.size(); i++) {
+        std::string file = get()+"/";
+        file = URLParser::getFileDirectory(file) + directoryTree_[i];
+        if (filters=="*.*") {
+            validFilesWithExtension.push_back(file);
+        }
+        else if (URLParser::getFileExtension(directoryTree_[i]) == filters) {
+            validFilesWithExtension.push_back(file);
+        }
+    }
+    return validFilesWithExtension;
 }
 
 void DirectoryProperty::setDirectoryTree(std::vector<std::string> dirTree)  {    
@@ -34,14 +50,28 @@ void  DirectoryProperty::setVariant(const Variant& val) {
 
 void DirectoryProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;    
-    s.serialize("directory", get());
+    std::string basePath = s.getFileName();
+    std::string absoluteFilePath = get();
+    if (basePath.empty())
+        basePath = IVW_DIR+"data/workspace";
+    std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
+    s.serialize("directory", relativePath);    
+    //s.serialize("files", directoryTree_, "file");
 }
 
 void DirectoryProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d) ;
-    std::string directory;
-    d.deserialize("directory", directory);   
-    set(directory);
+    std::string relativePath;
+    d.deserialize("directory", relativePath);
+    std::string basePath = d.getFileName(); 
+    if (basePath.empty())
+        basePath = IVW_DIR+"data/workspace";
+    basePath = URLParser::getFileDirectory(basePath);
+    set(basePath+relativePath);
+
+    //std::vector<std::string> directoryTree;
+    //d.deserialize("files", directoryTree, "file");
+    //directoryTree_ = directoryTree;
 }
 
 } // namespace

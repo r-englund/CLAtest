@@ -13,6 +13,8 @@ void ButtonProperty::serialize(inviwo::IvwSerializer &s) const {
 	Property::serialize(s);
 }
 	
-void ButtonProperty::deserialize(IvwDeserializer& d) {}
+void ButtonProperty::deserialize(IvwDeserializer& d) {
+    Property::deserialize(d);
+}
 
 } //namespace

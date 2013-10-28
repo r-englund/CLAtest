@@ -31,6 +31,7 @@ private:
 
 public slots:
     void setPropertyValue();
+    void setPropertyTreeInfo(std::string path);
     void setPropertyDisplayName();
 };
 

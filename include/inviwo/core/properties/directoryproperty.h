@@ -1,7 +1,7 @@
 #ifndef IVW_DIRECTORY_PROPERTY_H
 #define IVW_DIRECTORY_PROPERTY_H
 
-#include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
 /** class DirectoryProperty
@@ -17,6 +17,7 @@ public:
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
                  PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual std::vector<std::string> getDirectoryTree()  const ;
+    virtual std::vector<std::string> getFiles(std::string filters="*.*")  const ;
     virtual void setDirectoryTree(std::vector<std::string> dirTree) ;
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);

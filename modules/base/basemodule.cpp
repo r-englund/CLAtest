@@ -7,6 +7,7 @@
 #include <modules/base/processors/imagegrayscale.h>
 #include <modules/base/processors/imagemixer.h>
 #include <modules/base/processors/imagesource.h>
+#include <modules/base/processors/imagesourceseries.h>
 #include <modules/base/processors/meshclipping.h>
 #include <modules/base/processors/parallelepipedproxygeometry.h>
 #include <modules/base/processors/positionwidgetprocessor.h>
@@ -32,6 +33,7 @@ BaseModule::BaseModule() : InviwoModule() {
 	registerProcessor(ImageGrayscale);
     registerProcessor(ImageMixer);
     registerProcessor(ImageSource);
+    registerProcessor(ImageSourceSeries);
     registerProcessor(MeshClipping);
     registerProcessor(ParallelepipedProxyGeometry);
     registerProcessor(PositionWidgetProcessor);
