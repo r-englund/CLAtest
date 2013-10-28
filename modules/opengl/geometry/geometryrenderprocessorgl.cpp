@@ -1,6 +1,7 @@
 #include "geometryrenderprocessorgl.h"
 #include <modules/opengl/geometry/geometrygl.h>
 #include <inviwo/core/interaction/trackball.h>
+#include <modules/opengl/geometry/meshgl.h>
 
 namespace inviwo {
 
@@ -31,7 +32,12 @@ void GeometryRenderProcessorGL::process() {
 
     activateAndClearTarget(outport_);
 
-    inport_.getData()->getRepresentation<GeometryGL>()->render();
+    //inport_.getData()->getRepresentation<GeometryGL>()->render();
+    const Geometry* geom = inport_.getData();
+    if( const Mesh* mesh = dynamic_cast<const Mesh*>(geom)) {
+        MeshRenderer renderer(mesh);
+        renderer.render();
+    }
 
     deactivateCurrentTarget();
 

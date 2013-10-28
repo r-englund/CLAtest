@@ -96,7 +96,7 @@ void Image::setAllowMissingLayers(bool allowMissingLayers) {
     allowMissingLayers_ = allowMissingLayers;
 }
 
-void Image::createDefaultRepresentation() const {
+void Image::createDefaultRepresentation() {
 	representations_.push_back(createImageRAM((uvec2)getDimension(), getImageType(), getDataFormat()));
 }
 

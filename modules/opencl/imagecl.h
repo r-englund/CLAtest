@@ -27,6 +27,7 @@ public:
      * @return (void)
      */
     void download(void* data) const; 
+    virtual void setDimensions(uvec2 dimensions);
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeImage(DataRepresentation* target);
     cl::ImageFormat getFormat() const { return imageFormat_;}

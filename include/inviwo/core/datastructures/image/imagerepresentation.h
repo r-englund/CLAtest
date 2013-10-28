@@ -19,6 +19,9 @@ public:
     virtual void performOperation(DataOperation*) const {};
     virtual void resize(uvec2 dimensions);
     const uvec2& getDimensions() const {return dimensions_;}
+    // Removes old data and reallocate for new dimension.
+    // Needs to be overloaded by child classes.
+    virtual void setDimensions(uvec2 dimensions) { dimensions_ = dimensions;}
     virtual bool copyAndResizeImage(DataRepresentation*) = 0;
     virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "ImageRepresentation"; }

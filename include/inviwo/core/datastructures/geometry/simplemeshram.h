@@ -6,10 +6,10 @@
 
 namespace inviwo {
 
-class IVW_CORE_API SimpleMeshRAM : public MeshRAM {
+class IVW_CORE_API SimpleMeshRAM : public Mesh {
 
 public:
-    SimpleMeshRAM(RenderType rt = GeometryRepresentation::POINTS, ConnectivityType ct = GeometryRepresentation::NONE);
+    SimpleMeshRAM(RenderType rt = Mesh::POINTS, Mesh::ConnectivityType ct = Mesh::NONE);
     virtual ~SimpleMeshRAM();
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
@@ -19,14 +19,14 @@ public:
     void addVertex(vec3 pos, vec3 texCoord, vec4 color);
     void addIndex(unsigned int idx);
     void setIndicesInfo(RenderType, ConnectivityType);
-	const Position3dAttributes* getVertexList() const;
-	const IndexAttributes* getIndexList() const;
+	const Position3dBuffer* getVertexList() const;
+	const IndexBuffer* getIndexList() const;
 
 protected:
-    Position3dAttributes* vertexPositions_;
-    TexCoord3dAttributes* vertexTexCoords_;
-    ColorAttributes* vertexColors_;
-    IndexAttributes* indices_;
+    Position3dBuffer* vertexPositions_;
+    TexCoord3dBuffer* vertexTexCoords_;
+    ColorBuffer* vertexColors_;
+    IndexBuffer* indices_;
 };
 
 } // namespace

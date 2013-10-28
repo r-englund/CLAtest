@@ -30,7 +30,7 @@ DataRepresentation* ImageCLGL::clone() const {
 
 void ImageCLGL::deinitialize() {
     delete image2D_;
-    image2D_ = 0; texture_ = 0;
+    image2D_ = 0; 
 }
 
 

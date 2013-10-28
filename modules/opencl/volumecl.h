@@ -20,6 +20,9 @@ public:
     virtual DataRepresentation* clone() const;
     
     void initialize(const void* voxels);
+
+    virtual void setDimensions(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(); }
+
     void upload(const void* data);
     /**
      * Download data to preallocated memory.

@@ -9,30 +9,49 @@
 
 namespace inviwo {
 
-class IVW_CORE_API MeshRAM : public GeometryRAM {
+class IVW_CORE_API Mesh : public Geometry {
 
 public:
-    struct AttributesInfo{
-        GeometryRepresentation::RenderType rt;
-        GeometryRepresentation::ConnectivityType ct;
-        AttributesInfo() : rt(GeometryRepresentation::POINTS), ct(GeometryRepresentation::NONE){}
-        AttributesInfo(GeometryRepresentation::RenderType r, GeometryRepresentation::ConnectivityType c) : rt(r), ct(c){}
+    enum RenderType{
+        NOT_SPECIFIED,
+        POINTS,
+        LINES,
+        TRIANGLES,
+        NUMBER_OF_RENDER_TYPES
     };
 
-    MeshRAM();
-    MeshRAM(RenderType rt, ConnectivityType ct);
-    virtual ~MeshRAM();
+    enum ConnectivityType{
+        NONE,
+        STRIP,
+        LOOP,
+        FAN,
+        NUMBER_OF_CONNECTIVITY_TYPES
+    };
+    struct AttributesInfo {
+        RenderType rt;
+        ConnectivityType ct;
+        AttributesInfo() : rt(POINTS), ct(NONE){}
+        AttributesInfo(RenderType r, ConnectivityType c) : rt(r), ct(c){}
+    };
+
+    Mesh();
+    Mesh(RenderType rt, ConnectivityType ct);
+    virtual ~Mesh();
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
-    virtual void render(RenderType = GeometryRepresentation::NOT_SPECIFIED) const{};
+    virtual Data* clone() const;
 
-    void addAttribute(AttributesBase*);
-    void addIndicies(AttributesInfo info, IndexAttributes* ind);
+    virtual void render() const{};
 
-    AttributesBase* getAttributes(size_t idx) const;
-    AttributesBase* getIndicies(size_t idx) const;
+    void addAttribute(Buffer*);
+    void addIndicies(AttributesInfo info, IndexBuffer* ind);
+
+    const std::vector<Buffer*>& getBuffers() const { return attributes_; }
+    const std::vector<std::pair<AttributesInfo, IndexBuffer*> >& getIndexBuffers() const { return indexAttributes_; }
+
+    Buffer* getAttributes(size_t idx) const;
+    Buffer* getIndicies(size_t idx) const;
 
     AttributesInfo getAttributesInfo() const;
     AttributesInfo getIndexAttributesInfo(size_t idx) const;
@@ -41,11 +60,12 @@ public:
     size_t getNumberOfIndicies() const;
 
 protected:
-    std::vector<AttributesBase*> attributes_;
+    std::vector<Buffer*> attributes_;
     AttributesInfo attributesInfo_;
-    std::vector<std::pair<AttributesInfo, IndexAttributes*> > indexAttributes_;
+    std::vector<std::pair<AttributesInfo, IndexBuffer*> > indexAttributes_;
 
 };
+
 
 } // namespace
 

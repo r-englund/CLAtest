@@ -94,10 +94,10 @@ namespace inviwo {
 
 
         //Create parallelepiped and set it to the outport
-        Geometry* geom = new Geometry(
+        Geometry* geom = 
             SimpleMeshCreator::parallelepiped(pos, p1, p2, p3, 	
                                             tex, t1, t2, t3, 	
-                                            col, c1, c2, c3));
+                                            col, c1, c2, c3);
 
         // This would be easier, use unit box to make geom instead...
         // geom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());

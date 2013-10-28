@@ -9,15 +9,20 @@ Geometry::Geometry(GeometryRepresentation* rep) : SpatialData<3>() {
     addRepresentation(rep);
 }
 
-Geometry* Geometry::clone() const {
-    return new Geometry(*this);
-}
+//Data* Geometry::clone() const {
+//    Geometry* newGeometry = new Geometry();
+//    copyRepresentations(newGeometry);
+//    return newGeometry;
+//}
 
 Geometry::~Geometry() {
+
 }
 
-void Geometry::createDefaultRepresentation() const{
-    representations_.push_back(new MeshRAM());
+void Geometry::createDefaultRepresentation() {
+
+    // FIXME: Should Geometry be a data object?
+    //representations_.push_back(new Mesh());
 }
 
 } // namespace

@@ -30,6 +30,8 @@ public:
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
 
+    virtual void setDimensions(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(); }
+
     void setValueFromSingleFloat(const uvec3& pos, float val);
     void setValueFromVec2Float(const uvec3& pos, vec2 val);
     void setValueFromVec3Float(const uvec3& pos, vec3 val);

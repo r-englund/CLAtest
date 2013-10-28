@@ -18,6 +18,7 @@ public:
     virtual void deinitialize();
     DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "ImageRAM"; }
+    virtual void setDimensions(uvec2 dimensions);
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeImage(DataRepresentation*);
     void* getData() {return data_;};

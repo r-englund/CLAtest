@@ -10,19 +10,17 @@ VolumeRAM2GLConverter::VolumeRAM2GLConverter()
 VolumeRAM2GLConverter::~VolumeRAM2GLConverter() {}
 
 DataRepresentation* VolumeRAM2GLConverter::createFrom(const DataRepresentation* source) {     
-    const VolumeRAM* volumeRAM = dynamic_cast<const VolumeRAM*>(source);
-    if (volumeRAM) {
-        return new VolumeGL(volumeRAM->getData(), volumeRAM->getDimensions(), volumeRAM->getDataFormat());
-    }
-    return NULL;
+    const VolumeRAM* volumeRAM = static_cast<const VolumeRAM*>(source);
+    return new VolumeGL(volumeRAM->getData(), volumeRAM->getDimensions(), volumeRAM->getDataFormat());
 }
 
 void VolumeRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-    const VolumeRAM* volumeSrc = dynamic_cast<const VolumeRAM*>(source);
-    VolumeGL* volumeDst = dynamic_cast<VolumeGL*>(destination);
-    if(volumeSrc && volumeDst) {
-        volumeDst->upload(volumeSrc->getData());
+    const VolumeRAM* volumeSrc = static_cast<const VolumeRAM*>(source);
+    VolumeGL* volumeDst = static_cast<VolumeGL*>(destination);
+    if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
+        volumeDst->setDimensions(volumeSrc->getDimensions());
     }
+    volumeDst->upload(volumeSrc->getData());
 }
 
 VolumeGL2RAMConverter::VolumeGL2RAMConverter()
@@ -32,30 +30,24 @@ VolumeGL2RAMConverter::VolumeGL2RAMConverter()
 VolumeGL2RAMConverter::~VolumeGL2RAMConverter() {}
 
 DataRepresentation* VolumeGL2RAMConverter::createFrom(const DataRepresentation* source) {
-    const VolumeGL* volumeGL = dynamic_cast<const VolumeGL*>(source);
-    if(volumeGL){
-        VolumeRAM* volume = createVolumeRAM(volumeGL->getDimensions(), volumeGL->getDataFormat()); 
-        if (volume) {
-            volumeGL->getTexture()->download(volume->getData());
-            return volume;
-        } else {
-            LogError("Cannot convert format from GL to RAM:" << volumeGL->getDataFormat()->getString());
-        }
-    }
-    else {
-        LogError("Source could not be cast to VolumeGL");
+    const VolumeGL* volumeGL = static_cast<const VolumeGL*>(source);
+    VolumeRAM* volume = createVolumeRAM(volumeGL->getDimensions(), volumeGL->getDataFormat()); 
+    if (volume) {
+        volumeGL->getTexture()->download(volume->getData());
+        return volume;
+    } else {
+        LogError("Cannot convert format from GL to RAM:" << volumeGL->getDataFormat()->getString());
     }
     return NULL;
 }
 
 void VolumeGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-    const VolumeGL* volumeSrc = dynamic_cast<const VolumeGL*>(source);
-    VolumeRAM* volumeDst = dynamic_cast<VolumeRAM*>(destination);
-    if(volumeSrc && volumeDst) {
-        // FIXME: OpenGL color should not have both depth and color
-        if (volumeDst->getDimensions()==volumeSrc->getDimensions(),"GL and Ram representations are expected to have same dimensions.")
-            volumeSrc->getTexture()->download(volumeDst->getData());
+    const VolumeGL* volumeSrc = static_cast<const VolumeGL*>(source);
+    VolumeRAM* volumeDst = static_cast<VolumeRAM*>(destination);
+    if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
+        volumeDst->setDimensions(volumeSrc->getDimensions());
     }
+    volumeSrc->getTexture()->download(volumeDst->getData());
 }
 
 } // namespace

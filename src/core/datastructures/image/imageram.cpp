@@ -68,6 +68,11 @@ bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {
     return true;
 }
 
+void ImageRAM::setDimensions( uvec2 dimensions )
+{
+    resize(dimensions);
+}
+
 float ImageRAM::getDepthValue(const uvec2& pos) const{
     if(depthData_)
         return depthData_[posToIndex(pos, dimensions_)];

@@ -1,18 +1,19 @@
-#ifndef IVW_BUFFERGL_H
-#define IVW_BUFFERGL_H
+#ifndef IVW_ELEMENT_BUFFER_GL_H
+#define IVW_ELEMENT_BUFFER_GL_H
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
-#include <inviwo/core/datastructures/geometry/attributes.h>
+#include <inviwo/core/datastructures/buffer/bufferram.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API BufferGL: public BufferRepresentation {
+
+class IVW_MODULE_OPENGL_API ElementBufferGL: public BufferRepresentation {
 
 public:
-    BufferGL(size_t size, BufferType type, const DataFormatBase* format);
-    virtual ~BufferGL();
+    ElementBufferGL(size_t size, BufferType type, const DataFormatBase* format);
+    virtual ~ElementBufferGL();
 
     virtual void initialize();
     virtual void deinitialize();
@@ -29,13 +30,13 @@ public:
     void bind() const;
     void specifyLocation() const;
 
-    void upload(const void* data, size_t size, GLenum usage = GL_STATIC_DRAW, GLenum target = GL_ARRAY_BUFFER);
-    void reupload(const void* data, size_t size ,GLenum usage = GL_STATIC_DRAW);
+    void upload(const void* data, size_t size, GLenum usage = GL_STATIC_DRAW);
+
+    void update(const void* data, size_t size, GLenum usage = GL_STATIC_DRAW);
 
 protected:
-    void enableArray() const;
-    void disableArray() const;
 
+    void enableElementArray() const;
 
     void colorPointer() const;
     void normalPointer() const;
@@ -45,19 +46,22 @@ protected:
     void emptyFunc() const;
 
 private:
+    const Buffer* attrib_;
     GLuint id_;
     GLenum state_;
-    GLenum target_;
     GLFormats::GLFormat glFormat_;
-    void (BufferGL::*locationPointerFunc_)() const;
+    void (ElementBufferGL::*locationPointerFunc_)() const;
+    void (ElementBufferGL::*enableFunc_)() const;
+    void (ElementBufferGL::*disableFunc_)() const;
 
 };
 
-class IVW_MODULE_OPENGL_API BufferRAM2GLConverter : public RepresentationConverterType<BufferGL> {
+
+class IVW_MODULE_OPENGL_API BufferRAM2ElementGLConverter : public RepresentationConverterType<ElementBufferGL> {
 
 public:
-    BufferRAM2GLConverter();
-    virtual ~BufferRAM2GLConverter();
+    BufferRAM2ElementGLConverter();
+    virtual ~BufferRAM2ElementGLConverter();
 
     inline bool canConvertFrom(const DataRepresentation* source) const {
         return dynamic_cast<const BufferRAM*>(source) != NULL;
@@ -69,4 +73,4 @@ public:
 
 } // namespace
 
-#endif // IVW_BUFFERGL_H
+#endif // IVW_ELEMENT_BUFFER_GL_H

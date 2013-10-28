@@ -1,4 +1,5 @@
 #include <inviwo/core/common/inviwoapplication.h>
+#include <modules/opengl/buffer/elementbuffergl.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/opengl/geometry/geometryrenderprocessorgl.h>
 #include <modules/opengl/geometry/meshglconverter.h>
@@ -24,7 +25,8 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     addRepresentationConverter(new VolumeRAM2GLConverter());
     addRepresentationConverter(new VolumeDisk2GLConverter());
 
-    addRepresentationConverter(new MeshRAM2GLConverter());
+    addRepresentationConverter(new BufferRAM2GLConverter());
+    addRepresentationConverter(new BufferRAM2ElementGLConverter());
 
     registerProcessor(CanvasProcessorGL);
     registerProcessor(GeometryRenderProcessorGL);

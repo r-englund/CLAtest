@@ -37,7 +37,7 @@ DataRepresentation* VolumeCLGL::clone() const {
 
 void VolumeCLGL::deinitialize() {
     delete image3D_;
-    image3D_ = 0; texture_ = 0;
+    image3D_ = 0; 
 }
 
 } // namespace

@@ -3,7 +3,7 @@
 namespace inviwo {
 
 SimpleMeshRAM::SimpleMeshRAM(RenderType rt, ConnectivityType ct)
-: MeshRAM(rt, ct)
+: Mesh(rt, ct)
 {
 }
 
@@ -12,17 +12,17 @@ SimpleMeshRAM::~SimpleMeshRAM() {
 }
 
 void SimpleMeshRAM::initialize() {
-    vertexPositions_ = new Position3dAttributes();
+    vertexPositions_ = new Position3dBuffer();
     addAttribute(vertexPositions_);
 
-    vertexTexCoords_ = new TexCoord3dAttributes();
+    vertexTexCoords_ = new TexCoord3dBuffer();
     addAttribute(vertexTexCoords_);
 
-    vertexColors_ = new ColorAttributes();
+    vertexColors_ = new ColorBuffer();
     addAttribute(vertexColors_);
 
-    indices_ = new IndexAttributes();
-    addIndicies(MeshRAM::AttributesInfo(), indices_);
+    indices_ = new IndexBuffer();
+    addIndicies(Mesh::AttributesInfo(), indices_);
 }
 
 void SimpleMeshRAM::deinitialize() {}
@@ -30,24 +30,24 @@ void SimpleMeshRAM::deinitialize() {}
 void SimpleMeshRAM::render() const {}
 
 void SimpleMeshRAM::addVertex(vec3 pos, vec3 texCoord, vec4 color){
-    vertexPositions_->add(pos);
-    vertexTexCoords_->add(texCoord);
-    vertexColors_->add(color);
+    vertexPositions_->getEditableRepresentation<Position3dBufferRAM>()->add(pos);
+    vertexTexCoords_->getEditableRepresentation<TexCoord3dBufferRAM>()->add(texCoord);
+    vertexColors_->getEditableRepresentation<ColorBufferRAM>()->add(color);
 }
 
 void SimpleMeshRAM::addIndex(unsigned int idx){
-    indices_->add(idx);
+    indices_->getEditableRepresentation<IndexBufferRAM>()->add(idx);
 }
 
 void SimpleMeshRAM::setIndicesInfo(RenderType rt, ConnectivityType ct){
-    indexAttributes_[0].first = MeshRAM::AttributesInfo(rt, ct);
+    indexAttributes_[0].first = Mesh::AttributesInfo(rt, ct);
 }
 
-const Position3dAttributes* SimpleMeshRAM::getVertexList() const {
+const Position3dBuffer* SimpleMeshRAM::getVertexList() const {
 	return this->vertexPositions_;
 }
 
-const IndexAttributes* SimpleMeshRAM::getIndexList() const {
+const IndexBuffer* SimpleMeshRAM::getIndexList() const {
 	return this->indices_;
 }
 

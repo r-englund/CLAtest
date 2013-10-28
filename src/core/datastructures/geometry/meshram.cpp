@@ -2,69 +2,69 @@
 
 namespace inviwo {
 
-MeshRAM::MeshRAM()
-    : GeometryRAM(), attributesInfo_(AttributesInfo())
+Mesh::Mesh()
+    : Geometry(), attributesInfo_(AttributesInfo())
 {}
 
-MeshRAM::MeshRAM(RenderType rt, ConnectivityType ct)
-    : GeometryRAM(), attributesInfo_(AttributesInfo(rt, ct))
+Mesh::Mesh(RenderType rt, ConnectivityType ct)
+    : Geometry(), attributesInfo_(AttributesInfo(rt, ct))
 {}
 
-MeshRAM::~MeshRAM() {
+Mesh::~Mesh() {
     deinitialize();
 }
 
-void MeshRAM::initialize() {}
+void Mesh::initialize() {}
 
-void MeshRAM::deinitialize() {
-    for (std::vector<AttributesBase*>::iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
+void Mesh::deinitialize() {
+    for (std::vector<Buffer*>::iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
         delete (*it);
 
-    for (std::vector<std::pair<AttributesInfo, IndexAttributes*> >::iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
+    for (std::vector<std::pair<AttributesInfo, IndexBuffer*> >::iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
         delete it->second;
 }
 
-DataRepresentation* MeshRAM::clone() const {
-    MeshRAM* newMeshRAM = new MeshRAM(attributesInfo_.rt, attributesInfo_.ct);
+Data* Mesh::clone() const {
+    Mesh* newMeshRAM = new Mesh(attributesInfo_.rt, attributesInfo_.ct);
 
-    for(std::vector<AttributesBase*>::const_iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
-        newMeshRAM->addAttribute((*it)->clone());
+    for(std::vector<Buffer*>::const_iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
+        newMeshRAM->addAttribute(static_cast<Buffer*>((*it)->clone()));
 
-    for(std::vector<std::pair<AttributesInfo, IndexAttributes*> >::const_iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
-        newMeshRAM->addIndicies(it->first, static_cast<IndexAttributes*>(it->second->clone()));
+    for(std::vector<std::pair<AttributesInfo, IndexBuffer*> >::const_iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
+        newMeshRAM->addIndicies(it->first, static_cast<IndexBuffer*>(it->second->clone()));
 
     return newMeshRAM;
 }
 
-void MeshRAM::addAttribute(AttributesBase* att){
+void Mesh::addAttribute(Buffer* att){
     attributes_.push_back(att);
 }
 
-void MeshRAM::addIndicies(AttributesInfo info, IndexAttributes* ind){
+void Mesh::addIndicies(AttributesInfo info, IndexBuffer* ind){
     indexAttributes_.push_back(std::make_pair(info, ind));
 }
 
-AttributesBase* MeshRAM::getAttributes(size_t idx) const{
+Buffer* Mesh::getAttributes(size_t idx) const{
     return attributes_[idx];
 }
 
-AttributesBase* MeshRAM::getIndicies(size_t idx) const{
+Buffer* Mesh::getIndicies(size_t idx) const{
     return indexAttributes_[idx].second;
 }
 
-MeshRAM::AttributesInfo MeshRAM::getAttributesInfo() const{
+Mesh::AttributesInfo Mesh::getAttributesInfo() const{
     return attributesInfo_;
 }
 
-MeshRAM::AttributesInfo MeshRAM::getIndexAttributesInfo(size_t idx) const{
+Mesh::AttributesInfo Mesh::getIndexAttributesInfo(size_t idx) const{
     return indexAttributes_[idx].first;
 }
 
-size_t MeshRAM::getNumberOfAttributes() const{
+size_t Mesh::getNumberOfAttributes() const{
     return attributes_.size();
 }
 
-size_t MeshRAM::getNumberOfIndicies() const{
+size_t Mesh::getNumberOfIndicies() const{
     return indexAttributes_.size();
 }
 

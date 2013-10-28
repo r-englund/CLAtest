@@ -31,7 +31,7 @@ namespace inviwo {
         void setWorldTransform(const mat4& mat);
 
     protected:
-        void createDefaultRepresentation() const;
+        void createDefaultRepresentation();
     };
 
 } // namespace

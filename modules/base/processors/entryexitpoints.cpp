@@ -34,8 +34,15 @@ void EntryExitPoints::deinitialize() {
     ProcessorGL::deinitialize();
 }
 
+
 void EntryExitPoints::process() {
-    const GeometryGL* geom = geometryPort_.getData()->getRepresentation<GeometryGL>();
+    //const GeometryGL* geom = geometryPort_.getData()->getRepresentation<GeometryGL>();
+    const Geometry* geom = geometryPort_.getData();
+    const Mesh* mesh = dynamic_cast<const Mesh*>(geom);
+    if( !mesh ) {
+        return;
+    }
+    MeshRenderer renderer(mesh);
 
     glEnable(GL_CULL_FACE);    
 
@@ -54,13 +61,15 @@ void EntryExitPoints::process() {
     // generate entry points
     activateAndClearTarget(entryPort_);
     glCullFace(GL_BACK);
-    geom->render();
+    //geom->render();
+    renderer.render();
     deactivateCurrentTarget();
 
     // generate exit points
     activateAndClearTarget(exitPort_);
     glCullFace(GL_FRONT);
-    geom->render();
+    //geom->render();
+    renderer.render();
     deactivateCurrentTarget();
 
     glDepthFunc(GL_LESS);

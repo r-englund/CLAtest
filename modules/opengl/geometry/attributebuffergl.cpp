@@ -2,128 +2,140 @@
 
 namespace inviwo {
 
-AttributeBufferGL::AttributeBufferGL()
+BufferGL::BufferGL(size_t size, BufferType type, const DataFormatBase* format): BufferRepresentation(size, type, format), glFormat_(getGLFormats()->getGLFormat(format->getId()))
 {
-    //Generate a new buffer
-    glGenBuffers(1, &id_);
+    initialize();
     LGL_ERROR_SUPPRESS;
 }
 
-AttributeBufferGL::~AttributeBufferGL() {
-    glDeleteBuffers(1, &id_);
+BufferGL::~BufferGL() {
+    deinitialize();
 }
 
-const AttributesBase* AttributeBufferGL::getAttribute() const {
-    return attrib_;
-}
-
-GLenum AttributeBufferGL::getFormatType() const {
+GLenum BufferGL::getFormatType() const {
     return glFormat_.type;
 }
 
-GLuint AttributeBufferGL::getId() const {
+GLuint BufferGL::getId() const {
     return id_;
 }
 
-void AttributeBufferGL::enable() const {
-    (this->*enableFunc_)();
-}
-
-void AttributeBufferGL::disable() const {
-    (this->*disableFunc_)();
-}
-
-void AttributeBufferGL::bind() const {
-    glBindBuffer(target_, id_);
-}
-
-void AttributeBufferGL::specifyLocation() const {
-    (this->*locationPointerFunc_)();
-}
-
-void AttributeBufferGL::upload(const AttributesBase* attrib, GLenum usage, GLenum target, bool element){
-    //Set global variables
-    attrib_ = attrib;
-    target_ = target;
-
-    //Get GL Format
-    glFormat_ = getGLFormats()->getGLFormat(attrib->getDataFormat()->getId());
-
-    //Specify location and state
-    switch(attrib->getAttributeType())
-    {
-    case COLOR_ATTRIB:
-        locationPointerFunc_ = &AttributeBufferGL::colorPointer;
-        state_ = GL_COLOR_ARRAY;
-        break;
-    case NORMAL_ATTRIB:
-        locationPointerFunc_ = &AttributeBufferGL::normalPointer;
-        state_ = GL_NORMAL_ARRAY;
-        break;
-    case TEXCOORD_ATTRIB:
-        locationPointerFunc_ = &AttributeBufferGL::texCoordPointer;
-        state_ = GL_TEXTURE_COORD_ARRAY;
-        break;
-    case POSITION_ATTRIB:
-        locationPointerFunc_ = &AttributeBufferGL::vertexPointer;
-        state_ = GL_VERTEX_ARRAY;
-        break;
-    default:
-        locationPointerFunc_ = &AttributeBufferGL::emptyFunc;
-        state_ = GL_VERTEX_ARRAY;
-        break;
-    }
-
-    //Perform special operations if ELEMENT_ARRAY or ARRAY target
-    if(element){
-        enableFunc_ = &AttributeBufferGL::enableElementArray; 
-        disableFunc_ = &AttributeBufferGL::emptyFunc;
-    }
-    else{
-        enableFunc_ = &AttributeBufferGL::enableArray; 
-        disableFunc_ = &AttributeBufferGL::disableArray;
-    }
-
-    reupload(usage);
-}
-
-void AttributeBufferGL::reupload(GLenum usage){
-    bind();
-    glBufferData(target_, attrib_->getDataSize(), attrib_->getAttributes(), usage);
-    specifyLocation();
-}
-
-void AttributeBufferGL::enableArray() const {
+void BufferGL::enable() const {
     glEnableClientState(state_);
     bind();
     specifyLocation();
 }
 
-void AttributeBufferGL::disableArray() const {
+void BufferGL::disable() const {
     glDisableClientState(state_);
 }
 
-void AttributeBufferGL::enableElementArray() const {
-    bind();
+void BufferGL::bind() const {
+    glBindBuffer(target_, id_);
 }
 
-void AttributeBufferGL::colorPointer() const {
+void BufferGL::specifyLocation() const {
+    (this->*locationPointerFunc_)();
+}
+
+
+void BufferGL::upload( const void* data, size_t size, GLenum usage, GLenum target)
+{
+    //Set global variables
+    target_ = target;
+
+    //Get GL Format
+    glFormat_ = getGLFormats()->getGLFormat(getDataFormat()->getId());
+
+    //Specify location and state
+    switch(getBufferType())
+    {
+    case COLOR_ATTRIB:
+        locationPointerFunc_ = &BufferGL::colorPointer;
+        state_ = GL_COLOR_ARRAY;
+        break;
+    case NORMAL_ATTRIB:
+        locationPointerFunc_ = &BufferGL::normalPointer;
+        state_ = GL_NORMAL_ARRAY;
+        break;
+    case TEXCOORD_ATTRIB:
+        locationPointerFunc_ = &BufferGL::texCoordPointer;
+        state_ = GL_TEXTURE_COORD_ARRAY;
+        break;
+    case POSITION_ATTRIB:
+        locationPointerFunc_ = &BufferGL::vertexPointer;
+        state_ = GL_VERTEX_ARRAY;
+        break;
+    default:
+        locationPointerFunc_ = &BufferGL::emptyFunc;
+        state_ = GL_VERTEX_ARRAY;
+        break;
+    }
+
+    reupload(data, size, usage);
+}
+
+void BufferGL::reupload(const void* data, size_t size, GLenum usage){
+    bind();
+    glBufferData(target_, size, data, usage);
+    specifyLocation();
+}
+
+void BufferGL::colorPointer() const {
     glColorPointer(glFormat_.channels, glFormat_.type, 0, 0);
 }
 
-void AttributeBufferGL::normalPointer() const {
+void BufferGL::normalPointer() const {
     glNormalPointer(glFormat_.type, 0, 0);
 }
 
-void AttributeBufferGL::texCoordPointer() const {
+void BufferGL::texCoordPointer() const {
     glTexCoordPointer(glFormat_.channels, glFormat_.type, 0, 0);
 }
 
-void AttributeBufferGL::vertexPointer() const {
+void BufferGL::vertexPointer() const {
     glVertexPointer(glFormat_.channels, glFormat_.type, 0, 0);
 }
 
-void AttributeBufferGL::emptyFunc() const {}
+void BufferGL::emptyFunc() const {}
+
+DataRepresentation* BufferGL::clone() const
+{
+    return new BufferGL(*this);
+}
+
+void BufferGL::initialize()
+{
+    //Generate a new buffer
+    glGenBuffers(1, &id_);
+}
+
+void BufferGL::deinitialize()
+{
+    glDeleteBuffers(1, &id_);
+}
+
+
+BufferRAM2GLConverter::BufferRAM2GLConverter()
+: RepresentationConverterType<BufferGL>()
+{}
+
+BufferRAM2GLConverter::~BufferRAM2GLConverter() {}
+
+DataRepresentation* BufferRAM2GLConverter::createFrom(const DataRepresentation* source) {     
+    const BufferRAM* bufferRAM = static_cast<const BufferRAM*>(source);
+    BufferGL* bufferGL = new BufferGL(bufferRAM->getSize(), bufferRAM->getBufferType(), bufferRAM->getDataFormat());
+    bufferGL->upload(bufferRAM->getData(), bufferRAM->getSize()*bufferRAM->getSizeOfElement());
+    
+    return bufferGL;
+}
+void BufferRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const BufferRAM* src = static_cast<const BufferRAM*>(source);
+    BufferGL* dst = static_cast<BufferGL*>(destination);
+    dst->upload(src->getData(), src->getSize());
+
+}
+
 
 } // namespace
 

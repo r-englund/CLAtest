@@ -5,13 +5,12 @@ ivw_module(OpenGL)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
+	${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.h
     ${IVW_MODULE_DIR}/opengl/canvasgl.h
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/geometry/attributebuffergl.h
-    ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.h
     ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/geometry/meshgl.h
-    ${IVW_MODULE_DIR}/opengl/geometry/meshglconverter.h
     ${IVW_MODULE_DIR}/opengl/glformats.h
     ${IVW_MODULE_DIR}/opengl/image/imagegl.h
     ${IVW_MODULE_DIR}/opengl/image/imageglconverter.h
@@ -39,13 +38,12 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
+	${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.cpp
     ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/attributebuffergl.cpp
-    ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/meshgl.cpp
-    ${IVW_MODULE_DIR}/opengl/geometry/meshglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/image/imagegl.cpp
     ${IVW_MODULE_DIR}/opengl/image/imageglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp

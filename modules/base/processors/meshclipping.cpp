@@ -52,13 +52,14 @@ void MeshClipping::process() {
 	*/
 	
 	if(clippingEnabled_.get()) {
-        const GeometryRAM *geom = inport_.getData()->getRepresentation<GeometryRAM>();
+        //const GeometryRAM *geom = inport_.getData()->getRepresentation<GeometryRAM>();
+        const Geometry *geom = inport_.getData();
 
 		//LogInfo("Calling clipping method.");
-		GeometryRAM *clippedPlaneGeom = clipGeometryAgainstPlane(geom, Plane(planePoint_.get(), planeNormal_.get()));
+		Geometry *clippedPlaneGeom = clipGeometryAgainstPlane(geom, Plane(planePoint_.get(), planeNormal_.get()));
 
 		//LogInfo("Setting new mesh as outport data.");
-		outport_.setData(new Geometry(clippedPlaneGeom));
+		outport_.setData(clippedPlaneGeom);
 		//LogInfo("Done.");
 	} else {
 		outport_.setData(const_cast<Geometry*>(inport_.getData()), false);
@@ -124,7 +125,7 @@ std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int> triList
 	return result;
 }
 
-GeometryRAM* MeshClipping::clipGeometry(const GeometryRAM* in, SimpleMeshRAM* clip) {
+Geometry* MeshClipping::clipGeometry(Geometry* in, SimpleMeshRAM* clip) {
 	// STUB
 	// For clipping against qudrilateral (finite plane)
     const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
@@ -135,7 +136,7 @@ GeometryRAM* MeshClipping::clipGeometry(const GeometryRAM* in, SimpleMeshRAM* cl
 	return NULL;
 }
 
-GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane plane) {
+Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane& plane) {
 	//LogInfo("Entered clipGeometryAgainstPlane(...).");
 	
     const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
@@ -148,11 +149,15 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 		-	Create correct outputEdgeList while running clipping algorithm, currently edges between clipped verts
 			sometimes end up in incorrect order.
 		-	Use correct outputEdgeList to create a correctly sorted triangle strip list
+	std::cout << "Casting inputMesh.\n";
+
+
+	// --- Sutherland-Hogdman algorithm---
 	*/
 
 	//LogInfo("Fetching vertex- and triangle lists.");
-	const std::vector<glm::vec3> inputList = inputMesh->getVertexList()->getAttributeContainer(); // Vertex list
-	const std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getAttributeContainer(); // Triangle list
+	std::vector<vec3> inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer();
+	std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
 	std::vector<Edge> edgeList = triangleListtoEdgeList(triangleList);
 	std::vector<unsigned int> clippedVertInd;
 
@@ -328,9 +333,9 @@ GeometryRAM* MeshClipping::clipGeometryAgainstPlane(const GeometryRAM* in, Plane
 	//LogInfo("Number of verts in output mesh: " << 
 	//	outputList.size());
     if(renderAsPoints_.get())
-  	    outputMesh->setIndicesInfo(GeometryRepresentation::POINTS, GeometryRepresentation::NONE);
+  	    outputMesh->setIndicesInfo(Mesh::POINTS, Mesh::NONE);
     else
-        outputMesh->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
+        outputMesh->setIndicesInfo(Mesh::TRIANGLES, Mesh::STRIP);
 
    	for(unsigned int i=0; i<outputList.size(); ++i) {
    		outputMesh->addIndex(i);

@@ -6,9 +6,11 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/image/compositeprocessorgl.h>
+#include <inviwo/core/datastructures/geometry/simplemeshram.h>
 #include <inviwo/core/interaction/pickingobject.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/vectorproperties.h>
+
 
 namespace inviwo {
 
@@ -41,7 +43,7 @@ private:
 
     const PickingObject* widgetPickingObject_;
 
-    Geometry* widget_;
+    SimpleMeshRAM* widget_;
 
     Shader* program_;
 };

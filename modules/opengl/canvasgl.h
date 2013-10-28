@@ -47,7 +47,6 @@ protected:
 
 private:
     static bool glewInitialized_;
-    static const MeshGL* screenAlignedRectGL_;
     static GLuint screenAlignedVerticesId_;
     static GLuint screenAlignedTexCoordsId_;
 

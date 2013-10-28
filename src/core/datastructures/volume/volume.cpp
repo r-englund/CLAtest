@@ -60,7 +60,7 @@ void Volume::setWorldTransform(const mat4& mat){
     SpatialData<3>::setWorldTransform(Matrix<4,float>(mat));
 }
 
-void Volume::createDefaultRepresentation() const{
+void Volume::createDefaultRepresentation() {
 	representations_.push_back(new VolumeDisk(getDimension(), getDataFormat()));
 }
 

@@ -57,12 +57,10 @@ public:
     const DataFormatBase* getDataFormat() const;
 
     //Others
-    virtual Data* clone() const{
-        return new Data(*this);
-    };
+    virtual Data* clone() const = 0; 
 
 protected:
-    virtual void createDefaultRepresentation() const { };
+    virtual void createDefaultRepresentation() = 0;
 
     virtual void newEditableRepresentationCreated() const { }
 
@@ -101,7 +99,7 @@ protected:
 template<typename T>
 const T* Data::getRepresentation() const {
     if (!hasRepresentations()) {
-        createDefaultRepresentation();
+        const_cast<Data*>(this)->createDefaultRepresentation();
         lastValidRepresentation_ = representations_[0];
         setRepresentationAsValid(static_cast<int>(representations_.size())-1);
     }
@@ -305,7 +303,7 @@ public:
 	SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset);
 
 	virtual ~SpatialData(){}
-    virtual SpatialData<N>* clone() const;
+    virtual Data* clone() const = 0;
 
 	Vector<N,float> getOffset() const;
 	void setOffset(const Vector<N,float>& offset);
@@ -341,7 +339,7 @@ public:
         const DataFormatBase* format);
 
     virtual ~StructuredData(){}
-    virtual StructuredData<N>* clone() const;
+    virtual Data* clone() const = 0;
 
     Vector<N, unsigned int> getDimension() const;
     void setDimension(const Vector<N, unsigned int>& dimension);
@@ -376,11 +374,6 @@ template <unsigned int N>
 SpatialData<N>::SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset) : Data() {
 	setBasis(basis);
 	setOffset(offset);
-}
-
-template <unsigned int N>
-SpatialData<N>* SpatialData<N>::clone() const {
-    return new SpatialData<N>(*this);
 }
 
 template <unsigned int N>
@@ -490,11 +483,6 @@ StructuredData<N>::StructuredData(const Matrix<N,float>& basis,
 	SpatialData<N>(basis, offset) {
 	setDimension(dimension);
 	Data::setDataFormat(format);
-}
-
-template <unsigned int N>
-StructuredData<N>* StructuredData<N>::clone() const {
-    return new StructuredData<N>(*this);
 }
 
 template <unsigned int N>

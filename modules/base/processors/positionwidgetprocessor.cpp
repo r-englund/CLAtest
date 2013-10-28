@@ -59,12 +59,12 @@ void PositionWidgetProcessor::updateMeshWidget(){
     delete widget_;
 
     if(widgetType_.get() == "sphere"){
-        widget_ = new Geometry(SimpleMeshCreator::sphere(0.5f, 8, 16));
+        widget_ = SimpleMeshCreator::sphere(0.5f, 8, 16);
     }
     else{
         vec3 posLLF = vec3(0.0f);
         vec3 posURB = vec3(1.0f);
-        widget_ = new Geometry(SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f)));
+        widget_ = SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f));
     }
 }
 
@@ -89,6 +89,8 @@ void PositionWidgetProcessor::process() {
 
     activateAndClearTarget(outport_);
 
+    MeshRenderer renderer(widget_);
+
     program_->activate();
     program_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());
 
@@ -102,7 +104,7 @@ void PositionWidgetProcessor::process() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_ALWAYS);
 
-    widget_->getRepresentation<GeometryGL>()->render();
+    renderer.render();
 
     glDepthFunc(GL_LESS);
 

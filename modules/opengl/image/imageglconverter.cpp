@@ -10,7 +10,7 @@ ImageRAM2GLConverter::ImageRAM2GLConverter()
 ImageRAM2GLConverter::~ImageRAM2GLConverter() {}
 
 DataRepresentation* ImageRAM2GLConverter::createFrom(const DataRepresentation* source) {
-    const ImageRAM* imageRepresentation = dynamic_cast<const ImageRAM*>(source);
+    const ImageRAM* imageRepresentation = static_cast<const ImageRAM*>(source);
     
     //This creates a texture from the defined input ImageRAM.
     const void *data = imageRepresentation->getData();
@@ -24,12 +24,13 @@ DataRepresentation* ImageRAM2GLConverter::createFrom(const DataRepresentation* s
     return NULL;
 }
 void ImageRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-    const ImageRAM* imageSrc = dynamic_cast<const ImageRAM*>(source);
-    ImageGL* imageDst = dynamic_cast<ImageGL*>(destination);
-    if(imageSrc && imageDst) {
-        // FIXME: OpenGL color should not have both depth and color
-        imageDst->getColorTexture()->upload(imageSrc->getData());
+    const ImageRAM* imageSrc = static_cast<const ImageRAM*>(source);
+    ImageGL* imageDst = static_cast<ImageGL*>(destination);
+    if(imageSrc->getDimensions() != imageDst->getDimensions()) {
+        imageDst->resize(imageSrc->getDimensions());
     }
+    // FIXME: OpenGL color should not have both depth and color
+    imageDst->getColorTexture()->upload(imageSrc->getData());
 
 }
 
@@ -40,34 +41,30 @@ ImageGL2RAMConverter::ImageGL2RAMConverter()
 ImageGL2RAMConverter::~ImageGL2RAMConverter() {}
 
 DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* source) {
-    const ImageGL* imageGL = dynamic_cast<const ImageGL*>(source);
-    if(imageGL){
-        ImageRAM* image = createImageRAM(imageGL->getDimensions(), imageGL->getImageType(), imageGL->getDataFormat()); 
-        if (image) {
-            imageGL->getColorTexture()->download(image->getData());
-            imageGL->getPickingTexture()->download(image->getPickingData());
-            imageGL->getDepthTexture()->download(image->getDepthData());
-            return image;
-        } else {
-            LogError("Cannot convert format from GL to RAM:" << imageGL->getDataFormat()->getString());
-        }
-    }
-    else {
-        LogError("Source could not be cast to ImageGL");
+    const ImageGL* imageGL = static_cast<const ImageGL*>(source);
+    ImageRAM* image = createImageRAM(imageGL->getDimensions(), imageGL->getImageType(), imageGL->getDataFormat()); 
+    if (image) {
+        imageGL->getColorTexture()->download(image->getData());
+        imageGL->getPickingTexture()->download(image->getPickingData());
+        imageGL->getDepthTexture()->download(image->getDepthData());
+        return image;
+    } else {
+        LogError("Cannot convert format from GL to RAM:" << imageGL->getDataFormat()->getString());
     }
     return NULL;
 }
 
 void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-    const ImageGL* imageSrc = dynamic_cast<const ImageGL*>(source);
-    ImageRAM* imageDst = dynamic_cast<ImageRAM*>(destination);
-    if(imageSrc && imageDst) {
+    const ImageGL* imageSrc = static_cast<const ImageGL*>(source);
+    ImageRAM* imageDst = static_cast<ImageRAM*>(destination);
+    if(imageSrc->getDimensions() != imageDst->getDimensions()) {
+        imageDst->resize(imageSrc->getDimensions());
         // FIXME: OpenGL color should not have both depth and color
-        if (imageDst->getDimensions()==imageSrc->getDimensions(),"GL and Ram representations are expected to have same dimensions.")
         imageSrc->getColorTexture()->download(imageDst->getData());
         imageSrc->getPickingTexture()->download(imageDst->getPickingData());
         imageSrc->getDepthTexture()->download(imageDst->getDepthData());
     }
+
 }
 
 } // namespace

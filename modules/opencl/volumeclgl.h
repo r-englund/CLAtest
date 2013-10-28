@@ -21,6 +21,7 @@ public:
     virtual DataRepresentation* clone() const;
     
     void initialize(const Texture3D* texture);
+    virtual void setDimensions(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(texture_); }
 
     const cl::Image3DGL& getVolume() const { return *(image3D_); }
     const Texture3D* getTexture() const { return texture_; }

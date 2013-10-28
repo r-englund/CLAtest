@@ -18,7 +18,7 @@ SimpleMeshRAM* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec
     recPrism->addVertex(posUrb, texCoordUrb, colorUrb);
 
     //14 indices (Triangle Strip)
-    recPrism->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
+    recPrism->setIndicesInfo(Mesh::TRIANGLES, Mesh::STRIP);
     recPrism->addIndex(3);
     recPrism->addIndex(4);
     recPrism->addIndex(2);
@@ -55,7 +55,7 @@ SimpleMeshRAM* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, gl
 	ppd->addVertex(pos + p1 + p2 + p3, tex + t1 + t2 + t3, col + c1 + c2 + c3); // (1,1,1)
 
     //14 indices (Triangle Strip)
-    ppd->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
+    ppd->setIndicesInfo(Mesh::TRIANGLES, Mesh::STRIP);
     ppd->addIndex(3);
     ppd->addIndex(4);
     ppd->addIndex(2);
@@ -93,7 +93,7 @@ SimpleMeshRAM* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
     rec->addVertex(posUr, texCoordUr, colorUr);
 
 	// 4 indices (?)
-	rec->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
+	rec->setIndicesInfo(Mesh::TRIANGLES, Mesh::STRIP);
 	rec->addIndex(1);
 	rec->addIndex(3);
 	rec->addIndex(0);
@@ -134,7 +134,7 @@ SimpleMeshRAM* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, un
     }
 
     //Create Indices
-    spheremesh->setIndicesInfo(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
+    spheremesh->setIndicesInfo(Mesh::TRIANGLES, Mesh::STRIP);
     for (unsigned int j = 0; j < segmentsPerLoop; ++j){
         spheremesh->addIndex(j);
         spheremesh->addIndex(segmentsPerLoop + j);

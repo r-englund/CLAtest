@@ -71,7 +71,7 @@ void CubeProxyGeometry::process() {
     }
 
     //Create Rectangular Prism and set it to the outport
-    outport_.setData(new Geometry(SimpleMeshCreator::rectangularPrism(posLLF, posURB, texLLF, texURB, colLLF, colURB)));
+    outport_.setData(SimpleMeshCreator::rectangularPrism(posLLF, posURB, texLLF, texURB, colLLF, colURB));
 }
 
 } // namespace

@@ -348,4 +348,10 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     return true;
 }
 
+void ImageGL::setDimensions( uvec2 dimensions )
+{
+    // TODO: We do not need to resize (downscale/upscale), just change dimension.
+    resize(dimensions);
+}
+
 } // namespace

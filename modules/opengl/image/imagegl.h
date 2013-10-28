@@ -34,6 +34,7 @@ namespace inviwo {
         void unbindDepthTexture() const;
         void unbindColorTexture() const;
         void unbindPickingTexture() const;
+        virtual void setDimensions(uvec2 dimensions);
         virtual void resize(uvec2 dimensions);
         virtual bool copyAndResizeImage(DataRepresentation*);
         bool updateFrom(const ImageGL*);

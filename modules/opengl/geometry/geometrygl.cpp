@@ -2,17 +2,17 @@
 
 namespace inviwo {
 
-GeometryGL::GeometryGL()
-    : GeometryRepresentation()
-{}
-
-GeometryGL::~GeometryGL() {
-    deinitialize();
-}
-
-void GeometryGL::initialize() {}
-
-void GeometryGL::deinitialize() {}
+//GeometryGL::GeometryGL()
+//    : GeometryRepresentation()
+//{}
+//
+//GeometryGL::~GeometryGL() {
+//    deinitialize();
+//}
+//
+//void GeometryGL::initialize() {}
+//
+//void GeometryGL::deinitialize() {}
 
 } // namespace
 

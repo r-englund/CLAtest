@@ -28,6 +28,10 @@ namespace inviwo {
         VolumeRepresentation(uvec3 dimension, const DataFormatBase* format, VolumeBorders border);
         virtual ~VolumeRepresentation();
         virtual void performOperation(DataOperation*) const {};
+        // Removes old data and reallocate for new dimension.
+        // Needs to be overloaded by child classes.
+        virtual void setDimensions(uvec3 dimensions) { dimensions_ = dimensions;}
+
         const VolumeBorders& getBorder() const {return borders_;}
         virtual uvec3 getBorderLLF() const {return borders_.llf;}
         virtual uvec3 getBorderURB() const {return borders_.urb;}

@@ -11,7 +11,7 @@ VolumeDisk2RAMConverter::VolumeDisk2RAMConverter()
 VolumeDisk2RAMConverter::~VolumeDisk2RAMConverter() {}
 
 DataRepresentation* VolumeDisk2RAMConverter::createFrom(const DataRepresentation* source) {
-    const VolumeDisk* volumeDisk = dynamic_cast<const VolumeDisk*>(source);
+    const VolumeDisk* volumeDisk = static_cast<const VolumeDisk*>(source);
     if (volumeDisk) {
         switch (volumeDisk->getDataFormatId()) {
         #define DataFormatIdMacro(i) case i: return new VolumeRAM_##i(static_cast<Data##i::type*>(const_cast<VolumeDisk*>(volumeDisk)->loadRawData()), volumeDisk->getDimensions());
@@ -23,12 +23,13 @@ DataRepresentation* VolumeDisk2RAMConverter::createFrom(const DataRepresentation
     return NULL;
 }
 void VolumeDisk2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-    const VolumeDisk* volumeSrc = dynamic_cast<const VolumeDisk*>( source );
-    VolumeRAM* volumeDst = dynamic_cast<VolumeRAM*>(destination);
-    if(volumeSrc && volumeDst) {
-        // FIXME: The file loader should have a function that loads data into a preallocated location.
-		volumeDst->setData(volumeSrc->loadRawData());
+    const VolumeDisk* volumeSrc = static_cast<const VolumeDisk*>( source );
+    VolumeRAM* volumeDst = static_cast<VolumeRAM*>(destination);
+    if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
+        volumeDst->setDimensions(volumeSrc->getDimensions());
     }
+    // FIXME: The file loader should have a function that loads data into a preallocated location.
+	volumeDst->setData(volumeSrc->loadRawData());
 
 }
 

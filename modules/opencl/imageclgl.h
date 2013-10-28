@@ -21,6 +21,7 @@ public:
     
     void initialize(const Texture2D* texture);
 
+    virtual void setDimensions(uvec2 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(texture_); }
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeImage(DataRepresentation* target);
 

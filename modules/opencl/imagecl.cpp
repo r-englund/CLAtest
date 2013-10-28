@@ -82,6 +82,12 @@ bool ImageCL::copyAndResizeImage(DataRepresentation* target) {
 
 }
 
+void ImageCL::setDimensions( uvec2 dimensions )
+{
+    delete image2D_;
+    image2D_ = new cl::Image2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions.x, dimensions.y);
+}
+
 
 
 

@@ -1,4 +1,5 @@
 #include <inviwo/core/ports/geometryport.h>
+#include <inviwo/core/datastructures/geometry/simplemeshram.h>
 
 namespace inviwo {
 
@@ -23,7 +24,7 @@ uvec3 GeometryInport::getColorCode() const {
 GeometryOutport::GeometryOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
 : DataOutport<Geometry>(identifier, invalidationLevel)
 {
-    data_ = new Geometry();
+    data_ = new SimpleMeshRAM();
 }
 
 GeometryOutport::~GeometryOutport() {}

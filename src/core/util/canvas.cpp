@@ -13,23 +13,7 @@ Canvas::Canvas(uvec2 dimensions)
 {
     shared = true;
     pickingContainer_ = new PickingContainer();
-    if(!screenAlignedRect_){
-        shared = false;
-        Position2dAttributes* vertices_ = new Position2dAttributes();
-        vertices_->add(vec2(-1.0f, -1.0f));
-        vertices_->add(vec2(1.0f, -1.0f));
-        vertices_->add(vec2(-1.0f, 1.0f));
-        vertices_->add(vec2(1.0f, 1.0f));
-        TexCoord2dAttributes* texCoords_ = new TexCoord2dAttributes();
-        texCoords_->add(vec2(0.0f, 0.0f));
-        texCoords_->add(vec2(1.0f, 0.0f));
-        texCoords_->add(vec2(0.0f, 1.0f));
-        texCoords_->add(vec2(1.0f, 1.0f));
-        MeshRAM* screenAlignedRectMesh = new MeshRAM(GeometryRepresentation::TRIANGLES, GeometryRepresentation::STRIP);
-        screenAlignedRectMesh->addAttribute(vertices_);
-        screenAlignedRectMesh->addAttribute(texCoords_);
-        screenAlignedRect_ = new Geometry(screenAlignedRectMesh);
-    }
+
 }
 
 Canvas::~Canvas() {

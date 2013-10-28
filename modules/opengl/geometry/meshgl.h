@@ -3,49 +3,43 @@
 
 #include <modules/opengl/geometry/geometrygl.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
-#include <inviwo/core/datastructures/geometry/meshram.h>
 #include <modules/opengl/geometry/attributebuffergl.h>
+#include <inviwo/core/datastructures/geometry/meshram.h>
+#include <inviwo/core/datastructures/representationconverter.h>
 #include <vector>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API MeshGL : public GeometryGL {
+class IVW_MODULE_OPENGL_API MeshRenderer {
 
 public:
-    MeshGL();
-    MeshGL(MeshRAM::AttributesInfo);
-    virtual ~MeshGL();
-    virtual void performOperation(DataOperation*) const {};
-    virtual void initialize(MeshRAM::AttributesInfo);
-    virtual void deinitialize();
-    virtual DataRepresentation* clone() const { return NULL; };
-    virtual void render(RenderType = GeometryRepresentation::NOT_SPECIFIED) const;
+    MeshRenderer(const Mesh* mesh);
+    MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo);
+    MeshRenderer(const Mesh* mesh, Mesh::RenderType rt, Mesh::ConnectivityType ct);
+    virtual ~MeshRenderer();
 
-    //Create and add Vertex Buffer with data
-    void createArrayBuffer(const AttributesBase*);
+    virtual void render(Mesh::RenderType = Mesh::NOT_SPECIFIED) const;
 
-    //Create and add Element Array Buffer for rendering using indices
-    void createElementBuffer(const AttributesBase*, MeshRAM::AttributesInfo);
 
-    GLenum getDrawMode(RenderType, ConnectivityType);
-
-    const AttributeBufferGL* getArrayBufferGL(size_t) const;
+    GLenum getDrawMode(Mesh::RenderType, Mesh::ConnectivityType);
 
 protected:
-    void renderArray(RenderType) const;
-    void renderElements(RenderType) const;
-    void emptyFunc(RenderType rt) const{};
 
-    std::vector<AttributeBufferGL*> arrayBuffers_;
-    
-    typedef void (MeshGL::*DrawFunc)(RenderType) const;
+    virtual void initialize(Mesh::AttributesInfo = Mesh::AttributesInfo());
+    void initializeIndexBuffer( const Buffer* indexBuffer, Mesh::AttributesInfo ai );
+    void renderArray(Mesh::RenderType) const;
+    void renderElements(Mesh::RenderType) const;
+    void emptyFunc(Mesh::RenderType rt) const{};
+
+    typedef void (MeshRenderer::*DrawFunc)(Mesh::RenderType) const;
     struct DrawMethod{
         DrawFunc drawFunc;
         GLenum drawMode;
-        AttributeBufferGL* elementBuffer;
+        const Buffer* elementBuffer;
     };
 
-    DrawMethod drawMethods_[GeometryRepresentation::NUMBER_OF_RENDER_TYPES];
+    DrawMethod drawMethods_[Mesh::NUMBER_OF_RENDER_TYPES];
+    const Mesh* meshToRender_;
 };
 
 } // namespace

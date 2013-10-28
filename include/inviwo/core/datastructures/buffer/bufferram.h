@@ -10,7 +10,7 @@ namespace inviwo {
 class IVW_CORE_API BufferRAM : public BufferRepresentation {
 
 public:
-    BufferRAM(size_t size, const DataFormatBase* format = DataFormatBase::get());
+    BufferRAM(size_t size, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = DataFormatBase::get());
 
     virtual ~BufferRAM();
 
@@ -18,10 +18,14 @@ public:
     virtual void deinitialize();
     DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "BufferRAM"; }
+
+    virtual void setSize(size_t size) {  size_ = size; deinitialize(); initialize(); }
     virtual void resize(size_t size);
 
-    virtual void* getData() {return data_;};
-    virtual const void* getData() const {return data_;};
+    virtual void* getData() = 0; 
+    virtual const void* getData() const = 0;
+    //virtual void* getData() {return data_;};
+    //virtual const void* getData() const {return data_;};
 
     virtual void setValueFromSingleFloat(size_t index, float val) = 0;
     virtual void setValueFromVec2Float(size_t index, vec2 val) = 0;
@@ -34,13 +38,13 @@ public:
     virtual vec4 getValueAsVec4Float(size_t index) const = 0;
 
     // Takes ownership of data pointer
-    void setData(void* data) {
-        deinitialize();
-        data_ = data;
-    }
-
+    //void setData(void* data) {
+    //    deinitialize();
+    //    data_ = data;
+    //}
+    
 protected:
-    void* data_;
+    //void* data_;
 };
 
 /**
@@ -51,7 +55,7 @@ protected:
  * @param format of buffer to create.
  * @return NULL if no valid format was specified. 
  */
-IVW_CORE_API BufferRAM* createBufferRAM(size_t size, const DataFormatBase* format);
+IVW_CORE_API BufferRAM* createBufferRAM(size_t size, BufferType type, const DataFormatBase* format);
 
 } // namespace
 

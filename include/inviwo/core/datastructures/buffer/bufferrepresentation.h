@@ -13,17 +13,32 @@ class IVW_CORE_API BufferRepresentation : public DataRepresentation {
 friend class Image;
 
 public:
-    BufferRepresentation(size_t size, const DataFormatBase* format);
+    BufferRepresentation(size_t size, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = DataFormatBase::get());
     virtual ~BufferRepresentation() {};
     virtual void performOperation(DataOperation*) const {};
+    virtual void setSize(size_t size) {  size_ = size; }
     virtual void resize(size_t size) { size_ = size; }
-    size_t getSize() const { return size_; }
+
     virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "BufferRepresentation"; }
+    /**
+     * Return the number of elements in the buffer.
+     * 
+     * @return Number of elements in the buffer
+     */
+    size_t getSize() const { return size_; }
 
+    /**
+     * Return size of buffer element in bytes.
+     * 
+     * @return Size of element in bytes.
+     */
+    virtual size_t getSizeOfElement() const { return getDataFormat()->getBytesStored(); };
+
+    BufferType getBufferType() const { return type_; }
 protected:
     size_t size_;
-
+    BufferType type_;
 };
 
 } // namespace

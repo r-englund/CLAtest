@@ -24,7 +24,7 @@ public:
 	void setDimension(const uvec2& dim);
 
 protected:
-    void createDefaultRepresentation() const;
+    void createDefaultRepresentation();
     void newEditableRepresentationCreated() const;
 private:
     bool allowMissingLayers_;
