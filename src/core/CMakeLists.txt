@@ -28,6 +28,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/meshram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/plane.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/polygon.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/image.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageram.h

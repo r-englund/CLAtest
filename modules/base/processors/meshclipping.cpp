@@ -52,12 +52,10 @@ void MeshClipping::process() {
 	*/
 	
 	if(clippingEnabled_.get()) {
-        //const GeometryRAM *geom = inport_.getData()->getRepresentation<GeometryRAM>();
         const Geometry *geom = inport_.getData();
 
 		//LogInfo("Calling clipping method.");
-        Plane clipPlane(planePoint_.get(), planeNormal_.get());
-		Geometry *clippedPlaneGeom = clipGeometryAgainstPlane(geom, clipPlane);
+		Geometry *clippedPlaneGeom = clipGeometryAgainstPlane(geom, Plane(planePoint_.get(), planeNormal_.get()));
 
 		//LogInfo("Setting new mesh as outport data.");
 		outport_.setData(clippedPlaneGeom);
@@ -84,7 +82,6 @@ std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int> triList
 	for (size_t i=0; i<triList.size(); ++i) {
 		Edge e1;
 		if(i==0 || i%3 == 0)  {
-
 			if(i+1<static_cast<int>(triList.size())) {
 				e1.v1 = triList.at(i);
 				e1.v2 = triList.at(i+1);
@@ -126,20 +123,57 @@ std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int> triList
 	return result;
 }
 
-Geometry* MeshClipping::clipGeometry(Geometry* in, SimpleMeshRAM* clip) {
-	// STUB
-	// For clipping against qudrilateral (finite plane)
+Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plane plane) {
     const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
-	if(!inputMesh) {
-		LogError("Can only clip a SimpleMeshRAM");
-		return NULL;
-	}
-	return NULL;
+    if(!inputMesh) {
+        LogError("Can only clip a SimpleMeshRAM*");
+        return NULL;
+    }
+
+    std::vector<vec3> inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
+    std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
+
+    SimpleMeshRAM* outputMesh = new SimpleMeshRAM();
+    outputMesh->initialize();
+
+    //Check if we are using indicies
+    if(triangleList.size() > 0){
+        //Check if it is a Triangle Strip
+        if(inputMesh->getIndexAttributesInfo(0).ct == Mesh::STRIP){
+            // Iterate over edges by edge
+            Triangle3D triangle;
+            for(unsigned int i=0; i<triangleList.size()-2; ++i) {
+                triangle.vertices()[0] = inputList.at(triangleList[i]);
+                triangle.vertices()[1] = inputList.at(triangleList[i+1]);
+                triangle.vertices()[2] = inputList.at(triangleList[i+2]);
+                clipAndAddTriangle(triangle, plane, outputMesh);
+            }
+        }
+    }
+
+    return outputMesh;
 }
 
-Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, const Plane& plane) {
+void MeshClipping::clipAndAddTriangle(Triangle3D& poly, Plane& plane, SimpleMeshRAM* output){
+    /* Sutherland-Hodgman Clipping
+       1) Traverse each edge by edge, such as successive vertex pairs make up edges
+       2) For each edge with vertices [v1, v2]
+          2.1) If v1 and v2 is inside, add v2
+          2.2) If v1 inside and v2 outside, add intersection
+          2.3) If v1 and v2 is outside, add nothing
+          2.4) If v1 outside and v2 inside, add intersection and then add v2
+       Observation: A clipped triangle can either contain 
+          3 points (if only 2.1 and 2.3 occurred) or                                  
+          4 points (if 2.2 and 2.4 occurred) or
+          0 points (if only 2.3 occurred, thus no points)
+       3) If 4 points, make two triangles, where first and third point is used in both triangles, total 6 points.
+    */
+    output->addVertex(poly.at(0), poly.at(0), glm::vec4(poly.at(0), 1.0f));
+}
+
+Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane) {
 	//LogInfo("Entered clipGeometryAgainstPlane(...).");
-	
+
     const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
 	if(!inputMesh) {
 		LogError("Can only clip a SimpleMeshRAM*");
@@ -150,15 +184,11 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, const Plane
 		-	Create correct outputEdgeList while running clipping algorithm, currently edges between clipped verts
 			sometimes end up in incorrect order.
 		-	Use correct outputEdgeList to create a correctly sorted triangle strip list
-	std::cout << "Casting inputMesh.\n";
-
-
-	// --- Sutherland-Hogdman algorithm---
 	*/
 
 	//LogInfo("Fetching vertex- and triangle lists.");
-	std::vector<vec3> inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer();
-	std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
+    std::vector<vec3> inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
+    std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
 	std::vector<Edge> edgeList = triangleListtoEdgeList(triangleList);
 	std::vector<unsigned int> clippedVertInd;
 
@@ -334,7 +364,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, const Plane
 	//LogInfo("Number of verts in output mesh: " << 
 	//	outputList.size());
     if(renderAsPoints_.get())
-  	    outputMesh->setIndicesInfo(Mesh::POINTS, Mesh::NONE);
+  	    outputMesh->setIndicesInfo(Mesh::POINTS, Mesh::NONE); 
     else
         outputMesh->setIndicesInfo(Mesh::TRIANGLES, Mesh::STRIP);
 

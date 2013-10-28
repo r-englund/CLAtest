@@ -8,6 +8,7 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/datastructures/geometry/simplemeshram.h>
 #include <inviwo/core/datastructures/geometry/plane.h>
+#include <inviwo/core/datastructures/geometry/polygon.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
 
@@ -25,9 +26,11 @@ public:
 
 protected:
 	virtual void process();
+  
+    Geometry* clipGeometryAgainstPlaneRevised(const Geometry*, Plane);
+    void clipAndAddTriangle(Triangle3D&, Plane&, SimpleMeshRAM*);
 
-	Geometry* clipGeometry(Geometry*, SimpleMeshRAM*);
-	Geometry* clipGeometryAgainstPlane(const Geometry*, const Plane&);
+	Geometry* clipGeometryAgainstPlane(const Geometry*, Plane);
 	float degreeToRad(float);
 
 private:
