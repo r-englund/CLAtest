@@ -56,7 +56,8 @@ void MeshClipping::process() {
         const Geometry *geom = inport_.getData();
 
 		//LogInfo("Calling clipping method.");
-		Geometry *clippedPlaneGeom = clipGeometryAgainstPlane(geom, Plane(planePoint_.get(), planeNormal_.get()));
+        Plane clipPlane(planePoint_.get(), planeNormal_.get());
+		Geometry *clippedPlaneGeom = clipGeometryAgainstPlane(geom, clipPlane);
 
 		//LogInfo("Setting new mesh as outport data.");
 		outport_.setData(clippedPlaneGeom);
@@ -136,7 +137,7 @@ Geometry* MeshClipping::clipGeometry(Geometry* in, SimpleMeshRAM* clip) {
 	return NULL;
 }
 
-Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane& plane) {
+Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, const Plane& plane) {
 	//LogInfo("Entered clipGeometryAgainstPlane(...).");
 	
     const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);

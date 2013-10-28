@@ -15,7 +15,7 @@ Plane::Plane(vec3 point, vec3 normal) :
 Plane::~Plane() {
 }
 
-vec3 Plane::getIntersection(const vec3 &p1, const vec3 &p2) {
+vec3 Plane::getIntersection(const vec3 &p1, const vec3 &p2) const {
 	if(glm::abs(glm::dot(p2-p1,normal_)) < 0.0001) // Should never happen
 		std::cout<<"Line parallel with clip plane!\n";
 
@@ -34,7 +34,7 @@ vec3 Plane::getIntersection(const vec3 &p1, const vec3 &p2) {
 	return vec3(dist*l + l0);
 }
 
-bool Plane::isInside(const vec3 &p) {
+bool Plane::isInside(const vec3 &p) const {
 	return (glm::dot(normal_,p-point_) > 0.0f) ? true : false;
 }
 
