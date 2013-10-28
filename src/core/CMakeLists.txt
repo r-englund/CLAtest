@@ -174,6 +174,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systeminfo.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/glmstreamoperators.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -304,6 +305,7 @@ set(SOURCE_FILES
     util/stringconversion.cpp
     util/systeminfo.cpp
     util/variant.cpp
+    util/glmstreamoperators.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

@@ -51,7 +51,10 @@ typedef glm::mat3 mat3;
 typedef glm::mat4 mat4;
 typedef glm::quat quat;
 
+#include <inviwo/core/util/glmstreamoperators.h>
+
 #include <inviwo/core/util/formats.h>
+
 
 // error handling
 #include <inviwo/core/util/assertion.h>
