@@ -11,8 +11,7 @@ ImageSourceSeries::ImageSourceSeries()
     outport_("image.outport"),
     imageFileDirectory_("imageFileDirectory", "Image file directory", IVW_DIR+"data/images"),
     findFilesButton_("findFiles", "Find Files"),
-    currentImageIndex_("currentImageIndex", "Image index", 1, 1, 1, 1),
-    imageFilesInDirectory_("imageFiles", "Current File")
+    currentImageIndex_("currentImageIndex", "Image index", 1, 1, 1, 1)
 {
     addPort(outport_);    
     addProperty(imageFileDirectory_);
@@ -20,11 +19,6 @@ ImageSourceSeries::ImageSourceSeries()
     addProperty(currentImageIndex_);
 
     findFilesButton_.registerClassMemberFunction(this, &ImageSourceSeries::onFindFiles);
-
-    //TODO: following settings leads to crash. under investigation.
-    //addProperty(imageFilesInDirectory_);
-    //imageFilesInDirectory_.setReadOnly(true);    
-    //imageFileDirectory_.onChange(this, &ImageSourceSeries::onFindFiles);
 }
 
 ImageSourceSeries::~ImageSourceSeries() {}
@@ -38,19 +32,28 @@ void ImageSourceSeries::deinitialize() {
 }
 
 void ImageSourceSeries::onFindFiles() {
-    std::vector<std::string> files = imageFileDirectory_.getFiles();    
+    std::vector<std::string> files = imageFileDirectory_.getFiles();     
 
     //TODO: following settings leads to crash. under investigation.
-    /*imageFilesInDirectory_.clearOptions();
+    if(files.size())
+        currentImageIndex_.setMaxValue(files.size());
+
+    //imageFilesInDirectory_.clearOptions();
+    std::vector<std::string> ids;
+    std::vector<std::string> displayNames;
     for (size_t i=0; i<files.size(); i++) {
-        std::string identifier = URLParser::getFileNameWithExtension(files[i]); 
-        imageFilesInDirectory_.addOption(identifier+"_id", identifier);
-    }    
-    imageFilesInDirectory_.setSelectedOption(files.size()-1);*/
+        std::string displayName = URLParser::getFileNameWithExtension(files[i]); 
+        ids.push_back(displayName+"_id");
+        displayNames.push_back(displayName);
+    }
 
-    currentImageIndex_.setMaxValue(files.size());
+    if(!files.size()) {
+        ids.push_back("noImage");
+        displayNames.push_back("noImage");
+        files.push_back("");
+    }
+ 
     currentImageIndex_.set(files.size());
-
 }
 
 /**

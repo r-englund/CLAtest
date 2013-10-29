@@ -29,7 +29,6 @@ private:
     ButtonProperty findFilesButton_;
     DirectoryProperty imageFileDirectory_;
     IntProperty currentImageIndex_;
-    OptionPropertyString imageFilesInDirectory_;
 };
 
 } // namespace

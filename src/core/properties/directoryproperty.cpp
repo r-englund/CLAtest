@@ -56,7 +56,7 @@ void DirectoryProperty::serialize(IvwSerializer& s) const {
         basePath = IVW_DIR+"data/workspace";
     std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("directory", relativePath);    
-    //s.serialize("files", directoryTree_, "file");
+    s.serialize("files", directoryTree_, "file");
 }
 
 void DirectoryProperty::deserialize(IvwDeserializer& d) {
@@ -66,12 +66,13 @@ void DirectoryProperty::deserialize(IvwDeserializer& d) {
     std::string basePath = d.getFileName(); 
     if (basePath.empty())
         basePath = IVW_DIR+"data/workspace";
-    basePath = URLParser::getFileDirectory(basePath);
-    set(basePath+relativePath);
+    basePath = URLParser::getFileDirectory(basePath);   
 
-    //std::vector<std::string> directoryTree;
-    //d.deserialize("files", directoryTree, "file");
-    //directoryTree_ = directoryTree;
+    std::vector<std::string> directoryTree;
+    d.deserialize("files", directoryTree, "file");
+    directoryTree_ = directoryTree;
+
+     set(basePath+relativePath);
 }
 
 } // namespace
