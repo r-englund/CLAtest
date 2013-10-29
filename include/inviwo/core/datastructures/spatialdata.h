@@ -389,7 +389,7 @@ StructuredData<N>::StructuredData(const Matrix<N,float>& basis,
 
 template <unsigned int N>
 void StructuredData<N>::initTransformer(){
-    transformer_ = new StructuredCoordinateTransformer<N>(this);
+    SpatialData<N>::transformer_ = new StructuredCoordinateTransformer<N>(this);
 }
 
 template <unsigned int N>
