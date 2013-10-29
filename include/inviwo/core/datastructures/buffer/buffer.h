@@ -31,7 +31,7 @@ public:
     BufferType getBufferType() const { return type_; }
 
 protected:
-    void createDefaultRepresentation();
+    virtual DataRepresentation* createDefaultRepresentation();
 private:
     size_t size_;
     const DataFormatBase* format_;

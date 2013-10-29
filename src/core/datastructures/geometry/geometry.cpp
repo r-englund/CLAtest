@@ -9,18 +9,16 @@ Geometry::Geometry(GeometryRepresentation* rep) : SpatialData<3>() {
     addRepresentation(rep);
 }
 
-//Data* Geometry::clone() const {
-//    Geometry* newGeometry = new Geometry();
-//    copyRepresentations(newGeometry);
-//    return newGeometry;
-//}
-
-Geometry::~Geometry() {
-
+Geometry* Geometry::clone() const {
+    return new Geometry(*this);
 }
 
-void Geometry::createDefaultRepresentation() {
-    //representations_.push_back(new Mesh());
+Geometry::~Geometry() {
+}
+
+DataRepresentation* Geometry::createDefaultRepresentation() {
+    return NULL;
+    //return new Mesh();  //Peter, Mesh is not a DataRepresentation? what to do?
 }
 
 } // namespace

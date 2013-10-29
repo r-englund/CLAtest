@@ -1,5 +1,4 @@
 #include "volumebasistransformer.h"
-#include <inviwo/core/datastructures/coordinatetransformer.h>
 
 namespace inviwo {
 
@@ -59,7 +58,7 @@ void VolumeBasisTransformer::process() {
             out = in->clone();
             outport_.setData(out);
         }
-        
+
         float a = lengths_.get()[0];
         float b = lengths_.get()[1];
         float c = lengths_.get()[2];

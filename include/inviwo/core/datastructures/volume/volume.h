@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/data.h>
+#include <inviwo/core/datastructures/spatialdata.h>
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
 
 namespace inviwo {
@@ -19,8 +20,8 @@ namespace inviwo {
         void setDimension(const uvec3& dim);
 
         void setOffset(const vec3& offset); 
-		vec3 getOffset() const;
-	
+        vec3 getOffset() const;
+    
         mat3 getBasis() const;
         void setBasis(const mat3& basis);
 
@@ -31,7 +32,7 @@ namespace inviwo {
         void setWorldTransform(const mat4& mat);
 
     protected:
-        void createDefaultRepresentation();
+        virtual DataRepresentation* createDefaultRepresentation();
     };
 
 } // namespace

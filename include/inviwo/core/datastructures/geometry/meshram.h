@@ -20,12 +20,13 @@ public:
     };
 
     Mesh();
+    Mesh(const Mesh& rhs);
     Mesh(RenderType rt, ConnectivityType ct);
     virtual ~Mesh();
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
-    virtual Data* clone() const;
+    virtual Mesh* clone() const;
 
     void addAttribute(Buffer*);
     void addIndicies(AttributesInfo info, IndexBuffer* ind);

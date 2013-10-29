@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/data.h>
+#include <inviwo/core/datastructures/spatialdata.h>
 #include <inviwo/core/datastructures/image/imagetypes.h>
 
 namespace inviwo {
@@ -24,7 +25,7 @@ public:
 	void setDimension(const uvec2& dim);
 
 protected:
-    void createDefaultRepresentation();
+    virtual DataRepresentation* createDefaultRepresentation();
     void newEditableRepresentationCreated() const;
 private:
     bool allowMissingLayers_;

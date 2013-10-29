@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref1">
+        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-425" />
@@ -97,7 +97,7 @@
                     <increment content="1" />
                 </Property>
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate">
-                    <value content="2" />
+                    <value content="4.4" />
                     <minvalue content="1" />
                     <maxvalue content="10" />
                     <increment content="0.1" />
@@ -118,7 +118,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref2">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-600" />
@@ -146,7 +146,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-675" />
@@ -159,7 +159,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref3">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-525" />
@@ -292,7 +292,7 @@
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <value x="2.3" y="-4.1999998" z="1.4" />
+                        <value x="0.30000001" y="1.8" z="-4.5999999" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -304,7 +304,7 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <value x="0.69999999" y="0.1" z="-0.69999999" />
+                        <value x="1" y="0.1" z="0.1" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -331,14 +331,14 @@
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1022" y="382" />
-                    <dimension x="256" y="256" />
+                    <position x="593" y="224" />
+                    <dimension x="701" y="639" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
                 <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
+                    <value x="845" y="875" />
                     <minvalue x="128" y="128" />
                     <maxvalue x="4096" y="4096" />
                     <increment x="1" y="1" />
@@ -351,47 +351,47 @@
     <Connections>
         <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref3" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="CanvasGL" identifier="CanvasGL" reference="ref4" />

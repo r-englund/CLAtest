@@ -13,10 +13,10 @@ public:
     Geometry();
     Geometry(GeometryRepresentation* rep);
     virtual ~Geometry();
-    virtual Data* clone() const = 0;
+    virtual Geometry* clone() const;
 
 protected:
-    void createDefaultRepresentation();
+    virtual DataRepresentation* createDefaultRepresentation();
 };
 
 } // namespace

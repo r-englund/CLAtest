@@ -46,9 +46,9 @@ Data* Buffer::clone() const
     return buffer;
 }
 
-void Buffer::createDefaultRepresentation() 
+DataRepresentation* Buffer::createDefaultRepresentation() 
 {
-    representations_.push_back(createBufferRAM(getSize(), type_, format_));
+    return createBufferRAM(getSize(), type_, format_);
 
 }
 
