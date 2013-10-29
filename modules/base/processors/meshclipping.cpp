@@ -146,6 +146,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
             //Triangle3D triangle;
             unsigned int idx[3];
             std::vector<vec3> newVertices;
+            std::vector<vec3> intersections;
             std::vector<vec3> newTexCoords;
             std::vector<vec4> newColors;
             for(unsigned int t=0; t<triangleList->size()-2; ++t) {
@@ -172,6 +173,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                       4 points (if case 2 and 3 occurred) or
                       0 points (if only case 4 occurred, thus no points)
                    3) If 4 points, make two triangles, 0 1 2 and 0 3 2, total 6 points.
+                   4) If 0 points, put incoming triangle onto the plane and add the projected triangle.
                 */
                 newVertices.clear();
                 newTexCoords.clear();
@@ -190,6 +192,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
                             float normDist = glm::length(intersection - vertexList->at(idx[i]))/glm::length(vertexList->at(idx[j]) - vertexList->at(idx[i]));
                             newVertices.push_back(intersection);
+                            intersections.push_back(intersection);
                             newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
                             newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
                         }
@@ -200,6 +203,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
                             float normDist = glm::length(intersection - vertexList->at(idx[i]))/glm::length(vertexList->at(idx[j]) - vertexList->at(idx[i]));
                             newVertices.push_back(intersection);
+                            intersections.push_back(intersection);
                             newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
                             newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
 
@@ -221,28 +225,27 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                     newVertices.pop_back();
                     newTexCoords.pop_back();
                     newColors.pop_back();
-                    //if (t & 1){
-                        newVertices.push_back(newVertices.at(0));
-                        newTexCoords.push_back(newTexCoords.at(0));
-                        newColors.push_back(newColors.at(0));
-                        newVertices.push_back(newVertices.at(2));
-                        newTexCoords.push_back(newTexCoords.at(2));
-                        newColors.push_back(newColors.at(2));
-                        newVertices.push_back(lastVert);
-                        newTexCoords.push_back(lastTexc);
-                        newColors.push_back(lastColor);
-                    /*}
-                    else{
-                        newVertices.push_back(newVertices.at(2));
-                        newTexCoords.push_back(newTexCoords.at(2));
-                        newColors.push_back(newColors.at(2));
-                        newVertices.push_back(lastVert);
-                        newTexCoords.push_back(lastTexc);
-                        newColors.push_back(lastColor);
-                        newVertices.push_back(newVertices.at(0));
-                        newTexCoords.push_back(newTexCoords.at(0));
-                        newColors.push_back(newColors.at(0));
-                    }*/
+                    newVertices.push_back(newVertices.at(0));
+                    newTexCoords.push_back(newTexCoords.at(0));
+                    newColors.push_back(newColors.at(0));
+                    newVertices.push_back(newVertices.at(2));
+                    newTexCoords.push_back(newTexCoords.at(2));
+                    newColors.push_back(newColors.at(2));
+                    newVertices.push_back(lastVert);
+                    newTexCoords.push_back(lastTexc);
+                    newColors.push_back(lastColor);
+                }
+                else if(newVertices.empty()){
+                    //Project incoming triangle onto the plane
+                    vec3 edge01 = vertexList->at(idx[1])-vertexList->at(idx[0]);
+                    vec3 edge02 = vertexList->at(idx[2])-vertexList->at(idx[0]);
+                    vec3 triangleNormal = glm::cross(edge01, edge02);
+                    for(int i=0; i<3; ++i){
+                        vec3 projectedPoint = plane.projectPoint(vertexList->at(idx[i]));
+                        newVertices.push_back(projectedPoint);
+                        newTexCoords.push_back(projectedPoint);
+                        newColors.push_back(vec4(projectedPoint, 1.f));
+                    }
                 }
 
                 //Add vertices to mesh
@@ -250,6 +253,16 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                     outputMesh->addVertex(newVertices.at(i), newTexCoords.at(i), newColors.at(i));
                 }
             }
+            //Based on intersection edges, create triangles where plane intersect mesh.
+            //http://en.wikipedia.org/wiki/Point_set_triangulation
+            //http://en.wikipedia.org/wiki/Delaunay_triangulation
+            //https://code.google.com/p/poly2tri/
+            //Simpler Approach? : 
+            //One point on a clipped triangle is replaced with intersection edge,
+            //which is connected with the original point projected onto the plane.
+            //If original point is projected to either of the edge point, 
+            //that means no new triangle.
+            //If Case 4, project triangle onto plane.
         }
     }
 

@@ -11,9 +11,14 @@ public:
 	virtual ~Plane();
 
 	vec3 getIntersection(const vec3&, const vec3&) const;
+
+    vec3 projectPoint(const vec3&) const;
+
 	bool isInside(const vec3&) const;
-	void setPoint(const vec3);
+	
+    void setPoint(const vec3);
 	void setNormal(const vec3&);
+
 private:
 	vec3 point_;
 	vec3 normal_;
