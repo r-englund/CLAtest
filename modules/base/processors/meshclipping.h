@@ -28,8 +28,6 @@ protected:
 	virtual void process();
   
     Geometry* clipGeometryAgainstPlaneRevised(const Geometry*, Plane);
-    void clipAndAddTriangle(Triangle3D&, Plane&, SimpleMeshRAM*);
-
 	Geometry* clipGeometryAgainstPlane(const Geometry*, Plane);
 	float degreeToRad(float);
 

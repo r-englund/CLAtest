@@ -32,7 +32,7 @@ public:
     virtual void* getData() { return &data_->front(); } 
     virtual const void* getData() const {return &data_->front(); } 
 
-    std::vector<T> getDataContainer() const { return *data_; } 
+    const std::vector<T>* getDataContainer() const { return data_; } 
 
     void setValueFromSingleFloat(size_t index, float val);
     void setValueFromVec2Float(size_t index, vec2 val);

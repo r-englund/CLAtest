@@ -76,38 +76,38 @@ std::vector<unsigned int> edgeListtoTriangleList(std::vector<Edge>& edges) {
 }
 
 // Extract edges from triangle strip list
-std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int> triList) {
+std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int>* triList) {
 	std::vector<Edge> result;
-	LogInfoCustom("MeshClipping", "Size of tri list: " << triList.size()-1);
-	for (size_t i=0; i<triList.size(); ++i) {
+	LogInfoCustom("MeshClipping", "Size of tri list: " << triList->size()-1);
+	for (size_t i=0; i<triList->size(); ++i) {
 		Edge e1;
 		if(i==0 || i%3 == 0)  {
-			if(i+1<static_cast<int>(triList.size())) {
-				e1.v1 = triList.at(i);
-				e1.v2 = triList.at(i+1);
+			if(i+1<static_cast<int>(triList->size())) {
+				e1.v1 = triList->at(i);
+				e1.v2 = triList->at(i+1);
 				if (result.empty() || std::find(result.begin(),result.end(),e1) == result.end()) {
 					result.push_back(e1);
 				}
 			}
-			if(i+2<static_cast<int>(triList.size())) {
-				e1.v1 = triList.at(i);
-				e1.v2 = triList.at(i+2);
+			if(i+2<static_cast<int>(triList->size())) {
+				e1.v1 = triList->at(i);
+				e1.v2 = triList->at(i+2);
 				if(result.empty() || std::find(result.begin(),result.end(),e1) == result.end()) {
 					result.push_back(e1);
 				}
 			}
 		} else if((i-1)%3 == 0) {
-			if(i+2<static_cast<int>(triList.size())) {
-				e1.v1 = triList.at(i);
-				e1.v2 = triList.at(i+2);
+			if(i+2<static_cast<int>(triList->size())) {
+				e1.v1 = triList->at(i);
+				e1.v2 = triList->at(i+2);
 				if(result.empty() || std::find(result.begin(), result.end(),e1) == result.end()) {
 					result.push_back(e1);
 				}
 			}
 		} else if((i+1)%3 == 0) {
-			if(i+1<static_cast<int>(triList.size())) {
-				e1.v1 = triList.at(i);
-				e1.v2 = triList.at(i+1);
+			if(i+1<static_cast<int>(triList->size())) {
+				e1.v1 = triList->at(i);
+				e1.v2 = triList->at(i+1);
 				if(result.empty() || std::find(result.begin(), result.end(),e1) == result.end()) {
 					result.push_back(e1);
 				}
@@ -130,78 +130,130 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
         return NULL;
     }
 
-    std::vector<vec3> inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
-    std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
+    const std::vector<vec3>* vertexList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
+    const std::vector<vec3>* texcoordlist = inputMesh->getTexCoordList()->getRepresentation<TexCoord3dBufferRAM>()->getDataContainer();
+    const std::vector<vec4>* colorList = inputMesh->getColorList()->getRepresentation<ColorBufferRAM>()->getDataContainer(); 
+    const std::vector<unsigned int>* triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
 
     SimpleMeshRAM* outputMesh = new SimpleMeshRAM(TRIANGLES);
     outputMesh->initialize();
 
     //Check if we are using indicies
-    if(triangleList.size() > 0){
+    if(triangleList->size() > 0){
         //Check if it is a Triangle Strip
         if(inputMesh->getIndexAttributesInfo(0).ct == STRIP){
             // Iterate over edges by edge
-            Triangle3D triangle;
-            for(unsigned int i=0; i<triangleList.size()-2; ++i) {
-                triangle.vertices()[0] = inputList.at(triangleList[i]);
-                triangle.vertices()[1] = inputList.at(triangleList[i+1]);
-                triangle.vertices()[2] = inputList.at(triangleList[i+2]);
-                clipAndAddTriangle(triangle, plane, outputMesh);
+            //Triangle3D triangle;
+            unsigned int idx[3];
+            std::vector<vec3> newVertices;
+            std::vector<vec3> newTexCoords;
+            std::vector<vec4> newColors;
+            for(unsigned int t=0; t<triangleList->size()-2; ++t) {
+                idx[0] = triangleList->at(t);
+                //Clockwise
+                if (t & 1){
+                    idx[1] = triangleList->at(t+2);
+                    idx[2] = triangleList->at(t+1);
+                }
+                else{
+                    idx[1] = triangleList->at(t+1);
+                    idx[2] = triangleList->at(t+2);
+                }
+                //clipAndAddTriangle(triangle, plane, outputMesh);
+                /* Sutherland-Hodgman Clipping
+                   1) Traverse each edge by edge, such as successive vertex pairs make up edges
+                   2) For each edge with vertices [v1, v2]
+                      Case 1: If v1 and v2 is inside, add v2
+                      Case 2: If v1 inside and v2 outside, add intersection
+                      Case 3: If v1 outside and v2 inside, add intersection and then add v2
+                      Case 4: If v1 and v2 is outside, add nothing
+                   Observation: A clipped triangle can either contain 
+                      3 points (if only case 1 and 4 occurred) or                                  
+                      4 points (if case 2 and 3 occurred) or
+                      0 points (if only case 4 occurred, thus no points)
+                   3) If 4 points, make two triangles, 0 1 2 and 0 3 2, total 6 points.
+                */
+                newVertices.clear();
+                newTexCoords.clear();
+                newColors.clear();
+                for(size_t i=0; i<3; ++i){ 
+                    size_t j = (i==2 ? 0 : i+1);
+                    if(plane.isInside(vertexList->at(idx[i]))) {
+                        if(plane.isInside(vertexList->at(idx[j]))) { // Case 1
+                            //Add v2
+                            newVertices.push_back(vertexList->at(idx[j]));
+                            newTexCoords.push_back(texcoordlist->at(idx[j]));
+                            newColors.push_back(colorList->at(idx[j]));
+                        }
+                        else{ //Case 2
+                            //Add Intersection
+                            vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
+                            float normDist = glm::length(intersection - vertexList->at(idx[i]))/glm::length(vertexList->at(idx[j]) - vertexList->at(idx[i]));
+                            newVertices.push_back(intersection);
+                            newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
+                            newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
+                        }
+                    }
+                    else{
+                        if(plane.isInside(vertexList->at(idx[j]))) { // Case 3
+                            //Add Intersection
+                            vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
+                            float normDist = glm::length(intersection - vertexList->at(idx[i]))/glm::length(vertexList->at(idx[j]) - vertexList->at(idx[i]));
+                            newVertices.push_back(intersection);
+                            newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
+                            newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
+
+                            //Add v2
+                            newVertices.push_back(vertexList->at(idx[j]));
+                            newTexCoords.push_back(texcoordlist->at(idx[j]));
+                            newColors.push_back(colorList->at(idx[j]));
+                        }
+                        // Case 4
+                    }
+                }
+
+                //Handle more then 3 vertices
+                if(newVertices.size() > 3){
+                    ivwAssert(newVertices.size() < 5, "Can't handle " << newVertices.size() << " vertices after clipping");
+                    vec3 lastVert = newVertices.at(3);
+                    vec3 lastTexc = newTexCoords.at(3);
+                    vec4 lastColor = newColors.at(3);
+                    newVertices.pop_back();
+                    newTexCoords.pop_back();
+                    newColors.pop_back();
+                    //if (t & 1){
+                        newVertices.push_back(newVertices.at(0));
+                        newTexCoords.push_back(newTexCoords.at(0));
+                        newColors.push_back(newColors.at(0));
+                        newVertices.push_back(newVertices.at(2));
+                        newTexCoords.push_back(newTexCoords.at(2));
+                        newColors.push_back(newColors.at(2));
+                        newVertices.push_back(lastVert);
+                        newTexCoords.push_back(lastTexc);
+                        newColors.push_back(lastColor);
+                    /*}
+                    else{
+                        newVertices.push_back(newVertices.at(2));
+                        newTexCoords.push_back(newTexCoords.at(2));
+                        newColors.push_back(newColors.at(2));
+                        newVertices.push_back(lastVert);
+                        newTexCoords.push_back(lastTexc);
+                        newColors.push_back(lastColor);
+                        newVertices.push_back(newVertices.at(0));
+                        newTexCoords.push_back(newTexCoords.at(0));
+                        newColors.push_back(newColors.at(0));
+                    }*/
+                }
+
+                //Add vertices to mesh
+                for(size_t i=0; i<newVertices.size(); ++i){
+                    outputMesh->addVertex(newVertices.at(i), newTexCoords.at(i), newColors.at(i));
+                }
             }
         }
     }
 
     return outputMesh;
-}
-
-void MeshClipping::clipAndAddTriangle(Triangle3D& poly, Plane& plane, SimpleMeshRAM* output){
-    /* Sutherland-Hodgman Clipping
-       1) Traverse each edge by edge, such as successive vertex pairs make up edges
-       2) For each edge with vertices [v1, v2]
-          Case 1: If v1 and v2 is inside, add v2
-          Case 2: If v1 inside and v2 outside, add intersection
-          Case 3: If v1 outside and v2 inside, add intersection and then add v2
-          Case 4: If v1 and v2 is outside, add nothing
-       Observation: A clipped triangle can either contain 
-          3 points (if only case 1 and 4 occurred) or                                  
-          4 points (if case 2 and 3 occurred) or
-          0 points (if only case 4 occurred, thus no points)
-       3) If 4 points, make two triangles, 0 1 2 and 0 3 2, total 6 points.
-    */
-    std::vector<vec3> newVertices;
-    for(size_t i=0; i<3; ++i){ 
-        size_t j = (i==2 ? 0 : i+1);
-        if(plane.isInside(poly.at(i))) {
-            if(plane.isInside(poly.at(j))) { // Case 1
-                newVertices.push_back(poly.at(j));
-            }
-            else{ //Case 2
-                newVertices.push_back(plane.getIntersection(poly.at(i),poly.at(j)));
-            }
-        }
-        else{
-            if(plane.isInside(poly.at(j))) { // Case 3
-                newVertices.push_back(plane.getIntersection(poly.at(i),poly.at(j))); 
-                newVertices.push_back(poly.at(j));
-            }
-            // Case 4
-        }
-    }
-
-    //Handle more then 3 vertices
-    if(newVertices.size() > 3){
-        ivwAssert(newVertices.size() < 5, "Can't handle " << newVertices.size() << " vertices after clipping");
-        vec3 last = newVertices.at(3);
-        newVertices.pop_back();
-        newVertices.push_back(newVertices.at(0));
-        newVertices.push_back(last);
-        newVertices.push_back(newVertices.at(2));
-    }
-
-    //Add vertices to mesh
-    for(size_t i=0; i<newVertices.size(); ++i){
-        output->addVertex(newVertices.at(i), newVertices.at(i), glm::vec4(newVertices.at(i), 1.0f));
-    }
 }
 
 Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane) {
@@ -220,8 +272,8 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane
 	*/
 
 	//LogInfo("Fetching vertex- and triangle lists.");
-    std::vector<vec3> inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
-    std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
+    const std::vector<vec3>* inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
+    const std::vector<unsigned int>* triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
 	std::vector<Edge> edgeList = triangleListtoEdgeList(triangleList);
 	std::vector<unsigned int> clippedVertInd;
 
@@ -238,8 +290,8 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane
 		unsigned int Sind = edgeList.at(i).v1;
 		unsigned int Eind = edgeList.at(i).v2;
 
-		glm::vec3 S = inputList.at( Sind );
-		glm::vec3 E = inputList.at( Eind );
+		glm::vec3 S = inputList->at(Sind);
+		glm::vec3 E = inputList->at(Eind);
 
 		Edge edge;
 		int duplicate = -1;

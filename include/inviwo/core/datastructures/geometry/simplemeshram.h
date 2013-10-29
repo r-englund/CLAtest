@@ -19,6 +19,8 @@ public:
     void addIndex(unsigned int idx);
     void setIndicesInfo(RenderType, ConnectivityType);
 	const Position3dBuffer* getVertexList() const;
+    const TexCoord3dBuffer* getTexCoordList() const;
+    const ColorBuffer* getColorList() const;
 	const IndexBuffer* getIndexList() const;
 
 protected:

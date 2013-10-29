@@ -45,6 +45,14 @@ const Position3dBuffer* SimpleMeshRAM::getVertexList() const {
 	return this->vertexPositions_;
 }
 
+const TexCoord3dBuffer* SimpleMeshRAM::getTexCoordList() const {
+    return this->vertexTexCoords_;
+}
+
+const ColorBuffer* SimpleMeshRAM::getColorList() const {
+    return this->vertexColors_;
+}
+
 const IndexBuffer* SimpleMeshRAM::getIndexList() const {
 	return this->indices_;
 }
