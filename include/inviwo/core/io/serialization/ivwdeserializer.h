@@ -60,11 +60,11 @@ public:
      * <Properties>
      * 
      * @param const std::string & key vector key.
-     * @param std::vector<T * > & sVector vector to be deserialized.
+     * @param std::vector<T> & sVector vector to be deserialized.
      * @param const std::string & itemKey vector item key     
      */
     template <typename T>
-    void deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) throw (SerializationException);
+    void deserialize(const std::string &key, std::vector<T> &sVector, const std::string &itemKey) throw (SerializationException);
     /** 
      * \brief  Deserialize a map
      *
@@ -298,6 +298,19 @@ private:
     template <typename T>
     void deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) throw (SerializationException);
     /** 
+     * \brief Deserialize a stl vector
+     *
+     * Deserialize the vector that has pre-allocated objects of type T or added to the stl vectory by deserializer.
+     * A vector is identified by key and vector items are identified by itemKey
+     * 
+     * @param const std::string & key vector key.
+     * @param std::vector<T > & sVector vector to be deserialized.
+     * @param const std::string & itemKey vector item key     
+     */
+    template <typename T>
+    void deserializeSTL_Vector(const std::string &key, std::vector<T> &sVector, const std::string &itemKey) throw (SerializationException);
+
+    /** 
      * \brief Deserialize a map, which can have keys of type K, values of type V* (pointers) and an optional compare function C. eg., std::map<std::string, Property*>
      *
      * @param const std::string & key Parent node key e.g, "Property"
@@ -355,7 +368,7 @@ private:
 };
 
 template <typename T>
-inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey) 
+inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T> &sVector, const std::string &itemKey) 
         throw (SerializationException){
     deserializeSTL_Vector(key, sVector, itemKey);
 }
@@ -385,24 +398,68 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
     T* item;
     std::vector<T*> tVector;
 
-    //TODO: Add count attribute to store vector.size() if necessary
-    unsigned int i=0;
-    for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {
-        rootElement_ = &(*child);
-        
-        if (sVector.size()==0) {
-            item = 0;
-            deserializePointer(itemKey, item);
-            tVector.push_back(item);
+    try {    
+        //TODO: Add count attribute to store vector.size() if necessary
+        unsigned int i=0;
+        for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {
+            rootElement_ = &(*child);
+            
+            if (sVector.size()==0) {
+                item = 0;
+                deserializePointer(itemKey, item);
+                tVector.push_back(item);
+            }
+            else {
+                deserializePointer(itemKey, sVector[i]);
+                tVector.push_back(sVector[i]);
+                i++;
+            }        
         }
-        else {
-            deserializePointer(itemKey, sVector[i]);
-            tVector.push_back(sVector[i]);
-            i++;
-        }        
+    }catch (TxException&) {
+        //Proceed to next node safely if exception encountered
     }
 
     sVector = tVector;
+}
+
+template <typename T>
+inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T> &sVector, const std::string &itemKey)
+throw (SerializationException) {
+
+    TxElement* keyNode;
+
+
+    try {
+        keyNode = rootElement_->FirstChildElement(key);
+        keyNode->FirstChildElement();
+    } catch (TxException&) {
+        return;
+    }
+
+    NodeSwitch tempNodeSwitch(*this, keyNode);    
+    
+    T item;
+    std::vector<T> tVector;
+
+    try {
+        //space holder
+        if (sVector.size()==0) {
+            for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {
+                tVector.push_back(item);
+            }
+        }
+        sVector = tVector;
+
+        unsigned int i=0;
+        for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {
+            rootElement_ = &(*child);
+            deserialize(itemKey, sVector[i++]);
+        }
+    }catch (TxException&) {
+        //Proceed to next node safely if exception encountered
+        sVector.clear();
+    }
+     
 }
 
 template <typename T>

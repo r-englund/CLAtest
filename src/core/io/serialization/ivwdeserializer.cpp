@@ -90,7 +90,7 @@ void IvwDeserializer::deserialize(const std::string &key, IvwSerializable &sObj)
 
 void IvwDeserializer::deserializeAttributes(const std::string &key, std::string &data) throw (SerializationException) {
 
-    TxElement* keyNode = rootElement_->FirstChildElement(); 
+    TxElement* keyNode = rootElement_->FirstChildElement(false); 
     //if (!keyNode) return;      
 
     try {
@@ -123,7 +123,18 @@ void IvwDeserializer::deserializePrimitives(const std::string &key, std::string 
 
 void IvwDeserializer::deserialize(const std::string &key, std::string &data, const bool asAttribute) throw (SerializationException) {
     if (asAttribute) deserializeAttributes(key, data);
-    else deserializePrimitives(key, data);
+    else {
+        try {
+            deserializePrimitives(key, data);
+        }
+        catch (TxException& ) {
+            //Try one more time to deserialize as string attribute (content attribute)
+            try {
+                deserializeAttributes(IvwSerializeConstants::CONTENT_ATTRIBUTE, data);
+            }
+            catch (TxException& ) {}
+        }
+    }
 }
 
 void IvwDeserializer::deserialize(const std::string &key, float &data) throw (SerializationException) {
