@@ -308,7 +308,6 @@ set(SOURCE_FILES
     util/stringconversion.cpp
     util/systeminfo.cpp
     util/variant.cpp
-    util/glmstreamoperators.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
