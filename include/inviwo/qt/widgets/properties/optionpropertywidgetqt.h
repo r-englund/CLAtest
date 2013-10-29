@@ -32,10 +32,12 @@ private:
     EditableLabelQt* label_;
     void generateWidget();
     void fillComboBox();
+    bool updating_;
 
 public slots:
      void optionChanged();
      void setPropertyDisplayName();
+     
 };
 
 } // namespace

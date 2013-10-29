@@ -97,6 +97,8 @@ public:
     
     virtual void clearOptions();
 
+    virtual void replaceOptions(std::vector<std::string> ids, std::vector<std::string> displayNames, std::vector<T> values);
+
     bool isSelected(std::string identifier) const;
 
     /** 
@@ -196,6 +198,14 @@ void TemplateOptionProperty<T>::setSelectedOption(int option) {
 template<typename T>
 void TemplateOptionProperty<T>::clearOptions() {
     options_.clear();
+}
+
+template<typename T>
+void TemplateOptionProperty<T>::replaceOptions(std::vector<std::string> ids, std::vector<std::string> displayNames, std::vector<T> values) {
+    options_.clear();
+    for (size_t i=0; i<ids.size(); i++)
+        options_.push_back(std::make_pair(std::make_pair(ids[i], displayNames[i]), values[i]));        
+    setSelectedOption(options_.size()-1);
 }
 
 template<typename T>

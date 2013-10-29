@@ -2,7 +2,8 @@
 #include <QComboBox>
 #include <typeinfo>
 namespace inviwo {
-OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) : property_(property) { 
+OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) : property_(property),
+    updating_(false) { 
     PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
@@ -32,19 +33,29 @@ void OptionPropertyWidgetQt::generateWidget() {
     }
 }
 
-void OptionPropertyWidgetQt::fillComboBox() {
+void OptionPropertyWidgetQt::fillComboBox() {    
+    comboBox_->clear();
     for (int i=0; i<property_->numOptions(); i++) {
-        comboBox_->addItem(QString::fromStdString(property_->getOptionDisplayNames()[i]));
+        QString option = QString::fromStdString(property_->getOptionDisplayNames()[i]);
+        comboBox_->addItem(option);
     }
+
 }
 void OptionPropertyWidgetQt::optionChanged() {
-    property_->setSelectedOption(comboBox_->currentIndex());
-    emit modified();
+    if (!updating_) {
+        if (comboBox_->count() && comboBox_->currentIndex()>=0) {
+            property_->setSelectedOption(comboBox_->currentIndex());
+            emit modified();
+        }
+    }
 }
 
 void OptionPropertyWidgetQt::updateFromProperty() {
-    int index = property_->getSelectedOption();
+    updating_ = true;
+    int index = property_->getSelectedOption();    
+    fillComboBox();
     comboBox_->setCurrentIndex(index);
+    updating_ = false;
 }
 
 void OptionPropertyWidgetQt::setPropertyDisplayName(){
