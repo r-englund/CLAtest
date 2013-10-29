@@ -711,9 +711,18 @@ inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& da
 template<class T>
 inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) throw (SerializationException) {
 
-    TxElement* keyNode = rootElement_->FirstChildElement(key); 
-    if (!keyNode) {
-        return;
+    TxElement* keyNode = rootElement_->FirstChildElement(key, false); 
+    if (!keyNode) {        
+        //Try to finding key in the current node before exit. If not, let the exception be thrown.
+        try {
+            T tempVec;
+            rootElement_->GetAttribute(
+                isColor ? IvwSerializeConstants::COLOR_R_ATTRIBUTE : IvwSerializeConstants::VECTOR_X_ATTRIBUTE, &tempVec[0]);
+            keyNode = rootElement_;
+        }
+        catch (TxException& ) {
+            return;
+        }        
     }
 
     std::string attr;

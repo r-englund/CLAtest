@@ -96,11 +96,9 @@ inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &
 
     for (typename T::const_iterator it = sVector.begin(); it != sVector.end(); ++it) {
         if (!isPrimitiveType(typeid(typename T::value_type)) && !isPrimitivePointerType(typeid(typename T::value_type)) ) {
-            serialize(itemKey, (*it));
+            //Handle non primitive cases if necessary
         }
-        else {
-            serializePrimitives(itemKey, (*it));
-        }
+        serialize(itemKey, (*it));
     }
 }
 
@@ -112,12 +110,10 @@ inline void IvwSerializer::serializeSTL_Map(const std::string &key, const T &sMa
     NodeSwitch tempNodeSwitch(*this, newNode);
 
     for (typename T::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
-        if (!isPrimitiveType(typeid(typename T::mapped_type)) && !isPrimitivePointerType(typeid(typename T::mapped_type)) ) {
-            serialize(itemKey, it->second);
+        if (!isPrimitiveType(typeid(typename T::mapped_type)) && !isPrimitivePointerType(typeid(typename T::mapped_type)) ) {        
+            //Handle non primitive cases if necessary
         }
-        else {
-            serializePrimitives(itemKey, it->second);
-        }
+        serialize(itemKey, it->second);
     }
 }
 
