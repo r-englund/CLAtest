@@ -13,25 +13,6 @@ CanvasGL::CanvasGL(uvec2 dimensions)
     imageGL_ = NULL;
     shader_ = NULL;
     noiseShader_ = NULL;
-    if(!screenAlignedRect_){
-        shared = false;
-        Position2dBuffer* vertices_ = new Position2dBuffer();
-        Position2dBufferRAM* vertices = vertices_->getEditableRepresentation<Position2dBufferRAM>();
-        vertices->add(vec2(-1.0f, -1.0f));
-        vertices->add(vec2(1.0f, -1.0f));
-        vertices->add(vec2(-1.0f, 1.0f));
-        vertices->add(vec2(1.0f, 1.0f));
-        TexCoord2dBuffer* texCoords_ = new TexCoord2dBuffer();
-        TexCoord2dBufferRAM* texCoords = texCoords_->getEditableRepresentation<TexCoord2dBufferRAM>();
-        texCoords->add(vec2(0.0f, 0.0f));
-        texCoords->add(vec2(1.0f, 0.0f));
-        texCoords->add(vec2(0.0f, 1.0f));
-        texCoords->add(vec2(1.0f, 1.0f));
-        Mesh* screenAlignedRectMesh = new Mesh(Mesh::TRIANGLES, Mesh::STRIP);
-        screenAlignedRectMesh->addAttribute(vertices_);
-        screenAlignedRectMesh->addAttribute(texCoords_);
-        screenAlignedRect_ = screenAlignedRectMesh;
-    }
 }
 
 CanvasGL::~CanvasGL() {}

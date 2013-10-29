@@ -15,30 +15,30 @@ class IVW_MODULE_OPENGL_API MeshRenderer {
 public:
     MeshRenderer(const Mesh* mesh);
     MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo);
-    MeshRenderer(const Mesh* mesh, Mesh::RenderType rt, Mesh::ConnectivityType ct);
+    MeshRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
     virtual ~MeshRenderer();
 
-    virtual void render(Mesh::RenderType = Mesh::NOT_SPECIFIED) const;
+    virtual void render(RenderType = NOT_SPECIFIED) const;
 
 
-    GLenum getDrawMode(Mesh::RenderType, Mesh::ConnectivityType);
+    GLenum getDrawMode(RenderType, ConnectivityType);
 
 protected:
 
     virtual void initialize(Mesh::AttributesInfo = Mesh::AttributesInfo());
     void initializeIndexBuffer( const Buffer* indexBuffer, Mesh::AttributesInfo ai );
-    void renderArray(Mesh::RenderType) const;
-    void renderElements(Mesh::RenderType) const;
-    void emptyFunc(Mesh::RenderType rt) const{};
+    void renderArray(RenderType) const;
+    void renderElements(RenderType) const;
+    void emptyFunc(RenderType rt) const{};
 
-    typedef void (MeshRenderer::*DrawFunc)(Mesh::RenderType) const;
+    typedef void (MeshRenderer::*DrawFunc)(RenderType) const;
     struct DrawMethod{
         DrawFunc drawFunc;
         GLenum drawMode;
         const Buffer* elementBuffer;
     };
 
-    DrawMethod drawMethods_[Mesh::NUMBER_OF_RENDER_TYPES];
+    DrawMethod drawMethods_[NUMBER_OF_RENDER_TYPES];
     const Mesh* meshToRender_;
 };
 

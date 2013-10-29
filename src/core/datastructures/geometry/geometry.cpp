@@ -20,8 +20,6 @@ Geometry::~Geometry() {
 }
 
 void Geometry::createDefaultRepresentation() {
-
-    // FIXME: Should Geometry be a data object?
     //representations_.push_back(new Mesh());
 }
 

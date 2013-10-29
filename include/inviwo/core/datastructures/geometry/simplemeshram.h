@@ -9,12 +9,11 @@ namespace inviwo {
 class IVW_CORE_API SimpleMeshRAM : public Mesh {
 
 public:
-    SimpleMeshRAM(RenderType rt = Mesh::POINTS, Mesh::ConnectivityType ct = Mesh::NONE);
+    SimpleMeshRAM(RenderType rt = POINTS, ConnectivityType ct = NONE);
     virtual ~SimpleMeshRAM();
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
-    virtual void render() const;
 
     void addVertex(vec3 pos, vec3 texCoord, vec4 color);
     void addIndex(unsigned int idx);

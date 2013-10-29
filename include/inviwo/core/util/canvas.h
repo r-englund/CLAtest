@@ -45,7 +45,7 @@ protected:
 
     static Geometry* screenAlignedRect_;
 
-    bool shared;
+    bool shared_;
     uvec2 dimensions_;
 
     PickingContainer* pickingContainer_;

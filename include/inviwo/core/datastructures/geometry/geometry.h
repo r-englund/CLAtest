@@ -14,7 +14,7 @@ public:
     Geometry(GeometryRepresentation* rep);
     virtual ~Geometry();
     virtual Data* clone() const = 0;
-    virtual void render() const = 0;
+
 protected:
     void createDefaultRepresentation();
 };

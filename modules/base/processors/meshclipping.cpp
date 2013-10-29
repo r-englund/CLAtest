@@ -133,13 +133,13 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
     std::vector<vec3> inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
     std::vector<unsigned int> triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
 
-    SimpleMeshRAM* outputMesh = new SimpleMeshRAM(Mesh::TRIANGLES);
+    SimpleMeshRAM* outputMesh = new SimpleMeshRAM(TRIANGLES);
     outputMesh->initialize();
 
     //Check if we are using indicies
     if(triangleList.size() > 0){
         //Check if it is a Triangle Strip
-        if(inputMesh->getIndexAttributesInfo(0).ct == Mesh::STRIP){
+        if(inputMesh->getIndexAttributesInfo(0).ct == STRIP){
             // Iterate over edges by edge
             Triangle3D triangle;
             for(unsigned int i=0; i<triangleList.size()-2; ++i) {
@@ -397,9 +397,9 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane
 	//LogInfo("Number of verts in output mesh: " << 
 	//	outputList.size());
     if(renderAsPoints_.get())
-  	    outputMesh->setIndicesInfo(Mesh::POINTS, Mesh::NONE); 
+  	    outputMesh->setIndicesInfo(POINTS, NONE); 
     else
-        outputMesh->setIndicesInfo(Mesh::TRIANGLES, Mesh::STRIP);
+        outputMesh->setIndicesInfo(TRIANGLES, STRIP);
 
    	for(unsigned int i=0; i<outputList.size(); ++i) {
    		outputMesh->addIndex(i);

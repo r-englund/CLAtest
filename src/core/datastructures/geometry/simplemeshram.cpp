@@ -27,8 +27,6 @@ void SimpleMeshRAM::initialize() {
 
 void SimpleMeshRAM::deinitialize() {}
 
-void SimpleMeshRAM::render() const {}
-
 void SimpleMeshRAM::addVertex(vec3 pos, vec3 texCoord, vec4 color){
     vertexPositions_->getEditableRepresentation<Position3dBufferRAM>()->add(pos);
     vertexTexCoords_->getEditableRepresentation<TexCoord3dBufferRAM>()->add(texCoord);

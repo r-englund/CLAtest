@@ -59,12 +59,11 @@ void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresen
     ImageRAM* imageDst = static_cast<ImageRAM*>(destination);
     if(imageSrc->getDimensions() != imageDst->getDimensions()) {
         imageDst->resize(imageSrc->getDimensions());
-        // FIXME: OpenGL color should not have both depth and color
-        imageSrc->getColorTexture()->download(imageDst->getData());
-        imageSrc->getPickingTexture()->download(imageDst->getPickingData());
-        imageSrc->getDepthTexture()->download(imageDst->getDepthData());
     }
-
+    // FIXME: OpenGL color should not have both depth and color
+    imageSrc->getColorTexture()->download(imageDst->getData());
+    imageSrc->getPickingTexture()->download(imageDst->getPickingData());
+    imageSrc->getDepthTexture()->download(imageDst->getDepthData());
 }
 
 } // namespace

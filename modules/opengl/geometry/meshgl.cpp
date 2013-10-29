@@ -15,7 +15,7 @@ MeshRenderer::MeshRenderer( const Mesh* mesh, Mesh::AttributesInfo ai): meshToRe
     initialize(ai);
 }
 
-MeshRenderer::MeshRenderer( const Mesh* mesh, Mesh::RenderType rt, Mesh::ConnectivityType ct ): meshToRender_(mesh)
+MeshRenderer::MeshRenderer( const Mesh* mesh, RenderType rt, ConnectivityType ct ): meshToRender_(mesh)
 {
     initialize(Mesh::AttributesInfo(rt, ct));
 }
@@ -25,7 +25,7 @@ MeshRenderer::~MeshRenderer()
 
 }
 
-void MeshRenderer::render( Mesh::RenderType rt ) const{
+void MeshRenderer::render( RenderType rt ) const{
     std::vector<Buffer*>::const_iterator it;
     for (it = meshToRender_->getBuffers().begin() ; it != meshToRender_->getBuffers().end(); ++it) {
         (*it)->getRepresentation<BufferGL>()->enable();
@@ -38,28 +38,28 @@ void MeshRenderer::render( Mesh::RenderType rt ) const{
     }
 }
 
-GLenum MeshRenderer::getDrawMode( Mesh::RenderType rt, Mesh::ConnectivityType ct)
+GLenum MeshRenderer::getDrawMode( RenderType rt, ConnectivityType ct)
 {
     switch(rt)
     {
-    case Mesh::TRIANGLES:
+    case TRIANGLES:
         switch(ct)
         {
-        case Mesh::NONE:
+        case NONE:
             return GL_TRIANGLES;
-        case Mesh::STRIP:
+        case STRIP:
             return GL_TRIANGLE_STRIP;
-        case Mesh::FAN:
+        case FAN:
             return GL_TRIANGLE_FAN;
         }
-    case Mesh::LINES:
+    case LINES:
         switch(ct)
         {
-        case Mesh::NONE:
+        case NONE:
             return GL_LINES;
-        case Mesh::STRIP:
+        case STRIP:
             return GL_LINE_STRIP;
-        case Mesh::LOOP:
+        case LOOP:
             return GL_LINE_LOOP;
         }
     default:
@@ -67,12 +67,12 @@ GLenum MeshRenderer::getDrawMode( Mesh::RenderType rt, Mesh::ConnectivityType ct
     }
 }
 
-void MeshRenderer::renderArray( Mesh::RenderType rt) const
+void MeshRenderer::renderArray( RenderType rt) const
 {
     glDrawArrays(drawMethods_[rt].drawMode, 0, meshToRender_->getAttributes(0)->getSize());
 }
 
-void MeshRenderer::renderElements( Mesh::RenderType rt) const
+void MeshRenderer::renderElements( RenderType rt) const
 {
     const ElementBufferGL* elementBufferGL = drawMethods_[rt].elementBuffer->getRepresentation<ElementBufferGL>();
     glDrawElements(drawMethods_[rt].drawMode, elementBufferGL->getSize(), elementBufferGL->getFormatType(), 0);
@@ -84,15 +84,15 @@ void MeshRenderer::initialize( Mesh::AttributesInfo ai )
     drawMethods_[0].drawMode = getDrawMode(ai.rt, ai.ct);
     drawMethods_[0].elementBuffer = NULL;
 
-    for(int i=1; i<Mesh::NUMBER_OF_RENDER_TYPES; i++){
+    for(int i=1; i<NUMBER_OF_RENDER_TYPES; i++){
         drawMethods_[i].drawFunc = drawMethods_[0].drawFunc;
         drawMethods_[i].drawMode = drawMethods_[0].drawMode;
         drawMethods_[i].elementBuffer = drawMethods_[0].elementBuffer;
     }
 
-    drawMethods_[Mesh::NOT_SPECIFIED].drawFunc = &MeshRenderer::renderArray;
-    drawMethods_[Mesh::POINTS].drawFunc = &MeshRenderer::renderArray;
-    drawMethods_[Mesh::POINTS].drawMode = GL_POINTS;
+    drawMethods_[NOT_SPECIFIED].drawFunc = &MeshRenderer::renderArray;
+    drawMethods_[POINTS].drawFunc = &MeshRenderer::renderArray;
+    drawMethods_[POINTS].drawMode = GL_POINTS;
 
     for (size_t i=0; i < meshToRender_->getNumberOfIndicies(); ++i) {
         if(meshToRender_->getIndicies(i)->getSize() > 0)
@@ -106,10 +106,10 @@ void MeshRenderer::initializeIndexBuffer( const Buffer* indexBuffer, Mesh::Attri
     drawMethods_[ai.rt].elementBuffer = indexBuffer;
 
     // Specify first element buffer as default rendering method
-    if(!drawMethods_[Mesh::NOT_SPECIFIED].elementBuffer) {
-        drawMethods_[Mesh::NOT_SPECIFIED].drawFunc = drawMethods_[ai.rt].drawFunc;
-        drawMethods_[Mesh::NOT_SPECIFIED].drawMode = drawMethods_[ai.rt].drawMode;
-        drawMethods_[Mesh::NOT_SPECIFIED].elementBuffer = drawMethods_[ai.rt].elementBuffer;
+    if(!drawMethods_[NOT_SPECIFIED].elementBuffer) {
+        drawMethods_[NOT_SPECIFIED].drawFunc = drawMethods_[ai.rt].drawFunc;
+        drawMethods_[NOT_SPECIFIED].drawMode = drawMethods_[ai.rt].drawMode;
+        drawMethods_[NOT_SPECIFIED].elementBuffer = drawMethods_[ai.rt].elementBuffer;
     }
 }
 

@@ -4,19 +4,19 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/datarepresentation.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/geometry/geometrytype.h>
 
 namespace inviwo {
 
 class IVW_CORE_API GeometryRepresentation : public DataRepresentation {
 
 public:
-
-
     GeometryRepresentation();
     virtual ~GeometryRepresentation();
     virtual void performOperation(DataOperation*) const;
     virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const;
+    virtual void render(RenderType = NOT_SPECIFIED) const = 0;
 };
 
 } // namespace

@@ -7,6 +7,17 @@
 
 namespace inviwo {
 
+class IVW_CORE_API GeometryRAM : public GeometryRepresentation {
+
+public:
+    GeometryRAM();
+    virtual ~GeometryRAM();
+    virtual void performOperation(DataOperation*) const = 0;
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual DataRepresentation* clone() const = 0;
+    virtual void render(RenderType = NOT_SPECIFIED) const = 0;
+};
 
 } // namespace
 

@@ -11,13 +11,31 @@ Canvas::Canvas(uvec2 dimensions)
                : dimensions_(dimensions),
                  processorNetworkEvaluator_(0)
 {
-    shared = true;
+    shared_ = true;
     pickingContainer_ = new PickingContainer();
-
+    if(!screenAlignedRect_){
+        shared_ = false;
+        Position2dBuffer* verticesBuffer = new Position2dBuffer();
+        Position2dBufferRAM* verticesBufferRAM = verticesBuffer->getEditableRepresentation<Position2dBufferRAM>();
+        verticesBufferRAM->add(vec2(-1.0f, -1.0f));
+        verticesBufferRAM->add(vec2(1.0f, -1.0f));
+        verticesBufferRAM->add(vec2(-1.0f, 1.0f));
+        verticesBufferRAM->add(vec2(1.0f, 1.0f));
+        TexCoord2dBuffer* texCoordsBuffer = new TexCoord2dBuffer();
+        TexCoord2dBufferRAM* texCoordsBufferRAM = texCoordsBuffer->getEditableRepresentation<TexCoord2dBufferRAM>();
+        texCoordsBufferRAM->add(vec2(0.0f, 0.0f));
+        texCoordsBufferRAM->add(vec2(1.0f, 0.0f));
+        texCoordsBufferRAM->add(vec2(0.0f, 1.0f));
+        texCoordsBufferRAM->add(vec2(1.0f, 1.0f));
+        Mesh* screenAlignedRectMesh = new Mesh(TRIANGLES, STRIP);
+        screenAlignedRectMesh->addAttribute(verticesBuffer);
+        screenAlignedRectMesh->addAttribute(texCoordsBuffer);
+        screenAlignedRect_ = screenAlignedRectMesh;
+    }
 }
 
 Canvas::~Canvas() {
-    if(!shared)
+    if(!shared_)
         delete screenAlignedRect_;
     delete pickingContainer_;
 }

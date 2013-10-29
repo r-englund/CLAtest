@@ -12,21 +12,6 @@ namespace inviwo {
 class IVW_CORE_API Mesh : public Geometry {
 
 public:
-    enum RenderType{
-        NOT_SPECIFIED,
-        POINTS,
-        LINES,
-        TRIANGLES,
-        NUMBER_OF_RENDER_TYPES
-    };
-
-    enum ConnectivityType{
-        NONE,
-        STRIP,
-        LOOP,
-        FAN,
-        NUMBER_OF_CONNECTIVITY_TYPES
-    };
     struct AttributesInfo {
         RenderType rt;
         ConnectivityType ct;
@@ -41,8 +26,6 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual Data* clone() const;
-
-    virtual void render() const{};
 
     void addAttribute(Buffer*);
     void addIndicies(AttributesInfo info, IndexBuffer* ind);
