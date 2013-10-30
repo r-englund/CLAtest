@@ -17,7 +17,7 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual ElementBufferGL* clone() const;
 
     const Buffer* getAttribute() const;
     GLenum getFormatType() const;

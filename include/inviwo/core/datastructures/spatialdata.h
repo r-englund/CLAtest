@@ -155,7 +155,7 @@ public:
     SpatialData(const Matrix<N,float>& basis, const Vector<N,float>& offset);
 
     virtual ~SpatialData();
-    virtual SpatialData<N>* clone() const;
+    virtual SpatialData<N>* clone() const = 0;
 
     Vector<N,float> getOffset() const;
     void setOffset(const Vector<N,float>& offset);
@@ -195,7 +195,7 @@ public:
         const DataFormatBase* format);
 
     virtual ~StructuredData(){}
-    virtual StructuredData<N>* clone() const;
+    virtual StructuredData<N>* clone() const = 0;
 
     Vector<N, unsigned int> getDimension() const;
     void setDimension(const Vector<N, unsigned int>& dimension);
@@ -275,10 +275,10 @@ const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getWorldMatrix() const{
     return spatialData_->getWorldTransform();
 }
 
-template <unsigned int N>
-SpatialData<N>* SpatialData<N>::clone() const {
-    return new SpatialData<N>(*this);
-}
+//template <unsigned int N>
+//SpatialData<N>* SpatialData<N>::clone() const {
+//    return new SpatialData<N>(*this);
+//}
 
 template <unsigned int N>
 Vector<N,float> SpatialData<N>::getOffset() const {
@@ -392,10 +392,10 @@ void StructuredData<N>::initTransformer(){
     SpatialData<N>::transformer_ = new StructuredCoordinateTransformer<N>(this);
 }
 
-template <unsigned int N>
-StructuredData<N>* StructuredData<N>::clone() const {
-    return new StructuredData<N>(*this);
-}
+//template <unsigned int N>
+//StructuredData<N>* StructuredData<N>::clone() const {
+//    return new StructuredData<N>(*this);
+//}
 
 template <unsigned int N>
 Vector<N, unsigned int> StructuredData<N>::getDimension() const {

@@ -57,14 +57,10 @@ public:
     const DataFormatBase* getDataFormat() const;
 
     //Others
-    virtual Data* clone() const{
-        return new Data(*this);
-    };
+    virtual Data* clone() const = 0;
 
 protected:
-    virtual DataRepresentation* createDefaultRepresentation() {
-        return NULL;   
-    };
+    virtual DataRepresentation* createDefaultRepresentation() = 0;
 
     virtual void newEditableRepresentationCreated() const { }
 
@@ -103,8 +99,7 @@ template<typename T>
 const T* Data::getRepresentation() const {
     if (!hasRepresentations()) {
         DataRepresentation* repr = const_cast<Data*>(this)->createDefaultRepresentation();
-        // Peter, Should assert here, although to many implementations are missing still...
-        //ivwAssert(repr == NULL, " CreateDefaultRepresentation retured NULL. Possible missing subclass implementation")
+        ivwAssert(repr != NULL, " CreateDefaultRepresentation retured NULL. Possible missing subclass implementation")
         representations_.push_back(repr);
         lastValidRepresentation_ = representations_[0];
         setRepresentationAsValid(static_cast<int>(representations_.size())-1);

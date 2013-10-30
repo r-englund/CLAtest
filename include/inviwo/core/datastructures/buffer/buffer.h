@@ -19,9 +19,10 @@ class IVW_CORE_API Buffer : public Data {
 
 public:
     Buffer(size_t size, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = DataFormatBase::get());
+    Buffer(const Buffer& rhs);
     virtual ~Buffer();
     void resize(size_t size);
-    virtual Data* clone() const;
+    virtual Buffer* clone() const;
     void resizeBufferRepresentations(Buffer* targetBuffer, size_t targetSize);
 
     size_t getSize() const;
@@ -45,7 +46,7 @@ public:
     Attributes() : Buffer(0, A, DataFormat<T,B>::get()) {}
     virtual ~Attributes(){ }
 
-    virtual Data* clone() const { return new Attributes(*this); }
+    virtual Attributes* clone() const { return new Attributes(*this); }
 
     std::vector<T> getAttributeContainer() const { return this->getRepresentation<T>()->getDataContainer(); }
 

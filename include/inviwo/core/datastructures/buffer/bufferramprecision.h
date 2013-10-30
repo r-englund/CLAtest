@@ -10,9 +10,7 @@ class IVW_CORE_API BufferRAMPrecision : public BufferRAM {
 public:
     BufferRAMPrecision(size_t size = 0, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = defaultformat());
     BufferRAMPrecision(T* data, size_t size, BufferType type, const DataFormatBase* format = defaultformat());
-    BufferRAMPrecision(const BufferRAMPrecision<T>& rhs): BufferRAM(rhs.getSize(), rhs.getDataFormat()) {
-        *this = rhs;
-    }
+    BufferRAMPrecision(const BufferRAMPrecision<T>& rhs);
     BufferRAMPrecision<T>& operator=(const BufferRAMPrecision<T>& rhs) {
         if (this != &rhs) {
             
@@ -27,7 +25,7 @@ public:
     virtual void initialize();
     virtual void initialize(void*);
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual BufferRAMPrecision* clone() const;
 
     virtual void* getData() { return &data_->front(); } 
     virtual const void* getData() const {return &data_->front(); } 
@@ -69,12 +67,20 @@ private:
 };
 
 template<typename T>
-BufferRAMPrecision<T>::BufferRAMPrecision(size_t size, BufferType type, const DataFormatBase* format) : BufferRAM(size, type, format) {
+BufferRAMPrecision<T>::BufferRAMPrecision(size_t size, BufferType type, const DataFormatBase* format) : 
+    BufferRAM(size, type, format) {
     initialize();
 }
 template<typename T>
-BufferRAMPrecision<T>::BufferRAMPrecision(T* data, size_t size, BufferType type, const DataFormatBase* format) : BufferRAM(size, type, format) {
+BufferRAMPrecision<T>::BufferRAMPrecision(T* data, size_t size, BufferType type, const DataFormatBase* format) : 
+    BufferRAM(size, type, format) {
     initialize(data);
+}
+
+template<typename T>
+BufferRAMPrecision<T>::BufferRAMPrecision(const BufferRAMPrecision<T>& rhs) : BufferRAM(rhs) {
+    initialize(rhs.data);
+    //TODO clone data_
 }
 
 template<typename T>
@@ -106,8 +112,8 @@ void inviwo::BufferRAMPrecision<T>::deinitialize()
 }
 
 template<typename T>
-DataRepresentation* BufferRAMPrecision<T>::clone() const {
-    BufferRAMPrecision* newBufferRAM = new BufferRAMPrecision<T>(getSize(), type_, getDataFormat());
+BufferRAMPrecision<T>* BufferRAMPrecision<T>::clone() const {
+    BufferRAMPrecision<T>* newBufferRAM = new BufferRAMPrecision<T>(getSize(), type_, getDataFormat());
     return newBufferRAM;
 }
 

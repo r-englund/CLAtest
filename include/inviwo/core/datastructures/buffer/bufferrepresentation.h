@@ -14,12 +14,13 @@ friend class Image;
 
 public:
     BufferRepresentation(size_t size, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = DataFormatBase::get());
+    BufferRepresentation(const BufferRepresentation& rhs);
     virtual ~BufferRepresentation() {};
     virtual void performOperation(DataOperation*) const {};
     virtual void setSize(size_t size) {  size_ = size; }
     virtual void resize(size_t size) { size_ = size; }
 
-    virtual DataRepresentation* clone() const = 0;
+    virtual BufferRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "BufferRepresentation"; }
     /**
      * Return the number of elements in the buffer.

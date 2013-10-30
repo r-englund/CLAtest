@@ -2,8 +2,12 @@
 
 namespace inviwo {
 
-DataRepresentation::DataRepresentation() : valid_(true), dataFormatBase_(DataUINT8::get()) {}
-DataRepresentation::DataRepresentation(const DataFormatBase* format) : valid_(true), dataFormatBase_(format) {}
+DataRepresentation::DataRepresentation() 
+    : valid_(true), dataFormatBase_(DataUINT8::get()) {}
+DataRepresentation::DataRepresentation(const DataFormatBase* format) 
+    : valid_(true), dataFormatBase_(format) {}
+DataRepresentation::DataRepresentation(const DataRepresentation& rhs) 
+    : valid_(rhs.valid_), dataFormatBase_(rhs.dataFormatBase_) {}
 DataRepresentation::~DataRepresentation() { }
 
 std::string DataRepresentation::getClassName() const { 

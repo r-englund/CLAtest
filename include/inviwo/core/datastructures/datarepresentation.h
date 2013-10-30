@@ -12,6 +12,7 @@ namespace inviwo {
     public:
         DataRepresentation();
         DataRepresentation(const DataFormatBase* format);
+        DataRepresentation(const DataRepresentation& rhs);
         virtual ~DataRepresentation();
         virtual void performOperation(DataOperation*) const = 0;
 

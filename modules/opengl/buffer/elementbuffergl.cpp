@@ -3,8 +3,8 @@
 namespace inviwo {
 
 
-ElementBufferGL::ElementBufferGL(size_t size, BufferType type, const DataFormatBase* format): BufferRepresentation(size, type, format), glFormat_(getGLFormats()->getGLFormat(format->getId()))
-{
+ElementBufferGL::ElementBufferGL(size_t size, BufferType type, const DataFormatBase* format)
+    : BufferRepresentation(size, type, format), glFormat_(getGLFormats()->getGLFormat(format->getId())){
     initialize();
 }
 
@@ -100,8 +100,7 @@ void ElementBufferGL::vertexPointer() const {
 
 void ElementBufferGL::emptyFunc() const {}
 
-DataRepresentation* ElementBufferGL::clone() const
-{
+ElementBufferGL* ElementBufferGL::clone() const{
     return new ElementBufferGL(*this);
 }
 

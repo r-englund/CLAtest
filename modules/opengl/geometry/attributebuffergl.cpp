@@ -2,8 +2,9 @@
 
 namespace inviwo {
 
-BufferGL::BufferGL(size_t size, BufferType type, const DataFormatBase* format): BufferRepresentation(size, type, format), glFormat_(getGLFormats()->getGLFormat(format->getId()))
-{
+BufferGL::BufferGL(size_t size, BufferType type, const DataFormatBase* format)
+    : BufferRepresentation(size, type, format)
+    , glFormat_(getGLFormats()->getGLFormat(format->getId())){
     initialize();
     LGL_ERROR_SUPPRESS;
 }
@@ -99,26 +100,23 @@ void BufferGL::vertexPointer() const {
 
 void BufferGL::emptyFunc() const {}
 
-DataRepresentation* BufferGL::clone() const
-{
+BufferGL* BufferGL::clone() const{
     return new BufferGL(*this);
 }
 
-void BufferGL::initialize()
-{
+void BufferGL::initialize(){
     //Generate a new buffer
     glGenBuffers(1, &id_);
 }
 
-void BufferGL::deinitialize()
-{
+void BufferGL::deinitialize(){
     glDeleteBuffers(1, &id_);
 }
 
 
 BufferRAM2GLConverter::BufferRAM2GLConverter()
-: RepresentationConverterType<BufferGL>()
-{}
+    : RepresentationConverterType<BufferGL>(){
+}
 
 BufferRAM2GLConverter::~BufferRAM2GLConverter() {}
 

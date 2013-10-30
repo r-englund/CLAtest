@@ -11,12 +11,12 @@ class IVW_CORE_API BufferRAM : public BufferRepresentation {
 
 public:
     BufferRAM(size_t size, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = DataFormatBase::get());
-
+    BufferRAM(const BufferRAM& rhs);
     virtual ~BufferRAM();
 
     virtual void initialize();
     virtual void deinitialize();
-    DataRepresentation* clone() const = 0;
+    virtual BufferRAM* clone() const = 0;
     virtual std::string getClassName() const { return "BufferRAM"; }
 
     virtual void setSize(size_t size) {  size_ = size; deinitialize(); initialize(); }

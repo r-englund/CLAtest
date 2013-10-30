@@ -6,18 +6,18 @@
 namespace inviwo {
 
 
-Buffer::Buffer( size_t size, BufferType type, const DataFormatBase* format /*= DataFormatBase::get()*/ ): size_(size), type_(type), format_(format)
-{
+Buffer::Buffer( size_t size, BufferType type, const DataFormatBase* format /*= DataFormatBase::get()*/ ): 
+    Data(), size_(size), type_(type), format_(format){
+}
+
+Buffer::Buffer(const Buffer& rhs) : Data(rhs), size_(rhs.size_), type_(rhs.type_),format_(rhs.format_) {
+
+}
+Buffer::~Buffer(){
 
 }
 
-Buffer::~Buffer()
-{
-
-}
-
-void Buffer::resize( size_t size )
-{
+void Buffer::resize( size_t size ){
     if(size != size_) {
         size_ = size;
         for (size_t i=0; i<representations_.size(); i++) {
@@ -29,27 +29,20 @@ void Buffer::resize( size_t size )
     }
 }
 
-size_t Buffer::getSizeInBytes()
-{
+size_t Buffer::getSizeInBytes(){
     return size_ * format_->getBytesStored();
 }
 
-void Buffer::setSize( size_t size )
-{
+void Buffer::setSize( size_t size ){
     resize(size);
 }
 
-Data* Buffer::clone() const
-{
-    Buffer* buffer = new Buffer(getSize(), type_, getDataFormat());
-    // TODO: Copy at least one representation
-    return buffer;
+Buffer* Buffer::clone() const{
+    return new Buffer(*this);
 }
 
-DataRepresentation* Buffer::createDefaultRepresentation() 
-{
+DataRepresentation* Buffer::createDefaultRepresentation() {
     return createBufferRAM(getSize(), type_, format_);
-
 }
 
 size_t Buffer::getSize() const
