@@ -48,8 +48,7 @@ void VolumeBasisTransformer::process() {
             offset_.set(offset);
         }
 
-        // TODO
-        // This should be changed to make some kind of shallow copy of the representations
+        // TODO: This should be changed to make some kind of shallow copy of the representations
         // and update if the inport changes the representations
         Volume* out;
         if(outport_.hasData()){

@@ -79,8 +79,7 @@ BufferRAMPrecision<T>::BufferRAMPrecision(T* data, size_t size, BufferType type,
 
 template<typename T>
 BufferRAMPrecision<T>::BufferRAMPrecision(const BufferRAMPrecision<T>& rhs) : BufferRAM(rhs) {
-    initialize(rhs.data);
-    //TODO clone data_
+    initialize(rhs.data_->data());
 }
 
 template<typename T>
