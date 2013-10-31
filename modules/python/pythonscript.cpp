@@ -12,6 +12,7 @@
 
 #include <traceback.h>
 #include <frameobject.h>
+#include "pythonexecutionoutputobeserver.h"
 
 namespace inviwo {
 
@@ -184,6 +185,7 @@ bool PythonScript::checkRuntimeError() {
     Py_XDECREF(pyError_traceback);
 
    LogError(pyException);
+   PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(pyException,PythonExecutionOutputObeserver::error);
 
     return false;
 }

@@ -24,6 +24,7 @@ using namespace inviwo;
 #include "defaultinterface/pycanvas.h"
 #include "defaultinterface/pylist.h"
 #include "defaultinterface/pyutil.h"
+#include "pythonexecutionoutputobeserver.h"
 
 static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
     char* msg;
@@ -35,8 +36,7 @@ static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
     else {
         if(len!=0){
             if(!(len==1 && (msg[0] == '\n' || msg[0] == '\r' || msg[0] == '\0')))
-                std::cout << msg << std::endl;
-				//inviwo::PythonEditorWidget::getPythonEditorWidget()->appendToOutput(msg);
+				PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(msg,PythonExecutionOutputObeserver::standard);
         }
     }
     Py_RETURN_NONE;

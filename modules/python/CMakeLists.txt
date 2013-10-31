@@ -18,6 +18,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/python/pythonmodule.h
     ${IVW_MODULE_DIR}/python/pythonscript.h
     ${IVW_MODULE_DIR}/python/pythonmoduledefine.h
+    ${IVW_MODULE_DIR}/python/pythonexecutionoutputobeserver.h
 )
 
 ivw_group("Header Files" ${HEADER_FILES})
@@ -36,6 +37,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.cpp
     ${IVW_MODULE_DIR}/python/pythonscript.cpp
     ${IVW_MODULE_DIR}/python/pythonmodule.cpp
+    ${IVW_MODULE_DIR}/python/pythonexecutionoutputobeserver.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

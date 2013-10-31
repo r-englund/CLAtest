@@ -6,6 +6,7 @@
 #include <QSplitter>
 #include <QFileDialog>
 #include <QMessageBox>
+#include "modules/python/pythonmodule.h"
 
 
 namespace inviwo{
@@ -17,7 +18,8 @@ namespace inviwo{
     PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* mainWindow): 
             InviwoDockWidget(tr("Python Editor"),mainWindow), 
             script_(),
-            unsavedChanges_(false){
+            unsavedChanges_(false),
+		infoTextColor_(153,153,153), errorTextColor_(255,107,107) {
         setObjectName("PythonEditor");
         setAllowedAreas(Qt::AllDockWidgetAreas);
 		setFloating(true);
@@ -128,8 +130,10 @@ namespace inviwo{
 
     PythonEditorWidget::~PythonEditorWidget(){}
 
-    void PythonEditorWidget::appendToOutput(const std::string &msg){
+    void PythonEditorWidget::appendToOutput(const std::string &msg,bool error){
+		pythonOutput_->setTextColor(error ? errorTextColor_ : infoTextColor_);
         pythonOutput_->append(msg.c_str());
+		
     }
 
     void PythonEditorWidget::fileChanged(std::string fileName){
@@ -153,6 +157,10 @@ namespace inviwo{
         scriptFileName_ = fileName;
         readFile();
     }
+
+	void PythonEditorWidget::onPyhonExecutionOutput(std::string msg,OutputType outputType){
+		appendToOutput(msg,outputType!=OutputType::standard);
+	}
 
     void PythonEditorWidget::save(){
         if(scriptFileName_.size()==0){
