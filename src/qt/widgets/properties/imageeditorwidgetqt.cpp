@@ -45,7 +45,8 @@ void SimpleWithRectangleLabel::editLabel() {
 /////////////////////////////////////////////////
 // Simple Graphics view
 
-SimpleGraphicsView::SimpleGraphicsView(QWidget* parent) : QGraphicsView(parent), scene_(0), rubberBandActive_(false) {    
+SimpleGraphicsView::SimpleGraphicsView(QWidget* parent) : QGraphicsView(parent), scene_(0), rubberBandActive_(false),
+    hideLabels_(false), readOnly_(false){    
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
@@ -57,12 +58,13 @@ void SimpleGraphicsView::setDialogScene(QGraphicsScene* scene) {
     scene_ = scene;
 }
 
-void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint) {
+void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint) {    
     //QAbstractGraphicsShapeItem *i = scene_->addRect( mStartPoint.x(), mStartPoint.y(),  deltaPoint.x(), deltaPoint.y() );    
     SimpleWithRectangleLabel *i = new SimpleWithRectangleLabel(deltaPoint, scene_);
     i->setPos(mStartPoint.x(), mStartPoint.y());
     scene_->addItem(i);
-    i->setLabel("Box");
+    if (!hideLabels_)
+        i->setLabel("Box");
     i->updateLabelPosition();
     i->setFlag(QGraphicsItem::ItemIsMovable);
     i->setBrush( QColor(0,0,128,0) );
@@ -107,8 +109,9 @@ void SimpleGraphicsView::mousePressEvent(QMouseEvent* e) {
             //Delete rectangle             
             for (int i=0; i<graphicsItems.size(); i++) {
                 QGraphicsRectItem *rectItem = qgraphicsitem_cast<QGraphicsRectItem*>(graphicsItems[i]);
-                if (rectItem) {                    
-                    scene_->removeItem(rectItem);                    
+                if (rectItem) { 
+                    if (!readOnly_)
+                        scene_->removeItem(rectItem);                    
                 }
             }
         }
@@ -146,11 +149,21 @@ void SimpleGraphicsView::mouseReleaseEvent(QMouseEvent *e)
             //add a square
             (deltaPoint.x()>deltaPoint.y())?deltaPoint.setY(deltaPoint.x()):deltaPoint.setX(deltaPoint.y());
         }
-        addRectangle(mStartPoint, deltaPoint);
+        if (!readOnly_)
+            addRectangle(mStartPoint, deltaPoint);
     }
     rubberBandActive_ = false;
     //e->accept();
     QGraphicsView::mouseReleaseEvent(e);
+}
+
+void SimpleGraphicsView::setReadOnly(bool readOnly) {
+    //does not allow creation of new labels
+    readOnly_ = readOnly;
+}
+
+void SimpleGraphicsView::hideLabels(bool hide) {    
+    hideLabels_ = hide;
 }
 
 /////////////////////////////////////////////////
@@ -220,6 +233,16 @@ void ImageLabelWidget::setToolBarVisible(bool visible) {
         else
             toolBar_->setVisible(false);
     }
+}
+
+void ImageLabelWidget::setReadOnly(bool readOnly) {
+    //does not allow creation of new labels
+    view_->setReadOnly(readOnly);
+}
+
+void ImageLabelWidget::hideLabels(bool hide) {
+    //does not allow creation of new labels
+    view_->hideLabels(hide);
 }
 
 void ImageLabelWidget::addRectangleTest() {

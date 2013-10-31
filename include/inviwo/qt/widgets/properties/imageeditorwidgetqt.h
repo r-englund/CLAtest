@@ -89,6 +89,8 @@ public:
     void setDialogScene(QGraphicsScene* scene);
     void addRectangle(QPointF mstartPoint, QPointF mendPoint);
     std::vector<ImgRect> getRectList();
+    void setReadOnly(bool readOnly);
+    void hideLabels(bool hide);
 protected:
     void mousePressEvent(QMouseEvent* e);
     void mouseDoubleClickEvent(QMouseEvent* e);
@@ -97,6 +99,8 @@ private:
     QGraphicsScene* scene_;
     QPoint startPoint_;
     bool rubberBandActive_;
+    bool readOnly_;
+    bool hideLabels_;
 };
 
 
@@ -114,6 +118,8 @@ public:
     void addRectangleTest();
     void addBackGroundImage(std::string imagePath);
     void generateWidget();    
+    void setReadOnly(bool readOnly);
+    void hideLabels(bool hide);
     ImageEditorWidgetQt* mainParentWidget_;
     QToolBar* toolBar_;
     QToolButton *reDoButton_;
@@ -126,7 +132,7 @@ public:
     QImage* backGroundImage_;
     void setToolBarVisible(bool visible);
 protected:
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent *);    
     /*void showEvent(QShowEvent *);*/
 };
 
