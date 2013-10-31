@@ -1,13 +1,13 @@
-#ifndef IVW_OPENGLINFO_H
-#define IVW_OPENGLINFO_H
+#ifndef IVW_OPENGLCAPABILITIES_H
+#define IVW_OPENGLCAPABILITIES_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/util/resourceinfo.h>
+#include <inviwo/core/util/capabilities.h>
 #include <modules/opengl/inviwoopengl.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API OpenGLInfo : public ResourceInfo {
+class IVW_MODULE_OPENGL_API OpenGLCapabilities : public Capabilities  {
 public:
     class IVW_MODULE_OPENGL_API GLSLShaderVersion {
     public:
@@ -34,8 +34,8 @@ public:
         UNKNOWN
     };
 
-    OpenGLInfo();
-    virtual ~OpenGLInfo();
+    OpenGLCapabilities();
+    virtual ~OpenGLCapabilities();
 
     void printInfo();
 
@@ -111,4 +111,4 @@ private:
 
 } // namespace
 
-#endif // IVW_OPENGLINFO_H
+#endif // IVW_OPENGLCAPABILITIES_H

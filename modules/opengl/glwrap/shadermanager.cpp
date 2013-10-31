@@ -71,7 +71,7 @@ std::string ShaderManager::getGlobalGLSLHeader() {
     if (!openGLInfoRef_){
         OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
         if (openGLModule)
-            openGLInfoRef_ = getTypeFromVector<OpenGLInfo>(openGLModule->getResourceInfos());
+            openGLInfoRef_ = getTypeFromVector<OpenGLCapabilities>(openGLModule->getCapabilities());
     }
 
     if (openGLInfoRef_){
@@ -85,7 +85,7 @@ std::string ShaderManager::getGlobalGLSLFragmentDefines() {
     if (!openGLInfoRef_){
         OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
         if (openGLModule)
-            openGLInfoRef_ = getTypeFromVector<OpenGLInfo>(openGLModule->getResourceInfos());
+            openGLInfoRef_ = getTypeFromVector<OpenGLCapabilities>(openGLModule->getCapabilities());
     }
 
     if (openGLInfoRef_){

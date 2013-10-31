@@ -1,8 +1,8 @@
-#ifndef IVW_OPENCL_INFO_H
-#define IVW_OPENCL_INFO_H
+#ifndef IVW_OPENCLCAPABILITIES_H
+#define IVW_OPENCLCAPABILITIES_H
 
 
-#include <inviwo/core/util/resourceinfo.h>
+#include <inviwo/core/util/capabilities.h>
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opencl/cl.hpp>
 #include <modules/opencl/glmcl.h>
@@ -17,11 +17,11 @@
 
 namespace inviwo {
     
-    class IVW_MODULE_OPENCL_API OpenCLInfo: public ResourceInfo {
+    class IVW_MODULE_OPENCL_API OpenCLCapabilities: public Capabilities  {
         
     public:
-        OpenCLInfo();
-        virtual ~OpenCLInfo();
+        OpenCLCapabilities();
+        virtual ~OpenCLCapabilities();
         
         void printInfo();
         /**

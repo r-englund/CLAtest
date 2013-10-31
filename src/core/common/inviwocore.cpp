@@ -10,7 +10,7 @@
 
 //Utilizes
 #include <inviwo/core/util/formatconversion.h>
-#include <inviwo/core/util/systeminfo.h>
+#include <inviwo/core/util/systemcapabilities.h>
 #include <inviwo/core/util/vectoroperations.h>
 
 //Others
@@ -37,7 +37,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
     addMetaData(new ProcessorMetaData());
     addMetaData(new ProcessorWidgetMetaData());
 
-    addResourceInfo(new SystemInfo());
+    addCapabilities(new SystemCapabilities());
 
     allocTest_ = NULL;
 }
@@ -64,10 +64,10 @@ void InviwoCore::setupModuleSettings(){
         btnAllocTest->registerClassMemberFunction(this, &InviwoCore::allocationTest);
         getSettings()->addProperty(btnAllocTest);
 
-        SystemInfo* sysInfo = getTypeFromVector<SystemInfo>(getResourceInfos());
+        SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(getCapabilities());
         if (sysInfo){
             ButtonProperty* btnSysInfo = new ButtonProperty("printSysInfo", "Print System Info");
-            btnSysInfo->registerClassMemberFunction(sysInfo, &SystemInfo::printInfo);
+            btnSysInfo->registerClassMemberFunction(sysInfo, &SystemCapabilities::printInfo);
             getSettings()->addProperty(btnSysInfo);  
         }           
     }
@@ -75,7 +75,7 @@ void InviwoCore::setupModuleSettings(){
 
 void InviwoCore::allocationTest(){
     if (getSettings()){
-        SystemInfo* sysInfo = getTypeFromVector<SystemInfo>(getResourceInfos());
+        SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(getCapabilities());
         if (sysInfo){
             if (allocTest_){
                 delete allocTest_;

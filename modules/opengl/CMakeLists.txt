@@ -19,7 +19,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
-    ${IVW_MODULE_DIR}/opengl/openglinfo.h
+    ${IVW_MODULE_DIR}/opengl/openglcapabilities.h
     ${IVW_MODULE_DIR}/opengl/openglmodule.h
     ${IVW_MODULE_DIR}/opengl/portgroup.h
     ${IVW_MODULE_DIR}/opengl/processorgl.h
@@ -53,7 +53,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
-    ${IVW_MODULE_DIR}/opengl/openglinfo.cpp
+    ${IVW_MODULE_DIR}/opengl/openglcapabilities.cpp
     ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
     ${IVW_MODULE_DIR}/opengl/portgroup.cpp
     ${IVW_MODULE_DIR}/opengl/processorgl.cpp

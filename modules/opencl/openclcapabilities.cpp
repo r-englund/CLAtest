@@ -1,4 +1,4 @@
-#include "openclinfo.h"
+#include "openclcapabilities.h"
 #include <inviwo/core/util/logdistributor.h>
 #include <modules/opencl/inviwoopencl.h>
 
@@ -49,20 +49,20 @@ namespace inviwo {
         
     }
 
-    OpenCLInfo::OpenCLInfo() {}
+    OpenCLCapabilities::OpenCLCapabilities() {}
 
-    OpenCLInfo::~OpenCLInfo() {}
+    OpenCLCapabilities::~OpenCLCapabilities() {}
 
-    void OpenCLInfo::retrieveStaticInfo(){
+    void OpenCLCapabilities::retrieveStaticInfo(){
         
     }
 
-    void OpenCLInfo::retrieveDynamicInfo(){
+    void OpenCLCapabilities::retrieveDynamicInfo(){
         
     }
 
-    void OpenCLInfo::printInfo(){
-        OpenCLInfo::printDeviceInfo(OpenCL::instance()->getDevice());
+    void OpenCLCapabilities::printInfo(){
+        OpenCLCapabilities::printDeviceInfo(OpenCL::instance()->getDevice());
         
         //// Supported image 2D formats
         //std::vector<cl::ImageFormat> formats;
@@ -91,7 +91,7 @@ namespace inviwo {
         //LogInfo(stream.str())
     }
 
-    void OpenCLInfo::printDeviceInfo(const cl::Device& device) {
+    void OpenCLCapabilities::printDeviceInfo(const cl::Device& device) {
 
         try
         {

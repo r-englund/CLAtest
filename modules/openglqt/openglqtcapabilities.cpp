@@ -1,4 +1,4 @@
-#include "openglqtinfo.h"
+#include "openglqtcapabilities.h"
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <inviwo/core/util/stringconversion.h>
@@ -7,15 +7,15 @@ namespace inviwo {
 
 #define OpenglQtInfoNotFound(message) { LogInfo(message << " Info could not be retrieved"); }
 
-OpenglQtInfo::OpenglQtInfo() {}
+OpenglQtCapabilities::OpenglQtCapabilities() {}
 
-OpenglQtInfo::~OpenglQtInfo() {}
+OpenglQtCapabilities::~OpenglQtCapabilities() {}
 
-void OpenglQtInfo::printInfo(){
+void OpenglQtCapabilities::printInfo(){
     //Qt General Info
 }
 
-std::vector<int> OpenglQtInfo::getGLVersion() {    
+std::vector<int> OpenglQtCapabilities::getGLVersion() {    
 
     const GLubyte *glversion = glGetString(GL_VERSION);
     std::string glVersionStr = std::string((glversion!=NULL ? reinterpret_cast<const char*>(glversion) : "INVALID"));

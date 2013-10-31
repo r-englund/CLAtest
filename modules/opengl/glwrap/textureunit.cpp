@@ -3,7 +3,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
 #include <modules/opengl/openglmodule.h>
-#include <modules/opengl/openglinfo.h>
+#include <modules/opengl/openglcapabilities.h>
 
 namespace inviwo {
 
@@ -29,7 +29,7 @@ TextureUnit::~TextureUnit() {
 
 void TextureUnit::initialize() {
     OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
-    OpenGLInfo* openGLInfo = getTypeFromVector<OpenGLInfo>(openGLModule->getResourceInfos());
+    OpenGLCapabilities* openGLInfo = getTypeFromVector<OpenGLCapabilities>(openGLModule->getCapabilities());
     numRequestedUnits_ = 0;
     requestedUnits_ = std::vector<bool>(openGLInfo->getNumTexUnits());
     initialized_ = true;

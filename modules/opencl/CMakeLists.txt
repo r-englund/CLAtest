@@ -14,7 +14,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/imageclresizer.h
 	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
 	${IVW_MODULE_DIR}/opencl/kernelmanager.h
-	${IVW_MODULE_DIR}/opencl/openclinfo.h
+	${IVW_MODULE_DIR}/opencl/openclcapabilities.h
     ${IVW_MODULE_DIR}/opencl/openclmodule.h
 	${IVW_MODULE_DIR}/opencl/processors/grayscalecl.h
     ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.h
@@ -42,7 +42,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
 	${IVW_MODULE_DIR}/opencl/kernelmanager.cpp
     ${IVW_MODULE_DIR}/opencl/openclmodule.cpp
-    ${IVW_MODULE_DIR}/opencl/openclinfo.cpp
+    ${IVW_MODULE_DIR}/opencl/openclcapabilities.cpp
 	${IVW_MODULE_DIR}/opencl/processors/grayscalecl.cpp
     ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.cpp
     ${IVW_MODULE_DIR}/opencl/volumecl.cpp

@@ -6,7 +6,7 @@
 #include <modules/opengl/glwrap/shadermanager.h>
 #include <modules/opengl/image/imageglconverter.h>
 #include <modules/opengl/openglmodule.h>
-#include <modules/opengl/openglinfo.h>
+#include <modules/opengl/openglcapabilities.h>
 #include <modules/opengl/volume/volumeglconverter.h>
 
 namespace inviwo {
@@ -31,15 +31,15 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     registerProcessor(CanvasProcessorGL);
     registerProcessor(GeometryRenderProcessorGL);
 
-    addResourceInfo(new OpenGLInfo());
+    addCapabilities(new OpenGLCapabilities());
 }
 
 void OpenGLModule::setupModuleSettings(){
     if (getSettings()){
-        OpenGLInfo* openglInfo = getTypeFromVector<OpenGLInfo>(getResourceInfos());
+        OpenGLCapabilities* openglInfo = getTypeFromVector<OpenGLCapabilities>(getCapabilities());
         if (openglInfo){
             ButtonProperty* btnOpenGLInfo = new ButtonProperty("printOpenGLInfo", "Print OpenGL Info");
-            btnOpenGLInfo->registerClassMemberFunction(openglInfo, &OpenGLInfo::printInfo);
+            btnOpenGLInfo->registerClassMemberFunction(openglInfo, &OpenGLCapabilities::printInfo);
             getSettings()->addProperty(btnOpenGLInfo);
         }           
     }

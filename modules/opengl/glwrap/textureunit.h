@@ -5,7 +5,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <inviwo/core/util/resourceinfo.h>
+#include <inviwo/core/util/capabilities.h>
 
 namespace inviwo {
 

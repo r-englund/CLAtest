@@ -1,14 +1,14 @@
-#ifndef IVW_SYSTEMINFO_H
-#define IVW_SYSTEMINFO_H
+#ifndef IVW_SYSTEMCAPABILITIES_H
+#define IVW_SYSTEMCAPABILITIES_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/util/resourceinfo.h>
+#include <inviwo/core/util/capabilities.h>
 #include <vector>
 #include <string>
 
 namespace inviwo {
 
-    class IVW_CORE_API SystemInfo : public ResourceInfo {
+    class IVW_CORE_API SystemCapabilities : public Capabilities  {
 
     public:
         struct OSInfo {
@@ -40,8 +40,8 @@ namespace inviwo {
             uint64_t virtualMem; //In Bytes
         };
 
-        SystemInfo();
-        virtual ~SystemInfo();
+        SystemCapabilities();
+        virtual ~SystemCapabilities();
 
         void printInfo();
         
@@ -76,4 +76,4 @@ namespace inviwo {
 
 } // namespace
 
-#endif // IVW_SYSTEMINFO_H
+#endif // IVW_SYSTEMCAPABILITIES_H

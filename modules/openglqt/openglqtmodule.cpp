@@ -1,5 +1,5 @@
 #include <modules/openglqt/openglqtmodule.h>
-#include <modules/openglqt/openglqtinfo.h>
+#include <modules/openglqt/openglqtcapabilities.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
@@ -11,7 +11,7 @@ OpenglQtModule::OpenglQtModule() : InviwoModule() {
     setXMLFileName("openglqt/openglqtmodule.xml");   
 
     addProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetQt());
-    addResourceInfo(new OpenglQtInfo());
+    addCapabilities(new OpenglQtCapabilities());
 }
 
 } // namespace

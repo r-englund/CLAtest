@@ -1,7 +1,7 @@
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/cl.hpp>
 #include <modules/opencl/glmcl.h>
-#include <modules/opencl/openclinfo.h> 
+#include <modules/opencl/openclcapabilities.h> 
 #include <inviwo/core/util/logdistributor.h>
 #include <iostream>
 #include <sstream>

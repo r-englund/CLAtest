@@ -13,7 +13,7 @@ ivw_module(OpenglQt)
 # Add header files
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/openglqt/canvasqt.h
-    ${IVW_MODULE_DIR}/openglqt/openglqtinfo.h
+    ${IVW_MODULE_DIR}/openglqt/openglqtcapabilities.h
     ${IVW_MODULE_DIR}/openglqt/openglqtmodule.h
     ${IVW_MODULE_DIR}/openglqt/openglqtmoduledefine.h
     ${IVW_MODULE_DIR}/openglqt/processors/canvasprocessorwidgetqt.h
@@ -24,7 +24,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/openglqt/canvasqt.cpp
-    ${IVW_MODULE_DIR}/openglqt/openglqtinfo.cpp
+    ${IVW_MODULE_DIR}/openglqt/openglqtcapabilities.cpp
     ${IVW_MODULE_DIR}/openglqt/openglqtmodule.cpp
     ${IVW_MODULE_DIR}/openglqt/processors/canvasprocessorwidgetqt.cpp
 )

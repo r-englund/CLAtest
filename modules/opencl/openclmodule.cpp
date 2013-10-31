@@ -2,7 +2,7 @@
 #include <modules/opencl/imageclconverter.h>
 #include <modules/opencl/imageclglconverter.h>
 #include <modules/opencl/openclmodule.h>
-#include <modules/opencl/openclinfo.h>
+#include <modules/opencl/openclcapabilities.h>
 #include <modules/opencl/processors/grayscalecl.h>
 #include <modules/opencl/processors/volumeraycastercl.h>
 #include <modules/opencl/volumeclconverter.h>
@@ -52,7 +52,7 @@ void OpenCLModule::initialize() {
     addRepresentationConverter(new VolumeGL2CLGLConverter());
 
 
-    addResourceInfo(new OpenCLInfo());
+    addCapabilities(new OpenCLCapabilities());
     // Processors
     registerProcessor(GrayscaleCL);
     registerProcessor(VolumeRaycasterCL);
@@ -65,10 +65,10 @@ void OpenCLModule::deinitialize() {
 
 void OpenCLModule::setupModuleSettings(){
     if (getSettings()){
-        OpenCLInfo* openclInfo = getTypeFromVector<OpenCLInfo>(getResourceInfos());
+        OpenCLCapabilities* openclInfo = getTypeFromVector<OpenCLCapabilities>(getCapabilities());
         if (openclInfo){
             ButtonProperty* btnOpenCLInfo = new ButtonProperty("printOpenCLInfo", "Print OpenCL Info");
-            btnOpenCLInfo->registerClassMemberFunction(openclInfo, &OpenCLInfo::printInfo);
+            btnOpenCLInfo->registerClassMemberFunction(openclInfo, &OpenCLCapabilities::printInfo);
             getSettings()->addProperty(btnOpenCLInfo);
         }           
     }

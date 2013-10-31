@@ -1,16 +1,16 @@
-#ifndef IVW_RESOURCEINFO_H
-#define IVW_RESOURCEINFO_H
+#ifndef IVW_CAPABILITIES_H
+#define IVW_CAPABILITIES_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 
-    class IVW_CORE_API ResourceInfo {
+    class IVW_CORE_API Capabilities  {
 
     public:
-        ResourceInfo(){}
-        virtual ~ResourceInfo(){}
+        Capabilities (){}
+        virtual ~Capabilities (){}
 
         virtual void initialize(){
             retrieveStaticInfo();
@@ -37,4 +37,4 @@ namespace inviwo {
 
 } // namespace
 
-#endif // IVW_RESOURCEINFO_H
+#endif //IVW_CAPABILITIES_H

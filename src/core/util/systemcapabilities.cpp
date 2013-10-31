@@ -1,4 +1,4 @@
-#include <inviwo/core/util/systeminfo.h>
+#include <inviwo/core/util/systemcapabilities.h>
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <sigar/include/sigar.h>
@@ -7,15 +7,15 @@ namespace inviwo {
 
 #define SystemInfoNotFound(message) { LogInfo(message << " Info could not be retrieved"); }
 
-    SystemInfo::SystemInfo() {}
+    SystemCapabilities::SystemCapabilities() {}
 
-    SystemInfo::~SystemInfo() {}
+    SystemCapabilities::~SystemCapabilities() {}
 
-    bool SystemInfo::canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory){
+    bool SystemCapabilities::canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory){
         return getAvailableMemory()*percentageOfAvailableMemory/100 >= dataSize;
     }
 
-    uvec3 SystemInfo::calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory){
+    uvec3 SystemCapabilities::calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory){
         uvec3 currentBrickDimensions = dimensions;
         while(!canAllocate(getMemorySizeInBytes(currentBrickDimensions, formatSizeInBytes), percentageOfAvailableMemory)){
             int theMaxDim = (currentBrickDimensions.x > currentBrickDimensions.y ? (currentBrickDimensions.x > currentBrickDimensions.z ? 0 : 2) : (currentBrickDimensions.y > currentBrickDimensions.z ? 1 : 2));
@@ -26,18 +26,18 @@ namespace inviwo {
         return currentBrickDimensions;
     }
 
-    void SystemInfo::retrieveStaticInfo(){
+    void SystemCapabilities::retrieveStaticInfo(){
         successOSInfo_ = lookupOSInfo();
     }
 
-    void SystemInfo::retrieveDynamicInfo(){
+    void SystemCapabilities::retrieveDynamicInfo(){
         successCPUInfo_ = lookupCPUInfo();
         successMemoryInfo_ = lookupMemoryInfo();
         successDiskInfo_ = lookupDiskInfo();
         //successProcessMemoryInfo_ = lookupProcessMemoryInfo();
     }
 
-    bool SystemInfo::lookupOSInfo(){
+    bool SystemCapabilities::lookupOSInfo(){
         int status;
         sigar_t *sigar;
         sigar_open(&sigar);
@@ -57,7 +57,7 @@ namespace inviwo {
         return SUCCESS;
     }
 
-    bool SystemInfo::lookupCPUInfo(){
+    bool SystemCapabilities::lookupCPUInfo(){
         infoCPUs_.clear();
         int status;
         sigar_t *sigar;
@@ -81,7 +81,7 @@ namespace inviwo {
         return SUCCESS;
     }
 
-    bool SystemInfo::lookupMemoryInfo(){
+    bool SystemCapabilities::lookupMemoryInfo(){
         int status;
         sigar_t *sigar;
         sigar_open(&sigar);
@@ -98,7 +98,7 @@ namespace inviwo {
         return SUCCESS;
     }
 
-    bool SystemInfo::lookupDiskInfo(){
+    bool SystemCapabilities::lookupDiskInfo(){
         infoDisks_.clear();
         int status;
         sigar_t *sigar;
@@ -131,7 +131,7 @@ namespace inviwo {
         return SUCCESS;
     }
 
-    bool SystemInfo::lookupProcessMemoryInfo(){
+    bool SystemCapabilities::lookupProcessMemoryInfo(){
         int status;
         sigar_t *sigar;
         sigar_open(&sigar);
@@ -149,7 +149,7 @@ namespace inviwo {
         return SUCCESS;
     }
 
-    void SystemInfo::printInfo(){
+    void SystemCapabilities::printInfo(){
         retrieveDynamicInfo();
 
         // Try to retrieve operating system information
@@ -197,7 +197,7 @@ namespace inviwo {
         }*/
     }
 
-    uint64_t SystemInfo::getAvailableMemory(){
+    uint64_t SystemCapabilities::getAvailableMemory(){
         successMemoryInfo_ = lookupMemoryInfo();
 
         if (successMemoryInfo_){

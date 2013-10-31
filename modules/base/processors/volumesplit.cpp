@@ -243,13 +243,13 @@ void VolumeSplit::initialize() {
     if (!openGLInfoRef_){
         OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
         if (openGLModule)
-            openGLInfoRef_ = getTypeFromVector<OpenGLInfo>(openGLModule->getResourceInfos());
+            openGLInfoRef_ = getTypeFromVector<OpenGLCapabilities>(openGLModule->getCapabilities());
     }
 
     if (!systemInfoRef_){
         InviwoCore* inviwoCoreModule = getTypeFromVector<InviwoCore>(InviwoApplication::getRef().getModules());
         if (inviwoCoreModule)
-            systemInfoRef_ = getTypeFromVector<SystemInfo>(inviwoCoreModule->getResourceInfos());
+            systemInfoRef_ = getTypeFromVector<SystemCapabilities>(inviwoCoreModule->getCapabilities());
     }
 
     //brickingStrategy_.onChange(CallMemberAction<VolumeSplit>(this, &VolumeSplit::showAndHideProperties));

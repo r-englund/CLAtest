@@ -4,7 +4,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/openglinfo.h>
+#include <modules/opengl/openglcapabilities.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/core/util/singleton.h>
@@ -31,7 +31,7 @@ public:
 
 private:
     std::vector<Shader*> shaders_;
-    OpenGLInfo* openGLInfoRef_;
+    OpenGLCapabilities* openGLInfoRef_;
     std::vector<std::string> shaderSearchPaths_;
 };
 

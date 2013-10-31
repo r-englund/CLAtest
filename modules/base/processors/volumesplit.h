@@ -7,9 +7,9 @@
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
-#include <inviwo/core/util/systeminfo.h>
+#include <inviwo/core/util/systemcapabilities.h>
 #include <modules/base/basemoduledefine.h>
-#include <modules/opengl/openglinfo.h>
+#include <modules/opengl/openglcapabilities.h>
 
 namespace inviwo {
 
@@ -93,8 +93,8 @@ private:
     std::vector<VolumeSplit::Brick> bricks_;
     static const std::string loggerCat_; ///< category used in logging
 
-    OpenGLInfo* openGLInfoRef_;
-    SystemInfo* systemInfoRef_;
+    OpenGLCapabilities* openGLInfoRef_;
+    SystemCapabilities* systemInfoRef_;
 
     // calculate and return the size needed to store the volume 
     uint64_t getVolumeMemorySizeInBytes(ivec3 dims, size_t bits); 
