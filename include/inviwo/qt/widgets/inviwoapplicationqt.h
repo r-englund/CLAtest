@@ -25,6 +25,8 @@ public:
     virtual void startFileObservation(std::string fileName);
     virtual void stopFileObservation(std::string fileName);
 
+	virtual void closeInviwoApplication();
+
     virtual void playSound(unsigned int soundID);
 
 	virtual void initialize(registerModuleFuncPtr);

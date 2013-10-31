@@ -64,6 +64,10 @@ void InviwoApplicationQt::fileChanged(QString fileName) {
     }
 }
 
+void InviwoApplicationQt::closeInviwoApplication(){
+	this->quit();
+}
+
 void InviwoApplicationQt::playSound(unsigned int soundID) {
     // Qt currently does not support playing sounds from resources
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))

@@ -35,6 +35,8 @@ public:
         PATH_IMAGES
     };
 
+	virtual void closeInviwoApplication(){LogWarn("this application have not implemented close inviwo function");}
+
     std::string getBasePath() { return basePath_; }
     std::string getPath(PathType pathType, const std::string& suffix = "");
 

@@ -118,9 +118,11 @@ PyObject* py_getModulePath(PyObject* /*self*/, PyObject* /*args*/){
 
 
 
-//PyObject* py_closeInviwo(PyObject* /*self*/, PyObject* /*args*/){
-//	static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->quit();
-//    Py_RETURN_NONE;
-//}
+PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/){
+	
+	InviwoApplication::getPtr()->closeInviwoApplication();
+
+    Py_RETURN_NONE;
+}
 
 }

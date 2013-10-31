@@ -124,7 +124,7 @@ namespace inviwo{
         inviwoPyModule->addMethod(new PySnapshotCanvasMethod());
         inviwoPyModule->addMethod(new PyGetBasePathMethod());
         inviwoPyModule->addMethod(new PyGetDataPathMethod());
-       // inviwoPyModule->addMethod(new PyCloseInviwoMethod());
+        inviwoPyModule->addMethod(new PyQuitInviwoMethod());
 
         inviwoPyModule->addMethod(new PyGetWorkspaceSavePathMethod());
         inviwoPyModule->addMethod(new PyGetVolumePathMethod());
