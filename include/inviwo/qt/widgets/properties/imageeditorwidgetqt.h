@@ -87,7 +87,7 @@ public:
     SimpleGraphicsView(QWidget* parent=0);
     ~SimpleGraphicsView();
     void setDialogScene(QGraphicsScene* scene);
-    void addRectangle(QPointF mstartPoint, QPointF mendPoint);
+    void addRectangle(QPointF mstartPoint, QPointF mendPoint,ivec3 color = ivec3(0,0,255));
     std::vector<ImgRect> getRectList();
     void setReadOnly(bool readOnly);
     void hideLabels(bool hide);

@@ -58,7 +58,7 @@ void SimpleGraphicsView::setDialogScene(QGraphicsScene* scene) {
     scene_ = scene;
 }
 
-void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint) {    
+void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint,ivec3 color) {    
     //QAbstractGraphicsShapeItem *i = scene_->addRect( mStartPoint.x(), mStartPoint.y(),  deltaPoint.x(), deltaPoint.y() );    
     SimpleWithRectangleLabel *i = new SimpleWithRectangleLabel(deltaPoint, scene_);
     i->setPos(mStartPoint.x(), mStartPoint.y());
@@ -68,7 +68,7 @@ void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint) {
     i->updateLabelPosition();
     i->setFlag(QGraphicsItem::ItemIsMovable);
     i->setBrush( QColor(0,0,128,0) );
-    i->setPen( QPen(QColor(255, 0, 0), 2) );
+    i->setPen( QPen(QColor(color.x, color.y, color.z), 2) );
     i->setZValue(255);
 }
 
