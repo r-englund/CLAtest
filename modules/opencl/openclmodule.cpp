@@ -1,4 +1,5 @@
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/buffer/bufferclconverter.h>
 #include <modules/opencl/imageclconverter.h>
 #include <modules/opencl/imageclglconverter.h>
 #include <modules/opencl/openclmodule.h>
@@ -22,6 +23,10 @@ void OpenCLModule::initialize() {
     
     OpenCL::instance();
     KernelManager::init();
+    // Buffer CL
+    addRepresentationConverter(new BufferRAM2CLConverter());
+    addRepresentationConverter(new BufferCL2RAMConverter());
+
     // ImageCL
     addRepresentationConverter(new ImageDisk2CLConverter());
     addRepresentationConverter(new ImageRAM2CLConverter());

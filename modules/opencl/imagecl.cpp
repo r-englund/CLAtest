@@ -9,6 +9,13 @@ ImageCL::ImageCL(uvec2 dimensions, ImageType type, const DataFormatBase* format,
     initialize(data);
 }
 
+ImageCL::ImageCL( const ImageCL& rhs )
+    : ImageRepresentation(rhs.getDimensions(), rhs.getImageType(), rhs.getDataFormat()), imageFormat_(dataFormatToCLImageFormat(rhs.getDataFormat()->getId()))
+{
+    initialize(NULL);
+    OpenCL::instance()->getQueue().enqueueCopyImage(rhs.getImage(), *image2D_ , glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
+}
+
 ImageCL::~ImageCL() { 
     deinitialize(); 
 }

@@ -12,6 +12,7 @@ class IVW_MODULE_OPENCL_API ImageCL : public ImageRepresentation {
 
 public:
     ImageCL(uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
+    ImageCL(const ImageCL& other);
     virtual ~ImageCL();
     virtual std::string getClassName() const { return "ImageCL"; }
     virtual void initialize(){};
