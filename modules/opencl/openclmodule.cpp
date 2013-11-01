@@ -26,6 +26,8 @@ void OpenCLModule::initialize() {
     // Buffer CL
     addRepresentationConverter(new BufferRAM2CLConverter());
     addRepresentationConverter(new BufferCL2RAMConverter());
+    addRepresentationConverter(new BufferGL2CLConverter());
+    addRepresentationConverter(new BufferCL2GLConverter());
 
     // ImageCL
     addRepresentationConverter(new ImageDisk2CLConverter());

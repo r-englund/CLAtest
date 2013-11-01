@@ -5,6 +5,7 @@ ivw_module(OpenGL)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
+    ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.h
 	${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.h
     ${IVW_MODULE_DIR}/opengl/canvasgl.h
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
@@ -40,6 +41,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
+    ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.cpp
 	${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.cpp
     ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp

@@ -113,26 +113,24 @@ void BufferGL::deinitialize(){
     glDeleteBuffers(1, &id_);
 }
 
-
-BufferRAM2GLConverter::BufferRAM2GLConverter()
-    : RepresentationConverterType<BufferGL>(){
-}
-
-BufferRAM2GLConverter::~BufferRAM2GLConverter() {}
-
-DataRepresentation* BufferRAM2GLConverter::createFrom(const DataRepresentation* source) {     
-    const BufferRAM* bufferRAM = static_cast<const BufferRAM*>(source);
-    BufferGL* bufferGL = new BufferGL(bufferRAM->getSize(), bufferRAM->getBufferType(), bufferRAM->getDataFormat());
-    bufferGL->upload(bufferRAM->getData(), bufferRAM->getSize()*bufferRAM->getSizeOfElement());
-    
-    return bufferGL;
-}
-void BufferRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-    const BufferRAM* src = static_cast<const BufferRAM*>(source);
-    BufferGL* dst = static_cast<BufferGL*>(destination);
-    dst->upload(src->getData(), src->getSize());
+void BufferGL::download( void* data ) const
+{
+    bind();
+    // Map data
+    void* gldata = glMapBuffer(target_, GL_READ_ONLY);
+    // Copy data if valid pointer
+    if(gldata)
+    {
+        memcpy(data, gldata, getSize()*getSizeOfElement());
+        // Unmap buffer after using it
+        glUnmapBufferARB(target_); 
+    } else {
+        LogError("Unable to map data");
+    }
 
 }
+
+
 
 
 } // namespace

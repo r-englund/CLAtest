@@ -32,6 +32,8 @@ public:
     void upload(const void* data, size_t size, GLenum usage = GL_STATIC_DRAW, GLenum target = GL_ARRAY_BUFFER);
     void reupload(const void* data, size_t size ,GLenum usage = GL_STATIC_DRAW);
 
+    void download(void* data) const;
+
 protected:
     void enableArray() const;
     void disableArray() const;
@@ -53,18 +55,6 @@ private:
 
 };
 
-class IVW_MODULE_OPENGL_API BufferRAM2GLConverter : public RepresentationConverterType<BufferGL> {
-
-public:
-    BufferRAM2GLConverter();
-    virtual ~BufferRAM2GLConverter();
-
-    inline bool canConvertFrom(const DataRepresentation* source) const {
-        return dynamic_cast<const BufferRAM*>(source) != NULL;
-    }
-    DataRepresentation* createFrom(const DataRepresentation* source);
-    void update(const DataRepresentation* source, DataRepresentation* destination);
-};
 
 
 } // namespace

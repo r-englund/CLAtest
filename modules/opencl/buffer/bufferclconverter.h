@@ -5,6 +5,7 @@
 #include <modules/opencl/buffer/buffercl.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
+#include <modules/opengl/buffer/bufferglconverter.h>
 
 namespace inviwo {
 
@@ -34,6 +35,27 @@ public:
     DataRepresentation* createFrom(const DataRepresentation* source);
     void update(const DataRepresentation* source, DataRepresentation* destination);
 };
+
+class IVW_MODULE_OPENCL_API BufferGL2CLConverter : public RepresentationConverterPackage<BufferCL> {
+
+public:
+    BufferGL2CLConverter() : RepresentationConverterPackage<BufferCL>() {
+        addConverter(new BufferGL2RAMConverter());
+        addConverter(new BufferRAM2CLConverter());
+    };
+    virtual ~BufferGL2CLConverter() {};
+};
+
+class IVW_MODULE_OPENCL_API BufferCL2GLConverter : public RepresentationConverterPackage<BufferGL> {
+
+public:
+    BufferCL2GLConverter() : RepresentationConverterPackage<BufferGL>() {
+        addConverter(new BufferCL2RAMConverter());
+        addConverter(new BufferRAM2GLConverter());
+    };
+    virtual ~BufferCL2GLConverter() {};
+};
+
 
 } // namespace inviwo
 

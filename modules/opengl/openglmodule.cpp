@@ -1,4 +1,5 @@
 #include <inviwo/core/common/inviwoapplication.h>
+#include <modules/opengl/buffer/bufferglconverter.h>
 #include <modules/opengl/buffer/elementbuffergl.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/opengl/geometry/geometryrenderprocessorgl.h>
