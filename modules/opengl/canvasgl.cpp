@@ -82,7 +82,10 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
         }
         glDisable(GL_BLEND);
         //Pre-download picking image
-        imageGL_->getPickingTexture()->downloadToPBO();
+        const Texture2D* pickingTexture = imageGL_->getPickingTexture();
+        if(pickingTexture) {
+            pickingTexture->downloadToPBO();
+        }
     } else {
         imageGL_ = NULL;
         renderNoise();
