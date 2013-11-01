@@ -205,7 +205,7 @@ void TemplateOptionProperty<T>::replaceOptions(std::vector<std::string> ids, std
     options_.clear();
     for (size_t i=0; i<ids.size(); i++)
         options_.push_back(std::make_pair(std::make_pair(ids[i], displayNames[i]), values[i]));        
-    setSelectedOption(options_.size()-1);
+    setSelectedOption(static_cast<int>(options_.size()-1));
 }
 
 template<typename T>

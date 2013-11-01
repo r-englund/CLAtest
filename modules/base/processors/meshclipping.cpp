@@ -70,17 +70,17 @@ float MeshClipping::degreeToRad(float degree) {
 	return degree * (glm::pi<float>() / 180.f);
 }
 
-std::vector<unsigned int> edgeListtoTriangleList(std::vector<Edge>& edges) {
+std::vector<unsigned int> edgeListtoTriangleList(std::vector<EdgeIndex>& edges) {
 	// Traverse edge list and construct correctly sorted triangle strip list.
 	return std::vector<unsigned int>();
 }
 
 // Extract edges from triangle strip list
-std::vector<Edge> triangleListtoEdgeList(const std::vector<unsigned int>* triList) {
-	std::vector<Edge> result;
+std::vector<EdgeIndex> triangleListtoEdgeList(const std::vector<unsigned int>* triList) {
+	std::vector<EdgeIndex> result;
 	LogInfoCustom("MeshClipping", "Size of tri list: " << triList->size()-1);
 	for (size_t i=0; i<triList->size(); ++i) {
-		Edge e1;
+		EdgeIndex e1;
 		if(i==0 || i%3 == 0)  {
 			if(i+1<static_cast<int>(triList->size())) {
 				e1.v1 = triList->at(i);
@@ -143,12 +143,12 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
         //Check if it is a Triangle Strip
         if(inputMesh->getIndexAttributesInfo(0).ct == STRIP){
             // Iterate over edges by edge
-            //Triangle3D triangle;
             unsigned int idx[3];
             std::vector<vec3> newVertices;
-            std::vector<vec3> intersections;
             std::vector<vec3> newTexCoords;
             std::vector<vec4> newColors;
+            std::vector<Edge3D> intersectionsEdges;
+            size_t count = 0;
             for(unsigned int t=0; t<triangleList->size()-2; ++t) {
                 idx[0] = triangleList->at(t);
                 //Clockwise
@@ -192,9 +192,24 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
                             float normDist = glm::length(intersection - vertexList->at(idx[i]))/glm::length(vertexList->at(idx[j]) - vertexList->at(idx[i]));
                             newVertices.push_back(intersection);
-                            intersections.push_back(intersection);
                             newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
                             newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
+
+                            //We save the intersection as part of edge on the clipping plane
+                            if(newVertices.size() > 3)
+                                intersectionsEdges.back().v2 = intersection;
+                            else
+                                intersectionsEdges.push_back(Edge3D(intersection));
+
+                            /*Edge newEdge;
+                            if(newVertices.size() > 2)
+                            newEdge = Edge(static_cast<unsigned int>(newVertices.size()-1), 0);
+                            else
+                            newEdge = Edge(static_cast<unsigned int>(newVertices.size()-1), static_cast<unsigned int>(newVertices.size()));
+
+                            if(intersectionsEdges.empty() || std::find(intersectionsEdges.begin(), intersectionsEdges.end(), newEdge) == intersectionsEdges.end()) {
+                            intersectionsEdges.push_back(newEdge);
+                            }*/
                         }
                     }
                     else{
@@ -203,9 +218,14 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
                             float normDist = glm::length(intersection - vertexList->at(idx[i]))/glm::length(vertexList->at(idx[j]) - vertexList->at(idx[i]));
                             newVertices.push_back(intersection);
-                            intersections.push_back(intersection);
                             newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
                             newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
+
+                            //We save the intersection as part of edge on the clipping plane
+                            if(newVertices.size() > 1)
+                                intersectionsEdges.back().v2 = intersection;
+                            else
+                                intersectionsEdges.push_back(Edge3D(intersection));
 
                             //Add v2
                             newVertices.push_back(vertexList->at(idx[j]));
@@ -263,6 +283,20 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
             //If original point is projected to either of the edge point, 
             //that means no new triangle.
             //If Case 4, project triangle onto plane.
+            std::vector<Edge3D> uniqueintersectionsEdges;
+            for(size_t i=0; i<intersectionsEdges.size(); ++i){
+                 if(uniqueintersectionsEdges.empty() || std::find(uniqueintersectionsEdges.begin(), uniqueintersectionsEdges.end(), intersectionsEdges.at(i)) == uniqueintersectionsEdges.end()) {
+                     uniqueintersectionsEdges.push_back(intersectionsEdges.at(i));
+                 }
+            }
+
+            vec3 test = vec3(0.f);
+
+            for(size_t i=0; i<uniqueintersectionsEdges.size(); ++i){
+                outputMesh->addVertex(uniqueintersectionsEdges.at(i).v1, uniqueintersectionsEdges.at(i).v1, vec4(uniqueintersectionsEdges.at(i).v1, 1.f));
+                outputMesh->addVertex(uniqueintersectionsEdges.at(i).v2, uniqueintersectionsEdges.at(i).v2, vec4(uniqueintersectionsEdges.at(i).v2, 1.f));
+                outputMesh->addVertex(test, test, vec4(test, 1.f));
+            }
         }
     }
 
@@ -287,13 +321,13 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane
 	//LogInfo("Fetching vertex- and triangle lists.");
     const std::vector<vec3>* inputList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer(); 
     const std::vector<unsigned int>* triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
-	std::vector<Edge> edgeList = triangleListtoEdgeList(triangleList);
+	std::vector<EdgeIndex> edgeList = triangleListtoEdgeList(triangleList);
 	std::vector<unsigned int> clippedVertInd;
 
 	// For each clip plane, do:
 	std::vector<glm::vec3> outputList;
 	std::vector<unsigned int> outputIndexList; // vertex index list
-	std::vector<Edge> outputEdgeList; // output edge list
+	std::vector<EdgeIndex> outputEdgeList; // output edge list
 
 	// Iterate over edges extracted from triangle strip list, and perform clipping against plane
 	for(unsigned int i=0; i<edgeList.size(); ++i) {
@@ -306,7 +340,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane
 		glm::vec3 S = inputList->at(Sind);
 		glm::vec3 E = inputList->at(Eind);
 
-		Edge edge;
+		EdgeIndex edge;
 		int duplicate = -1;
 
 		// For each clip plane
@@ -431,7 +465,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane
 
 	// Create edges between new (clipped) vertices
 	for (unsigned int i=0; i<clippedVertInd.size(); ++i) {
-		Edge edge;
+		EdgeIndex edge;
 		unsigned int idx1,idx2,idx3;
 		idx1 = clippedVertInd.at(i % clippedVertInd.size());
 		idx2 = clippedVertInd.at((i+1) % clippedVertInd.size());

@@ -159,7 +159,7 @@ namespace inviwo{
     }
 
 	void PythonEditorWidget::onPyhonExecutionOutput(std::string msg,OutputType outputType){
-		appendToOutput(msg,outputType!=OutputType::standard);
+		appendToOutput(msg,outputType!=PythonExecutionOutputObeserver::standard);
 	}
 
     void PythonEditorWidget::save(){

@@ -69,13 +69,13 @@ GLenum MeshRenderer::getDrawMode( RenderType rt, ConnectivityType ct)
 
 void MeshRenderer::renderArray( RenderType rt) const
 {
-    glDrawArrays(drawMethods_[rt].drawMode, 0, meshToRender_->getAttributes(0)->getSize());
+    glDrawArrays(drawMethods_[rt].drawMode, 0, static_cast<GLsizei>(meshToRender_->getAttributes(0)->getSize()));
 }
 
 void MeshRenderer::renderElements( RenderType rt) const
 {
     const ElementBufferGL* elementBufferGL = drawMethods_[rt].elementBuffer->getRepresentation<ElementBufferGL>();
-    glDrawElements(drawMethods_[rt].drawMode, elementBufferGL->getSize(), elementBufferGL->getFormatType(), 0);
+    glDrawElements(drawMethods_[rt].drawMode, static_cast<GLsizei>(elementBufferGL->getSize()), elementBufferGL->getFormatType(), 0);
 }
 
 void MeshRenderer::initialize( Mesh::AttributesInfo ai )

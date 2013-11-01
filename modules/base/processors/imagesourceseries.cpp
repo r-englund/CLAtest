@@ -36,7 +36,7 @@ void ImageSourceSeries::onFindFiles() {
 
     //TODO: following settings leads to crash. under investigation.
     if(files.size())
-        currentImageIndex_.setMaxValue(files.size());
+        currentImageIndex_.setMaxValue(static_cast<const int>(files.size()));
 
     //imageFilesInDirectory_.clearOptions();
     std::vector<std::string> ids;
@@ -53,7 +53,7 @@ void ImageSourceSeries::onFindFiles() {
         files.push_back("");
     }
  
-    currentImageIndex_.set(files.size());
+    currentImageIndex_.set(static_cast<const int>(files.size()));
 }
 
 /**
