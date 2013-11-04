@@ -8,6 +8,13 @@ BufferCL::BufferCL(size_t size, BufferType type, const DataFormatBase* format, c
     initialize(data);
 }
 
+BufferCL::BufferCL( const BufferCL& rhs )
+: BufferRepresentation(rhs.getSize(), rhs.getBufferType(), rhs.getDataFormat()), readWriteFlag_(rhs.readWriteFlag_)
+{
+    initialize(NULL);
+    OpenCL::instance()->getQueue().enqueueCopyBuffer(rhs.getBuffer(), *buffer_ , 0, 0, getSize()*getSizeOfElement());
+}
+
 BufferCL::~BufferCL() {
     deinitialize();
 }

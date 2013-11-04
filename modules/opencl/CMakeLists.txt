@@ -7,6 +7,8 @@ ivw_module(OpenCL)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/buffer/buffercl.h
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclconverter.h
+    ${IVW_MODULE_DIR}/opencl/buffer/bufferclgl.h
+    ${IVW_MODULE_DIR}/opencl/buffer/bufferclglconverter.h
     ${IVW_MODULE_DIR}/opencl/cl.hpp
     ${IVW_MODULE_DIR}/opencl/glmcl.h
     ${IVW_MODULE_DIR}/opencl/imagecl.h
@@ -36,6 +38,8 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/buffer/buffercl.cpp
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclconverter.cpp
+    ${IVW_MODULE_DIR}/opencl/buffer/bufferclgl.cpp
+    ${IVW_MODULE_DIR}/opencl/buffer/bufferclglconverter.cpp
     ${IVW_MODULE_DIR}/opencl/cl.cpp
     ${IVW_MODULE_DIR}/opencl/glmcl.cpp
     ${IVW_MODULE_DIR}/opencl/imagecl.cpp
