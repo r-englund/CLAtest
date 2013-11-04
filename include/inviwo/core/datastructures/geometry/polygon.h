@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/geometry/edge.h>
 
 namespace inviwo {
 
@@ -14,12 +15,13 @@ namespace inviwo {
  * When polygon contains vertices, adjacent vertices are considered to be connected with lines to form a edge.
  * First and last vertex are also considered to be connected, to form a closed chain.
  */
-template<typename T, size_t B, size_t N>
+
+template<typename T>
 class IVW_CORE_API Polygon  {
 
 public:
-    Polygon() : dataFormat_(DataFormat<T,B>::get()) {
-        list_ = new T[N];
+    Polygon(size_t size) : size_(size) {
+        list_ = new T[size_];
     }
 
     virtual ~Polygon(){
@@ -31,23 +33,30 @@ public:
     }
 
     size_t size() const{
-        return N;
+        return size_;
     }
 
-    T* vertices(){
+    T* values(){
         return list_;
     }
 
 private:
     T* list_;
+    size_t size_;
+};
+
+template<typename T, size_t B>
+class IVW_CORE_API PolygonDataFormat :  public Polygon<T> {
+    PolygonDataFormat(size_t size) : Polygon<T>(size), dataFormat_(DataFormat<T,B>::get()) {
+    }
+    virtual ~PolygonDataFormat(){
+    }
+
+private:
     const DataFormat<T,B>* dataFormat_;
 };
 
-#define DataFormatPolygon(D, N) Polygon<D::type, D::bits, N>
-
-typedef DataFormatPolygon(DataUINT32, 3) Triangle;
-typedef DataFormatPolygon(DataVec2FLOAT32, 3) Triangle2D;
-typedef DataFormatPolygon(DataVec3FLOAT32, 3) Triangle3D;
+#define DataFormatPolygon(D) PolygonDataFormat<D::type, D::bits>
 
 } // namespace
 

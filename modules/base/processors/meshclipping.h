@@ -8,7 +8,6 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/datastructures/geometry/simplemeshram.h>
 #include <inviwo/core/datastructures/geometry/plane.h>
-#include <inviwo/core/datastructures/geometry/polygon.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
 

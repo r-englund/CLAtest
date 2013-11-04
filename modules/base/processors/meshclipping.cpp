@@ -1,5 +1,6 @@
 #include "meshclipping.h"
 #include <inviwo/core/datastructures/geometry/edge.h>
+#include <inviwo/core/datastructures/geometry/polygon.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
@@ -290,12 +291,61 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                  }
             }
 
-            vec3 test = vec3(0.f);
+            if(!uniqueintersectionsEdges.empty()){
+                /*//Create closed polygons based on edges
+                std::vector<Polygon<Edge3D>> polygons;
+                std::vector<Edge3D> connectedEdges;
+                std::vector<Edge3D> unconnectEdges = uniqueintersectionsEdges;
+                //Start with one edge, check which other edge it's connect to it
+                while(!unconnectEdges.empty()){
+                    Edge3D currentEdge = unconnectEdges.front();
+                    vec3 firstVertex = currentEdge.v1;
+                    bool createdPolygon = false;
+                    //Search all edges for a connection
+                    for(int i=0; i < uniqueintersectionsEdges.size(); ++i){
+                        if(uniqueintersectionsEdges[i].v1 == currentEdge.v2 && uniqueintersectionsEdges[i].v2 != currentEdge.v1){
+                            connectedEdges.push_back(currentEdge);
+                            std::vector<Edge3D>::iterator it = std::find(unconnectEdges.begin(), unconnectEdges.end(), currentEdge);
+                            if(it != unconnectEdges.end())
+                                unconnectEdges.erase(it);
+                            currentEdge = uniqueintersectionsEdges[i];
+                            i = 0;
+                        }   
+                        else if(uniqueintersectionsEdges[i].v2 == currentEdge.v2 && uniqueintersectionsEdges[i].v1 != currentEdge.v1){
+                            connectedEdges.push_back(currentEdge);
+                            std::vector<Edge3D>::iterator it = std::find(unconnectEdges.begin(), unconnectEdges.end(), currentEdge);
+                            if(it != unconnectEdges.end())
+                                unconnectEdges.erase(it);
+                            currentEdge = Edge3D(uniqueintersectionsEdges[i].v2, uniqueintersectionsEdges[i].v1);                        
+                            i = 0;
+                        }
+                        //Last edge connect to first edge, close the loop and make a polygon
+                        if(firstVertex == currentEdge.v2){
+                            connectedEdges.push_back(currentEdge);
+                            std::vector<Edge3D>::iterator it = std::find(unconnectEdges.begin(), unconnectEdges.end(), currentEdge);
+                            if(it != unconnectEdges.end())
+                                unconnectEdges.erase(it);
+                            Polygon<Edge3D> newPoly(connectedEdges.size());
+                            for(int j=0; j < connectedEdges.size(); ++j){
+                                newPoly.at(j) = connectedEdges.at(j);
+                            }
+                            polygons.push_back(newPoly);
+                            connectedEdges.clear();
+                            createdPolygon = true;
+                            break;
+                        }
+                    }
+                    if(!createdPolygon)
+                        ivwAssert(createdPolygon, "Could not connect clipped edges to manifold polygon");
+                }*/
 
-            for(size_t i=0; i<uniqueintersectionsEdges.size(); ++i){
-                outputMesh->addVertex(uniqueintersectionsEdges.at(i).v1, uniqueintersectionsEdges.at(i).v1, vec4(uniqueintersectionsEdges.at(i).v1, 1.f));
-                outputMesh->addVertex(uniqueintersectionsEdges.at(i).v2, uniqueintersectionsEdges.at(i).v2, vec4(uniqueintersectionsEdges.at(i).v2, 1.f));
-                outputMesh->addVertex(test, test, vec4(test, 1.f));
+                vec3 test = vec3(0.f);
+
+                for(size_t i=0; i<uniqueintersectionsEdges.size(); ++i){
+                    outputMesh->addVertex(uniqueintersectionsEdges.at(i).v1, uniqueintersectionsEdges.at(i).v1, vec4(uniqueintersectionsEdges.at(i).v1, 1.f));
+                    outputMesh->addVertex(uniqueintersectionsEdges.at(i).v2, uniqueintersectionsEdges.at(i).v2, vec4(uniqueintersectionsEdges.at(i).v2, 1.f));
+                    outputMesh->addVertex(test, test, vec4(test, 1.f));
+                }
             }
         }
     }
