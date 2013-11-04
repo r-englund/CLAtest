@@ -1,9 +1,9 @@
 #include "volumeraycastercl.h"
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/syncclgl.h>
-#include <modules/opencl/imagecl.h>
-#include <modules/opencl/imageclgl.h>
-#include <modules/opencl/volumeclgl.h>
+#include <modules/opencl/image/imagecl.h>
+#include <modules/opencl/image/imageclgl.h>
+#include <modules/opencl/volume/volumeclgl.h>
 #include <modules/opencl/kernelmanager.h>
 
 namespace inviwo {

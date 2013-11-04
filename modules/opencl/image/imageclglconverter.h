@@ -7,8 +7,8 @@
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <modules/opengl/image/imageglconverter.h> 
 #include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/imagecl.h>
-#include <modules/opencl/imageclgl.h>
+#include <modules/opencl/image/imagecl.h>
+#include <modules/opencl/image/imageclgl.h>
 
 namespace inviwo {
 

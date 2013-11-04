@@ -1,5 +1,5 @@
-#include <modules/opencl/volumeclconverter.h>
-#include <modules/opencl/volumeclglconverter.h>
+#include <modules/opencl/volume/volumeclconverter.h>
+#include <modules/opencl/volume/volumeclglconverter.h>
 #include <modules/opencl/syncclgl.h>
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
 #include <modules/opencl/inviwoopencl.h>

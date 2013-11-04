@@ -1,7 +1,7 @@
 #include "grayscalecl.h"
 #include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/imagecl.h>
-#include <modules/opencl/volumecl.h>
+#include <modules/opencl/image/imagecl.h>
+#include <modules/opencl/volume/volumecl.h>
 #include <modules/opencl/kernelmanager.h>
 
 namespace inviwo {

@@ -6,7 +6,7 @@
 #include <inviwo/core/datastructures/image/imageramconverter.h> 
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <modules/opengl/image/imageglconverter.h> 
-#include <modules/opencl/imagecl.h>
+#include <modules/opencl/image/imagecl.h>
 
 namespace inviwo {
 

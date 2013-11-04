@@ -1,5 +1,5 @@
-#include <modules/opencl/imageclconverter.h>
-#include <modules/opencl/imageclglconverter.h>
+#include <modules/opencl/image/imageclconverter.h>
+#include <modules/opencl/image/imageclglconverter.h>
 #include <modules/opencl/syncclgl.h>
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <modules/opencl/inviwoopencl.h>

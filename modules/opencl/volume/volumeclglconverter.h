@@ -7,8 +7,8 @@
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include <modules/opengl/volume/volumeglconverter.h> 
 #include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/volumecl.h>
-#include <modules/opencl/volumeclgl.h>
+#include <modules/opencl/volume/volumecl.h>
+#include <modules/opencl/volume/volumeclgl.h>
 
 namespace inviwo {
 

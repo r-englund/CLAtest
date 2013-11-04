@@ -1,13 +1,13 @@
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/buffer/bufferclconverter.h>
-#include <modules/opencl/imageclconverter.h>
-#include <modules/opencl/imageclglconverter.h>
+#include <modules/opencl/image/imageclconverter.h>
+#include <modules/opencl/image/imageclglconverter.h>
 #include <modules/opencl/openclmodule.h>
 #include <modules/opencl/openclcapabilities.h>
 #include <modules/opencl/processors/grayscalecl.h>
 #include <modules/opencl/processors/volumeraycastercl.h>
-#include <modules/opencl/volumeclconverter.h>
-#include <modules/opencl/volumeclglconverter.h>
+#include <modules/opencl/volume/volumeclconverter.h>
+#include <modules/opencl/volume/volumeclglconverter.h>
 #include <modules/opencl/kernelmanager.h>
 
 

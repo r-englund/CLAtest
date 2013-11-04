@@ -5,7 +5,7 @@
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumeramconverter.h>
 #include <inviwo/core/datastructures/volume/volumedisk.h>
-#include <modules/opencl/volumecl.h>
+#include <modules/opencl/volume/volumecl.h>
 
 namespace inviwo {
 

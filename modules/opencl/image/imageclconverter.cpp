@@ -1,4 +1,4 @@
-#include <modules/opencl/imageclconverter.h>
+#include <modules/opencl/image/imageclconverter.h>
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <modules/opencl/inviwoopencl.h>
 

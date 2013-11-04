@@ -1,4 +1,4 @@
-#include <modules/opencl/volumecl.h>
+#include <modules/opencl/volume/volumecl.h>
 
 namespace inviwo {
 
