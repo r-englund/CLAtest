@@ -57,7 +57,7 @@ private:
 
 #define DataFormatBuffers(D, A) Attributes<D::type, D::bits, A>
 
-//typedef DataVec4FLOAT32 ColorBuffer;
+typedef DataFormatBuffers(DataUINT32, POSITION_ATTRIB) BufferUINT32;
 //typedef DataFLOAT32 CurvatureBuffer;
 //typedef DataUINT32 IndexBuffer;
 //typedef DataVec2FLOAT32 Position2dBuffer;

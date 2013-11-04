@@ -42,7 +42,7 @@ public:
      * @return (cl::Program*) Pointer to a program no matter if it was succesfully built or not. 
      * The KernelManager will make sure that the processor is not evaluated if building fails.
      */
-    cl::Program* buildProgram(const std::string& fileName, const std::string& defines = "");;
+    cl::Program* buildProgram(const std::string& fileName, const std::string& defines = "");
 
 
     /**
@@ -54,7 +54,7 @@ public:
      * @param kernelName (const std::string &)
      * @return (cl::Kernel*) Pointer to cl::Kernel. KernelManager manages memory of Kernel, do not delete it.
      */
-    cl::Kernel* getKernel(cl::Program* program, const std::string& kernelName);;
+    cl::Kernel* getKernel(cl::Program* program, const std::string& kernelName);
 
     /**
      * Reloads programs from file and notifies processors.
