@@ -24,6 +24,13 @@ public:
         list_ = new T[size_];
     }
 
+    Polygon(const Polygon& rhs) : size_(rhs.size()){
+        list_ = new T[size_];
+        for(size_t i=0; i < size(); ++i){
+            list_[i] = rhs.at(i);
+        }
+    }
+
     virtual ~Polygon(){
         delete[] list_;
     }
@@ -34,6 +41,10 @@ public:
 
     size_t size() const{
         return size_;
+    }
+
+    const T* values() const{
+        return list_;
     }
 
     T* values(){

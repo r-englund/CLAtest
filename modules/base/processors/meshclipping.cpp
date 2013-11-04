@@ -179,6 +179,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                 newVertices.clear();
                 newTexCoords.clear();
                 newColors.clear();
+                bool intersectionAdded = false;
                 for(size_t i=0; i<3; ++i){ 
                     size_t j = (i==2 ? 0 : i+1);
                     if(plane.isInside(vertexList->at(idx[i]))) {
@@ -197,20 +198,12 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
 
                             //We save the intersection as part of edge on the clipping plane
-                            if(newVertices.size() > 3)
-                                intersectionsEdges.back().v2 = intersection;
-                            else
+                            if(intersectionAdded)
+                                intersectionsEdges.back().v1 = intersection;
+                            else{
                                 intersectionsEdges.push_back(Edge3D(intersection));
-
-                            /*Edge newEdge;
-                            if(newVertices.size() > 2)
-                            newEdge = Edge(static_cast<unsigned int>(newVertices.size()-1), 0);
-                            else
-                            newEdge = Edge(static_cast<unsigned int>(newVertices.size()-1), static_cast<unsigned int>(newVertices.size()));
-
-                            if(intersectionsEdges.empty() || std::find(intersectionsEdges.begin(), intersectionsEdges.end(), newEdge) == intersectionsEdges.end()) {
-                            intersectionsEdges.push_back(newEdge);
-                            }*/
+                                intersectionAdded = true;
+                            }
                         }
                     }
                     else{
@@ -223,10 +216,12 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
 
                             //We save the intersection as part of edge on the clipping plane
-                            if(newVertices.size() > 1)
+                            if(intersectionAdded)
                                 intersectionsEdges.back().v2 = intersection;
-                            else
+                            else{
                                 intersectionsEdges.push_back(Edge3D(intersection));
+                                intersectionAdded = true;
+                            }
 
                             //Add v2
                             newVertices.push_back(vertexList->at(idx[j]));
@@ -256,18 +251,6 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                     newTexCoords.push_back(lastTexc);
                     newColors.push_back(lastColor);
                 }
-                else if(newVertices.empty()){
-                    //Project incoming triangle onto the plane
-                    vec3 edge01 = vertexList->at(idx[1])-vertexList->at(idx[0]);
-                    vec3 edge02 = vertexList->at(idx[2])-vertexList->at(idx[0]);
-                    vec3 triangleNormal = glm::cross(edge01, edge02);
-                    for(int i=0; i<3; ++i){
-                        vec3 projectedPoint = plane.projectPoint(vertexList->at(idx[i]));
-                        newVertices.push_back(projectedPoint);
-                        newTexCoords.push_back(projectedPoint);
-                        newColors.push_back(vec4(projectedPoint, 1.f));
-                    }
-                }
 
                 //Add vertices to mesh
                 for(size_t i=0; i<newVertices.size(); ++i){
@@ -284,15 +267,20 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
             //If original point is projected to either of the edge point, 
             //that means no new triangle.
             //If Case 4, project triangle onto plane.
+
+            //This should not be needed...
             std::vector<Edge3D> uniqueintersectionsEdges;
             for(size_t i=0; i<intersectionsEdges.size(); ++i){
-                 if(uniqueintersectionsEdges.empty() || std::find(uniqueintersectionsEdges.begin(), uniqueintersectionsEdges.end(), intersectionsEdges.at(i)) == uniqueintersectionsEdges.end()) {
-                     uniqueintersectionsEdges.push_back(intersectionsEdges.at(i));
-                 }
+                if(intersectionsEdges.at(i).v1 != intersectionsEdges.at(i).v2){
+                    if(uniqueintersectionsEdges.empty() || std::find(uniqueintersectionsEdges.begin(), uniqueintersectionsEdges.end(), intersectionsEdges.at(i)) == uniqueintersectionsEdges.end()) {
+                        uniqueintersectionsEdges.push_back(intersectionsEdges.at(i));
+                    }
+                }
             }
 
+            //The points are not at same point, introduce threshold
             if(!uniqueintersectionsEdges.empty()){
-                /*//Create closed polygons based on edges
+                //Create closed polygons based on edges
                 std::vector<Polygon<Edge3D>> polygons;
                 std::vector<Edge3D> connectedEdges;
                 std::vector<Edge3D> unconnectEdges = uniqueintersectionsEdges;
@@ -302,7 +290,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                     vec3 firstVertex = currentEdge.v1;
                     bool createdPolygon = false;
                     //Search all edges for a connection
-                    for(int i=0; i < uniqueintersectionsEdges.size(); ++i){
+                    for(size_t i=0; i < uniqueintersectionsEdges.size(); ++i){
                         if(uniqueintersectionsEdges[i].v1 == currentEdge.v2 && uniqueintersectionsEdges[i].v2 != currentEdge.v1){
                             connectedEdges.push_back(currentEdge);
                             std::vector<Edge3D>::iterator it = std::find(unconnectEdges.begin(), unconnectEdges.end(), currentEdge);
@@ -326,7 +314,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             if(it != unconnectEdges.end())
                                 unconnectEdges.erase(it);
                             Polygon<Edge3D> newPoly(connectedEdges.size());
-                            for(int j=0; j < connectedEdges.size(); ++j){
+                            for(size_t j=0; j < connectedEdges.size(); ++j){
                                 newPoly.at(j) = connectedEdges.at(j);
                             }
                             polygons.push_back(newPoly);
@@ -336,15 +324,16 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                         }
                     }
                     if(!createdPolygon)
-                        ivwAssert(createdPolygon, "Could not connect clipped edges to manifold polygon");
-                }*/
+                        break;
+                        //ivwAssert(createdPolygon, "Could not connect clipped edges to manifold polygon");
+                }
 
                 vec3 test = vec3(0.f);
 
                 for(size_t i=0; i<uniqueintersectionsEdges.size(); ++i){
-                    outputMesh->addVertex(uniqueintersectionsEdges.at(i).v1, uniqueintersectionsEdges.at(i).v1, vec4(uniqueintersectionsEdges.at(i).v1, 1.f));
-                    outputMesh->addVertex(uniqueintersectionsEdges.at(i).v2, uniqueintersectionsEdges.at(i).v2, vec4(uniqueintersectionsEdges.at(i).v2, 1.f));
                     outputMesh->addVertex(test, test, vec4(test, 1.f));
+                    outputMesh->addVertex(uniqueintersectionsEdges.at(i).v2, uniqueintersectionsEdges.at(i).v2, vec4(uniqueintersectionsEdges.at(i).v2, 1.f));
+                    outputMesh->addVertex(uniqueintersectionsEdges.at(i).v1, uniqueintersectionsEdges.at(i).v1, vec4(uniqueintersectionsEdges.at(i).v1, 1.f));
                 }
             }
         }
