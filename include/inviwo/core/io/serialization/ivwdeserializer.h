@@ -445,7 +445,8 @@ throw (SerializationException) {
         //space holder
         if (sVector.size()==0) {
             for (TxEIt child(keyNode->FirstChildElement(itemKey), itemKey); child != child.end(); ++child) {
-                tVector.push_back(item);
+                T emptyItem;
+                tVector.push_back(emptyItem);
             }
         }
         sVector = tVector;
