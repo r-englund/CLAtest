@@ -2,6 +2,7 @@
 #include <inviwo/core/datastructures/geometry/edge.h>
 #include <inviwo/core/datastructures/geometry/polygon.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
+#include <vector>
 
 namespace inviwo {
 
@@ -281,7 +282,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
             //The points are not at same point, introduce threshold
             if(!uniqueintersectionsEdges.empty()){
                 //Create closed polygons based on edges
-                std::vector<Polygon<Edge3D>> polygons;
+                std::vector<Polygon<Edge3D> > polygons;
                 std::vector<Edge3D> connectedEdges;
                 std::vector<Edge3D> unconnectEdges = uniqueintersectionsEdges;
                 //Start with one edge, check which other edge it's connect to it

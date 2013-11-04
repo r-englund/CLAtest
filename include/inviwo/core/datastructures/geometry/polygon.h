@@ -56,19 +56,6 @@ private:
     size_t size_;
 };
 
-template<typename T, size_t B>
-class IVW_CORE_API PolygonDataFormat :  public Polygon<T> {
-    PolygonDataFormat(size_t size) : Polygon<T>(size), dataFormat_(DataFormat<T,B>::get()) {
-    }
-    virtual ~PolygonDataFormat(){
-    }
-
-private:
-    const DataFormat<T,B>* dataFormat_;
-};
-
-#define DataFormatPolygon(D) PolygonDataFormat<D::type, D::bits>
-
 } // namespace
 
 #endif // IVW_POLYGON_H
