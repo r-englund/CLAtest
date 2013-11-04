@@ -170,6 +170,7 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
     cl::Device device = queue.getInfo<CL_QUEUE_DEVICE>();
     // build the program from the source in the file
     std::ifstream file(fileName.c_str());
+    std::string concatenatedDefines = OpenCL::instance()->getIncludeDefine() + defines;
     std::string prog(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
     if(prog.empty()) {
         // When editing files using Visual Studio it may happen that the file is empty.
@@ -182,9 +183,10 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
         prog = srcPrg;
     }
     cl::Program::Sources source( 1, std::make_pair(prog.c_str(), prog.length()+1));
+    
     cl::Program program(context, source);
     try {
-        program.build(std::vector<cl::Device>(1, OpenCL::instance()->getDevice()));
+        program.build(std::vector<cl::Device>(1, OpenCL::instance()->getDevice()), concatenatedDefines.c_str());
         std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device);
         // Output log if it contains any info
         if(buildLog.size() > 1)
@@ -199,6 +201,28 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
 cl::Program OpenCL::buildProgram( const std::string& fileName, const std::string& defines /*= ""*/ )
 {
     return OpenCL::buildProgram(fileName, defines, OpenCL::instance()->getQueue());
+}
+
+void OpenCL::addCommonIncludeDirectory( const std::string& directoryPath )
+{
+    includeDirectories_.push_back(directoryPath);
+}
+
+void OpenCL::removeCommonIncludeDirectory( const std::string& directoryPath )
+{
+    std::vector<std::string>::iterator it = std::find(includeDirectories_.begin(), includeDirectories_.end(), directoryPath);
+    if(it != includeDirectories_.end()) {
+        includeDirectories_.erase(it);
+    }
+}
+
+std::string OpenCL::getIncludeDefine() const
+{
+    std::string result;
+    for(std::vector<std::string>::const_iterator it = includeDirectories_.begin(); it != includeDirectories_.end(); ++it ) {
+        result += " -I " + *it;
+    }
+    return result;
 }
 
 

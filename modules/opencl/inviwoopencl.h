@@ -90,6 +90,22 @@ public:
      */
     static std::vector<cl_context_properties> getGLSharingContextProperties();
 
+    /**
+     * Add a directory as an include path to be used when compiling OpenCL kernels.
+     * 
+     * @param directoryPath Directory path to include
+     */
+    void addCommonIncludeDirectory(const std::string& directoryPath);
+
+    /**
+     * Remove common include path.
+     * 
+     * @param directoryPath Directory path to remove
+     */
+    void removeCommonIncludeDirectory(const std::string& directoryPath);
+
+    const std::vector<std::string>& getCommonIncludeDirectories() const { return includeDirectories_; }
+
     
 private: 
     OpenCL();
@@ -106,6 +122,15 @@ private:
      *  @return True if any device found, false otherwise. 
      */
     static bool getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform);
+
+    
+    /**
+     * Merges all include directories into a string. Each include directory will be preceded by -I 
+     * 
+     * @return Define to be used when building the programs
+     */
+    std::string getIncludeDefine() const;
+
     /// Queue which can perform tasks in serial (no need to explicitly manage events)
     cl::CommandQueue synchronosGPUQueue_;
     /// Queue which can perform tasks in parallel
@@ -114,6 +139,8 @@ private:
     cl::Context gpuContext_;
     /// Default device associated with queues and device
     cl::Device gpuDevice_;
+    // Include directories define
+    std::vector<std::string> includeDirectories_;
 
 };
 

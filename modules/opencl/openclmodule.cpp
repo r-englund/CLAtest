@@ -21,7 +21,7 @@ OpenCLModule::OpenCLModule() : InviwoModule() {
 
 void OpenCLModule::initialize() {
     
-    OpenCL::instance();
+    OpenCL::instance()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl");
     KernelManager::init();
     // Buffer CL
     addRepresentationConverter(new BufferRAM2CLConverter());

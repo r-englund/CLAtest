@@ -62,6 +62,16 @@ set(SOURCE_FILES
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
+# Add OpenCL files
+set(SHADER_FILES
+    ${IVW_MODULE_DIR}/opencl/cl/grayscale.cl
+    ${IVW_MODULE_DIR}/opencl/cl/img_resize.cl
+    ${IVW_MODULE_DIR}/opencl/cl/samplers.cl
+    ${IVW_MODULE_DIR}/opencl/cl/volumeraycaster.cl
+)
+ivw_group("Shader Files" ${SHADER_FILES})
+
+#--------------------------------------------------------------------
 # Add definition
 ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
 
