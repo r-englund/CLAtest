@@ -25,9 +25,18 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "DirectoryProperty"; }
+    virtual void registerFileIndexingHandle(IntProperty* indexHandle) {
+        //TODO: use composite property if possible.
+        fileIndexingHandle_ = indexHandle;
+    }
+    virtual IntProperty* getFileIndexingHandle() {
+        //TODO: use composite property if possible.
+        return fileIndexingHandle_;
+    }
 protected:
     //TODO: currently tree contains file names only.
     std::vector<std::string> directoryTree_;
+    IntProperty* fileIndexingHandle_;
 };
 
 } // namespace

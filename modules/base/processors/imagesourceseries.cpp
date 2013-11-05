@@ -18,6 +18,7 @@ ImageSourceSeries::ImageSourceSeries()
     addProperty(findFilesButton_);
     addProperty(currentImageIndex_);
 
+    imageFileDirectory_.registerFileIndexingHandle(&currentImageIndex_);
     findFilesButton_.registerClassMemberFunction(this, &ImageSourceSeries::onFindFiles);
 }
 
