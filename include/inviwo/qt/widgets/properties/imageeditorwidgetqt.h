@@ -28,6 +28,8 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include <QSpinBox>
+#include <QGraphicsDropShadowEffect>
 
 
 //Property includes
@@ -83,6 +85,7 @@ struct ImgRect {
 };
 
 class SimpleGraphicsView : public QGraphicsView {
+    Q_OBJECT
 public:
     SimpleGraphicsView(QWidget* parent=0);
     ~SimpleGraphicsView();
@@ -91,16 +94,23 @@ public:
     std::vector<ImgRect> getRectList();
     void setReadOnly(bool readOnly);
     void hideLabels(bool hide);
+    void setCurrentLabelPositionFromTextField(ivec2 pos);
+    void setCurrentLabelPositionToTextField();
 protected:
     void mousePressEvent(QMouseEvent* e);
     void mouseDoubleClickEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+signals:
+    void currentRectItemPositionChanged(vec2 pos);
 private:
     QGraphicsScene* scene_;
     QPoint startPoint_;
     bool rubberBandActive_;
     bool readOnly_;
     bool hideLabels_;
+    QGraphicsRectItem* currentRectItem_;
+    QGraphicsDropShadowEffect* shadowEffect_;
 };
 
 
@@ -131,8 +141,14 @@ public:
     SimpleGraphicsView* view_;
     QImage* backGroundImage_;
     void setToolBarVisible(bool visible);
+public slots:
+    void updatePositionX(int);
+    void updatePositionY(int);
+    void onCurrentItemPositionChange(vec2 pos);
 protected:
-    void closeEvent(QCloseEvent *);    
+    void closeEvent(QCloseEvent *);
+    QSpinBox* positionX_;
+    QSpinBox* positionY_;
     /*void showEvent(QShowEvent *);*/
 };
 
