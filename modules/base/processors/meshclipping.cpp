@@ -77,6 +77,23 @@ inline bool equal(vec3 v1, vec3 v2, float eps) {
     return (std::fabs(v1.x-v2.x)<eps && std::fabs(v1.y-v2.y)<eps && std::fabs(v1.z-v2.z)<eps);
 }
 
+// Compute barycentric coordinates for
+// point p with respect to triangle (a, b, c)
+inline vec3 barycentric(vec3 p, vec3 a, vec3 b, vec3 c){
+    vec3 v0 = b - a, v1 = c - a, v2 = p - a;
+    float d00 = glm::dot(v0, v0);
+    float d01 = glm::dot(v0, v1);
+    float d11 = glm::dot(v1, v1);
+    float d20 = glm::dot(v2, v0);
+    float d21 = glm::dot(v2, v1);
+    float invDenom = 1.f / (d00 * d11 - d01 * d01);
+    vec3 bary;
+    bary.y = (d11 * d20 - d01 * d21) * invDenom;
+    bary.z = (d00 * d21 - d01 * d20) * invDenom;
+    bary.x = 1.f - bary.y - bary.z;
+    return bary;
+}
+
 std::vector<unsigned int> edgeListtoTriangleList(std::vector<EdgeIndex>& edges) {
 	// Traverse edge list and construct correctly sorted triangle strip list.
 	return std::vector<unsigned int>();
@@ -202,6 +219,8 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             newVertices.push_back(intersection);
                             newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
                             newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
+                            //vec4 colorNorm = colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist);
+                            //newColors.push_back(vec4(barycentric(colorNorm.xyz(), colorList->at(idx[0]).xyz(), colorList->at(idx[1]).xyz(), colorList->at(idx[2]).xyz()), colorNorm.w));
 
                             //We save the intersection as part of edge on the clipping plane
                             if(intersectionAdded)
@@ -220,6 +239,8 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             newVertices.push_back(intersection);
                             newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
                             newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
+                            //vec4 colorNorm = colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist);
+                            //newColors.push_back(vec4(barycentric(colorNorm.xyz(), colorList->at(idx[0]).xyz(), colorList->at(idx[1]).xyz(), colorList->at(idx[2]).xyz()), 1.f));
 
                             //We save the intersection as part of edge on the clipping plane
                             if(intersectionAdded)
@@ -260,7 +281,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 
                 //Add vertices to mesh
                 for(size_t i=0; i<newVertices.size(); ++i){
-                    outputMesh->addVertex(newVertices.at(i), newTexCoords.at(i), newColors.at(i));
+                    outputMesh->addVertex(newVertices.at(i), newVertices.at(i), newColors.at(i));
                 }
             }
             //Based on intersection edges, create triangles where plane intersect mesh.
