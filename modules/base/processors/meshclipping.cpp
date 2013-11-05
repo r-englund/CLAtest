@@ -215,12 +215,10 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                         else{ //Case 2
                             //Add Intersection
                             vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
-                            float normDist = glm::length(intersection - vertexList->at(idx[i]))/glm::length(vertexList->at(idx[j]) - vertexList->at(idx[i]));
                             newVertices.push_back(intersection);
-                            newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
-                            newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
-                            //vec4 colorNorm = colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist);
-                            //newColors.push_back(vec4(barycentric(colorNorm.xyz(), colorList->at(idx[0]).xyz(), colorList->at(idx[1]).xyz(), colorList->at(idx[2]).xyz()), colorNorm.w));
+                            vec3 interBC = barycentric(intersection, vertexList->at(idx[0]), vertexList->at(idx[1]), vertexList->at(idx[2]));
+                            newTexCoords.push_back((texcoordlist->at(idx[0])*interBC.x) + (texcoordlist->at(idx[1])*interBC.y) + (texcoordlist->at(idx[2])*interBC.z));
+                            newColors.push_back((colorList->at(idx[0])*interBC.x) + (colorList->at(idx[1])*interBC.y) + (colorList->at(idx[2])*interBC.z));
 
                             //We save the intersection as part of edge on the clipping plane
                             if(intersectionAdded)
@@ -235,12 +233,10 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                         if(plane.isInside(vertexList->at(idx[j]))) { // Case 3
                             //Add Intersection
                             vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
-                            float normDist = glm::length(intersection - vertexList->at(idx[i]))/glm::length(vertexList->at(idx[j]) - vertexList->at(idx[i]));
                             newVertices.push_back(intersection);
-                            newTexCoords.push_back(texcoordlist->at(idx[i])+(glm::normalize(texcoordlist->at(idx[j]) - texcoordlist->at(idx[i]))*normDist));
-                            newColors.push_back(colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist));
-                            //vec4 colorNorm = colorList->at(idx[i])+(glm::normalize(colorList->at(idx[j]) - colorList->at(idx[i]))*normDist);
-                            //newColors.push_back(vec4(barycentric(colorNorm.xyz(), colorList->at(idx[0]).xyz(), colorList->at(idx[1]).xyz(), colorList->at(idx[2]).xyz()), 1.f));
+                            vec3 interBC = barycentric(intersection, vertexList->at(idx[0]), vertexList->at(idx[1]), vertexList->at(idx[2]));
+                            newTexCoords.push_back((texcoordlist->at(idx[0])*interBC.x) + (texcoordlist->at(idx[1])*interBC.y) + (texcoordlist->at(idx[2])*interBC.z));
+                            newColors.push_back((colorList->at(idx[0])*interBC.x) + (colorList->at(idx[1])*interBC.y) + (colorList->at(idx[2])*interBC.z));
 
                             //We save the intersection as part of edge on the clipping plane
                             if(intersectionAdded)
