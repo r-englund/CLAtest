@@ -32,7 +32,7 @@ void SimpleWithRectangleLabel::setLabel(std::string label) {
     label_->setText(QString::fromStdString(label));
 }
 
-std::string SimpleWithRectangleLabel::getLabel() { return label_->text().toStdString(); }
+std::string SimpleWithRectangleLabel::getLabel() { return label_->text().toLocal8Bit().constData(); }
 
 void SimpleWithRectangleLabel::editLabel() {
     setFocus();
