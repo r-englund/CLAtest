@@ -129,6 +129,26 @@ bool ImageLoader::readInImage(std::string filename, FIBITMAP **bitmap){
 	return (imageFormat != FIF_UNKNOWN);
 }
 
+bool ImageLoader::isValidImageFile(std::string filename) {
+    const char* file_name_char = (char*)(filename.c_str());
+    FREE_IMAGE_FORMAT imageFormat = FIF_UNKNOWN;	
+
+    //Get file format of input file
+    imageFormat = FreeImage_GetFileType(file_name_char, 10);
+
+    if (imageFormat == FIF_UNKNOWN){
+        imageFormat = FreeImage_GetFIFFromFilename(file_name_char);
+
+        //Raw image files conflicting with raw 3d volumes.
+        if (imageFormat == FIF_RAW){
+            return false;
+        }
+    }    
+    
+    //Return if format was found.
+    return (imageFormat != FIF_UNKNOWN);    
+}
+
 
 template<typename T>
 T* ImageLoader::fiBitmapToDataArray(FIBITMAP *bitmap){
@@ -193,6 +213,7 @@ void* ImageLoader::rescaleImage(Image* srcImage, int dst_width, int dst_height) 
     return rescaleImageRAM(const_cast<ImageRAM*>(imageRam), dst_width, dst_height);
 }
 
+
 void* ImageLoader::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst_height) {
     ivwAssert(srcImageRam!=NULL, "ImageRAM representation does not exist.");
 
@@ -211,6 +232,7 @@ void* ImageLoader::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst
     }
     return NULL;
 }
+
 
 void ImageLoader::initLoader(){
     if (!loader_initialized){

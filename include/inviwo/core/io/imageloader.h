@@ -68,6 +68,8 @@ public:
      * @param void* rescaled raw data
      */
     static void* rescaleImageRAM(ImageRAM* imageRam, int dst_width, int dst_height);
+
+    static bool isValidImageFile(std::string fileExtension);
 private:
     /**
     * Internal function to load a image 

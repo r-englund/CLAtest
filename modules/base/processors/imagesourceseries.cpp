@@ -1,4 +1,5 @@
 #include "imagesourceseries.h"
+#include <inviwo/core/io/imageloader.h>
 
 namespace inviwo {
 
@@ -33,28 +34,30 @@ void ImageSourceSeries::deinitialize() {
 }
 
 void ImageSourceSeries::onFindFiles() {
-    std::vector<std::string> files = imageFileDirectory_.getFiles();     
-
-    //TODO: following settings leads to crash. under investigation.
-    if(files.size())
-        currentImageIndex_.setMaxValue(static_cast<const int>(files.size()));
+    std::vector<std::string> files = imageFileDirectory_.getFiles();         
 
     //imageFilesInDirectory_.clearOptions();
     std::vector<std::string> ids;
     std::vector<std::string> displayNames;
     for (size_t i=0; i<files.size(); i++) {
-        std::string displayName = URLParser::getFileNameWithExtension(files[i]); 
-        ids.push_back(displayName+"_id");
-        displayNames.push_back(displayName);
+        if (ImageLoader::isValidImageFile(files[i]) ) {
+            std::string displayName = URLParser::getFileNameWithExtension(files[i]);
+            ids.push_back(displayName+"_id");
+            displayNames.push_back(displayName);
+        }
     }
 
-    if(!files.size()) {
+    //TODO: following settings leads to crash. under investigation.
+    if(ids.size())
+        currentImageIndex_.setMaxValue(static_cast<const int>(ids.size()));
+
+    if(!ids.size()) {
         ids.push_back("noImage");
         displayNames.push_back("noImage");
         files.push_back("");
     }
  
-    currentImageIndex_.set(static_cast<const int>(files.size()));
+    currentImageIndex_.set(1);
 }
 
 /**
