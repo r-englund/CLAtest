@@ -27,7 +27,7 @@ public:
     Polygon(const Polygon& rhs) : size_(rhs.size()){
         list_ = new T[size_];
         for(size_t i=0; i < size(); ++i){
-            list_[i] = rhs.at(i);
+            list_[i] = rhs.get(i);
         }
     }
 
@@ -35,7 +35,11 @@ public:
         delete[] list_;
     }
 
-    T at(size_t i) const{
+    T& at(size_t i){
+        return list_[i];
+    }
+
+    T get(size_t i) const{
         return list_[i];
     }
 

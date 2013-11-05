@@ -72,6 +72,11 @@ float MeshClipping::degreeToRad(float degree) {
 	return degree * (glm::pi<float>() / 180.f);
 }
 
+//Check point equality with threshold
+inline bool equal(vec3 v1, vec3 v2, float eps) {
+    return (std::fabs(v1.x-v2.x)<eps && std::fabs(v1.y-v2.y)<eps && std::fabs(v1.z-v2.z)<eps);
+}
+
 std::vector<unsigned int> edgeListtoTriangleList(std::vector<EdgeIndex>& edges) {
 	// Traverse edge list and construct correctly sorted triangle strip list.
 	return std::vector<unsigned int>();
@@ -264,12 +269,10 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
             //https://code.google.com/p/poly2tri/
             //Simpler Approach? : 
             //One point on a clipped triangle is replaced with intersection edge,
-            //which is connected with the original point projected onto the plane.
-            //If original point is projected to either of the edge point, 
-            //that means no new triangle.
-            //If Case 4, project triangle onto plane.
+            //Connect all edges to form one or more polygons
+            //Then calculate centroids of these polygons
+            //Then create one triangle per edge
 
-            //This should not be needed...
             std::vector<Edge3D> uniqueintersectionsEdges;
             for(size_t i=0; i<intersectionsEdges.size(); ++i){
                 if(intersectionsEdges.at(i).v1 != intersectionsEdges.at(i).v2){
@@ -288,20 +291,21 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                 //Start with one edge, check which other edge it's connect to it
                 while(!unconnectEdges.empty()){
                     Edge3D currentEdge = unconnectEdges.front();
-                    vec3 firstVertex = currentEdge.v1;
+                    connectedEdges.push_back(currentEdge);
+                    unconnectEdges.erase(unconnectEdges.begin());
                     bool createdPolygon = false;
                     //Search all edges for a connection
                     for(size_t i=0; i < uniqueintersectionsEdges.size(); ++i){
-                        if(uniqueintersectionsEdges[i].v1 == currentEdge.v2 && uniqueintersectionsEdges[i].v2 != currentEdge.v1){
-                            connectedEdges.push_back(currentEdge);
+                        if(equal(uniqueintersectionsEdges[i].v1, currentEdge.v2, EPSILON) && uniqueintersectionsEdges[i].v2 != currentEdge.v1){
+                            connectedEdges.push_back(Edge3D(currentEdge.v2, uniqueintersectionsEdges[i].v2));
                             std::vector<Edge3D>::iterator it = std::find(unconnectEdges.begin(), unconnectEdges.end(), currentEdge);
                             if(it != unconnectEdges.end())
                                 unconnectEdges.erase(it);
                             currentEdge = uniqueintersectionsEdges[i];
                             i = 0;
                         }   
-                        else if(uniqueintersectionsEdges[i].v2 == currentEdge.v2 && uniqueintersectionsEdges[i].v1 != currentEdge.v1){
-                            connectedEdges.push_back(currentEdge);
+                        else if(equal(uniqueintersectionsEdges[i].v2, currentEdge.v2, EPSILON) && uniqueintersectionsEdges[i].v1 != currentEdge.v1){
+                            connectedEdges.push_back(Edge3D(currentEdge.v2, uniqueintersectionsEdges[i].v1));
                             std::vector<Edge3D>::iterator it = std::find(unconnectEdges.begin(), unconnectEdges.end(), currentEdge);
                             if(it != unconnectEdges.end())
                                 unconnectEdges.erase(it);
@@ -309,11 +313,13 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             i = 0;
                         }
                         //Last edge connect to first edge, close the loop and make a polygon
-                        if(firstVertex == currentEdge.v2){
-                            connectedEdges.push_back(currentEdge);
-                            std::vector<Edge3D>::iterator it = std::find(unconnectEdges.begin(), unconnectEdges.end(), currentEdge);
-                            if(it != unconnectEdges.end())
-                                unconnectEdges.erase(it);
+                        if(equal(connectedEdges[0].v1, currentEdge.v2, EPSILON)){
+                            if(currentEdge.v1 != currentEdge.v2){
+                                connectedEdges.push_back(Edge3D(currentEdge.v2, connectedEdges[0].v1));
+                                std::vector<Edge3D>::iterator it = std::find(unconnectEdges.begin(), unconnectEdges.end(), currentEdge);
+                                if(it != unconnectEdges.end())
+                                    unconnectEdges.erase(it);
+                            }
                             Polygon<Edge3D> newPoly(connectedEdges.size());
                             for(size_t j=0; j < connectedEdges.size(); ++j){
                                 newPoly.at(j) = connectedEdges.at(j);
@@ -324,17 +330,105 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             break;
                         }
                     }
-                    if(!createdPolygon)
-                        break;
-                        //ivwAssert(createdPolygon, "Could not connect clipped edges to manifold polygon");
+                    ivwAssert(createdPolygon, "Could not connect clipped edges to manifold polygon");
                 }
 
-                vec3 test = vec3(0.f);
+                //Calculate centroids per polygon
+                //First in the x-y plane and then in the x-z plane.
+                std::vector<vec3> polygonCentroids;
+                for(size_t p=0; p < polygons.size(); ++p){
+                    
+                    //Skip x-y plane if current plane is parallel to x-y plane
+                    //or skip x-z plane if current plane is parallel to x-z plane
+                    //or skip y-z if both skipXY and skip XZ are false
 
-                for(size_t i=0; i<uniqueintersectionsEdges.size(); ++i){
-                    outputMesh->addVertex(test, test, vec4(test, 1.f));
-                    outputMesh->addVertex(uniqueintersectionsEdges.at(i).v2, uniqueintersectionsEdges.at(i).v2, vec4(uniqueintersectionsEdges.at(i).v2, 1.f));
-                    outputMesh->addVertex(uniqueintersectionsEdges.at(i).v1, uniqueintersectionsEdges.at(i).v1, vec4(uniqueintersectionsEdges.at(i).v1, 1.f));
+                    vec3 p0, p1;
+                    vec3 centroid = plane.getPoint();
+                    float signedArea = 0.f;
+                    float a = 0.f;
+
+                    //X-Y Plane
+                    if(!plane.perpendicularToPlane(vec3(0.f, 0.f, 1.f))){
+                        centroid.x = 0.f;
+                        centroid.y = 0.f;
+                        signedArea = 0.f;
+                        for(size_t i=0; i < polygons[p].size(); ++i){
+                            p0 = polygons[p].get(i).v1;
+                            p1 = polygons[p].get(i).v2;
+                            a = p0.x*p1.y - p1.x*p0.y;
+                            signedArea += a;
+                            centroid.x += (p0.x + p1.x)*a;
+                            centroid.y += (p0.y + p1.y)*a;
+                        }
+                        signedArea *= 0.5f;
+                        if(std::fabs(signedArea) < EPSILON){
+                            centroid.x = 0.f;
+                            centroid.y = 0.f;
+                        }
+                        else{
+                            centroid.x /= (6.f*signedArea);
+                            centroid.y /= (6.f*signedArea);
+                        }
+                    }
+
+                    //X-Z Plane
+                    if(!plane.perpendicularToPlane(vec3(0.f, 1.f, 0.f))){
+                        centroid.x = 0.f;
+                        centroid.z = 0.f;
+                        signedArea = 0.f;
+                        for(size_t i=0; i < polygons[p].size(); ++i){
+                            p0 = polygons[p].get(i).v1;
+                            p1 = polygons[p].get(i).v2;
+                            a = p0.x*p1.z - p1.x*p0.z;
+                            signedArea += a;
+                            centroid.x += (p0.x + p1.x)*a;
+                            centroid.z += (p0.z + p1.z)*a;
+                        }
+                        signedArea *= 0.5f;
+                        if(std::fabs(signedArea) < EPSILON){
+                            centroid.x = 0.f;
+                            centroid.z = 0.f;
+                        }
+                        else{
+                            centroid.x /= (6.f*signedArea);
+                            centroid.z /= (6.f*signedArea);
+                        }
+                    }
+
+                    //X-Z Plane
+                    if(!plane.perpendicularToPlane(vec3(1.f, 0.f, 0.f))){
+                        centroid.y = 0.f;
+                        centroid.z = 0.f;
+                        signedArea = 0.f;
+                        for(size_t i=0; i < polygons[p].size(); ++i){
+                            p0 = polygons[p].get(i).v1;
+                            p1 = polygons[p].get(i).v2;
+                            a = p0.y*p1.z - p1.y*p0.z;
+                            signedArea += a;
+                            centroid.y += (p0.y + p1.y)*a;
+                            centroid.z += (p0.z + p1.z)*a;
+                        }
+                        signedArea *= 0.5f;
+                        if(std::fabs(signedArea) < EPSILON){
+                            centroid.y = 0.f;
+                            centroid.z = 0.f;
+                        }
+                        else{
+                            centroid.y /= (6.f*signedArea);
+                            centroid.z /= (6.f*signedArea);
+                        }
+                    }
+
+                    polygonCentroids.push_back(centroid);
+                }
+
+                //Add new polygons as triangles to the mesh
+                for(size_t p=0; p < polygons.size(); ++p){
+                    for(size_t i=0; i < polygons[p].size(); ++i){
+                        outputMesh->addVertex(polygonCentroids[p], polygonCentroids[p], vec4(polygonCentroids[p], 1.f));
+                        outputMesh->addVertex(polygons[p].get(i).v2, polygons[p].get(i).v2, vec4(polygons[p].get(i).v2, 1.f));
+                        outputMesh->addVertex(polygons[p].get(i).v1, polygons[p].get(i).v1, vec4(polygons[p].get(i).v1, 1.f));
+                    }
                 }
             }
         }

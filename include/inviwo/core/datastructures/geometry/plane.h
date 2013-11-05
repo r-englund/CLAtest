@@ -10,11 +10,16 @@ public:
 	Plane(vec3 point, vec3 normal);
 	virtual ~Plane();
 
+    vec3 getPoint() const;
+    vec3 getNormal() const;
+
 	vec3 getIntersection(const vec3&, const vec3&) const;
 
     vec3 projectPoint(const vec3&) const;
 
 	bool isInside(const vec3&) const;
+
+    bool perpendicularToPlane(const vec3&) const;
 	
     void setPoint(const vec3);
 	void setNormal(const vec3&);
