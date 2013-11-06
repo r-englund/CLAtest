@@ -77,9 +77,52 @@ inline bool equal(vec3 v1, vec3 v2, float eps) {
     return (std::fabs(v1.x-v2.x)<eps && std::fabs(v1.y-v2.y)<eps && std::fabs(v1.z-v2.z)<eps);
 }
 
-// Compute barycentric coordinates for
+// Compute barycentric coordinates/weights for
+// point p (which is inside the polygon) with respect to polygons of vertices (v)
+// Based on Mean Value Coordinates
+inline void barycentricInsidePolygon(vec3 p, const std::vector<vec3>& v, std::vector<float> &baryW){
+    size_t numV = v.size();
+
+    std::vector<vec3> s(numV);
+    std::vector<float> ri(numV);
+    for(size_t i = 0; i < numV; ++i){
+        s[i] = v[i] - p;
+        ri[i] = sqrt(glm::dot(s[i], s[i]));
+    }
+
+    size_t ip;
+    float Ai;
+    std::vector<float> tanA(numV);
+    for(size_t i = 0; i < numV; ++i){
+        ip = (i+1)%numV;
+        //Only 2D!!!!
+        Ai = (s[i].x*s[ip].y - s[ip].x*s[i].y);
+        tanA[i] = (ri[i]*ri[ip] - glm::dot(s[i], s[ip]))/Ai;
+    }
+
+    baryW.resize(numV);
+    for(size_t i = 0; i < numV; ++i){
+        baryW[i] = 0.f;
+    }
+
+    float wi, wsum = 0.f;
+    for(size_t i = 0; i < numV; ++i){
+        ip = (numV-1+i)%numV;
+        wi = 2.f*(tanA[i] + tanA[ip])/ri[i];
+        wsum += wi;
+        baryW[i] = wi;
+    }
+
+    if(std::fabs(wsum) > 0.f){
+        for(size_t i = 0; i < numV; ++i){
+            baryW[i] /= wsum;
+        }
+    }
+}
+
+// Compute barycentric coordinates/weights for
 // point p with respect to triangle (a, b, c)
-inline vec3 barycentric(vec3 p, vec3 a, vec3 b, vec3 c){
+inline vec3 barycentricTriangle(vec3 p, vec3 a, vec3 b, vec3 c){
     vec3 v0 = b - a, v1 = c - a, v2 = p - a;
     float d00 = glm::dot(v0, v0);
     float d01 = glm::dot(v0, v1);
@@ -172,6 +215,8 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
             std::vector<vec3> newTexCoords;
             std::vector<vec4> newColors;
             std::vector<Edge3D> intersectionsEdges;
+            std::vector<std::pair<vec3, vec3>> intersectionTex;
+            std::vector<std::pair<vec3, vec4>> intersectionCol;
             size_t count = 0;
             for(unsigned int t=0; t<triangleList->size()-2; ++t) {
                 idx[0] = triangleList->at(t);
@@ -184,7 +229,6 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                     idx[1] = triangleList->at(t+1);
                     idx[2] = triangleList->at(t+2);
                 }
-                //clipAndAddTriangle(triangle, plane, outputMesh);
                 /* Sutherland-Hodgman Clipping
                    1) Traverse each edge by edge, such as successive vertex pairs make up edges
                    2) For each edge with vertices [v1, v2]
@@ -216,9 +260,14 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             //Add Intersection
                             vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
                             newVertices.push_back(intersection);
-                            vec3 interBC = barycentric(intersection, vertexList->at(idx[0]), vertexList->at(idx[1]), vertexList->at(idx[2]));
-                            newTexCoords.push_back((texcoordlist->at(idx[0])*interBC.x) + (texcoordlist->at(idx[1])*interBC.y) + (texcoordlist->at(idx[2])*interBC.z));
-                            newColors.push_back((colorList->at(idx[0])*interBC.x) + (colorList->at(idx[1])*interBC.y) + (colorList->at(idx[2])*interBC.z));
+                            vec3 interBC = barycentricTriangle(intersection, vertexList->at(idx[0]), vertexList->at(idx[1]), vertexList->at(idx[2]));
+                            vec3 interTex = (texcoordlist->at(idx[0])*interBC.x) + (texcoordlist->at(idx[1])*interBC.y) + (texcoordlist->at(idx[2])*interBC.z);
+                            newTexCoords.push_back(interTex);
+                            vec4 interCol = (colorList->at(idx[0])*interBC.x) + (colorList->at(idx[1])*interBC.y) + (colorList->at(idx[2])*interBC.z);
+                            newColors.push_back(interCol);
+
+                            intersectionTex.push_back(std::make_pair(intersection, interTex));
+                            intersectionCol.push_back(std::make_pair(intersection, interCol));
 
                             //We save the intersection as part of edge on the clipping plane
                             if(intersectionAdded)
@@ -234,9 +283,14 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             //Add Intersection
                             vec3 intersection = plane.getIntersection(vertexList->at(idx[i]), vertexList->at(idx[j]));
                             newVertices.push_back(intersection);
-                            vec3 interBC = barycentric(intersection, vertexList->at(idx[0]), vertexList->at(idx[1]), vertexList->at(idx[2]));
-                            newTexCoords.push_back((texcoordlist->at(idx[0])*interBC.x) + (texcoordlist->at(idx[1])*interBC.y) + (texcoordlist->at(idx[2])*interBC.z));
-                            newColors.push_back((colorList->at(idx[0])*interBC.x) + (colorList->at(idx[1])*interBC.y) + (colorList->at(idx[2])*interBC.z));
+                            vec3 interBC = barycentricTriangle(intersection, vertexList->at(idx[0]), vertexList->at(idx[1]), vertexList->at(idx[2]));
+                            vec3 interTex = (texcoordlist->at(idx[0])*interBC.x) + (texcoordlist->at(idx[1])*interBC.y) + (texcoordlist->at(idx[2])*interBC.z);
+                            newTexCoords.push_back(interTex);
+                            vec4 interCol = (colorList->at(idx[0])*interBC.x) + (colorList->at(idx[1])*interBC.y) + (colorList->at(idx[2])*interBC.z);
+                            newColors.push_back(interCol);
+                            
+                            intersectionTex.push_back(std::make_pair(intersection, interTex));
+                            intersectionCol.push_back(std::make_pair(intersection, interCol));
 
                             //We save the intersection as part of edge on the clipping plane
                             if(intersectionAdded)
@@ -440,11 +494,50 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                 }
 
                 //Add new polygons as triangles to the mesh
+                std::vector<vec3> tex;
+                std::vector<vec4> col;
+                vec3 texC;
+                vec4 colC;
                 for(size_t p=0; p < polygons.size(); ++p){
-                    for(size_t i=0; i < polygons[p].size(); ++i){
-                        outputMesh->addVertex(polygonCentroids[p], polygonCentroids[p], vec4(polygonCentroids[p], 1.f));
-                        outputMesh->addVertex(polygons[p].get(i).v2, polygons[p].get(i).v2, vec4(polygons[p].get(i).v2, 1.f));
-                        outputMesh->addVertex(polygons[p].get(i).v1, polygons[p].get(i).v1, vec4(polygons[p].get(i).v1, 1.f));
+                    size_t pSize = polygons[p].size();
+
+                    //Lookup all texcoord and colors for the vertices of the polygon
+                    tex.clear();
+                    col.clear();
+                    for(size_t i=0; i < pSize; ++i){
+                        for(size_t t=0; t<intersectionTex.size(); ++t){
+                            if(intersectionTex.at(t).first == polygons[p].get(i).v1){
+                                tex.push_back(intersectionTex.at(t).second);
+                                col.push_back(intersectionCol.at(t).second);
+                                break;
+                            }
+                        }
+                    }
+                    //Calculate color of centroid
+                    //by first calculating distances to centroid
+                    //and multiply the tex and col with the distance
+                    //Then divide tex/col with the sum of all distances
+                    //i.e. normalize weights
+                    texC = vec3(0.f);
+                    colC = vec4(0.f);
+                    float wp;
+                    float wsum = 0.f;
+                    for(size_t i=0; i < pSize; ++i){
+                        wp = glm::length(polygonCentroids[p] - polygons[p].get(i).v1);
+                        texC += tex[i]*wp;
+                        colC += col[i]*wp;
+                        wsum += wp;
+                    }
+                    texC /= wsum;
+                    colC /= wsum;
+
+                    //Add triangles to the mesh
+                    size_t ip;
+                    for(size_t i=0; i < pSize; ++i){
+                        ip = (i+1)%pSize;
+                        outputMesh->addVertex(polygonCentroids[p], texC, colC);
+                        outputMesh->addVertex(polygons[p].get(i).v2, tex[ip], col[ip]);
+                        outputMesh->addVertex(polygons[p].get(i).v1, tex[i], col[i]);
                     }
                 }
             }
