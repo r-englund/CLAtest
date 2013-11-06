@@ -54,9 +54,9 @@ void InviwoCore::setupModuleSettings(){
 
         getSettings()->addProperty(new BoolProperty("shaderReloading", "Automatically reload shaders", true));
 
-        getSettings()->addProperty(new BoolProperty("portInspectorOn", "Port Inspector On", true));
+        getSettings()->addProperty(new BoolProperty("enablePortInspectors", "Enable port inspectors", true));
 
-        getSettings()->addProperty(new BoolProperty("soundsOn", "Sounds On", true));
+        getSettings()->addProperty(new BoolProperty("enableSound", "Enable sound", true));
 
         getSettings()->addProperty(new IntProperty("useRAMPercent", "Max Use Mem %", 50, 1, 100));
 

@@ -21,7 +21,10 @@ void SettingsWidget::generateWidget() {
 
     QFrame* frame = new QFrame();
     vLayout_ = new QVBoxLayout(frame);
+	vLayout_->setSpacing(0);
+	//vLayout_->setMargin(0);
     frame->setLayout(vLayout_);
+	//frame->adjustSize();
     setWidget(frame);
 }
 

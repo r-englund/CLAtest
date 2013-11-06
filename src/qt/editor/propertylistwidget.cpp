@@ -20,6 +20,7 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
     scrollArea_->setWidgetResizable(true);
     scrollArea_->setMinimumWidth(300);
     scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollArea_->setFrameShape(QFrame::NoFrame);
 
     listWidget_ = new QWidget();
     listWidgetLayout_ = new QVBoxLayout(listWidget_);

@@ -9,17 +9,17 @@ namespace inviwo {
 CanvasProcessor::CanvasProcessor()
     : Processor(),
     inport_("inport"),
-    displayedLayer_("displayedLayer_", "Display Layer"),
+    visibleLayer_("visibleLayer_", "Visible layer"),
     snapshotButton_("snapshot", "Create Snapshot", PropertyOwner::VALID),
     canvas_(0)
 {
     addPort(inport_);
 
-    displayedLayer_.addOption("color", "Color Layer", COLOR_LAYER);
-    displayedLayer_.addOption("depth", "Depth Layer", DEPTH_LAYER);
-    displayedLayer_.addOption("picking", "Picking Layer", PICKING_LAYER);
-    displayedLayer_.set(COLOR_LAYER);
-    addProperty(displayedLayer_);
+    visibleLayer_.addOption("color", "Color layer", COLOR_LAYER);
+    visibleLayer_.addOption("depth", "Depth layer", DEPTH_LAYER);
+    visibleLayer_.addOption("picking", "Picking layer", PICKING_LAYER);
+    visibleLayer_.set(COLOR_LAYER);
+    addProperty(visibleLayer_);
 
     snapshotButton_.registerClassMemberFunction(this, &CanvasProcessor::createSnapshot);
 	addProperty(snapshotButton_);

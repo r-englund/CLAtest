@@ -72,7 +72,7 @@ void Canvas::interactionEvent(InteractionEvent* e) {
 }
 
 void Canvas::mousePressEvent(MouseEvent* e) {
-    if(e->button() == MouseEvent::MOUSE_BUTTON_LEFT){
+    if(e->button() == MouseEvent::MOUSE_BUTTON_LEFT) {
         bool picked = pickingContainer_->performPick(mousePosToPixelCoordinates(e->pos()));
         if(!picked)
             interactionEvent(e);

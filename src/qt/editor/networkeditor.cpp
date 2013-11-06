@@ -328,7 +328,7 @@ void NetworkEditor::removeInspectorNetwork(Port* port) {
 
 void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
     //TODO: allow to define inspectors in module
-    if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("portInspectorOn"))->get())){
+    if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("enablePortInspectors"))->get())){
         if (port->getProcessor()->isInitialized()) {
             if (dynamic_cast<ImageOutport*>(port)) {
                 addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
@@ -461,24 +461,21 @@ void NetworkEditor::removeExternalNetwork(std::string identifierPrefix) {
 
 std::vector<std::string> NetworkEditor::getSnapshotsOfExternalNetwork(std::string fileName) {
     std::vector<std::string> snapshotFileNames;
-   // //TODO: allow to define inspectors in module
-   if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("portInspectorOn"))->get())){
-        //load external network
-        QRectF rect = sceneRect();
-        ivec2 pos(rect.width()/2, rect.height()/2);
-        std::string identifierPrefix = "TemporaryExternalNetwork";
-        addExternalNetwork(fileName, identifierPrefix, pos, true);
-        processorNetwork_->setModified(true);
-        processorNetworkEvaluator_->evaluate();
 
-        //save snapshot         
-        snapshotFileNames = saveSnapshotsInExternalNetwork(fileName, identifierPrefix);
+	//load external network
+    QRectF rect = sceneRect();
+    ivec2 pos(rect.width()/2, rect.height()/2);
+    std::string identifierPrefix = "TemporaryExternalNetwork";
+    addExternalNetwork(fileName, identifierPrefix, pos, true);
+    processorNetwork_->setModified(true);
+    processorNetworkEvaluator_->evaluate();
 
-        //unload external network
-        removeExternalNetwork(identifierPrefix);       
-               
-   }
-   return snapshotFileNames;
+    //save snapshot         
+    snapshotFileNames = saveSnapshotsInExternalNetwork(fileName, identifierPrefix);
+
+    //unload external network
+    removeExternalNetwork(identifierPrefix);       
+	return snapshotFileNames;
 }
 
 

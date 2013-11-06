@@ -30,7 +30,7 @@ public:
 
 protected:
     ImageInport inport_;
-    TemplateOptionProperty<ImageLayerType> displayedLayer_;
+    TemplateOptionProperty<ImageLayerType> visibleLayer_;
     ButtonProperty snapshotButton_;
 
 private:
