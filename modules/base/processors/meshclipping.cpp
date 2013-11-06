@@ -215,8 +215,8 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
             std::vector<vec3> newTexCoords;
             std::vector<vec4> newColors;
             std::vector<Edge3D> intersectionsEdges;
-            std::vector<std::pair<vec3, vec3>> intersectionTex;
-            std::vector<std::pair<vec3, vec4>> intersectionCol;
+            std::vector<std::pair<vec3, vec3> > intersectionTex;
+            std::vector<std::pair<vec3, vec4> > intersectionCol;
             size_t count = 0;
             for(unsigned int t=0; t<triangleList->size()-2; ++t) {
                 idx[0] = triangleList->at(t);
