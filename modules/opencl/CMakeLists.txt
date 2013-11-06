@@ -85,7 +85,6 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opencl/cl/img_resize.cl
     ${IVW_MODULE_DIR}/opencl/cl/samplers.cl
     ${IVW_MODULE_DIR}/opencl/cl/transformations.cl
-    ${IVW_MODULE_DIR}/opencl/cl/transmittance.cl
     ${IVW_MODULE_DIR}/opencl/cl/volumeraycaster.cl
 )
 ivw_group("Shader Files" ${SHADER_FILES})
