@@ -80,10 +80,10 @@ inline bool equal(vec3 v1, vec3 v2, float eps) {
 // Compute barycentric coordinates/weights for
 // point p (which is inside the polygon) with respect to polygons of vertices (v)
 // Based on Mean Value Coordinates
-inline void barycentricInsidePolygon(vec3 p, const std::vector<vec3>& v, std::vector<float> &baryW){
+inline void barycentricInsidePolygon2D(vec2 p, const std::vector<vec2>& v, std::vector<float> &baryW){
     size_t numV = v.size();
 
-    std::vector<vec3> s(numV);
+    std::vector<vec2> s(numV);
     std::vector<float> ri(numV);
     for(size_t i = 0; i < numV; ++i){
         s[i] = v[i] - p;
@@ -95,7 +95,6 @@ inline void barycentricInsidePolygon(vec3 p, const std::vector<vec3>& v, std::ve
     std::vector<float> tanA(numV);
     for(size_t i = 0; i < numV; ++i){
         ip = (i+1)%numV;
-        //Only 2D!!!!
         Ai = (s[i].x*s[ip].y - s[ip].x*s[i].y);
         tanA[i] = (ri[i]*ri[ip] - glm::dot(s[i], s[ip]))/Ai;
     }
@@ -407,6 +406,8 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                 //Calculate centroids per polygon
                 //First in the x-y plane and then in the x-z plane.
                 std::vector<vec3> polygonCentroids;
+                vec3 u, v;
+                vec3 n = plane.getNormal();
                 for(size_t p=0; p < polygons.size(); ++p){
                     
                     //Skip x-y plane if current plane is parallel to x-y plane
@@ -420,6 +421,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 
                     //X-Y Plane
                     if(!plane.perpendicularToPlane(vec3(0.f, 0.f, 1.f))){
+                        u = vec3(n.y, -n.x, 0.f);
                         centroid.x = 0.f;
                         centroid.y = 0.f;
                         signedArea = 0.f;
@@ -444,6 +446,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 
                     //X-Z Plane
                     if(!plane.perpendicularToPlane(vec3(0.f, 1.f, 0.f))){
+                        u = vec3(n.z, -n.x, 0.f);
                         centroid.x = 0.f;
                         centroid.z = 0.f;
                         signedArea = 0.f;
@@ -466,8 +469,9 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                         }
                     }
 
-                    //X-Z Plane
+                    //Y-Z Plane
                     if(!plane.perpendicularToPlane(vec3(1.f, 0.f, 0.f))){
+                        u = vec3(n.z, -n.y, 0.f);
                         centroid.y = 0.f;
                         centroid.z = 0.f;
                         signedArea = 0.f;
@@ -492,19 +496,27 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 
                     polygonCentroids.push_back(centroid);
                 }
+                v = glm::cross(plane.getNormal(), u);
 
                 //Add new polygons as triangles to the mesh
+                std::vector<vec2> uv;
+                std::vector<float> baryW;
                 std::vector<vec3> tex;
                 std::vector<vec4> col;
+                vec2 uvC;
                 vec3 texC;
                 vec4 colC;
                 for(size_t p=0; p < polygons.size(); ++p){
                     size_t pSize = polygons[p].size();
 
-                    //Lookup all texcoord and colors for the vertices of the polygon
+                    uv.clear();
                     tex.clear();
                     col.clear();
                     for(size_t i=0; i < pSize; ++i){
+                        //Calculate u-v plane coordinates of the vertex on the polygon
+                        uv.push_back(vec2(glm::dot(u, polygons[p].get(i).v1), glm::dot(v, polygons[p].get(i).v1)));
+
+                        //Lookup texcoord and colors for the vertex of the polygon
                         for(size_t t=0; t<intersectionTex.size(); ++t){
                             if(intersectionTex.at(t).first == polygons[p].get(i).v1){
                                 tex.push_back(intersectionTex.at(t).second);
@@ -513,6 +525,11 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             }
                         }
                     }
+
+                    //Calculate barycentric coordinates (weights) for all the vertices based on centroid.
+                    uvC = vec2(glm::dot(u, polygonCentroids[p]), glm::dot(v, polygonCentroids[p]));
+                    barycentricInsidePolygon2D(uvC, uv, baryW); 
+
                     //Calculate color of centroid
                     //by first calculating distances to centroid
                     //and multiply the tex and col with the distance
@@ -524,9 +541,9 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                     float wsum = 0.f;
                     for(size_t i=0; i < pSize; ++i){
                         wp = glm::length(polygonCentroids[p] - polygons[p].get(i).v1);
-                        texC += tex[i]*wp;
-                        colC += col[i]*wp;
-                        wsum += wp;
+                        texC += tex[i]*(1.f/wp);
+                        colC += col[i]*(1.f/wp);
+                        wsum += (1.f/wp);
                     }
                     texC /= wsum;
                     colC /= wsum;
