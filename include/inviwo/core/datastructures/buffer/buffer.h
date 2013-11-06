@@ -43,21 +43,23 @@ template<typename T, size_t B, BufferType A>
 class Attributes : public Buffer {
 
 public:
-    Attributes() : Buffer(0, A, DataFormat<T,B>::get()) {}
+    Attributes(size_t size = 0): Buffer(size, A, DataFormat<T,B>::get()) {}
+
     virtual ~Attributes(){ }
 
     virtual Attributes* clone() const { return new Attributes(*this); }
 
-    std::vector<T> getAttributeContainer() const { return this->getRepresentation<T>()->getDataContainer(); }
-
 private:
+    static const DataFormatBase* defaultformat(){
+        return  DataFormat<T, B>::get();
+    }
 
 };
 
 
 #define DataFormatBuffers(D, A) Attributes<D::type, D::bits, A>
 
-typedef DataFormatBuffers(DataUINT32, POSITION_ATTRIB) BufferUINT32;
+//typedef DataFormatBuffers(DataUINT32, POSITION_ATTRIB) BufferUINT32;
 //typedef DataFLOAT32 CurvatureBuffer;
 //typedef DataUINT32 IndexBuffer;
 //typedef DataVec2FLOAT32 Position2dBuffer;
@@ -75,7 +77,8 @@ typedef DataFormatBuffers(DataVec3FLOAT32, POSITION_ATTRIB) Position3dBuffer;
 typedef DataFormatBuffers(DataVec3FLOAT32, TEXCOORD_ATTRIB) TexCoord3dBuffer;
 typedef DataFormatBuffers(DataVec3FLOAT32, NORMAL_ATTRIB) NormalBuffer;
 
-
+#define DataFormatIdMacro(i) typedef Attributes<Data##i::type, Data##i::bits, POSITION_ATTRIB> Buffer_##i;
+#include <inviwo/core/util/formatsdefinefunc.h>
 
 
 } // namespace

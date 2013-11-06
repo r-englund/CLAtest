@@ -64,9 +64,28 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add OpenCL files
 set(SHADER_FILES
+    ${IVW_MODULE_DIR}/opencl/cl/datastructures/bbox.cl
+    ${IVW_MODULE_DIR}/opencl/cl/datastructures/lightsource.cl
+    ${IVW_MODULE_DIR}/opencl/cl/intersection/rayboxintersection.cl
+    ${IVW_MODULE_DIR}/opencl/cl/intersection/raydiscintersection.cl
+    ${IVW_MODULE_DIR}/opencl/cl/intersection/rayplaneintersection.cl
+    ${IVW_MODULE_DIR}/opencl/cl/intersection/raysphereintersection.cl
+    ${IVW_MODULE_DIR}/opencl/cl/light/light.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/abcbrdf.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/ashikiminbrdf.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/blinnphongbrdf.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/cooktorrancebrdf.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/microfacet.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/phasefunctions.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/shading.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/shadingmath.cl
+    ${IVW_MODULE_DIR}/opencl/cl/shading/wardbrdf.cl
+    ${IVW_MODULE_DIR}/opencl/cl/gradients.cl
     ${IVW_MODULE_DIR}/opencl/cl/grayscale.cl
     ${IVW_MODULE_DIR}/opencl/cl/img_resize.cl
     ${IVW_MODULE_DIR}/opencl/cl/samplers.cl
+    ${IVW_MODULE_DIR}/opencl/cl/transformations.cl
+    ${IVW_MODULE_DIR}/opencl/cl/transmittance.cl
     ${IVW_MODULE_DIR}/opencl/cl/volumeraycaster.cl
 )
 ivw_group("Shader Files" ${SHADER_FILES})

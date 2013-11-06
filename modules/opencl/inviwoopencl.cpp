@@ -433,4 +433,12 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
 
     return clFormat;
 }
+
+std::string getCLErrorString( const cl::Error& err )
+{
+    std::ostringstream ss; 
+    ss << "Error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl;
+    return ss.str();
+}
+
 }

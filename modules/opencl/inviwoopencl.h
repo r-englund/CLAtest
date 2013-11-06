@@ -144,8 +144,15 @@ private:
 
 };
 
+/**
+ * Creates a readable error report from an OpenCL exception. 
+ * Example usage: LogError(getCLErrorString(err))
+ * 
+ * @param err 
+ * @return 
+ */std::string getCLErrorString(const cl::Error& err);
 
-void LogOpenCLError(cl_int err, const char* message = NULL);
+void LogOpenCLError(cl_int err, const char* message = "");
 /** \brief Get string representation of error code according to definitions in CL/cl.h
  *
  *  \return The error code string.

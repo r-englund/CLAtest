@@ -9,6 +9,7 @@
 
 namespace cl {
 
+
 // Kernel argument specializations for vec3 types:
 // int, uint, float
 

@@ -78,17 +78,22 @@ void VolumeRaycasterCL::process() {
     uvec3 volumeDim = volumeCL->getDimensions();
     volumeCL->aquireGLObject();
     const ImageCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<ImageCL>();
-    
-    cl_uint arg = 0;
-    kernel_->setArg(arg++, *volumeCL);
-    kernel_->setArg(arg++, *entryCLGL);
-    kernel_->setArg(arg++, *exitCLGL);
-    kernel_->setArg(arg++, *transferFunctionCL);
-    kernel_->setArg(arg++, samplingRate_.get());// / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
-    kernel_->setArg(arg++, volumeDim);
-    kernel_->setArg(arg++, *outImageCL);
-    // 
-    OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+    try
+    {
+        cl_uint arg = 0;
+        kernel_->setArg(arg++, *volumeCL);
+        kernel_->setArg(arg++, *entryCLGL);
+        kernel_->setArg(arg++, *exitCLGL);
+        kernel_->setArg(arg++, *transferFunctionCL);
+        kernel_->setArg(arg++, samplingRate_.get());// / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
+        kernel_->setArg(arg++, volumeDim);
+        kernel_->setArg(arg++, *outImageCL);
+        // 
+        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+    } catch (cl::Error& err) {
+        LogError(getCLErrorString(err));
+    }
+
     
     volumeCL->releaseGLObject();
     outImageCL->releaseGLObject();

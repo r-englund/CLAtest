@@ -60,6 +60,13 @@ namespace cl {
 template <>
 cl_int Kernel::setArg(cl_uint index, const inviwo::BufferCL& value);
 
+// Kernel argument specializations for Buffer type 
+// (enables calling cl::Queue::setArg with Buffer)
+// @note This function is only valid for buffers 
+// that does not change the buffer data.
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::Buffer& value);
+
 } // namespace cl
 
 #endif // IVW_BUFFERCL_H

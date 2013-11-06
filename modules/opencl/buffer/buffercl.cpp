@@ -29,7 +29,7 @@ void BufferCL::upload( const void* data, size_t size)
         setSize(size/getSizeOfElement());
         initialize(data);
     } else {
-        OpenCL::instance()->getQueue().enqueueWriteBuffer(*buffer_, true, 0, getSize()*getSizeOfElement(), const_cast<void*>(data));
+        OpenCL::instance()->getQueue().enqueueWriteBuffer(*buffer_, true, 0, size, const_cast<void*>(data));
     }
     
 
@@ -68,10 +68,20 @@ void BufferCL::initialize(const void* data) {
     BufferCL::initialize();
 }
 
+} // namespace inviwo
 
+namespace cl {
 
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::BufferCL& value)
+{
+    return setArg(index, value.getBuffer());
+}
 
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::Buffer& value)
+{
+    return setArg(index, value.getRepresentation<inviwo::BufferCL>()->getBuffer());
+}
 
-
-} // namespace
-
+} // namespace cl
