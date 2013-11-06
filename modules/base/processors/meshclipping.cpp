@@ -79,7 +79,7 @@ inline bool equal(vec3 v1, vec3 v2, float eps) {
 
 // Compute barycentric coordinates/weights for
 // point p (which is inside the polygon) with respect to polygons of vertices (v)
-// Based on Mean Value Coordinates
+// Based on Mean Value Coordinates by Hormann/Floater
 inline void barycentricInsidePolygon2D(vec2 p, const std::vector<vec2>& v, std::vector<float> &baryW){
     size_t numV = v.size();
 
@@ -104,7 +104,8 @@ inline void barycentricInsidePolygon2D(vec2 p, const std::vector<vec2>& v, std::
         baryW[i] = 0.f;
     }
 
-    float wi, wsum = 0.f;
+    float wi;
+    float wsum = 0.f;
     for(size_t i = 0; i < numV; ++i){
         ip = (numV-1+i)%numV;
         wi = 2.f*(tanA[i] + tanA[ip])/ri[i];
@@ -421,7 +422,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 
                     //X-Y Plane
                     if(!plane.perpendicularToPlane(vec3(0.f, 0.f, 1.f))){
-                        u = vec3(n.y, -n.x, 0.f);
+                        u = vec3(n.y, -n.z, 0.f);
                         centroid.x = 0.f;
                         centroid.y = 0.f;
                         signedArea = 0.f;
@@ -446,7 +447,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 
                     //X-Z Plane
                     if(!plane.perpendicularToPlane(vec3(0.f, 1.f, 0.f))){
-                        u = vec3(n.z, -n.x, 0.f);
+                        u = vec3(n.x, -n.y, 0.f);
                         centroid.x = 0.f;
                         centroid.z = 0.f;
                         signedArea = 0.f;
@@ -471,7 +472,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 
                     //Y-Z Plane
                     if(!plane.perpendicularToPlane(vec3(1.f, 0.f, 0.f))){
-                        u = vec3(n.z, -n.y, 0.f);
+                        u = vec3(n.y, -n.z, 0.f);
                         centroid.y = 0.f;
                         centroid.z = 0.f;
                         signedArea = 0.f;
@@ -525,28 +526,17 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             }
                         }
                     }
+                    uv.pop_back();
 
                     //Calculate barycentric coordinates (weights) for all the vertices based on centroid.
                     uvC = vec2(glm::dot(u, polygonCentroids[p]), glm::dot(v, polygonCentroids[p]));
-                    barycentricInsidePolygon2D(uvC, uv, baryW); 
-
-                    //Calculate color of centroid
-                    //by first calculating distances to centroid
-                    //and multiply the tex and col with the distance
-                    //Then divide tex/col with the sum of all distances
-                    //i.e. normalize weights
+                    barycentricInsidePolygon2D(uvC, uv, baryW);
                     texC = vec3(0.f);
                     colC = vec4(0.f);
-                    float wp;
-                    float wsum = 0.f;
-                    for(size_t i=0; i < pSize; ++i){
-                        wp = glm::length(polygonCentroids[p] - polygons[p].get(i).v1);
-                        texC += tex[i]*(1.f/wp);
-                        colC += col[i]*(1.f/wp);
-                        wsum += (1.f/wp);
+                    for(size_t i=0; i < pSize-1; ++i){
+                        texC += tex[i]*baryW[i];
+                        colC += col[i]*baryW[i];
                     }
-                    texC /= wsum;
-                    colC /= wsum;
 
                     //Add triangles to the mesh
                     size_t ip;
