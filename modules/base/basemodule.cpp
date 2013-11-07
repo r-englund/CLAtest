@@ -9,6 +9,7 @@
 #include <modules/base/processors/imagesource.h>
 #include <modules/base/processors/imagesourceseries.h>
 #include <modules/base/processors/meshclipping.h>
+#include <modules/base/processors/meshcreator.h>
 #include <modules/base/processors/parallelepipedproxygeometry.h>
 #include <modules/base/processors/positionwidgetprocessor.h>
 #include <modules/base/processors/redgreenprocessor.h>
@@ -35,6 +36,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(ImageSource);
     registerProcessor(ImageSourceSeries);
     registerProcessor(MeshClipping);
+    registerProcessor(MeshCreator);
     registerProcessor(ParallelepipedProxyGeometry);
     registerProcessor(PositionWidgetProcessor);
     registerProcessor(RedGreenProcessor);

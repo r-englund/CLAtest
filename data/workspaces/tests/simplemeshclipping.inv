@@ -1,0 +1,277 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref0">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-675" y="-325" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="869" y="439" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="128" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
+                <Property type="BaseOptionProperty" identifier="visibleLayer_" displayName="Visible layer" />
+            </Properties>
+        </Processor>
+        <Processor type="MeshClipping" identifier="MeshClipping" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-600" y="-525" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable clipping">
+                    <value content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="planeNormal" displayName="Plane Normal">
+                    <value x="-0.5" y="-0.2" z="-0.69999999" />
+                    <minvalue x="-1" y="-1" z="-1" />
+                    <maxvalue x="1" y="1" z="1" />
+                    <increment x="0.1" y="0.1" z="0.1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="planePoint" displayName="Plane Point">
+                    <value x="0.68799973" y="1.3979998" z="0.60000002" />
+                    <minvalue x="-10" y="-10" z="-10" />
+                    <maxvalue x="10" y="10" z="10" />
+                    <increment x="0.1" y="0.1" z="0.1" />
+                </Property>
+                <Property type="BoolProperty" identifier="renderAsPoints" displayName="Render As Points by Default">
+                    <value content="0" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref2">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-650" y="-425" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <InteractonHandlers>
+                <InteractionHandler type="Trackball">
+                    <Properties>
+                        <Property type="EventProperty" identifier="stepPanDown" displayName="Step pan down">
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="S" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan down" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanLeft" displayName="Step pan left">
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="A" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan left" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanRight" displayName="Step pan right">
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="D" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan right" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanUp" displayName="Step pan up">
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="W" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan up" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateDown" displayName="Step rotate down">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="S" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate down" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateLeft" displayName="Step rotate left">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="A" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate left" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateRight" displayName="Step rotate right">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="D" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate right" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateUp" displayName="Step rotate up">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="W" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate up" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepZoomIn" displayName="Step zoom in">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="R" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step zoom in" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepZoomOut" displayName="Step zoom out">
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="F" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step zoom out" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="trackballPan" displayName="Pan">
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Middle mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball pan" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="trackballRotate" displayName="Rotate">
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Left mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball rotate" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="trackballZoom" displayName="Zoom">
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Right mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball zoom" />
+                            </Action>
+                        </Property>
+                    </Properties>
+                </InteractionHandler>
+            </InteractonHandlers>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera">
+                    <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
+                        <value x="1.5386699" y="1.6513728" z="1.7794089" />
+                        <minvalue x="-10" y="-10" z="-10" />
+                        <maxvalue x="10" y="10" z="10" />
+                        <increment x="0.1" y="0.1" z="0.1" />
+                    </lookFrom>
+                    <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
+                        <value x="-1.1232054" y="-1.1977723" z="-1.1805778" />
+                        <minvalue x="-10" y="-10" z="-10" />
+                        <maxvalue x="10" y="10" z="10" />
+                        <increment x="0.1" y="0.1" z="0.1" />
+                    </lookTo>
+                    <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
+                        <value x="0.0488826" y="0.67044353" z="-0.72671568" />
+                        <minvalue x="-10" y="-10" z="-10" />
+                        <maxvalue x="10" y="10" z="10" />
+                        <increment x="0.1" y="0.1" z="0.1" />
+                    </lookUp>
+                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
+                        <value content="60" />
+                        <minvalue content="30" />
+                        <maxvalue content="360" />
+                        <increment content="0.1" />
+                    </fovy>
+                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
+                        <value content="1" />
+                        <minvalue content="0" />
+                        <maxvalue content="1" />
+                        <increment content="0.1" />
+                    </aspectRatio>
+                    <useNearFarDistFromOrigin type="BoolProperty" identifier="useNearFarDistFromOrigin" displayName="Near/Far Plane Relative to Distance from Origin">
+                        <value content="0" />
+                    </useNearFarDistFromOrigin>
+                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
+                        <value content="0.01" />
+                        <minvalue content="0.001" />
+                        <maxvalue content="10" />
+                        <increment content="0.001" />
+                    </nearPlane>
+                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
+                        <value content="10" />
+                        <minvalue content="0.1" />
+                        <maxvalue content="100" />
+                        <increment content="0.1" />
+                    </farPlane>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="MeshCreator" identifier="MeshCreator" id="ref3">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-650" y="-600" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="OptionPropertyString" identifier="meshType" displayName="Mesh Type">
+                    <value content="cube" />
+                </Property>
+            </Properties>
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection>
+            <OutPort identifier="geometry.output">
+                <Processor type="MeshClipping" identifier="MeshClipping" reference="ref1" />
+            </OutPort>
+            <InPort identifier="geometry.inport">
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref0" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="MeshCreator" identifier="MeshCreator" reference="ref3" />
+            </OutPort>
+            <InPort identifier="geometry.input">
+                <Processor type="MeshClipping" identifier="MeshClipping" reference="ref1" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <ProcessorLinks />
+</InviwoTreeData>

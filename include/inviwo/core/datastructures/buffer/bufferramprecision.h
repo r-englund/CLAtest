@@ -27,8 +27,8 @@ public:
     virtual void deinitialize();
     virtual BufferRAMPrecision* clone() const;
 
-    virtual void* getData() { return &data_->front(); } 
-    virtual const void* getData() const {return &data_->front(); } 
+    virtual void* getData() { return (data_->empty() ? NULL : &data_->front()); } 
+    virtual const void* getData() const {return (data_->empty() ? NULL : &data_->front()); } 
 
     const std::vector<T>* getDataContainer() const { return data_; } 
 

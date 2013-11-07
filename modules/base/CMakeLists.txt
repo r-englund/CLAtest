@@ -14,6 +14,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/imagesource.h
     ${IVW_MODULE_DIR}/base/processors/imagesourceseries.h
     ${IVW_MODULE_DIR}/base/processors/meshclipping.h
+    ${IVW_MODULE_DIR}/base/processors/meshcreator.h
     ${IVW_MODULE_DIR}/base/processors/parallelepipedproxygeometry.h
     ${IVW_MODULE_DIR}/base/processors/positionwidgetprocessor.h
     ${IVW_MODULE_DIR}/base/processors/redgreenprocessor.h
@@ -39,6 +40,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/imagesource.cpp
     ${IVW_MODULE_DIR}/base/processors/imagesourceseries.cpp
     ${IVW_MODULE_DIR}/base/processors/meshclipping.cpp
+    ${IVW_MODULE_DIR}/base/processors/meshcreator.cpp
     ${IVW_MODULE_DIR}/base/processors/parallelepipedproxygeometry.cpp
     ${IVW_MODULE_DIR}/base/processors/positionwidgetprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/redgreenprocessor.cpp

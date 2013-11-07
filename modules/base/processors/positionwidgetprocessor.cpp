@@ -11,20 +11,15 @@ ProcessorCodeState(PositionWidgetProcessor, CODE_STATE_EXPERIMENTAL);
 
 PositionWidgetProcessor::PositionWidgetProcessor()
     : CompositeProcessorGL(),
-      inport_("inport"),
+      geometryInport_("geometryInport"),
+      imageInport_("imageInport"),
       outport_("outport", COLOR_DEPTH_PICKING),
-      widgetType_("widgetType", "Widget Type"),
       position_("position", "Position", vec3(0.0f), vec3(-100.f), vec3(100.f)),
       camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
-    addPort(inport_);
+    addPort(geometryInport_);
+    addPort(imageInport_);
     addPort(outport_);
-
-    widgetType_.addOption("cube", "Cube");
-    widgetType_.addOption("sphere", "Sphere");
-    widgetType_.set("sphere");
-    widgetType_.onChange(this, &PositionWidgetProcessor::updateMeshWidget);
-    addProperty(widgetType_);
 
     addProperty(position_);
     position_.setVisible(false);
@@ -32,8 +27,6 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     addInteractionHandler(new Trackball(&camera_));
 
     widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
-
-    widget_ = NULL;
 }
 
 PositionWidgetProcessor::~PositionWidgetProcessor() {}
@@ -50,22 +43,6 @@ void PositionWidgetProcessor::deinitialize() {
 
     delete program_;
     program_ = NULL;
-
-    delete widget_;
-    widget_ = NULL;
-}
-
-void PositionWidgetProcessor::updateMeshWidget(){
-    delete widget_;
-
-    if(widgetType_.get() == "sphere"){
-        widget_ = SimpleMeshCreator::sphere(0.5f, 8, 16);
-    }
-    else{
-        vec3 posLLF = vec3(0.0f);
-        vec3 posURB = vec3(1.0f);
-        widget_ = SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f));
-    }
 }
 
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
@@ -84,12 +61,9 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
 }
 
 void PositionWidgetProcessor::process() {  
-    if(!widget_)
-        updateMeshWidget();
-
     activateAndClearTarget(outport_);
 
-    MeshRenderer renderer(widget_);
+    MeshRenderer renderer(static_cast<const Mesh*>(geometryInport_.getData()));
 
     program_->activate();
     program_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());
@@ -119,7 +93,7 @@ void PositionWidgetProcessor::process() {
 
     deactivateCurrentTarget();
 
-    compositePortsToOutport(outport_, inport_);
+    compositePortsToOutport(outport_, imageInport_);
 }
 
 } // namespace

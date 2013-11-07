@@ -5,12 +5,10 @@
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/ports/geometryport.h>
 #include <modules/opengl/image/compositeprocessorgl.h>
-#include <inviwo/core/datastructures/geometry/simplemeshram.h>
 #include <inviwo/core/interaction/pickingobject.h>
-#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/vectorproperties.h>
-
 
 namespace inviwo {
 
@@ -24,26 +22,23 @@ public:
     void initialize();
     void deinitialize();
 
-    bool isReady() const { return true; }
+    bool isReady() const { return geometryInport_.isReady(); }
 
-    void updateMeshWidget();
     void updateWidgetPositionFromPicking();
 
 protected:
     virtual void process();
 
 private:
-    ImageInport inport_;
+    GeometryInport geometryInport_;
+    ImageInport imageInport_;
     ImageOutport outport_;
 
-    OptionPropertyString widgetType_;
     FloatVec3Property position_;
 
     CameraProperty camera_;
 
     const PickingObject* widgetPickingObject_;
-
-    SimpleMeshRAM* widget_;
 
     Shader* program_;
 };
