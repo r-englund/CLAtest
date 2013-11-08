@@ -241,7 +241,6 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                       4 points (if case 2 and 3 occurred) or
                       0 points (if only case 4 occurred, thus no points)
                    3) If 4 points, make two triangles, 0 1 2 and 0 3 2, total 6 points.
-                   4) If 0 points, put incoming triangle onto the plane and add the projected triangle.
                 */
                 newVertices.clear();
                 newTexCoords.clear();
