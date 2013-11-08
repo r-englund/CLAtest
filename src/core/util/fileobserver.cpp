@@ -9,8 +9,10 @@ void FileObserver::startFileObservation(std::string fileName) {
     if (isObserved(fileName))
         increaseNumObservers(fileName);
     else {
-        observedFiles_.push_back(std::pair<std::string,int>(fileName, 1));
-        InviwoApplication::getRef().startFileObservation(fileName);
+        if( URLParser::fileExists(fileName) ) {
+            observedFiles_.push_back(std::pair<std::string,int>(fileName, 1));
+            InviwoApplication::getRef().startFileObservation(fileName);
+        }
     }
 }
 
@@ -23,11 +25,6 @@ void FileObserver::stopFileObservation(std::string fileName) {
             InviwoApplication::getRef().stopFileObservation(fileName);
         }
     }
-    /*
-    for (size_t i=0;i<observedFiles_.size();i++)
-        std::cout << observedFiles_[i].first << ":" << observedFiles_[i].second << std::endl;
-    std::cout << std::endl;
-    */
 }
 
 void FileObserver::increaseNumObservers(std::string fileName) {
