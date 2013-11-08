@@ -74,7 +74,7 @@ public:
     static bool isValidVolumeFormat(const cl::Context& context, const cl::ImageFormat& format);
 
     /**
-     * Outputs formatted build error to logger.
+     * Outputs formatted build hint to logger.
      * 
      * @param devices (const std::vector<cl::Device> &)
      * @param program (const cl::Program &)
@@ -145,19 +145,35 @@ private:
 };
 
 /**
- * Creates a readable error report from an OpenCL exception. 
+ * Creates a readable hint report from an OpenCL exception. 
  * Example usage: LogError(getCLErrorString(err))
  * 
- * @param err 
- * @return 
- */std::string getCLErrorString(const cl::Error& err);
+ * @param err OpenCL exception
+ * @return Error report string.
+ */
+ std::string getCLErrorString(const cl::Error& err);
 
-void LogOpenCLError(cl_int err, const char* message = "");
-/** \brief Get string representation of error code according to definitions in CL/cl.h
+/**
+ * Creates an error report and outputs it using the log functionality.
+ * 
+ * @param err OpenCL error code
+ * @param message Message to be passed along with the error.
+ */
+ void LogOpenCLError(cl_int err, const char* message = "");
+
+/** \brief Get string representation of hint code according to definitions in CL/cl.h
  *
- *  \return The error code string.
+ *  \return The hint code string.
  */
 std::string errorCodeToString(cl_int err);
+
+/**
+ * Returns hints on how to resolve a particular OpenCL hint. 
+ * 
+ * @param err 
+ * @return A hint on what could cause the hint.
+ */
+std::string getCLErrorResolveHint(cl_int err);
 
 #if defined(IVW_DEBUG)
 #define LogCLError #if defined(__CL_ENABLE_EXCEPTIONS) \\LogOpenCLError(error)
@@ -165,7 +181,16 @@ std::string errorCodeToString(cl_int err);
 #define LogCLError
 #endif
 
-// Image formats for OpenCL
+// 
+/**
+ * Create a cl::ImageFormat based on DataFormatId. 
+ * Outputs an error message if a corresponding format does not exist and then returns the default ImageFormat.
+ *
+ * @see DataFormat
+ * @param format Id of a DataFormat
+ * @return Default ImageFormat created by the constructor 
+ * if a corresponding format does not exist, otherwise an ImageFormat with corresponding channel and data type.
+ */
 cl::ImageFormat dataFormatToCLImageFormat(DataFormatId format);
 
 

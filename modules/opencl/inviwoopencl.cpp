@@ -229,7 +229,7 @@ std::string OpenCL::getIncludeDefine() const
 void LogOpenCLError(cl_int err, const char* message) {
     if (err != CL_SUCCESS) {
         std::ostringstream errorMessage;
-        errorMessage << "OpenCL Error " << err << ": " << errorCodeToString(err) << std::endl << message;
+        errorMessage << "OpenCL Error " << err << ": " << errorCodeToString(err) << " " << getCLErrorResolveHint(err) << std::endl << message;
         LogErrorCustom("OpenCL", errorMessage.str());
     }
 }
@@ -294,6 +294,72 @@ std::string errorCodeToString(cl_int err) {
     default: error = "unknown OpenCL error"; break;
     }
     return error;
+}
+
+
+std::string getCLErrorResolveHint(cl_int err) {
+    // Add more hints when hint sources are discovered
+    // Separate hints with comma:
+    // Hint1, hint2
+    std::string hint; 
+    switch (err) {
+    case CL_SUCCESS: hint = ""; break; //                                                                      0
+    case CL_DEVICE_NOT_FOUND: hint = ""; break; //                                                             -1
+    case CL_DEVICE_NOT_AVAILABLE: hint = ""; break; //                                                         -2
+    case CL_COMPILER_NOT_AVAILABLE: hint = ""; break; //                                                       -3
+    case CL_MEM_OBJECT_ALLOCATION_FAILURE: hint = ""; break; //                                                -4
+    case CL_OUT_OF_RESOURCES: hint = ""; break; //                                                             -5
+    case CL_OUT_OF_HOST_MEMORY: hint = ""; break; //                                                           -6
+    case CL_PROFILING_INFO_NOT_AVAILABLE: hint = ""; break; //                                                 -7
+    case CL_MEM_COPY_OVERLAP: hint = ""; break; //                                                             -8
+    case CL_IMAGE_FORMAT_MISMATCH: hint = ""; break; //                                                        -9
+    case CL_IMAGE_FORMAT_NOT_SUPPORTED: hint = ""; break; //                                                   -10
+    case CL_BUILD_PROGRAM_FAILURE: hint = ""; break; //                                                        -11
+    case CL_MAP_FAILURE: hint = ""; break; //                                                                  -12
+#if defined(CL_VERSION_1_1)
+    case CL_MISALIGNED_SUB_BUFFER_OFFSET: hint = ""; break; //                                                 -13
+    case CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST: hint = ""; break; //                                    -14
+#endif
+    case CL_INVALID_VALUE: hint = ""; break; //                                                                -30
+    case CL_INVALID_DEVICE_TYPE: hint = ""; break; //                                                          -31
+    case CL_INVALID_PLATFORM: hint = ""; break; //                                                             -32
+    case CL_INVALID_DEVICE: hint = ""; break; //                                                               -33
+    case CL_INVALID_CONTEXT: hint = ""; break; //                                                              -34
+    case CL_INVALID_QUEUE_PROPERTIES: hint = ""; break; //                                                     -35
+    case CL_INVALID_COMMAND_QUEUE: hint = ""; break; //                                                        -36
+    case CL_INVALID_HOST_PTR: hint = ""; break; //                                                             -37
+    case CL_INVALID_MEM_OBJECT: hint = ""; break; //                                                           -38
+    case CL_INVALID_IMAGE_FORMAT_DESCRIPTOR: hint = ""; break; //                                              -39
+    case CL_INVALID_IMAGE_SIZE: hint = ""; break; //                                                           -40
+    case CL_INVALID_SAMPLER: hint = ""; break; //                                                              -41
+    case CL_INVALID_BINARY: hint = ""; break; //                                                               -42
+    case CL_INVALID_BUILD_OPTIONS: hint = ""; break; //                                                        -43
+    case CL_INVALID_PROGRAM: hint = ""; break; //                                                              -44
+    case CL_INVALID_PROGRAM_EXECUTABLE: hint = ""; break; //                                                   -45
+    case CL_INVALID_KERNEL_NAME: hint = ""; break; //                                                          -46
+    case CL_INVALID_KERNEL_DEFINITION: hint = ""; break; //                                                    -47
+    case CL_INVALID_KERNEL: hint = ""; break; //                                                               -48
+    case CL_INVALID_ARG_INDEX: hint = ""; break; //                                                            -49
+    case CL_INVALID_ARG_VALUE: hint = ""; break; //                                                            -50
+    case CL_INVALID_ARG_SIZE: hint = ""; break; //                                                             -51
+    case CL_INVALID_KERNEL_ARGS: hint = "Has all kernel argument values been specified?"; break; //            -52
+    case CL_INVALID_WORK_DIMENSION: hint = ""; break; //                                                       -53
+    case CL_INVALID_WORK_GROUP_SIZE: hint = ""; break; //                                                      -54
+    case CL_INVALID_WORK_ITEM_SIZE: hint = ""; break; //                                                       -55
+    case CL_INVALID_GLOBAL_OFFSET: hint = ""; break; //                                                        -56
+    case CL_INVALID_EVENT_WAIT_LIST: hint = ""; break; //                                                      -57
+    case CL_INVALID_EVENT: hint = ""; break; //                                                                -58
+    case CL_INVALID_OPERATION: hint = ""; break; //                                                            -59
+    case CL_INVALID_GL_OBJECT: hint = ""; break; //                                                            -60
+    case CL_INVALID_BUFFER_SIZE: hint = ""; break; //                                                          -61
+    case CL_INVALID_MIP_LEVEL: hint = ""; break; //                                                            -62
+    case CL_INVALID_GLOBAL_WORK_SIZE: hint = ""; break; //                                                     -63
+#if defined(CL_VERSION_1_1)
+    case CL_INVALID_PROPERTY: hint = ""; break; //                                                             -64
+#endif
+    default: hint = ""; break;
+    }
+    return hint;
 }
 
 cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
@@ -437,7 +503,7 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
 std::string getCLErrorString( const cl::Error& err )
 {
     std::ostringstream ss; 
-    ss << "Error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl;
+    ss << "Error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << " " << getCLErrorResolveHint(err.err()) << std::endl;
     return ss.str();
 }
 

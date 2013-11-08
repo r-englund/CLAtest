@@ -137,5 +137,6 @@ void sampleLights(__global PhotonLightSource const * __restrict lightSources, co
  
 }
 
+  
 
 #endif // LIGHT_CL

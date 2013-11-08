@@ -62,8 +62,10 @@ void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresen
     }
     // FIXME: OpenGL color should not have both depth and color
     imageSrc->getColorTexture()->download(imageDst->getData());
-    imageSrc->getPickingTexture()->download(imageDst->getPickingData());
-    imageSrc->getDepthTexture()->download(imageDst->getDepthData());
+    if(imageDst->getPickingData() != NULL && imageDst->getPickingData() != NULL)
+        imageSrc->getPickingTexture()->download(imageDst->getPickingData());
+    if(imageSrc->getDepthTexture() != NULL && imageDst->getDepthData() != NULL)
+        imageSrc->getDepthTexture()->download(imageDst->getDepthData());
 }
 
 } // namespace

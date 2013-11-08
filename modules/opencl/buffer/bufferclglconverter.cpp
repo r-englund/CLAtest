@@ -59,6 +59,7 @@ void BufferGL2CLGLConverter::update(const DataRepresentation* source, DataRepres
     if(src->getSize() != dst->getSize()) {
         dst->setSize(src->getSize());
     }
+    // FIXME: Do we need to recreate shared CLGL buffer?
 }
 
 
