@@ -30,11 +30,15 @@ public:
 
 protected:
     ImageInport inport_;
+
+	IntVec2Property dimensions_;
     TemplateOptionProperty<ImageLayerType> visibleLayer_;
     ButtonProperty snapshotButton_;
 
 private:
     Canvas* canvas_;
+
+	void resizeCanvas();
 };
 
 } // namespace

@@ -8,17 +8,8 @@ ProcessorCategory(CanvasProcessorGL, "Data Output");
 ProcessorCodeState(CanvasProcessorGL, CODE_STATE_STABLE);
 
 CanvasProcessorGL::CanvasProcessorGL()
-    : CanvasProcessor(),
-      dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
-{
-    dimensions_.onChange(this, &CanvasProcessorGL::resizeCanvas);
-    addProperty(dimensions_);
-}
-
-void CanvasProcessorGL::resizeCanvas() {
-    //std::cout << "onChange" << std::endl;
-    //getCanvas()->resize(uvec2(dimensions_.get()));
-}
+    : CanvasProcessor()
+{}
 
 void CanvasProcessorGL::initialize() {
     CanvasProcessor::initialize();

@@ -227,12 +227,10 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     // avoid continues evaluation when port change
     processorNetwork_->lock();
     
-    eventInitiator_= 0;
-
     // find the canvas processor from which the event was emitted
+	eventInitiator_= 0;
     eventInitiator_= retrieveCanvasProcessor(canvas);
-
-    ivwAssert(eventInitiator_!=0,"Invalid resize event encountered.");
+    ivwAssert(eventInitiator_!=0, "Invalid resize event encountered.");
 
     //propagate size of canvas to all preceding processors through port.
     //event initiator is a canvas processor, hence one ImageInport should exist.

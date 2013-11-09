@@ -23,10 +23,6 @@ public:
 protected:
     virtual void process();
 
-    IntVec2Property dimensions_;
-
-private:
-    void resizeCanvas();
 };
 
 } // namespace
