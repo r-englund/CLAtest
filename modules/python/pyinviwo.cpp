@@ -119,7 +119,7 @@ namespace inviwo{
         inviwoPyModule->addMethod(new PyListPropertiesMethod());
         inviwoPyModule->addMethod(new PyListProcessorsMethod());
         inviwoPyModule->addMethod(new PyCanvasCountMethod());
-        //inviwoPyModule->addMethod(new PySetViewportMethod());
+        inviwoPyModule->addMethod(new PyResizeCanvasMethod());
         inviwoPyModule->addMethod(new PySnapshotMethod());
         inviwoPyModule->addMethod(new PySnapshotCanvasMethod());
         inviwoPyModule->addMethod(new PyGetBasePathMethod());

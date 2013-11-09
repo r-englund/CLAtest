@@ -52,7 +52,7 @@ namespace inviwo{
     template <> float       PyValueParser::parse(PyObject *args){  return parseFloat(args);  }
     template <> char        PyValueParser::parse(PyObject *args){  return parseChar(args);   }
     template <> short       PyValueParser::parse(PyObject *args){  return parseShort(args);  }
-    template <> int         PyValueParser::parse(PyObject *args){  return parseInt(args);    }
+    template <> int         PyValueParser::parse(PyObject *args){  /*return parseInt(args);*/   return PyInt_AsLong(args); }
     template <> long        PyValueParser::parse(PyObject *args){  return parseLong(args);   }
     template <> vec2        PyValueParser::parse(PyObject *args){  return parseVec2(args);   }
     template <> vec3        PyValueParser::parse(PyObject *args){  return parseVec3(args);   }

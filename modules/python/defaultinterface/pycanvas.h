@@ -9,7 +9,7 @@
 
 namespace inviwo {
 PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/);
-//PyObject* py_setViewport(PyObject* /*self*/, PyObject* /*args*/);
+PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* /*args*/);
 
 
     class IVW_MODULE_PYTHON_API PyCanvasCountMethod : public PyMethod{
@@ -19,12 +19,12 @@ PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/);
         virtual PyCFunction getFunc(){return py_canvascount;}
     };
 
-	/*class IVW_MODULE_PYTHON_API PySetViewportMethod : public PyMethod{
+	class IVW_MODULE_PYTHON_API PyResizeCanvasMethod : public PyMethod{
 	public:
-	char *getName(){return "setViewport";}
-	char *getDesc(){return "setViewport(width,height)\tResizes all the canvases in the network to the given size.";}
-	virtual PyCFunction getFunc(){return py_setViewport;}
-	};*/
+	char *getName(){return "resizeCanvas";}
+	char *getDesc(){return "resizeCanvas(canvas,width,height)\tResizes all the canvases in the network to the given size. Canvas can either be given using a canvas index (starting at 0) or a canvas ID string ";}
+	virtual PyCFunction getFunc(){return py_resizecanvas;}
+	};
 
 } //namespace
 
