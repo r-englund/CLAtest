@@ -9,6 +9,7 @@
 #include <QFile>
 
 #include "inviwomainwindow.h"
+#include "inviwosplashscreen.h"
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <moduleregistration.h>
@@ -18,6 +19,11 @@ int main(int argc, char** argv) {
     setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
 #endif
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, IVW_DIR, argc, argv);
+	
+	// initialize and show splash screen
+	inviwo::InviwoSplashScreen splashScreen;
+	splashScreen.show();
+	splashScreen.showMessage("Loading application...");
 
 #if (QT_VERSION >= 0x040400)
     QFile styleSheetFile(":/stylesheets/inviwo.qss");
@@ -33,16 +39,20 @@ int main(int argc, char** argv) {
     inviwoApp.setMainWindow(&mainWin);
 
     //Initialize application and register modules
+	splashScreen.showMessage("Initializing modules...");
     inviwoApp.initialize(&inviwo::registerAllModules);
 
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
 
     // setup main window
     mainWin.initializeAndShow();
+
+	splashScreen.showMessage("Loading workspace...");
     mainWin.initializeWorkspace();
 
-    // open last worksapce
+    // open last workspace
     mainWin.openLastWorkspace();
+	splashScreen.finish(&mainWin);
 
     // process last arguments
     if (mainWin.processEndCommandLineArgs())

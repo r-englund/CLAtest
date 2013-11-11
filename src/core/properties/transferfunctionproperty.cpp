@@ -59,11 +59,7 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 		value_.addPoint(pos, rgba);
 	}
 
-    callChanged();
-}
-
-void TransferFunctionProperty::customSet(){
-	callChanged();
+    propertyModified();
 }
 
 } // namespace

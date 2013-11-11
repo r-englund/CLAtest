@@ -33,6 +33,10 @@ private:
     ImageOutport exitPort_;
 
     CameraProperty camera_;
+	BoolProperty capNearClipping_;
+
+	ImageGL* tmpEntryPointsGL_;
+	Shader* capNearClippingPrg_;
 };
 
 } // namespace

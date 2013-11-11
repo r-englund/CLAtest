@@ -54,7 +54,6 @@ void CompositeProperty::setPropertyModified(bool modified) {
 bool CompositeProperty::isPropertyModified() const {
     for (size_t i=0; i<subProperties_.size(); i++)
         if (subProperties_[i]->isPropertyModified()) return true;
-
     return false;
 }
 

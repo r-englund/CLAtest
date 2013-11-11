@@ -6,6 +6,7 @@
 
 namespace inviwo {
 
+// TODO: are the first two constructors needed? Otherwise remove.
 InviwoApplication::InviwoApplication()
     : displayName_("Inviwo"), basePath_("")
 {
@@ -22,14 +23,14 @@ InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayN
                                     : displayName_(displayName), basePath_(basePath)
 {
     commandLineParser_ = new CommandLineParser(argc, argv);
+	commandLineParser_->initialize();
+	commandLineParser_->parse();
     init(this);
 }
 
 InviwoApplication::~InviwoApplication() {}
 
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
-    commandLineParser_->initialize();
-    commandLineParser_->parse();
     settings_ = new Settings();
     settings_->initialize();
 

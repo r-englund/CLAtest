@@ -9,11 +9,11 @@ namespace inviwo {
 /** \brief A convenience class to generate transformation matrices between  
  *         the different coordinate systems in use.
  *
- *  Spatial data in inviwo uses 4 different coordinate systems, they are defined as
- *  * Index - The actual voxel indices in the data 
+ *  Spatial data in Inviwo uses 4 different coordinate systems, they are defined as
+ *  * Index - The actual voxel indices in the data.
+ *  * Texture - The corresponding texture coordinates of the data.
  *  * Model - Defines a local basis and offset for the data.
  *  * World - Puts the data at a position and angle in the scene.
- *  * Texture - The corresponding texture coordinates of the data.
  */
 template<unsigned int N>
 class CoordinateTransformer {

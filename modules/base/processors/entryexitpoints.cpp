@@ -13,13 +13,15 @@ EntryExitPoints::EntryExitPoints()
     geometryPort_("geometry"),
     entryPort_("entry-points"),
     exitPort_("exit-points"),
-    camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
+	capNearClipping_("capNearClipping", "Cap near plane clipping", true)
 {
     addPort(geometryPort_);
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
 
     addProperty(camera_);
+	addProperty(capNearClipping_);
 	addInteractionHandler(new Trackball(&camera_));
     entryPort_.addResizeEventListener(&camera_);
 }
@@ -28,20 +30,17 @@ EntryExitPoints::~EntryExitPoints() {}
 
 void EntryExitPoints::initialize() {
     ProcessorGL::initialize();
+	capNearClippingPrg_ = new Shader("capnearclipping.frag");
 }
 
 void EntryExitPoints::deinitialize() {
     ProcessorGL::deinitialize();
 }
 
-
 void EntryExitPoints::process() {
-    //const GeometryGL* geom = geometryPort_.getData()->getRepresentation<GeometryGL>();
     const Geometry* geom = geometryPort_.getData();
     const Mesh* mesh = dynamic_cast<const Mesh*>(geom);
-    if( !mesh ) {
-        return;
-    }
+    if (!mesh) return;
     MeshRenderer renderer(mesh);
 
     glEnable(GL_CULL_FACE);    
@@ -58,19 +57,54 @@ void EntryExitPoints::process() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_ALWAYS);
 
-    // generate entry points
-    activateAndClearTarget(entryPort_);
-    glCullFace(GL_BACK);
-    //geom->render();
+	// generate exit points
+	activateAndClearTarget(exitPort_);
+	glCullFace(GL_FRONT);
     renderer.render();
-    deactivateCurrentTarget();
+	deactivateCurrentTarget();
 
-    // generate exit points
-    activateAndClearTarget(exitPort_);
-    glCullFace(GL_FRONT);
-    //geom->render();
-    renderer.render();
-    deactivateCurrentTarget();
+	// generate entry points
+	if (capNearClipping_.get()) {
+		Image* tmpEntryPoints = new Image(exitPort_.getDimensions());
+		tmpEntryPointsGL_ = tmpEntryPoints->getEditableRepresentation<ImageGL>();
+		tmpEntryPointsGL_->activateBuffer();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	} else {
+		activateAndClearTarget(entryPort_);
+	}
+	glCullFace(GL_BACK);
+	renderer.render();
+	deactivateCurrentTarget();
+
+	if (capNearClipping_.get()) {
+		// render an image plane aligned quad to cap the proxy geometry
+		activateAndClearTarget(entryPort_);
+
+		TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
+		tmpEntryPointsGL_->bindColorTexture(entryColorUnit.getEnum());
+		tmpEntryPointsGL_->bindDepthTexture(entryDepthUnit.getEnum());
+		bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
+
+		capNearClippingPrg_->activate();
+		setGlobalShaderParameters(capNearClippingPrg_);
+
+		capNearClippingPrg_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
+		capNearClippingPrg_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
+		setTextureParameters(entryPort_, capNearClippingPrg_, "entryParameters_");
+		capNearClippingPrg_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
+		capNearClippingPrg_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
+		setTextureParameters(exitPort_, capNearClippingPrg_, "exitParameters_");
+
+		// the rendered plane is specified in camera coordinates
+		// thus we must transform from camera to world to texture coordinates
+		capNearClippingPrg_->setUniform("inverseViewMat_", camera_.inverseViewMatrix());
+		mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
+		capNearClippingPrg_->setUniform("world2TexMat_", worldToTexMat);
+
+		renderImagePlaneRect();
+
+		capNearClippingPrg_->deactivate();
+	}
 
     glDepthFunc(GL_LESS);
 

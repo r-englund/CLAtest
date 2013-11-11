@@ -1,7 +1,7 @@
 #ifndef IVW_COMMANDLINEPARSER_H
 #define IVW_COMMANDLINEPARSER_H
 
-//#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwo.h>
 
 #undef HAVE_CONFIG_H
@@ -49,54 +49,22 @@ public:
     const std::string getPythonScirptName() const;
     bool getQuitApplicationAfterStartup() const;
     bool getLoadWorkspaceFromArg() const;
-    // TODO: No need to serialize the parser, right?
-    //virtual void serialize(IvwSerializer& s) const;
-    //virtual void deserialize(IvwDeserializer& d);
-
+	bool getShowSplashScreen() const;
     
 private:
     int argc_;
     char** argv_;
     TCLAP::CmdLine *cmd_;
-    TCLAP::ValueArg<std::string> *workspaceValueArg_;
-    TCLAP::ValueArg<std::string> *outputValueArg_;
-    TCLAP::ValueArg<std::string> *snapshotArg_;
-    TCLAP::ValueArg<std::string> *pythonScriptArg_;
-    TCLAP::SwitchArg *quitValueArg_;
+    TCLAP::ValueArg<std::string>* workspaceValueArg_;
+    TCLAP::ValueArg<std::string>* outputValueArg_;
+    TCLAP::ValueArg<std::string>* snapshotArg_;
+    TCLAP::ValueArg<std::string>* pythonScriptArg_;
+	TCLAP::SwitchArg* noSplashScreenArg_;
+    TCLAP::SwitchArg* quitArg_;
     std::string workspaceName_;
 
 };
 
 } // namespace
-
-//Temp code, need some rework and a good place to put it.
-    /* inviwo::CommandLineParser parser;
-
-    parser.initialize();
-    parser.parse(argc, argv);
-
-   if (parser.getExitWithCapture()){
-        std::string workspacePath = parser.getWorkspace();
-        std::cout << "Capturing workspaces!" << std::endl << "Desired workspace: " << workspacePath << std::endl;
-        mainWin.openLastWorkspace();
-        std::vector<inviwo::CanvasProcessorGL*> pv = inviwoApp.getProcessorNetwork()->getProcessorsByType<inviwo::CanvasProcessorGL>();
-        std::cout << "Number of canvases: " << pv.size() << std::endl;
-
-        int i = 0;
-        for(std::vector<inviwo::CanvasProcessorGL*>::iterator it = pv.begin(); it != pv.end(); it++){
-            std::stringstream ss;
-            ss << i;
-            std::string path(IVW_DIR+"data/images/" + ss.str() + ".png");
-            std::cout << "Saving canvas to: " << path << std::endl;
-            (*it)->takeSnapshot((path).c_str());
-            ++i;
-        }
-        
-        
-        exit(0);    
-    }
-    else{
-        
-    }*/
 
 #endif // IVW_COMMANDLINEPARSER_H

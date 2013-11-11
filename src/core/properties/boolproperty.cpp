@@ -35,5 +35,4 @@ void  BoolProperty::setVariant(const Variant& val) {
     }
 }
 
-
 } // namespace

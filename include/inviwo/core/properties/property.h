@@ -8,104 +8,103 @@
 #include <inviwo/core/properties/propertyvisibility.h>
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/util/callback.h>
-#include <inviwo/core/util/variant.h>
 #include <inviwo/core/util/observer.h>
+#include <inviwo/core/util/variant.h>
 
 namespace inviwo {
 
-    class IVW_CORE_API Property : public IvwSerializable, public VoidObservable, public VoidObserver {
+class IVW_CORE_API Property : public IvwSerializable, public VoidObservable, public VoidObserver {
 
-    public:
-        Property(std::string identifier, std::string displayName,
-            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-            PropertySemantics::Type semantics=PropertySemantics::Default);
-        Property();
+public:
+    Property(std::string identifier, std::string displayName,
+             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+             PropertySemantics::Type semantics=PropertySemantics::Default);
+    Property();
 
-        virtual std::string getIdentifier() const;
-        virtual void setIdentifier(const std::string& identifier);
+    virtual std::string getIdentifier() const;
+    virtual void setIdentifier(const std::string& identifier);
 
-        virtual std::string getClassName()  const { return "undefined"; }    
+    virtual std::string getClassName()  const { return "undefined"; }    
 
-        virtual std::string getDisplayName() const;
-        virtual void setDisplayName(const std::string& displayName);
+    virtual std::string getDisplayName() const;
+    virtual void setDisplayName(const std::string& displayName);
 
-        virtual PropertySemantics::Type getSemantics() const;
-        virtual void setSemantics(const PropertySemantics::Type& semantics);
+    virtual PropertySemantics::Type getSemantics() const;
+    virtual void setSemantics(const PropertySemantics::Type& semantics);
 
-        virtual void setReadOnly(bool value){readOnly_ = value;};
-        virtual bool getReadOnly(){return readOnly_;};
+    virtual void setReadOnly(bool value){readOnly_ = value;};
+    virtual bool getReadOnly(){return readOnly_;};
 
-        PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
-        void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
-            invalidationLevel_ = invalidationLevel;
-        }
+    PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
+    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
+        invalidationLevel_ = invalidationLevel;
+    }
 
-        PropertyOwner* getOwner();
-        virtual void setOwner(PropertyOwner* owner);
+    PropertyOwner* getOwner();
+    virtual void setOwner(PropertyOwner* owner);
 
-        void registerPropertyWidget(PropertyWidget* propertyWidget);
-        void updatePropertyWidgets();
-        bool hasProcessorWidgets() { return (propertyWidgets_.size()!= 0); }
+    void registerPropertyWidget(PropertyWidget* propertyWidget);
+    void updatePropertyWidgets();
+    bool hasProcessorWidgets() { return (propertyWidgets_.size()!= 0); }
 
-        void setGroupID(std::string groupID) { 
-            groupID_ = groupID;
-        }
+    void setGroupID(std::string groupID) { 
+        groupID_ = groupID;
+    }
 
-        static void setGroupDisplayName(std::string groupID,std::string groupDisplayName);
-        
-        std::string getGroupID() { return groupID_; }
-        std::string getGroupDisplayName();
-
-        virtual void propertyModified();
-        virtual void setPropertyModified(bool modified) { propertyModified_ = modified; }
-        virtual bool isPropertyModified() const { return propertyModified_; }
-        virtual Variant getVariant();
-        virtual void setVariant(const Variant&);
-        virtual int getVariantType();
-        virtual void set(const Property* src) { IVW_UNUSED_PARAM(src); }
+    static void setGroupDisplayName(std::string groupID,std::string groupDisplayName);
     
+    std::string getGroupID() { return groupID_; }
+    std::string getGroupDisplayName();
 
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& d);
-
-        bool operator== (const Property& prop);
-
-        template <typename T>
-        void onChange(T* o, void (T::*m)()) {
-            onChangeCallback_.addMemberFunction(o,m);
-        }
-
-        void setVisibility(PropertyVisibility::VisibilityMode visibilityMode);
-        PropertyVisibility::VisibilityMode getVisibilityMode(){return visibilityMode_;};
-
-        virtual void setVisible(bool val);
-        virtual void updateVisibility();
+    virtual void propertyModified();
+    virtual void setPropertyModified(bool modified) { propertyModified_ = modified; }
+    virtual bool isPropertyModified() const { return propertyModified_; }
+    virtual Variant getVariant();
+    virtual void setVariant(const Variant&);
+    virtual int getVariantType();
+    virtual void set(const Property* src) { IVW_UNUSED_PARAM(src); }
 
 
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
-    protected:
-        SingleCallBack onChangeCallback_;
+    bool operator== (const Property& prop);
 
-    private:
-        //void notify();
-        std::string identifier_;
-        std::string displayName_;
-        PropertyOwner::InvalidationLevel invalidationLevel_;
-        PropertySemantics::Type semantics_;
-        bool readOnly_;
+    template <typename T>
+    void onChange(T* o, void (T::*m)()) {
+        onChangeCallback_.addMemberFunction(o,m);
+    }
 
-    bool propertyModified_;
-        PropertyOwner* owner_;
-        std::vector<PropertyWidget*> propertyWidgets_;
+    void setVisibility(PropertyVisibility::VisibilityMode visibilityMode);
+    PropertyVisibility::VisibilityMode getVisibilityMode(){return visibilityMode_;};
 
-        std::string groupID_;
-        std::string groupDisplayName_;
-
-        PropertyVisibility::VisibilityMode visibilityMode_;
+    virtual void setVisible(bool val);
+    virtual void updateVisibility();
 
 
-        static std::map<std::string,std::string> groupDisplayNames_;
-    };
+
+protected:
+    SingleCallBack onChangeCallback_;
+
+private:
+    std::string identifier_;
+    std::string displayName_;
+    PropertyOwner::InvalidationLevel invalidationLevel_;
+    PropertySemantics::Type semantics_;
+    bool readOnly_;
+
+bool propertyModified_;
+    PropertyOwner* owner_;
+    std::vector<PropertyWidget*> propertyWidgets_;
+
+    std::string groupID_;
+    std::string groupDisplayName_;
+
+    PropertyVisibility::VisibilityMode visibilityMode_;
+
+
+    static std::map<std::string,std::string> groupDisplayNames_;
+};
 
 } // namespace
 

@@ -112,7 +112,7 @@ private:
     QString currentWorkspaceFileName_;
     QStringList recentFileList_;
 
-    // the default render context for managing render sates
+    // the default render context for managing render states
     CanvasQt* defaultRenderContext_;
 };
 

@@ -31,7 +31,6 @@ public:
     float getNearPlaneDist() const;
     float getFarPlaneDist() const;
 
-    float getDistanceFromOrigin() const;
     vec3 getWorldPosFromNormalizedDeviceCoords(vec3 ndcCoords) const;
 
     void updateViewMatrix();
@@ -56,7 +55,6 @@ private:
     FloatVec3Property lookUp_;
     FloatProperty fovy_;
     FloatProperty aspectRatio_;
-    BoolProperty useNearFarDistFromOrigin_;
     FloatProperty farPlane_;
     FloatProperty nearPlane_;
 

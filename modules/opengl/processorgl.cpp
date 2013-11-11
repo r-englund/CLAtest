@@ -172,8 +172,7 @@ void ProcessorGL::setGlobalShaderParameters(Shader* shader) {
     setGlobalShaderParameters(shader, getOutports());
 }
 
-void ProcessorGL::setGlobalShaderParameters( Shader* shader, const std::vector<Outport*>& outports )
-{
+void ProcessorGL::setGlobalShaderParameters(Shader* shader, const std::vector<Outport*>& outports) {
     vec2 screenDimensions = vec2(0.0f,0.0f);
     for (size_t i=0; i<outports.size(); i++) {
         ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outports[i]);

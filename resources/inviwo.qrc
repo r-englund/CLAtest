@@ -15,6 +15,7 @@
     <file>icons/processor_stable.png</file>
     <file>icons/python.png</file>
     <file>icons/html.png</file>
+    <file>images/splashscreen.png</file>
 
     <file>stylesheets/inviwo.qss</file>
     <file>stylesheets/images/arrow_down.png</file>

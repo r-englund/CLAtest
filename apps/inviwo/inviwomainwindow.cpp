@@ -111,13 +111,11 @@ void InviwoMainWindow::initializeAndShow() {
     addMenuActions();
     updateRecentWorkspaces();
 
-
     if (maximized) showMaximized();
     else show();
 }
 
 void InviwoMainWindow::deinitialize() {
-    
 }
 
 void InviwoMainWindow::initializeWorkspace(){
@@ -138,10 +136,10 @@ void InviwoMainWindow::notify() {
 }
 
 bool InviwoMainWindow::processEndCommandLineArgs(){
-    const CommandLineParser *cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
+    const CommandLineParser* cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
 
 #ifdef IVW_HAS_PYTHON
-    if(cmdparser->getRunPythonScriptAfterStartup()){
+    if (cmdparser->getRunPythonScriptAfterStartup()){
         PythonEditorWidget *py = PythonEditorWidget::getPtr();
         py->show();
         py->loadFile(cmdparser->getPythonScirptName(),false);
@@ -362,7 +360,7 @@ void InviwoMainWindow::saveWorkspace() {
     }
     /*
     // FIXME: the following code snippet allows to reload the Qt style sheets during runtime,
-    // which is handy while we change them. once the style hseets have been finalized,
+    // which is handy while we change them. once the style sheets have been finalized,
     // this code should be removed.
     QFile styleSheetFile("D:/inviwo/resources/stylesheets/inviwo.qss");
     styleSheetFile.open(QFile::ReadOnly);
@@ -406,8 +404,6 @@ void InviwoMainWindow::saveWorkspaceAs() {
 }
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
-    IVW_UNUSED_PARAM(event);
-
     if (!askToSaveWorkspaceChanges()) {
         event->ignore();
         return;
@@ -442,14 +438,14 @@ bool InviwoMainWindow::askToSaveWorkspaceChanges() {
         msgBox.setDefaultButton(QMessageBox::Yes);
         int answer = msgBox.exec();
         switch (answer) {
-                case QMessageBox::Yes:
-                    saveWorkspace();
-                    break;
-                case QMessageBox::No:
-                    break;
-                case QMessageBox::Cancel:
-                    continueOperation = false;
-                    break;
+            case QMessageBox::Yes:
+                saveWorkspace();
+                break;
+            case QMessageBox::No:
+                break;
+            case QMessageBox::Cancel:
+                continueOperation = false;
+                break;
         }
     }
     return continueOperation;

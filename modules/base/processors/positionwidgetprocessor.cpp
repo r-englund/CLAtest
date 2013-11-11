@@ -47,11 +47,11 @@ void PositionWidgetProcessor::deinitialize() {
 
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
     vec2 move = widgetPickingObject_->getPickingMove();
-    if(move.x == 0.f && move.y == 0.f){
-        return;
-    }
-    vec2 pos = widgetPickingObject_->getPickingPosition();
+    if (move.x == 0.f && move.y == 0.f) return;
+
+	vec2 pos = widgetPickingObject_->getPickingPosition();
     float depth = widgetPickingObject_->getPickingDepth();
+	//TODO: do we not need to incorporate transformations here?
     vec3 startNdc = vec3((2.f*pos.x)-1.f, (2.f*pos.y)-1.f, depth);
     vec3 endNdc = vec3((2.f*(pos.x+move.x))-1.f, (2.f*(pos.y+move.y))-1.f, depth);
     vec3 startWorld = camera_.getWorldPosFromNormalizedDeviceCoords(startNdc);

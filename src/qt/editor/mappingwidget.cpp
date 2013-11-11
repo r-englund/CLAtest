@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Mapping"), parent), VoidObserver() {
+MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Input Mapping"), parent), VoidObserver() {
     setObjectName("MappingWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);   
 	processorNetwork_ = InviwoApplication::getPtr()->getProcessorNetwork();

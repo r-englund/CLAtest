@@ -41,16 +41,20 @@ void CommandLineParser::initialize() {
             false,
             "",
             "Snapshot default name: UPN=Use Processor name.");
-        quitValueArg_ = new TCLAP::SwitchArg("q", "quit", 
-            "Pass this flag if you want to close inviwo after startup.");
+		quitArg_ = new TCLAP::SwitchArg("q", "quit", 
+			"Pass this flag if you want to close inviwo after startup.");
+		noSplashScreenArg_ = new TCLAP::SwitchArg("n", "nosplash", 
+			"Pass this flag if you do not want to show a splash screen.");
         
         cmd_->add(*workspaceValueArg_);
         cmd_->add(*pythonScriptArg_);
         cmd_->add(*outputValueArg_);
         cmd_->add(*snapshotArg_);
-        cmd_->add(*quitValueArg_);
-    } catch (TCLAP::ArgException &e)  // catch exceptions
-    { std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
+		cmd_->add(*quitArg_);
+		cmd_->add(*noSplashScreenArg_);
+    } catch (TCLAP::ArgException &e) {
+		LogError(e.error() << " for arg " << e.argId());
+	}
 }
 
 const std::string CommandLineParser::getOutputPath() const{
@@ -104,7 +108,11 @@ const std::string CommandLineParser::getPythonScirptName() const{
 }
 
 bool CommandLineParser::getQuitApplicationAfterStartup() const{
-    return quitValueArg_->getValue();
+	return quitArg_->getValue();
+}
+
+bool CommandLineParser::getShowSplashScreen() const{
+	return !(noSplashScreenArg_->isSet());
 }
 
 bool CommandLineParser::getLoadWorkspaceFromArg() const{

@@ -19,9 +19,7 @@ public:
     virtual T& get();
 	virtual const T& get() const { return value_; };
     virtual void set(const T& value);
-    void callChanged();
     virtual void set(const Property* srcProperty);
-
 
 protected:
     T value_;
@@ -43,12 +41,7 @@ T& TemplateProperty<T>::get() {
 template <typename T>
 void TemplateProperty<T>::set(const T& value) {
     value_ = value;
-    callChanged();
-}
-
-template <typename T>
-void TemplateProperty<T>::callChanged(){   
-    propertyModified();    
+	propertyModified();    
 }
 
 template <typename T>
@@ -58,7 +51,7 @@ void TemplateProperty<T>::set(const Property* srcProperty) {
         this->value_ = templatedSrcProp->get();
     else        
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
-    TemplateProperty<T>::callChanged();
+	propertyModified();    
 }
 
 

@@ -11,7 +11,6 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     defaultContext_ = 0;
     eventInitiator_ = 0;
     linkEvaluator_  = 0;
-    //resetEvaluationHits();
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
@@ -232,16 +231,16 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     eventInitiator_= retrieveCanvasProcessor(canvas);
     ivwAssert(eventInitiator_!=0, "Invalid resize event encountered.");
 
-    //propagate size of canvas to all preceding processors through port.
-    //event initiator is a canvas processor, hence one ImageInport should exist.
+    // propagate size of canvas to all preceding processors through port
+    // event initiator is a canvas processor, hence one ImageInport should exist
     ImageInport* imageInport = dynamic_cast<ImageInport*>(eventInitiator_->getInports()[0]);    
     imageInport->changeDataDimensions(resizeEvent);
 
     // enable network evaluation again
     processorNetwork_->unlock();
 
-    //TODO: remove this invalidate. 
-    //Instead dimension property of event initiator (CanvasProcessor) should be invalid.
+    // TODO: remove this invalidate
+    // instead dimension property of event initiator (CanvasProcessor) should be invalid
     eventInitiator_->invalidate(PropertyOwner::INVALID_OUTPUT);
     eventInitiator_ = 0;
 }

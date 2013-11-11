@@ -128,8 +128,7 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
 bool ShaderObject::loadSource(std::string fileName) {
     source_ = "";
     if (fileName.length() > 0) {
-        // 
-        if(URLParser::fileExists(fileName)) {
+        if (URLParser::fileExists(fileName)) {
             // Absolute path was given 
             absoluteFileName_ = fileName;
         } else {
@@ -144,8 +143,8 @@ bool ShaderObject::loadSource(std::string fileName) {
         }
         
         std::ifstream fileStream(absoluteFileName_.c_str());
-        if( fileStream.bad() ) {
-            LogError("Error opening file " << absoluteFileName_);
+        if (!URLParser::fileExists(absoluteFileName_) || fileStream.bad()) {
+            LogError("Error opening file " << fileName);
             return false;
         } else {
             std::stringstream buffer;

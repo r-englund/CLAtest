@@ -97,14 +97,13 @@ void Property::deserialize(IvwDeserializer& d) {
 }
 
 bool Property::operator==(const Property& prop){
-    if (this->getClassName()==prop.getClassName()) {
-        return true;
-    }
-    return false;
+	// TODO: this is not an equal operator, change to isSameType or similar
+    if (this->getClassName()==prop.getClassName()) return true;
+	else return false;
 }
 
 void Property::setGroupDisplayName(std::string groupID, std::string groupDisplayName) {
-        Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID,groupDisplayName));
+	Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));
 }
 
 std::string Property::getGroupDisplayName(){
@@ -131,7 +130,7 @@ void Property::updateVisibility() {
             propertyWidgets_[i]->showWidget();
         }
     }
-    else if (visibilityMode_ == PropertyVisibility::DEVELOPMENT  && appMode == PropertyVisibility::DEVELOPMENT) {
+    else if (visibilityMode_ == PropertyVisibility::DEVELOPMENT && appMode == PropertyVisibility::DEVELOPMENT) {
         for (size_t i=0; i<propertyWidgets_.size(); i++){
             propertyWidgets_[i]->showWidget();
         }

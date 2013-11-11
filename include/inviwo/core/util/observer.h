@@ -189,7 +189,6 @@ class IVW_CORE_API VoidObservable: public Observable<VoidObserver> {
 public:
     VoidObservable(): Observable<VoidObserver>() {};
 
-
     void notifyObservers() const {
         // Notify observers
         ObserverSet::iterator endIt = observers_->end();

@@ -6,6 +6,7 @@ ivw_project(inviwo)
 # Add header files
 set(HEADER_FILES
     ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwomainwindow.h
+    ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwosplashscreen.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -13,6 +14,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add header files
 set(MOC_FILES
      ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwomainwindow.h
+     ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwosplashscreen.h
 )
 
 if(DESIRED_QT_VERSION MATCHES 5)
@@ -28,6 +30,7 @@ source_group("MOC Files" FILES ${MOC_FILES})
 set(SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwo.cpp
     ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwomainwindow.cpp
+    ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwosplashscreen.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

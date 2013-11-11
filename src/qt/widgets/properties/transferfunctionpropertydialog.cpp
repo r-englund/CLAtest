@@ -146,8 +146,7 @@ void TransferFunctionPropertyDialog::updateFromProperty(){
     gradient_->setFinalStop(editorview_->width(), 0.0);
     delete temp;
     this->update();
-    property_->callChanged();
-    property_->customSet();
+    property_->propertyModified();
 }
 
 bool TransferFunctionPropertyDialog::eventFilter(QObject *object, QEvent *e){
@@ -288,7 +287,7 @@ void TransferFunctionPropertyDialog::maskChanged(){
     
     editorview_->update();
     property_->get().calcTransferValues();
-    property_->callChanged();
+    property_->propertyModified();
 }
 
 const int TransferFunctionPropertyDialog::getArrayWidth() { 
