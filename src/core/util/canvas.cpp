@@ -1,5 +1,5 @@
 #include <inviwo/core/util/canvas.h>
-#include <inviwo/core/datastructures/geometry/meshram.h>
+#include <inviwo/core/datastructures/geometry/mesh.h>
 
 namespace inviwo {
 

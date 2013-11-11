@@ -5,7 +5,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/geometryport.h>
-#include <inviwo/core/datastructures/geometry/simplemeshram.h>
+#include <inviwo/core/datastructures/geometry/simplemesh.h>
 #include <inviwo/core/properties/optionproperties.h>
 
 namespace inviwo {

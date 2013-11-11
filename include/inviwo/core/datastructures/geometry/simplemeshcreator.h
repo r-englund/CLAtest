@@ -3,7 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/geometry/simplemeshram.h>
+#include <inviwo/core/datastructures/geometry/simplemesh.h>
 
 namespace inviwo {
 

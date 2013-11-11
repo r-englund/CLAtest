@@ -6,7 +6,7 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 #include <inviwo/core/ports/geometryport.h>
-#include <inviwo/core/datastructures/geometry/simplemeshram.h>
+#include <inviwo/core/datastructures/geometry/simplemesh.h>
 #include <inviwo/core/datastructures/geometry/plane.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>

@@ -4,7 +4,7 @@
 #include <modules/opengl/geometry/geometrygl.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
 #include <modules/opengl/geometry/attributebuffergl.h>
-#include <inviwo/core/datastructures/geometry/meshram.h>
+#include <inviwo/core/datastructures/geometry/mesh.h>
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <vector>
 

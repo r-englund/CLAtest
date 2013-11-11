@@ -2,7 +2,7 @@
 #define IVW_SIMPLEMESHRAM_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/geometry/meshram.h>
+#include <inviwo/core/datastructures/geometry/mesh.h>
 
 namespace inviwo {
 

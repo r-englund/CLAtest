@@ -1,5 +1,5 @@
 #include <inviwo/core/ports/geometryport.h>
-#include <inviwo/core/datastructures/geometry/simplemeshram.h>
+#include <inviwo/core/datastructures/geometry/simplemesh.h>
 
 namespace inviwo {
 
