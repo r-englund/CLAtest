@@ -6,7 +6,6 @@
 #include <inviwo/core/util/canvas.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/image/imagegl.h>
-#include <modules/opengl/geometry/meshgl.h>
 
 namespace inviwo {
 

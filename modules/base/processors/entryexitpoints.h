@@ -11,7 +11,6 @@
 #include <modules/opengl/glwrap/shader.h>
 #include <inviwo/core/common/inviwoapplication.h>
 
-
 namespace inviwo {
 
 class IVW_MODULE_BASE_API EntryExitPoints : public ProcessorGL {

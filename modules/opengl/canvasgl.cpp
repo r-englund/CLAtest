@@ -1,6 +1,8 @@
 #include "canvasgl.h"
 #include <modules/opengl/glwrap/textureunit.h>
-#include <modules/opengl/geometry/meshgl.h>
+#include <inviwo/core/datastructures/geometry/mesh.h>
+#include <modules/opengl/geometry/attributebuffergl.h>
+#include <modules/opengl/geometry/meshglrenderer.h>
 
 namespace inviwo {
 

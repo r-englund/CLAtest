@@ -43,6 +43,8 @@ public:
     vec4 getValueAsVec4Float(size_t index) const;
 
     void add(const T& item);
+
+    void clear();
     
 private:
     static const DataFormatBase* defaultformat(){
@@ -182,6 +184,13 @@ void BufferRAMPrecision<T>::add( const T& item )
     data_->push_back(item);
     size_ = data_->size();
     //setSize(data_->size());
+}
+
+template<typename T>
+void BufferRAMPrecision<T>::clear()
+{
+    data_->clear();
+    size_ = 0;
 }
 
 #define DataFormatIdMacro(i) typedef BufferRAMCustomPrecision<Data##i::type, Data##i::bits> BufferRAM_##i;

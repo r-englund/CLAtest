@@ -1,5 +1,5 @@
-#ifndef IVW_MESHGL_H
-#define IVW_MESHGL_H
+#ifndef IVW_MESHGLRENDERER_H
+#define IVW_MESHGLRENDERER_H
 
 #include <modules/opengl/geometry/geometrygl.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
@@ -10,13 +10,13 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API MeshRenderer {
+class IVW_MODULE_OPENGL_API MeshGLRenderer {
 
 public:
-    MeshRenderer(const Mesh* mesh);
-    MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo);
-    MeshRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
-    virtual ~MeshRenderer();
+    MeshGLRenderer(const Mesh* mesh);
+    MeshGLRenderer(const Mesh* mesh, Mesh::AttributesInfo);
+    MeshGLRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
+    virtual ~MeshGLRenderer();
 
     virtual void render(RenderType = NOT_SPECIFIED) const;
 
@@ -31,7 +31,7 @@ protected:
     void renderElements(RenderType) const;
     void emptyFunc(RenderType rt) const{};
 
-    typedef void (MeshRenderer::*DrawFunc)(RenderType) const;
+    typedef void (MeshGLRenderer::*DrawFunc)(RenderType) const;
     struct DrawMethod{
         DrawFunc drawFunc;
         GLenum drawMode;
@@ -44,4 +44,4 @@ protected:
 
 } // namespace
 
-#endif // IVW_MESHGL_H
+#endif // IVW_MESHGLRENDERER_H

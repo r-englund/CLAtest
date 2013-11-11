@@ -1,5 +1,6 @@
 #include "entryexitpoints.h"
 #include <modules/opengl/geometry/geometrygl.h>
+#include <modules/opengl/geometry/meshglrenderer.h>
 #include <inviwo/core/interaction/trackball.h>
 
 namespace inviwo {
@@ -41,7 +42,7 @@ void EntryExitPoints::process() {
     const Geometry* geom = geometryPort_.getData();
     const Mesh* mesh = dynamic_cast<const Mesh*>(geom);
     if (!mesh) return;
-    MeshRenderer renderer(mesh);
+    MeshGLRenderer renderer(mesh);
 
     glEnable(GL_CULL_FACE);    
 

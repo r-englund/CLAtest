@@ -3,7 +3,6 @@
 #include <modules/opengl/buffer/elementbuffergl.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/opengl/geometry/geometryrenderprocessorgl.h>
-#include <modules/opengl/geometry/meshglconverter.h>
 #include <modules/opengl/glwrap/shadermanager.h>
 #include <modules/opengl/image/imageglconverter.h>
 #include <modules/opengl/openglmodule.h>
