@@ -23,6 +23,8 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 }
 
 void GeometryRenderProcessorGL::process() {
+    glEnable(GL_CULL_FACE); 
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
@@ -31,6 +33,7 @@ void GeometryRenderProcessorGL::process() {
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
 
     activateAndClearTarget(outport_);
+    glCullFace(GL_BACK);
 
     //inport_.getData()->getRepresentation<GeometryGL>()->render();
     const Geometry* geom = inport_.getData();
@@ -44,6 +47,8 @@ void GeometryRenderProcessorGL::process() {
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
+
+    glDisable(GL_CULL_FACE);
 }
 
 } // namespace
