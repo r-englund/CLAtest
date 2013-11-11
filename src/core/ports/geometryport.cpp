@@ -24,7 +24,7 @@ uvec3 GeometryInport::getColorCode() const {
 GeometryOutport::GeometryOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
 : DataOutport<Geometry>(identifier, invalidationLevel)
 {
-    data_ = new SimpleMeshRAM();
+    data_ = new SimpleMesh();
 }
 
 GeometryOutport::~GeometryOutport() {}

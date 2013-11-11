@@ -2,16 +2,16 @@
 
 namespace inviwo {
 
-SimpleMeshRAM::SimpleMeshRAM(RenderType rt, ConnectivityType ct)
+SimpleMesh::SimpleMesh(RenderType rt, ConnectivityType ct)
 : Mesh(rt, ct)
 {
 }
 
-SimpleMeshRAM::~SimpleMeshRAM() {
+SimpleMesh::~SimpleMesh() {
     deinitialize();
 }
 
-void SimpleMeshRAM::initialize() {
+void SimpleMesh::initialize() {
     vertexPositions_ = new Position3dBuffer();
     addAttribute(vertexPositions_);
 
@@ -25,35 +25,35 @@ void SimpleMeshRAM::initialize() {
     addIndicies(Mesh::AttributesInfo(), indices_);
 }
 
-void SimpleMeshRAM::deinitialize() {}
+void SimpleMesh::deinitialize() {}
 
-void SimpleMeshRAM::addVertex(vec3 pos, vec3 texCoord, vec4 color){
+void SimpleMesh::addVertex(vec3 pos, vec3 texCoord, vec4 color){
     vertexPositions_->getEditableRepresentation<Position3dBufferRAM>()->add(pos);
     vertexTexCoords_->getEditableRepresentation<TexCoord3dBufferRAM>()->add(texCoord);
     vertexColors_->getEditableRepresentation<ColorBufferRAM>()->add(color);
 }
 
-void SimpleMeshRAM::addIndex(unsigned int idx){
+void SimpleMesh::addIndex(unsigned int idx){
     indices_->getEditableRepresentation<IndexBufferRAM>()->add(idx);
 }
 
-void SimpleMeshRAM::setIndicesInfo(RenderType rt, ConnectivityType ct){
+void SimpleMesh::setIndicesInfo(RenderType rt, ConnectivityType ct){
     indexAttributes_[0].first = Mesh::AttributesInfo(rt, ct);
 }
 
-const Position3dBuffer* SimpleMeshRAM::getVertexList() const {
+const Position3dBuffer* SimpleMesh::getVertexList() const {
 	return this->vertexPositions_;
 }
 
-const TexCoord3dBuffer* SimpleMeshRAM::getTexCoordList() const {
+const TexCoord3dBuffer* SimpleMesh::getTexCoordList() const {
     return this->vertexTexCoords_;
 }
 
-const ColorBuffer* SimpleMeshRAM::getColorList() const {
+const ColorBuffer* SimpleMesh::getColorList() const {
     return this->vertexColors_;
 }
 
-const IndexBuffer* SimpleMeshRAM::getIndexList() const {
+const IndexBuffer* SimpleMesh::getIndexList() const {
 	return this->indices_;
 }
 

@@ -191,9 +191,9 @@ std::vector<EdgeIndex> triangleListtoEdgeList(const std::vector<unsigned int>* t
 }
 
 Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plane plane) {
-    const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
+    const SimpleMesh *inputMesh = dynamic_cast<const SimpleMesh*>(in);
     if(!inputMesh) {
-        LogError("Can only clip a SimpleMeshRAM*");
+        LogError("Can only clip a SimpleMesh*");
         return NULL;
     }
 
@@ -202,7 +202,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
     const std::vector<vec4>* colorList = inputMesh->getColorList()->getRepresentation<ColorBufferRAM>()->getDataContainer(); 
     const std::vector<unsigned int>* triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
 
-    SimpleMeshRAM* outputMesh = new SimpleMeshRAM(TRIANGLES);
+    SimpleMesh* outputMesh = new SimpleMesh(TRIANGLES);
     outputMesh->initialize();
 
     //Check if we are using indicies
@@ -557,9 +557,9 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane) {
 	//LogInfo("Entered clipGeometryAgainstPlane(...).");
 
-    const SimpleMeshRAM *inputMesh = dynamic_cast<const SimpleMeshRAM*>(in);
+    const SimpleMesh *inputMesh = dynamic_cast<const SimpleMesh*>(in);
 	if(!inputMesh) {
-		LogError("Can only clip a SimpleMeshRAM*");
+		LogError("Can only clip a SimpleMesh*");
 		return NULL;
 	}
 
@@ -735,9 +735,9 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane
 		LogInfo("Edge, " << i << " = " << outputEdgeList.at(i).v1 << "->" << outputEdgeList.at(i).v2);
 	}*/
 
-	// Bygg ny SimpleMeshRAM här från outputList-vektor
+	// Bygg ny SimpleMesh här från outputList-vektor
 	//LogInfo("Buildning new mesh from clipped vertices.");
-	SimpleMeshRAM* outputMesh = new SimpleMeshRAM();
+	SimpleMesh* outputMesh = new SimpleMesh();
 	outputMesh->initialize();
 
 	for(unsigned int i=0; i<outputList.size(); ++i) {

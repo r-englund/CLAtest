@@ -4,7 +4,6 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
-#include <inviwo/core/datastructures/geometry/geometryram.h>
 #include <utility>
 
 namespace inviwo {

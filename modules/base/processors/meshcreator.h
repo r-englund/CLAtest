@@ -20,7 +20,7 @@ public:
     void initialize();
     void deinitialize();
 
-    SimpleMeshRAM* createMesh();
+    SimpleMesh* createMesh();
 
 protected:
     virtual void process();

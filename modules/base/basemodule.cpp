@@ -1,6 +1,7 @@
 #include <modules/base/basemodule.h>
 
 #include <modules/base/processors/cubeproxygeometry.h>
+#include <modules/base/processors/drawlinesprocessor.h>
 #include <modules/base/processors/entryexitpoints.h>
 #include <modules/base/processors/findedges.h>
 #include <modules/base/processors/firstivwprocessor.h>
@@ -28,6 +29,7 @@ BaseModule::BaseModule() : InviwoModule() {
     setXMLFileName("base/basemodule.xml");
 
     registerProcessor(CubeProxyGeometry);
+    registerProcessor(DrawLinesProcessor);
     registerProcessor(EntryExitPoints);
 	registerProcessor(FindEdges);
 	registerProcessor(FirstIvwProcessor);

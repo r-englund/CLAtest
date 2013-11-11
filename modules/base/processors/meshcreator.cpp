@@ -30,7 +30,7 @@ void MeshCreator::deinitialize() {
     Processor::deinitialize();
 }
 
-SimpleMeshRAM* MeshCreator::createMesh(){
+SimpleMesh* MeshCreator::createMesh(){
     if(meshType_.get() == "sphere"){
         return SimpleMeshCreator::sphere(0.5f, 8, 16);
     }

@@ -6,6 +6,7 @@ ivw_module(Base)
 # Add header files
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.h
+    ${IVW_MODULE_DIR}/base/processors/drawlinesprocessor.h
     ${IVW_MODULE_DIR}/base/processors/entryexitpoints.h
     ${IVW_MODULE_DIR}/base/processors/findedges.h
     ${IVW_MODULE_DIR}/base/processors/firstivwprocessor.h
@@ -32,6 +33,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.cpp
+    ${IVW_MODULE_DIR}/base/processors/drawlinesprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/entryexitpoints.cpp
     ${IVW_MODULE_DIR}/base/processors/findedges.cpp
     ${IVW_MODULE_DIR}/base/processors/firstivwprocessor.cpp

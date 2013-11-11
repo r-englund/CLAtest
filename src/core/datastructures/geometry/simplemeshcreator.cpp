@@ -2,9 +2,9 @@
 
 namespace inviwo {
 
-SimpleMeshRAM* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 texCoordLlf, 
+SimpleMesh* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 texCoordLlf, 
                                                vec3 texCoordUrb, vec4 colorLlf, vec4 colorUrb) {
-    SimpleMeshRAM* recPrism = new SimpleMeshRAM();
+    SimpleMesh* recPrism = new SimpleMesh();
     recPrism->initialize();
 
     //8 corners
@@ -37,11 +37,11 @@ SimpleMeshRAM* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec
     return recPrism;
 }
 
-SimpleMeshRAM* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, 	
+SimpleMesh* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, 	
 											 glm::vec3 tex, glm::vec3 t1, glm::vec3 t2, glm::vec3 t3, 	
 											 glm::vec4 col, glm::vec4 c1, glm::vec4 c2, glm::vec4 c3){
    
-	SimpleMeshRAM* ppd = new SimpleMeshRAM();
+	SimpleMesh* ppd = new SimpleMesh();
     ppd->initialize();
 
 	//8 corners
@@ -76,8 +76,8 @@ SimpleMeshRAM* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, gl
 
 }
 
-SimpleMeshRAM* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
-	SimpleMeshRAM* rec = new SimpleMeshRAM();
+SimpleMesh* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
+	SimpleMesh* rec = new SimpleMesh();
 	rec->initialize();
 
 	vec3 texCoordLl(0,0,0);
@@ -102,8 +102,8 @@ SimpleMeshRAM* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
 	return rec;
 }
 
-SimpleMeshRAM* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsigned int segmentsPerLoop){
-    SimpleMeshRAM* spheremesh = new SimpleMeshRAM();
+SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsigned int segmentsPerLoop){
+    SimpleMesh* spheremesh = new SimpleMesh();
     spheremesh->initialize();
 
     //Create Vertices

@@ -6,11 +6,11 @@
 
 namespace inviwo {
 
-class IVW_CORE_API SimpleMeshRAM : public Mesh {
+class IVW_CORE_API SimpleMesh : public Mesh {
 
 public:
-    SimpleMeshRAM(RenderType rt = POINTS, ConnectivityType ct = NONE);
-    virtual ~SimpleMeshRAM();
+    SimpleMesh(RenderType rt = POINTS, ConnectivityType ct = NONE);
+    virtual ~SimpleMesh();
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();
