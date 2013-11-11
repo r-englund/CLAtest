@@ -20,7 +20,7 @@ public:
      * @param data Data to transfer. Does not transfer data if data is NULL.
      * @param readWriteFlag Determine how memory will be used by Kernels: CL_MEM_READ_ONLY, CL_MEM_WRITE_ONLY, CL_MEM_READ_WRITE
      */
-    BufferCL(size_t size, BufferType type, const DataFormatBase* format, const void* data = NULL, cl_mem_flags readWriteFlag = CL_MEM_READ_WRITE);
+    BufferCL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage = STATIC, const void* data = NULL, cl_mem_flags readWriteFlag = CL_MEM_READ_WRITE);
     BufferCL( const BufferCL& rhs );
     virtual ~BufferCL();
 

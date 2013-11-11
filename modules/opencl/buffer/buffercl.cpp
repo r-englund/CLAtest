@@ -2,14 +2,14 @@
 
 namespace inviwo {
 
-BufferCL::BufferCL(size_t size, BufferType type, const DataFormatBase* format, const void* data, cl_mem_flags readWriteFlag)
-    : BufferRepresentation(size, type, format), readWriteFlag_(readWriteFlag)
+BufferCL::BufferCL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, const void* data, cl_mem_flags readWriteFlag)
+    : BufferRepresentation(size, format, type, usage), readWriteFlag_(readWriteFlag)
 {
     initialize(data);
 }
 
 BufferCL::BufferCL( const BufferCL& rhs )
-: BufferRepresentation(rhs.getSize(), rhs.getBufferType(), rhs.getDataFormat()), readWriteFlag_(rhs.readWriteFlag_)
+: BufferRepresentation(rhs.getSize(), rhs.getDataFormat(), rhs.getBufferType(), rhs.getBufferUsage()), readWriteFlag_(rhs.readWriteFlag_)
 {
     initialize(NULL);
     OpenCL::instance()->getQueue().enqueueCopyBuffer(rhs.getBuffer(), *buffer_ , 0, 0, getSize()*getSizeOfElement());

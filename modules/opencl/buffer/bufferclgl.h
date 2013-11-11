@@ -12,7 +12,7 @@ namespace inviwo {
 class IVW_MODULE_OPENCL_API BufferCLGL : public BufferRepresentation {
 
 public:
-    BufferCLGL(size_t size, BufferType type, const DataFormatBase* format, const BufferGL* data = NULL, cl_mem_flags readWriteFlag = CL_MEM_READ_WRITE);
+    BufferCLGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage = STATIC, const BufferGL* data = NULL, cl_mem_flags readWriteFlag = CL_MEM_READ_WRITE);
     BufferCLGL( const BufferCLGL& rhs );
     virtual ~BufferCLGL();
     virtual std::string getClassName() const { return "BufferCLGL"; }

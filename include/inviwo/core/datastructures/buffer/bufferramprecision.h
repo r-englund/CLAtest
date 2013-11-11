@@ -8,8 +8,8 @@ namespace inviwo {
 template<typename T>
 class IVW_CORE_API BufferRAMPrecision : public BufferRAM {
 public:
-    BufferRAMPrecision(size_t size = 0, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = defaultformat());
-    BufferRAMPrecision(T* data, size_t size, BufferType type, const DataFormatBase* format = defaultformat());
+    BufferRAMPrecision(size_t size = 0, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
+    BufferRAMPrecision(T* data, size_t size, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
     BufferRAMPrecision(const BufferRAMPrecision<T>& rhs);
     BufferRAMPrecision<T>& operator=(const BufferRAMPrecision<T>& rhs) {
         if (this != &rhs) {
@@ -56,8 +56,8 @@ private:
 template<typename T, size_t B>
 class IVW_CORE_API BufferRAMCustomPrecision : public BufferRAMPrecision<T> {
 public:
-    BufferRAMCustomPrecision(size_t size = 0, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = defaultformat())
-        : BufferRAMPrecision<T>(size, type, format) {}
+    BufferRAMCustomPrecision(size_t size = 0, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC)
+        : BufferRAMPrecision<T>(size, format, type, usage) {}
     virtual ~BufferRAMCustomPrecision() {};
     
 private:
@@ -67,13 +67,13 @@ private:
 };
 
 template<typename T>
-BufferRAMPrecision<T>::BufferRAMPrecision(size_t size, BufferType type, const DataFormatBase* format) : 
-    BufferRAM(size, type, format) {
+BufferRAMPrecision<T>::BufferRAMPrecision(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage) : 
+    BufferRAM(size, format, type, usage) {
     initialize();
 }
 template<typename T>
-BufferRAMPrecision<T>::BufferRAMPrecision(T* data, size_t size, BufferType type, const DataFormatBase* format) : 
-    BufferRAM(size, type, format) {
+BufferRAMPrecision<T>::BufferRAMPrecision(T* data, size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage) : 
+    BufferRAM(size, format, type, usage) {
     initialize(data);
 }
 
@@ -112,7 +112,7 @@ void inviwo::BufferRAMPrecision<T>::deinitialize()
 
 template<typename T>
 BufferRAMPrecision<T>* BufferRAMPrecision<T>::clone() const {
-    BufferRAMPrecision<T>* newBufferRAM = new BufferRAMPrecision<T>(getSize(), type_, getDataFormat());
+    BufferRAMPrecision<T>* newBufferRAM = new BufferRAMPrecision<T>(getSize(), getDataFormat(), getBufferType(), getBufferUsage());
     return newBufferRAM;
 }
 
@@ -187,13 +187,6 @@ void BufferRAMPrecision<T>::add( const T& item )
 #define DataFormatIdMacro(i) typedef BufferRAMCustomPrecision<Data##i::type, Data##i::bits> BufferRAM_##i;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
-
-
-
-
-
-
-
 typedef BufferRAM_Vec4FLOAT32 ColorBufferRAM;
 typedef BufferRAM_FLOAT32 CurvatureBufferRAM;
 typedef BufferRAM_UINT32 IndexBufferRAM;
@@ -202,8 +195,6 @@ typedef BufferRAM_Vec2FLOAT32 TexCoord2dBufferRAM;
 typedef BufferRAM_Vec3FLOAT32 Position3dBufferRAM;
 typedef BufferRAM_Vec3FLOAT32 TexCoord3dBufferRAM;
 typedef BufferRAM_Vec3FLOAT32 NormalBufferRAM;
-
-
 
 } // namespace
 

@@ -15,10 +15,16 @@ enum BufferType {
     POSITION_ATTRIB,
     TEXCOORD_ATTRIB
 };
+
+enum BufferUsage {
+    STATIC,
+    DYNAMIC
+};
+
 class IVW_CORE_API Buffer : public Data {
 
 public:
-    Buffer(size_t size, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = DataFormatBase::get());
+    Buffer(size_t size,  const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
     Buffer(const Buffer& rhs);
     virtual ~Buffer();
     void resize(size_t size);
@@ -37,13 +43,15 @@ private:
     size_t size_;
     const DataFormatBase* format_;
     BufferType type_;
+    BufferUsage usage_;
 };
 
 template<typename T, size_t B, BufferType A>
 class Attributes : public Buffer {
 
 public:
-    Attributes(size_t size = 0): Buffer(size, A, DataFormat<T,B>::get()) {}
+    Attributes(size_t size = 0, BufferUsage usage = STATIC): Buffer(size, DataFormat<T,B>::get(), A, usage) {}
+    Attributes(BufferUsage usage): Buffer(0, DataFormat<T,B>::get(), A, usage) {}
 
     virtual ~Attributes(){ }
 
@@ -56,17 +64,7 @@ private:
 
 };
 
-
 #define DataFormatBuffers(D, A) Attributes<D::type, D::bits, A>
-
-//typedef DataFormatBuffers(DataUINT32, POSITION_ATTRIB) BufferUINT32;
-//typedef DataFLOAT32 CurvatureBuffer;
-//typedef DataUINT32 IndexBuffer;
-//typedef DataVec2FLOAT32 Position2dBuffer;
-//typedef DataVec2FLOAT32 TexCoord2dBuffer;
-//typedef DataVec3FLOAT32 Position3dBuffer;
-//typedef DataVec3FLOAT32 TexCoord3dBuffer;
-//typedef DataVec3FLOAT32 NormalBuffer;
 
 typedef DataFormatBuffers(DataVec4FLOAT32, COLOR_ATTRIB) ColorBuffer;
 typedef DataFormatBuffers(DataFLOAT32, CURVATURE_ATTRIB) CurvatureBuffer;

@@ -10,7 +10,7 @@ BufferRAM2CLConverter::~BufferRAM2CLConverter() {}
 
 DataRepresentation* BufferRAM2CLConverter::createFrom(const DataRepresentation* source) {     
     const BufferRAM* bufferRAM = static_cast<const BufferRAM*>(source);
-    BufferCL* bufferCL = new BufferCL(bufferRAM->getSize(), bufferRAM->getBufferType(), bufferRAM->getDataFormat(), bufferRAM->getData());
+    BufferCL* bufferCL = new BufferCL(bufferRAM->getSize(), bufferRAM->getDataFormat(), bufferRAM->getBufferType(), bufferRAM->getBufferUsage(), bufferRAM->getData());
     return bufferCL;
 }
 void BufferRAM2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
@@ -30,7 +30,7 @@ BufferCL2RAMConverter::~BufferCL2RAMConverter() {}
 
 DataRepresentation* BufferCL2RAMConverter::createFrom(const DataRepresentation* source) {     
     const BufferCL* src = static_cast<const BufferCL*>(source);
-    BufferRAM* dst = createBufferRAM(src->getSize(), src->getBufferType(), src->getDataFormat());
+    BufferRAM* dst = createBufferRAM(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage());
     src->download(dst->getData());
     return dst;
 }

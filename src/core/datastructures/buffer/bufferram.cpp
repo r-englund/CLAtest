@@ -3,8 +3,8 @@
 
 namespace inviwo {
 
-BufferRAM::BufferRAM( size_t size, BufferType type, const DataFormatBase* format /*= DataFormatBase::get()*/ )
-    : BufferRepresentation(size, type, format){
+BufferRAM::BufferRAM(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage)
+    : BufferRepresentation(size, format, type, usage){
     BufferRAM::initialize();
 }
 BufferRAM::BufferRAM(const BufferRAM& rhs) : BufferRepresentation(rhs){
@@ -32,13 +32,13 @@ void BufferRAM::resize( size_t size ){
     initialize();
 }
 
-IVW_CORE_API BufferRAM* createBufferRAM( size_t size, BufferType type, const DataFormatBase* format ){
+IVW_CORE_API BufferRAM* createBufferRAM(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage){
     switch (format->getId())
     {
     case NOT_SPECIALIZED:
         LogErrorCustom("createBufferRAM", "Invalid format");
         return NULL;
-        #define DataFormatIdMacro(i) case i: return new BufferRAMCustomPrecision<Data##i::type, Data##i::bits>(size, type, format); break;
+        #define DataFormatIdMacro(i) case i: return new BufferRAMCustomPrecision<Data##i::type, Data##i::bits>(size, format, type, usage); break;
         #include <inviwo/core/util/formatsdefinefunc.h>
     default:
         LogErrorCustom("createBufferRAM", "Invalid format or not implemented");

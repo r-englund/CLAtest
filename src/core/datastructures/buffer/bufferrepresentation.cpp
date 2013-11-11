@@ -2,12 +2,12 @@
 
 namespace inviwo {
 
-BufferRepresentation::BufferRepresentation( size_t size, BufferType type, const DataFormatBase* format )
-    : DataRepresentation(format), size_(size), type_(type){
+BufferRepresentation::BufferRepresentation(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage)
+    : DataRepresentation(format), size_(size), type_(type), usage_(usage){
 }
 
 BufferRepresentation::BufferRepresentation(const BufferRepresentation& rhs) 
-    : DataRepresentation(rhs), size_(rhs.size_), type_(rhs.type_){
+    : DataRepresentation(rhs), size_(rhs.size_), type_(rhs.type_), usage_(rhs.usage_){
 }
 
 

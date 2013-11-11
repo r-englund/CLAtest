@@ -2,8 +2,8 @@
 
 namespace inviwo {
 
-BufferGL::BufferGL(size_t size, BufferType type, const DataFormatBase* format)
-    : BufferRepresentation(size, type, format)
+BufferGL::BufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage)
+    : BufferRepresentation(size, format, type, usage)
     , glFormat_(getGLFormats()->getGLFormat(format->getId())){
     initialize();
     LGL_ERROR_SUPPRESS;
@@ -40,7 +40,7 @@ void BufferGL::specifyLocation() const {
 }
 
 
-void BufferGL::upload( const void* data, size_t size, GLenum usage, GLenum target)
+void BufferGL::upload(const void* data, size_t size, GLenum target)
 {
     //Set global variables
     target_ = target;
@@ -73,12 +73,23 @@ void BufferGL::upload( const void* data, size_t size, GLenum usage, GLenum targe
         break;
     }
 
-    reupload(data, size, usage);
+    //Specify location and state
+    switch(getBufferUsage())
+    {
+        case DYNAMIC:
+            usageGL_ = GL_DYNAMIC_DRAW;
+            break;
+        default:
+            usageGL_ = GL_STATIC_DRAW;
+            break;
+    }
+
+    reupload(data, size);
 }
 
-void BufferGL::reupload(const void* data, size_t size, GLenum usage){
+void BufferGL::reupload(const void* data, size_t size){
     bind();
-    glBufferData(target_, size, data, usage);
+    glBufferData(target_, size, data, usageGL_);
     specifyLocation();
 }
 

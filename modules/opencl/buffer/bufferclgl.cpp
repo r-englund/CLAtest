@@ -3,8 +3,8 @@
 
 namespace inviwo {
 
-BufferCLGL::BufferCLGL(size_t size, BufferType type, const DataFormatBase* format, const BufferGL* data, cl_mem_flags readWriteFlag)
-    : BufferRepresentation(size, type, format), bufferGL_(data), readWriteFlag_(readWriteFlag)
+BufferCLGL::BufferCLGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, const BufferGL* data, cl_mem_flags readWriteFlag)
+    : BufferRepresentation(size, format, type, usage), bufferGL_(data), readWriteFlag_(readWriteFlag)
 {
     if(data) {
         initialize(data);
@@ -12,7 +12,7 @@ BufferCLGL::BufferCLGL(size_t size, BufferType type, const DataFormatBase* forma
 }
 
 BufferCLGL::BufferCLGL( const BufferCLGL& rhs )
-: BufferRepresentation(rhs.getSize(), rhs.getBufferType(), rhs.getDataFormat()), bufferGL_(rhs.getBufferGL()), readWriteFlag_(rhs.readWriteFlag_)
+: BufferRepresentation(rhs.getSize(), rhs.getDataFormat(), rhs.getBufferType(), rhs.getBufferUsage()), bufferGL_(rhs.getBufferGL()), readWriteFlag_(rhs.readWriteFlag_)
 {
     initialize(bufferGL_);
 }

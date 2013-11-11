@@ -11,7 +11,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API BufferGL: public BufferRepresentation {
 
 public:
-    BufferGL(size_t size, BufferType type, const DataFormatBase* format);
+    BufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage);
     virtual ~BufferGL();
 
     virtual void initialize();
@@ -29,8 +29,8 @@ public:
     void bind() const;
     void specifyLocation() const;
 
-    void upload(const void* data, size_t size, GLenum usage = GL_STATIC_DRAW, GLenum target = GL_ARRAY_BUFFER);
-    void reupload(const void* data, size_t size ,GLenum usage = GL_STATIC_DRAW);
+    void upload(const void* data, size_t size, GLenum target = GL_ARRAY_BUFFER);
+    void reupload(const void* data, size_t size);
 
     void download(void* data) const;
 
@@ -49,6 +49,7 @@ protected:
 private:
     GLuint id_;
     GLenum state_;
+    GLenum usageGL_;
     GLenum target_;
     GLFormats::GLFormat glFormat_;
     void (BufferGL::*locationPointerFunc_)() const;

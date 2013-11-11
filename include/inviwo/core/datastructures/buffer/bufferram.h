@@ -10,7 +10,7 @@ namespace inviwo {
 class IVW_CORE_API BufferRAM : public BufferRepresentation {
 
 public:
-    BufferRAM(size_t size, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = DataFormatBase::get());
+    BufferRAM(size_t size, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
     BufferRAM(const BufferRAM& rhs);
     virtual ~BufferRAM();
 
@@ -55,7 +55,7 @@ protected:
  * @param format of buffer to create.
  * @return NULL if no valid format was specified. 
  */
-IVW_CORE_API BufferRAM* createBufferRAM(size_t size, BufferType type, const DataFormatBase* format);
+IVW_CORE_API BufferRAM* createBufferRAM(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage);
 
 } // namespace
 

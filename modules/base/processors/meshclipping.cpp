@@ -345,7 +345,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
 
             std::vector<Edge3D> uniqueintersectionsEdges;
             for(size_t i=0; i<intersectionsEdges.size(); ++i){
-                if(intersectionsEdges.at(i).v1 != intersectionsEdges.at(i).v2){
+                if(!equal(intersectionsEdges.at(i).v1, intersectionsEdges.at(i).v2, EPSILON)){
                     if(uniqueintersectionsEdges.empty() || std::find(uniqueintersectionsEdges.begin(), uniqueintersectionsEdges.end(), intersectionsEdges.at(i)) == uniqueintersectionsEdges.end()) {
                         uniqueintersectionsEdges.push_back(intersectionsEdges.at(i));
                     }
@@ -399,6 +399,7 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
                             createdPolygon = true;
                             break;
                         }
+                        ivwAssert(i != uniqueintersectionsEdges.size()-1, "Could not connect find intersecting edges");
                     }
                     ivwAssert(createdPolygon, "Could not connect clipped edges to manifold polygon");
                 }

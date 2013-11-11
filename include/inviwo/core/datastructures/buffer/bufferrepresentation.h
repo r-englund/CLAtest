@@ -10,10 +10,8 @@ namespace inviwo {
 
 class IVW_CORE_API BufferRepresentation : public DataRepresentation {
 
-friend class Image;
-
 public:
-    BufferRepresentation(size_t size, BufferType type = POSITION_ATTRIB, const DataFormatBase* format = DataFormatBase::get());
+    BufferRepresentation(size_t size, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
     BufferRepresentation(const BufferRepresentation& rhs);
     virtual ~BufferRepresentation() {};
     virtual void performOperation(DataOperation*) const {};
@@ -37,9 +35,12 @@ public:
     virtual size_t getSizeOfElement() const { return getDataFormat()->getBytesStored(); };
 
     BufferType getBufferType() const { return type_; }
+    BufferUsage getBufferUsage() const { return usage_; }
+
 protected:
     size_t size_;
     BufferType type_;
+    BufferUsage usage_;
 };
 
 } // namespace

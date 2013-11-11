@@ -3,8 +3,8 @@
 namespace inviwo {
 
 
-ElementBufferGL::ElementBufferGL(size_t size, BufferType type, const DataFormatBase* format)
-    : BufferRepresentation(size, type, format), glFormat_(getGLFormats()->getGLFormat(format->getId())){
+ElementBufferGL::ElementBufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage)
+    : BufferRepresentation(size, format, type, usage), glFormat_(getGLFormats()->getGLFormat(format->getId())){
     initialize();
 }
 
@@ -40,7 +40,7 @@ void ElementBufferGL::specifyLocation() const {
     (this->*locationPointerFunc_)();
 }
 
-void ElementBufferGL::upload( const void* data, size_t size, GLenum usage)
+void ElementBufferGL::upload(const void* data, size_t size)
 {
     //Get GL Format
     glFormat_ = getGLFormats()->getGLFormat(getDataFormat()->getId());
@@ -70,14 +70,23 @@ void ElementBufferGL::upload( const void* data, size_t size, GLenum usage)
         break;
     }
 
-    bind();
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
-    specifyLocation();
+    //Specify usage
+    switch(getBufferUsage())
+    {
+    case DYNAMIC:
+        usageGL_ = GL_DYNAMIC_DRAW;
+        break;
+    default:
+        usageGL_ = GL_STATIC_DRAW;
+        break;
+    }
+
+    reupload(data, size);
 }
 
-void ElementBufferGL::update(const void* data, size_t size, GLenum usage){
+void ElementBufferGL::reupload(const void* data, size_t size){
     bind();
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usageGL_);
     specifyLocation();
 }
 
@@ -124,7 +133,7 @@ BufferRAM2ElementGLConverter::~BufferRAM2ElementGLConverter() {}
 
 DataRepresentation* BufferRAM2ElementGLConverter::createFrom(const DataRepresentation* source) {     
     const BufferRAM* bufferRAM = static_cast<const BufferRAM*>(source);
-    ElementBufferGL* bufferGL = new ElementBufferGL(bufferRAM->getSize(), bufferRAM->getBufferType(), bufferRAM->getDataFormat());
+    ElementBufferGL* bufferGL = new ElementBufferGL(bufferRAM->getSize(), bufferRAM->getDataFormat(), bufferRAM->getBufferType(), bufferRAM->getBufferUsage());
     bufferGL->upload(bufferRAM->getData(), bufferRAM->getSize()*bufferRAM->getSizeOfElement());
 
     return bufferGL;
@@ -132,7 +141,7 @@ DataRepresentation* BufferRAM2ElementGLConverter::createFrom(const DataRepresent
 void BufferRAM2ElementGLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferRAM* src = static_cast<const BufferRAM*>(source);
     ElementBufferGL* dst = static_cast<ElementBufferGL*>(destination);
-    dst->update(src->getData(), src->getSize()*src->getSizeOfElement());
+    dst->reupload(src->getData(), src->getSize()*src->getSizeOfElement());
 
 }
 

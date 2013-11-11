@@ -23,7 +23,7 @@ DataRepresentation* BufferCLGL2RAMConverter::createFrom(const DataRepresentation
     DataRepresentation* destination = 0;
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
     size_t size = src->getSize();
-    destination = createBufferRAM(size, src->getBufferType(), src->getDataFormat()); 
+    destination = createBufferRAM(size, src->getDataFormat(), src->getBufferType(), src->getBufferUsage()); 
     const BufferGL* buffer = src->getBufferGL();
     if (destination) {
         BufferRAM* dst = static_cast<BufferRAM*>(destination);
@@ -48,7 +48,7 @@ DataRepresentation* BufferGL2CLGLConverter::createFrom(const DataRepresentation*
 {
     DataRepresentation* destination = 0;
     const BufferGL* src = static_cast<const BufferGL*>(source);
-    destination = new BufferCLGL(src->getSize(), src->getBufferType(), src->getDataFormat(), src);
+    destination = new BufferCLGL(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage(), src);
     return destination;
 }
 
@@ -68,7 +68,7 @@ DataRepresentation* BufferCLGL2CLConverter::createFrom(const DataRepresentation*
     DataRepresentation* destination = 0;
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
     size_t size = src->getSize();;
-    destination = new BufferCL(size, src->getBufferType(), src->getDataFormat());
+    destination = new BufferCL(size, src->getDataFormat(), src->getBufferType(), src->getBufferUsage());
     SyncCLGL glSync;
     src->aquireGLObject(glSync.getGLSyncEvent());
     OpenCL::instance()->getQueue().enqueueCopyBuffer(src->getBuffer(), static_cast<BufferCL*>(destination)->getBuffer(), 0, 0, size);
