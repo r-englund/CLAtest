@@ -50,9 +50,14 @@ void VolumeSubset::process(){
 
          uvec3 dim = uvec3(static_cast<unsigned int>(rangeX_.get().y), static_cast<unsigned int>(rangeY_.get().y), static_cast<unsigned int>(rangeZ_.get().y));
          uvec3 offset = uvec3(static_cast<unsigned int>(rangeX_.get().x), static_cast<unsigned int>(rangeY_.get().x), static_cast<unsigned int>(rangeZ_.get().x));
+         dim -= offset;
 
-         Volume* volume = new Volume(VolumeRAMSubSet::apply(vol, dim, offset));
-         outport_.setData(volume);
+         if(dim == dims_)
+             outport_.setData(const_cast<Volume*>(inport_.getData()), false);
+         else{
+             Volume* volume = new Volume(VolumeRAMSubSet::apply(vol, dim, offset));
+             outport_.setData(volume);
+         }
     }
     else
         outport_.setData(const_cast<Volume*>(inport_.getData()), false);

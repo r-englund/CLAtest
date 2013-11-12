@@ -5,18 +5,18 @@
 
 namespace inviwo {
 
-    class VolumeRepresentation;
+class VolumeRepresentation;
 
-    class IVW_CORE_API VolumeOperation : public DataOperation {
-    public:
-        VolumeOperation(const VolumeRepresentation* in) : DataOperation(), in_(in){}
-        virtual ~VolumeOperation(){}
+class IVW_CORE_API VolumeOperation : public DataOperation {
+public:
+    VolumeOperation(const VolumeRepresentation* in) : DataOperation(), in_(in){}
+    virtual ~VolumeOperation(){}
 
-        const VolumeRepresentation* getInputVolume() { return in_; }
+    const VolumeRepresentation* getInputVolume() { return in_; }
 
-    private:
-        const VolumeRepresentation* in_;
-    };
+private:
+    const VolumeRepresentation* in_;
+};
 
 } // namespace
 

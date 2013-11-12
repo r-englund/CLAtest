@@ -4,7 +4,7 @@
 namespace inviwo {
 
 Volume::Volume(uvec3 dimensions, const DataFormatBase* format) : StructuredData<3>(dimensions, format) {
-	representations_.clear();
+	clearRepresentations();
 }
 
 Volume::Volume(VolumeRepresentation* in) : StructuredData<3>(in->getDimensions(), in->getDataFormat()) {
