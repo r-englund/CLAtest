@@ -74,6 +74,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add shaders
 set(SHADER_FILES
+    ${IVW_MODULE_DIR}/opengl/glsl/background.frag
     ${IVW_MODULE_DIR}/opengl/glsl/capnearclipping.frag
     ${IVW_MODULE_DIR}/opengl/glsl/composite.frag
     ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_freetype.frag
