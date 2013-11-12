@@ -72,7 +72,7 @@ void MinMaxProperty<T>::setRangeMin(const T &value) {
     if(TemplateProperty<glm::detail::tvec2<T> >::value_.x < value || TemplateProperty<glm::detail::tvec2<T> >::value_.x == range_.x)
         TemplateProperty<glm::detail::tvec2<T> >::value_.x = value;
     range_.x = value;
-    propertyModified();
+    TemplateProperty<glm::detail::tvec2<T> >::propertyModified();
 }
 
 template <typename T>
@@ -80,7 +80,7 @@ void MinMaxProperty<T>::setRangeMax(const T &value) {
     if(TemplateProperty<glm::detail::tvec2<T> >::value_.y > value || TemplateProperty<glm::detail::tvec2<T> >::value_.y == range_.y)
         TemplateProperty<glm::detail::tvec2<T> >::value_.y = value;
     range_.y = value;
-    propertyModified();
+    TemplateProperty<glm::detail::tvec2<T> >::propertyModified();
 }
 
 template <typename T>
