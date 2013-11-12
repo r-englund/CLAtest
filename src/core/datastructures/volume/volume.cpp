@@ -8,13 +8,13 @@ Volume::Volume(uvec3 dimensions, const DataFormatBase* format) : StructuredData<
 }
 
 Volume::Volume(VolumeRepresentation* in) : StructuredData<3>(in->getDimensions(), in->getDataFormat()) {
-    representations_.clear();
-    representations_.push_back(in);
+    clearRepresentations();
+    addRepresentation(in);
 }
 
 Volume::Volume(VolumeRepresentation* in, const Volume* src) : StructuredData<3>(in->getDimensions(), in->getDataFormat()) {
-    representations_.clear();
-    representations_.push_back(in);
+    clearRepresentations();
+    addRepresentation(in);
     this->metaData_ = src->getMetaDataMap();
 }
 

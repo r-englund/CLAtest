@@ -69,11 +69,15 @@ glm::detail::tvec2<T> MinMaxProperty<T>::getRange() const{
 
 template <typename T>
 void MinMaxProperty<T>::setRangeMin(const T &value) {
+    if(value_.x < value)
+        value_.x = value;
     range_.x = value;
 }
 
 template <typename T>
 void MinMaxProperty<T>::setRangeMax(const T &value) {
+    if(value_.y > value)
+        value_.y = value;
     range_.y = value;
 }
 
@@ -84,7 +88,8 @@ void MinMaxProperty<T>::setIncrement(const T &value) {
 
 template <typename T>
 void MinMaxProperty<T>::setRange(const glm::detail::tvec2<T> &value){
-    range_ = value;
+    setRangeMin(value.x);
+    setRangeMax(value.y);
 }
 
 template <typename T> 

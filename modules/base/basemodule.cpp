@@ -17,10 +17,11 @@
 #include <modules/base/processors/simpleraycaster.h>
 #include <modules/base/processors/testprocessor.h>
 #include <modules/base/processors/transferfunctiontestprocessor.h>
+#include <modules/base/processors/volumebasistransformer.h>
 #include <modules/base/processors/volumesplit.h>
 #include <modules/base/processors/volumesplitcompositor.h>
 #include <modules/base/processors/volumesplitimagecompositor.h>
-#include <modules/base/processors/volumebasistransformer.h>
+#include <modules/base/processors/volumesubset.h>
 
 namespace inviwo {
 
@@ -49,6 +50,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(VolumeSplit);
     registerProcessor(VolumeSplitCompositor);
     registerProcessor(VolumeSplitImageCompositor);
+    registerProcessor(VolumeSubset);
 }
 
 } // namespace

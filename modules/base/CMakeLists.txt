@@ -26,6 +26,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/volumesplit.h
     ${IVW_MODULE_DIR}/base/processors/volumesplitcompositor.h
     ${IVW_MODULE_DIR}/base/processors/volumesplitimagecompositor.h
+    ${IVW_MODULE_DIR}/base/processors/volumesubset.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -53,6 +54,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/volumesplit.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesplitcompositor.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesplitimagecompositor.cpp
+    ${IVW_MODULE_DIR}/base/processors/volumesubset.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
