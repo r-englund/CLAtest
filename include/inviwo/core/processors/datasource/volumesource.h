@@ -15,17 +15,12 @@ public:
 
     InviwoProcessorInfo();
 
-    virtual void initialize();
-    virtual void deinitialize();
-
 protected:
-    virtual void process();
-
-    void loadVolume(const std::string& filename);
+    void loadVolume();
 
 private:
     VolumeOutport volumePort_;
-    FileProperty volumeFileName_;
+    FileProperty volumeFile_;
 };
 
 } // namespace

@@ -59,11 +59,11 @@ std::string Processor::getPortDependencySet(Port* port) {
 
 }
 
-bool Processor::allInportsConnected() const {
-    for (size_t i=0; i<inports_.size(); i++)
-        if (!inports_[i]->isConnected())
-            return false;
-    return true;
+bool Processor::allInportsAreReady() const {
+	for (size_t i=0; i<inports_.size(); i++)
+		if (!inports_[i]->isReady())
+			return false;
+	return true;
 }
 
 void Processor::initialize() {

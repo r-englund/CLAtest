@@ -53,7 +53,8 @@ public:
     Processor* getProcessor() const;
     std::string getIdentifier() const;
 
-    virtual bool isConnected() const = 0;
+	virtual bool isConnected() const = 0;
+	virtual bool isReady() const = 0;
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 

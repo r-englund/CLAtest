@@ -51,12 +51,15 @@ void InviwoMainWindow::initializeAndShow() {
 
     resourceManagerWidget_ = new ResourceManagerWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, resourceManagerWidget_);
+	resourceManagerWidget_->hide();
 
     mappingwidget_ = new MappingWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, mappingwidget_);
+	mappingwidget_->hide();
 
     settingsWidget_ = new SettingsWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
+	settingsWidget_->hide();
 
     processorTreeWidget_ = new ProcessorTreeWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, processorTreeWidget_);
@@ -183,6 +186,7 @@ void InviwoMainWindow::addMenus() {
 }
 
 void InviwoMainWindow::addMenuActions() {
+	// file menu entries
     newFileAction_ = new QAction(QIcon(":/icons/new.png"), tr("&New Workspace"), this);
     newFileAction_->setShortcut(QKeySequence::New);
     connect(newFileAction_, SIGNAL(triggered()), this, SLOT(newWorkspace()));
@@ -210,21 +214,8 @@ void InviwoMainWindow::addMenuActions() {
         fileMenuItem_->addAction(recentFileActions_[i]);
     }
     
-    developerViewModeAction_ = new QAction(tr("&Developer"),this);
-    developerViewModeAction_->setCheckable(true);
-    viewModeItem_->addAction(developerViewModeAction_);
 
-    applicationViewModeAction_ = new QAction(tr("&Application"),this);
-    applicationViewModeAction_->setCheckable(true);
-    viewModeItem_->addAction(applicationViewModeAction_);
-    
-    QActionGroup* actionGroup = new QActionGroup(this);
-    actionGroup->addAction(developerViewModeAction_);
-    actionGroup->addAction(applicationViewModeAction_);
-
-    connect(developerViewModeAction_,SIGNAL(triggered(bool)),propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
-    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),propertyListWidget_, SLOT(setApplicationViewMode(bool)));
-    
+	// dockwidget visibility menu entries
     viewMenuItem_->addAction(mappingwidget_->toggleViewAction());
     viewMenuItem_->addAction(settingsWidget_->toggleViewAction());
     processorTreeWidget_->toggleViewAction()->setText(tr("&Processor List"));
@@ -232,18 +223,35 @@ void InviwoMainWindow::addMenuActions() {
     propertyListWidget_->toggleViewAction()->setText(tr("&Property List"));
     viewMenuItem_->addAction(propertyListWidget_->toggleViewAction());
     consoleWidget_->toggleViewAction()->setText(tr("&Output Console"));
-    viewMenuItem_->addAction(consoleWidget_->toggleViewAction());
+	viewMenuItem_->addAction(consoleWidget_->toggleViewAction());
+	viewMenuItem_->addAction(resourceManagerWidget_->toggleViewAction());
 
-    PropertyVisibility::VisibilityMode visibilityMode = propertyListWidget_->getVisibilityMode();
-    if (visibilityMode == PropertyVisibility::DEVELOPMENT){
-        developerViewModeAction_->setChecked(true);
-        //propertyListWidget_->setDeveloperViewMode(true);
-    }
-    if (visibilityMode == PropertyVisibility::APPLICATION) {
-        applicationViewModeAction_->setChecked(true);
-        //propertyListWidget_->setApplicationViewMode(true);
-    }
-    
+
+	// application/developer mode menu entries
+	developerViewModeAction_ = new QAction(tr("&Developer"),this);
+	developerViewModeAction_->setCheckable(true);
+	viewModeItem_->addAction(developerViewModeAction_);
+
+	applicationViewModeAction_ = new QAction(tr("&Application"),this);
+	applicationViewModeAction_->setCheckable(true);
+	viewModeItem_->addAction(applicationViewModeAction_);
+
+	QActionGroup* actionGroup = new QActionGroup(this);
+	actionGroup->addAction(developerViewModeAction_);
+	actionGroup->addAction(applicationViewModeAction_);
+
+	PropertyVisibility::VisibilityMode visibilityMode = propertyListWidget_->getVisibilityMode();
+	if (visibilityMode == PropertyVisibility::DEVELOPMENT){
+		developerViewModeAction_->setChecked(true);
+		//propertyListWidget_->setDeveloperViewMode(true);
+	}
+	if (visibilityMode == PropertyVisibility::APPLICATION) {
+		applicationViewModeAction_->setChecked(true);
+		//propertyListWidget_->setApplicationViewMode(true);
+	}
+
+	connect(developerViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
+	connect(applicationViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool)));    
 }
 
 void InviwoMainWindow::updateWindowTitle() {

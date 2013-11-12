@@ -20,8 +20,9 @@ public:
     virtual T* getData();
     virtual const T* getConstData() const;
     void setData(T* data, bool ownsData = true);
-
     bool hasData() const;
+
+	virtual bool isReady() const { return isConnected() && hasData(); }
 
 protected:
     T* data_;

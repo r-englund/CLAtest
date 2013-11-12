@@ -12,42 +12,28 @@ ProcessorCodeState(VolumeSource, CODE_STATE_EXPERIMENTAL);
 VolumeSource::VolumeSource()
     : Processor(),
       volumePort_("volume"),
-      volumeFileName_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/hydrogenatom.dat")
+	  //FIXME: rename identifier to volumeFile (needs workspace conversion first)
+      volumeFile_("volumeFileName", "Volume file")
 {
     addPort(volumePort_);
-    addProperty(volumeFileName_);
+
+	volumeFile_.onChange(this, &VolumeSource::loadVolume);
+	addProperty(volumeFile_);
 }
 
 VolumeSource::~VolumeSource() {}
 
-void VolumeSource::initialize() {
-    Processor::initialize();
-    // Load default volume
-    loadVolume(volumeFileName_.get());
-
-
-}
-
-void VolumeSource::deinitialize() {
-    Processor::deinitialize();
-}
-
-void VolumeSource::process() {
-    loadVolume(volumeFileName_.get());
-}
-
-void VolumeSource::loadVolume( const std::string& filename )
-{
+void VolumeSource::loadVolume() {
     // TODO: We need to remove resources at some point, how?
-    TemplateResource<Volume>* volumeResource = ResourceManager::instance()->getResourceAs< TemplateResource<Volume> >(filename);
-    if(volumeResource) {
+    TemplateResource<Volume>* volumeResource = ResourceManager::instance()->getResourceAs<TemplateResource<Volume> >(volumeFile_.get());
+    if (volumeResource) {
         volumePort_.setData(volumeResource->getData(), false);
     } else {
         Volume* volume = new UniformRectiLinearVolume();
-        VolumeDisk* vd = new VolumeDisk(filename);
+        VolumeDisk* vd = new VolumeDisk(volumeFile_.get());
         volume->setDimension(vd->getDimensions());
         volume->addRepresentation(vd);
-        ResourceManager::instance()->addResource(new TemplateResource<Volume>(filename, volume));
+        ResourceManager::instance()->addResource(new TemplateResource<Volume>(volumeFile_.get(), volume));
         volumePort_.setData(volume, false);
     }      
 }

@@ -28,6 +28,8 @@ public:
 
     bool hasData() const;
 
+	virtual bool isReady() const { return isConnected() && hasData(); }
+
 protected:
     DataOutport<T>* dataOutport_;
 };

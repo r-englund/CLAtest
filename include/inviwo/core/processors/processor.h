@@ -70,9 +70,9 @@ public:
     std::vector<Port*> getPortsByDependencySet(std::string portDependencySet);
     std::string getPortDependencySet(Port* port);
 
-    bool allInportsConnected() const;
+	bool allInportsAreReady() const;
 
-    virtual bool isReady() const { return allInportsConnected(); }
+    virtual bool isReady() const { return allInportsAreReady(); }
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     virtual void initializeResources() {} // reload shaders etc. here

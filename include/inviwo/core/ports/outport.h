@@ -22,10 +22,10 @@ public:
     virtual void initialize() {}
     virtual void deinitialize() {}
 
-    bool isConnected() const;
+    virtual bool isConnected() const;
     bool isConnectedTo(Inport* port) const;
 
-    bool isReady() const { ivwDeprecatedMethod("isConnected()"); return isConnected(); }
+    virtual bool isReady() const { return isConnected(); }
 
     std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
 

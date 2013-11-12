@@ -24,10 +24,10 @@ public:
     virtual void connectTo(Outport* outport);
     virtual void disconnectFrom(Outport* outport);
 
-    bool isConnected() const;
+    virtual bool isConnected() const;
     bool isConnectedTo(Outport* outport) const;
 
-    bool isReady() const { ivwDeprecatedMethod("isConnected()"); return isConnected(); }
+    virtual bool isReady() const { return isConnected(); }
 
     Outport* getConnectedOutport() const { return connectedOutport_; }
 
