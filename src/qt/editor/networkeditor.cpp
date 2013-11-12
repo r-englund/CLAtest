@@ -97,9 +97,10 @@ void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
 
 
 void NetworkEditor::addLink(Processor* processor1, Processor* processor2) {
-    processorNetwork_->addLink(processor1, processor2);
-    addLinkGraphicsItem(processor1, processor2);
-	
+    if (!processorNetwork_->getProcessorLink(processor1, processor2)) {
+        processorNetwork_->addLink(processor1, processor2);
+        addLinkGraphicsItem(processor1, processor2);
+    }	
 }
 
 void NetworkEditor::removeLink(Processor* processor1, Processor* processor2) {

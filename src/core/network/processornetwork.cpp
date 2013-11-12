@@ -81,7 +81,9 @@ void ProcessorNetwork::addLink(ProcessorLink* processorLink) {
     modified();
 }
 
-void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {      
+void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {    
+    if (getProcessorLink(sourceProcessor, destProcessor))
+        return;
     addLink(new ProcessorLink(sourceProcessor, destProcessor));
 }
 
@@ -129,9 +131,7 @@ ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* processor1, Process
              processorLinks_[i]->getSourceProcessor()==processor2)) {
             return processorLinks_[i];
         }
-    }
-    LogWarn("No link between "+processor1->getIdentifier()+" and "+
-                               processor2->getIdentifier()+" contained in processor network.");
+    }    
     return 0;
 }
 
