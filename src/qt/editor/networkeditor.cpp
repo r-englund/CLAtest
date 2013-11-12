@@ -426,6 +426,12 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
 }
 
 std::vector<std::string> NetworkEditor::saveSnapshotsInExternalNetwork(std::string externalNetworkFile, std::string identifierPrefix) { 
+    
+    //turnoff sound
+    BoolProperty* soundProperty = dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("enableSound"));
+    bool isSoundEnabled = soundProperty->get();
+    if (isSoundEnabled) soundProperty->set(false);
+
     std::vector<std::string> canvasSnapShotFiles;
     std::string directory = URLParser::getFileDirectory(externalNetworkFile);
     std::string workSpaceName = URLParser::getFileNameWithExtension(externalNetworkFile);
@@ -442,6 +448,9 @@ std::vector<std::string> NetworkEditor::saveSnapshotsInExternalNetwork(std::stri
             }
         }
     }
+
+    if (isSoundEnabled) soundProperty->set(true);
+
     processorNetwork_->setBroadcastModification(true);
     return canvasSnapShotFiles;
 }
