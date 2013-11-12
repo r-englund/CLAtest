@@ -1,20 +1,22 @@
 <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
     <file>icons/about.png</file>
-    <file>icons/edit.png</file>
-    <file>icons/inviwo_tmp.png</file>
-    <file>icons/new.png</file>
-    <file>icons/open.png</file>
-    <file>icons/save.png</file>
-    <file>icons/saveas.png</file>
     <file>icons/arrow_left.png</file>
     <file>icons/arrow_right.png</file>
     <file>icons/arrow_bidirectional.png</file>
+    <file>icons/edit.png</file>
+    <file>icons/html.png</file>
+    <file>icons/inviwo_tmp.png</file>
+    <file>icons/new.png</file>
+    <file>icons/open.png</file>
     <file>icons/processor_broken.png</file>
     <file>icons/processor_experimental.png</file>
     <file>icons/processor_stable.png</file>
     <file>icons/python.png</file>
-    <file>icons/html.png</file>
+    <file>icons/save.png</file>
+    <file>icons/saveas.png</file>
+    <file>icons/view-application.png</file>
+    <file>icons/view-developer.png</file>
     <file>images/splashscreen.png</file>
 
     <file>stylesheets/inviwo.qss</file>

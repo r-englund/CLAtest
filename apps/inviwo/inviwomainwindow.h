@@ -62,6 +62,7 @@ private:
     void openWorkspace(QString workspaceFileName);
     void addMenus();
     void addMenuActions();
+	void addToolBars();
     void closeEvent(QCloseEvent *event);
 
     bool askToSaveWorkspaceChanges();
@@ -101,6 +102,10 @@ private:
     QAction* recentFileActions_[maxNumRecentFiles_];
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
+
+	// mainwindow toolbars
+	QToolBar* fileToolBar_;
+	QToolBar* viewToolBar_;
 
     // settings
     bool lastExitWithoutErrors_;

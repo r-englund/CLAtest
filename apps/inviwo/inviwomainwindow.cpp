@@ -112,6 +112,7 @@ void InviwoMainWindow::initializeAndShow() {
     // initialize menus
     addMenus();
     addMenuActions();
+	addToolBars();
     updateRecentWorkspaces();
 
     if (maximized) showMaximized();
@@ -169,20 +170,20 @@ std::vector<std::string> InviwoMainWindow::getWorkspaceSnapshots(std::string wor
 }
 
 void InviwoMainWindow::addMenus() {
-    basicMenuBar = menuBar();
-    
-    QAction *first = 0;
-    if(basicMenuBar->actions().size()>0)
-        first = basicMenuBar->actions()[0];
+	basicMenuBar = menuBar();
 
-    fileMenuItem_ = new QMenu(tr("&File"));
-    viewMenuItem_ = new QMenu(tr("&View"));
-    viewModeItem_ = new QMenu(tr("&View mode"));
-    basicMenuBar->insertMenu(first,fileMenuItem_);
-    basicMenuBar->insertMenu(first,viewMenuItem_);
-    viewMenuItem_->addMenu(viewModeItem_);
+	QAction* first = 0;
+	if(basicMenuBar->actions().size()>0)
+		first = basicMenuBar->actions()[0];
 
-    helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
+	fileMenuItem_ = new QMenu(tr("&File"));
+	viewMenuItem_ = new QMenu(tr("&View"));
+	viewModeItem_ = new QMenu(tr("&View mode"));
+	basicMenuBar->insertMenu(first, fileMenuItem_);
+	basicMenuBar->insertMenu(first, viewMenuItem_);
+	viewMenuItem_->addMenu(viewModeItem_);
+
+	helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
 }
 
 void InviwoMainWindow::addMenuActions() {
@@ -230,10 +231,12 @@ void InviwoMainWindow::addMenuActions() {
 	// application/developer mode menu entries
 	developerViewModeAction_ = new QAction(tr("&Developer"),this);
 	developerViewModeAction_->setCheckable(true);
+	developerViewModeAction_->setIcon(QIcon(":/icons/view-developer.png"));
 	viewModeItem_->addAction(developerViewModeAction_);
 
 	applicationViewModeAction_ = new QAction(tr("&Application"),this);
 	applicationViewModeAction_->setCheckable(true);
+	applicationViewModeAction_->setIcon(QIcon(":/icons/view-application.png"));
 	viewModeItem_->addAction(applicationViewModeAction_);
 
 	QActionGroup* actionGroup = new QActionGroup(this);
@@ -252,6 +255,20 @@ void InviwoMainWindow::addMenuActions() {
 
 	connect(developerViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
 	connect(applicationViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool)));    
+}
+
+void InviwoMainWindow::addToolBars() {
+	fileToolBar_ = addToolBar("File");
+	fileToolBar_->setObjectName("fileToolBar");
+	fileToolBar_->addAction(newFileAction_);
+	fileToolBar_->addAction(openFileAction_);
+	fileToolBar_->addAction(saveFileAction_);
+	fileToolBar_->addAction(saveAsFileAction_);
+
+	viewToolBar_ = addToolBar("View");
+	viewToolBar_->setObjectName("viewToolBar");
+	viewToolBar_->addAction(developerViewModeAction_);
+	viewToolBar_->addAction(applicationViewModeAction_);
 }
 
 void InviwoMainWindow::updateWindowTitle() {
@@ -370,12 +387,12 @@ void InviwoMainWindow::saveWorkspace() {
     // FIXME: the following code snippet allows to reload the Qt style sheets during runtime,
     // which is handy while we change them. once the style sheets have been finalized,
     // this code should be removed.
-    QFile styleSheetFile("D:/inviwo/resources/stylesheets/inviwo.qss");
+    QFile styleSheetFile("C:/inviwo/resources/stylesheets/inviwo.qss");
     styleSheetFile.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(styleSheetFile.readAll());
     dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->setStyleSheet(styleSheet);
     styleSheetFile.close();
-    */
+	*/
 }
 
 void InviwoMainWindow::saveWorkspaceAs() {
