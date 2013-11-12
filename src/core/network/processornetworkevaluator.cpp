@@ -364,7 +364,7 @@ void ProcessorNetworkEvaluator::evaluate() {
     bool inValidTopology = false;
     for (size_t i=0; i<processorsSorted_.size(); i++)
         if (!processorsSorted_[i]->isValid())
-            if (!processorsSorted_[i]->isReady())
+            if (!processorsSorted_[i]->allInportsConnected())
                 if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
                     inValidTopology = true;
     if (inValidTopology) {

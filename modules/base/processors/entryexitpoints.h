@@ -34,7 +34,6 @@ private:
     CameraProperty camera_;
 	BoolProperty capNearClipping_;
 
-	ImageGL* tmpEntryPointsGL_;
 	Shader* capNearClippingPrg_;
 };
 

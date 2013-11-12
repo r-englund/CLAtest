@@ -65,10 +65,12 @@ void EntryExitPoints::process() {
 	deactivateCurrentTarget();
 
 	// generate entry points
+    Image* tmpEntryPoints;
+    ImageGL* tmpEntryPointsGL;
 	if (capNearClipping_.get()) {
-		Image* tmpEntryPoints = new Image(exitPort_.getDimensions());
-		tmpEntryPointsGL_ = tmpEntryPoints->getEditableRepresentation<ImageGL>();
-		tmpEntryPointsGL_->activateBuffer();
+		tmpEntryPoints = new Image(exitPort_.getDimensions());
+		tmpEntryPointsGL = tmpEntryPoints->getEditableRepresentation<ImageGL>();
+		tmpEntryPointsGL->activateBuffer();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	} else {
 		activateAndClearTarget(entryPort_);
@@ -82,8 +84,8 @@ void EntryExitPoints::process() {
 		activateAndClearTarget(entryPort_);
 
 		TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
-		tmpEntryPointsGL_->bindColorTexture(entryColorUnit.getEnum());
-		tmpEntryPointsGL_->bindDepthTexture(entryDepthUnit.getEnum());
+		tmpEntryPointsGL->bindColorTexture(entryColorUnit.getEnum());
+		tmpEntryPointsGL->bindDepthTexture(entryDepthUnit.getEnum());
 		bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
 
 		capNearClippingPrg_->activate();
@@ -105,6 +107,8 @@ void EntryExitPoints::process() {
 		renderImagePlaneRect();
 
 		capNearClippingPrg_->deactivate();
+
+        delete tmpEntryPoints;
 	}
 
     glDepthFunc(GL_LESS);
