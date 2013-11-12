@@ -63,10 +63,25 @@ bool ProcessorLink::isValid() {
     Processor* outProcessor = destinationProcessor_;
     Processor* inProcessor = sourceProcessor_;
 
-    if (outProcessor->isValid() && inProcessor->isValid())
-        return true;
+    bool outProcessorInValid = false;
+    bool inProcessorInValid = false;
 
-    return false;
+    std::vector<Property*> outProperties = outProcessor->getProperties();
+    for (size_t i=0; i<outProperties.size(); i++) {        
+        outProcessorInValid = outProperties[i]->isPropertyModified();
+        if (outProcessorInValid) break;
+    }
+
+    std::vector<Property*> inProperties = inProcessor->getProperties();
+    for (size_t i=0; i<inProperties.size(); i++) {
+        inProcessorInValid = inProperties[i]->isPropertyModified();
+        if (inProcessorInValid) break;
+    }
+
+    if (outProcessorInValid || inProcessorInValid)
+        return false;
+
+    return true;
 }
 
 void ProcessorLink::evaluate(LinkEvaluator *leval) {

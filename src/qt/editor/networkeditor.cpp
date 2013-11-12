@@ -296,7 +296,7 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string inspe
     std::string identifierPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();   
 
     processorNetwork_->lock();
-    addExternalNetwork(inspectorNetworkFileName, identifierPrefix, pos);    
+    addExternalNetwork(inspectorNetworkFileName, identifierPrefix, pos);
     processorNetwork_->setBroadcastModification(false);
     
     //connect input port to appropriate port in inspector network
@@ -365,7 +365,7 @@ void NetworkEditor::hoverPortTimeOut() {
 //   LOAD AND GET SNAPSHOT FROM EXTERNAL NETWORK      //
 ////////////////////////////////////////////////////////
 
-void NetworkEditor::addExternalNetwork(std::string fileName, std::string identifierPrefix, ivec2 pos, bool useOriginalCanvasSize, ivec2 canvasSize) {
+void NetworkEditor::addExternalNetwork(std::string fileName, std::string identifierPrefix, ivec2 pos, unsigned int networkEditorFlags , ivec2 canvasSize) {
     processorNetwork_->lock();
     processorNetwork_->setBroadcastModification(false);
 
@@ -384,14 +384,15 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
             // show processor widget as tool window              
             ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processor->getProcessorWidget());
             ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
-            if (!useOriginalCanvasSize) {
+            if (!(networkEditorFlags & NetworkEditor::UseOriginalCanvasSize)) {
                 processorWidgetQt->setMinimumSize(canvasSize[0], canvasSize[1]);
                 processorWidgetQt->setMaximumSize(canvasSize[0], canvasSize[1]);
             }
-            processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);            
+
+            processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
             processorWidgetQt->move(pos);
-            processorWidgetQt->show(); 
-            processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier()); //register is required because identifier is modifed.
+            processorWidgetQt->show();
+            processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier()); //register is required because identifier is modified.
         }
     }
 
@@ -404,15 +405,23 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
         processorNetwork->removeConnection(outport, inport);
         addConnection(outport, inport);
     }
-
-    /*
-    //TODO: establish links
+    
+    CameraProperty* externalNetworkCamera = 0;
     std::vector<ProcessorLink*> links = processorNetwork->getProcessorLinks();
-    for (size_t i=0; i<links.size(); i++) {
-        PropertyLink* propertyLink = links[i];
-        addLink(propertyLink->getSourceProperty())
+    for (size_t i=0; i<links.size(); i++) {        
+        addLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
+        ProcessorLink* link = processorNetwork->getProcessorLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
+        std::vector<PropertyLink*> propertyLinks = link->getPropertyLinks();
+        for (size_t j=0; j<propertyLinks.size(); j++) {
+            Property* srcProp = propertyLinks[j]->getSourceProperty();
+            Property* dstProp = propertyLinks[j]->getDestinationProperty();
+            link->addPropertyLinks(srcProp, dstProp);
+            if (!externalNetworkCamera) externalNetworkCamera = dynamic_cast<CameraProperty*>(srcProp);
+            if (!externalNetworkCamera) externalNetworkCamera = dynamic_cast<CameraProperty*>(dstProp);
+        }
     }
-    */    
+
+    //TODO: link any camera in current network with externalNetworkCamera
 
     processorNetwork_->unlock();
 
@@ -476,7 +485,8 @@ std::vector<std::string> NetworkEditor::getSnapshotsOfExternalNetwork(std::strin
     QRectF rect = sceneRect();
     ivec2 pos(rect.width()/2, rect.height()/2);
     std::string identifierPrefix = "TemporaryExternalNetwork";
-    addExternalNetwork(fileName, identifierPrefix, pos, true);
+    unsigned int networkEditorFlags = NetworkEditor::UseOriginalCanvasSize | NetworkEditor::CanvasHidden;
+    addExternalNetwork(fileName, identifierPrefix, pos, networkEditorFlags);
     processorNetwork_->setModified(true);
     processorNetworkEvaluator_->evaluate();
 
@@ -484,7 +494,7 @@ std::vector<std::string> NetworkEditor::getSnapshotsOfExternalNetwork(std::strin
     snapshotFileNames = saveSnapshotsInExternalNetwork(fileName, identifierPrefix);
 
     //unload external network
-    removeExternalNetwork(identifierPrefix);       
+    removeExternalNetwork(identifierPrefix);
 	return snapshotFileNames;
 }
 

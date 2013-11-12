@@ -13,12 +13,14 @@ Property::Property(std::string identifier, std::string displayName, PropertyOwne
   groupID_(""),
   VoidObservable(),
   visibilityMode_(PropertyVisibility::APPLICATION),
-  readOnly_(false)
+  readOnly_(false),
+  propertyModified_(false)
 {}
 
 Property::Property()
     : identifier_(""),
-      displayName_("")
+      displayName_(""),
+      propertyModified_(false)
 {}
 
 std::string Property::getIdentifier() const {
