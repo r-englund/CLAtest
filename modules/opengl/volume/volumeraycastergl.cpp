@@ -214,6 +214,10 @@ void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
     shader->setUniform("lightColorDiffuse_", lightColorDiffuse_.get());
     shader->setUniform("lightColorSpecular_", lightColorSpecular_.get());
     shader->setUniform("lightSpecularExponent_", lightSpecularExponent_.get());
+
+	// depth computation uniforms
+	shader->setUniform("zNear_", camera_.getNearPlaneDist());
+	shader->setUniform("zFar_", camera_.getFarPlaneDist());
 }
 
 } // namespace

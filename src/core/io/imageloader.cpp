@@ -77,8 +77,7 @@ FIBITMAP* ImageLoader::convertToByte(const ImageRAM* inputImage, uvec2 dim, size
 }
 
 
-void ImageLoader::saveImage(const char* filename, const Image* inputImage)
-{
+void ImageLoader::saveImage(const char* filename, const Image* inputImage) {
     initLoader();
     FREE_IMAGE_FORMAT imageFormat = FreeImage_GetFIFFromFilename(filename);
     

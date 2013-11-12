@@ -23,15 +23,21 @@ void ImageProcessorGL::deinitialize() {
     ProcessorGL::deinitialize();
 }
 
-
 void ImageProcessorGL::initializeResources() {
     program_->rebuild();
 }
 
-
 vec2 ImageProcessorGL::computeDepthRange(ImageInport* inport) {
-    // FIXME: implement this function
-    return vec2(0.0f, 1.0f);
+	vec2 depthRange = vec2(1.0f, 0.0f);
+	const ImageRAM* imageRAM = (inport->getData())->getRepresentation<ImageRAM>();
+	for (unsigned int x=0; x<imageRAM->getDimensions().x; x++) {
+		for (unsigned int y=0; y<imageRAM->getDimensions().y; y++) {
+			float curDepth = imageRAM->getDepthValue(uvec2(x,y));
+			if (curDepth < depthRange.x) depthRange.x = curDepth;
+			if (curDepth > depthRange.y) depthRange.y = curDepth;
+		}
+	}
+	return depthRange;
 }
 
 } // namespace
