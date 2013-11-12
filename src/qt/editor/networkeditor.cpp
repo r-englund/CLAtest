@@ -688,8 +688,42 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
                 port = inport->getConnectedOutport();
         } else {
             ConnectionGraphicsItem* connection = getConnectionGraphicsItemAt(e->scenePos());
+            LinkConnectionGraphicsItem* link = getLinkGraphicsItemAt(e->scenePos());
             if (connection)
                 port = connection->getOutport();
+            else if (link) {
+                ProcessorGraphicsItem* outProcessorGraphicsItem = link->getOutProcessorGraphicsItem();
+                ProcessorGraphicsItem* inProcessorGraphicsItem = link->getInProcessorGraphicsItem();
+
+                Processor* outProcessor = outProcessorGraphicsItem->getProcessor();
+                Processor* inProcessor = inProcessorGraphicsItem->getProcessor();               
+
+                ProcessorLink* processorLink = processorNetwork_->getProcessorLink(outProcessor, inProcessor);
+
+                if (processorLink) {
+                    std::string outId = outProcessor->getIdentifier();
+                    std::string inId = inProcessor->getIdentifier();
+                    QString title;
+
+                    std::vector<PropertyLink*> processedLinks;
+                    std::vector<PropertyLink*> propertyLinks = processorLink->getPropertyLinks();
+                    for (size_t i=0; i<propertyLinks.size(); i++) {
+                        if (std::find(processedLinks.begin(), processedLinks.end(), propertyLinks[i])==processedLinks.end()) {
+                            Property* srcProperty = propertyLinks[i]->getSourceProperty();
+                            Property* dstProperty = propertyLinks[i]->getDestinationProperty(); 
+                            PropertyLink* pairLink = processorLink->getBidirectionalPair(srcProperty, dstProperty);
+                            if (pairLink) 
+                                processedLinks.push_back(pairLink); 
+                            processedLinks.push_back(propertyLinks[i]);
+                            std::string linkInfo = outId + ":" + srcProperty->getDisplayName() + " - " + inId + ":" + dstProperty->getDisplayName() ;
+                            title+=QString::fromStdString(linkInfo+"\n");
+                        }
+                    }
+                    link->setToolTip(title);
+
+                }
+
+            }
         }
 
         if (port) {
