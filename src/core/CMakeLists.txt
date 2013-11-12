@@ -66,7 +66,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventlistener.h
-	${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/interactionevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/interactionevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/keyboardevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mouseevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/timerevent.h
@@ -96,9 +96,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
-	${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
-	${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbarowner.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/datasourceprocessor.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbarowner.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumeexport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/baseoptionproperty.h
@@ -150,10 +149,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserialization.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h
-	${IVW_INCLUDE_DIR}/inviwo/core/resources/resource.h
-	${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanager.h
-	${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanagerobserver.h
-	${IVW_INCLUDE_DIR}/inviwo/core/resources/templateresource.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/resources/resource.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanager.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanagerobserver.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/resources/templateresource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/callback.h
@@ -194,9 +193,9 @@ set(SOURCE_FILES
     datastructures/buffer/bufferrepresentation.cpp
     datastructures/data.cpp
     datastructures/datarepresentation.cpp
-	datastructures/geometry/attributes.cpp
+    datastructures/geometry/attributes.cpp
     datastructures/geometry/simplemeshcreator.cpp
-	datastructures/geometry/simplemesh.cpp
+    datastructures/geometry/simplemesh.cpp
     datastructures/geometry/geometry.cpp
     datastructures/geometry/geometryram.cpp
     datastructures/geometry/geometryrepresentation.cpp
@@ -227,7 +226,7 @@ set(SOURCE_FILES
     interaction/events/event.cpp
     interaction/events/eventhandler.cpp
     interaction/events/eventlistener.cpp
-	interaction/events/interactionevent.cpp
+    interaction/events/interactionevent.cpp
     interaction/events/keyboardevent.cpp
     interaction/events/mouseevent.cpp
     interaction/events/timerevent.cpp
@@ -254,8 +253,7 @@ set(SOURCE_FILES
     processors/processorfactory.cpp
     processors/processorwidget.cpp
     processors/processorwidgetfactory.cpp
-	processors/progressbar.cpp
-    processors/datasource/datasourceprocessor.cpp
+    processors/progressbar.cpp
     processors/datasource/volumeexport.cpp
     processors/datasource/volumesource.cpp
     properties/boolproperty.cpp
@@ -297,7 +295,7 @@ set(SOURCE_FILES
     io/serialization/ivwserializer.cpp
     io/serialization/ivwdeserializer.cpp
     io/serialization/ivwserializeconstants.cpp
-	resources/resourcemanager.cpp
+    resources/resourcemanager.cpp
     util/assertion.cpp
     util/canvas.cpp
     util/commandlineparser.cpp
