@@ -95,11 +95,11 @@ void VolumeRAMSlice::evaluate(){
         size_t dataSize = dataDims.x*static_cast<size_t>(volume->getDataFormat()->getBytesAllocated());
         size_t initialStartPos = sliceNum_*dataDims.x;
         size_t offsetVolume;
-        size_t offsetÍmage;
+        size_t offsetImage;
         for (size_t j=0; j < dataDims.z; j++) {
             offsetVolume = (j*dataDims.x*dataDims.y) + initialStartPos;
-            offsetÍmage = j*dataDims.x;
-            memcpy(dst + offsetÍmage, src + offsetVolume, dataSize);
+            offsetImage = j*dataDims.x;
+            memcpy(dst + offsetImage, src + offsetVolume, dataSize);
         }
         setOutput(sliceImage);
     }
@@ -121,11 +121,11 @@ void VolumeRAMSlice::evaluate(){
 
         //copy data
         /*size_t offsetVolume;
-        size_t offsetÍmage;
+        size_t offsetImage;
         for (size_t i=0; i < dataDims.z; i++) {
             for (size_t j=0; j < dataDims.y; j++) {
-                offsetÍmage = (i*dataDims.z)+j;
-                dst[offsetÍmage] = src[];
+                offsetImage = (i*dataDims.z)+j;
+                dst[offsetImage] = src[];
             }
         }*/
         setOutput(sliceImage);
