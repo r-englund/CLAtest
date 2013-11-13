@@ -317,6 +317,10 @@ void InviwoMainWindow::setCurrentWorkspace(QString workspaceFileName) {
     updateWindowTitle();
 }
 
+std::string InviwoMainWindow::getCurrentWorkspace() {
+    return currentWorkspaceFileName_.toLocal8Bit().constData();
+}
+
 void InviwoMainWindow::newWorkspace() {
     if (currentWorkspaceFileName_ != "")
         askToSaveWorkspaceChanges();

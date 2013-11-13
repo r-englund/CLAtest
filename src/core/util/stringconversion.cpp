@@ -12,6 +12,24 @@ std::vector<std::string> splitString(const std::string& str, char delimeter) {
     return strings;
 }
 
+std::vector<std::string> splitStringWithMultipleDelimiters(const std::string& str, std::vector<char> delimiters) {
+    if (!delimiters.size()) {
+        //adding default delimiters
+        delimiters.push_back('_');
+        delimiters.push_back('+');
+        delimiters.push_back('-');
+        delimiters.push_back('.');
+        delimiters.push_back(' ');
+    }
+
+    std::string tempString = str;
+    char lastDelimiter = delimiters[delimiters.size()-1];
+    for (size_t i=0; i<delimiters.size()-1; i++) {
+        replaceInString(tempString, toString(delimiters[i]), toString(lastDelimiter));
+    }
+    return splitString(tempString, lastDelimiter);
+}
+
 std::string removeFromString(std::string str, char char_to_remove) {
     str.erase(std::remove(str.begin(), str.end(), char_to_remove), str.end());
     return str;

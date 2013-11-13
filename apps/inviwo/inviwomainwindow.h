@@ -49,6 +49,10 @@ public:
      */
     std::vector<std::string> getWorkspaceSnapshots(std::string workspaceFileName);
 
+    void openWorkspace(QString workspaceFileName);
+
+    std::string getCurrentWorkspace();
+
     virtual void notify();
 
 public slots:
@@ -58,8 +62,7 @@ public slots:
     void saveWorkspace();
     void saveWorkspaceAs();
 
-private:
-    void openWorkspace(QString workspaceFileName);
+private:    
     void addMenus();
     void addMenuActions();
 	void addToolBars();
