@@ -1,21 +1,27 @@
 #include <inviwo/core/datastructures/image/image.h>
-#include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/imageram.h>
 
 namespace inviwo {
 
-	
 Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers) : 
 	StructuredData<2>(dimensions, format),
 	imageType_(comb), 
 	allowMissingLayers_(allowMissingLayers) {}
 
+Image::Image(ImageRepresentation* in, bool allowMissingLayers) : 
+    StructuredData<2>(in->getDimensions(), in->getDataFormat()),
+    imageType_(in->getImageType()), 
+    allowMissingLayers_(allowMissingLayers) 
+{
+        clearRepresentations();
+        addRepresentation(in);
+}
+
 Image::Image(const Image& rhs) : StructuredData<2>(rhs)
     , allowMissingLayers_(rhs.allowMissingLayers_)
     , imageType_(rhs.imageType_)
-    , inputSources_(rhs.inputSources_) {
-}
+    , inputSources_(rhs.inputSources_) {}
 
 Image* Image::clone() const {
     return new Image(*this);

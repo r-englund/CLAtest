@@ -22,7 +22,9 @@ public:
         }
         return *this;
     };
-    virtual ~ImageRAMPrecision() {};
+    virtual ~ImageRAMPrecision() {
+        deinitialize();
+    };
     virtual void initialize();
     virtual void initialize(void*);
     virtual void deinitialize();
@@ -81,7 +83,6 @@ void ImageRAMPrecision<T>::initialize() {
 
 template<typename T>
 void ImageRAMPrecision<T>::initialize(void* data) {
-    ImageRAM::initialize();
     if (data == NULL) {
         data_ = new T[dimensions_.x*dimensions_.y];
     } else {
@@ -91,7 +92,6 @@ void ImageRAMPrecision<T>::initialize(void* data) {
 
 template<typename T>
 void ImageRAMPrecision<T>::deinitialize(){
-    ImageRAM::deinitialize();
     if(data_) {
         delete[] static_cast<T*>(data_);
         data_ = NULL;
@@ -106,7 +106,9 @@ template<typename T>
 void ImageRAMPrecision<T>::resize(uvec2 dimensions) {
     dimensions_ = dimensions;
     //Delete and reallocate data_ to new size
+    ImageRAM::deinitialize();
     deinitialize();
+    ImageRAM::initialize();
     initialize();
 }
 

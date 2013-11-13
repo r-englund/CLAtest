@@ -8,11 +8,10 @@ ImageRAM::ImageRAM(uvec2 dimension, ImageType type, const DataFormatBase* format
     : ImageRepresentation(dimension, type, format)
 {
     ImageRAM::initialize();
-
 }
 
 ImageRAM::~ImageRAM() {
-    deinitialize();
+    ImageRAM::deinitialize();
 }  
 
 void ImageRAM::initialize() {
