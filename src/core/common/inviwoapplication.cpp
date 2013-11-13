@@ -4,11 +4,15 @@
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 
+//#define MEMLEAKCHECK
+
+#ifdef MEMLEAKCHECK
 #ifdef WIN32
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
+#endif
 #endif
 #endif
 
@@ -37,9 +41,11 @@ InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayN
 }
 
 InviwoApplication::~InviwoApplication() {
+#ifdef MEMLEAKCHECK
 #ifdef WIN32
 #ifdef _DEBUG
     _CrtDumpMemoryLeaks();
+#endif
 #endif
 #endif
 }

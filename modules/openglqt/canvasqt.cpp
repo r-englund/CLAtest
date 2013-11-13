@@ -71,6 +71,7 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
         EventConverterQt::getModifier(e), dimensions_);
     e->accept();
     Canvas::mousePressEvent(mouseEvent);
+    delete mouseEvent;
 }
 
 void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
@@ -82,6 +83,7 @@ void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
     processorNetworkEvaluator_->propagateInteractionEvent(this, mouseEvent);
     processorNetworkEvaluator_->evaluate();
     Canvas::mouseReleaseEvent(mouseEvent);
+    delete mouseEvent;
 }
 
 void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
@@ -94,6 +96,7 @@ void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
             EventConverterQt::getModifier(e), dimensions_);
         e->accept();
         Canvas::mouseMoveEvent(mouseEvent);
+        delete mouseEvent;
     }
 }
 
@@ -105,6 +108,7 @@ void CanvasQt::keyPressEvent(QKeyEvent* e) {
 		KeyboardEvent::KEY_STATE_PRESS);
     e->accept();
 	Canvas::keyPressEvent(keyEvent);
+    delete keyEvent;
 }
 
 void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
@@ -115,6 +119,7 @@ void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
 		KeyboardEvent::KEY_STATE_RELEASE);
     e->accept();
 	Canvas::keyReleaseEvent(keyEvent);
+    delete keyEvent;
 }
 
 } // namespace
