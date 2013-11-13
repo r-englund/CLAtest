@@ -35,23 +35,19 @@ void VolumeSlice::deinitialize() {
 }
 
 void VolumeSlice::process(){
-    int dimMax = 0;
     uvec3 dims = inport_.getData()->getDimension();
     switch(coordinatePlane_.get())
     {
     case VolumeRAMSlice::XY:
-        dimMax = static_cast<int>(dims.z);
+        sliceNumber_.setMaxValue(static_cast<int>(dims.z));
     	break;
     case VolumeRAMSlice::XZ:
-        dimMax = static_cast<int>(dims.y);
+        sliceNumber_.setMaxValue(static_cast<int>(dims.y));
         break;
     case VolumeRAMSlice::YZ:
-        dimMax = static_cast<int>(dims.x);
+        sliceNumber_.setMaxValue(static_cast<int>(dims.x));
         break;
     }
-
-    if(sliceNumber_.get()>dimMax)
-        sliceNumber_.set(dimMax);
 
     const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
     ImageRAM* sliceImage = VolumeRAMSlice::apply(vol, coordinatePlane_.get(), static_cast<unsigned int>(sliceNumber_.get()-1));

@@ -91,8 +91,7 @@ ImageOutport::ImageOutport(std::string identifier,
     Image* im = new Image(dimensions_);
     im->setAllowMissingLayers(false);
     data_ = im;
-    std::string dimensionString = glm::to_string(dimensions_);
-    imageDataMap_.insert(std::make_pair(dimensionString, data_));
+    dataChanged();
     mapDataInvalid_ = true;
 }
 
@@ -102,8 +101,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, PropertyOwner
     Image* im = new Image(dimensions_, type);
     im->setAllowMissingLayers(false);
     data_ = im;
-    std::string dimensionString = glm::to_string(dimensions_);
-    imageDataMap_.insert(std::make_pair(dimensionString, data_));
+    dataChanged();
     mapDataInvalid_ = true;
 }
 
@@ -113,8 +111,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType t
     Image* im = new Image(dimensions_, type);
     im->setAllowMissingLayers(false);
     data_ = im;
-    std::string dimensionString = glm::to_string(dimensions_);
-    imageDataMap_.insert(std::make_pair(dimensionString, data_));
+    dataChanged();
     mapDataInvalid_ = true;
     inputSources_[COLOR_LAYER] = src;
     inputSources_[DEPTH_LAYER] = src;
@@ -152,6 +149,12 @@ void ImageOutport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel
 Image* ImageOutport::getData(){
     updateInputSources();
     return DataOutport<Image>::getData();
+}
+
+void ImageOutport::dataChanged(){
+    imageDataMap_.clear();
+    std::string dimensionString = glm::to_string(dimensions_);
+    imageDataMap_.insert(std::make_pair(dimensionString, data_));
 }
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {

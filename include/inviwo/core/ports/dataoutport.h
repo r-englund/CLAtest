@@ -24,6 +24,8 @@ public:
 
 	virtual bool isReady() const { return isConnected() && hasData(); }
 
+    virtual void dataChanged() {}
+
 protected:
     T* data_;
     bool ownsData_;
@@ -67,6 +69,7 @@ void DataOutport<T>::setData(T* data, bool ownsData) {
     ownsData_ = ownsData;
     //Add reference to new data
     data_ = data;
+    dataChanged();
 }
 
 template <typename T>

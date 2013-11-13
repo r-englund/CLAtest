@@ -48,6 +48,8 @@ public:
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     Image* getData();
+
+    virtual void dataChanged();
     
     void changeDataDimensions(ResizeEvent* resizeEvent);    
     uvec2 getDimensions() const;
