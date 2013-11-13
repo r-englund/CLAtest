@@ -64,6 +64,8 @@ public:
 
     std::vector<std::string> getSnapshotsOfExternalNetwork(std::string fileName);
 
+    void updateLinkGraphicsItems();
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
@@ -79,7 +81,9 @@ protected:
     void dropEvent(QGraphicsSceneDragDropEvent* de);
 
 	void placeProcessorOnConnection(ProcessorGraphicsItem* processorItem, ConnectionGraphicsItem* connectionItem);
-    void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);
+    void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);  
+
+    bool isLinkDisplayEnabled();
 
 private:
     enum NetworkEditorFlags { 

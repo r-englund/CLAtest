@@ -23,6 +23,14 @@ NetworkEditorView::~NetworkEditorView() {
 
 void NetworkEditorView::setNetworkEditor(NetworkEditor* networkEditor) {
     networkEditor_ = networkEditor;
+    Property* displayLinkProperty = InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("displayLinks");
+    if (displayLinkProperty) {
+        displayLinkProperty->onChange(networkEditor_, &NetworkEditor::updateLinkGraphicsItems);
+        networkEditor_->updateLinkGraphicsItems();
+    }
+    else
+        LogWarn("Display Links property not found in settings");
+
     QGraphicsView::setScene(networkEditor);
 }
 

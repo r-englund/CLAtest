@@ -58,6 +58,8 @@ void InviwoCore::setupModuleSettings(){
 
         getSettings()->addProperty(new BoolProperty("enableSound", "Enable sound", true));
 
+        getSettings()->addProperty(new BoolProperty("displayLinks", "Display links", false));
+
         getSettings()->addProperty(new IntProperty("useRAMPercent", "Max Use Mem %", 50, 1, 100));
 
         ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");

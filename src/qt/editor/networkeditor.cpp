@@ -246,9 +246,9 @@ void NetworkEditor::removeConnectionGraphicsItem(ConnectionGraphicsItem* connect
 
 
 
-///////////////////////////////////////////////////
-//   PRIVATE METHODS FOR ADDING/REMOVING LINKS   //
-///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//   PRIVATE METHODS FOR ADDING/REMOVING/DISPLAYING LINKS   //
+//////////////////////////////////////////////////////////////
 void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
     Processor* processor1 = linkGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
     Processor* processor2 = linkGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
@@ -263,7 +263,8 @@ void NetworkEditor::addLinkGraphicsItem(Processor* processor1, Processor* proces
                                                                                   processorGraphicsItem2);
     linkGraphicsItems_.push_back(linkGraphicsItem);
     addItem(linkGraphicsItem);
-    linkGraphicsItem->setVisible(processorGraphicsItem1->isVisible() && processorGraphicsItem2->isVisible());    
+    linkGraphicsItem->setVisible(processorGraphicsItem1->isVisible() && processorGraphicsItem2->isVisible());
+    updateLinkGraphicsItems();
 }
 
 void NetworkEditor::removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem) {
@@ -286,6 +287,21 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
         removeLink(inProcessor, outProcessor);
 }
 
+void  NetworkEditor::updateLinkGraphicsItems() {
+    if( isLinkDisplayEnabled() ) {
+        for (size_t i=0;i<linkGraphicsItems_.size(); i++) {
+            linkGraphicsItems_[i]->setVisible(true);
+            ProcessorGraphicsItem* processorGraphicsItem1 = linkGraphicsItems_[i]->getOutProcessorGraphicsItem();
+            ProcessorGraphicsItem* processorGraphicsItem2 = linkGraphicsItems_[i]->getInProcessorGraphicsItem();
+            linkGraphicsItems_[i]->setVisible(processorGraphicsItem1->isVisible() && processorGraphicsItem2->isVisible());
+        }
+    }
+    else {
+        for (size_t i=0;i<linkGraphicsItems_.size(); i++) {
+            linkGraphicsItems_[i]->setVisible(false);            
+        }
+    }        
+}
 
 
 //////////////////////////////////////
@@ -616,11 +632,16 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 }
 
             } else if (e->modifiers() == Qt::ControlModifier) {
-                // ctrl modifier pressed: edit link
-                QRectF processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
-                linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos());
-                addItem(linkCurve_);
-                linkCurve_->show();
+                if (isLinkDisplayEnabled()) {
+                    // ctrl modifier pressed: edit link
+                    QRectF processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
+                    linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos());
+                    addItem(linkCurve_);
+                    linkCurve_->show();
+                }
+                else {
+                    LogWarn("Enable Display links in Settings to create links")
+                }
                 e->accept();
             }
         } else {
@@ -916,19 +937,21 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             removeConnection(connectionGraphicsItem);
 
     } else if (linkGraphicsItem) {
-        QMenu menu;
-        QAction* linkAction = menu.addAction(tr("Link properties"));
-        QAction* deleteAction = menu.addAction("Delete");
-        QAction* result = menu.exec(QCursor::pos());
-        if (result == deleteAction)
-            removeLink(linkGraphicsItem);
+        if (isLinkDisplayEnabled()) {
+            QMenu menu;
+            QAction* linkAction = menu.addAction(tr("Link properties"));
+            QAction* deleteAction = menu.addAction("Delete");
+            QAction* result = menu.exec(QCursor::pos());
+            if (result == deleteAction)
+                removeLink(linkGraphicsItem);
 
-        else if (result == linkAction) {
-            Processor* inProcessor = linkGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
-            Processor* outProcessor = linkGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
-            ProcessorLink* processorLink = processorNetwork_->getProcessorLink(inProcessor, outProcessor);
-            if (processorLink)
-                processorLink->autoLinkPropertiesByType();
+            else if (result == linkAction) {
+                Processor* inProcessor = linkGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
+                Processor* outProcessor = linkGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
+                ProcessorLink* processorLink = processorNetwork_->getProcessorLink(inProcessor, outProcessor);
+                if (processorLink)
+                    processorLink->autoLinkPropertiesByType();
+            }
         }
 
     } else
@@ -1228,4 +1251,13 @@ std::string NetworkEditor::obtainUniqueProcessorID(std::string identifierPrefix)
 
     return validProcessorID;
 }
+
+bool NetworkEditor::isLinkDisplayEnabled() {
+    Property* prop = InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("displayLinks");
+    ivwAssert(prop!=0, "Display Links property not found in settings");
+
+    BoolProperty* displayLinkProperty = dynamic_cast<BoolProperty*>( prop );
+    return displayLinkProperty->get();   
+}
+
 } // namespace
