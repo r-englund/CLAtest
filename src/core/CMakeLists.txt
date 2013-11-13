@@ -55,6 +55,28 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumetypeclassification.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumewriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfbasesettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfreadersettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfwritersettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumewriter.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumewriter.h 
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializableinterface.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserialization.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingcontainer.h
@@ -128,27 +150,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfbasesettings.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfreadersettings.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfwritersettings.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumewriter.h	
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h	
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumewriter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumewriter.h 
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializableinterface.h	
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h	
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserialization.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanagerobserver.h
@@ -278,18 +279,19 @@ set(SOURCE_FILES
     properties/vectorproperties.cpp
     properties/linkevaluator.cpp	
     io/datareader.cpp
+    io/datawriter.cpp
     io/datvolumereader.cpp
+    io/datvolumewriter.cpp 
     io/imageloader.cpp
+    io/ivfvolumewriter.cpp 
     io/ivfbasesettings.cpp 
     io/ivfreadersettings.cpp 
     io/ivfwritersettings.cpp 
     io/ivfvolumereader.cpp 
     io/rawvolumereader.cpp
-    io/volumereader.cpp
-    io/datawriter.cpp
-    io/datvolumewriter.cpp 
-    io/ivfvolumewriter.cpp 
     io/rawvolumewriter.cpp    
+    io/textfilereader.cpp    
+    io/volumereader.cpp
     io/volumewriter.cpp
     io/serialization/ivwserializebase.cpp
     io/serialization/ivwserializer.cpp

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <fstream>
 
+#include <inviwo/core/io/textfilereader.h>
 #include <inviwo/core/util/filedirectory.h>
 #include <modules/opengl/glwrap/shadermanager.h>
 
@@ -143,15 +144,17 @@ bool ShaderObject::loadSource(std::string fileName) {
         }
         
         std::ifstream fileStream(absoluteFileName_.c_str());
-        if (!URLParser::fileExists(absoluteFileName_) || fileStream.bad()) {
-            LogError("Error opening file " << fileName);
-            return false;
-        } else {
-            std::stringstream buffer;
-            buffer << fileStream.rdbuf();
-            source_ = buffer.str();
-            return true;
+        TextFileReader fileReader(absoluteFileName_);
+        try
+        {
+            source_ = fileReader.read();
         }
+        catch (std::ifstream::failure&)
+        {
+        	return false;
+        }
+        
+        return true;
 
     } else return false;
 }

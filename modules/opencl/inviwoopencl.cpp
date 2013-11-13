@@ -2,6 +2,7 @@
 #include <modules/opencl/cl.hpp>
 #include <modules/opencl/glmcl.h>
 #include <modules/opencl/openclcapabilities.h> 
+#include <inviwo/core/io/textfilereader.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <iostream>
 #include <sstream>
@@ -170,18 +171,14 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
     cl::Device device = queue.getInfo<CL_QUEUE_DEVICE>();
     // build the program from the source in the file
     std::ifstream file(fileName.c_str());
+    TextFileReader fileReader(fileName);
+    std::string prog; 
+    try {
+        prog = fileReader.read(); 
+    } catch (std::ifstream::failure&) {}
+
     std::string concatenatedDefines = OpenCL::instance()->getIncludeDefine() + defines;
-    std::string prog(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
-    if(prog.empty()) {
-        // When editing files using Visual Studio it may happen that the file is empty.
-        // Wait a bit and hope that the content is there later. 
-        #ifdef WIN32
-            Sleep(400);
-        #endif
-        std::ifstream srcFile(fileName.c_str());
-        std::string srcPrg(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
-        prog = srcPrg;
-    }
+
     cl::Program::Sources source( 1, std::make_pair(prog.c_str(), prog.length()+1));
     
     cl::Program program(context, source);
