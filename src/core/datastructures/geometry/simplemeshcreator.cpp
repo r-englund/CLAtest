@@ -6,7 +6,8 @@ SimpleMesh* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 t
                                                vec3 texCoordUrb, vec4 colorLlf, vec4 colorUrb) {
     SimpleMesh* recPrism = new SimpleMesh();
     recPrism->initialize();
-
+    // Set identity matrix
+    recPrism->setBasisAndOffset(mat4(1.f));
     //8 corners
     recPrism->addVertex(posLlf, texCoordLlf, colorLlf);
     recPrism->addVertex(vec3(posLlf.x, posUrb.y, posLlf.z), vec3(texCoordLlf.x, texCoordUrb.y, texCoordLlf.z), vec4(colorLlf.x, colorUrb.y, colorLlf.z, colorLlf.w));
@@ -43,7 +44,8 @@ SimpleMesh* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::
    
 	SimpleMesh* ppd = new SimpleMesh();
     ppd->initialize();
-
+    // Set identity matrix
+    ppd->setBasisAndOffset(mat4(1.f));
 	//8 corners
 	ppd->addVertex(pos               , tex               , col               ); // (0,0,0)
 	ppd->addVertex(pos      + p2     , tex      + t2     , col      + c2     ); // (0,1,0)
@@ -79,6 +81,8 @@ SimpleMesh* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::
 SimpleMesh* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
 	SimpleMesh* rec = new SimpleMesh();
 	rec->initialize();
+    // Set identity matrix
+    rec->setBasisAndOffset(mat4(1.f));
 
 	vec3 texCoordLl(0,0,0);
 	vec3 texCoordUr(1,1,0);
@@ -105,7 +109,8 @@ SimpleMesh* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
 SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsigned int segmentsPerLoop){
     SimpleMesh* spheremesh = new SimpleMesh();
     spheremesh->initialize();
-
+    // Set identity matrix
+    spheremesh->setBasisAndOffset(mat4(1.f));
     //Create Vertices
     for (unsigned int i = 0; i < segmentsPerLoop; ++i){
         float theta = 0.f;

@@ -507,4 +507,19 @@ std::string getCLErrorString( const cl::Error& err )
     return ss.str();
 }
 
+size_t getGlobalWorkGroupSize( size_t nItems, size_t localWorkGroupSize )
+{
+    return localWorkGroupSize*static_cast<size_t>(ceil(static_cast<float>(nItems) / static_cast<float>(localWorkGroupSize)));
+}
+
+svec2 getGlobalWorkGroupSize( svec2 nItems, glm::svec2 localWorkGroupSize )
+{
+    return localWorkGroupSize*svec2(glm::ceil(vec2(nItems) / vec2(localWorkGroupSize)));
+}
+
+svec3 getGlobalWorkGroupSize( svec3 nItems, glm::svec3 localWorkGroupSize )
+{
+    return localWorkGroupSize*svec3(glm::ceil(vec3(nItems) / vec3(localWorkGroupSize)));
+}
+
 }

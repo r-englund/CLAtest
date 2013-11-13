@@ -30,9 +30,15 @@ void MeshGLRenderer::render( RenderType rt ) const{
     for (it = meshToRender_->getBuffers().begin() ; it != meshToRender_->getBuffers().end(); ++it) {
         (*it)->getRepresentation<BufferGL>()->enable();
     }
- 
+    glPushMatrix();
+    mat4 dataToModel = meshToRender_->getBasisAndOffset();
+    glMultMatrixf(glm::value_ptr(dataToModel));
+    mat4 modelToWorld = meshToRender_->getWorldTransform();
+    glMultMatrixf(glm::value_ptr(modelToWorld));
+    
     (this->*drawMethods_[rt].drawFunc)(rt);
-
+    
+    glPopMatrix();
     for (it = meshToRender_->getBuffers().begin() ; it != meshToRender_->getBuffers().end(); ++it) {
         (*it)->getRepresentation<BufferGL>()->disable();
     }

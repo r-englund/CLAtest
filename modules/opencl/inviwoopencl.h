@@ -10,7 +10,8 @@
 #include <modules/opencl/glmcl.h>
 #include <modules/opencl/openclmoduledefine.h>
 
-
+using glm::svec2;
+using glm::svec3;
 
 using cl::CommandQueue;
 using cl::Context;
@@ -143,6 +144,21 @@ private:
     std::vector<std::string> includeDirectories_;
 
 };
+
+
+/**
+ * Computes the nearest multiple of local work group size.
+ * global work group size = localWorkGroupSize*ceil((float)nItems/(float)localWorkGroupSize)
+ * 
+ * @param nItems 
+ * @param localWorkGroupSize Local work group size of kernel
+ * @return 
+ */
+size_t getGlobalWorkGroupSize(size_t nItems, size_t localWorkGroupSize);
+
+svec2 getGlobalWorkGroupSize(svec2 nItems, glm::svec2 localWorkGroupSize);
+svec3 getGlobalWorkGroupSize(svec3 nItems, glm::svec3 localWorkGroupSize);
+
 
 /**
  * Creates a readable hint report from an OpenCL exception. 

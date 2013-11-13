@@ -48,11 +48,9 @@ void EntryExitPoints::process() {
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
-    glLoadIdentity();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glLoadIdentity();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
 
     glEnable(GL_DEPTH_TEST);
