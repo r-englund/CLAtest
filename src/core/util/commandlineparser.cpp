@@ -35,12 +35,20 @@ void CommandLineParser::initialize() {
                                                             false,
                                                             "",
                                                             "Path to the file containing the script");
-        snapshotArg_ = new TCLAP::ValueArg<std::string>("s",
-            "snapshot",
-            "Specify default name of each snapshot, or empty string for processor name",
-            false,
-            "",
-            "Snapshot default name: UPN=Use Processor name.");
+		snapshotArg_ = new TCLAP::ValueArg<std::string>("s",
+			"snapshot",
+			"Specify default name of each snapshot, or empty string for processor name.",
+			false,
+			"",
+			"Snapshot default name: UPN=Use Processor name.");
+
+		screenGrabArg_ = new TCLAP::ValueArg<std::string>("g",
+			"screengrab",
+			"Specify default name of each screengrab.",
+			false,
+			"",
+			"");
+
 		quitArg_ = new TCLAP::SwitchArg("q", "quit", 
 			"Pass this flag if you want to close inviwo after startup.");
 		noSplashScreenArg_ = new TCLAP::SwitchArg("n", "nosplash", 
@@ -49,7 +57,8 @@ void CommandLineParser::initialize() {
         cmd_->add(*workspaceValueArg_);
         cmd_->add(*pythonScriptArg_);
         cmd_->add(*outputValueArg_);
-        cmd_->add(*snapshotArg_);
+		cmd_->add(*snapshotArg_);
+		cmd_->add(*screenGrabArg_);
 		cmd_->add(*quitArg_);
 		cmd_->add(*noSplashScreenArg_);
     } catch (TCLAP::ArgException &e) {
@@ -84,14 +93,26 @@ void CommandLineParser::parse(){
 }
 
 bool CommandLineParser::getCaptureAfterStartup() const{
-    return snapshotArg_->isSet();
+	return snapshotArg_->isSet();
 }
 
 const std::string CommandLineParser::getSnapshotName() const{
-    if (snapshotArg_->isSet()){
-        return (snapshotArg_->getValue());
-    }
-    return "";
+	if (snapshotArg_->isSet()){
+		return (snapshotArg_->getValue());
+	}
+	return "";
+}
+
+
+bool CommandLineParser::getScreenGrabAfterStartup() const{
+	return screenGrabArg_->isSet();
+}
+
+const std::string CommandLineParser::getScreenGrabName() const{
+	if (screenGrabArg_->isSet()){
+		return (screenGrabArg_->getValue());
+	}
+	return "";
 }
 
 

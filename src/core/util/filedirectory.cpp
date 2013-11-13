@@ -47,8 +47,6 @@ std::string URLParser::getRelativePath(const std::string& bPath, const std::stri
     if (basePath.empty())
         basePath = InviwoApplication::getPtr()->getBasePath();
 
-    //TODO: Optimize or use qt/boost
-
     //path as string tokens
     std::vector<std::string> basePathTokens;
     std::vector<std::string> absolutePathTokens;

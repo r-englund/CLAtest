@@ -24,8 +24,7 @@ vec3 Plane::getNormal() const{
 }
 
 vec3 Plane::getIntersection(const vec3 &p1, const vec3 &p2) const {
-	if(glm::abs(glm::dot(p2-p1,normal_)) < 0.0001f) // Should never happen
-		std::cout<<"Line parallel with clip plane!\n";
+	ivwAssert(glm::abs(glm::dot(p2-p1,normal_)) < 0.0001f, "Line parallel with clip plane.");
 
 	vec3 l = p2 - p1;
 

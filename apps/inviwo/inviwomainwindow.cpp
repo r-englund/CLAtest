@@ -29,7 +29,7 @@
 
 namespace inviwo { 
 
-InviwoMainWindow::InviwoMainWindow() : VoidObserver() {
+InviwoMainWindow::InviwoMainWindow() : QMainWindow(), VoidObserver() {
     NetworkEditor::init();
 
     // initialize console widget first to receive log messages
@@ -143,21 +143,33 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
     const CommandLineParser* cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
 
 #ifdef IVW_HAS_PYTHON
-    if (cmdparser->getRunPythonScriptAfterStartup()){
+    if (cmdparser->getRunPythonScriptAfterStartup()) {
         PythonEditorWidget *py = PythonEditorWidget::getPtr();
         py->show();
         py->loadFile(cmdparser->getPythonScirptName(),false);
         py->run();
     }
 #endif
-    if (cmdparser->getCaptureAfterStartup()){
-        ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
-        networkEvaluator->evaluate();
-        std::string path = cmdparser->getOutputPath();
-        if (path.empty())
-            path = IVW_DIR+"data/images/";
-        networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
-    }
+	if (cmdparser->getCaptureAfterStartup()) {
+		ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
+		networkEvaluator->evaluate();
+		std::string path = cmdparser->getOutputPath();
+		if (path.empty())
+			path = IVW_DIR+"data/images/";
+		networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
+	}
+
+	if (cmdparser->getScreenGrabAfterStartup()) {
+		std::string path = cmdparser->getOutputPath();
+		if (path.empty())
+			path = IVW_DIR+"data/images/";
+		repaint();
+		int curScreen = QApplication::desktop()->screenNumber(this);
+		QPixmap screenGrab = QPixmap::grabWindow(QApplication::desktop()->screen(curScreen)->winId());
+		//QPixmap screenGrab = QPixmap::grabWindow(winId());
+		std::string fileName = cmdparser->getScreenGrabName();
+		screenGrab.save(QString::fromStdString(path + "/" + fileName), "png");
+	}
 
     if (cmdparser->getQuitApplicationAfterStartup())
         return false;

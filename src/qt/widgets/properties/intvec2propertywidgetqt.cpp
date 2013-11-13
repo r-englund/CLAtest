@@ -127,7 +127,6 @@ void IntVec2PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
             //Set current value of the slider to min value of the property
             valueVecMin_ = property_->getMinValue();
             valueVecMin_.x = sliderX_->getValue();
-            std::cout << "Slider value :" << sliderX_->getValue() << std::endl;
             property_->setMinValue(valueVecMin_);
             updateFromProperty();
         }

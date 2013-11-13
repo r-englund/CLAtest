@@ -43,8 +43,10 @@ public:
     }
     const std::string getOutputPath() const;
     const std::string getWorkspacePath() const;
-    bool getCaptureAfterStartup() const;
-    const std::string getSnapshotName() const;
+	bool getCaptureAfterStartup() const;
+	const std::string getSnapshotName() const;
+	bool getScreenGrabAfterStartup() const;
+	const std::string getScreenGrabName() const;
     bool getRunPythonScriptAfterStartup() const;
     const std::string getPythonScirptName() const;
     bool getQuitApplicationAfterStartup() const;
@@ -58,6 +60,7 @@ private:
     TCLAP::ValueArg<std::string>* workspaceValueArg_;
     TCLAP::ValueArg<std::string>* outputValueArg_;
     TCLAP::ValueArg<std::string>* snapshotArg_;
+	TCLAP::ValueArg<std::string>* screenGrabArg_;
     TCLAP::ValueArg<std::string>* pythonScriptArg_;
 	TCLAP::SwitchArg* noSplashScreenArg_;
     TCLAP::SwitchArg* quitArg_;
