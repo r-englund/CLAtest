@@ -21,19 +21,25 @@ public:
 
     inline bool performPick(const uvec2& coord) {
         prevCoord_ = coord;
-        const ImageRAM* imageRAM = src_->getRepresentation<ImageRAM>();
-        vec4 value = imageRAM->getPickingValue(coord);
-        vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
-        DataVec3UINT8::type pickedColorUINT8;
-        DataVec3UINT8::get()->vec3ToValue(pickedColor*255.f, &pickedColorUINT8);
-        currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
-        if(currentPickObj_){
-            setPickableSelected(true);
-            currentPickObj_->setPickingPosition(normalizedCoordinates(coord));
-            currentPickObj_->setPickingDepth(imageRAM->getDepthValue(coord));
-            currentPickObj_->setPickingMove(vec2(0.f,0.f));
-            currentPickObj_->picked();
-            return true;
+        if(src_){
+            const ImageRAM* imageRAM = src_->getRepresentation<ImageRAM>();
+            vec4 value = imageRAM->getPickingValue(coord);
+            vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
+            DataVec3UINT8::type pickedColorUINT8;
+            DataVec3UINT8::get()->vec3ToValue(pickedColor*255.f, &pickedColorUINT8);
+            currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
+            if(currentPickObj_){
+                setPickableSelected(true);
+                currentPickObj_->setPickingPosition(normalizedCoordinates(coord));
+                currentPickObj_->setPickingDepth(imageRAM->getDepthValue(coord));
+                currentPickObj_->setPickingMove(vec2(0.f,0.f));
+                currentPickObj_->picked();
+                return true;
+            }
+            else{
+                setPickableSelected(false);
+                return false;
+            }
         }
         else{
             setPickableSelected(false);

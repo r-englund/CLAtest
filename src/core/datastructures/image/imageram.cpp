@@ -31,13 +31,6 @@ void ImageRAM::deinitialize() {
     }
 }
 
-void ImageRAM::resize(uvec2 dimensions) {
-    dimensions_ = dimensions;
-    //Delete and reallocate data_ to new size
-    ImageRAM::deinitialize();
-    initialize();
-}
-
 float* ImageRAM::getDepthData() {
     if(!depthData_)
         allocateDepthData();

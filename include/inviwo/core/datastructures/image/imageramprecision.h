@@ -27,6 +27,7 @@ public:
     virtual void initialize(void*);
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
+    virtual void resize(uvec2 dimensions);
 
     void setValueFromSingleFloat(const uvec2& pos, float val);
     void setValueFromVec2Float(const uvec2& pos, vec2 val);
@@ -80,6 +81,7 @@ void ImageRAMPrecision<T>::initialize() {
 
 template<typename T>
 void ImageRAMPrecision<T>::initialize(void* data) {
+    ImageRAM::initialize();
     if (data == NULL) {
         data_ = new T[dimensions_.x*dimensions_.y];
     } else {
@@ -88,8 +90,8 @@ void ImageRAMPrecision<T>::initialize(void* data) {
 }
 
 template<typename T>
-void inviwo::ImageRAMPrecision<T>::deinitialize()
-{
+void ImageRAMPrecision<T>::deinitialize(){
+    ImageRAM::deinitialize();
     if(data_) {
         delete[] static_cast<T*>(data_);
         data_ = NULL;
@@ -98,6 +100,14 @@ void inviwo::ImageRAMPrecision<T>::deinitialize()
         delete[] static_cast<T*>(pickingData_);
         pickingData_ = NULL;
     }
+}
+
+template<typename T>
+void ImageRAMPrecision<T>::resize(uvec2 dimensions) {
+    dimensions_ = dimensions;
+    //Delete and reallocate data_ to new size
+    deinitialize();
+    initialize();
 }
 
 template<typename T>

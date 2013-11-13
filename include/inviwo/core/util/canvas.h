@@ -10,7 +10,6 @@
 #include <inviwo/core/interaction/events/eventhandler.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
-#include <inviwo/core/interaction/events/timerevent.h>
 
 namespace inviwo {
 

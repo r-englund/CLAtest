@@ -19,7 +19,7 @@ public:
     DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "ImageRAM"; }
     virtual void setDimensions(uvec2 dimensions);
-    virtual void resize(uvec2 dimensions);
+    virtual void resize(uvec2 dimensions) = 0;
     virtual bool copyAndResizeImage(DataRepresentation*);
     void* getData() {return data_;};
     const void* getData() const {return data_;};
