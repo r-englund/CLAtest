@@ -26,13 +26,13 @@ public:
     const cl::Image3DGL& getVolume() const { return *(image3D_); }
     const Texture3D* getTexture() const { return texture_; }
 
-    void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL) const {
+    void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL, const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
         std::vector<cl::Memory> syncImages(1, *image3D_); 
-        OpenCL::instance()->getQueue().enqueueAcquireGLObjects(&syncImages, syncEvents);
+        queue.enqueueAcquireGLObjects(&syncImages, syncEvents);
     }
-    void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL) const {
+    void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL, const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
         std::vector<cl::Memory> syncImages(1, *image3D_); 
-        OpenCL::instance()->getQueue().enqueueReleaseGLObjects(&syncImages, syncEvents, event);
+        queue.enqueueReleaseGLObjects(&syncImages, syncEvents, event);
     }
 
 protected:
