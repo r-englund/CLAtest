@@ -2,14 +2,14 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref0">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-325" />
                     <visibility content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="869" y="439" />
+                    <position x="877" y="470" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -25,7 +25,7 @@
                 <Property type="BaseOptionProperty" identifier="visibleLayer_" displayName="Visible layer" />
             </Properties>
         </Processor>
-        <Processor type="MeshClipping" identifier="MeshClipping" id="ref1">
+        <Processor type="MeshClipping" identifier="MeshClipping" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-525" />
@@ -37,13 +37,13 @@
                     <value content="1" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="planeNormal" displayName="Plane Normal">
-                    <value x="-0.5" y="-0.2" z="-0.69999999" />
+                    <value x="-0.5" y="-0.61059999" z="-0.69999999" />
                     <minvalue x="-1" y="-1" z="-1" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.1" y="0.1" z="0.1" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="planePoint" displayName="Plane Point">
-                    <value x="0.68799973" y="1.3979998" z="0.60000002" />
+                    <value x="0.69999999" y="0.49200058" z="0.60000002" />
                     <minvalue x="-10" y="-10" z="-10" />
                     <maxvalue x="10" y="10" z="10" />
                     <increment x="0.1" y="0.1" z="0.1" />
@@ -186,19 +186,19 @@
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <value x="1.5386699" y="1.6513728" z="1.7794089" />
+                        <value x="-0.79577649" y="0.22799045" z="1.5388913" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
-                        <value x="-1.1232054" y="-1.1977723" z="-1.1805778" />
+                        <value x="0" y="0" z="0" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <value x="0.0488826" y="0.67044353" z="-0.72671568" />
+                        <value x="0.18102539" y="0.97837168" z="-0.0040253485" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -215,9 +215,6 @@
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
-                    <useNearFarDistFromOrigin type="BoolProperty" identifier="useNearFarDistFromOrigin" displayName="Near/Far Plane Relative to Distance from Origin">
-                        <value content="0" />
-                    </useNearFarDistFromOrigin>
                     <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
                         <value content="0.01" />
                         <minvalue content="0.001" />
@@ -250,7 +247,7 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.output">
-                <Processor type="MeshClipping" identifier="MeshClipping" reference="ref1" />
+                <Processor type="MeshClipping" identifier="MeshClipping" reference="ref0" />
             </OutPort>
             <InPort identifier="geometry.inport">
                 <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
@@ -261,7 +258,7 @@
                 <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref0" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
@@ -269,7 +266,7 @@
                 <Processor type="MeshCreator" identifier="MeshCreator" reference="ref3" />
             </OutPort>
             <InPort identifier="geometry.input">
-                <Processor type="MeshClipping" identifier="MeshClipping" reference="ref1" />
+                <Processor type="MeshClipping" identifier="MeshClipping" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>
