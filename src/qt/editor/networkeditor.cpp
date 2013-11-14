@@ -627,6 +627,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 } else {
                     // click on processor but not on port: show property widgets
                     PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+                    propertyListWidget_->setMultiSelect(false);
                     propertyListWidget_->showProcessorProperties(startProcessor_->getProcessor());
                     QGraphicsScene::mousePressEvent(e);
                 }
@@ -816,7 +817,20 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
                 processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));				
 		}
         QGraphicsScene::mouseReleaseEvent(e);
+    } else if(selectedItems().size()>1){
+        //Show multiple processor widgets
+        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
+        PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+        std::vector<Processor*> processors;
+        for (int i=0; i<selectedGraphicsItems.size(); i++) {
+            if (dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i])) {
+                ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+                processors.push_back(processorGraphicsItem->getProcessor());
+            }
+        }
+        propertyListWidget_->showProcessorProperties(processors);
     }
+
 }
 
 void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {

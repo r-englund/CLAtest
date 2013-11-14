@@ -30,6 +30,7 @@ namespace inviwo {
         void removeAllProcessorProperties();
         void saveState();
         void notify();
+        void setMultiSelect(bool multiSelect){multiSelect_ = multiSelect; };
         PropertyVisibility::VisibilityMode getVisibilityMode();
 
         public slots:
@@ -46,6 +47,7 @@ namespace inviwo {
 
         bool developerViewMode_;
         bool applicationViewMode_;
+        bool multiSelect_;
 
         QVBoxLayout* listWidgetLayout_;
         QWidget* listWidget_;

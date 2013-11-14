@@ -254,4 +254,8 @@ void CollapsiveGroupBoxWidgetQt::deserialize(IvwDeserializer& d) {
     collapsed_ = value;
 }
 
+void CollapsiveGroupBoxWidgetQt::addWidget( QWidget* widget ){
+    vLayout_->addWidget(widget);
+}
+
 } // namespace

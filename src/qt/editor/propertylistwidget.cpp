@@ -15,6 +15,7 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     propertyListWidget_ = this;
+    multiSelect_ = false;
 
     scrollArea_ = new QScrollArea(propertyListWidget_);
     scrollArea_->setWidgetResizable(true);
@@ -39,6 +40,8 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
 PropertyListWidget::~PropertyListWidget() {}
 
 void PropertyListWidget::showProcessorProperties(std::vector<Processor*> processors) {
+
+    multiSelect_ = true;
     for (size_t i=0; i<processors.size(); i++) {
         addProcessorPropertiesToLayout(processors[i]);
     }
@@ -61,7 +64,14 @@ void PropertyListWidget::showProcessorProperties(Processor* processor) {
     if (processorPropertyWidget) {
         removeAllProcessorProperties();
         processorPropertyWidget->setVisible(true);
-        listWidgetLayout_->addWidget(processorPropertyWidget);
+        if (multiSelect_) {
+            CollapsiveGroupBoxWidgetQt* groupBox = new CollapsiveGroupBoxWidgetQt(processor->getIdentifier(),processor->getIdentifier());
+            groupBox->addWidget(processorPropertyWidget);
+            listWidgetLayout_->addWidget(groupBox);
+            groupBox->hide();
+        }else{
+            listWidgetLayout_->addWidget(processorPropertyWidget);
+        }
     }
 }
 
@@ -78,7 +88,14 @@ void PropertyListWidget::addProcessorPropertiesToLayout(Processor* processor) {
 
     if (processorPropertyWidget) {
         processorPropertyWidget->setVisible(true);
-        listWidgetLayout_->addWidget(processorPropertyWidget);
+        if (multiSelect_) {
+            CollapsiveGroupBoxWidgetQt* groupBox = new CollapsiveGroupBoxWidgetQt(processor->getIdentifier(),processor->getIdentifier());
+            groupBox->addWidget(processorPropertyWidget);
+            listWidgetLayout_->addWidget(groupBox);
+            groupBox->hide();
+        }else{
+            listWidgetLayout_->addWidget(processorPropertyWidget);
+        }
     }
 }
 
