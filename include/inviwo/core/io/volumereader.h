@@ -32,13 +32,12 @@ public:
     std::string dataFormat_; 
 };
 
-class IVW_CORE_API VolumeReader : public DataReader {
+class IVW_CORE_API VolumeReader : public DataReader  {
 
 public:
     VolumeReader();
     virtual ~VolumeReader() {}
 
-    //virtual Data* readData(const std::string filePath)=0;
     using DataReader::readData;
     virtual Data* readData()=0;
 protected:

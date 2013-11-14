@@ -10,11 +10,45 @@ namespace inviwo {
  *         the different coordinate systems in use.
  *
  *  Spatial data in Inviwo uses 4 different coordinate systems, they are defined as
- *  * Index - The actual voxel indices in the data.
- *  * Texture - The corresponding texture coordinates of the data.
- *  * Model - Defines a local basis and offset for the data.
- *  * World - Puts the data at a position and angle in the scene.
- */
+ *  - Index - The voxel indices in the data 
+ *  - Texture - The corresponding texture coordinates of the data.
+ *  - Model - Defines a local basis and offset for the data.
+ *  - World - Puts the data at a position and angle in the scene.
+ *
+ *  A matrix is always stored in an array:
+ *  m = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
+ *  in c++ that uses row major that translates to a matrix like
+ *      1  2  3  4
+ *      5  6  7  8
+ *      9  10 11 12
+ *      13 14 15 16
+ *
+ *  on the gpu that uses column major it looks like:
+ *      1  5  9 13
+ *      2  6 10 14
+ *      3  7 11 15
+ *      4  8 12 16
+ *
+ *  to create a translation matrix for on the gpu you want:
+ *      1  0  0 dx
+ *      0  1  0 dy
+ *      0  0  0 dz
+ *      0  0  0  1
+ *
+ *  in c++/glm that would be:
+ *      1  0  0  0
+ *      0  1  0  0
+ *      0  0  1  0
+ *      dx dy dz 1
+ *
+ *  Hence when we create our matrices in glm they will all be row matrices, 
+ *  but on the gpu they will become column matrices. This means that to apply
+ *  a transform in c++ you would write vec . mat or Transpose(mat) . vec.
+ *  But if you are using glm you will write as you do on the gpu since glm redefines
+ *  how to multiply matrices...
+ *  But on the gpu mat . vec.
+ */     
+
 template<unsigned int N>
 class CoordinateTransformer {
 public:
@@ -100,6 +134,11 @@ class SpatialCoordinateTransformer : public CoordinateTransformer<N> {
 public:
     SpatialCoordinateTransformer(const SpatialData<N>* spatialData) : CoordinateTransformer<N>(), spatialData_(spatialData) {};
     virtual ~SpatialCoordinateTransformer(){};
+
+    virtual const Matrix<N+1 ,float> getWorldMatrix() const;
+    virtual const Matrix<N+1, float> getBasisMatrix() const;
+    virtual const Matrix<N+1, float> getDimensionMatrix() const;
+
     virtual const Matrix<N+1, float> getTextureToIndexMatrix() const;
     virtual const Matrix<N+1, float> getTextureToModelMatrix() const;
     virtual const Matrix<N+1, float> getTextureToWorldMatrix() const;
@@ -113,11 +152,6 @@ public:
     virtual const Matrix<N+1, float> getWorldToIndexMatrix() const;
     virtual const Matrix<N+1, float> getWorldToModelMatrix() const;
 
-protected:
-    virtual const Matrix<N+1,float> getWorldMatrix() const;
-    virtual const Matrix<N+1,float> getBasisMatrix() const;
-    virtual const Matrix<N+1,float> getDimensionMatrix() const;
-
 private:
     const SpatialData<N>* spatialData_;
 };
@@ -129,7 +163,6 @@ public:
     StructuredCoordinateTransformer(const StructuredData<N>* structuredData) : SpatialCoordinateTransformer<N>(structuredData), structuredData_(structuredData) {};
     virtual ~StructuredCoordinateTransformer(){};
 
-protected:
     virtual const Matrix<N+1,float> getDimensionMatrix(){
         Vector<N,unsigned int> dim = structuredData_->getDimension();
         Matrix<N+1,float> mat(0.0f);
@@ -160,15 +193,15 @@ public:
     Vector<N,float> getOffset() const;
     void setOffset(const Vector<N,float>& offset);
 
-    // Using column vectors in basis
+    // Using row vectors in basis
     Matrix<N,float> getBasis() const;
     void setBasis(const Matrix<N,float>& basis);
 
     Matrix<N+1,float> getBasisAndOffset() const;
     void setBasisAndOffset(const Matrix<N+1,float>& mat);
 
-    Matrix<N+1,float> getWorldTransform() const;
-    void setWorldTransform(const Matrix<N+1,float>& mat);
+    Matrix<N+1,float> getWorldMatrix() const;
+    void setWorldMatrix(const Matrix<N+1,float>& mat);
 
     virtual const CoordinateTransformer<N>& getCoordinateTransformer() const;
 
@@ -204,6 +237,11 @@ protected:
     virtual void initTransformer();
 };
 
+
+/*---------------------------------------------------------------*/
+/*--Implementations----------------------------------------------*/
+/*--SpatialData--------------------------------------------------*/
+/*---------------------------------------------------------------*/
 
 template <unsigned int N>
 SpatialData<N>::SpatialData() : Data(), transformer_(NULL) {
@@ -272,20 +310,15 @@ const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getBasisMatrix() const{
 
 template<unsigned int N>
 const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getWorldMatrix() const{
-    return spatialData_->getWorldTransform();
+    return spatialData_->getWorldMatrix();
 }
-
-//template <unsigned int N>
-//SpatialData<N>* SpatialData<N>::clone() const {
-//    return new SpatialData<N>(*this);
-//}
 
 template <unsigned int N>
 Vector<N,float> SpatialData<N>::getOffset() const {
     Vector<N,float> offset(0.0f);
     Matrix<N+1,float> mat = getBasisAndOffset();
     for(int i=0;i<N;i++){
-        offset[i] = mat[i][N];
+        offset[i] = mat[N][i];
     }
     return offset;
 }
@@ -293,7 +326,7 @@ template <unsigned int N>
 void SpatialData<N>::setOffset(const Vector<N,float>& offset) {
      Matrix<N+1,float> mat = getBasisAndOffset();
      for(int i=0;i<N;i++){
-        mat[i][N] = offset[i];
+        mat[N][i] = offset[i];
      }
      setBasisAndOffset(mat);
 }
@@ -325,7 +358,7 @@ template <unsigned int N>
 Matrix<N+1,float> SpatialData<N>::getBasisAndOffset() const {
     Matrix<N+1,float> mat(2.0f);
     for(int i=0;i<N;i++){
-        mat[i][N] = -1.0f;
+        mat[N][i] = -1.0f;
     }
     mat[N][N]=1.0f;
     return Data::getMetaData<MatrixMetaData<N+1,float> >("basisAndOffset", mat);
@@ -336,12 +369,12 @@ void SpatialData<N>::setBasisAndOffset(const Matrix<N+1,float>& mat) {
 }
 
 template <unsigned int N>
-Matrix<N+1,float> SpatialData<N>::getWorldTransform() const {
+Matrix<N+1,float> SpatialData<N>::getWorldMatrix() const {
     Matrix<N+1,float> mat(1.0f);
     return Data::getMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
 }
 template <unsigned int N>
-void SpatialData<N>::setWorldTransform(const Matrix<N+1,float>& mat) {
+void SpatialData<N>::setWorldMatrix(const Matrix<N+1,float>& mat) {
     Data::setMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
 }
 
@@ -350,6 +383,8 @@ const CoordinateTransformer<N>& SpatialData<N>::getCoordinateTransformer() const
     return *transformer_;
 }
 
+/*---------------------------------------------------------------*/
+/*--StructuredData-----------------------------------------------*/
 /*---------------------------------------------------------------*/
 
 template <unsigned int N>
@@ -392,11 +427,6 @@ void StructuredData<N>::initTransformer(){
     SpatialData<N>::transformer_ = new StructuredCoordinateTransformer<N>(this);
 }
 
-//template <unsigned int N>
-//StructuredData<N>* StructuredData<N>::clone() const {
-//    return new StructuredData<N>(*this);
-//}
-
 template <unsigned int N>
 Vector<N, unsigned int> StructuredData<N>::getDimension() const {
     Vector<N, unsigned int> dimension;
@@ -407,7 +437,9 @@ void StructuredData<N>::setDimension(const Vector<N, unsigned int>& dimension) {
     Data::setMetaData<VectorMetaData<N, unsigned int> >("dimension", dimension);
 }
 
-
+/*---------------------------------------------------------------*/
+/*--SpatialCoordinateTransformer--------------------------------- */
+/*---------------------------------------------------------------*/
 
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getTextureToIndexMatrix() const {

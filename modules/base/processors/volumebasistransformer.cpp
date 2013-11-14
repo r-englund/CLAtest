@@ -13,8 +13,8 @@ VolumeBasisTransformer::VolumeBasisTransformer()
       lengths_("length_", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f)),
       angels_("angles_", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f)),
       offset_("offset_", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f)),
-      orgBasisAndOffset_(0.0f)
-{
+      orgBasisAndOffset_(0.0f){
+
     addPort(inport_);
     addPort(outport_);
 
@@ -23,8 +23,14 @@ VolumeBasisTransformer::VolumeBasisTransformer()
     addProperty(offset_);
 }
 
-VolumeBasisTransformer::~VolumeBasisTransformer() {
+VolumeBasisTransformer::~VolumeBasisTransformer() {}
 
+void VolumeBasisTransformer::initialize() {
+    Processor::initialize();
+}
+
+void VolumeBasisTransformer::deinitialize() {
+    Processor::deinitialize();
 }
 
 void VolumeBasisTransformer::process() {
@@ -34,10 +40,10 @@ void VolumeBasisTransformer::process() {
         if( orgBasisAndOffset_ != in->getBasisAndOffset()){
             orgBasisAndOffset_ = in->getBasisAndOffset();
 
-            vec3 a(glm::transpose(orgBasisAndOffset_)[0]);
-            vec3 b(glm::transpose(orgBasisAndOffset_)[1]);
-            vec3 c(glm::transpose(orgBasisAndOffset_)[2]);
-            vec3 offset(glm::transpose(orgBasisAndOffset_)[3]);
+            vec3 a(orgBasisAndOffset_[0]);
+            vec3 b(orgBasisAndOffset_[1]);
+            vec3 c(orgBasisAndOffset_[2]);
+            vec3 offset(orgBasisAndOffset_[3]);
 
             float alpha = glm::angle(b,c);
             float beta = glm::angle(c,a);
@@ -75,16 +81,11 @@ void VolumeBasisTransformer::process() {
             0.0f, 0.0f,              c*v/std::sin(gamma),                                                offset[2],
             0.0f, 0.0f,              0.0f,                                                               1.0f
             );
-        out->setBasisAndOffset(newBasisAndOffset);
+        out->setBasisAndOffset(glm::transpose(newBasisAndOffset));
+
     }
 }
 
-void VolumeBasisTransformer::initialize() {
-    Processor::initialize();
-}
 
-void VolumeBasisTransformer::deinitialize() {
-    Processor::deinitialize();
-}
 
 } // inviwo namespace

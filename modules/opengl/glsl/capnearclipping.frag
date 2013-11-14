@@ -8,24 +8,24 @@ uniform TEXTURE_TYPE exitDepthTex_;
 uniform TEXTURE_PARAMETERS exitParameters_;
 
 uniform mat4 inverseViewMat_;
-uniform mat4 worldToTexMat_;
+uniform mat4 inverseProjMat_;
+uniform mat4 world2TexMat_;
+uniform float nearDist_;
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-
-	float entryDepth = texture2D(entryDepthTex_, texCoords).z;
-	float exitDepth = texture2D(exitDepthTex_, texCoords).z;
+	float entryDepth = texture2D(entryDepthTex_, vec2(gl_TexCoord[0])).z;
+	float exitDepth = texture2D(exitDepthTex_, vec2(gl_TexCoord[0])).z;
 
 	vec4 entryColor;
 	if (entryDepth > exitDepth) {
 		// entry points are clipped by near plane
-		vec4 cameraCoordinates = gl_TexCoord[0];
-		vec4 worldCoordinates = cameraCoordinates*inverseViewMat_;
-		vec4 texCoordinates = worldCoordinates*worldToTexMat_;
-	    entryColor = cameraCoordinates;
-		entryDepth = 0.0;
+		// Convert texture coordinates to normalized device coordinates. (ndc) The z value will always be -1 on the clipping plane 
+		vec4 cameraCoordinates = vec4(2.0f*gl_TexCoord[0].x-1.0f, 2.0f*gl_TexCoord[0].y-1.0f, -1.0f, 1.0f);
+		// convert the ndc back to the volume texture coordinates
+	    entryColor = world2TexMat_ * inverseViewMat_ * inverseProjMat_ * cameraCoordinates * nearDist_;
+		entryDepth = 0.0f;
 	} else {
-		entryColor = texture2D(entryColorTex_, texCoords);
+		entryColor = texture2D(entryColorTex_, vec2(gl_TexCoord[0]));
 	}
     
 	FragData0 = entryColor;

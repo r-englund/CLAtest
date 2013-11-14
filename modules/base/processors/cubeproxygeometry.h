@@ -36,6 +36,7 @@ private:
     IntMinMaxProperty clipZ_;
 
     uvec3 dims_;
+    glm::mat4 basis_;
 };
 
 } // namespace

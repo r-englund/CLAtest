@@ -38,40 +38,69 @@ void CubeProxyGeometry::deinitialize() {
 }
 
 void CubeProxyGeometry::process() {
-    if(dims_ != inport_.getData()->getDimension()){
-        dims_ = inport_.getData()->getDimension();
-        clipX_.setRangeMax(static_cast<int>(dims_.x));
-        clipY_.setRangeMax(static_cast<int>(dims_.y));
-        clipZ_.setRangeMax(static_cast<int>(dims_.z));
-    }
+    if(inport_.hasData() && dims_ != inport_.getData()->getDimension() ||
+        basis_ != inport_.getData()->getBasisAndOffset()) {
+            dims_ = inport_.getData()->getDimension();
+            basis_ = inport_.getData()->getBasisAndOffset();
+            clipX_.setRangeMax(static_cast<int>(dims_.x));
+            clipY_.setRangeMax(static_cast<int>(dims_.y));
+            clipZ_.setRangeMax(static_cast<int>(dims_.z));
+        }
 
-    vec3 posLLF = vec3(-1.f);
-    vec3 posURB = vec3(1.f);
-    vec3 texLLF = vec3(0.f);
-    vec3 texURB = vec3(1.f);
-    vec4 colLLF = vec4(0.f, 0.f, 0.f, 1.f);
-    vec4 colURB = vec4(1.f);
+    glm::vec3 pos(0.0f);
+    glm::vec3 p1(1.0f,0.0f,0.0f);
+    glm::vec3 p2(0.0f,1.0f,0.0f);
+    glm::vec3 p3(0.0f,0.0f,1.0f);
+
+    glm::vec3 tex(0.0f);
+    glm::vec3 t1(1.0f,0.0f,0.0f);
+    glm::vec3 t2(0.0f,1.0f,0.0f);
+    glm::vec3 t3(0.0f,0.0f,1.0f);
+
+    glm::vec4 col(0.0f,0.0f,0.0f,1.0f);
+    glm::vec4 c1(1.0f,0.0f,0.0f,0.0f);
+    glm::vec4 c2(0.0f,1.0f,0.0f,0.0f);
+    glm::vec4 c3(0.0f,0.0f,1.0f,0.0f);
 
     if(clippingEnabled_.get()){
-        //Vertex positions
-        posLLF.x = ((static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x))*2.f)-1.f;
-        posLLF.y = ((static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y))*2.f)-1.f;
-        posLLF.z = ((static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z))*2.f)-1.f;
-        posURB.x = ((static_cast<float>(clipX_.get().y)/static_cast<float>(dims_.x))*2.f)-1.f;
-        posURB.y = ((static_cast<float>(clipY_.get().y)/static_cast<float>(dims_.y))*2.f)-1.f;
-        posURB.z = ((static_cast<float>(clipZ_.get().y)/static_cast<float>(dims_.z))*2.f)-1.f;
+        pos = pos + p1*static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x)
+            + p2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
+            + p3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
 
-        //Texture Coordinates and Colors
-        texLLF.x = colLLF.x = static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x);
-        texLLF.y = colLLF.y = static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y);
-        texLLF.z = colLLF.z = static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
-        texURB.x = colURB.x = static_cast<float>(clipX_.get().y)/static_cast<float>(dims_.x);
-        texURB.y = colURB.y = static_cast<float>(clipY_.get().y)/static_cast<float>(dims_.y);
-        texURB.z = colURB.z = static_cast<float>(clipZ_.get().y)/static_cast<float>(dims_.z);
-    }
+        p1 = p1*(static_cast<float>(clipX_.get().y)-static_cast<float>(clipX_.get().x))/static_cast<float>(dims_.x);
+        p2 = p2*(static_cast<float>(clipY_.get().y)-static_cast<float>(clipY_.get().x))/static_cast<float>(dims_.y);
+        p3 = p3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
 
-    //Create Rectangular Prism and set it to the outport
-    outport_.setData(SimpleMeshCreator::rectangularPrism(posLLF, posURB, texLLF, texURB, colLLF, colURB));
+        tex = tex + t1*static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x)
+            + t2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
+            + t3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
+
+        t1 = t1*(static_cast<float>(clipX_.get().y)-static_cast<float>(clipX_.get().x))/static_cast<float>(dims_.x);
+        t2 = t2*(static_cast<float>(clipY_.get().y)-static_cast<float>(clipY_.get().x))/static_cast<float>(dims_.y);
+        t3 = t3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
+
+        col = col + c1*static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x)
+            + c2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
+            + c3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
+
+        c1 = c1*(static_cast<float>(clipX_.get().y)-static_cast<float>(clipX_.get().x))/static_cast<float>(dims_.x);
+        c2 = c2*(static_cast<float>(clipY_.get().y)-static_cast<float>(clipY_.get().x))/static_cast<float>(dims_.y);
+        c3 = c3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
+        }
+
+
+    //Create parallelepiped and set it to the outport
+    Geometry* geom = 
+        SimpleMeshCreator::parallelepiped(pos, p1, p2, p3, 	
+        tex, t1, t2, t3, 	
+        col, c1, c2, c3);
+
+    // This would be easier, use unit box to make geom instead...
+    geom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
+
+    geom->setWorldMatrix(inport_.getData()->getWorldMatrix());
+
+    outport_.setData(geom);
 }
 
 } // namespace

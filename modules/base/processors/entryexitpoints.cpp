@@ -99,10 +99,12 @@ void EntryExitPoints::process() {
 		// the rendered plane is specified in camera coordinates
 		// thus we must transform from camera to world to texture coordinates
 		capNearClippingPrg_->setUniform("inverseViewMat_", camera_.inverseViewMatrix());
-		mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
+        capNearClippingPrg_->setUniform("inverseProjMat_", camera_.inverseProjectionMatrix());
+        const mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
 		capNearClippingPrg_->setUniform("world2TexMat_", worldToTexMat);
+        capNearClippingPrg_->setUniform("nearDist_", camera_.getNearPlaneDist());
 
-		renderImagePlaneRect();
+        renderImagePlaneRect();
 
 		capNearClippingPrg_->deactivate();
 

@@ -17,7 +17,7 @@ namespace inviwo {
         virtual ~VolumeDisk();
         virtual void initialize();
         virtual void deinitialize();
-        virtual DataRepresentation* clone() const;
+        virtual VolumeDisk* clone() const;
         void* loadRawData() const;
     };
 

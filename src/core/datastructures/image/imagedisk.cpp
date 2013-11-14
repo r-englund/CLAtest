@@ -40,7 +40,8 @@ namespace inviwo {
         dimensions_ = dimensions;
     } 
 
-    DataRepresentation* ImageDisk::clone() const {
+    ImageDisk* ImageDisk::clone() const {
+        //TODO: move to copyconstructor
         ImageDisk* imageDiskClone = new ImageDisk(getSourceFile());
         imageDiskClone->resize(dimensions_);
         return imageDiskClone;

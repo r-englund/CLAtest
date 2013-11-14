@@ -33,7 +33,7 @@ void MeshGLRenderer::render( RenderType rt ) const{
     glPushMatrix();
     mat4 dataToModel = meshToRender_->getBasisAndOffset();
     glMultMatrixf(glm::value_ptr(dataToModel));
-    mat4 modelToWorld = meshToRender_->getWorldTransform();
+    mat4 modelToWorld = meshToRender_->getWorldMatrix();
     glMultMatrixf(glm::value_ptr(modelToWorld));
     
     (this->*drawMethods_[rt].drawFunc)(rt);
