@@ -32,6 +32,7 @@ void IntVec4PropertyWidgetQt::generateWidget() {
 	QVBoxLayout* vLayout = new QVBoxLayout();
 	sliderWidget->setLayout(vLayout);
     vLayout->setContentsMargins(0,0,0,0);
+    vLayout->setSpacing(0);
     valueVecMax_ = property_->getMaxValue();
     valueVecMin_ = property_->getMinValue();
     valueIncrement_ = property_->getIncrement();
@@ -150,18 +151,18 @@ void IntVec4PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
         QPoint globalPos = sliderX_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVecMin_ = property_->getMinValue();
             valueVecMin_.x = sliderX_->getValue();
             property_->setMinValue(valueVecMin_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVecMax_ = property_->getMaxValue();
             valueVecMax_.x = sliderX_->getValue();
@@ -180,18 +181,18 @@ void IntVec4PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
         QPoint globalPos = sliderY_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVecMin_ = property_->getMinValue();
             valueVecMin_.y = sliderY_->getValue();
             property_->setMinValue(valueVecMin_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVecMax_ = property_->getMaxValue();
             valueVecMax_.y = sliderY_->getValue();
@@ -209,18 +210,18 @@ void IntVec4PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
         QPoint globalPos = sliderZ_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVecMin_ = property_->getMinValue();
             valueVecMin_.z = sliderZ_->getValue();
             property_->setMinValue(valueVecMin_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVecMax_ = property_->getMaxValue();
             valueVecMax_.z = sliderZ_->getValue();
@@ -240,18 +241,18 @@ void IntVec4PropertyWidgetQt::showContextMenuW( const QPoint& pos ) {
         QPoint globalPos = sliderW_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVecMin_ = property_->getMinValue();
             valueVecMin_.w = sliderW_->getValue();
             property_->setMinValue(valueVecMin_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVecMax_ = property_->getMaxValue();
             valueVecMax_.w = sliderW_->getValue();

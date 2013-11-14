@@ -67,14 +67,14 @@ void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
         QPoint globalPos = sliderWidget_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
-        } else if (selecteditem == settingsMenu_->actions().at(1)) {
+        } else if (selecteditem == settingsMenu_->actions().at(2)) {
             // set current value of the slider to min value of the property
             property_->setMinValue(sliderWidget_->getValue());
             updateFromProperty();
-        } else if (selecteditem == settingsMenu_->actions().at(2)){
+        } else if (selecteditem == settingsMenu_->actions().at(3)){
             // set current value of the slider to max value of the property
             property_->setMaxValue(sliderWidget_->getValue());
             updateFromProperty();

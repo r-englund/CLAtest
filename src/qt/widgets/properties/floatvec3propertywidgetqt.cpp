@@ -33,6 +33,7 @@ void FloatVec3PropertyWidgetQt::generateWidget() {
         QVBoxLayout* vLayout = new QVBoxLayout();
         sliderWidget->setLayout(vLayout);
         vLayout->setContentsMargins(0,0,0,0);
+        vLayout->setSpacing(0);
 
         sliderX_ = new FloatSliderWidgetQt();
         sliderY_ = new FloatSliderWidgetQt();
@@ -131,18 +132,18 @@ void FloatVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
     
         QPoint globalPos = sliderX_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVec3Min_ = property_->getMinValue();
             valueVec3Min_.x = sliderX_->getValue();
             property_->setMinValue(valueVec3Min_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVec3Max_ = property_->getMaxValue();
             valueVec3Max_.x = sliderX_->getValue();
@@ -159,18 +160,18 @@ void FloatVec3PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
         QPoint globalPos = sliderY_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVec3Min_ = property_->getMinValue();
             valueVec3Min_.y = sliderY_->getValue();
             property_->setMinValue(valueVec3Min_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVec3Max_ = property_->getMaxValue();
             valueVec3Max_.y = sliderY_->getValue();
@@ -187,18 +188,18 @@ void FloatVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
         QPoint globalPos = sliderZ_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVec3Min_ = property_->getMinValue();
             valueVec3Min_.z = sliderZ_->getValue();
             property_->setMinValue(valueVec3Min_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVec3Max_ = property_->getMaxValue();
             valueVec3Max_.z = sliderZ_->getValue();

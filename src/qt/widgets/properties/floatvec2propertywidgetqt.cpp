@@ -40,6 +40,7 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
 	    vLayout->addWidget(sliderX_);
 	    vLayout->addWidget(sliderY_);
         vLayout->setContentsMargins(0,0,0,0);
+        vLayout->setSpacing(0);
 	    hLayout->addWidget(sliderWidget);
 	    setLayout(hLayout);
 
@@ -114,18 +115,18 @@ void FloatVec2PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
 
         QPoint globalPos = sliderX_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVec2Min_ = property_->getMinValue();
             valueVec2Min_.x = sliderX_->getValue();
             property_->setMinValue(valueVec2Min_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVec2Max_ = property_->getMaxValue();
             valueVec2Max_.x = sliderX_->getValue();
@@ -142,18 +143,18 @@ void FloatVec2PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
         QPoint globalPos = sliderY_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem == settingsMenu_->actions().at(1)) {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem == settingsMenu_->actions().at(2)) {
             //Set current value of the slider to min value of the property
             valueVec2Min_ = property_->getMinValue();
             valueVec2Min_.y = sliderY_->getValue();
             property_->setMinValue(valueVec2Min_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem == settingsMenu_->actions().at(3)){
             //Set current value of the slider to max value of the property
             valueVec2Max_ = property_->getMaxValue();
             valueVec2Max_.y = sliderY_->getValue();
