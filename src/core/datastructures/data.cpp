@@ -31,7 +31,7 @@ void Data::addRepresentation(DataRepresentation* representation) {
     representations_.push_back(representation);
     lastValidRepresentation_ = representation;
     setRepresentationAsValid(static_cast<int>(representations_.size())-1);
-    newEditableRepresentationCreated();
+    newRepresentationCreated();
 }
 
 bool Data::hasRepresentations() const {

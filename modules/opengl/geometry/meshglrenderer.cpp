@@ -81,6 +81,7 @@ void MeshGLRenderer::renderArray( RenderType rt) const
 void MeshGLRenderer::renderElements( RenderType rt) const
 {
     const ElementBufferGL* elementBufferGL = drawMethods_[rt].elementBuffer->getRepresentation<ElementBufferGL>();
+    elementBufferGL->enable();
     glDrawElements(drawMethods_[rt].drawMode, static_cast<GLsizei>(elementBufferGL->getSize()), elementBufferGL->getFormatType(), 0);
 }
 
@@ -108,7 +109,6 @@ void MeshGLRenderer::initialize( Mesh::AttributesInfo ai )
 void MeshGLRenderer::initializeIndexBuffer( const Buffer* indexBuffer, Mesh::AttributesInfo ai ) {
     drawMethods_[ai.rt].drawFunc = &MeshGLRenderer::renderElements;
     drawMethods_[ai.rt].drawMode = getDrawMode(ai.rt, ai.ct);
-    delete drawMethods_[ai.rt].elementBuffer;
     drawMethods_[ai.rt].elementBuffer = indexBuffer;
 
     // Specify first element buffer as default rendering method

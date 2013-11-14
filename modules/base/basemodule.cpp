@@ -6,6 +6,7 @@
 #include <modules/base/processors/entryexitpoints.h>
 #include <modules/base/processors/findedges.h>
 #include <modules/base/processors/firstivwprocessor.h>
+#include <modules/base/processors/imageclassify.h>
 #include <modules/base/processors/imagegrayscale.h>
 #include <modules/base/processors/imagemixer.h>
 #include <modules/base/processors/imagesource.h>
@@ -37,6 +38,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(EntryExitPoints);
 	registerProcessor(FindEdges);
 	registerProcessor(FirstIvwProcessor);
+    registerProcessor(ImageClassify);
 	registerProcessor(ImageGrayscale);
     registerProcessor(ImageMixer);
     registerProcessor(ImageSource);

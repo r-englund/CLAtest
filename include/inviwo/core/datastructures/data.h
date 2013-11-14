@@ -62,7 +62,7 @@ public:
 protected:
     virtual DataRepresentation* createDefaultRepresentation() = 0;
 
-    virtual void newEditableRepresentationCreated() const { }
+    virtual void newRepresentationCreated() const { }
 
     template<typename T> 
     void updateRepresentation(T* representation, int index) const; 
@@ -137,6 +137,7 @@ const T* Data::createNewRepresentationUsingConverters() const
         representations_.push_back(result);
         setRepresentationAsValid(static_cast<int>(representations_.size())-1);
         lastValidRepresentation_ = result;
+        newRepresentationCreated();
         return dynamic_cast<T*>(result);
     }
     //A one-2-one converter could not be found, thus we want to find the smallest package of converters to get to our destination
@@ -172,6 +173,7 @@ const T* Data::createNewRepresentationUsingConverters() const
             setRepresentationAsValid(static_cast<int>(representations_.size())-1);
         }
         lastValidRepresentation_ = result;
+        newRepresentationCreated();
         return dynamic_cast<T*>(result);
     }
 
@@ -220,9 +222,6 @@ T* Data::getEditableRepresentation() {
     if (representations_.size()>1) {
         invalidateAllOther<T>();
     }
-    lastValidRepresentation_ = result;
-    if(!hasRep)
-        newEditableRepresentationCreated();
     return result;
 }
 

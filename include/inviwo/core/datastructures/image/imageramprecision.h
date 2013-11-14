@@ -45,8 +45,6 @@ public:
 
 protected:
     void allocatePickingData();
-    void useInputSource(ImageLayerType, const Image*){};
-    void createAndAddLayer(ImageLayerType){};
     
 private:
     static const DataFormatBase* defaultformat(){

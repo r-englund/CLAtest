@@ -1,7 +1,5 @@
 #include "imagegrayscale.h"
 
-#include <inviwo/core/datastructures/image/imageram.h>
-
 namespace inviwo {
 
 ProcessorClassName(ImageGrayscale, "ImageGrayscale"); 

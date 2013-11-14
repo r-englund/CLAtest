@@ -106,7 +106,7 @@ DataRepresentation* Image::createDefaultRepresentation() {
 	return createImageRAM((uvec2)getDimension(), getImageType(), getDataFormat());
 }
 
-void Image::newEditableRepresentationCreated() const {
+void Image::newRepresentationCreated() const {
     if (!allowMissingLayers_) {
         ImageRepresentation* lastValidRepresentation = dynamic_cast<ImageRepresentation*>(lastValidRepresentation_);
         ImageSourceMap::const_iterator it;

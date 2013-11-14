@@ -360,40 +360,31 @@ void ProcessorNetworkEvaluator::evaluate() {
         determineProcessingOrder();
         processorNetwork_->setModified(false);
     }
-
-    bool inValidTopology = false;
-    for (size_t i=0; i<processorsSorted_.size(); i++)
-        if (!processorsSorted_[i]->isValid())
-            if (!processorsSorted_[i]->allInportsConnected())
-                if (!dynamic_cast<CanvasProcessor*>(processorsSorted_[i]))
-                    inValidTopology = true;
-    if (inValidTopology) {
-        processorNetwork_->unlock();
-        return;
-    }
-   
+ 
     defaultContext_->activate();
     for (size_t i=0; i<processorsSorted_.size(); i++) {
         if (!processorsSorted_[i]->isValid()) {
-            // re-initialize resources (e.g., shaders) if necessary
-            if (processorsSorted_[i]->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
-                processorsSorted_[i]->initializeResources();                
+            if (processorsSorted_[i]->isReady()){
+                // re-initialize resources (e.g., shaders) if necessary
+                if (processorsSorted_[i]->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
+                    processorsSorted_[i]->initializeResources();                
             
-            // reset the progress indicator
-            ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processorsSorted_[i]);
-            if (progressBarOwner)
-                progressBarOwner->getProgressBar().resetProgress();
+                // reset the progress indicator
+                ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processorsSorted_[i]);
+                if (progressBarOwner)
+                    progressBarOwner->getProgressBar().resetProgress();
 
-            // do the actual processing
-            processorsSorted_[i]->process();
-            repaintRequired = true;
+                // do the actual processing
+                processorsSorted_[i]->process();
+                repaintRequired = true;
 
-            // set the progress indicator to finished
-            if (progressBarOwner)
-                progressBarOwner->getProgressBar().finishProgress();
+                // set the progress indicator to finished
+                if (progressBarOwner)
+                    progressBarOwner->getProgressBar().finishProgress();
 
-            // validate processor
-            processorsSorted_[i]->setValid();
+                // validate processor
+                processorsSorted_[i]->setValid();
+            }
         }
     }       
 

@@ -22,7 +22,7 @@ public:
     void setData(T* data, bool ownsData = true);
     bool hasData() const;
 
-	virtual bool isReady() const { return isConnected() && hasData(); }
+	virtual bool isReady() const { return isConnected(); }
 
     virtual void dataChanged() {}
 

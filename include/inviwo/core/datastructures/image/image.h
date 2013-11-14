@@ -28,7 +28,7 @@ public:
 
 protected:
     virtual DataRepresentation* createDefaultRepresentation();
-    void newEditableRepresentationCreated() const;
+    void newRepresentationCreated() const;
 private:
     bool allowMissingLayers_;
     ImageType imageType_;

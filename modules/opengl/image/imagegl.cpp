@@ -138,7 +138,9 @@ void ImageGL::createAndAddLayer(ImageLayerType layer){
     }
     else if(layer == DEPTH_LAYER){
         createDepthLayer();
-        glDrawBuffer(GL_DEPTH_ATTACHMENT);
+        frameBufferObject_->attachTexture(depthTexture_, static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
+        id = GL_DEPTH_ATTACHMENT;
+        glDrawBuffer(id);
         const GLfloat clearDepth = 0.f;
         glClearBufferfv(GL_DEPTH, 0, &clearDepth);
     }
