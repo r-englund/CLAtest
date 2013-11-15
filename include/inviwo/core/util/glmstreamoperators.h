@@ -51,6 +51,7 @@ std::ostream & operator << (std::ostream & s, glm::detail::tmat2x2<T> const & m)
 		}
 		s << "]";
 	}
+    return s;
 }
 
 template<typename T>
@@ -65,6 +66,7 @@ std::ostream & operator << (std::ostream & s, glm::detail::tmat3x3<T> const & m)
 		}
 		s << "]";
 	}
+    return s;
 }
 
 template<typename T>
@@ -79,6 +81,7 @@ std::ostream & operator << (std::ostream & s, glm::detail::tmat4x4<T> const & m)
 		}
 		s << "]";
 	}
+    return s;
 }
 
 
