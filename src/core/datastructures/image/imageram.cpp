@@ -31,7 +31,7 @@ void ImageRAM::deinitialize() {
 }
 
 float* ImageRAM::getDepthData() {
-    if(!depthData_)
+    if (!depthData_)
         allocateDepthData();
 
     return depthData_;
@@ -66,7 +66,7 @@ void ImageRAM::setDimensions( uvec2 dimensions )
 }
 
 float ImageRAM::getDepthValue(const uvec2& pos) const{
-    if(depthData_)
+    if (depthData_)
         return depthData_[posToIndex(pos, dimensions_)];
     else
         return 1.f;

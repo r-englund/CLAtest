@@ -31,7 +31,7 @@ const vec2& PickingObject::getPickingMove() const{
     return move_;
 }
 
-const float& PickingObject::getPickingDepth() const{
+const float& PickingObject::getPickingDepth() const {
     return depth_;
 }
 

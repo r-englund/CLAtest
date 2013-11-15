@@ -25,7 +25,7 @@ void CompositeProcessorGL::deinitialize() {
 }
 
 void CompositeProcessorGL::compositePortsToOutport(ImageOutport& outport, ImageInport& inport){
-    if(inport.isReady() && outport.isReady()){
+    if (inport.isReady() && outport.isReady()) {
         activateTarget(outport);
 
         TextureUnit inportColorUnit, inportDepthUnit, inportPickingUnit;

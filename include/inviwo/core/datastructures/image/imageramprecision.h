@@ -182,7 +182,7 @@ vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
 template<typename T>
 vec4 ImageRAMPrecision<T>::getPickingValue(const uvec2& pos) const{
     vec4 result = vec4(0.f);
-    if(pickingData_){
+    if (pickingData_) {
         T* pickData = static_cast<T*>(pickingData_);
         T val = pickData[posToIndex(pos, dimensions_)];
         result = getDataFormat()->valueToNormalizedVec4Float(&val);

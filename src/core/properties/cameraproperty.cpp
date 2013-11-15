@@ -12,7 +12,7 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     lookUp_("lookUp", "Look up", lookUp, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel),
     fovy_("fov", "FOV", 60.0f, 30.0f, 360.0f, 0.1f, invalidationLevel),
     aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 1.0f, 0.1f, invalidationLevel),
-    nearPlane_("near", "Near Plane", 0.01f, 0.001f, 10.f, 0.001f, invalidationLevel),
+    nearPlane_("near", "Near Plane", 0.1f, 0.001f, 10.f, 0.001f, invalidationLevel),
     farPlane_("far", "Far Plane", 100.0f, 1.0f, 1000.0f, 1.0f, invalidationLevel)
 {
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
@@ -61,7 +61,7 @@ float CameraProperty::getFarPlaneDist() const{
 }
 
 //XY between -1 -> 1, Z between 0 -> 1
-vec3 CameraProperty::getWorldPosFromNormalizedDeviceCoords(vec3 ndcCoords) const{
+vec3 CameraProperty::getWorldPosFromNormalizedDeviceCoords(vec3 ndcCoords) const {
     float clipW = projectionMatrix_[2][3] / (ndcCoords.z - (projectionMatrix_[2][2] / projectionMatrix_[3][2]));
     vec4 clipCoords = vec4(ndcCoords * clipW, clipW);
     vec4 eyeCoords = inverseProjectionMatrix()*clipCoords;
