@@ -87,6 +87,7 @@ public:
      * @return void <DESCRIBE ME>
      */void updateValueSlider();
 
+
     QSlider* getSlider();
     QSpinBox* getSpinBox();
 
@@ -99,7 +100,7 @@ public:
 
 signals:
         void valueChanged(int value);
-
+        
 
 
 private:
@@ -108,6 +109,7 @@ private:
     int maxValue_;
     int minValue_;
     int increment_;
+    bool fromSlider_;
     QSpinBox* spinBox_;
     CustomSliderWidgetQt* slider_;
     void generateWidget();

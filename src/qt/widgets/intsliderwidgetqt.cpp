@@ -5,6 +5,7 @@ inviwo::IntSliderWidgetQt::IntSliderWidgetQt( int minValue_, int maxValue_, int 
     this->minValue_ = minValue_;
     this->maxValue_ = maxValue_;
     this->increment_= increment_;
+    fromSlider_ = false;
     generateWidget();
 
 }
@@ -38,7 +39,10 @@ int inviwo::IntSliderWidgetQt::getValue() {
 void inviwo::IntSliderWidgetQt::setValue( int tmpValue ) {
     if (minValue_<tmpValue || tmpValue<=maxValue_) {
         value_ = tmpValue;
-        updateValueSlider();
+        if (!fromSlider_)
+            updateValueSlider();
+        else
+            fromSlider_=false;
         spinBox_->setValue(tmpValue);
     }
 
@@ -71,12 +75,15 @@ QSlider* inviwo::IntSliderWidgetQt::getSlider() {
 
 void inviwo::IntSliderWidgetQt::updateValueSpinBox() {
     if (spinBox_->value()!=value_) {
+        spinBox_->blockSignals(true);
         spinBox_->setValue(value_);
+        spinBox_->blockSignals(false);
     }
 
 }
 
 void inviwo::IntSliderWidgetQt::updateValueSlider() {
+    
     float normalizedValue = float(float(value_-minValue_)/float(maxValue_-minValue_));
     int newValue = static_cast<int>(floor(normalizedValue * SLIDER_MAX));
     slider_->blockSignals(true);
@@ -91,9 +98,9 @@ void IntSliderWidgetQt::setIncrement( int increment ) {
 }
 
 void IntSliderWidgetQt::updateFromSpinBox(){
-    int newValue = spinBox_->value();
-    if (newValue != value_) {
-        value_ = newValue;
+    int spinboxValue = spinBox_->value();
+    if (spinboxValue != value_) {
+        value_ = spinboxValue;
         updateValueSlider();
         emit valueChanged(value_);
     }
@@ -103,6 +110,7 @@ void IntSliderWidgetQt::updateFromSlider(){
     float normalizedValue = static_cast<float>(slider_->value())/static_cast<float>(slider_->maximum());
     int newValue = static_cast<int>(floor(minValue_ + (normalizedValue * (maxValue_ - minValue_))));
     if (newValue != value_) {
+        fromSlider_ = true;
         value_ = newValue;
         spinBox_->setValue(value_);
         emit valueChanged(value_);
