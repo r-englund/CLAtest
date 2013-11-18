@@ -337,7 +337,7 @@ Matrix<N,float> SpatialData<N>::getBasis() const {
     Matrix<N+1,float> mat = getBasisAndOffset();
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            basis[i][j] = mat[i][j];
+            basis[j][i] = mat[j][i];
         }
     }
     return basis;
@@ -348,7 +348,7 @@ void SpatialData<N>::setBasis(const Matrix<N,float>& basis) {
     Matrix<N+1,float> mat = getBasisAndOffset();
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            mat[i][j] = basis[i][j];
+            mat[j][i] = basis[j][i];
         }
     }
     setBasisAndOffset(mat);

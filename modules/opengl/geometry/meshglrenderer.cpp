@@ -31,10 +31,10 @@ void MeshGLRenderer::render( RenderType rt ) const{
         (*it)->getRepresentation<BufferGL>()->enable();
     }
     glPushMatrix();
-    mat4 dataToModel = meshToRender_->getBasisAndOffset();
-    glMultMatrixf(glm::value_ptr(dataToModel));
     mat4 modelToWorld = meshToRender_->getWorldMatrix();
     glMultMatrixf(glm::value_ptr(modelToWorld));
+    mat4 dataToModel = meshToRender_->getBasisAndOffset();
+    glMultMatrixf(glm::value_ptr(dataToModel));
     
     (this->*drawMethods_[rt].drawFunc)(rt);
     

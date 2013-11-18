@@ -47,7 +47,7 @@ std::ostream & operator << (std::ostream & s, glm::detail::tmat2x2<T> const & m)
 		for(int j = 0;j<size;j++){
 			if(j!=0)
 				s << " ";
-			s << m[i][j];
+			s << m[j][i]; // Column-major
 		}
 		s << "]";
 	}
@@ -62,7 +62,7 @@ std::ostream & operator << (std::ostream & s, glm::detail::tmat3x3<T> const & m)
 		for(int j = 0;j<size;j++){
 			if(j!=0)
 				s << " ";
-			s << m[i][j];
+			s << m[j][i]; // Column-major
 		}
 		s << "]";
 	}
@@ -77,7 +77,7 @@ std::ostream & operator << (std::ostream & s, glm::detail::tmat4x4<T> const & m)
 		for(int j = 0;j<size;j++){
 			if(j!=0)
 				s << " ";
-			s << m[i][j];
+			s << m[j][i]; // Column-major
 		}
 		s << "]";
 	}
