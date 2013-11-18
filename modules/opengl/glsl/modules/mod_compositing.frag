@@ -33,7 +33,7 @@ vec4 compositeFHN(in vec4 curResult, in vec4 color, in vec3 gradient, in float t
     vec4 result = curResult;
     if (result == vec4(0.0) && color.a > 0.0) {
         tDepth = t;
-        result = vec4(gradient, 1.0);
+        result = vec4(normalize(gradient)*0.5+0.5, 1.0);
     }
     return result;
 }
@@ -46,6 +46,14 @@ vec4 compositeISO(in vec4 curResult, in vec4 color, in float t, inout float tDep
         color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);
         result.rgb = result.rgb + (1.0 - result.a) * color.a * color.rgb;
         result.a = result.a + (1.0 - result.a) * color.a;
+    }
+    return result;
+}
+
+vec4 compositeISON(in vec4 curResult, in vec4 color, in vec3 gradient, in float t, inout float tDepth, in float isoValue) {
+    vec4 result = curResult;
+    if (color.a >= isoValue-0.01 && color.a <= isoValue+0.01) {
+        result = compositeFHN(curResult, color, gradient, t, tDepth);
     }
     return result;
 }

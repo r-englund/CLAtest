@@ -63,6 +63,9 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
 
     gradientComputationMode_.addOption("none", "None");
     gradientComputationMode_.addOption("forward", "Forward differences");
+    gradientComputationMode_.addOption("central", "Central differences");
+    gradientComputationMode_.addOption("central-higher", "Higher Order Central differences");
+    gradientComputationMode_.addOption("backward", "Backward differences");
     gradientComputationMode_.set("forward");
     addProperty(gradientComputationMode_);
 
@@ -77,10 +80,11 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     lightColorSpecular_.setSemantics(PropertySemantics::Color);
 
     compositingMode_.addOption("dvr", "Direct volume rendering");
-    compositingMode_.addOption("iso", "Iso surface rendering");
     compositingMode_.addOption("mip", "Maximum intensity projection");
     compositingMode_.addOption("fhp", "First hit points");
     compositingMode_.addOption("fhn", "First hit normals");
+    compositingMode_.addOption("iso", "Iso surface rendering");
+    compositingMode_.addOption("ison", "Iso surface normal rendering");
     compositingMode_.set("dvr");
     addProperty(compositingMode_);
 
@@ -142,6 +146,13 @@ void VolumeRaycasterGL::initializeResources() {
         gradientComputationValue = "voxel.xyz;";
     if (gradientComputationMode_.isSelected("forward"))
         gradientComputationValue = "gradientForwardDiff(voxel.a, volume_, volumeStruct_, samplePos);";
+    else if (gradientComputationMode_.isSelected("central"))
+        gradientComputationValue = "gradientCentralDiff(voxel.a, volume_, volumeStruct_, samplePos);";
+    else if (gradientComputationMode_.isSelected("central-higher"))
+        gradientComputationValue = "gradientCentralDiffH(voxel.a, volume_, volumeStruct_, samplePos);";
+    else if (gradientComputationMode_.isSelected("backward"))
+        gradientComputationValue = "gradientBackwardDiff(voxel.a, volume_, volumeStruct_, samplePos);";
+
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(gradientComputationKey, gradientComputationValue);
 
     // classification defines
@@ -179,6 +190,8 @@ void VolumeRaycasterGL::initializeResources() {
         compositingValue = "compositeFHN(result, color, gradient, t, tDepth);";
     else if (compositingMode_.isSelected("iso"))
         compositingValue = "compositeISO(result, color, t, tDepth, tIncr, isoValue_);";
+    else if (compositingMode_.isSelected("ison"))
+        compositingValue = "compositeISON(result, color, gradient, t, tDepth, isoValue_);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
 
     raycastPrg_->build();
