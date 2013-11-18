@@ -44,8 +44,11 @@ DataRepresentation* ImageGL2RAMConverter::createFrom(const DataRepresentation* s
     const ImageGL* imageGL = static_cast<const ImageGL*>(source);
     ImageRAM* image = createImageRAM(imageGL->getDimensions(), imageGL->getImageType(), imageGL->getDataFormat()); 
     if (image) {
+        imageGL->getColorTexture()->downloadToPBO();
         imageGL->getColorTexture()->download(image->getData());
+        imageGL->getPickingTexture()->downloadToPBO();
         imageGL->getPickingTexture()->download(image->getPickingData());
+        imageGL->getDepthTexture()->downloadToPBO();
         imageGL->getDepthTexture()->download(image->getDepthData());
         return image;
     } else {
@@ -61,8 +64,11 @@ void ImageGL2RAMConverter::update(const DataRepresentation* source, DataRepresen
         imageDst->resize(imageSrc->getDimensions());
     }
     // FIXME: OpenGL color should not have both depth and color
+    imageSrc->getColorTexture()->downloadToPBO();
     imageSrc->getColorTexture()->download(imageDst->getData());
+    imageSrc->getPickingTexture()->downloadToPBO();
     imageSrc->getPickingTexture()->download(imageDst->getPickingData());
+    imageSrc->getDepthTexture()->downloadToPBO();
     imageSrc->getDepthTexture()->download(imageDst->getDepthData());
 }
 

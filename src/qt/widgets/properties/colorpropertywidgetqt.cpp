@@ -41,9 +41,11 @@ void ColorPropertyWidgetQt::generateWidget() {
 void ColorPropertyWidgetQt::updateFromProperty(){
     if (dynamic_cast<IntVec4Property*>(property_)) {
         ivec4 colorVector = dynamic_cast<IntVec4Property*>(property_)->get();
+        colorVector = glm::clamp(colorVector, ivec4(0), ivec4(255));
         currentColor_->setRgb(colorVector.x, colorVector.y, colorVector.z, colorVector.w);
     } else if (dynamic_cast<FloatVec4Property*>(property_)) {
         vec4 colorVector = dynamic_cast<FloatVec4Property*>(property_)->get();
+        colorVector = glm::clamp(colorVector, vec4(0.f), vec4(255.f));
         int xVal = static_cast<int>(colorVector.x*255);
         int yVal = static_cast<int>(colorVector.y*255);
         int zVal = static_cast<int>(colorVector.z*255);
