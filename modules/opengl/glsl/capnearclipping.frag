@@ -9,7 +9,7 @@ uniform TEXTURE_PARAMETERS exitParameters_;
 
 uniform mat4 inverseViewMat_;
 uniform mat4 inverseProjMat_;
-uniform mat4 world2TexMat_;
+uniform mat4 worldToTexMat_;
 uniform float nearDist_;
 
 void main() {
@@ -22,7 +22,7 @@ void main() {
 		// Convert texture coordinates to normalized device coordinates. (ndc) The z value will always be -1 on the clipping plane 
 		vec4 cameraCoordinates = vec4(2.0f*gl_TexCoord[0].x-1.0f, 2.0f*gl_TexCoord[0].y-1.0f, -1.0f, 1.0f);
 		// convert the ndc back to the volume texture coordinates
-	    entryColor = world2TexMat_ * inverseViewMat_ * inverseProjMat_ * cameraCoordinates * nearDist_;
+	    entryColor = worldToTexMat_ * inverseViewMat_ * inverseProjMat_ * cameraCoordinates * nearDist_;
 		entryDepth = 0.0f;
 	} else {
 		entryColor = texture2D(entryColorTex_, vec2(gl_TexCoord[0]));

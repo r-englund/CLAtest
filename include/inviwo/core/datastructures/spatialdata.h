@@ -15,38 +15,48 @@ namespace inviwo {
  *  - Model - Defines a local basis and offset for the data.
  *  - World - Puts the data at a position and angle in the scene.
  *
- *  A matrix is always stored in an array:
+ *  A matrix is always stored in a 1 dim array, for example a 4x4 matrix would be:
  *  m = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
- *  in c++ that uses row major that translates to a matrix like
- *      1  2  3  4
- *      5  6  7  8
- *      9  10 11 12
- *      13 14 15 16
+ *  in c/c++, that uses row major, that translates to a matrix like
  *
- *  on the gpu that uses column major it looks like:
- *      1  5  9 13
- *      2  6 10 14
- *      3  7 11 15
- *      4  8 12 16
+ *      m[0][0]=1  m[0][1]=2  m[0][2]=3  m[0][3]=4
+ *      m[1][0]=5  m[1][1]=6  m[1][2]=7  m[1][3]=8
+ *      m[2][0]=9  m[2][1]=10 m[2][2]=11 m[2][3]=12
+ *      m[3][0]=13 m[3][1]=14 m[3][2]=15 m[3][3]=16
  *
- *  to create a translation matrix for on the gpu you want:
+ *  here the first index represent the row and the second the column: m[row][column]. 
+ *  On the gpu, that uses column major, the same array would look like:
+ *
+ *      m[0][0]=1  m[1][0]=5  m[2][0]=9  m[3][0]=13
+ *      m[0][1]=2  m[1][1]=6  m[2][1]=10 m[3][1]=14
+ *      m[0][2]=3  m[1][2]=7  m[2][2]=11 m[3][2]=15
+ *      m[0][3]=4  m[1][3]=8  m[2][3]=12 m[3][3]=16
+ *
+ *  here the first index is the column and the second the row: m[column][row]
+ *  
+ *  For example to create a translation matrix for on the gpu you want:
+ *
  *      1  0  0 dx
  *      0  1  0 dy
  *      0  0  0 dz
  *      0  0  0  1
  *
- *  in c++/glm that would be:
+ *  That means that in c/c++ you would create a transposed matrix like:
+ *
  *      1  0  0  0
  *      0  1  0  0
  *      0  0  1  0
  *      dx dy dz 1
  *
- *  Hence when we create our matrices in glm they will all be row matrices, 
- *  but on the gpu they will become column matrices. This means that to apply
- *  a transform in c++ you would write vec . mat or Transpose(mat) . vec.
- *  But if you are using glm you will write as you do on the gpu since glm redefines
- *  how to multiply matrices...
- *  But on the gpu mat . vec.
+ *  GLM also uses column major hence in glm you write m[column][row]
+ *  hence you would enter the a translation like:
+ *
+ *      m[0][0]=1  m[1][0]=0  m[2][0]=0  m[3][0]=dx
+ *      m[0][1]=0  m[1][1]=1  m[2][1]=0  m[3][1]=dy
+ *      m[0][2]=0  m[1][2]=0  m[2][2]=1  m[3][2]=dz
+ *      m[0][3]=0  m[1][3]=0  m[2][3]=0  m[3][3]=1
+ *
+ *  This means that they have the same representation as on the gpu.
  */     
 
 template<unsigned int N>
@@ -337,7 +347,7 @@ Matrix<N,float> SpatialData<N>::getBasis() const {
     Matrix<N+1,float> mat = getBasisAndOffset();
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            basis[j][i] = mat[j][i];
+            basis[i][j] = mat[i][j];
         }
     }
     return basis;
@@ -348,7 +358,7 @@ void SpatialData<N>::setBasis(const Matrix<N,float>& basis) {
     Matrix<N+1,float> mat = getBasisAndOffset();
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            mat[j][i] = basis[j][i];
+            mat[i][j] = basis[i][j];
         }
     }
     setBasisAndOffset(mat);
