@@ -3,6 +3,12 @@
 
 namespace inviwo {
 
+enum CoordinatePlane {
+    XY,
+    XZ,
+    YZ
+};
+
 enum RenderType{
     NOT_SPECIFIED,
     POINTS,

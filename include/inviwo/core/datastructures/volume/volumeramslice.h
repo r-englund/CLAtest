@@ -4,18 +4,12 @@
 #include <inviwo/core/datastructures/image/imageramprecision.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumeoperation.h>
+#include <inviwo/core/datastructures/geometry/geometrytype.h>
 
 namespace inviwo {
    
 class IVW_CORE_API VolumeRAMSlice : public VolumeOperation {
 public:
-    /// Which plane to take slice from
-    enum CoordinatePlane {
-        XY,
-        XZ,
-        YZ
-    };
-
     VolumeRAMSlice(const VolumeRepresentation* in, CoordinatePlane cPlane, unsigned int sliceNum) 
         : VolumeOperation(in), cPlane_(cPlane), sliceNum_(sliceNum) {}
     virtual ~VolumeRAMSlice() {}

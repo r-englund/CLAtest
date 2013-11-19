@@ -105,6 +105,7 @@ void ImageRAMPrecision<T>::deinitialize(){
 template<typename T>
 void ImageRAMPrecision<T>::resize(uvec2 dimensions) {
     dimensions_ = dimensions;
+
     //Delete and reallocate data_ to new size
     ImageRAM::deinitialize();
     deinitialize();

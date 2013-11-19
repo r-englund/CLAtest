@@ -1,4 +1,6 @@
 #include "simpleraycaster.h"
+#include <modules/opengl/volume/volumegl.h>
+#include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {

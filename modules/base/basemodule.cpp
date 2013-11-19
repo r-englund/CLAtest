@@ -20,6 +20,7 @@
 #include <modules/base/processors/transferfunctiontestprocessor.h>
 #include <modules/base/processors/volumebasistransformer.h>
 #include <modules/base/processors/volumeslice.h>
+#include <modules/base/processors/volumeslicegl.h>
 #include <modules/base/processors/volumesplit.h>
 #include <modules/base/processors/volumesplitcompositor.h>
 #include <modules/base/processors/volumesplitimagecompositor.h>
@@ -51,6 +52,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(TransferFunctiontionTestProcessor);
     registerProcessor(VolumeBasisTransformer);
     registerProcessor(VolumeSlice);
+    registerProcessor(VolumeSliceGL);
     registerProcessor(VolumeSplit);
     registerProcessor(VolumeSplitCompositor);
     registerProcessor(VolumeSplitImageCompositor);

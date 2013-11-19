@@ -29,7 +29,7 @@ private:
     VolumeInport inport_;
     ImageOutport outport_;
 
-    TemplateOptionProperty<VolumeRAMSlice::CoordinatePlane> coordinatePlane_;
+    TemplateOptionProperty<CoordinatePlane> coordinatePlane_;
     IntProperty sliceNumber_;
 };
 

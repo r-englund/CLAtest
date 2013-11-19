@@ -4,7 +4,7 @@ namespace inviwo {
 
 ProcessorClassName(VolumeSlice, "VolumeSlice"); 
 ProcessorCategory(VolumeSlice, "Volume Operation");
-ProcessorCodeState(VolumeSlice, CODE_STATE_STABLE);
+ProcessorCodeState(VolumeSlice, CODE_STATE_EXPERIMENTAL);
 
 VolumeSlice::VolumeSlice()
     : Processor(),
@@ -16,10 +16,10 @@ VolumeSlice::VolumeSlice()
     addPort(inport_);
     addPort(outport_);
 
-    coordinatePlane_.addOption("xy", "XY Plane", VolumeRAMSlice::XY);
-    coordinatePlane_.addOption("xz", "XZ Plane", VolumeRAMSlice::XZ);
-    coordinatePlane_.addOption("yz", "YZ Plane", VolumeRAMSlice::YZ);
-    coordinatePlane_.set(VolumeRAMSlice::XY);
+    coordinatePlane_.addOption("xy", "XY Plane", XY);
+    coordinatePlane_.addOption("xz", "XZ Plane", XZ);
+    coordinatePlane_.addOption("yz", "YZ Plane", YZ);
+    coordinatePlane_.set(XY);
     addProperty(coordinatePlane_);
     addProperty(sliceNumber_);
 }
@@ -38,20 +38,20 @@ void VolumeSlice::process(){
     uvec3 dims = inport_.getData()->getDimension();
     switch(coordinatePlane_.get())
     {
-    case VolumeRAMSlice::XY:
+    case XY:
         sliceNumber_.setMaxValue(static_cast<int>(dims.z));
     	break;
-    case VolumeRAMSlice::XZ:
+    case XZ:
         sliceNumber_.setMaxValue(static_cast<int>(dims.y));
         break;
-    case VolumeRAMSlice::YZ:
+    case YZ:
         sliceNumber_.setMaxValue(static_cast<int>(dims.x));
         break;
     }
 
     const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
     ImageRAM* sliceImage = VolumeRAMSlice::apply(vol, coordinatePlane_.get(), static_cast<unsigned int>(sliceNumber_.get()-1));
-    sliceImage->resize(outport_.getData()->getDimension());
+    //sliceImage->resize(outport_.getData()->getDimension());
     outport_.setData(new Image(sliceImage));
     
 }

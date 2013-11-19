@@ -95,7 +95,6 @@ void Texture2D::download(void* data) const {
         dataInReadBackPBO_ = false;
     }
     else{
-        unbindToPBO();
         bind();
         glGetTexImage(GL_TEXTURE_2D, 0, format_, dataType_, data);
         unbind();
