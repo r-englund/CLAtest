@@ -242,6 +242,7 @@ void Data::invalidateAllOther(){
         T* representation = dynamic_cast<T*>(representations_[i]);
         if (representation) {
             setAllOtherRepresentationsAsInvalid(i);
+            lastValidRepresentation_ = representations_[i];
             break;
         }
     }
