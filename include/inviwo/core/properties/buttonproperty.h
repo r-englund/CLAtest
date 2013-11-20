@@ -1,7 +1,6 @@
 #ifndef IVW_BUTTONPROPERTY_H
 #define IVW_BUTTONPROPERTY_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/util/callback.h>
 #include <inviwo/core/properties/property.h>
 
@@ -20,7 +19,7 @@ namespace inviwo {
 *  
 * @see ButtonPropertyWidgetQt
 */
-class IVW_CORE_API ButtonProperty : public Property {
+class ButtonProperty : public Property {
 
 public:
 	/** 
@@ -35,7 +34,7 @@ public:
 	 * @return  <DESCRIBE ME>
 	 */ButtonProperty(std::string identifier, std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
-                   PropertySemantics::Type semantics = PropertySemantics::Default);
+                   PropertySemantics::Type semantics = PropertySemantics::Default) : Property(identifier,displayName,invalidationLevel,semantics) {}
     
 
     //TODO: Only member functions with zero (void) arguments is allowed now.
@@ -57,8 +56,14 @@ public:
         callBack_.invoke();
     }
 
-	virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+	virtual void serialize(IvwSerializer& s) const{
+        Property::serialize(s);
+    }
+
+    virtual void deserialize(IvwDeserializer& d){
+        Property::deserialize(d);
+    }
+
     virtual std::string getClassName()  const { return "ButtonProperty"; }
 
 private:

@@ -26,7 +26,7 @@ private:
 };
 
 template<typename T>
-class IVW_CORE_API ProcessorFactoryObjectTemplate : public ProcessorFactoryObject  {
+class ProcessorFactoryObjectTemplate : public ProcessorFactoryObject  {
 
 public:
     ProcessorFactoryObjectTemplate(std::string className, std::string category, Processor::CodeState codeState) 

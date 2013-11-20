@@ -1,19 +1,18 @@
 #ifndef IVW_CALLBACK_H
 #define IVW_CALLBACK_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 
-class IVW_CORE_API BaseCallBack {
+class BaseCallBack {
 public:
     virtual void invoke() const=0;
 };
 
 
 template <typename T>
-class IVW_CORE_API MemberFunctionCallBack : public BaseCallBack {
+class MemberFunctionCallBack : public BaseCallBack {
 public:
     typedef void (T::*fPointerType1)();
 
@@ -36,7 +35,7 @@ private:
 // cbList.addMemberFunction(&myClassObject, &MYClassObject::myFunction);
 
 //TODO: Use map that uses string as keys : CallBackMap
-class IVW_CORE_API CallBackList {
+class CallBackList {
 public:
     CallBackList() {}
     void invokeAll() const{ 
@@ -54,7 +53,7 @@ private:
     std::vector<BaseCallBack*> callBackList_;
 };
 
-class IVW_CORE_API SingleCallBack {
+class SingleCallBack {
 public:
     SingleCallBack() : callBack_(0) {}
 

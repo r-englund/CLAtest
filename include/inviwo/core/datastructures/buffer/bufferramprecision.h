@@ -6,7 +6,7 @@
 namespace inviwo {
 
 template<typename T>
-class IVW_CORE_API BufferRAMPrecision : public BufferRAM {
+class BufferRAMPrecision : public BufferRAM {
 public:
     BufferRAMPrecision(size_t size = 0, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
     BufferRAMPrecision(T* data, size_t size, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
@@ -56,7 +56,7 @@ private:
 
 
 template<typename T, size_t B>
-class IVW_CORE_API BufferRAMCustomPrecision : public BufferRAMPrecision<T> {
+class BufferRAMCustomPrecision : public BufferRAMPrecision<T> {
 public:
     BufferRAMCustomPrecision(size_t size = 0, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC)
         : BufferRAMPrecision<T>(size, format, type, usage) {}

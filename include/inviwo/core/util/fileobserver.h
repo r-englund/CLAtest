@@ -1,12 +1,13 @@
 #ifndef IVW_FILEOBSERVER_H
 #define IVW_FILEOBSERVER_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <string>
 #include <vector>
 
 namespace inviwo {
 
-class FileObserver {
+class IVW_CORE_API FileObserver {
 
 public:
     void startFileObservation(std::string fileName);

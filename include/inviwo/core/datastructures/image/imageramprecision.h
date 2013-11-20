@@ -6,7 +6,7 @@
 namespace inviwo {
 
 template<typename T>
-class IVW_CORE_API ImageRAMPrecision : public ImageRAM {
+class ImageRAMPrecision : public ImageRAM {
 public:
     ImageRAMPrecision(uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = defaultformat());
     ImageRAMPrecision(T* data, uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = defaultformat());
@@ -53,7 +53,7 @@ private:
 };
 
 template<typename T, size_t B>
-class IVW_CORE_API ImageRAMCustomPrecision : public ImageRAMPrecision<T> {
+class ImageRAMCustomPrecision : public ImageRAMPrecision<T> {
 public:
     ImageRAMCustomPrecision(uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = defaultformat())
         : ImageRAMPrecision<T>(dimensions, type, format) {}

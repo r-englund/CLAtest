@@ -7,7 +7,7 @@
 namespace inviwo {
 
 template<typename T>
-class IVW_CORE_API VolumeRAMPrecision : public VolumeRAM {
+class VolumeRAMPrecision : public VolumeRAM {
 public:
     VolumeRAMPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = defaultformat());
     VolumeRAMPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = defaultformat());
@@ -49,7 +49,7 @@ private:
 };
 
 template<typename T, size_t B>
-class IVW_CORE_API VolumeRAMCustomPrecision : public VolumeRAMPrecision<T> {
+class VolumeRAMCustomPrecision : public VolumeRAMPrecision<T> {
 public:
     VolumeRAMCustomPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format =  defaultformat()) : VolumeRAMPrecision<T>(dimensions, border, format) {};
     VolumeRAMCustomPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = defaultformat()) : VolumeRAMPrecision<T>(data, dimensions, border, format) {};

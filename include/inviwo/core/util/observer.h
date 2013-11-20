@@ -13,7 +13,7 @@ class ObservableInterface;
 * Class to support observer pattern. An example of usage is given in the Observable class.
 * @see Observable
 */
-class Observer
+class IVW_CORE_API Observer
 {
 friend class ObservableInterface;
 public:
@@ -63,7 +63,7 @@ protected:
 * @see Observable
 * @see Observer
 */
-class ObservableInterface
+class IVW_CORE_API ObservableInterface
 {
 friend class Observer;
 public:
@@ -131,7 +131,7 @@ protected:
 * @see VoidObserver
 */
 template<typename T>
-class IVW_CORE_API Observable: public ObservableInterface {
+class Observable: public ObservableInterface {
 public:
     Observable(): ObservableInterface() {};
     /**

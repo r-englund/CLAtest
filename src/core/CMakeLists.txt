@@ -259,7 +259,6 @@ set(SOURCE_FILES
     processors/datasource/volumeexport.cpp
     processors/datasource/volumesource.cpp
     properties/boolproperty.cpp
-    properties/buttonproperty.cpp
     properties/cameraproperty.cpp
     properties/directoryproperty.cpp    
     properties/compositeproperty.cpp

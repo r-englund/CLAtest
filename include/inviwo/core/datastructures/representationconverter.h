@@ -25,7 +25,7 @@ public:
 };
 
 template <typename TO>
-class IVW_CORE_API RepresentationConverterType : public RepresentationConverter {
+class RepresentationConverterType : public RepresentationConverter {
 public:
     virtual ~RepresentationConverterType() {};
 

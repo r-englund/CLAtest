@@ -32,7 +32,7 @@ void BufferRAM::resize( size_t size ){
     initialize();
 }
 
-IVW_CORE_API BufferRAM* createBufferRAM(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage){
+BufferRAM* createBufferRAM(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage){
     switch (format->getId())
     {
     case NOT_SPECIALIZED:
