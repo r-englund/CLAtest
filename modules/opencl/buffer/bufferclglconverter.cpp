@@ -18,7 +18,6 @@ BufferCLGL2RAMConverter::BufferCLGL2RAMConverter()
 {
 }
 
-
 DataRepresentation* BufferCLGL2RAMConverter::createFrom(const DataRepresentation* source) {     
     DataRepresentation* destination = 0;
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
@@ -43,7 +42,6 @@ void BufferCLGL2RAMConverter::update(const DataRepresentation* source, DataRepre
     src->getBufferGL()->download(dst->getData());
 }
 
-
 DataRepresentation* BufferGL2CLGLConverter::createFrom(const DataRepresentation* source )
 {
     DataRepresentation* destination = 0;
@@ -62,7 +60,6 @@ void BufferGL2CLGLConverter::update(const DataRepresentation* source, DataRepres
     // FIXME: Do we need to recreate shared CLGL buffer?
 }
 
-
 DataRepresentation* BufferCLGL2CLConverter::createFrom(const DataRepresentation* source )
 {
     DataRepresentation* destination = 0;
@@ -76,6 +73,7 @@ DataRepresentation* BufferCLGL2CLConverter::createFrom(const DataRepresentation*
 
     return destination;
 }
+
 void BufferCLGL2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
     BufferCL* dst = static_cast<BufferCL*>(destination);
@@ -88,8 +86,6 @@ void BufferCLGL2CLConverter::update(const DataRepresentation* source, DataRepres
     src->releaseGLObject(glSync.getGLSyncEvent());
 
 }
-
-
 
 BufferCL2CLGLConverter::BufferCL2CLGLConverter() : RepresentationConverterPackage<BufferCLGL>()
 {

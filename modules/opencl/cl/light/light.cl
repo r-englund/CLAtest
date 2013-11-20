@@ -53,6 +53,7 @@ void sampleLights(__global PhotonLightSource const * __restrict lightSources, co
     int lightSourceId = getLightSourceId(nPhotonsPerLight, nLightSources);
 
 
+
     PhotonLightSource lightSource = lightSources[lightSourceId];
     //if(sizeof(PhotonLightSource) != 128)
     //    lightSource.radiance = (float3)(0);
@@ -93,8 +94,7 @@ void sampleLights(__global PhotonLightSource const * __restrict lightSources, co
     } 
     else if (lightSource.type == LIGHT_DIRECTIONAL ) {
 
-            float3 localOrigin = (float3)(lightSource.size*(-0.5f+uv), 0.f);
-
+            float3 localOrigin = (float3)(lightSource.size*(-0.5f+uv), 0.f); 
             
             //*origin = translatePoint(lightSource.tm, localOrigin);
             *origin = transformPoint(lightSource.tm, localOrigin);

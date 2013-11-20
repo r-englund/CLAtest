@@ -1,38 +1,85 @@
 
 #ifndef TRANSFORMATIONS_CL
 #define TRANSFORMATIONS_CL
+// Column major access (used by glm)
+// 00 04 08 12
+// 01 05 09 13
+// 02 06 10 14
+// 03 07 11 15
+// in opencl:
+// 00 04 08  c
+// 01 05 09  d
+// 02 06  a  e
+// 03 07  b  f
+
 
 // Assume that the fourth component in x is 1
-float3 transformPoint(const float16 m, const float3 x)
+inline float3 transformPoint(const float16 m, const float3 x)
 {
-     return (float3)(dot(m.s012, x)+m.s3, dot(m.s456, x)+m.s7, dot(m.s89a, x)+m.sb);
+     return (float3)(dot(m.s048, x)+m.sc, dot(m.s159, x)+m.sd, dot(m.s26a, x)+m.se);
 }
-float4 transformPoint4(const float16 m, const float4 x)
+inline float4 transformPoint4(const float16 m, const float4 x)
 {
-     return (float4)(dot(m.s0123, x), dot(m.s4567, x), dot(m.s89ab, x), dot(m.scdef, x));
-}
-// Transform and project
-float3 transformPointW(const float16 m, const float3 x)
-{
-    return (float3)(dot(m.s012, x)+m.s3, dot(m.s456, x)+m.s7, dot(m.s89a, x)+m.sb)/(dot(m.scde, x)+m.sf);
+     return (float4)( dot(m.s048c, x), dot(m.s159d, x), dot(m.s26ae, x), dot(m.s37bf, x) );
 }
 // Transform and project
-float4 transformPoint4W(const float16 m, const float4 x)
+inline float3 transformPointW(const float16 m, const float3 x)
 {
-    float4 point = (float4)(dot(m.s0123, x), dot(m.s4567, x), dot(m.s89ab, x), dot(m.scdef, x));
+    return transformPoint(m, x)/(dot(m.s37b, x)+m.sf);
+}
+// Transform and project
+inline float4 transformPoint4W(const float16 m, const float4 x)
+{
+    float4 point = transformPoint4(m, x);
     point /= point.w;
     return point;
 }
 // Transform a direction (does not apply translation)
-float3 transformVector(const float16 m, const float3 x)
+inline float3 transformVector(const float16 m, const float3 x)
 {
-    return (float3)(dot(m.s012, x), dot(m.s456, x), dot(m.s89a, x));
+    return (float3)(dot(m.s048, x), dot(m.s159, x), dot(m.s26a, x));
 }
 
-float3 translatePoint(const float16 m, const float3 x)
+inline float3 translatePoint(const float16 m, const float3 x)
 {
-     return x+m.s37b;
+     return x+m.scde;
 }
+
+
+
+
+// Row-major access
+//// Assume that the fourth component in x is 1
+//float3 transformPoint(const float16 m, const float3 x)
+//{
+//     return (float3)(dot(m.s012, x)+m.s3, dot(m.s456, x)+m.s7, dot(m.s89a, x)+m.sb);
+//}
+//float4 transformPoint4(const float16 m, const float4 x)
+//{
+//     return (float4)(dot(m.s0123, x), dot(m.s4567, x), dot(m.s89ab, x), dot(m.scdef, x));
+//}
+//// Transform and project
+//float3 transformPointW(const float16 m, const float3 x)
+//{
+//    return (float3)(dot(m.s012, x)+m.s3, dot(m.s456, x)+m.s7, dot(m.s89a, x)+m.sb)/(dot(m.scde, x)+m.sf);
+//}
+//// Transform and project
+//float4 transformPoint4W(const float16 m, const float4 x)
+//{
+//    float4 point = (float4)(dot(m.s0123, x), dot(m.s4567, x), dot(m.s89ab, x), dot(m.scdef, x));
+//    point /= point.w;
+//    return point;
+//}
+//// Transform a direction (does not apply translation)
+//float3 transformVector(const float16 m, const float3 x)
+//{
+//    return (float3)(dot(m.s012, x), dot(m.s456, x), dot(m.s89a, x));
+//}
+//
+//float3 translatePoint(const float16 m, const float3 x)
+//{
+//     return x+m.s37b;
+//}
 
 
 // Encode xyz direction into theta, phi angles

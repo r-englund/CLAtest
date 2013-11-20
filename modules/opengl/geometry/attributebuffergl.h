@@ -29,8 +29,8 @@ public:
     void bind() const;
     void specifyLocation() const;
 
-    void upload(const void* data, size_t size, GLenum target = GL_ARRAY_BUFFER);
-    void reupload(const void* data, size_t size);
+    void upload(const void* data, GLsizeiptr sizeInBytes, GLenum target = GL_ARRAY_BUFFER);
+    void reupload(const void* data, GLsizeiptr sizeInBytes);
 
     void download(void* data) const;
 

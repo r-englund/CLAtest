@@ -18,7 +18,7 @@ DataRepresentation* BufferRAM2GLConverter::createFrom(const DataRepresentation* 
 void BufferRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferRAM* src = static_cast<const BufferRAM*>(source);
     BufferGL* dst = static_cast<BufferGL*>(destination);
-    dst->reupload(src->getData(), src->getSize());
+    dst->reupload(src->getData(), src->getSize()*src->getSizeOfElement());
 
 }
 

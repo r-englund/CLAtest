@@ -34,6 +34,28 @@ void Data::addRepresentation(DataRepresentation* representation) {
     newRepresentationCreated();
 }
 
+void Data::removeRepresentation( DataRepresentation* representation )
+{
+    std::vector<DataRepresentation*>::iterator it = std::find(representations_.begin(), representations_.end(), representation);
+    if(it != representations_.end()) {
+        // Update last valid representation
+        if(lastValidRepresentation_ == *it) {
+            lastValidRepresentation_ = NULL;
+            for(size_t i = representations_.size()-1; i >= 0; --i) {
+                // Check if this representation is valid 
+                // and make sure that it is not the one removed
+                if(isRepresentationValid(i) && representations_[i] != representation) {
+                    lastValidRepresentation_ = representations_[i];
+                    break;
+                }
+            }
+        }
+        delete (*it);
+        representations_.erase(it);
+    }
+    
+}
+
 bool Data::hasRepresentations() const {
     return !representations_.empty();
 }

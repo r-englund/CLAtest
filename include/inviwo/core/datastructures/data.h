@@ -40,6 +40,7 @@ public:
     bool hasRepresentations() const;
 
     void addRepresentation(DataRepresentation* representation);
+    void removeRepresentation(DataRepresentation* representation);
     void clearRepresentations();
     void copyRepresentations(Data* targetData) const;
 
