@@ -7,9 +7,10 @@ namespace inviwo {
 
 FloatVec4PropertyWidgetQt::FloatVec4PropertyWidgetQt(FloatVec4Property* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
+    generatesSettingsWidget();
 }
 
 void FloatVec4PropertyWidgetQt::generateWidget() {
@@ -23,7 +24,7 @@ void FloatVec4PropertyWidgetQt::generateWidget() {
         setLayout(hLayout);
     }
     else {
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
 
         QWidget* sliderWidget = new QWidget();
@@ -62,7 +63,7 @@ void FloatVec4PropertyWidgetQt::generateWidget() {
         connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
         connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
         connect(sliderW_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-        generatesSettingsWidget();
+
     }
    
 }
@@ -136,12 +137,6 @@ void FloatVec4PropertyWidgetQt::generatesSettingsWidget() {
     connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));
     connect(sliderZ_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuZ(const QPoint&)));
     connect(sliderW_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuW(const QPoint&)));
-
-    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
-    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
-
-    updateContextMenu();
-
 }
 
 void FloatVec4PropertyWidgetQt::showContextMenuX( const QPoint& pos) {

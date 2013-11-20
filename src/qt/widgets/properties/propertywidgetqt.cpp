@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-    PropertyWidgetQt::PropertyWidgetQt() {
+    PropertyWidgetQt::PropertyWidgetQt() : viewModeItem_(NULL) {
     }
 
     void PropertyWidgetQt::showWidget() {
@@ -24,7 +24,7 @@ namespace inviwo {
         this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")));
         this->setContextMenuPolicy(Qt::CustomContextMenu);
         contextMenu_ = new QMenu();
-        QMenu* viewModeItem_ = new QMenu(tr("&View mode"));
+        viewModeItem_ = new QMenu(tr("&View mode"));
 
         developerViewModeAction_ = new QAction(tr("&Developer"),this);
         developerViewModeAction_->setCheckable(true);
@@ -55,32 +55,23 @@ namespace inviwo {
     }
     QMenu* PropertyWidgetQt::generatePropertyWidgetMenu(){
         QMenu* contextMenu = new QMenu();
-        viewModeItem_ = new QMenu(tr("&View mode"),contextMenu);
+        if (viewModeItem_ != NULL) 
+            contextMenu->addMenu(viewModeItem_);
 
-        developerViewModeAction_ = new QAction(tr("&Developer"),this);
-        developerViewModeAction_->setCheckable(true);
-        viewModeItem_->addAction(developerViewModeAction_);
-
-        applicationViewModeAction_ = new QAction(tr("&Application"),this);
-        applicationViewModeAction_->setCheckable(true);
-        viewModeItem_->addAction(applicationViewModeAction_);
-
-        viewModeActionGroup_ = new QActionGroup(this);
-        viewModeActionGroup_->addAction(developerViewModeAction_);
-        viewModeActionGroup_->addAction(applicationViewModeAction_);
-
-        contextMenu->addMenu(viewModeItem_);
         return contextMenu;
+        
     }
 
     void PropertyWidgetQt::setDeveloperViewMode(bool value) {
         property_->setVisibility(PropertyVisibility::DEVELOPMENT);
         developerViewModeAction_->setChecked(true);
+        updateContextMenu();
     }
 
     void PropertyWidgetQt::setApplicationViewMode(bool value) {
         property_->setVisibility(PropertyVisibility::APPLICATION);
         applicationViewModeAction_->setChecked(true);
+        updateContextMenu();
     }
 
     void PropertyWidgetQt::setProperty(Property* prop) {
@@ -93,14 +84,6 @@ namespace inviwo {
         else if (property_->getVisibilityMode() == PropertyVisibility::APPLICATION)
             applicationViewModeAction_->setChecked(true);
     }
-    //void PropertyWidgetQt::notify(){
-    //    //InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    //    //int mode = static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get();
-    //    //if (mode == 0)
-    //    //    viewModeItem_->setVisible(true);
-    //    //if (mode == 1)
-    //    //    viewModeItem_->setVisible(false);
 
-    //}
 
 } // namespace

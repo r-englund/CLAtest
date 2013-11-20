@@ -6,9 +6,10 @@ namespace inviwo {
 
 CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
+
 }
 
 

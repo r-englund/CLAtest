@@ -7,9 +7,9 @@ namespace inviwo {
 
 FloatMat2PropertyWidgetQt::FloatMat2PropertyWidgetQt(FloatMat2Property *property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
 }
 
 void FloatMat2PropertyWidgetQt::generateWidget() {
@@ -37,7 +37,7 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
         connect(mat1x1_, SIGNAL(editingFinished ()),
             this, SLOT(set1x1Value()));
 
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     }

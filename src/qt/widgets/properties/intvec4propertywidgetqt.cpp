@@ -10,6 +10,7 @@ IntVec4PropertyWidgetQt::IntVec4PropertyWidgetQt(IntVec4Property *property) : pr
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
 	updateFromProperty();
+    generatesSettingsWidget();
 	}
 
 
@@ -25,7 +26,7 @@ void IntVec4PropertyWidgetQt::generateWidget() {
     }
     else {
 
-    label_ = new EditableLabelQt(property_->getDisplayName());
+    label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
 
 	QWidget* sliderWidget = new QWidget();
@@ -62,7 +63,6 @@ void IntVec4PropertyWidgetQt::generateWidget() {
     connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     connect(sliderZ_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
     connect(sliderW_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
-    generatesSettingsWidget();
     }
    
 }
@@ -85,10 +85,6 @@ void IntVec4PropertyWidgetQt::generatesSettingsWidget() {
     connect(sliderZ_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuZ(const QPoint&)));
     connect(sliderW_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuW(const QPoint&)));
 
-    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
-    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
-
-    updateContextMenu();
 }
 
 

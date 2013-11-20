@@ -13,9 +13,11 @@ namespace inviwo {
     Q_OBJECT
 public:
     EditableLabelQt(std::string text);
+    EditableLabelQt(std::string text, QMenu* contextMenu);
     void edit();
     std::string getText(){return text_;};
     void setText(std::string txt);
+    void setContextMenu(QMenu* menu){contextMenu_ = menu;};
 public slots:
     void editingOff();
     void showContextMenu(const QPoint& pos);

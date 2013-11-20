@@ -4,9 +4,9 @@ namespace inviwo {
 
 BoolPropertyWidgetQt::BoolPropertyWidgetQt(BoolProperty* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
 }
 
 void BoolPropertyWidgetQt::generateWidget() {
@@ -17,7 +17,7 @@ void BoolPropertyWidgetQt::generateWidget() {
         checkBox_->setDisabled(true);
     }
     else{
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(checkBox_, SIGNAL(clicked()), this, SLOT(setPropertyValue()));

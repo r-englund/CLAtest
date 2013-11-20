@@ -22,7 +22,7 @@ void IntPropertyWidgetQt::generateWidget() {
         setLayout(hLayout);
     }
     else {
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         sliderWidget_ = new IntSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
@@ -91,10 +91,6 @@ void IntPropertyWidgetQt::generatesSettingsWidget() {
     sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(sliderWidget_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
 
-    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
-    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
-
-    updateContextMenu();
 }
 
 void IntPropertyWidgetQt::setPropertyValue(){

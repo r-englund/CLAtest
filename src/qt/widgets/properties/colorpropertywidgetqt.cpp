@@ -7,9 +7,9 @@ namespace inviwo {
 
 ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
 }
 
 void ColorPropertyWidgetQt::generateWidget() {
@@ -29,7 +29,7 @@ void ColorPropertyWidgetQt::generateWidget() {
         connect(btnColor_,SIGNAL(clicked()),this,SLOT(openColorDialog()));
         connect(colorDialog_,SIGNAL(currentColorChanged(QColor)),this, SLOT(setPropertyValue()));
 
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
             connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     }

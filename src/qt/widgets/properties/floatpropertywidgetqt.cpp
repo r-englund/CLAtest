@@ -4,9 +4,10 @@ namespace inviwo {
 
 FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
+    generatesSettingsWidget();
 }
 
 void FloatPropertyWidgetQt::generateWidget() {    
@@ -18,8 +19,9 @@ void FloatPropertyWidgetQt::generateWidget() {
         setLayout(hLayout);
     }
     else {
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
+
         sliderWidget_ = new FloatSliderWidgetQt();    
         hLayout->addWidget(sliderWidget_);
         setLayout(hLayout);
@@ -35,7 +37,6 @@ void FloatPropertyWidgetQt::generateWidget() {
 
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(sliderWidget_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue(float)));
-        generatesSettingsWidget();
     }
 }
 
@@ -59,7 +60,7 @@ void FloatPropertyWidgetQt::updateFromProperty() {
     }
 }
 
-void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
+void FloatPropertyWidgetQt::showContextMenuSlider(const QPoint& pos) {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
@@ -84,18 +85,15 @@ void FloatPropertyWidgetQt::showContextMenu(const QPoint& pos) {
 
 void FloatPropertyWidgetQt::generatesSettingsWidget() {
     settingsWidget_ = new PropertySettingsWidgetQt(property_);  
+
     settingsMenu_ = PropertyWidgetQt::generatePropertyWidgetMenu();
     settingsMenu_->addAction("Property settings");
     settingsMenu_->addAction("Set as Min");
     settingsMenu_->addAction("Set as Max");
+
     sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(sliderWidget_, SIGNAL(customContextMenuRequested(const QPoint&)),
-            this, SLOT(showContextMenu(const QPoint&)));
-
-    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
-    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
-
-    updateContextMenu();
+            this, SLOT(showContextMenuSlider(const QPoint&)));
 }
 
 void FloatPropertyWidgetQt::setPropertyDisplayName(){

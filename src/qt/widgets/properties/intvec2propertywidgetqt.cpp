@@ -6,8 +6,8 @@ IntVec2PropertyWidgetQt::IntVec2PropertyWidgetQt(IntVec2Property *property) : pr
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
 	generateWidget();
-
 	updateFromProperty();
+    generatesSettingsWidget();
 	}
 
 
@@ -36,7 +36,7 @@ void IntVec2PropertyWidgetQt::generateWidget() {
         vLayout->addWidget(sliderX_);
         vLayout->addWidget(sliderY_);
         
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         hLayout->addWidget(sliderWidget);
         setLayout(hLayout);
@@ -53,13 +53,13 @@ void IntVec2PropertyWidgetQt::generateWidget() {
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
         connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
-        generatesSettingsWidget();
+
     }
    
 }
 void IntVec2PropertyWidgetQt::generatesSettingsWidget(){
     settingsWidget_ = new PropertySettingsWidgetQt(property_);
-
+    
     settingsMenu_ = PropertyWidgetQt::generatePropertyWidgetMenu();
     settingsMenu_->addAction("Property settings");
     settingsMenu_->addAction("Set as Min");
@@ -70,12 +70,6 @@ void IntVec2PropertyWidgetQt::generatesSettingsWidget(){
 
     connect(sliderX_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuX(const QPoint&)));
     connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));
-
-    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
-    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
-
-    updateContextMenu();
-
 }
 
 
@@ -174,6 +168,5 @@ void IntVec2PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
 void IntVec2PropertyWidgetQt::setPropertyDisplayName(){
     property_->setDisplayName(label_->getText());
 }
-
 
 } //namespace

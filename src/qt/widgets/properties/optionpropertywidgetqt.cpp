@@ -5,9 +5,9 @@ namespace inviwo {
 OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) : property_(property),
     updating_(false) { 
     PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
 
 }
 
@@ -24,7 +24,7 @@ void OptionPropertyWidgetQt::generateWidget() {
     }
     else{
 
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         hLayout->addWidget(comboBox_);
         setLayout(hLayout);

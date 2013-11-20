@@ -2,8 +2,11 @@
 
 namespace inviwo{
 
-EditableLabelQt::EditableLabelQt(std::string text){
-    text_ = text;
+    EditableLabelQt::EditableLabelQt(std::string text): text_(text), contextMenu_(NULL){
+    generateWidget();
+}
+
+    EditableLabelQt::EditableLabelQt(std::string text, QMenu* contextMenu) :text_(text), contextMenu_(contextMenu){
     generateWidget();
 }
 
@@ -18,11 +21,11 @@ void EditableLabelQt::generateWidget(){
     hLayout->addWidget(label_);
     setLayout(hLayout);
 
-    contextMenu_ = new QMenu();
+    if (contextMenu_ == NULL)
+        contextMenu_ = new QMenu();
     contextMenu_->addAction("Rename");
 
     label_->setContextMenuPolicy(Qt::CustomContextMenu);
-  
 
     connect(label_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
     connect(lineEdit_, SIGNAL(editingFinished()),this, SLOT(editingOff()));

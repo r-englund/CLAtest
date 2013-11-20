@@ -35,7 +35,7 @@ private:
 public slots:
     void setPropertyValue(float value);
     void setPropertyDisplayName();
-    void showContextMenu(const QPoint& pos);
+    void showContextMenuSlider(const QPoint& pos);
 };
 
 } // namespace

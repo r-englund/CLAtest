@@ -9,10 +9,10 @@ valueVec2Min_(property->getMinValue()),
 valueVec2Max_(property->getMaxValue()),
 valueIncrement_(property->getIncrement()) {
     PropertyWidgetQt::setProperty(property_);
-	generateWidget();
-
-	updateFromProperty();
     PropertyWidgetQt::generateContextMenu();
+	generateWidget();
+	updateFromProperty();
+    generatesSettingsWidget();
 	}
 
 
@@ -26,7 +26,7 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
         setLayout(hLayout);
     }
     else{
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
 
 	    QWidget* sliderWidget = new QWidget();
@@ -56,7 +56,7 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
         connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
         connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-        generatesSettingsWidget();
+
     }
 }
 
@@ -100,12 +100,6 @@ void FloatVec2PropertyWidgetQt::generatesSettingsWidget() {
 
     connect(sliderX_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuX(const QPoint&)));
     connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));
-     
-    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
-    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
-
-    updateContextMenu();
-  
 }
 
 void FloatVec2PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {

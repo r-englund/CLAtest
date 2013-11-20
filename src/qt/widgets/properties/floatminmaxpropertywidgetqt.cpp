@@ -6,9 +6,9 @@ namespace inviwo {
 
 FloatMinMaxPropertyWidgetQt::FloatMinMaxPropertyWidgetQt(FloatMinMaxProperty *property) : property_(property), updatingFromProperty_(false) {
     PropertyWidgetQt::setProperty(property_);
+    PropertyWidgetQt::generateContextMenu();
 	generateWidget();
 	updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
 }
 
 void FloatMinMaxPropertyWidgetQt::generateWidget() {
@@ -25,7 +25,7 @@ void FloatMinMaxPropertyWidgetQt::generateWidget() {
     }
     else{
  
-    label_ = new EditableLabelQt(property_->getDisplayName());
+    label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
     QHBoxLayout* hSliderLayout = new QHBoxLayout();
     QWidget* sliderWidget = new QWidget();
