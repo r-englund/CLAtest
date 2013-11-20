@@ -66,9 +66,6 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
     if (image) {
         imageGL_ = image->getRepresentation<ImageGL>();
         pickingContainer_->setPickingSource(image);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         switch(layer){
             case COLOR_LAYER:
                 renderColor();
@@ -82,15 +79,10 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
             default:
                 renderNoise();
         }
-        glDisable(GL_BLEND);
     } else {
         imageGL_ = NULL;
         renderNoise();
     }
-}
-
-void CanvasGL::repaint() {
-    update();
 }
 
 void CanvasGL::resize(uvec2 size) {
@@ -98,8 +90,10 @@ void CanvasGL::resize(uvec2 size) {
     glViewport(0, 0, size[0], size[1]);
 }
 
+void CanvasGL::glSwapBuffers(){
+}
+
 void CanvasGL::update() {
-    Canvas::update();
     if (imageGL_) {
         renderColor();
     } else {
@@ -129,18 +123,29 @@ void CanvasGL::renderPicking() {
 }
 
 void CanvasGL::renderNoise() {
+    activate();
+    //FIXME: glViewport should not be here, which indicates this context is not active.
+    glViewport(0, 0, dimensions_[0], dimensions_[1]);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     noiseShader_->activate();
     renderImagePlaneRect();
     noiseShader_->deactivate();
+    glSwapBuffers();
 }
 
 void CanvasGL::renderTexture(GLint unitNumber) {
+    activate();
+    //FIXME: glViewport should not be here, which indicates this context is not active.
+    glViewport(0, 0, dimensions_[0], dimensions_[1]);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     shader_->activate();
     shader_->setUniform("tex_", unitNumber);
-    //FIXME: glViewport should not be here, which indicates this context is not active.
-    glViewport(0, 0, dimensions_.x, dimensions_.y);
     renderImagePlaneRect();
     shader_->deactivate();
+    glDisable(GL_BLEND);
+    glSwapBuffers();
 }
 
 } // namespace

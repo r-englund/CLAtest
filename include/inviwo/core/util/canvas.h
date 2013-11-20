@@ -22,7 +22,6 @@ public:
     virtual void deinitialize();
     virtual void activate();
     virtual void render(const Image*);
-    virtual void repaint();
     virtual void resize(uvec2 dimensions);
     virtual uvec2 size() { return dimensions_;}
     virtual void update();

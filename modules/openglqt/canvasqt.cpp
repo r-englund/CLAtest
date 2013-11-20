@@ -4,7 +4,7 @@
 namespace inviwo {
 
 QGLWidget* CanvasQt::sharedWidget_ = 0;
-QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::SingleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
+QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
 
 CanvasQt::CanvasQt(QWidget* parent)
 : QGLWidget(sharedFormat_, parent, sharedWidget_),
@@ -23,13 +23,12 @@ CanvasQt::CanvasQt(QWidget* parent)
         QGLWidget::glInit();
     }
 
-    //setAutoBufferSwap(false);
+    setAutoBufferSwap(false);
 	setFocusPolicy(Qt::StrongFocus);
 }
 
 CanvasQt::~CanvasQt() {
     CanvasGL::deinitialize();
-    //QGLContext::currentContext();
 }
 
 void CanvasQt::initialize() {
@@ -55,13 +54,20 @@ void CanvasQt::resizeGL(int width, int height) {
     CanvasGL::resize(uvec2(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));    
 }
 
+void CanvasQt::glSwapBuffers(){
+    QGLWidget::swapBuffers();
+}
+
 void CanvasQt::update() {
     CanvasGL::update();
 }
 
 void CanvasQt::repaint() {
-    //CanvasGL::repaint();
-    QGLWidget::repaint();
+    QGLWidget::updateGL();
+}
+
+void CanvasQt::paintGL() {
+    update();
 }
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {

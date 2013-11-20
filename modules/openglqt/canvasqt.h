@@ -23,13 +23,15 @@ public:
 
     void initialize();
     void initializeSquare();
-    virtual void activate();   
+    virtual void activate();
+    virtual void glSwapBuffers();
     virtual void update();
     void repaint();
 
 protected:
 	void initializeGL();
     void resizeGL(int w, int h);
+    void paintGL();
 
     void mousePressEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);

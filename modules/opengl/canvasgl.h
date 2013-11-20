@@ -18,8 +18,8 @@ public:
     virtual void deinitialize();
     virtual void activate();
     void render(const Image* im, ImageLayerType layer = COLOR_LAYER);
-    virtual void repaint();
     virtual void resize(uvec2 size);
+    virtual void glSwapBuffers();
     virtual void update();
 
     static inline void renderImagePlaneRect(){

@@ -344,7 +344,6 @@ void ProcessorNetworkEvaluator::evaluate() {
     
     // lock processor network to avoid concurrent evaluation
     processorNetwork_->lock();    
-    bool repaintRequired = false;
 
     //perform linking
     std::vector<ProcessorLink*> processorLinks = getSortedProcessorLinks();        
@@ -376,7 +375,6 @@ void ProcessorNetworkEvaluator::evaluate() {
 
                 // do the actual processing
                 processorsSorted_[i]->process();
-                repaintRequired = true;
 
                 // set the progress indicator to finished
                 if (progressBarOwner)
@@ -390,11 +388,6 @@ void ProcessorNetworkEvaluator::evaluate() {
 
     // unlock processor network to allow next evaluation
     processorNetwork_->unlock();
-
-    if (repaintRequired)
-        for (size_t i=0; i<registeredCanvases_.size(); i++)
-            registeredCanvases_[i]->repaint();
-    defaultContext_->activate();
 }
 
 } // namespace
