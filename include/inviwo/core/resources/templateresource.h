@@ -1,7 +1,6 @@
 #ifndef IVW_TEMPLATE_RESOURCE_H
 #define IVW_TEMPLATE_RESOURCE_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/property.h>
 
@@ -15,7 +14,7 @@ namespace inviwo {
 * @see ResourceManager
 */
 template<typename T>
-class IVW_CORE_API TemplateResource : public Resource {
+class TemplateResource : public Resource {
 
 public:
     /**

@@ -83,7 +83,7 @@ void Data::removeRepresentation( DataRepresentation* representation )
         // Update valid representation bit mask
         size_t element = static_cast<size_t>(std::distance(representations_.begin(), it));
         // Start after the element that is going to be removed and update the mask.
-        for(size_t i = element+1; i < representations_.size(); ++i) {
+        for(int i = static_cast<int>(element+1); i < static_cast<int>(representations_.size()); ++i) {
             if(isRepresentationValid(i)) {
                 setRepresentationAsValid(i-1);
             } else {

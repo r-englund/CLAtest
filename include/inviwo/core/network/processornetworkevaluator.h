@@ -1,6 +1,7 @@
 #ifndef IVW_PROCESSORNETWORKEVALUATOR_H
 #define IVW_PROCESSORNETWORKEVALUATOR_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
@@ -12,7 +13,7 @@ namespace inviwo {
 
 class Canvas;
 
-class ProcessorNetworkEvaluator {
+class IVW_CORE_API ProcessorNetworkEvaluator {
 
 friend class Processor;
 

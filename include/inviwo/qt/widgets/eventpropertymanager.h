@@ -1,11 +1,11 @@
 #ifndef IVW_EVENTPROPERTYMANAGER_H
 #define IVW_EVENTPROPERTYMANAGER_H
 
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/util/observer.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/properties/eventproperty.h>
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <vector>
 
 namespace inviwo {
@@ -20,7 +20,7 @@ namespace inviwo {
 * @see MappingWidget
 * @see MappingPopup
 */
-class EventPropertyManager : public VoidObservable {
+class IVW_QTWIDGETS_API EventPropertyManager : public VoidObservable {
 
 public:
 	EventPropertyManager();
