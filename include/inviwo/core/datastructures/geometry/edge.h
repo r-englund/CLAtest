@@ -4,7 +4,7 @@
 namespace inviwo {
 
 template<typename T>
-class IVW_CORE_API Edge {
+class Edge {
 
 public:
     T v1, v2;
@@ -24,7 +24,7 @@ protected:
 };
 
 template<typename T, size_t B>
-class IVW_CORE_API EdgeDataFormat : public Edge<T> {
+class EdgeDataFormat : public Edge<T> {
 
 public:
     EdgeDataFormat() : Edge<T>() {

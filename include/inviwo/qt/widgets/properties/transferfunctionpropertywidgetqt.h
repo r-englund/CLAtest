@@ -14,7 +14,7 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidgetQt {
-	Q_OBJECT;
+	Q_OBJECT
 
 public:
 	TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property);

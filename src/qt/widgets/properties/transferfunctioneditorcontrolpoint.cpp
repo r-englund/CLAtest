@@ -1,5 +1,5 @@
-#include <inviwo/qt/editor/transferfunctioneditorcontrolpoint.h>
-#include <inviwo/qt/editor/transferfunctioneditor.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 
 namespace inviwo {

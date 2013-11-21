@@ -113,8 +113,7 @@ Volume* VolumeSplit::createNewVolume(VolumeSplit::Brick brick){
     Volume* volume;
     if (inport_.getData()->hasRepresentation<VolumeRepresentation>()){
         const VolumeRepresentation* vol = inport_.getData()->getRepresentation<VolumeRepresentation>();
-        // Depricated constructor. 
-        // volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)), inport_.getData());
+        volume = new Volume(VolumeRAMSubSet::apply(vol, brick.dim, brick.offset, VolumeRepresentation::VolumeBorders(brick.borderLlf, brick.borderUrb)));
     }
 
     vec3 offsetTexCoords = (static_cast<vec3>(brick.offset)/static_cast<vec3>(inport_.getData()->getDimension()));//*inport_.getData()->getCubeSize();

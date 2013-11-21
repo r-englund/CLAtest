@@ -8,8 +8,8 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/qt/editor/transferfunctioneditor.h>
-#include <inviwo/qt/editor/transferfunctioneditorview.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/colorwheel.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 #include <inviwo/qt/widgets/spinboxrangesliderwidgetqt.h>
@@ -29,7 +29,7 @@ namespace inviwo {
  
 class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver {
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
 	//TransferFunctionPropertyDialog();

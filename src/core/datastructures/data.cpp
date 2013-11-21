@@ -44,7 +44,7 @@ void Data::clearRepresentations() {
 void Data::copyRepresentationsTo(Data* targetData) const{
     targetData->clearRepresentations();
     int count = 0;
-    for(size_t i=0; i<representations_.size(); i++) {
+    for(int i=0; i<static_cast<int>(representations_.size()); i++) {
         DataRepresentation* rep = representations_[i]->clone();
         if(rep){
             targetData->addRepresentation(rep);
@@ -71,7 +71,7 @@ void Data::removeRepresentation( DataRepresentation* representation )
         // Update last valid representation
         if(lastValidRepresentation_ == *it) {
             lastValidRepresentation_ = NULL;
-            for(size_t i = representations_.size()-1; i >= 0; --i) {
+            for(int i = static_cast<int>(representations_.size())-1; i >= 0; --i) {
                 // Check if this representation is valid 
                 // and make sure that it is not the one removed
                 if(isRepresentationValid(i) && representations_[i] != representation) {

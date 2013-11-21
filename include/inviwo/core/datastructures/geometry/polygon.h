@@ -1,7 +1,6 @@
 #ifndef IVW_POLYGON_H
 #define IVW_POLYGON_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/geometry/edge.h>
 
@@ -17,7 +16,7 @@ namespace inviwo {
  */
 
 template<typename T>
-class IVW_CORE_API Polygon  {
+class Polygon  {
 
 public:
     Polygon(size_t size) : size_(size) {

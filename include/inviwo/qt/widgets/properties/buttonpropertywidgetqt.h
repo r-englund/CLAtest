@@ -14,7 +14,7 @@ namespace inviwo {
 
 class ButtonPropertyWidgetQt : public PropertyWidgetQt {
 
-	Q_OBJECT;
+	Q_OBJECT
 
 public:
 	ButtonPropertyWidgetQt(ButtonProperty* property);

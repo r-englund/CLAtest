@@ -1,10 +1,10 @@
  #ifndef IVW_PROPERTYLISTWIDGET_H
 #define IVW_PROPERTYLISTWIDGET_H
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/processors/processor.h>
 
-#include <inviwo/qt/editor/inviwodockwidget.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
@@ -13,7 +13,7 @@
 
 namespace inviwo {
 
-    class IVW_QTEDITOR_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
+    class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
 
         Q_OBJECT
 

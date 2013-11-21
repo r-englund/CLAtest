@@ -95,6 +95,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 option(SHARED_LIBS "Build shared libs, else static libs" OFF)
 #mark_as_advanced(SHARED_LIBS)
 mark_as_advanced(BUILD_SHARED_LIBS)
+mark_as_advanced(FORCE GLM_DIR)
 
 if(SHARED_LIBS)
     set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs, else static libs" FORCE)

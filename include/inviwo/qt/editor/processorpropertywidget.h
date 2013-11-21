@@ -7,6 +7,7 @@
 namespace inviwo {
 
 class IVW_QTEDITOR_API ProcessorPropertyWidget : public QWidget {
+    Q_OBJECT
 
 public:
     ProcessorPropertyWidget(QWidget* parent);

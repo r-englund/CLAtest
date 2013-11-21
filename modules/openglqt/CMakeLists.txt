@@ -10,15 +10,24 @@ endif()
 ivw_module(OpenglQt)
 
 #--------------------------------------------------------------------
+# Add MOC files
+set(MOC_FILES
+    ${IVW_MODULE_DIR}/openglqt/canvasqt.h
+    ${IVW_MODULE_DIR}/openglqt/processors/canvasprocessorwidgetqt.h
+)
+
+#--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/openglqt/canvasqt.h
     ${IVW_MODULE_DIR}/openglqt/openglqtcapabilities.h
     ${IVW_MODULE_DIR}/openglqt/openglqtmodule.h
     ${IVW_MODULE_DIR}/openglqt/openglqtmoduledefine.h
-    ${IVW_MODULE_DIR}/openglqt/processors/canvasprocessorwidgetqt.h
+    ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
+
+ivw_qt_wrap_cpp(MOC_FILES ${MOC_FILES})
+source_group("MOC Files" FILES ${MOC_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
@@ -34,4 +43,4 @@ ivw_define_qt_definitions()
 ivw_add_definition(QT_OPENGL_LIB)
 
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES} ${SHADER_FILES})

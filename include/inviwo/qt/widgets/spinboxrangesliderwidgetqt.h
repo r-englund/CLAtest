@@ -10,7 +10,7 @@
 namespace inviwo {
 
 	class IVW_QTWIDGETS_API SpinBoxRangeSliderQt : public QWidget {
-		Q_OBJECT;
+		Q_OBJECT
 	public:
 		SpinBoxRangeSliderQt();
 		virtual ~SpinBoxRangeSliderQt();

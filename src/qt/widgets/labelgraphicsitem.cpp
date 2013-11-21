@@ -3,12 +3,11 @@
 #include <QPainter>
 #include <QTextCursor>
 
-#include <inviwo/qt/editor/labelgraphicsitem.h>
-#include <inviwo/qt/editor/processorgraphicsitem.h>
+#include <inviwo/qt/widgets/labelgraphicsitem.h>
 
 namespace inviwo {
 
-LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent) : QGraphicsTextItem(parent), orgText_(""), maxBefore_(0), maxAfter_(0) {
+LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent) : QGraphicsTextItem(parent), orgText_(""), maxBefore_(0), maxAfter_(0), focusOut_(false) {
 }
 
 LabelGraphicsItem::~LabelGraphicsItem() {}
@@ -48,20 +47,20 @@ bool LabelGraphicsItem::isCropped() const{
     return (!orgText_.isEmpty());
 }
 
+void LabelGraphicsItem::setNoFocusOut(){
+    focusOut_ = false;
+}
+
+bool LabelGraphicsItem::isFocusOut() const{
+    return focusOut_;
+}
+
 bool LabelGraphicsItem::doCrop(const QString &str){
     return (maxBefore_ + maxAfter_ + 2 < str.length());
 }
 
 void LabelGraphicsItem::updateCrop(){
     setText(toPlainText());
-}
-
-void LabelGraphicsItem::updateGraphicsItem(){
-    ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(this->parentItem());
-    if (processorGraphicsItem){ 
-        processorGraphicsItem->getProcessor()->setIdentifier(text().toLocal8Bit().constData());
-        processorGraphicsItem->updatePropertyListWidget();
-    }
 }
 
 void LabelGraphicsItem::keyPressEvent(QKeyEvent *event){
@@ -77,13 +76,15 @@ void LabelGraphicsItem::focusInEvent(QFocusEvent* event) {
 }
 
 void LabelGraphicsItem::focusOutEvent(QFocusEvent* event) {
+    focusOut_ = true;
     setFlags(0);
     setTextInteractionFlags(Qt::NoTextInteraction);
     QTextCursor cur = QTextCursor(textCursor());
     cur.clearSelection();
     setTextCursor(cur);
     updateCrop();
-    updateGraphicsItem();
+    notifyObservers();
+    focusOut_ = false;
 }
 
 } // namespace

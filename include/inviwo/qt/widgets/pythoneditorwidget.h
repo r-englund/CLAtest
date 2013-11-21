@@ -2,7 +2,7 @@
 #define IVW_PYTHONEDITORYWIDGET_H
 
 #include <modules/python/pythonmoduledefine.h>
-#include <inviwo/qt/editor/inviwodockwidget.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 
 #include <apps/inviwo/inviwomainwindow.h>
 
@@ -15,7 +15,7 @@
 namespace inviwo{
     
 class IVW_MODULE_PYTHON_API PythonEditorWidget : public InviwoDockWidget , public FileObserver, public Singleton<PythonEditorWidget> , public PythonExecutionOutputObeserver {
-    Q_OBJECT;
+    Q_OBJECT
 
 	PythonEditorWidget(InviwoMainWindow* mainWindow);
 public:

@@ -2,7 +2,7 @@
 #define IVW_EVENTPROPERTYMANAGERWIDGET_H
 
 #include <inviwo/core/util/observer.h>
-#include <inviwo/qt/editor/eventpropertymanager.h>
+#include <inviwo/qt/widgets/eventpropertymanager.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
@@ -11,7 +11,7 @@
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API EventPropertyManagerWidget : public QWidget, public VoidObserver {
+class IVW_QTWIDGETS_API EventPropertyManagerWidget : public QWidget, public VoidObserver {
 	Q_OBJECT
 
 public:

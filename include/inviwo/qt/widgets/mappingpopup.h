@@ -1,17 +1,17 @@
 #ifndef IVW_MAPPINGPOPUP_H
 #define IVW_MAPPINGPOPUP_H
 
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/qt/widgets/eventconverterqt.h>
-#include <inviwo/qt/editor/eventpropertymanager.h>
-#include <inviwo/qt/editor/mappingwidget.h>
+#include <inviwo/qt/widgets/eventpropertymanager.h>
 
 #include <QWidget>
 
 namespace inviwo {
 
-class MappingPopup : public QWidget {
-    Q_OBJECT;
+class IVW_QTWIDGETS_API MappingPopup : public QWidget {
+    Q_OBJECT
 
 public:
     MappingPopup(EventProperty* eventProperty, EventPropertyManager* parentManager);

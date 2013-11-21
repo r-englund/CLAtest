@@ -13,7 +13,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API FloatMinMaxPropertyWidgetQt : public PropertyWidgetQt {
 
-Q_OBJECT;
+Q_OBJECT
 
 public:
     FloatMinMaxPropertyWidgetQt(FloatMinMaxProperty* property);

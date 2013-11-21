@@ -6,7 +6,7 @@
 #include <QTime>
 
 #include <inviwo/core/processors/processor.h>
-#include <inviwo/qt/editor/labelgraphicsitem.h>
+#include <inviwo/qt/widgets/labelgraphicsitem.h>
 
 namespace inviwo {
 
@@ -51,6 +51,7 @@ public:
     int type() const  {return Type; }
 
 protected:
+    void setIdentifier(QString text);
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     void paintStatusIndicator(QPainter* p, QPointF offset, bool status, QColor baseColor);
     void paintProgressBar(QPainter* p, float progress);

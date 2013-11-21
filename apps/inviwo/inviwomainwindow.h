@@ -13,7 +13,7 @@
 #include <inviwo/qt/editor/settingswidget.h>
 #include <inviwo/qt/editor/consolewidget.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
-#include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/editor/resourcemanagerwidget.h>
 
 namespace inviwo {
@@ -23,7 +23,7 @@ class NetworkEditor;
 class CanvasQt;
 
 class InviwoMainWindow : public QMainWindow, public VoidObserver {
-Q_OBJECT;
+Q_OBJECT
 public:
     static const unsigned int maxNumRecentFiles_ = 10;
 

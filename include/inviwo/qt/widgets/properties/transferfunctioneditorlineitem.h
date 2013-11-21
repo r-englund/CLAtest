@@ -8,20 +8,19 @@
 #ifndef IVW_TRANSFERFUNCTIONEDITORLINEITEM_H
 #define IVW_TRANSFERFUNCTIONEDITORLINEITEM_H
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
 #include <QPainterPath>
 
 #include <inviwo/core/ports/port.h>
-#include <inviwo/qt/editor/processorgraphicsitem.h>
-#include <inviwo/qt/editor/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 
-//#include <inviwo/qt/editor/transferfunctioneditor.h>
+//#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 
 namespace inviwo {
 
-    class IVW_QTEDITOR_API TransferFunctionEditorLineItem : public QGraphicsItem {
+    class IVW_QTWIDGETS_API TransferFunctionEditorLineItem : public QGraphicsItem {
 
     public:
 		TransferFunctionEditorLineItem();
@@ -70,7 +69,7 @@ namespace inviwo {
 		void initiateLineItem();
 
         //override for qgraphicsitem_cast (refer qt documentation)
-        enum { Type = UserType + ConnectionGraphicsType + 1};
+        enum { Type = UserType + 3};
         int type() const  {return Type; }
 
         virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);

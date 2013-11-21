@@ -12,7 +12,7 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API FloatSliderWidgetQt : public QWidget {
-    Q_OBJECT;
+    Q_OBJECT
 public:
 
     FloatSliderWidgetQt();

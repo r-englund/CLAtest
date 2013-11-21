@@ -2,7 +2,7 @@
 #define IVW_SETTINGSWIDGET_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/qt/editor/inviwodockwidget.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 
 #include <QLayout>
 #include <QVBoxLayout>

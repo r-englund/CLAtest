@@ -6,7 +6,7 @@
 namespace inviwo {
 
 class InviwoSplashScreen : public QSplashScreen {
-Q_OBJECT;
+Q_OBJECT
 public:
 
 	InviwoSplashScreen();

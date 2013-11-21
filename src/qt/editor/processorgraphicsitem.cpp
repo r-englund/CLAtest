@@ -37,6 +37,7 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     nameLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight);
     nameLabel_->setDefaultTextColor(Qt::white);
     nameLabel_->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
+    addObservation(nameLabel_);
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setCrop(8,7);
@@ -379,6 +380,11 @@ bool ProcessorGraphicsItem::isEditingProcessorName(){
     return (nameLabel_->textInteractionFlags() == Qt::TextEditorInteraction);
 }
 
+void ProcessorGraphicsItem::setIdentifier(QString text){
+    getProcessor()->setIdentifier(text.toLocal8Bit().constData());
+    updatePropertyListWidget();
+}
+
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {
     if (change == ItemPositionHasChanged) {
         std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::getRef().connectionGraphicsItems_;
@@ -419,6 +425,11 @@ void ProcessorGraphicsItem::updateMetaData() {
 }
 
 void ProcessorGraphicsItem::notify() {
+    if(nameLabel_->isFocusOut()){
+        setIdentifier(nameLabel_->text());
+        nameLabel_->setNoFocusOut();
+    }
+
     ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
     if (progressBarOwner != NULL) {
         if (progressBarTimer_.elapsed() > 500 ||

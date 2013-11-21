@@ -8,7 +8,7 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API CanvasProcessorWidgetQt : public ProcessorWidgetQt {
-
+    Q_OBJECT
 public:
     CanvasProcessorWidgetQt();
     virtual ~CanvasProcessorWidgetQt();

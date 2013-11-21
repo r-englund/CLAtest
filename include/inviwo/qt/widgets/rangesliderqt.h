@@ -8,7 +8,7 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API RangeSliderQt : public QSplitter {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     RangeSliderQt(Qt::Orientation orientation = Qt::Horizontal, QWidget *parent = NULL);

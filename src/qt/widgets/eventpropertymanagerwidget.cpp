@@ -1,4 +1,4 @@
-#include <inviwo/qt/editor/eventpropertymanagerwidget.h>
+#include <inviwo/qt/widgets/eventpropertymanagerwidget.h>
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 
 namespace inviwo {	

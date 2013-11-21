@@ -14,7 +14,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API FloatVec2PropertyWidgetQt : public PropertyWidgetQt {
 
-Q_OBJECT;
+Q_OBJECT
 
 public:
     FloatVec2PropertyWidgetQt(FloatVec2Property* property);

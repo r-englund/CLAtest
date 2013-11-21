@@ -13,7 +13,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API IntPropertyWidgetQt : public PropertyWidgetQt {
 
-Q_OBJECT;
+Q_OBJECT
 
 public:
     IntPropertyWidgetQt(IntProperty* property);

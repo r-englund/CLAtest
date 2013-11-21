@@ -8,52 +8,52 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API CustomSliderWidgetQt : public QSlider
+class IVW_QTWIDGETS_API CustomSliderWidgetQt : public QSlider{
+    Q_OBJECT
+
+protected:
+    void mousePressEvent ( QMouseEvent * event )
     {
-
-    protected:
-        void mousePressEvent ( QMouseEvent * event )
+        if (event->button() == Qt::LeftButton)
         {
-            if (event->button() == Qt::LeftButton)
-            {
-                if (orientation() == Qt::Vertical){
-                    //FIX ME
-                    //Hardcoded value taken from the stylesheet for Qslider
-                    double halfHandleHeight = 6.5;     
-                    int adaptedPosY = event->y();
-                    if ( adaptedPosY < halfHandleHeight )
-                        adaptedPosY = halfHandleHeight;
-                    if ( adaptedPosY > height() - halfHandleHeight )
-                        adaptedPosY = height() - halfHandleHeight;
+            if (orientation() == Qt::Vertical){
+                //FIX ME
+                //Hardcoded value taken from the stylesheet for Qslider
+                double halfHandleHeight = 6.5;     
+                int adaptedPosY = event->y();
+                if ( adaptedPosY < halfHandleHeight )
+                    adaptedPosY = halfHandleHeight;
+                if ( adaptedPosY > height() - halfHandleHeight )
+                    adaptedPosY = height() - halfHandleHeight;
 
-                    double newWidth = (height() - halfHandleHeight) - halfHandleHeight;
-                    double normalizedPosition = (adaptedPosY - halfHandleHeight)  / newWidth ;
+                double newWidth = (height() - halfHandleHeight) - halfHandleHeight;
+                double normalizedPosition = (adaptedPosY - halfHandleHeight)  / newWidth ;
 
-                    int newVal = minimum() + ((maximum()-minimum()) * normalizedPosition);
-                    setValue(newVal);
-                }
-                else {
-                    //FIX ME
-                    //Hardcoded value taken from the stylesheet for Qslider
-                    double halfHandleWidth = 6.5;
-                    int adaptedPosX = event->x();
-                    if ( adaptedPosX < halfHandleWidth )
-                        adaptedPosX = halfHandleWidth;
-                    if ( adaptedPosX > width() - halfHandleWidth )
-                        adaptedPosX = width() - halfHandleWidth;
-
-                    double newWidth = (width() - halfHandleWidth) - halfHandleWidth;
-                    double normalizedPosition = (adaptedPosX - halfHandleWidth)  / newWidth ;
-
-                    int newVal = minimum() + ((maximum()-minimum()) * normalizedPosition);
-                    setValue(newVal);
-                }
-
-                event->accept();
+                int newVal = minimum() + ((maximum()-minimum()) * normalizedPosition);
+                setValue(newVal);
             }
-            QSlider::mousePressEvent(event);
+            else {
+                //FIX ME
+                //Hardcoded value taken from the stylesheet for Qslider
+                double halfHandleWidth = 6.5;
+                int adaptedPosX = event->x();
+                if ( adaptedPosX < halfHandleWidth )
+                    adaptedPosX = halfHandleWidth;
+                if ( adaptedPosX > width() - halfHandleWidth )
+                    adaptedPosX = width() - halfHandleWidth;
+
+                double newWidth = (width() - halfHandleWidth) - halfHandleWidth;
+                double normalizedPosition = (adaptedPosX - halfHandleWidth)  / newWidth ;
+
+                int newVal = minimum() + ((maximum()-minimum()) * normalizedPosition);
+                setValue(newVal);
+            }
+
+            event->accept();
         }
-    };
+        QSlider::mousePressEvent(event);
+    }
+};
 
 }
 

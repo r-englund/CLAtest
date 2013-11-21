@@ -2,8 +2,8 @@
 #define IVW_TRANSFERFUNCTIONEDITORVIEW_H
 
 //Inviwo includes
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/qt/editor/transferfunctioneditor.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 
 //Qt includes
@@ -14,7 +14,7 @@
 namespace inviwo {
 class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView {
 
-	Q_OBJECT;
+	Q_OBJECT
 
 public:    
     void setMaskMin( const int maskMin );

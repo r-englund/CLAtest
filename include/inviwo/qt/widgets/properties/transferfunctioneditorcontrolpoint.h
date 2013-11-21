@@ -7,21 +7,20 @@
 #ifndef IVW_TRANSFERFUNCTIONEDITORCONTROLPOINT_H
 #define IVW_TRANSFERFUNCTIONEDITORCONTROLPOINT_H
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
-//#include <inviwo/qt/editor/transferfunctioneditorview.h>
+//#include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <QGraphicsSceneEvent>
 #include <QGraphicsView>
 #include <QPainter>
 #include <QPainterPath>
 
 #include <inviwo/core/ports/port.h>
-#include <inviwo/qt/editor/processorgraphicsitem.h>
 
 namespace inviwo {
 
-    class IVW_QTEDITOR_API TransferFunctionEditorControlPoint :public QObject, public QGraphicsItem {
+    class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint :public QObject, public QGraphicsItem {
             Q_OBJECT
     public:
         /** \TransferFunctionEditorControlPoint constructor  
@@ -39,7 +38,7 @@ namespace inviwo {
         ~TransferFunctionEditorControlPoint();
 
         //override for qgraphicsitem_cast (refer qt documentation)
-        enum { Type = UserType + ConnectionGraphicsType };
+        enum { Type = UserType + 2 };
         int type() const  {return Type; }
 
         /**Paint method

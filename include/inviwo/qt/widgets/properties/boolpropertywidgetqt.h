@@ -13,7 +13,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API BoolPropertyWidgetQt : public PropertyWidgetQt {
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     BoolPropertyWidgetQt(BoolProperty* property);

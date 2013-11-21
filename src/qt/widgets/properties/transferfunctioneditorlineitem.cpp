@@ -4,8 +4,8 @@
 #include <math.h>
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
-#include <inviwo/qt/editor/transferfunctioneditorlineitem.h>
-#include <inviwo/qt/editor/transferfunctioneditor.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 
 namespace inviwo {
 	const int LEFT = 1;

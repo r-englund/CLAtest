@@ -2,11 +2,11 @@
 #define IVW_MAPPINGWIDGET_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/qt/editor/inviwodockwidget.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/core/util/observer.h>
 #include <inviwo/core/properties/eventproperty.h>
-#include <inviwo/qt/editor/eventpropertymanager.h>
-#include <inviwo/qt/editor/eventpropertymanagerwidget.h>
+#include <inviwo/qt/widgets/eventpropertymanager.h>
+#include <inviwo/qt/widgets/eventpropertymanagerwidget.h>
 
 #include <QFrame>
 #include <QVBoxLayout>

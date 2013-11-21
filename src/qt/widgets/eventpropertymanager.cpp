@@ -1,4 +1,4 @@
-#include <inviwo/qt/editor/eventpropertymanager.h>
+#include <inviwo/qt/widgets/eventpropertymanager.h>
 
 namespace inviwo {
 

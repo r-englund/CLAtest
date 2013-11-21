@@ -15,11 +15,11 @@
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/qt/editor/transferfunctioneditorcontrolpoint.h>
-#include <inviwo/qt/editor/transferfunctioneditorlineitem.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h>
 
-#include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
 
 #include <QBrush>
 #include <QGraphicsScene>

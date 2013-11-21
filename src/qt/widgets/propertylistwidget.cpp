@@ -1,4 +1,4 @@
-#include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
 
 #include <QLabel>

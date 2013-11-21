@@ -1,6 +1,7 @@
 #ifndef IVW_FILEPROPERTY_H
 #define IVW_FILEPROPERTY_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
@@ -11,7 +12,7 @@ namespace inviwo {
 * @see TemplateProperty
 */
 
-class FileProperty : public TemplateProperty<std::string> {
+class IVW_CORE_API FileProperty : public TemplateProperty<std::string> {
 
 public:
 

@@ -11,7 +11,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API IntSliderWidgetQt : public QWidget {
 
-        Q_OBJECT;
+        Q_OBJECT
 public:
 
     IntSliderWidgetQt(int minValue_, int maxValue_, int increment_);

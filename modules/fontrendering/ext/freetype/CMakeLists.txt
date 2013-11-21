@@ -34,6 +34,12 @@ mark_as_advanced(FREETYPE_SOURCE_NAME)
 mark_as_advanced(FREETYPE_STATICLIB_OUTPUT_PATH)
 mark_as_advanced(FREETYPE_STATICLIB_OUTPUT_NAME)
 
+#--------------------------------------------------------------------
+# Supress warnings
+if(WIN32)
+add_definitions( "/W0 /D_CRT_SECURE_NO_WARNINGS /wd4267 /wd4244 /wd4005 /wd4996 /nologo /IGNORE:4006" )
+endif()
+
 set(FREETYPE_src
         ${FREETYPE_SRC_FOLDER}/src/autofit/autofit.c
         ${FREETYPE_SRC_FOLDER}/src/bdf/bdf.c

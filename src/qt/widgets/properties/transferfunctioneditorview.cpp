@@ -1,4 +1,4 @@
-#include <inviwo/qt/editor/transferfunctioneditorview.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 
 namespace inviwo{

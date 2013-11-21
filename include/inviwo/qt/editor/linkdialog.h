@@ -15,7 +15,7 @@
 
 #include <inviwo/core/network/processorlink.h>
 #include <inviwo/core/network/processornetwork.h>
-#include <inviwo/qt/editor/labelgraphicsitem.h>
+#include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 
 static const qreal LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH = 1.0f;

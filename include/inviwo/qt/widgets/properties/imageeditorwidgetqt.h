@@ -43,14 +43,14 @@
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
-#include <inviwo/qt/editor/labelgraphicsitem.h>
+#include <inviwo/qt/widgets/labelgraphicsitem.h>
 
 
 namespace inviwo{
 
 /////////////////////////////////////////////////
 // Simple Graphics scene
-class SimpleGraphicsScene : public QGraphicsScene {
+class IVW_QTWIDGETS_API SimpleGraphicsScene : public QGraphicsScene {
     Q_OBJECT
 public:
     SimpleGraphicsScene(QWidget* parent=0);
@@ -63,7 +63,7 @@ signals:
 /////////////////////////////////////////////////
 // Simple Graphics Rectangle Item with label 
 // used by Simple Graphics View
-class SimpleWithRectangleLabel : public QGraphicsRectItem {
+class IVW_QTWIDGETS_API SimpleWithRectangleLabel : public QGraphicsRectItem {
 public:
     SimpleWithRectangleLabel(QPointF mendPoint, QGraphicsScene* scene);
     SimpleWithRectangleLabel();
@@ -84,7 +84,7 @@ struct ImgRect {
     std::string label_;
 };
 
-class SimpleGraphicsView : public QGraphicsView {
+class IVW_QTWIDGETS_API SimpleGraphicsView : public QGraphicsView {
     Q_OBJECT
 public:
     SimpleGraphicsView(QWidget* parent=0);
@@ -118,7 +118,7 @@ private:
 // Image Labeling widget
 class ImageEditorWidgetQt;
 class IVW_QTWIDGETS_API ImageLabelWidget : public QWidget{
-    Q_OBJECT;
+    Q_OBJECT
 public:
     ImageLabelWidget();
     bool saveDialog();
@@ -155,7 +155,7 @@ protected:
 /////////////////////////////////////////////////
 // Image Editor widget
 class IVW_QTWIDGETS_API ImageEditorWidgetQt : public PropertyWidgetQt{    
-    Q_OBJECT;
+    Q_OBJECT
 public:    
     ImageEditorWidgetQt(Property* property);
     ~ImageEditorWidgetQt();

@@ -12,7 +12,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API InviwoApplicationQt : public QApplication, public InviwoApplication {
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     InviwoApplicationQt(std::string displayName_, std::string basePath_,

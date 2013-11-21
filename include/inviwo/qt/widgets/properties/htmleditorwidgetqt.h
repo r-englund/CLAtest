@@ -26,7 +26,7 @@ namespace inviwo{
 class TextEditorWidgetQt;
 class IVW_QTWIDGETS_API HtmlEditorWidgetQt : public QWidget{
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     HtmlEditorWidgetQt();

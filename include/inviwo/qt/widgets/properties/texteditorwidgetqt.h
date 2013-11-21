@@ -41,7 +41,7 @@ namespace inviwo{
 class TextEditorWidgetQt;
 class IVW_QTWIDGETS_API ModifiedWidget : public QWidget{
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     ModifiedWidget();
@@ -68,7 +68,7 @@ protected:
 
 class IVW_QTWIDGETS_API TextEditorWidgetQt : public PropertyWidgetQt{
     
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
  

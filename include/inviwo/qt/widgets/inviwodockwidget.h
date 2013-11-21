@@ -1,12 +1,13 @@
 #ifndef IVW_INVIWODOCKWIDGET_H
 #define IVW_INVIWODOCKWIDGET_H
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QDockWidget>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API InviwoDockWidget : public QDockWidget {
+class IVW_QTWIDGETS_API InviwoDockWidget : public QDockWidget {
+    Q_OBJECT
 
 public:
     InviwoDockWidget(QString title, QWidget* parent);

@@ -7,7 +7,8 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API ProcessorWidgetQt : public ProcessorWidget, public QWidget {
+class IVW_QTWIDGETS_API ProcessorWidgetQt : public QWidget, public ProcessorWidget {
+    Q_OBJECT
 
 public:
     ProcessorWidgetQt();

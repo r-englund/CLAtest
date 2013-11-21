@@ -2,7 +2,7 @@
 #define IVW_EVENTPROPERTYWIDGETQT_H
 
 #include <inviwo/core/properties/eventproperty.h>
-#include <inviwo/qt/editor/eventpropertymanager.h>
+#include <inviwo/qt/widgets/eventpropertymanager.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/mappingpopup.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
@@ -14,8 +14,8 @@
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API EventPropertyWidgetQt : public PropertyWidgetQt {
-    Q_OBJECT;
+class IVW_QTWIDGETS_API EventPropertyWidgetQt : public PropertyWidgetQt {
+    Q_OBJECT
 
 public:
     EventPropertyWidgetQt(EventProperty* eventproperty);

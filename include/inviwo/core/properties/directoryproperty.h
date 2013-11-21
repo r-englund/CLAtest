@@ -1,6 +1,7 @@
 #ifndef IVW_DIRECTORY_PROPERTY_H
 #define IVW_DIRECTORY_PROPERTY_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
@@ -11,7 +12,7 @@ namespace inviwo {
 * @see FileProperty, StringProperty
 */
 
-class DirectoryProperty : public TemplateProperty<std::string> {
+class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:
     DirectoryProperty(std::string identifier, std::string displayName, std::string value=IVW_DIR,
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 

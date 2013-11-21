@@ -1,12 +1,13 @@
 #ifndef IVW_LABELGRAPHICSITEM_H
 #define IVW_LABELGRAPHICSITEM_H
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QGraphicsTextItem>
+#include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API LabelGraphicsItem : public QGraphicsTextItem {
+class IVW_QTWIDGETS_API LabelGraphicsItem : public QGraphicsTextItem, public VoidObservable {
 
 public:
     LabelGraphicsItem(QGraphicsItem* parent);
@@ -19,10 +20,12 @@ public:
     void setCrop(int, int);
     bool isCropped() const;
 
+    void setNoFocusOut();
+    bool isFocusOut() const;
+
 protected:
     bool doCrop(const QString &str);
     void updateCrop();
-    void updateGraphicsItem();
 
     void keyPressEvent(QKeyEvent* event);
     void focusInEvent(QFocusEvent* event);
@@ -32,6 +35,7 @@ private:
     int maxBefore_;
     int maxAfter_;
     unsigned int labelHeight_;
+    bool focusOut_;
     QString orgText_;
 };
 

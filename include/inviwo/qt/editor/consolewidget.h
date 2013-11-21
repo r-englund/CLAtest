@@ -3,7 +3,7 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/core/util/logdistributor.h>
-#include <inviwo/qt/editor/inviwodockwidget.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <QTextEdit>
 #include <QKeyEvent>
 

@@ -14,7 +14,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API FilePropertyWidgetQt : public PropertyWidgetQt {
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     FilePropertyWidgetQt(FileProperty* property);

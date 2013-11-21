@@ -1,11 +1,12 @@
 #ifndef IVW_IMAGEEDITORPROPERTY_H
 #define IVW_IMAGEEDITORPROPERTY_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/fileproperty.h>
 
 namespace inviwo {
 
-class ImageLabel : public IvwSerializable {
+class IVW_CORE_API ImageLabel : public IvwSerializable {
 public :
     ImageLabel();
     ImageLabel(vec2 startPoint, vec2 rectSize, std::string name);
@@ -27,7 +28,7 @@ private:
 * @see FileProperty
 */
 
-class ImageEditorProperty : public FileProperty {
+class IVW_CORE_API ImageEditorProperty : public FileProperty {
 
 public:    
     /** 

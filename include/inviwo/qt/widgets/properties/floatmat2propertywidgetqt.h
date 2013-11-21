@@ -12,7 +12,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API FloatMat2PropertyWidgetQt : public PropertyWidgetQt {
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     FloatMat2PropertyWidgetQt(FloatMat2Property* property);

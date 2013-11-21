@@ -10,12 +10,12 @@
 #include <QPushButton>
 
 //Widgets
-#include <inviwo/qt/editor/eventpropertymanager.h>
+#include <inviwo/qt/widgets/eventpropertymanager.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
-#include <inviwo/qt/editor/propertylistwidget.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
 
 #include <inviwo/core/properties/property.h>
 
@@ -23,7 +23,7 @@ namespace inviwo {
 
     class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt {
 
-        Q_OBJECT;
+        Q_OBJECT
 
     public:
         CollapsiveGroupBoxWidgetQt(std::string identifier, std::string displayName= "");

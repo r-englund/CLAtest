@@ -9,7 +9,7 @@
 namespace inviwo {
 
 ProcessorWidgetQt::ProcessorWidgetQt()
-    : ProcessorWidget(), QWidget(0)
+    : QWidget(NULL), ProcessorWidget()
 {
     QWidget::move(0, 0);
     QWidget::resize(32, 32);

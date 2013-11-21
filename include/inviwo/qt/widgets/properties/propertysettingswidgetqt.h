@@ -17,7 +17,7 @@
 namespace inviwo {
 class IVW_QTWIDGETS_API PropertySettingsWidgetQt : public QWidget {
 
-    Q_OBJECT;
+    Q_OBJECT
 public:
     PropertySettingsWidgetQt(Property *property);
     

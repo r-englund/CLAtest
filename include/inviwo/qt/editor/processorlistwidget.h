@@ -9,7 +9,7 @@
 #include <QTreeWidget>
 #include <QDrag>
 
-#include <inviwo/qt/editor/inviwodockwidget.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 
 #include <inviwo/core/processors/processorfactoryobject.h>
 

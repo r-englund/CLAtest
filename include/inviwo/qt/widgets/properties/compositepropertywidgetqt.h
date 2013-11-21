@@ -14,7 +14,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API CompositePropertyWidgetQt : public PropertyWidgetQt {
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     CompositePropertyWidgetQt(CompositeProperty* property);

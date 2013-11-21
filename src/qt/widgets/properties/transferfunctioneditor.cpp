@@ -1,4 +1,4 @@
-#include <inviwo/qt/editor/transferfunctioneditor.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 
 namespace inviwo {
 TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view)
