@@ -1,4 +1,4 @@
-#include <inviwo/core/processors/datasource/volumesource.h>
+#include "volumesource.h"
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include <inviwo/core/resources/resourcemanager.h>
 #include <inviwo/core/resources/templateresource.h>

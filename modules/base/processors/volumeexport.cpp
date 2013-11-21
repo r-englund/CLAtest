@@ -1,4 +1,4 @@
-#include <inviwo/core/processors/datasource/volumeexport.h>
+#include "volumeexport.h"
 #include <inviwo/core/datastructures/volume/volumeram.h>
 
 namespace inviwo {
