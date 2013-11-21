@@ -121,8 +121,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbarowner.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumeexport.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/processors/datasource/volumesource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/baseoptionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/boolproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/buttonproperty.h
@@ -256,8 +254,6 @@ set(SOURCE_FILES
     processors/processorwidget.cpp
     processors/processorwidgetfactory.cpp
     processors/progressbar.cpp
-    processors/datasource/volumeexport.cpp
-    processors/datasource/volumesource.cpp
     properties/boolproperty.cpp
     properties/cameraproperty.cpp
     properties/directoryproperty.cpp    

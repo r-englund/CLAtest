@@ -18,6 +18,8 @@
 #include <modules/base/processors/simpleraycaster.h>
 #include <modules/base/processors/testprocessor.h>
 #include <modules/base/processors/transferfunctiontestprocessor.h>
+#include <modules/base/processors/volumesource.h>
+#include <modules/base/processors/volumeexport.h>
 #include <modules/base/processors/volumebasistransformer.h>
 #include <modules/base/processors/volumeslice.h>
 #include <modules/base/processors/volumeslicegl.h>
@@ -50,6 +52,8 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(SimpleRaycaster);
     registerProcessor(TestProcessor);
     registerProcessor(TransferFunctiontionTestProcessor);
+	registerProcessor(VolumeSource);
+	registerProcessor(VolumeExport);
     registerProcessor(VolumeBasisTransformer);
     registerProcessor(VolumeSlice);
     registerProcessor(VolumeSliceGL);
