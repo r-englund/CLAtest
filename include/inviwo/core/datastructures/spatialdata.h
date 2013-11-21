@@ -401,7 +401,7 @@ StructuredData<N>::StructuredData(const Vector<N, unsigned int>& dimension)
 
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Vector<N,float>& offset, 
-                                  const Vector<N, unsigned int>&) 
+                                  const Vector<N, unsigned int>& dimension) 
     : SpatialData<N>(offset) {
     setDimension(dimension);
 }
