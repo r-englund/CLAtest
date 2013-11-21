@@ -40,7 +40,7 @@ void BufferGL::specifyLocation() const {
 }
 
 
-void BufferGL::upload( const void* data, GLsizeiptr sizeInBytes, GLenum target /*= GL_ARRAY_BUFFER*/ )
+void BufferGL::initialize( const void* data, GLsizeiptr sizeInBytes, GLenum target /*= GL_ARRAY_BUFFER*/ )
 {
     //Set global variables
     target_ = target;
@@ -84,14 +84,16 @@ void BufferGL::upload( const void* data, GLsizeiptr sizeInBytes, GLenum target /
             break;
     }
 
-    reupload(data, sizeInBytes);
-}
-
-void BufferGL::reupload( const void* data, GLsizeiptr sizeInBytes )
-{
     bind();
+    // Allocate and transfer possible data
     glBufferData(target_, sizeInBytes, data, usageGL_);
     specifyLocation();
+}
+
+void BufferGL::upload( const void* data, GLsizeiptr sizeInBytes )
+{
+    bind();
+    glBufferSubData(target_, 0, sizeInBytes, data);
 }
 
 void BufferGL::colorPointer() const {

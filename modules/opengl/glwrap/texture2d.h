@@ -29,8 +29,11 @@ public:
     void bindFromPBO() const;
     void bindToPBO() const;
 
+    void initialize(const void* data);
     void upload(const void* data);
     void uploadFromPBO(const Texture2D*);
+
+   
     
     /**
      * Download texture data to preallocated memory.

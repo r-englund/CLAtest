@@ -3,23 +3,15 @@
 namespace inviwo {
 
 DataRepresentation::DataRepresentation() 
-    : valid_(true), dataFormatBase_(DataUINT8::get()) {}
+    : dataFormatBase_(DataUINT8::get()) {}
 DataRepresentation::DataRepresentation(const DataFormatBase* format) 
-    : valid_(true), dataFormatBase_(format) {}
+    : dataFormatBase_(format) {}
 DataRepresentation::DataRepresentation(const DataRepresentation& rhs) 
-    : valid_(rhs.valid_), dataFormatBase_(rhs.dataFormatBase_) {}
+    : dataFormatBase_(rhs.dataFormatBase_) {}
 DataRepresentation::~DataRepresentation() { }
 
 std::string DataRepresentation::getClassName() const { 
     return "DataRepresentation"; 
-}
-
-bool DataRepresentation::isValid() const{
-    return valid_;
-}
-
-void DataRepresentation::invalidate(){
-    valid_ = false;
 }
 
 const DataFormatBase* DataRepresentation::getDataFormat() const { 

@@ -108,19 +108,19 @@ void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
 
 void ImageGL::createColorLayer(){
     colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
-    colorTexture_->upload(NULL);
+    colorTexture_->initialize(NULL);
     colorConstTexture_ = colorTexture_;
 }
 
 void ImageGL::createDepthLayer(){
     depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_NEAREST);
-    depthTexture_->upload(NULL);
+    depthTexture_->initialize(NULL);
     depthConstTexture_ = depthTexture_;
 }
 
 void ImageGL::createPickingLayer(){
     pickingTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
-    pickingTexture_->upload(NULL);
+    pickingTexture_->initialize(NULL);
     pickingConstTexture_ = pickingTexture_;
 }
 

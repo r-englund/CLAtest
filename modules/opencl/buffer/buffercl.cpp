@@ -3,7 +3,7 @@
 namespace inviwo {
 
 BufferCL::BufferCL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, const void* data, cl_mem_flags readWriteFlag)
-    : BufferRepresentation(size, format, type, usage), readWriteFlag_(readWriteFlag)
+    : BufferRepresentation(size, format, type, usage), readWriteFlag_(readWriteFlag), buffer_(NULL)
 {
     initialize(data);
 }

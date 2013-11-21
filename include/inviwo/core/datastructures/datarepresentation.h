@@ -23,13 +23,10 @@ namespace inviwo {
         const DataFormatBase* getDataFormat() const;
         std::string getDataFormatString() const;
         DataFormatId getDataFormatId() const;
-        bool isValid() const;
-        void invalidate();
 
     protected:
         void setDataFormat(const DataFormatBase* format);
 
-        bool valid_;
         const DataFormatBase* dataFormatBase_;
     };
 

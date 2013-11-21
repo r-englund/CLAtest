@@ -62,7 +62,7 @@ void Texture2D::bindToPBO() const{
     LGL_ERROR;
 }
 
-void Texture2D::upload(const void* data) {
+void Texture2D::initialize(const void* data) {
     bind();
     glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, data);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -74,10 +74,16 @@ void Texture2D::upload(const void* data) {
 
 void Texture2D::uploadFromPBO(const Texture2D* src){
     src->bindFromPBO();
-    bind();
-    glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, 0);
+    upload(NULL);
     unbind();
     src->unbindFromPBO();
+    LGL_ERROR;
+}
+
+void Texture2D::upload( const void* data )
+{
+    bind();
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, dimensions_.x, dimensions_.y, format_, dataType_, data);
     LGL_ERROR;
 }
 
@@ -134,7 +140,7 @@ void Texture2D::invalidatePBO(){
 void Texture2D::resize(uvec2 dimension) {
     setWidth(dimension.x);
     setHeight(dimension.y);
-    upload(NULL);
+    initialize(NULL);
     setupAsyncReadBackPBO();
 }
 
@@ -195,5 +201,7 @@ void Texture2D::setSizeInBytes(){
     }
     byteSize_ = numChannels_*dataTypeSize;
 }
+
+
 
 } // namespace
