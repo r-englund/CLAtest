@@ -80,6 +80,16 @@ void Data::removeRepresentation( DataRepresentation* representation )
                 }
             }
         }
+        // Update valid representation bit mask
+        size_t element = static_cast<size_t>(std::distance(representations_.begin(), it));
+        // Start after the element that is going to be removed and update the mask.
+        for(i = element+1; i < representations_.size(); ++i) {
+            if(isRepresentationValid(i)) {
+                setRepresentationAsValid(i-1);
+            } else {
+                setRepresentationAsInvalid(i-1);
+            }
+        }
         delete (*it);
         representations_.erase(it);
     }

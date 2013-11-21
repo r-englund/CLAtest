@@ -44,6 +44,13 @@ public:
     bool hasRepresentation() const;
     bool hasRepresentations() const;
     void addRepresentation(DataRepresentation* representation);
+    
+    /**
+     * Remove representation from data object. 
+     * This will delete the representation, thus rendering the representation pointer invalid.
+     * 
+     * @param representation The representation to remove
+     */
     void removeRepresentation(DataRepresentation* representation);
     void clearRepresentations();
  
