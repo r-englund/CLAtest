@@ -8,57 +8,55 @@
 #include <inviwo/core/metadata/metadatamap.h>
 
 namespace inviwo {
-
+/** \brief The base class for all data objects in Inviwo.
+ *
+ *  Data is the base class for all the data objects in Inviwo. 
+ *  It is responsible for holding the DateRepresentations, the metadata,
+ *  and the format of the data.
+ *  TODO: write a good overview here
+ *
+ *  --------
+ *
+ *  Requirements:
+ *      1. Copy constructor for deep copy
+ *      2. Assignment operator for deep copy
+ *      3. Clone pattern
+ *  
+ *  1 and 2 are needed to be a vaild member type of std::vector.
+ *  3 is needed for the factory pattern, 3 should be implemented using 1.
+ *
+ */
 class IVW_CORE_API Data {
 
 public:
     Data();
+    Data(const Data& rhs);
+    Data& operator=(const Data& rhs);
+    virtual Data* clone() const = 0;
     virtual ~Data();
-    Data(const Data& rhs) {
-        rhs.copyRepresentations(this);
-        metaData_ = rhs.metaData_->clone();
-        dataFormatBase_ = rhs.dataFormatBase_;
-        for(int i = 0; i < static_cast<int>(this->representations_.size()); ++i) {
-            if(rhs.isRepresentationValid(i)) {
-                this->setRepresentationAsValid(i);
-                this->lastValidRepresentation_ = this->representations_[i];
-            } else {
-                this->setRepresentationAsInvalid(i);
-            }
-        }
-    }
 
     //Representations
     template<typename T>
     const T* getRepresentation() const;
-
     template<typename T>
     T* getEditableRepresentation();
-
     template<typename T>
     bool hasRepresentation() const;
     bool hasRepresentations() const;
-
     void addRepresentation(DataRepresentation* representation);
     void removeRepresentation(DataRepresentation* representation);
     void clearRepresentations();
-    void copyRepresentations(Data* targetData) const;
-
+ 
     //MetaData
     template<typename T, typename U>
     void setMetaData(std::string key, U value);
-
     //param val is required to deduce the template argument
     template<typename T, typename U>
     U getMetaData(std::string key, U val) const;
 
-    MetaDataMap* getMetaDataMap() const { return metaData_; }
-
+    //DataFormat
     void setDataFormat(const DataFormatBase* format);
     const DataFormatBase* getDataFormat() const;
-
-    //Others
-    virtual Data* clone() const = 0;
 
 protected:
     virtual DataRepresentation* createDefaultRepresentation() = 0;
@@ -74,7 +72,9 @@ protected:
     template<class T>
     void invalidateAllOther();
 
-    
+    void copyRepresentationsTo(Data* targetData) const;
+    MetaDataMap* getMetaDataMap() const { return metaData_; }
+
     /**
      * Check if data needs to be updated.
      * See http://www.cprogramming.com/tutorial/bitwise_operators.html

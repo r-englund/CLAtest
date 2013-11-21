@@ -224,18 +224,14 @@ protected:
 template <unsigned int N>
 class StructuredData : public SpatialData<N> {
 public:
-    StructuredData(const Vector<N, unsigned int>& dimension, 
-        const DataFormatBase* format);
+    StructuredData(const Vector<N, unsigned int>& dimension);
     StructuredData(const Vector<N,float>& offset, 
-        const Vector<N, unsigned int>& dimension, 
-        const DataFormatBase* format);
+        const Vector<N, unsigned int>& dimension);
     StructuredData(const Matrix<N,float>& basis, 
-        const Vector<N, unsigned int>& dimension, 
-        const DataFormatBase* format);
+        const Vector<N, unsigned int>& dimension);
     StructuredData(const Matrix<N,float>& basis, 
         const Vector<N,float>& offset, 
-        const Vector<N, unsigned int>& dimension, 
-        const DataFormatBase* format);
+        const Vector<N, unsigned int>& dimension);
 
     virtual ~StructuredData(){}
     virtual StructuredData<N>* clone() const = 0;
@@ -398,38 +394,30 @@ const CoordinateTransformer<N>& SpatialData<N>::getCoordinateTransformer() const
 /*---------------------------------------------------------------*/
 
 template <unsigned int N>
-StructuredData<N>::StructuredData(const Vector<N, unsigned int>& dimension, 
-                                  const DataFormatBase* format) :
-    SpatialData<N>() {
+StructuredData<N>::StructuredData(const Vector<N, unsigned int>& dimension)
+    : SpatialData<N>() {
     setDimension(dimension);
-    Data::setDataFormat(format);
 }
 
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Vector<N,float>& offset, 
-                                  const Vector<N, unsigned int>& 
-                                  dimension, const DataFormatBase* format) : 
-    SpatialData<N>(offset) {
+                                  const Vector<N, unsigned int>&) 
+    : SpatialData<N>(offset) {
     setDimension(dimension);
-    Data::setDataFormat(format);
 }
 
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Matrix<N,float>& basis, 
-                                  const Vector<N, unsigned int>& dimension, 
-                                  const DataFormatBase* format) : 
-    SpatialData<N>(basis) {
+                                  const Vector<N, unsigned int>& dimension)
+    : SpatialData<N>(basis) {
     setDimension(dimension);
-    Data::setDataFormat(format);
 }
 template <unsigned int N>
 StructuredData<N>::StructuredData(const Matrix<N,float>& basis, 
                                   const Vector<N,float>& offset, 
-                                  const Vector<N, unsigned int>& dimension,
-                                  const DataFormatBase* format) : 
-    SpatialData<N>(basis, offset) {
+                                  const Vector<N, unsigned int>& dimension)
+    : SpatialData<N>(basis, offset) {
     setDimension(dimension);
-    Data::setDataFormat(format);
 }
 
 template <unsigned int N>

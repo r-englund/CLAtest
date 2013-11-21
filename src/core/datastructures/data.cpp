@@ -2,9 +2,32 @@
 
 namespace inviwo {
 
-Data::Data(): validRepresentations_(0), lastValidRepresentation_(NULL) {
-    metaData_ = new MetaDataMap();
+Data::Data()
+    : metaData_(new MetaDataMap())
+    , dataFormatBase_(0)
+    , validRepresentations_(0)
+    , lastValidRepresentation_(NULL){ 
 }
+
+Data::Data(const Data& rhs) 
+    : metaData_(rhs.metaData_->clone())
+    , dataFormatBase_(rhs.dataFormatBase_){
+    rhs.copyRepresentationsTo(this);
+}
+
+Data& Data::operator=(const Data& that){
+    if (this != &that) {
+        MetaDataMap* metadata = that.metaData_->clone();
+        delete metaData_;
+        metaData_ = metadata;
+
+        that.copyRepresentationsTo(this);
+        dataFormatBase_ = that.dataFormatBase_;
+    }
+    return *this;
+}
+
+
 Data::~Data() {
     delete metaData_;
     clearRepresentations();
@@ -18,12 +41,19 @@ void Data::clearRepresentations() {
     }
 }
 
-void Data::copyRepresentations(Data* targetData) const{
+void Data::copyRepresentationsTo(Data* targetData) const{
     targetData->clearRepresentations();
+    int count = 0;
     for(size_t i=0; i<representations_.size(); i++) {
         DataRepresentation* rep = representations_[i]->clone();
-        if(rep)
+        if(rep){
             targetData->addRepresentation(rep);
+            if(isRepresentationValid(i)) 
+                targetData->setRepresentationAsValid(count);
+            if(representations_[i] == lastValidRepresentation_) 
+                targetData->lastValidRepresentation_ = rep;
+           
+        }
     }
 }
 

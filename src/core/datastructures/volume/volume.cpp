@@ -3,19 +3,16 @@
 
 namespace inviwo {
 
-Volume::Volume(uvec3 dimensions, const DataFormatBase* format) : StructuredData<3>(dimensions, format) {
-	clearRepresentations();
+Volume::Volume(uvec3 dimensions, const DataFormatBase* format) : StructuredData<3>(dimensions) {
+    Data::setDataFormat(format);
 }
 
-Volume::Volume(VolumeRepresentation* in) : StructuredData<3>(in->getDimensions(), in->getDataFormat()) {
-    clearRepresentations();
-    addRepresentation(in);
+Volume::Volume(const Volume& rhs) : StructuredData<3>(rhs){
 }
 
-Volume::Volume(VolumeRepresentation* in, const Volume* src) : StructuredData<3>(in->getDimensions(), in->getDataFormat()) {
-    clearRepresentations();
+Volume::Volume(VolumeRepresentation* in) : StructuredData<3>(in->getDimensions()) {
     addRepresentation(in);
-    this->metaData_ = src->getMetaDataMap();
+    Data::setDataFormat(in->getDataFormat());
 }
 
 Volume::~Volume() {}

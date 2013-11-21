@@ -4,18 +4,20 @@
 
 namespace inviwo {
 
-Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers) : 
-	StructuredData<2>(dimensions, format),
-	imageType_(comb), 
-	allowMissingLayers_(allowMissingLayers) {}
+Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers) 
+	: StructuredData<2>(dimensions)
+	, imageType_(comb) 
+	, allowMissingLayers_(allowMissingLayers) {
+        Data::setDataFormat(format);
+}
 
-Image::Image(ImageRepresentation* in, bool allowMissingLayers) : 
-    StructuredData<2>(in->getDimensions(), in->getDataFormat()),
-    imageType_(in->getImageType()), 
-    allowMissingLayers_(allowMissingLayers) 
-{
-        clearRepresentations();
-        addRepresentation(in);
+Image::Image(ImageRepresentation* in, bool allowMissingLayers)
+    : StructuredData<2>(in->getDimensions())
+    , imageType_(in->getImageType())
+    , allowMissingLayers_(allowMissingLayers){
+    Data::setDataFormat(in->getDataFormat());    
+    clearRepresentations();
+    addRepresentation(in);
 }
 
 Image::Image(const Image& rhs) : StructuredData<2>(rhs)
