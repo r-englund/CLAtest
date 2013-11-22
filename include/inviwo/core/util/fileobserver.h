@@ -10,6 +10,9 @@ namespace inviwo {
 class IVW_CORE_API FileObserver {
 
 public:
+    FileObserver();
+    ~FileObserver();
+
     void startFileObservation(std::string fileName);
     void stopFileObservation(std::string fileName);
     std::vector<std::string> getFiles();
@@ -22,7 +25,7 @@ public:
     virtual void fileChanged(std::string fileName) = 0;
 
 private:
-    std::vector<std::pair<std::string, int> > observedFiles_; ///< stores the files to be observed
+    std::vector<std::pair<std::string, int> >* observedFiles_; ///< stores the files to be observed
                                                               ///< plus the number of observers for each
 };
 

@@ -15,9 +15,10 @@
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/resources/resource.h>
 #include <inviwo/core/util/capabilities.h>
-#include <inviwo/core/util/settings.h>
 
 namespace inviwo {
+
+class Settings;
 
 class IVW_CORE_API InviwoModule {
 

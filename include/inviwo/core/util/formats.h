@@ -5,6 +5,7 @@
 #pragma warning(disable : 4756)
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/util/pstdint.h>
 #include <glm/glm.hpp>
 #include <limits>

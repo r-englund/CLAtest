@@ -6,7 +6,7 @@
 
 namespace inviwo {
 
-ShaderManager::ShaderManager() {
+ShaderManager::ShaderManager() : FileObserver() {
     InviwoApplication::getRef().registerFileObserver(this);
     openGLInfoRef_ = NULL;
 }
