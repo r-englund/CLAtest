@@ -6,6 +6,7 @@
 
 #include <QLayout>
 #include <QVBoxLayout>
+#include <QTabWidget>
 
 namespace inviwo {
 
@@ -21,6 +22,7 @@ public:
 
 protected:
     QVBoxLayout* vLayout_;
+    QTabWidget* tabWidget_;
 };
 
 } // namespace

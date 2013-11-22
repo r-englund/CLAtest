@@ -19,13 +19,21 @@ void SettingsWidget::generateWidget() {
     setObjectName("SettingsWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    QFrame* frame = new QFrame();
-    vLayout_ = new QVBoxLayout(frame);
+    //QFrame* frame = new QFrame();
+    //vLayout_ = new QVBoxLayout(frame);
+    vLayout_ = new QVBoxLayout();
 	vLayout_->setSpacing(0);
-	//vLayout_->setMargin(0);
-    frame->setLayout(vLayout_);
-	//frame->adjustSize();
-    setWidget(frame);
+    tabWidget_ = new QTabWidget();
+    QWidget* tab1 = new QWidget();
+    QWidget* tab2 = new QWidget();
+    QWidget* tab3 = new QWidget();
+    tab1->setLayout(vLayout_);
+    tabWidget_->addTab(tab1,"Mainsettings");
+    tabWidget_->addTab(tab2,"tab2");
+    tabWidget_->addTab(tab3,"tab3");
+    //frame->setLayout(vLayout_);
+    setWidget(tabWidget_);
+    //setWidget(frame);
 }
 
 SettingsWidget::~SettingsWidget() {}
