@@ -31,8 +31,10 @@ file(GLOB_RECURSE LIBJPEG_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/*.h)
 file(GLOB_RECURSE LIBJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/*.c)
 list(REMOVE_ITEM LIBJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/ckconfig.c)
 ## macosx
-if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "(Darwin|FreeBSD)")
-  list(REMOVE_ITEM LIBJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/jmemmac.c)
+list(REMOVE_ITEM LIBJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg/jmemmac.c)
+# This is kind of ugly, is there a better way? /Peter
+if(${CMAKE_SYSTEM_NAME} MATCHES "(Darwin|FreeBSD)")
+ ivw_include_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/)
 endif()
 
 #--------------------------------------------------------------------

@@ -127,7 +127,6 @@ void ImageGL::createPickingLayer(){
 void ImageGL::createAndAddLayer(ImageLayerType layer){
     frameBufferObject_->activate();
     GLenum id = 0;
-    GLenum buffer = GL_COLOR;
 
     if(layer == COLOR_LAYER){
         createColorLayer();
@@ -141,15 +140,15 @@ void ImageGL::createAndAddLayer(ImageLayerType layer){
         frameBufferObject_->attachTexture(depthTexture_, static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
         id = GL_DEPTH_ATTACHMENT;
         glDrawBuffer(id);
-        const GLfloat clearDepth = 0.f;
-        glClearBufferfv(GL_DEPTH, 0, &clearDepth);
+        //const GLfloat clearDepth = 0.f;
+        //glClearBufferfv(GL_DEPTH, 0, &clearDepth);
     }
     else if(layer == PICKING_LAYER){
         createPickingLayer();
         id = frameBufferObject_->attachColorTexture(pickingTexture_, 0, true);
         glDrawBuffer(id);
-        GLuint clearColor[4] = {0, 0, 0, 0};
-        glClearBufferuiv(GL_COLOR, 0, clearColor);
+        //GLuint clearColor[4] = {0, 0, 0, 0};
+        //glClearBufferuiv(GL_COLOR, 0, clearColor);
     }
     else{
         frameBufferObject_->deactivate();
