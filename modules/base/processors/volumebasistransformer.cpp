@@ -34,10 +34,10 @@ void VolumeBasisTransformer::deinitialize() {
 }
 
 void VolumeBasisTransformer::process() {
-    if(inport_.hasData()){
+    if (inport_.hasData()) {
         const Volume* in = inport_.getData();
 
-        if( orgBasisAndOffset_ != in->getBasisAndOffset()){
+        if (orgBasisAndOffset_ != in->getBasisAndOffset()) {
             orgBasisAndOffset_ = in->getBasisAndOffset();
 
             vec3 a(orgBasisAndOffset_[0]);
