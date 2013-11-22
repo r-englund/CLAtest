@@ -45,10 +45,11 @@ int main(int argc, char** argv) {
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
 
     // setup main window
-    mainWin.initializeAndShow();
+    mainWin.initialize();
 
 	splashScreen.showMessage("Loading workspace...");
     mainWin.initializeWorkspace();
+    mainWin.showWindow();
 
     // open last workspace
     mainWin.openLastWorkspace();

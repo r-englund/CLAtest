@@ -45,7 +45,7 @@ InviwoMainWindow::~InviwoMainWindow() {
 	deinitialize();
 }
 
-void InviwoMainWindow::initializeAndShow() {
+void InviwoMainWindow::initialize() {
     networkEditorView_ = new NetworkEditorView(this);
     setCentralWidget(networkEditorView_);
 
@@ -83,7 +83,8 @@ void InviwoMainWindow::initializeAndShow() {
     QPoint newPos = settings.value("pos", pos()).toPoint();
     QSize newSize = settings.value("size", size()).toSize();
 
-	QDesktopWidget* desktop = QApplication::desktop();
+	maximized_ = settings.value("maximized", true).toBool();
+    QDesktopWidget* desktop = QApplication::desktop();
 	QRect wholeScreenGeometry = desktop->screenGeometry(0);
 	for (int i=1; i<desktop->screenCount(); i++)
 		wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
@@ -99,7 +100,6 @@ void InviwoMainWindow::initializeAndShow() {
 		resize(newSize);
 	}
 
-    bool maximized = settings.value("maximized", true).toBool();
     recentFileList_ = settings.value("recentFileList").toStringList();
     lastExitWithoutErrors_ = settings.value("lastExitWithoutErrors", true).toBool();
     settings.setValue("lastExitWithoutErrors", false);
@@ -114,11 +114,12 @@ void InviwoMainWindow::initializeAndShow() {
     addMenuActions();
 	addToolBars();
     updateRecentWorkspaces();
-
-    if (maximized) showMaximized();
-    else show();
 }
-
+void InviwoMainWindow::showWindow(){
+    if (maximized_) showMaximized();
+    else show();
+};
+        
 void InviwoMainWindow::deinitialize() {
 }
 

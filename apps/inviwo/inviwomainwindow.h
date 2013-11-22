@@ -30,7 +30,8 @@ public:
     InviwoMainWindow();
     ~InviwoMainWindow();
 
-    virtual void initializeAndShow();
+    virtual void initialize();
+    virtual void showWindow();
     virtual void deinitialize();
     virtual void initializeWorkspace();
 
@@ -113,6 +114,7 @@ private:
     // settings
     bool lastExitWithoutErrors_;
     bool workspaceModified_;
+    bool maximized_;
 
     // paths
     QString rootDir_;
