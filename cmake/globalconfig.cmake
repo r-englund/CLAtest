@@ -150,13 +150,15 @@ endif(DEBUG_POSTFIX)
 
 option(PRECOMPILED_HEADERS "Create and use precompilied headers" ON)
 
-if(WIN32)
-	if(BUILD_SHARED_LIBS)
-		if(MSVC_VERSION LESS 1600)
-			set(PRECOMPILED_HEADERS OFF CACHE BOOL "Create and use precompilied headers" FORCE)
-			ivw_message("Precompiled headers can not be used for Visual Studio 2008 and below with shared build")
-	    endif()
-    endif()
+if(PRECOMPILED_HEADERS)
+	if(WIN32)
+		if(BUILD_SHARED_LIBS)
+			if(MSVC_VERSION LESS 1600)
+				set(PRECOMPILED_HEADERS OFF CACHE BOOL "Create and use precompilied headers" FORCE)
+				ivw_message("Precompiled headers disabled as currently there is an issue under Visual Studio 2008 in combination with shared build")
+			endif()
+		endif()
+	endif()
 endif()
 
 #--------------------------------------------------------------------
