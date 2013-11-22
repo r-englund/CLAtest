@@ -2,10 +2,8 @@
 #define IVW_IMAGEGLCONVERTER_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/datastructures/representationconverter.h>
-#include <inviwo/core/datastructures/image/imageram.h>
-#include <inviwo/core/datastructures/image/imageramconverter.h>
 #include <modules/opengl/image/imagegl.h>
+#include <inviwo/core/datastructures/image/imageramconverter.h>
 
 namespace inviwo {
 

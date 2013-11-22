@@ -46,10 +46,6 @@ public:
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) = 0;
 };
 
-#ifdef WIN32
-IVW_CORE_EXT template class IVW_CORE_API std::vector<Logger*>;
-#endif
-
 class IVW_CORE_API ConsoleLogger : public Logger{
 
 public:
@@ -75,7 +71,7 @@ public:
 
 private:
     unsigned int logLevel_;
-    std::vector<Logger*> loggers_;
+    std::vector<Logger*>* loggers_;
 
     static LogCentral* instance_;
 };
