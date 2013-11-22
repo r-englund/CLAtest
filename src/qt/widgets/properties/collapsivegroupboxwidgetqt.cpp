@@ -190,6 +190,7 @@ void CollapsiveGroupBoxWidgetQt::showContextMenu( const QPoint& pos ){
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+        updateContextMenu();
         QPoint globalPos = this->mapToGlobal(pos);
         QAction* selecteditem = contextMenu_->exec(globalPos);
     }

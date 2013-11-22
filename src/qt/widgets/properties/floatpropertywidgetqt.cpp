@@ -64,18 +64,18 @@ void FloatPropertyWidgetQt::showContextMenuSlider(const QPoint& pos) {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
-
+        updateContextMenu();
         QPoint globalPos = sliderWidget_->mapToGlobal(pos);
-
+        
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(1)) {
+        if (selecteditem && selecteditem->text() == "Property settings") {
             settingsWidget_->reload();
             settingsWidget_->show();
-        } else if (selecteditem == settingsMenu_->actions().at(2)) {
+        } else if (selecteditem && selecteditem->text() == "Set as Min") {
             // set current value of the slider to min value of the property
             property_->setMinValue(sliderWidget_->getValue());
             updateFromProperty();
-        } else if (selecteditem == settingsMenu_->actions().at(3)){
+        } else if (selecteditem && selecteditem->text() == "Set as Max"){
             // set current value of the slider to max value of the property
             property_->setMaxValue(sliderWidget_->getValue());
             updateFromProperty();
@@ -94,6 +94,8 @@ void FloatPropertyWidgetQt::generatesSettingsWidget() {
     sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(sliderWidget_, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(showContextMenuSlider(const QPoint&)));
+    connect(addToStudyAction_,SIGNAL(triggered(bool)),this, SLOT(addToStudy(bool)));
+            
 }
 
 void FloatPropertyWidgetQt::setPropertyDisplayName(){

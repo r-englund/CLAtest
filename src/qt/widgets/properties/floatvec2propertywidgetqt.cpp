@@ -100,27 +100,34 @@ void FloatVec2PropertyWidgetQt::generatesSettingsWidget() {
 
     connect(sliderX_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuX(const QPoint&)));
     connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));
+     
+    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
+    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
+    connect(addToStudyAction_,SIGNAL(triggered(bool)),this, SLOT(addToStudy(bool)));
+
+    updateContextMenu();
+  
 }
 
 void FloatVec2PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
-
+        updateContextMenu();
         QPoint globalPos = sliderX_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(1)) {
+        if (selecteditem && selecteditem->text() == "Property settings") {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)) {
+        else if (selecteditem && selecteditem->text() == "Set as Min") {
             //Set current value of the slider to min value of the property
             valueVec2Min_ = property_->getMinValue();
             valueVec2Min_.x = sliderX_->getValue();
             property_->setMinValue(valueVec2Min_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(3)){
+        else if (selecteditem && selecteditem->text() == "Set as Max"){
             //Set current value of the slider to max value of the property
             valueVec2Max_ = property_->getMaxValue();
             valueVec2Max_.x = sliderX_->getValue();
@@ -134,21 +141,21 @@ void FloatVec2PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
-        QPoint globalPos = sliderY_->mapToGlobal(pos);
-
+        updateContextMenu();
+        QPoint globalPos = sliderY_->mapToGlobal(pos);        
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(1)) {
+        if (selecteditem && selecteditem->text() == "Property settings") {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)) {
+        else if (selecteditem && selecteditem->text() == "Set as Min") {
             //Set current value of the slider to min value of the property
             valueVec2Min_ = property_->getMinValue();
             valueVec2Min_.y = sliderY_->getValue();
             property_->setMinValue(valueVec2Min_);
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(3)){
+        else if (selecteditem && selecteditem->text() == "Set as Max"){
             //Set current value of the slider to max value of the property
             valueVec2Max_ = property_->getMaxValue();
             valueVec2Max_.y = sliderY_->getValue();

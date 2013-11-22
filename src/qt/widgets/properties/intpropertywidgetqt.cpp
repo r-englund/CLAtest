@@ -61,20 +61,20 @@ void IntPropertyWidgetQt::showContextMenu( const QPoint& pos ) {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
-        
+        updateContextMenu();
         QPoint globalPos = sliderWidget_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        if (selecteditem == settingsMenu_->actions().at(0)) {
+        if (selecteditem && selecteditem->text() == "Property settings") {
             settingsWidget_->reload();
             settingsWidget_->show();
         }
-        else if (selecteditem == settingsMenu_->actions().at(1)) {
+        else if (selecteditem && selecteditem->text() == "Property settings") {
             //Set current value of the slider to min value of the property
             property_->setMinValue(sliderWidget_->getValue());
             updateFromProperty();
         }
-        else if (selecteditem == settingsMenu_->actions().at(2)){
+        else if (selecteditem && selecteditem->text() == "Set as Max"){
             //Set current value of the slider to max value of the property
             property_->setMaxValue(sliderWidget_->getValue());
             updateFromProperty();
@@ -91,6 +91,11 @@ void IntPropertyWidgetQt::generatesSettingsWidget() {
     sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(sliderWidget_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
 
+    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
+    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
+    connect(addToStudyAction_,SIGNAL(triggered(bool)),this, SLOT(addToStudy(bool)));
+
+    updateContextMenu();
 }
 
 void IntPropertyWidgetQt::setPropertyValue(){

@@ -29,6 +29,7 @@ namespace inviwo {
             void showContextMenu(const QPoint& pos);
             void setDeveloperViewMode(bool value);
             void setApplicationViewMode(bool value);
+            void addToStudy(bool value);
 
 signals:
             void modified();
@@ -44,6 +45,7 @@ signals:
         QMenu* generatePropertyWidgetMenu();
         QAction* developerViewModeAction_;
         QAction* applicationViewModeAction_;
+        QAction* addToStudyAction_;
         void setProperty(Property* prop);
 
 
