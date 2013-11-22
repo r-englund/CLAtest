@@ -16,6 +16,7 @@ void inviwo::IntSliderWidgetQt::generateWidget() {
     slider_->setOrientation(Qt::Horizontal);
     slider_->setMaximum(SLIDER_MAX);
     spinBox_ = new QSpinBox();
+    spinBox_->setKeyboardTracking(false);  // don't emit the valueChanged() signal while typing
     spinBox_->setRange(this->minValue_,this->maxValue_);
     spinBox_->setSingleStep(this->increment_);
 

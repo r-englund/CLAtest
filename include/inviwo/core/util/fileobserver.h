@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace inviwo {
 

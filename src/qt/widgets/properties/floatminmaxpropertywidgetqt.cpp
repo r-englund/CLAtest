@@ -32,6 +32,7 @@ void FloatMinMaxPropertyWidgetQt::generateWidget() {
     sliderWidget->setLayout(hSliderLayout);
     hSliderLayout->setContentsMargins(0,0,0,0);
     spinBoxMin_ = new QDoubleSpinBox(this);
+    spinBoxMin_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
     spinBoxMin_->setFixedWidth(50);
     hSliderLayout->addWidget(spinBoxMin_);
 
@@ -39,6 +40,7 @@ void FloatMinMaxPropertyWidgetQt::generateWidget() {
 	hSliderLayout->addWidget(slider_);
 
     spinBoxMax_ = new QDoubleSpinBox(this);
+    spinBoxMax_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
     spinBoxMax_->setFixedWidth(50);
     hSliderLayout->addWidget(spinBoxMax_);
 

@@ -59,7 +59,7 @@ bool FileObserver::isObserved(std::string fileName) {
 std::vector<std::string> FileObserver::getFiles() {
     std::vector<std::string> files;
     for (size_t i=0;i<observedFiles_->size();i++)
-        files.push_back(observedFiles_[i].first);
+        files.push_back(observedFiles_->at(i).first);
     return files;
 }
 

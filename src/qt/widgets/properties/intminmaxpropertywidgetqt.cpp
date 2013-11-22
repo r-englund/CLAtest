@@ -31,6 +31,7 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
         hSliderLayout->setContentsMargins(0,0,0,0);
 
         spinBoxMin_ = new QSpinBox(this);
+        spinBoxMin_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
         spinBoxMin_->setFixedWidth(50);
         hSliderLayout->addWidget(spinBoxMin_);
 
@@ -39,6 +40,7 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
 	    hSliderLayout->addWidget(slider_);
 
         spinBoxMax_ = new QSpinBox(this);
+        spinBoxMax_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
         spinBoxMax_->setFixedWidth(50);
         hSliderLayout->addWidget(spinBoxMax_);
 

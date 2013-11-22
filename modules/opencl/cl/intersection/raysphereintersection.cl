@@ -7,7 +7,7 @@ bool raySphereIntersection(const float3 sphereCenter, const float radius, const 
     
     float3 m = o-sphereCenter;
     float b = dot(m, d);
-    float c = dot(m, m);
+    float c = dot(m, m)-radius*radius;
     // Exit if ray origin is outside of sphere and pointing away from sphere
     if(c > 0.f && b > 0.f) return false;
 

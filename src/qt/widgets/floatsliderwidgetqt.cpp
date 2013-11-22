@@ -12,6 +12,7 @@ void FloatSliderWidgetQt::generateWidget() {
     slider_->setOrientation(Qt::Horizontal);
     slider_->setMaximum(SLIDER_MAX);
     spinBox_ = new QDoubleSpinBox();
+    spinBox_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
     spinBox_->setFixedWidth(50);
     hLayout->addWidget(slider_);
     hLayout->addWidget(spinBox_);
