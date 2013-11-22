@@ -43,7 +43,7 @@ void CanvasGLUT::initializeGL() {
     glutMotionFunc(mouseMotion);
     glutPassiveMotionFunc(mouseMotion);
 
-    CanvasGL::initializeGL();
+    initializeGLEW();
 }
 
 void CanvasGLUT::initializeSquare(){

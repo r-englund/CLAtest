@@ -1,7 +1,7 @@
 #ifndef IVW_CANVASQT_H
 #define IVW_CANVASQT_H
 
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <modules/openglqt/openglqtmoduledefine.h>
 #include <modules/opengl/canvasgl.h>
 #include <inviwo/qt/widgets/eventconverterqt.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
@@ -16,7 +16,7 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API CanvasQt : public QGLWidget, public CanvasGL {
+class IVW_MODULE_OPENGLQT_API CanvasQt : public QGLWidget, public CanvasGL {
     Q_OBJECT
 public:
     CanvasQt(QWidget* parent = NULL);
@@ -42,7 +42,7 @@ protected:
     void keyReleaseEvent(QKeyEvent* e);
 
 private:
-    static QGLWidget* sharedWidget_; //For rendering-context sharing
+    static const QGLWidget* sharedWidget_; //For rendering-context sharing
     static QGLFormat sharedFormat_;
 };
 

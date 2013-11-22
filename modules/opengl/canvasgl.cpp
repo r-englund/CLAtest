@@ -35,7 +35,7 @@ void CanvasGL::initialize() {
     LGL_ERROR;
 }
 
-void CanvasGL::initializeGL() {
+void CanvasGL::initializeGLEW() {
     if (!glewInitialized_) {
         LogInfo("Initializing GLEW");
         glewInit();

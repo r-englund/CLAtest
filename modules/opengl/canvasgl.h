@@ -35,7 +35,7 @@ public:
     }
 
 protected:
-    virtual void initializeGL();
+    void initializeGLEW();
     virtual void initializeSquare();
 
     void renderColor();

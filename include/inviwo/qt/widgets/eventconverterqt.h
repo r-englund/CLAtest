@@ -1,13 +1,14 @@
 #ifndef IVW_EVENTCONVERTERQT_H
 #define IVW_EVENTCONVERTERQT_H
 
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QMouseEvent>
 #include <QInputEvent>
 #include <inviwo/core/interaction/events/mouseevent.h>
 
 namespace inviwo {
 
-class EventConverterQt {
+class IVW_QTWIDGETS_API EventConverterQt {
 public:
     EventConverterQt();
     ~EventConverterQt();

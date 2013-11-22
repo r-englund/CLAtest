@@ -218,7 +218,6 @@ protected:
         return instance_[id];
     }
 
-protected:
     DataFormatId formatId_;
     size_t bitsAllocated_;
     size_t bitsStored_;
