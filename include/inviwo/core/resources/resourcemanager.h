@@ -5,6 +5,7 @@
 #include <inviwo/core/resources/resource.h>
 #include <inviwo/core/resources/resourcemanagerobserver.h>
 #include <inviwo/core/util/singleton.h>
+#include <vector>
 
 namespace inviwo {
 /** \class ResourceManager 

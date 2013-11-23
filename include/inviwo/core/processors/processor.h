@@ -7,6 +7,7 @@
 #include <inviwo/core/interaction/events/event.h>
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/ports/outport.h>
+#include <inviwo/core/processors/processorstate.h>
 #include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/properties/properties.h>
 #include <inviwo/core/properties/propertyowner.h>
@@ -31,7 +32,7 @@ namespace inviwo {
     const std::string T::CATEGORY = category;
 
 #define ProcessorCodeState(T, codeState) \
-    const Processor::CodeState T::CODE_STATE = Processor::codeState;
+    const CodeState T::CODE_STATE = Processor::codeState;
 
 class IVW_CORE_API Processor : public PropertyOwner, public VoidObservable {
 

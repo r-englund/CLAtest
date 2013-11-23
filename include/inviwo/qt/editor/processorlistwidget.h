@@ -67,7 +67,7 @@ public:
 
 protected:
     bool processorFits(ProcessorFactoryObject* processor, const QString& filter);
-    QIcon* getCodeStateIcon(Processor::CodeState);
+    QIcon* getCodeStateIcon(CodeState);
 
 private slots:
     void addProcessorsToTree();

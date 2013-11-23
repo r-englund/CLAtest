@@ -19,18 +19,18 @@
 #include <glm/core/type.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-typedef ivec2 ivec2;
-typedef ivec3 ivec3;
-typedef ivec4 ivec4;
-typedef vec2 vec2;
-typedef vec3 vec3;
-typedef vec4 vec4;
-typedef dvec2 dvec2;
-typedef dvec3 dvec3;
-typedef dvec4 dvec4;
-typedef bvec2 bvec2;
-typedef bvec3 bvec3;
-typedef bvec3 bvec4;
+typedef glm::ivec2 ivec2;
+typedef glm::ivec3 ivec3;
+typedef glm::ivec4 ivec4;
+typedef glm::vec2 vec2;
+typedef glm::vec3 vec3;
+typedef glm::vec4 vec4;
+typedef glm::dvec2 dvec2;
+typedef glm::dvec3 dvec3;
+typedef glm::dvec4 dvec4;
+typedef glm::bvec2 bvec2;
+typedef glm::bvec3 bvec3;
+typedef glm::bvec3 bvec4;
 typedef glm::mat2 mat2;
 typedef glm::mat3 mat3;
 typedef glm::mat4 mat4;

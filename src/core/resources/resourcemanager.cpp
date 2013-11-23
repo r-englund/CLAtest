@@ -1,5 +1,6 @@
 #include <inviwo/core/resources/resourcemanager.h>
 #include <algorithm>
+
 namespace inviwo {
 
 struct ResourceComparer {

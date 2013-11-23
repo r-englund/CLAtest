@@ -71,9 +71,9 @@ void StudyParameterListWidget::addWorkspace() {
 
 void StudyParameterListWidget::updateStudyParameterList() {
     propertyList_->clear();
-    std::map<ProcessorNetwork*, std::vector<Property*> > parameterProperties = StudyParameterList::getPtr()->getParameters();
+    std::map<ProcessorNetwork*, std::vector<Property*> >* parameterProperties = StudyParameterList::getPtr()->getParameters();
     std::map<ProcessorNetwork*, std::vector<Property*> >::iterator mapIt;
-    for (mapIt = parameterProperties.begin(); mapIt!=parameterProperties.end(); mapIt++) {   
+    for (mapIt = parameterProperties->begin(); mapIt!=parameterProperties->end(); mapIt++) {   
         std::vector<Property*> properties = mapIt->second;
         for (size_t i=0; i<properties.size(); i++)
             propertyList_->addItem(new QListWidgetItem( tr(properties[i]->getDisplayName().c_str()) ));

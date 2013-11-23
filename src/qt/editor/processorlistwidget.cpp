@@ -135,7 +135,7 @@ bool ProcessorTreeWidget::processorFits(ProcessorFactoryObject* processor, const
     return (QString::fromStdString(processor->getClassName()).contains(filter, Qt::CaseInsensitive));
 }
 
-QIcon* ProcessorTreeWidget::getCodeStateIcon(Processor::CodeState state){
+QIcon* ProcessorTreeWidget::getCodeStateIcon(CodeState state){
     switch(state){
         case Processor::CODE_STATE_STABLE:
             return &iconStable_;

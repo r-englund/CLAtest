@@ -2,14 +2,16 @@
 #define IVW_PROCESSORFACTORYOBJECT_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/processors/processorstate.h>
 
 namespace inviwo {
+
+class Processor;
 
 class IVW_CORE_API ProcessorFactoryObject  {
 
 public:
-    ProcessorFactoryObject(std::string className, std::string category, Processor::CodeState codeState)
+    ProcessorFactoryObject(std::string className, std::string category, CodeState codeState)
         : className_(className), category_(category), codeState_(codeState) {}
     virtual ~ProcessorFactoryObject() {}
 
@@ -17,19 +19,19 @@ public:
 
     std::string getClassName() const { return className_; }
     std::string getCategory() const { return category_; }
-    Processor::CodeState getCodeState() const { return codeState_; } 
+    CodeState getCodeState() const { return codeState_; } 
 
 private:
     std::string className_;
     std::string category_;
-    Processor::CodeState codeState_;
+    CodeState codeState_;
 };
 
 template<typename T>
 class ProcessorFactoryObjectTemplate : public ProcessorFactoryObject  {
 
 public:
-    ProcessorFactoryObjectTemplate(std::string className, std::string category, Processor::CodeState codeState) 
+    ProcessorFactoryObjectTemplate(std::string className, std::string category, CodeState codeState) 
         : ProcessorFactoryObject(className, category, codeState) {}
     virtual ~ProcessorFactoryObjectTemplate() {}
 

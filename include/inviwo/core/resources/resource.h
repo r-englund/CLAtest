@@ -2,6 +2,7 @@
 #define IVW_RESOURCE_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <string>
 
 namespace inviwo {
 
