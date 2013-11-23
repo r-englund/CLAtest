@@ -32,7 +32,7 @@ namespace inviwo {
     const std::string T::CATEGORY = category;
 
 #define ProcessorCodeState(T, codeState) \
-    const CodeState T::CODE_STATE = Processor::codeState;
+    const CodeState T::CODE_STATE = codeState;
 
 class IVW_CORE_API Processor : public PropertyOwner, public VoidObservable {
 
