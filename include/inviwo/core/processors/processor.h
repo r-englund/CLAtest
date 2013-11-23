@@ -39,12 +39,7 @@ class IVW_CORE_API Processor : public PropertyOwner, public VoidObservable {
 public:
     Processor();
     virtual ~Processor();
-
-    enum CodeState {
-        CODE_STATE_BROKEN,
-        CODE_STATE_EXPERIMENTAL,
-        CODE_STATE_STABLE
-    };
+   
     InviwoProcessorInfo();
 
     void setIdentifier(const std::string& identifier) { identifier_ = identifier; }

@@ -10,6 +10,8 @@
 
 #include <inviwo/qt/editor/processorlistwidget.h>
 
+#include <inviwo/core/processors/processorstate.h>
+
 namespace inviwo {
 
 void ProcessorList::mousePressEvent(QMouseEvent* e) {
@@ -64,9 +66,9 @@ void ProcessorListWidget::addProcessorsToList(const QString& text) {
         for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
             if (text.isEmpty() || processorFits(curProcessorList[curProcessorId], text)) {
                 QString iconName = ":/icons/processor_experimental.png";
-                if (curProcessorList[curProcessorId]->getCodeState() == Processor::CODE_STATE_BROKEN)
+                if (curProcessorList[curProcessorId]->getCodeState() == CODE_STATE_BROKEN)
                     iconName = ":/icons/processor_broken.png";
-                else if (curProcessorList[curProcessorId]->getCodeState() == Processor::CODE_STATE_STABLE)
+                else if (curProcessorList[curProcessorId]->getCodeState() == CODE_STATE_STABLE)
                     iconName = ":/icons/processor_stable.png";
                 processorList_->addItem(new QListWidgetItem(QIcon(iconName),
                                         QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
@@ -137,9 +139,9 @@ bool ProcessorTreeWidget::processorFits(ProcessorFactoryObject* processor, const
 
 QIcon* ProcessorTreeWidget::getCodeStateIcon(CodeState state){
     switch(state){
-        case Processor::CODE_STATE_STABLE:
+        case CODE_STATE_STABLE:
             return &iconStable_;
-        case Processor::CODE_STATE_BROKEN:
+        case CODE_STATE_BROKEN:
             return &iconBroken_;
         default:
             return &iconExperimental_;
@@ -160,11 +162,11 @@ void ProcessorTreeWidget::addProcessorsToTree() {
                 if (lineEdit_->text().isEmpty() || processorFits(curProcessorList[curProcessorId], lineEdit_->text())) {
                     QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList(QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
                     switch(curProcessorList[curProcessorId]->getCodeState()){
-                        case Processor::CODE_STATE_STABLE:
+                        case CODE_STATE_STABLE:
                             newItem->setIcon(0, iconStable_);
                             stableItems->addChild(newItem);
                             break;
-                        case Processor::CODE_STATE_BROKEN:
+                        case CODE_STATE_BROKEN:
                             newItem->setIcon(0, iconBroken_);
                             brokenItems->addChild(newItem);
                             break;
