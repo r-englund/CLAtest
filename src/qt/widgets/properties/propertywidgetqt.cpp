@@ -119,12 +119,13 @@ void PropertyWidgetQt::updateContextMenu(){
     else if (property_->getVisibilityMode() == PropertyVisibility::APPLICATION)
         applicationViewModeAction_->setChecked(true);
 
-    if ( StudyParameterList::getPtr()->isParameterAdded(property_) )
+    //FIXME Should not be here?, or at least cause crash on  startup
+    /*if ( StudyParameterList::getPtr()->isParameterAdded(property_) )
         addToStudyAction_->setChecked(true);  
     else {
         if (addToStudyAction_->isChecked())
              addToStudyAction_->setChecked(false);  
-    }
+    }*/
 }
 
 
