@@ -194,6 +194,7 @@ set(SOURCE_FILES
     datastructures/buffer/bufferram.cpp
     datastructures/buffer/bufferrepresentation.cpp
     datastructures/data.cpp
+	datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp
     datastructures/geometry/attributes.cpp
     datastructures/geometry/simplemeshcreator.cpp
@@ -220,6 +221,7 @@ set(SOURCE_FILES
     datastructures/volume/volumetypeclassification.cpp
     interaction/action.cpp
     interaction/interactionhandler.cpp
+	interaction/pickingcontainer.cpp
     interaction/pickinghandler.cpp
     interaction/pickingmanager.cpp
     interaction/pickingobject.cpp

@@ -115,13 +115,13 @@ public:
     void setMat4(const mat4& value);  
 
     template<class T>
-    inline void set(const T& value, VariantType type);
+    void set(const T& value, VariantType type);
 
     template<class T>
-    inline void set(const T& value, int type);
+    void set(const T& value, int type);
 
     template<class T>
-    inline T get() const;
+    T get() const;
 
     void serialize(IvwSerializer& s) const;
     void deserialize(IvwDeserializer& d);
@@ -161,7 +161,7 @@ protected:
 #define VP(a) (*(a*)value_)
 
 template<class T>
-void Variant::set(const T& value, VariantType type) {
+inline void Variant::set(const T& value, VariantType type) {
     if (type != currentType_) {
         deleteValue();
         currentType_ = type;
@@ -173,12 +173,12 @@ void Variant::set(const T& value, VariantType type) {
 }
 
 template<class T>
-void Variant::set(const T& value, int type) {
+inline void Variant::set(const T& value, int type) {
     set<T>(value, VariantType(type));
 }
 
 template<class T>
-T Variant::get() const {
+inline T Variant::get() const {
     return VP(T);
 }
 

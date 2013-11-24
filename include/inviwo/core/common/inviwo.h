@@ -5,6 +5,11 @@
 
 #define NOMINMAX
 
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,11 +19,6 @@
 #include <stdio.h>
 
 #include <inviwo/core/common/inviwocommondefines.h>
-
-#ifdef WIN32
-#include <WinSock2.h>
-#include <windows.h>
-#endif
 
 // include glm
 #include <glm/glm.hpp>
@@ -55,7 +55,6 @@ typedef glm::quat quat;
 #include <inviwo/core/util/glmstreamoperators.h>
 
 #include <inviwo/core/util/formats.h>
-
 
 // error handling
 #include <inviwo/core/util/assertion.h>

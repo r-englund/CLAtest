@@ -1,6 +1,9 @@
 #ifndef IVW_PLANE_H
 #define IVW_PLANE_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+
 namespace inviwo {
 
 class IVW_CORE_API Plane {

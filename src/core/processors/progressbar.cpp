@@ -1,5 +1,6 @@
 #include <inviwo/core/processors/progressbar.h>
-
+#include <inviwo/core/io/serialization/ivwserialization.h>
+#include <inviwo/core/util/assertion.h>
 
 namespace inviwo {
 

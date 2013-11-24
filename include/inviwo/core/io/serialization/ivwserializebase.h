@@ -11,6 +11,11 @@
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <map>
 
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 // include glm
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -18,6 +23,10 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/core/type.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/vector_angle.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 typedef glm::ivec2 ivec2;
 typedef glm::ivec3 ivec3;
@@ -31,6 +40,9 @@ typedef glm::dvec4 dvec4;
 typedef glm::bvec2 bvec2;
 typedef glm::bvec3 bvec3;
 typedef glm::bvec3 bvec4;
+typedef glm::uvec2 uvec2;
+typedef glm::uvec3 uvec3;
+typedef glm::uvec4 uvec4;
 typedef glm::mat2 mat2;
 typedef glm::mat3 mat3;
 typedef glm::mat4 mat4;

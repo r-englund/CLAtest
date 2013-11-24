@@ -2,9 +2,7 @@
 
 namespace inviwo {
 
-Mesh::Mesh()
-    : Geometry(), attributesInfo_(AttributesInfo())
-{}
+Mesh::Mesh() : Geometry(), attributesInfo_(AttributesInfo()){}
 
 Mesh::Mesh(const Mesh& rhs) : Geometry(rhs), attributesInfo_(rhs.attributesInfo_) {
     for(std::vector<Buffer*>::const_iterator it = rhs.attributes_.begin() ; it != rhs.attributes_.end(); ++it)

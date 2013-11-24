@@ -12,44 +12,46 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget, public VoidObserver {
+class Property;
 
-        Q_OBJECT
+class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget, public VoidObserver {
 
-    public:
-        PropertyWidgetQt();
-        PropertyWidgetQt* create();
+    Q_OBJECT
 
-        void showWidget();
-        void hideWidget();
-        //void notify();
-        void updateContextMenu();
-        public slots:
-            void visibilityModified(int mode);
-            void showContextMenu(const QPoint& pos);
-            void setDeveloperViewMode(bool value);
-            void setApplicationViewMode(bool value);
-            void addToStudy(bool value);
+public:
+    PropertyWidgetQt();
+    PropertyWidgetQt* create();
+
+    void showWidget();
+    void hideWidget();
+    //void notify();
+    void updateContextMenu();
+    public slots:
+        void visibilityModified(int mode);
+        void showContextMenu(const QPoint& pos);
+        void setDeveloperViewMode(bool value);
+        void setApplicationViewMode(bool value);
+        void addToStudy(bool value);
 
 signals:
-            void modified();
-            void visibilityChange();
-    private:
-        QMenu* contextMenu_;
-        QActionGroup* viewModeActionGroup_;
-        QMenu* viewModeItem_;
-        Property* property_;
-    protected:
-        QMenu* getContextMenu(){return contextMenu_;}
-        void generateContextMenu();
-        QMenu* generatePropertyWidgetMenu();
-        QAction* developerViewModeAction_;
-        QAction* applicationViewModeAction_;
-        QAction* addToStudyAction_;
-        void setProperty(Property* prop);
+        void modified();
+        void visibilityChange();
+private:
+    QMenu* contextMenu_;
+    QActionGroup* viewModeActionGroup_;
+    QMenu* viewModeItem_;
+    Property* property_;
+protected:
+    QMenu* getContextMenu(){return contextMenu_;}
+    void generateContextMenu();
+    QMenu* generatePropertyWidgetMenu();
+    QAction* developerViewModeAction_;
+    QAction* applicationViewModeAction_;
+    QAction* addToStudyAction_;
+    void setProperty(Property* prop);
 
 
-    };
+};
 
 } // namespace
 

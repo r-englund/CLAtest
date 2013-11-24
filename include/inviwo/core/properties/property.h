@@ -6,12 +6,12 @@
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/properties/propertysemantics.h>
 #include <inviwo/core/properties/propertyvisibility.h>
-#include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/util/callback.h>
 #include <inviwo/core/util/observer.h>
-#include <inviwo/core/util/variant.h>
 
 namespace inviwo {
+
+class Variant;
 
 class IVW_CORE_API Property : public IvwSerializable, public VoidObservable, public VoidObserver {
 

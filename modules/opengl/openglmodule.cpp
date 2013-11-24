@@ -1,4 +1,6 @@
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/util/vectoroperations.h>
 #include <modules/opengl/buffer/bufferglconverter.h>
 #include <modules/opengl/buffer/elementbuffergl.h>
 #include <modules/opengl/canvasprocessorgl.h>

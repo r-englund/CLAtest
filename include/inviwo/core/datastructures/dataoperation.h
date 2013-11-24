@@ -10,17 +10,22 @@ class DataRepresentation;
 
 class IVW_CORE_API DataOperation {
 public:
-    DataOperation(){}
-    virtual ~DataOperation(){}
+    DataOperation();
+    virtual ~DataOperation();
 
-    void setOutput(DataRepresentation* out) { out_ = out; }
+    void setOutput(DataRepresentation* out);
 
     template<typename T>
-    T* getOutput() { return static_cast<T*>(out_); }
+    T* getOutput();
 
 private:
     DataRepresentation* out_;
 };
+
+template<typename T>
+T* DataOperation::getOutput() { 
+    return static_cast<T*>(out_); 
+}
 
 } // namespace
 

@@ -12,6 +12,8 @@ namespace inviwo {
 * @see FileProperty, StringProperty
 */
 
+class IntProperty;
+
 class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:
     DirectoryProperty(std::string identifier, std::string displayName, std::string value=IVW_DIR,

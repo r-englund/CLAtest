@@ -1,17 +1,18 @@
 #ifndef IVW_STUDY_PARAMETER_LIST_WIDGET_H
 #define IVW_STUDY_PARAMETER_LIST_WIDGET_H
 
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/core/util/observer.h>
 #include <QWidget>
 #include <QListWidget>
 #include <QDialog>
 #include <QPushButton>
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-
-class FileProperty;
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API StudyParameterListWidget : public QWidget ,public VoidObserver {
+class FileProperty;
+
+class IVW_QTWIDGETS_API StudyParameterListWidget : public QWidget, public VoidObserver {
     Q_OBJECT
 public:
     StudyParameterListWidget(QWidget* parent);

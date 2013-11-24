@@ -12,7 +12,6 @@
 
 namespace inviwo {
 
-
 class IVW_QTWIDGETS_API PropertySelectionTree : public QTreeWidget {
 
 public:
@@ -40,7 +39,6 @@ private:
     QPoint dragStartPosition_;
     QVBoxLayout* vLayout_;
 };
-
 
 class IVW_QTWIDGETS_API PropertySelectionTreeDialog : public QDialog, public Singleton<PropertySelectionTreeDialog> {
     Q_OBJECT

@@ -20,56 +20,58 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint :public QObject, public QGraphicsItem {
-            Q_OBJECT
-    public:
-        /** \TransferFunctionEditorControlPoint constructor  
-        *      Creates a TransferFunctionEditorControlPoint at a QPointF
-        */        
-        TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint);
-        
-        /** \TransferFunctionEditorControlPoint constructor  
-        *      Default constructor
-        */
-        TransferFunctionEditorControlPoint();
+class TransferFunctionDataPoint;
 
-        /** \TransferFunctionEditorControlPoint destructor  
-        */
-        ~TransferFunctionEditorControlPoint();
+class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint : public QObject, public QGraphicsItem {
+        Q_OBJECT
+public:
+    /** \TransferFunctionEditorControlPoint constructor  
+    *      Creates a TransferFunctionEditorControlPoint at a QPointF
+    */        
+    TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint);
+    
+    /** \TransferFunctionEditorControlPoint constructor  
+    *      Default constructor
+    */
+    TransferFunctionEditorControlPoint();
 
-        //override for qgraphicsitem_cast (refer qt documentation)
-        enum { Type = UserType + 2 };
-        int type() const  {return Type; }
+    /** \TransferFunctionEditorControlPoint destructor  
+    */
+    ~TransferFunctionEditorControlPoint();
 
-        /**Paint method
-        * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
-        */
-        virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-        QRectF boundingRect() const;
+    //override for qgraphicsitem_cast (refer qt documentation)
+    enum { Type = UserType + 2 };
+    int type() const  {return Type; }
 
-        TransferFunctionDataPoint* getPoint() const;
-		TransferFunctionEditorControlPoint* getLeftNeighbour() const;
-		TransferFunctionEditorControlPoint* getRightNeighbour() const;
+    /**Paint method
+    * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
+    */
+    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    QRectF boundingRect() const;
 
-		void setLeftNeighbour(TransferFunctionEditorControlPoint*);
-		void setRightNeighbour(TransferFunctionEditorControlPoint*);
+    TransferFunctionDataPoint* getPoint() const;
+	TransferFunctionEditorControlPoint* getLeftNeighbour() const;
+	TransferFunctionEditorControlPoint* getRightNeighbour() const;
 
-		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-		void notify();
+	void setLeftNeighbour(TransferFunctionEditorControlPoint*);
+	void setRightNeighbour(TransferFunctionEditorControlPoint*);
 
-    protected:
-        void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
-        void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-	
-    private:
-        float size_; ///< size for drawing the points
-        TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
-		TransferFunctionEditorControlPoint* leftNeighbour_;
-		TransferFunctionEditorControlPoint* rightNeighbour_;
-		float viewWidth_;
-		float viewHeight_;
-    };
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	void notify();
+
+protected:
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+
+private:
+    float size_; ///< size for drawing the points
+    TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
+	TransferFunctionEditorControlPoint* leftNeighbour_;
+	TransferFunctionEditorControlPoint* rightNeighbour_;
+	float viewWidth_;
+	float viewHeight_;
+};
 
 }// namespace
 #endif // IVW_TRANSFERFUNCTIONEDITORCONTROLPOINT_H

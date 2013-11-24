@@ -1,21 +1,13 @@
 #ifndef IVW_SERIALIZER_H
 #define IVW_SERIALIZER_H
 
-#ifndef TIXML_USE_TICPP
-#  define TIXML_USE_TICPP
-#endif
-
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <ticpp/ticpp.h>
-#include <inviwo/core/io/serialization/ivwserializeconstants.h>
 #include <inviwo/core/io/serialization/ivwserializebase.h>
-#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 
 class IvwSerializable;
 
-class IVW_CORE_API IvwSerializer : public  IvwSerializeBase {
+class IVW_CORE_API IvwSerializer : public IvwSerializeBase {
 public:
     IvwSerializer(IvwSerializer &s, bool allowReference=true);
     IvwSerializer(std::string fileName, bool allowReference=true);

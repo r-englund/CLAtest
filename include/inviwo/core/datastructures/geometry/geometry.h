@@ -2,7 +2,7 @@
 #define IVW_GEOMETRY_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/data.h>
+#include <inviwo/core/datastructures/spatialdata.h>
 #include <inviwo/core/datastructures/geometry/geometryrepresentation.h>
 
 namespace inviwo {

@@ -1,8 +1,10 @@
 #include <inviwo/core/properties/property.h>
+#include <inviwo/core/util/variant.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
-    std::map<std::string,std::string> Property::groupDisplayNames_;
+std::map<std::string,std::string> Property::groupDisplayNames_;
 
 Property::Property(std::string identifier, std::string displayName, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
 : identifier_(identifier),
@@ -119,8 +121,7 @@ void Property::setVisibility(PropertyVisibility::VisibilityMode visibilityMode) 
 
 void Property::updateVisibility() {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode appMode = static_cast<PropertyVisibility::VisibilityMode>(
-        static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
+    PropertyVisibility::VisibilityMode appMode = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant().getInt());
 
     if (visibilityMode_ == PropertyVisibility::INVISIBLE) {
         for (size_t i=0; i<propertyWidgets_.size(); i++){

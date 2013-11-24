@@ -4,10 +4,10 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 
-#include <modules/opengl/glwrap/framebufferobject.h>
-#include <modules/opengl/glwrap/shader.h>
-
 namespace inviwo {
+
+class FrameBufferObject;
+class Shader;
 
 class IVW_MODULE_OPENGL_API PortGroup {
 

@@ -60,7 +60,7 @@ PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* args){
 			return 0;
 		}
 
-		if(canvases.size()<=id){
+		if(static_cast<int>(canvases.size())<=id){
 			std::string msg = std::string("resizeCanvas(canvas,width,height) index out of bounds, index given: ") + toString(id) + ", max index possible: " + toString(canvases.size()-1) ;
 			PyErr_SetString(PyExc_TypeError, msg.c_str());
 			return 0;

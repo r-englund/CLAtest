@@ -1,3 +1,4 @@
+#include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>

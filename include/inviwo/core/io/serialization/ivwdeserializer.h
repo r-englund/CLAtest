@@ -1,15 +1,9 @@
 #ifndef IVW_DESERIALIZER_H
 #define IVW_DESERIALIZER_H
 
-#ifndef TIXML_USE_TICPP
-#  define TIXML_USE_TICPP
-#endif
+#pragma warning(disable: 4290)
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <ticpp/ticpp.h>
-#include <inviwo/core/io/serialization/ivwserializeconstants.h>
 #include <inviwo/core/io/serialization/ivwserializebase.h>
-#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/util/exception.h>
 
 namespace inviwo {

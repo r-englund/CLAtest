@@ -4,7 +4,6 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/interaction/pickingobject.h>
 #include <inviwo/core/util/singleton.h>
-#include <inviwo/core/interaction/pickingcontainer.h>
 
 namespace inviwo {
 /** \class PickingManager 

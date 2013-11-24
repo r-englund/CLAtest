@@ -1,6 +1,7 @@
 #include "portgroup.h"
-
 #include <modules/opengl/image/imagegl.h>
+#include <modules/opengl/glwrap/framebufferobject.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
