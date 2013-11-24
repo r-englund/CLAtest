@@ -5,9 +5,12 @@
     <file>icons/arrow_right.png</file>
     <file>icons/arrow_bidirectional.png</file>
     <file>icons/edit.png</file>
+    <file>icons/text_block.png</file>
     <file>icons/html.png</file>
     <file>icons/inviwo_tmp.png</file>
     <file>icons/new.png</file>
+    <file>icons/network.png</file>
+    <file>icons/ok.png</file>
     <file>icons/open.png</file>
     <file>icons/processor_broken.png</file>
     <file>icons/processor_experimental.png</file>
@@ -17,6 +20,10 @@
     <file>icons/saveas.png</file>
     <file>icons/view-application.png</file>
     <file>icons/view-developer.png</file>
+    <file>icons/view_choose.png</file>
+    <file>icons/view_statistics.png</file>
+    <file>icons/wallet_open.png</file>
+
     <file>images/splashscreen.png</file>
 
     <file>stylesheets/inviwo.qss</file>
