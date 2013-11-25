@@ -186,13 +186,13 @@ PropertyListWidget* PropertyListWidget::instance() {
 
 void PropertyListWidget::setDeveloperViewMode( bool value  ){
     if (value) {
-        setViewMode(PropertyVisibility::VisibilityMode::DEVELOPMENT);
+        setViewMode(PropertyVisibility::DEVELOPMENT);
     }
 }
 
 void PropertyListWidget::setApplicationViewMode(bool value){
     if (value) { 
-        setViewMode(PropertyVisibility::VisibilityMode::APPLICATION);
+        setViewMode(PropertyVisibility::APPLICATION);
     }
 }
 
@@ -200,8 +200,8 @@ void PropertyListWidget::setViewMode(PropertyVisibility::VisibilityMode viewMode
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     inviwoApp->setPropertyVisibilityMode(viewMode);
 
-    applicationViewMode_ = (viewMode == PropertyVisibility::VisibilityMode::APPLICATION);
-    developerViewMode_ = (viewMode == PropertyVisibility::VisibilityMode::DEVELOPMENT);
+    applicationViewMode_ = (viewMode == PropertyVisibility::APPLICATION);
+    developerViewMode_ = (viewMode == PropertyVisibility::DEVELOPMENT);
     for (size_t i = 0; i < properties_.size(); i++ ) {
         properties_[i]->updateVisibility();
     }
