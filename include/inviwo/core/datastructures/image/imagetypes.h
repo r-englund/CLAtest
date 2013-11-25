@@ -4,16 +4,16 @@
 namespace inviwo {
 
 enum ImageType{
-    COLOR_ONLY,
-    COLOR_DEPTH,
-    COLOR_PICKING,
-    COLOR_DEPTH_PICKING
+    COLOR_ONLY = 0,
+    COLOR_DEPTH = 1,
+    COLOR_PICKING = 2,
+    COLOR_DEPTH_PICKING = 3
 };
 
 enum ImageLayerType{
-    COLOR_LAYER,
-    DEPTH_LAYER,
-    PICKING_LAYER
+    COLOR_LAYER = 0,
+    DEPTH_LAYER = 1,
+    PICKING_LAYER = 2
 };
 
 static bool typeContainsColor(ImageType type){

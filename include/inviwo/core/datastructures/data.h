@@ -206,11 +206,11 @@ void Data::updateRepresentation(T* representation, int index) const {
         //Go-through the conversion package
         if (converterPackage) {
             //for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
-                const std::vector<RepresentationConverter*>& converters = converterPackage->getConverters();
-                for (int j=0; j<static_cast<int>(converters.size()); ++j) { 
+                const std::vector<RepresentationConverter*>* converters = converterPackage->getConverters();
+                for (int j=0; j<static_cast<int>(converters->size()); ++j) { 
                     for (int k=0; k<static_cast<int>(representations_.size()); ++k) { 
-                        if(converters[j]->canConvertTo(representations_[k])) {
-                            converters[j]->update(lastValidRepresentation_, representations_[k]);
+                        if(converters->at(j)->canConvertTo(representations_[k])) {
+                            converters->at(j)->update(lastValidRepresentation_, representations_[k]);
                             setRepresentationAsValid(k);
                             lastValidRepresentation_ = representations_[k];
                             break;

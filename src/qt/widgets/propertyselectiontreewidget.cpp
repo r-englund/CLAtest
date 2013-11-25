@@ -1,4 +1,5 @@
-
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/network/processornetwork.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/propertyselectiontreewidget.h>

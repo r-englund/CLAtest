@@ -8,9 +8,11 @@
 #include <QDialog>
 #include <QPushButton>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
+
+class Property;
+class ProcessorNetwork;
 
 class IVW_QTWIDGETS_API PropertySelectionTree : public QTreeWidget {
 
@@ -40,7 +42,7 @@ private:
     QVBoxLayout* vLayout_;
 };
 
-class IVW_QTWIDGETS_API PropertySelectionTreeDialog : public QDialog, public Singleton<PropertySelectionTreeDialog> {
+class IVW_QTWIDGETS_API PropertySelectionTreeDialog : public QDialog {
     Q_OBJECT
 public:
     PropertySelectionTreeDialog(ProcessorNetwork* processorNetwork,

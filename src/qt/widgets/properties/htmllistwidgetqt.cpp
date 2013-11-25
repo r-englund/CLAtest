@@ -6,6 +6,7 @@
 #include <QMimeData>
 
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/processors/processorfactoryobject.h>
 #include <inviwo/qt/widgets/properties/htmllistwidgetqt.h>
 
 namespace inviwo {

@@ -13,12 +13,13 @@ struct ResourceComparer {
 
 ResourceManager::~ResourceManager() {
     clearAllResources();
+    delete resources_;
 }
 
 Resource* ResourceManager::getResource( const std::string& identifier )
 {
-    std::vector<Resource*>::iterator it = std::find_if(resources_.begin(), resources_.end(), ResourceComparer(identifier));
-    if(it != resources_.end()) {
+    std::vector<Resource*>::iterator it = std::find_if(resources_->begin(), resources_->end(), ResourceComparer(identifier));
+    if(it != resources_->end()) {
         return *it;
     } else {
         return NULL;
@@ -27,30 +28,30 @@ Resource* ResourceManager::getResource( const std::string& identifier )
 
 void ResourceManager::clearAllResources(){
     // Deallocate resources
-    for(std::vector<Resource*>::iterator it = resources_.begin(); it != resources_.end(); ++it) {
+    for(std::vector<Resource*>::iterator it = resources_->begin(); it != resources_->end(); ++it) {
         notifyResourceRemoved(*it);
         delete *it;
     }
-    resources_.clear();
+    resources_->clear();
 }
 
 void ResourceManager::removeResource( Resource *resource )
 {
-    std::vector<Resource*>::iterator it = std::find(resources_.begin(), resources_.end(), resource);
-    if( it != resources_.end() ) {
+    std::vector<Resource*>::iterator it = std::find(resources_->begin(), resources_->end(), resource);
+    if( it != resources_->end() ) {
         notifyResourceRemoved(resource); 
         delete *it;
-        resources_.erase(it);
+        resources_->erase(it);
     }
 }
 
 void ResourceManager::removeResource( const std::string& identifier )
 {
-    std::vector<Resource*>::iterator it = std::find_if(resources_.begin(), resources_.end(), ResourceComparer(identifier));
-    if(it != resources_.end()) {
+    std::vector<Resource*>::iterator it = std::find_if(resources_->begin(), resources_->end(), ResourceComparer(identifier));
+    if(it != resources_->end()) {
         notifyResourceRemoved(*it); 
         delete *it;
-        resources_.erase(it);
+        resources_->erase(it);
     }
 }
 

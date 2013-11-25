@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/processors/processorstate.h>
+#include <string>
 
 namespace inviwo {
 

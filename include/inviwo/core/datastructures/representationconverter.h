@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/datarepresentation.h>
+#include <vector>
 
 namespace inviwo {
 
@@ -38,46 +39,49 @@ public:
 template <typename T>
 class RepresentationConverterPackage : public RepresentationConverter {
 public:
-    RepresentationConverterPackage() : RepresentationConverter() {};
+    RepresentationConverterPackage() : RepresentationConverter() {
+        converters_ = new std::vector<RepresentationConverter*>();
+    };
     ~RepresentationConverterPackage() {
-        for (std::vector<RepresentationConverter*>::iterator it = converters_.begin() ; it != converters_.end(); ++it){
+        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it){
             delete (*it);
         }
+        delete converters_;
     }
     bool canConvertFrom(const DataRepresentation* source) const {
-        for (std::vector<RepresentationConverter*>::const_iterator it = converters_.begin() ; it != converters_.end(); ++it){
+        for (std::vector<RepresentationConverter*>::const_iterator it = converters_->begin() ; it != converters_->end(); ++it){
             if ((*it)->canConvertFrom(source))
                 return true;
         }
         return false;
     }
     bool canConvertTo(const DataRepresentation* destination) const {
-        for (std::vector<RepresentationConverter*>::const_iterator it = converters_.begin() ; it != converters_.end(); ++it){
+        for (std::vector<RepresentationConverter*>::const_iterator it = converters_->begin() ; it != converters_->end(); ++it){
             if ((*it)->canConvertTo(destination))
                 return true;
         }
         return false;
     }
     DataRepresentation* createFrom(const DataRepresentation* source){
-        for (std::vector<RepresentationConverter*>::iterator it = converters_.begin() ; it != converters_.end(); ++it){
+        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it){
             if ((*it)->canConvertFrom(source))
                 return (*it)->createFrom(source);
         }
         return NULL;
     }  
     virtual void update(const DataRepresentation* source, DataRepresentation* destination) {
-        for (std::vector<RepresentationConverter*>::iterator it = converters_.begin() ; it != converters_.end(); ++it){
+        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it){
             if ((*it)->canConvertFrom(source))
                 (*it)->update(source, destination);
         }
     }  
 
-    void addConverter(RepresentationConverter* converter) { converters_.push_back(converter); }
-    size_t getNumberOfConverters() { return converters_.size(); }
+    void addConverter(RepresentationConverter* converter) { converters_->push_back(converter); }
+    size_t getNumberOfConverters() { return converters_->size(); }
 
-    const std::vector<RepresentationConverter*>& getConverters() const { return converters_; }
+    const std::vector<RepresentationConverter*>* getConverters() const { return converters_; }
 private:
-    std::vector<RepresentationConverter*> converters_;
+    std::vector<RepresentationConverter*>* converters_;
 };
 
 } // namespace

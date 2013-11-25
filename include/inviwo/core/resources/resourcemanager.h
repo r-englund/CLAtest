@@ -32,7 +32,7 @@ public:
      * 
      * @param resource Resource to add.
      */
-    void addResource(Resource *resource) { resources_.push_back(resource); notifyResourceAdded(resource); }
+    void addResource(Resource *resource) { resources_->push_back(resource); notifyResourceAdded(resource); }
 
     /**
      * Remove resource from ResourceManager.
@@ -85,7 +85,7 @@ public:
      */
     template<typename T> std::vector<T*> getResourcesByType() const {
         std::vector<T*> typedResources;
-        for(std::vector<Resource*>::const_iterator it = resources_.begin(); it != resources_.end(); ++it) {
+        for(std::vector<Resource*>::const_iterator it = resources_->begin(); it != resources_->end(); ++it) {
             if(dynamic_cast<T*>(*it)) {
                 typedResources.push_back(*it);
             }
@@ -93,16 +93,20 @@ public:
         return typedResources;
     }
 
-    std::vector<Resource*>* getResources() { return &resources_; }
+    std::vector<Resource*>* getResources() { return resources_; }
 
 protected:
     
 private:
-    ResourceManager(): ResourceManagerObservable() {};
-    ResourceManager(ResourceManager const&) {};
+    ResourceManager(): ResourceManagerObservable() {
+        resources_ = new std::vector<Resource*>();
+    };
+    ResourceManager(ResourceManager const&) {
+        resources_ = new std::vector<Resource*>();
+    };
     void operator=(ResourceManager const&) {};
 
-    std::vector<Resource*> resources_;
+    std::vector<Resource*>* resources_;
 };
 
 template<typename T>

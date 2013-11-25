@@ -11,11 +11,13 @@ PortGroup::PortGroup()
 
 void PortGroup::initialize() {
     frameBufferObject_ = new FrameBufferObject();
+    ports_ = new std::vector<ImageOutport*>();
 }
 
 void PortGroup::deinitialize() {
     delete frameBufferObject_;
     frameBufferObject_ = 0;
+    delete ports_;
 }
 
 void PortGroup::activate() {
@@ -30,17 +32,17 @@ void PortGroup::deactivate() {
 }
 
 void PortGroup::addPort(ImageOutport& port) {
-    ports_.push_back(&port);
+    ports_->push_back(&port);
 }
 
 void PortGroup::reattachTargets() {
     ivwAssert(frameBufferObject_!=0, "PortGroup not initialized.");
-    ivwAssert(!ports_.empty(), "PortGroup is empty.");
+    ivwAssert(!ports_->empty(), "PortGroup is empty.");
 
     // acquire all images to be attached
     std::vector<ImageGL*> images;
-    for (size_t i=0; i<ports_.size(); i++) {
-        Image* image = ports_[i]->getData();
+    for (size_t i=0; i<ports_->size(); i++) {
+        Image* image = ports_->at(i)->getData();
         if (image)
             images.push_back(image->getEditableRepresentation<ImageGL>());
         else LogWarn("Empty image in outport.");
@@ -62,7 +64,7 @@ void PortGroup::reattachTargets() {
 }
 
 void PortGroup::addShaderDefines(Shader* shader) {
-    for (size_t i=0; i<ports_.size(); i++) {
+    for (size_t i=0; i<ports_->size(); i++) {
         shader->getFragmentShaderObject()->addShaderDefine("OP"+toString(i));
         if (i!=0)
             // FragData0 is already defined in openglinfo.cpp

@@ -10,6 +10,8 @@
 
 namespace inviwo {
 
+class ProcessorFactoryObject;
+
 class IVW_QTWIDGETS_API HtmlTree : public QTreeWidget {
 
 public:

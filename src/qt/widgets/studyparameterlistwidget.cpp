@@ -5,6 +5,7 @@
 #include <QDialogButtonBox>
 
 #include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/study/studyparameterlist.h>
 #include <inviwo/qt/widgets/studyparameterlistwidget.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
@@ -13,18 +14,19 @@
 
 namespace inviwo{
 
-StudyParameterListWidget::StudyParameterListWidget(QWidget* parent) : QWidget(parent),
-    addWorkspaceProperty_("externalWorkSpace", "Add External Workspace")
+StudyParameterListWidget::StudyParameterListWidget(QWidget* parent) : QWidget(parent)
 {
+    addWorkspaceProperty_ = new FileProperty("externalWorkSpace", "Add External Workspace");
     setObjectName("StudyParameterListWidget");
     StudyParameterList::init();
     addObservation(StudyParameterList::getPtr());    
-    addWorkspaceProperty_.onChange(this, &StudyParameterListWidget::addWorkspace);
+    addWorkspaceProperty_->onChange(this, &StudyParameterListWidget::addWorkspace);
     buildWidgets();
     updateStudyParameterList();
 }
 
 StudyParameterListWidget::~StudyParameterListWidget() {
+    delete addWorkspaceProperty_;
 }
 
 void StudyParameterListWidget::buildWidgets() {   
@@ -33,11 +35,11 @@ void StudyParameterListWidget::buildWidgets() {
     vWorkspaceLayout->setAlignment(Qt::AlignTop);
 
     PropertyWidgetQt* propertyWidget = 0;
-    propertyWidget = PropertyWidgetFactoryQt::getRef().create(&addWorkspaceProperty_);    
-    addWorkspaceProperty_.registerPropertyWidget(propertyWidget);     
+    propertyWidget = PropertyWidgetFactoryQt::getRef().create(addWorkspaceProperty_);    
+    addWorkspaceProperty_->registerPropertyWidget(propertyWidget);     
     vWorkspaceLayout->addWidget(propertyWidget);
 
-    propertyList_ = new QListWidget();    
+    propertyList_ = new QListWidget(this);    
     connect(propertyList_, SIGNAL(itemDoubleClicked(QListWidgetItem *, int)), this, SLOT(onListItemDoubleClicked(QListWidgetItem *, int)));
     vWorkspaceLayout->addWidget(propertyList_);   
 
@@ -56,7 +58,7 @@ void StudyParameterListWidget::notify() {
 }
 
 void StudyParameterListWidget::addWorkspace() {
-    IvwDeserializer xmlDeserializer(addWorkspaceProperty_.get());
+    IvwDeserializer xmlDeserializer(addWorkspaceProperty_->get());
     ProcessorNetwork* processorNetwork = new ProcessorNetwork();
     processorNetwork->deserialize(xmlDeserializer);  
     std::vector<Property*> selectedProperties;

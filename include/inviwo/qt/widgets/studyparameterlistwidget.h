@@ -25,7 +25,7 @@ public slots:
 protected:
     void buildWidgets();
     void updateStudyParameterList();    
-    FileProperty addWorkspaceProperty_;
+    FileProperty* addWorkspaceProperty_;
     QListWidget* propertyList_;
 };
 

@@ -134,7 +134,7 @@ void CollapsiveGroupBoxWidgetQt::setGroupDisplayName(){
 void CollapsiveGroupBoxWidgetQt::updateVisibility(){
 
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode visibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
+    PropertyVisibility::VisibilityMode visibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant()->getInt());
 
     if (visibilityMode == PropertyVisibility::DEVELOPMENT) {
         this->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -188,7 +188,7 @@ void CollapsiveGroupBoxWidgetQt::generateContextMenu() {
 
 void CollapsiveGroupBoxWidgetQt::showContextMenu( const QPoint& pos ){
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
+    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant()->getInt());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = this->mapToGlobal(pos);
@@ -205,7 +205,7 @@ void CollapsiveGroupBoxWidgetQt::setDeveloperViewMode( bool value ){
     developerViewModeAction_->setChecked(true);
     updateWidgets();
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode visibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->get());
+    PropertyVisibility::VisibilityMode visibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant()->getInt());
 
     if (visibilityMode == PropertyVisibility::DEVELOPMENT)
         this->setVisible(true);

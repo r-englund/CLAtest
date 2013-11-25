@@ -29,7 +29,7 @@ public:
 private:
     FrameBufferObject* frameBufferObject_;
 
-    std::vector<ImageOutport*> ports_;
+    std::vector<ImageOutport*>* ports_;
 };
 
 } // namespace
