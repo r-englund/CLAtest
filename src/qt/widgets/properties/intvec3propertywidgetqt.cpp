@@ -128,8 +128,8 @@ void IntVec3PropertyWidgetQt::updateFromProperty() {
 
 
 void IntVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderX_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
@@ -157,8 +157,8 @@ void IntVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
 }
 
 void IntVec3PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderY_->mapToGlobal(pos);
 
@@ -186,8 +186,8 @@ void IntVec3PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
 }
 
 void IntVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderZ_->mapToGlobal(pos);
 

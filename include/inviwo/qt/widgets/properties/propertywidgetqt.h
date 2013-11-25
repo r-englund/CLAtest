@@ -6,7 +6,7 @@
 #include <QLabel>
 #include <QWidget>
 #include <QMenu>
-
+#include <inviwo/core/properties/propertyvisibility.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/util/observer.h>
 
@@ -42,7 +42,7 @@ private:
     QMenu* viewModeItem_;
     Property* property_;
 protected:
-    PropertyVisibility::VisibilityMode getApplicationViewMode();
+    PropertyVisibilityMode getApplicationViewMode();
     QMenu* getContextMenu(){return contextMenu_;}
     void generateContextMenu();
     QMenu* generatePropertyWidgetMenu();

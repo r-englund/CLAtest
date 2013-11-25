@@ -110,12 +110,12 @@ void InviwoApplication::printApplicationInfo(){
         LogInfoCustom("InviwoInfo", "Config: " << config);
 }
 
-void InviwoApplication::setPropertyVisibilityMode(PropertyVisibility::VisibilityMode viewMode){
+void InviwoApplication::setPropertyVisibilityMode(PropertyVisibilityMode viewMode){
     dynamic_cast<OptionPropertyInt*>(getSettings()->getPropertyByIdentifier("viewMode"))->set(static_cast<int>(viewMode));
 }
 
-PropertyVisibility::VisibilityMode InviwoApplication::getPropertyVisibilityMode(){
-    return static_cast<PropertyVisibility::VisibilityMode>(dynamic_cast<OptionPropertyInt*>(getSettings()->getPropertyByIdentifier("viewMode"))->get());
+PropertyVisibilityMode InviwoApplication::getPropertyVisibilityMode(){
+    return static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>(getSettings()->getPropertyByIdentifier("viewMode"))->get());
 }
 
 } // namespace

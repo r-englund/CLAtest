@@ -5,7 +5,7 @@ namespace inviwo {
 CollapsiveGroupBoxWidgetQt::CollapsiveGroupBoxWidgetQt(std::string identifier, std::string displayName):
 identifier_(identifier),
 displayName_(displayName),
-visibilityMode_(PropertyVisibility::APPLICATION){
+visibilityMode_(APPLICATION){
     collapsed_ = false;
     generateWidget();
     updateFromProperty();
@@ -132,22 +132,22 @@ void CollapsiveGroupBoxWidgetQt::setGroupDisplayName(){
 }
 
 void CollapsiveGroupBoxWidgetQt::updateVisibility(){
-    PropertyVisibility::VisibilityMode visibilityMode  = getApplicationViewMode();
+    PropertyVisibilityMode visibilityMode  = getApplicationViewMode();
 
-    if (visibilityMode == PropertyVisibility::DEVELOPMENT) {
+    if (visibilityMode == DEVELOPMENT) {
         this->setContextMenuPolicy(Qt::CustomContextMenu);
         for (size_t i= 0; i<properties_.size();i++) {
-            if(properties_[i]->getVisibilityMode()!= PropertyVisibility::INVISIBLE){
+            if(properties_[i]->getVisibilityMode()!= INVISIBLE){
                 this->setVisible(true);
                 break;
             }
             this->setVisible(false);
         }
     }
-    if (visibilityMode == PropertyVisibility::APPLICATION) {
+    if (visibilityMode == APPLICATION) {
         this->setContextMenuPolicy(Qt::NoContextMenu);
         for (size_t i= 0; i<properties_.size();i++) {
-            if(properties_[i]->getVisibilityMode()== PropertyVisibility::APPLICATION ){
+            if(properties_[i]->getVisibilityMode()== APPLICATION ){
                 this->setVisible(true);
                 break;
             }
@@ -185,8 +185,8 @@ void CollapsiveGroupBoxWidgetQt::generateContextMenu() {
 }
 
 void CollapsiveGroupBoxWidgetQt::showContextMenu( const QPoint& pos ){
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = this->mapToGlobal(pos);
         QAction* selecteditem = contextMenu_->exec(globalPos);
@@ -195,17 +195,17 @@ void CollapsiveGroupBoxWidgetQt::showContextMenu( const QPoint& pos ){
 
 
 void CollapsiveGroupBoxWidgetQt::setDeveloperViewMode( bool value ){
-    visibilityMode_ = PropertyVisibility::DEVELOPMENT;
+    visibilityMode_ = DEVELOPMENT;
     for (size_t i=0; i<properties_.size(); i++) {
-        properties_.at(i)->setVisibility(PropertyVisibility::DEVELOPMENT);
+        properties_.at(i)->setVisibility(DEVELOPMENT);
     }
     developerViewModeAction_->setChecked(true);
     updateWidgets();
-    PropertyVisibility::VisibilityMode visibilityMode  = getApplicationViewMode();
+    PropertyVisibilityMode visibilityMode  = getApplicationViewMode();
 
-    if (visibilityMode == PropertyVisibility::DEVELOPMENT)
+    if (visibilityMode == DEVELOPMENT)
         this->setVisible(true);
-    if (visibilityMode == PropertyVisibility::APPLICATION)
+    if (visibilityMode == APPLICATION)
         this->setVisible(false);
 
     emit visibilityModified();
@@ -213,9 +213,9 @@ void CollapsiveGroupBoxWidgetQt::setDeveloperViewMode( bool value ){
 }
 
 void CollapsiveGroupBoxWidgetQt::setApplicationViewMode( bool value ){
-    visibilityMode_ = PropertyVisibility::APPLICATION;
+    visibilityMode_ = APPLICATION;
     for (size_t i=0; i<properties_.size(); i++) {
-        properties_.at(i)->setVisibility(PropertyVisibility::APPLICATION);
+        properties_.at(i)->setVisibility(APPLICATION);
     }
     applicationViewModeAction_->setChecked(true);
     updateWidgets();
@@ -225,9 +225,9 @@ void CollapsiveGroupBoxWidgetQt::setApplicationViewMode( bool value ){
 }
 
 void CollapsiveGroupBoxWidgetQt::updateContextMenu(){
-    if (visibilityMode_ == PropertyVisibility::DEVELOPMENT)
+    if (visibilityMode_ == DEVELOPMENT)
         developerViewModeAction_->setChecked(true);
-    if (visibilityMode_ == PropertyVisibility::APPLICATION)
+    if (visibilityMode_ == APPLICATION)
         applicationViewModeAction_->setChecked(true);
 }
 

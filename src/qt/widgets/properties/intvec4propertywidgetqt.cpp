@@ -146,8 +146,8 @@ void IntVec4PropertyWidgetQt::setPropertyValue(){
 }
 
 void IntVec4PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderX_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
@@ -173,8 +173,8 @@ void IntVec4PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
 }
 
 void IntVec4PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderY_->mapToGlobal(pos);
 
@@ -201,8 +201,8 @@ void IntVec4PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
 }
 
 void IntVec4PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderZ_->mapToGlobal(pos);
 
@@ -230,8 +230,8 @@ void IntVec4PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
 }
 
 void IntVec4PropertyWidgetQt::showContextMenuW( const QPoint& pos ) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderW_->mapToGlobal(pos);
 

@@ -31,7 +31,7 @@ namespace inviwo {
         void saveState();
         void notify();
         void setMultiSelect(bool multiSelect){multiSelect_ = multiSelect; };
-        PropertyVisibility::VisibilityMode getVisibilityMode();
+        PropertyVisibilityMode getVisibilityMode();
 
     public slots:
         void setDeveloperViewMode(bool value);
@@ -41,7 +41,7 @@ namespace inviwo {
         void propertyModified();
 
     private:
-        void setViewMode(PropertyVisibility::VisibilityMode viewMode);
+        void setViewMode(PropertyVisibilityMode viewMode);
         QWidget* createNewProcessorPropertiesItem(Processor* processor);
         void addProcessorPropertiesToLayout(Processor* processor);
  

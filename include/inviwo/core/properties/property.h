@@ -75,8 +75,8 @@ public:
         onChangeCallback_.addMemberFunction(o,m);
     }
 
-    void setVisibility(PropertyVisibility::VisibilityMode visibilityMode);
-    PropertyVisibility::VisibilityMode getVisibilityMode(){return visibilityMode_;};
+    void setVisibility(PropertyVisibilityMode visibilityMode);
+    PropertyVisibilityMode getVisibilityMode(){return visibilityMode_;};
 
     virtual void setVisible(bool val);
     virtual void updateVisibility();
@@ -98,7 +98,7 @@ bool propertyModified_;
     std::string groupID_;
     std::string groupDisplayName_;
 
-    PropertyVisibility::VisibilityMode visibilityMode_;
+    PropertyVisibilityMode visibilityMode_;
 
 
     static std::map<std::string,std::string> groupDisplayNames_;

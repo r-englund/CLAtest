@@ -14,7 +14,7 @@ Property::Property(std::string identifier, std::string displayName, PropertyOwne
   owner_(0),
   groupID_(""),
   VoidObservable(),
-  visibilityMode_(PropertyVisibility::APPLICATION),
+  visibilityMode_(APPLICATION),
   readOnly_(false),
   propertyModified_(false)
 {}
@@ -59,7 +59,7 @@ void Property::setOwner(PropertyOwner* owner) {
 
 void Property::registerPropertyWidget(PropertyWidget* propertyWidget) {
     propertyWidgets_.push_back(propertyWidget);
-    if(this->visibilityMode_ == PropertyVisibility::INVISIBLE)
+    if(this->visibilityMode_ == INVISIBLE)
         updateVisibility();
 }
 
@@ -114,31 +114,31 @@ std::string Property::getGroupDisplayName(){
     return groupDisplayNames_[groupID_];
 }
 
-void Property::setVisibility(PropertyVisibility::VisibilityMode visibilityMode) {
+void Property::setVisibility(PropertyVisibilityMode visibilityMode) {
     this->visibilityMode_ = visibilityMode;
     updateVisibility();
 }
 
 void Property::updateVisibility() {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode appMode = inviwoApp->getPropertyVisibilityMode();
+    PropertyVisibilityMode appMode = inviwoApp->getPropertyVisibilityMode();
 
-    if (visibilityMode_ == PropertyVisibility::INVISIBLE) {
+    if (visibilityMode_ == INVISIBLE) {
         for (size_t i=0; i<propertyWidgets_.size(); i++){
             propertyWidgets_[i]->hideWidget();
         }
     }
-    if (visibilityMode_ == PropertyVisibility::APPLICATION) {
+    if (visibilityMode_ == APPLICATION) {
         for (size_t i=0; i<propertyWidgets_.size(); i++){
             propertyWidgets_[i]->showWidget();
         }
     }
-    else if (visibilityMode_ == PropertyVisibility::DEVELOPMENT && appMode == PropertyVisibility::DEVELOPMENT) {
+    else if (visibilityMode_ == DEVELOPMENT && appMode == DEVELOPMENT) {
         for (size_t i=0; i<propertyWidgets_.size(); i++){
             propertyWidgets_[i]->showWidget();
         }
     }
-    else if (visibilityMode_ == PropertyVisibility::DEVELOPMENT && appMode == PropertyVisibility::APPLICATION ) {
+    else if (visibilityMode_ == DEVELOPMENT && appMode == APPLICATION ) {
         for (size_t i=0; i<propertyWidgets_.size(); i++)
             propertyWidgets_[i]->hideWidget();
     }
@@ -147,9 +147,9 @@ void Property::updateVisibility() {
 
 void Property::setVisible( bool val ) {
     if (val)
-        setVisibility(PropertyVisibility::APPLICATION);
+        setVisibility(APPLICATION);
     else
-        setVisibility(PropertyVisibility::INVISIBLE);
+        setVisibility(INVISIBLE);
 }
 
 } // namespace

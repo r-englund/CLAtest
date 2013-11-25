@@ -55,8 +55,8 @@ void PropertyWidgetQt::generateContextMenu(){
 }
 
 void PropertyWidgetQt::showContextMenu(const QPoint& pos) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = this->mapToGlobal(pos);
         QAction* selecteditem = contextMenu_->exec(globalPos);
@@ -90,18 +90,18 @@ QMenu* PropertyWidgetQt::generatePropertyWidgetMenu(){
 }
 
 void PropertyWidgetQt::setDeveloperViewMode(bool value) {
-    property_->setVisibility(PropertyVisibility::DEVELOPMENT);
+    property_->setVisibility(DEVELOPMENT);
     developerViewModeAction_->setChecked(true);
     updateContextMenu();
 }
 
 void PropertyWidgetQt::setApplicationViewMode(bool value) {
-    property_->setVisibility(PropertyVisibility::APPLICATION);
+    property_->setVisibility(APPLICATION);
     applicationViewModeAction_->setChecked(true);
     updateContextMenu();
 }
 
-PropertyVisibility::VisibilityMode PropertyWidgetQt::getApplicationViewMode(){
+PropertyVisibilityMode PropertyWidgetQt::getApplicationViewMode(){
     return InviwoApplication::getPtr()->getPropertyVisibilityMode();
 }
 
@@ -119,9 +119,9 @@ void PropertyWidgetQt::setProperty(Property* prop) {
 }
 
 void PropertyWidgetQt::updateContextMenu(){
-    if (property_->getVisibilityMode() == PropertyVisibility::DEVELOPMENT)
+    if (property_->getVisibilityMode() == DEVELOPMENT)
         developerViewModeAction_->setChecked(true);
-    else if (property_->getVisibilityMode() == PropertyVisibility::APPLICATION)
+    else if (property_->getVisibilityMode() == APPLICATION)
         applicationViewModeAction_->setChecked(true);
 
     //FIXME Should not be here?, or at least cause crash on  startup

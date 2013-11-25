@@ -49,10 +49,10 @@ void CameraPropertyWidgetQt::setPropertyDisplayName(){
 }
 
 void CameraPropertyWidgetQt::visibilityModified( int mode ){
-    property_->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));
+    property_->setVisibility(static_cast<PropertyVisibilityMode>(mode));
     std::vector<Property*> subProperties = property_->getSubProperties();
     for (size_t i=0; i<subProperties.size(); i++)
-        subProperties[i]->setVisibility(static_cast<PropertyVisibility::VisibilityMode>(mode));
+        subProperties[i]->setVisibility(static_cast<PropertyVisibilityMode>(mode));
 
 }
 

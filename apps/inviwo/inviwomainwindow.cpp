@@ -256,11 +256,11 @@ void InviwoMainWindow::addMenuActions() {
 	actionGroup->addAction(developerViewModeAction_);
 	actionGroup->addAction(applicationViewModeAction_);
 
-	PropertyVisibility::VisibilityMode visibilityMode = propertyListWidget_->getVisibilityMode();
-	if (visibilityMode == PropertyVisibility::DEVELOPMENT){
+	PropertyVisibilityMode visibilityMode = propertyListWidget_->getVisibilityMode();
+	if (visibilityMode == DEVELOPMENT){
 		developerViewModeAction_->setChecked(true);
 	}
-	if (visibilityMode == PropertyVisibility::APPLICATION) {
+	if (visibilityMode == APPLICATION) {
 		applicationViewModeAction_->setChecked(true);
 	}
 

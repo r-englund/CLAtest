@@ -34,8 +34,8 @@ namespace inviwo {
         virtual std::string getDisplayName() const;
         virtual void setDisplayName(const std::string& displayName);
 
-        void setVisibilityMode(PropertyVisibility::VisibilityMode visibilityMode){visibilityMode_ = visibilityMode;};
-        PropertyVisibility::VisibilityMode getVisibilityMode(){return visibilityMode_;};
+        void setVisibilityMode(PropertyVisibilityMode visibilityMode){visibilityMode_ = visibilityMode;};
+        PropertyVisibilityMode getVisibilityMode(){return visibilityMode_;};
 
         void updateFromProperty();
         void addProperty(Property* tmpProperty);
@@ -67,7 +67,7 @@ signals:
         void generateContextMenu();
         void generateWidget();
         void updateContextMenu();
-        PropertyVisibility::VisibilityMode visibilityMode_;
+        PropertyVisibilityMode visibilityMode_;
         void updateWidgets();
 
         QMenu* contextMenu_;

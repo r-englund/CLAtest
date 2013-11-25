@@ -61,8 +61,8 @@ void FloatPropertyWidgetQt::updateFromProperty() {
 }
 
 void FloatPropertyWidgetQt::showContextMenuSlider(const QPoint& pos) {
-    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
-    if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+    if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderWidget_->mapToGlobal(pos);
         

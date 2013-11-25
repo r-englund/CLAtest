@@ -1,15 +1,13 @@
-#ifndef IVW_PROPERTYVISIBILITY_H
-#define IVW_PROPERTYVISIBILITY_H
+#ifndef IVW_PROPERTYVISIBILITYMODE_H
+#define IVW_PROPERTYVISIBILITYMODE_H
 
 namespace inviwo {
-    class IVW_CORE_API PropertyVisibility {
 
-    public:
-        enum VisibilityMode { DEVELOPMENT =0,
-            APPLICATION =1,
-            INVISIBLE =2
-        };
-    };
-} //Namespace
+typedef enum PropertyVisibilityMode { DEVELOPMENT =0,
+        APPLICATION =1,
+        INVISIBLE =2
+    } PropertyVisibilityMode;
 
-#endif //IVW_PROPERTYVISIBILITY_H
+} //namespace
+
+#endif //IVW_PROPERTYVISIBILITYMODE_H
