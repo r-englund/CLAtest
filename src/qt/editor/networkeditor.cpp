@@ -7,6 +7,7 @@
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/filedirectory.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/core/resources/resourcemanager.h>
 
@@ -16,7 +17,6 @@
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
-
 
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>

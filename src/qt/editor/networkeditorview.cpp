@@ -1,7 +1,7 @@
 #include <QMatrix>
 #include <QMouseEvent>
 #include <QWheelEvent>
-
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/editor/networkeditorview.h>
 
 namespace inviwo {

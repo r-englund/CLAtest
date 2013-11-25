@@ -1,6 +1,6 @@
 #include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
-
+#include <inviwo/core/common/inviwoapplication.h>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QSignalMapper>

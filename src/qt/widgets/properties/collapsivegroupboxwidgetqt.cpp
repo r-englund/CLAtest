@@ -1,4 +1,5 @@
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 

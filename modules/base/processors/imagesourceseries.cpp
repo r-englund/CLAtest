@@ -1,5 +1,6 @@
 #include "imagesourceseries.h"
 #include <inviwo/core/io/imageloader.h>
+#include <inviwo/core/util/filedirectory.h>
 
 namespace inviwo {
 
