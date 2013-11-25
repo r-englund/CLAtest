@@ -144,7 +144,7 @@ void PropertySelectionTreeDialog::initDialog() {
     std::string title = std::string("Property Selection");
     setWindowTitle(tr(title.c_str()));
 
-    QSize rSize(384,756);
+    QSize rSize(384,512);
     setFixedSize(rSize);
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
 

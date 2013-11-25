@@ -18,7 +18,8 @@ StudyParameterListWidget::StudyParameterListWidget(QWidget* parent) : QWidget(pa
 {
     addWorkspaceProperty_ = new FileProperty("externalWorkSpace", "Add External Workspace");
     setObjectName("StudyParameterListWidget");
-    StudyParameterList::init();
+    if (!StudyParameterList::getPtr())
+        StudyParameterList::init();
     addObservation(StudyParameterList::getPtr());    
     addWorkspaceProperty_->onChange(this, &StudyParameterListWidget::addWorkspace);
     buildWidgets();
@@ -37,11 +38,7 @@ void StudyParameterListWidget::buildWidgets() {
     PropertyWidgetQt* propertyWidget = 0;
     propertyWidget = PropertyWidgetFactoryQt::getRef().create(addWorkspaceProperty_);    
     addWorkspaceProperty_->registerPropertyWidget(propertyWidget);     
-    vWorkspaceLayout->addWidget(propertyWidget);
-
-    propertyList_ = new QListWidget(this);    
-    connect(propertyList_, SIGNAL(itemDoubleClicked(QListWidgetItem *, int)), this, SLOT(onListItemDoubleClicked(QListWidgetItem *, int)));
-    vWorkspaceLayout->addWidget(propertyList_);   
+    vWorkspaceLayout->addWidget(propertyWidget);    
 
     QHBoxLayout* rightPushButtonLayout = new QHBoxLayout;    
     rightPushButtonLayout->setAlignment(Qt::AlignLeft);
@@ -49,6 +46,10 @@ void StudyParameterListWidget::buildWidgets() {
     connect(clearPushButton_, SIGNAL(clicked()), this, SLOT(clickedClearButton()));    
     rightPushButtonLayout->addWidget(clearPushButton_);
     vWorkspaceLayout->addLayout(rightPushButtonLayout);
+
+    propertyList_ = new QListWidget(this);    
+    //connect(propertyList_, SIGNAL(itemDoubleClicked(QListWidgetItem *, int)), this, SLOT(onListItemDoubleClicked(QListWidgetItem *, int)));
+    vWorkspaceLayout->addWidget(propertyList_);   
 
     mainLayout->addLayout(vWorkspaceLayout);        
 }
@@ -64,17 +65,16 @@ void StudyParameterListWidget::addWorkspace() {
     std::vector<Property*> selectedProperties;
     PropertySelectionTreeDialog* propertySelectDialog = new PropertySelectionTreeDialog(processorNetwork, selectedProperties, this);
     if (propertySelectDialog->exec()==QDialog::Accepted) {
-        LogWarn("Property Selection dialog closed: Count" << selectedProperties.size());
+        //LogWarn("Property Selection dialog closed: Count" << selectedProperties.size());
         for (size_t i=0; i<selectedProperties.size(); i++)
-            StudyParameterList::getPtr()->addParameter(processorNetwork, selectedProperties[i]);
+            StudyParameterList::getPtr()->addParameter(addWorkspaceProperty_->get(), selectedProperties[i]);
     }
-
 }
 
 void StudyParameterListWidget::updateStudyParameterList() {
     propertyList_->clear();
-    std::map<ProcessorNetwork*, std::vector<Property*> >* parameterProperties = StudyParameterList::getPtr()->getParameters();
-    std::map<ProcessorNetwork*, std::vector<Property*> >::iterator mapIt;
+    std::map<std::string, std::vector<Property*> >* parameterProperties = StudyParameterList::getPtr()->getParameterProperties();
+    std::map<std::string, std::vector<Property*> >::iterator mapIt;
     for (mapIt = parameterProperties->begin(); mapIt!=parameterProperties->end(); mapIt++) {   
         std::vector<Property*> properties = mapIt->second;
         for (size_t i=0; i<properties.size(); i++)
@@ -102,7 +102,7 @@ void StudyParameterDialog::initDialog() {
     std::string title = std::string("Property Selection");
     setWindowTitle(tr(title.c_str()));
 
-    QSize rSize(384,756);
+    QSize rSize(384,512);
     setFixedSize(rSize);
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
 

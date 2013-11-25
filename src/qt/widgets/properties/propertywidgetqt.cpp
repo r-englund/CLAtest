@@ -2,6 +2,8 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/study/studyparameterlist.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <apps/inviwo/inviwomainwindow.h>
 
 namespace inviwo {
 
@@ -108,7 +110,11 @@ PropertyVisibilityMode PropertyWidgetQt::getApplicationViewMode(){
 void PropertyWidgetQt::addToStudy(bool value) { 
     if ( !StudyParameterList::getPtr()->isParameterAdded(property_) ) {
         addToStudyAction_->setChecked(true);
-        StudyParameterList::getPtr()->addParameter(InviwoApplication::getPtr()->getProcessorNetwork(), property_);
+        InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+        InviwoMainWindow* win = static_cast<InviwoMainWindow*>(appQt->getMainWindow());
+        std::string currentWorkspaceFileName = win->getCurrentWorkspace();
+
+        StudyParameterList::getPtr()->addParameter(currentWorkspaceFileName, property_);
     }
     else
         StudyParameterList::getPtr()->removeParameter(property_);
@@ -125,11 +131,14 @@ void PropertyWidgetQt::updateContextMenu(){
         applicationViewModeAction_->setChecked(true);
 
     //FIXME Should not be here?, or at least cause crash on  startup
-    /*if ( StudyParameterList::getPtr()->isParameterAdded(property_) )
-        addToStudyAction_->setChecked(true);  
-    else {
-        if (addToStudyAction_->isChecked())
-             addToStudyAction_->setChecked(false);  
+    /*
+    if (StudyParameterList::getPtr()) {
+        if ( StudyParameterList::getPtr()->isParameterAdded(property_) )
+            addToStudyAction_->setChecked(true);  
+        else {
+            if (addToStudyAction_->isChecked())
+                 addToStudyAction_->setChecked(false);  
+        }
     }*/
 }
 

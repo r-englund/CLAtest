@@ -5,18 +5,16 @@
 namespace inviwo {
 
 StudyParameterList::StudyParameterList() {
-    parameterProperties_ = new std::map<ProcessorNetwork*, std::vector<Property*> >();
-    parameterConstraints_ = new std::map<Property*, Property* >();
+    parameterProperties_ = new std::map<std::string, std::vector<Property*> >();
 }
 
 StudyParameterList::~StudyParameterList() { 
     clearAllParameters();
     delete parameterProperties_;
-    delete parameterConstraints_;
 }
 
 bool StudyParameterList::isParameterAdded(Property* property) {
-    std::map<ProcessorNetwork*, std::vector<Property*> >::iterator mapIt;
+    std::map<std::string, std::vector<Property*> >::iterator mapIt;
     for (mapIt = parameterProperties_->begin(); mapIt!=parameterProperties_->end(); mapIt++) {   
         std::vector<Property*> properties = mapIt->second;
         if (std::find(properties.begin(), properties.end(), property)!=properties.end()) return true;
@@ -24,15 +22,15 @@ bool StudyParameterList::isParameterAdded(Property* property) {
     return false;
 }
 
-void StudyParameterList::addParameter(ProcessorNetwork* network, Property* property) {
+void StudyParameterList::addParameter(std::string workspaceFileName, Property* property) {
     if (!isParameterAdded(property)) {
-        (*parameterProperties_)[network].push_back(property);
+        (*parameterProperties_)[workspaceFileName].push_back(property);
         notifyObservers();
     }
 }
 
-void StudyParameterList::removeParameter(Property* property) {    
-    std::map<ProcessorNetwork*, std::vector<Property*> >::iterator mapIt;
+void StudyParameterList::removeParameter(Property* property) {
+    std::map<std::string, std::vector<Property*> >::iterator mapIt;
     for (mapIt = parameterProperties_->begin(); mapIt!=parameterProperties_->end(); mapIt++) {   
         std::vector<Property*> properties = mapIt->second;
         for (size_t i=0; i<properties.size(); i++) {
@@ -44,9 +42,9 @@ void StudyParameterList::removeParameter(Property* property) {
     }    
 }
 
-void StudyParameterList::removeParameters(ProcessorNetwork* network) {
-    (*parameterProperties_)[network].clear();
-    parameterProperties_->erase(network);
+void StudyParameterList::removeParameters(std::string workspaceFileName) {
+    (*parameterProperties_)[workspaceFileName].clear();
+    parameterProperties_->erase(workspaceFileName);
     notifyObservers(); 
 }
 
@@ -55,6 +53,6 @@ void StudyParameterList::clearAllParameters() {
     notifyObservers();
 }
 
-std::map<ProcessorNetwork*, std::vector<Property*> >* StudyParameterList::getParameters() {return parameterProperties_;}
+std::map<std::string, std::vector<Property*> >* StudyParameterList::getParameterProperties() {return parameterProperties_;}
 
 } // namespace

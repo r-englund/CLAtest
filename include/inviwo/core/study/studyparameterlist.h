@@ -17,14 +17,13 @@ public:
     StudyParameterList();    
 	~StudyParameterList();	
     bool isParameterAdded(Property* property);
-	void addParameter(ProcessorNetwork* network, Property* property);	
+    void addParameter(std::string workspaceFileName, Property* property);	
 	void removeParameter(Property* property);	
-	void removeParameters(ProcessorNetwork* network);	
+	void removeParameters(std::string workspaceFileName);
     void clearAllParameters();
-    std::map<ProcessorNetwork*, std::vector<Property*> >* getParameters();
+    std::map<std::string, std::vector<Property*> >* getParameterProperties();
 private:
-	std::map<ProcessorNetwork*, std::vector<Property*> >* parameterProperties_;
-	std::map<Property*, Property* >* parameterConstraints_;
+    std::map<std::string, std::vector<Property*> >* parameterProperties_;
 };
 
 } // namespace
