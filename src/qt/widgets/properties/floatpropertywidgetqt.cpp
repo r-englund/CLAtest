@@ -62,7 +62,7 @@ void FloatPropertyWidgetQt::updateFromProperty() {
 
 void FloatPropertyWidgetQt::showContextMenuSlider(const QPoint& pos) {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant()->getInt());
+    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant().getInt());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderWidget_->mapToGlobal(pos);

@@ -111,7 +111,7 @@ void FloatVec2PropertyWidgetQt::generatesSettingsWidget() {
 
 void FloatVec2PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant()->getInt());
+    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant().getInt());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderX_->mapToGlobal(pos);
@@ -139,7 +139,7 @@ void FloatVec2PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
 
 void FloatVec2PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant()->getInt());
+    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant().getInt());
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderY_->mapToGlobal(pos);        
