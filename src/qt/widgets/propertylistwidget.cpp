@@ -161,7 +161,6 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
 
     vLayout->addStretch(1);
     propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
-    setApplicationViewMode(applicationViewMode_);
 
     return processorPropertyWidget;
 }
@@ -187,33 +186,26 @@ PropertyListWidget* PropertyListWidget::instance() {
 
 void PropertyListWidget::setDeveloperViewMode( bool value  ){
     if (value) {
-        InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-        static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->set(0);
-        
-        developerViewMode_ = value;
-        applicationViewMode_ = !value;
-
-        for (size_t i = 0; i < properties_.size(); i++ ) {
-            properties_[i]->updateVisibility();
-        }
-        
+        setViewMode(PropertyVisibility::VisibilityMode::DEVELOPMENT);
     }
 }
 
-void PropertyListWidget::setApplicationViewMode( bool value ){
+void PropertyListWidget::setApplicationViewMode(bool value){
     if (value) { 
-        InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-        dynamic_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode"))->set(1);
-       
-        applicationViewMode_ = value;
-        developerViewMode_ = !value;
-        for (size_t i = 0; i < properties_.size(); i++ ) {
-            properties_[i]->updateVisibility();
-        }
+        setViewMode(PropertyVisibility::VisibilityMode::APPLICATION);
     }
 }
 
+void PropertyListWidget::setViewMode(PropertyVisibility::VisibilityMode viewMode){
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+    inviwoApp->setPropertyVisibilityMode(viewMode);
 
+    applicationViewMode_ = (viewMode == PropertyVisibility::VisibilityMode::APPLICATION);
+    developerViewMode_ = (viewMode == PropertyVisibility::VisibilityMode::DEVELOPMENT);
+    for (size_t i = 0; i < properties_.size(); i++ ) {
+        properties_[i]->updateVisibility();
+    }
+}
 
 void PropertyListWidget::saveState(){
     QSettings settings("Inviwo", "Inviwo");

@@ -26,22 +26,23 @@ public:
     void hideWidget();
     //void notify();
     void updateContextMenu();
-    public slots:
-        void visibilityModified(int mode);
-        void showContextMenu(const QPoint& pos);
-        void setDeveloperViewMode(bool value);
-        void setApplicationViewMode(bool value);
-        void addToStudy(bool value);
+public slots:
+    void visibilityModified(int mode);
+    void showContextMenu(const QPoint& pos);
+    void setDeveloperViewMode(bool value);
+    void setApplicationViewMode(bool value);
+    void addToStudy(bool value);
 
 signals:
-        void modified();
-        void visibilityChange();
+    void modified();
+    void visibilityChange();
 private:
     QMenu* contextMenu_;
     QActionGroup* viewModeActionGroup_;
     QMenu* viewModeItem_;
     Property* property_;
 protected:
+    PropertyVisibility::VisibilityMode getApplicationViewMode();
     QMenu* getContextMenu(){return contextMenu_;}
     void generateContextMenu();
     QMenu* generatePropertyWidgetMenu();

@@ -6,6 +6,7 @@
 
 namespace inviwo {
 
+class ImageOutport;
 class FrameBufferObject;
 class Shader;
 

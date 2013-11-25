@@ -74,17 +74,17 @@ signals:
         QActionGroup* viewModeActionGroup_;
         QMenu* viewModeItem_;
 
-        public slots:
-            void hide();
-            void show();
-            void updateVisibility();
-            void showContextMenu(const QPoint& pos);
-            void setDeveloperViewMode(bool value);
-            void setApplicationViewMode(bool value);
+    public slots:
+        void hide();
+        void show();
+        void updateVisibility();
+        void showContextMenu(const QPoint& pos);
+        void setDeveloperViewMode(bool value);
+        void setApplicationViewMode(bool value);
 
-            protected slots:
-                void setGroupDisplayName();
-                void propertyModified();
+    protected slots:
+        void setGroupDisplayName();
+        void propertyModified();
 
     };
 

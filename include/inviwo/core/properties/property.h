@@ -81,8 +81,6 @@ public:
     virtual void setVisible(bool val);
     virtual void updateVisibility();
 
-
-
 protected:
     SingleCallBack onChangeCallback_;
 

@@ -1,5 +1,6 @@
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 #include <inviwo/core/common/inviwomodule.h>
+#include <inviwo/core/util/filedirectory.h>
 
 namespace inviwo {
 

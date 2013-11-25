@@ -259,11 +259,9 @@ void InviwoMainWindow::addMenuActions() {
 	PropertyVisibility::VisibilityMode visibilityMode = propertyListWidget_->getVisibilityMode();
 	if (visibilityMode == PropertyVisibility::DEVELOPMENT){
 		developerViewModeAction_->setChecked(true);
-		//propertyListWidget_->setDeveloperViewMode(true);
 	}
 	if (visibilityMode == PropertyVisibility::APPLICATION) {
 		applicationViewModeAction_->setChecked(true);
-		//propertyListWidget_->setApplicationViewMode(true);
 	}
 
 	connect(developerViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setDeveloperViewMode(bool)));

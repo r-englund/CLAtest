@@ -5,9 +5,7 @@
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/core/util/observer.h>
 #include <inviwo/core/properties/eventproperty.h>
-#include <inviwo/qt/widgets/eventpropertymanager.h>
-#include <inviwo/qt/widgets/eventpropertymanagerwidget.h>
-
+#include <vector>
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QScrollArea>
@@ -15,7 +13,9 @@
 
 namespace inviwo {
 
-class EventPropertyManagerWidget;
+class Processor;
+class ProcessorNetwork;
+class EventPropertyManager;
 
 class IVW_QTEDITOR_API MappingWidget : public InviwoDockWidget, public VoidObserver {
     Q_OBJECT
@@ -27,12 +27,12 @@ public:
 private:
 	void updateWidget();
 	void buildLayout();
-	std::vector<Processor*> findProcessorsWithInteractionHandlers(std::vector<Processor*> processors);
+	void findProcessorsWithInteractionHandlers(std::vector<Processor*>* container, std::vector<Processor*> processors);
 
 	ProcessorNetwork* processorNetwork_;
 	EventPropertyManager* eventPropertyManager_;
-	std::vector<Processor*> processorsWithInteractionHandlers_;
-	std::vector<Processor*> prevProcessorsWithInteractionHandlers_;
+	std::vector<Processor*>* processorsWithInteractionHandlers_;
+    size_t prevProcessorsWithInteractionHandlersSize_;
 
 	QComboBox* comboBox_;
 

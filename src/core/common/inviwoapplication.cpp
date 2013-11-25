@@ -1,6 +1,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
+#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 
@@ -107,6 +108,14 @@ void InviwoApplication::printApplicationInfo(){
 #endif
     if (config != "")
         LogInfoCustom("InviwoInfo", "Config: " << config);
+}
+
+void InviwoApplication::setPropertyVisibilityMode(PropertyVisibility::VisibilityMode viewMode){
+    dynamic_cast<OptionPropertyInt*>(getSettings()->getPropertyByIdentifier("viewMode"))->set(static_cast<int>(viewMode));
+}
+
+PropertyVisibility::VisibilityMode InviwoApplication::getPropertyVisibilityMode(){
+    return static_cast<PropertyVisibility::VisibilityMode>(dynamic_cast<OptionPropertyInt*>(getSettings()->getPropertyByIdentifier("viewMode"))->get());
 }
 
 } // namespace

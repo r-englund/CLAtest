@@ -23,7 +23,7 @@ private:
 };
 
 template<typename T>
-T* DataOperation::getOutput() { 
+inline T* DataOperation::getOutput() { 
     return static_cast<T*>(out_); 
 }
 

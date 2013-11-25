@@ -45,6 +45,10 @@ public:
 
     void setProcessorNetwork(ProcessorNetwork* processorNetwork) { processorNetwork_ = processorNetwork; }
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
+
+    void setPropertyVisibilityMode(PropertyVisibility::VisibilityMode);
+    PropertyVisibility::VisibilityMode getPropertyVisibilityMode();
+
     Settings* getSettings() { return settings_; }
     const CommandLineParser* getCommandLineParser() const { return commandLineParser_; } 
 

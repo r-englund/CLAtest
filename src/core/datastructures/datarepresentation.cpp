@@ -1,6 +1,5 @@
 #include <inviwo/core/util/formats.h>
 #include <inviwo/core/datastructures/datarepresentation.h>
-#include <inviwo/core/datastructures/dataoperation.h>
 
 namespace inviwo {
 

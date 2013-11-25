@@ -1,4 +1,7 @@
 #include <inviwo/qt/editor/mappingwidget.h>
+#include <inviwo/core/network/processornetwork.h>
+#include <inviwo/qt/widgets/eventpropertymanager.h>
+#include <inviwo/qt/widgets/eventpropertymanagerwidget.h>
 
 namespace inviwo {
 
@@ -14,11 +17,16 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Input Mappi
 	buildLayout();	
 	currentIndex_ = 0;
 
-	processorsWithInteractionHandlers_ = findProcessorsWithInteractionHandlers(processorNetwork_->getProcessors());
+    prevProcessorsWithInteractionHandlersSize_ = 0;
+
+    processorsWithInteractionHandlers_ = new std::vector<Processor*>();
+	findProcessorsWithInteractionHandlers(processorsWithInteractionHandlers_, processorNetwork_->getProcessors());
     updateWidget();
 }
 
-MappingWidget::~MappingWidget() {}
+MappingWidget::~MappingWidget() {
+    delete processorsWithInteractionHandlers_;
+}
 
 void MappingWidget::buildLayout() {
 	// Components needed for layout
@@ -45,8 +53,8 @@ void MappingWidget::buildLayout() {
 }
 
 void MappingWidget::notify() {
-	processorsWithInteractionHandlers_ = findProcessorsWithInteractionHandlers(processorNetwork_->getProcessors());
-	if (processorsWithInteractionHandlers_.size() != prevProcessorsWithInteractionHandlers_.size()) {
+	findProcessorsWithInteractionHandlers(processorsWithInteractionHandlers_, processorNetwork_->getProcessors());
+	if (processorsWithInteractionHandlers_->size() != prevProcessorsWithInteractionHandlersSize_) {
 		updateWidget();
 	} 
 }
@@ -64,8 +72,8 @@ void MappingWidget::updateWidget() {
 	PropertyOwner* eventPropertyOwner;
 
 	// Get all eventproperties from the processornetwork
-	for (size_t i = 0; i < processorsWithInteractionHandlers_.size(); ++i) {	
-		interactionHandlers = processorsWithInteractionHandlers_.at(i)->getInteractionHandlers();
+	for (size_t i = 0; i < processorsWithInteractionHandlers_->size(); ++i) {	
+		interactionHandlers = processorsWithInteractionHandlers_->at(i)->getInteractionHandlers();
 		for (size_t j = 0; j < interactionHandlers.size(); ++j) {
 			eventPropertyOwner = dynamic_cast<PropertyOwner*>(interactionHandlers.at(j));
 			if (eventPropertyOwner) /* Check if interactionhandlar has properties */{
@@ -74,8 +82,8 @@ void MappingWidget::updateWidget() {
 			}
 		}
 		// Add vector of eventproperties to map with processor identifier as key
-		eventPropertyMap[processorsWithInteractionHandlers_.at(i)->getIdentifier()] = eventProperties;
-		comboBox_->addItem(processorsWithInteractionHandlers_.at(i)->getIdentifier().c_str());
+		eventPropertyMap[processorsWithInteractionHandlers_->at(i)->getIdentifier()] = eventProperties;
+		comboBox_->addItem(processorsWithInteractionHandlers_->at(i)->getIdentifier().c_str());
 		eventProperties.clear();		
 	}
 
@@ -92,7 +100,7 @@ void MappingWidget::updateWidget() {
 		eventPropertyManager_->notifyObservers();
 	}
 
-	prevProcessorsWithInteractionHandlers_ = processorsWithInteractionHandlers_;
+	prevProcessorsWithInteractionHandlersSize_ = processorsWithInteractionHandlers_->size();
 }
 
 void MappingWidget::comboBoxChange() {
@@ -100,14 +108,13 @@ void MappingWidget::comboBoxChange() {
 	eventPropertyManager_->setActiveProcessor(identifier.c_str());
 }
 
-std::vector<Processor*> MappingWidget::findProcessorsWithInteractionHandlers(std::vector<Processor*> processors) {
-	std::vector<Processor*> processorsWithInteractionHandlers;
+void MappingWidget::findProcessorsWithInteractionHandlers(std::vector<Processor*>* container, std::vector<Processor*> processors) {
+    container->clear();
 	for (size_t i = 0; i < processors.size(); ++i) {
 		if (processors.at(i)->hasInteractionHandler()) {
-			processorsWithInteractionHandlers.push_back(processors.at(i));
+			container->push_back(processors.at(i));
 		}
 	}
-	return processorsWithInteractionHandlers;
 }
 
 } // namespace

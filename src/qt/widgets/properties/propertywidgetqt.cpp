@@ -1,4 +1,5 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/study/studyparameterlist.h>
 
@@ -54,8 +55,7 @@ void PropertyWidgetQt::generateContextMenu(){
 }
 
 void PropertyWidgetQt::showContextMenu(const QPoint& pos) {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibility::VisibilityMode appVisibilityMode  = static_cast<PropertyVisibility::VisibilityMode>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")->getVariant().getInt());
+    PropertyVisibility::VisibilityMode appVisibilityMode  = getApplicationViewMode();
     if (appVisibilityMode == PropertyVisibility::DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = this->mapToGlobal(pos);
@@ -66,19 +66,20 @@ QMenu* PropertyWidgetQt::generatePropertyWidgetMenu(){
     QMenu* contextMenu = new QMenu();
     if (viewModeItem_ != NULL) 
         contextMenu->addMenu(viewModeItem_);
+    else{
+        developerViewModeAction_ = new QAction(tr("&Developer"),this);
+        developerViewModeAction_->setCheckable(true);
+        viewModeItem_->addAction(developerViewModeAction_);
 
-    developerViewModeAction_ = new QAction(tr("&Developer"),this);
-    developerViewModeAction_->setCheckable(true);
-    viewModeItem_->addAction(developerViewModeAction_);
+        applicationViewModeAction_ = new QAction(tr("&Application"),this);
+        applicationViewModeAction_->setCheckable(true);
+        viewModeItem_->addAction(applicationViewModeAction_);
 
-    applicationViewModeAction_ = new QAction(tr("&Application"),this);
-    applicationViewModeAction_->setCheckable(true);
-    viewModeItem_->addAction(applicationViewModeAction_);
-
-    viewModeActionGroup_ = new QActionGroup(this);
-    viewModeActionGroup_->addAction(developerViewModeAction_);
-    viewModeActionGroup_->addAction(applicationViewModeAction_);
-    contextMenu->addMenu(viewModeItem_);
+        viewModeActionGroup_ = new QActionGroup(this);
+        viewModeActionGroup_->addAction(developerViewModeAction_);
+        viewModeActionGroup_->addAction(applicationViewModeAction_);
+        contextMenu->addMenu(viewModeItem_);
+    }
 
     addToStudyAction_ = new QAction(tr("&Add to Study"),this);
     addToStudyAction_->setCheckable(true);
@@ -98,6 +99,10 @@ void PropertyWidgetQt::setApplicationViewMode(bool value) {
     property_->setVisibility(PropertyVisibility::APPLICATION);
     applicationViewModeAction_->setChecked(true);
     updateContextMenu();
+}
+
+PropertyVisibility::VisibilityMode PropertyWidgetQt::getApplicationViewMode(){
+    return InviwoApplication::getPtr()->getPropertyVisibilityMode();
 }
 
 void PropertyWidgetQt::addToStudy(bool value) { 

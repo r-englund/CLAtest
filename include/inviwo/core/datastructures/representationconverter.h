@@ -2,10 +2,11 @@
 #define IVW_REPRESENTATIONCONVERTER_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/datarepresentation.h>
 #include <vector>
 
 namespace inviwo {
+
+class DataRepresentation;
 
 class IVW_CORE_API RepresentationConverter {
 

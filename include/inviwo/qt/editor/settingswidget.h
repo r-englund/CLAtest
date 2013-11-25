@@ -3,15 +3,14 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
-
-#include <QLayout>
 #include <QVBoxLayout>
 #include <QTabWidget>
+#include <QString>
 
 namespace inviwo {
 
 class IVW_QTEDITOR_API SettingsWidget : public InviwoDockWidget {
-Q_OBJECT
+    Q_OBJECT
 public:
     SettingsWidget(QWidget* parent);
     SettingsWidget(QString title, QWidget* parent);

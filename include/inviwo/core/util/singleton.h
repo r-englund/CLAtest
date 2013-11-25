@@ -6,7 +6,8 @@
 
 namespace inviwo {
 
-template <class T> class Singleton {
+template <class T>
+class Singleton {
 
 public:
     static void init() {
