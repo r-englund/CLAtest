@@ -17,5 +17,14 @@ set(SOURCE_FILES
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
+# Add CVIE3D directories
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/CVIE3DSDK/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/CVIE3DSDK/lib)
+
+#--------------------------------------------------------------------
 # Create module
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Link CVIE3D lib
+target_link_libraries(inviwo-module-cvie3d optimized CVIE3D)

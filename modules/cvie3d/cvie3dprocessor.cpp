@@ -1,4 +1,5 @@
 #include "cvie3dprocessor.h"
+#include <CVIE3D.h>
 
 namespace inviwo {
 
