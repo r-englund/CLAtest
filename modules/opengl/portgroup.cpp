@@ -7,11 +7,12 @@ namespace inviwo {
 
 PortGroup::PortGroup()
     : frameBufferObject_()
-{}
+{
+    ports_ = new std::vector<ImageOutport*>();
+}
 
 void PortGroup::initialize() {
     frameBufferObject_ = new FrameBufferObject();
-    ports_ = new std::vector<ImageOutport*>();
 }
 
 void PortGroup::deinitialize() {
