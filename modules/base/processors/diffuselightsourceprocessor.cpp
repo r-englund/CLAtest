@@ -15,17 +15,13 @@ DiffuseLightSourceProcessor::DiffuseLightSourceProcessor()
       lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f)),
       lightSize_("lightSize", "Light size", vec2(1.5f, 1.5f), vec2(0.0f, 0.0f), vec2(3.0f, 3.0f))
 {
-
+    addPort(outport_);
 
     addProperty(lightPosition_);
     addProperty(lightDiffuse_);
     addProperty(lightPowerProp_);
     addProperty(lightSize_);
-
-    addPort(outport_);
-    
-
-
+   
     // assign lighting properties to property group
     lightPosition_.setGroupID("lighting");
     lightDiffuse_.setGroupID("lighting");
@@ -37,21 +33,19 @@ DiffuseLightSourceProcessor::DiffuseLightSourceProcessor()
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
 
+    lightSource_ = new DiffuseLight();
+}
 
-
-
+DiffuseLightSourceProcessor::~DiffuseLightSourceProcessor() {
+    delete lightSource_;
 }
 
 void DiffuseLightSourceProcessor::process() {
-   updateLightSource(&lightSource_);
-   outport_.setData(&lightSource_, false);
-
+   updateLightSource(lightSource_);
+   outport_.setData(lightSource_, false);
 }
 
-
-
 void DiffuseLightSourceProcessor::updateLightSource(DiffuseLight* lightSource) {
-
     vec3 lightPos = vec3(0.5f, 0.5f, 0.5f) + lightPosition_.get();
     vec3 dir = glm::normalize(vec3(0.5f, 0.5f, 0.5f)-lightPos);
 
@@ -63,7 +57,6 @@ void DiffuseLightSourceProcessor::updateLightSource(DiffuseLight* lightSource) {
 #ifndef GLM_FORCE_RADIANS
     angle = glm::degrees(angle);
 #endif // GLM_FORCE_RADIANS
-
    
     mat4 transformationMatrix = glm::translate(lightPos)*glm::rotate(angle, rotationAxis);
 

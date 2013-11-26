@@ -1,20 +1,17 @@
 #ifndef IVW_PYTHONEDITORYWIDGET_H
 #define IVW_PYTHONEDITORYWIDGET_H
 
-#include <modules/python/pythonmoduledefine.h>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
-
 #include <apps/inviwo/inviwomainwindow.h>
-
 #include <inviwo/core/util/fileobserver.h>
-
 #include <modules/python/pythonscript.h>
 #include "modules/python/pythonmodule.h"
 #include "modules/python/pythonexecutionoutputobeserver.h"
 
 namespace inviwo{
     
-class IVW_MODULE_PYTHON_API PythonEditorWidget : public InviwoDockWidget , public FileObserver, public Singleton<PythonEditorWidget> , public PythonExecutionOutputObeserver {
+class IVW_QTWIDGETS_API PythonEditorWidget : public InviwoDockWidget , public FileObserver, public Singleton<PythonEditorWidget> , public PythonExecutionOutputObeserver {
     Q_OBJECT
 
 	PythonEditorWidget(InviwoMainWindow* mainWindow);

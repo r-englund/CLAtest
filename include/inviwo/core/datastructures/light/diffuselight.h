@@ -1,12 +1,13 @@
 #ifndef IVW_DIFFUSE_LIGHT_H
 #define IVW_DIFFUSE_LIGHT_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/baselightsource.h>
 
 namespace inviwo {
 
-class IVW_CORE_API DiffuseLight: public LightSource 
+class DiffuseLight: public LightSource 
 {
 public:
     DiffuseLight(): LightSource() {}

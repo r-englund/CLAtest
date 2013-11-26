@@ -4,13 +4,18 @@
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/light/diffuselight.h>
+#include <inviwo/core/ports/dataoutport.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
+
+class DiffuseLight;
 
 class IVW_MODULE_BASE_API DiffuseLightSourceProcessor : public Processor {
 public:
     DiffuseLightSourceProcessor();
-    virtual ~DiffuseLightSourceProcessor() {};
+    virtual ~DiffuseLightSourceProcessor();
 
     InviwoProcessorInfo();
 
@@ -24,16 +29,17 @@ protected:
      * @return 
      */
     void updateLightSource(DiffuseLight* lightSource);
+
 private:
+    DataOutport<LightSource> outport_;
+
     FloatProperty lightPowerProp_;
     FloatVec2Property lightSize_;
-
 
     FloatVec3Property lightDiffuse_;
     FloatVec3Property lightPosition_;
 
-    DiffuseLight lightSource_;
-    DataOutport<LightSource> outport_;
+    DiffuseLight* lightSource_;
 };
 
 } // namespace

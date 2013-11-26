@@ -1,12 +1,13 @@
 #ifndef IVW_DIRECTIONAL_LIGHT_H
 #define IVW_DIRECTIONAL_LIGHT_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/baselightsource.h>
 
 namespace inviwo {
 
-class IVW_CORE_API DirectionalLight: public LightSource 
+class DirectionalLight: public LightSource 
 {
 public:
     DirectionalLight(): LightSource() {}

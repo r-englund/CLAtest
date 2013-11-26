@@ -3,7 +3,6 @@
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/study/studyparameterlist.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <apps/inviwo/inviwomainwindow.h>
 
 namespace inviwo {
 
@@ -110,11 +109,11 @@ PropertyVisibilityMode PropertyWidgetQt::getApplicationViewMode(){
 void PropertyWidgetQt::addToStudy(bool value) { 
     if ( !StudyParameterList::getPtr()->isParameterAdded(property_) ) {
         addToStudyAction_->setChecked(true);
-        InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+        //FIXME Can't use InviwoMainWindow and why should you, get current workspace from InviwoApplication directly...
+        /*InviwoApplicationQt* appQt = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
         InviwoMainWindow* win = static_cast<InviwoMainWindow*>(appQt->getMainWindow());
         std::string currentWorkspaceFileName = win->getCurrentWorkspace();
-
-        StudyParameterList::getPtr()->addParameter(currentWorkspaceFileName, property_);
+        StudyParameterList::getPtr()->addParameter(currentWorkspaceFileName, property_);*/
     }
     else
         StudyParameterList::getPtr()->removeParameter(property_);
