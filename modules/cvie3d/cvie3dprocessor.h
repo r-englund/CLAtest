@@ -5,6 +5,10 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <CVIE3D.h>
 
 namespace inviwo {
 
@@ -21,9 +25,25 @@ public:
 protected:
     virtual void process();
 
+    bool createCVIE3DInstance();
+    void destroyCVIE3DInstance();
+
+    bool setupEnhancement();
+    bool runEnhancement();
+
+    void updateConfigurationFile();
+    bool updateParameterFile();
+
 private:
     VolumeInport inport_;
     VolumeOutport outport_;
+
+    BoolProperty enabled_;
+    FileProperty confFile_;
+    FileProperty parameterFile_;
+    IntProperty parameterSetting_;
+
+    HCVIE3D cvieHandle_;
 };
 
 } // namespace
