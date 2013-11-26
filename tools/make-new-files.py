@@ -7,10 +7,10 @@ import re
 import subprocess
 
 parser = argparse.ArgumentParser(description='Process outcars', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('names', type=str, nargs='+', action="store", help='filenames')
+parser.add_argument('names', type=str, nargs='+', action="store", help='Classes to add, form: path/to/class/ClassName')
 parser.add_argument("--dummy", action="store_true", dest="dummy", help="Write local testfiles instead")
 parser.add_argument("--svn", action="store_true", dest="svn", help="Add files to svn")			
-parser.add_argument("--cmake", type=str, nargs='?', default="", action="store", dest="cmakebuilddir", help="Cmakebuild dir")
+parser.add_argument("--cmake", type=str, nargs='?', default="", action="store", dest="cmakebuilddir", help="Cmake build directory")
 args = parser.parse_args()
 
 def makeHeader(name, define, api):
@@ -66,8 +66,9 @@ def updateCMakeLists(cmakefile, hfile, cfile):
 					lines.sort()
 					lines.append(l)
 					break
-				else:
-					lines.append(l)
+				elif l.strip() != "":	
+					lines.append(l.replace("\t","    "))
+						
 			return lines
 		
 		lines = []
