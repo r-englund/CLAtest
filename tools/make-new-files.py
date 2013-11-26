@@ -88,7 +88,7 @@ for name in args.names:
 	(path, file)  = os.path.split(name)
 	abspath = os.path.abspath(path).split(os.sep)
 
-	if re.compile(r".*/Inviwo/include/inviwo/.*").match("/".join(abspath)):
+	if re.compile(r".*/[Ii]nviwo/include/inviwo/.*").match("/".join(abspath)):
 		hpath = abspath
 		newpath = []
 		for i in range(len(abspath)):
@@ -108,8 +108,9 @@ for name in args.names:
 		api = "IVW_CORE_API"
 		
 		
-	elif re.compile(r".*/Inviwo/modules/.*").match("/".join(abspath)):
+	elif re.compile(r".*/[Ii]nviwo/modules/.*").match("/".join(abspath)):
 		mod="ERROR"
+		incfilepath=[]
 		for i in range(len(abspath)):
 			if abspath[i] == "Inviwo" and abspath[i+1] == "modules":
 				mod = abspath[i+2]
