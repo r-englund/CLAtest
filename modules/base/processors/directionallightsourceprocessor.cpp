@@ -52,7 +52,7 @@ void DirectionalLightSourceProcessor::process() {
 
 void DirectionalLightSourceProcessor::updateDirectionalLightSource(DirectionalLight* lightSource) {
 
-    vec3 lightPos = vec3(0.5f, 0.5f, 0.5f) + lightPosition_.get().xyz()*10.f/*+vec3(20.f, 20.f, 20.f)*/;
+    vec3 lightPos = vec3(0.5f, 0.5f, 0.5f) + lightPosition_.get()*10.f/*+vec3(20.f, 20.f, 20.f)*/;
     vec3 dir = glm::normalize(vec3(0.5f, 0.5f, 0.5f)-lightPos);
 
     vec3 A = vec3(0,0,1);

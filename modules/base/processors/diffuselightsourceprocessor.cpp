@@ -52,7 +52,7 @@ void DiffuseLightSourceProcessor::process() {
 
 void DiffuseLightSourceProcessor::updateLightSource(DiffuseLight* lightSource) {
 
-    vec3 lightPos = vec3(0.5f, 0.5f, 0.5f) + lightPosition_.get().xyz();
+    vec3 lightPos = vec3(0.5f, 0.5f, 0.5f) + lightPosition_.get();
     vec3 dir = glm::normalize(vec3(0.5f, 0.5f, 0.5f)-lightPos);
 
     vec3 A = vec3(0,0,1);
