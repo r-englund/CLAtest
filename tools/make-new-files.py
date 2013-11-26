@@ -91,6 +91,7 @@ for name in args.names:
 	if re.compile(r".*/[Ii]nviwo/include/inviwo/.*").match("/".join(abspath)):
 		hpath = abspath
 		newpath = []
+		incfilepath = []
 		for i in range(len(abspath)):
 			if abspath[i] == "include" and abspath[i+1] == "inviwo":
 				newpath.append("src")
@@ -103,8 +104,8 @@ for name in args.names:
 		incfile = "<" + "/".join(incfilepath + [file.lower()+".h"] ) + ">"
 		moddef = "<inviwo/core/common/inviwocoredefine.h>"
 		cpath = newpath
-		cmhfile = "    ${IVW_INCLUDE_DIR}/" + "/".join(incfilepath) + "/" + file.lower() +".h" + "\n"
-		cmcfile = "    " + "/".join(incfilepath[2:]) + "/" + file.lower() +".cpp" + "\n"
+		cmhfile = "    " + "/".join(["${IVW_INCLUDE_DIR}"] + incfilepath + [file.lower() +".h"])  + "\n"
+		cmcfile = "    " + "/".join(incfilepath[2:] + [file.lower() +".cpp"]) + "\n"
 		api = "IVW_CORE_API"
 		
 		
@@ -121,8 +122,8 @@ for name in args.names:
 		cpath = abspath
 		incfile = "\"" + file.lower()+".h" + "\""
 		moddef = "<moudules/" + mod + "/" + mod + "moduledefine.h>"
-		cmhfile = "    ${IVW_MODULE_DIR}/" + "/".join(incfilepath) + "/" + file.lower() + ".h" + "\n"
-		cmcfile = "    ${IVW_MODULE_DIR}/" + "/".join(incfilepath) + "/" + file.lower() + ".cpp" + "\n"
+		cmhfile = "    " + "/".join(["${IVW_MODULE_DIR}"] + incfilepath + [file.lower() + ".h"]) + "\n"
+		cmcfile = "    " + "/".join(["${IVW_MODULE_DIR}"] + incfilepath + [file.lower() + ".cpp"]) + "\n"
 		api = "IVW_MODULE_"+mod.upper()+"_API"
 	
 	else:
