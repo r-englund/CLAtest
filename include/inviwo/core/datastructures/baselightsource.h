@@ -14,18 +14,68 @@ namespace LightSourceType {
         LIGHT_DIRECTIONAL
     };
 }
+// TODO: Change/add transformation and size information to meters instead of texture space.
 
-class IVW_CORE_API BaseLightSource {
+class IVW_CORE_API LightSource {
 public:
-	BaseLightSource() {};
-	virtual ~BaseLightSource() {};
-    mat4 tm; // Transformation matrix from local to world coordinates
-    vec4 radiance; // Color of light source
-    LightSourceType::Enum type;
-    float area;
-	vec2 size; // width, height
-    float fov; // Field of view in radians
-    vec3 lightdir;
+	LightSource() {};
+	virtual ~LightSource() {};
+
+    virtual float getArea() const = 0;
+
+    /**
+     * Get radiant flux (color) of light source.
+     * @return Radiant flux in watt.
+     */
+    virtual vec3 getPower() const = 0;
+
+    const mat4& getObjectToTexture() const { return objectToTextureSpaceMatrix_; }
+    void setObjectToTexture(const mat4& m) { objectToTextureSpaceMatrix_ = m; }
+
+    virtual LightSourceType::Enum getLightSourceType() const = 0;
+
+    /**
+     * Return field of view in radians.
+     * 
+     * @return Field of view in radians
+     */
+    float getFieldOfView() const { return fieldOfView_; }
+
+    void setFieldOfView(float FOVInRadians) { fieldOfView_ = FOVInRadians; }
+
+    /**
+     * Get normalized general direction of light source. 
+     * 
+     * @return Normalized direction of light source.
+     */
+    const vec3& getLightDirection() const { return lightDirection_; }
+
+    /**
+     * Set normalized direction of light source.
+     * 
+     * @param direction Normalized direction of light source.
+     */
+    void setLightDirection(const vec3& direction) { lightDirection_ = direction; }
+
+    /**
+     * Get width and height in texture space.
+     * 
+     * @return 
+     */
+    const vec2& getSize() const { return size_; }
+
+    /**
+     * Set width and height in texture space.
+     * 
+     * @param newSize 
+     */
+    void setSize(const vec2& newSize) { size_ = newSize; }
+protected:
+
+    mat4 objectToTextureSpaceMatrix_; // Transformation matrix from object to texture space coordinates
+    float fieldOfView_; // Field of view in radians
+    vec3 lightDirection_;
+    vec2 size_; // width, height in texture space
 };
 
 // Data type that can be transfered to OpenCL device
@@ -44,7 +94,7 @@ typedef struct {
 }PackedLightSource;
 
 // Transform a BaseLightSource to PhotonLightSourceCL 
-IVW_CORE_API PackedLightSource baseLightToPackedLight(const BaseLightSource* lightsource, float radianceScale);
+IVW_CORE_API PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale);
 
 // Calculate how many samples to take from each light source
 IVW_CORE_API uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources);

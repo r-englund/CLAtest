@@ -7,6 +7,8 @@ ivw_module(Base)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/background.h
     ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.h
+    ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.h
+    ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/drawlinesprocessor.h
     ${IVW_MODULE_DIR}/base/processors/entryexitpoints.h
     ${IVW_MODULE_DIR}/base/processors/findedges.h
@@ -40,6 +42,8 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/background.cpp
     ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.cpp
+    ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.cpp
+    ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/drawlinesprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/entryexitpoints.cpp
     ${IVW_MODULE_DIR}/base/processors/findedges.cpp

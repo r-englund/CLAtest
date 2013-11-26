@@ -2,6 +2,7 @@
 #define IVW_INVIWOAPPLICATIONQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/timerqt.h>
 #include <QApplication>
 #include <QMainWindow>
 #include <QFileSystemWatcher>
@@ -30,6 +31,8 @@ public:
     virtual void playSound(unsigned int soundID);
 
 	virtual void initialize(registerModuleFuncPtr);
+
+    virtual Timer* createTimer() { return new TimerQt(); } 
 
 public slots:
     void fileChanged(QString fileName);

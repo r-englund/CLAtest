@@ -40,6 +40,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagetypes.h 
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/light/directionallight.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunction.h
@@ -177,6 +178,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/glmstreamoperators.h
@@ -311,6 +313,7 @@ set(SOURCE_FILES
     util/settings.cpp
     util/stringconversion.cpp
     util/systemcapabilities.cpp
+    util/timer.cpp
     util/variant.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})

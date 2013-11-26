@@ -86,13 +86,8 @@ void sampleLights(__global PhotonLightSource const * __restrict lightSources, co
         *pdf = lightSource.area; 
 
         *power = lightSource.radiance / *pdf;
-        // Fixed plane 
-        //*origin = (float3)(uv.x, -1.0f+uv.y,  1.5f);
-        //*wi = normalize((float3)(0.0f, 0.f, -1.f));
-        //*power = 0.01f*lightSource.radiance;
-        //*pdf = 1.f;
     } 
-    else if (lightSource.type == LIGHT_DIRECTIONAL ) {
+    else if (lightSource.type == LIGHT_DIRECTIONAL || lightSource.type == LIGHT_AREA ) {
 
             float3 localOrigin = (float3)(lightSource.size*(-0.5f+uv), 0.f); 
             

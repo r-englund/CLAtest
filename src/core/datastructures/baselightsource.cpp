@@ -4,15 +4,15 @@
 
 namespace inviwo {
 
-PackedLightSource baseLightToPackedLight(const BaseLightSource* lightsource, float radianceScale)
+PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale)
 {
     PackedLightSource light;
-    light.tm = lightsource->tm;
-    light.radiance = radianceScale*lightsource->radiance;
-    light.type = lightsource->type;
-    light.area = lightsource->area;
-    light.cosFOV = std::cos( glm::radians(lightsource->fov/2.f) );
-    light.size = lightsource->size;
+    light.tm = lightsource->getObjectToTexture();
+    light.radiance = vec4(radianceScale*lightsource->getPower(), 1.f);
+    light.type = lightsource->getLightSourceType();
+    light.area = lightsource->getArea();
+    light.cosFOV = std::cos( glm::radians(lightsource->getFieldOfView()/2.f) );
+    light.size = lightsource->getSize();
 
     return light;
 }

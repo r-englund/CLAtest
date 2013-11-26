@@ -2,6 +2,8 @@
 
 #include <modules/base/processors/background.h>
 #include <modules/base/processors/cubeproxygeometry.h>
+#include <modules/base/processors/diffuselightsourceprocessor.h>
+#include <modules/base/processors/directionallightsourceprocessor.h>
 #include <modules/base/processors/drawlinesprocessor.h>
 #include <modules/base/processors/entryexitpoints.h>
 #include <modules/base/processors/findedges.h>
@@ -36,6 +38,8 @@ BaseModule::BaseModule() : InviwoModule() {
 
 	registerProcessor(Background);
 	registerProcessor(CubeProxyGeometry);
+    registerProcessor(DiffuseLightSourceProcessor);
+    registerProcessor(DirectionalLightSourceProcessor);
     registerProcessor(DrawLinesProcessor);
     registerProcessor(EntryExitPoints);
 	registerProcessor(FindEdges);

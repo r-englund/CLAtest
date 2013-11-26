@@ -6,10 +6,12 @@
 #include <inviwo/core/common/inviwocore.h>
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/core/util/settings.h>
 #include <inviwo/core/util/singleton.h>
-#include <inviwo/core/util/commandlineparser.h>
+#include <inviwo/core/util/timer.h>
+
 
 namespace inviwo {
 
@@ -22,7 +24,7 @@ public:
     InviwoApplication(std::string displayName, std::string basePath);
     InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath);
     virtual ~InviwoApplication();
-
+    
     virtual void initialize(registerModuleFuncPtr);
     virtual void deinitialize();
     virtual bool isInitialized() { return initialized_; }
@@ -61,6 +63,13 @@ public:
         IVW_ERROR
     };
     virtual void playSound(unsigned int soundID) { /*LogWarn("This Inviwo application does not support sound feedback.");*/ }
+
+    /**
+     * Creates a timer. Caller is responsible for deleting returned object.
+     * @see Timer
+     * @return new Timer
+     */
+    virtual Timer* createTimer() { LogWarn("This application has not implemented any timer"); return NULL; } 
 
 protected:
     void printApplicationInfo();
