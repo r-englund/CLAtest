@@ -68,7 +68,14 @@ void ImageSourceSeries::process() {
 	Image* outImage = outport_.getData(); 
     if (outImage){
         
-        std::vector<std::string> fileNames = imageFileDirectory_.getFiles();
+        std::vector<std::string> filesInDirectory = imageFileDirectory_.getFiles();
+        std::vector<std::string> fileNames;
+        for (size_t i=0; i<filesInDirectory.size(); i++) {
+            if (ImageLoader::isValidImageFile(filesInDirectory[i]) ) {                
+                fileNames.push_back(filesInDirectory[i]);
+            }
+        }
+
         size_t currentIndex = currentImageIndex_.get();
 
         if (!fileNames.size()) {

@@ -129,6 +129,7 @@ bool ImageLoader::readInImage(std::string filename, FIBITMAP **bitmap){
 }
 
 bool ImageLoader::isValidImageFile(std::string filename) {
+    initLoader();
     const char* file_name_char = (char*)(filename.c_str());
     FREE_IMAGE_FORMAT imageFormat = FIF_UNKNOWN;	
 
