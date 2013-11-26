@@ -121,7 +121,7 @@ for name in args.names:
 		hpath = abspath
 		cpath = abspath
 		incfile = "\"" + file.lower()+".h" + "\""
-		moddef = "<moudules/" + mod + "/" + mod + "moduledefine.h>"
+		moddef = "<modules/" + mod + "/" + mod + "moduledefine.h>"
 		cmhfile = "    " + "/".join(["${IVW_MODULE_DIR}"] + incfilepath + [file.lower() + ".h"]) + "\n"
 		cmcfile = "    " + "/".join(["${IVW_MODULE_DIR}"] + incfilepath + [file.lower() + ".cpp"]) + "\n"
 		api = "IVW_MODULE_"+mod.upper()+"_API"
