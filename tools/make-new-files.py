@@ -113,7 +113,7 @@ for name in args.names:
 		mod="ERROR"
 		incfilepath=[]
 		for i in range(len(abspath)):
-			if abspath[i] == "Inviwo" and abspath[i+1] == "modules":
+			if (abspath[i] == "Inviwo" or abspath[i] == "inviwo") and abspath[i+1] == "modules":
 				mod = abspath[i+2]
 				incfilepath = abspath[i+2:]
 				break
