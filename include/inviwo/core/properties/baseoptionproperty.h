@@ -26,6 +26,21 @@ public:
     virtual int getSelectedOption() const = 0;
     virtual void setSelectedOption(int option) = 0;
     virtual void clearOptions() = 0;
+    
+    virtual void set(const Property* srcProperty) {
+        const BaseOptionProperty* optionSrcProp = dynamic_cast<const BaseOptionProperty*>(srcProperty);
+        if (optionSrcProp) {
+            int option = optionSrcProp->getSelectedOption();
+            if (option<numOptions())
+                setSelectedOption(option);
+            else
+                setSelectedOption(numOptions()-1);
+        }
+        //TODO: variants of option property (or composite property in general) does not work
+        /*else        
+            this->setVariant(const_cast<Property*>(srcProperty)->getVariant());*/
+        propertyModified();    
+    }
 
     virtual std::vector<std::string> getOptionDisplayNames() const = 0;
     virtual std::string getClassName()  const { return "BaseOptionProperty"; }
