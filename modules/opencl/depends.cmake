@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------
 # Dependencies for OpenCL module
 set(dependencies 
-    OpenGL
+    InviwoOpenGLModule
     OpenCL
 )

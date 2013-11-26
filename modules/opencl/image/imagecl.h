@@ -47,7 +47,7 @@ namespace cl {
 // Kernel argument specializations for ImageCL type 
 // (enables calling cl::Queue::setArg with ImageCL)
 template <>
-cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCL& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCL& value);
 
 } // namespace cl
 

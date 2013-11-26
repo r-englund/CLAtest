@@ -3,7 +3,7 @@
 
 #include <modules/opencl/cl.hpp>
 #include <glm/glm.hpp>
-
+#include <modules/opencl/openclmoduledefine.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <iostream>
 
@@ -15,30 +15,30 @@ namespace cl {
 
 // int types
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int8>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int8>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int16>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int16>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int32>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int32>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int64>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int64>& value);
 
 // uint types
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint8>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint8>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint16>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint16>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint32>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint32>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint64>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint64>& value);
 
 
 // float types
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::float16>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::float16>& value);
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::float32>& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::float32>& value);
 
 } // namespace cl
 #endif

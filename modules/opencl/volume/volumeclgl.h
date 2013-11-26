@@ -47,7 +47,7 @@ namespace cl {
 // Kernel argument specializations for VolumeCLGL type 
 // (enables calling cl::Queue::setArg with VolumeCLGL)
 template <>
-cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCLGL& value);
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCLGL& value);
 
 } // namespace cl
 

@@ -154,10 +154,10 @@ private:
  * @param localWorkGroupSize Local work group size of kernel
  * @return 
  */
-size_t getGlobalWorkGroupSize(size_t nItems, size_t localWorkGroupSize);
+IVW_MODULE_OPENCL_API size_t getGlobalWorkGroupSize(size_t nItems, size_t localWorkGroupSize);
 
-svec2 getGlobalWorkGroupSize(svec2 nItems, glm::svec2 localWorkGroupSize);
-svec3 getGlobalWorkGroupSize(svec3 nItems, glm::svec3 localWorkGroupSize);
+IVW_MODULE_OPENCL_API svec2 getGlobalWorkGroupSize(svec2 nItems, glm::svec2 localWorkGroupSize);
+IVW_MODULE_OPENCL_API svec3 getGlobalWorkGroupSize(svec3 nItems, glm::svec3 localWorkGroupSize);
 
 
 /**
@@ -167,7 +167,7 @@ svec3 getGlobalWorkGroupSize(svec3 nItems, glm::svec3 localWorkGroupSize);
  * @param err OpenCL exception
  * @return Error report string.
  */
- std::string getCLErrorString(const cl::Error& err);
+ IVW_MODULE_OPENCL_API std::string getCLErrorString(const cl::Error& err);
 
 /**
  * Creates an error report and outputs it using the log functionality.
@@ -175,13 +175,13 @@ svec3 getGlobalWorkGroupSize(svec3 nItems, glm::svec3 localWorkGroupSize);
  * @param err OpenCL error code
  * @param message Message to be passed along with the error.
  */
- void LogOpenCLError(cl_int err, const char* message = "");
+ IVW_MODULE_OPENCL_API void LogOpenCLError(cl_int err, const char* message = "");
 
 /** \brief Get string representation of hint code according to definitions in CL/cl.h
  *
  *  \return The hint code string.
  */
-std::string errorCodeToString(cl_int err);
+IVW_MODULE_OPENCL_API std::string errorCodeToString(cl_int err);
 
 /**
  * Returns hints on how to resolve a particular OpenCL hint. 
@@ -189,7 +189,7 @@ std::string errorCodeToString(cl_int err);
  * @param err 
  * @return A hint on what could cause the hint.
  */
-std::string getCLErrorResolveHint(cl_int err);
+IVW_MODULE_OPENCL_API std::string getCLErrorResolveHint(cl_int err);
 
 #if defined(IVW_DEBUG)
 #define LogCLError #if defined(__CL_ENABLE_EXCEPTIONS) \\LogOpenCLError(error)
@@ -207,7 +207,7 @@ std::string getCLErrorResolveHint(cl_int err);
  * @return Default ImageFormat created by the constructor 
  * if a corresponding format does not exist, otherwise an ImageFormat with corresponding channel and data type.
  */
-cl::ImageFormat dataFormatToCLImageFormat(DataFormatId format);
+IVW_MODULE_OPENCL_API cl::ImageFormat dataFormatToCLImageFormat(DataFormatId format);
 
 
 }
