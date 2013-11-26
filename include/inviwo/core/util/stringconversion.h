@@ -38,6 +38,8 @@ IVW_CORE_API std::string toLower(std::string str);
 
 IVW_CORE_API unsigned int countLines(std::string str);
 
+IVW_CORE_API std::string randomString(unsigned int length = 10);
+
 } // namespace
 
 #endif // IVW_STRINGCONVERSION_H
