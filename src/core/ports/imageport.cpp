@@ -95,10 +95,10 @@ ImageOutport::ImageOutport(std::string identifier,
     mapDataInvalid_ = true;
 }
 
-ImageOutport::ImageOutport(std::string identifier, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
+ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format, PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
-    Image* im = new Image(dimensions_, type);
+    Image* im = new Image(dimensions_, type, format);
     im->setAllowMissingLayers(false);
     data_ = im;
     dataChanged();

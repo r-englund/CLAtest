@@ -39,7 +39,7 @@ friend class ImageInport;
 
 public:
     ImageOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
-    ImageOutport(std::string identifier, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format = DataVec4UINT8::get(), PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     ImageOutport(std::string identifier, ImageInport* src, ImageType type = COLOR_DEPTH, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~ImageOutport();
 
