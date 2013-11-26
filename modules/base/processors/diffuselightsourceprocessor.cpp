@@ -4,7 +4,7 @@ namespace inviwo {
 
 ProcessorClassName(DiffuseLightSourceProcessor, "Diffuse light source"); 
 ProcessorCategory(DiffuseLightSourceProcessor, "Light source");
-ProcessorCodeState(DiffuseLightSourceProcessor, CodeState::CODE_STATE_EXPERIMENTAL);
+ProcessorCodeState(DiffuseLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
 
 
 DiffuseLightSourceProcessor::DiffuseLightSourceProcessor()
