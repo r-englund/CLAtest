@@ -255,6 +255,24 @@ FT_BEGIN_HEADER
 /* #define FT_EXPORT(x)      extern x */
 /* #define FT_EXPORT_DEF(x)  x */
 
+#ifdef INVIWO_ALL_DYN_LINK //DYNAMIC
+// If we are building DLL files we must declare dllexport/dllimport
+#ifdef FREETYPE_EXPORTS
+#ifdef _WIN32
+#define FT_BASE(x) __declspec(dllexport) x
+#define FT_EXPORT(x) __declspec(dllexport) x
+#else //UNIX (GCC)
+#define FT_BASE(x) __attribute__ ((visibility ("default"))) x
+#define FT_EXPORT(x) __attribute__ ((visibility ("default"))) x
+#endif
+#else
+#ifdef _WIN32
+#define FT_BASE(x) __declspec(dllimport) x
+#define FT_EXPORT(x) __declspec(dllimport) x
+#endif
+#endif
+#endif
+
 
   /*************************************************************************/
   /*                                                                       */
