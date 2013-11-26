@@ -1,9 +1,8 @@
 #ifndef IVW_BASELIGHT_H
 #define IVW_BASELIGHT_H
 
-
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-
 
 namespace inviwo {
 
@@ -16,7 +15,7 @@ namespace LightSourceType {
     };
 }
 
-class BaseLightSource {
+class IVW_CORE_API BaseLightSource {
 public:
 	BaseLightSource() {};
 	virtual ~BaseLightSource() {};
@@ -45,10 +44,10 @@ typedef struct {
 }PackedLightSource;
 
 // Transform a BaseLightSource to PhotonLightSourceCL 
-PackedLightSource baseLightToPackedLight(const BaseLightSource* lightsource, float radianceScale);
+IVW_CORE_API PackedLightSource baseLightToPackedLight(const BaseLightSource* lightsource, float radianceScale);
 
 // Calculate how many samples to take from each light source
-uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources);
+IVW_CORE_API uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources);
 
 
 } // namespace inviwo

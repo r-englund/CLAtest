@@ -9,7 +9,7 @@ namespace inviwo {
 
 //TODO: Make operation factory
 template<typename T, size_t B>
-IVW_CORE_API void executeOperationOnVolumeRAMPrecision(DataOperation* dop){
+void executeOperationOnVolumeRAMPrecision(DataOperation* dop){
     VolumeRAMSlice* volSliceDop = dynamic_cast<VolumeRAMSlice*>(dop);
     if (volSliceDop){
         volSliceDop->evaluate<T, B>();
