@@ -4,7 +4,7 @@ namespace inviwo {
 
 ProcessorClassName(DirectionalLightSourceProcessor, "Directional light source"); 
 ProcessorCategory(DirectionalLightSourceProcessor, "Light source");
-ProcessorCodeState(DirectionalLightSourceProcessor, CodeState::CODE_STATE_EXPERIMENTAL);
+ProcessorCodeState(DirectionalLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
 
 
 DirectionalLightSourceProcessor::DirectionalLightSourceProcessor()
