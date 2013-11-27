@@ -45,18 +45,18 @@ bool PythonScript::run() {
     PyObject* glb = PyDict_New();
     PyDict_SetItemString(glb, "__builtins__", PyEval_GetBuiltins());
 
-	if(isCompileNeeded_ && !compile()){
-		LogError("Failed to run script, script could not be compiled");
-		return false;
-	}
+    if(isCompileNeeded_ && !compile()){
+        LogError("Failed to run script, script could not be compiled");
+        return false;
+    }
 
-	ivwAssert(byteCode_!=0, "No byte code");
-	LogInfo("Running compiled script ...");
+    ivwAssert(byteCode_!=0, "No byte code");
+    LogInfo("Running compiled script ...");
 
-	PyObject* ret = PyEval_EvalCode((PyCodeObject*)byteCode_, glb, glb);
-	bool success = checkRuntimeError();
-	
-	Py_XDECREF(ret); 
+    PyObject* ret = PyEval_EvalCode((PyCodeObject*)byteCode_, glb, glb);
+    bool success = checkRuntimeError();
+    
+    Py_XDECREF(ret); 
     Py_XDECREF(glb);
 
     return success;
@@ -81,9 +81,9 @@ bool PythonScript::checkCompileError() {
     PyErr_Fetch(&errtype, &errvalue, &traceback);
 
 
-	std::string log = "";
-	int errorLine = -1;
-	int errorCol = -1;
+    std::string log = "";
+    int errorLine = -1;
+    int errorCol = -1;
 
     char* msg = 0;
     PyObject* obj = 0;
@@ -129,8 +129,8 @@ bool PythonScript::checkRuntimeError() {
     PyObject* pyError_string = 0;
     PyErr_Fetch(&pyError_type, &pyError_value, &pyError_traceback);
 
-	int errorLine = -1;
-	int errorCol = -1;
+    int errorLine = -1;
+    int errorCol = -1;
 
 
     std::string stacktraceStr;

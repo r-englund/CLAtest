@@ -36,7 +36,7 @@ static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
     else {
         if(len!=0){
             if(!(len==1 && (msg[0] == '\n' || msg[0] == '\r' || msg[0] == '\0')))
-				PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(msg,PythonExecutionOutputObeserver::standard);
+                PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(msg,PythonExecutionOutputObeserver::standard);
         }
     }
     Py_RETURN_NONE;
@@ -88,17 +88,17 @@ namespace inviwo{
         initDefaultInterfaces();
 
         PythonScript outputCatcher = PythonScript();
-		
+        
         std::string directorFileName = InviwoApplication::getPtr()->getBasePath() +"modules/python/scripts/outputredirector.py";
-		std::ifstream file(directorFileName.c_str());
-		std::string text((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
-		file.close();
+        std::ifstream file(directorFileName.c_str());
+        std::string text((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
+        file.close();
         outputCatcher.setSource(text);
         if(!outputCatcher.run()){
             LogWarn("Python init script failed to run");
         }
 
-		LogInfo("Python interface initialized");
+        LogInfo("Python interface initialized");
     }
 
 

@@ -151,7 +151,7 @@ PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
-	Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setPropertyMinValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -230,7 +230,7 @@ PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
 
 
-	Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("getPropertyValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -269,7 +269,7 @@ PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
 
 
-	Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("getPropertyMaxValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -323,7 +323,7 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
 
 
-	Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("getPropertyMinValue() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
@@ -377,7 +377,7 @@ PyObject* py_clickButton(PyObject* /*self*/, PyObject* args){
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
 
 
-	Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("clickButton() no processor with name: ") + processorName;
         PyErr_SetString(PyExc_TypeError, msg.c_str());

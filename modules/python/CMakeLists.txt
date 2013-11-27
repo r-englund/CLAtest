@@ -11,7 +11,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/python/pythoninterface/pyvalueparser.h
     ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.h
     ${IVW_MODULE_DIR}/python/defaultinterface/pycamera.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/pycanvas.h	
+    ${IVW_MODULE_DIR}/python/defaultinterface/pycanvas.h    
     ${IVW_MODULE_DIR}/python/defaultinterface/pylist.h
     ${IVW_MODULE_DIR}/python/defaultinterface/pyproperties.h
     ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.h

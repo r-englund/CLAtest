@@ -2,15 +2,15 @@
 #define IVW_PYTHON_SCRIPT_H
 
 #ifdef IVW_PYTHON
-	#ifdef _DEBUG
-		#undef _DEBUG //Prevent linking debug build of python
-			#include <Python.h>
-		#define _DEBUG 1
-	#else
-		#include <Python.h>
-	#endif
+    #ifdef _DEBUG
+        #undef _DEBUG //Prevent linking debug build of python
+            #include <Python.h>
+        #define _DEBUG 1
+    #else
+        #include <Python.h>
+    #endif
 #else
-	class PyObject;
+    class PyObject;
 #endif
 
 

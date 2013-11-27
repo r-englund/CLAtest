@@ -24,8 +24,8 @@ PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
     }
 
     std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-	
-	Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork ()->getProcessorByName(processorName);
+    
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork ()->getProcessorByName(processorName);
     if(!processor){
         std::ostringstream errStr;
         errStr << "listProperties(): no processor with name " << processorName << " could be found";
