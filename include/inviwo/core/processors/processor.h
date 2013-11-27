@@ -72,6 +72,7 @@ public:
     virtual bool isReady() const { return allInportsAreReady(); }
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void setValid();
     virtual void initializeResources() {} // reload shaders etc. here
 
     void addInteractionHandler(InteractionHandler* interactionHandler);

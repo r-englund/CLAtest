@@ -34,7 +34,7 @@ public:
 	template<class T> std::vector<T*> getPropertiesByType() const;
 
     bool isValid() { return (invalidationLevel_ == PropertyOwner::VALID); }
-    void setValid();
+    virtual void setValid();
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
        

@@ -163,4 +163,11 @@ void Processor::deserialize(IvwDeserializer& d) {
 
 }
 
+void Processor::setValid()
+{
+    PropertyOwner::setValid();
+    for (size_t i=0; i<outports_.size(); i++)
+        outports_[i]->setInvalidationLevel(VALID);
+}
+
 } // namespace

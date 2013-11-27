@@ -380,11 +380,14 @@ void ProcessorNetworkEvaluator::evaluate() {
                 if (progressBarOwner)
                     progressBarOwner->getProgressBar().finishProgress();
 
-                // validate processor
-                processorsSorted_[i]->setValid();
+
             }
         }
     }       
+    for (size_t i=0; i<processorsSorted_.size(); i++) {
+        // validate processor
+        processorsSorted_[i]->setValid();
+    }
 
     // unlock processor network to allow next evaluation
     processorNetwork_->unlock();

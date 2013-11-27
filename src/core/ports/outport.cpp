@@ -23,6 +23,13 @@ void Outport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
         connectedInports_[i]->invalidate(invalidationLevel);
 }
 
+void Outport::setInvalidationLevel( PropertyOwner::InvalidationLevel invalidationLevel )
+{
+    Port::setInvalidationLevel(invalidationLevel);
+    for (size_t i=0; i<connectedInports_.size(); i++)
+        connectedInports_[i]->setInvalidationLevel(invalidationLevel);
+}
+
 template <typename T>
 void Outport::getSuccessorsUsingPortType(std::vector<Processor*>& successorProcessors) {
     for (size_t i=0; i<connectedInports_.size(); i++) {
@@ -62,5 +69,6 @@ void Outport::disconnectFrom(Inport* inport) {
         Port::invalidate(invalidationLevel_);
     }
 }
+
 
 } // namespace

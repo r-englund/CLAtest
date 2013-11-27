@@ -59,7 +59,7 @@ public:
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
-    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
+    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
         invalidationLevel_ = invalidationLevel;
     }
 

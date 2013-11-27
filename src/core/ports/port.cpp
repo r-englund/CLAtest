@@ -34,6 +34,7 @@ void Port::setProcessor(Processor* processor) {
 }
 
 void Port::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) { 
+    invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
     //TODO: for port properties Port::invalidate() should be called here
     processor_->invalidate(invalidationLevel);
 }

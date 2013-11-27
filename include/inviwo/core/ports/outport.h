@@ -30,6 +30,8 @@ public:
     std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
+
     std::vector<Processor*> getDirectSuccessors();
 
 protected:
