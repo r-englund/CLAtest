@@ -24,6 +24,7 @@ public:
 
 protected:
     virtual void process();
+    void passthrough();
 
     bool createCVIE3DInstance();
     void destroyCVIE3DInstance();

@@ -7,6 +7,8 @@ ProcessorClassName(CVIE3DProcessor, "CVIE3DProcessor");
 ProcessorCategory(CVIE3DProcessor, "Context Vision");
 ProcessorCodeState(CVIE3DProcessor, CODE_STATE_EXPERIMENTAL);
 
+#define EndProcessIfFalse(success) if(!success){ passthrough(); return; }
+
 CVIE3DProcessor::CVIE3DProcessor()
     : Processor(),
     inport_("volume.inport"),
@@ -27,7 +29,7 @@ CVIE3DProcessor::CVIE3DProcessor()
     //parameterFile_.onChange(this, &CVIE3DProcessor::updateParameterFile);
     addProperty(parameterFile_);
 
-    addProperty(parameterSetting_);
+    //addProperty(parameterSetting_);
 }
 
 CVIE3DProcessor::~CVIE3DProcessor() {}
@@ -43,37 +45,30 @@ void CVIE3DProcessor::deinitialize() {
 }
 
 void CVIE3DProcessor::process() {
-    if(enabled_.get()){
-        bool success = true;
+    EndProcessIfFalse(enabled_.get());
 
-        //Create CVIE3D Instance with Configuration 
-        success = createCVIE3DInstance();
+    //Create CVIE3D Instance with Configuration 
+    EndProcessIfFalse(createCVIE3DInstance());
 
-        if(success){
-            //Set Parameter File of CVIE3D Instance
-            success = updateParameterFile();
+    //Set Parameter File of CVIE3D Instance
+    EndProcessIfFalse(updateParameterFile());
 
-            if(success){
-                //Setup CVIE3D Enhancement
-                success = setupEnhancement();
+    //Setup CVIE3D Enhancement
+    EndProcessIfFalse(setupEnhancement());
 
-                if(success){
-                    //Run CVIE3D Enhancement
-                    success = runEnhancement();
+    //Run CVIE3D Enhancement
+    EndProcessIfFalse(runEnhancement());
 
-                    if(success){
-                        //Destroy CVIE3D Instance
-                        destroyCVIE3DInstance();
-                    }
-                }
-            }
-        }
-    }
-    else
-        outport_.setData(const_cast<Volume*>(inport_.getData()), false);
+    //Destroy CVIE3D Instance
+    destroyCVIE3DInstance();
+}
+
+void CVIE3DProcessor::passthrough(){
+    outport_.setConstData(inport_.getData());
 }
 
 bool CVIE3DProcessor::createCVIE3DInstance(){
+    //LogInfo("configurationFile: " << confFile_.get());
     ECVIE3D cvieError = CVIE3DCreate(&cvieHandle_, confFile_.get().c_str(), NULL);
 
     if (cvieError != ECVIE3D_CudaInitializedOk && cvieError != ECVIE3D_CpuInitializedOk) {
@@ -114,7 +109,7 @@ bool CVIE3DProcessor::setupEnhancement(){
 
 bool CVIE3DProcessor::runEnhancement(){
     const VolumeRAM* volIn = inport_.getData()->getRepresentation<VolumeRAM>();
-    bool allocateNewVolume = (inport_.getData()->getDimension() != outport_.getData()->getDimension());
+    bool allocateNewVolume = (!outport_.hasData() ||  !outport_.isDataOwner() || inport_.getData()->getDimension() != outport_.getData()->getDimension());
     VolumeRAM* volOut;
 
     if(allocateNewVolume)
@@ -125,6 +120,9 @@ bool CVIE3DProcessor::runEnhancement(){
     ECVIE3D cvieError = CVIE3DEnhance(cvieHandle_, const_cast<void*>(volIn->getData()), volOut->getData(), 0);
 
     if (cvieError != ECVIE3D_Ok) {
+        if(allocateNewVolume)
+            delete volOut;
+
         char errstr[512];
         LogError("Error in CVIE3DEnhance: " << CVEMGetLastError(cvieHandle_, errstr, sizeof(errstr)));
         destroyCVIE3DInstance();
@@ -145,6 +143,7 @@ void CVIE3DProcessor::updateConfigurationFile(){
 bool CVIE3DProcessor::updateParameterFile(){
     // Set parameter file
     int nSettings = 0;
+    //LogInfo("parameterFile: " << parameterFile_.get());
     ECVIE3D cvieError = CVIE3DSetParameterFile(cvieHandle_, parameterFile_.get().c_str(), &nSettings);
 
     if (cvieError != ECVIE3D_Ok) {
