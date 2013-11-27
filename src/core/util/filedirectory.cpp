@@ -25,6 +25,13 @@ std::string URLParser::getFileNameWithExtension(const std::string url) {
     return fileNameWithExtension;
 }
 
+std::string URLParser::getFileNameWithoutExtension(const std::string url) {    
+    std::string fileNameWithExtension = getFileNameWithExtension(url);
+    size_t pos = fileNameWithExtension.find_last_of(".");
+    std::string fileNameWithoutExtension = fileNameWithExtension.substr(0, pos);
+    return fileNameWithoutExtension;
+}
+
 std::string URLParser::getFileExtension(const std::string url) {
     size_t pos = url.rfind(".") + 1;
     std::string fileExtension = url.substr( pos, url.length());
