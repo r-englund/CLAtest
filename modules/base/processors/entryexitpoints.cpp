@@ -12,8 +12,8 @@ ProcessorCodeState(EntryExitPoints, CODE_STATE_STABLE);
 EntryExitPoints::EntryExitPoints()
     : ProcessorGL(),
     geometryPort_("geometry"),
-    entryPort_("entry-points"),
-    exitPort_("exit-points"),
+    entryPort_("entry-points", COLOR_DEPTH, DataVec4FLOAT16::get()), // Using 8-bits will create artifacts when entering the volume
+    exitPort_("exit-points", COLOR_DEPTH, DataVec4FLOAT16::get()),
     camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
 	capNearClipping_("capNearClipping", "Cap near plane clipping", true)
 {
@@ -66,7 +66,7 @@ void EntryExitPoints::process() {
     Image* tmpEntryPoints;
     ImageGL* tmpEntryPointsGL;
 	if (capNearClipping_.get()) {
-		tmpEntryPoints = new Image(exitPort_.getDimensions());
+		tmpEntryPoints = new Image(entryPort_.getDimensions(), entryPort_.getData()->getImageType(), entryPort_.getData()->getDataFormat());
 		tmpEntryPointsGL = tmpEntryPoints->getEditableRepresentation<ImageGL>();
 		tmpEntryPointsGL->activateBuffer();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -98,10 +98,8 @@ void EntryExitPoints::process() {
 
 		// the rendered plane is specified in camera coordinates
 		// thus we must transform from camera to world to texture coordinates
-        capNearClippingPrg_->setUniform("inverseViewMat_", camera_.inverseViewMatrix());
-        capNearClippingPrg_->setUniform("inverseProjMat_", camera_.inverseProjectionMatrix());
         mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
-        capNearClippingPrg_->setUniform("worldToTexMat_", worldToTexMat);
+        capNearClippingPrg_->setUniform("NDCToTextureMat_", worldToTexMat*camera_.inverseViewMatrix()*camera_.inverseProjectionMatrix());
         capNearClippingPrg_->setUniform("nearDist_", camera_.getNearPlaneDist());
 
         renderImagePlaneRect();
