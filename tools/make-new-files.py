@@ -170,7 +170,14 @@ for name in args.names:
 			mess = subprocess.Popen("svn.exe add " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
 			for i in mess.splitlines():
 				print("... " + i)
+			mess = subprocess.Popen("svn.exe propset svn:eol-style native " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+			for i in mess.splitlines():
+				print("... " + i)
+				
 			mess = subprocess.Popen("svn.exe add " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+			for i in mess.splitlines():
+				print("... " + i)
+			mess = subprocess.Popen("svn.exe propset svn:eol-style native " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
 			for i in mess.splitlines():
 				print("... " + i)
 	
