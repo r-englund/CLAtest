@@ -53,14 +53,14 @@ void VolumeSubset::process(){
          dim -= offset;
 
          if(dim == dims_)
-             outport_.setData(const_cast<Volume*>(inport_.getData()), false);
+             outport_.setConstData(inport_.getData());
          else{
              Volume* volume = new Volume(VolumeRAMSubSet::apply(vol, dim, offset));
              outport_.setData(volume);
          }
     }
     else
-        outport_.setData(const_cast<Volume*>(inport_.getData()), false);
+        outport_.setConstData(inport_.getData());
 }
 
 } // inviwo namespace

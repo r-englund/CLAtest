@@ -19,8 +19,12 @@ public:
 
     virtual T* getData();
     virtual const T* getConstData() const;
+
     void setData(T* data, bool ownsData = true);
+    void setConstData(const T* data);
+
     bool hasData() const;
+    bool isDataOwner() const;
 
 	virtual bool isReady() const { return isConnected(); }
 
@@ -73,8 +77,25 @@ void DataOutport<T>::setData(T* data, bool ownsData) {
 }
 
 template <typename T>
+void DataOutport<T>::setConstData(const T* data) {
+    if(ownsData_) {
+        //Delete old data
+        delete data_;
+    }
+    ownsData_ = false;
+    //Add reference to new data
+    data_ = const_cast<T*>(data);
+    dataChanged();
+}
+
+template <typename T>
 bool DataOutport<T>::hasData() const {
     return (data_ != NULL);
+}
+
+template <typename T>
+bool DataOutport<T>::isDataOwner() const {
+    return ownsData_;
 }
 
 } // namespace

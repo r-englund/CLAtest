@@ -63,7 +63,7 @@ void MeshClipping::process() {
 		outport_.setData(clippedPlaneGeom);
 		//LogInfo("Done.");
 	} else {
-		outport_.setData(const_cast<Geometry*>(inport_.getData()), false);
+		outport_.setConstData(inport_.getData());
 	}
 }
 
