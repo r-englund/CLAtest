@@ -52,13 +52,8 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
 
     //translate
     meta_.rawFileAbsolutePath_ = fileDirectory + meta_.rawFileAbsolutePath_ ;
-    if (meta_.dataFormat_=="UCHAR") {
-        format_ = DataUINT8::get();
-    }
-    else if (meta_.dataFormat_=="USHORT") {
-        format_ = DataUINT16::get();
-    }
-  
+    format_ = DataFormatBase::get(meta_.dataFormat_);
+ 
     Volume* volume = new UniformRectiLinearVolume();
     volume->setDimension(meta_.dimensions_);
     volume->setDataFormat(format_);

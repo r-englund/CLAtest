@@ -190,6 +190,21 @@ public:
         return instance_[id];
     }
 
+    static const DataFormatBase* get(std::string name){
+        if(name == "FLOAT16") return instance_[NOT_SPECIALIZED];
+        #define DataFormatIdMacro(i) else if(name == "##i") return instance_[##i];
+        #include <inviwo/core/util/formatsdefinefunc.h>   
+        else if(name == "UCHAR") return instance_[UINT8];
+        else if(name == "CHAR") return instance_[INT8];
+        else if(name == "USHORT") return instance_[UINT16];
+        else if(name == "SHORT") return instance_[INT16];
+        else if(name == "UINT") return instance_[UINT32];
+        else if(name == "INT") return instance_[INT32];
+        else if(name == "FLOAT") return instance_[FLOAT32];
+        else if(name == "DOUBLE") return instance_[FLOAT64];
+        else return instance_[NOT_SPECIALIZED];
+    }
+
     static size_t bitsAllocated() { return 0; }
     static size_t bitsStored() { return 0; }
     static std::string str() { return "Error, type specialization not implemented"; }

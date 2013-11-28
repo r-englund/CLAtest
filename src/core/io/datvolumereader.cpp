@@ -54,6 +54,8 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
     std::string textLine; 
     std::string formatFlag = "";
 
+    Volume* volume = new UniformRectiLinearVolume();
+
     std::string key;
     while (!f->eof()) {
         getline(*f, textLine);
@@ -64,27 +66,18 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         if (key=="ObjectFileName:") {
             ss >> rawFile_;
             rawFile_ = fileDirectory + rawFile_;
-        }
-        else if (key=="Resolution:") {
+        }else if (key=="Resolution:") {
             ss >> dimension_.x;
             ss >> dimension_.y;
             ss >> dimension_.z;
-        }
-
-        //TODO: find a general way to extract format
-        else if (key=="Format:") {
+        }else if (key=="Format:") {
             ss >> formatFlag;
-
-            if (formatFlag=="UCHAR") {
-                format_ = DataUINT8::get();
-            }
-            else if (formatFlag=="USHORT") {
-                format_ = DataUINT16::get();
-            }
+            format_ = DataFormatBase::get(formatFlag);
+        }else{
+            volume->setMetaData<StringMetaData>(key, textLine);
         }                    
     };
 
-    Volume* volume = new UniformRectiLinearVolume();
     volume->setDimension(dimension_);
     volume->setDataFormat(format_);
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
