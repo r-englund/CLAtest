@@ -5,8 +5,9 @@ namespace inviwo {
 
 FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value, PropertyOwner::InvalidationLevel invalidationLevel, 
 PropertySemantics::Type semantics)
-    : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics)
-{}
+    : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics){
+        addNameFilter("All Files (*.*)");
+}
 
 int FileProperty::getVariantType() {
     return Variant::VariantTypeString;
@@ -35,6 +36,8 @@ void FileProperty::serialize(IvwSerializer& s) const {
     
     std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("url", relativePath);
+
+    s.serialize("nameFilter", nameFilters_, "filter");
 }
 
 void FileProperty::deserialize(IvwDeserializer& d) {
@@ -50,6 +53,21 @@ void FileProperty::deserialize(IvwDeserializer& d) {
     
     basePath = URLParser::getFileDirectory(basePath);
     set(basePath+relativePath);
+
+    nameFilters_.clear();
+    d.deserialize("nameFilter", nameFilters_, "filter");
+}
+
+void FileProperty::addNameFilter( std::string filter){
+    nameFilters_.push_back(filter);
+}
+
+void FileProperty::clearNameFilters(){
+    nameFilters_.clear();
+}
+
+std::vector<std::string> FileProperty::getNameFilters(){
+    return nameFilters_;
 }
 
 } // namespace

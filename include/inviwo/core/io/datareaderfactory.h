@@ -26,9 +26,9 @@ public:
 
         for(ExtensionMap::const_iterator it = readerForExtension_.begin();
             it != readerForExtension_.end(); ++it){
-                DataReaderType<T> r = dynamic_cast<DataReaderType<T> >(it->second);
+                DataReaderType<T>* r = dynamic_cast<DataReaderType<T>* >(it->second);
                 if(r){
-                    std::vector<FileExtension> readerExt = r.getExtensions();
+                    std::vector<FileExtension> readerExt = r->getExtensions();
                     for(std::vector<FileExtension>::const_iterator e = readerExt.begin();
                         e != readerExt.end(); ++e){
                             ext.push_back(*e);

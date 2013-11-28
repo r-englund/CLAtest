@@ -35,6 +35,13 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "FileProperty"; }
+
+    virtual void addNameFilter(std::string);
+    virtual void clearNameFilters();
+    virtual std::vector<std::string> getNameFilters();
+
+private:
+    std::vector<std::string> nameFilters_;
 };
 
 } // namespace

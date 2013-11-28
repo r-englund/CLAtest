@@ -41,7 +41,7 @@ void FilePropertyWidgetQt::generateWidget() {
 void FilePropertyWidgetQt::setPropertyValue() {
     // dialog window settings
     QStringList extension;
-    extension << "All Files (*.*)";
+    //extension << "All Files (*.*)";
 
     QString dataDir_ = QString::fromStdString(IVW_DIR+"data/");
 
@@ -56,9 +56,23 @@ void FilePropertyWidgetQt::setPropertyValue() {
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
-    
-    QFileDialog openFileDialog(this, tr("Open File ..."), QDir(dataDir_).absolutePath());
+    QString path;
+    if(property_->get()!= ""){
+        path=QDir(QString::fromStdString(property_->get())).absolutePath();
+    }else{
+        path=QDir(dataDir_).absolutePath();
+    }
+
+    QFileDialog openFileDialog(this, tr("Open File ..."), path);
     openFileDialog.setFileMode(QFileDialog::AnyFile);
+    
+    std::vector<std::string> filters = property_->getNameFilters();
+
+    for(std::vector<std::string>::const_iterator it = filters.begin();
+        it!=filters.end(); ++it){
+            extension.push_back(QString::fromStdString(*it));
+    }
+
     openFileDialog.setNameFilters(extension);
     openFileDialog.setSidebarUrls(sidebarURLs);
 

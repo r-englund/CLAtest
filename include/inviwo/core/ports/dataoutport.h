@@ -44,7 +44,7 @@ DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationL
 
 template <typename T>
 DataOutport<T>::~DataOutport() {
-    if(ownsData_)
+    if(ownsData_ && data_)
         delete data_;
 }
 
@@ -66,7 +66,7 @@ const T* DataOutport<T>::getConstData() const{
 
 template <typename T>
 void DataOutport<T>::setData(T* data, bool ownsData) {
-    if(ownsData_) {
+    if(ownsData_ && data_) {
         //Delete old data
         delete data_;
     }
@@ -78,7 +78,7 @@ void DataOutport<T>::setData(T* data, bool ownsData) {
 
 template <typename T>
 void DataOutport<T>::setConstData(const T* data) {
-    if(ownsData_) {
+    if(ownsData_ && data_) {
         //Delete old data
         delete data_;
     }

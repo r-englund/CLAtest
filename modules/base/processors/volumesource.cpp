@@ -21,7 +21,13 @@ VolumeSource::VolumeSource()
 
 	volumeFile_.onChange(this, &VolumeSource::loadVolume);
     
-    //TODO: Add the supported file types to volumeFile_
+    std::vector<FileExtension> ext = DataReaderFactory::getRef().getExtensionsForType<Volume>();
+    for(std::vector<FileExtension>::const_iterator it = ext.begin();
+        it != ext.end(); ++it){
+            std::stringstream ss;
+            ss << it->description_ << " (*." << it->extension_ << ")";
+            volumeFile_.addNameFilter(ss.str());
+    }
 
 	addProperty(volumeFile_);
 }
