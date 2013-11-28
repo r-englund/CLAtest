@@ -133,6 +133,7 @@ set(SOURCE_FILES
     properties/texteditorwidgetqt.cpp
     properties/transferfunctioneditor.cpp
     properties/transferfunctioneditorcontrolpoint.cpp
+    properties/transferfunctioneditorcontrolpointgroup.cpp
     properties/transferfunctioneditorlineitem.cpp
     properties/transferfunctioneditorview.cpp
     properties/transferfunctionpropertydialog.cpp

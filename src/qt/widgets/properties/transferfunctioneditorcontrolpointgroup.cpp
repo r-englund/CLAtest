@@ -1,4 +1,4 @@
-#include <inviwo/qt/editor/transferfunctioneditorcontrolpointgroup.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpointgroup.h>
 
 namespace inviwo {
     TransferFunctionEditorControlPointGroup::TransferFunctionEditorControlPointGroup(){
