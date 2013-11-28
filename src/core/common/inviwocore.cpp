@@ -13,6 +13,10 @@
 #include <inviwo/core/util/systemcapabilities.h>
 #include <inviwo/core/util/vectoroperations.h>
 
+//Io
+#include <inviwo/core/io/datvolumereader.h>
+#include <inviwo/core/io/ivfvolumereader.h>
+
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
 //Properties
@@ -32,6 +36,9 @@ InviwoCore::InviwoCore() : InviwoModule() {
     addMetaData(new ProcessorWidgetMetaData());
 
     addCapabilities(new SystemCapabilities());
+
+    addDataReader(new DatVolumeReader());
+    addDataReader(new IvfVolumeReader());
 
     allocTest_ = NULL;
 }

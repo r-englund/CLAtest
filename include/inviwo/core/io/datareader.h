@@ -4,27 +4,61 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include "inviwo/core/datastructures/data.h"
+#include <inviwo/core/util/fileextension.h>
 
 namespace inviwo {
 
+/** \brief A abstract base class for all file readers. 
+ *
+ */
 class IVW_CORE_API DataReader {
-
 public:
     DataReader();
-    DataReader(std::string identifier);
-    virtual ~DataReader() {}
+    DataReader(const DataReader& rhs);
+    DataReader& operator=(const DataReader& that);
+    virtual DataReader* clone() const = 0;
+    virtual ~DataReader() {};
+
 
     std::string getIdentifier() const;
-    virtual Data* readData(const std::string filePath)=0;
+    
+    virtual Data* readMetaData(const std::string filePath) = 0;
+    virtual void* readData() const = 0;
+    virtual void readDataInto(void* dest) const = 0;
+
+    const std::vector<FileExtension>& getExtensions() const;
+    void addExtension(FileExtension ext);
 
 protected:
 
-    void setIdentifier(const std::string& name);
-
 private:
-    std::string identifier_;
+    std::vector<FileExtension> extensions_;
+};
+
+/** \brief Template base class for file readers designating what type of data object the reader returns. 
+ *
+ */
+template <typename T>
+class DataReaderType : public DataReader {
+public:
+    DataReaderType() : DataReader() {};
+    DataReaderType(const DataReaderType& rhs) : DataReader(rhs) {};
+    DataReaderType& operator=(const DataReaderType& that) {
+        if (this != &that) {
+            DataReader::operator=(that);
+        }
+        return *this;
+    };
+    virtual DataReaderType* clone() const = 0;
+    virtual ~DataReaderType() {};
+
+    virtual T* readMetaData(const std::string filePath) = 0;
+    virtual void* readData() const = 0;
+    virtual void readDataInto(void* dest) const = 0;
 };
 
 } // namespace
 
 #endif // IVW_DATAREADER_H
+    
+    

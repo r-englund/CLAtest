@@ -11,7 +11,7 @@
 #include <modules/opencl/volume/volumeclglconverter.h>
 #include <modules/opencl/kernelmanager.h>
 
-
+#include <inviwo/core/util/vectoroperations.h>
 
 namespace inviwo {
 

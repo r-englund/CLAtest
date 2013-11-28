@@ -14,7 +14,7 @@ DataRepresentation* VolumeDisk2RAMConverter::createFrom(const DataRepresentation
     const VolumeDisk* volumeDisk = static_cast<const VolumeDisk*>(source);
     if (volumeDisk) {
         switch (volumeDisk->getDataFormatId()) {
-        #define DataFormatIdMacro(i) case i: return new VolumeRAM_##i(static_cast<Data##i::type*>(const_cast<VolumeDisk*>(volumeDisk)->loadRawData()), volumeDisk->getDimensions());
+        #define DataFormatIdMacro(i) case i: return new VolumeRAM_##i(static_cast<Data##i::type*>(const_cast<VolumeDisk*>(volumeDisk)->getDataReader()->readData()), volumeDisk->getDimensions());
         #include <inviwo/core/util/formatsdefinefunc.h>
         default: 
             LogError("Cannot convert format from Disk to RAM:" << volumeDisk->getDataFormat()->getString());
@@ -28,9 +28,7 @@ void VolumeDisk2RAMConverter::update(const DataRepresentation* source, DataRepre
     if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
         volumeDst->setDimensions(volumeSrc->getDimensions());
     }
-    // FIXME: The file loader should have a function that loads data into a preallocated location.
-	volumeDst->setData(volumeSrc->loadRawData());
-
+    volumeSrc->getDataReader()->readDataInto(volumeDst->getData());
 }
 
 } // namespace

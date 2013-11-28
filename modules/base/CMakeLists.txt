@@ -25,9 +25,9 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/simpleraycaster.h
     ${IVW_MODULE_DIR}/base/processors/testprocessor.h
     ${IVW_MODULE_DIR}/base/processors/transferfunctiontestprocessor.h
-	${IVW_MODULE_DIR}/base/processors/volumesource.h
-	${IVW_MODULE_DIR}/base/processors/volumeexport.h
-	${IVW_MODULE_DIR}/base/processors/volumebasistransformer.h
+    ${IVW_MODULE_DIR}/base/processors/volumesource.h
+    ${IVW_MODULE_DIR}/base/processors/volumeexport.h
+    ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.h
     ${IVW_MODULE_DIR}/base/processors/volumeslice.h
     ${IVW_MODULE_DIR}/base/processors/volumeslicegl.h
     ${IVW_MODULE_DIR}/base/processors/volumesplit.h
@@ -60,9 +60,9 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/simpleraycaster.cpp
     ${IVW_MODULE_DIR}/base/processors/testprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/transferfunctiontestprocessor.cpp
-	${IVW_MODULE_DIR}/base/processors/volumesource.cpp
-	${IVW_MODULE_DIR}/base/processors/volumeexport.cpp
-	${IVW_MODULE_DIR}/base/processors/volumebasistransformer.cpp
+    ${IVW_MODULE_DIR}/base/processors/volumesource.cpp
+    ${IVW_MODULE_DIR}/base/processors/volumeexport.cpp
+    ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.cpp
     ${IVW_MODULE_DIR}/base/processors/volumeslice.cpp
     ${IVW_MODULE_DIR}/base/processors/volumeslicegl.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesplit.cpp

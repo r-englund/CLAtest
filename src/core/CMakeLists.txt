@@ -5,6 +5,8 @@ ivw_project(inviwo-core)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
+	${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramslice.h
+	${IVW_INCLUDE_DIR}/inviwo/core/processors/processorstate.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwo.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwoapplication.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocore.h
@@ -20,65 +22,50 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/spatialdata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/attributes.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/simplemeshcreator.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/simplemesh.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/edge.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryram.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/edge.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometrytype.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/mesh.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/plane.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/polygon.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/simplemesh.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/simplemeshcreator.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/image.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageram.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramconverter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagetypes.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/light/directionallight.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/spatialdata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunctiondatapoint.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volume.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramoperationexecuter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramprecision.h
-	${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramslice.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramsubset.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumetypeclassification.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumewriter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfbasesettings.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfreadersettings.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfwritersettings.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h	
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumewriter.h    
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h    
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumewriter.h 
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializableinterface.h	
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h	
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserialization.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventlistener.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/interactionevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/keyboardevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mouseevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/resizeevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/timerevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingcontainer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickinghandler.h
@@ -86,14 +73,29 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventlistener.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/interactionevent.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/keyboardevent.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mouseevent.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/timerevent.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/resizeevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumewriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfbasesettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfreadersettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfwritersettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumewriter.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializableinterface.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserialization.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumewriter.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/compositemetadata.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatafactory.h
@@ -118,7 +120,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorobserver.h
-	${IVW_INCLUDE_DIR}/inviwo/core/processors/processorstate.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
@@ -132,6 +133,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
@@ -145,35 +147,36 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/scalarproperties.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferfunctionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferfunctionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanagerobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/templateresource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/study/studyparameterlist.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/callback.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/capabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/colorconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/datetime.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/filedirectory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/fileextension.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formats.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatsdefinefunc.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/inviwofactorybase.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/glmstreamoperators.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/inviwofactorybase.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/capabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/settings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
@@ -181,13 +184,14 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/glmstreamoperators.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
+	datastructures/dataoperation.cpp
+	interaction/pickingcontainer.cpp
     common/inviwoapplication.cpp
     common/inviwocore.cpp
     common/inviwomodule.cpp
@@ -196,16 +200,15 @@ set(SOURCE_FILES
     datastructures/buffer/bufferram.cpp
     datastructures/buffer/bufferrepresentation.cpp
     datastructures/data.cpp
-	datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp
     datastructures/geometry/attributes.cpp
-    datastructures/geometry/simplemeshcreator.cpp
-    datastructures/geometry/simplemesh.cpp
     datastructures/geometry/geometry.cpp
     datastructures/geometry/geometryram.cpp
     datastructures/geometry/geometryrepresentation.cpp
     datastructures/geometry/mesh.cpp
     datastructures/geometry/plane.cpp
+    datastructures/geometry/simplemesh.cpp
+    datastructures/geometry/simplemeshcreator.cpp
     datastructures/image/image.cpp
     datastructures/image/imagedisk.cpp
     datastructures/image/imageram.cpp
@@ -218,25 +221,44 @@ set(SOURCE_FILES
     datastructures/volume/volume.cpp
     datastructures/volume/volumedisk.cpp
     datastructures/volume/volumeram.cpp
-    datastructures/volume/volumerepresentation.cpp
     datastructures/volume/volumeramconverter.cpp
+    datastructures/volume/volumerepresentation.cpp
     datastructures/volume/volumetypeclassification.cpp
     interaction/action.cpp
-    interaction/interactionhandler.cpp
-	interaction/pickingcontainer.cpp
-    interaction/pickinghandler.cpp
-    interaction/pickingmanager.cpp
-    interaction/pickingobject.cpp
-    interaction/trackball.cpp
-    interaction/trackballaction.cpp
     interaction/events/event.cpp
     interaction/events/eventhandler.cpp
     interaction/events/eventlistener.cpp
     interaction/events/interactionevent.cpp
     interaction/events/keyboardevent.cpp
     interaction/events/mouseevent.cpp
-    interaction/events/timerevent.cpp
     interaction/events/resizeevent.cpp
+    interaction/events/timerevent.cpp
+    interaction/interactionhandler.cpp
+    interaction/pickinghandler.cpp
+    interaction/pickingmanager.cpp
+    interaction/pickingobject.cpp
+    interaction/trackball.cpp
+    interaction/trackballaction.cpp
+    io/datareader.cpp
+    io/datareaderfactory.cpp
+    io/datawriter.cpp
+    io/datvolumereader.cpp
+    io/datvolumewriter.cpp 
+    io/imageloader.cpp
+    io/ivfbasesettings.cpp 
+    io/ivfreadersettings.cpp 
+    io/ivfvolumereader.cpp 
+    io/ivfvolumewriter.cpp 
+    io/ivfwritersettings.cpp 
+    io/rawvolumereader.cpp
+    io/rawvolumewriter.cpp    
+    io/serialization/ivwdeserializer.cpp
+    io/serialization/ivwserializebase.cpp
+    io/serialization/ivwserializeconstants.cpp
+    io/serialization/ivwserializer.cpp
+    io/textfilereader.cpp    
+    io/volumereader.cpp
+    io/volumewriter.cpp
     metadata/compositemetadata.cpp	
     metadata/metadata.cpp
     metadata/metadatafactory.cpp
@@ -262,11 +284,12 @@ set(SOURCE_FILES
     processors/progressbar.cpp
     properties/boolproperty.cpp
     properties/cameraproperty.cpp
-    properties/directoryproperty.cpp    
     properties/compositeproperty.cpp
+    properties/directoryproperty.cpp    
     properties/eventproperty.cpp
     properties/fileproperty.cpp
     properties/imageeditorproperty.cpp
+    properties/linkevaluator.cpp	
     properties/matrixproperties.cpp
     properties/optionproperties.cpp
     properties/property.cpp
@@ -279,26 +302,6 @@ set(SOURCE_FILES
     properties/texteditorproperty.cpp
     properties/transferfunctionproperty.cpp
     properties/vectorproperties.cpp
-    properties/linkevaluator.cpp	
-    io/datareader.cpp
-    io/datawriter.cpp
-    io/datvolumereader.cpp
-    io/datvolumewriter.cpp 
-    io/imageloader.cpp
-    io/ivfvolumewriter.cpp 
-    io/ivfbasesettings.cpp 
-    io/ivfreadersettings.cpp 
-    io/ivfwritersettings.cpp 
-    io/ivfvolumereader.cpp 
-    io/rawvolumereader.cpp
-    io/rawvolumewriter.cpp    
-    io/textfilereader.cpp    
-    io/volumereader.cpp
-    io/volumewriter.cpp
-    io/serialization/ivwserializebase.cpp
-    io/serialization/ivwserializer.cpp
-    io/serialization/ivwdeserializer.cpp
-    io/serialization/ivwserializeconstants.cpp
     resources/resourcemanager.cpp
     study/studyparameterlist.cpp    
     util/assertion.cpp
@@ -306,6 +309,7 @@ set(SOURCE_FILES
     util/commandlineparser.cpp
     util/exception.cpp
     util/filedirectory.cpp
+    util/fileextension.cpp
     util/fileobserver.cpp
     util/formats.cpp
     util/logdistributor.cpp

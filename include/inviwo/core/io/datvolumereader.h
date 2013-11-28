@@ -1,30 +1,30 @@
 #ifndef IVW_DATVOLUMEREADER_H
 #define IVW_DATVOLUMEREADER_H
 
-#include "inviwo/core/common/inviwocoredefine.h"
-#include "inviwo/core/common/inviwo.h"
-#include "inviwo/core/io/volumereader.h"
-#include "inviwo/core/io/rawvolumereader.h"
-#include "inviwo/core/util/filedirectory.h"
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/io/volumereader.h>
+#include <inviwo/core/io/rawvolumereader.h>
+#include <inviwo/core/util/filedirectory.h>
 
 namespace inviwo {
 
 class IVW_CORE_API DatVolumeReader : public VolumeReader {
 public:        
-
-    DatVolumeReader(const std::string filePath);
-
+    DatVolumeReader();
+    DatVolumeReader(const DatVolumeReader& rhs);
+    DatVolumeReader& operator=(const DatVolumeReader& that);
+    virtual DatVolumeReader* clone() const;
     virtual ~DatVolumeReader() {}
 
-    virtual Data* readData();
-    
-    //RawVolumeReader::ReaderSettings& getReaderSettings() const;
+    virtual Volume* readMetaData(const std::string filePath);
+    virtual void* readData() const;
+    virtual void readDataInto(void* dest) const;
 
-    static void readDatFileSettings(std::string filePath, ReaderSettings& readerSettings);
-
-private:               
-    std::string sourceFileAbsolutePath_; //Absolute path to the file
-    Data* readRawVolumeData();
+private:
+    std::string rawFile_;
+    glm::uvec3 dimension_;
+    const DataFormatBase* format_;
 };    
 
 } // namespace

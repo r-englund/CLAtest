@@ -13,47 +13,19 @@ namespace inviwo {
 class IVW_CORE_API IvfVolumeReader : public VolumeReader {
 public:        
 
-    IvfVolumeReader(const std::string filePath);
-
+    IvfVolumeReader();
+    IvfVolumeReader(const IvfVolumeReader& rhs);
+    IvfVolumeReader& operator=(const IvfVolumeReader& that);
+    virtual IvfVolumeReader* clone() const;
     virtual ~IvfVolumeReader() {}
 
-    virtual Data* readData();
-    
-    //RawVolumeReader::ReaderSettings& getReaderSettings() const;
+    virtual Volume* readMetaData(const std::string filePath);
+    virtual void* readData() const;
+    virtual void readDataInto(void* dest) const;
 
-    static void readIvfFileSettings(const std::string filePath, IvfReaderSettings& ivfReaderSettings)  {
-        ivfReaderSettings.rawFileAbsolutePath_ = "";
-        ivfReaderSettings.dataFormat_ = "";
-        ivfReaderSettings.dimensions_ = ivec3(0,0,0);
-       
-        std::string fileDirectory = URLParser::getFileDirectory(filePath);
-        
-        std::string fileExtension = URLParser::getFileExtension(filePath);
-
-        ivwAssert(fileExtension=="ivf", "should be a *.ivf file");
-
-        if (fileExtension=="ivf") {
-            
-            //Read the ivf file content
-            IvwDeserializer d(filePath);
-            ivfReaderSettings.deserialize(d);
-
-            //translate
-            ivfReaderSettings.rawFileAbsolutePath_ = fileDirectory + ivfReaderSettings.rawFileAbsolutePath_ ;
-            if (ivfReaderSettings.dataFormat_=="UCHAR") {
-                ivfReaderSettings.dataFormat_ = DataUINT8::str();
-            }
-            else if (ivfReaderSettings.dataFormat_=="USHORT") {
-                ivfReaderSettings.dataFormat_ = DataUINT16::str();
-            }
-            else
-                ivfReaderSettings.dataFormat_="";
-        }        
-    }
-
-private:               
-    std::string sourceFileAbsolutePath_; //Absolute path to the file
-    Data* readRawVolumeData();
+private:
+    IvfReaderSettings meta_;
+    const DataFormatBase* format_;
 };    
 
 } // namespace

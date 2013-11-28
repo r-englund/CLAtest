@@ -1,6 +1,7 @@
 #include <inviwo/qt/widgets/pythoneditorwidget.h>
 
 #include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/filedirectory.h>
 
 #include <QCommandLinkButton>
 #include <QSplitter>
