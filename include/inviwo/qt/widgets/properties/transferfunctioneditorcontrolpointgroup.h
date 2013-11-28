@@ -14,7 +14,7 @@
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 
 namespace inviwo {
-    class IVW_QTEDITOR_API TransferFunctionEditorControlPointGroup : public QObject, public QGraphicsItem{
+    class IVW_QTWIDGETS_API TransferFunctionEditorControlPointGroup : public QObject, public QGraphicsItem{
             Q_OBJECT
     public:
         TransferFunctionEditorControlPointGroup();
