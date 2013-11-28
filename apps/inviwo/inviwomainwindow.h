@@ -15,6 +15,9 @@
 #include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/editor/resourcemanagerwidget.h>
+#ifdef IVW_HAS_PYTHON
+#include <inviwo/qt/widgets/pythoneditorwidget.h>
+#endif
 
 namespace inviwo {
 
@@ -89,6 +92,9 @@ private:
     ConsoleWidget* consoleWidget_;
     MappingWidget* mappingwidget_;
     ResourceManagerWidget* resourceManagerWidget_;
+#ifdef IVW_HAS_PYTHON
+    PythonEditorWidget* pythonEditorWidget_;
+#endif
 
     // mainwindow menus
     QMenuBar* basicMenuBar;
@@ -96,6 +102,9 @@ private:
     QMenu* helpMenuItem_;
     QMenu* viewMenuItem_;
     QMenu* viewModeItem_;
+#ifdef IVW_HAS_PYTHON
+    QMenu* pythonMenuItem_;
+#endif
     
     // mainwindow menuactions
     QAction* newFileAction_;
@@ -106,6 +115,9 @@ private:
     QAction* recentFileActions_[maxNumRecentFiles_];
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
+#ifdef IVW_HAS_PYTHON
+    QAction* pythonEditorOpenAction_;
+#endif
 
 	// mainwindow toolbars
 	QToolBar* fileToolBar_;

@@ -1,36 +1,26 @@
 #include <inviwo/qt/widgets/pythoneditorwidget.h>
-
 #include <inviwo/core/util/logdistributor.h>
 #include <inviwo/core/util/filedirectory.h>
-
+#include <modules/python/pythonmodule.h>
 #include <QCommandLinkButton>
 #include <QSplitter>
 #include <QFileDialog>
 #include <QMessageBox>
-#include "modules/python/pythonmodule.h"
-
+#include <QPushButton>
+#include <QToolButton>
+#include <QSpacerItem>
+#include <QHBoxLayout>
+#include <QFrame>
 
 namespace inviwo{
-
-	void PythonEditorWidget::init(InviwoMainWindow* mainWindow){
-		Singleton<PythonEditorWidget>::init (new PythonEditorWidget(mainWindow));
-	}
-
-    PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* mainWindow): 
-            InviwoDockWidget(tr("Python Editor"),mainWindow), 
+    PythonEditorWidget::PythonEditorWidget(QWidget* parent): 
+            InviwoDockWidget(tr("Python Editor"), parent), 
             script_(),
             unsavedChanges_(false),
 		infoTextColor_(153,153,153), errorTextColor_(255,107,107) {
         setObjectName("PythonEditor");
         setAllowedAreas(Qt::AllDockWidgetAreas);
 		setFloating(true);
-        InviwoApplication::getRef().registerFileObserver(this);
-
-        QMenu *menu = mainWindow->menuBar()->addMenu("&Python");
-        QAction *openAction = new QAction(QIcon(":/icons/python.png"),"&Python Editor",mainWindow);
-
-        mainWindow->connect(openAction,SIGNAL(triggered(bool)),this,SLOT(show(void)));
-        menu->addAction(openAction);
 
         buildWidget();
         resize(500,700);
@@ -69,14 +59,11 @@ namespace inviwo{
         saveAsButton->setIcon(QIcon(":/icons/saveas.png"));
         saveAsButton->setToolTip("Save as");
         
-        clearOutputButton->setText("Clear Output");
-
-        
+        clearOutputButton->setText("Clear Output");        
         
         QFrame* line = new QFrame(content);
         line->setFrameShape(QFrame::VLine);
         line->setFrameShadow(QFrame::Sunken);
-
 
         horizontalLayout->addWidget(runButton);
         horizontalLayout->addWidget(line);
@@ -89,11 +76,8 @@ namespace inviwo{
 
         QSpacerItem* horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
         horizontalLayout->addItem(horizontalSpacer);
-
-        
-        //Done creating buttons
-
-        
+  
+        //Done creating buttons        
         QSplitter* splitter = new  QSplitter(content);
         splitter->setOrientation(Qt::Vertical);
 

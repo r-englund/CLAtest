@@ -3,22 +3,21 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
-#include <apps/inviwo/inviwomainwindow.h>
 #include <inviwo/core/util/fileobserver.h>
 #include <modules/python/pythonscript.h>
-#include "modules/python/pythonmodule.h"
-#include "modules/python/pythonexecutionoutputobeserver.h"
+#include <modules/python/pythonmodule.h>
+#include <modules/python/pythonexecutionoutputobeserver.h>
+#include <QTextEdit>
+#include <QColor>
 
 namespace inviwo{
     
-class IVW_QTWIDGETS_API PythonEditorWidget : public InviwoDockWidget , public FileObserver, public Singleton<PythonEditorWidget> , public PythonExecutionOutputObeserver {
+class IVW_QTWIDGETS_API PythonEditorWidget : public InviwoDockWidget , public FileObserver , public PythonExecutionOutputObeserver {
     Q_OBJECT
 
-	PythonEditorWidget(InviwoMainWindow* mainWindow);
 public:
+    PythonEditorWidget(QWidget* parent = NULL);
     virtual ~PythonEditorWidget();
-
-	static void init(InviwoMainWindow* mainWindow);
 
     void appendToOutput(const std::string &msg,bool error = false);
     virtual void fileChanged(std::string fileName);

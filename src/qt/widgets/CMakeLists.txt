@@ -59,7 +59,6 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertydialog.h
 )
 
-
 if(IVW_MODULE_PYTHON)
 	list(APPEND MOC_FILES  ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/pythoneditorwidget.h)
 endif()
@@ -157,6 +156,9 @@ add_library(inviwo-qtwidgets ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
 # Add core dependencies to this list
 ivw_add_dependencies(InviwoCore)
+if(IVW_MODULE_PYTHON)
+	ivw_add_dependencies(InviwoPythonModule)
+endif()
 
 # Add qt dependencies to this list
 if(DESIRED_QT_VERSION MATCHES 5)

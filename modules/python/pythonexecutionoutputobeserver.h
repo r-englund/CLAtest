@@ -4,7 +4,7 @@
 #include <modules/python/pythonmoduledefine.h>
 
 namespace inviwo {
-class PythonExecutionOutputObeserver{
+class IVW_MODULE_PYTHON_API PythonExecutionOutputObeserver{
 public:
     enum OutputType
     {

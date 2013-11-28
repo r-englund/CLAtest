@@ -20,12 +20,7 @@
 #include <QSettings>
 #include <QUrl>
 
-
 #include <inviwo/core/util/commandlineparser.h>
-
-#ifdef IVW_HAS_PYTHON
-#include <inviwo/qt/widgets/pythoneditorwidget.h>
-#endif
 
 namespace inviwo { 
 
@@ -72,7 +67,8 @@ void InviwoMainWindow::initialize() {
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
 
 #ifdef IVW_HAS_PYTHON
-	PythonEditorWidget::init(this);
+	pythonEditorWidget_ = new PythonEditorWidget(this);
+    InviwoApplication::getRef().registerFileObserver(pythonEditorWidget_);
 #endif
 
     // load settings and restore window state
@@ -145,10 +141,9 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
 
 #ifdef IVW_HAS_PYTHON
     if (cmdparser->getRunPythonScriptAfterStartup()) {
-        PythonEditorWidget *py = PythonEditorWidget::getPtr();
-        py->show();
-        py->loadFile(cmdparser->getPythonScirptName(),false);
-        py->run();
+        pythonEditorWidget_->show();
+        pythonEditorWidget_->loadFile(cmdparser->getPythonScirptName(),false);
+        pythonEditorWidget_->run();
     }
 #endif
 	if (cmdparser->getCaptureAfterStartup()) {
@@ -197,6 +192,11 @@ void InviwoMainWindow::addMenus() {
 	viewMenuItem_->addMenu(viewModeItem_);
 
 	helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
+
+#ifdef IVW_HAS_PYTHON
+    pythonMenuItem_ = new QMenu(tr("&Python"));
+    basicMenuBar->insertMenu(first, pythonMenuItem_);
+#endif
 }
 
 void InviwoMainWindow::addMenuActions() {
@@ -265,7 +265,13 @@ void InviwoMainWindow::addMenuActions() {
 	}
 
 	connect(developerViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
-	connect(applicationViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool)));    
+	connect(applicationViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool))); 
+
+#ifdef IVW_HAS_PYTHON
+    pythonEditorOpenAction_ = new QAction(QIcon(":/icons/python.png"),"&Python Editor", this);
+    connect(pythonEditorOpenAction_, SIGNAL(triggered(bool)), this, SLOT(show(void)));
+    pythonMenuItem_->addAction(pythonEditorOpenAction_);
+#endif
 }
 
 void InviwoMainWindow::addToolBars() {
