@@ -24,7 +24,7 @@ public:
     std::vector<FileExtension> getExtensionsForType(){
         std::vector<FileExtension> ext;
 
-        for(ExtensionMap::const_iterator it = readerForExtension_.cbegin();
+        for(ExtensionMap::const_iterator it = readerForExtension_.begin();
             it != readerForExtension_.end(); ++it){
                 DataReaderType<T> r = dynamic_cast<DataReaderType<T> >(it->second);
                 if(r){
@@ -40,7 +40,7 @@ public:
         std::vector<DataReaderType<T>* > getExtensionsForType(){
             std::vector<FileExtension> ext;
 
-            for(ExtensionMap::const_iterator it = readerForExtension_.cbegin();
+            for(ExtensionMap::const_iterator it = readerForExtension_.begin();
                 it != readerForExtension_.end(); ++it){
                     DataReaderType<T> r = dynamic_cast<DataReaderType<T> >(it->second);
                     if(r){
