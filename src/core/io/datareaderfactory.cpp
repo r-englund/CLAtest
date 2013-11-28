@@ -28,7 +28,7 @@ namespace inviwo {
 
 
     void DataReaderFactory::deinitialize(){
-        throw std::exception("The method or operation is not implemented.");
+       
     }
 
 
