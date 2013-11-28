@@ -10,8 +10,8 @@ namespace inviwo {
     DataReader& DataReader::operator=( const DataReader& that ){
         if (this != &that) {
             extensions_.clear();
-            for(std::vector<FileExtension>::const_iterator it = that.getExtensions().cbegin();
-                it != that.getExtensions().cend(); ++it){
+            for(std::vector<FileExtension>::const_iterator it = that.getExtensions().begin();
+                it != that.getExtensions().end(); ++it){
                     extensions_.push_back(*it);
             }
         }

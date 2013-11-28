@@ -18,8 +18,8 @@ namespace inviwo {
     }
 
     void DataReaderFactory::registerDataReader( DataReader* reader ){
-        for( std::vector<FileExtension>::const_iterator it = reader->getExtensions().cbegin();
-            it != reader->getExtensions().cend(); ++it){
+        for( std::vector<FileExtension>::const_iterator it = reader->getExtensions().begin();
+            it != reader->getExtensions().end(); ++it){
              if(readerForExtension_.find(it->extension_) == readerForExtension_.end()){
                  readerForExtension_.insert(std::make_pair(it->extension_, reader));
              }
