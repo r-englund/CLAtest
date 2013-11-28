@@ -192,7 +192,7 @@ public:
 
     static const DataFormatBase* get(std::string name){
         if(name == "FLOAT16") return instance_[NOT_SPECIALIZED];
-        #define DataFormatIdMacro(i) else if(name == "##i") return instance_[##i];
+        #define DataFormatIdMacro(i) else if(name == #i) return instance_[i];
         #include <inviwo/core/util/formatsdefinefunc.h>   
         else if(name == "UCHAR") return instance_[UINT8];
         else if(name == "CHAR") return instance_[INT8];
