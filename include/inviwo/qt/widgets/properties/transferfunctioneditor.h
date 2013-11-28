@@ -16,6 +16,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpointgroup.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h>
 
 #include <inviwo/qt/widgets/propertylistwidget.h>
@@ -55,10 +56,15 @@ namespace inviwo {
         ~TransferFunctionEditor();
 		QGraphicsView* getView();
 		void repositionPoints();
-        const float getZoomRangeMin();
-        void setZoomRangeMin(float min);
-        const float getZoomRangeMax();
-        void setZoomRangeMax(float max);
+        const float getZoomRangeXMin();
+        const float getZoomRangeXMax();
+        void setZoomRangeXMin(float min);
+        void setZoomRangeXMax(float max);
+
+        const float getZoomRangeYMin();
+        const float getZoomRangeYMax();
+        void setZoomRangeYMin(float min);
+        void setZoomRangeYMax(float max);
     
     signals:
         void doubleClick();
@@ -86,17 +92,19 @@ namespace inviwo {
 		void sortControlPoints();
 		void setControlPointNeighbours();
     private :
+        float zoomRangeXMin_;
+        float zoomRangeXMax_;
+        float zoomRangeYMin_;
+        float zoomRangeYMax_;
 		QGraphicsView* view_;
-        std::vector<TransferFunctionEditorControlPoint*> points_; ///< Control points in the transfer function graph
-        std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
-        TransferFunction* transferFunction_; ///< Pointer to widget's member variable
 		QPointF mouseDownPos_; ///< Stores the mouseDown position to distinguish between mouse-click and mouse-drag
+		TransferFunction* transferFunction_; ///< Pointer to widget's member variable
 		TransferFunctionEditorLineItem* leftEdgeLine_;
 		TransferFunctionEditorLineItem*	rightEdgeLine_;
-        float zoomRangeMin_;
-        float zoomRangeMax_;
+		std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
+		std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
+		std::vector<TransferFunctionEditorControlPointGroup*> controlPointGroups_; ///< Control points in the transfer function graph
     };
-
 } // namespace
 
 #endif // IVW_TRANSFERFUNCTIONEDITOR_H

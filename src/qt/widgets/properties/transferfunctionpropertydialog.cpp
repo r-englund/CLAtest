@@ -1,4 +1,5 @@
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
+
 #include <math.h>
 #include <QComboBox>
 
@@ -32,8 +33,25 @@ void TransferFunctionPropertyDialog::generateWidget(){
     zoomSpinBoxSlider_ = new SpinBoxRangeSliderQt();
     maskSpinBoxSlider_ = new SpinBoxRangeSliderQt();
 
+    verticalZoomSlider_ = new RangeSliderQt(Qt::Vertical, this);
+    verticalZoomSlider_->setRange(999, 0);
+    verticalZoomSlider_->setMinValue(0);
+    verticalZoomSlider_->setMaxValue(300);
+
+    //zoomProp_ = new IntMinMaxProperty("zoom","zoom",0,arrayWidth_,0,arrayWidth_);
+    zoomProp_ = new IntMinMaxProperty("zoom","zoom",0,100);
+    zoomProp_->setRangeMax(20);
+    zoomProp_->get().x = 7;
+
+
+    zoomPropWidget_ = new IntMinMaxPropertyWidgetQt(zoomProp_);
+
     connect(zoomSpinBoxSlider_, SIGNAL(valuesChanged()), this, SLOT(zoomChanged()));
     connect(maskSpinBoxSlider_, SIGNAL(valuesChanged()), this, SLOT(maskChanged()));
+
+    connect(verticalZoomSlider_, SIGNAL(valuesChanged(int, int)), this, SLOT(vertZoomChanged(int, int)));
+
+    connect(zoomPropWidget_, SIGNAL(valuesChanged()), this, SLOT(zoomChanged()));
 
     editorview_ = new TransferFunctionEditorView();
     editorview_->setParent(this);
@@ -81,11 +99,18 @@ void TransferFunctionPropertyDialog::generateWidget(){
 
     connect(bitBox, SIGNAL(currentIndexChanged(int)), this, SLOT(bitRangeChanged(int)));
 
-    vLayout->addWidget(editorview_);
+    QHBoxLayout* hLay = new QHBoxLayout();
+    hLay->addWidget(verticalZoomSlider_);
+    hLay->addWidget(editorview_);
+
+    vLayout->addLayout(hLay);
     vLayout->addWidget(paintview_);	
 
     vLayout->addWidget(zoomSpinBoxSlider_);
     vLayout->addWidget(maskSpinBoxSlider_);
+
+    vLayout->addWidget(zoomPropWidget_);
+    //vLayout->addWidget(maskPropWidget_);
 
     vLayout->addWidget(bitBox);
 
@@ -150,28 +175,6 @@ void TransferFunctionPropertyDialog::updateFromProperty(){
 }
 
 bool TransferFunctionPropertyDialog::eventFilter(QObject *object, QEvent *e){
-    std::stringstream ss;
-    if (e->type() == QEvent::Wheel){
-        //const QPoint pos = static_cast<QWheelEvent*>(e)->pos();
-
-        //double scaleFactor = 1.10; ///< Zoom in/out by 10%
-        //if (static_cast<QWheelEvent*>(e)->delta() > 0){
-        //	editorview_->scale(scaleFactor, 1.0);
-        //} 
-        //else if (editorview_->matrix().m11() > 1.0 ){
-        //	editorview_->scale(1.0 / scaleFactor, 1.0);
-        //}
-
-        //QPointF focus = editorview_->mapToScene(pos);
-        //editorview_->centerOn(focus);
-        //zoomSpinBoxSlider_->setMinValue(floor(editorview_->mapToScene(0,0).x()));
-        //zoomSpinBoxSlider_->setMaxValue(floor(editorview_->mapToScene(editorview_->width(),0).x()));
-
-        //e->accept();
-        //this->update();
-        //editorview_->update();
-        //return true;
-    }
     return false;
 }
 
@@ -242,6 +245,10 @@ void TransferFunctionPropertyDialog::bitRangeChanged(int index){
 
     minValue = maskSpinBoxSlider_->getMinValue();
     maxValue = maskSpinBoxSlider_->getMaxValue();
+
+    minValue = maskProp_->getRangeMin();
+    maxValue = maskProp_->getRangeMax();
+
     newSliderMin = ceil(minValue * scaleFactor_);
     newSliderMax = ceil(maxValue * scaleFactor_);
 
@@ -251,14 +258,24 @@ void TransferFunctionPropertyDialog::bitRangeChanged(int index){
 }
 
 void TransferFunctionPropertyDialog::zoomChanged(){
-    float zoomMin = (float)zoomSpinBoxSlider_->getMinValue() / ((float)arrayWidth_ - 1.0);
-    float zoomMax = (float)zoomSpinBoxSlider_->getMaxValue() / ((float)arrayWidth_ - 1.0);
-    editor_->setZoomRangeMin(zoomMin);
-    editor_->setZoomRangeMax(zoomMax);
-    editor_->repositionPoints();
-    editor_->update();
+    float zoomMinX = (float)zoomSpinBoxSlider_->getMinValue() / ((float)arrayWidth_ - 1.0);
+    float zoomMaxX = (float)zoomSpinBoxSlider_->getMaxValue() / ((float)arrayWidth_ - 1.0);
 
+    editor_->setZoomRangeXMin(zoomMinX);
+    editor_->setZoomRangeXMax(zoomMaxX);
+
+    editor_->repositionPoints();
     maskChanged();
+}
+
+void TransferFunctionPropertyDialog::vertZoomChanged(int max, int min){
+    min = (min < 0) ? 0 : min;
+    max = (max < 1) ? 1 : max;
+    min = (min > 998) ? 998 : min;
+    max = (max > 999) ? 999 : max;
+    editor_->setZoomRangeYMin((float)min / 999.0);
+    editor_->setZoomRangeYMax((float)max / 999.0);
+    editor_->repositionPoints();
 }
 
 void TransferFunctionPropertyDialog::maskChanged(){
@@ -284,7 +301,7 @@ void TransferFunctionPropertyDialog::maskChanged(){
 
     property_->get().setMaskMin(propertyMaskMinPos);
     property_->get().setMaskMax(propertyMaskMaxPos);
-    
+
     editorview_->update();
     property_->get().calcTransferValues();
     property_->propertyModified();

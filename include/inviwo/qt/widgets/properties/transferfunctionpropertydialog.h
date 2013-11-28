@@ -13,6 +13,7 @@
 #include <inviwo/qt/widgets/colorwheel.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 #include <inviwo/qt/widgets/spinboxrangesliderwidgetqt.h>
+#include <inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h>
 
 #include <QCheckBox>
 #include <QColorDialog>
@@ -29,7 +30,7 @@ namespace inviwo {
  
 class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver {
 
-    Q_OBJECT
+    Q_OBJECT;
 
 public:
 	//TransferFunctionPropertyDialog();
@@ -63,8 +64,14 @@ private:
     QColorDialog* colorDialog_;
     ColorWheel* colorWheel_;
 
+    RangeSliderQt* verticalZoomSlider_;
 	SpinBoxRangeSliderQt* zoomSpinBoxSlider_;
 	SpinBoxRangeSliderQt* maskSpinBoxSlider_;
+
+    IntMinMaxProperty* zoomProp_;
+    IntMinMaxProperty* maskProp_;
+    IntMinMaxPropertyWidgetQt* zoomPropWidget_;
+    IntMinMaxPropertyWidgetQt* maskPropWidget_;
 
     bool colorChange_;
     int zoom_;
@@ -83,6 +90,7 @@ private:
 		void bitRangeChanged(int index);
 		void zoomChanged();
 		void maskChanged();
+        void vertZoomChanged(int min, int max);
 };
 
 } // namespace
