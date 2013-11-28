@@ -33,7 +33,7 @@ protected:
     bool runEnhancement();
 
     void updateConfigurationFile();
-    bool updateParameterFile();
+    void updateParameterFile();
 
 private:
     VolumeInport inport_;
@@ -45,6 +45,7 @@ private:
     IntProperty parameterSetting_;
 
     HCVIE3D cvieHandle_;
+    bool cvieContextCreated_;
 };
 
 } // namespace
