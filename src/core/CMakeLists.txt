@@ -19,6 +19,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/bufferramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/bufferrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datagroup.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datagrouprepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
@@ -200,6 +202,9 @@ set(SOURCE_FILES
     datastructures/buffer/bufferram.cpp
     datastructures/buffer/bufferrepresentation.cpp
     datastructures/data.cpp
+    datastructures/datagroup.cpp
+    datastructures/datagrouprepresentation.cpp
+	datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp
     datastructures/geometry/attributes.cpp
     datastructures/geometry/geometry.cpp

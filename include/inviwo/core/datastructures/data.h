@@ -8,9 +8,9 @@
 #include <inviwo/core/metadata/metadatamap.h>
 
 namespace inviwo {
-/** \brief The base class for all data objects in Inviwo.
+/** \brief The base class for all data objects.
  *
- *  Data is the base class for all the data objects in Inviwo. 
+ *  Data is the base class for all the data objects.
  *  It is responsible for holding the DateRepresentations, the metadata,
  *  and the format of the data.
  *  TODO: write a good overview here
@@ -134,8 +134,7 @@ const T* Data::getRepresentation() const {
 }
 
 template<typename T> 
-const T* Data::createNewRepresentationUsingConverters() const
-{
+const T* Data::createNewRepresentationUsingConverters() const{
     // no representation exists, so we try to create one
     DataRepresentation* result = 0;
     RepresentationConverterFactory* representationConverterFactory = RepresentationConverterFactory::getPtr();
