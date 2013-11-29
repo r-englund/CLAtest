@@ -52,7 +52,6 @@ ivw_define_standard_definitions(inviwo)
 # Define libraries that should be linked
 ivw_retrieve_all_modules(package_list)
 list(APPEND package_list InviwoQtEditor)
-list(APPEND package_list InviwoOpenglQtModule)
 list(APPEND package_list InviwoCore)
 
 #--------------------------------------------------------------------
@@ -66,7 +65,6 @@ ivw_add_dependency_directories(${package_list})
 #--------------------------------------------------------------------
 # Include generation directory to register modules etc
 include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
-
 
 #--------------------------------------------------------------------
 # Create application
