@@ -13,7 +13,7 @@ ProcessorCodeState(MeshClipping, CODE_STATE_EXPERIMENTAL);
 const float MeshClipping::EPSILON = 0.00001f;
 
 MeshClipping::MeshClipping()
-	: ProcessorGL(),
+	: Processor(),
 	inport_("geometry.input"),
 	outport_("geometry.output"),
 	clippingEnabled_("clippingEnabled", "Enable clipping", false),
@@ -33,11 +33,11 @@ MeshClipping::MeshClipping()
 MeshClipping::~MeshClipping() {}
 
 void MeshClipping::initialize() {
-	ProcessorGL::initialize();
+	Processor::initialize();
 }
 
 void MeshClipping::deinitialize() {
-	ProcessorGL::deinitialize();
+	Processor::deinitialize();
 }
 
 void MeshClipping::process() {

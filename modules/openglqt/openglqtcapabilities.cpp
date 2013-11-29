@@ -5,17 +5,17 @@
 
 namespace inviwo {
 
-#define OpenglQtInfoNotFound(message) { LogInfo(message << " Info could not be retrieved"); }
+#define OpenGLQtInfoNotFound(message) { LogInfo(message << " Info could not be retrieved"); }
 
-OpenglQtCapabilities::OpenglQtCapabilities() {}
+OpenGLQtCapabilities::OpenGLQtCapabilities() {}
 
-OpenglQtCapabilities::~OpenglQtCapabilities() {}
+OpenGLQtCapabilities::~OpenGLQtCapabilities() {}
 
-void OpenglQtCapabilities::printInfo(){
+void OpenGLQtCapabilities::printInfo(){
     //Qt General Info
 }
 
-std::vector<int> OpenglQtCapabilities::getGLVersion() {    
+std::vector<int> OpenGLQtCapabilities::getGLVersion() {    
 
     const GLubyte *glversion = glGetString(GL_VERSION);
     std::string glVersionStr = std::string((glversion!=NULL ? reinterpret_cast<const char*>(glversion) : "INVALID"));

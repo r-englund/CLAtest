@@ -1,7 +1,7 @@
 #ifndef IVW_VOLUMESLICEGL_H
 #define IVW_VOLUMESLICEGL_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
@@ -15,7 +15,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API VolumeSliceGL : public ProcessorGL {
+class IVW_MODULE_BASEGL_API VolumeSliceGL : public ProcessorGL {
 public:
     VolumeSliceGL();
     ~VolumeSliceGL();

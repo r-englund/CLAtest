@@ -3,8 +3,7 @@
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/datastructures/geometry/simplemesh.h>
 #include <inviwo/core/datastructures/geometry/plane.h>
@@ -13,7 +12,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API MeshClipping : public ProcessorGL {
+class IVW_MODULE_BASE_API MeshClipping : public Processor {
 public:
 	MeshClipping();
 	~MeshClipping();

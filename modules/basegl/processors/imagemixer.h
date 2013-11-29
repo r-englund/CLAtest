@@ -1,7 +1,7 @@
-#ifndef IVW_BACKGROUND_H
-#define IVW_BACKGROUND_H
+#ifndef IVW_IMAGEMIXER_H
+#define IVW_IMAGEMIXER_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/inviwoopengl.h>
@@ -10,32 +10,28 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API Background : public ProcessorGL {
+class IVW_MODULE_BASEGL_API ImageMixer : public ProcessorGL {
 public:
-    Background();
-    ~Background();
+    ImageMixer();
+    ~ImageMixer();
     
     InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
 
-	virtual void initializeResources();
-
 protected:
     virtual void process();
 
 private:
-    ImageInport inport_;
+    ImageInport inport0_;
+    ImageInport inport1_;
     ImageOutport outport_;
-
-	OptionPropertyInt backgroundStyle_;
-	FloatVec4Property color1_;
-	FloatVec4Property color2_;
+    FloatProperty alpha_;
 
     Shader* shader_;
 };
 
 } // namespace
 
-#endif // IVW_BACKGROUND_H
+#endif // IVW_IMAGEMIXER_H

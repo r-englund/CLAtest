@@ -7,10 +7,10 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGLQT_API OpenglQtCapabilities : public Capabilities  {
+class IVW_MODULE_OPENGLQT_API OpenGLQtCapabilities : public Capabilities  {
 public:    
-    OpenglQtCapabilities();
-    virtual ~OpenglQtCapabilities();
+    OpenGLQtCapabilities();
+    virtual ~OpenGLQtCapabilities();
     void printInfo();
     virtual void retrieveStaticInfo() {};
     virtual void retrieveDynamicInfo() {};

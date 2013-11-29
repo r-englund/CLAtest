@@ -1,7 +1,7 @@
 #ifndef IVW_POSITIONWIDGETPROCESSOR_H
 #define IVW_POSITIONWIDGETPROCESSOR_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/ports/imageport.h>
@@ -12,7 +12,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API PositionWidgetProcessor : public CompositeProcessorGL {
+class IVW_MODULE_BASEGL_API PositionWidgetProcessor : public CompositeProcessorGL {
 public:
     PositionWidgetProcessor();
     ~PositionWidgetProcessor();

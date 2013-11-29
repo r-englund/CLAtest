@@ -15,8 +15,9 @@ include(cmake/globalconfig.cmake)
 
 # Modules
 build_module(Base)
+build_module(BaseGL)
 build_module(OpenGL)
-build_module(OpenglQt)
+build_module(OpenGLQt)
 
 # Applications/Qt
 option(IVW_QT_APPLICATION "Build Inviwo Qt Application" ON)
@@ -26,15 +27,7 @@ option(IVW_QT_WIDGETS "Build Inviwo Qt Widgets" ON)
 option(IVW_TINY_GLUT_APPLICATION "Build Inviwo Tiny GLUT Application" OFF)
 build_module_dependency(GLUT IVW_TINY_GLUT_APPLICATION)
 
-option(IVW_DICOM_APPLICATION "Build DICOM Application" OFF)
-build_module_dependency(DICOM IVW_DICOM_APPLICATION)
-
-
 option(TEST_APPLICATIONS "Build All Test Application" OFF)
-
-option(IVW_MODULE_PYTHON "Enable python module" OFF)
-
-option(IVW_MODULE_MATLAB "Enable matlab module" OFF)
 
 #--------------------------------------------------------------------
 # Add subdirectories

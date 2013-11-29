@@ -6,12 +6,12 @@
 
 namespace inviwo {
 
-OpenglQtModule::OpenglQtModule() : InviwoModule() {
-    setIdentifier("OpenglQt");
+OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
+    setIdentifier("OpenGLQt");
     setXMLFileName("openglqt/openglqtmodule.xml");   
 
     addProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetQt());
-    addCapabilities(new OpenglQtCapabilities());
+    addCapabilities(new OpenGLQtCapabilities());
 }
 
 } // namespace

@@ -1,7 +1,7 @@
 #ifndef IVW_CUBEPROXYGEOMETRY_H
 #define IVW_CUBEPROXYGEOMETRY_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
@@ -12,7 +12,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API CubeProxyGeometry : public ProcessorGL {
+class IVW_MODULE_BASEGL_API CubeProxyGeometry : public ProcessorGL {
 public:
     CubeProxyGeometry();
     ~CubeProxyGeometry();

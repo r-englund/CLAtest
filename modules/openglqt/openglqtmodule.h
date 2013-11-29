@@ -6,10 +6,10 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGLQT_API OpenglQtModule : public InviwoModule {
+class IVW_MODULE_OPENGLQT_API OpenGLQtModule : public InviwoModule {
 
 public:
-    OpenglQtModule();
+    OpenGLQtModule();
 
 protected:
     template <typename T>

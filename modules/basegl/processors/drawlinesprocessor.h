@@ -1,7 +1,7 @@
 #ifndef IVW_DRAWLINESPROCESSOR_H
 #define IVW_DRAWLINESPROCESSOR_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/ports/imageport.h>
@@ -11,7 +11,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API DrawLinesProcessor : public CompositeProcessorGL {
+class IVW_MODULE_BASEGL_API DrawLinesProcessor : public CompositeProcessorGL {
 public:
     DrawLinesProcessor();
     ~DrawLinesProcessor();

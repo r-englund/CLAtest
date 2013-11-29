@@ -6,8 +6,8 @@ else()
 endif()
 
 #--------------------------------------------------------------------
-# Inviwo OpenglQt Module
-ivw_module(OpenglQt)
+# Inviwo OpenGLQt Module
+ivw_module(OpenGLQt)
 
 #--------------------------------------------------------------------
 # Add MOC files

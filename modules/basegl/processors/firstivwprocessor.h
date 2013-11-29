@@ -1,14 +1,14 @@
 #ifndef IVW_FIRSTIVWPROCESSOR_H
 #define IVW_FIRSTIVWPROCESSOR_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API FirstIvwProcessor : public ProcessorGL {
+class IVW_MODULE_BASEGL_API FirstIvwProcessor : public ProcessorGL {
 public:
     FirstIvwProcessor();
     

@@ -1,7 +1,7 @@
 #ifndef IVW_IMAGEGRAYSCALE_H
 #define IVW_IMAGEGRAYSCALE_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/inviwoopengl.h>
@@ -10,7 +10,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API ImageGrayscale : public ProcessorGL {
+class IVW_MODULE_BASEGL_API ImageGrayscale : public ProcessorGL {
 public:
     ImageGrayscale();
     ~ImageGrayscale();
