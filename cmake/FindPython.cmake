@@ -67,5 +67,3 @@ elseif(UNIX)
 	mark_as_advanced(PYTHON_LIBRARIES)
 endif()
 
-set(PYTHON_DEFINITIONS "-DIVW_HAS_PYTHON")
-

@@ -2,7 +2,6 @@
 # Inviwo Python Module
 ivw_module(Python)
 
-
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
@@ -41,11 +40,9 @@ set(SOURCE_FILES
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
-
 #--------------------------------------------------------------------
 # Define defintions
 add_definitions(-DIVW_PYTHON)
 
-
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})

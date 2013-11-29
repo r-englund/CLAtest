@@ -5,15 +5,10 @@
 
 #include "pythonscript.h"
 
-//#include <inviwo/qt/widgets/pythoneditorwidget.h>
-//#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/boolproperty.h>
-
-//#include <inviwo/qt/editor/networkeditor.h>
-//#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 
 #include <modules/opengl/canvasprocessorgl.h>
 

@@ -6,11 +6,10 @@
 
 namespace inviwo {
 
-    class PyInviwo;
-    class PythonEditorWidget;
+class PyInviwo;
+    
 class IVW_MODULE_PYTHON_API PythonModule : public InviwoModule {
-    PyInviwo *pyInviwo_;
-    PythonEditorWidget *pythonEditorWidget_;
+
 public:
     /** 
      * \brief Creates the Python module
@@ -47,8 +46,11 @@ protected:
      * @param const std::string & path Path to directory containing python modules
      */
     void addModulePath(const std::string& path);
+    
+private:
+    PyInviwo *pyInviwo_;
 };
 
 } // namespace
 
-#endif // IVW_OPENGLQT_MODULE_H
+#endif // IVW_PYTHON_MODULE_H

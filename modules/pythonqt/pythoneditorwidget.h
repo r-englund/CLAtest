@@ -1,18 +1,18 @@
 #ifndef IVW_PYTHONEDITORYWIDGET_H
 #define IVW_PYTHONEDITORYWIDGET_H
 
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/inviwodockwidget.h>
-#include <inviwo/core/util/fileobserver.h>
+#include <modules/pythonqt/pythonqtmoduledefine.h>
 #include <modules/python/pythonscript.h>
 #include <modules/python/pythonmodule.h>
 #include <modules/python/pythonexecutionoutputobeserver.h>
+#include <inviwo/core/util/fileobserver.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <QTextEdit>
 #include <QColor>
 
 namespace inviwo{
     
-class IVW_QTWIDGETS_API PythonEditorWidget : public InviwoDockWidget , public FileObserver , public PythonExecutionOutputObeserver {
+class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget , public FileObserver , public PythonExecutionOutputObeserver {
     Q_OBJECT
 
 public:

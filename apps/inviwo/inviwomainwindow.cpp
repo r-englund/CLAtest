@@ -66,7 +66,7 @@ void InviwoMainWindow::initialize() {
 
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
 
-#ifdef IVW_HAS_PYTHON
+#ifdef IVW_PYTHON_QT
 	pythonEditorWidget_ = new PythonEditorWidget(this);
     InviwoApplication::getRef().registerFileObserver(pythonEditorWidget_);
 #endif
@@ -139,7 +139,7 @@ void InviwoMainWindow::notify() {
 bool InviwoMainWindow::processEndCommandLineArgs(){
     const CommandLineParser* cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
 
-#ifdef IVW_HAS_PYTHON
+#ifdef IVW_PYTHON_QT
     if (cmdparser->getRunPythonScriptAfterStartup()) {
         pythonEditorWidget_->show();
         pythonEditorWidget_->loadFile(cmdparser->getPythonScirptName(),false);
@@ -193,7 +193,7 @@ void InviwoMainWindow::addMenus() {
 
 	helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
 
-#ifdef IVW_HAS_PYTHON
+#ifdef IVW_PYTHON_QT
     pythonMenuItem_ = new QMenu(tr("&Python"));
     basicMenuBar->insertMenu(first, pythonMenuItem_);
 #endif
@@ -267,9 +267,9 @@ void InviwoMainWindow::addMenuActions() {
 	connect(developerViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
 	connect(applicationViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool))); 
 
-#ifdef IVW_HAS_PYTHON
+#ifdef IVW_PYTHON_QT
     pythonEditorOpenAction_ = new QAction(QIcon(":/icons/python.png"),"&Python Editor", this);
-    connect(pythonEditorOpenAction_, SIGNAL(triggered(bool)), this, SLOT(show(void)));
+    connect(pythonEditorOpenAction_, SIGNAL(triggered(bool)), pythonEditorWidget_, SLOT(show(void)));
     pythonMenuItem_->addAction(pythonEditorOpenAction_);
 #endif
 }

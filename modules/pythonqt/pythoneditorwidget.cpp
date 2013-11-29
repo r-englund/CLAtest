@@ -1,4 +1,4 @@
-#include <inviwo/qt/widgets/pythoneditorwidget.h>
+#include <modules/pythonqt/pythoneditorwidget.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <inviwo/core/util/filedirectory.h>
 #include <modules/python/pythonmodule.h>

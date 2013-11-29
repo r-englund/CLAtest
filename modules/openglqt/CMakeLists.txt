@@ -43,4 +43,4 @@ ivw_define_qt_definitions()
 ivw_add_definition(QT_OPENGL_LIB)
 
 # Create module
-ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES} ${SHADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
