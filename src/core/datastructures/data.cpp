@@ -15,7 +15,7 @@ Data::Data(const Data& rhs)
     rhs.copyRepresentationsTo(this);
 }
 
-Data& Data::operator=(const Data& that){
+Data& Data::operator=(const Data& that) {
     if (this != &that) {
         MetaDataMap* metadata = that.metaData_->clone();
         delete metaData_;
@@ -44,17 +44,21 @@ void Data::clearRepresentations() {
 void Data::copyRepresentationsTo(Data* targetData) const{
     targetData->clearRepresentations();
     int count = 0;
-    for(int i=0; i<static_cast<int>(representations_.size()); i++) {
-        DataRepresentation* rep = representations_[i]->clone();
-        if(rep){
-            targetData->addRepresentation(rep);
-            if(isRepresentationValid(i)) 
-                targetData->setRepresentationAsValid(count);
-            if(representations_[i] == lastValidRepresentation_) 
-                targetData->lastValidRepresentation_ = rep;
-           
-        }
+    if(lastValidRepresentation_) {
+        DataRepresentation* rep = lastValidRepresentation_->clone();
+        targetData->addRepresentation(rep);
     }
+    //for(int i=0; i<static_cast<int>(representations_.size()); i++) {
+    //    DataRepresentation* rep = representations_[i]->clone();
+    //    if(rep){
+    //        targetData->addRepresentation(rep);
+    //        if(isRepresentationValid(i)) 
+    //            targetData->setRepresentationAsValid(count);
+    //        if(representations_[i] == lastValidRepresentation_) 
+    //            targetData->lastValidRepresentation_ = rep;
+    //       
+    //    }
+    //}
 }
 
 void Data::addRepresentation(DataRepresentation* representation) {

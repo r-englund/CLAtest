@@ -34,6 +34,19 @@ public:
     void update(const DataRepresentation* source, DataRepresentation* destination);
 };
 
+class IVW_MODULE_OPENCL_API ImageCLGL2GLConverter : public RepresentationConverterType<ImageGL> {
+
+public:
+    ImageCLGL2GLConverter();
+    virtual ~ImageCLGL2GLConverter(){};
+
+    inline bool canConvertFrom(const DataRepresentation* source) const {
+        return dynamic_cast<const ImageCLGL*>(source) != NULL;
+    }
+    DataRepresentation* createFrom(const DataRepresentation* source);
+    void update(const DataRepresentation* source, DataRepresentation* destination);
+};
+
 class IVW_MODULE_OPENCL_API ImageGL2CLGLConverter : public RepresentationConverterType<ImageCLGL> {
 
 public:

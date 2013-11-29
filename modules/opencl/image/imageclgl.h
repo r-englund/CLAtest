@@ -8,18 +8,27 @@
 #include <modules/opengl/glwrap/texture2d.h>
 
 namespace inviwo {
-
-class IVW_MODULE_OPENCL_API ImageCLGL : public ImageRepresentation {
+/** \class ImageCLGL 
+*
+* ImageCLGL handles shared texture2D between OpenCL and OpenGL.
+* It will make sure that the texture 
+* is not released while a shared representation exist
+* and also release and reattach the shared representation
+* when the texture is resized (handled through the TexturObserver)
+*
+* @see Observable
+*/
+class IVW_MODULE_OPENCL_API ImageCLGL : public ImageRepresentation, public TextureObserver {
 
 public:
-    ImageCLGL(uvec2 dimensions = uvec2(64), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataFormatBase::get(), const Texture2D* data = NULL);
+    ImageCLGL(uvec2 dimensions = uvec2(64), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataFormatBase::get(), Texture2D* data = NULL);
     virtual ~ImageCLGL();
     virtual std::string getClassName() const { return "ImageCLGL"; }
     virtual void initialize(){};
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
     
-    void initialize(const Texture2D* texture);
+    void initialize(Texture2D* texture);
 
     virtual void setDimensions(uvec2 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(texture_); }
     virtual void resize(uvec2 dimensions);
@@ -27,6 +36,18 @@ public:
 
     const cl::Image2DGL& getImage() const { return *(image2D_); }
     const Texture2D* getTexture() const { return texture_; }
+
+    /**
+    * This method will be called before the texture is initialized.
+    * Override it to add behavior.
+    */
+    virtual void notifyBeforeTextureInitialization();
+
+    /**
+    * This method will be called after the texture has been initialized.
+    * Override it to add behavior.
+    */
+    virtual void notifyAfterTextureInitialization();
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL) const {
         std::vector<cl::Memory> syncImages(1, *image2D_); 
@@ -39,7 +60,7 @@ public:
 
 protected:
     cl::Image2DGL* image2D_;
-    const Texture2D* texture_;
+    Texture2D* texture_;
 };
 
 } // namespace

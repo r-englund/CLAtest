@@ -3,17 +3,23 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/util/observer.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/ext/tgaload/tgaload.h>
+#include <modules/opengl/textureobserver.h>
 
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API Texture2D {
+
+class IVW_MODULE_OPENGL_API Texture2D: public Observable<TextureObserver> {
 
 public:
     Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering);
     Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
+    Texture2D(const Texture2D& other);
+    Texture2D& Texture2D::operator=(const Texture2D& other);
+
     virtual ~Texture2D();
 
     Texture2D* clone() const;
@@ -55,6 +61,28 @@ public:
     int getHeight() const{ return dimensions_.y; }
     void resize(uvec2 dimension);
 
+    /**
+     * Increase reference count of this object. 
+     * Object should not be removed unless reference count is zero.
+     *
+     * @return New reference count after increasing it.
+     */
+    int increaseRefCount() { return ++referenceCount_; }
+
+    /**
+     * Decrease reference count of this object. 
+     * Object should not be removed unless reference count is zero.
+     * 
+     * @return New reference count after decreasing it.
+     */
+    int decreaseRefCount() { return --referenceCount_; }
+    /**
+     * Get reference count of this object. 
+     * Object should not be removed unless reference count is zero.
+     * 
+     */
+    int getRefCount() const { return referenceCount_; }
+
 protected:
     void setWidth(int x) { dimensions_.x = x; }
     void setHeight(int y) { dimensions_.y = y; }
@@ -77,8 +105,14 @@ private:
     GLuint byteSize_;
     GLuint numChannels_;
 
+    int referenceCount_; // A texture can be shared with OpenCL/CUDA and should not be removed if it is used.
+
     mutable bool dataInReadBackPBO_;
 };
+
+
+
+
 
 } // namespace
 

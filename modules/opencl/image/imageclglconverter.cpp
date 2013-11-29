@@ -7,8 +7,7 @@
 namespace inviwo {
 
 ImageRAM2CLGLConverter::ImageRAM2CLGLConverter()
-    : RepresentationConverterPackage<ImageCLGL>()
-{
+    : RepresentationConverterPackage<ImageCLGL>() {
     addConverter(new ImageRAM2GLConverter());
     addConverter(new ImageGL2CLGLConverter());
 }
@@ -45,14 +44,31 @@ void ImageCLGL2RAMConverter::update(const DataRepresentation* source, DataRepres
     imageSrc->getTexture()->download(imageDst->getData());
 }
 
+ImageCLGL2GLConverter::ImageCLGL2GLConverter(): RepresentationConverterType<ImageGL>() {
+
+}
+
+DataRepresentation* ImageCLGL2GLConverter::createFrom( const DataRepresentation* source ) {
+    DataRepresentation* destination = 0;
+    const ImageCLGL* src = static_cast<const ImageCLGL*>(source);
+    // TODO: Do we need to check if the ImageCLGL texture is valid to use? 
+    // It should not have been deleted since no ImageGL representation existed.
+    Texture2D* tex = const_cast<Texture2D*>(src->getTexture());
+    destination = new ImageGL(src->getDimensions(), src->getImageType(), src->getDataFormat(), const_cast<Texture2D*>(src->getTexture()));
+    // Increase reference count to indicate that ImageGL is also using the texture
+    tex->increaseRefCount();
+    return destination;
+}
+
+void ImageCLGL2GLConverter::update( const DataRepresentation* source, DataRepresentation* destination ) {
+    // Do nothing since they share data
+}
 
 DataRepresentation* ImageGL2CLGLConverter::createFrom(const DataRepresentation* source )
 {
     DataRepresentation* destination = 0;
     const ImageGL* imageGL = static_cast<const ImageGL*>(source);
-    uvec2 dimension = imageGL->getDimensions();;
-    const Texture2D* data = imageGL->getColorTexture();
-    destination = new ImageCLGL(dimension, imageGL->getImageType(), imageGL->getDataFormat(), data);
+    destination = new ImageCLGL(imageGL->getDimensions(), imageGL->getImageType(), imageGL->getDataFormat(), const_cast<Texture2D*>(imageGL->getColorTexture()));
     return destination;
 }
 
@@ -100,5 +116,8 @@ ImageCL2CLGLConverter::ImageCL2CLGLConverter() : RepresentationConverterPackage<
     addConverter(new ImageRAM2GLConverter());
     addConverter(new ImageGL2CLGLConverter());
 }
+
+
+
 
 } // namespace

@@ -234,7 +234,7 @@ T* Data::getEditableRepresentation() {
 
 template<typename T>
 bool Data::hasRepresentation() const {
-    for (int i=0; i<static_cast<int>(representations_.size()); i++) {
+    for (size_t i=0; i<representations_.size(); i++) {
         T* representation = dynamic_cast<T*>(representations_[i]);
         if (representation) return true;
     }

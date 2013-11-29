@@ -21,6 +21,9 @@ void ImageGL::initialize() {
     program_->build();
     frameBufferObject_ = new FrameBufferObject();
     frameBufferObject_->activate();
+    //if(colorTexture_) { colorTexture_->increaseRefCount(); }
+    //if(depthTexture_) { depthTexture_->increaseRefCount(); }
+    //if(pickingTexture_) { pickingTexture_->increaseRefCount(); }
     colorConstTexture_ = colorTexture_;
     depthConstTexture_ = depthTexture_;
     pickingConstTexture_ = pickingTexture_;
@@ -32,6 +35,7 @@ void ImageGL::initialize() {
         else{
             colorTexture_->bind();
         }
+
         frameBufferObject_->attachColorTexture(colorTexture_);
     }
     if(typeContainsDepth(getImageType())){
@@ -41,6 +45,7 @@ void ImageGL::initialize() {
         else{
             depthTexture_->bind();
         }
+
         frameBufferObject_->attachTexture(depthTexture_, static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
     }
     if(typeContainsPicking(getImageType())){
@@ -50,6 +55,7 @@ void ImageGL::initialize() {
         else{
             pickingTexture_->bind();
         }
+        
         pickingAttachmentID_ = frameBufferObject_->attachColorTexture(pickingTexture_, 0, true);
     }
     frameBufferObject_->deactivate();
@@ -60,17 +66,17 @@ void ImageGL::deinitialize() {
     frameBufferObject_->deactivate();
     delete frameBufferObject_;
     frameBufferObject_ = NULL;
-    if(colorTexture_){
+    if(colorTexture_ && colorTexture_->decreaseRefCount() <= 0){
         delete colorTexture_;
         colorTexture_ = NULL;
     }
     colorConstTexture_ = NULL;
-    if(depthTexture_){
+    if(depthTexture_ && depthTexture_->decreaseRefCount() <= 0){
         delete depthTexture_;
         depthTexture_ = NULL;
     }
     depthConstTexture_ = NULL;
-    if(pickingTexture_){
+    if(pickingTexture_ && pickingTexture_->decreaseRefCount() <= 0){
         delete pickingTexture_;
         pickingTexture_ = NULL;
     }
@@ -109,18 +115,21 @@ void ImageGL::useInputSource(ImageLayerType layer, const Image* src){
 void ImageGL::createColorLayer(){
     colorTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
     colorTexture_->initialize(NULL);
+    //colorTexture_->increaseRefCount();
     colorConstTexture_ = colorTexture_;
 }
 
 void ImageGL::createDepthLayer(){
     depthTexture_ = new Texture2D(getDimensions(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, GL_FLOAT, GL_NEAREST);
     depthTexture_->initialize(NULL);
+    //depthTexture_->increaseRefCount();
     depthConstTexture_ = depthTexture_;
 }
 
 void ImageGL::createPickingLayer(){
     pickingTexture_ = new Texture2D(getDimensions(), getGLFormats()->getGLFormat(getDataFormatId()), GL_LINEAR);
     pickingTexture_->initialize(NULL);
+    //pickingTexture_->increaseRefCount();
     pickingConstTexture_ = pickingTexture_;
 }
 

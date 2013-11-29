@@ -35,11 +35,26 @@ Image::~Image() {
 
 void Image::resize(uvec2 dimensions) {
     setDimension(dimensions);
-    for (size_t i=0; i<representations_.size(); i++) {
-        ImageRepresentation* imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]) ;
-        if ( imageRepresentation ) {
-            imageRepresentation->resize(dimensions);
+    if(lastValidRepresentation_) {
+        // Resize last valid representation and remove the other ones
+        static_cast<ImageRepresentation*>(lastValidRepresentation_)->resize(dimensions);
+        std::vector<DataRepresentation*>::iterator it = std::find(representations_.begin(), representations_.end(), lastValidRepresentation_);
+        // First delete the representations before erasing them from the vector
+        for (size_t i=0; i<representations_.size(); i++) {
+            if(representations_[i] != lastValidRepresentation_) {
+                delete representations_[i]; representations_[i] = NULL;
+            }
         }
+        // Erasing representations: start from the back 
+        if(it != --representations_.end()) {
+            std::vector<DataRepresentation*>::iterator eraseFrom = it + 1;
+            representations_.erase(eraseFrom, representations_.end()); 
+        }
+        // and then erase the ones infron of the valid representation
+        if(representations_.begin() != it) {
+            representations_.erase(representations_.begin(), it);
+        }
+         
     }
     setAllRepresentationsAsInvalid();
 }

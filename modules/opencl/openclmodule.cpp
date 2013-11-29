@@ -51,6 +51,7 @@ void OpenCLModule::initialize() {
     addRepresentationConverter(new ImageCL2CLGLConverter());
     addRepresentationConverter(new ImageCLGL2RAMConverter());
     addRepresentationConverter(new ImageCLGL2CLConverter());
+    addRepresentationConverter(new ImageCLGL2GLConverter());
     addRepresentationConverter(new ImageGL2CLGLConverter());
 
     // VolumeCL

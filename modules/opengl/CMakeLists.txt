@@ -13,6 +13,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/openglmodule.h
     ${IVW_MODULE_DIR}/opengl/portgroup.h
     ${IVW_MODULE_DIR}/opengl/processorgl.h
+    ${IVW_MODULE_DIR}/opengl/textureobserver.h
     ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.h
     ${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.h
     ${IVW_MODULE_DIR}/opengl/geometry/attributebuffergl.h

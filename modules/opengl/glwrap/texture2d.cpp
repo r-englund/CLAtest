@@ -3,11 +3,13 @@
 namespace inviwo {
 
 Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering)
-    : dimensions_(dimensions),
+    :  Observable<TextureObserver>(), 
+      dimensions_(dimensions),
       format_(glFormat.format),
       internalformat_(glFormat.internalFormat),
       dataType_(glFormat.type),
-      filtering_(filtering) {
+      filtering_(filtering),
+      referenceCount_(1) {
     glGenTextures(1, &id_);
     numChannels_ = glFormat.channels;
     byteSize_ = numChannels_*glFormat.typeSize;
@@ -17,11 +19,13 @@ Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filt
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
-    : dimensions_(dimensions),
+    : Observable<TextureObserver>(),
+      dimensions_(dimensions),
       format_(format),
       internalformat_(internalformat),
       dataType_(dataType),
-      filtering_(filtering) {
+      filtering_(filtering),
+      referenceCount_(1) {
     glGenTextures(1, &id_);
     setNChannels();
     setSizeInBytes();
@@ -30,9 +34,52 @@ Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenu
     setupAsyncReadBackPBO();
 }
 
+Texture2D::Texture2D( const Texture2D& other )
+    : Observable<TextureObserver>(), 
+    dimensions_(other.dimensions_),
+    format_(other.format_),
+    internalformat_(other.internalformat_),
+    dataType_(other.dataType_),
+    filtering_(other.filtering_),
+    numChannels_(other.numChannels_),
+    byteSize_(other.byteSize_),
+    referenceCount_(1) {
+        
+    glGenTextures(1, &id_);
+    glGenBuffers(1, &pboBack_);
+    LGL_ERROR_SUPPRESS;
+    setupAsyncReadBackPBO();
+    initialize(NULL);
+    
+    // TODO: Copy texture from other
+    // bind();
+    // glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, dimensions_.x, dimensions_.y);
+}
+
+Texture2D& Texture2D::operator=( const Texture2D& other ) {
+    if (this != &other) {
+        // Check if this object is shared with OpenCL/CUDA/DirectX
+        if(getRefCount() > 1) {
+            LogError("This object is shared and cannot changed (size/format etc.) until the shared object has been released");
+        }
+
+        dimensions_ = other.dimensions_;
+        format_ = other.format_;
+        internalformat_ = other.internalformat_;
+        dataType_ = other.dataType_;
+        filtering_ = other.filtering_;
+        numChannels_ = other.numChannels_;
+        byteSize_ = other.byteSize_;
+        initialize(NULL);
+        // TODO: Copy other texture content
+    }
+    return *this;
+}
+
 Texture2D::~Texture2D() {
     glDeleteTextures(1, &id_);
     glDeleteBuffers(1, &pboBack_);
+    ivwAssert(getRefCount() == 0, "Deleting texture with reference count != 0");
     LGL_ERROR;
 }
 
@@ -63,6 +110,12 @@ void Texture2D::bindToPBO() const{
 }
 
 void Texture2D::initialize(const void* data) {
+    // Notify observers
+    ObserverSet::iterator endIt = observers_->end();
+    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        // static_cast can be used since only template class objects can be added
+        static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();    
+    }
     bind();
     glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, data);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -70,6 +123,10 @@ void Texture2D::initialize(const void* data) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering_);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering_);
     LGL_ERROR;
+    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        // static_cast can be used since only template class objects can be added
+        static_cast<TextureObserver*>(*it)->notifyAfterTextureInitialization();    
+    }
 }
 
 void Texture2D::uploadFromPBO(const Texture2D* src){
@@ -201,6 +258,8 @@ void Texture2D::setSizeInBytes(){
     }
     byteSize_ = numChannels_*dataTypeSize;
 }
+
+
 
 
 
