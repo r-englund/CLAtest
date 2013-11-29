@@ -30,7 +30,10 @@ public:
     virtual DataGroupRepresentation* clone() const = 0;
     virtual std::string getClassName() const;
 
+    //Update representations_ with DataRepresentation from each Data object
     virtual void update() = 0;
+
+    //Function for checking if representations_ is identical (and valid) to those in the Data object.
     virtual bool isValid() const = 0;
 
 protected:

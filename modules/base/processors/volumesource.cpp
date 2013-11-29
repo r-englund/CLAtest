@@ -44,7 +44,7 @@ void VolumeSource::loadVolume() {
         if(reader){
             Volume* volume = reader->readMetaData(volumeFile_.get());
             ResourceManager::instance()->addResource(new TemplateResource<Volume>(volumeFile_.get(), volume));
-            volumePort_.setData(volume);
+            volumePort_.setData(volume, false);
         }else{
             LogInfo("Could not load volume: " << volumeFile_.get());
         }
