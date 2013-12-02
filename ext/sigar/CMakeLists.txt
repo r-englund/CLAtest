@@ -11,7 +11,7 @@ if(WIN32)
 	add_definitions(-DWIN32_LEAN_AND_MEAN)
 
 	# force the correct version for the redist manifest
-	add_definitions(-D_BIND_TO_CURRENT_MFC_VERSION=1 -D_BIND_TO_CURRENT_CRT_VERSION=1)
+	#add_definitions(-D_BIND_TO_CURRENT_MFC_VERSION=1 -D_BIND_TO_CURRENT_CRT_VERSION=1)
     
     #disable useless warning
     add_definitions( "/wd4013 /wd4018 /wd4244 /wd4267 /wd4293 /wd4307 /wd4996 /nologo" )
