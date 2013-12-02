@@ -18,7 +18,7 @@ public:
     Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering);
     Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
     Texture2D(const Texture2D& other);
-    Texture2D& Texture2D::operator=(const Texture2D& other);
+    Texture2D& operator=(const Texture2D& other);
 
     virtual ~Texture2D();
 
