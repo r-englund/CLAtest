@@ -93,9 +93,13 @@ public:
     void addRectangle(QPointF mstartPoint, QPointF mendPoint,ivec3 color = ivec3(0,0,255));
     std::vector<ImgRect> getRectList();
     void setReadOnly(bool readOnly);
+    void hideLabelDescription(bool hide);
     void hideLabels(bool hide);
+    void filledRectangles(bool fill);
     void setCurrentLabelPositionFromTextField(ivec2 pos);
     void setCurrentLabelPositionToTextField();
+    void setScaleFactor(float scaling);
+    void clearRectItems();
 protected:
     void mousePressEvent(QMouseEvent* e);
     void mouseDoubleClickEvent(QMouseEvent* e);
@@ -109,8 +113,10 @@ private:
     bool rubberBandActive_;
     bool readOnly_;
     bool hideLabels_;
+    bool hideLabelDescriptions_;
+    bool fillRectangle_;
     QGraphicsRectItem* currentRectItem_;
-    QGraphicsDropShadowEffect* shadowEffect_;
+    QGraphicsDropShadowEffect* shadowEffect_;    
 };
 
 
@@ -129,6 +135,7 @@ public:
     void addBackGroundImage(std::string imagePath);
     void generateWidget();    
     void setReadOnly(bool readOnly);
+    void hideLabelDescription(bool hide);
     void hideLabels(bool hide);
     ImageEditorWidgetQt* mainParentWidget_;
     QToolBar* toolBar_;
@@ -141,14 +148,20 @@ public:
     SimpleGraphicsView* view_;
     QImage* backGroundImage_;
     void setToolBarVisible(bool visible);
+    void setSceneScaling(float scaling);
 public slots:
     void updatePositionX(int);
     void updatePositionY(int);
     void onCurrentItemPositionChange(vec2 pos);
+signals:
+    void rectItemPositionChanged();
 protected:
     void closeEvent(QCloseEvent *);
     QSpinBox* positionX_;
     QSpinBox* positionY_;
+    QLabel* labelPositionX_;
+    QLabel* labelPositionY_;
+    float sceneScaleFactor_;    
     /*void showEvent(QShowEvent *);*/
 };
 

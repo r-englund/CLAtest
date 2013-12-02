@@ -2,18 +2,22 @@
 
 namespace inviwo{
 
-    EditableLabelQt::EditableLabelQt(std::string text): text_(text), contextMenu_(NULL){
+    EditableLabelQt::EditableLabelQt(std::string text, bool shortenText): text_(text), contextMenu_(NULL), shortenText_(shortenText){
     generateWidget();
 }
 
-    EditableLabelQt::EditableLabelQt(std::string text, QMenu* contextMenu) :text_(text), contextMenu_(contextMenu){
+    EditableLabelQt::EditableLabelQt(std::string text, QMenu* contextMenu, bool shortenText) :text_(text), contextMenu_(contextMenu), shortenText_(shortenText){
     generateWidget();
 }
 
 void EditableLabelQt::generateWidget(){
     QHBoxLayout* hLayout = new QHBoxLayout();
     label_ = new QLabel();
-    label_->setText(QString::fromStdString(shortenText()));
+    if (shortenText_)
+        label_->setText(QString::fromStdString(shortenText()));
+    else
+        label_->setText(QString::fromStdString(text_));
+
     lineEdit_ = new QLineEdit();
     hLayout->addWidget(lineEdit_);
     lineEdit_->hide();
@@ -48,7 +52,11 @@ void EditableLabelQt::mouseDoubleClickEvent( QMouseEvent* e ){
 void EditableLabelQt::editingOff(){
     lineEdit_->hide();
     text_ = lineEdit_->text().toLocal8Bit().constData();
-    label_->setText(QString::fromStdString(shortenText()));    
+    if (shortenText_)
+        label_->setText(QString::fromStdString(shortenText()));    
+    else
+        label_->setText(QString::fromStdString(text_));    
+
     label_->show();
     emit textChanged();
 }
@@ -77,6 +85,10 @@ std::string EditableLabelQt::shortenText(){
         return text_;
     }
     
+}
+
+void EditableLabelQt::setShortenText(bool shorten) {
+    shortenText_ = shorten;
 }
 
 

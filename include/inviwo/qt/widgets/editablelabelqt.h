@@ -12,12 +12,13 @@ namespace inviwo {
     class IVW_QTWIDGETS_API EditableLabelQt: public QWidget{
     Q_OBJECT
 public:
-    EditableLabelQt(std::string text);
-    EditableLabelQt(std::string text, QMenu* contextMenu);
+    EditableLabelQt(std::string text, bool shortenText=true);
+    EditableLabelQt(std::string text, QMenu* contextMenu, bool shortenText=true);
     void edit();
     std::string getText(){return text_;};
     void setText(std::string txt);
     void setContextMenu(QMenu* menu){contextMenu_ = menu;};
+    void setShortenText(bool shorten);
 public slots:
     void editingOff();
     void showContextMenu(const QPoint& pos);
@@ -30,6 +31,7 @@ private:
     QMenu* contextMenu_;
     void mouseDoubleClickEvent( QMouseEvent * event );
     std::string shortenText();
+    bool shortenText_;
 
     signals:
         void textChanged();

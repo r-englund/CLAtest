@@ -46,7 +46,7 @@ void SimpleWithRectangleLabel::editLabel() {
 // Simple Graphics view
 
 SimpleGraphicsView::SimpleGraphicsView(QWidget* parent) : QGraphicsView(parent), scene_(0), rubberBandActive_(false),
-    hideLabels_(false), readOnly_(false), currentRectItem_(0){    
+    hideLabels_(false), hideLabelDescriptions_(false), readOnly_(false), currentRectItem_(0),fillRectangle_(false){    
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
@@ -67,14 +67,19 @@ void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint,iv
     SimpleWithRectangleLabel *i = new SimpleWithRectangleLabel(deltaPoint, scene_);
     i->setPos(mStartPoint.x(), mStartPoint.y());
     scene_->addItem(i);
-    if (!hideLabels_)
+    if (!hideLabelDescriptions_)
         i->setLabel("Box");
     i->updateLabelPosition();
     i->setFlag(QGraphicsItem::ItemIsMovable);
-    i->setBrush( QColor(0,0,128,0) );
-    i->setPen( QPen(QColor(color.x, color.y, color.z), 2) );
+
+    if (fillRectangle_)
+        i->setBrush( QBrush( QColor(color.x, color.y, color.z), Qt::SolidPattern ) );
+    else
+        i->setPen( QPen(QColor(color.x, color.y, color.z), 2) );
     i->setZValue(255);
     currentRectItem_ = i;
+    if (hideLabels_)
+        currentRectItem_->hide();
     setCurrentLabelPositionToTextField();
 }
 
@@ -191,15 +196,17 @@ void SimpleGraphicsView::mouseReleaseEvent(QMouseEvent *e)
 void SimpleGraphicsView::mouseMoveEvent(QMouseEvent *e) {    
     QPoint currentPoint = e->pos();
     QList<QGraphicsItem*> graphicsItems =items(e->pos());    
-    //graphicsItems.size()==1 because of background pixmap item
-    for (int i=0; i<graphicsItems.size(); i++) {
-        QGraphicsRectItem *rectItem = qgraphicsitem_cast<QGraphicsRectItem*>(graphicsItems[i]);
-        if (rectItem == currentRectItem_) { 
-            //LogWarn("Rect Item Move");
-            setCurrentLabelPositionToTextField();
+    if(e->button()==Qt::LeftButton) {
+        //graphicsItems.size()==1 because of background pixmap item
+        for (int i=0; i<graphicsItems.size(); i++) {
+            QGraphicsRectItem *rectItem = qgraphicsitem_cast<QGraphicsRectItem*>(graphicsItems[i]);
+            if (rectItem == currentRectItem_) { 
+                //LogWarn("Rect Item Move");
+                setCurrentLabelPositionToTextField();
+            }
         }
+        //e->accept();
     }
-    //e->accept();
     QGraphicsView::mouseMoveEvent(e);
 }
 
@@ -208,8 +215,37 @@ void SimpleGraphicsView::setReadOnly(bool readOnly) {
     readOnly_ = readOnly;
 }
 
-void SimpleGraphicsView::hideLabels(bool hide) {    
+void SimpleGraphicsView::hideLabelDescription(bool hide) {    
+    hideLabelDescriptions_ = hide;
+}
+
+void SimpleGraphicsView::hideLabels(bool hide) {
     hideLabels_ = hide;
+    
+    QList<QGraphicsItem*> graphicsItems = items();
+
+    if (hideLabels_) {        
+        for (int i=0; i<graphicsItems.size(); i++) {
+            SimpleWithRectangleLabel *rectItem = qgraphicsitem_cast<SimpleWithRectangleLabel*>(graphicsItems[i]);
+            if (rectItem) rectItem->hide();
+        }
+    }
+    else {
+        for (int i=0; i<graphicsItems.size(); i++) {
+            SimpleWithRectangleLabel *rectItem = qgraphicsitem_cast<SimpleWithRectangleLabel*>(graphicsItems[i]);
+            if (rectItem) rectItem->show();
+        }
+    }
+}
+
+void SimpleGraphicsView::filledRectangles(bool fill) {
+    fillRectangle_ = fill;
+}
+
+void SimpleGraphicsView::setScaleFactor(float scaling) {
+    QMatrix matrix;
+    matrix.scale(scaling, scaling);
+    setMatrix(matrix);
 }
 
 void SimpleGraphicsView::setCurrentLabelPositionFromTextField(ivec2 pos) {
@@ -244,9 +280,16 @@ void SimpleGraphicsView::setCurrentLabelPositionToTextField() {
     }
 }
 
+void SimpleGraphicsView::clearRectItems() {
+    scene_->clear();
+    currentRectItem_ = 0;    
+    shadowEffect_ = new QGraphicsDropShadowEffect();
+    shadowEffect_->setOffset(3.0);
+    shadowEffect_->setBlurRadius(3.0);
+}
 /////////////////////////////////////////////////
 // Image Labeling widget
-ImageLabelWidget::ImageLabelWidget() : scene_(0), view_(0) {
+ImageLabelWidget::ImageLabelWidget() : scene_(0), view_(0),sceneScaleFactor_(1.2f) {
     generateWidget();
 }
 
@@ -263,6 +306,8 @@ void ImageLabelWidget::generateWidget(){
     scene_ = new SimpleGraphicsScene(this);
     scene_->setSceneRect(0, 0, 10, 10);
     view_ = new SimpleGraphicsView(this);
+    view_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view_->setDialogScene(scene_);
     scene_->setBackgroundBrush(QBrush(Qt::lightGray));
 
@@ -299,12 +344,12 @@ void ImageLabelWidget::generateWidget(){
     editorLayout->addWidget(new QLabel());
     QHBoxLayout* hbox_xy = new QHBoxLayout();
     hbox_xy->setAlignment(Qt::AlignLeft);
-    QLabel* xLabel = new QLabel(" X : "); xLabel->setMaximumWidth(32);
-    hbox_xy->addWidget(xLabel);
+    labelPositionX_ = new QLabel(" X : "); labelPositionX_->setMaximumWidth(32);
+    hbox_xy->addWidget(labelPositionX_);
     positionX_ = new QSpinBox(); positionX_->setMaximumWidth(64);
     hbox_xy->addWidget(positionX_);
-    QLabel* yLabel = new QLabel(" Y : "); yLabel->setMaximumWidth(32);
-    hbox_xy->addWidget(yLabel);
+    labelPositionY_ = new QLabel(" Y : "); labelPositionY_->setMaximumWidth(32);
+    hbox_xy->addWidget(labelPositionY_);
     positionY_ = new QSpinBox(); positionY_->setMaximumWidth(64);
     hbox_xy->addWidget(positionY_);   
     editorLayout->addLayout(hbox_xy);
@@ -341,9 +386,31 @@ void ImageLabelWidget::setReadOnly(bool readOnly) {
     view_->setReadOnly(readOnly);
 }
 
+void ImageLabelWidget::setSceneScaling(float scaling) {
+    sceneScaleFactor_ = scaling;
+}
+
+void ImageLabelWidget::hideLabelDescription(bool hide) {
+    //does not show labels
+    view_->hideLabelDescription(hide);    
+}
+
 void ImageLabelWidget::hideLabels(bool hide) {
-    //does not allow creation of new labels
+    //does not show label and descriptions    
     view_->hideLabels(hide);
+
+    if (hide) {
+        positionX_->hide();
+        positionY_->hide();
+        labelPositionX_->hide();
+        labelPositionY_->hide();
+    }
+    else {
+        positionX_->show();
+        positionY_->show();
+        labelPositionX_->show();
+        labelPositionY_->show();        
+    }    
 }
 
 void ImageLabelWidget::addRectangleTest() {
@@ -355,18 +422,20 @@ void ImageLabelWidget::addRectangleTest() {
 }
 
 void ImageLabelWidget::addBackGroundImage(std::string imagePath) {
-    scene_->clear();
-    float sceneScaleFactor = 1.2f;
+    view_->clearRectItems();   
     backGroundImage_ = new QImage(imagePath.c_str());
-    QGraphicsPixmapItem *i = scene_->addPixmap( QPixmap(imagePath.c_str()) );
     vec2 unscaledSize(backGroundImage_->width(), backGroundImage_->height());
-    vec2 scaledSceneSize(backGroundImage_->width()*sceneScaleFactor, backGroundImage_->height()*sceneScaleFactor);
-    vec2 centralPos = (scaledSceneSize - unscaledSize)/2.0f ;    
+    vec2 scaledSceneSize(backGroundImage_->width()*sceneScaleFactor_, backGroundImage_->height()*sceneScaleFactor_);
+
+    backGroundImage_->scaled(QSize(scaledSceneSize.x, scaledSceneSize.y));
+    QGraphicsPixmapItem *i = scene_->addPixmap( QPixmap(imagePath.c_str()) );    
+    vec2 centralPos = (scaledSceneSize - unscaledSize)/2.0f ;
     //i->setPos(centralPos.x, centralPos.y);
     i->setZValue(1);    
     scene_->setSceneRect(0, 0, unscaledSize.x, unscaledSize.y);
+    view_->setScaleFactor(sceneScaleFactor_);
     //resize(image.size()*4/3);
-    setFixedSize(QSize(scaledSceneSize.x, scaledSceneSize.y));
+    resize(QSize(scaledSceneSize.x, scaledSceneSize.y));
 }
 
 void ImageLabelWidget::setParent(ImageEditorWidgetQt* tmp){
@@ -392,9 +461,10 @@ void ImageLabelWidget::updatePositionY(int y) {
 void ImageLabelWidget::onCurrentItemPositionChange(vec2 centerPos) {    
     ivec2 pos;
     pos[0] = centerPos[0];
-    pos[1] = centerPos[1];    
+    pos[1] = centerPos[1];
     positionX_->setValue(pos[0]);
     positionY_->setValue(pos[1]);
+    emit rectItemPositionChanged();
 }
 
 /////////////////////////////////////////////////
