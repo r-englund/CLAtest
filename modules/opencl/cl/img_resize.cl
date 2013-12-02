@@ -1,3 +1,16 @@
+/**********************************************************************
+ * Copyright (C) 2013 Scientific Visualization Group - Linköping University
+ * All Rights Reserved.
+ * 
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * No part of this software may be reproduced or transmitted in any
+ * form or by any means including photocopying or recording without
+ * written permission of the copyright owner.
+ *
+ * Primary author : Daniel Jönsson
+ *
+ **********************************************************************/
 
 __constant sampler_t linearSamp = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_LINEAR; 
 
