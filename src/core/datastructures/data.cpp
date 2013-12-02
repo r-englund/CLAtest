@@ -25,7 +25,9 @@ Data::Data()
 
 Data::Data(const Data& rhs) 
     : metaData_(rhs.metaData_->clone())
-    , dataFormatBase_(rhs.dataFormatBase_){
+    , dataFormatBase_(rhs.dataFormatBase_),
+     validRepresentations_(0),
+     lastValidRepresentation_(NULL){
     rhs.copyRepresentationsTo(this);
 }
 
