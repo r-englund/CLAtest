@@ -78,7 +78,6 @@ source_group("MOC Files" FILES ${MOC_FILES})
 # Add source files
 set(SOURCE_FILES
     colorwheel.cpp
-    customsliderwidgetqt.cpp
     editablelabelqt.cpp
     eventconverterqt.cpp
     eventpropertymanager.cpp
@@ -94,7 +93,6 @@ set(SOURCE_FILES
     rangesliderqt.cpp
     spinboxrangesliderwidgetqt.cpp
     studyparameterlistwidget.cpp
-    timerqt.cpp
     processors/processorwidgetqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
