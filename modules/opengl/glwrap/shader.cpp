@@ -18,6 +18,16 @@
 
 namespace inviwo {
 
+Shader::Shader(std::string fragmentFilename){
+    initialize();
+
+    createAndAddShader(GL_VERTEX_SHADER, "img_identity.vert", true);
+    createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, true);
+
+    attachAllShaderObjects();
+    linkAndRegister(true);
+}
+
 Shader::Shader(std::string fragmentFilename, bool linkShader){
     initialize();
 

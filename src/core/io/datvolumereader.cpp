@@ -71,8 +71,8 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
     Volume* volume = new UniformRectiLinearVolume();
 
     glm::mat3 basis(1.0f);
-    glm::vec3 offset(-1.0f);
-    glm::vec3 spacing(0.0f);
+    glm::vec3 offset(0.0f);
+    glm::vec3 spacing(1.0f);
     
     std::string key;
     while (!f->eof()) {
@@ -89,7 +89,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
             ss >> dimension_.x;
             ss >> dimension_.y;
             ss >> dimension_.z;
-        }else if (key=="spacing" || "slicethickness") {
+        }else if (key=="spacing" || key=="slicethickness") {
             ss >> spacing.x;
             ss >> spacing.y;
             ss >> spacing.z;
@@ -101,7 +101,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         }                    
     };
 
-    if( spacing != vec3(0.0f,0.0f,0.0f) ) {
+    /*if( spacing != vec3(0.0f,0.0f,0.0f) ) {
         basis[0][0] = dimension_.x * spacing.x;
         basis[1][1] = dimension_.y * spacing.y;
         basis[2][2] = dimension_.z * spacing.z;
@@ -109,11 +109,10 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         offset[0] = - basis[0][0]/2.0f;
         offset[1] = - basis[1][1]/2.0f;
         offset[2] = - basis[2][2]/2.0f;
-    }
+    }*/
     
-    
-    volume->setBasis(basis);
-    volume->setOffset(offset);
+    //volume->setBasis(basis);
+    //volume->setOffset(offset);
     volume->setDimension(dimension_);
     volume->setDataFormat(format_);
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);

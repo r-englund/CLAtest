@@ -28,9 +28,10 @@ class IVW_MODULE_OPENGL_API Shader {
 public:
     typedef std::map<GLenum, ShaderObject*> ShaderObjectMap;
 
-    Shader(std::string fragmentFilename, bool linkShader=true);
-    Shader(std::string vertexFilename, std::string fragmentFilename, bool linkShader=true);
-    Shader(std::string vertexFilename, std::string geometryFilename, std::string fragmentFilename, bool linkShader=true);
+    Shader(std::string fragmentFilename);
+    Shader(std::string fragmentFilename, bool linkShader);
+    Shader(std::string vertexFilename, std::string fragmentFilename, bool linkShader);
+    Shader(std::string vertexFilename, std::string geometryFilename, std::string fragmentFilename, bool linkShader);
 
     //Takes ownership of shader objects in vector
     Shader(std::vector<ShaderObject*>& shaderObjects, bool linkShader=true);
