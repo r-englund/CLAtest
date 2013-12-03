@@ -102,7 +102,15 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         }                    
     };
 
-    if(spacing.op == 0.0f)
+    if( spacing != vec3(0.0f,0.0f,0.0f) ) {
+        basis[0][0] = dimension_.x * spacing.x;
+        basis[1][1] = dimension_.y * spacing.y;
+        basis[2][2] = dimension_.z * spacing.z;
+
+        offset[0] = - basis[0][0]/2.0f;
+        offset[1] = - basis[1][1]/2.0f;
+        offset[2] = - basis[2][2]/2.0f;
+    }
     
     
     volume->setBasis(basis);
