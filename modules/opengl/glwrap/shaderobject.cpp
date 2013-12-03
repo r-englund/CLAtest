@@ -38,6 +38,7 @@ bool ShaderObject::initialize(bool compileShader) {
     // Help developer to spot errors
     std::string fileExtension = URLParser::getFileExtension(fileName_);
     if( fileExtension == "vert" && shaderType_ != GL_VERTEX_SHADER
+     || fileExtension == "geom" && shaderType_ != GL_GEOMETRY_SHADER
      || fileExtension == "frag" && shaderType_ != GL_FRAGMENT_SHADER) {
         LogWarn("File extension does not match shader type: " << fileName_);
     }

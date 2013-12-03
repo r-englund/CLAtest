@@ -42,7 +42,7 @@ Shader::Shader(std::string vertexFilename, std::string geometryFilename, std::st
     initialize();
 
     createAndAddShader(GL_VERTEX_SHADER, vertexFilename, linkShader);
-    createAndAddShader(GL_FRAGMENT_SHADER, geometryFilename, linkShader);
+    createAndAddShader(GL_GEOMETRY_SHADER, geometryFilename, linkShader);
     createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
 
     attachAllShaderObjects();

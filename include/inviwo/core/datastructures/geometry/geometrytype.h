@@ -36,6 +36,8 @@ enum ConnectivityType{
     STRIP,
     LOOP,
     FAN,
+    ADJACENCY,
+    STRIP_ADJACENCY,
     NUMBER_OF_CONNECTIVITY_TYPES
 };
 
