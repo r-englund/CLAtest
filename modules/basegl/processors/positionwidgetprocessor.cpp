@@ -50,7 +50,6 @@ void PositionWidgetProcessor::initialize() {
     CompositeProcessorGL::initialize();
 
     program_ = new Shader("picking.frag");
-    program_->build();
 }
 
 void PositionWidgetProcessor::deinitialize() {

@@ -374,33 +374,32 @@ void ProcessorNetworkEvaluator::evaluate() {
         processorNetwork_->setModified(false);
     }
  
+    std::vector<Processor*>::iterator it;
     defaultContext_->activate();
-    for (size_t i=0; i<processorsSorted_.size(); i++) {
-        if (!processorsSorted_[i]->isValid()) {
-            if (processorsSorted_[i]->isReady()){
+    for (it = processorsSorted_.begin(); it != processorsSorted_.end(); ++it) {
+        if (!(*it)->isValid()) {
+            if ((*it)->isReady()){
                 // re-initialize resources (e.g., shaders) if necessary
-                if (processorsSorted_[i]->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
-                    processorsSorted_[i]->initializeResources();                
+                if ((*it)->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
+                    (*it)->initializeResources();                
             
                 // reset the progress indicator
-                ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processorsSorted_[i]);
+                ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>((*it));
                 if (progressBarOwner)
                     progressBarOwner->getProgressBar().resetProgress();
 
                 // do the actual processing
-                processorsSorted_[i]->process();
+                (*it)->process();
 
                 // set the progress indicator to finished
                 if (progressBarOwner)
                     progressBarOwner->getProgressBar().finishProgress();
-
-
             }
         }
     }       
-    for (size_t i=0; i<processorsSorted_.size(); i++) {
+    for (it = processorsSorted_.begin(); it != processorsSorted_.end(); ++it) {
         // validate processor
-        processorsSorted_[i]->setValid();
+        (*it)->setValid();
     }
 
     // unlock processor network to allow next evaluation

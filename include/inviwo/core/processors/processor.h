@@ -73,7 +73,10 @@ public:
 
     virtual bool isEndProcessor() { return false; }
 
-    Port* getPort(std::string identifier) const;
+    Port* getPort(std::string identifier);
+    Inport* getInport(std::string identifier);
+    Outport* getOutport(std::string identifier);
+
     std::vector<Inport*> getInports() { return inports_; }
     std::vector<Outport*> getOutports() { return outports_; }
     std::vector<std::string> getPortDependencySets();

@@ -50,13 +50,27 @@ void Processor::addPort(Outport& port, std::string portDependencySet) {
     addPort(&port, portDependencySet);
 }
 
-Port* Processor::getPort(std::string identifier) const {
-    std::vector<Port*> ports;
-    ports.insert(ports.begin(), inports_.begin(), inports_.end());
-    ports.insert(ports.end(), outports_.begin(), outports_.end());
-    for (size_t i=0; i<ports.size(); i++)
-        if (ports[i]->getIdentifier() == identifier)
-            return ports[i];
+Port* Processor::getPort(std::string identifier) {
+    for (std::vector<Inport*>::iterator it = inports_.begin(); it != inports_.end(); ++it)
+        if((*it)->getIdentifier() == identifier)
+            return (*it);
+    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
+        if((*it)->getIdentifier() == identifier)
+            return (*it);
+    return NULL;
+}
+
+Inport* Processor::getInport(std::string identifier) {
+    for (std::vector<Inport*>::iterator it = inports_.begin(); it != inports_.end(); ++it)
+        if((*it)->getIdentifier() == identifier)
+            return (*it);
+    return NULL;
+}
+
+Outport* Processor::getOutport(std::string identifier) {
+    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
+        if((*it)->getIdentifier() == identifier)
+            return (*it);
     return NULL;
 }
 
@@ -74,32 +88,32 @@ std::string Processor::getPortDependencySet(Port* port) {
 }
 
 bool Processor::allInportsConnected() const {
-    for (size_t i=0; i<inports_.size(); i++)
-        if (!inports_[i]->isConnected())
+    for (std::vector<Inport*>::const_iterator it = inports_.begin(); it != inports_.end(); ++it)
+        if (!(*it)->isConnected())
             return false;
     return true;
 }
 
 bool Processor::allInportsAreReady() const {
-	for (size_t i=0; i<inports_.size(); i++)
-		if (!inports_[i]->isReady())
+	for (std::vector<Inport*>::const_iterator it = inports_.begin(); it != inports_.end(); ++it)
+		if (!(*it)->isReady())
 			return false;
 	return true;
 }
 
 void Processor::initialize() {
-    for (size_t i=0; i<inports_.size(); i++)
-        inports_[i]->initialize();
-    for (size_t i=0; i<outports_.size(); i++)
-        outports_[i]->initialize();
+    for (std::vector<Inport*>::iterator it = inports_.begin(); it != inports_.end(); ++it)
+        (*it)->initialize();
+    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
+        (*it)->initialize();
     initialized_ = true;
 }
 
 void Processor::deinitialize() {
-    for (size_t i=0; i<inports_.size(); i++)
-        inports_[i]->deinitialize();
-    for (size_t i=0; i<outports_.size(); i++)
-        outports_[i]->deinitialize();
+    for (std::vector<Inport*>::iterator it = inports_.begin(); it != inports_.end(); ++it)
+        (*it)->deinitialize();
+    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
+        (*it)->deinitialize();
 
     portDependencySets_.deinitialize();
     initialized_ = false;
@@ -107,8 +121,8 @@ void Processor::deinitialize() {
 
 void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     PropertyOwner::invalidate(invalidationLevel);
-    for (size_t i=0; i<outports_.size(); i++)
-        outports_[i]->invalidate(PropertyOwner::INVALID_OUTPUT);
+    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
+        (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);
     notifyObservers();
 }
 
@@ -159,8 +173,6 @@ void Processor::serialize(IvwSerializer& s) const {
 		s.serialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
 
     PropertyOwner::serialize(s);
-
-
 }
 
 void Processor::deserialize(IvwDeserializer& d) {
@@ -173,15 +185,12 @@ void Processor::deserialize(IvwDeserializer& d) {
 		d.deserialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
 
     PropertyOwner::deserialize(d);
-
-
 }
 
-void Processor::setValid()
-{
+void Processor::setValid(){
     PropertyOwner::setValid();
-    for (size_t i=0; i<outports_.size(); i++)
-        outports_[i]->setInvalidationLevel(VALID);
+    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
+        (*it)->setInvalidationLevel(VALID);
 }
 
 } // namespace

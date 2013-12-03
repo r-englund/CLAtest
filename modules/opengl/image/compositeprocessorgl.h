@@ -38,7 +38,7 @@ public:
 
 protected:
     std::string programFileName_;
-    Shader* program_;
+    Shader* compositeShader_;
 };
 
 } // namespace

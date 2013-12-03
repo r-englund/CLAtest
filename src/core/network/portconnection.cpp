@@ -38,7 +38,7 @@ void PortConnection::deserialize(IvwDeserializer& d) {
     ivwAssert(outPortProcessor!=0, "Unable to load processor.")
     
     if (outPortProcessor)
-        outport_ = dynamic_cast<Outport*>(outPortProcessor->getPort(outport.getIdentifier()));
+        outport_ = outPortProcessor->getOutport(outport.getIdentifier());
     
     Inport inport("");
     d.deserialize("InPort", inport);
@@ -46,7 +46,7 @@ void PortConnection::deserialize(IvwDeserializer& d) {
     ivwAssert(outPortProcessor!=0, "Unable to load processor.")
 
     if (inPortProcessor)
-        inport_ = dynamic_cast<Inport*>(inPortProcessor->getPort(inport.getIdentifier()));
+        inport_ = inPortProcessor->getInport(inport.getIdentifier());
 }
 
 } // namespace

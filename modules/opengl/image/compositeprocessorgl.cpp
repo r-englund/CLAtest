@@ -29,12 +29,12 @@ CompositeProcessorGL::CompositeProcessorGL(std::string programFileName)
 
 void CompositeProcessorGL::initialize() {
     ProcessorGL::initialize();
-    program_ = new Shader(programFileName_);
+    compositeShader_ = new Shader(programFileName_);
 }
 
 void CompositeProcessorGL::deinitialize() {
-    delete program_;
-    program_ = 0;
+    delete compositeShader_;
+    compositeShader_ = 0;
     ProcessorGL::deinitialize();
 }
 
@@ -48,28 +48,28 @@ void CompositeProcessorGL::compositePortsToOutport(ImageOutport& outport, ImageI
         TextureUnit outportColorUnit, outportDepthUnit, outportPickingUnit;
         bindTextures(outport, outportColorUnit.getEnum(), outportDepthUnit.getEnum(), outportPickingUnit.getEnum());
 
-        program_->activate();
+        compositeShader_->activate();
 
-        setGlobalShaderParameters(program_);
+        setGlobalShaderParameters(compositeShader_);
 
-        program_->setUniform("texColor0_", inportColorUnit.getUnitNumber());
-        program_->setUniform("texDepth0_", inportDepthUnit.getUnitNumber());
-        program_->setUniform("texPicking0_", inportPickingUnit.getUnitNumber());
+        compositeShader_->setUniform("texColor0_", inportColorUnit.getUnitNumber());
+        compositeShader_->setUniform("texDepth0_", inportDepthUnit.getUnitNumber());
+        compositeShader_->setUniform("texPicking0_", inportPickingUnit.getUnitNumber());
 
-        program_->setUniform("texColor1_", outportColorUnit.getUnitNumber());
-        program_->setUniform("texDepth1_", outportDepthUnit.getUnitNumber());
-        program_->setUniform("texPicking1_", outportPickingUnit.getUnitNumber());
+        compositeShader_->setUniform("texColor1_", outportColorUnit.getUnitNumber());
+        compositeShader_->setUniform("texDepth1_", outportDepthUnit.getUnitNumber());
+        compositeShader_->setUniform("texPicking1_", outportPickingUnit.getUnitNumber());
 
         renderImagePlaneRect();
 
-        program_->deactivate();
+        compositeShader_->deactivate();
 
         deactivateCurrentTarget();
     }
 }
 
 void CompositeProcessorGL::initializeResources() {
-    program_->rebuild();
+    compositeShader_->rebuild();
 }
 
 } // namespace

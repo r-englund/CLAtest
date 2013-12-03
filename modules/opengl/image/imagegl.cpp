@@ -32,7 +32,6 @@ ImageGL::~ImageGL() {
 
 void ImageGL::initialize() {
     program_ = new Shader("img_copy.frag");
-    program_->build();
     frameBufferObject_ = new FrameBufferObject();
     frameBufferObject_->activate();
     //if(colorTexture_) { colorTexture_->increaseRefCount(); }
