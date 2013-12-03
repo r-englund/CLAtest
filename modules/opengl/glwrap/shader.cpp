@@ -18,42 +18,105 @@
 
 namespace inviwo {
 
-Shader::Shader(std::string fragmentFilename, bool linkShader) :
-    vertexFilename_("img_identity.vert"),
-    fragmentFilename_(fragmentFilename)
-{
-    initialize(linkShader);
+Shader::Shader(std::string fragmentFilename, bool linkShader){
+    initialize();
+
+    createAndAddShader(GL_VERTEX_SHADER, "img_identity.vert", linkShader);
+    createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
+
+    attachAllShaderObjects();
+    linkAndRegister(linkShader);
 }
 
-Shader::Shader(std::string vertexFilename, std::string fragmentFilename, bool linkShader) :
-    vertexFilename_(vertexFilename),
-    fragmentFilename_(fragmentFilename)
-{
-    initialize(linkShader);
+Shader::Shader(std::string vertexFilename, std::string fragmentFilename, bool linkShader){
+    initialize();
+
+    createAndAddShader(GL_VERTEX_SHADER, vertexFilename, linkShader);
+    createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
+
+    attachAllShaderObjects();
+    linkAndRegister(linkShader);
+}
+
+Shader::Shader(std::string vertexFilename, std::string geometryFilename, std::string fragmentFilename, bool linkShader){
+    initialize();
+
+    createAndAddShader(GL_VERTEX_SHADER, vertexFilename, linkShader);
+    createAndAddShader(GL_FRAGMENT_SHADER, geometryFilename, linkShader);
+    createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
+
+    attachAllShaderObjects();
+    linkAndRegister(linkShader);
+}
+
+Shader::Shader(std::vector<ShaderObject*>& shaderObjects, bool linkShader){
+    initialize();
+
+    for(size_t i=0; i < shaderObjects.size(); ++i)
+        (*shaderObjects_)[shaderObjects[i]->getShaderType()] = shaderObjects[i];
+
+    attachAllShaderObjects();
+    linkAndRegister(linkShader);
 }
 
 Shader::~Shader() {
     deinitialize();
 }
 
-void Shader::initialize(bool linkShader) {
+void Shader::initialize() {
     id_ = glCreateProgram();
     LGL_ERROR;
-    vertexShaderObject_ = new ShaderObject(GL_VERTEX_SHADER , vertexFilename_, linkShader);
-    fragmentShaderObject_ = new ShaderObject(GL_FRAGMENT_SHADER , fragmentFilename_, linkShader);
-    attachShaderObject(vertexShaderObject_);
-    attachShaderObject(fragmentShaderObject_);
+
+    shaderObjects_ = new ShaderObjectMap();    
+}
+
+void Shader::linkAndRegister(bool linkShader) {
     if (linkShader) link();
     ShaderManager::getRef().registerShader(this);
 }
 
 void Shader::deinitialize() {
     ShaderManager::getRef().unregisterShader(this);
-    detachShaderObject(vertexShaderObject_);
-    detachShaderObject(fragmentShaderObject_);
-    delete vertexShaderObject_;
-    delete fragmentShaderObject_;
+    for(ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+        detachShaderObject(it->second);
+        delete it->second;
+    }
+    delete shaderObjects_;
+
     glDeleteProgram(id_);
+    LGL_ERROR;
+}
+
+void Shader::createAndAddShader(GLenum shaderType, std::string fileName, bool linkShader){
+    (*shaderObjects_)[shaderType] = new ShaderObject(shaderType, fileName, linkShader);
+}
+
+void Shader::link() {
+    glLinkProgram(id_);
+    LGL_ERROR;
+}
+
+void Shader::build() {
+    for(ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+        it->second->build();
+    }
+    link();
+}
+
+void Shader::rebuild() {
+    for(ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+        it->second->rebuild();
+    }
+    link();
+}
+
+void Shader::activate() {
+    glUseProgram(id_);
+    LGL_ERROR;
+}
+
+void Shader::deactivate() {
+    glUseProgram(0);
     LGL_ERROR;
 }
 
@@ -67,31 +130,16 @@ void Shader::detachShaderObject(ShaderObject* shaderObject) {
     LGL_ERROR;
 }
 
-void Shader::link() {
-    glLinkProgram(id_);
-    LGL_ERROR;
+void Shader::attachAllShaderObjects(){
+    for(ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+        attachShaderObject(it->second);
+    }
 }
 
-void Shader::build() {
-    vertexShaderObject_->build();
-    fragmentShaderObject_->build();
-    link();
-}
-
-void Shader::rebuild() {
-    vertexShaderObject_->rebuild();
-    fragmentShaderObject_->rebuild();
-    link();
-}
-
-void Shader::activate() {
-    glUseProgram(id_);
-    LGL_ERROR;
-}
-
-void Shader::deactivate() {
-    glUseProgram(0);
-    LGL_ERROR;
+void Shader::detachAllShaderObject(){
+    for(ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+        detachShaderObject(it->second);
+    }
 }
 
 void Shader::setUniform(const std::string name, GLint value) {

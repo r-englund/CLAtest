@@ -27,26 +27,25 @@ ShaderManager::ShaderManager() : FileObserver() {
 
 void ShaderManager::registerShader(Shader* shader) {
     shaders_.push_back(shader);
-    startFileObservation(shader->getVertexShaderObject()->getAbsoluteFileName());
-    std::vector<std::string> vertexIncludes = shader->getVertexShaderObject()->getIncludeFileNames();
-    for (size_t i=0;i<vertexIncludes.size();i++)
-        startFileObservation(vertexIncludes[i]);
-    startFileObservation(shader->getFragmentShaderObject()->getAbsoluteFileName());
-    std::vector<std::string> fragmentIncludes = shader->getFragmentShaderObject()->getIncludeFileNames();
-    for (size_t i=0;i<fragmentIncludes.size();i++)
-        startFileObservation(fragmentIncludes[i]);
+    const Shader::ShaderObjectMap* shaderObjects = shader->getShaderObjects();
+    for(Shader::ShaderObjectMap::const_iterator it = shaderObjects->begin(); it != shaderObjects->end(); it++) {
+        startFileObservation(it->second->getAbsoluteFileName());
+        std::vector<std::string> shaderIncludes = it->second->getIncludeFileNames();
+        for (size_t i=0;i<shaderIncludes.size();i++)
+            startFileObservation(shaderIncludes[i]);
+    }
 }
 
 void ShaderManager::unregisterShader(Shader* shader) {
     shaders_.erase(std::remove(shaders_.begin(), shaders_.end(), shader), shaders_.end());
-    stopFileObservation(shader->getVertexShaderObject()->getAbsoluteFileName());
-    std::vector<std::string> vertexIncludes = shader->getVertexShaderObject()->getIncludeFileNames();
-    for (size_t i=0;i<vertexIncludes.size();i++)
-        stopFileObservation(vertexIncludes[i]);
-    stopFileObservation(shader->getFragmentShaderObject()->getAbsoluteFileName());
-    std::vector<std::string> fragmentIncludes = shader->getFragmentShaderObject()->getIncludeFileNames();
-    for (size_t i=0;i<fragmentIncludes.size();i++)
-        stopFileObservation(fragmentIncludes[i]);
+
+    const Shader::ShaderObjectMap* shaderObjects = shader->getShaderObjects();
+    for(Shader::ShaderObjectMap::const_iterator it = shaderObjects->begin(); it != shaderObjects->end(); it++) {
+        stopFileObservation(it->second->getAbsoluteFileName());
+        std::vector<std::string> shaderIncludes = it->second->getIncludeFileNames();
+        for (size_t i=0;i<shaderIncludes.size();i++)
+            stopFileObservation(shaderIncludes[i]);
+    }
 }
 
 void ShaderManager::fileChanged(std::string shaderFilename) {
@@ -55,17 +54,14 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
             bool successfulReload = false;
             for (size_t i=0; i<shaders_.size(); i++) {
                 bool relink = false;
-                std::vector<std::string> vertexIncludes = shaders_[i]->getVertexShaderObject()->getIncludeFileNames();
-                if (shaders_[i]->getVertexShaderObject()->getAbsoluteFileName()==shaderFilename ||
-                    std::find(vertexIncludes.begin(), vertexIncludes.end(), shaderFilename) != vertexIncludes.end()) {
-                    successfulReload = shaders_[i]->getVertexShaderObject()->rebuild();
-                    relink = true;
-                }
-                std::vector<std::string> fragmentIncludes = shaders_[i]->getFragmentShaderObject()->getIncludeFileNames();
-                if (shaders_[i]->getFragmentShaderObject()->getAbsoluteFileName()==shaderFilename ||
-                    std::find(fragmentIncludes.begin(), fragmentIncludes.end(), shaderFilename) != fragmentIncludes.end()) {
-                    successfulReload = shaders_[i]->getFragmentShaderObject()->rebuild();
-                    relink = true;
+                const Shader::ShaderObjectMap* shaderObjects = shaders_[i]->getShaderObjects();
+                for(Shader::ShaderObjectMap::const_iterator it = shaderObjects->begin(); it != shaderObjects->end(); it++) {
+                    std::vector<std::string> shaderIncludes = it->second->getIncludeFileNames();
+                    if (it->second->getAbsoluteFileName() == shaderFilename ||
+                        std::find(shaderIncludes.begin(), shaderIncludes.end(), shaderFilename) != shaderIncludes.end()) {
+                            successfulReload = it->second->rebuild();
+                            relink = true;
+                    }
                 }
                 if (relink) shaders_[i]->link();
             }

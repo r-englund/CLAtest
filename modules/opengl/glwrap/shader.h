@@ -19,22 +19,33 @@
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include "shaderobject.h"
+#include <map>
 
 namespace inviwo {
 
 class IVW_MODULE_OPENGL_API Shader {
 
 public:
+    typedef std::map<GLenum, ShaderObject*> ShaderObjectMap;
+
     Shader(std::string fragmentFilename, bool linkShader=true);
     Shader(std::string vertexFilename, std::string fragmentFilename, bool linkShader=true);
+    Shader(std::string vertexFilename, std::string geometryFilename, std::string fragmentFilename, bool linkShader=true);
+
+    //Takes ownership of shader objects in vector
+    Shader(std::vector<ShaderObject*>& shaderObjects, bool linkShader=true);
+
     virtual ~Shader();
 
     void link();
     void build();
     void rebuild();
 
-    ShaderObject* getVertexShaderObject() { return vertexShaderObject_; }
-    ShaderObject* getFragmentShaderObject() { return fragmentShaderObject_; }
+    const ShaderObjectMap* getShaderObjects() { return shaderObjects_; }
+
+    ShaderObject* getVertexShaderObject() { return (*shaderObjects_)[GL_VERTEX_SHADER]; }
+    ShaderObject* getGeometryShaderObject() { return (*shaderObjects_)[GL_GEOMETRY_SHADER]; }
+    ShaderObject* getFragmentShaderObject() { return (*shaderObjects_)[GL_FRAGMENT_SHADER]; }
 
     void activate();
     void deactivate();
@@ -53,16 +64,19 @@ public:
 private:
     unsigned int id_;
 
-    std::string vertexFilename_;
-    std::string fragmentFilename_;
-    ShaderObject* vertexShaderObject_;
-    ShaderObject* fragmentShaderObject_;
+    ShaderObjectMap* shaderObjects_;
 
-    void initialize(bool linkShader);
+    void initialize();
+    void linkAndRegister(bool linkShader);
     void deinitialize();
+
+    void createAndAddShader(GLenum, std::string, bool);
 
     void attachShaderObject(ShaderObject* shaderObject);
     void detachShaderObject(ShaderObject* shaderObject);
+
+    void attachAllShaderObjects();
+    void detachAllShaderObject();
 };
 
 } // namespace

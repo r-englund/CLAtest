@@ -31,6 +31,7 @@ public:
     std::string getFileName() { return fileName_; }
     std::string getAbsoluteFileName() { return absoluteFileName_; }
     std::vector<std::string> getIncludeFileNames() { return includeFileNames_; }
+    GLenum getShaderType() { return shaderType_; }
 
     bool loadSource(std::string fileName);
     void preprocess();
