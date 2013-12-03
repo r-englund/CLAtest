@@ -16,6 +16,7 @@
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
+#include <ext/glm/>
 
 namespace inviwo {
 
@@ -70,21 +71,30 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
 
     Volume* volume = new UniformRectiLinearVolume();
 
+    glm::mat3 basis(1.0f);
+    glm::vec3 offset(-1.0f);
+    glm::vec3 spacing(0.0f);
+    
     std::string key;
     while (!f->eof()) {
         getline(*f, textLine);
         std::stringstream ss(textLine);
-        transform(textLine.begin(), textLine.end(), textLine.begin(), (int (*)(int))tolower);
         key = "";
         ss >> key;            
-        if (key=="ObjectFileName:") {
+        transform(key.begin(), key.end(), key.begin(), (int (*)(int))tolower);
+        key.erase(key.end()-1);
+        if (key=="objectfilename") {
             ss >> rawFile_;
             rawFile_ = fileDirectory + rawFile_;
-        }else if (key=="Resolution:") {
+        }else if (key=="resolution") {
             ss >> dimension_.x;
             ss >> dimension_.y;
             ss >> dimension_.z;
-        }else if (key=="Format:") {
+        }else if (key=="spacing" || "slicethickness") {
+            ss >> spacing.x;
+            ss >> spacing.y;
+            ss >> spacing.z;
+        }else if (key=="format") {
             ss >> formatFlag;
             format_ = DataFormatBase::get(formatFlag);
         }else{
@@ -92,6 +102,11 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         }                    
     };
 
+    if(spacing.op == 0.0f)
+    
+    
+    volume->setBasis(basis);
+    volume->setOffset(offset);
     volume->setDimension(dimension_);
     volume->setDataFormat(format_);
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
