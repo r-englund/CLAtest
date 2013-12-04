@@ -67,13 +67,13 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
 /////////////////////////////////////////////
 //   PUBLIC METHODS FOR CHANGING NETWORK   //
 /////////////////////////////////////////////
-void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showProcessor, bool showProcessorWidget) {
+void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showProcessor, bool showPropertyWidgets, bool showProcessorWidget) {
     // add the processor to the network    
     processor->setIdentifier(obtainUniqueProcessorID(processor->getClassName()));
     processor->initialize();
     processorNetwork_->addProcessor(processor);
     // add processor representations
-    addProcessorRepresentations(processor, pos, showProcessor, showProcessorWidget);
+    addProcessorRepresentations(processor, pos, showProcessor, showPropertyWidgets, showProcessorWidget);
 }
 
 void NetworkEditor::removeProcessor(Processor* processor) {
@@ -127,10 +127,10 @@ void NetworkEditor::removeLink(Processor* processor1, Processor* processor2) {
 ////////////////////////////////////////////////////////
 //   PRIVATE METHODS FOR ADDING/REMOVING PROCESSORS   //
 ////////////////////////////////////////////////////////
-void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor, bool showProcessorWidget) {
+void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor, bool showPropertyWidgets, bool showProcessorWidget) {
     // generate GUI representations (graphics item, property widget, processor widget)
     addProcessorGraphicsItem(processor, pos, showProcessor);
-    addPropertyWidgets(processor, showProcessor);
+    addPropertyWidgets(processor, showPropertyWidgets);
     addProcessorWidget(processor, showProcessorWidget);
 
     // TODO: Generalize by registering output/end processors (can also be e.g. VolumeSave)
@@ -407,7 +407,7 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
     for (size_t i=0; i<processors.size(); i++) {
         Processor* processor = processors[i];
         std::string newIdentifier = identifierPrefix+"_"+processor->getIdentifier();        
-        addProcessor(processor, QPointF(pos.x, pos.y), false, false);
+        addProcessor(processor, QPointF(pos.x, pos.y), false, false, false);
         processor->setIdentifier(obtainUniqueProcessorID(newIdentifier));
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
         if (canvasProcessor) {
@@ -1196,7 +1196,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     for (size_t i=0; i<processors.size(); i++) {
         processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
         ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
-        addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), meta->isVisible(), false);
+        addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), meta->isVisible(), false, false);
     }
 
     // add connections

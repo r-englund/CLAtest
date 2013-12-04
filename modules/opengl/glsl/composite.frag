@@ -37,7 +37,7 @@ void main() {
     vec4 pickingOut;
     float depthOut;
 
-    if (depth1 < depth0) {
+    if (depth1 <= depth0) {
         colorOut.rgb = color1.rgb + color0.rgb * color0.a * (1.0 - color1.a);
         colorOut.a = color1.a + color0.a * (1.0 - color1.a);
         pickingOut = (picking1.a > 0 ? picking1 : (color1.a < 0.95 ? picking0 : vec4(0.0)));
