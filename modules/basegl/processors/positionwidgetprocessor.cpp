@@ -40,8 +40,6 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     position_.setVisible(false);
     addProperty(camera_);
     addInteractionHandler(new Trackball(&camera_));
-
-    widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
 }
 
 PositionWidgetProcessor::~PositionWidgetProcessor() {}
@@ -50,6 +48,8 @@ void PositionWidgetProcessor::initialize() {
     CompositeProcessorGL::initialize();
 
     program_ = new Shader("picking.frag");
+
+    widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
 }
 
 void PositionWidgetProcessor::deinitialize() {
@@ -57,14 +57,16 @@ void PositionWidgetProcessor::deinitialize() {
 
     delete program_;
     program_ = NULL;
+
+    PickingManager::instance()->unregisterPickingObject(widgetPickingObject_);
 }
 
-void PositionWidgetProcessor::updateWidgetPositionFromPicking(){
-    vec2 move = widgetPickingObject_->getPickingMove();
+void PositionWidgetProcessor::updateWidgetPositionFromPicking(const PickingObject* p){
+    vec2 move = p->getPickingMove();
     if (move.x == 0.f && move.y == 0.f) return;
 
-	vec2 pos = widgetPickingObject_->getPickingPosition();
-    float depth = widgetPickingObject_->getPickingDepth();
+	vec2 pos = p->getPickingPosition();
+    float depth = p->getPickingDepth();
 	//TODO: do we not need to incorporate transformations here?
     vec3 startNdc = vec3((2.f*pos.x)-1.f, (2.f*pos.y)-1.f, depth);
     vec3 endNdc = vec3((2.f*(pos.x+move.x))-1.f, (2.f*(pos.y+move.y))-1.f, depth);

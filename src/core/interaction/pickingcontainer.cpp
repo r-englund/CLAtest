@@ -37,8 +37,12 @@ bool PickingContainer::performPick(const uvec2& coord) {
         if(currentPickObj_){
             setPickableSelected(true);
             currentPickObj_->setPickingPosition(normalizedCoordinates(coord));
-            currentPickObj_->setPickingDepth(imageRAM->getDepthValue(coord));
+            
+            if(currentPickObj_->readDepth())
+                currentPickObj_->setPickingDepth(imageRAM->getDepthValue(coord));
+
             currentPickObj_->setPickingMove(vec2(0.f,0.f));
+            
             currentPickObj_->picked();
             return true;
         }

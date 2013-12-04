@@ -38,7 +38,7 @@ public:
 
     bool isReady() const { return geometryInport_.isReady(); }
 
-    void updateWidgetPositionFromPicking();
+    void updateWidgetPositionFromPicking(const PickingObject*);
 
 protected:
     virtual void process();

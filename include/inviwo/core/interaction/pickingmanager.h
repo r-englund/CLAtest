@@ -48,17 +48,25 @@ public:
     ~PickingManager();
 
     template <typename T>
-    const PickingObject* registerPickingCallback(T* o, void (T::*m)()){
-        PickingObject* pickObj = generatePickingObject(pickingObjects_.size());
+    const PickingObject* registerPickingCallback(T* o, void (T::*m)(const PickingObject*), bool readDepth = true){
+        PickingObject* pickObj;
+        if(unRegisteredPickingObjects_.empty()){
+            pickObj = generatePickingObject(pickingObjects_.size());
+            pickingObjects_.push_back(pickObj);
+        }
+        else{
+            pickObj = unRegisteredPickingObjects_.back();
+            unRegisteredPickingObjects_.pop_back();
+        }
         pickObj->getCallbackContainer()->addMemberFunction(o,m);
-        pickingObjects_.push_back(pickObj);
+        pickObj->setReadDepth(readDepth);
         return pickObj;
     }
 
+    bool unregisterPickingObject(const PickingObject*);
+
 protected:
-    PickingManager() {
-        //PickingManager::instance()->performUniqueColorGenerationTest(2000);
-    };
+    PickingManager() {};
     PickingManager(PickingManager const&) {};
     void operator=(PickingManager const&) {};
 
@@ -70,6 +78,7 @@ protected:
 
 private:
     std::vector<PickingObject*> pickingObjects_;
+    std::vector<PickingObject*> unRegisteredPickingObjects_;
 };
 
 } // namespace

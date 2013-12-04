@@ -23,6 +23,18 @@ PickingManager::~PickingManager() {
     }
 }
 
+bool PickingManager::unregisterPickingObject(const PickingObject* p){
+    std::vector<PickingObject*>::iterator it = std::find(unRegisteredPickingObjects_.begin(), unRegisteredPickingObjects_.end(), p);
+    if (it == unRegisteredPickingObjects_.end()){
+        it = std::find(pickingObjects_.begin(), pickingObjects_.end(), p);
+        if (it != pickingObjects_.end()){
+            unRegisteredPickingObjects_.push_back(*it);
+            return true;
+        }
+    }
+    return false;
+}
+
 PickingObject* PickingManager::getPickingObjectFromColor(const DataVec3UINT8::type& c){
     std::vector<PickingObject*>::iterator it = std::find_if(pickingObjects_.begin(), pickingObjects_.end(), FindPickingObject(c));
     if (it != pickingObjects_.end()){

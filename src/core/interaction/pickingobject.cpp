@@ -16,8 +16,9 @@
 
 namespace inviwo {
 
-PickingObject::PickingObject(size_t id, DataVec3UINT8::type c) : id_(id), colorUINT8_(c) {
-    onPickedCallback_ = new SingleCallBack();
+PickingObject::PickingObject(size_t id, DataVec3UINT8::type c) : id_(id), colorUINT8_(c), 
+    pos_(vec2(0.f)), readDepth_(true), depth_(0.f), move_(vec2(0.f)) {
+    onPickedCallback_ = new PickingCallback();
     color_ = DataVec3UINT8::get()->valueToNormalizedVec3Float(&c);
 }
 
@@ -45,12 +46,20 @@ const vec2& PickingObject::getPickingMove() const{
     return move_;
 }
 
+void PickingObject::setReadDepth(bool rd) {
+    readDepth_ = rd;
+}
+
+bool PickingObject::readDepth() {
+    return readDepth_;
+}
+
 const float& PickingObject::getPickingDepth() const {
     return depth_;
 }
 
 void PickingObject::picked() const{
-    onPickedCallback_->invoke();
+    onPickedCallback_->invoke(this);
 }
 
 void PickingObject::setPickingPosition(vec2 pos){
@@ -65,7 +74,7 @@ void PickingObject::setPickingDepth(float depth){
     depth_ = depth;
 }
 
-SingleCallBack* PickingObject::getCallbackContainer(){
+PickingCallback* PickingObject::getCallbackContainer(){
     return onPickedCallback_;
 }
 

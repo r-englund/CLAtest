@@ -57,7 +57,8 @@ public:
     vec4 getValueAsVec4Float(size_t index) const;
 
     void add(const T& item);
-
+    void set(size_t index, const T& item);
+    void offset(size_t index, const T& item);
     void clear();
     
 private:
@@ -193,16 +194,24 @@ vec4 BufferRAMPrecision<T>::getValueAsVec4Float(size_t index) const{
 }
 
 template<typename T>
-void BufferRAMPrecision<T>::add( const T& item )
-{
+void BufferRAMPrecision<T>::add( const T& item ){
     data_->push_back(item);
     size_ = data_->size();
     //setSize(data_->size());
 }
 
 template<typename T>
-void BufferRAMPrecision<T>::clear()
-{
+void BufferRAMPrecision<T>::set(size_t index, const T& item){
+    data_->at(index) = item;
+}
+
+template<typename T>
+void BufferRAMPrecision<T>::offset(size_t index, const T& item){
+    data_->at(index) += item;
+}
+
+template<typename T>
+void BufferRAMPrecision<T>::clear(){
     data_->clear();
     size_ = 0;
 }
