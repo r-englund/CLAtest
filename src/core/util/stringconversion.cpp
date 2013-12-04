@@ -91,7 +91,6 @@ unsigned int countLines(std::string str) {
 std::string randomString(unsigned int length){
 	static const std::string possibleValues =
 		"0123456789"
-		"!@#$%^&*"
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		"abcdefghijklmnopqrstuvwxyz";
 		
