@@ -40,10 +40,13 @@ signals:
 protected:
 	void resizeEvent ( QResizeEvent * event );
 	void drawForeground(QPainter *painter, const QRectF &rect);
+    void drawBackground(QPainter* painter, const QRectF& rect);
 
 private:
     float viewMaskMin_;
     float viewMaskMax_;
+
+    static const int GRID_SPACING;
 };
 } // namespace
 

@@ -26,8 +26,8 @@
 #include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/colorwheel.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
-#include <inviwo/qt/widgets/spinboxrangesliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
 
 #include <QCheckBox>
 #include <QColorDialog>
@@ -50,10 +50,8 @@ public:
 	//TransferFunctionPropertyDialog();
 	TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent);
 	~TransferFunctionPropertyDialog();
-	
-	float zoomFactor_;
 
-    /** \Updates and draws the visual transferfunction
+    /** \Updates and draws the visual transfer function
     *         
     *      Fetches the float array from the TransferFunction and draws a line for each value
     *      Redraws it fully every time, to be optimized if it is allowed to stay
@@ -63,12 +61,26 @@ public:
 	void notify();
     QVector<QGradientStop>* getGradientStops();
 
+public slots:
+    void setPropertyValue();
+    void setPropertyValueColorDialog();
+    void updateColorWheel();
+    void showColorDialog();
+    void editorViewResized();
+    void bitRangeChanged();
+    void zoomHorizontalChanged();
+    void maskChanged();
+    void zoomVerticalChanged(int min, int max);
+
 private:
 	int arrayWidth_;
     static const std::string logSource_;
+
     TransferFunctionEditorView*	editorview_; ///< View that contains the editor
+
     QGraphicsView* paintview_; ///< View that contains the scene for the painted transferfunction
     QGraphicsScene* paintscene_; ///< Scene where the transferfunction is painted
+
     TransferFunctionProperty* property_; ///< Pointer to property, for get and invalidation in the widget
     TransferFunctionEditor* editor_; ///< TransferFunctionEditor inherited from QGraphicsScene
 
@@ -77,34 +89,17 @@ private:
 
     QColorDialog* colorDialog_;
     ColorWheel* colorWheel_;
-
+    
     RangeSliderQt* verticalZoomSlider_;
-	SpinBoxRangeSliderQt* zoomSpinBoxSlider_;
-	SpinBoxRangeSliderQt* maskSpinBoxSlider_;
-
-    IntMinMaxProperty* zoomProp_;
-    IntMinMaxProperty* maskProp_;
     IntMinMaxPropertyWidgetQt* zoomPropWidget_;
     IntMinMaxPropertyWidgetQt* maskPropWidget_;
+    OptionPropertyWidgetQt* bitRangewidget_;
 
     bool colorChange_;
     int zoom_;
     bool eventFilter(QObject *object, QEvent *event);
     void generateWidget();
     void setPointColor(QColor color);
-    RangeSliderQt* zoomSlider_;
-
-
-    public slots:
-        void setPropertyValue();
-        void setPropertyValueColorDialog();
-        void updateColorWheel();
-        void showColorDialog();
-		void editorViewResized();
-		void bitRangeChanged(int index);
-		void zoomChanged();
-		void maskChanged();
-        void vertZoomChanged(int min, int max);
 };
 
 } // namespace

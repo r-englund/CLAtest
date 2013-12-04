@@ -14,8 +14,12 @@
 
 #include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
+#include <QVarLengthArray>
 
 namespace inviwo{
+
+const int TransferFunctionEditorView::GRID_SPACING = 25;
+
 void TransferFunctionEditorView::resizeEvent ( QResizeEvent * event ){
 	emit resized();
 	static_cast<TransferFunctionEditor*>(scene())->repositionPoints();
@@ -30,6 +34,25 @@ void TransferFunctionEditorView::drawForeground( QPainter *painter, const QRectF
 	painter->setWorldMatrixEnabled(true);
 	painter->restore();
 	QGraphicsView::drawForeground(painter, rect);
+}
+
+void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF & rect) {
+    painter->setWorldMatrixEnabled(true);
+    painter->fillRect(rect, Qt::darkGray);
+
+    qreal left = int(rect.left()) - (int(rect.left()) % GRID_SPACING );
+    qreal top = int(rect.top()) - (int(rect.top()) % GRID_SPACING );
+
+    QVarLengthArray<QLineF, 100> linesX;
+    for (qreal x = left; x < rect.right(); x += GRID_SPACING )
+        linesX.append(QLineF(x, rect.top(), x, rect.bottom()));
+
+    QVarLengthArray<QLineF, 100> linesY;
+    for (qreal y = top; y < rect.bottom(); y += GRID_SPACING )
+        linesY.append(QLineF(rect.left(), y, rect.right(), y));
+
+    painter->drawLines(linesX.data(), linesX.size());
+    painter->drawLines(linesY.data(), linesY.size());
 }
 
 void TransferFunctionEditorView::setMaskMin( const int maskMin ){viewMaskMin_ = maskMin;}

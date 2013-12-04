@@ -30,76 +30,74 @@
 #include <inviwo/core/ports/port.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 
-//#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
-
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API TransferFunctionEditorLineItem : public QGraphicsItem {
+class IVW_QTWIDGETS_API TransferFunctionEditorLineItem : public QGraphicsItem {
 
-    public:
-		TransferFunctionEditorLineItem();
-        /** 
-         * \brief TransferFunctionEditorLineItem Constructor
-         *
-         * Constructor for TransferFunctionEditorLineItem
-         * 
-         * @param TransferFunctionDataPoint * Pointer to the point where the line starts
-         * @param TransferFunctionDataPoint * Pointer to the point where the line ends
-		 */
-		TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, TransferFunctionEditorControlPoint* finish);
+public:
+	TransferFunctionEditorLineItem();
+    /** 
+     * \brief TransferFunctionEditorLineItem Constructor
+     *
+     * Constructor for TransferFunctionEditorLineItem
+     * 
+     * @param TransferFunctionDataPoint * Pointer to the point where the line starts
+     * @param TransferFunctionDataPoint * Pointer to the point where the line ends
+	 */
+	TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, TransferFunctionEditorControlPoint* finish);
 
 
-		TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, int dir);
-        /** 
-         * \brief TransferFunctionEditorLineItem Constructor
-         *
-         * TransferFunctionEditorLineItem default constructor
-         */
-        //TransferFunctionEditorLineItem();
-		~TransferFunctionEditorLineItem();
+	TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, int dir);
+    /** 
+     * \brief TransferFunctionEditorLineItem Constructor
+     *
+     * TransferFunctionEditorLineItem default constructor
+     */
+    //TransferFunctionEditorLineItem();
+	~TransferFunctionEditorLineItem();
 
-		TransferFunctionEditorControlPoint* getStart();
-		TransferFunctionEditorControlPoint* getFinish();
-		/** 
-		 * \brief Sets the lines starting point
-		 *
-		 * Changes the point where the line starts
-		 * 
-		 * @param TransferFunctionDataPoint * start the new start-point
-		 */
-		void setStart(TransferFunctionEditorControlPoint* start);
+	TransferFunctionEditorControlPoint* getStart();
+	TransferFunctionEditorControlPoint* getFinish();
+	/** 
+	 * \brief Sets the lines starting point
+	 *
+	 * Changes the point where the line starts
+	 * 
+	 * @param TransferFunctionDataPoint * start the new start-point
+	 */
+	void setStart(TransferFunctionEditorControlPoint* start);
 
-		/** 
-		 * \brief Sets the lines ending point
-		 *
-		 * Changes the point where the line ends
-		 * 
-		 * @param TransferFunctionDataPoint * finish the new end-point
-		 */
-		void setFinish(TransferFunctionEditorControlPoint* finish);
+	/** 
+	 * \brief Sets the lines ending point
+	 *
+	 * Changes the point where the line ends
+	 * 
+	 * @param TransferFunctionDataPoint * finish the new end-point
+	 */
+	void setFinish(TransferFunctionEditorControlPoint* finish);
 
-		void setDirection(int dir);
-		QPainterPath shape() const;
-		void initiateLineItem();
+	void setDirection(int dir);
+	QPainterPath shape() const;
+	void initiateLineItem();
 
-        //override for qgraphicsitem_cast (refer qt documentation)
-        enum { Type = UserType + 3};
-        int type() const  {return Type; }
+    //override for qgraphicsitem_cast (refer qt documentation)
+    enum { Type = UserType + 3};
+    int type() const  {return Type; }
 
-        virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-        QRectF boundingRect() const;
+    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    QRectF boundingRect() const;
 
-    protected:
-        void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent);
-        void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent);
+protected:
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent);
+    void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent);
 
-    private:
-        TransferFunctionEditorControlPoint* start_;
-        TransferFunctionEditorControlPoint* finish_;
-		QPointF mouseDownPos_;
-		int direction_;
-    };
+private:
+    TransferFunctionEditorControlPoint* start_;
+    TransferFunctionEditorControlPoint* finish_;
+	QPointF mouseDownPos_;
+	int direction_;
+};
 
 }// namespace
 #endif // IVW_TRANSFERFUNCTIONEDITORLINEITEM_H

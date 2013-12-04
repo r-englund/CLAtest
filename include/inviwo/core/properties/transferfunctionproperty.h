@@ -17,6 +17,7 @@
 
 #include <inviwo/core/properties/templateproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/datastructures/transferfunction.h>
 
 namespace inviwo {
@@ -31,9 +32,18 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
 
+    IntMinMaxProperty* maskProperty();
+    IntMinMaxProperty* zoomHorizontalProperty();
+    FloatMinMaxProperty* zoomVerticalProperty();
+    OptionPropertyInt* bitRangeProperty();
+
+    void updateMask(ivec2 mask, int width);
+
 private:
     IntMinMaxProperty maskProperty_;
-    IntMinMaxProperty zoomProperty_;
+    IntMinMaxProperty zoomHorizontalProperty_;
+    FloatMinMaxProperty zoomVerticalProperty_;
+    OptionPropertyInt bitRangeProperty_;
 };
 
 } // namespace inviwo
