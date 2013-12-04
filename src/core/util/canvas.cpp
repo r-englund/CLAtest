@@ -114,7 +114,8 @@ void Canvas::keyReleaseEvent(KeyboardEvent* e) {
 }
 
 uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos){
-    uvec2 pos(mpos.x, mpos.y);
+    uvec2 pos(std::max(mpos.x, 0), std::max(mpos.y, 0));
+    pos = glm::min(pos, dimensions_);
     pos.y = dimensions_.y-(pos.y-1);
     return pos;
 }

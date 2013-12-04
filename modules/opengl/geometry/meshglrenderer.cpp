@@ -40,8 +40,13 @@ MeshGLRenderer::~MeshGLRenderer()
 }
 
 void MeshGLRenderer::render( RenderType rt ) const{
-    std::vector<Buffer*>::const_iterator it;
-    for (it = meshToRender_->getBuffers().begin() ; it != meshToRender_->getBuffers().end(); ++it) {
+    enable();    
+    (this->*drawMethods_[rt].drawFunc)(rt);
+    disable();    
+}
+
+void MeshGLRenderer::enable() const{
+    for (std::vector<Buffer*>::const_iterator it = meshToRender_->getBuffers().begin() ; it != meshToRender_->getBuffers().end(); ++it) {
         (*it)->getRepresentation<BufferGL>()->enable();
     }
     glPushMatrix();
@@ -49,13 +54,17 @@ void MeshGLRenderer::render( RenderType rt ) const{
     glMultMatrixf(glm::value_ptr(modelToWorld));
     mat4 dataToModel = meshToRender_->getBasisAndOffset();
     glMultMatrixf(glm::value_ptr(dataToModel));
-    
-    (this->*drawMethods_[rt].drawFunc)(rt);
-    
+}
+
+void MeshGLRenderer::disable() const{
     glPopMatrix();
-    for (it = meshToRender_->getBuffers().begin() ; it != meshToRender_->getBuffers().end(); ++it) {
+    for (std::vector<Buffer*>::const_iterator it = meshToRender_->getBuffers().begin() ; it != meshToRender_->getBuffers().end(); ++it) {
         (*it)->getRepresentation<BufferGL>()->disable();
     }
+}
+
+GLenum MeshGLRenderer::getDefaultDrawMode(){
+    return drawMethods_[0].drawMode;
 }
 
 GLenum MeshGLRenderer::getDrawMode( RenderType rt, ConnectivityType ct)

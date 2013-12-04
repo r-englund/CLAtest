@@ -32,13 +32,15 @@ public:
     MeshGLRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
     virtual ~MeshGLRenderer();
 
-    virtual void render(RenderType = NOT_SPECIFIED) const;
+    void render(RenderType = NOT_SPECIFIED) const;
 
+    void enable() const;
+    void disable() const;
 
+    GLenum getDefaultDrawMode();
     GLenum getDrawMode(RenderType, ConnectivityType);
 
 protected:
-
     virtual void initialize(Mesh::AttributesInfo = Mesh::AttributesInfo());
     void initializeIndexBuffer( const Buffer* indexBuffer, Mesh::AttributesInfo ai );
     void renderArray(RenderType) const;
