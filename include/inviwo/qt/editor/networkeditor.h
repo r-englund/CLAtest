@@ -80,6 +80,11 @@ public:
 
     void updateLinkGraphicsItems();
 
+public slots:
+    void hoverPortTimeOut();
+    void errorString(QString);
+    void cacheProcessorProperty(Processor*);
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
@@ -170,9 +175,24 @@ private:
     QPointF snapToGrid(QPointF pos);
     void drawBackground(QPainter* painter, const QRectF& rect);
     std::string obtainUniqueProcessorID(std::string) const;
+};
+
+class IVW_QTEDITOR_API ProcessorWorkerQt : public QObject{
+    Q_OBJECT
+public:
+    ProcessorWorkerQt(std::vector<Processor*> processors) : processors_(processors){}
+    ~ProcessorWorkerQt(){};
 
 public slots:
-    void hoverPortTimeOut();
+    void process();
+
+signals:
+    void nextProcessor(Processor*);
+    void finished();
+    void error(QString err);
+
+private:
+    std::vector<Processor*> processors_;
 };
 
 } // namespace

@@ -37,6 +37,7 @@
 #include <QMenu>
 #include <QVarLengthArray>
 #include <QGraphicsItem>
+#include <QThread>
 
 namespace inviwo {
 
@@ -202,8 +203,9 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
 
 void NetworkEditor::addPropertyWidgets(Processor* processor, bool visible) {
     // FIXME: show property widgets, but then also deselect all other processors and select this one
-    PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
-    if (visible) propertyListWidget_->showProcessorProperties(processor);
+    if (visible){ 
+        PropertyListWidget::instance()->showProcessorProperties(processor); 
+    }
 }
 
 void NetworkEditor::removePropertyWidgets(Processor* processor) {
@@ -390,6 +392,17 @@ void NetworkEditor::hoverPortTimeOut() {
     addPortInspector(inspectedPort_, QCursor::pos());
 }
 
+void NetworkEditor::errorString(QString str){
+    LogError(str.toLocal8Bit().constData());
+}
+
+
+void NetworkEditor::cacheProcessorProperty(Processor* p){
+    if(p){
+        PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+        propertyListWidget_->cacheProcessorPropertiesItem(p);
+    }
+}
 
 ////////////////////////////////////////////////////////
 //   LOAD AND GET SNAPSHOT FROM EXTERNAL NETWORK      //
@@ -1221,6 +1234,18 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
         }
     }
 
+    // create all property (should be all non-visible) widgets in a thread (as it can take a long time to create them)
+    QThread* workerThread = new QThread;
+    ProcessorWorkerQt* worker = new ProcessorWorkerQt(processors);
+    worker->moveToThread(workerThread);
+    connect(worker, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+    connect(workerThread, SIGNAL(started()), worker, SLOT(process()));
+    connect(worker, SIGNAL(nextProcessor(Processor*)), this, SLOT(cacheProcessorProperty(Processor*)));
+    connect(worker, SIGNAL(finished()), workerThread, SLOT(quit()));
+    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
+    workerThread->start();
+
     return true;
 }
 
@@ -1286,6 +1311,13 @@ bool NetworkEditor::isLinkDisplayEnabled() {
 
     BoolProperty* displayLinkProperty = dynamic_cast<BoolProperty*>( prop );
     return displayLinkProperty->get();   
+}
+
+void ProcessorWorkerQt::process() {
+    for(std::vector<Processor*>::iterator it = processors_.begin(); it != processors_.end(); ++it){
+        emit nextProcessor(*it);
+    }
+    emit finished();
 }
 
 } // namespace

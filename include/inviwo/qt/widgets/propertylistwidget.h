@@ -27,53 +27,55 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
+class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
+    Q_OBJECT
 
-        Q_OBJECT
+public:
+    static PropertyListWidget* instance();
 
-    public:
+    PropertyListWidget(QWidget* parent);
+    ~PropertyListWidget();
 
-        static PropertyListWidget* instance();
+    void showProcessorProperties(Processor* processor);
+    void removeProcessorProperties(Processor* processor);
+    void showProcessorProperties(std::vector<Processor*> processors);
+    void removeAllProcessorProperties();
+    void saveState();
+    void notify();
+    void setMultiSelect(bool multiSelect){multiSelect_ = multiSelect; };
+    PropertyVisibilityMode getVisibilityMode();
 
-        PropertyListWidget(QWidget* parent);
-        ~PropertyListWidget();
+    void cacheProcessorPropertiesItem(Processor* processor);
 
-        void showProcessorProperties(Processor* processor);
-        void removeProcessorProperties(Processor* processor);
-        void showProcessorProperties(std::vector<Processor*> processors);
-        void removeAllProcessorProperties();
-        void saveState();
-        void notify();
-        void setMultiSelect(bool multiSelect){multiSelect_ = multiSelect; };
-        PropertyVisibilityMode getVisibilityMode();
+public slots:
+    void setDeveloperViewMode(bool value);
+    void setApplicationViewMode(bool value);
 
-    public slots:
-        void setDeveloperViewMode(bool value);
-        void setApplicationViewMode(bool value);
+protected slots:
+    void propertyModified();
 
-    protected slots:
-        void propertyModified();
+private:
+    QWidget* getProcessorPropertiesItem(Processor* processor);
 
-    private:
-        void setViewMode(PropertyVisibilityMode viewMode);
-        QWidget* createNewProcessorPropertiesItem(Processor* processor);
-        void addProcessorPropertiesToLayout(Processor* processor);
- 
+    void setViewMode(PropertyVisibilityMode viewMode);
+    QWidget* createNewProcessorPropertiesItem(Processor* processor);
+    void addProcessorPropertiesToLayout(Processor* processor);
 
-        bool developerViewMode_;
-        bool applicationViewMode_;
-        bool multiSelect_;
 
-        QVBoxLayout* listWidgetLayout_;
-        QWidget* listWidget_;
-        QScrollArea* scrollArea_;
+    bool developerViewMode_;
+    bool applicationViewMode_;
+    bool multiSelect_;
 
-        std::vector<Property*> properties_;
+    QVBoxLayout* listWidgetLayout_;
+    QWidget* listWidget_;
+    QScrollArea* scrollArea_;
 
-    protected:
-        static PropertyListWidget* propertyListWidget_;
-        mutable std::map<std::string, QWidget*> propertyWidgetMap_;
-    };
+    std::vector<Property*> properties_;
+
+protected:
+    static PropertyListWidget* propertyListWidget_;
+    mutable std::map<std::string, QWidget*> propertyWidgetMap_;
+};
 
 } // namespace
 

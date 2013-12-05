@@ -66,15 +66,7 @@ void PropertyListWidget::showProcessorProperties(std::vector<Processor*> process
 }
 
 void PropertyListWidget::showProcessorProperties(Processor* processor) {
-    // check if processor widget has been already generated
-    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
-    QWidget* processorPropertyWidget = 0;
-    if (it != propertyWidgetMap_.end()) {
-        // property widget has already been created and stored in the map
-        processorPropertyWidget = it->second;
-    } else {
-        processorPropertyWidget = createNewProcessorPropertiesItem(processor);
-    }
+    QWidget* processorPropertyWidget = getProcessorPropertiesItem(processor);
     if (processorPropertyWidget) {
         removeAllProcessorProperties();
         processorPropertyWidget->setVisible(true);
@@ -90,16 +82,7 @@ void PropertyListWidget::showProcessorProperties(Processor* processor) {
 }
 
 void PropertyListWidget::addProcessorPropertiesToLayout(Processor* processor) {
-    // check if processor widget has been already generated
-    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
-    QWidget* processorPropertyWidget = 0;
-    if (it != propertyWidgetMap_.end()) {
-        // property widget has already been created and stored in the map
-        processorPropertyWidget = it->second;
-    } else {
-        processorPropertyWidget = createNewProcessorPropertiesItem(processor); 
-    }
-
+    QWidget* processorPropertyWidget = getProcessorPropertiesItem(processor);
     if (processorPropertyWidget) {
         processorPropertyWidget->setVisible(true);
         if (multiSelect_) {
@@ -119,6 +102,23 @@ void PropertyListWidget::removeAllProcessorProperties() {
         listWidgetLayout_->removeWidget(processorPropertyWidget);
         processorPropertyWidget->setVisible(false);
     }
+}
+
+void PropertyListWidget::cacheProcessorPropertiesItem(Processor* processor){
+    getProcessorPropertiesItem(processor);
+}
+
+QWidget* PropertyListWidget::getProcessorPropertiesItem(Processor* processor){
+    // check if processor widget has been already generated
+    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
+    QWidget* processorPropertyWidget = 0;
+    if (it != propertyWidgetMap_.end()) {
+        // property widget has already been created and stored in the map
+        processorPropertyWidget = it->second;
+    } else {
+        processorPropertyWidget = createNewProcessorPropertiesItem(processor); 
+    }
+    return processorPropertyWidget;
 }
 
 QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* processor) {
