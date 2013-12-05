@@ -94,14 +94,13 @@ void IvwSerializer::serializeAttributes(const std::string &key, const std::strin
 }
 
 void IvwSerializer::serializePrimitives(const std::string &key, const std::string &data) {
-
     std::stringstream ss;
     ss.precision(IvwSerializeConstants::STRINGSTREAM_PRECISION);
     ss<<data;
 
-     TxElement* node = new TxElement(key);
-     rootElement_->LinkEndChild(node);
-     node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, ss.str());
+    TxElement* node = new TxElement(key);
+    rootElement_->LinkEndChild(node);
+    node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, ss.str());
 }
 
 void IvwSerializer::serialize(const std::string &key, const std::string &data, const bool asAttribute) {

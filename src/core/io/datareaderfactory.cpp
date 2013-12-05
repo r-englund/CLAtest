@@ -21,8 +21,6 @@ namespace inviwo {
     }
 
     void DataReaderFactory::initialize() {
-        //TODO: check that inviwoapp is initialized
-
         InviwoApplication* inviwoApp = InviwoApplication::getPtr();
         for (size_t module=0; module<inviwoApp->getModules().size(); module++) {
             std::vector<DataReader*> readers = inviwoApp->getModules()[module]->getDataReaders();

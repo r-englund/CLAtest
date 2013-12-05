@@ -20,17 +20,28 @@ ProcessorWidgetMetaData::ProcessorWidgetMetaData()
     : positionMetaData_(ivec2(0)),
       dimensionMetaData_(ivec2(256)),
       visiblityMetaData_(false),
-      CompositeMetaData()
-{
+      CompositeMetaData() {
     addMetaData(positionMetaData_);
     addMetaData(dimensionMetaData_);
     addMetaData(visiblityMetaData_);
+}
+
+ProcessorWidgetMetaData::ProcessorWidgetMetaData( const ProcessorWidgetMetaData& rhs ) 
+    : CompositeMetaData(rhs){
+}
+
+ProcessorWidgetMetaData& ProcessorWidgetMetaData::operator=( const ProcessorWidgetMetaData& that ){
+    CompositeMetaData::operator=(that);
+    return *this;
 }
 
 ProcessorWidgetMetaData::~ProcessorWidgetMetaData() {}
 
 ProcessorWidgetMetaData* ProcessorWidgetMetaData::create() const {
     return new ProcessorWidgetMetaData();
+}
+ProcessorWidgetMetaData* ProcessorWidgetMetaData::clone() const{
+    return new ProcessorWidgetMetaData(*this);
 }
 
 void ProcessorWidgetMetaData::setWidgetPosition(ivec2 pos) {
@@ -80,5 +91,9 @@ void ProcessorWidgetMetaData::deserialize(IvwDeserializer& d) {
     dimensionMetaData_.set(dimension);
     visiblityMetaData_.set(visibility);    
 }
+
+
+
+
 
 } // namespace

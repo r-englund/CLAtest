@@ -17,13 +17,26 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/io/volumereader.h>
 #include <inviwo/core/io/rawvolumereader.h>
 #include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
-class IVW_CORE_API DatVolumeReader : public VolumeReader {
+/** \brief Reader for *.dat files 
+ *
+ *  The following tags are supported:
+ *   - ObjectFileName :: The name of the raw data file, should be in the same directory (Mandatory).
+ *   - Resolution | Dimension ::The size of the data grid: nx,ny,nz (Mandatory).
+ *   - Format :: The type of values in the raw file. (Mandatory)
+ *   - Spacing | SliceThickness :: The size of the voxels in the data. (Optional)
+ *   - BasisVector(1|2|3) :: Defines a coordinate system for the data. (Optional, overides spacing, default: 2*IdentityMatrix);
+ *   - Offset :: Offsets the basisvecors in space. (Optional, defaults to center the data on origo)
+ *   - WorldVector(1|2|3|4) :: Defines a world transformation matrix that is applied last to orient the data in world space. (Optional, default: IdentityMatrix) 
+ *
+ *  The tag names are case insensitive and should always be followed by a ":" 
+ */
+class IVW_CORE_API DatVolumeReader : public DataReaderType<Volume> {
 public:        
     DatVolumeReader();
     DatVolumeReader(const DatVolumeReader& rhs);

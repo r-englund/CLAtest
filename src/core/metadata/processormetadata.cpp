@@ -16,15 +16,26 @@
 
 namespace inviwo {
 
-ProcessorMetaData::ProcessorMetaData() 
-    : CompositeMetaData()
-{
+ProcessorMetaData::ProcessorMetaData() : CompositeMetaData() {
     visiblityMetaData_.set(true);
     addMetaData(positionMetaData_);
     addMetaData(visiblityMetaData_);
 }
 
+ProcessorMetaData::ProcessorMetaData( const ProcessorMetaData& rhs )
+    : CompositeMetaData(rhs) {
+}
+
+ProcessorMetaData& ProcessorMetaData::operator=( const ProcessorMetaData& that ){
+    CompositeMetaData::operator=(that);
+    return *this;
+}
+
 ProcessorMetaData::~ProcessorMetaData() {}
+
+ProcessorMetaData* ProcessorMetaData::clone() const{
+    return new ProcessorMetaData(*this);
+}
 
 ProcessorMetaData* ProcessorMetaData::create() const {
     return new ProcessorMetaData();
@@ -68,5 +79,7 @@ void ProcessorMetaData::deserialize(IvwDeserializer& d) {
     positionMetaData_.set(position);
     visiblityMetaData_.set(visibility);    
 }
+
+
 
 } // namespace

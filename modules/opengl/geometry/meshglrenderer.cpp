@@ -50,7 +50,7 @@ void MeshGLRenderer::enable() const{
         (*it)->getRepresentation<BufferGL>()->enable();
     }
     glPushMatrix();
-    mat4 modelToWorld = meshToRender_->getWorldMatrix();
+    mat4 modelToWorld = meshToRender_->getWorldTransform();
     glMultMatrixf(glm::value_ptr(modelToWorld));
     mat4 dataToModel = meshToRender_->getBasisAndOffset();
     glMultMatrixf(glm::value_ptr(dataToModel));

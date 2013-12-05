@@ -112,7 +112,7 @@ void CubeProxyGeometry::process() {
     // This would be easier, use unit box to make geom instead...
     geom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
 
-    geom->setWorldMatrix(inport_.getData()->getWorldMatrix());
+    geom->setWorldTransform(inport_.getData()->getWorldTransform());
 
     outport_.setData(geom);
 }

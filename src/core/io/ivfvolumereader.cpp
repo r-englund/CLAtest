@@ -20,13 +20,13 @@
 namespace inviwo {
 
 IvfVolumeReader::IvfVolumeReader() 
-    : VolumeReader()
+    : DataReaderType<Volume>()
     , format_(NULL) {
         addExtension(FileExtension("ivf", "Inviwo ivf file format"));
 }
 
 IvfVolumeReader::IvfVolumeReader( const IvfVolumeReader& rhs ) 
-    : VolumeReader(rhs)
+    : DataReaderType<Volume>(rhs)
     , meta_(rhs.meta_)
     , format_(rhs.format_){
 }
@@ -35,7 +35,7 @@ IvfVolumeReader& IvfVolumeReader::operator=( const IvfVolumeReader& that ){
     if (this != &that) {
         meta_ = that.meta_;
         format_ = that.format_;
-        VolumeReader::operator=(that);
+        DataReaderType<Volume>::operator=(that);
     }
     return *this;
 }
@@ -81,16 +81,23 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
 
 void IvfVolumeReader::readDataInto(void* destination) const{
     std::fstream fin(meta_.rawFileAbsolutePath_.c_str(), std::ios::in | std::ios::binary);
-    ivwAssert(fin.good(), "cannot open volume file");
-    std::streamsize size = meta_.dimensions_.x*meta_.dimensions_.y*meta_.dimensions_.z*(format_->getBytesStored());
-    fin.read((char*)destination, size);
+    if(fin.good()){
+        std::size_t size = meta_.dimensions_.x*meta_.dimensions_.y*meta_.dimensions_.z*(format_->getBytesStored());
+        fin.read((char*)destination, size);
+    }else{
+        throw DataReaderException("Error: Could not read from raw file: " + meta_.rawFileAbsolutePath_);
+    }
     fin.close();
 }
 
 void* IvfVolumeReader::readData() const{
-    std::streamsize size = meta_.dimensions_.x*meta_.dimensions_.y*meta_.dimensions_.z*(format_->getBytesStored());
+    std::size_t size = meta_.dimensions_.x*meta_.dimensions_.y*meta_.dimensions_.z*(format_->getBytesStored());
     char* data = new char[size];
-    readDataInto(data);
+    if(data){
+        readDataInto(data);
+    }else{
+        throw DataReaderException("Error: Could not allocate memory for loading raw file: " + meta_.rawFileAbsolutePath_);
+    }  
     return data;
 }
 

@@ -20,7 +20,7 @@
 namespace inviwo {
 
 DatVolumeReader::DatVolumeReader() 
-    : VolumeReader()
+    : DataReaderType<Volume>()
     , rawFile_("")
     , dimension_(uvec3(0,0,0))
     , format_(NULL) {
@@ -28,7 +28,7 @@ DatVolumeReader::DatVolumeReader()
 }
 
 DatVolumeReader::DatVolumeReader( const DatVolumeReader& rhs ) 
-    : VolumeReader(rhs)
+    : DataReaderType<Volume>(rhs)
     , rawFile_(rhs.rawFile_)
     , dimension_(rhs.dimension_)
     , format_(rhs.format_){};
@@ -38,7 +38,7 @@ DatVolumeReader& DatVolumeReader::operator=( const DatVolumeReader& that ){
         rawFile_ = that.rawFile_;
         dimension_ = that.dimension_;
         format_ = that.format_;
-        VolumeReader::operator=(that);
+        DataReaderType<Volume>::operator=(that);
     }
     return *this;
 }
@@ -52,16 +52,12 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
     if(!URLParser::fileExists(filePath)){
         filePath = URLParser::addBasePath(filePath);
         if(!URLParser::fileExists(filePath)) {
-            // FIXME: We need to throw an exception here (or return false)
-            LogInfoCustom("DatVolumeReader::readMetaData", "File " + filePath + " does not exist.");     
-            return NULL;
+            throw DataReaderException("Error: Input file: " + filePath + " does not exist");
         }
     }
 
     std::string fileDirectory = URLParser::getFileDirectory(filePath);
     std::string fileExtension = URLParser::getFileExtension(filePath);
-
-    ivwAssert(fileExtension=="dat", "should be a *.dat file");
 
     //Read the dat file content
     std::istream* f = new std::ifstream(filePath.c_str());
@@ -70,49 +66,107 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
 
     Volume* volume = new UniformRectiLinearVolume();
 
-    glm::mat3 basis(1.0f);
+    glm::mat3 basis(2.0f);
     glm::vec3 offset(0.0f);
-    glm::vec3 spacing(1.0f);
-    
+    glm::vec3 spacing(0.0f);
+    glm::mat4 wtm(1.0f);
+    glm::vec3 a(0.0f), b(0.0f), c(0.0f);
+
     std::string key;
     while (!f->eof()) {
         getline(*f, textLine);
         std::stringstream ss(textLine);
         key = "";
-        ss >> key;            
+        ss >> key;
+        if( key == "" || key[0] == '#' || key[0] == '/' )
+            continue;
+
         transform(key.begin(), key.end(), key.begin(), (int (*)(int))tolower);
         key.erase(key.end()-1);
-        if (key=="objectfilename") {
+        
+        if (key == "objectfilename" || key == "rawfile") {
             ss >> rawFile_;
             rawFile_ = fileDirectory + rawFile_;
-        }else if (key=="resolution") {
+        }else if (key == "resolution" || key == "dimension" ) {
             ss >> dimension_.x;
             ss >> dimension_.y;
             ss >> dimension_.z;
-        }else if (key=="spacing" || key=="slicethickness") {
+        }else if (key == "spacing" || key == "slicethickness") {
             ss >> spacing.x;
             ss >> spacing.y;
             ss >> spacing.z;
-        }else if (key=="format") {
+        }else if (key == "basisvector1") {
+            ss >> a.x;
+            ss >> a.y;
+            ss >> a.z;
+        }else if (key == "basisvector2") {
+            ss >> b.x;
+            ss >> b.y;
+            ss >> b.z;
+        }else if (key == "basisvector3") {
+            ss >> c.x;
+            ss >> c.y;
+            ss >> c.z;
+        }else if (key == "offset") {
+            ss >> offset.x;
+            ss >> offset.y;
+            ss >> offset.z;
+        }else if (key == "worldvector1") {
+            ss >> wtm[0][0];
+            ss >> wtm[1][0];
+            ss >> wtm[2][0];
+            ss >> wtm[3][0];
+        }else if (key == "worldvector2") {
+            ss >> wtm[0][1];
+            ss >> wtm[1][1];
+            ss >> wtm[2][1];
+            ss >> wtm[3][1];
+        }else if (key == "worldvector3") {
+            ss >> wtm[0][2];
+            ss >> wtm[1][2];
+            ss >> wtm[2][2];
+            ss >> wtm[3][2];
+        }else if (key == "worldvector4") {
+            ss >> wtm[0][3];
+            ss >> wtm[1][3];
+            ss >> wtm[2][3];
+            ss >> wtm[3][3];
+        }else if (key == "format") {
             ss >> formatFlag;
             format_ = DataFormatBase::get(formatFlag);
         }else{
-            volume->setMetaData<StringMetaData>(key, textLine);
+            volume->setMetaData<StringMetaData>(key, ss.str());
         }                    
     };
 
-    /*if( spacing != vec3(0.0f,0.0f,0.0f) ) {
+    if(dimension_ == uvec3(0)){
+        throw DataReaderException("Error: Unable to find \"Resolution\" tag in .dat file: " + filePath);
+    }else if(format_ == NULL){
+        throw DataReaderException("Error: Unable to find \"Format\" tag in .dat file: " + filePath);
+    }else if(rawFile_ == ""){
+        throw DataReaderException("Error: Unable to find \"ObjectFilename\" tag in .dat file: " + filePath);
+    }
+
+    if( spacing != vec3(0.0f) ) {
         basis[0][0] = dimension_.x * spacing.x;
         basis[1][1] = dimension_.y * spacing.y;
         basis[2][2] = dimension_.z * spacing.z;
-
-        offset[0] = - basis[0][0]/2.0f;
-        offset[1] = - basis[1][1]/2.0f;
-        offset[2] = - basis[2][2]/2.0f;
-    }*/
+    }
+    if ( a!= vec3(0.0f) && b != vec3(0.0f) && c != vec3(0.0f) ){
+        basis[0][0]=a.x;basis[1][0]=a.y;basis[2][0]=a.z;
+        basis[0][1]=b.x;basis[1][1]=b.y;basis[2][1]=b.z;
+        basis[0][2]=c.x;basis[1][2]=c.y;basis[2][2]=c.z;
+    }
+    // If not specified, center the data around origo.
+    if( offset == vec3(0.0f)){
+        offset[0] = -basis[0][0]/2.0f;
+        offset[1] = -basis[1][1]/2.0f;
+        offset[2] = -basis[2][2]/2.0f;
+    }
     
-    //volume->setBasis(basis);
-    //volume->setOffset(offset);
+    volume->setBasis(basis);
+    volume->setOffset(offset);
+    volume->setWorldTransform(wtm);
     volume->setDimension(dimension_);
     volume->setDataFormat(format_);
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
@@ -125,16 +179,23 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
 
 void DatVolumeReader::readDataInto(void* destination) const {
     std::fstream fin(rawFile_.c_str(), std::ios::in | std::ios::binary);
-    ivwAssert(fin.good(), "cannot open volume file");
-    std::streamsize size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
-    fin.read((char*)destination, size);
+    if(fin.good()){
+        std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
+        fin.read((char*)destination, size);
+    }else{
+        throw DataReaderException("Error: Could not read from raw file: " + rawFile_);
+    }
     fin.close();
 }
 
 void* DatVolumeReader::readData() const {
-    std::streamsize size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
+    std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
     char* data = new char[size];
-    readDataInto(data);
+    if(data){
+        readDataInto(data);
+    }else{
+        throw DataReaderException("Error: Could not allocate memory for loading raw file: " + rawFile_);
+    }  
     return data;
 }
 

@@ -56,11 +56,15 @@ void VolumeSource::loadVolume() {
         std::string fileExtension = URLParser::getFileExtension(volumeFile_.get());
         DataReaderType<Volume>* reader = DataReaderFactory::getRef().getReaderForTypeAndExtension<Volume>(fileExtension);
         if(reader){
-            Volume* volume = reader->readMetaData(volumeFile_.get());
-            ResourceManager::instance()->addResource(new TemplateResource<Volume>(volumeFile_.get(), volume));
-            volumePort_.setData(volume, false);
+            try{
+                Volume* volume = reader->readMetaData(volumeFile_.get());
+                ResourceManager::instance()->addResource(new TemplateResource<Volume>(volumeFile_.get(), volume));
+                volumePort_.setData(volume, false);
+            }catch(DataReaderException const& e){
+                LogError(e.getMessage());
+            }
         }else{
-            LogInfo("Could not load volume: " << volumeFile_.get());
+            LogError("Could not load volume: " << volumeFile_.get());
         }
     }      
 }

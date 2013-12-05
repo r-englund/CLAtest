@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Sathish Kottravel
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
@@ -17,14 +17,14 @@
 
 #include "inviwo/core/common/inviwocoredefine.h"
 #include "inviwo/core/common/inviwo.h"
-#include "inviwo/core/io/volumereader.h"
 #include "inviwo/core/io/rawvolumereader.h"
 #include "inviwo/core/util/filedirectory.h"
 #include "inviwo/core/io/ivfreadersettings.h"
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
-class IVW_CORE_API IvfVolumeReader : public VolumeReader {
+class IVW_CORE_API IvfVolumeReader : public DataReaderType<Volume> {
 public:        
 
     IvfVolumeReader();

@@ -19,8 +19,16 @@
 #include <inviwo/core/common/inviwo.h>
 #include "inviwo/core/datastructures/data.h"
 #include <inviwo/core/util/fileextension.h>
+#include <inviwo/core/util/exception.h>
 
 namespace inviwo {
+
+class IVW_CORE_API DataReaderException : public Exception {
+public:
+    DataReaderException(const std::string& message = "");
+    virtual ~DataReaderException() throw() {};
+};
+
 
 /** \brief A abstract base class for all file readers. 
  *
@@ -32,9 +40,6 @@ public:
     DataReader& operator=(const DataReader& that);
     virtual DataReader* clone() const = 0;
     virtual ~DataReader() {};
-
-
-    std::string getIdentifier() const;
     
     virtual Data* readMetaData(const std::string filePath) = 0;
     virtual void* readData() const = 0;

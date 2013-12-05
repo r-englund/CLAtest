@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Sathish Kottravel
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
@@ -38,7 +38,7 @@ protected:
 
 private:
     VolumeInport volumePort_;
-    FileProperty volumeFileName_;
+    FileProperty volumeFile_;
     ButtonProperty exportVolumeButton_;
 };
 

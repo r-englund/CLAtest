@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Timo Ropinski
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
@@ -18,8 +18,6 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/diskrepresentation.h>
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
-#include <stdio.h>
-#include <fstream>
 
 namespace inviwo {
 
@@ -32,8 +30,6 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual VolumeDisk* clone() const;
-    
-private:
 };
 
 } // namespace

@@ -31,22 +31,6 @@ public:
 
     unsigned int getID() const { return id_; }
 
-    // TODO: remove this function
-    void loadTexture(std::string fileName, uvec3 dimensions) {
-        bind();
-
-        GLubyte* texels = new GLubyte[dimensions.x*dimensions.y*dimensions.z];
-
-        std::fstream fin(fileName.c_str(), std::ios::in | std::ios::binary);
-        ivwAssert(fin.good(), "cannot open volume file");
-        fin.read((char*)texels, dimensions.x*dimensions.y*dimensions.z);
-        fin.close();
-        dimensions_ = dimensions;
-        upload(texels);
-        delete[] texels;
-    }
-
-
     void bind() const;
     void unbind() const;
     void upload(const void* data);

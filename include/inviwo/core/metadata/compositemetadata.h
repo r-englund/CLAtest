@@ -25,10 +25,12 @@ class IVW_CORE_API CompositeMetaData : public MetaData {
 
 protected:
     CompositeMetaData();
+    CompositeMetaData(const CompositeMetaData& rhs);
+    CompositeMetaData& operator=(const CompositeMetaData& that);
     virtual ~CompositeMetaData();
-
     virtual std::string getClassName() const { return "CompositeMetaData"; }
     virtual CompositeMetaData* create() const;
+    virtual CompositeMetaData* clone() const;
     void addMetaData(MetaData* metaData);
     void addMetaData(MetaData& metaData);
     std::vector<MetaData*> getSubMetaData() { return subMetaData_; }

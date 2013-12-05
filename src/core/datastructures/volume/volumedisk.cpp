@@ -13,8 +13,6 @@
  **********************************************************************/
 
 #include <inviwo/core/datastructures/volume/volumedisk.h>
-#include "inviwo/core/io/datvolumereader.h"
-#include "inviwo/core/io/ivfvolumereader.h"
 
 namespace inviwo {
 

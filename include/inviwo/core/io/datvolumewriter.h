@@ -8,66 +8,56 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Sathish Kottravel
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
 #ifndef IVW_DATVOLUMEWRITER_H
 #define IVW_DATVOLUMEWRITER_H
 
-#include "inviwo/core/common/inviwocoredefine.h"
-#include "inviwo/core/common/inviwo.h"
-#include "inviwo/core/io/volumewriter.h"
-#include "inviwo/core/util/filedirectory.h"
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/io/datareader.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
-class IVW_CORE_API DatVolumeWriter : public VolumeWriter {
+class IVW_CORE_API DatVolumeWriter : public DataWriterType<Volume> {
 public:        
+    DatVolumeWriter();
+    DatVolumeWriter(const DatVolumeWriter& rhs);
+    DatVolumeWriter& operator=(const DatVolumeWriter& that);
+    virtual DatVolumeWriter* clone() const;
+    virtual ~DatVolumeWriter() {};
 
-    DatVolumeWriter(const std::string filePath, WriterSettings writerSettings);
+    virtual void writeData(const Volume* data, const std::string filePath) const;
 
-    virtual ~DatVolumeWriter() {}
+private:
+    template<typename T>
+    void writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec2<T>& vec) const;
+    template<typename T>
+    void writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec3<T>& vec) const;
+    template<typename T>
+    void writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec4<T>& vec) const;
+    void writeKeyToString(std::stringstream& ss, const std::string& key, const std::string& str) const;
+};
 
-    virtual void writeData();
+template<typename T>
+void inviwo::DatVolumeWriter::writeKeyToString( std::stringstream& ss, const std::string& key, const glm::detail::tvec2<T>& vec ) const{
+    ss << key << ": " << vec.x << " " << vec.y << std::endl;
+}
+template<typename T>
+void inviwo::DatVolumeWriter::writeKeyToString( std::stringstream& ss, const std::string& key, const glm::detail::tvec3<T>& vec ) const{
+    ss << key << ": " << vec.x << " " << vec.y << " " << vec.z << std::endl;
+}
+template<typename T>
+void inviwo::DatVolumeWriter::writeKeyToString( std::stringstream& ss, const std::string& key, const glm::detail::tvec4<T>& vec ) const{
+    ss << key << ": " << vec.x << " " << vec.y << " " << vec.z << " " << vec.w << std::endl;
+}
 
-    static void writeDatFileSettings(const std::string filePath, WriterSettings& writerSettings)  {        
-        //Write the dat file content
-        //Note: Raw file writing need to be explicitly called.
-        std::ofstream f(filePath.c_str());
-        std::string textLine; 
-        
-        std::stringstream ss;
-        std::string rawFileNameWithExtension = URLParser::getFileNameWithExtension(writerSettings.rawFileAbsolutePath_);
-        
-        ss << "ObjectFileName: "<< rawFileNameWithExtension << std::endl;
-        ss << "Resolution: ";
-        ss << writerSettings.dimensions_.x << " ";
-        ss << writerSettings.dimensions_.y << " ";
-        ss << writerSettings.dimensions_.z << std::endl;
 
-        std::string format="";
-        if (writerSettings.dataFormat_== DataUINT8::str()) {
-            format = "UCHAR";
-        }
-        else if (writerSettings.dataFormat_== DataUINT16::str()) {
-            format = "USHORT";
-        }
 
-        ivwAssert(!format.empty(), "valid format required for writing");
-        if (format.empty()) return;
-        ss << "Format: " << format << std::endl;
 
-        f << ss.str();        
-        f.close();
-        
-    }
-
-private:               
-    std::string sourceFileAbsolutePath_; //Absolute path to the file
-    WriterSettings writerFileSettings_; //Write file settings
-    void writeRawVolumeData();
-};    
 
 } // namespace
 

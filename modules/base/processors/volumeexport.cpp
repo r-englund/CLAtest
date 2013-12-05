@@ -8,12 +8,15 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Sathish Kottravel
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
 #include "volumeexport.h"
 #include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/io/datawriterfactory.h>
+#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/fileextension.h>
 
 namespace inviwo {
 
@@ -24,11 +27,18 @@ ProcessorCodeState(VolumeExport, CODE_STATE_EXPERIMENTAL);
 VolumeExport::VolumeExport()
     : Processor(),
       volumePort_("volume"),
-      volumeFileName_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/newvolume.dat"),
+      volumeFile_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/newvolume.dat"),
       exportVolumeButton_("snapshot", "Export Volume", PropertyOwner::VALID)
 {
+    std::vector<FileExtension> ext = DataWriterFactory::getRef().getExtensionsForType<Volume>();
+    for(std::vector<FileExtension>::const_iterator it = ext.begin();
+        it != ext.end(); ++it){
+            std::stringstream ss;
+            ss << it->description_ << " (*." << it->extension_ << ")";
+            volumeFile_.addNameFilter(ss.str());
+    }
     addPort(volumePort_);
-    addProperty(volumeFileName_);
+    addProperty(volumeFile_);
     exportVolumeButton_.registerClassMemberFunction(this, &VolumeExport::exportVolume);
     addProperty(exportVolumeButton_);
 }
@@ -46,10 +56,21 @@ void VolumeExport::deinitialize() {
 void VolumeExport::exportVolume() {
     //TODO: if volume has changed setData
     const Volume* volume = volumePort_.getData();
-    if (volume) {
-        const VolumeRAM* volumeRAM = volume->getRepresentation<VolumeRAM>();
-        if (volumeRAM && !volumeFileName_.get().empty() ) {
-            volumeRAM->saveData(volumeFileName_.get());
+    if (volume && !volumeFile_.get().empty()) {
+
+        std::string fileExtension = URLParser::getFileExtension(volumeFile_.get());
+
+        DataWriterType<Volume>* writer = 
+            DataWriterFactory::getRef().getWriterForTypeAndExtension<Volume>(fileExtension);
+        
+        if(writer){
+            try{
+                writer->writeData(volume, volumeFile_.get());
+            }catch(DataWriterException const& e){
+                LogError(e.getMessage());
+            }
+        }else{
+            LogError("Cound not find a writer for the specified extension and data type");
         }
     }
 }

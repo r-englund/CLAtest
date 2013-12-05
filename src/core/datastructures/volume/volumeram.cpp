@@ -44,31 +44,6 @@ const void* VolumeRAM::getData() const {
     return const_cast<void*>(data_);
 }
 
-void VolumeRAM::saveData(std::string url) const {
-    std::string fileExtension = URLParser::getFileExtension(url);
-    if (!fileExtension.empty()) {
-        //TODO: better pattern for automatic data writer selection
-        if (fileExtension=="dat") {
-            WriterSettings writerSettings;
-            writerSettings.rawFileAbsolutePath_ = URLParser::replaceFileExtension(url, "raw");
-            writerSettings.dimensions_ = dimensions_;
-            writerSettings.dataFormat_ = std::string(getDataFormat()->getString());
-            writerSettings.texels_ = getData();
-            DatVolumeWriter::writeDatFileSettings(url, writerSettings);
-            RawVolumeWriter::saveRawData(writerSettings);
-        }
-        else if (fileExtension=="ivf") {
-            IvfWriterSettings writerSettings;
-            writerSettings.rawFileAbsolutePath_ = URLParser::replaceFileExtension(url, "raw");
-            writerSettings.dimensions_ = dimensions_;
-            writerSettings.dataFormat_ = std::string(getDataFormat()->getString());
-            writerSettings.texels_ = getData();
-            IvfVolumeWriter::writeIvfFileSettings(url, writerSettings);
-            RawVolumeWriter::saveRawData(writerSettings);
-        }
-    }
-}
-
 VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format) {
     // TODO: Add more formats
     VolumeRAM* result = 0;

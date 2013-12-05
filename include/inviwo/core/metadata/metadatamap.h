@@ -21,7 +21,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API MetaDataMap {
+class IVW_CORE_API MetaDataMap : public IvwSerializable {
 
 public:
     MetaDataMap();
@@ -38,8 +38,11 @@ public:
 
     MetaDataMap& operator=(const MetaDataMap& map) ;
 
-    typedef std::map<std::string, MetaData*>::const_iterator cItreator;
-    typedef std::map<std::string, MetaData*>::iterator itreator;
+    virtual void serialize( IvwSerializer &s ) const;
+    virtual void deserialize( IvwDeserializer &d );
+
+    typedef std::map<std::string, MetaData*>::const_iterator cIterator;
+    typedef std::map<std::string, MetaData*>::iterator iterator;
 
 private:
     std::map<std::string, MetaData*> metaData_;

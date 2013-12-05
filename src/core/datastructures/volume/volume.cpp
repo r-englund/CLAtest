@@ -65,10 +65,10 @@ void Volume::setBasisAndOffset(const mat4& mat){
 }
 
 mat4 Volume::getWorldTransform() const{
-    return SpatialData<3>::getWorldMatrix();
+    return SpatialData<3>::getWorldTransform();
 }
 void Volume::setWorldTransform(const mat4& mat){
-    SpatialData<3>::setWorldMatrix(Matrix<4,float>(mat));
+    SpatialData<3>::setWorldTransform(Matrix<4,float>(mat));
 }
 
 DataRepresentation* Volume::createDefaultRepresentation() {

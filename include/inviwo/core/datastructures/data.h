@@ -74,6 +74,7 @@ public:
     //param val is required to deduce the template argument
     template<typename T, typename U>
     U getMetaData(std::string key, U val) const;
+    MetaDataMap* getMetaDataMap() const { return metaData_; }
 
     //DataFormat
     void setDataFormat(const DataFormatBase* format);
@@ -94,7 +95,7 @@ protected:
     void invalidateAllOther();
 
     void copyRepresentationsTo(Data* targetData) const;
-    MetaDataMap* getMetaDataMap() const { return metaData_; }
+    
 
     /**
      * Check if data needs to be updated.

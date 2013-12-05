@@ -33,6 +33,8 @@ public:
     void serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey);
     template <typename K, typename V, typename C>
     void serialize(const std::string &key, const std::map<K,V,C> &sMap, const std::string &itemKey);
+    template <typename K, typename V, typename C>
+    void serialize(const std::string &key, const std::map<K,V,C> &sMap);
     void serialize(const std::string &key, const std::string &data, const bool asAttribute=false);
     void serialize(const std::string &key, const float &data);
     void serialize(const std::string &key, const double &data);
@@ -122,6 +124,24 @@ inline void IvwSerializer::serializeSTL_Map(const std::string &key, const T &sMa
         serialize(itemKey, it->second);
     }
 }
+
+template <typename K, typename V, typename C>
+void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C>& sMap) {
+    if(!isPrimitiveType(typeid(K))){
+        throw SerializationException("Error: map key has to be a primitive type");
+    }
+
+    TxElement* newNode = new TxElement(key);
+    rootElement_->LinkEndChild(newNode);
+
+    NodeSwitch tempNodeSwitch(*this, newNode);
+
+    for (std::map<K,V,C>::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
+        serialize(it->first, it->second);
+        //rootElement_->LastChild()->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE,  it->second->getClassName());
+    }
+}
+
 
 template<class T>
 inline void IvwSerializer::serialize(const std::string& key, const T* const& data) {

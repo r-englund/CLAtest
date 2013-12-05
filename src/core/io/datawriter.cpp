@@ -15,21 +15,32 @@
 #include <inviwo/core/io/datawriter.h>
 
 namespace inviwo {
+DataWriterException::DataWriterException(const std::string& message)
+    : Exception(message) {}
 
-DataWriter::DataWriter()
-    : identifier_("undefined")
-{}
 
-DataWriter::~DataWriter(){
+DataWriter::DataWriter() : extensions_() {}
 
+DataWriter::DataWriter( const DataWriter& rhs ) : extensions_(rhs.extensions_){    
 }
 
-std::string DataWriter::getIdentifier() const{
-    return identifier_;
+DataWriter& DataWriter::operator=( const DataWriter& that ){
+    if (this != &that) {
+        extensions_.clear();
+        for(std::vector<FileExtension>::const_iterator it = that.getExtensions().begin();
+            it != that.getExtensions().end(); ++it){
+                extensions_.push_back(*it);
+        }
+    }
+    return *this;
 }
 
-void DataWriter::setIdentifier(const std::string& name){
-    identifier_ = name;
+const std::vector<FileExtension>& DataWriter::getExtensions() const {
+    return extensions_;
 }
+void DataWriter::addExtension( FileExtension ext ){
+    extensions_.push_back(ext);
+}
+
 
 } // namespace

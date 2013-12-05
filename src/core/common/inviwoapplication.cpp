@@ -19,6 +19,7 @@
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <inviwo/core/io/datareaderfactory.h>
+#include <inviwo/core/io/datawriterfactory.h>
 
 //#define MEMLEAKCHECK
 
@@ -86,6 +87,7 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     ProcessorWidgetFactory::init();
     RepresentationConverterFactory::init();
     DataReaderFactory::init();
+    DataWriterFactory::init();
 
     initialized_ = true;
 }

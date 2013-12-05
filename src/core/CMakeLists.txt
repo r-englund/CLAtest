@@ -5,8 +5,6 @@ ivw_project(inviwo-core)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-	${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramslice.h
-	${IVW_INCLUDE_DIR}/inviwo/core/processors/processorstate.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwo.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwoapplication.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocore.h
@@ -56,6 +54,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramoperationexecuter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramprecision.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramslice.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramsubset.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumetypeclassification.h
@@ -79,27 +78,25 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriterfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumewriter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfbasesettings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfreadersettings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfwritersettings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumewriter.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializableinterface.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h  
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserialization.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h    
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/volumewriter.h 
-    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/compositemetadata.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/compositemetadata.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatafactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatamap.h
@@ -123,6 +120,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorobserver.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorstate.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
@@ -136,7 +134,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h	
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
@@ -193,8 +191,6 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-	datastructures/dataoperation.cpp
-	interaction/pickingcontainer.cpp
     common/inviwoapplication.cpp
     common/inviwocore.cpp
     common/inviwomodule.cpp
@@ -205,7 +201,8 @@ set(SOURCE_FILES
     datastructures/data.cpp
     datastructures/datagroup.cpp
     datastructures/datagrouprepresentation.cpp
-	datastructures/dataoperation.cpp
+    datastructures/dataoperation.cpp
+    datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp
     datastructures/geometry/attributes.cpp
     datastructures/geometry/geometry.cpp
@@ -240,6 +237,7 @@ set(SOURCE_FILES
     interaction/events/resizeevent.cpp
     interaction/events/timerevent.cpp
     interaction/interactionhandler.cpp
+    interaction/pickingcontainer.cpp
     interaction/pickinghandler.cpp
     interaction/pickingmanager.cpp
     interaction/pickingobject.cpp
@@ -248,6 +246,7 @@ set(SOURCE_FILES
     io/datareader.cpp
     io/datareaderfactory.cpp
     io/datawriter.cpp
+    io/datawriterfactory.cpp
     io/datvolumereader.cpp
     io/datvolumewriter.cpp 
     io/imageloader.cpp
@@ -263,9 +262,7 @@ set(SOURCE_FILES
     io/serialization/ivwserializeconstants.cpp
     io/serialization/ivwserializer.cpp
     io/textfilereader.cpp    
-    io/volumereader.cpp
-    io/volumewriter.cpp
-    metadata/compositemetadata.cpp	
+    metadata/compositemetadata.cpp    
     metadata/metadata.cpp
     metadata/metadatafactory.cpp
     metadata/metadatamap.cpp
@@ -295,7 +292,7 @@ set(SOURCE_FILES
     properties/eventproperty.cpp
     properties/fileproperty.cpp
     properties/imageeditorproperty.cpp
-    properties/linkevaluator.cpp	
+    properties/linkevaluator.cpp    
     properties/matrixproperties.cpp
     properties/optionproperties.cpp
     properties/property.cpp

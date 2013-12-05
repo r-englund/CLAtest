@@ -54,15 +54,11 @@ void FilePropertyWidgetQt::generateWidget() {
 
 void FilePropertyWidgetQt::setPropertyValue() {
     // dialog window settings
-    QStringList extension;
-    //extension << "All Files (*.*)";
-
-    QString dataDir_ = QString::fromStdString(IVW_DIR+"data/");
-
+ 
+    // Setup sidebar
     QList<QUrl> sidebarURLs;
+    QString dataDir_ = QString::fromStdString(IVW_DIR+"data/");
     sidebarURLs << QUrl::fromLocalFile(QDir(dataDir_).absolutePath());
-
-    //TODO: create InviwoFileDialog to avoid frequent version checks
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
@@ -70,6 +66,8 @@ void FilePropertyWidgetQt::setPropertyValue() {
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
+    
+    // Setup default path
     QString path;
     if(property_->get()!= ""){
         path=QDir(QString::fromStdString(property_->get())).absolutePath();
@@ -77,16 +75,16 @@ void FilePropertyWidgetQt::setPropertyValue() {
         path=QDir(dataDir_).absolutePath();
     }
 
-    QFileDialog openFileDialog(this, tr("Open File ..."), path);
-    openFileDialog.setFileMode(QFileDialog::AnyFile);
-    
+    // Setup Extensions
     std::vector<std::string> filters = property_->getNameFilters();
-
+    QStringList extension;
     for(std::vector<std::string>::const_iterator it = filters.begin();
         it!=filters.end(); ++it){
             extension.push_back(QString::fromStdString(*it));
     }
 
+    QFileDialog openFileDialog(this, tr("Open File ..."), path);
+    openFileDialog.setFileMode(QFileDialog::AnyFile);
     openFileDialog.setNameFilters(extension);
     openFileDialog.setSidebarUrls(sidebarURLs);
 

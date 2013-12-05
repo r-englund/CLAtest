@@ -30,11 +30,14 @@
 //Io
 #include <inviwo/core/io/datvolumereader.h>
 #include <inviwo/core/io/ivfvolumereader.h>
+#include <inviwo/core/io/datvolumewriter.h>
+#include <inviwo/core/io/ivfvolumewriter.h>
 
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
 //Properties
 #include <inviwo/core/properties/buttonproperty.h>
+
 
 namespace inviwo {
 
@@ -53,6 +56,9 @@ InviwoCore::InviwoCore() : InviwoModule() {
 
     addDataReader(new DatVolumeReader());
     addDataReader(new IvfVolumeReader());
+
+    addDataWriter(new DatVolumeWriter());
+    addDataWriter(new IvfVolumeWriter());
 
     allocTest_ = NULL;
 }

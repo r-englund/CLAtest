@@ -27,10 +27,13 @@ class IVW_CORE_API ProcessorMetaData : public CompositeMetaData {
 
 public:
     ProcessorMetaData();
+    ProcessorMetaData(const ProcessorMetaData& rhs);
+    ProcessorMetaData& operator=(const ProcessorMetaData& that);
     virtual ~ProcessorMetaData();
 
     virtual std::string getClassName() const { return "ProcessorMetaData"; }
     virtual ProcessorMetaData* create() const;
+    virtual ProcessorMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

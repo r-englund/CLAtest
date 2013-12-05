@@ -15,6 +15,9 @@
 #include <inviwo/core/io/datareader.h>
 
 namespace inviwo {
+    DataReaderException::DataReaderException(const std::string& message)
+        : Exception(message) {}
+
 
     DataReader::DataReader() : extensions_() {}
 

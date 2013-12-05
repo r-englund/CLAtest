@@ -16,14 +16,40 @@
 
 namespace inviwo {
 
-CompositeMetaData::CompositeMetaData()
-    : MetaData()
-{}
+CompositeMetaData::CompositeMetaData() : MetaData() {}
+
+CompositeMetaData::CompositeMetaData( const CompositeMetaData& rhs ) 
+    : MetaData(rhs){
+    for(std::vector<MetaData*>::const_iterator it = rhs.subMetaData_.begin();
+        it != rhs.subMetaData_.end(); ++it){
+            subMetaData_.push_back((*it)->clone());
+    }
+}
+
+CompositeMetaData& CompositeMetaData::operator=( const CompositeMetaData& that ){
+    if (this != &that) {
+        for(std::vector<MetaData*>::iterator it = subMetaData_.begin();
+            it != subMetaData_.end(); ++it){
+                if(*it)
+                    delete *it;
+        }
+        subMetaData_.clear();
+        for(std::vector<MetaData*>::const_iterator it = that.subMetaData_.begin();
+            it != that.subMetaData_.end(); ++it){
+                subMetaData_.push_back((*it)->clone());
+        }
+        MetaData::operator=(that);
+    }
+    return *this;
+}
 
 CompositeMetaData::~CompositeMetaData() {}
 
 CompositeMetaData* CompositeMetaData::create() const {
     return new CompositeMetaData();
+}
+CompositeMetaData* CompositeMetaData::clone() const{
+    return new CompositeMetaData(*this);
 }
 
 void CompositeMetaData::addMetaData(MetaData* metadata) {
@@ -35,11 +61,16 @@ void CompositeMetaData::addMetaData(MetaData& metadata) {
 }
 
 void  CompositeMetaData::serialize(IvwSerializer& s) const {
-    MetaData::serialize(s);
+    //TODO WTF?
+   //MetaData::serialize(s);
 }
 
 void  CompositeMetaData::deserialize(IvwDeserializer& d) {
-   MetaData::deserialize(d);
+   //MetaData::deserialize(d);
 }
+
+
+
+
 
 } // namespace

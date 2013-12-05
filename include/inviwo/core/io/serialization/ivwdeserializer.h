@@ -118,6 +118,10 @@ public:
      */    
     template <typename K, typename V, typename C>
     void deserialize(const std::string &key, std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute) throw (SerializationException);
+    
+    template <typename K, typename V, typename C>
+    void deserialize(const std::string &key, std::map<K, V*, C>) throw (SerializationException);  
+    
     /** 
      * \brief Deserialize string data.
      * 
@@ -386,6 +390,11 @@ inline void IvwDeserializer::deserialize(const std::string &key,std::map<K,V*,C>
         throw (SerializationException){
     deserializeSTL_Map(key, sMap, itemKey, comparisionAttribute);
 }
+
+template <typename K, typename V, typename C>
+inline void IvwDeserializer::deserialize(const std::string &key, std::map<K, V*, C>) throw (SerializationException){
+   //deserializeSTL_Map(key, sMap);
+}  
 
 template <typename T>
 inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey)

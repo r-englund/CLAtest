@@ -17,7 +17,7 @@
 
 #include "inviwo/core/common/inviwocoredefine.h"
 #include "inviwo/core/common/inviwo.h"
-#include "inviwo/core/io/volumewriter.h"
+#include <inviwo/core/io/ivfwritersettings.h>
 
 namespace inviwo {
 

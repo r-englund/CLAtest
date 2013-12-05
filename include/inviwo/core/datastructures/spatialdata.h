@@ -224,8 +224,8 @@ public:
     Matrix<N+1,float> getBasisAndOffset() const;
     void setBasisAndOffset(const Matrix<N+1,float>& mat);
 
-    Matrix<N+1,float> getWorldMatrix() const;
-    void setWorldMatrix(const Matrix<N+1,float>& mat);
+    Matrix<N+1,float> getWorldTransform() const;
+    void setWorldTransform(const Matrix<N+1,float>& mat);
 
     virtual const CoordinateTransformer<N>& getCoordinateTransformer() const;
 
@@ -330,7 +330,7 @@ const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getBasisMatrix() const{
 
 template<unsigned int N>
 const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getWorldMatrix() const{
-    return spatialData_->getWorldMatrix();
+    return spatialData_->getWorldTransform();
 }
 
 template <unsigned int N>
@@ -389,12 +389,12 @@ void SpatialData<N>::setBasisAndOffset(const Matrix<N+1,float>& mat) {
 }
 
 template <unsigned int N>
-Matrix<N+1,float> SpatialData<N>::getWorldMatrix() const {
+Matrix<N+1,float> SpatialData<N>::getWorldTransform() const {
     Matrix<N+1,float> mat(1.0f);
     return Data::getMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
 }
 template <unsigned int N>
-void SpatialData<N>::setWorldMatrix(const Matrix<N+1,float>& mat) {
+void SpatialData<N>::setWorldTransform(const Matrix<N+1,float>& mat) {
     Data::setMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
 }
 

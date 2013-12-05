@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Timo Ropinski
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
@@ -17,26 +17,54 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include "inviwo/core/datastructures/data.h"
+#include <inviwo/core/datastructures/data.h>
+#include <inviwo/core/util/fileextension.h>
+#include <inviwo/core/util/exception.h>
 
 namespace inviwo {
+
+
+class IVW_CORE_API DataWriterException : public Exception {
+public:
+    DataWriterException(const std::string& message = "");
+    virtual ~DataWriterException() throw() {};
+};
+
 
 class IVW_CORE_API DataWriter {
 
 public:
     DataWriter();
-    virtual ~DataWriter();
+    DataWriter(const DataWriter& rhs);
+    DataWriter& operator=(const DataWriter& that);
+    virtual DataWriter* clone() const = 0;
+    virtual ~DataWriter() {};
 
-    std::string getIdentifier() const;
-    virtual void writeData()=0;
-
-protected:
-
-    void setIdentifier(const std::string& name);
+    const std::vector<FileExtension>& getExtensions() const;
+    void addExtension(FileExtension ext);
 
 private:
-    std::string identifier_;
+    std::vector<FileExtension> extensions_;
 };
+
+
+template <typename T>
+class DataWriterType : public DataWriter {
+public:
+    DataWriterType() : DataWriter() {};
+    DataWriterType(const DataWriterType& rhs) : DataWriter(rhs) {};
+    DataWriterType& operator=(const DataWriterType& that) {
+        if (this != &that) {
+            DataWriter::operator=(that);
+        }
+        return *this;
+    };
+    virtual DataWriterType* clone() const = 0;
+    virtual ~DataWriterType() {};
+
+    virtual void writeData(const T* data, const std::string filePath) const = 0;
+};
+
 
 } // namespace
 

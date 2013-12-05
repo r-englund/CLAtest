@@ -8,20 +8,21 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Sathish Kottravel
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
 #ifndef IVW_RAWVOLUMEREADER_H
 #define IVW_RAWVOLUMEREADER_H
 
-#include "inviwo/core/common/inviwocoredefine.h"
-#include "inviwo/core/common/inviwo.h"
-#include "inviwo/core/io/volumereader.h"
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/io/datareader.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
-class IVW_CORE_API RawVolumeReader : public VolumeReader {
+class IVW_CORE_API RawVolumeReader : public DataReaderType<Volume> {
 public:
 	RawVolumeReader();
 	virtual ~RawVolumeReader() {}
