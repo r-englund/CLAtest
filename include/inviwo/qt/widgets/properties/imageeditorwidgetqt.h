@@ -79,15 +79,17 @@ signals:
 // used by Simple Graphics View
 class IVW_QTWIDGETS_API SimpleWithRectangleLabel : public QGraphicsRectItem {
 public:
-    SimpleWithRectangleLabel(QPointF mendPoint, QGraphicsScene* scene);
+    SimpleWithRectangleLabel(QPointF mendPoint, QGraphicsScene* scene, int index=0);
     SimpleWithRectangleLabel();
     ~SimpleWithRectangleLabel();
     void updateLabelPosition();
     void setLabel(std::string label);
     std::string getLabel();
     void editLabel();
+    int getIndex();
 private:
     LabelGraphicsItem* label_;
+    int uniqueIndex_; //to keep track of added rectangles
 };
 
 /////////////////////////////////////////////////
@@ -96,6 +98,7 @@ private:
 struct ImgRect {
     QRectF rect_;
     std::string label_;
+    int uniqueIndex_;
 };
 
 class IVW_QTWIDGETS_API SimpleGraphicsView : public QGraphicsView {
@@ -104,7 +107,7 @@ public:
     SimpleGraphicsView(QWidget* parent=0);
     ~SimpleGraphicsView();
     void setDialogScene(QGraphicsScene* scene);
-    void addRectangle(QPointF mstartPoint, QPointF mendPoint,ivec3 color = ivec3(0,0,255));
+    void addRectangle(QPointF mstartPoint, QPointF mendPoint,ivec3 color = ivec3(0,0,255), int uniqueIndex=0);
     std::vector<ImgRect> getRectList();
     void setReadOnly(bool readOnly);
     void hideLabelDescription(bool hide);

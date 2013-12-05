@@ -26,8 +26,8 @@ SimpleGraphicsScene::SimpleGraphicsScene(QWidget* parent) : QGraphicsScene(paren
 // Simple Graphics Rectangle Item with label 
 // used by Simple Graphics View
 
-SimpleWithRectangleLabel::SimpleWithRectangleLabel(QPointF rectSize, QGraphicsScene* scene) 
-    : QGraphicsRectItem(), label_(0) {
+SimpleWithRectangleLabel::SimpleWithRectangleLabel(QPointF rectSize, QGraphicsScene* scene, int index) 
+    : QGraphicsRectItem(), label_(0), uniqueIndex_(index) {
     setRect(0, 0, rectSize.x(), rectSize.y());
     label_ = new LabelGraphicsItem(this);
     label_->setPos(0, 0);
@@ -55,7 +55,7 @@ void SimpleWithRectangleLabel::editLabel() {
     label_->setFocus();
 }
 
-
+int SimpleWithRectangleLabel::getIndex() {return uniqueIndex_;}
 /////////////////////////////////////////////////
 // Simple Graphics view
 
@@ -76,9 +76,9 @@ void SimpleGraphicsView::setDialogScene(QGraphicsScene* scene) {
     scene_ = scene;
 }
 
-void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint,ivec3 color) {    
+void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint,ivec3 color, int index) {    
     //QAbstractGraphicsShapeItem *i = scene_->addRect( mStartPoint.x(), mStartPoint.y(),  deltaPoint.x(), deltaPoint.y() );    
-    SimpleWithRectangleLabel *i = new SimpleWithRectangleLabel(deltaPoint, scene_);
+    SimpleWithRectangleLabel *i = new SimpleWithRectangleLabel(deltaPoint, scene_, index);
     i->setPos(mStartPoint.x(), mStartPoint.y());
     scene_->addItem(i);
     if (!hideLabelDescriptions_)
@@ -181,6 +181,7 @@ std::vector<ImgRect> SimpleGraphicsView::getRectList() {
             vec2 pos1(rectItem->pos().x(), rectItem->pos().y());
             r.rect_ = QRectF(rectItem->mapRectToScene(rectItem->rect()));
             r.label_ = rectItem->getLabel();
+            r.uniqueIndex_ = rectItem->getIndex();
             rectList.push_back(r) ;             
          }
      }
