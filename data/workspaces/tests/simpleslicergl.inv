@@ -1,0 +1,108 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-675" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FileProperty" identifier="volumeFileName" displayName="Volume file">
+                    <url content="../../volumes/hydrogenatom.dat" />
+                    <nameFilter />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-525" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="BaseOptionProperty" identifier="coordinatePlane" displayName="Coordinate Plane" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number">
+                    <value content="64" />
+                    <minvalue content="1" />
+                    <maxvalue content="128" />
+                    <increment content="1" />
+                </Property>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function">
+                    <size content="4" />
+                    <mask_ type="IntMinMaxProperty" identifier="mask_" displayName="Mask">
+                        <value x="0" y="255" />
+                        <range x="0" y="255" />
+                        <increment content="1" />
+                    </mask_>
+                    <zoomHorizontal_ type="IntMinMaxProperty" identifier="zoomHorizontal_" displayName="Zoom">
+                        <value x="0" y="255" />
+                        <range x="0" y="255" />
+                        <increment content="1" />
+                    </zoomHorizontal_>
+                    <zoomVertical_ type="FloatMinMaxProperty" identifier="zoomVertical_" displayName="Zoom">
+                        <value x="0" y="1" />
+                        <range x="0" y="1" />
+                        <increment content="0.01" />
+                    </zoomVertical_>
+                    <bitRangeProperty_ type="OptionPropertyInt" identifier="bitRangeProperty" displayName="Bit Range">
+                        <value content="8" />
+                    </bitRangeProperty_>
+                    <pos0 x="0.0039215689" y="0" />
+                    <rgba0 x="0.40784314" y="0.40784314" z="0.40784314" w="0" />
+                    <pos1 x="0.023529412" y="0.74000001" />
+                    <rgba1 x="0.0077821012" y="0.99215686" z="0.089814603" w="0.74000001" />
+                    <pos2 x="0.078431375" y="0.050000001" />
+                    <rgba2 x="0.61960787" y="0.61960787" z="0.61960787" w="0.050000001" />
+                    <pos3 x="0.17254902" y="0.88" />
+                    <rgba3 x="0.96078432" y="0.094193943" z="0.094193943" w="0.88" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref2">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-400" />
+                    <visibility content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="794" y="528" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="256" />
+                    <minvalue x="128" y="128" />
+                    <maxvalue x="4096" y="4096" />
+                    <increment x="1" y="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
+                <Property type="BaseOptionProperty" identifier="visibleLayer_" displayName="Visible layer" />
+            </Properties>
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="volume">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <ProcessorLinks />
+</InviwoTreeData>
