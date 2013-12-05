@@ -67,10 +67,12 @@ void FloatPropertyWidgetQt::updateFromProperty() {
                                  "  Max: " +QString::number(property_->getMaxValue()));
     }
     else{
+        sliderWidget_->blockSignals(true);
         sliderWidget_->initValue(value);
         sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());    
         sliderWidget_->setIncrement(property_->getIncrement());
         sliderWidget_->setValue(value);
+        sliderWidget_->blockSignals(false);
     }
 }
 

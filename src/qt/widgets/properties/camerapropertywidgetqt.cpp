@@ -24,18 +24,6 @@ CameraPropertyWidgetQt::CameraPropertyWidgetQt(CameraProperty* property) : prope
     updateFromProperty();
 }
 
-//void CameraPropertyWidgetQt::generateWidget() {
-//    QHBoxLayout* hLayout = new QHBoxLayout();
-//    label_ = new EditableLabelQt(property_->getDisplayName());
-//    hLayout->addWidget(label_);
-//    slider_ = new QSlider();
-//    slider_->setOrientation(Qt::Horizontal);
-//    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-//    connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
-//    hLayout->addWidget(slider_);
-//    setLayout(hLayout);
-//}
-
 void CameraPropertyWidgetQt::generateWidget() {
     QVBoxLayout* vLayout = new QVBoxLayout();
     collapsiveGroupBoxWidget_ = new CollapsiveGroupBoxWidgetQt(property_->getIdentifier(),property_->getDisplayName());

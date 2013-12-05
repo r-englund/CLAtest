@@ -27,7 +27,6 @@ visibilityMode_(APPLICATION){
 }
 
 void CollapsiveGroupBoxWidgetQt::generateWidget() {
-
     setContextMenuPolicy(Qt::CustomContextMenu);
     btnCollapse_ = new QToolButton();
     btnCollapse_->setStyleSheet("QToolButton::hover { background-color: gray }");

@@ -26,28 +26,27 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API CameraPropertyWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API CameraPropertyWidgetQt : public PropertyWidgetQt {
+    Q_OBJECT
 
-        Q_OBJECT
+public:
+    CameraPropertyWidgetQt(CameraProperty* property);
+    void updateFromProperty();
 
-    public:
-        CameraPropertyWidgetQt(CameraProperty* property);
-        void updateFromProperty();
+public slots:
+    void setPropertyValue();
+    void setPropertyDisplayName();
+    void visibilityModified(int mode);
 
-        public slots:
-            void setPropertyValue();
-            void setPropertyDisplayName();
-            void visibilityModified(int mode);
+private:
+    CameraProperty* property_;
+    //QSlider* slider_;
+    EditableLabelQt* label_;
+    CollapsiveGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
+    void generateWidget();
+    std::vector<PropertyWidgetQt*> subPropertyWidgets_;
 
-    private:
-        CameraProperty* property_;
-        //QSlider* slider_;
-        EditableLabelQt* label_;
-        CollapsiveGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
-        void generateWidget();
-        std::vector<PropertyWidgetQt*> subPropertyWidgets_;
-
-    };
+};
 
 } // namespace
 

@@ -35,72 +35,72 @@
 
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt {
 
-        Q_OBJECT
+    Q_OBJECT
 
-    public:
-        CollapsiveGroupBoxWidgetQt(std::string identifier, std::string displayName= "");
+public:
+    CollapsiveGroupBoxWidgetQt(std::string identifier, std::string displayName= "");
 
-        virtual std::string getIdentifier() const;
-        virtual void setIdentifier(const std::string& identifier);
+    virtual std::string getIdentifier() const;
+    virtual void setIdentifier(const std::string& identifier);
 
-        virtual std::string getDisplayName() const;
-        virtual void setDisplayName(const std::string& displayName);
+    virtual std::string getDisplayName() const;
+    virtual void setDisplayName(const std::string& displayName);
 
-        void setVisibilityMode(PropertyVisibilityMode visibilityMode){visibilityMode_ = visibilityMode;};
-        PropertyVisibilityMode getVisibilityMode(){return visibilityMode_;};
+    void setVisibilityMode(PropertyVisibilityMode visibilityMode){visibilityMode_ = visibilityMode;};
+    PropertyVisibilityMode getVisibilityMode(){return visibilityMode_;};
 
-        void updateFromProperty();
-        void addProperty(Property* tmpProperty);
-        QVBoxLayout* vLayout_;
-        void generatePropertyWidgets();
-        void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
-        std::vector<Property*> getProperties();
-        bool isCollapsed() { return collapsed_; };
-        std::vector<PropertyWidgetQt*> getPropertyWidgets(){return propertyWidgets_; };
-        void addWidget(QWidget* widget);
+    void updateFromProperty();
+    void addProperty(Property* tmpProperty);
+    QVBoxLayout* vLayout_;
+    void generatePropertyWidgets();
+    void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
+    std::vector<Property*> getProperties();
+    bool isCollapsed() { return collapsed_; };
+    std::vector<PropertyWidgetQt*> getPropertyWidgets(){return propertyWidgets_; };
+    void addWidget(QWidget* widget);
 
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& d);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
 
 signals:
-        void visibilityModified();
+    void visibilityModified();
 
 
-    private:
-        QToolButton* btnCollapse_;
-        std::string identifier_;
-        std::string displayName_;
-        QGroupBox* groupBox_;
-        std::vector<Property*> properties_;
-        std::vector<PropertyWidgetQt*> propertyWidgets_;
-        bool collapsed_;
-        EditableLabelQt* label_;
-        void generateContextMenu();
-        void generateWidget();
-        void updateContextMenu();
-        PropertyVisibilityMode visibilityMode_;
-        void updateWidgets();
+private:
+    QToolButton* btnCollapse_;
+    std::string identifier_;
+    std::string displayName_;
+    QGroupBox* groupBox_;
+    std::vector<Property*> properties_;
+    std::vector<PropertyWidgetQt*> propertyWidgets_;
+    bool collapsed_;
+    EditableLabelQt* label_;
+    void generateContextMenu();
+    void generateWidget();
+    void updateContextMenu();
+    PropertyVisibilityMode visibilityMode_;
+    void updateWidgets();
 
-        QMenu* contextMenu_;
-        QActionGroup* viewModeActionGroup_;
-        QMenu* viewModeItem_;
+    QMenu* contextMenu_;
+    QActionGroup* viewModeActionGroup_;
+    QMenu* viewModeItem_;
 
-    public slots:
-        void hide();
-        void show();
-        void updateVisibility();
-        void showContextMenu(const QPoint& pos);
-        void setDeveloperViewMode(bool value);
-        void setApplicationViewMode(bool value);
+public slots:
+    void hide();
+    void show();
+    void updateVisibility();
+    void showContextMenu(const QPoint& pos);
+    void setDeveloperViewMode(bool value);
+    void setApplicationViewMode(bool value);
 
-    protected slots:
-        void setGroupDisplayName();
-        void propertyModified();
+protected slots:
+    void setGroupDisplayName();
+    void propertyModified();
 
-    };
+};
 
 } // namespace
 
