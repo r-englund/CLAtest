@@ -81,7 +81,7 @@ LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorGraphicsItem* ou
                                                ProcessorGraphicsItem* inProcessor)
                                                : LinkGraphicsItem(outProcessor->getShortestBoundaryPointTo(inProcessor),
                                                                   inProcessor->getShortestBoundaryPointTo(outProcessor), 
-                                                                  ivec3(256,256,256)),
+                                                                  ivec3(255,255,255)),
                                                  outProcessor_(outProcessor), inProcessor_(inProcessor) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
