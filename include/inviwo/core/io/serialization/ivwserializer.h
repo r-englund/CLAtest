@@ -31,10 +31,10 @@ public:
 
     template <typename T>
     void serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey);
-    template <typename K, typename V, typename C>
-    void serialize(const std::string &key, const std::map<K,V,C> &sMap, const std::string &itemKey);
-    template <typename K, typename V, typename C>
-    void serialize(const std::string &key, const std::map<K,V,C> &sMap);
+    template <typename K, typename V, typename C, typename A>
+    void serialize(const std::string &key, const std::map<K,V,C,A> &sMap, const std::string &itemKey);
+    template <typename K, typename V, typename C, typename A>
+    void serialize(const std::string &key, const std::map<K,V,C,A> &sMap);
     void serialize(const std::string &key, const std::string &data, const bool asAttribute=false);
     void serialize(const std::string &key, const float &data);
     void serialize(const std::string &key, const double &data);
@@ -90,8 +90,8 @@ inline void IvwSerializer::serialize(const std::string &key, const std::vector<T
     serializeSTL_Vector(key, sVector, itemKey);
 }
 
-template <typename K, typename V, typename C>
-inline void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C> &sMap, const std::string &itemKey) {
+template <typename K, typename V, typename C, typename A>
+inline void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C,A> &sMap, const std::string &itemKey) {
     serializeSTL_Map(key, sMap, itemKey);
 }
 
@@ -125,8 +125,8 @@ inline void IvwSerializer::serializeSTL_Map(const std::string &key, const T &sMa
     }
 }
 
-template <typename K, typename V, typename C>
-void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C>& sMap) {
+template <typename K, typename V, typename C, typename A>
+void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C,A>& sMap) {
     if(!isPrimitiveType(typeid(K))){
         throw SerializationException("Error: map key has to be a primitive type");
     }
@@ -136,7 +136,7 @@ void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C>& sMa
 
     NodeSwitch tempNodeSwitch(*this, newNode);
 
-    for (std::map<typename K, typename V, typename C>::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
+    for (std::map<typename K, typename V, typename C, typename A>::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
         serialize(it->first, it->second);
         //rootElement_->LastChild()->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE,  it->second->getClassName());
     }

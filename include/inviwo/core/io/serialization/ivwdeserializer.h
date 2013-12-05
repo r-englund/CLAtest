@@ -116,11 +116,11 @@ public:
      * @param const std::string & itemKey map item key of childeren nodes.
      * @param const std::string & comparisionAttribute  - forced comparison attribute.     
      */    
-    template <typename K, typename V, typename C>
-    void deserialize(const std::string &key, std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute) throw (SerializationException);
+    template <typename K, typename V, typename C, typename A>
+    void deserialize(const std::string &key, std::map<K,V*,C,A> &sMap, const std::string &itemKey, const std::string &comparisionAttribute) throw (SerializationException);
     
-    template <typename K, typename V, typename C>
-    void deserialize(const std::string &key, std::map<K, V*, C>) throw (SerializationException);  
+    template <typename K, typename V, typename C, typename A>
+    void deserialize(const std::string &key, std::map<K,V*,C,A>) throw (SerializationException);  
     
     /** 
      * \brief Deserialize string data.
@@ -385,14 +385,14 @@ inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T> 
     deserializeSTL_Vector(key, sVector, itemKey);
 }
 
-template <typename K, typename V, typename C>
-inline void IvwDeserializer::deserialize(const std::string &key,std::map<K,V*,C> &sMap, const std::string &itemKey, const std::string &comparisionAttribute)
+template <typename K, typename V, typename C, typename A>
+inline void IvwDeserializer::deserialize(const std::string &key,std::map<K,V*,C,A> &sMap, const std::string &itemKey, const std::string &comparisionAttribute)
         throw (SerializationException){
     deserializeSTL_Map(key, sMap, itemKey, comparisionAttribute);
 }
 
-template <typename K, typename V, typename C>
-inline void IvwDeserializer::deserialize(const std::string &key, std::map<K, V*, C>) throw (SerializationException){
+template <typename K, typename V, typename C, typename A>
+inline void IvwDeserializer::deserialize(const std::string &key, std::map<K,V*,C,A>) throw (SerializationException){
    //deserializeSTL_Map(key, sMap);
 }  
 
