@@ -76,7 +76,8 @@ void DiffuseLightSourceProcessor::updateLightSource(DiffuseLight* lightSource) {
 
     lightSource->setObjectToTexture(transformationMatrix);
     lightSource->setSize(lightSize_.get());
-    lightSource->setIntensity(lightPowerProp_.get()*lightDiffuse_.get().xyz());
+    vec3 diffuseLight = lightDiffuse_.get().xyz();
+    lightSource->setIntensity(lightPowerProp_.get()*diffuseLight);
     lightSource->setLightDirection(dir);
 }
 

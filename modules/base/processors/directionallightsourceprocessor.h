@@ -47,7 +47,7 @@ private:
     FloatProperty lightPowerProp_;
     FloatVec2Property lightSize_;
 
-    FloatVec3Property lightDiffuse_;
+    FloatVec4Property lightDiffuse_;
     FloatVec3Property lightPosition_;
 
     DirectionalLight* lightSource_;
