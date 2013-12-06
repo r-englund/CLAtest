@@ -33,6 +33,7 @@ public:
     void deinitialize();
 
     uvec3 getColorCode() const;
+    static uvec3 colorCode;
 };
 
 class IVW_CORE_API GeometryOutport : public DataOutport<Geometry> {

@@ -26,35 +26,56 @@ class Outport;
 class IVW_CORE_API Inport : public Port {
 
 public:
-    Inport(std::string identifier,
-           PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    Inport(std::string identifier);
     virtual ~Inport();
 
     //FIXME: Temporary fix. Remove this to make Inport abstract class
     virtual void initialize() {}
     virtual void deinitialize() {}
 
-    virtual bool canConnectTo(Port* port) const { return false; };
-    virtual void connectTo(Outport* outport);
-    virtual void disconnectFrom(Outport* outport);
-
-    virtual bool isConnected() const;
-    bool isConnectedTo(Outport* outport) const;
-
+    virtual bool isConnected() const { return false; }
     virtual bool isReady() const { return isConnected(); }
 
-    Outport* getConnectedOutport() const { return connectedOutport_; }
+    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {};
 
-    void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
-    virtual std::vector<Processor*> getPredecessors();
+    virtual bool canConnectTo(Port* port) const { return false; }
+    virtual void connectTo(Outport* outport) {};
+    virtual void disconnectFrom(Outport* outport) {};
+
+    virtual bool isConnectedTo(Outport* outport) const { return false; }
+    
+    virtual Outport* getConnectedOutport() const { return NULL; }
+    virtual std::vector<Outport*> getConnectedOutports() const { return std::vector<Outport*>(); }
+
+    std::vector<Processor*> getPredecessors();
 
 protected:
     template <typename T>
     void getPredecessorsUsingPortType(std::vector<Processor*>&);
 
-private:
-    Outport* connectedOutport_;
 };
+
+template <typename T>
+void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsProcessors) {
+    if (isConnected()) {
+        
+        std::vector<Outport*> connectedOutports = getConnectedOutports();
+        std::vector<Outport*>::const_iterator it = connectedOutports.begin(); std::vector<Outport*>::const_iterator endIt = connectedOutports.end();
+        for(; it != endIt; ++it) {
+            Processor* predecessorsProcessor = (*it)->getProcessor();
+
+            if (std::find(predecessorsProcessors.begin(), predecessorsProcessors.end(), predecessorsProcessor)== predecessorsProcessors.end())
+                predecessorsProcessors.push_back(predecessorsProcessor);
+
+            std::vector<Inport*> inports = predecessorsProcessor->getInports();
+            for (size_t j=0; j<inports.size(); j++) {
+                T* inPort = dynamic_cast<T*>(inports[j]);
+                if (inPort)
+                    inPort->template getPredecessorsUsingPortType<T>(predecessorsProcessors);
+            }
+        }
+    }
+}
 
 } // namespace
 

@@ -21,6 +21,7 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/datastructures/geometry/simplemesh.h>
 #include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/scalarproperties.h>
 
 namespace inviwo {
 
@@ -41,6 +42,7 @@ protected:
 
 private:
     GeometryOutport outport_;
+    FloatProperty meshScale_; // Scale size of mesh
 
     OptionPropertyString meshType_;
 };

@@ -22,10 +22,12 @@
 namespace inviwo {
 
 class Processor;
+class MultiInport;
 
 class IVW_CORE_API Port : public IvwSerializable {
 
 friend class Processor;
+friend class MultiInport;
 
 public:
     /**
@@ -34,11 +36,9 @@ public:
      *
      * @param identifier Port identifier used for serialization. Should be unique within the scope
      *                   of a processor.
-     * @param invalidationLevel Defines the level of invalidation used upon connection/deconnection.
-     * @see Processor::addPort(), PropertyOwner::InvalidationLevel
+     * @see Processor::addPort()
      */
-    Port(std::string identifier,
-         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    Port(std::string identifier);
     virtual ~Port();
 
     /**
@@ -63,6 +63,11 @@ public:
      * this method should be overloaded in derived classes.
      */
     virtual uvec3 getColorCode() const;
+    /**
+     * All instances have the same color. 
+     * Derived should declare its own and return DerivedClass::colorCode in getColorCode
+     */
+    static uvec3 colorCode; 
 
     Processor* getProcessor() const;
     std::string getIdentifier() const;
@@ -72,17 +77,15 @@ public:
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
-    PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
-    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
-        invalidationLevel_ = invalidationLevel;
-    }
+    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return PropertyOwner::INVALID_OUTPUT; }
+    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) = 0;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 protected:
+    
     std::string identifier_;
-    PropertyOwner::InvalidationLevel invalidationLevel_;
 
     void setIdentifier(const std::string& name);
     void setProcessor(Processor* processor);

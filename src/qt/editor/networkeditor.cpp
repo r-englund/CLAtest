@@ -19,6 +19,7 @@
 #include <inviwo/core/metadata/processormetadata.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/ports/multidatainport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/util/filedirectory.h>
@@ -821,8 +822,10 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
             if(endPort_){
                 Inport* inport = dynamic_cast<Inport*>(endPort_);
                 if (inport && inport->canConnectTo(startPort_)) {
-                    if(inport->isConnected())
-                        removeConnection(inport->getConnectedOutport(), inport);
+                    // MultiDataInports can have several connections
+                    SingleInport* singleInport = dynamic_cast<SingleInport*>(inport);
+                    if(inport->isConnected() && singleInport != NULL)
+                        removeConnection(singleInport->getConnectedOutport(), inport);
                     addConnection(dynamic_cast<Outport*>(startPort_), inport);                
                 }
             }

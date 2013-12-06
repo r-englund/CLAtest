@@ -69,15 +69,7 @@ void sampleLights(__global PhotonLightSource const * __restrict lightSources, co
 
 
     PhotonLightSource lightSource = lightSources[lightSourceId];
-    //if(sizeof(PhotonLightSource) != 128)
-    //    lightSource.radiance = (float3)(0);
-    //if( lightSourceId == 0) {
-    //    lightSource = lightSources[lightSourceId];
-    //} else {
-    //    lightSource.type = LIGHT_POINT;
-    //    //lightSource.radiance = 1000000000.f;
-    //}
-    //float2 uv = (float2)(get_global_id(0)+0.5f, get_global_id(1)+0.5f)/(float2)(get_global_size(0),get_global_size(1));
+    
     if( lightSource.type == LIGHT_POINT ) {
         float3 localOrigin = (float3)(0.f);
         *origin = transformPoint(lightSource.tm, localOrigin);

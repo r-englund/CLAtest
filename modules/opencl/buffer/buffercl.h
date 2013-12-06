@@ -41,6 +41,8 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual BufferCL* clone() const;
+    virtual void setSize(size_t size) {  BufferRepresentation::setSize(size);deinitialize(); initialize(NULL); }
+    virtual void resize(size_t size) { BufferRepresentation::resize(size);deinitialize(); initialize(NULL); }
 
     const Buffer* getAttribute() const;
 

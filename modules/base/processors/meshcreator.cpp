@@ -24,6 +24,7 @@ ProcessorCodeState(MeshCreator, CODE_STATE_STABLE);
 MeshCreator::MeshCreator()
     : Processor(),
       outport_("outport"),
+      meshScale_("scale", "Size scaling", 1.f, 0.01f, 10.f),
       meshType_("meshType", "Mesh Type")
 {
     addPort(outport_);
@@ -32,6 +33,7 @@ MeshCreator::MeshCreator()
     meshType_.addOption("sphere", "Sphere");
     meshType_.set("sphere");
     addProperty(meshType_);
+    addProperty(meshScale_);
 }
 
 MeshCreator::~MeshCreator() {}
@@ -46,11 +48,11 @@ void MeshCreator::deinitialize() {
 
 SimpleMesh* MeshCreator::createMesh(){
     if(meshType_.get() == "sphere"){
-        return SimpleMeshCreator::sphere(0.5f, 8, 16);
+        return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), 8, 16);
     }
     else{
         vec3 posLLF = vec3(0.0f);
-        vec3 posURB = vec3(1.0f);
+        vec3 posURB = vec3(1.0f)*meshScale_.get();
         return SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f));
     }
 }

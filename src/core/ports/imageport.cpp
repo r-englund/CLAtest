@@ -18,6 +18,8 @@
 
 namespace inviwo {
 
+uvec3 ImageInport::colorCode = uvec3(90,127,183); 
+
 // Image Inport
 ImageInport::ImageInport(std::string identifier,
                          PropertyOwner::InvalidationLevel invalidationLevel)
@@ -83,7 +85,7 @@ uvec2 ImageInport::getDimensions() const{
 
 const Image* ImageInport::getData() const{
     if (isConnected()) {
-        ImageOutport* outport = dynamic_cast<ImageOutport*>(dataOutport_);
+        ImageOutport* outport = dynamic_cast<ImageOutport*>(getConnectedOutport());
         if (dimensions_==outport->getDimensions())
             return outport->getConstData();
         else 
@@ -94,7 +96,7 @@ const Image* ImageInport::getData() const{
 }
 
 uvec3 ImageInport::getColorCode() const { 
-    return uvec3(90,127,183); 
+    return ImageInport::colorCode;
 }
 
 // Image Outport
@@ -320,7 +322,7 @@ void ImageOutport::setLargestImageData(ResizeEvent* resizeEvent) {
 }
 
 uvec3 ImageOutport::getColorCode() const { 
-    return uvec3(90,127,183); 
+    return ImageInport::colorCode; 
 }
 
 bool ImageOutport::addResizeEventListener(EventListener* el){

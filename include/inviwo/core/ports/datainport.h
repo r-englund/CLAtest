@@ -17,7 +17,7 @@
 
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/ports/inport.h>
+#include <inviwo/core/ports/singleinport.h>
 
 namespace inviwo {
 
@@ -25,8 +25,7 @@ template<typename T>
 class DataOutport;
 
 template<typename T>
-class DataInport : public Inport {
-
+class DataInport : public SingleInport {
 public:
     DataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~DataInport();
@@ -36,23 +35,18 @@ public:
 
     virtual bool canConnectTo(Port* port) const;
     virtual void connectTo(Outport* port);
-    virtual void disconnectFrom(Outport* port);
 
     virtual const T* getData() const;
 
     bool hasData() const;
 
 	virtual bool isReady() const { return isConnected() && hasData(); }
-
-protected:
-    DataOutport<T>* dataOutport_;
 };
 
 
 template <typename T>
 DataInport<T>::DataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
-    : Inport(identifier, invalidationLevel),
-      dataOutport_(NULL)
+    : SingleInport(identifier, invalidationLevel)      
 {
 }
 
@@ -77,29 +71,29 @@ template <typename T>
 void DataInport<T>::connectTo(Outport* port) {
     DataOutport<T>* dataPort = dynamic_cast<DataOutport<T>*>(port);
     ivwAssert(dataPort!=NULL, "Trying to connect incompatible ports.")
-    dataOutport_ = dataPort;
-    Inport::connectTo(port);
-}
-
-template <typename T>
-void DataInport<T>::disconnectFrom(Outport* port) {
-    dataOutport_ = NULL;
-    Inport::disconnectFrom(port);
+    if(dataPort != NULL) {
+        SingleInport::connectTo(port);
+    } else {
+        LogWarn("Trying to connect incompatible ports.");
+    }
+    
 }
 
 template <typename T>
 const T* DataInport<T>::getData() const {
-    if (isConnected())
-        return dataOutport_->getConstData();
-    else 
+    if (isConnected()) {
+        // Safe to static cast since we are unable to connect other outport types.
+        return static_cast< DataOutport<T>* >(connectedOutport_)->getConstData();
+    } else 
         return NULL;
 }
 
 template <typename T>
 bool DataInport<T>::hasData() const {
-    if (isConnected())
-        return dataOutport_->hasData();
-    else 
+    if (isConnected()) {
+        // Safe to static cast since we are unable to connect other outport types.
+        return static_cast< DataOutport<T>* >(connectedOutport_)->hasData();
+    } else 
         return false;
 }
 

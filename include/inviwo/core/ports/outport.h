@@ -21,18 +21,21 @@
 
 namespace inviwo {
 
-class Inport;
+class SingleInport;
+class MultiInport;
+
+
 
 class IVW_CORE_API Outport : public Port {
 
-friend class Inport;
-
+friend class SingleInport;
+friend class MultiInport;
 public:
     Outport(std::string identifier,
             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~Outport();
 
-    //TODO: Temporary fix. Remove this to make Outport abstract class
+    //TODO: Temporary fix to enable Deserialization. Remove this to make Outport abstract class
     virtual void initialize() {}
     virtual void deinitialize() {}
 
@@ -44,6 +47,7 @@ public:
     std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; } 
     virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
 
     std::vector<Processor*> getDirectSuccessors();
@@ -55,6 +59,7 @@ protected:
     template <typename T>
     void getSuccessorsUsingPortType(std::vector<Processor*>&);
 
+    PropertyOwner::InvalidationLevel invalidationLevel_;
 private:
     std::vector<Inport*> connectedInports_;
 };

@@ -18,17 +18,17 @@
 
 namespace inviwo {
 
-Port::Port(std::string identifier,
-           PropertyOwner::InvalidationLevel invalidationLevel)
+uvec3 Port::colorCode = uvec3(128,128,128); 
+
+Port::Port(std::string identifier)
     : identifier_(identifier),
-      invalidationLevel_(invalidationLevel),
       processor_(0)
 {}
 
 Port::~Port() {}
 
 uvec3 Port::getColorCode() const { 
-    return uvec3(128,128,128); 
+    return Port::colorCode;
 }
 
 Processor* Port::getProcessor() const { 
@@ -47,11 +47,7 @@ void Port::setProcessor(Processor* processor) {
     processor_ = processor; 
 }
 
-void Port::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) { 
-    invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
-    //TODO: for port properties Port::invalidate() should be called here
-    processor_->invalidate(invalidationLevel);
-}
+
 
 void Port::serialize(IvwSerializer& s) const {
     s.serialize("identifier", identifier_, true);
@@ -61,6 +57,10 @@ void Port::serialize(IvwSerializer& s) const {
 void Port::deserialize(IvwDeserializer& d) {
     d.deserialize("identifier", identifier_, true);
     d.deserialize("Processor", processor_);
+}
+
+void Port::invalidate( PropertyOwner::InvalidationLevel invalidationLevel ) {
+    processor_->invalidate(invalidationLevel);
 }
 
 } // namespace

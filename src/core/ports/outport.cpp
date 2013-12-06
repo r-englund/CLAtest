@@ -19,7 +19,7 @@
 namespace inviwo {
 
 Outport::Outport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
-    : Port(identifier, invalidationLevel)
+    : Port(identifier), invalidationLevel_(invalidationLevel)
 {}
 
 Outport::~Outport() {}
@@ -39,7 +39,7 @@ void Outport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
 
 void Outport::setInvalidationLevel( PropertyOwner::InvalidationLevel invalidationLevel )
 {
-    Port::setInvalidationLevel(invalidationLevel);
+    invalidationLevel_ = invalidationLevel;
     for (size_t i=0; i<connectedInports_.size(); i++)
         connectedInports_[i]->setInvalidationLevel(invalidationLevel);
 }

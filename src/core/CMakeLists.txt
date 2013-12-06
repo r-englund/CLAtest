@@ -112,8 +112,11 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/geometryport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/imageport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/inport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/multidatainport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/multiinport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/outport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/singleinport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/volumeport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processor.h
@@ -276,8 +279,10 @@ set(SOURCE_FILES
     ports/geometryport.cpp
     ports/imageport.cpp
     ports/inport.cpp
+    ports/multiinport.cpp
     ports/outport.cpp
     ports/port.cpp
+    ports/singleinport.cpp
     ports/volumeport.cpp
     processors/canvasprocessor.cpp
     processors/processor.cpp

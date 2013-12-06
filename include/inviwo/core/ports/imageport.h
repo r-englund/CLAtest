@@ -39,7 +39,7 @@ public:
     uvec2 getDimensions() const;
     const Image* getData() const;
     uvec3 getColorCode() const;
-
+    static uvec3 colorCode;
 protected:
     void propagateResizeToPredecessor(ResizeEvent* resizeEvent);
 
