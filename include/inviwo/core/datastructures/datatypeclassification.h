@@ -27,15 +27,13 @@ namespace inviwo {
     public:
         RectiLinearData(){}
         virtual ~RectiLinearData(){}
-        virtual Data* clone()=0;
-    }; 
+    };
 
     template <unsigned int N, typename U>
     class IVW_CORE_API CurviLinearData : public U {
     public:
         CurviLinearData(){}
         virtual ~CurviLinearData(){}
-        virtual Data* clone()=0;
     };
 
     template <unsigned int N, typename U>
@@ -43,15 +41,13 @@ namespace inviwo {
     public:
         UniformData(){}
         virtual ~UniformData(){}
-        virtual Data* clone()=0;
-    }; 
+    };
 
     template <unsigned int N, typename U>
     class IVW_CORE_API NonUniformData : public U {
     public:
         NonUniformData(){}
         virtual ~NonUniformData(){}
-        virtual Data* clone()=0;
     };
 
 } // namespace

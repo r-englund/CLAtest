@@ -187,7 +187,7 @@ public:
     StructuredCoordinateTransformer(const StructuredData<N>* structuredData) : SpatialCoordinateTransformer<N>(structuredData), structuredData_(structuredData) {};
     virtual ~StructuredCoordinateTransformer(){};
 
-    virtual const Matrix<N+1,float> getDimensionMatrix(){
+    virtual const Matrix<N+1,float> getDimensionMatrix() const {
         Vector<N,unsigned int> dim = structuredData_->getDimension();
         Matrix<N+1,float> mat(0.0f);
         for(int i=0;i<N;i++)

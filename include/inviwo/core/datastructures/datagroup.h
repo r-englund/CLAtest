@@ -89,7 +89,6 @@ const T* DataGroup::getRepresentation() const {
 
 template<typename T>
 T* DataGroup::getEditableRepresentation() {
-    bool hasRep = hasRepresentation<T>();
     T* result = const_cast<T*>(getRepresentation<T>());
     return result;
 }

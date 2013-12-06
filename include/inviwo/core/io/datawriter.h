@@ -42,9 +42,16 @@ public:
 
     const std::vector<FileExtension>& getExtensions() const;
     void addExtension(FileExtension ext);
+    
+    bool getOverwrite() const;
+    void setOverwrite(bool val);
 
+protected:
+    bool overwrite_;
+    
 private:
     std::vector<FileExtension> extensions_;
+
 };
 
 

@@ -40,6 +40,7 @@ private:
     VolumeInport volumePort_;
     FileProperty volumeFile_;
     ButtonProperty exportVolumeButton_;
+    BoolProperty overwrite_;
 };
 
 } // namespace

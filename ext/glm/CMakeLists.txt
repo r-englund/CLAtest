@@ -56,3 +56,8 @@ ivw_vs_folder(glm ext)
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
 ivw_make_package(GLM glm)
+
+if(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
+  #Ignore warnings in external packages
+  set_target_properties(glm PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_INHIBIT_ALL_WARNINGS YES)
+endif(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")

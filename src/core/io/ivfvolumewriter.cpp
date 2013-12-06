@@ -40,10 +40,10 @@ void IvfVolumeWriter::writeData( const Volume* data, const std::string filePath 
 
     std::string rawPath = URLParser::replaceFileExtension(filePath, "raw");
 
-    if(URLParser::fileExists(filePath)){
+    if(URLParser::fileExists(filePath) && !overwrite_){
         throw DataWriterException("Error: Output file: " + filePath + " already exists");
     }
-    if(URLParser::fileExists(rawPath)){
+    if(URLParser::fileExists(rawPath) && !overwrite_){
         throw DataWriterException("Error: Output file: " + rawPath + " already exists");
     }
 

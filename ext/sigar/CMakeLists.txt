@@ -43,7 +43,6 @@ endif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 ## macosx, freebsd
 if(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
   set(SIGAR_SRC src/os/darwin/darwin_sigar.c)
-
   include_directories(src/os/darwin/)
   if(CMAKE_SYSTEM_NAME MATCHES "(Darwin)")
     ivw_include_directories(/Developer/Headers/FlatCarbon/)
@@ -130,3 +129,9 @@ ivw_make_package(Sigar sigar)
 if(TEST_APPLICATIONS)
     add_subdirectory(examples)
 endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
+  #Ignore warnings in external packages
+  set_target_properties(sigar PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_INHIBIT_ALL_WARNINGS YES)
+endif(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
+

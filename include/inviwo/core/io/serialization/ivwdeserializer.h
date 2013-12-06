@@ -721,9 +721,16 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data) thro
 
 template<class T>
 inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) throw (SerializationException) {
-    TxElement* keyNode = rootElement_->FirstChildElement(key); 
-    //if (!keyNode) return;
-    keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
+    TxElement* keyNode = rootElement_->FirstChildElement(key, false);
+    if (keyNode && keyNode->HasAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE)){
+        try{
+            keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
+        }catch(TxException& e){
+            return;
+        }
+    }else{
+        return;
+    }
 }
 
 template<class T>

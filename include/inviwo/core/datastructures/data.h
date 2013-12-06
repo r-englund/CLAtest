@@ -216,22 +216,19 @@ void Data::updateRepresentation(T* representation, int index) const {
         }
         //A one-2-one converter could not be found
         RepresentationConverterPackage<T>* converterPackage = representationConverterFactory->getRepresentationConverterPackage<T>(lastValidRepresentation_);
-        DataRepresentation* updateFrom = lastValidRepresentation_;
         //Go-through the conversion package
         if (converterPackage) {
-            //for (size_t i=0; i<converterPackage->getNumberOfConverters(); i++) { 
-                const std::vector<RepresentationConverter*>* converters = converterPackage->getConverters();
-                for (int j=0; j<static_cast<int>(converters->size()); ++j) { 
-                    for (int k=0; k<static_cast<int>(representations_.size()); ++k) { 
-                        if(converters->at(j)->canConvertTo(representations_[k])) {
-                            converters->at(j)->update(lastValidRepresentation_, representations_[k]);
-                            setRepresentationAsValid(k);
-                            lastValidRepresentation_ = representations_[k];
-                            break;
-                        }
+            const std::vector<RepresentationConverter*>* converters = converterPackage->getConverters();
+            for (int j=0; j<static_cast<int>(converters->size()); ++j) {
+                for (int k=0; k<static_cast<int>(representations_.size()); ++k) {
+                    if(converters->at(j)->canConvertTo(representations_[k])) {
+                        converters->at(j)->update(lastValidRepresentation_, representations_[k]);
+                        setRepresentationAsValid(k);
+                        lastValidRepresentation_ = representations_[k];
+                        break;
                     }
                 }
-            //}
+            }
         }
     }
 }
@@ -239,7 +236,6 @@ void Data::updateRepresentation(T* representation, int index) const {
 
 template<typename T>
 T* Data::getEditableRepresentation() {
-    bool hasRep = hasRepresentation<T>();
     T* result = const_cast<T*>(getRepresentation<T>());
     if (representations_.size()>1) {
         invalidateAllOther<T>();
@@ -258,8 +254,6 @@ bool Data::hasRepresentation() const {
 
 template<typename T>
 void Data::invalidateAllOther(){
-
-    std::vector<DataRepresentation*>::iterator it = representations_.begin();
     for(int i = 0; i < static_cast<int>(representations_.size()); ++i ) {
         T* representation = dynamic_cast<T*>(representations_[i]);
         if (representation) {

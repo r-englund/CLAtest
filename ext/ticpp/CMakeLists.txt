@@ -46,3 +46,8 @@ ivw_vs_folder(ticpp ext)
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
 ivw_make_package(TiCPP ticpp)
+
+if(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
+  #Ignore warnings in external packages
+  set_target_properties(ticpp PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_INHIBIT_ALL_WARNINGS YES)
+endif(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")

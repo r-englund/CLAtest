@@ -17,30 +17,39 @@
 namespace inviwo {
 DataWriterException::DataWriterException(const std::string& message)
     : Exception(message) {}
-
-
-DataWriter::DataWriter() : extensions_() {}
-
-DataWriter::DataWriter( const DataWriter& rhs ) : extensions_(rhs.extensions_){    
+    
+    
+DataWriter::DataWriter() : extensions_(), overwrite_(false){}
+    
+DataWriter::DataWriter( const DataWriter& rhs )
+    : extensions_(rhs.extensions_)
+    , overwrite_(rhs.overwrite_){
 }
-
+    
 DataWriter& DataWriter::operator=( const DataWriter& that ){
     if (this != &that) {
+        overwrite_ = that.overwrite_;
         extensions_.clear();
         for(std::vector<FileExtension>::const_iterator it = that.getExtensions().begin();
             it != that.getExtensions().end(); ++it){
-                extensions_.push_back(*it);
+            extensions_.push_back(*it);
         }
     }
     return *this;
 }
-
+    
 const std::vector<FileExtension>& DataWriter::getExtensions() const {
     return extensions_;
 }
 void DataWriter::addExtension( FileExtension ext ){
     extensions_.push_back(ext);
 }
-
-
+    
+bool DataWriter::getOverwrite() const {
+    return overwrite_;
+}
+void DataWriter::setOverwrite(bool val){
+    overwrite_ = val;
+}
+    
 } // namespace

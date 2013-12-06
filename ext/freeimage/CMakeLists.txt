@@ -247,5 +247,10 @@ ivw_vs_folder(freeimage ext)
 # Make package (for other projects to find)
 ivw_make_package(FreeImage freeimage)
 
+if(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
+  #Ignore warnings in external packages
+  set_target_properties(freeimage PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_INHIBIT_ALL_WARNINGS YES)
+endif(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
+
 
 	

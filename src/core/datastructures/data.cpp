@@ -17,17 +17,17 @@
 namespace inviwo {
 
 Data::Data()
-    : metaData_(new MetaDataMap())
-    , dataFormatBase_(0)
-    , validRepresentations_(0)
-    , lastValidRepresentation_(NULL){ 
+    : validRepresentations_(0)
+    , lastValidRepresentation_(NULL)
+    , metaData_(new MetaDataMap())
+    , dataFormatBase_(0){
 }
 
 Data::Data(const Data& rhs) 
-    : metaData_(rhs.metaData_->clone())
-    , dataFormatBase_(rhs.dataFormatBase_),
-     validRepresentations_(0),
-     lastValidRepresentation_(NULL){
+    : validRepresentations_(0)
+    , lastValidRepresentation_(NULL)
+    , metaData_(rhs.metaData_->clone())
+    , dataFormatBase_(rhs.dataFormatBase_){
     rhs.copyRepresentationsTo(this);
 }
 
@@ -59,22 +59,10 @@ void Data::clearRepresentations() {
 
 void Data::copyRepresentationsTo(Data* targetData) const{
     targetData->clearRepresentations();
-    int count = 0;
     if(lastValidRepresentation_) {
         DataRepresentation* rep = lastValidRepresentation_->clone();
         targetData->addRepresentation(rep);
     }
-    //for(int i=0; i<static_cast<int>(representations_.size()); i++) {
-    //    DataRepresentation* rep = representations_[i]->clone();
-    //    if(rep){
-    //        targetData->addRepresentation(rep);
-    //        if(isRepresentationValid(i)) 
-    //            targetData->setRepresentationAsValid(count);
-    //        if(representations_[i] == lastValidRepresentation_) 
-    //            targetData->lastValidRepresentation_ = rep;
-    //       
-    //    }
-    //}
 }
 
 void Data::addRepresentation(DataRepresentation* representation) {

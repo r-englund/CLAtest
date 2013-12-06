@@ -83,11 +83,43 @@ void FilePropertyWidgetQt::setPropertyValue() {
             extension.push_back(QString::fromStdString(*it));
     }
 
-    QFileDialog openFileDialog(this, tr("Open File ..."), path);
-    openFileDialog.setFileMode(QFileDialog::AnyFile);
+        
+    QFileDialog openFileDialog(this, QString::fromStdString(property_->getDisplayName()), path);
+   
+    switch (property_->getAcceptMode()){
+    case FileProperty::AcceptSave : 
+        openFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+        break;
+    case FileProperty::AcceptOpen :
+        openFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+        break;
+    default:
+        openFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    }
+    
+    switch (property_->getFileMode()){
+    case FileProperty::AnyFile:
+        openFileDialog.setFileMode(QFileDialog::AnyFile);
+        break;
+    case FileProperty::ExistingFile:
+        openFileDialog.setFileMode(QFileDialog::ExistingFile);
+        break;
+    case FileProperty::Directory:
+        openFileDialog.setFileMode(QFileDialog::Directory);
+        break;
+    case FileProperty::ExistingFiles:
+        openFileDialog.setFileMode(QFileDialog::ExistingFiles);
+        break;
+    case FileProperty::DirectoryOnly:
+        openFileDialog.setFileMode(QFileDialog::DirectoryOnly);
+        break;
+    default:
+        openFileDialog.setFileMode(QFileDialog::AnyFile);
+    }
+    
     openFileDialog.setNameFilters(extension);
     openFileDialog.setSidebarUrls(sidebarURLs);
-
+    
     if (openFileDialog.exec()) {
         QString path = openFileDialog.selectedFiles().at(0);
         property_->set(path.toLocal8Bit().constData());

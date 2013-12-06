@@ -136,11 +136,11 @@ void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C,A>& s
 
     NodeSwitch tempNodeSwitch(*this, newNode);
 
-    //FIXME : Does not compile on GCC
-    /*for (std::map<typename K, typename V, typename C, typename A>::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
+    for (typename std::map<K, V, C, A>::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
         serialize(it->first, it->second);
-        //rootElement_->LastChild()->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE,  it->second->getClassName());
-    }*/
+        rootElement_->LastChild()->ToElement()->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE,
+                                                             it->second->getClassName());
+    }
 }
 
 

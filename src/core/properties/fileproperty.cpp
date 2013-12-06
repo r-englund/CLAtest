@@ -19,7 +19,9 @@ namespace inviwo {
 
 FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value, PropertyOwner::InvalidationLevel invalidationLevel, 
 PropertySemantics::Type semantics)
-    : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics){
+    : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics)
+    , acceptMode_(AcceptOpen)
+    , fileMode_(AnyFile) {
         addNameFilter("All Files (*.*)");
 }
 
@@ -52,6 +54,8 @@ void FileProperty::serialize(IvwSerializer& s) const {
     s.serialize("url", relativePath);
 
     s.serialize("nameFilter", nameFilters_, "filter");
+    s.serialize("acceptMode", acceptMode_);
+    s.serialize("fileMode", fileMode_);
 }
 
 void FileProperty::deserialize(IvwDeserializer& d) {
@@ -67,9 +71,19 @@ void FileProperty::deserialize(IvwDeserializer& d) {
     
     basePath = URLParser::getFileDirectory(basePath);
     set(basePath+relativePath);
-
-    nameFilters_.clear();
-    d.deserialize("nameFilter", nameFilters_, "filter");
+    
+    try{
+        nameFilters_.clear();
+        d.deserialize("nameFilter", nameFilters_, "filter");
+        int acceptMode = (int)acceptMode_;
+        d.deserialize("acceptMode", acceptMode);
+        acceptMode_ = (AcceptMode)acceptMode;
+        int fileMode = (int)fileMode_;
+        d.deserialize("fileMode", fileMode);
+        fileMode_ = (FileMode)fileMode;
+    }catch(SerializationException& e){
+        LogInfo("Problem deserializing fileproperty: " << e.getMessage());
+    }
 }
 
 void FileProperty::addNameFilter( std::string filter){
@@ -83,5 +97,21 @@ void FileProperty::clearNameFilters(){
 std::vector<std::string> FileProperty::getNameFilters(){
     return nameFilters_;
 }
+    
+void FileProperty::setAcceptMode(AcceptMode mode){
+    acceptMode_ = mode;
+}
+FileProperty::AcceptMode FileProperty::getAcceptMode() const {
+    return acceptMode_;
+};
+    
+void FileProperty::setFileMode(FileMode mode){
+    fileMode_ = mode;
+}
+FileProperty::FileMode FileProperty::getFileMode() const{
+    return fileMode_;
+}
+    
+    
 
 } // namespace

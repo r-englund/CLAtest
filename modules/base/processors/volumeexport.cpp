@@ -14,6 +14,7 @@
 
 #include "volumeexport.h"
 #include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/io/datawriter.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/util/filedirectory.h>
 #include <inviwo/core/util/fileextension.h>
@@ -25,11 +26,12 @@ ProcessorCategory(VolumeExport, "Data Output");
 ProcessorCodeState(VolumeExport, CODE_STATE_EXPERIMENTAL);
 
 VolumeExport::VolumeExport()
-    : Processor(),
-      volumePort_("volume"),
-      volumeFile_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/newvolume.dat"),
-      exportVolumeButton_("snapshot", "Export Volume", PropertyOwner::VALID)
-{
+    : Processor()
+    , volumePort_("volume")
+    , volumeFile_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/newvolume.dat")
+    , exportVolumeButton_("snapshot", "Export Volume", PropertyOwner::VALID)
+    , overwrite_("overwrite", "Overwrite", false){
+
     std::vector<FileExtension> ext = DataWriterFactory::getRef().getExtensionsForType<Volume>();
     for(std::vector<FileExtension>::const_iterator it = ext.begin();
         it != ext.end(); ++it){
@@ -39,8 +41,10 @@ VolumeExport::VolumeExport()
     }
     addPort(volumePort_);
     addProperty(volumeFile_);
+    volumeFile_.setAcceptMode(FileProperty::AcceptSave);
     exportVolumeButton_.registerClassMemberFunction(this, &VolumeExport::exportVolume);
     addProperty(exportVolumeButton_);
+    addProperty(overwrite_);
 }
 
 VolumeExport::~VolumeExport() {}
@@ -65,6 +69,7 @@ void VolumeExport::exportVolume() {
         
         if(writer){
             try{
+                writer->setOverwrite(overwrite_.get());
                 writer->writeData(volume, volumeFile_.get());
             }catch(DataWriterException const& e){
                 LogError(e.getMessage());

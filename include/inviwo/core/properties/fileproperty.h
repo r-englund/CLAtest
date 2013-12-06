@@ -30,6 +30,9 @@ class IVW_CORE_API FileProperty : public TemplateProperty<std::string> {
 
 public:
 
+    enum AcceptMode { AcceptOpen, AcceptSave };
+    enum FileMode { AnyFile, ExistingFile, Directory, ExistingFiles, DirectoryOnly };
+    
     /** 
      * \brief Constructor for the FileProperty
      *
@@ -54,8 +57,16 @@ public:
     virtual void clearNameFilters();
     virtual std::vector<std::string> getNameFilters();
 
+    virtual void setAcceptMode(AcceptMode mode);
+    AcceptMode getAcceptMode() const;
+    
+    virtual void setFileMode(FileMode mode);
+    FileMode getFileMode() const;
+    
 private:
     std::vector<std::string> nameFilters_;
+    AcceptMode acceptMode_;
+    FileMode fileMode_;
 };
 
 } // namespace
