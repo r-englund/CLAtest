@@ -37,7 +37,6 @@
 #include <QMenu>
 #include <QVarLengthArray>
 #include <QGraphicsItem>
-#include <QThread>
 
 namespace inviwo {
 
@@ -54,6 +53,7 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
 
 	oldConnectionTarget_ = NULL;
 	oldProcessorTarget_ = NULL;
+    workerThreadReset();
 
     processorNetwork_ = new ProcessorNetwork();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
@@ -63,7 +63,9 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
     connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(hoverPortTimeOut()));
 }
 
-
+NetworkEditor::~NetworkEditor(){
+    workerThreadQuit();
+}
 
 /////////////////////////////////////////////
 //   PUBLIC METHODS FOR CHANGING NETWORK   //
@@ -396,9 +398,21 @@ void NetworkEditor::errorString(QString str){
     LogError(str.toLocal8Bit().constData());
 }
 
+void NetworkEditor::workerThreadReset(){
+    workerThread_ = NULL;
+}
+
+void NetworkEditor::workerThreadQuit(){
+    if(workerThread_){
+        workerThread_->quit();
+        workerThread_->wait();
+        workerThreadReset();
+    }
+}
 
 void NetworkEditor::cacheProcessorProperty(Processor* p){
-    if(p){
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    if(std::find(processors.begin(), processors.end(), p) != processors.end()){
         PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
         propertyListWidget_->cacheProcessorPropertiesItem(p);
     }
@@ -1181,6 +1195,7 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
 }
 
 bool NetworkEditor::loadNetwork(std::string fileName) {
+    workerThreadQuit();
 
     // first we clean the current network
     clearNetwork();
@@ -1235,16 +1250,17 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     }
 
     // create all property (should be all non-visible) widgets in a thread (as it can take a long time to create them)
-    QThread* workerThread = new QThread;
+    workerThread_ = new QThread;
     ProcessorWorkerQt* worker = new ProcessorWorkerQt(processors);
-    worker->moveToThread(workerThread);
+    worker->moveToThread(workerThread_);
     connect(worker, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
-    connect(workerThread, SIGNAL(started()), worker, SLOT(process()));
+    connect(workerThread_, SIGNAL(started()), worker, SLOT(process()));
     connect(worker, SIGNAL(nextProcessor(Processor*)), this, SLOT(cacheProcessorProperty(Processor*)));
-    connect(worker, SIGNAL(finished()), workerThread, SLOT(quit()));
+    connect(worker, SIGNAL(finished()), workerThread_, SLOT(quit()));
     connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
-    workerThread->start();
+    connect(workerThread_, SIGNAL(finished()), workerThread_, SLOT(deleteLater()));
+    connect(workerThread_, SIGNAL(finished()), this, SLOT(workerThreadReset()));
+    workerThread_->start();
 
     return true;
 }

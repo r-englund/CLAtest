@@ -18,6 +18,7 @@
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsScene>
 #include <QTimer>
+#include <QThread>
 
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
@@ -45,6 +46,7 @@ class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
     Q_OBJECT
 public:
     NetworkEditor(QObject* parent=0);
+    virtual ~NetworkEditor();
 
     /**
      * \brief This method adds a processor to the network.
@@ -83,6 +85,7 @@ public:
 public slots:
     void hoverPortTimeOut();
     void errorString(QString);
+    void workerThreadReset();
     void cacheProcessorProperty(Processor*);
 
 protected:
@@ -103,6 +106,8 @@ protected:
     void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);  
 
     bool isLinkDisplayEnabled();
+
+    void workerThreadQuit();
 
 private:
     enum NetworkEditorFlags { 
@@ -137,6 +142,7 @@ private:
     bool gridSnapping_;
     static const int GRID_SPACING;
     QTimer hoverTimer_;
+    QThread* workerThread_;
 
     void addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor=true, bool showPropertyWidgets=true, bool showProcessorWidget=true);
     void removeProcessorRepresentations(Processor* processor);
