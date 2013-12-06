@@ -30,7 +30,27 @@ std::vector<Processor*> Inport::getPredecessors() {
     return predecessorsProcessors;
 }
 
+template <typename T>
+void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsProcessors) {
+    if (isConnected()) {
 
+        std::vector<Outport*> connectedOutports = getConnectedOutports();
+        std::vector<Outport*>::const_iterator it = connectedOutports.begin(); std::vector<Outport*>::const_iterator endIt = connectedOutports.end();
+        for(; it != endIt; ++it) {
+            Processor* predecessorsProcessor = (*it)->getProcessor();
+
+            if (std::find(predecessorsProcessors.begin(), predecessorsProcessors.end(), predecessorsProcessor)== predecessorsProcessors.end())
+                predecessorsProcessors.push_back(predecessorsProcessor);
+
+            std::vector<Inport*> inports = predecessorsProcessor->getInports();
+            for (size_t j=0; j<inports.size(); j++) {
+                T* inPort = dynamic_cast<T*>(inports[j]);
+                if (inPort)
+                    inPort->template getPredecessorsUsingPortType<T>(predecessorsProcessors);
+            }
+        }
+    }
+}
 
 
 
