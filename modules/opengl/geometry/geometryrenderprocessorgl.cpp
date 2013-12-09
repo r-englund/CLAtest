@@ -76,6 +76,9 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
         return;
     }
     const Position3dBufferRAM* posBuffer = dynamic_cast<const Position3dBufferRAM*>(geom->getAttributes(0)->getRepresentation<BufferRAM>());
+    if(posBuffer == NULL) {
+        return;
+    }
     const std::vector<vec3>* pos = posBuffer->getDataContainer();
     vec3 maxPos, minPos;
     if(pos->size() > 0) {
@@ -86,7 +89,7 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
         maxPos = glm::max(maxPos, (*pos)[i]);
         minPos = glm::min(minPos, (*pos)[i]);
     }
-    vec3 centerPos = 0.5f*(maxPos-minPos);
+    vec3 centerPos = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(0.5f*(maxPos+minPos), 1.f)).xyz();
     camera_.setLookTo(centerPos);
 
 
