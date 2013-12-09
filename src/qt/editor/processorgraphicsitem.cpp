@@ -27,6 +27,7 @@
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
+#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 
 namespace inviwo {
 
@@ -396,6 +397,9 @@ bool ProcessorGraphicsItem::isEditingProcessorName(){
 
 void ProcessorGraphicsItem::setIdentifier(QString text){
     getProcessor()->setIdentifier(text.toLocal8Bit().constData());
+    ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
+    if(processorWidgetQt)
+        processorWidgetQt->setWindowTitle(text);
     updatePropertyListWidget();
 }
 

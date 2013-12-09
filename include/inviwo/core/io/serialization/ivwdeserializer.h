@@ -725,7 +725,7 @@ inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& da
     if (keyNode && keyNode->HasAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE)){
         try{
             keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
-        }catch(TxException& e){
+        }catch(TxException&){
             return;
         }
     }else{
