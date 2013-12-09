@@ -60,8 +60,6 @@ namespace inviwo {
 
     QRectF TransferFunctionEditorControlPoint::boundingRect() const {
         float bboxsize = size_ + 10.0f;
-        float left = pos().x() - bboxsize/2.0f;
-        float top = pos().y() - bboxsize/2.0f;
         return QRectF(-bboxsize/2.0, -bboxsize/2.0f, bboxsize, bboxsize);
     }
 

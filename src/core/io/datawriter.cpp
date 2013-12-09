@@ -19,11 +19,11 @@ DataWriterException::DataWriterException(const std::string& message)
     : Exception(message) {}
     
     
-DataWriter::DataWriter() : extensions_(), overwrite_(false){}
+DataWriter::DataWriter() : overwrite_(false), extensions_() {}
     
 DataWriter::DataWriter( const DataWriter& rhs )
-    : extensions_(rhs.extensions_)
-    , overwrite_(rhs.overwrite_){
+    : overwrite_(rhs.overwrite_)
+    , extensions_(rhs.extensions_){
 }
     
 DataWriter& DataWriter::operator=( const DataWriter& that ){

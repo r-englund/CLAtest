@@ -59,8 +59,16 @@ int SimpleWithRectangleLabel::getIndex() {return uniqueIndex_;}
 /////////////////////////////////////////////////
 // Simple Graphics view
 
-SimpleGraphicsView::SimpleGraphicsView(QWidget* parent) : QGraphicsView(parent), scene_(0), rubberBandActive_(false),
-    hideLabels_(false), hideLabelDescriptions_(false), readOnly_(false), currentRectItem_(0),fillRectangle_(false){    
+SimpleGraphicsView::SimpleGraphicsView(QWidget* parent)
+    : QGraphicsView(parent)
+    , scene_(0)
+    , rubberBandActive_(false)
+    , readOnly_(false)
+    , hideLabels_(false)
+    , hideLabelDescriptions_(false)
+    , fillRectangle_(false)
+    , currentRectItem_(0){
+        
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
@@ -99,7 +107,6 @@ void SimpleGraphicsView::addRectangle(QPointF mStartPoint, QPointF deltaPoint,iv
 
 void SimpleGraphicsView::mouseDoubleClickEvent(QMouseEvent* e) {
 
-    QPoint currentPoint = e->pos();
     QList<QGraphicsItem*> graphicsItems =items(e->pos()); 
 
     //graphicsItems.size()==1 because of background pixmap item
@@ -209,8 +216,7 @@ void SimpleGraphicsView::mouseReleaseEvent(QMouseEvent *e)
 }
 
 void SimpleGraphicsView::mouseMoveEvent(QMouseEvent *e) {    
-    QPoint currentPoint = e->pos();
-    QList<QGraphicsItem*> graphicsItems =items(e->pos());    
+    QList<QGraphicsItem*> graphicsItems =items(e->pos());
     if(e->button()==Qt::LeftButton) {
         //graphicsItems.size()==1 because of background pixmap item
         for (int i=0; i<graphicsItems.size(); i++) {
@@ -444,12 +450,9 @@ void ImageLabelWidget::addBackGroundImage(std::string imagePath) {
 
     backGroundImage_->scaled(QSize(scaledSceneSize.x, scaledSceneSize.y));
     QGraphicsPixmapItem *i = scene_->addPixmap( QPixmap(imagePath.c_str()) );    
-    vec2 centralPos = (scaledSceneSize - unscaledSize)/2.0f ;
-    //i->setPos(centralPos.x, centralPos.y);
-    i->setZValue(1);    
+    i->setZValue(1);
     scene_->setSceneRect(0, 0, unscaledSize.x, unscaledSize.y);
     view_->setScaleFactor(sceneScaleFactor_);
-    //resize(image.size()*4/3);
     resize(QSize(scaledSceneSize.x, scaledSceneSize.y));
 }
 
@@ -589,7 +592,6 @@ bool ImageEditorWidgetQt::saveDialog() {
 }
 
 void ImageEditorWidgetQt::updateFromProperty() {
-    StringProperty* stringProp = dynamic_cast<StringProperty*>(property_);
     FileProperty* fileProp = dynamic_cast<FileProperty*>(property_);
     if (fileProp) {
         fileWidget_->updateFromProperty();

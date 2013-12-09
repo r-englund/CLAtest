@@ -40,9 +40,9 @@ private:
     Property* property_;
     FloatProperty* floatProperty_; ///< Property  for the 1-D float vectors
     IntProperty* intProperty_; ///< Property for the 1-D integer vectors
-    FloatVec4Property* floatVec4Property_; ///< Property for the 4-D float vectors
-    FloatVec3Property* floatVec3Property_; ///< Property for the 3-D float vectors
     FloatVec2Property* floatVec2Property_; ///< Property for the 2-D float vectors
+    FloatVec3Property* floatVec3Property_; ///< Property for the 3-D float vectors
+    FloatVec4Property* floatVec4Property_; ///< Property for the 4-D float vectors
     IntVec2Property* intVec2Property_; ///< Property for the 2-D integer vectors
     IntVec3Property* intVec3Property_; ///< Property for the 3-D integer vectors
     IntVec4Property* intVec4Property_; ///< Property for the 4-D integer vectors

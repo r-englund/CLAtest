@@ -84,7 +84,9 @@ void EntryExitPoints::process() {
     Image* tmpEntryPoints;
     ImageGL* tmpEntryPointsGL;
 	if (capNearClipping_.get()) {
-		tmpEntryPoints = new Image(entryPort_.getDimensions(), entryPort_.getData()->getImageType(), entryPort_.getData()->getDataFormat());
+		tmpEntryPoints = new Image(entryPort_.getDimensions(),
+                                   entryPort_.getData()->getImageType(),
+                                   entryPort_.getData()->getDataFormat());
 		tmpEntryPointsGL = tmpEntryPoints->getEditableRepresentation<ImageGL>();
 		tmpEntryPointsGL->activateBuffer();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

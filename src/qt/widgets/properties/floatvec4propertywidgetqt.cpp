@@ -46,9 +46,6 @@ void FloatVec4PropertyWidgetQt::generateWidget() {
         sliderWidget->setLayout(vLayout);
         vLayout->setContentsMargins(0,0,0,0);
         vLayout->setSpacing(0);
-        vec4 valueVec4Max = property_->getMaxValue();
-        vec4 valueVec4Min = property_->getMinValue();
-        vec4 valueIncrement = property_->getIncrement();
 
         sliderX_ = new FloatSliderWidgetQt();  
         sliderY_ = new FloatSliderWidgetQt();

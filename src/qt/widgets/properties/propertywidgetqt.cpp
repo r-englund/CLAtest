@@ -74,7 +74,7 @@ void PropertyWidgetQt::showContextMenu(const QPoint& pos) {
     if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = this->mapToGlobal(pos);
-        QAction* selecteditem = contextMenu_->exec(globalPos);
+        contextMenu_->exec(globalPos);
     }
 }
 QMenu* PropertyWidgetQt::generatePropertyWidgetMenu(){

@@ -17,10 +17,10 @@
 namespace inviwo {
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData() 
-    : positionMetaData_(ivec2(0)),
-      dimensionMetaData_(ivec2(256)),
-      visiblityMetaData_(false),
-      CompositeMetaData() {
+    : CompositeMetaData()
+    , positionMetaData_(ivec2(0))
+    , dimensionMetaData_(ivec2(256))
+    , visiblityMetaData_(false) {
     addMetaData(positionMetaData_);
     addMetaData(dimensionMetaData_);
     addMetaData(visiblityMetaData_);

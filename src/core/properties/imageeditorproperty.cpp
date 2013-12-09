@@ -16,14 +16,14 @@
 
 namespace inviwo {
 
-ImageLabel::ImageLabel() : startPoint_(0), rectSize_(0), name_("") {
+ImageLabel::ImageLabel() : name_(""), startPoint_(0), rectSize_(0) {
 
 }
 
-ImageLabel::ImageLabel(vec2 startPoint, vec2 rectSize, std::string name) :
-    startPoint_(startPoint), 
-    rectSize_(rectSize), 
-    name_(name) {
+ImageLabel::ImageLabel(vec2 startPoint, vec2 rectSize, std::string name)
+    : name_(name)
+    , startPoint_(startPoint)
+    , rectSize_(rectSize){
 }
 
 void ImageLabel::serialize(IvwSerializer& s) const {    

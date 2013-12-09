@@ -48,7 +48,6 @@ protected:
 private:
     int maxBefore_;
     int maxAfter_;
-    unsigned int labelHeight_;
     bool focusOut_;
     QString orgText_;
 };

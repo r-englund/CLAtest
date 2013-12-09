@@ -19,13 +19,16 @@ namespace inviwo {
 static const float RADIUS = 0.5f;
 static const float STEPSIZE = 0.05f;
 
-Trackball::Trackball(CameraProperty* camera) : InteractionHandler(), PropertyOwner(),
-      camera_(camera),
-      lastMousePos_(ivec2(0)),
-      lastTrackballPos_(vec3(0.5f)),
-      pixelWidth_(0.007f),
-      isMouseBeingPressedAndHold_(false) {
-	// Eventproperties for continuous movement
+Trackball::Trackball(CameraProperty* camera)
+    : InteractionHandler()
+    , PropertyOwner()
+    , pixelWidth_(0.007f)
+    , isMouseBeingPressedAndHold_(false)
+    , lastMousePos_(ivec2(0))
+    , lastTrackballPos_(vec3(0.5f))
+    , camera_(camera) {
+
+    // Eventproperties for continuous movement
     rotateEventProperty_ = new EventProperty("trackballRotate", "Rotate", 
         new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE), 
         new TrackballAction(TrackballAction::TRACKBALL_ROTATE));

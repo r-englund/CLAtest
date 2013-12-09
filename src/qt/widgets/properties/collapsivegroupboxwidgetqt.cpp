@@ -31,7 +31,6 @@ void CollapsiveGroupBoxWidgetQt::generateWidget() {
     btnCollapse_ = new QToolButton();
     btnCollapse_->setStyleSheet("QToolButton::hover { background-color: gray }");
     QHBoxLayout* hLayout = new QHBoxLayout();
-    QHBoxLayout* boxLayout = new QHBoxLayout();
     QGridLayout* gridLayout = new QGridLayout();
 
     QHBoxLayout* H2 = new QHBoxLayout();
@@ -203,7 +202,7 @@ void CollapsiveGroupBoxWidgetQt::showContextMenu( const QPoint& pos ){
     if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = this->mapToGlobal(pos);
-        QAction* selecteditem = contextMenu_->exec(globalPos);
+        contextMenu_->exec(globalPos);
     }
 }
 

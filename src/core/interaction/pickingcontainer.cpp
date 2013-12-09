@@ -19,7 +19,11 @@
 
 namespace inviwo {
 
-PickingContainer::PickingContainer() : src_(NULL), selected_(false), currentPickObj_(NULL), prevCoord_(uvec2(0,0)) {};
+PickingContainer::PickingContainer()
+    : src_(NULL)
+    , currentPickObj_(NULL)
+    , prevCoord_(uvec2(0,0))
+    , selected_(false) {};
 
 PickingContainer::~PickingContainer() {};
 

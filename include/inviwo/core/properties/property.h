@@ -104,8 +104,7 @@ private:
     PropertyOwner::InvalidationLevel invalidationLevel_;
     PropertySemantics::Type semantics_;
     bool readOnly_;
-
-bool propertyModified_;
+    bool propertyModified_;
     PropertyOwner* owner_;
     std::vector<PropertyWidget*> propertyWidgets_;
 

@@ -19,10 +19,12 @@
 
 namespace inviwo {
 
-FloatVec3PropertyWidgetQt::FloatVec3PropertyWidgetQt(FloatVec3Property* property) : property_(property),
-valueVec3Min_(property->getMinValue()),
-valueVec3Max_(property->getMaxValue()),
-valueIncrement_(property->getIncrement()){
+FloatVec3PropertyWidgetQt::FloatVec3PropertyWidgetQt(FloatVec3Property* property)
+    : property_(property)
+    , valueVec3Max_(property->getMaxValue())
+    , valueVec3Min_(property->getMinValue())
+    , valueIncrement_(property->getIncrement()){
+        
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();

@@ -63,20 +63,23 @@ void VolumeExport::exportVolume() {
     if (volume && !volumeFile_.get().empty()) {
 
         std::string fileExtension = URLParser::getFileExtension(volumeFile_.get());
-
         DataWriterType<Volume>* writer = 
             DataWriterFactory::getRef().getWriterForTypeAndExtension<Volume>(fileExtension);
-        
         if(writer){
             try{
                 writer->setOverwrite(overwrite_.get());
                 writer->writeData(volume, volumeFile_.get());
+                LogInfo("Volume exported to disk: " << volumeFile_.get());
             }catch(DataWriterException const& e){
                 LogError(e.getMessage());
             }
         }else{
-            LogError("Cound not find a writer for the specified extension and data type");
+            LogError("Error: Cound not find a writer for the specified extension and data type");
         }
+    } else if (volumeFile_.get().empty()){
+        LogError("Error: Please specify a file to write to");
+    } else if (!volume){
+        LogError("Error: Please connect a volume to export");
     }
 }
 

@@ -20,9 +20,13 @@
 
 namespace inviwo {
 
-ImageGL::ImageGL(uvec2 dimensions, ImageType type, const DataFormatBase* format, Texture2D* colorTexture, Texture2D* depthTexture, Texture2D* pickingTexture)
-: ImageRepresentation(dimensions, type, format), colorTexture_(colorTexture), depthTexture_(depthTexture), pickingTexture_(pickingTexture)
-{
+ImageGL::ImageGL(uvec2 dimensions, ImageType type, const DataFormatBase* format,
+                 Texture2D* colorTexture, Texture2D* depthTexture, Texture2D* pickingTexture)
+    : ImageRepresentation(dimensions, type, format)
+    , colorTexture_(colorTexture)
+    , depthTexture_(depthTexture)
+    , pickingTexture_(pickingTexture){
+        
     initialize();
 }
 

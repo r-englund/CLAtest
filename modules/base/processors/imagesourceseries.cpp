@@ -23,13 +23,13 @@ ProcessorCategory(ImageSourceSeries, "Data Input");
 ProcessorCodeState(ImageSourceSeries, CODE_STATE_EXPERIMENTAL);
 
 ImageSourceSeries::ImageSourceSeries()
-    : Processor(),
-    outport_("image.outport"),
-    imageFileDirectory_("imageFileDirectory", "Image file directory", IVW_DIR+"data/images"),
-    findFilesButton_("findFiles", "Find Files"),
-    currentImageIndex_("currentImageIndex", "Image index", 1, 1, 1, 1)
-{
-    addPort(outport_);    
+    : Processor()
+    , outport_("image.outport")
+    , findFilesButton_("findFiles", "Find Files")
+    , imageFileDirectory_("imageFileDirectory", "Image file directory", IVW_DIR+"data/images")
+    , currentImageIndex_("currentImageIndex", "Image index", 1, 1, 1, 1){
+
+    addPort(outport_);
     addProperty(imageFileDirectory_);
     addProperty(findFilesButton_);
     addProperty(currentImageIndex_);

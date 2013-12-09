@@ -18,16 +18,18 @@
 
 namespace inviwo {
 
-FloatVec2PropertyWidgetQt::FloatVec2PropertyWidgetQt(FloatVec2Property *property) : property_(property),
-valueVec2Min_(property->getMinValue()),
-valueVec2Max_(property->getMaxValue()),
-valueIncrement_(property->getIncrement()) {
+FloatVec2PropertyWidgetQt::FloatVec2PropertyWidgetQt(FloatVec2Property *property)
+    : property_(property)
+    , valueVec2Max_(property->getMaxValue())
+    , valueVec2Min_(property->getMinValue())
+    , valueIncrement_(property->getIncrement()) {
+        
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
 	generateWidget();
 	updateFromProperty();
     generatesSettingsWidget();
-	}
+}
 
 
 void FloatVec2PropertyWidgetQt::generateWidget() {

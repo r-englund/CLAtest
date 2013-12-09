@@ -17,11 +17,12 @@
 namespace inviwo {
 
 Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
-    : dimensions_(dimensions),
-      format_(format),
-      internalformat_(internalformat),
-      dataType_(dataType),
-      filtering_(filtering) {
+    : dimensions_(dimensions)
+    , format_(format)
+    , internalformat_(internalformat)
+    , dataType_(dataType)
+    , filtering_(filtering) {
+
     glGenTextures(1, &id_);
     // Allocate data
     bind();
@@ -31,7 +32,8 @@ Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenu
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage3D(GL_TEXTURE_3D, 0, internalformat_, dimensions_.x, dimensions_.y, dimensions_.z, 0, format_, dataType_, NULL);
+    glTexImage3D(GL_TEXTURE_3D, 0, internalformat_, dimensions_.x, dimensions_.y, dimensions_.z,
+                 0, format_, dataType_, NULL);
     LGL_ERROR;
 }
 

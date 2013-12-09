@@ -21,7 +21,12 @@
 
 namespace inviwo {
 
-LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent) : QGraphicsTextItem(parent), orgText_(""), maxBefore_(0), maxAfter_(0), focusOut_(false) {
+LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent)
+    : QGraphicsTextItem(parent)
+    , maxBefore_(0)
+    , maxAfter_(0)
+    , focusOut_(false)
+    , orgText_(""){
 }
 
 LabelGraphicsItem::~LabelGraphicsItem() {}

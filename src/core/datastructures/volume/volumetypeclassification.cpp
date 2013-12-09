@@ -21,9 +21,6 @@ UniformRectiLinearVolume::UniformRectiLinearVolume() : UniformData<3, RectiLinea
 
 UniformRectiLinearVolume::~UniformRectiLinearVolume() {}
 
-Data* UniformRectiLinearVolume::clone() {
-    return new UniformRectiLinearVolume();
-}
 
 /*----------------------------------------------------------------------*/
 
@@ -32,10 +29,6 @@ UniformCurviLinearVolume::UniformCurviLinearVolume() : UniformData<3, CurviLinea
 
 UniformCurviLinearVolume::~UniformCurviLinearVolume() {}
 
-Data* UniformCurviLinearVolume::clone() {
-    return new UniformCurviLinearVolume();
-}
-
 /*----------------------------------------------------------------------*/
 
 NonUniformRectiLinearVolume::NonUniformRectiLinearVolume() : NonUniformData<3, RectiLinearVolume>() {
@@ -43,20 +36,12 @@ NonUniformRectiLinearVolume::NonUniformRectiLinearVolume() : NonUniformData<3, R
 
 NonUniformRectiLinearVolume::~NonUniformRectiLinearVolume() {}
 
-Data* NonUniformRectiLinearVolume::clone() {
-    return new NonUniformRectiLinearVolume();
-}
-
 /*----------------------------------------------------------------------*/
 
 NonUniformCurviLinearVolume::NonUniformCurviLinearVolume() : NonUniformData<3, CurviLinearVolume>() {
 }
 
 NonUniformCurviLinearVolume::~NonUniformCurviLinearVolume() {}
-
-Data* NonUniformCurviLinearVolume::clone() {
-    return new NonUniformCurviLinearVolume();
-}
 
 /*----------------------------------------------------------------------*/
 

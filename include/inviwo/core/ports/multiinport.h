@@ -51,8 +51,8 @@ public:
     size_t getNumConnectedOutports() const { return inports_->size(); }
 
     void disconnectFrom(Outport* outport) {
-        InportSet::iterator it = inports_->begin(); InportSet::iterator endIt = inports_->end();
-        for(it; it != endIt; ++it) {
+        InportSet::iterator it;
+        for(it = inports_->begin(); it != inports_->end(); ++it) {
             // Find connected port
             if((*it)->isConnectedTo(outport)) {
                 (*it)->disconnectFrom(outport);

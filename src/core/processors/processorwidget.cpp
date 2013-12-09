@@ -18,10 +18,9 @@
 namespace inviwo {
 
 ProcessorWidget::ProcessorWidget()
-    : processor_(0),
-      initialized_(false),
-      metaData_(0)
-{}
+    : metaData_(0)
+    , processor_(0)
+    , initialized_(false){}
 
 ProcessorWidget::~ProcessorWidget() {}
 

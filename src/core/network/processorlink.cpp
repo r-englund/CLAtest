@@ -117,9 +117,7 @@ void ProcessorLink::evaluate(LinkEvaluator *leval) {
     for (size_t i=0; i<propertyLinks.size(); i++) {
         startProperty = propertyLinks[i]->getSourceProperty();
         endProperty = propertyLinks[i]->getDestinationProperty();        
-       
-        Processor* srcProc = dynamic_cast<Processor*>(startProperty->getOwner());
-        Processor* dstProc = dynamic_cast<Processor*>(endProperty->getOwner()); 
+        
         //is change due to property modification?
         if (startProperty->isPropertyModified())
                 leval->evaluate(startProperty, endProperty);

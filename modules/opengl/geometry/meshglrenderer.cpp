@@ -84,6 +84,8 @@ GLenum MeshGLRenderer::getDrawMode( RenderType rt, ConnectivityType ct)
             return GL_TRIANGLES_ADJACENCY;
         case STRIP_ADJACENCY:
             return GL_TRIANGLE_STRIP_ADJACENCY;
+        default:
+            return GL_POINTS;
         }
     case LINES:
         switch(ct)
@@ -98,6 +100,8 @@ GLenum MeshGLRenderer::getDrawMode( RenderType rt, ConnectivityType ct)
             return GL_LINES_ADJACENCY;
         case STRIP_ADJACENCY:
             return GL_LINE_STRIP_ADJACENCY;
+        default:
+            return GL_POINTS;
         }
     default:
         return GL_POINTS;

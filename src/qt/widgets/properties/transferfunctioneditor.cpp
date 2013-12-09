@@ -16,9 +16,9 @@
 
 namespace inviwo {
 TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view)
-    :transferFunction_(transferFunction),
-    view_(view)
-{
+    : view_(view)
+    , transferFunction_(transferFunction) {
+        
     leftEdgeLine_ = new TransferFunctionEditorLineItem();
     rightEdgeLine_ = new TransferFunctionEditorLineItem();
 
@@ -66,8 +66,6 @@ TransferFunctionEditor::~TransferFunctionEditor(){
 
 void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent *e){
     mouseDownPos_ = e->scenePos();
-
-    std::vector<TransferFunctionEditorControlPoint*>::iterator iter = controlPoints_.begin();
 
     if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ControlModifier)){
         this->views().front()->setDragMode(QGraphicsView::RubberBandDrag);

@@ -21,23 +21,23 @@ namespace inviwo {
 std::map<std::string,std::string> Property::groupDisplayNames_;
 
 Property::Property(std::string identifier, std::string displayName, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
-: identifier_(identifier),
-  displayName_(displayName),
-  invalidationLevel_(invalidationLevel),
-  semantics_(semantics),
-  owner_(0),
-  groupID_(""),
-  VoidObservable(),
-  visibilityMode_(APPLICATION),
-  readOnly_(false),
-  propertyModified_(false)
-{}
+    : VoidObservable()
+    , identifier_(identifier)
+    , displayName_(displayName)
+    , invalidationLevel_(invalidationLevel)
+    , semantics_(semantics)
+    , readOnly_(false)
+    , propertyModified_(false)
+    , owner_(0)
+    , groupID_("")
+    , visibilityMode_(APPLICATION){
+}
 
 Property::Property()
-    : identifier_(""),
-      displayName_(""),
-      propertyModified_(false)
-{}
+    : identifier_("")
+    , displayName_("")
+    , propertyModified_(false){
+}
 
 std::string Property::getIdentifier() const {
     return identifier_;

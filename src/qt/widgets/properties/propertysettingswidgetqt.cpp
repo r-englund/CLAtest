@@ -16,15 +16,16 @@
 
 namespace inviwo {
 
-PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property) : property_(property),
-floatProperty_(NULL),
-floatVec2Property_(NULL),
-floatVec3Property_(NULL),
-floatVec4Property_(NULL),
-intProperty_(NULL),
-intVec2Property_(NULL),
-intVec3Property_(NULL),
-intVec4Property_(NULL){
+PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property)
+    : property_(property)
+    , floatProperty_(NULL)
+    , intProperty_(NULL)
+    , floatVec2Property_(NULL)
+    , floatVec3Property_(NULL)
+    , floatVec4Property_(NULL)
+    , intVec2Property_(NULL)
+    , intVec3Property_(NULL)
+    , intVec4Property_(NULL){
 
     if (dynamic_cast<FloatProperty*>(property_)) {
         floatProperty_ = static_cast<FloatProperty*>(property_);

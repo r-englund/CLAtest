@@ -56,7 +56,6 @@ void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOption
     painter->setRenderHint(QPainter::Antialiasing, true);
     float viewScale = static_cast<TransferFunctionEditor*>(this->scene())->getView()->transform().m11();
     float viewWidth = static_cast<TransferFunctionEditor*>(this->scene())->getView()->width();
-    float viewHeight = static_cast<TransferFunctionEditor*>(this->scene())->getView()->height();
     QPointF start = start_->pos();
     QPointF finish = finish_->pos();
 

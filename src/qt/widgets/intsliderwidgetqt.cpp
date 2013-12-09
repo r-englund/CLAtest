@@ -108,7 +108,7 @@ void inviwo::IntSliderWidgetQt::updateValueSlider() {
 }
 
 void IntSliderWidgetQt::setIncrement( int increment ) {
- this->increment_ = increment_;
+ increment_ = increment;
  spinBox_->setSingleStep(increment_);
 }
 

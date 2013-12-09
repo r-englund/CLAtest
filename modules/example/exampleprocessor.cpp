@@ -53,8 +53,8 @@ namespace inviwo {
 	}
 
 	void ExampleProcessor::process() {
-		if(inport_.hasData() && dims_ != inport_.getData()->getDimension() ||
-			basis_ != inport_.getData()->getBasisAndOffset()) {
+		if(inport_.hasData() && (dims_ != inport_.getData()->getDimension() ||
+                                 basis_ != inport_.getData()->getBasisAndOffset())) {
 			dims_ = inport_.getData()->getDimension();
 			basis_ = inport_.getData()->getBasisAndOffset();
 			clipX_.setRangeMax(static_cast<int>(dims_.x));

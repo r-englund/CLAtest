@@ -124,8 +124,8 @@ void VolumeRAMSlice::evaluate(){
         else
             sliceImage = new ImageRAMPrecision<T>(dataDims.yz(),  COLOR_ONLY);
 
-        const T* src = reinterpret_cast<const T*>(volume->getData());
-        T* dst = reinterpret_cast<T*>(sliceImage->getData());
+        //const T* src = reinterpret_cast<const T*>(volume->getData());
+        //T* dst = reinterpret_cast<T*>(sliceImage->getData());
 
         //copy data
         /*size_t offsetVolume;

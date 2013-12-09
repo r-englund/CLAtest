@@ -19,9 +19,11 @@
 namespace inviwo {
 
 SingleInport::SingleInport(std::string identifier,
-               PropertyOwner::InvalidationLevel invalidationLevel)
-: Inport(identifier), invalidationLevel_(invalidationLevel), connectedOutport_(NULL)
-{}
+                           PropertyOwner::InvalidationLevel invalidationLevel)
+    : Inport(identifier)
+    , connectedOutport_(NULL)
+    , invalidationLevel_(invalidationLevel){
+}
 
 SingleInport::~SingleInport() {}
 

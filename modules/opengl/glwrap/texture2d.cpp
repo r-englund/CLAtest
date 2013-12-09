@@ -17,13 +17,14 @@
 namespace inviwo {
 
 Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering)
-    :  Observable<TextureObserver>(), 
-      dimensions_(dimensions),
-      format_(glFormat.format),
-      internalformat_(glFormat.internalFormat),
-      dataType_(glFormat.type),
-      filtering_(filtering),
-      referenceCount_(1) {
+    : Observable<TextureObserver>()
+    , dimensions_(dimensions)
+    , format_(glFormat.format)
+    , internalformat_(glFormat.internalFormat)
+    , dataType_(glFormat.type)
+    , filtering_(filtering)
+    , referenceCount_(1) {
+        
     glGenTextures(1, &id_);
     numChannels_ = glFormat.channels;
     byteSize_ = numChannels_*glFormat.typeSize;
@@ -33,13 +34,14 @@ Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filt
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
-    : Observable<TextureObserver>(),
-      dimensions_(dimensions),
-      format_(format),
-      internalformat_(internalformat),
-      dataType_(dataType),
-      filtering_(filtering),
-      referenceCount_(1) {
+    : Observable<TextureObserver>()
+    , dimensions_(dimensions)
+    , format_(format)
+    , internalformat_(internalformat)
+    , dataType_(dataType)
+    , filtering_(filtering)
+    , referenceCount_(1) {
+        
     glGenTextures(1, &id_);
     setNChannels();
     setSizeInBytes();
@@ -49,15 +51,15 @@ Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenu
 }
 
 Texture2D::Texture2D( const Texture2D& other )
-    : Observable<TextureObserver>(), 
-    dimensions_(other.dimensions_),
-    format_(other.format_),
-    internalformat_(other.internalformat_),
-    dataType_(other.dataType_),
-    filtering_(other.filtering_),
-    numChannels_(other.numChannels_),
-    byteSize_(other.byteSize_),
-    referenceCount_(1) {
+    : Observable<TextureObserver>()
+    , dimensions_(other.dimensions_)
+    , format_(other.format_)
+    , internalformat_(other.internalformat_)
+    , dataType_(other.dataType_)
+    , filtering_(other.filtering_)
+    , byteSize_(other.byteSize_)
+    , numChannels_(other.numChannels_)
+    , referenceCount_(1) {
         
     glGenTextures(1, &id_);
     glGenBuffers(1, &pboBack_);

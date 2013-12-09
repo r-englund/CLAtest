@@ -41,14 +41,12 @@ namespace inviwo {
     public:
         RectiLinearVolume() {}
         ~RectiLinearVolume() {}
-        virtual Data* clone()=0;
     };
 
     class IVW_CORE_API CurviLinearVolume : public CurviLinearData<3, Volume> {
     public:
         CurviLinearVolume() {}
         ~CurviLinearVolume() {}
-        virtual Data* clone()=0;
     };
 
     /*----------------------------------------------------------------------*/
@@ -57,28 +55,24 @@ namespace inviwo {
     public:
         UniformRectiLinearVolume();
         ~UniformRectiLinearVolume();
-        virtual Data* clone();
     };
 
     class IVW_CORE_API UniformCurviLinearVolume : public UniformData<3, CurviLinearVolume> {
     public:
         UniformCurviLinearVolume();
         ~UniformCurviLinearVolume();
-        virtual Data* clone();
     };
 
     class IVW_CORE_API NonUniformRectiLinearVolume : public NonUniformData<3, RectiLinearVolume> {
     public:
         NonUniformRectiLinearVolume();
         ~NonUniformRectiLinearVolume();
-        virtual Data* clone();
     };
 
     class IVW_CORE_API NonUniformCurviLinearVolume : public NonUniformData<3, CurviLinearVolume> {
     public:
         NonUniformCurviLinearVolume();
         ~NonUniformCurviLinearVolume();
-        virtual Data* clone();
     };
 
     typedef UniformRectiLinearVolume StandardVolume;

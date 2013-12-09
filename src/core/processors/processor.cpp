@@ -22,9 +22,12 @@ ProcessorClassName(Processor, "Processor");
 ProcessorCategory(Processor, "undefined");
 ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL); 
 
-Processor::Processor() : VoidObservable(),
-    initialized_(false), processorWidget_(0), identifier_("undefined")
-{}
+Processor::Processor()
+    : VoidObservable()
+    , processorWidget_(0)
+    , identifier_("undefined")
+    , initialized_(false){
+}
 
 Processor::~Processor() {}
 

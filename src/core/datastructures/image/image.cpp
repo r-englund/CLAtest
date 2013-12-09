@@ -20,15 +20,15 @@ namespace inviwo {
 
 Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers) 
 	: StructuredData<2>(dimensions)
-	, imageType_(comb) 
-	, allowMissingLayers_(allowMissingLayers) {
+    , allowMissingLayers_(allowMissingLayers)
+	, imageType_(comb) {
         Data::setDataFormat(format);
 }
 
 Image::Image(ImageRepresentation* in, bool allowMissingLayers)
     : StructuredData<2>(in->getDimensions())
-    , imageType_(in->getImageType())
-    , allowMissingLayers_(allowMissingLayers){
+    , allowMissingLayers_(allowMissingLayers)
+    , imageType_(in->getImageType()){
     Data::setDataFormat(in->getDataFormat());    
     clearRepresentations();
     addRepresentation(in);

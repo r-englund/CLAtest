@@ -27,14 +27,14 @@ ProcessorCodeState(MeshClipping, CODE_STATE_EXPERIMENTAL);
 const float MeshClipping::EPSILON = 0.00001f;
 
 MeshClipping::MeshClipping()
-	: Processor(),
-	inport_("geometry.input"),
-	outport_("geometry.output"),
-	clippingEnabled_("clippingEnabled", "Enable clipping", false),
-    planePoint_("planePoint", "Plane Point", vec3(0.0f), vec3(-10.0f), vec3(10.0f), vec3(0.1f)),
-    planeNormal_("planeNormal", "Plane Normal", vec3(0.0f, 0.0f, -1.0f), vec3(-1.0f), vec3(1.0f), vec3(0.1f)),
-    renderAsPoints_("renderAsPoints", "Render As Points by Default", false)
-{
+	: Processor()
+	, inport_("geometry.input")
+	, outport_("geometry.output")
+	, clippingEnabled_("clippingEnabled", "Enable clipping", false)
+    , planePoint_("planePoint", "Plane Point", vec3(0.0f), vec3(-10.0f), vec3(10.0f), vec3(0.1f))
+    , planeNormal_("planeNormal", "Plane Normal", vec3(0.0f, 0.0f, -1.0f), vec3(-1.0f), vec3(1.0f), vec3(0.1f))
+    , renderAsPoints_("renderAsPoints", "Render As Points by Default", false){
+        
 	addPort(inport_);
 	addPort(outport_);
 
@@ -231,7 +231,6 @@ Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plan
             std::vector<Edge3D> intersectionsEdges;
             std::vector<std::pair<vec3, vec3> > intersectionTex;
             std::vector<std::pair<vec3, vec4> > intersectionCol;
-            size_t count = 0;
             for(unsigned int t=0; t<triangleList->size()-2; ++t) {
                 idx[0] = triangleList->at(t);
                 //Clockwise

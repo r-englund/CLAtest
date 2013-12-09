@@ -22,15 +22,14 @@ ProcessorCodeState(DiffuseLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
 
 
 DiffuseLightSourceProcessor::DiffuseLightSourceProcessor()
-    : Processor(),
-      outport_("DiffuseLightSource"),
-      lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f),
-      lightDiffuse_("lightDiffuse", "Color", vec4(1.0f, 1.0f, 1.0f, 1.f)),
-      lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f)),
-      lightSize_("lightSize", "Light size", vec2(1.5f, 1.5f), vec2(0.0f, 0.0f), vec2(3.0f, 3.0f))
-{
-    addPort(outport_);
+    : Processor()
+    , outport_("DiffuseLightSource")
+    , lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f)
+    , lightSize_("lightSize", "Light size", vec2(1.5f, 1.5f), vec2(0.0f, 0.0f), vec2(3.0f, 3.0f))
+    , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f, 1.0f, 1.0f, 1.f))
+    , lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f)) {
 
+    addPort(outport_);
     addProperty(lightPosition_);
     addProperty(lightDiffuse_);
     addProperty(lightPowerProp_);
