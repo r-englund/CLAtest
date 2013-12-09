@@ -49,26 +49,6 @@ public:
 	 */ButtonProperty(std::string identifier, std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
                    PropertySemantics::Type semantics = PropertySemantics::Default) : Property(identifier,displayName,invalidationLevel,semantics) {}
-    
-
-    //TODO: Only member functions with zero (void) arguments is allowed now.
-    // Example usage
-    // myButton_.registerClassMemberFunction(this, &MyButton::doSomethingFunction);
-    // it is possible to register only one function
-    template <typename T>
-    void registerClassMemberFunction(T* o, void (T::*m)()) {
-        callBack_.addMemberFunction(o,m);
-    }
-
-    /** 
-     * \brief invokes all functions
-     *
-     * <DESCRIBE THE METHOD>
-     * 
-     * @return void <DESCRIBE ME>
-     */void invokeMemberFunctions() {
-        callBack_.invoke();
-    }
 
 	virtual void serialize(IvwSerializer& s) const{
         Property::serialize(s);
@@ -80,8 +60,6 @@ public:
 
     virtual std::string getClassName()  const { return "ButtonProperty"; }
 
-private:
-    SingleCallBack callBack_;
 };
 
 } //namespace

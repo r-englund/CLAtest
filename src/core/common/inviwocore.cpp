@@ -84,13 +84,13 @@ void InviwoCore::setupModuleSettings(){
         getSettings()->addProperty(new IntProperty("useRAMPercent", "Max Use Mem %", 50, 1, 100));
 
         ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");
-        btnAllocTest->registerClassMemberFunction(this, &InviwoCore::allocationTest);
+        btnAllocTest->onChange(this, &InviwoCore::allocationTest);
         getSettings()->addProperty(btnAllocTest);
 
         SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(getCapabilities());
         if (sysInfo){
             ButtonProperty* btnSysInfo = new ButtonProperty("printSysInfo", "Print System Info");
-            btnSysInfo->registerClassMemberFunction(sysInfo, &SystemCapabilities::printInfo);
+            btnSysInfo->onChange(sysInfo, &SystemCapabilities::printInfo);
             getSettings()->addProperty(btnSysInfo);  
         }           
     }

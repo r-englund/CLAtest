@@ -27,13 +27,18 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     : ProcessorGL(),
       inport_("geometry.inport"),
       outport_("image.outport"),
-      camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f))
+      camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f)),
+      centerViewOnGeometry_("centerView", "Center view on geometry")
 {
     addPort(inport_);
     addPort(outport_);
 
     addProperty(camera_);
     addInteractionHandler(new Trackball(&camera_));
+
+    centerViewOnGeometry_.onChange(this, &GeometryRenderProcessorGL::centerViewOnGeometry);
+    addProperty(centerViewOnGeometry_);
+
 }
 
 void GeometryRenderProcessorGL::process() {
@@ -63,6 +68,28 @@ void GeometryRenderProcessorGL::process() {
     glPopMatrix();
 
     glDisable(GL_CULL_FACE);
+}
+
+void GeometryRenderProcessorGL::centerViewOnGeometry() {
+    const Mesh* geom = dynamic_cast<const Mesh*>(inport_.getData());
+    if(geom == NULL) {
+        return;
+    }
+    const Position3dBufferRAM* posBuffer = dynamic_cast<const Position3dBufferRAM*>(geom->getAttributes(0)->getRepresentation<BufferRAM>());
+    const std::vector<vec3>* pos = posBuffer->getDataContainer();
+    vec3 maxPos, minPos;
+    if(pos->size() > 0) {
+        maxPos = (*pos)[0];
+        minPos = maxPos;
+    }
+    for(size_t i = 0; i < pos->size(); ++i) {
+        maxPos = glm::max(maxPos, (*pos)[i]);
+        minPos = glm::min(minPos, (*pos)[i]);
+    }
+    vec3 centerPos = 0.5f*(maxPos-minPos);
+    camera_.setLookTo(centerPos);
+
+
 }
 
 } // namespace

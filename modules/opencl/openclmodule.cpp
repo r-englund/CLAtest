@@ -98,7 +98,7 @@ void OpenCLModule::setupModuleSettings(){
         OpenCLCapabilities* openclInfo = getTypeFromVector<OpenCLCapabilities>(getCapabilities());
         if (openclInfo){
             ButtonProperty* btnOpenCLInfo = new ButtonProperty("printOpenCLInfo", "Print OpenCL Info");
-            btnOpenCLInfo->registerClassMemberFunction(openclInfo, &OpenCLCapabilities::printInfo);
+            btnOpenCLInfo->onChange(openclInfo, &OpenCLCapabilities::printInfo);
             getSettings()->addProperty(btnOpenCLInfo);
         }           
     }

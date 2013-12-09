@@ -37,7 +37,7 @@ void ButtonPropertyWidgetQt::generateWidget() {
 }
 
 void ButtonPropertyWidgetQt::handleButton(){
-    property_->invokeMemberFunctions();
+    property_->propertyModified();
 }
 void ButtonPropertyWidgetQt::updateFromProperty() {}
 

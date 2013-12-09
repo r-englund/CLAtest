@@ -55,7 +55,7 @@ void OpenGLModule::setupModuleSettings(){
         OpenGLCapabilities* openglInfo = getTypeFromVector<OpenGLCapabilities>(getCapabilities());
         if (openglInfo){
             ButtonProperty* btnOpenGLInfo = new ButtonProperty("printOpenGLInfo", "Print OpenGL Info");
-            btnOpenGLInfo->registerClassMemberFunction(openglInfo, &OpenGLCapabilities::printInfo);
+            btnOpenGLInfo->onChange(openglInfo, &OpenGLCapabilities::printInfo);
             getSettings()->addProperty(btnOpenGLInfo);
         }           
     }

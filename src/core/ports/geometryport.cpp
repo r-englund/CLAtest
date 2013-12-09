@@ -38,10 +38,8 @@ uvec3 GeometryInport::getColorCode() const {
 
 // Geometry Outport
 GeometryOutport::GeometryOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
-: DataOutport<Geometry>(identifier, invalidationLevel)
-{
-    data_ = new SimpleMesh();
-}
+: DataOutport<Geometry>(identifier, invalidationLevel) 
+{}
 
 GeometryOutport::~GeometryOutport() {}
 

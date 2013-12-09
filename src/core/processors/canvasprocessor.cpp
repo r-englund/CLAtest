@@ -39,7 +39,7 @@ CanvasProcessor::CanvasProcessor()
     visibleLayer_.set(COLOR_LAYER);
     addProperty(visibleLayer_);
 
-    snapshotButton_.registerClassMemberFunction(this, &CanvasProcessor::createSnapshot);
+    snapshotButton_.onChange(this, &CanvasProcessor::createSnapshot);
 	addProperty(snapshotButton_);
 }
 

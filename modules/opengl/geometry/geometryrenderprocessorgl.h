@@ -32,11 +32,13 @@ public:
 
 protected:
     virtual void process();
+    void centerViewOnGeometry();
 
     GeometryInport inport_;
     ImageOutport outport_;
 
     CameraProperty camera_;
+    ButtonProperty centerViewOnGeometry_;
 };
 
 } // namespace
