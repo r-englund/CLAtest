@@ -412,7 +412,7 @@ PyObject* py_clickButton(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 
-    button->invokeMemberFunctions();
+    button->propertyModified();
 
     Py_RETURN_NONE;
 }
