@@ -12,12 +12,6 @@
  *
  **********************************************************************/
 
-/*
-    Have a look at the script.cpp sample and at
-    http://docs.python.org/api/api.html
-    for more information about binding C/C++ stuff to python
-*/
-
 #include "pythonscript.h"
 
 #include <inviwo/core/util/assertion.h>
@@ -204,4 +198,4 @@ bool PythonScript::checkRuntimeError() {
     return false;
 }
 
-} // namespace voreen
+} // namespace inviwo

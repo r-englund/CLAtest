@@ -14,14 +14,20 @@
 
 #include "pyvalueparser.h"
 
-#define PARSETYPE(T,F,S) T F(PyObject *args){T t;PyArg_ParseTuple(args,S,&t);return t; }
+#define PARSETYPE(T,F,S)    T F(PyObject *args){T t;PyArg_ParseTuple(args,S,&t);return t; }
 #define PARSEVEC2(T,T2,F,S) T F(PyObject *args){T2 t0,t1;PyArg_ParseTuple(args,S,&t0,&t1);return T(t0,t1); }
 #define PARSEVEC3(T,T2,F,S) T F(PyObject *args){T2 t0,t1,t2;PyArg_ParseTuple(args,S,&t0,&t1,&t2);return T(t0,t1,t2); }
 #define PARSEVEC4(T,T2,F,S) T F(PyObject *args){T2 t0,t1,t2,t3;PyArg_ParseTuple(args,S,&t0,&t1,&t2,&t3);return T(t0,t1,t2,t3); }
 
 namespace inviwo{
-    PARSETYPE(double,parseDouble,"d");
-    PARSETYPE(float,parseFloat,"f");
+    //PARSETYPE(double,parseDouble,"d");
+  //  PARSETYPE(float,parseFloat,"f");
+    float parseFloat(PyObject *args){
+        return PyFloat_AsDouble(args);
+    }
+    double parseDouble(PyObject *args){
+        return PyFloat_AsDouble(args);
+    }
     PARSETYPE(char,parseChar,"b");
     PARSETYPE(short,parseShort,"h");
     PARSETYPE(int,parseInt,"i");
@@ -30,6 +36,10 @@ namespace inviwo{
     PARSEVEC2(ivec2,int,parseIVec2,"ii");
     PARSEVEC3(ivec3,int,parseIVec3,"iii");
     PARSEVEC4(ivec4,int,parseIVec4,"iiii");
+
+    PARSEVEC2(uvec2,unsigned int,parseUVec2,"ii");
+    PARSEVEC3(uvec3,unsigned int,parseUVec3,"iii");
+    PARSEVEC4(uvec4,unsigned int,parseUVec4,"iiii");
 
     PARSEVEC2(vec2,int,parseVec2,"ff");
     PARSEVEC3(vec3,int,parseVec3,"fff");
@@ -74,6 +84,9 @@ namespace inviwo{
     template <> ivec2       PyValueParser::parse(PyObject *args){  return parseIVec2(args);  }
     template <> ivec3       PyValueParser::parse(PyObject *args){  return parseIVec3(args);  }
     template <> ivec4       PyValueParser::parse(PyObject *args){  return parseIVec4(args);  }
+    template <> uvec2       PyValueParser::parse(PyObject *args){  return parseUVec2(args);  }
+    template <> uvec3       PyValueParser::parse(PyObject *args){  return parseUVec3(args);  }
+    template <> uvec4       PyValueParser::parse(PyObject *args){  return parseUVec4(args);  }
     template <> mat2        PyValueParser::parse(PyObject *args){  return parseMat2(args);   }
     template <> mat3        PyValueParser::parse(PyObject *args){  return parseMat3(args);   }
     template <> mat4        PyValueParser::parse(PyObject *args){  return parseMat4(args);   }
@@ -98,6 +111,9 @@ namespace inviwo{
     template <> PyObject* PyValueParser::toPyObject(ivec2 v){return Py_BuildValue("ii",v.x,v.y);}
     template <> PyObject* PyValueParser::toPyObject(ivec3 v){return Py_BuildValue("iii",v.x,v.y,v.z);}
     template <> PyObject* PyValueParser::toPyObject(ivec4 v){return Py_BuildValue("iiii",v.x,v.y,v.z,v.w);}
+    template <> PyObject* PyValueParser::toPyObject(uvec2 v){return Py_BuildValue("ii",v.x,v.y);}
+    template <> PyObject* PyValueParser::toPyObject(uvec3 v){return Py_BuildValue("iii",v.x,v.y,v.z);}
+    template <> PyObject* PyValueParser::toPyObject(uvec4 v){return Py_BuildValue("iiii",v.x,v.y,v.z,v.w);}
     template <> PyObject* PyValueParser::toPyObject(mat2 m){return Py_BuildValue("(ff)(ff)",m[0][0], m[0][1], 
                                                                                              m[1][0], m[1][1]);}
     template <> PyObject* PyValueParser::toPyObject(mat3 m){return Py_BuildValue("(fff)(fff)(fff)",m[0][0], m[0][1], m[0][2],
