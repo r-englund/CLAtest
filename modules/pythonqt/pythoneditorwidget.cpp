@@ -25,21 +25,22 @@
 #include <QSpacerItem>
 #include <QHBoxLayout>
 #include <QFrame>
+#include <inviwo/core/util/clock.h>
 
 namespace inviwo{
     PythonEditorWidget::PythonEditorWidget(QWidget* parent): 
             InviwoDockWidget(tr("Python Editor"), parent), 
             script_(),
             unsavedChanges_(false),
-		infoTextColor_(153,153,153), errorTextColor_(255,107,107) {
+        infoTextColor_(153,153,153), errorTextColor_(255,107,107) {
         setObjectName("PythonEditor");
         setAllowedAreas(Qt::AllDockWidgetAreas);
-		setFloating(true);
+        setFloating(true);
 
         buildWidget();
         resize(500,700);
 
-		setVisible(false);
+        setVisible(false);
     }
 
     void PythonEditorWidget::buildWidget(){
@@ -130,9 +131,9 @@ namespace inviwo{
     PythonEditorWidget::~PythonEditorWidget(){}
 
     void PythonEditorWidget::appendToOutput(const std::string &msg,bool error){
-		pythonOutput_->setTextColor(error ? errorTextColor_ : infoTextColor_);
+        pythonOutput_->setTextColor(error ? errorTextColor_ : infoTextColor_);
         pythonOutput_->append(msg.c_str());
-		
+        
     }
 
     void PythonEditorWidget::fileChanged(std::string fileName){
@@ -240,9 +241,15 @@ namespace inviwo{
         if(unsavedChanges_ && scriptFileName_.size()!=0) //save if needed
             save();
         clearOutput();
+
+        Clock c;
+        c.start();
+        bool ok = script_.run();
+        c.stop();
         if(script_.run()){
             LogInfo("Python Script Executed succesfully");
         }
+        LogInfo("Execution time: " << c.getElapsedMiliseconds() << " ms");
     }
     
     void PythonEditorWidget::show(){
@@ -258,9 +265,9 @@ namespace inviwo{
             else if(ret == 2) //cancel
                 return;
         }
-		const static std::string defaultSource = "# Inviwo Python script \nimport inviwo \n\ninviwo.info() \n";
+        const static std::string defaultSource = "# Inviwo Python script \nimport inviwo \n\ninviwo.info() \n";
         pythonCode_->setText(defaultSource.c_str());
-		script_.setSource(defaultSource);
+        script_.setSource(defaultSource);
         stopFileObservation(scriptFileName_);
         scriptFileName_ = "";
         unsavedChanges_ = false;
@@ -272,8 +279,8 @@ namespace inviwo{
 
     void PythonEditorWidget::onTextChange(){
         unsavedChanges_ = true;
-		const std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
-		script_.setSource(source);
+        const std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
+        script_.setSource(source);
     }
 
 
