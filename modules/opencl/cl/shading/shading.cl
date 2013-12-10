@@ -22,7 +22,6 @@
 #include "shading/wardbrdf.cl"
 #include "shading/abcbrdf.cl"
 
-#include "random.cl"
 #include "gradients.cl"
 #include "samplers.cl"  
 // Take a look at this pdf, it explains many of the models used:
@@ -142,20 +141,15 @@ inline float4 scaleShadingParameter(float4 material, const ShadingType shadingTy
     return scaledMaterial;
 }
 
-void sampleShadingFunction(read_only image3d_t volumeTex, float volumeSample, const float3 voxelSpacing, read_only image2d_t tfMaterial,
+void sampleShadingFunction(read_only image3d_t volumeTex, float volumeSample, const float3 voxelSpacing, float4 material,
                  float3 sample, 
-                 float3* direction, random_state* randstate, const ShadingType shadingType) {
+                 float3* direction, float2 rnd, const ShadingType shadingType) {
 
     // Material properties: 
     // x = fresnel factor f_0 = ((1-n)/(1+n))^2, 
     // y = exponent (blinn)
     // z = phase function scattering
-    float4 material = read_imagef(tfMaterial, smpNormClampEdgeLinear, (float2)(volumeSample,0.5f));
-    // float exponent = 2.f/(material.y*material.y)-2.f;
-    //float exponent =material.y;//*100.f;
-    // Map parameter according to V-ray
-    material = scaleShadingParameter(material, shadingType); 
-    float2 rnd = (float2)(random_01(randstate), random_01(randstate));
+
     if ( shadingType == HENYEY_GREENSTEIN ) {
         *direction = HenyeyGreensteinSample(-*direction, material.z, rnd);            
     } else if ( shadingType == SCHLICK ) { 
@@ -207,8 +201,8 @@ void sampleShadingFunction(read_only image3d_t volumeTex, float volumeSample, co
         //float gradientMagnitude = length(gradient);
         //if(gradientMagnitude > GRADIENT_MAGNITUDE_THRESHOLD) {
         
-        //if(material.w > 0.5f) {    
-        if(random_01(randstate) >= material.w) {
+        if(material.w > 0.5f) {    
+        //if(random_01(randstate) >= material.w) {
             *direction = uniformSampleSphere(rnd);   
         } else {
             gradient = normalize(gradient);
@@ -226,9 +220,8 @@ void sampleShadingFunction(read_only image3d_t volumeTex, float volumeSample, co
 
 void sampleShadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample, const float3 voxelSpacing, float4 material,
                  float3 pos, float3 toCameraDir,
-                 float3* toLightDirection, float *pdf, random_state* randstate, const ShadingType shadingType) {
+                 float3* toLightDirection, float *pdf, float2 rnd, const ShadingType shadingType) {
 
-    float2 rnd = (float2)(random_01(randstate), random_01(randstate));
     if ( shadingType == HENYEY_GREENSTEIN ) {
         *toLightDirection = HenyeyGreensteinSample(-toCameraDir, material.z, rnd);     
         *pdf = HenyeyGreensteinPhaseFunction(-toCameraDir, *toLightDirection, material.z);    
@@ -295,8 +288,8 @@ void sampleShadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample,
         //float gradientMagnitude = length(gradient);
         //if(gradientMagnitude > GRADIENT_MAGNITUDE_THRESHOLD) {
         
-        //if(material.w > 0.5f) {    
-        if(random_01(randstate) >= material.w) {
+        if(material.w > 0.5f) {    
+        //if(random_01(randstate) >= material.w) {
 
             *toLightDirection = uniformSampleSphere(rnd);   
             *pdf = uniformSpherePdf();
@@ -381,4 +374,89 @@ float shadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample, cons
     }
     return pdf;
 }
+
+float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const float3 materialDiffuse, const float3 materialSpecular, const float4 material, float3 gradient, float rnd, float pBRDF, const ShadingType shadingType) {
+    float3 f; 
+    float3 Nu = cross(gradient, toCameraDir);
+    if ( dot(Nu, Nu) < 1.e-3f ) {
+        Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+        //if ( dot(Nu, Nu) < 1.e-3f ) {
+        //    Nu = normalize(cross( gradient, (float3)( 0.0f, 1.0f, 0.0f ) ));
+        //}
+        //if ( dot(Nu, Nu) < 1.e-3f ) {
+        //    Nu = normalize(cross( gradient, (float3)( 0.0f, 0.0f, 1.0f ) ));
+        //}
+    }
+    Nu = normalize(Nu);
+    float3 Nv = normalize(cross(gradient, Nu));
+    float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+    float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
+#ifdef PERFORMANCE 
+#if PHASE_FUNCTION == PHASE_FUNCTION_HENYEY_GREENSTEIN
+    f = materialDiffuse*HenyeyGreensteinPhaseFunction(toCameraDir, toLightDir, material.z);
+#elif PHASE_FUNCTION == PHASE_FUNCTION_SCHLICK
+    f = materialDiffuse*SchlickPhaseFunction(toCameraDir, toLightDir, material.z); 
+#elif PHASE_FUNCTION == PHASE_FUNCTION_HALF_ANGLE_SLICING
+    f =materialDiffuse*HalfAngleSlicingPhaseFunction(wi, -toLightDir); 
+#elif PHASE_FUNCTION == PHASE_FUNCTION_BLINN_PHONG
+    f = materialDiffuse*lambertianBRDF()+materialSpecular*BlinnBRDF(wo, wi, material.y)*fabs(wi.z);
+#elif PHASE_FUNCTION == PHASE_FUNCTION_WARD
+    f = materialDiffuse*lambertianBRDF()+materialSpecular*WardBRDF(wo, wi, material.y, material.y)*fabs(wi.z);
+#elif PHASE_FUNCTION == PHASE_FUNCTION_COOK_TORRANCE
+    f = materialDiffuse*lambertianBRDF()+materialSpecular*CookTorranceBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
+#elif PHASE_FUNCTION == PHASE_FUNCTION_ABC_MICROFACET
+    f = materialDiffuse*lambertianBRDF()+materialSpecular*ABCMicrofacetBRDF(wo, wi, material.x, material.y, material.z)*fabs(wi.z);
+#elif PHASE_FUNCTION == PHASE_FUNCTION_ASHIKHMIN
+    f = materialDiffuse*lambertianBRDF()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z);
+#elif PHASE_FUNCTION == PHASE_FUNCTION_MIX
+    f = mix(materialDiffuse*isotropicPhaseFunction(), materialDiffuse*lambertianBRDF()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y), material.w)*fabs(wi.z);
+#else  
+    f = materialDiffuse*isotropicPhaseFunction();   
+#endif
+#else
+    if ( shadingType == HENYEY_GREENSTEIN ) { 
+        f = materialDiffuse*HenyeyGreensteinPhaseFunction(toCameraDir, -toLightDir, material.z);
+    } else if ( shadingType == SCHLICK ) {
+        f = materialDiffuse*SchlickPhaseFunction(toCameraDir, -toLightDir, material.z); 
+/*    } else if ( shadingType == HALF_ANGLE_SLICING ) {
+         f =materialDiffuse*HalfAngleSlicingPhaseFunction(wi, lightdir); */    
+    } else if ( shadingType == BLINN_PHONG ) {
+        f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*BlinnBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
+    } else if ( shadingType == WARD ) {
+        f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*WardBRDF(wo, wi, material.x, material.y, material.y)*fabs(wi.z);
+        //f = materialDiffuse*lambertianBRDF()+materialSpecular*WardBRDF(wo, wi, 0.016509f, 0.016509f);
+        //f = materialDiffuse*lambertianBRDF()+materialSpecular*WardBRDF(wo, wi, 0.006542f, 0.006542f);
+    } else if ( shadingType == COOK_TORRANCE ) {
+        f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*CookTorranceBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
+    } else if ( shadingType == ABC_MICROFACET ) {
+        f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*ABCMicrofacetBRDF(wo, wi, material.x, material.y, material.z)*fabs(wi.z);
+    } else if ( shadingType == ASHIKHMIN ) {
+        f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z);  
+        //f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*0.1f*fabs(wi.z); 
+    } else if ( shadingType == HYBRID ) { 
+        if(rnd < pBRDF) {
+            f =  (isotropicPhaseFunction()*materialDiffuse+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z));
+        } else {
+            f = materialDiffuse*isotropicPhaseFunction();
+        }
+
+    } else if ( shadingType == MIX ) {
+        //if(gradientMagnitude > GRADIENT_MAGNITUDE_THRESHOLD) {
+        f = mix(materialDiffuse*isotropicPhaseFunction(), materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z), material.w);
+        
+        //if(rnd > material.w) {
+        //    f = materialDiffuse*isotropicPhaseFunction();
+        //} else {
+        //    f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z); 
+        //}
+    } else if ( shadingType == SUB_SURFACE_SCATTERING ) {
+        f = isotropicPhaseFunction();
+    } else {
+        f = materialDiffuse*isotropicPhaseFunction(); 
+    } 
+#endif
+    // No need to use pdf since we are not generating samples based on phase function/BRDF
+    return f;
+}     
+
 #endif

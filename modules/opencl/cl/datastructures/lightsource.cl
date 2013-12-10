@@ -24,7 +24,7 @@ typedef enum LightSourceType {
 
 // Note that largest variables should be placed first 
 // in order to ensure struct size
-typedef struct PhotonLightSource {
+typedef struct LightSource {
     float16 tm; // Transformation matrix from local to world coordinates
     float3 radiance; // Note that float3 occupies same space as float4
     float2 size; // width, height of light source, used by area light
@@ -33,6 +33,6 @@ typedef struct PhotonLightSource {
     float cosFOV;  // cos( (field of view)/2 ), used by cone light
     
     int padding[7];
-} PhotonLightSource;
+} LightSource;
 
 #endif // LIGHTSOURCE_CL
