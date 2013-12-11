@@ -51,6 +51,13 @@ void LogCentral::registerLogger(Logger* logger) {
     loggers_->push_back(logger);
 }
 
+void LogCentral::unregisterLogger(Logger* logger) {
+    std::vector<Logger*>::iterator it = find(loggers_->begin(), loggers_->end(), logger);
+    if (it != loggers_->end()) {
+        loggers_->erase(it);
+    }
+}
+
 void LogCentral::log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) {
     if (logLevel >= logLevel_)
         for (size_t i=0; i<loggers_->size(); i++)

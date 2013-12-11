@@ -36,7 +36,9 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : InviwoDockWidget(tr("Console"), 
     LogCentral::instance()->registerLogger(this);
 }
 
-ConsoleWidget::~ConsoleWidget() {}
+ConsoleWidget::~ConsoleWidget() {
+    LogCentral::instance()->unregisterLogger(this);
+}
 
 void ConsoleWidget::showContextMenu(const QPoint& pos) {
     QMenu* menu = textField_->createStandardContextMenu();

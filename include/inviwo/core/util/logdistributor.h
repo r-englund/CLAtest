@@ -81,6 +81,7 @@ public:
     unsigned int getLogLevel() { return logLevel_; }
 
     void registerLogger(Logger* logger);
+    void unregisterLogger(Logger* logger);
     void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
 
 private:
