@@ -57,6 +57,8 @@
 #include <inviwo/qt/widgets/properties/imageeditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 
+#include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
+
 
 namespace inviwo {
 
@@ -74,6 +76,11 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
              else
                 return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
         }
+		if ((dynamic_cast<FileProperty*>(property)||dynamic_cast<StringProperty*>(property))&& property->getSemantics() == PropertySemantics::Shader) {
+			TextEditorWidgetQt* editor = new TextEditorWidgetQt(property);
+			editor->getSyntaxHighligther()->setSyntax(GLSL);
+			return editor;
+		}
         if (dynamic_cast<IntVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {
             return new ColorPropertyWidgetQt(static_cast<IntVec4Property*>(property));
         }

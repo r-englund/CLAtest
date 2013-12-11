@@ -15,44 +15,30 @@
 #ifndef IVW_TEXTEDITORWIDGETQT_H
 #define IVW_TEXTEDITORWIDGETQT_H
 
-//QT includes
-#include <QFile>
-#include <QFileInfo>
-#include <QCheckBox>
-#include <QGridLayout>
-#include <QLineEdit>
-#include <QMenu>
-#include <QMenuBar>
-#include <QMessageBox>
-#include <QPlainTextEdit>
-#include <QPushButton>
-#include <QTextStream>
-#include <QToolBar>
-#include <QToolButton>
-#include <QWidget>
-#include <QMainWindow>
-#include <QDesktopServices>
-#include <QUrl>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 
+//QT includes
+#include <QWidget>
 
 //Property includes
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/property.h>
+#include "propertywidgetqt.h"
 
-//Widget includes
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/htmleditorwidgetqt.h>
 
-//Inviwo
-#include <inviwo/core/common/inviwoapplication.h>
-
+class QFile;
+class QTextEdit;
+class QToolBar;
+class QToolButton;
+class QCheckBox;
 
 namespace inviwo{
-class TextEditorWidgetQt;
+	class SyntaxHighligther;
+	class FilePropertyWidgetQt;
+	class TextEditorWidgetQt;
+	class HtmlEditorWidgetQt;
+	class StringPropertyWidgetQt;
+
 class IVW_QTWIDGETS_API ModifiedWidget : public QWidget{
 
     Q_OBJECT
@@ -62,22 +48,30 @@ public:
     bool saveDialog();
     void setParent(TextEditorWidgetQt*);
 
-    QFile* file_;
-    QPlainTextEdit* textEditor_;
-    TextEditorWidgetQt* mainParentWidget_;
-    QToolBar* toolBar_;
-    QToolButton *reDoButton_;
-    QToolButton *reLoadButton_;
-    QToolButton *saveButton_;
-    QToolButton *unDoButton_;
-    QWidget* mainWidget_;
-    std::string tmpPropertyValue_;
+	QFile* file_;
+	QTextEdit* textEditor_;
+	TextEditorWidgetQt* mainParentWidget_;
+	QToolBar* toolBar_;
+	QToolButton* reDoButton_;
+	QToolButton* reLoadButton_;
+	QToolButton* saveButton_;
+	QToolButton* unDoButton_;
+	QWidget* mainWidget_;
+	std::string tmpPropertyValue_;
 
+	SyntaxHighligther* getSyntaxHighligther();
 
     void generateWidget();
+
+public slots:
+	void textHasChanged();
+
 protected:
     void closeEvent(QCloseEvent *);
     /*void showEvent(QShowEvent *);*/
+
+private:
+	SyntaxHighligther* syntaxHighligther_;
 };
 
 class IVW_QTWIDGETS_API TextEditorWidgetQt : public PropertyWidgetQt{
@@ -89,7 +83,7 @@ public:
     TextEditorWidgetQt(Property* property);
 
     void updateFromProperty();
-
+	SyntaxHighligther* getSyntaxHighligther();
 public:
      bool saveDialog();
 

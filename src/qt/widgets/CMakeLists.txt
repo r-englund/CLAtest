@@ -49,6 +49,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertyselectiontreewidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/stringpropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/syntaxhighlighter.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/texteditorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h
@@ -122,6 +123,7 @@ set(SOURCE_FILES
     properties/propertywidgetfactoryqt.cpp
     properties/propertywidgetqt.cpp
     properties/stringpropertywidgetqt.cpp
+    properties/syntaxhighlighter.cpp
     properties/texteditorwidgetqt.cpp
     properties/transferfunctioneditor.cpp
     properties/transferfunctioneditorcontrolpoint.cpp

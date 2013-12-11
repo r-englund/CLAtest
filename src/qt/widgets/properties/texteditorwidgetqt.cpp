@@ -16,10 +16,27 @@
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/util/filedirectory.h>
 
-namespace inviwo {
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QFileInfo>
+#include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
+
+
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/htmleditorwidgetqt.h>
+
+namespace inviwo{
 
 ModifiedWidget::ModifiedWidget(){
     generateWidget();
+}
+
+void ModifiedWidget::textHasChanged(){
+	
 }
 
 void ModifiedWidget::closeEvent(QCloseEvent *event)
@@ -29,6 +46,10 @@ void ModifiedWidget::closeEvent(QCloseEvent *event)
     } else {
         event->ignore();
     }
+}
+
+SyntaxHighligther* ModifiedWidget::getSyntaxHighligther(){
+	return syntaxHighligther_;
 }
 
 void ModifiedWidget::generateWidget(){
@@ -61,13 +82,15 @@ void ModifiedWidget::generateWidget(){
     toolBar_->addSeparator();
 
     mainWidget_ = new QWidget();
-    textEditor_ = new QPlainTextEdit();
+	textEditor_ = new QTextEdit();
     textEditor_->createStandardContextMenu();
+	syntaxHighligther_ = new SyntaxHighligther(textEditor_->document(),None);
 
     textEditorLayout->addWidget(toolBar_);
     textEditorLayout->addWidget(textEditor_);
     setLayout(textEditorLayout);
 
+	connect(textEditor_,SIGNAL(textChanged()),this,SLOT(textHasChanged()));
     connect(unDoButton_,SIGNAL(pressed()),textEditor_,SLOT(undo()));
     connect(reDoButton_,SIGNAL(pressed()),textEditor_,SLOT(redo()));
 }
@@ -240,6 +263,10 @@ void TextEditorWidgetQt::updateFromProperty() {
        stringWidget_->updateFromProperty();
     else if (fileProp)
         fileWidget_->updateFromProperty();
+}
+
+SyntaxHighligther* TextEditorWidgetQt::getSyntaxHighligther(){
+	return textEditorWidget_->getSyntaxHighligther();
 }
 
 
