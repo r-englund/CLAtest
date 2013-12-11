@@ -205,8 +205,7 @@ public:
 
     void notifyObservers() const {
         // Notify observers
-        ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
             // static_cast can be used since only template class objects can be added
             static_cast<VoidObserver*>(*it)->notify();    
         }

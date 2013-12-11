@@ -18,7 +18,6 @@
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsRectItem>
 #include <QTime>
-
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 
@@ -36,7 +35,7 @@ IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
     //LinkDialogGraphicsType = 4
 };
 
-class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem, public VoidObserver {
+class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem, public ProcessorObserver {
 
 public:
     ProcessorGraphicsItem();

@@ -169,7 +169,6 @@ void TransferFunctionPropertyDialog::updateFromProperty(){
     gradient_->setFinalStop(editorview_->width(), 0.0);
     delete temp;
     this->update();
-    property_->propertyModified();
 }
 
 bool TransferFunctionPropertyDialog::eventFilter(QObject *object, QEvent *e){

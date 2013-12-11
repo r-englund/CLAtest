@@ -275,6 +275,8 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
             lookLength = glm::length(camera_->getLookFrom()-camera_->getLookTo());
             vec3 offset = camera_->getLookTo();
             vec3 rotation = glm::rotate(quaternion, offset);
+
+            camera_->lockInvalidation();
             camera_->setLookTo(rotation);
             camera_->setLookFrom(glm::rotate(quaternion, camera_->getLookFrom()));
             camera_->setLookUp(glm::rotate(quaternion, camera_->getLookUp()));
@@ -284,7 +286,7 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
                 float diff = lookLength/glm::length(camera_->getLookFrom()-camera_->getLookTo());
                 camera_->setLookTo(camera_->getLookTo()*diff);
             }
-
+            camera_->unlockInvalidation();
             camera_->invalidate();
 
             //update mouse positions
@@ -321,7 +323,6 @@ void Trackball::zoomCamera(MouseEvent* mouseEvent) {
 
         // zoom by moving the camera
         camera_->setLookFrom(camera_->getLookFrom()-direction*diff);
-        camera_->invalidate();
         lastMousePos_ = curMousePos;
         lastTrackballPos_ = curTrackballPos;
     }
@@ -351,8 +352,10 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
 
     if (curMousePos != lastMousePos_) {
+        camera_->lockInvalidation();
         camera_->setLookTo(camera_->getLookTo()     + mappedTrackBallOffsetVector);
         camera_->setLookFrom(camera_->getLookFrom() + mappedTrackBallOffsetVector);
+        camera_->unlockInvalidation();
         camera_->invalidate();
         lastMousePos_ = curMousePos;
         lastTrackballPos_ = curTrackballPos;
@@ -407,6 +410,7 @@ void Trackball::stepRotateCamera(Direction dir) {
 		lookLength = glm::length(camera_->getLookFrom()-camera_->getLookTo());
 		vec3 offset = camera_->getLookTo();
 		vec3 rotation = glm::rotate(quaternion, offset);
+        camera_->lockInvalidation();
 		camera_->setLookTo(rotation);
 		camera_->setLookFrom(glm::rotate(quaternion, camera_->getLookFrom()));
 		camera_->setLookUp(glm::rotate(quaternion, camera_->getLookUp()));
@@ -416,7 +420,7 @@ void Trackball::stepRotateCamera(Direction dir) {
 			float diff = lookLength/glm::length(camera_->getLookFrom()-camera_->getLookTo());
 			camera_->setLookTo(camera_->getLookTo()*diff);
 		}
-
+        camera_->unlockInvalidation();
 		camera_->invalidate();
 	}
 	return;
@@ -433,7 +437,6 @@ void Trackball::stepZoomCamera(Direction dir) {
 
 	// zoom by moving the camera
 	camera_->setLookFrom(camera_->getLookFrom()-direction*STEPSIZE);
-	camera_->invalidate();
 
 	return;
 }
@@ -467,8 +470,10 @@ void Trackball::stepPanCamera(Direction dir) {
 	//compute next camera position
 	trackBallOffsetVector.z = 0.0f;
 	vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
+    camera_->lockInvalidation();
 	camera_->setLookTo(camera_->getLookTo()     + mappedTrackBallOffsetVector);
 	camera_->setLookFrom(camera_->getLookFrom() + mappedTrackBallOffsetVector);
+    camera_->unlockInvalidation();
 	camera_->invalidate();
 
 	return;

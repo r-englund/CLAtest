@@ -27,7 +27,7 @@
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/util/group.h>
-#include <inviwo/core/util/observer.h>
+#include <inviwo/core/processors/processorobserver.h>
 
 namespace inviwo {
 
@@ -48,7 +48,7 @@ namespace inviwo {
 #define ProcessorCodeState(T, codeState) \
     const CodeState T::CODE_STATE = codeState;
 
-class IVW_CORE_API Processor : public PropertyOwner, public VoidObservable {
+class IVW_CORE_API Processor : public PropertyOwner, public ProcessorObservable {
 
 public:
     Processor();
@@ -88,7 +88,11 @@ public:
 
     virtual bool isReady() const { return allInportsAreReady(); }
 
+    //Triggers invalidation. 
+    //Perform only full reimplementation of this function, meaning never call Proccessor::invalidate()
+    //in your reimplemented invalidation function.
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    
     virtual void setValid();
     virtual void initializeResources() {} // reload shaders etc. here
 

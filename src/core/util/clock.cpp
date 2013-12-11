@@ -6,25 +6,21 @@ static const double INV_CLOCKS_PER_MS = 1.0 / CLOCKS_PER_MS;
 
 namespace inviwo{
 
-    void Clock::start(){
-        startTime_ = clock();
-    }
+void Clock::start(){
+    startTime_ = clock();
+}
 
+void Clock::stop(){
+    stopTime_ = clock();
+}
 
-    void Clock::stop(){
-        stopTime_ = clock();
-    }
+unsigned int Clock::getElapsedMiliseconds()const{
+    return static_cast<unsigned int>((stopTime_ - startTime_)*INV_CLOCKS_PER_MS);
+}
 
-    unsigned int Clock::getElapsedMiliseconds()const{
-        return (stopTime_ - startTime_)*INV_CLOCKS_PER_MS;
-    }
-
-
-    unsigned int Clock::getElapsedSeconds()const{
-        return (stopTime_ - startTime_)/CLOCKS_PER_SEC;
-    }
-
-
+unsigned int Clock::getElapsedSeconds()const{
+    return static_cast<unsigned int>((stopTime_ - startTime_)/CLOCKS_PER_SEC);
+}
 
 
 }//namespace

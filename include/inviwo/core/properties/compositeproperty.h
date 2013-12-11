@@ -18,11 +18,12 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
-class IVW_CORE_API CompositeProperty : public Property{
+class IVW_CORE_API CompositeProperty : public Property, public PropertyOwner {
 
 public:
     CompositeProperty(std::string identifier, std::string displayName,

@@ -20,7 +20,7 @@ namespace inviwo {
 CompositeProperty::CompositeProperty(std::string identifier, std::string displayName,
                                      PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics::Type semantics)
-: Property(identifier, displayName, invalidationLevel, semantics)
+: Property(identifier, displayName, invalidationLevel, semantics), PropertyOwner()
 {}
 
 CompositeProperty::~CompositeProperty() {}
@@ -38,7 +38,7 @@ void CompositeProperty::addProperty(Property& property) {
 void CompositeProperty::setOwner(PropertyOwner* owner) {
     Property::setOwner(owner);
     for (size_t i=0; i<subProperties_.size(); i++)
-        subProperties_[i]->setOwner(owner);
+        subProperties_[i]->setOwner(this);
 }
 
 void CompositeProperty::notify() {

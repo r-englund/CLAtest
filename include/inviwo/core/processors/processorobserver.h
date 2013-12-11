@@ -17,9 +17,10 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/util/observer.h>
-#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
+
+class Processor;
 
 /** \class ProcessorObserver 
 *
@@ -33,7 +34,7 @@ class IVW_CORE_API ProcessorObserver: public VoidObserver {
 public:
     ProcessorObserver(): VoidObserver() {};
 
-    virtual void notify(Processor*) {};
+    virtual void notifyProcessorObserver(Processor*) {};
     virtual void notifyInvalidationBegin(Processor*) {};
     virtual void notifyInvalidationEnd(Processor*) {};
 };
@@ -50,29 +51,25 @@ public:
     ProcessorObservable(): Observable<ProcessorObserver>() {};
 
     void notifyObservers() const {
-        ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notify();    
         }
     }
 
     void notifyObservers(Processor* p) const {
-        ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
-            static_cast<ProcessorObserver*>(*it)->notify(p);    
+        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+            static_cast<ProcessorObserver*>(*it)->notifyProcessorObserver(p);    
         }
     }
 
     void notifyObserversInvalidationBegin(Processor* p) const {
-        ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationBegin(p);    
         }
     }
     
     void notifyObserversInvalidationEnd(Processor* p) const {
-        ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationEnd(p);    
         }
     }

@@ -27,7 +27,7 @@ namespace inviwo {
 
 class Canvas;
 
-class IVW_CORE_API ProcessorNetworkEvaluator {
+class IVW_CORE_API ProcessorNetworkEvaluator : public ProcessorObserver {
 
 friend class Processor;
 
@@ -49,6 +49,8 @@ public:
 
     Processor* retrieveCanvasProcessor(Canvas* canvas);
     std::vector<ProcessorLink*> getSortedProcessorLinks();
+
+    void notifyInvalidationEnd(Processor*);
 
 private:
     bool hasBeenVisited(Processor* processor);
@@ -76,6 +78,8 @@ private:
     Canvas* defaultContext_;
     LinkEvaluator* linkEvaluator_;
     Processor* eventInitiator_; 
+
+    bool evaulationQueued_;
 
     //unsigned int reEvaluationHits_;
 };

@@ -23,7 +23,7 @@ ProcessorCategory(Processor, "undefined");
 ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL); 
 
 Processor::Processor()
-    : VoidObservable()
+    : PropertyOwner(), ProcessorObservable()
     , processorWidget_(0)
     , identifier_("undefined")
     , initialized_(false){
@@ -123,10 +123,11 @@ void Processor::deinitialize() {
 }
 
 void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+    notifyObserversInvalidationBegin(this);
     PropertyOwner::invalidate(invalidationLevel);
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
         (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);
-    notifyObservers();
+    notifyObserversInvalidationEnd(this);
 }
 
 void Processor::process() {

@@ -59,6 +59,11 @@ public:
     void invokeEvent(Event* event);
 
     void invalidate();
+
+    void lockInvalidation() { lockInvalidation_ = true; }
+    void unlockInvalidation() { lockInvalidation_ = false; }
+    bool isInvalidationLocked() { return lockInvalidation_; }
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "CameraProperty"; }
@@ -77,6 +82,8 @@ private:
     mat4 projectionMatrix_;
     mat4 inverseViewMatrix_;
     mat4 inverseProjectionMatrix_;
+
+    bool lockInvalidation_;
 };
 
 } // namespace

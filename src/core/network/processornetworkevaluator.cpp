@@ -25,6 +25,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     defaultContext_ = 0;
     eventInitiator_ = 0;
     linkEvaluator_  = 0;
+    evaulationQueued_ = false;
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
@@ -148,8 +149,6 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, 
 		for (size_t i=0; i<directPredecessors.size(); i++) {
 			if (directPredecessors[i]->hasInteractionHandler())
 				directPredecessors[i]->invokeInteractionEvent(event);
-			// TODO: transform positions based on subcanvas arrangement
-			//directPredecessors[i]->invalidate();  //TODO: Check if this is needed
 			propagateInteractionEvent(directPredecessors[i], event);
 		}
 	}
@@ -158,7 +157,6 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, 
 void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, InteractionEvent* event) {
 	// find the canvas processor from which the event was emitted
 	eventInitiator_=0;
-	processorNetwork_->lock();
 	std::vector<Processor*> processors = processorNetwork_->getProcessors();
 	for (size_t i=0; i<processors.size(); i++) {
 		if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
@@ -168,15 +166,9 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, Intera
 		}
 	}
 
-    if (!eventInitiator_) {
-        processorNetwork_->unlock();
-        return;
-    }
 	processorsVisited_.clear();
 	propagateInteractionEvent(eventInitiator_, event);
-	processorNetwork_->unlock();
-	eventInitiator_ = 0;
-	//eventInitiator->invalidate(); //TODO: Check if this is needed
+    eventInitiator_ = 0;
 }
 
 /// /NEW ------------------------------------------------------------
@@ -351,10 +343,27 @@ std::vector<ProcessorLink*> ProcessorNetworkEvaluator::getSortedProcessorLinks()
     return sortedProcessorLinks;
 }
 
+void ProcessorNetworkEvaluator::notifyInvalidationEnd(Processor* p){
+    processorNetwork_->notifyInvalidationEnd(p);
+    p->removeObserver(this);
+    evaulationQueued_ = false;
+    evaluate();
+}
 
 void ProcessorNetworkEvaluator::evaluate() {
     if (processorNetwork_->islocked())
-        return;    
+        return;
+
+    //evaluation has been triggered but not performed yet
+    if(evaulationQueued_)
+        return;
+
+    //wait for invalidation to finish before evaluating
+    if (processorNetwork_->isInvalidating()){
+        evaulationQueued_ = true;
+        processorNetwork_->getInvalidationInitiator()->addObserver(this);
+        return;
+    }
     
     // lock processor network to avoid concurrent evaluation
     processorNetwork_->lock();    

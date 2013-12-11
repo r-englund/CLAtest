@@ -37,7 +37,7 @@ static const int roundedCorners = 9;
 static const int labelHeight = 8;
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
-    : VoidObserver(), processor_(0) {
+    : ProcessorObserver(), processor_(0) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);

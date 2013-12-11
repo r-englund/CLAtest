@@ -16,10 +16,12 @@
 
 namespace inviwo {
 
-ProcessorNetwork::ProcessorNetwork() : VoidObservable(),
+ProcessorNetwork::ProcessorNetwork() : VoidObservable(), ProcessorObserver(),
     modified_(true),
 	broadcastModification_(true),
-    locked_(0) {}
+    locked_(0),
+    invalidating_(false),
+    invalidationInitiator_(NULL) {}
 
 ProcessorNetwork::~ProcessorNetwork() {}
 
@@ -28,6 +30,8 @@ void ProcessorNetwork::addProcessor(Processor* processor) {
     ivwAssert(std::find(processors_.begin(), processors_.end(), processor)==processors_.end(),
               "Processor instance already contained in processor network.");
     processors_.push_back(processor);
+
+    processor->addObserver(this);
 
     modified();
 }
@@ -50,6 +54,8 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
 
     // remove processor itself
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
+
+    processor->removeObserver(this);
 
     modified();
 }
@@ -156,6 +162,20 @@ inline void ProcessorNetwork::modified() {
 	}	
 }
 
+void ProcessorNetwork::notifyInvalidationBegin(Processor* p){
+    if(!isInvalidating()){
+        invalidationInitiator_ = p;
+        invalidating_ = true;
+    }
+}
+
+void ProcessorNetwork::notifyInvalidationEnd(Processor* p){
+    if(invalidationInitiator_ == p){
+        invalidating_ = false;
+        invalidationInitiator_ = NULL;
+    }
+}
+
 void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("Processors", processors_, "Processor");
     s.serialize("Connections", portConnections_, "Connection");
@@ -169,6 +189,8 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     //Processors
     try {
         d.deserialize("Processors", processors_, "Processor");
+        for (size_t i=0; i<processors_.size(); i++)
+            processors_[i]->addObserver(this);
     }
     catch (const SerializationException& exception) {
         //Abort and clear all processors

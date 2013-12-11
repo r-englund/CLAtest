@@ -23,7 +23,7 @@ namespace inviwo{
     //PARSETYPE(double,parseDouble,"d");
   //  PARSETYPE(float,parseFloat,"f");
     float parseFloat(PyObject *args){
-        return PyFloat_AsDouble(args);
+        return static_cast<float>(PyFloat_AsDouble(args));
     }
     double parseDouble(PyObject *args){
         return PyFloat_AsDouble(args);

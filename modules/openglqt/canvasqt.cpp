@@ -100,8 +100,6 @@ void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
         EventConverterQt::getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE, 
         EventConverterQt::getModifier(e), dimensions_);
     e->accept();
-    processorNetworkEvaluator_->propagateInteractionEvent(this, mouseEvent);
-    processorNetworkEvaluator_->evaluate();
     Canvas::mouseReleaseEvent(mouseEvent);
     delete mouseEvent;
 }
