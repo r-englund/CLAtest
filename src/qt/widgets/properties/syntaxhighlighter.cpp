@@ -116,7 +116,6 @@ void SyntaxHighligther::highlightBlock(const QString& text){
 	int index,prevIndex,startIndex = 0;
 	int i;
 
-	auto test = previousBlockState();
 	if(previousBlockState()!=0 && previousBlockState()!=-1){//we are in comment
 		index = text.indexOf("*/");
 		if(index!=-1){

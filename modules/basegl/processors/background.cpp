@@ -13,7 +13,6 @@
  **********************************************************************/
 
 #include "background.h"
-#include <inviwo/core/datastructures/image/imageram.h>
 
 namespace inviwo {
 
