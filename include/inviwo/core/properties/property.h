@@ -59,7 +59,7 @@ public:
 
     void registerPropertyWidget(PropertyWidget* propertyWidget);
     void updatePropertyWidgets();
-    bool hasProcessorWidgets() { return (propertyWidgets_.size()!= 0); }
+    bool hasPropertyWidgets() { return (propertyWidgets_.size()!= 0); }
 
     void setGroupID(std::string groupID) { 
         groupID_ = groupID;
