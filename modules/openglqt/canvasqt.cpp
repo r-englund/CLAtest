@@ -38,7 +38,8 @@ CanvasQt::CanvasQt(QWidget* parent)
     }
 
     setAutoBufferSwap(false);
-	setFocusPolicy(Qt::StrongFocus);
+	setFocusPolicy(Qt::TabFocus);
+    setAttribute(Qt::WA_OpaquePaintEvent);
 }
 
 CanvasQt::~CanvasQt() {
@@ -80,9 +81,7 @@ void CanvasQt::repaint() {
     QGLWidget::updateGL();
 }
 
-void CanvasQt::paintGL() {
-    update();
-}
+void CanvasQt::paintGL() {}
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;

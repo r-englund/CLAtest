@@ -24,6 +24,8 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
       canvas_(0)
 {
     setMinimumSize(32, 32);
+    setFocusPolicy(Qt::NoFocus);
+    setAttribute(Qt::WA_OpaquePaintEvent);
     setWindowFlags(windowFlags() | Qt::Tool | Qt::CustomizeWindowHint);
     setWindowTitle(QString::fromStdString("untitled canvas")); 
 }

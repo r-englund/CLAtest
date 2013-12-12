@@ -100,15 +100,15 @@ void CanvasGL::render(const Image* image, ImageLayerType layer){
 }
 
 void CanvasGL::resize(uvec2 size) {
-    Canvas::resize(size);
     glViewport(0, 0, size[0], size[1]);
+    Canvas::resize(size);
 }
 
 void CanvasGL::glSwapBuffers(){
 }
 
 void CanvasGL::update() {
-    if (imageGL_) {
+    if (imageGL_){
         renderColor();
     } else {
         renderNoise();
