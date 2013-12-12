@@ -72,6 +72,8 @@ public:
     virtual void startFileObservation(std::string fileName) { LogWarn("This Inviwo application does not support FileObservers."); }
     virtual void stopFileObservation(std::string fileName) { LogWarn("This Inviwo application does not support FileObservers."); }
 
+    std::string getDisplayName()const{return displayName_;}
+
     enum MessageType {
         IVW_OK,
         IVW_ERROR

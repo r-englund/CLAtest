@@ -14,6 +14,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/python/defaultinterface/pylist.h
     ${IVW_MODULE_DIR}/python/defaultinterface/pyproperties.h
     ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.h
+#    ${IVW_MODULE_DIR}/python/defaultinterface/pyvolume.h
     ${IVW_MODULE_DIR}/python/pythonmodule.h
     ${IVW_MODULE_DIR}/python/pythonscript.h
     ${IVW_MODULE_DIR}/python/pythonmoduledefine.h
@@ -34,15 +35,24 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/python/defaultinterface/pylist.cpp
     ${IVW_MODULE_DIR}/python/defaultinterface/pyproperties.cpp
     ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.cpp
+#    ${IVW_MODULE_DIR}/python/defaultinterface/pyvolume.cpp
     ${IVW_MODULE_DIR}/python/pythonscript.cpp
     ${IVW_MODULE_DIR}/python/pythonmodule.cpp
     ${IVW_MODULE_DIR}/python/pythonexecutionoutputobeserver.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
+ if(IVW_UNIT_TEST_APPLICATION)
+    set(TEST_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/python.test.h
+    )
+    ivw_group("Unittest Files" ${TEST_FILES})
+    ivw_add_unittest(${TEST_FILES})
+ endif()
+
 #--------------------------------------------------------------------
 # Define defintions
 add_definitions(-DIVW_PYTHON)
 
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})

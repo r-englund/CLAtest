@@ -1,6 +1,11 @@
 if(IVW_TINY_GLUT_APPLICATION)
     add_subdirectory(glutminimum)
 endif()
+
+if(IVW_UNIT_TEST_APPLICATION)
+    add_subdirectory(unittests)
+endif()
+
 if(IVW_QT_APPLICATION)
     if(DESIRED_QT_VERSION MATCHES 5)
         find_package(Qt5Widgets QUIET REQUIRED)     

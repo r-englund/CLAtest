@@ -34,6 +34,13 @@ macro(ivw_project project_name)
   set(_allPchDirs "")
 endmacro()
 
+macro(ivw_add_unittest filenames)
+    foreach(item ${filenames})
+        file(APPEND ${CMAKE_BINARY_DIR}/apps/unittests/_generated/unittests_temp.h "#include \"${item}\" \n")
+    endforeach()
+endmacro()
+
+
 #--------------------------------------------------------------------
 # Convert module name to directory name
 macro(first_case_upper retval in_value)
