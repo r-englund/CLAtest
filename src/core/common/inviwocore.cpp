@@ -19,6 +19,7 @@
 #include <inviwo/core/datastructures/image/imageramconverter.h>
 
 //Meta Data
+#include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/metadata/processormetadata.h>
 #include <inviwo/core/metadata/processorwidgetmetadata.h>
 
@@ -43,20 +44,43 @@ namespace inviwo {
 
 InviwoCore::InviwoCore() : InviwoModule() {
     setIdentifier("Core");
-    //setXMLFileName(InviwoApplication::app()->getRootPath() + "/src/core/core.xml", true);
-
+    
+    // Register Converters
     addRepresentationConverter(new VolumeDisk2RAMConverter());
     addRepresentationConverter(new ImageDisk2RAMConverter());
+
+    // Register MetaData
+    #define MetaDataMacro(n, t, d) addMetaData(new n##MetaData());
+    #include <inviwo/core/metadata/metadatadefinefunc.h>
+
+    addMetaData(new VectorMetaData<2,float>());
+    addMetaData(new VectorMetaData<3,float>());
+    addMetaData(new VectorMetaData<4,float>());
+
+    addMetaData(new VectorMetaData<2,int>());
+    addMetaData(new VectorMetaData<3,int>());
+    addMetaData(new VectorMetaData<4,int>());
+
+    addMetaData(new VectorMetaData<2,unsigned int>());
+    addMetaData(new VectorMetaData<3,unsigned int>());
+    addMetaData(new VectorMetaData<4,unsigned int>());
+
+    addMetaData(new MatrixMetaData<2,float>());
+    addMetaData(new MatrixMetaData<3,float>());
+    addMetaData(new MatrixMetaData<4,float>());
 
     addMetaData(new PositionMetaData());
     addMetaData(new ProcessorMetaData());
     addMetaData(new ProcessorWidgetMetaData());
 
+    // Register Capabilities
     addCapabilities(new SystemCapabilities());
 
+    // Register Data readers
     addDataReader(new DatVolumeReader());
     addDataReader(new IvfVolumeReader());
 
+    // Register Data writers
     addDataWriter(new DatVolumeWriter());
     addDataWriter(new IvfVolumeWriter());
 

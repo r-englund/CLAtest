@@ -33,6 +33,7 @@ public:
     static const std::string VERSION_ATTRIBUTE;
     static const std::string CONTENT_ATTRIBUTE;
     static const std::string TYPE_ATTRIBUTE;
+    static const std::string KEY_ATTRIBUTE;
     static const std::string COLOR_R_ATTRIBUTE;
     static const std::string COLOR_G_ATTRIBUTE;
     static const std::string COLOR_B_ATTRIBUTE;

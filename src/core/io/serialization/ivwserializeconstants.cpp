@@ -27,6 +27,7 @@ const std::string IvwSerializeConstants::REF_ATTRIBUTE="reference";
 const std::string IvwSerializeConstants::VERSION_ATTRIBUTE="version";
 const std::string IvwSerializeConstants::CONTENT_ATTRIBUTE="content";
 const std::string IvwSerializeConstants::TYPE_ATTRIBUTE="type";
+const std::string IvwSerializeConstants::KEY_ATTRIBUTE="key";
 const std::string IvwSerializeConstants::COLOR_R_ATTRIBUTE="r";
 const std::string IvwSerializeConstants::COLOR_G_ATTRIBUTE="g";
 const std::string IvwSerializeConstants::COLOR_B_ATTRIBUTE="b";

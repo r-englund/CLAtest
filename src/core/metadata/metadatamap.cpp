@@ -38,7 +38,7 @@ void MetaDataMap::add(std::string key, MetaData* metaData) {
 
 void MetaDataMap::remove(std::string key) {
     iterator it = metaData_.find(key);
-    if (it != metaData_.end()){
+    if (it != metaData_.end() && it->second){
         delete it->second;
         metaData_.erase(it);
     }
@@ -87,11 +87,11 @@ MetaDataMap& MetaDataMap::operator=(const MetaDataMap& map) {
 }
 
 void MetaDataMap::serialize( IvwSerializer &s ) const{
-    s.serialize("metadata", metaData_);
+    s.serialize_test("MetaDataMap", metaData_, "MetaDataItem");
 }
 
 void MetaDataMap::deserialize( IvwDeserializer &d ){
-    //d.deserialize("metadata", metaData_, "item", "identifier");
+    d.deserialize_test("MetaDataMap", metaData_, "MetaDataItem");
 }
 
 } // namespace

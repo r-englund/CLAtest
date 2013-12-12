@@ -32,7 +32,6 @@ public:
     virtual ~ProcessorMetaData();
 
     virtual std::string getClassName() const { return "ProcessorMetaData"; }
-    virtual ProcessorMetaData* create() const;
     virtual ProcessorMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;

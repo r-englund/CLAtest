@@ -34,7 +34,7 @@ public:
     template <typename K, typename V, typename C, typename A>
     void serialize(const std::string &key, const std::map<K,V,C,A> &sMap, const std::string &itemKey);
     template <typename K, typename V, typename C, typename A>
-    void serialize(const std::string &key, const std::map<K,V,C,A> &sMap);
+    void serialize_test(const std::string &key, const std::map<K,V,C,A> &sMap, const std::string &itemKey);
     void serialize(const std::string &key, const std::string &data, const bool asAttribute=false);
     void serialize(const std::string &key, const float &data);
     void serialize(const std::string &key, const double &data);
@@ -126,7 +126,7 @@ inline void IvwSerializer::serializeSTL_Map(const std::string &key, const T &sMa
 }
 
 template <typename K, typename V, typename C, typename A>
-void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C,A>& sMap) {
+void IvwSerializer::serialize_test(const std::string &key, const std::map<K,V,C,A>& sMap, const std::string &itemKey) {
     if(!isPrimitiveType(typeid(K))){
         throw SerializationException("Error: map key has to be a primitive type");
     }
@@ -137,9 +137,9 @@ void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C,A>& s
     NodeSwitch tempNodeSwitch(*this, newNode);
 
     for (typename std::map<K, V, C, A>::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
-        serialize(it->first, it->second);
-        rootElement_->LastChild()->ToElement()->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE,
-                                                             it->second->getClassName());
+        serialize(itemKey, it->second);
+        rootElement_->LastChild()->ToElement()->SetAttribute(IvwSerializeConstants::KEY_ATTRIBUTE,
+                                                             it->first);
     }
 }
 
@@ -148,46 +148,29 @@ template<class T>
 inline void IvwSerializer::serialize(const std::string& key, const T* const& data) {
     
     if (!allowRef_) {
-        //allowRef_ = true;
         serialize(key, *data);
-        return;
-    }
-    else {
+    } else {
         if (refDataContainer_.find(data)) {
-            //std::vector<TxElement*> nodeList = refDataContainer_.getNode(data);
             TxElement* newNode = refDataContainer_.nodeCopy(data);
             rootElement_->LinkEndChild(newNode);
             refDataContainer_.insert(data, newNode);
-        }
-        else {
+        } else {
             serialize(key, *data);
             refDataContainer_.insert(data, rootElement_->LastChild()->ToElement(), false);
         }
-        return;
     }
-
-    TxElement* newNode = new TxElement(key);
-
-    if (data) {
-        //std::string typeString = getTypeString(typeid(*data));
-        //if (!typeString.empty()) {
-        //  newNode->SetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, typeid(*data).name());
-        //}
-    }
-    rootElement_->LinkEndChild(newNode);
 }
 
 template<class T>
-inline void IvwSerializer::serializePrimitives(const std::string& key, const T& data)
-{
+inline void IvwSerializer::serializePrimitives(const std::string& key, const T& data) {
      TxElement* node = new TxElement(key);
      rootElement_->LinkEndChild(node);
      node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, data);
 }
 
 template<class T>
-inline void IvwSerializer::serializeVector(const std::string& key, const T& vector, const bool& isColor)
-{
+inline void IvwSerializer::serializeVector(const std::string& key, const T& vector, const bool& isColor) {
+
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
 

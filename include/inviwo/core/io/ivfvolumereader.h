@@ -38,7 +38,8 @@ public:
     virtual void readDataInto(void* dest) const;
 
 private:
-    IvfReaderSettings meta_;
+    std::string rawFile_;
+    glm::uvec3 dimension_;
     const DataFormatBase* format_;
 };    
 

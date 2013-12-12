@@ -61,7 +61,6 @@ void CompositeMetaData::addMetaData(MetaData& metadata) {
 }
 
 void  CompositeMetaData::serialize(IvwSerializer& s) const {
-    //TODO WTF?
    //MetaData::serialize(s);
 }
 

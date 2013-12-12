@@ -37,10 +37,6 @@ ProcessorMetaData* ProcessorMetaData::clone() const{
     return new ProcessorMetaData(*this);
 }
 
-ProcessorMetaData* ProcessorMetaData::create() const {
-    return new ProcessorMetaData();
-}
-
 void ProcessorMetaData::setPosition(ivec2 pos) {
     positionMetaData_.set(pos);
 }

@@ -19,15 +19,32 @@ namespace inviwo {
 DataFormatBase* DataFormatBase::instance_[] = {NULL};
 
 DataFormatBase::DataFormatBase() 
-    : formatId_(id()), bitsAllocated_(bitsAllocated()), bitsStored_(bitsStored())
-{
+    : formatId_(id())
+    , bitsAllocated_(bitsAllocated())
+    , bitsStored_(bitsStored()){
     formatStr_ = new std::string(str());
 }
 
 DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, std::string s) 
-    : formatId_(t), bitsAllocated_(bA), bitsStored_(bS)
-{
+    : formatId_(t)
+    , bitsAllocated_(bA)
+    , bitsStored_(bS){
     formatStr_ = new std::string(s);
+}
+
+const DataFormatBase* DataFormatBase::get(std::string name){
+    if(name == "") return instance_[NOT_SPECIALIZED];
+    #define DataFormatIdMacro(i) else if(name == #i) return Data##i::get();
+    #include <inviwo/core/util/formatsdefinefunc.h>   
+    else if(name == "UCHAR") return DataUINT8::get();
+    else if(name == "CHAR") return DataINT8::get();
+    else if(name == "USHORT") return DataUINT16::get();
+    else if(name == "SHORT") return DataINT16::get();
+    else if(name == "UINT") return DataUINT32::get();
+    else if(name == "INT") return DataINT32::get();
+    else if(name == "FLOAT") return DataFLOAT32::get();
+    else if(name == "DOUBLE") return DataFLOAT64::get();
+    else return instance_[NOT_SPECIALIZED];
 }
 
 float DataFormatBase::valueToNormalizedFloat(void*) const { 

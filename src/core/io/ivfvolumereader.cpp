@@ -21,19 +21,23 @@ namespace inviwo {
 
 IvfVolumeReader::IvfVolumeReader() 
     : DataReaderType<Volume>()
+    , rawFile_("")
+    , dimension_(uvec3(0))
     , format_(NULL) {
         addExtension(FileExtension("ivf", "Inviwo ivf file format"));
 }
 
 IvfVolumeReader::IvfVolumeReader( const IvfVolumeReader& rhs ) 
     : DataReaderType<Volume>(rhs)
-    , meta_(rhs.meta_)
+    , rawFile_(rhs.rawFile_)
+    , dimension_(rhs.dimension_)
     , format_(rhs.format_){
 }
 
 IvfVolumeReader& IvfVolumeReader::operator=( const IvfVolumeReader& that ){
     if (this != &that) {
-        meta_ = that.meta_;
+        rawFile_ = that.rawFile_;
+        dimension_ = that.dimension_;
         format_ = that.format_;
         DataReaderType<Volume>::operator=(that);
     }
@@ -49,29 +53,26 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
     if(!URLParser::fileExists(filePath)){
         filePath = URLParser::addBasePath(filePath);
         if(!URLParser::fileExists(filePath)) {
-            // FIXME: We need to throw an exception here (or return false)
-            LogInfoCustom("DatVolumeReader::readMetaData", "File " + filePath + " does not exist.");     
-            return NULL;
+            throw DataReaderException("Error: Input file: " + filePath + " does not exist");
         }
     }
 
     std::string fileDirectory = URLParser::getFileDirectory(filePath);
     std::string fileExtension = URLParser::getFileExtension(filePath);
 
-    ivwAssert(fileExtension=="ivf", "should be a *.ivf file");
-
-    //Read the ivf file content
-    IvwDeserializer d(filePath);
-    meta_.deserialize(d);
-
-    //translate
-    meta_.rawFileAbsolutePath_ = fileDirectory + meta_.rawFileAbsolutePath_ ;
-    format_ = DataFormatBase::get(meta_.dataFormat_);
- 
     Volume* volume = new UniformRectiLinearVolume();
-    volume->setDimension(meta_.dimensions_);
-    volume->setDataFormat(format_);
-    VolumeDisk* vd = new VolumeDisk(meta_.rawFileAbsolutePath_, meta_.dimensions_, format_);
+
+    IvwDeserializer d(filePath);
+
+    d.deserialize("ObjectFileName", rawFile_);
+    std::string formatFlag("");
+    d.deserialize("Format", formatFlag);
+    format_ = DataFormatBase::get(formatFlag);
+
+    volume->getMetaDataMap()->deserialize(d);
+    dimension_ = volume->getDimension();
+    
+    VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
     vd->setDataReader(this);
 
     volume->addRepresentation(vd);
@@ -80,23 +81,23 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
 } 
 
 void IvfVolumeReader::readDataInto(void* destination) const{
-    std::fstream fin(meta_.rawFileAbsolutePath_.c_str(), std::ios::in | std::ios::binary);
+    std::fstream fin(rawFile_.c_str(), std::ios::in | std::ios::binary);
     if(fin.good()){
-        std::size_t size = meta_.dimensions_.x*meta_.dimensions_.y*meta_.dimensions_.z*(format_->getBytesStored());
+        std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
         fin.read((char*)destination, size);
     }else{
-        throw DataReaderException("Error: Could not read from raw file: " + meta_.rawFileAbsolutePath_);
+        throw DataReaderException("Error: Could not read from raw file: " + rawFile_);
     }
     fin.close();
 }
 
 void* IvfVolumeReader::readData() const{
-    std::size_t size = meta_.dimensions_.x*meta_.dimensions_.y*meta_.dimensions_.z*(format_->getBytesStored());
+    std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
     char* data = new char[size];
     if(data){
         readDataInto(data);
     }else{
-        throw DataReaderException("Error: Could not allocate memory for loading raw file: " + meta_.rawFileAbsolutePath_);
+        throw DataReaderException("Error: Could not allocate memory for loading raw file: " + rawFile_);
     }  
     return data;
 }

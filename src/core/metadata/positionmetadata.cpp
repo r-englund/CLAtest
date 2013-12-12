@@ -26,8 +26,8 @@ PositionMetaData::PositionMetaData(int x, int y)
 
 PositionMetaData::~PositionMetaData() {}
 
-PositionMetaData* PositionMetaData::create() const {
-    return new PositionMetaData();
+PositionMetaData* PositionMetaData::clone() const {
+    return new PositionMetaData(*this);
 }
 
 ivec2 PositionMetaData::getXY() {
@@ -59,13 +59,11 @@ void PositionMetaData::setY(const int &y) {
 }
 
 void PositionMetaData::serialize(IvwSerializer& s) const {
-    //MetaData::serialize(s);
     s.serialize("type", getClassName(), true);
     s.serialize("position", value_);
 }
 
 void PositionMetaData::deserialize(IvwDeserializer& d) {
-    //MetaData::deserialize(d);
     std::string className;
     d.deserialize("type", className, true);
     d.deserialize("position", value_);

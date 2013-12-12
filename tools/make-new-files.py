@@ -11,6 +11,9 @@ parser.add_argument('names', type=str, nargs='+', action="store", help='Classes 
 parser.add_argument("--dummy", action="store_true", dest="dummy", help="Write local testfiles instead")
 parser.add_argument("--svn", action="store_true", dest="svn", help="Add files to svn, and set file ending to native")			
 parser.add_argument("--cmake", type=str, nargs=1, action="store", dest="builddir", help="Rerun cmake in the specified build directory")
+parser.add_argument("--no-header", action="store_true", dest="no_header", help="Don't write header file")
+parser.add_argument("--no-source", action="store_true", dest="no_source", help="Don't write source file")
+
 args = parser.parse_args()
 
 def makeHeader(name, define, api):
@@ -73,10 +76,10 @@ def updateCMakeLists(cmakefile, hfile, cfile):
 		
 		lines = []
 		for line in cm:
-			if m1.match(line):
+			if hfile != "" and m1.match(line):
 				lines.append(line)
 				lines.extend(sortAndInsertLine(cm, hfile))						
-			elif m2.match(line):
+			elif cfile != "" and m2.match(line):
 				lines.append(line)
 				lines.extend(sortAndInsertLine(cm, cfile))
 			else:
@@ -130,7 +133,6 @@ for name in args.names:
 	else:
 		print("ERROR")
 	
-	
 	hfilename = os.sep.join(hpath + [file.lower() + ".h"])
 	cfilename = os.sep.join(cpath + [file.lower() + ".cpp"])
 	cmakefile = os.sep.join(findCMakeList(cpath))
@@ -141,6 +143,11 @@ for name in args.names:
 	print("... incfile: " + incfile)
 	print("... cmake: " + cmakefile)
 	 
+	
+	if args.no_header:
+		cmhfile = ""
+	if args.no_source:
+		cmcfile = ""
 	lines = updateCMakeLists(cmakefile, cmhfile, cmcfile)	
 	
 	if(args.dummy):
@@ -148,17 +155,19 @@ for name in args.names:
 		cfilename = file.lower() + ".cpp"
 		cmakefile = file.lower() + ".cmake"
 	
-	if os.path.exists(hfilename):
+	if os.path.exists(hfilename) and not args.no_header:
 		print("... ERROR file already exists: " + hfilename)
-	elif os.path.exists(cfilename):
+	elif os.path.exists(cfilename) and not args.no_source:
 		print("... ERROR file already exists: " + cfilename)
 	else:
-		with open(hfilename, "w") as f:
-			print("... Writing h-file: " + hfilename)
-			f.write(makeHeader(file, moddef, api))
-		with open(cfilename, "w") as f:
-			print("... Writing c-file: " + cfilename)
-			f.write(makeSource(incfile))		
+		if not args.no_header:
+			with open(hfilename, "w") as f:
+				print("... Writing h-file: " + hfilename)
+				f.write(makeHeader(file, moddef, api))
+		if not args.no_source:
+			with open(cfilename, "w") as f:
+				print("... Writing c-file: " + cfilename)
+				f.write(makeSource(incfile))		
 		with open(cmakefile, "w") as f:
 			print("... Updating cmakelists: " + cmakefile)
 			for l in lines:
@@ -167,23 +176,25 @@ for name in args.names:
 		if(args.svn):
 			print("... Adding to svn...")
 			# Do an svn add...
-			mess = subprocess.Popen("svn.exe add " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-			for i in mess.splitlines():
-				print("... " + i)
-			mess = subprocess.Popen("svn.exe propset svn:eol-style native " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-			for i in mess.splitlines():
-				print("... " + i)
+			if not args.no_header:
+				mess = subprocess.Popen("svn.exe add " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+				for i in mess.splitlines():
+					print("... " + i)
+				mess = subprocess.Popen("svn.exe propset svn:eol-style native " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+				for i in mess.splitlines():
+					print("... " + i)
 				
-			mess = subprocess.Popen("svn.exe add " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-			for i in mess.splitlines():
-				print("... " + i)
-			mess = subprocess.Popen("svn.exe propset svn:eol-style native " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-			for i in mess.splitlines():
-				print("... " + i)
+			if not args.no_source:
+				mess = subprocess.Popen("svn.exe add " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+				for i in mess.splitlines():
+					print("... " + i)
+				mess = subprocess.Popen("svn.exe propset svn:eol-style native " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+				for i in mess.splitlines():
+					print("... " + i)
 	
-		if(args.cmakebuilddir != ""):
+		if(args.builddir != ""):
 			print("... run cmake...")
-			mess = subprocess.Popen("cmake.exe " + args.builddir, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+			mess = subprocess.Popen("cmake.exe " + str(args.builddir[0]), stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
 			for i in mess.splitlines():
 				print("... " + i)
 

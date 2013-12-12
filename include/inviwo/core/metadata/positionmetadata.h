@@ -30,7 +30,7 @@ public:
     virtual ~PositionMetaData();
 
     virtual std::string getClassName() const { return "PositionMetaData"; }
-    virtual PositionMetaData* create() const;
+    virtual PositionMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

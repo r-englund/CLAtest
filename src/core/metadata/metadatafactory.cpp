@@ -27,8 +27,6 @@ MetaDataFactory::MetaDataFactory() {
 MetaDataFactory::~MetaDataFactory() {}
 
 void MetaDataFactory::initialize() {
-    //TODO: check that inviwoapp is initialized
-
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
         std::vector<MetaData*> curMetadataList = inviwoApp->getModules()[curModuleId]->getMetaData();
@@ -45,7 +43,7 @@ void MetaDataFactory::registerMetaData(MetaData* meta) {
 IvwSerializable* MetaDataFactory::create(std::string className) const {
     std::map<std::string, MetaData*>::iterator it = metaDataClassMap_.find(className);
     if (it != metaDataClassMap_.end())
-        return it->second->create();
+        return it->second->clone();
     else
         return 0;
 }

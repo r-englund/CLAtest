@@ -21,8 +21,8 @@
 namespace inviwo {
 
 IvwSerializer::IvwSerializer(IvwSerializer &s, bool allowReference)
-    : IvwSerializeBase(s.getFileName(), allowReference)
-{
+    : IvwSerializeBase(s.getFileName(), allowReference){
+
     registerFactories();
 
     try {
@@ -80,14 +80,9 @@ void IvwSerializer::serialize(const std::string &key, const IvwSerializable &sOb
 }
 
 void IvwSerializer::serializeAttributes(const std::string &key, const std::string &data) {
-
     std::stringstream ss;
     ss.precision(IvwSerializeConstants::STRINGSTREAM_PRECISION);
     ss<<data;
-
-     //TxElement* node = new TxElement(key);
-     //rootElement_->LinkEndChild(node);
-     //node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, ss.str());
 
     //TODO: Check key for xml keys
     rootElement_->SetAttribute(key, ss.str());

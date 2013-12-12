@@ -36,7 +36,7 @@ IvfVolumeWriter* IvfVolumeWriter::clone() const{
     return new IvfVolumeWriter(*this);
 }
 
-void IvfVolumeWriter::writeData( const Volume* data, const std::string filePath ) const{
+void IvfVolumeWriter::writeData( const Volume* volume, const std::string filePath ) const{
 
     std::string rawPath = URLParser::replaceFileExtension(filePath, "raw");
 
@@ -51,16 +51,20 @@ void IvfVolumeWriter::writeData( const Volume* data, const std::string filePath 
     std::string fileExtension = URLParser::getFileExtension(filePath);
     std::string fileName = URLParser::getFileNameWithoutExtension(filePath);
 
-    const VolumeRAM* vr = data->getRepresentation<VolumeRAM>();
+    const VolumeRAM* vr = volume->getRepresentation<VolumeRAM>();
 
     IvwSerializer s(filePath);
 
     s.serialize("ObjectFileName", fileName + ".raw");
     s.serialize("Format", vr->getDataFormatString());
 
-    MetaDataMap* meta = data->getMetaDataMap();
+    Vec3MetaData* m = new Vec3MetaData(glm::vec3(1.0f));
+
+    MetaDataMap* meta = volume->getMetaDataMap();
     meta->add("string", new StringMetaData("hej"));
-    meta->add("vec3", new Vec3MetaData(glm::vec3(1.0f)));
+    meta->add("vec3a", m);
+    meta->add("vec3b", m);
+    meta->add("vec3c", m);
     meta->add("float", new FloatMetaData(3.f));
     meta->serialize(s);
     s.writeFile();

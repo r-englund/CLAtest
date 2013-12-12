@@ -120,8 +120,8 @@ public:
     void deserialize(const std::string &key, std::map<K,V*,C,A> &sMap, const std::string &itemKey, const std::string &comparisionAttribute) throw (SerializationException);
     
     template <typename K, typename V, typename C, typename A>
-    void deserialize(const std::string &key, std::map<K,V*,C,A>) throw (SerializationException);  
-    
+    void deserialize_test(const std::string &key, std::map<K,V,C,A>& map, const std::string &itemKey);  
+   
     /** 
      * \brief Deserialize string data.
      * 
@@ -291,7 +291,7 @@ public:
      * @param T *  & data pointer to be deserialized which is of type T which is usally serializable object or primitive data
      */
     template <class T>
-    void deserialize(const std::string& key, T* & data) throw (SerializationException);
+    void deserialize(const std::string& key, T* & data, bool getChild=true) throw (SerializationException);
     
 protected:
     friend class NodeSwitch;
@@ -376,7 +376,6 @@ private:
      */
     template <class T>
     void deserializePointer(const std::string& key, T* & data) throw (SerializationException);
-
 };
 
 template <typename T>
@@ -392,8 +391,32 @@ inline void IvwDeserializer::deserialize(const std::string &key,std::map<K,V*,C,
 }
 
 template <typename K, typename V, typename C, typename A>
-inline void IvwDeserializer::deserialize(const std::string &key, std::map<K,V*,C,A>) throw (SerializationException){
-   //deserializeSTL_Map(key, sMap);
+inline void IvwDeserializer::deserialize_test(const std::string& key, std::map<K,V,C,A>& map, const std::string &itemKey){
+    if(!isPrimitiveType(typeid(K))){
+        throw SerializationException("Error: map key has to be a primitive type");
+    }
+
+    TxElement* keyNode = rootElement_->FirstChildElement(key);
+    NodeSwitch tempNodeSwitch(*this, keyNode);
+
+    TxEIt child(itemKey);
+    for(child = child.begin(rootElement_); child != child.end(); ++child){
+        NodeSwitch tempNodeSwitch(*this, &(*child));
+
+        K key;
+        child->GetAttribute(IvwSerializeConstants::KEY_ATTRIBUTE, &key);
+        
+        V value;
+        typename std::map<K, V, C, A>::iterator it = map.find(key);
+        if (it!=map.end()){
+            value = it->second;
+        } else {
+            value = NULL;
+        }
+
+        deserialize(itemKey, value, false);
+        map[key] = value;
+    }
 }  
 
 template <typename T>
@@ -660,62 +683,53 @@ inline void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* &
 }
 
 template<class T>
-inline void IvwDeserializer::deserialize(const std::string& key, T* & data) throw (SerializationException) {
+inline void IvwDeserializer::deserialize(const std::string& key, T* & data, bool getChild) throw (SerializationException) {
     TxElement* keyNode;
-
-    try {
-        keyNode = rootElement_->FirstChildElement(key); 
+ 
+    if(getChild){
+        try {
+            keyNode = rootElement_->FirstChildElement(key); 
+        } catch (TxException& ) {
+            return;
+        }
+    }else{
+        keyNode = rootElement_;
     }
-    catch (TxException& ) {
-        return;
-    } 
 
     std::string type_attr("");
     std::string ref_attr("");
     std::string id_attr("");
     try {
         keyNode->GetAttribute( IvwSerializeConstants::TYPE_ATTRIBUTE, &type_attr );
-        if (allowRef_) {
-            try {
-                keyNode->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attr );
-            }
-            catch (TxException&) {
-            }
-            keyNode->GetAttribute( IvwSerializeConstants::ID_ATTRIBUTE, &id_attr );
-        }
-    }
-    catch (TxException& ) {
+    } catch (TxException& ) {}
 
+    if (allowRef_) {
+        try {
+            keyNode->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attr );
+        } catch (TxException&) {}
+        try {
+            keyNode->GetAttribute( IvwSerializeConstants::ID_ATTRIBUTE, &id_attr );
+        } catch (TxException&) {}
     }
 
     if (!data) {
         if (!ref_attr.empty()) {
-            //allocate only
-
-            //search in reference list
-            //if data doesnt exist just allocate
-            // and add to list
-            //return the data, donot deserialize it yet
-
-           data=static_cast<T*>(refDataContainer_.find(type_attr, ref_attr));
-
-           //Do not allocate new data
-           //if (!data) {
-           //   if (!type_attr.empty()) {
-           //        data = IvwSerializeBase::getRegisteredType<T>(type_attr);
-           //   }
-           //   else {
-           //       data = IvwSerializeBase::getNonRegisteredType<T>();
-           //     }
-           //     if (data) refDataContainer_.insert(data, keyNode);
-           //}
-
+            // Has reference identifier, data should already be allocated and we only have to find
+            // and set the pointer to it.
+            data=static_cast<T*>(refDataContainer_.find(type_attr, ref_attr));
             return;
-
+        } else if (!type_attr.empty()) {
+            data = IvwSerializeBase::getRegisteredType<T>(type_attr);
+        } else {
+            data = IvwSerializeBase::getNonRegisteredType<T>();
         }
-        else if (!id_attr.empty()) {
+    }
+    if (data) {
+        (*data).deserialize(*this);
+        if (!id_attr.empty()) {
+            refDataContainer_.insert(data, keyNode);
         }
-   }
+    }
 }
 
 

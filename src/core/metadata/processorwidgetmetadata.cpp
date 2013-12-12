@@ -37,9 +37,6 @@ ProcessorWidgetMetaData& ProcessorWidgetMetaData::operator=( const ProcessorWidg
 
 ProcessorWidgetMetaData::~ProcessorWidgetMetaData() {}
 
-ProcessorWidgetMetaData* ProcessorWidgetMetaData::create() const {
-    return new ProcessorWidgetMetaData();
-}
 ProcessorWidgetMetaData* ProcessorWidgetMetaData::clone() const{
     return new ProcessorWidgetMetaData(*this);
 }
