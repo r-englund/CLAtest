@@ -20,6 +20,7 @@
 #include <inviwo/core/util/observer.h>
 #include <map>
 #include <vector>
+#include <string>
 
 namespace inviwo {
 

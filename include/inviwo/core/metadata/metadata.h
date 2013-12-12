@@ -39,13 +39,12 @@ public:
 template <typename T>
 class MetaDataPrimitiveType : public MetaData {
 public:
-    MetaDataPrimitiveType();
     MetaDataPrimitiveType(T value);
     MetaDataPrimitiveType(const MetaDataPrimitiveType& rhs);
     MetaDataPrimitiveType& operator=(const MetaDataPrimitiveType& that);
     virtual ~MetaDataPrimitiveType() {};
-    virtual MetaDataPrimitiveType* create() const;
-    virtual MetaDataPrimitiveType* clone() const; 
+    virtual MetaDataPrimitiveType<T>* create() const;
+    virtual MetaDataPrimitiveType<T>* clone() const; 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     void set(T value);
@@ -53,9 +52,6 @@ public:
 protected:
     T value_;
 };
-
-template <typename T>
-MetaDataPrimitiveType<T>::MetaDataPrimitiveType() : MetaData(), value_() {}
 
 template <typename T>
 MetaDataPrimitiveType<T>::MetaDataPrimitiveType(T value) : MetaData(), value_(value) {}
@@ -75,7 +71,7 @@ MetaDataPrimitiveType<T>& MetaDataPrimitiveType<T>::operator=(const MetaDataPrim
 
 template <typename T>
 MetaDataPrimitiveType<T>* MetaDataPrimitiveType<T>::create() const {
-    return new MetaDataPrimitiveType<T>();
+    return new MetaDataPrimitiveType<T>(*this);
 }
 
 template <typename T>
@@ -94,10 +90,9 @@ T MetaDataPrimitiveType<T>::get() const {
 }
 
 template <typename T>
-void inviwo::MetaDataPrimitiveType<T>::deserialize( IvwDeserializer& d ){}
+void MetaDataPrimitiveType<T>::deserialize( IvwDeserializer& d ){}
 template <typename T>
-void inviwo::MetaDataPrimitiveType<T>::serialize( IvwSerializer& s ) const{}
-
+void MetaDataPrimitiveType<T>::serialize( IvwSerializer& s ) const{}
 
 /*---------------------------------------------------------------------*/
 
@@ -221,7 +216,7 @@ public:
 
 /*---------------------------------------------------------------------*/
 
-class StringMetaData : public MetaDataPrimitiveType<std::string> {
+class IVW_CORE_API StringMetaData : public MetaDataPrimitiveType<std::string> {
 public:
     StringMetaData();
     StringMetaData(std::string value);
@@ -234,10 +229,10 @@ public:
 
 /*---------------------------------------------------------------------*/
 template<unsigned int N, typename T>
-class IVW_CORE_API VectorMetaData {};
+class VectorMetaData {};
 
 template<typename T>
-class IVW_CORE_API VectorMetaData<4,T> : public MetaDataPrimitiveType<Vector<4,T> > {
+class VectorMetaData<4,T> : public MetaDataPrimitiveType<Vector<4,T> > {
 public:
 	VectorMetaData<4,T>() : MetaDataPrimitiveType<Vector<4,T> >(Vector<4,T>(0)) {};
 	VectorMetaData<4,T>(Vector<4,T> value): MetaDataPrimitiveType<Vector<4,T> >(value) {};
@@ -269,7 +264,7 @@ public:
 
 
 template<typename T>
-class IVW_CORE_API VectorMetaData<3,T> : public MetaDataPrimitiveType<Vector<3,T> > {
+class VectorMetaData<3,T> : public MetaDataPrimitiveType<Vector<3,T> > {
 public:
 	VectorMetaData<3,T>() : MetaDataPrimitiveType<Vector<3,T> >(Vector<3,T>(0)) {};
 	VectorMetaData<3,T>(Vector<3,T> value): MetaDataPrimitiveType<Vector<3,T> >(value) {};
@@ -298,7 +293,7 @@ public:
 };
 
 template<typename T>
-class IVW_CORE_API VectorMetaData<2,T> : public MetaDataPrimitiveType<Vector<2,T> > {
+class VectorMetaData<2,T> : public MetaDataPrimitiveType<Vector<2,T> > {
 public:
 	VectorMetaData<2,T>() : MetaDataPrimitiveType<Vector<2,T> >(Vector<2,T>(0)) {};
 	VectorMetaData<2,T>(Vector<2,T> value): MetaDataPrimitiveType<Vector<2,T> >(value) {};
@@ -326,7 +321,7 @@ public:
 	};
 };
 template<typename T>
-class IVW_CORE_API VectorMetaData<1,T> : public MetaDataPrimitiveType<Vector<1,T> > {
+class VectorMetaData<1,T> : public MetaDataPrimitiveType<Vector<1,T> > {
 public:
 	VectorMetaData<1,T>() : MetaDataPrimitiveType<Vector<1,T> >(Vector<1,T>(0)) {};
 	VectorMetaData<1,T>(Vector<1,T> value): MetaDataPrimitiveType<Vector<1,T> >(value) {};
@@ -356,10 +351,10 @@ public:
 
 
 template<unsigned int N, typename T>
-class IVW_CORE_API MatrixMetaData {};
+class MatrixMetaData {};
 
 template<typename T>
-class IVW_CORE_API MatrixMetaData<4,T> : public MetaDataPrimitiveType<Matrix<4,T> > {
+class MatrixMetaData<4,T> : public MetaDataPrimitiveType<Matrix<4,T> > {
 public:
 	MatrixMetaData<4,T>() : MetaDataPrimitiveType<Matrix<4,T> >(Matrix<4,T>(0)) {};
 	MatrixMetaData<4,T>(Matrix<4,T> value): MetaDataPrimitiveType<Matrix<4,T> >(value) {};
@@ -390,7 +385,7 @@ public:
 	};
 };
 template<typename T>
-class IVW_CORE_API MatrixMetaData<3,T> : public MetaDataPrimitiveType<Matrix<3,T> > {
+class MatrixMetaData<3,T> : public MetaDataPrimitiveType<Matrix<3,T> > {
 public:
 	MatrixMetaData<3,T>() : MetaDataPrimitiveType<Matrix<3,T> >(Matrix<3,T>(0)) {};
 	MatrixMetaData<3,T>(Matrix<3,T> value): MetaDataPrimitiveType<Matrix<3,T> >(value) {};
@@ -420,7 +415,7 @@ public:
 	};
 };
 template<typename T>
-class IVW_CORE_API MatrixMetaData<2,T> : public MetaDataPrimitiveType<Matrix<2,T> > {
+class MatrixMetaData<2,T> : public MetaDataPrimitiveType<Matrix<2,T> > {
 public:
 	MatrixMetaData<2,T>() : MetaDataPrimitiveType<Matrix<2,T> >(Matrix<2,T>(0)) {};
 	MatrixMetaData<2,T>(Matrix<2,T> value): MetaDataPrimitiveType<Matrix<2,T> >(value) {};

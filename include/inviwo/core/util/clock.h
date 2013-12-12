@@ -3,6 +3,7 @@
 #define IVW_CLOCK_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <time.h>
 
 namespace inviwo {
 
