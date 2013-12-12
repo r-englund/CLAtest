@@ -50,8 +50,28 @@ InviwoCore::InviwoCore() : InviwoModule() {
     addRepresentationConverter(new ImageDisk2RAMConverter());
 
     // Register MetaData
-    #define MetaDataMacro(n, t, d) addMetaData(new n##MetaData());
-    #include <inviwo/core/metadata/metadatadefinefunc.h>
+    #define MetaDataMacroC(n, t, d) addMetaData(new n##MetaData());
+	MetaDataMacroC(Bool, bool, false)
+	MetaDataMacroC(Int, int, 0)
+	MetaDataMacroC(Float, float, 0.0f)
+	MetaDataMacroC(String, std::string, "")
+	MetaDataMacroC(IVec2, ivec2, ivec2(0))
+	MetaDataMacroC(IVec3, ivec3, ivec3(0))
+	MetaDataMacroC(IVec4, ivec4, ivec4(0))
+	MetaDataMacroC(Vec2, vec2, vec2(0))
+	MetaDataMacroC(Vec3, vec3, vec3(0))
+	MetaDataMacroC(Vec4, vec4, vec4(0))
+	MetaDataMacroC(DVec2, dvec2, dvec2(0))
+	MetaDataMacroC(DVec3, dvec3, dvec3(0))
+	MetaDataMacroC(DVec4, dvec4, dvec4(0))
+	MetaDataMacroC(UVec2, uvec2, uvec2(0))
+	MetaDataMacroC(UVec3, uvec3, uvec3(0))
+	MetaDataMacroC(UVec4, uvec4, uvec4(0))
+	MetaDataMacroC(Mat2, mat2, mat2(0))
+	MetaDataMacroC(Mat3, mat3, mat3(0))
+	MetaDataMacroC(Mat4, mat4, mat4(0))
+	
+	//#include <inviwo/core/metadata/metadatadefinefunc.h>
 
     addMetaData(new VectorMetaData<2,float>());
     addMetaData(new VectorMetaData<3,float>());

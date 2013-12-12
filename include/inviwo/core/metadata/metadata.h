@@ -101,17 +101,40 @@ void inviwo::MetaDataPrimitiveType<T>::deserialize( IvwDeserializer& d ){
     d.deserialize("MetaData", value_);
 }
 
-/*---------------------------------------------------------------------*/
-#define MetaDataMacro(n, t, d) \
+//
+/////*---------------------------------------------------------------------*/
+#define MetaDataMacroA(n, t, d) \
 class IVW_CORE_API n##MetaData : public MetaDataPrimitiveType<t> {\
 public:\
-    n##MetaData();\
-    n##MetaData(t value);\
-    virtual std::string getClassName() const;\
-    virtual n##MetaData* clone() const;\
+	n##MetaData();\
+	n##MetaData(t value);\
+	virtual std::string getClassName() const;\
+	virtual n##MetaData* clone() const;\
 };
 
-#include <inviwo/core/metadata/metadatadefinefunc.h>
+MetaDataMacroA(Bool, bool, false)
+MetaDataMacroA(Int, int, 0)
+MetaDataMacroA(Float, float, 0.0f)
+MetaDataMacroA(String, std::string, "")
+MetaDataMacroA(IVec2, ivec2, ivec2(0))
+MetaDataMacroA(IVec3, ivec3, ivec3(0))
+MetaDataMacroA(IVec4, ivec4, ivec4(0))
+MetaDataMacroA(Vec2, vec2, vec2(0))
+MetaDataMacroA(Vec3, vec3, vec3(0))
+MetaDataMacroA(Vec4, vec4, vec4(0))
+MetaDataMacroA(DVec2, dvec2, dvec2(0))
+MetaDataMacroA(DVec3, dvec3, dvec3(0))
+MetaDataMacroA(DVec4, dvec4, dvec4(0))
+MetaDataMacroA(UVec2, uvec2, uvec2(0))
+MetaDataMacroA(UVec3, uvec3, uvec3(0))
+MetaDataMacroA(UVec4, uvec4, uvec4(0))
+MetaDataMacroA(Mat2, mat2, mat2(0))
+MetaDataMacroA(Mat3, mat3, mat3(0))
+MetaDataMacroA(Mat4, mat4, mat4(0))
+
+
+
+//#include <inviwo/core/metadata/metadatadefinefunc.h>
 
 /*---------------------------------------------------------------------*/
 
