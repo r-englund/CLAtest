@@ -1,4 +1,5 @@
 #include <inviwo/core/io/datawriterfactory.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
