@@ -157,7 +157,7 @@ public:
     }
 
 	virtual void serialize(IvwSerializer& s) const {
-		glm::detail::tvec4<T> u(value_.x, value_.y, value_.z, value_.w);
+		glm::detail::tvec4<T> u(MetaDataPrimitiveType<Vector<4,T> >::value_.x, MetaDataPrimitiveType<Vector<4,T> >::value_.y, MetaDataPrimitiveType<Vector<4,T> >::value_.z, MetaDataPrimitiveType<Vector<4,T> >::value_.w);
         s.serialize("MetaData", u);
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
 	};
@@ -183,7 +183,7 @@ public:
         return new VectorMetaData<3,T>(*this);
     };
 	virtual void serialize(IvwSerializer& s) const {
-        glm::detail::tvec3<T> u(value_.x, value_.y, value_.z);
+        glm::detail::tvec3<T> u(MetaDataPrimitiveType<Vector<3,T> >::value_.x, MetaDataPrimitiveType<Vector<3,T> >::value_.y, MetaDataPrimitiveType<Vector<3,T> >::value_.z);
         s.serialize("MetaData", u);
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
 	};
@@ -208,7 +208,7 @@ public:
         return new VectorMetaData<2,T>(*this);
     };
 	virtual void serialize(IvwSerializer& s) const {
-        glm::detail::tvec2<T> u(value_.x, value_.y);
+        glm::detail::tvec2<T> u(MetaDataPrimitiveType<Vector<2,T> >::value_.x, MetaDataPrimitiveType<Vector<2,T> >::value_.y);
         s.serialize("MetaData", u);
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
@@ -237,10 +237,10 @@ public:
     };
 	virtual void serialize(IvwSerializer& s) const {
         glm::detail::tmat4x4<T> u(
-            value_[0][0], value_[0][1], value_[0][2], value_[0][3], 
-            value_[1][0], value_[1][1], value_[1][2], value_[1][3],
-            value_[2][0], value_[2][1], value_[2][2], value_[2][3],
-            value_[3][0], value_[3][1], value_[3][2], value_[3][3]);
+            MetaDataPrimitiveType<Matrix<4,T> >::value_[0][0], MetaDataPrimitiveType<Matrix<4,T> >::value_[0][1], MetaDataPrimitiveType<Matrix<4,T> >::value_[0][2], MetaDataPrimitiveType<Matrix<4,T> >::value_[0][3], 
+            MetaDataPrimitiveType<Matrix<4,T> >::value_[1][0], MetaDataPrimitiveType<Matrix<4,T> >::value_[1][1], MetaDataPrimitiveType<Matrix<4,T> >::value_[1][2], MetaDataPrimitiveType<Matrix<4,T> >::value_[1][3],
+            MetaDataPrimitiveType<Matrix<4,T> >::value_[2][0], MetaDataPrimitiveType<Matrix<4,T> >::value_[2][1], MetaDataPrimitiveType<Matrix<4,T> >::value_[2][2], MetaDataPrimitiveType<Matrix<4,T> >::value_[2][3],
+            MetaDataPrimitiveType<Matrix<4,T> >::value_[3][0], MetaDataPrimitiveType<Matrix<4,T> >::value_[3][1], MetaDataPrimitiveType<Matrix<4,T> >::value_[3][2], MetaDataPrimitiveType<Matrix<4,T> >::value_[3][3]);
         s.serialize("MetaData", u);
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
@@ -265,9 +265,9 @@ public:
     };
 	virtual void serialize(IvwSerializer& s) const {
         glm::detail::tmat3x3<T> u(
-            value_[0][0], value_[0][1], value_[0][2], 
-            value_[1][0], value_[1][1], value_[1][2],
-            value_[2][0], value_[2][1], value_[2][2]);
+            MetaDataPrimitiveType<Matrix<3,T> >::value_[0][0], MetaDataPrimitiveType<Matrix<3,T> >::value_[0][1], MetaDataPrimitiveType<Matrix<3,T> >::value_[0][2], 
+            MetaDataPrimitiveType<Matrix<3,T> >::value_[1][0], MetaDataPrimitiveType<Matrix<3,T> >::value_[1][1], MetaDataPrimitiveType<Matrix<3,T> >::value_[1][2],
+            MetaDataPrimitiveType<Matrix<3,T> >::value_[2][0], MetaDataPrimitiveType<Matrix<3,T> >::value_[2][1], MetaDataPrimitiveType<Matrix<3,T> >::value_[2][2]);
         s.serialize("MetaData", u);
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
@@ -292,8 +292,8 @@ public:
     };
 	virtual void serialize(IvwSerializer& s) const {
         glm::detail::tmat2x2<T> u(
-            value_[0][0], value_[0][1], 
-            value_[1][0], value_[1][1]);
+            MetaDataPrimitiveType<Matrix<2,T> >::value_[0][0], MetaDataPrimitiveType<Matrix<2,T> >::value_[0][1], 
+            MetaDataPrimitiveType<Matrix<2,T> >::value_[1][0], MetaDataPrimitiveType<Matrix<2,T> >::value_[1][1]);
         s.serialize("MetaData", u);
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
