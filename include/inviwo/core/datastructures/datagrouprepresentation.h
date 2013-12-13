@@ -32,10 +32,14 @@ namespace inviwo {
  *    - DataGroupRepresentation becomes invalid when a child DataRepresentation is invalid.
  */
 
+class DataGroup;
+
 class IVW_CORE_API DataGroupRepresentation : DataRepresentation {
 
+    friend class DataGroup;
+
 public:
-    DataGroupRepresentation(std::vector<Data*>*);
+    DataGroupRepresentation();
     DataGroupRepresentation(const DataGroupRepresentation& rhs);
     virtual ~DataGroupRepresentation();
 
@@ -44,15 +48,20 @@ public:
     virtual DataGroupRepresentation* clone() const = 0;
     virtual std::string getClassName() const;
 
-    //Update representations_ with DataRepresentation from each Data object
+    //Update representations_ with DataRepresentation from each Data and DataGroup object
     virtual void update() = 0;
 
-    //Function for checking if representations_ is identical (and valid) to those in the Data object.
+    //Function for checking if representations_ is identical (and valid) to those in the Data and DataGroup object.
     virtual bool isValid() const = 0;
 
 protected:
-    std::vector<Data*>* data_;
+    void setPointerToData(std::vector<Data*>*, std::vector<DataGroup*>*);
+
     std::vector<DataRepresentation*> representations_;
+
+private:
+    std::vector<Data*>* data_;
+    std::vector<DataGroup*>* groupData_;
 };
 
 } // namespace

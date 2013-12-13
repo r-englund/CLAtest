@@ -30,10 +30,10 @@ namespace inviwo {
  *  which are owned by the referenced/owned Data objects.
  *
  *  Differences between DataGroup and Data:
- *    - DataGroup can never hold any data with owning/referencing a Data object
+ *    - DataGroup can never hold any data with owning(referencing[later]) a Data object or a DataGroup object
  *    - DataGroupRepresentation need reference to all Data objects to be created correctly
  *    - DataGroup does not have converters, as the DataGroup objects always can create them self correctly.
- *    - DataGroupRepresentation becomes invalid when a child representations
+ *    - DataGroupRepresentation becomes invalid when a child representations becomes invalid
  */
 
 class IVW_CORE_API DataGroup {
@@ -53,14 +53,20 @@ public:
 
     template<typename T>
     bool hasRepresentation() const;
+
     bool hasRepresentations() const;
 
-    void addData(Data*);
     void clearRepresentations();
 
 protected:
-    std::vector<Data*> data_;
+    void addData(Data*);
+    void addData(DataGroup*);
+
     mutable std::vector<DataGroupRepresentation*> representations_;
+
+private:
+    std::vector<Data*> data_;
+    std::vector<DataGroup*> groupData_;
 };
 
 template<typename T>
@@ -82,7 +88,12 @@ const T* DataGroup::getRepresentation() const {
     }
 
     //no representation exists, create one
-    T* result = new T(&data_);
+    T* result = new T();
+    DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(result);
+    if(basRep){
+        basRep->setPointerToData(&data_, &groupData_);
+        basRep->initialize();
+    }
     representations_.push_back(result);
     return result;    
 }

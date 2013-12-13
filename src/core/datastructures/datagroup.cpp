@@ -32,10 +32,23 @@ DataGroup& DataGroup::operator=(const DataGroup& that){
 
 
 DataGroup::~DataGroup() {
+    clearRepresentations();
+    for (size_t i=0; i<data_.size(); ++i) {
+        delete data_[i];
+    }
+    data_.clear();
+    for (size_t i=0; i<groupData_.size(); ++i) {
+        delete groupData_[i];
+    }
+    groupData_.clear();
 }
 
 void DataGroup::addData(Data* dataObj){
     data_.push_back(dataObj);
+}
+
+void DataGroup::addData(DataGroup* dataGroupObj){
+    groupData_.push_back(dataGroupObj);
 }
 
 void DataGroup::clearRepresentations() {
