@@ -334,6 +334,19 @@ set(PCH_PATH_FILES
 )
 ivw_add_pch_path(${PCH_PATH_FILES})
 
+
+if(IVW_UNIT_TEST_APPLICATION)
+set(TEST_FILES
+	${IVW_INCLUDE_DIR}/inviwo/core/unittests/inviwoapplication.test.h
+	${IVW_INCLUDE_DIR}/inviwo/core/unittests/commandlineparser.test.h
+	${IVW_INCLUDE_DIR}/inviwo/core/unittests/volume.test.h
+)
+ivw_add_unittest(${TEST_FILES})
+ivw_group("Unittest Files" ${TEST_FILES})
+
+endif()
+
+
 #--------------------------------------------------------------------
 # Define standard defintions
 ivw_define_standard_definitions(IVW_CORE)
@@ -348,7 +361,7 @@ add_definitions(-DCMAKE_GENERATOR="${CMAKE_GENERATOR}")
 
 #--------------------------------------------------------------------
 # Create library
-add_library(inviwo-core ${SOURCE_FILES} ${HEADER_FILES})
+add_library(inviwo-core ${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})
 
 #--------------------------------------------------------------------
 # Add core folders to includes

@@ -15,12 +15,6 @@ set(SOURCE_FILES
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
-
-set(TEST_FILES
-	${CMAKE_SOURCE_DIR}/apps/unittests/defaulttests/inviwoapplication.test.h
-)
-ivw_group("Unittest Files" ${TEST_FILES})
-ivw_add_unittest(${TEST_FILES})
  
 
 
@@ -64,7 +58,7 @@ ivw_link_directories(${LIBRARY_OUTPUT_PATH})
 
 #--------------------------------------------------------------------
 # Create application
-add_executable(unittests MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})
+add_executable(unittests MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 target_link_libraries(unittests gtest)
 #--------------------------------------------------------------------
 # Add dependencies
