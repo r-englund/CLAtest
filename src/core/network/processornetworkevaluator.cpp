@@ -347,7 +347,7 @@ void ProcessorNetworkEvaluator::notifyInvalidationEnd(Processor* p){
     processorNetwork_->notifyInvalidationEnd(p);
     p->removeObserver(this);
     evaulationQueued_ = false;
-    //evaluate();
+    evaluate();
 }
 
 void ProcessorNetworkEvaluator::evaluate() {
@@ -355,7 +355,7 @@ void ProcessorNetworkEvaluator::evaluate() {
         return;
 
     //evaluation has been triggered but not performed yet
-    /*if(evaulationQueued_)
+    if(evaulationQueued_)
         return;
 
     //wait for invalidation to finish before evaluating
@@ -363,7 +363,7 @@ void ProcessorNetworkEvaluator::evaluate() {
         evaulationQueued_ = true;
         processorNetwork_->getInvalidationInitiator()->addObserver(this);
         return;
-    }*/
+    }
     
     // lock processor network to avoid concurrent evaluation
     processorNetwork_->lock();    
