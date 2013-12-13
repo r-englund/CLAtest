@@ -66,7 +66,7 @@ void Canvas::render(const Image* im) {}
 void Canvas::activate() {}
 
 void Canvas::resize(uvec2 size) {
-    if(size != dimensions_){
+    //if(size != dimensions_){
         uvec2 previousDimensions = dimensions_;
         dimensions_ = size;
         if (processorNetworkEvaluator_) {
@@ -75,13 +75,14 @@ void Canvas::resize(uvec2 size) {
             processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
             processorNetworkEvaluator_->evaluate();
         }
-    }
+    //}
 }
 
 void Canvas::update() {}
 
 void Canvas::interactionEvent(InteractionEvent* e) {
     processorNetworkEvaluator_->propagateInteractionEvent(this, e);
+    processorNetworkEvaluator_->evaluate();
 }
 
 void Canvas::mousePressEvent(MouseEvent* e) {
