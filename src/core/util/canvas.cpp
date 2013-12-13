@@ -72,7 +72,6 @@ void Canvas::resize(uvec2 size) {
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
         resizeEvent->setPreviousSize(previousDimensions);        
         processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
-        processorNetworkEvaluator_->evaluate();
     }
 }
 
