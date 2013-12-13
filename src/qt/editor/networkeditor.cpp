@@ -1062,8 +1062,6 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
 			if (processorItem && !oldProcessorTarget_) { //< New processor found
 				QString className;
 				ProcessorDragObject::decode(e->mimeData(), className);
-				Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
-				bool inportsMatch = true, outportsMatch = true;
 				processorItem->setSelected(true);
 				oldProcessorTarget_ = processorItem;
 			} else if ( !processorItem && oldProcessorTarget_) { //< Processor no longer targeted

@@ -47,26 +47,14 @@ void IvfVolumeWriter::writeData( const Volume* volume, const std::string filePat
         throw DataWriterException("Error: Output file: " + rawPath + " already exists");
     }
 
-    std::string fileDirectory = URLParser::getFileDirectory(filePath);
-    std::string fileExtension = URLParser::getFileExtension(filePath);
     std::string fileName = URLParser::getFileNameWithoutExtension(filePath);
 
     const VolumeRAM* vr = volume->getRepresentation<VolumeRAM>();
 
     IvwSerializer s(filePath);
-
     s.serialize("ObjectFileName", fileName + ".raw");
     s.serialize("Format", vr->getDataFormatString());
-
-    Vec3MetaData* m = new Vec3MetaData(glm::vec3(1.0f));
-
-    MetaDataMap* meta = volume->getMetaDataMap();
-    meta->add("string", new StringMetaData("hej"));
-    meta->add("vec3a", m);
-    meta->add("vec3b", m);
-    meta->add("vec3c", m);
-    meta->add("float", new FloatMetaData(3.f));
-    meta->serialize(s);
+    volume->getMetaDataMap()->serialize(s);
     s.writeFile();
 
     std::fstream fout(rawPath.c_str(), std::ios::out | std::ios::binary);

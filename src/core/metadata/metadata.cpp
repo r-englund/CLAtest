@@ -45,6 +45,6 @@ void MetaData::deserialize(IvwDeserializer& d) {
     n##MetaData* n##MetaData::clone() const { return new n##MetaData(*this); }; \
 
 #include <inviwo/core/metadata/metadatadefinefunc.h>
-#undef MetaDataMacro
+
     
 } // namespace

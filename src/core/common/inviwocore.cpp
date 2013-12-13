@@ -52,7 +52,6 @@ InviwoCore::InviwoCore() : InviwoModule() {
     // Register MetaData
     #define MetaDataMacro(n, t, d) addMetaData(new n##MetaData());
 	#include <inviwo/core/metadata/metadatadefinefunc.h>
-    #undef MetaDataMacro
 
     addMetaData(new VectorMetaData<2,float>());
     addMetaData(new VectorMetaData<3,float>());

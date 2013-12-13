@@ -15,11 +15,9 @@
 #ifndef IVW_IVFVOLUMEREADER_H
 #define IVW_IVFVOLUMEREADER_H
 
-#include "inviwo/core/common/inviwocoredefine.h"
-#include "inviwo/core/common/inviwo.h"
-#include "inviwo/core/io/rawvolumereader.h"
-#include "inviwo/core/util/filedirectory.h"
-#include "inviwo/core/io/ivfreadersettings.h"
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/io/datareader.h>
 #include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {

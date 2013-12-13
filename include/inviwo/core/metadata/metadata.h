@@ -112,7 +112,7 @@ public:\
 	virtual n##MetaData* clone() const;\
 };
 #include <inviwo/core/metadata/metadatadefinefunc.h>
-#undef MetaDataMacro
+
 
 /*---------------------------------------------------------------------*/
 

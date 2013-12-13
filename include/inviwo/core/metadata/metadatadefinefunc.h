@@ -1,3 +1,6 @@
+#ifndef MetaDataMacro
+#define MetaDataMacro(n, t, d)
+#endif
 MetaDataMacro(Bool, bool, false)
 MetaDataMacro(Int, int, 0)
 MetaDataMacro(Float, float, 0.0f)
@@ -17,4 +20,4 @@ MetaDataMacro(UVec4, uvec4, uvec4(0))
 MetaDataMacro(Mat2, mat2, mat2(0))
 MetaDataMacro(Mat3, mat3, mat3(0))
 MetaDataMacro(Mat4, mat4, mat4(0))
-
+#undef MetaDataMacro

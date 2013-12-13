@@ -14,9 +14,6 @@
 
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
-#include <inviwo/core/io/rawvolumewriter.h>
-#include <inviwo/core/io/datvolumewriter.h>
-#include <inviwo/core/io/ivfvolumewriter.h>
 
 namespace inviwo {
 

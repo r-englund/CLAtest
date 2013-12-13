@@ -64,15 +64,13 @@ public:
 
 template<typename T, typename U>
 MultiDataInport<T, U>::MultiDataInport(std::string identifier)
-                         : MultiInport(identifier) {
-    
+    : MultiInport(identifier) {
 }
 
 template <typename T, typename U>
 MultiDataInport<T, U>::~MultiDataInport() { 
 
 }
-
 
 template <typename T, typename U>
 void MultiDataInport<T, U>::connectTo(Outport* outport) {
@@ -85,16 +83,11 @@ void MultiDataInport<T, U>::connectTo(Outport* outport) {
     inport->connectTo(outport);
 }
 
-
-
-
-
-
 template < typename T, typename U /*= DataInport<T> */>
 std::vector<const T*> inviwo::MultiDataInport<T, U>::getData() const {
     std::vector<const T*> data;
     InportSet::const_iterator it = inports_->begin(); InportSet::const_iterator endIt = inports_->end();
-    for(it; it != endIt; ++it) {
+    for(; it != endIt; ++it) {
         data.push_back(static_cast<U*>(*it)->getData());
     }
     return data;
@@ -104,7 +97,7 @@ template < typename T, typename U /*= DataInport<T> */>
 bool inviwo::MultiDataInport<T, U>::hasData() const {
     if (isConnected()) {
         InportSet::const_iterator it = inports_->begin(); InportSet::const_iterator endIt = inports_->end();
-        for(it; it != endIt; ++it) {
+        for(; it != endIt; ++it) {
             if(!static_cast<U*>(*it)->hasData()) 
                 return false;
         }

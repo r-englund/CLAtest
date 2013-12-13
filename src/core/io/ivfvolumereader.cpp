@@ -16,6 +16,7 @@
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 #include "inviwo/core/datastructures/volume/volumedisk.h"
+#include "inviwo/core/util/filedirectory.h"
 
 namespace inviwo {
 
@@ -65,6 +66,7 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
     IvwDeserializer d(filePath);
 
     d.deserialize("ObjectFileName", rawFile_);
+    rawFile_ = fileDirectory + rawFile_;
     std::string formatFlag("");
     d.deserialize("Format", formatFlag);
     format_ = DataFormatBase::get(formatFlag);

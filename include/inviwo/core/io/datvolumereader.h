@@ -17,9 +17,8 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/io/rawvolumereader.h>
-#include <inviwo/core/util/filedirectory.h>
 #include <inviwo/core/datastructures/volume/volume.h>
+#include <inviwo/core/io/datareader.h>
 
 namespace inviwo {
 
