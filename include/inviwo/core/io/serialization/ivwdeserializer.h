@@ -377,7 +377,7 @@ private:
     template <class T>
     void deserializePointer(const std::string& key, T* & data) throw (SerializationException);
 };
-
+    
 template <typename T>
 inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T> &sVector, const std::string &itemKey) 
         throw (SerializationException){

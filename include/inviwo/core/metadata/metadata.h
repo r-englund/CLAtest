@@ -101,9 +101,9 @@ void inviwo::MetaDataPrimitiveType<T>::deserialize( IvwDeserializer& d ){
     d.deserialize("MetaData", value_);
 }
 
-//
-/////*---------------------------------------------------------------------*/
-#define MetaDataMacroA(n, t, d) \
+
+/*---------------------------------------------------------------------*/
+#define MetaDataMacro(n, t, d) \
 class IVW_CORE_API n##MetaData : public MetaDataPrimitiveType<t> {\
 public:\
 	n##MetaData();\
@@ -111,38 +111,16 @@ public:\
 	virtual std::string getClassName() const;\
 	virtual n##MetaData* clone() const;\
 };
-
-MetaDataMacroA(Bool, bool, false)
-MetaDataMacroA(Int, int, 0)
-MetaDataMacroA(Float, float, 0.0f)
-MetaDataMacroA(String, std::string, "")
-MetaDataMacroA(IVec2, ivec2, ivec2(0))
-MetaDataMacroA(IVec3, ivec3, ivec3(0))
-MetaDataMacroA(IVec4, ivec4, ivec4(0))
-MetaDataMacroA(Vec2, vec2, vec2(0))
-MetaDataMacroA(Vec3, vec3, vec3(0))
-MetaDataMacroA(Vec4, vec4, vec4(0))
-MetaDataMacroA(DVec2, dvec2, dvec2(0))
-MetaDataMacroA(DVec3, dvec3, dvec3(0))
-MetaDataMacroA(DVec4, dvec4, dvec4(0))
-MetaDataMacroA(UVec2, uvec2, uvec2(0))
-MetaDataMacroA(UVec3, uvec3, uvec3(0))
-MetaDataMacroA(UVec4, uvec4, uvec4(0))
-MetaDataMacroA(Mat2, mat2, mat2(0))
-MetaDataMacroA(Mat3, mat3, mat3(0))
-MetaDataMacroA(Mat4, mat4, mat4(0))
-
-
-
-//#include <inviwo/core/metadata/metadatadefinefunc.h>
+#include <inviwo/core/metadata/metadatadefinefunc.h>
+#undef MetaDataMacro
 
 /*---------------------------------------------------------------------*/
 
 template<unsigned int N, typename T>
-class IVW_CORE_API VectorMetaData {};
-
+class VectorMetaData {};
+    
 template<typename T>
-class IVW_CORE_API VectorMetaData<4,T> : public MetaDataPrimitiveType<Vector<4,T> > {
+class VectorMetaData<4,T> : public MetaDataPrimitiveType<Vector<4,T> > {
 public:
 	VectorMetaData<4,T>() : MetaDataPrimitiveType<Vector<4,T> >(Vector<4,T>(0)) {};
 	VectorMetaData<4,T>(Vector<4,T> value): MetaDataPrimitiveType<Vector<4,T> >(value) {};
@@ -151,26 +129,23 @@ public:
 		name << "VectorMetaData<4, " << typeid(T).name() << ">";
 		return name.str();
 	};
-
     virtual VectorMetaData<4,T>* clone() const {
         return new VectorMetaData<4,T>(*this);
     }
-
 	virtual void serialize(IvwSerializer& s) const {
-		glm::detail::tvec4<T> u(MetaDataPrimitiveType<Vector<4,T> >::value_.x, MetaDataPrimitiveType<Vector<4,T> >::value_.y, MetaDataPrimitiveType<Vector<4,T> >::value_.z, MetaDataPrimitiveType<Vector<4,T> >::value_.w);
-        s.serialize("MetaData", u);
+        s.serialize("MetaData", this->get().getGLM());
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
 	};
 	virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tvec4<T> u(0);
         d.deserialize("MetaData", u);
-        set(u);
+        this->set(u);
 	};
 };
 
 
 template<typename T>
-class IVW_CORE_API VectorMetaData<3,T> : public MetaDataPrimitiveType<Vector<3,T> > {
+class VectorMetaData<3,T> : public MetaDataPrimitiveType<Vector<3,T> > {
 public:
 	VectorMetaData<3,T>() : MetaDataPrimitiveType<Vector<3,T> >(Vector<3,T>(0)) {};
 	VectorMetaData<3,T>(Vector<3,T> value): MetaDataPrimitiveType<Vector<3,T> >(value) {};
@@ -183,19 +158,18 @@ public:
         return new VectorMetaData<3,T>(*this);
     };
 	virtual void serialize(IvwSerializer& s) const {
-        glm::detail::tvec3<T> u(MetaDataPrimitiveType<Vector<3,T> >::value_.x, MetaDataPrimitiveType<Vector<3,T> >::value_.y, MetaDataPrimitiveType<Vector<3,T> >::value_.z);
-        s.serialize("MetaData", u);
+        s.serialize("MetaData", this->get().getGLM());
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
 	};
 	virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tvec3<T> u(0);
         d.deserialize("MetaData", u);
-        set(u);
+        this->set(u);
 	};
 };
 
 template<typename T>
-class IVW_CORE_API VectorMetaData<2,T> : public MetaDataPrimitiveType<Vector<2,T> > {
+class VectorMetaData<2,T> : public MetaDataPrimitiveType<Vector<2,T> > {
 public:
 	VectorMetaData<2,T>() : MetaDataPrimitiveType<Vector<2,T> >(Vector<2,T>(0)) {};
 	VectorMetaData<2,T>(Vector<2,T> value): MetaDataPrimitiveType<Vector<2,T> >(value) {};
@@ -208,19 +182,18 @@ public:
         return new VectorMetaData<2,T>(*this);
     };
 	virtual void serialize(IvwSerializer& s) const {
-        glm::detail::tvec2<T> u(MetaDataPrimitiveType<Vector<2,T> >::value_.x, MetaDataPrimitiveType<Vector<2,T> >::value_.y);
-        s.serialize("MetaData", u);
+        s.serialize("MetaData", this->get().getGLM());
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
 	virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tvec2<T> u(0);
         d.deserialize("MetaData", u);
-        set(u);
+        this->set(u);
 	};
 };
 
 template<unsigned int N, typename T>
-class IVW_CORE_API MatrixMetaData {};
+class MatrixMetaData {};
 
 template<typename T>
 class IVW_CORE_API MatrixMetaData<4,T> : public MetaDataPrimitiveType<Matrix<4,T> > {
@@ -236,22 +209,17 @@ public:
         return new MatrixMetaData<4,T>(*this);
     };
 	virtual void serialize(IvwSerializer& s) const {
-        glm::detail::tmat4x4<T> u(
-            MetaDataPrimitiveType<Matrix<4,T> >::value_[0][0], MetaDataPrimitiveType<Matrix<4,T> >::value_[0][1], MetaDataPrimitiveType<Matrix<4,T> >::value_[0][2], MetaDataPrimitiveType<Matrix<4,T> >::value_[0][3], 
-            MetaDataPrimitiveType<Matrix<4,T> >::value_[1][0], MetaDataPrimitiveType<Matrix<4,T> >::value_[1][1], MetaDataPrimitiveType<Matrix<4,T> >::value_[1][2], MetaDataPrimitiveType<Matrix<4,T> >::value_[1][3],
-            MetaDataPrimitiveType<Matrix<4,T> >::value_[2][0], MetaDataPrimitiveType<Matrix<4,T> >::value_[2][1], MetaDataPrimitiveType<Matrix<4,T> >::value_[2][2], MetaDataPrimitiveType<Matrix<4,T> >::value_[2][3],
-            MetaDataPrimitiveType<Matrix<4,T> >::value_[3][0], MetaDataPrimitiveType<Matrix<4,T> >::value_[3][1], MetaDataPrimitiveType<Matrix<4,T> >::value_[3][2], MetaDataPrimitiveType<Matrix<4,T> >::value_[3][3]);
-        s.serialize("MetaData", u);
+        s.serialize("MetaData", this->get().getGLM());
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
 	virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tmat4x4<T> u(0);
         d.deserialize("MetaData", u);
-        set(u);
+        this->set(u);
 	};
 };
 template<typename T>
-class IVW_CORE_API MatrixMetaData<3,T> : public MetaDataPrimitiveType<Matrix<3,T> > {
+class MatrixMetaData<3,T> : public MetaDataPrimitiveType<Matrix<3,T> > {
 public:
 	MatrixMetaData<3,T>() : MetaDataPrimitiveType<Matrix<3,T> >(Matrix<3,T>(0)) {};
 	MatrixMetaData<3,T>(Matrix<3,T> value): MetaDataPrimitiveType<Matrix<3,T> >(value) {};
@@ -264,21 +232,17 @@ public:
         return new MatrixMetaData<3,T>(*this);
     };
 	virtual void serialize(IvwSerializer& s) const {
-        glm::detail::tmat3x3<T> u(
-            MetaDataPrimitiveType<Matrix<3,T> >::value_[0][0], MetaDataPrimitiveType<Matrix<3,T> >::value_[0][1], MetaDataPrimitiveType<Matrix<3,T> >::value_[0][2], 
-            MetaDataPrimitiveType<Matrix<3,T> >::value_[1][0], MetaDataPrimitiveType<Matrix<3,T> >::value_[1][1], MetaDataPrimitiveType<Matrix<3,T> >::value_[1][2],
-            MetaDataPrimitiveType<Matrix<3,T> >::value_[2][0], MetaDataPrimitiveType<Matrix<3,T> >::value_[2][1], MetaDataPrimitiveType<Matrix<3,T> >::value_[2][2]);
-        s.serialize("MetaData", u);
+        s.serialize("MetaData", this->get().getGLM());
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
 	virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tmat3x3<T> u(0);
         d.deserialize("MetaData", u);
-        set(u);
+        this->set(u);
 	};
 };
 template<typename T>
-class IVW_CORE_API MatrixMetaData<2,T> : public MetaDataPrimitiveType<Matrix<2,T> > {
+class MatrixMetaData<2,T> : public MetaDataPrimitiveType<Matrix<2,T> > {
 public:
 	MatrixMetaData<2,T>() : MetaDataPrimitiveType<Matrix<2,T> >(Matrix<2,T>(0)) {};
 	MatrixMetaData<2,T>(Matrix<2,T> value): MetaDataPrimitiveType<Matrix<2,T> >(value) {};
@@ -291,16 +255,13 @@ public:
         return new MatrixMetaData<2,T>(*this);
     };
 	virtual void serialize(IvwSerializer& s) const {
-        glm::detail::tmat2x2<T> u(
-            MetaDataPrimitiveType<Matrix<2,T> >::value_[0][0], MetaDataPrimitiveType<Matrix<2,T> >::value_[0][1], 
-            MetaDataPrimitiveType<Matrix<2,T> >::value_[1][0], MetaDataPrimitiveType<Matrix<2,T> >::value_[1][1]);
-        s.serialize("MetaData", u);
+        s.serialize("MetaData", this->get().getGLM());
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
 	virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tmat2x2<T> u(0);
         d.deserialize("MetaData", u);
-        set(u);
+        this->set(u);
 	};
 };
 /*---------------------------------------------------------------------*/

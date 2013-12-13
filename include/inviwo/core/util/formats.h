@@ -59,6 +59,9 @@ namespace inviwo {
             x2, y2, z2, w2,
             x3, y3, z3, w3,
             x4, y4, z4, w4){};
+        glm::detail::tmat4x4<T> getGLM(){
+            return *this;
+        };
     };
     template <typename T>
     class Matrix<3, T> : public glm::detail::tmat3x3<T> {
@@ -76,6 +79,9 @@ namespace inviwo {
         glm::detail::tmat3x3<T>(x1, y1, z1, 
             x2, y2, z2,
             x3, y3, z3){};
+        glm::detail::tmat3x3<T> getGLM(){
+            return *this;
+        };
     };
     template <typename T>
     class Matrix<2, T> : public glm::detail::tmat2x2<T> {
@@ -90,6 +96,9 @@ namespace inviwo {
             T x2, T y2) : 
         glm::detail::tmat2x2<T>(x1, y1, 
             x2, y2){};
+        glm::detail::tmat2x2<T> getGLM(){
+            return *this;
+        };
     };
     template <unsigned int N, typename T>
     class Vector {};
@@ -101,6 +110,7 @@ namespace inviwo {
         Vector<4, T>(const glm::detail::tvec4<T>& v) : glm::detail::tvec4<T>(v){};
         Vector<4, T>(T v) : glm::detail::tvec4<T>(v){};
         Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3, v4){};
+        glm::detail::tvec4<T> getGLM(){ return *this; };
     };
     template <typename T>
     class Vector<3, T> : public glm::detail::tvec3<T> {
@@ -110,6 +120,7 @@ namespace inviwo {
         Vector<3, T>(const glm::detail::tvec3<T>& v) : glm::detail::tvec3<T>(v){};
         Vector<3, T>(T v) : glm::detail::tvec3<T>(v){};
         Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T>(v1, v2, v3){};
+        glm::detail::tvec3<T> getGLM(){ return *this; };
     };
     template <typename T>
     class Vector<2, T> : public glm::detail::tvec2<T> {
@@ -119,14 +130,7 @@ namespace inviwo {
         Vector<2, T>(const glm::detail::tvec2<T>& v) : glm::detail::tvec2<T>(v){};
         Vector<2, T>(T v) : glm::detail::tvec2<T>(v){};
         Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T>(v1, v2){};
-    };
-    template <typename T>
-    class Vector<1, T> : public glm::detail::tvec1<T> {
-    public:
-        Vector<1, T>() : glm::detail::tvec1<T>(){};
-        Vector<1, T>(const Vector<1, T>& v) : glm::detail::tvec1<T>(v.x){};
-        Vector<1, T>(const glm::detail::tvec1<T>& v) : glm::detail::tvec1<T>(v){};
-        Vector<1, T>(T v) : glm::detail::tvec1<T>(v){};
+        glm::detail::tvec2<T> getGLM(){ return *this; };
     };
 
     //Do not set enums specifically, as NUMBER_OF_FORMATS is used to count the number of enums
