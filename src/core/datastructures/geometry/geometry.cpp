@@ -17,10 +17,10 @@
 
 namespace inviwo {
 
-Geometry::Geometry() : SpatialData<3>() {}
+Geometry::Geometry() : DataGroup(), SpatialMetaData<3>() {}
 
-Geometry::Geometry(GeometryRepresentation* rep) : SpatialData<3>() {
-    addRepresentation(rep);
+Geometry::Geometry(GeometryRepresentation* rep) : DataGroup(), SpatialMetaData<3>() {
+    //addRepresentation(rep);
 }
 
 Geometry* Geometry::clone() const {
@@ -28,11 +28,6 @@ Geometry* Geometry::clone() const {
 }
 
 Geometry::~Geometry() {
-}
-
-DataRepresentation* Geometry::createDefaultRepresentation() {
-    return NULL;
-    //return new Mesh();  //Peter, Mesh is not a DataRepresentation? what to do?
 }
 
 } // namespace

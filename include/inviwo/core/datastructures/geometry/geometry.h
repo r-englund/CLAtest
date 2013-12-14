@@ -16,21 +16,19 @@
 #define IVW_GEOMETRY_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/datastructures/datagroup.h>
 #include <inviwo/core/datastructures/spatialdata.h>
 #include <inviwo/core/datastructures/geometry/geometryrepresentation.h>
 
 namespace inviwo {
 
-class IVW_CORE_API Geometry : public SpatialData<3> {
+class IVW_CORE_API Geometry : public DataGroup, public SpatialMetaData<3> {
 
 public:
     Geometry();
     Geometry(GeometryRepresentation* rep);
     virtual ~Geometry();
     virtual Geometry* clone() const;
-
-protected:
-    virtual DataRepresentation* createDefaultRepresentation();
 };
 
 } // namespace

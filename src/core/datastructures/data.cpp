@@ -19,24 +19,24 @@ namespace inviwo {
 Data::Data()
     : validRepresentations_(0)
     , lastValidRepresentation_(NULL)
-    , metaData_(new MetaDataMap())
-    , dataFormatBase_(0){
+    , dataFormatBase_(DataFormatBase::get()){
+}
+
+Data::Data(const DataFormatBase* format)
+: validRepresentations_(0)
+, lastValidRepresentation_(NULL)
+, dataFormatBase_(format){
 }
 
 Data::Data(const Data& rhs) 
     : validRepresentations_(0)
     , lastValidRepresentation_(NULL)
-    , metaData_(rhs.metaData_->clone())
     , dataFormatBase_(rhs.dataFormatBase_){
     rhs.copyRepresentationsTo(this);
 }
 
 Data& Data::operator=(const Data& that) {
     if (this != &that) {
-        MetaDataMap* metadata = that.metaData_->clone();
-        delete metaData_;
-        metaData_ = metadata;
-
         that.copyRepresentationsTo(this);
         dataFormatBase_ = that.dataFormatBase_;
     }
@@ -45,7 +45,6 @@ Data& Data::operator=(const Data& that) {
 
 
 Data::~Data() {
-    delete metaData_;
     clearRepresentations();
 }
 

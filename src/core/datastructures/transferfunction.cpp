@@ -30,12 +30,12 @@ TransferFunction::TransferFunction(const TransferFunction& rhs) {
 
 TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
 	if (this != &rhs) {
-		delete data_;
-		this->data_ = static_cast<Image*>(rhs.data_->clone());
+		delete this->data_;
+		this->data_ = new Image(*rhs.data_);
 		this->clearPoints();
-        textureSize_ = rhs.textureSize_;
-        maskMin_ = rhs.maskMin_;
-        maskMax_ = rhs.maskMax_;
+        this->textureSize_ = rhs.textureSize_;
+        this->maskMin_ = rhs.maskMin_;
+        this->maskMax_ = rhs.maskMax_;
 		for (int i = 0; i < static_cast<int>(rhs.getNumberOfDataPoints()); ++i){
 			this->dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(i)));
 		}

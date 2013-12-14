@@ -23,7 +23,7 @@ namespace inviwo {
 
 class VolumeRepresentation;
 
-class IVW_CORE_API Volume : public StructuredData<3> {
+class IVW_CORE_API Volume : public Data, public StructuredGridMetaData<3> {
 public:
     Volume(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataUINT8::get());
     Volume(const Volume&);

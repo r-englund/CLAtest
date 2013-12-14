@@ -25,7 +25,7 @@ namespace inviwo {
 /** \brief The base class for all data objects.
  *
  *  Data is the base class for all the data objects.
- *  It is responsible for holding the DateRepresentations, the metadata,
+ *  It is responsible for holding the DateRepresentations
  *  and the format of the data.
  *  TODO: write a good overview here
  *
@@ -44,6 +44,7 @@ class IVW_CORE_API Data {
 
 public:
     Data();
+    Data(const DataFormatBase*);
     Data(const Data& rhs);
     Data& operator=(const Data& rhs);
     virtual Data* clone() const = 0;
@@ -67,14 +68,6 @@ public:
      */
     void removeRepresentation(DataRepresentation* representation);
     void clearRepresentations();
- 
-    //MetaData
-    template<typename T, typename U>
-    void setMetaData(std::string key, U value);
-    //param val is required to deduce the template argument
-    template<typename T, typename U>
-    U getMetaData(std::string key, U val) const;
-    MetaDataMap* getMetaDataMap() const { return metaData_; }
 
     //DataFormat
     void setDataFormat(const DataFormatBase* format);
@@ -114,7 +107,6 @@ protected:
     mutable int validRepresentations_; ///< Bit representation of valid representation. A maximum of 32 representations are supported.
     mutable DataRepresentation* lastValidRepresentation_; ///< A pointer to the the most recently updated representation. Makes updates and creation faster.
 
-    MetaDataMap* metaData_;
     const DataFormatBase* dataFormatBase_;
 };
 
@@ -261,47 +253,6 @@ void Data::invalidateAllOther(){
             lastValidRepresentation_ = representations_[i];
             break;
         }
-    }
-}
-
-template<typename T, typename U>
-void Data::setMetaData(std::string key, U value) {
-    MetaData* baseMetaData = metaData_->get(key);
-
-    T* derivedMetaData = 0;
-    if (baseMetaData) {
-        derivedMetaData = dynamic_cast<T*>(baseMetaData);
-        //if not an instance of valid meta data, forcefully replace with valid one
-        if (!derivedMetaData) {
-            metaData_->remove(key);
-            derivedMetaData = new T();
-            metaData_->add(key, derivedMetaData);
-        }
-        derivedMetaData->set(value);
-    }
-    else {
-        derivedMetaData = new T();
-        metaData_->add(key, derivedMetaData);
-        derivedMetaData->set(value);
-    }
-}
-
-//param val is required to deduce the template argument
-template<typename T, typename U>
-U Data::getMetaData(std::string key, U val) const {
-    const MetaData* baseMetaData = metaData_->get(key);
-
-    const T* derivedMetaData = 0;
-    if (baseMetaData) {
-        derivedMetaData = dynamic_cast<const T*>(baseMetaData);
-        //if not an instance of valid meta data, forcefully replace with valid one
-        if (!derivedMetaData) {
-            return val;
-        }
-        return derivedMetaData->get();
-    }
-    else {
-        return val;
     }
 }
 

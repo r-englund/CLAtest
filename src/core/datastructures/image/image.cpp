@@ -19,22 +19,20 @@
 namespace inviwo {
 
 Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers) 
-	: StructuredData<2>(dimensions)
+	: StructuredGridMetaData<2>(dimensions), Data(format)
     , allowMissingLayers_(allowMissingLayers)
-	, imageType_(comb) {
-        Data::setDataFormat(format);
+	, imageType_(comb){
 }
 
 Image::Image(ImageRepresentation* in, bool allowMissingLayers)
-    : StructuredData<2>(in->getDimensions())
+    : StructuredGridMetaData<2>(in->getDimensions()), Data(in->getDataFormat())
     , allowMissingLayers_(allowMissingLayers)
-    , imageType_(in->getImageType()){
-    Data::setDataFormat(in->getDataFormat());    
+    , imageType_(in->getImageType()) { 
     clearRepresentations();
     addRepresentation(in);
 }
 
-Image::Image(const Image& rhs) : StructuredData<2>(rhs)
+Image::Image(const Image& rhs) : StructuredGridMetaData<2>(rhs.getDimension()), Data(rhs.dataFormatBase_)
     , allowMissingLayers_(rhs.allowMissingLayers_)
     , imageType_(rhs.imageType_)
     , inputSources_(rhs.inputSources_) {}
@@ -75,10 +73,10 @@ void Image::resize(uvec2 dimensions) {
 
 
 uvec2 Image::getDimension() const {
-	return StructuredData<2>::getDimension();
+	return StructuredGridMetaData<2>::getDimension();
 }
 void  Image::setDimension(const uvec2& dim){
-	StructuredData<2>::setDimension(dim);
+	StructuredGridMetaData<2>::setDimension(dim);
 }
 
 void Image::resizeImageRepresentations(Image* targetImage, uvec2 targetDim) {
