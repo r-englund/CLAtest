@@ -24,7 +24,7 @@ namespace inviwo {
 
 class ImageRepresentation;
 
-class IVW_CORE_API Image : public StructuredGridMetaData<2>, public Data {
+class IVW_CORE_API Image : public Data, public StructuredGridMetaData<2> {
 public:
     Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(), bool allowMissingLayers = false);
     Image(ImageRepresentation*, bool allowMissingLayers = false);

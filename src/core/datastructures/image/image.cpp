@@ -19,20 +19,20 @@
 namespace inviwo {
 
 Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers) 
-	: StructuredGridMetaData<2>(dimensions), Data(format)
+	: Data(format), StructuredGridMetaData<2>(dimensions)
     , allowMissingLayers_(allowMissingLayers)
 	, imageType_(comb){
 }
 
 Image::Image(ImageRepresentation* in, bool allowMissingLayers)
-    : StructuredGridMetaData<2>(in->getDimensions()), Data(in->getDataFormat())
+    : Data(in->getDataFormat()), StructuredGridMetaData<2>(in->getDimensions())
     , allowMissingLayers_(allowMissingLayers)
     , imageType_(in->getImageType()) { 
     clearRepresentations();
     addRepresentation(in);
 }
 
-Image::Image(const Image& rhs) : StructuredGridMetaData<2>(rhs.getDimension()), Data(rhs.dataFormatBase_)
+Image::Image(const Image& rhs) : Data(rhs.dataFormatBase_), StructuredGridMetaData<2>(rhs.getDimension())
     , allowMissingLayers_(rhs.allowMissingLayers_)
     , imageType_(rhs.imageType_)
     , inputSources_(rhs.inputSources_) {}
