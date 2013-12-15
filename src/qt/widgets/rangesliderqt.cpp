@@ -18,9 +18,9 @@
 namespace inviwo {
     
 RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent) {
-    QFrame *left = new QFrame(this);
-    QFrame *middle = new QFrame(this);
-    QFrame *right = new QFrame(this);
+    QFrame* left = new QFrame(this);
+    QFrame* middle = new QFrame(this);
+    QFrame* right = new QFrame(this);
     addWidget(left);
     addWidget(middle);
     addWidget(right);
@@ -39,12 +39,8 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget *parent) : QSp
         "}"
         ));
 
-    if(orientation == Qt::Horizontal){
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    }
-    else{
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-    }
+    if (orientation == Qt::Horizontal) setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    else setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
 
     connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateSplitterPosition(int, int)));
 

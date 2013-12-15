@@ -72,12 +72,12 @@ void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOption
     QPen pen = QPen();
     pen.setStyle(Qt::SolidLine);
     pen.setCapStyle(Qt::RoundCap);
-    pen.setWidth(4.0/viewScale);
+    pen.setWidth(1.0/viewScale);
     isSelected() ? pen.setColor(Qt::red) : pen.setColor(Qt::black);
     painter->setPen(pen);
     painter->drawLine(start, finish);
     pen.setWidth(2.0/viewScale);
-    pen.setColor(Qt::cyan);
+    pen.setColor(Qt::black);
     painter->setPen(pen);
     painter->drawLine(start, finish);
 

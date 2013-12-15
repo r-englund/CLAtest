@@ -15,12 +15,12 @@
 #ifndef IVW_TRANSFERFUNCTIONEDITORVIEW_H
 #define IVW_TRANSFERFUNCTIONEDITORVIEW_H
 
-//Inviwo includes
+#include <inviwo/core/properties/transferfunctionproperty.h>
+
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 
-//Qt includes
 #include <QtEvents>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -30,23 +30,28 @@ class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView {
 
 	Q_OBJECT
 
-public:    
-    void setMaskMin( const int maskMin );
-    void setMaskMax( const int maskMax );
+public:
+
+    TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
+
+    void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); }
+    void setZoomH(float zoomHMin, float zoomHMax) { if (zoomHMax<zoomHMin) zoomHMax=zoomHMin; zoomH_ = vec2(zoomHMin, zoomHMax); }
+    void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
+
 
 signals:
 	void resized();
 
 protected:
-	void resizeEvent ( QResizeEvent * event );
+	void resizeEvent(QResizeEvent * event);
 	void drawForeground(QPainter *painter, const QRectF &rect);
     void drawBackground(QPainter* painter, const QRectF& rect);
 
 private:
-    float viewMaskMin_;
-    float viewMaskMax_;
-
-    static const int GRID_SPACING;
+    TransferFunctionProperty* tfProperty_;
+    vec2 mask_;
+    vec2 zoomH_;
+    vec2 zoomV_;
 };
 } // namespace
 

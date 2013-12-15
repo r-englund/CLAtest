@@ -47,7 +47,6 @@ class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget
     Q_OBJECT;
 
 public:
-	//TransferFunctionPropertyDialog();
 	TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent);
 	~TransferFunctionPropertyDialog();
 
@@ -57,49 +56,49 @@ public:
     *      Redraws it fully every time, to be optimized if it is allowed to stay
     */
     void updateFromProperty();
-    const int getArrayWidth();
 	void notify();
     QVector<QGradientStop>* getGradientStops();
+    QPixmap* getTFPreview() { return tfPixmap_; }
 
 public slots:
-    void setPropertyValue();
-    void setPropertyValueColorDialog();
+    void setPointColor();
+    void setPointColorDialog();
     void updateColorWheel();
     void showColorDialog();
     void editorViewResized();
-    void bitRangeChanged();
-    void zoomHorizontalChanged();
-    void maskChanged();
-    void zoomVerticalChanged(int min, int max);
+
+    void zoomHorizontally(int zoomHMin, int zoomHMax);
+    void zoomVertically(int zoomVMin, int zoomVMax);
+    void changeMask(int maskMin, int maskMax);
 
 private:
 	int arrayWidth_;
-    static const std::string logSource_;
+    int arrayHeight_;
 
-    TransferFunctionEditorView*	editorview_; ///< View that contains the editor
+    TransferFunctionProperty* tfProperty_;     ///< Pointer to property, for get and invalidation in the widget
+    TransferFunctionEditor* tfEditor_;         ///< TransferFunctionEditor inherited from QGraphicsScene
+    TransferFunctionEditorView*	tfEditorView_; ///< View that contains the editor
 
-    QGraphicsView* paintview_; ///< View that contains the scene for the painted transferfunction
-    QGraphicsScene* paintscene_; ///< Scene where the transferfunction is painted
-
-    TransferFunctionProperty* property_; ///< Pointer to property, for get and invalidation in the widget
-    TransferFunctionEditor* editor_; ///< TransferFunctionEditor inherited from QGraphicsScene
+    QGraphicsView* tfPreview_; ///< View that contains the scene for the painted transfer function
+    QGraphicsScene* paintscene_; ///< Scene where the transfer function is painted
+    QPixmap* tfPixmap_;
 
 	QLinearGradient* gradient_;
-	QVector<QGradientStop>* stops_;
+	QVector<QGradientStop>* gradientStops_;
 
     QColorDialog* colorDialog_;
     ColorWheel* colorWheel_;
     
-    RangeSliderQt* verticalZoomSlider_;
-    IntMinMaxPropertyWidgetQt* zoomPropWidget_;
-    IntMinMaxPropertyWidgetQt* maskPropWidget_;
-    OptionPropertyWidgetQt* bitRangewidget_;
+    RangeSliderQt* zoomVSlider_;
+    RangeSliderQt* zoomHSlider_;
+    RangeSliderQt* maskSlider_;
 
     bool colorChange_;
     int zoom_;
     bool eventFilter(QObject *object, QEvent *event);
     void generateWidget();
     void setPointColor(QColor color);
+    void updateTFPreview();
 };
 
 } // namespace

@@ -17,8 +17,8 @@
 
 #include <inviwo/core/properties/templateproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
-#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/datastructures/transferfunction.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
@@ -32,18 +32,25 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
 
-    IntMinMaxProperty* maskProperty();
-    IntMinMaxProperty* zoomHorizontalProperty();
-    FloatMinMaxProperty* zoomVerticalProperty();
-    OptionPropertyInt* bitRangeProperty();
+    vec2 getMask() { return mask_; }
+    void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); get().setMaskMin(mask_.x); get().setMaskMax(mask_.y); }
 
-    void updateMask(ivec2 mask, int width);
+    vec2 getZoomH() { return zoomH_; }
+    void setZoomH(float zoomHMin, float zoomHMax) { if (zoomHMax<zoomHMin) zoomHMax=zoomHMin; zoomH_ = vec2(zoomHMin, zoomHMax); }
+
+    vec2 getZoomV() { return zoomV_; }
+    void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
+
+    void setVolume(const Volume* volume);
+    std::vector<float> getHistogram() { return histogram_; }
 
 private:
-    IntMinMaxProperty maskProperty_;
-    IntMinMaxProperty zoomHorizontalProperty_;
-    FloatMinMaxProperty zoomVerticalProperty_;
-    OptionPropertyInt bitRangeProperty_;
+    vec2 mask_;
+    vec2 zoomH_;
+    vec2 zoomV_;
+
+    const Volume* volume_;
+    std::vector<float> histogram_;
 };
 
 } // namespace inviwo

@@ -23,7 +23,7 @@ DatVolumeWriter::DatVolumeWriter() : DataWriterType<Volume>() {
     addExtension(FileExtension("dat","Inviwo dat file format"));
 }
 
-DatVolumeWriter::DatVolumeWriter( const DatVolumeWriter& rhs ) : DataWriterType<Volume>(rhs) {
+DatVolumeWriter::DatVolumeWriter(const DatVolumeWriter& rhs) : DataWriterType<Volume>(rhs) {
 }
 
 DatVolumeWriter& DatVolumeWriter::operator=( const DatVolumeWriter& that ){

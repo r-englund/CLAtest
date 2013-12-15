@@ -18,45 +18,49 @@
 
 namespace inviwo{
 
-const int TransferFunctionEditorView::GRID_SPACING = 25;
-
-void TransferFunctionEditorView::resizeEvent ( QResizeEvent * event ){
-	emit resized();
-	static_cast<TransferFunctionEditor*>(scene())->repositionPoints();
-	QGraphicsView::resizeEvent( event );
+TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty* tfProperty)
+    : tfProperty_(tfProperty)
+{
 }
 
-void TransferFunctionEditorView::drawForeground( QPainter *painter, const QRectF &rect ){
-	painter->save();
-	painter->fillRect(QRectF(0, 0, viewMaskMin_, this->height()), QBrush(QColor(64, 64, 64, 192)));
-	painter->fillRect(QRectF(viewMaskMax_,0, this->width(), this->height()), QBrush(QColor(64, 64, 64, 192)));	
+void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
+	emit resized();
+	static_cast<TransferFunctionEditor*>(scene())->repositionPoints();
+	QGraphicsView::resizeEvent(event);
+}
 
-	painter->setWorldMatrixEnabled(true);
-	painter->restore();
+void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF &rect) {
+    if (mask_.x > zoomH_.x) {
+        int leftMaskBorder = ((mask_.x-zoomH_.x)/(zoomH_.y-zoomH_.x)*rect.width());
+        painter->fillRect(0, 0, leftMaskBorder, rect.height(), QColor(25,25,25,100));
+        painter->drawLine(leftMaskBorder, 0, leftMaskBorder, rect.height());
+    }
+    if (mask_.y < zoomH_.y) {
+        int rightMaskBorder = ((mask_.y-zoomH_.x)/(zoomH_.y-zoomH_.x)*rect.width());
+        painter->fillRect(rightMaskBorder, 0, rect.width()-rightMaskBorder, rect.height(), QColor(25,25,25,100));
+        painter->drawLine(rightMaskBorder, 0, rightMaskBorder, rect.height());
+    }
 	QGraphicsView::drawForeground(painter, rect);
 }
 
-void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF & rect) {
-    painter->setWorldMatrixEnabled(true);
-    painter->fillRect(rect, Qt::darkGray);
+void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF& rect) {
+    painter->fillRect(rect, QColor(119,136,221));
+    painter->drawRect(rect);
 
-    qreal left = int(rect.left()) - (int(rect.left()) % GRID_SPACING );
-    qreal top = int(rect.top()) - (int(rect.top()) % GRID_SPACING );
+    // obtain histogram
+    std::vector<float> histogram = tfProperty_->getHistogram();
 
-    QVarLengthArray<QLineF, 100> linesX;
-    for (qreal x = left; x < rect.right(); x += GRID_SPACING )
-        linesX.append(QLineF(x, rect.top(), x, rect.bottom()));
-
+    // draw histogram
     QVarLengthArray<QLineF, 100> linesY;
-    for (qreal y = top; y < rect.bottom(); y += GRID_SPACING )
-        linesY.append(QLineF(rect.left(), y, rect.right(), y));
-
-    painter->drawLines(linesX.data(), linesX.size());
+    unsigned int firstLine = zoomH_.x*histogram.size();
+    unsigned int lastLine  = zoomH_.y*histogram.size();
+    unsigned int numLines = lastLine-firstLine;
+    for (unsigned int i=firstLine; i<lastLine; i++)
+        linesY.append(QLineF((i-firstLine)*(rect.width()/numLines), 0.0,
+                             (i-firstLine)*(rect.width()/numLines), histogram[i]*rect.height()));
+    qreal lineWidth = rect.width()/numLines;
+    painter->setPen(QPen(QColor(68,102,170), lineWidth));
     painter->drawLines(linesY.data(), linesY.size());
 }
-
-void TransferFunctionEditorView::setMaskMin( const int maskMin ){viewMaskMin_ = maskMin;}
-
-void TransferFunctionEditorView::setMaskMax( const int maskMax ){viewMaskMax_ = maskMax;}
 
 }

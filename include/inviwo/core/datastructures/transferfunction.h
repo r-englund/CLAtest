@@ -15,7 +15,6 @@
 /** \Class for holding transfer function data
 *
 *  This class holds transfer function data, currently one parameter in the variable data_.
-*  TODO: refactor to also hold control points instead of keeping them in widget
 */
 
 #ifndef IVW_TRANSFERFUNCTION_H
@@ -28,7 +27,7 @@
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 
 namespace inviwo {
-//template <typename T>
+
 class IVW_CORE_API TransferFunction {
 public:
 	TransferFunction();
@@ -62,7 +61,6 @@ private:
     int textureSize_;
     Image* data_;
     std::vector<TransferFunctionDataPoint*> dataPoints_;
-
 };
 
 } // namespace

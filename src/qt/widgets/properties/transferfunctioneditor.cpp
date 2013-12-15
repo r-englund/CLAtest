@@ -28,10 +28,10 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     //VLDEnable;
 
     //if the editor is loaded from a saved state this adds graphicsitems to the editor for each datapoint in the Transferfunction
-    for (int i = 0; i < static_cast<int>(transferFunction_->getNumberOfDataPoints()); i++){
+    for (int i = 0; i < static_cast<int>(transferFunction_->getNumberOfDataPoints()); i++) {
         controlPoints_.push_back(new TransferFunctionEditorControlPoint(transferFunction_->getPoint(i)));
         addItem(controlPoints_.back());
-        if (i > 0){
+        if (i > 0) {
             lines_.push_back(new TransferFunctionEditorLineItem(
                 controlPoints_[i],
                 controlPoints_[i]));
@@ -39,7 +39,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
         }
     }
 
-    if (transferFunction_->getNumberOfDataPoints() == 0){
+    if (transferFunction_->getNumberOfDataPoints() == 0) {
         addPoint(new vec2(0.0, 0.0));
         addPoint(new vec2(1.0, 1.0));
     }
@@ -57,22 +57,22 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     update();
 }
 
-TransferFunctionEditor::~TransferFunctionEditor(){
-    for (std::vector<TransferFunctionEditorControlPoint*>::iterator p_itr = controlPoints_.begin(); p_itr != controlPoints_.end(); p_itr++){
+TransferFunctionEditor::~TransferFunctionEditor() {
+    for (std::vector<TransferFunctionEditorControlPoint*>::iterator p_itr = controlPoints_.begin(); p_itr != controlPoints_.end(); p_itr++) {
         delete *p_itr;		
     }
     controlPoints_.clear();
 }
 
-void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent *e){
+void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent *e) {
     mouseDownPos_ = e->scenePos();
 
-    if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ControlModifier)){
+    if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ControlModifier)) {
         this->views().front()->setDragMode(QGraphicsView::RubberBandDrag);
     }
 
-    if (e->button() == Qt::LeftButton && !e->modifiers().testFlag(Qt::ControlModifier)){
-        if (items(e->scenePos()).isEmpty()){
+    if (e->button() == Qt::LeftButton && !e->modifiers().testFlag(Qt::ControlModifier)) {
+        if (items(e->scenePos()).isEmpty()) {
             clearSelection();
             addPoint(e);
             QGraphicsScene::mousePressEvent(e);
@@ -82,55 +82,54 @@ void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent *e){
             QGraphicsScene::mousePressEvent(e);
         }
     }
-    else if (e->button() == Qt::RightButton){
-        if (items(e->scenePos()).isEmpty()){
+    else if (e->button() == Qt::RightButton) {
+        if (items(e->scenePos()).isEmpty()) {
             clearSelection();
         }
-        else if (items(e->scenePos()).first()->type() == TransferFunctionEditorControlPoint::Type){
+        else if (items(e->scenePos()).first()->type() == TransferFunctionEditorControlPoint::Type) {
             removePoint((TransferFunctionEditorControlPoint*)items(e->scenePos()).first());
         }
     }
     update();
 }
 
-void TransferFunctionEditor::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *e ){
+void TransferFunctionEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *e) {
     emit doubleClick();
 }
 
-void TransferFunctionEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e){
+void TransferFunctionEditor::mouseMoveEvent(QGraphicsSceneMouseEvent *e) {
     QGraphicsScene::mouseMoveEvent(e);
     transferFunction_->sortDataPoints();
     transferFunction_->calcTransferValues();
-    notifyObservers();
     sortLines();
-    update();
+    notifyObservers();
 }
 
-void TransferFunctionEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent *e){
+void TransferFunctionEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent *e) {
     QGraphicsScene::mouseReleaseEvent(e);
 }
 
-void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
-    if (e->key() == 'A' && e->modifiers().testFlag(Qt::ControlModifier)){
+void TransferFunctionEditor::keyPressEvent(QKeyEvent *e) {
+    if (e->key() == 'A' && e->modifiers().testFlag(Qt::ControlModifier)) {
         QList<QGraphicsItem *> itemList = this->items();
-        foreach( QGraphicsItem *item, itemList ){
+        foreach(QGraphicsItem *item, itemList) {
             item->setSelected(true);
         }
     }
 
-    if (e->key() == 'G' && e->modifiers().testFlag(Qt::ControlModifier)){
+    if (e->key() == 'G' && e->modifiers().testFlag(Qt::ControlModifier)) {
         //TransferFunctionEditorControlPointGroup* temp = new TransferFunctionEditorControlPointGroup();
         QList<QGraphicsItem *> itemList = this->items();
-        foreach( QGraphicsItem *item, itemList ){
+        foreach(QGraphicsItem *item, itemList) {
             //temp.addPoint(static_cast<TransferFunctionEditorControlPoint*<item);
         }
         //controlPointGroups_.push_back(temp);
     }
 
-    if (e->key() == Qt::Key_Delete && controlPoints_.size() > 0){
+    if (e->key() == Qt::Key_Delete && controlPoints_.size() > 0) {
         std::vector<TransferFunctionEditorControlPoint*>::iterator iter = controlPoints_.begin();
-        while (iter != controlPoints_.end()){
-            if ((*iter)->isSelected()){
+        while (iter != controlPoints_.end()) {
+            if ((*iter)->isSelected()) {
                 iter = removePoint(*iter);
             } 
             else{
@@ -140,7 +139,7 @@ void TransferFunctionEditor::keyPressEvent( QKeyEvent *e ){
     }
 }
 
-void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
+void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e) {
     float width = zoomRangeXMax_ - zoomRangeXMin_;
     float height = zoomRangeYMax_ - zoomRangeYMin_;
     float newX = e->scenePos().x() / view_->width();
@@ -151,7 +150,7 @@ void TransferFunctionEditor::addPoint(QGraphicsSceneMouseEvent *e){
     addPoint(pos);
 }
 
-void TransferFunctionEditor::addPoint(vec2* pos){
+void TransferFunctionEditor::addPoint(vec2* pos) {
     pos->x = (pos->x < 0.0) ? 0.0 : pos->x;
     pos->y = (pos->y < 0.0) ? 0.0 : pos->y;
     pos->x = (pos->x > view_->width()) ? view_->width() : pos->x;
@@ -164,7 +163,7 @@ void TransferFunctionEditor::addPoint(vec2* pos){
     controlPoints_.push_back(new TransferFunctionEditorControlPoint(newPoint));
     addItem(controlPoints_.back());
     controlPoints_.back()->setSelected(true);
-    if (transferFunction_->getNumberOfDataPoints() > 1){
+    if (transferFunction_->getNumberOfDataPoints() > 1) {
         lines_.push_back(new TransferFunctionEditorLineItem(
             controlPoints_[transferFunction_->getNumberOfDataPoints()-2], 
             controlPoints_[transferFunction_->getNumberOfDataPoints()-1]));
@@ -187,9 +186,9 @@ void TransferFunctionEditor::addPoint(vec2* pos){
     update();
 }
 
-std::vector<TransferFunctionEditorControlPoint*>::iterator TransferFunctionEditor::removePoint(TransferFunctionEditorControlPoint* target){
+std::vector<TransferFunctionEditorControlPoint*>::iterator TransferFunctionEditor::removePoint(TransferFunctionEditorControlPoint* target) {
     std::vector<TransferFunctionEditorControlPoint*>::iterator iter;
-    if (!lines_.empty()){		
+    if (!lines_.empty()) {		
         lines_.back()->setVisible(false);
         delete lines_.back();
         lines_.pop_back();
@@ -199,14 +198,14 @@ std::vector<TransferFunctionEditorControlPoint*>::iterator TransferFunctionEdito
     target->setVisible(false);
     delete target;
 
-    for (iter = controlPoints_.begin() ; iter != controlPoints_.end(); iter++){
-        if ((*iter) == target){
+    for (iter = controlPoints_.begin() ; iter != controlPoints_.end(); iter++) {
+        if ((*iter) == target) {
             iter = controlPoints_.erase(iter);
             break;
         }
     }
 
-    if (controlPoints_.size() != 0){
+    if (controlPoints_.size() != 0) {
         leftEdgeLine_->setStart(controlPoints_.front());
         leftEdgeLine_->setFinish(controlPoints_.front());
         rightEdgeLine_->setStart(controlPoints_.back());
@@ -227,18 +226,18 @@ std::vector<TransferFunctionEditorControlPoint*>::iterator TransferFunctionEdito
     return iter;
 }
 
-void TransferFunctionEditor::sortLines(){
-    if (lines_.size() > 0){
-        for (size_t i = 0; i < transferFunction_->getNumberOfDataPoints() - 1; i++){
+void TransferFunctionEditor::sortLines() {
+    if (lines_.size() > 0) {
+        for (size_t i = 0; i < transferFunction_->getNumberOfDataPoints() - 1; i++) {
             lines_[i]->setStart(controlPoints_[i]);
             lines_[i]->setFinish(controlPoints_[i + 1]);
         }
     }
 }
 
-void TransferFunctionEditor::setControlPointNeighbours(){
-    if (controlPoints_.size() == 0){}
-    else if (controlPoints_.size() == 1){
+void TransferFunctionEditor::setControlPointNeighbours() {
+    if (controlPoints_.size() == 0) {}
+    else if (controlPoints_.size() == 1) {
         controlPoints_.front()->setLeftNeighbour(NULL);
         controlPoints_.front()->setRightNeighbour(NULL);
     }
@@ -250,7 +249,7 @@ void TransferFunctionEditor::setControlPointNeighbours(){
         (*curr)->setRightNeighbour(NULL);
         curr++;
 
-        while(curr != controlPoints_.end()){
+        while(curr != controlPoints_.end()) {
             (*prev)->setRightNeighbour(*curr);
             (*curr)->setLeftNeighbour(*prev);
             prev = curr;
@@ -260,23 +259,23 @@ void TransferFunctionEditor::setControlPointNeighbours(){
     }
 }
 
-bool myPointCompare(TransferFunctionEditorControlPoint* a, TransferFunctionEditorControlPoint* b){
+bool myPointCompare(TransferFunctionEditorControlPoint* a, TransferFunctionEditorControlPoint* b) {
     return a->getPoint()->getPos()->x < b->getPoint()->getPos()->x;
 }
 
-void TransferFunctionEditor::sortControlPoints(){
+void TransferFunctionEditor::sortControlPoints() {
     std::sort(controlPoints_.begin(), controlPoints_.end(), myPointCompare);
 }
 
-QGraphicsView* TransferFunctionEditor::getView(){
+QGraphicsView* TransferFunctionEditor::getView() {
     return view_;
 }
 
-void TransferFunctionEditor::repositionPoints(){
+void TransferFunctionEditor::repositionPoints() {
     float viewWidth_ = getView()->width();
     float viewHeight_ = getView()->height();
 
-    for (size_t i = 0; i < controlPoints_.size(); ++i){
+    for (size_t i = 0; i < controlPoints_.size(); ++i) {
         float zoomRangeMinX = getZoomRangeXMin();
         float zoomRangeMaxX = getZoomRangeXMax();
 
@@ -291,38 +290,38 @@ void TransferFunctionEditor::repositionPoints(){
         controlPoints_[i]->setPos(newX, newY);
     }
     this->update();
-    //this->invalidate();
+    this->invalidate();
 }
 
-const float TransferFunctionEditor::getZoomRangeXMin(){
+const float TransferFunctionEditor::getZoomRangeXMin() {
     return zoomRangeXMin_;
 }
 
-void TransferFunctionEditor::setZoomRangeXMin(float min){
+void TransferFunctionEditor::setZoomRangeXMin(float min) {
     zoomRangeXMin_ = min;
 }
 
-const float TransferFunctionEditor::getZoomRangeXMax(){
+const float TransferFunctionEditor::getZoomRangeXMax() {
     return zoomRangeXMax_;
 }
 
-void TransferFunctionEditor::setZoomRangeXMax(float max){
+void TransferFunctionEditor::setZoomRangeXMax(float max) {
     zoomRangeXMax_ = max;
 }
 
-const float TransferFunctionEditor::getZoomRangeYMin(){
+const float TransferFunctionEditor::getZoomRangeYMin() {
     return zoomRangeYMin_;
 }
 
-void TransferFunctionEditor::setZoomRangeYMin(float min){
+void TransferFunctionEditor::setZoomRangeYMin(float min) {
     zoomRangeYMin_ = min;
 }
 
-const float TransferFunctionEditor::getZoomRangeYMax(){
+const float TransferFunctionEditor::getZoomRangeYMax() {
     return zoomRangeYMax_;
 }
 
-void TransferFunctionEditor::setZoomRangeYMax(float max){
+void TransferFunctionEditor::setZoomRangeYMax(float max) {
     zoomRangeYMax_ = max;
 }
 

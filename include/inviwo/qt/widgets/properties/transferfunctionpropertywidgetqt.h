@@ -21,9 +21,6 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QHBoxLayout>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGradient>
 
 namespace inviwo {
 
@@ -37,21 +34,18 @@ public:
 	void updateFromProperty();
 
 private:
-    QToolButton* btnOpenTF_;
     EditableLabelQt* label_;
-    QLinearGradient* gradient_;
-    QGraphicsView* gradientView_; 
-    QGraphicsScene* gradientScene_;
-    TransferFunctionProperty* property_;
+    QPushButton* btnOpenTF_;
 
+    TransferFunctionProperty* property_;
 	TransferFunctionPropertyDialog* transferFunctionDialog_;
 
 	void generateWidget();
 
-	public slots:
-		void setPropertyValue();
-		void openTransferFunctionDialog();
-        void setPropertyDisplayName();
+public slots:
+	void setPropertyValue();
+	void openTransferFunctionDialog();
+    void setPropertyDisplayName();
 };
 
 }//namespace

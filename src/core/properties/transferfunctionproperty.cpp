@@ -14,58 +14,59 @@
 
 #include <inviwo/core/properties/transferfunctionproperty.h>
 
+#include <inviwo/core/datastructures/volume/volumeram.h>
+
 namespace inviwo {
 
-TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics )
-: TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics), 
-    maskProperty_("mask_", "Mask", 0, 255, 0, 255), zoomHorizontalProperty_("zoomHorizontal_", "Zoom", 0, 255, 0, 255), 
-    zoomVerticalProperty_("zoomVertical_", "Zoom", 0.f, 1.f, 0.f, 1.f, 0.01f), bitRangeProperty_("bitRangeProperty", "Bit Range") 
+TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value,
+                                                   PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
+    : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
+    , mask_(0.0f, 1.0f)
+    , zoomH_(0.0f, 1.0f)
+    , zoomV_(0.0f, 1.0f)
 {
-    bitRangeProperty_.addOption("8", "8-bit", 8);
-    bitRangeProperty_.addOption("12", "12-bit", 12);
-    bitRangeProperty_.addOption("16", "16-bit", 16);
-    bitRangeProperty_.setSelectedOption(0);
 }
 
-IntMinMaxProperty* TransferFunctionProperty::maskProperty(){
-    return &maskProperty_;
+void TransferFunctionProperty::setVolume(const Volume* volume) {
+    if (volume != volume_) {
+        volume_ = volume;
+        uvec3 dim = volume->getDimension();
+
+        // allocate histogram
+        std::vector<unsigned int> histogram;
+        // FIXME: obtain bitdepth from volume
+        unsigned int numValues = 256;//volume->getDataFormat();
+        for (unsigned int i=0; i<numValues; i++) {
+            histogram.push_back(0);
+            histogram_.push_back(0.0f);
+        }
+
+        // fill histogram
+        const VolumeRAM* volumeRAM = volume_->getRepresentation<VolumeRAM>();
+        for (unsigned int x=0; x<dim.x; x++) {
+            for (unsigned int y=0; y<dim.y; y++) {
+                for (unsigned int z=0; z<dim.z; z++) {
+                    float intensity = volumeRAM->getValueAsSingleFloat(uvec3(x,y,z));
+                    histogram[static_cast<int>(intensity*numValues)]++;
+                }
+            }
+        }
+
+        // normalize histogram while excluding 0 values
+        unsigned int maxOccurance = 0;
+        for (unsigned int i=1; i<numValues; i++)
+            if (histogram[i]>maxOccurance) maxOccurance = histogram[i];
+        for (unsigned int i=1; i<numValues; i++)
+            histogram_[i] = static_cast<float>(histogram[i])/static_cast<float>(maxOccurance);
+        histogram_[0] = 1.0f;
+    }
 }
 
-IntMinMaxProperty* TransferFunctionProperty::zoomHorizontalProperty(){
-    return &zoomHorizontalProperty_;
-}
-
-FloatMinMaxProperty* TransferFunctionProperty::zoomVerticalProperty(){
-    return &zoomVerticalProperty_;
-}
-
-OptionPropertyInt* TransferFunctionProperty::bitRangeProperty(){
-    return &bitRangeProperty_;
-}
-
-void TransferFunctionProperty::updateMask(ivec2 mask, int width){
-    float propertyMaskMinPos = static_cast<float>(mask.x) / (float)width;
-    float propertyMaskMaxPos = static_cast<float>(mask.y) / (float)width;
-
-    propertyMaskMinPos = (propertyMaskMinPos < 0.f) ? 0.f : propertyMaskMinPos;
-    propertyMaskMinPos = (propertyMaskMinPos > 1.f) ? 1.f : propertyMaskMinPos;
-
-    propertyMaskMaxPos = (propertyMaskMaxPos < 0.f) ? 0.f : propertyMaskMaxPos;
-    propertyMaskMaxPos = (propertyMaskMaxPos > 1.f) ? 1.f : propertyMaskMaxPos;
-
-    get().setMaskMin(propertyMaskMinPos);
-    get().setMaskMax(propertyMaskMaxPos);
-}
 
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
 	std::stringstream stream;
     s.serialize("size", (int)value_.getNumberOfDataPoints());
-    s.serialize("mask_", maskProperty_);
-    s.serialize("zoomHorizontal_", zoomHorizontalProperty_);
-    s.serialize("zoomVertical_", zoomVerticalProperty_);
-    s.serialize("bitRangeProperty_", bitRangeProperty_);
-
 	for (int i = 0; i < static_cast<int>(value_.getNumberOfDataPoints()); i++){
 		stream << "pos" << i;
 		s.serialize(stream.str(), value_.getPoint(i)->getPos());
@@ -77,6 +78,9 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 		stream.clear();
 		stream.str(std::string());
 	}
+    s.serialize("mask_", mask_);
+    s.serialize("zoomH_", zoomH_);
+    s.serialize("zoomV_", zoomV_);
 }
 
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
@@ -87,27 +91,24 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 	std::stringstream stream;
 
 	d.deserialize("size", size);
-    d.deserialize("mask_", maskProperty_);
-    d.deserialize("zoomHorizontal_", zoomHorizontalProperty_);
-    d.deserialize("zoomVertical_", zoomVerticalProperty_);
-    d.deserialize("bitRangeProperty_", bitRangeProperty_);
+    for (int i = 0; i < size; i++){
+        stream << "pos" << i;
+        d.deserialize(stream.str(), pos);
+        stream.clear();
+        stream.str(std::string());
 
-    updateMask(maskProperty_.get(), static_cast<int>(pow(2.f, bitRangeProperty_.get())));
+        stream << "rgba" << i;
+        d.deserialize(stream.str(), rgba);
+        stream.clear();
+        stream.str(std::string());
 
-	for (int i = 0; i < size; i++){
-		stream << "pos" << i;
-		d.deserialize(stream.str(), pos);
-		stream.clear();
-		stream.str(std::string());
-
-		stream << "rgba" << i;
-		d.deserialize(stream.str(), rgba);
-		stream.clear();
-		stream.str(std::string());
-
-		value_.addPoint(pos, rgba);
-	}
-
+        value_.addPoint(pos, rgba);
+    }
+    d.deserialize("mask_", mask_);
+    get().setMaskMin(mask_.x);
+    get().setMaskMax(mask_.y);
+    d.deserialize("zoomH_", zoomH_);
+    d.deserialize("zoomV_", zoomV_);
     propertyModified();
 }
 

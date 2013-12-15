@@ -52,7 +52,4 @@ void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsP
     }
 }
 
-
-
-
 } // namespace
