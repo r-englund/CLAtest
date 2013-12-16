@@ -194,7 +194,7 @@ public:
         size_t insert(const void *data, TxElement *node, bool isPointer=true);
         size_t find(const void *data);
         void* find(const std::string& key, const std::string& reference_or_id);
-        std::vector<ReferenceData> getNodes(const void *data);
+        //std::vector<ReferenceData> getNodes(const void *data);
         TxElement* nodeCopy(const void *data);
         void setReferenceAttributes();
 
@@ -206,16 +206,6 @@ public:
 protected:
     friend class NodeSwitch;
 
-    //stream operators
-#ifdef TIXML_USE_STL
-
-    //friend std::istream& operator >> (std::istream& in, IvwSerializeBase& base);
-
-    //friend std::ostream& operator<< (std::ostream& out, const IvwSerializeBase& base);
-
-#endif   
-
-    //TODO: These are static factory objects. But still storing them in vectors can be useful??? 
     std::vector<Factory*> registeredFactories_;
     std::string fileName_;
     TxDocument doc_;    

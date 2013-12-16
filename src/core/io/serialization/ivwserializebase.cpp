@@ -24,8 +24,7 @@ namespace inviwo {
 
 IvwSerializeBase::NodeSwitch::NodeSwitch(IvwSerializeBase& serializer, TxElement* node)
     : _serializer(serializer)
-    , _storedNode(_serializer.rootElement_)
-{
+    , _storedNode(_serializer.rootElement_){
     _serializer.rootElement_ = node;
 }
 
@@ -43,116 +42,80 @@ IvwSerializeBase::ReferenceDataContainer::~ReferenceDataContainer() {
 size_t IvwSerializeBase::ReferenceDataContainer::insert(const void *data, TxElement *node, bool isPointer) {
  
     IvwSerializeBase::ReferenceData refData;
-
     refData._node = node;
     refData._isPointer = isPointer;
 
     _allReferenceMap.insert(RefDataPair(data, refData));
-
-    size_t count = _allReferenceMap.count(data);
-
-    return count;
-}
-
-void IvwSerializeBase::ReferenceDataContainer::setReferenceAttributes() {
-
-    std::map<const void*, int > keyMap;
-    std::map<const void*, int >::iterator keyMapIt;
-
-    for (RefMap::iterator it = _allReferenceMap.begin(); it != _allReferenceMap.end(); ++it) {
-        keyMap[(*it).first]++;
-    }
-
-    std::stringstream ss;
-
-    for ( keyMapIt=keyMap.begin(); keyMapIt != keyMap.end(); keyMapIt++ ) {
-
-        std::vector<ReferenceData> nodes;
-        std::vector<ReferenceData>::iterator nodeIt;
-
-        nodes = getNodes((*keyMapIt).first);
-
-        if (nodes.size()<=1) continue;
-
-         ss.str("");
-         ss<<"ref";
-         ss<<_refCount;
-
-        for ( nodeIt=nodes.begin(); nodeIt != nodes.end(); nodeIt++ ) {
-              
-
-            if ((*nodeIt)._isPointer) { 
-                (*nodeIt)._node->SetAttribute(IvwSerializeConstants::REF_ATTRIBUTE, ss.str() );
-            }
-            else {
-                (*nodeIt)._node->SetAttribute(IvwSerializeConstants::ID_ATTRIBUTE, ss.str() );             
-            }
-        }
-
-        _refCount++;
-    }
     
-}
-
-size_t IvwSerializeBase::ReferenceDataContainer::find(const void *data) {
     return _allReferenceMap.count(data);
 }
 
+    
+void IvwSerializeBase::ReferenceDataContainer::setReferenceAttributes() {
+    
+    std::pair<RefMap::const_iterator, RefMap::const_iterator> sameKeys;
+    
+    // Loop over all different key valus.
+    for (RefMap::const_iterator uniqueKey = _allReferenceMap.begin();
+        uniqueKey != _allReferenceMap.end();
+        uniqueKey = _allReferenceMap.upper_bound(uniqueKey->first)) {
+   
+        sameKeys = _allReferenceMap.equal_range(uniqueKey->first);
+        
+        if (std::distance(sameKeys.first, sameKeys.second)<=1) continue;
+
+        std::stringstream ss;
+        ss<<"ref";
+        ss<<_refCount;
+        
+        // Loop over all items with the same key as uniqueKey.
+        for (RefMap::const_iterator item = sameKeys.first;
+             item != sameKeys.second; ++item) {
+            
+            if (item->second._isPointer) {
+                item->second._node->SetAttribute(IvwSerializeConstants::REF_ATTRIBUTE, ss.str());
+            } else {
+                item->second._node->SetAttribute(IvwSerializeConstants::ID_ATTRIBUTE, ss.str());
+            }
+        }
+        _refCount++;
+    }
+}
+    
+size_t IvwSerializeBase::ReferenceDataContainer::find(const void *data) {
+    return _allReferenceMap.count(data);
+}
+    
 void* IvwSerializeBase::ReferenceDataContainer::find(const std::string& type, const std::string& reference_or_id) {
     void* data = 0;
 
-    std::map<const void*, int > keyMap;
-    std::map<const void*, int >::iterator keyMapIt;
-
+    if(reference_or_id.empty())
+        return data;
+    
     for (RefMap::iterator it = _allReferenceMap.begin(); it != _allReferenceMap.end(); ++it) {
-        keyMap[(*it).first]++;
-    }
-
-    for ( keyMapIt=keyMap.begin(); keyMapIt != keyMap.end(); keyMapIt++ ) {
-
-        std::vector<ReferenceData> nodes;
-        std::vector<ReferenceData>::iterator nodeIt;
-
-        nodes = getNodes((*keyMapIt).first);
-
         std::string type_attrib("");
         std::string ref_attrib("");
         std::string id_attrib("");
-
-        for ( nodeIt=nodes.begin(); nodeIt != nodes.end(); nodeIt++ ) {
-            try {
-                (*nodeIt)._node->GetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, &type_attrib);
-                try {
-                    (*nodeIt)._node->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attrib );
-                }
-                catch (TxException& ) {
-                }
-                (*nodeIt)._node->GetAttribute( IvwSerializeConstants::ID_ATTRIBUTE, &id_attrib );
-            }
-            catch (TxException& ) {
-            }
-
-            if (type_attrib == type) {
-                if (!reference_or_id.empty()) {
-                    if (ref_attrib == reference_or_id || id_attrib == reference_or_id ) {
-                        data = const_cast<void *>((*keyMapIt).first);
-                        break;
-                    }
-                }
-                else {
-                    data = const_cast<void *>((*keyMapIt).first);
-                    break;
-                }
-            }
-
+        
+        try {
+            it->second._node->GetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, &type_attrib);
+        } catch (TxException& ) {}
+        try {
+            it->second._node->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attrib);
+        } catch (TxException& ) {}
+        try {
+            it->second._node->GetAttribute( IvwSerializeConstants::ID_ATTRIBUTE, &id_attrib);
+        } catch (TxException&) {}
+        
+        if (type_attrib == type && (ref_attrib == reference_or_id || id_attrib == reference_or_id)) {
+            data = const_cast<void *>(it->first);
+            break;
         }
-
-        if (data) break;
     }
-
     return data;
 }
-
+    
+/*
 std::vector<IvwSerializeBase::ReferenceData> IvwSerializeBase::ReferenceDataContainer::getNodes(const void *data) {
     std::pair<RefMap::iterator, RefMap::iterator> pIt;
     std::vector<ReferenceData> nodes;
@@ -165,8 +128,9 @@ std::vector<IvwSerializeBase::ReferenceData> IvwSerializeBase::ReferenceDataCont
 
     return nodes;
 }
+ */
 
- TxElement* IvwSerializeBase::ReferenceDataContainer::nodeCopy(const void *data) {
+TxElement* IvwSerializeBase::ReferenceDataContainer::nodeCopy(const void *data) {
     std::pair<RefMap::iterator, RefMap::iterator> pIt;
     std::vector<ReferenceData> nodes;
 
@@ -175,7 +139,7 @@ std::vector<IvwSerializeBase::ReferenceData> IvwSerializeBase::ReferenceDataCont
     pIt = _allReferenceMap.equal_range(data);
 
     for (RefMap::iterator mIt = pIt.first; mIt != pIt.second; ++mIt) {
-        nodeCopy = (*mIt).second._node->Clone()->ToElement();
+        nodeCopy = mIt->second._node->Clone()->ToElement();
         if (nodeCopy) {
             nodeCopy->Clear();
             break;
@@ -188,16 +152,16 @@ std::vector<IvwSerializeBase::ReferenceData> IvwSerializeBase::ReferenceDataCont
 IvwSerializeBase::IvwSerializeBase(IvwSerializeBase &s, bool allowReference)
     : fileName_(s.fileName_)
     , doc_(s.fileName_)
-    , allowRef_(allowReference)
-{
-     registerFactories();  
+    , allowRef_(allowReference){
+        
+    registerFactories();
 }
 
 IvwSerializeBase::IvwSerializeBase(std::string fileName, bool allowReference)
     : fileName_(fileName)
     , doc_(fileName)
-    , allowRef_(allowReference)
-{
+    , allowRef_(allowReference){
+        
     registerFactories(); 
 }
 
@@ -227,8 +191,8 @@ bool IvwSerializeBase::isPrimitivePointerType(const std::type_info& type) const 
         || type == typeid(float *)
         || type == typeid(double *)
         || type == typeid(long double *)
-        || type == typeid(std::string *))
-    {
+        || type == typeid(std::string *)){
+        
         return true;
     }
 
@@ -244,8 +208,8 @@ bool IvwSerializeBase::isPrimitiveType(const std::type_info& type) const {
         || type == typeid(float)
         || type == typeid(double)
         || type == typeid(long double)
-        || type == typeid(std::string))
-    {
+        || type == typeid(std::string)) {
+        
         return true;
     }
 
@@ -255,15 +219,5 @@ bool IvwSerializeBase::isPrimitiveType(const std::type_info& type) const {
 void IvwSerializeBase::setAllowReference(const bool& allowReference) {
     allowRef_ = allowReference;
 }
-
-/*std::ostream& operator<< (std::ostream & out, const IvwSerializeBase & base) {
-    out << *base.rootElement_;
-    return out;
-}
-
-std::istream& operator>> (std::istream & in, IvwSerializeBase & base) {
-    in >> *base.rootElement_;
-    return in;
-}*/
 
 } //namespace

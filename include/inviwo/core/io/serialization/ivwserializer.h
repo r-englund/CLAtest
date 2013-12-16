@@ -29,13 +29,19 @@ public:
 
     virtual void writeFile();
 
+    // std containers
     template <typename T>
-    void serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey);
+    void serialize(const std::string &key, const std::vector<T> &sVector,
+                   const std::string &itemKey);
+    
     template <typename K, typename V, typename C, typename A>
-    void serialize(const std::string &key, const std::map<K,V,C,A> &sMap, const std::string &itemKey);
-    template <typename K, typename V, typename C, typename A>
-    void serialize_test(const std::string &key, const std::map<K,V,C,A> &sMap, const std::string &itemKey);
-    void serialize(const std::string &key, const std::string &data, const bool asAttribute=false);
+    void serialize(const std::string &key, const std::map<K,V,C,A> &sMap,
+                   const std::string &itemKey);
+    
+    void serialize(const std::string &key, const std::string &data,
+                   const bool asAttribute=false);
+    
+    // primitive types
     void serialize(const std::string &key, const float &data);
     void serialize(const std::string &key, const double &data);
     void serialize(const std::string &key, const bool &data);
@@ -43,22 +49,26 @@ public:
     void serialize(const std::string &key, const unsigned int &data);
     void serialize(const std::string &key, const long &data);
     void serialize(const std::string &key, const long long &data);
-    void serialize(const std::string &key, const vec2 &data);
-    void serialize(const std::string &key, const vec3 &data);
-    void serialize(const std::string &key, const vec4 &data);
-    void serialize(const std::string &key, const ivec2 &data);
-    void serialize(const std::string &key, const ivec3 &data);
-    void serialize(const std::string &key, const ivec4 &data);
-    void serialize(const std::string &key, const uvec2 &data);
-    void serialize(const std::string &key, const uvec3 &data);
-    void serialize(const std::string &key, const uvec4 &data);
-    void serialize(const std::string &key, const dvec2 &data);
-    void serialize(const std::string &key, const dvec3 &data);
-    void serialize(const std::string &key, const dvec4 &data);
-    void serialize(const std::string &key, const mat2 &data);
-    void serialize(const std::string &key, const mat3 &data);
-    void serialize(const std::string &key, const mat4 &data); 
+
+    // glm vector types
+    template<class T>
+    void serialize(const std::string& key, const glm::detail::tvec4<T>& data);
+    template<class T>
+    void serialize(const std::string& key, const glm::detail::tvec3<T>& data);
+    template<class T>
+    void serialize(const std::string& key, const glm::detail::tvec2<T>& data);
+    // glm matrix types
+    template<class T>
+    void serialize(const std::string& key, const glm::detail::tmat4x4<T>& data);
+    template<class T>
+    void serialize(const std::string& key, const glm::detail::tmat3x3<T>& data);
+    template<class T>
+    void serialize(const std::string& key, const glm::detail::tmat2x2<T>& data);
+    
+    // serializable classes
     void serialize(const std::string &key, const IvwSerializable &sObj);
+
+    // pointers to something of the above.
     template<class T>
     void serialize(const std::string& key, const T* const& data);
     
@@ -66,67 +76,37 @@ protected:
     friend class NodeSwitch;
 
 private:
-
-    template <typename T>
-    void serializeSTL_Vector(const std::string &key, const T &sVector, const std::string &itemKey);
-
-    template <typename T>
-    void serializeSTL_Map(const std::string &key, const T &sMap, const std::string &itemKey);
-
-    void serializeAttributes(const std::string &key, const std::string &data);
-
-    void serializePrimitives(const std::string &key, const std::string &data);
-    
     template<typename T>
     void serializePrimitives(const std::string& key, const T& data);
     
     template<class T>
     void serializeVector(const std::string& key, const T& vector, const bool& isColor=false);
-
+    
+    void initialize();
 };
 
-template <typename T>
-inline void IvwSerializer::serialize(const std::string &key, const std::vector<T> &sVector, const std::string &itemKey) {
-    serializeSTL_Vector(key, sVector, itemKey);
-}
-
-template <typename K, typename V, typename C, typename A>
-inline void IvwSerializer::serialize(const std::string &key, const std::map<K,V,C,A> &sMap, const std::string &itemKey) {
-    serializeSTL_Map(key, sMap, itemKey);
-}
 
 template <typename T>
-inline void IvwSerializer::serializeSTL_Vector(const std::string &key, const T &sVector, const std::string &itemKey) {
+void IvwSerializer::serialize(const std::string &key,
+                              const std::vector<T> &sVector,
+                              const std::string &itemKey) {
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
 
     NodeSwitch tempNodeSwitch(*this, newNode);
 
-    for (typename T::const_iterator it = sVector.begin(); it != sVector.end(); ++it) {
-        if (!isPrimitiveType(typeid(typename T::value_type)) && !isPrimitivePointerType(typeid(typename T::value_type)) ) {
-            //Handle non primitive cases if necessary
-        }
+    for (typename std::vector<T>::const_iterator it = sVector.begin();
+         it != sVector.end(); ++it) {
         serialize(itemKey, (*it));
     }
 }
 
-template <typename T>
-inline void IvwSerializer::serializeSTL_Map(const std::string &key, const T &sMap, const std::string &itemKey) {
-    TxElement* newNode = new TxElement(key);
-    rootElement_->LinkEndChild(newNode);
-
-    NodeSwitch tempNodeSwitch(*this, newNode);
-
-    for (typename T::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
-        if (!isPrimitiveType(typeid(typename T::mapped_type)) && !isPrimitivePointerType(typeid(typename T::mapped_type)) ) {        
-            //Handle non primitive cases if necessary
-        }
-        serialize(itemKey, it->second);
-    }
-}
 
 template <typename K, typename V, typename C, typename A>
-void IvwSerializer::serialize_test(const std::string &key, const std::map<K,V,C,A>& sMap, const std::string &itemKey) {
+void IvwSerializer::serialize(const std::string &key,
+                              const std::map<K,V,C,A>& sMap,
+                              const std::string &itemKey) {
+
     if(!isPrimitiveType(typeid(K))){
         throw SerializationException("Error: map key has to be a primitive type");
     }
@@ -135,8 +115,8 @@ void IvwSerializer::serialize_test(const std::string &key, const std::map<K,V,C,
     rootElement_->LinkEndChild(newNode);
 
     NodeSwitch tempNodeSwitch(*this, newNode);
-
-    for (typename std::map<K, V, C, A>::const_iterator it = sMap.begin(); it != sMap.end(); ++it) {
+    for (typename std::map<K, V, C, A>::const_iterator it = sMap.begin();
+         it != sMap.end(); ++it) {
         serialize(itemKey, it->second);
         rootElement_->LastChild()->ToElement()->SetAttribute(IvwSerializeConstants::KEY_ATTRIBUTE,
                                                              it->first);
@@ -169,7 +149,65 @@ inline void IvwSerializer::serializePrimitives(const std::string& key, const T& 
 }
 
 template<class T>
-inline void IvwSerializer::serializeVector(const std::string& key, const T& vector, const bool& isColor) {
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec4<T>& data){
+    serializeVector(key, data);
+}
+template<class T>
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec3<T>& data){
+    serializeVector(key, data);
+}
+template<class T>
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec2<T>& data){
+    serializeVector(key, data);
+}
+
+template<class T>
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat4x4<T>& data){
+    glm::detail::tvec4<T> rowVec;
+    TxElement* newNode = new TxElement(key);
+    rootElement_->LinkEndChild(newNode);
+    NodeSwitch tempNodeSwitch(*this, newNode);
+    
+    for (size_t i=0; i<4; i++) {
+        std::stringstream key;
+        key << "row" << i;
+        rowVec = glm::detail::tvec4<T>(data[i][0], data[i][1], data[i][2], data[i][3]);
+        serializeVector(key.str(), rowVec);
+    }
+}
+template<class T>
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat3x3<T>& data){
+    glm::detail::tvec3<T> rowVec;
+    TxElement* newNode = new TxElement(key);
+    rootElement_->LinkEndChild(newNode);
+    NodeSwitch tempNodeSwitch(*this, newNode);
+    
+    for (size_t i=0; i<3; i++) {
+        std::stringstream key;
+        key << "row" << i;
+        rowVec = glm::detail::tvec3<T>(data[i][0], data[i][1], data[i][2]);
+        serializeVector(key.str(), rowVec);
+    }
+}
+template<class T>
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat2x2<T>& data){
+    glm::detail::tvec2<T> rowVec;
+    TxElement* newNode = new TxElement(key);
+    rootElement_->LinkEndChild(newNode);
+    NodeSwitch tempNodeSwitch(*this, newNode);
+    
+    for (size_t i=0; i<2; i++) {
+        std::stringstream key;
+        key << "row" << i;
+        rowVec = glm::detail::tvec2<T>(data[i][0], data[i][1]);
+        serializeVector(key.str(), rowVec);
+    }
+}
+
+template<class T>
+inline void IvwSerializer::serializeVector(const std::string& key,
+                                           const T& vector,
+                                           const bool& isColor) {
 
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
@@ -178,28 +216,32 @@ inline void IvwSerializer::serializeVector(const std::string& key, const T& vect
     ss.precision(IvwSerializeConstants::STRINGSTREAM_PRECISION);
     ss<<(isColor ? static_cast<int>(vector[0]) : vector[0]);
 
-    newNode->SetAttribute(
-        isColor ? IvwSerializeConstants::COLOR_R_ATTRIBUTE : IvwSerializeConstants::VECTOR_X_ATTRIBUTE, ss.str());
+    newNode->SetAttribute(isColor ? IvwSerializeConstants::COLOR_R_ATTRIBUTE :
+                                    IvwSerializeConstants::VECTOR_X_ATTRIBUTE,
+                          ss.str());
 
     if (vector.length() >= 2) {
         ss.str(std::string());
         ss<<(isColor ? static_cast<int>(vector[1]) : vector[1]);
-        newNode->SetAttribute(
-            isColor ? IvwSerializeConstants::COLOR_G_ATTRIBUTE : IvwSerializeConstants::VECTOR_Y_ATTRIBUTE,ss.str());
+        newNode->SetAttribute(isColor ? IvwSerializeConstants::COLOR_G_ATTRIBUTE :
+                                        IvwSerializeConstants::VECTOR_Y_ATTRIBUTE,
+                              ss.str());
     }
 
     if (vector.length() >= 3) {
         ss.str(std::string());
         ss<<(isColor ? static_cast<int>(vector[2]) : vector[2]);
-        newNode->SetAttribute(
-            isColor ? IvwSerializeConstants::COLOR_B_ATTRIBUTE : IvwSerializeConstants::VECTOR_Z_ATTRIBUTE,ss.str());
+        newNode->SetAttribute(isColor ? IvwSerializeConstants::COLOR_B_ATTRIBUTE :
+                                        IvwSerializeConstants::VECTOR_Z_ATTRIBUTE,
+                              ss.str());
     }
 
     if (vector.length() >= 4) {
         ss.str(std::string());
         ss<<(isColor ? static_cast<int>(vector[3]) : vector[3]);
-        newNode->SetAttribute(
-            isColor ? IvwSerializeConstants::COLOR_A_ATTRIBUTE : IvwSerializeConstants::VECTOR_W_ATTRIBUTE,ss.str());
+        newNode->SetAttribute(isColor ? IvwSerializeConstants::COLOR_A_ATTRIBUTE :
+                                        IvwSerializeConstants::VECTOR_W_ATTRIBUTE,
+                              ss.str());
     }
 }
 

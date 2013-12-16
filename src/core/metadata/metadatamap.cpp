@@ -87,7 +87,7 @@ MetaDataMap& MetaDataMap::operator=(const MetaDataMap& map) {
 }
 
 void MetaDataMap::serialize( IvwSerializer &s ) const{
-    s.serialize_test("MetaDataMap", metaData_, "MetaDataItem");
+    s.serialize("MetaDataMap", metaData_, "MetaDataItem");
 }
 
 void MetaDataMap::deserialize( IvwDeserializer &d ){

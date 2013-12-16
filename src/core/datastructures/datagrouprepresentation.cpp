@@ -32,7 +32,7 @@ std::string DataGroupRepresentation::getClassName() const {
     return "DataGroupRepresentation"; 
 }
 
-void DataGroupRepresentation::setPointerToData(std::vector<Data*>* dVec, std::vector<DataGroup*>* gdVec){
+void DataGroupRepresentation::setPointerToData(const std::vector<Data*>* dVec, const std::vector<DataGroup*>* gdVec){
     data_ = dVec;
     groupData_ = gdVec;
 }

@@ -55,13 +55,13 @@ public:
     virtual bool isValid() const = 0;
 
 protected:
-    void setPointerToData(std::vector<Data*>*, std::vector<DataGroup*>*);
+    void setPointerToData(const std::vector<Data*>*, const std::vector<DataGroup*>*);
 
     std::vector<DataRepresentation*> representations_;
 
 private:
-    std::vector<Data*>* data_;
-    std::vector<DataGroup*>* groupData_;
+    const std::vector<Data*>* data_;
+    const std::vector<DataGroup*>* groupData_;
 };
 
 } // namespace
