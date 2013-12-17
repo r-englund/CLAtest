@@ -19,7 +19,7 @@
 #include <QLabel>
 #include <QRadialGradient>
 #include <QPixmap>
-#include <Qpainter>
+#include <QPainter>
 #include <QBrush>
 #include <QMouseEvent>
 #include <QPoint>
