@@ -51,6 +51,7 @@
 #include <inviwo/qt/widgets/properties/intvec2propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intvec3propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/intvec4propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/lightpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
@@ -83,6 +84,9 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
 		}
         if (dynamic_cast<IntVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {
             return new ColorPropertyWidgetQt(static_cast<IntVec4Property*>(property));
+        }
+        if (dynamic_cast<IntVec3Property*>(property)&& property->getSemantics() == PropertySemantics::LightPosition) {
+            return new LightPropertyWidgetQt(static_cast<IntVec3Property*>(property));
         }
         if (dynamic_cast<StringProperty*>(property)&& property->getSemantics() == PropertySemantics::Editor) {
             return new TextEditorWidgetQt(static_cast<StringProperty*>(property));

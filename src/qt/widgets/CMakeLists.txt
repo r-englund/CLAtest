@@ -13,6 +13,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwodockwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/lightpositionwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangesliderqt.h
@@ -44,6 +45,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec3propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec4propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/imageeditorwidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/lightpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertysettingswidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
@@ -87,6 +89,7 @@ set(SOURCE_FILES
     inviwoapplicationqt.cpp
     inviwodockwidget.cpp
     labelgraphicsitem.cpp
+    lightpositionwidgetqt.cpp
     mappingpopup.cpp
     propertylistwidget.cpp
     propertyselectiontreewidget.cpp
@@ -118,6 +121,7 @@ set(SOURCE_FILES
     properties/intvec2propertywidgetqt.cpp
     properties/intvec3propertywidgetqt.cpp
     properties/intvec4propertywidgetqt.cpp    
+    properties/lightpropertywidgetqt.cpp  
     properties/optionpropertywidgetqt.cpp
     properties/propertysettingswidgetqt.cpp
     properties/propertywidgetfactoryqt.cpp
