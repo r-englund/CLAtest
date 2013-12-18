@@ -174,13 +174,13 @@ public:
         ~NodeSwitch();
 
     private:  
-        IvwSerializeBase& _serializer;  //reference to serializer or deserializer
-        TxElement* _storedNode; //Parent (Ticpp Node) element.
+        IvwSerializeBase& serializer_;  //reference to serializer or deserializer
+        TxElement* storedNode_; //Parent (Ticpp Node) element.
     };
 
     struct ReferenceData {            
-        TxElement* _node; //Ticpp Node element.
-        bool _isPointer; //Used to differentiate pointer and object.
+        TxElement* node_; //Ticpp Node element.
+        bool isPointer_; //Used to differentiate pointer and object.
     };    
 
     typedef std::pair<const void *, IvwSerializeBase::ReferenceData> RefDataPair;
@@ -189,18 +189,17 @@ public:
 
     class ReferenceDataContainer {
     public:
-         ReferenceDataContainer();
+        ReferenceDataContainer();
         ~ReferenceDataContainer();
         size_t insert(const void *data, TxElement *node, bool isPointer=true);
         size_t find(const void *data);
         void* find(const std::string& key, const std::string& reference_or_id);
-        //std::vector<ReferenceData> getNodes(const void *data);
         TxElement* nodeCopy(const void *data);
         void setReferenceAttributes();
 
     private:  
-        RefMap _allReferenceMap;
-        int _refCount;
+        RefMap referenceMap_;
+        int referenceCount_;
     };    
     
 protected:

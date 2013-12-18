@@ -31,20 +31,25 @@ public:
 
     // std containers
     template <typename T>
-    void serialize(const std::string &key, const std::vector<T> &sVector,
+    void serialize(const std::string &key, 
+                   const std::vector<T> &sVector,
                    const std::string &itemKey);
     
     template <typename K, typename V, typename C, typename A>
-    void serialize(const std::string &key, const std::map<K,V,C,A> &sMap,
+    void serialize(const std::string &key,
+                   const std::map<K,V,C,A> &sMap,
                    const std::string &itemKey);
     
-    void serialize(const std::string &key, const std::string &data,
+
+    // strings
+    void serialize(const std::string &key, 
+                   const std::string &data,
                    const bool asAttribute=false);
     
     // primitive types
+    void serialize(const std::string &key, const bool &data);
     void serialize(const std::string &key, const float &data);
     void serialize(const std::string &key, const double &data);
-    void serialize(const std::string &key, const bool &data);
     void serialize(const std::string &key, const int &data);
     void serialize(const std::string &key, const unsigned int &data);
     void serialize(const std::string &key, const long &data);
