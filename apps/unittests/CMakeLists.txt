@@ -3,9 +3,6 @@
 ivw_project(unittests)
 
 add_definitions(-DGTEST_HAS_TR1_TUPLE=0)
-add_subdirectory(gtest-1.7.0)
-ivw_vs_folder(gtest ext)
-ivw_make_package(gtest gtest)
 
 
 #--------------------------------------------------------------------
@@ -50,7 +47,7 @@ ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
 # Include generation directory to register modules etc
-include_directories(gtest-1.7.0/include)
+include_directories(${IVW_MODULE_DIR}/unittests/gtest-1.7.0/include)
 include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
 include_directories(${CMAKE_BINARY_DIR}/apps/unittests/_generated)
 ivw_link_directories(${LIBRARY_OUTPUT_PATH})

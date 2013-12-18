@@ -11,7 +11,7 @@ protected:
     
     virtual void SetUp(){
         const std::vector<InviwoModule*> modules = InviwoApplication::getPtr()->getModules();
-        for(int i = 0;i<modules.size();i++){
+        for(size_t i = 0;i<modules.size();i++){
             const PythonModule* pyModule = dynamic_cast<const PythonModule*>(modules[i]);
             if(pyModule){
                 module_ = const_cast<PythonModule*>(pyModule);

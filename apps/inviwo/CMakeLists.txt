@@ -66,6 +66,13 @@ ivw_add_dependency_directories(${package_list})
 # Include generation directory to register modules etc
 include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
 
+if(IVW_MODULE_UNITTESTS)
+	option(IVW_RUN_UNITTEST_ON_STARTUP "Run all registered unittest when Inviwo starts" OFF)
+	if(IVW_RUN_UNITTEST_ON_STARTUP)
+		add_definitions(-DIVW_RUN_UNITTEST_ON_STARTUP)
+	endif()
+endif()
+
 #--------------------------------------------------------------------
 # Create application
 add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE})

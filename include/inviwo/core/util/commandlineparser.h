@@ -66,7 +66,10 @@ public:
     bool getQuitApplicationAfterStartup() const;
     bool getLoadWorkspaceFromArg() const;
 	bool getShowSplashScreen() const;
-    
+
+    int getARGC()const{return argc_;}
+    char** getARGV()const{return argv_;}
+
 private:
     int argc_;
     char** argv_;

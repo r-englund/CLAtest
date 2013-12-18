@@ -28,6 +28,11 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <moduleregistration.h>
 
+
+#ifdef REG_INVIWOUNITTESTSMODULE
+    #include <modules/unittests/unittestsmodule.h>
+#endif
+
 int main(int argc, char** argv) {
 #ifdef __unix__
     setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
@@ -68,6 +73,10 @@ int main(int argc, char** argv) {
     // open last workspace
     mainWin.openLastWorkspace();
 	splashScreen.finish(&mainWin);
+
+#if defined(REG_INVIWOUNITTESTSMODULE) && defined(IVW_RUN_UNITTEST_ON_STARTUP) 
+    int res = inviwo::UnitTestsModule::runAllTests();
+#endif
 
     // process last arguments
     if (mainWin.processEndCommandLineArgs())
