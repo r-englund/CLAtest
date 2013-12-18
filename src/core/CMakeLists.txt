@@ -262,7 +262,7 @@ set(SOURCE_FILES
     metadata/metadata.cpp
     metadata/metadatafactory.cpp
     metadata/metadatamap.cpp
-	metadata/metadataowner.cpp
+    metadata/metadataowner.cpp
     metadata/positionmetadata.cpp
     metadata/processormetadata.cpp
     metadata/processorwidgetmetadata.cpp
@@ -341,6 +341,7 @@ if(IVW_UNIT_TEST_APPLICATION)
 set(TEST_FILES
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/inviwoapplication.test.h
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/commandlineparser.test.h
+	${IVW_INCLUDE_DIR}/inviwo/core/unittests/urlparser.test.h
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/volume.test.h
 )
 ivw_add_unittest(${TEST_FILES})
