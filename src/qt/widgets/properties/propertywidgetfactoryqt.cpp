@@ -79,7 +79,7 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         }
 		if ((dynamic_cast<FileProperty*>(property)||dynamic_cast<StringProperty*>(property))&& property->getSemantics() == PropertySemantics::Shader) {
 			TextEditorWidgetQt* editor = new TextEditorWidgetQt(property);
-			editor->getSyntaxHighligther()->setSyntax(GLSL);
+			editor->getSyntaxHighligther()->setSyntax<GLSL>();
 			return editor;
 		}
         if (dynamic_cast<IntVec4Property*>(property)&& property->getSemantics() == PropertySemantics::Color) {

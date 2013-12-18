@@ -113,6 +113,7 @@ set(SOURCE_FILES
     properties/floatvec2propertywidgetqt.cpp
     properties/floatvec3propertywidgetqt.cpp
     properties/floatvec4propertywidgetqt.cpp
+    properties/glslsyntaxhighlighter.cpp
     properties/htmleditorwidgetqt.cpp
     properties/htmllistwidgetqt.cpp
     properties/imageeditorwidgetqt.cpp

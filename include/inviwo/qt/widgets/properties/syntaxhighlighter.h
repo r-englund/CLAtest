@@ -26,29 +26,60 @@ class QTextDocument;
 
 namespace inviwo{
 
-	enum Syntax{
+	enum SyntaxType{
 		None = 0,
-		GLSL = 1
+		GLSL = 1,
+        Python = 2,
 	};
+
+
+class IVW_QTWIDGETS_API SyntaxFormater{
+public:
+    struct Result{
+        std::vector<unsigned int> start;
+        std::vector<unsigned int> length;
+        QTextCharFormat* format;
+        int outgoingState;
+
+        Result():format(0),outgoingState(-1){}
+    };
+
+    virtual Result eval(const QString &text,const int &previousBlockState) = 0;
+
+};
 
 class IVW_QTWIDGETS_API SyntaxHighligther : public QSyntaxHighlighter{
 	Q_OBJECT
 public:	
-	SyntaxHighligther(QTextDocument* parent,Syntax syntax);
-	void setSyntax(Syntax syntax);
+    template<SyntaxType T> void setSyntax();
+    template<SyntaxType T> static SyntaxHighligther* createSyntaxHighligther(QTextDocument* parent);
+
 protected:
+    SyntaxHighligther(QTextDocument* parent);
 	void highlightBlock(const QString& text);
 
 private:
-	void loadConfig();
-	void loadGLSLConfig();
-	Syntax syntax_;	
-
+    template<SyntaxType T> void loadConfig();
 	QTextCharFormat* formats_;
-
+    std::vector<SyntaxFormater*> formaters_;
 };	
 
+template<SyntaxType T> void SyntaxHighligther::setSyntax(){
+    formaters_.clear();
+    loadConfig<T>();
+}
 
+
+template<SyntaxType T> SyntaxHighligther* SyntaxHighligther::createSyntaxHighligther(QTextDocument* parent){
+    SyntaxHighligther* s = new SyntaxHighligther(parent);
+    s->loadConfig<T>();
+    return s;
+}
+
+
+template<> void SyntaxHighligther::loadConfig<None>();
+template<> void SyntaxHighligther::loadConfig<GLSL>();
+template<> void SyntaxHighligther::loadConfig<Python>();
 	
 
 

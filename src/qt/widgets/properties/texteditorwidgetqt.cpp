@@ -84,7 +84,7 @@ void ModifiedWidget::generateWidget(){
     mainWidget_ = new QWidget();
 	textEditor_ = new QTextEdit();
     textEditor_->createStandardContextMenu();
-	syntaxHighligther_ = new SyntaxHighligther(textEditor_->document(),None);
+	syntaxHighligther_ = SyntaxHighligther::createSyntaxHighligther<None>(textEditor_->document());
 
     textEditorLayout->addWidget(toolBar_);
     textEditorLayout->addWidget(textEditor_);
