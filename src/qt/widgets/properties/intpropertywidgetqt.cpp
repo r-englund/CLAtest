@@ -105,7 +105,6 @@ void IntPropertyWidgetQt::generatesSettingsWidget() {
 
     connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
     connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
-    connect(addToStudyAction_,SIGNAL(triggered(bool)),this, SLOT(addToStudy(bool)));
 
     updateContextMenu();
 }

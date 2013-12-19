@@ -10,6 +10,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocore.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocoredefine.h
     ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwomodule.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/common/moduleaction.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/common/modulecallback.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/axisalignedboundingbox.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/baselightsource.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/buffer.h
@@ -195,6 +197,7 @@ set(SOURCE_FILES
     common/inviwoapplication.cpp
     common/inviwocore.cpp
     common/inviwomodule.cpp
+    common/moduleaction.cpp
     datastructures/baselightsource.cpp 
     datastructures/buffer/buffer.cpp
     datastructures/buffer/bufferram.cpp

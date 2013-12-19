@@ -19,6 +19,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwocore.h>
 #include <inviwo/core/common/inviwomodule.h>
+#include <inviwo/core/common/moduleaction.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/core/util/fileobserver.h>
@@ -87,6 +88,10 @@ public:
      */
     virtual Timer* createTimer() { LogWarn("This application has not implemented any timer"); return NULL; } 
 
+    virtual void addCallbackAction(ModuleCallbackAction* callbackAction);
+
+    virtual std::vector<ModuleCallbackAction*> getCallbackActions();
+
 protected:
     void printApplicationInfo();
 
@@ -104,6 +109,8 @@ private:
     Settings* settings_;
 
     bool initialized_;
+
+    std::vector<ModuleCallbackAction*> moudleCallbackActions_;
 };
 
 } // namespace

@@ -137,4 +137,12 @@ PropertyVisibilityMode InviwoApplication::getPropertyVisibilityMode(){
     return static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>(getSettings()->getPropertyByIdentifier("viewMode"))->get());
 }
 
+void InviwoApplication::addCallbackAction(ModuleCallbackAction* callbackAction) {
+    moudleCallbackActions_.push_back(callbackAction);
+}
+
+std::vector<ModuleCallbackAction*> InviwoApplication::getCallbackActions() {
+    return moudleCallbackActions_;
+}
+
 } // namespace

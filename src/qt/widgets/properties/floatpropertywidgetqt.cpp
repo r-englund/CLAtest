@@ -109,7 +109,6 @@ void FloatPropertyWidgetQt::generatesSettingsWidget() {
     sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(sliderWidget_, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(showContextMenuSlider(const QPoint&)));
-    connect(addToStudyAction_,SIGNAL(triggered(bool)),this, SLOT(addToStudy(bool)));
             
 }
 

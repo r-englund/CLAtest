@@ -45,13 +45,15 @@ public slots:
     void showContextMenu(const QPoint& pos);
     void setDeveloperViewMode(bool value);
     void setApplicationViewMode(bool value);
-    void addToStudy(bool value);
+    void moduleAction();
 
 signals:
     void modified();
     void visibilityChange();
 private:
     QMenu* contextMenu_;
+    QMap<QString,QMenu*> moduleSubMenus_;
+    QList<QAction*> actionS_;
     QActionGroup* viewModeActionGroup_;
     QMenu* viewModeItem_;
     Property* property_;
@@ -60,9 +62,10 @@ protected:
     QMenu* getContextMenu(){return contextMenu_;}
     void generateContextMenu();
     QMenu* generatePropertyWidgetMenu();
+    void generateModuleMenuActions();
+    void updateModuleMenuActions();
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
-    QAction* addToStudyAction_;
     void setProperty(Property* prop);
 
 
