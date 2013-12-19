@@ -79,6 +79,7 @@ public slots:
     void openRecentWorkspace();
     void saveWorkspace();
     void saveWorkspaceAs();
+    void exitInviwo();
 
 private:    
     void addMenus();
@@ -125,6 +126,7 @@ private:
     QAction* openFileAction_;
     QAction* saveFileAction_;
     QAction* saveAsFileAction_;
+    QAction* exitAction_;
     QAction* recentFileSeparator_;
     QAction* recentFileActions_[maxNumRecentFiles_];
     QAction* developerViewModeAction_;

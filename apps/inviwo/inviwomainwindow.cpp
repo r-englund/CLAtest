@@ -243,6 +243,13 @@ void InviwoMainWindow::addMenuActions() {
     }
     
 
+    recentFileSeparator_ = fileMenuItem_->addSeparator();
+    exitAction_ = new QAction(tr("&Exit"), this);
+    connect(exitAction_, SIGNAL(triggered()), this, SLOT(exitInviwo()));
+    fileMenuItem_->addAction(exitAction_);
+
+
+
 	// dockwidget visibility menu entries
     viewMenuItem_->addAction(mappingwidget_->toggleViewAction());
     viewMenuItem_->addAction(settingsWidget_->toggleViewAction());
@@ -461,6 +468,10 @@ void InviwoMainWindow::saveWorkspaceAs() {
         setCurrentWorkspace(path);
         addToRecentWorkspaces(path);
     }
+}
+
+void InviwoMainWindow::exitInviwo(){
+    InviwoApplication::getPtr()->closeInviwoApplication();
 }
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
