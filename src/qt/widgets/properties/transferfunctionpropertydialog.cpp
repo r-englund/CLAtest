@@ -63,7 +63,6 @@ void TransferFunctionPropertyDialog::generateWidget() {
     addObservation(tfEditor_);
     tfEditor_->addObserver(this);
     tfEditor_->setSceneRect(0, 0, minEditorDims.x, minEditorDims.y);
-    ///this->zoomHorizontalChanged();
     connect(tfEditor_, SIGNAL(doubleClick()), this, SLOT(showColorDialog()));
     connect(tfEditor_, SIGNAL(selectionChanged()), this, SLOT(updateColorWheel()));
     tfEditorView_->setScene(tfEditor_);
@@ -118,7 +117,9 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
     checkerBoardPainter.fillRect(5, 5, 5, 5, Qt::lightGray);
     checkerBoardPainter.end();
 
-    tfPixmap_ = new QPixmap(tfEditorView_->width(), 20);
+    int gradientWidth = 255;
+    if (tfEditorView_->isVisible()) gradientWidth = tfEditorView_->width();
+    tfPixmap_ = new QPixmap(gradientWidth, 20);
     QPainter tfPainter(tfPixmap_);
     tfPainter.fillRect(0, 0, tfEditorView_->width(), 20, QBrush(checkerBoard));
     tfPainter.fillRect(0, 0, tfEditorView_->width(), 20, QBrush(*gradient_));

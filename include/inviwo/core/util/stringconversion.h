@@ -40,7 +40,7 @@ T stringTo(const std::string& str) {
     return result;
 }
 
-IVW_CORE_API std::vector<std::string> splitString(const std::string& str, char delimeter = ' ') ;
+IVW_CORE_API std::vector<std::string> splitString(const std::string& str, char delimeter = ' ');
 IVW_CORE_API std::vector<std::string> splitStringWithMultipleDelimiters(const std::string& str, std::vector<char> delimiters=std::vector<char>());
 
 IVW_CORE_API std::string removeFromString(std::string str, char char_to_remove = ' ');

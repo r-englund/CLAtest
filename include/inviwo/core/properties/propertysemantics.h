@@ -12,20 +12,26 @@
  *
  **********************************************************************/
 
-#ifndef IVW_PROPERTYSEMANTCIS_H
-#define IVW_PROPERTYSEMANTCIS_H
+#ifndef IVW_PROPERTYSEMANTICS_H
+#define IVW_PROPERTYSEMANTICS_H
+
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <string>
 
 namespace inviwo {
-class IVW_CORE_API PropertySemantics {
 
+class IVW_CORE_API PropertySemantics {
 public:
-    enum Type { Default =0,
-                Color =1,
-                LightPosition =2,
+    enum Type { Default=0,
+                Color=1,
+                LightPosition=2,
                 Editor=3,
-                Collapsible=4,
-				Shader=5};
+				Shader=4};
 };
+
+IVW_CORE_API std::string getPropertySemanticID(PropertySemantics::Type type);
+
 } //Namespace
 
-#endif //IVW_PROPERTYSEMANTCIS_H
+#endif //IVW_PROPERTYSEMANTICS_H

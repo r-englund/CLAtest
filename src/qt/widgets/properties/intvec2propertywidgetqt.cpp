@@ -22,7 +22,7 @@ IntVec2PropertyWidgetQt::IntVec2PropertyWidgetQt(IntVec2Property *property) : pr
 	generateWidget();
 	updateFromProperty();
     generatesSettingsWidget();
-	}
+}
 
 
 void IntVec2PropertyWidgetQt::generateWidget() {

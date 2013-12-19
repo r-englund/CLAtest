@@ -18,38 +18,32 @@ namespace inviwo {
 
 #ifdef WIN32
 
-void CALLBACK TimerCallback( void* param, bool timerOrWaitFired )
-{
+void CALLBACK TimerCallback(void* param, bool timerOrWaitFired) {
     WindowsTimer* timer = static_cast<WindowsTimer*>(param);
     timer->onIntervalEvent();
 }
-WindowsTimer::WindowsTimer() :Timer(), timer_(NULL)
-{
 
+WindowsTimer::WindowsTimer() :Timer(), timer_(NULL) {
 }
 
-WindowsTimer::~WindowsTimer()
-{
+WindowsTimer::~WindowsTimer() {
     stop();
 }
 
-void WindowsTimer::start( unsigned int intervalInMilliseconds, bool once /*= false*/ )
-{
-    if(timer_) {
+void WindowsTimer::start(unsigned int intervalInMilliseconds, bool once /*= false*/) {
+    if (timer_)
         return;
-    }
-    BOOL success = CreateTimerQueueTimer( &timer_,
-        NULL,
-        (WAITORTIMERCALLBACK)TimerCallback,
-        this,
-        0,
-        once ? 0 : intervalInMilliseconds,
-        WT_EXECUTEINTIMERTHREAD);
+    BOOL success = CreateTimerQueueTimer(&timer_,
+                                         NULL,
+                                         (WAITORTIMERCALLBACK)TimerCallback,
+                                         this,
+                                         0,
+                                         once ? 0 : intervalInMilliseconds,
+                                         WT_EXECUTEINTIMERTHREAD);
 }
 
-void WindowsTimer::stop()
-{
-    DeleteTimerQueueTimer( NULL, timer_, NULL );
+void WindowsTimer::stop() {
+    DeleteTimerQueueTimer(NULL, timer_, NULL);
     timer_ = NULL ;
 }
 

@@ -297,6 +297,7 @@ set(SOURCE_FILES
     properties/property.cpp
     properties/propertyfactory.cpp
     properties/propertyowner.cpp
+    properties/propertysemantics.cpp
     properties/propertywidget.cpp
     properties/propertywidgetfactory.cpp
     properties/scalarproperties.cpp
