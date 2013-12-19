@@ -71,35 +71,37 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new BoolPropertyWidgetQt(static_cast<BoolProperty*>(property));
-	}
-	else if (dynamic_cast<ButtonProperty*>(property)) {
+    }
+    else if (dynamic_cast<ButtonProperty*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new ButtonPropertyWidgetQt(static_cast<ButtonProperty*>(property));
-	}
+    }
     else if (dynamic_cast<CompositeProperty*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new CompositePropertyWidgetQt(static_cast<CompositeProperty*>(property));
-	}
+    }
     else if (dynamic_cast<DirectoryProperty*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new DirectoryPropertyWidgetQt(static_cast<DirectoryProperty*>(property));
-	}
+    }
     else if (dynamic_cast<EventProperty*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new EventPropertyWidgetQt(static_cast<EventProperty*>(property));
     }
     else if (dynamic_cast<FileProperty*>(property)) {
-		ivwAssert(property->getSemantics()==PropertySemantics::Default ||
+        ivwAssert(property->getSemantics()==PropertySemantics::Default ||
                   property->getSemantics()==PropertySemantics::Editor  ||
                   property->getSemantics()==PropertySemantics::Shader,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");                  
         if (property->getSemantics()==PropertySemantics::Editor) {
-            if (dynamic_cast<ImageEditorProperty*>(property)) return new ImageEditorWidgetQt(static_cast<FileProperty*>(property));
-            else return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
+            if (dynamic_cast<ImageEditorProperty*>(property)) 
+                return new ImageEditorWidgetQt(static_cast<FileProperty*>(property));
+            else 
+                return new TextEditorWidgetQt(static_cast<FileProperty*>(property));
         } else if (property->getSemantics()==PropertySemantics::Shader) {
             TextEditorWidgetQt* editor = new TextEditorWidgetQt(property);
             editor->getSyntaxHighligther()->setSyntax<GLSL>();
@@ -110,7 +112,7 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
     else if (dynamic_cast<FloatMat2Property*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
-		return new FloatMat2PropertyWidgetQt(static_cast<FloatMat2Property*>(property));
+        return new FloatMat2PropertyWidgetQt(static_cast<FloatMat2Property*>(property));
     }
     else if (dynamic_cast<FloatMat3Property*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
@@ -145,26 +147,26 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
             return new ColorPropertyWidgetQt(static_cast<FloatVec3Property*>(property));
         else
             return new FloatVec3PropertyWidgetQt(static_cast<FloatVec3Property*>(property));
-	}
+    }
     else if (dynamic_cast<FloatVec4Property*>(property)) {
-		ivwAssert(property->getSemantics()==PropertySemantics::Default ||
+        ivwAssert(property->getSemantics()==PropertySemantics::Default ||
                   property->getSemantics()==PropertySemantics::Color,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         if (property->getSemantics()==PropertySemantics::Color)
             return new ColorPropertyWidgetQt(static_cast<FloatVec4Property*>(property));
         else
             return new FloatVec4PropertyWidgetQt(static_cast<FloatVec4Property*>(property));
-	}
+    }
     else if (dynamic_cast<IntMinMaxProperty*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new IntMinMaxPropertyWidgetQt(static_cast<IntMinMaxProperty*>(property));
-	}
+    }
     else if (dynamic_cast<IntVec2Property*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new IntVec2PropertyWidgetQt(static_cast<IntVec2Property*>(property));
-	}
+    }
     else if (dynamic_cast<IntVec3Property*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default ||
                   property->getSemantics()==PropertySemantics::LightPosition,
@@ -173,40 +175,57 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
             return new LightPropertyWidgetQt(static_cast<IntVec3Property*>(property));
         else
             return new IntVec3PropertyWidgetQt(static_cast<IntVec3Property*>(property));
-	}
+    }
     else if (dynamic_cast<IntVec4Property*>(property)) {
-		ivwAssert(property->getSemantics()==PropertySemantics::Default ||
+        ivwAssert(property->getSemantics()==PropertySemantics::Default ||
                   property->getSemantics()==PropertySemantics::Color,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         if (property->getSemantics()==PropertySemantics::Color)
             return new ColorPropertyWidgetQt(static_cast<IntVec4Property*>(property));
         else
             return new IntVec4PropertyWidgetQt(static_cast<IntVec4Property*>(property));
-	}
+    }
     else if (dynamic_cast<IntProperty*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
-	    return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
-	}
+        return new IntPropertyWidgetQt(static_cast<IntProperty*>(property));
+    }
     else if (dynamic_cast<BaseOptionProperty*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new OptionPropertyWidgetQt(static_cast<BaseOptionProperty*>(property));
-	}
+    }
     else if (dynamic_cast<StringProperty*>(property)) {
-        ivwAssert(property->getSemantics()==PropertySemantics::Default,
-                  "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
+        switch (property->getSemantics())
+        {
+        case PropertySemantics::Default:
+            return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
+        case PropertySemantics::Editor:
+            return new TextEditorWidgetQt(property);
+            break;
+        case PropertySemantics::Shader:
+         {
+             TextEditorWidgetQt* editor = new TextEditorWidgetQt(property);
+             editor->getSyntaxHighligther()->setSyntax<GLSL>();
+             return editor;
+        }
+        default:
+            ivwAssert(false,
+                "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
+            break;
+        }
+        
         return new StringPropertyWidgetQt(static_cast<StringProperty*>(property));
-	}
+    }
     else if (dynamic_cast<TransferFunctionProperty*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         return new TransferFunctionPropertyWidgetQt(static_cast<TransferFunctionProperty*>(property));
-	}
-	else {
-		LogWarn("No widget for property " + property->getIdentifier() + " found.")
+    }
+    else {
+        LogWarn("No widget for property " + property->getIdentifier() + " found.")
         return 0;
-	}
+    }
 }
 
 } // namespace
