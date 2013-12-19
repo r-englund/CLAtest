@@ -65,7 +65,9 @@ void IvwDeserializer::deserializePrimitives(const std::string &key, std::string 
     keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
 }
 
-void IvwDeserializer::deserialize(const std::string &key, std::string &data, const bool asAttribute) throw (SerializationException) {
+void IvwDeserializer::deserialize(const std::string &key,
+                                  std::string &data,
+                                  const bool asAttribute) {
     if(asAttribute) {
         deserializeAttributes(key, data);
     } else {
@@ -104,7 +106,7 @@ void IvwDeserializer::deserialize(const std::string &key, long long &data) {
     deserializePrimitives<long long>(key, data);
 }
 
-void IvwDeserializer::readFile() throw (SerializationException) {
+void IvwDeserializer::readFile() {
     try {   
         doc_.LoadFile();         
     } catch (TxException& ) {}

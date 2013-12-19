@@ -91,7 +91,7 @@ void MetaDataMap::serialize( IvwSerializer &s ) const{
 }
 
 void MetaDataMap::deserialize( IvwDeserializer &d ){
-    d.deserialize_test("MetaDataMap", metaData_, "MetaDataItem");
+    d.deserialize("MetaDataMap", metaData_, "MetaDataItem");
 }
 
 } // namespace

@@ -229,7 +229,7 @@ private:
      *        allocated data, otherwise pre-allocated data should be passed.
      */
     template <class T>
-    void deserializePointer(const std::string& key, T* & data) throw (SerializationException);
+    void deserializePointer(const std::string& key, T* & data);
 };
 
 template<class T>
@@ -299,14 +299,16 @@ void IvwDeserializer::deserialize(const std::string &key, glm::detail::tmat2x2<T
 
 
 template <typename T>
-inline void IvwDeserializer::deserialize(const std::string &key, std::vector<T> &sVector, const std::string &itemKey) 
-        throw (SerializationException){
+inline void IvwDeserializer::deserialize(const std::string &key,
+                                         std::vector<T> &sVector,
+                                         const std::string &itemKey) {
     deserializeSTL_Vector(key, sVector, itemKey);
 }
 
 template <typename T>
-inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T*> &sVector, const std::string &itemKey)
-        throw (SerializationException) {
+inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key,
+                                                   std::vector<T*> &sVector,
+                                                   const std::string &itemKey) {
     
     TxElement* keyNode;
 
@@ -348,8 +350,9 @@ inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::
 }
 
 template <typename T>
-inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key, std::vector<T> &sVector, const std::string &itemKey)
-throw (SerializationException) {
+inline void IvwDeserializer::deserializeSTL_Vector(const std::string &key,
+                                                   std::vector<T> &sVector,
+                                                   const std::string &itemKey) {
 
     TxElement* keyNode;
 
@@ -429,7 +432,7 @@ void IvwDeserializer::deserialize(const std::string &key,
 }
 
 template<class T>
-void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) throw (SerializationException) {
+void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) {
     
     TxElement* nextRootNode;
     TxElement* rootCopy = rootElement_;
@@ -548,7 +551,7 @@ void IvwDeserializer::deserializePointer(const std::string& /*key*/, T* & data) 
 }
 
 template<class T>
-inline void IvwDeserializer::deserialize(const std::string& key, T* & data, bool getChild) throw (SerializationException) {
+inline void IvwDeserializer::deserialize(const std::string& key, T* & data, bool getChild) {
     TxElement* keyNode;
  
     if(getChild){
@@ -599,7 +602,7 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data, bool
 
 
 template<class T>
-inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) throw (SerializationException) {
+inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {
     TxElement* keyNode = rootElement_->FirstChildElement(key, false);
     if (keyNode && keyNode->HasAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE)){
         try{
@@ -613,7 +616,7 @@ inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& da
 }
 
 template<class T>
-inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) throw (SerializationException) {
+inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) {
 
     TxElement* keyNode = rootElement_->FirstChildElement(key, false); 
     if (!keyNode) {        
