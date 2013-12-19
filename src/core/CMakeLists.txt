@@ -159,7 +159,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanagerobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/templateresource.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/study/studyparameterlist.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/callback.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
@@ -309,7 +308,6 @@ set(SOURCE_FILES
     properties/transferfunctionproperty.cpp
     properties/vectorproperties.cpp
     resources/resourcemanager.cpp
-    study/studyparameterlist.cpp    
     util/assertion.cpp
     util/canvas.cpp
     util/clock.cpp

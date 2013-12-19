@@ -15,7 +15,6 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/property.h>
-#include <inviwo/core/study/studyparameterlist.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/common/moduleaction.h>
 
@@ -126,7 +125,6 @@ void PropertyWidgetQt::generateModuleMenuActions() {
             moduleSubMenus_[mapIt->first.c_str()] = submenu;
             for (size_t i=0; i<moduleActions.size(); i++) {
                 QAction* action = new QAction( tr(moduleActions[i]->getActionName().c_str()), this);
-                actionS_.push_back(action);
                 action->setCheckable(true);
                 submenu->addAction(action);
                 action->setChecked(moduleActions[i]->getActionState() == ModuleCallBackActionState::Enabled);
@@ -146,11 +144,11 @@ void PropertyWidgetQt::updateModuleMenuActions() {
             it.next();
             if (it.key().toLocal8Bit().constData() == moduleName) {
                 
-                QList<QAction*> actions1 = actionS_;
                 QList<QAction*> actions = it.value()->actions();
                 for (int j=0; j<actions.size(); j++) {
                      
-                    if (actions[j]->text().toLocal8Bit().constData() == moduleActions[i]->getActionName()){   
+                    if (actions[j]->text().toLocal8Bit().constData() == moduleActions[i]->getActionName()){
+                        //FIXME: Following setChecked is not behaving as expected on some special case. This needs to be investigated.
                         //bool blockState = actions[j]->blockSignals(true);
                         actions[j]->setChecked(moduleActions[i]->getActionState() == ModuleCallBackActionState::Enabled);     
                         //actions[j]->blockSignals(blockState);

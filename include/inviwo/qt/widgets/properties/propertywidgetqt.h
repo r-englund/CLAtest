@@ -53,7 +53,6 @@ signals:
 private:
     QMenu* contextMenu_;
     QMap<QString,QMenu*> moduleSubMenus_;
-    QList<QAction*> actionS_;
     QActionGroup* viewModeActionGroup_;
     QMenu* viewModeItem_;
     Property* property_;
