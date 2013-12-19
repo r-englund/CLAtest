@@ -211,25 +211,27 @@ namespace inviwo {
 template<>
 void SyntaxHighligther::loadConfig<GLSL>(){
 	QColor textColor;
-	QColor bgColor;
-	textColor.setNamedColor("#999999");
-	bgColor.setNamedColor("#4d4d4d");
+    QColor bgColor;
+    textColor.setNamedColor("#aaaaaa");
+    bgColor.setNamedColor("#4d4d4d");
+    defaultFormat_.setBackground(bgColor);
+    defaultFormat_.setForeground(textColor);
 	
 
     QTextCharFormat typeformat,qualifiersformat,builtins_varformat,glsl_builtins_funcformat,commentformat,preprocessorformat;
     typeformat.setBackground(bgColor);
-    typeformat.setForeground(QColor("#0000ff"));
+    typeformat.setForeground(QColor("#569CD6"));
     qualifiersformat.setBackground(bgColor);
-    qualifiersformat.setForeground(QColor("#0000ff"));
+    qualifiersformat.setForeground(QColor("#7DB4DF"));
     builtins_varformat.setBackground(bgColor);
-    builtins_varformat.setForeground(QColor("#008080"));
+    builtins_varformat.setForeground(QColor("#1FF07F"));
     glsl_builtins_funcformat.setBackground(bgColor);
-    glsl_builtins_funcformat.setForeground(QColor("#008080"));
+    glsl_builtins_funcformat.setForeground(QColor("#FF8000"));
 
     commentformat.setBackground(bgColor);
-    commentformat.setForeground(QColor("#008000"));
+    commentformat.setForeground(QColor("#608B4E"));
     preprocessorformat.setBackground(bgColor);
-    preprocessorformat.setForeground(QColor("#808080"));
+    preprocessorformat.setForeground(QColor("#9B9B9B"));
 
     formaters_.push_back(new GLSLKeywordFormater(typeformat,glsl_types));
     formaters_.push_back(new GLSLKeywordFormater(qualifiersformat,glsl_qualifiers));

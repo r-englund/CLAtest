@@ -28,6 +28,7 @@ SyntaxHighligther::SyntaxHighligther(QTextDocument* parent):QSyntaxHighlighter(p
 }
 
 void SyntaxHighligther::highlightBlock(const QString& text){
+    setFormat(0,text.size(),defaultFormat_);
     std::vector<SyntaxFormater*>::iterator it;
     for(it = formaters_.begin();it != formaters_.end();++it){
         SyntaxFormater::Result res = (*it)->eval(text,previousBlockState());
@@ -40,12 +41,23 @@ void SyntaxHighligther::highlightBlock(const QString& text){
 
 template<>
 void SyntaxHighligther::loadConfig<None>(){
-
+    QColor textColor;
+    QColor bgColor;
+    textColor.setNamedColor("#aaaaaa");
+    bgColor.setNamedColor("#4d4d4d");
+    defaultFormat_.setBackground(bgColor);
+    defaultFormat_.setForeground(textColor);
 }
 
 
 template<>
 void SyntaxHighligther::loadConfig<Python>(){
+    QColor textColor;
+    QColor bgColor;
+    textColor.setNamedColor("#aaaaaa");
+    bgColor.setNamedColor("#4d4d4d");
+    defaultFormat_.setBackground(bgColor);
+    defaultFormat_.setForeground(textColor);
 
 }
 

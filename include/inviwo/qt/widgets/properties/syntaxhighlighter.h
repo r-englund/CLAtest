@@ -60,7 +60,7 @@ protected:
 
 private:
     template<SyntaxType T> void loadConfig();
-	QTextCharFormat* formats_;
+	QTextCharFormat defaultFormat_;
     std::vector<SyntaxFormater*> formaters_;
 };	
 
