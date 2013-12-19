@@ -56,16 +56,25 @@ CameraProperty::~CameraProperty() {}
 
 void CameraProperty::setLookFrom(vec3 lookFrom) {
     lookFrom_.set(lookFrom);
-    updateViewMatrix();
 }
 
 void CameraProperty::setLookTo(vec3 lookTo) {
     lookTo_.set(lookTo);
-    updateViewMatrix();
 }
 
 void CameraProperty::setLookUp(vec3 lookUp) {
     lookUp_.set(lookUp);
+}
+
+void CameraProperty::setLook(vec3 lookFrom, vec3 lookTo, vec3 lookUp){
+    bool lock = isInvalidationLocked();
+    if(!lock)
+        lockInvalidation();
+    lookFrom_.set(lookFrom);
+    lookTo_.set(lookTo);
+    lookUp_.set(lookUp);
+    if(!lock)
+        unlockInvalidation();
     updateViewMatrix();
 }
 
@@ -110,7 +119,7 @@ void CameraProperty::updateViewMatrix() {
 
 void CameraProperty::invalidate() {
     if(!isInvalidationLocked())
-        propertyModified();
+        Property::propertyModified();
 }
 
 void CameraProperty::invokeEvent(Event* event) {

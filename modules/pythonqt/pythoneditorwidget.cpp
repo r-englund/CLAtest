@@ -246,7 +246,7 @@ namespace inviwo{
         c.start();
         bool ok = script_.run();
         c.stop();
-        if(script_.run()){
+        if(ok){
             LogInfo("Python Script Executed succesfully");
         }
         LogInfo("Execution time: " << c.getElapsedMiliseconds() << " ms");

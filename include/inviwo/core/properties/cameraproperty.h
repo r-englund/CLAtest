@@ -42,6 +42,8 @@ public:
     void setLookUp(vec3 lookUp);
     vec3 getLookRight() const { return lookRight_; }
 
+    void setLook(vec3 lookFrom, vec3 lookTo, vec3 lookUp);
+
     float getNearPlaneDist() const;
     float getFarPlaneDist() const;
 
@@ -59,6 +61,7 @@ public:
     void invokeEvent(Event* event);
 
     void invalidate();
+    void propertyModified(){};
 
     void lockInvalidation() { lockInvalidation_ = true; }
     void unlockInvalidation() { lockInvalidation_ = false; }

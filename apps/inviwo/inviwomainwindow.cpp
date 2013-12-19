@@ -162,7 +162,7 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
 #endif
 	if (cmdparser->getCaptureAfterStartup()) {
 		ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
-		networkEvaluator->evaluate();
+		networkEvaluator->requestEvaluate();
 		std::string path = cmdparser->getOutputPath();
 		if (path.empty())
 			path = IVW_DIR+"data/images/";
@@ -286,7 +286,17 @@ void InviwoMainWindow::addMenuActions() {
 	}
 
 	connect(developerViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
-	connect(applicationViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool))); 
+	connect(applicationViewModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool)));
+
+    enableDisableEvaluationButton_ = new QToolButton(this);
+    enableDisableEvaluationButton_->setToolTip(tr("Enable/Disable Evaluation"));
+    enableDisableEvaluationButton_->setCheckable(true);
+    enableDisableEvaluationButton_->setChecked(false);
+    QIcon enableDisableIcon;
+    enableDisableIcon.addFile(":/icons/button_ok.png", QSize(), QIcon::Active, QIcon::Off);
+    enableDisableIcon.addFile(":/icons/button_cancel.png", QSize(), QIcon::Active, QIcon::On);
+    enableDisableEvaluationButton_->setIcon(enableDisableIcon);
+    connect(enableDisableEvaluationButton_, SIGNAL(toggled(bool)), this, SLOT(disableEvaluation(bool)));
 
 #ifdef IVW_PYTHON_QT
     pythonEditorOpenAction_ = new QAction(QIcon(":/icons/python.png"),"&Python Editor", this);
@@ -307,6 +317,7 @@ void InviwoMainWindow::addToolBars() {
 	viewToolBar_->setObjectName("viewToolBar");
 	viewToolBar_->addAction(developerViewModeAction_);
 	viewToolBar_->addAction(applicationViewModeAction_);
+    viewToolBar_->addWidget(enableDisableEvaluationButton_);
 }
 
 void InviwoMainWindow::updateWindowTitle() {
@@ -472,6 +483,13 @@ void InviwoMainWindow::saveWorkspaceAs() {
 
 void InviwoMainWindow::exitInviwo(){
     InviwoApplication::getPtr()->closeInviwoApplication();
+}
+
+void InviwoMainWindow::disableEvaluation(bool disable){
+    if(disable)
+        networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->disableEvaluation();
+    else
+        networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->enableEvaluation();
 }
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {

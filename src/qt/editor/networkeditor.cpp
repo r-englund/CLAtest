@@ -370,21 +370,21 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
                 addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
                                     IVW_DIR+"data/workspaces/portinspectors/imageportinspector.inv");
                 processorNetwork_->setModified(true);
-                processorNetworkEvaluator_->evaluate();
+                processorNetworkEvaluator_->requestEvaluate();
                 return;
 			} 
 			if (dynamic_cast<VolumeOutport*>(port)) {
 				addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
 					IVW_DIR+"data/workspaces/portinspectors/volumeportinspector.inv");
 				processorNetwork_->setModified(true);
-				processorNetworkEvaluator_->evaluate();
+				processorNetworkEvaluator_->requestEvaluate();
 				return;
 			} 
 			if (dynamic_cast<GeometryOutport*>(port)) {
 				addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
 					IVW_DIR+"data/workspaces/portinspectors/geometryportinspector.inv");
 				processorNetwork_->setModified(true);
-				processorNetworkEvaluator_->evaluate();
+				processorNetworkEvaluator_->requestEvaluate();
 				return;
 			}
         }
@@ -546,7 +546,7 @@ std::vector<std::string> NetworkEditor::getSnapshotsOfExternalNetwork(std::strin
     unsigned int networkEditorFlags = NetworkEditor::UseOriginalCanvasSize | NetworkEditor::CanvasHidden;
     addExternalNetwork(fileName, identifierPrefix, pos, networkEditorFlags);
     processorNetwork_->setModified(true);
-    processorNetworkEvaluator_->evaluate();
+    processorNetworkEvaluator_->requestEvaluate();
 
     //save snapshot         
     snapshotFileNames = saveSnapshotsInExternalNetwork(fileName, identifierPrefix);
@@ -1130,7 +1130,7 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorI
     processorNetwork_->unlock();
 
     if(processorNetwork_->isModified())
-        processorNetworkEvaluator_->evaluate();	
+        processorNetworkEvaluator_->requestEvaluate();	
 }
 
 void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem){
@@ -1172,7 +1172,7 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
     processorNetwork_->unlock();
 
     if(processorNetwork_->isModified())
-        processorNetworkEvaluator_->evaluate();	
+        processorNetworkEvaluator_->requestEvaluate();	
 }
 
 ///////////////////////////////

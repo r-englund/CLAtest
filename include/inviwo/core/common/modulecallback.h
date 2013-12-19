@@ -15,6 +15,7 @@
 #ifndef IVW_MODULECALLBACK_H
 #define IVW_MODULECALLBACK_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {

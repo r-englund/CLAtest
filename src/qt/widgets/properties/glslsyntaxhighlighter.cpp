@@ -101,7 +101,7 @@ namespace inviwo {
     public:
         GLSLCommentFormater(const QTextCharFormat &format) : 
             format_(format) 
-            , oneLineComment_("^[\s\t]*\/\/")
+            , oneLineComment_("^[\\s\\t]*\\/\\/")
             , blockStart_(QRegExp::escape("/*") )
             , blockEnd_(QRegExp::escape("*/") )
         {

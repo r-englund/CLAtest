@@ -42,7 +42,11 @@ public:
     void setDefaultRenderContext(Canvas* canvas) { defaultContext_ = canvas; }
     void activateDefaultRenderContext();
     void initializeNetwork();   
-    void evaluate();
+    
+    void disableEvaluation();
+    void enableEvaluation();
+    void requestEvaluate();
+
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
 	void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
@@ -53,6 +57,8 @@ public:
     void notifyInvalidationEnd(Processor*);
 
 private:
+    void evaluate();
+
     bool hasBeenVisited(Processor* processor);
     bool hasBeenVisited(Property* property);
     std::vector<Processor*> getDirectPredecessors(Processor* processor);
@@ -80,6 +86,7 @@ private:
     Processor* eventInitiator_; 
 
     bool evaulationQueued_;
+    bool evaluationDisabled_;
 
     //unsigned int reEvaluationHits_;
 };

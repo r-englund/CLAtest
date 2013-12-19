@@ -26,6 +26,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     eventInitiator_ = 0;
     linkEvaluator_  = 0;
     evaulationQueued_ = false;
+    evaluationDisabled_ = false;
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
@@ -346,17 +347,37 @@ std::vector<ProcessorLink*> ProcessorNetworkEvaluator::getSortedProcessorLinks()
 void ProcessorNetworkEvaluator::notifyInvalidationEnd(Processor* p){
     processorNetwork_->notifyInvalidationEnd(p);
     p->removeObserver(this);
-    evaulationQueued_ = false;
-    evaluate();
+    if(evaulationQueued_){
+        evaulationQueued_ = false;
+        requestEvaluate();
+    }
 }
 
-void ProcessorNetworkEvaluator::evaluate() {
+void ProcessorNetworkEvaluator::disableEvaluation(){
+    evaluationDisabled_ = true;
+}
+
+void ProcessorNetworkEvaluator::enableEvaluation(){
+    evaluationDisabled_ = false;
+    if(evaulationQueued_){
+        evaulationQueued_ = false;
+        requestEvaluate();
+    }
+}
+
+void ProcessorNetworkEvaluator::requestEvaluate() {
     if (processorNetwork_->islocked())
         return;
 
     //evaluation has been triggered but not performed yet
     if(evaulationQueued_)
         return;
+
+    //evaluation disabled
+    if (evaluationDisabled_){
+        evaulationQueued_ = true;
+        return;
+    }
 
     //wait for invalidation to finish before evaluating
     if (processorNetwork_->isInvalidating()){
@@ -365,6 +386,11 @@ void ProcessorNetworkEvaluator::evaluate() {
         return;
     }
     
+    //if we haven't returned yet, perform evaluation of the network
+    evaluate();
+}
+
+void ProcessorNetworkEvaluator::evaluate() {
     // lock processor network to avoid concurrent evaluation
     processorNetwork_->lock();    
 

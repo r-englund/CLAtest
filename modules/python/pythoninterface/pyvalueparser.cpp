@@ -191,10 +191,7 @@ namespace inviwo{
             }
 
             CameraProperty* cam = static_cast<CameraProperty*>(p);
-            cam->setLookFrom(from);
-            cam->setLookTo(to);
-            cam->setLookUp(up);
-
+            cam->setLook(from, to, up);
         }
         else{
             LogWarn("Unknown Property type : " << className);

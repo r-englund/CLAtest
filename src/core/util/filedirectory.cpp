@@ -24,7 +24,7 @@ std::string URLParser::addBasePath(const std::string url){
 
 bool URLParser::fileExists(std::string fileName) {
     std::ifstream inputFile(fileName.c_str());
-    return static_cast<bool>(inputFile);
+    return (inputFile != NULL);
 }
 
 std::string URLParser::getFileDirectory(const std::string url) {

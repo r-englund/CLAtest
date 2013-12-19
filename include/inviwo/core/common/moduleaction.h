@@ -19,7 +19,7 @@
 
 namespace inviwo {
 
-class ModuleCallBackActionState {
+class IVW_CORE_API ModuleCallBackActionState {
 public:
     enum Status { Default =0,
                   Enabled =1,
@@ -29,7 +29,7 @@ public:
 };
 
 //TODO: several types of call back action required ???
-class ModuleCallbackAction {
+class IVW_CORE_API ModuleCallbackAction {
 public:
     ModuleCallbackAction(std::string actionName, InviwoModule* module, ModuleCallBackActionState::Status state=ModuleCallBackActionState::Disabled);    
     std::string getActionName();

@@ -19,6 +19,7 @@
 #include <QDockWidget>
 #include <QListWidget>
 #include <QToolBar>
+#include <QToolButton>
 #include <QMenu>
 #include <QMenuBar>
 #include <QAction>
@@ -80,6 +81,7 @@ public slots:
     void saveWorkspace();
     void saveWorkspaceAs();
     void exitInviwo();
+    void disableEvaluation(bool);
 
 private:    
     void addMenus();
@@ -134,6 +136,8 @@ private:
 #ifdef IVW_PYTHON_QT
     QAction* pythonEditorOpenAction_;
 #endif
+
+    QToolButton* enableDisableEvaluationButton_;
 
 	// mainwindow toolbars
 	QToolBar* fileToolBar_;
