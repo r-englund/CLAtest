@@ -19,10 +19,6 @@ namespace inviwo {
 
 Geometry::Geometry() : DataGroup(), SpatialMetaData<3>() {}
 
-Geometry::Geometry(GeometryRepresentation* rep) : DataGroup(), SpatialMetaData<3>() {
-    //addRepresentation(rep);
-}
-
 Geometry* Geometry::clone() const {
     return new Geometry(*this);
 }

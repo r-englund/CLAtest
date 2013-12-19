@@ -26,7 +26,6 @@ class IVW_CORE_API Geometry : public DataGroup, public SpatialMetaData<3> {
 
 public:
     Geometry();
-    Geometry(GeometryRepresentation* rep);
     virtual ~Geometry();
     virtual Geometry* clone() const;
 };

@@ -34,7 +34,7 @@ namespace inviwo {
 
 class DataGroup;
 
-class IVW_CORE_API DataGroupRepresentation : DataRepresentation {
+class IVW_CORE_API DataGroupRepresentation : public DataRepresentation {
 
     friend class DataGroup;
 
@@ -42,10 +42,11 @@ public:
     DataGroupRepresentation();
     DataGroupRepresentation(const DataGroupRepresentation& rhs);
     virtual ~DataGroupRepresentation();
+    virtual void performOperation(DataOperation*) const = 0;
 
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
-    virtual DataGroupRepresentation* clone() const = 0;
+    virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const;
 
     //Update representations_ with DataRepresentation from each Data and DataGroup object

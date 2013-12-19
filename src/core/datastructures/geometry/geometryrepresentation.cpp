@@ -17,7 +17,7 @@
 namespace inviwo {
 
 GeometryRepresentation::GeometryRepresentation()
-    : DataRepresentation()
+    : DataGroupRepresentation()
 {}
 
 GeometryRepresentation::~GeometryRepresentation(){}

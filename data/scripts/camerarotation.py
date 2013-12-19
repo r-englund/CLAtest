@@ -12,7 +12,7 @@ for i in range(0, steps):
 
 
 for i in range(0, steps):
-   r = (2 * 3.14 * i) / (3*steps)
+   r = (2 * 3.14 * i) / (steps)
    x = 1.0*math.sin(r)
    z = 1.0*math.cos(r)
    inviwo.setCameraUp("EntryExitPoints","camera",(x,z,0))

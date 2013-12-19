@@ -415,7 +415,9 @@ void NetworkEditor::cacheProcessorProperty(Processor* p){
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
     if(std::find(processors.begin(), processors.end(), p) != processors.end()){
         PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
+        processorNetwork_->lock();
         propertyListWidget_->cacheProcessorPropertiesItem(p);
+        processorNetwork_->unlock();
     }
 }
 
