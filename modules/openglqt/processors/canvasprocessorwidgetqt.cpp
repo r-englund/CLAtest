@@ -72,10 +72,8 @@ void CanvasProcessorWidgetQt::show() {
 }
 
 void CanvasProcessorWidgetQt::showEvent(QShowEvent* event) {
-    canvas_->show();
-    canvas_->activate();
-    canvas_->update();
     ProcessorWidgetQt::showEvent(event);
+    canvas_->activate();
 }
 
 void CanvasProcessorWidgetQt::hide() {

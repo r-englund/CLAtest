@@ -81,7 +81,9 @@ void CanvasQt::repaint() {
     QGLWidget::updateGL();
 }
 
-void CanvasQt::paintGL() {}
+void CanvasQt::paintGL() {
+    CanvasGL::update();
+}
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;

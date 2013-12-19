@@ -90,7 +90,8 @@ void CanvasProcessor::process() {
 void CanvasProcessor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     Processor::invalidate(invalidationLevel);
     if (canvas_ && canvas_->getNetworkEvaluator())
-        canvas_->getNetworkEvaluator()->requestEvaluate();
+        if(processorWidget_ && processorWidget_->getVisibilityMetaData())
+            canvas_->getNetworkEvaluator()->requestEvaluate();
 }
 
 } // namespace
