@@ -23,11 +23,14 @@ class IVW_CORE_API GeometryRAM : public GeometryRepresentation {
 
 public:
     GeometryRAM();
+    GeometryRAM(const GeometryRAM& rhs);
     virtual ~GeometryRAM();
-    virtual void performOperation(DataOperation*) const = 0;
     virtual void initialize();
     virtual void deinitialize();
     virtual DataRepresentation* clone() const = 0;
+
+protected:
+    virtual void setPointerToOwner(const DataGroup*) = 0;
 };
 
 } // namespace

@@ -33,7 +33,8 @@ namespace inviwo {
  *    - DataGroup can never hold any data with owning(referencing[later]) a Data object or a DataGroup object
  *    - DataGroupRepresentation need reference to all Data objects to be created correctly
  *    - DataGroup does not have converters, as the DataGroup objects always can create them self correctly.
- *    - DataGroupRepresentation becomes invalid when a child representations becomes invalid
+ *    - DataGroupRepresentation becomes invalid when a child representations becomes invalid, thus we do not know when it's valid
+ *      and we need to call update before we return it from getRepresentation.
  */
 
 class IVW_CORE_API DataGroup {
@@ -59,9 +60,6 @@ public:
     void clearRepresentations();
 
 protected:
-    void addData(Data*);
-    void addData(DataGroup*);
-
     mutable std::vector<DataGroupRepresentation*> representations_;
 
 private:
@@ -77,12 +75,8 @@ const T* DataGroup::getRepresentation() const {
         if (representation) {
             DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(representation);
             if(basRep){
-                if (basRep->isValid()) {
-                    return representation;
-                } else {
-                    basRep->update();
-                    return representation;
-                }
+                basRep->update();
+                return representation;
             }
         }
     }
@@ -91,8 +85,9 @@ const T* DataGroup::getRepresentation() const {
     T* result = new T();
     DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(result);
     if(basRep){
-        basRep->setPointerToData(&data_, &groupData_);
+        basRep->setPointerToOwner(this);
         basRep->initialize();
+        basRep->update();
     }
     representations_.push_back(result);
     return result;    

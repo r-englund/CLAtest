@@ -52,17 +52,8 @@ public:
     //Update representations_ with DataRepresentation from each Data and DataGroup object
     virtual void update() = 0;
 
-    //Function for checking if representations_ is identical (and valid) to those in the Data and DataGroup object.
-    virtual bool isValid() const = 0;
-
 protected:
-    void setPointerToData(const std::vector<Data*>*, const std::vector<DataGroup*>*);
-
-    std::vector<DataRepresentation*> representations_;
-
-private:
-    const std::vector<Data*>* data_;
-    const std::vector<DataGroup*>* groupData_;
+    virtual void setPointerToOwner(const DataGroup*) = 0;
 };
 
 } // namespace

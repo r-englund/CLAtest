@@ -26,11 +26,7 @@
 #endif
 #endif
 
-
-
-
 namespace inviwo {
-
 
 class IVW_MODULE_OPENCL_API SyncCLGL {
 public:

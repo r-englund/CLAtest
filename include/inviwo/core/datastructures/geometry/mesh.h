@@ -12,8 +12,8 @@
  *
  **********************************************************************/
 
-#ifndef IVW_MESHRAM_H
-#define IVW_MESHRAM_H
+#ifndef IVW_MESH_H
+#define IVW_MESH_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
@@ -68,4 +68,4 @@ protected:
 
 } // namespace
 
-#endif // IVW_MESHRAM_H
+#endif // IVW_MESH_H

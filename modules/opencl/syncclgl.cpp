@@ -14,8 +14,10 @@
 
 #include <modules/opencl/syncclgl.h>
 
+/*
 typedef cl_event (*PFNCLCREATEEVENTFROMGLSYNCKHR) (cl_context context, cl_GLsync sync, cl_int *errcode_ret);
 PFNCLCREATEEVENTFROMGLSYNCKHR clCreateEventFromGLsync = (PFNCLCREATEEVENTFROMGLSYNCKHR)clGetExtensionFunctionAddress("clCreateEventFromGLsyncKHR");
+*/
 
 namespace inviwo {
 

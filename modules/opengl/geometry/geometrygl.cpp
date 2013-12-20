@@ -17,8 +17,12 @@
 namespace inviwo {
 
 GeometryGL::GeometryGL()
-    : GeometryRepresentation()
-{}
+    : GeometryRepresentation(){
+}
+
+GeometryGL::GeometryGL(const GeometryGL& rhs) 
+    : GeometryRepresentation(rhs){
+}
 
 GeometryGL::~GeometryGL() {
     deinitialize();

@@ -12,25 +12,41 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/datastructures/geometry/geometryram.h>
+#ifndef IVW_MESHGL_H
+#define IVW_MESHGL_H
+
+#include <modules/opengl/geometry/geometrygl.h>
 
 namespace inviwo {
 
-GeometryRAM::GeometryRAM()
-    : GeometryRepresentation(){
-}
+class Mesh;
+class BufferGL;
 
-GeometryRAM::GeometryRAM(const GeometryRAM& rhs) 
-    : GeometryRepresentation(rhs){
-}
+class IVW_MODULE_OPENGL_API MeshGL : public GeometryGL {
 
-GeometryRAM::~GeometryRAM() {
-    deinitialize();
-}
+public:
+    MeshGL();
+    MeshGL(const MeshGL& rhs);
+    virtual ~MeshGL();
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual DataRepresentation* clone() const;
 
-void GeometryRAM::initialize() {}
+    virtual void update();
 
-void GeometryRAM::deinitialize() {}
+    void enable() const;
+    void disable() const;
+
+protected:
+    virtual void setPointerToOwner(const DataGroup*);
+
+private:
+    const Mesh* owner_;
+
+    std::vector<const BufferGL*> attributesGL_;
+
+};
 
 } // namespace
 
+#endif // IVW_MESHGL_H

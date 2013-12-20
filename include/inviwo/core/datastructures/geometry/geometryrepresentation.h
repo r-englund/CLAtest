@@ -24,10 +24,19 @@ class IVW_CORE_API GeometryRepresentation : public DataGroupRepresentation {
 
 public:
     GeometryRepresentation();
+    GeometryRepresentation(const GeometryRepresentation& rhs);
     virtual ~GeometryRepresentation();
     virtual void performOperation(DataOperation*) const;
-    virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const;
+
+    virtual void initialize() = 0;
+    virtual void deinitialize() = 0;
+    virtual DataRepresentation* clone() const = 0;
+
+    virtual void update() = 0;
+
+protected:
+    virtual void setPointerToOwner(const DataGroup*) = 0;
 };
 
 } // namespace

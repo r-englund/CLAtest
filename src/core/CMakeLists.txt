@@ -32,6 +32,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometrytype.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/mesh.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/meshram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/plane.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/polygon.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/simplemesh.h
@@ -213,6 +214,7 @@ set(SOURCE_FILES
     datastructures/geometry/geometryram.cpp
     datastructures/geometry/geometryrepresentation.cpp
     datastructures/geometry/mesh.cpp
+    datastructures/geometry/meshram.cpp
     datastructures/geometry/plane.cpp
     datastructures/geometry/simplemesh.cpp
     datastructures/geometry/simplemeshcreator.cpp

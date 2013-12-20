@@ -43,14 +43,6 @@ DataGroup::~DataGroup() {
     groupData_.clear();
 }
 
-void DataGroup::addData(Data* dataObj){
-    data_.push_back(dataObj);
-}
-
-void DataGroup::addData(DataGroup* dataGroupObj){
-    groupData_.push_back(dataGroupObj);
-}
-
 void DataGroup::clearRepresentations() {
     while (hasRepresentations()) {
         delete representations_.back();

@@ -12,25 +12,37 @@
  *
  **********************************************************************/
 
+#ifndef IVW_MESHRAM_H
+#define IVW_MESHRAM_H
+
 #include <inviwo/core/datastructures/geometry/geometryram.h>
 
 namespace inviwo {
 
-GeometryRAM::GeometryRAM()
-    : GeometryRepresentation(){
-}
+class Mesh;
+class BufferRAM;
 
-GeometryRAM::GeometryRAM(const GeometryRAM& rhs) 
-    : GeometryRepresentation(rhs){
-}
+class IVW_CORE_API MeshRAM : public GeometryRAM {
 
-GeometryRAM::~GeometryRAM() {
-    deinitialize();
-}
+public:
+    MeshRAM();
+    MeshRAM(const MeshRAM& rhs);
+    virtual ~MeshRAM();
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual DataRepresentation* clone() const;
 
-void GeometryRAM::initialize() {}
+    virtual void update();
 
-void GeometryRAM::deinitialize() {}
+protected:
+    virtual void setPointerToOwner(const DataGroup*);
+
+private:
+    const Mesh* owner_;
+
+    std::vector<const BufferRAM*> attributesRAM_;
+};
 
 } // namespace
 
+#endif // IVW_MESHRAM_H

@@ -20,6 +20,10 @@ GeometryRepresentation::GeometryRepresentation()
     : DataGroupRepresentation()
 {}
 
+GeometryRepresentation::GeometryRepresentation(const GeometryRepresentation& rhs) 
+: DataGroupRepresentation(rhs) {
+}
+
 GeometryRepresentation::~GeometryRepresentation(){}
 
 void GeometryRepresentation::performOperation(DataOperation*) const {}

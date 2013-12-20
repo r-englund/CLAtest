@@ -16,25 +16,14 @@
 
 namespace inviwo {
 
-DataGroupRepresentation::DataGroupRepresentation() {
-    data_ = NULL;
-    groupData_ = NULL;
-}
+DataGroupRepresentation::DataGroupRepresentation(){}
 
-DataGroupRepresentation::DataGroupRepresentation(const DataGroupRepresentation& rhs) {
-    data_ = rhs.data_;
-    groupData_ = rhs.groupData_;
-}
+DataGroupRepresentation::DataGroupRepresentation(const DataGroupRepresentation& rhs){}
 
 DataGroupRepresentation::~DataGroupRepresentation() { }
 
 std::string DataGroupRepresentation::getClassName() const { 
     return "DataGroupRepresentation"; 
-}
-
-void DataGroupRepresentation::setPointerToData(const std::vector<Data*>* dVec, const std::vector<DataGroup*>* gdVec){
-    data_ = dVec;
-    groupData_ = gdVec;
 }
 
 } // namespace

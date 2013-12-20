@@ -25,11 +25,14 @@ class IVW_MODULE_OPENGL_API GeometryGL : public GeometryRepresentation {
 
 public:
     GeometryGL();
+    GeometryGL(const GeometryGL& rhs);
     virtual ~GeometryGL();
-    virtual void performOperation(DataOperation*) const = 0;
     virtual void initialize();
     virtual void deinitialize();
     virtual DataRepresentation* clone() const = 0;
+
+protected:
+    virtual void setPointerToOwner(const DataGroup*) = 0;
 };
 
 } // namespace
