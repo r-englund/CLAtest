@@ -9,7 +9,7 @@ TEST(URLParserTest,fileExistsTest){
 #ifdef __FILE__
     EXPECT_TRUE(URLParser::fileExists(__FILE__));
 #endif
-    EXPECT_TRUE(URLParser::fileExists(global_argv[0]),"Cant find current executable");
+    EXPECT_TRUE(URLParser::fileExists(global_argv[0]));//Cant find current executable
 
 }
 

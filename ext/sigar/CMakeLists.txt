@@ -124,12 +124,6 @@ ivw_vs_folder(sigar ext)
 # Make package (for other projects to find)
 ivw_make_package(Sigar sigar)
 
-#--------------------------------------------------------------------
-# Add test
-if(TEST_APPLICATIONS)
-    add_subdirectory(examples)
-endif()
-
 if(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")
   #Ignore warnings in external packages
   set_target_properties(sigar PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_INHIBIT_ALL_WARNINGS YES)

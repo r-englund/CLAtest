@@ -31,6 +31,11 @@ set(SOURCE_FILES
 
 ivw_group("Source Files" ${SOURCE_FILES})
 
+if(IVW_MODULE_OPENCL)
+	ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
+endif()
+
+
 #--------------------------------------------------------------------
 # Create module
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})

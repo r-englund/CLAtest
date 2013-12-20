@@ -93,13 +93,17 @@ ivw_group("Shader Files" ${SHADER_FILES})
 # Add definition
 ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
 
-#--------------------------------------------------------------------
-# Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+
+ if(IVW_UNIT_TEST_APPLICATION)
+    set(TEST_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/opencl.test.h
+    )
+    ivw_group("Unittest Files" ${TEST_FILES})
+    ivw_add_unittest(${TEST_FILES})
+ endif()
 
 #--------------------------------------------------------------------
-# Add tests
-if(TEST_APPLICATIONS)
-    add_subdirectory(test)
-endif()
+# Create module
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES} ${TEST_FILES})
+
 
