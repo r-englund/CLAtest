@@ -57,6 +57,7 @@ set(SOURCE_FILES
 	${IVW_MODULE_DIR}/opencl/volume/volumeclconverter.cpp
 	${IVW_MODULE_DIR}/opencl/volume/volumeclglconverter.cpp
 	${IVW_MODULE_DIR}/opencl/volume/volumeclgl.cpp
+    ${IVW_MODULE_DIR}/opencl/syncclgl.cpp
 
 )
 ivw_group("Source Files" ${SOURCE_FILES})

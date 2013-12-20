@@ -396,8 +396,8 @@ float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const flo
     f = materialDiffuse*HenyeyGreensteinPhaseFunction(toCameraDir, toLightDir, material.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_SCHLICK
     f = materialDiffuse*SchlickPhaseFunction(toCameraDir, toLightDir, material.z); 
-#elif PHASE_FUNCTION == PHASE_FUNCTION_HALF_ANGLE_SLICING
-    f =materialDiffuse*HalfAngleSlicingPhaseFunction(wi, -toLightDir); 
+//#elif PHASE_FUNCTION == PHASE_FUNCTION_HALF_ANGLE_SLICING
+//    f =materialDiffuse*HalfAngleSlicingPhaseFunction(wi, -toLightDir); 
 #elif PHASE_FUNCTION == PHASE_FUNCTION_BLINN_PHONG
     f = materialDiffuse*lambertianBRDF()+materialSpecular*BlinnBRDF(wo, wi, material.y)*fabs(wi.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_WARD

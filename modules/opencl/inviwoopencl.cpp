@@ -16,6 +16,7 @@
 #include <modules/opencl/cl.hpp>
 #include <modules/opencl/glmcl.h>
 #include <modules/opencl/openclcapabilities.h> 
+#include <modules/opencl/syncclgl.h>
 #include <inviwo/core/io/textfilereader.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <iostream>
@@ -53,7 +54,7 @@ void OpenCL::initialize(bool glSharing) {
         std::vector<cl::Platform> platforms;
         cl::Platform::get(&platforms);
         if (platforms.size() == 0) {
-            std::cout << "No OpenCL platforms found" << std::endl;
+            LogError("No OpenCL platforms found" << std::endl);
             return;
         }
 
@@ -91,6 +92,14 @@ void OpenCL::initialize(bool glSharing) {
         if ( supportedQueueProperties & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE)
             queueProperties |= CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
         asyncGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
+
+        STRING_CLASS deviceExtensions = gpuDevice_.getInfo<CL_DEVICE_EXTENSIONS>();
+        size_t foundAt = deviceExtensions.find_first_of("cl_khr_gl_event");
+        if(foundAt != std::string::npos) {
+            // Efficient cl/gl synchronization possible
+        }
+
+
 
     } catch (cl::Error& err) {
             
@@ -133,28 +142,33 @@ bool OpenCL::getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform) 
     // Search for best device
     for(::size_t i = 0; i < platforms.size(); ++i) {
         std::vector<cl::Device> devices;
-        platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
-        for(::size_t j = 0; j < devices.size(); ++j) {
-            cl_uint tmpMaxComputeUnits;
-            devices[j].getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &tmpMaxComputeUnits);
-            if( maxComputeUnits < tmpMaxComputeUnits ) {
-                bestDevice = devices[j];
-                onPlatform = platforms[i];
-                maxComputeUnits = tmpMaxComputeUnits;
-                foundDevice = true;
+        try {
+            platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
+            //platforms[i].getDevices(CL_DEVICE_TYPE_CPU, &devices);
+            for(::size_t j = 0; j < devices.size(); ++j) {
+                cl_uint tmpMaxComputeUnits;
+                devices[j].getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &tmpMaxComputeUnits);
+                if( maxComputeUnits < tmpMaxComputeUnits ) {
+                    bestDevice = devices[j];
+                    onPlatform = platforms[i];
+                    maxComputeUnits = tmpMaxComputeUnits;
+                    foundDevice = true;
+                }
             }
+        }  catch (cl::Error& ) {
+            // Error getting device, continue with others
         }
     }
     return foundDevice;
 }
 void OpenCL::printBuildError(const std::vector<cl::Device>& devices, const cl::Program& program, const std::string& filename) {
     for(::size_t i = 0; i < devices.size(); ++i) {
-            cl_build_status status = program.getBuildInfo<CL_PROGRAM_BUILD_STATUS>(devices[i]);
-            // Houston, we have a problem
-            if(status == CL_BUILD_ERROR) {
-                std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[i]);
+        cl_build_status status = program.getBuildInfo<CL_PROGRAM_BUILD_STATUS>(devices[i]);
+        // Houston, we have a problem
+        if(status == CL_BUILD_ERROR) {
+            std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[i]);
             LogErrorCustom("OpenCL", filename << " build error:" << std::endl << buildLog);
-            }
+        }
     }
 }
 void OpenCL::printBuildError(const cl::Device& device, const cl::Program& program, const std::string& filename) {
@@ -197,13 +211,13 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
     
     cl::Program program(context, source);
     try {
-        program.build(std::vector<cl::Device>(1, OpenCL::instance()->getDevice()), concatenatedDefines.c_str());
+        program.build(std::vector<cl::Device>(1, device), concatenatedDefines.c_str());
         std::string buildLog = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device);
         // Output log if it contains any info
         if(buildLog.size() > 1)
             LogInfoCustom("OpenCL", fileName << " build info:" << std::endl << buildLog);
     } catch (cl::Error& e) {
-        OpenCL::printBuildError(std::vector<cl::Device>(1, OpenCL::instance()->getDevice()), program);
+        OpenCL::printBuildError(std::vector<cl::Device>(1, device), program);
         throw e;
     }
     return program;
@@ -505,6 +519,7 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
 #ifdef DEBUG
     if (!inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::instance()->getContext(), clFormat)) {
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "OpenCL device does not support format");
+        ivwAssert(inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::instance()->getContext(), clFormat), "cl::ImageFormat typeToImageFormat: OpenCL device does not support format");
     };
 #endif 
 
