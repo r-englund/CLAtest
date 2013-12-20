@@ -23,7 +23,13 @@ ivw_define_standard_definitions(tinythread)
 
 #--------------------------------------------------------------------
 # Create library
-add_library(tinythread ${SOURCE_FILES} ${HEADER_FILES})
+#add_library(tinythread ${SOURCE_FILES} ${HEADER_FILES})
+
+IF(${SHARED_LIBS})
+    add_library(tinythread SHARED ${SOURCE_FILES} ${HEADER_FILES})
+ELSE()
+    add_library(tinythread STATIC ${SOURCE_FILES} ${HEADER_FILES})
+ENDIF()
 
 #--------------------------------------------------------------------
 # Creates VS folder structure

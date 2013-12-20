@@ -24,6 +24,26 @@ freely, subject to the following restrictions:
 #ifndef _TINYTHREAD_H_
 #define _TINYTHREAD_H_
 
+
+#ifdef INVIWO_ALL_DYN_LINK //DYNAMIC
+// If we are building DLL files we must declare dllexport/dllimport
+#ifdef TINYTHREAD_EXPORTS
+#ifdef _WIN32
+#define IVW_TINYTHREAD_API __declspec(dllexport)
+#else //UNIX (GCC)
+#define IVW_TINYTHREAD_API __attribute__ ((visibility ("default")))
+#endif
+#else
+#ifdef _WIN32
+#define IVW_TINYTHREAD_API __declspec(dllimport)
+#else
+#define IVW_TINYTHREAD_API
+#endif
+#endif
+#else //STATIC
+#define IVW_TINYTHREAD_API
+#endif
+
 /// @file
 /// @mainpage TinyThread++ API Reference
 ///
@@ -156,7 +176,7 @@ namespace tthread {
 /// program may deadlock if the thread that owns a mutex object calls lock()
 /// on that object).
 /// @see recursive_mutex
-class mutex {
+class IVW_TINYTHREAD_API mutex {
   public:
     /// Constructor.
     mutex()
@@ -249,7 +269,8 @@ class mutex {
 /// number of times).
 /// @see mutex
 class recursive_mutex {
-  public:
+    _TTHREAD_DISABLE_ASSIGNMENT(recursive_mutex)
+public:
     /// Constructor.
     recursive_mutex()
     {
@@ -312,7 +333,6 @@ class recursive_mutex {
 #endif
     }
 
-    _TTHREAD_DISABLE_ASSIGNMENT(recursive_mutex)
 
   private:
 #if defined(_TTHREAD_WIN32_)
@@ -340,7 +360,7 @@ class recursive_mutex {
 /// @endcode
 
 template <class T>
-class lock_guard {
+class  lock_guard {
   public:
     typedef T mutex_type;
 
@@ -389,7 +409,7 @@ class lock_guard {
 ///   cond.notify_all();
 /// }
 /// @endcode
-class condition_variable {
+class IVW_TINYTHREAD_API condition_variable {
   public:
     /// Constructor.
 #if defined(_TTHREAD_WIN32_)
@@ -478,7 +498,7 @@ class condition_variable {
 
 
 /// Thread class.
-class thread {
+class IVW_TINYTHREAD_API thread {
   public:
 #if defined(_TTHREAD_WIN32_)
     typedef HANDLE native_handle_type;
@@ -569,7 +589,7 @@ class thread {
 /// Thread ID.
 /// The thread ID is a unique identifier for each thread.
 /// @see thread::get_id()
-class thread::id {
+class IVW_TINYTHREAD_API thread::id {
   public:
     /// Default constructor.
     /// The default constructed ID is that of thread without a thread of
@@ -632,7 +652,7 @@ typedef long long __intmax_t;
 
 /// Minimal implementation of the @c ratio class. This class provides enough
 /// functionality to implement some basic @c chrono classes.
-template <__intmax_t N, __intmax_t D = 1> class ratio {
+template <__intmax_t N, __intmax_t D = 1> class  ratio {
   public:
     static double _as_double() { return double(N) / double(D); }
 };
@@ -642,7 +662,7 @@ template <__intmax_t N, __intmax_t D = 1> class ratio {
 namespace chrono {
   /// Duration template class. This class provides enough functionality to
   /// implement @c this_thread::sleep_for().
-  template <class _Rep, class _Period = ratio<1> > class duration {
+  template <class _Rep, class _Period = ratio<1> > class  duration {
     private:
       _Rep rep_;
     public:
@@ -673,12 +693,12 @@ namespace chrono {
 /// calling thread.
 namespace this_thread {
   /// Return the thread ID of the calling thread.
-  thread::id get_id();
+  thread::id IVW_TINYTHREAD_API get_id();
 
   /// Yield execution to another thread.
   /// Offers the operating system the opportunity to schedule another thread
   /// that is ready to run on the current processor.
-  inline void yield()
+  inline void  yield()
   {
 #if defined(_TTHREAD_WIN32_)
     Sleep(0);
