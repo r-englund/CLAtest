@@ -97,15 +97,9 @@ void* IvwSerializeBase::ReferenceDataContainer::find(const std::string& type, co
         std::string ref_attrib("");
         std::string id_attrib("");
         
-        try {
-            it->second.node_->GetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, &type_attrib);
-        } catch (TxException& ) {}
-        try {
-            it->second.node_->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attrib);
-        } catch (TxException& ) {}
-        try {
-            it->second.node_->GetAttribute( IvwSerializeConstants::ID_ATTRIBUTE, &id_attrib);
-        } catch (TxException&) {}
+        it->second.node_->GetAttribute(IvwSerializeConstants::TYPE_ATTRIBUTE, &type_attrib, false);
+        it->second.node_->GetAttribute( IvwSerializeConstants::REF_ATTRIBUTE, &ref_attrib, false);
+        it->second.node_->GetAttribute( IvwSerializeConstants::ID_ATTRIBUTE, &id_attrib, false);
         
         if (type_attrib == type && (ref_attrib == reference_or_id || id_attrib == reference_or_id)) {
             data = const_cast<void *>(it->first);
