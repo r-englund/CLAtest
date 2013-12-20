@@ -29,7 +29,7 @@ public:
     virtual ~PropertyOwner();
 
     // invalidation level must be sorted based on their complexity,
-    // whereby higher numbers (later entry in teh list) invole more
+    // whereby higher numbers (later entry in the list) invole more
     // expensive update operations
     enum InvalidationLevel {
         VALID,

@@ -12,37 +12,16 @@
  *
  **********************************************************************/
 
-#ifndef IVW_PROCESSORCONNECTION_H
-#define IVW_PROCESSORCONNECTION_H
+#ifndef IVW_PROCESSORLINK_H
+#define IVW_PROCESSORLINK_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/linkevaluator.h>
+#include <inviwo/core/links/linkevaluator.h>
+#include <inviwo/core/links/propertylink.h>
 
 namespace inviwo {
-
-class IVW_CORE_API PropertyLink : public IvwSerializable {
-public :
-    PropertyLink();
-    PropertyLink(Property* srcProperty, Property* dstProperty);
-    virtual ~PropertyLink();
-    
-    void setSourceProperty(Property* src) { srcProperty_=src; }
-    void setDestinationProperty(Property* dst) { dstProperty_=dst; } 
-
-    Property* getSourceProperty() const{ return srcProperty_; }
-    Property* getDestinationProperty() const{ return dstProperty_; }  
-
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
-
-    void switchDirection();
-
-private:
-    Property* srcProperty_;
-    Property* dstProperty_;
-};
 
 class IVW_CORE_API ProcessorLink : public IvwSerializable {
 
@@ -84,4 +63,4 @@ private:
 
 } // namespace
 
-#endif // IVW_PORTCONNECTION_H
+#endif // IVW_PROCESSORLINK_H

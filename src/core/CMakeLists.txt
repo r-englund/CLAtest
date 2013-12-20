@@ -92,7 +92,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/links/processorlink.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/links/propertylink.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/links/linkevaluator.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/compositemetadata.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatadefinefunc.h
@@ -103,7 +106,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processormetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processorwidgetmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/portconnection.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/network/processorlink.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetwork.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/datainport.h
@@ -135,8 +137,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/directoryproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/linkevaluator.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
@@ -259,7 +260,10 @@ set(SOURCE_FILES
     io/serialization/ivwserializebase.cpp
     io/serialization/ivwserializeconstants.cpp
     io/serialization/ivwserializer.cpp
-    io/textfilereader.cpp    
+    io/textfilereader.cpp   
+    links/processorlink.cpp	
+    links/propertylink.cpp	
+    links/linkevaluator.cpp 	
     metadata/compositemetadata.cpp    
     metadata/metadata.cpp
     metadata/metadatafactory.cpp
@@ -269,7 +273,6 @@ set(SOURCE_FILES
     metadata/processormetadata.cpp
     metadata/processorwidgetmetadata.cpp
     network/portconnection.cpp
-    network/processorlink.cpp
     network/processornetwork.cpp
     network/processornetworkevaluator.cpp
     ports/geometryport.cpp
@@ -292,8 +295,7 @@ set(SOURCE_FILES
     properties/directoryproperty.cpp    
     properties/eventproperty.cpp
     properties/fileproperty.cpp
-    properties/imageeditorproperty.cpp
-    properties/linkevaluator.cpp    
+    properties/imageeditorproperty.cpp   
     properties/matrixproperties.cpp
     properties/optionproperties.cpp
     properties/property.cpp

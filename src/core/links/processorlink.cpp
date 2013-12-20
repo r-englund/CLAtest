@@ -12,42 +12,9 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/network/processorlink.h>
+#include <inviwo/core/links/processorlink.h>
 
 namespace inviwo {
-
-PropertyLink::PropertyLink() 
-    : srcProperty_(0), 
-      dstProperty_(0) {
-    
-}
-
-PropertyLink::~PropertyLink() {}
-
-PropertyLink::PropertyLink(Property* srcProperty, Property* destProperty) 
-              : srcProperty_(srcProperty), dstProperty_(destProperty) {
-}
-
-void PropertyLink::switchDirection() {
-    Property* tempProperty = srcProperty_;
-    srcProperty_ = dstProperty_;
-    dstProperty_ = tempProperty;
-}
-
-void PropertyLink::serialize(IvwSerializer& s) const {
-    std::vector<Property*> linkedProperties;
-    linkedProperties.push_back(srcProperty_);
-    linkedProperties.push_back(dstProperty_);
-    s.serialize("Properties", linkedProperties, "Property");   
-}
-
-void PropertyLink::deserialize(IvwDeserializer& d) {
-    std::vector<Property*> linkedProperties;
-    d.deserialize("Properties",linkedProperties, "Property");
-    srcProperty_ = linkedProperties[0];
-    dstProperty_ = linkedProperties[1];
-}
-
 
 ProcessorLink::ProcessorLink()   
     : sourceProcessor_(0),

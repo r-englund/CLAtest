@@ -26,7 +26,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 
-#include <inviwo/core/network/processorlink.h>
+#include <inviwo/core/links/processorlink.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>

@@ -12,7 +12,7 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/properties/linkevaluator.h>
+#include <inviwo/core/links/linkevaluator.h>
 #include <inviwo/core/util/variant.h>
 
 namespace inviwo {

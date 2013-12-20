@@ -20,8 +20,8 @@
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
 #include <inviwo/core/network/processornetwork.h>
-#include <inviwo/core/network/processorlink.h>
-#include <inviwo/core/properties/linkevaluator.h>
+#include <inviwo/core/links/processorlink.h>
+#include <inviwo/core/links/linkevaluator.h>
 
 namespace inviwo {
 

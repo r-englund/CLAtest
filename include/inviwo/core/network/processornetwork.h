@@ -20,7 +20,7 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/processorobserver.h>
 #include <inviwo/core/network/portconnection.h>
-#include <inviwo/core/network/processorlink.h>
+#include <inviwo/core/links/processorlink.h>
 #include <inviwo/core/util/observer.h>
 #include <inviwo/core/util/exception.h>
 
