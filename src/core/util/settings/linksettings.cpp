@@ -8,34 +8,23 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Erik Sundén
+ * Primary author : Sathish Kottravel
  *
  **********************************************************************/
 
-#include <inviwo/core/util/settings.h>
+#include <inviwo/core/util/settings/linksettings.h>
 
 namespace inviwo {
 
-Settings::Settings(){}
+LinkSettings::LinkSettings(InviwoModule* module, std::string id) : Settings(module, id) {}
 
-Settings::~Settings() {
-}
-
-void Settings::initialize() {
+LinkSettings::~LinkSettings() {
 }
 
-void Settings::deinitialize() {
+void LinkSettings::initialize() {
+    addProperty(new BoolProperty("displayLinks", "Display links", true));
 }
 
-void Settings::invalidate() {
-    PropertyOwner::invalidate(PropertyOwner::INVALID_OUTPUT);
-}
-
-void Settings::serialize(IvwSerializer& s) const {
-    PropertyOwner::serialize(s);
-}
-void Settings::deserialize(IvwDeserializer& d) {
-    PropertyOwner::deserialize(d);  
-}
+void LinkSettings::deinitialize()  {}
 
 } // namespace

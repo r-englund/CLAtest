@@ -56,20 +56,17 @@ public:
     const std::vector<Property*>& getProperties() const;
     const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
     const std::vector<Resource*>& getResources() const;
+    const std::vector<Settings*>& getSettings() const;
     
     std::string getDescription() const;
     void setDescription(const std::string& description) const;
-    void setGlobalSettings(Settings* settings);
 
     virtual void initialize();
     virtual void deinitialize();
 
 protected:
-
-    Settings* getSettings() { return applicationSettings_; }
-
     void setIdentifier(const std::string& identifier);
-
+    
     void addCapabilities(Capabilities* info);
     void addData(Data* data);
     void addDataReader(DataReader* reader);
@@ -82,12 +79,15 @@ protected:
     void addProperty(Property* property);
     void addRepresentationConverter(RepresentationConverter* representationConverter);
     void addResource(Resource* resource);
+    void addSettings(Settings* settings);
     
     void setXMLFileName(const std::string& xmlDocuFileName);
 
     virtual void setupModuleSettings(){};
 
     std::string getPath(const std::string& suffix = "") const;
+
+    std::vector<Settings*> moduleSettings_;
 
 private:
     std::string identifier_;
@@ -107,10 +107,9 @@ private:
     std::vector<RepresentationConverter*> representationConverters_;
     std::vector<Resource*> resources_;
 
-    Settings* applicationSettings_;
-
     std::string xmlDocuFileName_;
 };
+
 
 #define registerProcessor(T) { addProcessor(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
 

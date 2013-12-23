@@ -14,6 +14,7 @@
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/common/moduleaction.h>
@@ -39,7 +40,7 @@ void PropertyWidgetQt::generateContextMenu(){
     bool appInitialized = inviwoApp->isInitialized();
     //FIXME: Why do we need to check if inviwo initialized? Should addObservation exist here?
     ivwAssert(appInitialized!=false, "InviwoApplication not initialized.This should not be the case.");
-    this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")));
+    this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode")));
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu_ = new QMenu();
     viewModeItem_ = new QMenu(tr("&View mode"));
@@ -172,7 +173,9 @@ void PropertyWidgetQt::setApplicationViewMode(bool value) {
 }
 
 PropertyVisibilityMode PropertyWidgetQt::getApplicationViewMode(){
-    return InviwoApplication::getPtr()->getPropertyVisibilityMode();
+    Settings* mainSettings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
+    PropertyVisibilityMode appMode =  static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>(mainSettings->getPropertyByIdentifier("viewMode"))->get());
+    return appMode;
 }
 
 void PropertyWidgetQt::moduleAction() { 

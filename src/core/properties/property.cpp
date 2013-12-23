@@ -135,7 +135,8 @@ void Property::setVisibility(PropertyVisibilityMode visibilityMode) {
 
 void Property::updateVisibility() {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    PropertyVisibilityMode appMode = inviwoApp->getPropertyVisibilityMode();
+    Settings* mainSettings = inviwoApp->getSettingsByType<SystemSettings>();
+    PropertyVisibilityMode appMode =  static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>(mainSettings->getPropertyByIdentifier("viewMode"))->get());
 
     if (visibilityMode_ == INVISIBLE) {
         for (size_t i=0; i<propertyWidgets_.size(); i++){

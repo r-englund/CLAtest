@@ -14,6 +14,7 @@
 
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 #include <inviwo/core/common/inviwomodule.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/util/filedirectory.h>
 
 #include <QTextDocument>
@@ -144,7 +145,7 @@ void TextEditorWidgetQt::editFile(){
      // fetch settings from the settings menu to determine what editor to use
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     
-    if (dynamic_cast<BoolProperty*>(inviwoApp->getSettings()->getPropertyByIdentifier("txtEditor"))->get()) { 
+    if (dynamic_cast<BoolProperty*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("txtEditor"))->get()) { 
         if (static_cast<StringProperty*>(property_)->get() == "") {
             fileWidget_->setPropertyValue();
         }

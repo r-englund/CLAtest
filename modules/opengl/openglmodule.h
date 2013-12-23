@@ -26,7 +26,7 @@ public:
     OpenGLModule();
 
 protected:
-    void setupModuleSettings();
+    virtual void setupModuleSettings();
 
 };
 

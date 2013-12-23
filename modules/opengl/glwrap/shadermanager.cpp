@@ -15,6 +15,7 @@
 #include "shadermanager.h"
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 #include <modules/opengl/openglmodule.h>
 #include <modules/opengl/processorgl.h>
 
@@ -49,7 +50,7 @@ void ShaderManager::unregisterShader(Shader* shader) {
 }
 
 void ShaderManager::fileChanged(std::string shaderFilename) {
-    if (dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("shaderReloading"))->get()) { 
+    if (dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("shaderReloading"))->get()) { 
         if (isObserved(shaderFilename)) {
             bool successfulReload = false;
             for (size_t i=0; i<shaders_.size(); i++) {

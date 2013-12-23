@@ -16,6 +16,8 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/settings/linksettings.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/qt/editor/networkeditorview.h>
 
 namespace inviwo {
@@ -37,7 +39,7 @@ NetworkEditorView::~NetworkEditorView() {
 
 void NetworkEditorView::setNetworkEditor(NetworkEditor* networkEditor) {
     networkEditor_ = networkEditor;
-    Property* displayLinkProperty = InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("displayLinks");
+    Property* displayLinkProperty = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()->getPropertyByIdentifier("displayLinks");
     if (displayLinkProperty) {
         displayLinkProperty->onChange(networkEditor_, &NetworkEditor::updateLinkGraphicsItems);
         networkEditor_->updateLinkGraphicsItems();

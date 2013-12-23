@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -8,28 +8,26 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Timo Ropinski
+ * Primary author : Sathish Kottravel
  *
  **********************************************************************/
 
-#ifndef IVW_INVIWOCORE_H
-#define IVW_INVIWOCORE_H
+#ifndef IVW_LINKSETTINGS_H
+#define IVW_LINKSETTINGS_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/common/inviwomodule.h>
+#include <inviwo/core/util/settings/settings.h>
 
 namespace inviwo {
 
-class IVW_CORE_API InviwoCore : public InviwoModule {
+class IVW_CORE_API LinkSettings : public Settings {
 
 public:
-    InviwoCore();
-
-protected:
-    virtual void setupModuleSettings();
+    LinkSettings(InviwoModule* module, std::string id="Link Settings");
+    virtual ~LinkSettings();
+    virtual void initialize();
+    virtual void deinitialize();
 };
 
 } // namespace
 
-#endif // IVW_INVIWOCORE_H
+#endif // IVW_LINKSETTINGS_H

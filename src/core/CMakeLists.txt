@@ -182,13 +182,15 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/settings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/systemsettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/linksettings.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -322,12 +324,14 @@ set(SOURCE_FILES
     util/fileobserver.cpp
     util/formats.cpp
     util/logdistributor.cpp
-    util/observer.cpp
-    util/settings.cpp
+    util/observer.cpp    
     util/stringconversion.cpp
     util/systemcapabilities.cpp
     util/timer.cpp
     util/variant.cpp
+    util/settings/settings.cpp	
+    util/settings/systemsettings.cpp	
+    util/settings/linksettings.cpp	
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -339,6 +343,7 @@ set(PCH_PATH_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata
     ${IVW_INCLUDE_DIR}/inviwo/core/ports
     ${IVW_INCLUDE_DIR}/inviwo/core/util
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings
 )
 ivw_add_pch_path(${PCH_PATH_FILES})
 

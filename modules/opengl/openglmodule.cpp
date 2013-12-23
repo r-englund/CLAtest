@@ -15,6 +15,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/util/vectoroperations.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 #include <modules/opengl/buffer/bufferglconverter.h>
 #include <modules/opengl/buffer/elementbuffergl.h>
 #include <modules/opengl/canvasprocessorgl.h>
@@ -51,12 +52,14 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
 }
 
 void OpenGLModule::setupModuleSettings(){
-    if (getSettings()){
+    //New OpengGLSettings class can be created if required.
+    SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
+    if (settings){
         OpenGLCapabilities* openglInfo = getTypeFromVector<OpenGLCapabilities>(getCapabilities());
         if (openglInfo){
             ButtonProperty* btnOpenGLInfo = new ButtonProperty("printOpenGLInfo", "Print OpenGL Info");
             btnOpenGLInfo->onChange(openglInfo, &OpenGLCapabilities::printInfo);
-            getSettings()->addProperty(btnOpenGLInfo);
+            settings->addProperty(btnOpenGLInfo);
         }           
     }
 }

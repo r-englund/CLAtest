@@ -25,7 +25,9 @@
 #include <modules/opencl/volume/volumeclglconverter.h>
 #include <modules/opencl/kernelmanager.h>
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 namespace inviwo {
 
@@ -94,12 +96,14 @@ void OpenCLModule::deinitialize() {
 }
 
 void OpenCLModule::setupModuleSettings(){
-    if (getSettings()){
+    //New OpengCLSettings class can be created if required.
+    SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
+    if (settings){
         OpenCLCapabilities* openclInfo = getTypeFromVector<OpenCLCapabilities>(getCapabilities());
         if (openclInfo){
             ButtonProperty* btnOpenCLInfo = new ButtonProperty("printOpenCLInfo", "Print OpenCL Info");
             btnOpenCLInfo->onChange(openclInfo, &OpenCLCapabilities::printInfo);
-            getSettings()->addProperty(btnOpenCLInfo);
+            settings->addProperty(btnOpenCLInfo);
         }           
     }
 }

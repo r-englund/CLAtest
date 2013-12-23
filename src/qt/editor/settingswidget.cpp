@@ -33,19 +33,7 @@ void SettingsWidget::generateWidget() {
     setObjectName("SettingsWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    //QFrame* frame = new QFrame();
-    //vLayout_ = new QVBoxLayout(frame);
-    vLayout_ = new QVBoxLayout();
-	vLayout_->setSpacing(0);
-    tabWidget_ = new QTabWidget();
-    QWidget* tab1 = new QWidget();
-    QWidget* tab2 = new QWidget();
-    QWidget* tab3 = new QWidget();
-    tab1->setLayout(vLayout_);
-    tabWidget_->addTab(tab1,"Mainsettings");
-    tabWidget_->addTab(tab2,"tab2");
-    tabWidget_->addTab(tab3,"tab3");
-    //frame->setLayout(vLayout_);
+    tabWidget_ = new QTabWidget();    
     setWidget(tabWidget_);
     //setWidget(frame);
 }
@@ -54,39 +42,54 @@ SettingsWidget::~SettingsWidget() {}
 
 //Load settings from QSettings
 void SettingsWidget::loadSettings() {
-    Settings* mainsettings = InviwoApplication::getRef().getSettings();
-    std::vector<Property*> properties = mainsettings->getProperties();
+    std::vector<Settings*> settings = InviwoApplication::getPtr()->getModuleSettings();
     QSettings qmainsettings("Inviwo", "Inviwo");
-    qmainsettings.beginGroup("mainsettings");
-    QStringList keys = qmainsettings.allKeys();
-    for (size_t i=0; i<properties.size(); i++) {
-        Property* curProperty = properties[i];
-        QString name = QString::fromStdString(curProperty->getIdentifier());
-        if(keys.contains(name)){
-            QVariant qval = qmainsettings.value(name);
-            Variant val(std::string(qval.toString().toLocal8Bit().constData()));
-            curProperty->setVariant(val);
-        }
 
-        PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
-        vLayout_->addWidget(propertyWidget);
-        curProperty->registerPropertyWidget(propertyWidget);
+    for (size_t i=0; i<settings.size(); i++) {
+       
+        QVBoxLayout* vLayout =  new QVBoxLayout();
+        vLayout->setSpacing(0);
+        QWidget* tab = new QWidget();
+        tab->setLayout(vLayout);        
+
+        std::vector<Property*> properties = settings[i]->getProperties();        
+        qmainsettings.beginGroup(tr(settings[i]->getIdentifier().c_str()));
+        QStringList keys = qmainsettings.allKeys();
+        for (size_t j=0; j<properties.size(); j++) {
+            Property* curProperty = properties[j];
+            QString name = QString::fromStdString(curProperty->getIdentifier());
+            if(keys.contains(name)){
+                QVariant qval = qmainsettings.value(name);
+                Variant val(std::string(qval.toString().toLocal8Bit().constData()));
+                curProperty->setVariant(val);
+            }
+
+            PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
+            vLayout->addWidget(propertyWidget);
+            curProperty->registerPropertyWidget(propertyWidget);
+        }
+        qmainsettings.endGroup();
+
+        tabWidget_->addTab(tab, tr(settings[i]->getIdentifier().c_str()) );
+
+        vLayout->addStretch(0);
     }
-    qmainsettings.endGroup();
-    vLayout_->addStretch(0);
+
 }
 
 //Save application settings to QSettings
 void SettingsWidget::saveSettings() {
-    Settings* mainsettings = InviwoApplication::getRef().getSettings();
-    std::vector<Property*> properties = mainsettings->getProperties();
+    const std::vector<Settings*> settings = InviwoApplication::getRef().getModuleSettings();
     QSettings qmainsettings("Inviwo", "Inviwo");
-    qmainsettings.beginGroup("mainsettings");
-    for (size_t i=0; i<properties.size(); i++) {
-        Property* curProperty = properties[i];
-        qmainsettings.setValue(QString::fromStdString(curProperty->getIdentifier()), QVariant(QString::fromStdString(curProperty->getVariant().getString())));
+    for (size_t i=0; i<settings.size(); i++) {
+        std::vector<Property*> properties = settings[i]->getProperties();
+        qmainsettings.beginGroup(tr(settings[i]->getIdentifier().c_str()));
+        for (size_t j=0; j<properties.size(); j++) {
+            Property* curProperty = properties[j];
+            qmainsettings.setValue(QString::fromStdString(curProperty->getIdentifier()), QVariant(QString::fromStdString(curProperty->getVariant().getString())));
+        }
+        qmainsettings.endGroup();
     }
-    qmainsettings.endGroup();
 }
 
 } // namespace

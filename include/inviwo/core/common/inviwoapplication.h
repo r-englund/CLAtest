@@ -23,7 +23,8 @@
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/core/util/fileobserver.h>
-#include <inviwo/core/util/settings.h>
+#include <inviwo/core/util/vectoroperations.h>
+#include <inviwo/core/util/settings/settings.h>
 #include <inviwo/core/util/singleton.h>
 #include <inviwo/core/util/timer.h>
 
@@ -63,10 +64,8 @@ public:
     void setProcessorNetwork(ProcessorNetwork* processorNetwork) { processorNetwork_ = processorNetwork; }
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
 
-    void setPropertyVisibilityMode(PropertyVisibilityMode);
-    PropertyVisibilityMode getPropertyVisibilityMode();
+    template<class T> T* getSettingsByType();
 
-    Settings* getSettings() { return settings_; }
     const CommandLineParser* getCommandLineParser() const { return commandLineParser_; } 
 
     virtual void registerFileObserver(FileObserver* fileObserver) { LogWarn("This Inviwo application does not support FileObservers."); }
@@ -92,8 +91,10 @@ public:
 
     virtual std::vector<ModuleCallbackAction*> getCallbackActions();
 
+    std::vector<Settings*> getModuleSettings();
+
 protected:
-    void printApplicationInfo();
+    void printApplicationInfo();    
 
 private:
     std::string displayName_;
@@ -106,12 +107,16 @@ private:
 
     CommandLineParser *commandLineParser_;
 
-    Settings* settings_;
-
     bool initialized_;
 
     std::vector<ModuleCallbackAction*> moudleCallbackActions_;
 };
+
+template<class T>
+T* InviwoApplication::getSettingsByType() {
+    T* settings = getTypeFromVector<T>(getModuleSettings());
+    return settings;
+}
 
 } // namespace
 

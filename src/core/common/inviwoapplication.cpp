@@ -69,16 +69,12 @@ InviwoApplication::~InviwoApplication() {
 }
 
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
-    settings_ = new Settings();
-    settings_->initialize();
-
     printApplicationInfo();
 
     registerModule(new InviwoCore());
     (*regModuleFunc)(this);
     for (size_t i=0; i<modules_.size(); i++){
-        modules_[i]->initialize();
-        modules_[i]->setGlobalSettings(settings_);
+        modules_[i]->initialize();        
     }
 
     // initialize singleton factories
@@ -129,20 +125,22 @@ void InviwoApplication::printApplicationInfo(){
         LogInfoCustom("InviwoInfo", "Config: " << config);
 }
 
-void InviwoApplication::setPropertyVisibilityMode(PropertyVisibilityMode viewMode){
-    dynamic_cast<OptionPropertyInt*>(getSettings()->getPropertyByIdentifier("viewMode"))->set(static_cast<int>(viewMode));
-}
-
-PropertyVisibilityMode InviwoApplication::getPropertyVisibilityMode(){
-    return static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>(getSettings()->getPropertyByIdentifier("viewMode"))->get());
-}
-
 void InviwoApplication::addCallbackAction(ModuleCallbackAction* callbackAction) {
     moudleCallbackActions_.push_back(callbackAction);
 }
 
 std::vector<ModuleCallbackAction*> InviwoApplication::getCallbackActions() {
     return moudleCallbackActions_;
+}
+
+std::vector<Settings*> InviwoApplication::getModuleSettings() {
+    std::vector<Settings*> allModuleSettings;
+    for (size_t i=0; i<modules_.size(); i++) {
+        const std::vector<Settings*> modSettings = modules_[i]->getSettings();
+        allModuleSettings.insert(allModuleSettings.end(), modSettings.begin(), modSettings.end());
+
+    }
+    return allModuleSettings;
 }
 
 } // namespace

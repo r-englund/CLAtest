@@ -20,7 +20,6 @@ namespace inviwo {
 InviwoModule::InviwoModule()
     : identifier_("undefined")
     , initialized_(false)
-    , applicationSettings_(NULL)
     , xmlDocuFileName_("undefined")
 {}
 
@@ -85,18 +84,13 @@ std::string InviwoModule::getPath(const std::string& suffix) const {
     return InviwoApplication::getRef().getPath(InviwoApplication::PATH_MODULES, suffix);
 }
 
-void InviwoModule::setGlobalSettings(Settings* settings){
-    if (settings){
-        applicationSettings_ = settings;
-        setupModuleSettings();
-    }
-}
-
 void InviwoModule::initialize() {
     for(size_t i=0; i<capabilities_.size(); i++){
         capabilities_[i]->initialize();
         capabilities_[i]->printInfo();
     }
+
+    setupModuleSettings();
 
     initialized_ = true;
 }
@@ -131,6 +125,7 @@ const std::vector< std::pair<std::string, ProcessorWidget*> >& InviwoModule::get
 const std::vector<Property*>& InviwoModule::getProperties() const {return properties_;}
 const std::vector<RepresentationConverter*>& InviwoModule::getRepresentationConverters() const {return representationConverters_;}
 const std::vector<Resource*>& InviwoModule::getResources() const {return resources_;}
+const std::vector<Settings*>& InviwoModule::getSettings() const {return moduleSettings_;}
 
 void InviwoModule::addCapabilities(Capabilities* info) {capabilities_.push_back(info);}
 void InviwoModule::addData(Data* data) {data_.push_back(data);}
@@ -153,5 +148,6 @@ void InviwoModule::addRepresentationConverter(RepresentationConverter* represent
 }
 void InviwoModule::addResource(Resource* resource) {resources_.push_back(resource);}
 
+void InviwoModule::addSettings(Settings* settings) {moduleSettings_.push_back(settings);}
 
 } // namespace

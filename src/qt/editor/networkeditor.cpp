@@ -23,6 +23,8 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/settings/linksettings.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/core/resources/resourcemanager.h>
 
@@ -364,7 +366,7 @@ void NetworkEditor::removeInspectorNetwork(Port* port) {
 
 void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
     //TODO: allow to define inspectors in module
-    if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("enablePortInspectors"))->get())){
+    if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enablePortInspectors"))->get())){
         if (port->getProcessor()->isInitialized()) {
             if (dynamic_cast<ImageOutport*>(port)) {
                 addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
@@ -497,7 +499,7 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
 std::vector<std::string> NetworkEditor::saveSnapshotsInExternalNetwork(std::string externalNetworkFile, std::string identifierPrefix) { 
     
     //turnoff sound
-    BoolProperty* soundProperty = dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("enableSound"));
+    BoolProperty* soundProperty = dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enableSound"));
     bool isSoundEnabled = soundProperty->get();
     if (isSoundEnabled) soundProperty->set(false);
 
@@ -1325,7 +1327,7 @@ std::string NetworkEditor::obtainUniqueProcessorID(std::string identifierPrefix)
 }
 
 bool NetworkEditor::isLinkDisplayEnabled() {
-    Property* prop = InviwoApplication::getPtr()->getSettings()->getPropertyByIdentifier("displayLinks");
+    Property* prop = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()->getPropertyByIdentifier("displayLinks");
     ivwAssert(prop!=0, "Display Links property not found in settings");
 
     BoolProperty* displayLinkProperty = dynamic_cast<BoolProperty*>( prop );

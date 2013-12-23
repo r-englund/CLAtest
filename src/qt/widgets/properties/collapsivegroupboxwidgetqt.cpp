@@ -14,6 +14,7 @@
 
 #include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 namespace inviwo {
 
@@ -173,7 +174,7 @@ void CollapsiveGroupBoxWidgetQt::updateVisibility(){
 
 void CollapsiveGroupBoxWidgetQt::generateContextMenu() {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettings()->getPropertyByIdentifier("viewMode")));
+    this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode")));
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu_ = new QMenu();
     QMenu* viewModeItem_ = new QMenu(tr("&View mode"));

@@ -26,7 +26,7 @@ PropertyOwner::~PropertyOwner() {
 }
 
 void PropertyOwner::addProperty(Property* property) {
-    // TODO: check if property with same name has been added before
+    ivwAssert(getPropertyByIdentifier(property->getIdentifier())==0, "Property already exist");
     properties_.push_back(property);
     property->setOwner(this);
 }

@@ -17,27 +17,33 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/properties/properties.h>
 #include <inviwo/core/properties/propertyowner.h>
 
 namespace inviwo {
 
-    class IVW_CORE_API Settings : public PropertyOwner {
+class IVW_CORE_API Settings : public PropertyOwner {
 
-    public:
-        Settings();
-        virtual ~Settings();
+public:
+    Settings(InviwoModule* module, std::string id);
+    virtual ~Settings();
 
-        virtual void initialize();
-        virtual void deinitialize();
+    virtual void initialize()=0;
+    virtual void deinitialize()=0;
 
-        virtual void invalidate();
-        virtual bool isValid() { return PropertyOwner::isValid(); }
-        virtual void setValid() { PropertyOwner::setValid(); }
+    virtual void invalidate();
+    virtual bool isValid() { return PropertyOwner::isValid(); }
+    virtual void setValid() { PropertyOwner::setValid(); }
 
-        virtual void serialize(IvwSerializer& s) const;
-        virtual void deserialize(IvwDeserializer& d);
-    };
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+
+    virtual std::string getIdentifier();
+protected:
+    std::string identifier_;
+    InviwoModule* module_;
+};
 
 } // namespace
 
