@@ -96,7 +96,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/processorlink.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/propertylink.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/links/linkevaluator.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/links/linkconditions.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/links/linkevaluator.h            
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/compositemetadata.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatadefinefunc.h
@@ -266,8 +267,9 @@ set(SOURCE_FILES
     io/serialization/ivwserializer.cpp
     io/textfilereader.cpp   
     links/processorlink.cpp	
-    links/propertylink.cpp	
-    links/linkevaluator.cpp 	
+    links/propertylink.cpp
+    links/linkconditions.cpp	
+    links/linkevaluator.cpp    
     metadata/compositemetadata.cpp    
     metadata/metadata.cpp
     metadata/metadatafactory.cpp

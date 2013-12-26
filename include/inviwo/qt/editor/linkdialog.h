@@ -27,6 +27,7 @@
 #include <QPushButton>
 
 #include <inviwo/core/links/processorlink.h>
+#include <inviwo/core/links/linkconditions.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>

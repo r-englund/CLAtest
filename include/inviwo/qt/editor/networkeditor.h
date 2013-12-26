@@ -107,6 +107,8 @@ protected:
 
     bool isLinkDisplayEnabled();
 
+    void autoLinkOnAddedProcessor(Processor*);
+
     void workerThreadQuit();
 
 private:

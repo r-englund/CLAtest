@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/core/links/linkevaluator.h>
+#include <inviwo/core/links/linkconditions.h>
 #include <inviwo/core/util/variant.h>
 
 namespace inviwo {
@@ -28,11 +29,12 @@ void LinkEvaluator::evaluate(Property* src, Property *dst) {
 }
 
 bool LinkEvaluator::canLink(Property* src, Property *dst) {
-    if (*src == *dst) return true;
+    if (SimpleLinkCondition::canLink(src,dst)) return true;
     return canConvert(src->getVariant(), dst->getVariant());
 }
 
 bool LinkEvaluator::canConvert(const Variant& src, const Variant& dst) {
+    //Replace with variant based condition
     if (src.getType() == Variant::VariantTypeInvalid || dst.getType() == Variant::VariantTypeInvalid) {
         //Error message
         return false;

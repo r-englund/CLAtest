@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -12,23 +12,26 @@
  *
  **********************************************************************/
 
-#ifndef IVW_LINKSETTINGS_H
-#define IVW_LINKSETTINGS_H
+#ifndef IVW_LINKCONDITIONS_H
+#define IVW_LINKCONDITIONS_H
 
-#include <inviwo/core/util/settings/settings.h>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/properties/property.h>
 
 namespace inviwo {
 
-class IVW_CORE_API LinkSettings : public Settings {
-
+class IVW_CORE_API SimpleLinkCondition {
 public:
-    LinkSettings(InviwoModule* module, std::string id="Link Settings");
-    virtual ~LinkSettings();
-    virtual void initialize();
-    virtual void deinitialize();
-    virtual bool isLinkable(Property* property);
+   SimpleLinkCondition() {}
+   static bool canLink(Property* src, Property *dst);
+};
+
+class IVW_CORE_API AutoLinkCondition {
+public:
+   AutoLinkCondition() {}
+   static bool canLink(Property* src, Property *dst);  
 };
 
 } // namespace
 
-#endif // IVW_LINKSETTINGS_H
+#endif // IVW_LINKCONDITIONS_H

@@ -1180,7 +1180,7 @@ void LinkDialog::clickedAutoLinkPushButton() {
         //processor of same type can be linked one to one
         if (srcProperties.size() == dstProperties.size()) {
             for (size_t i=0; i<srcProperties.size(); i++)
-                if (*srcProperties[i] == *dstProperties[i])
+                if (SimpleLinkCondition::canLink(srcProperties[i], dstProperties[i]))
                     linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[i], true);            
             return;
         }
@@ -1188,43 +1188,8 @@ void LinkDialog::clickedAutoLinkPushButton() {
 
     for (size_t i=0; i<srcProperties.size(); i++) {
         for (size_t j=0; j<dstProperties.size(); j++) {
-            //does properties have same class names
-            if (*srcProperties[i] == *dstProperties[j]) {                
-                bool canLink = false;
-                //does properties have same identifiers
-                if (srcProperties[i]->getIdentifier() == dstProperties[j]->getIdentifier()) {                    
-                    canLink = true;
-                }
-                else {
-
-                    //conversion to lower case
-                    std::string srcIdentifier = srcProperties[i]->getIdentifier();
-                    std::transform(srcIdentifier.begin(), srcIdentifier.end(), srcIdentifier.begin(), tolower);
-
-                    std::string dstIdentifier = dstProperties[j]->getIdentifier();
-                    std::transform(dstIdentifier.begin(), dstIdentifier.end(), dstIdentifier.begin(), tolower);
-
-                    std::string srcClassName = srcProperties[i]->getClassName();
-                    std::transform(srcClassName.begin(), srcClassName.end(), srcClassName.begin(), tolower);
-
-                    std::string dstClassName = dstProperties[j]->getClassName();
-                    std::transform(dstClassName.begin(), dstClassName.end(), dstClassName.begin(), tolower);
-
-                    //does class name occurs in identifiers
-                    if (srcIdentifier.find(dstClassName)!=std::string::npos &&
-                        dstIdentifier.find(srcClassName)!=std::string::npos)
-                        canLink = true;
-
-                    //does identifier occur in other identifier
-                    if (srcIdentifier.find(dstIdentifier)!=std::string::npos ||
-                        dstIdentifier.find(srcIdentifier)!=std::string::npos)
-                        canLink = true;
-                }   
-                    
-                if (canLink)
-                    linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[j], true);
-
-            }            
+            if (AutoLinkCondition::canLink(srcProperties[i], dstProperties[j]) )
+                linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[j], true);
         }
     }
 }

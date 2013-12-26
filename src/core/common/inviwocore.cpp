@@ -38,7 +38,7 @@
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
 //Properties
-#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/properties.h>
 
 
 namespace inviwo {
@@ -88,6 +88,12 @@ InviwoCore::InviwoCore() : InviwoModule() {
     // Register Settings
     addSettings(new SystemSettings(this));
     addSettings(new LinkSettings(this));
+
+    // Register Properties
+    // TODO: Register all properties
+    addProperty(new CameraProperty("camera", "Cameras"));
+    addProperty(new TransferFunctionProperty("transferfunction", "TransferFunctions"));
+    addProperty(new StringOptionProperty("stringoptions", "StringOptions"));
 }
 
 void InviwoCore::setupModuleSettings(){

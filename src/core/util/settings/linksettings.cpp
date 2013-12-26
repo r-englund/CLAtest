@@ -23,8 +23,47 @@ LinkSettings::~LinkSettings() {
 
 void LinkSettings::initialize() {
     addProperty(new BoolProperty("displayLinks", "Display links", true));
+    std::vector<Property*> registeredProperties = module_->getProperties();
+    for (size_t i=0; i<registeredProperties.size(); i++) {
+        std::string id = registeredProperties[i]->getIdentifier();
+        std::string displayName = registeredProperties[i]->getDisplayName();
+        addProperty(new BoolProperty("link"+id, displayName, false));
+    }
 }
 
 void LinkSettings::deinitialize()  {}
+
+bool LinkSettings::isLinkable(Property* property)  {
+    Property* prop = 0;
+    BoolProperty* linkOption = 0;
+
+    //camera
+    prop = getPropertyByIdentifier("linkcamera");
+    ivwAssert(prop!=0, "Camera Property link option not found in settings");
+    linkOption = dynamic_cast<BoolProperty*>( prop );
+    bool linkCameraProperty = linkOption->get();
+    if (linkCameraProperty && dynamic_cast<CameraProperty*>(property))
+        return true;    
+
+    //transfer functions
+    prop = getPropertyByIdentifier("linktransferfunction");
+    ivwAssert(prop!=0, "TransferFunction Property link option not found in settings");
+    linkOption = dynamic_cast<BoolProperty*>( prop );
+    bool linkTfProperty = linkOption->get();
+    if (linkTfProperty && dynamic_cast<TransferFunctionProperty*>(property))
+        return true;    
+
+    //options
+    prop = getPropertyByIdentifier("linkstringoptions");
+    ivwAssert(prop!=0, "Options Property link option not found in settings");
+    linkOption = dynamic_cast<BoolProperty*>( prop );
+    bool linkOptionProperty = linkOption->get();
+    if (linkOptionProperty && dynamic_cast<BaseOptionProperty*>(property))
+        return true;
+
+
+    return false;
+}
+
 
 } // namespace

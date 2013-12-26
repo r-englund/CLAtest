@@ -77,9 +77,10 @@ void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showPro
     // add the processor to the network    
     processor->setIdentifier(obtainUniqueProcessorID(processor->getClassName()));
     processor->initialize();
-    processorNetwork_->addProcessor(processor);
+    processorNetwork_->addProcessor(processor);    
     // add processor representations
     addProcessorRepresentations(processor, pos, showProcessor, showPropertyWidgets, showProcessorWidget);
+    autoLinkOnAddedProcessor(processor);
 }
 
 void NetworkEditor::removeProcessor(Processor* processor) {
@@ -126,6 +127,48 @@ void NetworkEditor::addLink(Processor* processor1, Processor* processor2) {
 void NetworkEditor::removeLink(Processor* processor1, Processor* processor2) {
     removeLinkGraphicsItem(getLinkGraphicsItem(processor1, processor2));
     processorNetwork_->removeLink(processor1, processor2);	
+}
+
+void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
+
+    std::vector<Processor*> existingProcessors = processorNetwork_->getProcessors();
+    std::vector<Property*> dstProperties = addedProcessor->getProperties();
+    LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
+
+    for (size_t i=0; i<dstProperties.size(); i++) {
+        Property* dstProperty = dstProperties[i];
+
+        for (size_t j=0; j<existingProcessors.size(); j++) {
+            if (existingProcessors[j]!=addedProcessor) {
+                std::vector<Property*> srcProperties = existingProcessors[j]->getProperties();
+
+                Property* srcProperty = 0;
+                for (size_t k=0; k<srcProperties.size(); k++) {
+                    if (AutoLinkCondition::canLink(srcProperties[k], dstProperty) &&
+                        linkSettings->isLinkable(srcProperties[k]) &&
+                        linkSettings->isLinkable(dstProperty)) 
+                    {
+                        srcProperty = srcProperties[k];
+                        break;
+                    }
+                }
+
+                if (srcProperty) {
+                    Processor* srcProcessor = dynamic_cast<Processor*>(srcProperty->getOwner());
+                    Processor* dstProcessor = dynamic_cast<Processor*>(dstProperty->getOwner());
+                    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(srcProcessor, dstProcessor);
+                    if (!processorLink) {
+                        addLink(srcProcessor, dstProcessor);
+                        processorLink = processorNetwork_->getProcessorLink(srcProcessor, dstProcessor);
+                    }
+                    processorLink->addPropertyLinks(srcProperty, dstProperty);
+                    processorLink->addPropertyLinks(dstProperty, srcProperty);
+                    
+                }                    
+            }
+        } 
+    }
+
 }
 
 
