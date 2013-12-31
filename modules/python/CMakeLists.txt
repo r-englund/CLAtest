@@ -17,6 +17,7 @@ set(HEADER_FILES
 #    ${IVW_MODULE_DIR}/python/defaultinterface/pyvolume.h
     ${IVW_MODULE_DIR}/python/pythonmodule.h
     ${IVW_MODULE_DIR}/python/pythonscript.h
+    ${IVW_MODULE_DIR}/python/pythonscriptrecorderutil.h
     ${IVW_MODULE_DIR}/python/pythonmoduledefine.h
     ${IVW_MODULE_DIR}/python/pythonexecutionoutputobeserver.h
 )
@@ -37,6 +38,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.cpp
 #    ${IVW_MODULE_DIR}/python/defaultinterface/pyvolume.cpp
     ${IVW_MODULE_DIR}/python/pythonscript.cpp
+    ${IVW_MODULE_DIR}/python/pythonscriptrecorderutil.cpp
     ${IVW_MODULE_DIR}/python/pythonmodule.cpp
     ${IVW_MODULE_DIR}/python/pythonexecutionoutputobeserver.cpp
 )

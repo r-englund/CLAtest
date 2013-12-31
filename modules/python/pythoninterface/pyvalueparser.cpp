@@ -41,9 +41,9 @@ namespace inviwo{
     PARSEVEC3(uvec3,unsigned int,parseUVec3,"iii");
     PARSEVEC4(uvec4,unsigned int,parseUVec4,"iiii");
 
-    PARSEVEC2(vec2,int,parseVec2,"ff");
-    PARSEVEC3(vec3,int,parseVec3,"fff");
-    PARSEVEC4(vec4,int,parseVec4,"ffff");
+    PARSEVEC2(vec2,float,parseVec2,"ff");
+    PARSEVEC3(vec3,float,parseVec3,"fff");
+    PARSEVEC4(vec4,float,parseVec4,"ffff");
 
     bool        parseBool(PyObject* args){return PyObject_IsTrue(args) != 0;};
     std::string parseStr(PyObject* args){return std::string(PyString_AsString(args));};

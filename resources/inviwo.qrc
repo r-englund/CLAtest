@@ -14,6 +14,8 @@
     <file>icons/network.png</file>
     <file>icons/ok.png</file>
     <file>icons/open.png</file>
+    <file>icons/player_record.png</file>
+    <file>icons/player_stop.png</file>
     <file>icons/processor_broken.png</file>
     <file>icons/processor_experimental.png</file>
     <file>icons/processor_stable.png</file>

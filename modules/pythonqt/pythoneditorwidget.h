@@ -23,10 +23,11 @@
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <QTextEdit>
 #include <QColor>
+#include <QToolButton>
 
 namespace inviwo{
     
-class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget , public FileObserver , public PythonExecutionOutputObeserver {
+class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget , public FileObserver , public PythonExecutionOutputObeserver, public VoidObserver {
     Q_OBJECT
 
 public:
@@ -38,6 +39,8 @@ public:
     void loadFile(std::string fileName,bool askForSave = true);
 
 	virtual void onPyhonExecutionOutput(std::string msg,OutputType outputType);
+
+    virtual void notify();
 
 private:
     void buildWidget();
@@ -54,6 +57,9 @@ private:
     bool unsavedChanges_;
     void readFile();
 
+    QToolButton* startRecordScriptButton_;
+    QToolButton* endRecordScriptButton_;
+
 public slots:
     void save();
     void saveAs();
@@ -62,6 +68,8 @@ public slots:
     void show();
     void setDefaultText();
     void clearOutput();
+    void startRecordingScript();
+    void endRecordingScript();
     void onTextChange();
 };
 

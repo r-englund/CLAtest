@@ -164,6 +164,8 @@ inline void ProcessorNetwork::modified() {
 
 void ProcessorNetwork::notifyInvalidationBegin(Processor* p){
     if(!isInvalidating()){
+        //FIXME: Observers need to be notified here. Any other alternatives?
+        if (!modified_) modified();
         invalidationInitiator_ = p;
         invalidating_ = true;
     }

@@ -21,6 +21,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QButtonGroup>
 #include <QToolButton>
 #include <QSpacerItem>
 #include <QHBoxLayout>
@@ -29,7 +30,8 @@
 
 namespace inviwo{
     PythonEditorWidget::PythonEditorWidget(QWidget* parent): 
-            InviwoDockWidget(tr("Python Editor"), parent), 
+            InviwoDockWidget(tr("Python Editor"), parent),
+            VoidObserver(),
             script_(),
             unsavedChanges_(false),
         infoTextColor_(153,153,153), errorTextColor_(255,107,107) {
@@ -40,7 +42,27 @@ namespace inviwo{
         buildWidget();
         resize(500,700);
 
-        setVisible(false);
+        setVisible(false);  
+
+        ProcessorNetwork* processorNetwork = InviwoApplication::getPtr()->getProcessorNetwork();
+        addObservation(processorNetwork);
+        processorNetwork->addObserver(this);
+    }   
+
+    void PythonEditorWidget::notify() {
+        if (script_.getScriptRecorder()->isRecording()) {
+            script_.getScriptRecorder()->recordNetworkChanges();
+
+            std::string currentScriptInEditor = pythonCode_->toPlainText().toLocal8Bit().constData();
+
+            if (script_.getSource()!=currentScriptInEditor) {
+                //set new script source from recorder
+                clearOutput();
+                pythonCode_->setText(tr(script_.getSource().c_str()));
+                pythonCode_->setText(tr(script_.getSource().c_str()));
+                unsavedChanges_ = true;
+            }
+        }
     }
 
     void PythonEditorWidget::buildWidget(){
@@ -58,6 +80,8 @@ namespace inviwo{
         QToolButton* saveButton = new QToolButton(content);
         QToolButton* saveAsButton = new QToolButton(content);
         QPushButton* clearOutputButton = new QPushButton(content);
+        startRecordScriptButton_ = new QToolButton(content);
+        endRecordScriptButton_ = new QToolButton(content);
 
         runButton->setIcon(QIcon(":/icons/python.png"));
         runButton->setToolTip("Compile and run");
@@ -74,21 +98,39 @@ namespace inviwo{
         saveAsButton->setIcon(QIcon(":/icons/saveas.png"));
         saveAsButton->setToolTip("Save as");
         
-        clearOutputButton->setText("Clear Output");        
+        clearOutputButton->setText("Clear Output");   
+
+        startRecordScriptButton_->setIcon(QIcon(":/icons/player_record.png"));
+        startRecordScriptButton_->setToolTip("Start Recording");
+
+        endRecordScriptButton_->setIcon(QIcon(":/icons/player_stop.png"));
+        endRecordScriptButton_->setToolTip("Stop Recording");
+        endRecordScriptButton_->setDisabled(true);
         
-        QFrame* line = new QFrame(content);
-        line->setFrameShape(QFrame::VLine);
-        line->setFrameShadow(QFrame::Sunken);
+        QFrame* line1 = new QFrame(content);
+        line1->setFrameShape(QFrame::VLine);
+        line1->setFrameShadow(QFrame::Sunken);
+
+        QFrame* line2 = new QFrame(content);
+        line2->setFrameShape(QFrame::VLine);
+        line2->setFrameShadow(QFrame::Sunken);
+
+        QFrame* line3 = new QFrame(content);
+        line3->setFrameShape(QFrame::VLine);
+        line3->setFrameShadow(QFrame::Sunken);
 
         horizontalLayout->addWidget(runButton);
-        horizontalLayout->addWidget(line);
+        horizontalLayout->addWidget(line1);
         horizontalLayout->addWidget(newButton);
         horizontalLayout->addWidget(openButton);
         horizontalLayout->addWidget(saveButton);
         horizontalLayout->addWidget(saveAsButton);
-        horizontalLayout->addWidget(line);
+        horizontalLayout->addWidget(line2);
         horizontalLayout->addWidget(clearOutputButton);
-
+        horizontalLayout->addWidget(line3);
+        horizontalLayout->addWidget(startRecordScriptButton_);
+        horizontalLayout->addWidget(endRecordScriptButton_);
+        
         QSpacerItem* horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
         horizontalLayout->addItem(horizontalSpacer);
   
@@ -124,6 +166,8 @@ namespace inviwo{
         connect(saveButton,SIGNAL(clicked()),this,SLOT(save()));
         connect(saveAsButton,SIGNAL(clicked()),this,SLOT(saveAs()));
         connect(clearOutputButton,SIGNAL(clicked()),this,SLOT(clearOutput()));
+        connect(startRecordScriptButton_,SIGNAL(clicked()),this,SLOT(startRecordingScript()));
+        connect(endRecordScriptButton_,SIGNAL(clicked()),this,SLOT(endRecordingScript()));
         
     }
 
@@ -281,6 +325,18 @@ namespace inviwo{
         unsavedChanges_ = true;
         const std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
         script_.setSource(source);
+    }
+
+    void PythonEditorWidget::startRecordingScript(){
+        script_.getScriptRecorder()->startRecording();
+        startRecordScriptButton_->setDisabled(true);
+        endRecordScriptButton_->setDisabled(false);
+    }
+
+    void PythonEditorWidget::endRecordingScript(){
+        script_.getScriptRecorder()->endRecording();
+        startRecordScriptButton_->setDisabled(false);
+        endRecordScriptButton_->setDisabled(true);
     }
 
 

@@ -32,6 +32,8 @@
 
 #include <modules/python/pythonmoduledefine.h>
 
+#include <modules/python/pythonscriptrecorderutil.h>
+
 namespace inviwo {
 
 /**
@@ -39,7 +41,7 @@ namespace inviwo {
  * Used by PythonScriptEditor and PythonModule
  * 
  */
-class IVW_MODULE_PYTHON_API PythonScript {
+    class IVW_MODULE_PYTHON_API PythonScript {
 
 public:
     PythonScript();
@@ -71,6 +73,8 @@ public:
      */
     bool run();
 
+    PythonScriptRecorderUtil* getScriptRecorder() {return scriptRecorder_;}
+
 private:
     bool checkCompileError();
     bool checkRuntimeError();
@@ -91,6 +95,7 @@ private:
     std::string     source_;
     PyObject*       byteCode_;
     bool            isCompileNeeded_;
+    PythonScriptRecorderUtil* scriptRecorder_;
 };
 
 }

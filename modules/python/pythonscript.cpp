@@ -28,7 +28,10 @@ PythonScript::PythonScript()
     : source_("")
     , byteCode_(0)
     , isCompileNeeded_(false)
-{}
+    , scriptRecorder_(0)
+{
+    scriptRecorder_ = new PythonScriptRecorderUtil(this);
+}
 
 PythonScript::~PythonScript() {
     Py_XDECREF(byteCode_);
