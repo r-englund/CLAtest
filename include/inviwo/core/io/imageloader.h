@@ -92,49 +92,38 @@ private:
 
     /**
     * Create bitmap from image.
-    * @param inputImage is the image that is to be converted.
-    * @return the converted image.
     */
     static FIBITMAP* createBitmapFromData(const ImageRAM* inputImage);
 
     /**
     * Converts image to byte array.
-    * @param inputImage is the image that is to be converted.
-    * @param dim is the dimensions of the image.
-    * @param bitsPerPixel is the bits per pixel.
-    * @return the converted image.
     */
     static FIBITMAP* convertToByte(const ImageRAM* inputImage, uvec2 dim, size_t bitsPerPixel);
 
-template<typename T>
-    static FIBITMAP* handleBitmapCreations(const T* data, uvec2 dim, size_t bitsPerPixel);
+    static FIBITMAP* allocateBitmap(int width, int height, size_t bitsPerPixel, int channels);
 
-template<typename T>
-    static FIBITMAP* createBitmapFromData(const T* data, uvec2 dim, size_t bitsPerPixel);
+    template<typename T>
+    static FIBITMAP* handleBitmapCreations(const T* data, uvec2 dim, size_t bitsPerPixel, int channels);
+
+    template<typename T>
+    static FIBITMAP* createBitmapFromData(const T* data, uvec2 dim, size_t bitsPerPixel, int channels);
 
     /**
     * Switch red and blue channels in the bitmap.
     */
-    static void switchChannels(FIBITMAP* bitmap, uvec2 dim);
+    static void switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels);
 
     /**
     * Converts an image from freeimage format to regular int.
-    * @param bitmap is the bitmap to convert
-    * @return the converted bitmap.
     **/
-template<typename T>
-    static T* fiBitmapToDataArray(FIBITMAP* bitmap);
+    template<typename T>
+    static T* fiBitmapToDataArray(FIBITMAP* bitmap, size_t bitsPerPixel, int channels);
 
     /** 
      * \brief fits the bitmap into data array which is readable by representations such as ImageRAM that uses FILTER_BILINEAR
-     * 
-     * @param FIBITMAP * bitmap is the bitmap to convert
-     * @param int dst_width destination width
-     * @param int dst_height destination height
-     * @return T* converted bitmap in required format
      */
     template<typename T>
-    static T* fiBitmapToDataArrayAndRescale(FIBITMAP* bitmap, int dst_width, int dst_height);
+    static T* fiBitmapToDataArrayAndRescale(FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels);
 
 	static bool loader_initialized;
 };

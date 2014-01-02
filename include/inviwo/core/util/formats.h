@@ -208,6 +208,7 @@ public:
 
     static size_t bitsAllocated() { return 0; }
     static size_t bitsStored() { return 0; }
+    static int components() { return 0; }
     static std::string str() { return "Error, type specialization not implemented"; }
     static DataFormatId id() { return NOT_SPECIALIZED; }
 
@@ -263,6 +264,7 @@ public:
 
     static size_t bitsAllocated() { return B; }
     static size_t bitsStored() { return B; }
+    static int components() { return 1; }
 
     static T max() { return std::numeric_limits<T>::max(); }
     static T min() { return std::numeric_limits<T>::min(); }
@@ -654,6 +656,7 @@ template<> inline std::string DataVec2UINT64::str() { return "Vec2UINT64"; }
 
 // Type Conversion Specializations
 #define DatatoVec2t(F, G) \
+    template<> inline int F::components() { return 2; } \
     template<> inline void F::floatToValue(float val, void* loc) const { *static_cast<F::type*>(loc) = singleToVec2<G::type>(static_cast<G::type>(val)); } \
     template<> inline void F::vec2ToValue(vec2 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y)); } \
     template<> inline void F::vec3ToValue(vec3 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y)); } \
@@ -761,6 +764,7 @@ template<> inline std::string DataVec3UINT64::str() { return "Vec3UINT64"; }
 
 // Type Conversion Specializations
 #define DataToVec3t(F, G) \
+    template<> inline int F::components() { return 3; } \
     template<> inline void F::floatToValue(float val, void* loc) const { *static_cast<F::type*>(loc) = singleToVec3<G::type>(static_cast<G::type>(val)); } \
     template<> inline void F::vec2ToValue(vec2 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), 0.f); } \
     template<> inline void F::vec3ToValue(vec3 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), static_cast<G::type>(val.z)); } \
@@ -868,6 +872,7 @@ template<> inline std::string DataVec4UINT64::str() { return "Vec4UINT64"; }
 
 // Type Conversion Specializations
 #define DataToVec4t(F, G) \
+    template<> inline int F::components() { return 4; } \
     template<> inline void F::floatToValue(float val, void* loc) const { *static_cast<F::type*>(loc) = singleToVec4<G::type>(static_cast<G::type>(val)); } \
     template<> inline void F::vec2ToValue(vec2 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), 0.f, 1.f); } \
     template<> inline void F::vec3ToValue(vec3 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), static_cast<G::type>(val.z), 1.f); } \
