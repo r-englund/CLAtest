@@ -17,48 +17,48 @@
 
 namespace inviwo {
 
-    ImageDisk::ImageDisk()
-        : ImageRepresentation(uvec2(256,256), COLOR_DEPTH_PICKING, DataVec4UINT8::get()), DiskRepresentation(){}
+ImageDisk::ImageDisk()
+    : ImageRepresentation(uvec2(0), COLOR_DEPTH_PICKING, DataVec4UINT8::get()), DiskRepresentation(){}
 
-	ImageDisk::ImageDisk(std::string url)
-        : ImageRepresentation(uvec2(256,256), COLOR_DEPTH_PICKING, DataVec4UINT8::get()), DiskRepresentation(url){
-        initialize();
-	}
+ImageDisk::ImageDisk(std::string url)
+    : ImageRepresentation(uvec2(0), COLOR_DEPTH_PICKING, DataVec4UINT8::get()), DiskRepresentation(url){
+    initialize();
+}
 
-    ImageDisk::~ImageDisk() {
-    }
+ImageDisk::~ImageDisk() {
+}
 
-    void ImageDisk::initialize(){
-        if (hasSourceFile()){
-            dimensions_ = ImageLoader::imageDimensions(getSourceFile());
-        }
-    }
+void ImageDisk::initialize(){
+}
 
-    void* ImageDisk::loadFileData() const {
-        if (hasSourceFile())            
+void* ImageDisk::loadFileData() const {
+    if (hasSourceFile())
+        if(dimensions_.x > 0 && dimensions_.y > 0)
             return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dimensions_.x, dimensions_.y);
+        else
+            return ImageLoader::loadImageToData(getSourceFile());
 
-        return NULL;
-    }
+    return NULL;
+}
 
-    void* ImageDisk::loadFileDataAndRescale(uvec2 dst_dimesion) const {
-        if (hasSourceFile())
-            return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dst_dimesion.x, dst_dimesion.y);
+void* ImageDisk::loadFileDataAndRescale(uvec2 dst_dimesion) const {
+    if (hasSourceFile())
+        return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dst_dimesion.x, dst_dimesion.y);
 
-        return NULL;
-    }
+    return NULL;
+}
 
-    void ImageDisk::deinitialize() {}
+void ImageDisk::deinitialize() {}
 
-    void ImageDisk::resize(uvec2 dimensions){        
-        dimensions_ = dimensions;
-    } 
+void ImageDisk::resize(uvec2 dimensions){        
+    dimensions_ = dimensions;
+} 
 
-    ImageDisk* ImageDisk::clone() const {
-        //TODO: move to copyconstructor
-        ImageDisk* imageDiskClone = new ImageDisk(getSourceFile());
-        imageDiskClone->resize(dimensions_);
-        return imageDiskClone;
-    }
+ImageDisk* ImageDisk::clone() const {
+    //TODO: move to copyconstructor
+    ImageDisk* imageDiskClone = new ImageDisk(getSourceFile());
+    imageDiskClone->resize(dimensions_);
+    return imageDiskClone;
+}
 
 } // namespace

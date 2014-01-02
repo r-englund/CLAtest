@@ -91,7 +91,6 @@ void ImageRAM::allocateDepthData(){
 }
 
 ImageRAM* createImageRAM(const uvec2& dimension, ImageType type, const DataFormatBase* format) {
-    // TODO: Add more formats
     switch (format->getId())
     {
     case NOT_SPECIALIZED:
