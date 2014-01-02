@@ -17,6 +17,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/textureobserver.h>
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
 #include <inviwo/core/datastructures/buffer/bufferram.h>
 
@@ -61,7 +62,6 @@ protected:
 private:
     const Buffer* attrib_;
     GLuint id_;
-    GLenum state_;
     GLenum usageGL_;
     GLFormats::GLFormat glFormat_;
     void (ElementBufferGL::*locationPointerFunc_)() const;

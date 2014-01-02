@@ -32,7 +32,7 @@ GLenum BufferGL::getFormatType() const {
 }
 
 GLuint BufferGL::getId() const {
-    return id_;
+    return bufferId_->getId();
 }
 
 void BufferGL::enable() const {
@@ -46,7 +46,7 @@ void BufferGL::disable() const {
 }
 
 void BufferGL::bind() const {
-    glBindBuffer(target_, id_);
+    glBindBuffer(target_, bufferId_->getId());
 }
 
 void BufferGL::specifyLocation() const {
@@ -104,8 +104,7 @@ void BufferGL::initialize( const void* data, GLsizeiptr sizeInBytes, GLenum targ
     specifyLocation();
 }
 
-void BufferGL::upload( const void* data, GLsizeiptr sizeInBytes )
-{
+void BufferGL::upload( const void* data, GLsizeiptr sizeInBytes ) {
     bind();
     glBufferSubData(target_, 0, sizeInBytes, data);
 }
@@ -134,11 +133,15 @@ BufferGL* BufferGL::clone() const{
 
 void BufferGL::initialize(){
     //Generate a new buffer
-    glGenBuffers(1, &id_);
+    GLuint id;
+    glGenBuffers(1, &id);
+    bufferId_ = new BufferGLObjectId(id);
 }
 
-void BufferGL::deinitialize(){
-    glDeleteBuffers(1, &id_);
+void BufferGL::deinitialize() {
+    if(bufferId_->decreaseRefCount() <= 0) {
+        delete bufferId_; bufferId_ = NULL;
+    }
 }
 
 void BufferGL::download( void* data ) const

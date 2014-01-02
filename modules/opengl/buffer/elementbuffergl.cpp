@@ -64,23 +64,18 @@ void ElementBufferGL::upload(const void* data, size_t size)
     {
     case COLOR_ATTRIB:
         locationPointerFunc_ = &ElementBufferGL::colorPointer;
-        state_ = GL_COLOR_ARRAY;
         break;
     case NORMAL_ATTRIB:
         locationPointerFunc_ = &ElementBufferGL::normalPointer;
-        state_ = GL_NORMAL_ARRAY;
         break;
     case TEXCOORD_ATTRIB:
         locationPointerFunc_ = &ElementBufferGL::texCoordPointer;
-        state_ = GL_TEXTURE_COORD_ARRAY;
         break;
     case POSITION_ATTRIB:
         locationPointerFunc_ = &ElementBufferGL::vertexPointer;
-        state_ = GL_VERTEX_ARRAY;
         break;
     default:
         locationPointerFunc_ = &ElementBufferGL::emptyFunc;
-        state_ = GL_VERTEX_ARRAY;
         break;
     }
 
@@ -94,14 +89,14 @@ void ElementBufferGL::upload(const void* data, size_t size)
         usageGL_ = GL_STATIC_DRAW;
         break;
     }
-
-    reupload(data, size);
+    bind();
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usageGL_);
+    specifyLocation();
 }
 
 void ElementBufferGL::reupload(const void* data, size_t size){
     bind();
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usageGL_);
-    specifyLocation();
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, size, data);
 }
 
 

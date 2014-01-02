@@ -18,7 +18,7 @@
 namespace inviwo {
 
 BufferCLGL::BufferCLGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, const BufferGL* data, cl_mem_flags readWriteFlag)
-    : BufferRepresentation(size, format, type, usage), bufferGL_(data), readWriteFlag_(readWriteFlag)
+    : BufferRepresentation(size, format, type, usage), bufferGL_(data), readWriteFlag_(readWriteFlag), bufferGLObjectId_(NULL)
 {
     if(data) {
         initialize(data);
@@ -37,6 +37,8 @@ BufferCLGL::~BufferCLGL() {
 
 void BufferCLGL::initialize(const BufferGL* data) {
     ivwAssert(data != 0, "Cannot initialize with null OpenGL buffer");
+    bufferGLObjectId_ = const_cast<BufferGL*>(data)->getBufferId();
+    bufferGLObjectId_->increaseRefCount();
     buffer_ = new cl::BufferGL(OpenCL::instance()->getContext(), readWriteFlag_, data->getId());
     BufferCLGL::initialize();
 }
@@ -48,6 +50,9 @@ BufferCLGL* BufferCLGL::clone() const {
 void BufferCLGL::deinitialize() {
     delete buffer_;
     buffer_ = 0; 
+    if(bufferGLObjectId_->decreaseRefCount() <= 0) {
+        delete bufferGLObjectId_; bufferGLObjectId_ = NULL;
+    }
 }
 
 } // namespace

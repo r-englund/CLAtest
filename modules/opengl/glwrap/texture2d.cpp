@@ -17,13 +17,12 @@
 namespace inviwo {
 
 Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering)
-    : Observable<TextureObserver>()
+    : Observable<TextureObserver>(), ReferenceCounter()
     , dimensions_(dimensions)
     , format_(glFormat.format)
     , internalformat_(glFormat.internalFormat)
     , dataType_(glFormat.type)
-    , filtering_(filtering)
-    , referenceCount_(1) {
+    , filtering_(filtering) {
         
     glGenTextures(1, &id_);
     numChannels_ = glFormat.channels;
@@ -34,13 +33,12 @@ Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filt
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
-    : Observable<TextureObserver>()
+    : Observable<TextureObserver>(), ReferenceCounter()
     , dimensions_(dimensions)
     , format_(format)
     , internalformat_(internalformat)
     , dataType_(dataType)
-    , filtering_(filtering)
-    , referenceCount_(1) {
+    , filtering_(filtering) {
         
     glGenTextures(1, &id_);
     setNChannels();
@@ -51,15 +49,14 @@ Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenu
 }
 
 Texture2D::Texture2D( const Texture2D& other )
-    : Observable<TextureObserver>()
+    : Observable<TextureObserver>(), ReferenceCounter()
     , dimensions_(other.dimensions_)
     , format_(other.format_)
     , internalformat_(other.internalformat_)
     , dataType_(other.dataType_)
     , filtering_(other.filtering_)
     , byteSize_(other.byteSize_)
-    , numChannels_(other.numChannels_)
-    , referenceCount_(1) {
+    , numChannels_(other.numChannels_) {
         
     glGenTextures(1, &id_);
     glGenBuffers(1, &pboBack_);
@@ -95,7 +92,6 @@ Texture2D& Texture2D::operator=( const Texture2D& other ) {
 Texture2D::~Texture2D() {
     glDeleteTextures(1, &id_);
     glDeleteBuffers(1, &pboBack_);
-    ivwAssert(getRefCount() == 0, "Deleting texture with reference count != 0");
     LGL_ERROR;
 }
 

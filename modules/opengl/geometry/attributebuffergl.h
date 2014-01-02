@@ -17,6 +17,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/buffer/bufferglobjectid.h>
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
 
@@ -35,6 +36,9 @@ public:
     const Buffer* getAttribute() const;
     GLenum getFormatType() const;
     GLuint getId() const;
+    BufferGLObjectId* getBufferId() { return bufferId_; }
+    const BufferGLObjectId* getBufferId() const { return bufferId_; }
+
     GLFormats::GLFormat getGLFormat() const { return glFormat_; }
 
     void enable() const;
@@ -61,7 +65,7 @@ protected:
     void emptyFunc() const;
 
 private:
-    GLuint id_;
+    BufferGLObjectId* bufferId_;
     GLenum state_;
     GLenum usageGL_;
     GLenum target_;
@@ -69,7 +73,6 @@ private:
     void (BufferGL::*locationPointerFunc_)() const;
 
 };
-
 
 
 } // namespace

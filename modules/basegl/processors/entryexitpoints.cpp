@@ -27,11 +27,11 @@ EntryExitPoints::EntryExitPoints()
     : ProcessorGL(),
     geometryPort_("geometry"),
 
-    //entryPort_("entry-points"),
-    //exitPort_("exit-points"),
+    entryPort_("entry-points"),
+    exitPort_("exit-points"),
     // Temporally disabled /Peter
-    entryPort_("entry-points", COLOR_DEPTH, DataVec4FLOAT32::get()), // Using 8-bits will create artifacts when entering the volume
-    exitPort_("exit-points", COLOR_DEPTH, DataVec4FLOAT32::get()),
+    //entryPort_("entry-points", COLOR_DEPTH, DataVec4FLOAT32::get()), // Using 8-bits will create artifacts when entering the volume
+    //exitPort_("exit-points", COLOR_DEPTH, DataVec4FLOAT32::get()),
     camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
 	capNearClipping_("capNearClipping", "Cap near plane clipping", true),
     tmpEntryPoints_(NULL)
@@ -52,9 +52,6 @@ void EntryExitPoints::initialize() {
     ProcessorGL::initialize();
 	capNearClippingPrg_ = new Shader("capnearclipping.frag");
 
-    tmpEntryPoints_ = new Image(entryPort_.getDimensions(),
-        entryPort_.getData()->getImageType(),
-        entryPort_.getData()->getDataFormat());
 }
 
 void EntryExitPoints::deinitialize() {
@@ -90,13 +87,12 @@ void EntryExitPoints::process() {
 
     ImageGL* tmpEntryPointsGL;
 	if (capNearClipping_.get()) {
-        if (tmpEntryPoints_->getDimension() != entryPort_.getDimensions() || 
-            tmpEntryPoints_->getImageType() != entryPort_.getData()->getImageType()  || 
+        if (tmpEntryPoints_ == NULL || 
+            tmpEntryPoints_->getDimension() != entryPort_.getDimensions() || 
+            tmpEntryPoints_->getImageType() != entryPort_.getData()->getImageType() || 
             tmpEntryPoints_->getDataFormat() != entryPort_.getData()->getDataFormat()) {
-                delete tmpEntryPoints_;
-                tmpEntryPoints_ = new Image(entryPort_.getDimensions(),
-                    entryPort_.getData()->getImageType(),
-                    entryPort_.getData()->getDataFormat());
+            delete tmpEntryPoints_;
+            tmpEntryPoints_ = new Image(entryPort_.getDimensions(), entryPort_.getData()->getImageType(), entryPort_.getData()->getDataFormat());
         }
 
 		tmpEntryPointsGL = tmpEntryPoints_->getEditableRepresentation<ImageGL>();

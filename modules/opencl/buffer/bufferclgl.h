@@ -52,6 +52,7 @@ public:
 protected:
     cl::BufferGL* buffer_;
     const BufferGL* bufferGL_;
+    BufferGLObjectId* bufferGLObjectId_;
     cl_mem_flags readWriteFlag_;
 };
 
