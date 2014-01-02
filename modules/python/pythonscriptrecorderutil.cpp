@@ -80,26 +80,57 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
     if (dynamic_cast<BoolProperty*>(property)) {
         BoolProperty* prop = dynamic_cast<BoolProperty*>(property);
         ss << prop->get();
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<ButtonProperty*>(property)) {
         commandOpen = "inviwo.clickButton(";
     }
-    else if (dynamic_cast<CompositeProperty*>(property)) {
-        commandOpen =+ "# NOT IMPLEMENTED # " + commandOpen ;
+    else if (dynamic_cast<CompositeProperty*>(property)) {        
+        if (dynamic_cast<CameraProperty*>(property)) {
+            CameraProperty* prop = dynamic_cast<CameraProperty*>(property);
+
+            ss << "(";
+            vec3 from = prop->getLookFrom();
+            ss << "(";
+            ss << from.x << ",";
+            ss << from.y << ",";
+            ss << from.z ;
+            ss << "),";
+            
+            vec3 to = prop->getLookTo();
+            ss << "(";
+            ss << to.x << ",";
+            ss << to.y << ",";
+            ss << to.z ;
+            ss << "),";
+            
+            vec3 up = prop->getLookUp();
+            ss << "(";
+            ss << up.x << ",";
+            ss << up.y << ",";
+            ss << up.z ;
+            ss << ")";           
+
+            ss << ")";
+
+            propertyValue = ss.str();
+
+        }
+        else
+            commandOpen =+ "# NOT IMPLEMENTED # " + commandOpen ;
     }
     else if (dynamic_cast<DirectoryProperty*>(property)) {
         DirectoryProperty* prop = dynamic_cast<DirectoryProperty*>(property);
         ss << "\"";
         ss << prop->get();
         ss << "\"";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }    
     else if (dynamic_cast<FileProperty*>(property)) {
         FileProperty* prop = dynamic_cast<FileProperty*>(property);
         ss << "\"";
         ss << prop->get();
-        propertyValue += ss.str();
+        propertyValue = ss.str();
         ss << "\"";
     }
     else if (dynamic_cast<FloatMat2Property*>(property)) {
@@ -114,7 +145,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << m[1][0] << " ";
         ss << m[1][1] ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<FloatMat3Property*>(property)) {
         FloatMat3Property* prop = dynamic_cast<FloatMat3Property*>(property);
@@ -136,7 +167,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << m[2][1] << " ";
         ss << m[2][2] ;
         ss << ")";   
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<FloatMat4Property*>(property)) {
         FloatMat4Property* prop = dynamic_cast<FloatMat4Property*>(property);
@@ -168,12 +199,12 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << m[3][2] << " ";
         ss << m[3][3] ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<FloatProperty*>(property)) {
         FloatProperty* prop = dynamic_cast<FloatProperty*>(property);
         ss << prop->get();
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<FloatMinMaxProperty*>(property)) {
         FloatMinMaxProperty* prop = dynamic_cast<FloatMinMaxProperty*>(property);
@@ -182,7 +213,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << value.x << ",";
         ss << value.y ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<FloatVec2Property*>(property)) {
         FloatVec2Property* prop = dynamic_cast<FloatVec2Property*>(property);
@@ -191,7 +222,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << value.x << ",";
         ss << value.y ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<FloatVec3Property*>(property)) {
         FloatVec3Property* prop = dynamic_cast<FloatVec3Property*>(property);
@@ -201,7 +232,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << value.y << ",";
         ss << value.z ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<FloatVec4Property*>(property)) {
         FloatVec4Property* prop = dynamic_cast<FloatVec4Property*>(property);
@@ -212,7 +243,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << value.z << ",";
         ss << value.w ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<IntMinMaxProperty*>(property)) {
         IntMinMaxProperty* prop = dynamic_cast<IntMinMaxProperty*>(property);
@@ -221,7 +252,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << value.x << ",";
         ss << value.y ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<IntVec2Property*>(property)) {
         IntVec2Property* prop = dynamic_cast<IntVec2Property*>(property);
@@ -230,7 +261,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << value.x << ",";
         ss << value.y ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<IntVec3Property*>(property)) {
         IntVec3Property* prop = dynamic_cast<IntVec3Property*>(property);
@@ -240,7 +271,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << value.y << ",";
         ss << value.z ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<IntVec4Property*>(property)) {
         IntVec4Property* prop = dynamic_cast<IntVec4Property*>(property);
@@ -251,12 +282,12 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << value.z << ",";
         ss << value.w ;
         ss << ")";
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<IntProperty*>(property)) {
         IntProperty* prop = dynamic_cast<IntProperty*>(property);
         ss << prop->get();
-        propertyValue += ss.str();
+        propertyValue = ss.str();
     }
     else if (dynamic_cast<BaseOptionProperty*>(property)) {
         commandOpen =+ "# NOT IMPLEMENTED # " + commandOpen ;
@@ -265,7 +296,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         StringProperty* prop = dynamic_cast<StringProperty*>(property);
         ss << "\"";
         ss << prop->get();
-        propertyValue += ss.str();
+        propertyValue = ss.str();
         ss << "\"";
     }
     else if (dynamic_cast<TransferFunctionProperty*>(property)) {
