@@ -43,7 +43,12 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagerepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagetypes.h 
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagetypes.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/layer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/layerdisk.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/layerram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/layerramprecision.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/layerrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/light/directionallight.h 
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
@@ -226,6 +231,10 @@ set(SOURCE_FILES
     datastructures/image/imageram.cpp
     datastructures/image/imageramconverter.cpp
     datastructures/image/imagerepresentation.cpp
+    datastructures/image/layer.cpp
+    datastructures/image/layerdisk.cpp
+    datastructures/image/layerram.cpp
+    datastructures/image/layerrepresentation.cpp
     datastructures/representationconverter.cpp
     datastructures/representationconverterfactory.cpp
     datastructures/transferfunction.cpp
