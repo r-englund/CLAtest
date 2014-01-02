@@ -17,17 +17,23 @@
 
 namespace inviwo {
 
-LightPropertyWidgetQt::LightPropertyWidgetQt(IntVec3Property* property) : property_(property) {
+LightPropertyWidgetQt::LightPropertyWidgetQt(FloatVec3Property* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
 }
 
+
+LightPropertyWidgetQt::~LightPropertyWidgetQt() {
+    delete lightWidget_;
+}
+
+
 void LightPropertyWidgetQt::generateWidget() {
     
     setObjectName("LightPropertyWidgetQt");
-    valueVec_ = new ivec3();
+    
     lightWidget_ = new LightPositionWidgetQt();
     QHBoxLayout* hLayout = new QHBoxLayout();
     label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
@@ -44,17 +50,7 @@ void LightPropertyWidgetQt::generateWidget() {
 }
 
 void LightPropertyWidgetQt::setPropertyValue() {
-    
-    double x = lightWidget_->getX();
-    double y = lightWidget_->getY();
-    double r = lightWidget_->getR();
-    double z = qPow(r,2)-qPow(x,2)-qPow(y,2);
-    double result = sqrt(z <= 0 ? 0 : z);
-
-    valueVec_->x = x;
-    valueVec_->y = y;
-    valueVec_->z = result;
-    property_->set(*valueVec_);
+    property_->set(lightWidget_->getPosition());
     emit modified();
 }
 

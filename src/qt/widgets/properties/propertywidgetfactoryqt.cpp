@@ -141,10 +141,13 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
     }
     else if (dynamic_cast<FloatVec3Property*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default ||
-                  property->getSemantics()==PropertySemantics::Color,
+                    property->getSemantics()==PropertySemantics::Color ||
+                    property->getSemantics()==PropertySemantics::LightPosition,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
         if (property->getSemantics()==PropertySemantics::Color)
             return new ColorPropertyWidgetQt(static_cast<FloatVec3Property*>(property));
+        else if (property->getSemantics()==PropertySemantics::LightPosition)
+            return new LightPropertyWidgetQt(static_cast<FloatVec3Property*>(property));
         else
             return new FloatVec3PropertyWidgetQt(static_cast<FloatVec3Property*>(property));
     }
@@ -168,13 +171,9 @@ PropertyWidgetQt* PropertyWidgetFactoryQt::create(Property* property) {
         return new IntVec2PropertyWidgetQt(static_cast<IntVec2Property*>(property));
     }
     else if (dynamic_cast<IntVec3Property*>(property)) {
-        ivwAssert(property->getSemantics()==PropertySemantics::Default ||
-                  property->getSemantics()==PropertySemantics::LightPosition,
+        ivwAssert(property->getSemantics()==PropertySemantics::Default,
                   "PropertySemantics::"+getPropertySemanticID(property->getSemantics())+" unsupported for "+property->getClassName()+".");
-        if (property->getSemantics()==PropertySemantics::LightPosition)
-            return new LightPropertyWidgetQt(static_cast<IntVec3Property*>(property));
-        else
-            return new IntVec3PropertyWidgetQt(static_cast<IntVec3Property*>(property));
+        return new IntVec3PropertyWidgetQt(static_cast<IntVec3Property*>(property));
     }
     else if (dynamic_cast<IntVec4Property*>(property)) {
         ivwAssert(property->getSemantics()==PropertySemantics::Default ||

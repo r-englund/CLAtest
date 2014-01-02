@@ -49,6 +49,8 @@ private:
 	BoolProperty capNearClipping_;
 
 	Shader* capNearClippingPrg_;
+
+    Image* tmpEntryPoints_;
 };
 
 } // namespace

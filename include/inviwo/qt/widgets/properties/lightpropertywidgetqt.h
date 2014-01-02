@@ -31,13 +31,13 @@ class IVW_QTWIDGETS_API LightPropertyWidgetQt : public PropertyWidgetQt {
     Q_OBJECT
 
 public:
-    LightPropertyWidgetQt(IntVec3Property* property);
+    LightPropertyWidgetQt(FloatVec3Property* property);
+    virtual ~LightPropertyWidgetQt();
 
     void updateFromProperty();
 
 private:
-    IntVec3Property* property_;
-    ivec3* valueVec_;
+    FloatVec3Property* property_;
     LightPositionWidgetQt* lightWidget_;
     EditableLabelQt* label_;
 

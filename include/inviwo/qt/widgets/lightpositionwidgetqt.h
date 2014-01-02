@@ -28,7 +28,7 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API LightPositionWidgetQt : public QLabel {
-        Q_OBJECT
+    Q_OBJECT
 
 protected:
     void mousePressEvent ( QMouseEvent * event );
@@ -37,25 +37,18 @@ protected:
 public:
 
     LightPositionWidgetQt();
-    void setPosition( ivec3 positionVector);
+    void setPosition( const vec3& positionVector);
+    vec3 getPosition() const { return vec3(getX(), getY(), getZ()); }
     virtual ~LightPositionWidgetQt();
 
 
-    /** 
-     * \brief Returns the integer value of the slider
-     *
-     * <DESCRIBE THE METHOD>
-     * 
-     * @return int <DESCRIBE ME>
-     */
-    int getValue();
-    int getX(){return x0_;};
-    int getY(){return y0_;};
-    int getR(){return R_;};
+    float getX() const { return radius_*sin(theta_)*cos(phi_); };
+    float getY() const { return radius_*sin(theta_)*sin(phi_); };
+    float getZ() const { return radius_*cos(theta_); };
  
 
 signals:
-        void positionChanged();
+    void positionChanged();
         
 
 private:
@@ -65,9 +58,9 @@ private:
     bool mouseDown_;
     void generateWidget();
     void setNewPosition(QMouseEvent * event );
-    int R_;
-    int x0_;
-    int y0_;
+    float radius_;
+    float theta_;
+    float phi_;
 
 };
 
