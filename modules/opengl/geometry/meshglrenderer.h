@@ -15,11 +15,9 @@
 #ifndef IVW_MESHGLRENDERER_H
 #define IVW_MESHGLRENDERER_H
 
-#include <modules/opengl/geometry/geometrygl.h>
+#include <modules/opengl/geometry/meshgl.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
-#include <modules/opengl/geometry/attributebuffergl.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
-#include <inviwo/core/datastructures/representationconverter.h>
 #include <vector>
 
 namespace inviwo {
@@ -34,8 +32,7 @@ public:
 
     void render(RenderType = NOT_SPECIFIED) const;
 
-    void enable() const;
-    void disable() const;
+    const MeshGL* getMeshGL() const;
 
     GLenum getDefaultDrawMode();
     GLenum getDrawMode(RenderType, ConnectivityType);
