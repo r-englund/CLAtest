@@ -80,6 +80,7 @@ TYPE_TEST(oneMinusEpsilonFloatTest,float,oneMinusEpsilonF);
 TYPE_TEST(oneMinusEpsilonDobuleTest,double,oneMinusEpsilonD);
 
 
+
 class MinimumSerilizableClass : public IvwSerializable{
 public:
     MinimumSerilizableClass(float v=0): value_(v) {}
@@ -221,5 +222,104 @@ TEST(SerialitionTest,vectorOfPointersTest){
         EXPECT_EQ(inVector[i]->value_,outVector[i]->value_);
     }
 }
+
+TEST(SerialitionTest,vec2Tests){
+    vec2 inVec(1,2),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+}
+
+TEST(SerialitionTest,vec3Tests){
+    vec3 inVec(1,2,3),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+}
+
+TEST(SerialitionTest,vec4Tests){
+    vec4 inVec(1,2,3,4),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+    EXPECT_EQ(inVec.w,outVec.w);
+}
+
+
+TEST(SerialitionTest,ivec2Tests){
+    ivec2 inVec(1,2),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+}
+
+TEST(SerialitionTest,ivec3Tests){
+    ivec3 inVec(1,2,3),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+}
+
+TEST(SerialitionTest,ivec4Tests){
+    ivec4 inVec(1,2,3,4),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+    EXPECT_EQ(inVec.w,outVec.w);
+}
+
+
+
+TEST(SerialitionTest,uvec2Tests){
+    uvec2 inVec(1,2),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+}
+
+TEST(SerialitionTest,uvec3Tests){
+    uvec3 inVec(1,2,3),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+}
+
+TEST(SerialitionTest,uvec4Tests){
+    uvec4 inVec(1,2,3,4),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+    EXPECT_EQ(inVec.w,outVec.w);
+}
+
+
+
+TEST(SerialitionTest,bvec2Tests){
+    bvec2 inVec(false,true),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+}
+
+TEST(SerialitionTest,bvec3Tests){
+    bvec3 inVec(false,true,false),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+}
+
+TEST(SerialitionTest,bvec4Tests){
+    bvec4 inVec(false,true,false,true),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+}
+
 
 #endif
