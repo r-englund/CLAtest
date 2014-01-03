@@ -16,6 +16,56 @@
 
 bool ImageLoader::loader_initialized = false;
 
+inline DataFormatId getDataFormatFromBitmap(FIBITMAP* bitmap){
+    FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
+    unsigned int bpp = FreeImage_GetBPP(bitmap);
+
+    switch(type){
+        case FIT_UNKNOWN:
+            break;
+        case FIT_BITMAP:
+            switch(bpp){
+                case 1:
+                case 4:
+                case 8:
+                    return inviwo::UINT8;
+                case 16:
+                    return inviwo::Vec2UINT8;
+                case 24:
+                    return inviwo::Vec3UINT8;
+                case 32:
+                    return inviwo::Vec4UINT8;
+            }
+            break;
+        case FIT_UINT16:
+            return inviwo::UINT16;
+        case FIT_INT16:
+            return inviwo::INT16;
+        case FIT_UINT32:
+            return inviwo::UINT32;
+        case FIT_INT32:
+            return inviwo::INT32;
+        case FIT_FLOAT:
+            return inviwo::FLOAT32;
+        case FIT_DOUBLE:
+            return inviwo::FLOAT64;
+        case FIT_COMPLEX:
+            return inviwo::Vec2FLOAT64;
+        case FIT_RGB16:
+            return inviwo::Vec3UINT16;
+        case FIT_RGBA16:
+            return inviwo::Vec4UINT16;
+        case FIT_RGBF:
+            return inviwo::Vec3FLOAT32;
+        case FIT_RGBAF:
+            return inviwo::Vec4FLOAT32;
+        default:
+            break;
+    }
+
+    return inviwo::NOT_SPECIALIZED;
+}
+
 void ImageLoader::saveImage(const char* filename, const Image* inputImage) {
     initLoader();
     FREE_IMAGE_FORMAT imageFormat = FreeImage_GetFIFFromFilename(filename);
@@ -81,25 +131,48 @@ bool ImageLoader::isValidImageFile(std::string filename) {
     return (imageFormat != FIF_UNKNOWN);    
 }
 
-void* ImageLoader::loadImageToData(std::string filename){
+DataFormatId ImageLoader::loadImageToData(void* data, std::string filename){
     initLoader();
     FIBITMAP *bitmap = new FIBITMAP();
-    void* out = NULL;
+    DataFormatId formatId = NOT_SPECIALIZED;
     if (readInImage(filename, &bitmap)){
-        out = (void*)fiBitmapToDataArray<DataVec4UINT8::type>(bitmap, DataVec4UINT8::bitsAllocated(), DataVec4UINT8::components());
-    }
-    return out;
-}
-
-void* ImageLoader::loadImageToDataAndRescale(std::string filename, int dst_width, int dst_height){
-    initLoader();
-    FIBITMAP* bitmap = new FIBITMAP();
-    void* out = NULL;
-    if (readInImage(filename, &bitmap)){
-        out = (void*)fiBitmapToDataArrayAndRescale<DataVec4UINT8::type>(bitmap, dst_width, dst_height, DataVec4UINT8::bitsAllocated(), DataVec4UINT8::components());
+        formatId = getDataFormatFromBitmap(bitmap);
+        switch (formatId)
+        {
+        case NOT_SPECIALIZED:
+            LogErrorCustom("loadImageToData", "Invalid format");
+            break;
+#define DataFormatIdMacro(i) case inviwo::i: fiBitmapToDataArray<Data##i::type>(data, bitmap, Data##i::bitsAllocated(), Data##i::components()); break;
+#include <inviwo/core/util/formatsdefinefunc.h>
+        default:
+            LogErrorCustom("loadImageToData", "Invalid format or not implemented");
+            break;
+        }
     }
     FreeImage_Unload(bitmap);
-    return out;
+    return formatId;
+}
+
+DataFormatId ImageLoader::loadImageToDataAndRescale(void* data, std::string filename, int dst_width, int dst_height){
+    initLoader();
+    FIBITMAP* bitmap = new FIBITMAP();
+    DataFormatId formatId = NOT_SPECIALIZED;
+    if (readInImage(filename, &bitmap)){
+        formatId = getDataFormatFromBitmap(bitmap);
+        switch (formatId)
+        {
+        case NOT_SPECIALIZED:
+            LogErrorCustom("loadImageToDataAndRescale", "Invalid format");
+            break;
+#define DataFormatIdMacro(i) case inviwo::i: fiBitmapToDataArrayAndRescale<Data##i::type>(data, bitmap, dst_width, dst_height, Data##i::bitsAllocated(), Data##i::components()); break;
+#include <inviwo/core/util/formatsdefinefunc.h>
+        default:
+            LogErrorCustom("loadImageToDataAndRescale", "Invalid format or not implemented");
+            break;
+        }
+    }
+    FreeImage_Unload(bitmap);
+    return formatId;
 }
 
 void* ImageLoader::rescaleImage(Image* srcImage, int dst_width, int dst_height) {
@@ -121,7 +194,7 @@ void* ImageLoader::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst
         rawData = NULL;
         break;
 #define DataFormatIdMacro(i) case inviwo::i: bitmap = handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(srcImageRam->getData()), srcImageRam->getDimensions(), Data##i::bitsAllocated(), Data##i::components()); \
-    rawData = (void*)fiBitmapToDataArrayAndRescale<Data##i::type>(bitmap, dst_width, dst_height, Data##i::bitsAllocated(), Data##i::components()); break;
+    fiBitmapToDataArrayAndRescale<Data##i::type>(static_cast<Data##i::type*>(rawData), bitmap, dst_width, dst_height, Data##i::bitsAllocated(), Data##i::components()); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
     default:
         LogErrorCustom("rescaleImageRAM", "Invalid format or not implemented");
@@ -199,41 +272,53 @@ FIBITMAP* ImageLoader::createBitmapFromData(const ImageRAM* inputImage){
 }
 
 template<typename T>
-T* ImageLoader::fiBitmapToDataArray(FIBITMAP* bitmap, size_t bitsPerPixel, int channels){
+void ImageLoader::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels){
     int width = FreeImage_GetWidth(bitmap);
     int height = FreeImage_GetHeight(bitmap);
     uvec2 dim(width, height);
     FIBITMAP* bitmapNEW = allocateBitmap(width, height, bitsPerPixel, channels);
-    FreeImage_Paste(bitmapNEW, bitmap, 0, 0, static_cast<int>(pow(2.f, static_cast<float>(bitsPerPixel)/channels))-1);
+    FreeImage_Paste(bitmapNEW, bitmap, 0, 0, 255);
 
     switchChannels(bitmapNEW, dim, channels);
 
-    T *pixelValues = (T*)FreeImage_GetBits(bitmapNEW);
+    void* pixelValues = static_cast<void*>(FreeImage_GetBits(bitmapNEW));
 
-    return pixelValues;
+    if(!dst){
+        T* dstAlloc = new T[dim.x*dim.y];
+        dst = static_cast<void*>(dstAlloc);
+    }
+
+    memcpy(dst, pixelValues, dim.x*dim.y*sizeof(T));
+    FreeImage_Unload(bitmapNEW);
 }
 
 template<typename T>
-T* ImageLoader::fiBitmapToDataArrayAndRescale(FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels){
+void ImageLoader::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels){
     int width = FreeImage_GetWidth(bitmap);
     int height = FreeImage_GetHeight(bitmap);
     uvec2 dim(width, height);
     uvec2 dst_dim(dst_width, dst_height);
 
     if (dim==dst_dim)
-        return fiBitmapToDataArray<T>(bitmap, bitsPerPixel, channels);
+        return fiBitmapToDataArray<T>(dst, bitmap, bitsPerPixel, channels);
 
     FIBITMAP *bitmap2 = allocateBitmap(width, height, bitsPerPixel, channels);
-    FreeImage_Paste(bitmap2, bitmap, 0, 0, static_cast<int>(pow(2.f, static_cast<float>(bitsPerPixel)/channels))-1);
+    FreeImage_Paste(bitmap2, bitmap, 0, 0, 255);
 
     FIBITMAP* bitmapNEW = FreeImage_Rescale(bitmap2, dst_width, dst_height, FILTER_BILINEAR);
     FreeImage_Unload(bitmap2);
 
-    switchChannels(bitmapNEW, dim, channels);
+    switchChannels(bitmapNEW, dst_dim, channels);
 
-    T *pixelValues = (T*)FreeImage_GetBits(bitmapNEW);
+    void* pixelValues = static_cast<void*>(FreeImage_GetBits(bitmapNEW));
 
-    return pixelValues;
+    if(!dst){
+        T* dstAlloc = new T[dst_dim.x*dst_dim.y];
+        dst = static_cast<void*>(dstAlloc);
+    }
+
+    memcpy(dst, pixelValues, dst_dim.x*dst_dim.y*sizeof(T));
+    FreeImage_Unload(bitmapNEW);
 }
 
 void ImageLoader::initLoader(){

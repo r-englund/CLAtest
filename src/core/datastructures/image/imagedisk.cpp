@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Sathish Kottravel
+ * Primary author : Erik Sundén
  *
  **********************************************************************/
 
@@ -18,10 +18,10 @@
 namespace inviwo {
 
 ImageDisk::ImageDisk()
-    : ImageRepresentation(uvec2(0), COLOR_DEPTH_PICKING, DataVec4UINT8::get()), DiskRepresentation(){}
+    : ImageRepresentation(uvec2(0), COLOR_DEPTH_PICKING, DataFormatBase::get()), DiskRepresentation(){}
 
 ImageDisk::ImageDisk(std::string url)
-    : ImageRepresentation(uvec2(0), COLOR_DEPTH_PICKING, DataVec4UINT8::get()), DiskRepresentation(url){
+    : ImageRepresentation(uvec2(0), COLOR_DEPTH_PICKING, DataFormatBase::get()), DiskRepresentation(url){
     initialize();
 }
 
@@ -31,21 +31,21 @@ ImageDisk::~ImageDisk() {
 void ImageDisk::initialize(){
 }
 
-void* ImageDisk::loadFileData() const {
+DataFormatId ImageDisk::loadFileData(void* dst) const {
     if (hasSourceFile())
         if(dimensions_.x > 0 && dimensions_.y > 0)
-            return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dimensions_.x, dimensions_.y);
+            return ImageLoader::loadImageToDataAndRescale(dst, getSourceFile(), dimensions_.x, dimensions_.y);
         else
-            return ImageLoader::loadImageToData(getSourceFile());
+            return ImageLoader::loadImageToData(dst, getSourceFile());
 
-    return NULL;
+    return NOT_SPECIALIZED;
 }
 
-void* ImageDisk::loadFileDataAndRescale(uvec2 dst_dimesion) const {
+DataFormatId ImageDisk::loadFileDataAndRescale(void* dst, uvec2 dst_dimesion) const {
     if (hasSourceFile())
-        return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dst_dimesion.x, dst_dimesion.y);
+        return ImageLoader::loadImageToDataAndRescale(dst, getSourceFile(), dst_dimesion.x, dst_dimesion.y);
 
-    return NULL;
+    return NOT_SPECIALIZED;
 }
 
 void ImageDisk::deinitialize() {}

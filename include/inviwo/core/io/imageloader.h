@@ -30,22 +30,23 @@ public:
 		FreeImage_DeInitialise();
 	}
     /**
-    * Loads an image to bitmap.
+    * Loads an image through bitmap.
+    * @param void* will point to the raw data
     * @param filename is the file that is to be loaded
-    * @return raw data which has format DataUINT8::type by default
-    */ 
-     static void* loadImageToData(std::string filename);
-
+    * @return DataFormatId the data format
+    */
+     static DataFormatId loadImageToData(void* data, std::string filename);
     
      /** 
-      * \brief Loads an image to bitmap and rescale
+      * \brief Loads an image through bitmap and rescale
       *
+      * @param void* will point to the raw data
       * @param std::string filename is the file that is to be loaded
       * @param int dst_width destination width
       * @param int dst_height destination height
-      * @return raw data which has format DataUINT8::type by default
+      * @return DataFormatId the data format
       */
-     static void* loadImageToDataAndRescale(std::string filename, int dst_width, int dst_height);
+     static DataFormatId loadImageToDataAndRescale(void* data, std::string filename, int dst_width, int dst_height);
     
     /**
     * Saves an image to a specified filename.
@@ -117,13 +118,13 @@ private:
     * Converts an image from freeimage format to regular int.
     **/
     template<typename T>
-    static T* fiBitmapToDataArray(FIBITMAP* bitmap, size_t bitsPerPixel, int channels);
+    static void fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels);
 
     /** 
      * \brief fits the bitmap into data array which is readable by representations such as ImageRAM that uses FILTER_BILINEAR
      */
     template<typename T>
-    static T* fiBitmapToDataArrayAndRescale(FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels);
+    static void fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels);
 
 	static bool loader_initialized;
 };

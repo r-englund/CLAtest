@@ -18,10 +18,10 @@
 namespace inviwo {
 
 LayerDisk::LayerDisk()
-    : LayerRepresentation(uvec2(0), DataVec4UINT8::get()), DiskRepresentation(){}
+    : LayerRepresentation(uvec2(0), DataFormatBase::get()), DiskRepresentation(){}
 
 LayerDisk::LayerDisk(std::string url)
-    : LayerRepresentation(uvec2(0), DataVec4UINT8::get()), DiskRepresentation(url){
+    : LayerRepresentation(uvec2(0), DataFormatBase::get()), DiskRepresentation(url){
     initialize();
 }
 
@@ -31,21 +31,21 @@ LayerDisk::~LayerDisk() {
 void LayerDisk::initialize(){
 }
 
-void* LayerDisk::loadFileData() const {
-    if (hasSourceFile())            
+DataFormatId LayerDisk::loadFileData(void* dst) const {
+    if (hasSourceFile())
         if(dimensions_.x > 0 && dimensions_.y > 0)
-            return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dimensions_.x, dimensions_.y);
+            return ImageLoader::loadImageToDataAndRescale(dst, getSourceFile(), dimensions_.x, dimensions_.y);
         else
-            return ImageLoader::loadImageToData(getSourceFile());
+            return ImageLoader::loadImageToData(dst, getSourceFile());
 
-    return NULL;
+    return NOT_SPECIALIZED;
 }
 
-void* LayerDisk::loadFileDataAndRescale(uvec2 dst_dimesion) const {
+DataFormatId LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dst_dimesion) const {
     if (hasSourceFile())
-        return ImageLoader::loadImageToDataAndRescale(getSourceFile(), dst_dimesion.x, dst_dimesion.y);
+        return ImageLoader::loadImageToDataAndRescale(dst, getSourceFile(), dst_dimesion.x, dst_dimesion.y);
 
-    return NULL;
+    return NOT_SPECIALIZED;
 }
 
 void LayerDisk::deinitialize() {}

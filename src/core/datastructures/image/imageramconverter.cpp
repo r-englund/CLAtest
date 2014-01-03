@@ -34,12 +34,14 @@ ImageDisk2RAMConverter::~ImageDisk2RAMConverter() {}
 **/
 DataRepresentation* ImageDisk2RAMConverter::createFrom(const DataRepresentation* source) {
     const ImageDisk* imageDisk = static_cast<const ImageDisk*>(source);
-    switch (imageDisk->getDataFormatId()) {
-    #define DataFormatIdMacro(i) case i: return new ImageRAM_##i(static_cast<Data##i::type*>(imageDisk->loadFileData()), imageDisk->getDimensions(), imageDisk->getImageType());
+    void* data = NULL;
+    DataFormatId formatId = imageDisk->loadFileData(data);
+    switch (formatId) {
+    #define DataFormatIdMacro(i) case i: return new ImageRAM_##i(static_cast<Data##i::type*>(data), imageDisk->getDimensions(), imageDisk->getImageType());
     #include <inviwo/core/util/formatsdefinefunc.h>
     default: 
         LogError("Cannot convert format from Disk to RAM:" << imageDisk->getDataFormat()->getString());
-    } 
+    }
         
     return NULL;
 }
@@ -47,14 +49,10 @@ DataRepresentation* ImageDisk2RAMConverter::createFrom(const DataRepresentation*
 void ImageDisk2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const ImageDisk* imageSrc = static_cast<const ImageDisk*>(source);
     ImageRAM* imageDst = static_cast<ImageRAM*>(destination);
-    // FIXME: The file loader should have a function that loads data into a preallocated location.
     if (imageSrc->getDimensions()==imageDst->getDimensions())
-        imageDst->setData(imageSrc->loadFileData());
+        imageSrc->loadFileData(imageDst->getData());
     else {
-        //Image disk and ram vary in dimension sometimes              
-
-        //TODO: Avoid this condition. Needs investigation.
-        imageDst->setData(imageSrc->loadFileDataAndRescale(imageDst->getDimensions())); 
+        imageSrc->loadFileDataAndRescale(imageDst->getData(), imageDst->getDimensions()); 
     }
 }
 
