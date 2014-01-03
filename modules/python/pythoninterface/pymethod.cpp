@@ -24,10 +24,10 @@ PyMethod::PyMethod(){
 
 
 PyMethodDef* PyMethod::getDef(){
-    def_.ml_doc   = getDesc();
+    def_.ml_doc   = getDesc().c_str();
     def_.ml_flags = getFlags();
     def_.ml_meth  = getFunc();
-    def_.ml_name  = getName();
+    def_.ml_name  = getName().c_str();
     return &def_;
 }
 

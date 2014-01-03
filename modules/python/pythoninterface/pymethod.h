@@ -36,8 +36,8 @@ namespace inviwo {
       PyMethodDef def_;
   public:
       PyMethod();
-      virtual char* getName() = 0;
-      virtual char* getDesc() = 0;
+      virtual std::string getName() = 0;
+      virtual std::string getDesc() = 0;
       virtual PyCFunction getFunc() = 0;
       virtual int getFlags(){return METH_VARARGS;};
 

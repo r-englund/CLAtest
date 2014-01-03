@@ -28,8 +28,8 @@ namespace inviwo {
 
     class IVW_MODULE_PYTHON_API PyInfoMethod : public PyMethod{
     public:
-        char *getName(){return "info";}
-        char *getDesc(){return "info()\tPrints documentation of the module's functions.";}
+        std::string getName(){return "info";}
+        std::string getDesc(){return "info()\tPrints documentation of the module's functions.";}
         virtual PyCFunction getFunc(){return py_info;}
     };  
 

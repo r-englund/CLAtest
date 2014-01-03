@@ -57,8 +57,8 @@ static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
 namespace inviwo{
     class PyStdOutCatcher : public PyMethod{
     public:
-        char *getName(){return "ivwPrint";}
-        char *getDesc(){return "ivwPrint()\t Only for internal use. Redirect std output to python editor widget.";}
+        std::string getName(){return "ivwPrint";}
+        std::string getDesc(){return "ivwPrint()\t Only for internal use. Redirect std output to python editor widget.";}
         virtual PyCFunction getFunc(){return py_stdout;}
     };
 

@@ -37,58 +37,58 @@ PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/);
 
 class IVW_MODULE_PYTHON_API PySnapshotMethod : public PyMethod{
     public:
-        char *getName(){return "snapshot";}
-        char *getDesc(){return "snapshot(filename, [canvas])\tSaves a snapshot of the specified canvas to the given file. If no canvas name is passed, the first canvas in the network is chosen.";}
+        std::string getName(){return "snapshot";}
+        std::string getDesc(){return "snapshot(filename, [canvas])\tSaves a snapshot of the specified canvas to the given file. If no canvas name is passed, the first canvas in the network is chosen.";}
         virtual PyCFunction getFunc(){return py_snapshot;}
 };
 
 class IVW_MODULE_PYTHON_API PySnapshotCanvasMethod : public PyMethod{
 public:
-    char *getName(){return "snapshotCanvas";}
-    char *getDesc(){return "snapshotCanvas(i, filename)\tSaves a snapshot of the ith canvas to the given file.";}
+    std::string getName(){return "snapshotCanvas";}
+    std::string getDesc(){return "snapshotCanvas(i, filename)\tSaves a snapshot of the ith canvas to the given file.";}
     virtual PyCFunction getFunc(){return py_snapshotCanvas;}
 };
 
 class IVW_MODULE_PYTHON_API PyGetBasePathMethod : public PyMethod{
 public:
-    char *getName(){return "getBasePath";}
-    char *getDesc(){return "getBasePath()\tReturns the path to Inviwos base folder.";}
+    std::string getName(){return "getBasePath";}
+    std::string getDesc(){return "getBasePath()\tReturns the path to Inviwos base folder.";}
     virtual PyCFunction getFunc(){return py_getBasePath;}
 };
 
 class IVW_MODULE_PYTHON_API PyGetDataPathMethod : public PyMethod{
 public:
-    char *getName(){return "getDataPath";}
-    char *getDesc(){return "getDataPath()\tReturns the path to Inviwos data folder.";}
+    std::string getName(){return "getDataPath";}
+    std::string getDesc(){return "getDataPath()\tReturns the path to Inviwos data folder.";}
     virtual PyCFunction getFunc(){return py_getDataPath;}
 };
 
 
 class IVW_MODULE_PYTHON_API PyGetWorkspaceSavePathMethod : public PyMethod{
 public:
-    char *getName(){return "getWorkspaceSavePathtReturns the path to Inviwos workspace folder.";}
-    char *getDesc(){return "getWorkspaceSavePathtReturns()\tReturns the path to Inviwos workspace folder.";}
+    std::string getName(){return "getWorkspaceSavePathtReturns the path to Inviwos workspace folder.";}
+    std::string getDesc(){return "getWorkspaceSavePathtReturns()\tReturns the path to Inviwos workspace folder.";}
     virtual PyCFunction getFunc(){return py_getWorkspaceSavePath;}
 };
 
 class IVW_MODULE_PYTHON_API PyGetVolumePathMethod : public PyMethod{
 public:
-    char *getName(){return "getVolumePath";}
-    char *getDesc(){return "getVolumePath()\tReturns the path to Inviwos volume folder.";}
+    std::string getName(){return "getVolumePath";}
+    std::string getDesc(){return "getVolumePath()\tReturns the path to Inviwos volume folder.";}
     virtual PyCFunction getFunc(){return py_getVolumePath;}
 };
 
 class IVW_MODULE_PYTHON_API PyGetImagePathMethod : public PyMethod{
 public:
-    char *getName(){return "getImagePath";}
-    char *getDesc(){return "getImagePath()\tReturns the path to Inviwos image folder.";}
+    std::string getName(){return "getImagePath";}
+    std::string getDesc(){return "getImagePath()\tReturns the path to Inviwos image folder.";}
     virtual PyCFunction getFunc(){return py_getImagePath;}
 };
 
 class IVW_MODULE_PYTHON_API PyGetModulePathMethod : public PyMethod{
 public:
-    char *getName(){return "getModulePath";}
-    char *getDesc(){return "getModulePath()\tReturns the path to Inviwo module folder.";}
+    std::string getName(){return "getModulePath";}
+    std::string getDesc(){return "getModulePath()\tReturns the path to Inviwo module folder.";}
     virtual PyCFunction getFunc(){return py_getModulePath;}
 };
 
@@ -96,8 +96,8 @@ public:
 
 class IVW_MODULE_PYTHON_API PyQuitInviwoMethod : public PyMethod{
 public:
-    char *getName(){return "quit";}
-    char *getDesc(){return "quit()\tMethod to quit Inviwo.";}
+    std::string getName(){return "quit";}
+    std::string getDesc(){return "quit()\tMethod to quit Inviwo.";}
     virtual PyCFunction getFunc(){return py_quitInviwo;}
 };
 
