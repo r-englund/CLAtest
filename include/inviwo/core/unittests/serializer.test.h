@@ -155,7 +155,7 @@ TEST(SerialitionTest,floatVectorTest){
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
 
-//    serializer.serialize("serializedVector",inVector,"value");
+    serializer.serialize("serializedVector",inVector,"value");
 
     serializer.writeFile();
 
@@ -182,7 +182,7 @@ TEST(SerialitionTest,vectorOfNonPointersTest){
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
 
-//    serializer.serialize("serializedVector",inVector,"value");
+    serializer.serialize("serializedVector",inVector,"value");
 
 
     serializer.writeFile();
