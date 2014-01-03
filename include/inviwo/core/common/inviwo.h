@@ -57,7 +57,7 @@ typedef glm::dvec3 dvec3;
 typedef glm::dvec4 dvec4;
 typedef glm::bvec2 bvec2;
 typedef glm::bvec3 bvec3;
-typedef glm::bvec3 bvec4;
+typedef glm::bvec4 bvec4;
 typedef glm::uvec2 uvec2;
 typedef glm::uvec3 uvec3;
 typedef glm::uvec4 uvec4;
