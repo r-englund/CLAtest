@@ -32,7 +32,6 @@ inline DataFormatId getDataFormatFromBitmap(FIBITMAP* bitmap){
                 case 16:
                     return inviwo::Vec2UINT8;
                 case 24:
-                    return inviwo::Vec3UINT8;
                 case 32:
                     return inviwo::Vec4UINT8;
             }
