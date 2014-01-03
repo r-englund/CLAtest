@@ -366,6 +366,7 @@ set(TEST_FILES
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/commandlineparser.test.h
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/urlparser.test.h
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/volume.test.h
+	${IVW_INCLUDE_DIR}/inviwo/core/unittests/serializer.test.h
 )
 ivw_add_unittest(${TEST_FILES})
 ivw_group("Unittest Files" ${TEST_FILES})

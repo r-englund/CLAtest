@@ -183,6 +183,31 @@ namespace ticpp
 			return value;
 		}
 
+
+        std::string ToString( const float& value ) const
+        {
+            std::stringstream convert;
+            convert.precision(8);
+            convert << value;
+            if ( convert.fail() )
+            {
+                TICPPTHROW( "Could not convert value to text" );
+            }
+            return convert.str();
+        }
+
+        std::string ToString( const double& value ) const
+        {
+            std::stringstream convert;
+            convert.precision(40);
+            convert << value;
+            if ( convert.fail() )
+            {
+                TICPPTHROW( "Could not convert value to text" );
+            }
+            return convert.str();
+        }
+
 		/**
 		Converts a std::string to any class with a proper overload of the >> opertor
 		@param temp			The string to be converted
@@ -207,6 +232,41 @@ namespace ticpp
 		void FromString( const std::string& temp, std::string* out ) const
 		{
 			*out = temp;
+		}
+        
+		/**
+		Specialization for signed char
+		*/
+		void FromString( const std::string& temp, signed char* out ) const
+		{
+            std::istringstream val( temp );
+            short tmp;
+            val >> tmp;
+
+            *out = tmp;
+
+            if ( val.fail() )
+            {
+                TICPPTHROW( "Could not convert \"" << temp << "\" to target type" );
+            }
+		}
+
+        
+		/**
+		Specialization for unsigned char
+		*/
+		void FromString( const std::string& temp, unsigned char* out ) const
+		{
+            std::istringstream val( temp );
+            unsigned short tmp;
+            val >> tmp;
+
+            *out = tmp;
+
+            if ( val.fail() )
+            {
+                TICPPTHROW( "Could not convert \"" << temp << "\" to target type" );
+            }
 		}
 
 		/**

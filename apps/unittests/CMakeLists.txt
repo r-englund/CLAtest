@@ -47,22 +47,18 @@ ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
 # Include generation directory to register modules etc
-include_directories(${IVW_MODULE_DIR}/unittests/gtest-1.7.0/include)
+#include_directories(${IVW_MODULE_DIR}/unittests/ext/gtest-1.7.0/include)
 include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
-include_directories(${CMAKE_BINARY_DIR}/apps/unittests/_generated)
 ivw_link_directories(${LIBRARY_OUTPUT_PATH})
 
 
 #--------------------------------------------------------------------
 # Create application
 add_executable(unittests MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
-target_link_libraries(unittests gtest)
 #--------------------------------------------------------------------
 # Add dependencies
 ivw_add_dependencies(${package_list})
 
-configure_file(${CMAKE_BINARY_DIR}/apps/unittests/_generated/unittests_temp.h ${CMAKE_BINARY_DIR}/apps/unittests/_generated/unittests.h)
-file(REMOVE ${CMAKE_BINARY_DIR}/apps/unittests/_generated/unittests_temp.h)
 #--------------------------------------------------------------------
 # Optimize compilation with pre-compilied headers based on inviwo-core
 ivw_compile_optimize_inviwo_core()

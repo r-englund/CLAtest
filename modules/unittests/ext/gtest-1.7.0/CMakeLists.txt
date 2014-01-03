@@ -7,7 +7,8 @@
 
 # BUILD_SHARED_LIBS is a standard CMake variable, but we declare it here to
 # make it prominent in the GUI.
-option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." OFF)
+#option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." OFF)
+# for INVIWO  gtest dont need BUILD_SHARED_LIBS, it already exist in globalconfig.cmake  
 
 # When other libraries are using a shared version of runtime libraries,
 # Google Test also has to use one.
@@ -15,10 +16,6 @@ option(
   gtest_force_shared_crt
   "Use shared (DLL) run-time lib even when Google Test is built as static lib."
   OFF)
-
-option(gtest_build_tests "Build all of gtest's own tests." OFF)
-
-option(gtest_build_samples "Build gtest's sample programs." OFF)
 
 option(gtest_disable_pthreads "Disable uses of pthreads in gtest." OFF)
 
@@ -67,4 +64,8 @@ link_directories(${gtest_BINARY_DIR}/src)
 # Google Test libraries.  We build them using more strict warnings than what
 # are used for other targets, to ensure that gtest can be compiled by a user
 # aggressive about warnings.
-cxx_library(gtest "${cxx_strict}" src/gtest-all.cc)
+if(BUILD_SHARED_LIBS)
+	cxx_shared_library(gtest "${cxx_strict}" src/gtest-all.cc)
+else()
+	cxx_library(gtest "${cxx_strict}" src/gtest-all.cc)
+endif()

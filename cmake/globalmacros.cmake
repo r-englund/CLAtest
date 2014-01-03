@@ -36,7 +36,7 @@ endmacro()
 
 macro(ivw_add_unittest)
     foreach(item ${ARGN})
-        file(APPEND ${CMAKE_BINARY_DIR}/apps/unittests/_generated/unittests_temp.h "#include \"${item}\" \n")
+        file(APPEND ${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h "#include \"${item}\" \n")
     endforeach()
 endmacro()
 

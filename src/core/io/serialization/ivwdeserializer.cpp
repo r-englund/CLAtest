@@ -26,7 +26,6 @@ IvwDeserializer::IvwDeserializer(IvwDeserializer &s, bool allowReference)
     registerFactories();
     try {
         readFile();
-        rootElement_ = doc_.FirstChildElement();
     } catch (TxException& e) {
         throw SerializationException(e.what());
     }
@@ -37,7 +36,6 @@ IvwDeserializer::IvwDeserializer(std::string fileName, bool allowReference)
     registerFactories();
     try {
         readFile();
-        rootElement_ = doc_.FirstChildElement();
     } catch (TxException& e) {
         throw SerializationException(e.what());
     }
@@ -93,6 +91,18 @@ void IvwDeserializer::deserialize(const std::string &key, float &data) {
 void IvwDeserializer::deserialize(const std::string &key, double &data) {
     deserializePrimitives<double>(key, data);
 }
+void IvwDeserializer::deserialize(const std::string &key, int8_t &data) {
+    deserializePrimitives<int8_t>(key, data);
+}
+void IvwDeserializer::deserialize(const std::string &key, uint8_t &data) {
+    deserializePrimitives<uint8_t>(key, data);
+}
+void IvwDeserializer::deserialize(const std::string &key, short &data) {
+    deserializePrimitives<short>(key, data);
+}
+void IvwDeserializer::deserialize(const std::string &key, unsigned short &data) {
+    deserializePrimitives<unsigned short>(key, data);
+}
 void IvwDeserializer::deserialize(const std::string &key, int &data) {
     deserializePrimitives<int>(key, data);
 }
@@ -108,7 +118,8 @@ void IvwDeserializer::deserialize(const std::string &key, long long &data) {
 
 void IvwDeserializer::readFile() {
     try {   
-        doc_.LoadFile();         
+        doc_.LoadFile();   
+        rootElement_ = doc_.FirstChildElement();      
     } catch (TxException& ) {}
 }
 

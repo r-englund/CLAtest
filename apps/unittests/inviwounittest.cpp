@@ -12,7 +12,6 @@
 
 #include <moduleregistration.h>
 
-#include <gtest/gtest.h>
 
 using namespace inviwo;
 

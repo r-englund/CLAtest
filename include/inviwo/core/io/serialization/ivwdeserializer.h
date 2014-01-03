@@ -135,6 +135,10 @@ public:
     void deserialize(const std::string &key, bool &data);
     void deserialize(const std::string &key, float &data);
     void deserialize(const std::string &key, double &data);
+    void deserialize(const std::string &key, int8_t &data);
+    void deserialize(const std::string &key, uint8_t &data);
+    void deserialize(const std::string &key, short &data);
+    void deserialize(const std::string &key, unsigned short &data);
     void deserialize(const std::string &key, int &data);
     void deserialize(const std::string &key, unsigned int &data);
     void deserialize(const std::string &key, long &data);
