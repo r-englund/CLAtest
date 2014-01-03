@@ -86,11 +86,11 @@ public:
 
 
     virtual void serialize( IvwSerializer &s ) const {
-        s.serialize("value",value_);
+        s.serialize("classVariable",value_);
     }
 
     virtual void deserialize( IvwDeserializer &d ) {
-        d.deserialize("value",value_);
+        d.deserialize("classVariable",value_);
     }
 
     bool operator==(const MinimumSerilizableClass &v)const{
@@ -103,53 +103,99 @@ public:
 
 };
 
-//
-//TEST(SerialitionTest,floatVectorTest){
-//    std::vector<float> inVector,outVector;
-//    inVector.push_back(0.1);
-//    inVector.push_back(0.2);
-//    inVector.push_back(0.3);
-//
-//    std::string filename = SERIALITION_FILE_NAME;
-//    IvwSerializer serializer(filename);
-//
-//    serializer.serialize("serializedVector",inVector,"value");
-//
-//    serializer.writeFile();
-//
-//    IvwDeserializer deserializer(filename);
-//    deserializer.readFile();
-//    deserializer.deserialize("serializedVector",outVector,"value");
-//
-//    for(int i = 0;i<inVector.size();i++){
-//        EXPECT_EQ(inVector[i],outVector[i]);
-//    }
-//}
+TEST(SerialitionTest,IvwSerializableClassTest){
+    MinimumSerilizableClass inValue(12),outValue;
+
+    std::string filename = SERIALITION_FILE_NAME;
+    IvwSerializer serializer(filename);
+
+    serializer.serialize("serializedValue",inValue);
 
 
-//
-//TEST(SerialitionTest,vectorOfNonPointersTest){
-//    std::vector<MinimumSerilizableClass> inVector,outVector;
-//    inVector.push_back(MinimumSerilizableClass(0.1));
-//    inVector.push_back(MinimumSerilizableClass(0.2));
-//    inVector.push_back(MinimumSerilizableClass(0.3));
-//
-//    std::string filename = SERIALITION_FILE_NAME;
-//    IvwSerializer serializer(filename);
-//
+    serializer.writeFile();
+
+    IvwDeserializer deserializer(filename);
+    deserializer.readFile();
+
+    deserializer.deserialize("serializedValue",outValue);
+
+    EXPECT_EQ(inValue.value_,12);
+    EXPECT_NE(outValue.value_,0);
+    EXPECT_EQ(inValue,outValue);
+}
+
+
+TEST(SerialitionTest,IvwSerializableClassAsPointerTest){
+    MinimumSerilizableClass *inValue = new MinimumSerilizableClass(12),*outValue = 0;
+
+    std::string filename = SERIALITION_FILE_NAME;
+    IvwSerializer serializer(filename);
+
+    serializer.serialize("serializedValue",inValue);
+
+
+    serializer.writeFile();
+
+    IvwDeserializer deserializer(filename);
+    deserializer.readFile();
+
+    deserializer.deserialize("serializedValue",outValue);
+
+    EXPECT_EQ(inValue->value_,12);
+    EXPECT_NE(outValue->value_,0);
+    EXPECT_EQ(inValue,outValue);
+}
+
+TEST(SerialitionTest,floatVectorTest){
+    std::vector<float> inVector,outVector;
+    inVector.push_back(0.1);
+    inVector.push_back(0.2);
+    inVector.push_back(0.3);
+
+    std::string filename = SERIALITION_FILE_NAME;
+    IvwSerializer serializer(filename);
+
 //    serializer.serialize("serializedVector",inVector,"value");
-//
-//
-//    serializer.writeFile();
-//
-//    IvwDeserializer deserializer(filename);
-//    deserializer.readFile();
+
+    serializer.writeFile();
+
+    IvwDeserializer deserializer(filename);
+    deserializer.readFile();
 //    deserializer.deserialize("serializedVector",outVector,"value");
-//
-//    for(int i = 0;i<inVector.size();i++){
-//        EXPECT_EQ(inVector[i],outVector[i]);
-//    }
-//}
+
+    ASSERT_EQ(inVector.size(),outVector.size());
+    for(int i = 0;i<inVector.size();i++){
+        EXPECT_EQ(inVector[i],outVector[i]);
+    }
+}
+
+
+
+
+
+TEST(SerialitionTest,vectorOfNonPointersTest){
+    std::vector<MinimumSerilizableClass> inVector,outVector;
+    inVector.push_back(MinimumSerilizableClass(0.1));
+    inVector.push_back(MinimumSerilizableClass(0.2));
+    inVector.push_back(MinimumSerilizableClass(0.3));
+
+    std::string filename = SERIALITION_FILE_NAME;
+    IvwSerializer serializer(filename);
+
+//    serializer.serialize("serializedVector",inVector,"value");
+
+
+    serializer.writeFile();
+
+    IvwDeserializer deserializer(filename);
+    deserializer.readFile();
+//    deserializer.deserialize("serializedVector",outVector,"value");
+
+    ASSERT_EQ(inVector.size(),outVector.size());
+    for(int i = 0;i<inVector.size();i++){
+        EXPECT_EQ(inVector[i],outVector[i]);
+    }
+}
 
 
 TEST(SerialitionTest,vectorOfPointersTest){
@@ -170,6 +216,7 @@ TEST(SerialitionTest,vectorOfPointersTest){
     deserializer.readFile();
     deserializer.deserialize("serializedVector",outVector,"value");
 
+    ASSERT_EQ(inVector.size(),outVector.size());
     for(int i = 0;i<inVector.size();i++){
         EXPECT_EQ(inVector[i]->value_,outVector[i]->value_);
     }
