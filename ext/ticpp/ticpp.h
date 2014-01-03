@@ -243,7 +243,7 @@ namespace ticpp
             short tmp;
             val >> tmp;
 
-            *out = tmp;
+            *out = static_cast<signed char>(tmp);
 
             if ( val.fail() )
             {
@@ -261,7 +261,7 @@ namespace ticpp
             unsigned short tmp;
             val >> tmp;
 
-            *out = tmp;
+            *out = static_cast<unsigned char>(tmp);
 
             if ( val.fail() )
             {

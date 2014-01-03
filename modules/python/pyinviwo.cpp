@@ -79,7 +79,8 @@ namespace inviwo{
         isInit_ = true;
   
         LogInfo("Python version: " + toString(Py_GetVersion()));
-        Py_SetProgramName("PyInviwo");
+        char programName[] = "PyInviwo";
+        Py_SetProgramName(programName);
 
 #ifdef WIN32
         Py_NoSiteFlag = 1;  
