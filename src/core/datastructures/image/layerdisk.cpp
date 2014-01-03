@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/core/datastructures/image/layerdisk.h>
-#include <inviwo/core/io/imageloader.h>
+#include <inviwo/core/io/imageio.h>
 
 namespace inviwo {
 
@@ -34,16 +34,16 @@ void LayerDisk::initialize(){
 DataFormatId LayerDisk::loadFileData(void* dst) const {
     if (hasSourceFile())
         if(dimensions_.x > 0 && dimensions_.y > 0)
-            return ImageLoader::loadImageToDataAndRescale(dst, getSourceFile(), dimensions_.x, dimensions_.y);
+            return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dimensions_.x, dimensions_.y);
         else
-            return ImageLoader::loadImageToData(dst, getSourceFile());
+            return ImageIO::loadImageToData(dst, getSourceFile());
 
     return NOT_SPECIALIZED;
 }
 
 DataFormatId LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dst_dimesion) const {
     if (hasSourceFile())
-        return ImageLoader::loadImageToDataAndRescale(dst, getSourceFile(), dst_dimesion.x, dst_dimesion.y);
+        return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dst_dimesion.x, dst_dimesion.y);
 
     return NOT_SPECIALIZED;
 }

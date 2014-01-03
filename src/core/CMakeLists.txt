@@ -89,7 +89,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriterfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datvolumewriter.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/imageloader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/imageio.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
@@ -268,7 +268,7 @@ set(SOURCE_FILES
     io/datawriterfactory.cpp
     io/datvolumereader.cpp
     io/datvolumewriter.cpp 
-    io/imageloader.cpp
+    io/imageio.cpp
     io/ivfvolumereader.cpp 
     io/ivfvolumewriter.cpp  
     io/serialization/ivwdeserializer.cpp

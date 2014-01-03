@@ -12,9 +12,9 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/io/imageloader.h>
+#include <inviwo/core/io/imageio.h>
 
-bool ImageLoader::loader_initialized = false;
+bool ImageIO::loader_initialized = false;
 
 inline DataFormatId getDataFormatFromBitmap(FIBITMAP* bitmap){
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
@@ -66,7 +66,7 @@ inline DataFormatId getDataFormatFromBitmap(FIBITMAP* bitmap){
     return inviwo::NOT_SPECIALIZED;
 }
 
-void ImageLoader::saveImage(const char* filename, const Image* inputImage) {
+void ImageIO::saveImage(const char* filename, const Image* inputImage) {
     initLoader();
     FREE_IMAGE_FORMAT imageFormat = FreeImage_GetFIFFromFilename(filename);
     
@@ -86,7 +86,7 @@ void ImageLoader::saveImage(const char* filename, const Image* inputImage) {
     }
 }
 
-bool ImageLoader::readInImage(std::string filename, FIBITMAP** bitmap){
+bool ImageIO::readInImage(std::string filename, FIBITMAP** bitmap){
 	const char* file_name_char = (char*)(filename.c_str());
 	FREE_IMAGE_FORMAT imageFormat = FIF_UNKNOWN;	
 
@@ -110,7 +110,7 @@ bool ImageLoader::readInImage(std::string filename, FIBITMAP** bitmap){
 	return (imageFormat != FIF_UNKNOWN);
 }
 
-bool ImageLoader::isValidImageFile(std::string filename) {
+bool ImageIO::isValidImageFile(std::string filename) {
     initLoader();
     const char* file_name_char = (char*)(filename.c_str());
     FREE_IMAGE_FORMAT imageFormat = FIF_UNKNOWN;	
@@ -131,7 +131,7 @@ bool ImageLoader::isValidImageFile(std::string filename) {
     return (imageFormat != FIF_UNKNOWN);    
 }
 
-DataFormatId ImageLoader::loadImageToData(void* data, std::string filename){
+DataFormatId ImageIO::loadImageToData(void* data, std::string filename){
     initLoader();
     FIBITMAP *bitmap = new FIBITMAP();
     DataFormatId formatId = NOT_SPECIALIZED;
@@ -153,7 +153,7 @@ DataFormatId ImageLoader::loadImageToData(void* data, std::string filename){
     return formatId;
 }
 
-DataFormatId ImageLoader::loadImageToDataAndRescale(void* data, std::string filename, int dst_width, int dst_height){
+DataFormatId ImageIO::loadImageToDataAndRescale(void* data, std::string filename, int dst_width, int dst_height){
     initLoader();
     FIBITMAP* bitmap = new FIBITMAP();
     DataFormatId formatId = NOT_SPECIALIZED;
@@ -175,12 +175,12 @@ DataFormatId ImageLoader::loadImageToDataAndRescale(void* data, std::string file
     return formatId;
 }
 
-void* ImageLoader::rescaleImage(Image* srcImage, int dst_width, int dst_height) {
+void* ImageIO::rescaleImage(Image* srcImage, int dst_width, int dst_height) {
     const ImageRAM *imageRam = srcImage->getRepresentation<ImageRAM>();
     return rescaleImageRAM(const_cast<ImageRAM*>(imageRam), dst_width, dst_height);
 }
 
-void* ImageLoader::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst_height) {
+void* ImageIO::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst_height) {
     ivwAssert(srcImageRam!=NULL, "ImageRAM representation does not exist.");
 
     initLoader();  
@@ -206,7 +206,7 @@ void* ImageLoader::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst
     return rawData;
 }
 
-void ImageLoader::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels){
+void ImageIO::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels){
     if(channels > 2){
         unsigned int c = static_cast<unsigned int>(channels);
         BYTE* result = FreeImage_GetBits(bitmap);
@@ -219,7 +219,7 @@ void ImageLoader::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels){
     }
 }
 
-FIBITMAP* ImageLoader::allocateBitmap(int width, int height, size_t bitsPerPixel, int channels){
+FIBITMAP* ImageIO::allocateBitmap(int width, int height, size_t bitsPerPixel, int channels){
     unsigned int rMask = FI_RGBA_RED_MASK;
     unsigned int gMask = FI_RGBA_GREEN_MASK;
     unsigned int bMask = FI_RGBA_BLUE_MASK;
@@ -241,7 +241,7 @@ FIBITMAP* ImageLoader::allocateBitmap(int width, int height, size_t bitsPerPixel
 }
 
 template<typename T>
-FIBITMAP* ImageLoader::createBitmapFromData(const T* data, uvec2 dim, size_t bitsPerPixel, int channels){
+FIBITMAP* ImageIO::createBitmapFromData(const T* data, uvec2 dim, size_t bitsPerPixel, int channels){
     FIBITMAP* dib = allocateBitmap(dim.x, dim.y, bitsPerPixel, channels);
     unsigned int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
     T* bits = (T*)FreeImage_GetBits(dib);
@@ -250,13 +250,13 @@ FIBITMAP* ImageLoader::createBitmapFromData(const T* data, uvec2 dim, size_t bit
 }
 
 template<typename T>
-FIBITMAP* ImageLoader::handleBitmapCreations(const T* data, uvec2 dim, size_t bitsPerPixel, int channels){
+FIBITMAP* ImageIO::handleBitmapCreations(const T* data, uvec2 dim, size_t bitsPerPixel, int channels){
     FIBITMAP *bitmap = createBitmapFromData<T>(data, dim, bitsPerPixel, channels);
     switchChannels(bitmap, dim, channels);
     return bitmap;
 }
 
-FIBITMAP* ImageLoader::createBitmapFromData(const ImageRAM* inputImage){
+FIBITMAP* ImageIO::createBitmapFromData(const ImageRAM* inputImage){
     switch (inputImage->getDataFormatId())
     {
     case NOT_SPECIALIZED:
@@ -272,7 +272,7 @@ FIBITMAP* ImageLoader::createBitmapFromData(const ImageRAM* inputImage){
 }
 
 template<typename T>
-void ImageLoader::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels){
+void ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels){
     int width = FreeImage_GetWidth(bitmap);
     int height = FreeImage_GetHeight(bitmap);
     uvec2 dim(width, height);
@@ -293,7 +293,7 @@ void ImageLoader::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPe
 }
 
 template<typename T>
-void ImageLoader::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels){
+void ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels){
     int width = FreeImage_GetWidth(bitmap);
     int height = FreeImage_GetHeight(bitmap);
     uvec2 dim(width, height);
@@ -321,7 +321,7 @@ void ImageLoader::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, int
     FreeImage_Unload(bitmapNEW);
 }
 
-void ImageLoader::initLoader(){
+void ImageIO::initLoader(){
     if (!loader_initialized){
 		loader_initialized = true;
 		FreeImage_Initialise(1);

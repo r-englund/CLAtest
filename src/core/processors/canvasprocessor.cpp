@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/io/imageloader.h>
+#include <inviwo/core/io/imageio.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/datetime.h>
 #include <inviwo/core/util/stringconversion.h>
@@ -78,7 +78,7 @@ void CanvasProcessor::createSnapshot() {
     
 void CanvasProcessor::createSnapshot(const char* snapshotPath) {
     const Image* image = inport_.getData();
-    ImageLoader::saveImage(snapshotPath, image);
+    ImageIO::saveImage(snapshotPath, image);
     InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
 }
 

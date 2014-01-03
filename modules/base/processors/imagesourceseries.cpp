@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include "imagesourceseries.h"
-#include <inviwo/core/io/imageloader.h>
+#include <inviwo/core/io/imageio.h>
 #include <inviwo/core/util/filedirectory.h>
 
 namespace inviwo {
@@ -55,7 +55,7 @@ void ImageSourceSeries::onFindFiles() {
     std::vector<std::string> ids;
     std::vector<std::string> displayNames;
     for (size_t i=0; i<files.size(); i++) {
-        if (ImageLoader::isValidImageFile(files[i]) ) {
+        if (ImageIO::isValidImageFile(files[i]) ) {
             std::string displayName = URLParser::getFileNameWithExtension(files[i]);
             ids.push_back(displayName+"_id");
             displayNames.push_back(displayName);
@@ -85,7 +85,7 @@ void ImageSourceSeries::process() {
         std::vector<std::string> filesInDirectory = imageFileDirectory_.getFiles();
         std::vector<std::string> fileNames;
         for (size_t i=0; i<filesInDirectory.size(); i++) {
-            if (ImageLoader::isValidImageFile(filesInDirectory[i]) ) {                
+            if (ImageIO::isValidImageFile(filesInDirectory[i]) ) {                
                 fileNames.push_back(filesInDirectory[i]);
             }
         }

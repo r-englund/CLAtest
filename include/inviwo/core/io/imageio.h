@@ -23,10 +23,10 @@
 
 using namespace inviwo;
 
-class IVW_CORE_API ImageLoader{
+class IVW_CORE_API ImageIO{
 public:
-	ImageLoader(){};
-	~ImageLoader(){
+	ImageIO(){};
+	~ImageIO(){
 		FreeImage_DeInitialise();
 	}
     /**

@@ -14,7 +14,7 @@
 
 #include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/datastructures/image/imageramprecision.h>
-#include <inviwo/core/io/imageloader.h>
+#include <inviwo/core/io/imageio.h>
 
 namespace inviwo {
 
@@ -65,7 +65,7 @@ bool ImageRAM::copyAndResizeImage(DataRepresentation* targetImageRam) {
 
     //CPU image rescaling using image loader
     uvec2 targetDimensions  = target->getDimensions();
-    void* rawData = ImageLoader::rescaleImageRAM(source, targetDimensions.x, targetDimensions.y);
+    void* rawData = ImageIO::rescaleImageRAM(source, targetDimensions.x, targetDimensions.y);
 
     if (!rawData) return false;
 
