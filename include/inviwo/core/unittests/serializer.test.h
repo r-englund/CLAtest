@@ -312,6 +312,7 @@ TEST(SerialitionTest,bvec3Tests){
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
 }
 
 TEST(SerialitionTest,bvec4Tests){
@@ -319,7 +320,58 @@ TEST(SerialitionTest,bvec4Tests){
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+    EXPECT_EQ(inVec.w,outVec.w);
 }
 
+
+TEST(SerialitionTest,dvec2Tests){
+    dvec2 inVec(false,true),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+}
+
+TEST(SerialitionTest,dvec3Tests){
+    dvec3 inVec(false,true,false),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+}
+
+TEST(SerialitionTest,dvec4Tests){
+    dvec4 inVec(false,true,false,true),outVec;
+    outVec = serializationOfType(inVec);
+    EXPECT_EQ(inVec.x,outVec.x);
+    EXPECT_EQ(inVec.y,outVec.y);
+    EXPECT_EQ(inVec.z,outVec.z);
+    EXPECT_EQ(inVec.w,outVec.w);
+}
+
+
+TEST(SerialitionTest,mat2Tests){
+    mat2 inMat(0,1,2,3),outMat;
+    outMat = serializationOfType(inMat);
+    int s = 2;
+    for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
+        EXPECT_EQ(inMat[i][j],outMat[i][j]);
+}
+
+TEST(SerialitionTest,mat3Tests){
+    mat3 inMat(0,1,2,3,4,5,6,7,8),outMat;
+    outMat = serializationOfType(inMat);
+    int s = 3;
+    for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
+        EXPECT_EQ(inMat[i][j],outMat[i][j]);
+}
+
+TEST(SerialitionTest,mat4Tests){
+    mat4 inMat(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15),outMat;
+    outMat = serializationOfType(inMat);
+    int s = 4;
+    for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
+        EXPECT_EQ(inMat[i][j],outMat[i][j]);
+}
 
 #endif
