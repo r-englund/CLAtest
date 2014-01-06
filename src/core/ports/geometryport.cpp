@@ -36,6 +36,22 @@ uvec3 GeometryInport::getColorCode() const {
     return GeometryInport::colorCode; 
 }
 
+GeometryMultiInport::GeometryMultiInport(std::string identifier)
+	: MultiDataInport<Geometry>(identifier)
+{}
+
+GeometryMultiInport::~GeometryMultiInport() {
+}
+
+void GeometryMultiInport::initialize() {}
+
+void GeometryMultiInport::deinitialize() {}
+
+
+uvec3 GeometryMultiInport::getColorCode() const { 
+	return GeometryInport::colorCode; 
+}
+
 // Geometry Outport
 GeometryOutport::GeometryOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
 : DataOutport<Geometry>(identifier, invalidationLevel) 

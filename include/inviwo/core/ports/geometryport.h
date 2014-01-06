@@ -18,6 +18,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/ports/dataoutport.h>
+#include <inviwo/core/ports/multidatainport.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
 
 namespace inviwo {
@@ -34,6 +35,18 @@ public:
 
     uvec3 getColorCode() const;
     static uvec3 colorCode;
+};
+
+class IVW_CORE_API GeometryMultiInport : public MultiDataInport<Geometry> {
+
+public:
+	GeometryMultiInport(std::string identifier);
+	virtual ~GeometryMultiInport();
+
+	void initialize();
+	void deinitialize();
+
+	uvec3 getColorCode() const;
 };
 
 class IVW_CORE_API GeometryOutport : public DataOutport<Geometry> {
