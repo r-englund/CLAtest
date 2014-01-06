@@ -34,7 +34,7 @@ protected:
     virtual void process();
     void centerViewOnGeometry();
 
-    GeometryInport inport_;
+    GeometryMultiInport inport_;
     ImageOutport outport_;
 
     CameraProperty camera_;

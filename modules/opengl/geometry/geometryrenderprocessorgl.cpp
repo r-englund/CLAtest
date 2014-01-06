@@ -24,11 +24,11 @@ ProcessorCategory(GeometryRenderProcessorGL, "Geometry Rendering");
 ProcessorCodeState(GeometryRenderProcessorGL, CODE_STATE_STABLE);
 
 GeometryRenderProcessorGL::GeometryRenderProcessorGL()
-    : ProcessorGL(),
-      inport_("geometry.inport"),
-      outport_("image.outport"),
-      camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f)),
-      centerViewOnGeometry_("centerView", "Center view on geometry")
+    : ProcessorGL()
+    , inport_("geometry.inport")
+    , outport_("image.outport")
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f))
+    , centerViewOnGeometry_("centerView", "Center view on geometry")
 {
     addPort(inport_);
     addPort(outport_);
@@ -54,12 +54,14 @@ void GeometryRenderProcessorGL::process() {
     activateAndClearTarget(outport_);
     glCullFace(GL_BACK);
 
-    //inport_.getData()->getRepresentation<GeometryGL>()->render();
-    const Geometry* geom = inport_.getData();
-    if( const Mesh* mesh = dynamic_cast<const Mesh*>(geom)) {
-        MeshGLRenderer renderer(mesh);
-        renderer.render();
-    }
+	std::vector<const Geometry*> geometries = inport_.getData();
+	for (std::vector<const Geometry*>::const_iterator it = geometries.begin(), endIt = geometries.end(); it != endIt; ++it) {
+		const Geometry* geom = *it;
+		if (const Mesh* mesh = dynamic_cast<const Mesh*>(geom)) {
+			MeshGLRenderer renderer(mesh);
+			renderer.render();
+		}
+	}
 
     deactivateCurrentTarget();
 
@@ -71,21 +73,24 @@ void GeometryRenderProcessorGL::process() {
 }
 
 void GeometryRenderProcessorGL::centerViewOnGeometry() {
-    const Mesh* geom = dynamic_cast<const Mesh*>(inport_.getData());
-    if(geom == NULL) {
+	std::vector<const Geometry*> geometries = inport_.getData();
+	if (geometries.empty()) return;
+
+    const Mesh* geom = dynamic_cast<const Mesh*>(geometries[0]);
+    if (geom == NULL) {
         return;
     }
     const Position3dBufferRAM* posBuffer = dynamic_cast<const Position3dBufferRAM*>(geom->getAttributes(0)->getRepresentation<BufferRAM>());
-    if(posBuffer == NULL) {
+    if (posBuffer == NULL) {
         return;
     }
     const std::vector<vec3>* pos = posBuffer->getDataContainer();
     vec3 maxPos, minPos;
-    if(pos->size() > 0) {
+    if (pos->size() > 0) {
         maxPos = (*pos)[0];
         minPos = maxPos;
     }
-    for(size_t i = 0; i < pos->size(); ++i) {
+    for (size_t i = 0; i < pos->size(); ++i) {
         maxPos = glm::max(maxPos, (*pos)[i]);
         minPos = glm::min(minPos, (*pos)[i]);
     }
