@@ -16,23 +16,25 @@ endif()
 
 include_directories(${IVW_MODULE_DIR}/unittests/ext/gtest-1.7.0/include)
 include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
+ivw_link_directories(${LIBRARY_OUTPUT_PATH})
 
 
 ivw_retrieve_all_modules(package_list)
-list(APPEND package_list InviwoCore)
 
 foreach(module ${package_list})
     string(TOUPPER ${module} u_module)
     if(u_module MATCHES "QT+")
         list(REMOVE_ITEM package_list ${module})
-    endif()
-    if(u_module MATCHES "GL+")
+    elseif(u_module MATCHES "GL+")
         list(REMOVE_ITEM package_list ${module})
-    endif()
-    if(u_module MATCHES "VRN+")
+    elseif(u_module MATCHES "VRN+")
         list(REMOVE_ITEM package_list ${module})
+    else()
+        ivw_mod_name_to_dir(libraryname ${module})
+		add_dependency_libs_to_module(inviwo-module-${libraryname})
     endif()
 endforeach()
+list(APPEND package_list InviwoCore)
 
 #--------------------------------------------------------------------
 # Register the use of modules
@@ -70,9 +72,7 @@ endif()
 configure_file(${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h ${CMAKE_BINARY_DIR}/modules/_generated/unittests.h)
 file(REMOVE ${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h)
 
-
 add_dependency_libs_to_module(gtest)
-
 
 #--------------------------------------------------------------------
 # Create module
