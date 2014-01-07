@@ -27,12 +27,6 @@
 #include <GL/glx.h> // glXCurrentContext()
 #endif
 
-#ifdef WIN32
-#define OPEN_FILE(a,b,c) fopen_s(&a, b, c);
-#else
-#define OPEN_FILE(a,b,c) a = fopen(b, c);
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 

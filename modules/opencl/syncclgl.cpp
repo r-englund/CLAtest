@@ -39,6 +39,7 @@ SyncCLGL::SyncCLGL(): releaseEvent_(NULL), syncEvents_(NULL) {
 }
 
 SyncCLGL::~SyncCLGL() {
+    try {
 #if defined(CL_VERSION_1_1) && defined(GL_ARB_cl_event) && defined(CL_COMMAND_GL_FENCE_SYNC_OBJECT_KHR)
     //GLsync clSync = glCreateSyncFromCLeventARB(OpenCL::instance()->getContext()(), (*releaseEvent_)(), 0);
     //glWaitSync(clSync, 0, GL_TIMEOUT_IGNORED);
@@ -49,7 +50,9 @@ SyncCLGL::~SyncCLGL() {
 #else 
     OpenCL::instance()->getQueue().finish();
 #endif
-
+    } catch (cl::Error& err) {
+        LogError(getCLErrorString(err));
+    }
 }
 
 } // end namespace
