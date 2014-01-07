@@ -1,10 +1,12 @@
 #ifndef IVW_PYTHON_TEST_H
 #define IVW_PYTHON_TEST_H
 
+#include <modules/unittests/unittestsmoduledefine.h>
+
 #include <modules/python/pythonmodule.h>
 #include <modules/python/pythonscript.h>
 
-class PythonModuleTest : public ::testing::Test {
+class IVW_MODULE_UNITTESTS_API PythonModuleTest : public ::testing::Test {
 protected:
     PythonModuleTest():module_(0){}
     ~PythonModuleTest(){}

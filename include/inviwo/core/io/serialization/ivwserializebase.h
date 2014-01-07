@@ -159,7 +159,7 @@ public:
      */
     virtual void setFileName(const std::string fileName);
 
-    class NodeSwitch {
+    class IVW_CORE_API NodeSwitch {
     public:
          /** 
           * \brief NodeSwitch helps track parent node during recursive/nested function calls.
@@ -178,7 +178,7 @@ public:
         TxElement* storedNode_; //Parent (Ticpp Node) element.
     };
 
-    struct ReferenceData {            
+    struct IVW_CORE_API ReferenceData {            
         TxElement* node_; //Ticpp Node element.
         bool isPointer_; //Used to differentiate pointer and object.
     };    
@@ -187,7 +187,7 @@ public:
     typedef std::multimap<const void*,ReferenceData> RefMap;
     typedef std::vector<IvwSerializeBase::ReferenceData> RefDataList;
 
-    class ReferenceDataContainer {
+    class IVW_CORE_API ReferenceDataContainer {
     public:
         ReferenceDataContainer();
         ~ReferenceDataContainer();

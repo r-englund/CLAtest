@@ -1,6 +1,9 @@
 #ifndef IVW_SERIALIZER_TEST_H
 #define IVW_SERIALIZER_TEST_H
 
+
+#include <modules/unittests/unittestsmoduledefine.h>
+
 #include <inviwo/core/io/serialization/ivwserializable.h>
 
 #define SERIALITION_FILE_NAME InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/tmpfiles/serilizationtests.xml")
@@ -46,7 +49,7 @@ NUMERIC_TESTS(doubleSerializationTest,double,6.28);
 NUMERIC_TESTS(int8SerializationTest,int8_t,3);
 NUMERIC_TESTS(int16SerializationTest,int16_t,6);
 NUMERIC_TESTS(int32SerializationTest,int32_t,654);
-NUMERIC_TESTS(int64SerializationTest,int64_t,6789);
+//NUMERIC_TESTS(int64SerializationTest,int64_t,6789);
 
 NUMERIC_TESTS(uint8SerializationTest,uint8_t,3);
 NUMERIC_TESTS(uint16SerializationTest,uint16_t,6);
@@ -57,7 +60,7 @@ NUMERIC_TESTS(uint32SerializationTest,uint32_t,654);
 NUMERIC_TESTS(intLeast8SerializationTest,int_least8_t,3);
 NUMERIC_TESTS(intLeast16SerializationTest,int_least16_t,6);
 NUMERIC_TESTS(intLeast32SerializationTest,int_least32_t,654);
-NUMERIC_TESTS(intLeast64SerializationTest,int_least64_t,6789);
+//NUMERIC_TESTS(intLeast64SerializationTest,int_least64_t,6789);
 
 NUMERIC_TESTS(uintLeast8SerializationTest,uint_least8_t,3);
 NUMERIC_TESTS(uintLeast16SerializationTest,uint_least16_t,6);
@@ -69,7 +72,7 @@ NUMERIC_TESTS(uintLeast32SerializationTest,uint_least32_t,654);
 NUMERIC_TESTS(intFast8SerializationTest,int_fast8_t,3);
 NUMERIC_TESTS(intFast16SerializationTest,int_fast16_t,6);
 NUMERIC_TESTS(intFast32SerializationTest,int_fast32_t,654);
-NUMERIC_TESTS(intFast64SerializationTest,int_fast64_t,6789);
+//NUMERIC_TESTS(intFast64SerializationTest,int_fast64_t,6789);
 
 NUMERIC_TESTS(uintFast8SerializationTest,uint_fast8_t,3);
 NUMERIC_TESTS(uintFast16SerializationTest,uint_fast16_t,6);
@@ -80,8 +83,7 @@ TYPE_TEST(oneMinusEpsilonFloatTest,float,oneMinusEpsilonF);
 TYPE_TEST(oneMinusEpsilonDobuleTest,double,oneMinusEpsilonD);
 
 
-
-class MinimumSerilizableClass : public IvwSerializable{
+class IVW_MODULE_UNITTESTS_API MinimumSerilizableClass : public IvwSerializable{
 public:
     MinimumSerilizableClass(float v=0): value_(v) {}
 
@@ -149,9 +151,9 @@ TEST(SerialitionTest,IvwSerializableClassAsPointerTest){
 
 TEST(SerialitionTest,floatVectorTest){
     std::vector<float> inVector,outVector;
-    inVector.push_back(0.1);
-    inVector.push_back(0.2);
-    inVector.push_back(0.3);
+    inVector.push_back(0.1f);
+    inVector.push_back(0.2f);
+    inVector.push_back(0.3f);
 
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
@@ -165,7 +167,7 @@ TEST(SerialitionTest,floatVectorTest){
 //    deserializer.deserialize("serializedVector",outVector,"value");
 
     ASSERT_EQ(inVector.size(),outVector.size());
-    for(int i = 0;i<inVector.size();i++){
+    for(size_t i = 0;i<inVector.size();i++){
         EXPECT_EQ(inVector[i],outVector[i]);
     }
 }
@@ -176,9 +178,9 @@ TEST(SerialitionTest,floatVectorTest){
 
 TEST(SerialitionTest,vectorOfNonPointersTest){
     std::vector<MinimumSerilizableClass> inVector,outVector;
-    inVector.push_back(MinimumSerilizableClass(0.1));
-    inVector.push_back(MinimumSerilizableClass(0.2));
-    inVector.push_back(MinimumSerilizableClass(0.3));
+    inVector.push_back(MinimumSerilizableClass(0.1f));
+    inVector.push_back(MinimumSerilizableClass(0.2f));
+    inVector.push_back(MinimumSerilizableClass(0.3f));
 
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
@@ -193,7 +195,7 @@ TEST(SerialitionTest,vectorOfNonPointersTest){
 //    deserializer.deserialize("serializedVector",outVector,"value");
 
     ASSERT_EQ(inVector.size(),outVector.size());
-    for(int i = 0;i<inVector.size();i++){
+    for(size_t i = 0;i<inVector.size();i++){
         EXPECT_EQ(inVector[i],outVector[i]);
     }
 }
@@ -201,9 +203,9 @@ TEST(SerialitionTest,vectorOfNonPointersTest){
 
 TEST(SerialitionTest,vectorOfPointersTest){
     std::vector<MinimumSerilizableClass*> inVector,outVector;
-    inVector.push_back(new MinimumSerilizableClass(0.1));
-    inVector.push_back(new MinimumSerilizableClass(0.2));
-    inVector.push_back(new MinimumSerilizableClass(0.3));
+    inVector.push_back(new MinimumSerilizableClass(0.1f));
+    inVector.push_back(new MinimumSerilizableClass(0.2f));
+    inVector.push_back(new MinimumSerilizableClass(0.3f));
 
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
@@ -218,20 +220,20 @@ TEST(SerialitionTest,vectorOfPointersTest){
     deserializer.deserialize("serializedVector",outVector,"value");
 
     ASSERT_EQ(inVector.size(),outVector.size());
-    for(int i = 0;i<inVector.size();i++){
+    for(size_t i = 0;i<inVector.size();i++){
         EXPECT_EQ(inVector[i]->value_,outVector[i]->value_);
     }
 }
 
 TEST(SerialitionTest,vec2Tests){
-    vec2 inVec(1,2),outVec;
+    vec2 inVec(1.1f,2.2f),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
 }
 
 TEST(SerialitionTest,vec3Tests){
-    vec3 inVec(1,2,3),outVec;
+    vec3 inVec(1.1f,2.2f,3.3f),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
@@ -239,7 +241,7 @@ TEST(SerialitionTest,vec3Tests){
 }
 
 TEST(SerialitionTest,vec4Tests){
-    vec4 inVec(1,2,3,4),outVec;
+    vec4 inVec(1.1f,2.2f,3.3f,4.4f),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
@@ -326,14 +328,14 @@ TEST(SerialitionTest,bvec4Tests){
 
 
 TEST(SerialitionTest,dvec2Tests){
-    dvec2 inVec(false,true),outVec;
+    dvec2 inVec(1.1,2.2),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
 }
 
 TEST(SerialitionTest,dvec3Tests){
-    dvec3 inVec(false,true,false),outVec;
+    dvec3 inVec(1.1,2.2,3.3),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
@@ -341,7 +343,7 @@ TEST(SerialitionTest,dvec3Tests){
 }
 
 TEST(SerialitionTest,dvec4Tests){
-    dvec4 inVec(false,true,false,true),outVec;
+    dvec4 inVec(1.1,2.2,3.3,4.4),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
@@ -351,7 +353,7 @@ TEST(SerialitionTest,dvec4Tests){
 
 
 TEST(SerialitionTest,mat2Tests){
-    mat2 inMat(0,1,2,3),outMat;
+    mat2 inMat(0.0f,1.0f,2.0f,3.0f),outMat;
     outMat = serializationOfType(inMat);
     int s = 2;
     for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
@@ -359,7 +361,7 @@ TEST(SerialitionTest,mat2Tests){
 }
 
 TEST(SerialitionTest,mat3Tests){
-    mat3 inMat(0,1,2,3,4,5,6,7,8),outMat;
+    mat3 inMat(0.0f,1.0f,2.0f,3.0f,4.0f,5.0f,6.0f,7.0f,8.0f),outMat;
     outMat = serializationOfType(inMat);
     int s = 3;
     for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
@@ -367,7 +369,7 @@ TEST(SerialitionTest,mat3Tests){
 }
 
 TEST(SerialitionTest,mat4Tests){
-    mat4 inMat(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15),outMat;
+    mat4 inMat(0.0f,1.0f,2.0f,3.0f,4.0f,5.0f,6.0f,7.0f,8.0f,9.0f,10.0f,11.0f,12.0f,13.0f,14.0f,15.0f),outMat;
     outMat = serializationOfType(inMat);
     int s = 4;
     for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
