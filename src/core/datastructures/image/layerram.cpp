@@ -65,7 +65,7 @@ bool LayerRAM::copyAndResizeLayer(DataRepresentation* targetLayerRam) {
 
     //CPU image rescaling using image loader
     uvec2 targetDimensions  = target->getDimensions();
-    /*void* rawData = ImageLoader::rescaleImageRAM(source, targetDimensions.x, targetDimensions.y);
+    /*void* rawData = ImageIO::rescaleImageRAM(source, targetDimensions.x, targetDimensions.y);
 
     if (!rawData) return false;
 
