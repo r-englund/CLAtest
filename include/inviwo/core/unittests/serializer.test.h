@@ -1,7 +1,6 @@
 #ifndef IVW_SERIALIZER_TEST_H
 #define IVW_SERIALIZER_TEST_H
 
-
 #include <modules/unittests/unittestsmoduledefine.h>
 
 #include <inviwo/core/io/serialization/ivwserializable.h>
@@ -49,7 +48,7 @@ NUMERIC_TESTS(doubleSerializationTest,double,6.28);
 NUMERIC_TESTS(int8SerializationTest,int8_t,3);
 NUMERIC_TESTS(int16SerializationTest,int16_t,6);
 NUMERIC_TESTS(int32SerializationTest,int32_t,654);
-//NUMERIC_TESTS(int64SerializationTest,int64_t,6789);
+NUMERIC_TESTS(int64SerializationTest,int64_t,6789);
 
 NUMERIC_TESTS(uint8SerializationTest,uint8_t,3);
 NUMERIC_TESTS(uint16SerializationTest,uint16_t,6);
@@ -66,8 +65,6 @@ NUMERIC_TESTS(uintLeast8SerializationTest,uint_least8_t,3);
 NUMERIC_TESTS(uintLeast16SerializationTest,uint_least16_t,6);
 NUMERIC_TESTS(uintLeast32SerializationTest,uint_least32_t,654);
 //NUMERIC_TESTS(uintLeast64SerializationTest,uint_least64_t,6789);
-
-
 
 NUMERIC_TESTS(intFast8SerializationTest,int_fast8_t,3);
 NUMERIC_TESTS(intFast16SerializationTest,int_fast16_t,6);
@@ -128,28 +125,25 @@ TEST(SerialitionTest,IvwSerializableClassTest){
 }
 
 
-TEST(SerialitionTest,IvwSerializableClassAsPointerTest){
-    MinimumSerilizableClass *inValue = new MinimumSerilizableClass(12),*outValue = 0;
+TEST(SerialitionTest, IvwSerializableClassAsPointerTest){
+    MinimumSerilizableClass *inValue = new MinimumSerilizableClass(12), *outValue = 0;
 
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
 
-    serializer.serialize("serializedValue",inValue);
-
-
+    serializer.serialize("serializedValue", inValue);
     serializer.writeFile();
 
     IvwDeserializer deserializer(filename);
     deserializer.readFile();
+    deserializer.deserialize("serializedValue", outValue);
 
-    deserializer.deserialize("serializedValue",outValue);
-
-    EXPECT_EQ(inValue->value_,12);
-    EXPECT_NE(outValue->value_,0);
-    EXPECT_EQ(inValue,outValue);
+    EXPECT_EQ(inValue->value_, 12);
+    EXPECT_NE(outValue->value_, 0);
+    EXPECT_EQ(inValue->value_, outValue->value_);
 }
 
-TEST(SerialitionTest,floatVectorTest){
+TEST(SerialitionTest, floatVectorTest){
     std::vector<float> inVector,outVector;
     inVector.push_back(0.1f);
     inVector.push_back(0.2f);
@@ -158,13 +152,13 @@ TEST(SerialitionTest,floatVectorTest){
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
 
-    serializer.serialize("serializedVector",inVector,"value");
+    serializer.serialize("serializedVector", inVector, "value");
 
     serializer.writeFile();
 
     IvwDeserializer deserializer(filename);
     deserializer.readFile();
-//    deserializer.deserialize("serializedVector",outVector,"value");
+    deserializer.deserialize("serializedVector", outVector, "value");
 
     ASSERT_EQ(inVector.size(),outVector.size());
     for(size_t i = 0;i<inVector.size();i++){
@@ -192,7 +186,7 @@ TEST(SerialitionTest,vectorOfNonPointersTest){
 
     IvwDeserializer deserializer(filename);
     deserializer.readFile();
-//    deserializer.deserialize("serializedVector",outVector,"value");
+    deserializer.deserialize("serializedVector",outVector,"value");
 
     ASSERT_EQ(inVector.size(),outVector.size());
     for(size_t i = 0;i<inVector.size();i++){

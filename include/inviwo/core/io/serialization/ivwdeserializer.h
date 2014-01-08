@@ -68,6 +68,10 @@ public:
      * @param const std::string & itemKey vector item key     
      */
     template <typename T>
+    void deserialize(const std::string &key,
+                     std::vector<T*> &sVector,
+                     const std::string &itemKey); 
+    template <typename T>
     void deserialize(const std::string &key, 
                      std::vector<T> &sVector, 
                      const std::string &itemKey);
@@ -123,9 +127,10 @@ public:
     /** 
      * \brief Deserialize string data.
      * 
-     * @param const std::string & key Parent node key e.g, "Property"
-     * @param std::string & data string data to be deserialized
-     * @param const bool asAttribute if attribute is true the xml node is formatted as <Key data="this is an attribute"\>, otherwise <Key> <data="this is non-attribute"> <Key\>     
+     * @param key Parent node key e.g, "Property"
+     * @param data string data to be deserialized
+     * @param asAttribute if attribute is true the xml node is formatted as <Key data="this is an attribute"\>, 
+     * otherwise <Key> <data="this is non-attribute"> <Key\>     
      */
     void deserialize(const std::string &key, 
                      std::string &data, 
@@ -135,8 +140,9 @@ public:
     void deserialize(const std::string &key, bool &data);
     void deserialize(const std::string &key, float &data);
     void deserialize(const std::string &key, double &data);
-    void deserialize(const std::string &key, int8_t &data);
-    void deserialize(const std::string &key, uint8_t &data);
+    void deserialize(const std::string &key, signed char &data);
+    void deserialize(const std::string &key, unsigned char &data);
+    void deserialize(const std::string &key, char &data);
     void deserialize(const std::string &key, short &data);
     void deserialize(const std::string &key, unsigned short &data);
     void deserialize(const std::string &key, int &data);
@@ -168,7 +174,7 @@ public:
      *         serializeble object or primitive data
      */
     template <class T>
-    void deserialize(const std::string& key, T* & data, bool getChild=true);
+    void deserialize(const std::string& key, T* & data);
     
 protected:
     friend class NodeSwitch;
@@ -216,11 +222,6 @@ private:
     void deserializeVector(const std::string& key, 
                            T& vector, 
                            const bool& isColor=false);
-    
-    template<typename T>
-    struct is_pointer { static const bool value = false; };
-    template<typename T>
-    struct is_pointer<T*> { static const bool value = true; };
 };
 
 template<class T>
@@ -290,7 +291,7 @@ void IvwDeserializer::deserialize(const std::string &key, glm::detail::tmat2x2<T
 
 template <typename T>
 void IvwDeserializer::deserialize(const std::string &key,
-                                  std::vector<T> &sVector,
+                                  std::vector<T*> &sVector,
                                   const std::string &itemKey) {
     try {
         TxElement* keyNode = rootElement_->FirstChildElement(key);
@@ -300,22 +301,39 @@ void IvwDeserializer::deserialize(const std::string &key,
         
         TxEIt child(itemKey);
         for (child = child.begin(rootElement_); child != child.end(); ++child) {
-            NodeSwitch tempNodeSwitch(*this, &(*child));
+            NodeSwitch tempNodeSwitch(*this, &(*child), false);
             
-            if (sVector.size()>i) {
-                deserialize(itemKey, sVector[i], false);
-            } else if (is_pointer<T>::value){
-                T item = NULL;
-                deserialize(itemKey, item, false);
-                sVector.push_back(item);
-            }else {
-                T item;
-                deserialize(itemKey, item, false);
+            if (sVector.size()<=i) {
+                T* item = NULL;
                 sVector.push_back(item);
             }
+            deserialize(itemKey, sVector[i]);
             i++;
         }
     } catch (TxException&) {}
+}
+template <typename T>
+void IvwDeserializer::deserialize(const std::string &key,
+                                  std::vector<T> &sVector,
+                                  const std::string &itemKey) {
+    try {
+        TxElement* keyNode = rootElement_->FirstChildElement(key);
+        NodeSwitch tempNodeSwitch(*this, keyNode);
+
+        unsigned int i = 0;
+
+        TxEIt child(itemKey);
+        for(child = child.begin(rootElement_); child != child.end(); ++child) {
+            NodeSwitch tempNodeSwitch(*this, &(*child), false);
+            if(sVector.size() <= i) {
+                T item;
+                sVector.push_back(item);
+            }
+            deserialize(itemKey, sVector[i]);
+
+            i++;
+        }
+    } catch(TxException&) {}
 }
 
 template <typename K, typename V, typename C, typename A>
@@ -334,7 +352,7 @@ void IvwDeserializer::deserialize(const std::string &key,
 
         TxEIt child(itemKey);
         for(child = child.begin(rootElement_); child != child.end(); ++child) {
-            NodeSwitch tempNodeSwitch(*this, &(*child));
+            NodeSwitch tempNodeSwitch(*this, &(*child), false);
 
             K key;
             child->GetAttribute(comparisionAttribute, &key);
@@ -348,17 +366,17 @@ void IvwDeserializer::deserialize(const std::string &key,
                 value = NULL;
             }
 
-            deserialize(itemKey, value, false);
+            deserialize(itemKey, value);
             map[key] = value;
         }
     } catch(TxException&) {}
 }
 
 template<class T>
-inline void IvwDeserializer::deserialize(const std::string& key, T* & data, bool getChild) {
+inline void IvwDeserializer::deserialize(const std::string& key, T* & data) {
     TxElement* keyNode;
  
-    if(getChild){
+    if(getChild_){
         try {
             keyNode = rootElement_->FirstChildElement(key); 
         } catch (TxException& ) {
@@ -391,26 +409,24 @@ inline void IvwDeserializer::deserialize(const std::string& key, T* & data, bool
         }
     }
     if (data) {
-        (*data).deserialize(*this);
+        deserialize(key, *data); 
         if (!id_attr.empty()) {
             refDataContainer_.insert(data, keyNode);
         }
     }
 }
 
-
 template<class T>
 inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {
-    TxElement* keyNode = rootElement_->FirstChildElement(key, false);
-    if (keyNode && keyNode->HasAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE)){
-        try{
-            keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
-        }catch(TxException&){
-            return;
+    try{
+        if(getChild_) {
+            rootElement_->FirstChildElement(key)->GetAttribute(
+                IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
+        } else {
+            rootElement_->GetAttribute(
+                IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
         }
-    }else{
-        return;
-    }
+    } catch (TxException&) {}
 }
 
 template<class T>

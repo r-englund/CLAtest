@@ -72,18 +72,15 @@ void IvwSerializer::serialize(const std::string &key,
     }
 }
 
-void IvwSerializer::serialize(const std::string &key, const float &data) {
-    serializePrimitives<float>(key, data);
-}
-
-void IvwSerializer::serialize(const std::string &key, const double &data) {
-    serializePrimitives<double>(key, data);
-}
-
 void IvwSerializer::serialize(const std::string &key, const bool &data) {
     serializePrimitives<bool>(key, data);
 }
-
+void IvwSerializer::serialize(const std::string &key, const float &data) {
+    serializePrimitives<float>(key, data);
+}
+void IvwSerializer::serialize(const std::string &key, const double &data) {
+    serializePrimitives<double>(key, data);
+}
 void IvwSerializer::serialize(const std::string &key, const int &data) {
     serializePrimitives<int>(key, data);
 }

@@ -22,14 +22,17 @@
 
 namespace inviwo {
 
-IvwSerializeBase::NodeSwitch::NodeSwitch(IvwSerializeBase& serializer, TxElement* node)
+IvwSerializeBase::NodeSwitch::NodeSwitch(IvwSerializeBase& serializer, TxElement* node, bool getChild)
     : serializer_(serializer)
-    , storedNode_(serializer_.rootElement_){
+    , storedNode_(serializer_.rootElement_)
+    , storedGetChild_(serializer_.getChild_){
     serializer_.rootElement_ = node;
+    serializer_.getChild_ = getChild;
 }
 
 IvwSerializeBase::NodeSwitch::~NodeSwitch() {
     serializer_.rootElement_ = storedNode_;
+    serializer_.getChild_ = storedGetChild_;
 }
 
 IvwSerializeBase::ReferenceDataContainer::ReferenceDataContainer() {
@@ -141,7 +144,7 @@ IvwSerializeBase::IvwSerializeBase(std::string fileName, bool allowReference)
     , doc_(fileName)
     , allowRef_(allowReference){
         
-    registerFactories(); 
+    registerFactories();
 }
 
 IvwSerializeBase::~IvwSerializeBase() {
@@ -197,6 +200,17 @@ bool IvwSerializeBase::isPrimitiveType(const std::type_info& type) const {
 
 void IvwSerializeBase::setAllowReference(const bool& allowReference) {
     allowRef_ = allowReference;
+}
+
+std::string IvwSerializeBase::nodeToString(const TxElement& node) {
+    try {
+        TiXmlPrinter printer;
+        printer.SetIndent("    ");
+        node.Accept(&printer);
+        return printer.CStr();
+    } catch(TxException&) {
+        return "No valid root node";
+    }
 }
 
 } //namespace

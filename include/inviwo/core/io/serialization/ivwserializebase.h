@@ -167,7 +167,7 @@ public:
           * @param IvwSerializeBase & serializer reference to serializer or deserializer
           * @param TxElement * node //Parent (Ticpp Node) element.
           */
-         NodeSwitch(IvwSerializeBase& serializer, TxElement* node);
+         NodeSwitch(IvwSerializeBase& serializer, TxElement* node, bool getChild = true);
         /** 
          * \brief Destructor         
          */
@@ -176,6 +176,7 @@ public:
     private:  
         IvwSerializeBase& serializer_;  //reference to serializer or deserializer
         TxElement* storedNode_; //Parent (Ticpp Node) element.
+        bool storedGetChild_;
     };
 
     struct IVW_CORE_API ReferenceData {            
@@ -203,6 +204,9 @@ public:
     };    
     
 protected:
+
+    static std::string nodeToString(const TxElement& node);
+
     friend class NodeSwitch;
 
     std::vector<Factory*> registeredFactories_;
@@ -210,6 +214,7 @@ protected:
     TxDocument doc_;    
     TxElement* rootElement_;
     bool allowRef_;
+    bool getChild_;
     ReferenceDataContainer refDataContainer_;
 };
 

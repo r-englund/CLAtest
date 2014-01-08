@@ -46,7 +46,12 @@ IvwDeserializer::~IvwDeserializer() {
 
 void IvwDeserializer::deserialize(const std::string &key, IvwSerializable &sObj) {
     try {
-        TxElement* keyNode = rootElement_->FirstChildElement(key);
+        TxElement* keyNode;
+        if(getChild_) {
+            keyNode = rootElement_->FirstChildElement(key);
+        } else {
+            keyNode = rootElement_;
+        }
         NodeSwitch tempNodeSwitch(*this, keyNode);
         sObj.deserialize(*this);
     } catch(TxException&) {}
@@ -59,8 +64,12 @@ void IvwDeserializer::deserializeAttributes(const std::string &key, std::string 
 }
 
 void IvwDeserializer::deserializePrimitives(const std::string &key, std::string &data){
-    TxElement* keyNode = rootElement_->FirstChildElement(key);
-    keyNode->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
+    if(getChild_) {
+        rootElement_->FirstChildElement(key)->GetAttribute(
+            IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
+    } else {
+       rootElement_->GetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
+    }
 }
 
 void IvwDeserializer::deserialize(const std::string &key,
@@ -91,11 +100,14 @@ void IvwDeserializer::deserialize(const std::string &key, float &data) {
 void IvwDeserializer::deserialize(const std::string &key, double &data) {
     deserializePrimitives<double>(key, data);
 }
-void IvwDeserializer::deserialize(const std::string &key, int8_t &data) {
-    deserializePrimitives<int8_t>(key, data);
+void IvwDeserializer::deserialize(const std::string &key, signed char &data) {
+    deserializePrimitives<signed char>(key, data);
 }
-void IvwDeserializer::deserialize(const std::string &key, uint8_t &data) {
-    deserializePrimitives<uint8_t>(key, data);
+void IvwDeserializer::deserialize(const std::string &key, unsigned char &data) {
+    deserializePrimitives<unsigned char>(key, data);
+} 
+void IvwDeserializer::deserialize(const std::string &key, char &data) {
+    deserializePrimitives<char>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string &key, short &data) {
     deserializePrimitives<short>(key, data);
