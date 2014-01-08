@@ -20,13 +20,13 @@
 
 namespace inviwo {
 
-class IVW_CORE_API CallbackWithSingleArgument {
+class CallbackWithSingleArgument {
 public:
     virtual void invoke(const void*) const=0;
 };
 
 template <typename T, typename U>
-class IVW_CORE_API BaseModuleCallback  : public CallbackWithSingleArgument {
+class BaseModuleCallback  : public CallbackWithSingleArgument {
 public:
     typedef void (T::*fPointer)(const U*);
 
@@ -52,7 +52,7 @@ private:
     T* obj_;
 };
 
-class IVW_CORE_API ModuleCallback {
+class ModuleCallback {
 public:
     ModuleCallback() : callBack_(0) {}
 

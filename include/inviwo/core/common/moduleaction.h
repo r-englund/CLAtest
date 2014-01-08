@@ -19,7 +19,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API ModuleCallBackActionState {
+class ModuleCallBackActionState {
 public:
     enum Status { Default =0,
                   Enabled =1,
