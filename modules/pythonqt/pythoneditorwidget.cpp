@@ -238,9 +238,7 @@ namespace inviwo{
         extensions << "Python Script (*.py)";
 
         QFileDialog saveFileDialog(this, tr("Save Python Script ..."));
-        //TODO consider added scripts folder and use getPath instead of getBasePath
-        //or to use workspace directory
-        saveFileDialog.setDirectory(QDir((InviwoApplication::getPtr()->getBasePath() + "/data/scripts").c_str()));
+        saveFileDialog.setDirectory(QDir((InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA) + "scripts").c_str()));
         saveFileDialog.setFileMode(QFileDialog::AnyFile);
         saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
         saveFileDialog.setConfirmOverwrite(true);
@@ -268,8 +266,7 @@ namespace inviwo{
         extensions << "Python Script (*.py)";
 
         QFileDialog openFileDialog(this, tr("Open Python Script ..."));
-        //TODO consider added scripts folder and use getPath instead of getBasePath
-        openFileDialog.setDirectory(QDir((InviwoApplication::getPtr()->getBasePath() + "/data/scripts").c_str()));
+        openFileDialog.setDirectory(QDir((InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA) + "scripts").c_str()));
         openFileDialog.setFileMode(QFileDialog::AnyFile);
         openFileDialog.setNameFilters(extensions);
 
