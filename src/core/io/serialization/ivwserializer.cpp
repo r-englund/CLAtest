@@ -96,6 +96,10 @@ void IvwSerializer::serialize(const std::string &key, const long &data) {
 void IvwSerializer::serialize(const std::string &key, const long long &data) {
     serializePrimitives<long long>(key, data);
 }
+void IvwSerializer::serialize(const std::string &key, const unsigned long long &data) {
+    serializePrimitives<unsigned long long>(key, data);
+}
+
     
 void IvwSerializer::writeFile() {
     try { 

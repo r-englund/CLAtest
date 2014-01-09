@@ -149,6 +149,7 @@ public:
     void deserialize(const std::string &key, unsigned int &data);
     void deserialize(const std::string &key, long &data);
     void deserialize(const std::string &key, long long &data);
+    void deserialize(const std::string &key, unsigned long long &data);
 
     // glm vector types
     template<class T>

@@ -54,6 +54,7 @@ public:
     void serialize(const std::string &key, const unsigned int &data);
     void serialize(const std::string &key, const long &data);
     void serialize(const std::string &key, const long long &data);
+    void serialize(const std::string &key, const unsigned long long &data);
 
     // glm vector types
     template<class T>

@@ -15,7 +15,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <QPainterPath>
-
+#include <QVector2D>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
 
 namespace inviwo {
@@ -78,14 +78,88 @@ QRectF LinkGraphicsItem::boundingRect() const {
 
 
 LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor,
-                                               ProcessorGraphicsItem* inProcessor)
-                                               : LinkGraphicsItem(outProcessor->getShortestBoundaryPointTo(inProcessor),
-                                                                  inProcessor->getShortestBoundaryPointTo(outProcessor), 
-                                                                  ivec3(255,255,255)),
-                                                 outProcessor_(outProcessor), inProcessor_(inProcessor) {
+                                                       ProcessorGraphicsItem* inProcessor)
+    : LinkGraphicsItem(outProcessor->getShortestBoundaryPointTo(inProcessor),
+                       inProcessor->getShortestBoundaryPointTo(outProcessor), 
+                       ivec3(255,255,255))   
+    , outProcessor_(outProcessor)
+    , inProcessor_(inProcessor) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
 
 LinkConnectionGraphicsItem::~LinkConnectionGraphicsItem() {}
+
+QRectF LinkConnectionGraphicsItem::boundingRect() const {
+    QPointF outc = outProcessor_->pos();
+    QPointF inc = inProcessor_->pos();
+    QPointF outRight = outc + mapToParent((outProcessor_->rect().bottomRight() + outProcessor_->rect().topRight()) / 2);
+    QPointF outLeft = outc + mapToParent((outProcessor_->rect().bottomLeft() + outProcessor_->rect().topLeft()) / 2);
+    QPointF inRight = inc + mapToParent((inProcessor_->rect().bottomRight() + inProcessor_->rect().topRight()) / 2);
+    QPointF inLeft = inc + mapToParent((inProcessor_->rect().bottomLeft() + inProcessor_->rect().topLeft()) / 2);
+    QPointF start;
+    QPointF stop;
+
+    if(outRight.x() < inLeft.x()) {
+        start = outRight;
+        stop = inLeft;
+    } else if(outLeft.x() > inRight.x()) {
+        start = outLeft;
+        stop = inRight;
+    } else {
+        start = outRight;
+        stop = inRight;
+    }
+
+    QPointF topLeft = QPointF(std::min(start.x(), stop.x()), std::min(start.y(), stop.y()));
+    QPointF bottomRight = QPointF(std::max(start.x(), stop.x()), std::max(start.y(), stop.y()));
+    return QRectF(topLeft.x() - 30, 
+                  topLeft.y() - 30,
+                  bottomRight.x() - topLeft.x() + 70,
+                  bottomRight.y() - topLeft.y() + 70);
+}
+
+QPainterPath LinkConnectionGraphicsItem::obtainCurvePath() const {
+    
+    QPointF outc = outProcessor_->pos();
+    QPointF inc = inProcessor_->pos();
+
+    QPointF outRight = outc + mapToParent((outProcessor_->rect().bottomRight() + outProcessor_->rect().topRight()) / 2);
+    QPointF outLeft = outc + mapToParent((outProcessor_->rect().bottomLeft() + outProcessor_->rect().topLeft()) / 2);
+
+    QPointF inRight = inc + mapToParent((inProcessor_->rect().bottomRight() + inProcessor_->rect().topRight()) / 2);
+    QPointF inLeft = inc + mapToParent((inProcessor_->rect().bottomLeft() + inProcessor_->rect().topLeft()) / 2);
+
+    QPointF start;
+    QPointF stop;
+
+    QPointF ctrlPointStart;
+    QPointF ctrlPointStop;
+    QPointF qp = QPointF(1,0);
+    QPainterPath bezierCurve;
+
+    if(outRight.x() <= inLeft.x()) {
+        start = outRight;
+        stop = inLeft;
+        ctrlPointStart = qp;
+        ctrlPointStop = -qp;
+    } else if(outLeft.x() >= inRight.x()) {
+        start = outLeft;
+        stop = inRight;
+        ctrlPointStart = -qp;
+        ctrlPointStop = qp;
+    } else {
+        start = outRight;
+        stop = inRight;
+        ctrlPointStart = qp;
+        ctrlPointStop = qp;
+    }
+    float dist = 1.0f + std::min(50.0f, 2.0f * static_cast<float>(QVector2D(start - stop).length()));
+    bezierCurve.moveTo(start);
+    bezierCurve.cubicTo(start + dist*ctrlPointStart,
+                        stop + dist*ctrlPointStop,
+                        stop);
+
+    return bezierCurve;
+}
 
 } // namespace

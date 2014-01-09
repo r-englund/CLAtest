@@ -110,12 +110,12 @@ QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
     centerPoints.push_back(c + (propertyMappedDim/2.0));
 
     //top boundary center
-    propertyMappedDim = mapToParent(tr) - mapToParent(br);
-    centerPoints.push_back(c + (propertyMappedDim/2.0));
+   // propertyMappedDim = mapToParent(tr) - mapToParent(br);
+   // centerPoints.push_back(c + (propertyMappedDim/2.0));
 
     //bottom boundary center
-    propertyMappedDim = mapToParent(br) - mapToParent(tr);
-    centerPoints.push_back(c + (propertyMappedDim/2.0));
+   // propertyMappedDim = mapToParent(br) - mapToParent(tr);
+   // centerPoints.push_back(c + (propertyMappedDim/2.0));
     
     qreal minDist = std::numeric_limits<qreal>::max();
     size_t minInd=0;

@@ -47,8 +47,11 @@ std::string URLParser::getFileNameWithoutExtension(const std::string url) {
 }
 
 std::string URLParser::getFileExtension(const std::string url) {
-    size_t pos = url.rfind(".") + 1;
-    std::string fileExtension = url.substr( pos, url.length());
+    std::string filename = getFileNameWithExtension(url);   
+    size_t pos = filename.rfind(".");
+    if(pos == std::string::npos)
+        return "";
+    std::string fileExtension = filename.substr(pos+1, url.length());
     return fileExtension;
 }
 

@@ -43,7 +43,7 @@ public:
      * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
      */
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-    QRectF boundingRect() const;
+    virtual QRectF boundingRect() const;
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkGraphicsType };
@@ -67,8 +67,11 @@ public:
     
     ProcessorGraphicsItem* getOutProcessorGraphicsItem() const { return outProcessor_; }    
     ProcessorGraphicsItem* getInProcessorGraphicsItem() const { return inProcessor_; }
+    virtual QRectF boundingRect() const;
 
 private:
+    virtual QPainterPath obtainCurvePath() const;
+    
     ProcessorGraphicsItem* outProcessor_; ///< Processor representation from which the connection starts
     ProcessorGraphicsItem* inProcessor_; ///< Processor representation to which the connection goes to 
 };

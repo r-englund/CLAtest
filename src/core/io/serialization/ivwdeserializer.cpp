@@ -127,6 +127,9 @@ void IvwDeserializer::deserialize(const std::string &key, long &data) {
 void IvwDeserializer::deserialize(const std::string &key, long long &data) {
     deserializePrimitives<long long>(key, data);
 }
+void IvwDeserializer::deserialize(const std::string &key, unsigned long long &data) {
+    deserializePrimitives<unsigned long long>(key, data);
+}
 
 void IvwDeserializer::readFile() {
     try {   
