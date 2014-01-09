@@ -41,50 +41,50 @@ void OpenCLModule::initialize() {
     OpenCL::instance()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl");
     KernelManager::init();
     // Buffer CL
-    addRepresentationConverter(new BufferRAM2CLConverter());
-    addRepresentationConverter(new BufferCL2RAMConverter());
-    addRepresentationConverter(new BufferGL2CLConverter());
+    registerRepresentationConverter(new BufferRAM2CLConverter());
+    registerRepresentationConverter(new BufferCL2RAMConverter());
+    registerRepresentationConverter(new BufferGL2CLConverter());
 
     // Buffer CLGL
-    addRepresentationConverter(new BufferRAM2CLGLConverter());
-    addRepresentationConverter(new BufferCLGL2RAMConverter());
-    addRepresentationConverter(new BufferCL2GLConverter());
-    addRepresentationConverter(new BufferCLGL2CLConverter());
-    addRepresentationConverter(new BufferCL2CLGLConverter());
+    registerRepresentationConverter(new BufferRAM2CLGLConverter());
+    registerRepresentationConverter(new BufferCLGL2RAMConverter());
+    registerRepresentationConverter(new BufferCL2GLConverter());
+    registerRepresentationConverter(new BufferCLGL2CLConverter());
+    registerRepresentationConverter(new BufferCL2CLGLConverter());
     
 
     // ImageCL
-    addRepresentationConverter(new ImageDisk2CLConverter());
-    addRepresentationConverter(new ImageRAM2CLConverter());
-    addRepresentationConverter(new ImageCL2RAMConverter());
-    addRepresentationConverter(new ImageGL2CLConverter());
-    addRepresentationConverter(new ImageCL2GLConverter());
+    registerRepresentationConverter(new ImageDisk2CLConverter());
+    registerRepresentationConverter(new ImageRAM2CLConverter());
+    registerRepresentationConverter(new ImageCL2RAMConverter());
+    registerRepresentationConverter(new ImageGL2CLConverter());
+    registerRepresentationConverter(new ImageCL2GLConverter());
 
     // ImageCLGL
-    addRepresentationConverter(new ImageDisk2CLGLConverter());
-    addRepresentationConverter(new ImageRAM2CLGLConverter());
-    addRepresentationConverter(new ImageGL2CLGLConverter());
-    addRepresentationConverter(new ImageCL2CLGLConverter());
-    addRepresentationConverter(new ImageCLGL2RAMConverter());
-    addRepresentationConverter(new ImageCLGL2CLConverter());
-    addRepresentationConverter(new ImageCLGL2GLConverter());
-    addRepresentationConverter(new ImageGL2CLGLConverter());
+    registerRepresentationConverter(new ImageDisk2CLGLConverter());
+    registerRepresentationConverter(new ImageRAM2CLGLConverter());
+    registerRepresentationConverter(new ImageGL2CLGLConverter());
+    registerRepresentationConverter(new ImageCL2CLGLConverter());
+    registerRepresentationConverter(new ImageCLGL2RAMConverter());
+    registerRepresentationConverter(new ImageCLGL2CLConverter());
+    registerRepresentationConverter(new ImageCLGL2GLConverter());
+    registerRepresentationConverter(new ImageGL2CLGLConverter());
 
     // VolumeCL
-    addRepresentationConverter(new VolumeDisk2CLConverter());
-    addRepresentationConverter(new VolumeRAM2CLConverter());
-    addRepresentationConverter(new VolumeCL2RAMConverter());
+    registerRepresentationConverter(new VolumeDisk2CLConverter());
+    registerRepresentationConverter(new VolumeRAM2CLConverter());
+    registerRepresentationConverter(new VolumeCL2RAMConverter());
     // VolumeCLGL
-    addRepresentationConverter(new VolumeDisk2CLGLConverter());
-    addRepresentationConverter(new VolumeRAM2CLGLConverter());
-    addRepresentationConverter(new VolumeGL2CLGLConverter());
-    addRepresentationConverter(new VolumeCL2CLGLConverter());
-    addRepresentationConverter(new VolumeCLGL2RAMConverter());
-    addRepresentationConverter(new VolumeCLGL2CLConverter());
-    addRepresentationConverter(new VolumeGL2CLGLConverter());
+    registerRepresentationConverter(new VolumeDisk2CLGLConverter());
+    registerRepresentationConverter(new VolumeRAM2CLGLConverter());
+    registerRepresentationConverter(new VolumeGL2CLGLConverter());
+    registerRepresentationConverter(new VolumeCL2CLGLConverter());
+    registerRepresentationConverter(new VolumeCLGL2RAMConverter());
+    registerRepresentationConverter(new VolumeCLGL2CLConverter());
+    registerRepresentationConverter(new VolumeGL2CLGLConverter());
 
 
-    addCapabilities(new OpenCLCapabilities());
+    registerCapabilities(new OpenCLCapabilities());
     // Processors
     registerProcessor(GrayscaleCL);
     registerProcessor(VolumeRaycasterCL);

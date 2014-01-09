@@ -67,19 +67,19 @@ public:
 protected:
     void setIdentifier(const std::string& identifier);
     
-    void addCapabilities(Capabilities* info);
-    void addData(Data* data);
-    void addDataReader(DataReader* reader);
-    void addDataRepresentation(DataRepresentation* dataRepresentation);
-    void addDataWriter(DataWriter* writer);
-    void addMetaData(MetaData* meta);
-    void addPort(Port* port);
-    void addProcessor(ProcessorFactoryObject* processor);
-    void addProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
-    void addProperty(Property* property);
-    void addRepresentationConverter(RepresentationConverter* representationConverter);
-    void addResource(Resource* resource);
-    void addSettings(Settings* settings);
+    void registerCapabilities(Capabilities* info);
+    void registerData(Data* data);
+    void registerDataReader(DataReader* reader);
+    void registerDataRepresentation(DataRepresentation* dataRepresentation);
+    void registerDataWriter(DataWriter* writer);
+    void registerMetaData(MetaData* meta);
+    void registerPort(Port* port);
+    void registerProcessorObject(ProcessorFactoryObject* processor);
+    void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
+    void registerProperty(Property* property);
+    void registerRepresentationConverter(RepresentationConverter* representationConverter);
+    void registerResource(Resource* resource);
+    void registerSettings(Settings* settings);
     
     void setXMLFileName(const std::string& xmlDocuFileName);
 
@@ -107,11 +107,11 @@ private:
     std::vector<RepresentationConverter*> representationConverters_;
     std::vector<Resource*> resources_;
 
-    std::string xmlDocuFileName_;
+    std::string xmlDocumentFileName_;
 };
 
 
-#define registerProcessor(T) { addProcessor(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
+#define registerProcessor(T) { registerProcessorObject(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
 
 } // namespace
 

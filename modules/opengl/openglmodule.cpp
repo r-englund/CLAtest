@@ -35,20 +35,20 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     ShaderManager::init();
     ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opengl/glsl");
 
-    addRepresentationConverter(new ImageRAM2GLConverter());
-    addRepresentationConverter(new ImageGL2RAMConverter());
-    addRepresentationConverter(new ImageDisk2GLConverter());
+    registerRepresentationConverter(new ImageRAM2GLConverter());
+    registerRepresentationConverter(new ImageGL2RAMConverter());
+    registerRepresentationConverter(new ImageDisk2GLConverter());
 
-    addRepresentationConverter(new VolumeRAM2GLConverter());
-    addRepresentationConverter(new VolumeDisk2GLConverter());
+    registerRepresentationConverter(new VolumeRAM2GLConverter());
+    registerRepresentationConverter(new VolumeDisk2GLConverter());
 
-    addRepresentationConverter(new BufferRAM2GLConverter());
-    addRepresentationConverter(new BufferRAM2ElementGLConverter());
+    registerRepresentationConverter(new BufferRAM2GLConverter());
+    registerRepresentationConverter(new BufferRAM2ElementGLConverter());
 
     registerProcessor(CanvasProcessorGL);
     registerProcessor(GeometryRenderProcessorGL);
 
-    addCapabilities(new OpenGLCapabilities());
+    registerCapabilities(new OpenGLCapabilities());
 }
 
 void OpenGLModule::setupModuleSettings(){

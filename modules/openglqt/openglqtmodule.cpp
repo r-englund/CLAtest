@@ -24,8 +24,8 @@ OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
     setIdentifier("OpenGLQt");
     setXMLFileName("openglqt/openglqtmodule.xml");   
 
-    addProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetQt());
-    addCapabilities(new OpenGLQtCapabilities());
+    registerProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetQt());
+    registerCapabilities(new OpenGLQtCapabilities());
 }
 
 } // namespace

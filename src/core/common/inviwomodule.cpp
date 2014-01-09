@@ -20,7 +20,7 @@ namespace inviwo {
 InviwoModule::InviwoModule()
     : identifier_("undefined")
     , initialized_(false)
-    , xmlDocuFileName_("undefined")
+    , xmlDocumentFileName_("undefined")
 {}
 
 InviwoModule::~InviwoModule() {
@@ -105,12 +105,12 @@ void InviwoModule::deinitialize() {
 
 void InviwoModule::setIdentifier(const std::string& identifier) {
     identifier_ = identifier;
-    if (xmlDocuFileName_ == "undefined")
-        xmlDocuFileName_ = identifier_ + ".xml";
+    if (xmlDocumentFileName_ == "undefined")
+        xmlDocumentFileName_ = identifier_ + ".xml";
 }
 
 void InviwoModule::setXMLFileName(const std::string& xmlFileName) {
-    xmlDocuFileName_ = getPath() + "/" + xmlFileName;
+    xmlDocumentFileName_ = getPath() + "/" + xmlFileName;
 }
 
 const std::vector<Capabilities*>& InviwoModule::getCapabilities() const {return capabilities_;}
@@ -127,27 +127,27 @@ const std::vector<RepresentationConverter*>& InviwoModule::getRepresentationConv
 const std::vector<Resource*>& InviwoModule::getResources() const {return resources_;}
 const std::vector<Settings*>& InviwoModule::getSettings() const {return moduleSettings_;}
 
-void InviwoModule::addCapabilities(Capabilities* info) {capabilities_.push_back(info);}
-void InviwoModule::addData(Data* data) {data_.push_back(data);}
-void InviwoModule::addDataReader(DataReader* dataReader) {dataReaders_.push_back(dataReader);}
-void InviwoModule::addDataRepresentation(DataRepresentation* dataRepresentation) {dataRepresentations_.push_back(dataRepresentation);}
-void InviwoModule::addDataWriter(DataWriter* dataWriter) {dataWriters_.push_back(dataWriter);}
-void InviwoModule::addMetaData(MetaData* meta) {metadata_.push_back(meta);}
-void InviwoModule::addPort(Port* port) {ports_.push_back(port);}
-void InviwoModule::addProcessor(ProcessorFactoryObject* processor) {
+void InviwoModule::registerCapabilities(Capabilities* info) {capabilities_.push_back(info);}
+void InviwoModule::registerData(Data* data) {data_.push_back(data);}
+void InviwoModule::registerDataReader(DataReader* dataReader) {dataReaders_.push_back(dataReader);}
+void InviwoModule::registerDataRepresentation(DataRepresentation* dataRepresentation) {dataRepresentations_.push_back(dataRepresentation);}
+void InviwoModule::registerDataWriter(DataWriter* dataWriter) {dataWriters_.push_back(dataWriter);}
+void InviwoModule::registerMetaData(MetaData* meta) {metadata_.push_back(meta);}
+void InviwoModule::registerPort(Port* port) {ports_.push_back(port);}
+void InviwoModule::registerProcessorObject(ProcessorFactoryObject* processor) {
     // FIXME: check processor pointer and module's name
     //processor->setModuleIdentifier(identifier_);
     processors_.push_back(processor);
 }
-void InviwoModule::addProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) {
+void InviwoModule::registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) {
     processorWidgets_.push_back(std::make_pair(processorClassName, processorWidget));
 }
-void InviwoModule::addProperty(Property* property) {properties_.push_back(property);}
-void InviwoModule::addRepresentationConverter(RepresentationConverter* representationConverter) {
+void InviwoModule::registerProperty(Property* property) {properties_.push_back(property);}
+void InviwoModule::registerRepresentationConverter(RepresentationConverter* representationConverter) {
     representationConverters_.push_back(representationConverter);
 }
-void InviwoModule::addResource(Resource* resource) {resources_.push_back(resource);}
+void InviwoModule::registerResource(Resource* resource) {resources_.push_back(resource);}
 
-void InviwoModule::addSettings(Settings* settings) {moduleSettings_.push_back(settings);}
+void InviwoModule::registerSettings(Settings* settings) {moduleSettings_.push_back(settings);}
 
 } // namespace

@@ -44,6 +44,14 @@ static const double oneMinusEpsilonD = 1.0-std::numeric_limits<double>::epsilon(
 
 NUMERIC_TESTS(floatSerialization,float,3.14f);
 NUMERIC_TESTS(doubleSerializationTest,double,6.28);
+TYPE_TEST(oneMinusEpsilonFloatTest, float, oneMinusEpsilonF);
+TYPE_TEST(oneMinusEpsilonDobuleTest, double, oneMinusEpsilonD);
+
+#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_EQ(T(v),serializationOfType(T(v)));} 
+#define MIN_TEST(n,T) TEST(SerialitionTest,n##MinTest){EXPECT_EQ(std::numeric_limits<T>::min(),serializationOfType(std::numeric_limits<T>::min()));}
+#define MAX_TEST(n,T) TEST(SerialitionTest,n##MaxTest){EXPECT_EQ(std::numeric_limits<T>::max(),serializationOfType(std::numeric_limits<T>::max()));}
+#define EPSILON_TEST(n,T) TEST(SerialitionTest,n##EpsilonTest){EXPECT_EQ(std::numeric_limits<T>::epsilon(),serializationOfType(std::numeric_limits<T>::epsilon()));}
+
 
 NUMERIC_TESTS(int8SerializationTest,int8_t,3);
 NUMERIC_TESTS(int16SerializationTest,int16_t,6);
@@ -75,8 +83,7 @@ NUMERIC_TESTS(uintFast16SerializationTest,uint_fast16_t,6);
 NUMERIC_TESTS(uintFast32SerializationTest,uint_fast32_t,654);
 NUMERIC_TESTS(uintFast64SerializationTest,uint_fast64_t,6789);
 
-TYPE_TEST(oneMinusEpsilonFloatTest,float,oneMinusEpsilonF);
-TYPE_TEST(oneMinusEpsilonDobuleTest,double,oneMinusEpsilonD);
+
 
 
 class IVW_MODULE_UNITTESTS_API MinimumSerilizableClass : public IvwSerializable{

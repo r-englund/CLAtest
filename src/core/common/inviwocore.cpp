@@ -47,53 +47,53 @@ InviwoCore::InviwoCore() : InviwoModule() {
     setIdentifier("Core");
     
     // Register Converters
-    addRepresentationConverter(new VolumeDisk2RAMConverter());
-    addRepresentationConverter(new ImageDisk2RAMConverter());
+    registerRepresentationConverter(new VolumeDisk2RAMConverter());
+    registerRepresentationConverter(new ImageDisk2RAMConverter());
 
     // Register MetaData
-    #define MetaDataMacro(n, t, d) addMetaData(new n##MetaData());
+    #define MetaDataMacro(n, t, d) registerMetaData(new n##MetaData());
 	#include <inviwo/core/metadata/metadatadefinefunc.h>
 
-    addMetaData(new VectorMetaData<2,float>());
-    addMetaData(new VectorMetaData<3,float>());
-    addMetaData(new VectorMetaData<4,float>());
+    registerMetaData(new VectorMetaData<2,float>());
+    registerMetaData(new VectorMetaData<3,float>());
+    registerMetaData(new VectorMetaData<4,float>());
 
-    addMetaData(new VectorMetaData<2,int>());
-    addMetaData(new VectorMetaData<3,int>());
-    addMetaData(new VectorMetaData<4,int>());
+    registerMetaData(new VectorMetaData<2,int>());
+    registerMetaData(new VectorMetaData<3,int>());
+    registerMetaData(new VectorMetaData<4,int>());
 
-    addMetaData(new VectorMetaData<2,unsigned int>());
-    addMetaData(new VectorMetaData<3,unsigned int>());
-    addMetaData(new VectorMetaData<4,unsigned int>());
+    registerMetaData(new VectorMetaData<2,unsigned int>());
+    registerMetaData(new VectorMetaData<3,unsigned int>());
+    registerMetaData(new VectorMetaData<4,unsigned int>());
 
-    addMetaData(new MatrixMetaData<2,float>());
-    addMetaData(new MatrixMetaData<3,float>());
-    addMetaData(new MatrixMetaData<4,float>());
+    registerMetaData(new MatrixMetaData<2,float>());
+    registerMetaData(new MatrixMetaData<3,float>());
+    registerMetaData(new MatrixMetaData<4,float>());
 
-    addMetaData(new PositionMetaData());
-    addMetaData(new ProcessorMetaData());
-    addMetaData(new ProcessorWidgetMetaData());
+    registerMetaData(new PositionMetaData());
+    registerMetaData(new ProcessorMetaData());
+    registerMetaData(new ProcessorWidgetMetaData());
 
     // Register Capabilities
-    addCapabilities(new SystemCapabilities());
+    registerCapabilities(new SystemCapabilities());
 
     // Register Data readers
-    addDataReader(new DatVolumeReader());
-    addDataReader(new IvfVolumeReader());
+    registerDataReader(new DatVolumeReader());
+    registerDataReader(new IvfVolumeReader());
 
     // Register Data writers
-    addDataWriter(new DatVolumeWriter());
-    addDataWriter(new IvfVolumeWriter());    
+    registerDataWriter(new DatVolumeWriter());
+    registerDataWriter(new IvfVolumeWriter());    
 
     // Register Settings
-    addSettings(new SystemSettings());
-    addSettings(new LinkSettings());
+    registerSettings(new SystemSettings());
+    registerSettings(new LinkSettings());
 
     // Register Properties
     // TODO: Register all properties
-    addProperty(new CameraProperty("camera", "Camera"));
-    addProperty(new TransferFunctionProperty("transferfunction", "TransferFunction"));
-    addProperty(new StringOptionProperty("stringoptions", "StringOption"));
+    registerProperty(new CameraProperty("camera", "Camera"));
+    registerProperty(new TransferFunctionProperty("transferfunction", "TransferFunction"));
+    registerProperty(new StringOptionProperty("stringoptions", "StringOption"));
 }
 
 void InviwoCore::setupModuleSettings(){
