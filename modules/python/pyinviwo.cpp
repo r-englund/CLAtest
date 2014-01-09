@@ -33,6 +33,7 @@ using namespace inviwo;
 #include "defaultinterface/pycanvas.h"
 #include "defaultinterface/pylist.h"
 #include "defaultinterface/pyutil.h"
+#include "defaultinterface/pyvolume.h"
 #include "pythonexecutionoutputobeserver.h"
 
 static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
@@ -140,6 +141,12 @@ namespace inviwo{
         inviwoPyModule->addMethod(new PyGetVolumePathMethod());
         inviwoPyModule->addMethod(new PyGetImagePathMethod());
         inviwoPyModule->addMethod(new PyGetModulePathMethod());
+
+        inviwoPyModule->addMethod(new PySetVoxelMethod());
+        inviwoPyModule->addMethod(new PyGetVolumeDimension());
+
+        inviwoPyModule->addMethod(new PyEnableEvaluation());
+        inviwoPyModule->addMethod(new PyDisableEvaluation());
 
         inviwoInternalPyModule->addMethod(new PyStdOutCatcher());
 

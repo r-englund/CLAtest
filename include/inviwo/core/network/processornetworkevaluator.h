@@ -56,6 +56,8 @@ public:
 
     void notifyInvalidationEnd(Processor*);
 
+    static ProcessorNetworkEvaluator* getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork *network);
+
 private:
     void evaluate();
 
@@ -87,6 +89,8 @@ private:
 
     bool evaulationQueued_;
     bool evaluationDisabled_;
+
+    static std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*> processorNetworkEvaluators_;
 
     //unsigned int reEvaluationHits_;
 };

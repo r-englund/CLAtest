@@ -16,7 +16,6 @@
 #define IVW_PYSNAPSHOTMEHTODINVIWO_H
 
 
-
 #include <modules/python/pythonmoduledefine.h>
 
 #include "../pythoninterface/pymethod.h"
@@ -33,6 +32,10 @@ PyObject* py_getImagePath(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getModulePath(PyObject* /*self*/, PyObject* /*args*/);
 
 PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/);
+
+
+PyObject* py_disableEvaluation(PyObject* /*self*/, PyObject* /*args*/);
+PyObject* py_enableEvaluation(PyObject* /*self*/, PyObject* /*args*/);
 
 
 class IVW_MODULE_PYTHON_API PySnapshotMethod : public PyMethod{
@@ -99,6 +102,24 @@ public:
     std::string getName(){return "quit";}
     std::string getDesc(){return "quit()\tMethod to quit Inviwo.";}
     virtual PyCFunction getFunc(){return py_quitInviwo;}
+};
+
+
+
+class IVW_MODULE_PYTHON_API PyDisableEvaluation : public PyMethod{
+public:
+    std::string getName(){return "beginUpdate";}
+    std::string getDesc(){return "beginUpdate()\tMethod to disable evaluation of Inviwos network.";}
+    virtual PyCFunction getFunc(){return py_disableEvaluation;}
+};
+
+
+
+class IVW_MODULE_PYTHON_API PyEnableEvaluation : public PyMethod{
+public:
+    std::string getName(){return "endUpdate";}
+    std::string getDesc(){return "endUpdate()\tMethod to reenable evaluation of Inviwos network.";}
+    virtual PyCFunction getFunc(){return py_enableEvaluation;}
 };
 
 } //namespace

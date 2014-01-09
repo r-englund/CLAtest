@@ -15,8 +15,12 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/processors/progressbarowner.h>
+#include <inviwo/core/util/assertion.h>
 
 namespace inviwo {
+
+
+std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*> ProcessorNetworkEvaluator::processorNetworkEvaluators_;
 
 ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processorNetwork)
     : processorNetwork_(processorNetwork) { 
@@ -27,9 +31,17 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     linkEvaluator_  = 0;
     evaulationQueued_ = false;
     evaluationDisabled_ = false;
+    ivwAssert(processorNetworkEvaluators_.find(processorNetwork) == processorNetworkEvaluators_.end() , "A ProcessorNetworkEvaluator for the given ProcessorNetwork is already created");
+    
+    processorNetworkEvaluators_[processorNetwork] = this;
 }
 
-ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {}
+ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {
+    std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*>::iterator it = processorNetworkEvaluators_.find(processorNetwork_);
+    if(it != processorNetworkEvaluators_.end())
+        processorNetworkEvaluators_.erase(it);
+}
+
 
 void ProcessorNetworkEvaluator::activateDefaultRenderContext() {
     defaultContext_->activate();
@@ -363,6 +375,14 @@ void ProcessorNetworkEvaluator::enableEvaluation(){
         evaulationQueued_ = false;
         requestEvaluate();
     }
+}
+
+
+ProcessorNetworkEvaluator* ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork *network){
+    std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*>::iterator it = processorNetworkEvaluators_.find(network);
+    if(it == processorNetworkEvaluators_.end())
+        return new ProcessorNetworkEvaluator(network);
+    return it->second;
 }
 
 void ProcessorNetworkEvaluator::requestEvaluate() {

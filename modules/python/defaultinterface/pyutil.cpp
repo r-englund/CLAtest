@@ -139,4 +139,53 @@ PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/){
     Py_RETURN_NONE;
 }
 
+PyObject* py_disableEvaluation(PyObject* /*self*/, PyObject* /*args*/){
+    if(InviwoApplication::getPtr()){
+        ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
+        if(network){
+            ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
+            if(evaluator){
+                evaluator->disableEvaluation();
+                Py_RETURN_NONE;
+            }
+            std::string msg = std::string("disableEvaluation() could not find ProcessorNetworkEvaluator");
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+        std::string msg = std::string("disableEvaluation() could not find ProcessorNetwork");
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+        
+    }
+    std::string msg = std::string("disableEvaluation() could not find InviwoApplication");
+    PyErr_SetString(PyExc_TypeError, msg.c_str());
+    return 0;
 }
+
+
+
+PyObject* py_enableEvaluation(PyObject* /*self*/, PyObject* /*args*/){
+    if(InviwoApplication::getPtr()){
+        ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
+        if(network){
+            ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
+            if(evaluator){
+                evaluator->enableEvaluation();
+                Py_RETURN_NONE;
+            }
+            std::string msg = std::string("disableEvaluation() could not find ProcessorNetworkEvaluator");
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+        std::string msg = std::string("disableEvaluation() could not find ProcessorNetwork");
+        PyErr_SetString(PyExc_TypeError, msg.c_str());
+        return 0;
+
+    }
+    std::string msg = std::string("disableEvaluation() could not find InviwoApplication");
+    PyErr_SetString(PyExc_TypeError, msg.c_str());
+    return 0;
+}
+
+}
+
