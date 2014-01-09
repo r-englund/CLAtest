@@ -66,6 +66,8 @@ public:
 
     template<class T> T* getSettingsByType();
 
+    template<class T> T* getModuleByType();
+
     const CommandLineParser* getCommandLineParser() const { return commandLineParser_; } 
 
     virtual void registerFileObserver(FileObserver* fileObserver) { LogWarn("This Inviwo application does not support FileObservers."); }
@@ -116,6 +118,12 @@ template<class T>
 T* InviwoApplication::getSettingsByType() {
     T* settings = getTypeFromVector<T>(getModuleSettings());
     return settings;
+}
+
+template<class T>
+T* InviwoApplication::getModuleByType() {
+    T* module = getTypeFromVector<T>(getModules());
+    return module;
 }
 
 } // namespace

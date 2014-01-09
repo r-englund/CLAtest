@@ -16,7 +16,7 @@
 
 namespace inviwo {
 
-Settings::Settings(InviwoModule* module, std::string id) : module_(module), identifier_(id) {}
+Settings::Settings(std::string id) : identifier_(id) {}
 
 Settings::~Settings() {
 }

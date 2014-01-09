@@ -19,7 +19,7 @@
 
 namespace inviwo {
 
-SystemSettings::SystemSettings(InviwoModule* module, std::string id) : Settings(module, id), allocTest_(0) {}
+SystemSettings::SystemSettings(std::string id) : Settings(id), allocTest_(0) {}
 
 SystemSettings::~SystemSettings() {
 }
@@ -44,7 +44,9 @@ void SystemSettings::initialize() {
     btnAllocTest->onChange(this, &SystemSettings::allocationTest);
     addProperty(btnAllocTest);
 
-    SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module_->getCapabilities());
+    InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
+    ivwAssert(module!=0, "Core module is not yet registered")
+    SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module->getCapabilities());
     if (sysInfo){
         ButtonProperty* btnSysInfo = new ButtonProperty("printSysInfo", "Print System Info");
         btnSysInfo->onChange(sysInfo, &SystemCapabilities::printInfo);
@@ -55,7 +57,9 @@ void SystemSettings::initialize() {
 void SystemSettings::deinitialize()  {}
 
 void SystemSettings::allocationTest(){
-    SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module_->getCapabilities());
+    InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
+    ivwAssert(module!=0, "Core module is not yet registered")
+    SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module->getCapabilities());
     if (sysInfo){
         if (allocTest_){
             delete allocTest_;

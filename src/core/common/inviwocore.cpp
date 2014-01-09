@@ -86,14 +86,14 @@ InviwoCore::InviwoCore() : InviwoModule() {
     addDataWriter(new IvfVolumeWriter());    
 
     // Register Settings
-    addSettings(new SystemSettings(this));
-    addSettings(new LinkSettings(this));
+    addSettings(new SystemSettings());
+    addSettings(new LinkSettings());
 
     // Register Properties
     // TODO: Register all properties
-    addProperty(new CameraProperty("camera", "Cameras"));
-    addProperty(new TransferFunctionProperty("transferfunction", "TransferFunctions"));
-    addProperty(new StringOptionProperty("stringoptions", "StringOptions"));
+    addProperty(new CameraProperty("camera", "Camera"));
+    addProperty(new TransferFunctionProperty("transferfunction", "TransferFunction"));
+    addProperty(new StringOptionProperty("stringoptions", "StringOption"));
 }
 
 void InviwoCore::setupModuleSettings(){

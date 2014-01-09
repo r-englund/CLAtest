@@ -22,7 +22,7 @@ namespace inviwo {
 class IVW_CORE_API LinkSettings : public Settings {
 
 public:
-    LinkSettings(InviwoModule* module, std::string id="Link Settings");
+    LinkSettings(std::string id="Link Settings");
     virtual ~LinkSettings();
     virtual void initialize();
     virtual void deinitialize();

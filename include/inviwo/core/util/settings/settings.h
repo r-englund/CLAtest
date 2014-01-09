@@ -26,7 +26,7 @@ namespace inviwo {
 class IVW_CORE_API Settings : public PropertyOwner {
 
 public:
-    Settings(InviwoModule* module, std::string id);
+    Settings(std::string id);
     virtual ~Settings();
 
     virtual void initialize()=0;
@@ -42,7 +42,6 @@ public:
     virtual std::string getIdentifier();
 protected:
     std::string identifier_;
-    InviwoModule* module_;
 };
 
 } // namespace
