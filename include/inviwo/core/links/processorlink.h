@@ -51,6 +51,7 @@ public:
     PropertyLink* getPropertyLink(Property* startProperty, Property* endProperty);
     PropertyLink* getBidirectionalPair(PropertyLink* propertyLink);
     PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty);
+    std::string getLinkInfo();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

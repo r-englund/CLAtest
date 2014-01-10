@@ -23,7 +23,9 @@ bool SimpleLinkCondition::canLink(Property* src, Property *dst) {
 
 bool AutoLinkCondition::canLink(Property* src, Property *dst) {
     //does properties have same class names
-    if (SimpleLinkCondition::canLink(src, dst)) {
+    if (SimpleLinkCondition::canLink(src, dst)) 
+        return true;
+    else {
 		bool canLink = false;
 		//does properties have same identifiers
 		if (src->getIdentifier() == dst->getIdentifier()) {                    
@@ -56,7 +58,8 @@ bool AutoLinkCondition::canLink(Property* src, Property *dst) {
 		}   
 			
 		return canLink;
-	}
+	}    
+
 	return false;
 }
 

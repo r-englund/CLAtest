@@ -207,6 +207,35 @@ PropertyLink* ProcessorLink::getBidirectionalPair(PropertyLink* propertyLink) {
     return getPropertyLink(propertyLink->getDestinationProperty(), propertyLink->getSourceProperty());
 }
 
+std::string ProcessorLink::getLinkInfo() {
+    std::string info("");
+    if (!propertyLinks_.size()) return info;
+
+    Processor* outProcessor = dynamic_cast<Processor*>(propertyLinks_[0]->getSourceProperty()->getOwner());
+    Processor* inProcessor = dynamic_cast<Processor*>(propertyLinks_[0]->getDestinationProperty()->getOwner());  
+
+    std::string outId = outProcessor->getIdentifier();
+    std::string inId = inProcessor->getIdentifier();    
+
+    std::vector<PropertyLink*> processedLinks;
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        if (std::find(processedLinks.begin(), processedLinks.end(), propertyLinks_[i])==processedLinks.end()) {
+            Property* srcProperty = propertyLinks_[i]->getSourceProperty();
+            Property* dstProperty = propertyLinks_[i]->getDestinationProperty(); 
+            PropertyLink* pairLink = getBidirectionalPair(srcProperty, dstProperty);
+            if (pairLink) 
+                processedLinks.push_back(pairLink); 
+            processedLinks.push_back(propertyLinks_[i]);
+            if (!info.empty())
+                info+="\n";
+            info += outId + ":" + srcProperty->getDisplayName() + " - " + inId + ":" + dstProperty->getDisplayName() ;            
+        }
+    }
+
+    return info;
+
+}
+
 void ProcessorLink::serialize(IvwSerializer& s) const {
     s.serialize("PropertyLinks", propertyLinks_, "PropertyLink");
 }

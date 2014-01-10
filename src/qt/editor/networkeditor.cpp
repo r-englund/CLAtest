@@ -321,10 +321,14 @@ void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
 }
 
 void NetworkEditor::addLinkGraphicsItem(Processor* processor1, Processor* processor2) {
+    std::string linkInfo = processorNetwork_->getProcessorLink(processor1, processor2)->getLinkInfo();
     ProcessorGraphicsItem* processorGraphicsItem1 = getProcessorGraphicsItem(processor1->getIdentifier());
     ProcessorGraphicsItem* processorGraphicsItem2 = getProcessorGraphicsItem(processor2->getIdentifier());
     LinkConnectionGraphicsItem* linkGraphicsItem = new LinkConnectionGraphicsItem(processorGraphicsItem1,
                                                                                   processorGraphicsItem2);
+    if (!linkInfo.empty())
+        linkGraphicsItem->setToolTip(QString(linkInfo.c_str()));
+    
     linkGraphicsItems_.push_back(linkGraphicsItem);
     addItem(linkGraphicsItem);
     linkGraphicsItem->setVisible(processorGraphicsItem1->isVisible() && processorGraphicsItem2->isVisible());
@@ -343,12 +347,17 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
     Processor* inProcessor = linkConnectionGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
     Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
 
-    LinkDialog* linkDialog = new LinkDialog(inProcessor, outProcessor, processorNetwork_, 0);
-    linkDialog->exec();
+    LinkDialog linkDialog(inProcessor, outProcessor, processorNetwork_, 0);
+    linkDialog.exec();
 
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(inProcessor, outProcessor);
     if (!processorLink->getPropertyLinks().size())
         removeLink(inProcessor, outProcessor);
+    else {
+        std::string toolTip = processorLink->getLinkInfo();
+        if (!toolTip.empty())
+            linkConnectionGraphicsItem->setToolTip(QString(toolTip.c_str()));
+    }
 }
 
 void  NetworkEditor::updateLinkGraphicsItems() {
@@ -801,40 +810,7 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
             ConnectionGraphicsItem* connection = getConnectionGraphicsItemAt(e->scenePos());
             LinkConnectionGraphicsItem* link = getLinkGraphicsItemAt(e->scenePos());
             if (connection)
-                port = connection->getOutport();
-            else if (link) {
-                ProcessorGraphicsItem* outProcessorGraphicsItem = link->getOutProcessorGraphicsItem();
-                ProcessorGraphicsItem* inProcessorGraphicsItem = link->getInProcessorGraphicsItem();
-
-                Processor* outProcessor = outProcessorGraphicsItem->getProcessor();
-                Processor* inProcessor = inProcessorGraphicsItem->getProcessor();               
-
-                ProcessorLink* processorLink = processorNetwork_->getProcessorLink(outProcessor, inProcessor);
-
-                if (processorLink) {
-                    std::string outId = outProcessor->getIdentifier();
-                    std::string inId = inProcessor->getIdentifier();
-                    QString title;
-
-                    std::vector<PropertyLink*> processedLinks;
-                    std::vector<PropertyLink*> propertyLinks = processorLink->getPropertyLinks();
-                    for (size_t i=0; i<propertyLinks.size(); i++) {
-                        if (std::find(processedLinks.begin(), processedLinks.end(), propertyLinks[i])==processedLinks.end()) {
-                            Property* srcProperty = propertyLinks[i]->getSourceProperty();
-                            Property* dstProperty = propertyLinks[i]->getDestinationProperty(); 
-                            PropertyLink* pairLink = processorLink->getBidirectionalPair(srcProperty, dstProperty);
-                            if (pairLink) 
-                                processedLinks.push_back(pairLink); 
-                            processedLinks.push_back(propertyLinks[i]);
-                            std::string linkInfo = outId + ":" + srcProperty->getDisplayName() + " - " + inId + ":" + dstProperty->getDisplayName() ;
-                            title+=QString::fromStdString(linkInfo+"\n");
-                        }
-                    }
-                    link->setToolTip(title);
-
-                }
-
-            }
+                port = connection->getOutport();            
         }
 
         if (port) {

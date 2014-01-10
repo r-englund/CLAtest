@@ -30,6 +30,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 
+
 #include <inviwo/qt/editor/linkdialog.h>
 #include <inviwo/core/util/variant.h>
 
@@ -1140,12 +1141,20 @@ void LinkDialog::initDialog() {
     QHBoxLayout* autoLinkPushButtonLayout = new QHBoxLayout;    
     autoLinkPushButtonLayout->setAlignment(Qt::AlignLeft);
     //qt documentation
+    //auto link button
     autoLinkPushButton_ = new QPushButton("AutoLink", this);
     connect(autoLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedAutoLinkPushButton()));    
-    autoLinkPushButtonLayout->addWidget(autoLinkPushButton_);
+    autoLinkPushButtonLayout->addWidget(autoLinkPushButton_, 10);
+    //checkable combo box
+    std::vector<std::string> options;
+    options.push_back("By Type");
+    options.push_back("By Name");
+    autoLinkOptions_ = new CheckableQComboBox(options);
+    autoLinkPushButtonLayout->addWidget(autoLinkOptions_, 20);
+    //delete button
     deleteAllLinkPushButton_ = new QPushButton("Delete All", this);
     connect(deleteAllLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedDeleteAllLinksPushButton()));
-    autoLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_);    
+    autoLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_, 10);    
     commonButtonLayout->addLayout(autoLinkPushButtonLayout);
 
     //okay cancel button
@@ -1197,6 +1206,36 @@ void LinkDialog::clickedAutoLinkPushButton() {
 void LinkDialog::clickedDeleteAllLinksPushButton() { 
     linkDialogScene_->removeAllPropertyLinks();
 }
+
+
+CheckableQComboBox::CheckableQComboBox(std::vector<std::string> options) : QComboBox() {
+    stdandardModel_ = new QStandardItemModel (options.size(),1);    
+    for (size_t i=0; i<options.size(); i++) {
+        QStandardItem* item = new QStandardItem(QString(options[i].c_str()));
+        item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled );
+        item->setData(Qt::Unchecked, Qt::CheckStateRole);
+        stdandardModel_->setItem(i, 0, item);  
+        standardItems_.push_back(item);
+    }
+    setModel(stdandardModel_);    
+    connect(stdandardModel_, SIGNAL(dataChanged ( const QModelIndex&, const QModelIndex&)), this, SLOT(onAutoLinkOptionChecked(const QModelIndex&, const QModelIndex&)));
+}
+
+bool CheckableQComboBox::isItemChecked(int i) {
+    if (i>(int)standardItems_.size())
+        return false;
+    QStandardItem* item = standardItems_[i];
+    if(item->checkState() == Qt::Unchecked)
+        return true;
+    return false;
+}
+
+void CheckableQComboBox::onAutoLinkOptionChecked(const QModelIndex& tl, const QModelIndex& br) {
+    int row = tl.row();
+    if (isItemChecked(row)) {}
+    //setCurrentText(standardItems_[row]->text());
+}
+
 
 /*---------------------------------------------------------------------------------------*/
 

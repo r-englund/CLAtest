@@ -25,6 +25,8 @@
 #include <QPainterPath>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QComboBox>
+#include <QStandardItemModel>
 
 #include <inviwo/core/links/processorlink.h>
 #include <inviwo/core/links/linkconditions.h>
@@ -272,6 +274,19 @@ private:
 
 /*---------------------------------------------------------------------------------------*/
 
+class IVW_QTEDITOR_API CheckableQComboBox : public QComboBox {
+Q_OBJECT
+public:
+    CheckableQComboBox(std::vector<std::string> options);
+    bool isItemChecked(int i);
+public slots:
+    void onAutoLinkOptionChecked(const QModelIndex&, const QModelIndex&);
+private:
+    QStandardItemModel * stdandardModel_;
+    std::vector<QStandardItem*> standardItems_;
+};
+
+
 class IVW_QTEDITOR_API LinkDialog : public QDialog {
 Q_OBJECT
 public:
@@ -291,6 +306,7 @@ private:
     LinkDialogGraphicsScene* linkDialogScene_;
     QDialogButtonBox* okayCancelbuttonBox_;
     QPushButton* autoLinkPushButton_;  
+    CheckableQComboBox* autoLinkOptions_;
     QPushButton* deleteAllLinkPushButton_;  
     Processor* src_;
     Processor* dest_;
