@@ -47,21 +47,6 @@ std::string ImageRAM::getClassName() const {
     return "ImageRAM"; 
 }
 
-/*void ImageRAM::setDimension( uvec2 dimensions )
-{
-    resize(dimensions);
-}*/
-
-/*void ImageRAM::resize(uvec2 dimensions){
-    for (int i=0; i<owner_->getNumberOfColorLayers(); ++i) {
-        owner_->getColorLayer(i)->getRepresentation<LayerRAM>()->resize(dimensions);
-    }
-}*/
-
-bool ImageRAM::copyAndResizeImage(Image* im) const {
-    return copyAndResizeImageRepresentation(im->getEditableRepresentation<ImageRAM>());
-}
-
 bool ImageRAM::copyAndResizeImageRepresentation(ImageRepresentation* targetImageRam) const {
     const ImageRAM* source = this;
     ImageRAM* target = dynamic_cast<ImageRAM*>(targetImageRam);

@@ -33,9 +33,6 @@ public:
     virtual void deinitialize();
     virtual std::string getClassName() const;
 
-    //virtual void setDimension(uvec2 dimensions);
-    //virtual void resize(uvec2 dimensions);
-    virtual bool copyAndResizeImage(Image*) const;
     virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const;
 
     LayerRAM* getColorLayerRAM(size_t idx = 0);

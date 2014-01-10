@@ -42,7 +42,6 @@ public:
     void activateBuffer();
     void deactivateBuffer();
    
-    virtual bool copyAndResizeImage(Image*) const;
     virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const;
     bool updateFrom(const ImageGL*);
 

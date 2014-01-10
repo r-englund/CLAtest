@@ -43,10 +43,6 @@ const LayerCL* ImageCL::getLayerCL() const {
     return layerCLConst_;
 }
 
-bool ImageCL::copyAndResizeImage(Image* im) const {
-    return copyAndResizeImageRepresentation(im->getEditableRepresentation<ImageCL>());
-}
-
 bool ImageCL::copyAndResizeImageRepresentation(ImageRepresentation* targetRep) const {
     ImageCL* targetCL = dynamic_cast<ImageCL*>(targetRep);
 

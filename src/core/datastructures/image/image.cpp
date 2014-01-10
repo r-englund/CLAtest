@@ -210,7 +210,7 @@ void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
     else {
         //If not representation exist, create ImageRAM one
         const ImageRAM* imageRAM = this->getRepresentation<ImageRAM>();   
-        imageRAM->copyAndResizeImage(targetImage);
+        imageRAM->copyAndResizeImageRepresentation(targetImage->getEditableRepresentation<ImageRAM>());
     }
 }
 

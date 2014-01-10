@@ -37,7 +37,6 @@ public:
     LayerCLGL* getLayerCLGL();
     const LayerCLGL* getLayerCLGL() const;
     
-    virtual bool copyAndResizeImage(Image*) const;
     virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const;
 
 protected:

@@ -46,10 +46,6 @@ const LayerCLGL* ImageCLGL::getLayerCLGL() const {
     return layerCLGLConst_;
 }
 
-bool ImageCLGL::copyAndResizeImage(Image* im) const {
-    return copyAndResizeImageRepresentation(im->getEditableRepresentation<ImageCLGL>());
-}
-
 bool ImageCLGL::copyAndResizeImageRepresentation(ImageRepresentation* targetRep) const {
     ImageCLGL* targetCLGL = dynamic_cast<ImageCLGL*>(targetRep);
 
