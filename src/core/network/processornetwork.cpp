@@ -23,7 +23,20 @@ ProcessorNetwork::ProcessorNetwork() : VoidObservable(), ProcessorObserver(),
     invalidating_(false),
     invalidationInitiator_(NULL) {}
 
-ProcessorNetwork::~ProcessorNetwork() {}
+ProcessorNetwork::~ProcessorNetwork() {
+    for(size_t i = 0;i< processors_.size();i++){
+        Processor* a = processors_[i];
+        delete a;
+    }
+    for(size_t i = 0;i< portConnections_.size();i++){
+        PortConnection* a = portConnections_[i];
+        delete a;
+    }
+    for(size_t i = 0;i< processorLinks_.size();i++){
+        ProcessorLink* a = processorLinks_[i];
+        delete a;
+    }
+}
 
 
 void ProcessorNetwork::addProcessor(Processor* processor) {

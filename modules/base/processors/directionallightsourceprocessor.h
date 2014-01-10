@@ -21,6 +21,8 @@
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/vectorproperties.h>
 
+#include <inviwo/core/processors/processor.h>
+
 namespace inviwo {
 
 class IVW_MODULE_BASE_API DirectionalLightSourceProcessor : public Processor {

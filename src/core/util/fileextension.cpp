@@ -14,7 +14,10 @@
 
 #include <inviwo/core/util/fileextension.h>
 
+#include <inviwo/core/util/singleton.h>
+
 namespace inviwo {
+std::vector<SingeltonBase*> SingeltonBase::instances_;
 
 FileExtension::FileExtension()
     : extension_("txt")

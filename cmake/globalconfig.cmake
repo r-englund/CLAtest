@@ -104,8 +104,10 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # Build shared libs or static libs
 option(SHARED_LIBS "Build shared libs, else static libs" OFF)
+option(IVW_ENABLE_MSVC_MEMLEAK_TEST "Run memoryleak test within visual stiduo" OFF)
 #mark_as_advanced(SHARED_LIBS)
 mark_as_advanced(BUILD_SHARED_LIBS)
+mark_as_advanced(IVW_ENABLE_MSVC_MEMLEAK_TEST)
 mark_as_advanced(FORCE GLM_DIR)
 
 if(SHARED_LIBS)
@@ -172,3 +174,7 @@ else(BUILD_SHARED_LIBS)
   add_definitions(-DGLEW_STATIC)
 endif(BUILD_SHARED_LIBS)
 
+
+if(IVW_ENABLE_MSVC_MEMLEAK_TEST)
+	add_definitions(-DIVW_ENABLE_MSVC_MEM_LEAK_TEST)
+endif()

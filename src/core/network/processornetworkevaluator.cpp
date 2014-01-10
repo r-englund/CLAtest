@@ -40,6 +40,7 @@ ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {
     std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*>::iterator it = processorNetworkEvaluators_.find(processorNetwork_);
     if(it != processorNetworkEvaluators_.end())
         processorNetworkEvaluators_.erase(it);
+    delete linkEvaluator_;
 }
 
 

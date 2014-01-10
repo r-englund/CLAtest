@@ -25,7 +25,9 @@ MetaDataMap::MetaDataMap(const MetaDataMap& inMap) {
     }
 }
 
-MetaDataMap::~MetaDataMap() {}
+MetaDataMap::~MetaDataMap() {
+    removeAll();
+}
 
 MetaDataMap* MetaDataMap::clone() const {
     return new MetaDataMap(*this);

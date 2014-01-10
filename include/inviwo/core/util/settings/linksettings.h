@@ -27,6 +27,10 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual bool isLinkable(Property* property);
+
+private:
+    BoolProperty displayLinksproerty_;
+    std::vector<BoolProperty*> linkProperties_;
 };
 
 } // namespace

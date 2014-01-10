@@ -124,9 +124,11 @@ const T* Data::getRepresentation() const {
         T* representation = dynamic_cast<T*>(representations_[i]);
         if (representation) {
             if (isRepresentationValid(i)) {
+                lastValidRepresentation_ = representation;
                 return representation;
             } else {
                 updateRepresentation<T>(representation, i);
+                lastValidRepresentation_ = representation;
                 return representation;
             }
             

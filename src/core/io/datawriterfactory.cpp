@@ -1,6 +1,8 @@
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/common/inviwoapplication.h>
 
+#include <inviwo/core/io/datawriter.h>
+
 namespace inviwo {
 
 DataWriterFactory::DataWriterFactory(){

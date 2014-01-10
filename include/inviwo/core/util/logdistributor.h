@@ -88,7 +88,7 @@ private:
     unsigned int logLevel_;
     std::vector<Logger*>* loggers_;
 
-    static LogCentral* instance_;
+    //static LogCentral* instance_;
 };
 
 } // namespace

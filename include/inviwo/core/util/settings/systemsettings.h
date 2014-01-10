@@ -30,6 +30,17 @@ public:
 protected:
     void allocationTest();
     uint32_t* allocTest_;
+
+private:
+    OptionPropertyInt viewModeProperty_;
+    BoolProperty txtEditorProperty_;
+    BoolProperty shaderReloadingProperty_;
+    BoolProperty enablePortInspectorsProperty_;
+    BoolProperty enableSoundProperty_;
+    IntProperty  useRAMPercentProperty_;
+
+    ButtonProperty btnAllocTestProperty_;
+    ButtonProperty btnSysInfoProperty_;
 };
 
 } // namespace

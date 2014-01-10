@@ -12,6 +12,7 @@
  *
  **********************************************************************/
 
+
 #ifdef _MSC_VER
     #ifdef _DEBUG
         #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
@@ -20,22 +21,26 @@
     #endif
 #endif
 
+
+
 #include <QFile>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 #include "inviwomainwindow.h"
 #include "inviwosplashscreen.h"
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <inviwo/core/common/inviwoapplication.h>
 #include <moduleregistration.h>
 
+#include <inviwo/core/util/msvc-memleak-includes.h>
 
-#ifdef REG_INVIWOUNITTESTSMODULE
-    #include <modules/unittests/unittestsmodule.h>
-#endif
 
 int main(int argc, char** argv) {
 #ifdef __unix__
     setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
+#endif
+#ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
+    _CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_FILE  | _CRTDBG_MODE_DEBUG);
+    _CrtSetReportFile( _CRT_WARN, _CRTDBG_FILE_STDERR );
+    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, IVW_DIR, argc, argv);
 	
@@ -77,7 +82,6 @@ int main(int argc, char** argv) {
 #if defined(REG_INVIWOUNITTESTSMODULE) && defined(IVW_RUN_UNITTEST_ON_STARTUP) 
     int res = inviwo::UnitTestsModule::runAllTests();
 #endif
-
     // process last arguments
     if (mainWin.processEndCommandLineArgs())
         return inviwoApp.exec();

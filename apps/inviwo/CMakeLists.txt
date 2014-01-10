@@ -83,7 +83,10 @@ ivw_add_dependencies(${package_list})
 
 #--------------------------------------------------------------------
 # Optimize compilation with pre-compilied headers based on inviwo-core
-ivw_compile_optimize_inviwo_core()
+
+if(NOT IVW_ENABLE_MSVC_MEMLEAK_TEST)
+	ivw_compile_optimize_inviwo_core()
+endif()
 
 if(DESIRED_QT_VERSION MATCHES 5)
     qt5_use_modules(inviwo Widgets Gui OpenGL Multimedia Network Script)    

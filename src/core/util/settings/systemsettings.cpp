@@ -17,40 +17,47 @@
 #include <inviwo/core/util/systemcapabilities.h>
 #include <inviwo/core/util/formatconversion.h>
 
-namespace inviwo {
+#include <inviwo/core/common/inviwoapplication.h>
 
-SystemSettings::SystemSettings(std::string id) : Settings(id), allocTest_(0) {}
+namespace inviwo {
+SystemSettings::SystemSettings(std::string id) : 
+    Settings(id)
+    , allocTest_(0)
+    ,viewModeProperty_ ("viewMode","",0)
+    ,txtEditorProperty_("txtEditor", "Use system text editor", true)
+    ,shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
+    ,enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", true)
+    ,enableSoundProperty_("enableSound", "Enable sound", true)
+    ,useRAMPercentProperty_("useRAMPercent", "Max Use Mem %", 50, 1, 100)
+    ,btnAllocTestProperty_("allocTest", "Perform Allocation Test")
+    ,btnSysInfoProperty_("printSysInfo", "Print System Info")
+{}
 
 SystemSettings::~SystemSettings() {
 }
 
 void SystemSettings::initialize() {
-    OptionPropertyInt* viewMode_ = new OptionPropertyInt("viewMode","",0);
-    viewMode_->addOption("developerMode","developerMode",0);
-    viewMode_->addOption("applicationMode","applicationMode",1);
-    addProperty(viewMode_);
-    viewMode_->setVisibility(INVISIBLE);
-    addProperty(new BoolProperty("txtEditor", "Use system text editor", true));
+    viewModeProperty_.addOption("developerMode","developerMode",0);
+    viewModeProperty_.addOption("applicationMode","applicationMode",1);
+    addProperty(&viewModeProperty_);
+    viewModeProperty_.setVisibility(INVISIBLE);
 
-    addProperty(new BoolProperty("shaderReloading", "Automatically reload shaders", true));
 
-    addProperty(new BoolProperty("enablePortInspectors", "Enable port inspectors", true));
+    addProperty(&txtEditorProperty_);
+    addProperty(&shaderReloadingProperty_);
+    addProperty(&enablePortInspectorsProperty_);
+    addProperty(&enableSoundProperty_);
+    addProperty(&useRAMPercentProperty_);
 
-    addProperty(new BoolProperty("enableSound", "Enable sound", true));        
-
-    addProperty(new IntProperty("useRAMPercent", "Max Use Mem %", 50, 1, 100));
-
-    ButtonProperty* btnAllocTest = new ButtonProperty("allocTest", "Perform Allocation Test");
-    btnAllocTest->onChange(this, &SystemSettings::allocationTest);
-    addProperty(btnAllocTest);
+    btnAllocTestProperty_.onChange(this, &SystemSettings::allocationTest);
+    addProperty(&btnAllocTestProperty_);
 
     InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
     ivwAssert(module!=0, "Core module is not yet registered")
     SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module->getCapabilities());
     if (sysInfo){
-        ButtonProperty* btnSysInfo = new ButtonProperty("printSysInfo", "Print System Info");
-        btnSysInfo->onChange(sysInfo, &SystemCapabilities::printInfo);
-        addProperty(btnSysInfo);  
+        btnSysInfoProperty_.onChange(sysInfo, &SystemCapabilities::printInfo);
+        addProperty(&btnSysInfoProperty_);  
     } 
 }
 

@@ -19,6 +19,9 @@
 
 namespace inviwo {
 
+  class InviwoModule;
+
+
 class ModuleCallBackActionState {
 public:
     enum Status { Default =0,

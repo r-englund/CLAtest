@@ -52,6 +52,7 @@ InviwoMainWindow::InviwoMainWindow() : QMainWindow(), VoidObserver() {
 
 InviwoMainWindow::~InviwoMainWindow() {
 	deinitialize();
+    NetworkEditor::deleteInstance();
 }
 
 void InviwoMainWindow::initialize() {

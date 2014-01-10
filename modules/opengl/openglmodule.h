@@ -24,10 +24,13 @@ class IVW_MODULE_OPENGL_API OpenGLModule : public InviwoModule {
 
 public:
     OpenGLModule();
+    ~OpenGLModule();
 
 protected:
     virtual void setupModuleSettings();
 
+private:
+    ButtonProperty btnOpenGLInfo_;
 };
 
 } // namespace

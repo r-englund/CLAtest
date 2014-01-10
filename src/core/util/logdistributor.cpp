@@ -16,7 +16,7 @@
 
 namespace inviwo {
 
-LogCentral* LogCentral::instance_ = 0;
+//LogCentral* LogCentral::instance_ = 0;
 
 ConsoleLogger::ConsoleLogger() : Logger() {}
 ConsoleLogger::~ConsoleLogger() {}
@@ -31,7 +31,7 @@ void ConsoleLogger::log(std::string logSource, unsigned int logLevel, const char
 }
 
 
-LogCentral::LogCentral() {
+LogCentral::LogCentral() : logLevel_(Info) {
     loggers_ = new std::vector<Logger*>();
 }
 LogCentral::~LogCentral() {
@@ -39,12 +39,13 @@ LogCentral::~LogCentral() {
 }
 
 LogCentral* LogCentral::instance() {
-    if (!instance_) {
-        instance_ = new LogCentral();
-        instance_->setLogLevel(Info);
-        //instance_->registerLogger(new ConsoleLogger());
-    }
-    return instance_;
+    //if (!instance_) {
+    //    instance_ = new LogCentral();
+    //    instance_->setLogLevel(Info);
+    //    //instance_->registerLogger(new ConsoleLogger());
+    //}
+    static LogCentral instance_;
+    return &instance_;
 }
 
 void LogCentral::registerLogger(Logger* logger) {

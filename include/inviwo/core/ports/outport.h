@@ -23,7 +23,7 @@ namespace inviwo {
 
 class SingleInport;
 class MultiInport;
-
+class Inport;
 
 
 class IVW_CORE_API Outport : public Port {

@@ -12,8 +12,12 @@
  *
  **********************************************************************/
 
+
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/common/inviwoapplication.h>
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 
 namespace inviwo {
 
@@ -74,6 +78,12 @@ InviwoModule::~InviwoModule() {
     for (size_t i=0; i<resources_.size(); i++)
         delete resources_[i];
     resources_.clear();
+
+
+
+    for (size_t i=0; i<moduleSettings_.size(); i++)
+        delete moduleSettings_[i];
+    moduleSettings_.clear();
 }
 
 std::string InviwoModule::getIdentifier() const {

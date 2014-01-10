@@ -21,6 +21,7 @@
 #include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 

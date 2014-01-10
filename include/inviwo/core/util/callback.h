@@ -71,6 +71,8 @@ class SingleCallBack {
 public:
     SingleCallBack() : callBack_(0) {}
 
+    ~SingleCallBack(){delete callBack_;}
+
     void invoke() const{
         if (callBack_)
             callBack_->invoke();

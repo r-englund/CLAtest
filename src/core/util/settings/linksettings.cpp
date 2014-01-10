@@ -16,20 +16,29 @@
 
 namespace inviwo {
 
-LinkSettings::LinkSettings(std::string id) : Settings(id) {}
+LinkSettings::LinkSettings( std::string id) : 
+    Settings(id)
+    , displayLinksproerty_("displayLinks", "Display links", true) {}
 
 LinkSettings::~LinkSettings() {
+    for (size_t i=0; i<linkProperties_.size(); i++) {
+        BoolProperty* property = linkProperties_[i];
+        delete property;
+    }
+    linkProperties_.clear();
 }
 
 void LinkSettings::initialize() {
-    addProperty(new BoolProperty("displayLinks", "Display links", true));
+    addProperty(&displayLinksproerty_);
     InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
     ivwAssert(module!=0, "Core module is not yet registered")
     std::vector<Property*> registeredProperties = module->getProperties();
     for (size_t i=0; i<registeredProperties.size(); i++) {
         std::string id = registeredProperties[i]->getIdentifier();
         std::string displayName = registeredProperties[i]->getDisplayName();
-        addProperty(new BoolProperty("link"+id, displayName, false));
+        BoolProperty* linkPropery = new BoolProperty("link"+id, displayName, false);
+        linkProperties_.push_back(linkPropery);
+        addProperty(linkPropery);
     }
 }
 

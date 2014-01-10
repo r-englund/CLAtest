@@ -20,9 +20,38 @@
 
 namespace inviwo {
 
-template <class T>
-class Singleton {
+    class SingeltonBase;
+    class IVW_CORE_API SingeltonBase{
+    protected:
+        static std::vector<SingeltonBase*> instances_;
 
+        void deleteAllSingeltons(){
+            while (!instances_.empty()){
+                SingeltonBase* instance = instances_[0];
+                instances_.erase(instances_.begin());
+                if(instance != this)
+                    delete instance;
+            }
+        }
+
+        SingeltonBase(){
+            instances_.push_back(this);
+        }
+
+        virtual ~SingeltonBase(){
+            for(size_t i = 0;i<instances_.size();i++){
+                if(instances_[i] == this){
+                    instances_.erase(instances_.begin()+i);
+                    break;
+                }
+            }
+        }
+    };
+
+
+
+template <class T>
+class Singleton : public SingeltonBase{
 public:
     static void init() {
         ivwAssert(instance_==0, "Singleton already initialized.");
@@ -47,9 +76,13 @@ public:
         return instance_;
     };
 
-protected:
+    static void deleteInstance(){
+        delete instance_;
+        instance_ = 0;
+    }
+
     Singleton<T>() {};
-    ~Singleton() {};
+    virtual ~Singleton() {};
     
 private:    
     // no implementation for copy functionalities by making the following two methods

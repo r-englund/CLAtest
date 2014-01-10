@@ -12,6 +12,7 @@
  *
  **********************************************************************/
 
+
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
@@ -21,17 +22,7 @@
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 
-//#define MEMLEAKCHECK
-
-#ifdef MEMLEAKCHECK
-#ifdef WIN32
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-#endif
-#endif
-#endif
+#include <inviwo/core/util/msvc-memleak-includes.h>
 
 
 namespace inviwo {
@@ -50,22 +41,27 @@ InviwoApplication::InviwoApplication(std::string displayName, std::string basePa
 }
 
 InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath)
-                                    : displayName_(displayName), basePath_(basePath)
+                                    : displayName_(displayName)
+                                    , basePath_(basePath)
+                                    , commandLineParser_(argc,argv)
 {
-    commandLineParser_ = new CommandLineParser(argc, argv);
-	commandLineParser_->initialize();
-	commandLineParser_->parse();
+    //commandLineParser_ = new CommandLineParser(argc, argv);
+	commandLineParser_.initialize();
+	commandLineParser_.parse();
     init(this);
 }
 
 InviwoApplication::~InviwoApplication() {
-#ifdef MEMLEAKCHECK
-#ifdef WIN32
-#ifdef _DEBUG
-    _CrtDumpMemoryLeaks();
-#endif
-#endif
-#endif
+    if(initialized_)
+        deinitialize();
+    for (size_t i=0; i<modules_.size(); i++){
+        InviwoModule* module = modules_[i];
+        delete module;
+    }
+    modules_.clear();
+    //delete commandLineParser_;
+    //commandLineParser_ = 0;
+    SingeltonBase::deleteAllSingeltons();
 }
 
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {

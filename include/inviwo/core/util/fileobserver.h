@@ -40,7 +40,7 @@ public:
     virtual void fileChanged(std::string fileName) = 0;
 
 private:
-    std::vector<std::pair<std::string, int> >* observedFiles_; ///< stores the files to be observed
+    std::vector<std::pair<std::string, int> > observedFiles_; ///< stores the files to be observed
                                                               ///< plus the number of observers for each
 };
 

@@ -5,8 +5,12 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/util/singleton.h>
 
+#include <inviwo/core/util/fileextension.h>
+
 namespace inviwo {
 
+    class DataWriter;
+    template<typename T> class DataWriterType;
 class IVW_CORE_API DataWriterFactory : public Factory, public Singleton<DataWriterFactory> { 
 public:
     DataWriterFactory();

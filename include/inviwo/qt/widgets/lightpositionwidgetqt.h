@@ -25,6 +25,8 @@
 #include <QPoint>
 #include <QtCore/qmath.h>
 
+#include <inviwo/core/common/inviwo.h>
+
 namespace inviwo {
 
 class IVW_QTWIDGETS_API LightPositionWidgetQt : public QLabel {

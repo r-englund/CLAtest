@@ -12,6 +12,22 @@
  *
  **********************************************************************/
 
+
+#include <inviwo/qt/editor/networkeditor.h>
+#include <inviwo/qt/editor/processorlistwidget.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
+#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
+
+#include <QApplication>
+#include <QGraphicsSceneMouseEvent>
+#include <QMenu>
+#include <QVarLengthArray>
+#include <QGraphicsItem>
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/io/serialization/ivwserializer.h>
@@ -28,18 +44,6 @@
 #include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/core/resources/resourcemanager.h>
 
-#include <inviwo/qt/editor/networkeditor.h>
-#include <inviwo/qt/editor/processorlistwidget.h>
-#include <inviwo/qt/widgets/propertylistwidget.h>
-#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
-
-#include <QApplication>
-#include <QGraphicsSceneMouseEvent>
-#include <QMenu>
-#include <QVarLengthArray>
-#include <QGraphicsItem>
 
 namespace inviwo {
 
@@ -68,6 +72,8 @@ NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
 
 NetworkEditor::~NetworkEditor(){
     workerThreadQuit();
+    delete processorNetwork_;
+    delete processorNetworkEvaluator_;
 }
 
 /////////////////////////////////////////////

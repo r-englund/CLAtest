@@ -26,6 +26,14 @@ CommandLineParser::CommandLineParser(int argc, char **argv) : argc_(argc), argv_
 }
 
 CommandLineParser::~CommandLineParser() {
+    delete cmd_;
+    delete workspaceValueArg_;
+    delete outputValueArg_;
+    delete snapshotArg_;
+    delete screenGrabArg_;
+    delete pythonScriptArg_;
+    delete noSplashScreenArg_;
+    delete quitArg_;
 }
 
 void CommandLineParser::initialize() {

@@ -19,7 +19,8 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
 #include <modules/opengl/canvasprocessorgl.h>
-#include "inviwo/core/datastructures/volume/volumeram.h"
+#include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/datastructures/volume/volumeramprecision.h>
 
 
 
@@ -92,10 +93,9 @@ namespace inviwo {
             PyErr_SetString(PyExc_TypeError, ("setVoxel(vol,(x,y,z),v). No volume outport on processor " + volume).c_str());
             return 0;
         }
-
         VolumeRAM* vol = volumePort->getData()->getEditableRepresentation<VolumeRAM>();
-        vol->setValueFromSingleFloat(voxel,value);
-
+        //VolumeRAM* vol = volumePort->getData()->getEditableRepresentation<VolumeRAMPrecision<float>>();
+        vol->setValueFromSingleFloat(voxel,value*255);
         Py_RETURN_NONE;
     }
 

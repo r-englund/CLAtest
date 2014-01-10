@@ -15,6 +15,7 @@
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/util/variant.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 namespace inviwo {
 

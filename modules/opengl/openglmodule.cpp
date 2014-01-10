@@ -28,7 +28,9 @@
 
 namespace inviwo {
 
-OpenGLModule::OpenGLModule() : InviwoModule() {
+OpenGLModule::OpenGLModule() : 
+    InviwoModule()
+    ,btnOpenGLInfo_("printOpenGLInfo", "Print OpenGL Info"){
     setIdentifier("OpenGL");
     setXMLFileName("opengl/openglmodule.xml");
 
@@ -51,15 +53,19 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     registerCapabilities(new OpenGLCapabilities());
 }
 
+
+
+OpenGLModule::~OpenGLModule(){
+}
+
 void OpenGLModule::setupModuleSettings(){
     //New OpengGLSettings class can be created if required.
     SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
     if (settings){
         OpenGLCapabilities* openglInfo = getTypeFromVector<OpenGLCapabilities>(getCapabilities());
         if (openglInfo){
-            ButtonProperty* btnOpenGLInfo = new ButtonProperty("printOpenGLInfo", "Print OpenGL Info");
-            btnOpenGLInfo->onChange(openglInfo, &OpenGLCapabilities::printInfo);
-            settings->addProperty(btnOpenGLInfo);
+            btnOpenGLInfo_.onChange(openglInfo, &OpenGLCapabilities::printInfo);
+            settings->addProperty(&btnOpenGLInfo_);
         }           
     }
 }
