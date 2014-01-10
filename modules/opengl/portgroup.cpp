@@ -68,10 +68,10 @@ void PortGroup::reattachTargets() {
     frameBufferObject_->activate();
     frameBufferObject_->detachAllTextures();
     for (unsigned int i=0; i<static_cast<unsigned int>(images.size()); i++) {
-        frameBufferObject_->attachColorTexture(images[i]->getColorTexture(), i);
+        frameBufferObject_->attachColorTexture(images[i]->getColorLayerGL()->getTexture(), i);
         if (i==0)
             // depth values only valid for the first render target
-            frameBufferObject_->attachTexture(images[i]->getDepthTexture(), static_cast<GLenum>(GL_DEPTH_ATTACHMENT_EXT));
+            frameBufferObject_->attachTexture(images[i]->getDepthLayerGL()->getTexture(), static_cast<GLenum>(GL_DEPTH_ATTACHMENT_EXT));
     }
 
     LGL_ERROR;

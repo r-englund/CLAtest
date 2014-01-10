@@ -71,9 +71,9 @@ void VolumeSliceGL::process(){
     volumeGL->bindTexture(volUnit.getEnum());
 
     TextureUnit transFuncUnit;
-    const Image* tfImage = transferFunction_.get().getData();
-    const ImageGL* transferFunctionGL = tfImage->getRepresentation<ImageGL>();
-    transferFunctionGL->bindColorTexture(transFuncUnit.getEnum());
+    const Layer* tfLayer = transferFunction_.get().getData();
+    const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
+    transferFunctionGL->bindTexture(transFuncUnit.getEnum());
 
     float sliceNum = static_cast<float>(sliceNumber_.get())/glm::max<float>(static_cast<float>(sliceNumber_.getMaxValue()-1), 1.f);
 
@@ -83,11 +83,11 @@ void VolumeSliceGL::process(){
     setGlobalShaderParameters(shader_);
 
     shader_->setUniform("volume_", volUnit.getUnitNumber());
-    vec3 dimensions = vec3(volumeGL->getDimensions());
+    vec3 dimensions = vec3(volumeGL->getDimension());
     shader_->setUniform("volumeParameters_.dimensions_", dimensions);
     shader_->setUniform("volumeParameters_.dimensionsRCP_", vec3(1.0f)/dimensions);
 
-    shader_->setUniform("dimension_", vec2(1.f / outport_.getDimensions()[0], 1.f / outport_.getDimensions()[1]));
+    shader_->setUniform("dimension_", vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
     shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
     shader_->setUniform("sliceNum_", sliceNum);
 

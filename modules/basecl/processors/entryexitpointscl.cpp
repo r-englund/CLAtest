@@ -70,7 +70,7 @@ void EntryExitPointsCL::process() {
 	// the rendered plane is specified in camera coordinates
 	// thus we must transform from camera to world to texture coordinates
     mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
-	uvec2 outportDim = exitPort_.getDimensions();
+	uvec2 outportDim = exitPort_.getDimension();
 	ImageCL* entryPointsCL = entryPort_.getData()->getEditableRepresentation<ImageCL>();
 	ImageCL* exitPointsCL = exitPort_.getData()->getEditableRepresentation<ImageCL>();
 	mat4 NDCToTextureMat = worldToTexMat*camera_.inverseViewMatrix()*camera_.inverseProjectionMatrix();

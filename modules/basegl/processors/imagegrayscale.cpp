@@ -49,7 +49,7 @@ void ImageGrayscale::process() {
 
     shader_->activate();
     shader_->setUniform("inport_", 0);
-    shader_->setUniform("dimension_", vec2(1.f / outport_.getDimensions()[0], 1.f / outport_.getDimensions()[1]));
+    shader_->setUniform("dimension_", vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
     renderImagePlaneRect();
     shader_->deactivate();
 

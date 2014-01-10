@@ -106,7 +106,7 @@ void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
         imageInport->changeDataDimensions(&resizeEvent);
     }
     else if (!canvasProcessor && imageInport) {
-        ResizeEvent resizeEvent(imageOutport->getDimensions());
+        ResizeEvent resizeEvent(imageOutport->getDimension());
         imageInport->changeDataDimensions(&resizeEvent);
     }
 }

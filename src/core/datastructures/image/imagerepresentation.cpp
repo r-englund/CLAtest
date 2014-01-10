@@ -16,15 +16,32 @@
 
 namespace inviwo {
 
-ImageRepresentation::ImageRepresentation(uvec2 dimensions, ImageType type, const DataFormatBase* format)
-    : DataRepresentation(format), dimensions_(dimensions), imageType_(type){
+ImageRepresentation::ImageRepresentation()
+    : DataGroupRepresentation(){
+}
+
+ImageRepresentation::ImageRepresentation(const ImageRepresentation& rhs) 
+    : DataGroupRepresentation(rhs), owner_(rhs.owner_){
 }
 
 ImageRepresentation::~ImageRepresentation() {}
 
-void ImageRepresentation::resize(uvec2 dimensions){
-    dimensions_ = dimensions;
-}    
+void ImageRepresentation::performOperation(DataOperation*) const {}
 
+std::string ImageRepresentation::getClassName() const { 
+    return "ImageRepresentation"; 
+}
+
+uvec2 ImageRepresentation::getDimension() const {
+    return owner_->getDimension();
+}
+
+const Image* ImageRepresentation::getOwner() const{
+    return owner_;
+}
+
+void ImageRepresentation::setPointerToOwner(DataGroup* owner){
+    owner_ = dynamic_cast<Image*>(owner);
+}
 
 } // namespace

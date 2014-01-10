@@ -15,7 +15,7 @@
 #include <inviwo/core/interaction/pickingcontainer.h>
 #include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/datastructures/image/image.h>
-#include <inviwo/core/datastructures/image/imageram.h>
+#include <inviwo/core/datastructures/image/layerram.h>
 
 namespace inviwo {
 
@@ -32,8 +32,8 @@ bool PickingContainer::isPickableSelected() { return selected_; }
 bool PickingContainer::performPick(const uvec2& coord) {
     prevCoord_ = coord;
     if(src_){
-        const ImageRAM* imageRAM = src_->getRepresentation<ImageRAM>();
-        vec4 value = imageRAM->getPickingValue(coord);
+        const LayerRAM* pickingRAM = src_->getPickingLayer()->getRepresentation<LayerRAM>();
+        vec4 value = pickingRAM->getValueAsVec4Float(coord);
         vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
         DataVec3UINT8::type pickedColorUINT8;
         DataVec3UINT8::get()->vec3ToValue(pickedColor*255.f, &pickedColorUINT8);
@@ -42,23 +42,21 @@ bool PickingContainer::performPick(const uvec2& coord) {
             setPickableSelected(true);
             currentPickObj_->setPickingPosition(normalizedCoordinates(coord));
             
-            if(currentPickObj_->readDepth())
-                currentPickObj_->setPickingDepth(imageRAM->getDepthValue(coord));
+            if(currentPickObj_->readDepth()){
+                const LayerRAM* depthRAM = src_->getDepthLayer()->getRepresentation<LayerRAM>();
+                float depth = depthRAM->getValueAsSingleFloat(coord);
+                currentPickObj_->setPickingDepth(depth);
+            }
 
             currentPickObj_->setPickingMove(vec2(0.f,0.f));
             
             currentPickObj_->picked();
             return true;
         }
-        else{
-            setPickableSelected(false);
-            return false;
-        }
     }
-    else{
-        setPickableSelected(false);
-        return false;
-    }
+    
+    setPickableSelected(false);
+    return false;
 }
 
 void PickingContainer::movePicked(const uvec2& coord){

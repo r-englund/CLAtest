@@ -16,10 +16,10 @@
 
 namespace inviwo {
 
-DataGroup::DataGroup(){ 
+DataGroup::DataGroup() : editableUpdate_(false) { 
 }
 
-DataGroup::DataGroup(const DataGroup& rhs){
+DataGroup::DataGroup(const DataGroup& rhs) : editableUpdate_(false) {
     //TOD0: Implement
 }
 

@@ -62,7 +62,7 @@ void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     glm::mat4 wtm = glm::transpose(data->getWorldTransform());
 
     writeKeyToString(ss, "ObjectFileName",  fileName + ".raw");
-    writeKeyToString(ss, "Resolution", vr->getDimensions());
+    writeKeyToString(ss, "Resolution", vr->getDimension());
     writeKeyToString(ss, "Format",  vr->getDataFormatString());
     writeKeyToString(ss, "Offset", offset);
     writeKeyToString(ss, "BasisVector1", basis[0]);
@@ -98,7 +98,7 @@ void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     std::fstream fout(rawPath.c_str(), std::ios::out | std::ios::binary);
     if(fout.good()){
         fout.write((char*)vr->getData(), 
-            vr->getDimensions().x*vr->getDimensions().x*vr->getDimensions().x
+            vr->getDimension().x*vr->getDimension().x*vr->getDimension().x
             * vr->getDataFormat()->getBytesStored());
     }else{
           throw DataWriterException("Error: Could not write to raw file: " + rawPath);

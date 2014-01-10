@@ -23,7 +23,8 @@ MeshRAM::MeshRAM()
 }
 
 MeshRAM::MeshRAM(const MeshRAM& rhs) 
-: GeometryRAM(rhs){
+: GeometryRAM(rhs), owner_(rhs.owner_){
+    update(true);
 }
 
 MeshRAM::~MeshRAM() {
@@ -38,15 +39,22 @@ DataRepresentation* MeshRAM::clone() const{
     return new MeshRAM(*this);
 }
 
-void MeshRAM::update(){
+void MeshRAM::update(bool editable){
     attributesRAM_.clear();
-    for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin() ; it != owner_->getBuffers().end(); ++it) {
-        attributesRAM_.push_back((*it)->getRepresentation<BufferRAM>());
+    if(editable){
+        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
+            attributesRAM_.push_back((*it)->getEditableRepresentation<BufferRAM>());
+        }
+    }
+    else{
+        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
+            attributesRAM_.push_back(const_cast<BufferRAM*>((*it)->getRepresentation<BufferRAM>()));
+        }
     }
 }
 
-void MeshRAM::setPointerToOwner(const DataGroup* owner){
-    owner_ = dynamic_cast<const Mesh*>(owner);
+void MeshRAM::setPointerToOwner(DataGroup* owner){
+    owner_ = dynamic_cast<Mesh*>(owner);
 }
 
 

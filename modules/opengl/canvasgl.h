@@ -19,7 +19,7 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/util/canvas.h>
 #include <modules/opengl/glwrap/shader.h>
-#include <modules/opengl/image/imagegl.h>
+#include <modules/opengl/image/layergl.h>
 
 namespace inviwo {
 
@@ -31,7 +31,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual void activate();
-    void render(const Image* im, ImageLayerType layer = COLOR_LAYER);
+    void render(const Image* im, LayerType layerType = COLOR_LAYER);
     virtual void resize(uvec2 size);
     virtual void glSwapBuffers();
     virtual void update();
@@ -52,9 +52,7 @@ protected:
     void initializeGLEW();
     virtual void initializeSquare();
 
-    void renderColor();
-    void renderDepth();
-    void renderPicking();
+    void renderLayer();
     void renderNoise();
     void renderTexture(GLint);
 
@@ -63,7 +61,7 @@ private:
     static GLuint screenAlignedVerticesId_;
     static GLuint screenAlignedTexCoordsId_;
 
-    const ImageGL* imageGL_;
+    const LayerGL* layerGL_;
     Shader* shader_;
     Shader* noiseShader_;
 

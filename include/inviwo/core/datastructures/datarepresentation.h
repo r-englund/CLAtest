@@ -32,8 +32,6 @@ public:
     virtual ~DataRepresentation();
     virtual void performOperation(DataOperation*) const = 0;
 
-    virtual void initialize() = 0;
-    virtual void deinitialize() = 0;
     virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const;
     const DataFormatBase* getDataFormat() const;

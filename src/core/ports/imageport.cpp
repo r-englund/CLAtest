@@ -53,10 +53,10 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
                 ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(portSet[j]);
                 if (imageOutport) {  
                     hasImageOutport = true;
-                    uvec2 dim = imageOutport->getDimensions();
+                    uvec2 dim = imageOutport->getDimension();
                     //Largest outport dimension
                     if (dimMax.x*dimMax.y<dim.x*dim.y)
-                        dimMax = imageOutport->getDimensions();
+                        dimMax = imageOutport->getDimension();
                 }
             }
         }
@@ -79,14 +79,14 @@ void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
 }
 
 
-uvec2 ImageInport::getDimensions() const{ 
+uvec2 ImageInport::getDimension() const{ 
     return dimensions_; 
 }
 
 const Image* ImageInport::getData() const{
     if (isConnected()) {
         ImageOutport* outport = dynamic_cast<ImageOutport*>(getConnectedOutport());
-        if (dimensions_==outport->getDimensions())
+        if (dimensions_==outport->getDimension())
             return outport->getConstData();
         else 
             return const_cast<const Image*>(outport->getResizedImageData(dimensions_));            
@@ -105,7 +105,6 @@ ImageOutport::ImageOutport(std::string identifier,
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {     
     Image* im = new Image(dimensions_);
-    im->setAllowMissingLayers(false);
     data_ = im;
     dataChanged();
     mapDataInvalid_ = true;
@@ -115,7 +114,6 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
     Image* im = new Image(dimensions_, type, format);
-    im->setAllowMissingLayers(false);
     data_ = im;
     dataChanged();
     mapDataInvalid_ = true;
@@ -125,7 +123,6 @@ ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType t
     : DataOutport<Image>(identifier, invalidationLevel), EventHandler(), dimensions_(uvec2(256,256))
 {
     Image* im = new Image(dimensions_, type);
-    im->setAllowMissingLayers(false);
     data_ = im;
     dataChanged();
     mapDataInvalid_ = true;
@@ -262,18 +259,17 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     propagateResizeEventToPredecessor(resizeEvent);
 }
 
-uvec2 ImageOutport::getDimensions() const{ 
+uvec2 ImageOutport::getDimension() const{ 
     return dimensions_; 
 }
 
 Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions){
-
     if (mapDataInvalid_) {
         //Resize all map data once
         for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
             if (it->second != data_) { 
                 uvec2 mapDataDimensions = it->second->getDimension();
-                data_->resizeImageRepresentations(it->second, mapDataDimensions);
+                data_->resizeRepresentations(it->second, mapDataDimensions);
             }
         }
         mapDataInvalid_ = false;
@@ -289,11 +285,10 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions){
     //ivwAssert(1==0, "Required dimension " << requiredDimensions.x << " x " << requiredDimensions.y << "does not exist in outport.");    
     //FIXME: Should not enter this region. Port inspectors needs this.
     Image* resultImage = dynamic_cast<Image*>(data_->clone());
-    resultImage->setAllowMissingLayers(false);
     resultImage->resize(requiredDimensions);
     std::string dimensionString = glm::to_string(requiredDimensions);
     imageDataMap_.insert(std::make_pair(dimensionString, resultImage));
-    data_->resizeImageRepresentations(resultImage, requiredDimensions);
+    data_->resizeRepresentations(resultImage, requiredDimensions);
     return resultImage;
 }
 
@@ -333,7 +328,7 @@ bool ImageOutport::removeResizeEventListener(EventListener* el){
     return removeEventListener(el);
 }
 
-void ImageOutport::setInputSource(ImageLayerType layer, ImageInport* src){
+void ImageOutport::setInputSource(LayerType layer, ImageInport* src){
     inputSources_[layer] = src;
 }
 

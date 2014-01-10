@@ -212,9 +212,9 @@ void VolumeRaycasterGL::initializeResources() {
 }
 
 void VolumeRaycasterGL::bindTransferFunction(const TransferFunction& tf, GLenum tfTexUnit) {
-    const Image* tfImage = tf.getData();
-    const ImageGL* transferFunctionGL = tfImage->getRepresentation<ImageGL>();
-    transferFunctionGL->bindColorTexture(tfTexUnit);
+    const Layer* tfLayer = tf.getData();
+    const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
+    transferFunctionGL->bindTexture(tfTexUnit);
 }
 
 void VolumeRaycasterGL::bindVolume(const VolumeInport& inport, GLenum volTexUnit) {
@@ -224,7 +224,7 @@ void VolumeRaycasterGL::bindVolume(const VolumeInport& inport, GLenum volTexUnit
 }
 
 void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* shader, const std::string samplerID) {
-    vec3 dimensions = vec3(inport.getData()->getRepresentation<VolumeGL>()->getDimensions());
+    vec3 dimensions = vec3(inport.getData()->getRepresentation<VolumeGL>()->getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimensions);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.0f)/dimensions);
 }

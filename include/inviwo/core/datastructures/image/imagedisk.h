@@ -16,36 +16,25 @@
 #define IVW_IMAGEDISK_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/diskrepresentation.h>
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
 
 namespace inviwo {
 
-class IVW_CORE_API ImageDisk : public ImageRepresentation, public DiskRepresentation {
+class IVW_CORE_API ImageDisk : public ImageRepresentation {
 
 public:
     ImageDisk();
-	ImageDisk(std::string url);
     virtual ~ImageDisk();
     virtual void initialize();
     virtual void deinitialize();
-    virtual void resize(uvec2 dimensions);
+    //virtual void resize(uvec2 dimensions);
     virtual ImageDisk* clone() const;
-    virtual std::string getClassName() const { return "ImageDisk"; }
-    virtual bool copyAndResizeImage(DataRepresentation*){ return false; }
-    /** 
-     * \brief loads data from url.
-     *
-     * @param void* the destination of the raw data
-     */
-    DataFormatId loadFileData(void*) const;
-    /** 
-     * \brief loads and rescales data from url.
-     * 
-     * @param uvec2 dst_dimesion destination dimension
-     * @param void* the destination of the raw data
-     */
-    DataFormatId loadFileDataAndRescale(void*, uvec2 dst_dimesion) const;
+    virtual std::string getClassName() const;
+    virtual bool copyAndResizeImage(Image*) const;
+    virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const;
+
+protected:
+    virtual void update(bool editable);
 };
 
 } // namespace

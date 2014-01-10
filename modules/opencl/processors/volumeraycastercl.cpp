@@ -75,33 +75,33 @@ void VolumeRaycasterCL::process() {
     const ImageCLGL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCLGL>();
     // Will synchronize with OpenGL upon creation and destruction
     SyncCLGL glSync;
-    entryCLGL->aquireGLObject(glSync.getGLSyncEvent());
+    entryCLGL->getLayerCLGL()->aquireGLObject(glSync.getGLSyncEvent());
 
     const ImageCLGL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCLGL>();
-    exitCLGL->aquireGLObject();
+    exitCLGL->getLayerCLGL()->aquireGLObject();
 
     Image* outImage = outport_.getData();
     //ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
     ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
     uvec2 outportDim = outImage->getDimension();
-    outImageCL->aquireGLObject();
+    outImageCL->getLayerCLGL()->aquireGLObject();
 
 
     const Volume* volume = volumePort_.getData();
     const VolumeCLGL* volumeCL = volume->getRepresentation<VolumeCLGL>();
-    uvec3 volumeDim = volumeCL->getDimensions();
+    uvec3 volumeDim = volumeCL->getDimension();
     volumeCL->aquireGLObject();
-    const ImageCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<ImageCL>();
+    const LayerCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
     try
     {
         cl_uint arg = 0;
         kernel_->setArg(arg++, *volumeCL);
-        kernel_->setArg(arg++, *entryCLGL);
-        kernel_->setArg(arg++, *exitCLGL);
+        kernel_->setArg(arg++, *entryCLGL->getLayerCLGL());
+        kernel_->setArg(arg++, *exitCLGL->getLayerCLGL());
         kernel_->setArg(arg++, *transferFunctionCL);
         kernel_->setArg(arg++, samplingRate_.get());// / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
         kernel_->setArg(arg++, volumeDim);
-        kernel_->setArg(arg++, *outImageCL);
+        kernel_->setArg(arg++, *outImageCL->getLayerCLGL());
         // 
         OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
     } catch (cl::Error& err) {
@@ -110,9 +110,9 @@ void VolumeRaycasterCL::process() {
 
     
     volumeCL->releaseGLObject();
-    outImageCL->releaseGLObject();
-    exitCLGL->releaseGLObject();
-    entryCLGL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
+    outImageCL->getLayerCLGL()->releaseGLObject();
+    exitCLGL->getLayerCLGL()->releaseGLObject();
+    entryCLGL->getLayerCLGL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
 
 }
 

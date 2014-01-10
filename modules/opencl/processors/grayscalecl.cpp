@@ -54,15 +54,18 @@ void GrayscaleCL::process() {
     if( kernel_ == NULL) {
         return;
     }
+    
     Image* outImage = outport_.getData();
-    const ImageCL* colorImageCL = inputPort_.getData()->getRepresentation<ImageCL>();
-    outImage->resize(colorImageCL->getDimensions());
+    const Image* inImage = inputPort_.getData();
+
+    const ImageCL* colorImageCL = inImage->getRepresentation<ImageCL>();
+    outImage->resize(inImage->getDimension());
     uvec2 outportDim = outImage->getDimension();
     ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
 
     cl_uint arg = 0;
-    kernel_->setArg(arg++, *colorImageCL);
-    kernel_->setArg(arg++, *outImageCL);
+    kernel_->setArg(arg++, *colorImageCL->getLayerCL());
+    kernel_->setArg(arg++, *outImageCL->getLayerCL());
 
     OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
 

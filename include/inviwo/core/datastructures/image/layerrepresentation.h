@@ -19,6 +19,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/datarepresentation.h>
 #include <inviwo/core/datastructures/image/layer.h>
+#include <inviwo/core/datastructures/image/imagetypes.h>
 
 namespace inviwo {
 
@@ -27,20 +28,24 @@ class IVW_CORE_API LayerRepresentation : public DataRepresentation {
 friend class Layer;
 
 public:
-    LayerRepresentation(uvec2 dimensions, const DataFormatBase* format);
+    LayerRepresentation(uvec2 dimensions = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataVec4UINT8::get());
     virtual ~LayerRepresentation();
-    virtual void performOperation(DataOperation*) const {};
-    virtual void resize(uvec2 dimensions);
-    const uvec2& getDimensions() const {return dimensions_;}
-    // Removes old data and reallocate for new dimension.
-    // Needs to be overloaded by child classes.
-    virtual void setDimensions(uvec2 dimensions) { dimensions_ = dimensions;}
-    virtual bool copyAndResizeLayer(DataRepresentation*) = 0;
     virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const { return "LayerRepresentation"; }
+    virtual void performOperation(DataOperation*) const {};
+    virtual void resize(uvec2 dimensions);
+    virtual bool copyAndResizeLayer(DataRepresentation*) const = 0;
+    
+    uvec2 getDimension() const;
+    // Removes old data and reallocate for new dimension.
+    // Needs to be overloaded by child classes.
+    virtual void setDimension(uvec2 dimensions);
+    
+    LayerType getLayerType() const;
 
 protected:
     uvec2 dimensions_;
+    LayerType layerType_;
 };
 
 } // namespace

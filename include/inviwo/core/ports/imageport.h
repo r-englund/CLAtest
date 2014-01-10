@@ -36,7 +36,7 @@ public:
     void deinitialize();
 
     void changeDataDimensions(ResizeEvent* resizeEvent);    
-    uvec2 getDimensions() const;
+    uvec2 getDimension() const;
     const Image* getData() const;
     uvec3 getColorCode() const;
     static uvec3 colorCode;
@@ -66,13 +66,13 @@ public:
     virtual void dataChanged();
     
     void changeDataDimensions(ResizeEvent* resizeEvent);    
-    uvec2 getDimensions() const;
+    uvec2 getDimension() const;
     uvec3 getColorCode() const;
 
     bool addResizeEventListener(EventListener*);
     bool removeResizeEventListener(EventListener*);
 
-    void setInputSource(ImageLayerType, ImageInport*);
+    void setInputSource(LayerType, ImageInport*);
 
 protected:
     Image* getResizedImageData(uvec2 dimensions);
@@ -86,7 +86,7 @@ private:
     bool mapDataInvalid_;
     typedef std::map<std::string, Image*> ImagePortMap;
     ImagePortMap imageDataMap_;
-    typedef std::map<ImageLayerType, const ImageInport*> ImageInSourceMap;
+    typedef std::map<LayerType, const ImageInport*> ImageInSourceMap;
     ImageInSourceMap inputSources_;
 };
 

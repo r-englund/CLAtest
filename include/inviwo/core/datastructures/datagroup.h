@@ -65,6 +65,8 @@ protected:
 private:
     std::vector<Data*> data_;
     std::vector<DataGroup*> groupData_;
+
+    bool editableUpdate_;
 };
 
 template<typename T>
@@ -75,7 +77,7 @@ const T* DataGroup::getRepresentation() const {
         if (representation) {
             DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(representation);
             if(basRep){
-                basRep->update();
+                basRep->update(editableUpdate_);
                 return representation;
             }
         }
@@ -85,9 +87,9 @@ const T* DataGroup::getRepresentation() const {
     T* result = new T();
     DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(result);
     if(basRep){
-        basRep->setPointerToOwner(this);
+        basRep->setPointerToOwner(const_cast<DataGroup*>(this));
         basRep->initialize();
-        basRep->update();
+        basRep->update(editableUpdate_);
     }
     representations_.push_back(result);
     return result;    
@@ -95,7 +97,9 @@ const T* DataGroup::getRepresentation() const {
 
 template<typename T>
 T* DataGroup::getEditableRepresentation() {
+    editableUpdate_ = true;
     T* result = const_cast<T*>(getRepresentation<T>());
+    editableUpdate_ = false;
     return result;
 }
 

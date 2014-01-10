@@ -32,15 +32,14 @@ public:
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
 
-    virtual void update();
-
 protected:
-    virtual void setPointerToOwner(const DataGroup*);
+    virtual void update(bool editable);
 
-private:
-    const Mesh* owner_;
+    virtual void setPointerToOwner(DataGroup*);
 
-    std::vector<const BufferRAM*> attributesRAM_;
+    Mesh* owner_;
+
+    std::vector<BufferRAM*> attributesRAM_;
 };
 
 } // namespace

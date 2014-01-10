@@ -25,7 +25,7 @@ namespace inviwo {
     DataRepresentation* VolumeRAM2CLConverter::createFrom(const DataRepresentation* source) {     
         DataRepresentation* destination = 0;
         const VolumeRAM* volumeRAM = static_cast<const VolumeRAM*>(source);
-        uvec3 dimension = volumeRAM->getDimensions();
+        uvec3 dimension = volumeRAM->getDimension();
         const void* data = volumeRAM->getData();
         destination = new VolumeCL(dimension, volumeRAM->getDataFormat(), data);
 
@@ -34,8 +34,8 @@ namespace inviwo {
     void VolumeRAM2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
         const VolumeRAM* volumeSrc = static_cast<const VolumeRAM*>(source);
         VolumeCL* volumeDst = static_cast<VolumeCL*>(destination);
-        if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
-            volumeDst->setDimensions(volumeSrc->getDimensions());
+        if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+            volumeDst->setDimension(volumeSrc->getDimension());
         }
         volumeDst->upload(volumeSrc->getData());
 
@@ -50,7 +50,7 @@ namespace inviwo {
     DataRepresentation* VolumeCL2RAMConverter::createFrom(const DataRepresentation* source) {     
         DataRepresentation* destination = 0;
         const VolumeCL* volumeCL = static_cast<const VolumeCL*>(source);
-        uvec3 dimension = volumeCL->getDimensions();
+        uvec3 dimension = volumeCL->getDimension();
         destination = createVolumeRAM(dimension, volumeCL->getDataFormat());
 
         if (destination) {
@@ -64,8 +64,8 @@ namespace inviwo {
     void VolumeCL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
         const VolumeCL* volumeSrc = static_cast<const VolumeCL*>(source);
         VolumeRAM* volumeDst = static_cast<VolumeRAM*>(destination);
-        if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
-            volumeDst->setDimensions(volumeSrc->getDimensions());
+        if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+            volumeDst->setDimension(volumeSrc->getDimension());
         }
         volumeSrc->download(volumeDst->getData());
 

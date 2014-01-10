@@ -20,32 +20,32 @@
 
 namespace inviwo {
 
-/** \class ImageCLResizer 
+/** \class LayerCLResizer 
  * 
- * Helper class that resizes a 2D image. 
+ * Helper class that resizes a 2D layer. 
  * @note It will compile the OpenCL kernel the first time resize is called (may take some time).
- * @see ImageCL
+ * @see LayerCL
  */
-class IVW_MODULE_OPENCL_API ImageCLResizer {
+class IVW_MODULE_OPENCL_API LayerCLResizer {
 
 public:
 
     /**
-     * Resize image to given dimension. 
+     * Resize layer to given dimension. 
      * 
-     * \param src (const cl::Image2D &) Image to get data from
-     * \param dst (const cl::Image2D &) Image containing resized src image. Note that this should same dimension as resizeToDimension 
+     * \param src (const cl::Image2D &) Layer to get data from
+     * \param dst (const cl::Image2D &) Layer containing resized src layer. Note that this should same dimension as resizeToDimension 
      * \param resizeToDimension (const ivec2 &) Size to resize to
      * \return (void)
      */
     static void resize(const cl::Image2D& src, const cl::Image2D& dst, const uvec2& resizeToDimension);
 
 private:
-    ImageCLResizer();
-    ImageCLResizer(ImageCLResizer const&) {};
-    void operator=(ImageCLResizer const&) {};
+    LayerCLResizer();
+    LayerCLResizer(LayerCLResizer const&) {};
+    void operator=(LayerCLResizer const&) {};
     /**
-     * Kernel that takes two images as input. First image acts as source and second as destination.
+     * Kernel that takes two layers as input. First layer acts as source and second as destination.
      * 
      * \return (cl::Kernel*)
      */

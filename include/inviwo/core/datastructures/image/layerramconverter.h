@@ -17,23 +17,23 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/representationconverter.h>
-#include <inviwo/core/datastructures/image/imageram.h>
-#include <inviwo/core/datastructures/image/imagedisk.h>
+#include <inviwo/core/datastructures/image/layerram.h>
+#include <inviwo/core/datastructures/image/layerdisk.h>
 
 namespace inviwo {
 
-    class IVW_CORE_API ImageDisk2RAMConverter : public RepresentationConverterType<ImageRAM> {
+class IVW_CORE_API LayerDisk2RAMConverter : public RepresentationConverterType<LayerRAM> {
 
-    public:
-        ImageDisk2RAMConverter();
-        virtual ~ImageDisk2RAMConverter();
+public:
+    LayerDisk2RAMConverter();
+    virtual ~LayerDisk2RAMConverter();
 
-        inline bool canConvertFrom(const DataRepresentation* source) const {
-            return dynamic_cast<const ImageDisk*>(source) != NULL;
-        }
-        DataRepresentation* createFrom(const DataRepresentation* source);
-        void update(const DataRepresentation* source, DataRepresentation* destination);
-    };
+    inline bool canConvertFrom(const DataRepresentation* source) const {
+        return dynamic_cast<const LayerDisk*>(source) != NULL;
+    }
+    DataRepresentation* createFrom(const DataRepresentation* source);
+    void update(const DataRepresentation* source, DataRepresentation* destination);
+};
 
 } // namespace
 

@@ -43,14 +43,14 @@ void ImageProcessorGL::initializeResources() {
 
 vec2 ImageProcessorGL::computeDepthRange(ImageInport* inport) {
 	vec2 depthRange = vec2(1.0f, 0.0f);
-	const ImageRAM* imageRAM = (inport->getData())->getRepresentation<ImageRAM>();
-	for (unsigned int x=0; x<imageRAM->getDimensions().x; x++) {
-		for (unsigned int y=0; y<imageRAM->getDimensions().y; y++) {
+	/*const ImageRAM* imageRAM = (inport->getData())->getRepresentation<ImageRAM>();
+	for (unsigned int x=0; x<imageRAM->getDimension().x; x++) {
+		for (unsigned int y=0; y<imageRAM->getDimension().y; y++) {
 			float curDepth = imageRAM->getDepthValue(uvec2(x,y));
 			if (curDepth < depthRange.x) depthRange.x = curDepth;
 			if (curDepth > depthRange.y) depthRange.y = curDepth;
 		}
-	}
+	}*/
 	return depthRange;
 }
 

@@ -24,13 +24,13 @@ class ImageRAMPrecision : public ImageRAM {
 public:
     ImageRAMPrecision(uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = defaultformat());
     ImageRAMPrecision(T* data, uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = defaultformat());
-    ImageRAMPrecision(const ImageRAMPrecision<T>& rhs): ImageRAM(rhs.getDimensions(), rhs.getImageType(), rhs.getDataFormat()) {
+    ImageRAMPrecision(const ImageRAMPrecision<T>& rhs): ImageRAM(rhs.getDimension(), rhs.getImageType(), rhs.getDataFormat()) {
         *this = rhs;
     }
     ImageRAMPrecision<T>& operator=(const ImageRAMPrecision<T>& rhs) {
         if (this != &rhs) {
             delete[] data_;
-            dimensions_ = rhs.getDimensions();
+            dimensions_ = rhs.getDimension();
             initialize();
             memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*sizeof(T));
         }
@@ -129,7 +129,7 @@ void ImageRAMPrecision<T>::resize(uvec2 dimensions) {
 
 template<typename T>
 DataRepresentation* ImageRAMPrecision<T>::clone() const {
-    ImageRAMPrecision* newImageRAM = new ImageRAMPrecision<T>(getDimensions());
+    ImageRAMPrecision* newImageRAM = new ImageRAMPrecision<T>(getDimension());
     //*newImageRAM = *this;
     return newImageRAM;
 }

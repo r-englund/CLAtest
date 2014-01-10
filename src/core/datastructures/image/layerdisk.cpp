@@ -17,48 +17,59 @@
 
 namespace inviwo {
 
-LayerDisk::LayerDisk()
-    : LayerRepresentation(uvec2(0), DataFormatBase::get()), DiskRepresentation(){}
+LayerDisk::LayerDisk(LayerType type)
+    : LayerRepresentation(uvec2(0), type, DataFormatBase::get()), DiskRepresentation(){
+    initialize();
+}
 
-LayerDisk::LayerDisk(std::string url)
-    : LayerRepresentation(uvec2(0), DataFormatBase::get()), DiskRepresentation(url){
+LayerDisk::LayerDisk(std::string url, LayerType type)
+    : LayerRepresentation(uvec2(0), type, DataFormatBase::get()), DiskRepresentation(url){
+    initialize();
+}
+
+LayerDisk::LayerDisk(const LayerDisk& rhs) 
+    : LayerRepresentation(rhs.dimensions_, rhs.layerType_, rhs.dataFormatBase_), DiskRepresentation(rhs.getSourceFile()){
     initialize();
 }
 
 LayerDisk::~LayerDisk() {
+    deinitialize();
 }
 
-void LayerDisk::initialize(){
+LayerDisk* LayerDisk::clone() const {  
+    return new LayerDisk(*this);
 }
 
-DataFormatId LayerDisk::loadFileData(void* dst) const {
-    if (hasSourceFile())
-        if(dimensions_.x > 0 && dimensions_.y > 0)
-            return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dimensions_.x, dimensions_.y);
-        else
-            return ImageIO::loadImageToData(dst, getSourceFile());
-
-    return NOT_SPECIALIZED;
-}
-
-DataFormatId LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dst_dimesion) const {
-    if (hasSourceFile())
-        return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dst_dimesion.x, dst_dimesion.y);
-
-    return NOT_SPECIALIZED;
-}
+void LayerDisk::initialize(){}
 
 void LayerDisk::deinitialize() {}
 
-void LayerDisk::resize(uvec2 dimensions){        
-    dimensions_ = dimensions;
-} 
+std::string LayerDisk::getClassName() const { 
+    return "LayerDisk"; 
+}
 
-LayerDisk* LayerDisk::clone() const {
-    //TODO: move to copy constructor
-    LayerDisk* imageDiskClone = new LayerDisk(getSourceFile());
-    imageDiskClone->resize(dimensions_);
-    return imageDiskClone;
+bool LayerDisk::copyAndResizeLayer(DataRepresentation*) const{ 
+    return false; 
+}
+
+//Hold the requested size of the image, not the actual size
+//If the actual image should be loaded without recaling, the dimension need to equal zero
+void LayerDisk::resize(uvec2 dim){
+    dimensions_ = dim;
+}
+
+void* LayerDisk::loadFileData(void* dst, uvec2& outDimension, DataFormatId& outFormatId) const {
+    if (hasSourceFile())
+        return ImageIO::loadImageToData(dst, getSourceFile(), outDimension, outFormatId);
+
+    return NULL;
+}
+
+void* LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dstDimesion, DataFormatId& outFormatId) const {
+    if (hasSourceFile())
+        return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dstDimesion, outFormatId);
+
+    return NULL;
 }
 
 } // namespace

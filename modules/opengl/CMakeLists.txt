@@ -29,7 +29,8 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.h
     ${IVW_MODULE_DIR}/opengl/image/imagegl.h
-    ${IVW_MODULE_DIR}/opengl/image/imageglconverter.h
+    ${IVW_MODULE_DIR}/opengl/image/layergl.h
+    ${IVW_MODULE_DIR}/opengl/image/layerglconverter.h
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
@@ -64,7 +65,8 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.cpp
     ${IVW_MODULE_DIR}/opengl/image/imagegl.cpp
-    ${IVW_MODULE_DIR}/opengl/image/imageglconverter.cpp
+    ${IVW_MODULE_DIR}/opengl/image/layergl.cpp
+    ${IVW_MODULE_DIR}/opengl/image/layerglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp

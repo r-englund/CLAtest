@@ -65,19 +65,60 @@ inline DataFormatId getDataFormatFromBitmap(FIBITMAP* bitmap){
     return inviwo::NOT_SPECIALIZED;
 }
 
-void ImageIO::saveImage(const char* filename, const Image* inputImage) {
+inline FREE_IMAGE_TYPE getFreeImageFormatFromDataFormat(DataFormatId formatId){
+    switch(formatId){
+        case inviwo::NOT_SPECIALIZED:
+            break;
+        case inviwo::UINT8:
+        case inviwo::Vec2UINT8:
+        case inviwo::Vec3UINT8:
+        case inviwo::Vec4UINT8:
+            return FIT_BITMAP;
+        case inviwo::UINT16:
+            return FIT_UINT16;
+        case inviwo::INT16:
+            return FIT_INT16;
+        case inviwo::UINT32:
+            return FIT_UINT32;
+        case inviwo::INT32:
+            return FIT_INT32;
+        case inviwo::FLOAT32:
+            return FIT_FLOAT;
+        case inviwo::FLOAT64:
+            return FIT_DOUBLE;
+        case inviwo::Vec2FLOAT64:
+            return FIT_COMPLEX;
+        case inviwo::Vec3UINT16:
+            return FIT_RGB16;
+        case inviwo::Vec4UINT16:
+            return FIT_RGBA16;
+        case inviwo::Vec3FLOAT32:
+            return FIT_RGBF;
+        case inviwo::Vec4FLOAT32:
+            return FIT_RGBAF;
+        default:
+            break;
+    }
+
+    return FIT_UNKNOWN;
+}
+
+void ImageIO::saveLayer(const char* filename, const Layer* inputLayer) {
     initLoader();
     FREE_IMAGE_FORMAT imageFormat = FreeImage_GetFIFFromFilename(filename);
     
-    if (imageFormat != FIF_UNKNOWN && inputImage != NULL){
-	    const ImageRAM *imageRam = inputImage->getRepresentation<ImageRAM>();
+    if (imageFormat != FIF_UNKNOWN && inputLayer != NULL){
+	    const LayerRAM *imageRam = inputLayer->getRepresentation<LayerRAM>();
 
         assert(imageRam != NULL);
 
         FIBITMAP* bitmap = createBitmapFromData(imageRam);
- 
-        FreeImage_Save(imageFormat, bitmap, filename, static_cast<int>(imageRam->getDataFormat()->getBitsAllocated()));
 
+        FIBITMAP* bitmapStandard = FreeImage_ConvertToStandardType(bitmap);
+ 
+        FreeImage_Save(imageFormat, bitmapStandard, filename, static_cast<int>(imageRam->getDataFormat()->getBitsAllocated()));
+
+        FreeImage_Unload(bitmapStandard);
         FreeImage_Unload(bitmap);
     }
     else{
@@ -130,73 +171,79 @@ bool ImageIO::isValidImageFile(std::string filename) {
     return (imageFormat != FIF_UNKNOWN);    
 }
 
-DataFormatId ImageIO::loadImageToData(void* data, std::string filename){
+void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim, DataFormatId& out_format){
     initLoader();
     FIBITMAP *bitmap = new FIBITMAP();
-    DataFormatId formatId = NOT_SPECIALIZED;
+    void* outData = data;
+    out_format = NOT_SPECIALIZED;
     if (readInImage(filename, &bitmap)){
-        formatId = getDataFormatFromBitmap(bitmap);
-        switch (formatId)
+        unsigned int width = FreeImage_GetWidth(bitmap);
+        unsigned int height = FreeImage_GetHeight(bitmap);
+        out_dim = uvec2(width, height);
+        out_format = getDataFormatFromBitmap(bitmap);
+        switch (out_format)
         {
         case NOT_SPECIALIZED:
             LogErrorCustom("loadImageToData", "Invalid format");
             break;
-#define DataFormatIdMacro(i) case inviwo::i: fiBitmapToDataArray<Data##i::type>(data, bitmap, Data##i::bitsAllocated(), Data##i::components()); break;
+#define DataFormatIdMacro(i) case inviwo::i: outData = fiBitmapToDataArray<Data##i::type>(data, bitmap, Data##i::bitsAllocated(), Data##i::components()); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
         default:
             LogErrorCustom("loadImageToData", "Invalid format or not implemented");
             break;
         }
     }
-    FreeImage_Unload(bitmap);
-    return formatId;
+    //FreeImage_Unload(bitmap);
+    return outData;
 }
 
-DataFormatId ImageIO::loadImageToDataAndRescale(void* data, std::string filename, int dst_width, int dst_height){
+void* ImageIO::loadImageToDataAndRescale(void* data, std::string filename, uvec2 dst_dim, DataFormatId& out_format){
     initLoader();
     FIBITMAP* bitmap = new FIBITMAP();
-    DataFormatId formatId = NOT_SPECIALIZED;
+    void* outData = data;
+    out_format = NOT_SPECIALIZED;
     if (readInImage(filename, &bitmap)){
-        formatId = getDataFormatFromBitmap(bitmap);
-        switch (formatId)
+        out_format = getDataFormatFromBitmap(bitmap);
+        switch (out_format)
         {
         case NOT_SPECIALIZED:
             LogErrorCustom("loadImageToDataAndRescale", "Invalid format");
             break;
-#define DataFormatIdMacro(i) case inviwo::i: fiBitmapToDataArrayAndRescale<Data##i::type>(data, bitmap, dst_width, dst_height, Data##i::bitsAllocated(), Data##i::components()); break;
+#define DataFormatIdMacro(i) case inviwo::i: outData = fiBitmapToDataArrayAndRescale<Data##i::type>(data, bitmap, dst_dim, Data##i::bitsAllocated(), Data##i::components()); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
         default:
             LogErrorCustom("loadImageToDataAndRescale", "Invalid format or not implemented");
             break;
         }
     }
-    FreeImage_Unload(bitmap);
-    return formatId;
+    //FreeImage_Unload(bitmap);
+    return outData;
 }
 
-void* ImageIO::rescaleImage(Image* srcImage, int dst_width, int dst_height) {
-    const ImageRAM *imageRam = srcImage->getRepresentation<ImageRAM>();
-    return rescaleImageRAM(const_cast<ImageRAM*>(imageRam), dst_width, dst_height);
+void* ImageIO::rescaleLayer(const Layer* inputLayer, uvec2 dst_dim) {
+    const LayerRAM* layerRam = inputLayer->getRepresentation<LayerRAM>();
+    return rescaleLayerRAM(layerRam, dst_dim);
 }
 
-void* ImageIO::rescaleImageRAM(ImageRAM* srcImageRam, int dst_width, int dst_height) {
-    ivwAssert(srcImageRam!=NULL, "ImageRAM representation does not exist.");
+void* ImageIO::rescaleLayerRAM(const LayerRAM* srcLayerRam, uvec2 dst_dim) {
+    ivwAssert(srcLayerRam!=NULL, "LayerRAM representation does not exist.");
 
     initLoader();  
 
     void* rawData = NULL;
     FIBITMAP* bitmap = NULL;
-    switch (srcImageRam->getDataFormatId())
+    FREE_IMAGE_TYPE formatType = getFreeImageFormatFromDataFormat(srcLayerRam->getDataFormatId());
+    switch (srcLayerRam->getDataFormatId())
     {
     case NOT_SPECIALIZED:
-        LogErrorCustom("rescaleImageRAM", "Invalid format");
+        LogErrorCustom("rescaleLayerRAM", "Invalid format");
         rawData = NULL;
         break;
-#define DataFormatIdMacro(i) case inviwo::i: bitmap = handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(srcImageRam->getData()), srcImageRam->getDimensions(), Data##i::bitsAllocated(), Data##i::components()); \
-    fiBitmapToDataArrayAndRescale<Data##i::type>(static_cast<Data##i::type*>(rawData), bitmap, dst_width, dst_height, Data##i::bitsAllocated(), Data##i::components()); break;
+#define DataFormatIdMacro(i) case inviwo::i: bitmap = handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(srcLayerRam->getData()), formatType, srcLayerRam->getDimension(), Data##i::bitsAllocated(), Data##i::components(), srcLayerRam->getDataFormat()); \
+    rawData = fiBitmapToDataArrayAndRescale<Data##i::type>(NULL, bitmap, dst_dim, Data##i::bitsAllocated(), Data##i::components()); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
     default:
-        LogErrorCustom("rescaleImageRAM", "Invalid format or not implemented");
+        LogErrorCustom("rescaleLayerRAM", "Invalid format or not implemented");
         rawData = NULL;
         break;
     }
@@ -218,50 +265,63 @@ void ImageIO::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels){
     }
 }
 
-FIBITMAP* ImageIO::allocateBitmap(int width, int height, size_t bitsPerPixel, int channels){
+FIBITMAP* ImageIO::allocateBitmap(FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels){
     unsigned int rMask = FI_RGBA_RED_MASK;
     unsigned int gMask = FI_RGBA_GREEN_MASK;
     unsigned int bMask = FI_RGBA_BLUE_MASK;
 
-    if(channels < 3){
+    if(channels == 2){
         bMask = 0;
     }
-    else if(channels < 2){
+    else if(channels == 1){
         gMask = 0;
         bMask = 0;
     }
-    else if(channels < 1){
+    else if(channels == 0){
         rMask = 0;
         gMask = 0;
         bMask = 0;
     }
 
-    return FreeImage_Allocate(width, height, static_cast<int>(bitsPerPixel), rMask, gMask, bMask);
+    return FreeImage_AllocateT(type, static_cast<int>(dim.x), static_cast<int>(dim.y), static_cast<int>(bitsPerPixel), rMask, gMask, bMask);
 }
 
 template<typename T>
-FIBITMAP* ImageIO::createBitmapFromData(const T* data, uvec2 dim, size_t bitsPerPixel, int channels){
-    FIBITMAP* dib = allocateBitmap(dim.x, dim.y, bitsPerPixel, channels);
+FIBITMAP* ImageIO::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels, const DataFormatBase* format){
+    FIBITMAP* dib = allocateBitmap(type, dim, bitsPerPixel, channels);
     unsigned int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
     T* bits = (T*)FreeImage_GetBits(dib);
+
+    //Scale normalized float value to from 0 - 1 to 0  - 255
+    if(type == FIT_FLOAT || type == FIT_RGBF || type == FIT_RGBAF){
+        T value;
+        format->floatToValue(255.f, &value);
+        for(unsigned int i = 0; i < dim.x * dim.y; i++){
+            bits[i] = data[i]*value;
+        }
+        FIBITMAP* dibConvert = FreeImage_ConvertToStandardType(dib);
+        return dibConvert;
+    }
+
     memcpy(bits, data, dim.x*dim.y*bytespp);
     return dib;
 }
 
 template<typename T>
-FIBITMAP* ImageIO::handleBitmapCreations(const T* data, uvec2 dim, size_t bitsPerPixel, int channels){
-    FIBITMAP *bitmap = createBitmapFromData<T>(data, dim, bitsPerPixel, channels);
+FIBITMAP* ImageIO::handleBitmapCreations(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels, const DataFormatBase* format){
+    FIBITMAP *bitmap = createBitmapFromData<T>(data, type, dim, bitsPerPixel, channels, format);
     switchChannels(bitmap, dim, channels);
     return bitmap;
 }
 
-FIBITMAP* ImageIO::createBitmapFromData(const ImageRAM* inputImage){
-    switch (inputImage->getDataFormatId())
+FIBITMAP* ImageIO::createBitmapFromData(const LayerRAM* inputLayer){
+    FREE_IMAGE_TYPE formatType = getFreeImageFormatFromDataFormat(inputLayer->getDataFormatId());
+    switch (inputLayer->getDataFormatId())
     {
     case NOT_SPECIALIZED:
         LogErrorCustom("createBitmapFromData", "Invalid format");
         return NULL;
-#define DataFormatIdMacro(i) case inviwo::i: return handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(inputImage->getData()), inputImage->getDimensions(), Data##i::bitsAllocated(), Data##i::components());
+#define DataFormatIdMacro(i) case inviwo::i: return handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(inputLayer->getData()), formatType, inputLayer->getDimension(), Data##i::bitsAllocated(), Data##i::components(), inputLayer->getDataFormat());
 #include <inviwo/core/util/formatsdefinefunc.h>
     default:
         LogErrorCustom("createBitmapFromData", "Invalid format or not implemented");
@@ -271,11 +331,12 @@ FIBITMAP* ImageIO::createBitmapFromData(const ImageRAM* inputImage){
 }
 
 template<typename T>
-void ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels){
-    int width = FreeImage_GetWidth(bitmap);
-    int height = FreeImage_GetHeight(bitmap);
+void* ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels){
+    unsigned int width = FreeImage_GetWidth(bitmap);
+    unsigned int height = FreeImage_GetHeight(bitmap);
+    FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
     uvec2 dim(width, height);
-    FIBITMAP* bitmapNEW = allocateBitmap(width, height, bitsPerPixel, channels);
+    FIBITMAP* bitmapNEW = allocateBitmap(type, dim, bitsPerPixel, channels);
     FreeImage_Paste(bitmapNEW, bitmap, 0, 0, 255);
 
     switchChannels(bitmapNEW, dim, channels);
@@ -288,23 +349,24 @@ void ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPix
     }
 
     memcpy(dst, pixelValues, dim.x*dim.y*sizeof(T));
-    FreeImage_Unload(bitmapNEW);
+    //FreeImage_Unload(bitmapNEW);
+    return dst;
 }
 
 template<typename T>
-void ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels){
+void* ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, uvec2 dst_dim, size_t bitsPerPixel, int channels){
     int width = FreeImage_GetWidth(bitmap);
     int height = FreeImage_GetHeight(bitmap);
     uvec2 dim(width, height);
-    uvec2 dst_dim(dst_width, dst_height);
 
     if (dim==dst_dim)
         return fiBitmapToDataArray<T>(dst, bitmap, bitsPerPixel, channels);
 
-    FIBITMAP *bitmap2 = allocateBitmap(width, height, bitsPerPixel, channels);
+    FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
+    FIBITMAP *bitmap2 = allocateBitmap(type, dim, bitsPerPixel, channels);
     FreeImage_Paste(bitmap2, bitmap, 0, 0, 255);
 
-    FIBITMAP* bitmapNEW = FreeImage_Rescale(bitmap2, dst_width, dst_height, FILTER_BILINEAR);
+    FIBITMAP* bitmapNEW = FreeImage_Rescale(bitmap2, static_cast<int>(dst_dim.x), static_cast<int>(dst_dim.y), FILTER_BILINEAR);
     FreeImage_Unload(bitmap2);
 
     switchChannels(bitmapNEW, dst_dim, channels);
@@ -317,7 +379,8 @@ void ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, int dst
     }
 
     memcpy(dst, pixelValues, dst_dim.x*dst_dim.y*sizeof(T));
-    FreeImage_Unload(bitmapNEW);
+    //FreeImage_Unload(bitmapNEW);
+    return dst;
 }
 
 void ImageIO::initLoader(){

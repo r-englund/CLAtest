@@ -16,36 +16,37 @@
 #define IVW_IMAGEREPRESENTATION_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/datarepresentation.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/image/imagetypes.h>
+#include <inviwo/core/datastructures/datagrouprepresentation.h>
 #include <inviwo/core/datastructures/image/image.h>
 
 namespace inviwo {
 
-class IVW_CORE_API ImageRepresentation : public DataRepresentation {
+class IVW_CORE_API ImageRepresentation : public DataGroupRepresentation {
 
 friend class Image;
 
 public:
-    ImageRepresentation(uvec2 dimensions, ImageType type, const DataFormatBase* format);
+    ImageRepresentation();
+    ImageRepresentation(const ImageRepresentation& rhs);
     virtual ~ImageRepresentation();
-    virtual void performOperation(DataOperation*) const {};
-    virtual void resize(uvec2 dimensions);
-    const uvec2& getDimensions() const {return dimensions_;}
-    // Removes old data and reallocate for new dimension.
-    // Needs to be overloaded by child classes.
-    virtual void setDimensions(uvec2 dimensions) { dimensions_ = dimensions;}
-    virtual bool copyAndResizeImage(DataRepresentation*) = 0;
-    virtual DataRepresentation* clone() const = 0;
-    virtual std::string getClassName() const { return "ImageRepresentation"; }
-    ImageType getImageType() const { return imageType_; }
-protected:
-    virtual void useInputSource(ImageLayerType, const Image*) {}
-    virtual void createAndAddLayer(ImageLayerType) {}
+    virtual void performOperation(DataOperation*) const;
+    virtual std::string getClassName() const;
 
-    uvec2 dimensions_;
-    ImageType imageType_;
+    uvec2 getDimension() const;
+
+    virtual DataRepresentation* clone() const = 0;
+    virtual bool copyAndResizeImage(Image*) const = 0;
+    virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const = 0;
+
+    const Image* getOwner() const;
+
+protected:
+    virtual void update(bool) = 0;
+
+    virtual void setPointerToOwner(DataGroup*);
+
+    Image* owner_;
 };
 
 } // namespace

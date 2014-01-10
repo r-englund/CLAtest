@@ -31,12 +31,6 @@ public:
 
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
-    virtual DataRepresentation* clone() const = 0;
-
-    virtual void update() = 0;
-
-protected:
-    virtual void setPointerToOwner(const DataGroup*) = 0;
 };
 
 } // namespace

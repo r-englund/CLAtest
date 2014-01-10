@@ -39,13 +39,6 @@ DataRepresentation* MeshGL::clone() const{
     return new MeshGL(*this);
 }
 
-void MeshGL::update(){
-    attributesGL_.clear();
-    for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
-        attributesGL_.push_back((*it)->getRepresentation<BufferGL>());
-    }
-}
-
 void MeshGL::enable() const{
     for (std::vector<const BufferGL*>::const_iterator it = attributesGL_.begin(); it != attributesGL_.end(); ++it) {
         (*it)->enable();
@@ -64,8 +57,22 @@ void MeshGL::disable() const{
     }
 }
 
-void MeshGL::setPointerToOwner(const DataGroup* owner){
-    owner_ = dynamic_cast<const Mesh*>(owner);
+void MeshGL::update(bool editable){
+    attributesGL_.clear();
+    if(editable){
+        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
+            attributesGL_.push_back((*it)->getEditableRepresentation<BufferGL>());
+        }
+    }
+    else{
+        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
+            attributesGL_.push_back((*it)->getRepresentation<BufferGL>());
+        }
+    }
+}
+
+void MeshGL::setPointerToOwner(DataGroup* owner){
+    owner_ = dynamic_cast<Mesh*>(owner);
 }
 
 

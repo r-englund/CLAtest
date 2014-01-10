@@ -46,7 +46,7 @@ protected:
     ImageInport inport_;
 
 	IntVec2Property dimensions_;
-    TemplateOptionProperty<ImageLayerType> visibleLayer_;
+    TemplateOptionProperty<LayerType> visibleLayer_;
     ButtonProperty snapshotButton_;
 
 private:

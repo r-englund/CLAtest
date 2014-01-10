@@ -15,7 +15,7 @@
 #ifndef IVW_VOLUMERAMSLICE_H
 #define IVW_VOLUMERAMSLICE_H
 
-#include <inviwo/core/datastructures/image/imageramprecision.h>
+#include <inviwo/core/datastructures/image/layerramprecision.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumeoperation.h>
 #include <inviwo/core/datastructures/geometry/geometrytype.h>
@@ -56,8 +56,8 @@ void VolumeRAMSlice::evaluate(){
         return;
     }
 
-    uvec3 dataDims = volume->getDimensions();
-    if(cPlane_ == XY){ //XY Plane
+    uvec3 dataDims = volume->getDimension();
+    /*if(cPlane_ == XY){ //XY Plane
         if (sliceNum_ >= dataDims.z){
             setOutput(NULL);
             return;
@@ -136,8 +136,8 @@ void VolumeRAMSlice::evaluate(){
                 dst[offsetImage] = src[];
             }
         }*/
-        setOutput(sliceImage);
-    }
+        /*setOutput(sliceImage);
+    }*/
 }
 
 } // namespace

@@ -21,8 +21,7 @@
 #define IVW_TRANSFERFUNCTION_H
 #include <stdlib.h>
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/image/imagedisk.h>
-#include <inviwo/core/datastructures/image/imageram.h>
+#include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 
@@ -35,8 +34,7 @@ public:
 	TransferFunction(const TransferFunction& rhs);
 	TransferFunction& operator=(const TransferFunction& rhs);
 	virtual ~TransferFunction();
-	void setData(Image);
-	const Image* getData() const;
+	const Layer* getData() const;
 	size_t getNumberOfDataPoints() const;
 	TransferFunctionDataPoint* getPoint(int i) const;
 
@@ -59,7 +57,7 @@ private:
     float maskMin_;
     float maskMax_;
     int textureSize_;
-    Image* data_;
+    Layer* data_;
     std::vector<TransferFunctionDataPoint*> dataPoints_;
 };
 

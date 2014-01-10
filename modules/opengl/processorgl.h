@@ -22,6 +22,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/image/imagegl.h>
 #include <modules/opengl/canvasgl.h>
 

@@ -13,17 +13,12 @@
  **********************************************************************/
 
 #include <inviwo/core/datastructures/image/imagedisk.h>
-#include <inviwo/core/io/imageio.h>
+#include <inviwo/core/datastructures/image/layerdisk.h>
 
 namespace inviwo {
 
 ImageDisk::ImageDisk()
-    : ImageRepresentation(uvec2(0), COLOR_DEPTH_PICKING, DataFormatBase::get()), DiskRepresentation(){}
-
-ImageDisk::ImageDisk(std::string url)
-    : ImageRepresentation(uvec2(0), COLOR_DEPTH_PICKING, DataFormatBase::get()), DiskRepresentation(url){
-    initialize();
-}
+    : ImageRepresentation(){}
 
 ImageDisk::~ImageDisk() {
 }
@@ -31,34 +26,58 @@ ImageDisk::~ImageDisk() {
 void ImageDisk::initialize(){
 }
 
-DataFormatId ImageDisk::loadFileData(void* dst) const {
-    if (hasSourceFile())
-        if(dimensions_.x > 0 && dimensions_.y > 0)
-            return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dimensions_.x, dimensions_.y);
-        else
-            return ImageIO::loadImageToData(dst, getSourceFile());
-
-    return NOT_SPECIALIZED;
-}
-
-DataFormatId ImageDisk::loadFileDataAndRescale(void* dst, uvec2 dst_dimesion) const {
-    if (hasSourceFile())
-        return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dst_dimesion.x, dst_dimesion.y);
-
-    return NOT_SPECIALIZED;
-}
-
 void ImageDisk::deinitialize() {}
 
-void ImageDisk::resize(uvec2 dimensions){        
-    dimensions_ = dimensions;
-} 
+/*void ImageDisk::resize(uvec2 dimensions){        
+} */
 
 ImageDisk* ImageDisk::clone() const {
     //TODO: move to copyconstructor
-    ImageDisk* imageDiskClone = new ImageDisk(getSourceFile());
-    imageDiskClone->resize(dimensions_);
-    return imageDiskClone;
+    //ImageDisk* imageDiskClone = new ImageDisk(getSourceFile());
+    //imageDiskClone->resize(getDimension());
+    //return imageDiskClone;
+    return NULL;
+}
+
+std::string ImageDisk::getClassName() const { 
+     return "ImageDisk"; 
+}
+
+bool ImageDisk::copyAndResizeImage(Image*) const { 
+    return false; 
+}
+
+bool ImageDisk::copyAndResizeImageRepresentation(ImageRepresentation*) const { 
+    return false; 
+}
+
+void ImageDisk::update(bool editable) {
+    if(editable){
+        for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i) {
+            owner_->getColorLayer(i)->getEditableRepresentation<LayerDisk>();
+        }
+
+        Layer* depthLayer = owner_->getDepthLayer();
+        if(depthLayer)
+            depthLayer->getEditableRepresentation<LayerDisk>();
+
+        Layer* pickingLayer = owner_->getPickingLayer();
+        if(pickingLayer)
+            pickingLayer->getEditableRepresentation<LayerDisk>();
+    }
+    else{
+        for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i) {
+            owner_->getColorLayer(i)->getRepresentation<LayerDisk>();
+        }
+
+        Layer* depthLayer = owner_->getDepthLayer();
+        if(depthLayer)
+            depthLayer->getRepresentation<LayerDisk>();
+
+        Layer* pickingLayer = owner_->getPickingLayer();
+        if(pickingLayer)
+            pickingLayer->getRepresentation<LayerDisk>();
+    }
 }
 
 } // namespace

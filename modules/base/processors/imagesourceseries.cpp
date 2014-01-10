@@ -15,6 +15,8 @@
 #include "imagesourceseries.h"
 #include <inviwo/core/io/imageio.h>
 #include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/datastructures/image/imagedisk.h>
+#include <inviwo/core/datastructures/image/layerdisk.h>
 
 namespace inviwo {
 
@@ -108,15 +110,15 @@ void ImageSourceSeries::process() {
         }
 
         std::string currentFileName = fileNames[currentIndex-1];
-        ImageDisk* outImageDisk = outImage->getEditableRepresentation<ImageDisk>();
-        if (!outImageDisk || outImageDisk->getSourceFile() != currentFileName){ 
-            outImageDisk = new ImageDisk(currentFileName);
-            outImage->clearRepresentations();
-            outImage->addRepresentation(outImageDisk);
+        LayerDisk* outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
+        if (!outLayerDisk || outLayerDisk->getSourceFile() != currentFileName){ 
+            outLayerDisk = new LayerDisk(currentFileName);
+            outImage->getColorLayer()->clearRepresentations();
+            outImage->getColorLayer()->addRepresentation(outLayerDisk);
         }
 
         //Original image dimension loaded from disk may differ from requested dimension.
-        outImageDisk->resize(outImage->getDimension());
+       outLayerDisk->resize(outImage->getDimension());
     }
 }
 

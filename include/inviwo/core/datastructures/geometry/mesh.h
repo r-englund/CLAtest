@@ -46,11 +46,14 @@ public:
     void addAttribute(Buffer*);
     void addIndicies(AttributesInfo info, IndexBuffer* ind);
 
-    const std::vector<Buffer*>& getBuffers() const { return attributes_; }
-    const std::vector<std::pair<AttributesInfo, IndexBuffer*> >& getIndexBuffers() const { return indexAttributes_; }
+    const std::vector<Buffer*>& getBuffers() { return attributes_; }
+    const std::vector<std::pair<AttributesInfo, IndexBuffer*> >& getIndexBuffers() { return indexAttributes_; }
 
-    Buffer* getAttributes(size_t idx) const;
-    Buffer* getIndicies(size_t idx) const;
+    const Buffer* getAttributes(size_t idx) const;
+    const Buffer* getIndicies(size_t idx) const;
+
+    Buffer* getAttributes(size_t idx);
+    Buffer* getIndicies(size_t idx);
 
     AttributesInfo getAttributesInfo() const;
     AttributesInfo getIndexAttributesInfo(size_t idx) const;

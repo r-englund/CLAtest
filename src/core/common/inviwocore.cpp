@@ -16,7 +16,7 @@
 
 //Data Structures
 #include <inviwo/core/datastructures/volume/volumeramconverter.h>
-#include <inviwo/core/datastructures/image/imageramconverter.h>
+#include <inviwo/core/datastructures/image/layerramconverter.h>
 
 //Meta Data
 #include <inviwo/core/metadata/metadata.h>
@@ -48,7 +48,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
     
     // Register Converters
     registerRepresentationConverter(new VolumeDisk2RAMConverter());
-    registerRepresentationConverter(new ImageDisk2RAMConverter());
+    registerRepresentationConverter(new LayerDisk2RAMConverter());
 
     // Register MetaData
     #define MetaDataMacro(n, t, d) registerMetaData(new n##MetaData());

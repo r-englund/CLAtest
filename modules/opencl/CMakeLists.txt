@@ -12,10 +12,12 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/cl.hpp
     ${IVW_MODULE_DIR}/opencl/glmcl.h
     ${IVW_MODULE_DIR}/opencl/image/imagecl.h
-    ${IVW_MODULE_DIR}/opencl/image/imageclconverter.h
     ${IVW_MODULE_DIR}/opencl/image/imageclgl.h
-	${IVW_MODULE_DIR}/opencl/image/imageclglconverter.h
-    ${IVW_MODULE_DIR}/opencl/image/imageclresizer.h
+    ${IVW_MODULE_DIR}/opencl/image/layercl.h
+    ${IVW_MODULE_DIR}/opencl/image/layerclgl.h
+    ${IVW_MODULE_DIR}/opencl/image/layerclconverter.h
+	${IVW_MODULE_DIR}/opencl/image/layerclglconverter.h
+    ${IVW_MODULE_DIR}/opencl/image/layerclresizer.h
 	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
 	${IVW_MODULE_DIR}/opencl/kernelmanager.h
 	${IVW_MODULE_DIR}/opencl/openclcapabilities.h
@@ -44,9 +46,11 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/glmcl.cpp
     ${IVW_MODULE_DIR}/opencl/image/imagecl.cpp
     ${IVW_MODULE_DIR}/opencl/image/imageclgl.cpp
-	${IVW_MODULE_DIR}/opencl/image/imageclconverter.cpp
-	${IVW_MODULE_DIR}/opencl/image/imageclglconverter.cpp
-	${IVW_MODULE_DIR}/opencl/image/imageclresizer.cpp
+    ${IVW_MODULE_DIR}/opencl/image/layercl.cpp
+    ${IVW_MODULE_DIR}/opencl/image/layerclgl.cpp
+	${IVW_MODULE_DIR}/opencl/image/layerclconverter.cpp
+	${IVW_MODULE_DIR}/opencl/image/layerclglconverter.cpp
+	${IVW_MODULE_DIR}/opencl/image/layerclresizer.cpp
     ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
 	${IVW_MODULE_DIR}/opencl/kernelmanager.cpp
     ${IVW_MODULE_DIR}/opencl/openclmodule.cpp

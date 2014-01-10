@@ -24,11 +24,11 @@ typedef enum ImageType{
     COLOR_DEPTH_PICKING = 3
 } ImageType;
 
-typedef enum ImageLayerType{
+typedef enum LayerType{
     COLOR_LAYER = 0,
     DEPTH_LAYER = 1,
     PICKING_LAYER = 2
-} ImageLayerType;
+} LayerType;
 
 static bool typeContainsColor(ImageType type){
     return (type == COLOR_ONLY || type == COLOR_DEPTH || type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);

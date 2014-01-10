@@ -21,7 +21,7 @@ Volume::Volume(uvec3 dimensions, const DataFormatBase* format) : Data(format), S
 
 Volume::Volume(const Volume& rhs) : Data(rhs), StructuredGridMetaData<3>(rhs.getDimension()) {}
 
-Volume::Volume(VolumeRepresentation* in) : Data(in->getDataFormat()), StructuredGridMetaData<3>(in->getDimensions()) {
+Volume::Volume(VolumeRepresentation* in) : Data(in->getDataFormat()), StructuredGridMetaData<3>(in->getDimension()) {
     addRepresentation(in);
 }
 

@@ -60,7 +60,7 @@ void IvfVolumeWriter::writeData( const Volume* volume, const std::string filePat
     std::fstream fout(rawPath.c_str(), std::ios::out | std::ios::binary);
     if(fout.good()){
         fout.write((char*)vr->getData(), 
-            vr->getDimensions().x*vr->getDimensions().x*vr->getDimensions().x
+            vr->getDimension().x*vr->getDimension().x*vr->getDimension().x
             * vr->getDataFormat()->getBytesStored());
     }else{
         throw DataWriterException("Error: Could not write to raw file: " + rawPath);

@@ -18,6 +18,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/data.h>
 #include <inviwo/core/datastructures/spatialdata.h>
+#include <inviwo/core/datastructures/image/imagetypes.h>
 
 namespace inviwo {
 
@@ -25,19 +26,26 @@ class LayerRepresentation;
 
 class IVW_CORE_API Layer : public Data, public StructuredGridMetaData<2> {
 public:
-    Layer(uvec2 dimensions = uvec2(256,256), const DataFormatBase* format = DataVec4UINT8::get());
+    Layer(uvec2 dimensions = uvec2(256,256), const DataFormatBase* format = DataVec4UINT8::get(), LayerType type = COLOR_LAYER);
     Layer(LayerRepresentation*);
     Layer(const Layer&);
     virtual ~Layer();
-    void resize(uvec2 dimensions);
     virtual Layer* clone() const;
-    void resizeLayerRepresentations(Layer* targetLayer, uvec2 targetDim);
+
+    void resize(uvec2 dimensions);
+    
+    void resizeRepresentations(Layer* targetLayer, uvec2 targetDim);
 
 	uvec2 getDimension() const;
 	void setDimension(const uvec2& dim);
 
+    LayerType getLayerType() const;
+
 protected:
     virtual DataRepresentation* createDefaultRepresentation();
+
+private:
+    LayerType layerType_;
 
 };
 

@@ -88,11 +88,11 @@ void EntryExitPoints::process() {
     ImageGL* tmpEntryPointsGL;
 	if (capNearClipping_.get()) {
         if (tmpEntryPoints_ == NULL || 
-            tmpEntryPoints_->getDimension() != entryPort_.getDimensions() || 
+            tmpEntryPoints_->getDimension() != entryPort_.getDimension() || 
             tmpEntryPoints_->getImageType() != entryPort_.getData()->getImageType() || 
             tmpEntryPoints_->getDataFormat() != entryPort_.getData()->getDataFormat()) {
             delete tmpEntryPoints_;
-            tmpEntryPoints_ = new Image(entryPort_.getDimensions(), entryPort_.getData()->getImageType(), entryPort_.getData()->getDataFormat());
+            tmpEntryPoints_ = new Image(entryPort_.getDimension(), entryPort_.getData()->getImageType(), entryPort_.getData()->getDataFormat());
         }
 
 		tmpEntryPointsGL = tmpEntryPoints_->getEditableRepresentation<ImageGL>();
@@ -110,8 +110,8 @@ void EntryExitPoints::process() {
 		activateAndClearTarget(entryPort_);
 
 		TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
-		tmpEntryPointsGL->bindColorTexture(entryColorUnit.getEnum());
-		tmpEntryPointsGL->bindDepthTexture(entryDepthUnit.getEnum());
+		tmpEntryPointsGL->getColorLayerGL()->bindTexture(entryColorUnit.getEnum());
+		tmpEntryPointsGL->getDepthLayerGL()->bindTexture(entryDepthUnit.getEnum());
 		bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
 
 		capNearClippingPrg_->activate();

@@ -16,15 +16,26 @@
 
 namespace inviwo {
 
-LayerRepresentation::LayerRepresentation(uvec2 dimensions, const DataFormatBase* format)
-    : DataRepresentation(format), dimensions_(dimensions){
+LayerRepresentation::LayerRepresentation(uvec2 dimensions, LayerType type, const DataFormatBase* format)
+    : DataRepresentation(format), dimensions_(dimensions), layerType_(type) {
 }
 
 LayerRepresentation::~LayerRepresentation() {}
 
 void LayerRepresentation::resize(uvec2 dimensions){
     dimensions_ = dimensions;
-}    
+}
 
+uvec2 LayerRepresentation::getDimension() const { 
+    return dimensions_; 
+}
+
+void LayerRepresentation::setDimension(uvec2 dimensions) { 
+    dimensions_ = dimensions;
+}
+
+LayerType LayerRepresentation::getLayerType() const { 
+    return layerType_; 
+}
 
 } // namespace

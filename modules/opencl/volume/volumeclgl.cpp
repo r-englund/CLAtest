@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include <modules/opencl/volume/volumeclgl.h>
-#include <modules/opencl/image/imageclresizer.h>
+#include <modules/opencl/image/layerclresizer.h>
 #include <inviwo/core/util/assertion.h>
 
 namespace inviwo {

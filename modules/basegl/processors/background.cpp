@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include "background.h"
+#include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {
 

@@ -55,129 +55,129 @@ void ProcessorGL::updateAndActivateTarget(ImageOutport& outport, ImageInport& in
 void ProcessorGL::bindColorTexture(const ImageInport& inport, GLenum texUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->bindColorTexture(texUnit);
+    inImageGL->getColorLayerGL()->bindTexture(texUnit);
 }
 
 void ProcessorGL::bindColorTexture(const ImageOutport& outport, GLenum texUnit) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->bindColorTexture(texUnit);
+    outImageGL->getColorLayerGL()->bindTexture(texUnit);
 }
 
 void ProcessorGL::bindDepthTexture(const ImageInport& inport, GLenum texUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->bindDepthTexture(texUnit);
+    inImageGL->getDepthLayerGL()->bindTexture(texUnit);
 }
 
 void ProcessorGL::bindDepthTexture(const ImageOutport& outport, GLenum texUnit) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->bindDepthTexture(texUnit);
+    outImageGL->getDepthLayerGL()->bindTexture(texUnit);
 }
 
 void ProcessorGL::bindPickingTexture(const ImageInport& inport, GLenum texUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->bindPickingTexture(texUnit);
+    inImageGL->getPickingLayerGL()->bindTexture(texUnit);
 }
 
 void ProcessorGL::bindPickingTexture(const ImageOutport& outport, GLenum texUnit) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->bindPickingTexture(texUnit);
+    outImageGL->getPickingLayerGL()->bindTexture(texUnit);
 }
 
 void ProcessorGL::bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->bindColorTexture(colorTexUnit);
-    inImageGL->bindDepthTexture(depthTexUnit);
+    inImageGL->getColorLayerGL()->bindTexture(colorTexUnit);
+    inImageGL->getDepthLayerGL()->bindTexture(depthTexUnit);
 }
 
 void ProcessorGL::bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->bindColorTexture(colorTexUnit);
-    outImageGL->bindDepthTexture(depthTexUnit);
+    outImageGL->getColorLayerGL()->bindTexture(colorTexUnit);
+    outImageGL->getDepthLayerGL()->bindTexture(depthTexUnit);
 }
 
 void ProcessorGL::bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit){
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->bindColorTexture(colorTexUnit);
-    inImageGL->bindDepthTexture(depthTexUnit);
-    inImageGL->bindPickingTexture(pickingTexUnit);
+    inImageGL->getColorLayerGL()->bindTexture(colorTexUnit);
+    inImageGL->getDepthLayerGL()->bindTexture(depthTexUnit);
+    inImageGL->getPickingLayerGL()->bindTexture(pickingTexUnit);
 }
 
 void ProcessorGL::bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit){
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->bindColorTexture(colorTexUnit);
-    outImageGL->bindDepthTexture(depthTexUnit);
-    outImageGL->bindPickingTexture(pickingTexUnit);
+    outImageGL->getColorLayerGL()->bindTexture(colorTexUnit);
+    outImageGL->getDepthLayerGL()->bindTexture(depthTexUnit);
+    outImageGL->getPickingLayerGL()->bindTexture(pickingTexUnit);
 }
 
 void ProcessorGL::unbindColorTexture(const ImageInport& inport) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->unbindColorTexture();
+    inImageGL->getColorLayerGL()->unbindTexture();
 }
 
 void ProcessorGL::unbindColorTexture(const ImageOutport& outport) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->unbindColorTexture();
+    outImageGL->getColorLayerGL()->unbindTexture();
 }
 
 void ProcessorGL::unbindDepthTexture(const ImageInport& inport) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->unbindDepthTexture();
+    inImageGL->getDepthLayerGL()->unbindTexture();
 }
 
 void ProcessorGL::unbindDepthTexture(const ImageOutport& outport) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->unbindDepthTexture();
+    outImageGL->getDepthLayerGL()->unbindTexture();
 }
 
 void ProcessorGL::unbindPickingTexture(const ImageInport& inport) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->unbindPickingTexture();
+    inImageGL->getPickingLayerGL()->unbindTexture();
 }
 
 void ProcessorGL::unbindPickingTexture(const ImageOutport& outport) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->unbindPickingTexture();
+    outImageGL->getPickingLayerGL()->unbindTexture();
 }
 
 void ProcessorGL::unbindTextures(const ImageInport& inport) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
-    inImageGL->unbindColorTexture();
-    inImageGL->unbindDepthTexture();
-    inImageGL->unbindPickingTexture();
+    inImageGL->getColorLayerGL()->unbindTexture();
+    inImageGL->getDepthLayerGL()->unbindTexture();
+    inImageGL->getPickingLayerGL()->unbindTexture();
 }
 
 void ProcessorGL::unbindTextures(const ImageOutport& outport) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
-    outImageGL->unbindColorTexture();
-    outImageGL->unbindDepthTexture();
-    outImageGL->unbindPickingTexture();
+    outImageGL->getColorLayerGL()->unbindTexture();
+    outImageGL->getDepthLayerGL()->unbindTexture();
+    outImageGL->getPickingLayerGL()->unbindTexture();
 }
 
 void ProcessorGL::setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID) {
-    vec2 dimensions = vec2(inport.getDimensions());
+    vec2 dimensions = vec2(inport.getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimensions);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f)/dimensions);
 }
 
 void ProcessorGL::setTextureParameters(const ImageOutport& outport, Shader* shader, const std::string samplerID) {
-    vec2 dimensions = vec2(outport.getDimensions());
+    vec2 dimensions = vec2(outport.getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimensions);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f)/dimensions);
 }
@@ -191,7 +191,7 @@ void ProcessorGL::setGlobalShaderParameters(Shader* shader, const std::vector<Ou
     for (size_t i=0; i<outports.size(); i++) {
         ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outports[i]);
         if (imageOutport) {
-            screenDimensions = imageOutport->getDimensions();
+            screenDimensions = imageOutport->getDimension();
             break;
         }
     }

@@ -34,7 +34,7 @@ public:
     virtual void show();
     virtual void hide();
     virtual void move(ivec2 pos);
-	virtual void setDimensions(ivec2 dimensions);
+	virtual void setDimension(ivec2 dimensions);
 
 protected:
     virtual void resizeEvent(QResizeEvent*);

@@ -40,7 +40,7 @@ void ProcessorWidget::hide() {
     metaData_->setVisibile(false);
 }
 
-void ProcessorWidget::setDimensions(ivec2 dimension) {   
+void ProcessorWidget::setDimension(ivec2 dimension) {   
     metaData_->setDimension(dimension);
 }
 

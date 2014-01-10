@@ -32,16 +32,16 @@ public:
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
 
-    virtual void update();
-
     void enable() const;
     void disable() const;
 
 protected:
-    virtual void setPointerToOwner(const DataGroup*);
+    virtual void update(bool editable);
+
+    virtual void setPointerToOwner(DataGroup*);
 
 private:
-    const Mesh* owner_;
+    Mesh* owner_;
 
     std::vector<const BufferGL*> attributesGL_;
 

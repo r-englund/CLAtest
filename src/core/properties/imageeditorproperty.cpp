@@ -44,7 +44,7 @@ PropertySemantics::Type semantics)
     : FileProperty(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
-void ImageEditorProperty::setDimensions(ivec2 imgSize) {    
+void ImageEditorProperty::setDimension(ivec2 imgSize) {    
    dimensions_ = imgSize;
 }
 

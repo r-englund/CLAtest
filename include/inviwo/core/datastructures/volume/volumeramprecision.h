@@ -32,7 +32,7 @@ public:
     VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& rhs) {
         if (this != &rhs) {
             delete[] data_;
-            dimensions_ = rhs.getDimensions();
+            dimensions_ = rhs.getDimension();
             initialize();
             memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
         }
@@ -44,7 +44,7 @@ public:
     virtual void deinitialize();
     virtual DataRepresentation* clone() const;
 
-    virtual void setDimensions(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(); }
+    virtual void setDimension(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(); }
 
     void setValueFromSingleFloat(const uvec3& pos, float val);
     void setValueFromVec2Float(const uvec3& pos, vec2 val);

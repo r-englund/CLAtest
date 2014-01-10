@@ -22,15 +22,15 @@ namespace inviwo {
 template<typename T>
 class LayerRAMPrecision : public LayerRAM {
 public:
-    LayerRAMPrecision(uvec2 dimensions = uvec2(128,128), const DataFormatBase* format = defaultformat());
-    LayerRAMPrecision(T* data, uvec2 dimensions = uvec2(128,128), const DataFormatBase* format = defaultformat());
-    LayerRAMPrecision(const LayerRAMPrecision<T>& rhs): LayerRAM(rhs.getDimensions(), rhs.getDataFormat()) {
+    LayerRAMPrecision(uvec2 dimensions = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = defaultformat());
+    LayerRAMPrecision(T* data, uvec2 dimensions = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = defaultformat());
+    LayerRAMPrecision(const LayerRAMPrecision<T>& rhs): LayerRAM(rhs.getDimension(), rhs.getLayerType(), rhs.getDataFormat()) {
         *this = rhs;
     }
     LayerRAMPrecision<T>& operator=(const LayerRAMPrecision<T>& rhs) {
         if (this != &rhs) {
             delete[] data_;
-            dimensions_ = rhs.getDimensions();
+            dimensions_ = rhs.getDimension();
             initialize();
             memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*sizeof(T));
         }
@@ -54,11 +54,6 @@ public:
     vec2 getValueAsVec2Float(const uvec2& pos) const;
     vec3 getValueAsVec3Float(const uvec2& pos) const;
     vec4 getValueAsVec4Float(const uvec2& pos) const;
-
-    vec4 getPickingValue(const uvec2& pos) const;
-
-protected:
-    void allocatePickingData();
     
 private:
     static const DataFormatBase* defaultformat(){
@@ -69,10 +64,10 @@ private:
 template<typename T, size_t B>
 class LayerRAMCustomPrecision : public LayerRAMPrecision<T> {
 public:
-    LayerRAMCustomPrecision(uvec2 dimensions = uvec2(128,128), const DataFormatBase* format = defaultformat())
-        : LayerRAMPrecision<T>(dimensions, format) {}
-    LayerRAMCustomPrecision(T* data, uvec2 dimensions = uvec2(128,128), const DataFormatBase* format = defaultformat())
-        : LayerRAMPrecision<T>(data, dimensions, format) {}
+    LayerRAMCustomPrecision(uvec2 dimensions = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = defaultformat())
+        : LayerRAMPrecision<T>(dimensions, type, format) {}
+    LayerRAMCustomPrecision(T* data, uvec2 dimensions = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = defaultformat())
+        : LayerRAMPrecision<T>(data, dimensions, type, format) {}
     virtual ~LayerRAMCustomPrecision() {};
     
 private:
@@ -82,11 +77,11 @@ private:
 };
 
 template<typename T>
-LayerRAMPrecision<T>::LayerRAMPrecision(uvec2 dimensions, const DataFormatBase* format) : LayerRAM(dimensions, format) {
+LayerRAMPrecision<T>::LayerRAMPrecision(uvec2 dimensions, LayerType type, const DataFormatBase* format) : LayerRAM(dimensions, type, format) {
     initialize();
 }
 template<typename T>
-LayerRAMPrecision<T>::LayerRAMPrecision(T* data, uvec2 dimensions, const DataFormatBase* format) : LayerRAM(dimensions, format) {
+LayerRAMPrecision<T>::LayerRAMPrecision(T* data, uvec2 dimensions, LayerType type, const DataFormatBase* format) : LayerRAM(dimensions, type, format) {
     initialize(data);
 }
 
@@ -110,10 +105,6 @@ void LayerRAMPrecision<T>::deinitialize(){
         delete[] static_cast<T*>(data_);
         data_ = NULL;
     }
-    if(pickingData_) {
-        delete[] static_cast<T*>(pickingData_);
-        pickingData_ = NULL;
-    }
 }
 
 template<typename T>
@@ -121,15 +112,13 @@ void LayerRAMPrecision<T>::resize(uvec2 dimensions) {
     dimensions_ = dimensions;
 
     //Delete and reallocate data_ to new size
-    LayerRAM::deinitialize();
     deinitialize();
-    LayerRAM::initialize();
     initialize();
 }
 
 template<typename T>
 DataRepresentation* LayerRAMPrecision<T>::clone() const {
-    LayerRAMPrecision* newLayerRAM = new LayerRAMPrecision<T>(getDimensions());
+    LayerRAMPrecision* newLayerRAM = new LayerRAMPrecision<T>(getDimension());
     //*newLayerRAM = *this;
     return newLayerRAM;
 }
@@ -192,22 +181,6 @@ vec4 LayerRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
     T val = data[posToIndex(pos, dimensions_)];
     result = getDataFormat()->valueToNormalizedVec4Float(&val);
     return result;
-}
-
-template<typename T>
-vec4 LayerRAMPrecision<T>::getPickingValue(const uvec2& pos) const{
-    vec4 result = vec4(0.f);
-    if (pickingData_) {
-        T* pickData = static_cast<T*>(pickingData_);
-        T val = pickData[posToIndex(pos, dimensions_)];
-        result = getDataFormat()->valueToNormalizedVec4Float(&val);
-    }
-    return result;
-}
-
-template<typename T>
-void LayerRAMPrecision<T>::allocatePickingData(){
-    pickingData_ = new T[dimensions_.x*dimensions_.y];
 }
 
 #define DataFormatIdMacro(i) typedef LayerRAMCustomPrecision<Data##i::type, Data##i::bits> LayerRAM_##i;

@@ -28,7 +28,7 @@ DataRepresentation* VolumeDisk2RAMConverter::createFrom(const DataRepresentation
     const VolumeDisk* volumeDisk = static_cast<const VolumeDisk*>(source);
     if (volumeDisk) {
         switch (volumeDisk->getDataFormatId()) {
-        #define DataFormatIdMacro(i) case i: return new VolumeRAM_##i(static_cast<Data##i::type*>(const_cast<VolumeDisk*>(volumeDisk)->getDataReader()->readData()), volumeDisk->getDimensions());
+        #define DataFormatIdMacro(i) case i: return new VolumeRAM_##i(static_cast<Data##i::type*>(const_cast<VolumeDisk*>(volumeDisk)->getDataReader()->readData()), volumeDisk->getDimension());
         #include <inviwo/core/util/formatsdefinefunc.h>
         default: 
             LogError("Cannot convert format from Disk to RAM:" << volumeDisk->getDataFormat()->getString());
@@ -39,8 +39,8 @@ DataRepresentation* VolumeDisk2RAMConverter::createFrom(const DataRepresentation
 void VolumeDisk2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const VolumeDisk* volumeSrc = static_cast<const VolumeDisk*>( source );
     VolumeRAM* volumeDst = static_cast<VolumeRAM*>(destination);
-    if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
-        volumeDst->setDimensions(volumeSrc->getDimensions());
+    if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+        volumeDst->setDimension(volumeSrc->getDimension());
     }
     volumeSrc->getDataReader()->readDataInto(volumeDst->getData());
 }

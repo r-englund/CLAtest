@@ -17,8 +17,8 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/image/image.h>
-#include <inviwo/core/datastructures/image/imageram.h>
+#include <inviwo/core/datastructures/image/layer.h>
+#include <inviwo/core/datastructures/image/layerram.h>
 #include <ext/freeimage/FreeImage.h>
 
 using namespace inviwo;
@@ -35,45 +35,42 @@ public:
     * @param filename is the file that is to be loaded
     * @return DataFormatId the data format
     */
-     static DataFormatId loadImageToData(void* data, std::string filename);
+     static void* loadImageToData(void* data, std::string filename, uvec2& out_dim, DataFormatId& out_format);
     
      /** 
       * \brief Loads an image through bitmap and rescale
       *
       * @param void* will point to the raw data
       * @param std::string filename is the file that is to be loaded
-      * @param int dst_width destination width
-      * @param int dst_height destination height
+      * @param uvec2 dst_dim is destination dimensions
       * @return DataFormatId the data format
       */
-     static DataFormatId loadImageToDataAndRescale(void* data, std::string filename, int dst_width, int dst_height);
+     static void* loadImageToDataAndRescale(void* data, std::string filename, uvec2 dist_dim, DataFormatId& out_format);
     
     /**
-    * Saves an image to a specified filename.
+    * Saves an layer of an image to a specified filename.
     * @param filename the path including name to file that is to be stored.
     * @param inputImage specifies the image that is to be saved.
     **/
-    static void saveImage(const char* filename, const Image* inputImage);
+    static void saveLayer(const char* filename, const Layer* inputImage);
 
     /** 
-     * \brief Rescales ImageRAM representation of given image data
+     * \brief Rescales Layer of given image data
      * 
-     * @param Image * inputImage image data that needs to be rescaled
-     * @param int dst_width destination width or new width
-     * @param int dst_height destination height or new height     
+     * @param Layer * inputImage image data that needs to be rescaled
+     * @param uvec2 dst_dim is destination dimensions   
      * @param void* rescaled raw data
      */
-    static void* rescaleImage(Image* inputImage, int dst_width, int dst_height);
+    static void* rescaleLayer(const Layer* inputLayer, uvec2 dst_dim);
 
     /** 
-     * \brief Rescales ImageRAM representation uses FILTER_BILINEAR by default.
+     * \brief Rescales LayerRAM representation uses FILTER_BILINEAR by default.
      * 
-     * @param ImageRAM * imageRam representation that needs rescaling
-     * @param int dst_width destination width or new width
-     * @param int dst_height destination height or new height
+     * @param LayerRAM * imageRam representation that needs rescaling
+     * @param uvec2 dst_dim is destination dimensions
      * @param void* rescaled raw data
      */
-    static void* rescaleImageRAM(ImageRAM* imageRam, int dst_width, int dst_height);
+    static void* rescaleLayerRAM(const LayerRAM* layerRam, uvec2 dst_dim);
 
     static bool isValidImageFile(std::string fileExtension);
 
@@ -94,20 +91,20 @@ private:
     /**
     * Create bitmap from image.
     */
-    static FIBITMAP* createBitmapFromData(const ImageRAM* inputImage);
+    static FIBITMAP* createBitmapFromData(const LayerRAM* inputImage);
 
     /**
     * Converts image to byte array.
     */
-    static FIBITMAP* convertToByte(const ImageRAM* inputImage, uvec2 dim, size_t bitsPerPixel);
+    static FIBITMAP* convertToByte(const LayerRAM* inputImage, uvec2 dim, size_t bitsPerPixel);
 
-    static FIBITMAP* allocateBitmap(int width, int height, size_t bitsPerPixel, int channels);
-
-    template<typename T>
-    static FIBITMAP* handleBitmapCreations(const T* data, uvec2 dim, size_t bitsPerPixel, int channels);
+    static FIBITMAP* allocateBitmap(FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels);
 
     template<typename T>
-    static FIBITMAP* createBitmapFromData(const T* data, uvec2 dim, size_t bitsPerPixel, int channels);
+    static FIBITMAP* handleBitmapCreations(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels, const DataFormatBase* format);
+
+    template<typename T>
+    static FIBITMAP* createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels, const DataFormatBase* format);
 
     /**
     * Switch red and blue channels in the bitmap.
@@ -118,13 +115,13 @@ private:
     * Converts an image from freeimage format to regular int.
     **/
     template<typename T>
-    static void fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels);
+    static void* fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels);
 
     /** 
-     * \brief fits the bitmap into data array which is readable by representations such as ImageRAM that uses FILTER_BILINEAR
+     * \brief fits the bitmap into data array which is readable by representations such as LayerRAM that uses FILTER_BILINEAR
      */
     template<typename T>
-    static void fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, int dst_width, int dst_height, size_t bitsPerPixel, int channels);
+    static void* fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, uvec2 dst_dim, size_t bitsPerPixel, int channels);
 
 	static bool loader_initialized;
 };

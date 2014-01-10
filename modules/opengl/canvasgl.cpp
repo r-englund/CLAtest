@@ -15,6 +15,7 @@
 #include "canvasgl.h"
 #include <modules/opengl/glwrap/textureunit.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
+#include <modules/opengl/image/imagegl.h>
 #include <modules/opengl/geometry/attributebuffergl.h>
 #include <modules/opengl/geometry/meshglrenderer.h>
 
@@ -26,7 +27,7 @@ GLuint CanvasGL::screenAlignedTexCoordsId_ = 1;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions) {
-    imageGL_ = NULL;
+    layerGL_ = NULL;
     shader_ = NULL;
     noiseShader_ = NULL;
 }
@@ -76,25 +77,15 @@ void CanvasGL::deinitialize() {
 
 void CanvasGL::activate() {}
 
-void CanvasGL::render(const Image* image, ImageLayerType layer){
+void CanvasGL::render(const Image* image, LayerType layerType){
     if (image) {
-        imageGL_ = image->getRepresentation<ImageGL>();
+        layerGL_ = image->getLayer(layerType)->getRepresentation<LayerGL>();
         pickingContainer_->setPickingSource(image);
-        switch(layer){
-            case COLOR_LAYER:
-                renderColor();
-                break;
-            case DEPTH_LAYER:
-                renderDepth();
-                break;
-            case PICKING_LAYER:
-                renderPicking();
-                break;
-            default:
-                renderNoise();
-        }
+        renderLayer();
+        //Called make sure a full ImageGL is added as representation.
+        image->getRepresentation<ImageGL>();
     } else {
-        imageGL_ = NULL;
+        layerGL_ = NULL;
         renderNoise();
     }
 }
@@ -108,32 +99,18 @@ void CanvasGL::glSwapBuffers(){
 }
 
 void CanvasGL::update() {
-    if (imageGL_){
-        renderColor();
+    if (layerGL_){
+        renderLayer();
     } else {
         renderNoise();
     }
 }
 
-void CanvasGL::renderColor() {
+void CanvasGL::renderLayer() {
     TextureUnit textureUnit;
-    imageGL_->bindColorTexture(textureUnit.getEnum());
+    layerGL_->bindTexture(textureUnit.getEnum());
     renderTexture(textureUnit.getUnitNumber());
-    imageGL_->unbindColorTexture();
-}
-
-void CanvasGL::renderDepth() {
-    TextureUnit textureUnit;
-    imageGL_->bindDepthTexture(textureUnit.getEnum());
-    renderTexture(textureUnit.getUnitNumber());
-    imageGL_->unbindDepthTexture();
-}
-
-void CanvasGL::renderPicking() {
-    TextureUnit textureUnit;
-    imageGL_->bindPickingTexture(textureUnit.getEnum());
-    renderTexture(textureUnit.getUnitNumber());
-    imageGL_->unbindPickingTexture();
+    layerGL_->unbindTexture();
 }
 
 void CanvasGL::renderNoise() {

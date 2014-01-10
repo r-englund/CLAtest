@@ -17,22 +17,22 @@
 
 namespace inviwo {
 
-Layer::Layer(uvec2 dimensions, const DataFormatBase* format) : Data(format), StructuredGridMetaData<2>(dimensions) {}
+Layer::Layer(uvec2 dimensions, const DataFormatBase* format, LayerType type) : Data(format), StructuredGridMetaData<2>(dimensions), layerType_(type) {}
 
-Layer::Layer(LayerRepresentation* in) : Data(in->getDataFormat()), StructuredGridMetaData<2>(in->getDimensions()) 
+Layer::Layer(LayerRepresentation* in) : Data(in->getDataFormat()), StructuredGridMetaData<2>(in->getDimension()), layerType_(in->getLayerType())
 { 
     clearRepresentations();
     addRepresentation(in);
 }
 
-Layer::Layer(const Layer& rhs) : Data(rhs.dataFormatBase_), StructuredGridMetaData<2>(rhs.getDimension()) {}
-
-Layer* Layer::clone() const {
-    return new Layer(*this);
-}
+Layer::Layer(const Layer& rhs) : Data(rhs.dataFormatBase_), StructuredGridMetaData<2>(rhs.getDimension()), layerType_(rhs.getLayerType()) {}
 
 Layer::~Layer() {
     // Representations are deleted by Data destructor.
+}
+
+Layer* Layer::clone() const {
+    return new Layer(*this);
 }
 
 void Layer::resize(uvec2 dimensions) {
@@ -69,7 +69,7 @@ void  Layer::setDimension(const uvec2& dim){
 	StructuredGridMetaData<2>::setDimension(dim);
 }
 
-void Layer::resizeLayerRepresentations(Layer* targetLayer, uvec2 targetDim) {
+void Layer::resizeRepresentations(Layer* targetLayer, uvec2 targetDim) {
     //TODO: check if getClassName() is necessary.
     //TODO: And also need to be tested on multiple representations_ such as LayerRAM, LayerDisk etc.,
     //TODO: optimize the code
@@ -113,8 +113,12 @@ void Layer::resizeLayerRepresentations(Layer* targetLayer, uvec2 targetDim) {
     }
 }
 
+LayerType Layer::getLayerType() const { 
+    return layerType_; 
+}
+
 DataRepresentation* Layer::createDefaultRepresentation() {
-	return createLayerRAM((uvec2)getDimension(), getDataFormat());
+	return createLayerRAM((uvec2)getDimension(), getLayerType(), getDataFormat());
 }
 
 } // namespace

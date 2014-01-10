@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/core/datastructures/transferfunction.h>
+#include <inviwo/core/datastructures/image/layerram.h>
 #include <math.h>
 
 namespace inviwo {
@@ -20,7 +21,7 @@ TransferFunction::TransferFunction() {
 	textureSize_ = 1024;
     maskMin_ = 0;
     maskMax_ = 1;
-    data_ = new Image(uvec2(textureSize_, 1), COLOR_ONLY, DataVec4FLOAT32::get());
+    data_ = new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get());
 }
 
 TransferFunction::TransferFunction(const TransferFunction& rhs) {
@@ -31,7 +32,7 @@ TransferFunction::TransferFunction(const TransferFunction& rhs) {
 TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
 	if (this != &rhs) {
 		delete this->data_;
-		this->data_ = new Image(*rhs.data_);
+		this->data_ = new Layer(*rhs.data_);
 		this->clearPoints();
         this->textureSize_ = rhs.textureSize_;
         this->maskMin_ = rhs.maskMin_;
@@ -49,7 +50,7 @@ TransferFunction::~TransferFunction(){
 	delete data_;
 }
 
-const Image* TransferFunction::getData() const{
+const Layer* TransferFunction::getData() const{
 	return data_;
 }
 
@@ -120,7 +121,7 @@ void TransferFunction::clearPoints(){
 }
 
 void TransferFunction::calcTransferValues(){
-	vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<ImageRAM>()->getData());
+	vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<LayerRAM>()->getData());
 
 	//In case of 0 points
 	if ((int)dataPoints_.size() == 0){

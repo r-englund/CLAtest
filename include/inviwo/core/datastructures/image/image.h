@@ -16,37 +16,68 @@
 #define IVW_IMAGE_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/data.h>
+#include <inviwo/core/datastructures/datagroup.h>
 #include <inviwo/core/datastructures/spatialdata.h>
+#include <inviwo/core/datastructures/image/layer.h>
+#include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/datastructures/image/imagetypes.h>
 
 namespace inviwo {
 
 class ImageRepresentation;
 
-class IVW_CORE_API Image : public Data, public StructuredGridMetaData<2> {
+class IVW_CORE_API Image : public DataGroup, public StructuredGridMetaData<2> {
 public:
     Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(), bool allowMissingLayers = false);
-    Image(ImageRepresentation*, bool allowMissingLayers = false);
     Image(const Image&);
     virtual ~Image();
-    void resize(uvec2 dimensions);
     virtual Image* clone() const;
-    void resizeImageRepresentations(Image* targetImage, uvec2 targetDim);
-    ImageType getImageType() const { return imageType_; }
-    void setInputSource(ImageLayerType, const Image*);
-    void setAllowMissingLayers(bool);
 
-	uvec2 getDimension() const;
-	void setDimension(const uvec2& dim);
+    void initialize(const DataFormatBase*);
+
+    uvec2 getDimension() const;
+    void setDimension(const uvec2& dim);
+
+    size_t addColorLayer(Layer*);
+
+    const std::vector<const Layer*>* getAllLayers() const;
+    const std::vector<Layer*>* getAllLayers();
+
+    const Layer* getLayer(LayerType) const;
+    Layer* getLayer(LayerType);
+
+    const Layer* getColorLayer(size_t idx = 0) const;
+    Layer* getColorLayer(size_t idx = 0);
+
+    size_t getNumberOfColorLayers() const;
+
+    const Layer* getDepthLayer() const;
+    Layer* getDepthLayer();
+
+    const Layer* getPickingLayer() const;
+    Layer* getPickingLayer();
+
+    void resize(uvec2 dimensions);
+    void resizeRepresentations(Image* targetImage, uvec2 targetDim);
+
+    ImageType getImageType() const;
+    const DataFormatBase* getDataFormat() const;
+    void setInputSource(LayerType, const Image*);
 
 protected:
-    virtual DataRepresentation* createDefaultRepresentation();
-    void newRepresentationCreated() const;
+    void addLayer(Layer*);
+
+    std::vector<Layer*> colorLayers_;
+    Layer* depthLayer_;
+    Layer* pickingLayer_;
+
+    std::vector<Layer*> allLayers_;
+    std::vector<const Layer*> allLayersConst_;
+
 private:
     bool allowMissingLayers_;
     ImageType imageType_;
-    typedef std::map<ImageLayerType, const Image*> ImageSourceMap;
+    typedef std::map<LayerType, const Image*> ImageSourceMap;
     ImageSourceMap inputSources_;
 };
 

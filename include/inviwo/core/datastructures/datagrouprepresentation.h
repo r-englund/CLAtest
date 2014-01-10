@@ -36,7 +36,7 @@ class DataGroup;
 
 class IVW_CORE_API DataGroupRepresentation : public DataRepresentation {
 
-    friend class DataGroup;
+friend class DataGroup;
 
 public:
     DataGroupRepresentation();
@@ -49,11 +49,11 @@ public:
     virtual DataRepresentation* clone() const = 0;
     virtual std::string getClassName() const;
 
-    //Update representations_ with DataRepresentation from each Data and DataGroup object
-    virtual void update() = 0;
-
 protected:
-    virtual void setPointerToOwner(const DataGroup*) = 0;
+    //Update representations_ with DataRepresentation from each Data and DataGroup object
+    virtual void update(bool) = 0;
+
+    virtual void setPointerToOwner(DataGroup*) = 0;
 };
 
 } // namespace

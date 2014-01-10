@@ -13,6 +13,8 @@
  **********************************************************************/
 
 #include "imagesource.h"
+#include <inviwo/core/datastructures/image/imagedisk.h>
+#include <inviwo/core/datastructures/image/layerdisk.h>
 
 namespace inviwo {
 
@@ -46,15 +48,15 @@ void ImageSource::process() {
 	Image* outImage = outport_.getData(); 
     if (outImage){
                 
-        ImageDisk* outImageDisk = outImage->getEditableRepresentation<ImageDisk>();
-        if (!outImageDisk || outImageDisk->getSourceFile() != imageFileName_.get()){ 
-            outImageDisk = new ImageDisk(imageFileName_.get());
-            outImage->clearRepresentations();
-            outImage->addRepresentation(outImageDisk);
+        LayerDisk* outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
+        if (!outLayerDisk || outLayerDisk->getSourceFile() != imageFileName_.get()){ 
+            outLayerDisk = new LayerDisk(imageFileName_.get());
+            outImage->getColorLayer()->clearRepresentations();
+            outImage->getColorLayer()->addRepresentation(outLayerDisk);
         }
 
         //Original image dimension loaded from disk may differ from requested dimension.
-        outImageDisk->resize(outImage->getDimension());
+        outLayerDisk->resize(outImage->getDimension());
     }
 }
 

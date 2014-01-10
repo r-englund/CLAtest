@@ -21,7 +21,7 @@
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/opengl/geometry/geometryrenderprocessorgl.h>
 #include <modules/opengl/glwrap/shadermanager.h>
-#include <modules/opengl/image/imageglconverter.h>
+#include <modules/opengl/image/layerglconverter.h>
 #include <modules/opengl/openglmodule.h>
 #include <modules/opengl/openglcapabilities.h>
 #include <modules/opengl/volume/volumeglconverter.h>
@@ -35,9 +35,9 @@ OpenGLModule::OpenGLModule() : InviwoModule() {
     ShaderManager::init();
     ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opengl/glsl");
 
-    registerRepresentationConverter(new ImageRAM2GLConverter());
-    registerRepresentationConverter(new ImageGL2RAMConverter());
-    registerRepresentationConverter(new ImageDisk2GLConverter());
+    registerRepresentationConverter(new LayerRAM2GLConverter());
+    registerRepresentationConverter(new LayerGL2RAMConverter());
+    registerRepresentationConverter(new LayerDisk2GLConverter());
 
     registerRepresentationConverter(new VolumeRAM2GLConverter());
     registerRepresentationConverter(new VolumeDisk2GLConverter());

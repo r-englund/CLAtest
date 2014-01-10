@@ -18,85 +18,73 @@
 
 namespace inviwo {
 
-LayerRAM::LayerRAM(uvec2 dimension, const DataFormatBase* format)
-    : LayerRepresentation(dimension, format)
-{
-    LayerRAM::initialize();
+LayerRAM::LayerRAM(uvec2 dimension, LayerType type, const DataFormatBase* format)
+    : LayerRepresentation(dimension, type, format), data_(NULL){
 }
 
 LayerRAM::~LayerRAM() {
-    LayerRAM::deinitialize();
-}  
-
-void LayerRAM::initialize() {
-    data_ = NULL;
-    depthData_ = NULL;
-    pickingData_ = NULL;
 }
 
-void LayerRAM::deinitialize() {
-    // Make sure that data is deinitialized in
-    // child class (should not delete void pointer 
-    // since destructor will not be called for object).
-    if(depthData_) {
-        delete[] depthData_;
-        depthData_ = NULL;
-    }
+std::string LayerRAM::getClassName() const { 
+    return "LayerRAM"; 
 }
 
-float* LayerRAM::getDepthData() {
-    if (!depthData_)
-        allocateDepthData();
-
-    return depthData_;
-}
-
-void* LayerRAM::getPickingData() {
-    if(!pickingData_)
-        allocatePickingData();
-
-    return pickingData_;
-}
-
-bool LayerRAM::copyAndResizeLayer(DataRepresentation* targetLayerRam) {
-    LayerRAM* source = this;
+bool LayerRAM::copyAndResizeLayer(DataRepresentation* targetLayerRam) const {
+    const LayerRAM* source = this;
     LayerRAM* target = dynamic_cast<LayerRAM*>(targetLayerRam);
-    ivwAssert(target!=0, "Target representation missing.");
+    if(!target){
+        return false;
+        LogError("Target representation missing.");
+    }
 
-    //CPU image rescaling using image loader
-    uvec2 targetDimensions  = target->getDimensions();
-    /*void* rawData = ImageIO::rescaleImageRAM(source, targetDimensions.x, targetDimensions.y);
+    if(!source->getData())
+        return true;
 
-    if (!rawData) return false;
+    if(source->getDimension() != target->getDimension()){
+        //CPU image rescaling using imageIO  
+        void* rawData = ImageIO::rescaleLayerRAM(source, target->getDimension());
 
-    target->setData(rawData);*/
+        if (!rawData) 
+            return false;
+
+        target->setData(rawData);
+    }
+    else{
+        if(!target->getData()){
+            return false;
+            LogError("Target should have data.");
+        }
+
+        memcpy(target->getData(), source->getData(), source->getDimension().x*source->getDimension().y*source->getDataFormat()->getBitsAllocated());
+    }
 
     return true;
 }
 
-void LayerRAM::setDimensions( uvec2 dimensions )
-{
+void LayerRAM::setDimension( uvec2 dimensions ){
     resize(dimensions);
 }
 
-float LayerRAM::getDepthValue(const uvec2& pos) const{
-    if (depthData_)
-        return depthData_[posToIndex(pos, dimensions_)];
-    else
-        return 1.f;
+void* LayerRAM::getData() {
+    return data_;
 }
 
-void LayerRAM::allocateDepthData(){
-    depthData_ = new float[dimensions_.x*dimensions_.y];
+const void* LayerRAM::getData() const {
+    return data_;
 }
 
-LayerRAM* createLayerRAM(const uvec2& dimension, const DataFormatBase* format) {
+void LayerRAM::setData(void* data) {
+    deinitialize();
+    data_ = data;
+}
+
+LayerRAM* createLayerRAM(const uvec2& dimension, LayerType type, const DataFormatBase* format) {
     switch (format->getId())
     {
     case NOT_SPECIALIZED:
         LogErrorCustom("createLayerRAM", "Invalid format");
         return NULL;
-    #define DataFormatIdMacro(i) case i: return new LayerRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); break;
+    #define DataFormatIdMacro(i) case i: return new LayerRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension, type); break;
     #include <inviwo/core/util/formatsdefinefunc.h>
     default:
         LogErrorCustom("createLayerRAM", "Invalid format or not implemented");

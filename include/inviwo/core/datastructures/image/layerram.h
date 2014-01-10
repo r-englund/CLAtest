@@ -24,21 +24,23 @@ namespace inviwo {
 class IVW_CORE_API LayerRAM : public LayerRepresentation {
 
 public:
-    LayerRAM(uvec2 dimension, const DataFormatBase* format = DataFormatBase::get());
-
+    LayerRAM(uvec2 dimension = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataVec4UINT8::get());
     virtual ~LayerRAM();
 
-    virtual void initialize();
-    virtual void deinitialize();
     DataRepresentation* clone() const = 0;
-    virtual std::string getClassName() const { return "LayerRAM"; }
-    virtual void setDimensions(uvec2 dimensions);
+    virtual void initialize() = 0;
+    virtual void deinitialize() = 0;
+
+    virtual std::string getClassName() const;
+    virtual void setDimension(uvec2 dimensions);
     virtual void resize(uvec2 dimensions) = 0;
-    virtual bool copyAndResizeLayer(DataRepresentation*);
-    void* getData() {return data_;};
-    const void* getData() const {return data_;};
-    float* getDepthData();
-    void* getPickingData();
+    virtual bool copyAndResizeLayer(DataRepresentation*) const;
+
+    void* getData();
+    const void* getData() const;
+
+    // Takes ownership of data pointer
+    void setData(void* data);
 
     virtual void setValueFromSingleFloat(const uvec2& pos, float val) = 0;
     virtual void setValueFromVec2Float(const uvec2& pos, vec2 val) = 0;
@@ -50,26 +52,12 @@ public:
     virtual vec3 getValueAsVec3Float(const uvec2& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec2& pos) const = 0;
 
-    float getDepthValue(const uvec2& pos) const;
-    virtual vec4 getPickingValue(const uvec2& pos) const = 0;
-
-    // Takes ownership of data pointer
-    void setData(void* data) {
-        deinitialize();
-        data_ = data;
-    }
-
     static inline unsigned int posToIndex(const uvec2& pos, const uvec2& dim){
         return pos.x+(pos.y*dim.x);
     }
 
 protected:
-    void allocateDepthData();
-    virtual void allocatePickingData() = 0;
-
     void* data_;
-    float* depthData_;
-    void* pickingData_;
 };
 
 /**
@@ -80,7 +68,7 @@ protected:
  * @param format of layer to create.
  * @return NULL if no valid format was specified. 
  */
-IVW_CORE_API LayerRAM* createLayerRAM(const uvec2& dimension, const DataFormatBase* format);
+IVW_CORE_API LayerRAM* createLayerRAM(const uvec2& dimension, LayerType type, const DataFormatBase* format);
 
 } // namespace
 

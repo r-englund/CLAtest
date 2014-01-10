@@ -60,7 +60,7 @@ public:
                  PropertySemantics::Type semantics = PropertySemantics::Editor);
     virtual std::string getClassName()  const { return "ImageEditorProperty"; }
     void addLabel(vec2 start, vec2 end, std::string name="");
-    void setDimensions(ivec2 imgSize);
+    void setDimension(ivec2 imgSize);
     std::vector<ImageLabel*> getLabels() const;
     void clearLabels();
     virtual void serialize(IvwSerializer& s) const;

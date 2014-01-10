@@ -36,7 +36,7 @@ VolumeCLGL2RAMConverter::VolumeCLGL2RAMConverter()
 DataRepresentation* VolumeCLGL2RAMConverter::createFrom(const DataRepresentation* source) {     
     DataRepresentation* destination = 0;
     const VolumeCLGL* volumeCLGL = static_cast<const VolumeCLGL*>(source);
-    uvec3 dimension = volumeCLGL->getDimensions();
+    uvec3 dimension = volumeCLGL->getDimension();
     destination = createVolumeRAM(dimension, volumeCLGL->getDataFormat()); 
     const Texture3D* texture = volumeCLGL->getTexture();
     if (destination) {
@@ -53,8 +53,8 @@ DataRepresentation* VolumeCLGL2RAMConverter::createFrom(const DataRepresentation
 void VolumeCLGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const VolumeCLGL* volumeSrc = static_cast<const VolumeCLGL*>(source);
     VolumeRAM* volumeDst = static_cast<VolumeRAM*>(destination);
-    if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
-        volumeDst->setDimensions(volumeSrc->getDimensions());
+    if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+        volumeDst->setDimension(volumeSrc->getDimension());
     }
     volumeSrc->getTexture()->download(volumeDst->getData());
 
@@ -67,7 +67,7 @@ DataRepresentation* VolumeGL2CLGLConverter::createFrom(const DataRepresentation*
     const VolumeGL* volumeGL = static_cast<const VolumeGL*>(source);
 
     const Texture3D* data = volumeGL->getTexture();
-    destination = new VolumeCLGL(volumeGL->getDimensions(), volumeGL->getDataFormat(), data);
+    destination = new VolumeCLGL(volumeGL->getDimension(), volumeGL->getDataFormat(), data);
      
     return destination;
 }
@@ -76,8 +76,8 @@ void VolumeGL2CLGLConverter::update(const DataRepresentation* source, DataRepres
      // Do nothing since they are sharing data
     const VolumeGL* volumeSrc = static_cast<const VolumeGL*>(source);
     VolumeCLGL* volumeDst = static_cast<VolumeCLGL*>(destination);
-    if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
-        volumeDst->setDimensions(volumeSrc->getDimensions());
+    if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+        volumeDst->setDimension(volumeSrc->getDimension());
     }
 }
 
@@ -86,7 +86,7 @@ DataRepresentation* VolumeCLGL2CLConverter::createFrom(const DataRepresentation*
 {
     DataRepresentation* destination = 0;
     const VolumeCLGL* volumeCLGL = static_cast<const VolumeCLGL*>(source);
-    uvec3 dimension = volumeCLGL->getDimensions();;
+    uvec3 dimension = volumeCLGL->getDimension();;
     destination = new VolumeCL(dimension, volumeCLGL->getDataFormat());
     SyncCLGL glSync;
     volumeCLGL->aquireGLObject(glSync.getGLSyncEvent());
@@ -98,12 +98,12 @@ DataRepresentation* VolumeCLGL2CLConverter::createFrom(const DataRepresentation*
 void VolumeCLGL2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const VolumeCLGL* volumeSrc = static_cast<const VolumeCLGL*>(source);
     VolumeCL* volumeDst = static_cast<VolumeCL*>(destination);
-    if(volumeSrc->getDimensions() != volumeDst->getDimensions()) {
-        volumeDst->setDimensions(volumeSrc->getDimensions());
+    if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+        volumeDst->setDimension(volumeSrc->getDimension());
     }
     SyncCLGL glSync;
     volumeSrc->aquireGLObject(glSync.getGLSyncEvent());
-    OpenCL::instance()->getQueue().enqueueCopyImage(volumeSrc->getVolume(), volumeDst->getVolume(), glm::svec3(0), glm::svec3(0), glm::svec3(volumeSrc->getDimensions()));
+    OpenCL::instance()->getQueue().enqueueCopyImage(volumeSrc->getVolume(), volumeDst->getVolume(), glm::svec3(0), glm::svec3(0), glm::svec3(volumeSrc->getDimension()));
     volumeSrc->releaseGLObject(glSync.getGLSyncEvent());
 
 }

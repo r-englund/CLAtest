@@ -67,7 +67,7 @@ void CanvasProcessor::resizeCanvas() {
 	if (canvas_!=0)
 		canvas_->resize(uvec2(dimensions_.get()));
 	if (processorWidget_!=0) {
-		processorWidget_->setDimensions(dimensions_.get());
+		processorWidget_->setDimension(dimensions_.get());
 	}
 }
 
@@ -78,7 +78,8 @@ void CanvasProcessor::createSnapshot() {
     
 void CanvasProcessor::createSnapshot(const char* snapshotPath) {
     const Image* image = inport_.getData();
-    ImageIO::saveImage(snapshotPath, image);
+    const Layer* layer = image->getLayer(visibleLayer_.get());
+    ImageIO::saveLayer(snapshotPath, layer);
     InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
 }
 

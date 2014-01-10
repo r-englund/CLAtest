@@ -129,22 +129,18 @@ void ImageOverlay::render_text(const char *text, float x, float y, float sx, flo
 }
 
 void ImageOverlay::process() {
-	
 	const Image* inputImage = inport0_.getData();
 	Image* outImage = outport_.getData();
 
 	const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
 	ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
 
-	uvec2 imageSize = inImageGL->getDimensions();
-	outImageGL->resize(imageSize);
-
 	activateTarget(outport_);
 	bindColorTexture(inport0_, GL_TEXTURE0);
 
 	shader_passthrough_->activate();
 	shader_passthrough_->setUniform("inport0_",0);
-	shader_passthrough_->setUniform("dimension_", vec2(1.f / imageSize[0], 1.f / imageSize[1]) );
+	shader_passthrough_->setUniform("dimension_", vec2(1.f / outImageGL->getDimension().x, 1.f / outImageGL->getDimension().y));
 	renderImagePlaneRect();
 	shader_passthrough_->deactivate();
 
@@ -165,11 +161,11 @@ void ImageOverlay::process() {
 	glBindBuffer(GL_ARRAY_BUFFER, vboCharacter_);
 	glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
-	float sx = 2.f / imageSize[0];
-	float sy = 2.f / imageSize[1];
+	float sx = 2.f / outImageGL->getDimension().x;
+	float sy = 2.f / outImageGL->getDimension().y;
 	font_size_ = optionPropertyIntFontSize_.getValue();
-	xpos_ = floatVec2FontPos_.get().x * imageSize[0];
-	ypos_ = floatVec2FontPos_.get().y * imageSize[1] + float(font_size_);
+	xpos_ = floatVec2FontPos_.get().x * outImageGL->getDimension().x;
+	ypos_ = floatVec2FontPos_.get().y * outImageGL->getDimension().y + float(font_size_);
 
 	shader_->activate();
 	render_text(

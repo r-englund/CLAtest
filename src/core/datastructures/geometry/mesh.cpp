@@ -56,11 +56,19 @@ void Mesh::addIndicies(AttributesInfo info, IndexBuffer* ind){
     indexAttributes_.push_back(std::make_pair(info, ind));
 }
 
-Buffer* Mesh::getAttributes(size_t idx) const{
+const Buffer* Mesh::getAttributes(size_t idx) const{
     return attributes_[idx];
 }
 
-Buffer* Mesh::getIndicies(size_t idx) const{
+const Buffer* Mesh::getIndicies(size_t idx) const{
+    return indexAttributes_[idx].second;
+}
+
+Buffer* Mesh::getAttributes(size_t idx){
+    return attributes_[idx];
+}
+
+Buffer* Mesh::getIndicies(size_t idx){
     return indexAttributes_[idx].second;
 }
 

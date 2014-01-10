@@ -15,21 +15,21 @@
 #include <inviwo/core/common/inviwocommondefines.h>
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/logdistributor.h>
-#include <modules/opencl/image/imageclresizer.h>
+#include <modules/opencl/image/layerclresizer.h>
 
 namespace inviwo {
 
 
-ImageCLResizer::ImageCLResizer() {
+LayerCLResizer::LayerCLResizer() {
 
     cl::Program program = OpenCL::buildProgram(IVW_DIR+"modules/opencl/cl/img_resize.cl");
 
-    resizeKernel_ = cl::Kernel(program, "resizeImage");
+    resizeKernel_ = cl::Kernel(program, "resizeLayer");
 }
 
- void ImageCLResizer::resize(const cl::Image2D& src, const cl::Image2D& dst, const uvec2& resizeToDimension)
+ void LayerCLResizer::resize(const cl::Image2D& src, const cl::Image2D& dst, const uvec2& resizeToDimension)
  {
-    static ImageCLResizer instance;
+    static LayerCLResizer instance;
 
     instance.getResizeKernel()->setArg(0, src);
     instance.resizeKernel_.setArg(1, dst);
@@ -39,7 +39,7 @@ ImageCLResizer::ImageCLResizer() {
     
     event.wait();
     #if IVW_PROFILING
-    LogInfoCustom("ImageCLResizer", "Image resizing from (" << src.getImageInfo<CL_IMAGE_WIDTH>() << ", " << src.getImageInfo<CL_IMAGE_HEIGHT>() << ") to (" << resizeToDimension.x << ", " << resizeToDimension.y << ") in " << event.getElapsedTime() << " ms");
+    LogInfoCustom("LayerCLResizer", "Image resizing from (" << src.getImageInfo<CL_IMAGE_WIDTH>() << ", " << src.getImageInfo<CL_IMAGE_HEIGHT>() << ") to (" << resizeToDimension.x << ", " << resizeToDimension.y << ") in " << event.getElapsedTime() << " ms");
     #endif
  }
 } // namespace

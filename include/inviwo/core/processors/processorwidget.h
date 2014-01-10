@@ -33,7 +33,7 @@ public:
     virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();    
-    virtual void setDimensions(ivec2);
+    virtual void setDimension(ivec2);
     virtual void move(ivec2);
     virtual void setProcessor(Processor* processor) {processor_ = processor;}
     virtual Processor* getProcessor() {return processor_;}

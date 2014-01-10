@@ -19,52 +19,34 @@
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
+#include <modules/opencl/image/layercl.h>
 
 namespace inviwo {
 
 class IVW_MODULE_OPENCL_API ImageCL : public ImageRepresentation {
 
 public:
-    ImageCL(uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
+    ImageCL();
     ImageCL(const ImageCL& other);
     virtual ~ImageCL();
     virtual std::string getClassName() const { return "ImageCL"; }
-    virtual void initialize(){};
-    virtual void deinitialize();
     virtual DataRepresentation* clone() const;
+    virtual void initialize();
+    virtual void deinitialize();
+
+    LayerCL* getLayerCL();
+    const LayerCL* getLayerCL() const;
     
-    void initialize(const void* texels);
-    void upload(const void* data);
-    /**
-     * Download data to preallocated memory.
-     * 
-     * @param data (void *) Preallocated pointer that will contain data after function returns.
-     * @return (void)
-     */
-    void download(void* data) const; 
-    virtual void setDimensions(uvec2 dimensions);
-    virtual void resize(uvec2 dimensions);
-    virtual bool copyAndResizeImage(DataRepresentation* target);
-    cl::ImageFormat getFormat() const { return imageFormat_;}
-    cl::Image2D getEditableImage() { return *image2D_; }
-    const cl::Image2D& getImage() const { return *const_cast<const cl::Image2D*>(image2D_); }
+    virtual bool copyAndResizeImage(Image*) const;
+    virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const;
 
 protected:
-    cl::Image2D* image2D_;
-    cl::ImageFormat imageFormat_;
+    virtual void update(bool);
+
+    LayerCL* layerCL_;
+    const LayerCL* layerCLConst_;
 };
 
 } // namespace
-
-namespace cl {
-
-// Kernel argument specializations for ImageCL type 
-// (enables calling cl::Queue::setArg with ImageCL)
-template <>
-IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCL& value);
-
-} // namespace cl
-
-
 
 #endif // IVW_IMAGECL_H

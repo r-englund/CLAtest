@@ -29,10 +29,6 @@ public:
     virtual ~GeometryGL();
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const = 0;
-
-protected:
-    virtual void setPointerToOwner(const DataGroup*) = 0;
 };
 
 } // namespace
