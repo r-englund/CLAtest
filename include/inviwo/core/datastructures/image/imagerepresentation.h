@@ -22,6 +22,8 @@
 
 namespace inviwo {
 
+class Image;
+
 class IVW_CORE_API ImageRepresentation : public DataGroupRepresentation {
 
 friend class Image;
