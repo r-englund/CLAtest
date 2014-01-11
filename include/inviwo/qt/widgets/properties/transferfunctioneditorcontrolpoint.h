@@ -24,44 +24,26 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
-//#include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <QGraphicsSceneEvent>
 #include <QGraphicsView>
 #include <QPainter>
 #include <QPainterPath>
 
-#include <inviwo/core/ports/port.h>
-
 namespace inviwo {
 
 class TransferFunctionDataPoint;
 
-class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint : public QObject, public QGraphicsItem {
-        Q_OBJECT
+class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint : public QGraphicsItem {
+
 public:
     /** \TransferFunctionEditorControlPoint constructor  
-    *      Creates a TransferFunctionEditorControlPoint at a QPointF
+    *      Creates a TransferFunctionEditorControlPoint
     */        
-    TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint);
+    TransferFunctionEditorControlPoint(TransferFunctionDataPoint* dataPoint);
     
-    /** \TransferFunctionEditorControlPoint constructor  
-    *      Default constructor
-    */
-    TransferFunctionEditorControlPoint();
-
     /** \TransferFunctionEditorControlPoint destructor  
     */
     ~TransferFunctionEditorControlPoint();
-
-    //override for qgraphicsitem_cast (refer qt documentation)
-    enum { Type = UserType + 2 };
-    int type() const  {return Type; }
-
-    /**Paint method
-    * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
-    */
-    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-    QRectF boundingRect() const;
 
     TransferFunctionDataPoint* getPoint() const;
 	TransferFunctionEditorControlPoint* getLeftNeighbour() const;
@@ -70,21 +52,32 @@ public:
 	void setLeftNeighbour(TransferFunctionEditorControlPoint*);
 	void setRightNeighbour(TransferFunctionEditorControlPoint*);
 
-	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 	void notify();
 
+    //override for qgraphicsitem_cast (refer qt documentation)
+    enum { Type = UserType + 278 };
+    int type() const  {return Type; }
+
 protected:
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    //void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    //void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+
+    /**Paint method
+    * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
+    */
+    void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    QRectF boundingRect() const;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
 
 private:
     float size_; ///< size for drawing the points
-    TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the controlpoint gets all its data from
+    float viewWidth_;
+    float viewHeight_;
+
+    TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the control point gets all its data from
 	TransferFunctionEditorControlPoint* leftNeighbour_;
 	TransferFunctionEditorControlPoint* rightNeighbour_;
-	float viewWidth_;
-	float viewHeight_;
 };
 
 }// namespace

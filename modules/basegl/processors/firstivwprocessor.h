@@ -39,4 +39,4 @@ private:
 
 } // namespace
 
-#endif // VRN_FIRSTIVWPROCESSOR_H
+#endif // IVW_FIRSTIVWPROCESSOR_H

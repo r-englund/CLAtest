@@ -45,4 +45,4 @@ private:
 
 } // namespace
 
-#endif // VRN_REDGREENPROCESSOR_H
+#endif // IVW_REDGREENPROCESSOR_H

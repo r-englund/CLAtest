@@ -36,19 +36,19 @@ public:
 	void setPos(vec2 pos);
 	void setPos(vec2* pos);
 	void setPos(float x, float y);
+
 	const vec4* getRgba();
 	void setRgba(vec4 rgba);
 	void setRgba(vec4* rgba);
+
     void setRgb(const vec3* rgb);
     void setA(const float alpha);
-	const bool isSelected();
-	void setSelected(bool);
 
 private:
 	vec2 pos_;
     vec4 rgba_;
-	bool selected_;
 };
 
 } // namespace
+
 #endif // IVW_TRANSFERFUNCTIONDATAPOINT_H

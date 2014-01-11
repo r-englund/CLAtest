@@ -66,6 +66,7 @@ public slots:
     void updateColorWheel();
     void showColorDialog();
     void editorViewResized();
+    void updateTransferFunction();
 
     void zoomHorizontally(int zoomHMin, int zoomHMax);
     void zoomVertically(int zoomVMin, int zoomVMax);

@@ -12,34 +12,17 @@
  *
  **********************************************************************/
 
-#define _USE_MATH_DEFINES
+#include <inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h>
 
 #include <QPainter>
 #include <math.h>
-#include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
-#include <inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h>
-#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 
 namespace inviwo {
-const int LEFT = 1;
-const int RIGHT = 2;
 
-TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(){
-    start_ = NULL;
-    finish_ = NULL;
-    initiateLineItem();
-};
-
-TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, TransferFunctionEditorControlPoint* finish):
-    start_(start),
-    finish_(finish),
-    direction_(0)
+TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(QPointF startPos, QPointF endPos):
+    startPos_(startPos),
+    endPos_(endPos)
 {
-    initiateLineItem();
-};
-
-void TransferFunctionEditorLineItem::initiateLineItem(){
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -54,65 +37,28 @@ void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOption
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
     painter->setRenderHint(QPainter::Antialiasing, true);
-    float viewScale = static_cast<TransferFunctionEditor*>(this->scene())->getView()->transform().m11();
-    float viewWidth = static_cast<TransferFunctionEditor*>(this->scene())->getView()->width();
-    QPointF start = start_->pos();
-    QPointF finish = finish_->pos();
-
-    if (direction_ == LEFT){
-        finish = start;
-        finish.setX(start.x() - viewWidth);
-    }
-
-    if (direction_ == RIGHT){
-        finish = start;
-        finish.setX(start.x() + viewWidth);
-    }
-    viewScale = (viewScale > 10.0) ? 10.0 : viewScale;
     QPen pen = QPen();
     pen.setStyle(Qt::SolidLine);
     pen.setCapStyle(Qt::RoundCap);
-    pen.setWidth(1.0/viewScale);
+    pen.setWidth(2.0);
     isSelected() ? pen.setColor(Qt::red) : pen.setColor(Qt::black);
     painter->setPen(pen);
-    painter->drawLine(start, finish);
-    pen.setWidth(2.0/viewScale);
-    pen.setColor(Qt::black);
-    painter->setPen(pen);
-    painter->drawLine(start, finish);
-
-    //Paint the boundingrect
-    //painter->drawPath(shape());
+    painter->drawLine(startPos_, endPos_);
 }
 
 QPainterPath TransferFunctionEditorLineItem::shape() const { 
-    QPolygonF boundingPolygon;
-    QPainterPath boundingPath;
-    float viewScale = static_cast<TransferFunctionEditor*>(this->scene())->getView()->transform().m11();
-    float boxWidth = 20.0f / viewScale;
-
-    QPointF startPos = start_->pos();
-    QPointF finishPos = finish_->pos();
-
-    //TODO : Temporary check for Nan and Inf. Needs to be adressed.
-    float startX = static_cast<float>(startPos.x());
-    startPos.setX((glm::isnan(startX) || glm::isinf(startX) ? 0.f : startPos.x()));
-    float startY = static_cast<float>(startPos.y());
-    startPos.setY((glm::isnan(startY) || glm::isinf(startY) ? 0.f : startPos.y()));
-    float finishX = static_cast<float>(finishPos.x());
-    finishPos.setX((glm::isnan(finishX) || glm::isinf(finishX) ? 0.f : finishPos.x()));
-    float finishY = static_cast<float>(finishPos.y());
-    finishPos.setY((glm::isnan(finishY) || glm::isinf(finishY) ? 0.f : finishPos.y()));
-
-    QPointF deltaPos = finishPos - startPos;
-    float angle = atan2(deltaPos.y(), deltaPos.x());
+    QPointF delta = endPos_ - startPos_;
+    float angle = atan2(delta.y(), delta.x());
+    float boxWidth = 20.0f;
     QPointF rotatedSize = QPointF(sin(angle), -cos(angle)) * boxWidth/2;
 
-    boundingPolygon	<< startPos - rotatedSize	//Lower left
-        << startPos + rotatedSize	//Upper left
-        << finishPos + rotatedSize	//Upper right
-        << finishPos - rotatedSize;	//Lower right
+    QPolygonF boundingPolygon;
+    boundingPolygon	<< startPos_ - rotatedSize	// lower left
+                    << startPos_ + rotatedSize	// upper left
+                    << endPos_ + rotatedSize	// upper right
+                    << endPos_ - rotatedSize;	// lower right
 
+    QPainterPath boundingPath;
     boundingPath.addPolygon(boundingPolygon);
     boundingPath.closeSubpath();
     return boundingPath; 
@@ -122,14 +68,8 @@ QRectF TransferFunctionEditorLineItem::boundingRect() const {
     return shape().boundingRect();
 }
 
-void TransferFunctionEditorLineItem::mousePressEvent ( QGraphicsSceneMouseEvent *e ){
-    mouseDownPos_ = e->scenePos();
-    this->setSelected(true);
-}
-
-void TransferFunctionEditorLineItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *e ){}
-
-void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e){
+/*
+void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent* e){
     float viewWidth = static_cast<TransferFunctionEditor*>(this->scene())->getView()->width();
     float viewHeight = static_cast<TransferFunctionEditor*>(this->scene())->getView()->height();
 
@@ -184,25 +124,6 @@ void TransferFunctionEditorLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent * e
 
     mouseDownPos_ = e->pos();
 }
-
-TransferFunctionEditorControlPoint* TransferFunctionEditorLineItem::getStart(){
-    return start_;
-}
-
-TransferFunctionEditorControlPoint* TransferFunctionEditorLineItem::getFinish(){
-    return finish_;
-}
-
-void TransferFunctionEditorLineItem::setStart(TransferFunctionEditorControlPoint* start){
-    start_ = start;
-}
-
-void TransferFunctionEditorLineItem::setFinish(TransferFunctionEditorControlPoint* finish){
-    finish_ = finish;
-}
-
-void TransferFunctionEditorLineItem::setDirection(int dir){
-    direction_ = dir;
-}
+*/
 
 } // namespace

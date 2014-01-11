@@ -31,17 +31,17 @@ TransferFunction::TransferFunction(const TransferFunction& rhs) {
 
 TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
 	if (this != &rhs) {
-		delete this->data_;
-		this->data_ = new Layer(*rhs.data_);
-		this->clearPoints();
-        this->textureSize_ = rhs.textureSize_;
-        this->maskMin_ = rhs.maskMin_;
-        this->maskMax_ = rhs.maskMax_;
+		delete data_;
+		data_ = new Layer(*rhs.data_);
+		clearPoints();
+        textureSize_ = rhs.textureSize_;
+        maskMin_ = rhs.maskMin_;
+        maskMax_ = rhs.maskMax_;
 		for (int i = 0; i < static_cast<int>(rhs.getNumberOfDataPoints()); ++i){
-			this->dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(i)));
+			dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(i)));
 		}
 	}
-	this->calcTransferValues();
+	calcTransferValues();
 	return *this;
 }
 
@@ -66,11 +66,11 @@ TransferFunctionDataPoint* TransferFunction::getPoint(int i) const{
 }
 
 void TransferFunction::addPoint(vec2* pos, vec4* rgba){
-	this->addPoint(new TransferFunctionDataPoint(pos, rgba));
+	addPoint(new TransferFunctionDataPoint(pos, rgba));
 }
 
 void TransferFunction::addPoint(vec2 pos, vec4 rgba){
-	this->addPoint(new TransferFunctionDataPoint(pos, rgba));
+	addPoint(new TransferFunctionDataPoint(pos, rgba));
 }
 
 void TransferFunction::addPoint(TransferFunctionDataPoint* newPoint){
@@ -123,20 +123,20 @@ void TransferFunction::clearPoints(){
 void TransferFunction::calcTransferValues(){
 	vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<LayerRAM>()->getData());
 
-	//In case of 0 points
+	// in case of 0 points
 	if ((int)dataPoints_.size() == 0){
 		for (int i = 0; i <= (textureSize_ - 1); i++){
 			dataArray[i] = vec4((float)i/(textureSize_ - 1.0), (float)i/(textureSize_ - 1.0), (float)i/(textureSize_ - 1.0), 1.0);
 		}
 	}
-	//In case of 1 point
+	// in case of 1 point
 	else if ((int)dataPoints_.size () == 1){ 
 		for (size_t i = 0; i <= (size_t)(textureSize_ - 1) ; ++i){
 			dataArray[i] = *dataPoints_[0]->getRgba();
 		}
 	}
 
-	//In case of >1 points
+	// in case of more than 1 points
 	else{
 		int frontX = (int)ceil(dataPoints_.front()->getPos()->x * (textureSize_ - 1));
 		int backX = (int)ceil(dataPoints_.back()->getPos()->x * (textureSize_ - 1));
@@ -185,7 +185,7 @@ void TransferFunction::sortDataPoints(){
 
 int TransferFunction::getTextureSize(){
 	return textureSize_;
-};
+}
 
 float TransferFunction::getMaskMin() { return maskMin_; }
 
@@ -194,4 +194,5 @@ float TransferFunction::getMaskMax() { return maskMax_; }
 void TransferFunction::setMaskMin(float maskMin) { maskMin_ = maskMin; }
 
 void TransferFunction::setMaskMax(float maskMax) { maskMax_ = maskMax; }
-};
+
+}

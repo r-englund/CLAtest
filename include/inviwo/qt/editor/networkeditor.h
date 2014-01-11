@@ -36,16 +36,15 @@ namespace inviwo {
 /**
  * The NetworkEditor supports interactive editing of a ProcessorNetwork. Processors can be added
  * and removed, and their ports can be connected, while their properties can be linked.
- * - interactive editing, but if necessary use access fucntions
+ * - interactive editing, but if necessary use access functions
  * - graphical representation automatically managed
  * - inspector networks
  */
 class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
                                        public Singleton<NetworkEditor>  {
-
     Q_OBJECT
 public:
-    NetworkEditor(QObject* parent=0);
+    NetworkEditor();
     virtual ~NetworkEditor();
 
     /**

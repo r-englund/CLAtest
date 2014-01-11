@@ -71,7 +71,11 @@ protected:
     QPointF endPoint_;
 	QPointF midPoint_;
 
-    QColor color_, borderColor_, selectedBorderColor_, hoverInputColor_, hoverOutputColor_;
+    QColor color_;
+    QColor borderColor_;
+    QColor selectedBorderColor_;
+    QColor hoverInputColor_;
+    QColor hoverOutputColor_;
 };
 
 

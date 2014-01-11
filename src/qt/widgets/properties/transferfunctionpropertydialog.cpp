@@ -52,19 +52,20 @@ void TransferFunctionPropertyDialog::generateWidget() {
     tfEditorView_ = new TransferFunctionEditorView(tfProperty_);
     tfEditorView_->scale(1.0, -1.0);
     tfEditorView_->setMinimumSize(minEditorDims.x, minEditorDims.y);
-    tfEditorView_->viewport()->installEventFilter(this);
-    tfEditorView_->setDragMode(QGraphicsView::NoDrag);
+    //tfEditorView_->viewport()->installEventFilter(this);
+    //tfEditorView_->setDragMode(QGraphicsView::NoDrag);
     tfEditorView_->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
     tfEditorView_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tfEditorView_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     connect(tfEditorView_, SIGNAL(resized()), this, SLOT(editorViewResized()));
 
     tfEditor_ = new TransferFunctionEditor(&tfProperty_->get(), tfEditorView_);
-    addObservation(tfEditor_);
-    tfEditor_->addObserver(this);
+    //addObservation(tfEditor_);
+    //tfEditor_->addObserver(this);
     tfEditor_->setSceneRect(0, 0, minEditorDims.x, minEditorDims.y);
     connect(tfEditor_, SIGNAL(doubleClick()), this, SLOT(showColorDialog()));
     connect(tfEditor_, SIGNAL(selectionChanged()), this, SLOT(updateColorWheel()));
+    connect(tfEditor_, SIGNAL(controlPointsChanged()), this, SLOT(updateTransferFunction()));
     tfEditorView_->setScene(tfEditor_);
 
     colorChange_ = false;
@@ -83,12 +84,12 @@ void TransferFunctionPropertyDialog::generateWidget() {
     tfPreview_->setAlignment(Qt::AlignLeft);
 
     QGridLayout* gridLayout = new QGridLayout();
-    gridLayout->addWidget(zoomVSlider_, 0, 0);
-    gridLayout->addWidget(tfEditorView_,    0, 1);
-    gridLayout->addWidget(zoomHSlider_, 1, 1);
-    gridLayout->addWidget(tfPreview_,   2, 1);
-    gridLayout->addWidget(maskSlider_,  3, 1);
-    gridLayout->addWidget(colorWheel_,  0, 2);
+    gridLayout->addWidget(zoomVSlider_,  0, 0);
+    gridLayout->addWidget(tfEditorView_, 0, 1);
+    gridLayout->addWidget(zoomHSlider_,  1, 1);
+    gridLayout->addWidget(tfPreview_,    2, 1);
+    gridLayout->addWidget(maskSlider_,   3, 1);
+    gridLayout->addWidget(colorWheel_,   0, 2);
     QFrame* frame = new QFrame();
     frame->setLayout(gridLayout);
     setWidget(frame);
@@ -202,7 +203,14 @@ void TransferFunctionPropertyDialog::setPointColor(QColor color) {
     tfEditorView_->update();
     tfProperty_->get().calcTransferValues();
     tfProperty_->propertyModified();
+}
 
+void TransferFunctionPropertyDialog::updateTransferFunction() {
+    //tfEditorView_->update();
+    tfProperty_->get().calcTransferValues();
+    updateFromProperty();
+    tfProperty_->propertyModified();
+    update();
 }
 
 void TransferFunctionPropertyDialog::setPointColor() {
@@ -236,7 +244,7 @@ void TransferFunctionPropertyDialog::zoomHorizontally(int zoomHMin, int zoomHMax
     tfEditorView_->setZoomH(zoomHMinF, zoomHMaxF);
     tfEditor_->setZoomRangeXMin(static_cast<float>(zoomHMin) / (static_cast<float>(arrayWidth_) - 1.0f));
     tfEditor_->setZoomRangeXMax(static_cast<float>(zoomHMax) / (static_cast<float>(arrayWidth_) - 1.0f));
-    tfEditor_->repositionPoints();
+    //tfEditor_->repositionPoints();
 }
 
 void TransferFunctionPropertyDialog::zoomVertically(int zoomVMin, int zoomVMax) {
@@ -246,7 +254,7 @@ void TransferFunctionPropertyDialog::zoomVertically(int zoomVMin, int zoomVMax) 
     tfEditorView_->setZoomV(zoomVMinF, zoomVMaxF);
     tfEditor_->setZoomRangeYMin(1.f-zoomVMaxF);
     tfEditor_->setZoomRangeYMax(1.f-zoomVMinF);
-    tfEditor_->repositionPoints();
+    //tfEditor_->repositionPoints();
 }
 
 void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {

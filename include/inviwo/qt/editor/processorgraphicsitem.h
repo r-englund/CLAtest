@@ -51,7 +51,6 @@ public:
     QRectF calculateOutportRect(size_t curPort) const;
     Port* getSelectedPort(const QPointF pos) const;
     void updateMetaData();
-    void flipLayout();
     QPointF getShortestBoundaryPointTo(ProcessorGraphicsItem* processorGraphicsItem);
     QPointF getShortestBoundaryPointTo(QPointF inPos);
 

@@ -46,79 +46,78 @@
 #include <QPointF>
 #include <vector>
 
-#include <inviwo/core/util/observer.h>
-
-//#include <vld.h>
-
 namespace inviwo {
-    class TransferFunctionEditor :public QGraphicsScene, public VoidObservable{
 
-        Q_OBJECT
+class TransferFunctionEditor : public QGraphicsScene {
 
-    public :
-        /** \TransferFunctionEditor constructor
-        *         
-        *  Default TransferFunctionEditor constructor
-        */
-        TransferFunctionEditor();
+    Q_OBJECT
 
-        /** \TransferFunctionEditor constructor
-        *         
-        *  Main constructor, creates edge control points and corresponding line
-        */
-        TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view);
-        ~TransferFunctionEditor();
-		QGraphicsView* getView();
-		void repositionPoints();
-        const float getZoomRangeXMin();
-        const float getZoomRangeXMax();
-        void setZoomRangeXMin(float min);
-        void setZoomRangeXMax(float max);
+public :
+    /** \TransferFunctionEditor constructor
+    *         
+    *  Main constructor, creates control points
+    */
+    TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view);
+    ~TransferFunctionEditor();
 
-        const float getZoomRangeYMin();
-        const float getZoomRangeYMax();
-        void setZoomRangeYMin(float min);
-        void setZoomRangeYMax(float max);
-    
-    signals:
-        void doubleClick();
 
-	protected :
-        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *e);
-		void mousePressEvent(QGraphicsSceneMouseEvent *e);
-		void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
-		void keyPressEvent(QKeyEvent *e);
-		void ResizeEvent(QResizeEvent * e);
+    void updateControlPointView();
 
-        /** \Add new control point
-        *      Adds a new control point at the event position
-        *
-        *      Adds a new control point the the points_ array, adds a new line item to the lines_ array,
-        *      sorts the points_ array and updates the line items to go to and from the correct points.
-        *      Runs CalcTransferValues to update the TransferFunction datamember Image
-		*/
-		void addPoint(QGraphicsSceneMouseEvent *e);
-		void addPoint(vec2* pos);
-		void removePoint(QGraphicsSceneMouseEvent *e);
-		std::vector<TransferFunctionEditorControlPoint*>::iterator removePoint(TransferFunctionEditorControlPoint* p);
-		void sortLines();
-		void sortControlPoints();
-		void setControlPointNeighbours();
-    private :
-        float zoomRangeXMin_;
-        float zoomRangeXMax_;
-        float zoomRangeYMin_;
-        float zoomRangeYMax_;
-		QGraphicsView* view_;
-		QPointF mouseDownPos_; ///< Stores the mouseDown position to distinguish between mouse-click and mouse-drag
-		TransferFunction* transferFunction_; ///< Pointer to widget's member variable
-		TransferFunctionEditorLineItem* leftEdgeLine_;
-		TransferFunctionEditorLineItem*	rightEdgeLine_;
-		std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the controlpoints
-		std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
-		std::vector<TransferFunctionEditorControlPointGroup*> controlPointGroups_; ///< Control points in the transfer function graph
-    };
+    const float getZoomRangeXMin() { return zoomRangeXMin_; }
+    void setZoomRangeXMin(float min) { zoomRangeXMin_ = min; }
+
+    const float getZoomRangeXMax() { return zoomRangeXMax_; }
+    void setZoomRangeXMax(float max) { zoomRangeXMax_ = max; }
+
+    const float getZoomRangeYMin() { return zoomRangeYMin_; }
+    void setZoomRangeYMin(float min) { zoomRangeYMin_ = min; }
+
+    const float getZoomRangeYMax() { return zoomRangeYMax_; }
+    void setZoomRangeYMax(float max) { zoomRangeYMax_ = max; }
+
+    QGraphicsView* getView() { return view_; }
+
+signals:
+    void doubleClick();
+    void controlPointsChanged();
+
+protected:
+	void mousePressEvent(QGraphicsSceneMouseEvent* e);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
+	void keyPressEvent(QKeyEvent *e);
+
+    /** \Add new control point
+    *      Adds a new control point at the event position
+    *
+    *      Adds a new control point the the points_ array, adds a new line item to the lines_ array,
+    *      sorts the points_ array and updates the line items to go to and from the correct points.
+    *      Runs CalcTransferValues to update the TransferFunction data Image
+	*/
+    void addControlPoint(QPointF pos);
+
+	void removeControlPoint(TransferFunctionEditorControlPoint* p);
+
+    TransferFunctionEditorControlPoint* getControlPointGraphicsItemAt(const QPointF pos) const;
+
+private :
+    void addControlPoint(QPointF pos, TransferFunctionDataPoint* dataPoint);
+    void updateLines();
+
+    float zoomRangeXMin_;
+    float zoomRangeXMax_;
+    float zoomRangeYMin_;
+    float zoomRangeYMax_;
+
+	QGraphicsView* view_;
+	TransferFunction* transferFunction_; ///< Pointer to widget's member variable
+
+    std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the control points
+	std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
+	std::vector<TransferFunctionEditorControlPointGroup*> controlPointGroups_; ///< Control points in the transfer function graph
+};
+
 } // namespace
 
 #endif // IVW_TRANSFERFUNCTIONEDITOR_H

@@ -49,7 +49,7 @@ namespace inviwo {
 
 const int NetworkEditor::GRID_SPACING = 25;
 
-NetworkEditor::NetworkEditor(QObject* parent) : QGraphicsScene(parent) {
+NetworkEditor::NetworkEditor() : QGraphicsScene() {
     connectionCurve_ = 0;
     linkCurve_ = 0;
     startProcessor_ = 0;
@@ -367,7 +367,7 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
 }
 
 void  NetworkEditor::updateLinkGraphicsItems() {
-    if( isLinkDisplayEnabled() ) {
+    if (isLinkDisplayEnabled()) {
         for (size_t i=0;i<linkGraphicsItems_.size(); i++) {
             linkGraphicsItems_[i]->setVisible(true);
             ProcessorGraphicsItem* processorGraphicsItem1 = linkGraphicsItems_[i]->getOutProcessorGraphicsItem();
@@ -456,6 +456,7 @@ void NetworkEditor::hoverPortTimeOut() {
 }
 
 void NetworkEditor::errorString(QString str){
+    //TODO: remove this function
     LogError(str.toLocal8Bit().constData());
 }
 
@@ -464,7 +465,7 @@ void NetworkEditor::workerThreadReset(){
 }
 
 void NetworkEditor::workerThreadQuit(){
-    if(workerThread_){
+    if (workerThread_) {
         workerThread_->quit();
         workerThread_->wait();
         workerThreadReset();
@@ -473,7 +474,7 @@ void NetworkEditor::workerThreadQuit(){
 
 void NetworkEditor::cacheProcessorProperty(Processor* p){
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
-    if(std::find(processors.begin(), processors.end(), p) != processors.end()){
+    if (std::find(processors.begin(), processors.end(), p) != processors.end()) {
         PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
         processorNetwork_->lock();
         propertyListWidget_->cacheProcessorPropertiesItem(p);
@@ -688,10 +689,8 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     if (e->button() == Qt::LeftButton) {
         startProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
         if (startProcessor_) {
-
             if (e->modifiers()==Qt::NoModifier) {
                 startPort_ = startProcessor_->getSelectedPort(e->scenePos());
-
                 if (startPort_ && dynamic_cast<Outport*>(startPort_)) {
                     // click on outport: start drawing a connection
                     QRectF portRect = startProcessor_->calculatePortRect(dynamic_cast<Outport*>(startPort_));
@@ -890,7 +889,7 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
                 processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));				
 		}
         QGraphicsScene::mouseReleaseEvent(e);
-    } else if(selectedItems().size()>1){
+    } else if(selectedItems().size() > 1){
         //Show multiple processor widgets
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
         PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
@@ -1065,14 +1064,14 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
 			ProcessorDragObject::decode(e->mimeData(), className);
 			Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
 			QColor inputColor = Qt::red, outputColor = Qt::red;
-			// Try to find a match between connection outport and one of the new processors inports
+			// try to find a match between connection outport and one of the new processors inports
 			for (size_t i = 0; i < processor->getInports().size(); ++i) { 
 				if(processor->getInports().at(i)->canConnectTo(connectionItem->getOutport())) {
 					inputColor = Qt::green;
 					break;
 				}
 			}
-			// Try to find a match between connection inport and one of the new processors outports
+			// try to find a match between connection inport and one of the new processors outports
 			for (size_t i = 0; i < processor->getOutports().size(); ++i) {
 				if(connectionItem->getInport()->canConnectTo(processor->getOutports().at(i))) {
 					outputColor = Qt::green;
@@ -1081,19 +1080,19 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
 			}
 			connectionItem->setBorderColors(inputColor, outputColor);		
 			oldConnectionTarget_ = connectionItem;
-		} else if (connectionItem) { //< Move event on active connection
+		} else if (connectionItem) { // move event on active connection
 			oldConnectionTarget_->setMidPoint(e->scenePos());
 		} else if (oldConnectionTarget_ && !connectionItem){ //< Connection no longer targeted
 			oldConnectionTarget_->clearMidPoint();
 			oldConnectionTarget_ = NULL;
-		} else if (!connectionItem) { //< Processor replacement
+		} else if (!connectionItem) { // processor replacement
 			ProcessorGraphicsItem* processorItem = getProcessorGraphicsItemAt(e->scenePos());
 			if (processorItem && !oldProcessorTarget_) { //< New processor found
 				QString className;
 				ProcessorDragObject::decode(e->mimeData(), className);
 				processorItem->setSelected(true);
 				oldProcessorTarget_ = processorItem;
-			} else if ( !processorItem && oldProcessorTarget_) { //< Processor no longer targeted
+			} else if ( !processorItem && oldProcessorTarget_) { // processor no longer targeted
 				oldProcessorTarget_->setSelected(false);
 				oldProcessorTarget_ = NULL;
 			}
@@ -1116,7 +1115,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
             e->setAccepted(true);
             e->acceptProposedAction();
 
-			// Check for collisions
+			// check for collisions
 			if(oldConnectionTarget_)
 				placeProcessorOnConnection(processorGraphicsItem, oldConnectionTarget_);
             else if(oldProcessorTarget_)
@@ -1131,18 +1130,18 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorI
 	Inport* connectionInport = connectionItem->getInport();
 	Outport* connectionOutport = connectionItem->getOutport();
 
-	// Clear oldDragTarget
+	// clear oldDragTarget
 	oldConnectionTarget_->clearMidPoint();
 	oldConnectionTarget_ = NULL;
 
     processorNetwork_->lock();
 
-	// Remove old connection
+	// remove old connection
 	removeConnection(connectionItem);
 
 	for (size_t i = 0; i < inports.size(); ++i) {
 		if(inports.at(i)->canConnectTo(connectionOutport)) {
-			// Create new connection connectionOutport-processorInport
+			// create new connection connectionOutport-processorInport
 			addConnection(connectionOutport, inports.at(i));
 			break;
 		}
@@ -1150,7 +1149,7 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorI
 
 	for (size_t i = 0; i < outports.size(); ++i) {
 		if(connectionInport->canConnectTo(outports.at(i))) {
-			// Create new connection processorOutport-connectionInport
+			// create new connection processorOutport-connectionInport
 			addConnection(outports.at(i), connectionInport);
 			break;
 		}
@@ -1175,7 +1174,7 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
 
     for (size_t i = 0; i < std::min(inports.size(), oldInports.size()); ++i) {
         if(inports.at(i)->canConnectTo(oldInports.at(i)->getConnectedOutport())) {
-            // Save new connection connectionOutportoldInport-processorInport
+            // save new connection connectionOutportoldInport-processorInport
             newConnections.push_back(std::make_pair(oldInports.at(i)->getConnectedOutport(), inports.at(i)));
         }
     }
@@ -1184,16 +1183,16 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
         std::vector<Inport*> connectionInports = oldOutports.at(i)->getConnectedInports();
         for (size_t j = 0; j < connectionInports.size(); ++j) {
             if(connectionInports.at(j)->canConnectTo(outports.at(i))) {
-                // Save new connection processorOutport-connectionInport
+                // save new connection processorOutport-connectionInport
                 newConnections.push_back(std::make_pair(outports.at(i), connectionInports.at(j)));
             }
         }
     }
 
-    //Remove old processor
+    // remove old processor
     removeProcessor(oldProcessorItem->getProcessor());
 
-    //Create all new connections
+    // create all new connections
     for (size_t i = 0; i < newConnections.size(); ++i) {
         addConnection(newConnections.at(i).first, newConnections.at(i).second);
     }

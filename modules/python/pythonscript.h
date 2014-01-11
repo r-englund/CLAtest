@@ -73,7 +73,7 @@ public:
      */
     bool run();
 
-    PythonScriptRecorderUtil* getScriptRecorder() {return scriptRecorder_;}
+    PythonScriptRecorderUtil* getScriptRecorder() { return scriptRecorder_; }
 
 private:
     bool checkCompileError();
@@ -92,12 +92,12 @@ private:
      */
     bool compile();
 
-    std::string     source_;
-    PyObject*       byteCode_;
-    bool            isCompileNeeded_;
+    std::string source_;
+    PyObject* byteCode_;
+    bool isCompileNeeded_;
     PythonScriptRecorderUtil* scriptRecorder_;
 };
 
 }
 
-#endif // VRN_PYTHONSCRIPT_H
+#endif // IVW_PYTHONSCRIPT_H

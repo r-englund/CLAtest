@@ -23,80 +23,49 @@
 #define IVW_TRANSFERFUNCTIONEDITORLINEITEM_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QGraphicsLineItem>
-#include <QGraphicsScene>
+#include <QGraphicsItem>
 #include <QPainterPath>
-
-#include <inviwo/core/ports/port.h>
-#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 
 namespace inviwo {
 
 class IVW_QTWIDGETS_API TransferFunctionEditorLineItem : public QGraphicsItem {
 
 public:
-	TransferFunctionEditorLineItem();
     /** 
      * \brief TransferFunctionEditorLineItem Constructor
      *
      * Constructor for TransferFunctionEditorLineItem
-     * 
-     * @param TransferFunctionDataPoint * Pointer to the point where the line starts
-     * @param TransferFunctionDataPoint * Pointer to the point where the line ends
-	 */
-	TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, TransferFunctionEditorControlPoint* finish);
-
-
-	TransferFunctionEditorLineItem(TransferFunctionEditorControlPoint* start, int dir);
-    /** 
-     * \brief TransferFunctionEditorLineItem Constructor
-     *
-     * TransferFunctionEditorLineItem default constructor
      */
-    //TransferFunctionEditorLineItem();
-	~TransferFunctionEditorLineItem();
+	TransferFunctionEditorLineItem(QPointF startPos, QPointF endPos);
+    ~TransferFunctionEditorLineItem();
 
-	TransferFunctionEditorControlPoint* getStart();
-	TransferFunctionEditorControlPoint* getFinish();
 	/** 
 	 * \brief Sets the lines starting point
 	 *
 	 * Changes the point where the line starts
-	 * 
-	 * @param TransferFunctionDataPoint * start the new start-point
 	 */
-	void setStart(TransferFunctionEditorControlPoint* start);
+    void setStartPos(QPointF startPos) { startPos_ = startPos; }
+    QPointF getStartPos() { return startPos_; }
 
 	/** 
 	 * \brief Sets the lines ending point
 	 *
 	 * Changes the point where the line ends
-	 * 
-	 * @param TransferFunctionDataPoint * finish the new end-point
 	 */
-	void setFinish(TransferFunctionEditorControlPoint* finish);
+    void setEndPos(QPointF endPos) { endPos_ = endPos; }
+    QPointF getEndPos() { return endPos_; }
 
-	void setDirection(int dir);
-	QPainterPath shape() const;
-	void initiateLineItem();
+    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    QPainterPath shape() const;
+    QRectF boundingRect() const;
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + 3};
     int type() const  {return Type; }
 
-    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-    QRectF boundingRect() const;
-
-protected:
-    void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent);
-    void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent);
-
 private:
-    TransferFunctionEditorControlPoint* start_;
-    TransferFunctionEditorControlPoint* finish_;
-	QPointF mouseDownPos_;
-	int direction_;
+    QPointF startPos_;
+    QPointF endPos_;
 };
 
 }// namespace

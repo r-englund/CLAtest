@@ -21,11 +21,15 @@ namespace inviwo{
 TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty* tfProperty)
     : tfProperty_(tfProperty)
 {
+    setRenderHint(QPainter::Antialiasing, true);
+    setMouseTracking(true);
+    //setDragMode(QGraphicsView::RubberBandDrag);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
 void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
 	emit resized();
-	static_cast<TransferFunctionEditor*>(scene())->repositionPoints();
+	//static_cast<TransferFunctionEditor*>(scene())->repositionPoints();
 	QGraphicsView::resizeEvent(event);
 }
 

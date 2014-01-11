@@ -14,58 +14,50 @@
 
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 
-namespace inviwo{
-    TransferFunctionDataPoint::TransferFunctionDataPoint(){}
-    TransferFunctionDataPoint::TransferFunctionDataPoint(vec2* pos):pos_(*pos){}
-	TransferFunctionDataPoint::TransferFunctionDataPoint(vec2* pos, vec4* rgba):pos_(*pos), rgba_(*rgba){}
-	TransferFunctionDataPoint::TransferFunctionDataPoint(vec2 pos, vec4 rgba):pos_(pos), rgba_(rgba){}
-	TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
+namespace inviwo {
 
-    const vec2* TransferFunctionDataPoint::getPos(){
-        return &pos_;
-    }
+TransferFunctionDataPoint::TransferFunctionDataPoint(){}
+TransferFunctionDataPoint::TransferFunctionDataPoint(vec2* pos):pos_(*pos){}
+TransferFunctionDataPoint::TransferFunctionDataPoint(vec2* pos, vec4* rgba):pos_(*pos), rgba_(*rgba){}
+TransferFunctionDataPoint::TransferFunctionDataPoint(vec2 pos, vec4 rgba):pos_(pos), rgba_(rgba){}
+TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
 
-	void TransferFunctionDataPoint::setPos(vec2 pos){
-		pos_ = pos;
-	}
-	
-	void TransferFunctionDataPoint::setPos(vec2* pos){
-		pos_ = *pos;
-	}
+const vec2* TransferFunctionDataPoint::getPos(){
+    return &pos_;
+}
 
-	void TransferFunctionDataPoint::setPos( float x, float y ){
-		pos_ = vec2(x, y);
-	}
+void TransferFunctionDataPoint::setPos(vec2 pos){
+	pos_ = pos;
+}
 
-    const vec4* TransferFunctionDataPoint::getRgba(){
-        return &rgba_;
-    }
+void TransferFunctionDataPoint::setPos(vec2* pos){
+	pos_ = *pos;
+}
 
-	void TransferFunctionDataPoint::setRgba(vec4 rgba ){
-		rgba_ = rgba;
-	}
-	
-	void TransferFunctionDataPoint::setRgba(vec4* rgba ){
-		rgba_ = *rgba;
-	}
+void TransferFunctionDataPoint::setPos( float x, float y ){
+	pos_ = vec2(x, y);
+}
 
-    void TransferFunctionDataPoint::setRgb(const vec3* rgb){
-        rgba_.r = rgb->r;
-        rgba_.g = rgb->g;
-        rgba_.b = rgb->b;
-    }
+const vec4* TransferFunctionDataPoint::getRgba(){
+    return &rgba_;
+}
 
-    void TransferFunctionDataPoint::setA(const float alpha ){
-        rgba_.a = alpha;
-    }
+void TransferFunctionDataPoint::setRgba(vec4 rgba ){
+	rgba_ = rgba;
+}
 
-	const bool TransferFunctionDataPoint::isSelected(){
-		return selected_;
-	}
+void TransferFunctionDataPoint::setRgba(vec4* rgba ){
+	rgba_ = *rgba;
+}
 
-	void TransferFunctionDataPoint::setSelected( bool selected ){
-		selected_ = selected;
-        //if (selected)
-        //    emit pointSelected(this);
-	}
-};
+void TransferFunctionDataPoint::setRgb(const vec3* rgb){
+    rgba_.r = rgb->r;
+    rgba_.g = rgb->g;
+    rgba_.b = rgb->b;
+}
+
+void TransferFunctionDataPoint::setA(const float alpha ){
+    rgba_.a = alpha;
+}
+
+} // namespace

@@ -404,7 +404,7 @@ void ProcessorGraphicsItem::setIdentifier(QString text){
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {
-    if (change == ItemPositionHasChanged) {
+    if (change == QGraphicsItem::ItemPositionHasChanged) {
         std::vector<ConnectionGraphicsItem*> connectionGraphicsItems = NetworkEditor::getRef().connectionGraphicsItems_;
         for (size_t i=0; i<connectionGraphicsItems.size(); i++) {
             if (connectionGraphicsItems[i]->getOutProcessor() == this) {
