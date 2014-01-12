@@ -31,42 +31,39 @@ void TransferFunctionPropertyDialog::generateWidget() {
     arrayWidth_ = 256; //TODO: set based on data size bit depth
     arrayHeight_ = 256;
 
+    tfEditorView_ = new TransferFunctionEditorView(tfProperty_);
+    // put origin to bottom left corner
+    tfEditorView_->scale(1.0, -1.0);
+    tfEditorView_->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+    tfEditorView_->setMinimumSize(minEditorDims.x, minEditorDims.y);
+    //tfEditorView_->viewport()->installEventFilter(this);
+    //tfEditorView_->setDragMode(QGraphicsView::NoDrag);
+    tfEditorView_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    tfEditorView_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    connect(tfEditorView_, SIGNAL(resized()), this, SLOT(editorViewResized()));
+
+    tfEditor_ = new TransferFunctionEditor(&tfProperty_->get(), tfEditorView_);
+    tfEditor_->setSceneRect(0, 0, minEditorDims.x, minEditorDims.y);
+    connect(tfEditor_, SIGNAL(doubleClick()), this, SLOT(showColorDialog()));
+    connect(tfEditor_, SIGNAL(selectionChanged()), this, SLOT(updateColorWheel()));
+    connect(tfEditor_, SIGNAL(controlPointsChanged()), this, SLOT(updateTransferFunction()));
+    tfEditorView_->setScene(tfEditor_);
+
     zoomVSlider_ = new RangeSliderQt(Qt::Vertical, this);
-    int maxZoomV = arrayHeight_;
-    zoomVSlider_->setRange(0, maxZoomV);
-    zoomVSlider_->setValue(static_cast<int>(tfProperty_->getZoomV().x*maxZoomV), static_cast<int>(tfProperty_->getZoomV().y*maxZoomV));
-    connect(zoomVSlider_, SIGNAL(valuesChanged(int, int)), this, SLOT(zoomVertically(int, int)));
+    zoomVSlider_->setRange(0, 100);
+    zoomVSlider_->setValue(static_cast<int>(tfProperty_->getZoomV().x*100), static_cast<int>(tfProperty_->getZoomV().y*100));
+    connect(zoomVSlider_, SIGNAL(valuesChanged(int, int)), tfEditorView_, SLOT(zoomVertically(int, int)));
 
     zoomHSlider_ = new RangeSliderQt(Qt::Horizontal, this);
-    int maxZoomH = arrayWidth_;
-    zoomHSlider_->setRange(0, maxZoomH);
-    zoomHSlider_->setValue(static_cast<int>(tfProperty_->getZoomH().x*maxZoomH), static_cast<int>(tfProperty_->getZoomH().y*maxZoomH));
-    connect(zoomHSlider_, SIGNAL(valuesChanged(int, int)), this, SLOT(zoomHorizontally(int, int)));
+    zoomHSlider_->setRange(0, 100);
+    zoomHSlider_->setValue(static_cast<int>(tfProperty_->getZoomH().x*100), static_cast<int>(tfProperty_->getZoomH().y*100));
+    connect(zoomHSlider_, SIGNAL(valuesChanged(int, int)), tfEditorView_, SLOT(zoomHorizontally(int, int)));
 
     maskSlider_ = new RangeSliderQt(Qt::Horizontal, this);
     int maxMask = arrayWidth_;
     maskSlider_->setRange(0, maxMask);
     maskSlider_->setValue(static_cast<int>(tfProperty_->getMask().x*maxMask), static_cast<int>(tfProperty_->getMask().y*maxMask));
     connect(maskSlider_, SIGNAL(valuesChanged(int, int)), this, SLOT(changeMask(int, int)));
-
-    tfEditorView_ = new TransferFunctionEditorView(tfProperty_);
-    tfEditorView_->scale(1.0, -1.0);
-    tfEditorView_->setMinimumSize(minEditorDims.x, minEditorDims.y);
-    //tfEditorView_->viewport()->installEventFilter(this);
-    //tfEditorView_->setDragMode(QGraphicsView::NoDrag);
-    tfEditorView_->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-    tfEditorView_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    tfEditorView_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    connect(tfEditorView_, SIGNAL(resized()), this, SLOT(editorViewResized()));
-
-    tfEditor_ = new TransferFunctionEditor(&tfProperty_->get(), tfEditorView_);
-    //addObservation(tfEditor_);
-    //tfEditor_->addObserver(this);
-    tfEditor_->setSceneRect(0, 0, minEditorDims.x, minEditorDims.y);
-    connect(tfEditor_, SIGNAL(doubleClick()), this, SLOT(showColorDialog()));
-    connect(tfEditor_, SIGNAL(selectionChanged()), this, SLOT(updateColorWheel()));
-    connect(tfEditor_, SIGNAL(controlPointsChanged()), this, SLOT(updateTransferFunction()));
-    tfEditorView_->setScene(tfEditor_);
 
     colorChange_ = false;
     colorWheel_ = new ColorWheel();
@@ -78,8 +75,8 @@ void TransferFunctionPropertyDialog::generateWidget() {
 
     tfPreview_ = new QGraphicsView(this);
     tfPreview_->scale(1.0, -1.0);
-    paintscene_ = new QGraphicsScene(this);
-    tfPreview_->setScene(paintscene_);
+    paintScene_ = new QGraphicsScene(this);
+    tfPreview_->setScene(paintScene_);
     tfPreview_->setFixedHeight(20.0);
     tfPreview_->setAlignment(Qt::AlignLeft);
 
@@ -110,19 +107,9 @@ TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog() {
 }
 
 void TransferFunctionPropertyDialog::updateTFPreview() {
-    QPixmap checkerBoard(10, 10);
-    QPainter checkerBoardPainter(&checkerBoard);
-    checkerBoardPainter.fillRect(0, 0, 5, 5, Qt::lightGray);
-    checkerBoardPainter.fillRect(5, 0, 5, 5, Qt::darkGray);
-    checkerBoardPainter.fillRect(0, 5, 5, 5, Qt::darkGray);
-    checkerBoardPainter.fillRect(5, 5, 5, 5, Qt::lightGray);
-    checkerBoardPainter.end();
-
     int gradientWidth = 255;
-    if (tfEditorView_->isVisible()) gradientWidth = tfEditorView_->width();
     tfPixmap_ = new QPixmap(gradientWidth, 20);
     QPainter tfPainter(tfPixmap_);
-    tfPainter.fillRect(0, 0, tfEditorView_->width(), 20, QBrush(checkerBoard));
     tfPainter.fillRect(0, 0, tfEditorView_->width(), 20, QBrush(*gradient_));
     if (tfProperty_->getMask().x > 0.0f) {
         tfPainter.fillRect(0, 0, static_cast<int>(tfProperty_->getMask().x*tfEditorView_->width()), 20, QColor(25,25,25,100));
@@ -133,8 +120,8 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
             static_cast<int>(tfEditorView_->width()-(tfProperty_->getMask().y*tfEditorView_->width())), 20, QColor(25,25,25,150));
         tfPainter.drawLine(static_cast<int>(tfProperty_->getMask().y*tfEditorView_->width()), 0, static_cast<int>(tfProperty_->getMask().y*tfEditorView_->width()), 20);
     }
-    paintscene_->setForegroundBrush(QBrush(*tfPixmap_));
-    this->update();
+    paintScene_->setBackgroundBrush(QBrush((*tfPixmap_).scaled(tfEditorView_->width(), 20)));
+    update();
 }
 
 void TransferFunctionPropertyDialog::updateFromProperty() {
@@ -233,28 +220,8 @@ QVector<QGradientStop>* TransferFunctionPropertyDialog::getGradientStops() {
 
 void TransferFunctionPropertyDialog::editorViewResized() {
     gradient_->setStops(*gradientStops_);
-    paintscene_->setForegroundBrush(*gradient_);
+    paintScene_->setForegroundBrush(*gradient_);
     gradient_->setFinalStop(tfEditorView_->width(), 0.0);	
-}
-
-void TransferFunctionPropertyDialog::zoomHorizontally(int zoomHMin, int zoomHMax) {
-    float zoomHMinF = static_cast<float>(zoomHMin)/static_cast<float>(arrayWidth_);
-    float zoomHMaxF = static_cast<float>(zoomHMax)/static_cast<float>(arrayWidth_);
-    tfProperty_->setZoomH(zoomHMinF, zoomHMaxF);
-    tfEditorView_->setZoomH(zoomHMinF, zoomHMaxF);
-    tfEditor_->setZoomRangeXMin(static_cast<float>(zoomHMin) / (static_cast<float>(arrayWidth_) - 1.0f));
-    tfEditor_->setZoomRangeXMax(static_cast<float>(zoomHMax) / (static_cast<float>(arrayWidth_) - 1.0f));
-    //tfEditor_->repositionPoints();
-}
-
-void TransferFunctionPropertyDialog::zoomVertically(int zoomVMin, int zoomVMax) {
-    float zoomVMinF = static_cast<float>(zoomVMin)/static_cast<float>(arrayHeight_);
-    float zoomVMaxF = static_cast<float>(zoomVMax)/static_cast<float>(arrayHeight_);
-    tfProperty_->setZoomV(zoomVMinF, zoomVMaxF);
-    tfEditorView_->setZoomV(zoomVMinF, zoomVMaxF);
-    tfEditor_->setZoomRangeYMin(1.f-zoomVMaxF);
-    tfEditor_->setZoomRangeYMax(1.f-zoomVMinF);
-    //tfEditor_->repositionPoints();
 }
 
 void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {

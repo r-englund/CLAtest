@@ -68,8 +68,6 @@ public slots:
     void editorViewResized();
     void updateTransferFunction();
 
-    void zoomHorizontally(int zoomHMin, int zoomHMax);
-    void zoomVertically(int zoomVMin, int zoomVMax);
     void changeMask(int maskMin, int maskMax);
 
 private:
@@ -81,7 +79,7 @@ private:
     TransferFunctionEditorView*	tfEditorView_; ///< View that contains the editor
 
     QGraphicsView* tfPreview_; ///< View that contains the scene for the painted transfer function
-    QGraphicsScene* paintscene_; ///< Scene where the transfer function is painted
+    QGraphicsScene* paintScene_; ///< Scene where the transfer function is painted
     QPixmap* tfPixmap_;
 
 	QLinearGradient* gradient_;
@@ -95,7 +93,6 @@ private:
     RangeSliderQt* maskSlider_;
 
     bool colorChange_;
-    int zoom_;
     bool eventFilter(QObject *object, QEvent *event);
     void generateWidget();
     void setPointColor(QColor color);

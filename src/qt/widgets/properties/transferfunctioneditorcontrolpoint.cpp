@@ -23,7 +23,7 @@ TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(TransferF
     : datapoint_(datapoint) {
 
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
-    //setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+    setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     viewWidth_ = 255.0;
     viewHeight_ = 100.0;
 
@@ -97,7 +97,7 @@ void TransferFunctionEditorControlPoint::setLeftNeighbour(TransferFunctionEditor
 
 void TransferFunctionEditorControlPoint::setRightNeighbour(TransferFunctionEditorControlPoint* point){rightNeighbour_ = point;}
 
-QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change, const QVariant &value){
+QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change, const QVariant &value) {
     if (change == QGraphicsItem::ItemPositionChange && scene()) {
         // constrain positions to valid view positions
         QPointF newPos = value.toPointF();

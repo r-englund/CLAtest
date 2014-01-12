@@ -31,19 +31,21 @@ class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView {
 	Q_OBJECT
 
 public:
-
     TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
 
     void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); }
-    void setZoomH(float zoomHMin, float zoomHMax) { if (zoomHMax<zoomHMin) zoomHMax=zoomHMin; zoomH_ = vec2(zoomHMin, zoomHMax); }
-    void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
-
 
 signals:
-	void resized();
+    void resized();
+
+public slots:
+    void zoomHorizontally(int zoomHMin, int zoomHMax);
+    void zoomVertically(int zoomVMin, int zoomVMax);
 
 protected:
+    void updateZoom();
 	void resizeEvent(QResizeEvent * event);
+
 	void drawForeground(QPainter *painter, const QRectF &rect);
     void drawBackground(QPainter* painter, const QRectF& rect);
 

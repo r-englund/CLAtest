@@ -31,13 +31,14 @@ TransferFunctionEditorLineItem::TransferFunctionEditorLineItem(QPointF startPos,
     setZValue(0);
 }
 
-TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem(){};
+TransferFunctionEditorLineItem::~TransferFunctionEditorLineItem() {}
 
 void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
     painter->setRenderHint(QPainter::Antialiasing, true);
     QPen pen = QPen();
+    pen.setCosmetic(true);
     pen.setStyle(Qt::SolidLine);
     pen.setCapStyle(Qt::RoundCap);
     pen.setWidth(2.0);

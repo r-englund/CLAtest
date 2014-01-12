@@ -21,7 +21,6 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     , transferFunction_(transferFunction)
     , view_(view)
 {
-
     // initialize editor with current tf
     for (size_t i=0; i<transferFunction_->getNumberOfDataPoints(); i++) {
         TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(i);
@@ -132,7 +131,7 @@ void TransferFunctionEditor::addControlPoint(QPointF pos) {
     vec4 rgba = vec4(0.5f);
 
     // add control point to editor and transfer function
-    TransferFunctionDataPoint* dataPoint = new TransferFunctionDataPoint(vec2(pos.x()/view_->width(),pos.y()/view_->height()), rgba);
+    TransferFunctionDataPoint* dataPoint = new TransferFunctionDataPoint(vec2(pos.x()/view_->width(), pos.y()/view_->height()), rgba);
     transferFunction_->addPoint(dataPoint);
     addControlPoint(pos, dataPoint);
 }
@@ -190,7 +189,6 @@ void TransferFunctionEditor::updateControlPointView() {
     // initiate transfer function update
     emit controlPointsChanged();
 }
-
 
 
 /*
