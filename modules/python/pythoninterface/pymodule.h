@@ -46,6 +46,7 @@ class IVW_MODULE_PYTHON_API PyModule{
 
 public:
     PyModule(std::string moduleName,std::vector<PyMethod*> methods = std::vector<PyMethod*>());
+    ~PyModule();
     void addMethod(PyMethod* method);
     
     const char* getModuleName();

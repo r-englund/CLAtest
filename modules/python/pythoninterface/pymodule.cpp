@@ -38,6 +38,10 @@ PyModule::PyModule(std::string moduleName,std::vector<PyMethod*> methods):module
     addMethod(new PyInfoMethod());
 }
 
+PyModule::~PyModule(){
+    while(!methods_.empty()){delete methods_.back();methods_.pop_back();}
+}
+
 void PyModule::addMethod(PyMethod* method){
     methods_.push_back(method);
     PyObject* pyFunc = PyCFunction_NewEx(method->getDef(),moduleObject_,name_);

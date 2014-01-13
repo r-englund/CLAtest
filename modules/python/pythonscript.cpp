@@ -35,6 +35,7 @@ PythonScript::PythonScript()
 
 PythonScript::~PythonScript() {
     Py_XDECREF(byteCode_);
+    delete scriptRecorder_;
 }
 
 bool PythonScript::compile() {

@@ -27,7 +27,6 @@ PythonModule::PythonModule() : InviwoModule() {
 
 PythonModule::~PythonModule(){
     delete pyInviwo_;
-    Py_Finalize();
 }
 
 } // namespace

@@ -71,7 +71,9 @@ namespace inviwo{
     }
 
     PyInviwo::~PyInviwo(){
-        
+        delete inviwoPyModule;
+        delete inviwoInternalPyModule;
+        Py_Finalize();
     }
 
     void PyInviwo::init_() {
