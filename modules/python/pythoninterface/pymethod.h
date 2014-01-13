@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -27,10 +27,11 @@
 #endif
 
 #include <vector>
+#include <string>
 
 
 namespace inviwo {
-    
+
   class IVW_MODULE_PYTHON_API PyMethod{
   protected:
       PyMethodDef def_;

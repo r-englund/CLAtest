@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2012-2013 Scientific Visualization Group - Linkï¿½ping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Erik Sundén
+ * Primary author : Erik Sundï¿½n
  *
  **********************************************************************/
 
@@ -16,6 +16,7 @@
 #define IVW_REPRESENTATIONCONVERTER_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <vector>
 
 namespace inviwo {

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -17,6 +17,7 @@
 
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <vector>
 
 namespace inviwo {
 
@@ -83,8 +84,8 @@ public:
 
     Singleton<T>() {};
     virtual ~Singleton() {};
-    
-private:    
+
+private:
     // no implementation for copy functionalities by making the following two methods
     // unaccessible. Otherwise unwanted Singleton copies might appear.
     Singleton<T>(Singleton<T> const&);

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,6 +19,7 @@
 
 #include "pythonscript.h"
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
@@ -80,13 +81,13 @@ namespace inviwo{
         if(isInit_)
             return;
         isInit_ = true;
-  
+
         LogInfo("Python version: " + toString(Py_GetVersion()));
         char programName[] = "PyInviwo";
         Py_SetProgramName(programName);
 
 #ifdef WIN32
-        Py_NoSiteFlag = 1;  
+        Py_NoSiteFlag = 1;
 #endif
 
         Py_InitializeEx(false);
@@ -97,11 +98,11 @@ namespace inviwo{
         PyEval_InitThreads();
 
         addModulePath(InviwoApplication::getPtr()->getBasePath() + "modules/python/scripts");
-        
+
         initDefaultInterfaces();
 
         PythonScript outputCatcher = PythonScript();
-        
+
         std::string directorFileName = InviwoApplication::getPtr()->getBasePath() +"modules/python/scripts/outputredirector.py";
         std::ifstream file(directorFileName.c_str());
         std::string text((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
@@ -175,7 +176,7 @@ namespace inviwo{
     PyObject* PyInviwo::registerPyModule(PyModule *pyModule) {
         init_();
         if (Py_IsInitialized()) {
-          //  PyObject *refrence = 
+          //  PyObject *refrence =
           //  PyObject* obj = Py_InitModule4(pyModule->getModuleName(),NULL,NULL,refrence,PYTHON_API_VERSION);
             PyObject* obj = Py_InitModule(pyModule->getModuleName(),NULL);
             if(!obj){

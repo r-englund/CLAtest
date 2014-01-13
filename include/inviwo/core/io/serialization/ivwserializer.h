@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -16,6 +16,7 @@
 #define IVW_SERIALIZER_H
 
 #include <inviwo/core/io/serialization/ivwserializebase.h>
+#include <inviwo/core/util/exception.h>
 
 namespace inviwo {
 
@@ -31,21 +32,21 @@ public:
 
     // std containers
     template <typename T>
-    void serialize(const std::string &key, 
+    void serialize(const std::string &key,
                    const std::vector<T> &sVector,
                    const std::string &itemKey);
-    
+
     template <typename K, typename V, typename C, typename A>
     void serialize(const std::string &key,
                    const std::map<K,V,C,A> &sMap,
                    const std::string &itemKey);
-    
+
 
     // strings
-    void serialize(const std::string &key, 
+    void serialize(const std::string &key,
                    const std::string &data,
                    const bool asAttribute=false);
-    
+
     // primitive types
     void serialize(const std::string &key, const bool &data);
     void serialize(const std::string &key, const float &data);
@@ -70,24 +71,24 @@ public:
     void serialize(const std::string& key, const glm::detail::tmat3x3<T>& data);
     template<class T>
     void serialize(const std::string& key, const glm::detail::tmat2x2<T>& data);
-    
+
     // serializable classes
     void serialize(const std::string &key, const IvwSerializable &sObj);
 
     // pointers to something of the above.
     template<class T>
     void serialize(const std::string& key, const T* const& data);
-    
+
 protected:
     friend class NodeSwitch;
 
 private:
     template<typename T>
     void serializePrimitives(const std::string& key, const T& data);
-    
+
     template<class T>
     void serializeVector(const std::string& key, const T& vector, const bool& isColor=false);
-    
+
     void initialize();
 };
 
@@ -132,7 +133,7 @@ void IvwSerializer::serialize(const std::string &key,
 
 template<class T>
 inline void IvwSerializer::serialize(const std::string& key, const T* const& data) {
-    
+
     if (!allowRef_) {
         serialize(key, *data);
     } else {
@@ -173,7 +174,7 @@ void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat4x4
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
     NodeSwitch tempNodeSwitch(*this, newNode);
-    
+
     for (size_t i=0; i<4; i++) {
         std::stringstream key;
         key << "row" << i;
@@ -187,7 +188,7 @@ void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat3x3
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
     NodeSwitch tempNodeSwitch(*this, newNode);
-    
+
     for (size_t i=0; i<3; i++) {
         std::stringstream key;
         key << "row" << i;
@@ -201,7 +202,7 @@ void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat2x2
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
     NodeSwitch tempNodeSwitch(*this, newNode);
-    
+
     for (size_t i=0; i<2; i++) {
         std::stringstream key;
         key << "row" << i;

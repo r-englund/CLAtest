@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,10 +13,11 @@
  **********************************************************************/
 
 #include <inviwo/core/datastructures/image/image.h>
+#include <inviwo/core/datastructures/image/imageram.h>
 
 namespace inviwo {
 
-Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers) 
+Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers)
 	: DataGroup(), StructuredGridMetaData<2>(dimensions)
     , allowMissingLayers_(allowMissingLayers)
 	, imageType_(comb)
@@ -156,7 +157,7 @@ const Layer* Image::getPickingLayer() const{
     ImageSourceMap::const_iterator it = inputSources_.find(PICKING_LAYER);
     if(it != inputSources_.end())
         return it->second->getPickingLayer();
-    
+
     return pickingLayer_;
 }
 
@@ -205,17 +206,17 @@ void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
     }
     else {
         //If not representation exist, create ImageRAM one
-        const ImageRAM* imageRAM = this->getRepresentation<ImageRAM>();   
+        const ImageRAM* imageRAM = this->getRepresentation<ImageRAM>();
         imageRAM->copyAndResizeRepresentation(targetImage->getEditableRepresentation<ImageRAM>());
     }
 }
 
-ImageType Image::getImageType() const { 
-    return imageType_; 
+ImageType Image::getImageType() const {
+    return imageType_;
 }
 
-const DataFormatBase* Image::getDataFormat() const { 
-    return getColorLayer()->getDataFormat(); 
+const DataFormatBase* Image::getDataFormat() const {
+    return getColorLayer()->getDataFormat();
 }
 
 void Image::setInputSource(LayerType layer, const Image* src) {

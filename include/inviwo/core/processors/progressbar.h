@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -16,13 +16,13 @@
 #define IVW_PROGRESSBAR_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/io/serialization/ivwserializable.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
 
-/** \class ProgressBarObserver 
+/** \class ProgressBarObserver
 *
 * Observer for ProgressBar
 *
@@ -47,7 +47,7 @@ public:
 };
 
 
-/** \class ProgressBarObservable 
+/** \class ProgressBarObservable
 *
 * Observable for ProgressBar.
 *
@@ -64,7 +64,7 @@ public:
         ObserverSet::iterator endIt = observers_->end();
         for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
             // static_cast can be used since only template class objects can be added
-            static_cast<ProgressBarObserver*>(*it)->progressChanged();    
+            static_cast<ProgressBarObserver*>(*it)->progressChanged();
         }
     }
 
@@ -73,12 +73,12 @@ public:
         ObserverSet::iterator endIt = observers_->end();
         for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
             // static_cast can be used since only template class objects can be added
-            static_cast<ProgressBarObserver*>(*it)->progressBarVisibilityChanged();    
+            static_cast<ProgressBarObserver*>(*it)->progressBarVisibilityChanged();
         }
     }
 };
 
-/** \class ProgressBar 
+/** \class ProgressBar
 *
 * Simple progressbar to be used in a ProgressBarOwner.
 *

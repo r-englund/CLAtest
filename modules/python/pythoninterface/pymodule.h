@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 PyObject* py_info(PyObject* /*self*/, PyObject* /*args*/);
 
@@ -31,7 +32,7 @@ namespace inviwo {
         std::string getName(){return "info";}
         std::string getDesc(){return "info()\tPrints documentation of the module's functions.";}
         virtual PyCFunction getFunc(){return py_info;}
-    };  
+    };
 
 
 
@@ -48,11 +49,11 @@ public:
     PyModule(std::string moduleName,std::vector<PyMethod*> methods = std::vector<PyMethod*>());
     ~PyModule();
     void addMethod(PyMethod* method);
-    
+
     const char* getModuleName();
-    
+
     void printInfo();
-    
+
     static PyModule* getModuleByPyObject(PyObject *obj);
 
 

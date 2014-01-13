@@ -36,6 +36,7 @@
 int main(int argc, char** argv) {
 #ifdef __unix__
     setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
+
 #endif
 #ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
     _CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_FILE  | _CRTDBG_MODE_DEBUG);

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/util/filedirectory.h>
@@ -21,8 +22,6 @@
 #include <QTextBlock>
 #include <QFileInfo>
 #include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
-
-
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
@@ -37,7 +36,7 @@ ModifiedWidget::ModifiedWidget(){
 }
 
 void ModifiedWidget::textHasChanged(){
-	
+
 }
 
 void ModifiedWidget::closeEvent(QCloseEvent *event)
@@ -106,7 +105,7 @@ TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property)
     updateFromProperty();
 }
 
-void TextEditorWidgetQt::generateWidget() {    
+void TextEditorWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     btnEdit_ = new QToolButton();
     btnEdit_->setIcon(QIcon(":/icons/edit.png"));
@@ -144,8 +143,8 @@ void TextEditorWidgetQt::editFile(){
 
      // fetch settings from the settings menu to determine what editor to use
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    
-    if (dynamic_cast<BoolProperty*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("txtEditor"))->get()) { 
+
+    if (dynamic_cast<BoolProperty*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("txtEditor"))->get()) {
         if (static_cast<StringProperty*>(property_)->get() == "") {
             fileWidget_->setPropertyValue();
         }
@@ -189,8 +188,8 @@ void TextEditorWidgetQt::loadFile(){
     }
     else {
         textEditorWidget_->textEditor_->setPlainText(textStream_.readAll());
-    }   
-    
+    }
+
 }
 
 //Function writes content of the textEditor_ to the file
@@ -212,7 +211,7 @@ bool TextEditorWidgetQt::writeToFile(){
     else {
         textStream << textEditorWidget_->textEditor_->toPlainText();
     }
-    
+
     file_->close();
 
     return true;
@@ -245,7 +244,7 @@ bool TextEditorWidgetQt::saveDialog(){
             QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         if (ret == QMessageBox::Save){
             if (dynamic_cast<FileProperty*>(property_))
-                return TextEditorWidgetQt::writeToFile();   
+                return TextEditorWidgetQt::writeToFile();
             if (dynamic_cast<StringProperty*>(property_))
                 return TextEditorWidgetQt::writeToString();
         }

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2013 Scientific Visualization Group - Linkï¿½ping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -13,6 +13,8 @@
  **********************************************************************/
 
 #include <modules/pythonqt/pythoneditorwidget.h>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <inviwo/core/util/filedirectory.h>
 #include <modules/python/pythonmodule.h>

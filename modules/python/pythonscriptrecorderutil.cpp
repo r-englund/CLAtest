@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -14,7 +14,8 @@
 
 #include <modules/python/pythonscript.h>
 #include <modules/python/pythonscriptrecorderutil.h>
-
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/stringconversion.h>
 #include <inviwo/core/util/filedirectory.h>
@@ -24,17 +25,17 @@ namespace inviwo {
 PythonScriptRecorderUtil::PythonScriptRecorderUtil(PythonScript* script) :  recordScript_(false) , script_(script)
 {}
 
-PythonScriptRecorderUtil::~PythonScriptRecorderUtil() {    
+PythonScriptRecorderUtil::~PythonScriptRecorderUtil() {
 }
 
 void PythonScriptRecorderUtil::startRecording() {
     recordScript_ = true;
 }
-    
+
 void PythonScriptRecorderUtil::endRecording() {
     recordScript_ = false;
 }
-    
+
 bool PythonScriptRecorderUtil::isRecording() {
     return recordScript_;
 }
@@ -85,7 +86,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
     else if (dynamic_cast<ButtonProperty*>(property)) {
         commandOpen = "inviwo.clickButton(";
     }
-    else if (dynamic_cast<CompositeProperty*>(property)) {        
+    else if (dynamic_cast<CompositeProperty*>(property)) {
         if (dynamic_cast<CameraProperty*>(property)) {
             CameraProperty* prop = dynamic_cast<CameraProperty*>(property);
 
@@ -96,20 +97,20 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
             ss << from.y << ",";
             ss << from.z ;
             ss << "),";
-            
+
             vec3 to = prop->getLookTo();
             ss << "(";
             ss << to.x << ",";
             ss << to.y << ",";
             ss << to.z ;
             ss << "),";
-            
+
             vec3 up = prop->getLookUp();
             ss << "(";
             ss << up.x << ",";
             ss << up.y << ",";
             ss << up.z ;
-            ss << ")";           
+            ss << ")";
 
             ss << ")";
 
@@ -125,7 +126,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << prop->get();
         ss << "\"";
         propertyValue = ss.str();
-    }    
+    }
     else if (dynamic_cast<FileProperty*>(property)) {
         FileProperty* prop = dynamic_cast<FileProperty*>(property);
         ss << "\"";
@@ -166,7 +167,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << m[2][0] << " ";
         ss << m[2][1] << " ";
         ss << m[2][2] ;
-        ss << ")";   
+        ss << ")";
         propertyValue = ss.str();
     }
     else if (dynamic_cast<FloatMat4Property*>(property)) {
@@ -191,7 +192,7 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
         ss << m[2][1] << " ";
         ss << m[2][2] << " ";
         ss << m[2][3] ;
-        ss << ")"; 
+        ss << ")";
         ss << ",";
         ss << "(";
         ss << m[3][0] << " ";

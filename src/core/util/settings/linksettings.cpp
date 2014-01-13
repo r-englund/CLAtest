@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,10 +13,11 @@
  **********************************************************************/
 
 #include <inviwo/core/util/settings/linksettings.h>
+#include <inviwo/core/common/inviwocore.h>
 
 namespace inviwo {
 
-LinkSettings::LinkSettings( std::string id) : 
+LinkSettings::LinkSettings( std::string id) :
     Settings(id)
     , displayLinksproerty_("displayLinks", "Display links", true) {}
 
@@ -54,7 +55,7 @@ bool LinkSettings::isLinkable(Property* property)  {
     linkOption = dynamic_cast<BoolProperty*>( prop );
     bool linkCameraProperty = linkOption->get();
     if (linkCameraProperty && dynamic_cast<CameraProperty*>(property))
-        return true;    
+        return true;
 
     //transfer functions
     prop = getPropertyByIdentifier("linktransferfunction");
@@ -62,7 +63,7 @@ bool LinkSettings::isLinkable(Property* property)  {
     linkOption = dynamic_cast<BoolProperty*>( prop );
     bool linkTfProperty = linkOption->get();
     if (linkTfProperty && dynamic_cast<TransferFunctionProperty*>(property))
-        return true;    
+        return true;
 
     //options
     prop = getPropertyByIdentifier("linkstringoptions");

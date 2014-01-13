@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h>
-
+#include <inviwo/core/common/inviwo.h>
 #include <QPainter>
 #include <math.h>
 
@@ -47,7 +47,7 @@ void TransferFunctionEditorLineItem::paint(QPainter* painter, const QStyleOption
     painter->drawLine(startPos_, endPos_);
 }
 
-QPainterPath TransferFunctionEditorLineItem::shape() const { 
+QPainterPath TransferFunctionEditorLineItem::shape() const {
     QPointF delta = endPos_ - startPos_;
     float angle = atan2(delta.y(), delta.x());
     float boxWidth = 20.0f;
@@ -62,8 +62,8 @@ QPainterPath TransferFunctionEditorLineItem::shape() const {
     QPainterPath boundingPath;
     boundingPath.addPolygon(boundingPolygon);
     boundingPath.closeSubpath();
-    return boundingPath; 
-} 
+    return boundingPath;
+}
 
 QRectF TransferFunctionEditorLineItem::boundingRect() const {
     return shape().boundingRect();

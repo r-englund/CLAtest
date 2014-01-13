@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -21,20 +21,20 @@
 #include <inviwo/core/datastructures/geometry/geometrytype.h>
 
 namespace inviwo {
-   
+
 class IVW_CORE_API VolumeRAMSlice : public VolumeOperation {
 public:
-    VolumeRAMSlice(const VolumeRepresentation* in, CoordinatePlane cPlane, unsigned int sliceNum) 
+    VolumeRAMSlice(const VolumeRepresentation* in, CoordinatePlane cPlane, unsigned int sliceNum)
         : VolumeOperation(in), cPlane_(cPlane), sliceNum_(sliceNum) {}
     virtual ~VolumeRAMSlice() {}
 
     template<typename T, size_t B>
     void evaluate();
 
-    static inline ImageRAM* apply(const VolumeRepresentation* in, CoordinatePlane cPlane, unsigned int sliceNum){
+    static inline LayerRAM* apply(const VolumeRepresentation* in, CoordinatePlane cPlane, unsigned int sliceNum){
         VolumeRAMSlice sliceOP = VolumeRAMSlice(in, cPlane, sliceNum);
         in->performOperation(&sliceOP);
-        return sliceOP.getOutput<ImageRAM>();
+        return sliceOP.getOutput<LayerRAM>();
     }
 
 private:
