@@ -43,7 +43,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     connect(tfEditorView_, SIGNAL(resized()), this, SLOT(editorViewResized()));
 
     tfEditor_ = new TransferFunctionEditor(&tfProperty_->get(), tfEditorView_);
-    tfEditor_->setSceneRect(0, 0, minEditorDims.x, minEditorDims.y);
+    //tfEditor_->setSceneRect(0, 0, minEditorDims.x, minEditorDims.y);
     connect(tfEditor_, SIGNAL(doubleClick()), this, SLOT(showColorDialog()));
     connect(tfEditor_, SIGNAL(selectionChanged()), this, SLOT(updateColorWheel()));
     connect(tfEditor_, SIGNAL(controlPointsChanged()), this, SLOT(updateTransferFunction()));
@@ -60,14 +60,18 @@ void TransferFunctionPropertyDialog::generateWidget() {
     connect(zoomHSlider_, SIGNAL(valuesChanged(int, int)), tfEditorView_, SLOT(zoomHorizontally(int, int)));
 
     maskSlider_ = new RangeSliderQt(Qt::Horizontal, this);
-    int maxMask = arrayWidth_;
-    maskSlider_->setRange(0, maxMask);
-    maskSlider_->setValue(static_cast<int>(tfProperty_->getMask().x*maxMask), static_cast<int>(tfProperty_->getMask().y*maxMask));
+    maskSlider_->setRange(0, 100);
+    maskSlider_->setValue(static_cast<int>(tfProperty_->getMask().x*100), static_cast<int>(tfProperty_->getMask().y*100));
     connect(maskSlider_, SIGNAL(valuesChanged(int, int)), this, SLOT(changeMask(int, int)));
 
     colorChange_ = false;
     colorWheel_ = new ColorWheel();
     connect(colorWheel_, SIGNAL(colorChange(QColor)), this, SLOT(setPointColor()));
+
+    btnClearTF_ = new QPushButton();
+    btnClearTF_->setIcon(QIcon(":/icons/button_cancel.png"));
+    btnClearTF_->setFixedSize(40, 40);
+    connect(btnClearTF_, SIGNAL(clicked()), tfEditor_, SLOT(resetTransferFunction()));
 
     colorDialog_ = new QColorDialog();
     colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
@@ -87,6 +91,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     gridLayout->addWidget(tfPreview_,    2, 1);
     gridLayout->addWidget(maskSlider_,   3, 1);
     gridLayout->addWidget(colorWheel_,   0, 2);
+    gridLayout->addWidget(btnClearTF_,   1, 2);
     QFrame* frame = new QFrame();
     frame->setLayout(gridLayout);
     setWidget(frame);
@@ -107,21 +112,20 @@ TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog() {
 }
 
 void TransferFunctionPropertyDialog::updateTFPreview() {
-    int gradientWidth = 255;
+    int gradientWidth = tfEditorView_->width();
     tfPixmap_ = new QPixmap(gradientWidth, 20);
     QPainter tfPainter(tfPixmap_);
-    tfPainter.fillRect(0, 0, tfEditorView_->width(), 20, QBrush(*gradient_));
+    tfPainter.fillRect(0, 0, gradientWidth, 20, QBrush(*gradient_));
     if (tfProperty_->getMask().x > 0.0f) {
-        tfPainter.fillRect(0, 0, static_cast<int>(tfProperty_->getMask().x*tfEditorView_->width()), 20, QColor(25,25,25,100));
-        tfPainter.drawLine(static_cast<int>(tfProperty_->getMask().x*tfEditorView_->width()), 0, static_cast<int>(tfProperty_->getMask().x*tfEditorView_->width()), 20);
+        tfPainter.fillRect(0, 0, static_cast<int>(tfProperty_->getMask().x*gradientWidth), 20, QColor(25,25,25,100));
+        tfPainter.drawLine(static_cast<int>(tfProperty_->getMask().x*gradientWidth), 0, static_cast<int>(tfProperty_->getMask().x*gradientWidth), 20);
     }
     if (tfProperty_->getMask().y < 1.0f) {
-        tfPainter.fillRect(static_cast<int>(tfProperty_->getMask().y*tfEditorView_->width()), 0, 
-            static_cast<int>(tfEditorView_->width()-(tfProperty_->getMask().y*tfEditorView_->width())), 20, QColor(25,25,25,150));
-        tfPainter.drawLine(static_cast<int>(tfProperty_->getMask().y*tfEditorView_->width()), 0, static_cast<int>(tfProperty_->getMask().y*tfEditorView_->width()), 20);
+        tfPainter.fillRect(static_cast<int>(tfProperty_->getMask().y*gradientWidth), 0, 
+            static_cast<int>(tfEditor_->width()-(tfProperty_->getMask().y*gradientWidth)), 20, QColor(25,25,25,150));
+        tfPainter.drawLine(static_cast<int>(tfProperty_->getMask().y*gradientWidth), 0, static_cast<int>(tfProperty_->getMask().y*gradientWidth), 20);
     }
-    paintScene_->setBackgroundBrush(QBrush((*tfPixmap_).scaled(tfEditorView_->width(), 20)));
-    update();
+    paintScene_->setBackgroundBrush(QBrush(*tfPixmap_));
 }
 
 void TransferFunctionPropertyDialog::updateFromProperty() {
@@ -130,19 +134,18 @@ void TransferFunctionPropertyDialog::updateFromProperty() {
 
     TransferFunctionDataPoint* curPoint;
     const vec4* curColor;
-    for (size_t i=0; i<tfProperty_->get().getNumberOfDataPoints(); i++) {
+    for (size_t i=0; i<tfProperty_->get().getNumDataPoints(); i++) {
         curPoint = tfProperty_->get().getPoint(i);
         curColor = curPoint->getRgba();
         curGradientStop->first = curPoint->getPos()->x;
         // modify the alpha channel to make the colors better visible
         float displayAlpha = curPoint->getPos()->y*2.0;
         if (displayAlpha > 1.0) displayAlpha = 1.0;
-        curGradientStop->second = QColor::fromRgbF(curColor->r, curColor->g, curColor->b, displayAlpha);
+        curGradientStop->second = QColor::fromRgbF(curColor->r, curColor->g, curColor->b, 1.0);//displayAlpha);
         gradientStops_->push_front(*curGradientStop);
     }
     gradient_->setStops(*gradientStops_);
 
-    gradient_->setFinalStop(tfEditorView_->width(), 0.0);
     delete curGradientStop;
     updateTFPreview();
 }
@@ -225,8 +228,8 @@ void TransferFunctionPropertyDialog::editorViewResized() {
 }
 
 void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {
-    float maskMinF = static_cast<float>(maskMin)/static_cast<float>(arrayWidth_);
-    float maskMaxF = static_cast<float>(maskMax)/static_cast<float>(arrayWidth_);
+    float maskMinF = static_cast<float>(maskMin)/100.0;
+    float maskMaxF = static_cast<float>(maskMax)/100.0;
     tfProperty_->setMask(maskMinF, maskMaxF);
     tfEditorView_->setMask(maskMinF, maskMaxF);
     updateTFPreview();

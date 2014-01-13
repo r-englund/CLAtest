@@ -47,7 +47,7 @@ void SimpleRaycaster::process() {
     ivwAssert(entryPort_.getData()!=0, "Entry port empty.");
     ivwAssert(exitPort_.getData()!=0, "Exit port empty.");
 
-    // FIXME: enable onCHange for ports and put the following line there
+    // FIXME: enable onChange for ports and put the following line there
     transferFunction_.setVolume(volumePort_.getData());
     
     TextureUnit transFuncUnit;

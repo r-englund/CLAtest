@@ -47,7 +47,7 @@ void TransferFunctionProperty::setVolume(const Volume* volume) {
             for (unsigned int y=0; y<dim.y; y++) {
                 for (unsigned int z=0; z<dim.z; z++) {
                     float intensity = volumeRAM->getValueAsSingleFloat(uvec3(x,y,z));
-                    histogram[static_cast<int>(intensity*numValues)]++;
+                    histogram[static_cast<int>(intensity*(numValues-1))]++;
                 }
             }
         }
@@ -66,8 +66,8 @@ void TransferFunctionProperty::setVolume(const Volume* volume) {
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
 	std::stringstream stream;
-    s.serialize("size", (int)value_.getNumberOfDataPoints());
-	for (int i = 0; i < static_cast<int>(value_.getNumberOfDataPoints()); i++){
+    s.serialize("size", (int)value_.getNumDataPoints());
+	for (size_t i=0; i<value_.getNumDataPoints(); i++){
 		stream << "pos" << i;
 		s.serialize(stream.str(), value_.getPoint(i)->getPos());
 		stream.clear();

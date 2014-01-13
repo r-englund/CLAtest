@@ -28,7 +28,8 @@ ColorWheel::ColorWheel(QWidget *parent) :
 {
     //    resize(initSize);
     current = current.toHsv();
-    //    setMinimumSize(200,200);
+    setMinimumSize(200, 200);
+    setMaximumSize(200, 200);
     setCursor(Qt::CrossCursor);
 }
 
@@ -38,12 +39,12 @@ QColor ColorWheel::color() {
 
 void ColorWheel::setColor(const QColor &color) {
     if(color == current) return;
-    if(color.hue() != current.hue()){
+    if(color.hue() != current.hue()) {
         hueChanged(color.hue());
     }
 
     if( color.saturation() != current.saturation()
-        || color.value() != current.value() ){
+        || color.value() != current.value() ) {
             svChanged(color);
     }
 
@@ -132,52 +133,52 @@ void ColorWheel::mouseMoveEvent(QMouseEvent *event) {
         QColor color = posColor(lastPos);
         svChanged(color);
     }else{
-                int length = qMin(width(), height());
-                QPoint center(length/2, length/2);
-                
-                if(inWheel){
-                    int r =  length / 2;
-                    double x0 = lastPos.x()-center.x();
-                    double y0 = lastPos.y()-center.y();
-                    double vNorm = qSqrt(qPow(x0,2)+qPow(y0,2));
-                    double x1 = r*(x0/vNorm);
-                    double y1 = r*(y0/vNorm);
-                    x1 += center.x();
-                    y1 += center.y();
-                    QColor color = posColor(QPoint(x1, y1));
-                    hueChanged(color.hue());
-                }else if(inSquare){
-                    int w = qMin(width(), height());
-                    // radius of outer circle
-                    qreal r = w/2-margin;
-                    // radius of inner circle
-                    qreal ir = r-wheelWidth;
-                    // left corner of square
-                    qreal m = w/2.0-ir/qSqrt(2);
+        int length = qMin(width(), height());
+        QPoint center(length/2, length/2);
+        
+        if(inWheel){
+            int r =  length / 2;
+            double x0 = lastPos.x()-center.x();
+            double y0 = lastPos.y()-center.y();
+            double vNorm = qSqrt(qPow(x0,2)+qPow(y0,2));
+            double x1 = r*(x0/vNorm);
+            double y1 = r*(y0/vNorm);
+            x1 += center.x();
+            y1 += center.y();
+            QColor color = posColor(QPoint(x1, y1));
+            hueChanged(color.hue());
+        }else if(inSquare){
+            int w = qMin(width(), height());
+            // radius of outer circle
+            qreal r = w/2-margin;
+            // radius of inner circle
+            qreal ir = r-wheelWidth;
+            // left corner of square
+            qreal m = w/2.0-ir/qSqrt(2);
 
-                    float x0 = 0.0f;
-                    float y0 = 0.0f;
-                    float w0 = squareRegion.boundingRect().width();
+            float x0 = 0.0f;
+            float y0 = 0.0f;
+            float w0 = squareRegion.boundingRect().width();
 
-                    if (lastPos.x() > m + w0) {
-                        x0 = m + w0;
-                    }else if (lastPos.x() < m) {
-                        x0 = m;
-                    } else{
-                        x0 = lastPos.x();
-                    }
-                    if (lastPos.y() > m + w0) {
-                        y0 = m + w0;
-                    }else if (lastPos.y() < m) {
-                        y0 = m;
-                    } else{
-                        y0 = lastPos.y();
-                    }
-                    
-                    
-                    QColor color = posColor(QPoint(x0, y0));
-                    svChanged(color);
-                }
+            if (lastPos.x() > m + w0) {
+                x0 = m + w0;
+            }else if (lastPos.x() < m) {
+                x0 = m;
+            } else{
+                x0 = lastPos.x();
+            }
+            if (lastPos.y() > m + w0) {
+                y0 = m + w0;
+            }else if (lastPos.y() < m) {
+                y0 = m;
+            } else{
+                y0 = lastPos.y();
+            }
+            
+            
+            QColor color = posColor(QPoint(x0, y0));
+            svChanged(color);
+        }
     }
 }
 
@@ -294,7 +295,8 @@ void ColorWheel::drawIndicator(const int &hue) {
     painter.setBrush(Qt::NoBrush);
 
     QPen pen = painter.pen();
-    pen.setWidth(3);
+    pen.setWidth(2);
+    pen.setCosmetic(true);
     painter.setPen(pen);
     qreal r = qMin(height(), width()) / 2.0;
     painter.translate(r, r);
@@ -324,7 +326,8 @@ void ColorWheel::drawPicker(const QColor &color) {
     if(color.saturation() > 30 ||color.value() < 50){
         pen.setColor(Qt::white);
     }
-    pen.setWidth(3);
+    pen.setWidth(2);
+    pen.setCosmetic(true);
     painter.setPen(pen);
     painter.drawEllipse(S,V,10,10);
 }

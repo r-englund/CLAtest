@@ -35,7 +35,7 @@ public:
 	TransferFunction& operator=(const TransferFunction& rhs);
 	virtual ~TransferFunction();
 	const Layer* getData() const;
-	size_t getNumberOfDataPoints() const;
+	size_t getNumDataPoints() const;
 	TransferFunctionDataPoint* getPoint(int i) const;
 
 	void addPoint(vec2 pos, vec4 rgba);

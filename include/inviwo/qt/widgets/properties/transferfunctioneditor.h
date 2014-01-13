@@ -60,7 +60,6 @@ public :
     TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view);
     ~TransferFunctionEditor();
 
-
     void updateControlPointView();
 
     const float getZoomRangeXMin() { return zoomRangeXMin_; }
@@ -81,6 +80,9 @@ signals:
     void doubleClick();
     void controlPointsChanged();
 
+public slots:
+    void resetTransferFunction();
+
 protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent* e);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
@@ -96,6 +98,7 @@ protected:
     *      Runs CalcTransferValues to update the TransferFunction data Image
 	*/
     void addControlPoint(QPointF pos);
+    void addControlPoint(QPointF pos, vec4 color);
 
 	void removeControlPoint(TransferFunctionEditorControlPoint* p);
 

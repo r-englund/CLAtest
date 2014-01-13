@@ -77,6 +77,7 @@ private:
     TransferFunctionProperty* tfProperty_;     ///< Pointer to property, for get and invalidation in the widget
     TransferFunctionEditor* tfEditor_;         ///< TransferFunctionEditor inherited from QGraphicsScene
     TransferFunctionEditorView*	tfEditorView_; ///< View that contains the editor
+    QPushButton* btnClearTF_;
 
     QGraphicsView* tfPreview_; ///< View that contains the scene for the painted transfer function
     QGraphicsScene* paintScene_; ///< Scene where the transfer function is painted

@@ -21,20 +21,14 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     , transferFunction_(transferFunction)
     , view_(view)
 {
+    setSceneRect(0.0, 0.0, 512.0, 256.0);
     // initialize editor with current tf
-    for (size_t i=0; i<transferFunction_->getNumberOfDataPoints(); i++) {
+    for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
         TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(i);
         vec2 pos = *dataPoint->getPos();
-        pos.x *= view_->width();
-        pos.y *= view_->height();
+        pos.x *= width();
+        pos.y *= height();
         addControlPoint(QPointF(pos.x,pos.y), dataPoint);
-    }
-
-    // if the transfer function is empty, initialize it with simple ramp
-    // TODO: move to tf core (TR)
-    if (transferFunction_->getNumberOfDataPoints() == 0) {
-        addControlPoint(QPointF(0.0, 0.0));
-        addControlPoint(QPointF(1.0, 1.0));
     }
 }
 
@@ -46,6 +40,17 @@ TransferFunctionEditor::~TransferFunctionEditor() {
     for (size_t i=0; i<lines_.size(); i++)
         delete lines_[i];
     lines_.clear();
+}
+
+void TransferFunctionEditor::resetTransferFunction() {
+    for (size_t i=0; i<controlPoints_.size(); i++) {
+        transferFunction_->removePoint(controlPoints_[i]->getPoint());
+        removeItem(controlPoints_[i]);
+        delete controlPoints_[i];
+    }
+    controlPoints_.clear();
+    addControlPoint(QPointF(0.0*(width()-1), 0.0*(height()-1)), vec4(0.0f));
+    addControlPoint(QPointF(1.0*(width()-1), 1.0*(height()-1)), vec4(1.0f));
 }
 
 void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
@@ -89,19 +94,6 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
             item->setSelected(true);
         }
     }
-
-    /*
-    // group selected keys
-    if (e->key() == 'G' && e->modifiers()==Qt::ControlModifier) {
-        //TransferFunctionEditorControlPointGroup* temp = new TransferFunctionEditorControlPointGroup();
-        QList<QGraphicsItem *> itemList = this->items();
-        foreach(QGraphicsItem *item, itemList) {
-            //temp.addPoint(static_cast<TransferFunctionEditorControlPoint*<item);
-        }
-        //controlPointGroups_.push_back(temp);
-    }
-    */
-
     // delete selected keys
     if (e->key() == Qt::Key_Delete) {
         for (size_t i=0; i<controlPoints_.size(); i++)
@@ -110,31 +102,39 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
     }
 }
 
-/*
-void TransferFunctionEditor::addControlPoint(QGraphicsSceneMouseEvent *e) {
-    float width = zoomRangeXMax_ - zoomRangeXMin_;
-    float height = zoomRangeYMax_ - zoomRangeYMin_;
-    float newX = e->scenePos().x() / view_->width();
-    float newY = e->scenePos().y() / view_->height();
-    newX = zoomRangeXMin_ + width * newX;
-    newY = zoomRangeYMin_ + height * newY;
-    vec2* pos = new vec2(newX, newY);   
-    addControlPoint(pos);
-}
-*/
-
 void TransferFunctionEditor::addControlPoint(QPointF pos) {
-    ivwAssert(pos.x()>=0.0 && pos.x()<view_->width(), "Transfer function control point's x coordinate out of range.");
-    ivwAssert(pos.y()>=0.0 && pos.y()<view_->height(), "Transfer function control point's y coordinate out of range.");
+    // determine color
+    vec4 color = vec4(0.5f, 0.5f, 0.5f, pos.y()/height());
+    if (controlPoints_.size() > 0) {
+        int leftNeighborID = 0;
+        int rightNeighborID = 0;
+        for (size_t i=0; i<controlPoints_.size(); i++)
+            if (controlPoints_[i]->pos().x()<=pos.x()) leftNeighborID=i;
+            else if (rightNeighborID==0 && controlPoints_[i]->pos().x()>pos.x()) rightNeighborID=i;
+        const vec4* colorL = controlPoints_[leftNeighborID]->getPoint()->getRgba();
+        const vec4* colorR = controlPoints_[rightNeighborID]->getPoint()->getRgba();
+        float a = 0.5f;
+        float denom = controlPoints_[rightNeighborID]->pos().x() - controlPoints_[leftNeighborID]->pos().x();
+        if (denom > 0.0)
+            a = (controlPoints_[rightNeighborID]->pos().x() - pos.x()) / denom;
+        color = vec4(a*colorL->r+(1.0-a)*colorR->r,
+                     a*colorL->g+(1.0-a)*colorR->g,
+                     a*colorL->b+(1.0-a)*colorR->b,
+                     pos.y()/height());
+    }
+    addControlPoint(pos, color);
+}
 
-    // suggest a color
-    vec4 rgba = vec4(0.5f);
+void TransferFunctionEditor::addControlPoint(QPointF pos, vec4 color) {
+    ivwAssert(pos.x()>=0.0 && pos.x()<width(), "Transfer function control point's x coordinate out of range.");
+    ivwAssert(pos.y()>=0.0 && pos.y()<height(), "Transfer function control point's y coordinate out of range.");
 
     // add control point to editor and transfer function
-    TransferFunctionDataPoint* dataPoint = new TransferFunctionDataPoint(vec2(pos.x()/view_->width(), pos.y()/view_->height()), rgba);
+    TransferFunctionDataPoint* dataPoint = new TransferFunctionDataPoint(vec2(pos.x()/width(), pos.y()/height()), color);
     transferFunction_->addPoint(dataPoint);
     addControlPoint(pos, dataPoint);
 }
+
 
 void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPoint* dataPoint) {
     TransferFunctionEditorControlPoint* pointGraphicsItem = new TransferFunctionEditorControlPoint(dataPoint);
@@ -168,18 +168,20 @@ void TransferFunctionEditor::updateLines() {
     std::sort(controlPoints_.begin(), controlPoints_.end(), controlPointComparison);
 
     // add new lines
-    TransferFunctionEditorLineItem* firstLine = new TransferFunctionEditorLineItem(QPointF(0.0,controlPoints_[0]->pos().y()), controlPoints_[0]->pos());
-    lines_.push_back(firstLine);
-    addItem(firstLine);
-    for (size_t i=0; i<controlPoints_.size()-1; i++) {
-        TransferFunctionEditorLineItem* lineGraphicsItem = new TransferFunctionEditorLineItem(controlPoints_[i]->pos(), controlPoints_[i+1]->pos());
-        lines_.push_back(lineGraphicsItem);
-        addItem(lineGraphicsItem);
+    if (controlPoints_.size() > 1) {
+        TransferFunctionEditorLineItem* firstLine = new TransferFunctionEditorLineItem(QPointF(0.0,controlPoints_[0]->pos().y()), controlPoints_[0]->pos());
+        lines_.push_back(firstLine);
+        addItem(firstLine);
+        for (size_t i=0; i<controlPoints_.size()-1; i++) {
+            TransferFunctionEditorLineItem* lineGraphicsItem = new TransferFunctionEditorLineItem(controlPoints_[i]->pos(), controlPoints_[i+1]->pos());
+            lines_.push_back(lineGraphicsItem);
+            addItem(lineGraphicsItem);
+        }
+        TransferFunctionEditorLineItem* lastLine = new TransferFunctionEditorLineItem(controlPoints_[controlPoints_.size()-1]->pos(),
+                                                                                      QPointF(width(), controlPoints_[controlPoints_.size()-1]->pos().y()));
+        lines_.push_back(lastLine);
+        addItem(lastLine);
     }
-    TransferFunctionEditorLineItem* lastLine = new TransferFunctionEditorLineItem(controlPoints_[controlPoints_.size()-1]->pos(),
-                                                                                  QPointF(view_->width(), controlPoints_[controlPoints_.size()-1]->pos().y()));
-    lines_.push_back(lastLine);
-    addItem(lastLine);
 }
 
 void TransferFunctionEditor::updateControlPointView() {
@@ -189,64 +191,6 @@ void TransferFunctionEditor::updateControlPointView() {
     // initiate transfer function update
     emit controlPointsChanged();
 }
-
-
-/*
-void TransferFunctionEditor::setControlPointNeighbours() {
-    if (controlPoints_.size() == 0) {}
-    else if (controlPoints_.size() == 1) {
-        controlPoints_.front()->setLeftNeighbour(NULL);
-        controlPoints_.front()->setRightNeighbour(NULL);
-    }
-    else{
-        std::vector<TransferFunctionEditorControlPoint*>::iterator curr = controlPoints_.begin();
-        std::vector<TransferFunctionEditorControlPoint*>::iterator prev = controlPoints_.begin();
-
-        (*curr)->setLeftNeighbour(NULL);
-        (*curr)->setRightNeighbour(NULL);
-        curr++;
-
-        while(curr != controlPoints_.end()) {
-            (*prev)->setRightNeighbour(*curr);
-            (*curr)->setLeftNeighbour(*prev);
-            prev = curr;
-            curr++;
-        }
-        controlPoints_.back()->setRightNeighbour(NULL);
-    }
-}
-
-bool myPointCompare(TransferFunctionEditorControlPoint* a, TransferFunctionEditorControlPoint* b) {
-    return a->getPoint()->getPos()->x < b->getPoint()->getPos()->x;
-}
-
-void TransferFunctionEditor::sortControlPoints() {
-    std::sort(controlPoints_.begin(), controlPoints_.end(), myPointCompare);
-}
-
-
-void TransferFunctionEditor::repositionPoints() {
-    float viewWidth_ = getView()->width();
-    float viewHeight_ = getView()->height();
-
-    for (size_t i = 0; i < controlPoints_.size(); ++i) {
-        float zoomRangeMinX = getZoomRangeXMin();
-        float zoomRangeMaxX = getZoomRangeXMax();
-
-        float zoomRangeMinY = getZoomRangeYMin();
-        float zoomRangeMaxY = getZoomRangeYMax();
-
-        float datapointXpos = controlPoints_[i]->getPoint()->getPos()->x;
-        float datapointYpos = controlPoints_[i]->getPoint()->getPos()->y;
-
-        float newX = (datapointXpos - zoomRangeMinX)  * viewWidth_ / (zoomRangeMaxX - zoomRangeMinX);
-        float newY = (datapointYpos - zoomRangeMinY)  * viewHeight_ / (zoomRangeMaxY - zoomRangeMinY);
-        controlPoints_[i]->setPos(newX, newY);
-    }
-    update();
-    invalidate();
-}
-*/
 
 TransferFunctionEditorControlPoint* TransferFunctionEditor::getControlPointGraphicsItemAt(const QPointF pos) const {
     QList<QGraphicsItem*> graphicsItems = items(pos);
@@ -258,4 +202,4 @@ TransferFunctionEditorControlPoint* TransferFunctionEditor::getControlPointGraph
     return 0;
 }
 
-};
+}

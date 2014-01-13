@@ -16,7 +16,7 @@
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <QVarLengthArray>
 
-namespace inviwo{
+namespace inviwo {
 
 TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty* tfProperty)
     : tfProperty_(tfProperty)
@@ -33,14 +33,14 @@ void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
 
 void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF &rect) {
     if (mask_.x > 0.0f) {
-        QRectF rect = scene()->sceneRect();
-        int leftMaskBorder = mask_.x*rect.width();
+        int leftMaskBorder = mask_.x*sceneRect().width();
         painter->fillRect(0, 0, leftMaskBorder, rect.height(), QColor(25,25,25,100));
         painter->drawLine(leftMaskBorder, 0, leftMaskBorder, rect.height());
     }
     if (mask_.y < 1.0f) {
-        int rightMaskBorder = mask_.y*rect.width();
-        painter->fillRect(rightMaskBorder, 0, rect.width()-rightMaskBorder, rect.height(), QColor(25,25,25,100));
+        int rightMaskBorder = mask_.y*sceneRect().width();
+        // add 10 to width to compensate scaling differences between scene and view
+        painter->fillRect(rightMaskBorder, 0, sceneRect().width()-rightMaskBorder+10, rect.height(), QColor(25,25,25,100));
         painter->drawLine(rightMaskBorder, 0, rightMaskBorder, rect.height());
     }
 	QGraphicsView::drawForeground(painter, rect);
@@ -55,10 +55,11 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
 
     // draw histogram
     QVarLengthArray<QLineF, 100> linesY;
+    QRectF sRect = sceneRect();
     for (size_t i=0; i<histogram.size(); i++)
-        linesY.append(QLineF(((float)i/(float)histogram.size())*rect.width(), 0.0,
-                             ((float)i/(float)histogram.size())*rect.width(), histogram[i]*rect.height()));
-    qreal lineWidth = rect.width()/histogram.size();
+        linesY.append(QLineF(((float)i/(float)histogram.size())*sRect.width(), 0.0,
+                             ((float)i/(float)histogram.size())*sRect.width(), histogram[i]*sRect.height()));
+    qreal lineWidth = sRect.width()/histogram.size();
     painter->setPen(QPen(QColor(68,102,170), lineWidth));
     painter->drawLines(linesY.data(), linesY.size());
 }
@@ -97,4 +98,4 @@ void TransferFunctionEditorView::zoomVertically(int zoomVMin, int zoomVMax) {
     updateZoom();
 }
 
-}
+} // namespace inviwo

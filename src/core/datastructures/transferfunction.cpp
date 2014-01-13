@@ -37,7 +37,7 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
         textureSize_ = rhs.textureSize_;
         maskMin_ = rhs.maskMin_;
         maskMax_ = rhs.maskMax_;
-		for (int i = 0; i < static_cast<int>(rhs.getNumberOfDataPoints()); ++i){
+		for (size_t i=0; i<rhs.getNumDataPoints(); i++){
 			dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(i)));
 		}
 	}
@@ -54,12 +54,12 @@ const Layer* TransferFunction::getData() const{
 	return data_;
 }
 
-size_t TransferFunction::getNumberOfDataPoints() const{
+size_t TransferFunction::getNumDataPoints() const{
 	return dataPoints_.size();
 }
 
 TransferFunctionDataPoint* TransferFunction::getPoint(int i) const{
-	if (getNumberOfDataPoints() == 0){
+	if (getNumDataPoints() == 0){
 		return NULL;
 	}
 	return dataPoints_[i];

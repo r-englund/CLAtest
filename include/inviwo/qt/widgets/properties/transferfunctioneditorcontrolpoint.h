@@ -59,9 +59,6 @@ public:
     int type() const  {return Type; }
 
 protected:
-    //void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    //void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-
     /**Paint method
     * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
     */
@@ -72,8 +69,6 @@ protected:
 
 private:
     float size_; ///< size for drawing the points
-    float viewWidth_;
-    float viewHeight_;
 
     TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the control point gets all its data from
 	TransferFunctionEditorControlPoint* leftNeighbour_;
