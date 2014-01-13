@@ -12,10 +12,6 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/properties/buttonproperty.h>
-#include <inviwo/core/util/vectoroperations.h>
-#include <inviwo/core/util/settings/systemsettings.h>
 #include <modules/opengl/buffer/bufferglconverter.h>
 #include <modules/opengl/buffer/elementbuffergl.h>
 #include <modules/opengl/canvasprocessorgl.h>
@@ -25,6 +21,14 @@
 #include <modules/opengl/openglmodule.h>
 #include <modules/opengl/openglcapabilities.h>
 #include <modules/opengl/volume/volumeglconverter.h>
+
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/util/vectoroperations.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 namespace inviwo {
 

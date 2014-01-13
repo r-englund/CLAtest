@@ -43,7 +43,12 @@ CompositeMetaData& CompositeMetaData::operator=( const CompositeMetaData& that )
     return *this;
 }
 
-CompositeMetaData::~CompositeMetaData() {}
+CompositeMetaData::~CompositeMetaData() {
+    for(size_t i = 0;i<subMetaData_.size();i++){
+        //delete subMetaData_[i];
+    }
+    subMetaData_.clear();
+}
 
 CompositeMetaData* CompositeMetaData::create() const {
     return new CompositeMetaData();

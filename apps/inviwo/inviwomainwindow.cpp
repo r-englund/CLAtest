@@ -19,7 +19,6 @@
 #include <inviwo/qt/editor/networkeditorview.h>
 #include <modules/openglqt/canvasqt.h>
 
-#include <inviwo/core/network/processornetworkevaluator.h>
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 #include <QStandardPaths>
@@ -33,6 +32,12 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QUrl>
+
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
+#include <inviwo/core/network/processornetworkevaluator.h>
+
 
 #include <inviwo/core/util/commandlineparser.h>
 

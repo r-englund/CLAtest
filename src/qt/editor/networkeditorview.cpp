@@ -15,10 +15,13 @@
 #include <QMatrix>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <inviwo/qt/editor/networkeditorview.h>
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/linksettings.h>
 #include <inviwo/core/util/settings/systemsettings.h>
-#include <inviwo/qt/editor/networkeditorview.h>
 
 namespace inviwo {
 

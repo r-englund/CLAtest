@@ -61,8 +61,8 @@ public:
 
     void notifyProgressChanged() const {
         // Notify observers
-        ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        ObserverSet::iterator endIt = observers_.end();
+        for(ObserverSet::iterator it = observers_.begin(); it != endIt; ++it) {
             // static_cast can be used since only template class objects can be added
             static_cast<ProgressBarObserver*>(*it)->progressChanged();
         }
@@ -70,8 +70,8 @@ public:
 
     void notifyVisibilityChanged() const {
         // Notify observers
-        ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        ObserverSet::iterator endIt = observers_.end();
+        for(ObserverSet::iterator it = observers_.begin(); it != endIt; ++it) {
             // static_cast can be used since only template class objects can be added
             static_cast<ProgressBarObserver*>(*it)->progressBarVisibilityChanged();
         }

@@ -60,36 +60,36 @@ void Observer::addObservation(ObservableInterface* observed) {
 
 ObservableInterface::ObservableInterface() 
 {
-    observers_ = new ObserverSet();
+   // observers_ = new ObserverSet();
 }
 
 ObservableInterface::~ObservableInterface() 
 {
     removeObservers();
-    delete observers_;
+   // delete observers_;
 }
 void ObservableInterface::addObserver(Observer* observer) {
     ivwAssert(observer!=NULL, "Tried to add null Observer");
 
-    std::pair<ObserverSet::iterator, bool> inserted = observers_->insert(observer);
+    std::pair<ObserverSet::iterator, bool> inserted = observers_.insert(observer);
     if (inserted.second) {
         observer->addObservation(this); 
     }
 }
 
 void ObservableInterface::removeObserver(Observer* observer) {
-    ObserverSet::iterator it = observers_->find(observer);
+    ObserverSet::iterator it = observers_.find(observer);
     // Remove from list and observer if observed by it
-    if (it != observers_->end()) {
-        observers_->erase(it);
+    if (it != observers_.end()) {
+        observers_.erase(it);
         // Remove from observer
         observer->removeObservation(this);
     }
 }
 
 void ObservableInterface::removeObservers() {
-    while (!observers_->empty()) {
-        removeObserver(*observers_->begin());
+    while (!observers_.empty()) {
+        removeObserver(*observers_.begin());
     }
 }
 

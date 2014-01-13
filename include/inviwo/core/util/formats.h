@@ -196,13 +196,15 @@ class IVW_CORE_API DataFormatBase
 public:
     DataFormatBase();
     DataFormatBase(DataFormatId t, size_t bA, size_t bS, std::string s);
-    virtual ~DataFormatBase() { delete formatStr_; }
+    virtual ~DataFormatBase();
 
     static const DataFormatBase* get(){
         if (!instance_[NOT_SPECIALIZED])
             instance_[NOT_SPECIALIZED] = new DataFormatBase();
         return instance_[NOT_SPECIALIZED];
     }
+
+    static void cleanDataFormatBases();
 
     static const DataFormatBase* get(std::string name);
 
@@ -229,12 +231,14 @@ public:
     const char* getString() const;
     DataFormatId getId() const;
 
+
 protected:
     static DataFormatBase* instance_[NUMBER_OF_FORMATS];
 
     static DataFormatBase* getNonConst(DataFormatId id){
         return instance_[id];
     }
+    
 
     DataFormatId formatId_;
     size_t bitsAllocated_;

@@ -84,7 +84,7 @@ private:
 
     std::vector<Canvas*> registeredCanvases_;
     Canvas* defaultContext_;
-    LinkEvaluator* linkEvaluator_;
+    LinkEvaluator linkEvaluator_;
     Processor* eventInitiator_; 
 
     bool evaulationQueued_;

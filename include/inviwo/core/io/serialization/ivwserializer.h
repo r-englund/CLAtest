@@ -90,6 +90,7 @@ private:
     void serializeVector(const std::string& key, const T& vector, const bool& isColor=false);
 
     void initialize();
+
 };
 
 

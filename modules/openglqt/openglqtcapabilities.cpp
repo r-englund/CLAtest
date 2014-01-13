@@ -13,6 +13,9 @@
  **********************************************************************/
 
 #include "openglqtcapabilities.h"
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/logdistributor.h>
 #include <inviwo/core/util/stringconversion.h>

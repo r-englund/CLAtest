@@ -13,9 +13,13 @@
  **********************************************************************/
 
 #include <inviwo/qt/editor/resourcemanagerwidget.h>
-#include <inviwo/core/resources/resourcemanager.h>
 
 #include <QStandardItem>
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
+#include <inviwo/core/resources/resourcemanager.h>
+
 #include <string>
 namespace inviwo {
 

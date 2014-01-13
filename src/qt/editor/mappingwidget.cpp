@@ -18,6 +18,8 @@
 #include <inviwo/qt/widgets/eventpropertymanagerwidget.h>
 #include <inviwo/core/common/inviwoapplication.h>
 
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 namespace inviwo {
 
 MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Input Mapping"), parent), VoidObserver() {

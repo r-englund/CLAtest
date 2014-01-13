@@ -14,6 +14,7 @@
 
 #include <modules/openglqt/canvasqt.h>
 
+#include <inviwo/core/util/msvc-memleak-includes.h>
 
 namespace inviwo {
 

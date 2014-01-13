@@ -14,8 +14,11 @@
 
 #include <QGridLayout>
 
-#include <inviwo/core/processors/canvasprocessor.h>
 #include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
+#include <inviwo/core/processors/canvasprocessor.h>
 
 namespace inviwo {
 

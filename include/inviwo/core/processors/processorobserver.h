@@ -51,25 +51,25 @@ public:
     ProcessorObservable(): Observable<ProcessorObserver>() {};
 
     void notifyObservers() const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        for(ObserverSet::reverse_iterator it = observers_.rbegin(); it != observers_.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notify();    
         }
     }
 
     void notifyObservers(Processor* p) const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        for(ObserverSet::reverse_iterator it = observers_.rbegin(); it != observers_.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyProcessorObserver(p);    
         }
     }
 
     void notifyObserversInvalidationBegin(Processor* p) const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        for(ObserverSet::reverse_iterator it = observers_.rbegin(); it != observers_.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationBegin(p);    
         }
     }
     
     void notifyObserversInvalidationEnd(Processor* p) const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        for(ObserverSet::reverse_iterator it = observers_.rbegin(); it != observers_.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationEnd(p);    
         }
     }

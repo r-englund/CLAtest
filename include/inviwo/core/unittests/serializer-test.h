@@ -147,6 +147,8 @@ TEST(SerialitionTest, IvwSerializableClassAsPointerTest){
     EXPECT_EQ(inValue->value_, 12);
     EXPECT_NE(outValue->value_, 0);
     EXPECT_EQ(inValue->value_, outValue->value_);
+    delete inValue;
+    delete outValue;
 }
 
 TEST(SerialitionTest, floatVectorTest){
@@ -223,6 +225,13 @@ TEST(SerialitionTest,vectorOfPointersTest){
     for(size_t i = 0;i<inVector.size();i++){
         EXPECT_EQ(inVector[i]->value_,outVector[i]->value_);
     }
+
+    delete inVector[0];
+    delete inVector[1];
+    delete inVector[2];
+    delete outVector[0];
+    delete outVector[1];
+    delete outVector[2];
 }
 
 TEST(SerialitionTest,vec2Tests){

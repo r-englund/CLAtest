@@ -1,13 +1,13 @@
 
-//#define _CRTDBG_MAP_ALLOC
-//#include <stdlib.h>
-//#include <crtdbg.h>
-
-
 #ifdef _MSC_VER
     #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
 #endif
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
 
 #include <modules/unittests/unittestsmodule.h>
 
@@ -20,14 +20,20 @@
 using namespace inviwo;
 
 int main(int argc , char ** argv){
-    /*_CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_FILE  | _CRTDBG_MODE_DEBUG);
+    _CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_FILE  | _CRTDBG_MODE_DEBUG);
     _CrtSetReportFile( _CRT_WARN, _CRTDBG_FILE_STDOUT );
-    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );*/
+    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     
-    InviwoApplication app(argc, argv, "unittest "+IVW_VERSION, IVW_DIR);
-    app.initialize(&inviwo::registerAllModules);
+    int ret = -1;
+    inviwo::ConsoleLogger* logger = new inviwo::ConsoleLogger();
+    { //scopre for ivw app
+        InviwoApplication app(argc, argv, "unittest "+IVW_VERSION, IVW_DIR);
+        app.initialize(&inviwo::registerAllModules);
 
-    inviwo::LogCentral::instance()->registerLogger(new inviwo::ConsoleLogger());
-	
-    return inviwo::UnitTestsModule::runAllTests();
+        inviwo::LogCentral::instance()->registerLogger(logger);
+
+        ret = inviwo::UnitTestsModule::runAllTests();
+    }
+    delete logger;
+    return ret;
 }

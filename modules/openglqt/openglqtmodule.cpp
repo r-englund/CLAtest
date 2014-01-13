@@ -18,6 +18,8 @@
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
 
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 namespace inviwo {
 
 OpenGLQtModule::OpenGLQtModule() : InviwoModule() {

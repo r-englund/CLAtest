@@ -12,6 +12,8 @@
  *
  **********************************************************************/
 
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/processors/progressbarowner.h>
@@ -28,7 +30,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     initializeNetwork();
     defaultContext_ = 0;
     eventInitiator_ = 0;
-    linkEvaluator_  = 0;
+  //  linkEvaluator_  = 0;
     evaulationQueued_ = false;
     evaluationDisabled_ = false;
     ivwAssert(processorNetworkEvaluators_.find(processorNetwork) == processorNetworkEvaluators_.end() , "A ProcessorNetworkEvaluator for the given ProcessorNetwork is already created");
@@ -40,7 +42,7 @@ ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {
     std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*>::iterator it = processorNetworkEvaluators_.find(processorNetwork_);
     if(it != processorNetworkEvaluators_.end())
         processorNetworkEvaluators_.erase(it);
-    delete linkEvaluator_;
+  //  delete linkEvaluator_;
 }
 
 
@@ -55,7 +57,7 @@ void ProcessorNetworkEvaluator::initializeNetwork() {
     for (size_t i=0; i<processors.size(); i++)
         if (!processors[i]->isInitialized())
             processors[i]->initialize();
-    linkEvaluator_  = new LinkEvaluator();
+   // linkEvaluator_  = new LinkEvaluator();
 }
 
 void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string associatedProcessName) {    
@@ -421,7 +423,7 @@ void ProcessorNetworkEvaluator::evaluate() {
     std::vector<ProcessorLink*> processorLinks = getSortedProcessorLinks();        
     for (size_t i=0; i<processorLinks.size(); i++) {         
         if (!processorLinks[i]->isValid())
-            processorLinks[i]->evaluate(linkEvaluator_);
+            processorLinks[i]->evaluate(&linkEvaluator_);
     } 
   
     // if the processor network has changed determine the new processor order

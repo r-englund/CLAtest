@@ -62,6 +62,7 @@ InviwoApplication::~InviwoApplication() {
     //delete commandLineParser_;
     //commandLineParser_ = 0;
     SingeltonBase::deleteAllSingeltons();
+    DataFormatBase::cleanDataFormatBases();
 }
 
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {

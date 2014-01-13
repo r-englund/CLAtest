@@ -20,9 +20,12 @@
 #include <QWidget>
 #include <QMimeData>
 
+#include <inviwo/qt/editor/processorlistwidget.h>
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 #include <inviwo/core/common/inviwoapplication.h>
 
-#include <inviwo/qt/editor/processorlistwidget.h>
 
 #include <inviwo/core/processors/processorstate.h>
 

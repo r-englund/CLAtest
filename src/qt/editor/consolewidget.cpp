@@ -18,6 +18,8 @@
 
 #include <inviwo/qt/editor/consolewidget.h>
 
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 namespace inviwo {
 
 ConsoleWidget::ConsoleWidget(QWidget* parent) : InviwoDockWidget(tr("Console"), parent)

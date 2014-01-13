@@ -32,6 +32,10 @@ DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, std::string
     formatStr_ = new std::string(s);
 }
 
+DataFormatBase::~DataFormatBase(){
+    delete formatStr_;
+}
+
 const DataFormatBase* DataFormatBase::get(std::string name){
     if(name == "") return instance_[NOT_SPECIALIZED];
     #define DataFormatIdMacro(i) else if(name == #i) return Data##i::get();
@@ -45,6 +49,14 @@ const DataFormatBase* DataFormatBase::get(std::string name){
     else if(name == "FLOAT") return DataFLOAT32::get();
     else if(name == "DOUBLE") return DataFLOAT64::get();
     else return instance_[NOT_SPECIALIZED];
+}
+
+void DataFormatBase::cleanDataFormatBases(){
+    for(int i = 0;i<NUMBER_OF_FORMATS;i++)if(instance_[i]){
+        delete instance_[i];
+        instance_[i] = 0;
+    }
+    //delete instance_;
 }
 
 float DataFormatBase::valueToNormalizedFloat(void*) const { 
