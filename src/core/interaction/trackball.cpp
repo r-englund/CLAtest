@@ -26,83 +26,85 @@ Trackball::Trackball(CameraProperty* camera)
     , isMouseBeingPressedAndHold_(false)
     , lastMousePos_(ivec2(0))
     , lastTrackballPos_(vec3(0.5f))
-    , camera_(camera) {
+    , camera_(camera)
+    , rotateEventProperty_("trackballRotate", "Rotate", 
+                            new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE), 
+                            new TrackballAction(TrackballAction::TRACKBALL_ROTATE))
 
-    // Eventproperties for continuous movement
-    rotateEventProperty_ = new EventProperty("trackballRotate", "Rotate", 
-        new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE), 
-        new TrackballAction(TrackballAction::TRACKBALL_ROTATE));
-    zoomEventProperty_ = new EventProperty("trackballZoom", "Zoom", 
-        new MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE), 
-        new TrackballAction(TrackballAction::TRACKBALL_ZOOM));
-    panEventProperty_ = new EventProperty("trackballPan", "Pan", 
-        new MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE), 
-        new TrackballAction(TrackballAction::TRACKBALL_PAN));
+                            ,zoomEventProperty_("trackballZoom", "Zoom", 
+                            new MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE), 
+                            new TrackballAction(TrackballAction::TRACKBALL_ZOOM))
+                            ,panEventProperty_ ("trackballPan", "Pan", 
+                            new MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE), 
+                            new TrackballAction(TrackballAction::TRACKBALL_PAN))
 
-	// Eventproperties for step rotate
-	stepRotateUp_ = new EventProperty("stepRotateUp", "Step rotate up",
-		new KeyboardEvent('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_UP));
-	stepRotateLeft_ = new EventProperty("stepRotateLeft", "Step rotate left",
-		new KeyboardEvent('A', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_LEFT));
-	stepRotateDown_ = new EventProperty("stepRotateDown", "Step rotate down",
-		new KeyboardEvent('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_DOWN));
-	stepRotateRight_ = new EventProperty("stepRotateRight", "Step rotate right",
-		new KeyboardEvent('D', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_RIGHT));
+                            // Eventproperties for step rotate
+                            ,stepRotateUp_("stepRotateUp", "Step rotate up",
+                            new KeyboardEvent('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_UP))
+                            ,stepRotateLeft_ ("stepRotateLeft", "Step rotate left",
+                            new KeyboardEvent('A', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_LEFT))
+                            ,stepRotateDown_ ("stepRotateDown", "Step rotate down",
+                            new KeyboardEvent('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_DOWN))
+                            ,stepRotateRight_ ("stepRotateRight", "Step rotate right",
+                            new KeyboardEvent('D', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_RIGHT))
 
-	// Eventproperties for step zoom
-	stepZoomIn_ = new EventProperty("stepZoomIn", "Step zoom in",
-		new KeyboardEvent('R', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_IN));
-	stepZoomOut_ = new EventProperty("stepZoomOut", "Step zoom out",
-		new KeyboardEvent('F', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_OUT));
+                            // Eventproperties for step zoom
+                            ,stepZoomIn_ ("stepZoomIn", "Step zoom in",
+                            new KeyboardEvent('R', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_IN))
+                            ,stepZoomOut_ ("stepZoomOut", "Step zoom out",
+                            new KeyboardEvent('F', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_OUT))
 
-	// Eventproperties for step pan
-	stepPanUp_ = new EventProperty("stepPanUp", "Step pan up",
-		new KeyboardEvent('W', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_UP));
-	stepPanLeft_ = new EventProperty("stepPanLeft", "Step pan left",
-		new KeyboardEvent('A', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_LEFT));
-	stepPanDown_ = new EventProperty("stepPanDown", "Step pan down",
-		new KeyboardEvent('S', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_DOWN));
-	stepPanRight_ = new EventProperty("stepPanRight", "Step pan right",
-		new KeyboardEvent('D', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
-		new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_RIGHT));
+                            // Eventproperties for step pan
+                            ,stepPanUp_ ("stepPanUp", "Step pan up",
+                            new KeyboardEvent('W', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_UP))
+                            ,stepPanLeft_ ("stepPanLeft", "Step pan left",
+                            new KeyboardEvent('A', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_LEFT))
+                            ,stepPanDown_ ("stepPanDown", "Step pan down",
+                            new KeyboardEvent('S', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_DOWN))
+                            ,stepPanRight_ ("stepPanRight", "Step pan right",
+                            new KeyboardEvent('D', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+                            new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_RIGHT))
+{
+
+   
 
 
-	rotateEventProperty_->setGroupID("Continuous movement");
-	zoomEventProperty_->setGroupID("Continuous movement");
-	panEventProperty_->setGroupID("Continuous movement");
-	stepRotateUp_->setGroupID("Step rotation");
-	stepRotateLeft_->setGroupID("Step rotation");
-	stepRotateDown_->setGroupID("Step rotation");
-	stepRotateRight_->setGroupID("Step rotation");
-	stepZoomIn_->setGroupID("Step zooming");
-	stepZoomOut_->setGroupID("Step zooming");
-	stepPanUp_->setGroupID("Step panning");
-	stepPanLeft_->setGroupID("Step panning");
-	stepPanDown_->setGroupID("Step panning");
-	stepPanRight_->setGroupID("Step panning");
+	rotateEventProperty_.setGroupID("Continuous movement");
+	zoomEventProperty_.setGroupID("Continuous movement");
+	panEventProperty_.setGroupID("Continuous movement");
+	stepRotateUp_.setGroupID("Step rotation");
+	stepRotateLeft_.setGroupID("Step rotation");
+	stepRotateDown_.setGroupID("Step rotation");
+	stepRotateRight_.setGroupID("Step rotation");
+	stepZoomIn_.setGroupID("Step zooming");
+	stepZoomOut_.setGroupID("Step zooming");
+	stepPanUp_.setGroupID("Step panning");
+	stepPanLeft_.setGroupID("Step panning");
+	stepPanDown_.setGroupID("Step panning");
+	stepPanRight_.setGroupID("Step panning");
 
-    addProperty(rotateEventProperty_);
-    addProperty(zoomEventProperty_);
-    addProperty(panEventProperty_);
-	addProperty(stepRotateUp_);
-	addProperty(stepRotateLeft_);
-	addProperty(stepRotateDown_);
-	addProperty(stepRotateRight_);
-	addProperty(stepZoomIn_);
-	addProperty(stepZoomOut_);
-	addProperty(stepPanUp_);
-	addProperty(stepPanLeft_);
-	addProperty(stepPanDown_);
-	addProperty(stepPanRight_);
+    addProperty(&rotateEventProperty_);
+    addProperty(&zoomEventProperty_);
+    addProperty(&panEventProperty_);
+	addProperty(&stepRotateUp_);
+	addProperty(&stepRotateLeft_);
+	addProperty(&stepRotateDown_);
+	addProperty(&stepRotateRight_);
+	addProperty(&stepZoomIn_);
+	addProperty(&stepZoomOut_);
+	addProperty(&stepPanUp_);
+	addProperty(&stepPanLeft_);
+	addProperty(&stepPanDown_);
+	addProperty(&stepPanRight_);
 }
 
 Trackball::~Trackball() {}
@@ -159,44 +161,44 @@ void Trackball::invokeEvent(Event* event) {
 		KeyboardEvent::KeyState state = keyEvent->state();
 		InteractionEvent::Modifier modifier = keyEvent->modifier();
 
-		if (button == stepRotateUp_->getEvent()->button() 
-			&& modifier == stepRotateUp_->getEvent()->modifier() 
+		if (button == stepRotateUp_.getEvent()->button() 
+			&& modifier == stepRotateUp_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepRotateCamera(UP);
-		} else if (button == stepRotateLeft_->getEvent()->button() 
-			&& modifier == stepRotateLeft_->getEvent()->modifier() 
+		} else if (button == stepRotateLeft_.getEvent()->button() 
+			&& modifier == stepRotateLeft_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepRotateCamera(LEFT);
-		} else if (button == stepRotateDown_->getEvent()->button() 
-			&& modifier == stepRotateDown_->getEvent()->modifier() 
+		} else if (button == stepRotateDown_.getEvent()->button() 
+			&& modifier == stepRotateDown_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepRotateCamera(DOWN);
-		} else if (button == stepRotateRight_->getEvent()->button() 
-			&& modifier == stepRotateRight_->getEvent()->modifier() 
+		} else if (button == stepRotateRight_.getEvent()->button() 
+			&& modifier == stepRotateRight_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepRotateCamera(RIGHT);
-		} else if (button == stepZoomIn_->getEvent()->button() 
-			&& modifier == stepZoomIn_->getEvent()->modifier() 
+		} else if (button == stepZoomIn_.getEvent()->button() 
+			&& modifier == stepZoomIn_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepZoomCamera(UP);
-		} else if (button == stepZoomOut_->getEvent()->button() 
-			&& modifier == stepZoomOut_->getEvent()->modifier() 
+		} else if (button == stepZoomOut_.getEvent()->button() 
+			&& modifier == stepZoomOut_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepZoomCamera(DOWN);
-		} else if (button == stepPanUp_->getEvent()->button() 
-			&& modifier == stepPanUp_->getEvent()->modifier() 
+		} else if (button == stepPanUp_.getEvent()->button() 
+			&& modifier == stepPanUp_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepPanCamera(UP);
-		} else if (button == stepPanLeft_->getEvent()->button() 
-			&& modifier == stepPanLeft_->getEvent()->modifier() 
+		} else if (button == stepPanLeft_.getEvent()->button() 
+			&& modifier == stepPanLeft_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepPanCamera(LEFT);
-		} else if (button == stepPanDown_->getEvent()->button() 
-			&& modifier == stepPanDown_->getEvent()->modifier() 
+		} else if (button == stepPanDown_.getEvent()->button() 
+			&& modifier == stepPanDown_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepPanCamera(DOWN);
-		} else if (button == stepPanRight_->getEvent()->button() 
-			&& modifier == stepPanRight_->getEvent()->modifier() 
+		} else if (button == stepPanRight_.getEvent()->button() 
+			&& modifier == stepPanRight_.getEvent()->modifier() 
 			&& state == KeyboardEvent::KEY_STATE_PRESS) {
 				stepPanCamera(RIGHT);
 		}
@@ -207,18 +209,18 @@ void Trackball::invokeEvent(Event* event) {
 		MouseEvent::MouseState state = mouseEvent->state();
 		InteractionEvent::Modifier modifier = mouseEvent->modifier();
 
-        if (button == rotateEventProperty_->getEvent()->button() 
-			&& modifier == rotateEventProperty_->getEvent()->modifier() 
+        if (button == rotateEventProperty_.getEvent()->button() 
+			&& modifier == rotateEventProperty_.getEvent()->modifier() 
 			&& state == MouseEvent::MOUSE_STATE_PRESS) {
             //perform rotation
             rotateCamera(mouseEvent);
-        } else if (button == zoomEventProperty_->getEvent()->button()
-			&& modifier == zoomEventProperty_->getEvent()->modifier()
+        } else if (button == zoomEventProperty_.getEvent()->button()
+			&& modifier == zoomEventProperty_.getEvent()->modifier()
 			&& state == MouseEvent::MOUSE_STATE_PRESS) {
             //perform zoom
             zoomCamera(mouseEvent);
-	    } else if (button == panEventProperty_->getEvent()->button() 
-			&& modifier == panEventProperty_->getEvent()->modifier()
+	    } else if (button == panEventProperty_.getEvent()->button() 
+			&& modifier == panEventProperty_.getEvent()->modifier()
 			&& state == MouseEvent::MOUSE_STATE_PRESS) {
             //perform pan
             panCamera(mouseEvent);  

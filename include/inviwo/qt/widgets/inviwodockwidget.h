@@ -25,7 +25,7 @@ class IVW_QTWIDGETS_API InviwoDockWidget : public QDockWidget {
 
 public:
     InviwoDockWidget(QString title, QWidget* parent);
-    ~InviwoDockWidget();
+    virtual ~InviwoDockWidget();
 };
 
 } // namespace

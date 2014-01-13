@@ -35,7 +35,9 @@ public:
         }
         return *this;
     };
-    virtual ~BufferRAMPrecision() {};
+    virtual ~BufferRAMPrecision() {
+        deinitialize();
+    };
     virtual void initialize();
     virtual void initialize(void*);
     virtual void deinitialize();
@@ -89,17 +91,21 @@ private:
 
 template<typename T>
 BufferRAMPrecision<T>::BufferRAMPrecision(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage) : 
-    BufferRAM(size, format, type, usage) {
+    BufferRAM(size, format, type, usage)
+    ,data_(0){
     initialize();
 }
 template<typename T>
 BufferRAMPrecision<T>::BufferRAMPrecision(T* data, size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage) : 
-    BufferRAM(size, format, type, usage) {
+    BufferRAM(size, format, type, usage)
+    ,data_(0) {
     initialize(data);
 }
 
 template<typename T>
-BufferRAMPrecision<T>::BufferRAMPrecision(const BufferRAMPrecision<T>& rhs) : BufferRAM(rhs) {
+BufferRAMPrecision<T>::BufferRAMPrecision(const BufferRAMPrecision<T>& rhs) : 
+    BufferRAM(rhs)
+    ,data_(0) {
     initialize(rhs.data_->data());
 }
 
@@ -112,6 +118,8 @@ void BufferRAMPrecision<T>::initialize() {
 
 template<typename T>
 void BufferRAMPrecision<T>::initialize(void* data) {
+    if(data_!=0)
+        delete data_;
     if (data == NULL) {
         data_ = new std::vector<T>(size_);
         //data_ = new T[size_];

@@ -73,10 +73,16 @@ NetworkEditor::NetworkEditor() :
     connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(hoverPortTimeOut()));
 }
 
+#define DELETE_VECTOR_ENTRIES(vec) while(!vec.empty()){delete vec.back();vec.pop_back();}
+
 NetworkEditor::~NetworkEditor(){
     workerThreadQuit();
     delete processorNetwork_;
     delete processorNetworkEvaluator_;
+
+    DELETE_VECTOR_ENTRIES(processorGraphicsItems_)
+    DELETE_VECTOR_ENTRIES(connectionGraphicsItems_)
+    DELETE_VECTOR_ENTRIES(linkGraphicsItems_)
 }
 
 /////////////////////////////////////////////

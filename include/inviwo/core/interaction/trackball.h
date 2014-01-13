@@ -63,21 +63,21 @@ private:
 
     CameraProperty* camera_;
 
-    EventProperty* rotateEventProperty_;
-    EventProperty* zoomEventProperty_;
-    EventProperty* panEventProperty_;
+    EventProperty rotateEventProperty_;
+    EventProperty zoomEventProperty_;
+    EventProperty panEventProperty_;
 
-	EventProperty* stepRotateUp_;
-	EventProperty* stepRotateLeft_;
-	EventProperty* stepRotateDown_;
-	EventProperty* stepRotateRight_;
+	EventProperty stepRotateUp_;
+	EventProperty stepRotateLeft_;
+	EventProperty stepRotateDown_;
+	EventProperty stepRotateRight_;
 
-	EventProperty* stepZoomIn_;
-	EventProperty* stepZoomOut_;
-	EventProperty* stepPanUp_;
-	EventProperty* stepPanLeft_;
-	EventProperty* stepPanDown_;
-	EventProperty* stepPanRight_;
+	EventProperty stepZoomIn_;
+	EventProperty stepZoomOut_;
+	EventProperty stepPanUp_;
+	EventProperty stepPanLeft_;
+	EventProperty stepPanDown_;
+	EventProperty stepPanRight_;
 
     vec3 mapNormalizedMousePosToTrackball(vec2 mousePos);
     vec3 mapToCamera(vec3 pos);

@@ -56,6 +56,7 @@ void EntryExitPoints::initialize() {
 
 void EntryExitPoints::deinitialize() {
     delete tmpEntryPoints_;
+    delete capNearClippingPrg_;
     ProcessorGL::deinitialize();
 }
 

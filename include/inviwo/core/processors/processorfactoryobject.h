@@ -27,7 +27,9 @@ class IVW_CORE_API ProcessorFactoryObject  {
 
 public:
     ProcessorFactoryObject(std::string className, std::string category, CodeState codeState)
-        : className_(className), category_(category), codeState_(codeState) {}
+        : className_(className), category_(category), codeState_(codeState) {
+
+    }
     virtual ~ProcessorFactoryObject() {}
 
     virtual Processor* create() = 0;

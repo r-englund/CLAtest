@@ -59,7 +59,10 @@ void Canvas::initialize() {
         pickingContainer_ = new PickingContainer();
 }
 
-void Canvas::deinitialize() {}
+void Canvas::deinitialize() {
+    delete pickingContainer_;
+    delete processorNetworkEvaluator_;
+}
 
 void Canvas::render(const Image* im) {}
 
@@ -72,6 +75,7 @@ void Canvas::resize(uvec2 size) {
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
         resizeEvent->setPreviousSize(previousDimensions);        
         processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
+        delete resizeEvent;
     }
 }
 
