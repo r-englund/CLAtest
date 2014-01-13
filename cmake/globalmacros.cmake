@@ -35,9 +35,11 @@ macro(ivw_project project_name)
 endmacro()
 
 macro(ivw_add_unittest)
+	if(IVW_UNIT_TEST_APPLICATION)
     foreach(item ${ARGN})
         file(APPEND ${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h "#include \"${item}\" \n")
     endforeach()
+	endif()
 endmacro()
 
 
@@ -531,28 +533,6 @@ macro(ivw_create_module)
   # Make package (for other modules to find)
   #string(TOUPPER ${project_name} u_project_name)
   ivw_make_package(${_packageName} inviwo-module-${_projectName})
-endmacro()
-
-#--------------------------------------------------------------------
-# Creates project module from name 
-macro(ivw_create_test)
-    set(_projectName test-${_projectName})
-    
-    #--------------------------------------------------------------------
-    # Define defintions
-    ivw_define_standard_definitions(${_projectName})
-    
-    #--------------------------------------------------------------------
-	# Create test application
-	add_executable(${_projectName} MACOSX_BUNDLE WIN32 ${ARGN})
-    
-    #--------------------------------------------------------------------
-    # Specify console as target
-    ivw_vs_executable_setup(${_projectName})
-
-	#--------------------------------------------------------------------
-	# Set VS Executable properties
-	ivw_vs_folder(${_projectName} tests)
 endmacro()
 
 #--------------------------------------------------------------------

@@ -44,13 +44,11 @@ set(SOURCE_FILES
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
- if(IVW_UNIT_TEST_APPLICATION)
-    set(TEST_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/python-test.h
-    )
-    ivw_group("Unittest Files" ${TEST_FILES})
-    ivw_add_unittest(${TEST_FILES})
- endif()
+ set(TEST_FILES
+	${CMAKE_CURRENT_SOURCE_DIR}/tests/python-test.h
+)
+ivw_group("Unittest Files" ${TEST_FILES})
+ivw_add_unittest(${TEST_FILES})
 
 #--------------------------------------------------------------------
 # Define defintions
