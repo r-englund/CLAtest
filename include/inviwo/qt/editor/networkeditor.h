@@ -25,6 +25,7 @@
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/ports/outport.h>
 #include <inviwo/core/util/singleton.h>
+#include <inviwo/core/util/observer.h>
 
 #include "processorgraphicsitem.h"
 #include "connectiongraphicsitem.h"
@@ -32,6 +33,13 @@
 #include "linkdialog.h"
 
 namespace inviwo {
+
+    class IVW_QTEDITOR_API NetworkEditorObserver : public Observer{
+    public:
+        virtual void onNetworkEditorFileChanged(const std::string &newFIlename) = 0;
+
+
+    };
 
 /**
  * The NetworkEditor supports interactive editing of a ProcessorNetwork. Processors can be added
@@ -41,7 +49,8 @@ namespace inviwo {
  * - inspector networks
  */
 class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
-                                       public Singleton<NetworkEditor>  {
+                                       public Singleton<NetworkEditor>,
+                                       public Observable<NetworkEditorObserver>         {
     Q_OBJECT
 public:
     NetworkEditor();
@@ -71,6 +80,7 @@ public:
     void clearNetwork();
     bool saveNetwork(std::string fileName);
     bool loadNetwork(std::string fileName);
+    std::string getCurrentFilename()const{return filename_;}
 
     void updatePropertyListWidget();
 
@@ -182,6 +192,8 @@ private:
     QPointF snapToGrid(QPointF pos);
     void drawBackground(QPainter* painter, const QRectF& rect);
     std::string obtainUniqueProcessorID(std::string) const;
+
+    std::string filename_;
 };
 
 class IVW_QTEDITOR_API ProcessorWorkerQt : public QObject{

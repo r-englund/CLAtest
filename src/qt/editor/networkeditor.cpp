@@ -49,17 +49,20 @@ namespace inviwo {
 
 const int NetworkEditor::GRID_SPACING = 25;
 
-NetworkEditor::NetworkEditor() : QGraphicsScene() {
-    connectionCurve_ = 0;
-    linkCurve_ = 0;
-    startProcessor_ = 0;
-    endProcessor_ = 0;
-    inspectedPort_ = 0;
-    gridSnapping_ = true;
+NetworkEditor::NetworkEditor() : 
+    QGraphicsScene()
+    , connectionCurve_(0)
+    , linkCurve_(0)
+    , startProcessor_(0)
+    , endProcessor_(0)
+    , inspectedPort_(0)
+    , gridSnapping_(true)
+    , oldConnectionTarget_(NULL)
+    , oldProcessorTarget_(NULL)
+    , filename_(""){
+    
     setSceneRect(-1000,-1000,1000,1000);
 
-	oldConnectionTarget_ = NULL;
-	oldProcessorTarget_ = NULL;
     workerThreadReset();
 
     processorNetwork_ = new ProcessorNetwork();
@@ -1220,6 +1223,7 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
     processorNetwork_->serialize(xmlSerializer);
     processorNetwork_->setModified(false);
     xmlSerializer.writeFile();
+    filename_ = fileName;
     return true;
 }
 
@@ -1290,6 +1294,12 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     connect(workerThread_, SIGNAL(finished()), workerThread_, SLOT(deleteLater()));
     connect(workerThread_, SIGNAL(finished()), this, SLOT(workerThreadReset()));
     workerThread_->start();
+
+    for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<NetworkEditorObserver*>(*it)->onNetworkEditorFileChanged(fileName);    
+    }
+
+    filename_ = fileName;
 
     return true;
 }

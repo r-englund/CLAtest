@@ -57,6 +57,7 @@ InviwoMainWindow::~InviwoMainWindow() {
 
 void InviwoMainWindow::initialize() {
     networkEditorView_ = new NetworkEditorView(this);
+    NetworkEditorObserver::addObservation(networkEditorView_->getNetworkEditor());
     setCentralWidget(networkEditorView_);
 
     resourceManagerWidget_ = new ResourceManagerWidget(this);
@@ -76,7 +77,7 @@ void InviwoMainWindow::initialize() {
 
     propertyListWidget_ = new PropertyListWidget(this);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
-    addObservation(propertyListWidget_);
+    VoidObserver::addObservation(propertyListWidget_);
     propertyListWidget_->addObserver(this);
 
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
@@ -142,7 +143,7 @@ void InviwoMainWindow::initializeWorkspace(){
     defaultRenderContext_->activate();
 
     ProcessorNetwork* processorNetwork = const_cast<ProcessorNetwork*>(networkEditorView_->getNetworkEditor()->getProcessorNetwork());
-    addObservation(processorNetwork);
+    VoidObserver::addObservation(processorNetwork);
     processorNetwork->addObserver(this);
 }
 
@@ -186,10 +187,6 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
         return false;
 
     return true;
-}
-
-std::vector<std::string> InviwoMainWindow::getWorkspaceSnapshots(std::string workspaceFileName) {
-    return networkEditorView_->getNetworkEditor()->getSnapshotsOfExternalNetwork(workspaceFileName);
 }
 
 void InviwoMainWindow::addMenus() {
@@ -378,8 +375,13 @@ void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
     
     networkEditorView_->getNetworkEditor()->loadNetwork(workspaceFileName.toLocal8Bit().constData());
     workspaceModified_ = false;
-    setCurrentWorkspace(workspaceFileName);
-    addToRecentWorkspaces(workspaceFileName);
+    onNetworkEditorFileChanged(workspaceFileName.toLocal8Bit().constData());
+}
+
+void InviwoMainWindow::onNetworkEditorFileChanged(const std::string &filename){
+    setCurrentWorkspace(filename.c_str());
+    addToRecentWorkspaces(filename.c_str());
+
 }
 
 void InviwoMainWindow::openLastWorkspace() {

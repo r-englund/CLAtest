@@ -33,6 +33,7 @@
 #ifdef IVW_PYTHON_QT
 #include <modules/pythonqt/pythoneditorwidget.h>
 #endif
+#include <inviwo/qt/editor/networkeditor.h>
 
 namespace inviwo {
 
@@ -40,7 +41,9 @@ class NetworkEditorView;
 class NetworkEditor;
 class CanvasQt;
 
-class InviwoMainWindow : public QMainWindow, public VoidObserver {
+class InviwoMainWindow : public QMainWindow, 
+                         public VoidObserver, 
+                         public NetworkEditorObserver {
 Q_OBJECT
 public:
     static const unsigned int maxNumRecentFiles_ = 10;
@@ -56,23 +59,13 @@ public:
     void openLastWorkspace();
     bool processEndCommandLineArgs();
     
-    /** 
-     * \brief loads and unloads external workspace while current workspace is still active
-     *
-     * This function is used to get snapshot of all canvases in a given external workspace.
-     * This function safely loads an external network without conflicting with current loaded workspace.
-     * And also safely clears them.
-     * 
-     * @param std::string workspaceFileName external work space
-     * @return std::vector<std::string> file locations where snapshots of canvases in external workspace are save.
-     */
-    std::vector<std::string> getWorkspaceSnapshots(std::string workspaceFileName);
-
     void openWorkspace(QString workspaceFileName);
 
     std::string getCurrentWorkspace();
 
     virtual void notify();
+
+    virtual void onNetworkEditorFileChanged(const std::string &filename);
 
 public slots:
     void newWorkspace();
@@ -156,6 +149,8 @@ private:
 
     // the default render context for managing render states
     CanvasQt* defaultRenderContext_;
+
+
 };
 
 } // namespace

@@ -99,13 +99,11 @@ ivw_group("Shader Files" ${SHADER_FILES})
 ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
 
 
- if(IVW_UNIT_TEST_APPLICATION)
-    set(TEST_FILES
-        #${CMAKE_CURRENT_SOURCE_DIR}/test/opencl.test.h
-    )
-    ivw_group("Unittest Files" ${TEST_FILES})
-    ivw_add_unittest(${TEST_FILES})
- endif()
+set(TEST_FILES
+	#${CMAKE_CURRENT_SOURCE_DIR}/test/opencl-test.h
+)
+ivw_group("Unittest Files" ${TEST_FILES})
+ivw_add_unittest(${TEST_FILES})
 
 #--------------------------------------------------------------------
 # Create module
