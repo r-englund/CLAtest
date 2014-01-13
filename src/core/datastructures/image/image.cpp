@@ -196,10 +196,8 @@ void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
             for (size_t j=0; j<targetRepresentations.size(); j++) {
                 if (representations_[i]->getClassName()==targetRepresentations[j]->getClassName()) {
                     if(!existsMoreThenDiskAndRAMRepresentation || (targetRepresentations[j]->getClassName() != "ImageRAM" && targetRepresentations[j]->getClassName() != "ImageDisk")){
-                        imageRepresentation = dynamic_cast<ImageRepresentation*>(representations_[i]);        
-                        ivwAssert(imageRepresentation!=0, "Only image representations should be used here.");
-                        targetRepresentation = dynamic_cast<ImageRepresentation*>(targetRepresentations[j]) ;
-                        ivwAssert(targetRepresentation!=0, "Only image representations should be used here.");
+                        imageRepresentation = static_cast<ImageRepresentation*>(representations_[i]);
+                        targetRepresentation = static_cast<ImageRepresentation*>(targetRepresentations[j]);
                         imageRepresentation->update(false);
                         imageRepresentation->copyAndResizeImageRepresentation(targetRepresentation);
                     }

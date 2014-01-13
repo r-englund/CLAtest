@@ -47,7 +47,6 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
         portSet = getProcessor()->getPortsByDependencySet(portDependencySets[i]);        
         //check if current port belong to portSet
         if (std::find(portSet.begin(), portSet.end(), this) != portSet.end()) {
-
             //Find the image port with largest dimension
             for (size_t j=0; j<portSet.size(); j++) {
                 ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(portSet[j]);
@@ -73,11 +72,11 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {    
-    ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(getConnectedOutport());
-    if (imageOutport)
+    if(equalColorCode(getConnectedOutport())){
+        ImageOutport* imageOutport = static_cast<ImageOutport*>(getConnectedOutport());
         imageOutport->changeDataDimensions(resizeEvent);
+    }
 }
-
 
 uvec2 ImageInport::getDimension() const{ 
     return dimensions_; 
@@ -145,8 +144,8 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
     Processor* processor = getProcessor();
     std::vector<Inport*> inPorts = processor->getInports();
     for (size_t i=0; i<inPorts.size(); i++) {
-        ImageInport* imageInport = dynamic_cast<ImageInport*>(inPorts[i]);
-        if (imageInport) {
+        if(equalColorCode(inPorts[i])){
+            ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
             imageInport->changeDataDimensions(resizeEvent);
         }
     }
@@ -226,7 +225,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         }
         else {
             //previousDimensions does not exist. So allocate space holder
-            resultImage = dynamic_cast<Image*>(data_->clone());            
+            resultImage = static_cast<Image*>(data_->clone());            
         }
         //Resize the result image
         resultImage->resize(requiredDimensions);

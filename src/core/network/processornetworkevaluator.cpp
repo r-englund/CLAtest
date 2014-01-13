@@ -172,9 +172,10 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, Intera
 	// find the canvas processor from which the event was emitted
 	eventInitiator_=0;
 	std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    CanvasProcessor* canvasProcessor = NULL;
 	for (size_t i=0; i<processors.size(); i++) {
-		if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
-			(dynamic_cast<CanvasProcessor*>(processors[i])->getCanvas()==canvas)) {
+        canvasProcessor = dynamic_cast<CanvasProcessor*>(processors[i]);
+		if (canvasProcessor && canvasProcessor->getCanvas()==canvas) {
 				eventInitiator_ = processors[i];
 				i = processors.size();
 		}
@@ -227,17 +228,18 @@ bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor
 
 Processor* ProcessorNetworkEvaluator::retrieveCanvasProcessor(Canvas* canvas) {
     // find the canvas processor which contains the canvas
-    Processor* canvasProcessor = 0;
+    Processor* processor = NULL;
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    CanvasProcessor* canvasProcessor = NULL;
     for (size_t i=0; i<processors.size(); i++) {
-        if ((dynamic_cast<CanvasProcessor*>(processors[i])) &&
-            (dynamic_cast<CanvasProcessor*>(processors[i])->getCanvas()==canvas)) {
-                canvasProcessor = processors[i];
+        canvasProcessor = dynamic_cast<CanvasProcessor*>(processors[i]);
+        if (canvasProcessor && canvasProcessor->getCanvas()==canvas) {
+                processor = processors[i];
                 i = processors.size();
         }
     }
     
-    return canvasProcessor;
+    return processor;
 }
 
 void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent) {
@@ -253,7 +255,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
 
     // propagate size of canvas to all preceding processors through port
     // event initiator is a canvas processor, hence one ImageInport should exist
-    ImageInport* imageInport = dynamic_cast<ImageInport*>(eventInitiator_->getInports()[0]);    
+    ImageInport* imageInport = static_cast<ImageInport*>(eventInitiator_->getInports()[0]);    
     imageInport->changeDataDimensions(resizeEvent);
 
     // enable network evaluation again
@@ -437,19 +439,10 @@ void ProcessorNetworkEvaluator::evaluate() {
             if ((*it)->isReady()){
                 // re-initialize resources (e.g., shaders) if necessary
                 if ((*it)->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
-                    (*it)->initializeResources();                
-            
-                // reset the progress indicator
-                ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>((*it));
-                if (progressBarOwner)
-                    progressBarOwner->getProgressBar().resetProgress();
+                    (*it)->initializeResources();
 
                 // do the actual processing
                 (*it)->process();
-
-                // set the progress indicator to finished
-                if (progressBarOwner)
-                    progressBarOwner->getProgressBar().finishProgress();
             }
         }
     }       

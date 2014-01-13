@@ -80,13 +80,11 @@ void Layer::resizeRepresentations(Layer* targetLayer, uvec2 targetDim) {
 
     if (targetRepresentations.size()) {
         for (int i=0; i<static_cast<int>(representations_.size()); i++) {
-            layerRepresentation = dynamic_cast<LayerRepresentation*>(representations_[i]) ;        
-            ivwAssert(layerRepresentation!=0, "Only layer representations should be used here.");
+            layerRepresentation = static_cast<LayerRepresentation*>(representations_[i]);
             if (isRepresentationValid(i)) {
                 int numberOfTargets = static_cast<int>(targetRepresentations.size());
                 for (int j=0; j<numberOfTargets; j++) {
-                    targetRepresentation = dynamic_cast<LayerRepresentation*>(targetRepresentations[j]) ;
-                    ivwAssert(targetRepresentation!=0, "Only layer representations should be used here.");
+                    targetRepresentation = static_cast<LayerRepresentation*>(targetRepresentations[j]);
                     if (layerRepresentation->getClassName()==targetRepresentation->getClassName()) {
                         if (layerRepresentation->copyAndResizeLayer(targetRepresentation)) {
                             targetLayer->setRepresentationAsValid(j);

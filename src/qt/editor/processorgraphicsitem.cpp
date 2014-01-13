@@ -379,10 +379,11 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     paintStatusIndicator(p, QPointF(57.0f, -20.0f),
                          processor_->isReady(), QColor(0,170,0));
 
-    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    //TODO: Fix progressbar to true indicator or just make a processing wheel.
+    /*ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
     if (progressBarOwner != NULL) {
         paintProgressBar(p, progressBarOwner->getProgressBar().getProgress());
-    }
+    }*/
 
     p->restore();
 }
@@ -448,7 +449,8 @@ void ProcessorGraphicsItem::notify() {
         nameLabel_->setNoFocusOut();
     }
 
-    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    //TODO: Fix progressbar to true indicator or just make a processing wheel.
+    /*ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
     if (progressBarOwner != NULL) {
         if (progressBarTimer_.elapsed() > 500 ||
             progressBarOwner->getProgressBar().getProgress()==0.0f || progressBarOwner->getProgressBar().getProgress()==1.0f) {
@@ -456,7 +458,7 @@ void ProcessorGraphicsItem::notify() {
             update();
             //QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
         }
-    }
+    }*/
 }
 
 } // namespace
