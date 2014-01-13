@@ -46,6 +46,8 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics::Type semantics = PropertySemantics::Default);
 
+    virtual ~EventProperty();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 

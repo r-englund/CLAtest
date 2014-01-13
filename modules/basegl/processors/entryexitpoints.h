@@ -26,6 +26,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
+    class Trackball;
 
 class IVW_MODULE_BASEGL_API EntryExitPoints : public ProcessorGL {
 public:
@@ -48,6 +49,7 @@ private:
     CameraProperty camera_;
 	BoolProperty capNearClipping_;
 
+    Trackball* trackball_;
 	Shader* capNearClippingPrg_;
     Image* tmpEntryPoints_;
 };

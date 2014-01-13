@@ -42,11 +42,15 @@ EntryExitPoints::EntryExitPoints()
 
     addProperty(camera_);
 	addProperty(capNearClipping_);
+    trackball_ = new Trackball(&camera_);
 	addInteractionHandler(new Trackball(&camera_));
     entryPort_.addResizeEventListener(&camera_);
 }
 
-EntryExitPoints::~EntryExitPoints() {}
+EntryExitPoints::~EntryExitPoints() {
+    delete trackball_;
+}
+
 
 void EntryExitPoints::initialize() {
     ProcessorGL::initialize();
