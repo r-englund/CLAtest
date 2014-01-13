@@ -33,7 +33,7 @@ public:
     virtual void deinitialize();
     virtual std::string getClassName() const;
 
-    virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const;
+    virtual bool copyAndResizeRepresentation(DataRepresentation*) const;
 
     LayerRAM* getColorLayerRAM(size_t idx = 0);
     LayerRAM* getDepthLayerRAM();

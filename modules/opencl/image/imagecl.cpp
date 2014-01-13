@@ -43,7 +43,7 @@ const LayerCL* ImageCL::getLayerCL() const {
     return layerCLConst_;
 }
 
-bool ImageCL::copyAndResizeImageRepresentation(ImageRepresentation* targetRep) const {
+bool ImageCL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     ImageCL* targetCL = dynamic_cast<ImageCL*>(targetRep);
 
     if (!targetCL) return false;

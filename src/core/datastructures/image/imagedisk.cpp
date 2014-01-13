@@ -43,7 +43,7 @@ std::string ImageDisk::getClassName() const {
      return "ImageDisk"; 
 }
 
-bool ImageDisk::copyAndResizeImageRepresentation(ImageRepresentation*) const { 
+bool ImageDisk::copyAndResizeRepresentation(DataRepresentation*) const { 
     return false; 
 }
 

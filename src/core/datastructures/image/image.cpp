@@ -191,15 +191,13 @@ void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
         }
 
         ImageRepresentation* imageRepresentation = 0;
-        ImageRepresentation* targetRepresentation = 0;
         for (size_t i=0; i<representations_.size(); i++) {
             for (size_t j=0; j<targetRepresentations.size(); j++) {
                 if (representations_[i]->getClassName()==targetRepresentations[j]->getClassName()) {
                     if(!existsMoreThenDiskAndRAMRepresentation || (targetRepresentations[j]->getClassName() != "ImageRAM" && targetRepresentations[j]->getClassName() != "ImageDisk")){
                         imageRepresentation = static_cast<ImageRepresentation*>(representations_[i]);
-                        targetRepresentation = static_cast<ImageRepresentation*>(targetRepresentations[j]);
                         imageRepresentation->update(false);
-                        imageRepresentation->copyAndResizeImageRepresentation(targetRepresentation);
+                        imageRepresentation->copyAndResizeRepresentation(targetRepresentations[j]);
                     }
                 }
             }
@@ -208,7 +206,7 @@ void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
     else {
         //If not representation exist, create ImageRAM one
         const ImageRAM* imageRAM = this->getRepresentation<ImageRAM>();   
-        imageRAM->copyAndResizeImageRepresentation(targetImage->getEditableRepresentation<ImageRAM>());
+        imageRAM->copyAndResizeRepresentation(targetImage->getEditableRepresentation<ImageRAM>());
     }
 }
 

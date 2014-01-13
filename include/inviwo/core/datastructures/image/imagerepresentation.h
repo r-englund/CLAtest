@@ -38,7 +38,7 @@ public:
     uvec2 getDimension() const;
 
     virtual DataRepresentation* clone() const = 0;
-    virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const = 0;
+    virtual bool copyAndResizeRepresentation(DataRepresentation*) const = 0;
 
     const Image* getOwner() const;
 

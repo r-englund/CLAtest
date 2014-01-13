@@ -30,7 +30,7 @@ public:
     //virtual void resize(uvec2 dimensions);
     virtual ImageDisk* clone() const;
     virtual std::string getClassName() const;
-    virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const;
+    virtual bool copyAndResizeRepresentation(DataRepresentation*) const;
 
 protected:
     virtual void update(bool editable);

@@ -104,7 +104,7 @@ void ImageGL::deactivateBuffer() {
     frameBufferObject_->deactivate();
 }
 
-bool ImageGL::copyAndResizeImageRepresentation(ImageRepresentation* targetRep) const {
+bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     const ImageGL* source = this;
     ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
 

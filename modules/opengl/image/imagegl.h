@@ -42,7 +42,7 @@ public:
     void activateBuffer();
     void deactivateBuffer();
    
-    virtual bool copyAndResizeImageRepresentation(ImageRepresentation*) const;
+    virtual bool copyAndResizeRepresentation(DataRepresentation*) const;
     bool updateFrom(const ImageGL*);
 
     FrameBufferObject* getFBO();

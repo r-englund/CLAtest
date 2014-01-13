@@ -46,7 +46,7 @@ const LayerCLGL* ImageCLGL::getLayerCLGL() const {
     return layerCLGLConst_;
 }
 
-bool ImageCLGL::copyAndResizeImageRepresentation(ImageRepresentation* targetRep) const {
+bool ImageCLGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     ImageCLGL* targetCLGL = dynamic_cast<ImageCLGL*>(targetRep);
 
     if (!targetCLGL) return false;

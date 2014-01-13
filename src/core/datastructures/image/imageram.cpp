@@ -47,9 +47,9 @@ std::string ImageRAM::getClassName() const {
     return "ImageRAM"; 
 }
 
-bool ImageRAM::copyAndResizeImageRepresentation(ImageRepresentation* targetImageRam) const {
+bool ImageRAM::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     const ImageRAM* source = this;
-    ImageRAM* target = dynamic_cast<ImageRAM*>(targetImageRam);
+    ImageRAM* target = dynamic_cast<ImageRAM*>(targetRep);
     ivwAssert(target!=0, "Target representation missing.");
 
     //Copy and resize color layers
