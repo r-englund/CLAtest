@@ -134,4 +134,110 @@ namespace inviwo {
 
         return parser.toPyObject(volumePort->getData()->getDimension());
     }
+
+
+
+    PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args){
+        if (PyTuple_Size(args) != 3) {
+            std::ostringstream errStr;
+            errStr << "saveTransferFunction() takes exactly 3 arguments: processor name, property id and filename";
+            errStr << " (" << PyTuple_Size(args) << " given)";
+            PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+            return 0;
+        }
+
+        // check parameter 1 and 2, if they are strings
+        if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1) || !PyString_Check(PyTuple_GetItem(args, 2)))) {
+            PyErr_SetString(PyExc_TypeError, "saveTransferFunction() arguments must be strings");
+            return 0;
+        }
+
+        std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+        std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+        std::string filename = std::string(PyString_AsString(PyTuple_GetItem(args, 2)));
+
+
+        Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+        if(!processor){
+            std::string msg = std::string("saveTransferFunction() no processor with name: ") + processorName;
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+        Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+        if(!theProperty){
+            std::string msg = std::string("saveTransferFunction() no property with id: ") + propertyID;
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+        TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
+        if(!tf){
+            std::string msg = std::string("saveTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID  +" is of type "+ theProperty->getClassName() +  ")";
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+/*
+        IvwSerializer serializer(filename);
+        serializer.serialize("transferfunction",tf);
+        serializer.writeFile();*/
+
+        Py_RETURN_NONE;
+    }
+
+    PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args){
+        if (PyTuple_Size(args) != 3) {
+            std::ostringstream errStr;
+            errStr << "loadTransferFunction() takes exactly 3 arguments: processor name, property id and filename";
+            errStr << " (" << PyTuple_Size(args) << " given)";
+            PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+            return 0;
+        }
+
+        // check parameter 1 and 2, if they are strings
+        if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1) || !PyString_Check(PyTuple_GetItem(args, 2)))) {
+            PyErr_SetString(PyExc_TypeError, "loadTransferFunction() arguments must be strings");
+            return 0;
+        }
+
+        std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+        std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+        std::string filename = std::string(PyString_AsString(PyTuple_GetItem(args, 2)));
+
+
+        Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+        if(!processor){
+            std::string msg = std::string("loadTransferFunction() no processor with name: ") + processorName;
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+        Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+        if(!theProperty){
+            std::string msg = std::string("loadTransferFunction() no property with id: ") + propertyID;
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+        TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
+        if(!tf){
+            std::string msg = std::string("loadTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID  +" is of type "+ theProperty->getClassName() +  ")";
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+/*
+        IvwDeserializer deserializer(filename);
+        deserializer.deserialize("transferfunction",tf);*/
+
+        Py_RETURN_NONE;
+    }
+
+
+
+
 }
+
+
+

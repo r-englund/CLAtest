@@ -27,6 +27,9 @@ namespace inviwo {
 PyObject* py_setVoxel(PyObject* /*self*/, PyObject* args);
 PyObject* py_getVolumeDimension(PyObject* /*self*/, PyObject* args);
 
+PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args);
+PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args);
+
 
 class IVW_MODULE_PYTHON_API PySetVoxelMethod : public PyMethod{
 public:
@@ -41,6 +44,24 @@ public:
     std::string getName(){return "getVolumeDimension";}
     std::string getDesc(){return "getVolumeDimension(vol)\tGet dimesnion of volume.";}
     virtual PyCFunction getFunc(){return py_getVolumeDimension;}
+};
+
+
+
+class IVW_MODULE_PYTHON_API PySaveTransferFunction : public PyMethod{
+public:
+    std::string getName(){return "saveTransferFunction";}
+    std::string getDesc(){return "saveTransferFunction(processor,transferfunctionPropery,filename)\Save a transfer function to file from the specified transfer function property.";}
+    virtual PyCFunction getFunc(){return py_saveTransferFunction;}
+};
+
+
+
+class IVW_MODULE_PYTHON_API PyLoadTransferFunction : public PyMethod{
+public:
+    std::string getName(){return "loadTransferFunction";}
+    std::string getDesc(){return "loadTransferFunction(vol)\tLoad a transfer function from file into the specified transfer function property.";}
+    virtual PyCFunction getFunc(){return py_loadTransferFunction;}
 };
 
 } //namespace

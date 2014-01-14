@@ -151,6 +151,9 @@ namespace inviwo{
         inviwoPyModule->addMethod(new PyEnableEvaluation());
         inviwoPyModule->addMethod(new PyDisableEvaluation());
 
+        inviwoPyModule->addMethod(new PySaveTransferFunction());
+        inviwoPyModule->addMethod(new PyLoadTransferFunction());
+
         inviwoInternalPyModule->addMethod(new PyStdOutCatcher());
 
     }
