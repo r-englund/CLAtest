@@ -107,6 +107,7 @@ void IvwSerializer::serialize(const std::string &key,
          it != sVector.end(); ++it) {
         serialize(itemKey, (*it));
     }
+    delete newNode;
 }
 
 
@@ -129,6 +130,7 @@ void IvwSerializer::serialize(const std::string &key,
         rootElement_->LastChild()->ToElement()->SetAttribute(IvwSerializeConstants::KEY_ATTRIBUTE,
                                                              it->first);
     }
+    delete newNode;
 }
 
 
@@ -154,6 +156,7 @@ inline void IvwSerializer::serializePrimitives(const std::string& key, const T& 
      TxElement* node = new TxElement(key);
      rootElement_->LinkEndChild(node);
      node->SetAttribute(IvwSerializeConstants::CONTENT_ATTRIBUTE, data);
+     delete node;
 }
 
 template<class T>
@@ -182,6 +185,7 @@ void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat4x4
         rowVec = glm::detail::tvec4<T>(data[i][0], data[i][1], data[i][2], data[i][3]);
         serializeVector(key.str(), rowVec);
     }
+    delete newNode;
 }
 template<class T>
 void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat3x3<T>& data){
@@ -210,6 +214,7 @@ void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat2x2
         rowVec = glm::detail::tvec2<T>(data[i][0], data[i][1]);
         serializeVector(key.str(), rowVec);
     }
+    delete newNode;
 }
 
 template<class T>
@@ -251,6 +256,7 @@ inline void IvwSerializer::serializeVector(const std::string& key,
                                         IvwSerializeConstants::VECTOR_W_ATTRIBUTE,
                               ss.str());
     }
+    delete newNode;
 }
 
 } //namespace

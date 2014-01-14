@@ -30,7 +30,9 @@ IvwSerializer::IvwSerializer(std::string fileName, bool allowReference)
     initialize();
 }
 
-IvwSerializer::~IvwSerializer() {}
+IvwSerializer::~IvwSerializer() {
+    delete rootElement_;
+}
 
 void IvwSerializer::initialize(){
     registerFactories();
@@ -49,6 +51,8 @@ void IvwSerializer::initialize(){
         comment = new TxComment();
 	    comment->SetValue(IvwSerializeConstants::EDIT_COMMENT.c_str());
 	    rootElement_->LinkEndChild(comment);
+        delete comment;
+        delete decl;
     } catch (TxException& e) {
         throw SerializationException(e.what());
     }
@@ -57,9 +61,9 @@ void IvwSerializer::initialize(){
 void IvwSerializer::serialize(const std::string &key, const IvwSerializable &sObj) {
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
-
     NodeSwitch tempNodeSwitch(*this, newNode);
     sObj.serialize(*this); 
+    delete newNode;
 }
    
 void IvwSerializer::serialize(const std::string &key,
