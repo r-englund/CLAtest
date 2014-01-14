@@ -20,10 +20,4 @@
     #define IVW_MODULE_BASE_API
 #endif
 
-
-
-#ifdef IVW_MODULE_BASE_EXPORTS
-#include <inviwo/core/util/msvc-memleak-includes.h>
-#endif
-
 #endif /* _IVW_MODULE_BASE_DEFINE_H_ */

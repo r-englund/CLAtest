@@ -39,10 +39,4 @@
     #define IVW_CORE_EXT extern
 #endif
 
-
-
-#ifdef IVW_CORE_EXPORTS
-#include <inviwo/core/util/msvc-memleak-includes.h>
-#endif
-
 #endif /* _IVW_CORE_DEFINE_H_ */

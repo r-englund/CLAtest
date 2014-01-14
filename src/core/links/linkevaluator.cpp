@@ -16,8 +16,6 @@
 #include <inviwo/core/links/linkconditions.h>
 #include <inviwo/core/util/variant.h>
 
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
 namespace inviwo {
 
 LinkEvaluator::LinkEvaluator() {}

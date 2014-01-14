@@ -16,9 +16,6 @@
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/common/inviwoapplication.h>
 
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
-
 namespace inviwo {
 
 InviwoModule::InviwoModule()

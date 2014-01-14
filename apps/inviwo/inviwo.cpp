@@ -21,17 +21,12 @@
     #endif
 #endif
 
-
-
 #include <QFile>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 #include "inviwomainwindow.h"
 #include "inviwosplashscreen.h"
 #include <moduleregistration.h>
-
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
 
 int main(int argc, char** argv) {
 #ifdef __unix__
