@@ -22,9 +22,6 @@
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
-
 namespace inviwo {
 
 // TODO: are the first two constructors needed? Otherwise remove.
