@@ -25,17 +25,17 @@ ProcessorNetwork::ProcessorNetwork() : VoidObservable(), ProcessorObserver(),
 
 ProcessorNetwork::~ProcessorNetwork() {
     for(size_t i = 0;i< processors_.size();i++){
-        Processor* a = processors_[i];
-        delete a;
+        delete processors_[i];
     }
     for(size_t i = 0;i< portConnections_.size();i++){
-        PortConnection* a = portConnections_[i];
-        delete a;
+        delete portConnections_[i];
     }
     for(size_t i = 0;i< processorLinks_.size();i++){
-        ProcessorLink* a = processorLinks_[i];
-        delete a;
+        delete processorLinks_[i];
     }
+    processors_.clear();
+    portConnections_.clear();
+    processorLinks_.clear();
 }
 
 
@@ -198,6 +198,7 @@ void ProcessorNetwork::serialize(IvwSerializer& s) const {
 }
 
 void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
+
     std::vector<PortConnection*> portConnections;
     std::vector<ProcessorLink*> processorLinks;
 
@@ -276,6 +277,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
         throw AbortException("Unknown Exception.");        
     }
 	notifyObservers();
+
 }
 
 } // namespace

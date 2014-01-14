@@ -139,6 +139,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
             volume->setMetaData<StringMetaData>(key, ss.str());
         }                    
     };
+    delete f;
 
     if(dimension_ == uvec3(0)){
         throw DataReaderException("Error: Unable to find \"Resolution\" tag in .dat file: " + filePath);

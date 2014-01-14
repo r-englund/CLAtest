@@ -12,6 +12,9 @@
  *
  **********************************************************************/
 
+
+#include <inviwo/core/util/msvc-memleak-includes.h>
+
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/util/inviwofactorybase.h>
@@ -29,7 +32,12 @@ Processor::Processor()
     , initialized_(false){
 }
 
-Processor::~Processor() {}
+Processor::~Processor() {
+    while(!metaData_.empty()){
+        delete metaData_.back();
+        metaData_.pop_back();
+    }
+}
 
 void Processor::addPort(Inport* port, std::string portDependencySet) {
     // TODO: check if port with same name has been added before

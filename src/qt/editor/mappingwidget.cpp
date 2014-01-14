@@ -41,6 +41,7 @@ MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Input Mappi
 
 MappingWidget::~MappingWidget() {
     delete processorsWithInteractionHandlers_;
+    delete eventPropertyManager_;
 }
 
 void MappingWidget::buildLayout() {

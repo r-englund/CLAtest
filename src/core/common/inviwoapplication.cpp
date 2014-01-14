@@ -40,11 +40,10 @@ InviwoApplication::InviwoApplication(std::string displayName, std::string basePa
 InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath)
                                     : displayName_(displayName)
                                     , basePath_(basePath)
-                                    , commandLineParser_(argc,argv)
 {
-    //commandLineParser_ = new CommandLineParser(argc, argv);
-	commandLineParser_.initialize();
-	commandLineParser_.parse();
+    commandLineParser_ = new CommandLineParser(argc, argv);
+	commandLineParser_->initialize();
+	commandLineParser_->parse();
     init(this);
 }
 
@@ -56,9 +55,9 @@ InviwoApplication::~InviwoApplication() {
         delete module;
     }
     modules_.clear();
-    //delete commandLineParser_;
-    //commandLineParser_ = 0;
+    delete commandLineParser_;
     SingeltonBase::deleteAllSingeltons();
+    DataFormatBase::cleanDataFormatBases(); 
 }
 
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {

@@ -48,6 +48,7 @@ EntryExitPoints::EntryExitPoints()
 }
 
 EntryExitPoints::~EntryExitPoints() {
+    deinitialize();
     delete trackball_;
 }
 
@@ -60,7 +61,9 @@ void EntryExitPoints::initialize() {
 
 void EntryExitPoints::deinitialize() {
     delete tmpEntryPoints_;
+    tmpEntryPoints_ = 0;
     delete capNearClippingPrg_;
+    capNearClippingPrg_ = 0;
     ProcessorGL::deinitialize();
 }
 
