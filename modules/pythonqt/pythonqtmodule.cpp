@@ -14,13 +14,23 @@
 
 #include <modules/pythonqt/pythonqtmodule.h>
 
+#include <modules/python/pythoninterface/pymodule.h>
+#include "pythonqtmethods/pythonqtmethods.h"
+
 namespace inviwo {
 
 PythonQtModule::PythonQtModule() : InviwoModule() {
     setIdentifier("PythonQt");
+    initPyQtModule();
 }
 
 PythonQtModule::~PythonQtModule(){
+    delete inviwoPyQtModule_;
+}
+
+void PythonQtModule::initPyQtModule(){
+    inviwoPyQtModule_ = new PyModule("inviwoqt");
+    inviwoPyQtModule_->addMethod(new PyLoadNetwork());
 }
 
 } // namespace

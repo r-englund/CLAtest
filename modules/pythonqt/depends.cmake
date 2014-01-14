@@ -3,6 +3,7 @@
 set(dependencies 
     InviwoPythonModule
     InviwoQtWidgets
+    InviwoQtEditor
 )
 
 if(DESIRED_QT_VERSION MATCHES 5)

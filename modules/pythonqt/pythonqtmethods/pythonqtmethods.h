@@ -1,36 +1,36 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Erik Sundén
+ * Primary author : Rickard Englund
  *
  **********************************************************************/
 
-#ifndef IVW_PYTHONQT_MODULE_H
-#define IVW_PYTHONQT_MODULE_H
+#ifndef IVW_PYTONQTFUNCTIONS_H
+#define IVW_PYTONQTFUNCTIONS_H
 
 #include <modules/pythonqt/pythonqtmoduledefine.h>
-#include <inviwo/core/common/inviwomodule.h>
+#include <modules/python/pythoninterface/pymethod.h>
 
-namespace inviwo {
-    class PyModule;
-class IVW_MODULE_PYTHONQT_API PythonQtModule : public InviwoModule {
-public:
-    PythonQtModule();
-    virtual ~PythonQtModule();
 
-private:
-    void initPyQtModule();
+namespace inviwo{
+    
+    PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* /*args*/);
 
-    PyModule* inviwoPyQtModule_;
-};
 
-} // namespace
+    class IVW_MODULE_PYTHONQT_API PyLoadNetwork : public PyMethod{
+    public:
+        std::string getName(){return "loadWorkspace";}
+        std::string getDesc(){return "loadWorkspace(filename)\tLoad a new workspace into the network.";}
+        virtual PyCFunction getFunc(){return py_loadWorkspace;}
+    };
 
-#endif // IVW_PYTHONQT_MODULE_H
+}
+
+#endif
