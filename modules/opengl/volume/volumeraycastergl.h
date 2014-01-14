@@ -25,7 +25,7 @@
 #include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {
-
+    class Trackball;
 class IVW_MODULE_OPENGL_API VolumeRaycasterGL : public ProcessorGL {
 
 public:
@@ -65,6 +65,8 @@ protected:
     FloatVec3Property lightAttenuation_;
 
     CameraProperty camera_;
+
+    Trackball* trackball_;
 
     void addShadingProperties();
 };

@@ -38,11 +38,14 @@ VolumeRaycasterGL::VolumeRaycasterGL()
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(0.5f, 0.5f, 0.5f))
 
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+
+    , trackball_(0)
 {
     VolumeRaycasterGL("rc_simple.frag");
 
     addProperty(camera_);
-    addInteractionHandler(new Trackball(&camera_));
+    trackball_  = new Trackball(&camera_);
+    addInteractionHandler(trackball_);
 }
 
 VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
@@ -104,7 +107,8 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
 
     //camera_.setVisible(false);
     addProperty(camera_);
-    addInteractionHandler(new Trackball(&camera_));
+    trackball_  = new Trackball(&camera_);
+    addInteractionHandler(trackball_);
 }
 
 void VolumeRaycasterGL::addShadingProperties() {
@@ -137,6 +141,7 @@ void VolumeRaycasterGL::initialize() {
 
 void VolumeRaycasterGL::deinitialize() {
     if (raycastPrg_) delete raycastPrg_;
+    if(trackball_) delete trackball_;
     raycastPrg_ = 0;
     ProcessorGL::deinitialize();
 }
