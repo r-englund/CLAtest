@@ -1301,7 +1301,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     connect(workerThread_, SIGNAL(finished()), this, SLOT(workerThreadReset()));
     workerThread_->start();
 
-    for(ObserverSet::reverse_iterator it = observers_.rbegin(); it != observers_.rend(); ++it) {
+    for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
         static_cast<NetworkEditorObserver*>(*it)->onNetworkEditorFileChanged(fileName);    
     }
 

@@ -18,19 +18,16 @@
 #include <QStyleOptionGraphicsItem>
 #include <QVector2D>
 
+#include <inviwo/core/ports/inport.h>
+#include <inviwo/core/ports/outport.h>
+#include <inviwo/core/processors/progressbarowner.h>
+#include <inviwo/core/metadata/processormetadata.h>
 
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
-
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
-#include <inviwo/core/ports/inport.h>
-#include <inviwo/core/ports/outport.h>
-#include <inviwo/core/processors/progressbarowner.h>
-#include <inviwo/core/metadata/processormetadata.h>
 
 namespace inviwo {
 

@@ -18,8 +18,6 @@
 #include <QVector2D>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
 
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
 namespace inviwo {
 
 LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color)

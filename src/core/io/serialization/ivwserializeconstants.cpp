@@ -12,8 +12,6 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
 #include <inviwo/core/io/serialization/ivwserializeconstants.h>
 
 namespace inviwo {

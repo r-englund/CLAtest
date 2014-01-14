@@ -60,8 +60,8 @@ public:
 
     void notifyResourceAdded(const Resource* item) const {
         // Notify observers
-        ObserverSet::iterator endIt = observers_.end();
-        for(ObserverSet::iterator it = observers_.begin(); it != endIt; ++it) {
+        ObserverSet::iterator endIt = observers_->end();
+        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
             // static_cast can be used since only template class objects can be added
             static_cast<ResourceManagerObserver*>(*it)->resourceAdded(item);    
         }
@@ -69,8 +69,8 @@ public:
 
     void notifyResourceRemoved(const Resource* item) const {
         // Notify observers
-        ObserverSet::iterator endIt = observers_.end();
-        for(ObserverSet::iterator it = observers_.begin(); it != endIt; ++it) {
+        ObserverSet::iterator endIt = observers_->end();
+        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
             // static_cast can be used since only template class objects can be added
             static_cast<ResourceManagerObserver*>(*it)->resourceRemoved(item);    
         }

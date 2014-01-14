@@ -25,7 +25,6 @@ namespace inviwo {
 class IVW_CORE_API LinkEvaluator {
 public:
    LinkEvaluator();
-
    void evaluate(Property* src, Property *dst);   
 private:
    bool canLink(Property* src, Property *dst);

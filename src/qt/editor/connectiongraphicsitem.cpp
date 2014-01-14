@@ -18,8 +18,6 @@
 
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
 namespace inviwo {
 
 CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color)

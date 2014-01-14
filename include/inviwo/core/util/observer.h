@@ -109,7 +109,7 @@ protected:
 	void removeObservers();
 
 	typedef std::set<Observer*> ObserverSet;
-	ObserverSet observers_; 
+	ObserverSet* observers_; 
 
 };
 
@@ -205,7 +205,7 @@ public:
 
     void notifyObservers() const {
         // Notify observers
-        for(ObserverSet::reverse_iterator it = observers_.rbegin(); it != observers_.rend(); ++it) {
+        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
             // static_cast can be used since only template class objects can be added
             static_cast<VoidObserver*>(*it)->notify();    
         }

@@ -123,8 +123,8 @@ void Texture2D::bindToPBO() const{
 
 void Texture2D::initialize(const void* data) {
     // Notify observers
-    ObserverSet::iterator endIt = observers_.end();
-    for(ObserverSet::iterator it = observers_.begin(); it != endIt; ++it) {
+    ObserverSet::iterator endIt = observers_->end();
+    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
         static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();    
     }
@@ -135,7 +135,7 @@ void Texture2D::initialize(const void* data) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering_);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering_);
     LGL_ERROR;
-    for(ObserverSet::iterator it = observers_.begin(); it != endIt; ++it) {
+    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
         static_cast<TextureObserver*>(*it)->notifyAfterTextureInitialization();    
     }

@@ -13,14 +13,11 @@
  **********************************************************************/
 
 #include <inviwo/qt/editor/settingswidget.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <QLayout>
 #include <QFrame>
 #include <QSettings>
-
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
-#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 

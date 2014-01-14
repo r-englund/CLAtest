@@ -52,11 +52,12 @@ const DataFormatBase* DataFormatBase::get(std::string name){
 }
 
 void DataFormatBase::cleanDataFormatBases(){
-    for(int i = 0;i<NUMBER_OF_FORMATS;i++)if(instance_[i]){
-        delete instance_[i];
-        instance_[i] = 0;
+    for(int i = 0;i<NUMBER_OF_FORMATS;i++){
+        if(instance_[i]){
+            delete instance_[i];
+            instance_[i] = 0;
+        }
     }
-    //delete instance_;
 }
 
 float DataFormatBase::valueToNormalizedFloat(void*) const { 

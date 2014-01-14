@@ -32,9 +32,6 @@
 
 
 #include <inviwo/qt/editor/linkdialog.h>
-
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
 #include <inviwo/core/util/variant.h>
 
 namespace inviwo {
