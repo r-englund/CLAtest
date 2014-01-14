@@ -25,8 +25,6 @@ EventProperty::EventProperty(std::string identifier, std::string displayName, In
 }
 
 EventProperty::~EventProperty(){
-    delete event_;
-    delete action_;
 }
 
 void EventProperty::serialize( IvwSerializer& s ) const {

@@ -63,21 +63,61 @@ private:
 
     CameraProperty* camera_;
 
+
+
+    MouseEvent rotateEvent_;
+    MouseEvent zoomEvent_;
+    MouseEvent panEvent_;
+
+    KeyboardEvent stepRotateUpEvent_;
+    KeyboardEvent stepRotateLeftEvent_;
+    KeyboardEvent stepRotateDownEvent_;
+    KeyboardEvent stepRotateRightEvent_;
+
+    KeyboardEvent stepZoomInEvent_;
+    KeyboardEvent stepZoomOutEvent_;
+    KeyboardEvent stepPanUpEvent_;
+    KeyboardEvent stepPanLeftEvent_;
+    KeyboardEvent stepPanDownEvent_;
+    KeyboardEvent stepPanRightEvent_;
+
+
+
+    TrackballAction rotateAction_;
+    TrackballAction zoomAction_;
+    TrackballAction panAction_;
+
+    TrackballAction stepRotateUpAction_;
+    TrackballAction stepRotateLeftAction_;
+    TrackballAction stepRotateDownAction_;
+    TrackballAction stepRotateRightAction_;
+
+    TrackballAction stepZoomInAction_;
+    TrackballAction stepZoomOutAction_;
+    TrackballAction stepPanUpAction_;
+    TrackballAction stepPanLeftAction_;
+    TrackballAction stepPanDownAction_;
+    TrackballAction stepPanRightAction_;
+
+
     EventProperty rotateEventProperty_;
     EventProperty zoomEventProperty_;
     EventProperty panEventProperty_;
 
-	EventProperty stepRotateUp_;
-	EventProperty stepRotateLeft_;
-	EventProperty stepRotateDown_;
-	EventProperty stepRotateRight_;
+    EventProperty stepRotateUpProperty_;
+    EventProperty stepRotateLeftProperty_;
+    EventProperty stepRotateDownProperty_;
+    EventProperty stepRotateRightProperty_;
 
-	EventProperty stepZoomIn_;
-	EventProperty stepZoomOut_;
-	EventProperty stepPanUp_;
-	EventProperty stepPanLeft_;
-	EventProperty stepPanDown_;
-	EventProperty stepPanRight_;
+    EventProperty stepZoomInProperty_;
+    EventProperty stepZoomOutProperty_;
+    EventProperty stepPanUpProperty_;
+    EventProperty stepPanLeftProperty_;
+    EventProperty stepPanDownProperty_;
+    EventProperty stepPanRightProperty_;
+
+
+
 
     vec3 mapNormalizedMousePosToTrackball(vec2 mousePos);
     vec3 mapToCamera(vec3 pos);

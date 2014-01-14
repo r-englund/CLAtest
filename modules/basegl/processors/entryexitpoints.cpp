@@ -43,7 +43,7 @@ EntryExitPoints::EntryExitPoints()
     addProperty(camera_);
 	addProperty(capNearClipping_);
     trackball_ = new Trackball(&camera_);
-	addInteractionHandler(new Trackball(&camera_));
+	addInteractionHandler(trackball_);
     entryPort_.addResizeEventListener(&camera_);
 }
 
