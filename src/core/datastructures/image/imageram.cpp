@@ -21,7 +21,6 @@ namespace inviwo {
 
 ImageRAM::ImageRAM()
     : ImageRepresentation(){
-    ImageRAM::initialize();
 }
 
 ImageRAM::ImageRAM(const ImageRAM& rhs) 

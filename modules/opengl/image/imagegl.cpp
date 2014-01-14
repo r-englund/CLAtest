@@ -20,12 +20,12 @@
 namespace inviwo {
 
 ImageGL::ImageGL()
-    : ImageRepresentation() ,frameBufferObject_(NULL),program_(NULL){   
+    : ImageRepresentation(), frameBufferObject_(NULL), program_(NULL), initialized_(false){   
     initialize();
 }
 
 ImageGL::ImageGL(const ImageGL& rhs) 
-: ImageRepresentation(rhs)  ,frameBufferObject_(NULL),program_(NULL) {
+: ImageRepresentation(rhs), frameBufferObject_(NULL), program_(NULL), initialized_(false) {
     initialize();
     update(true);
 }
@@ -35,12 +35,18 @@ ImageGL::~ImageGL() {
 }
 
 void ImageGL::initialize() {
+    if(initialized_)
+        return;
+
     if(program_)
         delete program_;
     program_ = new Shader("img_copy.frag");
+
     if(frameBufferObject_)
         delete frameBufferObject_;
     frameBufferObject_ = new FrameBufferObject();
+
+    initialized_ = true;
 }
 
 void ImageGL::deinitialize() {
@@ -101,7 +107,8 @@ void ImageGL::reAttachAllLayers(bool clearLayers){
 void ImageGL::activateBuffer() {
     //invalidatePBOs();
     frameBufferObject_->activate();
-    glViewport(0, 0, getDimension().x, getDimension().y);
+    uvec2 dim = getDimension();
+    glViewport(0, 0, dim.x, dim.y);
 }
 
 void ImageGL::deactivateBuffer() {

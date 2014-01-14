@@ -67,6 +67,8 @@ private:
     FrameBufferObject* frameBufferObject_;
     GLenum pickingAttachmentID_;
     Shader* program_;
+
+    bool initialized_;
 };
 
 } // namespace

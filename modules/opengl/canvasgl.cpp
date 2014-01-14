@@ -91,8 +91,8 @@ void CanvasGL::render(const Image* image, LayerType layerType){
 }
 
 void CanvasGL::resize(uvec2 size) {
-    glViewport(0, 0, size[0], size[1]);
     Canvas::resize(size);
+    glViewport(0, 0, size[0], size[1]);
 }
 
 void CanvasGL::glSwapBuffers(){
