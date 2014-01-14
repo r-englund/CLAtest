@@ -38,7 +38,7 @@ void InviwoSplashScreen::show() {
 void InviwoSplashScreen::showMessage(std::string message) {
 	// show message and add whitespace to match layout
 	if (showSplashScreen_)
-		QSplashScreen::showMessage(QString::fromStdString("  "+message), Qt::AlignLeft|Qt::AlignBottom, Qt::white);
+        QSplashScreen::showMessage(QString::fromStdString("  Inviwo Version: "+IVW_VERSION+"\n"+"  "+message), Qt::AlignLeft|Qt::AlignBottom, Qt::white);
 }
 
 void InviwoSplashScreen::finish(QWidget* mainWindow) {
