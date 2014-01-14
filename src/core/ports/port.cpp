@@ -32,7 +32,10 @@ uvec3 Port::getColorCode() const {
 }
 
 bool Port::equalColorCode(Port* p) const {
-    return (p->getColorCode() == getColorCode());
+    if(p)
+        return (p->getColorCode() == getColorCode());
+    else
+        return false;
 }
 
 Processor* Port::getProcessor() const { 
