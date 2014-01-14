@@ -21,6 +21,7 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/util/filedirectory.h>
 #include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <CVIE3D.h>
 
