@@ -17,6 +17,8 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>

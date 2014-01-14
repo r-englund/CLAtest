@@ -16,6 +16,7 @@
 
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/cameraproperty.h>
 
 
 namespace inviwo {

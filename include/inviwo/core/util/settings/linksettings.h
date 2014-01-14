@@ -16,6 +16,7 @@
 #define IVW_LINKSETTINGS_H
 
 #include <inviwo/core/util/settings/settings.h>
+#include <inviwo/core/properties/boolproperty.h>
 
 namespace inviwo {
 

@@ -17,9 +17,9 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/properties/properties.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/volume/volumeraycastergl.h>
 

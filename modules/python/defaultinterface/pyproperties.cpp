@@ -19,11 +19,21 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
 
+#include <inviwo/core/properties/baseoptionproperty.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/directoryproperty.h>
+#include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/matrixproperties.h>
+#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/stringproperty.h>
+#include <inviwo/core/properties/texteditorproperty.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 
 namespace inviwo {
-
-
-
 
 PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
     if (PyTuple_Size(args) != 3) {

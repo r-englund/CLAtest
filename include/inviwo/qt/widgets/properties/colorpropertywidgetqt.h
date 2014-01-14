@@ -22,7 +22,6 @@
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
-#include <inviwo/core/properties/properties.h>
 #include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {

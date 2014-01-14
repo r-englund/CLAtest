@@ -22,6 +22,7 @@
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 
 namespace inviwo {
     PyObject* py_setVoxel(PyObject* /*self*/, PyObject* args){

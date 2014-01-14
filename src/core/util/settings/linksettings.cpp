@@ -14,6 +14,8 @@
 
 #include <inviwo/core/util/settings/linksettings.h>
 #include <inviwo/core/common/inviwocore.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
 
 namespace inviwo {
 

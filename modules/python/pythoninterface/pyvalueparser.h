@@ -28,8 +28,6 @@
 
 #include <vector>
 
-#include <inviwo/core/properties/properties.h>
-
 namespace inviwo {
 
     class IVW_MODULE_PYTHON_API PyValueParser{

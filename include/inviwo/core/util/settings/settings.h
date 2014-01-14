@@ -18,7 +18,6 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwomodule.h>
-#include <inviwo/core/properties/properties.h>
 #include <inviwo/core/properties/propertyowner.h>
 
 namespace inviwo {

@@ -22,6 +22,7 @@
 #define IVW_TRANSFERFUNCTIONEDITOR_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/datastructures/transferfunction.h>
 #include <inviwo/core/io/serialization/ivwserializer.h>
 #include <inviwo/core/io/serialization/ivwdeserializer.h>
 #include <inviwo/core/network/processornetworkevaluator.h>

@@ -16,9 +16,15 @@
 #define IVW_VOLUMERAYCASTERGL_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/transferfunction.h>
 #include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>

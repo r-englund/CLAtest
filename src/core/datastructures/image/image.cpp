@@ -191,14 +191,17 @@ void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
                 existsMoreThenDiskAndRAMRepresentation = true;
         }
 
-        ImageRepresentation* imageRepresentation = 0;
+        ImageRepresentation* sourceImageRepresentation = 0;
+        ImageRepresentation* targetImageRepresentation = 0;
         for (size_t i=0; i<representations_.size(); i++) {
             for (size_t j=0; j<targetRepresentations.size(); j++) {
                 if (representations_[i]->getClassName()==targetRepresentations[j]->getClassName()) {
                     if(!existsMoreThenDiskAndRAMRepresentation || (targetRepresentations[j]->getClassName() != "ImageRAM" && targetRepresentations[j]->getClassName() != "ImageDisk")){
-                        imageRepresentation = static_cast<ImageRepresentation*>(representations_[i]);
-                        imageRepresentation->update(false);
-                        imageRepresentation->copyAndResizeRepresentation(targetRepresentations[j]);
+                        sourceImageRepresentation = static_cast<ImageRepresentation*>(representations_[i]);
+                        sourceImageRepresentation->update(false);
+                        targetImageRepresentation = static_cast<ImageRepresentation*>(targetRepresentations[j]);
+                        targetImageRepresentation->update(false);
+                        sourceImageRepresentation->copyAndResizeRepresentation(targetImageRepresentation);
                     }
                 }
             }

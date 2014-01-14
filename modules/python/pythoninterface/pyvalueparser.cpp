@@ -14,6 +14,16 @@
 
 #include "pyvalueparser.h"
 
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/directoryproperty.h>
+#include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/matrixproperties.h>
+#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/stringproperty.h>
+
 #define PARSETYPE(T,F,S)    T F(PyObject *args){T t;PyArg_ParseTuple(args,S,&t);return t; }
 #define PARSEVEC2(T,T2,F,S) T F(PyObject *args){T2 t0,t1;PyArg_ParseTuple(args,S,&t0,&t1);return T(t0,t1); }
 #define PARSEVEC3(T,T2,F,S) T F(PyObject *args){T2 t0,t1,t2;PyArg_ParseTuple(args,S,&t0,&t1,&t2);return T(t0,t1,t2); }

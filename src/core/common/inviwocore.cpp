@@ -37,9 +37,11 @@
 
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
-//Properties
-#include <inviwo/core/properties/properties.h>
 
+//Properties
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/properties/optionproperties.h>
 
 namespace inviwo {
 

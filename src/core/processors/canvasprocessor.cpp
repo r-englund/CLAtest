@@ -12,7 +12,6 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/io/imageio.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/datetime.h>
@@ -21,12 +20,13 @@
 namespace inviwo {
 
 CanvasProcessor::CanvasProcessor()
-    : Processor(),
-    inport_("inport"),
-	dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096)),
-    visibleLayer_("visibleLayer_", "Visible layer"),
-    snapshotButton_("snapshot", "Create Snapshot", PropertyOwner::VALID),
-    canvas_(0)
+    : Processor()
+    , inport_("inport")
+	, dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
+    , visibleLayer_("visibleLayer", "Visible Layer")
+    , saveLayerDirectory_("layerDir", "Output Directory", IVW_DIR+"data/images")
+    , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
+    , canvas_(0)
 {
     addPort(inport_);
 
@@ -39,8 +39,10 @@ CanvasProcessor::CanvasProcessor()
     visibleLayer_.set(COLOR_LAYER);
     addProperty(visibleLayer_);
 
-    snapshotButton_.onChange(this, &CanvasProcessor::createSnapshot);
-	addProperty(snapshotButton_);
+    addProperty(saveLayerDirectory_);
+
+    saveLayerButton_.onChange(this, &CanvasProcessor::saveImageLayer);
+	addProperty(saveLayerButton_);
 }
 
 
@@ -71,16 +73,15 @@ void CanvasProcessor::resizeCanvas() {
 	}
 }
 
-void CanvasProcessor::createSnapshot() {
-    std::string snapshotPath(IVW_DIR+"data/images/" + toLower(getIdentifier()) + "-" + currentDateTime() + ".png");
-    createSnapshot(snapshotPath.c_str());
+void CanvasProcessor::saveImageLayer() {
+    std::string snapshotPath(saveLayerDirectory_.get() + "/" + toLower(getIdentifier()) + "-" + currentDateTime() + ".png");
+    saveImageLayer(snapshotPath.c_str());
 }
     
-void CanvasProcessor::createSnapshot(const char* snapshotPath) {
+void CanvasProcessor::saveImageLayer(const char* snapshotPath) {
     const Image* image = inport_.getData();
     const Layer* layer = image->getLayer(visibleLayer_.get());
     ImageIO::saveLayer(snapshotPath, layer);
-    InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
 }
 
 void CanvasProcessor::process() {

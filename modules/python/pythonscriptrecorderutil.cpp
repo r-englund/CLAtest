@@ -16,6 +16,16 @@
 #include <modules/python/pythonscriptrecorderutil.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/directoryproperty.h>
+#include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/matrixproperties.h>
+#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/stringproperty.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/stringconversion.h>
 #include <inviwo/core/util/filedirectory.h>

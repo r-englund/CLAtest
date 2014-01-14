@@ -35,6 +35,7 @@
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/multidatainport.h>
 #include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/util/filedirectory.h>
 #include <inviwo/core/util/settings/linksettings.h>
@@ -581,7 +582,7 @@ std::vector<std::string> NetworkEditor::saveSnapshotsInExternalNetwork(std::stri
             if (canvasProcessor) {
                 std::string snapShotFilePath = directory + "snapshot_" + canvasProcessor->getIdentifier() + newFileName;
                 canvasSnapShotFiles.push_back(snapShotFilePath);
-                canvasProcessor->createSnapshot(snapShotFilePath.c_str());
+                canvasProcessor->saveImageLayer(snapShotFilePath.c_str());
             }
         }
     }

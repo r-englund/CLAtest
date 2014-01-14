@@ -23,7 +23,6 @@
 #include <inviwo/core/ports/outport.h>
 #include <inviwo/core/processors/processorstate.h>
 #include <inviwo/core/processors/processorwidget.h>
-#include <inviwo/core/properties/properties.h>
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/util/group.h>

@@ -18,7 +18,10 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/properties/vectorproperties.h>
 #include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/directoryproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/util/canvas.h>
 
 namespace inviwo {
@@ -39,15 +42,16 @@ public:
 
     bool isEndProcessor() { return true; }
     
-    void createSnapshot();
-    void createSnapshot(const char* filePath);
+    void saveImageLayer();
+    void saveImageLayer(const char* filePath);
 
 protected:
     ImageInport inport_;
 
 	IntVec2Property dimensions_;
     TemplateOptionProperty<LayerType> visibleLayer_;
-    ButtonProperty snapshotButton_;
+    DirectoryProperty saveLayerDirectory_;
+    ButtonProperty saveLayerButton_;
 
 private:
     Canvas* canvas_;

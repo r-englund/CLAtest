@@ -22,6 +22,7 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/interaction/pickingobject.h>
+#include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {

@@ -17,6 +17,7 @@
 
 #include <modules/basecl/baseclmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>

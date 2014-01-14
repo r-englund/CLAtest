@@ -148,7 +148,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/properties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyowner.h

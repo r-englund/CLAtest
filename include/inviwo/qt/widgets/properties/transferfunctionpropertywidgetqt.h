@@ -15,7 +15,6 @@
 #ifndef IVW_TRANSFERFUNCTIONPROPERTYWIDGET_H
 #define IVW_TRANSFERFUNCTIONPROPERTYWIDGET_H
 
-#include <inviwo/core/properties/properties.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>

@@ -20,7 +20,9 @@
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
+#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/stringproperty.h>
+#include <inviwo/core/properties/vectorproperties.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 

@@ -100,7 +100,7 @@ void ProcessorNetworkEvaluator::saveSnapshotAllCanvases(std::string dir, std::st
             ss << default_name << i+1;
         std::string path(dir + ss.str() + ext);
         LogInfo("Saving canvas to: " + path);
-        (*it)->createSnapshot((path).c_str());
+        (*it)->saveImageLayer((path).c_str());
         ++i;
     }
 }
