@@ -27,7 +27,8 @@ VolumeSliceGL::VolumeSliceGL()
     outport_("image.outport", COLOR_ONLY),
     coordinatePlane_("coordinatePlane", "Coordinate Plane"),
     sliceNumber_("sliceNumber", "Slice Number", 1, 1, 256),
-    transferFunction_("transferFunction", "Transfer function", TransferFunction())
+    transferFunction_("transferFunction", "Transfer function", TransferFunction()),
+    shader_(NULL)
 {
     addPort(inport_);
     addPort(outport_);
@@ -99,19 +100,21 @@ void VolumeSliceGL::process(){
 }
 
 void VolumeSliceGL::coordinatePlaneChanged(){
-    switch(coordinatePlane_.get())
-    {
-    case XY:
-        shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "x,y,z");
-        break;
-    case XZ:
-        shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "x,z,y");
-        break;
-    case YZ:
-        shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "y,z,x");
-        break;
+    if(shader_){
+        switch(coordinatePlane_.get())
+        {
+        case XY:
+            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "x,y,z");
+            break;
+        case XZ:
+            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "x,z,y");
+            break;
+        case YZ:
+            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "y,z,x");
+            break;
+        }
+        shader_->rebuild();
     }
-    shader_->rebuild();
 }
 
 void VolumeSliceGL::volumeDimensionChanged(){
