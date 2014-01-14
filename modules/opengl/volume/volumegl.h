@@ -45,6 +45,7 @@ public:
     void upload(const void* data);
     void download(void* data) const;
 
+    Texture3D* getTexture() { return volumeTexture_; }
     const Texture3D* getTexture() const { return volumeTexture_; }
 
 protected:

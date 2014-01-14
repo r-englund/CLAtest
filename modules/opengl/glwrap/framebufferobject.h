@@ -19,6 +19,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include "texture2d.h"
+#include "texture3d.h"
 
 namespace inviwo {
 
@@ -34,6 +35,11 @@ public:
     void attachTexture(Texture2D* texture, GLenum attachementID);
     GLenum attachColorTexture(Texture2D* texture);
     GLenum attachColorTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear = false);
+
+    void attachTexture(Texture3D* texture, GLenum attachementID, int layer = 0);
+    GLenum attachColorTexture(Texture3D* texture, int layer = 0);
+    GLenum attachColorTexture(Texture3D* texture, int attachmentNumber, int layer, bool attachFromRear);
+
     void detachTexture(GLenum attachementID);
     void detachAllTextures();
     const GLenum* getDrawBuffers() const { return drawBuffers_; }
@@ -46,6 +52,11 @@ public:
 
     void setRead_Blit(bool set=true) const;
     void setDraw_Blit(bool set=true);
+
+protected:
+    void attachTexture(GLenum attachementID);
+    bool attachColorTexture(GLenum& outAttachNumber);
+    bool attachColorTexture(GLenum& outAttachNumber, int attachmentNumber, bool attachFromRear = false);
 
 private:
     unsigned int id_;

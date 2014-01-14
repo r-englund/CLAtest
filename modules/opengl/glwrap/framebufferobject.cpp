@@ -49,63 +49,44 @@ void FrameBufferObject::deactivate() {
 }
 
 void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) {
-    if(attachementID == GL_DEPTH_ATTACHMENT)
-        hasDepthAttachment_ = true;
-    else if(attachementID == GL_STENCIL_ATTACHMENT)
-        hasStencilAttachment_ = true;
-    else{
-        int attachementNumber = -1;
-        for(int i=0; i<maxColorAttachements_; i++){
-            if(colorAttachmentEnums_[i] == attachementID){
-                attachementNumber = i;
-                break;
-            }
-        }
-
-        if(attachementNumber>=0){
-            drawBuffers_[attachementNumber] = attachementID;
-        }
-        else{
-            LogError("Attachments ID " << attachementID << " exceeds maximum amount of color attachments");
-            return;
-        }
-    }
-
+    attachTexture(attachementID);
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
 }
 
 GLenum FrameBufferObject::attachColorTexture(Texture2D* texture) {
-    int attachementNumber = -1;
-    for(int i=0; i<maxColorAttachements_; i++){
-        if(drawBuffers_[i] == GL_NONE){
-            attachementNumber = i;
-            break;
-        }
+    GLenum attachementID;
+    if(attachColorTexture(attachementID)){
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
     }
-
-    if(attachementNumber>=0){
-        drawBuffers_[attachementNumber] = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
-        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, drawBuffers_[attachementNumber], GL_TEXTURE_2D, texture->getID(), 0);
-        return drawBuffers_[attachementNumber];
-    }
-    else{
-        LogError("Attachments number exceeds maximum amount of color attachments");
-        return GL_COLOR_ATTACHMENT15_EXT;
-    }
+    return attachementID;
 }
 
 GLenum FrameBufferObject::attachColorTexture(Texture2D* texture, int attachementNumber, bool attachFromRear) {
-    attachementNumber = (attachFromRear ? maxColorAttachements_-attachementNumber-1 : attachementNumber);
-    GLenum attachementID = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
-    
-    if(attachementNumber<maxColorAttachements_ && attachementNumber>=0){
-        drawBuffers_[attachementNumber] = attachementID;
+    GLenum attachementID;
+    if(attachColorTexture(attachementID, attachementNumber, attachFromRear)){
         glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
     }
-    else{
-        LogError("AttachmentID " << attachementID << " exceeds maximum amount of color attachments");
-    }
+    return attachementID;
+}
 
+void FrameBufferObject::attachTexture(Texture3D* texture, GLenum attachementID, int layer) {
+    attachTexture(attachementID);
+    glFramebufferTexture3DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_3D, texture->getID(), 0, layer);
+}
+
+GLenum FrameBufferObject::attachColorTexture(Texture3D* texture, int layer) {
+    GLenum attachementID;
+    if(attachColorTexture(attachementID)){
+        glFramebufferTexture3DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_3D, texture->getID(), 0, layer);
+    }
+    return attachementID;
+}
+
+GLenum FrameBufferObject::attachColorTexture(Texture3D* texture, int attachementNumber, int layer, bool attachFromRear) {
+    GLenum attachementID;
+    if(attachColorTexture(attachementID, attachementNumber, attachFromRear)){
+        glFramebufferTexture3DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_3D, texture->getID(), 0, layer);
+    }
     return attachementID;
 }
 
@@ -132,7 +113,7 @@ void FrameBufferObject::detachTexture(GLenum attachementID) {
         }
     }
 
-    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, 0, 0);    
+    glFramebufferTextureEXT(GL_FRAMEBUFFER_EXT, attachementID, 0, 0);    
 }
 
 void FrameBufferObject::detachAllTextures() {
@@ -141,7 +122,7 @@ void FrameBufferObject::detachAllTextures() {
 
     for(int i=0; i<maxColorAttachements_; i++){
         if(drawBuffers_[i] != GL_NONE){
-            glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, drawBuffers_[i], GL_TEXTURE_2D, 0, 0);  
+            glFramebufferTextureEXT(GL_FRAMEBUFFER_EXT, drawBuffers_[i], 0, 0);  
             drawBuffers_[i] = GL_NONE;
         }
     }
@@ -181,6 +162,66 @@ void FrameBufferObject::setDraw_Blit(bool set) {
         glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, id_ );
     else
         glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0 );
+}
+
+void FrameBufferObject::attachTexture(GLenum attachementID) {
+    if(attachementID == GL_DEPTH_ATTACHMENT)
+        hasDepthAttachment_ = true;
+    else if(attachementID == GL_STENCIL_ATTACHMENT)
+        hasStencilAttachment_ = true;
+    else{
+        int attachementNumber = -1;
+        for(int i=0; i<maxColorAttachements_; i++){
+            if(colorAttachmentEnums_[i] == attachementID){
+                attachementNumber = i;
+                break;
+            }
+        }
+
+        if(attachementNumber>=0){
+            drawBuffers_[attachementNumber] = attachementID;
+        }
+        else{
+            LogError("Attachments ID " << attachementID << " exceeds maximum amount of color attachments");
+            return;
+        }
+    }
+}
+
+bool FrameBufferObject::attachColorTexture(GLenum& outAttachNumber) {
+    int attachementNumber = -1;
+    for(int i=0; i<maxColorAttachements_; i++){
+        if(drawBuffers_[i] == GL_NONE){
+            attachementNumber = i;
+            break;
+        }
+    }
+
+    if(attachementNumber>=0){
+        drawBuffers_[attachementNumber] = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
+        outAttachNumber = drawBuffers_[attachementNumber];
+        return true;
+    }
+    else{
+        LogError("Attachments number exceeds maximum amount of color attachments");
+        outAttachNumber = GL_COLOR_ATTACHMENT15_EXT;
+        return false;
+    }
+}
+
+bool FrameBufferObject::attachColorTexture(GLenum& outAttachNumber, int attachementNumber, bool attachFromRear) {
+    attachementNumber = (attachFromRear ? maxColorAttachements_-attachementNumber-1 : attachementNumber);
+    GLenum attachementID = static_cast<GLenum>(GL_COLOR_ATTACHMENT0_EXT+attachementNumber);
+    outAttachNumber = attachementID;
+
+    if(attachementNumber<maxColorAttachements_ && attachementNumber>=0){
+        drawBuffers_[attachementNumber] = attachementID;
+        return true;
+    }
+    else{
+        LogError("AttachmentID " << attachementID << " exceeds maximum amount of color attachments");
+        return false;
+    }
 }
 
 
