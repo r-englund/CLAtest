@@ -14,7 +14,7 @@
 
 __constant sampler_t linearSamp = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_LINEAR; 
 
-__kernel void resizeImage(read_only image2d_t src, write_only image2d_t dst) 
+__kernel void resizeLayer(read_only image2d_t src, write_only image2d_t dst) 
 { 
     if (get_global_id(0) >= get_image_width(dst) || get_global_id(1) >= get_image_height(dst)) { return; } 
 

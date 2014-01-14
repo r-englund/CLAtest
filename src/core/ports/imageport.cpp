@@ -66,9 +66,9 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
     else    
         dimensions_ = dimMax;
 
-    invalidate(PropertyOwner::INVALID_OUTPUT);
     resizeEvent->setSize(dimensions_);
     propagateResizeToPredecessor(resizeEvent);
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {    

@@ -21,23 +21,28 @@ namespace inviwo {
 
 
 LayerCLResizer::LayerCLResizer() {
-
-    cl::Program program = OpenCL::buildProgram(IVW_DIR+"modules/opencl/cl/img_resize.cl");
-
-    resizeKernel_ = cl::Kernel(program, "resizeLayer");
+	try {
+        cl::Program program = OpenCL::buildProgram(IVW_DIR+"modules/opencl/cl/img_resize.cl");
+        resizeKernel_ = cl::Kernel(program, "resizeLayer");
+    } catch (cl::Error&) {
+       
+    }
 }
 
  void LayerCLResizer::resize(const cl::Image2D& src, const cl::Image2D& dst, const uvec2& resizeToDimension)
  {
     static LayerCLResizer instance;
-
-    instance.getResizeKernel()->setArg(0, src);
-    instance.resizeKernel_.setArg(1, dst);
-    cl::Event event;
-    OpenCL::instance()->getQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0], resizeToDimension[1]),
-        cl::NullRange, NULL, &event);
+    try {
+        instance.getResizeKernel()->setArg(0, src);
+        instance.getResizeKernel()->setArg(1, dst);
+        cl::Event event;
+        OpenCL::instance()->getQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0], resizeToDimension[1]),
+            cl::NullRange, NULL, &event);
     
-    event.wait();
+        event.wait();
+    } catch (cl::Error& err) {
+        LogErrorCustom("LayerCLResizer", getCLErrorString(err));
+    }
     #if IVW_PROFILING
     LogInfoCustom("LayerCLResizer", "Image resizing from (" << src.getImageInfo<CL_IMAGE_WIDTH>() << ", " << src.getImageInfo<CL_IMAGE_HEIGHT>() << ") to (" << resizeToDimension.x << ", " << resizeToDimension.y << ") in " << event.getElapsedTime() << " ms");
     #endif
