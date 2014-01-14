@@ -39,11 +39,6 @@ LogCentral::~LogCentral() {
 }
 
 LogCentral* LogCentral::instance() {
-    //if (!instance_) {
-    //    instance_ = new LogCentral();
-    //    instance_->setLogLevel(Info);
-    //    //instance_->registerLogger(new ConsoleLogger());
-    //}
     static LogCentral instance_;
     return &instance_;
 }
