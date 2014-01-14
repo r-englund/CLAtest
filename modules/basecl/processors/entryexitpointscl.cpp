@@ -81,8 +81,8 @@ void EntryExitPointsCL::process() {
 		capNearClippingPrg_->setArg(arg++, NDCToTextureMat);
 		capNearClippingPrg_->setArg(arg++, camPosInTextureSpace);
 		capNearClippingPrg_->setArg(arg++, vec2(camera_.getNearPlaneDist(), camera_.getFarPlaneDist()));
-		capNearClippingPrg_->setArg(arg++, *entryPointsCL);
-		capNearClippingPrg_->setArg(arg++, *exitPointsCL);
+		capNearClippingPrg_->setArg(arg++, *entryPointsCL->getLayerCL());
+		capNearClippingPrg_->setArg(arg++, *exitPointsCL->getLayerCL());
 
 		OpenCL::instance()->getQueue().enqueueNDRangeKernel(*capNearClippingPrg_, cl::NullRange, static_cast<glm::svec2>(outportDim));
 	} catch (cl::Error& err) {

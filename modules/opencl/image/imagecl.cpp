@@ -40,7 +40,7 @@ LayerCL* ImageCL::getLayerCL(){
 }
 
 const LayerCL* ImageCL::getLayerCL() const {
-    return layerCLConst_;
+    return layerCL_;
 }
 
 bool ImageCL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
@@ -54,13 +54,20 @@ bool ImageCL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
 void ImageCL::update(bool editable) {
     //TODO: Convert more then just first color layer
     layerCL_ = NULL;
-    layerCLConst_ = NULL;
-    if(editable){
+    if (editable) {
         layerCL_ = owner_->getColorLayer()->getEditableRepresentation<LayerCL>();
-    }
-    else{
-        layerCLConst_ = owner_->getColorLayer()->getRepresentation<LayerCL>();
+    } else{
+        layerCL_ = const_cast<LayerCL*>(owner_->getColorLayer()->getRepresentation<LayerCL>());
     }
 }
 
 } // namespace
+
+namespace cl {
+
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCL& value) {
+	return setArg(index, value.getLayerCL()->get());
+}
+
+} // namespace cl

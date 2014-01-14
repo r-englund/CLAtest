@@ -100,7 +100,6 @@ bool LayerCL::copyAndResizeLayer(DataRepresentation* target) const{
     LayerCLResizer::resize(*clImage2D_, (targetCL->get()), targetCL->getDimension());
 	
 	return true;
-
 }
 
 void LayerCL::setDimension( uvec2 dimensions )
@@ -109,18 +108,13 @@ void LayerCL::setDimension( uvec2 dimensions )
     clImage2D_ = new cl::Image2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions.x, dimensions.y);
 }
 
-
-
-
 } // namespace
 
 namespace cl {
 
 template <>
-cl_int Kernel::setArg(cl_uint index, const inviwo::LayerCL& value)
-{
+cl_int Kernel::setArg(cl_uint index, const inviwo::LayerCL& value) {
     return setArg(index, value.get());
 }
-
 
 } // namespace cl
