@@ -20,14 +20,8 @@
 #define PARSEVEC4(T,T2,F,S) T F(PyObject *args){T2 t0,t1,t2,t3;PyArg_ParseTuple(args,S,&t0,&t1,&t2,&t3);return T(t0,t1,t2,t3); }
 
 namespace inviwo{
-    //PARSETYPE(double,parseDouble,"d");
-  //  PARSETYPE(float,parseFloat,"f");
-    float parseFloat(PyObject *args){
-        return static_cast<float>(PyFloat_AsDouble(args));
-    }
-    double parseDouble(PyObject *args){
-        return PyFloat_AsDouble(args);
-    }
+    float parseFloat(PyObject *args){return static_cast<float>(PyFloat_AsDouble(args)); }
+    double parseDouble(PyObject *args){return PyFloat_AsDouble(args); }
     PARSETYPE(char,parseChar,"b");
     PARSETYPE(short,parseShort,"h");
     PARSETYPE(int,parseInt,"i");

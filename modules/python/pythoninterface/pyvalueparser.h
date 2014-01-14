@@ -43,6 +43,30 @@ namespace inviwo {
         PyObject *getProperty(Property *p);
 
     };
+
+
+    template <> bool        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> double      IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> float       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> char        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> short       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> int         IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> long        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> vec2        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> vec3        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> vec4        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> ivec2       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> ivec3       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> ivec4       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> uvec2       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> uvec3       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> uvec4       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> mat2        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> mat3        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> mat4        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <> std::string IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+
+
 } //namespace
 
 #endif // IVW_PYVALUEPARSERINVIWO_H
