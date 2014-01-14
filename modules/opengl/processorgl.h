@@ -88,6 +88,22 @@ public:
         glPopMatrix();
     }
 
+    static inline void renderImagePlaneRectInstanced(int instances) {
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_ALWAYS);
+        CanvasGL::renderImagePlaneRectInstanced(instances);
+        glDepthFunc(GL_LESS);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+    }
+
     // deprecated
     static inline void renderQuad() {
         ivwDeprecatedMethod("renderImagePlaneRect()");

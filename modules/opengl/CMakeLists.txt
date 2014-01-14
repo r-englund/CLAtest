@@ -95,7 +95,7 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
     ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/vol_slice.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/volumeslice.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_classification.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_gradients.frag
     ${IVW_MODULE_DIR}/opengl/glsl/modules/mod_depth.frag

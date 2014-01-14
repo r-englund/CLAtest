@@ -47,6 +47,17 @@ public:
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
+    static inline void renderImagePlaneRectInstanced(int instances){
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glBindBuffer(GL_ARRAY_BUFFER, screenAlignedVerticesId_);
+        glVertexPointer(2, GL_FLOAT, 0, 0);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glBindBuffer(GL_ARRAY_BUFFER, screenAlignedTexCoordsId_);
+        glTexCoordPointer(2, GL_FLOAT, 0, 0);
+        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, instances);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    }
 
 protected:
     void initializeGLEW();

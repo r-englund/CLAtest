@@ -50,7 +50,7 @@ VolumeSliceGL::~VolumeSliceGL() {}
 
 void VolumeSliceGL::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("vol_slice.frag", false);
+    shader_ = new Shader("volumeslice.frag", false);
     coordinatePlaneChanged();
     volumeDimensionChanged();
 }
