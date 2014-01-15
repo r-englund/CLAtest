@@ -54,6 +54,12 @@ namespace inviwo {
 template <class T>
 class Singleton : public SingeltonBase{
 public:
+
+    /**
+     * For Singletons in the inviwo::core init should be called in 
+     * void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc).
+     *  
+     */
     static void init() {
         ivwAssert(instance_==0, "Singleton already initialized.");
         instance_ = new T;

@@ -23,14 +23,14 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API MeshGLRenderer: public GeometryRenderer {
+class IVW_MODULE_OPENGL_API MeshRenderer: public GeometryRenderer {
 
 public:
-    MeshGLRenderer();
-    MeshGLRenderer(const Mesh* mesh);
-    MeshGLRenderer(const Mesh* mesh, Mesh::AttributesInfo);
-    MeshGLRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
-    virtual ~MeshGLRenderer();
+    MeshRenderer();
+    MeshRenderer(const Mesh* mesh);
+    MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo);
+    MeshRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
+    virtual ~MeshRenderer();
 
     virtual void render();
     virtual void render(RenderType rt);
@@ -43,7 +43,7 @@ public:
     virtual const Geometry* getGeometry() const { return meshToRender_; }
 
 protected:
-    virtual GeometryRenderer* create(const Geometry* geom) const { return new MeshGLRenderer(static_cast<const Mesh*>(geom)); }
+    virtual GeometryRenderer* create(const Geometry* geom) const { return new MeshRenderer(static_cast<const Mesh*>(geom)); }
     virtual bool canRender(const Geometry* geom) const { return dynamic_cast<const Mesh*>(geom) != NULL; }
 
     virtual void initialize(Mesh::AttributesInfo = Mesh::AttributesInfo());
@@ -52,7 +52,7 @@ protected:
     void renderElements(RenderType) const;
     void emptyFunc(RenderType rt) const {};
 
-    typedef void (MeshGLRenderer::*DrawFunc)(RenderType) const;
+    typedef void (MeshRenderer::*DrawFunc)(RenderType) const;
     struct DrawMethod{
         DrawFunc drawFunc;
         GLenum drawMode;

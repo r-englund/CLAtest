@@ -42,7 +42,7 @@ void DrawLinesProcessor::initialize() {
     addPoint(vec2(0.25f));
     addPoint(vec2(0.75f));
 
-    lineRenderer_ = new MeshGLRenderer(lines_);
+    lineRenderer_ = new MeshRenderer(lines_);
 }
 
 void DrawLinesProcessor::deinitialize() {

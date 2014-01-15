@@ -13,56 +13,56 @@
  **********************************************************************/
 
 #include <modules/opengl/buffer/elementbuffergl.h>
-#include <modules/opengl/rendering/meshglrenderer.h>
+#include <modules/opengl/rendering/meshrenderer.h>
 
 namespace inviwo {
 
 
 
-MeshGLRenderer::MeshGLRenderer(): meshToRender_(NULL) {
+MeshRenderer::MeshRenderer(): meshToRender_(NULL) {
 
 }
 
-MeshGLRenderer::MeshGLRenderer( const Mesh* mesh ): meshToRender_(mesh)
+MeshRenderer::MeshRenderer( const Mesh* mesh ): meshToRender_(mesh)
 {
     initialize(mesh->getAttributesInfo());
 }
 
-MeshGLRenderer::MeshGLRenderer( const Mesh* mesh, Mesh::AttributesInfo ai): meshToRender_(mesh)
+MeshRenderer::MeshRenderer( const Mesh* mesh, Mesh::AttributesInfo ai): meshToRender_(mesh)
 {
     initialize(ai);
 }
 
-MeshGLRenderer::MeshGLRenderer( const Mesh* mesh, RenderType rt, ConnectivityType ct ): meshToRender_(mesh)
+MeshRenderer::MeshRenderer( const Mesh* mesh, RenderType rt, ConnectivityType ct ): meshToRender_(mesh)
 {
     initialize(Mesh::AttributesInfo(rt, ct));
 }
 
-MeshGLRenderer::~MeshGLRenderer()
+MeshRenderer::~MeshRenderer()
 {
 
 }
 
-void MeshGLRenderer::render() {
+void MeshRenderer::render() {
     render(NOT_SPECIFIED);
 }
 
-void MeshGLRenderer::render(RenderType rt) {
+void MeshRenderer::render(RenderType rt) {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();    
     (this->*drawMethods_[rt].drawFunc)(rt);
     meshGL->disable();    
 }
 
-const MeshGL* MeshGLRenderer::getMeshGL() const{
+const MeshGL* MeshRenderer::getMeshGL() const{
     return meshToRender_->getRepresentation<MeshGL>();
 }
 
-GLenum MeshGLRenderer::getDefaultDrawMode(){
+GLenum MeshRenderer::getDefaultDrawMode(){
     return drawMethods_[0].drawMode;
 }
 
-GLenum MeshGLRenderer::getDrawMode( RenderType rt, ConnectivityType ct)
+GLenum MeshRenderer::getDrawMode( RenderType rt, ConnectivityType ct)
 {
     switch(rt)
     {
@@ -103,21 +103,21 @@ GLenum MeshGLRenderer::getDrawMode( RenderType rt, ConnectivityType ct)
     }
 }
 
-void MeshGLRenderer::renderArray( RenderType rt) const
+void MeshRenderer::renderArray( RenderType rt) const
 {
     glDrawArrays(drawMethods_[rt].drawMode, 0, static_cast<GLsizei>(meshToRender_->getAttributes(0)->getSize()));
 }
 
-void MeshGLRenderer::renderElements( RenderType rt) const
+void MeshRenderer::renderElements( RenderType rt) const
 {
     const ElementBufferGL* elementBufferGL = drawMethods_[rt].elementBuffer->getRepresentation<ElementBufferGL>();
     elementBufferGL->enable();
     glDrawElements(drawMethods_[rt].drawMode, static_cast<GLsizei>(elementBufferGL->getSize()), elementBufferGL->getFormatType(), 0);
 }
 
-void MeshGLRenderer::initialize( Mesh::AttributesInfo ai )
+void MeshRenderer::initialize( Mesh::AttributesInfo ai )
 {
-    drawMethods_[0].drawFunc = &MeshGLRenderer::emptyFunc;
+    drawMethods_[0].drawFunc = &MeshRenderer::emptyFunc;
     drawMethods_[0].drawMode = getDrawMode(ai.rt, ai.ct);
     drawMethods_[0].elementBuffer = NULL;
 
@@ -127,8 +127,8 @@ void MeshGLRenderer::initialize( Mesh::AttributesInfo ai )
         drawMethods_[i].elementBuffer = drawMethods_[0].elementBuffer;
     }
 
-    drawMethods_[NOT_SPECIFIED].drawFunc = &MeshGLRenderer::renderArray;
-    drawMethods_[POINTS].drawFunc = &MeshGLRenderer::renderArray;
+    drawMethods_[NOT_SPECIFIED].drawFunc = &MeshRenderer::renderArray;
+    drawMethods_[POINTS].drawFunc = &MeshRenderer::renderArray;
     drawMethods_[POINTS].drawMode = GL_POINTS;
 
     for (size_t i=0; i < meshToRender_->getNumberOfIndicies(); ++i) {
@@ -136,8 +136,8 @@ void MeshGLRenderer::initialize( Mesh::AttributesInfo ai )
             initializeIndexBuffer( meshToRender_->getIndicies(i), meshToRender_->getIndexAttributesInfo(i));
     }
 }
-void MeshGLRenderer::initializeIndexBuffer( const Buffer* indexBuffer, Mesh::AttributesInfo ai ) {
-    drawMethods_[ai.rt].drawFunc = &MeshGLRenderer::renderElements;
+void MeshRenderer::initializeIndexBuffer( const Buffer* indexBuffer, Mesh::AttributesInfo ai ) {
+    drawMethods_[ai.rt].drawFunc = &MeshRenderer::renderElements;
     drawMethods_[ai.rt].drawMode = getDrawMode(ai.rt, ai.ct);
     drawMethods_[ai.rt].elementBuffer = indexBuffer;
 

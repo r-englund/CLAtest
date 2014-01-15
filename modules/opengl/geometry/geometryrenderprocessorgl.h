@@ -32,6 +32,8 @@ public:
     
     InviwoProcessorInfo();
 
+    void deinitialize();
+
 protected:
     virtual void process();
     void centerViewOnGeometry();

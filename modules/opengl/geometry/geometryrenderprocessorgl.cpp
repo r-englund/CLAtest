@@ -16,7 +16,7 @@
 #include <modules/opengl/geometry/geometrygl.h>
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
-#include <modules/opengl/rendering/meshglrenderer.h>
+#include <modules/opengl/rendering/meshrenderer.h>
 
 namespace inviwo {
 
@@ -41,6 +41,14 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     addProperty(centerViewOnGeometry_);
 
 }
+
+void GeometryRenderProcessorGL::deinitialize() {
+    // Delete all renderers
+    for (std::vector<GeometryRenderer*>::iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
+        delete *it;
+    }
+}
+
 
 void GeometryRenderProcessorGL::process() {
     std::vector<const Geometry*> geometries = inport_.getData();

@@ -16,7 +16,7 @@
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
-#include <modules/opengl/rendering/meshglrenderer.h>
+#include <modules/opengl/rendering/meshrenderer.h>
 
 namespace inviwo {
 
@@ -79,7 +79,7 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(const PickingObjec
 void PositionWidgetProcessor::process() {  
     activateAndClearTarget(outport_);
 
-    MeshGLRenderer renderer(static_cast<const Mesh*>(geometryInport_.getData()));
+    MeshRenderer renderer(static_cast<const Mesh*>(geometryInport_.getData()));
 
     program_->activate();
     program_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());

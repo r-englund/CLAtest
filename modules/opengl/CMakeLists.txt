@@ -33,7 +33,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/image/layerglconverter.h
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.h
-    ${IVW_MODULE_DIR}/opengl/rendering/meshglrenderer.h
+    ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.h
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeprocessorgl.h
@@ -70,7 +70,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/image/layerglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/rendering/meshglrenderer.cpp
+    ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeprocessorgl.cpp

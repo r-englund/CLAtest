@@ -22,6 +22,7 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/rendering/geometryrenderer.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
@@ -54,6 +55,7 @@ private:
     Trackball* trackball_;
 	Shader* capNearClippingPrg_;
     Image* tmpEntryPoints_;
+    GeometryRenderer* renderer_;
 };
 
 } // namespace

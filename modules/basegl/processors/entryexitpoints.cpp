@@ -13,9 +13,8 @@
  **********************************************************************/
 
 #include "entryexitpoints.h"
-#include <modules/opengl/geometry/geometrygl.h>
-#include <modules/opengl/rendering//meshglrenderer.h>
 #include <inviwo/core/interaction/trackball.h>
+#include <inviwo/core/rendering/geometryrendererfactory.h>
 
 namespace inviwo {
 
@@ -34,7 +33,8 @@ EntryExitPoints::EntryExitPoints()
     //exitPort_("exit-points", COLOR_DEPTH, DataVec4FLOAT32::get()),
     camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
 	capNearClipping_("capNearClipping", "Cap near plane clipping", true),
-    tmpEntryPoints_(NULL)
+    tmpEntryPoints_(NULL),
+    renderer_(NULL)
 {
     addPort(geometryPort_);
     addPort(entryPort_, "ImagePortGroup1");
@@ -64,15 +64,23 @@ void EntryExitPoints::deinitialize() {
     tmpEntryPoints_ = 0;
     delete capNearClippingPrg_;
     capNearClippingPrg_ = 0;
+    delete renderer_; renderer_ = 0;
     ProcessorGL::deinitialize();
 }
 
 void EntryExitPoints::process() {
     const Geometry* geom = geometryPort_.getData();
-    const Mesh* mesh = dynamic_cast<const Mesh*>(geom);
-    if (!mesh) return;
-    MeshGLRenderer renderer(mesh);
-
+    // Check if no renderer exist or if geometry changed
+    if (renderer_ == NULL) {
+        renderer_ = GeometryRendererFactory::getPtr()->create(geom);
+    } else if (renderer_->getGeometry() != geom) {
+        delete renderer_; // Nothing will happen if NULL
+        renderer_ = GeometryRendererFactory::getPtr()->create(geom);
+    }
+    if (renderer_ == NULL) {
+        // No renderer found
+        return;
+    }
     glEnable(GL_CULL_FACE);    
 
     glMatrixMode(GL_PROJECTION);
@@ -88,7 +96,7 @@ void EntryExitPoints::process() {
 	// generate exit points
 	activateAndClearTarget(exitPort_);
 	glCullFace(GL_FRONT);
-    renderer.render();
+    renderer_->render();
 	deactivateCurrentTarget();
 
 	// generate entry points
@@ -110,7 +118,7 @@ void EntryExitPoints::process() {
 		activateAndClearTarget(entryPort_);
 	}
 	glCullFace(GL_BACK);
-	renderer.render();
+	renderer_->render();
 	deactivateCurrentTarget();
 
 	if (capNearClipping_.get()) {

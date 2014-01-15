@@ -21,7 +21,7 @@
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
-#include <modules/opengl/rendering/meshglrenderer.h>
+#include <modules/opengl/rendering/meshrenderer.h>
 
 namespace inviwo {
 
@@ -48,7 +48,7 @@ private:
     ImageOutport outport_;
 
     Mesh* lines_;
-    MeshGLRenderer* lineRenderer_;
+    MeshRenderer* lineRenderer_;
 };
 
 } // namespace

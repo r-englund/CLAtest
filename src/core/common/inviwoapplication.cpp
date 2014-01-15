@@ -14,13 +14,15 @@
 
 
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/processors/processorfactory.h>
-#include <inviwo/core/processors/processorwidgetfactory.h>
-#include <inviwo/core/properties/optionproperties.h>
-#include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
+#include <inviwo/core/metadata/metadatafactory.h>
+#include <inviwo/core/processors/processorfactory.h>
+#include <inviwo/core/processors/processorwidgetfactory.h>
+#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/rendering/geometryrendererfactory.h>
+
 
 namespace inviwo {
 
@@ -70,6 +72,7 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     }
 
     // initialize singleton factories
+    GeometryRendererFactory::init();
     ProcessorFactory::init();
     MetaDataFactory::init();
     ProcessorWidgetFactory::init();
