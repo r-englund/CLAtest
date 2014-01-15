@@ -17,6 +17,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwomodule.h>
+#include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {
 
