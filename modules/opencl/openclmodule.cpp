@@ -31,7 +31,7 @@
 
 namespace inviwo {
 
-OpenCLModule::OpenCLModule() : InviwoModule() {
+OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo", "Print OpenCL Info") {
     setIdentifier("OpenCL");
     setXMLFileName("opencl/openclmodule.xml");
 }
@@ -101,9 +101,8 @@ void OpenCLModule::setupModuleSettings(){
     if (settings){
         OpenCLCapabilities* openclInfo = getTypeFromVector<OpenCLCapabilities>(getCapabilities());
         if (openclInfo){
-            ButtonProperty* btnOpenCLInfo = new ButtonProperty("printOpenCLInfo", "Print OpenCL Info");
-            btnOpenCLInfo->onChange(openclInfo, &OpenCLCapabilities::printInfo);
-            settings->addProperty(btnOpenCLInfo);
+            btnOpenCLInfo_.onChange(openclInfo, &OpenCLCapabilities::printInfo);
+            settings->addProperty(&btnOpenCLInfo_);
         }           
     }
 }

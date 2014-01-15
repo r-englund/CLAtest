@@ -31,7 +31,7 @@ public:
 
 protected:
     void setupModuleSettings();
-
+    ButtonProperty btnOpenCLInfo_;
 };
 
 } // namespace
