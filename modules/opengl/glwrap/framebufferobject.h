@@ -42,11 +42,14 @@ public:
 
     void detachTexture(GLenum attachementID);
     void detachAllTextures();
-    const GLenum* getDrawBuffers() const { return drawBuffers_; }
-    int getMaxColorAttachments() const { return maxColorAttachements_; }
 
-    bool hasDepthAttachment() const { return hasDepthAttachment_; }
-    bool hasStencilAttachment() const { return hasStencilAttachment_; }
+    unsigned int getID() const;
+    const GLenum* getDrawBuffers() const;
+    int getMaxColorAttachments() const;
+
+    bool hasColorAttachment() const;
+    bool hasDepthAttachment() const;
+    bool hasStencilAttachment() const;
 
     void checkStatus();
 

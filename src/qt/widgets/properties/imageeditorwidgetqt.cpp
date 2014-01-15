@@ -33,7 +33,7 @@ SimpleWithRectangleLabel::SimpleWithRectangleLabel(QPointF rectSize, QGraphicsSc
     label_->setPos(0, 0);
     label_->setDefaultTextColor(Qt::black);
     label_->setFont(QFont("Segoe", 10, QFont::Black, false));
-    label_->setCrop(8, 7);
+    label_->setCrop(9, 8);
 }
 
 SimpleWithRectangleLabel::~SimpleWithRectangleLabel() {}

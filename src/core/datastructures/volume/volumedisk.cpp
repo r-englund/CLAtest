@@ -16,23 +16,23 @@
 
 namespace inviwo {
 
-    VolumeDisk::VolumeDisk(uvec3 dimensions, const DataFormatBase* format)
-        : VolumeRepresentation(dimensions, format), DiskRepresentation(){
-    }
+VolumeDisk::VolumeDisk(uvec3 dimensions, const DataFormatBase* format)
+    : VolumeRepresentation(dimensions, format), DiskRepresentation(){
+}
 
-    VolumeDisk::VolumeDisk(std::string srcFile, uvec3 dimensions, const DataFormatBase* format)
-        : VolumeRepresentation(dimensions, format), DiskRepresentation(srcFile){
-        initialize();
-    }
+VolumeDisk::VolumeDisk(std::string srcFile, uvec3 dimensions, const DataFormatBase* format)
+    : VolumeRepresentation(dimensions, format), DiskRepresentation(srcFile){
+    initialize();
+}
 
-    VolumeDisk* VolumeDisk::clone() const {
-        return new VolumeDisk(*this);
-    }
+VolumeDisk* VolumeDisk::clone() const {
+    return new VolumeDisk(*this);
+}
 
-    VolumeDisk::~VolumeDisk() {}
+VolumeDisk::~VolumeDisk() {}
 
-    void VolumeDisk::initialize() {}
-    void VolumeDisk::deinitialize() {}
+void VolumeDisk::initialize() {}
+void VolumeDisk::deinitialize() {}
 
 
 } // namespace

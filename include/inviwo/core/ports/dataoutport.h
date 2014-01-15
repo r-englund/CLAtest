@@ -57,7 +57,7 @@ protected:
 template <typename T>
 DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
     : Outport(identifier, invalidationLevel),
-      data_(NULL), ownsData_(true)
+      data_(NULL), ownsData_(false)
 {
 }
 

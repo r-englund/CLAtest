@@ -207,13 +207,13 @@ LinkDialogProcessorGraphicsItem::LinkDialogProcessorGraphicsItem() : GraphicsIte
     nameLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight);
     nameLabel_->setDefaultTextColor(Qt::white);
     nameLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Black, false));
-    nameLabel_->setCrop(8, 7);
+    nameLabel_->setCrop(9, 8);
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setPos(-processorItemWidth/2.0+processorLabelHeight/2.0, -processorItemHeight/2.0+processorLabelHeight*2.5);
     classLabel_->setDefaultTextColor(Qt::lightGray);
     classLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
-    classLabel_->setCrop(8, 7);
+    classLabel_->setCrop(9, 8);
 }
 
 LinkDialogProcessorGraphicsItem::~LinkDialogProcessorGraphicsItem() {}
@@ -310,13 +310,13 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
     classLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight);
     classLabel_->setDefaultTextColor(Qt::black);
     classLabel_->setFont(QFont("Segoe", propertyLabelHeight, QFont::Black, false));
-    classLabel_->setCrop(8, 7);    
+    classLabel_->setCrop(9, 8);    
 
     typeLabel_ = new LabelGraphicsItem(this);
     typeLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight*2.5);
     typeLabel_->setDefaultTextColor(Qt::black);
     typeLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
-    typeLabel_->setCrop(8, 7);    
+    typeLabel_->setCrop(9, 8);    
 
     processorGraphicsItem_ = processor;
 

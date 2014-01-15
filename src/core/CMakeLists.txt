@@ -216,6 +216,7 @@ set(SOURCE_FILES
     datastructures/dataoperation.cpp
     datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp
+    datastructures/diskrepresentation.cpp
     datastructures/geometry/attributes.cpp
     datastructures/geometry/geometry.cpp
     datastructures/geometry/geometryram.cpp

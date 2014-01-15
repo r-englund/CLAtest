@@ -24,25 +24,18 @@ namespace inviwo {
 class IVW_CORE_API DiskRepresentation {
 
 public:
-    DiskRepresentation() : sourceFile_(""), reader_(NULL) {};
-    DiskRepresentation(std::string srcFile) : sourceFile_(srcFile), reader_(NULL) {};
-    virtual ~DiskRepresentation(){
-        if(reader_){
-            delete reader_;
-        }
-    };
-    const std::string& getSourceFile() const { return sourceFile_; };
-    bool hasSourceFile() const { return !sourceFile_.empty(); };
+    DiskRepresentation();
+    DiskRepresentation(std::string);
+    virtual ~DiskRepresentation();
 
-    void setDataReader(DataReader* reader){
-        if(reader_){
-            delete reader_;
-        }
-        reader_ = reader;
-    }
-    DataReader* getDataReader() const{
-        return reader_;
-    };
+    const std::string& getSourceFile() const;
+    bool hasSourceFile() const;
+
+    void setDataReader(DataReader* reader);
+
+    void* readData() const;
+    void readDataInto(void* dest) const;
+
 private:
 	std::string sourceFile_;      
     // DiskRepresentation owns a DataReader to be able to convert it self into RAM.

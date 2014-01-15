@@ -128,6 +128,35 @@ void FrameBufferObject::detachAllTextures() {
     }
 }
 
+unsigned int FrameBufferObject::getID() const{
+    return id_;
+}
+
+const GLenum* FrameBufferObject::getDrawBuffers() const { 
+    return drawBuffers_; 
+}
+
+int FrameBufferObject::getMaxColorAttachments() const { 
+    return maxColorAttachements_; 
+}
+
+bool FrameBufferObject::hasColorAttachment() const {
+    for(int i=0; i<maxColorAttachements_; i++){
+        if(drawBuffers_[i] != GL_NONE){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool FrameBufferObject::hasDepthAttachment() const { 
+    return hasDepthAttachment_; 
+}
+
+bool FrameBufferObject::hasStencilAttachment() const { 
+    return hasStencilAttachment_; 
+}
+
 void FrameBufferObject::checkStatus() {
     GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
     switch (status) {
