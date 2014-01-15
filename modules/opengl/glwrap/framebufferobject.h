@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2012-2014 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Timo Ropinski
+ * Primary author : Erik Sundén
  *
  **********************************************************************/
 
@@ -16,7 +16,6 @@
 #define IVW_FRAMEBUFFEROBJECT_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include "texture2d.h"
 #include "texture3d.h"
@@ -30,15 +29,23 @@ public:
     ~FrameBufferObject();
 
     void activate();
+    void defineDrawBuffers();
     static void deactivate();
 
+    //For attaching a 2D Texture
     void attachTexture(Texture2D* texture, GLenum attachementID);
     GLenum attachColorTexture(Texture2D* texture);
     GLenum attachColorTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear = false);
 
-    void attachTexture(Texture3D* texture, GLenum attachementID, int layer = 0);
-    GLenum attachColorTexture(Texture3D* texture, int layer = 0);
-    GLenum attachColorTexture(Texture3D* texture, int attachmentNumber, int layer, bool attachFromRear);
+    //For attaching a 3D Texture
+    void attachTexture(Texture3D* texture, GLenum attachementID);
+    GLenum attachColorTexture(Texture3D* texture);
+    GLenum attachColorTexture(Texture3D* texture, int attachmentNumber, bool attachFromRear = false);
+
+    //For attaching a layer of a 3D Texture
+    void attachTextureLayer(Texture3D* texture, GLenum attachementID, int layer);
+    GLenum attachColorTextureLayer(Texture3D* texture, int layer);
+    GLenum attachColorTextureLayer(Texture3D* texture, int attachmentNumber, int layer, bool attachFromRear = false);
 
     void detachTexture(GLenum attachementID);
     void detachAllTextures();
@@ -57,9 +64,9 @@ public:
     void setDraw_Blit(bool set=true);
 
 protected:
-    void attachTexture(GLenum attachementID);
-    bool attachColorTexture(GLenum& outAttachNumber);
-    bool attachColorTexture(GLenum& outAttachNumber, int attachmentNumber, bool attachFromRear = false);
+    void performAttachTexture(GLenum attachementID);
+    bool performAttachColorTexture(GLenum& outAttachNumber);
+    bool performAttachColorTexture(GLenum& outAttachNumber, int attachmentNumber, bool attachFromRear = false);
 
 private:
     unsigned int id_;

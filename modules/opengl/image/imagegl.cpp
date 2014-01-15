@@ -64,6 +64,7 @@ DataRepresentation* ImageGL::clone() const {
 
 void ImageGL::reAttachAllLayers(bool clearLayers){
     frameBufferObject_->activate();
+    frameBufferObject_->defineDrawBuffers();
     frameBufferObject_->detachAllTextures();
     pickingAttachmentID_ = 0;
 
@@ -107,6 +108,7 @@ void ImageGL::reAttachAllLayers(bool clearLayers){
 void ImageGL::activateBuffer() {
     //invalidatePBOs();
     frameBufferObject_->activate();
+    frameBufferObject_->defineDrawBuffers();
     uvec2 dim = getDimension();
     glViewport(0, 0, dim.x, dim.y);
 }

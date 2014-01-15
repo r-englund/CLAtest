@@ -39,6 +39,7 @@ void PortGroup::deinitialize() {
 void PortGroup::activate() {
     ivwAssert(frameBufferObject_!=0, "PortGroup not initialized.");
     frameBufferObject_->activate();
+    frameBufferObject_->defineDrawBuffers();
     LGL_ERROR;
 }
 
@@ -66,6 +67,7 @@ void PortGroup::reattachTargets() {
 
     // attach textures to FBO
     frameBufferObject_->activate();
+    frameBufferObject_->defineDrawBuffers();
     frameBufferObject_->detachAllTextures();
     for (unsigned int i=0; i<static_cast<unsigned int>(images.size()); i++) {
         frameBufferObject_->attachColorTexture(images[i]->getColorLayerGL()->getTexture(), i);
