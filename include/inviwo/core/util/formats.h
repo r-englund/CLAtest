@@ -290,10 +290,8 @@ public:
 
     template<typename D, typename S> 
     inline D normalizeSigned(S val) const {
-        if(val >= 0)
-            return static_cast<D>(val) / static_cast<D>(DataFormat<S, B>::max());
-        else
-            return static_cast<D>(val) / -static_cast<D>(DataFormat<S, B>::min());
+        return (static_cast<D>(val) - static_cast<D>(DataFormat<S, B>::min())) /
+            (static_cast<D>(DataFormat<S, B>::max()) - static_cast<D>(DataFormat<S, B>::min()));
     }
 
     template<typename D, typename S>

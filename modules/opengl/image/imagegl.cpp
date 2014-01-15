@@ -20,12 +20,20 @@
 namespace inviwo {
 
 ImageGL::ImageGL()
-    : ImageRepresentation(), frameBufferObject_(NULL), program_(NULL), initialized_(false){   
+    : ImageRepresentation()
+    , frameBufferObject_(NULL)
+    , program_(NULL)
+    , initialized_(false){ 
+
     initialize();
 }
 
 ImageGL::ImageGL(const ImageGL& rhs) 
-: ImageRepresentation(rhs), frameBufferObject_(NULL), program_(NULL), initialized_(false) {
+    : ImageRepresentation(rhs)
+    , frameBufferObject_(NULL)
+    , program_(NULL)
+    , initialized_(false) {
+
     initialize();
     update(true);
 }
@@ -58,7 +66,7 @@ void ImageGL::deinitialize() {
     program_ = NULL;
 }
 
-DataRepresentation* ImageGL::clone() const {
+ImageGL* ImageGL::clone() const {
     return new ImageGL(*this);
 }
 

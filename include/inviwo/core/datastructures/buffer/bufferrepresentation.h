@@ -27,12 +27,14 @@ class IVW_CORE_API BufferRepresentation : public DataRepresentation {
 public:
     BufferRepresentation(size_t size, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
     BufferRepresentation(const BufferRepresentation& rhs);
+    BufferRepresentation& operator=(const BufferRepresentation& that);
+    virtual BufferRepresentation* clone() const = 0;
     virtual ~BufferRepresentation() {};
     virtual void performOperation(DataOperation*) const {};
     virtual void setSize(size_t size) {  size_ = size; }
     virtual void resize(size_t size) { size_ = size; }
 
-    virtual BufferRepresentation* clone() const = 0;
+
     virtual std::string getClassName() const { return "BufferRepresentation"; }
     /**
      * Return the number of elements in the buffer.

@@ -20,6 +20,20 @@ LayerRepresentation::LayerRepresentation(uvec2 dimensions, LayerType type, const
     : DataRepresentation(format), dimensions_(dimensions), layerType_(type) {
 }
 
+LayerRepresentation::LayerRepresentation(const LayerRepresentation& rhs) 
+    : DataRepresentation(rhs)
+    , dimensions_(rhs.dimensions_)
+    , layerType_(rhs.layerType_){
+}
+LayerRepresentation& LayerRepresentation::operator=(const LayerRepresentation& that) {
+    if(this != &that) {
+        dimensions_ = that.dimensions_;
+        layerType_ = that.layerType_;
+        DataRepresentation::operator=(that);
+    }
+    return *this;
+}
+
 LayerRepresentation::~LayerRepresentation() {}
 
 void LayerRepresentation::resize(uvec2 dimensions){
@@ -37,5 +51,7 @@ void LayerRepresentation::setDimension(uvec2 dimensions) {
 LayerType LayerRepresentation::getLayerType() const { 
     return layerType_; 
 }
+
+
 
 } // namespace

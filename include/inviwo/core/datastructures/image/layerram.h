@@ -25,9 +25,11 @@ class IVW_CORE_API LayerRAM : public LayerRepresentation {
 
 public:
     LayerRAM(uvec2 dimension = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataVec4UINT8::get());
+    LayerRAM(const LayerRAM& rhs);
+    LayerRAM& operator=(const LayerRAM& that);
+    LayerRAM* clone() const = 0;
     virtual ~LayerRAM();
 
-    DataRepresentation* clone() const = 0;
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
 

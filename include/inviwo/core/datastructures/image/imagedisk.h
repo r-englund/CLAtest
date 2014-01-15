@@ -24,11 +24,14 @@ class IVW_CORE_API ImageDisk : public ImageRepresentation {
 
 public:
     ImageDisk();
+    ImageDisk(const ImageDisk& rhs);
+    ImageDisk& operator=(const ImageDisk& that);
+    virtual ImageDisk* clone() const;
     virtual ~ImageDisk();
+
     virtual void initialize();
     virtual void deinitialize();
-    //virtual void resize(uvec2 dimensions);
-    virtual ImageDisk* clone() const;
+
     virtual std::string getClassName() const;
     virtual bool copyAndResizeRepresentation(DataRepresentation*) const;
 

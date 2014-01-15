@@ -31,7 +31,7 @@ public:
     
     virtual void initialize() {};
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual VolumeCL* clone() const;
     
     void initialize(const void* voxels);
 

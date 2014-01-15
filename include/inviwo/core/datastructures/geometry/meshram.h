@@ -30,7 +30,7 @@ public:
     virtual ~MeshRAM();
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual MeshRAM* clone() const;
 
 protected:
     virtual void update(bool editable);

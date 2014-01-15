@@ -24,8 +24,9 @@ LayerCL::LayerCL(uvec2 dimensions, LayerType type, const DataFormatBase* format,
 }
 
 LayerCL::LayerCL( const LayerCL& rhs )
-    : LayerRepresentation(rhs.getDimension(), rhs.getLayerType(), rhs.getDataFormat()), layerFormat_(dataFormatToCLImageFormat(rhs.getDataFormat()->getId()))
-{
+    : LayerRepresentation(rhs)
+    , layerFormat_(dataFormatToCLImageFormat(rhs.getDataFormat()->getId())) {
+
     initialize(NULL);
     OpenCL::instance()->getQueue().enqueueCopyImage(rhs.get(), *clImage2D_ , glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
 }
@@ -58,7 +59,7 @@ void LayerCL::initialize(const void* texels) {
     LayerCL::initialize();
 }
 
-DataRepresentation* LayerCL::clone() const {
+LayerCL* LayerCL::clone() const {
     LayerCL* newLayerCL = new LayerCL(dimensions_, getLayerType(), getDataFormat());
     OpenCL::instance()->getQueue().enqueueCopyImage(*clImage2D_, (newLayerCL->get()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
     return newLayerCL;

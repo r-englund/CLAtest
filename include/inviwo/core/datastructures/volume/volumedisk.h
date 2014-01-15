@@ -26,10 +26,13 @@ class IVW_CORE_API VolumeDisk : public VolumeRepresentation, public DiskRepresen
 public:
     VolumeDisk(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataUINT8::get());
     VolumeDisk(std::string url, uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataUINT8::get());
+    VolumeDisk(const VolumeDisk& rhs);
+    VolumeDisk& operator=(const VolumeDisk& that);
+    virtual VolumeDisk* clone() const;
     virtual ~VolumeDisk();
+
     virtual void initialize();
     virtual void deinitialize();
-    virtual VolumeDisk* clone() const;
 };
 
 } // namespace

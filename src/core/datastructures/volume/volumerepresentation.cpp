@@ -35,6 +35,26 @@ namespace inviwo {
 
     {}
 
+    VolumeRepresentation::VolumeRepresentation(const VolumeRepresentation& rhs)
+        : DataRepresentation() 
+        , dimensions_(rhs.dimensions_)
+        , borders_(rhs.borders_){
+    }
+
+    VolumeRepresentation& VolumeRepresentation::operator=(const VolumeRepresentation& that) {
+        if(this != &that) {
+            dimensions_ = that.dimensions_;
+            borders_ = that.borders_;
+            DataRepresentation::operator=(that);
+        }
+        return *this;
+    }
+    VolumeRepresentation* VolumeRepresentation::clone() const {
+        return new VolumeRepresentation(*this);
+    }
     VolumeRepresentation::~VolumeRepresentation() {}
+
+
+
 
 } // namespace

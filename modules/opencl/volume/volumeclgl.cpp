@@ -19,8 +19,10 @@
 namespace inviwo {
 
 VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
-: VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format), image3D_(0), texture_(data) 
-{
+    : VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format)
+    , image3D_(0)
+    , texture_(data) {
+
     if(data) {
         initialize(data);
     }
@@ -28,9 +30,20 @@ VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
 }
 
 VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, const Texture3D* data)
-    : VolumeRepresentation(dimensions, format), texture_(data)
-{
+    : VolumeRepresentation(dimensions, format)
+    , texture_(data){
+
     initialize(data);
+}
+
+VolumeCLGL::VolumeCLGL(const VolumeCLGL& rhs) 
+    : VolumeRepresentation(rhs) {
+    OpenCL::instance()->getQueue().enqueueCopyImage(*image3D_, 
+                                                    getVolume(),
+                                                    glm::svec3(0), 
+                                                    glm::svec3(0),
+                                                    glm::svec3(dimensions_));
+
 }
 
 VolumeCLGL::~VolumeCLGL() { 
@@ -43,10 +56,8 @@ void VolumeCLGL::initialize(const Texture3D* texture) {
     VolumeCLGL::initialize();
 }
 
-DataRepresentation* VolumeCLGL::clone() const {
-    VolumeCLGL* newVolumeCLGL = new VolumeCLGL(dimensions_, getDataFormat(), NULL);
-    OpenCL::instance()->getQueue().enqueueCopyImage(*image3D_, (newVolumeCLGL->getVolume()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
-    return newVolumeCLGL;
+VolumeCLGL* VolumeCLGL::clone() const {
+    return new VolumeCLGL(*this);
 }
 
 void VolumeCLGL::deinitialize() {

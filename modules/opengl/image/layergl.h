@@ -32,7 +32,7 @@ public:
 
     void initialize();
     void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual LayerGL* clone() const;
     virtual std::string getClassName() const { return "LayerGL"; }
 
     void bindTexture(GLenum texUnit) const;

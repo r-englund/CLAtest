@@ -35,7 +35,7 @@ void MeshRAM::initialize() {}
 
 void MeshRAM::deinitialize() {}
 
-DataRepresentation* MeshRAM::clone() const{
+MeshRAM* MeshRAM::clone() const {
     return new MeshRAM(*this);
 }
 

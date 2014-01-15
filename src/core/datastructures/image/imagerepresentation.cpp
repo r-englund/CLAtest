@@ -23,6 +23,13 @@ ImageRepresentation::ImageRepresentation()
 ImageRepresentation::ImageRepresentation(const ImageRepresentation& rhs) 
     : DataGroupRepresentation(rhs), owner_(rhs.owner_){
 }
+ImageRepresentation& ImageRepresentation::operator=(const ImageRepresentation& that) {
+    if(this != &that) {
+        owner_ = that.owner_;
+        DataGroupRepresentation::operator=(that);
+    }
+    return *this;
+}
 
 ImageRepresentation::~ImageRepresentation() {}
 
@@ -43,5 +50,7 @@ const Image* ImageRepresentation::getOwner() const{
 void ImageRepresentation::setPointerToOwner(DataGroup* owner){
     owner_ = dynamic_cast<Image*>(owner);
 }
+
+
 
 } // namespace

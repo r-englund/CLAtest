@@ -30,9 +30,12 @@ MetaDataOwner& MetaDataOwner::operator=(const MetaDataOwner& that) {
     }
     return *this;
 }
-
+MetaDataOwner* MetaDataOwner::clone() const {
+    return new MetaDataOwner(*this);
+}
 MetaDataOwner::~MetaDataOwner() {
     delete metaData_;
 }
+
 
 } // namespace

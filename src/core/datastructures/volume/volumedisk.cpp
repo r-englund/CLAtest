@@ -25,6 +25,19 @@ VolumeDisk::VolumeDisk(std::string srcFile, uvec3 dimensions, const DataFormatBa
     initialize();
 }
 
+VolumeDisk::VolumeDisk(const VolumeDisk& rhs) 
+    : VolumeRepresentation(rhs)
+    , DiskRepresentation(rhs) {    
+}
+
+VolumeDisk& VolumeDisk::operator=(const VolumeDisk& that) {
+    if(this != &that) {
+        VolumeRepresentation::operator=(that);
+        DiskRepresentation::operator=(that);
+    }
+    return *this;
+}
+
 VolumeDisk* VolumeDisk::clone() const {
     return new VolumeDisk(*this);
 }
@@ -33,6 +46,8 @@ VolumeDisk::~VolumeDisk() {}
 
 void VolumeDisk::initialize() {}
 void VolumeDisk::deinitialize() {}
+
+
 
 
 } // namespace

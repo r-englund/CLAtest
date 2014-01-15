@@ -23,6 +23,14 @@ DataRepresentation::DataRepresentation(const DataFormatBase* format)
     : dataFormatBase_(format) {}
 DataRepresentation::DataRepresentation(const DataRepresentation& rhs) 
     : dataFormatBase_(rhs.dataFormatBase_) {}
+
+DataRepresentation& DataRepresentation::operator=(const DataRepresentation& that) {
+    if(this != &that) {
+        dataFormatBase_ = that.dataFormatBase_;
+    }
+    return *this;
+}
+
 DataRepresentation::~DataRepresentation() { }
 
 std::string DataRepresentation::getClassName() const { 
@@ -44,5 +52,9 @@ DataFormatId DataRepresentation::getDataFormatId() const {
 void DataRepresentation::setDataFormat(const DataFormatBase* format){
     dataFormatBase_ = format;
 }
+
+
+
+
 
 } // namespace

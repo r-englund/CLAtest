@@ -46,7 +46,7 @@ void LayerGL::deinitialize() {
     }
 }
 
-DataRepresentation* LayerGL::clone() const {
+LayerGL* LayerGL::clone() const {
     Texture2D* tex = NULL;
     if(texture_)
         tex = texture_->clone();

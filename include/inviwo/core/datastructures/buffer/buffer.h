@@ -40,9 +40,11 @@ class IVW_CORE_API Buffer : public Data {
 public:
     Buffer(size_t size,  const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
     Buffer(const Buffer& rhs);
-    virtual ~Buffer();
-    void resize(size_t size);
+    Buffer& operator=(const Buffer& that);
     virtual Buffer* clone() const;
+    virtual ~Buffer();
+
+    void resize(size_t size);
     void resizeBufferRepresentations(Buffer* targetBuffer, size_t targetSize);
 
     size_t getSize() const;

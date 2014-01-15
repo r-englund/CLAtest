@@ -31,13 +31,15 @@ friend class Image;
 public:
     ImageRepresentation();
     ImageRepresentation(const ImageRepresentation& rhs);
+    ImageRepresentation& operator=(const ImageRepresentation& that);
+    virtual ImageRepresentation* clone() const = 0;
     virtual ~ImageRepresentation();
+
     virtual void performOperation(DataOperation*) const;
     virtual std::string getClassName() const;
 
     uvec2 getDimension() const;
 
-    virtual DataRepresentation* clone() const = 0;
     virtual bool copyAndResizeRepresentation(DataRepresentation*) const = 0;
 
     const Image* getOwner() const;

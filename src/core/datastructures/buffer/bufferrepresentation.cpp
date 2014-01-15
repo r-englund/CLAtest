@@ -24,5 +24,15 @@ BufferRepresentation::BufferRepresentation(const BufferRepresentation& rhs)
     : DataRepresentation(rhs), size_(rhs.size_), type_(rhs.type_), usage_(rhs.usage_){
 }
 
+BufferRepresentation& BufferRepresentation::operator=(const BufferRepresentation& that) {
+    if(this != &that) {
+        DataRepresentation::operator=(that);
+        size_ = that.size_;
+        type_ = that.type_;
+        usage_ = that.usage_;
+    }
+    return *this;
+}
+
 
 } //namespace

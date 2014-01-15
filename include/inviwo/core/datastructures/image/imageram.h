@@ -29,8 +29,10 @@ class IVW_CORE_API ImageRAM : public ImageRepresentation {
 public:
     ImageRAM();
     ImageRAM(const ImageRAM& rhs);
+    ImageRAM& operator=(const ImageRAM& that);
+    virtual ImageRAM* clone() const;
     virtual ~ImageRAM();
-    DataRepresentation* clone() const;
+
     virtual void initialize();
     virtual void deinitialize();
     virtual std::string getClassName() const;

@@ -17,8 +17,9 @@
 namespace inviwo {
 
 VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format), volumeTexture_(0)
-{
+    : VolumeRepresentation(dimensions, format)
+    , volumeTexture_(0){
+
     GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format->getId());
     format_ = glFormat.format;
     internalFormat_ = glFormat.internalFormat;
@@ -27,14 +28,19 @@ VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format)
 }
 
 VolumeGL::VolumeGL(uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType)
-: VolumeRepresentation(dimensions, DataFormatBase::get()), format_(format), internalFormat_(internalFormat), dataType_(dataType), volumeTexture_(0)
-{
+    : VolumeRepresentation(dimensions, DataFormatBase::get())
+    , format_(format)
+    , internalFormat_(internalFormat)
+    , dataType_(dataType)
+    , volumeTexture_(0){
+
     initialize();
 }
 
 VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, const DataFormatBase* format)
-: VolumeRepresentation(dimensions, format), volumeTexture_(0)
-{
+    : VolumeRepresentation(dimensions, format)
+    , volumeTexture_(0) {
+
     GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format->getId());
     format_ = glFormat.format;
     internalFormat_ = glFormat.internalFormat;
@@ -43,9 +49,31 @@ VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, const DataFormatBase* f
 }
 
 VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType)
-: VolumeRepresentation(dimensions, DataFormatBase::get()), format_(format), internalFormat_(internalFormat), dataType_(dataType), volumeTexture_(0)
-{
+    : VolumeRepresentation(dimensions, DataFormatBase::get())
+    , format_(format)
+    , internalFormat_(internalFormat)
+    , dataType_(dataType)
+    , volumeTexture_(0) {
+
     initialize(texels);
+}
+
+VolumeGL::VolumeGL(const VolumeGL& rhs) 
+    : VolumeRepresentation(rhs){
+
+    //TODO: copy texels.
+}
+
+VolumeGL& VolumeGL::operator=(const VolumeGL& that) {
+    if(this != &that) {
+        VolumeRepresentation::operator=(that);
+        //TODO: copy texels.
+    }
+    return *this;
+}
+
+VolumeGL* VolumeGL::clone() const {
+    return new VolumeGL(*this);
 }
 
 VolumeGL::~VolumeGL() {
@@ -67,12 +95,6 @@ void VolumeGL::initialize(const void* texels) {
 void VolumeGL::deinitialize() {
     delete volumeTexture_;
     volumeTexture_ = 0;
-}
-
-DataRepresentation* VolumeGL::clone() const {
-    VolumeGL* newVolumeGL = new VolumeGL(dimensions_, dataFormatBase_);
-    //TODO:: Copy volume textures if necessary
-    return newVolumeGL;
 }
 
 GLint VolumeGL::getFormat() {

@@ -35,7 +35,7 @@ void MeshGL::initialize() {}
 
 void MeshGL::deinitialize() {}
 
-DataRepresentation* MeshGL::clone() const{
+MeshGL* MeshGL::clone() const {
     return new MeshGL(*this);
 }
 

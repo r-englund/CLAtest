@@ -29,8 +29,10 @@ public:
     Layer(uvec2 dimensions = uvec2(256,256), const DataFormatBase* format = DataVec4UINT8::get(), LayerType type = COLOR_LAYER);
     Layer(LayerRepresentation*);
     Layer(const Layer&);
-    virtual ~Layer();
+    Layer& operator=(const Layer& that);
     virtual Layer* clone() const;
+    virtual ~Layer();
+    
 
     void resize(uvec2 dimensions);
     

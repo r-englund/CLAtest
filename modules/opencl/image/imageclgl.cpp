@@ -28,7 +28,7 @@ ImageCLGL::ImageCLGL(const ImageCLGL& rhs )
 ImageCLGL::~ImageCLGL() { 
 }
 
-DataRepresentation* ImageCLGL::clone() const {
+ImageCLGL* ImageCLGL::clone() const {
     return new ImageCLGL(*this);
 }
 

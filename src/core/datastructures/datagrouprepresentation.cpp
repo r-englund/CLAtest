@@ -16,14 +16,23 @@
 
 namespace inviwo {
 
-DataGroupRepresentation::DataGroupRepresentation(){}
+DataGroupRepresentation::DataGroupRepresentation()
+    : DataRepresentation() {}
 
-DataGroupRepresentation::DataGroupRepresentation(const DataGroupRepresentation& rhs){}
+DataGroupRepresentation::DataGroupRepresentation(const DataGroupRepresentation& rhs)
+    : DataRepresentation(rhs) {}
 
 DataGroupRepresentation::~DataGroupRepresentation() { }
 
 std::string DataGroupRepresentation::getClassName() const { 
     return "DataGroupRepresentation"; 
+}
+
+DataGroupRepresentation& DataGroupRepresentation::operator=(const DataGroupRepresentation& that) {
+    if(this != &that) {
+        DataRepresentation::operator=(that);
+    }
+    return *this;
 }
 
 } // namespace

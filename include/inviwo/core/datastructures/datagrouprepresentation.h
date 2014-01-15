@@ -41,18 +41,19 @@ friend class DataGroup;
 public:
     DataGroupRepresentation();
     DataGroupRepresentation(const DataGroupRepresentation& rhs);
+    DataGroupRepresentation& operator=(const DataGroupRepresentation& that);
+    virtual DataGroupRepresentation* clone() const = 0;
     virtual ~DataGroupRepresentation();
+
+    virtual std::string getClassName() const;
     virtual void performOperation(DataOperation*) const = 0;
 
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
-    virtual DataRepresentation* clone() const = 0;
-    virtual std::string getClassName() const;
 
 protected:
     //Update representations_ with DataRepresentation from each Data and DataGroup object
     virtual void update(bool) = 0;
-
     virtual void setPointerToOwner(DataGroup*) = 0;
 };
 

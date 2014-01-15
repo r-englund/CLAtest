@@ -17,23 +17,43 @@
 
 namespace inviwo {
 
-Layer::Layer(uvec2 dimensions, const DataFormatBase* format, LayerType type) : Data(format), StructuredGridMetaData<2>(dimensions), layerType_(type) {}
+Layer::Layer(uvec2 dimensions, const DataFormatBase* format, LayerType type) 
+    : Data(format)
+    , StructuredGridMetaData<2>(dimensions)
+    , layerType_(type) {}
 
-Layer::Layer(LayerRepresentation* in) : Data(in->getDataFormat()), StructuredGridMetaData<2>(in->getDimension()), layerType_(in->getLayerType())
-{ 
+Layer::Layer(LayerRepresentation* in) 
+    : Data(in->getDataFormat())
+    , StructuredGridMetaData<2>(in->getDimension())
+    , layerType_(in->getLayerType()) {
+
     clearRepresentations();
     addRepresentation(in);
 }
 
-Layer::Layer(const Layer& rhs) : Data(rhs.dataFormatBase_), StructuredGridMetaData<2>(rhs.getDimension()), layerType_(rhs.getLayerType()) {}
+Layer::Layer(const Layer& rhs) 
+    : Data(rhs)
+    , StructuredGridMetaData<2>(rhs)
+    , layerType_(rhs.layerType_) {}
 
-Layer::~Layer() {
-    // Representations are deleted by Data destructor.
+Layer& Layer::operator=(const Layer& that) {
+    if(this != &that) {
+        Data::operator=(that);
+        StructuredGridMetaData<2>::operator=(that);
+        layerType_ = that.layerType_;
+    }
+    return *this;
 }
 
 Layer* Layer::clone() const {
     return new Layer(*this);
 }
+
+Layer::~Layer() {
+    // Representations are deleted by Data destructor.
+}
+
+
 
 void Layer::resize(uvec2 dimensions) {
     setDimension(dimensions);
@@ -118,5 +138,6 @@ LayerType Layer::getLayerType() const {
 DataRepresentation* Layer::createDefaultRepresentation() {
 	return createLayerRAM((uvec2)getDimension(), getLayerType(), getDataFormat());
 }
+
 
 } // namespace

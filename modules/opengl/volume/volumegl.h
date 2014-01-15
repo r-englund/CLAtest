@@ -29,12 +29,15 @@ public:
     VolumeGL(uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType);
     VolumeGL(const void* texels, uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataFormatBase::get());
     VolumeGL(const void* texels, uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType);
+    VolumeGL(const VolumeGL& rhs);
+    VolumeGL& operator=(const VolumeGL& that);
+    virtual VolumeGL* clone() const;
     virtual ~VolumeGL();
 
     virtual void initialize();
     virtual void initialize(const void* texels);
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+
     GLint getFormat();
     GLint getInternalFormat();
     GLenum getDataType();

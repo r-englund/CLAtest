@@ -28,8 +28,16 @@ LayerDisk::LayerDisk(std::string url, LayerType type)
 }
 
 LayerDisk::LayerDisk(const LayerDisk& rhs) 
-    : LayerRepresentation(rhs.dimensions_, rhs.layerType_, rhs.dataFormatBase_), DiskRepresentation(rhs.getSourceFile()){
+    : LayerRepresentation(rhs)
+    , DiskRepresentation(rhs){
     initialize();
+}
+
+LayerDisk& LayerDisk::operator=(const LayerDisk& that) {
+    if(this != &that) {
+        LayerRepresentation::operator=(that);
+    }
+    return *this;
 }
 
 LayerDisk::~LayerDisk() {
@@ -71,5 +79,7 @@ void* LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dstDimesion, DataFormat
 
     return NULL;
 }
+
+
 
 } // namespace

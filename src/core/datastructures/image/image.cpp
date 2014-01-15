@@ -20,45 +20,84 @@ namespace inviwo {
 Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers)
 	: DataGroup(), StructuredGridMetaData<2>(dimensions)
     , allowMissingLayers_(allowMissingLayers)
-	, imageType_(comb)
-{
+	, imageType_(comb) {
+
     initialize(format);
 }
 
-Image::Image(const Image& rhs) : DataGroup(), StructuredGridMetaData<2>(rhs.getDimension())
+Image::Image(const Image& rhs) 
+    : DataGroup(rhs)
+    , StructuredGridMetaData<2>(rhs)
     , allowMissingLayers_(rhs.allowMissingLayers_)
     , imageType_(rhs.imageType_)
-    , inputSources_(rhs.inputSources_)
-{
+    , inputSources_(rhs.inputSources_) {
+
     for (std::vector<Layer*>::const_iterator it = rhs.colorLayers_.begin() ; it != rhs.colorLayers_.end(); ++it)
         addColorLayer((*it)->clone());
 
     if(rhs.depthLayer_){
         depthLayer_ = rhs.depthLayer_->clone();
         addLayer(depthLayer_);
-    }
-    else
+    } else {
         depthLayer_ = NULL;
+    }
 
     if(rhs.pickingLayer_){
         pickingLayer_ = rhs.pickingLayer_->clone();
         addLayer(pickingLayer_);
-    }
-    else
+    } else {
         pickingLayer_ = NULL;
+    }
 }
 
-Image::~Image() {
-    //Delete all layers
-    for (std::vector<Layer*>::iterator it = colorLayers_.begin() ; it != colorLayers_.end(); ++it)
-        delete (*it);
+Image& Image::operator=(const Image& that) {
+    if(this != &that) {
+        DataGroup::operator=(that);
+        StructuredGridMetaData<2>::operator=(that);
 
-    delete depthLayer_;
-    delete pickingLayer_;
+        allowMissingLayers_ = that.allowMissingLayers_;
+        imageType_ = that.imageType_;
+        inputSources_ = that.inputSources_;
+
+        deinitialize();
+
+        for(std::vector<Layer*>::const_iterator it = that.colorLayers_.begin(); it != that.colorLayers_.end(); ++it)
+            addColorLayer((*it)->clone());
+
+        if(that.depthLayer_) {
+            depthLayer_ = that.depthLayer_->clone();
+            addLayer(depthLayer_);
+        } else {
+            depthLayer_ = NULL;
+        }
+
+        if(that.pickingLayer_) {
+            pickingLayer_ = that.pickingLayer_->clone();
+            addLayer(pickingLayer_);
+        } else {
+            pickingLayer_ = NULL;
+        }
+
+    }
+    return *this;
 }
 
 Image* Image::clone() const {
     return new Image(*this);
+}
+
+Image::~Image() {
+    //Delete all layers
+    deinitialize();
+
+}
+
+void Image::deinitialize() {
+    for(std::vector<Layer*>::iterator it = colorLayers_.begin(); it != colorLayers_.end(); ++it)
+        delete (*it);
+
+    delete depthLayer_;
+    delete pickingLayer_;
 }
 
 void Image::initialize(const DataFormatBase* format){
@@ -230,5 +269,9 @@ void Image::addLayer(Layer* layer){
     allLayers_.push_back(layer);
     allLayersConst_.push_back(static_cast<const Layer*>(layer));
 }
+
+
+
+
 
 } // namespace

@@ -39,7 +39,7 @@ void LayerCLGL::initialize(Texture2D* texture) {
     LayerCLGL::initialize();
 }
 
-DataRepresentation* LayerCLGL::clone() const {
+LayerCLGL* LayerCLGL::clone() const {
     Texture2D* clonedTexture = new Texture2D(*texture_); 
     LayerCLGL* newLayerCLGL = new LayerCLGL(dimensions_, getLayerType(), getDataFormat(), clonedTexture);
     return newLayerCLGL;

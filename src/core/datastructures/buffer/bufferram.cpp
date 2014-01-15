@@ -24,7 +24,14 @@ BufferRAM::BufferRAM(size_t size, const DataFormatBase* format, BufferType type,
 BufferRAM::BufferRAM(const BufferRAM& rhs) : BufferRepresentation(rhs){
     BufferRAM::initialize();
 } 
-
+BufferRAM& BufferRAM::operator=(const BufferRAM& that) {
+    if(this != &that) {
+        deinitialize();
+        BufferRepresentation::operator=(that);
+        initialize();
+    }
+    return *this;
+}
 BufferRAM::~BufferRAM() {
     deinitialize();
 }

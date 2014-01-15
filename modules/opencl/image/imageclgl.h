@@ -30,7 +30,7 @@ public:
     ImageCLGL(const ImageCLGL& other);
     virtual ~ImageCLGL();
     virtual std::string getClassName() const { return "ImageCLGL"; }
-    virtual DataRepresentation* clone() const;
+    virtual ImageCLGL* clone() const;
     virtual void initialize();
     virtual void deinitialize();
 

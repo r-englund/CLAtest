@@ -25,11 +25,15 @@ class IVW_CORE_API VolumeRAM : public VolumeRepresentation {
 
 public:
     VolumeRAM(uvec3 dimension = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = DataFormatBase::get());
+    VolumeRAM(const VolumeRAM& rhs);
+    VolumeRAM& operator=(const VolumeRAM& that);
+    virtual VolumeRAM* clone() const = 0;
     virtual ~VolumeRAM();
+
     virtual void performOperation(DataOperation*) const = 0;
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const = 0;
+
     virtual void* getData();
     virtual const void* getData() const;
     /** 

@@ -23,9 +23,29 @@ namespace inviwo {
 Buffer::Buffer(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage): 
     Data(), size_(size), format_(format), type_(type), usage_(usage){
 }
-Buffer::Buffer(const Buffer& rhs) : Data(rhs), size_(rhs.size_), format_(rhs.format_), type_(rhs.type_), usage_(rhs.usage_) {
-
+Buffer::Buffer(const Buffer& rhs) 
+    : Data(rhs)
+    , size_(rhs.size_)
+    , format_(rhs.format_)
+    , type_(rhs.type_)
+    , usage_(rhs.usage_) {
 }
+
+Buffer& Buffer::operator=(const Buffer& that) {
+    if(this != &that) {
+        Data::operator=(that);
+        size_ = that.size_;
+        format_ = that.format_;
+        type_ = that.type_;
+        usage_ = that.usage_;
+    }
+    return *this;
+}
+
+Buffer* Buffer::clone() const {
+    return new Buffer(*this);
+}
+
 Buffer::~Buffer(){
 
 }
@@ -50,9 +70,7 @@ void Buffer::setSize( size_t size ){
     resize(size);
 }
 
-Buffer* Buffer::clone() const{
-    return new Buffer(*this);
-}
+
 
 DataRepresentation* Buffer::createDefaultRepresentation() {
     return createBufferRAM(getSize(), format_, type_, usage_);

@@ -40,7 +40,7 @@ void VolumeCL::initialize(const void* voxels) {
     VolumeCL::initialize();
 }
 
-DataRepresentation* VolumeCL::clone() const {
+VolumeCL* VolumeCL::clone() const {
     VolumeCL* newVolumeCL = new VolumeCL(dimensions_, getDataFormat());
     OpenCL::instance()->getQueue().enqueueCopyImage(*image3D_, (newVolumeCL->getVolume()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
     return newVolumeCL;

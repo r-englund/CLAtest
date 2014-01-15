@@ -27,8 +27,9 @@ public:
     LayerDisk(LayerType type = COLOR_LAYER);
 	LayerDisk(std::string url, LayerType type = COLOR_LAYER);
     LayerDisk(const LayerDisk& rhs);
-    virtual ~LayerDisk();
+    LayerDisk& operator=(const LayerDisk& that);
     virtual LayerDisk* clone() const;
+    virtual ~LayerDisk();
     virtual void initialize();
     virtual void deinitialize();
     virtual std::string getClassName() const;

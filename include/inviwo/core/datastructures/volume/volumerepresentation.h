@@ -40,7 +40,11 @@ public:
     VolumeRepresentation(uvec3 dimension);
     VolumeRepresentation(uvec3 dimension, const DataFormatBase* format);
     VolumeRepresentation(uvec3 dimension, const DataFormatBase* format, VolumeBorders border);
+    VolumeRepresentation(const VolumeRepresentation& rhs);
+    VolumeRepresentation& operator=(const VolumeRepresentation& that);
+    virtual VolumeRepresentation* clone() const;
     virtual ~VolumeRepresentation();
+
     virtual void performOperation(DataOperation*) const {};
     // Removes old data and reallocate for new dimension.
     // Needs to be overloaded by child classes.

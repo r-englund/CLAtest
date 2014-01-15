@@ -34,7 +34,7 @@ public:
 
     void initialize();
     void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual ImageGL* clone() const;
     virtual std::string getClassName() const { return "ImageGL"; }
 
     void reAttachAllLayers(bool clearLayers = false);

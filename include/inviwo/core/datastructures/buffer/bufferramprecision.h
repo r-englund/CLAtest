@@ -141,8 +141,7 @@ void inviwo::BufferRAMPrecision<T>::deinitialize()
 
 template<typename T>
 BufferRAMPrecision<T>* BufferRAMPrecision<T>::clone() const {
-    BufferRAMPrecision<T>* newBufferRAM = new BufferRAMPrecision<T>(getSize(), getDataFormat(), getBufferType(), getBufferUsage());
-    return newBufferRAM;
+    return new BufferRAMPrecision<T>(*this);
 }
 
 template<typename T>

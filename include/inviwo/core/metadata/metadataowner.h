@@ -31,6 +31,7 @@ public:
     MetaDataOwner();
     MetaDataOwner(const MetaDataOwner& rhs);
     MetaDataOwner& operator=(const MetaDataOwner& rhs);
+    virtual MetaDataOwner* clone() const;
     virtual ~MetaDataOwner();
  
     //MetaData

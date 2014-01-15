@@ -25,7 +25,7 @@ ImageCL::ImageCL(const ImageCL& rhs )
 ImageCL::~ImageCL() { 
 }
 
-DataRepresentation* ImageCL::clone() const {
+ImageCL* ImageCL::clone() const {
     return new ImageCL(*this);
 }
 

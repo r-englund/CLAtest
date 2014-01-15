@@ -21,6 +21,15 @@ VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders borde
     : VolumeRepresentation(dimensions, format, border), data_(0)
 {}
 
+VolumeRAM::VolumeRAM(const VolumeRAM& rhs) 
+    : VolumeRepresentation(rhs) {
+}
+VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
+    if(this != &that) {
+        VolumeRepresentation::operator=(that);
+    }
+    return *this;
+}
 VolumeRAM::~VolumeRAM() {
     deinitialize();
 }

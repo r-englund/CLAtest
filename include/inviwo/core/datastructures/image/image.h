@@ -29,8 +29,11 @@ class IVW_CORE_API Image : public DataGroup, public StructuredGridMetaData<2> {
 public:
     Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(), bool allowMissingLayers = false);
     Image(const Image&);
-    virtual ~Image();
+    Image& operator=(const Image& that);
     virtual Image* clone() const;
+    virtual ~Image();
+
+    void deinitialize();
 
     void initialize(const DataFormatBase*);
 

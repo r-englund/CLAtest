@@ -20,28 +20,46 @@ DataGroup::DataGroup() : editableUpdate_(false) {
 }
 
 DataGroup::DataGroup(const DataGroup& rhs) : editableUpdate_(false) {
-    //TOD0: Implement
+    for(size_t i = 0; i < rhs.data_.size(); ++i) {
+        data_.push_back(rhs.data_[i]->clone());
+    }
+    for(size_t i = 0; i < rhs.groupData_.size(); ++i) {
+        groupData_.push_back(rhs.groupData_[i]->clone());
+    }
+    //TODO: copy representations!?!
 }
 
 DataGroup& DataGroup::operator=(const DataGroup& that){
     if (this != &that) {
-        //TOD0: Implement 
+        deinitialize();
+        for(size_t i = 0; i < that.data_.size(); ++i) {
+            data_.push_back(that.data_[i]->clone());
+        }
+        for(size_t i = 0; i < that.groupData_.size(); ++i) {
+            groupData_.push_back(that.groupData_[i]->clone());
+        }
+        //TODO: copy representations!?!
     }
     return *this;
 }
 
 
 DataGroup::~DataGroup() {
+    deinitialize();
+}
+
+void DataGroup::deinitialize() {
     clearRepresentations();
-    for (size_t i=0; i<data_.size(); ++i) {
+    for(size_t i = 0; i < data_.size(); ++i) {
         delete data_[i];
     }
     data_.clear();
-    for (size_t i=0; i<groupData_.size(); ++i) {
+    for(size_t i = 0; i < groupData_.size(); ++i) {
         delete groupData_[i];
     }
     groupData_.clear();
 }
+
 
 void DataGroup::clearRepresentations() {
     while (hasRepresentations()) {

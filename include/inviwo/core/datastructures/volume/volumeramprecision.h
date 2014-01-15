@@ -25,26 +25,29 @@ class VolumeRAMPrecision : public VolumeRAM {
 public:
     VolumeRAMPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = defaultformat());
     VolumeRAMPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = defaultformat());
-    virtual ~VolumeRAMPrecision() {
-        deinitialize();
-    };
-    VolumeRAMPrecision(const VolumeRAMPrecision<T>& rhs) {
-        *this = rhs;
+    VolumeRAMPrecision(const VolumeRAMPrecision<T>& rhs)
+        : VolumeRAM(rhs) {                                    
+        initialize(0);
+        memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
     }
-    VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& rhs) {
-        if (this != &rhs) {
+    VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& that) {
+        if(this != &that) {
+            VolumeRAM::operator=(that);
             delete[] data_;
-            dimensions_ = rhs.getDimension();
-            initialize();
-            memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
+            dimensions_ = that.getDimension();
+            initialize(0);
+            memcpy(data_, that.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
         }
         return *this;
+    };
+    virtual ~VolumeRAMPrecision() {
+        deinitialize();
     };
     virtual void performOperation(DataOperation* dop) const;
     using VolumeRAM::initialize;
     virtual void initialize(void*);
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual VolumeRAMPrecision<T>* clone() const;
 
     virtual void setDimension(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(); }
 
@@ -106,10 +109,8 @@ void inviwo::VolumeRAMPrecision<T>::deinitialize() {
 }
 
 template<typename T>
-DataRepresentation* VolumeRAMPrecision<T>::clone() const {
-    VolumeRAMPrecision* newVolumeRAM = new VolumeRAMPrecision<T>(dimensions_);
-    //TODO:: Copy volume textures if necessary
-    return newVolumeRAM;
+VolumeRAMPrecision<T>* VolumeRAMPrecision<T>::clone() const {
+    return new VolumeRAMPrecision<T>(dimensions_);
 }
 
 template<typename T>

@@ -26,6 +26,9 @@ class IVW_CORE_API DiskRepresentation {
 public:
     DiskRepresentation();
     DiskRepresentation(std::string);
+    DiskRepresentation(const DiskRepresentation& rhs);
+    DiskRepresentation& operator=(const DiskRepresentation& that);
+    virtual DiskRepresentation* clone() const;
     virtual ~DiskRepresentation();
 
     const std::string& getSourceFile() const;

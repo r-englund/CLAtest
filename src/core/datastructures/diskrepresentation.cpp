@@ -20,6 +20,27 @@ DiskRepresentation::DiskRepresentation() : sourceFile_(""), reader_(NULL) {}
 
 DiskRepresentation::DiskRepresentation(std::string srcFile) : sourceFile_(srcFile), reader_(NULL) {}
 
+DiskRepresentation::DiskRepresentation(const DiskRepresentation& rhs) 
+    : sourceFile_(rhs.sourceFile_)
+    , reader_(rhs.reader_->clone()){
+}
+
+DiskRepresentation& DiskRepresentation::operator=(const DiskRepresentation& that) {
+    if(this != &that) {
+        sourceFile_ = that.sourceFile_;
+        if(reader_) {
+            delete reader_;
+            reader_ = NULL;
+        }
+        reader_ = that.reader_->clone();
+    }
+    return *this;
+}
+
+DiskRepresentation* DiskRepresentation::clone() const {
+    return new DiskRepresentation(*this);
+}
+
 DiskRepresentation::~DiskRepresentation(){
     if(reader_){
         delete reader_;

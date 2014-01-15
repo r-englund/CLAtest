@@ -28,10 +28,16 @@ ImageRAM::ImageRAM(const ImageRAM& rhs)
     update(true);
 }
 
-DataRepresentation* ImageRAM::clone() const{
+ImageRAM* ImageRAM::clone() const {
     return new ImageRAM(*this);
 }
-
+ImageRAM& ImageRAM::operator=(const ImageRAM& that) {
+    if(this != &that) {
+        ImageRepresentation::operator=(that);
+        update(true);
+    }
+    return *this;
+}
 ImageRAM::~ImageRAM() {
     ImageRAM::deinitialize();
 }  
@@ -126,5 +132,7 @@ const LayerRAM* ImageRAM::getDepthLayerRAM() const {
 const LayerRAM* ImageRAM::getPickingLayerRAM() const {
     return pickingLayerRAM_;
 }
+
+
 
 } // namespace

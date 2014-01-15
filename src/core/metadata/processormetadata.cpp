@@ -17,8 +17,7 @@
 namespace inviwo {
 
 ProcessorMetaData::ProcessorMetaData() : CompositeMetaData() {
-    visiblityMetaData_.set(true);
-    addMetaData(positionMetaData_);
+    visiblityMetaData_.set(true);                             addMetaData(positionMetaData_);
     addMetaData(visiblityMetaData_);
 }
 

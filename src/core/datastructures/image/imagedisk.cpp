@@ -20,6 +20,19 @@ namespace inviwo {
 ImageDisk::ImageDisk()
     : ImageRepresentation(){}
 
+ImageDisk::ImageDisk(const ImageDisk& rhs) 
+    : ImageRepresentation(rhs){
+}
+ImageDisk& ImageDisk::operator=(const ImageDisk& that) {
+    if(this != &that) {
+        ImageRepresentation::operator=(that);
+    }
+    return *this;
+}
+ImageDisk* ImageDisk::clone() const {
+    return new ImageDisk(*this);
+}
+
 ImageDisk::~ImageDisk() {
 }
 
@@ -28,16 +41,6 @@ void ImageDisk::initialize(){
 
 void ImageDisk::deinitialize() {}
 
-/*void ImageDisk::resize(uvec2 dimensions){        
-} */
-
-ImageDisk* ImageDisk::clone() const {
-    //TODO: move to copyconstructor
-    //ImageDisk* imageDiskClone = new ImageDisk(getSourceFile());
-    //imageDiskClone->resize(getDimension());
-    //return imageDiskClone;
-    return NULL;
-}
 
 std::string ImageDisk::getClassName() const { 
      return "ImageDisk"; 

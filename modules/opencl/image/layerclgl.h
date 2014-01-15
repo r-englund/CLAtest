@@ -40,7 +40,7 @@ public:
     virtual std::string getClassName() const { return "LayerCLGL"; }
     virtual void initialize(){};
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual LayerCLGL* clone() const;
     
     void initialize(Texture2D* texture);
 

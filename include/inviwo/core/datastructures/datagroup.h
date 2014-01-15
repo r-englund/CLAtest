@@ -46,6 +46,8 @@ public:
     virtual DataGroup* clone() const = 0;
     virtual ~DataGroup();
 
+    void deinitialize();
+
     //Representations
     template<typename T>
     const T* getRepresentation() const;

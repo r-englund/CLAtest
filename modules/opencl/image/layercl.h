@@ -31,7 +31,7 @@ public:
     virtual std::string getClassName() const { return "LayerCL"; }
     virtual void initialize(){};
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual LayerCL* clone() const;
     
     void initialize(const void* texels);
     void upload(const void* data);

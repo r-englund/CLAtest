@@ -29,8 +29,11 @@ friend class Layer;
 
 public:
     LayerRepresentation(uvec2 dimensions = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataVec4UINT8::get());
+    LayerRepresentation(const LayerRepresentation& rhs);
+    LayerRepresentation& operator=(const LayerRepresentation& that);
+    virtual LayerRepresentation* clone() const = 0;
     virtual ~LayerRepresentation();
-    virtual DataRepresentation* clone() const = 0;
+    
     virtual std::string getClassName() const { return "LayerRepresentation"; }
     virtual void performOperation(DataOperation*) const {};
     virtual void resize(uvec2 dimensions);

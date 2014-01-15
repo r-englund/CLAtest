@@ -22,6 +22,17 @@ LayerRAM::LayerRAM(uvec2 dimension, LayerType type, const DataFormatBase* format
     : LayerRepresentation(dimension, type, format), data_(NULL){
 }
 
+LayerRAM::LayerRAM(const LayerRAM& rhs) 
+    : LayerRepresentation(rhs) {
+}
+
+LayerRAM& LayerRAM::operator=(const LayerRAM& that) {
+    if(this != &that) {
+        LayerRepresentation::operator=(that);
+    }
+    return *this;
+}
+
 LayerRAM::~LayerRAM() {
 }
 

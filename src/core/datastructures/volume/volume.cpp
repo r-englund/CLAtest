@@ -19,17 +19,23 @@ namespace inviwo {
 
 Volume::Volume(uvec3 dimensions, const DataFormatBase* format) : Data(format), StructuredGridMetaData<3>(dimensions) {}
 
-Volume::Volume(const Volume& rhs) : Data(rhs), StructuredGridMetaData<3>(rhs.getDimension()) {}
+Volume::Volume(const Volume& rhs) : Data(rhs), StructuredGridMetaData<3>(rhs) {}
 
 Volume::Volume(VolumeRepresentation* in) : Data(in->getDataFormat()), StructuredGridMetaData<3>(in->getDimension()) {
     addRepresentation(in);
 }
 
-Volume::~Volume() {}
-
+Volume& Volume::operator=(const Volume& that) {
+    if(this != &that) {
+        Data::operator=(that);
+        StructuredGridMetaData<3>::operator=(that);
+    }
+    return *this;
+}
 Volume* Volume::clone() const {
     return new Volume(*this);
 }
+Volume::~Volume() {}
 
 uvec3 Volume::getDimension() const{
     return StructuredGridMetaData<3>::getDimension();

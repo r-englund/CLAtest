@@ -29,14 +29,15 @@ public:
     DataRepresentation();
     DataRepresentation(const DataFormatBase* format);
     DataRepresentation(const DataRepresentation& rhs);
-    virtual ~DataRepresentation();
-    virtual void performOperation(DataOperation*) const = 0;
-
+    DataRepresentation& operator=(const DataRepresentation& that);
     virtual DataRepresentation* clone() const = 0;
+    virtual ~DataRepresentation();
+
     virtual std::string getClassName() const;
     const DataFormatBase* getDataFormat() const;
     std::string getDataFormatString() const;
     DataFormatId getDataFormatId() const;
+    virtual void performOperation(DataOperation*) const = 0;
 
 protected:
     void setDataFormat(const DataFormatBase* format);

@@ -28,9 +28,10 @@ public:
     Volume(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataUINT8::get());
     Volume(const Volume&);
     Volume(VolumeRepresentation*);
-
+    Volume& operator=(const Volume& that);
+    virtual Volume* clone() const;
     virtual ~Volume();
-    virtual Volume* clone() const;        
+       
     
     uvec3 getDimension() const;
     void setDimension(const uvec3& dim);

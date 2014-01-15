@@ -30,7 +30,7 @@ public:
     virtual ~MeshGL();
     virtual void initialize();
     virtual void deinitialize();
-    virtual DataRepresentation* clone() const;
+    virtual MeshGL* clone() const;
 
     void enable() const;
     void disable() const;

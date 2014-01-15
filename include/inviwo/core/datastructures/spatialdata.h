@@ -206,14 +206,16 @@ template <unsigned int N>
 class SpatialMetaData : public MetaDataOwner {
 public:
     SpatialMetaData();
-    SpatialMetaData(const SpatialMetaData&);
+    SpatialMetaData(const SpatialMetaData<N>&);
     SpatialMetaData(const Vector<N,float>& offset);
     SpatialMetaData(const Matrix<N,float>& basis);
     SpatialMetaData(const Matrix<N+1,float>& mat);
     SpatialMetaData(const Matrix<N,float>& basis, const Vector<N,float>& offset);
 
-    virtual ~SpatialMetaData();
+    SpatialMetaData<N>& operator=(const SpatialMetaData<N>& that);
     virtual SpatialMetaData<N>* clone() const = 0;
+    virtual ~SpatialMetaData();
+    
 
     Vector<N,float> getOffset() const;
     void setOffset(const Vector<N,float>& offset);
@@ -248,8 +250,12 @@ public:
         const Vector<N,float>& offset, 
         const Vector<N, unsigned int>& dimension);
 
-    virtual ~StructuredGridMetaData(){}
+    StructuredGridMetaData(const StructuredGridMetaData<N>& rhs);
+    StructuredGridMetaData<N>& operator=(const StructuredGridMetaData<N>& that);
     virtual StructuredGridMetaData<N>* clone() const = 0;
+
+    virtual ~StructuredGridMetaData(){}
+    
 
     Vector<N, unsigned int> getDimension() const;
     void setDimension(const Vector<N, unsigned int>& dimension);
@@ -265,7 +271,9 @@ protected:
 /*---------------------------------------------------------------*/
 
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData() : transformer_(NULL) {
+SpatialMetaData<N>::SpatialMetaData() 
+    :   MetaDataOwner()
+    ,   transformer_(NULL) {
     Vector<N,float> offset(-1.0f);
     Matrix<N,float> basis(2.0f);
     setBasis(basis);
@@ -273,35 +281,58 @@ SpatialMetaData<N>::SpatialMetaData() : transformer_(NULL) {
     initTransformer();
 }
 
-template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const SpatialMetaData& rhs) : transformer_(NULL){
-     initTransformer();
-}
+
 
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const Vector<N,float>& offset) : transformer_(NULL) {
+SpatialMetaData<N>::SpatialMetaData(const Vector<N,float>& offset) 
+    : MetaDataOwner()
+    , transformer_(NULL) {
     Matrix<N,float> basis(2.0f);
     setBasis(basis);
     setOffset(offset);
     initTransformer();
 }
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const Matrix<N,float>& basis) : transformer_(NULL) {
+SpatialMetaData<N>::SpatialMetaData(const Matrix<N,float>& basis) 
+    : MetaDataOwner()
+    , transformer_(NULL) {
     Vector<N,float> offset(-1.0f);
     setBasis(basis);
     setOffset(offset);
     initTransformer();
 }
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const Matrix<N+1,float>& mat) : transformer_(NULL) {
+SpatialMetaData<N>::SpatialMetaData(const Matrix<N+1,float>& mat) 
+    : MetaDataOwner()
+    , transformer_(NULL) {
     setBasisAndOffset(mat);
     initTransformer();
 }
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const Matrix<N,float>& basis, const Vector<N,float>& offset) : transformer_(NULL) {
+SpatialMetaData<N>::SpatialMetaData(const Matrix<N,float>& basis, const Vector<N,float>& offset) 
+    : MetaDataOwner()
+    , transformer_(NULL) {
     setBasis(basis);
     setOffset(offset);
     initTransformer();
+}
+template <unsigned int N>
+SpatialMetaData<N>::SpatialMetaData(const SpatialMetaData<N>& rhs)
+    : MetaDataOwner(rhs)
+    , transformer_(NULL) {
+    initTransformer();
+}
+
+template <unsigned int N>
+SpatialMetaData<N>& SpatialMetaData<N>::operator=(const SpatialMetaData<N>& that) {
+    if(this != &that) {
+        MetaDataOwner::operator=(that);
+        if(transformer_) {
+            delete transformer_;
+        }
+        initTransformer();
+    }
+    return *this;
 }
 
 template <unsigned int N>
@@ -434,6 +465,20 @@ StructuredGridMetaData<N>::StructuredGridMetaData(const Matrix<N,float>& basis,
     : SpatialMetaData<N>(basis, offset) {
     setDimension(dimension);
 }
+
+template <unsigned int N>
+StructuredGridMetaData<N>::StructuredGridMetaData(const StructuredGridMetaData<N>& rhs)
+    : SpatialMetaData<N>(rhs){
+}
+
+template <unsigned int N>
+StructuredGridMetaData<N>& StructuredGridMetaData<N>::operator=(const StructuredGridMetaData<N>& that) {
+    if(this != &that) {
+        SpatialMetaData<N>::operator=(that);
+    }
+    return *this;
+}
+
 
 template <unsigned int N>
 void StructuredGridMetaData<N>::initTransformer(){
