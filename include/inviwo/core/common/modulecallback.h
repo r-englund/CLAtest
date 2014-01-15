@@ -12,7 +12,7 @@
  *
  **********************************************************************/
 
-#ifndef IVW_MODULECALLBACK
+#ifndef IVW_MODULECALLBACK_H
 #define IVW_MODULECALLBACK_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
