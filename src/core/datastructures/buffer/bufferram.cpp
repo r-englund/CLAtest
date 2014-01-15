@@ -37,13 +37,18 @@ BufferRAM::~BufferRAM() {
 }
 
 void BufferRAM::initialize(){
-    //data_ = NULL;
 }
 
 void BufferRAM::deinitialize(){
     // Make sure that data is deinitialized in
     // child class (should not delete void pointer 
     // since destructor will not be called for object).
+}
+
+void BufferRAM::setSize(size_t size) {  
+    size_ = size; 
+    deinitialize(); 
+    initialize(); 
 }
 
 void BufferRAM::resize( size_t size ){

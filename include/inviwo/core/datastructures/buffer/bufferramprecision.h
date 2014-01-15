@@ -27,9 +27,7 @@ public:
     BufferRAMPrecision(const BufferRAMPrecision<T>& rhs);
     BufferRAMPrecision<T>& operator=(const BufferRAMPrecision<T>& rhs) {
         if (this != &rhs) {
-            
             size_ = rhs.getSize();
-
             initialize();
             memcpy(data_, rhs.getData(), size_*sizeof(T));
         }
@@ -95,25 +93,18 @@ BufferRAMPrecision<T>::BufferRAMPrecision(size_t size, const DataFormatBase* for
     ,data_(0){
     initialize();
 }
-template<typename T>
-BufferRAMPrecision<T>::BufferRAMPrecision(T* data, size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage) : 
-    BufferRAM(size, format, type, usage)
-    ,data_(0) {
-    initialize(data);
-}
 
 template<typename T>
 BufferRAMPrecision<T>::BufferRAMPrecision(const BufferRAMPrecision<T>& rhs) : 
     BufferRAM(rhs)
     ,data_(0) {
-    initialize(rhs.data_->data());
+    initialize();
+    *data_ = *(rhs.data_);
 }
 
 template<typename T>
 void BufferRAMPrecision<T>::initialize() {
     initialize(NULL);
-    //data_->resize(size_);
-    //data_ = new T[size_];
 }
 
 template<typename T>
@@ -122,19 +113,16 @@ void BufferRAMPrecision<T>::initialize(void* data) {
         delete data_;
     if (data == NULL) {
         data_ = new std::vector<T>(size_);
-        //data_ = new T[size_];
-    } else {
+    } 
+    else {
         data_ = new std::vector<T>(static_cast<T*>(data), static_cast<T*>(data)+size_);
-        //data_ = data;
     }
 }
 
 template<typename T>
-void inviwo::BufferRAMPrecision<T>::deinitialize()
-{
+void inviwo::BufferRAMPrecision<T>::deinitialize(){
     if(data_) {
         delete data_;
-        //delete[] static_cast<T*>(data_);
         data_ = NULL;
     }
 }

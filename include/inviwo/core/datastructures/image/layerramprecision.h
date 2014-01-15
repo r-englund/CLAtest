@@ -38,7 +38,7 @@ public:
     }
     LayerRAMPrecision<T>& operator=(const LayerRAMPrecision<T>& rhs) {
         if (this != &rhs) {
-            LayerRAM::operator=(that);
+            LayerRAM::operator=(rhs);
             delete[] data_;
             initialize();
             memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*sizeof(T));

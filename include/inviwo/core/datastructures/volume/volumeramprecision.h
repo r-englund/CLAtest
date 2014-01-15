@@ -30,13 +30,13 @@ public:
         initialize(0);
         memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
     }
-    VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& that) {
-        if(this != &that) {
-            VolumeRAM::operator=(that);
+    VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& rhs) {
+        if(this != &rhs) {
+            VolumeRAM::operator=(rhs);
             delete[] data_;
-            dimensions_ = that.getDimension();
+            dimensions_ = rhs.getDimension();
             initialize(0);
-            memcpy(data_, that.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
+            memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
         }
         return *this;
     };

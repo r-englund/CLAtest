@@ -35,13 +35,11 @@ public:
 
     virtual std::string getClassName() const { return "BufferRAM"; }
 
-    virtual void setSize(size_t size) {  size_ = size; deinitialize(); initialize(); }
+    virtual void setSize(size_t size);
     virtual void resize(size_t size);
 
     virtual void* getData() = 0; 
     virtual const void* getData() const = 0;
-    //virtual void* getData() {return data_;};
-    //virtual const void* getData() const {return data_;};
 
     virtual void setValueFromSingleFloat(size_t index, float val) = 0;
     virtual void setValueFromVec2Float(size_t index, vec2 val) = 0;
@@ -52,15 +50,6 @@ public:
     virtual vec2 getValueAsVec2Float(size_t index) const = 0;
     virtual vec3 getValueAsVec3Float(size_t index) const = 0;
     virtual vec4 getValueAsVec4Float(size_t index) const = 0;
-
-    // Takes ownership of data pointer
-    //void setData(void* data) {
-    //    deinitialize();
-    //    data_ = data;
-    //}
-    
-protected:
-    //void* data_;
 };
 
 /**
