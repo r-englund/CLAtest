@@ -26,21 +26,23 @@ LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent)
     , maxBefore_(0)
     , maxAfter_(0)
     , focusOut_(false)
-    , orgText_(""){
+    , orgText_("")
+{
+    font().setPixelSize(4);
 }
 
 LabelGraphicsItem::~LabelGraphicsItem() {}
 
 QString LabelGraphicsItem::text() const{
-    if(isCropped())
+    if (isCropped())
         return orgText_;
     else
         return toPlainText();
 }
 
 void LabelGraphicsItem::setText(const QString &str){
-    if(doCrop(str)){
-        if(toolTip()==orgText_)
+    if (doCrop(str)) {
+        if (toolTip()==orgText_)
             setToolTip(str);
         orgText_ = str;
         setPlainText(str.left(maxBefore_) + "..." + str.right(maxAfter_));

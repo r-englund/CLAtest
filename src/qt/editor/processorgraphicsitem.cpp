@@ -36,6 +36,11 @@ static const int height = 50;
 static const int roundedCorners = 9;
 static const int labelHeight = 8;
 
+int pointSizeToPixelSize(const int pointSize) {
+    // compute pixel size by assuming 96 dpi as basis
+    return ((pointSize * 4) / 3);
+}
+
 ProcessorGraphicsItem::ProcessorGraphicsItem()
     : ProcessorObserver(), processor_(0) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
@@ -51,20 +56,23 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     nameLabel_->setCrop(8,7);
     nameLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight);
     nameLabel_->setDefaultTextColor(Qt::white);
-    nameLabel_->setFont(QFont("Segoe", labelHeight, QFont::Black, false));
+    QFont nameFont("Segoe", labelHeight, QFont::Black, false);
+    nameFont.setPixelSize(pointSizeToPixelSize(labelHeight));
+    nameLabel_->setFont(nameFont);
     addObservation(nameLabel_);
 
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setCrop(8,7);
     classLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight*2.5);
     classLabel_->setDefaultTextColor(Qt::lightGray);
-    classLabel_->setFont(QFont("Segoe", labelHeight, QFont::Normal, true));
+    QFont classFont("Segoe", labelHeight, QFont::Normal, true);
+    classFont.setPixelSize(pointSizeToPixelSize(labelHeight));
+    classLabel_->setFont(classFont);
 
     progressBarTimer_.start();
 }
 
-ProcessorGraphicsItem::~ProcessorGraphicsItem() {
-}
+ProcessorGraphicsItem::~ProcessorGraphicsItem() {}
 
 void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     processor_ = processor;

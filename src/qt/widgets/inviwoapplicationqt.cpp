@@ -34,7 +34,7 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
                                        InviwoApplication(argc, argv, displayName, basePath)  
 {
     QCoreApplication::setOrganizationName("Inviwo");
-    //QCoreApplication::setOrganizationDomain("inviwo.org");
+    QCoreApplication::setOrganizationDomain("inviwo.org");
     QCoreApplication::setApplicationName(displayName.c_str());
 
     // initialize singletons
