@@ -76,6 +76,10 @@ InviwoModule::~InviwoModule() {
         delete resources_[i];
     resources_.clear();
 
+    for (size_t i=0; i<renderers_.size(); i++)
+        delete renderers_[i];
+    renderers_.clear();
+
 
 
     for (size_t i=0; i<moduleSettings_.size(); i++)
