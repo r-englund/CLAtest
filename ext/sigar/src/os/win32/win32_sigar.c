@@ -1858,13 +1858,13 @@ SIGAR_DECLARE(int) sigar_file_system_list_get(sigar_t *sigar,
         SIGAR_SSTRCPY(fsp->dir_name, ptr);
         SIGAR_SSTRCPY(fsp->dev_name, ptr);
 
-        if ((drive_type == DRIVE_REMOTE) && sigar_WNetGetConnection) {
+        /*if ((drive_type == DRIVE_REMOTE) && sigar_WNetGetConnection) {
             DWORD len = sizeof(fsp->dev_name);
-            char drive[3] = {'\0', ':', '\0'}; /* e.g. "X:" w/o trailing "\" */
+            char drive[3] = {'\0', ':', '\0'}; // e.g. "X:" w/o trailing "\"
             drive[0] = fsp->dir_name[0];
             sigar_WNetGetConnection(drive, fsp->dev_name, &len);
-            /* ignoring failure, leaving dev_name as dir_name */
-        }
+            // ignoring failure, leaving dev_name as dir_name
+        }*/
 
         /* we set fsp->type, just looking up sigar.c:fstype_names[type] */
         sigar_fs_type_get(fsp);

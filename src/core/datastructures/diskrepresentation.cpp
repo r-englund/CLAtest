@@ -23,6 +23,7 @@ DiskRepresentation::DiskRepresentation(std::string srcFile) : sourceFile_(srcFil
 DiskRepresentation::~DiskRepresentation(){
     if(reader_){
         delete reader_;
+        reader_ = NULL;
     }
 }
 

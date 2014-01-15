@@ -51,7 +51,7 @@ void VolumeBasisTransformer::process() {
     if (inport_.hasData()) {
         const Volume* in = inport_.getData();
 
-        /*if (orgBasisAndOffset_ != in->getBasisAndOffset()) {
+        if (orgBasisAndOffset_ != in->getBasisAndOffset()) {
             orgBasisAndOffset_ = in->getBasisAndOffset();
 
             vec3 a(orgBasisAndOffset_[0]);
@@ -66,7 +66,7 @@ void VolumeBasisTransformer::process() {
             lengths_.set(vec3(glm::length(a),glm::length(b),glm::length(c)));
             angels_.set(vec3(alpha, beta, gamma));
             offset_.set(offset);
-        }*/
+        }
 
         // TODO: This should be changed to make some kind of shallow copy of the representations
         // and update if the inport changes the representations
@@ -78,7 +78,7 @@ void VolumeBasisTransformer::process() {
             outport_.setData(out);
         }
 
-        /*float a = lengths_.get()[0];
+        float a = lengths_.get()[0];
         float b = lengths_.get()[1];
         float c = lengths_.get()[2];
         vec3 offset = offset_.get();
@@ -95,7 +95,7 @@ void VolumeBasisTransformer::process() {
             0.0f, 0.0f,              c*v/std::sin(gamma),                                                offset[2],
             0.0f, 0.0f,              0.0f,                                                               1.0f
             );
-        out->setBasisAndOffset(glm::transpose(newBasisAndOffset));*/
+        out->setBasisAndOffset(glm::transpose(newBasisAndOffset));
 
     }
 }
