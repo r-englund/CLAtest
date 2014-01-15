@@ -16,49 +16,53 @@
 
 namespace inviwo {
 
-bool SimpleLinkCondition::canLink(Property* src, Property *dst) {
+bool SimpleCondition::canLink(Property* src, Property *dst) {
     if (*src == *dst) return true;
 	return false;
 }
 
-bool AutoLinkCondition::canLink(Property* src, Property *dst) {
+bool PartiallyMatchingIdCondition::canLink(Property* src, Property *dst) {
+    bool canLink = false;
+    
+    //conversion to lower case
+    std::string srcIdentifier = src->getIdentifier();
+    std::transform(srcIdentifier.begin(), srcIdentifier.end(), srcIdentifier.begin(), tolower);
+
+    std::string dstIdentifier = dst->getIdentifier();
+    std::transform(dstIdentifier.begin(), dstIdentifier.end(), dstIdentifier.begin(), tolower);
+
+    std::string srcClassName = src->getClassName();
+    std::transform(srcClassName.begin(), srcClassName.end(), srcClassName.begin(), tolower);
+
+    std::string dstClassName = dst->getClassName();
+    std::transform(dstClassName.begin(), dstClassName.end(), dstClassName.begin(), tolower);
+
+    //does class name occurs in identifiers
+    if (srcIdentifier.find(dstClassName)!=std::string::npos &&
+        dstIdentifier.find(srcClassName)!=std::string::npos)
+        canLink = true;
+
+    //does identifier occur in other identifier
+    if (srcIdentifier.find(dstIdentifier)!=std::string::npos ||
+        dstIdentifier.find(srcIdentifier)!=std::string::npos)
+        canLink = true;   
+
+    return canLink;
+}
+
+bool AutoLinker::canLink(Property* src, Property *dst, LinkingConditions givenConditions) {
+    int satisfiedConditions = 0;
+
     //does properties have same class names
-    if (SimpleLinkCondition::canLink(src, dst)) 
+    if ( (givenConditions&LinkMatchingTypes) && SimpleCondition::canLink(src, dst)) 
+        satisfiedConditions |= ((int) LinkMatchingTypes);
+
+    //does partially matching identifier strings
+    if ( (givenConditions&LinkMatchingId) && PartiallyMatchingIdCondition::canLink(src, dst)) 
+        satisfiedConditions |= ((int) LinkMatchingId);
+
+    if (givenConditions == satisfiedConditions)
         return true;
-    else {
-		bool canLink = false;
-		//does properties have same identifiers
-		if (src->getIdentifier() == dst->getIdentifier()) {                    
-			canLink = true;
-		}
-		else {
-
-			//conversion to lower case
-			std::string srcIdentifier = src->getIdentifier();
-			std::transform(srcIdentifier.begin(), srcIdentifier.end(), srcIdentifier.begin(), tolower);
-
-			std::string dstIdentifier = dst->getIdentifier();
-			std::transform(dstIdentifier.begin(), dstIdentifier.end(), dstIdentifier.begin(), tolower);
-
-			std::string srcClassName = src->getClassName();
-			std::transform(srcClassName.begin(), srcClassName.end(), srcClassName.begin(), tolower);
-
-			std::string dstClassName = dst->getClassName();
-			std::transform(dstClassName.begin(), dstClassName.end(), dstClassName.begin(), tolower);
-
-			//does class name occurs in identifiers
-			if (srcIdentifier.find(dstClassName)!=std::string::npos &&
-				dstIdentifier.find(srcClassName)!=std::string::npos)
-				canLink = true;
-
-			//does identifier occur in other identifier
-			if (srcIdentifier.find(dstIdentifier)!=std::string::npos ||
-				dstIdentifier.find(srcIdentifier)!=std::string::npos)
-				canLink = true;
-		}   
-			
-		return canLink;
-	}    
 
 	return false;
 }

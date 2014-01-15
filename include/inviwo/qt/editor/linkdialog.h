@@ -277,13 +277,15 @@ private:
 class IVW_QTEDITOR_API CheckableQComboBox : public QComboBox {
 Q_OBJECT
 public:
-    CheckableQComboBox(std::vector<std::string> options);
-    bool isItemChecked(int i);
+    CheckableQComboBox(std::string widgetName, std::vector<std::string> options);
+    bool isItemChecked(int i);  
+    std::vector<std::string> getCheckedItems();
 public slots:
     void onAutoLinkOptionChecked(const QModelIndex&, const QModelIndex&);
 private:
     QStandardItemModel * stdandardModel_;
     std::vector<QStandardItem*> standardItems_;
+    std::string widgetName_;
 };
 
 

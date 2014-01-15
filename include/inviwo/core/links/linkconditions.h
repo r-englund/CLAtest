@@ -20,16 +20,35 @@
 
 namespace inviwo {
 
-class IVW_CORE_API SimpleLinkCondition {
+enum LinkingConditions { NoLinkCondition=0, 
+                         LinkMatchingTypes=1<<1, 
+                         LinkMatchingId=1<<2, 
+                         ApplyAllConditions=~0, 
+                         DefaultLinkingCondition=LinkMatchingTypes
+                       };
+
+
+class IVW_CORE_API SimpleCondition {
 public:
-   SimpleLinkCondition() {}
+   SimpleCondition() {}
    static bool canLink(Property* src, Property *dst);
+   static LinkingConditions conditionType() { return LinkMatchingTypes;}
+   static std::string conditionName() { return "Matching Type";}
 };
 
-class IVW_CORE_API AutoLinkCondition {
+class IVW_CORE_API PartiallyMatchingIdCondition {
 public:
-   AutoLinkCondition() {}
-   static bool canLink(Property* src, Property *dst);  
+    PartiallyMatchingIdCondition() {}
+    static bool canLink(Property* src, Property *dst);
+    static LinkingConditions conditionType() { return LinkMatchingId;}
+    static std::string conditionName() { return "Matching Id";}
+};
+
+class IVW_CORE_API AutoLinker {
+public:
+    AutoLinker() {}
+    static bool canLink(Property* src, Property *dst, LinkingConditions);
+
 };
 
 } // namespace

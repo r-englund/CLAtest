@@ -29,6 +29,8 @@
 #include <QVector2D>
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
+#include <QLineEdit>
+
 
 
 #include <inviwo/qt/editor/linkdialog.h>
@@ -1147,9 +1149,9 @@ void LinkDialog::initDialog() {
     autoLinkPushButtonLayout->addWidget(autoLinkPushButton_, 10);
     //checkable combo box
     std::vector<std::string> options;
-    options.push_back("By Type");
-    options.push_back("By Name");
-    autoLinkOptions_ = new CheckableQComboBox(options);
+    options.push_back(SimpleCondition::conditionName());
+    options.push_back(PartiallyMatchingIdCondition::conditionName());
+    autoLinkOptions_ = new CheckableQComboBox("AutoLink Filter", options);
     autoLinkPushButtonLayout->addWidget(autoLinkOptions_, 20);
     //delete button
     deleteAllLinkPushButton_ = new QPushButton("Delete All", this);
@@ -1185,19 +1187,21 @@ void LinkDialog::clickedAutoLinkPushButton() {
     std::vector<Property*> srcProperties = src_->getProperties();
     std::vector<Property*> dstProperties = dest_->getProperties();
 
-    if (src_->getClassName() == dest_->getClassName()) {
-        //processor of same type can be linked one to one
-        if (srcProperties.size() == dstProperties.size()) {
-            for (size_t i=0; i<srcProperties.size(); i++)
-                if (SimpleLinkCondition::canLink(srcProperties[i], dstProperties[i]))
-                    linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[i], true);            
-            return;
-        }
+    int selectedTypes = (int) NoLinkCondition;
+
+    std::vector<std::string> selectedConditons = autoLinkOptions_->getCheckedItems();
+    for (size_t i=0; i<selectedConditons.size(); i++) {
+
+        if (selectedConditons[i] == SimpleCondition::conditionName())
+            selectedTypes|=SimpleCondition::conditionType();
+
+        if (selectedConditons[i] == PartiallyMatchingIdCondition::conditionName())
+            selectedTypes|=PartiallyMatchingIdCondition::conditionType();
     }
 
     for (size_t i=0; i<srcProperties.size(); i++) {
         for (size_t j=0; j<dstProperties.size(); j++) {
-            if (AutoLinkCondition::canLink(srcProperties[i], dstProperties[j]) )
+            if (AutoLinker::canLink(srcProperties[i], dstProperties[j], (LinkingConditions) selectedTypes) )
                 linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[j], true);
         }
     }
@@ -1208,32 +1212,46 @@ void LinkDialog::clickedDeleteAllLinksPushButton() {
 }
 
 
-CheckableQComboBox::CheckableQComboBox(std::vector<std::string> options) : QComboBox() {
+CheckableQComboBox::CheckableQComboBox(std::string widgetName, std::vector<std::string> options) : QComboBox(),widgetName_(widgetName) {    
+    setEditable(true);
+    lineEdit()->setReadOnly(true);
     stdandardModel_ = new QStandardItemModel (options.size(),1);    
     for (size_t i=0; i<options.size(); i++) {
         QStandardItem* item = new QStandardItem(QString(options[i].c_str()));
         item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled );
-        item->setData(Qt::Unchecked, Qt::CheckStateRole);
-        stdandardModel_->setItem(i, 0, item);  
+        item->setData(Qt::Checked, Qt::CheckStateRole);
+        stdandardModel_->setItem(i, 0, item);
         standardItems_.push_back(item);
-    }
-    setModel(stdandardModel_);    
-    connect(stdandardModel_, SIGNAL(dataChanged ( const QModelIndex&, const QModelIndex&)), this, SLOT(onAutoLinkOptionChecked(const QModelIndex&, const QModelIndex&)));
+    }    
+    setModel(stdandardModel_);
+    lineEdit()->setText(QString(widgetName_.c_str()));
+    connect(stdandardModel_, SIGNAL(dataChanged ( const QModelIndex&, const QModelIndex&)), this, SLOT(onAutoLinkOptionChecked(const QModelIndex&, const QModelIndex&)));    
 }
+
 
 bool CheckableQComboBox::isItemChecked(int i) {
     if (i>(int)standardItems_.size())
         return false;
     QStandardItem* item = standardItems_[i];
-    if(item->checkState() == Qt::Unchecked)
+    if(item->checkState() == Qt::Checked)
         return true;
     return false;
 }
 
-void CheckableQComboBox::onAutoLinkOptionChecked(const QModelIndex& tl, const QModelIndex& br) {
-    int row = tl.row();
-    if (isItemChecked(row)) {}
-    //setCurrentText(standardItems_[row]->text());
+std::vector<std::string> CheckableQComboBox::getCheckedItems() {
+    std::vector<std::string> checkedItemString;
+    for (size_t i=0; i<standardItems_.size(); i++)
+        if (isItemChecked(i))
+            checkedItemString.push_back(standardItems_[i]->text().toLocal8Bit().constData());
+
+    return checkedItemString;
+}
+
+void CheckableQComboBox::onAutoLinkOptionChecked(const QModelIndex& tl, const QModelIndex& br) {    
+    if (isItemChecked(tl.row())) { 
+        //do some maintenance stuff here
+    }
+    lineEdit()->setText(QString(widgetName_.c_str()));
 }
 
 

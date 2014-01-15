@@ -29,7 +29,7 @@ void LinkEvaluator::evaluate(Property* src, Property *dst) {
 }
 
 bool LinkEvaluator::canLink(Property* src, Property *dst) {
-    if (SimpleLinkCondition::canLink(src,dst)) return true;
+    if (SimpleCondition::canLink(src,dst)) return true;
     return canConvert(src->getVariant(), dst->getVariant());
 }
 

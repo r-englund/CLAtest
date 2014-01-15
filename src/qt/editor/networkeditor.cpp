@@ -158,7 +158,7 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
 
                 Property* srcProperty = 0;
                 for (size_t k=0; k<srcProperties.size(); k++) {
-                    if (AutoLinkCondition::canLink(srcProperties[k], dstProperty) &&
+                    if (AutoLinker::canLink(srcProperties[k], dstProperty, DefaultLinkingCondition) &&
                         linkSettings->isLinkable(srcProperties[k]) &&
                         linkSettings->isLinkable(dstProperty)) 
                     {
