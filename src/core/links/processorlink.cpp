@@ -166,16 +166,28 @@ void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endPr
          (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor) ) {
 
             removeBidirectionalPair(startProperty, endProperty);
-
+            PropertyLink* plink = 0;
             for (size_t i=0; i<propertyLinks_.size(); i++) {
-                if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) ) {                        
-                    PropertyLink* plink = propertyLinks_[i];
-                    propertyLinks_.erase(propertyLinks_.begin()+i);
-                    delete plink;
-                    break;
-                }
+                if ( (propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty) )
+                    plink = propertyLinks_[i];                    
             }
+            removePropertyLink(plink);
     }  
+}
+
+void ProcessorLink::removePropertyLink(PropertyLink* plink) {
+    if (!plink) {
+        LogWarn("Invalid property link requested for removal");
+        return;
+    }
+
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        if (plink == propertyLinks_[i] ) {
+            propertyLinks_.erase(propertyLinks_.begin()+i);
+            delete plink;
+            break;
+        }
+    }
 }
 
 PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* endProperty) {

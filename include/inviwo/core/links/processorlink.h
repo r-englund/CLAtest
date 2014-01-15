@@ -46,6 +46,7 @@ public:
 
     void addPropertyLinks(Property* startProperty, Property* endProperty);
     void removePropertyLinks(Property* startProperty, Property* endProperty);
+    void removePropertyLink(PropertyLink* plink);
     void removeBidirectionalPair(Property* startProperty, Property* endProperty);
     std::vector<PropertyLink*> getPropertyLinks() {return propertyLinks_;} 
     PropertyLink* getPropertyLink(Property* startProperty, Property* endProperty);
