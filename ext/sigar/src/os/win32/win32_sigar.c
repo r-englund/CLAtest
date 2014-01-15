@@ -1824,8 +1824,7 @@ SIGAR_DECLARE(int) sigar_file_system_list_get(sigar_t *sigar,
               //SKip network drive, as if network drive is non-responsive then it gets stuck here
               //type = SIGAR_FSTYPE_NETWORK;
               ptr += strlen(ptr)+1;
-            continue;
-              break;
+              continue;
           case DRIVE_CDROM:
             type = SIGAR_FSTYPE_CDROM;
             break;
