@@ -13,11 +13,15 @@
  **********************************************************************/
 
 #include <modules/opengl/buffer/elementbuffergl.h>
-#include <modules/opengl/geometry/meshglrenderer.h>
+#include <modules/opengl/rendering/meshglrenderer.h>
 
 namespace inviwo {
 
 
+
+MeshGLRenderer::MeshGLRenderer(): meshToRender_(NULL) {
+
+}
 
 MeshGLRenderer::MeshGLRenderer( const Mesh* mesh ): meshToRender_(mesh)
 {
@@ -39,7 +43,11 @@ MeshGLRenderer::~MeshGLRenderer()
 
 }
 
-void MeshGLRenderer::render( RenderType rt ) const{
+void MeshGLRenderer::render() {
+    render(NOT_SPECIFIED);
+}
+
+void MeshGLRenderer::render(RenderType rt) {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();    
     (this->*drawMethods_[rt].drawFunc)(rt);

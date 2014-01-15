@@ -18,7 +18,7 @@
 namespace inviwo {
 
 ImageCLGL::ImageCLGL()
-    : ImageRepresentation()
+    : ImageRepresentation(), layerCLGL_(NULL)
 {}
 
 ImageCLGL::ImageCLGL(const ImageCLGL& rhs )
@@ -43,7 +43,7 @@ LayerCLGL* ImageCLGL::getLayerCLGL(){
 }
 
 const LayerCLGL* ImageCLGL::getLayerCLGL() const {
-    return layerCLGLConst_;
+    return layerCLGL_;
 }
 
 bool ImageCLGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
@@ -57,13 +57,21 @@ bool ImageCLGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const
 void ImageCLGL::update(bool editable) {
     //TODO: Convert more then just first color layer
     layerCLGL_ = NULL;
-    layerCLGLConst_ = NULL;
     if(editable){
         layerCLGL_ = owner_->getColorLayer()->getEditableRepresentation<LayerCLGL>();
     }
     else{
-        layerCLGLConst_ = owner_->getColorLayer()->getRepresentation<LayerCLGL>();
+        layerCLGL_ = const_cast<LayerCLGL*>(owner_->getColorLayer()->getRepresentation<LayerCLGL>());
     }
 }
 
 } // namespace
+
+namespace cl {
+
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCLGL& value) {
+    return setArg(index, value.getLayerCLGL()->get());
+}
+
+} // namespace cl

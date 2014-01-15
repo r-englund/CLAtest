@@ -19,8 +19,10 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/rendering/geometryrenderer.h>
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/processorgl.h>
+#include <vector>
 
 namespace inviwo {
 
@@ -39,6 +41,8 @@ protected:
 
     CameraProperty camera_;
     ButtonProperty centerViewOnGeometry_;
+
+    std::vector<GeometryRenderer*> renderers_;
 };
 
 } // namespace

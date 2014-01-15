@@ -82,7 +82,7 @@ void sampleLights(__global LightSource const * __restrict lightSources, const in
 
         *power = lightSource.radiance / *pdf;
     } 
-    else if (lightSource.type == LIGHT_DIRECTIONAL || lightSource.type == LIGHT_AREA ) {
+    else if (lightSource.type == LIGHT_DIRECTIONAL) {
 
             float3 localOrigin = (float3)(lightSource.size*(-0.5f+uv), 0.f); 
             

@@ -15,7 +15,8 @@
 #include "geometryrenderprocessorgl.h"
 #include <modules/opengl/geometry/geometrygl.h>
 #include <inviwo/core/interaction/trackball.h>
-#include <modules/opengl/geometry/meshglrenderer.h>
+#include <inviwo/core/rendering/geometryrendererfactory.h>
+#include <modules/opengl/rendering/meshglrenderer.h>
 
 namespace inviwo {
 
@@ -42,6 +43,23 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 }
 
 void GeometryRenderProcessorGL::process() {
+    std::vector<const Geometry*> geometries = inport_.getData();
+    std::vector<GeometryRenderer*>::iterator renIt = renderers_.begin();
+    for (std::vector<const Geometry*>::const_iterator it = geometries.begin(), endIt = geometries.end(); it != endIt; ++it, ++renIt) {
+        const Geometry* geom = *it;
+        if (renIt == renderers_.end()) {
+            GeometryRenderer *renderer = GeometryRendererFactory::getPtr()->create(geom);
+            // Do not render if no renderer exist for this geometry
+            if (renderer != NULL)
+                renderers_.push_back(renderer);
+            // Assign iterator to last element
+            renIt = --renderers_.end();
+        } else if (geom != (*renIt)->getGeometry()) {
+            // The geometry changed. Create a new renderer for it
+            delete *renIt;
+            *renIt = GeometryRendererFactory::getPtr()->create(geom);
+        }
+    }
     glEnable(GL_CULL_FACE); 
 
     glMatrixMode(GL_MODELVIEW);
@@ -54,14 +72,9 @@ void GeometryRenderProcessorGL::process() {
     activateAndClearTarget(outport_);
     glCullFace(GL_BACK);
 
-	std::vector<const Geometry*> geometries = inport_.getData();
-	for (std::vector<const Geometry*>::const_iterator it = geometries.begin(), endIt = geometries.end(); it != endIt; ++it) {
-		const Geometry* geom = *it;
-		if (const Mesh* mesh = dynamic_cast<const Mesh*>(geom)) {
-			MeshGLRenderer renderer(mesh);
-			renderer.render();
-		}
-	}
+    for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
+        (*it)->render();
+    }
 
     deactivateCurrentTarget();
 

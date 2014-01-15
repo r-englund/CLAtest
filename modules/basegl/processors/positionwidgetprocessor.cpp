@@ -16,7 +16,7 @@
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
-#include <modules/opengl/geometry/meshglrenderer.h>
+#include <modules/opengl/rendering/meshglrenderer.h>
 
 namespace inviwo {
 

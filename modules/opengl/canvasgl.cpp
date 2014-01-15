@@ -17,7 +17,7 @@
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opengl/image/imagegl.h>
 #include <modules/opengl/geometry/attributebuffergl.h>
-#include <modules/opengl/geometry/meshglrenderer.h>
+#include <modules/opengl/rendering/meshglrenderer.h>
 
 namespace inviwo {
 

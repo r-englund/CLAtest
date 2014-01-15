@@ -17,6 +17,7 @@
 #include <modules/opencl/syncclgl.h>
 #include <modules/opencl/image/imagecl.h>
 #include <modules/opencl/image/imageclgl.h>
+#include <modules/opencl/volume/volumecl.h>
 #include <modules/opencl/volume/volumeclgl.h>
 #include <modules/opencl/kernelmanager.h>
 
@@ -88,9 +89,11 @@ void VolumeRaycasterCL::process() {
 
 
     const Volume* volume = volumePort_.getData();
-    const VolumeCLGL* volumeCL = volume->getRepresentation<VolumeCLGL>();
+    //const VolumeCLGL* volumeCL = volume->getRepresentation<VolumeCLGL>();
+    //volumeCL->aquireGLObject();
+    const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
     uvec3 volumeDim = volumeCL->getDimension();
-    volumeCL->aquireGLObject();
+
     const LayerCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
     try
     {
@@ -109,7 +112,7 @@ void VolumeRaycasterCL::process() {
     }
 
     
-    volumeCL->releaseGLObject();
+    //volumeCL->releaseGLObject();
     outImageCL->getLayerCLGL()->releaseGLObject();
     exitCLGL->getLayerCLGL()->releaseGLObject();
     entryCLGL->getLayerCLGL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());

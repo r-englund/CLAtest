@@ -43,9 +43,18 @@ protected:
     virtual void update(bool);
 
     LayerCLGL* layerCLGL_;
-    const LayerCLGL* layerCLGLConst_;
 };
 
 } // namespace
+
+namespace cl {
+
+// Kernel argument specializations for ImageCLGL type
+// Will set the color layer as argument.
+// (enables calling cl::Queue::setArg with ImageCLGL)
+template <>
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCLGL& value);
+
+} // namespace cl
 
 #endif // IVW_IMAGECLGL_H

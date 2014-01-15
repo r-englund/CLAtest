@@ -165,6 +165,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanagerobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/templateresource.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrenderer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrendererfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/callback.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
@@ -324,6 +326,7 @@ set(SOURCE_FILES
     properties/texteditorproperty.cpp
     properties/transferfunctionproperty.cpp
     properties/vectorproperties.cpp
+    rendering/geometryrendererfactory.cpp
     resources/resourcemanager.cpp
     util/assertion.cpp
     util/canvas.cpp

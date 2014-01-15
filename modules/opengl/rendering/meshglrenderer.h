@@ -18,31 +18,39 @@
 #include <modules/opengl/geometry/meshgl.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
+#include <inviwo/core/rendering/geometryrenderer.h>
 #include <vector>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API MeshGLRenderer {
+class IVW_MODULE_OPENGL_API MeshGLRenderer: public GeometryRenderer {
 
 public:
+    MeshGLRenderer();
     MeshGLRenderer(const Mesh* mesh);
     MeshGLRenderer(const Mesh* mesh, Mesh::AttributesInfo);
     MeshGLRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
     virtual ~MeshGLRenderer();
 
-    void render(RenderType = NOT_SPECIFIED) const;
+    virtual void render();
+    virtual void render(RenderType rt);
 
     const MeshGL* getMeshGL() const;
 
     GLenum getDefaultDrawMode();
     GLenum getDrawMode(RenderType, ConnectivityType);
 
+    virtual const Geometry* getGeometry() const { return meshToRender_; }
+
 protected:
+    virtual GeometryRenderer* create(const Geometry* geom) const { return new MeshGLRenderer(static_cast<const Mesh*>(geom)); }
+    virtual bool canRender(const Geometry* geom) const { return dynamic_cast<const Mesh*>(geom) != NULL; }
+
     virtual void initialize(Mesh::AttributesInfo = Mesh::AttributesInfo());
     void initializeIndexBuffer( const Buffer* indexBuffer, Mesh::AttributesInfo ai );
     void renderArray(RenderType) const;
     void renderElements(RenderType) const;
-    void emptyFunc(RenderType rt) const{};
+    void emptyFunc(RenderType rt) const {};
 
     typedef void (MeshGLRenderer::*DrawFunc)(RenderType) const;
     struct DrawMethod{

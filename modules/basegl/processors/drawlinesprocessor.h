@@ -21,7 +21,7 @@
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
-#include <modules/opengl/geometry/meshglrenderer.h>
+#include <modules/opengl/rendering/meshglrenderer.h>
 
 namespace inviwo {
 

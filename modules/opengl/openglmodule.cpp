@@ -24,6 +24,7 @@
 #include <modules/opengl/image/layerglconverter.h>
 #include <modules/opengl/openglmodule.h>
 #include <modules/opengl/openglcapabilities.h>
+#include <modules/opengl/rendering/meshglrenderer.h>
 #include <modules/opengl/volume/volumeglconverter.h>
 
 namespace inviwo {
@@ -36,6 +37,8 @@ OpenGLModule::OpenGLModule() :
 
     ShaderManager::init();
     ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opengl/glsl");
+
+    registerRenderer(new MeshGLRenderer());
 
     registerRepresentationConverter(new LayerRAM2GLConverter());
     registerRepresentationConverter(new LayerGL2RAMConverter());

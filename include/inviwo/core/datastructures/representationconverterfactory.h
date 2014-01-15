@@ -23,8 +23,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API RepresentationConverterFactory : public Factory, 
-                                                    public Singleton<RepresentationConverterFactory>  {
+class IVW_CORE_API RepresentationConverterFactory : public Singleton<RepresentationConverterFactory>  {
 
 public:
     RepresentationConverterFactory();

@@ -17,7 +17,7 @@
 namespace inviwo {
 
 ImageCL::ImageCL()
-    : ImageRepresentation(){}
+    : ImageRepresentation(), layerCL_(NULL) {}
 
 ImageCL::ImageCL(const ImageCL& rhs )
     : ImageRepresentation(rhs){}

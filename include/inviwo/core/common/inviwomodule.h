@@ -27,6 +27,7 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/processorfactoryobject.h>
 #include <inviwo/core/properties/property.h>
+#include <inviwo/core/rendering/geometryrenderer.h>
 #include <inviwo/core/resources/resource.h>
 #include <inviwo/core/util/capabilities.h>
 
@@ -54,6 +55,7 @@ public:
     const std::vector<ProcessorFactoryObject*>& getProcessors() const;
     const std::vector< std::pair<std::string, ProcessorWidget*> >& getProcessorWidgets() const;
     const std::vector<Property*>& getProperties() const;
+    const std::vector<GeometryRenderer*>& getRenderers() const;
     const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
     const std::vector<Resource*>& getResources() const;
     const std::vector<Settings*>& getSettings() const;
@@ -77,6 +79,7 @@ protected:
     void registerProcessorObject(ProcessorFactoryObject* processor);
     void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
     void registerProperty(Property* property);
+    void registerRenderer(GeometryRenderer* renderer);
     void registerRepresentationConverter(RepresentationConverter* representationConverter);
     void registerResource(Resource* resource);
     void registerSettings(Settings* settings);
@@ -104,6 +107,7 @@ private:
     std::vector<ProcessorFactoryObject*> processors_;
     std::vector< std::pair<std::string, ProcessorWidget*> > processorWidgets_;
     std::vector<Property*> properties_;
+    std::vector<GeometryRenderer*> renderers_;
     std::vector<RepresentationConverter*> representationConverters_;
     std::vector<Resource*> resources_;
 

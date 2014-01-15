@@ -110,7 +110,9 @@ typedef struct {
 // Transform a BaseLightSource to PhotonLightSourceCL 
 IVW_CORE_API PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale);
 
-// Calculate how many samples to take from each light source
+// Calculate how many samples to take from each light source. 
+// x component contains the amount of samples to take in x and y dimension
+// y component is the number of samples taken for each light source (x*x)
 IVW_CORE_API uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources);
 
 

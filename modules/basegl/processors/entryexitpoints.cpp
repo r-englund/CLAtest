@@ -14,7 +14,7 @@
 
 #include "entryexitpoints.h"
 #include <modules/opengl/geometry/geometrygl.h>
-#include <modules/opengl/geometry/meshglrenderer.h>
+#include <modules/opengl/rendering//meshglrenderer.h>
 #include <inviwo/core/interaction/trackball.h>
 
 namespace inviwo {
