@@ -1821,8 +1821,11 @@ SIGAR_DECLARE(int) sigar_file_system_list_get(sigar_t *sigar,
             type = SIGAR_FSTYPE_LOCAL_DISK;
             break;
           case DRIVE_REMOTE:
-            type = SIGAR_FSTYPE_NETWORK;
-            break;
+              //SKip network drive, as if network drive is non-responsive then it gets stuck here
+              //type = SIGAR_FSTYPE_NETWORK;
+              ptr += strlen(ptr)+1;
+            continue;
+              break;
           case DRIVE_CDROM:
             type = SIGAR_FSTYPE_CDROM;
             break;
