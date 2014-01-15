@@ -25,7 +25,9 @@ class VolumeRAMPrecision : public VolumeRAM {
 public:
     VolumeRAMPrecision(uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = defaultformat());
     VolumeRAMPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = defaultformat());
-    virtual ~VolumeRAMPrecision() {};
+    virtual ~VolumeRAMPrecision() {
+        deinitialize();
+    };
     VolumeRAMPrecision(const VolumeRAMPrecision<T>& rhs) {
         *this = rhs;
     }
@@ -96,8 +98,7 @@ void VolumeRAMPrecision<T>::initialize(void* data) {
 }
 
 template<typename T>
-void inviwo::VolumeRAMPrecision<T>::deinitialize()
-{
+void inviwo::VolumeRAMPrecision<T>::deinitialize() {
     if(data_) {
         delete[] static_cast<T*>(data_);
         data_ = NULL;
