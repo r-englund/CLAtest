@@ -25,7 +25,7 @@ class IvwSerializable;
 class IVW_CORE_API Factory {
 
 public:
-    ~Factory() {}
+    virtual ~Factory() {}
 
     virtual void initialize()=0;
     virtual void deinitialize()=0;

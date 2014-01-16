@@ -55,7 +55,7 @@ class IVW_CORE_API Logger {
 
 public:
     Logger() {};
-    ~Logger() {};
+    virtual ~Logger() {};
 
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) = 0;
 };
@@ -64,7 +64,7 @@ class IVW_CORE_API ConsoleLogger : public Logger{
 
 public:
     ConsoleLogger();
-    ~ConsoleLogger();
+    virtual ~ConsoleLogger();
 
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
 };

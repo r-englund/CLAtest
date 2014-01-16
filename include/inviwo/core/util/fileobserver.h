@@ -26,7 +26,7 @@ class IVW_CORE_API FileObserver {
 
 public:
     FileObserver();
-    ~FileObserver();
+    virtual ~FileObserver();
 
     void startFileObservation(std::string fileName);
     void stopFileObservation(std::string fileName);
