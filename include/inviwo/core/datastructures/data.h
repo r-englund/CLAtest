@@ -20,6 +20,7 @@
 #include <inviwo/core/datastructures/datarepresentation.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <inviwo/core/metadata/metadatamap.h>
+#include <inviwo/core/metadata/metadataowner.h>
 
 namespace inviwo {
 /** \brief The base class for all data objects.
@@ -40,7 +41,7 @@ namespace inviwo {
  *  3 is needed for the factory pattern, 3 should be implemented using 1.
  *
  */
-class IVW_CORE_API Data {
+class IVW_CORE_API Data : public MetaDataOwner {
 
 public:
     Data();

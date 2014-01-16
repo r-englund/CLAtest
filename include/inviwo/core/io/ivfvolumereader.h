@@ -37,6 +37,7 @@ public:
 
 private:
     std::string rawFile_;
+    bool littleEndian_ = true;
     glm::uvec3 dimension_;
     const DataFormatBase* format_;
 };    

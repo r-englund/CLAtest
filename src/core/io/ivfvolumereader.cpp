@@ -70,10 +70,18 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
     std::string formatFlag("");
     d.deserialize("Format", formatFlag);
     format_ = DataFormatBase::get(formatFlag);
-
+    mat4 basisAndOffset;
+    d.deserialize("BasisAndOffset", basisAndOffset);
+    volume->setBasisAndOffset(basisAndOffset);
+    mat4 worldTransform;
+    d.deserialize("WorldTransform", worldTransform);
+    volume->setWorldTransform(worldTransform);
+    d.deserialize("Dimension", dimension_);
+    volume->setDimension(dimension_);
     volume->getMetaDataMap()->deserialize(d);
-    dimension_ = volume->getDimension();
     
+    littleEndian_ = volume->getMetaData<BoolMetaData>("LittleEndian", littleEndian_);
+
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
     vd->setDataReader(this);
 
@@ -87,6 +95,22 @@ void IvfVolumeReader::readDataInto(void* destination) const{
     if(fin.good()){
         std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
         fin.read((char*)destination, size);
+
+        if(!littleEndian_ && format_->getBytesStored() > 1) {
+            std::size_t bytes = format_->getBytesStored();
+            char* temp = new char[bytes];
+
+            for(std::size_t i = 0; i < size; i += bytes) {
+                for(std::size_t j = 0; j < bytes; j++) {
+                    temp[j] = static_cast<char*>(destination)[i + j];
+                }
+                for(std::size_t j = 0; j < bytes; j++) {
+                    static_cast<char*>(destination)[i + j] = temp[bytes - j - 1];
+                }
+            }
+            delete temp;
+        }
+
     }else{
         throw DataReaderException("Error: Could not read from raw file: " + rawFile_);
     }

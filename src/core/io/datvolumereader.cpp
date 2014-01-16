@@ -88,6 +88,13 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         if (key == "objectfilename" || key == "rawfile") {
             ss >> rawFile_;
             rawFile_ = fileDirectory + rawFile_;
+        } else if(key == "byteorder") {
+            std::string type;
+            ss >> type;
+            transform(type.begin(), type.end(), type.begin(), (int(*)(int))tolower);
+            if(type == "bigendian") {
+                littleEndian_ = false;
+            }
         }else if (key == "resolution" || key == "dimension" ) {
             ss >> dimension_.x;
             ss >> dimension_.y;
@@ -183,7 +190,22 @@ void DatVolumeReader::readDataInto(void* destination) const {
     std::fstream fin(rawFile_.c_str(), std::ios::in | std::ios::binary);
     if(fin.good()){
         std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
-        fin.read((char*)destination, size);
+        fin.read(static_cast<char*>(destination), size);
+
+        if(!littleEndian_ && format_->getBytesStored()>1) {
+            std::size_t bytes = format_->getBytesStored();
+            char* temp = new char[bytes];
+
+            for(std::size_t i = 0; i < size; i += bytes) {
+                for(std::size_t j = 0; j < bytes; j++) {
+                    temp[j] = static_cast<char*>(destination)[i + j];
+                }
+                for(std::size_t j = 0; j < bytes; j++) {
+                    static_cast<char*>(destination)[i + j] = temp[bytes - j - 1];
+                }
+            }
+            delete temp;
+        }
     }else{
         throw DataReaderException("Error: Could not read from raw file: " + rawFile_);
     }

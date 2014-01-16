@@ -25,7 +25,8 @@ namespace inviwo {
 /** \brief Reader for *.dat files 
  *
  *  The following tags are supported:
- *   - ObjectFileName :: The name of the raw data file, should be in the same directory (Mandatory).
+ *   - Rawfile :: The name of the raw data file, should be in the same directory (Mandatory).
+ *   - ByteOrder :: the byte order in the raw data file. (Optional, LittleEndian|BigEndian,  defualt: LittleEndian).  
  *   - Resolution | Dimension ::The size of the data grid: nx,ny,nz (Mandatory).
  *   - Format :: The type of values in the raw file. (Mandatory)
  *   - Spacing | SliceThickness :: The size of the voxels in the data. (Optional)
@@ -49,6 +50,7 @@ public:
 
 private:
     std::string rawFile_;
+    bool littleEndian_ = true;
     glm::uvec3 dimension_;
     const DataFormatBase* format_;
 };    

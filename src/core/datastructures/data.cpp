@@ -17,19 +17,22 @@
 namespace inviwo {
 
 Data::Data()
-    : validRepresentations_(0)
+    : MetaDataOwner()
+    , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
     , dataFormatBase_(DataFormatBase::get()){
 }
 
 Data::Data(const DataFormatBase* format)
-: validRepresentations_(0)
-, lastValidRepresentation_(NULL)
-, dataFormatBase_(format){
+    : MetaDataOwner()
+    , validRepresentations_(0)
+    , lastValidRepresentation_(NULL)
+    , dataFormatBase_(format){
 }
 
-Data::Data(const Data& rhs) 
-    : validRepresentations_(0)
+Data::Data(const Data& rhs)
+    : MetaDataOwner(rhs)
+    , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
     , dataFormatBase_(rhs.dataFormatBase_){
     rhs.copyRepresentationsTo(this);
@@ -37,6 +40,7 @@ Data::Data(const Data& rhs)
 
 Data& Data::operator=(const Data& that) {
     if (this != &that) {
+        MetaDataOwner::operator=(that);
         that.copyRepresentationsTo(this);
         dataFormatBase_ = that.dataFormatBase_;
     }

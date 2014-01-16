@@ -22,7 +22,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API Geometry : public DataGroup, public SpatialMetaData<3> {
+class IVW_CORE_API Geometry : public DataGroup, public SpatialEntity<3> {
 
 public:
     Geometry();

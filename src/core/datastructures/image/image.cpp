@@ -18,7 +18,7 @@
 namespace inviwo {
 
 Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers)
-	: DataGroup(), StructuredGridMetaData<2>(dimensions)
+	: DataGroup(), StructuredGridEntity<2>(dimensions)
     , allowMissingLayers_(allowMissingLayers)
 	, imageType_(comb) {
 
@@ -27,7 +27,7 @@ Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, boo
 
 Image::Image(const Image& rhs) 
     : DataGroup(rhs)
-    , StructuredGridMetaData<2>(rhs)
+    , StructuredGridEntity<2>(rhs)
     , allowMissingLayers_(rhs.allowMissingLayers_)
     , imageType_(rhs.imageType_)
     , inputSources_(rhs.inputSources_) {
@@ -53,7 +53,7 @@ Image::Image(const Image& rhs)
 Image& Image::operator=(const Image& that) {
     if(this != &that) {
         DataGroup::operator=(that);
-        StructuredGridMetaData<2>::operator=(that);
+        StructuredGridEntity<2>::operator=(that);
 
         allowMissingLayers_ = that.allowMissingLayers_;
         imageType_ = that.imageType_;
@@ -121,11 +121,11 @@ void Image::initialize(const DataFormatBase* format){
 }
 
 uvec2 Image::getDimension() const {
-	return StructuredGridMetaData<2>::getDimension();
+	return StructuredGridEntity<2>::getDimension();
 }
 
 void Image::setDimension(const uvec2& dim){
-	StructuredGridMetaData<2>::setDimension(dim);
+	StructuredGridEntity<2>::setDimension(dim);
 }
 
 size_t Image::addColorLayer(Layer* layer){

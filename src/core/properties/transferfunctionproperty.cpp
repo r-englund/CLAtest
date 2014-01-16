@@ -42,11 +42,17 @@ void TransferFunctionProperty::setVolume(const Volume* volume) {
         }
 
         // fill histogram
+        // TODO: Implement this without getValueAsSingleFloat,
+        // should be done with a volumeoperation or something.
+        // since getValueAsSingleFloat is very slow
         const VolumeRAM* volumeRAM = volume_->getRepresentation<VolumeRAM>();
         for (unsigned int x=0; x<dim.x; x++) {
             for (unsigned int y=0; y<dim.y; y++) {
                 for (unsigned int z=0; z<dim.z; z++) {
                     float intensity = volumeRAM->getValueAsSingleFloat(uvec3(x,y,z));
+                    // Temporary fix for intensity values outside of 0,1. needed for for float types where
+                    // the values are not normalized. 
+                    intensity = std::min(std::max(0.0f, intensity), 1.0f);
                     histogram[static_cast<int>(intensity*(numValues-1))]++;
                 }
             }

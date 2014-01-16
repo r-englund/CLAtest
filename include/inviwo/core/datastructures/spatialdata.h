@@ -17,7 +17,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/metadata/metadataowner.h>
+
 
 namespace inviwo {
 
@@ -152,12 +152,12 @@ public:
     virtual const Matrix<N+1, float> getWorldToModelMatrix() const = 0;
 };
 
-template <unsigned int N> class SpatialMetaData;
+template <unsigned int N> class SpatialEntity;
 
 template<unsigned int N>
 class SpatialCoordinateTransformer : public CoordinateTransformer<N> {
 public:
-    SpatialCoordinateTransformer(const SpatialMetaData<N>* spatialData) : CoordinateTransformer<N>(), spatialData_(spatialData) {};
+    SpatialCoordinateTransformer(const SpatialEntity<N>* spatialData) : CoordinateTransformer<N>(), spatialData_(spatialData) {};
     virtual ~SpatialCoordinateTransformer(){};
 
     virtual const Matrix<N+1 ,float> getWorldMatrix() const;
@@ -178,14 +178,14 @@ public:
     virtual const Matrix<N+1, float> getWorldToModelMatrix() const;
 
 private:
-    const SpatialMetaData<N>* spatialData_;
+    const SpatialEntity<N>* spatialData_;
 };
 
-template <unsigned int N> class StructuredGridMetaData;
+template <unsigned int N> class StructuredGridEntity;
 template <unsigned int N>
 class StructuredCoordinateTransformer : public SpatialCoordinateTransformer<N> {
 public:
-    StructuredCoordinateTransformer(const StructuredGridMetaData<N>* structuredData) : SpatialCoordinateTransformer<N>(structuredData), structuredData_(structuredData) {};
+    StructuredCoordinateTransformer(const StructuredGridEntity<N>* structuredData) : SpatialCoordinateTransformer<N>(structuredData), structuredData_(structuredData) {};
     virtual ~StructuredCoordinateTransformer(){};
 
     virtual const Matrix<N+1,float> getDimensionMatrix() const {
@@ -198,25 +198,24 @@ public:
     }
 
 private:
-    const StructuredGridMetaData<N>* structuredData_;
+    const StructuredGridEntity<N>* structuredData_;
 };
 
              
 template <unsigned int N>
-class SpatialMetaData : public MetaDataOwner {
+class SpatialEntity {
 public:
-    SpatialMetaData();
-    SpatialMetaData(const SpatialMetaData<N>&);
-    SpatialMetaData(const Vector<N,float>& offset);
-    SpatialMetaData(const Matrix<N,float>& basis);
-    SpatialMetaData(const Matrix<N+1,float>& mat);
-    SpatialMetaData(const Matrix<N,float>& basis, const Vector<N,float>& offset);
+    SpatialEntity();
+    SpatialEntity(const SpatialEntity<N>&);
+    SpatialEntity(const Vector<N,float>& offset);
+    SpatialEntity(const Matrix<N,float>& basis);
+    SpatialEntity(const Matrix<N+1,float>& mat);
+    SpatialEntity(const Matrix<N,float>& basis, const Vector<N,float>& offset);
 
-    SpatialMetaData<N>& operator=(const SpatialMetaData<N>& that);
-    virtual SpatialMetaData<N>* clone() const = 0;
-    virtual ~SpatialMetaData();
+    SpatialEntity<N>& operator=(const SpatialEntity<N>& that);
+    virtual SpatialEntity<N>* clone() const = 0;
+    virtual ~SpatialEntity();
     
-
     Vector<N,float> getOffset() const;
     void setOffset(const Vector<N,float>& offset);
 
@@ -235,26 +234,27 @@ public:
 protected:
     virtual void initTransformer();
     CoordinateTransformer<N>* transformer_;
-
+    Matrix<N+1, float> basisAndOffset_;
+    Matrix<N+1, float> worldTransform_;
 };
 
 template <unsigned int N>
-class StructuredGridMetaData : public SpatialMetaData<N> {
+class StructuredGridEntity : public SpatialEntity<N> {
 public:
-    StructuredGridMetaData(const Vector<N, unsigned int>& dimension);
-    StructuredGridMetaData(const Vector<N,float>& offset, 
+    StructuredGridEntity(const Vector<N, unsigned int>& dimension);
+    StructuredGridEntity(const Vector<N,float>& offset, 
         const Vector<N, unsigned int>& dimension);
-    StructuredGridMetaData(const Matrix<N,float>& basis, 
+    StructuredGridEntity(const Matrix<N,float>& basis, 
         const Vector<N, unsigned int>& dimension);
-    StructuredGridMetaData(const Matrix<N,float>& basis, 
+    StructuredGridEntity(const Matrix<N,float>& basis, 
         const Vector<N,float>& offset, 
         const Vector<N, unsigned int>& dimension);
 
-    StructuredGridMetaData(const StructuredGridMetaData<N>& rhs);
-    StructuredGridMetaData<N>& operator=(const StructuredGridMetaData<N>& that);
-    virtual StructuredGridMetaData<N>* clone() const = 0;
+    StructuredGridEntity(const StructuredGridEntity<N>& rhs);
+    StructuredGridEntity<N>& operator=(const StructuredGridEntity<N>& that);
+    virtual StructuredGridEntity<N>* clone() const = 0;
 
-    virtual ~StructuredGridMetaData(){}
+    virtual ~StructuredGridEntity(){}
     
 
     Vector<N, unsigned int> getDimension() const;
@@ -262,6 +262,7 @@ public:
 
 protected:
     virtual void initTransformer();
+    Vector<N, unsigned int> dimension_;
 };
 
 
@@ -271,9 +272,9 @@ protected:
 /*---------------------------------------------------------------*/
 
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData() 
-    :   MetaDataOwner()
-    ,   transformer_(NULL) {
+SpatialEntity<N>::SpatialEntity() 
+    : transformer_(NULL)
+    , worldTransform_(1.0f) {
     Vector<N,float> offset(-1.0f);
     Matrix<N,float> basis(2.0f);
     setBasis(basis);
@@ -281,67 +282,67 @@ SpatialMetaData<N>::SpatialMetaData()
     initTransformer();
 }
 
-
-
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const Vector<N,float>& offset) 
-    : MetaDataOwner()
-    , transformer_(NULL) {
+SpatialEntity<N>::SpatialEntity(const Vector<N,float>& offset) 
+    : transformer_(NULL)
+    , worldTransform_(1.0f) {
     Matrix<N,float> basis(2.0f);
     setBasis(basis);
     setOffset(offset);
     initTransformer();
 }
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const Matrix<N,float>& basis) 
-    : MetaDataOwner()
-    , transformer_(NULL) {
+SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis) 
+    : transformer_(NULL)
+    , worldTransform_(1.0f) {
     Vector<N,float> offset(-1.0f);
     setBasis(basis);
     setOffset(offset);
     initTransformer();
 }
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const Matrix<N+1,float>& mat) 
-    : MetaDataOwner()
-    , transformer_(NULL) {
+SpatialEntity<N>::SpatialEntity(const Matrix<N+1,float>& mat) 
+    : transformer_(NULL)
+    , worldTransform_(1.0f) {
     setBasisAndOffset(mat);
     initTransformer();
 }
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const Matrix<N,float>& basis, const Vector<N,float>& offset) 
-    : MetaDataOwner()
-    , transformer_(NULL) {
+SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis, const Vector<N,float>& offset) 
+    : transformer_(NULL)
+    , worldTransform_(1.0f) {
     setBasis(basis);
     setOffset(offset);
     initTransformer();
 }
 template <unsigned int N>
-SpatialMetaData<N>::SpatialMetaData(const SpatialMetaData<N>& rhs)
-    : MetaDataOwner(rhs)
-    , transformer_(NULL) {
+SpatialEntity<N>::SpatialEntity(const SpatialEntity<N>& rhs)
+    : transformer_(NULL)
+    , basisAndOffset_(rhs.basisAndOffset_)
+    , worldTransform_(rhs.worldTransform_) {
     initTransformer();
 }
 
 template <unsigned int N>
-SpatialMetaData<N>& SpatialMetaData<N>::operator=(const SpatialMetaData<N>& that) {
+SpatialEntity<N>& SpatialEntity<N>::operator=(const SpatialEntity<N>& that) {
     if(this != &that) {
-        MetaDataOwner::operator=(that);
+        basisAndOffset_ = that.basisAndOffset_;
+        worldTransform_ = that.worldTransform_;
         if(transformer_) {
             delete transformer_;
         }
-        initTransformer();
+      initTransformer();
     }
     return *this;
 }
 
 template <unsigned int N>
-void SpatialMetaData<N>::initTransformer(){
+void SpatialEntity<N>::initTransformer(){
     transformer_ = new SpatialCoordinateTransformer<N>(this);
 }
 
 template <unsigned int N>
-SpatialMetaData<N>::~SpatialMetaData(){
+SpatialEntity<N>::~SpatialEntity(){
     if(transformer_){
         delete transformer_;
     }
@@ -366,72 +367,60 @@ const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getWorldMatrix() const{
 }
 
 template <unsigned int N>
-Vector<N,float> SpatialMetaData<N>::getOffset() const {
+Vector<N,float> SpatialEntity<N>::getOffset() const {
     Vector<N,float> offset(0.0f);
-    Matrix<N+1,float> mat = getBasisAndOffset();
     for(int i=0;i<N;i++){
-        offset[i] = mat[N][i];
+        offset[i] = basisAndOffset_[N][i];
     }
     return offset;
 }
 template <unsigned int N>
-void SpatialMetaData<N>::setOffset(const Vector<N,float>& offset) {
-     Matrix<N+1,float> mat = getBasisAndOffset();
+void SpatialEntity<N>::setOffset(const Vector<N,float>& offset) {
      for(int i=0;i<N;i++){
-        mat[N][i] = offset[i];
+         basisAndOffset_[N][i] = offset[i];
      }
-     setBasisAndOffset(mat);
 }
 
 template <unsigned int N>
-Matrix<N,float> SpatialMetaData<N>::getBasis() const {
+Matrix<N,float> SpatialEntity<N>::getBasis() const {
     Matrix<N,float> basis(1.0f);
-    Matrix<N+1,float> mat = getBasisAndOffset();
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            basis[i][j] = mat[i][j];
+            basis[i][j] = basisAndOffset_[i][j];
         }
     }
     return basis;
 }
 
 template <unsigned int N>
-void SpatialMetaData<N>::setBasis(const Matrix<N,float>& basis) {
-    Matrix<N+1,float> mat = getBasisAndOffset();
+void SpatialEntity<N>::setBasis(const Matrix<N,float>& basis) {
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            mat[i][j] = basis[i][j];
+            basisAndOffset_[i][j] = basis[i][j];
         }
     }
-    setBasisAndOffset(mat);
 }
 
 template <unsigned int N>
-Matrix<N+1,float> SpatialMetaData<N>::getBasisAndOffset() const {
-    Matrix<N+1,float> mat(2.0f);
-    for(int i=0;i<N;i++){
-        mat[N][i] = -1.0f;
-    }
-    mat[N][N]=1.0f;
-    return MetaDataOwner::getMetaData<MatrixMetaData<N+1,float> >("basisAndOffset", mat);
+Matrix<N+1,float> SpatialEntity<N>::getBasisAndOffset() const {
+    return basisAndOffset_;
 }
 template <unsigned int N>
-void SpatialMetaData<N>::setBasisAndOffset(const Matrix<N+1,float>& mat) {
-    MetaDataOwner::setMetaData<MatrixMetaData<N+1,float> >("basisAndOffset", mat);
+void SpatialEntity<N>::setBasisAndOffset(const Matrix<N+1,float>& mat) {
+    basisAndOffset_ = mat;
 }
 
 template <unsigned int N>
-Matrix<N+1,float> SpatialMetaData<N>::getWorldTransform() const {
-    Matrix<N+1,float> mat(1.0f);
-    return MetaDataOwner::getMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
+Matrix<N+1,float> SpatialEntity<N>::getWorldTransform() const {
+   return worldTransform_;
 }
 template <unsigned int N>
-void SpatialMetaData<N>::setWorldTransform(const Matrix<N+1,float>& mat) {
-    MetaDataOwner::setMetaData<MatrixMetaData<N+1,float> >("worldTransform", mat);
+void SpatialEntity<N>::setWorldTransform(const Matrix<N+1,float>& mat) {
+    worldTransform_ = mat;
 }
 
 template <unsigned int N>
-const CoordinateTransformer<N>& SpatialMetaData<N>::getCoordinateTransformer() const{
+const CoordinateTransformer<N>& SpatialEntity<N>::getCoordinateTransformer() const{
     return *transformer_;
 }
 
@@ -440,59 +429,59 @@ const CoordinateTransformer<N>& SpatialMetaData<N>::getCoordinateTransformer() c
 /*---------------------------------------------------------------*/
 
 template <unsigned int N>
-StructuredGridMetaData<N>::StructuredGridMetaData(const Vector<N, unsigned int>& dimension)
-    : SpatialMetaData<N>() {
-    setDimension(dimension);
+StructuredGridEntity<N>::StructuredGridEntity(const Vector<N, unsigned int>& dimension)
+    : SpatialEntity<N>()
+    , dimension_(dimension) {
 }
 
 template <unsigned int N>
-StructuredGridMetaData<N>::StructuredGridMetaData(const Vector<N,float>& offset, 
+StructuredGridEntity<N>::StructuredGridEntity(const Vector<N,float>& offset, 
                                   const Vector<N, unsigned int>& dimension) 
-    : SpatialMetaData<N>(offset) {
-    setDimension(dimension);
+    : SpatialEntity<N>(offset)
+    , dimension_(dimension) {
 }
 
 template <unsigned int N>
-StructuredGridMetaData<N>::StructuredGridMetaData(const Matrix<N,float>& basis, 
+StructuredGridEntity<N>::StructuredGridEntity(const Matrix<N,float>& basis, 
                                   const Vector<N, unsigned int>& dimension)
-    : SpatialMetaData<N>(basis) {
-    setDimension(dimension);
+    : SpatialEntity<N>(basis)
+    , dimension_(dimension) {
 }
 template <unsigned int N>
-StructuredGridMetaData<N>::StructuredGridMetaData(const Matrix<N,float>& basis, 
+StructuredGridEntity<N>::StructuredGridEntity(const Matrix<N,float>& basis, 
                                   const Vector<N,float>& offset, 
                                   const Vector<N, unsigned int>& dimension)
-    : SpatialMetaData<N>(basis, offset) {
-    setDimension(dimension);
+    : SpatialEntity<N>(basis, offset)
+    , dimension_(dimension) {
 }
 
 template <unsigned int N>
-StructuredGridMetaData<N>::StructuredGridMetaData(const StructuredGridMetaData<N>& rhs)
-    : SpatialMetaData<N>(rhs){
+StructuredGridEntity<N>::StructuredGridEntity(const StructuredGridEntity<N>& rhs)
+    : SpatialEntity<N>(rhs)
+    , dimension_(rhs.dimension_) {
 }
 
 template <unsigned int N>
-StructuredGridMetaData<N>& StructuredGridMetaData<N>::operator=(const StructuredGridMetaData<N>& that) {
+StructuredGridEntity<N>& StructuredGridEntity<N>::operator=(const StructuredGridEntity<N>& that) {
     if(this != &that) {
-        SpatialMetaData<N>::operator=(that);
+        SpatialEntity<N>::operator=(that);
+        dimension_ = that.dimension_;
     }
     return *this;
 }
 
-
 template <unsigned int N>
-void StructuredGridMetaData<N>::initTransformer(){
-    SpatialMetaData<N>::transformer_ = new StructuredCoordinateTransformer<N>(this);
+void StructuredGridEntity<N>::initTransformer(){
+    SpatialEntity<N>::transformer_ = new StructuredCoordinateTransformer<N>(this);
 }
 
 template <unsigned int N>
-Vector<N, unsigned int> StructuredGridMetaData<N>::getDimension() const {
-    Vector<N, unsigned int> dimension;
-    return MetaDataOwner::getMetaData<VectorMetaData<N, unsigned int> >("dimension", dimension);
+Vector<N, unsigned int> StructuredGridEntity<N>::getDimension() const {
+    return dimension_;
 }
 template <unsigned int N>
-void StructuredGridMetaData<N>::setDimension(const Vector<N, unsigned int>& dimension) {
-    MetaDataOwner::setMetaData<VectorMetaData<N, unsigned int> >("dimension", dimension);
+void StructuredGridEntity<N>::setDimension(const Vector<N, unsigned int>& dimension) {
+    dimension_ = dimension;
 }
 
 /*---------------------------------------------------------------*/

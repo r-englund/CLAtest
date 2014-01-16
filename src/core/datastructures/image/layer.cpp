@@ -19,12 +19,12 @@ namespace inviwo {
 
 Layer::Layer(uvec2 dimensions, const DataFormatBase* format, LayerType type) 
     : Data(format)
-    , StructuredGridMetaData<2>(dimensions)
+    , StructuredGridEntity<2>(dimensions)
     , layerType_(type) {}
 
 Layer::Layer(LayerRepresentation* in) 
     : Data(in->getDataFormat())
-    , StructuredGridMetaData<2>(in->getDimension())
+    , StructuredGridEntity<2>(in->getDimension())
     , layerType_(in->getLayerType()) {
 
     clearRepresentations();
@@ -33,13 +33,13 @@ Layer::Layer(LayerRepresentation* in)
 
 Layer::Layer(const Layer& rhs) 
     : Data(rhs)
-    , StructuredGridMetaData<2>(rhs)
+    , StructuredGridEntity<2>(rhs)
     , layerType_(rhs.layerType_) {}
 
 Layer& Layer::operator=(const Layer& that) {
     if(this != &that) {
         Data::operator=(that);
-        StructuredGridMetaData<2>::operator=(that);
+        StructuredGridEntity<2>::operator=(that);
         layerType_ = that.layerType_;
     }
     return *this;
@@ -83,10 +83,10 @@ void Layer::resize(uvec2 dimensions) {
 
 
 uvec2 Layer::getDimension() const {
-	return StructuredGridMetaData<2>::getDimension();
+	return StructuredGridEntity<2>::getDimension();
 }
 void  Layer::setDimension(const uvec2& dim){
-	StructuredGridMetaData<2>::setDimension(dim);
+	StructuredGridEntity<2>::setDimension(dim);
 }
 
 void Layer::resizeRepresentations(Layer* targetLayer, uvec2 targetDim) {
