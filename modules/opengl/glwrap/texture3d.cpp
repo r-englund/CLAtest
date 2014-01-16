@@ -16,51 +16,61 @@
 
 namespace inviwo {
 
-Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
-    : dimensions_(dimensions)
-    , format_(format)
-    , internalformat_(internalformat)
-    , dataType_(dataType)
-    , filtering_(filtering) {
+Texture3D::Texture3D(uvec3 dimensions, GLFormats::GLFormat glFormat, GLenum filtering)
+    : Texture(GL_TEXTURE_3D, glFormat, filtering)
+    , dimensions_(dimensions) {}
 
-    glGenTextures(1, &id_);
+Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
+    : Texture(GL_TEXTURE_3D, format, internalformat, dataType, filtering)
+    , dimensions_(dimensions) {}
+
+Texture3D::Texture3D(const Texture3D& rhs)
+    : Texture(rhs)
+    , dimensions_(rhs.dimensions_) 
+{
+    initialize(NULL);   
+    // TODO: Copy texture from other
+    // bind();
+    // glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, dimensions_.x, dimensions_.y);
+}
+
+Texture3D& Texture3D::operator=(const Texture3D& rhs) {
+    if (this != &rhs) {
+        Texture::operator=(rhs);
+        dimensions_ = rhs.dimensions_;
+        initialize(NULL);
+        // TODO: Copy other texture content
+    }
+    return *this;
+}
+
+Texture3D::~Texture3D() {}
+
+Texture3D* Texture3D::clone() const {
+    return new Texture3D(*this);
+}
+
+void Texture3D::initialize(const void* data) {
     // Allocate data
     bind();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage3D(GL_TEXTURE_3D, 0, internalformat_, dimensions_.x, dimensions_.y, dimensions_.z,
-                 0, format_, dataType_, NULL);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, filtering_);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, filtering_);
+    glTexImage3D(GL_TEXTURE_3D, 0, internalformat_, dimensions_.x, dimensions_.y, dimensions_.z, 0, format_, dataType_, data);
     LGL_ERROR;
 }
 
-Texture3D::~Texture3D() {
-    glDeleteTextures(1, &id_);
-    LGL_ERROR;
-}
-
-void Texture3D::bind() const{
-    glBindTexture(GL_TEXTURE_3D, id_);
-    LGL_ERROR;
-}
-
-void Texture3D::unbind() const{
-    glBindTexture(GL_TEXTURE_3D, 0);
-    LGL_ERROR;
+size_t Texture3D::getNumberOfValues() const{
+    return static_cast<size_t>(dimensions_.x*dimensions_.y);
 }
 
 void Texture3D::upload(const void* data) {
     bind();
     glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, dimensions_.x, dimensions_.y, dimensions_.z, format_, dataType_, data);  
     LGL_ERROR;
-}
-
-void Texture3D::download( void* data ) const{
-    bind();
-    glGetTexImage(GL_TEXTURE_3D, 0, format_, dataType_, data);
 }
 
 } // namespace

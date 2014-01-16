@@ -229,7 +229,7 @@ bool ImageGL::updateFrom(const ImageGL* source) {
         tTex = target->getDepthLayerGL()->getTexture();
 
         if(sTex && tTex)
-            tTex->uploadFromPBO(sTex);
+            tTex->loadFromPBO(sTex);
     }
     LGL_ERROR;
 
@@ -239,7 +239,7 @@ bool ImageGL::updateFrom(const ImageGL* source) {
         tTex = target->getPickingLayerGL()->getTexture();
 
         if(sTex && tTex)
-            tTex->uploadFromPBO(sTex);
+            tTex->loadFromPBO(sTex);
     }
     LGL_ERROR;
 

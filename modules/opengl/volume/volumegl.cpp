@@ -16,97 +16,44 @@
 
 namespace inviwo {
 
-VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format)
+VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format, Texture3D* tex)
     : VolumeRepresentation(dimensions, format)
-    , volumeTexture_(0){
-
-    GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format->getId());
-    format_ = glFormat.format;
-    internalFormat_ = glFormat.internalFormat;
-    dataType_ = glFormat.type;
+    , volumeTexture_(tex)
+{
     initialize();
-}
-
-VolumeGL::VolumeGL(uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType)
-    : VolumeRepresentation(dimensions, DataFormatBase::get())
-    , format_(format)
-    , internalFormat_(internalFormat)
-    , dataType_(dataType)
-    , volumeTexture_(0){
-
-    initialize();
-}
-
-VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format)
-    , volumeTexture_(0) {
-
-    GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(format->getId());
-    format_ = glFormat.format;
-    internalFormat_ = glFormat.internalFormat;
-    dataType_ = glFormat.type;
-    initialize(texels);
-}
-
-VolumeGL::VolumeGL(const void* texels, uvec3 dimensions, GLint format, GLint internalFormat, GLenum dataType)
-    : VolumeRepresentation(dimensions, DataFormatBase::get())
-    , format_(format)
-    , internalFormat_(internalFormat)
-    , dataType_(dataType)
-    , volumeTexture_(0) {
-
-    initialize(texels);
 }
 
 VolumeGL::VolumeGL(const VolumeGL& rhs) 
     : VolumeRepresentation(rhs){
-
     //TODO: copy texels.
 }
 
-VolumeGL& VolumeGL::operator=(const VolumeGL& that) {
-    if(this != &that) {
-        VolumeRepresentation::operator=(that);
+VolumeGL& VolumeGL::operator=(const VolumeGL& rhs) {
+    if(this != &rhs) {
+        VolumeRepresentation::operator=(rhs);
         //TODO: copy texels.
     }
     return *this;
-}
-
-VolumeGL* VolumeGL::clone() const {
-    return new VolumeGL(*this);
 }
 
 VolumeGL::~VolumeGL() {
     deinitialize();
 }
 
-void VolumeGL::initialize() {}
+VolumeGL* VolumeGL::clone() const {
+    return new VolumeGL(*this);
+}
 
-void VolumeGL::initialize(const void* texels) {
-    volumeTexture_ = new Texture3D(dimensions_, getFormat(), getInternalFormat(), getDataType(), GL_LINEAR);
-
-    if (texels) {
-         upload(texels);
+void VolumeGL::initialize() {
+    if(!volumeTexture_){
+        GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(getDataFormatId());
+        volumeTexture_ = new Texture3D(dimensions_, glFormat, GL_LINEAR);
     }
-
-    VolumeGL::initialize();
 }
 
 void VolumeGL::deinitialize() {
     delete volumeTexture_;
-    volumeTexture_ = 0;
-}
-
-GLint VolumeGL::getFormat() {
-    return format_; 
-}
-
-GLint VolumeGL::getInternalFormat() {
-    return internalFormat_; 
-}
-
-GLenum VolumeGL::getDataType() {
-    return dataType_; 
+    volumeTexture_ = NULL;
 }
 
 void VolumeGL::bindTexture(GLenum texUnit) const{
@@ -118,15 +65,12 @@ void VolumeGL::unbindTexture() const{
     volumeTexture_->unbind();
 }
 
-void VolumeGL::upload( const void* data )
-{
-    volumeTexture_->upload(data);
+Texture3D* VolumeGL::getTexture() { 
+    return volumeTexture_; 
 }
 
-void VolumeGL::download( void* data ) const
-{
-    volumeTexture_->download(data);
-
+const Texture3D* VolumeGL::getTexture() const { 
+    return volumeTexture_; 
 }
 
 } // namespace

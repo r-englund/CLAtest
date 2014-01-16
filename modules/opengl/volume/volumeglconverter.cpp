@@ -25,7 +25,9 @@ VolumeRAM2GLConverter::~VolumeRAM2GLConverter() {}
 
 DataRepresentation* VolumeRAM2GLConverter::createFrom(const DataRepresentation* source) {     
     const VolumeRAM* volumeRAM = static_cast<const VolumeRAM*>(source);
-    return new VolumeGL(volumeRAM->getData(), volumeRAM->getDimension(), volumeRAM->getDataFormat());
+    VolumeGL* volume = new VolumeGL(volumeRAM->getDimension(), volumeRAM->getDataFormat());
+    volume->getTexture()->initialize(volumeRAM->getData());
+    return volume;
 }
 
 void VolumeRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
@@ -34,7 +36,7 @@ void VolumeRAM2GLConverter::update(const DataRepresentation* source, DataReprese
     if(volumeSrc->getDimension() != volumeDst->getDimension()) {
         volumeDst->setDimension(volumeSrc->getDimension());
     }
-    volumeDst->upload(volumeSrc->getData());
+    volumeDst->getTexture()->upload(volumeSrc->getData());
 }
 
 VolumeGL2RAMConverter::VolumeGL2RAMConverter()

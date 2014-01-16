@@ -74,6 +74,7 @@ void OpenCLModule::initialize() {
     registerRepresentationConverter(new VolumeDisk2CLConverter());
     registerRepresentationConverter(new VolumeRAM2CLConverter());
     registerRepresentationConverter(new VolumeCL2RAMConverter());
+
     // VolumeCLGL
     registerRepresentationConverter(new VolumeDisk2CLGLConverter());
     registerRepresentationConverter(new VolumeRAM2CLGLConverter());

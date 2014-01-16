@@ -26,13 +26,12 @@ class Shader;
 class IVW_MODULE_OPENGL_API LayerGL : public LayerRepresentation {
 
 public:
-    LayerGL(uvec2 dimensions = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataVec4UINT8::get(), 
-        Texture2D* tex = NULL);
+    LayerGL(uvec2 dimensions = uvec2(256,256), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataVec4UINT8::get(), Texture2D* tex = NULL);
+    LayerGL(const LayerGL& rhs);
+    LayerGL& operator=(const LayerGL& rhs);
     virtual ~LayerGL();
-
-    void initialize();
-    void deinitialize();
     virtual LayerGL* clone() const;
+    
     virtual std::string getClassName() const { return "LayerGL"; }
 
     void bindTexture(GLenum texUnit) const;
@@ -43,6 +42,10 @@ public:
 
     Texture2D* getTexture();
     const Texture2D* getTexture() const;
+
+protected:
+    void initialize();
+    void deinitialize();
 
 private:
     Texture2D* texture_;

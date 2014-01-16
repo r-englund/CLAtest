@@ -17,15 +17,37 @@
 
 namespace inviwo {
 
-LayerGL::LayerGL(uvec2 dimensions, LayerType type, const DataFormatBase* format,
-                 Texture2D* tex)
+LayerGL::LayerGL(uvec2 dimensions, LayerType type, const DataFormatBase* format, Texture2D* tex)
     : LayerRepresentation(dimensions, type, format)
-    , texture_(tex){
+    , texture_(tex)
+{
     initialize();
+}
+
+LayerGL::LayerGL(const LayerGL& rhs) 
+: LayerRepresentation(rhs){
+    //TODO: copy texels.
+    /*Texture2D* tex = NULL;
+    if(texture_)
+        tex = texture_->clone();
+    LayerGL* newLayerGL = new LayerGL(getDimension(), getLayerType(), getDataFormat(), tex);
+    return newLayerGL;*/
+}
+
+LayerGL& LayerGL::operator=(const LayerGL& rhs) {
+    if(this != &rhs) {
+        LayerRepresentation::operator=(rhs);
+        //TODO: copy texels.
+    }
+    return *this;
 }
 
 LayerGL::~LayerGL() {
     deinitialize();
+}
+
+LayerGL* LayerGL::clone() const {
+    return new LayerGL(*this);
 }
 
 void LayerGL::initialize() {
@@ -44,14 +66,6 @@ void LayerGL::deinitialize() {
         delete texture_;
         texture_ = NULL;
     }
-}
-
-LayerGL* LayerGL::clone() const {
-    Texture2D* tex = NULL;
-    if(texture_)
-        tex = texture_->clone();
-    LayerGL* newLayerGL = new LayerGL(getDimension(), getLayerType(), getDataFormat(), tex);
-    return newLayerGL;
 }
 
 void LayerGL::bindTexture(GLenum texUnit) const {

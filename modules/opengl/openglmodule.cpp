@@ -45,6 +45,7 @@ OpenGLModule::OpenGLModule() :
     registerRepresentationConverter(new LayerDisk2GLConverter());
 
     registerRepresentationConverter(new VolumeRAM2GLConverter());
+    registerRepresentationConverter(new VolumeGL2RAMConverter());
     registerRepresentationConverter(new VolumeDisk2GLConverter());
 
     registerRepresentationConverter(new BufferRAM2GLConverter());

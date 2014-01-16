@@ -18,34 +18,31 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <stdio.h>
-#include <fstream>
+#include <modules/opengl/glwrap/texture.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API Texture3D {
+class IVW_MODULE_OPENGL_API Texture3D : public Texture {
 
 public:
+    Texture3D(uvec3 dimensions, GLFormats::GLFormat glFormat, GLenum filtering);
     Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
+    Texture3D(const Texture3D& other);
+    Texture3D& operator=(const Texture3D& other);
     virtual ~Texture3D();
 
-    unsigned int getID() const { return id_; }
+    Texture3D* clone() const;
 
-    void bind() const;
-    void unbind() const;
+    void initialize(const void* data);
+
+    size_t getNumberOfValues() const;
+
     void upload(const void* data);
-    void download(void* data) const;
 
     const uvec3& getDimension() const { return dimensions_; }
 
 private:
     uvec3 dimensions_;
-    GLenum format_;
-    GLenum internalformat_;
-    GLenum dataType_;
-    GLenum filtering_;
-
-    GLuint id_;
 };
 
 } // namespace
