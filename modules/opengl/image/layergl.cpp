@@ -51,8 +51,17 @@ void LayerGL::initialize() {
         if(getLayerType() == DEPTH_LAYER){
             texture_ = new Texture2D(getDimension(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, glFormat.type, GL_NEAREST);
         }
-        else
-            texture_ = new Texture2D(getDimension(), glFormat, GL_NEAREST);
+        else{
+            //On Linux their might be an issue with float textures and linear filtering
+            GLenum filter = GL_LINEAR;
+            switch (glFormat.type) {
+                case GL_HALF_FLOAT:
+                case GL_FLOAT:
+                    filter = GL_NEAREST;
+                    break;
+            }
+            texture_ = new Texture2D(getDimension(), glFormat, filter);
+        }
     }
 }
 
