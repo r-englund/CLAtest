@@ -98,7 +98,7 @@ static bool IsPathSeparator(char c) {
 }
 
 // Returns the current working directory, or "" if unsuccessful.
-FilePath FilePath::GetCurrentDir() {
+FilePath FilePath::GtestGetCurrentDir() {
 #if GTEST_OS_WINDOWS_MOBILE
   // Windows CE doesn't have a current directory, so we just return
   // something reasonable.
