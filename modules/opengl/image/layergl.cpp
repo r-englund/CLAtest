@@ -52,7 +52,7 @@ void LayerGL::initialize() {
             texture_ = new Texture2D(getDimension(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, glFormat.type, GL_NEAREST);
         }
         else
-            texture_ = new Texture2D(getDimension(), glFormat, GL_LINEAR);
+            texture_ = new Texture2D(getDimension(), glFormat, GL_NEAREST);
     }
 }
 

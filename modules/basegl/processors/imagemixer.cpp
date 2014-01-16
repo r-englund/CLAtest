@@ -45,7 +45,7 @@ void ImageMixer::initialize() {
 
 void ImageMixer::deinitialize() {
     delete shader_;
-    Processor::deinitialize();
+    ProcessorGL::deinitialize();
 }
 
 void ImageMixer::process() {    
@@ -56,7 +56,7 @@ void ImageMixer::process() {
     uvec2 csize = outport_.getData()->getDimension();    
     bindColorTexture(inport0_, inportTexture0.getEnum());
     bindColorTexture(inport1_, inportTexture1.getEnum());    
-    activateTarget(outport_);
+    activateAndClearTarget(outport_);
     shader_->activate();
     shader_->setUniform("inport0_", inportTexture0.getUnitNumber());
     shader_->setUniform("inport1_", inportTexture1.getUnitNumber());
