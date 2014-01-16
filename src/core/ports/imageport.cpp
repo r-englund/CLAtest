@@ -194,7 +194,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         uvec2 dimensions = registeredDimensions[i];
         std::string dimensionString = glm::to_string(dimensions);        
         registeredDimensionsStrings.push_back(dimensionString);
-    }    
+    }
 
     //If requiredDimension does not exist then do the following:
     //  If image data with previousDimensions exists in map and 
@@ -250,9 +250,14 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         }
     }
 
+    uvec2 largestDim = getDimension();
+
     //Set largest data
     setLargestImageData(resizeEvent);
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+
+    //Only invalidate largest image is equal to the resize event size, then stop resize propagation
+    if(largestDim != resizeEvent->size())
+        invalidate(PropertyOwner::INVALID_OUTPUT);
 
     //Propagate the resize event
     propagateResizeEventToPredecessor(resizeEvent);

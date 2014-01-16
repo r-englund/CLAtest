@@ -55,6 +55,7 @@ public:
     std::vector<ProcessorLink*> getSortedProcessorLinks();
 
     void notifyInvalidationEnd(Processor*);
+    void notify();
 
     static ProcessorNetworkEvaluator* getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork *network);
 

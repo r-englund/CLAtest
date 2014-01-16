@@ -33,6 +33,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     evaluationDisabled_ = false;
     ivwAssert(processorNetworkEvaluators_.find(processorNetwork) == processorNetworkEvaluators_.end() , "A ProcessorNetworkEvaluator for the given ProcessorNetwork is already created");
     processorNetworkEvaluators_[processorNetwork] = this;
+    processorNetwork_->addObserver(this);
 }
 
 ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {
@@ -366,6 +367,10 @@ void ProcessorNetworkEvaluator::notifyInvalidationEnd(Processor* p){
     }
 }
 
+void ProcessorNetworkEvaluator::notify(){
+    requestEvaluate();
+}
+
 void ProcessorNetworkEvaluator::disableEvaluation(){
     evaluationDisabled_ = true;
 }
@@ -406,6 +411,8 @@ void ProcessorNetworkEvaluator::requestEvaluate() {
         processorNetwork_->getInvalidationInitiator()->addObserver(this);
         return;
     }
+
+    evaulationQueued_ = false;
     
     //if we haven't returned yet, perform evaluation of the network
     evaluate();
