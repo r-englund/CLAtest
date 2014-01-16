@@ -23,6 +23,7 @@ namespace inviwo {
 IvfVolumeReader::IvfVolumeReader() 
     : DataReaderType<Volume>()
     , rawFile_("")
+    , littleEndian_(true)
     , dimension_(uvec3(0))
     , format_(NULL) {
         addExtension(FileExtension("ivf", "Inviwo ivf file format"));
@@ -31,6 +32,7 @@ IvfVolumeReader::IvfVolumeReader()
 IvfVolumeReader::IvfVolumeReader( const IvfVolumeReader& rhs ) 
     : DataReaderType<Volume>(rhs)
     , rawFile_(rhs.rawFile_)
+    , littleEndian_(true)
     , dimension_(rhs.dimension_)
     , format_(rhs.format_){
 }
@@ -38,8 +40,9 @@ IvfVolumeReader::IvfVolumeReader( const IvfVolumeReader& rhs )
 IvfVolumeReader& IvfVolumeReader::operator=( const IvfVolumeReader& that ){
     if (this != &that) {
         rawFile_ = that.rawFile_;
+        littleEndian_ = that.littleEndian_;
         dimension_ = that.dimension_;
-        format_ = that.format_;
+        format_ = that.format_;        
         DataReaderType<Volume>::operator=(that);
     }
     return *this;

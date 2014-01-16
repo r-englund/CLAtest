@@ -23,6 +23,7 @@ namespace inviwo {
 DatVolumeReader::DatVolumeReader() 
     : DataReaderType<Volume>()
     , rawFile_("")
+    , littleEndian_(true)
     , dimension_(uvec3(0,0,0))
     , format_(NULL) {
         addExtension(FileExtension("dat", "Inviwo dat file format"));
@@ -31,12 +32,14 @@ DatVolumeReader::DatVolumeReader()
 DatVolumeReader::DatVolumeReader( const DatVolumeReader& rhs ) 
     : DataReaderType<Volume>(rhs)
     , rawFile_(rhs.rawFile_)
+    , littleEndian_(true)
     , dimension_(rhs.dimension_)
     , format_(rhs.format_){};
 
 DatVolumeReader& DatVolumeReader::operator=( const DatVolumeReader& that ){
     if (this != &that) {
         rawFile_ = that.rawFile_;
+        littleEndian_ = that.littleEndian_;
         dimension_ = that.dimension_;
         format_ = that.format_;
         DataReaderType<Volume>::operator=(that);
