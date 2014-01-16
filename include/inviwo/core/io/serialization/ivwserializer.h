@@ -200,6 +200,7 @@ void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat3x3
         rowVec = glm::detail::tvec3<T>(data[i][0], data[i][1], data[i][2]);
         serializeVector(key.str(), rowVec);
     }
+    delete newNode;
 }
 template<class T>
 void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat2x2<T>& data){
