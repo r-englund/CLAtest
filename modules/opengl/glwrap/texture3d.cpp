@@ -64,7 +64,7 @@ void Texture3D::initialize(const void* data) {
 }
 
 size_t Texture3D::getNumberOfValues() const{
-    return static_cast<size_t>(dimensions_.x*dimensions_.y);
+    return static_cast<size_t>(dimensions_.x*dimensions_.y*dimensions_.z);
 }
 
 void Texture3D::upload(const void* data) {

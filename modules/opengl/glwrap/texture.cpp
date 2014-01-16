@@ -21,14 +21,14 @@ Texture::Texture(GLenum target, GLFormats::GLFormat glFormat, GLenum filtering)
     , format_(glFormat.format)
     , internalformat_(glFormat.internalFormat)
     , dataType_(glFormat.type)
-    , filtering_(filtering) 
+    , filtering_(filtering)
+    , dataInReadBackPBO_(false)
 {
     glGenTextures(1, &id_);
     numChannels_ = glFormat.channels;
     byteSize_ = numChannels_*glFormat.typeSize;
     glGenBuffers(1, &pboBack_);
     LGL_ERROR_SUPPRESS;
-    setupAsyncReadBackPBO();
 }
 
 Texture::Texture(GLenum target, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
@@ -36,7 +36,8 @@ Texture::Texture(GLenum target, GLint format, GLint internalformat, GLenum dataT
     , format_(format)
     , internalformat_(internalformat)
     , dataType_(dataType)
-    , filtering_(filtering) 
+    , filtering_(filtering)
+    , dataInReadBackPBO_(false)
 {
     glGenTextures(1, &id_);
     setNChannels();
@@ -52,14 +53,15 @@ Texture::Texture(const Texture& other)
     , dataType_(other.dataType_)
     , filtering_(other.filtering_)
     , byteSize_(other.byteSize_)
-    , numChannels_(other.numChannels_) 
+    , numChannels_(other.numChannels_)
+    , dataInReadBackPBO_(false)
 {        
     glGenTextures(1, &id_);
     glGenBuffers(1, &pboBack_);
     LGL_ERROR_SUPPRESS;
 }
 
-Texture& Texture::operator=( const Texture& rhs) {
+Texture& Texture::operator=(const Texture& rhs) {
     if (this != &rhs) {
         target_ = rhs.target_;
         format_ = rhs.format_;

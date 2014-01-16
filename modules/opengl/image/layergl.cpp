@@ -25,19 +25,14 @@ LayerGL::LayerGL(uvec2 dimensions, LayerType type, const DataFormatBase* format,
 }
 
 LayerGL::LayerGL(const LayerGL& rhs) 
-: LayerRepresentation(rhs){
-    //TODO: copy texels.
-    /*Texture2D* tex = NULL;
-    if(texture_)
-        tex = texture_->clone();
-    LayerGL* newLayerGL = new LayerGL(getDimension(), getLayerType(), getDataFormat(), tex);
-    return newLayerGL;*/
+    : LayerRepresentation(rhs) {
+    texture_ = rhs.texture_->clone();
 }
 
 LayerGL& LayerGL::operator=(const LayerGL& rhs) {
     if(this != &rhs) {
         LayerRepresentation::operator=(rhs);
-        //TODO: copy texels.
+        texture_ = rhs.texture_->clone();
     }
     return *this;
 }

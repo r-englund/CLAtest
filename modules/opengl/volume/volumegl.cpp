@@ -25,13 +25,13 @@ VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format, Texture3D* te
 
 VolumeGL::VolumeGL(const VolumeGL& rhs) 
     : VolumeRepresentation(rhs){
-    //TODO: copy texels.
+    volumeTexture_ = rhs.volumeTexture_->clone();
 }
 
 VolumeGL& VolumeGL::operator=(const VolumeGL& rhs) {
     if(this != &rhs) {
         VolumeRepresentation::operator=(rhs);
-        //TODO: copy texels.
+        volumeTexture_ = rhs.volumeTexture_->clone();
     }
     return *this;
 }
