@@ -24,6 +24,7 @@
 #include <inviwo/core/io/datawriter.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/ports/port.h>
+#include <inviwo/core/ports/portinspector.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/processorfactoryobject.h>
 #include <inviwo/core/properties/property.h>
@@ -52,6 +53,7 @@ public:
     const std::vector<DataWriter*>& getDataWriters() const;
     const std::vector<MetaData*>& getMetaData() const;
     const std::vector<Port*>& getPorts() const;
+    const std::vector<PortInspector*>& getPortInspectors() const;
     const std::vector<ProcessorFactoryObject*>& getProcessors() const;
     const std::vector< std::pair<std::string, ProcessorWidget*> >& getProcessorWidgets() const;
     const std::vector<Property*>& getProperties() const;
@@ -76,6 +78,7 @@ protected:
     void registerDataWriter(DataWriter* writer);
     void registerMetaData(MetaData* meta);
     void registerPort(Port* port);
+    void registerPortInspector(PortInspector* portInspector);
     void registerProcessorObject(ProcessorFactoryObject* processor);
     void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
     void registerProperty(Property* property);
@@ -104,6 +107,7 @@ private:
     std::vector<DataWriter*> dataWriters_;
     std::vector<MetaData*> metadata_;
     std::vector<Port*> ports_;
+    std::vector<PortInspector*> portInspectors_;
     std::vector<ProcessorFactoryObject*> processors_;
     std::vector< std::pair<std::string, ProcessorWidget*> > processorWidgets_;
     std::vector<Property*> properties_;

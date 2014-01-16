@@ -98,16 +98,16 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/links/processorlink.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/links/propertylink.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/linkconditions.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/linkevaluator.h            
+    ${IVW_INCLUDE_DIR}/inviwo/core/links/processorlink.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/links/propertylink.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/compositemetadata.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatadefinefunc.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatafactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatamap.h
-	${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadataowner.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadataowner.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/positionmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processormetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/processorwidgetmetadata.h
@@ -123,6 +123,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/multiinport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/outport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/portinspector.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/singleinport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/volumeport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessor.h
@@ -161,12 +162,12 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferfunctionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrenderer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrendererfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resource.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resourcemanagerobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/templateresource.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrenderer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrendererfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/assertion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/callback.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/canvas.h
@@ -189,15 +190,15 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/referencecounter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/linksettings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/settings.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/systemsettings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/settings.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/systemsettings.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/linksettings.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -277,10 +278,10 @@ set(SOURCE_FILES
     io/serialization/ivwserializeconstants.cpp
     io/serialization/ivwserializer.cpp
     io/textfilereader.cpp   
-    links/processorlink.cpp	
-    links/propertylink.cpp
-    links/linkconditions.cpp	
+    links/linkconditions.cpp    
     links/linkevaluator.cpp    
+    links/processorlink.cpp    
+    links/propertylink.cpp
     metadata/compositemetadata.cpp    
     metadata/metadata.cpp
     metadata/metadatafactory.cpp
@@ -298,6 +299,7 @@ set(SOURCE_FILES
     ports/multiinport.cpp
     ports/outport.cpp
     ports/port.cpp
+    ports/portinspector.cpp
     ports/singleinport.cpp
     ports/volumeport.cpp
     processors/canvasprocessor.cpp
@@ -339,13 +341,13 @@ set(SOURCE_FILES
     util/formats.cpp
     util/logdistributor.cpp
     util/observer.cpp    
+    util/settings/linksettings.cpp    
+    util/settings/settings.cpp    
+    util/settings/systemsettings.cpp    
     util/stringconversion.cpp
     util/systemcapabilities.cpp
     util/timer.cpp
     util/variant.cpp
-    util/settings/settings.cpp	
-    util/settings/systemsettings.cpp	
-    util/settings/linksettings.cpp	
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

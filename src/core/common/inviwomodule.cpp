@@ -56,6 +56,10 @@ InviwoModule::~InviwoModule() {
         delete ports_[i];
     ports_.clear();
 
+    for(size_t i = 0; i < portInspectors_.size(); i++)
+        delete portInspectors_[i];
+    portInspectors_.clear();
+
     for (size_t i=0; i<processors_.size(); i++)
         delete processors_[i];
     processors_.clear();
@@ -131,6 +135,7 @@ const std::vector<DataRepresentation*>& InviwoModule::getDataRepresentations() c
 const std::vector<DataWriter*>& InviwoModule::getDataWriters() const {return dataWriters_;}
 const std::vector<MetaData*>& InviwoModule::getMetaData() const {return metadata_;}
 const std::vector<Port*>& InviwoModule::getPorts() const {return ports_;}
+const std::vector<PortInspector*>& InviwoModule::getPortInspectors() const { return portInspectors_; }
 const std::vector<ProcessorFactoryObject*>& InviwoModule::getProcessors() const {return processors_;}
 const std::vector< std::pair<std::string, ProcessorWidget*> >& InviwoModule::getProcessorWidgets() const {return processorWidgets_;}
 const std::vector<Property*>& InviwoModule::getProperties() const {return properties_;}
@@ -146,6 +151,7 @@ void InviwoModule::registerDataRepresentation(DataRepresentation* dataRepresenta
 void InviwoModule::registerDataWriter(DataWriter* dataWriter) {dataWriters_.push_back(dataWriter);}
 void InviwoModule::registerMetaData(MetaData* meta) {metadata_.push_back(meta);}
 void InviwoModule::registerPort(Port* port) {ports_.push_back(port);}
+void InviwoModule::registerPortInspector(PortInspector* portInspector) { portInspectors_.push_back(portInspector); }
 void InviwoModule::registerProcessorObject(ProcessorFactoryObject* processor) {
     // FIXME: check processor pointer and module's name
     //processor->setModuleIdentifier(identifier_);
