@@ -51,7 +51,7 @@ public:
 class IVW_MODULE_PYTHON_API PySaveTransferFunction : public PyMethod{
 public:
     std::string getName(){return "saveTransferFunction";}
-    std::string getDesc(){return "saveTransferFunction(processor,transferfunctionPropery,filename)\Save a transfer function to file from the specified transfer function property.";}
+    std::string getDesc(){return "saveTransferFunction(processor,transferfunctionPropery,filename)\tSave a transfer function to file from the specified transfer function property.";}
     virtual PyCFunction getFunc(){return py_saveTransferFunction;}
 };
 
