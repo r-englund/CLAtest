@@ -123,7 +123,7 @@ namespace inviwo {
         }
         catch (cl::Error& e)
         {
-            LogErrorCustom("OpenCL", "Error while retrieving device info: " << e.what());
+            LogInfoCustom("OpenCL", "Device does not have the following info: " << e.what());
         }        
     }
 
