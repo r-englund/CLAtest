@@ -383,7 +383,6 @@ void ProcessorNetworkEvaluator::enableEvaluation(){
     }
 }
 
-
 ProcessorNetworkEvaluator* ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork *network){
     std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*>::iterator it = processorNetworkEvaluators_.find(network);
     if(it == processorNetworkEvaluators_.end())

@@ -1275,9 +1275,9 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     for (size_t i=0; i<links.size(); i++)
         addLinkGraphicsItem(links[i]->getDestinationProcessor(), links[i]->getSourceProcessor());
 
-    // flag the network's modified flag, unlock it and initiate evaluation
+    // flag the network's modified flag
     processorNetwork_->setModified(true);
-    processorNetwork_->unlock();
+
     // show all processor widgets that where hidden on network load
     for (size_t i=0; i<processors.size(); i++) {
         if (processors[i]->hasProcessorWidget()){
@@ -1286,6 +1286,10 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
                 processors[i]->getProcessorWidget()->show();
         }
     }
+
+    // unlock it and initiate evaluation
+    processorNetwork_->unlock();
+    processorNetwork_->modified();
 
     // create all property (should be all non-visible) widgets in a thread (as it can take a long time to create them)
     workerThread_ = new QThread;
