@@ -271,7 +271,7 @@ F(cl_device_info, CL_DEVICE_BUILT_IN_KERNELS, STRING_CLASS)
         LogInfoCustom("OpenCLInfo", #param_name << ": " << inviwo::deviceInfoToString(param_name, device.getInfo<param_name>(), false)) \
         } \
     } catch(cl::Error&) { \
-        LogErrorCustom("OpenCLInfo", "Error while retrieving device info for " << #param_name); \
+        LogInfoCustom("OpenCLInfo", "Device info missing: " << #param_name); \
     }        
         
 #endif
