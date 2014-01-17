@@ -116,13 +116,21 @@ void ImageIO::saveLayer(const char* filename, const Layer* inputLayer) {
 
         FIBITMAP* bitmapStandard = FreeImage_ConvertToStandardType(bitmap);
  
-        FreeImage_Save(imageFormat, bitmapStandard, filename, static_cast<int>(imageRam->getDataFormat()->getBitsAllocated()));
+        BOOL saved = FreeImage_Save(imageFormat, bitmapStandard, filename, static_cast<int>(imageRam->getDataFormat()->getBitsAllocated()));
+
+        if(saved == 0){
+            LogErrorCustom("ImageIO", "Image layer could not be saved to "  << filename);
+        }
+        else{
+            LogInfoCustom("ImageIO", "Image layer saved to "  << filename);
+        }
 
         FreeImage_Unload(bitmapStandard);
         FreeImage_Unload(bitmap);
     }
     else{
         //Unknown file ending
+        LogErrorCustom("ImageIO", "Unknown file ending.");
     }
 }
 

@@ -1215,12 +1215,12 @@ void LinkDialog::clickedDeleteAllLinksPushButton() {
 CheckableQComboBox::CheckableQComboBox(std::string widgetName, std::vector<std::string> options) : QComboBox(),widgetName_(widgetName) {    
     setEditable(true);
     lineEdit()->setReadOnly(true);
-    stdandardModel_ = new QStandardItemModel (options.size(),1);    
+    stdandardModel_ = new QStandardItemModel (static_cast<int>(options.size()),1);    
     for (size_t i=0; i<options.size(); i++) {
         QStandardItem* item = new QStandardItem(QString(options[i].c_str()));
         item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled );
         item->setData(Qt::Checked, Qt::CheckStateRole);
-        stdandardModel_->setItem(i, 0, item);
+        stdandardModel_->setItem(static_cast<int>(i), 0, item);
         standardItems_.push_back(item);
     }    
     setModel(stdandardModel_);
@@ -1241,7 +1241,7 @@ bool CheckableQComboBox::isItemChecked(int i) {
 std::vector<std::string> CheckableQComboBox::getCheckedItems() {
     std::vector<std::string> checkedItemString;
     for (size_t i=0; i<standardItems_.size(); i++)
-        if (isItemChecked(i))
+        if (isItemChecked(static_cast<int>(i)))
             checkedItemString.push_back(standardItems_[i]->text().toLocal8Bit().constData());
 
     return checkedItemString;

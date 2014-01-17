@@ -38,7 +38,7 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
         maskMin_ = rhs.maskMin_;
         maskMax_ = rhs.maskMax_;
 		for (size_t i=0; i<rhs.getNumDataPoints(); i++){
-			dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(i)));
+			dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(static_cast<int>(i))));
 		}
 	}
 	calcTransferValues();

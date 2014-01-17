@@ -135,7 +135,7 @@ void TransferFunctionPropertyDialog::updateFromProperty() {
     TransferFunctionDataPoint* curPoint;
     const vec4* curColor;
     for (size_t i=0; i<tfProperty_->get().getNumDataPoints(); i++) {
-        curPoint = tfProperty_->get().getPoint(i);
+        curPoint = tfProperty_->get().getPoint(static_cast<int>(i));
         curColor = curPoint->getRgba();
         curGradientStop->first = curPoint->getPos()->x;
         // modify the alpha channel to make the colors better visible

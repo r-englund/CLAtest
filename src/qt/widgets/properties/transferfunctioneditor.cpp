@@ -24,7 +24,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     setSceneRect(0.0, 0.0, 512.0, 256.0);
     // initialize editor with current tf
     for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
-        TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(i);
+        TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(static_cast<int>(i));
         vec2 pos = *dataPoint->getPos();
         pos.x *= width();
         pos.y *= height();
@@ -109,8 +109,8 @@ void TransferFunctionEditor::addControlPoint(QPointF pos) {
         int leftNeighborID = 0;
         int rightNeighborID = 0;
         for (size_t i=0; i<controlPoints_.size(); i++)
-            if (controlPoints_[i]->pos().x()<=pos.x()) leftNeighborID=i;
-            else if (rightNeighborID==0 && controlPoints_[i]->pos().x()>pos.x()) rightNeighborID=i;
+            if (controlPoints_[i]->pos().x()<=pos.x()) leftNeighborID=static_cast<int>(i);
+            else if (rightNeighborID==0 && controlPoints_[i]->pos().x()>pos.x()) rightNeighborID=static_cast<int>(i);
         const vec4* colorL = controlPoints_[leftNeighborID]->getPoint()->getRgba();
         const vec4* colorR = controlPoints_[rightNeighborID]->getPoint()->getRgba();
         float a = 0.5f;

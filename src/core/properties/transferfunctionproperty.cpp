@@ -75,12 +75,12 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
     s.serialize("size", (int)value_.getNumDataPoints());
 	for (size_t i=0; i<value_.getNumDataPoints(); i++){
 		stream << "pos" << i;
-		s.serialize(stream.str(), value_.getPoint(i)->getPos());
+		s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getPos());
 		stream.clear();
 		stream.str(std::string());
 
 		stream << "rgba" << i;
-		s.serialize(stream.str(), value_.getPoint(i)->getRgba());
+		s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getRgba());
 		stream.clear();
 		stream.str(std::string());
 	}

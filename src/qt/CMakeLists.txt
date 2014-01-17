@@ -9,6 +9,31 @@ if(IVW_QT_EDITOR AND NOT IVW_QT_WIDGETS)
 endif()
 
 if(IVW_QT_EDITOR OR IVW_QT_WIDGETS)
+    if(NOT QT_QMAKE_EXECUTABLE)
+        find_program(QT_QMAKE_EXECUTABLE_FINDQT NAMES qmake qmake4 qmake-qt4 qmake5 qmake-qt5
+               PATHS "${QT_SEARCH_PATH}/bin" "$ENV{QTDIR}/bin")
+        set(QT_QMAKE_EXECUTABLE ${QT_QMAKE_EXECUTABLE_FINDQT} CACHE PATH "Qt qmake program.")
+    endif(NOT QT_QMAKE_EXECUTABLE)
+
+    if(QT_QMAKE_EXECUTABLE)
+        exec_program(${QT_QMAKE_EXECUTABLE} ARGS "-query QT_VERSION" OUTPUT_VARIABLE QTVERSION)
+        if(QTVERSION MATCHES "4.*")
+            set(QT4_INSTALLED TRUE)
+        endif(QTVERSION MATCHES "4.*")
+        if(QTVERSION MATCHES "5.*")
+            set(QT5_INSTALLED TRUE)
+        endif(QTVERSION MATCHES "5.*")
+    endif(QT_QMAKE_EXECUTABLE)
+
+    if(NOT DESIRED_QT_VERSION)
+        if(QT4_INSTALLED)
+            set(DESIRED_QT_VERSION 4 CACHE STRING "Pick a version of Qt to use: 4 or 5")
+        endif(QT4_INSTALLED)
+        if(QT5_INSTALLED)
+         set(DESIRED_QT_VERSION 5 CACHE STRING "Pick a version of Qt to use: 4 or 5")
+        endif(QT5_INSTALLED)
+    endif(NOT DESIRED_QT_VERSION)
+
     # Find the QtWidgets library
     if(DESIRED_QT_VERSION MATCHES 5)
         string(REGEX REPLACE "bin\\\\qmake([^ ]*)$" "lib\\\\cmake" QT5_PATH "${QT_QMAKE_EXECUTABLE}")
