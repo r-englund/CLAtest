@@ -22,7 +22,8 @@ QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QG
 
 CanvasQt::CanvasQt(QWidget* parent)
 : QGLWidget(sharedFormat_, parent, sharedWidget_),
-  CanvasGL(uvec2(256,256))
+  CanvasGL(uvec2(256,256)),
+  swapBuffersAllowed_(false)
 {
     //This is our default rendering context
     //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
@@ -58,8 +59,7 @@ void CanvasQt::initializeSquare(){
 }
 
 void CanvasQt::activate() {
-    if (context() != QGLContext::currentContext())
-        makeCurrent();
+    makeCurrent();
 }
 
 void CanvasQt::initializeGL() {
@@ -72,7 +72,10 @@ void CanvasQt::resizeGL(int width, int height) {
 }
 
 void CanvasQt::glSwapBuffers(){
-    QGLWidget::swapBuffers();
+    if(swapBuffersAllowed_){
+        activate();
+        QGLWidget::swapBuffers();
+    }
 }
 
 void CanvasQt::update() {
@@ -84,6 +87,7 @@ void CanvasQt::repaint() {
 }
 
 void CanvasQt::paintGL() {
+    swapBuffersAllowed_ = true;
     CanvasGL::update();
 }
 
