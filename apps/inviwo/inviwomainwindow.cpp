@@ -196,9 +196,9 @@ void InviwoMainWindow::addMenus() {
 	if(basicMenuBar->actions().size()>0)
 		first = basicMenuBar->actions()[0];
 
-	fileMenuItem_ = new QMenu(tr("&File"));
-	viewMenuItem_ = new QMenu(tr("&View"));
-	viewModeItem_ = new QMenu(tr("&View mode"));
+	fileMenuItem_ = new QMenu(tr("&File"),basicMenuBar);
+	viewMenuItem_ = new QMenu(tr("&View"),basicMenuBar);
+	viewModeItem_ = new QMenu(tr("&View mode"),basicMenuBar);
 	basicMenuBar->insertMenu(first, fileMenuItem_);
 	basicMenuBar->insertMenu(first, viewMenuItem_);
 	viewMenuItem_->addMenu(viewModeItem_);
@@ -206,7 +206,7 @@ void InviwoMainWindow::addMenus() {
 	helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
 
 #ifdef IVW_PYTHON_QT
-    pythonMenuItem_ = new QMenu(tr("&Python"));
+    pythonMenuItem_ = new QMenu(tr("&Python"),basicMenuBar);
     basicMenuBar->insertMenu(first, pythonMenuItem_);
 #endif
 }
