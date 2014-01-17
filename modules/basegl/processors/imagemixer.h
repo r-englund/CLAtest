@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -18,6 +18,7 @@
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/properties/scalarproperties.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
@@ -28,7 +29,7 @@ class IVW_MODULE_BASEGL_API ImageMixer : public ProcessorGL {
 public:
     ImageMixer();
     ~ImageMixer();
-    
+
     InviwoProcessorInfo();
 
     void initialize();

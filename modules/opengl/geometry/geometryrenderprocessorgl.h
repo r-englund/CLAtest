@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,6 +19,7 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/processorgl.h>
@@ -29,7 +30,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API GeometryRenderProcessorGL : public ProcessorGL {
 public:
     GeometryRenderProcessorGL();
-    
+
     InviwoProcessorInfo();
 
     void deinitialize();

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2012-2013 Scientific Visualization Group - Linkï¿½ping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -18,11 +18,11 @@
 namespace inviwo {
 
 VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format, border), data_(0)
+    : VolumeRepresentation(dimensions, format, border), data_(NULL)
 {}
 
 VolumeRAM::VolumeRAM(const VolumeRAM& rhs) 
-    : VolumeRepresentation(rhs) {
+    : VolumeRepresentation(rhs), data_(NULL) {
 }
 VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
     if(this != &that) {
@@ -57,6 +57,7 @@ VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format)
     {
     case NOT_SPECIALIZED:
         LogErrorCustom("createVolumeRAM", "Invalid format");
+        break;
     #define DataFormatIdMacro(i) case i: return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); break;
     #include <inviwo/core/util/formatsdefinefunc.h>
     default:

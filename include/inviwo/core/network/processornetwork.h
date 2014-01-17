@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2012-2013 Scientific Visualization Group - Linkï¿½ping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -121,7 +121,7 @@ public:
 
     ProcessorLink* getProcessorLink(Processor* sourceProcessor, Processor* destProcessor) const;    
     
-    inline void modified();
+    void modified();
     void setModified(bool modified) { modified_ = modified; }
     bool isModified() const { return modified_; }
 

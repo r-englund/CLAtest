@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -14,10 +14,11 @@
 
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/interaction/events/resizeevent.h>
 
 namespace inviwo {
 
-CameraProperty::CameraProperty(std::string identifier, std::string displayName, 
+CameraProperty::CameraProperty(std::string identifier, std::string displayName,
                                vec3 eye, vec3 center, vec3 lookUp,
                                PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics), EventListener()
@@ -29,7 +30,7 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     , farPlane_("far", "Far Plane", 100.0f, 1.0f, 1000.0f, 1.0f, invalidationLevel)
     , nearPlane_("near", "Near Plane", 0.1f, 0.001f, 10.f, 0.001f, invalidationLevel)
     , lockInvalidation_(false) {
-        
+
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
     lookTo_.onChange(this, &CameraProperty::updateViewMatrix);
     lookUp_.onChange(this, &CameraProperty::updateViewMatrix);
@@ -129,7 +130,7 @@ void CameraProperty::invokeEvent(Event* event) {
         float width = (float)canvasSize[0];
         float height = (float)canvasSize[1];
         setProjectionMatrix(fovy_.get(), width/height, nearPlane_.get(), farPlane_.get());
-    }    
+    }
 }
 
 void CameraProperty::serialize(IvwSerializer& s) const {
