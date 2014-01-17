@@ -17,6 +17,7 @@
 
 #include <QStandardItem>
 #include <string>
+
 namespace inviwo {
 
 ResourceManagerWidget::ResourceManagerWidget(QWidget* parent) : InviwoDockWidget(tr("Resources"), parent), ResourceManagerObserver() {
@@ -28,12 +29,13 @@ ResourceManagerWidget::ResourceManagerWidget(QWidget* parent) : InviwoDockWidget
 
 ResourceManagerWidget::~ResourceManagerWidget() {}
 
+
 void ResourceManagerWidget::buildLayout() {
 	// Components needed for layout
 	QFrame* frame_ = new QFrame();
 	QVBoxLayout* mainLayout = new QVBoxLayout();
     listView_ = new QListView();
-    model_ = new QStandardItemModel();
+    model_ = new QStandardItemModel(listView_);
     listView_->setModel(model_);  
 
     
