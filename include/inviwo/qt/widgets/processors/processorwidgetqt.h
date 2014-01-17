@@ -30,6 +30,7 @@ public:
 
     virtual ProcessorWidget* create() const = 0;
     virtual void initialize() = 0;    
+    virtual void deinitialize() = 0; 
     virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();

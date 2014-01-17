@@ -36,7 +36,8 @@ public:
     CanvasQt(QWidget* parent = NULL);
     ~CanvasQt();
 
-    void initialize();
+    virtual void initialize();
+    virtual void deinitialize();
     void initializeSquare();
     virtual void activate();
     virtual void glSwapBuffers();

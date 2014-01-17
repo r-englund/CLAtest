@@ -28,6 +28,7 @@ public:
     virtual ~CanvasProcessorWidgetQt();
 
     virtual void initialize();
+    virtual void deinitialize();
     virtual ProcessorWidget* create() const;
     virtual void show();
     virtual void hide();

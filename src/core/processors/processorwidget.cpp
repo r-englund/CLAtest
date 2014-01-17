@@ -24,8 +24,14 @@ ProcessorWidget::ProcessorWidget()
 
 ProcessorWidget::~ProcessorWidget() {}
 
-void ProcessorWidget::initialize() {    
-     metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(processor_->getMetaData("ProcessorWidgetMetaData"));
+void ProcessorWidget::initialize() { 
+    initialized_ = true;
+    metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(processor_->getMetaData("ProcessorWidgetMetaData"));
+}
+
+void ProcessorWidget::deinitialize() {
+    //FIXME: should metaData_ be set to NULL??? //Also initialized_ status is never used anywhere
+    initialized_ = false;
 }
 
 void ProcessorWidget::setVisible(bool visible) {

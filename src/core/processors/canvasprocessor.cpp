@@ -46,21 +46,15 @@ CanvasProcessor::CanvasProcessor()
 }
 
 
-CanvasProcessor::~CanvasProcessor() {
-    if (processorWidget_) {
-        delete processorWidget_;
-        processorWidget_ = 0;
-    }
-}
+CanvasProcessor::~CanvasProcessor() {}
 
 void CanvasProcessor::initialize() {
 	Processor::initialize();
 }
 
 void CanvasProcessor::deinitialize() {
-	processorWidget_->hide();
-	delete processorWidget_;
-	processorWidget_ = 0;
+	if (processorWidget_) 
+        processorWidget_->hide();
 	Processor::deinitialize();
 }
 

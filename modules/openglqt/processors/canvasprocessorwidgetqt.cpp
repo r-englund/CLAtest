@@ -30,13 +30,7 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
     setWindowTitle(QString::fromStdString("untitled canvas")); 
 }
 
-CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
-    if (canvas_) {
-        canvas_->hide();
-        ProcessorWidgetQt::hide();
-        delete canvas_;
-    }
-}
+CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {}
 
 ProcessorWidget* CanvasProcessorWidgetQt::create() const {
     return new CanvasProcessorWidgetQt();
@@ -44,7 +38,9 @@ ProcessorWidget* CanvasProcessorWidgetQt::create() const {
 
 void CanvasProcessorWidgetQt::initialize() {    
     setWindowTitle(QString::fromStdString(processor_->getIdentifier())); 
-    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
+    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);    
+    //FIXME: Consider creating widget outside this class. Weird qt problem.
+    //Because NULL does not make any difference here. CanvasQt has this object as parent.
     canvas_ = new CanvasQt(NULL);
     canvas_->initialize();
     canvas_->setMouseTracking(true);
@@ -59,7 +55,22 @@ void CanvasProcessorWidgetQt::initialize() {
     ProcessorWidgetQt::initialize();
     ivec2 dim = getDimensionMetaData();
     resize(static_cast<int>(dim[0]), static_cast<int>(dim[1]));
-    initialized_ = true;
+}
+
+void CanvasProcessorWidgetQt::deinitialize() {  
+    if (canvas_) {
+        this->hide();
+        canvas_->deinitialize();
+        //FIXME: CanvasQt is child of this object.
+        //Hence don't delete CanvasQt here or use deleteLater. Let the destructor destroy CanvasQt widget
+
+        //canvas_->deleteLater();
+        //if (children().size())
+        //    LogWarn("Canvas is not expected to have children");
+
+        canvas_ = 0;        
+    }
+    ProcessorWidgetQt::deinitialize();
 }
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {

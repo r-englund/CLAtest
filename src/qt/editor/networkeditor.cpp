@@ -97,7 +97,7 @@ void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showPro
     autoLinkOnAddedProcessor(processor);
 }
 
-void NetworkEditor::removeProcessor(Processor* processor) {
+void NetworkEditor::removeProcessor(Processor* processor) {  
     // remove processor representations
     removeProcessorRepresentations(processor);
     // remove the processor from the network
@@ -211,7 +211,8 @@ void NetworkEditor::removeProcessorRepresentations(Processor* processor) {
 
     removeProcessorGraphicsItem(processor);
     removePropertyWidgets(processor);
-    // processor widget already removed when processor is destroyed
+    // processor widget should be removed here since it is added in addProcessorRepresentations()    
+    removeProcessorWidget(processor);
 }
 
 void NetworkEditor::addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible) {
@@ -289,6 +290,15 @@ void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
     }
 }
 
+void NetworkEditor::removeProcessorWidget(Processor* processor) {    
+    ProcessorWidgetQt* processorWidget = dynamic_cast<ProcessorWidgetQt*>(processor->getProcessorWidget());
+    if (processorWidget) {
+        processorWidget->deinitialize();
+        processor->setProcessorWidget(NULL);
+        delete processorWidget;
+        //LGL_ERROR;
+    }
+}
 
 
 /////////////////////////////////////////////////////////

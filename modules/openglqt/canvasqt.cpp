@@ -42,13 +42,15 @@ CanvasQt::CanvasQt(QWidget* parent)
     setAttribute(Qt::WA_OpaquePaintEvent);
 }
 
-CanvasQt::~CanvasQt() {
-    CanvasGL::deinitialize();
-}
+CanvasQt::~CanvasQt() {}
 
 void CanvasQt::initialize() {
     activate();
     CanvasGL::initialize();
+}
+
+void CanvasQt::deinitialize() {
+    CanvasGL::deinitialize();
 }
 
 void CanvasQt::initializeSquare(){

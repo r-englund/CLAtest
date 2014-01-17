@@ -162,6 +162,7 @@ private:
     void addPropertyWidgets(Processor* processor, bool visible=true);
     void removePropertyWidgets(Processor* processor);
     void addProcessorWidget(Processor* processor, bool visible=true);
+    void removeProcessorWidget(Processor* processor);
 
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);
     void addConnectionGraphicsItem(Outport* outport, Inport* inport);

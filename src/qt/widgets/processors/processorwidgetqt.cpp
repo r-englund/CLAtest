@@ -51,6 +51,10 @@ void ProcessorWidgetQt::initialize() {
 		QWidget::move(pos.x, pos.y);
 }
 
+void ProcessorWidgetQt::deinitialize() {
+    ProcessorWidget::deinitialize();
+}
+
 void ProcessorWidgetQt::setVisible(bool visible) {
     ProcessorWidget::setVisible(visible);
     QWidget::setVisible(visible);
