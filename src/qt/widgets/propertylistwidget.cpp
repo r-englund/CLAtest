@@ -58,7 +58,7 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
     if (processorPropertyWidget) {
         listWidgetLayout_->addWidget(processorPropertyWidget);
         processorPropertyWidget->setVisible(true);
-        processorPropertyWidget->show();
+        static_cast<CollapsibleGroupBoxWidgetQt*>(processorPropertyWidget)->show();
      }
 }
 
@@ -66,6 +66,16 @@ void PropertyListWidget::removeProcessorProperties(Processor* processor) {
     QWidget* processorPropertyWidget = getProcessorPropertiesItem(processor);
     processorPropertyWidget->setVisible(false);
     listWidgetLayout_->removeWidget(processorPropertyWidget);
+}
+
+void PropertyListWidget::changeName(std::string oldName, std::string newName) {
+    // check if processor widget exists
+    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(oldName);
+    if (it != propertyWidgetMap_.end()) {
+        CollapsibleGroupBoxWidgetQt* processorPropertyWidget = dynamic_cast<CollapsibleGroupBoxWidgetQt*>(it->second);
+        processorPropertyWidget->setIdentifier(newName);
+        const_cast<std::string &>(it->first) = newName;
+    }
 }
 
 void PropertyListWidget::cacheProcessorPropertiesItem(Processor* processor){
@@ -90,12 +100,6 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
     CollapsibleGroupBoxWidgetQt* processorPropertyWidget = new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
     processorPropertyWidget->setParent(this);
 
-    QLabel* processorLabel = new QLabel(QString::fromStdString(processor->getIdentifier()));
-    processorLabel->setAlignment(Qt::AlignCenter);
-    processorLabel->setAutoFillBackground(true);
-    processorLabel->setFrameStyle(QFrame::StyledPanel);
-
-    processorPropertyWidget->addWidget(processorLabel);
     properties_ = processor->getProperties();
     std::vector<Property*> addedProperties;
     for (size_t i=0; i<properties_.size(); i++) {
@@ -104,8 +108,9 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
         if(std::find(addedProperties.begin(),addedProperties.end(),curProperty) != addedProperties.end())
             continue;
         // add to group box if one is assigned to the property
-        else if (curProperty->getGroupID()!="") {
+        else if (curProperty->getGroupID() != "") {
             CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(curProperty->getGroupID(), curProperty->getGroupDisplayName());
+            group->setIdentifier(curProperty->getGroupDisplayName());
             // add all the properties with the same group assigned
             for (size_t k=0; k<properties_.size(); k++){
                 Property* tmpProperty = properties_[k];

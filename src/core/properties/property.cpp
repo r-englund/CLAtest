@@ -125,7 +125,7 @@ void Property::setGroupDisplayName(std::string groupID, std::string groupDisplay
 	Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));
 }
 
-std::string Property::getGroupDisplayName(){
+std::string Property::getGroupDisplayName() {
     return groupDisplayNames_[groupID_];
 }
 

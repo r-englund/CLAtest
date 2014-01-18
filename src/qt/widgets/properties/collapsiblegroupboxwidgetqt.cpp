@@ -75,16 +75,16 @@ void CollapsibleGroupBoxWidgetQt::show() {
     collapsed_ = false;
     groupBox_->show();
     btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
-    disconnect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
-    connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(hide()));
+    disconnect(btnCollapse_, SIGNAL(clicked()), this, SLOT(show()));
+    connect(btnCollapse_, SIGNAL(clicked()), this, SLOT(hide()));
 }
 
 void CollapsibleGroupBoxWidgetQt::hide() {
     collapsed_= true;
     groupBox_->hide();
     btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_right.png"));
-    disconnect(btnCollapse_,SIGNAL(clicked()),this,SLOT(hide()));
-    connect(btnCollapse_,SIGNAL(clicked()),this,SLOT(show()));
+    disconnect(btnCollapse_, SIGNAL(clicked()), this, SLOT(hide()));
+    connect(btnCollapse_, SIGNAL(clicked()), this, SLOT(show()));
 }
 
 void CollapsibleGroupBoxWidgetQt::addProperty(Property* tmpProperty) {
@@ -123,6 +123,7 @@ std::string CollapsibleGroupBoxWidgetQt::getIdentifier() const {
 
 void CollapsibleGroupBoxWidgetQt::setIdentifier(const std::string& identifier) {
     identifier_ = identifier;
+    label_->setText(identifier);
 }
 
 std::string CollapsibleGroupBoxWidgetQt::getDisplayName() const {
@@ -143,7 +144,8 @@ void CollapsibleGroupBoxWidgetQt::propertyModified(){
 
 void CollapsibleGroupBoxWidgetQt::setGroupDisplayName(){
     displayName_ = label_->getText();
-    Property::setGroupDisplayName(identifier_,displayName_);
+    label_->setText(displayName_);
+    Property::setGroupDisplayName(identifier_, displayName_);
 }
 
 void CollapsibleGroupBoxWidgetQt::updateVisibility(){

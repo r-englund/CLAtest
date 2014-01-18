@@ -46,6 +46,7 @@ VolumeRaycasterGL::VolumeRaycasterGL()
     addProperty(camera_);
     trackball_  = new Trackball(&camera_);
     addInteractionHandler(trackball_);
+    //FIXME: shouldn't here all properties be added?
 }
 
 VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
@@ -107,13 +108,14 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
 
     //camera_.setVisible(false);
     addProperty(camera_);
-    trackball_  = new Trackball(&camera_);
+    trackball_ = new Trackball(&camera_);
     addInteractionHandler(trackball_);
 }
 
 void VolumeRaycasterGL::addShadingProperties() {
     // shading
     addProperty(shadingMode_);
+    lightPosition_.setSemantics(PropertySemantics::LightPosition);
     addProperty(lightPosition_);
     addProperty(lightColorAmbient_);
     addProperty(lightColorDiffuse_);
@@ -130,7 +132,7 @@ void VolumeRaycasterGL::addShadingProperties() {
     lightSpecularExponent_.setGroupID("lighting");
     applyLightAttenuation_.setGroupID("lighting");
     lightAttenuation_.setGroupID("lighting");
-    //setPropertyGroupGuiName("lighting", "Lighting Parameters");
+    Property::setGroupDisplayName("lighting", "Lighting Parameters");
 }
 
 void VolumeRaycasterGL::initialize() {

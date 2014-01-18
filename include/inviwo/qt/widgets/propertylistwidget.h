@@ -39,6 +39,8 @@ public:
     void addProcessorProperties(Processor* processor);
     void removeProcessorProperties(Processor* processor);
 
+    void changeName(std::string oldName, std::string newName);
+
     void saveState();
     void notify();
     PropertyVisibilityMode getVisibilityMode();

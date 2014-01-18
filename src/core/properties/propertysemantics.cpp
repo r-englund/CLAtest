@@ -18,12 +18,12 @@ namespace inviwo {
 
 std::string getPropertySemanticID(PropertySemantics::Type type) {
     switch (type) {
-            case PropertySemantics::Default:        return "Default";
-            case PropertySemantics::Color:          return "Color";
-            case PropertySemantics::LightPosition:  return "LightPosition";
-            case PropertySemantics::Editor:         return "Editor";
-            case PropertySemantics::Shader:         return "Shader";
-            default: return "Unknown PropertySemantics.";
+        case PropertySemantics::Default:        return "Default";
+        case PropertySemantics::Color:          return "Color";
+        case PropertySemantics::LightPosition:  return "LightPosition";
+        case PropertySemantics::Editor:         return "Editor";
+        case PropertySemantics::Shader:         return "Shader";
+        default: return "Unknown PropertySemantics.";
     }
 }
 

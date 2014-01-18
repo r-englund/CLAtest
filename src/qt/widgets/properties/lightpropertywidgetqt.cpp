@@ -24,29 +24,24 @@ LightPropertyWidgetQt::LightPropertyWidgetQt(FloatVec3Property* property) : prop
     updateFromProperty();
 }
 
-
 LightPropertyWidgetQt::~LightPropertyWidgetQt() {
     delete lightWidget_;
 }
 
-
-void LightPropertyWidgetQt::generateWidget() {
-    
+void LightPropertyWidgetQt::generateWidget() {   
     setObjectName("LightPropertyWidgetQt");
     
     lightWidget_ = new LightPositionWidgetQt();
     QHBoxLayout* hLayout = new QHBoxLayout();
     label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-    connect(lightWidget_,SIGNAL(positionChanged()),this,SLOT(setPropertyValue()));
+    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
+    connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(setPropertyValue()));
     hLayout->addWidget(lightWidget_);
     setLayout(hLayout);
     if (property_->getReadOnly()) 
-        label_->editingOff();
-
+        label_->finishEditing();
     lightWidget_->setPosition(property_->get());
-
 }
 
 void LightPropertyWidgetQt::setPropertyValue() {
@@ -55,10 +50,7 @@ void LightPropertyWidgetQt::setPropertyValue() {
 }
 
 void LightPropertyWidgetQt::updateFromProperty() {
-
-
     lightWidget_->setPosition(property_->get());
-
 }
 
 void LightPropertyWidgetQt::setPropertyDisplayName(){

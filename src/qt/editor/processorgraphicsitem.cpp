@@ -27,6 +27,7 @@
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 
 namespace inviwo {
@@ -37,7 +38,7 @@ static const int roundedCorners = 9;
 static const int labelHeight = 8;
 
 int pointSizeToPixelSize(const int pointSize) {
-    // compute pixel size by assuming 96 dpi as basis
+    // compute pixel size for fonts by assuming 96 dpi as basis
     return ((pointSize * 4) / 3);
 }
 
@@ -401,11 +402,13 @@ bool ProcessorGraphicsItem::isEditingProcessorName(){
 }
 
 void ProcessorGraphicsItem::setIdentifier(QString text){
-    getProcessor()->setIdentifier(text.toLocal8Bit().constData());
+    std::string oldName = getProcessor()->getIdentifier();
+    std::string newName = text.toLocal8Bit().constData();
+    getProcessor()->setIdentifier(newName);
     ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
-    if(processorWidgetQt)
+    if (processorWidgetQt)
         processorWidgetQt->setWindowTitle(text);
-    //TODO: change name in property list widget
+    PropertyListWidget::instance()->changeName(oldName, newName);
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {

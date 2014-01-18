@@ -35,7 +35,7 @@ void StringPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(lineEdit_);
     setLayout(hLayout);
     if (property_->getReadOnly()) 
-        label_->editingOff();
+        label_->finishEditing();
 }
 
 void StringPropertyWidgetQt::setPropertyValue() {

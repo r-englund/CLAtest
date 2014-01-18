@@ -16,11 +16,11 @@
 
 namespace inviwo{
 
-    EditableLabelQt::EditableLabelQt(std::string text, bool shortenText): text_(text), contextMenu_(NULL), shortenText_(shortenText){
+EditableLabelQt::EditableLabelQt(std::string text, bool shortenText): text_(text), contextMenu_(NULL), shortenText_(shortenText) {
     generateWidget();
 }
 
-    EditableLabelQt::EditableLabelQt(std::string text, QMenu* contextMenu, bool shortenText) :text_(text), contextMenu_(contextMenu), shortenText_(shortenText){
+EditableLabelQt::EditableLabelQt(std::string text, QMenu* contextMenu, bool shortenText) :text_(text), contextMenu_(contextMenu), shortenText_(shortenText) {
     generateWidget();
 }
 
@@ -46,7 +46,7 @@ void EditableLabelQt::generateWidget(){
     label_->setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(label_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
-    connect(lineEdit_, SIGNAL(editingFinished()),this, SLOT(editingOff()));
+    connect(lineEdit_, SIGNAL(editingFinished()),this, SLOT(finishEditing()));
 }
 
 void EditableLabelQt::edit(){
@@ -58,19 +58,17 @@ void EditableLabelQt::edit(){
     lineEdit_->selectAll();
 }
 
-
 void EditableLabelQt::mouseDoubleClickEvent( QMouseEvent* e ){
     edit();
 }
 
-void EditableLabelQt::editingOff(){
+void EditableLabelQt::finishEditing() {
     lineEdit_->hide();
     text_ = lineEdit_->text().toLocal8Bit().constData();
     if (shortenText_)
         label_->setText(QString::fromStdString(shortenText()));    
     else
-        label_->setText(QString::fromStdString(text_));    
-
+        label_->setText(QString::fromStdString(text_));
     label_->show();
     emit textChanged();
 }
@@ -78,7 +76,7 @@ void EditableLabelQt::editingOff(){
 void EditableLabelQt::setText(std::string txt) {
     text_ = txt; 
     edit(); 
-    editingOff();
+    finishEditing();
 }
 
 void EditableLabelQt::showContextMenu( const QPoint& pos ){
@@ -105,6 +103,4 @@ void EditableLabelQt::setShortenText(bool shorten) {
     shortenText_ = shorten;
 }
 
-
-
-}//namespace
+} //namespace

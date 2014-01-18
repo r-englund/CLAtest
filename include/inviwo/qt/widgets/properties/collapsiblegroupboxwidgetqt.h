@@ -15,21 +15,19 @@
 #ifndef IVW_COLLAPSIVEGROUPBOXWIDGETQT_H
 #define IVW_COLLAPSIVEGROUPBOXWIDGETQT_H
 
-//Qt
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QLineEdit>
 #include <QToolButton>
 #include <QGroupBox>
 #include <QPushButton>
 
-//Widgets
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/eventpropertymanager.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
+#include <inviwo/qt/widgets/editablelabelqt.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
-#include <inviwo/qt/widgets/propertylistwidget.h>
 
 #include <inviwo/core/properties/property.h>
 

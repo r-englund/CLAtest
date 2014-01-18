@@ -23,7 +23,7 @@
 #include <QMenu>
 namespace inviwo {
 
-    class IVW_QTWIDGETS_API EditableLabelQt: public QWidget{
+class IVW_QTWIDGETS_API EditableLabelQt: public QWidget{
     Q_OBJECT
 public:
     EditableLabelQt(std::string text, bool shortenText=true);
@@ -34,7 +34,7 @@ public:
     void setContextMenu(QMenu* menu){contextMenu_ = menu;};
     void setShortenText(bool shorten);
 public slots:
-    void editingOff();
+    void finishEditing();
     void showContextMenu(const QPoint& pos);
 
 private:

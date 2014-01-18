@@ -91,7 +91,7 @@ void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showPro
     // add the processor to the network    
     processor->setIdentifier(obtainUniqueProcessorID(processor->getClassName()));
     processor->initialize();
-    processorNetwork_->addProcessor(processor);    
+    processorNetwork_->addProcessor(processor);
     // add processor representations
     addProcessorRepresentations(processor, pos, showProcessor, showPropertyWidgets, showProcessorWidget);
     autoLinkOnAddedProcessor(processor);
