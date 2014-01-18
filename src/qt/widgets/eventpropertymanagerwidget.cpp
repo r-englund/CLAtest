@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/qt/widgets/eventpropertymanagerwidget.h>
-#include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
+#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 
 namespace inviwo {	
 
@@ -45,7 +45,7 @@ void EventPropertyManagerWidget::notify() {
 void EventPropertyManagerWidget::emptyLayout(QVBoxLayout* layout) {
 	while(!layout->isEmpty()) {
 		QWidget* w =  layout->takeAt(0)->widget();
-		CollapsableGroupBoxWidgetQt* box = dynamic_cast<CollapsableGroupBoxWidgetQt*>(w);
+		CollapsibleGroupBoxWidgetQt* box = dynamic_cast<CollapsibleGroupBoxWidgetQt*>(w);
 		if (box)
 			groupCollapsed[box->getIdentifier()] = box->isCollapsed();
 
@@ -64,7 +64,7 @@ void EventPropertyManagerWidget::drawEventPropertyWidgets() {
 			continue;
 
 		if (properties[i]->getGroupID()!="") {
-			CollapsableGroupBoxWidgetQt* group = new CollapsableGroupBoxWidgetQt(properties[i]->getGroupID(), properties[i]->getGroupID());
+			CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(properties[i]->getGroupID(), properties[i]->getGroupID());
 			//Add all the properties with the same group assigned
 			for (size_t k=0; k<properties.size(); k++){
 				Property* tmpProperty = properties[k];

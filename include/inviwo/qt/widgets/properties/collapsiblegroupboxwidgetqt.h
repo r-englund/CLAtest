@@ -35,12 +35,12 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API CollapsableGroupBoxWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API CollapsibleGroupBoxWidgetQt : public PropertyWidgetQt {
 
     Q_OBJECT
 
 public:
-    CollapsableGroupBoxWidgetQt(std::string identifier, std::string displayName= "");
+    CollapsibleGroupBoxWidgetQt(std::string identifier, std::string displayName= "");
 
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);

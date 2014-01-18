@@ -17,7 +17,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
-#include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
+#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <QSlider>
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
@@ -42,7 +42,7 @@ private:
     CameraProperty* property_;
     //QSlider* slider_;
     EditableLabelQt* label_;
-    CollapsableGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
+    CollapsibleGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
     void generateWidget();
     std::vector<PropertyWidgetQt*> subPropertyWidgets_;
 

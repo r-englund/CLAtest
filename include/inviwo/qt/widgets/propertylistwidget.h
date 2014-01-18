@@ -19,7 +19,7 @@
 #include <inviwo/core/processors/processor.h>
 
 #include <inviwo/qt/widgets/inviwodockwidget.h>
-#include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
+#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <QCheckBox>

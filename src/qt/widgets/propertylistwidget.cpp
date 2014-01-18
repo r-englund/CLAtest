@@ -87,7 +87,7 @@ QWidget* PropertyListWidget::getProcessorPropertiesItem(Processor* processor){
 
 QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* processor) {
     // create property widget and store it in the map
-    CollapsableGroupBoxWidgetQt* processorPropertyWidget = new CollapsableGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
+    CollapsibleGroupBoxWidgetQt* processorPropertyWidget = new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
     processorPropertyWidget->setParent(this);
 
     QLabel* processorLabel = new QLabel(QString::fromStdString(processor->getIdentifier()));
@@ -105,7 +105,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
             continue;
         // add to group box if one is assigned to the property
         else if (curProperty->getGroupID()!="") {
-            CollapsableGroupBoxWidgetQt* group = new CollapsableGroupBoxWidgetQt(curProperty->getGroupID(), curProperty->getGroupDisplayName());
+            CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(curProperty->getGroupID(), curProperty->getGroupDisplayName());
             // add all the properties with the same group assigned
             for (size_t k=0; k<properties_.size(); k++){
                 Property* tmpProperty = properties_[k];

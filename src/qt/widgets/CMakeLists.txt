@@ -22,7 +22,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/buttonpropertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/colorpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/camerapropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/compositepropertywidgetqt.h
@@ -98,7 +98,7 @@ set(SOURCE_FILES
     processors/processorwidgetqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
-    properties/collapsivegroupboxwidgetqt.cpp
+    properties/collapsiblegroupboxwidgetqt.cpp
     properties/colorpropertywidgetqt.cpp
     properties/camerapropertywidgetqt.cpp
     properties/compositepropertywidgetqt.cpp

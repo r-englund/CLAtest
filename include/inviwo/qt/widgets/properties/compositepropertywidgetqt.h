@@ -16,7 +16,7 @@
 #define IVW_COMPOSITEPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
+#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <QLineEdit>
 #include <QToolButton>
 
@@ -42,7 +42,7 @@ protected slots:
     void setDisplayModeFromGroupBox();
 private:
     CompositeProperty* property_;
-    CollapsableGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
+    CollapsibleGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
     
     void generateWidget();
 

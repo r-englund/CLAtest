@@ -33,7 +33,7 @@
 #include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/collapsivegroupboxwidgetqt.h>
+#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/colorpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/directorypropertywidgetqt.h>
