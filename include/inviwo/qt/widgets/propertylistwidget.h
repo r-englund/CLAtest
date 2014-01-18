@@ -12,7 +12,7 @@
  *
  **********************************************************************/
 
- #ifndef IVW_PROPERTYLISTWIDGET_H
+#ifndef IVW_PROPERTYLISTWIDGET_H
 #define IVW_PROPERTYLISTWIDGET_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
@@ -36,13 +36,11 @@ public:
     PropertyListWidget(QWidget* parent);
     ~PropertyListWidget();
 
-    void showProcessorProperties(Processor* processor);
+    void addProcessorProperties(Processor* processor);
     void removeProcessorProperties(Processor* processor);
-    void showProcessorProperties(std::vector<Processor*> processors);
-    void removeAllProcessorProperties();
+
     void saveState();
     void notify();
-    void setMultiSelect(bool multiSelect){multiSelect_ = multiSelect; };
     PropertyVisibilityMode getVisibilityMode();
 
     void cacheProcessorPropertiesItem(Processor* processor);
@@ -59,12 +57,9 @@ private:
 
     void setViewMode(PropertyVisibilityMode viewMode);
     QWidget* createNewProcessorPropertiesItem(Processor* processor);
-    void addProcessorPropertiesToLayout(Processor* processor);
-
 
     bool developerViewMode_;
     bool applicationViewMode_;
-    bool multiSelect_;
 
     QVBoxLayout* listWidgetLayout_;
     QWidget* listWidget_;

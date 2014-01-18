@@ -35,12 +35,12 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API CollapsiveGroupBoxWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API CollapsableGroupBoxWidgetQt : public PropertyWidgetQt {
 
     Q_OBJECT
 
 public:
-    CollapsiveGroupBoxWidgetQt(std::string identifier, std::string displayName= "");
+    CollapsableGroupBoxWidgetQt(std::string identifier, std::string displayName= "");
 
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);
@@ -64,10 +64,8 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-
 signals:
     void visibilityModified();
-
 
 private:
     QToolButton* btnCollapse_;

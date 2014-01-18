@@ -26,7 +26,7 @@ CameraPropertyWidgetQt::CameraPropertyWidgetQt(CameraProperty* property) : prope
 
 void CameraPropertyWidgetQt::generateWidget() {
     QVBoxLayout* vLayout = new QVBoxLayout();
-    collapsiveGroupBoxWidget_ = new CollapsiveGroupBoxWidgetQt(property_->getIdentifier(),property_->getDisplayName());
+    collapsiveGroupBoxWidget_ = new CollapsableGroupBoxWidgetQt(property_->getIdentifier(),property_->getDisplayName());
     std::vector<Property*> subProperties = property_->getSubProperties();
     for (size_t i=0; i<subProperties.size(); i++) {
         Property* curProperty = subProperties[i];

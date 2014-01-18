@@ -396,10 +396,6 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     p->restore();
 }
 
-void ProcessorGraphicsItem::updatePropertyListWidget(){
-    NetworkEditor::getRef().updatePropertyListWidget();
-}
-
 bool ProcessorGraphicsItem::isEditingProcessorName(){
     return (nameLabel_->textInteractionFlags() == Qt::TextEditorInteraction);
 }
@@ -409,7 +405,7 @@ void ProcessorGraphicsItem::setIdentifier(QString text){
     ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
     if(processorWidgetQt)
         processorWidgetQt->setWindowTitle(text);
-    updatePropertyListWidget();
+    //TODO: change name in property list widget
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value) {
@@ -440,6 +436,10 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
         }
 
         updateMetaData();
+    }
+    else if (change == QGraphicsItem::ItemSelectedHasChanged) {
+        if (isSelected()) NetworkEditor::getPtr()->addPropertyWidgets(getProcessor());
+        else NetworkEditor::getPtr()->removePropertyWidgets(getProcessor());
     }
     return QGraphicsItem::itemChange(change, value);
 }

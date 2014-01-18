@@ -30,7 +30,6 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     propertyListWidget_ = this;
-    multiSelect_ = false;
 
     scrollArea_ = new QScrollArea(propertyListWidget_);
     scrollArea_->setWidgetResizable(true);
@@ -54,55 +53,19 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
 
 PropertyListWidget::~PropertyListWidget() {}
 
-void PropertyListWidget::showProcessorProperties(std::vector<Processor*> processors) {
-
-    multiSelect_ = true;
-    for (size_t i=0; i<processors.size(); i++) {
-        addProcessorPropertiesToLayout(processors[i]);
-    }
-    if (developerViewMode_)
-        setDeveloperViewMode(true);
-    if (applicationViewMode_)
-        setApplicationViewMode(true);
-}
-
-void PropertyListWidget::showProcessorProperties(Processor* processor) {
+void PropertyListWidget::addProcessorProperties(Processor* processor) {
     QWidget* processorPropertyWidget = getProcessorPropertiesItem(processor);
     if (processorPropertyWidget) {
-        removeAllProcessorProperties();
+        listWidgetLayout_->addWidget(processorPropertyWidget);
         processorPropertyWidget->setVisible(true);
-        if (multiSelect_) {
-            CollapsiveGroupBoxWidgetQt* groupBox = new CollapsiveGroupBoxWidgetQt(processor->getIdentifier(),processor->getIdentifier());
-            groupBox->addWidget(processorPropertyWidget);
-            listWidgetLayout_->addWidget(groupBox);
-            groupBox->hide();
-        }else{
-            listWidgetLayout_->addWidget(processorPropertyWidget);
-        }
-    }
+        processorPropertyWidget->show();
+     }
 }
 
-void PropertyListWidget::addProcessorPropertiesToLayout(Processor* processor) {
+void PropertyListWidget::removeProcessorProperties(Processor* processor) {
     QWidget* processorPropertyWidget = getProcessorPropertiesItem(processor);
-    if (processorPropertyWidget) {
-        processorPropertyWidget->setVisible(true);
-        if (multiSelect_) {
-            CollapsiveGroupBoxWidgetQt* groupBox = new CollapsiveGroupBoxWidgetQt(processor->getIdentifier(),processor->getIdentifier());
-            groupBox->addWidget(processorPropertyWidget);
-            listWidgetLayout_->addWidget(groupBox);
-            groupBox->hide();
-        }else{
-            listWidgetLayout_->addWidget(processorPropertyWidget);
-        }
-    }
-}
-
-void PropertyListWidget::removeAllProcessorProperties() {
-    while (QLayoutItem* item = listWidgetLayout_->takeAt(0)) {
-        QWidget* processorPropertyWidget = item->widget();
-        listWidgetLayout_->removeWidget(processorPropertyWidget);
-        processorPropertyWidget->setVisible(false);
-    }
+    processorPropertyWidget->setVisible(false);
+    listWidgetLayout_->removeWidget(processorPropertyWidget);
 }
 
 void PropertyListWidget::cacheProcessorPropertiesItem(Processor* processor){
@@ -124,20 +87,15 @@ QWidget* PropertyListWidget::getProcessorPropertiesItem(Processor* processor){
 
 QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* processor) {
     // create property widget and store it in the map
-    QWidget* processorPropertyWidget = new QWidget(this, Qt::WindowStaysOnBottomHint);
-
-    QVBoxLayout* vLayout = new QVBoxLayout(processorPropertyWidget);
-    vLayout->setAlignment(Qt::AlignTop);
-    vLayout->setSpacing(0);
-    vLayout->setMargin(0);
-    vLayout->setContentsMargins(0,0,0,0);
+    CollapsableGroupBoxWidgetQt* processorPropertyWidget = new CollapsableGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
+    processorPropertyWidget->setParent(this);
 
     QLabel* processorLabel = new QLabel(QString::fromStdString(processor->getIdentifier()));
     processorLabel->setAlignment(Qt::AlignCenter);
     processorLabel->setAutoFillBackground(true);
     processorLabel->setFrameStyle(QFrame::StyledPanel);
 
-    vLayout->addWidget(processorLabel);
+    processorPropertyWidget->addWidget(processorLabel);
     properties_ = processor->getProperties();
     std::vector<Property*> addedProperties;
     for (size_t i=0; i<properties_.size(); i++) {
@@ -147,7 +105,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
             continue;
         // add to group box if one is assigned to the property
         else if (curProperty->getGroupID()!="") {
-            CollapsiveGroupBoxWidgetQt* group = new CollapsiveGroupBoxWidgetQt(curProperty->getGroupID(),curProperty->getGroupDisplayName());
+            CollapsableGroupBoxWidgetQt* group = new CollapsableGroupBoxWidgetQt(curProperty->getGroupID(), curProperty->getGroupDisplayName());
             // add all the properties with the same group assigned
             for (size_t k=0; k<properties_.size(); k++){
                 Property* tmpProperty = properties_[k];
@@ -157,38 +115,20 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
                 }
             }
             group->generatePropertyWidgets();
-
-            vLayout->addWidget(group);
-
+            processorPropertyWidget->addWidget(group);
         }
         else {
             PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
-            if (propertyWidget) {
-              
+            if (propertyWidget) {          
                 curProperty->registerPropertyWidget(propertyWidget);
-                vLayout->addWidget(propertyWidget);
-
+                processorPropertyWidget->addWidget(propertyWidget);
                 connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
                 addedProperties.push_back(curProperty);
             }
         }
     } 
-
-    vLayout->addStretch(1);
     propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
-
     return processorPropertyWidget;
-}
-
-void PropertyListWidget::removeProcessorProperties(Processor* processor) {
-    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
-    if (it != propertyWidgetMap_.end()) { 
-        QWidget* processorPropertyWidget = propertyWidgetMap_[processor->getIdentifier()];
-        listWidgetLayout_->removeWidget(processorPropertyWidget);
-        processorPropertyWidget->setVisible(false);
-        propertyWidgetMap_.erase(processor->getIdentifier());
-        delete processorPropertyWidget;
-    }
 }
 
 void PropertyListWidget::propertyModified() {
@@ -238,8 +178,6 @@ PropertyVisibilityMode PropertyListWidget::getVisibilityMode(){
         return APPLICATION;
 }
 
-void PropertyListWidget::notify(){ 
-
-}
+void PropertyListWidget::notify() {}
 
 } // namespace

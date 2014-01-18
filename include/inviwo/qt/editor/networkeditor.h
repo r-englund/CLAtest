@@ -34,12 +34,10 @@
 
 namespace inviwo {
 
-    class NetworkEditorObserver : public Observer{
-    public:
-        virtual void onNetworkEditorFileChanged(const std::string &newFIlename) = 0;
-
-
-    };
+class NetworkEditorObserver : public Observer{
+public:
+    virtual void onNetworkEditorFileChanged(const std::string &newFilename) = 0;
+};
 
 /**
  * The NetworkEditor supports interactive editing of a ProcessorNetwork. Processors can be added
@@ -82,7 +80,8 @@ public:
     bool loadNetwork(std::string fileName);
     std::string getCurrentFilename()const{return filename_;}
 
-    void updatePropertyListWidget();
+    void addPropertyWidgets(Processor* processor);
+    void removePropertyWidgets(Processor* processor);
 
     const ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() const { return processorNetworkEvaluator_; }
@@ -93,7 +92,6 @@ public:
 
 public slots:
     void hoverPortTimeOut();
-    void errorString(QString);
     void workerThreadReset();
     void cacheProcessorProperty(Processor*);
 
@@ -104,9 +102,8 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 
     void keyPressEvent(QKeyEvent* keyEvent);
-
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
-
+    
     void dragEnterEvent(QGraphicsSceneDragDropEvent* de);
     void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
     void dropEvent(QGraphicsSceneDragDropEvent* de);
@@ -115,7 +112,6 @@ protected:
     void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);  
 
     bool isLinkDisplayEnabled();
-
     void autoLinkOnAddedProcessor(Processor*);
 
     void workerThreadQuit();
@@ -159,8 +155,6 @@ private:
     void removeProcessorRepresentations(Processor* processor);
     void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true);
     void removeProcessorGraphicsItem(Processor* processor);
-    void addPropertyWidgets(Processor* processor, bool visible=true);
-    void removePropertyWidgets(Processor* processor);
     void addProcessorWidget(Processor* processor, bool visible=true);
     void removeProcessorWidget(Processor* processor);
 

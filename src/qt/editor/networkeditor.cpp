@@ -193,7 +193,8 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
 void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor, bool showPropertyWidgets, bool showProcessorWidget) {
     // generate GUI representations (graphics item, property widget, processor widget)
     addProcessorGraphicsItem(processor, pos, showProcessor);
-    addPropertyWidgets(processor, showPropertyWidgets);
+    if (showPropertyWidgets)
+        addPropertyWidgets(processor);
     addProcessorWidget(processor, showProcessorWidget);
 
     // TODO: Generalize by registering output/end processors (can also be e.g. VolumeSave)
@@ -264,16 +265,12 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
     delete processorGraphicsItem;
 }
 
-void NetworkEditor::addPropertyWidgets(Processor* processor, bool visible) {
-    // FIXME: show property widgets, but then also deselect all other processors and select this one
-    if (visible){ 
-        PropertyListWidget::instance()->showProcessorProperties(processor); 
-    }
+void NetworkEditor::addPropertyWidgets(Processor* processor) {
+    PropertyListWidget::instance()->addProcessorProperties(processor); 
 }
 
 void NetworkEditor::removePropertyWidgets(Processor* processor) {
-    PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
-    propertyListWidget_->removeProcessorProperties(processor);
+    PropertyListWidget::instance()->removeProcessorProperties(processor); 
 }
 
 // remove processor widget unnecessary as processor widget is removed when processor is destroyed
@@ -296,7 +293,6 @@ void NetworkEditor::removeProcessorWidget(Processor* processor) {
         processorWidget->deinitialize();
         processor->setProcessorWidget(NULL);
         delete processorWidget;
-        //LGL_ERROR;
     }
 }
 
@@ -471,11 +467,6 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
 
 void NetworkEditor::hoverPortTimeOut() {
     addPortInspector(inspectedPort_, QCursor::pos());
-}
-
-void NetworkEditor::errorString(QString str){
-    //TODO: remove this function
-    LogError(str.toLocal8Bit().constData());
 }
 
 void NetworkEditor::workerThreadReset(){
@@ -717,6 +708,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                     addItem(connectionCurve_);
                     connectionCurve_->show();
                     e->accept();
+                    return;
                 } else if (startPort_ && dynamic_cast<Inport*>(startPort_)) {
                     // click on inport: disconnect if connected
                     // FIXME: delete operation in release event handling results in a crash when
@@ -740,19 +732,11 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                         connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(), startPort_->getColorCode());
                         addItem(connectionCurve_);
                         connectionCurve_->show();
-
                         e->accept();
-                        
+                        return;                        
                     }
 
-                } else {
-                    // click on processor but not on port: show property widgets
-                    PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
-                    propertyListWidget_->setMultiSelect(false);
-                    propertyListWidget_->showProcessorProperties(startProcessor_->getProcessor());
-                    QGraphicsScene::mousePressEvent(e);
                 }
-
             } else if (e->modifiers() == Qt::ControlModifier) {
                 if (isLinkDisplayEnabled()) {
                     // ctrl modifier pressed: edit link
@@ -760,27 +744,17 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                     linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos());
                     addItem(linkCurve_);
                     linkCurve_->show();
+                    e->accept();
+                    return;
                 }
                 else {
                     LogWarn("Enable Display links in Settings to create links")
                 }
                 e->accept();
             }
-        } else {
-            // no processor selected
-            PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
-            propertyListWidget_->removeAllProcessorProperties();
-            QGraphicsScene::mousePressEvent(e);
         }
     }
-    else if (e->button() == Qt::RightButton) {
-        startProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
-        if (startProcessor_) {
-            PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
-            propertyListWidget_->showProcessorProperties(startProcessor_->getProcessor());
-            QGraphicsScene::mousePressEvent(e);
-        }
-    }
+    QGraphicsScene::mousePressEvent(e);
 }
 
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
@@ -851,7 +825,6 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
             }
         }
     }
-    
     QGraphicsScene::mouseMoveEvent(e);
 }
 
@@ -898,7 +871,7 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         endProcessor_ = 0;
         e->accept();
 
-    } else if (startProcessor_){
+    } else if (startProcessor_) {
         // move processor
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
@@ -907,20 +880,8 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
                 processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));				
 		}
         QGraphicsScene::mouseReleaseEvent(e);
-    } else if(selectedItems().size() > 1){
-        //Show multiple processor widgets
-        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
-        PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
-        std::vector<Processor*> processors;
-        for (int i=0; i<selectedGraphicsItems.size(); i++) {
-            if (dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i])) {
-                ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
-                processors.push_back(processorGraphicsItem->getProcessor());
-            }
-        }
-        propertyListWidget_->showProcessorProperties(processors);
     }
-
+    QGraphicsScene::mouseReleaseEvent(e);
 }
 
 void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
@@ -1305,7 +1266,6 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     workerThread_ = new QThread;
     ProcessorWorkerQt* worker = new ProcessorWorkerQt(processors);
     worker->moveToThread(workerThread_);
-    connect(worker, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
     connect(workerThread_, SIGNAL(started()), worker, SLOT(process()));
     connect(worker, SIGNAL(nextProcessor(Processor*)), this, SLOT(cacheProcessorProperty(Processor*)));
     connect(worker, SIGNAL(finished()), workerThread_, SLOT(quit()));
@@ -1321,17 +1281,6 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     filename_ = fileName;
 
     return true;
-}
-
-void NetworkEditor::updatePropertyListWidget(){
-    QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
-    PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
-    for (int i=0; i<selectedGraphicsItems.size(); i++) {
-        ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
-        if (processorGraphicsItem) {
-            propertyListWidget_->showProcessorProperties(processorGraphicsItem->getProcessor());
-        }
-    }
 }
 
 ////////////////////////

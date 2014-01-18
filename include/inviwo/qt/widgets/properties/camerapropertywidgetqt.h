@@ -42,7 +42,7 @@ private:
     CameraProperty* property_;
     //QSlider* slider_;
     EditableLabelQt* label_;
-    CollapsiveGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
+    CollapsableGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
     void generateWidget();
     std::vector<PropertyWidgetQt*> subPropertyWidgets_;
 

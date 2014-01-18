@@ -42,7 +42,7 @@ protected slots:
     void setDisplayModeFromGroupBox();
 private:
     CompositeProperty* property_;
-    CollapsiveGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
+    CollapsableGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
     
     void generateWidget();
 
