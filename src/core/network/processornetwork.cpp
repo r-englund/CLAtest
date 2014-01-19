@@ -162,7 +162,7 @@ ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* processor1, Process
     return 0;
 }
 
-inline void ProcessorNetwork::modified() {
+void ProcessorNetwork::modified() {
 	modified_ = true; 
 	if (broadcastModification_) {
 		notifyObservers();

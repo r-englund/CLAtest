@@ -89,7 +89,5 @@ if(NOT IVW_ENABLE_MSVC_MEMLEAK_TEST)
 endif()
 
 if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_use_modules(inviwo Widgets Gui OpenGL Multimedia Network Script)    
-else()
-    #qt4_use_modules(inviwo Core Gui Network Script)    
+    qt5_use_modules(inviwo OpenGL)
 endif()
