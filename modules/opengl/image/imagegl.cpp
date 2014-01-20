@@ -254,6 +254,30 @@ const FrameBufferObject* ImageGL::getFBO() const {
     return frameBufferObject_;
 }
 
+LayerGL* ImageGL::getLayerGL(LayerType type, size_t idx) {
+    switch (type){
+        case COLOR_LAYER:
+            return getColorLayerGL(idx);
+        case DEPTH_LAYER:
+            return getDepthLayerGL();
+        case PICKING_LAYER:
+            return getPickingLayerGL();
+    }
+    return NULL;
+}
+
+const LayerGL* ImageGL::getLayerGL(LayerType type, size_t idx) const{
+    switch (type){
+        case COLOR_LAYER:
+            return getColorLayerGL(idx);
+        case DEPTH_LAYER:
+            return getDepthLayerGL();
+        case PICKING_LAYER:
+            return getPickingLayerGL();
+    }
+    return NULL;
+}
+
 LayerGL* ImageGL::getColorLayerGL(size_t idx) {
     return colorLayersGL_.at(idx);
 }
@@ -278,8 +302,23 @@ const LayerGL* ImageGL::getPickingLayerGL() const {
     return pickingLayerGL_;
 }
 
+void ImageGL::updateExistingLayers() const{
+    for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i) {
+        owner_->getColorLayer(i)->getRepresentation<LayerGL>();
+    }
+
+    const Layer* depthLayer = owner_->getDepthLayer();
+    if(depthLayer)
+        depthLayer->getRepresentation<LayerGL>();
+
+    const Layer* pickingLayer = owner_->getPickingLayer();
+    if(pickingLayer)
+        pickingLayer->getRepresentation<LayerGL>();
+}
+
+
 void ImageGL::update(bool editable) {
-    bool reAttachTargets = colorLayersGL_.empty();
+    bool reAttachTargets = (!isValid() || colorLayersGL_.empty());
     colorLayersGL_.clear();
     depthLayerGL_ = NULL;
     pickingLayerGL_ = NULL;

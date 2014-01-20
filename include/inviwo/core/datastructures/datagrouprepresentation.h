@@ -48,6 +48,9 @@ public:
     virtual std::string getClassName() const;
     virtual void performOperation(DataOperation*) const = 0;
 
+    void setAsInvalid();
+    bool isValid();
+
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
 
@@ -55,6 +58,11 @@ protected:
     //Update representations_ with DataRepresentation from each Data and DataGroup object
     virtual void update(bool) = 0;
     virtual void setPointerToOwner(DataGroup*) = 0;
+
+    void setAsValid();
+
+private:
+    bool valid_;
 };
 
 } // namespace

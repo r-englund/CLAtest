@@ -116,7 +116,7 @@ void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
     ImageInport* imageInport = dynamic_cast<ImageInport*>(inport);
     ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outport);
     if (canvasProcessor && imageInport) {                    
-        ResizeEvent resizeEvent(canvasProcessor->getCanvas()->size());
+        ResizeEvent resizeEvent(canvasProcessor->getCanvas()->getDimension());
         imageInport->changeDataDimensions(&resizeEvent);
     }
     else if (!canvasProcessor && imageInport) {

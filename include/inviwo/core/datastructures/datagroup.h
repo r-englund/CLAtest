@@ -56,8 +56,9 @@ public:
 
     template<typename T>
     bool hasRepresentation() const;
-
     bool hasRepresentations() const;
+
+    void setRepresentationsAsInvalid();
 
     void clearRepresentations();
 
@@ -80,6 +81,7 @@ const T* DataGroup::getRepresentation() const {
             DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(representation);
             if(basRep){
                 basRep->update(editableUpdate_);
+                basRep->setAsValid();
                 return representation;
             }
         }
@@ -92,6 +94,7 @@ const T* DataGroup::getRepresentation() const {
         basRep->setPointerToOwner(const_cast<DataGroup*>(this));
         basRep->initialize();
         basRep->update(editableUpdate_);
+        basRep->setAsValid();
     }
     representations_.push_back(result);
     return result;    

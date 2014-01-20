@@ -20,9 +20,9 @@ namespace inviwo {
 const QGLWidget* CanvasQt::sharedWidget_ = NULL;
 QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
 
-CanvasQt::CanvasQt(QWidget* parent)
+CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
 : QGLWidget(sharedFormat_, parent, sharedWidget_),
-  CanvasGL(uvec2(256,256)),
+  CanvasGL(dim),
   swapBuffersAllowed_(false)
 {
     //This is our default rendering context

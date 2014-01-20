@@ -17,10 +17,10 @@
 namespace inviwo {
 
 DataGroupRepresentation::DataGroupRepresentation()
-    : DataRepresentation() {}
+    : DataRepresentation(), valid_(false) {}
 
 DataGroupRepresentation::DataGroupRepresentation(const DataGroupRepresentation& rhs)
-    : DataRepresentation(rhs) {}
+    : DataRepresentation(rhs), valid_(false) {}
 
 DataGroupRepresentation::~DataGroupRepresentation() { }
 
@@ -33,6 +33,18 @@ DataGroupRepresentation& DataGroupRepresentation::operator=(const DataGroupRepre
         DataRepresentation::operator=(that);
     }
     return *this;
+}
+
+void DataGroupRepresentation::setAsInvalid(){
+    valid_ = false;   
+}
+
+bool DataGroupRepresentation::isValid(){
+    return valid_;
+}
+
+void DataGroupRepresentation::setAsValid(){
+    valid_ = true;
 }
 
 } // namespace

@@ -37,7 +37,7 @@ public:
     virtual void activate();
     virtual void render(const Image*);
     virtual void resize(uvec2 dimensions);
-    virtual uvec2 size() { return dimensions_;}
+    virtual uvec2 getDimension() { return dimensions_;}
     virtual void update();
 
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };

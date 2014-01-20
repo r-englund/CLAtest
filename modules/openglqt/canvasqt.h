@@ -34,7 +34,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGLQT_API CanvasQt : public QGLWidget, public CanvasGL {
     Q_OBJECT
 public:
-    CanvasQt(QWidget* parent = NULL);
+    CanvasQt(QWidget* parent = NULL, uvec2 dim = uvec2(256,256));
     ~CanvasQt();
 
     virtual void initialize();

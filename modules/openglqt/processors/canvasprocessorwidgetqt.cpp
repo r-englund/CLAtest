@@ -38,10 +38,12 @@ ProcessorWidget* CanvasProcessorWidgetQt::create() const {
 
 void CanvasProcessorWidgetQt::initialize() {    
     setWindowTitle(QString::fromStdString(processor_->getIdentifier())); 
-    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);    
+    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);  
+    ProcessorWidgetQt::initialize();
+    ivec2 dim = getDimensionMetaData();
     //FIXME: Consider creating widget outside this class. Weird qt problem.
     //Because NULL does not make any difference here. CanvasQt has this object as parent.
-    canvas_ = new CanvasQt(NULL);
+    canvas_ = new CanvasQt(NULL, uvec2(dim.x, dim.y));
     canvas_->initialize();
     canvas_->setMouseTracking(true);
     
@@ -52,9 +54,7 @@ void CanvasProcessorWidgetQt::initialize() {
 
     canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_)); 
     
-    ProcessorWidgetQt::initialize();
-    ivec2 dim = getDimensionMetaData();
-    resize(static_cast<int>(dim[0]), static_cast<int>(dim[1]));
+    QWidget::resize(dim.x, dim.y);
 }
 
 void CanvasProcessorWidgetQt::deinitialize() {  
@@ -78,9 +78,6 @@ void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
 }
 
 void CanvasProcessorWidgetQt::show() {
-    //canvas_->activate();
-    //canvas_->update();
-    //canvas_->show();
     ProcessorWidgetQt::show();
 }
 

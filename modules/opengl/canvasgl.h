@@ -19,7 +19,7 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/util/canvas.h>
 #include <modules/opengl/glwrap/shader.h>
-#include <modules/opengl/image/layergl.h>
+#include <modules/opengl/image/imagegl.h>
 
 namespace inviwo {
 
@@ -72,7 +72,8 @@ private:
     static GLuint screenAlignedVerticesId_;
     static GLuint screenAlignedTexCoordsId_;
 
-    const LayerGL* layerGL_;
+    const ImageGL* imageGL_;
+    LayerType layerType_;
     Shader* shader_;
     Shader* noiseShader_;
 

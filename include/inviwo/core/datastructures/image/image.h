@@ -38,15 +38,14 @@ public:
     void initialize(const DataFormatBase*);
 
     uvec2 getDimension() const;
-    void setDimension(const uvec2& dim);
 
     size_t addColorLayer(Layer*);
 
     const std::vector<const Layer*>* getAllLayers() const;
     const std::vector<Layer*>* getAllLayers();
 
-    const Layer* getLayer(LayerType) const;
-    Layer* getLayer(LayerType);
+    const Layer* getLayer(LayerType, size_t idx = 0) const;
+    Layer* getLayer(LayerType, size_t idx = 0);
 
     const Layer* getColorLayer(size_t idx = 0) const;
     Layer* getColorLayer(size_t idx = 0);
@@ -68,6 +67,8 @@ public:
 
 protected:
     void addLayer(Layer*);
+
+    void setDimension(const uvec2& dim);
 
     std::vector<Layer*> colorLayers_;
     Layer* depthLayer_;

@@ -27,9 +27,10 @@ GLuint CanvasGL::screenAlignedTexCoordsId_ = 1;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions) {
-    layerGL_ = NULL;
+    imageGL_ = NULL;
     shader_ = NULL;
     noiseShader_ = NULL;
+    layerType_ = COLOR_LAYER;
 }
 
 CanvasGL::~CanvasGL() {}
@@ -79,18 +80,18 @@ void CanvasGL::activate() {}
 
 void CanvasGL::render(const Image* image, LayerType layerType){
     if (image) {
-        layerGL_ = image->getLayer(layerType)->getRepresentation<LayerGL>();
+        imageGL_ = image->getRepresentation<ImageGL>();
         pickingContainer_->setPickingSource(image);
         renderLayer();
-        //Called make sure a full ImageGL is added as representation.
-        image->getRepresentation<ImageGL>();
     } else {
-        layerGL_ = NULL;
+        imageGL_  = NULL;
         renderNoise();
     }
 }
 
 void CanvasGL::resize(uvec2 size) {
+    if(imageGL_)
+        imageGL_->updateExistingLayers();
     Canvas::resize(size);
     glViewport(0, 0, size[0], size[1]);
 }
@@ -99,7 +100,7 @@ void CanvasGL::glSwapBuffers(){
 }
 
 void CanvasGL::update() {
-    if (layerGL_){
+    if (imageGL_){
         renderLayer();
     } else {
         renderNoise();
@@ -107,10 +108,11 @@ void CanvasGL::update() {
 }
 
 void CanvasGL::renderLayer() {
+    const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
     TextureUnit textureUnit;
-    layerGL_->bindTexture(textureUnit.getEnum());
+    layerGL->bindTexture(textureUnit.getEnum());
     renderTexture(textureUnit.getUnitNumber());
-    layerGL_->unbindTexture();
+    layerGL->unbindTexture();
 }
 
 void CanvasGL::renderNoise() {

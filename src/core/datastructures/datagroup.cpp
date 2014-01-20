@@ -60,16 +60,21 @@ void DataGroup::deinitialize() {
     groupData_.clear();
 }
 
+bool DataGroup::hasRepresentations() const {
+    return !representations_.empty();
+}
+
+void DataGroup::setRepresentationsAsInvalid(){
+    for (int i=0; i<static_cast<int>(representations_.size()); ++i) {
+        representations_[i]->setAsInvalid();
+    }
+}
 
 void DataGroup::clearRepresentations() {
     while (hasRepresentations()) {
         delete representations_.back();
         representations_.pop_back();
     }
-}
-
-bool DataGroup::hasRepresentations() const {
-    return !representations_.empty();
 }
 
 } // namespace

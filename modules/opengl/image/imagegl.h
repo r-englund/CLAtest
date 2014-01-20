@@ -47,6 +47,9 @@ public:
 
     FrameBufferObject* getFBO();
     const FrameBufferObject* getFBO() const;
+    
+    LayerGL* getLayerGL(LayerType, size_t idx = 0);
+    const LayerGL* getLayerGL(LayerType, size_t idx = 0) const;
 
     LayerGL* getColorLayerGL(size_t idx = 0);
     LayerGL* getDepthLayerGL();
@@ -55,6 +58,8 @@ public:
     const LayerGL* getColorLayerGL(size_t idx = 0) const;
     const LayerGL* getDepthLayerGL() const;
     const LayerGL* getPickingLayerGL() const;
+
+    void updateExistingLayers() const;
 
 protected:
     virtual void update(bool editable);

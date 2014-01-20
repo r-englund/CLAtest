@@ -126,6 +126,7 @@ uvec2 Image::getDimension() const {
 
 void Image::setDimension(const uvec2& dim){
 	StructuredGridEntity<2>::setDimension(dim);
+    setRepresentationsAsInvalid();
 }
 
 size_t Image::addColorLayer(Layer* layer){
@@ -144,10 +145,10 @@ const std::vector<Layer*>* Image::getAllLayers(){
     return &allLayers_;
 }
 
-const Layer* Image::getLayer(LayerType type) const{
+const Layer* Image::getLayer(LayerType type, size_t idx) const{
     switch (type){
     case COLOR_LAYER:
-    	return getColorLayer();
+    	return getColorLayer(idx);
     case DEPTH_LAYER:
         return getDepthLayer();
     case PICKING_LAYER:
@@ -156,10 +157,10 @@ const Layer* Image::getLayer(LayerType type) const{
     return NULL;
 }
 
-Layer* Image::getLayer(LayerType type){
+Layer* Image::getLayer(LayerType type, size_t idx){
     switch (type){
     case COLOR_LAYER:
-        return getColorLayer();
+        return getColorLayer(idx);
     case DEPTH_LAYER:
         return getDepthLayer();
     case PICKING_LAYER:

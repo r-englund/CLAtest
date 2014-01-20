@@ -171,7 +171,6 @@ void ImageOutport::dataChanged(){
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     //Allocates space holder, sets largest data, cleans up un-used data 
-    
     uvec2 requiredDimensions = resizeEvent->size();
     uvec2 previousDimensions = resizeEvent->previousSize();
     std::string prevDimensionString = glm::to_string(previousDimensions);
@@ -184,7 +183,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     for (size_t i=0; i<directSuccessors.size(); i++) {
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(directSuccessors[i]);
         if (canvasProcessor) {
-            uvec2 dimensions = canvasProcessor->getCanvas()->size();
+            uvec2 dimensions = canvasProcessor->getCanvas()->getDimension();
             registeredDimensions.push_back(dimensions);
         }
     }

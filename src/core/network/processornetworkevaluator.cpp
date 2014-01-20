@@ -242,8 +242,6 @@ Processor* ProcessorNetworkEvaluator::retrieveCanvasProcessor(Canvas* canvas) {
 }
 
 void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent) {
-    if (processorNetwork_->islocked()) return;
-
     // avoid continues evaluation when port change
     processorNetwork_->lock();
     
@@ -262,7 +260,9 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
 
     // TODO: remove this invalidate
     // instead dimension property of event initiator (CanvasProcessor) should be invalid
-    eventInitiator_->invalidate(PropertyOwner::INVALID_OUTPUT);
+    if (!processorNetwork_->islocked())
+        eventInitiator_->invalidate(PropertyOwner::INVALID_OUTPUT);
+
     eventInitiator_ = 0;
 }
 
