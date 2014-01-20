@@ -211,7 +211,7 @@ void NetworkEditor::removeProcessorRepresentations(Processor* processor) {
         processorNetworkEvaluator_->deregisterCanvas(canvasProcessor->getCanvas());
 
     removeProcessorGraphicsItem(processor);
-    removePropertyWidgets(processor);
+    removeAndDeletePropertyWidgets(processor);
     // processor widget should be removed here since it is added in addProcessorRepresentations()    
     removeProcessorWidget(processor);
 }
@@ -267,6 +267,10 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
 
 void NetworkEditor::addPropertyWidgets(Processor* processor) {
     PropertyListWidget::instance()->addProcessorProperties(processor); 
+}
+
+void NetworkEditor::removeAndDeletePropertyWidgets(Processor* processor) {
+    PropertyListWidget::instance()->removeAndDeleteProcessorProperties(processor); 
 }
 
 void NetworkEditor::removePropertyWidgets(Processor* processor) {

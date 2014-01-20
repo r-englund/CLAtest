@@ -78,9 +78,9 @@ void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
 }
 
 void CanvasProcessorWidgetQt::show() {
-    canvas_->activate();
-    canvas_->update();
-    canvas_->show();
+    //canvas_->activate();
+    //canvas_->update();
+    //canvas_->show();
     ProcessorWidgetQt::show();
 }
 

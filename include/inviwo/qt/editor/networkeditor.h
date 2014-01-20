@@ -81,6 +81,7 @@ public:
     std::string getCurrentFilename()const{return filename_;}
 
     void addPropertyWidgets(Processor* processor);
+    void removeAndDeletePropertyWidgets(Processor* processor);
     void removePropertyWidgets(Processor* processor);
 
     const ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }

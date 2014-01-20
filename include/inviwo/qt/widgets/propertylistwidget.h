@@ -37,6 +37,7 @@ public:
     ~PropertyListWidget();
 
     void addProcessorProperties(Processor* processor);
+    void removeAndDeleteProcessorProperties(Processor* processor);
     void removeProcessorProperties(Processor* processor);
 
     void changeName(std::string oldName, std::string newName);
