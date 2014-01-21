@@ -199,7 +199,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     try {
         d.deserialize("Processors", processors_, "Processor");
         int i = 1;
-        std::vector<Processor*>::const_iterator it = processors_.begin();
+        std::vector<Processor*>::iterator it = processors_.begin();
         while (it != processors_.end()) {
             if(*it){
                 (*it)->addObserver(this);

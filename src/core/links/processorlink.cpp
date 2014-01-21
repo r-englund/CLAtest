@@ -266,7 +266,7 @@ void ProcessorLink::deserialize(IvwDeserializer& d) {
     }
     if(!destinationProcessor_ || !sourceProcessor_){
         LogWarn("Could not deserialize property links.");
-        std::vector<PropertyLink*>::const_iterator it = propertyLinks_.begin();
+        std::vector<PropertyLink*>::iterator it = propertyLinks_.begin();
         while (it != propertyLinks_.end()) {
             it = propertyLinks_.erase(it);
         }
