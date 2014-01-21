@@ -83,7 +83,6 @@ ivw_add_dependencies(${package_list})
 
 #--------------------------------------------------------------------
 # Optimize compilation with pre-compilied headers based on inviwo-core
-
 if(NOT IVW_ENABLE_MSVC_MEMLEAK_TEST)
 	ivw_compile_optimize_inviwo_core()
 endif()

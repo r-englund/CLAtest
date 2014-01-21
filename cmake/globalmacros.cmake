@@ -76,10 +76,14 @@ endmacro()
 # Convert name to upper (if not certain string)
 macro(ivw_depend_name retval)
     set(result ${ARGN})
-    string(REGEX MATCH "(^Qt5)" found_item ${result})
-    if(NOT found_item)
+    if(DESIRED_QT_VERSION MATCHES 5)
+        string(REGEX MATCH "(^Qt5)" found_item ${result})
+        if(NOT found_item)
+            string(TOUPPER ${result} result)
+        endif()
+    else()
         string(TOUPPER ${result} result)
-   endif()
+    endif()
     set(${retval} ${result})
 endmacro()
 
@@ -753,6 +757,8 @@ macro(ivw_add_dependencies)
       # Set includes and append to list
       include_directories(${${u_package}_INCLUDE_DIR})
       list(APPEND _allIncludeDirs ${${u_package}_INCLUDE_DIR})
+      include_directories(${${u_package}_INCLUDE_DIRS})
+      list(APPEND _allIncludeDirs ${${u_package}_INCLUDE_DIRS})
 
       #--------------------------------------------------------------------
       # Set directory links
@@ -773,13 +779,21 @@ macro(ivw_add_dependencies)
       
       #--------------------------------------------------------------------
       # Link library
-      target_link_libraries(${_projectName} ${${u_package}_LIBRARIES})
+       target_link_libraries(${_projectName} ${${u_package}_LIBRARIES})
 
       #--------------------------------------------------------------------
       # Link flags
       if(NOT "${${u_package}_LINK_FLAGS}" STREQUAL "")
       	set_target_properties(${_projectName} PROPERTIES LINK_FLAGS "${${u_package}_LINK_FLAGS}")
       endif()
+      
+      #--------------------------------------------------------------------
+      # Qt5
+       if(DESIRED_QT_VERSION MATCHES 5)
+           if(${package} STREQUAL "InviwoOpenGLQtModule")
+                qt5_use_modules(${_projectName} OpenGL)
+           endif()
+       endif()
       
     endforeach()
 endmacro()
