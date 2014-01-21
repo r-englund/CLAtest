@@ -81,6 +81,7 @@ void CanvasGL::activate() {}
 void CanvasGL::render(const Image* image, LayerType layerType){
     if (image) {
         imageGL_ = image->getRepresentation<ImageGL>();
+        layerType_ = layerType;
         pickingContainer_->setPickingSource(image);
         renderLayer();
     } else {

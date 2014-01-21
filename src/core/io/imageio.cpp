@@ -113,10 +113,8 @@ void ImageIO::saveLayer(const char* filename, const Layer* inputLayer) {
         assert(imageRam != NULL);
 
         FIBITMAP* bitmap = createBitmapFromData(imageRam);
-
-        FIBITMAP* bitmapStandard = FreeImage_ConvertToStandardType(bitmap);
  
-        BOOL saved = FreeImage_Save(imageFormat, bitmapStandard, filename, static_cast<int>(imageRam->getDataFormat()->getBitsAllocated()));
+        BOOL saved = FreeImage_Save(imageFormat, bitmap, filename, static_cast<int>(imageRam->getDataFormat()->getBitsAllocated()));
 
         if(saved == 0){
             LogErrorCustom("ImageIO", "Image layer could not be saved to "  << filename);
@@ -125,7 +123,6 @@ void ImageIO::saveLayer(const char* filename, const Layer* inputLayer) {
             LogInfoCustom("ImageIO", "Image layer saved to "  << filename);
         }
 
-        FreeImage_Unload(bitmapStandard);
         FreeImage_Unload(bitmap);
     }
     else{
@@ -301,17 +298,19 @@ FIBITMAP* ImageIO::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uve
     T* bits = (T*)FreeImage_GetBits(dib);
 
     //Scale normalized float value to from 0 - 1 to 0  - 255
-    if(type == FIT_FLOAT || type == FIT_RGBF || type == FIT_RGBAF){
+    if(type == FIT_FLOAT){
         T value;
         format->floatToValue(255.f, &value);
         for(unsigned int i = 0; i < dim.x * dim.y; i++){
             bits[i] = data[i]*value;
         }
+
         FIBITMAP* dibConvert = FreeImage_ConvertToStandardType(dib);
         return dibConvert;
     }
-
-    memcpy(bits, data, dim.x*dim.y*bytespp);
+    else
+        memcpy(bits, data, dim.x*dim.y*bytespp);
+    
     return dib;
 }
 

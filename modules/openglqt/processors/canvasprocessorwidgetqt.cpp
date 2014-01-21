@@ -78,6 +78,8 @@ void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
 }
 
 void CanvasProcessorWidgetQt::show() {
+    canvas_->show();
+    canvas_->triggerQueuedEvaluation();
     ProcessorWidgetQt::show();
 }
 

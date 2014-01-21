@@ -129,14 +129,14 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     const ImageGL* source = this;
     ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
 
-    //Render to FBO, with correct scaling
-    target->activateBuffer();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     TextureUnit colorUnit, depthUnit, pickingUnit;
     source->getColorLayerGL()->bindTexture(colorUnit.getEnum());
     source->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
     source->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
+
+    //Render to FBO, with correct scaling
+    target->activateBuffer();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     float ratioSource = (float)source->getDimension().x / (float)source->getDimension().y;
     float ratioTarget = (float)target->getDimension().x / (float)target->getDimension().y;

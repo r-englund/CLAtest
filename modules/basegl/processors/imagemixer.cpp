@@ -13,8 +13,6 @@
  **********************************************************************/
 
 #include "imagemixer.h"
-
-#include <inviwo/core/datastructures/image/imageram.h>
 #include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {

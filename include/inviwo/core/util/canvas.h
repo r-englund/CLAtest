@@ -37,11 +37,13 @@ public:
     virtual void activate();
     virtual void render(const Image*);
     virtual void resize(uvec2 dimensions);
-    virtual uvec2 getDimension() { return dimensions_;}
+    virtual uvec2 getDimension();
     virtual void update();
 
-    void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { processorNetworkEvaluator_ = networkEvaluator; };
-    ProcessorNetworkEvaluator* getNetworkEvaluator() const { return processorNetworkEvaluator_; };
+    void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator);
+    ProcessorNetworkEvaluator* getNetworkEvaluator() const;
+    void performEvaluationAtNextShow();
+    void triggerQueuedEvaluation();
 
 protected:
     void interactionEvent(InteractionEvent* e);
@@ -63,6 +65,7 @@ protected:
     PickingContainer* pickingContainer_;
 
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
+    bool queuedRequest_;
 };
 
 } // namespace
