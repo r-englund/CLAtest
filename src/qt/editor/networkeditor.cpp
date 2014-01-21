@@ -403,61 +403,22 @@ void  NetworkEditor::updateLinkGraphicsItems() {
 
 //////////////////////////////////////
 //   PORT INSPECTOR FUNCTIONALITY   //
-//////////////////////////////////////
-void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string inspectorNetworkFileName) {
-
-    std::string identifierPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();   
-
-    processorNetwork_->lock();
-    addExternalNetwork(inspectorNetworkFileName, identifierPrefix, pos);
-    processorNetwork_->setBroadcastModification(false);
-    
-    //connect input port to appropriate port in inspector network
-    std::vector<Processor*> processors = processorNetwork_->getProcessors();
-    for (size_t i=0; i<processors.size(); i++) {
-        if (processors[i]->getIdentifier().find(identifierPrefix)!=std::string::npos) {
-            Processor* processor = processors[i];
-            std::vector<Inport*> inports = processor->getInports();
-            for (size_t i=0; i<inports.size(); i++) {
-                if (!inports[i]->isConnected()) {
-                    Outport* outport = dynamic_cast<Outport*>(port);
-                    if (dynamic_cast<ImageOutport*>(outport) && dynamic_cast<ImageInport*>(inports[i]))
-                        processorNetwork_->addConnection(outport, inports[i]);
-                    else if (dynamic_cast<VolumeOutport*>(outport) && dynamic_cast<VolumeInport*>(inports[i]))
-                            processorNetwork_->addConnection(outport, inports[i]);
-                    else if (dynamic_cast<GeometryOutport*>(outport) && dynamic_cast<GeometryInport*>(inports[i]))
-                        processorNetwork_->addConnection(outport, inports[i]);
-                }
-            }
-        }
-    }
-    processorNetwork_->unlock();
-    processorNetwork_->setBroadcastModification(true);
-}
-
-void NetworkEditor::removeInspectorNetwork(Port* port) {   
-    //std::string portPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();
-    //removeExternalNetwork(portPrefix);
-    
-    removePortInspector(port);
-}
-   
+////////////////////////////////////// 
 void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
-
-    LogInfo("show inspector");
     
     PortInspector* portInspector =
         PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
-    if(portInspector){
-        
+    if(portInspector && !portInspector->isActive()){
+        portInspector->setActive(true);
+
         processorNetwork_->lock();
         processorNetwork_->setBroadcastModification(false);
         
-        ProcessorNetwork* inspectorNetwork = portInspector->getInspectorNetwork();
         CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
         
         // Add processors to the network
         std::vector<Processor*> processors = portInspector->getProcessors();
+        
         for (size_t i=0; i<processors.size(); i++) {
             processorNetwork_->addProcessor(processors[i]);
         }
@@ -467,19 +428,24 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
         // Add connections to the network
         std::vector<PortConnection*> connections = portInspector->getConnections();
         for (size_t i=0; i<connections.size(); i++) {
-            processorNetwork_->addConnection(connections[i]->getOutport(), connections[i]->getInport());
+            processorNetwork_->addConnection(connections[i]->getOutport(), 
+                                             connections[i]->getInport());
         }
         
         // Add links to the network
-        std::vector<ProcessorLink*> links = inspectorNetwork->getProcessorLinks();
+        std::vector<ProcessorLink*> links = portInspector->getProcessorLinks();
         for (size_t i=0; i<links.size(); i++) {
-            processorNetwork_->addLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
-            ProcessorLink* link = inspectorNetwork->getProcessorLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
-            std::vector<PropertyLink*> propertyLinks = link->getPropertyLinks();
+            processorNetwork_->addLink(links[i]->getSourceProcessor(), 
+                                       links[i]->getDestinationProcessor());
+
+            ProcessorLink* link = 
+                processorNetwork_->getProcessorLink(links[i]->getSourceProcessor(),
+                                                    links[i]->getDestinationProcessor());
+           
+            std::vector<PropertyLink*> propertyLinks = links[i]->getPropertyLinks();
             for (size_t j=0; j<propertyLinks.size(); j++) {
-                Property* srcProp = propertyLinks[j]->getSourceProperty();
-                Property* dstProp = propertyLinks[j]->getDestinationProperty();
-                link->addPropertyLinks(srcProp, dstProp);
+                link->addPropertyLinks(propertyLinks[j]->getSourceProperty(),
+                                       propertyLinks[j]->getDestinationProperty());
             }
         }
         
@@ -490,69 +456,37 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
         processorWidgetQt->setMinimumSize(128, 128);
         processorWidgetQt->setMaximumSize(128, 128);
         
-        processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+        processorWidgetQt->setWindowFlags(Qt::Tool | 
+                                          Qt::CustomizeWindowHint | 
+                                          Qt::WindowStaysOnTopHint);
         processorWidgetQt->move(ivec2(pos.x(),pos.y()));
         processorWidgetQt->show();
-        processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
+        processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), 
+                                                   canvasProcessor->getIdentifier());
         
         // Connect the port to inspect to the inports of the inspector network
         Outport* outport = dynamic_cast<Outport*>(port);
         std::vector<Inport*> inports = portInspector->getInports();        
         for (size_t i=0; i<inports.size(); i++) {
-            processorNetwork_->addConnection(outport, inports[i]);
-            
+            processorNetwork_->addConnection(outport, inports[i]);      
         }
         
         processorNetwork_->unlock();
         processorNetwork_->setBroadcastModification(true);
-    }
-    
-  
-     
-     /*
-    
-    if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enablePortInspectors"))->get())){
-        if (port->getProcessor()->isInitialized()) {
-            if (dynamic_cast<ImageOutport*>(port)) {
-                addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
-                                    IVW_DIR+"data/workspaces/portinspectors/imageportinspector.inv");
-                processorNetwork_->setModified(true);
-                processorNetworkEvaluator_->requestEvaluate();
-                return;
-			} 
-			if (dynamic_cast<VolumeOutport*>(port)) {
-				addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
-					IVW_DIR+"data/workspaces/portinspectors/volumeportinspector.inv");
-				processorNetwork_->setModified(true);
-				processorNetworkEvaluator_->requestEvaluate();
-				return;
-			} 
-			if (dynamic_cast<GeometryOutport*>(port)) {
-				addInspectorNetwork(port, ivec2(pos.x(), pos.y()),
-					IVW_DIR+"data/workspaces/portinspectors/geometryportinspector.inv");
-				processorNetwork_->setModified(true);
-				processorNetworkEvaluator_->requestEvaluate();
-				return;
-			}
-        }
-    }
-     */
-    
+    }    
 }
     
 void NetworkEditor::removePortInspector(Port* port){
-    LogInfo("remove inspector");
     
     PortInspector* portInspector =
-    PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
-    if(portInspector){
+        PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+    if(portInspector && portInspector->isActive()){
         processorNetwork_->lock();
         processorNetwork_->setBroadcastModification(false);
         
         CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
        
-        // Remove processors to the network
-        
+        // Remove processors from the network       
         removeProcessorRepresentations(canvasProcessor);
         std::vector<Processor*> processors = portInspector->getProcessors();
         for (size_t i=0; i<processors.size(); i++) {
@@ -561,6 +495,8 @@ void NetworkEditor::removePortInspector(Port* port){
         
         processorNetwork_->unlock();
         processorNetwork_->setBroadcastModification(true);
+
+        portInspector->setActive(false);
     }
 }
     
@@ -636,22 +572,17 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
         addConnection(outport, inport);
     }
     
-    CameraProperty* externalNetworkCamera = 0;
     std::vector<ProcessorLink*> links = processorNetwork->getProcessorLinks();
     for (size_t i=0; i<links.size(); i++) {        
         addLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
-        ProcessorLink* link = processorNetwork->getProcessorLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
-        std::vector<PropertyLink*> propertyLinks = link->getPropertyLinks();
+        ProcessorLink* link = processorNetwork_->getProcessorLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
+        std::vector<PropertyLink*> propertyLinks = links[i]->getPropertyLinks();
         for (size_t j=0; j<propertyLinks.size(); j++) {
             Property* srcProp = propertyLinks[j]->getSourceProperty();
             Property* dstProp = propertyLinks[j]->getDestinationProperty();
             link->addPropertyLinks(srcProp, dstProp);
-            if (!externalNetworkCamera) externalNetworkCamera = dynamic_cast<CameraProperty*>(srcProp);
-            if (!externalNetworkCamera) externalNetworkCamera = dynamic_cast<CameraProperty*>(dstProp);
         }
     }
-
-    //TODO: link any camera in current network with externalNetworkCamera
 
     processorNetwork_->unlock();
 
@@ -912,16 +843,19 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
             port = connection->getOutport();
         }
 
-        if (port && inspectedPort_ != port) {
-            LogInfo("start");
+        bool inspectPort = dynamic_cast<BoolProperty*>(
+            InviwoApplication::getPtr()->
+                getSettingsByType<SystemSettings>()->
+                    getPropertyByIdentifier("enablePortInspectors"))->get();
+
+        if(inspectPort && port && inspectedPort_ != port) {
             inspectedPort_ = port;
             hoverTimer_.start(500);
         } else if(port==0 && hoverTimer_.isActive()){
             hoverTimer_.stop();
             inspectedPort_ = NULL;
         } else if(inspectedPort_ && !hoverTimer_.isActive()) {
-            LogInfo("stop");
-            removeInspectorNetwork(inspectedPort_);
+            removePortInspector(inspectedPort_);
             inspectedPort_ = NULL;
         }
     }
@@ -990,9 +924,9 @@ void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
         // link edit mode
         showLinkDialog(linkGraphicsItem);
         e->accept();
-
-    } else
+    } else {
         QGraphicsScene::mouseDoubleClickEvent(e);
+    }
 }
 
 void NetworkEditor::keyPressEvent(QKeyEvent* e) {
@@ -1035,38 +969,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     LinkConnectionGraphicsItem* linkGraphicsItem = getLinkGraphicsItemAt(e->scenePos());
     
     if (processorGraphicsItem) {
-        Port* selectedPort = processorGraphicsItem->getSelectedPort(e->scenePos());
-        if (selectedPort && dynamic_cast<Outport*>(selectedPort)) {
-            /*
-            // Port context menu
-            QMenu menu;
-            QAction* inspectorAction = menu.addAction("Pin inspector");
-            inspectorAction->setCheckable(true);
-            bool inspectorShown = false;
-            if (selectedPort->isConnected()) {
-                // check if outport is already connected to an inspector network
-                std::vector<PortConnection*> portConnections = processorNetwork_->getPortConnections();
-                for (size_t i=0;i<portConnections.size();i++) {
-                    if (portConnections[i]->getOutport()==selectedPort) {
-                        std::string portPrefix = selectedPort->getProcessor()->getIdentifier()+":"+selectedPort->getIdentifier();
-                        std::string connectedProcessorIdentifier = portConnections[i]->getInport()->getProcessor()->getIdentifier();
-                        if (connectedProcessorIdentifier.find(portPrefix)!=std::string::npos)
-                            inspectorShown = true;
-                    }
-                }
-            }
-            if (inspectorShown) inspectorAction->setChecked(true);
-            else inspectorAction->setChecked(false);
-
-            QAction* result = menu.exec(QCursor::pos());
-            if (result == inspectorAction)
-                if (inspectorAction->isChecked())
-                    addPortInspector(selectedPort, e->screenPos());
-                else
-                    removeInspectorNetwork(selectedPort);
-            */
-        } else {
-            processorGraphicsItem->setSelected(true);
+        processorGraphicsItem->setSelected(true);
             // Processor context menu
             QMenu menu;
             QAction* renameAction = menu.addAction(tr("Rename"));
@@ -1092,7 +995,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
                 else
                     processorGraphicsItem->getProcessor()->getProcessorWidget()->hide();
             }
-        }
+        
 
     } else if (connectionGraphicsItem) {
         QMenu menu;

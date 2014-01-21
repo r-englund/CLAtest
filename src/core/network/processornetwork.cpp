@@ -122,7 +122,6 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
              processorLinks_[i]->getDestinationProcessor()==destProcessor) ||
             (processorLinks_[i]->getDestinationProcessor()==sourceProcessor &&
              processorLinks_[i]->getSourceProcessor()==destProcessor)) {
-                //FIXME: unlink processors
                 processorLinks_.erase(processorLinks_.begin()+i);
                 break;
         }

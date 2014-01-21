@@ -5,6 +5,7 @@ namespace inviwo {
 PortInspector::PortInspector(std::string portClassName, std::string inspectorWorkspace)
     : inspectorNetworkFileName_(inspectorWorkspace)
     , portClassName_(portClassName)
+    , active_(false)
     , inspectorNetwork_(NULL) {
 }
 
@@ -14,19 +15,20 @@ PortInspector::~PortInspector() {
     }
 }
 
-std::string PortInspector::getInspectorWorkspace() {
+void PortInspector::setActive(bool val) {
+    active_ = val;
+}
+
+bool PortInspector::isActive() {
+    return active_;
+}
+
+std::string PortInspector::getInspectorNetworkFileName() {
     return inspectorNetworkFileName_;
 }
 
 std::string PortInspector::getPortClassName() {
     return portClassName_;
-}
-
-ProcessorNetwork* PortInspector::getInspectorNetwork() {
-    if(!inspectorNetwork_) {
-        initialize();
-    }
-    return inspectorNetwork_;
 }
 
 std::vector<Inport*> PortInspector::getInports() {
@@ -49,7 +51,12 @@ std::vector<PortConnection*>  PortInspector::getConnections(){
     }
     return connections_;
 }
-
+std::vector<ProcessorLink*> PortInspector::getProcessorLinks() {
+    if(!inspectorNetwork_) {
+        initialize();
+    }
+    return processorLinks_;
+}
 std::vector<Processor*> PortInspector::getProcessors(){
     if(!inspectorNetwork_) {
         initialize();
@@ -89,20 +96,19 @@ void PortInspector::initialize() {
         }
     }
     
-    // Store the connections and remove them from the network.
+    // Store the connections and and disconnect them.
     connections_ = inspectorNetwork_->getPortConnections();
     for (size_t i=0; i<connections_.size(); i++) {
-        inspectorNetwork_->removeConnection(connections_[i]->getOutport(),
-                                            connections_[i]->getInport());
-
+        connections_[i]->getInport()->disconnectFrom(connections_[i]->getOutport());
     }
-    
 
-    
-    
-    
-    
+    // store the processor links.
+    processorLinks_ = inspectorNetwork_->getProcessorLinks();
 }
+
+
+
+
 
 } // namespace
 

@@ -102,13 +102,13 @@ InviwoCore::InviwoCore() : InviwoModule() {
         InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT)
         + "portinspectors/imageportinspector.inv"));
     
-    //    registerPortInspector(new PortInspector("VolumeOutport",
-    //    InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT)
-    //    + "portinspectors/volumeportinspector.inv"));
+    registerPortInspector(new PortInspector("VolumeOutport",
+        InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT)
+        + "portinspectors/volumeportinspector.inv"));
     
-    //registerPortInspector(new PortInspector("GeometryOutport",
-    //    InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT)
-    //    + "portinspectors/geometryportinspector.inv"));
+    registerPortInspector(new PortInspector("GeometryOutport",
+        InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT)
+        + "portinspectors/geometryportinspector.inv"));
     
     // Register Properties
     // TODO: Register all properties

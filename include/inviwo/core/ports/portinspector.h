@@ -18,25 +18,29 @@ public:
     PortInspector(std::string portClassName, std::string inspectorWorkspace);
     virtual ~PortInspector();
 
-    std::string getInspectorWorkspace();
+    std::string getInspectorNetworkFileName();
     std::string getPortClassName();
-    ProcessorNetwork* getInspectorNetwork();
-
+    void setActive(bool val);
+    bool isActive();
+   
     std::vector<Processor*> getProcessors();
     std::vector<Inport*> getInports();
     CanvasProcessor* getCanvasProcessor();
     std::vector<PortConnection*> getConnections();
+    std::vector<ProcessorLink*> getProcessorLinks();
 
 private:
     void initialize();
     
     std::string inspectorNetworkFileName_;
     std::string portClassName_;
+    bool active_;
     ProcessorNetwork* inspectorNetwork_;
  
     std::vector<Processor*> processors_;
     std::vector<Inport*> inPorts_;
     std::vector<PortConnection*> connections_;
+    std::vector<ProcessorLink*> processorLinks_;
     CanvasProcessor* canvasProcessor_;
 
 };

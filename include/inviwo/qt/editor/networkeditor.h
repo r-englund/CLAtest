@@ -177,8 +177,6 @@ private:
     ConnectionGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
     LinkConnectionGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
 
-    void addInspectorNetwork(Port* port, ivec2 pos, std::string fileName);
-    void removeInspectorNetwork(Port* port);
     void addPortInspector(Port* port, QPointF pos);
     void removePortInspector(Port*);
 
