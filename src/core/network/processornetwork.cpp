@@ -198,8 +198,19 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     //Processors
     try {
         d.deserialize("Processors", processors_, "Processor");
-        for (size_t i=0; i<processors_.size(); i++)
-            processors_[i]->addObserver(this);
+        int i = 1;
+        std::vector<Processor*>::const_iterator it = processors_.begin();
+        while (it != processors_.end()) {
+            if(*it){
+                (*it)->addObserver(this);
+                ++it;
+            }
+            else{
+                it = processors_.erase(it);
+                LogWarn("Failed deserialization: Processor Nr." << i);
+            }
+            ++i;
+        }
     }
     catch (const SerializationException& exception) {
         //Abort and clear all processors
@@ -216,13 +227,18 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     try {
         d.deserialize("Connections", portConnections, "Connection");
         for (size_t i=0; i<portConnections.size(); i++) {
-            Outport* outPort = portConnections[i]->getOutport();
-            Inport* inPort = portConnections[i]->getInport();
-            if (outPort && inPort) {
-                addConnection(outPort, inPort);
+            if(portConnections[i]){
+                Outport* outPort = portConnections[i]->getOutport();
+                Inport* inPort = portConnections[i]->getInport();
+                if (outPort && inPort) {
+                    addConnection(outPort, inPort);
+                }
+                else {
+                    LogWarn("Unable to establish port connection.");
+                }
             }
             else {
-                LogWarn("Unable to establish port connection.");
+                LogWarn("Failed deserialization: Port Connection Nr." << i);
             }
         }
     }
@@ -239,24 +255,29 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     try {        
         d.deserialize("ProcessorLinks", processorLinks, "ProcessorLink");        
         for (size_t i=0; i<processorLinks.size(); i++) {
-            Processor* inProcessor = processorLinks[i]->getSourceProcessor();
-            Processor* outProcessor = processorLinks[i]->getDestinationProcessor();
-            if (inProcessor && outProcessor) {
-                std::vector<PropertyLink*> propertyLinks = processorLinks[i]->getPropertyLinks();
-                for (size_t j=0; j<propertyLinks.size(); j++) {
-                    Property* srcProperty = propertyLinks[j]->getSourceProperty();
-                    Property* dstProperty = propertyLinks[j]->getDestinationProperty();
-                    if (!( srcProperty && dstProperty)) {
-                        processorLinks[i]->removePropertyLink(propertyLinks[j]);
-                        LogWarn("Unable to establish property link.");
+            if(processorLinks[i]){
+                Processor* inProcessor = processorLinks[i]->getSourceProcessor();
+                Processor* outProcessor = processorLinks[i]->getDestinationProcessor();
+                if (inProcessor && outProcessor) {
+                    std::vector<PropertyLink*> propertyLinks = processorLinks[i]->getPropertyLinks();
+                    for (size_t j=0; j<propertyLinks.size(); j++) {
+                        Property* srcProperty = propertyLinks[j]->getSourceProperty();
+                        Property* dstProperty = propertyLinks[j]->getDestinationProperty();
+                        if (!( srcProperty && dstProperty)) {
+                            processorLinks[i]->removePropertyLink(propertyLinks[j]);
+                            LogWarn("Unable to establish property link.");
+                        }
                     }
+                    
+                    if (processorLinks[i]->getPropertyLinks().size())
+                        addLink(processorLinks[i]);
                 }
-                
-                if (processorLinks[i]->getPropertyLinks().size())
-                    addLink(processorLinks[i]);
+                else {
+                    LogWarn("Unable to establish processor link.");
+                }
             }
             else {
-                LogWarn("Unable to establish processor link.");
+                LogWarn("Failed deserialization: Processor Links Nr." << i);
             }
         }
             

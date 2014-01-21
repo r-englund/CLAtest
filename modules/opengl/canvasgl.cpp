@@ -53,7 +53,6 @@ void CanvasGL::initialize() {
 
 void CanvasGL::initializeGLEW() {
     if (!glewInitialized_) {
-        LogInfo("Initializing GLEW");
         glewInit();
         LGL_ERROR;
         glewInitialized_ = true;

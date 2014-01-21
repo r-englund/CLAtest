@@ -35,18 +35,20 @@ void PortConnection::deserialize(IvwDeserializer& d) {
     Outport outport("");
     d.deserialize("OutPort", outport);
     Processor* outPortProcessor = outport.getProcessor();
-    ivwAssert(outPortProcessor!=0, "Unable to load processor.")
     
     if (outPortProcessor)
         outport_ = outPortProcessor->getOutport(outport.getIdentifier());
+    else
+        LogWarn("Could not deserialize " << outport.getIdentifier());
     
     Inport inport("");
     d.deserialize("InPort", inport);
     Processor* inPortProcessor = inport.getProcessor();
-    ivwAssert(outPortProcessor!=0, "Unable to load processor.")
 
     if (inPortProcessor)
         inport_ = inPortProcessor->getInport(inport.getIdentifier());
+    else
+        LogWarn("Could not deserialize " << inport.getIdentifier());
 }
 
 } // namespace

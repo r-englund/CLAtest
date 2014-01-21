@@ -45,7 +45,8 @@ ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {
 
 
 void ProcessorNetworkEvaluator::activateDefaultRenderContext() {
-    defaultContext_->activate();
+    if(defaultContext_)
+        defaultContext_->activate();
 }
 
 void ProcessorNetworkEvaluator::initializeNetwork() {

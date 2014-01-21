@@ -255,8 +255,22 @@ void ProcessorLink::serialize(IvwSerializer& s) const {
 void ProcessorLink::deserialize(IvwDeserializer& d) {
     propertyLinks_.clear();
     d.deserialize("PropertyLinks", propertyLinks_, "PropertyLink");
-    destinationProcessor_ = dynamic_cast<Processor*>(propertyLinks_[0]->getSourceProperty()->getOwner());
-    sourceProcessor_ = dynamic_cast<Processor*>(propertyLinks_[0]->getDestinationProperty()->getOwner());
+    if(propertyLinks_[0]){
+        Property* srcProp = propertyLinks_[0]->getSourceProperty();
+        if(srcProp)
+            destinationProcessor_ = dynamic_cast<Processor*>(srcProp->getOwner());
+    
+        Property* destProp = propertyLinks_[0]->getSourceProperty();
+        if(destProp)
+            sourceProcessor_ = dynamic_cast<Processor*>(destProp->getOwner());
+    }
+    if(!destinationProcessor_ || !sourceProcessor_){
+        LogWarn("Could not deserialize property links.");
+        std::vector<PropertyLink*>::const_iterator it = propertyLinks_.begin();
+        while (it != propertyLinks_.end()) {
+            it = propertyLinks_.erase(it);
+        }
+    }
 }
 
 } // namespace

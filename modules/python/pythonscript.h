@@ -71,7 +71,7 @@ public:
      *
      * @return true, if script execution has been successful
      */
-    bool run();
+    bool run(bool outputInfo = true);
 
     PythonScriptRecorderUtil* getScriptRecorder() { return scriptRecorder_; }
 
@@ -90,7 +90,7 @@ private:
      *
      * @return true, if script compilation has been successful
      */
-    bool compile();
+    bool compile(bool outputInfo = true);
 
     std::string source_;
     PyObject* byteCode_;

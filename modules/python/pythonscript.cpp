@@ -38,9 +38,9 @@ PythonScript::~PythonScript() {
     delete scriptRecorder_;
 }
 
-bool PythonScript::compile() {
-    LogInfo("Compiling script");
-
+bool PythonScript::compile(bool outputInfo) {
+    if(outputInfo)
+        LogInfo("Compiling script");
     Py_XDECREF(byteCode_);
     byteCode_ = Py_CompileString(source_.c_str(), "", Py_file_input);
     isCompileNeeded_ = !checkCompileError();
@@ -53,17 +53,18 @@ bool PythonScript::compile() {
     return !isCompileNeeded_;
 }
 
-bool PythonScript::run() {
+bool PythonScript::run(bool outputInfo) {
     PyObject* glb = PyDict_New();
     PyDict_SetItemString(glb, "__builtins__", PyEval_GetBuiltins());
 
-    if(isCompileNeeded_ && !compile()){
+    if(isCompileNeeded_ && !compile(outputInfo)){
         LogError("Failed to run script, script could not be compiled");
         return false;
     }
 
     ivwAssert(byteCode_!=0, "No byte code");
-    LogInfo("Running compiled script ...");
+    if(outputInfo)
+        LogInfo("Running compiled script ...");
 
     PyObject* ret = PyEval_EvalCode((PyCodeObject*)byteCode_, glb, glb);
     bool success = checkRuntimeError();

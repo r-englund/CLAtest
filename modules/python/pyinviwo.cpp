@@ -108,11 +108,9 @@ namespace inviwo{
         std::string text((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
         file.close();
         outputCatcher.setSource(text);
-        if(!outputCatcher.run()){
+        if(!outputCatcher.run(false)){
             LogWarn("Python init script failed to run");
         }
-
-        LogInfo("Python interface initialized");
     }
 
 
@@ -168,7 +166,6 @@ namespace inviwo{
         std::string pathConv = path;
         replaceInString(pathConv, "\\", "/");
 
-        LogInfo("Adding '" + pathConv + "' to Python module search path");
         std::string runString = "import sys\n";
         runString.append(std::string("sys.path.append('") + pathConv + std::string("')"));
         int ret = PyRun_SimpleString(runString.c_str());
@@ -184,8 +181,6 @@ namespace inviwo{
             PyObject* obj = Py_InitModule(pyModule->getModuleName(),NULL);
             if(!obj){
                 LogWarn("Failed to init python module '" << pyModule->getModuleName() <<"' ");
-            }else{
-                LogInfo("Python module '" << pyModule->getModuleName() <<"' initialized");
             }
             return obj;
         }else{
