@@ -87,7 +87,3 @@ ivw_add_dependencies(${package_list})
 if(NOT IVW_ENABLE_MSVC_MEMLEAK_TEST)
 	ivw_compile_optimize_inviwo_core()
 endif()
-
-if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_use_modules(inviwo OpenGL)
-endif()

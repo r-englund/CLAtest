@@ -146,6 +146,7 @@ void EntryExitPoints::process() {
 
 		capNearClippingPrg_->deactivate();
 
+        deactivateCurrentTarget();
 	}
 
     glDepthFunc(GL_LESS);

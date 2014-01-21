@@ -14,7 +14,7 @@
 
 #include <modules/openglqt/openglqtmodule.h>
 #include <modules/openglqt/openglqtcapabilities.h>
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
 
@@ -22,10 +22,25 @@ namespace inviwo {
 
 OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
     setIdentifier("OpenGLQt");
-    setXMLFileName("openglqt/openglqtmodule.xml");   
+    setXMLFileName("openglqt/openglqtmodule.xml");
+
+    //Create GL Context
+    qtGLSharedCanvas_ = new CanvasQt();
+    if(InviwoApplication::getPtr()){
+        ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
+        if(network){
+            ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
+            qtGLSharedCanvas_->setNetworkEvaluator(evaluator);
+            evaluator->setDefaultRenderContext(qtGLSharedCanvas_);
+        }
+    }
 
     registerProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetQt());
     registerCapabilities(new OpenGLQtCapabilities());
+}
+
+OpenGLQtModule::~OpenGLQtModule(){
+    delete qtGLSharedCanvas_;
 }
 
 } // namespace

@@ -430,14 +430,14 @@ void ProcessorNetworkEvaluator::evaluate() {
   
     // if the processor network has changed determine the new processor order
     if (processorNetwork_->isModified()) {
-        defaultContext_->activate();
+        activateDefaultRenderContext();
         initializeNetwork();
         determineProcessingOrder();
         processorNetwork_->setModified(false);
     }
  
     std::vector<Processor*>::iterator it;
-    defaultContext_->activate();
+    activateDefaultRenderContext();
     for (it = processorsSorted_.begin(); it != processorsSorted_.end(); ++it) {
         if (!(*it)->isValid()) {
             if ((*it)->isReady()){

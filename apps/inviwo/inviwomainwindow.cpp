@@ -12,13 +12,9 @@
  *
  **********************************************************************/
 
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
-
 #include "inviwomainwindow.h"
-
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/editor/networkeditorview.h>
-#include <modules/openglqt/canvasqt.h>
-
 #include <inviwo/core/network/processornetworkevaluator.h>
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
@@ -43,9 +39,6 @@ InviwoMainWindow::InviwoMainWindow() : QMainWindow(), VoidObserver() {
 
     // initialize console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
-
-    // the default render context managing the rendering state
-    defaultRenderContext_ = new CanvasQt(this);
 
     currentWorkspaceFileName_ = "";
 }
@@ -136,12 +129,6 @@ void InviwoMainWindow::deinitialize() {
 }
 
 void InviwoMainWindow::initializeWorkspace(){
-    ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
-    networkEvaluator->setDefaultRenderContext(defaultRenderContext_);
-    defaultRenderContext_->setFixedSize(0,0);
-    defaultRenderContext_->initializeSquare();
-    defaultRenderContext_->activate();
-
     ProcessorNetwork* processorNetwork = const_cast<ProcessorNetwork*>(networkEditorView_->getNetworkEditor()->getProcessorNetwork());
     VoidObserver::addObservation(processorNetwork);
     processorNetwork->addObserver(this);

@@ -35,7 +35,7 @@ public:
     ProcessorNetworkEvaluator(ProcessorNetwork* processorNetwork);
     virtual ~ProcessorNetworkEvaluator();
 
-    void registerCanvas(Canvas* canvas, std::string associatedProcessName="CanvasGL");
+    void registerCanvas(Canvas* canvas, std::string associatedProcessName);
     void deregisterCanvas(Canvas* canvas);
     void saveSnapshotAllCanvases(std::string dir, std::string default_name = "", std::string ext = ".png");
     std::vector<Canvas*> getRegisteredCanvases() { return registeredCanvases_; }

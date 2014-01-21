@@ -39,7 +39,6 @@ namespace inviwo {
 
 class NetworkEditorView;
 class NetworkEditor;
-class CanvasQt;
 
 class InviwoMainWindow : public QMainWindow, 
                          public VoidObserver, 
@@ -146,11 +145,6 @@ private:
     QString workspaceFileDir_;
     QString currentWorkspaceFileName_;
     QStringList recentFileList_;
-
-    // the default render context for managing render states
-    CanvasQt* defaultRenderContext_;
-
-
 };
 
 } // namespace

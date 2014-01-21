@@ -17,6 +17,7 @@
 
 #include <modules/openglqt/openglqtmoduledefine.h>
 #include <inviwo/core/common/inviwomodule.h>
+#include <modules/openglqt/canvasqt.h>
 
 namespace inviwo {
 
@@ -24,12 +25,16 @@ class IVW_MODULE_OPENGLQT_API OpenGLQtModule : public InviwoModule {
 
 public:
     OpenGLQtModule();
+    virtual ~OpenGLQtModule();
 
 protected:
     template <typename T>
     void registerProcessorWidgetAndAssociate(ProcessorWidget* processorWidget) {      
         registerProcessorWidget(T::CLASS_NAME, processorWidget);
     }
+
+private:
+    CanvasQt* qtGLSharedCanvas_;
 };
 
 } // namespace

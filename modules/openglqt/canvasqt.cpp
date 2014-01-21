@@ -19,6 +19,7 @@ namespace inviwo {
 
 const QGLWidget* CanvasQt::sharedWidget_ = NULL;
 QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
+bool CanvasQt::sharedInitialized_ = false;
 
 CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
 : QGLWidget(sharedFormat_, parent, sharedWidget_),
@@ -46,16 +47,16 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
 CanvasQt::~CanvasQt() {}
 
 void CanvasQt::initialize() {
+    if(!sharedInitialized_){
+        initializeSquare();
+        sharedInitialized_ = true;
+    }
     activate();
     CanvasGL::initialize();
 }
 
 void CanvasQt::deinitialize() {
     CanvasGL::deinitialize();
-}
-
-void CanvasQt::initializeSquare(){
-    CanvasGL::initializeSquare();
 }
 
 void CanvasQt::activate() {
@@ -65,10 +66,6 @@ void CanvasQt::activate() {
 void CanvasQt::initializeGL() {
     initializeGLEW();
     QGLWidget::initializeGL();
-}
-
-void CanvasQt::resizeGL(int width, int height) {    
-    //CanvasGL::resize(uvec2(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));    
 }
 
 void CanvasQt::glSwapBuffers(){

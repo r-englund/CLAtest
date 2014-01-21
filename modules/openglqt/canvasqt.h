@@ -39,7 +39,6 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
-    void initializeSquare();
     virtual void activate();
     virtual void glSwapBuffers();
     virtual void update();
@@ -47,7 +46,6 @@ public:
 
 protected:
 	void initializeGL();
-    void resizeGL(int w, int h);
     void paintGL();
 
     void mousePressEvent(QMouseEvent* e);
@@ -60,6 +58,7 @@ protected:
 private:
     static const QGLWidget* sharedWidget_; //For rendering-context sharing
     static QGLFormat sharedFormat_;
+    static bool sharedInitialized_;
     bool swapBuffersAllowed_;
 };
 

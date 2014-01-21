@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
     }
 
     // Register Canvas GLUT
-    processorNetworkEvaluator->registerCanvas(canvas);
+    processorNetworkEvaluator->registerCanvas(canvas, "CanvasGLUT");
 
     glutKeyboardFunc(keyPressed);
     glutSpecialFunc(keyPressedSpecial);
