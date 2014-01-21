@@ -38,10 +38,14 @@
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
 
+//PortInspectors
+#include <inviwo/core/ports/portinspector.h>
+
 //Properties
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/properties/optionproperties.h>
+
 
 namespace inviwo {
 
@@ -91,6 +95,21 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerSettings(new SystemSettings());
     registerSettings(new LinkSettings());
 
+    // Register Ports
+        
+    // Register PortInspectors
+    registerPortInspector(new PortInspector("ImageOutport",
+        InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT)
+        + "portinspectors/imageportinspector.inv"));
+    
+    //    registerPortInspector(new PortInspector("VolumeOutport",
+    //    InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT)
+    //    + "portinspectors/volumeportinspector.inv"));
+    
+    //registerPortInspector(new PortInspector("GeometryOutport",
+    //    InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT)
+    //    + "portinspectors/geometryportinspector.inv"));
+    
     // Register Properties
     // TODO: Register all properties
     registerProperty(new CameraProperty("camera", "Camera"));

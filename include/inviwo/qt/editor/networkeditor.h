@@ -180,6 +180,7 @@ private:
     void addInspectorNetwork(Port* port, ivec2 pos, std::string fileName);
     void removeInspectorNetwork(Port* port);
     void addPortInspector(Port* port, QPointF pos);
+    void removePortInspector(Port*);
 
     void addExternalNetwork(std::string fileName, std::string processorPrefix, ivec2 pos, unsigned int networkEditorFlags=NetworkEditor::None, ivec2 canvasSize=ivec2(128));
     void removeExternalNetwork(std::string identifierPrefix);

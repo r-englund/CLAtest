@@ -1,10 +1,19 @@
-#!/
+#!/usr/bin/env python
 # make a new pair (.h, .cpp) of files
 
 import os
 import argparse
 import re
 import subprocess
+
+
+if os.name == 'posix':
+	SVN='/usr/bin/svn'
+	CMAKE='cmake'
+else:
+	SVN='svn.exe'
+	CMAKE='cmake.exe'
+
 
 parser = argparse.ArgumentParser(description='Add new files to Inviwo.\n typical usage: \n python.exe ./make-new-files.py --svn --cmake ../build ../include/inviwo/path/to/h-file/MyNewClass', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('names', type=str, nargs='+', action="store", help='Classes to add, form: path/to/h-file/NewClassName')
@@ -177,24 +186,24 @@ for name in args.names:
 			print("... Adding to svn...")
 			# Do an svn add...
 			if not args.no_header:
-				mess = subprocess.Popen("svn.exe add " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+				mess = subprocess.Popen(SVN + " add " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
 				for i in mess.splitlines():
 					print("... " + i)
-				mess = subprocess.Popen("svn.exe propset svn:eol-style native " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+				mess = subprocess.Popen(SVN + " propset svn:eol-style native " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
 				for i in mess.splitlines():
 					print("... " + i)
 				
 			if not args.no_source:
-				mess = subprocess.Popen("svn.exe add " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+				mess = subprocess.Popen(SVN + " add " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
 				for i in mess.splitlines():
 					print("... " + i)
-				mess = subprocess.Popen("svn.exe propset svn:eol-style native " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+				mess = subprocess.Popen(SVN + " propset svn:eol-style native " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
 				for i in mess.splitlines():
 					print("... " + i)
 	
 		if(args.builddir != ""):
 			print("... run cmake...")
-			mess = subprocess.Popen("cmake.exe " + str(args.builddir[0]), stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+			mess = subprocess.Popen(CMAKE + " " + str(args.builddir[0]), stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
 			for i in mess.splitlines():
 				print("... " + i)
 

@@ -20,7 +20,7 @@ TEST(VolumeTest, SimpleLoadVolumeTest){
     if(reader){
         Volume* volume = reader->readMetaData(file);
         ResourceManager::instance()->addResource(new TemplateResource<Volume>(file, volume));
-        const VolumeRAM* volumeRAM = volume->getRepresentation<VolumeRAM>();
+        volume->getRepresentation<VolumeRAM>();
     }
 
     ResourceManager::instance()->clearAllResources();

@@ -48,7 +48,9 @@ public:
     virtual std::vector<Outport*> getConnectedOutports() const { return std::vector<Outport*>(); }
 
     std::vector<Processor*> getPredecessors();
-
+    
+    virtual std::string getClassName() const {return "Inport";}
+    
 protected:
     template <typename T>
     void getPredecessorsUsingPortType(std::vector<Processor*>&);

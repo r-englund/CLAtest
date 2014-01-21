@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/network/portconnection.h>
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <string.h>
@@ -21,8 +22,10 @@ public:
     std::string getPortClassName();
     ProcessorNetwork* getInspectorNetwork();
 
+    std::vector<Processor*> getProcessors();
     std::vector<Inport*> getInports();
     CanvasProcessor* getCanvasProcessor();
+    std::vector<PortConnection*> getConnections();
 
 private:
     void initialize();
@@ -31,7 +34,9 @@ private:
     std::string portClassName_;
     ProcessorNetwork* inspectorNetwork_;
  
+    std::vector<Processor*> processors_;
     std::vector<Inport*> inPorts_;
+    std::vector<PortConnection*> connections_;
     CanvasProcessor* canvasProcessor_;
 
 };

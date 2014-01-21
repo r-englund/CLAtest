@@ -18,9 +18,9 @@ namespace inviwo {
 
 TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view)
     : QGraphicsScene()
-    , transferFunction_(transferFunction)
     , view_(view)
-{
+    , transferFunction_(transferFunction) {
+        
     setSceneRect(0.0, 0.0, 512.0, 256.0);
     // initialize editor with current tf
     for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {

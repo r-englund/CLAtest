@@ -50,14 +50,14 @@ const int NetworkEditor::GRID_SPACING = 25;
 
 NetworkEditor::NetworkEditor() : 
     QGraphicsScene()
+    , oldConnectionTarget_(NULL)
+    , oldProcessorTarget_(NULL)
     , connectionCurve_(0)
     , linkCurve_(0)
     , startProcessor_(0)
     , endProcessor_(0)
     , inspectedPort_(0)
     , gridSnapping_(true)
-    , oldConnectionTarget_(NULL)
-    , oldProcessorTarget_(NULL)
     , filename_(""){
     
     setSceneRect(-1000,-1000,1000,1000);
@@ -436,12 +436,81 @@ void NetworkEditor::addInspectorNetwork(Port* port, ivec2 pos, std::string inspe
 }
 
 void NetworkEditor::removeInspectorNetwork(Port* port) {   
-    std::string portPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();
-    removeExternalNetwork(portPrefix);    
+    //std::string portPrefix = port->getProcessor()->getIdentifier()+":"+port->getIdentifier();
+    //removeExternalNetwork(portPrefix);
+    
+    removePortInspector(port);
 }
-
+   
 void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
-    //TODO: allow to define inspectors in module
+
+    LogInfo("show inspector");
+    
+    PortInspector* portInspector =
+        PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+    if(portInspector){
+        
+        processorNetwork_->lock();
+        processorNetwork_->setBroadcastModification(false);
+        
+        ProcessorNetwork* inspectorNetwork = portInspector->getInspectorNetwork();
+        CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
+        
+        // Add processors to the network
+        std::vector<Processor*> processors = portInspector->getProcessors();
+        for (size_t i=0; i<processors.size(); i++) {
+            processorNetwork_->addProcessor(processors[i]);
+        }
+        addProcessorRepresentations(canvasProcessor, pos, false, false, false);
+        autoLinkOnAddedProcessor(canvasProcessor);
+       
+        // Add connections to the network
+        std::vector<PortConnection*> connections = portInspector->getConnections();
+        for (size_t i=0; i<connections.size(); i++) {
+            processorNetwork_->addConnection(connections[i]->getOutport(), connections[i]->getInport());
+        }
+        
+        // Add links to the network
+        std::vector<ProcessorLink*> links = inspectorNetwork->getProcessorLinks();
+        for (size_t i=0; i<links.size(); i++) {
+            processorNetwork_->addLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
+            ProcessorLink* link = inspectorNetwork->getProcessorLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
+            std::vector<PropertyLink*> propertyLinks = link->getPropertyLinks();
+            for (size_t j=0; j<propertyLinks.size(); j++) {
+                Property* srcProp = propertyLinks[j]->getSourceProperty();
+                Property* dstProp = propertyLinks[j]->getDestinationProperty();
+                link->addPropertyLinks(srcProp, dstProp);
+            }
+        }
+        
+        // Setup the widget
+        ProcessorWidgetQt* processorWidgetQt =
+            dynamic_cast<ProcessorWidgetQt*>(canvasProcessor->getProcessorWidget());
+        ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
+        processorWidgetQt->setMinimumSize(128, 128);
+        processorWidgetQt->setMaximumSize(128, 128);
+        
+        processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+        processorWidgetQt->move(ivec2(pos.x(),pos.y()));
+        processorWidgetQt->show();
+        processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
+        
+        // Connect the port to inspect to the inports of the inspector network
+        Outport* outport = dynamic_cast<Outport*>(port);
+        std::vector<Inport*> inports = portInspector->getInports();        
+        for (size_t i=0; i<inports.size(); i++) {
+            processorNetwork_->addConnection(outport, inports[i]);
+            
+        }
+        
+        processorNetwork_->unlock();
+        processorNetwork_->setBroadcastModification(true);
+    }
+    
+  
+     
+     /*
+    
     if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enablePortInspectors"))->get())){
         if (port->getProcessor()->isInitialized()) {
             if (dynamic_cast<ImageOutport*>(port)) {
@@ -467,7 +536,34 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
 			}
         }
     }
+     */
+    
 }
+    
+void NetworkEditor::removePortInspector(Port* port){
+    LogInfo("remove inspector");
+    
+    PortInspector* portInspector =
+    PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+    if(portInspector){
+        processorNetwork_->lock();
+        processorNetwork_->setBroadcastModification(false);
+        
+        CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
+       
+        // Remove processors to the network
+        
+        removeProcessorRepresentations(canvasProcessor);
+        std::vector<Processor*> processors = portInspector->getProcessors();
+        for (size_t i=0; i<processors.size(); i++) {
+            processorNetwork_->removeProcessor(processors[i]);
+        }
+        
+        processorNetwork_->unlock();
+        processorNetwork_->setBroadcastModification(true);
+    }
+}
+    
 
 void NetworkEditor::hoverPortTimeOut() {
     addPortInspector(inspectedPort_, QCursor::pos());
@@ -762,71 +858,71 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
+    
     if (connectionCurve_) {
-        // connection drag mode
+        // Connection drag mode
+        
         connectionCurve_->setEndPoint(e->scenePos());
-
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
         if (endProcessor_) {
             Port* port = endProcessor_->getSelectedPort(e->scenePos());
             if (port && port!=startPort_) {
                 Inport* inport = dynamic_cast<Inport*>(port);
-                if(inport && inport->canConnectTo(startPort_) && !inport->isConnectedTo(dynamic_cast<Outport*>(startPort_)))
-                    connectionCurve_->setBorderColor(Qt::green);	
-                else
-                    connectionCurve_->setBorderColor(Qt::red);	
-            }
-            else
+                if(inport && inport->canConnectTo(startPort_)
+                   && !inport->isConnectedTo(dynamic_cast<Outport*>(startPort_))) {
+                    connectionCurve_->setBorderColor(Qt::green);
+                } else {
+                    connectionCurve_->setBorderColor(Qt::red);
+                }
+            } else {
                 connectionCurve_->resetBorderColors();
-        }
-        else
+            }
+        } else {
             connectionCurve_->resetBorderColors();
+        }
 
         endProcessor_ = NULL;
-
         connectionCurve_->update();
         e->accept();
-    }
     
-    else if (linkCurve_) {
-        // link drag mode
+    } else if (linkCurve_) {
+        // Link drag mode
+        
         QPointF center = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
         linkCurve_->setStartPoint(center) ;
         linkCurve_->setEndPoint(e->scenePos());
         linkCurve_->update();
         e->accept();
-    }
-
-    else if (e->button()==Qt::NoButton) {
-        // port inspector hover effect
+    
+    } else if (e->button()==Qt::NoButton) {
+        // Port inspector hover effect
+        
         Port* port = 0;
         ProcessorGraphicsItem* processor = getProcessorGraphicsItemAt(e->scenePos());
+        ConnectionGraphicsItem* connection = getConnectionGraphicsItemAt(e->scenePos());
+        
         if (processor) {
             port = processor->getSelectedPort(e->scenePos());
-            // if we hover over an inport get its connected outport instead
+            // If we hover over an inport get its connected outport instead
             Inport* inport = dynamic_cast<Inport*>(port);
-            if (inport)
+            if (inport){
                 port = inport->getConnectedOutport();
-        } else {
-            ConnectionGraphicsItem* connection = getConnectionGraphicsItemAt(e->scenePos());
-            LinkConnectionGraphicsItem* link = getLinkGraphicsItemAt(e->scenePos());
-            if (connection)
-                port = connection->getOutport();            
+            }
+        } else if (connection) {
+            port = connection->getOutport();
         }
 
-        if (port) {
-            if (inspectedPort_ != port) {
-                if (inspectedPort_)
-                    removeInspectorNetwork(inspectedPort_);
-                inspectedPort_ = port;
-                hoverTimer_.start(500);
-            }
-        } else {
-            if (inspectedPort_) {
-                hoverTimer_.stop();
-                removeInspectorNetwork(inspectedPort_);
-                inspectedPort_ = 0;
-            }
+        if (port && inspectedPort_ != port) {
+            LogInfo("start");
+            inspectedPort_ = port;
+            hoverTimer_.start(500);
+        } else if(port==0 && hoverTimer_.isActive()){
+            hoverTimer_.stop();
+            inspectedPort_ = NULL;
+        } else if(inspectedPort_ && !hoverTimer_.isActive()) {
+            LogInfo("stop");
+            removeInspectorNetwork(inspectedPort_);
+            inspectedPort_ = NULL;
         }
     }
     QGraphicsScene::mouseMoveEvent(e);

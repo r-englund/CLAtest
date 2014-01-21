@@ -34,6 +34,7 @@ public:
 
     uvec3 getColorCode() const;
     static uvec3 colorCode;
+    virtual std::string getClassName() const {return "VolumeInport";}
 };
 
 class IVW_CORE_API VolumeOutport : public DataOutport<Volume> {
@@ -47,6 +48,7 @@ public:
     void deinitialize();
 
     uvec3 getColorCode() const;
+    virtual std::string getClassName() const {return "VolumeOutport";}
 };
 
 } // namespace

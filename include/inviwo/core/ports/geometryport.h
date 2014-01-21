@@ -35,6 +35,7 @@ public:
 
     uvec3 getColorCode() const;
     static uvec3 colorCode;
+    virtual std::string getClassName() const {return "GeometryInport";}
 };
 
 class IVW_CORE_API GeometryMultiInport : public MultiDataInport<Geometry> {
@@ -47,6 +48,7 @@ public:
 	void deinitialize();
 
 	uvec3 getColorCode() const;
+    virtual std::string getClassName() const {return "GeometryMultiInport";}
 };
 
 class IVW_CORE_API GeometryOutport : public DataOutport<Geometry> {
@@ -60,6 +62,7 @@ public:
     void deinitialize();
 
     uvec3 getColorCode() const;
+    virtual std::string getClassName() const {return "GeometryOutport";}
 };
 
 } // namespace

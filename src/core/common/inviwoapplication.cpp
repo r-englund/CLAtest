@@ -79,6 +79,7 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     RepresentationConverterFactory::init();
     DataReaderFactory::init();
     DataWriterFactory::init();
+    PortInspectorFactory::init();
 
     initialized_ = true;
 }

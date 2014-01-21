@@ -35,7 +35,6 @@ void inviwo::LightPositionWidgetQt::generateWidget() {
     radius_ = gradient_->radius();
 
     painter_ = new QPainter(gradientPixmap_);
-    QBrush* brush = new QBrush(*gradient_);
 
     painter_->fillRect(0, 0, 100, 100, *gradient_);
     this->setPixmap(*gradientPixmap_);

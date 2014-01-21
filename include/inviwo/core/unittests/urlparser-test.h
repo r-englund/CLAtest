@@ -1,4 +1,4 @@
-#include "..\util\filedirectory.h"
+#include <inviwo/core/util/filedirectory.h>
 
 #ifndef IVW_URLPARSERTEST_TEST_H
 #define IVW_URLPARSERTEST_TEST_H

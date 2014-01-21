@@ -124,6 +124,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/outport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/portinspector.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/portinspectorfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/singleinport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/volumeport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessor.h
@@ -300,6 +301,7 @@ set(SOURCE_FILES
     ports/outport.cpp
     ports/port.cpp
     ports/portinspector.cpp
+    ports/portinspectorfactory.cpp
     ports/singleinport.cpp
     ports/volumeport.cpp
     processors/canvasprocessor.cpp

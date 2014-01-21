@@ -51,6 +51,8 @@ public:
     virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
 
     std::vector<Processor*> getDirectSuccessors();
+    
+    virtual std::string getClassName() const {return "Outport";}
 
 protected:
     void connectTo(Inport* port);

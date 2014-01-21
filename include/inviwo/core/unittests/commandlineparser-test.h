@@ -1,4 +1,4 @@
-#include "inviwo\core\util\commandlineparser.h"
+#include <inviwo/core/util/commandlineparser.h>
 #ifndef IVW_COMMANDLINEPARSER_TEST_H
 #define IVW_COMMANDLINEPARSER_TEST_H
 

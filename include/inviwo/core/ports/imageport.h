@@ -40,6 +40,7 @@ public:
     const Image* getData() const;
     uvec3 getColorCode() const;
     static uvec3 colorCode;
+    virtual std::string getClassName() const {return "ImageInport";}
 protected:
     void propagateResizeToPredecessor(ResizeEvent* resizeEvent);
 
@@ -68,7 +69,8 @@ public:
     void changeDataDimensions(ResizeEvent* resizeEvent);    
     uvec2 getDimension() const;
     uvec3 getColorCode() const;
-
+    virtual std::string getClassName() const {return "ImageOutport";}
+    
     bool addResizeEventListener(EventListener*);
     bool removeResizeEventListener(EventListener*);
 

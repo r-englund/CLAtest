@@ -47,6 +47,11 @@ NUMERIC_TESTS(doubleSerializationTest,double,6.28);
 TYPE_TEST(oneMinusEpsilonFloatTest, float, oneMinusEpsilonF);
 TYPE_TEST(oneMinusEpsilonDobuleTest, double, oneMinusEpsilonD);
 
+#undef TYPE_TEST
+#undef MIN_TEST
+#undef MAX_TEST
+#undef EPSILON_TEST
+
 #define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_EQ(T(v),serializationOfType(T(v)));} 
 #define MIN_TEST(n,T) TEST(SerialitionTest,n##MinTest){EXPECT_EQ(std::numeric_limits<T>::min(),serializationOfType(std::numeric_limits<T>::min()));}
 #define MAX_TEST(n,T) TEST(SerialitionTest,n##MaxTest){EXPECT_EQ(std::numeric_limits<T>::max(),serializationOfType(std::numeric_limits<T>::max()));}

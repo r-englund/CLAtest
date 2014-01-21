@@ -76,6 +76,8 @@ public:
     Processor* getProcessor() const;
     std::string getIdentifier() const;
 
+    virtual std::string getClassName() const = 0;
+    
 	virtual bool isConnected() const = 0;
 	virtual bool isReady() const = 0;
 

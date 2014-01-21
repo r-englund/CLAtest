@@ -57,13 +57,15 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     std::vector<PortConnection*> portConnections = portConnections_;
     for (size_t i=0; i<portConnections.size(); i++)
         if (portConnections[i]->involvesProcessor(processor))
-            removeConnection(portConnections[i]->getOutport(), portConnections[i]->getInport());
+            removeConnection(portConnections[i]->getOutport(),
+                             portConnections[i]->getInport());
 
     // remove all links for this processor
     std::vector<ProcessorLink*> processorLinks = processorLinks_;
     for (size_t i=0; i<processorLinks.size(); i++)
         if (processorLinks[i]->involvesProcessor(processor))
-            removeLink(processorLinks[i]->getDestinationProcessor(), processorLinks[i]->getSourceProcessor());
+            removeLink(processorLinks[i]->getDestinationProcessor(),
+                       processorLinks[i]->getSourceProcessor());
 
     // remove processor itself
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
