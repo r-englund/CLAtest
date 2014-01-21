@@ -27,6 +27,7 @@ CanvasProcessor::CanvasProcessor()
     , saveLayerDirectory_("layerDir", "Output Directory", IVW_DIR+"data/images")
     , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
     , canvas_(0)
+    , disableResize_(false)
 {
     addPort(inport_);
 
@@ -59,12 +60,18 @@ void CanvasProcessor::deinitialize() {
 }
 
 void CanvasProcessor::resizeCanvas() {
-	//std::cout << "onChange" << std::endl;
-	if (canvas_!=0)
-		canvas_->resize(uvec2(dimensions_.get()));
-	if (processorWidget_!=0) {
-		processorWidget_->setDimension(dimensions_.get());
-	}
+    if(!disableResize_){
+	    if (processorWidget_)
+		    processorWidget_->setDimension(dimensions_.get());
+    }
+}
+
+void CanvasProcessor::setCanvasSize(ivec2 dim){
+    disableResize_ = true;
+    dimensions_.set(dim);
+    if (canvas_)
+        canvas_->resize(uvec2(dimensions_.get()));
+    disableResize_ = false;
 }
 
 void CanvasProcessor::saveImageLayer() {

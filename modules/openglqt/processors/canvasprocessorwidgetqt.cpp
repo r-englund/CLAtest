@@ -13,8 +13,6 @@
  **********************************************************************/
 
 #include <QGridLayout>
-
-#include <inviwo/core/processors/canvasprocessor.h>
 #include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
 
 namespace inviwo {
@@ -38,7 +36,7 @@ ProcessorWidget* CanvasProcessorWidgetQt::create() const {
 
 void CanvasProcessorWidgetQt::initialize() {    
     setWindowTitle(QString::fromStdString(processor_->getIdentifier())); 
-    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);  
+    canvasProcessor_ = dynamic_cast<CanvasProcessor*>(processor_);  
     ProcessorWidgetQt::initialize();
     ivec2 dim = getDimensionMetaData();
     //FIXME: Consider creating widget outside this class. Weird qt problem.
@@ -52,7 +50,7 @@ void CanvasProcessorWidgetQt::initialize() {
     gridLayout->addWidget(static_cast<QWidget*>(canvas_), 0, 0);
     setLayout(gridLayout);
 
-    canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_)); 
+    canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_)); 
     
     QWidget::resize(dim.x, dim.y);
 }
@@ -75,6 +73,7 @@ void CanvasProcessorWidgetQt::deinitialize() {
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     ProcessorWidgetQt::resizeEvent(event);
+    canvasProcessor_->setCanvasSize(ivec2(event->size().width(), event->size().height()));
 }
 
 void CanvasProcessorWidgetQt::show() {

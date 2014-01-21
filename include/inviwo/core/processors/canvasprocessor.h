@@ -38,6 +38,8 @@ public:
 
     void setCanvas(Canvas* canvas) { canvas_ = canvas; }
     Canvas* getCanvas() const { return canvas_; }
+    void setCanvasSize(ivec2);
+
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     bool isEndProcessor() { return true; }
@@ -55,6 +57,7 @@ protected:
 
 private:
     Canvas* canvas_;
+    bool disableResize_;
 
 	void resizeCanvas();
 };

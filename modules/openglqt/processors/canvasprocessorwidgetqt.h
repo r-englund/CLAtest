@@ -17,6 +17,7 @@
 
 #include <modules/openglqt/openglqtmoduledefine.h>
 #include <modules/openglqt/canvasqt.h>
+#include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 
 namespace inviwo {
@@ -40,6 +41,7 @@ protected:
 
 private:
     CanvasQt* canvas_;
+    CanvasProcessor* canvasProcessor_;
 };
 
 } // namespace

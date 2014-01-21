@@ -68,7 +68,7 @@ void CanvasQt::initializeGL() {
 }
 
 void CanvasQt::resizeGL(int width, int height) {    
-    CanvasGL::resize(uvec2(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));    
+    //CanvasGL::resize(uvec2(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));    
 }
 
 void CanvasQt::glSwapBuffers(){
