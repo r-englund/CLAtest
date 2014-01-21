@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -18,6 +18,7 @@
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
+#include <inviwo/core/ports/portinspectorfactory.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/core/properties/optionproperties.h>
@@ -59,7 +60,7 @@ InviwoApplication::~InviwoApplication() {
     modules_.clear();
     delete commandLineParser_;
     SingeltonBase::deleteAllSingeltons();
-    DataFormatBase::cleanDataFormatBases(); 
+    DataFormatBase::cleanDataFormatBases();
 }
 
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
@@ -68,7 +69,7 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     registerModule(new InviwoCore());
     (*regModuleFunc)(this);
     for (size_t i=0; i<modules_.size(); i++){
-        modules_[i]->initialize();        
+        modules_[i]->initialize();
     }
 
     // initialize singleton factories

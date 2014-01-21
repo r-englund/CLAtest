@@ -1,4 +1,5 @@
 #include <inviwo/core/ports/portinspectorfactory.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
@@ -18,9 +19,9 @@ void PortInspectorFactory::initialize() {
 }
 
 void PortInspectorFactory::registerPortInspector(PortInspector* portInspector){
-    
+
     std::string className = portInspector->getPortClassName();
-    
+
     if(portInspectors_.find(className) == portInspectors_.end()){
         portInspectors_.insert(std::make_pair(className, portInspector));
     }else{
