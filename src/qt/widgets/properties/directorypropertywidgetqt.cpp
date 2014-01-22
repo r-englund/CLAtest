@@ -56,7 +56,7 @@ void DirectoryPropertyWidgetQt::setPropertyValue() {
     QString dataDir;
 
     if (property_->get().empty())
-        dataDir = QString::fromStdString(IVW_DIR+"data/");
+        dataDir = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
     else
         dataDir = QString::fromStdString(property_->get());
 

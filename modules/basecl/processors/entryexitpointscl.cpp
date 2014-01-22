@@ -50,7 +50,7 @@ void EntryExitPointsCL::initialize() {
     Processor::initialize();
 
 	try {
-		cl::Program* program = KernelManager::getRef().buildProgram(IVW_DIR+"modules/basecl/cl/entryexitpoints.cl");
+		cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl/entryexitpoints.cl");
 		capNearClippingPrg_ = KernelManager::getRef().getKernel(program, "entryexitpoints");
 
 

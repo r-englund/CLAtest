@@ -110,7 +110,7 @@ void InviwoMainWindow::initialize() {
     settings.setValue("lastExitWithoutErrors", false);
     settings.endGroup();
 
-    rootDir_ = QString::fromStdString(IVW_DIR+"data/");
+    rootDir_ = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
     workspaceFileDir_ = rootDir_ + "workspaces/";
     settingsWidget_->loadSettings();
 
@@ -154,14 +154,14 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
 		networkEvaluator->requestEvaluate();
 		std::string path = cmdparser->getOutputPath();
 		if (path.empty())
-			path = IVW_DIR+"data/images/";
+			path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
 		networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
 	}
 
 	if (cmdparser->getScreenGrabAfterStartup()) {
 		std::string path = cmdparser->getOutputPath();
 		if (path.empty())
-			path = IVW_DIR+"data/images/";
+			path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
 		repaint();
 		int curScreen = QApplication::desktop()->screenNumber(this);
 		QPixmap screenGrab = QPixmap::grabWindow(QApplication::desktop()->screen(curScreen)->winId());

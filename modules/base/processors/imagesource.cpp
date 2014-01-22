@@ -25,7 +25,7 @@ ProcessorCodeState(ImageSource, CODE_STATE_EXPERIMENTAL);
 ImageSource::ImageSource()
     : Processor(),
     outport_("image.outport"),
-    imageFileName_("imageFileName", "Image file name", IVW_DIR+"data/images/swirl.tga")
+    imageFileName_("imageFileName", "Image file name", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES)+"swirl.tga")
 {
     addPort(outport_);
     addProperty(imageFileName_);

@@ -24,7 +24,6 @@
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 
-
 namespace inviwo {
 
 // TODO: are the first two constructors needed? Otherwise remove.
@@ -93,16 +92,28 @@ void InviwoApplication::deinitialize() {
 
 std::string InviwoApplication::getPath(PathType pathType, const std::string& suffix) {
     std::string result = getBasePath();
-    if (pathType == InviwoApplication::PATH_PROJECT)
-        result += "data/workspaces/";
-    else if (pathType == InviwoApplication::PATH_DATA)
+    switch (pathType) {
+    case inviwo::InviwoApplication::PATH_DATA:
         result += "data/";
-    else if (pathType == InviwoApplication::PATH_VOLUMES)
+        break;
+    case inviwo::InviwoApplication::PATH_VOLUMES:
         result += "data/volumes/";
-    else if (pathType == InviwoApplication::PATH_IMAGES)
-        result += "data/images/";
-    else if (pathType == InviwoApplication::PATH_MODULES)
+        break;
+    case inviwo::InviwoApplication::PATH_MODULES:
         result += "modules/";
+        break;
+    case inviwo::InviwoApplication::PATH_WORKSPACES:
+        result += "data/workspaces/";
+        break;
+    case inviwo::InviwoApplication::PATH_IMAGES:
+        result += "data/images/";
+        break;
+    case inviwo::InviwoApplication::PATH_RESOURCES:
+        result += "resources";
+        break;
+    default:
+        break;
+    }
     result += suffix;
     return result;
 }
@@ -139,5 +150,12 @@ std::vector<Settings*> InviwoApplication::getModuleSettings() {
     }
     return allModuleSettings;
 }
+
+void InviwoApplication::initializeBasePath() {
+    if (basePath_.empty()) {
+        basePath_ = filesystem::getParentFolderPath(filesystem::getWorkingDirectory(), "data");
+    } 
+}
+
 
 } // namespace

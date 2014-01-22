@@ -23,6 +23,7 @@
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/core/util/fileobserver.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/util/vectoroperations.h>
 #include <inviwo/core/util/settings/settings.h>
 #include <inviwo/core/util/singleton.h>
@@ -46,16 +47,30 @@ public:
     virtual bool isInitialized() { return initialized_; }
 
     enum PathType {
-        PATH_DATA,
-        PATH_VOLUMES,
-        PATH_MODULES,
-        PATH_PROJECT,
-        PATH_IMAGES
+        PATH_DATA,      // data/
+        PATH_VOLUMES,   // data/volumes/
+        PATH_MODULES,   // modules/
+        PATH_WORKSPACES,// data/workspaces/
+        PATH_IMAGES,     // data/images/
+        PATH_RESOURCES  // resources/
     };
 
 	virtual void closeInviwoApplication(){LogWarn("this application have not implemented close inviwo function");}
 
-    std::string getBasePath() { return basePath_; }
+    /**
+     * Get the base path of the application.
+     * 
+     * @return 
+     */
+    const std::string& getBasePath() { return basePath_; }
+
+    /**
+     * Get basePath +  pathType + suffix.
+     * @see PathType
+     * @param pathType Enum for type of path
+     * @param suffix Path extension
+     * @return basePath +  pathType + suffix
+     */
     std::string getPath(PathType pathType, const std::string& suffix = "");
 
     void registerModule(InviwoModule* module) { modules_.push_back(module); }
@@ -95,7 +110,8 @@ public:
     std::vector<Settings*> getModuleSettings();
 
 protected:
-    void printApplicationInfo();    
+    void printApplicationInfo();  
+    void initializeBasePath();
 
 private:
     std::string displayName_;

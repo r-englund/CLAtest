@@ -68,7 +68,7 @@ void DirectoryProperty::serialize(IvwSerializer& s) const {
     std::string basePath = s.getFileName();
     std::string absoluteFilePath = get();
     if (basePath.empty())
-        basePath = IVW_DIR+"data/workspace";
+        basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
     std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("directory", relativePath);    
     s.serialize("files", directoryTree_, "file");
@@ -80,7 +80,7 @@ void DirectoryProperty::deserialize(IvwDeserializer& d) {
     d.deserialize("directory", relativePath);
     std::string basePath = d.getFileName(); 
     if (basePath.empty())
-        basePath = IVW_DIR+"data/workspace";
+        basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
     basePath = URLParser::getFileDirectory(basePath);   
 
     std::vector<std::string> directoryTree;

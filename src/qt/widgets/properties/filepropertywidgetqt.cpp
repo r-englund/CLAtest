@@ -57,7 +57,7 @@ void FilePropertyWidgetQt::setPropertyValue() {
  
     // Setup sidebar
     QList<QUrl> sidebarURLs;
-    QString dataDir_ = QString::fromStdString(IVW_DIR+"data/");
+    QString dataDir_ = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
     sidebarURLs << QUrl::fromLocalFile(QDir(dataDir_).absolutePath());
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));

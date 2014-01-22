@@ -24,6 +24,7 @@
 #include <QFile>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
+#include <inviwo/core/util/filedirectory.h>
 #include "inviwomainwindow.h"
 #include "inviwosplashscreen.h"
 #include <moduleregistration.h>
@@ -38,7 +39,10 @@ int main(int argc, char** argv) {
     _CrtSetReportFile( _CRT_WARN, _CRTDBG_FILE_STDERR );
     _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
-    inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, IVW_DIR, argc, argv);
+    // Search for directory containing data folder to find application basepath. 
+    // Working directory will be used if data folder is not found in parent directories.
+    std::string basePath = inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
+    inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
 	
 	// initialize and show splash screen
 	inviwo::InviwoSplashScreen splashScreen;

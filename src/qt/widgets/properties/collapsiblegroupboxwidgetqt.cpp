@@ -74,7 +74,7 @@ void CollapsibleGroupBoxWidgetQt::updateFromProperty() {}
 void CollapsibleGroupBoxWidgetQt::show() {
     collapsed_ = false;
     groupBox_->show();
-    btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
+    btnCollapse_->setIcon(QIcon(":/stylesheets/int (&hypRec)arrow_darker_down.png"));
     disconnect(btnCollapse_, SIGNAL(clicked()), this, SLOT(show()));
     connect(btnCollapse_, SIGNAL(clicked()), this, SLOT(hide()));
 }

@@ -18,15 +18,6 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
-#include <stdio.h>  // defines FILENAME_MAX
-#ifdef WIN32
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
-
 namespace inviwo {
 
 class IVW_CORE_API URLParser {

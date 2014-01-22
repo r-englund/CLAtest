@@ -53,9 +53,9 @@ VolumeRaycasterCL::~VolumeRaycasterCL() {}
 void VolumeRaycasterCL::initialize() {
     Processor::initialize();
     try {
-        cl::Program* program = KernelManager::getRef().buildProgram(IVW_DIR+"modules/opencl/cl/volumeraycaster.cl");
+        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl/volumeraycaster.cl");
         kernel_ = KernelManager::getRef().getKernel(program, "raycaster");
-        //cl::Program program = OpenCL::buildProgram(IVW_DIR+"modules/opencl/cl/volumeraycaster.cl");
+        //cl::Program program = OpenCL::buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl/volumeraycaster.cl");
         //kernel_ = new cl::Kernel(program, "raycaster");
 
     } catch (cl::Error&) {

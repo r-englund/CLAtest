@@ -87,8 +87,8 @@ void InviwoApplicationQt::playSound(unsigned int soundID) {
     // Qt currently does not support playing sounds from resources
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
     if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enableSound"))->get())){
-        if (soundID == IVW_OK) QSound::play(QString::fromStdString(IVW_DIR+"resources/sounds/ok.wav"));
-        else if (soundID == IVW_ERROR) QSound::play(QString::fromStdString(IVW_DIR+"resources/sounds/error.wav"));
+        if (soundID == IVW_OK) QSound::play(QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_RESOURCES)+"sounds/ok.wav"));
+        else if (soundID == IVW_ERROR) QSound::play(QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_RESOURCES)+"sounds/error.wav"));
     }
 #endif
 }

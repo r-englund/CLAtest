@@ -18,6 +18,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/templateproperty.h>
 
+
 namespace inviwo {
 /** class DirectoryProperty
 *  A class for file representations.
@@ -30,7 +31,7 @@ class IntProperty;
 
 class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:
-    DirectoryProperty(std::string identifier, std::string displayName, std::string value=IVW_DIR,
+    DirectoryProperty(std::string identifier, std::string displayName, std::string value,
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
                  PropertySemantics::Type semantics = PropertySemantics::Default);
     virtual std::vector<std::string> getDirectoryTree()  const ;

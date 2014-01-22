@@ -28,7 +28,7 @@ ProcessorCodeState(VolumeExport, CODE_STATE_EXPERIMENTAL);
 VolumeExport::VolumeExport()
     : Processor()
     , volumePort_("volume")
-    , volumeFile_("volumeFileName", "Volume file name", IVW_DIR+"data/volumes/newvolume.dat")
+    , volumeFile_("volumeFileName", "Volume file name", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA)+"volumes/newvolume.dat")
     , exportVolumeButton_("snapshot", "Export Volume", PropertyOwner::VALID)
     , overwrite_("overwrite", "Overwrite", false){
 

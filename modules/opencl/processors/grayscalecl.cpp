@@ -39,7 +39,7 @@ GrayscaleCL::~GrayscaleCL() {}
 void GrayscaleCL::initialize() {
     Processor::initialize();
     try {
-        cl::Program* program = KernelManager::getRef().buildProgram(IVW_DIR+"modules/opencl/cl/grayscale.cl");
+        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl/grayscale.cl");
         kernel_ = KernelManager::getRef().getKernel(program, "grayscaleKernel");
     } catch (cl::Error&) {
         

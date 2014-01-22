@@ -180,6 +180,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileextension.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/filesystem.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formats.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatsdefinefunc.h
@@ -339,6 +340,7 @@ set(SOURCE_FILES
     util/exception.cpp
     util/fileextension.cpp
     util/fileobserver.cpp
+    util/filesystem.cpp
     util/formats.cpp
     util/logdistributor.cpp
     util/observer.cpp    
