@@ -17,6 +17,7 @@
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 #include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/formatconversion.h>
 
 namespace inviwo {
 
@@ -186,6 +187,11 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
 
     volume->addRepresentation(vd);
 
+    
+    std::string size = formatBytesToString(dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()));
+
+    LogInfo("Loaded volume: " << filePath << " size: " << size);
+    
     return volume;
 }    
 

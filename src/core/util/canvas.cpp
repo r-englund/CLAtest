@@ -22,11 +22,11 @@ EventHandler* eventHandler_();
 Geometry* Canvas::screenAlignedRect_ = NULL;
 
 Canvas::Canvas(uvec2 dimensions)
-               : dimensions_(dimensions),
-                 processorNetworkEvaluator_(0),
-                 queuedRequest_(false),
-                 shared_(true)
-{
+    : shared_(true)
+    , dimensions_(dimensions)
+    , processorNetworkEvaluator_(0)
+    , queuedRequest_(false) {
+
     pickingContainer_ = new PickingContainer();
     if(!screenAlignedRect_){
         shared_ = false;

@@ -56,8 +56,9 @@ void VolumeRAMSlice::evaluate(){
         return;
     }
 
+    /*
     uvec3 dataDims = volume->getDimension();
-    /*if(cPlane_ == XY){ //XY Plane
+    if(cPlane_ == XY){ //XY Plane
         if (sliceNum_ >= dataDims.z){
             setOutput(NULL);
             return;
@@ -128,15 +129,15 @@ void VolumeRAMSlice::evaluate(){
         //T* dst = reinterpret_cast<T*>(sliceImage->getData());
 
         //copy data
-        /*size_t offsetVolume;
-        size_t offsetImage;
-        for (size_t i=0; i < dataDims.z; i++) {
-            for (size_t j=0; j < dataDims.y; j++) {
-                offsetImage = (i*dataDims.z)+j;
-                dst[offsetImage] = src[];
-            }
-        }*/
-        /*setOutput(sliceImage);
+        //size_t offsetVolume;
+     //size_t offsetImage;
+     // for (size_t i=0; i < dataDims.z; i++) {
+     //      for (size_t j=0; j < dataDims.y; j++) {
+     //         offsetImage = (i*dataDims.z)+j;
+     //         dst[offsetImage] = src[];
+     //     }
+     // }
+        setOutput(sliceImage);
     }*/
 }
 

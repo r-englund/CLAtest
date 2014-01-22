@@ -91,6 +91,8 @@ namespace glm
 	}
 
 	// usubBorrow
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wshift-op-parentheses"
 	template <typename genUType>
 	GLM_FUNC_QUALIFIER genUType usubBorrow
 	(
@@ -105,6 +107,7 @@ namespace glm
 		else
 			return genUType(detail::highp_int_t(1) << detail::highp_int_t(32) + detail::highp_int_t(x) - detail::highp_int_t(y));
 	}
+    #pragma clang diagnostic pop
 
 	template <typename T>
 	GLM_FUNC_QUALIFIER detail::tvec2<T> usubBorrow

@@ -80,8 +80,11 @@ void TransferFunctionEditorView::zoomHorizontally(int zoomHMin, int zoomHMax) {
     zoomH_.y = zoomHMax / 100.0f;
     // avoid degenerated zoom area
     if (abs(zoomH_.x-zoomH_.y)<0.05f)
-        if (zoomH_.y == 1.0f) zoomH_.x=zoomH_.y-0.05f;
-        else zoomH_.y=zoomH_.x+0.05f;
+        if (zoomH_.y == 1.0f) {
+         	zoomH_.x=zoomH_.y-0.05f;
+        } else {
+            zoomH_.y=zoomH_.x+0.05f;
+        }
     updateZoom();
 }
 
@@ -93,8 +96,11 @@ void TransferFunctionEditorView::zoomVertically(int zoomVMin, int zoomVMax) {
     zoomV_.y = (100.0-zoomVMin) / 100.0f;
     // avoid degenerated zoom area
     if (abs(zoomV_.x-zoomV_.y)<0.05f)
-        if (zoomV_.y == 1.0f) zoomV_.x=zoomV_.y-0.05f;
-        else zoomV_.y=zoomV_.x+0.05f;
+        if (zoomV_.y == 1.0f) {
+            zoomV_.x=zoomV_.y-0.05f;
+        } else {
+            zoomV_.y=zoomV_.x+0.05f;
+        }
     updateZoom();
 }
 

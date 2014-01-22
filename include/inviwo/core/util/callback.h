@@ -21,6 +21,8 @@ namespace inviwo {
 
 class BaseCallBack {
 public:
+    BaseCallBack(){};
+    virtual ~BaseCallBack(){};
     virtual void invoke() const=0;
 };
 
@@ -71,7 +73,7 @@ class SingleCallBack {
 public:
     SingleCallBack() : callBack_(0) {}
 
-    ~SingleCallBack(){delete callBack_;}
+    virtual ~SingleCallBack(){delete callBack_;}
 
     void invoke() const{
         if (callBack_)

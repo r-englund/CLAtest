@@ -22,6 +22,8 @@
 
 namespace inviwo {
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 static const std::string currentDateTime() {
     time_t currentDateTime = time(0);
     struct tm dateTimeStruct;
@@ -30,6 +32,7 @@ static const std::string currentDateTime() {
     strftime(dateTimeBuffer, sizeof(dateTimeBuffer), "%Y%m%d_%H%M%S", &dateTimeStruct);
     return dateTimeBuffer;
 }
+#pragma clang diagnostic pop
 
 } // namespace
 

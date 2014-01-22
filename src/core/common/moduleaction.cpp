@@ -18,10 +18,12 @@
 namespace inviwo {
 
 
-ModuleCallbackAction::ModuleCallbackAction(std::string actionName, InviwoModule* module, ModuleCallBackActionState::Status state) 
-                                            : actionName_(actionName)
-                                              , module_(module)
-                                              , actionState_(state) {
+ModuleCallbackAction::ModuleCallbackAction(std::string actionName,
+                                           InviwoModule* module,
+                                           ModuleCallBackActionState::Status state)
+    : module_(module)
+    , actionName_(actionName)
+    , actionState_(state) {
 }
 
 std::string ModuleCallbackAction::getActionName() {

@@ -77,7 +77,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingcallback.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingcontainer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickinghandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingmanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
@@ -261,7 +260,6 @@ set(SOURCE_FILES
     interaction/events/timerevent.cpp
     interaction/interactionhandler.cpp
     interaction/pickingcontainer.cpp
-    interaction/pickinghandler.cpp
     interaction/pickingmanager.cpp
     interaction/pickingobject.cpp
     interaction/trackball.cpp

@@ -77,7 +77,7 @@ void ImageGL::reAttachAllLayers(bool clearLayers){
     pickingAttachmentID_ = 0;
 
     GLenum id = 0;
-    GLuint clearColor[4] = {0, 0, 0, 0};
+    //GLuint clearColor[4] = {0, 0, 0, 0};
     for (size_t i=0; i<colorLayersGL_.size(); ++i) {
         colorLayersGL_[i]->getTexture()->bind();
         id = frameBufferObject_->attachColorTexture(colorLayersGL_[i]->getTexture());
@@ -87,7 +87,7 @@ void ImageGL::reAttachAllLayers(bool clearLayers){
         }*/
     }
 
-    Layer* depthLayer = owner_->getDepthLayer();
+    //Layer* depthLayer = owner_->getDepthLayer();
     if(depthLayerGL_){
         depthLayerGL_->getTexture()->bind();
         frameBufferObject_->attachTexture(depthLayerGL_->getTexture(), static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
@@ -99,7 +99,7 @@ void ImageGL::reAttachAllLayers(bool clearLayers){
         }*/
     }
 
-    Layer* pickingLayer = owner_->getPickingLayer();
+    //Layer* pickingLayer = owner_->getPickingLayer();
     if(pickingLayerGL_){
         pickingLayerGL_->getTexture()->bind();
         id = pickingAttachmentID_ = frameBufferObject_->attachColorTexture(pickingLayerGL_->getTexture(), 0, true);

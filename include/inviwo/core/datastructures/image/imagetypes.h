@@ -30,6 +30,8 @@ typedef enum LayerType{
     PICKING_LAYER = 2
 } LayerType;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 static bool typeContainsColor(ImageType type){
     return (type == COLOR_ONLY || type == COLOR_DEPTH || type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);
 }
@@ -41,7 +43,7 @@ static bool typeContainsDepth(ImageType type){
 static bool typeContainsPicking(ImageType type){
     return (type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);
 }
-
+#pragma clang diagnostic pop
 } // namespace
 
 #endif // IVW_IMAGETYPES_H

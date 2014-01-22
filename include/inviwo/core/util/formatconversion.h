@@ -36,6 +36,8 @@ static const float BYTE_DIV = 1.f/BYTE_SWAP;
 #define KILOBYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP)
 #define MEGABYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP*BYTE_SWAP)
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 static std::string formatBytesToString(uint64_t bytes) {
     std::ostringstream stream;
     stream.precision(2);
@@ -54,7 +56,8 @@ static std::string formatBytesToString(uint64_t bytes) {
 
     return stream.str();
 };
-
+#pragma clang diagnostic pop
+    
 } // namespace
 
 #endif // IVW_FORMATCONVERSION_H

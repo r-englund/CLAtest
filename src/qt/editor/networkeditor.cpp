@@ -781,7 +781,8 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
             } else if (e->modifiers() == Qt::ControlModifier) {
                 if (isLinkDisplayEnabled()) {
                     // ctrl modifier pressed: edit link
-                    QRectF processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
+                    QRectF processorRect(0,0,0,0);
+                    processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
                     linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos());
                     addItem(linkCurve_);
                     linkCurve_->show();

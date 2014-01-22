@@ -63,7 +63,7 @@ void VolumeSlice::process(){
         break;
     }
 
-    const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
+    //const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
     //LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, coordinatePlane_.get(), static_cast<unsigned int>(sliceNumber_.get()-1));
     //sliceImage->resize(outport_.getData()->getDimension());
     //outport_.setData(new Image(sliceImage));

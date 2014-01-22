@@ -22,6 +22,8 @@ namespace inviwo {
 
 class CallbackWithSingleArgument {
 public:
+    CallbackWithSingleArgument(){}
+    virtual ~CallbackWithSingleArgument(){}
     virtual void invoke(const void*) const=0;
 };
 
@@ -34,6 +36,8 @@ public:
         : functionPtr_(functionPtr)
         , obj_(obj){}
 
+    virtual ~BaseModuleCallback() {}
+    
     void invoke(const U* argument) const {
         if(!argument) {
             LogInfo("Callback function argument does not match");
@@ -55,7 +59,8 @@ private:
 class ModuleCallback {
 public:
     ModuleCallback() : callBack_(0) {}
-
+    virtual ~ModuleCallback() {};
+    
 	template <typename U>
     void invoke(const U* p) const{
         if (callBack_)
