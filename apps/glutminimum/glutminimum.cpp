@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
     canvas->activate();
 
     // Load simple scene
-    IvwDeserializer xmlDeserializer(inviwoApp.getPath(InviwoApplication::PATH_PROJECT, "tests/simple.inv"));
+    IvwDeserializer xmlDeserializer(inviwoApp.getPath(InviwoApplication::PATH_MODULES, "tests/simple.inv"));
     processorNetwork->deserialize(xmlDeserializer);
     std::vector<Processor*> processors = processorNetwork->getProcessors();
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
