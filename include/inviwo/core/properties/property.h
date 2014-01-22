@@ -30,7 +30,8 @@ class Variant;
 class IVW_CORE_API Property : public IvwSerializable, public VoidObservable, public VoidObserver {
 
 public:
-    Property(std::string identifier, std::string displayName,
+    Property(std::string identifier, 
+             std::string displayName,
              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
              PropertySemantics::Type semantics=PropertySemantics::Default);
     Property();

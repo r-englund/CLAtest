@@ -57,7 +57,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerRepresentationConverter(new LayerDisk2RAMConverter());
 
     // Register MetaData
-    #define MetaDataMacro(n, t, d) registerMetaData(new n##MetaData());
+    #define MetaDataMacro(n, t, d, v) registerMetaData(new n##MetaData());
 	#include <inviwo/core/metadata/metadatadefinefunc.h>
 
     registerMetaData(new VectorMetaData<2,float>());

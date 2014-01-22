@@ -48,8 +48,8 @@ void testDatReader(std::string filename) {
     double ref2;
     double ref3;
     double val;
-    double ty;
-    double tz;
+    long long ty;
+    long long tz;
     double mod = static_cast<double>(std::numeric_limits<T>::max())
         - static_cast<double>(std::numeric_limits<T>::min());
     double min = static_cast<double>(std::numeric_limits<T>::min());

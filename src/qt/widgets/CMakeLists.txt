@@ -48,6 +48,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/lightpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertysettingswidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetfactoryqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertyselectiontreewidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/stringpropertywidgetqt.h

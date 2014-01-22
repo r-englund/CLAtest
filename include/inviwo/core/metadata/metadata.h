@@ -46,8 +46,8 @@ public:
     virtual MetaDataPrimitiveType<T>* clone() const; 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    void set(T value);
-    T get() const;    
+    virtual void set(T value);
+    virtual T get() const;    
 protected:
     T value_;
 };
@@ -103,7 +103,7 @@ void inviwo::MetaDataPrimitiveType<T>::deserialize( IvwDeserializer& d ){
 
 
 /*---------------------------------------------------------------------*/
-#define MetaDataMacro(n, t, d) \
+#define MetaDataMacro(n, t, d, v) \
 class IVW_CORE_API n##MetaData : public MetaDataPrimitiveType<t> {\
 public:\
 	n##MetaData();\

@@ -19,12 +19,9 @@ T serializationOfType(T inValue){
     IvwSerializer serializer(filename);
 
     serializer.serialize("serializedValue",inValue);
-
-
     serializer.writeFile();
 
     IvwDeserializer deserializer(filename);
-    deserializer.readFile();
 
     T outValue;
     deserializer.deserialize("serializedValue",outValue);

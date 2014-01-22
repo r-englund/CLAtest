@@ -17,6 +17,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/metadata/metadatamap.h>
 
 namespace inviwo {
@@ -71,20 +72,14 @@ void MetaDataOwner::setMetaData(std::string key, U value) {
 //param val is required to deduce the template argument
 template<typename T, typename U>
 U MetaDataOwner::getMetaData(std::string key, U val) const {
-    const MetaData* baseMetaData = metaData_->get(key);
-
-    const T* derivedMetaData = 0;
-    if (baseMetaData) {
-        derivedMetaData = dynamic_cast<const T*>(baseMetaData);
-        //if not an instance of valid meta data, forcefully replace with valid one
-        if (!derivedMetaData) {
-            return val;
+    const MetaData* baseMetadata = metaData_->get(key);
+    if (baseMetadata) {
+        const T* derivedMetaData = dynamic_cast<const T*>(baseMetadata);
+        if (derivedMetaData) {
+            return derivedMetaData->get();
         }
-        return derivedMetaData->get();
     }
-    else {
-        return val;
-    }
+    return val;
 }
 
 } // namespace

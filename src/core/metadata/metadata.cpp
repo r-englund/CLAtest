@@ -38,7 +38,7 @@ void MetaData::deserialize(IvwDeserializer& d) {
     IVW_UNUSED_PARAM(d);
 }
 
-#define MetaDataMacro(n, t, d) \
+#define MetaDataMacro(n, t, d, v) \
     n##MetaData::n##MetaData() : MetaDataPrimitiveType<t>(d) {}; \
     n##MetaData::n##MetaData(t value) : MetaDataPrimitiveType<t>(value) {}; \
     std::string n##MetaData::getClassName() const {std::stringstream s; s << #n; s << "MetaData"; return s.str(); }; \

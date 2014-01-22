@@ -30,7 +30,7 @@ int main(int argc , char ** argv){
         // Search for directory containing data folder to find application basepath. 
         // Working directory will be used if data folder is not found in parent directories.
         std::string basePath = inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
-		InviwoApplication app(argc, argv, "unittest "+IVW_VERSION, IVW_DIR);
+        InviwoApplication app(argc, argv, "unittest " + IVW_VERSION, basePath);
         app.initialize(&inviwo::registerAllModules);
 
         inviwo::LogCentral::instance()->registerLogger(logger);

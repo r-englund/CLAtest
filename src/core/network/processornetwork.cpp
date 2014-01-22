@@ -132,7 +132,7 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
 void ProcessorNetwork::clear() {
     std::vector<Processor*> processors = processors_;   
     for (size_t i=0; i<processors.size(); i++)
-        removeProcessor(processors[i]);
+        removeAndDeleteProcessor(processors[i]);
 }
 
 Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
