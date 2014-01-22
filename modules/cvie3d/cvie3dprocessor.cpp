@@ -28,8 +28,8 @@ CVIE3DProcessor::CVIE3DProcessor()
     inport_("volume.inport"),
     outport_("volume.outport"),
     enabled_("enabled", "Filtering Enabled", false),
-    confFile_("confFile", "Configuration file", IVW_DIR+"modules/cvie3D/ext/CVIE3DSDK/bin/CVIE3D.conf"),
-    parameterFile_("parameterFile", "Parameter file", IVW_DIR+"modules/cvie3D/ext/CVIE3DSDK/par/default.gop"),
+    confFile_("confFile", "Configuration file", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"cvie3D/ext/CVIE3DSDK/bin/CVIE3D.conf"),
+    parameterFile_("parameterFile", "Parameter file", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"cvie3D/ext/CVIE3DSDK/par/default.gop"),
     parameterSetting_("parameterSetting", "Parameter setting", 0)
 {
     addPort(inport_);
