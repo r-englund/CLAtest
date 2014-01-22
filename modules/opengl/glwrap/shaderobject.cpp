@@ -17,7 +17,7 @@
 #include <fstream>
 
 #include <inviwo/core/io/textfilereader.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 #include <modules/opengl/glwrap/shadermanager.h>
 
 

@@ -14,7 +14,7 @@
 
 #include "imagesourceseries.h"
 #include <inviwo/core/io/imageio.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
 

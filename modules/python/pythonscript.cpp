@@ -16,7 +16,7 @@
 
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/stringconversion.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 
 #include <traceback.h>
 #include <frameobject.h>

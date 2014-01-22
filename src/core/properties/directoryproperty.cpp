@@ -14,7 +14,7 @@
 
 #include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 
 namespace inviwo {
 

@@ -768,7 +768,7 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     Processor* startProcessor = dynamic_cast<Processor*>(sProp->getOwner());
     Processor* endProcessor = dynamic_cast<Processor*>(eProp->getOwner());
     
-    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
 
     if ( !processorLink->isLinked(sProp, eProp) && !processorLink->isLinked(eProp, sProp)) {
         processorLink->addPropertyLinks(sProp, eProp);
@@ -808,7 +808,7 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
     Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
     Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
 
-    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
 
     if (processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {        
 
@@ -874,7 +874,7 @@ bool LinkDialogGraphicsScene::isPropertyLinkBidirectional(DialogConnectionGraphi
     Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
     Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
 
-    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
 
     PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 
@@ -888,7 +888,7 @@ void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGrap
     Processor* startProcessor = dynamic_cast<Processor*>(startProperty->getGraphicsItemData()->getOwner());
     Processor* endProcessor   = dynamic_cast<Processor*>(endProperty->getGraphicsItemData()->getOwner());
 
-    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
 
     PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 
@@ -939,7 +939,7 @@ void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPro
                                                                    PropertyLink* propertyLink) {
     Processor* startProcessor = dynamic_cast<Processor*>(outProperty->getGraphicsItemData()->getOwner());
     Processor* endProcessor   = dynamic_cast<Processor*>(inProperty->getGraphicsItemData()->getOwner());
-    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(startProcessor, endProcessor);
+    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
 
     DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, processorLink);
     addItem(cItem);
@@ -1018,7 +1018,7 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
         yPosition+=yIncrement;
     }
 
-    std::vector<ProcessorLink*> processorLinks = processorNetwork_->getProcessorLinks();
+    std::vector<ProcessorLink*> processorLinks = processorNetwork_->getLinks();
     for (size_t i=0; i<processorLinks.size(); i++) {
         Processor* srcProcessor = processorLinks[i]->getSourceProcessor();
         Processor* dstProcessor = processorLinks[i]->getDestinationProcessor();

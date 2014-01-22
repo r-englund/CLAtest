@@ -1,7 +1,7 @@
 #include "pythonqtmethods.h"
 #include <modules/python/pythoninterface/pyvalueparser.h>
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 #include <inviwo/qt/editor/networkeditor.h>
 
 namespace inviwo{

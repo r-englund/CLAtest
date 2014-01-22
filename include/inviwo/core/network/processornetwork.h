@@ -54,72 +54,157 @@ public:
      * Adds a Processor to the ProcessorNetwork. The identifiers of all processors in the
      * ProcessorNetwork should be unique.
      *
-     * @param processor The Processor to be added.
+     * @param[in] processor The Processor to be added.
      * @see removeProcessor(), Processor::setIdentifier()
      */
     void addProcessor(Processor* processor);
 
     /**
      * Removes a Processor from the ProcessorNetwork. To ensure that the network does not end up
-     * in a corrupt state, this method first removes all PortConnections and ProcessorLinks, which
+     * in a corrupt state, this method first removes and deletes all PortConnections and ProcessorLinks, which
      * are related to the Processor to be removed.
      *
-     * @param processor The Processor to be removed.
+     * @param[in] processor The Processor to be removed.
      * @see addProcessor()
      */
     void removeProcessor(Processor* processor);
 
+    /**
+    * Removes and deletes a Processor from the ProcessorNetwork. To ensure that the network does not end up
+    * in a corrupt state, this method first removes and deletes all PortConnections and ProcessorLinks, which
+    * are related to the Processor to be removed.
+    *
+    * @param[in] processor The Processor to be removed.
+    * @see addProcessor()
+    */
+    void removeAndDeleteProcessor(Processor* processor);
 
     /**
-     * Adds a PortConnection to the ProcessorNetwork. This involves creating the connection
-     * between the two specified ports, as well as adding this connection to the ProcessorNetwork.
-     *
-     * @param sourcePort The outport.
-     * @param destPort The inport.
-     * @see removeConnection()
-     */
-    void addConnection(Outport* sourcePort, Inport* destPort);
+    * Returns the Processor from the ProcessorNetwork, which has the given identifier.
+    * In case no Processor with the given identifier is contained in the network, a null
+    * pointer is returned.
+    *
+    * @param identifier Identifier of the Processor to be accessed.
+    * @see getProcessorsByType(), Processor::setIdentifier(), Processor::getIdentifier()
+    */
+    Processor* getProcessorByName(std::string identifier) const;
 
     /**
-     * Removes a PortConnection from the ProcessorNetwork. This involves resolving the connection
+    * Returns a vector of Processors which are of type T. In case no Processors match T
+    * an empty vector is returned.
+    *
+    * @see getProcessorByName()
+    */
+    template<class T> std::vector<T*> getProcessorsByType() const;
+    
+    /**
+    * Returns a vector of all Processors.
+    *
+    * @return A vector of Processors
+    */
+    std::vector<Processor*> getProcessors() const;
+
+
+    /**
+    * Adds a PortConnection to the ProcessorNetwork. This involves creating the connection
+    * between the two specified ports, as well as adding this connection to the ProcessorNetwork.
+    *
+    * @param[in] sourcePort The outport.
+    * @param[in] destPort The inport.
+    * @return The newly created connection.
+    * @see removeConnection()
+    */
+    PortConnection* addConnection(Outport* sourcePort, Inport* destPort);
+
+    /**
+     * Removes and deletes a PortConnection from the ProcessorNetwork. This involves resolving the connection
      * between the two specified Ports, as well as removing this connection from the
      * ProcessorNetwork.
      *
-     * @param sourcePort The outport.
-     * @param destPort The inport.
+     * @param[in] sourcePort The outport.
+     * @param[in] destPort The inport.
      * @see addConnection()
      */
     void removeConnection(Outport* sourcePort, Inport* destPort);
 
-    void addLink(ProcessorLink* processorLink);
-    void addLink(Processor* sourceProcessor, Processor* destProcessor);
+    /**
+    * Checks weather two port are connected
+    *
+    * @param[in] sourcePort The outport.
+    * @param[in] destPort The inport.
+    * @return Weather the two port are connected
+    * @see addConnection()
+    */
+    bool isConnected(Outport* sourcePort, Inport* destPort);
+
+    /**
+    * Get a connection between two ports
+    *
+    * @param[in] sourcePort The outport.
+    * @param[in] destPort The inport.
+    * @return The PortConnection between the ports or NULL if there is none.
+    * @see addConnection()
+    */
+    PortConnection* getConnection(Outport* sourcePort, Inport* destPort);
+
+    /**
+    * Returns a vector of all Connections.
+    *
+    * @return A vector of Connections
+    */
+    std::vector<PortConnection*> getConnections() const;
+
+
+    /**
+    * Adds a ProcessorLink to the ProcessorNetwork. This involves creating the link
+    * between the two specified processors, as well as adding this connection to the ProcessorNetwork.
+    *
+    * @param[in] sourceProcessor The source processor.
+    * @param[in] destProcessor The destination processor.
+    * @return The newly crated link.
+    * @see removeConnection()
+    */
+    ProcessorLink* addLink(Processor* sourceProcessor, Processor* destProcessor);
+ 
+    /**
+    * Removes and deletes a PortConnection from the ProcessorNetwork. This involves resolving the connection
+    * between the two specified Ports, as well as removing this connection from the
+    * ProcessorNetwork.
+    *
+    * @param[in] sourceProcessor The source processor.
+    * @param[in] destProcessor The destination processor.
+    * @see addConnection()
+    */
     void removeLink(Processor* sourceProcessor, Processor* destProcessor);
 
-    std::vector<Processor*> getProcessors() const { return processors_; }
-    std::vector<PortConnection*> getPortConnections() const { return portConnections_; }
-    std::vector<ProcessorLink*> getProcessorLinks() const { return processorLinks_; }
+    /**
+    * Checks weather the two processors have a link
+    *
+    * @param[in] sourceProcessor The source processor.
+    * @param[in] destProcessor The destination processor.
+    * @return Weather the two processors have a link.
+    * @see addConnection()
+    */
     bool isLinked(Processor* src, Processor* dst);
 
+    /**
+    * Get a link between two processors
+    *
+    * @param[in] sourceProcessor The source processor.
+    * @param[in] destProcessor The destination processor.
+    * @return The link between the processors or NULL if there is none. 
+    * @see addConnection()
+    */
+    ProcessorLink* getLink(Processor* sourceProcessor, Processor* destProcessor) const;
 
     /**
-     * Returns the Processor from the ProcessorNetwork, which has the given identifier.
-     * In case no Processor with the given identifier is contained in the network, a null
-     * pointer is returned.
-     *
-     * @param identifier Identifier of the Processor to be accessed.
-     * @see getProcessorsByType(), Processor::setIdentifier(), Processor::getIdentifier()
-     */
-    Processor* getProcessorByName(std::string identifier) const;
+    * Returns a vector of all Links.
+    *
+    * @return A vector of Links
+    */
+    std::vector<ProcessorLink*> getLinks() const;
 
-    /**
-     * Returns a vector of Processors which are of type T. In case no Processors match T
-     * an empty vector is returned.
-     *
-     * @see getProcessorByName()
-     */
-    template<class T> std::vector<T*> getProcessorsByType() const;
 
-    ProcessorLink* getProcessorLink(Processor* sourceProcessor, Processor* destProcessor) const;    
     
     void modified();
     void setModified(bool modified) { modified_ = modified; }
@@ -130,7 +215,7 @@ public:
     void notifyInvalidationEnd(Processor*);
     Processor* getInvalidationInitiator() { return invalidationInitiator_; }
 
-    void setBroadcastModification(bool broadcastModification) { broadcastModification_ = broadcastModification; }
+    void setBroadcastModification(bool broadcastModification);
 
     inline void lock() { locked_++; }
     inline void unlock() { (locked_>0)?locked_--:locked_=0; }

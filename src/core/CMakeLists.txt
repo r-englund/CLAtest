@@ -178,7 +178,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/datetime.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/filedirectory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileextension.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatconversion.h
@@ -198,6 +197,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/urlparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
 )
@@ -337,7 +337,6 @@ set(SOURCE_FILES
     util/clock.cpp
     util/commandlineparser.cpp
     util/exception.cpp
-    util/filedirectory.cpp
     util/fileextension.cpp
     util/fileobserver.cpp
     util/formats.cpp
@@ -349,6 +348,7 @@ set(SOURCE_FILES
     util/stringconversion.cpp
     util/systemcapabilities.cpp
     util/timer.cpp
+    util/urlparser.cpp
     util/variant.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})

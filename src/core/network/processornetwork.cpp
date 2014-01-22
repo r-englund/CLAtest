@@ -24,30 +24,24 @@ ProcessorNetwork::ProcessorNetwork() : VoidObservable(), ProcessorObserver(),
     invalidationInitiator_(NULL) {}
 
 ProcessorNetwork::~ProcessorNetwork() {
-    for(size_t i = 0;i< processors_.size();i++){
-        delete processors_[i];
-    }
-    for(size_t i = 0;i< portConnections_.size();i++){
-        delete portConnections_[i];
-    }
-    for(size_t i = 0;i< processorLinks_.size();i++){
-        delete processorLinks_[i];
-    }
-    processors_.clear();
-    portConnections_.clear();
-    processorLinks_.clear();
+    clear();
 }
-
 
 void ProcessorNetwork::addProcessor(Processor* processor) {
     ivwAssert(std::find(processors_.begin(), processors_.end(), processor)==processors_.end(),
               "Processor instance already contained in processor network.");
+
     processors_.push_back(processor);
-
     processor->addObserver(this);
-
     modified();
 }
+
+void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
+    removeProcessor(processor);
+    processor->deinitialize();
+    delete processor;
+}
+
 
 void ProcessorNetwork::removeProcessor(Processor* processor) {
     ivwAssert(std::find(processors_.begin(), processors_.end(), processor)!=processors_.end(),
@@ -69,26 +63,31 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
 
     // remove processor itself
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
-
     processor->removeObserver(this);
 
     modified();
 }
 
 
-void ProcessorNetwork::addConnection(Outport* sourcePort, Inport* destPort) {
-    ivwAssert(!sourcePort->isConnectedTo(destPort), "Ports already connected.");
-    lock();
-    destPort->connectTo(sourcePort);
-    portConnections_.push_back(new PortConnection(sourcePort, destPort));
-    unlock();
-    modified();
+PortConnection* ProcessorNetwork::addConnection(Outport* sourcePort, Inport* destPort) {
+    PortConnection* connection = getConnection(sourcePort, destPort);
+    if(!connection) {
+        lock();
+        destPort->connectTo(sourcePort);
+        connection = new PortConnection(sourcePort, destPort);
+        portConnections_.push_back(connection);
+        unlock();
+        modified();
+    }
+    return connection;
 }
 
 void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
     lock();
     for (size_t i=0; i<portConnections_.size(); i++) {
-        if (portConnections_[i]->getOutport()==sourcePort && portConnections_[i]->getInport()==destPort) {
+        if (portConnections_[i]->getOutport()==sourcePort &&
+            portConnections_[i]->getInport()==destPort) {
+
             destPort->disconnectFrom(sourcePort);
             delete portConnections_[i];
             portConnections_.erase(portConnections_.begin()+i);
@@ -100,20 +99,19 @@ void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
 }
 
 bool ProcessorNetwork::isLinked(Processor* src, Processor* dst) {
-    if (getProcessorLink(src, dst))
+    if (getLink(src, dst))
         return true;
     return false;
 }
 
-void ProcessorNetwork::addLink(ProcessorLink* processorLink) {
-    processorLinks_.push_back(processorLink);
-    modified();
-}
-
-void ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {    
-    if (getProcessorLink(sourceProcessor, destProcessor))
-        return;
-    addLink(new ProcessorLink(sourceProcessor, destProcessor));
+ProcessorLink* ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {
+    ProcessorLink* link = getLink(sourceProcessor, destProcessor);
+    if(!link) {
+        link = new ProcessorLink(sourceProcessor, destProcessor);
+        processorLinks_.push_back(link);
+        modified();
+    }
+    return link;
 }
 
 void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destProcessor) {
@@ -122,8 +120,10 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
              processorLinks_[i]->getDestinationProcessor()==destProcessor) ||
             (processorLinks_[i]->getDestinationProcessor()==sourceProcessor &&
              processorLinks_[i]->getSourceProcessor()==destProcessor)) {
-                processorLinks_.erase(processorLinks_.begin()+i);
-                break;
+
+            delete processorLinks_[i];
+            processorLinks_.erase(processorLinks_.begin()+i);
+            break;
         }
     }
     modified();
@@ -131,17 +131,8 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
 
 void ProcessorNetwork::clear() {
     std::vector<Processor*> processors = processors_;   
-
     for (size_t i=0; i<processors.size(); i++)
         removeProcessor(processors[i]);
-
-    std::vector<PortConnection*> connections = portConnections_;
-    for (size_t i=0; i<connections.size(); i++)
-        removeConnection(connections[i]->getOutport(), connections[i]->getInport());
-
-    std::vector<ProcessorLink*> processorLinks = processorLinks_;
-    for (size_t i=0; i<processorLinks_.size(); i++)
-        removeLink(processorLinks[i]->getDestinationProcessor(), processorLinks[i]->getSourceProcessor() );
 }
 
 Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
@@ -151,7 +142,7 @@ Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
     return 0;
 }
 
-ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* processor1, Processor* processor2) const {
+ProcessorLink* ProcessorNetwork::getLink(Processor* processor1, Processor* processor2) const {
     for (size_t i=0; i<processorLinks_.size(); i++) { 
         if ((processorLinks_[i]->getSourceProcessor()==processor1 &&
              processorLinks_[i]->getDestinationProcessor()==processor2) ||
@@ -160,7 +151,7 @@ ProcessorLink* ProcessorNetwork::getProcessorLink(Processor* processor1, Process
             return processorLinks_[i];
         }
     }    
-    return 0;
+    return NULL;
 }
 
 void ProcessorNetwork::modified() {
@@ -204,8 +195,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
             if(*it){
                 (*it)->addObserver(this);
                 ++it;
-            }
-            else{
+            } else {
                 it = processors_.erase(it);
                 LogWarn("Failed deserialization: Processor Nr." << i);
             }
@@ -232,20 +222,17 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
                 Inport* inPort = portConnections[i]->getInport();
                 if (outPort && inPort) {
                     addConnection(outPort, inPort);
-                }
-                else {
+                } else {
                     LogWarn("Unable to establish port connection.");
                 }
-            }
-            else {
+                delete portConnections[i];
+            } else {
                 LogWarn("Failed deserialization: Port Connection Nr." << i);
             }
         }
-    }
-    catch (const SerializationException& exception) {             
+    } catch (const SerializationException& exception) {             
         throw IgnoreException("DeSerialization Exception " + exception.getMessage());
-    }
-    catch (...) {
+    } catch (...) {
         //Abort and clear network in case of unknown exception
         clear();
         throw AbortException("Unknown Exception."); 
@@ -268,30 +255,57 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
                             LogWarn("Unable to establish property link.");
                         }
                     }
-                    
-                    if (processorLinks[i]->getPropertyLinks().size())
-                        addLink(processorLinks[i]);
-                }
-                else {
+                    if(processorLinks[i]->getPropertyLinks().size()) {
+                        processorLinks_.push_back(processorLinks[i]);
+                    }
+                } else {
                     LogWarn("Unable to establish processor link.");
                 }
-            }
-            else {
+            } else {
                 LogWarn("Failed deserialization: Processor Links Nr." << i);
             }
-        }
-            
-    }
-    catch (const SerializationException& exception) {       
+        }        
+    } catch (const SerializationException& exception) {       
         throw IgnoreException("DeSerialization Exception " + exception.getMessage());
-    }
-    catch (...) {
+    } catch (...) {
         //Abort and clear network in case of unknown exception
         clear();
         throw AbortException("Unknown Exception.");        
     }
 	notifyObservers();
 
+}
+
+std::vector<PortConnection*> ProcessorNetwork::getConnections() const {
+    return portConnections_;
+}
+
+std::vector<Processor*> ProcessorNetwork::getProcessors() const {
+    return processors_;
+}
+
+std::vector<ProcessorLink*> ProcessorNetwork::getLinks() const {
+    return processorLinks_;
+}
+
+void ProcessorNetwork::setBroadcastModification(bool broadcastModification) {
+    broadcastModification_ = broadcastModification;
+}
+
+PortConnection* ProcessorNetwork::getConnection(Outport* sourcePort, Inport* destPort) {
+    for(size_t i = 0; i < portConnections_.size(); i++) {
+        if(portConnections_[i]->getOutport() == sourcePort &&
+           portConnections_[i]->getInport() == destPort) {
+            return portConnections_[i];
+        }
+    }
+    return NULL;
+}
+
+bool ProcessorNetwork::isConnected(Outport* sourcePort, Inport* destPort) {
+    if(getConnection(sourcePort, destPort))
+        return true;
+    return false;
 }
 
 } // namespace

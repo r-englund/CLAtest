@@ -97,13 +97,13 @@ void PortInspector::initialize() {
     }
     
     // Store the connections and and disconnect them.
-    connections_ = inspectorNetwork_->getPortConnections();
+    connections_ = inspectorNetwork_->getConnections();
     for (size_t i=0; i<connections_.size(); i++) {
         connections_[i]->getInport()->disconnectFrom(connections_[i]->getOutport());
     }
 
     // store the processor links.
-    processorLinks_ = inspectorNetwork_->getProcessorLinks();
+    processorLinks_ = inspectorNetwork_->getLinks();
 }
 
 

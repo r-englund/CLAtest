@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/core/util/fileobserver.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {

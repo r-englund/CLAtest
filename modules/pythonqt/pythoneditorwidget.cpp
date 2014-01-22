@@ -16,7 +16,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/logdistributor.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 #include <modules/python/pythonmodule.h>
 #include <QCommandLinkButton>
 #include <QSplitter>

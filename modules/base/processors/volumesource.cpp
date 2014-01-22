@@ -17,7 +17,7 @@
 #include <inviwo/core/resources/resourcemanager.h>
 #include <inviwo/core/resources/templateresource.h>
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/io/datareaderfactory.h>
 
 namespace inviwo {

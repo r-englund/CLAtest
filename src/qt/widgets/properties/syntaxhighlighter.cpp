@@ -14,7 +14,7 @@
 
 #include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
 #include <inviwo/core/common/inviwomodule.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 
 #include <QTextDocument>
 #include <QTextBlock>

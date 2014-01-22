@@ -16,7 +16,7 @@
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/io/datawriter.h>
 #include <inviwo/core/io/datawriterfactory.h>
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/fileextension.h>
 
 namespace inviwo {

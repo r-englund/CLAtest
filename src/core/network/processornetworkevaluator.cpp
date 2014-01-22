@@ -117,7 +117,7 @@ bool ProcessorNetworkEvaluator::hasBeenVisited(Processor* processor) {
 std::vector<Processor*> ProcessorNetworkEvaluator::getDirectPredecessors(Processor* processor) {
     std::vector<Processor*> predecessors;
     std::vector<Inport*> inports = processor->getInports();
-    std::vector<PortConnection*> portConnections = processorNetwork_->getPortConnections();
+    std::vector<PortConnection*> portConnections = processorNetwork_->getConnections();
     for (size_t i=0; i<inports.size(); i++) {
         for (size_t j=0; j<portConnections.size(); j++) {
             const Port* curInport = portConnections[j]->getInport();
@@ -190,7 +190,7 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, Intera
 
 bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor *processor) {
     bool isConnected = false;
-    std::vector<PortConnection*> portConnections = processorNetwork_->getPortConnections();
+    std::vector<PortConnection*> portConnections = processorNetwork_->getConnections();
 
     std::vector<Outport*> outports = processor->getOutports();   
     for (size_t i=0; i<outports.size(); i++) {
@@ -269,7 +269,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
 
 std::vector<PropertyLink*> ProcessorNetworkEvaluator::getConnectedPropertyLinks(Property* property) {
     std::vector<PropertyLink*> propertyLinks;
-    std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
+    std::vector<ProcessorLink*> links = processorNetwork_->getLinks();
     for (size_t i=0; i<links.size(); i++) {
         std::vector<PropertyLink*> plinks = links[i]->getPropertyLinks();
         for (size_t j=0; j<plinks.size(); j++) {
@@ -283,7 +283,7 @@ std::vector<PropertyLink*> ProcessorNetworkEvaluator::getConnectedPropertyLinks(
 
 std::vector<Property*> ProcessorNetworkEvaluator::getLinkedProperties(Property* property) {
     std::vector<Property*> connectedProperties;
-    std::vector<ProcessorLink*> links = processorNetwork_->getProcessorLinks();
+    std::vector<ProcessorLink*> links = processorNetwork_->getLinks();
     for (size_t i=0; i<links.size(); i++) {
         std::vector<PropertyLink*> plinks = links[i]->getPropertyLinks();
         for (size_t j=0; j<plinks.size(); j++) {
@@ -302,7 +302,7 @@ bool ProcessorNetworkEvaluator::hasBeenVisited(Property* property) {
 }
 
 std::vector<ProcessorLink*> ProcessorNetworkEvaluator::getSortedProcessorLinks() {
-    std::vector<ProcessorLink*> unsortedProcessorLinks = processorNetwork_->getProcessorLinks();
+    std::vector<ProcessorLink*> unsortedProcessorLinks = processorNetwork_->getLinks();
     std::vector<ProcessorLink*> sortedProcessorLinks;
 
     ProcessorLink* nextInvalidLink = 0;
