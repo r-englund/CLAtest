@@ -24,7 +24,7 @@
 #include <QFile>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
-#include <inviwo/core/util/filedirectory.h>
+#include <inviwo/core/util/filesystem.h>
 #include "inviwomainwindow.h"
 #include "inviwosplashscreen.h"
 #include <moduleregistration.h>

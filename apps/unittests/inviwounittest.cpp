@@ -26,8 +26,11 @@ int main(int argc , char ** argv){
     
     int ret = -1;
     inviwo::ConsoleLogger* logger = new inviwo::ConsoleLogger();
-    { //scopre for ivw app
-        InviwoApplication app(argc, argv, "unittest "+IVW_VERSION, IVW_DIR);
+    { //scope for ivw app
+        // Search for directory containing data folder to find application basepath. 
+        // Working directory will be used if data folder is not found in parent directories.
+        std::string basePath = inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
+		InviwoApplication app(argc, argv, "unittest "+IVW_VERSION, IVW_DIR);
         app.initialize(&inviwo::registerAllModules);
 
         inviwo::LogCentral::instance()->registerLogger(logger);

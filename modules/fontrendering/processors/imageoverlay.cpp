@@ -62,7 +62,7 @@ void ImageOverlay::initialize() {
 	if( FT_Init_FreeType(&fontlib_) )
 		std::cout << "Major FT error.\n";
 
-    std::string arialfont = IVW_DIR + "modules/fontrendering/fonts/arial.ttf";
+    std::string arialfont = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) + "fontrendering/fonts/arial.ttf";
 
 	error = FT_New_Face( fontlib_, arialfont.c_str(), 0, &fontface_);
 

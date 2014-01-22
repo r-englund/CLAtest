@@ -29,6 +29,7 @@
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/core/util/filesystem.h>
 
 #include <moduleregistration.h>
 
@@ -79,7 +80,10 @@ void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
 
 
 int main(int argc, char** argv) {
-    InviwoApplication inviwoApp(argc, argv, "glutminimum "+IVW_VERSION, IVW_DIR);
+    // Search for directory containing data folder to find application basepath. 
+    // Working directory will be used if data folder is not found in parent directories.
+    std::string basePath = inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
+    InviwoApplication inviwoApp(argc, argv, "glutminimum "+IVW_VERSION, basePath);
 
     glutInit(&argc, argv);
 

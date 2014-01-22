@@ -5,7 +5,6 @@
 
 
 TEST(URLParserTest,fileExistsTest){
-    EXPECT_FALSE(URLParser::fileExists(IVW_DIR));
 #ifdef __FILE__
     EXPECT_TRUE(URLParser::fileExists(__FILE__));
 #endif
