@@ -118,7 +118,7 @@ PyObject* py_getDataPath(PyObject* /*self*/, PyObject* /*args*/){
 }
 
 PyObject* py_getWorkspaceSavePath(PyObject* /*self*/, PyObject* /*args*/){
-    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PROJECT));
+    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES));
 }
 PyObject* py_getVolumePath(PyObject* /*self*/, PyObject* /*args*/){
     return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_VOLUMES));
