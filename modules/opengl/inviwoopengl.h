@@ -37,7 +37,7 @@
 
 IVW_MODULE_OPENGL_API void LogGLError(const char* fileName, const char* functionName, int lineNumber);
 
-#if defined(IVW_DEBUG)
+#if defined(_DEBUG)
     #define LGL_ERROR LogGLError(__FILE__, __FUNCTION__, __LINE__)
     #define LGL_ERROR_SUPPRESS glGetError()
 #else

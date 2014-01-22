@@ -205,7 +205,7 @@ IVW_MODULE_OPENCL_API std::string errorCodeToString(cl_int err);
  */
 IVW_MODULE_OPENCL_API std::string getCLErrorResolveHint(cl_int err);
 
-#if defined(IVW_DEBUG)
+#if defined(_DEBUG)
 #define LogCLError #if defined(__CL_ENABLE_EXCEPTIONS) \\LogOpenCLError(error)
 #else
 #define LogCLError

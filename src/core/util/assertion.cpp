@@ -17,13 +17,13 @@
 
 #include <sstream>
 
-#if defined(IVW_DEBUG)
+#if defined(_DEBUG)
 
 void ivwAssertion(const char* fileName, const char* functionName, long lineNumber, std::string message) {
     std::cout << "Assertion in (" << fileName << ", " << functionName << ", Ln " << lineNumber << "): ";
     std::cout << message << std::endl;
     std::cout << "(choose to ";
-    #if defined(IVW_DEBUG) && defined(WIN32)
+    #if defined(_DEBUG) && defined(WIN32)
         std::cout << "(b)reak, ";
     #endif
     std::cout << "(i)gnore or (e)xit):";
@@ -31,7 +31,7 @@ void ivwAssertion(const char* fileName, const char* functionName, long lineNumbe
         std::string keyboardInput = "";
         std::cin >> keyboardInput;
         switch (keyboardInput[0]) {
-            #if defined(IVW_DEBUG) && defined(WIN32)
+            #if defined(_DEBUG) && defined(WIN32)
                 case 'b': __debugbreak();
             #endif
                 case 'i': return;
@@ -40,4 +40,4 @@ void ivwAssertion(const char* fileName, const char* functionName, long lineNumbe
     }
 }
 
-#endif // IVW_DEBUG
+#endif // _DEBUG
