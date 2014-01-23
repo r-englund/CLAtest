@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include "volumeexport.h"
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/io/datawriter.h>
 #include <inviwo/core/io/datawriterfactory.h>
@@ -21,7 +22,7 @@
 
 namespace inviwo {
 
-ProcessorClassName(VolumeExport, "VolumeExport"); 
+ProcessorClassName(VolumeExport, "VolumeExport");
 ProcessorCategory(VolumeExport, "Data Output");
 ProcessorCodeState(VolumeExport, CODE_STATE_EXPERIMENTAL);
 
@@ -50,7 +51,7 @@ VolumeExport::VolumeExport()
 VolumeExport::~VolumeExport() {}
 
 void VolumeExport::initialize() {
-    Processor::initialize();    
+    Processor::initialize();
 }
 
 void VolumeExport::deinitialize() {
@@ -63,7 +64,7 @@ void VolumeExport::exportVolume() {
     if (volume && !volumeFile_.get().empty()) {
 
         std::string fileExtension = URLParser::getFileExtension(volumeFile_.get());
-        DataWriterType<Volume>* writer = 
+        DataWriterType<Volume>* writer =
             DataWriterFactory::getRef().getWriterForTypeAndExtension<Volume>(fileExtension);
         if(writer){
             try{

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -12,6 +12,7 @@
  *
  **********************************************************************/
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
@@ -54,7 +55,7 @@ void FilePropertyWidgetQt::generateWidget() {
 
 void FilePropertyWidgetQt::setPropertyValue() {
     // dialog window settings
- 
+
     // Setup sidebar
     QList<QUrl> sidebarURLs;
     QString dataDir_ = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
@@ -66,7 +67,7 @@ void FilePropertyWidgetQt::setPropertyValue() {
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
-    
+
     // Setup default path
     QString path;
     if(property_->get()!= ""){
@@ -83,11 +84,11 @@ void FilePropertyWidgetQt::setPropertyValue() {
             extension.push_back(QString::fromStdString(*it));
     }
 
-        
+
     QFileDialog openFileDialog(this, QString::fromStdString(property_->getDisplayName()), path);
-   
+
     switch (property_->getAcceptMode()){
-    case FileProperty::AcceptSave : 
+    case FileProperty::AcceptSave :
         openFileDialog.setAcceptMode(QFileDialog::AcceptSave);
         break;
     case FileProperty::AcceptOpen :
@@ -96,7 +97,7 @@ void FilePropertyWidgetQt::setPropertyValue() {
     default:
         openFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
     }
-    
+
     switch (property_->getFileMode()){
     case FileProperty::AnyFile:
         openFileDialog.setFileMode(QFileDialog::AnyFile);
@@ -116,10 +117,10 @@ void FilePropertyWidgetQt::setPropertyValue() {
     default:
         openFileDialog.setFileMode(QFileDialog::AnyFile);
     }
-    
+
     openFileDialog.setNameFilters(extension);
     openFileDialog.setSidebarUrls(sidebarURLs);
-    
+
     if (openFileDialog.exec()) {
         QString path = openFileDialog.selectedFiles().at(0);
         property_->set(path.toLocal8Bit().constData());

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,13 +13,14 @@
  **********************************************************************/
 
 #include <inviwo/qt/widgets/customdoublespinboxqt.h>
+#include <limits>
 
 namespace inviwo {
 
 
 
 CustomDoubleSpinBoxQt::CustomDoubleSpinBoxQt( QWidget *parent /*= 0*/ ) {
-    // Enables setting number of decimals to display 
+    // Enables setting number of decimals to display
     displayDecimals_ = decimals();
     // Save default sizeHint before changing decimal property
     cachedSizeHint_ = QDoubleSpinBox::sizeHint();
@@ -43,7 +44,7 @@ void CustomDoubleSpinBoxQt::setDecimals( int decimals ) {
     QDoubleSpinBox::setDecimals(decimals);
     cachedSizeHint_ = QDoubleSpinBox::sizeHint();
     QDoubleSpinBox::setDecimals(std::numeric_limits<double>::max_exponent);
-    
+
     setValue(val);
     blockSignals(false);
 }

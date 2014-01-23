@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -12,6 +12,7 @@
  *
  **********************************************************************/
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/io/imageio.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/datetime.h>
@@ -54,7 +55,7 @@ void CanvasProcessor::initialize() {
 }
 
 void CanvasProcessor::deinitialize() {
-	if (processorWidget_) 
+	if (processorWidget_)
         processorWidget_->hide();
 	Processor::deinitialize();
 }
@@ -78,7 +79,7 @@ void CanvasProcessor::saveImageLayer() {
     std::string snapshotPath(saveLayerDirectory_.get() + "/" + toLower(getIdentifier()) + "-" + currentDateTime() + ".png");
     saveImageLayer(snapshotPath.c_str());
 }
-    
+
 void CanvasProcessor::saveImageLayer(const char* snapshotPath) {
     const Image* image = inport_.getData();
     const Layer* layer = image->getLayer(visibleLayer_.get());

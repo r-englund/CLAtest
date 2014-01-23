@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include "imagesourceseries.h"
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/io/imageio.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/datastructures/image/imagedisk.h>
@@ -20,7 +21,7 @@
 
 namespace inviwo {
 
-ProcessorClassName(ImageSourceSeries, "ImageSourceSeries"); 
+ProcessorClassName(ImageSourceSeries, "ImageSourceSeries");
 ProcessorCategory(ImageSourceSeries, "Data Input");
 ProcessorCodeState(ImageSourceSeries, CODE_STATE_EXPERIMENTAL);
 
@@ -51,7 +52,7 @@ void ImageSourceSeries::deinitialize() {
 }
 
 void ImageSourceSeries::onFindFiles() {
-    std::vector<std::string> files = imageFileDirectory_.getFiles();         
+    std::vector<std::string> files = imageFileDirectory_.getFiles();
 
     //imageFilesInDirectory_.clearOptions();
     std::vector<std::string> ids;
@@ -73,7 +74,7 @@ void ImageSourceSeries::onFindFiles() {
         displayNames.push_back("noImage");
         files.push_back("");
     }
- 
+
     currentImageIndex_.set(1);
 }
 
@@ -81,13 +82,13 @@ void ImageSourceSeries::onFindFiles() {
 * Creates a ImageDisk representation if there isn't an object already defined.
 **/
 void ImageSourceSeries::process() {
-	Image* outImage = outport_.getData(); 
+	Image* outImage = outport_.getData();
     if (outImage){
-        
+
         std::vector<std::string> filesInDirectory = imageFileDirectory_.getFiles();
         std::vector<std::string> fileNames;
         for (size_t i=0; i<filesInDirectory.size(); i++) {
-            if (ImageIO::isValidImageFile(filesInDirectory[i]) ) {                
+            if (ImageIO::isValidImageFile(filesInDirectory[i]) ) {
                 fileNames.push_back(filesInDirectory[i]);
             }
         }
@@ -111,7 +112,7 @@ void ImageSourceSeries::process() {
 
         std::string currentFileName = fileNames[currentIndex-1];
         LayerDisk* outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
-        if (!outLayerDisk || outLayerDisk->getSourceFile() != currentFileName){ 
+        if (!outLayerDisk || outLayerDisk->getSourceFile() != currentFileName){
             outLayerDisk = new LayerDisk(currentFileName);
             outImage->getColorLayer()->clearRepresentations();
             outImage->getColorLayer()->addRepresentation(outLayerDisk);

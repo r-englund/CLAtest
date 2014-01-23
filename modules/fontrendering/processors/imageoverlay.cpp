@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,14 +13,15 @@
  **********************************************************************/
 
 #include "imageoverlay.h"
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
-ProcessorClassName(ImageOverlay, "ImageOverlay"); 
+ProcessorClassName(ImageOverlay, "ImageOverlay");
 ProcessorCategory(ImageOverlay, "Image Operation");
 ProcessorCodeState(ImageOverlay, CODE_STATE_EXPERIMENTAL);
 
-ImageOverlay::ImageOverlay() 
+ImageOverlay::ImageOverlay()
 	: ProcessorGL(),
 	inport0_("inport0"),
 	outport_("outport"),
@@ -148,7 +149,7 @@ void ImageOverlay::process() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glActiveTexture(GL_TEXTURE0);
-	
+
 	glBindTexture(GL_TEXTURE_2D, texCharacter_);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
@@ -175,7 +176,7 @@ void ImageOverlay::process() {
 		sx,
 		sy);
 	shader_->deactivate();
-	
+
 	deactivateCurrentTarget();
 
     glDisableVertexAttribArray(attribute_location);

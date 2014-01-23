@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -16,11 +16,11 @@
 
 namespace inviwo {
 
-PropertyWidget::PropertyWidget() 
-    : property_(NULL) {
+PropertyWidget::PropertyWidget()
+    : property_(0) {
 }
 
-PropertyWidget::PropertyWidget(Property* property) 
+PropertyWidget::PropertyWidget(Property* property)
     : property_(property) {
 }
 

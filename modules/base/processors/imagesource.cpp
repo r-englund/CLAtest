@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -13,12 +13,13 @@
  **********************************************************************/
 
 #include "imagesource.h"
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
 
 namespace inviwo {
 
-ProcessorClassName(ImageSource, "ImageSource"); 
+ProcessorClassName(ImageSource, "ImageSource");
 ProcessorCategory(ImageSource, "Data Input");
 ProcessorCodeState(ImageSource, CODE_STATE_EXPERIMENTAL);
 
@@ -45,11 +46,11 @@ void ImageSource::deinitialize() {
 * Creates a ImageDisk representation if there isn't an object already defined.
 **/
 void ImageSource::process() {
-	Image* outImage = outport_.getData(); 
+	Image* outImage = outport_.getData();
     if (outImage){
-                
+
         LayerDisk* outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
-        if (!outLayerDisk || outLayerDisk->getSourceFile() != imageFileName_.get()){ 
+        if (!outLayerDisk || outLayerDisk->getSourceFile() != imageFileName_.get()){
             outLayerDisk = new LayerDisk(imageFileName_.get());
             outImage->getColorLayer()->clearRepresentations();
             outImage->getColorLayer()->addRepresentation(outLayerDisk);

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -12,6 +12,7 @@
  *
  **********************************************************************/
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/widgets/properties/directorypropertywidgetqt.h>
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
@@ -71,7 +72,7 @@ void DirectoryPropertyWidgetQt::setPropertyValue() {
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
-    
+
     QFileDialog openFileDialog(this, tr("Open Directory ..."), QDir(dataDir).absolutePath());
     openFileDialog.setFileMode(QFileDialog::Directory);
     openFileDialog.setSidebarUrls(sidebarURLs);
@@ -79,11 +80,11 @@ void DirectoryPropertyWidgetQt::setPropertyValue() {
     QString existingDir = openFileDialog.getExistingDirectory();
     std::string dir = existingDir.toLocal8Bit().constData();
 
-    if (!dir.empty()) {       
+    if (!dir.empty()) {
         setPropertyTreeInfo(dir);
         property_->set(dir);
         emit modified();
-    }    
+    }
 }
 
 void DirectoryPropertyWidgetQt::updateFromProperty() {

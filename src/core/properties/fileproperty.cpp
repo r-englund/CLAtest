@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -12,12 +12,13 @@
  *
  **********************************************************************/
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/util/urlparser.h>
 
 namespace inviwo {
 
-FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value, PropertyOwner::InvalidationLevel invalidationLevel, 
+FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value, PropertyOwner::InvalidationLevel invalidationLevel,
 PropertySemantics::Type semantics)
     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics)
     , acceptMode_(AcceptOpen)
@@ -49,7 +50,7 @@ void FileProperty::serialize(IvwSerializer& s) const {
     //ivwAssert(!basePath.empty(), "File name cannot be empty.");
     if (basePath.empty())
         basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
-    
+
     std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("url", relativePath);
 
@@ -68,10 +69,10 @@ void FileProperty::deserialize(IvwDeserializer& d) {
     std::string basePath = d.getFileName();
     if (basePath.empty())
         basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
-    
+
     basePath = URLParser::getFileDirectory(basePath);
     set(basePath+relativePath);
-    
+
     try{
         nameFilters_.clear();
         d.deserialize("nameFilter", nameFilters_, "filter");
@@ -97,21 +98,21 @@ void FileProperty::clearNameFilters(){
 std::vector<std::string> FileProperty::getNameFilters(){
     return nameFilters_;
 }
-    
+
 void FileProperty::setAcceptMode(AcceptMode mode){
     acceptMode_ = mode;
 }
 FileProperty::AcceptMode FileProperty::getAcceptMode() const {
     return acceptMode_;
 };
-    
+
 void FileProperty::setFileMode(FileMode mode){
     fileMode_ = mode;
 }
 FileProperty::FileMode FileProperty::getFileMode() const{
     return fileMode_;
 }
-    
-    
+
+
 
 } // namespace
