@@ -24,6 +24,18 @@
 #include <windows.h>
 #endif
 
+#ifdef __clang__
+#define STARTCLANGIGNORE(warning) \
+#pragma clang diagnostic push \
+#pragma clang diagnostic ignored warning
+
+#define ENDCLANGIGNORE \
+#pragma clang diagnostic pop
+#else
+#define STARTCLANGIGNORE(warning)
+#define ENDCLANGIGNORE
+#endif
+
 #include <iostream>
 #include <string>
 #include <vector>

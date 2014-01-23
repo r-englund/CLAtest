@@ -28,6 +28,7 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/processorfactoryobject.h>
 #include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/propertywidgetfactoryobject.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <inviwo/core/resources/resource.h>
 #include <inviwo/core/util/capabilities.h>
@@ -57,6 +58,7 @@ public:
     const std::vector<ProcessorFactoryObject*>& getProcessors() const;
     const std::vector< std::pair<std::string, ProcessorWidget*> >& getProcessorWidgets() const;
     const std::vector<Property*>& getProperties() const;
+    const std::vector<PropertyWidgetFactoryObject*>& getPropertyWidgets() const;
     const std::vector<GeometryRenderer*>& getRenderers() const;
     const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
     const std::vector<Resource*>& getResources() const;
@@ -82,6 +84,7 @@ protected:
     void registerProcessorObject(ProcessorFactoryObject* processor);
     void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
     void registerProperty(Property* property);
+    void registerPropertyWidgetObject(PropertyWidgetFactoryObject* property);
     void registerRenderer(GeometryRenderer* renderer);
     void registerRepresentationConverter(RepresentationConverter* representationConverter);
     void registerResource(Resource* resource);
@@ -109,8 +112,9 @@ private:
     std::vector<Port*> ports_;
     std::vector<PortInspector*> portInspectors_;
     std::vector<ProcessorFactoryObject*> processors_;
-    std::vector< std::pair<std::string, ProcessorWidget*> > processorWidgets_;
+    std::vector<std::pair<std::string, ProcessorWidget*> > processorWidgets_;
     std::vector<Property*> properties_;
+    std::vector<PropertyWidgetFactoryObject*> propertyWidgets_;
     std::vector<GeometryRenderer*> renderers_;
     std::vector<RepresentationConverter*> representationConverters_;
     std::vector<Resource*> resources_;
@@ -120,6 +124,7 @@ private:
 
 
 #define registerProcessor(T) { registerProcessorObject(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
+#define registerPropertyWidget(T, P, semantics) { registerPropertyWidgetObject(new PropertyWidgetFactoryObjectTemplate<T,P>(#P, semantics)); }
 
 } // namespace
 

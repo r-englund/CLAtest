@@ -72,13 +72,13 @@ void Property::setOwner(PropertyOwner* owner) {
     owner_ = owner;
 }
 
-void Property::registerPropertyWidget(PropertyWidget* propertyWidget) {
+void Property::registerWidget(PropertyWidget* propertyWidget) {
     propertyWidgets_.push_back(propertyWidget);
     if(this->visibilityMode_ == INVISIBLE)
         updateVisibility();
 }
 
-void Property::updatePropertyWidgets() {
+void Property::updateWidgets() {
     for (size_t i=0; i<propertyWidgets_.size(); i++)
         if (propertyWidgets_[i] != 0)
             propertyWidgets_[i]->updateFromProperty();
@@ -89,7 +89,7 @@ void Property::propertyModified() {
     setPropertyModified(true); 
     //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )    
     if (getOwner()) getOwner()->invalidate(getInvalidationLevel());    
-    updatePropertyWidgets();
+    updateWidgets();
 }
 
 Variant Property::getVariant() {

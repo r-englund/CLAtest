@@ -21,8 +21,19 @@
 
 namespace inviwo {
 
-PropertyWidgetQt::PropertyWidgetQt() : viewModeItem_(NULL) {
+PropertyWidgetQt::PropertyWidgetQt() 
+    : PropertyWidget()
+    , viewModeItem_(NULL) {
 }
+
+PropertyWidgetQt::PropertyWidgetQt(Property* property)
+    : PropertyWidget(property)
+    , viewModeItem_(NULL) {
+}
+
+PropertyWidgetQt::~PropertyWidgetQt() {
+}
+
 
 void PropertyWidgetQt::showWidget() {
     this->show();
@@ -194,10 +205,6 @@ void PropertyWidgetQt::moduleAction() {
     }
 }
 
-void PropertyWidgetQt::setProperty(Property* prop) {
-    property_ = prop;
-}
-
 void PropertyWidgetQt::updateContextMenu(){
     if (property_->getVisibilityMode() == DEVELOPMENT)
         developerViewModeAction_->setChecked(true);
@@ -205,6 +212,10 @@ void PropertyWidgetQt::updateContextMenu(){
         applicationViewModeAction_->setChecked(true);
     
     updateModuleMenuActions();
+}
+
+void PropertyWidgetQt::setProperty(Property* property) {
+    PropertyWidget::setProperty(property);
 }
 
 

@@ -426,8 +426,9 @@ void InviwoMainWindow::saveWorkspace() {
         workspaceModified_ = false;
         updateWindowTitle();
     }
+    
     /*
-    // FIXME: the following code snippet allows to reload the Qt style sheets during runtime,
+    // The following code snippet allows to reload the Qt style sheets during runtime,
     // which is handy while we change them. once the style sheets have been finalized,
     // this code should be removed.
     QFile styleSheetFile("C:/inviwo/resources/stylesheets/inviwo.qss");
@@ -471,16 +472,19 @@ void InviwoMainWindow::saveWorkspaceAs() {
     }
 }
 
-void InviwoMainWindow::exitInviwo(){
-    InviwoApplication::getPtr()->closeInviwoApplication();
-}
-
 void InviwoMainWindow::disableEvaluation(bool disable){
     if(disable)
         networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->disableEvaluation();
     else
         networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->enableEvaluation();
 }
+
+
+void InviwoMainWindow::exitInviwo() {
+    InviwoApplication::getPtr()->closeInviwoApplication();
+    QMainWindow::close();
+}
+
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     if (!askToSaveWorkspaceChanges()) {

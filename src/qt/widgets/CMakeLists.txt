@@ -70,6 +70,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/labelgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/qtwidgetmodule.h
     ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -84,7 +85,7 @@ set(SOURCE_FILES
     editablelabelqt.cpp
     eventconverterqt.cpp
     eventpropertymanager.cpp
-	eventpropertymanagerwidget.cpp
+    eventpropertymanagerwidget.cpp
     floatsliderwidgetqt.cpp
     intsliderwidgetqt.cpp
     inviwoapplicationqt.cpp
@@ -92,16 +93,12 @@ set(SOURCE_FILES
     labelgraphicsitem.cpp
     lightpositionwidgetqt.cpp
     mappingpopup.cpp
-    propertylistwidget.cpp
-    propertyselectiontreewidget.cpp
-    rangesliderqt.cpp
-    spinboxrangesliderwidgetqt.cpp
     processors/processorwidgetqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
+    properties/camerapropertywidgetqt.cpp
     properties/collapsiblegroupboxwidgetqt.cpp
     properties/colorpropertywidgetqt.cpp
-    properties/camerapropertywidgetqt.cpp
     properties/compositepropertywidgetqt.cpp
     properties/directorypropertywidgetqt.cpp    
     properties/eventpropertywidgetqt.cpp
@@ -138,6 +135,11 @@ set(SOURCE_FILES
     properties/transferfunctioneditorview.cpp
     properties/transferfunctionpropertydialog.cpp
     properties/transferfunctionpropertywidgetqt.cpp 
+    propertylistwidget.cpp
+    propertyselectiontreewidget.cpp
+    rangesliderqt.cpp
+    spinboxrangesliderwidgetqt.cpp
+    qtwidgetmodule.cpp
 )
 
 ivw_group("Source Files" ${SOURCE_FILES})

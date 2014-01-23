@@ -15,6 +15,9 @@
 #ifndef IVW_IMAGETYPES_H
 #define IVW_IMAGETYPES_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+
 namespace inviwo {
 
 typedef enum ImageType{
@@ -30,8 +33,7 @@ typedef enum LayerType{
     PICKING_LAYER = 2
 } LayerType;
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-function"
+STARTCLANGIGNORE("-Wunused-function")
 static bool typeContainsColor(ImageType type){
     return (type == COLOR_ONLY || type == COLOR_DEPTH || type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);
 }
@@ -43,7 +45,7 @@ static bool typeContainsDepth(ImageType type){
 static bool typeContainsPicking(ImageType type){
     return (type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);
 }
-#pragma clang diagnostic pop
+ENDCLANGIGNORE
 } // namespace
 
 #endif // IVW_IMAGETYPES_H

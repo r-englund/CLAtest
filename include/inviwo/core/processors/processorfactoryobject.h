@@ -55,8 +55,6 @@ public:
     virtual Processor* create() { return static_cast<Processor*>(new T()); }
 };
 
-#define createProcessorFactoryObject(T) { new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE) }
-
 } // namespace
 
 #endif // IVW_PROCESSORFACTORYOBJECT_H

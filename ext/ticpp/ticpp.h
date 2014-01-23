@@ -145,9 +145,11 @@ namespace ticpp
 		virtual bool VisitEnter( const Element& /*element*/, const Attribute* /*firstAttribute*/ )	{ return true; }
 		/// Visit an element.
 		virtual bool VisitExit( const Element& /*element*/ )		{ return true; }
-
+        
+        #ifdef __clang__
         #pragma clang diagnostic push
         #pragma clang diagnostic ignored "-Woverloaded-virtual"
+        #endif
 		/// Visit a declaration
 		virtual bool Visit( const Declaration& /*declaration*/ )	{ return true; }
 		/// Visit a stylesheet reference
@@ -156,7 +158,9 @@ namespace ticpp
 		virtual bool Visit( const Text& /*text*/ )					{ return true; }
 		/// Visit a comment node
 		virtual bool Visit( const Comment& /*comment*/ )			{ return true; }
+        #ifdef __clang__        
         #pragma clang diagnostic pop
+        #endif
 	};
 
 	/** Wrapper around TiXmlBase */

@@ -15,56 +15,85 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
-
+#include <inviwo/core/properties/propertysemantics.h>
 
 namespace inviwo {
 
-PropertyWidgetFactory::PropertyWidgetFactory() {}
-
-PropertyWidgetFactory::~PropertyWidgetFactory() {}
-
-void PropertyWidgetFactory::initialize() {
-    //TODO: check that inviwoapp is initialized
-
-    /*
-    InviwoApplication* inviwoApp = InviwoApplication::app();
-    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-        for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
-            registerFactoryObject(curProcessorList[curProcessorId]);
-    }
-    */
+PropertyWidgetFactory::PropertyWidgetFactory() {
+    initialize();
 }
 
-void PropertyWidgetFactory::registerPropertyWidget(PropertyWidget* propertyWidget) {
-    /*
-    if (processorClassMap_.find(processor->getClassName()) == processorClassMap_.end())
-        processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));
-    */
+PropertyWidgetFactory::~PropertyWidgetFactory() {
+    deinitialize();
+}
+
+void PropertyWidgetFactory::initialize() {
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
+        std::vector<PropertyWidgetFactoryObject*> widgets = 
+            inviwoApp->getModules()[curModuleId]->getPropertyWidgets();
+        for (size_t i=0; i<widgets.size(); i++)
+            registerPropertyWidgetObject(widgets[i]);
+    }
+}
+
+void PropertyWidgetFactory::registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget) {
+    std::string className = propertyWidget->getClassName();
+    std::string sematics = propertyWidget->getSematics();
+
+    LogInfo("Adding a PropertyWidget for a Property (" << className
+            << ") and senamics (" << sematics << ")");
+
+    std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
+    sameKeys = widgetMap_.equal_range(className);
+
+    for(WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
+        if(sematics == it->second->getSematics()) {
+            LogWarn("Adding a PropertyWidget for a Property (" << className
+                    << ") and senamics (" << sematics << ") that is already registed");
+        }
+    }
+    widgetMap_.insert(std::make_pair(className, propertyWidget));
+}
+
+PropertyWidget* PropertyWidgetFactory::create(Property* property) {
+    std::string sematics = getPropertySemanticID(property->getSemantics());
+    std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
+    sameKeys = widgetMap_.equal_range(property->getClassName());
+
+    for(WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
+        if(sematics == it->second->getSematics()) {
+            return it->second->create(property);
+        }
+    }
+    for(WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
+        if("Default" == it->second->getSematics()) {
+            LogWarn("Requested property widget semantics ("<< sematics <<") for property ("
+                    <<property->getClassName()<<") does not exist, returning Deafult senamic");
+            return it->second->create(property);
+        }
+    }
+    LogWarn("Can not find a property widget for property: " << property->getClassName());
+    return 0;
 }
 
 IvwSerializable* PropertyWidgetFactory::create(std::string className) const {
-    /*
-    std::map<std::string, PropertyWidget*>::iterator it = propertyWidgetMap_.find(className);
-    if (it != propertyWidgetMap_.end())
-        return it->second->create();
-    else
-    */
-        return 0;
-
+    // Widgets are not serializable...
+    return 0;
 }
 
 bool PropertyWidgetFactory::isValidType(std::string className) const {
-    /*std::map<std::string, PropertyWidget*>::iterator it = propertyWidgetMap_.find(className);
-    if (it != processorClassMap_.end())
+    WidgetMap::const_iterator it = widgetMap_.find(className);
+    if(it != widgetMap_.end())
         return true;
     else
-        return false;*/
-
-    return false;
+        return false;
 }
 
 void PropertyWidgetFactory::deinitialize() {
+    for(WidgetMap::iterator it = widgetMap_.begin(); it != widgetMap_.end(); ++it) {
+        delete it->second;
+    }
 }
 
 } // namespace

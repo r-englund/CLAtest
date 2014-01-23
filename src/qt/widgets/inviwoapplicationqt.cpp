@@ -15,6 +15,7 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/core/util/settings/systemsettings.h>
+#include <inviwo/qt/widgets/qtwidgetmodule.h>
 #include <QFile>
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QSound>
@@ -28,11 +29,13 @@
 
 namespace inviwo {
 
-InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string basePath,
-                                         int& argc, char** argv)
-                                     : QApplication(argc, argv),
-                                       InviwoApplication(argc, argv, displayName, basePath)  
-{
+InviwoApplicationQt::InviwoApplicationQt(std::string displayName, 
+                                         std::string basePath,
+                                         int& argc,
+                                         char** argv)
+    : QApplication(argc, argv)
+    , InviwoApplication(argc, argv, displayName, basePath) {
+
     QCoreApplication::setOrganizationName("Inviwo");
     QCoreApplication::setOrganizationDomain("inviwo.org");
     QCoreApplication::setApplicationName(displayName.c_str());
@@ -43,6 +46,9 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName, std::string ba
 
     fileWatcher_ = new QFileSystemWatcher();
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
+
+    // Since QtWidgets are not a module we have to register it our self
+    registerModule(new QtWidgetModule());
 }
 
 void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {

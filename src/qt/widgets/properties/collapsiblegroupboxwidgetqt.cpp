@@ -97,7 +97,7 @@ void CollapsibleGroupBoxWidgetQt::generatePropertyWidgets() {
         Property* curProperty = properties_[i];
         PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
         vLayout_->addWidget(propertyWidget);
-        curProperty->registerPropertyWidget(propertyWidget);
+        curProperty->registerWidget(propertyWidget);
         propertyWidgets_.push_back(propertyWidget);
         connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
         connect(propertyWidget, SIGNAL(visibilityChange()),this, SLOT(updateVisibility()));
@@ -111,7 +111,7 @@ void CollapsibleGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyMana
         Property* curProperty = properties_[i];
         PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
         vLayout_->addWidget(propertyWidget);
-        curProperty->registerPropertyWidget(propertyWidget);
+        curProperty->registerWidget(propertyWidget);
         dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager);
     }
 }

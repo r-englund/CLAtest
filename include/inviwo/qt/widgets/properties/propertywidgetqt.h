@@ -34,6 +34,8 @@ class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget
 
 public:
     PropertyWidgetQt();
+    PropertyWidgetQt(Property* property);
+    virtual ~PropertyWidgetQt();
     PropertyWidgetQt* create();
 
     void showWidget();
@@ -55,8 +57,8 @@ private:
     QMap<QString,QMenu*> moduleSubMenus_;
     QActionGroup* viewModeActionGroup_;
     QMenu* viewModeItem_;
-    Property* property_;
 protected:
+    void setProperty(Property* property);
     PropertyVisibilityMode getApplicationViewMode();
     QMenu* getContextMenu(){return contextMenu_;}
     void generateContextMenu();
@@ -65,8 +67,6 @@ protected:
     void updateModuleMenuActions();
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
-    void setProperty(Property* prop);
-
 
 };
 

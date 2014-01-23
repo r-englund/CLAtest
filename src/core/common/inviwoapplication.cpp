@@ -22,6 +22,7 @@
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 
 namespace inviwo {
@@ -33,16 +34,20 @@ InviwoApplication::InviwoApplication()
     init(this);
 }
 
-InviwoApplication::InviwoApplication(std::string displayName, std::string basePath)
-                                     : displayName_(displayName), basePath_(basePath)
-{
+InviwoApplication::InviwoApplication(std::string displayName, 
+                                     std::string basePath)
+    : displayName_(displayName)
+    , basePath_(basePath) {
+
     init(this);
 }
 
-InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath)
-                                    : displayName_(displayName)
-                                    , basePath_(basePath)
-{
+InviwoApplication::InviwoApplication(int argc, char** argv,
+                                     std::string displayName,
+                                     std::string basePath)
+    : displayName_(displayName)
+    , basePath_(basePath) {
+
     commandLineParser_ = new CommandLineParser(argc, argv);
 	commandLineParser_->initialize();
 	commandLineParser_->parse();
@@ -80,6 +85,7 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     DataReaderFactory::init();
     DataWriterFactory::init();
     PortInspectorFactory::init();
+    PropertyWidgetFactory::init();
 
     initialized_ = true;
 }

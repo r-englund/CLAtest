@@ -23,11 +23,19 @@ class IVW_CORE_API PropertyWidget {
 
 public:
     PropertyWidget();
+    PropertyWidget(Property* property);
 
-    //virtual PropertyWidget* create();
+    virtual ~PropertyWidget();
+
     virtual void updateFromProperty() = 0;
     virtual void showWidget() = 0;
     virtual void hideWidget() = 0;
+
+    virtual Property* getProperty();
+    virtual void setProperty(Property* property);
+
+protected:
+    Property* property_; //< Non owning reference to a property.
 };
 
 } // namespace

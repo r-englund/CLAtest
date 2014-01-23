@@ -156,6 +156,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyvisibility.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/scalarproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
@@ -324,6 +325,7 @@ set(SOURCE_FILES
     properties/propertysemantics.cpp
     properties/propertywidget.cpp
     properties/propertywidgetfactory.cpp
+    properties/propertywidgetfactoryobject.cpp
     properties/scalarproperties.cpp
     properties/stringproperty.cpp
     properties/texteditorproperty.cpp

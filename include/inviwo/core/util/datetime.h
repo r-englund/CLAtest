@@ -15,6 +15,9 @@
 #ifndef IVW_DATETIME_H
 #define IVW_DATETIME_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
+
 #include <iostream>
 #include <string>
 #include <stdio.h>
@@ -22,8 +25,7 @@
 
 namespace inviwo {
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-function"
+STARTCLANGIGNORE("-Wunused-function")
 static const std::string currentDateTime() {
     time_t currentDateTime = time(0);
     struct tm dateTimeStruct;
@@ -32,7 +34,7 @@ static const std::string currentDateTime() {
     strftime(dateTimeBuffer, sizeof(dateTimeBuffer), "%Y%m%d_%H%M%S", &dateTimeStruct);
     return dateTimeBuffer;
 }
-#pragma clang diagnostic pop
+ENDCLANGIGNORE
 
 } // namespace
 

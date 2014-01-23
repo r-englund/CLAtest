@@ -139,6 +139,7 @@ const std::vector<PortInspector*>& InviwoModule::getPortInspectors() const { ret
 const std::vector<ProcessorFactoryObject*>& InviwoModule::getProcessors() const {return processors_;}
 const std::vector< std::pair<std::string, ProcessorWidget*> >& InviwoModule::getProcessorWidgets() const {return processorWidgets_;}
 const std::vector<Property*>& InviwoModule::getProperties() const {return properties_;}
+const std::vector<PropertyWidgetFactoryObject*>& InviwoModule::getPropertyWidgets() const {return propertyWidgets_; }
 const std::vector<RepresentationConverter*>& InviwoModule::getRepresentationConverters() const {return representationConverters_;}
 const std::vector<GeometryRenderer*>& InviwoModule::getRenderers() const { return renderers_; }
 const std::vector<Resource*>& InviwoModule::getResources() const {return resources_;}
@@ -152,26 +153,13 @@ void InviwoModule::registerDataWriter(DataWriter* dataWriter) {dataWriters_.push
 void InviwoModule::registerMetaData(MetaData* meta) {metadata_.push_back(meta);}
 void InviwoModule::registerPort(Port* port) {ports_.push_back(port);}
 void InviwoModule::registerPortInspector(PortInspector* portInspector) { portInspectors_.push_back(portInspector); }
-void InviwoModule::registerProcessorObject(ProcessorFactoryObject* processor) {
-    // FIXME: check processor pointer and module's name
-    //processor->setModuleIdentifier(identifier_);
-    processors_.push_back(processor);
-}
-void InviwoModule::registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) {
-    processorWidgets_.push_back(std::make_pair(processorClassName, processorWidget));
-}
+void InviwoModule::registerProcessorObject(ProcessorFactoryObject* processor) { processors_.push_back(processor); }
+void InviwoModule::registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) { processorWidgets_.push_back(std::make_pair(processorClassName, processorWidget));}
 void InviwoModule::registerProperty(Property* property) {properties_.push_back(property);}
-
-void InviwoModule::registerRenderer(GeometryRenderer* renderer) {
-    renderers_.push_back(renderer);
-}
-
-void InviwoModule::registerRepresentationConverter(RepresentationConverter* representationConverter) {
-    representationConverters_.push_back(representationConverter);
-}
+void InviwoModule::registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget) { propertyWidgets_.push_back(propertyWidget); }
+void InviwoModule::registerRenderer(GeometryRenderer* renderer) { renderers_.push_back(renderer); }
+void InviwoModule::registerRepresentationConverter(RepresentationConverter* representationConverter) {representationConverters_.push_back(representationConverter);}
 void InviwoModule::registerResource(Resource* resource) {resources_.push_back(resource);}
-
 void InviwoModule::registerSettings(Settings* settings) {moduleSettings_.push_back(settings);}
-
 
 } // namespace

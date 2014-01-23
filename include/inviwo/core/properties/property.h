@@ -58,9 +58,9 @@ public:
     PropertyOwner* getOwner();
     virtual void setOwner(PropertyOwner* owner);
 
-    void registerPropertyWidget(PropertyWidget* propertyWidget);
-    void updatePropertyWidgets();
-    bool hasPropertyWidgets() { return (propertyWidgets_.size()!= 0); }
+    void registerWidget(PropertyWidget* propertyWidget);
+    void updateWidgets();
+    bool hasWidgets() { return (propertyWidgets_.size()!= 0); }
 
     void setGroupID(std::string groupID) { 
         groupID_ = groupID;

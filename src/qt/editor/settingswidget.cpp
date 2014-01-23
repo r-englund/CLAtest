@@ -66,7 +66,7 @@ void SettingsWidget::loadSettings() {
 
             PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
             vLayout->addWidget(propertyWidget);
-            curProperty->registerPropertyWidget(propertyWidget);
+            curProperty->registerWidget(propertyWidget);
         }
         qmainsettings.endGroup();
 

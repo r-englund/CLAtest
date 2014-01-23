@@ -137,7 +137,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
         else {
             PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
             if (propertyWidget) {          
-                curProperty->registerPropertyWidget(propertyWidget);
+                curProperty->registerWidget(propertyWidget);
                 processorPropertyWidget->addWidget(propertyWidget);
                 connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
                 addedProperties.push_back(curProperty);

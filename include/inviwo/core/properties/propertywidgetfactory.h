@@ -17,8 +17,10 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/propertywidget.h>
+#include <inviwo/core/properties/propertywidgetfactoryobject.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/util/singleton.h>
+
 
 namespace inviwo {
 
@@ -32,12 +34,15 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    void registerPropertyWidget(PropertyWidget* propertyWidget);
+    PropertyWidget* create(Property* property);
+
+    void registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget);
     virtual IvwSerializable* create(std::string className) const;
     virtual bool isValidType(std::string className) const;
 
 private:
-    mutable std::map<std::string, PropertyWidget*> propertyWidgetMap_;
+    typedef std::multimap<std::string, PropertyWidgetFactoryObject*> WidgetMap;
+    mutable WidgetMap widgetMap_;
 };
 
 } // namespace

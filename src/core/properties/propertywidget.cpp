@@ -16,6 +16,24 @@
 
 namespace inviwo {
 
-PropertyWidget::PropertyWidget() {}
+PropertyWidget::PropertyWidget() 
+    : property_(NULL) {
+}
+
+PropertyWidget::PropertyWidget(Property* property) 
+    : property_(property) {
+}
+
+PropertyWidget::~PropertyWidget() {
+}
+
+Property* PropertyWidget::getProperty() {
+    return property_;
+}
+
+void PropertyWidget::setProperty(Property* property) {
+    property_ = property;
+}
+
 
 } // namespace

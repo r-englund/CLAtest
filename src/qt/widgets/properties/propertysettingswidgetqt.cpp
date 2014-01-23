@@ -465,7 +465,7 @@ void PropertySettingsWidgetQt::save() {
         intVec4Property_->setMaxValue(vec4MaxValue);
         intVec4Property_->setIncrement(vec4Increment);
     }
-    property_->updatePropertyWidgets();
+    property_->updateWidgets();
     hide();
 
 }
