@@ -35,7 +35,6 @@ FloatVec3PropertyWidgetQt::FloatVec3PropertyWidgetQt(FloatVec3Property* property
 void FloatVec3PropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     if (property_->getReadOnly()) {
-        valueVec_ = property_->get();
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
         readOnlyLabel_ = new QLabel();
         hLayout->addWidget(readOnlyLabel_);
@@ -79,11 +78,10 @@ void FloatVec3PropertyWidgetQt::generateWidget() {
 }
 
 void FloatVec3PropertyWidgetQt::updateFromProperty() {
-    valueVec_ = property_->get();
     if (property_->getReadOnly()) {
-        readOnlyLabel_->setText(QString::number(valueVec_.x)+","
-                                +QString::number(valueVec_.y)+","
-                                +QString::number(valueVec_.z));
+        readOnlyLabel_->setText(QString::number(property_->get().x)+","
+                                +QString::number(property_->get().y)+","
+                                +QString::number(property_->get().z));
 
 
         readOnlyLabel_->setToolTip("Min: [" +QString::number((property_->getMinValue()).x)+
@@ -101,17 +99,17 @@ void FloatVec3PropertyWidgetQt::updateFromProperty() {
         valueIncrement_ = property_->getIncrement();
 
 
-        sliderX_->initValue(valueVec_.x);
-        sliderY_->initValue(valueVec_.y);
-        sliderZ_->initValue(valueVec_.z);
+        sliderX_->initValue(property_->get().x);
+        sliderY_->initValue(property_->get().y);
+        sliderZ_->initValue(property_->get().z);
 
         sliderX_->setRange(valueVec3Min_.x,valueVec3Max_.x);
         sliderY_->setRange(valueVec3Min_.y,valueVec3Max_.y);
         sliderZ_->setRange(valueVec3Min_.z,valueVec3Max_.z);
 
-        sliderX_->setValue(valueVec_.x);
-        sliderY_->setValue(valueVec_.y);
-        sliderZ_->setValue(valueVec_.z);
+        sliderX_->setValue(property_->get().x);
+        sliderY_->setValue(property_->get().y);
+        sliderZ_->setValue(property_->get().z);
 
         sliderX_->setIncrement(valueIncrement_.x);
         sliderY_->setIncrement(valueIncrement_.y);
@@ -224,11 +222,7 @@ void FloatVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
 }
 
 void FloatVec3PropertyWidgetQt::setPropertyValue() {
-    valueVec_ = property_->get();
-    valueVec_.x = sliderX_->getValue();
-    valueVec_.y = sliderY_->getValue();
-    valueVec_.z = sliderZ_->getValue();
-    property_->set(valueVec_);
+    property_->set(vec3(sliderX_->getValue(), sliderY_->getValue(), sliderZ_->getValue()));
     emit modified();
 }
 

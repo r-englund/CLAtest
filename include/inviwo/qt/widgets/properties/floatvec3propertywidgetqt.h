@@ -47,7 +47,6 @@ private:
     vec3 valueVec3Max_;
     vec3 valueVec3Min_;
     vec3 valueIncrement_;
-    vec3 valueVec_;
     QMenu* settingsMenu_;
     EditableLabelQt* label_;
 

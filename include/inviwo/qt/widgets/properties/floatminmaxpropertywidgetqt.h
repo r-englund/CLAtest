@@ -19,7 +19,7 @@
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <QDoubleSpinBox>
+#include <inviwo/qt/widgets/customdoublespinboxqt.h>
 //Core
 #include <inviwo/core/properties/vectorproperties.h>
 
@@ -39,8 +39,8 @@ private:
     vec2 valueVec_;
     QLabel* readOnlyLabel_;
     RangeSliderQt* slider_;
-    QDoubleSpinBox* spinBoxMin_;
-    QDoubleSpinBox* spinBoxMax_;
+    CustomDoubleSpinBoxQt* spinBoxMin_;
+    CustomDoubleSpinBoxQt* spinBoxMax_;
     EditableLabelQt* label_;
 
     bool updatingFromProperty_;

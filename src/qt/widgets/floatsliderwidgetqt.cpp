@@ -25,9 +25,9 @@ void FloatSliderWidgetQt::generateWidget() {
     slider_ = new CustomSliderWidgetQt();
     slider_->setOrientation(Qt::Horizontal);
     slider_->setMaximum(SLIDER_MAX);
-    spinBox_ = new QDoubleSpinBox();
+    spinBox_ = new CustomDoubleSpinBoxQt();
     spinBox_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
-    spinBox_->setFixedWidth(50);
+    //spinBox_->setFixedWidth(50);
     hLayout->addWidget(slider_);
     hLayout->addWidget(spinBox_);
     hLayout->setContentsMargins(0,0,0,0);
@@ -82,7 +82,7 @@ void FloatSliderWidgetQt::updateFromSlider() {
     float newValue = minValue_ + (normalizedValue * (maxValue_ - minValue_));
     if (newValue != value_) {
         value_ = newValue;
-        updateSpinBox();
+        //updateSpinBox();
         emit valueChanged(value_);
     }
 }
@@ -100,7 +100,7 @@ void FloatSliderWidgetQt::updateFromSpinBox() {
     float newValue = static_cast<float>(spinBox_->value());
     if (newValue != value_) {
         value_ = newValue;
-        updateSlider();
+        //updateSlider();
         emit valueChanged(value_);
     }
 }
