@@ -82,7 +82,7 @@ std::string findBasePath() {
     std::string basePath = inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
 
     //If we did not find "data" in basepath, check CMake source path.
-    if(!directoryExists(basePath + "/data") && directoryExists(IVW_TRUNK + "/data"))
+    if(!directoryExists(basePath + "/modules") && directoryExists(IVW_TRUNK + "/modules"))
         basePath = IVW_TRUNK;
 
     return basePath;
