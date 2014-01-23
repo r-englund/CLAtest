@@ -72,10 +72,20 @@ std::string getParentFolderPath(const std::string& basePath, const std::string& 
             return fileDirectory + "/";
         }
 
-    } while ((pos = fileDirectory.find_last_of("\\/")) != std::string::npos);
+    } while ((pos = fileDirectory.find_last_of("\\/")) != std::string::npos); 
     return basePath;
-    
-    
+}
+
+std::string findBasePath() {
+    // Search for directory containing data folder to find application basepath. 
+    // Working directory will be used if data folder is not found in parent directories.
+    std::string basePath = inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
+
+    //If we did not find "data" in basepath, check CMake source path.
+    if(!directoryExists(basePath + "/data") && directoryExists(IVW_TRUNK + "/data"))
+        basePath = IVW_TRUNK;
+
+    return basePath;
 }
 
 }

@@ -80,10 +80,7 @@ void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
 
 
 int main(int argc, char** argv) {
-    // Search for directory containing data folder to find application basepath. 
-    // Working directory will be used if data folder is not found in parent directories.
-    std::string basePath = inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
-    InviwoApplication inviwoApp(argc, argv, "glutminimum "+IVW_VERSION, basePath);
+    InviwoApplication inviwoApp(argc, argv, "glutminimum "+IVW_VERSION, inviwo::filesystem::findBasePath());
 
     glutInit(&argc, argv);
 

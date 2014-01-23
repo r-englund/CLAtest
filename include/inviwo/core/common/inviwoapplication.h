@@ -110,8 +110,7 @@ public:
     std::vector<Settings*> getModuleSettings();
 
 protected:
-    void printApplicationInfo();  
-    void initializeBasePath();
+    void printApplicationInfo();
 
 private:
     std::string displayName_;

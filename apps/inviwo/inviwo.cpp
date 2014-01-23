@@ -39,10 +39,7 @@ int main(int argc, char** argv) {
     _CrtSetReportFile( _CRT_WARN, _CRTDBG_FILE_STDERR );
     _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
-    // Search for directory containing data folder to find application basepath. 
-    // Working directory will be used if data folder is not found in parent directories.
-    std::string basePath = inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
-    inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
+    inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, inviwo::filesystem::findBasePath(), argc, argv);
 	
 	// initialize and show splash screen
 	inviwo::InviwoSplashScreen splashScreen;

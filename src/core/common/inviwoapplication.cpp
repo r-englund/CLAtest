@@ -157,11 +157,5 @@ std::vector<Settings*> InviwoApplication::getModuleSettings() {
     return allModuleSettings;
 }
 
-void InviwoApplication::initializeBasePath() {
-    if (basePath_.empty()) {
-        basePath_ = filesystem::getParentFolderPath(filesystem::getWorkingDirectory(), "data");
-    } 
-}
-
 
 } // namespace

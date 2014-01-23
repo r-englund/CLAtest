@@ -48,6 +48,13 @@ IVW_CORE_API bool directoryExists(const std::string& path);
  */
 IVW_CORE_API std::string getParentFolderPath(const std::string& path, const std::string& parentFolder);
 
+/**
+ * Finds base path which contains subfolders such as "data" and "modules" where external files are stored
+ * 
+ * @return The directory considered to be the basePath.
+ */
+IVW_CORE_API std::string findBasePath();
+
 } // namespace
 
 } // namespace
