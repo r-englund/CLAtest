@@ -72,9 +72,10 @@ protected:
 
     CameraProperty camera_;
 
-    Trackball* trackball_;
 
     void addShadingProperties();
+private:
+    void addBasicProperties();
 };
 
 } // namespace

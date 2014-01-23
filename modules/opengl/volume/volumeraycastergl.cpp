@@ -39,14 +39,9 @@ VolumeRaycasterGL::VolumeRaycasterGL()
 
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 
-    , trackball_(0)
+    , programFileName_("rc_simple.frag")
 {
-    VolumeRaycasterGL("rc_simple.frag");
-
-    addProperty(camera_);
-    trackball_  = new Trackball(&camera_);
-    addInteractionHandler(trackball_);
-    //FIXME: shouldn't here all properties be added?
+    addBasicProperties();
 }
 
 VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
@@ -72,44 +67,7 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
 
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
 {
-    addProperty(samplingRate_);
-
-    classificationMode_.addOption("none", "None");
-    classificationMode_.addOption("transfer-function", "Transfer function");
-    classificationMode_.set("transfer-function");
-    addProperty(classificationMode_);
-
-    gradientComputationMode_.addOption("none", "None");
-    gradientComputationMode_.addOption("forward", "Forward differences");
-    gradientComputationMode_.addOption("central", "Central differences");
-    gradientComputationMode_.addOption("central-higher", "Higher Order Central differences");
-    gradientComputationMode_.addOption("backward", "Backward differences");
-    gradientComputationMode_.set("forward");
-    addProperty(gradientComputationMode_);
-
-    // light properties are only initialized here and need to be added by derived raycasters
-    shadingMode_.addOption("none", "No Shading");
-    shadingMode_.addOption("ambient", "Ambient");
-    shadingMode_.addOption("diffuse", "Diffuse");
-    shadingMode_.addOption("specular", "Specular");
-    shadingMode_.set("diffuse");
-    lightColorAmbient_.setSemantics(PropertySemantics::Color);
-    lightColorDiffuse_.setSemantics(PropertySemantics::Color);
-    lightColorSpecular_.setSemantics(PropertySemantics::Color);
-
-    compositingMode_.addOption("dvr", "Direct volume rendering");
-    compositingMode_.addOption("mip", "Maximum intensity projection");
-    compositingMode_.addOption("fhp", "First hit points");
-    compositingMode_.addOption("fhn", "First hit normals");
-    compositingMode_.addOption("iso", "Iso surface rendering");
-    compositingMode_.addOption("ison", "Iso surface normal rendering");
-    compositingMode_.set("dvr");
-    addProperty(compositingMode_);
-
-    //camera_.setVisible(false);
-    addProperty(camera_);
-    trackball_ = new Trackball(&camera_);
-    addInteractionHandler(trackball_);
+    addBasicProperties();
 }
 
 void VolumeRaycasterGL::addShadingProperties() {
@@ -143,7 +101,6 @@ void VolumeRaycasterGL::initialize() {
 
 void VolumeRaycasterGL::deinitialize() {
     if (raycastPrg_) delete raycastPrg_;
-    if(trackball_) delete trackball_;
     raycastPrg_ = 0;
     ProcessorGL::deinitialize();
 }
@@ -252,6 +209,44 @@ void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
 	// depth computation uniforms
 	shader->setUniform("zNear_", camera_.getNearPlaneDist());
 	shader->setUniform("zFar_", camera_.getFarPlaneDist());
+}
+
+void VolumeRaycasterGL::addBasicProperties() {
+    addProperty(samplingRate_);
+
+    classificationMode_.addOption("none", "None");
+    classificationMode_.addOption("transfer-function", "Transfer function");
+    classificationMode_.set("transfer-function");
+    addProperty(classificationMode_);
+
+    gradientComputationMode_.addOption("none", "None");
+    gradientComputationMode_.addOption("forward", "Forward differences");
+    gradientComputationMode_.addOption("central", "Central differences");
+    gradientComputationMode_.addOption("central-higher", "Higher Order Central differences");
+    gradientComputationMode_.addOption("backward", "Backward differences");
+    gradientComputationMode_.set("forward");
+    addProperty(gradientComputationMode_);
+
+    // light properties are only initialized here and need to be added by derived raycasters
+    shadingMode_.addOption("none", "No Shading");
+    shadingMode_.addOption("ambient", "Ambient");
+    shadingMode_.addOption("diffuse", "Diffuse");
+    shadingMode_.addOption("specular", "Specular");
+    shadingMode_.set("diffuse");
+    lightColorAmbient_.setSemantics(PropertySemantics::Color);
+    lightColorDiffuse_.setSemantics(PropertySemantics::Color);
+    lightColorSpecular_.setSemantics(PropertySemantics::Color);
+
+    compositingMode_.addOption("dvr", "Direct volume rendering");
+    compositingMode_.addOption("mip", "Maximum intensity projection");
+    compositingMode_.addOption("fhp", "First hit points");
+    compositingMode_.addOption("fhn", "First hit normals");
+    compositingMode_.addOption("iso", "Iso surface rendering");
+    compositingMode_.addOption("ison", "Iso surface normal rendering");
+    compositingMode_.set("dvr");
+    addProperty(compositingMode_);
+    //camera_.setVisible(false);
+    addProperty(camera_);
 }
 
 } // namespace
