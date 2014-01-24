@@ -107,7 +107,7 @@ void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     fout.close();    
 }
 
-void DatVolumeWriter::writeKeyToString( std::stringstream& ss, const std::string& key, const std::string& str ) const{
+void DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key, const std::string& str) const {
     ss << key << ": " << str << std::endl;
 }
 

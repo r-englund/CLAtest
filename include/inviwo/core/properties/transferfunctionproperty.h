@@ -28,6 +28,8 @@ public:
     TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value = TransferFunction(),
                              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics::Type semantics=PropertySemantics::Default);
+    ~TransferFunctionProperty();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "TransferFunctionProperty"; }

@@ -62,6 +62,14 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
      }
 }
 
+void PropertyListWidget::removeProcessorProperties(Processor* processor) {
+    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
+    if (it != propertyWidgetMap_.end()) {
+        it->second->setVisible(false);
+        listWidgetLayout_->removeWidget(it->second);
+    }
+}
+
 void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor) {
     std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
     if (it != propertyWidgetMap_.end()) {
@@ -71,14 +79,6 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
         propertyWidgetMap_.erase(it);
     }   
 }    
-
-void PropertyListWidget::removeProcessorProperties(Processor* processor) {
-    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
-    if (it != propertyWidgetMap_.end()) {
-        it->second->setVisible(false);
-        listWidgetLayout_->removeWidget(it->second);
-    }
-}
 
 void PropertyListWidget::changeName(std::string oldName, std::string newName) {
     // check if processor widget exists

@@ -42,9 +42,9 @@
 
 namespace inviwo {
  
-class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver {
+class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget {
 
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
 	TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent);
@@ -56,8 +56,7 @@ public:
     *      Redraws it fully every time, to be optimized if it is allowed to stay
     */
     void updateFromProperty();
-	void notify();
-    QVector<QGradientStop>* getGradientStops();
+
     QPixmap* getTFPreview() { return tfPixmap_; }
 
 public slots:
@@ -65,8 +64,8 @@ public slots:
     void setPointColorDialog();
     void updateColorWheel();
     void showColorDialog();
-    void editorViewResized();
     void updateTransferFunction();
+    void switchInterpolationType(int interpolationType);
 
     void changeMask(int maskMin, int maskMax);
 
@@ -78,13 +77,12 @@ private:
     TransferFunctionEditor* tfEditor_;         ///< TransferFunctionEditor inherited from QGraphicsScene
     TransferFunctionEditorView*	tfEditorView_; ///< View that contains the editor
     QPushButton* btnClearTF_;
+    QComboBox* interpolationSelector_;
 
-    QGraphicsView* tfPreview_; ///< View that contains the scene for the painted transfer function
-    QGraphicsScene* paintScene_; ///< Scene where the transfer function is painted
+    QLabel* tfPreview_; ///< View that contains the scene for the painted transfer function
     QPixmap* tfPixmap_;
 
 	QLinearGradient* gradient_;
-	QVector<QGradientStop>* gradientStops_;
 
     QColorDialog* colorDialog_;
     ColorWheel* colorWheel_;
@@ -94,7 +92,6 @@ private:
     RangeSliderQt* maskSlider_;
 
     bool colorChange_;
-    bool eventFilter(QObject *object, QEvent *event);
     void generateWidget();
     void setPointColor(QColor color);
     void updateTFPreview();

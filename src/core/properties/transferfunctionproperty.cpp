@@ -24,8 +24,9 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::
     , mask_(0.0f, 1.0f)
     , zoomH_(0.0f, 1.0f)
     , zoomV_(0.0f, 1.0f)
-{
-}
+{}
+
+TransferFunctionProperty::~TransferFunctionProperty() {}
 
 void TransferFunctionProperty::setVolume(const Volume* volume) {
     if (volume != volume_) {
@@ -66,6 +67,7 @@ void TransferFunctionProperty::setVolume(const Volume* volume) {
             histogram_[i] = static_cast<float>(histogram[i])/static_cast<float>(maxOccurance);
         histogram_[0] = 1.0f;
     }
+    notifyObservers();
 }
 
 
@@ -80,13 +82,15 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 		stream.str(std::string());
 
 		stream << "rgba" << i;
-		s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getRgba());
+		s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getRGBA());
 		stream.clear();
 		stream.str(std::string());
 	}
     s.serialize("mask_", mask_);
     s.serialize("zoomH_", zoomH_);
     s.serialize("zoomV_", zoomV_);
+    TransferFunction::InterpolationType interpolationType = value_.getInterpolationType();
+    s.serialize("interpolationType_", interpolationType);
 }
 
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
@@ -115,6 +119,9 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
     get().setMaskMax(mask_.y);
     d.deserialize("zoomH_", zoomH_);
     d.deserialize("zoomV_", zoomV_);
+    int interpolationType;
+    d.deserialize("interpolationType_", interpolationType);
+    get().setInterpolationType(static_cast<TransferFunction::InterpolationType>(interpolationType));
     propertyModified();
 }
 

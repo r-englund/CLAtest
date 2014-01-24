@@ -22,8 +22,20 @@ TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionP
 {
     setObjectName("Transfer Function");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
     generateWidget();
+
+    gradient_ = new QLinearGradient(0,0,100,20);
+    updateTFPreview();
+
     updateFromProperty();
+}
+
+TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog() {
+    delete tfEditor_;
+    delete colorWheel_;
+    delete gradient_;
+    delete colorDialog_;
 }
 
 void TransferFunctionPropertyDialog::generateWidget() {
@@ -32,18 +44,16 @@ void TransferFunctionPropertyDialog::generateWidget() {
     arrayHeight_ = 256;
 
     tfEditorView_ = new TransferFunctionEditorView(tfProperty_);
+    //VoidObserver::addObservation(tfProperty_);
+    tfProperty_->addObserver(tfEditorView_);
     // put origin to bottom left corner
     tfEditorView_->scale(1.0, -1.0);
     tfEditorView_->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
     tfEditorView_->setMinimumSize(minEditorDims.x, minEditorDims.y);
-    //tfEditorView_->viewport()->installEventFilter(this);
-    //tfEditorView_->setDragMode(QGraphicsView::NoDrag);
     tfEditorView_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tfEditorView_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    connect(tfEditorView_, SIGNAL(resized()), this, SLOT(editorViewResized()));
 
     tfEditor_ = new TransferFunctionEditor(&tfProperty_->get(), tfEditorView_);
-    //tfEditor_->setSceneRect(0, 0, minEditorDims.x, minEditorDims.y);
     connect(tfEditor_, SIGNAL(doubleClick()), this, SLOT(showColorDialog()));
     connect(tfEditor_, SIGNAL(selectionChanged()), this, SLOT(updateColorWheel()));
     connect(tfEditor_, SIGNAL(controlPointsChanged()), this, SLOT(updateTransferFunction()));
@@ -77,12 +87,14 @@ void TransferFunctionPropertyDialog::generateWidget() {
     colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
     connect(colorDialog_, SIGNAL(currentColorChanged(QColor)), this, SLOT(setPointColorDialog()));
 
-    tfPreview_ = new QGraphicsView(this);
-    tfPreview_->scale(1.0, -1.0);
-    paintScene_ = new QGraphicsScene(this);
-    tfPreview_->setScene(paintScene_);
-    tfPreview_->setFixedHeight(20.0);
-    tfPreview_->setAlignment(Qt::AlignLeft);
+    tfPreview_ = new QLabel();
+    tfPreview_->setMinimumSize(1,1);
+
+    interpolationSelector_ = new QComboBox();
+    interpolationSelector_->addItem("linear interpolation");
+    interpolationSelector_->addItem("cubic interpolation");
+    interpolationSelector_->setCurrentIndex(int(tfProperty_->get().getInterpolationType()));
+    connect(interpolationSelector_, SIGNAL(currentIndexChanged(int)), this, SLOT(switchInterpolationType(int)));
 
     QGridLayout* gridLayout = new QGridLayout();
     gridLayout->addWidget(zoomVSlider_,  0, 0);
@@ -92,30 +104,25 @@ void TransferFunctionPropertyDialog::generateWidget() {
     gridLayout->addWidget(maskSlider_,   3, 1);
     gridLayout->addWidget(colorWheel_,   0, 2);
     gridLayout->addWidget(btnClearTF_,   1, 2);
+    gridLayout->addWidget(interpolationSelector_,   2, 2);
     QFrame* frame = new QFrame();
     frame->setLayout(gridLayout);
     setWidget(frame);
-
-    gradient_ = new QLinearGradient(0.0f, 0.0f, tfEditorView_->width(), 0.0f);
-    gradientStops_ = new QVector<QGradientStop>();
-
-    updateFromProperty();
 }
 
-TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog() {
-    delete tfEditor_;
-    delete colorWheel_;
-    delete gradient_;
-    gradientStops_->clear();
-    delete gradientStops_;
-    delete colorDialog_;
+void TransferFunctionPropertyDialog::switchInterpolationType(int interpolationType) {
+    if (interpolationType == 0) tfProperty_->get().setInterpolationType(TransferFunction::InterpolationLinear);
+    else tfProperty_->get().setInterpolationType(TransferFunction::InterpolationCubic);
+    tfEditor_->redrawConnections();
 }
 
 void TransferFunctionPropertyDialog::updateTFPreview() {
-    int gradientWidth = tfEditorView_->width();
+    int gradientWidth = tfPreview_->width();
+    gradient_->setFinalStop(gradientWidth, 0);
     tfPixmap_ = new QPixmap(gradientWidth, 20);
     QPainter tfPainter(tfPixmap_);
-    tfPainter.fillRect(0, 0, gradientWidth, 20, QBrush(*gradient_));
+    tfPainter.fillRect(0, 0, gradientWidth, 20, *gradient_);
+    // draw masking indicators
     if (tfProperty_->getMask().x > 0.0f) {
         tfPainter.fillRect(0, 0, static_cast<int>(tfProperty_->getMask().x*gradientWidth), 20, QColor(25,25,25,100));
         tfPainter.drawLine(static_cast<int>(tfProperty_->getMask().x*gradientWidth), 0, static_cast<int>(tfProperty_->getMask().x*gradientWidth), 20);
@@ -125,49 +132,30 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
             static_cast<int>(tfEditor_->width()-(tfProperty_->getMask().y*gradientWidth)), 20, QColor(25,25,25,150));
         tfPainter.drawLine(static_cast<int>(tfProperty_->getMask().y*gradientWidth), 0, static_cast<int>(tfProperty_->getMask().y*gradientWidth), 20);
     }
-    paintScene_->setBackgroundBrush(QBrush(*tfPixmap_));
+    tfPreview_->setPixmap(*tfPixmap_);
 }
 
 void TransferFunctionPropertyDialog::updateFromProperty() {
-    QGradientStop* curGradientStop = new QGradientStop();
-    gradientStops_->clear();
-
-    TransferFunctionDataPoint* curPoint;
-    const vec4* curColor;
-    for (size_t i=0; i<tfProperty_->get().getNumDataPoints(); i++) {
-        curPoint = tfProperty_->get().getPoint(static_cast<int>(i));
-        curColor = curPoint->getRgba();
-        curGradientStop->first = curPoint->getPos()->x;
-        // modify the alpha channel to make the colors better visible
-        float displayAlpha = curPoint->getPos()->y*2.0;
-        if (displayAlpha > 1.0) displayAlpha = 1.0;
-        curGradientStop->second = QColor::fromRgbF(curColor->r, curColor->g, curColor->b, 1.0);//displayAlpha);
-        gradientStops_->push_front(*curGradientStop);
+    TransferFunction transFunc = tfProperty_->get();
+    QVector<QGradientStop> gradientStops;
+    for (size_t i=0; i<transFunc.getNumDataPoints(); i++) {
+        TransferFunctionDataPoint* curPoint = transFunc.getPoint(i);
+        vec4 curColor = curPoint->getRGBA();
+        gradientStops.append(QGradientStop(curPoint->getPos().x,
+                                           QColor::fromRgbF(curColor.r, curColor.g, curColor.b, 1.0)));
     }
-    gradient_->setStops(*gradientStops_);
-
-    delete curGradientStop;
+    gradient_->setStops(gradientStops);
     updateTFPreview();
-}
-
-
-bool TransferFunctionPropertyDialog::eventFilter(QObject *object, QEvent *e) {
-    return false;
-}
-
-void TransferFunctionPropertyDialog::notify() {
-    updateFromProperty();
-    tfProperty_->propertyModified();
 }
 
 
 void TransferFunctionPropertyDialog::updateColorWheel() {
     QList<QGraphicsItem *> selection = tfEditor_->selectedItems();
     if (selection.size()== 1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
-        const vec4* pointColor = dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))->getPoint()->getRgba();
-        colorWheel_->setColor(QColor(pointColor->r*255.0, pointColor->g*255.0, pointColor->b*255.0, pointColor->a*255.0));
+        vec4 pointColor = dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))->getPoint()->getRGBA();
+        colorWheel_->setColor(QColor(pointColor.r*255.0, pointColor.g*255.0, pointColor.b*255.0, pointColor.a*255.0));
         if (!colorChange_)
-            colorDialog_->setCurrentColor(QColor(pointColor->r*255.0, pointColor->g*255.0, pointColor->b*255.0, pointColor->a*255.0));
+            colorDialog_->setCurrentColor(QColor(pointColor.r*255.0, pointColor.g*255.0, pointColor.b*255.0, pointColor.a*255.0));
     }
 }
 
@@ -177,31 +165,6 @@ void TransferFunctionPropertyDialog::showColorDialog() {
         colorDialog_->show();
 }
 
-
-void TransferFunctionPropertyDialog::setPointColor(QColor color) {
-    vec3* newRgb;
-    QList<QGraphicsItem *> selection = tfEditor_->selectedItems();
-
-    for (int i=0; i< selection.size(); i++) {
-        if (dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))) {
-            newRgb = new vec3(color.redF(),color.greenF(),color.blueF());
-            dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))->getPoint()->setRgb(newRgb);
-        }
-    }
-
-    updateFromProperty();
-    tfEditorView_->update();
-    tfProperty_->get().calcTransferValues();
-    tfProperty_->propertyModified();
-}
-
-void TransferFunctionPropertyDialog::updateTransferFunction() {
-    //tfEditorView_->update();
-    tfProperty_->get().calcTransferValues();
-    updateFromProperty();
-    tfProperty_->propertyModified();
-    update();
-}
 
 void TransferFunctionPropertyDialog::setPointColor() {
     QColor color = colorWheel_->color();
@@ -216,15 +179,25 @@ void TransferFunctionPropertyDialog::setPointColorDialog() {
     colorChange_ = false;
 }
 
+void TransferFunctionPropertyDialog::setPointColor(QColor color) {
+    QList<QGraphicsItem *> selection = tfEditor_->selectedItems();
+    for (int i=0; i< selection.size(); i++) {
+        if (dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))) {
+            vec3 newRgb = vec3(color.redF(),color.greenF(),color.blueF());
+            dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))->getPoint()->setRGB(newRgb);
+        }
+    }
 
-QVector<QGradientStop>* TransferFunctionPropertyDialog::getGradientStops() {
-    return gradientStops_;
+    updateFromProperty();
+    tfEditorView_->update();
+    tfProperty_->get().calcTransferValues();
+    tfProperty_->propertyModified();
 }
 
-void TransferFunctionPropertyDialog::editorViewResized() {
-    gradient_->setStops(*gradientStops_);
-    paintScene_->setForegroundBrush(*gradient_);
-    gradient_->setFinalStop(tfEditorView_->width(), 0.0);	
+void TransferFunctionPropertyDialog::updateTransferFunction() {
+    tfProperty_->get().calcTransferValues();
+    updateFromProperty();
+    tfProperty_->propertyModified();
 }
 
 void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {

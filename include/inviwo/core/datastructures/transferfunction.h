@@ -19,6 +19,7 @@
 
 #ifndef IVW_TRANSFERFUNCTION_H
 #define IVW_TRANSFERFUNCTION_H
+
 #include <stdlib.h>
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/image/layer.h>
@@ -29,29 +30,38 @@ namespace inviwo {
 
 class IVW_CORE_API TransferFunction {
 public:
-	TransferFunction();
 
+    enum InterpolationType {
+        InterpolationLinear = 0,
+        InterpolationCubic
+    };
+
+	TransferFunction();
 	TransferFunction(const TransferFunction& rhs);
 	TransferFunction& operator=(const TransferFunction& rhs);
 	virtual ~TransferFunction();
-	const Layer* getData() const;
-	size_t getNumDataPoints() const;
+
+    const Layer* getData() const { return data_; }
+    size_t getNumDataPoints() const { return dataPoints_.size(); }
+    int getTextureSize() { return textureSize_; }
+
 	TransferFunctionDataPoint* getPoint(int i) const;
 
-	void addPoint(vec2 pos, vec4 rgba);
-	void addPoint(vec2* pos, vec4* rgba);
-	void addPoint(TransferFunctionDataPoint* newPoint);
-	void removePoint(TransferFunctionDataPoint* newPoint);
-	void clearPoints();
+	void addPoint(vec2 pos, vec4 color);
+	void addPoint(TransferFunctionDataPoint* dataPoint);
+	void removePoint(TransferFunctionDataPoint* dataPoint);
+    void clearPoints();
+    void sortPoints();
 
-	void sortDataPoints();
 	void calcTransferValues();
-	int getTextureSize();
 
-    float getMaskMin();
-    float getMaskMax();
-    void setMaskMin(float maskMin);
-    void setMaskMax(float maskMax);
+    float getMaskMin() { return maskMin_; }
+    void setMaskMin(float maskMin) { maskMin_ = maskMin; }
+    float getMaskMax() { return maskMax_; }
+    void setMaskMax(float maskMax) { maskMax_ = maskMax; }
+
+    void setInterpolationType(InterpolationType interpolationType) { interpolationType_ = interpolationType; }
+    InterpolationType getInterpolationType() const { return interpolationType_; }
 
 private:
     float maskMin_;
@@ -59,6 +69,7 @@ private:
     int textureSize_;
     Layer* data_;
     std::vector<TransferFunctionDataPoint*> dataPoints_;
+    InterpolationType interpolationType_;
 };
 
 } // namespace

@@ -19,7 +19,7 @@
 namespace inviwo {
 
 TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty* tfProperty)
-    : tfProperty_(tfProperty)
+    : VoidObserver(), tfProperty_(tfProperty)
 {
     setMouseTracking(true);
     setRenderHint(QPainter::Antialiasing, true);
@@ -46,22 +46,35 @@ void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF 
 	QGraphicsView::drawForeground(painter, rect);
 }
 
+void TransferFunctionEditorView::notify() {
+    histogram_= tfProperty_->getHistogram();
+}
+
 void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF& rect) {
-    painter->fillRect(rect, QColor(119,136,221));
+    painter->fillRect(rect, QColor(89,89,89));
     painter->drawRect(rect);
+    // overlay grid
+    int gridSpacing = 25;
+    qreal right = int(rect.right()) - (int(rect.right()) % gridSpacing);
+    qreal top = int(rect.top()) - (int(rect.top()) % gridSpacing);
+    QVarLengthArray<QLineF, 100> lines;
+    for (qreal x=rect.left(); x<=right; x+=gridSpacing)
+        lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+    QPen gridPen;
+    gridPen.setColor(QColor(102,102,102));
+    gridPen.setWidth(1.0);
+    gridPen.setCosmetic(true);
+    painter->setPen(gridPen);
+    painter->drawLines(lines.data(), lines.size());
 
-    // obtain histogram
-    std::vector<float> histogram = tfProperty_->getHistogram();
-
-    // draw histogram
-    QVarLengthArray<QLineF, 100> linesY;
+    QVarLengthArray<QLineF, 100> bars;
     QRectF sRect = sceneRect();
-    for (size_t i=0; i<histogram.size(); i++)
-        linesY.append(QLineF(((float)i/(float)histogram.size())*sRect.width(), 0.0,
-                             ((float)i/(float)histogram.size())*sRect.width(), histogram[i]*sRect.height()));
-    qreal lineWidth = sRect.width()/histogram.size();
-    painter->setPen(QPen(QColor(68,102,170), lineWidth));
-    painter->drawLines(linesY.data(), linesY.size());
+    for (size_t i=0; i<histogram_.size(); i++)
+        bars.append(QLineF(((float)i/(float)histogram_.size())*sRect.width(), 0.0,
+                           ((float)i/(float)histogram_.size())*sRect.width(), histogram_[i]*sRect.height()));
+    qreal lineWidth = sRect.width()/histogram_.size();
+    painter->setPen(QPen(QColor(68,102,170,150), lineWidth));
+    painter->drawLines(bars.data(), bars.size());
 }
 
 void TransferFunctionEditorView::updateZoom() {

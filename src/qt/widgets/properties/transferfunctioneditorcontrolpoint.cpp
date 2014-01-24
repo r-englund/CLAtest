@@ -12,59 +12,76 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
-#include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
+
+#include <QTextStream>
 
 namespace inviwo {
 
 TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint)
-    : datapoint_(datapoint) {
-
-    setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
-    setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+    : dataPoint_(datapoint)
+{
+    size_ = 14.0f;
+    showLabel_ = false;
+    setFlags(ItemIgnoresTransformations | ItemIsFocusable | ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
     setZValue(1);
-    size_ = 12.0f;
-    leftNeighbour_ = NULL;
-    rightNeighbour_ = NULL;
+    setAcceptHoverEvents(true);
 }
 
-TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint(){};
+TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint() {}
 
 void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
     painter->setRenderHint(QPainter::Antialiasing, true);
-    QPen pen = QPen();
 
+    QPen pen = QPen();
+    pen.setWidth(3);
+    pen.setCosmetic(true);
     pen.setCapStyle(Qt::RoundCap);
     pen.setStyle(Qt::SolidLine);
-    pen.setWidth(2);
-    pen.setCosmetic(true);
-    isSelected() ? pen.setColor(Qt::red) : pen.setColor(Qt::black);
+    isSelected() ? pen.setColor(QColor(213,79,79)) : pen.setColor(QColor(66,66,66));
 
-    QBrush brush = QBrush(QColor::fromRgbF(datapoint_->getRgba()->r, datapoint_->getRgba()->g, datapoint_->getRgba()->b));
+    QBrush brush = QBrush(QColor::fromRgbF(dataPoint_->getRGBA().r, dataPoint_->getRGBA().g, dataPoint_->getRGBA().b));
 
     painter->setPen(pen);
     painter->setBrush(brush);
     painter->drawEllipse(-size_/2.0, -size_/2.0, size_, size_);
+
+    if (showLabel_) {
+        QString label;
+        QTextStream labelStream(&label);
+        labelStream.setRealNumberPrecision(2);
+        labelStream << "a(" << dataPoint_->getPos().x << ")=";
+        labelStream << dataPoint_->getRGBA().a;
+        QPointF labelPos = boundingRect().center()+QPointF(size_/2.0, -size_/2.0);
+        pen.setColor(QColor(66,66,66));
+        painter->setPen(pen);
+        QFont font;
+        font.setPixelSize(16);
+        painter->setFont(font);
+        painter->drawText(labelPos, label);
+    }
 }
 
 QRectF TransferFunctionEditorControlPoint::boundingRect() const {
-    float bboxsize = size_ + 10.0f;
-    return QRectF(-bboxsize/2.0, -bboxsize/2.0f, bboxsize, bboxsize);
+    float bBoxSize = size_ + 10.0f;
+    return QRectF(-bBoxSize/2.0, -bBoxSize/2.0f, bBoxSize, bBoxSize);
 }
 
-TransferFunctionDataPoint* TransferFunctionEditorControlPoint::getPoint() const {return datapoint_;}
+void TransferFunctionEditorControlPoint::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
+    size_ += 5.0f;
+    showLabel_ = true;
+    update();
+}
 
-TransferFunctionEditorControlPoint* TransferFunctionEditorControlPoint::getLeftNeighbour() const{return leftNeighbour_;}
-
-TransferFunctionEditorControlPoint* TransferFunctionEditorControlPoint::getRightNeighbour() const{return rightNeighbour_;}
-
-void TransferFunctionEditorControlPoint::setLeftNeighbour(TransferFunctionEditorControlPoint* point){leftNeighbour_ = point;}
-
-void TransferFunctionEditorControlPoint::setRightNeighbour(TransferFunctionEditorControlPoint* point){rightNeighbour_ = point;}
+void TransferFunctionEditorControlPoint::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
+    size_ -= 5.0f;
+    showLabel_ = false;
+    update();
+}
 
 QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change, const QVariant &value) {
     if (change == QGraphicsItem::ItemPositionChange && scene()) {
@@ -77,8 +94,8 @@ QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange chang
         }
         // update the associated transfer function data point
         QPointF controlPointPos = pos();
-        datapoint_->setPos(controlPointPos.x()/rect.width(), controlPointPos.y()/rect.height());
-        datapoint_->setA(controlPointPos.y()/rect.height());
+        dataPoint_->setPos(vec2(controlPointPos.x()/rect.width(), controlPointPos.y()/rect.height()));
+        dataPoint_->setA(controlPointPos.y()/rect.height());
         // let the editor know that an update is required
         static_cast<TransferFunctionEditor*>(scene())->updateControlPointView();
         // return the constraint position

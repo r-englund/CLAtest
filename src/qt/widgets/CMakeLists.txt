@@ -55,7 +55,6 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/syntaxhighlighter.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/texteditorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditor.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorcontrolpointgroup.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorview.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertydialog.h
@@ -69,7 +68,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/labelgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/qtwidgetmodule.h
     ${MOC_FILES}
 )
@@ -130,8 +128,6 @@ set(SOURCE_FILES
     properties/texteditorwidgetqt.cpp
     properties/transferfunctioneditor.cpp
     properties/transferfunctioneditorcontrolpoint.cpp
-    properties/transferfunctioneditorcontrolpointgroup.cpp
-    properties/transferfunctioneditorlineitem.cpp
     properties/transferfunctioneditorview.cpp
     properties/transferfunctionpropertydialog.cpp
     properties/transferfunctionpropertywidgetqt.cpp 

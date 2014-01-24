@@ -45,17 +45,15 @@ public:
     */
     ~TransferFunctionEditorControlPoint();
 
-    TransferFunctionDataPoint* getPoint() const;
-	TransferFunctionEditorControlPoint* getLeftNeighbour() const;
-	TransferFunctionEditorControlPoint* getRightNeighbour() const;
+    TransferFunctionDataPoint* getPoint() const { return dataPoint_; }
 
-	void setLeftNeighbour(TransferFunctionEditorControlPoint*);
-	void setRightNeighbour(TransferFunctionEditorControlPoint*);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
 	void notify();
 
     //override for qgraphicsitem_cast (refer qt documentation)
-    enum { Type = UserType + 278 };
+    enum { Type = UserType + 255 };
     int type() const  {return Type; }
 
 protected:
@@ -69,10 +67,8 @@ protected:
 
 private:
     float size_; ///< size for drawing the points
-
-    TransferFunctionDataPoint* datapoint_; ///<The TransferFunctionDataPoint the control point gets all its data from
-	TransferFunctionEditorControlPoint* leftNeighbour_;
-	TransferFunctionEditorControlPoint* rightNeighbour_;
+    bool showLabel_;
+    TransferFunctionDataPoint* dataPoint_; ///<The TransferFunctionDataPoint the control point gets all its data from
 };
 
 }// namespace

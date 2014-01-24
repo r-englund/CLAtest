@@ -31,8 +31,6 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
-#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpointgroup.h>
-#include <inviwo/qt/widgets/properties/transferfunctioneditorlineitem.h>
 
 #include <inviwo/qt/widgets/propertylistwidget.h>
 
@@ -76,6 +74,7 @@ public :
     void setZoomRangeYMax(float max) { zoomRangeYMax_ = max; }
 
     QGraphicsView* getView() { return view_; }
+    void redrawConnections();
 
 signals:
     void doubleClick();
@@ -86,8 +85,6 @@ public slots:
 
 protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent* e);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 	void keyPressEvent(QKeyEvent *e);
 
@@ -107,7 +104,6 @@ protected:
 
 private :
     void addControlPoint(QPointF pos, TransferFunctionDataPoint* dataPoint);
-    void updateLines();
 
     float zoomRangeXMin_;
     float zoomRangeXMax_;
@@ -117,9 +113,8 @@ private :
 	QGraphicsView* view_;
 	TransferFunction* transferFunction_; ///< Pointer to widget's member variable
 
-    std::vector<TransferFunctionEditorLineItem*> lines_; ///< Vector for the lines between the control points
+    QGraphicsPathItem* graphicsPathItem_;
 	std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
-	std::vector<TransferFunctionEditorControlPointGroup*> controlPointGroups_; ///< Control points in the transfer function graph
 };
 
 } // namespace

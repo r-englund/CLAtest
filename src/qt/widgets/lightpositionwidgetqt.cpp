@@ -21,7 +21,6 @@ namespace inviwo {
 }
 
 void inviwo::LightPositionWidgetQt::generateWidget() {
-
     gradientPixmap_ = new QPixmap(100,100);
     gradientPixmap_->fill(Qt::transparent);
 

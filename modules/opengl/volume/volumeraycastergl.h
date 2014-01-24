@@ -72,8 +72,8 @@ protected:
 
     CameraProperty camera_;
 
-
     void addShadingProperties();
+
 private:
     void addBasicProperties();
 };

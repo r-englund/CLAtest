@@ -26,7 +26,7 @@
 #include <QGraphicsView>
 
 namespace inviwo {
-class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView {
+class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, public VoidObserver {
 
 	Q_OBJECT
 
@@ -34,6 +34,7 @@ public:
     TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
 
     void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); }
+    virtual void notify();
 
 signals:
     void resized();
@@ -54,6 +55,8 @@ private:
     vec2 mask_;
     vec2 zoomH_;
     vec2 zoomV_;
+
+    std::vector<float> histogram_;
 };
 } // namespace
 

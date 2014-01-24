@@ -23,7 +23,7 @@ TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunct
     PropertyWidgetQt::generateContextMenu();
 }
 
-TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt(){
+TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt() {
     delete transferFunctionDialog_;
     delete btnOpenTF_;
 }
@@ -54,8 +54,8 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty() {
-    btnOpenTF_->setIcon((*transferFunctionDialog_->getTFPreview()).scaled(QSize(180, 25)));
-    btnOpenTF_->setIconSize(QSize(180, 25));
+    btnOpenTF_->setIcon((*transferFunctionDialog_->getTFPreview()).scaled(btnOpenTF_->size()));
+    btnOpenTF_->setIconSize(btnOpenTF_->size());
 }
 
 
