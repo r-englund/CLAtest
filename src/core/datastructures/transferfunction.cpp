@@ -103,6 +103,7 @@ void TransferFunction::removePoint(TransferFunctionDataPoint* p){
 	std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin();
 	for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++){
 		if ((*iter) == p){
+            delete *iter;
 			dataPoints_.erase(iter);
 			break;
 		}
