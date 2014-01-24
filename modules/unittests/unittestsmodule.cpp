@@ -1,5 +1,3 @@
-#include <inviwo/core/util/msvc-memleak-includes.h>
-
 #include <modules/unittests/unittestsmodule.h>
 
 #include <gtest/gtest.h>
