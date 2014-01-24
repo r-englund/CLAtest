@@ -100,4 +100,10 @@ typedef glm::quat quat;
 #define ivwDeprecatedMethod(newFunction)
 #endif
 
+#ifdef _MSC_VER
+    #ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
+        #include <ext/vld/vld.h>
+    #endif
+#endif
+
 #endif // IVW_INVIWO_H

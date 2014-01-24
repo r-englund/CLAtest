@@ -32,12 +32,6 @@
 int main(int argc, char** argv) {
 #ifdef __unix__
     setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
-
-#endif
-#ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
-    _CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_FILE  | _CRTDBG_MODE_DEBUG);
-    _CrtSetReportFile( _CRT_WARN, _CRTDBG_FILE_STDERR );
-    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, inviwo::filesystem::findBasePath(), argc, argv);
 	

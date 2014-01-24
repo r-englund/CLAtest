@@ -13,7 +13,6 @@
  **********************************************************************/
 
 
-#include <inviwo/core/util/msvc-memleak-includes.h>
 
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/metadata/metadatafactory.h>
