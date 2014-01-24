@@ -16,13 +16,26 @@
 
 namespace inviwo {
 
-Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering)
-    : Texture(GL_TEXTURE_2D, glFormat, filtering), Observable<TextureObserver>(), ReferenceCounter()
-    , dimensions_(dimensions) {}
+void default2DTextureParemeterFunction(Texture* tex){
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex->getFiltering());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex->getFiltering());
+}
 
-Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
-    : Texture(GL_TEXTURE_2D, format, internalformat, dataType, filtering), Observable<TextureObserver>(), ReferenceCounter()
-    , dimensions_(dimensions) {}
+Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level)
+    : Texture(GL_TEXTURE_2D, glFormat, filtering, level), Observable<TextureObserver>(), ReferenceCounter()
+    , dimensions_(dimensions) 
+{
+    setTextureParameterFunction(&default2DTextureParemeterFunction);
+}
+
+Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level)
+    : Texture(GL_TEXTURE_2D, format, internalformat, dataType, filtering, level), Observable<TextureObserver>(), ReferenceCounter()
+    , dimensions_(dimensions) 
+{
+    setTextureParameterFunction(&default2DTextureParemeterFunction);
+}
 
 Texture2D::Texture2D(const Texture2D& rhs)
     : Texture(rhs), Observable<TextureObserver>(), ReferenceCounter()
@@ -62,12 +75,8 @@ void Texture2D::initialize(const void* data) {
         static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();    
     }
     bind();
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering_);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering_);
-    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, data);
+    (*texParameterFunction_)(this);
+    glTexImage2D(GL_TEXTURE_2D, level_, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, data);
     LGL_ERROR;
     for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added

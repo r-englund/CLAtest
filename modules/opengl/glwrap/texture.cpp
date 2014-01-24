@@ -16,12 +16,14 @@
 
 namespace inviwo {
 
-Texture::Texture(GLenum target, GLFormats::GLFormat glFormat, GLenum filtering)
+Texture::Texture(GLenum target, GLFormats::GLFormat glFormat, GLenum filtering, GLint level)
     : target_(target)
     , format_(glFormat.format)
     , internalformat_(glFormat.internalFormat)
     , dataType_(glFormat.type)
     , filtering_(filtering)
+    , level_(level)
+    , texParameterFunction_(NULL)
     , dataInReadBackPBO_(false)
 {
     glGenTextures(1, &id_);
@@ -31,12 +33,14 @@ Texture::Texture(GLenum target, GLFormats::GLFormat glFormat, GLenum filtering)
     LGL_ERROR_SUPPRESS;
 }
 
-Texture::Texture(GLenum target, GLint format, GLint internalformat, GLenum dataType, GLenum filtering)
+Texture::Texture(GLenum target, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level)
     : target_(target)
     , format_(format)
     , internalformat_(internalformat)
     , dataType_(dataType)
     , filtering_(filtering)
+    , level_(level)
+    , texParameterFunction_(NULL)
     , dataInReadBackPBO_(false)
 {
     glGenTextures(1, &id_);
@@ -52,6 +56,8 @@ Texture::Texture(const Texture& other)
     , internalformat_(other.internalformat_)
     , dataType_(other.dataType_)
     , filtering_(other.filtering_)
+    , level_(other.level_)
+    , texParameterFunction_(other.texParameterFunction_)
     , byteSize_(other.byteSize_)
     , numChannels_(other.numChannels_)
     , dataInReadBackPBO_(false)
@@ -84,6 +90,30 @@ GLuint Texture::getID() const {
     return id_; 
 }
 
+GLenum Texture::getTarget() const{
+    return target_;
+}
+
+GLenum Texture::getFormat() const{
+    return format_;
+}
+
+GLenum Texture::getInternalFormat() const{
+    return internalformat_;
+}
+
+GLenum Texture::getDataType() const{
+    return dataType_;
+}
+
+GLenum Texture::getFiltering() const{
+    return filtering_;
+}
+
+GLint Texture::getLevel() const{
+    return level_;
+}
+
 GLuint Texture::getNChannels() const { 
     return numChannels_; 
 }
@@ -92,12 +122,8 @@ GLuint Texture::getSizeInBytes() const {
     return byteSize_; 
 }
 
-GLenum Texture::getFormat() const { 
-    return format_; 
-}
-
-GLenum Texture::getDataType() const { 
-    return dataType_; 
+void Texture::setTextureParameterFunction(texParameterFunc f){
+    texParameterFunction_ = f;
 }
 
 void Texture::bind() const{

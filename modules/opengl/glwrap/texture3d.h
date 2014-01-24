@@ -22,11 +22,13 @@
 
 namespace inviwo {
 
+IVW_MODULE_OPENGL_API void default3DTextureParemeterFunction(Texture*);
+
 class IVW_MODULE_OPENGL_API Texture3D : public Texture {
 
 public:
-    Texture3D(uvec3 dimensions, GLFormats::GLFormat glFormat, GLenum filtering);
-    Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
+    Texture3D(uvec3 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);
+    Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level = 0);
     Texture3D(const Texture3D& other);
     Texture3D& operator=(const Texture3D& other);
     virtual ~Texture3D();

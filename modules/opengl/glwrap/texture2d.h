@@ -25,11 +25,13 @@
 
 namespace inviwo {
 
+IVW_MODULE_OPENGL_API void default2DTextureParemeterFunction(Texture*);
+
 class IVW_MODULE_OPENGL_API Texture2D : public Texture, public Observable<TextureObserver>, public ReferenceCounter {
 
 public:
-    Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering);
-    Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
+    Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);
+    Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level = 0);
     Texture2D(const Texture2D& other);
     Texture2D& operator=(const Texture2D& other);
     virtual ~Texture2D();

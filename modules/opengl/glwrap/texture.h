@@ -23,8 +23,10 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API Texture {
 
 public:
-    Texture(GLenum, GLFormats::GLFormat glFormat, GLenum filtering);
-    Texture(GLenum, GLint format, GLint internalformat, GLenum dataType, GLenum filtering);
+    typedef void (*texParameterFunc)(Texture*);
+
+    Texture(GLenum, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);
+    Texture(GLenum, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level = 0);
     Texture(const Texture& other);
     Texture& operator=(const Texture& other);
     virtual ~Texture();
@@ -37,11 +39,17 @@ public:
 
     GLuint getID() const;
 
+    GLenum getTarget() const;
+    GLenum getFormat() const;
+    GLenum getInternalFormat() const;
+    GLenum getDataType() const;
+    GLenum getFiltering() const;
+    GLint getLevel() const;
+
     GLuint getNChannels() const;
     GLuint getSizeInBytes() const;
 
-    GLenum getFormat() const;
-    GLenum getDataType() const;
+    void setTextureParameterFunction(texParameterFunc);
 
     void bind() const;
     void unbind() const;
@@ -70,6 +78,9 @@ protected:
     GLenum internalformat_;
     GLenum dataType_;
     GLenum filtering_;
+    GLint level_;
+
+    texParameterFunc texParameterFunction_;
 
 private:
     GLuint id_;
