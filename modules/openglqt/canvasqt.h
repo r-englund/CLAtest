@@ -56,7 +56,7 @@ protected:
     void keyReleaseEvent(QKeyEvent* e);
 
 private:
-    static const QGLWidget* sharedWidget_; //For rendering-context sharing
+    static QGLWidget* sharedWidget_; //For rendering-context sharing
     static QGLFormat sharedFormat_;
     static bool sharedInitialized_;
     bool swapBuffersAllowed_;
