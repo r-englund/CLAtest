@@ -48,11 +48,11 @@ CanvasQt::~CanvasQt() {}
 
 void CanvasQt::initialize() {
     activate();
-    CanvasGL::initialize();
     if(!sharedInitialized_){
         initializeSquare();
         sharedInitialized_ = true;
     }
+    CanvasGL::initialize();
 }
 
 void CanvasQt::deinitialize() {
