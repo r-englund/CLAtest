@@ -27,8 +27,8 @@ class ObservableInterface;
 * Class to support observer pattern. An example of usage is given in the Observable class.
 * @see Observable
 */
-class IVW_CORE_API Observer
-{
+class IVW_CORE_API Observer {
+
 friend class ObservableInterface;
 public:
 	/** 
@@ -96,13 +96,13 @@ protected:
 	 * 
 	 * @param observer The observer to add.
 	 */
-	virtual void addObserver(Observer* observer);
+	void addObserver(Observer* observer);
  	/** 
 	 * Remove an observer.
 	 * 
 	 * @param observer The observer to remove.
 	 */
-	virtual void removeObserver(Observer* observer);
+	void removeObserver(Observer* observer);
 	/** 
 	 * Remove all observers.
 	 */

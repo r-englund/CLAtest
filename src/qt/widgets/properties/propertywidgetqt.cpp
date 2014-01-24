@@ -48,9 +48,7 @@ void PropertyWidgetQt::visibilityModified(int mode) {}
 
 void PropertyWidgetQt::generateContextMenu(){
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    bool appInitialized = inviwoApp->isInitialized();
-    //FIXME: Why do we need to check if inviwo initialized? Should addObservation exist here?
-    ivwAssert(appInitialized!=false, "InviwoApplication not initialized.This should not be the case.");
+    ivwAssert(inviwoApp->isInitialized()!=false, "InviwoApplication not initialized.This should not be the case.");
     this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode")));
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu_ = new QMenu();

@@ -48,7 +48,7 @@ public:
 
 	virtual void initialize(registerModuleFuncPtr);
 
-    virtual Timer* createTimer()const;
+    virtual Timer* createTimer() const;
 
 public slots:
     void fileChanged(QString fileName);

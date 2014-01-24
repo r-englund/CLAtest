@@ -146,7 +146,8 @@ public:
      * 
      * @param std::string the key to the desiered value
      */
-    void set(T value);
+    virtual void set(const Property* srcProperty);
+    virtual void set(T value);
 
     void setToID(std::string identifier);
     void selectByKey(std::string identifier);
@@ -263,6 +264,11 @@ void TemplateOptionProperty<T>::set(T value) {
     propertyModified();
 }
 
+template<typename T>
+void TemplateOptionProperty<T>::set(const Property* srcProperty) {
+    BaseOptionProperty::set(srcProperty);
+}
+    
 template<typename T>
 void TemplateOptionProperty<T>::setToID(std::string identifier) {
     for (size_t i=0; i<options_.size(); i++)

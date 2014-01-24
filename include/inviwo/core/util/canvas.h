@@ -18,6 +18,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/image.h>
+#include <inviwo/core/datastructures/image/imagetypes.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/interaction/pickingcontainer.h>
@@ -35,7 +36,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual void activate();
-    virtual void render(const Image*);
+    virtual void render(const Image*, LayerType layerType = COLOR_LAYER);
     virtual void resize(uvec2 dimensions);
     virtual uvec2 getDimension();
     virtual void update();

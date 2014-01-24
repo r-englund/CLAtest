@@ -25,14 +25,14 @@
 #endif
 
 #ifdef __clang__
-#define STARTCLANGIGNORE(warning) \
-#pragma clang diagnostic push \
-#pragma clang diagnostic ignored warning
-
+#define STR(X) #X
+#define STARTCLANGIGNORE(X) \
+_Pragma("clang diagnostic push") \
+_Pragma(STR(clang diagnostic ignored X))
 #define ENDCLANGIGNORE \
-#pragma clang diagnostic pop
+_Pragma("clang diagnostic pop")
 #else
-#define STARTCLANGIGNORE(warning)
+#define STARTCLANGIGNORE(X)
 #define ENDCLANGIGNORE
 #endif
 

@@ -20,6 +20,7 @@ namespace inviwo {
 VolumeRaycasterGL::VolumeRaycasterGL()
     : ProcessorGL()
     , raycastPrg_(0)
+    , programFileName_("rc_simple.frag")
     , samplingRate_("samplingRate", "Sampling rate", 2.0f, 1.0f, 10.0f)
     , isoValue_("isoValue", "Iso value", 0.5f, 0.0f, 1.0f)
 
@@ -36,11 +37,8 @@ VolumeRaycasterGL::VolumeRaycasterGL()
 
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(0.5f, 0.5f, 0.5f))
-
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
-
-    , programFileName_("rc_simple.frag")
-{
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)){
+        
     addBasicProperties();
 }
 
@@ -65,8 +63,8 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(0.5f, 0.5f, 0.5f))
 
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
-{
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)) {
+        
     addBasicProperties();
 }
 

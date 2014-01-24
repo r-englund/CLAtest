@@ -74,8 +74,7 @@ MultiDataInport<T, U>::~MultiDataInport() {
 
 template <typename T, typename U>
 void MultiDataInport<T, U>::connectTo(Outport* outport) {
-    DataOutport<T>* dataPort = dynamic_cast<DataOutport<T>*>(outport);
-    ivwAssert(dataPort!=NULL, "Trying to connect incompatible ports.")
+    ivwAssert(dynamic_cast<DataOutport<T>*>(outport)!=NULL, "Trying to connect incompatible ports.")
     // U is a Port class
     U* inport = new U(getIdentifier());
     inports_->insert(inport);

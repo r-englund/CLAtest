@@ -101,7 +101,7 @@ public:
      * @see Timer
      * @return new Timer
      */
-    virtual Timer* createTimer() { LogWarn("This application has not implemented any timer"); return NULL; } 
+    virtual Timer* createTimer() const { LogWarn("This application has not implemented any timer"); return NULL; }
 
     virtual void addCallbackAction(ModuleCallbackAction* callbackAction);
 

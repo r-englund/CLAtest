@@ -94,8 +94,7 @@ public:
     };
 
     GLFormat getGLFormat(DataFormatId id) const{
-        GLFormat format = glFormatArray_[static_cast<int>(id)];
-        ivwAssert(format.valid, "Accessing invalid GLFormat");
+        ivwAssert(glFormatArray_[static_cast<int>(id)].valid, "Accessing invalid GLFormat");
         return glFormatArray_[static_cast<int>(id)];   
     };
 
@@ -104,10 +103,11 @@ private:
 };
 
 static const GLFormats glFormats_ = GLFormats();
+STARTCLANGIGNORE("-Wunused-function")
 static const GLFormats* getGLFormats(){
     return &glFormats_;
 }
-
+ENDCLANGIGNORE
 }
 
 #endif

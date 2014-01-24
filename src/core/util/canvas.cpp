@@ -62,7 +62,7 @@ void Canvas::initialize() {
 
 void Canvas::deinitialize() {}
 
-void Canvas::render(const Image* im) {}
+void Canvas::render(const Image* im, LayerType layerType/* = COLOR_LAYER*/) {}
 
 void Canvas::activate() {}
 

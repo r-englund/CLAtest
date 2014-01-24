@@ -22,8 +22,8 @@ void testserialization(T def, T in) {
     mdo2 = new MetaDataOwner();
 
 
-    mdo1->typename setMetaData<M>("data", indata);
-    outdata1 = mdo1->typename getMetaData<M>("data", outdata1);
+    mdo1->setMetaData<M>("data", indata);
+    outdata1 = mdo1->getMetaData<M>("data", outdata1);
     EXPECT_EQ(indata, outdata1);
 
     IvwSerializer serializer(filename);
@@ -34,7 +34,7 @@ void testserialization(T def, T in) {
     mdo2->getMetaDataMap()->deserialize(deserializer);
 
     T outdata2 = def;
-    outdata2 = mdo2->typename getMetaData<M>("data", outdata2);
+    outdata2 = mdo2->getMetaData<M>("data", outdata2);
     EXPECT_EQ(indata, outdata2);
 
     delete mdo1;

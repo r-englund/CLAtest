@@ -1,4 +1,9 @@
 # Interactive Visualization Workshop (Inviwo)
+
+
+
+set(DESIRED_QT_VERSION "5" CACHE STRING "Qt Version")
+
 if(DESIRED_QT_VERSION MATCHES 5)
 cmake_minimum_required(VERSION 2.8.11)
 cmake_policy(VERSION 2.8.11)

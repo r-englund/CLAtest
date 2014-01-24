@@ -31,6 +31,7 @@ public:
     virtual void initialize()=0;
     virtual void deinitialize()=0;
 
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     virtual void invalidate();
     virtual bool isValid() { return PropertyOwner::isValid(); }
     virtual void setValid() { PropertyOwner::setValid(); }

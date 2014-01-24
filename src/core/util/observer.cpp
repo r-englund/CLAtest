@@ -20,13 +20,11 @@ namespace inviwo
 
 ////////////////////////////// Observer //////////////////////////////////////////// 
 
-Observer::Observer()
-{
+Observer::Observer() {
 	observables_ = new ObservableSet();
 }
 
-Observer::~Observer()
-{
+Observer::~Observer() {
 	removeObservations();
 	delete observables_;
 }
@@ -58,13 +56,11 @@ void Observer::addObservation(ObservableInterface* observed) {
 
 ////////////////////////////// ObservableInterface //////////////////////////////////////////// 
 
-ObservableInterface::ObservableInterface() 
-{
+ObservableInterface::ObservableInterface() {
     observers_ = new ObserverSet();
 }
 
-ObservableInterface::~ObservableInterface() 
-{
+ObservableInterface::~ObservableInterface() {
     removeObservers();
     delete observers_;
 }

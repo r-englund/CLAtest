@@ -31,7 +31,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual void activate();
-    void render(const Image* im, LayerType layerType = COLOR_LAYER);
+    virtual void render(const Image* im, LayerType layerType = COLOR_LAYER);
     virtual void resize(uvec2 size);
     virtual void glSwapBuffers();
     virtual void update();
