@@ -15,6 +15,7 @@
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
+#include <inviwo/core/properties/propertywidgetfactory.h>
 
 namespace inviwo {
 
@@ -92,10 +93,11 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* tmpProperty) {
 }
 
 void CollapsibleGroupBoxWidgetQt::generatePropertyWidgets() {
-    PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
+    
     for (size_t i=0; i<properties_.size(); i++) {
         Property* curProperty = properties_[i];
-        PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
+        PropertyWidgetQt* propertyWidget =
+            static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(curProperty));
         vLayout_->addWidget(propertyWidget);
         curProperty->registerWidget(propertyWidget);
         propertyWidgets_.push_back(propertyWidget);
@@ -106,10 +108,10 @@ void CollapsibleGroupBoxWidgetQt::generatePropertyWidgets() {
 }
 
 void CollapsibleGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager) {
-    PropertyWidgetFactoryQt* propertyWidgetFactory = new PropertyWidgetFactoryQt();
     for (size_t i=0; i<properties_.size(); i++) {
         Property* curProperty = properties_[i];
-        PropertyWidgetQt* propertyWidget = propertyWidgetFactory->create(curProperty);
+        PropertyWidgetQt* propertyWidget =
+            static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(curProperty));
         vLayout_->addWidget(propertyWidget);
         curProperty->registerWidget(propertyWidget);
         dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager);

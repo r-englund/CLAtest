@@ -81,6 +81,10 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(IntVec4PropertyWidgetQt, IntVec4Property, "Default");
     registerPropertyWidget(LightPropertyWidgetQt, FloatVec3Property, "LightPosition");     
     registerPropertyWidget(OptionPropertyWidgetQt, BaseOptionProperty, "Default");
+    registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyInt, "Default");
+    registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyFloat, "Default");
+    registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyDouble, "Default");
+    registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyString, "Default");
     registerPropertyWidget(StringPropertyWidgetQt, StringProperty, "Default");
     registerPropertyWidget(TextEditorWidgetQt, FileProperty, "TextEditor"); // TODO: fix "imageEditor..."
     registerPropertyWidget(TextEditorWidgetQt, FileProperty, "Shader");

@@ -27,7 +27,6 @@
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 #include <inviwo/core/properties/property.h>
 

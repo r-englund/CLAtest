@@ -13,7 +13,6 @@
  **********************************************************************/
 
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/qt/widgets/qtwidgetmodule.h>
 #include <QFile>
@@ -39,10 +38,6 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
     QCoreApplication::setOrganizationName("Inviwo");
     QCoreApplication::setOrganizationDomain("inviwo.org");
     QCoreApplication::setApplicationName(displayName.c_str());
-
-    // initialize singletons
-    //ProcessorWidgetFactory::init();
-    PropertyWidgetFactoryQt::init();
 
     fileWatcher_ = new QFileSystemWatcher(this);
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));

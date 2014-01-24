@@ -14,6 +14,7 @@
 
 #include <inviwo/qt/widgets/eventpropertymanagerwidget.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
+#include <inviwo/core/properties/propertywidgetfactory.h>
 
 namespace inviwo {	
 
@@ -79,7 +80,9 @@ void EventPropertyManagerWidget::drawEventPropertyWidgets() {
 
 			mainLayout_->addWidget(group);
 		} else {
-			PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(properties[i]);
+			PropertyWidgetQt* propertyWidget =
+                static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(properties[i]));
+
 			mainLayout_->addWidget(propertyWidget);
 			properties[i]->registerWidget(propertyWidget);
 			dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager_);

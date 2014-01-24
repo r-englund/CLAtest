@@ -20,7 +20,6 @@
 
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
-#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <QCheckBox>
 #include <QScrollArea>

@@ -18,7 +18,6 @@
 #include <inviwo/core/util/observer.h>
 #include <inviwo/qt/widgets/eventpropertymanager.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 #include <QVBoxLayout>
 #include <QWidget>

@@ -18,7 +18,6 @@
 #include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>

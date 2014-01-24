@@ -13,8 +13,9 @@
  **********************************************************************/
 
 #include <inviwo/qt/editor/settingswidget.h>
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/qt/widgets/properties/propertywidgetfactoryqt.h>
 #include <QLayout>
 #include <QFrame>
 #include <QSettings>
@@ -64,7 +65,8 @@ void SettingsWidget::loadSettings() {
                 curProperty->setVariant(val);
             }
 
-            PropertyWidgetQt* propertyWidget = PropertyWidgetFactoryQt::getRef().create(curProperty);
+            PropertyWidgetQt* propertyWidget =
+                static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getRef().create(curProperty));
             vLayout->addWidget(propertyWidget);
             curProperty->registerWidget(propertyWidget);
         }
