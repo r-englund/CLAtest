@@ -47,12 +47,12 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
 CanvasQt::~CanvasQt() {}
 
 void CanvasQt::initialize() {
+    activate();
+    CanvasGL::initialize();
     if(!sharedInitialized_){
         initializeSquare();
         sharedInitialized_ = true;
     }
-    activate();
-    CanvasGL::initialize();
 }
 
 void CanvasQt::deinitialize() {
