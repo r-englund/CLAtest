@@ -33,7 +33,9 @@ public:
     InviwoApplicationQt(std::string displayName_, std::string basePath_,
                         int& argc, char** argv);
 
-    void setMainWindow(QMainWindow* mainWindow) { mainWindow_ = mainWindow; }
+    virtual ~InviwoApplicationQt();
+
+    void setMainWindow(QMainWindow* mainWindow);
     QMainWindow* getMainWindow() { return mainWindow_; }
 
     virtual void registerFileObserver(FileObserver* fileObserver);
@@ -46,7 +48,7 @@ public:
 
 	virtual void initialize(registerModuleFuncPtr);
 
-    virtual Timer* createTimer() { return new TimerQt(); } 
+    virtual Timer* createTimer()const;
 
 public slots:
     void fileChanged(QString fileName);

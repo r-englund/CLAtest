@@ -44,11 +44,17 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
     //ProcessorWidgetFactory::init();
     PropertyWidgetFactoryQt::init();
 
-    fileWatcher_ = new QFileSystemWatcher();
+    fileWatcher_ = new QFileSystemWatcher(this);
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 
     // Since QtWidgets are not a module we have to register it our self
     registerModule(new QtWidgetModule());
+}
+
+InviwoApplicationQt::~InviwoApplicationQt(){}
+
+void InviwoApplicationQt::setMainWindow(QMainWindow* mainWindow) { 
+    mainWindow_ = mainWindow; 
 }
 
 void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {
@@ -103,6 +109,10 @@ void InviwoApplicationQt::playSound(unsigned int soundID) {
 void InviwoApplicationQt::initialize(registerModuleFuncPtr regModuleFunc){
 	LogInfoCustom("InviwoInfo","QT Version " << QT_VERSION_STR);
 	InviwoApplication::initialize(regModuleFunc);
+}
+
+Timer* InviwoApplicationQt::createTimer()const { 
+    return new TimerQt(); 
 }
 
 void InviwoApplicationQt::wait(int ms){
