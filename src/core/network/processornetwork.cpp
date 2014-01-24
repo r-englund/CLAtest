@@ -175,6 +175,10 @@ void ProcessorNetwork::notifyInvalidationEnd(Processor* p){
     }
 }
 
+void ProcessorNetwork::notifyRequestEvaluate(Processor*){
+    notifyObservers();
+}
+
 void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("Processors", processors_, "Processor");
     s.serialize("Connections", portConnections_, "Connection");

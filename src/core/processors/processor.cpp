@@ -167,6 +167,8 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
         (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);
     notifyObserversInvalidationEnd(this);
+    if(isEndProcessor())
+        performEvaluateRequest();
 }
 
 bool Processor::isEndProcessor() { 
@@ -250,6 +252,10 @@ void Processor::setValid(){
     PropertyOwner::setValid();
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
         (*it)->setInvalidationLevel(VALID);
+}
+
+void Processor::performEvaluateRequest(){
+    notifyObserversRequestEvaluate(this);
 }
 
 } // namespace

@@ -204,8 +204,6 @@ public:
     */
     std::vector<ProcessorLink*> getLinks() const;
 
-
-    
     void modified();
     void setModified(bool modified) { modified_ = modified; }
     bool isModified() const { return modified_; }
@@ -213,6 +211,7 @@ public:
     bool isInvalidating() const { return invalidating_; }
     void notifyInvalidationBegin(Processor*);
     void notifyInvalidationEnd(Processor*);
+    void notifyRequestEvaluate(Processor*);
     Processor* getInvalidationInitiator() { return invalidationInitiator_; }
 
     void setBroadcastModification(bool broadcastModification);

@@ -110,6 +110,8 @@ protected:
     void addPort(Outport* port, std::string portDependencySet="default");
     void addPort(Outport& port, std::string portDependencySet="default");
 
+    virtual void performEvaluateRequest();
+
     ProcessorWidget* processorWidget_;
 
 private:

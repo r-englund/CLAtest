@@ -37,6 +37,7 @@ public:
     virtual void notifyProcessorObserver(Processor*) {};
     virtual void notifyInvalidationBegin(Processor*) {};
     virtual void notifyInvalidationEnd(Processor*) {};
+    virtual void notifyRequestEvaluate(Processor*) {};
 };
 
 
@@ -71,6 +72,12 @@ public:
     void notifyObserversInvalidationEnd(Processor* p) const {
         for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationEnd(p);    
+        }
+    }
+
+    void notifyObserversRequestEvaluate(Processor* p) const {
+        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+            static_cast<ProcessorObserver*>(*it)->notifyRequestEvaluate(p);    
         }
     }
 };

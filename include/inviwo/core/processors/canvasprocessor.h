@@ -46,6 +46,8 @@ public:
     void saveImageLayer(const char* filePath);
 
 protected:
+    void performEvaluateRequest();
+
     ImageInport inport_;
 
 	IntVec2Property dimensions_;

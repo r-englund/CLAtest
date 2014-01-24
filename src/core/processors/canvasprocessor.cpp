@@ -93,6 +93,9 @@ void CanvasProcessor::process() {
 
 void CanvasProcessor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     Processor::invalidate(invalidationLevel);
+}
+
+void CanvasProcessor::performEvaluateRequest(){
     if (canvas_ && canvas_->getNetworkEvaluator()){
         if(processorWidget_ && processorWidget_->getVisibilityMetaData()){
             canvas_->getNetworkEvaluator()->requestEvaluate();

@@ -60,10 +60,7 @@ void Canvas::initialize() {
         pickingContainer_ = new PickingContainer();
 }
 
-void Canvas::deinitialize() {
-    delete pickingContainer_;
-    delete processorNetworkEvaluator_;
-}
+void Canvas::deinitialize() {}
 
 void Canvas::render(const Image* im) {}
 
