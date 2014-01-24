@@ -17,21 +17,27 @@
 namespace inviwo {
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData() 
-    : CompositeMetaData()
-    , positionMetaData_(ivec2(0))
+    : positionMetaData_(ivec2(0))
     , dimensionMetaData_(ivec2(256))
     , visiblityMetaData_(false) {
-    addMetaData(positionMetaData_);
+    /*addMetaData(positionMetaData_);
     addMetaData(dimensionMetaData_);
-    addMetaData(visiblityMetaData_);
+    addMetaData(visiblityMetaData_);*/
 }
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData( const ProcessorWidgetMetaData& rhs ) 
-    : CompositeMetaData(rhs){
+    : positionMetaData_(positionMetaData_)
+    , dimensionMetaData_(dimensionMetaData_)
+    , visiblityMetaData_(visiblityMetaData_){
 }
 
 ProcessorWidgetMetaData& ProcessorWidgetMetaData::operator=( const ProcessorWidgetMetaData& that ){
-    CompositeMetaData::operator=(that);
+    if(this != &that){
+        delete this;
+        positionMetaData_ = that.positionMetaData_;
+        dimensionMetaData_ = that.dimensionMetaData_;
+        visiblityMetaData_ = that.visiblityMetaData_;
+    }
     return *this;
 }
 
@@ -66,7 +72,7 @@ bool ProcessorWidgetMetaData::isVisible() const{
 }
 
 void ProcessorWidgetMetaData::serialize(IvwSerializer& s) const {
-    CompositeMetaData::serialize(s);    
+    //CompositeMetaData::serialize(s);    
     s.serialize("type", getClassName(), true);
     s.serialize("position", positionMetaData_.get());
     s.serialize("dimension", dimensionMetaData_.get());
@@ -78,7 +84,7 @@ void ProcessorWidgetMetaData::deserialize(IvwDeserializer& d) {
     ivec2 position, dimension;
     bool visibility;
 
-    CompositeMetaData::deserialize(d);
+ //   CompositeMetaData::deserialize(d);
     d.deserialize("type", className, true);
     d.deserialize("position", position);
     d.deserialize("dimension", dimension);

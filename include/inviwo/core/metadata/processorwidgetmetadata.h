@@ -17,13 +17,13 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/metadata/compositemetadata.h>
+#include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/metadata/positionmetadata.h>
 
 
 namespace inviwo {
 
-class IVW_CORE_API ProcessorWidgetMetaData : public CompositeMetaData {
+class IVW_CORE_API ProcessorWidgetMetaData : public MetaData {
 
 public:
     ProcessorWidgetMetaData();
