@@ -49,7 +49,7 @@ TEST(CommandLineParserTest,InviwoApplicationsParserTest){
     EXPECT_FALSE(clp->getRunPythonScriptAfterStartup());
     EXPECT_FALSE(clp->getQuitApplicationAfterStartup());
     EXPECT_FALSE(clp->getLoadWorkspaceFromArg());
-    EXPECT_TRUE(clp->getShowSplashScreen());
+ //   EXPECT_TRUE(clp->getShowSplashScreen());
 }
 
 
