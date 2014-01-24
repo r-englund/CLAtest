@@ -45,7 +45,8 @@ public:
     };
 
     virtual Result eval(const QString &text,const int &previousBlockState) = 0;
-
+    SyntaxFormater(){}
+    virtual ~SyntaxFormater(){}
 };
 
 class IVW_QTWIDGETS_API SyntaxHighligther : public QSyntaxHighlighter{
@@ -53,8 +54,9 @@ class IVW_QTWIDGETS_API SyntaxHighligther : public QSyntaxHighlighter{
 public:	
     template<SyntaxType T> void setSyntax();
     template<SyntaxType T> static SyntaxHighligther* createSyntaxHighligther(QTextDocument* parent);
-
+    virtual ~SyntaxHighligther();
 protected:
+    void clearFormaters();
     SyntaxHighligther(QTextDocument* parent);
 	void highlightBlock(const QString& text);
 
@@ -65,7 +67,8 @@ private:
 };	
 
 template<SyntaxType T> void SyntaxHighligther::setSyntax(){
-    formaters_.clear();
+    clearFormaters();
+    
     loadConfig<T>();
 }
 
@@ -75,7 +78,6 @@ template<SyntaxType T> SyntaxHighligther* SyntaxHighligther::createSyntaxHighlig
     s->loadConfig<T>();
     return s;
 }
-
 
 template<> void SyntaxHighligther::loadConfig<None>();
 template<> void SyntaxHighligther::loadConfig<GLSL>();

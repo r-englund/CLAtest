@@ -27,6 +27,17 @@ SyntaxHighligther::SyntaxHighligther(QTextDocument* parent):QSyntaxHighlighter(p
 
 }
 
+SyntaxHighligther::~SyntaxHighligther(){
+    clearFormaters();
+}
+
+void SyntaxHighligther::clearFormaters(){
+    while (!formaters_.empty()){
+        delete formaters_.back();
+        formaters_.pop_back();
+    }
+}
+
 void SyntaxHighligther::highlightBlock(const QString& text){
     setFormat(0,text.size(),defaultFormat_);
     std::vector<SyntaxFormater*>::iterator it;
