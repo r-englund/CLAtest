@@ -60,6 +60,26 @@ void Processor::addPort(Outport& port, std::string portDependencySet) {
     addPort(&port, portDependencySet);
 }
 
+void Processor::setIdentifier(const std::string& identifier) { 
+    identifier_ = identifier; 
+}
+
+std::string Processor::getIdentifier() const { 
+    return identifier_; 
+}
+
+void Processor::setProcessorWidget(ProcessorWidget* processorWidget) { 
+    processorWidget_ = processorWidget; 
+}
+
+ProcessorWidget* Processor::getProcessorWidget() { 
+    return processorWidget_;
+}
+
+bool Processor::hasProcessorWidget() { 
+    return (processorWidget_ != 0); 
+}
+
 Port* Processor::getPort(std::string identifier) {
     for (std::vector<Inport*>::iterator it = inports_.begin(); it != inports_.end(); ++it)
         if((*it)->getIdentifier() == identifier)
@@ -82,6 +102,14 @@ Outport* Processor::getOutport(std::string identifier) {
         if((*it)->getIdentifier() == identifier)
             return (*it);
     return NULL;
+}
+
+std::vector<Inport*> Processor::getInports() { 
+    return inports_; 
+}
+
+std::vector<Outport*> Processor::getOutports() { 
+    return outports_; 
 }
 
 std::vector<Port*> Processor::getPortsByDependencySet(std::string portDependencySet) {
@@ -129,12 +157,24 @@ void Processor::deinitialize() {
     initialized_ = false;
 }
 
+bool Processor::isInitialized() { 
+    return initialized_; 
+}
+
 void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     notifyObserversInvalidationBegin(this);
     PropertyOwner::invalidate(invalidationLevel);
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
         (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);
     notifyObserversInvalidationEnd(this);
+}
+
+bool Processor::isEndProcessor() { 
+    return outports_.empty(); 
+}
+
+bool Processor::isReady() const { 
+    return allInportsAreReady(); 
 }
 
 void Processor::process() {
@@ -151,6 +191,14 @@ void Processor::removeInteractionHandler(InteractionHandler* interactionHandler)
             interactionHandlers_.erase(interactionHandlers_.begin()+i);
             i = interactionHandlers_.size();
         }
+}
+
+bool Processor::hasInteractionHandler() { 
+    return (interactionHandlers_.size() != 0); 
+}
+
+std::vector<InteractionHandler*> Processor::getInteractionHandlers() const { 
+    return interactionHandlers_;
 }
 
 void Processor::invokeInteractionEvent(Event* event) {

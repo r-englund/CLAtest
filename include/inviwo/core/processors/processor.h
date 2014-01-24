@@ -55,38 +55,37 @@ public:
    
     InviwoProcessorInfo();
 
-    void setIdentifier(const std::string& identifier) { identifier_ = identifier; }
-    std::string getIdentifier() const { return identifier_; }
+    void setIdentifier(const std::string& identifier);
+    std::string getIdentifier() const;
 
-    void setProcessorWidget(ProcessorWidget* processorWidget) { processorWidget_ = processorWidget; }
-    ProcessorWidget* getProcessorWidget() { return processorWidget_; }
-    bool hasProcessorWidget() { return (processorWidget_ != 0); }
+    void setProcessorWidget(ProcessorWidget* processorWidget);
+    ProcessorWidget* getProcessorWidget();
+    bool hasProcessorWidget();
 
     MetaData* getMetaData(std::string meta);
 
     virtual void initialize();
     virtual void deinitialize();
-    bool isInitialized() { return initialized_; }
-
-    virtual void process();
-
-    virtual bool isEndProcessor() { return false; }
+    bool isInitialized();
 
     Port* getPort(std::string identifier);
     Inport* getInport(std::string identifier);
     Outport* getOutport(std::string identifier);
 
-    std::vector<Inport*> getInports() { return inports_; }
-    std::vector<Outport*> getOutports() { return outports_; }
+    std::vector<Inport*> getInports();
+    std::vector<Outport*> getOutports();
     std::vector<std::string> getPortDependencySets();
     std::vector<Port*> getPortsByDependencySet(std::string portDependencySet);
     std::string getPortDependencySet(Port* port);
 
     bool allInportsConnected() const;
-	bool allInportsAreReady() const;
+    bool allInportsAreReady() const;
 
-    virtual bool isReady() const { return allInportsAreReady(); }
+    virtual bool isEndProcessor();
+    virtual bool isReady() const;
 
+    virtual void process();
+    
     //Triggers invalidation. 
     //Perform only full reimplementation of this function, meaning never call Proccessor::invalidate()
     //in your reimplemented invalidation function.
@@ -97,15 +96,14 @@ public:
 
     void addInteractionHandler(InteractionHandler* interactionHandler);
     void removeInteractionHandler(InteractionHandler* interactionHandler);
-    inline bool hasInteractionHandler() { return (interactionHandlers_.size() != 0); }
-	std::vector<InteractionHandler*> getInteractionHandlers() const { return interactionHandlers_; }
+    bool hasInteractionHandler();
+	std::vector<InteractionHandler*> getInteractionHandlers() const;
     void invokeInteractionEvent(Event* event);
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 protected:
-
     void addPort(Inport* port, std::string portDependencySet="default");
     void addPort(Inport& port, std::string portDependencySet="default");
 
