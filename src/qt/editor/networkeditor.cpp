@@ -906,7 +906,7 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         linkCurve_ = 0;
 
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
-        if (endProcessor_) {
+        if (startProcessor_!=endProcessor_ && endProcessor_ ) {
             addLink(startProcessor_->getProcessor(), endProcessor_->getProcessor());
             LinkConnectionGraphicsItem* linkGraphicsItem = getLinkGraphicsItem(startProcessor_->getProcessor(), endProcessor_->getProcessor());
             showLinkDialog(linkGraphicsItem);

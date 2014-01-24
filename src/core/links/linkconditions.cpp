@@ -61,7 +61,7 @@ bool AutoLinker::canLink(Property* src, Property *dst, LinkingConditions givenCo
     if ( (givenConditions&LinkMatchingId) && PartiallyMatchingIdCondition::canLink(src, dst)) 
         satisfiedConditions |= ((int) LinkMatchingId);
 
-    if (givenConditions == satisfiedConditions)
+    if (givenConditions == satisfiedConditions && givenConditions)
         return true;
 
 	return false;
