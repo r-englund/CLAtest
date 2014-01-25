@@ -93,7 +93,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     interpolationSelector_ = new QComboBox();
     interpolationSelector_->addItem("linear interpolation");
     interpolationSelector_->addItem("cubic interpolation");
-    interpolationSelector_->setCurrentIndex(int(tfProperty_->get().getInterpolationType()));
+    interpolationSelector_->setCurrentIndex(tfProperty_->get().getInterpolationType());
     connect(interpolationSelector_, SIGNAL(currentIndexChanged(int)), this, SLOT(switchInterpolationType(int)));
 
     QGridLayout* gridLayout = new QGridLayout();
@@ -129,7 +129,7 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
     }
     if (tfProperty_->getMask().y < 1.0f) {
         tfPainter.fillRect(static_cast<int>(tfProperty_->getMask().y*gradientWidth), 0, 
-            static_cast<int>(tfEditor_->width()-(tfProperty_->getMask().y*gradientWidth)), 20, QColor(25,25,25,150));
+                           static_cast<int>(gradientWidth-(tfProperty_->getMask().y*gradientWidth)+10), 20, QColor(25,25,25,150));
         tfPainter.drawLine(static_cast<int>(tfProperty_->getMask().y*gradientWidth), 0, static_cast<int>(tfProperty_->getMask().y*gradientWidth), 20);
     }
     tfPreview_->setPixmap(*tfPixmap_);

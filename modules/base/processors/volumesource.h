@@ -36,6 +36,13 @@ protected:
 private:
     VolumeOutport volumePort_;
     FileProperty volumeFile_;
+
+    IntVec2Property dataRange_;
+    FloatVec2Property valueRange_;
+    StringProperty valueUnit_;
+
+    void invalidateOutput();
+    void updateRangeProperties(Volume* volume);
 };
 
 } // namespace
