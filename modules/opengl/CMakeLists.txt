@@ -26,6 +26,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/texturecallback.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.h

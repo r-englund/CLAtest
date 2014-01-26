@@ -73,7 +73,9 @@ class SingleCallBack {
 public:
     SingleCallBack() : callBack_(0) {}
 
-    virtual ~SingleCallBack(){delete callBack_;}
+    virtual ~SingleCallBack(){ 
+        delete callBack_;
+    }
 
     void invoke() const{
         if (callBack_)
@@ -82,6 +84,8 @@ public:
 
     template <typename T>
     void addMemberFunction(T* o, void (T::*m)()){
+        if(callBack_)
+            delete callBack_;
         callBack_ = new MemberFunctionCallBack<T>(o,m);
     }
 

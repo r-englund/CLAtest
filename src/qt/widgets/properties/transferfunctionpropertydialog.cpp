@@ -139,7 +139,7 @@ void TransferFunctionPropertyDialog::updateFromProperty() {
     TransferFunction transFunc = tfProperty_->get();
     QVector<QGradientStop> gradientStops;
     for (size_t i=0; i<transFunc.getNumDataPoints(); i++) {
-        TransferFunctionDataPoint* curPoint = transFunc.getPoint(i);
+        TransferFunctionDataPoint* curPoint = transFunc.getPoint(static_cast<int>(i));
         vec4 curColor = curPoint->getRGBA();
         gradientStops.append(QGradientStop(curPoint->getPos().x,
                                            QColor::fromRgbF(curColor.r, curColor.g, curColor.b, 1.0)));

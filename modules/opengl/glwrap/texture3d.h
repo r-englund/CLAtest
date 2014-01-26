@@ -22,8 +22,6 @@
 
 namespace inviwo {
 
-IVW_MODULE_OPENGL_API void default3DTextureParemeterFunction(Texture*);
-
 class IVW_MODULE_OPENGL_API Texture3D : public Texture {
 
 public:
@@ -41,7 +39,12 @@ public:
 
     void upload(const void* data);
 
+    void uploadAndResize(const void* data, const uvec3& dim);
+
     const uvec3& getDimension() const { return dimensions_; }
+
+protected:
+    void default3DTextureParameterFunction(Texture*);
 
 private:
     uvec3 dimensions_;

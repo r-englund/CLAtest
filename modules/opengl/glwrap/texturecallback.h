@@ -12,59 +12,57 @@
  *
  **********************************************************************/
 
-#ifndef IVW_PICKINGCALLBACK_H
-#define IVW_PICKINGCALLBACK_H
+#ifndef IVW_TEXTURECALLBACK_H
+#define IVW_TEXTURECALLBACK_H
 
 #include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 
-class PickingObject;
+class Texture;
 
-class BasePickingCallBack {
+class BaseTextureCallBack {
 public:
-    virtual void invoke(const PickingObject*) const=0;
+    virtual void invoke(Texture*) const=0;
 };
 
 template <typename T>
-class MemberFunctionPickingCallback : public BasePickingCallBack {
+class MemberFunctionTextureCallback : public BaseTextureCallBack {
 public:
-    typedef void (T::*fPointerPicking)(const PickingObject*);
+    typedef void (T::*fPointerTexture)(Texture*);
 
-    MemberFunctionPickingCallback(T* obj, fPointerPicking functionPtr) 
+    MemberFunctionTextureCallback(T* obj, fPointerTexture functionPtr) 
         : functionPtr_(functionPtr)
         , obj_(obj){}
 
-    void invoke(const PickingObject* p) const{
+    void invoke(Texture* p) const{
         if (functionPtr_) (*obj_.*functionPtr_)(p);
     }
 
 private:
-    fPointerPicking functionPtr_;
+    fPointerTexture functionPtr_;
     T* obj_;
 };
 
-class PickingCallback {
+class TextureCallback {
 public:
-    PickingCallback() : callBack_(0) {}
+    TextureCallback() : callBack_(0) {}
 
-    void invoke(const PickingObject* p) const{
+    void invoke(Texture* p) const{
         if (callBack_)
             callBack_->invoke(p);
     }
 
     template <typename T>
-    void addMemberFunction(T* o, void (T::*m)(const PickingObject*)){
-        if (callBack_)
-            delete callBack_;
-        callBack_ = new MemberFunctionPickingCallback<T>(o,m);
+    void addMemberFunction(T* o, void (T::*m)(Texture*)){
+        callBack_ = new MemberFunctionTextureCallback<T>(o,m);
     }
 
 private:
-    BasePickingCallBack* callBack_;
+    BaseTextureCallBack* callBack_;
 };
 
 
 } // namespace
 
-#endif // IVW_PICKINGCALLBACK_H
+#endif // IVW_TEXTURECALLBACK_H

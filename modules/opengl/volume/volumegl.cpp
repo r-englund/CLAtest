@@ -65,6 +65,11 @@ void VolumeGL::unbindTexture() const{
     volumeTexture_->unbind();
 }
 
+void VolumeGL::setDimension(uvec3 dimensions){
+    dimensions_ = dimensions;
+    volumeTexture_->uploadAndResize(NULL, dimensions_);
+}
+
 Texture3D* VolumeGL::getTexture() { 
     return volumeTexture_; 
 }

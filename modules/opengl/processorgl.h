@@ -88,7 +88,7 @@ public:
         glPopMatrix();
     }
 
-    static inline void renderImagePlaneRectInstanced(int instances) {
+    static inline void renderImagePlaneRect(int instances) {
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
@@ -97,7 +97,7 @@ public:
         glLoadIdentity();
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_ALWAYS);
-        CanvasGL::renderImagePlaneRectInstanced(instances);
+        CanvasGL::renderImagePlaneRect(instances);
         glDepthFunc(GL_LESS);
         glPopMatrix();
         glMatrixMode(GL_MODELVIEW);

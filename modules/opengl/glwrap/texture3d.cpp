@@ -16,26 +16,18 @@
 
 namespace inviwo {
 
-void default3DTextureParemeterFunction(Texture* tex){
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, tex->getFiltering());
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, tex->getFiltering());
-}
-
 Texture3D::Texture3D(uvec3 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level)
     : Texture(GL_TEXTURE_3D, glFormat, filtering, level)
     , dimensions_(dimensions) 
 {
-    setTextureParameterFunction(&default3DTextureParemeterFunction);
+    setTextureParameterFunction(this, &Texture3D::default3DTextureParameterFunction);
 }
 
 Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level)
     : Texture(GL_TEXTURE_3D, format, internalformat, dataType, filtering, level)
     , dimensions_(dimensions)
 {
-    setTextureParameterFunction(&default3DTextureParemeterFunction);
+    setTextureParameterFunction(this, &Texture3D::default3DTextureParameterFunction);
 }
 
 Texture3D::Texture3D(const Texture3D& rhs)
@@ -68,7 +60,7 @@ void Texture3D::initialize(const void* data) {
     // Allocate data
     bind();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    (*texParameterFunction_)(this);
+    texParameterCallback_->invoke(this);
     glTexImage3D(GL_TEXTURE_3D, level_, internalformat_, dimensions_.x, dimensions_.y, dimensions_.z, 0, format_, dataType_, data);
     LGL_ERROR;
 }
@@ -82,5 +74,19 @@ void Texture3D::upload(const void* data) {
     glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, dimensions_.x, dimensions_.y, dimensions_.z, format_, dataType_, data);  
     LGL_ERROR;
 }
+
+void Texture3D::uploadAndResize(const void* data, const uvec3& dim) {
+    dimensions_ = dim;
+    initialize(data);
+}
+
+void Texture3D::default3DTextureParameterFunction(Texture* tex){
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, tex->getFiltering());
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, tex->getFiltering());
+}
+
 
 } // namespace

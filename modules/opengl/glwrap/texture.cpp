@@ -23,7 +23,7 @@ Texture::Texture(GLenum target, GLFormats::GLFormat glFormat, GLenum filtering, 
     , dataType_(glFormat.type)
     , filtering_(filtering)
     , level_(level)
-    , texParameterFunction_(NULL)
+    , texParameterCallback_(new TextureCallback())
     , dataInReadBackPBO_(false)
 {
     glGenTextures(1, &id_);
@@ -40,7 +40,7 @@ Texture::Texture(GLenum target, GLint format, GLint internalformat, GLenum dataT
     , dataType_(dataType)
     , filtering_(filtering)
     , level_(level)
-    , texParameterFunction_(NULL)
+    , texParameterCallback_(new TextureCallback())
     , dataInReadBackPBO_(false)
 {
     glGenTextures(1, &id_);
@@ -57,7 +57,7 @@ Texture::Texture(const Texture& other)
     , dataType_(other.dataType_)
     , filtering_(other.filtering_)
     , level_(other.level_)
-    , texParameterFunction_(other.texParameterFunction_)
+    , texParameterCallback_(new TextureCallback())
     , byteSize_(other.byteSize_)
     , numChannels_(other.numChannels_)
     , dataInReadBackPBO_(false)
@@ -83,6 +83,7 @@ Texture& Texture::operator=(const Texture& rhs) {
 Texture::~Texture() {
     glDeleteTextures(1, &id_);
     glDeleteBuffers(1, &pboBack_);
+    delete texParameterCallback_;
     LGL_ERROR;
 }
 
@@ -120,10 +121,6 @@ GLuint Texture::getNChannels() const {
 
 GLuint Texture::getSizeInBytes() const { 
     return byteSize_; 
-}
-
-void Texture::setTextureParameterFunction(texParameterFunc f){
-    texParameterFunction_ = f;
 }
 
 void Texture::bind() const{

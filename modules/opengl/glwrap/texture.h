@@ -17,14 +17,13 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/glwrap/texturecallback.h>
 
 namespace inviwo {
 
 class IVW_MODULE_OPENGL_API Texture {
 
 public:
-    typedef void (*texParameterFunc)(Texture*);
-
     Texture(GLenum, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);
     Texture(GLenum, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level = 0);
     Texture(const Texture& other);
@@ -49,7 +48,10 @@ public:
     GLuint getNChannels() const;
     GLuint getSizeInBytes() const;
 
-    void setTextureParameterFunction(texParameterFunc);
+    template <typename T>
+    void setTextureParameterFunction(T* o, void (T::*m)(Texture*)) {
+        texParameterCallback_->addMemberFunction(o,m);
+    }
 
     void bind() const;
     void unbind() const;
@@ -80,7 +82,7 @@ protected:
     GLenum filtering_;
     GLint level_;
 
-    texParameterFunc texParameterFunction_;
+    TextureCallback* texParameterCallback_;
 
 private:
     GLuint id_;

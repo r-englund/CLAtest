@@ -194,7 +194,7 @@ const T* Data::createNewRepresentationUsingConverters() const{
                  it != itEnd; ++it) {
                 if (result != *it && (*converterIt)->canConvertTo(*it)) {
                     (*converterIt)->update(result, *it);
-                    setRepresentationAsValid(representations_.size()-static_cast<int>(itEnd-it));
+                    setRepresentationAsValid(static_cast<int>(representations_.size())-static_cast<int>(itEnd-it));
                     result = *it;
                     updatedRepresentation = true;
                     break;

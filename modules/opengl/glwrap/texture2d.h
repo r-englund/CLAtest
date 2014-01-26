@@ -25,8 +25,6 @@
 
 namespace inviwo {
 
-IVW_MODULE_OPENGL_API void default2DTextureParemeterFunction(Texture*);
-
 class IVW_MODULE_OPENGL_API Texture2D : public Texture, public Observable<TextureObserver>, public ReferenceCounter {
 
 public:
@@ -52,6 +50,8 @@ public:
 protected:
     void setWidth(int x) { dimensions_.x = x; }
     void setHeight(int y) { dimensions_.y = y; }
+
+    void default2DTextureParameterFunction(Texture*);
 
 private:
     uvec2 dimensions_;

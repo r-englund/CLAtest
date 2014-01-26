@@ -16,25 +16,18 @@
 
 namespace inviwo {
 
-void default2DTextureParemeterFunction(Texture* tex){
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex->getFiltering());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex->getFiltering());
-}
-
 Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level)
     : Texture(GL_TEXTURE_2D, glFormat, filtering, level), Observable<TextureObserver>(), ReferenceCounter()
     , dimensions_(dimensions) 
 {
-    setTextureParameterFunction(&default2DTextureParemeterFunction);
+    setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level)
     : Texture(GL_TEXTURE_2D, format, internalformat, dataType, filtering, level), Observable<TextureObserver>(), ReferenceCounter()
     , dimensions_(dimensions) 
 {
-    setTextureParameterFunction(&default2DTextureParemeterFunction);
+    setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
 }
 
 Texture2D::Texture2D(const Texture2D& rhs)
@@ -75,7 +68,7 @@ void Texture2D::initialize(const void* data) {
         static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();    
     }
     bind();
-    (*texParameterFunction_)(this);
+    texParameterCallback_->invoke(this);
     glTexImage2D(GL_TEXTURE_2D, level_, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, data);
     LGL_ERROR;
     for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
@@ -98,6 +91,13 @@ void Texture2D::resize(uvec2 dimension) {
     setWidth(dimension.x);
     setHeight(dimension.y);
     initialize(NULL);
+}
+
+void Texture2D::default2DTextureParameterFunction(Texture* tex){
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex->getFiltering());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex->getFiltering());
 }
 
 } // namespace
