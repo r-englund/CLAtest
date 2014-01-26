@@ -184,10 +184,28 @@ const T* Data::createNewRepresentationUsingConverters() const{
     }
 
     if (converterPackage) {
-        for (int i=0; i<static_cast<int>(converterPackage->getNumberOfConverters()); ++i) { 
-            result = converterPackage->createFrom(result);
-            representations_.push_back(result);
-            setRepresentationAsValid(static_cast<int>(representations_.size())-1);
+        const std::vector<RepresentationConverter*>* converters = converterPackage->getConverters();
+        for (std::vector<RepresentationConverter*>::const_iterator converterIt = converters->begin(),
+             converterEnd = converters->end(); converterIt != converterEnd; ++converterIt) { 
+            // Check if we already have the destination representation 
+            // and can update to it instead of creating a new
+            bool updatedRepresentation = false;
+            for (std::vector<DataRepresentation*>::const_iterator it = representations_.begin(), itEnd = representations_.end(); 
+                 it != itEnd; ++it) {
+                if (result != *it && (*converterIt)->canConvertTo(*it)) {
+                    (*converterIt)->update(result, *it);
+                    setRepresentationAsValid(representations_.size()-static_cast<int>(itEnd-it));
+                    result = *it;
+                    updatedRepresentation = true;
+                    break;
+                }
+            }
+            // Create the representation if it did not exist
+            if (!updatedRepresentation) {
+                result = (*converterIt)->createFrom(result);
+                representations_.push_back(result);
+                setRepresentationAsValid(static_cast<int>(representations_.size())-1);
+            }
         }
         lastValidRepresentation_ = result;
         newRepresentationCreated();
