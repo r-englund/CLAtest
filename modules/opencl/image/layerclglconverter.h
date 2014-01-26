@@ -60,6 +60,19 @@ public:
     void update(const DataRepresentation* source, DataRepresentation* destination);
 };
 
+class IVW_MODULE_OPENCL_API LayerCLGL2CLConverter : public RepresentationConverterType<LayerCL> {
+
+public:
+    LayerCLGL2CLConverter() : RepresentationConverterType<LayerCL>() {};
+    virtual ~LayerCLGL2CLConverter(){};
+
+    inline bool canConvertFrom(const DataRepresentation* source) const {
+        return dynamic_cast<const LayerCLGL*>(source) != NULL;
+    }
+    DataRepresentation* createFrom(const DataRepresentation* source);
+    void update(const DataRepresentation* source, DataRepresentation* destination);
+};
+
 class IVW_MODULE_OPENCL_API LayerGL2CLGLConverter : public RepresentationConverterType<LayerCLGL> {
 
 public:
@@ -68,18 +81,6 @@ public:
 
     inline bool canConvertFrom(const DataRepresentation* source) const {
         return dynamic_cast<const LayerGL*>(source) != NULL;
-    }
-    DataRepresentation* createFrom(const DataRepresentation* source);
-    void update(const DataRepresentation* source, DataRepresentation* destination);
-};
-
-class IVW_MODULE_OPENCL_API LayerCLGL2CLConverter : public RepresentationConverterType<LayerCL> {
-public:
-    LayerCLGL2CLConverter() : RepresentationConverterType<LayerCL>() {};
-    virtual ~LayerCLGL2CLConverter() {};
-
-    inline bool canConvertFrom(const DataRepresentation* source) const {
-        return dynamic_cast<const LayerCLGL*>(source) != NULL;
     }
     DataRepresentation* createFrom(const DataRepresentation* source);
     void update(const DataRepresentation* source, DataRepresentation* destination);

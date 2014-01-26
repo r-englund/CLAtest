@@ -40,11 +40,12 @@ LayerCLResizer::LayerCLResizer() {
             cl::NullRange, NULL, &event);
     
         event.wait();
+#if IVW_PROFILING
+		LogInfoCustom("LayerCLResizer", "Image resizing from (" << src.getImageInfo<CL_IMAGE_WIDTH>() << ", " << src.getImageInfo<CL_IMAGE_HEIGHT>() << ") to (" << resizeToDimension.x << ", " << resizeToDimension.y << ") in " << event.getElapsedTime() << " ms");
+#endif
     } catch (cl::Error& err) {
         LogErrorCustom("LayerCLResizer", getCLErrorString(err));
     }
-    #if IVW_PROFILING
-    LogInfoCustom("LayerCLResizer", "Image resizing from (" << src.getImageInfo<CL_IMAGE_WIDTH>() << ", " << src.getImageInfo<CL_IMAGE_HEIGHT>() << ") to (" << resizeToDimension.x << ", " << resizeToDimension.y << ") in " << event.getElapsedTime() << " ms");
-    #endif
+
  }
 } // namespace

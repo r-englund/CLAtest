@@ -77,6 +77,9 @@ void EntryExitPointsCL::process() {
 	vec4 camPosInTextureSpace = worldToTexMat*vec4(camera_.getLookFrom(), 1.f);
 	try
 	{
+#if IVW_PROFILING
+		cl::Event profilingEvent;
+#endif
 		cl_uint arg = 0;
 		capNearClippingPrg_->setArg(arg++, NDCToTextureMat);
 		capNearClippingPrg_->setArg(arg++, camPosInTextureSpace);
@@ -84,7 +87,14 @@ void EntryExitPointsCL::process() {
 		capNearClippingPrg_->setArg(arg++, *entryPointsCL->getLayerCL());
 		capNearClippingPrg_->setArg(arg++, *exitPointsCL->getLayerCL());
 
+		
+#if IVW_PROFILING
+		OpenCL::instance()->getQueue().enqueueNDRangeKernel(*capNearClippingPrg_, cl::NullRange, static_cast<glm::svec2>(outportDim), cl::NullRange, NULL, &profilingEvent);
+		profilingEvent.wait();
+		LogInfo("Exec time: " << profilingEvent.getElapsedTime() << " ms");
+#else 
 		OpenCL::instance()->getQueue().enqueueNDRangeKernel(*capNearClippingPrg_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+#endif
 	} catch (cl::Error& err) {
 		LogError(getCLErrorString(err));
 	}

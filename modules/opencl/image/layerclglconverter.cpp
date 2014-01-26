@@ -27,8 +27,7 @@ LayerRAM2CLGLConverter::LayerRAM2CLGLConverter()
 }
 
 LayerCLGL2RAMConverter::LayerCLGL2RAMConverter()
-    : RepresentationConverterType<LayerRAM>()
-{
+    : RepresentationConverterType<LayerRAM>() {
 }
 
 
@@ -78,8 +77,36 @@ void LayerCLGL2GLConverter::update( const DataRepresentation* source, DataRepres
     // Do nothing since they share data
 }
 
-DataRepresentation* LayerGL2CLGLConverter::createFrom(const DataRepresentation* source )
-{
+DataRepresentation* LayerCLGL2CLConverter::createFrom(const DataRepresentation* source) {
+#ifdef _DEBUG
+    LogWarn("Performance warning: Use shared CLGL representation instead of CL ");
+#endif
+    DataRepresentation* destination = 0;
+    const LayerCLGL* src = static_cast<const LayerCLGL*>(source);
+    destination = new LayerCL(src->getDimension(), src->getLayerType(), src->getDataFormat());
+    {SyncCLGL glSync;
+    src->aquireGLObject(glSync.getGLSyncEvent());
+    OpenCL::instance()->getQueue().enqueueCopyImage(src->get(), static_cast<LayerCL*>(destination)->get(), glm::svec3(0), glm::svec3(0), glm::svec3(src->getDimension(), 1));
+    src->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
+    }
+    return destination;
+}
+
+void LayerCLGL2CLConverter::update( const DataRepresentation* source, DataRepresentation* destination ) {
+    const LayerCLGL* src = static_cast<const LayerCLGL*>(source);
+    LayerCL* dst = static_cast<LayerCL*>(destination);
+    if(src->getDimension() != dst->getDimension()) {
+        dst->setDimension(src->getDimension());
+    }
+    {SyncCLGL glSync;
+    src->aquireGLObject(glSync.getGLSyncEvent());
+    OpenCL::instance()->getQueue().enqueueCopyImage(src->get(), dst->get(), glm::svec3(0), glm::svec3(0), glm::svec3(src->getDimension(), 1));
+    src->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
+    }
+}
+
+
+DataRepresentation* LayerGL2CLGLConverter::createFrom(const DataRepresentation* source ) {
     DataRepresentation* destination = 0;
     const LayerGL* layerGL = static_cast<const LayerGL*>(source);
     destination = new LayerCLGL(layerGL->getDimension(), layerGL->getLayerType(), layerGL->getDataFormat(), const_cast<Texture2D*>(layerGL->getTexture()));
@@ -87,7 +114,6 @@ DataRepresentation* LayerGL2CLGLConverter::createFrom(const DataRepresentation* 
 }
 
 void LayerGL2CLGLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-
     const LayerGL* layerSrc = static_cast<const LayerGL*>(source);
     LayerCLGL* layerDst = static_cast<LayerCLGL*>(destination);
     if(layerSrc->getDimension() != layerDst->getDimension()) {
@@ -95,37 +121,7 @@ void LayerGL2CLGLConverter::update(const DataRepresentation* source, DataReprese
     }
 }
 
-
-DataRepresentation* LayerCLGL2CLConverter::createFrom(const DataRepresentation* source )
-{
-    DataRepresentation* destination = 0;
-    const LayerCLGL* layerCLGL = static_cast<const LayerCLGL*>(source);
-    uvec2 dimension = layerCLGL->getDimension();;
-    destination = new LayerCL(dimension, layerCLGL->getLayerType(), layerCLGL->getDataFormat());
-    SyncCLGL glSync;
-    layerCLGL->aquireGLObject(glSync.getGLSyncEvent());
-    OpenCL::instance()->getQueue().enqueueCopyImage(layerCLGL->get(), static_cast<LayerCL*>(destination)->get(), glm::svec3(0), glm::svec3(0), glm::svec3(dimension, 1));
-    layerCLGL->releaseGLObject(glSync.getGLSyncEvent());
-
-    return destination;
-}
-void LayerCLGL2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-    const LayerCLGL* layerSrc = static_cast<const LayerCLGL*>(source);
-    LayerCL* layerDst = static_cast<LayerCL*>(destination);
-    if(layerSrc->getDimension() != layerDst->getDimension()) {
-        layerDst->setDimension(layerSrc->getDimension());
-    }
-    SyncCLGL glSync;
-    layerSrc->aquireGLObject(glSync.getGLSyncEvent());
-    OpenCL::instance()->getQueue().enqueueCopyImage(layerSrc->get(), layerDst->get(), glm::svec3(0), glm::svec3(0), glm::svec3(layerSrc->getDimension(), 1));
-    layerSrc->releaseGLObject(glSync.getGLSyncEvent());
-
-}
-
-
-
-LayerCL2CLGLConverter::LayerCL2CLGLConverter() : RepresentationConverterPackage<LayerCLGL>()
-{
+LayerCL2CLGLConverter::LayerCL2CLGLConverter() : RepresentationConverterPackage<LayerCLGL>() {
     addConverter(new LayerCL2RAMConverter());
     addConverter(new LayerRAM2GLConverter());
     addConverter(new LayerGL2CLGLConverter());
