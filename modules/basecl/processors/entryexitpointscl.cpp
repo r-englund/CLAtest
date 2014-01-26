@@ -16,7 +16,9 @@
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opencl/image/imagecl.h>
+#include <modules/opencl/image/imageclgl.h>
 #include <modules/opencl/kernelmanager.h>
+#include <modules/opencl/syncclgl.h>
 
 namespace inviwo {
 
@@ -25,21 +27,21 @@ ProcessorCategory(EntryExitPointsCL, "Geometry Rendering");
 ProcessorCodeState(EntryExitPointsCL, CODE_STATE_STABLE);
 
 EntryExitPointsCL::EntryExitPointsCL()
-    : Processor(),
-    geometryPort_("geometry"),
-
-    //entryPort_("entry-points"),
-    //exitPort_("exit-points"),
-    // Temporally disabled /Peter
-    entryPort_("entry-points", COLOR_DEPTH, DataVec4FLOAT32::get()), // Using 8-bits will create artifacts when entering the volume
-    exitPort_("exit-points", COLOR_DEPTH, DataVec4FLOAT32::get()),
-    camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    : Processor()
+    , geometryPort_("geometry")
+    , entryPort_("entry-points", COLOR_DEPTH, DataVec4FLOAT32::get()) // Using 8-bits will create artifacts when entering the volume
+    , exitPort_("exit-points", COLOR_DEPTH, DataVec4FLOAT32::get())
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    , workGroupSize_("wgsize", "Work group size", ivec2(8, 8), ivec2(0), ivec2(256))
+    , useGLSharing_("glsharing", "Use OpenGL sharing", true)
 {
     addPort(geometryPort_);
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
 
     addProperty(camera_);
+    addProperty(workGroupSize_);
+    addProperty(useGLSharing_);
 	addInteractionHandler(new Trackball(&camera_));
     entryPort_.addResizeEventListener(&camera_);
 }
@@ -51,9 +53,7 @@ void EntryExitPointsCL::initialize() {
 
 	try {
 		cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl/entryexitpoints.cl");
-		capNearClippingPrg_ = KernelManager::getRef().getKernel(program, "entryexitpoints");
-
-
+		entryExitKernel_ = KernelManager::getRef().getKernel(program, "entryexitpoints");
 	} catch (cl::Error&) {
 
 	}
@@ -71,34 +71,53 @@ void EntryExitPointsCL::process() {
 	// thus we must transform from camera to world to texture coordinates
     mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
 	uvec2 outportDim = exitPort_.getDimension();
-	ImageCL* entryPointsCL = entryPort_.getData()->getEditableRepresentation<ImageCL>();
-	ImageCL* exitPointsCL = exitPort_.getData()->getEditableRepresentation<ImageCL>();
+
 	mat4 NDCToTextureMat = worldToTexMat*camera_.inverseViewMatrix()*camera_.inverseProjectionMatrix();
 	vec4 camPosInTextureSpace = worldToTexMat*vec4(camera_.getLookFrom(), 1.f);
-	try
-	{
 #if IVW_PROFILING
-		cl::Event profilingEvent;
-#endif
-		cl_uint arg = 0;
-		capNearClippingPrg_->setArg(arg++, NDCToTextureMat);
-		capNearClippingPrg_->setArg(arg++, camPosInTextureSpace);
-		capNearClippingPrg_->setArg(arg++, vec2(camera_.getNearPlaneDist(), camera_.getFarPlaneDist()));
-		capNearClippingPrg_->setArg(arg++, *entryPointsCL->getLayerCL());
-		capNearClippingPrg_->setArg(arg++, *exitPointsCL->getLayerCL());
-
-		
-#if IVW_PROFILING
-		OpenCL::instance()->getQueue().enqueueNDRangeKernel(*capNearClippingPrg_, cl::NullRange, static_cast<glm::svec2>(outportDim), cl::NullRange, NULL, &profilingEvent);
-		profilingEvent.wait();
-		LogInfo("Exec time: " << profilingEvent.getElapsedTime() << " ms");
+    cl::Event* profilingEvent = new cl::Event(); 
 #else 
-		OpenCL::instance()->getQueue().enqueueNDRangeKernel(*capNearClippingPrg_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+    cl::Event* profilingEvent = NULL;
 #endif
-	} catch (cl::Error& err) {
-		LogError(getCLErrorString(err));
-	}
+    if (useGLSharing_.get()) {
+        SyncCLGL glSync;
+        const cl::Image2D& entry = entryPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL()->get();
+        const cl::Image2D& exit = exitPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL()->get();
+        computeEntryExitPoints(NDCToTextureMat, camPosInTextureSpace, entry, exit, outportDim, profilingEvent);
+    } else {
+        const cl::Image2D& entry = entryPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
+        const cl::Image2D& exit = exitPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
+        computeEntryExitPoints(NDCToTextureMat, camPosInTextureSpace, entry, exit, outportDim, profilingEvent);
+    }
+#if IVW_PROFILING
+    try {
+        profilingEvent->wait();
+        LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms");
+    } catch (cl::Error& err) {
+        LogError(getCLErrorString(err));
+    }
+    delete profilingEvent;
+#endif
 
+}
+
+void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, const vec4& camPosInTextureSpace, const cl::Image2D& entryPointsCL, const cl::Image2D& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent) {
+    svec2 localWorkGroupSize(workGroupSize_.get());
+    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x), getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
+
+    try
+    {
+        cl_uint arg = 0;
+        entryExitKernel_->setArg(arg++, NDCToTextureMat);
+        entryExitKernel_->setArg(arg++, camPosInTextureSpace);
+        entryExitKernel_->setArg(arg++, vec2(camera_.getNearPlaneDist(), camera_.getFarPlaneDist()));
+        entryExitKernel_->setArg(arg++, entryPointsCL);
+        entryExitKernel_->setArg(arg++, exitPointsCL);
+        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*entryExitKernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
+
+    } catch (cl::Error& err) {
+        LogError(getCLErrorString(err));
+    }
 }
 
 } // namespace

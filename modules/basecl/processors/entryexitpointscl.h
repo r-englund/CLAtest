@@ -39,14 +39,18 @@ public:
 protected:
     virtual void process();
 
+    void computeEntryExitPoints(const mat4& NDCToTextureMat, const vec4& camPosInTextureSpace, const cl::Image2D& entryPointsCL, const cl::Image2D& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent);
+
 private:
     GeometryInport geometryPort_;
     ImageOutport entryPort_;
     ImageOutport exitPort_;
 
     CameraProperty camera_;
+    IntVec2Property workGroupSize_;
+    BoolProperty useGLSharing_;
 
-	cl::Kernel* capNearClippingPrg_;
+	cl::Kernel* entryExitKernel_;
 
 };
 
