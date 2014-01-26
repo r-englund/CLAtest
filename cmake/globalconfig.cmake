@@ -104,7 +104,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # Build shared libs or static libs
 option(SHARED_LIBS "Build shared libs, else static libs" OFF)
-option(IVW_ENABLE_MSVC_MEMLEAK_TEST "Run memoryleak test within visual stiduo" OFF)
+option(IVW_PROFILING "Enable profiling" OFF)
+option(IVW_ENABLE_MSVC_MEMLEAK_TEST "Run memoryleak test within Visual Studio" OFF)
 #mark_as_advanced(SHARED_LIBS)
 mark_as_advanced(BUILD_SHARED_LIBS)
 mark_as_advanced(IVW_ENABLE_MSVC_MEMLEAK_TEST)
@@ -186,3 +187,7 @@ IF(WIN32)
 		endif(IVW_ENABLE_MSVC_MEMLEAK_TEST)	
     ENDIF(MSVC)
 ENDIF(WIN32)
+
+if(IVW_PROFILING)
+    add_definitions(-DIVW_PROFILING)
+endif(IVW_PROFILING)
