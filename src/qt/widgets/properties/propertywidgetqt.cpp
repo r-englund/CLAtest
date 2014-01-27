@@ -29,6 +29,7 @@ PropertyWidgetQt::PropertyWidgetQt()
 PropertyWidgetQt::PropertyWidgetQt(Property* property)
     : PropertyWidget(property)
     , viewModeItem_(NULL) {
+        this->setToolTip(property_->getIdentifier().c_str());
 }
 
 PropertyWidgetQt::~PropertyWidgetQt() {
@@ -214,6 +215,9 @@ void PropertyWidgetQt::updateContextMenu(){
 
 void PropertyWidgetQt::setProperty(Property* property) {
     PropertyWidget::setProperty(property);
+    
+    setToolTip(("id: " + property_->getIdentifier()).c_str());
+    
 }
 
 
