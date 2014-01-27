@@ -98,18 +98,24 @@ int main(int argc, char** argv) {
     processorNetworkEvaluator->setDefaultRenderContext(canvas);
     canvas->setNetworkEvaluator(processorNetworkEvaluator);
     canvas->initializeSquare();
+    canvas->initialize();
     canvas->activate();
 
     // Load simple scene
-    IvwDeserializer xmlDeserializer(inviwoApp.getPath(InviwoApplication::PATH_MODULES, "tests/simple.inv"));
+    processorNetwork->lock();
+    IvwDeserializer xmlDeserializer(inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simple.inv"));
     processorNetwork->deserialize(xmlDeserializer);
     std::vector<Processor*> processors = processorNetwork->getProcessors();
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
-        (*it)->initialize();
-    }
+        (*it)->invalidate(PropertyOwner::INVALID_RESOURCES);
 
-    // Register Canvas GLUT
-    processorNetworkEvaluator->registerCanvas(canvas, "CanvasGLUT");
+        CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
+        if (canvasProcessor)
+            processorNetworkEvaluator->registerCanvas(canvas, canvasProcessor->getIdentifier());
+    }
+    processorNetwork->setModified(true);
+    processorNetwork->unlock();
+    processorNetwork->modified();
 
     glutKeyboardFunc(keyPressed);
     glutSpecialFunc(keyPressedSpecial);
