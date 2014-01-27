@@ -41,6 +41,8 @@ void LinkSettings::initialize() {
         std::string displayName = registeredProperties[i]->getDisplayName();
         BoolProperty* linkPropery = new BoolProperty("link"+id, displayName, false);
         linkProperties_.push_back(linkPropery);
+        linkPropery->setGroupID("auto-link-properties");
+        linkPropery->setGroupDisplayName("auto-link-properties", "Auto Link Properties");
         addProperty(linkPropery);
     }
 }
@@ -51,6 +53,7 @@ bool LinkSettings::isLinkable(Property* property)  {
     Property* prop = 0;
     BoolProperty* linkOption = 0;
 
+    //TODO: Following are some standard properties. Extend with more properties.
     //camera
     prop = getPropertyByIdentifier("linkcamera");
     ivwAssert(prop!=0, "Camera Property link option not found in settings");

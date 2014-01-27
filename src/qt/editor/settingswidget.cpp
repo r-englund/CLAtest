@@ -14,6 +14,7 @@
 
 #include <inviwo/qt/editor/settingswidget.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <QLayout>
@@ -53,7 +54,8 @@ void SettingsWidget::loadSettings() {
         QWidget* tab = new QWidget();
         tab->setLayout(vLayout);        
 
-        std::vector<Property*> properties = settings[i]->getProperties();        
+        std::map<std::string, std::vector<Property*> > groups;
+        std::vector<Property*> properties = settings[i]->getProperties();
         qmainsettings.beginGroup(tr(settings[i]->getIdentifier().c_str()));
         QStringList keys = qmainsettings.allKeys();
         for (size_t j=0; j<properties.size(); j++) {
@@ -63,14 +65,37 @@ void SettingsWidget::loadSettings() {
                 QVariant qval = qmainsettings.value(name);
                 Variant val(std::string(qval.toString().toLocal8Bit().constData()));
                 curProperty->setVariant(val);
+            }           
+
+            if (curProperty->getGroupID() != "")
+                groups[curProperty->getGroupID()].push_back(curProperty);
+            else {
+                PropertyWidgetQt* propertyWidget =
+                    static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getRef().create(curProperty));           
+                curProperty->registerWidget(propertyWidget);
+                vLayout->addWidget(propertyWidget);
             }
 
-            PropertyWidgetQt* propertyWidget =
-                static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getRef().create(curProperty));
-            vLayout->addWidget(propertyWidget);
-            curProperty->registerWidget(propertyWidget);
+        }
+
+        std::map<std::string, std::vector<Property*> >::iterator  groupIt;
+
+        for (groupIt = groups.begin(); groupIt!=groups.end(); groupIt++){
+            Property* curProperty = groupIt->second[0];
+            CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(curProperty->getGroupID(), curProperty->getGroupDisplayName());
+            group->setIdentifier(curProperty->getGroupDisplayName());
+
+            for (size_t j=0; j<groupIt->second.size(); j++) {
+                Property* curProperty = groupIt->second[j];                
+                group->addProperty(curProperty);
+            }
+
+            group->generatePropertyWidgets();
+            vLayout->addWidget(group);
         }
         qmainsettings.endGroup();
+
+
 
         tabWidget_->addTab(tab, tr(settings[i]->getIdentifier().c_str()) );
 
