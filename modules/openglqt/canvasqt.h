@@ -37,11 +37,11 @@ public:
     CanvasQt(QWidget* parent = NULL, uvec2 dim = uvec2(256,256));
     ~CanvasQt();
 
-    virtual void initialize();
-    virtual void deinitialize();
-    virtual void activate();
-    virtual void glSwapBuffers();
-    virtual void update();
+    void initialize();
+    void deinitialize();
+    void activate();
+    void glSwapBuffers();
+    void update();
     void repaint();
 
 protected:

@@ -30,10 +30,12 @@ public:
     CanvasGLUT(std::string title, uvec2 dimensions);
     ~CanvasGLUT();
 
-    virtual void initialize();
-    virtual void initializeGL();
+    void initialize();
+    void initializeGL();
     void initializeSquare();
-    virtual void deinitialize();
+    void deinitialize();
+
+    void glSwapBuffers();
 
     static void display(void);
     static void idle(void);

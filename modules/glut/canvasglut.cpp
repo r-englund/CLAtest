@@ -22,8 +22,6 @@ CanvasGLUT* CanvasGLUT::canvases_[MAX_CANVAS_NUMBER];
 
 EventHandler* CanvasGLUT::eventHandler_;
 
-//ProcessorNetworkEvaluator* CanvasGLUT::processorNetworkEvaluator_ = 0;
-
 CanvasGLUT::CanvasGLUT(std::string windowTitle, uvec2 dimensions)
     : CanvasGL(dimensions),
     mouseButton_(MouseEvent::MOUSE_BUTTON_NONE),
@@ -68,8 +66,11 @@ void CanvasGLUT::deinitialize() {
     CanvasGL::deinitialize();
 }
 
+void CanvasGLUT::glSwapBuffers() {
+    //glutSwapBuffers();
+}
+
 void CanvasGLUT::reshape(int width, int height) {
-    canvases_[glutGetWindow()]->dimensions_ = ivec2(width, height);
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -77,10 +78,12 @@ void CanvasGLUT::reshape(int width, int height) {
     else gluPerspective (60.0, static_cast<double>(width) / static_cast<double>(height), 0.1, 10.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    canvases_[glutGetWindow()]->resize(uvec2(width, height));
     glutPostRedisplay();
 }
 
 void CanvasGLUT::display(void) {
+    //canvases_[glutGetWindow()]->update();
     glutSwapBuffers();
 }
 
