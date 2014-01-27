@@ -39,7 +39,7 @@ void PropertyWidgetFactory::initialize() {
 
 void PropertyWidgetFactory::registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget) {
     std::string className = propertyWidget->getClassName();
-    std::string sematics = propertyWidget->getSematics();
+    PropertySemantics sematics = propertyWidget->getSematics();
 
     LogInfo("Adding a PropertyWidget for a Property (" << className
             << ") and senamics (" << sematics << ")");
@@ -57,7 +57,7 @@ void PropertyWidgetFactory::registerPropertyWidgetObject(PropertyWidgetFactoryOb
 }
 
 PropertyWidget* PropertyWidgetFactory::create(Property* property) {
-    std::string sematics = getPropertySemanticID(property->getSemantics());
+    PropertySemantics sematics = property->getSemantics();
     std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
     sameKeys = widgetMap_.equal_range(property->getClassName());
 
@@ -67,9 +67,9 @@ PropertyWidget* PropertyWidgetFactory::create(Property* property) {
         }
     }
     for(WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
-        if("Default" == it->second->getSematics()) {
+        if(PropertySemantics::Default == it->second->getSematics()) {
             LogWarn("Requested property widget semantics ("<< sematics <<") for property ("
-                    <<property->getClassName()<<") does not exist, returning Deafult senamic");
+                   <<property->getClassName()<<") does not exist, returning Deafult senamic");
             return it->second->create(property);
         }
     }

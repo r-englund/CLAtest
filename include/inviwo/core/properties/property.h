@@ -33,7 +33,7 @@ public:
     Property(std::string identifier, 
              std::string displayName,
              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-             PropertySemantics::Type semantics=PropertySemantics::Default);
+             PropertySemantics semantics = PropertySemantics::Default);
     Property();
 
     virtual std::string getIdentifier() const;
@@ -44,8 +44,8 @@ public:
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
 
-    virtual PropertySemantics::Type getSemantics() const;
-    virtual void setSemantics(const PropertySemantics::Type& semantics);
+    virtual PropertySemantics getSemantics() const;
+    virtual void setSemantics(const PropertySemantics& semantics);
 
     virtual void setReadOnly(bool value){readOnly_ = value;};
     virtual bool getReadOnly(){return readOnly_;};
@@ -103,7 +103,7 @@ private:
     std::string displayName_;
 
     bool readOnly_;
-    PropertySemantics::Type semantics_;
+    PropertySemantics semantics_;
     PropertyVisibilityMode visibilityMode_;
 
     bool propertyModified_;

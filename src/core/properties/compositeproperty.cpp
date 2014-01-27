@@ -19,7 +19,7 @@ namespace inviwo {
 
 CompositeProperty::CompositeProperty(std::string identifier, std::string displayName,
                                      PropertyOwner::InvalidationLevel invalidationLevel,
-                                     PropertySemantics::Type semantics)
+                                     PropertySemantics semantics)
 : Property(identifier, displayName, invalidationLevel, semantics), PropertyOwner()
 {}
 

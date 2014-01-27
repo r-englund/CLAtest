@@ -44,11 +44,11 @@ public:
 	 * @param std::string identifier <DESCRIBE ME>
 	 * @param std::string displayName <DESCRIBE ME>
 	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-	 * @param PropertySemantics::Type semantics <DESCRIBE ME>
+	 * @param PropertySemantics semantics <DESCRIBE ME>
 	 * @return  <DESCRIBE ME>
 	 */ButtonProperty(std::string identifier, std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
-                   PropertySemantics::Type semantics = PropertySemantics::Default) : Property(identifier,displayName,invalidationLevel,semantics) {}
+                   PropertySemantics semantics = PropertySemantics::Default) : Property(identifier,displayName,invalidationLevel,semantics) {}
 
 	virtual void serialize(IvwSerializer& s) const{
         Property::serialize(s);

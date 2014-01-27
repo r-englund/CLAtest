@@ -33,7 +33,7 @@ class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:
     DirectoryProperty(std::string identifier, std::string displayName, std::string value,
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
-                 PropertySemantics::Type semantics = PropertySemantics::Default);
+                 PropertySemantics semantics = PropertySemantics::Default);
     virtual std::vector<std::string> getDirectoryTree()  const ;
     virtual std::vector<std::string> getFiles(std::string filters="*.*")  const ;
     virtual void setDirectoryTree(std::vector<std::string> dirTree) ;

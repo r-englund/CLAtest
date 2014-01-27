@@ -18,7 +18,7 @@ namespace inviwo {
 
     BoolProperty::BoolProperty(std::string identifier, std::string displayName, bool value,
                                PropertyOwner::InvalidationLevel invalidationLevel, 
-                               PropertySemantics::Type semantics)
+                               PropertySemantics semantics)
     : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 

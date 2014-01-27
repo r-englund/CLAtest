@@ -29,10 +29,10 @@ class IVW_CORE_API OptionPropertyInt : public TemplateOptionProperty<int> {
 public:
     OptionPropertyInt(std::string identifier, std::string displayName,
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics::Type semantics=PropertySemantics::Default);
+                      PropertySemantics semantics=PropertySemantics::Default);
     OptionPropertyInt(std::string identifier, std::string displayName, int value,
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics::Type semantics=PropertySemantics::Default);
+                      PropertySemantics semantics=PropertySemantics::Default);
     /** 
      * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
@@ -66,10 +66,10 @@ class IVW_CORE_API OptionPropertyFloat : public TemplateOptionProperty<float> {
 public:
     OptionPropertyFloat(std::string identifier, std::string displayName,
                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                        PropertySemantics::Type semantics=PropertySemantics::Default);
+                        PropertySemantics semantics=PropertySemantics::Default);
     OptionPropertyFloat(std::string identifier, std::string displayName, float value,
                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                        PropertySemantics::Type semantics=PropertySemantics::Default);
+                        PropertySemantics semantics=PropertySemantics::Default);
     /** 
      * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
@@ -102,10 +102,10 @@ class IVW_CORE_API OptionPropertyDouble : public TemplateOptionProperty<double> 
 public:
     OptionPropertyDouble(std::string identifier, std::string displayName,
                          PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                         PropertySemantics::Type semantics=PropertySemantics::Default);
+                         PropertySemantics semantics=PropertySemantics::Default);
     OptionPropertyDouble(std::string identifier, std::string displayName, double value,
                          PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                         PropertySemantics::Type semantics=PropertySemantics::Default);
+                         PropertySemantics semantics=PropertySemantics::Default);
     /** 
      * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
@@ -138,10 +138,10 @@ class IVW_CORE_API OptionPropertyString : public TemplateOptionProperty<std::str
 public:
     OptionPropertyString(std::string identifier, std::string displayName, std::string value,
                          PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                         PropertySemantics::Type semantics=PropertySemantics::Default);
+                         PropertySemantics semantics=PropertySemantics::Default);
     OptionPropertyString(std::string identifier, std::string displayName,
                          PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                         PropertySemantics::Type semantics=PropertySemantics::Default);
+                         PropertySemantics semantics=PropertySemantics::Default);
     /** 
      * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *

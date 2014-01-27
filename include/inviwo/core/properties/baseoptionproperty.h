@@ -32,7 +32,7 @@ public:
 
     BaseOptionProperty(std::string identifier, std::string displayName,
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-        PropertySemantics::Type semantics=PropertySemantics::Default)
+        PropertySemantics semantics=PropertySemantics::Default)
         : Property(identifier, displayName, invalidationLevel, semantics)
     {}
 
@@ -83,10 +83,10 @@ struct Option {
 public:
     TemplateOptionProperty(std::string identifier, std::string displayName,
                            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                           PropertySemantics::Type semantics=PropertySemantics::Default);
+                           PropertySemantics semantics=PropertySemantics::Default);
     TemplateOptionProperty(std::string identifier, std::string displayName, T value,
                            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                           PropertySemantics::Type semantics=PropertySemantics::Default);
+                           PropertySemantics semantics=PropertySemantics::Default);
 
 
     /** 
@@ -170,14 +170,14 @@ protected:
 template <typename T>
 TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName,
                                                     PropertyOwner::InvalidationLevel invalidationLevel,
-                                                    PropertySemantics::Type semantics )
+                                                    PropertySemantics semantics )
     : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics)
 {}
 
 template <typename T>
 TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName, T value,
                                                     PropertyOwner::InvalidationLevel invalidationLevel,
-                                                    PropertySemantics::Type semantics )
+                                                    PropertySemantics semantics )
     : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics),
       value_(value)
 {}

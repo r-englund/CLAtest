@@ -29,7 +29,7 @@ public:
 
     TemplateProperty(std::string identifier, std::string displayName, T value,
                      PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
-                     PropertySemantics::Type semantics = PropertySemantics::Default);
+                     PropertySemantics semantics = PropertySemantics::Default);
 
     virtual T& get();
 	virtual const T& get() const { return value_; };
@@ -43,7 +43,7 @@ protected:
 template <typename T>
 TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value,
                                       PropertyOwner::InvalidationLevel invalidationLevel,
-                                      PropertySemantics::Type semantics)
+                                      PropertySemantics semantics)
 : Property(identifier, displayName, invalidationLevel, semantics),
 value_(value)
 {}

@@ -16,7 +16,7 @@
 
 namespace inviwo {
 
-TextEditorProperty::TextEditorProperty(std::string identifier, std::string displayName, std::string value, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics )
+TextEditorProperty::TextEditorProperty(std::string identifier, std::string displayName, std::string value, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics )
     : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 

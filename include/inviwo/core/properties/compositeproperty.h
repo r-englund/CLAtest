@@ -28,7 +28,7 @@ class IVW_CORE_API CompositeProperty : public Property, public PropertyOwner {
 public:
     CompositeProperty(std::string identifier, std::string displayName,
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics::Type semantics = PropertySemantics::Default);
+                      PropertySemantics semantics = PropertySemantics::Default);
     virtual ~CompositeProperty();
 
     void addProperty(Property* property);

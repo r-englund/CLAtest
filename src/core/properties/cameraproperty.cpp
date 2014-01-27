@@ -20,7 +20,7 @@ namespace inviwo {
 
 CameraProperty::CameraProperty(std::string identifier, std::string displayName,
                                vec3 eye, vec3 center, vec3 lookUp,
-                               PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
+                               PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics), EventListener()
     , lookFrom_("lookFrom", "Look from", eye, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel)
     , lookTo_("lookTo", "Look to", center, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel)

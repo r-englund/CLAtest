@@ -41,12 +41,12 @@ public:
 	 * @param mat2 maxValue <DESCRIBE ME>
 	 * @param mat2 increment <DESCRIBE ME>
 	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-	 * @param PropertySemantics::Type semantics <DESCRIBE ME>
+	 * @param PropertySemantics semantics <DESCRIBE ME>
 	 * @return  <DESCRIBE ME>
 	 */FloatMat2Property(std::string identifier, std::string displayName,mat2 value,
                       mat2 minValue=mat2(0.0f), mat2 maxValue= mat2(1.0f), mat2 increment=mat2(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics::Type semantics = PropertySemantics::Default);
+                      PropertySemantics semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
 	virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "FloatMat2Property"; }
@@ -73,12 +73,12 @@ public:
      * @param mat3 maxValue <DESCRIBE ME>
      * @param mat3 increment <DESCRIBE ME>
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-     * @param PropertySemantics::Type semantics <DESCRIBE ME>
+     * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
      */FloatMat3Property(std::string identifier, std::string displayName,mat3 value,
                       mat3 minValue=mat3(0.0f), mat3 maxValue= mat3(1.0f), mat3 increment=mat3(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics::Type semantics = PropertySemantics::Default);
+                      PropertySemantics semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "FloatMat3Property"; }
@@ -105,12 +105,12 @@ public:
      * @param mat4 maxValue <DESCRIBE ME>
      * @param mat4 increment <DESCRIBE ME>
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-     * @param PropertySemantics::Type semantics <DESCRIBE ME>
+     * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
      */FloatMat4Property(std::string identifier, std::string displayName, mat4 value,
                       mat4 minValue=mat4(0.0f), mat4 maxValue= mat4(1.0f), mat4 increment=mat4(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics::Type semantics = PropertySemantics::Default);
+                      PropertySemantics semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "FloatMat4Property"; }

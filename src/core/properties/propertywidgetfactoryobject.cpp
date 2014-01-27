@@ -2,7 +2,7 @@
 
 namespace inviwo {
     PropertyWidgetFactoryObject::PropertyWidgetFactoryObject(const std::string& className,
-                                                             const std::string& semantics)
+                                                             const PropertySemantics& semantics)
         : className_(className), semantics_(semantics) {
     }
 
@@ -12,7 +12,7 @@ namespace inviwo {
         return className_;
     }
 
-    std::string PropertyWidgetFactoryObject::getSematics() const {
+    PropertySemantics PropertyWidgetFactoryObject::getSematics() const {
         return semantics_;
     }
 

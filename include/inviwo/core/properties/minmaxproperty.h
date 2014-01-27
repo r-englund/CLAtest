@@ -27,7 +27,7 @@ class MinMaxProperty : public TemplateProperty<glm::detail::tvec2<T> > {
 public:
     MinMaxProperty(std::string identifier, std::string displayName, T value, T valueMax,
         T rangeMin, T rangeMax, T increment, PropertyOwner::InvalidationLevel invalidationLevel,
-        PropertySemantics::Type semantics = PropertySemantics::Default);
+        PropertySemantics semantics = PropertySemantics::Default);
 
     T getRangeMin() const;
     T getRangeMax() const;
@@ -55,7 +55,7 @@ template <typename T>
 MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayName,
                                     T valueMin, T valueMax, T rangeMin, T rangeMax, T increment,
                                     PropertyOwner::InvalidationLevel invalidationLevel,
-                                    PropertySemantics::Type semantics )
+                                    PropertySemantics semantics )
     : TemplateProperty<glm::detail::tvec2<T> >(identifier, displayName, glm::detail::tvec2<T>(valueMin, valueMax), invalidationLevel, semantics),
       range_(glm::detail::tvec2<T>(rangeMin, rangeMax)),
       increment_(increment)

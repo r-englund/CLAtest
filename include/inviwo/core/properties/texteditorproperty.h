@@ -31,11 +31,11 @@ public:
      * @param std::string displayName <DESCRIBE ME>
      * @param std::string value <DESCRIBE ME>
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-     * @param PropertySemantics::Type semantics <DESCRIBE ME>
+     * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
      */TextEditorProperty(std::string identifier, std::string displayName, std::string value,
                        PropertyOwner::InvalidationLevel invalidationLevel,
-                       PropertySemantics::Type semantics = PropertySemantics::Default);
+                       PropertySemantics semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "TextEditorProperty"; }

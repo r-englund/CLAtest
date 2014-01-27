@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Timo Ropinski
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
@@ -16,15 +16,31 @@
 
 namespace inviwo {
 
-std::string getPropertySemanticID(PropertySemantics::Type type) {
-    switch (type) {
-        case PropertySemantics::Default:        return "Default";
-        case PropertySemantics::Color:          return "Color";
-        case PropertySemantics::LightPosition:  return "LightPosition";
-        case PropertySemantics::Editor:         return "Editor";
-        case PropertySemantics::Shader:         return "Shader";
-        default: return "Unknown PropertySemantics.";
+PropertySemantics::PropertySemantics() : semantic_("Default") {}
+PropertySemantics::PropertySemantics(std::string semantic) : semantic_(semantic) {}
+PropertySemantics::PropertySemantics(const PropertySemantics& rhs) : semantic_(rhs.semantic_) {};
+PropertySemantics& PropertySemantics::operator=(const PropertySemantics& that){
+    if (this != &that) {
+        semantic_ = that.semantic_;
     }
+    return *this;
 }
 
+const std::string& PropertySemantics::getString() const{
+    return semantic_;
+}
+
+std::ostream& operator << (std::ostream& os, const inviwo::PropertySemantics& obj) {
+    os << obj.semantic_;
+    return os;
+}
+
+const PropertySemantics PropertySemantics::Default("Default");
+const PropertySemantics PropertySemantics::Color("Color");
+const PropertySemantics PropertySemantics::LightPosition("LightPosition");
+const PropertySemantics PropertySemantics::Editor("Editor");
+const PropertySemantics PropertySemantics::TextEditor("TextEditor");
+const PropertySemantics PropertySemantics::ImageEditor("ImageEditor");
+const PropertySemantics PropertySemantics::Shader("Shader");
+    
 } // namespace

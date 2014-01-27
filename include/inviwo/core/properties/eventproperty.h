@@ -37,14 +37,14 @@ public:
      * @param std::string displayName 
      * @param Event e The key or mouse event to bind to an action
      * @param Action action The action to be bound to an event
-     * @param PropertySemantics::Type semantics 
+     * @param PropertySemantics semantics 
      */
     EventProperty(std::string identifier, 
         std::string displayName,
         InteractionEvent* e,
         Action* action,
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-        PropertySemantics::Type semantics = PropertySemantics::Default);
+        PropertySemantics semantics = PropertySemantics::Default);
 
     virtual ~EventProperty();
 

@@ -19,7 +19,7 @@
 namespace inviwo {
 
 TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value,
-                                                   PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
+                                                   PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
     : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
     , mask_(0.0f, 1.0f)
     , zoomH_(0.0f, 1.0f)

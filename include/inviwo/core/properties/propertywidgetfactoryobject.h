@@ -2,6 +2,7 @@
 #define IVW_PROPERTYWIDGETFACTORYOBJECT_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/properties/propertysemantics.h>
 #include <string>
 
 namespace inviwo {
@@ -11,23 +12,23 @@ class PropertyWidget;
 
 class IVW_CORE_API PropertyWidgetFactoryObject {
 public:
-    PropertyWidgetFactoryObject(const std::string& className, const std::string& semantics);
+    PropertyWidgetFactoryObject(const std::string& className, const PropertySemantics& semantics);
     virtual ~PropertyWidgetFactoryObject();
 
     virtual PropertyWidget* create(Property*) = 0;
 
     std::string getClassName() const;
-    std::string getSematics() const;
+    PropertySemantics getSematics() const;
 
 private:
     std::string className_;
-    std::string semantics_;
+    PropertySemantics semantics_;
 };
 
 template<typename T, typename P>
 class PropertyWidgetFactoryObjectTemplate : public PropertyWidgetFactoryObject {
 public:
-    PropertyWidgetFactoryObjectTemplate(const std::string& className, const std::string& semantics)
+    PropertyWidgetFactoryObjectTemplate(const std::string& className, const PropertySemantics& semantics)
         : PropertyWidgetFactoryObject(className, semantics) {}
 
     virtual ~PropertyWidgetFactoryObjectTemplate() {}

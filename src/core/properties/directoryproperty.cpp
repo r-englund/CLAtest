@@ -20,7 +20,7 @@
 namespace inviwo {
 
 DirectoryProperty::DirectoryProperty(std::string identifier, std::string displayName,std::string value, PropertyOwner::InvalidationLevel invalidationLevel,
-    PropertySemantics::Type semantics)
+    PropertySemantics semantics)
     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics),
       fileIndexingHandle_(0)
 {

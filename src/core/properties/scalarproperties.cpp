@@ -19,7 +19,7 @@ namespace inviwo {
 FloatProperty::FloatProperty(std::string identifier, std::string displayName, float value,
                              float minValue, float maxValue, float increment,
                              PropertyOwner::InvalidationLevel invalidationLevel,
-                             PropertySemantics::Type semantics)
+                             PropertySemantics semantics)
     : OrdinalProperty<float>(identifier, displayName, value, minValue, maxValue, increment,
                              invalidationLevel, semantics)
 {}
@@ -65,7 +65,7 @@ void FloatProperty::deserialize(IvwDeserializer& d) {
 IntProperty::IntProperty(std::string identifier, std::string displayName, int value,
                          int minValue, int maxValue, int increment,
                          PropertyOwner::InvalidationLevel invalidationLevel,
-                         PropertySemantics::Type semantics)
+                         PropertySemantics semantics)
     : OrdinalProperty<int>(identifier, displayName, value, minValue, maxValue, increment,
                            invalidationLevel, semantics)
 {}

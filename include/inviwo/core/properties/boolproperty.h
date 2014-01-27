@@ -41,11 +41,11 @@ public:
      * @param std::string displayName <DESCRIBE ME>
      * @param bool value <DESCRIBE ME>
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-     * @param PropertySemantics::Type semantics <DESCRIBE ME>
+     * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
      */BoolProperty(std::string identifier, std::string displayName, bool value,
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                 PropertySemantics::Type semantics = PropertySemantics::Default);
+                 PropertySemantics semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "BoolProperty"; }

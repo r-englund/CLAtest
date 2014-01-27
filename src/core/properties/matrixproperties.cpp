@@ -19,7 +19,7 @@ namespace inviwo {
 FloatMat2Property::FloatMat2Property(std::string identifier, std::string displayName, mat2 value,
                                      mat2 minValue, mat2 maxValue, mat2 increment,
                                      PropertyOwner::InvalidationLevel invalidationLevel, 
-                                     PropertySemantics::Type semantics)
+                                     PropertySemantics semantics)
 	: OrdinalProperty<mat2>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics) 
 {}
 
@@ -50,7 +50,7 @@ void FloatMat2Property::deserialize(IvwDeserializer& d) {
 FloatMat3Property::FloatMat3Property(std::string identifier, std::string displayName, mat3 value,
                                      mat3 minValue, mat3 maxValue, mat3 increment,
                                      PropertyOwner::InvalidationLevel invalidationLevel, 
-                                     PropertySemantics::Type semantics)
+                                     PropertySemantics semantics)
     : OrdinalProperty<mat3>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics) 
 {}
 
@@ -81,7 +81,7 @@ void FloatMat3Property::deserialize(IvwDeserializer& d) {
 FloatMat4Property::FloatMat4Property(std::string identifier, std::string displayName, mat4 value,
                                      mat4 minValue, mat4 maxValue, mat4 increment,
                                      PropertyOwner::InvalidationLevel invalidationLevel, 
-                                     PropertySemantics::Type semantics)
+                                     PropertySemantics semantics)
     : OrdinalProperty<mat4>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics) 
 {}
 

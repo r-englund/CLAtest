@@ -19,7 +19,7 @@
 namespace inviwo {
 
 FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value, PropertyOwner::InvalidationLevel invalidationLevel,
-PropertySemantics::Type semantics)
+PropertySemantics semantics)
     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics)
     , acceptMode_(AcceptOpen)
     , fileMode_(AnyFile) {

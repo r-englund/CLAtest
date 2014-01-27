@@ -27,7 +27,7 @@ class IVW_CORE_API TransferFunctionProperty : public TemplateProperty<TransferFu
 public:
     TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value = TransferFunction(),
                              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                             PropertySemantics::Type semantics=PropertySemantics::Default);
+                             PropertySemantics semantics=PropertySemantics::Default);
     ~TransferFunctionProperty();
 
     virtual void serialize(IvwSerializer& s) const;

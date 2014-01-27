@@ -21,17 +21,20 @@ namespace inviwo {
 
 std::map<std::string,std::string> Property::groupDisplayNames_;
 
-Property::Property(std::string identifier, std::string displayName, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics::Type semantics)
+Property::Property(std::string identifier,
+                   std::string displayName,
+                   PropertyOwner::InvalidationLevel invalidationLevel,
+                   PropertySemantics semantics)
     : VoidObservable()
     , identifier_(identifier)
     , displayName_(displayName)
-    , invalidationLevel_(invalidationLevel)
-    , semantics_(semantics)
     , readOnly_(false)
+    , semantics_(semantics)
+    , visibilityMode_(APPLICATION)
     , propertyModified_(false)
+    , invalidationLevel_(invalidationLevel)
     , owner_(0)
-    , groupID_("")
-    , visibilityMode_(APPLICATION){
+    , groupID_("") {
 }
 
 Property::Property()
@@ -56,11 +59,11 @@ void Property::setDisplayName(const std::string& displayName) {
     displayName_ = displayName;
 }
 
-void Property::setSemantics( const PropertySemantics::Type& semantics) {
+void Property::setSemantics( const PropertySemantics& semantics) {
     semantics_ = semantics;
 }
 
-inviwo::PropertySemantics::Type Property::getSemantics() const {
+inviwo::PropertySemantics Property::getSemantics() const {
     return semantics_;
 }
 

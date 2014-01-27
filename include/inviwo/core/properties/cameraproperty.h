@@ -31,7 +31,7 @@ public:
     CameraProperty(std::string identifier, std::string displayName,
                    vec3 eye=vec3(0.0f, 0.0f, -2.0f), vec3 center=vec3(0.0f), vec3 lookUp=vec3(0.0f, 1.0f, 0.0f),
                    PropertyOwner::InvalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                   PropertySemantics::Type semantics = PropertySemantics::Default);
+                   PropertySemantics semantics = PropertySemantics::Default);
     virtual ~CameraProperty();
 
     vec3 getLookFrom() const { return lookFrom_.get(); }

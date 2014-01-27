@@ -23,12 +23,17 @@ class PickingObject;
 
 class BasePickingCallBack {
 public:
+    BasePickingCallBack(){}
+    virtual ~BasePickingCallBack(){}
     virtual void invoke(const PickingObject*) const=0;
 };
 
 template <typename T>
 class MemberFunctionPickingCallback : public BasePickingCallBack {
 public:
+    MemberFunctionPickingCallback(){}
+    virtual ~MemberFunctionPickingCallback(){}
+    
     typedef void (T::*fPointerPicking)(const PickingObject*);
 
     MemberFunctionPickingCallback(T* obj, fPointerPicking functionPtr) 

@@ -25,7 +25,7 @@ public:
     FloatProperty(std::string identifier, std::string displayName, float value,
                   float minValue=0.0f, float maxValue=1.0f, float increment=0.01f,
                   PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                  PropertySemantics::Type semantics=PropertySemantics::Default);
+                  PropertySemantics semantics=PropertySemantics::Default);
     virtual std::string getClassName()  const { return "FloatProperty"; }
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
@@ -39,7 +39,7 @@ public:
     IntProperty(std::string identifier, std::string displayName, int value,
                 int minValue=0, int maxValue=4096, int increment=1,
                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                PropertySemantics::Type semantics=PropertySemantics::Default);
+                PropertySemantics semantics=PropertySemantics::Default);
     virtual std::string getClassName()  const { return "IntProperty"; }
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);

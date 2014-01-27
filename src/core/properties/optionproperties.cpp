@@ -18,13 +18,13 @@ namespace inviwo {
 
 OptionPropertyInt::OptionPropertyInt(std::string identifier, std::string displayName,
                                      PropertyOwner::InvalidationLevel invalidationLevel,
-                                     PropertySemantics::Type semantics)
+                                     PropertySemantics semantics)
     : TemplateOptionProperty<int>(identifier, displayName, 0, invalidationLevel, semantics)
 {}
 
 OptionPropertyInt::OptionPropertyInt(std::string identifier, std::string displayName, int value,
                                      PropertyOwner::InvalidationLevel invalidationLevel,
-                                     PropertySemantics::Type semantics)
+                                     PropertySemantics semantics)
     : TemplateOptionProperty<int>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
@@ -70,13 +70,13 @@ void OptionPropertyInt::deserialize(IvwDeserializer& d) {
 
 OptionPropertyFloat::OptionPropertyFloat(std::string identifier, std::string displayName,
                                          PropertyOwner::InvalidationLevel invalidationLevel,
-                                         PropertySemantics::Type semantics )
+                                         PropertySemantics semantics )
     : TemplateOptionProperty<float>(identifier, displayName, 0.0f, invalidationLevel, semantics)
 {}
 
 OptionPropertyFloat::OptionPropertyFloat(std::string identifier, std::string displayName, float value,
                                          PropertyOwner::InvalidationLevel invalidationLevel,
-                                         PropertySemantics::Type semantics )
+                                         PropertySemantics semantics )
     : TemplateOptionProperty<float>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
@@ -124,13 +124,13 @@ void OptionPropertyFloat::deserialize(IvwDeserializer& d) {
 
 OptionPropertyDouble::OptionPropertyDouble(std::string identifier, std::string displayName,
                                            PropertyOwner::InvalidationLevel invalidationLevel,
-                                           PropertySemantics::Type semantics)
+                                           PropertySemantics semantics)
     : TemplateOptionProperty<double>(identifier, displayName, 0.0, invalidationLevel, semantics)
 {}
 
 OptionPropertyDouble::OptionPropertyDouble(std::string identifier, std::string displayName, double value,
                                            PropertyOwner::InvalidationLevel invalidationLevel,
-                                           PropertySemantics::Type semantics)
+                                           PropertySemantics semantics)
     : TemplateOptionProperty<double>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 
@@ -178,13 +178,13 @@ void OptionPropertyDouble::deserialize(IvwDeserializer& d) {
 
 OptionPropertyString::OptionPropertyString(std::string identifier, std::string displayName,
                                            PropertyOwner::InvalidationLevel invalidationLevel,
-                                           PropertySemantics::Type semantics)
+                                           PropertySemantics semantics)
                                            : TemplateOptionProperty<std::string>(identifier, displayName, identifier, invalidationLevel, semantics)
 {}
 
 OptionPropertyString::OptionPropertyString(std::string identifier, std::string displayName, std::string value,
                                            PropertyOwner::InvalidationLevel invalidationLevel,
-                                           PropertySemantics::Type semantics)
+                                           PropertySemantics semantics)
                                            : TemplateOptionProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics)
 {}
 

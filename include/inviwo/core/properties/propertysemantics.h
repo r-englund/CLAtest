@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Alexander Johansson
+ * Primary author : Peter Steneteg
  *
  **********************************************************************/
 
@@ -18,19 +18,47 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <string>
+#include <ostream>
 
 namespace inviwo {
-
+   
 class IVW_CORE_API PropertySemantics {
+    
 public:
-    enum Type { Default=0,
-                Color=1,
-                LightPosition=2,
-                Editor=3,
-				Shader=4};
+    PropertySemantics();
+    PropertySemantics(std::string semantic);
+    PropertySemantics(const PropertySemantics& rhs);
+    PropertySemantics& operator=(const PropertySemantics& that);
+    virtual ~PropertySemantics(){}
+    
+    const std::string& getString() const;
+    
+    friend std::ostream& operator << (std::ostream& os, const inviwo::PropertySemantics& obj);
+    
+    static const PropertySemantics Default;
+
+    static const PropertySemantics Color;
+    static const PropertySemantics LightPosition;
+    static const PropertySemantics Editor;
+    static const PropertySemantics TextEditor;
+    static const PropertySemantics ImageEditor;
+    static const PropertySemantics Shader;
+    
+private:
+    std::string semantic_;
 };
 
-IVW_CORE_API std::string getPropertySemanticID(PropertySemantics::Type type);
+ 
+inline bool operator==(const PropertySemantics& lhs, const PropertySemantics& rhs){
+    return lhs.getString() == rhs.getString();
+}
+inline bool operator< (const PropertySemantics& lhs, const PropertySemantics& rhs){
+    return lhs.getString() < rhs.getString();
+}
+inline bool operator!=(const PropertySemantics& lhs, const PropertySemantics& rhs){return !operator==(lhs,rhs);}
+inline bool operator> (const PropertySemantics& lhs, const PropertySemantics& rhs){return  operator< (rhs,lhs);}
+inline bool operator<=(const PropertySemantics& lhs, const PropertySemantics& rhs){return !operator> (lhs,rhs);}
+inline bool operator>=(const PropertySemantics& lhs, const PropertySemantics& rhs){return !operator< (lhs,rhs);}
 
 } //Namespace
 

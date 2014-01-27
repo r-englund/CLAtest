@@ -41,11 +41,11 @@ public:
      * @param std::string identifier identifier for the property 
      * @param std::string displayName displayName for the property
      * @param std::string value the path to the file
-     * @param PropertySemantics::Type semantics Can be set to Editor
+     * @param PropertySemantics semantics Can be set to Editor
      */
     FileProperty(std::string identifier, std::string displayName, std::string value="",
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
-                 PropertySemantics::Type semantics = PropertySemantics::Default);
+                 PropertySemantics semantics = PropertySemantics::Default);
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();

@@ -40,7 +40,7 @@ void ImageLabel::deserialize(IvwDeserializer& d) {
 
 
 ImageEditorProperty::ImageEditorProperty(std::string identifier, std::string displayName,std::string value, PropertyOwner::InvalidationLevel invalidationLevel, 
-PropertySemantics::Type semantics)
+PropertySemantics semantics)
     : FileProperty(identifier, displayName, value, invalidationLevel, semantics)
 {}
 

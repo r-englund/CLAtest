@@ -44,12 +44,12 @@ public:
      * @param std::string identifier identifier for the property
      * @param std::string displayName displayName for the property
      * @param std::string value value of the property
-     * @param PropertySemantics::Type semantics Semantics of the property, if nothing is specified it will set to the Default. The semantics can be specified as Editor
+     * @param PropertySemantics semantics Semantics of the property, if nothing is specified it will set to the Default. The semantics can be specified as Editor
      * @return 
      */
     StringProperty(std::string identifier, std::string displayName, std::string value,
                    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
-                   PropertySemantics::Type semantics=PropertySemantics::Default);
+                   PropertySemantics semantics=PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "StringProperty"; }
