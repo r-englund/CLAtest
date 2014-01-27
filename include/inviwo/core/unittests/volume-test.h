@@ -9,24 +9,6 @@
 #ifndef IVW_VOLUME_TEST_H
 #define IVW_VOLUME_TEST_H
 
-
-TEST(VolumeTest, SimpleLoadVolumeTest){
-    EXPECT_TRUE(true);
-    
-    std::string file = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_VOLUMES) + "/hydrogenatom.dat";
-
-    std::string fileExtension = URLParser::getFileExtension(file);
-    DataReaderType<Volume>* reader = DataReaderFactory::getRef().getReaderForTypeAndExtension<Volume>(fileExtension);
-    if(reader){
-        Volume* volume = reader->readMetaData(file);
-        ResourceManager::instance()->addResource(new TemplateResource<Volume>(file, volume));
-        volume->getRepresentation<VolumeRAM>();
-    }
-
-    ResourceManager::instance()->clearAllResources();
-}
-
-
 template<typename T>
 void testDatReader(std::string filename) {
     std::string file = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
