@@ -254,7 +254,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
                     for (size_t j=0; j<propertyLinks.size(); j++) {
                         Property* srcProperty = propertyLinks[j]->getSourceProperty();
                         Property* dstProperty = propertyLinks[j]->getDestinationProperty();
-                        if (!( srcProperty && dstProperty)) {
+                        if (!srcProperty || !dstProperty) {
                             processorLinks[i]->removePropertyLink(propertyLinks[j]);
                             LogWarn("Unable to establish property link.");
                         }
