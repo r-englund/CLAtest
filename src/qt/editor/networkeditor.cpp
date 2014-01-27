@@ -465,9 +465,12 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
         processorWidgetQt->setMinimumSize(128, 128);
         processorWidgetQt->setMaximumSize(128, 128);
 
-        processorWidgetQt->setWindowFlags(Qt::Tool |
-                                          Qt::CustomizeWindowHint |
-                                          Qt::WindowStaysOnTopHint);
+        processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint |
+                                          Qt::Tool |
+                                          Qt::WindowStaysOnTopHint |
+                                          Qt::FramelessWindowHint 
+                                          );
+        
         processorWidgetQt->move(ivec2(pos.x(),pos.y()));
         processorWidgetQt->show();
         processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(),

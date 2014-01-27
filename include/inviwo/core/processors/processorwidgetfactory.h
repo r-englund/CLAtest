@@ -37,7 +37,8 @@ public:
     bool isValidType(std::string className) const;
 
 private:
-    mutable std::map<std::string, ProcessorWidget*> processorWidgetMap_;
+    typedef std::map<std::string, ProcessorWidget*> ProcessorWidgetMap;
+    mutable ProcessorWidgetMap processorWidgetMap_;
 };
 
 } // namespace
