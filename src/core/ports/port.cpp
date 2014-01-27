@@ -55,7 +55,6 @@ void Port::setProcessor(Processor* processor) {
 }
 
 
-
 void Port::serialize(IvwSerializer& s) const {
     s.serialize("identifier", identifier_, true);
     s.serialize("Processor", processor_);
@@ -67,6 +66,7 @@ void Port::deserialize(IvwDeserializer& d) {
 }
 
 void Port::invalidate( PropertyOwner::InvalidationLevel invalidationLevel ) {
+    onChangeCallback_.invoke();
     processor_->invalidate(invalidationLevel);
 }
 

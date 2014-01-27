@@ -30,6 +30,7 @@ VolumeSliceGL::VolumeSliceGL()
     transferFunction_("transferFunction", "Transfer function", TransferFunction()),
     shader_(NULL)
 {
+    inport_.onChange(this, &VolumeSliceGL::volumeChanged);
     addPort(inport_);
     addPort(outport_);
 
@@ -61,12 +62,17 @@ void VolumeSliceGL::deinitialize() {
     ProcessorGL::deinitialize();
 }
 
-void VolumeSliceGL::process(){
-    if(volumeDimensions_ != inport_.getData()->getDimension()){
-        volumeDimensions_ = inport_.getData()->getDimension();
-        volumeDimensionChanged();
+void VolumeSliceGL::volumeChanged() {
+    if (inport_.getData()) {
+        if (volumeDimensions_ != inport_.getData()->getDimension()) {
+            volumeDimensions_ = inport_.getData()->getDimension();
+            volumeDimensionChanged();
+        }
+        transferFunction_.setVolume(inport_.getData());
     }
+}
 
+void VolumeSliceGL::process(){
     TextureUnit volUnit;
     const VolumeGL* volumeGL = inport_.getData()->getRepresentation<VolumeGL>();
     volumeGL->bindTexture(volUnit.getEnum());
@@ -100,7 +106,7 @@ void VolumeSliceGL::process(){
 }
 
 void VolumeSliceGL::coordinatePlaneChanged(){
-    if(shader_){
+    if (shader_) {
         switch(coordinatePlane_.get())
         {
         case XY:
@@ -118,8 +124,7 @@ void VolumeSliceGL::coordinatePlaneChanged(){
 }
 
 void VolumeSliceGL::volumeDimensionChanged(){
-    switch(coordinatePlane_.get())
-    {
+    switch (coordinatePlane_.get()) {
     case XY:
         sliceNumber_.setMaxValue(static_cast<int>(volumeDimensions_.z));
         break;

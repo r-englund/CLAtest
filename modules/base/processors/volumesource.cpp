@@ -49,11 +49,11 @@ VolumeSource::VolumeSource()
 
 	addProperty(volumeFile_);
     dataRange_.onChange(this, &VolumeSource::invalidateOutput);
-    //addProperty(dataRange_);
+    addProperty(dataRange_);
     valueRange_.onChange(this, &VolumeSource::invalidateOutput);
-    //addProperty(valueRange_);
+    addProperty(valueRange_);
     valueUnit_.onChange(this, &VolumeSource::invalidateOutput);
-    //addProperty(valueUnit_);
+    addProperty(valueUnit_);
 }
 
 VolumeSource::~VolumeSource() {}
@@ -69,9 +69,12 @@ void VolumeSource::invalidateOutput() {
 }
 
 void VolumeSource::updateRangeProperties(Volume* volume) {
-    dataRange_.set(volume->getMetaData<IVec2MetaData>("DataRange", dataRange_.get()));
-    int numValues = static_cast<int>(pow(2.0f, static_cast<float>(volume->getDataFormat()->bitsStored())));
-    dataRange_.setMaxValue(ivec2(numValues, numValues));
+    int numValues = static_cast<int>(pow(2.0f, static_cast<float>(volume->getDataFormat()->getBitsStored())));
+    dataRange_.setMaxValue(ivec2(numValues-1, numValues-1));
+    if (volume->hasMetaData<IVec2MetaData>("DataRange"))
+        dataRange_.set(volume->getMetaData<IVec2MetaData>("DataRange", dataRange_.get()));
+    else
+        dataRange_.set(ivec2(0, numValues-1));
     valueRange_.set(volume->getMetaData<Vec2MetaData>("ValueRange", valueRange_.get()));
     valueUnit_.set(volume->getMetaData<StringMetaData>("ValueUnit", valueUnit_.get()));
     invalidateOutput();

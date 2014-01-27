@@ -79,7 +79,6 @@ public:
     virtual int getVariantType();
     virtual void set(const Property* src) { IVW_UNUSED_PARAM(src); }
 
-
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
@@ -102,19 +101,19 @@ protected:
 private:
     std::string identifier_;
     std::string displayName_;
-    PropertyOwner::InvalidationLevel invalidationLevel_;
-    PropertySemantics::Type semantics_;
+
     bool readOnly_;
+    PropertySemantics::Type semantics_;
+    PropertyVisibilityMode visibilityMode_;
+
     bool propertyModified_;
+    PropertyOwner::InvalidationLevel invalidationLevel_;
+
     PropertyOwner* owner_;
     std::vector<PropertyWidget*> propertyWidgets_;
 
     std::string groupID_;
     std::string groupDisplayName_;
-
-    PropertyVisibilityMode visibilityMode_;
-
-
     static std::map<std::string,std::string> groupDisplayNames_;
 };
 

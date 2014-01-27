@@ -48,6 +48,7 @@ void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF 
 
 void TransferFunctionEditorView::notify() {
     histogram_= tfProperty_->getHistogram();
+    update();
 }
 
 void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF& rect) {
@@ -55,11 +56,11 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     painter->drawRect(rect);
     // overlay grid
     int gridSpacing = 25;
-    qreal right = int(rect.right()) - (int(rect.right()) % gridSpacing);
-    qreal top = int(rect.top()) - (int(rect.top()) % gridSpacing);
+    QRectF sRect = sceneRect();
+    qreal right = int(sRect.right()) - (int(sRect.right()) % gridSpacing);
     QVarLengthArray<QLineF, 100> lines;
-    for (qreal x=rect.left(); x<=right; x+=gridSpacing)
-        lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+    for (qreal x=sRect.left(); x<=right; x+=gridSpacing)
+        lines.append(QLineF(x, sRect.top(), x, sRect.bottom()));
     QPen gridPen;
     gridPen.setColor(QColor(102,102,102));
     gridPen.setWidth(1.0);
@@ -67,8 +68,8 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     painter->setPen(gridPen);
     painter->drawLines(lines.data(), lines.size());
 
+    // histogram
     QVarLengthArray<QLineF, 100> bars;
-    QRectF sRect = sceneRect();
     for (size_t i=0; i<histogram_.size(); i++)
         bars.append(QLineF(((float)i/(float)histogram_.size())*sRect.width(), 0.0,
                            ((float)i/(float)histogram_.size())*sRect.width(), histogram_[i]*sRect.height()));

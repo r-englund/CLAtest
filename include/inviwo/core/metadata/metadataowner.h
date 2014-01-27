@@ -43,6 +43,9 @@ public:
     U getMetaData(std::string key, U val) const;
     MetaDataMap* getMetaDataMap() const { return metaData_; }
 
+    template<typename T>
+    bool hasMetaData(std::string key) const;
+
 protected:
     MetaDataMap* metaData_;
 };
@@ -80,6 +83,19 @@ U MetaDataOwner::getMetaData(std::string key, U val) const {
         }
     }
     return val;
+}
+
+
+template<typename T>
+bool MetaDataOwner::hasMetaData(std::string key) const {
+    const MetaData* baseMetadata = metaData_->get(key);
+    if (baseMetadata) {
+        const T* derivedMetaData = dynamic_cast<const T*>(baseMetadata);
+        if (derivedMetaData) {
+            return true;
+        }
+    }
+    return false;
 }
 
 } // namespace

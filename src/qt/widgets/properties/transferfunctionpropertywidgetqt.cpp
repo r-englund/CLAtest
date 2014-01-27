@@ -35,6 +35,8 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
     transferFunctionDialog_->setFloating(true);
     transferFunctionDialog_->setVisible(false);
     app->getMainWindow()->addDockWidget(Qt::RightDockWidgetArea, transferFunctionDialog_);
+    // notify the transfer function dialog, that the volume with the histogram is already there
+    property_->notifyObservers();
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     btnOpenTF_ = new QPushButton();
@@ -57,7 +59,6 @@ void TransferFunctionPropertyWidgetQt::updateFromProperty() {
     btnOpenTF_->setIcon((*transferFunctionDialog_->getTFPreview()).scaled(btnOpenTF_->size()));
     btnOpenTF_->setIconSize(btnOpenTF_->size());
 }
-
 
 void TransferFunctionPropertyWidgetQt::setPropertyValue() {}
 

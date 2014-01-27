@@ -31,6 +31,7 @@ SimpleRaycaster::SimpleRaycaster()
     outport_("outport", &entryPort_, COLOR_DEPTH),
     transferFunction_("transferFunction", "Transfer function", TransferFunction())
 {
+    volumePort_.onChange(this, &SimpleRaycaster::volumeChanged);
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
@@ -43,13 +44,15 @@ SimpleRaycaster::SimpleRaycaster()
     addShadingProperties();
 }
 
+void SimpleRaycaster::volumeChanged() {
+    if (volumePort_.getData())
+        transferFunction_.setVolume(volumePort_.getData());
+}
+
 void SimpleRaycaster::process() {
     ivwAssert(entryPort_.getData()!=0, "Entry port empty.");
     ivwAssert(exitPort_.getData()!=0, "Exit port empty.");
 
-    // FIXME: enable onChange for ports and put the following line there
-    transferFunction_.setVolume(volumePort_.getData());
-    
     TextureUnit transFuncUnit;
     bindTransferFunction(transferFunction_.get(), transFuncUnit.getEnum());
 

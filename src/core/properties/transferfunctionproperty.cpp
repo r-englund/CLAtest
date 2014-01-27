@@ -66,8 +66,8 @@ void TransferFunctionProperty::setVolume(const Volume* volume) {
         for (unsigned int i=1; i<numValues; i++)
             histogram_[i] = static_cast<float>(histogram[i])/static_cast<float>(maxOccurance);
         histogram_[0] = 1.0f;
+        notifyObservers();
     }
-    notifyObservers();
 }
 
 
