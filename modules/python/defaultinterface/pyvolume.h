@@ -30,6 +30,8 @@ PyObject* py_getVolumeDimension(PyObject* /*self*/, PyObject* args);
 PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args);
 PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args);
 
+PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args);
+
 
 class IVW_MODULE_PYTHON_API PySetVoxelMethod : public PyMethod{
 public:
@@ -60,9 +62,18 @@ public:
 class IVW_MODULE_PYTHON_API PyLoadTransferFunction : public PyMethod{
 public:
     std::string getName(){return "loadTransferFunction";}
-    std::string getDesc(){return "loadTransferFunction(vol)\tLoad a transfer function from file into the specified transfer function property.";}
+    std::string getDesc(){return "loadTransferFunction(processor,transferfunctionPropery,filename)\tLoad a transfer function from file into the specified transfer function property.";}
     virtual PyCFunction getFunc(){return py_loadTransferFunction;}
 };
+
+
+class IVW_MODULE_PYTHON_API PyAddTransferFunction : public PyMethod{
+public:
+    std::string getName(){return "addTF";}
+    std::string getDesc(){return "addTF(processor,transferfunctionPropery)\tLoad a transfer function from file into the specified transfer function property.";}
+    virtual PyCFunction getFunc(){return py_addPointTransferFunction;}
+};
+
 
 } //namespace
 
