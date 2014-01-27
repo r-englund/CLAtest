@@ -114,8 +114,8 @@ bool ProcessorNetworkEvaluator::hasBeenVisited(Processor* processor) {
     return false;
 }
 
-std::vector<Processor*> ProcessorNetworkEvaluator::getDirectPredecessors(Processor* processor) {
-    std::vector<Processor*> predecessors;
+std::set<Processor*> ProcessorNetworkEvaluator::getDirectPredecessors( Processor* processor ) {
+    std::set<Processor*> predecessors;
     std::vector<Inport*> inports = processor->getInports();
     std::vector<PortConnection*> portConnections = processorNetwork_->getConnections();
     for (size_t i=0; i<inports.size(); i++) {
@@ -123,7 +123,7 @@ std::vector<Processor*> ProcessorNetworkEvaluator::getDirectPredecessors(Process
             const Port* curInport = portConnections[j]->getInport();
             if (curInport == inports[i]) {
                 const Outport* connectedOutport = portConnections[j]->getOutport();
-                predecessors.push_back(connectedOutport->getProcessor());
+                predecessors.insert(connectedOutport->getProcessor());
             }
         }
     }
@@ -133,9 +133,10 @@ std::vector<Processor*> ProcessorNetworkEvaluator::getDirectPredecessors(Process
 void ProcessorNetworkEvaluator::traversePredecessors(Processor* processor) {
     if (!hasBeenVisited(processor)) {
         processorsVisited_.push_back(processor);
-        std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
-        for (size_t i=0; i<directPredecessors.size(); i++)
-            traversePredecessors(directPredecessors[i]);
+        std::set<Processor*> directPredecessors = getDirectPredecessors(processor);
+        for (std::set<Processor*>::iterator it = directPredecessors.begin(), itEnd=directPredecessors.end(); it!=itEnd; ++it) {
+            traversePredecessors(*it);
+        }
         processorsSorted_.push_back(processor);
     }
 }
@@ -159,11 +160,11 @@ void ProcessorNetworkEvaluator::determineProcessingOrder() {
 void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, InteractionEvent* event) {
 	if (!hasBeenVisited(processor)) {
 		processorsVisited_.push_back(processor);
-		std::vector<Processor*> directPredecessors = getDirectPredecessors(processor);
-		for (size_t i=0; i<directPredecessors.size(); i++) {
-			if (directPredecessors[i]->hasInteractionHandler())
-				directPredecessors[i]->invokeInteractionEvent(event);
-			propagateInteractionEvent(directPredecessors[i], event);
+		std::set<Processor*> directPredecessors = getDirectPredecessors(processor);
+		for (std::set<Processor*>::iterator it = directPredecessors.begin(), itEnd=directPredecessors.end(); it!=itEnd; ++it) {
+			if ((*it)->hasInteractionHandler())
+				(*it)->invokeInteractionEvent(event);
+			propagateInteractionEvent(*it, event);
 		}
 	}
 }

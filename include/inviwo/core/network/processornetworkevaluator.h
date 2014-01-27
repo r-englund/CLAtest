@@ -64,7 +64,7 @@ private:
 
     bool hasBeenVisited(Processor* processor);
     bool hasBeenVisited(Property* property);
-    std::vector<Processor*> getDirectPredecessors(Processor* processor);
+    std::set<Processor*> getDirectPredecessors(Processor* processor);
     void traversePredecessors(Processor* processor);
     void determineProcessingOrder();
 
