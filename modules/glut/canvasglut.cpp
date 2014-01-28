@@ -40,7 +40,7 @@ void CanvasGLUT::initialize() {
 
 void CanvasGLUT::initializeGL() {
     glutInitWindowSize(dimensions_.x, dimensions_.y);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutCreateWindow(windowTitle_.c_str());
 
     canvasID_ = glutGetWindow();
@@ -67,33 +67,16 @@ void CanvasGLUT::deinitialize() {
 }
 
 void CanvasGLUT::glSwapBuffers() {
-    //glutSwapBuffers();
-}
-
-void CanvasGLUT::reshape(int width, int height) {
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    if (height == 0) gluPerspective(60.0, static_cast<double>(width), 0.1, 10.0);
-    else gluPerspective (60.0, static_cast<double>(width) / static_cast<double>(height), 0.1, 10.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    canvases_[glutGetWindow()]->resize(uvec2(width, height));
-    glutPostRedisplay();
-}
-
-void CanvasGLUT::display(void) {
-    //canvases_[glutGetWindow()]->update();
     glutSwapBuffers();
 }
 
-void CanvasGLUT::idle() {
-    //FIXME: update() already called in network evaluator?!
-    /*processorNetworkEvaluator_->evaluate();
-    if (processorNetworkEvaluator_->repaintRequired())
-        glutPostRedisplay();
-    */
+void CanvasGLUT::reshape(int width, int height) {
+    canvases_[glutGetWindow()]->resize(uvec2(width, height));
 }
+
+void CanvasGLUT::display(void) {}
+
+void CanvasGLUT::idle() {}
 
 void CanvasGLUT::keyboard(unsigned char /*key*/, int /*x*/, int /*y*/) {
     KeyboardEvent* keyboardEvent = new KeyboardEvent();
