@@ -23,6 +23,8 @@ class Texture;
 
 class BaseTextureCallBack {
 public:
+    BaseTextureCallBack(){}
+    virtual ~BaseTextureCallBack(){}
     virtual void invoke(Texture*) const=0;
 };
 
@@ -68,4 +70,4 @@ private:
 
 } // namespace
 
-#endif // IVW_TEXTURECALLBACK_H
+#endif // IVW_TEXTURECALLBACK_H, settingsWidget_(0)

@@ -16,11 +16,15 @@
 
 namespace inviwo {
 
-    NormalizedHistogram::NormalizedHistogram(size_t numberOfBins) : valid_(false), maximumBinValue_(1.f) {
+NormalizedHistogram::NormalizedHistogram(size_t numberOfBins)
+    : maximumBinValue_(1.f)
+    , valid_(false) {
     data_ = new std::vector<float>(numberOfBins, 0.f);
 }
 
-NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram* rhs) : valid_(rhs->isValid()), maximumBinValue_(rhs->getMaximumBinValue()) {
+NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram* rhs)
+    : maximumBinValue_(rhs->getMaximumBinValue())
+    , valid_(rhs->isValid()) {
     data_ = new std::vector<float>(rhs->getData()->size(), 0.f);
     std::copy(rhs->getData()->begin(), rhs->getData()->end(), std::back_inserter(*data_));
 }

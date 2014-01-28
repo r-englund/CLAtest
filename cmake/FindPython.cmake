@@ -45,8 +45,22 @@ if(WIN32)
 	mark_as_advanced(PYTHON_LIBRARY_DIR)
     mark_as_advanced(PYTHON_LIBRARY)
     mark_as_advanced(PYTHON_LIBRARIES)
-elseif(APPLE )
-	message(FATAL_ERROR "Python not yet supported on apple platforms")
+
+elseif(APPLE)
+	set(APPLE_INCLUDE_PATHS /System/Library/Frameworks/Python.framework/Headers)
+	set(APPLE_LIB_PATHS /System/Library/Frameworks/Python.framework/Versions/Current/lib)
+	find_path(PYTHON_INCLUDE_DIR Python.h ${APPLE_INCLUDE_PATHS})
+	
+	set(PYTHON_APPLE_LIBS libpython2.7.dylib libpython2.6.dylib libpython2.5.dylib libpython2.4.dylib)
+	find_library(PYTHON_LIBRARIES NAMES ${PYTHON_APPLE_LIBS} PATHS ${APPLE_LIB_PATHS})
+	
+	FIND_PACKAGE_HANDLE_STANDARD_ARGS(Python DEFAULT_MSG PYTHON_LIBRARIES PYTHON_INCLUDE_DIR)
+	
+	mark_as_advanced(PYTHON_FOUND)
+	mark_as_advanced(PYTHON_INCLUDE_DIR)
+	mark_as_advanced(PYTHON_LIBRARY_DIR)
+	mark_as_advanced(PYTHON_LIBRARIES)
+
 elseif(UNIX)
 	set(UNIX_INCLUDE_PATHS /usr/local/pyenv/versions/2.7.6/include/python2.7 /usr/include/python2.7 /usr/include/python2.6 /usr/include/python2.5)
 	set(UNIX_LIB_PATHS /usr/local/pyenv/versions/2.7.6/lib/ /usr/lib/i386-linux-gnu)
@@ -57,12 +71,6 @@ elseif(UNIX)
         set(PYTHON_UNIX_LIBS libpython2.7.a libpython2.6.a libpython2.5.a libpython2.4.a)
     endif()
     find_library(PYTHON_LIBRARIES NAMES ${PYTHON_UNIX_LIBS} PATHS ${UNIX_LIB_PATHS})
-	#find_library(PYTHON_FIND_LIB1 NAMES libpthread.a libdl.a  PATHS ${UNIX_LIB_PATHS})
-	#find_library(PYTHON_FIND_LIB2 NAMES libpthread.so  PATHS ${UNIX_LIB_PATHS})
-	#find_library(PYTHON_FIND_LIB3 NAMES libdl.so  PATHS ${UNIX_LIB_PATHS})
-	#find_library(PYTHON_FIND_LIB4 NAMES libc.so  PATHS ${UNIX_LIB_PATHS})
-	#find_library(PYTHON_FIND_LIB5 NAMES libutil.so  PATHS ${UNIX_LIB_PATHS})
-	#set(PYTHON_LIBRARIES ${PYTHON_FIND_LIB1} ${PYTHON_FIND_LIB2} ${PYTHON_FIND_LIB3} ${PYTHON_FIND_LIB4} ${PYTHON_FIND_LIB5})
 	
 	FIND_PACKAGE_HANDLE_STANDARD_ARGS(Python DEFAULT_MSG PYTHON_LIBRARIES PYTHON_INCLUDE_DIR)
 	

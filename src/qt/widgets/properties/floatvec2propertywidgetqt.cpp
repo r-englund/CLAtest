@@ -20,10 +20,10 @@ namespace inviwo {
 
 FloatVec2PropertyWidgetQt::FloatVec2PropertyWidgetQt(FloatVec2Property *property)
     : property_(property)
+    , settingsWidget_(0) 
     , valueVec2Max_(property->getMaxValue())
     , valueVec2Min_(property->getMinValue())
-    , valueIncrement_(property->getIncrement()) 
-    , settingsWidget_(0) {
+    , valueIncrement_(property->getIncrement()) {
         
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();

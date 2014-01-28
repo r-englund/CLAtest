@@ -5,7 +5,8 @@ import time
 
 start = time.clock()
 
-d = 5
+d = 5 
+
 steps = 120
 for i in range(0, steps):
    r = (2 * 3.14 * i) / steps
@@ -19,7 +20,7 @@ for i in range(0, steps):
    x = 1.0*math.sin(r)
    z = 1.0*math.cos(r)
    inviwo.setCameraUp("EntryExitPoints","camera",(x,z,0))
-
+   inviwo.snapshot("/Users/petst/Work/Projects/Elstruct-vis/Inviwo/tmp/img"+str(i)+".jpg")
 
 end = time.clock()
 fps = 2*steps / (end - start)

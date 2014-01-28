@@ -38,6 +38,11 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property)
     , lineEditMinZ_(NULL)
     , lineEditMinW_(NULL)
 
+    , lineEditIcrementX_(NULL)
+    , lineEditIcrementY_(NULL)
+    , lineEditIcrementZ_(NULL)
+    , lineEditIcrementW_(NULL)
+
     , xValueLabel_(NULL)
     , yValueLabel_(NULL)
     , zValueLabel_(NULL)
@@ -45,13 +50,7 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property)
 
     , minValueLabel_(NULL)
     , maxValueLabel_(NULL)
-    , incValueLabel_(NULL)
-
-    , lineEditIcrementX_(NULL)
-    , lineEditIcrementY_(NULL)
-    , lineEditIcrementZ_(NULL)
-    , lineEditIcrementW_(NULL)
-{
+    , incValueLabel_(NULL) {
 
     if (dynamic_cast<FloatProperty*>(property_)) {
         floatProperty_ = static_cast<FloatProperty*>(property_);
