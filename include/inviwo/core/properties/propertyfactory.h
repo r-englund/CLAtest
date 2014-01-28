@@ -12,13 +12,14 @@
  *
  **********************************************************************/
 
-#ifndef IVW_PROCESSORFACTORY_H
-#define IVW_PROCESSORFACTORY_H
+#ifndef IVW_PROPERTYFACTORY_H
+#define IVW_PROPERTYFACTORY_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/util/inviwofactorybase.h>
 #include <inviwo/core/util/singleton.h>
+#include <inviwo/core/properties/propertyfactoryobject.h>
 
 namespace inviwo {
 
@@ -32,13 +33,22 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    void registerFactoryObject(Property* property);
+    void registeryPropertyObject(PropertyFactoryObject* property);
     virtual IvwSerializable* create(std::string className) const;
+    
+    virtual Property* getProperty(std::string className,
+                                  std::string identifier,
+                                  std::string displayName);
+    
+    virtual bool isValidType(std::string className) const;
+
+    std::vector<std::string> getRegistedPropertyClassNames();
 
 private:
-    mutable std::map<std::string, Property*> processorClassMap_;
+    typedef std::map<std::string, PropertyFactoryObject*> PropertyClassMap;
+    mutable PropertyClassMap propertyClassMap_;
 };
 
 } // namespace
 
-#endif // IVW_PROCESSORFACTORY_H
+#endif // IVW_PROPERTYFACTORY_H

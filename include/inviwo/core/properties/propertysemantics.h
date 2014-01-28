@@ -39,10 +39,9 @@ public:
 
     static const PropertySemantics Color;
     static const PropertySemantics LightPosition;
-    static const PropertySemantics Editor;
     static const PropertySemantics TextEditor;
     static const PropertySemantics ImageEditor;
-    static const PropertySemantics Shader;
+    static const PropertySemantics ShaderEditor;
     
 private:
     std::string semantic_;

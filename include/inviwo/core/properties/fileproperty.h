@@ -36,7 +36,7 @@ public:
     /** 
      * \brief Constructor for the FileProperty
      *
-     * The PropertySemantics can be set to Editor. Then a TextEditorWidget will be used instead of a FilePropertyWidget
+     * The PropertySemantics can be set to TextEditor. Then a TextEditorWidget will be used instead of a FilePropertyWidget
      * 
      * @param std::string identifier identifier for the property 
      * @param std::string displayName displayName for the property

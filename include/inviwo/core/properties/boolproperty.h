@@ -43,7 +43,9 @@ public:
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
      * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
-     */BoolProperty(std::string identifier, std::string displayName, bool value,
+     */
+    
+    BoolProperty(std::string identifier, std::string displayName, bool value = false,
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                  PropertySemantics semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;

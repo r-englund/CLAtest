@@ -47,7 +47,7 @@ public:
      * @param PropertySemantics semantics Semantics of the property, if nothing is specified it will set to the Default. The semantics can be specified as Editor
      * @return 
      */
-    StringProperty(std::string identifier, std::string displayName, std::string value,
+    StringProperty(std::string identifier, std::string displayName, std::string value = "",
                    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics=PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;

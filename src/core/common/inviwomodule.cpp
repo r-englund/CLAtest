@@ -72,6 +72,10 @@ InviwoModule::~InviwoModule() {
         delete properties_[i];
     properties_.clear();
 
+    for(size_t i = 0; i < propertyWidgets_.size(); i++)
+        delete propertyWidgets_[i];
+    propertyWidgets_.clear();
+
     for (size_t i=0; i<representationConverters_.size(); i++)
         delete representationConverters_[i];
     representationConverters_.clear();
@@ -138,7 +142,7 @@ const std::vector<Port*>& InviwoModule::getPorts() const {return ports_;}
 const std::vector<PortInspector*>& InviwoModule::getPortInspectors() const { return portInspectors_; }
 const std::vector<ProcessorFactoryObject*>& InviwoModule::getProcessors() const {return processors_;}
 const std::vector< std::pair<std::string, ProcessorWidget*> >& InviwoModule::getProcessorWidgets() const {return processorWidgets_;}
-const std::vector<Property*>& InviwoModule::getProperties() const {return properties_;}
+const std::vector<PropertyFactoryObject*>& InviwoModule::getProperties() const {return properties_;}
 const std::vector<PropertyWidgetFactoryObject*>& InviwoModule::getPropertyWidgets() const {return propertyWidgets_; }
 const std::vector<RepresentationConverter*>& InviwoModule::getRepresentationConverters() const {return representationConverters_;}
 const std::vector<GeometryRenderer*>& InviwoModule::getRenderers() const { return renderers_; }
@@ -155,7 +159,7 @@ void InviwoModule::registerPort(Port* port) {ports_.push_back(port);}
 void InviwoModule::registerPortInspector(PortInspector* portInspector) { portInspectors_.push_back(portInspector); }
 void InviwoModule::registerProcessorObject(ProcessorFactoryObject* processor) { processors_.push_back(processor); }
 void InviwoModule::registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) { processorWidgets_.push_back(std::make_pair(processorClassName, processorWidget));}
-void InviwoModule::registerProperty(Property* property) {properties_.push_back(property);}
+void InviwoModule::registerPropertyObject(PropertyFactoryObject* property) {properties_.push_back(property);}
 void InviwoModule::registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget) { propertyWidgets_.push_back(propertyWidget); }
 void InviwoModule::registerRenderer(GeometryRenderer* renderer) { renderers_.push_back(renderer); }
 void InviwoModule::registerRepresentationConverter(RepresentationConverter* representationConverter) {representationConverters_.push_back(representationConverter);}

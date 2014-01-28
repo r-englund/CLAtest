@@ -62,6 +62,53 @@ void FloatProperty::deserialize(IvwDeserializer& d) {
     OrdinalProperty<float>::setIncrement(value);
 }
 
+
+DoubleProperty::DoubleProperty(std::string identifier, std::string displayName, double value,
+                             double minValue, double maxValue, double increment,
+                             PropertyOwner::InvalidationLevel invalidationLevel,
+                             PropertySemantics semantics)
+                             : OrdinalProperty<double>(identifier, displayName, value, minValue, maxValue, increment,
+                             invalidationLevel, semantics) {}
+
+int DoubleProperty::getVariantType() {
+    return Variant::VariantTypeDouble;
+}
+
+Variant DoubleProperty::getVariant() {
+    return Variant(get());
+}
+
+void  DoubleProperty::setVariant(const Variant& val) {
+    if(val.canConvert(getVariantType())) {
+        set(val.getDouble());
+    }
+}
+
+void DoubleProperty::serialize(IvwSerializer& s) const {
+    Property::serialize(s);
+    s.serialize("value", get());
+    s.serialize("minvalue", OrdinalProperty<double>::getMinValue());
+    s.serialize("maxvalue", OrdinalProperty<double>::getMaxValue());
+    s.serialize("increment", OrdinalProperty<double>::getIncrement());
+}
+
+void DoubleProperty::deserialize(IvwDeserializer& d) {
+    Property::deserialize(d);
+    double value;
+    d.deserialize("value", value);
+    set(value);
+
+    d.deserialize("minvalue", value);
+    OrdinalProperty<double>::setMinValue(value);
+
+    d.deserialize("maxvalue", value);
+    OrdinalProperty<double>::setMaxValue(value);
+
+    d.deserialize("increment", value);
+    OrdinalProperty<double>::setIncrement(value);
+}
+
+
 IntProperty::IntProperty(std::string identifier, std::string displayName, int value,
                          int minValue, int maxValue, int increment,
                          PropertyOwner::InvalidationLevel invalidationLevel,

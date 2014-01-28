@@ -16,6 +16,7 @@
 #include <inviwo/core/common/inviwocore.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/propertyfactory.h>
 
 namespace inviwo {
 
@@ -33,13 +34,12 @@ LinkSettings::~LinkSettings() {
 
 void LinkSettings::initialize() {
     addProperty(&displayLinksproerty_);
-    InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
-    ivwAssert(module!=0, "Core module is not yet registered")
-    std::vector<Property*> registeredProperties = module->getProperties();
-    for (size_t i=0; i<registeredProperties.size(); i++) {
-        std::string id = registeredProperties[i]->getIdentifier();
-        std::string displayName = registeredProperties[i]->getDisplayName();
-        BoolProperty* linkPropery = new BoolProperty("link"+id, displayName, false);
+
+    std::vector<std::string> properties = PropertyFactory::getPtr()->getRegistedPropertyClassNames();
+    std::sort(properties.begin(), properties.end());
+
+    for(size_t i = 0; i<properties.size(); i++) {
+        BoolProperty* linkPropery = new BoolProperty("link-" + properties[i], properties[i], false);
         linkProperties_.push_back(linkPropery);
         linkPropery->setGroupID("auto-link-properties");
         linkPropery->setGroupDisplayName("auto-link-properties", "Auto Link Properties");
@@ -50,35 +50,13 @@ void LinkSettings::initialize() {
 void LinkSettings::deinitialize()  {}
 
 bool LinkSettings::isLinkable(Property* property)  {
-    Property* prop = 0;
-    BoolProperty* linkOption = 0;
-
-    //TODO: Following are some standard properties. Extend with more properties.
-    //camera
-    prop = getPropertyByIdentifier("linkcamera");
-    ivwAssert(prop!=0, "Camera Property link option not found in settings");
-    linkOption = dynamic_cast<BoolProperty*>( prop );
-    bool linkCameraProperty = linkOption->get();
-    if (linkCameraProperty && dynamic_cast<CameraProperty*>(property))
-        return true;
-
-    //transfer functions
-    prop = getPropertyByIdentifier("linktransferfunction");
-    ivwAssert(prop!=0, "TransferFunction Property link option not found in settings");
-    linkOption = dynamic_cast<BoolProperty*>( prop );
-    bool linkTfProperty = linkOption->get();
-    if (linkTfProperty && dynamic_cast<TransferFunctionProperty*>(property))
-        return true;
-
-    //options
-    prop = getPropertyByIdentifier("linkstringoptions");
-    ivwAssert(prop!=0, "Options Property link option not found in settings");
-    linkOption = dynamic_cast<BoolProperty*>( prop );
-    bool linkOptionProperty = linkOption->get();
-    if (linkOptionProperty && dynamic_cast<BaseOptionProperty*>(property))
-        return true;
-
-
+    Property* prop = getPropertyByIdentifier("link-" + property->getClassName());
+    if(prop) {
+        BoolProperty* linkOption = dynamic_cast<BoolProperty*>(prop);
+        if(linkOption) {
+            return linkOption->get();
+        }
+    }
     return false;
 }
 

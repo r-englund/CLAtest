@@ -30,7 +30,6 @@
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/vectorproperties.h>
 #include <inviwo/core/properties/stringproperty.h>
-#include <inviwo/core/properties/texteditorproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 
 namespace inviwo {

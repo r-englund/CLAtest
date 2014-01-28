@@ -34,6 +34,7 @@
 #include <inviwo/core/io/ivfvolumereader.h>
 #include <inviwo/core/io/datvolumewriter.h>
 #include <inviwo/core/io/ivfvolumewriter.h>
+#include <inviwo/core/io/rawvolumereader.h>
 
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
@@ -42,10 +43,18 @@
 #include <inviwo/core/ports/portinspector.h>
 
 //Properties
+#include <inviwo/core/properties/matrixproperties.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/properties/directoryproperty.h>
+#include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/imageeditorproperty.h>
 #include <inviwo/core/properties/optionproperties.h>
-
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/stringproperty.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/properties/vectorproperties.h>
 
 namespace inviwo {
 
@@ -86,10 +95,11 @@ InviwoCore::InviwoCore() : InviwoModule() {
     // Register Data readers
     registerDataReader(new DatVolumeReader());
     registerDataReader(new IvfVolumeReader());
+    registerDataReader(new RawVolumeReader());
 
     // Register Data writers
     registerDataWriter(new DatVolumeWriter());
-    registerDataWriter(new IvfVolumeWriter());    
+    registerDataWriter(new IvfVolumeWriter()); 
 
     // Register Settings
     registerSettings(new SystemSettings());
@@ -110,11 +120,34 @@ InviwoCore::InviwoCore() : InviwoModule() {
         InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
         + "portinspectors/geometryportinspector.inv"));
     
-    // Register Properties
-    // TODO: Register all properties
-    registerProperty(new CameraProperty("camera", "Camera"));
-    registerProperty(new TransferFunctionProperty("transferfunction", "TransferFunction"));
-    registerProperty(new StringOptionProperty("stringoptions", "StringOption"));
+    registerProperty(CameraProperty);
+    registerProperty(TransferFunctionProperty);
+
+    registerProperty(BoolProperty);
+    registerProperty(ButtonProperty);
+    registerProperty(DirectoryProperty);
+    //registerProperty(EventProperty); TODO fix "default" contructor with 2 args...
+    registerProperty(FileProperty);
+    registerProperty(ImageEditorProperty);
+    registerProperty(FloatMat2Property);
+    registerProperty(FloatMat3Property);
+    registerProperty(FloatMat4Property);
+    registerProperty(OptionPropertyInt);
+    registerProperty(OptionPropertyFloat);
+    registerProperty(OptionPropertyDouble);
+    registerProperty(OptionPropertyString);
+    registerProperty(FloatProperty);
+    registerProperty(IntProperty);
+    registerProperty(DoubleProperty);
+    registerProperty(StringProperty);
+    registerProperty(FloatMinMaxProperty);
+    registerProperty(FloatVec2Property);
+    registerProperty(FloatVec3Property);
+    registerProperty(FloatVec4Property);
+    registerProperty(IntMinMaxProperty);
+    registerProperty(IntVec2Property);
+    registerProperty(IntVec3Property);
+    registerProperty(IntVec4Property);
 }
 
 void InviwoCore::setupModuleSettings(){

@@ -31,7 +31,7 @@ class IntProperty;
 
 class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:
-    DirectoryProperty(std::string identifier, std::string displayName, std::string value,
+    DirectoryProperty(std::string identifier, std::string displayName, std::string value = "",
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
                  PropertySemantics semantics = PropertySemantics::Default);
     virtual std::vector<std::string> getDirectoryTree()  const ;

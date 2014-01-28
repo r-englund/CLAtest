@@ -25,7 +25,7 @@ ImageOverlay::ImageOverlay()
 	: ProcessorGL(),
 	inport0_("inport0"),
 	outport_("outport"),
-	textStringProperty_("Text","Text","Lorem ipsum etc.",PropertyOwner::INVALID_OUTPUT,PropertySemantics::Editor),
+	textStringProperty_("Text","Text","Lorem ipsum etc.",PropertyOwner::INVALID_OUTPUT,PropertySemantics::TextEditor),
 	font_size_(20),
 	xpos_(0),
 	ypos_(0),

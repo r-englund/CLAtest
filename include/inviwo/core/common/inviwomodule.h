@@ -28,6 +28,7 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/processorfactoryobject.h>
 #include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/propertyfactoryobject.h>
 #include <inviwo/core/properties/propertywidgetfactoryobject.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <inviwo/core/resources/resource.h>
@@ -57,7 +58,7 @@ public:
     const std::vector<PortInspector*>& getPortInspectors() const;
     const std::vector<ProcessorFactoryObject*>& getProcessors() const;
     const std::vector< std::pair<std::string, ProcessorWidget*> >& getProcessorWidgets() const;
-    const std::vector<Property*>& getProperties() const;
+    const std::vector<PropertyFactoryObject*>& getProperties() const;
     const std::vector<PropertyWidgetFactoryObject*>& getPropertyWidgets() const;
     const std::vector<GeometryRenderer*>& getRenderers() const;
     const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
@@ -83,7 +84,7 @@ protected:
     void registerPortInspector(PortInspector* portInspector);
     void registerProcessorObject(ProcessorFactoryObject* processor);
     void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
-    void registerProperty(Property* property);
+    void registerPropertyObject(PropertyFactoryObject* property);
     void registerPropertyWidgetObject(PropertyWidgetFactoryObject* property);
     void registerRenderer(GeometryRenderer* renderer);
     void registerRepresentationConverter(RepresentationConverter* representationConverter);
@@ -113,7 +114,7 @@ private:
     std::vector<PortInspector*> portInspectors_;
     std::vector<ProcessorFactoryObject*> processors_;
     std::vector<std::pair<std::string, ProcessorWidget*> > processorWidgets_;
-    std::vector<Property*> properties_;
+    std::vector<PropertyFactoryObject*> properties_;
     std::vector<PropertyWidgetFactoryObject*> propertyWidgets_;
     std::vector<GeometryRenderer*> renderers_;
     std::vector<RepresentationConverter*> representationConverters_;
@@ -124,6 +125,7 @@ private:
 
 
 #define registerProcessor(T) { registerProcessorObject(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
+#define registerProperty(T) { registerPropertyObject(new PropertyFactoryObjectTemplate<T>(#T)); }
 #define registerPropertyWidget(T, P, semantics) { registerPropertyWidgetObject(new PropertyWidgetFactoryObjectTemplate<T,P>(#P, PropertySemantics(semantics))); }
 
 } // namespace

@@ -32,7 +32,7 @@ public:
 	/** 
 	 * \brief Constructs a FloatMinMaxProperty
      */FloatMinMaxProperty(std::string identifier, std::string displayName, 
-       float valueMin, float valueMax, float rangeMin=0.f, float rangeMax=1.f, float increment=0.01f,
+     float valueMin = 0.f, float valueMax = 1.f, float rangeMin = 0.f, float rangeMax = 1.f, float increment = 0.01f,
        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
        PropertySemantics semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
@@ -62,7 +62,7 @@ public:
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
      * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
-     */FloatVec2Property(std::string identifier, std::string displayName, vec2 value, 
+     */FloatVec2Property(std::string identifier, std::string displayName, vec2 value = vec2(0.0f),
 		vec2 minValue=vec2(0.0f), vec2 maxValue= vec2(1.0f), vec2 increment=vec2(0.01f),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
@@ -94,7 +94,7 @@ public:
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
      * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
-     */FloatVec3Property(std::string identifier, std::string displayName, vec3 value, 
+     */FloatVec3Property(std::string identifier, std::string displayName, vec3 value = vec3(0.0f),
 		vec3 minValue=vec3(0.0f), vec3 maxValue=vec3(1.0f), vec3 increment=vec3(0.01f),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
@@ -125,7 +125,7 @@ public:
 	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
 	 * @param PropertySemantics semantics <DESCRIBE ME>
 	 * @return  <DESCRIBE ME>
-	 */FloatVec4Property(std::string identifier, std::string displayName, vec4 value, 
+     */FloatVec4Property(std::string identifier, std::string displayName, vec4 value = vec4(0.0f),
 		vec4 minValue=vec4(0.0f), vec4 maxValue= vec4(1.0f), vec4 increment=vec4(0.01f),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
@@ -146,7 +146,7 @@ public:
 	/** 
 	 * \brief Constructs a IntMinMaxProperty
 	 */IntMinMaxProperty(std::string identifier, std::string displayName, 
-       int valueMin, int valueMax, int rangeMin=0, int rangeMax=10, int increment=1,
+       int valueMin = 0, int valueMax = 10, int rangeMin=0, int rangeMax=10, int increment=1,
        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
        PropertySemantics semantics = PropertySemantics::Default);
 	virtual void serialize(IvwSerializer& s) const;
@@ -177,7 +177,7 @@ public:
 	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
 	 * @param PropertySemantics semantics <DESCRIBE ME>
 	 * @return  <DESCRIBE ME>
-	 */IntVec2Property(std::string identifier, std::string displayName, ivec2 value, 
+     */IntVec2Property(std::string identifier, std::string displayName, ivec2 value = ivec2(0),
 		ivec2 minValue=ivec2(0), ivec2 maxValue=ivec2(10), ivec2 increment=ivec2(1),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
@@ -209,7 +209,7 @@ public:
 	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
 	 * @param PropertySemantics semantics <DESCRIBE ME>
 	 * @return  <DESCRIBE ME>
-	 */IntVec3Property(std::string identifier, std::string displayName, ivec3 value, 
+     */IntVec3Property(std::string identifier, std::string displayName, ivec3 value = ivec3(0),
 		ivec3 minValue=ivec3(0), ivec3 maxValue= ivec3(10), ivec3 increment=ivec3(1),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
@@ -241,7 +241,7 @@ public:
 	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
 	 * @param PropertySemantics semantics <DESCRIBE ME>
 	 * @return  <DESCRIBE ME>
-	 */IntVec4Property(std::string identifier, std::string displayName, ivec4 value, 
+     */IntVec4Property(std::string identifier, std::string displayName, ivec4 value = ivec4(0),
 		ivec4 minValue=ivec4(0), ivec4 maxValue= ivec4(10), ivec4 increment=ivec4(1),
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);

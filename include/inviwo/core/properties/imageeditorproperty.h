@@ -55,9 +55,9 @@ public:
      * @param std::string value the path to the file
      * @param PropertySemantics semantics Can be set to Editor
      */
-    ImageEditorProperty(std::string identifier, std::string displayName, std::string value,
+    ImageEditorProperty(std::string identifier, std::string displayName, std::string value = "",
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
-                 PropertySemantics semantics = PropertySemantics::Editor);
+                 PropertySemantics semantics = PropertySemantics::ImageEditor);
     virtual std::string getClassName()  const { return "ImageEditorProperty"; }
     void addLabel(vec2 start, vec2 end, std::string name="");
     void setDimension(ivec2 imgSize);

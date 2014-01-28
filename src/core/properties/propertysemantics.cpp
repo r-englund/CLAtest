@@ -38,9 +38,8 @@ std::ostream& operator << (std::ostream& os, const inviwo::PropertySemantics& ob
 const PropertySemantics PropertySemantics::Default("Default");
 const PropertySemantics PropertySemantics::Color("Color");
 const PropertySemantics PropertySemantics::LightPosition("LightPosition");
-const PropertySemantics PropertySemantics::Editor("Editor");
 const PropertySemantics PropertySemantics::TextEditor("TextEditor");
 const PropertySemantics PropertySemantics::ImageEditor("ImageEditor");
-const PropertySemantics PropertySemantics::Shader("Shader");
+const PropertySemantics PropertySemantics::ShaderEditor("ShaderEditor");
     
 } // namespace

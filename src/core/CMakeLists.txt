@@ -92,6 +92,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/imageio.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/ivfvolumewriter.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/rawvolumereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwdeserializer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializable.h  
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserialization.h
@@ -152,6 +153,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyowner.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertysemantics.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyvisibility.h
@@ -161,7 +163,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/scalarproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/texteditorproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferfunctionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrenderer.h
@@ -276,6 +277,7 @@ set(SOURCE_FILES
     io/imageio.cpp
     io/ivfvolumereader.cpp 
     io/ivfvolumewriter.cpp  
+    io/rawvolumereader.cpp
     io/serialization/ivwdeserializer.cpp
     io/serialization/ivwserializebase.cpp
     io/serialization/ivwserializeconstants.cpp
@@ -322,6 +324,7 @@ set(SOURCE_FILES
     properties/optionproperties.cpp
     properties/property.cpp
     properties/propertyfactory.cpp
+    properties/propertyfactoryobject.cpp
     properties/propertyowner.cpp
     properties/propertysemantics.cpp
     properties/propertywidget.cpp
@@ -329,7 +332,6 @@ set(SOURCE_FILES
     properties/propertywidgetfactoryobject.cpp
     properties/scalarproperties.cpp
     properties/stringproperty.cpp
-    properties/texteditorproperty.cpp
     properties/transferfunctionproperty.cpp
     properties/vectorproperties.cpp
     rendering/geometryrendererfactory.cpp

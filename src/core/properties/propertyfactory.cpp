@@ -23,33 +23,63 @@ PropertyFactory::PropertyFactory() {
     initialize();
 }
 
-PropertyFactory::~PropertyFactory() {}
+PropertyFactory::~PropertyFactory() {
+    deinitialize();
+}
 
 void PropertyFactory::initialize() {
-    //TODO: check that inviwoapp is initialized
-
-    /*InviwoApplication* inviwoApp = InviwoApplication::app();
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<Processor*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-        for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
-            registerFactoryObject(curProcessorList[curProcessorId]);
-    }*/
-}
-
-void PropertyFactory::registerFactoryObject(Property* property) {
-   /* if (processorClassMap_.find(processor->getClassName()) == processorClassMap_.end())
-        processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));*/
-}
-
-IvwSerializable* PropertyFactory::create(std::string className) const {
-    /*std::map<std::string, Processor*>::iterator it = processorClassMap_.find(className);
-    if (it != processorClassMap_.end())
-        return it->second->create();
-    else*/
-        return 0;
+        std::vector<PropertyFactoryObject*> propeties = inviwoApp->getModules()[curModuleId]->getProperties();
+        for(size_t i = 0; i<propeties.size(); i++)
+            registeryPropertyObject(propeties[i]);
+    }
 }
 
 void PropertyFactory::deinitialize() {
+    propertyClassMap_.clear();
+}
+
+void PropertyFactory::registeryPropertyObject(PropertyFactoryObject* property){
+    std::string className = property->getClassName();
+
+    PropertyClassMap::const_iterator it = propertyClassMap_.find(className);
+    if(it == propertyClassMap_.end()) {
+        propertyClassMap_.insert(std::make_pair(className, property));;
+
+    } else {
+        LogWarn("Property with class name: " << className << " already registed");
+    }
+}
+
+IvwSerializable* PropertyFactory::create(std::string className) const {
+    return NULL;
+}
+
+bool PropertyFactory::isValidType(std::string className) const {
+    PropertyClassMap::const_iterator it = propertyClassMap_.find(className);
+    if(it != propertyClassMap_.end()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+Property* PropertyFactory::getProperty(std::string className, std::string identifier, std::string displayName) {
+    PropertyClassMap::const_iterator it = propertyClassMap_.find(className);
+    if(it != propertyClassMap_.end()) {
+        return it->second->create(identifier, displayName);
+    } else {
+        return NULL;
+    }
+}
+
+std::vector<std::string> PropertyFactory::getRegistedPropertyClassNames() {
+    std::vector<std::string> classNames;
+    for(PropertyClassMap::iterator it = propertyClassMap_.begin(); it != propertyClassMap_.end(); ++it) {
+        classNames.push_back(it->first);
+    }
+    return classNames;
 }
 
 } // namespace

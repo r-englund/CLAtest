@@ -50,7 +50,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertysettingswidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertyselectiontreewidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/sphericalfloatvec3propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/stringpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/syntaxhighlighter.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/texteditorwidgetqt.h
@@ -58,6 +58,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorview.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertydialog.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertyselectiontreewidget.h
 )
 
 #--------------------------------------------------------------------
@@ -66,7 +67,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventconverterqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventpropertymanager.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/labelgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/labelgraphicsitem.h   
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/qtwidgetmodule.h
     ${MOC_FILES}
@@ -123,6 +124,7 @@ set(SOURCE_FILES
     properties/optionpropertywidgetqt.cpp
     properties/propertysettingswidgetqt.cpp
     properties/propertywidgetqt.cpp
+    properties/sphericalfloatvec3propertywidgetqt.cpp
     properties/stringpropertywidgetqt.cpp
     properties/syntaxhighlighter.cpp
     properties/texteditorwidgetqt.cpp
@@ -133,9 +135,10 @@ set(SOURCE_FILES
     properties/transferfunctionpropertywidgetqt.cpp 
     propertylistwidget.cpp
     propertyselectiontreewidget.cpp
+    qtwidgetmodule.cpp
     rangesliderqt.cpp
     spinboxrangesliderwidgetqt.cpp
-    qtwidgetmodule.cpp
+  
 )
 
 ivw_group("Source Files" ${SOURCE_FILES})

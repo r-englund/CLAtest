@@ -22,6 +22,7 @@
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
 #include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/propertyfactory.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 
@@ -72,9 +73,6 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
 
     registerModule(new InviwoCore());
     (*regModuleFunc)(this);
-    for (size_t i=0; i<modules_.size(); i++){
-        modules_[i]->initialize();
-    }
 
     // initialize singleton factories
     GeometryRendererFactory::init();
@@ -85,7 +83,12 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     DataReaderFactory::init();
     DataWriterFactory::init();
     PortInspectorFactory::init();
+    PropertyFactory::init();
     PropertyWidgetFactory::init();
+
+    for(size_t i = 0; i < modules_.size(); i++) {
+        modules_[i]->initialize();
+    }
 
     initialized_ = true;
 }

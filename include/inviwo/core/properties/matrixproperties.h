@@ -43,7 +43,7 @@ public:
 	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
 	 * @param PropertySemantics semantics <DESCRIBE ME>
 	 * @return  <DESCRIBE ME>
-	 */FloatMat2Property(std::string identifier, std::string displayName,mat2 value,
+     */FloatMat2Property(std::string identifier, std::string displayName, mat2 value = mat2(0.0f),
                       mat2 minValue=mat2(0.0f), mat2 maxValue= mat2(1.0f), mat2 increment=mat2(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
@@ -75,7 +75,7 @@ public:
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
      * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
-     */FloatMat3Property(std::string identifier, std::string displayName,mat3 value,
+     */FloatMat3Property(std::string identifier, std::string displayName, mat3 value = mat3(0.0f),
                       mat3 minValue=mat3(0.0f), mat3 maxValue= mat3(1.0f), mat3 increment=mat3(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
@@ -107,7 +107,7 @@ public:
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
      * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
-     */FloatMat4Property(std::string identifier, std::string displayName, mat4 value,
+     */FloatMat4Property(std::string identifier, std::string displayName, mat4 value = mat4(0.0f),
                       mat4 minValue=mat4(0.0f), mat4 maxValue= mat4(1.0f), mat4 increment=mat4(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);

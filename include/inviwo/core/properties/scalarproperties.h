@@ -22,7 +22,7 @@ namespace inviwo {
 
 class IVW_CORE_API FloatProperty : public OrdinalProperty<float> {
 public:
-    FloatProperty(std::string identifier, std::string displayName, float value,
+    FloatProperty(std::string identifier, std::string displayName, float value = 0.f,
                   float minValue=0.0f, float maxValue=1.0f, float increment=0.01f,
                   PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                   PropertySemantics semantics=PropertySemantics::Default);
@@ -34,9 +34,23 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 };
 
+class IVW_CORE_API DoubleProperty : public OrdinalProperty<double> {
+public:
+    DoubleProperty(std::string identifier, std::string displayName, double value = 0.0,
+                  double minValue = 0.0f, double maxValue = 1.0f, double increment = 0.01f,
+                  PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                  PropertySemantics semantics = PropertySemantics::Default);
+    virtual std::string getClassName()  const { return "DoubleProperty"; }
+    virtual Variant getVariant();
+    virtual void setVariant(const Variant&);
+    virtual int getVariantType();
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+};
+
 class IVW_CORE_API IntProperty : public OrdinalProperty<int> {
 public:
-    IntProperty(std::string identifier, std::string displayName, int value,
+    IntProperty(std::string identifier, std::string displayName, int value = 0,
                 int minValue=0, int maxValue=4096, int increment=1,
                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                 PropertySemantics semantics=PropertySemantics::Default);

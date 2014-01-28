@@ -91,9 +91,7 @@ bool PropertyWidgetFactory::isValidType(std::string className) const {
 }
 
 void PropertyWidgetFactory::deinitialize() {
-    for(WidgetMap::iterator it = widgetMap_.begin(); it != widgetMap_.end(); ++it) {
-        delete it->second;
-    }
+    widgetMap_.clear();
 }
 
 } // namespace
