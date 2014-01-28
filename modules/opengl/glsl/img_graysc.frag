@@ -12,7 +12,7 @@
  *
  **********************************************************************/
 
-#include "modules/sampler2d.frag"
+#include "modules/inc_sampler2d.frag"
 
 uniform sampler2D inport_;
 

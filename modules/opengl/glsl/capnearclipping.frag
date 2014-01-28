@@ -12,7 +12,7 @@
  *
  **********************************************************************/
 
-#include "modules/sampler2d.frag"
+#include "modules/inc_sampler2d.frag"
 
 uniform TEXTURE_TYPE entryColorTex_;
 uniform TEXTURE_TYPE entryDepthTex_;
