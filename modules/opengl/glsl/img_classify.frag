@@ -12,7 +12,7 @@
  *
  **********************************************************************/
 
-#include "modules/mod_classification.frag"
+#include "modules/classification.frag"
 
 uniform sampler2D inport_;
 uniform vec2 dimension_;

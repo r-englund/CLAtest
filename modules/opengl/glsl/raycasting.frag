@@ -12,14 +12,14 @@
  *
  **********************************************************************/
 
-#include "modules/mod_sampler2d.frag"
-#include "modules/mod_sampler3d.frag"
-#include "modules/mod_raycasting.frag"
-#include "modules/mod_classification.frag"
-#include "modules/mod_gradients.frag"
-#include "modules/mod_shading.frag"
-#include "modules/mod_compositing.frag"
-#include "modules/mod_depth.frag"
+#include "modules/sampler2d.frag"
+#include "modules/sampler3d.frag"
+#include "modules/raycasting.frag"
+#include "modules/classification.frag"
+#include "modules/gradients.frag"
+#include "modules/shading.frag"
+#include "modules/compositing.frag"
+#include "modules/depth.frag"
 
 uniform TEXTURE_TYPE entryColorTex_;
 uniform TEXTURE_TYPE entryDepthTex_;

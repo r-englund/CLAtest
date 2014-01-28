@@ -12,9 +12,9 @@
  *
  **********************************************************************/
 
-#include "modules/mod_sampler2d.frag"
-#include "modules/mod_sampler3d.frag"
-#include "modules/mod_classification.frag"
+#include "modules/sampler2d.frag"
+#include "modules/sampler3d.frag"
+#include "modules/classification.frag"
 
 uniform VOLUME_TYPE volume_;
 uniform VOLUME_PARAMETERS volumeParameters_;
