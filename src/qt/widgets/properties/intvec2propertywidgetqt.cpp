@@ -21,7 +21,8 @@ IntVec2PropertyWidgetQt::IntVec2PropertyWidgetQt(IntVec2Property *property) : pr
     PropertyWidgetQt::generateContextMenu();
 	generateWidget();
 	updateFromProperty();
-    generatesSettingsWidget();
+    if(!property->getReadOnly())
+        generatesSettingsWidget();
 }
 
 

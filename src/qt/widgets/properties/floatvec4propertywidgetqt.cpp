@@ -24,7 +24,8 @@ FloatVec4PropertyWidgetQt::FloatVec4PropertyWidgetQt(FloatVec4Property* property
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    generatesSettingsWidget();
+    if(!property->getReadOnly())
+        generatesSettingsWidget();
 }
 
 

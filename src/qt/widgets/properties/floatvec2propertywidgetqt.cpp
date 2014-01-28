@@ -29,7 +29,8 @@ FloatVec2PropertyWidgetQt::FloatVec2PropertyWidgetQt(FloatVec2Property *property
     PropertyWidgetQt::generateContextMenu();
 	generateWidget();
 	updateFromProperty();
-    generatesSettingsWidget();
+    if(!property->getReadOnly())
+        generatesSettingsWidget();
 }
 
 FloatVec2PropertyWidgetQt::~FloatVec2PropertyWidgetQt(){

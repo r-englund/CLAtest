@@ -21,7 +21,8 @@ FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    generatesSettingsWidget();
+    if(!property->getReadOnly())
+        generatesSettingsWidget();
 }
 
 FloatPropertyWidgetQt::~FloatPropertyWidgetQt(){

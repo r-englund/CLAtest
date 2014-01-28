@@ -23,7 +23,8 @@ IntVec4PropertyWidgetQt::IntVec4PropertyWidgetQt(IntVec4Property *property) : pr
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
 	updateFromProperty();
-    generatesSettingsWidget();
+    if(!property->getReadOnly())
+        generatesSettingsWidget();
 }
 
 

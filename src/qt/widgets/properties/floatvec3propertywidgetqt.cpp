@@ -30,7 +30,9 @@ FloatVec3PropertyWidgetQt::FloatVec3PropertyWidgetQt(FloatVec3Property* property
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    generatesSettingsWidget();
+
+    if(!property->getReadOnly())
+        generatesSettingsWidget();
 }
 
 
