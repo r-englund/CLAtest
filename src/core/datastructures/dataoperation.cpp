@@ -20,7 +20,7 @@ DataOperation::DataOperation(){}
 
 DataOperation::~DataOperation(){}
 
-void DataOperation::setOutput(DataRepresentation* out) { 
+void DataOperation::setOutput(void* out) { 
     out_ = out; 
 }
 

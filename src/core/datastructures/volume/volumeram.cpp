@@ -18,15 +18,16 @@
 namespace inviwo {
 
 VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format, border), data_(NULL)
+    : VolumeRepresentation(dimensions, format, border), data_(NULL), histogram_(NULL)
 {}
 
 VolumeRAM::VolumeRAM(const VolumeRAM& rhs) 
-    : VolumeRepresentation(rhs), data_(NULL) {
+    : VolumeRepresentation(rhs), data_(NULL), histogram_(new NormalizedHistogram(rhs.histogram_)) {
 }
 VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
     if(this != &that) {
         VolumeRepresentation::operator=(that);
+        histogram_ = new NormalizedHistogram(that.histogram_);
     }
     return *this;
 }
@@ -40,6 +41,8 @@ void VolumeRAM::deinitialize() {
     // Make sure that data is deinitialized in
     // child class (should not delete void pointer 
     // since destructor will not be called for object.
+    delete histogram_;
+    histogram_ = NULL;
 }
 
 void* VolumeRAM::getData() {
@@ -48,6 +51,22 @@ void* VolumeRAM::getData() {
 
 const void* VolumeRAM::getData() const {
     return const_cast<void*>(data_);
+}
+
+bool VolumeRAM::hasNormalizedHistogram() const{
+    return (histogram_ != NULL);
+}
+
+NormalizedHistogram* VolumeRAM::getNormalizedHistogram() {
+    if(data_ && (!histogram_ || !histogram_->isValid()))
+        histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_);
+    return histogram_; 
+}
+
+const NormalizedHistogram* VolumeRAM::getNormalizedHistogram() const {
+    if(data_ && (!histogram_ || !histogram_->isValid()))
+        histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_);
+    return histogram_; 
 }
 
 VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format) {

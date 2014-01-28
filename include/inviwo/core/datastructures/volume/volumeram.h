@@ -18,6 +18,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
+#include <inviwo/core/datastructures/histogram.h>
 
 namespace inviwo {
 
@@ -47,6 +48,10 @@ public:
         data_ = data;
     }
 
+    bool hasNormalizedHistogram() const;
+    NormalizedHistogram* getNormalizedHistogram();
+    const NormalizedHistogram* getNormalizedHistogram() const;
+
     virtual void setValueFromSingleFloat(const uvec3& pos, float val) = 0;
     virtual void setValueFromVec2Float(const uvec3& pos, vec2 val) = 0;
     virtual void setValueFromVec3Float(const uvec3& pos, vec3 val) = 0;
@@ -63,6 +68,7 @@ public:
 
 protected:
     void* data_;
+    mutable NormalizedHistogram* histogram_;
 };
 
 

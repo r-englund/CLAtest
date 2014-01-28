@@ -27,13 +27,13 @@ public:
     DataOperation();
     virtual ~DataOperation();
 
-    void setOutput(DataRepresentation* out);
+    void setOutput(void* out);
 
     template<typename T>
     T* getOutput();
 
 private:
-    DataRepresentation* out_;
+    void* out_;
 };
 
 template<typename T>

@@ -12,6 +12,7 @@
  *
  **********************************************************************/
 
+#include <inviwo/core/datastructures/histogram.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <QVarLengthArray>
@@ -47,7 +48,6 @@ void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF 
 }
 
 void TransferFunctionEditorView::notify() {
-    histogram_= tfProperty_->getHistogram();
     update();
 }
 
@@ -69,13 +69,18 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     painter->drawLines(lines.data(), lines.size());
 
     // histogram
-    QVarLengthArray<QLineF, 100> bars;
-    for (size_t i=0; i<histogram_.size(); i++)
-        bars.append(QLineF(((float)i/(float)histogram_.size())*sRect.width(), 0.0,
-                           ((float)i/(float)histogram_.size())*sRect.width(), histogram_[i]*sRect.height()));
-    qreal lineWidth = sRect.width()/histogram_.size();
-    painter->setPen(QPen(QColor(68,102,170,150), lineWidth));
-    painter->drawLines(bars.data(), bars.size());
+    const NormalizedHistogram* normHistogram = tfProperty_->getNormalizedHistogram();
+    if(normHistogram){
+        const std::vector<float>* normHistogramData = normHistogram->getData();
+        QVarLengthArray<QLineF, 100> bars;
+        for (size_t i=0; i<normHistogramData->size(); i++){
+            bars.append(QLineF(((float)i/(float)normHistogramData->size())*sRect.width(), 0.0,
+                               ((float)i/(float)normHistogramData->size())*sRect.width(), normHistogramData->at(i)*sRect.height()));
+        }
+        qreal lineWidth = sRect.width()/normHistogramData->size();
+        painter->setPen(QPen(QColor(68,102,170,150), lineWidth));
+        painter->drawLines(bars.data(), bars.size());
+    }
 }
 
 void TransferFunctionEditorView::updateZoom() {

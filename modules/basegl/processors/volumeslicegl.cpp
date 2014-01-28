@@ -30,7 +30,6 @@ VolumeSliceGL::VolumeSliceGL()
     transferFunction_("transferFunction", "Transfer function", TransferFunction()),
     shader_(NULL)
 {
-    inport_.onChange(this, &VolumeSliceGL::volumeChanged);
     addPort(inport_);
     addPort(outport_);
 
@@ -62,17 +61,12 @@ void VolumeSliceGL::deinitialize() {
     ProcessorGL::deinitialize();
 }
 
-void VolumeSliceGL::volumeChanged() {
-    if (inport_.getData()) {
-        if (volumeDimensions_ != inport_.getData()->getDimension()) {
-            volumeDimensions_ = inport_.getData()->getDimension();
-            volumeDimensionChanged();
-        }
-        transferFunction_.setVolume(inport_.getData());
-    }
-}
-
 void VolumeSliceGL::process(){
+    if (volumeDimensions_ != inport_.getData()->getDimension()) {
+        volumeDimensions_ = inport_.getData()->getDimension();
+        volumeDimensionChanged();
+    }
+
     TextureUnit volUnit;
     const VolumeGL* volumeGL = inport_.getData()->getRepresentation<VolumeGL>();
     volumeGL->bindTexture(volUnit.getEnum());

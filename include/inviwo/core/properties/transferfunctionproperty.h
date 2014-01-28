@@ -19,6 +19,8 @@
 #include <inviwo/core/properties/vectorproperties.h>
 #include <inviwo/core/datastructures/transferfunction.h>
 #include <inviwo/core/datastructures/volume/volume.h>
+#include <inviwo/core/datastructures/histogram.h>
+#include <inviwo/core/ports/volumeport.h>
 
 namespace inviwo {
 
@@ -26,7 +28,7 @@ class IVW_CORE_API TransferFunctionProperty : public TemplateProperty<TransferFu
 
 public:
     TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value = TransferFunction(),
-                             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                             VolumeInport* volumeInport = NULL, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics semantics=PropertySemantics::Default);
     ~TransferFunctionProperty();
 
@@ -43,16 +45,14 @@ public:
     vec2 getZoomV() { return zoomV_; }
     void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
 
-    void setVolume(const Volume* volume);
-    std::vector<float> getHistogram() { return histogram_; }
+    const NormalizedHistogram* getNormalizedHistogram() const;
 
 private:
     vec2 mask_;
     vec2 zoomH_;
     vec2 zoomV_;
 
-    const Volume* volume_;
-    std::vector<float> histogram_;
+    const VolumeInport* volumeInport_;
 };
 
 } // namespace inviwo

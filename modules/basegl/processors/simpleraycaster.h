@@ -33,7 +33,6 @@ public:
 
 protected:
     virtual void process();
-    void volumeChanged();
 
 private:
     VolumeInport volumePort_;

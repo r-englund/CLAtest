@@ -42,7 +42,6 @@ public:
 protected:
     virtual void process();
 
-    void volumeChanged();
     void coordinatePlaneChanged();
     void volumeDimensionChanged();
 

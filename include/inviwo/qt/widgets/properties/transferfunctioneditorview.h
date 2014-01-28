@@ -16,7 +16,6 @@
 #define IVW_TRANSFERFUNCTIONEDITORVIEW_H
 
 #include <inviwo/core/properties/transferfunctionproperty.h>
-
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
@@ -55,8 +54,6 @@ private:
     vec2 mask_;
     vec2 zoomH_;
     vec2 zoomV_;
-
-    std::vector<float> histogram_;
 };
 } // namespace
 
