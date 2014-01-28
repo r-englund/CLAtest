@@ -101,12 +101,12 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/volumeslice.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/modules/inc_classification.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/modules/inc_gradients.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/modules/inc_depth.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/modules/inc_sampler2d.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/modules/inc_sampler3d.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/modules/inc_shading.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_classification.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_gradients.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_depth.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler2d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler3d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_shading.frag
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 

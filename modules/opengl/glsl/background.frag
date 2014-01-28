@@ -12,7 +12,7 @@
  *
  **********************************************************************/
 
-#include "modules/inc_sampler2d.frag"
+#include "include/inc_sampler2d.frag"
 
 uniform TEXTURE_TYPE srcColorTex_;
 uniform TEXTURE_PARAMETERS srcColorParameters_;
