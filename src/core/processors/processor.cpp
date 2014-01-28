@@ -72,55 +72,55 @@ void Processor::setProcessorWidget(ProcessorWidget* processorWidget) {
     processorWidget_ = processorWidget; 
 }
 
-ProcessorWidget* Processor::getProcessorWidget() { 
+ProcessorWidget* Processor::getProcessorWidget() const { 
     return processorWidget_;
 }
 
-bool Processor::hasProcessorWidget() { 
+bool Processor::hasProcessorWidget() const { 
     return (processorWidget_ != 0); 
 }
 
-Port* Processor::getPort(std::string identifier) {
-    for (std::vector<Inport*>::iterator it = inports_.begin(); it != inports_.end(); ++it)
+Port* Processor::getPort(std::string identifier) const {
+    for (std::vector<Inport*>::const_iterator it = inports_.begin(); it != inports_.end(); ++it)
         if((*it)->getIdentifier() == identifier)
             return (*it);
-    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
-        if((*it)->getIdentifier() == identifier)
-            return (*it);
-    return NULL;
-}
-
-Inport* Processor::getInport(std::string identifier) {
-    for (std::vector<Inport*>::iterator it = inports_.begin(); it != inports_.end(); ++it)
+    for (std::vector<Outport*>::const_iterator it = outports_.begin(); it != outports_.end(); ++it)
         if((*it)->getIdentifier() == identifier)
             return (*it);
     return NULL;
 }
 
-Outport* Processor::getOutport(std::string identifier) {
-    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
+Inport* Processor::getInport(std::string identifier) const {
+    for (std::vector<Inport*>::const_iterator it = inports_.begin(); it != inports_.end(); ++it)
         if((*it)->getIdentifier() == identifier)
             return (*it);
     return NULL;
 }
 
-std::vector<Inport*> Processor::getInports() { 
+Outport* Processor::getOutport(std::string identifier) const {
+    for (std::vector<Outport*>::const_iterator it = outports_.begin(); it != outports_.end(); ++it)
+        if((*it)->getIdentifier() == identifier)
+            return (*it);
+    return NULL;
+}
+
+const std::vector<Inport*>& Processor::getInports() const { 
     return inports_; 
 }
 
-std::vector<Outport*> Processor::getOutports() { 
+const std::vector<Outport*>& Processor::getOutports() const { 
     return outports_; 
 }
 
-std::vector<Port*> Processor::getPortsByDependencySet(std::string portDependencySet) {
+std::vector<Port*> Processor::getPortsByDependencySet(std::string portDependencySet) const {
      return portDependencySets_.getGroupedData(portDependencySet);
 }
 
-std::vector<std::string> Processor::getPortDependencySets() {
+std::vector<std::string> Processor::getPortDependencySets() const {
     return portDependencySets_.getGroupKeys();
 }
 
-std::string Processor::getPortDependencySet(Port* port) {
+std::string Processor::getPortDependencySet(Port* port) const {
     return portDependencySets_.getKey(port);
 
 }
@@ -157,7 +157,7 @@ void Processor::deinitialize() {
     initialized_ = false;
 }
 
-bool Processor::isInitialized() { 
+bool Processor::isInitialized() const { 
     return initialized_; 
 }
 
@@ -171,7 +171,7 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
         performEvaluateRequest();
 }
 
-bool Processor::isEndProcessor() { 
+bool Processor::isEndProcessor() const { 
     return outports_.empty(); 
 }
 
@@ -195,8 +195,8 @@ void Processor::removeInteractionHandler(InteractionHandler* interactionHandler)
         }
 }
 
-bool Processor::hasInteractionHandler() { 
-    return (interactionHandlers_.size() != 0); 
+bool Processor::hasInteractionHandler() const { 
+    return !interactionHandlers_.empty(); 
 }
 
 std::vector<InteractionHandler*> Processor::getInteractionHandlers() const { 

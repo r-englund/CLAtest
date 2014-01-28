@@ -51,10 +51,10 @@ public:
 
     void updateViewMatrix();
     void updateProjectionMatrix();
-    mat4 viewMatrix() const { return viewMatrix_; }
-    mat4 projectionMatrix() const { return projectionMatrix_; }
-    mat4 inverseViewMatrix() const { return inverseViewMatrix_; }
-    mat4 inverseProjectionMatrix() const { return inverseProjectionMatrix_; }
+    const mat4& viewMatrix() const { return viewMatrix_; }
+    const mat4& projectionMatrix() const { return projectionMatrix_; }
+    const mat4& inverseViewMatrix() const { return inverseViewMatrix_; }
+    const mat4& inverseProjectionMatrix() const { return inverseProjectionMatrix_; }
 
     void setProjectionMatrix(float fovy, float aspect, float farPlane, float nearPlane);
 

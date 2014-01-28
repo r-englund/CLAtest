@@ -116,15 +116,18 @@ bool ProcessorNetworkEvaluator::hasBeenVisited(Processor* processor) {
 
 std::set<Processor*> ProcessorNetworkEvaluator::getDirectPredecessors( Processor* processor ) {
     std::set<Processor*> predecessors;
-    std::vector<Inport*> inports = processor->getInports();
+    const std::vector<Inport*>& inports = processor->getInports();
     std::vector<PortConnection*> portConnections = processorNetwork_->getConnections();
-    for (size_t i=0; i<inports.size(); i++) {
-        for (size_t j=0; j<portConnections.size(); j++) {
-            const Port* curInport = portConnections[j]->getInport();
-            if (curInport == inports[i]) {
-                const Outport* connectedOutport = portConnections[j]->getOutport();
-                predecessors.insert(connectedOutport->getProcessor());
-            }
+    
+    for (std::vector<Inport*>::const_iterator portIt = inports.begin(), portItEnd = inports.end(); portIt!=portItEnd; ++portIt) {
+        if (!(*portIt)->isConnected()) {
+            continue;
+        }
+        const std::vector<Outport*>& connectedOutPorts = (*portIt)->getConnectedOutports();
+        for (std::vector<Outport*>::const_iterator connectedPortIt = connectedOutPorts.begin(), 
+            connectedPortItEnd = connectedOutPorts.end(); 
+            connectedPortIt!=connectedPortItEnd; ++connectedPortIt) {
+                predecessors.insert((*connectedPortIt)->getProcessor());
         }
     }
     return predecessors;

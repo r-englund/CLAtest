@@ -1157,11 +1157,11 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorI
 }
 
 void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem){
-    std::vector<Inport*> inports = processorItem->getProcessor()->getInports();
-    std::vector<Outport*> outports = processorItem->getProcessor()->getOutports();
+    const std::vector<Inport*>& inports = processorItem->getProcessor()->getInports();
+    const std::vector<Outport*>& outports = processorItem->getProcessor()->getOutports();
 
-    std::vector<Inport*> oldInports = oldProcessorItem->getProcessor()->getInports();
-    std::vector<Outport*> oldOutports = oldProcessorItem->getProcessor()->getOutports();
+    const std::vector<Inport*>& oldInports = oldProcessorItem->getProcessor()->getInports();
+    const std::vector<Outport*>& oldOutports = oldProcessorItem->getProcessor()->getOutports();
 
     processorNetwork_->lock();
 

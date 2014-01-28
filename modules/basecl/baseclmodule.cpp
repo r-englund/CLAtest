@@ -15,6 +15,7 @@
 #include <modules/basecl/baseclmodule.h>
 
 #include <modules/basecl/processors/entryexitpointscl.h>
+#include <modules/basecl/processors/volumefirsthitcl.h>
 
 namespace inviwo {
 
@@ -23,6 +24,7 @@ BaseCLModule::BaseCLModule() : InviwoModule() {
     setXMLFileName("basecl/baseglmodule.xml");
 
     registerProcessor(EntryExitPointsCL);
+    registerProcessor(VolumeFirstHitCL);
 }
 
 BaseCLModule::~BaseCLModule()

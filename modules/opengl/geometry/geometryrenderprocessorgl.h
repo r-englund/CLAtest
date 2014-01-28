@@ -16,6 +16,7 @@
 #define IVW_GEOMETRYRENDERPROCESSORGL_H
 
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/cameraproperty.h>
@@ -46,6 +47,7 @@ protected:
     ButtonProperty centerViewOnGeometry_;
 
     std::vector<GeometryRenderer*> renderers_;
+    Trackball* trackball_;
 };
 
 } // namespace

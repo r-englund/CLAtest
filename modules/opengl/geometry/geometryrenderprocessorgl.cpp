@@ -39,6 +39,9 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 
     centerViewOnGeometry_.onChange(this, &GeometryRenderProcessorGL::centerViewOnGeometry);
     addProperty(centerViewOnGeometry_);
+    trackball_ = new Trackball(&camera_);
+    addInteractionHandler(trackball_);
+    outport_.addResizeEventListener(&camera_);
 
 }
 

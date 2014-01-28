@@ -59,29 +59,29 @@ public:
     std::string getIdentifier() const;
 
     void setProcessorWidget(ProcessorWidget* processorWidget);
-    ProcessorWidget* getProcessorWidget();
-    bool hasProcessorWidget();
+    ProcessorWidget* getProcessorWidget() const;
+    bool hasProcessorWidget() const;
 
     MetaData* getMetaData(std::string meta);
 
     virtual void initialize();
     virtual void deinitialize();
-    bool isInitialized();
+    bool isInitialized() const;
 
-    Port* getPort(std::string identifier);
-    Inport* getInport(std::string identifier);
-    Outport* getOutport(std::string identifier);
+    Port* getPort(std::string identifier) const;
+    Inport* getInport(std::string identifier) const;
+    Outport* getOutport(std::string identifier) const;
 
-    std::vector<Inport*> getInports();
-    std::vector<Outport*> getOutports();
-    std::vector<std::string> getPortDependencySets();
-    std::vector<Port*> getPortsByDependencySet(std::string portDependencySet);
-    std::string getPortDependencySet(Port* port);
+    const std::vector<Inport*>& getInports() const;
+    const std::vector<Outport*>& getOutports() const;
+    std::vector<std::string> getPortDependencySets() const;
+    std::vector<Port*> getPortsByDependencySet(std::string portDependencySet) const;
+    std::string getPortDependencySet(Port* port) const;
 
     bool allInportsConnected() const;
     bool allInportsAreReady() const;
 
-    virtual bool isEndProcessor();
+    virtual bool isEndProcessor() const;
     virtual bool isReady() const;
 
     virtual void process();
@@ -96,7 +96,7 @@ public:
 
     void addInteractionHandler(InteractionHandler* interactionHandler);
     void removeInteractionHandler(InteractionHandler* interactionHandler);
-    bool hasInteractionHandler();
+    bool hasInteractionHandler() const;
 	std::vector<InteractionHandler*> getInteractionHandlers() const;
     void invokeInteractionEvent(Event* event);
 

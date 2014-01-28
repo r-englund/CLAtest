@@ -45,23 +45,23 @@ public:
     }
 
     //Get the data corressponding to supplied key. There can be multiple data for each key.
-    std::vector<DATA> getGroupedData(KEY groupKEY) {
-        std::pair<typename GroupMap::iterator, typename GroupMap::iterator> pgRangeIt;
+    std::vector<DATA> getGroupedData(KEY groupKEY) const {
+        std::pair<typename GroupMap::const_iterator, typename GroupMap::const_iterator> pgRangeIt;
         std::vector<DATA> ports;
         pgRangeIt = groupMap_.equal_range(groupKEY);
-        for (typename GroupMap::iterator mIt = pgRangeIt.first; mIt != pgRangeIt.second; ++mIt) {
+        for (typename GroupMap::const_iterator mIt = pgRangeIt.first; mIt != pgRangeIt.second; ++mIt) {
             ports.push_back((*mIt).second);
         }
         return ports;
     }
 
     //Get all existing keys in map with no duplicates
-    std::vector<KEY> getGroupKeys() {        
+    std::vector<KEY> getGroupKeys() const {        
         std::map<KEY, int> keyMap;
         typename std::map<KEY, int>::iterator keyMapIt;
         std::vector<KEY> groups;
         if (groupMap_.empty()) return groups;
-        typename GroupMap::iterator it;
+        typename GroupMap::const_iterator it;
         for (it = groupMap_.begin(); it != groupMap_.end(); ++it) {
             keyMap[(*it).first]++;
         }
@@ -72,9 +72,9 @@ public:
     }
 
     //Get key that corresponds to data
-    KEY getKey(DATA data) {
+    KEY getKey(DATA data)  const {
         KEY key;
-        typename GroupMap::iterator it;
+        typename GroupMap::const_iterator it;
         for (it = groupMap_.begin(); it != groupMap_.end(); ++it) {
             if ((*it).second == data) {
                 key = (*it).first;
