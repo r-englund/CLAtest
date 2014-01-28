@@ -16,12 +16,16 @@
 
 namespace inviwo {
 
-FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property_(property) {
+FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property) : property_(property) , settingsWidget_(0) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
     generatesSettingsWidget();
+}
+
+FloatPropertyWidgetQt::~FloatPropertyWidgetQt(){
+    settingsWidget_->deleteLater();
 }
 
 void FloatPropertyWidgetQt::generateWidget() {    
@@ -33,7 +37,7 @@ void FloatPropertyWidgetQt::generateWidget() {
         setLayout(hLayout);
     }
     else {
-        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
 
         sliderWidget_ = new FloatSliderWidgetQt();    

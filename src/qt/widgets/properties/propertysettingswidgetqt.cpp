@@ -17,7 +17,8 @@
 namespace inviwo {
 
 PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property)
-    : property_(property)
+    : QWidget(0)
+    , property_(property)
     , floatProperty_(NULL)
     , intProperty_(NULL)
     , floatVec2Property_(NULL)
@@ -25,7 +26,32 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property)
     , floatVec4Property_(NULL)
     , intVec2Property_(NULL)
     , intVec3Property_(NULL)
-    , intVec4Property_(NULL){
+    , intVec4Property_(NULL)
+    
+    , lineEditMaxX_(NULL)
+    , lineEditMaxY_(NULL)
+    , lineEditMaxZ_(NULL)
+    , lineEditMaxW_(NULL)
+
+    , lineEditMinX_(NULL)
+    , lineEditMinY_(NULL)
+    , lineEditMinZ_(NULL)
+    , lineEditMinW_(NULL)
+
+    , xValueLabel_(NULL)
+    , yValueLabel_(NULL)
+    , zValueLabel_(NULL)
+    , wValueLabel_(NULL)
+
+    , minValueLabel_(NULL)
+    , maxValueLabel_(NULL)
+    , incValueLabel_(NULL)
+
+    , lineEditIcrementX_(NULL)
+    , lineEditIcrementY_(NULL)
+    , lineEditIcrementZ_(NULL)
+    , lineEditIcrementW_(NULL)
+{
 
     if (dynamic_cast<FloatProperty*>(property_)) {
         floatProperty_ = static_cast<FloatProperty*>(property_);
@@ -58,27 +84,61 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property *property)
     this->setFixedSize(300,125);
 }
 
+#define DELETE_LATER(prop) if(prop) prop->deleteLater()
+PropertySettingsWidgetQt::~PropertySettingsWidgetQt(){
+    DELETE_LATER(lineEditMaxX_);
+    DELETE_LATER(lineEditMaxY_);
+    DELETE_LATER(lineEditMaxZ_);
+    DELETE_LATER(lineEditMaxW_);
+
+    DELETE_LATER(lineEditMinX_);
+    DELETE_LATER(lineEditMinY_);
+    DELETE_LATER(lineEditMinZ_);
+    DELETE_LATER(lineEditMinW_);
+
+    DELETE_LATER(lineEditIcrementX_);
+    DELETE_LATER(lineEditIcrementY_);
+    DELETE_LATER(lineEditIcrementZ_);
+    DELETE_LATER(lineEditIcrementW_);
+    DELETE_LATER(lineEditIcrementW_);
+
+    DELETE_LATER(xValueLabel_);
+    DELETE_LATER(yValueLabel_);
+    DELETE_LATER(zValueLabel_);
+    DELETE_LATER(wValueLabel_);
+    DELETE_LATER(minValueLabel_);
+    DELETE_LATER(maxValueLabel_);
+    DELETE_LATER(incValueLabel_);
+
+    DELETE_LATER(gridLayout_);
+    DELETE_LATER(btnApply_);
+    DELETE_LATER(btnCancel_);
+}
 
 void PropertySettingsWidgetQt::generateWidget() {
 
-    btnApply_ = new QPushButton("Apply");
-    btnCancel_ = new QPushButton("Cancel");
+    btnApply_ = new QPushButton("Apply",this);
+    btnCancel_ = new QPushButton("Cancel",this);
 
     connect(btnApply_,SIGNAL(clicked()),this,SLOT(save()));
     connect(btnCancel_,SIGNAL(clicked()),this,SLOT(cancel()));
     
-    gridLayout_ = new QGridLayout();
-    lineEditMaxX_ = new QLineEdit();
-    lineEditMinX_ = new QLineEdit();
-    lineEditIcrementX_ = new QLineEdit();
+    gridLayout_ = new QGridLayout(this);
+    lineEditMaxX_ = new QLineEdit(this);
+    lineEditMinX_ = new QLineEdit(this);
+    lineEditIcrementX_ = new QLineEdit(this);
+
+    minValueLabel_ = new QLabel("Min value",this);
+    maxValueLabel_ = new QLabel("Max value",this);
+    incValueLabel_ = new QLabel("Increment",this);
     if (floatProperty_!= NULL || intProperty_!= NULL ) {
         gridLayout_->setColumnStretch(1,2);
         gridLayout_->setColumnStretch(2,2);
-        gridLayout_->addWidget(new QLabel("Min value"),1,1);
+        gridLayout_->addWidget(minValueLabel_,1,1);
         gridLayout_->addWidget(lineEditMinX_,1,2);
-        gridLayout_->addWidget(new QLabel("Max value"),2,1);
+        gridLayout_->addWidget(maxValueLabel_,2,1);
         gridLayout_->addWidget(lineEditMaxX_,2,2);
-        gridLayout_->addWidget(new QLabel("Icrement"),3,1);
+        gridLayout_->addWidget(incValueLabel_,3,1);
         gridLayout_->addWidget(lineEditIcrementX_,3,2);
         gridLayout_->addWidget(btnApply_,4,1);
         gridLayout_->addWidget(btnCancel_,4,2);
@@ -100,9 +160,17 @@ void PropertySettingsWidgetQt::generateWidget() {
 }
 
 void PropertySettingsWidgetQt::generateVec2Widget() {
-    lineEditMaxY_ = new QLineEdit();
-    lineEditMinY_ = new QLineEdit();
-    lineEditIcrementY_ = new QLineEdit();
+    lineEditMaxY_ = new QLineEdit(this);
+    lineEditMinY_ = new QLineEdit(this);
+    lineEditIcrementY_ = new QLineEdit(this);
+
+
+    xValueLabel_ = new QLabel("X",this);
+    yValueLabel_ = new QLabel("Y",this);
+
+    minValueLabel_ = new QLabel("Min value",this);
+    maxValueLabel_ = new QLabel("Max value",this);
+    incValueLabel_ = new QLabel("Increment",this);
 
     gridLayout_->addWidget(lineEditMinX_,2,2,1,1);
     gridLayout_->addWidget(lineEditMinY_,2,3,1,1);
@@ -113,26 +181,35 @@ void PropertySettingsWidgetQt::generateVec2Widget() {
     gridLayout_->addWidget(lineEditIcrementX_,4,2,1,1);
     gridLayout_->addWidget(lineEditIcrementY_,4,3,1,1);
 
-    gridLayout_->addWidget(new QLabel("X"),1,2,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(new QLabel("Y"),1,3,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(xValueLabel_,1,2,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(yValueLabel_,1,3,1,1,Qt::AlignHCenter);
 
-    gridLayout_->addWidget(new QLabel("Min"),2,1);
-    gridLayout_->addWidget(new QLabel("Max"),3,1);
-    gridLayout_->addWidget(new QLabel("Increment"),4,1);
+
+    gridLayout_->addWidget(minValueLabel_,2,1);
+    gridLayout_->addWidget(maxValueLabel_,3,1);
+    gridLayout_->addWidget(incValueLabel_,4,1);
 
     gridLayout_->addWidget(btnApply_,5,1,1,2);
     gridLayout_->addWidget(btnCancel_,5,3,1,2);
 }
 
 void PropertySettingsWidgetQt::generateVec3Widget() {
-    lineEditMaxY_ = new QLineEdit();
-    lineEditMaxZ_ = new QLineEdit();
+    lineEditMaxY_ = new QLineEdit(this);
+    lineEditMaxZ_ = new QLineEdit(this);
 
-    lineEditMinY_ = new QLineEdit();
-    lineEditMinZ_ = new QLineEdit();
+    lineEditMinY_ = new QLineEdit(this);
+    lineEditMinZ_ = new QLineEdit(this);
 
-    lineEditIcrementY_ = new QLineEdit();
-    lineEditIcrementZ_ = new QLineEdit();
+    lineEditIcrementY_ = new QLineEdit(this);
+    lineEditIcrementZ_ = new QLineEdit(this);
+
+    xValueLabel_ = new QLabel("X",this);
+    yValueLabel_ = new QLabel("Y",this);
+    zValueLabel_ = new QLabel("Z",this);
+
+    minValueLabel_ = new QLabel("Min value",this);
+    maxValueLabel_ = new QLabel("Max value",this);
+    incValueLabel_ = new QLabel("Increment",this);
 
     gridLayout_->addWidget(lineEditMinX_,2,2,1,1);
     gridLayout_->addWidget(lineEditMinY_,2,3,1,1);
@@ -146,30 +223,40 @@ void PropertySettingsWidgetQt::generateVec3Widget() {
     gridLayout_->addWidget(lineEditIcrementY_,4,3,1,1);
     gridLayout_->addWidget(lineEditIcrementZ_,4,4,1,1);
 
-    gridLayout_->addWidget(new QLabel("X"),1,2,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(new QLabel("Y"),1,3,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(new QLabel("Z"),1,4,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(xValueLabel_,1,2,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(yValueLabel_,1,3,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(zValueLabel_,1,4,1,1,Qt::AlignHCenter);
 
-    gridLayout_->addWidget(new QLabel("Min"),2,1);
-    gridLayout_->addWidget(new QLabel("Max"),3,1);
-    gridLayout_->addWidget(new QLabel("Increment"),4,1);
+    gridLayout_->addWidget(minValueLabel_,2,1);
+    gridLayout_->addWidget(maxValueLabel_,3,1);
+    gridLayout_->addWidget(incValueLabel_,4,1);
 
     gridLayout_->addWidget(btnApply_,5,2,1,2);
     gridLayout_->addWidget(btnCancel_,5,4,1,2);
 }
 
 void PropertySettingsWidgetQt::generateVec4Widget() {
-    lineEditMaxY_ = new QLineEdit();
-    lineEditMaxZ_ = new QLineEdit();
-    lineEditMaxW_ = new QLineEdit();
+    lineEditMaxY_ = new QLineEdit(this);
+    lineEditMaxZ_ = new QLineEdit(this);
+    lineEditMaxW_ = new QLineEdit(this);
 
-    lineEditMinY_ = new QLineEdit();
-    lineEditMinZ_ = new QLineEdit();
-    lineEditMinW_ = new QLineEdit();
+    lineEditMinY_ = new QLineEdit(this);
+    lineEditMinZ_ = new QLineEdit(this);
+    lineEditMinW_ = new QLineEdit(this);
 
-    lineEditIcrementY_ = new QLineEdit();
-    lineEditIcrementZ_ = new QLineEdit();
-    lineEditIcrementW_ = new QLineEdit();
+    lineEditIcrementY_ = new QLineEdit(this);
+    lineEditIcrementZ_ = new QLineEdit(this);
+    lineEditIcrementW_ = new QLineEdit(this);
+
+
+    xValueLabel_ = new QLabel("X",this);
+    yValueLabel_ = new QLabel("Y",this);
+    zValueLabel_ = new QLabel("Z",this);
+    wValueLabel_ = new QLabel("W",this);
+
+    minValueLabel_ = new QLabel("Min value",this);
+    maxValueLabel_ = new QLabel("Max value",this);
+    incValueLabel_ = new QLabel("Increment",this);
 
     gridLayout_->addWidget(lineEditMinX_,2,2,1,1);
     gridLayout_->addWidget(lineEditMinY_,2,3,1,1);
@@ -186,14 +273,14 @@ void PropertySettingsWidgetQt::generateVec4Widget() {
     gridLayout_->addWidget(lineEditIcrementZ_,4,4,1,1);
     gridLayout_->addWidget(lineEditIcrementW_,4,5,1,1);
 
-    gridLayout_->addWidget(new QLabel("X"),1,2,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(new QLabel("Y"),1,3,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(new QLabel("Z"),1,4,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(new QLabel("W"),1,5,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(xValueLabel_,1,2,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(yValueLabel_,1,3,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(zValueLabel_,1,4,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(wValueLabel_,1,5,1,1,Qt::AlignHCenter);
 
-    gridLayout_->addWidget(new QLabel("Min"),2,1);
-    gridLayout_->addWidget(new QLabel("Max"),3,1);
-    gridLayout_->addWidget(new QLabel("Increment"),4,1);
+    gridLayout_->addWidget(minValueLabel_,2,1);
+    gridLayout_->addWidget(maxValueLabel_,3,1);
+    gridLayout_->addWidget(incValueLabel_,4,1);
 
     gridLayout_->addWidget(btnApply_,5,2,1,2);
     gridLayout_->addWidget(btnCancel_,5,4,1,2);

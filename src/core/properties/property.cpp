@@ -43,6 +43,8 @@ Property::Property()
     , propertyModified_(false){
 }
 
+Property::~Property(){}
+
 std::string Property::getIdentifier() const {
     return identifier_;
 }
@@ -59,12 +61,29 @@ void Property::setDisplayName(const std::string& displayName) {
     displayName_ = displayName;
 }
 
-void Property::setSemantics( const PropertySemantics& semantics) {
+PropertySemantics Property::getSemantics()const{
+    return semantics_;
+}
+
+void Property::setSemantics(const PropertySemantics& semantics){
     semantics_ = semantics;
 }
 
-inviwo::PropertySemantics Property::getSemantics() const {
-    return semantics_;
+
+void Property::setReadOnly(const bool &value){
+    readOnly_ = value;
+}
+
+bool Property::getReadOnly()const{
+    return readOnly_;
+}
+
+
+PropertyOwner::InvalidationLevel Property::getInvalidationLevel() const {
+    return invalidationLevel_; 
+}
+void Property::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
+    invalidationLevel_ = invalidationLevel;
 }
 
 PropertyOwner* Property::getOwner() {
@@ -87,12 +106,34 @@ void Property::updateWidgets() {
             propertyWidgets_[i]->updateFromProperty();
 }
 
+bool Property::hasWidgets() const{
+    return !propertyWidgets_.empty();
+}
+
+void Property::setGroupID(const std::string &groupID) { 
+    groupID_ = groupID;
+}
+
+std::string Property::getGroupID()const{
+     return groupID_;
+}
+
+
 void Property::propertyModified() { 
     onChangeCallback_.invoke();
     setPropertyModified(true); 
     //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )    
     if (getOwner()) getOwner()->invalidate(getInvalidationLevel());    
     updateWidgets();
+}
+
+
+void Property::setPropertyModified(bool modified) { 
+    propertyModified_ = modified; 
+}
+
+bool Property::isPropertyModified() const { 
+    return propertyModified_; 
 }
 
 Variant Property::getVariant() {
@@ -124,11 +165,11 @@ bool Property::operator==(const Property& prop){
 	else return false;
 }
 
-void Property::setGroupDisplayName(std::string groupID, std::string groupDisplayName) {
+void Property::setGroupDisplayName(const std::string &groupID,const std::string &groupDisplayName) {
 	Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));
 }
 
-std::string Property::getGroupDisplayName() {
+std::string Property::getGroupDisplayName() const {
     return groupDisplayNames_[groupID_];
 }
 

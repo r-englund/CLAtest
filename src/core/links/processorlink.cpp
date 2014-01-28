@@ -24,7 +24,12 @@ ProcessorLink::ProcessorLink(Processor* outProecessor, Processor* inProecessor)
     : sourceProcessor_(inProecessor),
       destinationProcessor_(outProecessor){}
 
-ProcessorLink::~ProcessorLink() {}
+ProcessorLink::~ProcessorLink() {
+    while(!propertyLinks_.empty()){
+        delete propertyLinks_.back();
+        propertyLinks_.pop_back();
+    }
+}
 
 void ProcessorLink::autoLinkPropertiesByType() {    
     //This is just for testing. Best to use if processors are of same type
@@ -253,6 +258,10 @@ void ProcessorLink::serialize(IvwSerializer& s) const {
 }
 
 void ProcessorLink::deserialize(IvwDeserializer& d) {
+    while(!propertyLinks_.empty()){
+        delete propertyLinks_.back();
+        propertyLinks_.pop_back();
+    }
     propertyLinks_.clear();
     d.deserialize("PropertyLinks", propertyLinks_, "PropertyLink");
     if(propertyLinks_[0]){

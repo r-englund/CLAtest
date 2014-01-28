@@ -47,6 +47,9 @@ private:
 class TextureCallback {
 public:
     TextureCallback() : callBack_(0) {}
+    virtual ~TextureCallback(){
+        delete callBack_;
+    }
 
     void invoke(Texture* p) const{
         if (callBack_)

@@ -19,6 +19,7 @@ namespace inviwo {
 TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty, QWidget* parent)
     : InviwoDockWidget(tr("Transfer Function"), parent)
     , tfProperty_(tfProperty)
+    , tfPixmap_(NULL)
 {
     setObjectName("Transfer Function");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -32,6 +33,7 @@ TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionP
 }
 
 TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog() {
+    delete tfPixmap_;
     delete tfEditor_;
     delete colorWheel_;
     delete gradient_;
@@ -119,6 +121,8 @@ void TransferFunctionPropertyDialog::switchInterpolationType(int interpolationTy
 void TransferFunctionPropertyDialog::updateTFPreview() {
     int gradientWidth = tfPreview_->width();
     gradient_->setFinalStop(gradientWidth, 0);
+    if(tfPixmap_)
+        delete tfPixmap_;
     tfPixmap_ = new QPixmap(gradientWidth, 20);
     QPainter tfPainter(tfPixmap_);
     tfPainter.fillRect(0, 0, gradientWidth, 20, *gradient_);

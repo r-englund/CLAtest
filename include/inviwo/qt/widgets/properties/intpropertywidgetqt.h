@@ -31,6 +31,7 @@ Q_OBJECT
 
 public:
     IntPropertyWidgetQt(IntProperty* property);
+    virtual ~IntPropertyWidgetQt();
 
     void updateFromProperty();
 

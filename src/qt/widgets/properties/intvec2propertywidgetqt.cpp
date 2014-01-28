@@ -16,12 +16,17 @@
 
 namespace inviwo {
 
-IntVec2PropertyWidgetQt::IntVec2PropertyWidgetQt(IntVec2Property *property) : property_(property) {
+IntVec2PropertyWidgetQt::IntVec2PropertyWidgetQt(IntVec2Property *property) : property_(property) , settingsWidget_(0) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
 	generateWidget();
 	updateFromProperty();
     generatesSettingsWidget();
+}
+
+
+IntVec2PropertyWidgetQt::~IntVec2PropertyWidgetQt(){
+    settingsWidget_->deleteLater();
 }
 
 
@@ -50,7 +55,7 @@ void IntVec2PropertyWidgetQt::generateWidget() {
         vLayout->addWidget(sliderX_);
         vLayout->addWidget(sliderY_);
         
-        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         hLayout->addWidget(sliderWidget);
         setLayout(hLayout);

@@ -52,8 +52,8 @@ void PropertyWidgetQt::generateContextMenu(){
     ivwAssert(inviwoApp->isInitialized()!=false, "InviwoApplication not initialized.This should not be the case.");
     this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode")));
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    contextMenu_ = new QMenu();
-    viewModeItem_ = new QMenu(tr("&View mode"));
+    contextMenu_ = new QMenu(this);
+    viewModeItem_ = new QMenu(tr("&View mode"),contextMenu_);
 
     developerViewModeAction_ = new QAction(tr("&Developer"),this);
     developerViewModeAction_->setCheckable(true);
@@ -91,7 +91,7 @@ void PropertyWidgetQt::showContextMenu(const QPoint& pos) {
     }
 }
 QMenu* PropertyWidgetQt::generatePropertyWidgetMenu(){
-    QMenu* contextMenu = new QMenu();
+    QMenu* contextMenu = new QMenu(this);
     if (viewModeItem_ != NULL) 
         contextMenu->addMenu(viewModeItem_);
     else{

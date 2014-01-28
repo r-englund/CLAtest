@@ -81,7 +81,6 @@ void ModifiedWidget::generateWidget(){
     toolBar_->addWidget(reLoadButton_);
     toolBar_->addSeparator();
 
-    mainWidget_ = new QWidget();
 	textEditor_ = new QTextEdit();
     textEditor_->createStandardContextMenu();
 	syntaxHighligther_ = SyntaxHighligther::createSyntaxHighligther<None>(textEditor_->document());
@@ -103,6 +102,11 @@ void ModifiedWidget::setParent(TextEditorWidgetQt* tmp){
 TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property) {
     generateWidget();
     updateFromProperty();
+}
+
+TextEditorWidgetQt::~TextEditorWidgetQt(){
+    textEditorWidget_->deleteLater();
+    htmlEditorWidget_->deleteLater();
 }
 
 void TextEditorWidgetQt::generateWidget() {

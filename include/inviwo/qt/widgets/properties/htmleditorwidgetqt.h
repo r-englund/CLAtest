@@ -55,7 +55,6 @@ public:
     QToolButton *runButton_;    
     QToolButton *saveButton_;    
     QToolButton *reLoadButton_;    
-    QWidget* mainWidget_;
     std::string tmpPropertyValue_;
     HtmlTreeWidget* htmlTreeWidgetQt_;
 

@@ -18,14 +18,18 @@
 
 namespace inviwo {
 
-IntVec4PropertyWidgetQt::IntVec4PropertyWidgetQt(IntVec4Property *property) : property_(property) {
+IntVec4PropertyWidgetQt::IntVec4PropertyWidgetQt(IntVec4Property *property) : property_(property) , settingsWidget_(0) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
 	updateFromProperty();
     generatesSettingsWidget();
-	}
+}
 
+
+IntVec4PropertyWidgetQt::~IntVec4PropertyWidgetQt(){
+    settingsWidget_->deleteLater();
+}
 
 void IntVec4PropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
@@ -39,7 +43,7 @@ void IntVec4PropertyWidgetQt::generateWidget() {
     }
     else {
 
-    label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
 
 	QWidget* sliderWidget = new QWidget();

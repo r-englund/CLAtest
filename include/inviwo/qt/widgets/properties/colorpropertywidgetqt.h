@@ -33,6 +33,7 @@ class IVW_QTWIDGETS_API ColorPropertyWidgetQt : public PropertyWidgetQt {
 public:
 
     ColorPropertyWidgetQt(Property* property);
+    virtual ~ColorPropertyWidgetQt();
 
     void updateFromProperty();
     QColor getCurrentColor();

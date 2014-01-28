@@ -32,7 +32,7 @@ Q_OBJECT
 
 public:
     FloatPropertyWidgetQt(FloatProperty* property);
-
+    virtual ~FloatPropertyWidgetQt();
     void updateFromProperty();
 
 private:

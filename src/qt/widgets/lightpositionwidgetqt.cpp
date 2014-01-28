@@ -15,9 +15,16 @@
 #include <inviwo/qt/widgets/lightpositionwidgetqt.h>
 
 namespace inviwo {
-    inviwo::LightPositionWidgetQt::LightPositionWidgetQt() : mouseDown_(false){
+    
+    
+LightPositionWidgetQt::LightPositionWidgetQt() : mouseDown_(false){
     generateWidget();
+}
 
+LightPositionWidgetQt::~LightPositionWidgetQt(){
+    delete painter_;
+    delete gradient_;
+    delete gradientPixmap_;
 }
 
 void inviwo::LightPositionWidgetQt::generateWidget() {
@@ -38,8 +45,6 @@ void inviwo::LightPositionWidgetQt::generateWidget() {
     painter_->fillRect(0, 0, 100, 100, *gradient_);
     this->setPixmap(*gradientPixmap_);
 }
-
-inviwo::LightPositionWidgetQt::~LightPositionWidgetQt(){}
 
 
 void LightPositionWidgetQt::mousePressEvent( QMouseEvent* event ){

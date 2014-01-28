@@ -28,7 +28,7 @@ void StringPropertyWidgetQt::generateWidget() {
     setObjectName("StringPropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
     lineEdit_ = new QLineEdit;
-    label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
     connect(lineEdit_, SIGNAL(editingFinished()), this, SLOT(setPropertyValue()));
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));

@@ -39,11 +39,11 @@ DirectoryPropertyWidgetQt::DirectoryPropertyWidgetQt(DirectoryProperty* property
 void DirectoryPropertyWidgetQt::generateWidget() {
     setObjectName("DirectoryPropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
-    directoryLabel_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    directoryLabel_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(directoryLabel_);
-    lineEdit_ = new QLineEdit();
+    lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);
-    openButton_ = new QToolButton();
+    openButton_ = new QToolButton(this);
     openButton_->setIcon(QIcon(":/icons/open.png"));
 
     connect(directoryLabel_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));

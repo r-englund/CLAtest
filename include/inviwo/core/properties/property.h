@@ -35,6 +35,7 @@ public:
              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
              PropertySemantics semantics = PropertySemantics::Default);
     Property();
+    virtual ~Property();
 
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);
@@ -47,33 +48,29 @@ public:
     virtual PropertySemantics getSemantics() const;
     virtual void setSemantics(const PropertySemantics& semantics);
 
-    virtual void setReadOnly(bool value){readOnly_ = value;};
-    virtual bool getReadOnly(){return readOnly_;};
+    virtual void setReadOnly(const bool &value);
+    virtual bool getReadOnly()const;
 
-    PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
-    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
-        invalidationLevel_ = invalidationLevel;
-    }
+    PropertyOwner::InvalidationLevel getInvalidationLevel() const;
+    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) ;
 
     PropertyOwner* getOwner();
     virtual void setOwner(PropertyOwner* owner);
 
     void registerWidget(PropertyWidget* propertyWidget);
     void updateWidgets();
-    bool hasWidgets() { return (propertyWidgets_.size()!= 0); }
+    bool hasWidgets()const;
 
-    void setGroupID(std::string groupID) { 
-        groupID_ = groupID;
-    }
+    void setGroupID(const std::string &groupID);
 
-    static void setGroupDisplayName(std::string groupID,std::string groupDisplayName);
+    static void setGroupDisplayName(const std::string &groupID,const std::string &groupDisplayName);
     
-    std::string getGroupID() { return groupID_; }
-    std::string getGroupDisplayName();
+    std::string getGroupID()const;
+    std::string getGroupDisplayName()const;
 
     virtual void propertyModified();
-    virtual void setPropertyModified(bool modified) { propertyModified_ = modified; }
-    virtual bool isPropertyModified() const { return propertyModified_; }
+    virtual void setPropertyModified(bool modified);
+    virtual bool isPropertyModified() const;
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();

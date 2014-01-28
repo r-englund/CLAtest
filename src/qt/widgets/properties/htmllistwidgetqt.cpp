@@ -48,7 +48,7 @@ HtmlTreeWidget::HtmlTreeWidget(QWidget* parent): QWidget(parent) {
     //frame->setObjectName("HtmlTreeWidgetFrame");
     QVBoxLayout* vLayout = new QVBoxLayout();
 
-    QLineEdit* lineEdit = new QLineEdit();
+    QLineEdit* lineEdit = new QLineEdit(this);
     lineEdit->setPlaceholderText("Filter Html object list...");
     connect(lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(addTagsToTree(const QString&)));
     vLayout->addWidget(lineEdit);

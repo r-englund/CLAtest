@@ -33,7 +33,7 @@ void LightPropertyWidgetQt::generateWidget() {
     
     lightWidget_ = new LightPositionWidgetQt();
     QHBoxLayout* hLayout = new QHBoxLayout();
-    label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
     connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
     connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(setPropertyValue()));

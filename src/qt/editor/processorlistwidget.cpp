@@ -52,7 +52,7 @@ ProcessorListWidget::ProcessorListWidget(QWidget* parent) : InviwoDockWidget(tr(
     QFrame* frame = new QFrame();
     QVBoxLayout* vLayout = new QVBoxLayout(frame);
    
-    QLineEdit* lineEdit = new QLineEdit();
+    QLineEdit* lineEdit = new QLineEdit(frame);
     lineEdit->setPlaceholderText("Filter processor list...");
     connect(lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(addProcessorsToList(const QString&)));
     vLayout->addWidget(lineEdit);
@@ -116,14 +116,14 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     QFrame* frame = new QFrame();
     QVBoxLayout* vLayout = new QVBoxLayout(frame);
 
-    lineEdit_ = new QLineEdit();
+    lineEdit_ = new QLineEdit(frame);
     lineEdit_->setPlaceholderText("Filter processor list...");
     connect(lineEdit_, SIGNAL(textChanged(const QString&)), this, SLOT(addProcessorsToTree()));
     vLayout->addWidget(lineEdit_);
 
     QHBoxLayout* listViewLayout = new QHBoxLayout();
-    listViewLayout->addWidget(new QLabel("Group processors by"));
-    listView_ = new QComboBox();
+    listViewLayout->addWidget(new QLabel("Group processors by",frame));
+    listView_ = new QComboBox(frame);
     listView_->addItem("Category");
     listView_->addItem("Module");
     listView_->addItem("Code State");

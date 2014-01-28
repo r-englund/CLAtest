@@ -22,7 +22,7 @@
 #include <QString>
 
 namespace inviwo {
-
+    class PropertyWidgetQt;
 class IVW_QTEDITOR_API SettingsWidget : public InviwoDockWidget {
     Q_OBJECT
 public:
@@ -36,6 +36,8 @@ public:
 protected:
     QVBoxLayout* vLayout_;
     QTabWidget* tabWidget_;
+
+    std::vector<PropertyWidgetQt*> propertyWidgets_;
 };
 
 } // namespace

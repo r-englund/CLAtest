@@ -31,6 +31,7 @@ Q_OBJECT
 
 public:
     IntVec2PropertyWidgetQt(IntVec2Property* property);
+    virtual ~IntVec2PropertyWidgetQt();
 
     void updateFromProperty();
 

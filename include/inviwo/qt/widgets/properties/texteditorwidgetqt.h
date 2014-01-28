@@ -56,7 +56,6 @@ public:
 	QToolButton* reLoadButton_;
 	QToolButton* saveButton_;
 	QToolButton* unDoButton_;
-	QWidget* mainWidget_;
 	std::string tmpPropertyValue_;
 
 	SyntaxHighligther* getSyntaxHighligther();
@@ -68,7 +67,6 @@ public slots:
 
 protected:
     void closeEvent(QCloseEvent *);
-    /*void showEvent(QShowEvent *);*/
 
 private:
 	SyntaxHighligther* syntaxHighligther_;
@@ -81,7 +79,7 @@ class IVW_QTWIDGETS_API TextEditorWidgetQt : public PropertyWidgetQt{
 public:
  
     TextEditorWidgetQt(Property* property);
-
+    virtual ~TextEditorWidgetQt();
     void updateFromProperty();
 	SyntaxHighligther* getSyntaxHighligther();
 public:

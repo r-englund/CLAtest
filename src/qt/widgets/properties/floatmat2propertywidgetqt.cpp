@@ -51,7 +51,7 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
         connect(mat1x1_, SIGNAL(editingFinished ()),
             this, SLOT(set1x1Value()));
 
-        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     }
@@ -63,7 +63,7 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
     gridLayout->addWidget(mat1x1_,1,1);
 
     matrixgroup->setLayout(gridLayout);
-    label_ = new EditableLabelQt(property_->getDisplayName());
+    label_ = new EditableLabelQt(this,property_->getDisplayName());
 
      hLayout->addWidget(matrixgroup);
     setLayout(hLayout);

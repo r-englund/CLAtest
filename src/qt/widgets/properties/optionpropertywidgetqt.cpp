@@ -38,7 +38,7 @@ void OptionPropertyWidgetQt::generateWidget() {
     }
     else{
 
-        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         hLayout->addWidget(comboBox_);
         setLayout(hLayout);

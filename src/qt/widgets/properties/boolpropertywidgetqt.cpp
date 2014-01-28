@@ -31,7 +31,7 @@ void BoolPropertyWidgetQt::generateWidget() {
         checkBox_->setDisabled(true);
     }
     else{
-        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(checkBox_, SIGNAL(clicked()), this, SLOT(setPropertyValue()));

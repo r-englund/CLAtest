@@ -35,12 +35,17 @@ void SettingsWidget::generateWidget() {
     setObjectName("SettingsWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    tabWidget_ = new QTabWidget();    
+    tabWidget_ = new QTabWidget(this);    
     setWidget(tabWidget_);
     //setWidget(frame);
 }
 
-SettingsWidget::~SettingsWidget() {}
+SettingsWidget::~SettingsWidget() {
+    while(propertyWidgets_.empty()){
+        delete propertyWidgets_.back();
+        propertyWidgets_.pop_back();
+    }
+}
 
 //Load settings from QSettings
 void SettingsWidget::loadSettings() {
@@ -51,7 +56,7 @@ void SettingsWidget::loadSettings() {
        
         QVBoxLayout* vLayout =  new QVBoxLayout();
         vLayout->setSpacing(0);
-        QWidget* tab = new QWidget();
+        QWidget* tab = new QWidget(tabWidget_);
         tab->setLayout(vLayout);        
 
         std::map<std::string, std::vector<Property*> > groups;
@@ -73,9 +78,9 @@ void SettingsWidget::loadSettings() {
                 PropertyWidgetQt* propertyWidget =
                     static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getRef().create(curProperty));           
                 curProperty->registerWidget(propertyWidget);
+                propertyWidgets_.push_back(propertyWidget);
                 vLayout->addWidget(propertyWidget);
             }
-
         }
 
         std::map<std::string, std::vector<Property*> >::iterator  groupIt;

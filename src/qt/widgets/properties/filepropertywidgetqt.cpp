@@ -39,11 +39,11 @@ FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property) : property_(p
 void FilePropertyWidgetQt::generateWidget() {
     setObjectName("FilePropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
-    label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
-    lineEdit_ = new QLineEdit();
+    lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);
-    openButton_ = new QToolButton();
+    openButton_ = new QToolButton(this);
     openButton_->setIcon(QIcon(":/icons/open.png"));
 
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));

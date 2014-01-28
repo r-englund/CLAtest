@@ -45,7 +45,7 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
         btnOpenTF_->setDisabled(true);
     } else {
-        label_ = new EditableLabelQt(property_->getDisplayName());
+        label_ = new EditableLabelQt(this,property_->getDisplayName());
         hLayout->addWidget(label_);
         connect(btnOpenTF_, SIGNAL(clicked()), this, SLOT(openTransferFunctionDialog()));
         connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));

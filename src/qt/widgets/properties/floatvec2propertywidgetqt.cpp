@@ -22,7 +22,8 @@ FloatVec2PropertyWidgetQt::FloatVec2PropertyWidgetQt(FloatVec2Property *property
     : property_(property)
     , valueVec2Max_(property->getMaxValue())
     , valueVec2Min_(property->getMinValue())
-    , valueIncrement_(property->getIncrement()) {
+    , valueIncrement_(property->getIncrement()) 
+    , settingsWidget_(0) {
         
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
@@ -31,6 +32,9 @@ FloatVec2PropertyWidgetQt::FloatVec2PropertyWidgetQt(FloatVec2Property *property
     generatesSettingsWidget();
 }
 
+FloatVec2PropertyWidgetQt::~FloatVec2PropertyWidgetQt(){
+    settingsWidget_->deleteLater();
+}
 
 void FloatVec2PropertyWidgetQt::generateWidget() {
 	QHBoxLayout* hLayout = new QHBoxLayout();
@@ -42,7 +46,7 @@ void FloatVec2PropertyWidgetQt::generateWidget() {
         setLayout(hLayout);
     }
     else{
-        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
 
 	    QWidget* sliderWidget = new QWidget();

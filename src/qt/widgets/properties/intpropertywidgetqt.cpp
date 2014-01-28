@@ -19,11 +19,16 @@
 
 namespace inviwo {
 
-IntPropertyWidgetQt::IntPropertyWidgetQt(IntProperty* property) : property_(property) {
+IntPropertyWidgetQt::IntPropertyWidgetQt(IntProperty* property) : property_(property) , settingsWidget_(0) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
+}
+
+
+IntPropertyWidgetQt::~IntPropertyWidgetQt(){
+    delete settingsWidget_;//->deleteLater();
 }
 
 void IntPropertyWidgetQt::generateWidget() {
@@ -36,7 +41,7 @@ void IntPropertyWidgetQt::generateWidget() {
         setLayout(hLayout);
     }
     else {
-        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         sliderWidget_ = new IntSliderWidgetQt(property_->getMinValue(), property_->getMaxValue(), property_->getIncrement());
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));

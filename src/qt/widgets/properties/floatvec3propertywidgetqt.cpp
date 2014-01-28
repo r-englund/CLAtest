@@ -20,7 +20,8 @@
 namespace inviwo {
 
 FloatVec3PropertyWidgetQt::FloatVec3PropertyWidgetQt(FloatVec3Property* property)
-    : property_(property)
+    : property_(property) 
+    , settingsWidget_(0)
     , valueVec3Max_(property->getMaxValue())
     , valueVec3Min_(property->getMinValue())
     , valueIncrement_(property->getIncrement()){
@@ -32,6 +33,11 @@ FloatVec3PropertyWidgetQt::FloatVec3PropertyWidgetQt(FloatVec3Property* property
     generatesSettingsWidget();
 }
 
+
+FloatVec3PropertyWidgetQt::~FloatVec3PropertyWidgetQt(){
+    settingsWidget_->deleteLater();
+}
+
 void FloatVec3PropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     if (property_->getReadOnly()) {
@@ -41,7 +47,7 @@ void FloatVec3PropertyWidgetQt::generateWidget() {
         setLayout(hLayout);
     }
     else {
-        label_ = new EditableLabelQt(property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
 
         QWidget* sliderWidget = new QWidget();

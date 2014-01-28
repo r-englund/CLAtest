@@ -16,23 +16,31 @@
 
 namespace inviwo{
 
-EditableLabelQt::EditableLabelQt(std::string text, bool shortenText): text_(text), contextMenu_(NULL), shortenText_(shortenText) {
+EditableLabelQt::EditableLabelQt(QWidget *parent , std::string text, bool shortenText)
+    : QWidget(parent)
+    , text_(text)
+    , contextMenu_(NULL)
+    , shortenText_(shortenText) {
     generateWidget();
 }
 
-EditableLabelQt::EditableLabelQt(std::string text, QMenu* contextMenu, bool shortenText) :text_(text), contextMenu_(contextMenu), shortenText_(shortenText) {
+EditableLabelQt::EditableLabelQt(QWidget *parent , std::string text, QMenu* contextMenu, bool shortenText)
+    : QWidget(parent)
+    , text_(text)
+    , contextMenu_(contextMenu)
+    , shortenText_(shortenText) {
     generateWidget();
 }
 
 void EditableLabelQt::generateWidget(){
     QHBoxLayout* hLayout = new QHBoxLayout();
-    label_ = new QLabel();
+    label_ = new QLabel(this);
     if (shortenText_)
         label_->setText(QString::fromStdString(shortenText()));
     else
         label_->setText(QString::fromStdString(text_));
 
-    lineEdit_ = new QLineEdit();
+    lineEdit_ = new QLineEdit(this);
     hLayout->addWidget(lineEdit_);
     lineEdit_->hide();
     lineEdit_->setAlignment(Qt::AlignLeft);
@@ -40,7 +48,7 @@ void EditableLabelQt::generateWidget(){
     setLayout(hLayout);
 
     if (contextMenu_ == NULL)
-        contextMenu_ = new QMenu();
+        contextMenu_ = new QMenu(this);
     contextMenu_->addAction("Rename");
 
     label_->setContextMenuPolicy(Qt::CustomContextMenu);

@@ -34,6 +34,7 @@ Q_OBJECT
 
 public:
     FloatVec3PropertyWidgetQt(FloatVec3Property* property);
+    virtual ~FloatVec3PropertyWidgetQt();
 
     void updateFromProperty();
 

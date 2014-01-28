@@ -34,7 +34,7 @@ class IVW_QTWIDGETS_API PropertySettingsWidgetQt : public QWidget {
     Q_OBJECT
 public:
     PropertySettingsWidgetQt(Property *property);
-    
+    virtual ~PropertySettingsWidgetQt();
   
 private:
     Property* property_;
@@ -61,7 +61,16 @@ private:
     QLineEdit* lineEditIcrementY_; ///< Text box for the increment value of the Y component
     QLineEdit* lineEditIcrementZ_; ///< Text box for the increment value of the Z component
     QLineEdit* lineEditIcrementW_; ///< Text box for the increment value of the W component
-    
+
+    QLabel* xValueLabel_;
+    QLabel* yValueLabel_;
+    QLabel* zValueLabel_;
+    QLabel* wValueLabel_;
+
+    QLabel* minValueLabel_;
+    QLabel* maxValueLabel_;
+    QLabel* incValueLabel_;
+
     QGridLayout* gridLayout_;
     QPushButton* btnApply_; 
     QPushButton* btnCancel_;

@@ -31,19 +31,19 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
 
 void CollapsibleGroupBoxWidgetQt::generateWidget() {
     setContextMenuPolicy(Qt::CustomContextMenu);
-    btnCollapse_ = new QToolButton();
+    btnCollapse_ = new QToolButton(this);
     btnCollapse_->setStyleSheet("QToolButton::hover { background-color: gray }");
     QHBoxLayout* hLayout = new QHBoxLayout();
     QGridLayout* gridLayout = new QGridLayout();
 
     QHBoxLayout* H2 = new QHBoxLayout();
 
-    groupBox_ = new QGroupBox();
+    groupBox_ = new QGroupBox(this);
 
     groupBox_->setFlat(true);
     groupBox_->setStyleSheet("border:0;");
 
-    QFrame* frame = new QFrame();
+    QFrame* frame = new QFrame(this);
     frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     frame->setLineWidth(2);
     hLayout->addWidget(frame);
@@ -59,7 +59,7 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setSpacing(0);
     H2->addWidget(btnCollapse_);
-    label_ = new EditableLabelQt(displayName_);
+    label_ = new EditableLabelQt(this,displayName_);
     H2->addWidget(label_);
     H2->setSpacing(7);
     gridLayout->addLayout(H2,1,0,Qt::AlignLeft);
@@ -179,8 +179,8 @@ void CollapsibleGroupBoxWidgetQt::generateContextMenu() {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode")));
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    contextMenu_ = new QMenu();
-    QMenu* viewModeItem_ = new QMenu(tr("&View mode"));
+    contextMenu_ = new QMenu(this);
+    QMenu* viewModeItem_ = new QMenu(tr("&View mode"),contextMenu_);
 
     developerViewModeAction_ = new QAction(tr("&Developer"),this);
     developerViewModeAction_->setCheckable(true);

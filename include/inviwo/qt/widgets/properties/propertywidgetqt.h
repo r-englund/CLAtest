@@ -65,6 +65,7 @@ protected:
     QMenu* generatePropertyWidgetMenu();
     void generateModuleMenuActions();
     void updateModuleMenuActions();
+
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
 
