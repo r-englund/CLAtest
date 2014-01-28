@@ -54,10 +54,20 @@ void SettingsWidget::loadSettings() {
 
     for (size_t i=0; i<settings.size(); i++) {
        
+        //Holder widget
         QVBoxLayout* vLayout =  new QVBoxLayout();
         vLayout->setSpacing(0);
-        QWidget* tab = new QWidget(tabWidget_);
-        tab->setLayout(vLayout);        
+        vLayout->setAlignment(Qt::AlignTop);
+        QWidget* tabHolder = new QWidget();
+        tabHolder->setLayout(vLayout);        
+
+        //Scroll widget
+        QScrollArea* scrollAreaTab = new QScrollArea(tabWidget_);
+        scrollAreaTab->setWidgetResizable(true);
+        scrollAreaTab->setMinimumWidth(300);
+        scrollAreaTab->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollAreaTab->setFrameShape(QFrame::NoFrame);
+        scrollAreaTab->setWidget(tabHolder);        
 
         std::map<std::string, std::vector<Property*> > groups;
         std::vector<Property*> properties = settings[i]->getProperties();
@@ -102,7 +112,7 @@ void SettingsWidget::loadSettings() {
 
 
 
-        tabWidget_->addTab(tab, tr(settings[i]->getIdentifier().c_str()) );
+        tabWidget_->addTab(scrollAreaTab, tr(settings[i]->getIdentifier().c_str()) );
 
         vLayout->addStretch(0);
     }
