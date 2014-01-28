@@ -49,8 +49,8 @@ void SystemSettings::initialize() {
     addProperty(&enableSoundProperty_);
     addProperty(&useRAMPercentProperty_);
 
-    btnAllocTestProperty_.onChange(this, &SystemSettings::allocationTest);
-    addProperty(&btnAllocTestProperty_);
+    //btnAllocTestProperty_.onChange(this, &SystemSettings::allocationTest);
+    //addProperty(&btnAllocTestProperty_);
 
     InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
     ivwAssert(module!=0, "Core module is not yet registered")

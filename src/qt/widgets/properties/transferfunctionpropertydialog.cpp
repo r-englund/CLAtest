@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
+#include <QFileDialog>
 
 namespace inviwo {
 
@@ -80,10 +81,14 @@ void TransferFunctionPropertyDialog::generateWidget() {
     colorWheel_ = new ColorWheel();
     connect(colorWheel_, SIGNAL(colorChange(QColor)), this, SLOT(setPointColor()));
 
-    btnClearTF_ = new QPushButton();
-    btnClearTF_->setIcon(QIcon(":/icons/button_cancel.png"));
-    btnClearTF_->setFixedSize(40, 40);
+    btnClearTF_ = new QPushButton("Reset transfer function");
     connect(btnClearTF_, SIGNAL(clicked()), tfEditor_, SLOT(resetTransferFunction()));
+
+    btnImportTF_ = new QPushButton("Import transfer function");
+    connect(btnImportTF_, SIGNAL(clicked()), this, SLOT(importTransferFunction()));
+
+    btnExportTF_ = new QPushButton("Export transfer function");
+    connect(btnExportTF_, SIGNAL(clicked()), this, SLOT(exportTransferFunction()));
 
     colorDialog_ = new QColorDialog();
     colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
@@ -92,24 +97,37 @@ void TransferFunctionPropertyDialog::generateWidget() {
     tfPreview_ = new QLabel();
     tfPreview_->setMinimumSize(1,1);
 
-    interpolationSelector_ = new QComboBox();
-    interpolationSelector_->addItem("linear interpolation");
-    interpolationSelector_->addItem("cubic interpolation");
-    interpolationSelector_->setCurrentIndex(tfProperty_->get().getInterpolationType());
-    connect(interpolationSelector_, SIGNAL(currentIndexChanged(int)), this, SLOT(switchInterpolationType(int)));
+    cmbInterpolation_ = new QComboBox();
+    cmbInterpolation_->addItem("linear interpolation");
+    cmbInterpolation_->addItem("cubic interpolation");
+    cmbInterpolation_->setCurrentIndex(tfProperty_->get().getInterpolationType());
+    connect(cmbInterpolation_, SIGNAL(currentIndexChanged(int)), this, SLOT(switchInterpolationType(int)));
 
-    QGridLayout* gridLayout = new QGridLayout();
-    gridLayout->addWidget(zoomVSlider_,  0, 0);
-    gridLayout->addWidget(tfEditorView_, 0, 1);
-    gridLayout->addWidget(zoomHSlider_,  1, 1);
-    gridLayout->addWidget(tfPreview_,    2, 1);
-    gridLayout->addWidget(maskSlider_,   3, 1);
-    gridLayout->addWidget(colorWheel_,   0, 2);
-    gridLayout->addWidget(btnClearTF_,   1, 2);
-    gridLayout->addWidget(interpolationSelector_,   2, 2);
-    QFrame* frame = new QFrame();
-    frame->setLayout(gridLayout);
-    setWidget(frame);
+    QFrame* leftPanel = new QFrame(this);
+    QGridLayout* leftLayout = new QGridLayout();
+    leftLayout->addWidget(zoomVSlider_,  0, 0);
+    leftLayout->addWidget(tfEditorView_, 0, 1);
+    leftLayout->addWidget(zoomHSlider_,  1, 1);
+    leftLayout->addWidget(tfPreview_,    2, 1);
+    leftLayout->addWidget(maskSlider_,   3, 1);
+    leftPanel->setLayout(leftLayout);
+
+    QFrame* rightPanel = new QFrame(this);
+    QVBoxLayout* rightLayout = new QVBoxLayout();
+    rightLayout->setAlignment(Qt::AlignTop);
+    rightLayout->addWidget(colorWheel_);
+    rightLayout->addWidget(btnClearTF_);
+    rightLayout->addWidget(btnImportTF_);
+    rightLayout->addWidget(btnExportTF_);
+    rightLayout->addWidget(cmbInterpolation_);
+    rightPanel->setLayout(rightLayout);
+
+    QFrame* mainPanel = new QFrame(this);
+    QHBoxLayout* mainLayout = new QHBoxLayout();
+    mainLayout->addWidget(leftPanel);
+    mainLayout->addWidget(rightPanel);
+    mainPanel->setLayout(mainLayout);
+    setWidget(mainPanel);
 }
 
 void TransferFunctionPropertyDialog::switchInterpolationType(int interpolationType) {
@@ -213,6 +231,36 @@ void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {
     tfEditorView_->update();
     tfProperty_->get().calcTransferValues();
     tfProperty_->propertyModified();
+}
+
+void TransferFunctionPropertyDialog::importTransferFunction() {
+    QFileDialog importFileDialog(this, QString::fromStdString("Import transfer function"));
+    importFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    importFileDialog.setFileMode(QFileDialog::ExistingFile);
+    importFileDialog.setNameFilter("*.itf");
+    if (importFileDialog.exec()) {
+        QString file = importFileDialog.selectedFiles().at(0);
+        IvwDeserializer deserializer(file.toLocal8Bit().constData());
+        tfProperty_->deserialize(deserializer);
+        tfEditor_->recalculateControlPoints();
+        updateFromProperty();
+    }
+}
+
+void TransferFunctionPropertyDialog::exportTransferFunction() {
+    QFileDialog exportFileDialog(this, QString::fromStdString("Export transfer function"));
+    exportFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    exportFileDialog.setFileMode(QFileDialog::AnyFile);
+    exportFileDialog.setNameFilter("*.itf");
+    if (exportFileDialog.exec()) {
+        std::string file = exportFileDialog.selectedFiles().at(0).toStdString();
+        std::string extension = URLParser::getFileExtension(file);
+        if (extension == "") file.append(".itf");
+        else if (extension != "itf") URLParser::replaceFileExtension(file, "itf");
+        IvwSerializer serializer(file);
+        tfProperty_->serialize(serializer);
+        serializer.writeFile();
+    }
 }
 
 } // namespace

@@ -65,7 +65,7 @@ void NormalizedHistogram::resize(size_t numberOfBins){
 void NormalizedHistogram::performNormalization(){
     //Find bin with largest count
     maximumBinValue_ = 0.f;
-    for (std::vector<float>::const_iterator it = data_->begin() ; it != data_->end(); ++it){
+    for (std::vector<float>::const_iterator it = data_->begin()+1 ; it != data_->end(); ++it){
         if ((*it)>maximumBinValue_)
             maximumBinValue_ = (*it);
     }
@@ -74,6 +74,8 @@ void NormalizedHistogram::performNormalization(){
     for (std::vector<float>::iterator it = data_->begin() ; it != data_->end(); ++it){
         (*it) /= maximumBinValue_;
     }
+
+    data_->at(0) = 1.0f;
 }
 
 float NormalizedHistogram::getMaximumBinValue() const{

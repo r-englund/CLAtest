@@ -446,21 +446,23 @@ void ProcessorGraphicsItem::updateMetaData() {
 }
 
 void ProcessorGraphicsItem::notify() {
-    if(nameLabel_->isFocusOut()){
+    if (nameLabel_->isFocusOut()) {
         setIdentifier(nameLabel_->text());
         nameLabel_->setNoFocusOut();
     }
 
-    //TODO: Fix progressbar to true indicator or just make a processing wheel.
-    /*ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    //TODO: Fix progressbar to true indicator
+    /*
+    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
     if (progressBarOwner != NULL) {
         if (progressBarTimer_.elapsed() > 500 ||
             progressBarOwner->getProgressBar().getProgress()==0.0f || progressBarOwner->getProgressBar().getProgress()==1.0f) {
             progressBarTimer_.restart();
             update();
-            //QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+            QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
         }
-    }*/
+    }
+    */
 }
 
 } // namespace

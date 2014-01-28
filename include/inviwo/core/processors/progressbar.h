@@ -58,7 +58,6 @@ class IVW_CORE_API ProgressBarObservable: public Observable<ProgressBarObserver>
 public:
     ProgressBarObservable(): Observable<ProgressBarObserver>() {};
 
-
     void notifyProgressChanged() const {
         // Notify observers
         ObserverSet::iterator endIt = observers_->end();
@@ -112,8 +111,6 @@ private:
     bool visible_;
 
 };
-
-
 
 } // namespace
 

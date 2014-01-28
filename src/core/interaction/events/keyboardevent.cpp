@@ -30,12 +30,12 @@ KeyboardEvent::KeyboardEvent() {
 
 KeyboardEvent::~KeyboardEvent() {}
 
-void KeyboardEvent::serialize( IvwSerializer& s ) const {
+void KeyboardEvent::serialize(IvwSerializer& s) const {
 	InteractionEvent::serialize(s);
 	s.serialize("button", buttonName_);
 }
 
-void KeyboardEvent::deserialize( IvwDeserializer& s ) {
+void KeyboardEvent::deserialize(IvwDeserializer& s) {
 	InteractionEvent::deserialize(s);
 	s.deserialize("button", buttonName_);
 	button_ = buttonName_[0];

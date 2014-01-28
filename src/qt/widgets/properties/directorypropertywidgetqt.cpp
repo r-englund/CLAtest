@@ -73,11 +73,11 @@ void DirectoryPropertyWidgetQt::setPropertyValue() {
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
 
-    QFileDialog openFileDialog(this, tr("Open Directory ..."), QDir(dataDir).absolutePath());
-    openFileDialog.setFileMode(QFileDialog::Directory);
-    openFileDialog.setSidebarUrls(sidebarURLs);
+    QFileDialog importFileDialog(this, tr("Open Directory ..."), QDir(dataDir).absolutePath());
+    importFileDialog.setFileMode(QFileDialog::Directory);
+    importFileDialog.setSidebarUrls(sidebarURLs);
 
-    QString existingDir = openFileDialog.getExistingDirectory();
+    QString existingDir = importFileDialog.getExistingDirectory();
     std::string dir = existingDir.toLocal8Bit().constData();
 
     if (!dir.empty()) {

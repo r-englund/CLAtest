@@ -24,10 +24,8 @@ ProgressBar::ProgressBar() :
 
 ProgressBar::~ProgressBar() {}
 
-
-
 void ProgressBar::updateProgress(float progress) {
-    if(visible_) {
+    if (visible_) {
         ivwAssert(progress>=progress_, "Progress should always increase");
         ivwAssert(progress>=0.0f&&progress<=1.0, "Progress out of bounds.");
         progress_ = progress;
@@ -36,7 +34,7 @@ void ProgressBar::updateProgress(float progress) {
 }
 
 void ProgressBar::updateProgressLoop(size_t loopVar, size_t maxLoopVar, float endLoopProgress) {
-    if(visible_) {
+    if (visible_) {
         if (beginLoopProgress_<=0.0f)
             beginLoopProgress_ = progress_;
         float normalizedLoopVar = static_cast<float>(loopVar)/static_cast<float>(maxLoopVar);
@@ -54,6 +52,5 @@ void ProgressBar::serialize(IvwSerializer& s) const {
 void ProgressBar::deserialize(IvwDeserializer& d) {
     d.deserialize("visible", visible_);
 }
-
 
 } // namespace

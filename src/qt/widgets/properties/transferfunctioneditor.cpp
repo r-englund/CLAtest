@@ -32,13 +32,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     addItem(graphicsPathItem_);
 
     // initialize editor with current tf
-    for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
-        TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(static_cast<int>(i));
-        vec2 pos = dataPoint->getPos();
-        pos.x *= width();
-        pos.y *= height();
-        addControlPoint(QPointF(pos.x,pos.y), dataPoint);
-    }
+    recalculateControlPoints();
 }
 
 TransferFunctionEditor::~TransferFunctionEditor() {
@@ -147,6 +141,23 @@ void TransferFunctionEditor::removeControlPoint(TransferFunctionEditorControlPoi
         controlPoints_.erase(std::remove(controlPoints_.begin(), controlPoints_.end(), controlPoint), controlPoints_.end());
         delete controlPoint;
         updateControlPointView();
+    }
+}
+
+void TransferFunctionEditor::recalculateControlPoints() {
+    for (size_t i=0; i<controlPoints_.size(); i++) {
+        transferFunction_->removePoint(controlPoints_[i]->getPoint());
+        removeItem(controlPoints_[i]);
+        delete controlPoints_[i];
+    }
+    controlPoints_.clear();
+    // initialize editor with current tf
+    for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
+        TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(static_cast<int>(i));
+        vec2 pos = dataPoint->getPos();
+        pos.x *= width();
+        pos.y *= height();
+        addControlPoint(QPointF(pos.x,pos.y), dataPoint);
     }
 }
 

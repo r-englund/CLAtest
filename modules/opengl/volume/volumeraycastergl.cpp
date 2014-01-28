@@ -120,7 +120,7 @@ void VolumeRaycasterGL::initializeResources() {
     std::string gradientComputationValue = "";
     if (gradientComputationMode_.isSelected("none"))
         gradientComputationValue = "voxel.xyz;";
-    if (gradientComputationMode_.isSelected("forward"))
+    else if (gradientComputationMode_.isSelected("forward"))
         gradientComputationValue = "gradientForwardDiff(voxel.a, volume_, volumeStruct_, samplePos);";
     else if (gradientComputationMode_.isSelected("central"))
         gradientComputationValue = "gradientCentralDiff(voxel.a, volume_, volumeStruct_, samplePos);";
@@ -136,7 +136,7 @@ void VolumeRaycasterGL::initializeResources() {
     std::string classificationValue = "";
     if (classificationMode_.isSelected("none"))
         classificationValue = "vec4(voxel.a);";
-    if (classificationMode_.isSelected("transfer-function"))
+    else if (classificationMode_.isSelected("transfer-function"))
         classificationValue = "applyTF(transferFunc_, voxel);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(classificationKey, classificationValue);
 
@@ -145,12 +145,14 @@ void VolumeRaycasterGL::initializeResources() {
     std::string shadingValue = "";
     if (shadingMode_.isSelected("none"))
         shadingValue = "colorAmb;";
-    if (shadingMode_.isSelected("ambient"))
+    else if (shadingMode_.isSelected("ambient"))
         shadingValue = "shadeAmbient(colorAmb);";
-    if (shadingMode_.isSelected("diffuse"))
+    else if (shadingMode_.isSelected("diffuse"))
         shadingValue = "shadeDiffuse(colorDiff, gradient, lightPos);";
-    if (shadingMode_.isSelected("specular"))
+    else if (shadingMode_.isSelected("specular"))
         shadingValue = "shadeSpecular(colorSpec, gradient, lightPos, cameraPos);";
+    else if (shadingMode_.isSelected("phong"))
+        shadingValue = "shadePhong(colorAmb, colorDiff, colorSpec, gradient, lightPos, cameraPos);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 
     // compositing defines
@@ -230,7 +232,8 @@ void VolumeRaycasterGL::addBasicProperties() {
     shadingMode_.addOption("ambient", "Ambient");
     shadingMode_.addOption("diffuse", "Diffuse");
     shadingMode_.addOption("specular", "Specular");
-    shadingMode_.set("diffuse");
+    shadingMode_.addOption("phong", "Phong");
+    shadingMode_.set("phong");
     lightColorAmbient_.setSemantics(PropertySemantics::Color);
     lightColorDiffuse_.setSemantics(PropertySemantics::Color);
     lightColorSpecular_.setSemantics(PropertySemantics::Color);
@@ -243,7 +246,6 @@ void VolumeRaycasterGL::addBasicProperties() {
     compositingMode_.addOption("ison", "Iso surface normal rendering");
     compositingMode_.set("dvr");
     addProperty(compositingMode_);
-    //camera_.setVisible(false);
     addProperty(camera_);
 }
 

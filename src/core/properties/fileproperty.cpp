@@ -18,8 +18,8 @@
 
 namespace inviwo {
 
-FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value, PropertyOwner::InvalidationLevel invalidationLevel,
-PropertySemantics semantics)
+FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value,
+                           PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics)
     , acceptMode_(AcceptOpen)
     , fileMode_(AnyFile) {
@@ -39,7 +39,6 @@ void  FileProperty::setVariant(const Variant& val) {
         set(val.getString());
     }
 }
-
 
 void FileProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
@@ -112,7 +111,5 @@ void FileProperty::setFileMode(FileMode mode){
 FileProperty::FileMode FileProperty::getFileMode() const{
     return fileMode_;
 }
-
-
 
 } // namespace

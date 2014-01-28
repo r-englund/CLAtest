@@ -100,7 +100,7 @@ void VolumeSource::loadVolume() {
         } else {
             LogError("Could not load volume: " << volumeFile_.get());
         }
-    }      
+    }
 }
 
 } // namespace

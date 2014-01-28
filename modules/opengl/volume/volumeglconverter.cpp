@@ -60,11 +60,11 @@ DataRepresentation* VolumeGL2RAMConverter::createFrom(const DataRepresentation* 
 void VolumeGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const VolumeGL* volumeSrc = static_cast<const VolumeGL*>(source);
     VolumeRAM* volumeDst = static_cast<VolumeRAM*>(destination);
-    if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+    if (volumeSrc->getDimension() != volumeDst->getDimension()) {
         volumeDst->setDimension(volumeSrc->getDimension());
     }
     volumeSrc->getTexture()->download(volumeDst->getData());
-    if(volumeDst->hasNormalizedHistogram())
+    if (volumeDst->hasNormalizedHistogram())
         volumeDst->getNormalizedHistogram()->setValid(false);
 }
 

@@ -66,8 +66,10 @@ public slots:
     void showColorDialog();
     void updateTransferFunction();
     void switchInterpolationType(int interpolationType);
-
     void changeMask(int maskMin, int maskMax);
+
+    void importTransferFunction();
+    void exportTransferFunction();
 
 private:
 	int arrayWidth_;
@@ -77,7 +79,9 @@ private:
     TransferFunctionEditor* tfEditor_;         ///< TransferFunctionEditor inherited from QGraphicsScene
     TransferFunctionEditorView*	tfEditorView_; ///< View that contains the editor
     QPushButton* btnClearTF_;
-    QComboBox* interpolationSelector_;
+    QPushButton* btnImportTF_;
+    QPushButton* btnExportTF_;
+    QComboBox* cmbInterpolation_;
 
     QLabel* tfPreview_; ///< View that contains the scene for the painted transfer function
     QPixmap* tfPixmap_;

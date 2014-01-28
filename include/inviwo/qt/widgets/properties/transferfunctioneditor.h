@@ -76,6 +76,8 @@ public :
     QGraphicsView* getView() { return view_; }
     void redrawConnections();
 
+    void recalculateControlPoints();
+
 signals:
     void doubleClick();
     void controlPointsChanged();
@@ -98,7 +100,7 @@ protected:
     void addControlPoint(QPointF pos);
     void addControlPoint(QPointF pos, vec4 color);
 
-	void removeControlPoint(TransferFunctionEditorControlPoint* p);
+    void removeControlPoint(TransferFunctionEditorControlPoint* p);
 
     TransferFunctionEditorControlPoint* getControlPointGraphicsItemAt(const QPointF pos) const;
 

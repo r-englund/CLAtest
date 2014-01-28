@@ -48,12 +48,12 @@ MouseEvent::MouseEvent( MouseEvent::MouseButton button, InteractionEvent::Modifi
 
 MouseEvent::~MouseEvent() {}
 
-void MouseEvent::serialize( IvwSerializer& s ) const {
+void MouseEvent::serialize(IvwSerializer& s) const {
 	InteractionEvent::serialize(s);
 	s.serialize("button", buttonName_);
 }
 
-void MouseEvent::deserialize( IvwDeserializer& d ) {
+void MouseEvent::deserialize(IvwDeserializer& d) {
 	InteractionEvent::deserialize(d);
 	d.deserialize("button", buttonName_);
 	for (int i = 0; i < COUNT; ++i) {

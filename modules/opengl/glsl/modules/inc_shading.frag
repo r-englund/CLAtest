@@ -31,3 +31,10 @@ vec3 shadeSpecular(vec3 colorSpec, vec3 gradient, vec3 lightPos, vec3 cameraPos)
     vec3 halfway = normalize(cameraPos + lightPos);
     return colorSpec * lightColorSpecular_ * pow(max(dot(gradient, halfway), 0.0), lightSpecularExponent_);
 }
+
+vec3 shadePhong(vec3 colorAmb, vec3 colorDiff, vec3 colorSpec, vec3 gradient, vec3 lightPos, vec3 cameraPos) {
+    vec3 resAmb = shadeAmbient(colorAmb);
+    vec3 resDiff = shadeDiffuse(colorDiff, gradient, lightPos);
+    vec3 resSpec = shadeSpecular(colorSpec, gradient, lightPos, cameraPos);
+    return resAmb + resDiff + resSpec;
+}

@@ -83,10 +83,10 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 }
 
  const NormalizedHistogram* TransferFunctionProperty::getNormalizedHistogram() const { 
-     if(volumeInport_ && volumeInport_->hasData())
+     if (volumeInport_ && volumeInport_->hasData())
         return volumeInport_->getData()->getRepresentation<VolumeRAM>()->getNormalizedHistogram();
      else
-         return NULL;
+        return NULL;
  }
 
 } // namespace
