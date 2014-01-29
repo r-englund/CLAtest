@@ -1279,7 +1279,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     processorNetwork_->modified();
 
     // create all property (should be all non-visible) widgets in a thread (as it can take a long time to create them)
-    workerThread_ = new QThread;
+    workerThread_ = new QThread();
     ProcessorWorkerQt* worker = new ProcessorWorkerQt(processors);
     worker->moveToThread(workerThread_);
     connect(workerThread_, SIGNAL(started()), worker, SLOT(process()));

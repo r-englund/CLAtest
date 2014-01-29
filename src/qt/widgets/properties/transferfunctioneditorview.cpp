@@ -20,11 +20,13 @@
 namespace inviwo {
 
 TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty* tfProperty)
-    : VoidObserver(), tfProperty_(tfProperty)
+    : VoidObserver(), tfProperty_(tfProperty), volumeInport_(tfProperty->getVolumeInport()), histogramTheadWorking_(false)
 {
     setMouseTracking(true);
     setRenderHint(QPainter::Antialiasing, true);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
+    volumeInport_->onChange(this, &TransferFunctionEditorView::notify);
 }
 
 void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
@@ -48,7 +50,41 @@ void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF 
 }
 
 void TransferFunctionEditorView::notify() {
+    volumeInport_ = tfProperty_->getVolumeInport();
     update();
+}
+
+void TransferFunctionEditorView::histogramThreadFinished(){
+    histogramTheadWorking_ = false;
+    update();
+}
+
+const NormalizedHistogram* TransferFunctionEditorView::getNormalizedHistogram() { 
+    if (volumeInport_ && volumeInport_->hasData()){
+        const VolumeRAM* volumeRAM = volumeInport_->getData()->getRepresentation<VolumeRAM>();
+        if(volumeRAM){
+            if(volumeRAM->hasNormalizedHistogram())
+                return volumeRAM->getNormalizedHistogram();
+            else if(!histogramTheadWorking_){
+                histogramTheadWorking_ = true;
+                workerThread_ = new QThread();
+                HistogramWorkerQt* worker = new HistogramWorkerQt(volumeRAM);
+                worker->moveToThread(workerThread_);
+                connect(workerThread_, SIGNAL(started()), worker, SLOT(process()));
+                connect(worker, SIGNAL(finished()), workerThread_, SLOT(quit()));
+                connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+                connect(workerThread_, SIGNAL(finished()), workerThread_, SLOT(deleteLater()));
+                connect(workerThread_, SIGNAL(finished()), this, SLOT(histogramThreadFinished()));
+                workerThread_->start();
+            }
+            
+            return NULL;
+        }
+        else
+            return NULL;
+    }
+    else
+        return NULL;
 }
 
 void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF& rect) {
@@ -69,7 +105,7 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     painter->drawLines(lines.data(), lines.size());
 
     // histogram
-    const NormalizedHistogram* normHistogram = tfProperty_->getNormalizedHistogram();
+    const NormalizedHistogram* normHistogram = getNormalizedHistogram();
     if(normHistogram){
         const std::vector<float>* normHistogramData = normHistogram->getData();
         QVarLengthArray<QLineF, 100> bars;
@@ -123,6 +159,11 @@ void TransferFunctionEditorView::zoomVertically(int zoomVMin, int zoomVMax) {
         }
     }
     updateZoom();
+}
+
+void HistogramWorkerQt::process() {
+    volumeRAM_->getNormalizedHistogram();
+    emit finished();
 }
 
 } // namespace inviwo

@@ -18,11 +18,11 @@
 namespace inviwo {
 
 VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format, border), data_(NULL), histogram_(NULL)
+    : VolumeRepresentation(dimensions, format, border), data_(NULL), histogram_(NULL), calculatingHistogram_(false)
 {}
 
 VolumeRAM::VolumeRAM(const VolumeRAM& rhs) 
-    : VolumeRepresentation(rhs), data_(NULL), histogram_(new NormalizedHistogram(rhs.histogram_)) {
+    : VolumeRepresentation(rhs), data_(NULL), histogram_(new NormalizedHistogram(rhs.histogram_)), calculatingHistogram_(false) {
 }
 VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
     if(this != &that) {
@@ -58,15 +58,21 @@ bool VolumeRAM::hasNormalizedHistogram() const{
 }
 
 NormalizedHistogram* VolumeRAM::getNormalizedHistogram() {
-    if(data_ && (!histogram_ || !histogram_->isValid()))
-        histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_);
+    if(!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
+        calculateHistogram();
     return histogram_; 
 }
 
 const NormalizedHistogram* VolumeRAM::getNormalizedHistogram() const {
-    if(data_ && (!histogram_ || !histogram_->isValid()))
-        histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_);
+    if(!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
+        calculateHistogram();
     return histogram_; 
+}
+
+void VolumeRAM::calculateHistogram() const{
+    calculatingHistogram_ = true;
+    histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_);
+    calculatingHistogram_ = false;
 }
 
 VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format) {

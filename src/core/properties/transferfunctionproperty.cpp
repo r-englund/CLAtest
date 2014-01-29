@@ -13,7 +13,6 @@
  **********************************************************************/
 
 #include <inviwo/core/properties/transferfunctionproperty.h>
-#include <inviwo/core/datastructures/volume/volumeram.h>
 
 namespace inviwo {
 
@@ -26,7 +25,10 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::
     , zoomV_(0.0f, 1.0f)
 {}
 
-TransferFunctionProperty::~TransferFunctionProperty() {}
+TransferFunctionProperty::~TransferFunctionProperty() {
+    volumeInport_ = NULL;
+    notifyObservers();
+}
 
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 	Property::serialize(s);
@@ -82,11 +84,8 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
     propertyModified();
 }
 
- const NormalizedHistogram* TransferFunctionProperty::getNormalizedHistogram() const { 
-     if (volumeInport_ && volumeInport_->hasData())
-        return volumeInport_->getData()->getRepresentation<VolumeRAM>()->getNormalizedHistogram();
-     else
-        return NULL;
- }
+VolumeInport* TransferFunctionProperty::getVolumeInport(){
+    return volumeInport_;
+}
 
 } // namespace

@@ -19,10 +19,11 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-
+#include <inviwo/core/datastructures/volume/volumeram.h>
 #include <QtEvents>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QThread>
 
 namespace inviwo {
 class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, public VoidObserver {
@@ -39,10 +40,13 @@ signals:
     void resized();
 
 public slots:
+    void histogramThreadFinished();
     void zoomHorizontally(int zoomHMin, int zoomHMax);
     void zoomVertically(int zoomVMin, int zoomVMax);
 
 protected:
+    const NormalizedHistogram* getNormalizedHistogram();
+
     void updateZoom();
 	void resizeEvent(QResizeEvent * event);
 
@@ -54,7 +58,28 @@ private:
     vec2 mask_;
     vec2 zoomH_;
     vec2 zoomV_;
+    VolumeInport* volumeInport_;
+
+    bool histogramTheadWorking_;
+    QThread* workerThread_;
 };
+
+class IVW_QTWIDGETS_API HistogramWorkerQt : public QObject{
+    Q_OBJECT
+public:
+    HistogramWorkerQt(const VolumeRAM* volumeRAM) : volumeRAM_(volumeRAM){}
+    ~HistogramWorkerQt(){ volumeRAM_ = NULL; };
+
+public slots:
+    void process();
+
+signals:
+    void finished();
+
+private:
+    const VolumeRAM* volumeRAM_;
+};
+
 } // namespace
 
 #endif // IVW_TRANSFERFUNCTIONEDITORVIEW_H

@@ -67,8 +67,11 @@ public:
     }
 
 protected:
+    void calculateHistogram() const;
+
     void* data_;
     mutable NormalizedHistogram* histogram_;
+    mutable bool calculatingHistogram_;
 };
 
 

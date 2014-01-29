@@ -44,15 +44,15 @@ public:
 
     vec2 getZoomV() { return zoomV_; }
     void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
-
-    const NormalizedHistogram* getNormalizedHistogram() const;
+    
+    VolumeInport* getVolumeInport();
 
 private:
     vec2 mask_;
     vec2 zoomH_;
     vec2 zoomV_;
 
-    const VolumeInport* volumeInport_;
+    VolumeInport* volumeInport_;
 };
 
 } // namespace inviwo
