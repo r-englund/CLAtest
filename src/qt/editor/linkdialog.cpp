@@ -666,7 +666,8 @@ void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         if (linkCurve_) {
             linkCurve_->hide();
             removeItem(linkCurve_);
-            //delete linkCurve_;
+            delete linkCurve_;
+            linkCurve_ = 0;
         }
         QPointF center = startProperty_->getShortestBoundaryPointTo(e->scenePos());
         linkCurve_ = new DialogCurveGraphicsItem(center, e->scenePos());
@@ -697,7 +698,7 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
     if (linkCurve_) {
         linkCurve_->hide();
         removeItem(linkCurve_);
-        //delete linkCurve_;
+        delete linkCurve_;
         linkCurve_ = 0;
 
         endProperty_ = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());

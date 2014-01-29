@@ -61,6 +61,7 @@ public:
 
 private:
     void evaluate();
+    void evaluateInvalidPropertyLinks();
 
     bool hasBeenVisited(Processor* processor);
     bool hasBeenVisited(Property* property);

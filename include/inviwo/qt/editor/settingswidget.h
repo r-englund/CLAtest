@@ -20,6 +20,7 @@
 #include <QVBoxLayout>
 #include <QTabWidget>
 #include <QString>
+#include <QScrollArea>
 
 namespace inviwo {
     class PropertyWidgetQt;

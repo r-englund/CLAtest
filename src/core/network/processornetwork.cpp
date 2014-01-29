@@ -162,9 +162,12 @@ void ProcessorNetwork::modified() {
 }
 
 void ProcessorNetwork::notifyInvalidationBegin(Processor* p){
-    if(!isInvalidating()){
+    if(!isInvalidating()){       
         invalidationInitiator_ = p;
         invalidating_ = true;
+        //TODO: Optimize notification only to network evaluator. 
+        //(But for now notify for all observers. Currently there are only two observers observing network)
+        notifyObservers();
     }
 }
 

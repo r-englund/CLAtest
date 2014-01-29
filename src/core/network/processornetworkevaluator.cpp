@@ -312,7 +312,7 @@ std::vector<ProcessorLink*> ProcessorNetworkEvaluator::getSortedProcessorLinks()
     ProcessorLink* nextInvalidLink = 0;
 
     //Find initial invalid link (whose property is currently modified)
-    for (size_t i=0; i<unsortedProcessorLinks.size(); i++) { 
+    for (size_t i=0; i<unsortedProcessorLinks.size(); i++) {         
         if (!unsortedProcessorLinks[i]->isValid()) { 
             nextInvalidLink = unsortedProcessorLinks[i];
             break;
@@ -373,6 +373,16 @@ void ProcessorNetworkEvaluator::notifyInvalidationEnd(Processor* p){
 }
 
 void ProcessorNetworkEvaluator::notify(){
+    if (!processorNetwork_->islocked()) {  
+        Processor* p = processorNetwork_->getInvalidationInitiator();
+        if (p) {    
+            std::vector<Property*> properties = p->getProperties();
+            for (size_t i=0; i<properties.size(); i++) {
+                if (properties[i]->isPropertyModified())
+                    evaluateInvalidPropertyLinks();
+            }
+        }
+    }
     requestEvaluate();
 }
 
@@ -422,16 +432,26 @@ void ProcessorNetworkEvaluator::requestEvaluate() {
     evaluate();
 }
 
-void ProcessorNetworkEvaluator::evaluate() {
-    // lock processor network to avoid concurrent evaluation
-    processorNetwork_->lock();    
+void ProcessorNetworkEvaluator::evaluateInvalidPropertyLinks() {
+    if (processorNetwork_->islocked())
+        return;
 
+    processorNetwork_->lock();
+    
     //perform linking
-    std::vector<ProcessorLink*> processorLinks = getSortedProcessorLinks();        
-    for (size_t i=0; i<processorLinks.size(); i++) {         
+    std::vector<ProcessorLink*> processorLinks = getSortedProcessorLinks();
+                
+    for (size_t i=0; i<processorLinks.size(); i++) {
         if (!processorLinks[i]->isValid())
             processorLinks[i]->evaluate(linkEvaluator_);
-    } 
+    }
+
+    processorNetwork_->unlock();    
+}
+
+void ProcessorNetworkEvaluator::evaluate() {
+    // lock processor network to avoid concurrent evaluation
+    processorNetwork_->lock();  
   
     // if the processor network has changed determine the new processor order
     if (processorNetwork_->isModified()) {
