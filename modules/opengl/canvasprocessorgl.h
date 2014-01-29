@@ -34,6 +34,8 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+
 protected:
     virtual void process();
 

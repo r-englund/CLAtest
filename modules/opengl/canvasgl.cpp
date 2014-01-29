@@ -84,6 +84,7 @@ void CanvasGL::render(const Image* image, LayerType layerType){
         pickingContainer_->setPickingSource(image);
         renderLayer();
     } else {
+        pickingContainer_->setPickingSource(NULL);
         imageGL_  = NULL;
         renderNoise();
     }
