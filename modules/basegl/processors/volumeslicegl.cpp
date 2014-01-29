@@ -27,7 +27,7 @@ VolumeSliceGL::VolumeSliceGL()
     outport_("image.outport", COLOR_ONLY),
     coordinatePlane_("coordinatePlane", "Coordinate Plane"),
     sliceNumber_("sliceNumber", "Slice Number", 1, 1, 256),
-    transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_),
+    transferFunction_("transferFunction", "Transfer function", TransferFunction()),
     shader_(NULL)
 {
     addPort(inport_);

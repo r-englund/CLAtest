@@ -24,7 +24,7 @@
 #include <QDebug>
 namespace inviwo {
 
-class ColorWheel : public QWidget
+class IVW_QTWIDGETS_API ColorWheel : public QWidget
 {
     Q_OBJECT
 public:
