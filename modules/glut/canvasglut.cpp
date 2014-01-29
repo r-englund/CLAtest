@@ -23,7 +23,7 @@ CanvasGLUT* CanvasGLUT::canvases_[MAX_CANVAS_NUMBER];
 EventHandler* CanvasGLUT::eventHandler_;
 
 CanvasGLUT::CanvasGLUT(std::string windowTitle, uvec2 dimensions)
-    : CanvasGL(dimensions),
+    : CanvasGL(dimensions), windowTitle_(windowTitle),
     mouseButton_(MouseEvent::MOUSE_BUTTON_NONE),
     mouseState_(MouseEvent::MOUSE_STATE_NONE),
     mouseModifiers_(InteractionEvent::MODIFIER_NONE)
@@ -40,7 +40,7 @@ void CanvasGLUT::initialize() {
 
 void CanvasGLUT::initializeGL() {
     glutInitWindowSize(dimensions_.x, dimensions_.y);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutCreateWindow(windowTitle_.c_str());
 
     canvasID_ = glutGetWindow();
@@ -68,6 +68,15 @@ void CanvasGLUT::deinitialize() {
 
 void CanvasGLUT::glSwapBuffers() {
     glutSwapBuffers();
+}
+
+void CanvasGLUT::setWindowTitle(std::string windowTitle){
+    windowTitle_ = windowTitle;
+    glutSetWindowTitle(windowTitle_.c_str());
+}
+
+void CanvasGLUT::setWindowSize(uvec2 size){
+    glutReshapeWindow(static_cast<int>(size.x), static_cast<int>(size.y));
 }
 
 void CanvasGLUT::reshape(int width, int height) {
@@ -114,7 +123,7 @@ void CanvasGLUT::mouse(int button, int state, int x, int y) {
     thisCanvas->mouseButton_ = mapMouseButton(button);
     thisCanvas->mouseState_ = mapMouseState(state);
     thisCanvas->mouseModifiers_ = mapModifiers(glutGetModifiers());
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, thisCanvas->dimensions_.y-y), thisCanvas->mouseButton_,
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_,
         thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
     if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_PRESS) canvases_[glutGetWindow()]->mousePressEvent(mouseEvent);
     else if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_RELEASE) canvases_[glutGetWindow()]->mouseReleaseEvent(mouseEvent);
@@ -123,7 +132,7 @@ void CanvasGLUT::mouse(int button, int state, int x, int y) {
 
 void CanvasGLUT::mouseMotion(int x, int y) {
     CanvasGLUT* thisCanvas = canvases_[glutGetWindow()];
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, thisCanvas->dimensions_.y-y), thisCanvas->mouseButton_,
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_,
                                             thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
     canvases_[glutGetWindow()]->mouseMoveEvent(mouseEvent);
     delete mouseEvent;

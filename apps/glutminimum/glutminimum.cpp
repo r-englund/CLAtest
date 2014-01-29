@@ -50,6 +50,8 @@ void deinitialize() {
     if (app) app->deinitialize();
     delete app;
     app = 0;
+    //for(unsigned int i=0; i<CanvasGLUT::canvasCount_; ++i)
+    //    delete CanvasGLUT::canvases_[i];
 }
 
 
@@ -59,32 +61,19 @@ void keyPressed(unsigned char key, int /*x*/, int /*y*/) {
             deinitialize();
             exit(0);
             break;
-        case '1': {
-            Processor* processor = processorNetwork->getProcessorByName("EntryExitPoints");
-            FloatProperty* distance = dynamic_cast<FloatProperty*>(processor->getPropertyByIdentifier("viewDist"));
-            distance->set(distance->get()+distance->getIncrement());
-            break;
-        }
-        case '2': {
-            Processor* processor = processorNetwork->getProcessorByName("EntryExitPoints");
-            FloatProperty* distance = dynamic_cast<FloatProperty*>(processor->getPropertyByIdentifier("viewDist"));
-            distance->set(distance->get()-distance->getIncrement());     
-            break;
-        }
     }
 }
-
 
 void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
 }
 
 
 int main(int argc, char** argv) {
-    InviwoApplication inviwoApp(argc, argv, "glutminimum "+IVW_VERSION, inviwo::filesystem::findBasePath());
+    InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLUTApp", inviwo::filesystem::findBasePath());
 
     glutInit(&argc, argv);
 
-    canvas = new CanvasGLUT("glutminimum", uvec2(256,256));//, GLCanvas::RGBAD);
+    canvas = new CanvasGLUT(inviwoApp.getDisplayName(), uvec2(128,128));
     canvas->initializeGL();
 
     inviwoApp.initialize(&inviwo::registerAllModules);
@@ -103,19 +92,52 @@ int main(int argc, char** argv) {
 
     // Load simple scene
     processorNetwork->lock();
-    IvwDeserializer xmlDeserializer(inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simple.inv"));
+
+    const CommandLineParser *cmdparser = (inviwo::InviwoApplication::getRef()).getCommandLineParser();
+    std::string workspace;
+    if (cmdparser->getLoadWorkspaceFromArg())
+        workspace = cmdparser->getWorkspacePath();
+    else
+        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simple.inv");
+
+    IvwDeserializer xmlDeserializer(workspace);
     processorNetwork->deserialize(xmlDeserializer);
     std::vector<Processor*> processors = processorNetwork->getProcessors();
+
+    int i=0;
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
         (*it)->invalidate(PropertyOwner::INVALID_RESOURCES);
 
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
-        if (canvasProcessor)
-            processorNetworkEvaluator->registerCanvas(canvas, canvasProcessor->getIdentifier());
+        if (canvasProcessor){
+            if(i==0){
+                canvas->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
+                canvas->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
+                processorNetworkEvaluator->registerCanvas(canvas, canvasProcessor->getIdentifier());
+            }
+            else{
+                CanvasGLUT* newC = new CanvasGLUT(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
+                processorNetworkEvaluator->registerCanvas(newC, canvasProcessor->getIdentifier());
+                newC->initializeGL();
+                newC->setNetworkEvaluator(processorNetworkEvaluator);
+                newC->initialize();
+            }
+            i++;
+        }
     }
     processorNetwork->setModified(true);
     processorNetwork->unlock();
     processorNetwork->modified();
+
+    if (cmdparser->getCaptureAfterStartup()) {
+        std::string path = cmdparser->getOutputPath();
+        if (path.empty())
+            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
+        processorNetworkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
+    }
+
+    if (cmdparser->getQuitApplicationAfterStartup())
+        return 0;
 
     glutKeyboardFunc(keyPressed);
     glutSpecialFunc(keyPressedSpecial);

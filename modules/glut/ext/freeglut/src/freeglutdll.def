@@ -1,5 +1,5 @@
 LIBRARY freeglut
-VERSION 2.6
+VERSION 2.8
 EXPORTS
 	glutInit
 	glutInitWindowPosition

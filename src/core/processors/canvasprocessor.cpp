@@ -75,6 +75,10 @@ void CanvasProcessor::setCanvasSize(ivec2 dim){
     disableResize_ = false;
 }
 
+ivec2 CanvasProcessor::getCanvasSize() const{
+    return dimensions_.get();
+}
+
 void CanvasProcessor::saveImageLayer() {
     std::string snapshotPath(saveLayerDirectory_.get() + "/" + toLower(getIdentifier()) + "-" + currentDateTime() + ".png");
     saveImageLayer(snapshotPath.c_str());

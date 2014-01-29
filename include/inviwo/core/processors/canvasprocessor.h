@@ -39,6 +39,7 @@ public:
     void setCanvas(Canvas* canvas) { canvas_ = canvas; }
     Canvas* getCanvas() const { return canvas_; }
     void setCanvasSize(ivec2);
+    ivec2 getCanvasSize() const;
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     

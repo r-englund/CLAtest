@@ -37,6 +37,9 @@ public:
 
     void glSwapBuffers();
 
+    void setWindowTitle(std::string);
+    void setWindowSize(uvec2);
+
     static void display(void);
     static void idle(void);
     static void reshape(int width, int height);
