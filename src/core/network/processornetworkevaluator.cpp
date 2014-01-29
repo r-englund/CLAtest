@@ -28,7 +28,6 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     initializeNetwork();
     defaultContext_ = 0;
     eventInitiator_ = 0;
-    linkEvaluator_  = new LinkEvaluator();
     evaulationQueued_ = false;
     evaluationDisabled_ = false;
     ivwAssert(processorNetworkEvaluators_.find(processorNetwork) == processorNetworkEvaluators_.end() , "A ProcessorNetworkEvaluator for the given ProcessorNetwork is already created");
@@ -40,7 +39,6 @@ ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {
     std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*>::iterator it = processorNetworkEvaluators_.find(processorNetwork_);
     if(it != processorNetworkEvaluators_.end())
         processorNetworkEvaluators_.erase(it);
-    delete linkEvaluator_;
 }
 
 
@@ -271,96 +269,10 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     eventInitiator_ = 0;
 }
 
-std::vector<PropertyLink*> ProcessorNetworkEvaluator::getConnectedPropertyLinks(Property* property) {
-    std::vector<PropertyLink*> propertyLinks;
-    std::vector<ProcessorLink*> links = processorNetwork_->getLinks();
-    for (size_t i=0; i<links.size(); i++) {
-        std::vector<PropertyLink*> plinks = links[i]->getPropertyLinks();
-        for (size_t j=0; j<plinks.size(); j++) {
-            if (plinks[j]->getSourceProperty()==property || plinks[j]->getDestinationProperty()==property) {
-                propertyLinks.push_back(plinks[j]);
-            }
-        }
-    }
-    return propertyLinks;
-}
-
-std::vector<Property*> ProcessorNetworkEvaluator::getLinkedProperties(Property* property) {
-    std::vector<Property*> connectedProperties;
-    std::vector<ProcessorLink*> links = processorNetwork_->getLinks();
-    for (size_t i=0; i<links.size(); i++) {
-        std::vector<PropertyLink*> plinks = links[i]->getPropertyLinks();
-        for (size_t j=0; j<plinks.size(); j++) {
-            if (plinks[j]->getSourceProperty()==property) {
-                connectedProperties.push_back(plinks[j]->getDestinationProperty());
-            }            
-        }
-    }
-    return connectedProperties;
-}
-
 bool ProcessorNetworkEvaluator::hasBeenVisited(Property* property) {
     if (std::find(propertiesVisited_.begin(), propertiesVisited_.end(), property)== propertiesVisited_.end())
         return false;
     return true;
-}
-
-std::vector<ProcessorLink*> ProcessorNetworkEvaluator::getSortedProcessorLinks() {
-    std::vector<ProcessorLink*> unsortedProcessorLinks = processorNetwork_->getLinks();
-    std::vector<ProcessorLink*> sortedProcessorLinks;
-
-    ProcessorLink* nextInvalidLink = 0;
-
-    //Find initial invalid link (whose property is currently modified)
-    for (size_t i=0; i<unsortedProcessorLinks.size(); i++) {         
-        if (!unsortedProcessorLinks[i]->isValid()) { 
-            nextInvalidLink = unsortedProcessorLinks[i];
-            break;
-        }
-    }
-
-    if (!nextInvalidLink)  return sortedProcessorLinks; //return empty list
-
-    //Find link connected to the invalid link.
-    //If it does not exist pick any unsorted processor link and repeat.    
-    while (sortedProcessorLinks.size()!=unsortedProcessorLinks.size()) {        
-        sortedProcessorLinks.push_back(nextInvalidLink);
-        
-        Processor* srcProc = nextInvalidLink->getSourceProcessor();
-        Processor* dstProc = nextInvalidLink->getDestinationProcessor();
-
-        //Find link connected to the invalid link.
-        nextInvalidLink = 0;
-        for (size_t i=0; i<unsortedProcessorLinks.size(); i++) {
-            if ( std::find(sortedProcessorLinks.begin(), sortedProcessorLinks.end(), unsortedProcessorLinks[i])==sortedProcessorLinks.end()) {
-                std::vector<PropertyLink*> propertyLinks = unsortedProcessorLinks[i]->getPropertyLinks();                
-                for (size_t j=0; j<propertyLinks.size(); j++) { 
-                    if (propertyLinks[j]->getSourceProperty()->getOwner() == dstProc ||
-                        propertyLinks[j]->getSourceProperty()->getOwner() == srcProc) {
-                        nextInvalidLink = unsortedProcessorLinks[i];
-                        break;
-                    }
-                }
-            }
-        }
-
-        //Pick any unsorted link.
-        if (!nextInvalidLink) {
-            for (size_t i=0; i<unsortedProcessorLinks.size(); i++) {
-                if ( std::find(sortedProcessorLinks.begin(), sortedProcessorLinks.end(), unsortedProcessorLinks[i])==sortedProcessorLinks.end()) {
-                    if (!unsortedProcessorLinks[i]->isValid()) { 
-                        nextInvalidLink = unsortedProcessorLinks[i];
-                        break;
-                    }
-                }
-            }
-        }
-
-        //there is no more invalid links
-        if (!nextInvalidLink) break;        
-    }
-
-    return sortedProcessorLinks;
 }
 
 void ProcessorNetworkEvaluator::notifyInvalidationEnd(Processor* p){
@@ -372,17 +284,7 @@ void ProcessorNetworkEvaluator::notifyInvalidationEnd(Processor* p){
     }
 }
 
-void ProcessorNetworkEvaluator::notify(){
-    if (!processorNetwork_->islocked()) {  
-        Processor* p = processorNetwork_->getInvalidationInitiator();
-        if (p) {    
-            std::vector<Property*> properties = p->getProperties();
-            for (size_t i=0; i<properties.size(); i++) {
-                if (properties[i]->isPropertyModified())
-                    evaluateInvalidPropertyLinks();
-            }
-        }
-    }
+void ProcessorNetworkEvaluator::notify(){    
     requestEvaluate();
 }
 
@@ -432,22 +334,6 @@ void ProcessorNetworkEvaluator::requestEvaluate() {
     evaluate();
 }
 
-void ProcessorNetworkEvaluator::evaluateInvalidPropertyLinks() {
-    if (processorNetwork_->islocked())
-        return;
-
-    processorNetwork_->lock();
-    
-    //perform linking
-    std::vector<ProcessorLink*> processorLinks = getSortedProcessorLinks();
-                
-    for (size_t i=0; i<processorLinks.size(); i++) {
-        if (!processorLinks[i]->isValid())
-            processorLinks[i]->evaluate(linkEvaluator_);
-    }
-
-    processorNetwork_->unlock();    
-}
 
 void ProcessorNetworkEvaluator::evaluate() {
     // lock processor network to avoid concurrent evaluation

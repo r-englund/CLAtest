@@ -21,7 +21,6 @@
 #include <inviwo/core/interaction/events/resizeevent.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/links/processorlink.h>
-#include <inviwo/core/links/linkevaluator.h>
 
 namespace inviwo {
 
@@ -51,8 +50,7 @@ public:
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
 	void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
 
-    Processor* retrieveCanvasProcessor(Canvas* canvas);
-    std::vector<ProcessorLink*> getSortedProcessorLinks();
+    Processor* retrieveCanvasProcessor(Canvas* canvas);    
 
     void notifyInvalidationEnd(Processor*);
     void notify();
@@ -61,7 +59,6 @@ public:
 
 private:
     void evaluate();
-    void evaluateInvalidPropertyLinks();
 
     bool hasBeenVisited(Processor* processor);
     bool hasBeenVisited(Property* property);
@@ -73,11 +70,7 @@ private:
 	void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
 
     bool isPortConnectedToProcessor(Port* port, Processor *processor);
-
-    //Property Linking support
-    std::vector<PropertyLink*> getConnectedPropertyLinks(Property* property);
-    std::vector<Property*> getLinkedProperties(Property* property);
-
+   
     ProcessorNetwork* processorNetwork_;
 
     std::vector<Processor*> processorsSorted_; // the sorted list of processors obtained through topological sorting
@@ -85,8 +78,7 @@ private:
     std::vector<Property*> propertiesVisited_;
 
     std::vector<Canvas*> registeredCanvases_;
-    Canvas* defaultContext_;
-    LinkEvaluator* linkEvaluator_;
+    Canvas* defaultContext_;    
     Processor* eventInitiator_; 
 
     bool evaulationQueued_;

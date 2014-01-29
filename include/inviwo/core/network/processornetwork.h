@@ -21,6 +21,7 @@
 #include <inviwo/core/processors/processorobserver.h>
 #include <inviwo/core/network/portconnection.h>
 #include <inviwo/core/links/processorlink.h>
+#include <inviwo/core/links/linkevaluator.h>
 #include <inviwo/core/util/observer.h>
 #include <inviwo/core/util/exception.h>
 
@@ -231,6 +232,11 @@ public:
     void clear();
 
 private:
+    //Property Linking support
+    std::vector<ProcessorLink*> getSortedProcessorLinks();
+    void performLinking();
+    void evaluateInvalidPropertyLinks();
+
     bool modified_;
     bool broadcastModification_; //< shall observers be notified when the network has been modified
     unsigned int locked_;
@@ -241,7 +247,7 @@ private:
 
     bool invalidating_;
     Processor* invalidationInitiator_;
-
+    LinkEvaluator* linkEvaluator_;
 };
 
 template<class T>
