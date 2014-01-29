@@ -34,12 +34,7 @@ namespace inviwo {
 OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo", "Print OpenCL Info") {
     setIdentifier("OpenCL");
     setXMLFileName("opencl/openclmodule.xml");
-}
 
-void OpenCLModule::initialize() {
-    
-    OpenCL::instance()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl");
-    KernelManager::init();
     // Buffer CL
     registerRepresentationConverter(new BufferRAM2CLConverter());
     registerRepresentationConverter(new BufferCL2RAMConverter());
@@ -51,7 +46,7 @@ void OpenCLModule::initialize() {
     registerRepresentationConverter(new BufferCL2GLConverter());
     registerRepresentationConverter(new BufferCLGL2CLConverter());
     registerRepresentationConverter(new BufferCL2CLGLConverter());
-    
+
 
     // LayerCL
     registerRepresentationConverter(new LayerDisk2CLConverter());
@@ -89,6 +84,12 @@ void OpenCLModule::initialize() {
     // Processors
     registerProcessor(GrayscaleCL);
     registerProcessor(VolumeRaycasterCL);
+}
+
+void OpenCLModule::initialize() {
+    OpenCL::instance()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl");
+    KernelManager::init();
+
     InviwoModule::initialize();
 }
 

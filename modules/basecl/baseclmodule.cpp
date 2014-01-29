@@ -22,9 +22,14 @@ namespace inviwo {
 BaseCLModule::BaseCLModule() : InviwoModule() {
     setIdentifier("BaseCL");
     setXMLFileName("basecl/baseglmodule.xml");
-
+    
     registerProcessor(EntryExitPointsCL);
     registerProcessor(VolumeFirstHitCL);
+}
+
+void BaseCLModule::initialize() {
+    OpenCL::instance()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl");
+    InviwoModule::initialize();
 }
 
 BaseCLModule::~BaseCLModule()

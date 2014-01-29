@@ -25,6 +25,7 @@ class IVW_MODULE_BASECL_API BaseCLModule: public InviwoModule {
 public:
     BaseCLModule();
 	virtual ~BaseCLModule();
+    void initialize();
 
 };
 
