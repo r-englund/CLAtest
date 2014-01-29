@@ -92,8 +92,9 @@ void SphericalFloatVec3PropertyWidgetQt::updateFromProperty() {
         sliderPhi_->initValue(initVal.z);
 
         sliderR_->setRange(0, glm::length(valueVec3Max_));
-        sliderTheta_->setRange(-M_PI, M_PI);
-        sliderPhi_->setRange(-M_PI / 2.0f, M_PI / 2.0f);
+        float pi = static_cast<float>(M_PI);
+        sliderTheta_->setRange(-pi, pi);
+        sliderPhi_->setRange(-pi / 2.f, pi / 2.f);
 
         sliderR_->setValue(initVal.x);
         sliderTheta_->setValue(initVal.y);
