@@ -57,7 +57,8 @@ public:
      */
     ImageEditorProperty(std::string identifier, std::string displayName, std::string value = "",
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
-                 PropertySemantics semantics = PropertySemantics::ImageEditor);
+                 PropertySemantics semantics = PropertySemantics::Default);
+
     virtual std::string getClassName()  const { return "ImageEditorProperty"; }
     void addLabel(vec2 start, vec2 end, std::string name="");
     void setDimension(ivec2 imgSize);

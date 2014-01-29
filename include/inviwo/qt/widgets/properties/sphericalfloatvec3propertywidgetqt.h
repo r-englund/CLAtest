@@ -42,8 +42,6 @@ private:
     vec3 cartesianToSpherical(vec3);
     vec3 sphericalToCartesian(vec3);
 
-    const float PI = std::atanf(1.0) * 4;
-
 public slots:
     void setPropertyValue();
     void setPropertyDisplayName();

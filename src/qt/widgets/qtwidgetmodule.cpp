@@ -73,7 +73,9 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(FloatVec2PropertyWidgetQt, FloatVec2Property, "Default");
     registerPropertyWidget(FloatVec3PropertyWidgetQt, FloatVec3Property, "Default");
     registerPropertyWidget(FloatVec4PropertyWidgetQt, FloatVec4Property, "Default");
-    registerPropertyWidget(ImageEditorWidgetQt, FileProperty, "ImageEditor");    // TODO: fix "imageEditor..."
+    registerPropertyWidget(ImageEditorWidgetQt, FileProperty, "ImageEditor"); 
+    registerPropertyWidget(ImageEditorWidgetQt, ImageEditorProperty, "Default");
+    registerPropertyWidget(ImageEditorWidgetQt, ImageEditorProperty, "ImageEditor");
     registerPropertyWidget(IntMinMaxPropertyWidgetQt, IntMinMaxProperty, "Default");
     registerPropertyWidget(IntPropertyWidgetQt, IntProperty, "Default");
     registerPropertyWidget(IntVec2PropertyWidgetQt, IntVec2Property, "Default");

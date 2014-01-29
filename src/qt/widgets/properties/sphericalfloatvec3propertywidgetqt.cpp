@@ -92,8 +92,8 @@ void SphericalFloatVec3PropertyWidgetQt::updateFromProperty() {
         sliderPhi_->initValue(initVal.z);
 
         sliderR_->setRange(0, glm::length(valueVec3Max_));
-        sliderTheta_->setRange(-PI , PI);
-        sliderPhi_->setRange(-PI / 2.0f, PI / 2.0f);
+        sliderTheta_->setRange(-M_PI, M_PI);
+        sliderPhi_->setRange(-M_PI / 2.0f, M_PI / 2.0f);
 
         sliderR_->setValue(initVal.x);
         sliderTheta_->setValue(initVal.y);
@@ -219,18 +219,18 @@ void SphericalFloatVec3PropertyWidgetQt::setPropertyDisplayName() {
 vec3 SphericalFloatVec3PropertyWidgetQt::cartesianToSpherical(vec3 v) {
     float r = glm::length(v);
     float theta = std::acosf(v.z / r);
-    while(theta < -PI) {
-        theta += 2 * PI;
+    while(theta < -M_PI) {
+        theta += 2 * M_PI;
     }
-    while(theta > PI) {
-        theta -= 2 * PI;
+    while(theta > M_PI) {
+        theta -= 2 * M_PI;
     }
     float phi = std::atanf(v.y / v.x);
-    while(phi < -PI / 2) {
-        phi += PI;
+    while(phi < -M_PI / 2) {
+        phi += M_PI;
     }
-    while(phi > PI / 2) {
-        phi -= PI;
+    while(phi > M_PI / 2) {
+        phi -= M_PI;
     }
     return vec3(r, std::acosf(v.z / r), std::atanf(v.y / v.x));
 }

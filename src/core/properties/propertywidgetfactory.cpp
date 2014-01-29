@@ -57,7 +57,7 @@ PropertyWidget* PropertyWidgetFactory::create(Property* property) {
             return it->second->create(property);
         }
     }
-    LogWarn("Can not find a property widget for property: " << property->getClassName());
+    LogWarn("Can not find a property widget for property: " << property->getClassName() << "("<< sematics <<")");
     return 0;
 }
 

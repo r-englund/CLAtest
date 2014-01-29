@@ -40,7 +40,6 @@ public:
     std::vector<PropertySemantics> getSupportedSemanicsForProperty(Property* property);
 
     typedef std::multimap<std::string, PropertyWidgetFactoryObject*> WidgetMap;
-
 private:
     mutable WidgetMap widgetMap_;
 };

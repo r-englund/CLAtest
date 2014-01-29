@@ -22,8 +22,8 @@ namespace inviwo {
 CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier, std::string displayName)
     : identifier_(identifier)
     , displayName_(displayName)
-    , visibilityMode_(APPLICATION)
-{
+    , visibilityMode_(APPLICATION) {
+
     collapsed_ = false;
     generateWidget();
     updateFromProperty();
@@ -98,11 +98,15 @@ void CollapsibleGroupBoxWidgetQt::generatePropertyWidgets() {
         Property* curProperty = properties_[i];
         PropertyWidgetQt* propertyWidget =
             static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(curProperty));
-        vLayout_->addWidget(propertyWidget);
-        curProperty->registerWidget(propertyWidget);
-        propertyWidgets_.push_back(propertyWidget);
-        connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
-        connect(propertyWidget, SIGNAL(visibilityChange()),this, SLOT(updateVisibility()));
+        if(propertyWidget) {
+            vLayout_->addWidget(propertyWidget);
+            curProperty->registerWidget(propertyWidget);
+            propertyWidgets_.push_back(propertyWidget);
+            connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
+            connect(propertyWidget, SIGNAL(visibilityChange()), this, SLOT(updateVisibility()));
+        } else {
+            LogWarn("Could not find a widget for property: " << curProperty->getClassName());
+        }
     }
     generateContextMenu();
 }

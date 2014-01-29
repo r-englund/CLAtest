@@ -432,8 +432,8 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
         for (size_t i=0; i<processors.size(); i++) {
             processorNetwork_->addProcessor(processors[i]);
         }
-        addProcessorRepresentations(canvasProcessor, pos, false, false, false);
-        
+        //addProcessorRepresentations(canvasProcessor, pos, false, false, false);
+        addProcessorRepresentations(canvasProcessor, pos + QPointF(50,50), true, true, true);
 
         // Add connections to the network
         std::vector<PortConnection*> connections = portInspector->getConnections();
@@ -471,10 +471,10 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
         processorWidgetQt->setMinimumSize(portInspectorSize, portInspectorSize);
         processorWidgetQt->setMaximumSize(portInspectorSize, portInspectorSize);
 
-        processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint |
-                                          Qt::Tool |
-                                          Qt::WindowStaysOnTopHint |
-                                          Qt::FramelessWindowHint 
+        processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint
+                                          | Qt::Tool
+                                          | Qt::WindowStaysOnTopHint
+                                          //| Qt::FramelessWindowHint 
                                           );
         
         processorWidgetQt->move(ivec2(pos.x(),pos.y()));
