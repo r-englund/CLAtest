@@ -97,13 +97,17 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/img_identity.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_identity.vert
     ${IVW_MODULE_DIR}/opengl/glsl/img_mix.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/img_noise.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
     ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/volumeslice.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_classification.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_gradients.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_compositing.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_depth.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_gradients.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_normdepth.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler2d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler3d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_shading.frag
