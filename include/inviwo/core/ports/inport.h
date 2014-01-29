@@ -18,6 +18,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/ports/port.h>
+#include <inviwo/core/util/callback.h>
 
 namespace inviwo {
 
@@ -50,10 +51,18 @@ public:
     std::vector<Processor*> getPredecessors();
     
     virtual std::string getClassName() const {return "Inport";}
+
+    template <typename T>
+    void onChange(T* o, void (T::*m)()) {
+        onChangeCallback_.addMemberFunction(o,m);
+    }
+    void callOnChangeIfInvalid();
     
 protected:
     template <typename T>
     void getPredecessorsUsingPortType(std::vector<Processor*>&);
+
+    SingleCallBack onChangeCallback_;
 
 };
 

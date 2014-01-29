@@ -13,7 +13,6 @@
  **********************************************************************/
 
 #include <inviwo/core/ports/port.h>
-
 #include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
@@ -66,7 +65,6 @@ void Port::deserialize(IvwDeserializer& d) {
 }
 
 void Port::invalidate( PropertyOwner::InvalidationLevel invalidationLevel ) {
-    onChangeCallback_.invoke();
     processor_->invalidate(invalidationLevel);
 }
 

@@ -26,7 +26,8 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
     setRenderHint(QPainter::Antialiasing, true);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-    volumeInport_->onChange(this, &TransferFunctionEditorView::notify);
+    if(volumeInport_)
+        volumeInport_->onChange(this, &TransferFunctionEditorView::notify);
 }
 
 void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
@@ -51,6 +52,8 @@ void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF 
 
 void TransferFunctionEditorView::notify() {
     volumeInport_ = tfProperty_->getVolumeInport();
+    if(volumeInport_)
+        volumeInport_->onChange(this, &TransferFunctionEditorView::notify);
     update();
 }
 

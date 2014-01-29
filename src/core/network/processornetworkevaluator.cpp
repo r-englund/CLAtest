@@ -462,6 +462,7 @@ void ProcessorNetworkEvaluator::evaluate() {
     }
  
     std::vector<Processor*>::iterator it;
+    std::vector<Inport*>::const_iterator inport_it;
     activateDefaultRenderContext();
     for (it = processorsSorted_.begin(); it != processorsSorted_.end(); ++it) {
         if (!(*it)->isValid()) {
@@ -469,6 +470,11 @@ void ProcessorNetworkEvaluator::evaluate() {
                 // re-initialize resources (e.g., shaders) if necessary
                 if ((*it)->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
                     (*it)->initializeResources();
+
+                // call onChange for all invalid inports
+                const std::vector<Inport*>& inports = (*it)->getInports();
+                for (inport_it = inports.begin(); inport_it != inports.end(); ++inport_it)
+                   (*inport_it)->callOnChangeIfInvalid();
 
                 // do the actual processing
                 (*it)->process();

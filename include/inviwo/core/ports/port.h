@@ -18,7 +18,6 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/propertyowner.h>
-#include <inviwo/core/util/callback.h>
 
 namespace inviwo {
 
@@ -86,11 +85,6 @@ public:
     virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return PropertyOwner::INVALID_OUTPUT; }
     virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) = 0;
 
-    template <typename T>
-    void onChange(T* o, void (T::*m)()) {
-        onChangeCallback_.addMemberFunction(o,m);
-    }
-
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
@@ -99,8 +93,6 @@ protected:
 
     void setIdentifier(const std::string& name);
     void setProcessor(Processor* processor);
-
-    SingleCallBack onChangeCallback_;
 
 private:
     Processor* processor_;
