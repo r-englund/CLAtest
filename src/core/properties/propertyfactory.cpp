@@ -19,28 +19,12 @@
 
 namespace inviwo {
 
-PropertyFactory::PropertyFactory() {
-    initialize();
-}
+PropertyFactory::PropertyFactory() {}
 
-PropertyFactory::~PropertyFactory() {
-    deinitialize();
-}
+PropertyFactory::~PropertyFactory() {}
 
-void PropertyFactory::initialize() {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<PropertyFactoryObject*> propeties = inviwoApp->getModules()[curModuleId]->getProperties();
-        for(size_t i = 0; i<propeties.size(); i++)
-            registeryPropertyObject(propeties[i]);
-    }
-}
 
-void PropertyFactory::deinitialize() {
-    propertyClassMap_.clear();
-}
-
-void PropertyFactory::registeryPropertyObject(PropertyFactoryObject* property){
+void PropertyFactory::registeryObject(PropertyFactoryObject* property){
     std::string className = property->getClassName();
 
     PropertyClassMap::const_iterator it = propertyClassMap_.find(className);

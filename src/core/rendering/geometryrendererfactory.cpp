@@ -27,15 +27,9 @@ private:
 }; 
 
 GeometryRendererFactory::GeometryRendererFactory(){
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    for (size_t module=0; module<inviwoApp->getModules().size(); module++) {
-        std::vector<GeometryRenderer*> objects = inviwoApp->getModules()[module]->getRenderers();
-        for (size_t i=0; i<objects.size(); i++)
-            registerFactoryObject(objects[i]);
-    }
 }
 
-void GeometryRendererFactory::registerFactoryObject(GeometryRenderer* renderer) { 
+void GeometryRendererFactory::registerObject(GeometryRenderer* renderer) {
     renderers_.insert(renderer);
 }
 

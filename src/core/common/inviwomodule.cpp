@@ -16,6 +16,17 @@
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/common/inviwoapplication.h>
 
+#include <inviwo/core/ports/portinspectorfactory.h>
+#include <inviwo/core/io/datareaderfactory.h>
+#include <inviwo/core/io/datawriterfactory.h>
+#include <inviwo/core/metadata/metadatafactory.h>
+#include <inviwo/core/processors/processorfactory.h>
+#include <inviwo/core/processors/processorwidgetfactory.h>
+#include <inviwo/core/properties/propertyfactory.h>
+#include <inviwo/core/properties/propertywidgetfactory.h>
+#include <inviwo/core/datastructures/representationconverterfactory.h>
+#include <inviwo/core/rendering/geometryrendererfactory.h>
+
 namespace inviwo {
 
 InviwoModule::InviwoModule()
@@ -151,18 +162,48 @@ const std::vector<Settings*>& InviwoModule::getSettings() const {return moduleSe
 
 void InviwoModule::registerCapabilities(Capabilities* info) {capabilities_.push_back(info);}
 void InviwoModule::registerData(Data* data) {data_.push_back(data);}
-void InviwoModule::registerDataReader(DataReader* dataReader) {dataReaders_.push_back(dataReader);}
+void InviwoModule::registerDataReader(DataReader* dataReader) {
+    dataReaders_.push_back(dataReader);
+    DataReaderFactory::getPtr()->registerObject(dataReader);
+}
 void InviwoModule::registerDataRepresentation(DataRepresentation* dataRepresentation) {dataRepresentations_.push_back(dataRepresentation);}
-void InviwoModule::registerDataWriter(DataWriter* dataWriter) {dataWriters_.push_back(dataWriter);}
-void InviwoModule::registerMetaData(MetaData* meta) {metadata_.push_back(meta);}
+void InviwoModule::registerDataWriter(DataWriter* dataWriter) {
+    dataWriters_.push_back(dataWriter);
+    DataWriterFactory::getPtr()->registerObject(dataWriter);
+}
+void InviwoModule::registerMetaData(MetaData* meta) {
+    metadata_.push_back(meta);
+    MetaDataFactory::getPtr()->registerObject(meta);
+}
 void InviwoModule::registerPort(Port* port) {ports_.push_back(port);}
-void InviwoModule::registerPortInspector(PortInspector* portInspector) { portInspectors_.push_back(portInspector); }
-void InviwoModule::registerProcessorObject(ProcessorFactoryObject* processor) { processors_.push_back(processor); }
-void InviwoModule::registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) { processorWidgets_.push_back(std::make_pair(processorClassName, processorWidget));}
-void InviwoModule::registerPropertyObject(PropertyFactoryObject* property) {properties_.push_back(property);}
-void InviwoModule::registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget) { propertyWidgets_.push_back(propertyWidget); }
-void InviwoModule::registerRenderer(GeometryRenderer* renderer) { renderers_.push_back(renderer); }
-void InviwoModule::registerRepresentationConverter(RepresentationConverter* representationConverter) {representationConverters_.push_back(representationConverter);}
+void InviwoModule::registerPortInspector(PortInspector* portInspector) {
+    portInspectors_.push_back(portInspector); 
+    PortInspectorFactory::getPtr()->registerObject(portInspector);
+}
+void InviwoModule::registerProcessorObject(ProcessorFactoryObject* processor) {
+    processors_.push_back(processor); 
+    ProcessorFactory::getPtr()->registerObject(processor);
+}
+void InviwoModule::registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) {
+    processorWidgets_.push_back(std::make_pair(processorClassName, processorWidget));
+    ProcessorWidgetFactory::getPtr()->registerObject(std::make_pair(processorClassName, processorWidget));
+}
+void InviwoModule::registerPropertyObject(PropertyFactoryObject* property) {
+    properties_.push_back(property);
+    PropertyFactory::getPtr()->registeryObject(property);
+}
+void InviwoModule::registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget) {
+    propertyWidgets_.push_back(propertyWidget); 
+    PropertyWidgetFactory::getPtr()->registerObject(propertyWidget);
+}
+void InviwoModule::registerRenderer(GeometryRenderer* renderer) {
+    renderers_.push_back(renderer); 
+    GeometryRendererFactory::getPtr()->registerObject(renderer);
+}
+void InviwoModule::registerRepresentationConverter(RepresentationConverter* representationConverter) {
+    representationConverters_.push_back(representationConverter);
+    RepresentationConverterFactory::getPtr()->registerObject(representationConverter);
+}
 void InviwoModule::registerResource(Resource* resource) {resources_.push_back(resource);}
 void InviwoModule::registerSettings(Settings* settings) {moduleSettings_.push_back(settings);}
 

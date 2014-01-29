@@ -23,14 +23,15 @@ namespace inviwo {
 SystemSettings::SystemSettings(std::string id) : 
     Settings(id)
     , allocTest_(0)
-    ,viewModeProperty_ ("viewMode","",0)
-    ,txtEditorProperty_("txtEditor", "Use system text editor", true)
-    ,shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
-    ,enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", true)
-    ,enableSoundProperty_("enableSound", "Enable sound", true)
-    ,useRAMPercentProperty_("useRAMPercent", "Max Use Mem %", 50, 1, 100)
-    ,btnAllocTestProperty_("allocTest", "Perform Allocation Test")
-    ,btnSysInfoProperty_("printSysInfo", "Print System Info")
+    , viewModeProperty_ ("viewMode","",0)
+    , txtEditorProperty_("txtEditor", "Use system text editor", true)
+    , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
+    , enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", true)
+    , portInspectorSize_("portInspectorSize", "Port Inspector size", 128, 1, 1024)
+    , enableSoundProperty_("enableSound", "Enable sound", true)
+    , useRAMPercentProperty_("useRAMPercent", "Max Use Mem %", 50, 1, 100)
+    , btnAllocTestProperty_("allocTest", "Perform Allocation Test")
+    , btnSysInfoProperty_("printSysInfo", "Print System Info")
 {}
 
 SystemSettings::~SystemSettings() {
@@ -42,10 +43,10 @@ void SystemSettings::initialize() {
     addProperty(&viewModeProperty_);
     viewModeProperty_.setVisibility(INVISIBLE);
 
-
     addProperty(&txtEditorProperty_);
     addProperty(&shaderReloadingProperty_);
     addProperty(&enablePortInspectorsProperty_);
+    addProperty(&portInspectorSize_);
     addProperty(&enableSoundProperty_);
     addProperty(&useRAMPercentProperty_);
 

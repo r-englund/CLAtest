@@ -19,30 +19,14 @@
 
 namespace inviwo {
 
-PropertyWidgetFactory::PropertyWidgetFactory() {
-    initialize();
-}
+PropertyWidgetFactory::PropertyWidgetFactory() {}
 
-PropertyWidgetFactory::~PropertyWidgetFactory() {
-    deinitialize();
-}
+PropertyWidgetFactory::~PropertyWidgetFactory() {}
 
-void PropertyWidgetFactory::initialize() {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<PropertyWidgetFactoryObject*> widgets = 
-            inviwoApp->getModules()[curModuleId]->getPropertyWidgets();
-        for (size_t i=0; i<widgets.size(); i++)
-            registerPropertyWidgetObject(widgets[i]);
-    }
-}
 
-void PropertyWidgetFactory::registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget) {
+void PropertyWidgetFactory::registerObject(PropertyWidgetFactoryObject* propertyWidget) {
     std::string className = propertyWidget->getClassName();
     PropertySemantics sematics = propertyWidget->getSematics();
-
-    LogInfo("Adding a PropertyWidget for a Property (" << className
-            << ") and senamics (" << sematics << ")");
 
     std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
     sameKeys = widgetMap_.equal_range(className);
@@ -90,8 +74,15 @@ bool PropertyWidgetFactory::isValidType(std::string className) const {
         return false;
 }
 
-void PropertyWidgetFactory::deinitialize() {
-    widgetMap_.clear();
+std::vector<PropertySemantics> PropertyWidgetFactory::getSupportedSemanicsForProperty(Property* property) {
+    std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
+    sameKeys = widgetMap_.equal_range(property->getClassName());
+
+    std::vector<PropertySemantics> semantics;
+    for(WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
+        semantics.push_back(it->second->getSematics());
+    }
+    return semantics;
 }
 
 } // namespace

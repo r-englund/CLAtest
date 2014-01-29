@@ -40,6 +40,7 @@ private:
     BoolProperty txtEditorProperty_;
     BoolProperty shaderReloadingProperty_;
     BoolProperty enablePortInspectorsProperty_;
+    IntProperty portInspectorSize_;
     BoolProperty enableSoundProperty_;
     IntProperty  useRAMPercentProperty_;
 

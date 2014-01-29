@@ -18,19 +18,10 @@
 namespace inviwo {
 
 DataReaderFactory::DataReaderFactory(){
-    initialize();
 }
 
-void DataReaderFactory::initialize() {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    for (size_t module=0; module<inviwoApp->getModules().size(); module++) {
-        std::vector<DataReader*> readers = inviwoApp->getModules()[module]->getDataReaders();
-        for (size_t i=0; i<readers.size(); i++)
-            registerDataReader(readers[i]);
-    }
-}
 
-void DataReaderFactory::registerDataReader( DataReader* reader ){
+void DataReaderFactory::registerObject(DataReader* reader) {
     for( std::vector<FileExtension>::const_iterator it = reader->getExtensions().begin();
         it != reader->getExtensions().end(); ++it){
          if(readerForExtension_.find(it->extension_) == readerForExtension_.end()){
@@ -38,14 +29,6 @@ void DataReaderFactory::registerDataReader( DataReader* reader ){
          }
     }
 }
-
-
-void DataReaderFactory::deinitialize(){
-   
-}
-
-
-
 
 
 

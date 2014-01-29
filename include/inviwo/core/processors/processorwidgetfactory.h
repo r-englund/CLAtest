@@ -17,7 +17,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/processors/processorwidget.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
@@ -28,16 +28,13 @@ public:
     ProcessorWidgetFactory();
     ~ProcessorWidgetFactory();
 
-    void initialize();
-    void deinitialize();
-
-    void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
+    void registerObject(std::pair<std::string , ProcessorWidget* >);
     ProcessorWidget* create(std::string processorClassName) const;
     ProcessorWidget* create(Processor* processor) const;
     bool isValidType(std::string className) const;
 
-private:
     typedef std::map<std::string, ProcessorWidget*> ProcessorWidgetMap;
+private:    
     mutable ProcessorWidgetMap processorWidgetMap_;
 };
 

@@ -17,7 +17,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 
 #include <inviwo/core/io/datareader.h>
@@ -29,10 +29,9 @@ public:
     DataReaderFactory();
     virtual ~DataReaderFactory(){}
 
-    virtual void initialize();
-    virtual void deinitialize();
 
-    void registerDataReader( DataReader* reader );
+
+    void registerObject( DataReader* reader );
 
     template <typename T>
     std::vector<FileExtension> getExtensionsForType(){
@@ -66,6 +65,7 @@ public:
     }
 
     typedef std::map<std::string, DataReader*> ExtensionMap;
+
 private:
     ExtensionMap readerForExtension_;
 

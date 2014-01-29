@@ -9,17 +9,15 @@
 
 namespace inviwo {
 
-    class DataWriter;
-    template<typename T> class DataWriterType;
+class DataWriter;
+
+template<typename T> class DataWriterType;
 class IVW_CORE_API DataWriterFactory : public Factory, public Singleton<DataWriterFactory> { 
 public:
     DataWriterFactory();
     virtual ~DataWriterFactory(){}
 
-    virtual void initialize();
-    virtual void deinitialize();
-
-    void registerDataWriter( DataWriter* reader );
+    void registerObject( DataWriter* reader );
 
     template <typename T>
     std::vector<FileExtension> getExtensionsForType(){

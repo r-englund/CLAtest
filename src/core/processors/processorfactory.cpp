@@ -17,28 +17,19 @@
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
 
-
 namespace inviwo {
 
-ProcessorFactory::ProcessorFactory() {
-    initialize();
-}
+ProcessorFactory::ProcessorFactory() {}
 
 ProcessorFactory::~ProcessorFactory() {}
 
-void ProcessorFactory::initialize() {
-    //TODO: check that inviwoapp is initialized
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-        for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
-            registerFactoryObject(curProcessorList[curProcessorId]);
-    }
-}
-
-void ProcessorFactory::registerFactoryObject(ProcessorFactoryObject* processor) {
-    if (processorClassMap_.find(processor->getClassName()) == processorClassMap_.end())
+void ProcessorFactory::registerObject(ProcessorFactoryObject* processor) {
+    if(processorClassMap_.find(processor->getClassName()) == processorClassMap_.end()) {
         processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));
+    } else {
+        LogWarn("Processor with class name: " << processor->getClassName() << " is already registerd")
+    }
+
 }
 
 IvwSerializable* ProcessorFactory::create(std::string className) const {
@@ -55,9 +46,6 @@ bool ProcessorFactory::isValidType(std::string className) const {
         return true;
     else
         return false;
-}
-
-void ProcessorFactory::deinitialize() {
 }
 
 } // namespace

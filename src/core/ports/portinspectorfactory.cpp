@@ -3,23 +3,11 @@
 
 namespace inviwo {
 
-PortInspectorFactory::PortInspectorFactory() {
-    initialize();
-}
+PortInspectorFactory::PortInspectorFactory() {}
 
+PortInspectorFactory::~PortInspectorFactory() {}
 
-void PortInspectorFactory::initialize() {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<PortInspector*> curList = inviwoApp->getModules()[curModuleId]->getPortInspectors();
-        for (size_t i=0; i<curList.size(); i++){
-            registerPortInspector(curList[i]);
-        }
-    }
-}
-
-void PortInspectorFactory::registerPortInspector(PortInspector* portInspector){
-
+void PortInspectorFactory::registerObject(PortInspector* portInspector) {
     std::string className = portInspector->getPortClassName();
 
     if(portInspectors_.find(className) == portInspectors_.end()){
@@ -37,6 +25,17 @@ PortInspector* PortInspectorFactory::getPortInspectorForPortClass(std::string cl
         return NULL;
     }
 }
+
+bool PortInspectorFactory::isValidType(std::string className) const {
+    PortInspectorMap::const_iterator it = portInspectors_.find(className);
+    if(it != portInspectors_.end()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 
 } // namespace
 

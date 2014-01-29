@@ -20,22 +20,11 @@
 
 namespace inviwo {
 
-MetaDataFactory::MetaDataFactory() {
-    initialize();
-}
+MetaDataFactory::MetaDataFactory() {}
 
 MetaDataFactory::~MetaDataFactory() {}
 
-void MetaDataFactory::initialize() {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<MetaData*> curMetadataList = inviwoApp->getModules()[curModuleId]->getMetaData();
-        for (size_t curMetadataId=0; curMetadataId<curMetadataList.size(); curMetadataId++)
-            registerMetaData(curMetadataList[curMetadataId]);
-    }
-}
-
-void MetaDataFactory::registerMetaData(MetaData* meta) {
+void MetaDataFactory::registerObject(MetaData* meta) {
     if (metaDataClassMap_.find(meta->getClassName()) == metaDataClassMap_.end())
         metaDataClassMap_.insert(std::make_pair(meta->getClassName(), meta));
 }
@@ -54,9 +43,6 @@ bool MetaDataFactory::isValidType(std::string className) const {
         return true;
     else
         return false;
-}
-
-void MetaDataFactory::deinitialize() {
 }
 
 } // namespace

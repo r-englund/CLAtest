@@ -6,7 +6,7 @@
 #include <inviwo/qt/widgets/floatsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <QMenu>
-
+#include <math.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
 #include <inviwo/core/properties/vectorproperties.h>
@@ -25,9 +25,9 @@ public:
 
 private:
     FloatVec3Property* property_;
-    FloatSliderWidgetQt* sliderX_;
-    FloatSliderWidgetQt* sliderY_;
-    FloatSliderWidgetQt* sliderZ_;
+    FloatSliderWidgetQt* sliderR_;
+    FloatSliderWidgetQt* sliderTheta_;
+    FloatSliderWidgetQt* sliderPhi_;
     QLabel* readOnlyLabel_;
     PropertySettingsWidgetQt* settingsWidget_;
     vec3 valueVec3Max_;
@@ -39,6 +39,11 @@ private:
     void generateWidget();
     void generatesSettingsWidget();
 
+    vec3 cartesianToSpherical(vec3);
+    vec3 sphericalToCartesian(vec3);
+
+    const float PI = std::atanf(1.0) * 4;
+
 public slots:
     void setPropertyValue();
     void setPropertyDisplayName();
@@ -46,6 +51,8 @@ public slots:
     void showContextMenuX(const QPoint& pos);
     void showContextMenuY(const QPoint& pos);
     void showContextMenuZ(const QPoint& pos);
+
+
 };
 
 } // namespace

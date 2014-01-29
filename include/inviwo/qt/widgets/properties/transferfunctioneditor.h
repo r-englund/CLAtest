@@ -27,7 +27,7 @@
 #include <inviwo/core/io/serialization/ivwdeserializer.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>

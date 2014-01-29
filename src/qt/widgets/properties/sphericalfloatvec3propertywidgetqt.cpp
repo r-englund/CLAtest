@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
+
 namespace inviwo {
 
 SphericalFloatVec3PropertyWidgetQt::SphericalFloatVec3PropertyWidgetQt(FloatVec3Property* property)
@@ -15,7 +16,9 @@ SphericalFloatVec3PropertyWidgetQt::SphericalFloatVec3PropertyWidgetQt(FloatVec3
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-    generatesSettingsWidget();
+
+    if(!property->getReadOnly())
+        generatesSettingsWidget();
 }
 
 void SphericalFloatVec3PropertyWidgetQt::generateWidget() {
@@ -35,13 +38,13 @@ void SphericalFloatVec3PropertyWidgetQt::generateWidget() {
         vLayout->setContentsMargins(0, 0, 0, 0);
         vLayout->setSpacing(0);
 
-        sliderX_ = new FloatSliderWidgetQt();
-        sliderY_ = new FloatSliderWidgetQt();
-        sliderZ_ = new FloatSliderWidgetQt();
+        sliderR_ = new FloatSliderWidgetQt();
+        sliderTheta_ = new FloatSliderWidgetQt();
+        sliderPhi_ = new FloatSliderWidgetQt();
 
-        vLayout->addWidget(sliderX_);
-        vLayout->addWidget(sliderY_);
-        vLayout->addWidget(sliderZ_);
+        vLayout->addWidget(sliderR_);
+        vLayout->addWidget(sliderTheta_);
+        vLayout->addWidget(sliderPhi_);
         hLayout->addWidget(sliderWidget);
         setLayout(hLayout);
 
@@ -55,9 +58,9 @@ void SphericalFloatVec3PropertyWidgetQt::generateWidget() {
         sliderWidget->setSizePolicy(slidersPol);
 
         connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
-        connect(sliderX_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-        connect(sliderY_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
-        connect(sliderZ_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        connect(sliderR_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        connect(sliderTheta_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
+        connect(sliderPhi_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue()));
 
     }
 }
@@ -82,22 +85,25 @@ void SphericalFloatVec3PropertyWidgetQt::updateFromProperty() {
         valueVec3Min_ = property_->getMinValue();
         valueIncrement_ = property_->getIncrement();
 
+        vec3 initVal = cartesianToSpherical(property_->get());
 
-        sliderX_->initValue(property_->get().x);
-        sliderY_->initValue(property_->get().y);
-        sliderZ_->initValue(property_->get().z);
+        sliderR_->initValue(initVal.x);
+        sliderTheta_->initValue(initVal.y);
+        sliderPhi_->initValue(initVal.z);
 
-        sliderX_->setRange(valueVec3Min_.x, valueVec3Max_.x);
-        sliderY_->setRange(valueVec3Min_.y, valueVec3Max_.y);
-        sliderZ_->setRange(valueVec3Min_.z, valueVec3Max_.z);
+        sliderR_->setRange(0, glm::length(valueVec3Max_));
+        sliderTheta_->setRange(-PI , PI);
+        sliderPhi_->setRange(-PI / 2.0f, PI / 2.0f);
 
-        sliderX_->setValue(property_->get().x);
-        sliderY_->setValue(property_->get().y);
-        sliderZ_->setValue(property_->get().z);
+        sliderR_->setValue(initVal.x);
+        sliderTheta_->setValue(initVal.y);
+        sliderPhi_->setValue(initVal.z);
 
-        sliderX_->setIncrement(valueIncrement_.x);
-        sliderY_->setIncrement(valueIncrement_.y);
-        sliderZ_->setIncrement(valueIncrement_.z);
+        vec3 inc = cartesianToSpherical(valueIncrement_);
+
+        sliderR_->setIncrement(inc.x);
+        sliderTheta_->setIncrement(inc.y);
+        sliderPhi_->setIncrement(inc.z);
     }
 }
 
@@ -110,13 +116,13 @@ void SphericalFloatVec3PropertyWidgetQt::generatesSettingsWidget() {
     settingsMenu_->addAction("Set as Min");
     settingsMenu_->addAction("Set as Max");
 
-    sliderX_->setContextMenuPolicy(Qt::CustomContextMenu);
-    sliderY_->setContextMenuPolicy(Qt::CustomContextMenu);
-    sliderZ_->setContextMenuPolicy(Qt::CustomContextMenu);
+    sliderR_->setContextMenuPolicy(Qt::CustomContextMenu);
+    sliderTheta_->setContextMenuPolicy(Qt::CustomContextMenu);
+    sliderPhi_->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(sliderX_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuX(const QPoint&)));
-    connect(sliderY_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuY(const QPoint&)));
-    connect(sliderZ_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuZ(const QPoint&)));
+    connect(sliderR_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuX(const QPoint&)));
+    connect(sliderTheta_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuY(const QPoint&)));
+    connect(sliderPhi_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuZ(const QPoint&)));
     connect(developerViewModeAction_, SIGNAL(triggered(bool)), this, SLOT(setDeveloperViewMode(bool)));
     connect(applicationViewModeAction_, SIGNAL(triggered(bool)), this, SLOT(setApplicationViewMode(bool)));
 
@@ -127,7 +133,7 @@ void SphericalFloatVec3PropertyWidgetQt::showContextMenuX(const QPoint& pos) {
     PropertyVisibilityMode appVisibilityMode = getApplicationViewMode();
     if(appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
-        QPoint globalPos = sliderX_->mapToGlobal(pos);
+        QPoint globalPos = sliderR_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
         if(selecteditem && selecteditem->text() == "Property settings") {
             settingsWidget_->reload();
@@ -135,13 +141,13 @@ void SphericalFloatVec3PropertyWidgetQt::showContextMenuX(const QPoint& pos) {
         } else if(selecteditem && selecteditem->text() == "Set as Min") {
             //Set current value of the slider to min value of the property
             valueVec3Min_ = property_->getMinValue();
-            valueVec3Min_.x = sliderX_->getValue();
+            valueVec3Min_.x = sliderR_->getValue();
             property_->setMinValue(valueVec3Min_);
             updateFromProperty();
         } else if(selecteditem && selecteditem->text() == "Set as Max") {
             //Set current value of the slider to max value of the property
             valueVec3Max_ = property_->getMaxValue();
-            valueVec3Max_.x = sliderX_->getValue();
+            valueVec3Max_.x = sliderR_->getValue();
             property_->setMaxValue(valueVec3Max_);
             updateFromProperty();
         }
@@ -152,7 +158,7 @@ void SphericalFloatVec3PropertyWidgetQt::showContextMenuY(const QPoint& pos) {
     PropertyVisibilityMode appVisibilityMode = getApplicationViewMode();
     if(appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
-        QPoint globalPos = sliderY_->mapToGlobal(pos);
+        QPoint globalPos = sliderTheta_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
         if(selecteditem && selecteditem->text() == "Property settings") {
             settingsWidget_->reload();
@@ -160,13 +166,13 @@ void SphericalFloatVec3PropertyWidgetQt::showContextMenuY(const QPoint& pos) {
         } else if(selecteditem && selecteditem->text() == "Set as Min") {
             //Set current value of the slider to min value of the property
             valueVec3Min_ = property_->getMinValue();
-            valueVec3Min_.y = sliderY_->getValue();
+            valueVec3Min_.y = sliderTheta_->getValue();
             property_->setMinValue(valueVec3Min_);
             updateFromProperty();
         } else if(selecteditem && selecteditem->text() == "Set as Max") {
             //Set current value of the slider to max value of the property
             valueVec3Max_ = property_->getMaxValue();
-            valueVec3Max_.y = sliderY_->getValue();
+            valueVec3Max_.y = sliderTheta_->getValue();
             property_->setMaxValue(valueVec3Max_);
             updateFromProperty();
         }
@@ -177,7 +183,7 @@ void SphericalFloatVec3PropertyWidgetQt::showContextMenuZ(const QPoint& pos) {
     PropertyVisibilityMode appVisibilityMode = getApplicationViewMode();
     if(appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
-        QPoint globalPos = sliderZ_->mapToGlobal(pos);
+        QPoint globalPos = sliderPhi_->mapToGlobal(pos);
 
         QAction* selecteditem = settingsMenu_->exec(globalPos);
         if(selecteditem && selecteditem->text() == "Property settings") {
@@ -186,13 +192,13 @@ void SphericalFloatVec3PropertyWidgetQt::showContextMenuZ(const QPoint& pos) {
         } else if(selecteditem && selecteditem->text() == "Set as Min") {
             //Set current value of the slider to min value of the property
             valueVec3Min_ = property_->getMinValue();
-            valueVec3Min_.z = sliderZ_->getValue();
+            valueVec3Min_.z = sliderPhi_->getValue();
             property_->setMinValue(valueVec3Min_);
             updateFromProperty();
         } else if(selecteditem && selecteditem->text() == "Set as Max") {
             //Set current value of the slider to max value of the property
             valueVec3Max_ = property_->getMaxValue();
-            valueVec3Max_.z = sliderZ_->getValue();
+            valueVec3Max_.z = sliderPhi_->getValue();
             property_->setMaxValue(valueVec3Max_);
             updateFromProperty();
         }
@@ -200,12 +206,39 @@ void SphericalFloatVec3PropertyWidgetQt::showContextMenuZ(const QPoint& pos) {
 }
 
 void SphericalFloatVec3PropertyWidgetQt::setPropertyValue() {
-    property_->set(vec3(sliderX_->getValue(), sliderY_->getValue(), sliderZ_->getValue()));
+    property_->set(sphericalToCartesian(vec3(sliderR_->getValue(),
+                                             sliderTheta_->getValue(),
+                                             sliderPhi_->getValue())));
     emit modified();
 }
 
 void SphericalFloatVec3PropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
+}
+
+vec3 SphericalFloatVec3PropertyWidgetQt::cartesianToSpherical(vec3 v) {
+    float r = glm::length(v);
+    float theta = std::acosf(v.z / r);
+    while(theta < -PI) {
+        theta += 2 * PI;
+    }
+    while(theta > PI) {
+        theta -= 2 * PI;
+    }
+    float phi = std::atanf(v.y / v.x);
+    while(phi < -PI / 2) {
+        phi += PI;
+    }
+    while(phi > PI / 2) {
+        phi -= PI;
+    }
+    return vec3(r, std::acosf(v.z / r), std::atanf(v.y / v.x));
+}
+
+vec3 SphericalFloatVec3PropertyWidgetQt::sphericalToCartesian(vec3 v) {
+    return vec3(v.x * std::sinf(v.y) * std::cosf(v.z),
+                v.x * std::sinf(v.y) * std::sinf(v.z),
+                v.x * std::cosf(v.y));
 }
 
 

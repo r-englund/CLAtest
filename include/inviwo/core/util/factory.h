@@ -25,10 +25,8 @@ class IvwSerializable;
 class IVW_CORE_API Factory {
 
 public:
+    Factory() {}
     virtual ~Factory() {}
-
-    virtual void initialize()=0;
-    virtual void deinitialize()=0;
 
     virtual IvwSerializable* create(std::string className) const { return 0; }
     virtual bool isValidType(std::string className) const {return false; }

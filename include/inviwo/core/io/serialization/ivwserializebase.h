@@ -22,7 +22,7 @@
 #include <ticpp/ticpp.h>
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/io/serialization/ivwserializeconstants.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <map>
 
 #ifdef WIN32

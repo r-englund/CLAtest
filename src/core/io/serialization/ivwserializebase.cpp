@@ -17,7 +17,7 @@
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 
 
 namespace inviwo {

@@ -17,7 +17,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/metadata/metadata.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
@@ -29,15 +29,14 @@ public:
     MetaDataFactory();
     virtual ~MetaDataFactory();
 
-    virtual void initialize();
-    virtual void deinitialize();
-
-    void registerMetaData(MetaData* meta);
+    void registerObject(MetaData* meta);
     virtual IvwSerializable* create(std::string className) const;
     virtual bool isValidType(std::string className) const;
 
+    typedef std::map<std::string, MetaData*> MetaDataClassMap;
+
 private:
-    mutable std::map<std::string, MetaData*> metaDataClassMap_;
+    mutable MetaDataClassMap metaDataClassMap_;
 };
 
 } // namespace

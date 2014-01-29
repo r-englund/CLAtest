@@ -71,20 +71,20 @@ InviwoApplication::~InviwoApplication() {
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     printApplicationInfo();
 
-    registerModule(new InviwoCore());
-    (*regModuleFunc)(this);
-
     // initialize singleton factories
-    GeometryRendererFactory::init();
-    ProcessorFactory::init();
-    MetaDataFactory::init();
-    ProcessorWidgetFactory::init();
-    RepresentationConverterFactory::init();
     DataReaderFactory::init();
     DataWriterFactory::init();
+    GeometryRendererFactory::init();
+    MetaDataFactory::init();
     PortInspectorFactory::init();
+    ProcessorFactory::init();
+    ProcessorWidgetFactory::init(); 
     PropertyFactory::init();
     PropertyWidgetFactory::init();
+    RepresentationConverterFactory::init();
+
+    registerModule(new InviwoCore());
+    (*regModuleFunc)(this);
 
     for(size_t i = 0; i < modules_.size(); i++) {
         modules_[i]->initialize();

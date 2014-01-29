@@ -18,7 +18,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/representationconverter.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
@@ -29,9 +29,7 @@ public:
     RepresentationConverterFactory();
     virtual ~RepresentationConverterFactory();
 
-    virtual void initialize();
-    virtual void deinitialize();
-    void registerRepresentationConverter(RepresentationConverter* representationConverter);
+    void registerObject(RepresentationConverter* representationConverter);
     
     template <typename T>
     RepresentationConverter* getRepresentationConverter(DataRepresentation* source) {

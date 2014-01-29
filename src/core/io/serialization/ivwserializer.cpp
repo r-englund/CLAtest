@@ -15,7 +15,7 @@
 #include <inviwo/core/io/serialization/ivwserializer.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/exception.h>
 
 namespace inviwo {

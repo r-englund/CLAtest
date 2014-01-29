@@ -18,25 +18,18 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 #include <set>
 
 namespace inviwo {
 
-
-
 class IVW_CORE_API GeometryRendererFactory : public Singleton<GeometryRendererFactory>  {
 public:
     GeometryRendererFactory();
-    virtual ~GeometryRendererFactory() {
-        //for (std::set<GeometryRenderer*>::iterator it = renderers_.begin(), itEnd = renderers_.end(); it != itEnd; ++it) {
-        //    delete *it;
-        //}
-        //renderers_.clear();
-    };
+    virtual ~GeometryRendererFactory() {}
 
-    void registerFactoryObject(GeometryRenderer* renderer);
+    void registerObject(GeometryRenderer* renderer);
     virtual GeometryRenderer* create(const Geometry* geom) const;
 
 

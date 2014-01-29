@@ -17,7 +17,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/processors/processorfactoryobject.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
@@ -29,15 +29,13 @@ public:
     ProcessorFactory();
     virtual ~ProcessorFactory();
 
-    virtual void initialize();
-    virtual void deinitialize();
-
-    void registerFactoryObject(ProcessorFactoryObject* processor);
+    void registerObject(ProcessorFactoryObject* processor);
     virtual IvwSerializable* create(std::string className) const;
     virtual bool isValidType(std::string className) const;
 
+    typedef std::map<std::string, ProcessorFactoryObject*> ProcessorClassMap;
 private:
-    mutable std::map<std::string, ProcessorFactoryObject*> processorClassMap_;
+    mutable ProcessorClassMap processorClassMap_;
 };
 
 } // namespace

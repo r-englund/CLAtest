@@ -40,10 +40,7 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
     QCoreApplication::setApplicationName(displayName.c_str());
 
     fileWatcher_ = new QFileSystemWatcher(this);
-    connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
-
-    // Since QtWidgets are not a module we have to register it our self
-    registerModule(new QtWidgetModule());
+    connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString))); 
 }
 
 InviwoApplicationQt::~InviwoApplicationQt(){}
@@ -104,6 +101,12 @@ void InviwoApplicationQt::playSound(unsigned int soundID) {
 void InviwoApplicationQt::initialize(registerModuleFuncPtr regModuleFunc){
 	LogInfoCustom("InviwoInfo","QT Version " << QT_VERSION_STR);
 	InviwoApplication::initialize(regModuleFunc);
+    
+    // Since QtWidgets are not a module we have to register it our self
+    InviwoModule* module = new QtWidgetModule();
+    registerModule(module);
+    module->initialize();
+
 }
 
 Timer* InviwoApplicationQt::createTimer()const { 

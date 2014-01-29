@@ -180,6 +180,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/datetime.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/factory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileextension.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/filesystem.h
@@ -188,7 +189,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatsdefinefunc.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/glmstreamoperators.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/inviwofactorybase.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h

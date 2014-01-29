@@ -19,30 +19,16 @@
 
 namespace inviwo {
 
-ProcessorWidgetFactory::ProcessorWidgetFactory() {
-    initialize();
-}
+ProcessorWidgetFactory::ProcessorWidgetFactory() {}
 
-ProcessorWidgetFactory::~ProcessorWidgetFactory() {
-    deinitialize();
-}
+ProcessorWidgetFactory::~ProcessorWidgetFactory() {}
 
-void ProcessorWidgetFactory::initialize() {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector< std::pair<std::string, ProcessorWidget*> > curProcessorList =
-            inviwoApp->getModules()[curModuleId]->getProcessorWidgets();
-        for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++)
-            registerProcessorWidget(curProcessorList[curProcessorId].first,
-                                    curProcessorList[curProcessorId].second);
+void ProcessorWidgetFactory::registerObject(std::pair<std::string, ProcessorWidget* > widget) {
+    if(processorWidgetMap_.find(widget.first) == processorWidgetMap_.end()) {
+        processorWidgetMap_.insert(widget);
+    } else {
+        LogWarn("Processor Widget for class name: " << widget.first << " is already registerd");
     }
-}
-
-void ProcessorWidgetFactory::registerProcessorWidget(std::string processorClassName,
-                                                     ProcessorWidget* processorWidget) {
-
-    if (processorWidgetMap_.find(processorClassName) == processorWidgetMap_.end())
-        processorWidgetMap_.insert(std::make_pair(processorClassName, processorWidget));
 }
 
 ProcessorWidget* ProcessorWidgetFactory::create(std::string processorClassName) const {
@@ -65,7 +51,5 @@ bool ProcessorWidgetFactory::isValidType(std::string processorClassName) const {
         return false;
 }
 
-void ProcessorWidgetFactory::deinitialize() {
-}
 
 } // namespace

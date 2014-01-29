@@ -18,7 +18,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/properties/propertywidgetfactoryobject.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 
 
@@ -31,17 +31,17 @@ public:
     PropertyWidgetFactory();
     ~PropertyWidgetFactory();
 
-    virtual void initialize();
-    virtual void deinitialize();
-
     PropertyWidget* create(Property* property);
 
-    void registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget);
+    void registerObject(PropertyWidgetFactoryObject* propertyWidget);
     virtual IvwSerializable* create(std::string className) const;
     virtual bool isValidType(std::string className) const;
+    
+    std::vector<PropertySemantics> getSupportedSemanicsForProperty(Property* property);
+
+    typedef std::multimap<std::string, PropertyWidgetFactoryObject*> WidgetMap;
 
 private:
-    typedef std::multimap<std::string, PropertyWidgetFactoryObject*> WidgetMap;
     mutable WidgetMap widgetMap_;
 };
 

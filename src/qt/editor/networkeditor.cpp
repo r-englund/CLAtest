@@ -35,7 +35,7 @@
 #include <inviwo/core/ports/multidatainport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/settings/linksettings.h>
 #include <inviwo/core/util/settings/systemsettings.h>
@@ -462,8 +462,14 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
         ProcessorWidgetQt* processorWidgetQt =
             dynamic_cast<ProcessorWidgetQt*>(canvasProcessor->getProcessorWidget());
         ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
-        processorWidgetQt->setMinimumSize(128, 128);
-        processorWidgetQt->setMaximumSize(128, 128);
+        
+        int portInspectorSize = dynamic_cast<IntProperty*>(
+            InviwoApplication::getPtr()->
+            getSettingsByType<SystemSettings>()->
+            getPropertyByIdentifier("portInspectorSize"))->get();
+        
+        processorWidgetQt->setMinimumSize(portInspectorSize, portInspectorSize);
+        processorWidgetQt->setMaximumSize(portInspectorSize, portInspectorSize);
 
         processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint |
                                           Qt::Tool |

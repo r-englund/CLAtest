@@ -17,7 +17,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/property.h>
-#include <inviwo/core/util/inviwofactorybase.h>
+#include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 #include <inviwo/core/properties/propertyfactoryobject.h>
 
@@ -30,10 +30,8 @@ public:
     PropertyFactory();
     ~PropertyFactory();
 
-    virtual void initialize();
-    virtual void deinitialize();
+    void registeryObject(PropertyFactoryObject* property);
 
-    void registeryPropertyObject(PropertyFactoryObject* property);
     virtual IvwSerializable* create(std::string className) const;
     
     virtual Property* getProperty(std::string className,
@@ -44,8 +42,9 @@ public:
 
     std::vector<std::string> getRegistedPropertyClassNames();
 
-private:
     typedef std::map<std::string, PropertyFactoryObject*> PropertyClassMap;
+
+private:
     mutable PropertyClassMap propertyClassMap_;
 };
 

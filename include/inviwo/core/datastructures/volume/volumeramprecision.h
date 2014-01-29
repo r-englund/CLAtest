@@ -30,6 +30,7 @@ public:
         initialize(0);
         memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
     }
+
     VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& rhs) {
         if(this != &rhs) {
             VolumeRAM::operator=(rhs);
@@ -110,7 +111,7 @@ void inviwo::VolumeRAMPrecision<T>::deinitialize() {
 
 template<typename T>
 VolumeRAMPrecision<T>* VolumeRAMPrecision<T>::clone() const {
-    return new VolumeRAMPrecision<T>(dimensions_);
+    return new VolumeRAMPrecision<T>(*this);
 }
 
 template<typename T>
