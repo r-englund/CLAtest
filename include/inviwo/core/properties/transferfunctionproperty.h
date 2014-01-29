@@ -45,12 +45,15 @@ public:
     const vec2& getZoomV() const { return zoomV_; }
     void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
     
+    void setShowHistogram(bool);
+    bool getShowHistogram();
     VolumeInport* getVolumeInport();
 
 private:
     vec2 mask_;
     vec2 zoomH_;
     vec2 zoomV_;
+    bool showHistogram_;
 
     VolumeInport* volumeInport_;
 };

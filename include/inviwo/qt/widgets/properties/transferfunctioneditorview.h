@@ -35,6 +35,7 @@ public:
 
     void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); }
     virtual void notify();
+    void setShowHistogram(bool);
 
 signals:
     void resized();
@@ -59,6 +60,7 @@ private:
     vec2 zoomH_;
     vec2 zoomV_;
     VolumeInport* volumeInport_;
+    bool showHistogram_;
 
     bool histogramTheadWorking_;
     QThread* workerThread_;

@@ -27,6 +27,10 @@ TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionP
 
     generateWidget();
 
+    if(!tfProperty_->getVolumeInport()){
+        chkShowHistogram_->setVisible(false);
+    }
+
     gradient_ = new QLinearGradient(0,0,100,20);
     updateTFPreview();
 
@@ -103,6 +107,10 @@ void TransferFunctionPropertyDialog::generateWidget() {
     cmbInterpolation_->setCurrentIndex(tfProperty_->get().getInterpolationType());
     connect(cmbInterpolation_, SIGNAL(currentIndexChanged(int)), this, SLOT(switchInterpolationType(int)));
 
+    chkShowHistogram_ = new QCheckBox("Show Histogram");
+    chkShowHistogram_->setChecked(tfProperty_->getShowHistogram());
+    connect(chkShowHistogram_, SIGNAL(toggled(bool)), this, SLOT(showHistogram(bool)));
+
     QFrame* leftPanel = new QFrame(this);
     QGridLayout* leftLayout = new QGridLayout();
     leftLayout->addWidget(zoomVSlider_,  0, 0);
@@ -120,6 +128,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     rightLayout->addWidget(btnImportTF_);
     rightLayout->addWidget(btnExportTF_);
     rightLayout->addWidget(cmbInterpolation_);
+    rightLayout->addWidget(chkShowHistogram_);
     rightPanel->setLayout(rightLayout);
 
     QFrame* mainPanel = new QFrame(this);
@@ -261,6 +270,11 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
         tfProperty_->serialize(serializer);
         serializer.writeFile();
     }
+}
+
+void TransferFunctionPropertyDialog::showHistogram(bool show){
+    tfProperty_->setShowHistogram(show);
+    tfEditorView_->setShowHistogram(show);
 }
 
 } // namespace

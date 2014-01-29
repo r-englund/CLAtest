@@ -23,6 +23,7 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::
     , mask_(0.0f, 1.0f)
     , zoomH_(0.0f, 1.0f)
     , zoomV_(0.0f, 1.0f)
+    , showHistogram_(true)
 {}
 
 TransferFunctionProperty::~TransferFunctionProperty() {
@@ -50,6 +51,7 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
     s.serialize("zoomV_", zoomV_);
     TransferFunction::InterpolationType interpolationType = value_.getInterpolationType();
     s.serialize("interpolationType_", interpolationType);
+    s.serialize("showHistogram_", showHistogram_);
 }
 
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
@@ -81,7 +83,16 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
     int interpolationType;
     d.deserialize("interpolationType_", interpolationType);
     get().setInterpolationType(static_cast<TransferFunction::InterpolationType>(interpolationType));
+    d.deserialize("showHistogram_", showHistogram_);
     propertyModified();
+}
+
+void TransferFunctionProperty::setShowHistogram(bool show){
+    showHistogram_ = show;
+}
+
+bool TransferFunctionProperty::getShowHistogram(){
+    return showHistogram_;
 }
 
 VolumeInport* TransferFunctionProperty::getVolumeInport(){

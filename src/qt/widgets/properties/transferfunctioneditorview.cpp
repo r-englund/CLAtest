@@ -20,7 +20,7 @@
 namespace inviwo {
 
 TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty* tfProperty)
-    : VoidObserver(), tfProperty_(tfProperty), volumeInport_(tfProperty->getVolumeInport()), histogramTheadWorking_(false)
+    : VoidObserver(), tfProperty_(tfProperty), volumeInport_(tfProperty->getVolumeInport()), showHistogram_(tfProperty->getShowHistogram()), histogramTheadWorking_(false)
 {
     setMouseTracking(true);
     setRenderHint(QPainter::Antialiasing, true);
@@ -54,6 +54,11 @@ void TransferFunctionEditorView::notify() {
     volumeInport_ = tfProperty_->getVolumeInport();
     if(volumeInport_)
         volumeInport_->onChange(this, &TransferFunctionEditorView::notify);
+    update();
+}
+
+void TransferFunctionEditorView::setShowHistogram(bool show){
+    showHistogram_ = show;
     update();
 }
 
@@ -108,17 +113,19 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     painter->drawLines(lines.data(), lines.size());
 
     // histogram
-    const NormalizedHistogram* normHistogram = getNormalizedHistogram();
-    if(normHistogram){
-        const std::vector<float>* normHistogramData = normHistogram->getData();
-        QVarLengthArray<QLineF, 100> bars;
-        for (size_t i=0; i<normHistogramData->size(); i++){
-            bars.append(QLineF(((float)i/(float)normHistogramData->size())*sRect.width(), 0.0,
-                               ((float)i/(float)normHistogramData->size())*sRect.width(), normHistogramData->at(i)*sRect.height()));
+    if(showHistogram_){
+        const NormalizedHistogram* normHistogram = getNormalizedHistogram();
+        if(normHistogram){
+            const std::vector<float>* normHistogramData = normHistogram->getData();
+            QVarLengthArray<QLineF, 100> bars;
+            for (size_t i=0; i<normHistogramData->size(); i++){
+                bars.append(QLineF(((float)i/(float)normHistogramData->size())*sRect.width(), 0.0,
+                                   ((float)i/(float)normHistogramData->size())*sRect.width(), normHistogramData->at(i)*sRect.height()));
+            }
+            qreal lineWidth = sRect.width()/normHistogramData->size();
+            painter->setPen(QPen(QColor(68,102,170,150), lineWidth));
+            painter->drawLines(bars.data(), bars.size());
         }
-        qreal lineWidth = sRect.width()/normHistogramData->size();
-        painter->setPen(QPen(QColor(68,102,170,150), lineWidth));
-        painter->drawLines(bars.data(), bars.size());
     }
 }
 

@@ -218,27 +218,27 @@ void SphericalFloatVec3PropertyWidgetQt::setPropertyDisplayName() {
 
 vec3 SphericalFloatVec3PropertyWidgetQt::cartesianToSpherical(vec3 v) {
     float r = glm::length(v);
-    float theta = std::acosf(v.z / r);
+    float theta = std::acos(v.z / r);
     while(theta < -M_PI) {
         theta += 2 * M_PI;
     }
     while(theta > M_PI) {
         theta -= 2 * M_PI;
     }
-    float phi = std::atanf(v.y / v.x);
+    float phi = std::atan(v.y / v.x);
     while(phi < -M_PI / 2) {
         phi += M_PI;
     }
     while(phi > M_PI / 2) {
         phi -= M_PI;
     }
-    return vec3(r, std::acosf(v.z / r), std::atanf(v.y / v.x));
+    return vec3(r, std::acos(v.z / r), std::atan(v.y / v.x));
 }
 
 vec3 SphericalFloatVec3PropertyWidgetQt::sphericalToCartesian(vec3 v) {
-    return vec3(v.x * std::sinf(v.y) * std::cosf(v.z),
-                v.x * std::sinf(v.y) * std::sinf(v.z),
-                v.x * std::cosf(v.y));
+    return vec3(v.x * std::sin(v.y) * std::cos(v.z),
+                v.x * std::sin(v.y) * std::sin(v.z),
+                v.x * std::cos(v.y));
 }
 
 
