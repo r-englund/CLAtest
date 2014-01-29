@@ -158,7 +158,7 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
 }
 
 void TransferFunctionPropertyDialog::updateFromProperty() {
-    TransferFunction transFunc = tfProperty_->get();
+    TransferFunction& transFunc = tfProperty_->get();
     QVector<QGradientStop> gradientStops;
     for (size_t i=0; i<transFunc.getNumDataPoints(); i++) {
         TransferFunctionDataPoint* curPoint = transFunc.getPoint(static_cast<int>(i));

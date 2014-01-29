@@ -81,9 +81,15 @@ void EntryExitPointsCL::process() {
 #endif
     if (useGLSharing_.get()) {
         SyncCLGL glSync;
-        const cl::Image2D& entry = entryPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL()->get();
-        const cl::Image2D& exit = exitPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL()->get();
+        LayerCLGL* entryCL = entryPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL();
+        LayerCLGL* exitCL = exitPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL();
+        entryCL->aquireGLObject(glSync.getGLSyncEvent());
+        exitCL->aquireGLObject();
+        const cl::Image2D& entry = entryCL->get();
+        const cl::Image2D& exit = exitCL->get();
         computeEntryExitPoints(NDCToTextureMat, camPosInTextureSpace, entry, exit, outportDim, profilingEvent);
+        exitCL->releaseGLObject();
+        entryCL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     } else {
         const cl::Image2D& entry = entryPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
         const cl::Image2D& exit = exitPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
