@@ -36,13 +36,13 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
 
-    vec2 getMask() { return mask_; }
+    const vec2& getMask() const { return mask_; }
     void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); get().setMaskMin(mask_.x); get().setMaskMax(mask_.y); }
 
-    vec2 getZoomH() { return zoomH_; }
+    const vec2& getZoomH() const { return zoomH_; }
     void setZoomH(float zoomHMin, float zoomHMax) { if (zoomHMax<zoomHMin) zoomHMax=zoomHMin; zoomH_ = vec2(zoomHMin, zoomHMax); }
 
-    vec2 getZoomV() { return zoomV_; }
+    const vec2& getZoomV() const { return zoomV_; }
     void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
     
     VolumeInport* getVolumeInport();

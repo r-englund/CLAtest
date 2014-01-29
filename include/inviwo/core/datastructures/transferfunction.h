@@ -47,7 +47,7 @@ public:
 
 	TransferFunctionDataPoint* getPoint(int i) const;
 
-	void addPoint(vec2 pos, vec4 color);
+	void addPoint(const vec2& pos, const vec4& color);
 	void addPoint(TransferFunctionDataPoint* dataPoint);
 	void removePoint(TransferFunctionDataPoint* dataPoint);
     void clearPoints();

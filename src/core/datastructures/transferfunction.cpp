@@ -58,7 +58,7 @@ TransferFunctionDataPoint* TransferFunction::getPoint(int i) const {
 	return dataPoints_[i];
 }
 
-void TransferFunction::addPoint(vec2 pos, vec4 color) {
+void TransferFunction::addPoint(const vec2& pos, const vec4& color) {
 	addPoint(new TransferFunctionDataPoint(pos, color));
 }
 
@@ -89,14 +89,11 @@ void TransferFunction::addPoint(TransferFunctionDataPoint* dataPoint) {
 }
 
 void TransferFunction::removePoint(TransferFunctionDataPoint* dataPoint) {
-	std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin();
-	for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++){
-		if ((*iter) == dataPoint) {
-            delete *iter;
-			dataPoints_.erase(iter);
-			break;
-		}
-	}
+    std::vector<TransferFunctionDataPoint*>::iterator it = std::find(dataPoints_.begin(), dataPoints_.end(), dataPoint);
+    if (it != dataPoints_.end()) {
+        delete *it;
+        dataPoints_.erase(it);
+    }
 	calcTransferValues();
 }
 

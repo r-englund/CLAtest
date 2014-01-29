@@ -16,14 +16,14 @@
 
 namespace inviwo {
 
-TransferFunctionDataPoint::TransferFunctionDataPoint(vec2 pos, vec4 rgba)
+TransferFunctionDataPoint::TransferFunctionDataPoint(const vec2& pos, const vec4& rgba)
     : pos_(pos)
     , rgba_(rgba)
 {}
 
 TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
 
-void TransferFunctionDataPoint::setRGB(vec3 rgb) {
+void TransferFunctionDataPoint::setRGB(const vec3& rgb) {
     rgba_.r = rgb.r;
     rgba_.g = rgb.g;
     rgba_.b = rgb.b;
