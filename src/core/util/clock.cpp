@@ -6,20 +6,41 @@ static const double INV_CLOCKS_PER_MS = 1.0 / CLOCKS_PER_MS;
 
 namespace inviwo{
 
+Clock::Clock() {
+#ifdef WIN32
+    QueryPerformanceFrequency(&ticksPerSecond_);
+#endif
+}
+
 void Clock::start(){
+#ifdef WIN32
+    QueryPerformanceCounter(&startTime_);
+#else
     startTime_ = clock();
+#endif
 }
 
 void Clock::stop(){
+#ifdef WIN32
+    QueryPerformanceCounter(&stopTime_);
+#else
     stopTime_ = clock();
+#endif
+    
 }
 
-unsigned int Clock::getElapsedMiliseconds()const{
-    return static_cast<unsigned int>((stopTime_ - startTime_)*INV_CLOCKS_PER_MS);
+float Clock::getElapsedMiliseconds() const {
+    return 1000.f*getElapsedSeconds();
 }
 
-unsigned int Clock::getElapsedSeconds()const{
-    return static_cast<unsigned int>((stopTime_ - startTime_)/CLOCKS_PER_SEC);
+float Clock::getElapsedSeconds() const {
+#ifdef WIN32
+    return static_cast<float>(stopTime_.QuadPart-startTime_.QuadPart) / ticksPerSecond_.QuadPart;
+#else
+    return static_cast<float>(stopTime_ - startTime_)/static_cast<float>(CLOCKS_PER_SEC);
+#endif
+    
+    
 }
 
 

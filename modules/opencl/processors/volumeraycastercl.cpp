@@ -102,7 +102,7 @@ void VolumeRaycasterCL::process() {
         kernel_->setArg(arg++, *entryCLGL->getLayerCLGL());
         kernel_->setArg(arg++, *exitCLGL->getLayerCLGL());
         kernel_->setArg(arg++, *transferFunctionCL);
-        kernel_->setArg(arg++, samplingRate_.get());// / (float)std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z)) );
+        kernel_->setArg(arg++, samplingRate_.get());
         kernel_->setArg(arg++, volumeDim);
         kernel_->setArg(arg++, *outImageCL->getLayerCLGL());
         // 
