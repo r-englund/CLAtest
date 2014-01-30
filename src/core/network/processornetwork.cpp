@@ -202,7 +202,6 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
     lock();
     //perform linking    
     std::vector<ProcessorLink*> sortedModifiableLinks = getSortedProcessorLinksFromProperty(modifiedProperty);
-    LogWarn("Sorted Processor Size: " << sortedModifiableLinks.size());
 
     //This saves expensive branched search. But can be still optimized.
     std::vector<Property*> destinationProperties;    
