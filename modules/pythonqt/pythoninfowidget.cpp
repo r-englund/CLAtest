@@ -81,7 +81,7 @@ namespace inviwo {
             replaceInString(params," , ","<br />");
             layout->addWidget(new QLabel(params.c_str()),row,1);
 
-            auto desc = new QLabel(methods[i]->getDesc().c_str());
+            QLabel* desc = new QLabel(methods[i]->getDesc().c_str());
             desc->setWordWrap(true);
             layout->addWidget(desc,row,2);
 
