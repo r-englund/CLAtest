@@ -42,7 +42,7 @@
 
 namespace inviwo {
  
-class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget {
+class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver {
 
     Q_OBJECT
 
@@ -58,6 +58,8 @@ public:
     void updateFromProperty();
 
     QPixmap* getTFPreview() { return tfPixmap_; }
+
+    virtual void notify();
 
 public slots:
     void setPointColor();

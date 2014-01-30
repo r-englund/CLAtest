@@ -12,25 +12,47 @@
  *
  **********************************************************************/
 
+#include <inviwo/core/datastructures/transferfunction.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 
 namespace inviwo {
 
-TransferFunctionDataPoint::TransferFunctionDataPoint(const vec2& pos, const vec4& rgba)
-    : pos_(pos)
+TransferFunctionDataPoint::TransferFunctionDataPoint(TransferFunction* transFunc, const vec2& pos, const vec4& rgba)
+    : transFunc_(transFunc)
+    , pos_(pos)
     , rgba_(rgba)
 {}
 
 TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
 
+const vec2& TransferFunctionDataPoint::getPos() const {
+    return pos_;
+}
+
+void TransferFunctionDataPoint::setPos(const vec2& pos) {
+    pos_ = pos;
+    transFunc_->calcTransferValues();
+}
+
+const vec4& TransferFunctionDataPoint::getRGBA() const {
+    return rgba_;
+}
+
+void TransferFunctionDataPoint::setRGBA(const vec4& rgba) {
+    rgba_ = rgba;
+    transFunc_->calcTransferValues();
+}
+
 void TransferFunctionDataPoint::setRGB(const vec3& rgb) {
     rgba_.r = rgb.r;
     rgba_.g = rgb.g;
     rgba_.b = rgb.b;
+    transFunc_->calcTransferValues();
 }
 
 void TransferFunctionDataPoint::setA(float alpha) {
     rgba_.a = alpha;
+    transFunc_->calcTransferValues();
 }
 
 } // namespace

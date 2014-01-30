@@ -28,7 +28,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API TransferFunction {
+class IVW_CORE_API TransferFunction : public VoidObservable {
 public:
 
     enum InterpolationType {
@@ -50,8 +50,8 @@ public:
 	void addPoint(const vec2& pos, const vec4& color);
 	void addPoint(TransferFunctionDataPoint* dataPoint);
 	void removePoint(TransferFunctionDataPoint* dataPoint);
+
     void clearPoints();
-    void sortPoints();
 
 	void calcTransferValues();
 

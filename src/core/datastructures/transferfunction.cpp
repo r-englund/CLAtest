@@ -18,12 +18,17 @@
 
 namespace inviwo {
 
-TransferFunction::TransferFunction() {
+TransferFunction::TransferFunction()
+    : VoidObservable() {
 	textureSize_ = 1024;
     maskMin_ = 0.0f;
     maskMax_ = 1.0f;
     interpolationType_ = InterpolationLinear;
     data_ = new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get());
+
+    // initialize with standard ramp
+    addPoint(new TransferFunctionDataPoint(this, vec2(0.0f,0.0f), vec4(0.0f,0.0f,0.0f,0.0f)));
+    addPoint(new TransferFunctionDataPoint(this, vec2(1.0f,1.0f), vec4(1.0f,1.0f,1.0f,1.0f)));
 }
 
 TransferFunction::TransferFunction(const TransferFunction& rhs) {
@@ -40,9 +45,8 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
         maskMin_ = rhs.maskMin_;
         maskMax_ = rhs.maskMax_;
         interpolationType_ = rhs.interpolationType_;
-		for (size_t i=0; i<rhs.getNumDataPoints(); i++){
-			dataPoints_.push_back(new TransferFunctionDataPoint(*rhs.getPoint(static_cast<int>(i))));
-		}
+		for (size_t i=0; i<rhs.getNumDataPoints(); i++)
+            addPoint(new TransferFunctionDataPoint(*rhs.getPoint(static_cast<int>(i))));
 	}
 	calcTransferValues();
 	return *this;
@@ -59,7 +63,7 @@ TransferFunctionDataPoint* TransferFunction::getPoint(int i) const {
 }
 
 void TransferFunction::addPoint(const vec2& pos, const vec4& color) {
-	addPoint(new TransferFunctionDataPoint(pos, color));
+	addPoint(new TransferFunctionDataPoint(this, pos, color));
 }
 
 void TransferFunction::addPoint(TransferFunctionDataPoint* dataPoint) {
@@ -68,15 +72,15 @@ void TransferFunction::addPoint(TransferFunctionDataPoint* dataPoint) {
 	float pointPosition = dataPoint->getPos().x;
 	float iterPosition;
 
-	if (dataPoints_.size() == 0){
+	if (dataPoints_.size() == 0) {
 		dataPoints_.push_back(dataPoint);
 	}
 	else{
-		if (pointPosition > dataPoints_.back()->getPos().x){
+		if (pointPosition > dataPoints_.back()->getPos().x) {
 			dataPoints_.push_back(dataPoint);
 		}
 		else{
-			for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++){
+			for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++) {
 				iterPosition = (*iter)->getPos().x;
 				if (iterPosition > pointPosition){
 					dataPoints_.insert(iter, dataPoint);
@@ -153,6 +157,7 @@ void TransferFunction::calcTransferValues(){
             }
         //} else {
             // cubic interpolation
+            // TODO: implement cubic interpolation
         //}
     }
 
@@ -160,14 +165,8 @@ void TransferFunction::calcTransferValues(){
         dataArray[i].a = 0.0;
     for (int i=int(maskMax_*textureSize_); i<textureSize_; i++)
         dataArray[i].a = 0.0;
-}
-
-bool myPointCompare (TransferFunctionDataPoint* a, TransferFunctionDataPoint* b){
-	return a->getPos().x < b->getPos().x;
-}
-
-void TransferFunction::sortPoints(){
-	std::sort(dataPoints_.begin(), dataPoints_.end(), myPointCompare);
+    
+    notifyObservers();
 }
 
 }

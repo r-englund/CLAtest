@@ -23,20 +23,23 @@ namespace inviwo {
    
 class IVW_CORE_API VolumeRAMNormalizedHistogram : public VolumeOperation {
 public:
-    VolumeRAMNormalizedHistogram(const VolumeRepresentation* in, NormalizedHistogram* oldHist = NULL) 
-        : VolumeOperation(in), histogramContainer_(oldHist) {}
+    VolumeRAMNormalizedHistogram(const VolumeRepresentation* in, NormalizedHistogram* oldHist=NULL, int delta=1) 
+        : VolumeOperation(in)
+        , histogramContainer_(oldHist)
+        , delta_(delta) {}
     virtual ~VolumeRAMNormalizedHistogram() {}
 
     template<typename T, size_t B>
     void evaluate();
 
-    static inline NormalizedHistogram* apply(const VolumeRepresentation* in, NormalizedHistogram* oldHist = NULL){
-        VolumeRAMNormalizedHistogram subsetOP = VolumeRAMNormalizedHistogram(in, oldHist);
+    static inline NormalizedHistogram* apply(const VolumeRepresentation* in, NormalizedHistogram* oldHist=NULL, int delta=1) {
+        VolumeRAMNormalizedHistogram subsetOP = VolumeRAMNormalizedHistogram(in, oldHist, delta);
         in->performOperation(&subsetOP);
         return subsetOP.getOutput<NormalizedHistogram>();
     }
 
 private:
+    int delta_;
     NormalizedHistogram* histogramContainer_;
 };
 
@@ -83,9 +86,9 @@ void VolumeRAMNormalizedHistogram::evaluate(){
     unsigned int dimXY = dim.x*dim.y;
     size_t idx;
     float intensity;
-    for (size_t z=0; z < dim.z; ++z) {
-        for (size_t y=0; y < dim.y; ++y) {
-            for (size_t x=0; x < dim.x; ++x) {
+    for (size_t z=0; z<dim.z-delta_; z+=delta_) {
+        for (size_t y=0; y<dim.y-delta_; y+=delta_) {
+            for (size_t x=0; x<dim.x-delta_; x+=delta_) {
                 intensity = dataFormat->valueToNormalizedFloat(&src[x+(y*dim.x)+(z*dimXY)]);
                 // Temporary fix for intensity values outside of 0,1. needed for for float types where
                 // the values are not normalized. 

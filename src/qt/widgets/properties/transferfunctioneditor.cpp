@@ -42,12 +42,7 @@ TransferFunctionEditor::~TransferFunctionEditor() {
 }
 
 void TransferFunctionEditor::resetTransferFunction() {
-    for (size_t i=0; i<controlPoints_.size(); i++) {
-        transferFunction_->removePoint(controlPoints_[i]->getPoint());
-        removeItem(controlPoints_[i]);
-        delete controlPoints_[i];
-    }
-    controlPoints_.clear();
+    transferFunction_->clearPoints();
     addControlPoint(QPointF(0.0*(width()-1), 0.0*(height()-1)), vec4(0.0f));
     addControlPoint(QPointF(1.0*(width()-1), 1.0*(height()-1)), vec4(1.0f));
 }
@@ -120,10 +115,9 @@ void TransferFunctionEditor::addControlPoint(QPointF pos, vec4 color) {
     ivwAssert(pos.x()>=0.0 && pos.x()<width(), "Transfer function control point's x coordinate out of range.");
     ivwAssert(pos.y()>=0.0 && pos.y()<height(), "Transfer function control point's y coordinate out of range.");
 
-    // add control point to editor and transfer function
-    TransferFunctionDataPoint* dataPoint = new TransferFunctionDataPoint(vec2(pos.x()/width(), pos.y()/height()), color);
+    // add control point to transfer function
+    TransferFunctionDataPoint* dataPoint = new TransferFunctionDataPoint(transferFunction_, vec2(pos.x()/width(), pos.y()/height()), color);
     transferFunction_->addPoint(dataPoint);
-    addControlPoint(pos, dataPoint);
 }
 
 void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPoint* dataPoint) {
@@ -131,34 +125,31 @@ void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPo
     pointGraphicsItem->setPos(pos);
     controlPoints_.push_back(pointGraphicsItem);
     addItem(pointGraphicsItem);
-    updateControlPointView();
+    redrawConnections();
 }
 
 void TransferFunctionEditor::removeControlPoint(TransferFunctionEditorControlPoint* controlPoint) {
-    if (controlPoints_.size() > 1) {
-        transferFunction_->removePoint(controlPoint->getPoint());
-        removeItem(controlPoint);
-        controlPoints_.erase(std::remove(controlPoints_.begin(), controlPoints_.end(), controlPoint), controlPoints_.end());
-        delete controlPoint;
-        updateControlPointView();
-    }
+    transferFunction_->removePoint(controlPoint->getPoint());
 }
 
 void TransferFunctionEditor::recalculateControlPoints() {
-    for (size_t i=0; i<controlPoints_.size(); i++) {
-        transferFunction_->removePoint(controlPoints_[i]->getPoint());
-        removeItem(controlPoints_[i]);
-        delete controlPoints_[i];
+    if (controlPoints_.size()!=transferFunction_->getNumDataPoints()) {
+        for (size_t i=0; i<controlPoints_.size(); i++) {
+            removeItem(controlPoints_[i]);
+            delete controlPoints_[i];
+        }
+        controlPoints_.clear();
+        // initialize editor with current tf
+        for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
+            TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(static_cast<int>(i));
+            vec2 pos = dataPoint->getPos();
+            pos.x *= width();
+            pos.y *= height();
+            addControlPoint(QPointF(pos.x,pos.y), dataPoint);
+        }
     }
-    controlPoints_.clear();
-    // initialize editor with current tf
-    for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
-        TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(static_cast<int>(i));
-        vec2 pos = dataPoint->getPos();
-        pos.x *= width();
-        pos.y *= height();
-        addControlPoint(QPointF(pos.x,pos.y), dataPoint);
-    }
+    update();
+    redrawConnections();
 }
 
 bool controlPointComparison(TransferFunctionEditorControlPoint* controlPoint0, TransferFunctionEditorControlPoint* controlPoint1) {
@@ -199,13 +190,6 @@ void TransferFunctionEditor::redrawConnections() {
         path.lineTo(QPointF(width(), controlPoints_[controlPoints_.size()-1]->pos().y()));
     }
     graphicsPathItem_->setPath(path);
-}
-
-void TransferFunctionEditor::updateControlPointView() {
-    // update lines and repaint
-    redrawConnections();
-    // initiate transfer function update
-    emit controlPointsChanged();
 }
 
 TransferFunctionEditorControlPoint* TransferFunctionEditor::getControlPointGraphicsItemAt(const QPointF pos) const {

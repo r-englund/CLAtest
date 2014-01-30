@@ -23,17 +23,19 @@
 
 namespace inviwo {
 
+class TransferFunction;
+
 class IVW_CORE_API TransferFunctionDataPoint {
 
 public:
-	TransferFunctionDataPoint(const vec2& pos, const vec4& rgba);
+	TransferFunctionDataPoint(TransferFunction* transFunc, const vec2& pos, const vec4& rgba);
     virtual ~TransferFunctionDataPoint();
 
-    const vec2& getPos() const { return pos_; }
-    void setPos(const vec2& pos) { pos_ = pos; }
+    const vec2& getPos() const;
+    void setPos(const vec2& pos);
 
-    const vec4& getRGBA() const { return rgba_; }
-    void setRGBA(const vec4& rgba) { rgba_ = rgba; }
+    const vec4& getRGBA() const;
+    void setRGBA(const vec4& rgba);
 
     void setRGB(const vec3& rgb);
     void setA(float alpha);
@@ -41,6 +43,7 @@ public:
 private:
 	vec2 pos_;
     vec4 rgba_;
+    TransferFunction* transFunc_;
 };
 
 } // namespace

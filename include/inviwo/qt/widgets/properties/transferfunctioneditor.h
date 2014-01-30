@@ -59,8 +59,6 @@ public :
     TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view);
     ~TransferFunctionEditor();
 
-    void updateControlPointView();
-
     const float getZoomRangeXMin() { return zoomRangeXMin_; }
     void setZoomRangeXMin(float min) { zoomRangeXMin_ = min; }
 

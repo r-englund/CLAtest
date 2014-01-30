@@ -96,8 +96,6 @@ QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange chang
         QPointF controlPointPos = pos();
         dataPoint_->setPos(vec2(controlPointPos.x()/rect.width(), controlPointPos.y()/rect.height()));
         dataPoint_->setA(controlPointPos.y()/rect.height());
-        // let the editor know that an update is required
-        static_cast<TransferFunctionEditor*>(scene())->updateControlPointView();
         // return the constraint position
         return newPos;
     }

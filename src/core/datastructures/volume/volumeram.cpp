@@ -64,14 +64,18 @@ NormalizedHistogram* VolumeRAM::getNormalizedHistogram() {
 }
 
 const NormalizedHistogram* VolumeRAM::getNormalizedHistogram() const {
-    if(!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
+    if (!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
         calculateHistogram();
     return histogram_; 
 }
 
 void VolumeRAM::calculateHistogram() const{
     calculatingHistogram_ = true;
-    histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_);
+    // TODO: using delta should be changeable from outside when requesting
+    //       the histogram through getNormalizedHistogram()
+    int maxDim = std::max(dimensions_.x, std::max(dimensions_.y, dimensions_.z));
+    int delta = std::max(1, int(float(maxDim)/64.0f));
+    histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_, delta);
     calculatingHistogram_ = false;
 }
 

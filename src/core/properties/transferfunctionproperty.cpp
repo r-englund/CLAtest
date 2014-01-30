@@ -62,6 +62,7 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
 	std::stringstream stream;
 
 	d.deserialize("size", size);
+    value_.clearPoints();
     for (int i = 0; i < size; i++){
         stream << "pos" << i;
         d.deserialize(stream.str(), pos);

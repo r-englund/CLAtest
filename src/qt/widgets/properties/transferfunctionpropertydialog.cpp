@@ -18,18 +18,23 @@
 namespace inviwo {
 
 TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty, QWidget* parent)
-    : InviwoDockWidget(tr("Transfer Function"), parent)
+    : InviwoDockWidget("Transfer Function", parent)
+    , VoidObserver()
     , tfProperty_(tfProperty)
     , tfPixmap_(NULL)
 {
+    std::string processorName = (dynamic_cast<Processor*>(tfProperty_->getOwner()))->getIdentifier();
+    QString windowTitle = QString::fromStdString("Transfer Function (")+
+                          QString::fromStdString(processorName)+QString::fromStdString(")");
+    setWindowTitle(windowTitle);
     setObjectName("Transfer Function");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
     generateWidget();
+    tfProperty_->get().addObserver(this);
 
-    if(!tfProperty_->getVolumeInport()){
+    if (!tfProperty_->getVolumeInport())
         chkShowHistogram_->setVisible(false);
-    }
 
     gradient_ = new QLinearGradient(0,0,100,20);
     updateTFPreview();
@@ -179,7 +184,6 @@ void TransferFunctionPropertyDialog::updateFromProperty() {
     updateTFPreview();
 }
 
-
 void TransferFunctionPropertyDialog::updateColorWheel() {
     QList<QGraphicsItem *> selection = tfEditor_->selectedItems();
     if (selection.size()== 1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
@@ -218,11 +222,12 @@ void TransferFunctionPropertyDialog::setPointColor(QColor color) {
             dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))->getPoint()->setRGB(newRgb);
         }
     }
-
+/*
     updateFromProperty();
     tfEditorView_->update();
     tfProperty_->get().calcTransferValues();
     tfProperty_->propertyModified();
+*/
 }
 
 void TransferFunctionPropertyDialog::updateTransferFunction() {
@@ -278,5 +283,12 @@ void TransferFunctionPropertyDialog::showHistogram(bool show){
     tfProperty_->setShowHistogram(show);
     tfEditorView_->setShowHistogram(show);
 }
+
+void TransferFunctionPropertyDialog::notify() {
+    tfEditor_->recalculateControlPoints();
+    updateFromProperty();
+    tfProperty_->propertyModified();
+}
+
 
 } // namespace
