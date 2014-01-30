@@ -66,7 +66,6 @@ public slots:
     void setPointColorDialog();
     void updateColorWheel();
     void showColorDialog();
-    void updateTransferFunction();
     void switchInterpolationType(int interpolationType);
     void changeMask(int maskMin, int maskMax);
 

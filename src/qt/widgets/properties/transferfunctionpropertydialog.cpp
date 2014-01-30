@@ -68,7 +68,6 @@ void TransferFunctionPropertyDialog::generateWidget() {
     tfEditor_ = new TransferFunctionEditor(&tfProperty_->get(), tfEditorView_);
     connect(tfEditor_, SIGNAL(doubleClick()), this, SLOT(showColorDialog()));
     connect(tfEditor_, SIGNAL(selectionChanged()), this, SLOT(updateColorWheel()));
-    connect(tfEditor_, SIGNAL(controlPointsChanged()), this, SLOT(updateTransferFunction()));
     tfEditorView_->setScene(tfEditor_);
 
     zoomVSlider_ = new RangeSliderQt(Qt::Vertical, this);
@@ -232,12 +231,6 @@ void TransferFunctionPropertyDialog::setPointColor(QColor color) {
             dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))->getPoint()->setRGB(newRgb);
         }
     }
-}
-
-void TransferFunctionPropertyDialog::updateTransferFunction() {
-    tfProperty_->get().calcTransferValues();
-    updateFromProperty();
-    tfProperty_->propertyModified();
 }
 
 void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {

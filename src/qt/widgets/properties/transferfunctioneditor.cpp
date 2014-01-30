@@ -129,7 +129,8 @@ void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPo
 }
 
 void TransferFunctionEditor::removeControlPoint(TransferFunctionEditorControlPoint* controlPoint) {
-    transferFunction_->removePoint(controlPoint->getPoint());
+    if (transferFunction_->getNumDataPoints() > 1)
+        transferFunction_->removePoint(controlPoint->getPoint());
 }
 
 void TransferFunctionEditor::recalculateControlPoints() {

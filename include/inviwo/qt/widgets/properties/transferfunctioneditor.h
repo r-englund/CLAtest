@@ -78,7 +78,6 @@ public :
 
 signals:
     void doubleClick();
-    void controlPointsChanged();
 
 public slots:
     void resetTransferFunction();

@@ -40,6 +40,8 @@ public:
     void setRGB(const vec3& rgb);
     void setA(float alpha);
 
+    void setPosA(const vec2& pos, float alpha);
+
 private:
 	vec2 pos_;
     vec4 rgba_;

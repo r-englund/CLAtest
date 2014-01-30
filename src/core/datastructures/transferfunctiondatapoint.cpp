@@ -55,4 +55,10 @@ void TransferFunctionDataPoint::setA(float alpha) {
     transFunc_->calcTransferValues();
 }
 
+void TransferFunctionDataPoint::setPosA(const vec2& pos, float alpha) {
+    pos_ = pos;
+    rgba_.a = alpha;
+    transFunc_->calcTransferValues();
+}
+
 } // namespace
