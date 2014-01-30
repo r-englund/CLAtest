@@ -50,12 +50,12 @@ void CompositeProperty::updateVisibility(){
         subProperties_[i]->updateVisibility();
 }
 
-void CompositeProperty::setVisible( bool val ) {
+void CompositeProperty::setVisible(bool val ) {
     for (size_t i=0; i<subProperties_.size(); i++)
         subProperties_[i]->setVisible(val);
 }
 
-void CompositeProperty::setReadOnly( bool value ) {
+void CompositeProperty::setReadOnly(const bool &value ) {
     for (size_t i=0; i<subProperties_.size(); i++)
         subProperties_[i]->setReadOnly(value);
 }

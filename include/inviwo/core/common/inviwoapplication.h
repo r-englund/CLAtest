@@ -52,7 +52,8 @@ public:
         PATH_MODULES,   // modules/
         PATH_WORKSPACES,// data/workspaces/
         PATH_IMAGES,     // data/images/
-        PATH_RESOURCES  // resources/
+        PATH_RESOURCES,  // resources/
+        PATH_TRANSFERFUNCTIONS  // data/transferfunctions/
     };
 
 	virtual void closeInviwoApplication(){LogWarn("this application have not implemented close inviwo function");}

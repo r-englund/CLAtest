@@ -244,6 +244,7 @@ void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {
 
 void TransferFunctionPropertyDialog::importTransferFunction() {
     QFileDialog importFileDialog(this, QString::fromStdString("Import transfer function"));
+    importFileDialog.setDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_TRANSFERFUNCTIONS).c_str());
     importFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
     importFileDialog.setFileMode(QFileDialog::ExistingFile);
     importFileDialog.setNameFilter("*.itf");
@@ -258,6 +259,7 @@ void TransferFunctionPropertyDialog::importTransferFunction() {
 
 void TransferFunctionPropertyDialog::exportTransferFunction() {
     QFileDialog exportFileDialog(this, QString::fromStdString("Export transfer function"));
+    exportFileDialog.setDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_TRANSFERFUNCTIONS).c_str());
     exportFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     exportFileDialog.setFileMode(QFileDialog::AnyFile);
     exportFileDialog.setNameFilter("*.itf");

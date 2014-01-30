@@ -39,7 +39,7 @@ public:
     virtual std::string getClassName()  const { return "CompositeProperty"; }
     void updateVisibility();
     void setVisible(bool val);
-    void setReadOnly(bool value);
+    void setReadOnly(const bool &value);
 
     //override original function in property
     virtual void set(const Property* src);

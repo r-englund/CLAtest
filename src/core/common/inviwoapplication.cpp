@@ -120,6 +120,9 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
     case inviwo::InviwoApplication::PATH_RESOURCES:
         result += "resources";
         break;
+    case inviwo::InviwoApplication::PATH_TRANSFERFUNCTIONS:
+        result += "data/transferfunctions/";
+        break;
     default:
         break;
     }
