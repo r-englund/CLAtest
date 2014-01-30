@@ -15,6 +15,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/basegl/processors/imagegrayscale.h
     ${IVW_MODULE_DIR}/basegl/processors/imagemixer.h
     ${IVW_MODULE_DIR}/basegl/processors/lightingraycaster.h
+	${IVW_MODULE_DIR}/basegl/processors/lightvolumegl.h
     ${IVW_MODULE_DIR}/basegl/processors/positionwidgetprocessor.h
     ${IVW_MODULE_DIR}/basegl/processors/redgreenprocessor.h
     ${IVW_MODULE_DIR}/basegl/processors/simpleraycaster.h
@@ -35,6 +36,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/basegl/processors/imagegrayscale.cpp
     ${IVW_MODULE_DIR}/basegl/processors/imagemixer.cpp
     ${IVW_MODULE_DIR}/basegl/processors/lightingraycaster.cpp
+	${IVW_MODULE_DIR}/basegl/processors/lightvolumegl.cpp
     ${IVW_MODULE_DIR}/basegl/processors/positionwidgetprocessor.cpp
     ${IVW_MODULE_DIR}/basegl/processors/redgreenprocessor.cpp
     ${IVW_MODULE_DIR}/basegl/processors/simpleraycaster.cpp

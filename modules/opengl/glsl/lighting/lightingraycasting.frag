@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2014Scientific Visualization Group - Linköping University
+ * Copyright (C) 2014 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited

@@ -112,6 +112,12 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler3d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_shading.frag
     ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightingraycasting.frag
+	${IVW_MODULE_DIR}/opengl/glsl/lighting/lightpropagation.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightpropagation.geom
+    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightpropagation.vert
+    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightvolumeblend.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightvolumeblend.geom
+    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightvolumeblend.vert
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
