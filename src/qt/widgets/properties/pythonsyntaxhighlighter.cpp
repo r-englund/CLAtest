@@ -27,7 +27,7 @@ namespace inviwo{
     public:
         PythonCommentFormater(const QTextCharFormat &format) 
             : format_(format) 
-            , oneLineComment_("^[\s]*\#")
+            , oneLineComment_("^[\\s]*\\#")
         { }
 
         virtual Result eval( const QString &text ,const int &previousBlockState) {
