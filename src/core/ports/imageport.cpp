@@ -170,6 +170,9 @@ void ImageOutport::dataChanged(){
 }
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
+    //This function should check which dimension request exists, by going through the successors and checking registeredDimensions.
+    //We do only want to propagate when there is not a registeredDimension which is larger then the resizeevent size.
+
     //Allocates space holder, sets largest data, cleans up un-used data 
     uvec2 requiredDimensions = resizeEvent->size();
     uvec2 previousDimensions = resizeEvent->previousSize();

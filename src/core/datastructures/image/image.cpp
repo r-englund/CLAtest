@@ -32,6 +32,12 @@ Image::Image(const Image& rhs)
     , imageType_(rhs.imageType_)
     , inputSources_(rhs.inputSources_) {
 
+    for(size_t i = 0; i < representations_.size(); ++i) {
+        ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
+        if(imRep)
+            imRep->setPointerToOwner(this);
+    }
+
     for (std::vector<Layer*>::const_iterator it = rhs.colorLayers_.begin() ; it != rhs.colorLayers_.end(); ++it)
         addColorLayer((*it)->clone());
 
@@ -54,6 +60,12 @@ Image& Image::operator=(const Image& that) {
     if(this != &that) {
         DataGroup::operator=(that);
         StructuredGridEntity<2>::operator=(that);
+
+        for(size_t i = 0; i < representations_.size(); ++i) {
+            ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
+            if(imRep)
+                imRep->setPointerToOwner(this);
+        }
 
         allowMissingLayers_ = that.allowMissingLayers_;
         imageType_ = that.imageType_;
