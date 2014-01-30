@@ -28,7 +28,6 @@ TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt() {
     delete btnOpenTF_;
 }
 
-
 void TransferFunctionPropertyWidgetQt::generateWidget(){
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_, app->getMainWindow());
@@ -56,7 +55,31 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty() {
-    btnOpenTF_->setIcon((*transferFunctionDialog_->getTFPreview()).scaled(btnOpenTF_->size()));
+    int gradientWidth = btnOpenTF_->width();
+    QLinearGradient* gradient = transferFunctionDialog_->getTFGradient();
+    gradient->setFinalStop(gradientWidth, 0);
+    QPixmap tfPixmap(gradientWidth, btnOpenTF_->height());
+    QPainter tfPainter(&tfPixmap);
+    QPixmap checkerBoard(10, 10);
+    QPainter checkerBoardPainter(&checkerBoard);
+    checkerBoardPainter.fillRect(0, 0, 5, 5, Qt::lightGray);
+    checkerBoardPainter.fillRect(5, 0, 5, 5, Qt::darkGray);
+    checkerBoardPainter.fillRect(0, 5, 5, 5, Qt::darkGray);
+    checkerBoardPainter.fillRect(5, 5, 5, 5, Qt::lightGray);
+    checkerBoardPainter.end();
+    tfPainter.fillRect(0, 0, gradientWidth, btnOpenTF_->height(), QBrush(checkerBoard));
+    tfPainter.fillRect(0, 0, gradientWidth, btnOpenTF_->height(), *gradient);
+    // draw masking indicators
+    if (property_->getMask().x > 0.0f) {
+        tfPainter.fillRect(0, 0, static_cast<int>(property_->getMask().x*gradientWidth), btnOpenTF_->height(), QColor(25,25,25,100));
+        tfPainter.drawLine(static_cast<int>(property_->getMask().x*gradientWidth), 0, static_cast<int>(property_->getMask().x*gradientWidth), btnOpenTF_->height());
+    }
+    if (property_->getMask().y < 1.0f) {
+        tfPainter.fillRect(static_cast<int>(property_->getMask().y*gradientWidth), 0, 
+            static_cast<int>(gradientWidth-(property_->getMask().y*gradientWidth)+10), btnOpenTF_->height(), QColor(25,25,25,150));
+        tfPainter.drawLine(static_cast<int>(property_->getMask().y*gradientWidth), 0, static_cast<int>(property_->getMask().y*gradientWidth), btnOpenTF_->height());
+    }
+    btnOpenTF_->setIcon(tfPixmap);
     btnOpenTF_->setIconSize(btnOpenTF_->size());
 }
 

@@ -57,7 +57,7 @@ public:
     */
     void updateFromProperty();
 
-    QPixmap* getTFPreview() { return tfPixmap_; }
+    QLinearGradient* getTFGradient() { return gradient_; }
 
     virtual void notify();
 
