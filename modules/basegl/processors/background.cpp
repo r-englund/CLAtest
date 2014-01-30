@@ -40,11 +40,9 @@ Background::Background()
 	addProperty(color1_);
 	color2_.setSemantics(PropertySemantics::Color);
     addProperty(color2_);
-    LogInfo("asdf");
 }
 
 Background::~Background() {
-    LogInfo("qwer");
 }
 
 void Background::initialize() {
