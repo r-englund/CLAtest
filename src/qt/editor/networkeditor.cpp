@@ -1081,6 +1081,7 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
 			}
 			connectionItem->setBorderColors(inputColor, outputColor);
 			oldConnectionTarget_ = connectionItem;
+            delete processor;
 		} else if (connectionItem) { // move event on active connection
 			oldConnectionTarget_->setMidPoint(e->scenePos());
 		} else if (oldConnectionTarget_ && !connectionItem){ //< Connection no longer targeted

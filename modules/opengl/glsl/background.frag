@@ -36,12 +36,7 @@ vec4 linearGradient(vec2 texCoords) {
 void main() {
 
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-    vec4 srcColor;
-	if(hasData_){
-		srcColor = texture2D(srcColorTex_, texCoords);
-	}else{
-		srcColor = vec4(0.0,0.0,0.0,0.0);
-	}
+    vec4 srcColor = SRC_COLOR;
 
 	vec4 backgroundColor = BACKGROUND_STYLE_FUNCTION;
 

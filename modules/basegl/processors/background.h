@@ -50,6 +50,8 @@ private:
 	FloatVec4Property color2_;
 
     Shader* shader_;
+
+    bool hadData_;
 };
 
 } // namespace

@@ -39,10 +39,13 @@ Background::Background()
 	color1_.setSemantics(PropertySemantics::Color);
 	addProperty(color1_);
 	color2_.setSemantics(PropertySemantics::Color);
-	addProperty(color2_);
+    addProperty(color2_);
+    LogInfo("asdf");
 }
 
-Background::~Background() {}
+Background::~Background() {
+    LogInfo("qwer");
+}
 
 void Background::initialize() {
     ProcessorGL::initialize();
@@ -67,12 +70,22 @@ void Background::initializeResources() {
 	case 2 : // checker board
 		shaderDefine = "checkerBoard(texCoords)";
 		break;
-	}
-	shader_->getFragmentShaderObject()->addShaderDefine("BACKGROUND_STYLE_FUNCTION", shaderDefine);
+    }
+    shader_->getFragmentShaderObject()->addShaderDefine("BACKGROUND_STYLE_FUNCTION", shaderDefine);
+    if(inport_.hasData()){
+        shader_->getFragmentShaderObject()->addShaderDefine("SRC_COLOR", "texture2D(srcColorTex_, texCoords)");
+        hadData_ = true;
+    }else{
+        shader_->getFragmentShaderObject()->addShaderDefine("SRC_COLOR", "vec4(0.0,0.0,0.0,0.0)");
+        hadData_ = false;
+    }
 	shader_->build();
 }
 
 void Background::process() { 
+    if(inport_.hasData() != hadData_){
+        initializeResources();
+    }
     activateTarget(outport_);
 
     TextureUnit srcColorUnit;
