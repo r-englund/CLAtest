@@ -124,6 +124,7 @@ set(SOURCE_FILES
     properties/optionpropertywidgetqt.cpp
     properties/propertysettingswidgetqt.cpp
     properties/propertywidgetqt.cpp
+    properties/pythonsyntaxhighlighter.cpp
     properties/sphericalfloatvec3propertywidgetqt.cpp
     properties/stringpropertywidgetqt.cpp
     properties/syntaxhighlighter.cpp

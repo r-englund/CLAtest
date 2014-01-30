@@ -79,9 +79,9 @@ template<SyntaxType T> SyntaxHighligther* SyntaxHighligther::createSyntaxHighlig
     return s;
 }
 
-template<> void SyntaxHighligther::loadConfig<None>();
-template<> void SyntaxHighligther::loadConfig<GLSL>();
-template<> void SyntaxHighligther::loadConfig<Python>();
+template<> IVW_QTWIDGETS_API void SyntaxHighligther::loadConfig<None>();
+template<> IVW_QTWIDGETS_API void SyntaxHighligther::loadConfig<GLSL>();
+template<> IVW_QTWIDGETS_API void SyntaxHighligther::loadConfig<Python>();
 	
 
 

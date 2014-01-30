@@ -25,13 +25,18 @@
 #include <QColor>
 #include <QToolButton>
 
+class QPlainTextEdit;
+
 namespace inviwo{
-    
-class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget , public FileObserver , public PythonExecutionOutputObeserver, public VoidObserver {
+    class SyntaxHighligther;
+class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget 
+                                                 , public FileObserver 
+                                                 , public PythonExecutionOutputObeserver
+                                                 , public VoidObserver {
     Q_OBJECT
 
 public:
-    PythonEditorWidget(QWidget* parent = NULL);
+    PythonEditorWidget(QWidget* parent);
     virtual ~PythonEditorWidget();
 
     void appendToOutput(const std::string &msg,bool error = false);
@@ -59,6 +64,8 @@ private:
 
     QToolButton* startRecordScriptButton_;
     QToolButton* endRecordScriptButton_;
+
+    SyntaxHighligther* syntaxHighligther_;
 
 public slots:
     void save();

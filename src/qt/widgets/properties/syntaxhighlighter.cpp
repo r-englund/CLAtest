@@ -61,17 +61,6 @@ void SyntaxHighligther::loadConfig<None>(){
 }
 
 
-template<>
-void SyntaxHighligther::loadConfig<Python>(){
-    QColor textColor;
-    QColor bgColor;
-    textColor.setNamedColor("#aaaaaa");
-    bgColor.setNamedColor("#4d4d4d");
-    defaultFormat_.setBackground(bgColor);
-    defaultFormat_.setForeground(textColor);
-
-}
-
 
 } // namespace
 
