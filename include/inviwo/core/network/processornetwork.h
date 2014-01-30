@@ -210,6 +210,7 @@ public:
     bool isModified() const { return modified_; }
 
     bool isInvalidating() const { return invalidating_; }
+    void notifyObserversAboutPropertyChange(Property*);
     void notifyInvalidationBegin(Processor*);
     void notifyInvalidationEnd(Processor*);
     void notifyRequestEvaluate(Processor*);
@@ -234,8 +235,11 @@ public:
 private:
     //Property Linking support
     std::vector<ProcessorLink*> getSortedProcessorLinks();
-    void performLinking();
+    std::vector<ProcessorLink*> getSortedProcessorLinksFromProperty(Property* modifiedProperty);
+    void performLinkingOnPropertyChange(Property* modifiedProperty);
+    void evaluatePropertyLinks(Property*);
     void evaluateInvalidPropertyLinks();
+
 
     bool modified_;
     bool broadcastModification_; //< shall observers be notified when the network has been modified

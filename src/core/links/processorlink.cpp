@@ -96,14 +96,6 @@ void ProcessorLink::evaluate(LinkEvaluator *leval) {
     }
 }
 
-std::vector<Property*> ProcessorLink::getSourceProperties() {
-    std::vector<Property*> sourceProperties;
-    for (size_t i=0; i<propertyLinks_.size(); i++) {
-        sourceProperties.push_back(propertyLinks_[i]->getSourceProperty());
-    }
-    return sourceProperties;
-}
-
 bool ProcessorLink::isLinked(Property* startProperty, Property* endProperty) {
     bool isLinkFound = false;
     for (size_t i=0; i<propertyLinks_.size(); i++) {
@@ -113,6 +105,46 @@ bool ProcessorLink::isLinked(Property* startProperty, Property* endProperty) {
         }
     }
     return isLinkFound;
+}
+
+std::vector<Property*> ProcessorLink::getSourceProperties() {
+    std::vector<Property*> sourceProperties;
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        sourceProperties.push_back(propertyLinks_[i]->getSourceProperty());
+    }
+    return sourceProperties;
+}
+
+std::vector<Property*> ProcessorLink::getDestinationProperties() {
+    std::vector<Property*> destProperties;
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        destProperties.push_back(propertyLinks_[i]->getDestinationProperty());
+    }
+    return destProperties;
+}
+
+bool ProcessorLink::isPropertySource(Property* property)  {
+    std::vector<Property*> srcProperties = getSourceProperties();       
+    if (std::find(srcProperties.begin(), srcProperties.end(), property)!=srcProperties.end())
+        return true;
+    return false;
+}
+
+bool ProcessorLink::isPropertyDestination(Property* property)  {
+    std::vector<Property*> destProperties = getDestinationProperties();
+    if (std::find(destProperties.begin(), destProperties.end(), property)!=destProperties.end())
+        return true;
+    return false;
+}
+
+bool ProcessorLink::involvesProcessor(Processor* processor) {
+    return (sourceProcessor_==processor || destinationProcessor_==processor);
+}
+
+bool ProcessorLink::involvesProperty(Property* property)  {
+    if (isPropertySource(property) || isPropertyDestination(property) )
+        return true;
+    return false;
 }
 
 void ProcessorLink::addPropertyLinks(Property* startProperty, Property* endProperty) {

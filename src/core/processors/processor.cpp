@@ -161,7 +161,8 @@ bool Processor::isInitialized() const {
     return initialized_; 
 }
 
-void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
+    notifyObserversAboutPropertyChange(modifiedProperty);
     notifyObserversInvalidationBegin(this);
     PropertyOwner::invalidate(invalidationLevel);
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)

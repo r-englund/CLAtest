@@ -33,7 +33,8 @@ class Processor;
 class IVW_CORE_API ProcessorObserver: public VoidObserver {
 public:
     ProcessorObserver(): VoidObserver() {};
-
+    //TODO: Use seperate class for property observation if necessary
+    virtual void notifyObserversAboutPropertyChange(Property*) {};
     virtual void notifyProcessorObserver(Processor*) {};
     virtual void notifyInvalidationBegin(Processor*) {};
     virtual void notifyInvalidationEnd(Processor*) {};
@@ -60,6 +61,13 @@ public:
     void notifyObservers(Processor* p) const {
         for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyProcessorObserver(p);    
+        }
+    }
+
+    //TODO: Use seperate class for property observation if necessary
+    void notifyObserversAboutPropertyChange(Property* p) const {
+        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+            static_cast<ProcessorObserver*>(*it)->notifyObserversAboutPropertyChange(p);
         }
     }
 

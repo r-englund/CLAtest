@@ -33,17 +33,18 @@ public:
 
     Processor* getSourceProcessor() const{ return sourceProcessor_; }
     Processor* getDestinationProcessor() const{ return destinationProcessor_; }
-
-    bool involvesProcessor(Processor* processor) const {
-        return (sourceProcessor_==processor || destinationProcessor_==processor);
-    }
+    
 
     void autoLinkPropertiesByType();
     void evaluate(LinkEvaluator *leval);
     bool isLinked(Property* startProperty, Property* endProperty);
+    bool involvesProcessor(Processor* processor);
+    bool isPropertySource(Property* property) ;
+    bool isPropertyDestination(Property* property) ;
+    bool involvesProperty(Property* property) ;
     bool isValid();
     std::vector<Property*> getSourceProperties();
-
+    std::vector<Property*> getDestinationProperties();
     void addPropertyLinks(Property* startProperty, Property* endProperty);
     void removePropertyLinks(Property* startProperty, Property* endProperty);
     void removePropertyLink(PropertyLink* plink);

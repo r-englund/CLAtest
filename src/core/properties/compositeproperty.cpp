@@ -63,6 +63,7 @@ void CompositeProperty::setReadOnly( bool value ) {
 void CompositeProperty::setPropertyModified(bool modified) { 
     for (size_t i=0; i<subProperties_.size(); i++)
         subProperties_[i]->setPropertyModified(modified);
+    Property::setPropertyModified(modified);
 }
 
 bool CompositeProperty::isPropertyModified() const {

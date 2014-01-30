@@ -89,7 +89,7 @@ public:
     //Triggers invalidation. 
     //Perform only full reimplementation of this function, meaning never call Proccessor::invalidate()
     //in your reimplemented invalidation function.
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty=0);
     
     virtual void setValid();
     virtual void initializeResources() {} // reload shaders etc. here

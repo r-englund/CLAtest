@@ -50,7 +50,7 @@ public:
     bool isValid() { return (invalidationLevel_ == PropertyOwner::VALID); }
     virtual void setValid();
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty=0);
        
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

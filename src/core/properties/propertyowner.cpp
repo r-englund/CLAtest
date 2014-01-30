@@ -48,7 +48,8 @@ void PropertyOwner::setValid() {
     invalidationLevel_ = PropertyOwner::VALID; 
 }
 
-void PropertyOwner::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+void PropertyOwner::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
+    IVW_UNUSED_PARAM(modifiedProperty);
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
 }
 

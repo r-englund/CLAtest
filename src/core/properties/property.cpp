@@ -123,7 +123,7 @@ void Property::propertyModified() {
     onChangeCallback_.invoke();
     setPropertyModified(true); 
     //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )    
-    if (getOwner()) getOwner()->invalidate(getInvalidationLevel());    
+    if (getOwner()) getOwner()->invalidate(getInvalidationLevel(), this);    
     updateWidgets();
 }
 
