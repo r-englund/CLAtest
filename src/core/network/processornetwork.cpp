@@ -192,8 +192,6 @@ void ProcessorNetwork::notifyObserversAboutPropertyChange(Property* modifiedProp
 void ProcessorNetwork::performLinkingOnPropertyChange(Property* modifiedProperty) {
     if (modifiedProperty)        
         evaluatePropertyLinks(modifiedProperty);
-    else
-        evaluateInvalidPropertyLinks(); //TODO: remove this when links are stable
 }
 
 void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {  
@@ -227,22 +225,6 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
 
     unlock();    
 }
-
-void ProcessorNetwork::evaluateInvalidPropertyLinks() {
-    if (islocked())
-        return;
-    lock();
-    //perform linking
-    std::vector<ProcessorLink*> processorLinks = getSortedProcessorLinks();
-    for (size_t i=0; i<processorLinks.size(); i++) {
-        if (!processorLinks[i]->isValid()) {
-            processorLinks[i]->evaluate(linkEvaluator_);
-            break;
-        }
-    }
-    unlock();    
-}
-
 
 std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromProperty(Property* modifiedProperty) { 
     std::vector<ProcessorLink*> unsortedProcessorLinks = processorLinks_;
@@ -314,65 +296,6 @@ std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromPropert
 
     return sortedProcessorLinks;
 }
-
-std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinks() {
-    std::vector<ProcessorLink*>& unsortedProcessorLinks = processorLinks_;
-    std::vector<ProcessorLink*> sortedProcessorLinks;
-
-    ProcessorLink* nextInvalidLink = 0;
-
-    //Find initial invalid link (whose property is currently modified)
-    for (size_t i=0; i<unsortedProcessorLinks.size(); i++) {         
-        if (!unsortedProcessorLinks[i]->isValid()) { 
-            nextInvalidLink = unsortedProcessorLinks[i];
-            break;
-        }
-    }
-
-    if (!nextInvalidLink)  return sortedProcessorLinks; //return empty list
-
-    //Find link connected to the invalid link.
-    //If it does not exist pick any unsorted processor link and repeat.    
-    while (sortedProcessorLinks.size()!=unsortedProcessorLinks.size()) {        
-        sortedProcessorLinks.push_back(nextInvalidLink);
-
-        Processor* srcProc = nextInvalidLink->getSourceProcessor();
-        Processor* dstProc = nextInvalidLink->getDestinationProcessor();
-
-        //Find link connected to the invalid link.
-        nextInvalidLink = 0;
-        for (size_t i=0; i<unsortedProcessorLinks.size(); i++) {
-            if ( std::find(sortedProcessorLinks.begin(), sortedProcessorLinks.end(), unsortedProcessorLinks[i])==sortedProcessorLinks.end()) {
-                std::vector<PropertyLink*> propertyLinks = unsortedProcessorLinks[i]->getPropertyLinks();                
-                for (size_t j=0; j<propertyLinks.size(); j++) { 
-                    if (propertyLinks[j]->getSourceProperty()->getOwner() == dstProc ||
-                        propertyLinks[j]->getSourceProperty()->getOwner() == srcProc) {
-                            nextInvalidLink = unsortedProcessorLinks[i];
-                            break;
-                    }
-                }
-            }
-        }
-
-        //Pick any unsorted link.
-        if (!nextInvalidLink) {
-            for (size_t i=0; i<unsortedProcessorLinks.size(); i++) {
-                if ( std::find(sortedProcessorLinks.begin(), sortedProcessorLinks.end(), unsortedProcessorLinks[i])==sortedProcessorLinks.end()) {
-                    if (!unsortedProcessorLinks[i]->isValid()) { 
-                        nextInvalidLink = unsortedProcessorLinks[i];
-                        break;
-                    }
-                }
-            }
-        }
-
-        //there is no more invalid links
-        if (!nextInvalidLink) break;        
-    }
-
-    return sortedProcessorLinks;
-}
-
 
 void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("Processors", processors_, "Processor");

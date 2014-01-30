@@ -234,12 +234,9 @@ public:
 
 private:
     //Property Linking support
-    std::vector<ProcessorLink*> getSortedProcessorLinks();
     std::vector<ProcessorLink*> getSortedProcessorLinksFromProperty(Property* modifiedProperty);
     void performLinkingOnPropertyChange(Property* modifiedProperty);
     void evaluatePropertyLinks(Property*);
-    void evaluateInvalidPropertyLinks();
-
 
     bool modified_;
     bool broadcastModification_; //< shall observers be notified when the network has been modified
