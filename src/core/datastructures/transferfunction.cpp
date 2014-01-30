@@ -45,8 +45,13 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
         maskMin_ = rhs.maskMin_;
         maskMax_ = rhs.maskMax_;
         interpolationType_ = rhs.interpolationType_;
-		for (size_t i=0; i<rhs.getNumDataPoints(); i++)
-            addPoint(new TransferFunctionDataPoint(*rhs.getPoint(static_cast<int>(i))));
+		//for (size_t i=0; i<rhs.getNumDataPoints(); i++)
+        //    addPoint(new TransferFunctionDataPoint(*rhs.getPoint(static_cast<int>(i))));        
+        for (size_t i=0; i<rhs.getNumDataPoints(); i++) {
+            TransferFunctionDataPoint* oldPoint = rhs.getPoint(static_cast<int>(i));
+            TransferFunctionDataPoint* newPoint = new TransferFunctionDataPoint(this, oldPoint->getPos(), oldPoint->getRGBA());
+            addPoint(newPoint);
+        }
 	}
 	calcTransferValues();
 	return *this;

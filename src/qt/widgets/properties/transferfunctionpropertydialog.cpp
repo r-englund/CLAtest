@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
+#include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 #include <QFileDialog>
 
 namespace inviwo {
@@ -20,6 +21,7 @@ namespace inviwo {
 TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty, QWidget* parent)
     : InviwoDockWidget("Transfer Function", parent)
     , VoidObserver()
+    , PropertyEditorWidget()
     , tfProperty_(tfProperty)
     , tfPixmap_(NULL)
 {
@@ -141,6 +143,10 @@ void TransferFunctionPropertyDialog::generateWidget() {
     mainLayout->addWidget(rightPanel);
     mainPanel->setLayout(mainLayout);
     setWidget(mainPanel);
+
+    initialize(tfProperty_);
+    setFloating(true);
+    setVisible(false);
 }
 
 void TransferFunctionPropertyDialog::switchInterpolationType(int interpolationType) {
@@ -279,6 +285,24 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
 void TransferFunctionPropertyDialog::showHistogram(bool show){
     tfProperty_->setShowHistogram(show);
     tfEditorView_->setShowHistogram(show);
+}
+
+void TransferFunctionPropertyDialog::resizeEvent(QResizeEvent* event) {
+    setEditorDimension(ivec2(event->size().width(), event->size().height()) );
+    QWidget::resizeEvent(event);
+}
+
+void TransferFunctionPropertyDialog::showEvent(QShowEvent* event) {
+    showEditor();
+}
+
+void TransferFunctionPropertyDialog::closeEvent(QCloseEvent* event) {
+    hideEditor();
+}
+
+void TransferFunctionPropertyDialog::moveEvent(QMoveEvent* event) {
+    moveEditor(ivec2(event->pos().x(), event->pos().y()) );
+    QWidget::moveEvent(event);
 }
 
 void TransferFunctionPropertyDialog::notify() {

@@ -22,6 +22,7 @@
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/metadata/processormetadata.h>
 #include <inviwo/core/metadata/processorwidgetmetadata.h>
+#include <inviwo/core/metadata/propertyeditorwidgetmetadata.h>
 
 //Utilizes
 #include <inviwo/core/util/systemcapabilities.h>
@@ -93,6 +94,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerMetaData(new PositionMetaData());
     registerMetaData(new ProcessorMetaData());
     registerMetaData(new ProcessorWidgetMetaData());
+    registerMetaData(new PropertyEditorWidgetMetaData());
 
     // Register Capabilities
     registerCapabilities(new SystemCapabilities());

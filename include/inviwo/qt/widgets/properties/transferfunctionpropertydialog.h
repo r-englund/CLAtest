@@ -21,13 +21,13 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/colorwheel.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 #include <inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
+#include <inviwo/core/properties/propertywidget.h>
 
 #include <QCheckBox>
 #include <QColorDialog>
@@ -41,8 +41,10 @@
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
+
+class TransferFunctionPropertyWidgetQt;
  
-class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver {
+class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver, public PropertyEditorWidget {
 
     Q_OBJECT
 
@@ -102,6 +104,12 @@ private:
     void generateWidget();
     void setPointColor(QColor color);
     void updateTFPreview();
+
+protected:
+    virtual void resizeEvent(QResizeEvent*);
+    virtual void closeEvent(QCloseEvent*);
+    virtual void showEvent(QShowEvent*);
+    virtual void moveEvent(QMoveEvent*);
 };
 
 } // namespace

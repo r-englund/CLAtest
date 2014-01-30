@@ -146,10 +146,28 @@ int Property::getVariantType() {
     return Variant::VariantTypeInvalid;
 }
 
+MetaData* Property::getMetaData(std::string className) {
+    //TODO: Code is very similar to processor getMetaData. Use common scheme
+    MetaData* meta = 0;
+    for (size_t i=0; i<metaData_.size(); i++) {
+        if (metaData_[i]->getClassName()==className) {
+            meta = metaData_[i];
+            break;
+        }
+    }
+
+    if (!meta) {
+        meta = dynamic_cast<MetaData*>(MetaDataFactory::getRef().create(className));
+        metaData_.push_back(meta);
+    }
+    return meta;
+}
+
 void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassName(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("displayName", displayName_, true);
+    s.serialize("MetaDataList", metaData_, "MetaData") ;
 }
 
 void Property::deserialize(IvwDeserializer& d) {
@@ -157,6 +175,7 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("type", className, true);
     d.deserialize("identifier", identifier_, true);
     d.deserialize("displayName", displayName_, true);
+    d.deserialize("MetaDataList", metaData_, "MetaData") ;
 }
 
 bool Property::operator==(const Property& prop){

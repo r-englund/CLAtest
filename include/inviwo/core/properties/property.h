@@ -60,6 +60,7 @@ public:
     void registerWidget(PropertyWidget* propertyWidget);
     void updateWidgets();
     bool hasWidgets()const;
+    MetaData* getMetaData(std::string meta);
 
     void setGroupID(const std::string &groupID);
 
@@ -112,6 +113,9 @@ private:
     std::string groupID_;
     std::string groupDisplayName_;
     static std::map<std::string,std::string> groupDisplayNames_;
+
+    //TODO: Use map (Refer Processor meta-data list)
+    std::vector<MetaData*> metaData_; 
 };
 
 } // namespace
