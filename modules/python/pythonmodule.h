@@ -37,8 +37,6 @@ public:
      * \brief Destructor for PythonModule
      *
      * Calls the destructor for the PythonEditorWidget and PyInviwo and then shut down the python interpreter. 
-     * 
-     * @return  DESCRIBE_ME
      */
     virtual ~PythonModule();
 

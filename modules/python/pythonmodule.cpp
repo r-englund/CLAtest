@@ -13,7 +13,6 @@
  **********************************************************************/
 
 #include <modules/python/pythonmodule.h>
-#include <inviwo/core/util/stringconversion.h>
 #include "pyinviwo.h"
 
 namespace inviwo {

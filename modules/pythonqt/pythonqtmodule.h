@@ -20,6 +20,7 @@
 
 namespace inviwo {
     class PyModule;
+    class PythonMenu;
 class IVW_MODULE_PYTHONQT_API PythonQtModule : public InviwoModule {
 public:
     PythonQtModule();
@@ -29,6 +30,7 @@ private:
     void initPyQtModule();
 
     PyModule* inviwoPyQtModule_;
+    PythonMenu* menu_;
 };
 
 } // namespace

@@ -198,6 +198,57 @@ namespace inviwo {
         Py_RETURN_NONE;
     }
 
+
+    PyObject* py_clearTransferfunction(PyObject* /*self*/, PyObject* args){
+        if (PyTuple_Size(args) != 2) {
+            std::ostringstream errStr;
+            errStr << "clearTransferfunction() takes exactly 2 arguments: processor name, property id";
+            errStr << " (" << PyTuple_Size(args) << " given)";
+            PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+            return 0;
+        }
+
+        if (!PyString_Check(PyTuple_GetItem(args, 0))) {
+            PyErr_SetString(PyExc_TypeError, "clearTransferfunction() argument 1 must be string");
+            return 0;
+        }
+
+        if (!PyString_Check(PyTuple_GetItem(args, 1))) {
+            PyErr_SetString(PyExc_TypeError, "clearTransferfunction() argument 2 must be string");
+            return 0;
+        }
+
+        std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+        std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+
+
+        Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+        if(!processor){
+            std::string msg = std::string("clearTransferfunction() no processor with name: ") + processorName;
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+        Property *theProperty = processor->getPropertyByIdentifier(propertyID);
+        if(!theProperty){
+            std::string msg = std::string("clearTransferfunction() no property with id: ") + propertyID;
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+        TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
+        if(!tf){
+            std::string msg = std::string("clearTransferfunction() no transfer function property with id: ") + propertyID + ", ("+propertyID  +" is of type "+ theProperty->getClassName() +  ")";
+            PyErr_SetString(PyExc_TypeError, msg.c_str());
+            return 0;
+        }
+
+        tf->get().clearPoints();
+
+        Py_RETURN_NONE;
+
+    }
+
     PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args){
         if (PyTuple_Size(args) != 3) {
             std::ostringstream errStr;
@@ -249,6 +300,16 @@ namespace inviwo {
             return 0;
         }
 
+        if(!URLParser::fileExists(filename)){
+            if(URLParser::fileExists(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_TRANSFERFUNCTIONS,filename))){
+                filename = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_TRANSFERFUNCTIONS,filename);
+            }else{
+                std::string msg = "loadTransferFunction() file not found (" + filename + ")";
+                PyErr_SetString(PyExc_TypeError, msg.c_str());
+                return 0;
+            }
+        }
+
         //*
         IvwDeserializer deserializer(filename);
         tf->deserialize(deserializer);
@@ -259,9 +320,9 @@ namespace inviwo {
 
     
     PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args){
-        if (PyTuple_Size(args) != 2) {
+        if (PyTuple_Size(args) != 4) {
             std::ostringstream errStr;
-            errStr << "loadTransferFunction() takes exactly 2 arguments: processor name, property id";
+            errStr << "addPointToTransferFunction() takes exactly 2 arguments: processor name, property id";
             errStr << " (" << PyTuple_Size(args) << " given)";
             PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
             return 0;
@@ -269,36 +330,42 @@ namespace inviwo {
 
         // check parameter 1 and 2, if they are strings
         if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-            PyErr_SetString(PyExc_TypeError, "loadTransferFunction() arguments must be strings");
+            PyErr_SetString(PyExc_TypeError, "addPointToTransferFunction() arguments must be strings");
             return 0;
         }
 
+        
+
         std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
         std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
-        
 
         Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
         if(!processor){
-            std::string msg = std::string("loadTransferFunction() no processor with name: ") + processorName;
+            std::string msg = std::string("addPointToTransferFunction() no processor with name: ") + processorName;
             PyErr_SetString(PyExc_TypeError, msg.c_str());
             return 0;
         }
 
         Property *theProperty = processor->getPropertyByIdentifier(propertyID);
         if(!theProperty){
-            std::string msg = std::string("loadTransferFunction() no property with id: ") + propertyID;
+            std::string msg = std::string("addPointToTransferFunction() no property with id: ") + propertyID;
             PyErr_SetString(PyExc_TypeError, msg.c_str());
             return 0;
         }
 
         TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
         if(!tf){
-            std::string msg = std::string("loadTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID  +" is of type "+ theProperty->getClassName() +  ")";
+            std::string msg = std::string("addPointToTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID  +" is of type "+ theProperty->getClassName() +  ")";
             PyErr_SetString(PyExc_TypeError, msg.c_str());
             return 0;
         }
 
-        tf->get().addPoint(vec2(0.1,0.9),vec4(0,1,1,1));
+
+        PyValueParser parser;
+        vec2 pos = parser.parse<vec2>(PyTuple_GetItem(args, 2));
+        vec3 color = parser.parse<vec3>(PyTuple_GetItem(args, 3));
+
+        tf->get().addPoint(pos,vec4(color,pos.y));
         tf->setPropertyModified(true);
         Py_RETURN_NONE;
     }

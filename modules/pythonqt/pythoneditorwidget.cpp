@@ -32,15 +32,26 @@
 #include <inviwo/core/util/clock.h>
 #include "inviwo/qt/widgets/properties/syntaxhighlighter.h"
 
+
 namespace inviwo{
+
+    const static std::string defaultSource = "# Inviwo Python script \nimport inviwo \nimport inviwoqt \n\ninviwo.info() \ninviwoqt.info() \n";
+    PythonEditorWidget* PythonEditorWidget::instance_ = 0;
+    PythonEditorWidget* PythonEditorWidget::getPtr(){
+        ivwAssert(instance_!=0,"Singleton not yet created");
+            return instance_;
+    }
+
     PythonEditorWidget::PythonEditorWidget(QWidget* parent)
         : InviwoDockWidget(tr("Python Editor"), parent)
         , VoidObserver()
         , script_()
         , unsavedChanges_(false)
         , infoTextColor_(153,153,153)
-        , errorTextColor_(255,107,107) {
-
+        , errorTextColor_(255,107,107) 
+    {
+        ivwAssert(instance_==0,"This is a Singelton, constructor may only be called once")
+        instance_ = this;
         setObjectName("PythonEditor");
         setAllowedAreas(Qt::AllDockWidgetAreas);
         setFloating(true);
@@ -53,6 +64,8 @@ namespace inviwo{
         ProcessorNetwork* processorNetwork = InviwoApplication::getPtr()->getProcessorNetwork();
         addObservation(processorNetwork);
         processorNetwork->addObserver(this);
+
+        InviwoApplication::getRef().registerFileObserver(this);
     }   
 
     void PythonEditorWidget::notify() {
@@ -89,17 +102,18 @@ namespace inviwo{
         startRecordScriptButton_ = new QToolButton(content);
         endRecordScriptButton_ = new QToolButton(content);
 
+        runButton->setShortcut(QKeySequence(tr("F5")));
         runButton->setIcon(QIcon(":/icons/python.png"));
-        runButton->setToolTip("Compile and run");
+        runButton->setToolTip("Compile and run (F5)");
 
         newButton->setIcon(QIcon(":/icons/new.png"));
-        newButton->setToolTip("New file");
+        newButton->setToolTip("New file (Ctrl+N)");
 
         openButton->setIcon(QIcon(":/icons/open.png"));
         openButton->setToolTip("Open Python script");
 
         saveButton->setIcon(QIcon(":/icons/save.png"));
-        saveButton->setToolTip("Save");
+        saveButton->setToolTip("Save (Ctrl+S)");
 
         saveAsButton->setIcon(QIcon(":/icons/saveas.png"));
         saveAsButton->setToolTip("Save as");
@@ -217,6 +231,8 @@ namespace inviwo{
 	}
 
     void PythonEditorWidget::save(){
+        if(script_.getSource() == defaultSource)
+            return; //nothig to be saved
         if(scriptFileName_.size()==0){
             saveAs();
         }else if(unsavedChanges_){
@@ -243,7 +259,15 @@ namespace inviwo{
         unsavedChanges_ = false;
     }
 
+    bool PythonEditorWidget::hasFocus()const{
+        if(InviwoDockWidget::hasFocus()) return true;
+        if(pythonCode_->hasFocus()) return true;
+        return false;
+    }
+
     void PythonEditorWidget::saveAs(){
+        if(script_.getSource() == defaultSource)
+            return; //nothig to be saved
         QStringList extensions;
         extensions << "Python Script (*.py)";
 
@@ -308,8 +332,9 @@ namespace inviwo{
         setVisible(true);
     }
 
-    const static std::string defaultSource = "# Inviwo Python script \nimport inviwo \n\ninviwo.info() \n";
     void PythonEditorWidget::setDefaultText(){
+        if(script_.getSource() == defaultSource)
+            return; //nothig to be done
         if(unsavedChanges_){
             int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard Changes","Cancel");
             if(ret == 0)

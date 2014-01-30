@@ -32,7 +32,8 @@ namespace inviwo{
 class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget 
                                                  , public FileObserver 
                                                  , public PythonExecutionOutputObeserver
-                                                 , public VoidObserver {
+                                                 , public VoidObserver
+{
     Q_OBJECT
 
 public:
@@ -46,7 +47,8 @@ public:
 	virtual void onPyhonExecutionOutput(std::string msg,OutputType outputType);
 
     virtual void notify();
-
+    bool hasFocus()const;
+    static PythonEditorWidget* getPtr();
 private:
     void buildWidget();
 
@@ -62,10 +64,13 @@ private:
     bool unsavedChanges_;
     void readFile();
 
+
     QToolButton* startRecordScriptButton_;
     QToolButton* endRecordScriptButton_;
 
     SyntaxHighligther* syntaxHighligther_;
+    
+    static PythonEditorWidget* instance_;
 
 public slots:
     void save();

@@ -64,7 +64,9 @@ void PyModule::printInfo(){
     }
 }
 
-
+std::vector<PyMethod*> PyModule::getPyMethods(){
+    return methods_;
+}
 
 PyModule* PyModule::getModuleByPyObject(PyObject *obj){
     return instances_[obj];

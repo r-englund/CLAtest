@@ -29,7 +29,7 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* /*args*/);
     class IVW_MODULE_PYTHON_API PySetCameraFocusMethod : public PyMethod{
     public:
         std::string getName(){return "setCameraFocus";}
-        std::string getDesc(){return "setCameraFocus(processor name, property id, tuple)\tFunction to set the cameras focal point.";}
+        std::string getDesc(){return "Function to set the cameras focal point.";}
         virtual PyCFunction getFunc(){return py_setCameraFocus;}
 
     };
@@ -37,7 +37,7 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* /*args*/);
     class IVW_MODULE_PYTHON_API PySetCameraUpMethod : public PyMethod{
     public:
         std::string getName(){return "setCameraUp";}
-        std::string getDesc(){return "setCameraUpDirection(processor name, property id, tuple)\tFunction to set the cameras up direction.";}
+        std::string getDesc(){return "Function to set the cameras up direction.";}
         virtual PyCFunction getFunc(){return py_setCameraUp;}
 
     };
@@ -45,7 +45,7 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* /*args*/);
     class IVW_MODULE_PYTHON_API PySetCameraPosMethod : public PyMethod{
     public:
         std::string getName(){return "setCameraPosition";}
-        std::string getDesc(){return "setCameraUpDirection(processor name, property id, tuple)\tFunction to set the cameras position.";}
+        std::string getDesc(){return "Function to set the cameras position.";}
         virtual PyCFunction getFunc(){return py_setCameraPos;}
 
     };

@@ -30,20 +30,13 @@ namespace inviwo {
     class IVW_MODULE_PYTHON_API PyInfoMethod : public PyMethod{
     public:
         std::string getName(){return "info";}
-        std::string getDesc(){return "info()\tPrints documentation of the module's functions.";}
+        std::string getDesc(){return "Prints documentation of the module's functions.";}
         virtual PyCFunction getFunc(){return py_info;}
     };
 
 
 
 class IVW_MODULE_PYTHON_API PyModule{
-    std::string moduleName_;
-    std::vector<PyMethod*> methods_;
-    PyObject* moduleObject_;
-    PyObject* dict_;
-    PyObject *name_;
-
-    static std::map<PyObject*,PyModule*> instances_;
 
 public:
     PyModule(std::string moduleName,std::vector<PyMethod*> methods = std::vector<PyMethod*>());
@@ -54,7 +47,19 @@ public:
 
     void printInfo();
 
+    std::vector<PyMethod*> getPyMethods();
+
     static PyModule* getModuleByPyObject(PyObject *obj);
+
+
+private:
+    std::string moduleName_;
+    std::vector<PyMethod*> methods_;
+    PyObject* moduleObject_;
+    PyObject* dict_;
+    PyObject *name_;
+
+    static std::map<PyObject*,PyModule*> instances_;
 
 
 };

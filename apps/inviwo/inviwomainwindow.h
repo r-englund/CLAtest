@@ -30,9 +30,6 @@
 #include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/editor/resourcemanagerwidget.h>
-#ifdef IVW_PYTHON_QT
-#include <modules/pythonqt/pythoneditorwidget.h>
-#endif
 #include <inviwo/qt/editor/networkeditor.h>
 
 namespace inviwo {
@@ -101,9 +98,6 @@ private:
     ConsoleWidget* consoleWidget_;
     MappingWidget* mappingwidget_;
     ResourceManagerWidget* resourceManagerWidget_;
-#ifdef IVW_PYTHON_QT
-    PythonEditorWidget* pythonEditorWidget_;
-#endif
 
     // mainwindow menus
     QMenuBar* basicMenuBar;
@@ -111,9 +105,6 @@ private:
     QMenu* helpMenuItem_;
     QMenu* viewMenuItem_;
     QMenu* viewModeItem_;
-#ifdef IVW_PYTHON_QT
-    QMenu* pythonMenuItem_;
-#endif
     
     // mainwindow menuactions
     QAction* newFileAction_;
@@ -125,9 +116,6 @@ private:
     QAction* recentFileActions_[maxNumRecentFiles_];
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
-#ifdef IVW_PYTHON_QT
-    QAction* pythonEditorOpenAction_;
-#endif
 
     QToolButton* enableDisableEvaluationButton_;
 

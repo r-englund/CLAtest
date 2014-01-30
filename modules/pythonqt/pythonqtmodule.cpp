@@ -16,16 +16,20 @@
 
 #include <modules/python/pythoninterface/pymodule.h>
 #include "pythonqtmethods/pythonqtmethods.h"
+#include "pythonmenu.h"
 
 namespace inviwo {
 
 PythonQtModule::PythonQtModule() : InviwoModule() {
     setIdentifier("PythonQt");
     initPyQtModule();
+
+    menu_ = new PythonMenu();
 }
 
 PythonQtModule::~PythonQtModule(){
     delete inviwoPyQtModule_;
+    delete menu_;
 }
 
 void PythonQtModule::initPyQtModule(){

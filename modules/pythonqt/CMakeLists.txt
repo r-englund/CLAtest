@@ -16,9 +16,11 @@ set(MOC_FILES
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
+    ${IVW_MODULE_DIR}/pythonqt/pythoninfowidget.h
+    ${IVW_MODULE_DIR}/pythonqt/pythonmenu.h
+    ${IVW_MODULE_DIR}/pythonqt/pythonqtmethods/pythonqtmethods.h
     ${IVW_MODULE_DIR}/pythonqt/pythonqtmodule.h
     ${IVW_MODULE_DIR}/pythonqt/pythonqtmoduledefine.h
-    ${IVW_MODULE_DIR}/pythonqt/pythonqtmethods/pythonqtmethods.h
     ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -30,8 +32,10 @@ source_group("MOC Files" FILES ${MOC_FILES})
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/pythonqt/pythoneditorwidget.cpp
-    ${IVW_MODULE_DIR}/pythonqt/pythonqtmodule.cpp
+    ${IVW_MODULE_DIR}/pythonqt/pythoninfowidget.cpp
+    ${IVW_MODULE_DIR}/pythonqt/pythonmenu.cpp
     ${IVW_MODULE_DIR}/pythonqt/pythonqtmethods/pythonqtmethods.cpp
+    ${IVW_MODULE_DIR}/pythonqt/pythonqtmodule.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

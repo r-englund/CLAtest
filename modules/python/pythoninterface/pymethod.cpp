@@ -18,8 +18,23 @@
 
 namespace inviwo{
 
+PyParamBase::PyParamBase(std::string paramName,bool optional)
+: name_(paramName)
+, optional_(optional)
+{
+
+}
+
+std::string PyParamBase::getParamName()const{
+    return name_;
+}
+
+bool PyParamBase::isOptional()const{
+    return optional_;
+}
 
 PyMethod::PyMethod(){
+
 }
 
 
@@ -31,6 +46,32 @@ PyMethodDef* PyMethod::getDef(){
     return &def_;
 }
 
+std::string PyMethod::getParamDesc(){
+    if(params_.empty()){
+        return "None";
+    }
+
+    std::stringstream ss;
+    for(size_t i = 0;i<params_.size();i++){
+        if(i!=0)
+            ss << " , ";
+        if(params_[i]->isOptional())
+            ss << "[";
+        ss << params_[i]->paramType() << " " << params_[i]->getParamName();
+
+        if(params_[i]->isOptional())
+            ss << "]";
+
+    }
+
+    
+
+    return ss.str();
+}
+
+void PyMethod::addParam(PyParamBase* param){
+    params_.push_back(param);
+}
 
 
 

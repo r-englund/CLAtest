@@ -30,13 +30,14 @@ PyObject* py_getVolumeDimension(PyObject* /*self*/, PyObject* args);
 PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args);
 PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args);
 
+PyObject* py_clearTransferfunction(PyObject* /*self*/, PyObject* args);
 PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args);
 
 
 class IVW_MODULE_PYTHON_API PySetVoxelMethod : public PyMethod{
 public:
     std::string getName(){return "setVoxel";}
-    std::string getDesc(){return "setVoxel(vol,(x,y,z),v)\tSet voxel value of volume vol, at (x,y,z) ot value v (between 0-1).";}
+    std::string getDesc(){return "Set voxel value of volume vol, at (x,y,z) ot value v (between 0-1).";}
     virtual PyCFunction getFunc(){return py_setVoxel;}
 };
 
@@ -44,7 +45,7 @@ public:
 class IVW_MODULE_PYTHON_API PyGetVolumeDimension : public PyMethod{
 public:
     std::string getName(){return "getVolumeDimension";}
-    std::string getDesc(){return "getVolumeDimension(vol)\tGet dimesnion of volume.";}
+    std::string getDesc(){return "Get dimesnion of volume.";}
     virtual PyCFunction getFunc(){return py_getVolumeDimension;}
 };
 
@@ -53,7 +54,7 @@ public:
 class IVW_MODULE_PYTHON_API PySaveTransferFunction : public PyMethod{
 public:
     std::string getName(){return "saveTransferFunction";}
-    std::string getDesc(){return "saveTransferFunction(processor,transferfunctionPropery,filename)\tSave a transfer function to file from the specified transfer function property.";}
+    std::string getDesc(){return "Save a transfer function to file from the specified transfer function property.";}
     virtual PyCFunction getFunc(){return py_saveTransferFunction;}
 };
 
@@ -62,16 +63,42 @@ public:
 class IVW_MODULE_PYTHON_API PyLoadTransferFunction : public PyMethod{
 public:
     std::string getName(){return "loadTransferFunction";}
-    std::string getDesc(){return "loadTransferFunction(processor,transferfunctionPropery,filename)\tLoad a transfer function from file into the specified transfer function property.";}
+    std::string getDesc(){return "Load a transfer function from file into the specified transfer function property.";}
     virtual PyCFunction getFunc(){return py_loadTransferFunction;}
+};
+
+
+
+class IVW_MODULE_PYTHON_API PyClearTransferfunction : public PyMethod{
+public:
+    std::string getName(){return "clearTransferfunction";}
+    std::string getDesc(){return "Clears a transfer function.";}
+    virtual PyCFunction getFunc(){return py_clearTransferfunction;}
 };
 
 
 class IVW_MODULE_PYTHON_API PyAddTransferFunction : public PyMethod{
 public:
-    std::string getName(){return "addTF";}
-    std::string getDesc(){return "addTF(processor,transferfunctionPropery)\tLoad a transfer function from file into the specified transfer function property.";}
+    PyAddTransferFunction()
+        : processor_("processor")
+        , property_("property")
+        , pos_("position")
+        , color_("color")
+    {
+        addParam(&processor_);
+        addParam(&property_);
+        addParam(&pos_);
+        addParam(&color_);
+    }
+    std::string getName(){return "addPointToTransferFunction";}
+    std::string getDesc(){return "Load a transfer function from file into the specified transfer function property.";}
     virtual PyCFunction getFunc(){return py_addPointTransferFunction;}
+
+private:
+    PyParamString processor_;
+    PyParamString property_;
+    PyParamVec2 pos_;
+    PyParamVec4 color_;
 };
 
 

@@ -60,7 +60,7 @@ namespace inviwo{
     class PyStdOutCatcher : public PyMethod{
     public:
         std::string getName(){return "ivwPrint";}
-        std::string getDesc(){return "ivwPrint()\t Only for internal use. Redirect std output to python editor widget.";}
+        std::string getDesc(){return " Only for internal use. Redirect std output to python editor widget.";}
         virtual PyCFunction getFunc(){return py_stdout;}
     };
 
@@ -151,6 +151,8 @@ namespace inviwo{
 
         inviwoPyModule->addMethod(new PySaveTransferFunction());
         inviwoPyModule->addMethod(new PyLoadTransferFunction());
+        inviwoPyModule->addMethod(new PyClearTransferfunction());
+        inviwoPyModule->addMethod(new PyAddTransferFunction());
 
         inviwoInternalPyModule->addMethod(new PyStdOutCatcher());
 
@@ -173,15 +175,25 @@ namespace inviwo{
             LogWarn("Failed to add '" + pathConv + "' to Python module search path");
     }
 
+    std::vector<PyModule*> PyInviwo::getAllPythonModules(){
+        return registeredModules_;
+    }
+
     PyObject* PyInviwo::registerPyModule(PyModule *pyModule) {
         init_();
         if (Py_IsInitialized()) {
-          //  PyObject *refrence =
-          //  PyObject* obj = Py_InitModule4(pyModule->getModuleName(),NULL,NULL,refrence,PYTHON_API_VERSION);
             PyObject* obj = Py_InitModule(pyModule->getModuleName(),NULL);
             if(!obj){
                 LogWarn("Failed to init python module '" << pyModule->getModuleName() <<"' ");
             }
+
+            registeredModules_.push_back(pyModule);
+            
+            for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+                static_cast<PyInviwoObserver*>(*it)->onModuleRegistered(pyModule);
+            }
+
+
             return obj;
         }else{
             LogError("Python environment not initialized");

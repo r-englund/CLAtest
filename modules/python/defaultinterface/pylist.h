@@ -29,14 +29,14 @@ PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/);
     class IVW_MODULE_PYTHON_API PyListPropertiesMethod : public PyMethod{
     public:
         std::string getName(){return "listProperties";}
-        std::string getDesc(){return "listProperties(processor name)\tList all properties for a processor.";}
+        std::string getDesc(){return "List all properties for a processor";}
         virtual PyCFunction getFunc(){return py_listProperties;}
 
     };
     class IVW_MODULE_PYTHON_API PyListProcessorsMethod : public PyMethod{
     public:
         std::string getName(){return "listProcessors";}
-        std::string getDesc(){return "listProcessors()\tLists all processors in the current network.";}
+        std::string getDesc(){return "Lists all processors in the current network";}
         virtual PyCFunction getFunc(){return py_listProcesoors;}
 
     };

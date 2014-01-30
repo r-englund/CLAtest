@@ -32,6 +32,11 @@
 
 #include <inviwo/core/util/commandlineparser.h>
 
+
+#ifdef IVW_PYTHON_QT
+#include <modules/pythonqt/pythoneditorwidget.h>
+#endif
+
 namespace inviwo { 
 
 InviwoMainWindow::InviwoMainWindow() : QMainWindow(), VoidObserver() {
@@ -74,11 +79,6 @@ void InviwoMainWindow::initialize() {
     propertyListWidget_->addObserver(this);
 
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
-
-#ifdef IVW_PYTHON_QT
-	pythonEditorWidget_ = new PythonEditorWidget(this);
-    InviwoApplication::getRef().registerFileObserver(pythonEditorWidget_);
-#endif
 
     // load settings and restore window state
     QSettings settings("Inviwo", "Inviwo");
@@ -144,9 +144,9 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
 
 #ifdef IVW_PYTHON_QT
     if (cmdparser->getRunPythonScriptAfterStartup()) {
-        pythonEditorWidget_->show();
-        pythonEditorWidget_->loadFile(cmdparser->getPythonScirptName(),false);
-        pythonEditorWidget_->run();
+        PythonEditorWidget::getPtr()->show();
+        PythonEditorWidget::getPtr()->loadFile(cmdparser->getPythonScirptName(),false);
+        PythonEditorWidget::getPtr()->run();
     }
 #endif
 	if (cmdparser->getCaptureAfterStartup()) {
@@ -191,11 +191,6 @@ void InviwoMainWindow::addMenus() {
 	viewMenuItem_->addMenu(viewModeItem_);
 
 	helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
-
-#ifdef IVW_PYTHON_QT
-    pythonMenuItem_ = new QMenu(tr("&Python"),basicMenuBar);
-    basicMenuBar->insertMenu(first, pythonMenuItem_);
-#endif
 }
 
 void InviwoMainWindow::addMenuActions() {
@@ -282,12 +277,6 @@ void InviwoMainWindow::addMenuActions() {
     enableDisableIcon.addFile(":/icons/button_cancel.png", QSize(), QIcon::Active, QIcon::On);
     enableDisableEvaluationButton_->setIcon(enableDisableIcon);
     connect(enableDisableEvaluationButton_, SIGNAL(toggled(bool)), this, SLOT(disableEvaluation(bool)));
-
-#ifdef IVW_PYTHON_QT
-    pythonEditorOpenAction_ = new QAction(QIcon(":/icons/python.png"),"&Python Editor", this);
-    connect(pythonEditorOpenAction_, SIGNAL(triggered(bool)), pythonEditorWidget_, SLOT(show(void)));
-    pythonMenuItem_->addAction(pythonEditorOpenAction_);
-#endif
 }
 
 void InviwoMainWindow::addToolBars() {
@@ -344,6 +333,12 @@ std::string InviwoMainWindow::getCurrentWorkspace() {
 }
 
 void InviwoMainWindow::newWorkspace() {
+#ifdef IVW_PYTHON_QT
+    if(PythonEditorWidget::getPtr()->isActiveWindow() && PythonEditorWidget::getPtr()->hasFocus()){
+        PythonEditorWidget::getPtr()->setDefaultText();
+        return;
+    }
+#endif
     if (currentWorkspaceFileName_ != "")
         askToSaveWorkspaceChanges();
     networkEditorView_->getNetworkEditor()->clearNetwork();
@@ -353,6 +348,7 @@ void InviwoMainWindow::newWorkspace() {
     updateWindowTitle();
     // set it back to false to not ask to save an unmodified new workspace on exit
     workspaceModified_ = false;
+
 }
 
 void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
@@ -422,6 +418,14 @@ void InviwoMainWindow::openRecentWorkspace() {
 }
 
 void InviwoMainWindow::saveWorkspace() {
+
+#ifdef IVW_PYTHON_QT
+    if(PythonEditorWidget::getPtr()->isActiveWindow() && PythonEditorWidget::getPtr()->hasFocus()){
+        PythonEditorWidget::getPtr()->save();
+        return;
+    } // only save workspace if ptyhon editor does not have focus
+#endif
+
     if (currentWorkspaceFileName_.contains("untitled.inv")) saveWorkspaceAs();
     else {
         networkEditorView_->getNetworkEditor()->saveNetwork(currentWorkspaceFileName_.toLocal8Bit().constData());
@@ -429,6 +433,8 @@ void InviwoMainWindow::saveWorkspace() {
         updateWindowTitle();
     }
     
+
+
     /*
     // The following code snippet allows to reload the Qt style sheets during runtime,
     // which is handy while we change them. once the style sheets have been finalized,

@@ -187,5 +187,21 @@ PyObject* py_enableEvaluation(PyObject* /*self*/, PyObject* /*args*/){
     return 0;
 }
 
+PySnapshotMethod::PySnapshotMethod()
+    : filename_("filename")
+    , canvas_("canvas")
+{
+    addParam(&filename_);
+    addParam(&canvas_);
+}
+
+PySnapshotCanvasMethod::PySnapshotCanvasMethod()
+: canvasID_("canvasID")
+, filename_("filename")
+{
+    addParam(&canvasID_);
+    addParam(&filename_);
+}
+
 }
 
