@@ -17,6 +17,7 @@
 uniform TEXTURE_TYPE srcColorTex_;
 uniform TEXTURE_PARAMETERS srcColorParameters_;
 
+uniform bool hasData_;
 uniform int backgroundStyle_;
 uniform vec4 color1_;
 uniform vec4 color2_;
@@ -33,8 +34,14 @@ vec4 linearGradient(vec2 texCoords) {
 }
 
 void main() {
+
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-    vec4 srcColor = texture2D(srcColorTex_, texCoords);
+    vec4 srcColor;
+	if(hasData_){
+		srcColor = texture2D(srcColorTex_, texCoords);
+	}else{
+		srcColor = vec4(0.0,0.0,0.0,0.0);
+	}
 
 	vec4 backgroundColor = BACKGROUND_STYLE_FUNCTION;
 

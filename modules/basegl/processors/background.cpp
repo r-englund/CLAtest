@@ -32,9 +32,9 @@ Background::Background()
     addPort(inport_);
     addPort(outport_);
 
-	backgroundStyle_.addOption("uniformColor", "Uniform color", 0);
-	backgroundStyle_.addOption("checkerBoard", "Checker board", 1);
-	backgroundStyle_.addOption("linearGradient", "Linear gradient", 2);
+    backgroundStyle_.addOption("linearGradient", "Linear gradient", 0);
+	backgroundStyle_.addOption("uniformColor", "Uniform color", 1);
+	backgroundStyle_.addOption("checkerBoard", "Checker board", 2);
     addProperty(backgroundStyle_);
 	color1_.setSemantics(PropertySemantics::Color);
 	addProperty(color1_);
@@ -58,30 +58,35 @@ void Background::deinitialize() {
 void Background::initializeResources() {
 	std::string shaderDefine;
 	switch (backgroundStyle_.get()) {
-	case 0 : // uniform color
+    case 0 : // linear gradient
+        shaderDefine = "linearGradient(texCoords)";
+        break;
+	case 1 : // uniform color
 		shaderDefine = "color1_";
 		break;
-	case 1 : // checker board
+	case 2 : // checker board
 		shaderDefine = "checkerBoard(texCoords)";
-		break;
-	case 2 : // linear gradient
-		shaderDefine = "linearGradient(texCoords)";
 		break;
 	}
 	shader_->getFragmentShaderObject()->addShaderDefine("BACKGROUND_STYLE_FUNCTION", shaderDefine);
 	shader_->build();
 }
 
-void Background::process() {    
+void Background::process() { 
     activateTarget(outport_);
 
-	TextureUnit srcColorUnit;
-    bindColorTexture(inport_, srcColorUnit.getEnum());
+    TextureUnit srcColorUnit;
+    if(inport_.hasData())
+        bindColorTexture(inport_, srcColorUnit.getEnum());
 
     shader_->activate();
 	setGlobalShaderParameters(shader_);
     shader_->setUniform("srcColorTex_", srcColorUnit.getUnitNumber());
-	setTextureParameters(inport_, shader_, "srcColorParameters_");
+    if(inport_.hasData())
+        setTextureParameters(inport_, shader_, "srcColorParameters_");
+
+    shader_->setUniform("hasData_",inport_.hasData());
+
 	shader_->setUniform("color1_", color1_.get());
 	shader_->setUniform("color2_", color2_.get());
 
@@ -89,6 +94,10 @@ void Background::process() {
 
 	shader_->deactivate();
     deactivateCurrentTarget();
+}
+
+bool Background::isReady()const{
+    return true;
 }
 
 } // namespace

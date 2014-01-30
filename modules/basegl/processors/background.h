@@ -40,7 +40,7 @@ public:
 
 protected:
     virtual void process();
-
+    virtual bool isReady()const;
 private:
     ImageInport inport_;
     ImageOutport outport_;
