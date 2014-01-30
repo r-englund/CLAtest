@@ -265,14 +265,21 @@ bool LightVolumeGL::lightSourceChanged(){
         }
     }
 
-    if(color != lightColor_.xyz()){
-        lightColor_.x = color.x;
-        lightColor_.y = color.y;
-        lightColor_.z = color.z;
-        return true;
+    bool lightColorChanged = false;
+    if(color.r != lightColor_.r){
+        lightColor_.r = color.r;
+        lightColorChanged = true;
+    }
+    if(color.g != lightColor_.g){
+        lightColor_.g = color.g;
+        lightColorChanged = true;
+    }
+    if(color.b != lightColor_.b){
+        lightColor_.b = color.b;
+        lightColorChanged = true;
     }
 
-    return false;
+    return lightColorChanged;
 }
 
 bool LightVolumeGL::volumeChanged(bool lightColorChanged){
