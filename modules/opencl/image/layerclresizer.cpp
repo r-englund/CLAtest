@@ -14,7 +14,7 @@
 
 #include <inviwo/core/common/inviwocommondefines.h>
 #include <inviwo/core/util/assertion.h>
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 #include <modules/opencl/image/layerclresizer.h>
 
 namespace inviwo {

@@ -18,7 +18,7 @@
 #include <modules/opencl/cl.hpp>
 #include <glm/glm.hpp>
 #include <modules/opencl/openclmoduledefine.h>
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 #include <iostream>
 
 namespace cl {

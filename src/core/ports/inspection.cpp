@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-Inspection::Inspection() : state_(State::Start)
+Inspection::Inspection() : state_(Start)
     , processorIdentifier_("")
     , portIdentifier_("")
     , active_(NULL)

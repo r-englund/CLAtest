@@ -18,7 +18,7 @@
 #include <modules/opencl/openclcapabilities.h> 
 #include <modules/opencl/syncclgl.h>
 #include <inviwo/core/io/textfilereader.h>
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 #include <iostream>
 #include <sstream>
 #include <stdio.h>

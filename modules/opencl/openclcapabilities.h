@@ -20,7 +20,7 @@
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opencl/cl.hpp>
 #include <modules/opencl/glmcl.h>
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 #include <iostream>
 #include <sstream>
 #include <stdio.h>

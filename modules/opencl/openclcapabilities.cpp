@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include "openclcapabilities.h"
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 #include <modules/opencl/inviwoopencl.h>
 
 namespace inviwo {
