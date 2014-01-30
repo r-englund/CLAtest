@@ -61,10 +61,11 @@ void GeometryRenderProcessorGL::process() {
         if (renIt == renderers_.end()) {
             GeometryRenderer *renderer = GeometryRendererFactory::getPtr()->create(geom);
             // Do not render if no renderer exist for this geometry
-            if (renderer != NULL)
+            if(renderer != NULL) {
                 renderers_.push_back(renderer);
-            // Assign iterator to last element
-            renIt = --renderers_.end();
+                // Assign iterator to last element
+                renIt = --renderers_.end();
+            }
         } else if (geom != (*renIt)->getGeometry()) {
             // The geometry changed. Create a new renderer for it
             delete *renIt;

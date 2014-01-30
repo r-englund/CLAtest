@@ -24,6 +24,7 @@
 #include <inviwo/core/io/datawriter.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/ports/port.h>
+#include <inviwo/core/ports/portfactoryobject.h>
 #include <inviwo/core/ports/portinspector.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/processorfactoryobject.h>
@@ -54,7 +55,7 @@ public:
     const std::vector<DataRepresentation*>& getDataRepresentations() const;
     const std::vector<DataWriter*>& getDataWriters() const;
     const std::vector<MetaData*>& getMetaData() const;
-    const std::vector<Port*>& getPorts() const;
+    const std::vector<PortFactoryObject*>& getPorts() const;
     const std::vector<PortInspector*>& getPortInspectors() const;
     const std::vector<ProcessorFactoryObject*>& getProcessors() const;
     const std::vector< std::pair<std::string, ProcessorWidget*> >& getProcessorWidgets() const;
@@ -80,7 +81,7 @@ protected:
     void registerDataRepresentation(DataRepresentation* dataRepresentation);
     void registerDataWriter(DataWriter* writer);
     void registerMetaData(MetaData* meta);
-    void registerPort(Port* port);
+    void registerPortObject(PortFactoryObject* port);
     void registerPortInspector(PortInspector* portInspector);
     void registerProcessorObject(ProcessorFactoryObject* processor);
     void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
@@ -110,7 +111,7 @@ private:
     std::vector<DataRepresentation*> dataRepresentations_;
     std::vector<DataWriter*> dataWriters_;
     std::vector<MetaData*> metadata_;
-    std::vector<Port*> ports_;
+    std::vector<PortFactoryObject*> ports_;
     std::vector<PortInspector*> portInspectors_;
     std::vector<ProcessorFactoryObject*> processors_;
     std::vector<std::pair<std::string, ProcessorWidget*> > processorWidgets_;
@@ -127,6 +128,8 @@ private:
 #define registerProcessor(T) { registerProcessorObject(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
 #define registerProperty(T) { registerPropertyObject(new PropertyFactoryObjectTemplate<T>(#T)); }
 #define registerPropertyWidget(T, P, semantics) { registerPropertyWidgetObject(new PropertyWidgetFactoryObjectTemplate<T,P>(#P, PropertySemantics(semantics))); }
+#define registerPort(T) { registerPortObject(new PortFactoryObjectTemplate<T>(#T)); }
+
 
 } // namespace
 

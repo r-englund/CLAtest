@@ -92,7 +92,7 @@ public:
     void updateLinkGraphicsItems();
 
 public slots:
-    void hoverPortTimeOut();
+    void managePortInspectors();
     void workerThreadReset();
     void cacheProcessorProperty(Processor*);
 
@@ -145,7 +145,8 @@ private:
     ProcessorGraphicsItem* endProcessor_;
     Port* startPort_;
     Port* endPort_;
-    Port* inspectedPort_; // the port which is currently inspected by hovering over it
+   
+    Inspection inspection_;
 
     bool gridSnapping_;
     static const int GRID_SPACING;
@@ -177,8 +178,8 @@ private:
     ConnectionGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
     LinkConnectionGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
 
-    void addPortInspector(Port* port, QPointF pos);
-    void removePortInspector(Port*);
+    void addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos);
+    void removePortInspector(std::string processorIdentifier, std::string portIdentifier);
 
     void addExternalNetwork(std::string fileName, std::string processorPrefix, ivec2 pos, unsigned int networkEditorFlags=NetworkEditor::None, ivec2 canvasSize=ivec2(128));
     void removeExternalNetwork(std::string identifierPrefix);

@@ -149,7 +149,7 @@ const std::vector<DataReader*>& InviwoModule::getDataReaders() const {return dat
 const std::vector<DataRepresentation*>& InviwoModule::getDataRepresentations() const {return dataRepresentations_;}
 const std::vector<DataWriter*>& InviwoModule::getDataWriters() const {return dataWriters_;}
 const std::vector<MetaData*>& InviwoModule::getMetaData() const {return metadata_;}
-const std::vector<Port*>& InviwoModule::getPorts() const {return ports_;}
+const std::vector<PortFactoryObject*>& InviwoModule::getPorts() const {return ports_;}
 const std::vector<PortInspector*>& InviwoModule::getPortInspectors() const { return portInspectors_; }
 const std::vector<ProcessorFactoryObject*>& InviwoModule::getProcessors() const {return processors_;}
 const std::vector< std::pair<std::string, ProcessorWidget*> >& InviwoModule::getProcessorWidgets() const {return processorWidgets_;}
@@ -175,7 +175,10 @@ void InviwoModule::registerMetaData(MetaData* meta) {
     metadata_.push_back(meta);
     MetaDataFactory::getPtr()->registerObject(meta);
 }
-void InviwoModule::registerPort(Port* port) {ports_.push_back(port);}
+void InviwoModule::registerPortObject(PortFactoryObject* port) {
+    ports_.push_back(port);
+    PortFactory::getPtr()->registeryObject(port);
+}
 void InviwoModule::registerPortInspector(PortInspector* portInspector) {
     portInspectors_.push_back(portInspector); 
     PortInspectorFactory::getPtr()->registerObject(portInspector);

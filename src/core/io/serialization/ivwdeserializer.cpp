@@ -135,7 +135,11 @@ void IvwDeserializer::readFile() {
     try {   
         doc_.LoadFile();   
         rootElement_ = doc_.FirstChildElement();      
-    } catch (TxException& ) {}
+    } catch (TxException& ) {
+        std::stringstream ss;
+        ss << "Error reading file: " << IvwSerializeBase::fileName_;
+        throw(AbortException(ss.str()));
+    }
 }
 
 } //namespace

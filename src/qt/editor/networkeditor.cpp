@@ -56,7 +56,7 @@ NetworkEditor::NetworkEditor() :
     , linkCurve_(0)
     , startProcessor_(0)
     , endProcessor_(0)
-    , inspectedPort_(0)
+    , inspection_()
     , gridSnapping_(true)
     , filename_(""){
 
@@ -69,7 +69,7 @@ NetworkEditor::NetworkEditor() :
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
 
     hoverTimer_.setSingleShot(true);
-    connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(hoverPortTimeOut()));
+    connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspectors()));
 }
 
 #define DELETE_VECTOR_ENTRIES(vec) while(!vec.empty()){delete vec.back();vec.pop_back();}
@@ -110,6 +110,7 @@ void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showPro
 }
 
 void NetworkEditor::removeProcessor(Processor* processor) {
+    removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
     // remove processor representations
     removeProcessorRepresentations(processor);
     // enable default rendering context before deinitializing processor
@@ -414,10 +415,78 @@ void  NetworkEditor::updateLinkGraphicsItems() {
 //////////////////////////////////////
 //   PORT INSPECTOR FUNCTIONALITY   //
 //////////////////////////////////////
-void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
+
+void NetworkEditor::managePortInspectors() {
+
+    QPointF pos(inspection_.pos_.x, inspection_.pos_.y);
+
+    Port* port = 0;
+    ProcessorGraphicsItem* processor = getProcessorGraphicsItemAt(pos);
+    ConnectionGraphicsItem* connection = getConnectionGraphicsItemAt(pos);
+
+    if(processor) {
+        port = processor->getSelectedPort(pos);
+        // If we hover over an inport get its connected outport instead
+        Inport* inport = dynamic_cast<Inport*>(port);
+        if(inport) {
+            port = inport->getConnectedOutport();
+        }
+    } else if(connection) {
+        port = connection->getOutport();
+    }
+
+    if(!port) {  // return to start
+        removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+        hoverTimer_.stop();
+        inspection_.resetPort();
+        inspection_.setState(Inspection::Start);        
+    }
+
+    if(inspection_.state() == Inspection::Start) {
+        if(port) {
+            inspection_.setState(Inspection::Wait);
+            inspection_.setPort(port);
+            hoverTimer_.start(500);
+        }
+    } else if(inspection_.state() == Inspection::Wait) {
+        if(inspection_.samePort(port)) {
+            if(hoverTimer_.isActive()) {
+                //Keep waiting
+            } else {
+                // add port inspector
+                inspection_.setState(Inspection::Inspect);
+                addPortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_, QCursor::pos());
+            }
+        } else { // Left port before time out, reset.
+            hoverTimer_.stop();
+            inspection_.resetPort();
+            inspection_.setState(Inspection::Start);
+        }
+    } else if(inspection_.state() == Inspection::Inspect) {
+        if(inspection_.samePort(port)) {
+            // Keep showing inspector 
+        } else {
+            removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+            inspection_.setState(Inspection::Start);
+            inspection_.resetPort();
+        }
+    }
+}
+
+void NetworkEditor::addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos) {
+
+    Processor* processor = processorNetwork_->getProcessorByName(processorIdentifier);
+    if(!processor) {
+        return;
+    }
+    Outport* port = processor->getOutport(portIdentifier);
+    if(!port) {
+        return;
+    }
 
     PortInspector* portInspector =
         PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+    
     if(portInspector && !portInspector->isActive()){
         portInspector->setActive(true);
 
@@ -431,10 +500,10 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
 
         for (size_t i=0; i<processors.size(); i++) {
             processorNetwork_->addProcessor(processors[i]);
+            //addProcessor(processors[i], QPointF(pos.x()+50*i, pos.y()), true, true, false);
         }
-        //addProcessorRepresentations(canvasProcessor, pos, false, false, false);
-        addProcessorRepresentations(canvasProcessor, pos + QPointF(50,50), true, true, true);
-
+        addProcessorRepresentations(canvasProcessor, pos, false, false, false);
+        
         // Add connections to the network
         std::vector<PortConnection*> connections = portInspector->getConnections();
         for (size_t i=0; i<connections.size(); i++) {
@@ -454,24 +523,53 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
                                        propertyLinks[j]->getDestinationProperty());
             }
         }
+
+        //Do some autolinking, without adding gui stuff.
+        std::vector<Processor*> existingProcessors = processorNetwork_->getProcessors();
+        LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
+        ProcessorLink* processorLink = NULL;
         for(size_t i = 0; i < processors.size(); i++) {
-            autoLinkOnAddedProcessor(processors[i]);
+            Processor* addedProcessor = processors[i];
+  
+            std::vector<Property*> dstProperties = addedProcessor->getProperties();           
+            for(size_t i = 0; i < dstProperties.size(); i++) {
+                Property* dstProperty = dstProperties[i];
+
+                for(size_t j = 0; j < existingProcessors.size(); j++) {
+                    if(existingProcessors[j] != addedProcessor) {
+                        std::vector<Property*> srcProperties = existingProcessors[j]->getProperties();
+
+                        Property* srcProperty = 0;
+                        for(size_t k = 0; k < srcProperties.size(); k++) {
+                            if(AutoLinker::canLink(srcProperties[k], dstProperty, DefaultLinkingCondition) &&
+                               linkSettings->isLinkable(srcProperties[k]) &&
+                               linkSettings->isLinkable(dstProperty)) {
+                                srcProperty = srcProperties[k];
+                                break;
+                            }
+                        }
+
+                        if(srcProperty) {
+                            processorLink = processorNetwork_->addLink(existingProcessors[j], addedProcessor);
+                            processorLink->addPropertyLinks(srcProperty, dstProperty);
+                            processorLink->addPropertyLinks(dstProperty, srcProperty);
+                        }
+                    }
+                }
+            }
         }
         
         // Setup the widget
+        
         ProcessorWidgetQt* processorWidgetQt =
             dynamic_cast<ProcessorWidgetQt*>(canvasProcessor->getProcessorWidget());
         ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
         
-        int portInspectorSize = dynamic_cast<IntProperty*>(
-            InviwoApplication::getPtr()->
-            getSettingsByType<SystemSettings>()->
-            getPropertyByIdentifier("portInspectorSize"))->get();
         
-        processorWidgetQt->setMinimumSize(portInspectorSize, portInspectorSize);
-        processorWidgetQt->setMaximumSize(portInspectorSize, portInspectorSize);
+        processorWidgetQt->setMinimumSize(inspection_.size(), inspection_.size());
+        processorWidgetQt->setMaximumSize(inspection_.size(), inspection_.size());
 
-        processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint
+        processorWidgetQt->setWindowFlags(  Qt::CustomizeWindowHint
                                           | Qt::Tool
                                           | Qt::WindowStaysOnTopHint
                                           //| Qt::FramelessWindowHint 
@@ -482,6 +580,8 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
         processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(),
                                                    canvasProcessor->getIdentifier());
 
+        
+
         // Connect the port to inspect to the inports of the inspector network
         Outport* outport = dynamic_cast<Outport*>(port);
         std::vector<Inport*> inports = portInspector->getInports();
@@ -491,13 +591,25 @@ void NetworkEditor::addPortInspector(Port* port, QPointF pos) {
 
         processorNetwork_->unlock();
         processorNetwork_->setBroadcastModification(true);
+
+        processorNetwork_->modified();
+
     }
 }
 
-void NetworkEditor::removePortInspector(Port* port){
+void NetworkEditor::removePortInspector(std::string processorIdentifier, std::string portIdentifier) {
+    
+    Processor* processor = processorNetwork_->getProcessorByName(processorIdentifier);
+    if(!processor) {
+        return;
+    }
+    Outport* port = processor->getOutport(portIdentifier);
+    if(!port) {
+        return;
+    }
 
     PortInspector* portInspector =
-        PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+       PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
     if(portInspector && portInspector->isActive()){
         processorNetwork_->lock();
         processorNetwork_->setBroadcastModification(false);
@@ -518,10 +630,6 @@ void NetworkEditor::removePortInspector(Port* port){
     }
 }
 
-
-void NetworkEditor::hoverPortTimeOut() {
-    addPortInspector(inspectedPort_, QCursor::pos());
-}
 
 void NetworkEditor::workerThreadReset(){
     workerThread_ = NULL;
@@ -809,6 +917,13 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 
+    bool inspectPort = dynamic_cast<BoolProperty*>(
+        InviwoApplication::getPtr()->
+        getSettingsByType<SystemSettings>()->
+        getPropertyByIdentifier("enablePortInspectors"))->get();
+
+
+
     if (connectionCurve_) {
         // Connection drag mode
 
@@ -844,42 +959,14 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         linkCurve_->update();
         e->accept();
 
-    } else if (e->button()==Qt::NoButton) {
+    } else if(inspection_.isActive() && e->button() == Qt::NoButton) {
         // Port inspector hover effect
-
-        Port* port = 0;
-        ProcessorGraphicsItem* processor = getProcessorGraphicsItemAt(e->scenePos());
-        ConnectionGraphicsItem* connection = getConnectionGraphicsItemAt(e->scenePos());
-
-        if (processor) {
-            port = processor->getSelectedPort(e->scenePos());
-            // If we hover over an inport get its connected outport instead
-            Inport* inport = dynamic_cast<Inport*>(port);
-            if (inport){
-                port = inport->getConnectedOutport();
-            }
-        } else if (connection) {
-            port = connection->getOutport();
-        }
-
-        bool inspectPort = dynamic_cast<BoolProperty*>(
-            InviwoApplication::getPtr()->
-                getSettingsByType<SystemSettings>()->
-                    getPropertyByIdentifier("enablePortInspectors"))->get();
-
-        if(inspectPort && port && inspectedPort_ != port) {
-            inspectedPort_ = port;
-            hoverTimer_.start(500);
-        } else if(port==0 && hoverTimer_.isActive()){
-            hoverTimer_.stop();
-            inspectedPort_ = NULL;
-        } else if(inspectedPort_ && !hoverTimer_.isActive()) {
-            removePortInspector(inspectedPort_);
-            inspectedPort_ = NULL;
-        }
+        inspection_.pos_ = ivec2(e->scenePos().x(),e->scenePos().y());
+        managePortInspectors();
     }
     QGraphicsScene::mouseMoveEvent(e);
 }
+
 
 void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
     if (connectionCurve_) {
@@ -1236,8 +1323,8 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     processorNetwork_->lock();
 
     // then we deserialize processor network
-    IvwDeserializer xmlDeserializer(fileName);
     try {
+        IvwDeserializer xmlDeserializer(fileName);
         processorNetwork_->deserialize(xmlDeserializer);
     }
     catch (const AbortException& exception) {

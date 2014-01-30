@@ -18,6 +18,7 @@
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
+#include <inviwo/core/ports/portfactory.h>
 #include <inviwo/core/ports/portinspectorfactory.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/processors/processorwidgetfactory.h>
@@ -76,6 +77,7 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     DataWriterFactory::init();
     GeometryRendererFactory::init();
     MetaDataFactory::init();
+    PortFactory::init();
     PortInspectorFactory::init();
     ProcessorFactory::init();
     ProcessorWidgetFactory::init(); 

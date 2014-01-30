@@ -39,6 +39,11 @@
 //Others
 #include <inviwo/core/processors/canvasprocessor.h>
 
+//Ports
+#include <inviwo/core/ports/geometryport.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/ports/volumeport.h>
+
 //PortInspectors
 #include <inviwo/core/ports/portinspector.h>
 
@@ -106,7 +111,14 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerSettings(new LinkSettings());
 
     // Register Ports
-        
+    registerPort(GeometryInport);
+    registerPort(GeometryMultiInport);
+    registerPort(GeometryOutport);
+    registerPort(ImageInport);
+    registerPort(ImageOutport);
+    registerPort(VolumeInport);
+    registerPort(VolumeOutport);
+
     // Register PortInspectors
     registerPortInspector(new PortInspector("ImageOutport",
         InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)

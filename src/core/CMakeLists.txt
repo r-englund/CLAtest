@@ -25,7 +25,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/histogram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/attributes.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/edge.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
@@ -38,6 +37,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/polygon.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/simplemesh.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/simplemeshcreator.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/histogram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/image.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imagedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/imageram.h
@@ -120,10 +120,13 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/geometryport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/imageport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/inport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/inspection.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/multidatainport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/multiinport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/outport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/port.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/portfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/portfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/portinspector.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/portinspectorfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/singleinport.h
@@ -224,7 +227,6 @@ set(SOURCE_FILES
     datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp
     datastructures/diskrepresentation.cpp
-    datastructures/histogram.cpp
     datastructures/geometry/attributes.cpp
     datastructures/geometry/geometry.cpp
     datastructures/geometry/geometryram.cpp
@@ -234,6 +236,7 @@ set(SOURCE_FILES
     datastructures/geometry/plane.cpp
     datastructures/geometry/simplemesh.cpp
     datastructures/geometry/simplemeshcreator.cpp
+    datastructures/histogram.cpp
     datastructures/image/image.cpp
     datastructures/image/imagedisk.cpp
     datastructures/image/imageram.cpp
@@ -300,9 +303,12 @@ set(SOURCE_FILES
     ports/geometryport.cpp
     ports/imageport.cpp
     ports/inport.cpp
+    ports/inspection.cpp
     ports/multiinport.cpp
     ports/outport.cpp
     ports/port.cpp
+    ports/portfactory.cpp
+    ports/portfactoryobject.cpp
     ports/portinspector.cpp
     ports/portinspectorfactory.cpp
     ports/singleinport.cpp

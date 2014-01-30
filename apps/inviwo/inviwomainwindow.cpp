@@ -357,8 +357,10 @@ void InviwoMainWindow::newWorkspace() {
 
 void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
     QFile file(workspaceFileName);
-    if (!file.exists())
+    if(!file.exists()) {
+        LogError("Could not find workspace file: " << workspaceFileName.toLocal8Bit().constData());
         return;
+    }
     
     networkEditorView_->getNetworkEditor()->loadNetwork(workspaceFileName.toLocal8Bit().constData());
     workspaceModified_ = false;
