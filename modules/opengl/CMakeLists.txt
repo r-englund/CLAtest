@@ -111,6 +111,7 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler2d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler3d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_shading.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightingraycasting.frag
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 

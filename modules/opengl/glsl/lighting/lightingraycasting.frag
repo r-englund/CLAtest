@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2014Scientific Visualization Group - Linköping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -8,7 +8,7 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Timo Ropinski
+ * Primary author : Erik Sundén
  *
  **********************************************************************/
 
@@ -31,6 +31,9 @@ uniform TEXTURE_PARAMETERS exitParameters_;
 uniform VOLUME_TYPE volume_;
 uniform VOLUME_PARAMETERS volumeParameters_;
 
+uniform VOLUME_TYPE lightVolume_;
+uniform VOLUME_PARAMETERS lightVolumeParameters_;
+
 // set threshold for early ray termination
 #define ERT_THRESHOLD 0.95
 
@@ -47,11 +50,20 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     while (t < tEnd) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getVoxel(volume_, volumeParameters_, samplePos);
+        
         voxel.xyz = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
 
         vec4 color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
 
         color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), voxel.xyz, lightPosition_, cameraPosition_);
+        
+        //Light Volume Compositing
+        vec4 lightVoxel = getVoxel(lightVolume_, lightVolumeParameters_, samplePos);
+#ifdef LIGHT_COLOR_ENABLED
+        //color.rgb *= lightVoxel.rgb;
+        color.rgb = (color.rgb * 0.6) + (lightVoxel.rgb * color.rgb * 0.8) + (0.8 * color.rgb * pow(lightVoxel.rgb, vec3(5.0)));
+#endif
+        color.rgb *= lightVoxel.a;
 
         result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel.xyz, t, tDepth, tIncr);
 

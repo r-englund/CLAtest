@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
+ * Copyright (C) 2014 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -8,42 +8,57 @@
  * form or by any means including photocopying or recording without
  * written permission of the copyright owner.
  *
- * Primary author : Timo Ropinski
+ * Primary author : Erik Sundén
  *
  **********************************************************************/
 
-#include "simpleraycaster.h"
+#include "lightingraycaster.h"
 #include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {
 
-ProcessorClassName(SimpleRaycaster, "SimpleRaycaster"); 
-ProcessorCategory(SimpleRaycaster, "Volume Rendering");
-ProcessorCodeState(SimpleRaycaster, CODE_STATE_STABLE);
+ProcessorClassName(LightingRaycaster, "LightingRaycaster"); 
+ProcessorCategory(LightingRaycaster, "Volume Rendering");
+ProcessorCodeState(LightingRaycaster, CODE_STATE_EXPERIMENTAL);
 
-SimpleRaycaster::SimpleRaycaster()
-    : VolumeRaycasterGL("raycasting.frag"),
+LightingRaycaster::LightingRaycaster()
+    : VolumeRaycasterGL("lighting/lightingraycasting.frag"),
     volumePort_("volume"),
     entryPort_("entry-points"),
     exitPort_("exit-points"),
+    lightVolumePort_("lightVolume"),
     outport_("outport", &entryPort_, COLOR_DEPTH),
-    transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
+    transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_),
+    enableLightColor_("supportColoredLight", "Enable Light Color", false, PropertyOwner::INVALID_RESOURCES)
 {
-    addPort(volumePort_, "VolumePortGroup");
+    addPort(volumePort_);
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
+    addPort(lightVolumePort_);
     addPort(outport_, "ImagePortGroup1");
 
     addProperty(transferFunction_);
+
+    addProperty(enableLightColor_);
+    enableLightColor_.setGroupID("lighting");
 
     addProperty(isoValue_);
 
     addShadingProperties();
 }
 
-void SimpleRaycaster::process() {
+void LightingRaycaster::initializeResources() {
+    if(enableLightColor_.get())
+        raycastPrg_->getFragmentShaderObject()->addShaderDefine("LIGHT_COLOR_ENABLED");
+    else
+        raycastPrg_->getFragmentShaderObject()->removeShaderDefine("LIGHT_COLOR_ENABLED");
+
+    VolumeRaycasterGL::initializeResources();
+}
+
+void LightingRaycaster::process() {
     TextureUnit transFuncUnit;
     bindTransferFunction(transferFunction_.get(), transFuncUnit.getEnum());
 
@@ -53,6 +68,9 @@ void SimpleRaycaster::process() {
 
     TextureUnit volUnit;
     bindVolume(volumePort_, volUnit.getEnum());
+
+    TextureUnit lightVolUnit;
+    bindVolume(lightVolumePort_, lightVolUnit.getEnum());
 
     activateAndClearTarget(outport_);
     uvec2 outportDim = outport_.getDimension();
@@ -71,6 +89,9 @@ void SimpleRaycaster::process() {
 
     raycastPrg_->setUniform("volume_", volUnit.getUnitNumber());
     setVolumeParameters(volumePort_, raycastPrg_, "volumeParameters_");
+
+    raycastPrg_->setUniform("lightVolume_", lightVolUnit.getUnitNumber());
+    setVolumeParameters(lightVolumePort_, raycastPrg_, "lightVolumeParameters_");
 
     raycastPrg_->setUniform("samplingRate_", samplingRate_.get());
     raycastPrg_->setUniform("isoValue_", isoValue_.get());

@@ -21,14 +21,16 @@ DataFormatBase* DataFormatBase::instance_[] = {NULL};
 DataFormatBase::DataFormatBase() 
     : formatId_(id())
     , bitsAllocated_(bitsAllocated())
-    , bitsStored_(bitsStored()){
+    , bitsStored_(bitsStored())
+    , components_(components()){
     formatStr_ = new std::string(str());
 }
 
-DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, std::string s) 
+DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, std::string s) 
     : formatId_(t)
     , bitsAllocated_(bA)
-    , bitsStored_(bS){
+    , bitsStored_(bS)
+    , components_(c) {
     formatStr_ = new std::string(s);
 }
 
@@ -107,6 +109,10 @@ size_t DataFormatBase::getBytesAllocated() const {
 
 size_t DataFormatBase::getBytesStored() const { 
     return static_cast<size_t>(glm::ceil(BITS_TO_BYTES(static_cast<float>(getBitsStored())))); 
+}
+
+int DataFormatBase::getComponents() const {
+    return components_;
 }
 
 const char* DataFormatBase::getString() const { 

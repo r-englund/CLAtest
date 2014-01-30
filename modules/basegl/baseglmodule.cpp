@@ -23,6 +23,7 @@
 #include <modules/basegl/processors/imageclassify.h>
 #include <modules/basegl/processors/imagegrayscale.h>
 #include <modules/basegl/processors/imagemixer.h>
+#include <modules/basegl/processors/lightingraycaster.h>
 #include <modules/basegl/processors/positionwidgetprocessor.h>
 #include <modules/basegl/processors/redgreenprocessor.h>
 #include <modules/basegl/processors/simpleraycaster.h>
@@ -43,6 +44,7 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(ImageClassify);
 	registerProcessor(ImageGrayscale);
     registerProcessor(ImageMixer);
+    registerProcessor(LightingRaycaster);
     registerProcessor(PositionWidgetProcessor);
     registerProcessor(RedGreenProcessor);
     registerProcessor(SimpleRaycaster);

@@ -195,7 +195,7 @@ class IVW_CORE_API DataFormatBase
 {
 public:
     DataFormatBase();
-    DataFormatBase(DataFormatId t, size_t bA, size_t bS, std::string s);
+    DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, std::string s);
     virtual ~DataFormatBase();
 
     static const DataFormatBase* get(){
@@ -228,6 +228,7 @@ public:
     size_t getBitsStored() const;
     size_t getBytesAllocated() const;
     size_t getBytesStored() const;
+    int getComponents() const;
     const char* getString() const;
     DataFormatId getId() const;
 
@@ -238,11 +239,11 @@ protected:
     static DataFormatBase* getNonConst(DataFormatId id){
         return instance_[id];
     }
-    
 
     DataFormatId formatId_;
     size_t bitsAllocated_;
     size_t bitsStored_;
+    int components_;
     std::string* formatStr_;
     
 };
@@ -254,7 +255,7 @@ public:
     typedef T type;
     static const size_t bits = B;
 
-    DataFormat() : DataFormatBase(id(), bitsAllocated(), bitsStored(), str()){}
+    DataFormat() : DataFormatBase(id(), bitsAllocated(), bitsStored(), components(), str()){}
     virtual ~DataFormat() {}
 
     static const DataFormat<T, B>* get(){

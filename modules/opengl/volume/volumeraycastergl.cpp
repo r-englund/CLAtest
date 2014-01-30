@@ -105,7 +105,6 @@ void VolumeRaycasterGL::deinitialize() {
 
 
 void VolumeRaycasterGL::initializeResources() {
-    // DEPRECATED: add some empty defines for Voreen compatibility
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_BEGIN_COMPOSITING");
     raycastPrg_->getFragmentShaderObject()->addShaderDefine("RC_END_COMPOSITING");
 
