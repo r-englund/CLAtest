@@ -7,7 +7,7 @@
 #include <QScrollArea>
 #include <QGridLayout>
 
-#include "..\python\pyinviwo.h"
+#include <modules/python/pyinviwo.h>
 
 namespace inviwo {
     PythonInfoWidget::PythonInfoWidget(QWidget *parent) 
