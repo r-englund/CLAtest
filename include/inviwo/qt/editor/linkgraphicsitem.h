@@ -65,8 +65,8 @@ public:
     LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
     ~LinkConnectionGraphicsItem();
     
-    ProcessorGraphicsItem* getOutProcessorGraphicsItem() const { return outProcessor_; }    
-    ProcessorGraphicsItem* getInProcessorGraphicsItem() const { return inProcessor_; }
+    ProcessorGraphicsItem* getSrcProcessorGraphicsItem() const { return outProcessor_; }    
+    ProcessorGraphicsItem* getDestProcessorGraphicsItem() const { return inProcessor_; }
     virtual QRectF boundingRect() const;
 
 private:

@@ -260,8 +260,8 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
     // remove link graphics items
     std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = linkGraphicsItems_;
     for (size_t i=0; i<linkGraphicsItems.size(); i++) {
-        if (linkGraphicsItems[i]->getOutProcessorGraphicsItem() == processorGraphicsItem ||
-            linkGraphicsItems[i]->getInProcessorGraphicsItem() == processorGraphicsItem) {
+        if (linkGraphicsItems[i]->getSrcProcessorGraphicsItem() == processorGraphicsItem ||
+            linkGraphicsItems[i]->getDestProcessorGraphicsItem() == processorGraphicsItem) {
             removeLinkGraphicsItem(linkGraphicsItems[i]);
         }
     }
@@ -348,8 +348,8 @@ void NetworkEditor::removeConnectionGraphicsItem(ConnectionGraphicsItem* connect
 //   PRIVATE METHODS FOR ADDING/REMOVING/DISPLAYING LINKS   //
 //////////////////////////////////////////////////////////////
 void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
-    Processor* processor1 = linkGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
-    Processor* processor2 = linkGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
+    Processor* processor1 = linkGraphicsItem->getSrcProcessorGraphicsItem()->getProcessor();
+    Processor* processor2 = linkGraphicsItem->getDestProcessorGraphicsItem()->getProcessor();
     removeLinkGraphicsItem(linkGraphicsItem);
     processorNetwork_->removeLink(processor1, processor2);
 }
@@ -378,15 +378,15 @@ void NetworkEditor::removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraph
 }
 
 void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem) {
-    Processor* inProcessor = linkConnectionGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
-    Processor* outProcessor = linkConnectionGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
+    Processor* srcProcessor = linkConnectionGraphicsItem->getSrcProcessorGraphicsItem()->getProcessor();
+    Processor* destProcessor = linkConnectionGraphicsItem->getDestProcessorGraphicsItem()->getProcessor();
 
-    LinkDialog linkDialog(inProcessor, outProcessor, processorNetwork_, 0);
+    LinkDialog linkDialog(srcProcessor, destProcessor, processorNetwork_, 0);
     linkDialog.exec();
 
-    ProcessorLink* processorLink = processorNetwork_->getLink(inProcessor, outProcessor);
+    ProcessorLink* processorLink = processorNetwork_->getLink(srcProcessor, destProcessor);
     if (!processorLink->getPropertyLinks().size())
-        removeLink(inProcessor, outProcessor);
+        removeLink(srcProcessor, destProcessor);
     else {
         std::string toolTip = processorLink->getLinkInfo();
         if (!toolTip.empty())
@@ -398,8 +398,8 @@ void  NetworkEditor::updateLinkGraphicsItems() {
     if (isLinkDisplayEnabled()) {
         for (size_t i=0;i<linkGraphicsItems_.size(); i++) {
             linkGraphicsItems_[i]->setVisible(true);
-            ProcessorGraphicsItem* processorGraphicsItem1 = linkGraphicsItems_[i]->getOutProcessorGraphicsItem();
-            ProcessorGraphicsItem* processorGraphicsItem2 = linkGraphicsItems_[i]->getInProcessorGraphicsItem();
+            ProcessorGraphicsItem* processorGraphicsItem1 = linkGraphicsItems_[i]->getSrcProcessorGraphicsItem();
+            ProcessorGraphicsItem* processorGraphicsItem2 = linkGraphicsItems_[i]->getDestProcessorGraphicsItem();
             linkGraphicsItems_[i]->setVisible(processorGraphicsItem1->isVisible() && processorGraphicsItem2->isVisible());
         }
     }
@@ -698,8 +698,8 @@ ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(Outport* outpor
 
 LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItem(Processor* processor1, Processor* processor2) const {
     for (size_t i=0; i<linkGraphicsItems_.size(); i++) {
-        Processor* outProcessor = linkGraphicsItems_[i]->getOutProcessorGraphicsItem()->getProcessor();
-        Processor* inProcessor = linkGraphicsItems_[i]->getInProcessorGraphicsItem()->getProcessor();
+        Processor* outProcessor = linkGraphicsItems_[i]->getSrcProcessorGraphicsItem()->getProcessor();
+        Processor* inProcessor = linkGraphicsItems_[i]->getDestProcessorGraphicsItem()->getProcessor();
         if ((outProcessor == processor1 && inProcessor == processor2)  ||
             (outProcessor == processor2 && inProcessor == processor1))
            return linkGraphicsItems_[i];
@@ -1033,8 +1033,8 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
                 removeLink(linkGraphicsItem);
 
             else if (result == linkAction) {
-                Processor* inProcessor = linkGraphicsItem->getInProcessorGraphicsItem()->getProcessor();
-                Processor* outProcessor = linkGraphicsItem->getOutProcessorGraphicsItem()->getProcessor();
+                Processor* inProcessor = linkGraphicsItem->getDestProcessorGraphicsItem()->getProcessor();
+                Processor* outProcessor = linkGraphicsItem->getSrcProcessorGraphicsItem()->getProcessor();
                 ProcessorLink* processorLink = processorNetwork_->getLink(inProcessor, outProcessor);
                 if (processorLink)
                     processorLink->autoLinkPropertiesByType();

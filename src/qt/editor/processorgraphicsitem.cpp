@@ -420,9 +420,9 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
 
         std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems = NetworkEditor::getRef().linkGraphicsItems_;
         for (size_t i=0; i<linkGraphicsItems.size(); i++) {
-             if (linkGraphicsItems[i]->getOutProcessorGraphicsItem() == this || linkGraphicsItems[i]->getInProcessorGraphicsItem() == this) {
-                 QPointF startPoint = linkGraphicsItems[i]->getOutProcessorGraphicsItem()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getInProcessorGraphicsItem());
-                 QPointF endPoint = linkGraphicsItems[i]->getInProcessorGraphicsItem()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getOutProcessorGraphicsItem());
+             if (linkGraphicsItems[i]->getSrcProcessorGraphicsItem() == this || linkGraphicsItems[i]->getDestProcessorGraphicsItem() == this) {
+                 QPointF startPoint = linkGraphicsItems[i]->getSrcProcessorGraphicsItem()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getDestProcessorGraphicsItem());
+                 QPointF endPoint = linkGraphicsItems[i]->getDestProcessorGraphicsItem()->getShortestBoundaryPointTo(linkGraphicsItems[i]->getSrcProcessorGraphicsItem());
                  linkGraphicsItems[i]->setStartPoint(startPoint);
                  linkGraphicsItems[i]->setEndPoint(endPoint);
                  linkGraphicsItems[i]->update();
