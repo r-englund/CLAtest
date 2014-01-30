@@ -1,4 +1,5 @@
 # Inviwo Python script 
+import inviwo
 import inviwoqt 
 
 for i in range(0, 5):
