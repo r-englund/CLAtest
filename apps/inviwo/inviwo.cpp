@@ -32,10 +32,12 @@ int main(int argc, char** argv) {
 #ifdef __unix__
     setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
 #endif
+    std::string basePath = inviwo::filesystem::findBasePath();
+    inviwo::FileLogger fileLogger(basePath);
+    inviwo::LogCentral::instance()->registerLogger(&fileLogger);
 
-    inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, inviwo::filesystem::findBasePath(), argc, argv);
+    inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
 	
-    inviwo::LogCentral::instance()->registerLogger(new inviwo::FileLogger(inviwoApp.getBasePath()));
 
     // initialize and show splash screen
 	inviwo::InviwoSplashScreen splashScreen;
@@ -79,5 +81,5 @@ int main(int argc, char** argv) {
     if (mainWin.processEndCommandLineArgs())
         return inviwoApp.exec();
     else
-        return 0;
+        return  0;
 }
