@@ -186,10 +186,10 @@ bool ImageIO::isValidImageFile(std::string filename) {
 
 void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim, DataFormatId& out_format){
     initLoader();
-    FIBITMAP *bitmap = new FIBITMAP();
+    FIBITMAP *bitmap = 0;
     void* outData = data;
     out_format = NOT_SPECIALIZED;
-    if (readInImage(filename, &bitmap)){
+    if (readInImage(filename, &bitmap)){ 
         unsigned int width = FreeImage_GetWidth(bitmap);
         unsigned int height = FreeImage_GetHeight(bitmap);
         out_dim = uvec2(width, height);
@@ -206,16 +206,16 @@ void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim,
             break;
         }
     }
-    //FreeImage_Unload(bitmap);
+    FreeImage_Unload(bitmap);
     return outData;
 }
 
 void* ImageIO::loadImageToDataAndRescale(void* data, std::string filename, uvec2 dst_dim, DataFormatId& out_format){
     initLoader();
-    FIBITMAP* bitmap = new FIBITMAP();
+    FIBITMAP* bitmap = 0;
     void* outData = data;
     out_format = NOT_SPECIALIZED;
-    if (readInImage(filename, &bitmap)){
+    if (readInImage(filename, &bitmap)){ 
         out_format = getDataFormatFromBitmap(bitmap);
         switch (out_format)
         {
@@ -229,7 +229,7 @@ void* ImageIO::loadImageToDataAndRescale(void* data, std::string filename, uvec2
             break;
         }
     }
-    //FreeImage_Unload(bitmap);
+    FreeImage_Unload(bitmap);
     return outData;
 }
 
@@ -352,7 +352,7 @@ void* ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPi
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
     uvec2 dim(width, height);
     FIBITMAP* bitmapNEW = allocateBitmap(type, dim, bitsPerPixel, channels);
-    FreeImage_Paste(bitmapNEW, bitmap, 0, 0, 255);
+    FreeImage_Paste(bitmapNEW, bitmap, 0, 0, 256);
 
     switchChannels(bitmapNEW, dim, channels);
 
@@ -379,7 +379,7 @@ void* ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, uvec2 
 
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
     FIBITMAP *bitmap2 = allocateBitmap(type, dim, bitsPerPixel, channels);
-    FreeImage_Paste(bitmap2, bitmap, 0, 0, 255);
+    FreeImage_Paste(bitmap2, bitmap, 0, 0, 256);
 
     FIBITMAP* bitmapNEW = FreeImage_Rescale(bitmap2, static_cast<int>(dst_dim.x), static_cast<int>(dst_dim.y), FILTER_BILINEAR);
     FreeImage_Unload(bitmap2);

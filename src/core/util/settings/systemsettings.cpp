@@ -69,10 +69,6 @@ void SystemSettings::allocationTest(){
     ivwAssert(module!=0, "Core module is not yet registered")
     SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module->getCapabilities());
     if (sysInfo){
-        if (allocTest_){
-            delete allocTest_;
-            LogInfo("Deleted previous test allocation");
-        }
         IntProperty* useRAMPercent = dynamic_cast<IntProperty*>(getPropertyByIdentifier("useRAMPercent"));
         uint64_t memBytesAlloc = sysInfo->getAvailableMemory(); //In Bytes
         LogInfo("Maximum Available Memory is " << formatBytesToString(memBytesAlloc));
@@ -82,6 +78,7 @@ void SystemSettings::allocationTest(){
         {
             allocTest_ = new uint32_t[static_cast<uint32_t>(memBytesAlloc/4)];
             LogInfo("Allocated " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
+            delete allocTest_;
         }
         catch(std::bad_alloc&)
         {
