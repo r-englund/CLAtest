@@ -15,7 +15,7 @@
 #include "pymodule.h"
 
 #include "../pyinviwo.h"
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 
 namespace inviwo{
 

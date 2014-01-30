@@ -16,7 +16,7 @@
 #include <inviwo/qt/widgets/properties/htmllistwidgetqt.h>
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 
 #include <QCommandLinkButton>
 #include <QSplitter>

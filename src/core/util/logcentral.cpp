@@ -12,24 +12,55 @@
  *
  **********************************************************************/
 
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 
 namespace inviwo {
-
-//LogCentral* LogCentral::instance_ = 0;
 
 ConsoleLogger::ConsoleLogger() : Logger() {}
 ConsoleLogger::~ConsoleLogger() {}
 
 void ConsoleLogger::log(std::string logSource, unsigned int logLevel, const char* fileName,
-                        const char* functionName, int lineNumber, std::string logMsg) {
+    const char* functionName, int lineNumber, std::string logMsg) {
+        IVW_UNUSED_PARAM(fileName);
+        IVW_UNUSED_PARAM(logLevel);
+        IVW_UNUSED_PARAM(functionName);
+        IVW_UNUSED_PARAM(lineNumber);
+        std::cout << "(" << logSource << ") " << logMsg << std::endl;
+}
+
+FileLogger::FileLogger(std::string logPath)
+    : Logger()
+    , fileStream_(logPath.append("/inviwo-log.html").c_str())
+{
+    fileStream_ << "<p><font size='+1'>Inviwo (V " << IVW_VERSION << ") Log File</font></p><br>" << std::endl;
+    fileStream_ << "<p>" << std::endl;
+}
+
+FileLogger::~FileLogger() {
+    fileStream_ << "</p>" << std::endl;
+    fileStream_.close();
+}
+
+void FileLogger::log(std::string logSource, unsigned int logLevel, const char* fileName,
+    const char* functionName, int lineNumber, std::string logMsg) {
     IVW_UNUSED_PARAM(fileName);
     IVW_UNUSED_PARAM(logLevel);
     IVW_UNUSED_PARAM(functionName);
     IVW_UNUSED_PARAM(lineNumber);
-    std::cout << "(" << logSource << ") " << logMsg << std::endl;
+    switch (logLevel) {
+        case inviwo::Info:
+            fileStream_ << "<font color='#000000'>Info: ";
+            break;
+        case inviwo::Warn:
+            fileStream_ << "<font color='#FFFF00'>Warn: ";
+            break;
+        case inviwo::Error:
+            fileStream_ << "<font color='#FF0000'>Error: ";
+            break;
+    }
+    fileStream_ << "(" << logSource << ") " << logMsg;
+    fileStream_ << "</font><br>" << std::endl;
 }
-
 
 LogCentral::LogCentral() : logLevel_(Info) {
     loggers_ = new std::vector<Logger*>();

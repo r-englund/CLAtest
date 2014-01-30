@@ -14,7 +14,7 @@
 
 #include <inviwo/core/util/systemcapabilities.h>
 #include <inviwo/core/util/formatconversion.h>
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 #include <sigar/include/sigar.h>
 
 namespace inviwo {

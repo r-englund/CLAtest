@@ -19,6 +19,8 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <fstream>
+#include <iostream>
 #include <sstream>
 #include <typeinfo>
 #include <inviwo/core/util/stringconversion.h>
@@ -60,7 +62,7 @@ public:
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) = 0;
 };
 
-class IVW_CORE_API ConsoleLogger : public Logger{
+class IVW_CORE_API ConsoleLogger : public Logger {
 
 public:
     ConsoleLogger();
@@ -68,6 +70,19 @@ public:
 
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
 };
+
+
+class IVW_CORE_API FileLogger : public Logger {
+
+public:
+    FileLogger(std::string logPath);
+    virtual ~FileLogger();
+
+    virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
+private:
+    std::ofstream fileStream_;
+};
+
 
 class IVW_CORE_API LogCentral {
 
@@ -87,8 +102,6 @@ public:
 private:
     unsigned int logLevel_;
     std::vector<Logger*>* loggers_;
-
-    //static LogCentral* instance_;
 };
 
 } // namespace

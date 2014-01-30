@@ -16,7 +16,7 @@
 #define IVW_CONSOLEWIDGET_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <QTextEdit>
 #include <QKeyEvent>

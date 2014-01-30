@@ -192,7 +192,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatsdefinefunc.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/glmstreamoperators.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/group.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/logdistributor.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/logcentral.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pstdint.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/referencecounter.h
@@ -351,7 +351,7 @@ set(SOURCE_FILES
     util/fileobserver.cpp
     util/filesystem.cpp
     util/formats.cpp
-    util/logdistributor.cpp
+    util/logcentral.cpp
     util/observer.cpp    
     util/settings/linksettings.cpp    
     util/settings/settings.cpp    

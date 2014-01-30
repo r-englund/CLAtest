@@ -13,7 +13,7 @@
  **********************************************************************/
 
 #include <modules/opengl/inviwoopengl.h>
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 
 void LogGLError(const char* fileName, const char* functionName, int lineNumber) {
     GLenum err = glGetError();

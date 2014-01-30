@@ -12,7 +12,6 @@
  *
  **********************************************************************/
 
-
 #ifdef _MSC_VER
     #ifdef _DEBUG
         #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
@@ -23,8 +22,8 @@
 
 #include <QFile>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
-
 #include <inviwo/core/util/filesystem.h>
+#include <inviwo/core/util/logcentral.h>
 #include "inviwomainwindow.h"
 #include "inviwosplashscreen.h"
 #include <moduleregistration.h>
@@ -33,9 +32,12 @@ int main(int argc, char** argv) {
 #ifdef __unix__
     setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
 #endif
+
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, inviwo::filesystem::findBasePath(), argc, argv);
 	
-	// initialize and show splash screen
+    inviwo::LogCentral::instance()->registerLogger(new inviwo::FileLogger(inviwoApp.getBasePath()));
+
+    // initialize and show splash screen
 	inviwo::InviwoSplashScreen splashScreen;
 	splashScreen.show();
 	splashScreen.showMessage("Loading application...");

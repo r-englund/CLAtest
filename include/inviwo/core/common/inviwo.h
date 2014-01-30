@@ -85,7 +85,7 @@ typedef glm::quat quat;
 // error handling
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/exception.h>
-#include <inviwo/core/util/logdistributor.h>
+#include <inviwo/core/util/logcentral.h>
 #define IVW_UNUSED_PARAM(param) (void)param
 
 #include <inviwo/core/io/serialization/ivwserialization.h>
