@@ -366,7 +366,6 @@ void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
 void InviwoMainWindow::onNetworkEditorFileChanged(const std::string &filename){
     setCurrentWorkspace(filename.c_str());
     addToRecentWorkspaces(filename.c_str());
-
 }
 
 void InviwoMainWindow::openLastWorkspace() {

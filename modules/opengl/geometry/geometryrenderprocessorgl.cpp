@@ -28,7 +28,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     : ProcessorGL()
     , inport_("geometry.inport")
     , outport_("image.outport")
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 1.0f, 0.0f))
+    , camera_("camera", "Camera")
     , centerViewOnGeometry_("centerView", "Center view on geometry")
 {
     addPort(inport_);
@@ -39,8 +39,6 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 
     centerViewOnGeometry_.onChange(this, &GeometryRenderProcessorGL::centerViewOnGeometry);
     addProperty(centerViewOnGeometry_);
-    trackball_ = new Trackball(&camera_);
-    addInteractionHandler(trackball_);
     outport_.addResizeEventListener(&camera_);
 
 }
@@ -73,13 +71,13 @@ void GeometryRenderProcessorGL::process() {
         }
     }
     glEnable(GL_CULL_FACE); 
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
+
 
     activateAndClearTarget(outport_);
     glCullFace(GL_BACK);
@@ -91,7 +89,7 @@ void GeometryRenderProcessorGL::process() {
     deactivateCurrentTarget();
 
     glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
     glDisable(GL_CULL_FACE);
@@ -120,7 +118,16 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
         minPos = glm::min(minPos, (*pos)[i]);
     }
     vec3 centerPos = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(0.5f*(maxPos+minPos), 1.f)).xyz();
-    camera_.setLookTo(centerPos);
+    vec3 lookFrom = camera_.getLookFrom();
+    vec3 dir = centerPos - lookFrom;
+    if (glm::length(dir) < 1e-6f) {
+        dir = vec3(0.f, 0.f, -1.f);
+    }
+    dir = glm::normalize(dir);
+    vec3 worldMin = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(minPos, 1.f)).xyz();
+    vec3 worldMax = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(maxPos, 1.f)).xyz();
+    vec3 newLookFrom = lookFrom -dir*glm::length(worldMax-worldMin);
+    camera_.setLook(newLookFrom, centerPos, camera_.getLookUp());
 
 
 }

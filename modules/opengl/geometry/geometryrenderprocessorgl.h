@@ -47,7 +47,6 @@ protected:
     ButtonProperty centerViewOnGeometry_;
 
     std::vector<GeometryRenderer*> renderers_;
-    Trackball* trackball_;
 };
 
 } // namespace

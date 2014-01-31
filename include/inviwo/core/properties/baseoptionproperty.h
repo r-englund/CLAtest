@@ -297,7 +297,7 @@ void TemplateOptionProperty<T>::serialize(IvwSerializer& s) const {
 template<typename T>
 void TemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
     BaseOptionProperty::deserialize(d) ;
-    T value = get();
+    T value = get(); // Set to default value if property did not exist 
     d.deserialize("value", value);
     set(value);
 }
