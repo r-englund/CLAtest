@@ -82,6 +82,9 @@ void PropertyEditorWidget::moveEditor(ivec2 pos) {
     metaData_->setWidgetPosition(pos);
 }
 
+void PropertyEditorWidget::setDockStatus(PropertyEditorWidgetDockStatus dockStatus) {
+    metaData_->setDockStatus(dockStatus);
+}
 bool PropertyEditorWidget::getEditorVisibilityMetaData() {    
     return metaData_->isVisible();
 }
@@ -94,5 +97,8 @@ ivec2 PropertyEditorWidget::getEditorDimensionMetaData() {
     return metaData_->getDimension();
 }
 
+PropertyEditorWidgetDockStatus PropertyEditorWidget::getEditorDockStatus() {
+    return metaData_->getDocStatus();
+}
 
 } // namespace

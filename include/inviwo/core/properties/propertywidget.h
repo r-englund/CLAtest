@@ -55,14 +55,18 @@ public:
     PropertyEditorWidget();
     virtual ~PropertyEditorWidget();
     virtual void initialize(Property* property);
+    //set functions
     virtual void setEditorVisibility(bool visible);
     virtual void showEditor();
     virtual void hideEditor();
     virtual void setEditorDimension(ivec2 dimension);
     virtual void moveEditor(ivec2 pos);
+    virtual void setDockStatus(PropertyEditorWidgetDockStatus dockStatus);
+    //get functions
     virtual bool getEditorVisibilityMetaData();
     virtual ivec2 getEditorPositionMetaData();
     virtual ivec2 getEditorDimensionMetaData();
+    virtual PropertyEditorWidgetDockStatus getEditorDockStatus();
 
 protected:
     PropertyEditorWidgetMetaData* metaData_;  //< Non owning reference to a metadata that belongs to property.

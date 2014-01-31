@@ -15,6 +15,7 @@
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 #include <QFileDialog>
+#include <QDockWidget>
 
 namespace inviwo {
 
@@ -143,6 +144,8 @@ void TransferFunctionPropertyDialog::generateWidget() {
     mainLayout->addWidget(rightPanel);
     mainPanel->setLayout(mainLayout);
     setWidget(mainPanel);
+
+    connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)) , this, SLOT(dockLocationChanged(Qt::DockWidgetArea)));
 
     initialize(tfProperty_);
     setFloating(true);
@@ -302,7 +305,18 @@ void TransferFunctionPropertyDialog::closeEvent(QCloseEvent* event) {
 
 void TransferFunctionPropertyDialog::moveEvent(QMoveEvent* event) {
     moveEditor(ivec2(event->pos().x(), event->pos().y()) );
+    if (isFloating() && !(getEditorDockStatus()==PropertyEditorWidgetDockStatus::Floating))
+        setDockStatus(PropertyEditorWidgetDockStatus::Floating);
     QWidget::moveEvent(event);
+}
+
+void TransferFunctionPropertyDialog::dockLocationChanged(Qt::DockWidgetArea dockArea) {
+    if (dockArea == Qt::LeftDockWidgetArea)
+        setDockStatus(PropertyEditorWidgetDockStatus::DockedLeft);
+    else if (dockArea == Qt::RightDockWidgetArea)
+        setDockStatus(PropertyEditorWidgetDockStatus::DockedRight);
+    else
+        setDockStatus(PropertyEditorWidgetDockStatus::Floating);
 }
 
 void TransferFunctionPropertyDialog::notify() {

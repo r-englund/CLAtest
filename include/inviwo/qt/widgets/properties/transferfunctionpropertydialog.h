@@ -74,7 +74,7 @@ public slots:
     void importTransferFunction();
     void exportTransferFunction();
     void showHistogram(bool);
-
+    void dockLocationChanged(Qt::DockWidgetArea dockArea);
 private:
 	int arrayWidth_;
     int arrayHeight_;
@@ -104,12 +104,11 @@ private:
     void generateWidget();
     void setPointColor(QColor color);
     void updateTFPreview();
-
 protected:
     virtual void resizeEvent(QResizeEvent*);
     virtual void closeEvent(QCloseEvent*);
     virtual void showEvent(QShowEvent*);
-    virtual void moveEvent(QMoveEvent*);
+    virtual void moveEvent(QMoveEvent*);    
 };
 
 } // namespace

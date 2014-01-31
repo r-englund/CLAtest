@@ -23,9 +23,28 @@
 
 namespace inviwo {
 
+class IVW_CORE_API PropertyEditorWidgetDockStatus {
+public:
+    PropertyEditorWidgetDockStatus();
+    PropertyEditorWidgetDockStatus(std::string dockStatus);
+    PropertyEditorWidgetDockStatus(const PropertyEditorWidgetDockStatus& rhs);    
+    virtual ~PropertyEditorWidgetDockStatus(){}
+    PropertyEditorWidgetDockStatus& operator=(const PropertyEditorWidgetDockStatus& rhs);
+    bool operator==(const PropertyEditorWidgetDockStatus& that);
+    const std::string& getString() const;    
+    static const PropertyEditorWidgetDockStatus Floating;
+    static const PropertyEditorWidgetDockStatus DockedLeft;
+    static const PropertyEditorWidgetDockStatus DockedRight;
+private:
+    std::string dockStatus_;
+};
+
+//////////////////////////////////////////////////////////////////////////
+
 class IVW_CORE_API PropertyEditorWidgetMetaData : public MetaData {
 
 public:
+
     PropertyEditorWidgetMetaData();
     PropertyEditorWidgetMetaData(const PropertyEditorWidgetMetaData& rhs);
     PropertyEditorWidgetMetaData& operator=(const PropertyEditorWidgetMetaData& that);
@@ -43,12 +62,14 @@ public:
     ivec2 getDimension() const;
     void setVisibile(bool visibility);
     bool isVisible() const;
+    void setDockStatus(PropertyEditorWidgetDockStatus& dockStatus);
+    const PropertyEditorWidgetDockStatus getDocStatus() const;
 
 private:
     IVec2MetaData positionMetaData_;
     IVec2MetaData dimensionMetaData_;
     BoolMetaData visiblityMetaData_;
-
+    StringMetaData dockStatusMetaData_;
 };
 
 } // namespace

@@ -16,16 +16,43 @@
 
 namespace inviwo {
 
+
+PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus() : dockStatus_("Floating") {}
+PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(std::string dockStatus="Floating") : dockStatus_(dockStatus) {}
+PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(const PropertyEditorWidgetDockStatus& rhs) : dockStatus_(rhs.dockStatus_) {};
+PropertyEditorWidgetDockStatus& PropertyEditorWidgetDockStatus::operator=(const PropertyEditorWidgetDockStatus& that){
+    if (this != &that) {
+        dockStatus_ = that.dockStatus_;
+    }
+    return *this;
+}
+bool PropertyEditorWidgetDockStatus::operator==(const PropertyEditorWidgetDockStatus& that){
+    if (this->getString() ==  that.getString())
+        return true;    
+    return false;
+}
+const std::string& PropertyEditorWidgetDockStatus::getString() const{
+    return dockStatus_;
+}
+const PropertyEditorWidgetDockStatus PropertyEditorWidgetDockStatus::Floating("Floating");
+const PropertyEditorWidgetDockStatus PropertyEditorWidgetDockStatus::DockedLeft("DockedLeft");
+const PropertyEditorWidgetDockStatus PropertyEditorWidgetDockStatus::DockedRight("DockedRight");
+
+
+//////////////////////////////////////////////////////////////////////////
+
 PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData() 
     : positionMetaData_(ivec2(0))
     , dimensionMetaData_(ivec2(256))
-    , visiblityMetaData_(false) {
+    , visiblityMetaData_(false)
+    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()){
 }
 
 PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData( const PropertyEditorWidgetMetaData& rhs ) 
     : positionMetaData_(rhs.positionMetaData_)
     , dimensionMetaData_(rhs.dimensionMetaData_)
-    , visiblityMetaData_(rhs.visiblityMetaData_){
+    , visiblityMetaData_(rhs.visiblityMetaData_)
+    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()){
 }
 
 PropertyEditorWidgetMetaData& PropertyEditorWidgetMetaData::operator=( const PropertyEditorWidgetMetaData& that ){
@@ -34,6 +61,7 @@ PropertyEditorWidgetMetaData& PropertyEditorWidgetMetaData::operator=( const Pro
         positionMetaData_ = that.positionMetaData_;
         dimensionMetaData_ = that.dimensionMetaData_;
         visiblityMetaData_ = that.visiblityMetaData_;
+        dockStatusMetaData_ = that.dockStatusMetaData_;
     }
     return *this;
 }
@@ -68,26 +96,41 @@ bool PropertyEditorWidgetMetaData::isVisible() const{
     return visiblityMetaData_.get();
 }
 
+void PropertyEditorWidgetMetaData::setDockStatus(PropertyEditorWidgetDockStatus& dockStatus) {
+    dockStatusMetaData_.set(dockStatus.getString());
+}
+
+const PropertyEditorWidgetDockStatus PropertyEditorWidgetMetaData::getDocStatus() const {
+    return PropertyEditorWidgetDockStatus(dockStatusMetaData_.get());
+}
+
 void PropertyEditorWidgetMetaData::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassName(), true);
     s.serialize("position", positionMetaData_.get());
     s.serialize("dimension", dimensionMetaData_.get());
     s.serialize("visibility", visiblityMetaData_.get());
+    s.serialize("dockstatus", dockStatusMetaData_.get());
 }
 
 void PropertyEditorWidgetMetaData::deserialize(IvwDeserializer& d) {
     std::string className;
     ivec2 position, dimension;
     bool visibility;
+    std::string dockStatus("");
 
     d.deserialize("type", className, true);
     d.deserialize("position", position);
     d.deserialize("dimension", dimension);
     d.deserialize("visibility", visibility);
+    d.deserialize("dockstatus", dockStatus);
+
+    if (dockStatus.empty())
+        dockStatus="Floating";
 
     positionMetaData_.set(position);
     dimensionMetaData_.set(dimension);
-    visiblityMetaData_.set(visibility);    
+    visiblityMetaData_.set(visibility);
+    dockStatusMetaData_.set(dockStatus);
 }
 
 

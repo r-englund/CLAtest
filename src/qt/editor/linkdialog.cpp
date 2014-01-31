@@ -499,19 +499,21 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
         QRectF arrowRect = calculateArrowRect(connectionItems_[i], !right);
 
        
-        QPainterPath rectPath;
-        p->setPen(Qt::black);
+        QPainterPath rectPath;        
         //determine color of start and end arrow       
         if (connectionItems_[i]->getEndProperty()==this) {
             arrowRect = calculateArrowRect(connectionItems_[i]->getEndArrowHeadIndex(), !right);
-            p->setBrush(Qt::red);
+            p->setPen(Qt::black);
+            p->setBrush(Qt::green);
         }
         else if (connectionItems_[i]->getStartProperty()==this) {
             arrowRect = calculateArrowRect(connectionItems_[i]->getStartArrowHeadIndex(), !right);
-            p->setBrush(Qt::gray);
+            p->setPen(Qt::transparent);
+            p->setBrush(Qt::transparent);
         }        
         
         if (connectionItems_[i]->isBidirectional()) {
+            p->setPen(Qt::black);
             p->setBrush(Qt::green);
         }
 
@@ -538,44 +540,15 @@ QVariant LinkDialogPropertyGraphicsItem::itemChange(GraphicsItemChange change, c
     return QGraphicsItem::itemChange(change, value);
 }
 
-std::string LinkDialogPropertyGraphicsItem::variantTypeAsString(int variantType) {    
-    std::string variantTypeAsString("");
-    /* Temporarily disabled
-    switch (variantType) {
-        case Variant::VariantType::VariantTypeInvalid : { variantTypeAsString = "VariantTypeInvalid"; break; }
-        case Variant::VariantType::VariantTypeBool : { variantTypeAsString = "Bool"; break; }
-        case Variant::VariantType::VariantTypeDouble : { variantTypeAsString = "VariantTypeDouble"; break; }
-        case Variant::VariantType::VariantTypeFloat : { variantTypeAsString = "VariantTypeFloat"; break; }
-        case Variant::VariantType::VariantTypeInteger : { variantTypeAsString = "VariantTypeInteger"; break; }
-        case Variant::VariantType::VariantTypeLong : { variantTypeAsString = "VariantTypeLong"; break; }
-        case Variant::VariantType::VariantTypeString : { variantTypeAsString = "VariantTypeString"; break; }
-        case Variant::VariantType::VariantTypeIVec2 : { variantTypeAsString = "VariantTypeIVec2"; break; }
-        case Variant::VariantType::VariantTypeIVec3 : { variantTypeAsString = "VariantTypeIVec3"; break; }
-        case Variant::VariantType::VariantTypeIVec4 : { variantTypeAsString = "VariantTypeIVec4"; break; }
-        case Variant::VariantType::VariantTypeVec2 : { variantTypeAsString = "VariantTypeVec2"; break; }
-        case Variant::VariantType::VariantTypeVec3 : { variantTypeAsString = "VariantTypeVec3"; break; }
-        case Variant::VariantType::VariantTypeVec4 : { variantTypeAsString = "VariantTypeVec4"; break; }
-        case Variant::VariantType::VariantTypeDVec2 : { variantTypeAsString = "VariantTypeDVec2"; break; }
-        case Variant::VariantType::VariantTypeDVec3 : { variantTypeAsString = "VariantTypeDVec3"; break; }
-        case Variant::VariantType::VariantTypeDVec4 : { variantTypeAsString = "VariantTypeDVec4"; break; }
-        case Variant::VariantType::VariantTypeMat2 : { variantTypeAsString = "VariantTypeMat2"; break; }
-        case Variant::VariantType::VariantTypeMat3 : { variantTypeAsString = "VariantTypeMat3"; break; }
-        case Variant::VariantType::VariantTypeMat4 : { variantTypeAsString = "VariantTypeMat4"; break; }
-        case Variant::VariantType::VariantTypeLastBaseType : { variantTypeAsString = "VariantTypeLastBaseType"; break; }
-        case Variant::VariantType::VariantTypeUserType : { variantTypeAsString = "VariantTypeUserType"; break; }
-        default : variantTypeAsString="";
-    }
-    */
-    return variantTypeAsString;
-}
-
 void LinkDialogPropertyGraphicsItem::setProperty(Property* prop) {
     setGraphicsItemData(prop);    
-    if (prop) {        
-        std::string variantType = variantTypeAsString(prop->getVariantType());
+    if (prop) {
+        //TODO: Is class name required?
+        //std::string className = prop->getClassName();
+        std::string className("");
         QString label = QString::fromStdString(prop->getDisplayName());
         classLabel_->setText(label);
-        typeLabel_->setText( QString::fromStdString(variantType));
+        typeLabel_->setText( QString::fromStdString(className));
         
     } else {        
         classLabel_->setText("");
@@ -1121,7 +1094,7 @@ LinkDialog::LinkDialog(Processor* src, Processor *dest, ProcessorNetwork* networ
 
 void LinkDialog::initDialog() {
     setWindowTitle("Edit Processor Link Dialog");
-
+    
     QSize rSize(linkDialogWidth, linkDialogHeight);    
 
     setFixedSize(rSize);
@@ -1132,7 +1105,7 @@ void LinkDialog::initDialog() {
     linkDialogScene_ = new LinkDialogGraphicsScene(this);
 
     linkDialogView_->setDialogScene(linkDialogScene_);
-    linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*2);
+    linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*5);
     linkDialogView_->fitInView(linkDialogView_->rect());
     linkDialogView_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 

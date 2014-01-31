@@ -31,8 +31,23 @@ TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt() {
 void TransferFunctionPropertyWidgetQt::generateWidget(){
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_, app->getMainWindow()); 
-    setEditorWidget(transferFunctionDialog_);    
-    app->getMainWindow()->addDockWidget(Qt::RightDockWidgetArea, transferFunctionDialog_);
+    setEditorWidget(transferFunctionDialog_);        
+
+    PropertyEditorWidgetDockStatus docStatus = getEditorWidget()->getEditorDockStatus();
+    if (docStatus == PropertyEditorWidgetDockStatus::DockedLeft) {
+        app->getMainWindow()->addDockWidget(Qt::LeftDockWidgetArea, transferFunctionDialog_);
+        transferFunctionDialog_->setFloating(false);
+    }
+    else if (docStatus == PropertyEditorWidgetDockStatus::DockedRight) {
+        app->getMainWindow()->addDockWidget(Qt::RightDockWidgetArea, transferFunctionDialog_);
+        transferFunctionDialog_->setFloating(false);
+    }
+    else {
+        app->getMainWindow()->addDockWidget(Qt::RightDockWidgetArea, transferFunctionDialog_);
+        transferFunctionDialog_->setFloating(true);
+    }
+    
+
     // notify the transfer function dialog, that the volume with the histogram is already there
     property_->notifyObservers();
 
@@ -62,9 +77,6 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
     bool visible = getEditorWidget()->getEditorVisibilityMetaData();
     if (!visible ) transferFunctionDialog_->hide();
     else transferFunctionDialog_->show();
-
-
-    
     
 }
 
