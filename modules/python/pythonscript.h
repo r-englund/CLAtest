@@ -58,8 +58,6 @@ public:
      */
     void setSource(const std::string& source);
 
-    StringProperty *getSourceProperty(){return &sourceProperty_;}
-
     /**
      * Returns the script's source.
      */
@@ -94,8 +92,7 @@ private:
      */
     bool compile(bool outputInfo = true);
 
-    //std::string source_;
-    StringProperty sourceProperty_;
+    std::string source_;
     void* byteCode_;
     bool isCompileNeeded_;
     PythonScriptRecorderUtil* scriptRecorder_;

@@ -30,8 +30,7 @@
 namespace inviwo {
 
 PythonScript::PythonScript()
-    : sourceProperty_("src","Source","",PropertyOwner::INVALID_OUTPUT,PropertySemantics("PythonEditor"))
-    //, source_("")
+    : source_("")
     , byteCode_(0)
     , isCompileNeeded_(false)
     , scriptRecorder_(0)
@@ -48,7 +47,7 @@ bool PythonScript::compile(bool outputInfo) {
     if(outputInfo)
         LogInfo("Compiling script");
     Py_XDECREF(BYTE_CODE);
-    byteCode_ = Py_CompileString(sourceProperty_.get().c_str(), "", Py_file_input);
+    byteCode_ = Py_CompileString(source_.c_str(), "", Py_file_input);
     isCompileNeeded_ = !checkCompileError();
 
     if (isCompileNeeded_) {
@@ -85,11 +84,11 @@ bool PythonScript::run(bool outputInfo) {
 }
 
 std::string PythonScript::getSource() const {
-    return sourceProperty_.get();
+    return source_;
 }
 
 void PythonScript::setSource(const std::string& source) {
-    sourceProperty_.set(source);
+    source_ = source;
     isCompileNeeded_ = true;
     Py_XDECREF(BYTE_CODE);
     byteCode_ = 0;
@@ -143,7 +142,7 @@ bool PythonScript::checkCompileError() {
 bool PythonScript::checkRuntimeError() {
     if (!PyErr_Occurred())
         return true;
-    PyErr_Print();
+
     std::string pyException = "";
     PyObject* pyError_type = 0;
     PyObject* pyError_value = 0;
