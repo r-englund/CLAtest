@@ -31,7 +31,7 @@ template <typename T>
 class MemberFunctionCallBack : public BaseCallBack {
 public:
     typedef void (T::*fPointerType1)();
-
+    virtual ~MemberFunctionCallBack(){}
     MemberFunctionCallBack(T* obj, fPointerType1 functionPtr) 
         : functionPtr1_(functionPtr)
         , obj_(obj){}
@@ -54,6 +54,12 @@ private:
 class CallBackList {
 public:
     CallBackList() {}
+    virtual ~CallBackList(){
+        std::map<void*,BaseCallBack*>::iterator it;
+        for (it=callBackList_.begin(); it!=callBackList_.end(); ++it)
+            delete it->second;
+        callBackList_.clear();
+    }
     void invokeAll() const{ 
         std::map<void*,BaseCallBack*>::const_iterator it;
         for (it=callBackList_.begin(); it!=callBackList_.end(); ++it)
@@ -66,8 +72,9 @@ public:
        if(it != callBackList_.end()){
            delete it->second;
            it->second = new MemberFunctionCallBack<T>(o, m);
+       }else{
+           callBackList_[o] = new MemberFunctionCallBack<T>(o, m);
        }
-       callBackList_[o] = new MemberFunctionCallBack<T>(o, m);
     }
 
 private:
