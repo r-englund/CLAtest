@@ -31,6 +31,8 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     graphicsPathItem_->setPen(pathPen);
     addItem(graphicsPathItem_);
 
+    mouseDrag_ = false;
+
     // initialize editor with current tf
     recalculateControlPoints();
 }
@@ -56,6 +58,8 @@ void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
             } else if (e->modifiers()==Qt::ControlModifier) {
                 views().front()->setDragMode(QGraphicsView::RubberBandDrag);
             }
+        } else {
+            mouseDrag_ = true;
         }
     }
     
@@ -65,6 +69,11 @@ void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         }
     }
     QGraphicsScene::mousePressEvent(e);
+}
+
+void TransferFunctionEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
+    mouseDrag_ = false;
+    QGraphicsScene::mouseReleaseEvent(e);
 }
 
 void TransferFunctionEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
@@ -134,7 +143,7 @@ void TransferFunctionEditor::removeControlPoint(TransferFunctionEditorControlPoi
 }
 
 void TransferFunctionEditor::recalculateControlPoints() {
-    if (controlPoints_.size()!=transferFunction_->getNumDataPoints()) {
+    if (!mouseDrag_) {
         for (size_t i=0; i<controlPoints_.size(); i++) {
             removeItem(controlPoints_[i]);
             delete controlPoints_[i];

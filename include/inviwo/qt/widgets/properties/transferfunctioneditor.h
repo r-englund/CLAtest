@@ -83,7 +83,8 @@ public slots:
     void resetTransferFunction();
 
 protected:
-	void mousePressEvent(QGraphicsSceneMouseEvent* e);
+    void mousePressEvent(QGraphicsSceneMouseEvent* e);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 	void keyPressEvent(QKeyEvent *e);
 
@@ -114,6 +115,8 @@ private :
 
     QGraphicsPathItem* graphicsPathItem_;
 	std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
+
+    bool mouseDrag_;
 };
 
 } // namespace
