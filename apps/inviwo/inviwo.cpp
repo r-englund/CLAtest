@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 	splashScreen.showMessage("Initializing modules...");
     inviwoApp.initialize(&inviwo::registerAllModules);
 
-    inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_tmp.png"));
+    inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_light.png"));
 
     // setup main window
     mainWin.initialize();

@@ -73,9 +73,14 @@ if(IVW_MODULE_UNITTESTS)
 	endif()
 endif()
 
+set(RES_FILES "")
+IF(WIN32)
+    set(RES_FILES "${CMAKE_SOURCE_DIR}/resources/inviwo.rc")
+ENDIF(WIN32)
+
 #--------------------------------------------------------------------
 # Create application
-add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE})
+add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE} ${RES_FILES})
 
 #--------------------------------------------------------------------
 # Add dependencies
