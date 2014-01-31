@@ -40,8 +40,8 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(ImageSourceSeries);
     registerProcessor(MeshClipping);
     registerProcessor(MeshCreator);
-    registerProcessor(TestProcessor);
-    registerProcessor(TransferFunctiontionTestProcessor);
+    //registerProcessor(TestProcessor);
+    //registerProcessor(TransferFunctiontionTestProcessor);
 	registerProcessor(VolumeSource);
 	registerProcessor(VolumeExport);
     registerProcessor(VolumeBasisTransformer);
