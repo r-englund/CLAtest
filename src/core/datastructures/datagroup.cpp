@@ -26,9 +26,6 @@ DataGroup::DataGroup(const DataGroup& rhs) : editableUpdate_(false) {
     for(size_t i = 0; i < rhs.groupData_.size(); ++i) {
         groupData_.push_back(rhs.groupData_[i]->clone());
     }
-    for(size_t i = 0; i < rhs.representations_.size(); ++i) {
-        representations_.push_back(rhs.representations_[i]->clone());
-    }
 }
 
 DataGroup& DataGroup::operator=(const DataGroup& that){
@@ -39,9 +36,6 @@ DataGroup& DataGroup::operator=(const DataGroup& that){
         }
         for(size_t i = 0; i < that.groupData_.size(); ++i) {
             groupData_.push_back(that.groupData_[i]->clone());
-        }
-        for(size_t i = 0; i < that.representations_.size(); ++i) {
-            representations_.push_back(that.representations_[i]->clone());
         }
     }
     return *this;

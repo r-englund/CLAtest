@@ -35,7 +35,6 @@ ImageGL::ImageGL(const ImageGL& rhs)
     , initialized_(false) {
 
     initialize();
-    update(true);
 }
 
 ImageGL::~ImageGL() {

@@ -34,6 +34,7 @@ Texture2D::Texture2D(const Texture2D& rhs)
     : Texture(rhs), Observable<TextureObserver>(), ReferenceCounter()
     , dimensions_(rhs.dimensions_) 
 {
+    setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
     initialize(NULL);   
     // TODO: Copy texture from other
     // bind();
@@ -48,6 +49,7 @@ Texture2D& Texture2D::operator=(const Texture2D& rhs) {
             LogError("This object is shared and cannot changed (size/format etc.) until the shared object has been released");
         }
         dimensions_ = rhs.dimensions_;
+        setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
         initialize(NULL);
         // TODO: Copy other texture content
     }

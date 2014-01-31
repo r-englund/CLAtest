@@ -32,12 +32,6 @@ Image::Image(const Image& rhs)
     , imageType_(rhs.imageType_)
     , inputSources_(rhs.inputSources_) {
 
-    for(size_t i = 0; i < representations_.size(); ++i) {
-        ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
-        if(imRep)
-            imRep->setPointerToOwner(this);
-    }
-
     for (std::vector<Layer*>::const_iterator it = rhs.colorLayers_.begin() ; it != rhs.colorLayers_.end(); ++it)
         addColorLayer((*it)->clone());
 
@@ -54,18 +48,22 @@ Image::Image(const Image& rhs)
     } else {
         pickingLayer_ = NULL;
     }
+
+    for(size_t i = 0; i < rhs.representations_.size(); ++i) {
+        representations_.push_back(rhs.representations_[i]->clone());
+        ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
+        if(imRep){
+            imRep->setPointerToOwner(this);
+            imRep->setAsInvalid();
+            //imRep->update(true);
+        }
+    }
 }
 
 Image& Image::operator=(const Image& that) {
     if(this != &that) {
         DataGroup::operator=(that);
         StructuredGridEntity<2>::operator=(that);
-
-        for(size_t i = 0; i < representations_.size(); ++i) {
-            ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
-            if(imRep)
-                imRep->setPointerToOwner(this);
-        }
 
         allowMissingLayers_ = that.allowMissingLayers_;
         imageType_ = that.imageType_;
@@ -88,6 +86,16 @@ Image& Image::operator=(const Image& that) {
             addLayer(pickingLayer_);
         } else {
             pickingLayer_ = NULL;
+        }
+
+        for(size_t i = 0; i < that.representations_.size(); ++i) {
+            representations_.push_back(that.representations_[i]->clone());
+            ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
+            if(imRep){
+                imRep->setPointerToOwner(this);
+                imRep->setAsInvalid();
+                //imRep->update(true);
+            }
         }
 
     }
@@ -232,7 +240,7 @@ void Image::resize(uvec2 dimensions) {
 }
 
 void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
-    targetImage->resize(targetDim);
+    //targetImage->resize(targetDim);
     std::vector<DataGroupRepresentation*> &targetRepresentations = targetImage->representations_;
 
     if (targetRepresentations.size()) {

@@ -34,6 +34,7 @@ Texture3D::Texture3D(const Texture3D& rhs)
     : Texture(rhs)
     , dimensions_(rhs.dimensions_) 
 {
+    setTextureParameterFunction(this, &Texture3D::default3DTextureParameterFunction);
     initialize(NULL);   
     // TODO: Copy texture from other
     // bind();
@@ -44,6 +45,7 @@ Texture3D& Texture3D::operator=(const Texture3D& rhs) {
     if (this != &rhs) {
         Texture::operator=(rhs);
         dimensions_ = rhs.dimensions_;
+        setTextureParameterFunction(this, &Texture3D::default3DTextureParameterFunction);
         initialize(NULL);
         // TODO: Copy other texture content
     }
