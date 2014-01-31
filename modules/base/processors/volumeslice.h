@@ -43,7 +43,7 @@ private:
     VolumeInport inport_;
     ImageOutport outport_;
 
-    TemplateOptionProperty<CoordinatePlane> coordinatePlane_;
+    IntOptionProperty coordinatePlane_;
     IntProperty sliceNumber_;
 };
 

@@ -115,6 +115,7 @@ void VolumeSliceGL::coordinatePlaneChanged(){
         }
         shader_->rebuild();
     }
+    invalidate(INVALID_OUTPUT);
 }
 
 void VolumeSliceGL::volumeDimensionChanged(){

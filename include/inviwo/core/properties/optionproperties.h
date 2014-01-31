@@ -49,8 +49,7 @@ public:
      * @param const Variant & input source variant
      */
     virtual void setVariant(const Variant& inVariant);
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+
     virtual std::string getClassName()  const { return "OptionPropertyInt"; }
 };
 
@@ -86,8 +85,7 @@ public:
      * @param const Variant & input source variant
      */
     virtual void setVariant(const Variant& inVariant);
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+
     virtual std::string getClassName()  const { return "OptionPropertyFloat"; }
 };
 
@@ -122,8 +120,7 @@ public:
      * @param const Variant & input source variant
      */
     virtual void setVariant(const Variant& inVariant);
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+
     virtual std::string getClassName()  const { return "OptionPropertyDouble"; }
 };
 
@@ -160,8 +157,7 @@ public:
     virtual void setVariant(const Variant& inVariant);
     void addOption(std::string identifier, std::string displayName);
     void addOption(std::string identifier, std::string displayName, std::string value);
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+
     virtual std::string getClassName()  const { return "OptionPropertyString"; }
 };
 

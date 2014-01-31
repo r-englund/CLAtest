@@ -161,6 +161,10 @@ public:
         return Variant::VariantTypeString;
     }
 
+    virtual void serialize(IvwSerializer& s) const;
+
+    virtual void deserialize(IvwDeserializer& d);
+
 protected:
     T value_;
     std::vector< std::pair<std::pair<std::string, std::string>, T> > options_;
@@ -282,6 +286,20 @@ template<typename T>
 void TemplateOptionProperty<T>::selectByKey(std::string identifier) {
     ivwDeprecatedMethod("setToID");
     setToID(identifier);
+}
+
+template<typename T>
+void TemplateOptionProperty<T>::serialize(IvwSerializer& s) const {
+    BaseOptionProperty::serialize(s) ;
+    s.serialize("value", get());
+}
+
+template<typename T>
+void TemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
+    BaseOptionProperty::deserialize(d) ;
+    T value = get();
+    d.deserialize("value", value);
+    set(value);
 }
 
 } // namespace inviwo

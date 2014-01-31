@@ -56,18 +56,6 @@ void OptionPropertyInt::setVariant(const Variant& inVariant) {
     setSelectedOption(seletctedOption);
 }
 
-void OptionPropertyInt::serialize(IvwSerializer& s) const {
-    Property::serialize(s) ;
-    s.serialize("value", get());
-}
-
-void OptionPropertyInt::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d) ;
-    int value;
-    d.deserialize("value", value);
-    set(value);
-}
-
 OptionPropertyFloat::OptionPropertyFloat(std::string identifier, std::string displayName,
                                          PropertyOwner::InvalidationLevel invalidationLevel,
                                          PropertySemantics semantics )
@@ -109,19 +97,6 @@ void OptionPropertyFloat::setVariant(const Variant& inVariant) {
     setSelectedOption(seletctedOption);
 }
 
-void OptionPropertyFloat::serialize(IvwSerializer& s) const {
-    Property::serialize(s) ;
-    s.serialize("value", get());
-}
-
-void OptionPropertyFloat::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d) ;
-    float value;
-    d.deserialize("value", value);
-    set(value);
-}
-
-
 OptionPropertyDouble::OptionPropertyDouble(std::string identifier, std::string displayName,
                                            PropertyOwner::InvalidationLevel invalidationLevel,
                                            PropertySemantics semantics)
@@ -162,19 +137,6 @@ void OptionPropertyDouble::setVariant(const Variant& inVariant) {
     }
     setSelectedOption(seletctedOption);
 }
-
-void OptionPropertyDouble::serialize(IvwSerializer& s) const {
-    Property::serialize(s) ;
-    s.serialize("value", get());
-}
-
-void OptionPropertyDouble::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d) ;
-    double value;
-    d.deserialize("value", value);
-    set(value);
-}
-
 
 OptionPropertyString::OptionPropertyString(std::string identifier, std::string displayName,
                                            PropertyOwner::InvalidationLevel invalidationLevel,
@@ -223,18 +185,6 @@ void OptionPropertyString::setVariant(const Variant& inVariant) {
     }    
     setSelectedOption(seletctedOption);
     
-}
-
-void OptionPropertyString::serialize(IvwSerializer& s) const {
-    Property::serialize(s) ;
-    s.serialize("value", get());
-}
-
-void OptionPropertyString::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d) ;
-    std::string value;
-    d.deserialize("value", value);
-    set(value);
 }
 
 } // namespace
