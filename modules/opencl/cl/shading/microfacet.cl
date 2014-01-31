@@ -59,8 +59,6 @@ float fresnelDielectric(const float eta_i, const float eta_t, float cosi) {
 //       w_i is incident light direction
 //       w_o is the view direction
 //       H is the half vector w_o+w_i
-
-
 typedef struct Microfacet {
     float F;
     float G;
@@ -106,7 +104,7 @@ inline float BeckmannDistribution(const float NdotH, const float m) {
     return native_exp( (NdotH2-1.f)/(m2NdotH2) ) / ( M_PI*m2NdotH2*NdotH2 );
 
 }
-// Adapted from luxrender
+
 // Based on http://sirkan.iit.bme.hu/~szirmay/scook.pdf
 float3 BeckmannSample(const float3 wo, float m, const float2 rnd) {
     // Compute sampled half-angle vector $\wh$ for Beckmann distribution
@@ -125,11 +123,8 @@ float3 BeckmannSample(const float3 wo, float m, const float2 rnd) {
     // Compute incident direction by reflecting about $\wh$
     return -wo + 2.f * dot(wo, H) * H;
 }
-// Adapted from luxrender
+
 float BeckmannPdf(const float3 wo, const float3 wi, const float m) {
-    // Compute PDF for \wi from Beckmann distribution - note that the inverse of the integral over
-    // the Beckmann distribution is not available in closed form, so this is not really correct
-    // (see Kelemen and Szirmay-Kalos / Microfacet Based BRDF Model, Eurographics 2001)
     float3 H = normalize(wo+wi);
     float conversion_factor = 1.f / (4.f * dot(wo, H));
     return conversion_factor * BeckmannDistribution(absCosTheta(H), m);

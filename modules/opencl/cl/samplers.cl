@@ -24,9 +24,5 @@ __constant sampler_t smpNormClampEdgeLinear = CLK_NORMALIZED_COORDS_TRUE | CLK_A
 float getVoxel(read_only image3d_t volume, sampler_t sampler, float4 pos) {
     return read_imagef(volume, sampler, pos).x;  
 }
-// Convert from [0 1] space to data space [1/(2*dim) 1-1/(2*dim)]
-float3 toDataSpace3D(float3 p, float3 invDim) {
-    return 0.5f*invDim + p*(1.f-invDim);
-}
 
 #endif // SAMPLERS_CL

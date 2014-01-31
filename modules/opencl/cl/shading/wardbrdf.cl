@@ -26,15 +26,6 @@ float WardIsotropicDistribution(const float3 wo, const float3 wi, const float3 w
     tanThetaH = sinTheta(wh) / absCosTheta(wh);
     float dfac = tanThetaH/r;
     return 0.5f * M_1_PI * native_exp(-(dfac * dfac)) / ( r * r * absCosTheta(wi)*absCosTheta(wo));
-
-    //float NdotWo = absCosTheta(wo);
-    //float NdotWi = absCosTheta(wi);
-    //float theta = acos(NdotH);
-    //float tanThetaH = tan(theta);
-    ////r+= 1e-3;
-    //float dfac = tanThetaH/r;
-
-    //return exp(-(dfac * dfac)) / (M_PI * r * r * powr(NdotH, 3.f));
 }
 
 float WardBRDF(const float3 wo, const float3 wi, const float f0, const float alphaX, const float alphaY) {
@@ -46,7 +37,6 @@ float WardBRDF(const float3 wo, const float3 wi, const float f0, const float alp
     wh = normalize(wh);
     float NdotWh = absCosTheta(wh);
     distribution.D = WardIsotropicDistribution(wo, wi, wh, alphaX);
-    //distribution.D = BlinnPhongDistribution(NdotWh, m);
     distribution.G = CookTorranceGeometry(wo, wi, wh);
     distribution.F = fresnelSchlick(NdotWh, f0); 
     return microfacetBRDF(wo, wi, wh, &distribution);

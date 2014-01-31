@@ -59,6 +59,10 @@ inline float3 translatePoint(const float16 m, const float3 x)
 }
 
 
+// Convert from [0 1] space to data space [1/(2*dim) 1-1/(2*dim)]
+float3 toDataSpace3D(float3 p, float3 invDim) {
+    return 0.5f*invDim + p*(1.f-invDim);
+}
 
 
 // Row-major access

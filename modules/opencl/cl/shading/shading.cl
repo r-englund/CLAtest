@@ -36,8 +36,6 @@
 #define PHASE_FUNCTION_ABC_MICROFACET 7
 #define PHASE_FUNCTION_ASHIKHMIN 8
 #define PHASE_FUNCTION_MIX 9
-#define PHASE_FUNCTION_HALF_ANGLE_SLICING 10
-#define PHASE_FUNCTION_SUB_SURFACE_SCATTERING 11
 
 
 typedef enum ShadingType {
@@ -49,10 +47,7 @@ typedef enum ShadingType {
     COOK_TORRANCE,
     ABC_MICROFACET,
     ASHIKHMIN,
-    MIX,
-    HYBRID,
-    HALF_ANGLE_SLICING,
-    SUB_SURFACE_SCATTERING
+    MIX
 } ShadingType;
 
 #define BLINN_EXPONENT 10.0f
@@ -61,6 +56,7 @@ typedef enum ShadingType {
     // x = fresnel factor f_0 = ((1-n)/(1+n))^2, 
     // y = exponent (blinn)
     // z = phase function scattering
+    // w = Mix between phase function and BRDF (MIX shadingtype)
 #define EXPONENT_SCALE 100.f
 
 
@@ -71,7 +67,6 @@ inline float vrayParameterMapping(float x) {
 }
 inline float WardParameterMapping(float x) {
     return fmax(x,1e-4f);
-    //return native_powr(x, 2.f);
 }
 // Convert between the roughness m in Beckmann distribution and shininess exponent in Blinn-Phong distribution
 float shininessToRoughness(float exponent) {
@@ -101,7 +96,6 @@ inline float4 scaleShadingParameter(float4 material, const ShadingType shadingTy
 #elif PHASE_FUNCTION == PHASE_FUNCTION_WARD
     scaledMaterial.y = WardParameterMapping(material.y);  
 #elif PHASE_FUNCTION == PHASE_FUNCTION_COOK_TORRANCE
-    //scaledMaterial.y = roughnessToShininess(material.y);  
     scaledMaterial.y = WardParameterMapping(material.y); 
 #elif PHASE_FUNCTION == PHASE_FUNCTION_ABC_MICROFACET
     scaledMaterial.yz = BCParameterMapping(material.yz);  
@@ -182,13 +176,6 @@ void sampleShadingFunction(read_only image3d_t volumeTex, float volumeSample, co
         float3 Nv = normalize(cross(gradient, Nu));
         wo = worldToShading(Nu, Nv, gradient, wo); 
         *direction = shadingToWorld(Nu, Nv, gradient, ABCMicrofacetSample(wo, material.z, material.w, rnd));
-    } else if ( shadingType == HALF_ANGLE_SLICING ) {
-        float3 gradient = normalize(calcGradient(as_float4(sample), volumeTex, as_float4(voxelSpacing)).xyz);
-        float3 wo = -*direction;
-        float3 Nu = normalize(cross(gradient, wo));
-        float3 Nv = normalize(cross(gradient, Nu));
-        wo = worldToShading(Nu, Nv, gradient, wo); 
-        *direction = shadingToWorld(Nu, Nv,gradient, uniformSampleCone(rnd, 0.5f));
     } else if ( shadingType == ASHIKHMIN ) {
         float3 gradient = normalize(calcGradient(as_float4(sample), volumeTex, as_float4(voxelSpacing)).xyz);
         float3 wo = -*direction;
@@ -198,11 +185,8 @@ void sampleShadingFunction(read_only image3d_t volumeTex, float volumeSample, co
         *direction = shadingToWorld(Nu, Nv, gradient, AshikhminSample(wo, gradient, material.y, rnd));
     } else if ( shadingType == MIX ) {
         float3 gradient = (calcGradient(as_float4(sample), volumeTex, as_float4(voxelSpacing)).xyz); 
-        //float gradientMagnitude = length(gradient);
-        //if(gradientMagnitude > GRADIENT_MAGNITUDE_THRESHOLD) {
-        
-        if(material.w > 0.5f) {    
-        //if(random_01(randstate) >= material.w) {
+        float gradientMagnitude = length(gradient);      
+        if(material.w < gradientMagnitude) {    
             *direction = uniformSampleSphere(rnd);   
         } else {
             gradient = normalize(gradient);
@@ -212,7 +196,7 @@ void sampleShadingFunction(read_only image3d_t volumeTex, float volumeSample, co
             wo = worldToShading(Nu, Nv, gradient, wo); 
             *direction = shadingToWorld(Nu, Nv, gradient, AshikhminSample(wo, gradient, material.y, rnd)); 
         }
-    } else { 
+    } else { // Isotropic phase function
         *direction = uniformSampleSphere(rnd);  
     }
 
@@ -265,15 +249,6 @@ void sampleShadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample,
         // TODO: Implement ABC pdf
         *pdf = CookTorrancePdf(wo, wi, gradient, material.w);
         *toLightDirection = shadingToWorld(Nu, Nv, gradient, wi);
-    } else if ( shadingType == HALF_ANGLE_SLICING ) {
-        float3 gradient = normalize(calcGradient(as_float4(pos), volumeTex, as_float4(voxelSpacing)).xyz);
-        float3 wo = toCameraDir;
-        float3 Nu = normalize(cross(gradient, wo));
-        float3 Nv = normalize(cross(gradient, Nu));
-        wo = worldToShading(Nu, Nv, gradient, wo); 
-        float3 wi = uniformSampleCone(rnd, 0.5f);
-        *pdf = uniformConePdf(0.5f);
-        *toLightDirection = shadingToWorld(Nu, Nv,gradient, wi);
     } else if ( shadingType == ASHIKHMIN ) {
         float3 gradient = normalize(calcGradient(as_float4(pos), volumeTex, as_float4(voxelSpacing)).xyz);
         float3 wo = toCameraDir;
@@ -285,12 +260,8 @@ void sampleShadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample,
         *toLightDirection = shadingToWorld(Nu, Nv, gradient, wi);
     } else if ( shadingType == MIX ) {
         float3 gradient = (calcGradient(as_float4(pos), volumeTex, as_float4(voxelSpacing)).xyz); 
-        //float gradientMagnitude = length(gradient);
-        //if(gradientMagnitude > GRADIENT_MAGNITUDE_THRESHOLD) {
-        
-        if(material.w > 0.5f) {    
-        //if(random_01(randstate) >= material.w) {
-
+        float gradientMagnitude = length(gradient);
+        if(material.w < gradientMagnitude) {    
             *toLightDirection = uniformSampleSphere(rnd);   
             *pdf = uniformSpherePdf();
         } else {
@@ -351,14 +322,6 @@ float shadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample, cons
         float3 wi = worldToShading(Nu, Nv, gradient, toLightDirection);
         // TODO: Implement ABC pdf
         pdf = CookTorrancePdf(wo, wi, gradient, material.w);
-    } else if ( shadingType == HALF_ANGLE_SLICING ) {
-        float3 gradient = normalize(calcGradient(as_float4(pos), volumeTex, as_float4(voxelSpacing)).xyz);
-        float3 wo = toCameraDir;
-        float3 Nu = normalize(cross(gradient, wo));
-        float3 Nv = normalize(cross(gradient, Nu));
-        wo = worldToShading(Nu, Nv, gradient, wo); 
-        float3 wi = worldToShading(Nu, Nv, gradient, toLightDirection);
-        pdf = uniformConePdf(0.5f);
     } else if ( shadingType == ASHIKHMIN ) {
         float3 gradient = normalize(calcGradient(as_float4(pos), volumeTex, as_float4(voxelSpacing)).xyz);
         float3 wo = toCameraDir;
@@ -367,8 +330,20 @@ float shadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample, cons
         wo = worldToShading(Nu, Nv, gradient, wo); 
         float3 wi = worldToShading(Nu, Nv, gradient, toLightDirection);
         pdf = AshikhminPdf(wo, wi, material.y);
-    } else if ( shadingType == MIX ) {  
-        pdf = uniformSpherePdf();
+    } else if ( shadingType == MIX ) {
+        float3 gradient = (calcGradient(as_float4(pos), volumeTex, as_float4(voxelSpacing)).xyz); 
+        float gradientMagnitude = length(gradient);
+        if(material.w < gradientMagnitude) {      
+            pdf = uniformSpherePdf();
+        } else {
+            gradient = normalize(gradient);
+            float3 wo = toCameraDir;
+            float3 Nu = normalize(cross(gradient, wo));
+            float3 Nv = normalize(cross(gradient, Nu));
+            wo = worldToShading(Nu, Nv, gradient, wo); 
+            float3 wi = worldToShading(Nu, Nv, gradient, toLightDirection);
+            pdf = AshikhminPdf(wo, wi, material.y);
+        }
     } else { 
         pdf = uniformSpherePdf();
     }
@@ -418,39 +393,20 @@ float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const flo
         f = materialDiffuse*HenyeyGreensteinPhaseFunction(toCameraDir, -toLightDir, material.z);
     } else if ( shadingType == SCHLICK ) {
         f = materialDiffuse*SchlickPhaseFunction(toCameraDir, -toLightDir, material.z); 
-/*    } else if ( shadingType == HALF_ANGLE_SLICING ) {
-         f =materialDiffuse*HalfAngleSlicingPhaseFunction(wi, lightdir); */    
+    } else if ( shadingType == HALF_ANGLE_SLICING ) {
+         f =materialDiffuse*HalfAngleSlicingPhaseFunction(wi, -toLightDir); 
     } else if ( shadingType == BLINN_PHONG ) {
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*BlinnBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
     } else if ( shadingType == WARD ) {
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*WardBRDF(wo, wi, material.x, material.y, material.y)*fabs(wi.z);
-        //f = materialDiffuse*lambertianBRDF()+materialSpecular*WardBRDF(wo, wi, 0.016509f, 0.016509f);
-        //f = materialDiffuse*lambertianBRDF()+materialSpecular*WardBRDF(wo, wi, 0.006542f, 0.006542f);
     } else if ( shadingType == COOK_TORRANCE ) {
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*CookTorranceBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
     } else if ( shadingType == ABC_MICROFACET ) {
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*ABCMicrofacetBRDF(wo, wi, material.x, material.y, material.z)*fabs(wi.z);
     } else if ( shadingType == ASHIKHMIN ) {
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z);  
-        //f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*0.1f*fabs(wi.z); 
-    } else if ( shadingType == HYBRID ) { 
-        if(rnd < pBRDF) {
-            f =  (isotropicPhaseFunction()*materialDiffuse+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z));
-        } else {
-            f = materialDiffuse*isotropicPhaseFunction();
-        }
-
     } else if ( shadingType == MIX ) {
-        //if(gradientMagnitude > GRADIENT_MAGNITUDE_THRESHOLD) {
         f = mix(materialDiffuse*isotropicPhaseFunction(), materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z), material.w);
-        
-        //if(rnd > material.w) {
-        //    f = materialDiffuse*isotropicPhaseFunction();
-        //} else {
-        //    f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z); 
-        //}
-    } else if ( shadingType == SUB_SURFACE_SCATTERING ) {
-        f = isotropicPhaseFunction();
     } else {
         f = materialDiffuse*isotropicPhaseFunction(); 
     } 

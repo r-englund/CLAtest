@@ -23,6 +23,8 @@ float isotropicPhaseFunction() {
     return 1.f/(4.f*M_PI);
 }
 // Henyey-Greenstein phase function 
+// @param g Angle between incoming ray and scattered ray, g = 0 is forward direction and g = pi is backward direction
+// @return Distribution of scattered light
 float HenyeyGreensteinPhaseFunction(const float3 wo, const float3 wi, const float g) {
     float costheta = dot(wo, wi);
     return (1.f/(4.f*M_PI)) * (1.f-g*g) / pow( 1.f + g*g - 2.f*g*costheta, 1.5f);
@@ -46,7 +48,9 @@ float3 HenyeyGreensteinSample(const float3 wi, const float g, const float2 rnd) 
     return sphericalDirectionCoordinateSystem(sinTheta, cosTheta, phi, v1, v2, wi);
 }
 
-// Schlick phase function
+// Schlick phase function. Approximation of Henyey-Greenstein phase function, faster to compute. 
+// @param k Angle between incoming ray and scattered ray, k = 0 is forward direction and k = pi is backward direction
+// @return Distribution of scattered light
 float SchlickPhaseFunction(const float3 wo, const float3 wi, float k) {
     k = clamp(k, -0.99f, 0.99f);
     float tmp = (1.f-k*dot(wo, wi));
@@ -63,15 +67,6 @@ float3 SchlickSample(const float3 wi, float k, const float2 rnd) {
     float3 v1, v2;
     createCoordinateSystem(wi, &v1, &v2);
     return sphericalDirectionCoordinateSystem(sinTheta, cosTheta, phi, v1, v2, wi);
-}
-float HalfAngleSlicingPhaseFunction(const float3 wi, const float3 wl) {
-    
-    float costheta = dot(wl, wi);
-    float theta=60;
-    if(costheta<cos(theta))
-    return (1.f) / ( 2.f*M_1_PI*(1-cos(theta)));
-    else
-        return 0.0f;
 }
 
 float RayleighPhaseFunction(const float3 wo, const float3 wi) {
@@ -92,9 +87,7 @@ float3 RayleighSample(const float3 wi, const float2 rnd, float *theta) {
 
 
 
-// Phase function
-// @param theta Angle between incoming ray and scattered ray, theta = 0 is forward direction and theta = pi is backward direction
-// @return Distribution of scattered light
+
 float phaseFunction(float theta) {
 
     return isotropicPhaseFunction();

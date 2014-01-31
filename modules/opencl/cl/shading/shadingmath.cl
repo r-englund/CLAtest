@@ -14,6 +14,13 @@
 
 #ifndef SHADING_MATH_CL
 #define SHADING_MATH_CL
+// Some systems does not have these defined
+#ifndef M_PI
+#define M_PI 3.14159265359f
+#endif
+#ifndef M_1_PI
+#define M_1_PI 0.31830988618f
+#endif
 
 // Transform coordinate to local shading space
 inline float3 worldToShading(const float3 Nu, const float3 Nv, const float3 Nn, const float3 W)
