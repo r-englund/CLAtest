@@ -1,5 +1,5 @@
 # Inviwo Python script 
 import inviwo 
 
-inviwo.clickButton("CanvasGL","snapshot") 
+inviwo.clickButton("CanvasGL","saveLayer") 
 
