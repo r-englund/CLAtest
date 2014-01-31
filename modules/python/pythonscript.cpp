@@ -154,7 +154,7 @@ bool PythonScript::checkRuntimeError() {
 
     std::string stacktraceStr;
     if (pyError_traceback) {
-        /*PyTracebackObject* traceback = (PyTracebackObject*)pyError_traceback;
+        PyTracebackObject* traceback = (PyTracebackObject*)pyError_traceback;
         while (traceback) {
             PyFrameObject* frame = traceback->tb_frame;
             std::string stacktraceLine;
@@ -173,7 +173,7 @@ bool PythonScript::checkRuntimeError() {
             stacktraceStr = stacktraceLine + stacktraceStr;
 
             traceback = traceback->tb_next;
-        }*/
+        }
     }
 
     std::stringstream s;
