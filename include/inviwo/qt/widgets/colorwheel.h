@@ -12,8 +12,8 @@
  *
  **********************************************************************/
 
-#ifndef COLORWHEEL_H
-#define COLORWHEEL_H
+#ifndef IVW_COLORWHEEL_H
+#define IVW_COLORWHEEL_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QWidget>
@@ -67,9 +67,9 @@ private:
     void drawSquareImage(const int &hue);
     void composeWheel();
     double PI;
-    private slots:
-        void hueChanged(const int &hue);
-        void svChanged(const QColor &newcolor);
+private slots:
+    void hueChanged(const int &hue);
+    void svChanged(const QColor &newcolor);
 };
-} //Namespace
-#endif // COLORWHEEL_H
+} //namespace
+#endif // IVW_COLORWHEEL_H
