@@ -240,8 +240,8 @@ namespace inviwo{
     }
 
     template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<bool>(PyObject *arg){return PyBool_Check(arg);}
-    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<double>(PyObject *arg){return PyFloat_Check(arg);}
-    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<float>(PyObject *arg){return PyFloat_Check(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<double>(PyObject *arg){return PyFloat_Check(arg) || is<int>(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<float>(PyObject *arg){return PyFloat_Check(arg)  || is<int>(arg);}
     template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<char>(PyObject *arg){return is<int>(arg);}
     template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<short>(PyObject *arg){return is<int>(arg);}
     template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<long>(PyObject *arg){return PyLong_Check(arg);}

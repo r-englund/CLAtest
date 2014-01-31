@@ -333,8 +333,6 @@ namespace inviwo{
     }
 
     void PythonEditorWidget::setDefaultText(){
-        if(script_.getSource() == defaultSource)
-            return; //nothig to be done
         if(unsavedChanges_){
             int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard Changes","Cancel");
             if(ret == 0)

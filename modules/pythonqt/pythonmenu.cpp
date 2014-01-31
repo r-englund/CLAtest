@@ -15,7 +15,7 @@ namespace inviwo {
        
         QMenu* menu = win->menuBar()->addMenu("Python");
         QAction* pythonEditorOpen = menu->addAction(QIcon(":/icons/python.png"),"&Python Editor");
-        QAction* infoAction = menu->addAction("Info");
+        QAction* infoAction = menu->addAction("API Documentation");
 
         infoWidget_ = new PythonInfoWidget(win);
         pythonEditorWidget_ = new PythonEditorWidget(win);

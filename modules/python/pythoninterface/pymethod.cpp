@@ -70,8 +70,8 @@ std::string PyMethod::getParamDesc(){
 }
 
 bool PyMethod::testParams(PyObject* args)const{
-    Py_ssize_t size = PyTuple_Size(args);
-    if(static_cast<size_t>(size) > params_.size() || static_cast<size_t>(size) < (params_.size()-optionalParams_)){
+    size_t size = static_cast<size_t>(PyTuple_Size(args));
+    if(size > params_.size() || size < (params_.size()-optionalParams_)){
         std::stringstream ss;
         ss << getName() << "() expects " << params_.size()-optionalParams_ << " parameters ";
         if(optionalParams_!=0){
@@ -81,10 +81,10 @@ bool PyMethod::testParams(PyObject* args)const{
         return false;
     }
 
-    for(Py_ssize_t i = 0;i<size;i++){
+    for(size_t i = 0;i<size;i++){
         if(!params_[i]->testParam(PyTuple_GetItem(args,i))){
             std::stringstream ss;
-            ss << getName() << "() expects a " << params_[i]->paramType() << " for its " << i << ":th parameter";
+            ss << getName() << "() expects a " << params_[i]->paramType() << " for its " << i+1 << ":th parameter";
             PyErr_SetString(PyExc_TypeError,ss.str().c_str());
             return false;
         }

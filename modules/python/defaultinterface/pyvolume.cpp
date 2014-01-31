@@ -27,7 +27,7 @@
 namespace inviwo {
     PyObject* py_setVoxel(PyObject* /*self*/, PyObject* args){
         static PySetVoxelMethod p;
-        if(p.testParams(args))
+        if(!p.testParams(args))
             return 0;
 
         std::string volume = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
@@ -58,7 +58,7 @@ namespace inviwo {
 
     PyObject* py_getVolumeDimension(PyObject* /*self*/, PyObject* args){
         static PyGetVolumeDimension p;
-        if(p.testParams(args))
+        if(!p.testParams(args))
             return 0;
 
         
@@ -88,7 +88,7 @@ namespace inviwo {
 
     PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args){
         static PySaveTransferFunction p;
-        if(p.testParams(args))
+        if(!p.testParams(args))
             return 0;
 
         std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
@@ -130,7 +130,7 @@ namespace inviwo {
 
     PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args){
         static PyLoadTransferFunction p;
-        if(p.testParams(args))
+        if(!p.testParams(args))
             return 0;
 
         std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
@@ -179,7 +179,7 @@ namespace inviwo {
 
     PyObject* py_clearTransferfunction(PyObject* /*self*/, PyObject* args){
         static PyClearTransferfunction p;
-        if(p.testParams(args))
+        if(!p.testParams(args))
             return 0;
 
         std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
@@ -216,7 +216,7 @@ namespace inviwo {
     
     PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args){
         static PyAddTransferFunction p;
-        if(p.testParams(args))
+        if(!p.testParams(args))
             return 0;
         
         std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));

@@ -76,7 +76,7 @@ PyModule* PyModule::getModuleByPyObject(PyObject *obj){
 
 PyObject* py_info(PyObject* self, PyObject* args){
     static PyInfoMethod p;
-    if(p.testParams(args))
+    if(!p.testParams(args))
         return 0;
     inviwo::PyModule::getModuleByPyObject(self)->printInfo();
     Py_RETURN_NONE;
