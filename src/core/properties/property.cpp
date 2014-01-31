@@ -43,7 +43,12 @@ Property::Property()
     , propertyModified_(false){
 }
 
-Property::~Property(){}
+Property::~Property(){
+    while(!metaData_.empty()){
+        delete metaData_.back();
+        metaData_.pop_back();
+    }
+}
 
 std::string Property::getIdentifier() const {
     return identifier_;
