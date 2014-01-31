@@ -16,10 +16,13 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
 
+#include <inviwo/core/util/glmstreamoperators.h>
+
 namespace inviwo {
 
 CameraProperty::CameraProperty(std::string identifier, std::string displayName,
                                vec3 eye, vec3 center, vec3 lookUp,
+                               Inport* inport,
                                PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics), EventListener()
     , lookFrom_("lookFrom", "Look from", eye, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel)
@@ -29,7 +32,9 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     , aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 1.0f, 0.1f, invalidationLevel)
     , farPlane_("far", "Far Plane", 100.0f, 1.0f, 1000.0f, 1.0f, invalidationLevel)
     , nearPlane_("near", "Near Plane", 0.1f, 0.001f, 10.f, 0.001f, invalidationLevel)
-    , lockInvalidation_(false) {
+    , lockInvalidation_(false)
+    , inport_(inport)
+    , data_(0){
 
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
     lookTo_.onChange(this, &CameraProperty::updateViewMatrix);
@@ -51,6 +56,10 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     updateViewMatrix();
     updateProjectionMatrix();
     unlockInvalidation();
+
+    if(inport_){
+        inport_->onChange(this,&CameraProperty::inportChanged);
+    }
 }
 
 CameraProperty::~CameraProperty() {}
@@ -157,6 +166,94 @@ void CameraProperty::deserialize(IvwDeserializer& d) {
     updateViewMatrix();
     updateProjectionMatrix();
     unlockInvalidation();
+}
+
+void CameraProperty::setInport(Inport* inport){
+    if(inport_ != inport){
+        inport->onChange(this,&CameraProperty::inportChanged);
+    }
+    inport_ = inport;
+}
+
+void CameraProperty::fitCameraToVolume( const Volume* volume){
+    mat3 newBasis = volume->getBasis();
+    fitWithBasis(newBasis);
+}
+
+void CameraProperty::fitCameraToGeomtry( const Geometry* geometry){
+    mat3 newBasis = geometry->getBasis();
+    fitWithBasis(newBasis);
+}
+
+void CameraProperty::fitWithBasis(const mat3 &basis){
+    lockInvalidation();
+    float newSize = glm::length(basis * vec3(2,2,2));
+    float oldSize = glm::length(oldBasis_ * vec3(2,2,2));
+
+    float ratio = newSize/oldSize;
+    if(ratio == 1)
+        return;
+    float newFarPlane = farPlane_.get()*ratio;
+
+    farPlane_.setMaxValue(farPlane_.getMaxValue() * ratio);
+    farPlane_.set(newFarPlane);
+
+    vec3 oldOffset = lookFrom_.get() - lookTo_.get();
+
+    vec3 newPos    = lookTo_.get() + (oldOffset * ratio);
+    float l1 = glm::length(oldOffset);
+    float l2 = glm::length(newPos - lookTo_.get());
+
+    lookFrom_.setMinValue(lookFrom_.getMinValue()*ratio);
+    lookFrom_.setMaxValue(lookFrom_.getMaxValue()*ratio);
+    lookTo_.setMinValue(lookTo_.getMinValue()*ratio);
+    lookTo_.setMaxValue(lookTo_.getMaxValue()*ratio);
+
+    lookFrom_.set(newPos); //TODO something wrong is happening in here. 
+
+    updateViewMatrix();
+    updateProjectionMatrix();
+    unlockInvalidation();
+
+    oldBasis_ = basis;
+}
+
+void CameraProperty::inportChanged(){
+    VolumeInport* volumeInport = dynamic_cast<VolumeInport*>(inport_);
+    GeometryInport* geometryInport = dynamic_cast<GeometryInport*>(inport_);
+
+    const SpatialEntity<3>* data = 0; //using SpatialEntity since Geometry is not derived from data
+    if(volumeInport){
+        const Volume* newVolume = volumeInport->getData();
+        data = newVolume;
+
+    }else if(geometryInport){
+        const Geometry* newGeometry = geometryInport->getData();
+        data = newGeometry;
+    }
+
+    if(data_ == 0){ // first time only
+        data_ = data;
+        if(volumeInport){
+            oldBasis_ = volumeInport->getData()->getBasis();
+        }else if(geometryInport){
+            oldBasis_ = geometryInport->getData()->getBasis();
+        }
+        return;
+    }
+
+    if(data_ == data){ // nothing changed change
+        return;
+    }
+
+    if(volumeInport){
+        fitCameraToVolume(volumeInport->getData());
+    }else if(geometryInport){
+        fitCameraToGeomtry(geometryInport->getData());
+    }
+
+
+    data_ = data;
 }
 
 

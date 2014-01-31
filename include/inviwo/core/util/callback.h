@@ -55,18 +55,23 @@ class CallBackList {
 public:
     CallBackList() {}
     void invokeAll() const{ 
-        for (std::vector<BaseCallBack*>::const_iterator it=callBackList_.begin(); it!=callBackList_.end(); ++it)
-            (*it)->invoke();        
+        std::map<void*,BaseCallBack*>::const_iterator it;
+        for (it=callBackList_.begin(); it!=callBackList_.end(); ++it)
+            it->second->invoke();        
     }
 
     template <typename T>
     void addMemberFunction(T* o, void (T::*m)()) {
-        callBackList_.clear();
-        callBackList_.push_back(new MemberFunctionCallBack<T>(o, m));
+       std::map<void*,BaseCallBack*>::iterator it = callBackList_.find(o);
+       if(it != callBackList_.end()){
+           delete it->second;
+           it->second = new MemberFunctionCallBack<T>(o, m);
+       }
+       callBackList_[o] = new MemberFunctionCallBack<T>(o, m);
     }
 
 private:
-    std::vector<BaseCallBack*> callBackList_;
+    std::map<void*,BaseCallBack*> callBackList_;
 };
 
 class SingleCallBack {

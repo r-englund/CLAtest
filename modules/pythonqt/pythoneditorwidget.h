@@ -52,7 +52,7 @@ public:
 private:
     void buildWidget();
 
-    QTextEdit* pythonCode_;
+    QPlainTextEdit* pythonCode_;
     QTextEdit* pythonOutput_;
 
 	QColor infoTextColor_;

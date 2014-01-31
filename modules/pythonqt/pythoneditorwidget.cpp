@@ -158,7 +158,7 @@ namespace inviwo{
         QSplitter* splitter = new  QSplitter(content);
         splitter->setOrientation(Qt::Vertical);
 
-        pythonCode_ = new QTextEdit(content);
+        pythonCode_ = new QPlainTextEdit(content);
         pythonCode_->setObjectName("pythonEditor");
         
         

@@ -27,7 +27,7 @@ namespace inviwo{
     class IVW_MODULE_PYTHONQT_API PyLoadNetwork : public PyMethod{
     public:
         std::string getName()const{return "loadWorkspace";}
-        std::string getDesc()const{return "loadWorkspace(filename)\tLoad a new workspace into the network.";}
+        std::string getDesc()const{return "Load a new workspace into the network.";}
         virtual PyCFunction getFunc(){return py_loadWorkspace;}
     };
 

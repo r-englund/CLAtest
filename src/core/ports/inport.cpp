@@ -54,7 +54,7 @@ void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsP
 
 void Inport::callOnChangeIfInvalid(){
     if(getInvalidationLevel() >= PropertyOwner::INVALID_OUTPUT)
-        onChangeCallback_.invoke();
+        onChangeCallback_.invokeAll();
 }
 
 } // namespace

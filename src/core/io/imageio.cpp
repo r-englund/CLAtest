@@ -301,7 +301,7 @@ FIBITMAP* ImageIO::allocateBitmap(FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPe
 
 template<typename T>
 FIBITMAP* ImageIO::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels, const DataFormatBase* format){
-    FIBITMAP* dib = allocateBitmap(type, dim, bitsPerPixel, channels);
+    FIBITMAP* dib = allocateBitmap(type, dim, bitsPerPixel, channels); 
     unsigned int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
     T* bits = (T*)FreeImage_GetBits(dib);
 
@@ -364,7 +364,7 @@ void* ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPi
     }
 
     memcpy(dst, pixelValues, dim.x*dim.y*sizeof(T));
-    //FreeImage_Unload(bitmapNEW);
+    FreeImage_Unload(bitmapNEW);
     return dst;
 }
 
@@ -394,7 +394,7 @@ void* ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, uvec2 
     }
 
     memcpy(dst, pixelValues, dst_dim.x*dst_dim.y*sizeof(T));
-    //FreeImage_Unload(bitmapNEW);
+    FreeImage_Unload(bitmapNEW);
     return dst;
 }
 

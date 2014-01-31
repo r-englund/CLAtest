@@ -30,6 +30,7 @@ class IVW_CORE_API CameraProperty : public CompositeProperty, public EventListen
 public:
     CameraProperty(std::string identifier, std::string displayName,
                    vec3 eye=vec3(0.0f, 0.0f, -2.0f), vec3 center=vec3(0.0f), vec3 lookUp=vec3(0.0f, 1.0f, 0.0f),
+                   Inport* inport = NULL,
                    PropertyOwner::InvalidationLevel=PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics = PropertySemantics::Default);
     virtual ~CameraProperty();
@@ -73,6 +74,11 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "CameraProperty"; }
 
+    void setInport(Inport* inport);
+    void fitCameraToVolume( const Volume* volume);
+    void fitCameraToGeomtry( const Geometry* volume);
+    void fitWithBasis(const mat3 &basis);
+    void inportChanged();
 private:
     FloatVec3Property lookFrom_;
     FloatVec3Property lookTo_;
@@ -89,6 +95,10 @@ private:
     mat4 inverseProjectionMatrix_;
 
     bool lockInvalidation_;
+
+    Inport* inport_;
+    const SpatialEntity<3>* data_;
+    mat3 oldBasis_;
 };
 
 } // namespace

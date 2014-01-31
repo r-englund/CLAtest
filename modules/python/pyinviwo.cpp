@@ -139,6 +139,7 @@ namespace inviwo{
 
         inviwoPyModule->addMethod(new PyGetWorkspaceSavePathMethod());
         inviwoPyModule->addMethod(new PyGetVolumePathMethod());
+        inviwoPyModule->addMethod(new PyGetDataPathMethod());
         inviwoPyModule->addMethod(new PyGetImagePathMethod());
         inviwoPyModule->addMethod(new PyGetModulePathMethod());
         inviwoPyModule->addMethod(new PyGetTransferFunctionPath());

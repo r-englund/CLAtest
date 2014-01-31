@@ -62,7 +62,7 @@ protected:
     template <typename T>
     void getPredecessorsUsingPortType(std::vector<Processor*>&);
 
-    SingleCallBack onChangeCallback_;
+    CallBackList onChangeCallback_;
 
 };
 
