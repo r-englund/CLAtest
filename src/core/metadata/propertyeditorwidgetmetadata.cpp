@@ -18,7 +18,7 @@ namespace inviwo {
 
 
 PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus() : dockStatus_("Floating") {}
-PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(std::string dockStatus="Floating") : dockStatus_(dockStatus) {}
+PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(std::string dockStatus) : dockStatus_(dockStatus) {}
 PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(const PropertyEditorWidgetDockStatus& rhs) : dockStatus_(rhs.dockStatus_) {};
 PropertyEditorWidgetDockStatus& PropertyEditorWidgetDockStatus::operator=(const PropertyEditorWidgetDockStatus& that){
     if (this != &that) {
