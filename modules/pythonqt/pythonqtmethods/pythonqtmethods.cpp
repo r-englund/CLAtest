@@ -17,13 +17,12 @@ PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* args){
     }
 
     // check parameter if is string
-    if (!PyString_Check(PyTuple_GetItem(args, 0))) {
+    if (!PyValueParser::is<std::string>(PyTuple_GetItem(args, 0))) {
         PyErr_SetString(PyExc_TypeError, "loadWorkspace() first argument must be a string");
         return 0;
     }
 
-    PyValueParser parser;
-    std::string filename = parser.parse<std::string>(PyTuple_GetItem(args, 0));
+    std::string filename = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
 
     if(!URLParser::fileExists(filename)){
         filename = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) + filename;

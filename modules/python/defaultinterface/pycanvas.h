@@ -26,19 +26,25 @@ PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* /*args*/);
 
 
-    class IVW_MODULE_PYTHON_API PyCanvasCountMethod : public PyMethod{
-    public:
-        std::string getName(){return "canvasCount";}
-        std::string getDesc(){return "Returns the number of canvases in the current network.";}
+class IVW_MODULE_PYTHON_API PyCanvasCountMethod : public PyMethod{
+public:
+        virtual std::string getName()const{return "canvasCount";}
+        virtual std::string getDesc()const{return "Returns the number of canvases in the current network.";}
         virtual PyCFunction getFunc(){return py_canvascount;}
-    };
+};
 
-    class IVW_MODULE_PYTHON_API PyResizeCanvasMethod : public PyMethod{
-    public:
-    std::string getName(){return "resizeCanvas";}
-    std::string getDesc(){return "Resizes all the canvases in the network to the given size. Canvas can either be given using a canvas index (starting at 0) or a canvas ID string ";}
+class IVW_MODULE_PYTHON_API PyResizeCanvasMethod : public PyMethod{
+public:
+    PyResizeCanvasMethod();
+    virtual ~PyResizeCanvasMethod(){}
+    virtual std::string getName()const{return "resizeCanvas";}
+    virtual std::string getDesc()const{return "Resizes the canvas in the network to the given size. Canvas can either be given using a canvas index (starting at 0) or a canvas ID string ";}
     virtual PyCFunction getFunc(){return py_resizecanvas;}
-    };
+private:
+    PyParamVarious canvas_;
+    PyParamInt newWidth_;
+    PyParamInt newHeight_;
+};
 
 } //namespace
 

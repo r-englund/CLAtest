@@ -53,7 +53,7 @@ namespace inviwo{
         ivwAssert(instance_==0,"This is a Singelton, constructor may only be called once")
         instance_ = this;
         setObjectName("PythonEditor");
-        setAllowedAreas(Qt::AllDockWidgetAreas);
+        setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
         setFloating(true);
 
         buildWidget();

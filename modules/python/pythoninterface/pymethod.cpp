@@ -18,12 +18,12 @@
 
 namespace inviwo{
 
-PyParamBase::PyParamBase(std::string paramName,bool optional)
-: name_(paramName)
-, optional_(optional)
-{
+    PyParamBase::PyParamBase(std::string paramName,bool optional)
+        : name_(paramName)
+        , optional_(optional)
+    {
 
-}
+    }
 
 std::string PyParamBase::getParamName()const{
     return name_;
@@ -33,7 +33,7 @@ bool PyParamBase::isOptional()const{
     return optional_;
 }
 
-PyMethod::PyMethod(){
+PyMethod::PyMethod():optionalParams_(0){
 
 }
 
@@ -69,8 +69,35 @@ std::string PyMethod::getParamDesc(){
     return ss.str();
 }
 
+bool PyMethod::testParams(PyObject* args)const{
+    Py_ssize_t size = PyTuple_Size(args);
+    if(size > params_.size() || size < (params_.size()-optionalParams_)){
+        std::stringstream ss;
+        ss << getName() << "() expects " << params_.size()-optionalParams_ << " parameters ";
+        if(optionalParams_!=0){
+            ss << " and may have " << optionalParams_ << " additional parameters";
+        }
+        PyErr_SetString(PyExc_TypeError,ss.str().c_str());
+        return false;
+    }
+
+    for(Py_ssize_t i = 0;i<size;i++){
+        if(!params_[i]->testParam(PyTuple_GetItem(args,i))){
+            std::stringstream ss;
+            ss << getName() << "() expects a " << params_[i]->paramType() << " for its " << i << ":th parameter";
+            PyErr_SetString(PyExc_TypeError,ss.str().c_str());
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void PyMethod::addParam(PyParamBase* param){
+    ivwAssert(optionalParams_ == 0 || ( optionalParams_ != 0 && param->isOptional()),"Once one paramter has been marked as optional, the rest of the has to as well");
     params_.push_back(param);
+    if(param->isOptional())
+       optionalParams_++;     
 }
 
 

@@ -23,21 +23,26 @@
 #include <string>
 #include <map>
 
-PyObject* py_info(PyObject* /*self*/, PyObject* /*args*/);
 
 namespace inviwo {
+    
+    PyObject* py_info(PyObject* /*self*/, PyObject* /*args*/);
 
     class IVW_MODULE_PYTHON_API PyInfoMethod : public PyMethod{
     public:
-        std::string getName(){return "info";}
-        std::string getDesc(){return "Prints documentation of the module's functions.";}
+        virtual std::string getName()const{return "info";}
+        virtual std::string getDesc()const{return "Prints documentation of the module's functions.";}
         virtual PyCFunction getFunc(){return py_info;}
     };
 
-
+    
 
 class IVW_MODULE_PYTHON_API PyModule{
 
+
+#if PY_MAJOR_VERSION >= 3
+    struct PyModuleDef pyModuleDef_;
+#endif
 public:
     PyModule(std::string moduleName,std::vector<PyMethod*> methods = std::vector<PyMethod*>());
     ~PyModule();
@@ -51,6 +56,9 @@ public:
 
     static PyModule* getModuleByPyObject(PyObject *obj);
 
+#if PY_MAJOR_VERSION >= 3
+    PyModuleDef* getPyModuleDef();
+#endif
 
 private:
     std::string moduleName_;
@@ -63,7 +71,6 @@ private:
 
 
 };
-
 
 
 }//namespace

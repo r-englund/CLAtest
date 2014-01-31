@@ -22,10 +22,16 @@
 #include <frameobject.h>
 #include "pythonexecutionoutputobeserver.h"
 
+#include "pythoninterface/pymethod.h"
+#include "pythoninterface/pyvalueparser.h"
+
+#define BYTE_CODE static_cast<PyObject*>(byteCode_)
+
 namespace inviwo {
 
 PythonScript::PythonScript()
-    : source_("")
+    : sourceProperty_("src","Source","",PropertyOwner::INVALID_OUTPUT,PropertySemantics("PythonEditor"))
+    //, source_("")
     , byteCode_(0)
     , isCompileNeeded_(false)
     , scriptRecorder_(0)
@@ -34,19 +40,19 @@ PythonScript::PythonScript()
 }
 
 PythonScript::~PythonScript() {
-    Py_XDECREF(byteCode_);
+    Py_XDECREF(BYTE_CODE);
     delete scriptRecorder_;
 }
 
 bool PythonScript::compile(bool outputInfo) {
     if(outputInfo)
         LogInfo("Compiling script");
-    Py_XDECREF(byteCode_);
-    byteCode_ = Py_CompileString(source_.c_str(), "", Py_file_input);
+    Py_XDECREF(BYTE_CODE);
+    byteCode_ = Py_CompileString(sourceProperty_.get().c_str(), "", Py_file_input);
     isCompileNeeded_ = !checkCompileError();
 
     if (isCompileNeeded_) {
-        Py_XDECREF(byteCode_);
+        Py_XDECREF(BYTE_CODE);
         byteCode_ = 0;
     }
 
@@ -65,8 +71,11 @@ bool PythonScript::run(bool outputInfo) {
     ivwAssert(byteCode_!=0, "No byte code");
     if(outputInfo)
         LogInfo("Running compiled script ...");
-
-    PyObject* ret = PyEval_EvalCode((PyCodeObject*)byteCode_, glb, glb);
+#if PY_MAJOR_VERSION <= 2
+    PyObject* ret = PyEval_EvalCode(static_cast<PyCodeObject*>(byteCode_), glb, glb);
+#else
+    PyObject* ret = PyEval_EvalCode(BYTE_CODE, glb, glb);
+#endif
     bool success = checkRuntimeError();
     
     Py_XDECREF(ret); 
@@ -76,13 +85,13 @@ bool PythonScript::run(bool outputInfo) {
 }
 
 std::string PythonScript::getSource() const {
-    return source_;
+    return sourceProperty_.get();
 }
 
 void PythonScript::setSource(const std::string& source) {
-    source_ = source;
+    sourceProperty_.set(source);
     isCompileNeeded_ = true;
-    Py_XDECREF(byteCode_);
+    Py_XDECREF(BYTE_CODE);
     byteCode_ = 0;
 }
 
@@ -115,8 +124,8 @@ bool PythonScript::checkCompileError() {
     if (log.empty()) {
         LogWarn("Failed to parse exception, printing as string:");
         PyObject* s = PyObject_Str(errvalue);
-        if (s && PyString_AsString(s)) {
-            log = std::string(PyString_AsString(s));
+        if (s && PyValueParser::is<std::string>(s)) {
+            log = std::string(PyValueParser::parse<std::string>(s));
             Py_XDECREF(s);
         }
     }
@@ -134,7 +143,7 @@ bool PythonScript::checkCompileError() {
 bool PythonScript::checkRuntimeError() {
     if (!PyErr_Occurred())
         return true;
-
+    PyErr_Print();
     std::string pyException = "";
     PyObject* pyError_type = 0;
     PyObject* pyError_value = 0;
@@ -154,14 +163,14 @@ bool PythonScript::checkRuntimeError() {
             std::string stacktraceLine;
             if (frame && frame->f_code) {
                 PyCodeObject* codeObject = frame->f_code;
-                if (PyString_Check(codeObject->co_filename))
-                    stacktraceLine.append(std::string("  File \"") + PyString_AsString(codeObject->co_filename) + std::string("\", "));
+                if (PyValueParser::is<std::string>(codeObject->co_filename))
+                    stacktraceLine.append(std::string("  File \"") + PyValueParser::parse<std::string>(codeObject->co_filename) + std::string("\", "));
 
                 errorLine = PyCode_Addr2Line(codeObject, frame->f_lasti);
                 stacktraceLine.append(std::string("line ") + toString(errorLine));
 
-                if (PyString_Check(codeObject->co_name))
-                    stacktraceLine.append(std::string(", in ") + PyString_AsString(codeObject->co_name));
+                if (PyValueParser::is<std::string>(codeObject->co_name))
+                    stacktraceLine.append(std::string(", in ") + PyValueParser::parse<std::string>(codeObject->co_name));
             }
             stacktraceLine.append("\n");
             stacktraceStr = stacktraceLine + stacktraceStr;
@@ -173,8 +182,8 @@ bool PythonScript::checkRuntimeError() {
     std::stringstream s;
     s << errorLine;
     pyException.append(std::string("[") + s.str() + std::string("] "));
-    if (pyError_value && (pyError_string = PyObject_Str(pyError_value)) != 0 && (PyString_Check(pyError_string))) {
-        pyException.append(PyString_AsString(pyError_string));
+    if (pyError_value && (pyError_string = PyObject_Str(pyError_value)) != 0 && (PyValueParser::is<std::string>(pyError_string))) {
+        pyException.append(PyValueParser::parse<std::string>(pyError_string));
         Py_XDECREF(pyError_string);
         pyError_string = 0;
     }

@@ -14,7 +14,6 @@
 
 #include "pyproperties.h"
 
-#include "../pythoninterface/pyvalueparser.h"
 
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
@@ -31,26 +30,17 @@
 #include <inviwo/core/properties/vectorproperties.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
+#include "../pythoninterface/pyvalueparser.h"
 
 namespace inviwo {
 
 PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
-    if (PyTuple_Size(args) != 3) {
-        std::ostringstream errStr;
-        errStr << "setPropertyValue() takes exactly 3 arguments: processor name, property id, value";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PySetPropertyValueMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "setPropertyValue() arguments 1 and 2 must be strings");
-        return 0;
-    }
-
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -67,8 +57,7 @@ PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
         return 0;
     }
 
-    PyValueParser pyValueParser;
-    pyValueParser.setProperty(theProperty,parameter);
+    PyValueParser::setProperty(theProperty,parameter);
 
     Py_RETURN_NONE;
 }
@@ -78,22 +67,12 @@ PyObject* py_setPropertyValue(PyObject* self, PyObject* args){
 
 
 PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 3) {
-        std::ostringstream errStr;
-        errStr << "setPropertyMaxValue() takes exactly 3 arguments: processor name, property id, value";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PySetPropertyMaxValueMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "setPropertyMaxValue() arguments 1 and 2 must be strings");
-        return 0;
-    }
-
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -122,30 +101,28 @@ PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
     OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
     OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
-    PyValueParser parser;
-
     if(ordinalFloat){
-        ordinalFloat->setMaxValue(parser.parse<float>(args));
+        ordinalFloat->setMaxValue(PyValueParser::parse<float>(args));
     }else if(ordinalInt){
-        ordinalInt->setMaxValue(parser.parse<int>(args));
+        ordinalInt->setMaxValue(PyValueParser::parse<int>(args));
     }else if(ordinalIvec2){
-        ordinalIvec2->setMaxValue(parser.parse<ivec2>(args));
+        ordinalIvec2->setMaxValue(PyValueParser::parse<ivec2>(args));
     }else if(ordinalIvec3){
-        ordinalIvec3->setMaxValue(parser.parse<ivec3>(args));
+        ordinalIvec3->setMaxValue(PyValueParser::parse<ivec3>(args));
     }else if(ordinalIvec4){
-        ordinalIvec4->setMaxValue(parser.parse<ivec4>(args));
+        ordinalIvec4->setMaxValue(PyValueParser::parse<ivec4>(args));
     }else if(ordinalMat2){
-        ordinalMat2->setMaxValue(parser.parse<mat2>(args));
+        ordinalMat2->setMaxValue(PyValueParser::parse<mat2>(args));
     }else if(ordinalMat3){
-        ordinalMat3->setMaxValue(parser.parse<mat3>(args));
+        ordinalMat3->setMaxValue(PyValueParser::parse<mat3>(args));
     }else if(ordinalMat4){
-        ordinalMat4->setMaxValue(parser.parse<mat4>(args));
+        ordinalMat4->setMaxValue(PyValueParser::parse<mat4>(args));
     }else if(ordinalVec2){
-        ordinalVec2->setMaxValue(parser.parse<vec2>(args));
+        ordinalVec2->setMaxValue(PyValueParser::parse<vec2>(args));
     }else if(ordinalVec3){
-        ordinalVec3->setMaxValue(parser.parse<vec3>(args));
+        ordinalVec3->setMaxValue(PyValueParser::parse<vec3>(args));
     }else if(ordinalVec4){
-        ordinalVec4->setMaxValue(parser.parse<vec4>(args));
+        ordinalVec4->setMaxValue(PyValueParser::parse<vec4>(args));
     }else{
         LogErrorCustom("inviwo_setPropertyMaxValue","Unknown parameter type");
     }
@@ -156,22 +133,12 @@ PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args){
 
 
 PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 3) {
-        std::ostringstream errStr;
-        errStr << "setPropertyMinValue() takes exactly 3 arguments: processor name, property id, value";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PySetPropertyMinValueMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "setPropertyMinValue() arguments 1 and 2 must be strings");
-        return 0;
-    }
-
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -200,30 +167,28 @@ PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
     OrdinalProperty<vec3>*  ordinalVec3  = dynamic_cast<OrdinalProperty<vec3> *>(theProperty);
     OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
-    PyValueParser parser;
-
     if(ordinalFloat){
-        ordinalFloat->setMinValue(parser.parse<float>(args));
+        ordinalFloat->setMinValue(PyValueParser::parse<float>(args));
     }else if(ordinalInt){
-        ordinalInt->setMinValue(parser.parse<int>(args));
+        ordinalInt->setMinValue(PyValueParser::parse<int>(args));
     }else if(ordinalIvec2){
-        ordinalIvec2->setMinValue(parser.parse<ivec2>(args));
+        ordinalIvec2->setMinValue(PyValueParser::parse<ivec2>(args));
     }else if(ordinalIvec3){
-        ordinalIvec3->setMinValue(parser.parse<ivec3>(args));
+        ordinalIvec3->setMinValue(PyValueParser::parse<ivec3>(args));
     }else if(ordinalIvec4){
-        ordinalIvec4->setMinValue(parser.parse<ivec4>(args));
+        ordinalIvec4->setMinValue(PyValueParser::parse<ivec4>(args));
     }else if(ordinalMat2){
-        ordinalMat2->setMinValue(parser.parse<mat2>(args));
+        ordinalMat2->setMinValue(PyValueParser::parse<mat2>(args));
     }else if(ordinalMat3){
-        ordinalMat3->setMinValue(parser.parse<mat3>(args));
+        ordinalMat3->setMinValue(PyValueParser::parse<mat3>(args));
     }else if(ordinalMat4){
-        ordinalMat4->setMinValue(parser.parse<mat4>(args));
+        ordinalMat4->setMinValue(PyValueParser::parse<mat4>(args));
     }else if(ordinalVec2){
-        ordinalVec2->setMinValue(parser.parse<vec2>(args));
+        ordinalVec2->setMinValue(PyValueParser::parse<vec2>(args));
     }else if(ordinalVec3){
-        ordinalVec3->setMinValue(parser.parse<vec3>(args));
+        ordinalVec3->setMinValue(PyValueParser::parse<vec3>(args));
     }else if(ordinalVec4){
-        ordinalVec4->setMinValue(parser.parse<vec4>(args));
+        ordinalVec4->setMinValue(PyValueParser::parse<vec4>(args));
     }else{
         LogErrorCustom("inviwo_setPropertyMinValue","Unknown parameter type" );
     }
@@ -235,22 +200,12 @@ PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args){
 
 
 PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 2) {
-        std::ostringstream errStr;
-        errStr << "getPropertyValue() takes exactly 2 arguments: processor name, property id";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PyGetPropertyValueMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "getPropertyValue() arguments 1 and 2 must be strings");
-        return 0;
-    }
-
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
 
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -267,29 +222,20 @@ PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 
-    return PyValueParser().getProperty(theProperty);
+    return PyValueParser::getProperty(theProperty);
 }
 
-#define CAST_N_GETMAX(PropType,prop,parser) {PropType* casted = dynamic_cast<PropType*>(prop); if(casted) {return parser.toPyObject(casted->getMaxValue());}}
-#define CAST_N_GETMIN(PropType,prop,parser) {PropType* casted = dynamic_cast<PropType*>(prop); if(casted) {return parser.toPyObject(casted->getMinValue());}}
+#define CAST_N_GETMAX(PropType,prop,parser) {PropType* casted = dynamic_cast<PropType*>(prop); if(casted) {return PyValueParser::toPyObject(casted->getMaxValue());}}
+#define CAST_N_GETMIN(PropType,prop,parser) {PropType* casted = dynamic_cast<PropType*>(prop); if(casted) {return PyValueParser::toPyObject(casted->getMinValue());}}
 
 PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 2) {
-        std::ostringstream errStr;
-        errStr << "getPropertyMaxValue() takes exactly 2 arguments: processor name, property id";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
-        return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "getPropertyMaxValue() arguments 1 and 2 must be strings");
+    static PyGetPropertyMaxValueMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
 
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -305,8 +251,6 @@ PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
-
-    PyValueParser parser;
 
     CAST_N_GETMAX(FloatProperty,theProperty,parser);
     CAST_N_GETMAX(IntProperty,theProperty,parser);
@@ -328,22 +272,12 @@ PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args){
 
 
 PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 2) {
-        std::ostringstream errStr;
-        errStr << "getPropertyMinValue() takes exactly 2 arguments: processor name, property id";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PyGetPropertyMinValueMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "getPropertyMinValue() arguments 1 and 2 must be strings");
-        return 0;
-    }
-
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
 
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -359,8 +293,6 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
-
-    PyValueParser parser;
 
     CAST_N_GETMIN(FloatProperty,theProperty,parser);
     CAST_N_GETMIN(IntProperty,theProperty,parser);
@@ -382,22 +314,12 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args){
 
 
 PyObject* py_clickButton(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 2) {
-        std::ostringstream errStr;
-        errStr << "clickButton() takes exactly 2 arguments: processor name, property id";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PyClickButtonMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "clickButton() arguments 1 and 2 must be strings");
-        return 0;
-    }
-
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
 
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -425,6 +347,71 @@ PyObject* py_clickButton(PyObject* /*self*/, PyObject* args){
 
     Py_RETURN_NONE;
 }
+
+
+PySetPropertyValueMethod::PySetPropertyValueMethod()
+    : processor_("processor")
+    , property_("property")
+    , value_("value")
+{
+    addParam(&processor_);
+    addParam(&property_);
+    addParam(&value_);
+}
+
+PySetPropertyMaxValueMethod::PySetPropertyMaxValueMethod()
+    : processor_("processor")
+    , property_("property")
+    , maxValue_("maxValue")
+{
+    addParam(&processor_);
+    addParam(&property_);
+    addParam(&maxValue_);
+}
+
+PySetPropertyMinValueMethod::PySetPropertyMinValueMethod()
+    : processor_("processor")
+    , property_("property")
+    , minValue_("minValue")
+{
+    addParam(&processor_);
+    addParam(&property_);
+    addParam(&minValue_);
+}
+
+PyGetPropertyValueMethod::PyGetPropertyValueMethod()
+    : processor_("processor")
+    , property_("property")
+{
+    addParam(&processor_);
+    addParam(&property_);
+}
+
+PyGetPropertyMaxValueMethod::PyGetPropertyMaxValueMethod()
+    : processor_("processor")
+    , property_("property")
+{
+    addParam(&processor_);
+    addParam(&property_);
+}
+
+PyGetPropertyMinValueMethod::PyGetPropertyMinValueMethod()
+    : processor_("processor")
+    , property_("property")
+{
+    addParam(&processor_);
+    addParam(&property_);
+}
+
+PyClickButtonMethod::PyClickButtonMethod()
+    : processor_("processor")
+    , property_("property")
+{
+    addParam(&processor_);
+    addParam(&property_);
+}
+
+
 
 
 }

@@ -32,14 +32,15 @@
 namespace inviwo {
 
     class IVW_MODULE_PYTHON_API PyValueParser{
-
-    public:
         PyValueParser(){}
+    public:
+        
+        template <typename T> static T parse(PyObject *arg);
+        template <typename T> static PyObject* toPyObject(T t);
+        static void setProperty(Property *p,PyObject *args);
+        static PyObject *getProperty(Property *p);
 
-        template <typename T> T parse(PyObject *arg);
-        template <typename T> PyObject* toPyObject(T t);
-        void setProperty(Property *p,PyObject *args);
-        PyObject *getProperty(Property *p);
+        template<typename T> static bool is(PyObject *arg);
 
     };
 
@@ -50,6 +51,7 @@ namespace inviwo {
     template <> char        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
     template <> short       IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
     template <> int         IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+    template <>unsigned int IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
     template <> long        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
     template <> vec2        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
     template <> vec3        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
@@ -64,6 +66,29 @@ namespace inviwo {
     template <> mat3        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
     template <> mat4        IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
     template <> std::string IVW_MODULE_PYTHON_API PyValueParser::parse(PyObject *args);
+
+
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<bool>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<double>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<float>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<char>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<short>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<int>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<unsigned int>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<long>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<vec2>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<vec3>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<vec4>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<ivec2>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<ivec3>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<ivec4>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<uvec2>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<uvec3>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<uvec4>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<mat2>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<mat3>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<mat4>(PyObject *arg);
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<std::string>(PyObject *arg);
 
 
 } //namespace

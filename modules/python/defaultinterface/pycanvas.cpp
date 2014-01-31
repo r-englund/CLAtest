@@ -36,22 +36,16 @@ PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/){
 
 //
 PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 3) {
-        std::ostringstream errStr;
-        errStr << "resizeCanvas(canvas,width,height) takes exactly 3 argument: canvas,width and height";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PyResizeCanvasMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
-
-    PyValueParser parser;
     CanvasProcessor* canvas = 0;
 
     PyObject *arg0 = PyTuple_GetItem(args,0);
-    bool argIsString = PyString_Check(arg0);
+    bool argIsString = PyValueParser::is<std::string>(arg0);
 
     if(argIsString){
-        std::string id = parser.parse<std::string>(arg0);
+        std::string id = PyValueParser::parse<std::string>(arg0);
         Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(id);
         if(!processor){
             std::string msg = std::string("resizeCanvas(canvas,width,height) no processor with name: ") + id;
@@ -66,7 +60,7 @@ PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* args){
             return 0;
         }
     }else{
-        int id = parser.parse<int>(arg0);
+        int id = PyValueParser::parse<int>(arg0);
         std::vector<CanvasProcessor*> canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
         if(canvases.size()==0){
             std::string msg = std::string("resizeCanvas(canvas,width,height) no canvases found in current network") ;
@@ -87,8 +81,8 @@ PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* args){
     PyObject *arg1 = PyTuple_GetItem(args,1);
     PyObject *arg2 = PyTuple_GetItem(args,2);
 
-    int w = parser.parse<int>(arg1);
-    int h = parser.parse<int>(arg1);
+    int w = PyValueParser::parse<int>(arg1);
+    int h = PyValueParser::parse<int>(arg2);
 
     if(w <= 0 || h <= 0){
         std::string msg = std::string("resizeCanvas(canvas,width,height) width and height must have positive non-zero values ");
@@ -100,6 +94,16 @@ PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* args){
     canvas->invalidate(PropertyOwner::INVALID_OUTPUT);
     Py_RETURN_NONE;
 
+}
+
+PyResizeCanvasMethod::PyResizeCanvasMethod()
+    : canvas_("canvas")
+    , newWidth_("newWidth")
+    , newHeight_("newHeight")
+{
+    addParam(&canvas_);
+    addParam(&newWidth_);
+    addParam(&newHeight_);
 }
 
 }

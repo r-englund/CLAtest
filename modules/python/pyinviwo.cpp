@@ -59,8 +59,8 @@ static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
 namespace inviwo{
     class PyStdOutCatcher : public PyMethod{
     public:
-        std::string getName(){return "ivwPrint";}
-        std::string getDesc(){return " Only for internal use. Redirect std output to python editor widget.";}
+        virtual std::string getName()const{return "ivwPrint";}
+        virtual std::string getDesc()const{return " Only for internal use. Redirect std output to python editor widget.";}
         virtual PyCFunction getFunc(){return py_stdout;}
     };
 
@@ -83,7 +83,11 @@ namespace inviwo{
         isInit_ = true;
 
         LogInfo("Python version: " + toString(Py_GetVersion()));
+#if PY_MAJOR_VERSION <= 2
         char programName[] = "PyInviwo";
+#else   
+        wchar_t programName[] = L"PyInviwo";
+#endif
         Py_SetProgramName(programName);
 
 #ifdef WIN32
@@ -135,13 +139,13 @@ namespace inviwo{
         inviwoPyModule->addMethod(new PySnapshotMethod());
         inviwoPyModule->addMethod(new PySnapshotCanvasMethod());
         inviwoPyModule->addMethod(new PyGetBasePathMethod());
-        inviwoPyModule->addMethod(new PyGetDataPathMethod());
         inviwoPyModule->addMethod(new PyQuitInviwoMethod());
 
         inviwoPyModule->addMethod(new PyGetWorkspaceSavePathMethod());
         inviwoPyModule->addMethod(new PyGetVolumePathMethod());
         inviwoPyModule->addMethod(new PyGetImagePathMethod());
         inviwoPyModule->addMethod(new PyGetModulePathMethod());
+        inviwoPyModule->addMethod(new PyGetTransferFunctionPath());
 
         inviwoPyModule->addMethod(new PySetVoxelMethod());
         inviwoPyModule->addMethod(new PyGetVolumeDimension());
@@ -182,7 +186,14 @@ namespace inviwo{
     PyObject* PyInviwo::registerPyModule(PyModule *pyModule) {
         init_();
         if (Py_IsInitialized()) {
+#if PY_MAJOR_VERSION <= 2            
             PyObject* obj = Py_InitModule(pyModule->getModuleName(),NULL);
+#else
+            PyObject* obj = PyModule_Create(pyModule->getPyModuleDef());
+            PyImport_AddModuleObject(obj);
+            //PyImport_AppendInittab(pyModule->getModuleName(), pyModule);
+#endif
+            
             if(!obj){
                 LogWarn("Failed to init python module '" << pyModule->getModuleName() <<"' ");
             }

@@ -17,12 +17,17 @@
 
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
+#include "../pythoninterface/pyvalueparser.h"
 
 
 namespace inviwo {
 
 
 PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
+    static PyListPropertiesMethod p;
+    if(!p.testParams(args))
+        return 0;
+
     if (PyTuple_Size(args) != 1) {
         std::ostringstream errStr;
         errStr << "listProperties() takes exactly 1 argument: processor name";
@@ -32,12 +37,12 @@ PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
     }
 
     // check parameter if is string
-    if (!PyString_Check(PyTuple_GetItem(args, 0))) {
+    if (!PyValueParser::is<std::string>(PyTuple_GetItem(args, 0))) {
         PyErr_SetString(PyExc_TypeError, "listProperties() argument must be a string");
         return 0;
     }
 
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
     
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork ()->getProcessorByName(processorName);
     if(!processor){
@@ -70,5 +75,10 @@ PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/){
     Py_RETURN_NONE;
 }
 
+PyListPropertiesMethod::PyListPropertiesMethod()
+    : processor_("processor")
+{
+    addParam(&processor_);
+}
 
 }

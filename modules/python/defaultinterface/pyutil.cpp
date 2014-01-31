@@ -25,29 +25,14 @@
 namespace inviwo {
 
 PyObject* py_snapshot(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 1 && PyTuple_Size(args) != 2) {
-        std::ostringstream errStr;
-        errStr << "snapshot() takes 1 or 2 argument: filename, canvas name";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PySnapshotMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
-    std::string filename,canvasName = "";
-
-    // check parameter if is string
-    if (!PyString_Check(PyTuple_GetItem(args, 0))) {
-        PyErr_SetString(PyExc_TypeError, "snapshot() first argument must be a string");
-        return 0;
-    }
-
-    // check parameter if is string
-    if (PyTuple_Size(args) == 2 && !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "snapshot() second argument must be a string");
-        return 0;
-    }
-    filename = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
+    
+    std::string canvasName = "";
+    std::string filename = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
     if(PyTuple_Size(args) == 2){
-        canvasName = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+        canvasName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
     }
     CanvasProcessor *canvas = 0;
     if(canvasName.size()!=0){
@@ -72,26 +57,10 @@ PyObject* py_snapshot(PyObject* /*self*/, PyObject* args){
 
 
 PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 2) {
-        std::ostringstream errStr;
-        errStr << "snapshotCanvas() takes exactly 2 argument: canvas ID, filename";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PySnapshotCanvasMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
-
-    // check parameter if is string
-    if (!PyInt_Check(PyTuple_GetItem(args, 0))) {
-        PyErr_SetString(PyExc_TypeError, "snapshotCanvas() first argument must be an integer");
-        return 0;
-    }
-
-    // check parameter if is string
-    if (!PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "snapshotCanvas() second argument must be a string");
-        return 0;
-    }
-
+    
     unsigned int index;
     const char* filename = 0;
     if (!PyArg_ParseTuple(args, "is:canvasSnapshot", &index, &filename))
@@ -109,27 +78,30 @@ PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* args){
 
 
 PyObject* py_getBasePath(PyObject* /*self*/, PyObject* /*args*/){
-    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getBasePath());
+    return PyValueParser::toPyObject(InviwoApplication::getPtr()->getBasePath());
 
 }
 
 PyObject* py_getDataPath(PyObject* /*self*/, PyObject* /*args*/){
-    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
+    return PyValueParser::toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
 }
 
 PyObject* py_getWorkspaceSavePath(PyObject* /*self*/, PyObject* /*args*/){
-    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES));
+    return PyValueParser::toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES));
 }
 PyObject* py_getVolumePath(PyObject* /*self*/, PyObject* /*args*/){
-    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_VOLUMES));
+    return PyValueParser::toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_VOLUMES));
 }
 PyObject* py_getImagePath(PyObject* /*self*/, PyObject* /*args*/){
-    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES));
+    return PyValueParser::toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES));
 }
 PyObject* py_getModulePath(PyObject* /*self*/, PyObject* /*args*/){
-    return PyValueParser().toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES));
+    return PyValueParser::toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES));
 }
 
+PyObject* py_getTransferFunctionPath(PyObject* /*self*/, PyObject* /*args*/){
+    return PyValueParser::toPyObject(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_TRANSFERFUNCTIONS));
+}
 
 
 PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/){
@@ -189,7 +161,7 @@ PyObject* py_enableEvaluation(PyObject* /*self*/, PyObject* /*args*/){
 
 PySnapshotMethod::PySnapshotMethod()
     : filename_("filename")
-    , canvas_("canvas")
+    , canvas_("canvas",true)
 {
     addParam(&filename_);
     addParam(&canvas_);

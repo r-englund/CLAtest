@@ -15,7 +15,7 @@
 #ifndef IVW_PYTHON_SCRIPT_H
 #define IVW_PYTHON_SCRIPT_H
 
-#ifdef IVW_PYTHON
+#ifdef IVW_MODULE_PYTHON_EXPORTS 
     #ifdef _DEBUG
         #undef _DEBUG //Prevent linking debug build of python
             #include <Python.h>
@@ -24,7 +24,7 @@
         #include <Python.h>
     #endif
 #else
-    class PyObject;
+
 #endif
 
 
@@ -57,6 +57,8 @@ public:
      * Sets the source for the Python (replacing the current source).
      */
     void setSource(const std::string& source);
+
+    StringProperty *getSourceProperty(){return &sourceProperty_;}
 
     /**
      * Returns the script's source.
@@ -92,8 +94,9 @@ private:
      */
     bool compile(bool outputInfo = true);
 
-    std::string source_;
-    PyObject* byteCode_;
+    //std::string source_;
+    StringProperty sourceProperty_;
+    void* byteCode_;
     bool isCompileNeeded_;
     PythonScriptRecorderUtil* scriptRecorder_;
 };

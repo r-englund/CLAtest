@@ -50,7 +50,14 @@ namespace inviwo{
     PARSEVEC4(vec4,float,parseVec4,"ffff");
 
     bool        parseBool(PyObject* args){return PyObject_IsTrue(args) != 0;};
-    std::string parseStr(PyObject* args){return std::string(PyString_AsString(args));};
+    std::string parseStr(PyObject* args){
+        
+#if PY_MAJOR_VERSION <= 2
+        return std::string(PyString_AsString(args));
+#else
+        return std::string(PyUnicode_AS_DATA(args));
+#endif
+    };
     //std::string parseStr(PyObject* args){char* c;int l;PyArg_ParseTuple(args,"s#",&c,&l);return std::string(c);};
 
     mat2 parseMat2(PyObject* args){
@@ -80,7 +87,7 @@ namespace inviwo{
     template <> float       PyValueParser::parse(PyObject *args){  return parseFloat(args);  }
     template <> char        PyValueParser::parse(PyObject *args){  return parseChar(args);   }
     template <> short       PyValueParser::parse(PyObject *args){  return parseShort(args);  }
-    template <> int         PyValueParser::parse(PyObject *args){  /*return parseInt(args);*/   return PyInt_AsLong(args); }
+    template <> int         PyValueParser::parse(PyObject *args){  return parseInt(args);    }
     template <> long        PyValueParser::parse(PyObject *args){  return parseLong(args);   }
     template <> vec2        PyValueParser::parse(PyObject *args){  return parseVec2(args);   }
     template <> vec3        PyValueParser::parse(PyObject *args){  return parseVec3(args);   }
@@ -98,7 +105,7 @@ namespace inviwo{
 
 #if (PY_MAJOR_VERSION == 3  && PY_MINOR_VERSION >= 3) ||  PY_MAJOR_VERSION > 3
     //if python version is 3.3 or larger, use "p", eg parse a real bool obj, else treat it as an int
-    template <> PyObject* PyValueParser::toPyObject(bool b){return toPyPy_BuildValueObject("p",b);}
+    template <> PyObject* PyValueParser::toPyObject(bool b){return Py_BuildValue("p",b);}
 #else
     template <> PyObject* PyValueParser::toPyObject(bool b){return Py_BuildValue("i",b);}
 #endif
@@ -108,6 +115,7 @@ namespace inviwo{
     template <> PyObject* PyValueParser::toPyObject(char c){return Py_BuildValue("b",c);}
     template <> PyObject* PyValueParser::toPyObject(short s){return Py_BuildValue("s",s);}
     template <> PyObject* PyValueParser::toPyObject(int i){return Py_BuildValue("i",i);}
+    template <> PyObject* PyValueParser::toPyObject(unsigned int i){return Py_BuildValue("I",i);}
     template <> PyObject* PyValueParser::toPyObject(long l){return Py_BuildValue("l",l);}
     template <> PyObject* PyValueParser::toPyObject(vec2 v){return Py_BuildValue("ff",v.x,v.y);}
     template <> PyObject* PyValueParser::toPyObject(vec3 v){return Py_BuildValue("fff",v.x,v.y,v.z);}
@@ -198,7 +206,7 @@ namespace inviwo{
             cam->setLook(from, to, up);
         }
         else{
-            LogWarn("Unknown Property type : " << className);
+            LogWarnCustom("PyValueParser","Unknown Property type : " << className);
             std::string msg = std::string("setPropertyValue() no available conversion for proerty of type: ") + className;
             PyErr_SetString(PyExc_TypeError, msg.c_str());
         }
@@ -226,6 +234,87 @@ namespace inviwo{
         CAST_DO_STUFF(IntMinMaxProperty,p);
         
         return 0;
+    }
+
+    template <typename T,int size> static bool testTuple(PyObject *arg){
+        if(!PyTuple_Check(arg)) 
+            return false;
+        if(PyTuple_Size(arg) != size){
+            return false;
+        }
+        for(int i = 0;i<size;i++){
+            if(!PyValueParser::is<T>(PyTuple_GetItem(arg,i)))
+                return false;
+        }
+        return true;
+    }
+
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<bool>(PyObject *arg){return PyBool_Check(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<double>(PyObject *arg){return PyFloat_Check(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<float>(PyObject *arg){return PyFloat_Check(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<char>(PyObject *arg){return is<int>(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<short>(PyObject *arg){return is<int>(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<long>(PyObject *arg){return PyLong_Check(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<unsigned int>(PyObject *arg){return is<int>(arg);}
+
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<vec2>(PyObject *arg){ return testTuple<float,2>(arg); }
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<vec3>(PyObject *arg){ return testTuple<float,3>(arg); }
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<vec4>(PyObject *arg){ return testTuple<float,4>(arg); }
+
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<ivec2>(PyObject *arg){return testTuple<int,2>(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<ivec3>(PyObject *arg){return testTuple<int,3>(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<ivec4>(PyObject *arg){return testTuple<int,4>(arg);}
+
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<uvec2>(PyObject *arg){return testTuple<unsigned int,2>(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<uvec3>(PyObject *arg){return testTuple<unsigned int,3>(arg);}
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<uvec4>(PyObject *arg){return testTuple<unsigned int,4>(arg);}
+
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<mat2>(PyObject *arg){
+        if(!PyTuple_Check(arg)) 
+            return false;
+        if(PyTuple_Size(arg) != 2){
+            return false;
+        }
+        return testTuple<float,2>(PyTuple_GetItem(arg,0)) && testTuple<float,2>(PyTuple_GetItem(arg,1));
+    }
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<mat3>(PyObject *arg){
+        if(!PyTuple_Check(arg)) 
+            return false;
+        if(PyTuple_Size(arg) != 3){
+            return false;
+        }
+        return testTuple<float,3>(PyTuple_GetItem(arg,0)) && 
+               testTuple<float,3>(PyTuple_GetItem(arg,1)) && 
+               testTuple<float,3>(PyTuple_GetItem(arg,2));
+    }
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<mat4>(PyObject *arg){
+        if(!PyTuple_Check(arg)) 
+            return false;
+        if(PyTuple_Size(arg) != 4){
+            return false;
+        }
+        return testTuple<float,4>(PyTuple_GetItem(arg,0)) && 
+               testTuple<float,4>(PyTuple_GetItem(arg,1)) && 
+               testTuple<float,4>(PyTuple_GetItem(arg,2)) && 
+               testTuple<float,4>(PyTuple_GetItem(arg,3));
+    }
+
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<std::string>(PyObject *arg){
+#if PY_MAJOR_VERSION <= 2
+        return PyString_Check(arg);
+#else
+        return PyUnicode_Check(arg);
+#endif
+    }
+
+
+
+    template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<int>(PyObject *arg){
+#if PY_MAJOR_VERSION <= 2
+        return PyInt_Check(arg);
+#else
+        return PyLong_Check(arg);
+#endif
     }
 
 }//namespace

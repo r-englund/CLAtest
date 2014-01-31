@@ -17,27 +17,18 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/cameraproperty.h>
+#include "../pythoninterface/pyvalueparser.h"
 
 
 namespace inviwo {
 
 PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 3) {
-        std::ostringstream errStr;
-        errStr << "setCameraFocus() takes exactly 3 arguments: processor name, property id, value";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PySetCameraFocusMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "setCameraFocus() arguments 1 and 2 must be strings");
-        return 0;
-    }
-
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -78,22 +69,13 @@ PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
 }
 
 PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 3) {
-        std::ostringstream errStr;
-        errStr << "setCameraUp() takes exactly 3 arguments: processor name, property id, value";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PySetCameraUpMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "setCameraUp() arguments 1 and 2 must be strings");
-        return 0;
-    }
 
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
@@ -135,22 +117,13 @@ PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args){
 
 
 PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
-    if (PyTuple_Size(args) != 3) {
-        std::ostringstream errStr;
-        errStr << "setCameraPosition() takes exactly 3 arguments: processor name, property id, value";
-        errStr << " (" << PyTuple_Size(args) << " given)";
-        PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
+    static PySetCameraPosMethod p;
+    if(!p.testParams(args))
         return 0;
-    }
 
-    // check parameter 1 and 2, if they are strings
-    if (!PyString_Check(PyTuple_GetItem(args, 0)) || !PyString_Check(PyTuple_GetItem(args, 1))) {
-        PyErr_SetString(PyExc_TypeError, "setCameraPosition() arguments 1 and 2 must be strings");
-        return 0;
-    }
 
-    std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
+    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
     PyObject* parameter = PyTuple_GetItem(args, 2);
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
@@ -189,4 +162,36 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
         return 0;
     }
 }
+
+
+PySetCameraFocusMethod::PySetCameraFocusMethod()
+    : processor_("processor")
+    , property_("property")
+    , focusPoint_("focusPoint")
+{
+    addParam(&processor_);
+    addParam(&property_);
+    addParam(&focusPoint_);
+}
+
+PySetCameraUpMethod::PySetCameraUpMethod()
+    : processor_("processor")
+    , property_("property")
+    , upVector_("upVector")
+{
+    addParam(&processor_);
+    addParam(&property_);
+    addParam(&upVector_);
+}
+
+PySetCameraPosMethod::PySetCameraPosMethod()
+    : processor_("processor")
+    , property_("property")
+    , position_("position")
+{
+    addParam(&processor_);
+    addParam(&property_);
+    addParam(&position_);
+}
+
 }

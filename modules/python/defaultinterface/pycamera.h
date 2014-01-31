@@ -28,25 +28,45 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* /*args*/);
 
     class IVW_MODULE_PYTHON_API PySetCameraFocusMethod : public PyMethod{
     public:
-        std::string getName(){return "setCameraFocus";}
-        std::string getDesc(){return "Function to set the cameras focal point.";}
-        virtual PyCFunction getFunc(){return py_setCameraFocus;}
+        PySetCameraFocusMethod();
+        virtual ~PySetCameraFocusMethod(){}
 
+        virtual std::string getName()const{return "setCameraFocus";}
+        virtual std::string getDesc()const{return "Function to set the cameras focal point.";}
+        virtual PyCFunction getFunc(){return py_setCameraFocus;}
+    private:
+        PyParamString processor_;
+        PyParamString property_;
+        PyParamVec3   focusPoint_;
     };
 
     class IVW_MODULE_PYTHON_API PySetCameraUpMethod : public PyMethod{
     public:
-        std::string getName(){return "setCameraUp";}
-        std::string getDesc(){return "Function to set the cameras up direction.";}
+        PySetCameraUpMethod();
+        virtual ~PySetCameraUpMethod(){}
+
+        virtual std::string getName()const{return "setCameraUp";}
+        virtual std::string getDesc()const{return "Function to set the cameras up direction.";}
         virtual PyCFunction getFunc(){return py_setCameraUp;}
+    private:
+        PyParamString processor_;
+        PyParamString property_;
+        PyParamVec3   upVector_;
 
     };
 
     class IVW_MODULE_PYTHON_API PySetCameraPosMethod : public PyMethod{
     public:
-        std::string getName(){return "setCameraPosition";}
-        std::string getDesc(){return "Function to set the cameras position.";}
+        PySetCameraPosMethod();
+        virtual ~PySetCameraPosMethod(){}
+
+        virtual std::string getName()const{return "setCameraPosition";}
+        virtual std::string getDesc()const{return "Function to set the cameras position.";}
         virtual PyCFunction getFunc(){return py_setCameraPos;}
+    private:
+        PyParamString processor_;
+        PyParamString property_;
+        PyParamVec3   position_;
 
     };
 
