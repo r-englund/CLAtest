@@ -51,12 +51,7 @@ namespace inviwo{
 
     bool        parseBool(PyObject* args){return PyObject_IsTrue(args) != 0;};
     std::string parseStr(PyObject* args){
-        
-#if PY_MAJOR_VERSION <= 2
         return std::string(PyString_AsString(args));
-#else
-        return std::string(PyUnicode_AS_DATA(args));
-#endif
     };
     //std::string parseStr(PyObject* args){char* c;int l;PyArg_ParseTuple(args,"s#",&c,&l);return std::string(c);};
 
@@ -103,12 +98,7 @@ namespace inviwo{
     template <> mat4        PyValueParser::parse(PyObject *args){  return parseMat4(args);   }
     template <> std::string PyValueParser::parse(PyObject *args){  return parseStr(args);    }
 
-#if (PY_MAJOR_VERSION == 3  && PY_MINOR_VERSION >= 3) ||  PY_MAJOR_VERSION > 3
-    //if python version is 3.3 or larger, use "p", eg parse a real bool obj, else treat it as an int
-    template <> PyObject* PyValueParser::toPyObject(bool b){return Py_BuildValue("p",b);}
-#else
     template <> PyObject* PyValueParser::toPyObject(bool b){return Py_BuildValue("i",b);}
-#endif
     
     template <> PyObject* PyValueParser::toPyObject(double d){return Py_BuildValue("d",d);}
     template <> PyObject* PyValueParser::toPyObject(float f){return Py_BuildValue("f",f);}
@@ -300,21 +290,13 @@ namespace inviwo{
     }
 
     template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<std::string>(PyObject *arg){
-#if PY_MAJOR_VERSION <= 2
         return PyString_Check(arg);
-#else
-        return PyUnicode_Check(arg);
-#endif
     }
 
 
 
     template <> bool IVW_MODULE_PYTHON_API PyValueParser::is<int>(PyObject *arg){
-#if PY_MAJOR_VERSION <= 2
         return PyInt_Check(arg);
-#else
-        return PyLong_Check(arg);
-#endif
     }
 
 }//namespace

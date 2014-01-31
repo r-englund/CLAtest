@@ -83,11 +83,7 @@ namespace inviwo{
         isInit_ = true;
 
         LogInfo("Python version: " + toString(Py_GetVersion()));
-#if PY_MAJOR_VERSION <= 2
         char programName[] = "PyInviwo";
-#else   
-        wchar_t programName[] = L"PyInviwo";
-#endif
         Py_SetProgramName(programName);
 
 #ifdef WIN32
@@ -185,14 +181,8 @@ namespace inviwo{
 
     PyObject* PyInviwo::registerPyModule(PyModule *pyModule) {
         init_();
-        if (Py_IsInitialized()) {
-#if PY_MAJOR_VERSION <= 2            
+        if (Py_IsInitialized()) {      
             PyObject* obj = Py_InitModule(pyModule->getModuleName(),NULL);
-#else
-            PyObject* obj = PyModule_Create(pyModule->getPyModuleDef());
-            PyImport_AddModuleObject(obj);
-            //PyImport_AppendInittab(pyModule->getModuleName(), pyModule);
-#endif
             
             if(!obj){
                 LogWarn("Failed to init python module '" << pyModule->getModuleName() <<"' ");

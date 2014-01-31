@@ -70,11 +70,7 @@ bool PythonScript::run(bool outputInfo) {
     ivwAssert(byteCode_!=0, "No byte code");
     if(outputInfo)
         LogInfo("Running compiled script ...");
-#if PY_MAJOR_VERSION <= 2
     PyObject* ret = PyEval_EvalCode(static_cast<PyCodeObject*>(byteCode_), glb, glb);
-#else
-    PyObject* ret = PyEval_EvalCode(BYTE_CODE, glb, glb);
-#endif
     bool success = checkRuntimeError();
     
     Py_XDECREF(ret); 

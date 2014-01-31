@@ -22,22 +22,7 @@ namespace inviwo{
 
     std::map<PyObject*,PyModule*> PyModule::instances_;
 
-PyModule::PyModule(std::string moduleName,std::vector<PyMethod*> methods):moduleName_(moduleName){
-#if PY_MAJOR_VERSION >= 3
-    struct PyModuleDef moduledef = {
-        PyModuleDef_HEAD_INIT,
-    };
-
-    pyModuleDef_.m_base = moduledef.m_base;
-    pyModuleDef_.m_clear = NULL;
-    pyModuleDef_.m_doc = NULL;
-    pyModuleDef_.m_free =NULL;
-    pyModuleDef_.m_methods = NULL;
-    pyModuleDef_.m_name = getModuleName();
-    pyModuleDef_.m_reload = NULL;
-    pyModuleDef_.m_size = -1;
-    pyModuleDef_.m_traverse = NULL;
-#endif    
+PyModule::PyModule(std::string moduleName,std::vector<PyMethod*> methods):moduleName_(moduleName){ 
     moduleObject_ = PyInviwo::getPtr()->registerPyModule(this);
     if(!moduleObject_){
         LogWarn("Module could not be initzialied ");
@@ -86,14 +71,6 @@ std::vector<PyMethod*> PyModule::getPyMethods(){
 PyModule* PyModule::getModuleByPyObject(PyObject *obj){
     return instances_[obj];
 }
-
-#if PY_MAJOR_VERSION >= 3
-PyModuleDef* PyModule::getPyModuleDef(){
-    return &pyModuleDef_;
-}
-#endif
-
-
 
 
 

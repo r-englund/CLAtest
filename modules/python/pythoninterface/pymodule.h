@@ -38,11 +38,6 @@ namespace inviwo {
     
 
 class IVW_MODULE_PYTHON_API PyModule{
-
-
-#if PY_MAJOR_VERSION >= 3
-    struct PyModuleDef pyModuleDef_;
-#endif
 public:
     PyModule(std::string moduleName,std::vector<PyMethod*> methods = std::vector<PyMethod*>());
     ~PyModule();
@@ -55,10 +50,6 @@ public:
     std::vector<PyMethod*> getPyMethods();
 
     static PyModule* getModuleByPyObject(PyObject *obj);
-
-#if PY_MAJOR_VERSION >= 3
-    PyModuleDef* getPyModuleDef();
-#endif
 
 private:
     std::string moduleName_;
