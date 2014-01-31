@@ -17,6 +17,7 @@
 
 #include <modules/python/pythonmoduledefine.h>
 
+#ifdef IVW_MODULE_PYTHON_EXPORTS 
 #ifdef _DEBUG
 #undef _DEBUG //Prevent linking debug build of python
 #include <Python.h>
@@ -24,7 +25,9 @@
 #else
 #include <Python.h>
 #endif
+#else
 
+#endif
 #include <inviwo/core/util/singleton.h>
 #include <inviwo/core/util/observer.h>  
 
