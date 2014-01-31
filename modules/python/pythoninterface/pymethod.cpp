@@ -71,7 +71,7 @@ std::string PyMethod::getParamDesc(){
 
 bool PyMethod::testParams(PyObject* args)const{
     Py_ssize_t size = PyTuple_Size(args);
-    if(size > params_.size() || size < (params_.size()-optionalParams_)){
+    if(static_cast<size_t>(size) > params_.size() || static_cast<size_t>(size) < (params_.size()-optionalParams_)){
         std::stringstream ss;
         ss << getName() << "() expects " << params_.size()-optionalParams_ << " parameters ";
         if(optionalParams_!=0){
