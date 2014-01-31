@@ -61,7 +61,7 @@ namespace inviwo{
                 int pos = 0;
                 while((pos = reg->indexIn(text,pos))!=-1){
                     result.start.push_back(pos);
-                    pos += reg->matchedLength();
+                    pos += std::max(1,reg->matchedLength());
                     result.length.push_back(reg->matchedLength());
                 }
             }
