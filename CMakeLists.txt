@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.8.4)
 cmake_policy(VERSION 2.8.4)
 endif()
 project(inviwo-projects)
-set(IVW_VERSION 0.1)
+set(IVW_VERSION 0.6b)
 include(cmake/globalconfig.cmake)
 
 #--------------------------------------------------------------------

@@ -252,7 +252,7 @@ std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromPropert
     //Find link connected to the invalid link.    
     while (unsortedProcessorLinks.size()) {
 
-        int unsortedSize = unsortedProcessorLinks.size();
+        size_t unsortedSize = unsortedProcessorLinks.size();
 
         //Seed from sorted links
         for (size_t k=0; k<sortedProcessorLinks.size(); k++) {

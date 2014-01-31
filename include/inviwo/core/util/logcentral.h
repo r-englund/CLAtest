@@ -80,7 +80,7 @@ public:
 
     virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
 private:
-    std::ofstream fileStream_;
+    std::ofstream* fileStream_;
 };
 
 

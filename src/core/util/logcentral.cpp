@@ -30,15 +30,17 @@ void ConsoleLogger::log(std::string logSource, unsigned int logLevel, const char
 
 FileLogger::FileLogger(std::string logPath)
     : Logger()
-    , fileStream_(logPath.append("/inviwo-log.html").c_str())
 {
-    fileStream_ << "<p><font size='+1'>Inviwo (V " << IVW_VERSION << ") Log File</font></p><br>" << std::endl;
-    fileStream_ << "<p>" << std::endl;
+    fileStream_ = new std::ofstream(logPath.append("/inviwo-log.html").c_str());
+    (*fileStream_) << "<p><font size='+1'>Inviwo (V " << IVW_VERSION << ") Log File</font></p><br>" << std::endl;
+    (*fileStream_) << "<p>" << std::endl;
 }
 
 FileLogger::~FileLogger() {
-    fileStream_ << "</p>" << std::endl;
-    fileStream_.close();
+    (*fileStream_) << "</p>" << std::endl;
+    fileStream_->close();
+    delete fileStream_;
+    fileStream_ = NULL;
 }
 
 void FileLogger::log(std::string logSource, unsigned int logLevel, const char* fileName,
@@ -49,17 +51,17 @@ void FileLogger::log(std::string logSource, unsigned int logLevel, const char* f
     IVW_UNUSED_PARAM(lineNumber);
     switch (logLevel) {
         case inviwo::Info:
-            fileStream_ << "<font color='#000000'>Info: ";
+            (*fileStream_) << "<font color='#000000'>Info: ";
             break;
         case inviwo::Warn:
-            fileStream_ << "<font color='#FFFF00'>Warn: ";
+            (*fileStream_) << "<font color='#FFFF00'>Warn: ";
             break;
         case inviwo::Error:
-            fileStream_ << "<font color='#FF0000'>Error: ";
+            (*fileStream_) << "<font color='#FF0000'>Error: ";
             break;
     }
-    fileStream_ << "(" << logSource << ") " << logMsg;
-    fileStream_ << "</font><br>" << std::endl;
+    (*fileStream_) << "(" << logSource << ") " << logMsg;
+    (*fileStream_) << "</font><br>" << std::endl;
 }
 
 LogCentral::LogCentral() : logLevel_(Info) {
