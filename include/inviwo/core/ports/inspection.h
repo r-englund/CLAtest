@@ -10,7 +10,7 @@ class IVW_CORE_API Inspection {
 
 public:
     Inspection();
-    virtual ~Inspection();;
+    virtual ~Inspection();
 
     enum State {
         Start = 0,

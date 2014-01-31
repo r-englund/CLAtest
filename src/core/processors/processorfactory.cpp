@@ -27,7 +27,7 @@ void ProcessorFactory::registerObject(ProcessorFactoryObject* processor) {
     if(processorClassMap_.find(processor->getClassName()) == processorClassMap_.end()) {
         processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));
     } else {
-        LogWarn("Processor with class name: " << processor->getClassName() << " is already registerd")
+        LogWarn("Processor with class name: " << processor->getClassName() << " is already registerd");
     }
 
 }

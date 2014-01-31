@@ -89,11 +89,11 @@ static void CALLBACK TimerCallback(void* param, bool timerOrWaitFired);
 */
 class IVW_CORE_API WindowsTimer: public Timer {
 public:
-    WindowsTimer();;
+    WindowsTimer();
     virtual ~WindowsTimer();
 
-    virtual void start(unsigned int intervalInMilliseconds, bool once = false);;
-    virtual void stop();;
+    virtual void start(unsigned int intervalInMilliseconds, bool once = false);
+    virtual void stop();
 
 
 protected:

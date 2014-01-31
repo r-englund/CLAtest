@@ -29,7 +29,7 @@ void PropertyFactory::registeryObject(PropertyFactoryObject* property){
 
     PropertyClassMap::const_iterator it = propertyClassMap_.find(className);
     if(it == propertyClassMap_.end()) {
-        propertyClassMap_.insert(std::make_pair(className, property));;
+        propertyClassMap_.insert(std::make_pair(className, property));
 
     } else {
         LogWarn("Property with class name: " << className << " already registed");

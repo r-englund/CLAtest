@@ -46,7 +46,7 @@ std::string TextFileReader::read() throw (std::ifstream::failure)
         Sleep(400);
 #endif
         std::ifstream srcFile(filePath_.c_str());
-        data = std::string(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));;
+        data = std::string(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
     }
     file.close();
     return data;

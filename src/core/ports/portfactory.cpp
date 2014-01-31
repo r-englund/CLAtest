@@ -12,7 +12,7 @@ void PortFactory::registeryObject(PortFactoryObject* port) {
 
     PortClassMap::const_iterator it = portClassMap_.find(className);
     if(it == portClassMap_.end()) {
-        portClassMap_.insert(std::make_pair(className, port));;
+        portClassMap_.insert(std::make_pair(className, port));
 
     } else {
         LogWarn("Port with class name: " << className << " already registed");

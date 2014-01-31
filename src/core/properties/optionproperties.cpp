@@ -74,7 +74,7 @@ Variant OptionPropertyFloat::getVariant() {
     for (size_t i=0; i<options_.size(); i++) {
         ss << options_[i].first.first << std::endl;
         ss << options_[i].first.second << std::endl;
-        ss << options_[i].second << std::endl;;
+        ss << options_[i].second << std::endl;
     }    
     return Variant(ss.str());
 }
@@ -111,7 +111,7 @@ OptionPropertyDouble::OptionPropertyDouble(std::string identifier, std::string d
 
 Variant OptionPropertyDouble::getVariant() {
     std::stringstream ss;
-    ss << getSelectedOption() << std::endl;;
+    ss << getSelectedOption() << std::endl;
     for (size_t i=0; i<options_.size(); i++) {
         ss << options_[i].first.first << std::endl;
         ss << options_[i].first.second << std::endl;

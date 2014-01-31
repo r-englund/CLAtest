@@ -77,7 +77,6 @@ void TransferFunctionPropertyWidgetQt::generateWidget(){
     bool visible = getEditorWidget()->getEditorVisibilityMetaData();
     if (!visible ) transferFunctionDialog_->hide();
     else transferFunctionDialog_->show();
-    
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty() {

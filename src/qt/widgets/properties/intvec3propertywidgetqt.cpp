@@ -136,7 +136,7 @@ void IntVec3PropertyWidgetQt::updateFromProperty() {
 
         sliderX_->setValue(valueVec_.x);
         sliderY_->setValue(valueVec_.y);
-        sliderZ_->setValue(valueVec_.z);;
+        sliderZ_->setValue(valueVec_.z);
 
         sliderX_->updateValueSpinBox();
         sliderY_->updateValueSpinBox();
