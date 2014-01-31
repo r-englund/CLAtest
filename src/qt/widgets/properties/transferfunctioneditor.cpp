@@ -167,6 +167,10 @@ bool controlPointComparison(TransferFunctionEditorControlPoint* controlPoint0, T
 }
 
 void TransferFunctionEditor::redrawConnections() {
+    // We need at least two points
+    if (controlPoints_.size()<2) {
+        return;
+    }
     // sort control point vector
     std::sort(controlPoints_.begin(), controlPoints_.end(), controlPointComparison);
 
