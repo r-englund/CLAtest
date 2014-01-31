@@ -917,13 +917,6 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
 void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 
-    bool inspectPort = dynamic_cast<BoolProperty*>(
-        InviwoApplication::getPtr()->
-        getSettingsByType<SystemSettings>()->
-        getPropertyByIdentifier("enablePortInspectors"))->get();
-
-
-
     if (connectionCurve_) {
         // Connection drag mode
 

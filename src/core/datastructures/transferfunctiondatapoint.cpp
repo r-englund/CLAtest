@@ -18,10 +18,10 @@
 namespace inviwo {
 
 TransferFunctionDataPoint::TransferFunctionDataPoint(TransferFunction* transFunc, const vec2& pos, const vec4& rgba)
-    : transFunc_(transFunc)
-    , pos_(pos)
+    : pos_(pos)
     , rgba_(rgba)
-{}
+    , transFunc_(transFunc){
+}
 
 TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
 

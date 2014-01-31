@@ -16,15 +16,19 @@
 
 namespace inviwo {
 
-TransferFunctionProperty::TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value,
-                                                   VolumeInport* volumeInport, PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
+TransferFunctionProperty::TransferFunctionProperty(std::string identifier,
+                                                   std::string displayName,
+                                                   TransferFunction value,
+                                                   VolumeInport* volumeInport,
+                                                   PropertyOwner::InvalidationLevel invalidationLevel,
+                                                   PropertySemantics semantics)
     : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
-    , volumeInport_(volumeInport)
     , mask_(0.0f, 1.0f)
     , zoomH_(0.0f, 1.0f)
     , zoomV_(0.0f, 1.0f)
     , showHistogram_(true)
-{}
+    , volumeInport_(volumeInport){
+}
 
 TransferFunctionProperty::~TransferFunctionProperty() {
     volumeInport_ = NULL;

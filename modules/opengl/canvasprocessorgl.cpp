@@ -38,8 +38,9 @@ void CanvasProcessorGL::process() {
     static_cast<CanvasGL*>(getCanvas())->render(inport_.getData(), visibleLayer_.get());
 }
 
-void CanvasProcessorGL::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
-    CanvasProcessor::invalidate(invalidationLevel);
+void CanvasProcessorGL::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                                   Property* modifiedProperty) {
+    CanvasProcessor::invalidate(invalidationLevel, modifiedProperty);
     if(getCanvas() && !inport_.isConnected())
         process();
 }

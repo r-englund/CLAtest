@@ -41,7 +41,8 @@ public:
     void setCanvasSize(ivec2);
     ivec2 getCanvasSize() const;
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                            Property* modifiedProperty=0);
     
     void saveImageLayer();
     void saveImageLayer(const char* filePath);

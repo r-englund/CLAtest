@@ -60,7 +60,9 @@ public:
 
     void invokeEvent(Event* event);
 
+    STARTCLANGIGNORE("-Woverloaded-virtual")
     void invalidate();
+    ENDCLANGIGNORE
     void propertyModified(){};
 
     void lockInvalidation() { lockInvalidation_ = true; }

@@ -95,8 +95,9 @@ void CanvasProcessor::process() {
     canvas_->activate();
 }
 
-void CanvasProcessor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
-    Processor::invalidate(invalidationLevel);
+void CanvasProcessor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                                 Property* modifiedProperty) {
+    Processor::invalidate(invalidationLevel, modifiedProperty);
 }
 
 void CanvasProcessor::performEvaluateRequest(){

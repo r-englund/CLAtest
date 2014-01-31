@@ -73,7 +73,6 @@ void LightingRaycaster::process() {
     bindVolume(lightVolumePort_, lightVolUnit.getEnum());
 
     activateAndClearTarget(outport_);
-    uvec2 outportDim = outport_.getDimension();
     
     raycastPrg_->activate();
     setGlobalShaderParameters(raycastPrg_);

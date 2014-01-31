@@ -19,6 +19,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/properties/propertyowner.h>
+#include <inviwo/core/properties/property.h>
 
 namespace inviwo {
 
@@ -31,7 +32,8 @@ public:
     virtual void initialize()=0;
     virtual void deinitialize()=0;
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                            Property* modifiedProperty=0);
     virtual void invalidate();
     virtual bool isValid() { return PropertyOwner::isValid(); }
     virtual void setValid() { PropertyOwner::setValid(); }

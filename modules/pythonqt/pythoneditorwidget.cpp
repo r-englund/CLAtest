@@ -45,11 +45,11 @@ namespace inviwo{
     PythonEditorWidget::PythonEditorWidget(QWidget* parent)
         : InviwoDockWidget(tr("Python Editor"), parent)
         , VoidObserver()
-        , script_()
-        , unsavedChanges_(false)
         , infoTextColor_(153,153,153)
-        , errorTextColor_(255,107,107) 
-    {
+        , errorTextColor_(255,107,107)
+        , script_()
+        , unsavedChanges_(false) {
+        
         ivwAssert(instance_==0,"This is a Singelton, constructor may only be called once")
         instance_ = this;
         setObjectName("PythonEditor");

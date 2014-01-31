@@ -25,8 +25,10 @@ class IVW_CORE_API VolumeRAMNormalizedHistogram : public VolumeOperation {
 public:
     VolumeRAMNormalizedHistogram(const VolumeRepresentation* in, NormalizedHistogram* oldHist=NULL, int delta=1) 
         : VolumeOperation(in)
-        , histogramContainer_(oldHist)
-        , delta_(delta) {}
+        , delta_(delta)
+        , histogramContainer_(oldHist){
+    }
+    
     virtual ~VolumeRAMNormalizedHistogram() {}
 
     template<typename T, size_t B>

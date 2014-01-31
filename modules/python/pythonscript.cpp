@@ -18,6 +18,8 @@
 #include <inviwo/core/util/stringconversion.h>
 #include <inviwo/core/util/urlparser.h>
 
+#include <Python.h>
+
 #include <traceback.h>
 #include <frameobject.h>
 #include "pythonexecutionoutputobeserver.h"

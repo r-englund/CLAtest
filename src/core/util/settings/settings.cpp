@@ -21,8 +21,9 @@ Settings::Settings(std::string id) : identifier_(id) {}
 Settings::~Settings() {
 }
 
-void Settings::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
-    PropertyOwner::invalidate(invalidationLevel);
+void Settings::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                          Property* modifiedProperty) {
+    PropertyOwner::invalidate(invalidationLevel, modifiedProperty);
 }
     
 void Settings::invalidate() {
