@@ -38,7 +38,6 @@ int main(int argc, char** argv) {
 
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
 	
-
     // initialize and show splash screen
 	inviwo::InviwoSplashScreen splashScreen;
 	splashScreen.show();

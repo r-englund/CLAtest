@@ -18,6 +18,7 @@
 
 #include <inviwo/core/ports/portinspectorfactory.h>
 #include <inviwo/core/io/datareaderfactory.h>
+#include <inviwo/core/io/datareaderdialogfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/processors/processorfactory.h>
@@ -99,8 +100,6 @@ InviwoModule::~InviwoModule() {
         delete renderers_[i];
     renderers_.clear();
 
-
-
     for (size_t i=0; i<moduleSettings_.size(); i++)
         delete moduleSettings_[i];
     moduleSettings_.clear();
@@ -146,6 +145,7 @@ void InviwoModule::setXMLFileName(const std::string& xmlFileName) {
 const std::vector<Capabilities*>& InviwoModule::getCapabilities() const {return capabilities_;}
 const std::vector<Data*>& InviwoModule::getData() const {return data_;}
 const std::vector<DataReader*>& InviwoModule::getDataReaders() const {return dataReaders_;}
+const std::vector<DataReaderDialog*>& InviwoModule::getDataReaderDialogs() const {return dataReaderDialogs_;}
 const std::vector<DataRepresentation*>& InviwoModule::getDataRepresentations() const {return dataRepresentations_;}
 const std::vector<DataWriter*>& InviwoModule::getDataWriters() const {return dataWriters_;}
 const std::vector<MetaData*>& InviwoModule::getMetaData() const {return metadata_;}
@@ -162,11 +162,16 @@ const std::vector<Settings*>& InviwoModule::getSettings() const {return moduleSe
 
 void InviwoModule::registerCapabilities(Capabilities* info) {capabilities_.push_back(info);}
 void InviwoModule::registerData(Data* data) {data_.push_back(data);}
+void InviwoModule::registerDataRepresentation(DataRepresentation* dataRepresentation) {dataRepresentations_.push_back(dataRepresentation);}
 void InviwoModule::registerDataReader(DataReader* dataReader) {
     dataReaders_.push_back(dataReader);
     DataReaderFactory::getPtr()->registerObject(dataReader);
 }
-void InviwoModule::registerDataRepresentation(DataRepresentation* dataRepresentation) {dataRepresentations_.push_back(dataRepresentation);}
+void InviwoModule::registerDataReaderDialog(DataReader* reader, DataReaderDialog* readerDialog) {
+    dataReaderDialogs_.push_back(readerDialog);
+    DataReaderDialogFactory::getPtr()->registerDataReaderDialog(reader, readerDialog);
+}
+
 void InviwoModule::registerDataWriter(DataWriter* dataWriter) {
     dataWriters_.push_back(dataWriter);
     DataWriterFactory::getPtr()->registerObject(dataWriter);

@@ -1,3 +1,4 @@
+#include <inviwo/core/io/datareaderdialogfactory.h>
 #include <inviwo/core/io/rawvolumereader.h>
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
@@ -55,45 +56,46 @@ Volume* RawVolumeReader::readMetaData(std::string filePath) {
     rawFile_ = filePath;
     
     //format_ = some format
+    DataReaderDialog* readerDialog = DataReaderDialogFactory::getRef().getDataReaderDialog<RawVolumeReader>();
+    ivwAssert(readerDialog!=0, "No data reader dialog found.");
+    format_ = readerDialog->getFormat(rawFile_, &dimension_, &littleEndian_);
+    if (format_) {
+        glm::mat3 basis(2.0f);
+        glm::vec3 offset(0.0f);
+        glm::vec3 spacing(0.0f);
+        glm::mat4 wtm(1.0f);
+      
+        if(spacing != vec3(0.0f)) {
+            basis[0][0] = dimension_.x * spacing.x;
+            basis[1][1] = dimension_.y * spacing.y;
+            basis[2][2] = dimension_.z * spacing.z;
+        }
 
-    // Somewhere here open the QT DIALOG
+        // If not specified, center the data around origo.
+        if(offset == vec3(0.0f)) {
+            offset[0] = -basis[0][0] / 2.0f;
+            offset[1] = -basis[1][1] / 2.0f;
+            offset[2] = -basis[2][2] / 2.0f;
+        }
 
-    glm::mat3 basis(2.0f);
-    glm::vec3 offset(0.0f);
-    glm::vec3 spacing(0.0f);
-    glm::mat4 wtm(1.0f);
-  
-    if(spacing != vec3(0.0f)) {
-        basis[0][0] = dimension_.x * spacing.x;
-        basis[1][1] = dimension_.y * spacing.y;
-        basis[2][2] = dimension_.z * spacing.z;
-    }
+        volume->setBasis(basis);
+        volume->setOffset(offset);
+        volume->setWorldTransform(wtm);
+        volume->setDimension(dimension_);
+        volume->setDataFormat(format_);
+        VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
+        vd->setDataReader(this);
 
-    // If not specified, center the data around origo.
-    if(offset == vec3(0.0f)) {
-        offset[0] = -basis[0][0] / 2.0f;
-        offset[1] = -basis[1][1] / 2.0f;
-        offset[2] = -basis[2][2] / 2.0f;
-    }
+        volume->addRepresentation(vd);
 
-    volume->setBasis(basis);
-    volume->setOffset(offset);
-    volume->setWorldTransform(wtm);
-    volume->setDimension(dimension_);
-    volume->setDataFormat(format_);
-    VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
-    vd->setDataReader(this);
+        std::string size = formatBytesToString(dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()));
 
-    volume->addRepresentation(vd);
+        LogInfo("Loaded volume: " << filePath << " size: " << size);
 
-    std::string size = formatBytesToString(dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()));
-
-    LogInfo("Loaded volume: " << filePath << " size: " << size);
-
-    return volume;
+        return volume;
+    } else
+        throw DataReaderException("Raw data import terminated by user");
 }
-
-
 
 void RawVolumeReader::readDataInto(void* destination) const {
     std::fstream fin(rawFile_.c_str(), std::ios::in | std::ios::binary);

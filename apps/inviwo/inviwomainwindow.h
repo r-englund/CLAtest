@@ -71,6 +71,7 @@ public slots:
     void saveWorkspaceAs();
     void exitInviwo();
     void disableEvaluation(bool);
+    void showAboutBox();
 
 private:    
     void addMenus();
@@ -102,9 +103,9 @@ private:
     // mainwindow menus
     QMenuBar* basicMenuBar;
     QMenu* fileMenuItem_;
-    QMenu* helpMenuItem_;
     QMenu* viewMenuItem_;
     QMenu* viewModeItem_;
+    QMenu* helpMenuItem_;
     
     // mainwindow menuactions
     QAction* newFileAction_;
@@ -116,6 +117,7 @@ private:
     QAction* recentFileActions_[maxNumRecentFiles_];
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
+    QAction* aboutBoxAction_;
 
     QToolButton* enableDisableEvaluationButton_;
 

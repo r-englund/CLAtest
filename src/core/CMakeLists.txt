@@ -84,6 +84,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderdialog.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderdialogfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriterfactory.h
@@ -273,6 +275,8 @@ set(SOURCE_FILES
     interaction/trackball.cpp
     interaction/trackballaction.cpp
     io/datareader.cpp
+    io/datareaderdialog.cpp
+    io/datareaderdialogfactory.cpp
     io/datareaderfactory.cpp
     io/datawriter.cpp
     io/datawriterfactory.cpp

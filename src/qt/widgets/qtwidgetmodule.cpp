@@ -44,15 +44,18 @@
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 
+#include <inviwo/core/io/rawvolumereader.h>
+#include <inviwo/qt/widgets/rawdatareaderdialogqt.h>
+
 namespace inviwo {
 
 QtWidgetModule::QtWidgetModule() : InviwoModule() {
     setIdentifier("QtWidget");
 
     // What really happens
-    //registerPropertyWidgetObject(
-    //    new PropertyWidgetFactoryObjectTemplate<FloatPropertyWidgetQt, FloatProperty>("FloatProperty", "Default")
-    //    );
+    // registerPropertyWidgetObject(
+    //     new PropertyWidgetFactoryObjectTemplate<FloatPropertyWidgetQt, FloatProperty>("FloatProperty", "Default")
+    // );
 
     registerPropertyWidget(BoolPropertyWidgetQt, BoolProperty, "Default");
     registerPropertyWidget(ButtonPropertyWidgetQt, ButtonProperty, "Default");
@@ -95,6 +98,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(TextEditorWidgetQt, StringProperty, "Shader");
     registerPropertyWidget(TransferFunctionPropertyWidgetQt, TransferFunctionProperty, "Default");
 
+    registerDataReaderDialog(new RawVolumeReader(), new RawDataReaderDialogQt());
 }
 
 } // namespace

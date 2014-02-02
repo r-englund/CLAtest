@@ -185,12 +185,12 @@ void InviwoMainWindow::addMenus() {
 
 	fileMenuItem_ = new QMenu(tr("&File"),basicMenuBar);
 	viewMenuItem_ = new QMenu(tr("&View"),basicMenuBar);
-	viewModeItem_ = new QMenu(tr("&View mode"),basicMenuBar);
+    viewModeItem_ = new QMenu(tr("&View mode"),basicMenuBar);
+    helpMenuItem_ = new QMenu(tr("&Help"),basicMenuBar);
 	basicMenuBar->insertMenu(first, fileMenuItem_);
 	basicMenuBar->insertMenu(first, viewMenuItem_);
 	viewMenuItem_->addMenu(viewModeItem_);
-
-	helpMenuItem_ = basicMenuBar->addMenu(tr("&Help"));
+    basicMenuBar->insertMenu(first, helpMenuItem_);
 }
 
 void InviwoMainWindow::addMenuActions() {
@@ -221,14 +221,11 @@ void InviwoMainWindow::addMenuActions() {
         connect(recentFileActions_[i], SIGNAL(triggered()), this, SLOT(openRecentWorkspace()));
         fileMenuItem_->addAction(recentFileActions_[i]);
     }
-    
 
     recentFileSeparator_ = fileMenuItem_->addSeparator();
     exitAction_ = new QAction(tr("&Exit"), this);
     connect(exitAction_, SIGNAL(triggered()), this, SLOT(exitInviwo()));
     fileMenuItem_->addAction(exitAction_);
-
-
 
 	// dockwidget visibility menu entries
     viewMenuItem_->addAction(mappingwidget_->toggleViewAction());
@@ -240,7 +237,6 @@ void InviwoMainWindow::addMenuActions() {
     consoleWidget_->toggleViewAction()->setText(tr("&Output Console"));
 	viewMenuItem_->addAction(consoleWidget_->toggleViewAction());
 	viewMenuItem_->addAction(resourceManagerWidget_->toggleViewAction());
-
 
 	// application/developer mode menu entries
 	developerViewModeAction_ = new QAction(tr("&Developer"),this);
@@ -277,6 +273,10 @@ void InviwoMainWindow::addMenuActions() {
     enableDisableIcon.addFile(":/icons/button_cancel.png", QSize(), QIcon::Active, QIcon::On);
     enableDisableEvaluationButton_->setIcon(enableDisableIcon);
     connect(enableDisableEvaluationButton_, SIGNAL(toggled(bool)), this, SLOT(disableEvaluation(bool)));
+
+    aboutBoxAction_ = new QAction(QIcon(":/icons/about.png"), tr("&About"), this);
+    connect(aboutBoxAction_, SIGNAL(triggered()), this, SLOT(showAboutBox()));
+    helpMenuItem_->addAction(aboutBoxAction_);
 }
 
 void InviwoMainWindow::addToolBars() {
@@ -431,8 +431,6 @@ void InviwoMainWindow::saveWorkspace() {
         workspaceModified_ = false;
         updateWindowTitle();
     }
-    
-
 
     /*
     // The following code snippet allows to reload the Qt style sheets during runtime,
@@ -486,6 +484,18 @@ void InviwoMainWindow::disableEvaluation(bool disable){
         networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->enableEvaluation();
 }
 
+void InviwoMainWindow::showAboutBox() {
+    std::string aboutText;
+    aboutText.append("<b>Inviwo V"+IVW_VERSION+"</b><br>");
+    aboutText.append("Interactive Visualization Workshop<br>");
+    aboutText.append("(C) 2012-2014 The Inviwo Foundation<br>");
+    aboutText.append("<a href='http://www.inviwo.org/'>http://www.inviwo.org/</a>");
+    aboutText.append("<p>Inviwo is a rapid prototyping environment for interactive \
+                     visualizations. It is licensed under the Simplified BSD license.</p>");
+    aboutText.append("<p><b>Core Team:</b><br>");
+    aboutText.append("Rickard Englund, Daniel Jönsson, Sathish Kottravel, Timo Ropinski, Peter Steneteg, Erik Sundén</p>");
+    QMessageBox::about(this, QString::fromStdString("Inviwo V"+IVW_VERSION), QString::fromStdString(aboutText));
+}
 
 void InviwoMainWindow::exitInviwo() {
     InviwoApplication::getPtr()->closeInviwoApplication();

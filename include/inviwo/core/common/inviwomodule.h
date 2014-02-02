@@ -21,6 +21,7 @@
 #include <inviwo/core/datastructures/datarepresentation.h>
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <inviwo/core/io/datareader.h>
+#include <inviwo/core/io/datareaderdialog.h>
 #include <inviwo/core/io/datawriter.h>
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/ports/port.h>
@@ -52,6 +53,7 @@ public:
     const std::vector<Capabilities*>& getCapabilities() const;
     const std::vector<Data*>& getData() const;
     const std::vector<DataReader*>& getDataReaders() const;
+    const std::vector<DataReaderDialog*>& getDataReaderDialogs() const;
     const std::vector<DataRepresentation*>& getDataRepresentations() const;
     const std::vector<DataWriter*>& getDataWriters() const;
     const std::vector<MetaData*>& getMetaData() const;
@@ -78,6 +80,7 @@ protected:
     void registerCapabilities(Capabilities* info);
     void registerData(Data* data);
     void registerDataReader(DataReader* reader);
+    void registerDataReaderDialog(DataReader* reader, DataReaderDialog* readerDialog);
     void registerDataRepresentation(DataRepresentation* dataRepresentation);
     void registerDataWriter(DataWriter* writer);
     void registerMetaData(MetaData* meta);
@@ -107,8 +110,9 @@ private:
 
     std::vector<Capabilities*> capabilities_;
     std::vector<Data*> data_;
-    std::vector<DataReader*> dataReaders_;
     std::vector<DataRepresentation*> dataRepresentations_;
+    std::vector<DataReader*> dataReaders_;
+    std::vector<DataReaderDialog*> dataReaderDialogs_;
     std::vector<DataWriter*> dataWriters_;
     std::vector<MetaData*> metadata_;
     std::vector<PortFactoryObject*> ports_;

@@ -18,6 +18,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangesliderqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rawdatareaderdialogqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/spinboxrangesliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/timerqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
@@ -93,6 +94,12 @@ set(SOURCE_FILES
     labelgraphicsitem.cpp
     lightpositionwidgetqt.cpp
     mappingpopup.cpp
+    propertylistwidget.cpp
+    propertyselectiontreewidget.cpp
+    qtwidgetmodule.cpp
+    rangesliderqt.cpp
+    rawdatareaderdialogqt.cpp
+    spinboxrangesliderwidgetqt.cpp
     processors/processorwidgetqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
@@ -134,12 +141,6 @@ set(SOURCE_FILES
     properties/transferfunctioneditorview.cpp
     properties/transferfunctionpropertydialog.cpp
     properties/transferfunctionpropertywidgetqt.cpp 
-    propertylistwidget.cpp
-    propertyselectiontreewidget.cpp
-    qtwidgetmodule.cpp
-    rangesliderqt.cpp
-    spinboxrangesliderwidgetqt.cpp
-  
 )
 
 ivw_group("Source Files" ${SOURCE_FILES})
