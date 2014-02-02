@@ -48,6 +48,7 @@ private:
     FloatVec3Property lightSourcePos_;
     FloatProperty samplingRate_;
     TransferFunctionProperty transferFunction_;
+    IntVec2Property workGroupSize_;
 
     cl::Kernel* kernel_;
 };

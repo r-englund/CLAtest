@@ -28,15 +28,16 @@ ProcessorCategory(VolumeRaycasterCL, "Volume Rendering");
 ProcessorCodeState(VolumeRaycasterCL, CODE_STATE_EXPERIMENTAL);
 
 VolumeRaycasterCL::VolumeRaycasterCL()
-    : Processor(),
-    volumePort_("volume"),
-    entryPort_("entry-points"),
-    exitPort_("exit-points"),
-    outport_("outport"),
-    lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f)),
-    samplingRate_("samplingRate", "Sampling rate", 1.0f, 1.0f, 15.0f),
-    transferFunction_("transferFunction", "Transfer function", TransferFunction()),
-    kernel_(NULL)
+    : Processor()
+    , volumePort_("volume")
+    , entryPort_("entry-points")
+    , exitPort_("exit-points")
+    , outport_("outport")
+    , lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f))
+    , samplingRate_("samplingRate", "Sampling rate", 1.0f, 1.0f, 15.0f)
+    , transferFunction_("transferFunction", "Transfer function", TransferFunction())
+    , workGroupSize_("wgsize", "Work group size", ivec2(8, 8), ivec2(0), ivec2(256))
+    , kernel_(NULL)
 {
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
@@ -46,6 +47,7 @@ VolumeRaycasterCL::VolumeRaycasterCL()
     addProperty(samplingRate_);
     addProperty(lightSourcePos_);
     addProperty(transferFunction_);
+    addProperty(workGroupSize_);
 }
 
 VolumeRaycasterCL::~VolumeRaycasterCL() {}
@@ -95,6 +97,13 @@ void VolumeRaycasterCL::process() {
     uvec3 volumeDim = volumeCL->getDimension();
 
     const LayerCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
+    svec2 localWorkGroupSize(workGroupSize_.get());
+    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(outportDim.x, localWorkGroupSize.x), getGlobalWorkGroupSize(outportDim.y, localWorkGroupSize.y));
+#if IVW_PROFILING
+    cl::Event* profilingEvent = new cl::Event(); 
+#else 
+    cl::Event* profilingEvent = NULL;
+#endif
     try
     {
         cl_uint arg = 0;
@@ -106,7 +115,7 @@ void VolumeRaycasterCL::process() {
         kernel_->setArg(arg++, volumeDim);
         kernel_->setArg(arg++, *outImageCL->getLayerCLGL());
         // 
-        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
@@ -116,7 +125,15 @@ void VolumeRaycasterCL::process() {
     outImageCL->getLayerCLGL()->releaseGLObject();
     exitCLGL->getLayerCLGL()->releaseGLObject();
     entryCLGL->getLayerCLGL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
-
+#if IVW_PROFILING
+    try {
+        profilingEvent->wait();
+        LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms");
+    } catch (cl::Error& err) {
+        LogError(getCLErrorString(err));
+    }
+    delete profilingEvent;
+#endif
 }
 
 } // namespace

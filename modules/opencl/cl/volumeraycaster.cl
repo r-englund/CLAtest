@@ -27,9 +27,9 @@ __kernel void raycaster(read_only image3d_t volume
 {
     int2 globalId = (int2)(get_global_id(0), get_global_id(1));      
     //uint3 volumeDimension = (uint3)(128,128, 128); 
-    //if( any(globalId >= get_image_dim(output)) ) {
-    //    return;
-    //}
+    if (any(globalId >= get_image_dim(output))) {
+        return;
+    }
     float4 entry = read_imagef(entryPoints, smpUNormNoClampNearest, globalId);  
     
     float4 result = (float4)(0.f); 
