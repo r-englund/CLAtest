@@ -53,6 +53,7 @@ VolumeCLGL::~VolumeCLGL() {
 void VolumeCLGL::initialize(const Texture3D* texture) {
     ivwAssert(texture != 0, "Cannot initialize with null OpenGL texture");
     image3D_ = new cl::Image3DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture->getID());
+    
     VolumeCLGL::initialize();
 }
 

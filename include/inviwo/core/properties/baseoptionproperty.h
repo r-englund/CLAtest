@@ -163,6 +163,26 @@ public:
     virtual int getVariantType() {
         return Variant::VariantTypeString;
     }
+    // TODO: Only selected option is converted right now in getVariant()
+    // since it was done incorrectly before and changing it
+    // now will not work for old workspaces.
+    /**
+     * \brief  Variants are used while linking. 
+     * All options are converted to strings (including values) and hence variant type is string.
+     *
+     *  values must have overloaded streaming operator <<
+     *
+     * @return inviwo::Variant variant
+     */
+    virtual Variant getVariant();
+    /**
+     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
+     * values must have overloaded streaming operator >>
+     *
+     * @param const Variant & input source variant
+     */
+    virtual void setVariant(const Variant& inVariant);
 
     virtual void serialize(IvwSerializer& s) const;
 
@@ -172,7 +192,6 @@ protected:
     T value_;
     std::vector< std::pair<std::pair<std::string, std::string>, T> > options_;
 };
-
 
 template <typename T>
 TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName,
@@ -294,6 +313,42 @@ template<typename T>
 void TemplateOptionProperty<T>::selectByKey(std::string identifier) {
     ivwDeprecatedMethod("setToID");
     setToID(identifier);
+}
+
+template<typename T>
+Variant inviwo::TemplateOptionProperty<T>::getVariant() {
+    std::stringstream ss;
+    ss << getSelectedOption() << std::endl;
+
+    //for (size_t i=0; i<options_.size(); i++) {
+    //    ss << options_[i].first.first << std::endl;
+    //    ss << options_[i].first.second << std::endl;
+    //    ss << options_[i].second << std::endl;
+    //}
+
+    return Variant(ss.str());
+}
+
+template<typename T>
+void inviwo::TemplateOptionProperty<T>::setVariant( const Variant& inVariant ) {
+    std::string textLine;
+    std::istringstream ss(inVariant.getString());
+    int seletctedOption=0;
+    getline(ss, textLine);
+    seletctedOption = atoi(textLine.c_str());
+    //options_.clear();
+    //while(!ss.eof()) { 
+    //    std::string identifier, displayName, valStr;
+    //    getline(ss, identifier);        
+    //    getline(ss, displayName);  
+    //    getline(ss, valStr);
+    //    std::stringstream stream(valStr);
+    //    T val;
+    //    stream >> val;
+    //    addOption(identifier, displayName, val);
+    //}
+
+    setSelectedOption(seletctedOption);
 }
 
 template<typename T>

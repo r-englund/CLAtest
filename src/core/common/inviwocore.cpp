@@ -147,9 +147,4 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerProperty(IntVec4Property);
 }
 
-void InviwoCore::setupModuleSettings() {
-    for (size_t i=0; i<moduleSettings_.size(); i++)
-        moduleSettings_[i]->initialize();
-}
-
 } // namespace

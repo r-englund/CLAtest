@@ -30,9 +30,9 @@ float WardIsotropicDistribution(const float3 wo, const float3 wi, const float3 w
 
 float WardBRDF(const float3 wo, const float3 wi, const float f0, const float alphaX, const float alphaY) {
 	float3 wh = wo+wi;
-	if (wh.z <= 0.f) return 0.f;
-	float tmp = wi.z*wo.z;
-	if (tmp <= 0.f) return 0.f;
+	//if (wh.z <= 0.f) return 0.f;
+	//float tmp = wi.z*wo.z;
+	//if (tmp <= 0.f) return 0.f;
     Microfacet distribution;
     wh = normalize(wh);
     float NdotWh = absCosTheta(wh);

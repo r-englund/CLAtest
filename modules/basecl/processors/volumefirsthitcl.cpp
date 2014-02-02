@@ -32,10 +32,11 @@ VolumeFirstHitCL::VolumeFirstHitCL()
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
-    , outport_("outport")
+    , outport_("outport", ImageType::COLOR_ONLY, DataVec4FLOAT32::get())
     , samplingRate_("samplingRate", "Sampling rate", 1.0f, 1.0f, 15.0f)
     , transferFunction_("transferFunction", "Transfer function", TransferFunction())
     , workGroupSize_("wgsize", "Work group size", ivec2(8, 8), ivec2(0), ivec2(256))
+    , useGLSharing_("glsharing", "Use OpenGL sharing", true)
     , kernel_(NULL)
 {
     addPort(volumePort_, "VolumePortGroup");
@@ -46,6 +47,7 @@ VolumeFirstHitCL::VolumeFirstHitCL()
     addProperty(samplingRate_);
     addProperty(transferFunction_);
     addProperty(workGroupSize_);
+    addProperty(useGLSharing_);
 }
 
 VolumeFirstHitCL::~VolumeFirstHitCL() {}
@@ -70,31 +72,14 @@ void VolumeFirstHitCL::process() {
     if( kernel_ == NULL) {
         return;
     }
-    
-    const ImageCLGL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCLGL>();
-    // Will synchronize with OpenGL upon creation and destruction
-    SyncCLGL glSync;
-    entryCLGL->getLayerCLGL()->aquireGLObject(glSync.getGLSyncEvent());
-
-    const ImageCLGL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCLGL>();
-    exitCLGL->getLayerCLGL()->aquireGLObject();
-
-    Image* outImage = outport_.getData();
-    //ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
-    ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
-    uvec2 outportDim = outImage->getDimension();
-    outImageCL->getLayerCLGL()->aquireGLObject();
+    uvec2 outportDim = outport_.getDimension();
 
 
-    const Volume* volume = volumePort_.getData();
-    //const VolumeCLGL* volumeCL = volume->getRepresentation<VolumeCLGL>();
-    //volumeCL->aquireGLObject();
-    const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
-    mat4 volumeTextureToWorld = volume->getCoordinateTransformer().getTextureToWorldMatrix();
-    uvec3 volumeDim = volume->getDimension();
+
+    mat4 volumeTextureToWorld = volumePort_.getData()->getCoordinateTransformer().getTextureToWorldMatrix();
+    uvec3 volumeDim = volumePort_.getData()->getDimension();
     float stepSize = 1.f/(samplingRate_.get()*static_cast<float>(std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z))));
 
-    const LayerCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
     svec2 localWorkGroupSize(workGroupSize_.get());
     svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x), getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
 #if IVW_PROFILING
@@ -102,26 +87,71 @@ void VolumeFirstHitCL::process() {
 #else 
     cl::Event* profilingEvent = NULL;
 #endif
-    try
-    {
-        cl_uint arg = 0;
-        kernel_->setArg(arg++, *volumeCL);
-        kernel_->setArg(arg++, *entryCLGL->getLayerCLGL());
-        kernel_->setArg(arg++, *exitCLGL->getLayerCLGL());
-        kernel_->setArg(arg++, *transferFunctionCL);
-        kernel_->setArg(arg++, stepSize);
-        kernel_->setArg(arg++, *outImageCL->getLayerCLGL());
-        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+    if (useGLSharing_.get()) {
+        // Will synchronize with OpenGL upon creation and destruction
+        SyncCLGL glSync;
+        const ImageCLGL* entry = entryPort_.getData()->getRepresentation<ImageCLGL>();
+        const ImageCLGL* exit = exitPort_.getData()->getRepresentation<ImageCLGL>();
+        const ImageCLGL* output = outport_.getData()->getEditableRepresentation<ImageCLGL>();
+        const VolumeCLGL* volume = volumePort_.getData()->getRepresentation<VolumeCLGL>();
+        const LayerCLGL* tfCL = transferFunction_.get().getData()->getRepresentation<LayerCLGL>();
+        volume->aquireGLObject(glSync.getGLSyncEvent());
+        entry->getLayerCLGL()->aquireGLObject();
+        exit->getLayerCLGL()->aquireGLObject();
+        output->getLayerCLGL()->aquireGLObject();
+        tfCL->aquireGLObject();
+        const cl::Image3D& volumeCL = volume->getVolume();
+        const cl::Image2D& entryCL = entry->getLayerCLGL()->get();
+        const cl::Image2D& exitCL = exit->getLayerCLGL()->get();
+        const cl::Image2D& outImageCL = output->getLayerCLGL()->get();
+        const cl::Image2D& tf = tfCL->get();
+        firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
+        entry->getLayerCLGL()->releaseGLObject();
+        exit->getLayerCLGL()->releaseGLObject();
+        output->getLayerCLGL()->releaseGLObject();
+        tfCL->releaseGLObject();
+        volume->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
+    } else {
+        const ImageCL* entry = entryPort_.getData()->getRepresentation<ImageCL>();
+        const ImageCL* exit = exitPort_.getData()->getRepresentation<ImageCL>();
+        const ImageCL* output = outport_.getData()->getEditableRepresentation<ImageCL>();
+        const VolumeCL* volume = volumePort_.getData()->getRepresentation<VolumeCL>();
+        const LayerCL* tfCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
+        const cl::Image3D& volumeCL = volume->getVolume();
+        const cl::Image2D& entryCL = entry->getLayerCL()->get();
+        const cl::Image2D& exitCL = exit->getLayerCL()->get();
+        const cl::Image2D& outImageCL = output->getLayerCL()->get();
+        const cl::Image2D& tf = tfCL->get();
+        firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
+    }
+    
+#if IVW_PROFILING
+    try {
+        profilingEvent->wait();
+        LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms");
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
+    delete profilingEvent;
+#endif
+}
 
-    
-    //volumeCL->releaseGLObject();
-    outImageCL->getLayerCLGL()->releaseGLObject();
-    exitCLGL->getLayerCLGL()->releaseGLObject();
-    entryCLGL->getLayerCLGL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
-
+void VolumeFirstHitCL::firstHit( const cl::Image3D& volumeCL, const cl::Image2D& entryPoints, const cl::Image2D& exitPoints, const cl::Image2D& transferFunctionCL, const cl::Image2D& output, float stepSize, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent ) {
+    try
+    {
+        cl_uint arg = 0;
+        kernel_->setArg(arg++, volumeCL);
+        kernel_->setArg(arg++, entryPoints);
+        kernel_->setArg(arg++, exitPoints);
+        kernel_->setArg(arg++, transferFunctionCL);
+        kernel_->setArg(arg++, stepSize);
+        kernel_->setArg(arg++, output);
+        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
+    } catch (cl::Error& err) {
+        LogError(getCLErrorString(err));
+    }
 }
 
 } // namespace
+
+

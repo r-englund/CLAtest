@@ -27,27 +27,28 @@
 // Take a look at this pdf, it explains many of the models used:
 // http://www.cs.ucl.ac.uk/staff/j.kautz/GameCourse/04_PointLights.pdf
 
-#define PHASE_FUNCTION_ISOTROPIC 1
-#define PHASE_FUNCTION_HENYEY_GREENSTEIN 2
-#define PHASE_FUNCTION_SCHLICK 3
-#define PHASE_FUNCTION_BLINN_PHONG 4
-#define PHASE_FUNCTION_WARD 5
-#define PHASE_FUNCTION_COOK_TORRANCE 6
-#define PHASE_FUNCTION_ABC_MICROFACET 7
-#define PHASE_FUNCTION_ASHIKHMIN 8
-#define PHASE_FUNCTION_MIX 9
+
+#define PHASE_FUNCTION_HENYEY_GREENSTEIN 0
+#define PHASE_FUNCTION_SCHLICK 1
+#define PHASE_FUNCTION_BLINN_PHONG 2
+#define PHASE_FUNCTION_WARD 3
+#define PHASE_FUNCTION_COOK_TORRANCE 4
+#define PHASE_FUNCTION_ABC_MICROFACET 5
+#define PHASE_FUNCTION_ASHIKHMIN 6
+#define PHASE_FUNCTION_MIX 7
+#define PHASE_FUNCTION_ISOTROPIC 8
 
 
 typedef enum ShadingType {
-    ISOTROPIC = 1,
-    HENYEY_GREENSTEIN,
+    HENYEY_GREENSTEIN=0,
     SCHLICK,
     BLINN_PHONG,
     WARD,
     COOK_TORRANCE,
     ABC_MICROFACET,
     ASHIKHMIN,
-    MIX
+    MIX,
+    ISOTROPIC
 } ShadingType;
 
 #define BLINN_EXPONENT 10.0f
@@ -371,8 +372,6 @@ float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const flo
     f = materialDiffuse*HenyeyGreensteinPhaseFunction(toCameraDir, toLightDir, material.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_SCHLICK
     f = materialDiffuse*SchlickPhaseFunction(toCameraDir, toLightDir, material.z); 
-//#elif PHASE_FUNCTION == PHASE_FUNCTION_HALF_ANGLE_SLICING
-//    f =materialDiffuse*HalfAngleSlicingPhaseFunction(wi, -toLightDir); 
 #elif PHASE_FUNCTION == PHASE_FUNCTION_BLINN_PHONG
     f = materialDiffuse*lambertianBRDF()+materialSpecular*BlinnBRDF(wo, wi, material.y)*fabs(wi.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_WARD
@@ -393,8 +392,6 @@ float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const flo
         f = materialDiffuse*HenyeyGreensteinPhaseFunction(toCameraDir, -toLightDir, material.z);
     } else if ( shadingType == SCHLICK ) {
         f = materialDiffuse*SchlickPhaseFunction(toCameraDir, -toLightDir, material.z); 
-    } else if ( shadingType == HALF_ANGLE_SLICING ) {
-         f =materialDiffuse*HalfAngleSlicingPhaseFunction(wi, -toLightDir); 
     } else if ( shadingType == BLINN_PHONG ) {
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*BlinnBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
     } else if ( shadingType == WARD ) {

@@ -76,6 +76,12 @@ public:
      */
     virtual void fileChanged(std::string fileName);;
 
+    /**
+     * Remove all kernels and stop observing the files.
+     * DO NOT call this function when kernels are being used!
+     */
+    void clear();
+
 private:
     ProgramMap programs_;
     KernelMap kernels_;

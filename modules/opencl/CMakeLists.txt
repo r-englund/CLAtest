@@ -29,9 +29,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/volume/volumeclgl.h
     ${IVW_MODULE_DIR}/opencl/volume/volumeclglconverter.h
     ${IVW_MODULE_DIR}/opencl/syncclgl.h
-	${IVW_MODULE_DIR}/opencl/cl/grayscale.cl
-	${IVW_MODULE_DIR}/opencl/cl/img_resize.cl
-	${IVW_MODULE_DIR}/opencl/cl/volumeraycaster.cl
+	${IVW_MODULE_DIR}/opencl/settings/openclsettings.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -57,6 +55,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/openclcapabilities.cpp
 	${IVW_MODULE_DIR}/opencl/processors/grayscalecl.cpp
     ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.cpp
+	${IVW_MODULE_DIR}/opencl/settings/openclsettings.cpp
     ${IVW_MODULE_DIR}/opencl/volume/volumecl.cpp
 	${IVW_MODULE_DIR}/opencl/volume/volumeclconverter.cpp
 	${IVW_MODULE_DIR}/opencl/volume/volumeclglconverter.cpp

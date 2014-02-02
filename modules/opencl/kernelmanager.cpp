@@ -12,7 +12,7 @@
  *
  **********************************************************************/
 
-#include "kernelmanager.h"
+#include <modules/opencl/kernelmanager.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
 #include <modules/opengl/openglmodule.h>
@@ -24,23 +24,11 @@ KernelManager::KernelManager() {
     InviwoApplication::getRef().registerFileObserver(this);
 }
 
-KernelManager::~KernelManager()
-{
-    for(ProgramMap::iterator programIt = programs_.begin(); programIt != programs_.end(); ++programIt) {
-        InviwoApplication::getRef().stopFileObservation(programIt->first);
-    }
-    for(KernelMap::iterator kernelIt = kernels_.begin(); kernelIt != kernels_.end(); ++kernelIt) {
-        delete kernelIt->second; 
-        kernelIt->second = NULL;
-    }
-    for(ProgramMap::iterator programIt = programs_.begin(); programIt != programs_.end(); ++programIt) {
-        delete programIt->second.program;
-        programIt->second.program = NULL;
-    }
+KernelManager::~KernelManager() {
+    clear();
 }
 
-cl::Program* KernelManager::buildProgram( const std::string& fileName, const std::string& defines /*= ""*/ )
-{
+cl::Program* KernelManager::buildProgram( const std::string& fileName, const std::string& defines /*= ""*/ ) {
     std::pair <ProgramMap::iterator, ProgramMap::iterator> range = programs_.equal_range(fileName);
     for(ProgramMap::iterator it = range.first; it != range.second; ++it) {
         if(it->second.defines == defines) {
@@ -69,8 +57,7 @@ cl::Program* KernelManager::buildProgram( const std::string& fileName, const std
     return program;
 }
 
-cl::Kernel* KernelManager::getKernel( cl::Program* program, const std::string& kernelName )
-{
+cl::Kernel* KernelManager::getKernel( cl::Program* program, const std::string& kernelName ) {
     std::pair <KernelMap::iterator, KernelMap::iterator> kernelRange = kernels_.equal_range(program);
     for(KernelMap::iterator kernelIt = kernelRange.first; kernelIt != kernelRange.second; ++kernelIt) {
         std::string thisKernelName;
@@ -84,8 +71,7 @@ cl::Kernel* KernelManager::getKernel( cl::Program* program, const std::string& k
     return NULL;
 }
 
-void KernelManager::fileChanged( std::string fileName )
-{
+void KernelManager::fileChanged( std::string fileName ) {
     std::pair <ProgramMap::iterator, ProgramMap::iterator> programRange = programs_.equal_range(fileName);
     for(ProgramMap::iterator programIt = programRange.first; programIt != programRange.second; ++programIt) {
         cl::Program* program = programIt->second.program; 
@@ -148,6 +134,20 @@ void KernelManager::fileChanged( std::string fileName )
             LogError(fileName << " Failed to create kernels, error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl);
             InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
         }
+    }
+}
+
+void KernelManager::clear() {
+    for(ProgramMap::iterator programIt = programs_.begin(); programIt != programs_.end(); ++programIt) {
+        InviwoApplication::getRef().stopFileObservation(programIt->first);
+    }
+    for(KernelMap::iterator kernelIt = kernels_.begin(); kernelIt != kernels_.end(); ++kernelIt) {
+        delete kernelIt->second; 
+        kernelIt->second = NULL;
+    }
+    for(ProgramMap::iterator programIt = programs_.begin(); programIt != programs_.end(); ++programIt) {
+        delete programIt->second.program;
+        programIt->second.program = NULL;
     }
 }
 

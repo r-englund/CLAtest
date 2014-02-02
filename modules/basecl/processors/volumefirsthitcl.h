@@ -39,6 +39,8 @@ public:
 protected:
     virtual void process();
 
+    void firstHit( const cl::Image3D& volumeCL, const cl::Image2D& entryPoints, const cl::Image2D& exitPoints, const cl::Image2D& transferFunctionCL, const cl::Image2D& output, float stepSize, uvec2 outportDim, svec2 localWorkGroupSize, cl::Event* profilingEvent );
+
 private:
     VolumeInport volumePort_;
     ImageInport entryPort_;
@@ -48,6 +50,7 @@ private:
     FloatProperty samplingRate_;
     TransferFunctionProperty transferFunction_;
     IntVec2Property workGroupSize_;
+    BoolProperty useGLSharing_;
 
     cl::Kernel* kernel_;
 };

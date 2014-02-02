@@ -158,6 +158,11 @@ void InviwoModule::setXMLFileName(const std::string& xmlFileName) {
     xmlDocumentFileName_ = getPath() + "/" + xmlFileName;
 }
 
+void InviwoModule::setupModuleSettings() {
+    for (size_t i=0; i<moduleSettings_.size(); i++)
+        moduleSettings_[i]->initialize();
+}
+
 const std::vector<Capabilities*>& InviwoModule::getCapabilities() const {return capabilities_;}
 const std::vector<Data*>& InviwoModule::getData() const {return data_;}
 const std::vector<DataReader*>& InviwoModule::getDataReaders() const {return dataReaders_;}

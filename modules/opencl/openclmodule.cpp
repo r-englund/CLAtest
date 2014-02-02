@@ -21,6 +21,7 @@
 #include <modules/opencl/openclcapabilities.h>
 #include <modules/opencl/processors/grayscalecl.h>
 #include <modules/opencl/processors/volumeraycastercl.h>
+#include <modules/opencl/settings/openclsettings.h>
 #include <modules/opencl/volume/volumeclconverter.h>
 #include <modules/opencl/volume/volumeclglconverter.h>
 #include <modules/opencl/kernelmanager.h>
@@ -81,6 +82,7 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
 
 
     registerCapabilities(new OpenCLCapabilities());
+    registerSettings(new OpenCLSettings());
     // Processors
     registerProcessor(GrayscaleCL);
     registerProcessor(VolumeRaycasterCL);
@@ -107,6 +109,7 @@ void OpenCLModule::setupModuleSettings(){
             settings->addProperty(&btnOpenCLInfo_);
         }           
     }
+    InviwoModule::setupModuleSettings();
 }
 
 } // namespace

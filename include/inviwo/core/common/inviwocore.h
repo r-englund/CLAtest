@@ -27,7 +27,6 @@ public:
     InviwoCore();
 
 protected:
-    virtual void setupModuleSettings();
 };
 
 } // namespace

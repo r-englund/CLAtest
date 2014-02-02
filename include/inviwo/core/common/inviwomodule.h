@@ -97,7 +97,11 @@ protected:
 
     void setXMLFileName(const std::string& xmlDocuFileName);
 
-    virtual void setupModuleSettings() {};
+    /**
+     * Initializes all settings registered by the module.
+     * @note Call InviwoModule::setupModuleSettings() if overriding this function
+     */
+    virtual void setupModuleSettings();
 
     std::string getPath(const std::string& suffix = "") const;
 

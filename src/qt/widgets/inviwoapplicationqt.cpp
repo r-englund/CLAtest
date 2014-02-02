@@ -62,8 +62,6 @@ void InviwoApplicationQt::startFileObservation(std::string fileName) {
 
 void InviwoApplicationQt::stopFileObservation(std::string fileName) {
     QString qFileName = QString::fromStdString(fileName);
-    ivwAssert(fileWatcher_->files().contains(qFileName),
-              "trying to stop observation of an unobserved file: "+fileName);
 
     if (fileWatcher_->files().contains(qFileName))
         fileWatcher_->removePath(qFileName);

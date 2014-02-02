@@ -53,48 +53,9 @@ void OpenCL::initialize(bool glSharing) {
         }
 
         cl::Platform platform;
-        getBestGPUDevice(gpuDevice_, platform);
-        std::vector<cl_context_properties> properties;
-        if(glSharing) 
-            properties = getGLSharingContextProperties();
-        cl_context_properties platformProperties[] = {CL_CONTEXT_PLATFORM, (cl_context_properties)platform(), 0};
-        properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
-        try
-        {
-            gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
-        }
-        catch (cl::Error&)
-        {
-            LogError("ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
-            properties.clear();
-            properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
-            gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
-            LogError("Succeeded creating OpenCL without OpenGL sharing. ");
-
-        }
-
-        //OpenCLInfo::printDeviceInfo(gpuDevice_);
-
-        cl_command_queue_properties queueProperties = 0;
-        cl_command_queue_properties supportedQueueProperties;
-        gpuDevice_.getInfo(CL_DEVICE_QUEUE_PROPERTIES, &supportedQueueProperties);
-        #if IVW_PROFILING
-            if ( supportedQueueProperties & CL_QUEUE_PROFILING_ENABLE)
-                queueProperties |= CL_QUEUE_PROFILING_ENABLE;
-        #endif
-        synchronosGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
-        if ( supportedQueueProperties & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE)
-            queueProperties |= CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
-        asyncGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
-
-        STRING_CLASS deviceExtensions = gpuDevice_.getInfo<CL_DEVICE_EXTENSIONS>();
-        size_t foundAt = deviceExtensions.find_first_of("cl_khr_gl_event");
-        if(foundAt != std::string::npos) {
-            // Efficient cl/gl synchronization possible
-        }
-
-
-
+        cl::Device device;
+        getBestGPUDevice(device, platform);
+        setDevice(device, glSharing);
     } catch (cl::Error& err) {
             
         LogError("ERROR: Failed to initialize OpenCL. " << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl);
@@ -187,8 +148,24 @@ std::vector<cl_context_properties> OpenCL::getGLSharingContextProperties() {
     return std::vector<cl_context_properties>(props, props + sizeof(props)/sizeof(cl_context_properties));
 }
 
-cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string& defines, const cl::CommandQueue& queue) 
-{
+std::vector<cl::Device> OpenCL::getAllDevices() {
+    std::vector<cl::Platform> platforms;
+    cl::Platform::get(&platforms);
+    // Retrieve all devices
+    std::vector<cl::Device> allDevices;
+    for(::size_t i = 0; i < platforms.size(); ++i) {
+        std::vector<cl::Device> devices;
+        try {
+            platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
+            allDevices.insert(allDevices.end(), devices.begin(), devices.end());
+        }  catch (cl::Error& ) {
+            // Error getting device, continue with others
+        }
+    }
+    return allDevices;
+}
+
+cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string& defines, const cl::CommandQueue& queue) {
     cl::Context context = queue.getInfo<CL_QUEUE_CONTEXT>();
     cl::Device device = queue.getInfo<CL_QUEUE_DEVICE>();
     // build the program from the source in the file
@@ -244,6 +221,62 @@ std::string OpenCL::getIncludeDefine() const
     return result;
 }
 
+void OpenCL::setDevice(cl::Device device, bool glSharing) {
+    try {
+        // Check if we are setting the same device
+        if (gpuDevice_() == device()) {
+            std::vector<cl_context_properties> sharingProperties = getGLSharingContextProperties();
+            std::vector<cl_context_properties> contextProperties = gpuContext_.getInfo<CL_CONTEXT_PROPERTIES>();
+            bool sharingEnabled = (std::find(contextProperties.begin(), contextProperties.end(), *sharingProperties.begin()) != contextProperties.end());
+            if (sharingEnabled == glSharing) {
+                // The device and sharing properties are the same.
+                // No need to update the device
+                return;
+            }
+        }
+        gpuDevice_ = device;
+        cl::Platform platform = device.getInfo<CL_DEVICE_PLATFORM>();
+
+        std::vector<cl_context_properties> properties;
+        if(glSharing) 
+            properties = getGLSharingContextProperties();
+        cl_context_properties platformProperties[] = {CL_CONTEXT_PLATFORM, (cl_context_properties)platform(), 0};
+        properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
+        try
+        {
+            gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
+        } catch (cl::Error&)
+        {
+            LogError("ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
+            properties.clear();
+            properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
+            gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
+            LogError("Succeeded creating OpenCL without OpenGL sharing. ");
+
+        }
+        cl_command_queue_properties queueProperties = 0;
+        cl_command_queue_properties supportedQueueProperties;
+        gpuDevice_.getInfo(CL_DEVICE_QUEUE_PROPERTIES, &supportedQueueProperties);
+#if IVW_PROFILING
+        if ( supportedQueueProperties & CL_QUEUE_PROFILING_ENABLE)
+            queueProperties |= CL_QUEUE_PROFILING_ENABLE;
+#endif
+        synchronosGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
+        if ( supportedQueueProperties & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE)
+            queueProperties |= CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
+        asyncGPUQueue_ = cl::CommandQueue(gpuContext_, gpuDevice_, queueProperties);
+
+        STRING_CLASS deviceExtensions = gpuDevice_.getInfo<CL_DEVICE_EXTENSIONS>();
+        size_t foundAt = deviceExtensions.find_first_of("cl_khr_gl_event");
+        if(foundAt != std::string::npos) {
+            // Efficient cl/gl synchronization possible
+        }
+    } catch (cl::Error& err) {
+
+        LogError("Faile to set OpenCL device. " << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl);
+
+    }
+}
 
 void LogOpenCLError(cl_int err, const char* message) {
     if (err != CL_SUCCESS) {
@@ -403,27 +436,27 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
     case NOT_SPECIALIZED:
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
     case FLOAT16:
-        clFormat = cl::ImageFormat(CL_INTENSITY, CL_HALF_FLOAT);  break;
+        clFormat = cl::ImageFormat(CL_R, CL_HALF_FLOAT);  break;
     case FLOAT32:
-        clFormat = cl::ImageFormat(CL_INTENSITY, CL_FLOAT); break;
+        clFormat = cl::ImageFormat(CL_R, CL_FLOAT); break;
     case FLOAT64:
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
     case INT8:
-        clFormat = cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT8); break;
+        clFormat = cl::ImageFormat(CL_R, CL_SNORM_INT8); break;
     case INT12:
-        clFormat = cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT16); break;
+        clFormat = cl::ImageFormat(CL_R, CL_SNORM_INT16); break;
     case INT16:
-        clFormat = cl::ImageFormat(CL_INTENSITY, CL_SNORM_INT16); break;
+        clFormat = cl::ImageFormat(CL_R, CL_SNORM_INT16); break;
     case INT32:
         clFormat = cl::ImageFormat(CL_R, CL_SIGNED_INT32); break;
     case INT64:
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
     case UINT8:
-        clFormat = cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT8);  break;
+        clFormat = cl::ImageFormat(CL_R, CL_UNORM_INT8);  break;
     case UINT12:
-        clFormat = cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT16); break;
+        clFormat = cl::ImageFormat(CL_R, CL_UNORM_INT16); break;
     case UINT16:
-        clFormat = cl::ImageFormat(CL_INTENSITY, CL_UNORM_INT16); break;
+        clFormat = cl::ImageFormat(CL_R, CL_UNORM_INT16); break;
     case UINT32:
         clFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32); break;
     case UINT64:

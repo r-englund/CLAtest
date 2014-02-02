@@ -72,6 +72,14 @@ public:
      * Get default OpenCL device.
      */
     const cl::Device& getDevice() const { return gpuDevice_; }
+    
+    /**
+     * Set default OpenCL device. 
+     * Note that this may have an effect on all allocated OpenCL resources (queue changes).
+     * Therefore make sure that no OpenCL resources are used before calling this function.
+     * This can be done by closing the workspace.
+     */
+    void setDevice(cl::Device device, bool glSharing);
 
     static cl::Program buildProgram(const std::string& fileName, const std::string& defines = "");
     static cl::Program buildProgram(const std::string& fileName, const std::string& defines, const cl::CommandQueue& queue);
@@ -104,6 +112,11 @@ public:
      * Get OpenGL sharing properties depending on operating system.
      */
     static std::vector<cl_context_properties> getGLSharingContextProperties();
+
+    /** 
+     * Get all devices on the system.
+     */
+    static std::vector<cl::Device> getAllDevices();
 
     /**
      * Add a directory as an include path to be used when compiling OpenCL kernels.
