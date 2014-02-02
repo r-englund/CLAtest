@@ -1,4 +1,6 @@
 #include <inviwo/core/ports/inspection.h>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 namespace inviwo {
 

@@ -23,6 +23,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/ports/inport.h>
+#include <inviwo/core/ports/inspection.h>
 #include <inviwo/core/ports/outport.h>
 #include <inviwo/core/util/singleton.h>
 #include <inviwo/core/util/observer.h>

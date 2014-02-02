@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,6 +20,8 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/ports/volumeport.h>
 
 namespace inviwo {

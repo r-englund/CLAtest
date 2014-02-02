@@ -3,6 +3,9 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/ports/port.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/scalarproperties.h>
 
 namespace inviwo {
 

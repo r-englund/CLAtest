@@ -13,6 +13,7 @@
  **********************************************************************/
 
 #include <inviwo/core/properties/propertywidget.h>
+#include <inviwo/core/properties/property.h>
 
 namespace inviwo {
 

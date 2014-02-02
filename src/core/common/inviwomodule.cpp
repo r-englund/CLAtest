@@ -15,7 +15,7 @@
 
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/common/inviwoapplication.h>
-
+#include <inviwo/core/ports/portfactory.h>
 #include <inviwo/core/ports/portinspectorfactory.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/datareaderdialogfactory.h>

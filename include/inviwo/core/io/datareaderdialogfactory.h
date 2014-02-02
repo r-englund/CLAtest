@@ -18,6 +18,8 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/representationconverter.h>
+#include <inviwo/core/io/datareader.h>
+#include <inviwo/core/io/datareaderdialog.h>
 #include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/singleton.h>
 

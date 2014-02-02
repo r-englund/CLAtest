@@ -14,6 +14,7 @@
 
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
+#include <inviwo/core/util/urlparser.h>
 #include <QFileDialog>
 #include <QDockWidget>
 

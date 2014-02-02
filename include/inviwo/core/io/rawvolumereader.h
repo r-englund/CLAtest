@@ -3,6 +3,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/io/datareaderdialog.h>
 
 namespace inviwo {

@@ -4,6 +4,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/portfactoryobject.h>
+#include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
 

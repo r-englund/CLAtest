@@ -25,6 +25,7 @@
 #include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
+#include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
