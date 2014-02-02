@@ -63,6 +63,12 @@ inline float3 translatePoint(const float16 m, const float3 x)
 float3 toDataSpace3D(float3 p, float3 invDim) {
     return 0.5f*invDim + p*(1.f-invDim);
 }
+float2 toDataSpace2D(float2 p, float2 invDim) {
+    return 0.5f*invDim + p*(1.f-invDim);
+}
+float toDataSpace1D(float p, float invDim) {
+    return 0.5f*invDim + p*(1.f-invDim);
+}
 
 
 // Row-major access

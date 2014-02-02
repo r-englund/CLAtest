@@ -165,7 +165,9 @@ public:
     }
     // TODO: Only selected option is converted right now in getVariant()
     // since it was done incorrectly before and changing it
-    // now will not work for old workspaces.
+    // now will not work for old workspaces. 
+    // To discuss: Serializing and deserializing options will prevent
+    // new options from being added, which we probably don't want.
     /**
      * \brief  Variants are used while linking. 
      * All options are converted to strings (including values) and hence variant type is string.
