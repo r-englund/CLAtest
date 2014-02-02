@@ -12,6 +12,7 @@
  *
  **********************************************************************/
 
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/io/datareaderdialog.h>
 #include <QComboBox>
 #include <QDialog>
@@ -20,7 +21,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API RawDataReaderDialogQt : public DataReaderDialog, public QDialog {
+class IVW_QTWIDGETS_API RawDataReaderDialogQt : public DataReaderDialog, public QDialog {
 public:
     RawDataReaderDialogQt();
     virtual ~RawDataReaderDialogQt();
