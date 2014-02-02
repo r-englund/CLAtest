@@ -51,8 +51,10 @@ void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
     if (e->button() == Qt::LeftButton) {
         if (!controlPointGraphicsItem) {
-            if (e->modifiers()==Qt::NoModifier)
+            if (e->modifiers()==Qt::NoModifier) {
                 addControlPoint(e->scenePos());
+                mouseDrag_ = true;
+            }
             else if (e->modifiers()==Qt::ControlModifier)
                 views().front()->setDragMode(QGraphicsView::RubberBandDrag);
         } else
