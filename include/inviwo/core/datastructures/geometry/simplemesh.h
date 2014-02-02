@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -32,10 +32,10 @@ public:
     void addVertex(vec3 pos, vec3 texCoord, vec4 color);
     void addIndex(unsigned int idx);
     void setIndicesInfo(RenderType, ConnectivityType);
-	const Position3dBuffer* getVertexList() const;
+    const Position3dBuffer* getVertexList() const;
     const TexCoord3dBuffer* getTexCoordList() const;
     const ColorBuffer* getColorList() const;
-	const IndexBuffer* getIndexList() const;
+    const IndexBuffer* getIndexList() const;
 
 protected:
     Position3dBuffer* vertexPositions_;

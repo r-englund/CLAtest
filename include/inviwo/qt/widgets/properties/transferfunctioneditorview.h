@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,7 +28,7 @@
 namespace inviwo {
 class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, public VoidObserver {
 
-	Q_OBJECT
+    Q_OBJECT
 
 public:
     TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
@@ -49,9 +49,9 @@ protected:
     const NormalizedHistogram* getNormalizedHistogram();
 
     void updateZoom();
-	void resizeEvent(QResizeEvent * event);
+    void resizeEvent(QResizeEvent* event);
 
-	void drawForeground(QPainter *painter, const QRectF &rect);
+    void drawForeground(QPainter* painter, const QRectF& rect);
     void drawBackground(QPainter* painter, const QRectF& rect);
 
 private:
@@ -66,11 +66,11 @@ private:
     QThread* workerThread_;
 };
 
-class IVW_QTWIDGETS_API HistogramWorkerQt : public QObject{
+class IVW_QTWIDGETS_API HistogramWorkerQt : public QObject {
     Q_OBJECT
 public:
-    HistogramWorkerQt(const VolumeRAM* volumeRAM) : volumeRAM_(volumeRAM){}
-    ~HistogramWorkerQt(){ volumeRAM_ = NULL; };
+    HistogramWorkerQt(const VolumeRAM* volumeRAM) : volumeRAM_(volumeRAM) {}
+    ~HistogramWorkerQt() { volumeRAM_ = NULL; };
 
 public slots:
     void process();

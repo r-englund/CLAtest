@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,7 +22,7 @@ namespace inviwo {
 
 class Processor;
 
-/** \class ProcessorObserver 
+/** \class ProcessorObserver
 *
 * Processor observer that knows which processor did the notification.
 * Has notification for begin and end of it's invalidation.
@@ -42,7 +42,7 @@ public:
 };
 
 
-/** \class ProcessorObservable 
+/** \class ProcessorObservable
 *
 * Can call notifyObserversInvalidationBegin and notifyObserversInvalidationEnd
 *
@@ -53,40 +53,34 @@ public:
     ProcessorObservable(): Observable<ProcessorObserver>() {};
 
     void notifyObservers() const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notify();    
-        }
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+            static_cast<ProcessorObserver*>(*it)->notify();
     }
 
     void notifyObservers(Processor* p) const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyProcessorObserver(p);    
-        }
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+            static_cast<ProcessorObserver*>(*it)->notifyProcessorObserver(p);
     }
 
     //TODO: Use seperate class for property observation if necessary
     void notifyObserversAboutPropertyChange(Property* p) const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
             static_cast<ProcessorObserver*>(*it)->notifyObserversAboutPropertyChange(p);
-        }
     }
 
     void notifyObserversInvalidationBegin(Processor* p) const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyInvalidationBegin(p);    
-        }
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+            static_cast<ProcessorObserver*>(*it)->notifyInvalidationBegin(p);
     }
-    
+
     void notifyObserversInvalidationEnd(Processor* p) const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyInvalidationEnd(p);    
-        }
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+            static_cast<ProcessorObserver*>(*it)->notifyInvalidationEnd(p);
     }
 
     void notifyObserversRequestEvaluate(Processor* p) const {
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyRequestEvaluate(p);    
-        }
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+            static_cast<ProcessorObserver*>(*it)->notifyRequestEvaluate(p);
     }
 };
 

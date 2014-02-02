@@ -12,41 +12,44 @@ namespace inviwo {
 class DataWriter;
 
 template<typename T> class DataWriterType;
-class IVW_CORE_API DataWriterFactory : public Factory, public Singleton<DataWriterFactory> { 
+class IVW_CORE_API DataWriterFactory : public Factory, public Singleton<DataWriterFactory> {
 public:
     DataWriterFactory();
-    virtual ~DataWriterFactory(){}
+    virtual ~DataWriterFactory() {}
 
-    void registerObject( DataWriter* reader );
+    void registerObject(DataWriter* reader);
 
     template <typename T>
-    std::vector<FileExtension> getExtensionsForType(){
+    std::vector<FileExtension> getExtensionsForType() {
         std::vector<FileExtension> ext;
 
-        for(ExtensionMap::const_iterator it = writerForExtension_.begin();
-            it != writerForExtension_.end(); ++it){
-                DataWriterType<T>* r = dynamic_cast<DataWriterType<T>* >(it->second);
-                if(r){
-                    std::vector<FileExtension> writerExt = r->getExtensions();
-                    for(std::vector<FileExtension>::const_iterator e = writerExt.begin();
-                        e != writerExt.end(); ++e){
-                            ext.push_back(*e);
-                    }
-                }
+        for (ExtensionMap::const_iterator it = writerForExtension_.begin();
+             it != writerForExtension_.end(); ++it) {
+            DataWriterType<T>* r = dynamic_cast<DataWriterType<T>* >(it->second);
 
-        }        
+            if (r) {
+                std::vector<FileExtension> writerExt = r->getExtensions();
+
+                for (std::vector<FileExtension>::const_iterator e = writerExt.begin();
+                     e != writerExt.end(); ++e)
+                    ext.push_back(*e);
+            }
+        }
+
         return ext;
     }
 
     template <typename T>
-    DataWriterType<T>* getWriterForTypeAndExtension(std::string ext){
+    DataWriterType<T>* getWriterForTypeAndExtension(std::string ext) {
         ExtensionMap::iterator it = writerForExtension_.find(ext);
-        if (it != writerForExtension_.end()){
+
+        if (it != writerForExtension_.end()) {
             DataWriterType<T>* r = dynamic_cast<DataWriterType<T>* >(it->second);
-            if(r){
+
+            if (r)
                 return r->clone();
-            }
         }
+
         return NULL;
     }
 

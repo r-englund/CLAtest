@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -16,31 +16,32 @@
 
 namespace inviwo {
 
-ProcessorWidgetMetaData::ProcessorWidgetMetaData() 
+ProcessorWidgetMetaData::ProcessorWidgetMetaData()
     : positionMetaData_(ivec2(0))
     , dimensionMetaData_(ivec2(256))
     , visiblityMetaData_(false) {
 }
 
-ProcessorWidgetMetaData::ProcessorWidgetMetaData( const ProcessorWidgetMetaData& rhs ) 
+ProcessorWidgetMetaData::ProcessorWidgetMetaData(const ProcessorWidgetMetaData& rhs)
     : positionMetaData_(rhs.positionMetaData_)
     , dimensionMetaData_(rhs.dimensionMetaData_)
-    , visiblityMetaData_(rhs.visiblityMetaData_){
+    , visiblityMetaData_(rhs.visiblityMetaData_) {
 }
 
-ProcessorWidgetMetaData& ProcessorWidgetMetaData::operator=( const ProcessorWidgetMetaData& that ){
-    if(this != &that){
+ProcessorWidgetMetaData& ProcessorWidgetMetaData::operator=(const ProcessorWidgetMetaData& that) {
+    if (this != &that) {
         delete this;
         positionMetaData_ = that.positionMetaData_;
         dimensionMetaData_ = that.dimensionMetaData_;
         visiblityMetaData_ = that.visiblityMetaData_;
     }
+
     return *this;
 }
 
 ProcessorWidgetMetaData::~ProcessorWidgetMetaData() {}
 
-ProcessorWidgetMetaData* ProcessorWidgetMetaData::clone() const{
+ProcessorWidgetMetaData* ProcessorWidgetMetaData::clone() const {
     return new ProcessorWidgetMetaData(*this);
 }
 
@@ -53,10 +54,10 @@ ivec2 ProcessorWidgetMetaData::getWidgetPosition() {
 }
 
 void ProcessorWidgetMetaData::setDimension(ivec2 dim) {
-    dimensionMetaData_.set(dim); 
+    dimensionMetaData_.set(dim);
 }
 
-ivec2 ProcessorWidgetMetaData::getDimension() const{
+ivec2 ProcessorWidgetMetaData::getDimension() const {
     return dimensionMetaData_.get();
 }
 
@@ -64,7 +65,7 @@ void ProcessorWidgetMetaData::setVisibile(bool visibility) {
     visiblityMetaData_.set(visibility);
 }
 
-bool ProcessorWidgetMetaData::isVisible() const{
+bool ProcessorWidgetMetaData::isVisible() const {
     return visiblityMetaData_.get();
 }
 
@@ -79,15 +80,13 @@ void ProcessorWidgetMetaData::deserialize(IvwDeserializer& d) {
     std::string className;
     ivec2 position, dimension;
     bool visibility;
-
     d.deserialize("type", className, true);
     d.deserialize("position", position);
     d.deserialize("dimension", dimension);
     d.deserialize("visibility", visibility);
-
     positionMetaData_.set(position);
     dimensionMetaData_.set(dimension);
-    visiblityMetaData_.set(visibility);    
+    visiblityMetaData_.set(visibility);
 }
 
 

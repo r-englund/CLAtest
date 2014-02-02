@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -42,18 +42,18 @@ public:
     void addProperty(Property& property);
     void addProperty(Property* property);
 
-	virtual std::string getClassName() const { return "Trackball"; }
+    virtual std::string getClassName() const { return "Trackball"; }
 
-	void serialize(IvwSerializer &s) const;
-	void deserialize(IvwDeserializer &d);
+    void serialize(IvwSerializer& s) const;
+    void deserialize(IvwDeserializer& d);
 
 private:
-	enum Direction {
-		UP = 0,
-		LEFT,
-		DOWN,
-		RIGHT
-	};
+    enum Direction {
+        UP = 0,
+        LEFT,
+        DOWN,
+        RIGHT
+    };
 
     float pixelWidth_;
     bool isMouseBeingPressedAndHold_;
@@ -124,9 +124,9 @@ private:
     void rotateCamera(MouseEvent* mouseEvent);
     void zoomCamera(MouseEvent* mouseEvent);
     void panCamera(MouseEvent* mouseEvent);
-	void stepRotateCamera(Direction dir);
-	void stepZoomCamera(Direction dir);
-	void stepPanCamera(Direction dir);
+    void stepRotateCamera(Direction dir);
+    void stepZoomCamera(Direction dir);
+    void stepPanCamera(Direction dir);
 };
 
 } // namespace

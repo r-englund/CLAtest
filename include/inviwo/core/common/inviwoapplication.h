@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -41,7 +41,7 @@ public:
     InviwoApplication(std::string displayName, std::string basePath);
     InviwoApplication(int argc, char** argv, std::string displayName, std::string basePath);
     virtual ~InviwoApplication();
-    
+
     virtual void initialize(registerModuleFuncPtr);
     virtual void deinitialize();
     virtual bool isInitialized() { return initialized_; }
@@ -56,12 +56,12 @@ public:
         PATH_TRANSFERFUNCTIONS  // data/transferfunctions/
     };
 
-	virtual void closeInviwoApplication(){LogWarn("this application have not implemented close inviwo function");}
+    virtual void closeInviwoApplication() {LogWarn("this application have not implemented close inviwo function");}
 
     /**
      * Get the base path of the application.
-     * 
-     * @return 
+     *
+     * @return
      */
     const std::string& getBasePath() { return basePath_; }
 
@@ -82,14 +82,14 @@ public:
 
     template<class T> T* getSettingsByType();
 
-    const CommandLineParser* getCommandLineParser() const { return commandLineParser_; } 
+    const CommandLineParser* getCommandLineParser() const { return commandLineParser_; }
     template<class T> T* getModuleByType();
 
     virtual void registerFileObserver(FileObserver* fileObserver) { LogWarn("This Inviwo application does not support FileObservers."); }
     virtual void startFileObservation(std::string fileName) { LogWarn("This Inviwo application does not support FileObservers."); }
     virtual void stopFileObservation(std::string fileName) { LogWarn("This Inviwo application does not support FileObservers."); }
 
-    std::string getDisplayName()const{return displayName_;}
+    std::string getDisplayName()const {return displayName_;}
 
     enum MessageType {
         IVW_OK,
@@ -117,7 +117,7 @@ private:
     std::string displayName_;
 
     std::string basePath_;
- 
+
     std::vector<InviwoModule*> modules_;
 
     ProcessorNetwork* processorNetwork_;

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,22 +22,22 @@
 
 namespace inviwo {
 
-/** \brief Reader for *.dat files 
+/** \brief Reader for *.dat files
  *
  *  The following tags are supported:
  *   - Rawfile :: The name of the raw data file, should be in the same directory (Mandatory).
- *   - ByteOrder :: the byte order in the raw data file. (Optional, LittleEndian|BigEndian,  defualt: LittleEndian).  
+ *   - ByteOrder :: the byte order in the raw data file. (Optional, LittleEndian|BigEndian,  defualt: LittleEndian).
  *   - Resolution | Dimension ::The size of the data grid: nx,ny,nz (Mandatory).
  *   - Format :: The type of values in the raw file. (Mandatory)
  *   - Spacing | SliceThickness :: The size of the voxels in the data. (Optional)
  *   - BasisVector(1|2|3) :: Defines a coordinate system for the data. (Optional, overides spacing, default: 2*IdentityMatrix);
  *   - Offset :: Offsets the basisvecors in space. (Optional, defaults to center the data on origo)
- *   - WorldVector(1|2|3|4) :: Defines a world transformation matrix that is applied last to orient the data in world space. (Optional, default: IdentityMatrix) 
+ *   - WorldVector(1|2|3|4) :: Defines a world transformation matrix that is applied last to orient the data in world space. (Optional, default: IdentityMatrix)
  *
- *  The tag names are case insensitive and should always be followed by a ":" 
+ *  The tag names are case insensitive and should always be followed by a ":"
  */
 class IVW_CORE_API DatVolumeReader : public DataReaderType<Volume> {
-public:        
+public:
     DatVolumeReader();
     DatVolumeReader(const DatVolumeReader& rhs);
     DatVolumeReader& operator=(const DatVolumeReader& that);
@@ -53,7 +53,7 @@ private:
     bool littleEndian_;
     glm::uvec3 dimension_;
     const DataFormatBase* format_;
-};    
+};
 
 } // namespace
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -16,39 +16,39 @@
 
 namespace inviwo {
 
-TrackballAction::TrackballAction( TrackballAction::Actions action ) {
+TrackballAction::TrackballAction(TrackballAction::Actions action) {
     actionNames_[TRACKBALL_ROTATE] = "Trackball rotate";
     actionNames_[TRACKBALL_ZOOM] = "Trackball zoom";
     actionNames_[TRACKBALL_PAN] = "Trackball pan";
-	actionNames_[TRACKBALL_STEPROTATE_UP] = "Step rotate up";
-	actionNames_[TRACKBALL_STEPROTATE_LEFT] = "Step rotate left";
-	actionNames_[TRACKBALL_STEPROTATE_DOWN] = "Step rotate down";
-	actionNames_[TRACKBALL_STEPROTATE_RIGHT] = "Step rotate right";
-	actionNames_[TRACKBALL_STEPZOOM_IN] = "Step zoom in";
-	actionNames_[TRACKBALL_STEPZOOM_OUT] = "Step zoom out";
-	actionNames_[TRACKBALL_STEPPAN_UP] = "Step pan up";
-	actionNames_[TRACKBALL_STEPPAN_LEFT] = "Step pan left";
-	actionNames_[TRACKBALL_STEPPAN_DOWN] = "Step pan down";
-	actionNames_[TRACKBALL_STEPPAN_RIGHT] = "Step pan right";
-
+    actionNames_[TRACKBALL_STEPROTATE_UP] = "Step rotate up";
+    actionNames_[TRACKBALL_STEPROTATE_LEFT] = "Step rotate left";
+    actionNames_[TRACKBALL_STEPROTATE_DOWN] = "Step rotate down";
+    actionNames_[TRACKBALL_STEPROTATE_RIGHT] = "Step rotate right";
+    actionNames_[TRACKBALL_STEPZOOM_IN] = "Step zoom in";
+    actionNames_[TRACKBALL_STEPZOOM_OUT] = "Step zoom out";
+    actionNames_[TRACKBALL_STEPPAN_UP] = "Step pan up";
+    actionNames_[TRACKBALL_STEPPAN_LEFT] = "Step pan left";
+    actionNames_[TRACKBALL_STEPPAN_DOWN] = "Step pan down";
+    actionNames_[TRACKBALL_STEPPAN_RIGHT] = "Step pan right";
     action_ = action;
     actionName_ = actionNames_[action];
 }
 
 TrackballAction::~TrackballAction() {}
 
-void TrackballAction::serialize( IvwSerializer& s ) const {
-	Action::serialize(s);
-	s.serialize("action", actionName_);
+void TrackballAction::serialize(IvwSerializer& s) const {
+    Action::serialize(s);
+    s.serialize("action", actionName_);
 }
 void TrackballAction::deserialize(IvwDeserializer& d) {
-	d.deserialize("action", actionName_);
-	for (int i = 0; i < COUNT; ++i) {
-		if (actionNames_[i] == actionName_) {
-			action_ = i;
-			break;
-		}
-	}
+    d.deserialize("action", actionName_);
+
+    for (int i = 0; i < COUNT; ++i) {
+        if (actionNames_[i] == actionName_) {
+            action_ = i;
+            break;
+        }
+    }
 }
 
 } //namespace

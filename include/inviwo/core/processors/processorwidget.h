@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -30,10 +30,10 @@ public:
 
     virtual ProcessorWidget* create() const = 0;
     virtual void initialize() = 0;
-    virtual void deinitialize() = 0;    
+    virtual void deinitialize() = 0;
     virtual void setVisible(bool visible);
     virtual void show();
-    virtual void hide();    
+    virtual void hide();
     virtual void setDimension(ivec2);
     virtual void move(ivec2);
     virtual void setProcessor(Processor* processor) {processor_ = processor;}
@@ -46,7 +46,7 @@ private:
 
 protected:
     Processor* processor_;
-    bool initialized_; 
+    bool initialized_;
 
     ivec2 getPositionMetaData();
     ivec2 getDimensionMetaData();

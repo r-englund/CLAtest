@@ -23,7 +23,7 @@ FileProperty::FileProperty(std::string identifier, std::string displayName, std:
     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics)
     , acceptMode_(AcceptOpen)
     , fileMode_(AnyFile) {
-        addNameFilter("All Files (*.*)");
+    addNameFilter("All Files (*.*)");
 }
 
 int FileProperty::getVariantType() {
@@ -35,9 +35,8 @@ Variant FileProperty::getVariant() {
 }
 
 void  FileProperty::setVariant(const Variant& val) {
-    if (val.canConvert(getVariantType())) {
+    if (val.canConvert(getVariantType()))
         set(val.getString());
-    }
 }
 
 void FileProperty::serialize(IvwSerializer& s) const {
@@ -52,7 +51,6 @@ void FileProperty::serialize(IvwSerializer& s) const {
 
     std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("url", relativePath);
-
     s.serialize("nameFilter", nameFilters_, "filter");
     s.serialize("acceptMode", acceptMode_);
     s.serialize("fileMode", fileMode_);
@@ -62,17 +60,17 @@ void FileProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d) ;
     std::string relativePath;
     d.deserialize("url", relativePath);
-
     //FIXME: Make sure valid base path is set
     //ivwAssert(!basePath.empty(), "File name cannot be empty.")
     std::string basePath = d.getFileName();
+
     if (basePath.empty())
         basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
 
     basePath = URLParser::getFileDirectory(basePath);
     set(basePath+relativePath);
 
-    try{
+    try {
         nameFilters_.clear();
         d.deserialize("nameFilter", nameFilters_, "filter");
         int acceptMode = (int)acceptMode_;
@@ -81,34 +79,34 @@ void FileProperty::deserialize(IvwDeserializer& d) {
         int fileMode = (int)fileMode_;
         d.deserialize("fileMode", fileMode);
         fileMode_ = (FileMode)fileMode;
-    }catch(SerializationException& e){
+    } catch (SerializationException& e) {
         LogInfo("Problem deserializing fileproperty: " << e.getMessage());
     }
 }
 
-void FileProperty::addNameFilter( std::string filter){
+void FileProperty::addNameFilter(std::string filter) {
     nameFilters_.push_back(filter);
 }
 
-void FileProperty::clearNameFilters(){
+void FileProperty::clearNameFilters() {
     nameFilters_.clear();
 }
 
-std::vector<std::string> FileProperty::getNameFilters(){
+std::vector<std::string> FileProperty::getNameFilters() {
     return nameFilters_;
 }
 
-void FileProperty::setAcceptMode(AcceptMode mode){
+void FileProperty::setAcceptMode(AcceptMode mode) {
     acceptMode_ = mode;
 }
 FileProperty::AcceptMode FileProperty::getAcceptMode() const {
     return acceptMode_;
 };
 
-void FileProperty::setFileMode(FileMode mode){
+void FileProperty::setFileMode(FileMode mode) {
     fileMode_ = mode;
 }
-FileProperty::FileMode FileProperty::getFileMode() const{
+FileProperty::FileMode FileProperty::getFileMode() const {
     return fileMode_;
 }
 

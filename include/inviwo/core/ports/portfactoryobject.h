@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API PortFactoryObject { 
+class IVW_CORE_API PortFactoryObject {
 public:
     PortFactoryObject(const std::string& className);
     virtual ~PortFactoryObject();

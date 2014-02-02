@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -27,11 +27,11 @@ class IVW_CORE_API PropertyEditorWidgetDockStatus {
 public:
     PropertyEditorWidgetDockStatus();
     PropertyEditorWidgetDockStatus(std::string dockStatus);
-    PropertyEditorWidgetDockStatus(const PropertyEditorWidgetDockStatus& rhs);    
-    virtual ~PropertyEditorWidgetDockStatus(){}
+    PropertyEditorWidgetDockStatus(const PropertyEditorWidgetDockStatus& rhs);
+    virtual ~PropertyEditorWidgetDockStatus() {}
     PropertyEditorWidgetDockStatus& operator=(const PropertyEditorWidgetDockStatus& rhs);
     bool operator==(const PropertyEditorWidgetDockStatus& that);
-    const std::string& getString() const;    
+    const std::string& getString() const;
     static const PropertyEditorWidgetDockStatus Floating;
     static const PropertyEditorWidgetDockStatus DockedLeft;
     static const PropertyEditorWidgetDockStatus DockedRight;
@@ -58,7 +58,7 @@ public:
 
     void setWidgetPosition(ivec2 pos);
     ivec2 getWidgetPosition();
-    void setDimension(ivec2 dim); 
+    void setDimension(ivec2 dim);
     ivec2 getDimension() const;
     void setVisibile(bool visibility);
     bool isVisible() const;

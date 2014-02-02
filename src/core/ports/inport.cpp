@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,7 +19,7 @@
 namespace inviwo {
 
 Inport::Inport(std::string identifier)
-: Port(identifier)
+    : Port(identifier)
 {}
 
 Inport::~Inport() {}
@@ -33,18 +33,21 @@ std::vector<Processor*> Inport::getPredecessors() {
 template <typename T>
 void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsProcessors) {
     if (isConnected()) {
-
         std::vector<Outport*> connectedOutports = getConnectedOutports();
-        std::vector<Outport*>::const_iterator it = connectedOutports.begin(); std::vector<Outport*>::const_iterator endIt = connectedOutports.end();
-        for(; it != endIt; ++it) {
+        std::vector<Outport*>::const_iterator it = connectedOutports.begin();
+        std::vector<Outport*>::const_iterator endIt = connectedOutports.end();
+
+        for (; it != endIt; ++it) {
             Processor* predecessorsProcessor = (*it)->getProcessor();
 
             if (std::find(predecessorsProcessors.begin(), predecessorsProcessors.end(), predecessorsProcessor)== predecessorsProcessors.end())
                 predecessorsProcessors.push_back(predecessorsProcessor);
 
             std::vector<Inport*> inports = predecessorsProcessor->getInports();
+
             for (size_t j=0; j<inports.size(); j++) {
                 T* inPort = dynamic_cast<T*>(inports[j]);
+
                 if (inPort)
                     inPort->template getPredecessorsUsingPortType<T>(predecessorsProcessors);
             }
@@ -52,8 +55,8 @@ void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsP
     }
 }
 
-void Inport::callOnChangeIfInvalid(){
-    if(getInvalidationLevel() >= PropertyOwner::INVALID_OUTPUT)
+void Inport::callOnChangeIfInvalid() {
+    if (getInvalidationLevel() >= PropertyOwner::INVALID_OUTPUT)
         onChangeCallback_.invokeAll();
 }
 

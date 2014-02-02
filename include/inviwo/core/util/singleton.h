@@ -21,44 +21,45 @@
 
 namespace inviwo {
 
-    class SingeltonBase;
-    class IVW_CORE_API SingeltonBase{
-    protected:
-        static std::vector<SingeltonBase*> instances_;
+class SingeltonBase;
+class IVW_CORE_API SingeltonBase {
+protected:
+    static std::vector<SingeltonBase*> instances_;
 
-        void deleteAllSingeltons(){
-            while (!instances_.empty()){
-                SingeltonBase* instance = instances_[0];
-                instances_.erase(instances_.begin());
-                if(instance != this)
-                    delete instance;
+    void deleteAllSingeltons() {
+        while (!instances_.empty()) {
+            SingeltonBase* instance = instances_[0];
+            instances_.erase(instances_.begin());
+
+            if (instance != this)
+                delete instance;
+        }
+    }
+
+    SingeltonBase() {
+        instances_.push_back(this);
+    }
+
+    virtual ~SingeltonBase() {
+        for (size_t i = 0; i<instances_.size(); i++) {
+            if (instances_[i] == this) {
+                instances_.erase(instances_.begin()+i);
+                break;
             }
         }
-
-        SingeltonBase(){
-            instances_.push_back(this);
-        }
-
-        virtual ~SingeltonBase(){
-            for(size_t i = 0;i<instances_.size();i++){
-                if(instances_[i] == this){
-                    instances_.erase(instances_.begin()+i);
-                    break;
-                }
-            }
-        }
-    };
+    }
+};
 
 
 
 template <class T>
-class Singleton : public SingeltonBase{
+class Singleton : public SingeltonBase {
 public:
 
     /**
-     * For Singletons in the inviwo::core init should be called in 
+     * For Singletons in the inviwo::core init should be called in
      * void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc).
-     *  
+     *
      */
     static void init() {
         ivwAssert(instance_==0, "Singleton already initialized.");
@@ -73,17 +74,17 @@ public:
 
     static T& getRef() {
         ivwAssert(instance_!=0, "Singleton not initialized. Ensure that init() "
-                                "is called in a thread-safe environment.");
+                  "is called in a thread-safe environment.");
         return *instance_;
     };
 
     static T* getPtr() {
         ivwAssert(instance_!=0, "Singleton not initialized. Ensure that init() "
-                                "is called in a thread-safe environment.");
+                  "is called in a thread-safe environment.");
         return instance_;
     };
 
-    static void deleteInstance(){
+    static void deleteInstance() {
         delete instance_;
         instance_ = 0;
     }

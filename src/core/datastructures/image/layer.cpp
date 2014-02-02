@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -17,31 +17,31 @@
 
 namespace inviwo {
 
-Layer::Layer(uvec2 dimensions, const DataFormatBase* format, LayerType type) 
+Layer::Layer(uvec2 dimensions, const DataFormatBase* format, LayerType type)
     : Data(format)
     , StructuredGridEntity<2>(dimensions)
     , layerType_(type) {}
 
-Layer::Layer(LayerRepresentation* in) 
+Layer::Layer(LayerRepresentation* in)
     : Data(in->getDataFormat())
     , StructuredGridEntity<2>(in->getDimension())
     , layerType_(in->getLayerType()) {
-
     clearRepresentations();
     addRepresentation(in);
 }
 
-Layer::Layer(const Layer& rhs) 
+Layer::Layer(const Layer& rhs)
     : Data(rhs)
     , StructuredGridEntity<2>(rhs)
     , layerType_(rhs.layerType_) {}
 
 Layer& Layer::operator=(const Layer& that) {
-    if(this != &that) {
+    if (this != &that) {
         Data::operator=(that);
         StructuredGridEntity<2>::operator=(that);
         layerType_ = that.layerType_;
     }
+
     return *this;
 }
 
@@ -57,36 +57,40 @@ Layer::~Layer() {
 
 void Layer::resize(uvec2 dimensions) {
     setDimension(dimensions);
-    if(lastValidRepresentation_) {
+
+    if (lastValidRepresentation_) {
         // Resize last valid representation and remove the other ones
         static_cast<LayerRepresentation*>(lastValidRepresentation_)->resize(dimensions);
         std::vector<DataRepresentation*>::iterator it = std::find(representations_.begin(), representations_.end(), lastValidRepresentation_);
+
         // First delete the representations before erasing them from the vector
         for (size_t i=0; i<representations_.size(); i++) {
-            if(representations_[i] != lastValidRepresentation_) {
-                delete representations_[i]; representations_[i] = NULL;
+            if (representations_[i] != lastValidRepresentation_) {
+                delete representations_[i];
+                representations_[i] = NULL;
             }
         }
-        // Erasing representations: start from the back 
-        if(it != --representations_.end()) {
+
+        // Erasing representations: start from the back
+        if (it != --representations_.end()) {
             std::vector<DataRepresentation*>::iterator eraseFrom = it + 1;
-            representations_.erase(eraseFrom, representations_.end()); 
+            representations_.erase(eraseFrom, representations_.end());
         }
+
         // and then erase the ones infron of the valid representation
-        if(representations_.begin() != it) {
+        if (representations_.begin() != it)
             representations_.erase(representations_.begin(), it);
-        }
-         
     }
+
     setAllRepresentationsAsInvalid();
 }
 
 
 uvec2 Layer::getDimension() const {
-	return StructuredGridEntity<2>::getDimension();
+    return StructuredGridEntity<2>::getDimension();
 }
-void  Layer::setDimension(const uvec2& dim){
-	StructuredGridEntity<2>::setDimension(dim);
+void  Layer::setDimension(const uvec2& dim) {
+    StructuredGridEntity<2>::setDimension(dim);
 }
 
 void Layer::resizeRepresentations(Layer* targetLayer, uvec2 targetDim) {
@@ -96,15 +100,18 @@ void Layer::resizeRepresentations(Layer* targetLayer, uvec2 targetDim) {
     targetLayer->resize(targetDim);
     LayerRepresentation* layerRepresentation = 0;
     LayerRepresentation* targetRepresentation = 0;
-    std::vector<DataRepresentation*> &targetRepresentations = targetLayer->representations_;
+    std::vector<DataRepresentation*>& targetRepresentations = targetLayer->representations_;
 
     if (targetRepresentations.size()) {
         for (int i=0; i<static_cast<int>(representations_.size()); i++) {
             layerRepresentation = static_cast<LayerRepresentation*>(representations_[i]);
+
             if (isRepresentationValid(i)) {
                 int numberOfTargets = static_cast<int>(targetRepresentations.size());
+
                 for (int j=0; j<numberOfTargets; j++) {
                     targetRepresentation = static_cast<LayerRepresentation*>(targetRepresentations[j]);
+
                     if (layerRepresentation->getClassName()==targetRepresentation->getClassName()) {
                         if (layerRepresentation->copyAndResizeLayer(targetRepresentation)) {
                             targetLayer->setRepresentationAsValid(j);
@@ -120,23 +127,23 @@ void Layer::resizeRepresentations(Layer* targetLayer, uvec2 targetDim) {
         targetLayer->setAllRepresentationsAsInvalid();
         targetLayer->createDefaultRepresentation();
         LayerRepresentation* lastValidRepresentation = dynamic_cast<LayerRepresentation*>(lastValidRepresentation_);
-        LayerRepresentation* cloneOfLastValidRepresentation = dynamic_cast<LayerRepresentation*>(lastValidRepresentation->clone());        
-        targetLayer->addRepresentation(cloneOfLastValidRepresentation);        
+        LayerRepresentation* cloneOfLastValidRepresentation = dynamic_cast<LayerRepresentation*>(lastValidRepresentation->clone());
+        targetLayer->addRepresentation(cloneOfLastValidRepresentation);
+        targetLayer->resize(targetDim);
 
-       targetLayer->resize(targetDim);
-       if (lastValidRepresentation->copyAndResizeLayer(cloneOfLastValidRepresentation)) {
+        if (lastValidRepresentation->copyAndResizeLayer(cloneOfLastValidRepresentation)) {
             targetLayer->setRepresentationAsValid(static_cast<int>(targetLayer->representations_.size())-1);
             targetLayer->lastValidRepresentation_ = cloneOfLastValidRepresentation;
-       }
+        }
     }
 }
 
-LayerType Layer::getLayerType() const { 
-    return layerType_; 
+LayerType Layer::getLayerType() const {
+    return layerType_;
 }
 
 DataRepresentation* Layer::createDefaultRepresentation() {
-	return createLayerRAM((uvec2)getDimension(), getLayerType(), getDataFormat());
+    return createLayerRAM((uvec2)getDimension(), getLayerType(), getDataFormat());
 }
 
 

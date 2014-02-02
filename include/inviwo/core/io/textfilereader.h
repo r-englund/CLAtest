@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,7 +22,7 @@
 
 
 namespace inviwo {
-/** \class TextFileReader 
+/** \class TextFileReader
 *
 * Reader for text files.
 */
@@ -34,7 +34,7 @@ public:
 
     /**
      * Read a file and return the content as a string.
-     * Throws an exception if file could not be opened 
+     * Throws an exception if file could not be opened
      * and prints an error message to the error log.
      * @param filePath Path of file.
      * @return Content of file.
@@ -43,12 +43,12 @@ public:
 
     /**
      * Read a file and return the content as a string.
-     * Throws an exception if file could not be opened 
+     * Throws an exception if file could not be opened
      * and prints an error message to the error log.
      * @return Content of file.
      */
     virtual std::string read() throw (std::ifstream::failure);
-    
+
     void setFilePath(const std::string& filePath) { filePath_ = filePath; }
     const std::string& getFilePath() const { return filePath_; }
 private:

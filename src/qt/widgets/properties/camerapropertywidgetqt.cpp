@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,13 +28,14 @@ void CameraPropertyWidgetQt::generateWidget() {
     QVBoxLayout* vLayout = new QVBoxLayout();
     collapsiveGroupBoxWidget_ = new CollapsibleGroupBoxWidgetQt(property_->getIdentifier(),property_->getDisplayName());
     std::vector<Property*> subProperties = property_->getSubProperties();
+
     for (size_t i=0; i<subProperties.size(); i++) {
         Property* curProperty = subProperties[i];
         collapsiveGroupBoxWidget_->addProperty(curProperty);
     }
+
     collapsiveGroupBoxWidget_->generatePropertyWidgets();
     vLayout->addWidget(collapsiveGroupBoxWidget_);
-
     vLayout->setContentsMargins(0,0,0,0);
     vLayout->setSpacing(0);
     setLayout(vLayout);
@@ -46,16 +47,16 @@ void CameraPropertyWidgetQt::setPropertyValue() {
 void CameraPropertyWidgetQt::updateFromProperty() {
 };
 
-void CameraPropertyWidgetQt::setPropertyDisplayName(){
+void CameraPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 
-void CameraPropertyWidgetQt::visibilityModified( int mode ){
+void CameraPropertyWidgetQt::visibilityModified(int mode) {
     property_->setVisibility(static_cast<PropertyVisibilityMode>(mode));
     std::vector<Property*> subProperties = property_->getSubProperties();
+
     for (size_t i=0; i<subProperties.size(); i++)
         subProperties[i]->setVisibility(static_cast<PropertyVisibilityMode>(mode));
-
 }
 
 } // namespace

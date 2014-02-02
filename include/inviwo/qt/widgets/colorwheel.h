@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,28 +24,27 @@
 #include <QDebug>
 namespace inviwo {
 
-class IVW_QTWIDGETS_API ColorWheel : public QWidget
-{
+class IVW_QTWIDGETS_API ColorWheel : public QWidget {
     Q_OBJECT
 public:
-    explicit ColorWheel(QWidget *parent = 0);
+    explicit ColorWheel(QWidget* parent = 0);
 
-    virtual QSize sizeHint () const;
-    virtual QSize minimumSizeHint () const;
+    virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
     QColor color();
 
 signals:
-    void colorChange(const QColor &color);
+    void colorChange(const QColor& color);
 
-    public slots:
-        void setColor(const QColor &color);
+public slots:
+    void setColor(const QColor& color);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *);
-    void resizeEvent(QResizeEvent *event);
-    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent*);
+    void resizeEvent(QResizeEvent* event);
+    void paintEvent(QPaintEvent*);
 private:
     QSize initSize;
     QImage wheelImage;
@@ -60,16 +59,16 @@ private:
     QColor current;
     bool inWheel;
     bool inSquare;
-    QColor posColor(const QPoint &point);
-    void drawWheelImage(const QSize &newSize);
-    void drawIndicator(const int &hue);
-    void drawPicker(const QColor &color);
-    void drawSquareImage(const int &hue);
+    QColor posColor(const QPoint& point);
+    void drawWheelImage(const QSize& newSize);
+    void drawIndicator(const int& hue);
+    void drawPicker(const QColor& color);
+    void drawSquareImage(const int& hue);
     void composeWheel();
     double PI;
 private slots:
-    void hueChanged(const int &hue);
-    void svChanged(const QColor &newcolor);
+    void hueChanged(const int& hue);
+    void svChanged(const QColor& newcolor);
 };
 } //namespace
 #endif // IVW_COLORWHEEL_H

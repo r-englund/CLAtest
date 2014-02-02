@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -39,7 +39,7 @@ public:
     virtual std::string getClassName()  const { return "CompositeProperty"; }
     void updateVisibility();
     void setVisible(bool val);
-    void setReadOnly(const bool &value);
+    void setReadOnly(const bool& value);
 
     //override original function in property
     virtual void set(const Property* src);
@@ -48,7 +48,7 @@ public:
 
 private:
     std::vector<Property*> subProperties_;
-    
+
 };
 
 } // namespace

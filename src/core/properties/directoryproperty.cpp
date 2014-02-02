@@ -19,8 +19,9 @@
 
 namespace inviwo {
 
-DirectoryProperty::DirectoryProperty(std::string identifier, std::string displayName,std::string value, PropertyOwner::InvalidationLevel invalidationLevel,
-    PropertySemantics semantics)
+DirectoryProperty::DirectoryProperty(std::string identifier, std::string displayName,std::string value,
+                                     PropertyOwner::InvalidationLevel invalidationLevel,
+                                     PropertySemantics semantics)
     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics),
       fileIndexingHandle_(0)
 {
@@ -33,16 +34,17 @@ std::vector<std::string> DirectoryProperty::getDirectoryTree()  const  {
 
 std::vector<std::string> DirectoryProperty::getFiles(std::string filters)  const {
     std::vector<std::string> validFilesWithExtension;
+
     for (size_t i=0; i<directoryTree_.size(); i++) {
         std::string file = get()+"/";
         file = URLParser::getFileDirectory(file) + directoryTree_[i];
-        if (filters=="*.*") {
+
+        if (filters=="*.*")
             validFilesWithExtension.push_back(file);
-        }
-        else if (URLParser::getFileExtension(directoryTree_[i]) == filters) {
+        else if (URLParser::getFileExtension(directoryTree_[i]) == filters)
             validFilesWithExtension.push_back(file);
-        }
     }
+
     return validFilesWithExtension;
 }
 
@@ -59,17 +61,18 @@ Variant DirectoryProperty::getVariant() {
 }
 
 void  DirectoryProperty::setVariant(const Variant& val) {
-    if (val.canConvert(getVariantType())) {
+    if (val.canConvert(getVariantType()))
         set(val.getString());
-    }
 }
 
 void DirectoryProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s) ;
     std::string basePath = s.getFileName();
     std::string absoluteFilePath = get();
+
     if (basePath.empty())
         basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
+
     std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("directory", relativePath);
     s.serialize("files", directoryTree_, "file");
@@ -80,15 +83,15 @@ void DirectoryProperty::deserialize(IvwDeserializer& d) {
     std::string relativePath;
     d.deserialize("directory", relativePath);
     std::string basePath = d.getFileName();
+
     if (basePath.empty())
         basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
-    basePath = URLParser::getFileDirectory(basePath);
 
+    basePath = URLParser::getFileDirectory(basePath);
     std::vector<std::string> directoryTree;
     d.deserialize("files", directoryTree, "file");
     directoryTree_ = directoryTree;
-
-     set(basePath+relativePath);
+    set(basePath+relativePath);
 }
 
 } // namespace

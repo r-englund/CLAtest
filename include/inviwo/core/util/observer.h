@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,100 +22,99 @@ namespace inviwo {
 // Forward declaration
 class ObservableInterface;
 
-/** \class Observer 
+/** \class Observer
 *
 * Class to support observer pattern. An example of usage is given in the Observable class.
 * @see Observable
 */
 class IVW_CORE_API Observer {
 
-friend class ObservableInterface;
+    friend class ObservableInterface;
 public:
-	/** 
-	 * Allocates Observable set.
-	 */
-	Observer();
+    /**
+     * Allocates Observable set.
+     */
+    Observer();
 
-	/**
-	 * Removes the observer from all observable objects. Makes sure that it cannot be called when destroyed.
-	 * 
-	 */
+    /**
+     * Removes the observer from all observable objects. Makes sure that it cannot be called when destroyed.
+     *
+     */
     virtual ~Observer();
 
-	/**
-	 * Stop observing object by removing it from observation list.
-	 * 
-	 * @param observable (ObservableInterface *) The observable to stop observing.
-	 */
+    /**
+     * Stop observing object by removing it from observation list.
+     *
+     * @param observable (ObservableInterface *) The observable to stop observing.
+     */
     void removeObservation(ObservableInterface* observable);
 
-	/**
-	 * Stops observing all objects by removing them from observation list.
-	 * 
-	 */
+    /**
+     * Stops observing all objects by removing them from observation list.
+     *
+     */
     void removeObservations();
 
 protected:
-	/** 
-	 * Add an object to observe.
-	 * 
-	 * @param observable The observable to add.
-	 */
-	void addObservation(ObservableInterface* observable);
+    /**
+     * Add an object to observe.
+     *
+     * @param observable The observable to add.
+     */
+    void addObservation(ObservableInterface* observable);
 
 
     // Storing observables connected to this observer enables removal upon destruction.
-	typedef std::set<ObservableInterface*> ObservableSet;
-	ObservableSet* observables_; 
+    typedef std::set<ObservableInterface*> ObservableSet;
+    ObservableSet* observables_;
 };
 
-/** \class ObservableInterface 
+/** \class ObservableInterface
 *
-* Class to support observer pattern. 
-* This is an interface only, inherit from Observable<DerivedObserver> to define your own "notify()" method. 
+* Class to support observer pattern.
+* This is an interface only, inherit from Observable<DerivedObserver> to define your own "notify()" method.
 * An example of usage is given in the Observable class.
 * @see Observable
 * @see Observer
 */
-class IVW_CORE_API ObservableInterface
-{
-friend class Observer;
+class IVW_CORE_API ObservableInterface {
+    friend class Observer;
 public:
-    /** 
-	 * Allocates Observer set.
-	 */
-	ObservableInterface();
-	/* 
-	 * Removes all observers.
-	 */
-	virtual ~ObservableInterface();
+    /**
+     * Allocates Observer set.
+     */
+    ObservableInterface();
+    /*
+     * Removes all observers.
+     */
+    virtual ~ObservableInterface();
 
 protected:
-	/** 
-	 * Add an observer.
-	 * 
-	 * @param observer The observer to add.
-	 */
-	void addObserver(Observer* observer);
- 	/** 
-	 * Remove an observer.
-	 * 
-	 * @param observer The observer to remove.
-	 */
-	void removeObserver(Observer* observer);
-	/** 
-	 * Remove all observers.
-	 */
-	void removeObservers();
+    /**
+     * Add an observer.
+     *
+     * @param observer The observer to add.
+     */
+    void addObserver(Observer* observer);
+    /**
+     * Remove an observer.
+     *
+     * @param observer The observer to remove.
+     */
+    void removeObserver(Observer* observer);
+    /**
+     * Remove all observers.
+     */
+    void removeObservers();
 
-	typedef std::set<Observer*> ObserverSet;
-	ObserverSet* observers_; 
+    typedef std::set<Observer*> ObserverSet;
+    ObserverSet* observers_;
 
 };
 
-/** \class Observable 
+/** \class Observable
 *
-* Class to support observer pattern. 
+* Class to support observer pattern.
 *
 * \section example Example
 * Example of how to apply it to a simple button.
@@ -136,7 +135,7 @@ protected:
 *            ObserverSet::iterator endIt = observers_->end();
 *            for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
 *               // static_cast can be used since only template class objects can be added
-*               static_cast<ButtonObserver*>(*it)->buttonPressed();    
+*               static_cast<ButtonObserver*>(*it)->buttonPressed();
 *            }
 *        }
 *    };
@@ -149,32 +148,32 @@ class Observable: public ObservableInterface {
 public:
     Observable(): ObservableInterface() {};
     /**
-     * Removes all observers 
+     * Removes all observers
      */
     virtual ~Observable() {};
-	/** 
-	 * Add an observer.
-	 * 
-	 * @param observer The observer to add.
-	 */
-    virtual void addObserver(T* observer) { 
-        ObservableInterface::addObserver(observer); 
+    /**
+     * Add an observer.
+     *
+     * @param observer The observer to add.
+     */
+    virtual void addObserver(T* observer) {
+        ObservableInterface::addObserver(observer);
     }
- 	/** 
-	 * Remove an observer.
-	 * 
-	 * @param observer The observer to remove.
-	 */
+    /**
+     * Remove an observer.
+     *
+     * @param observer The observer to remove.
+     */
     virtual void removeObserver(T* observer) {
         ObservableInterface::removeObserver(observer);
     }
 };
 
 
-/** \class VoidObserver 
+/** \class VoidObserver
 *
 * Simple observer that does not require any arguments
-* when observed object changes. The observer therefore 
+* when observed object changes. The observer therefore
 * does not know what changed, only that it changed.
 *
 * @see VoidObservable
@@ -191,10 +190,10 @@ public:
 };
 
 
-/** \class VoidObservable 
+/** \class VoidObservable
 *
-* Simple observable that should call notifyObservers as soon as it 
-* has changed. The observer  
+* Simple observable that should call notifyObservers as soon as it
+* has changed. The observer
 * does not know what changed, only that it changed.
 *
 * @see VoidObserver
@@ -205,9 +204,9 @@ public:
 
     void notifyObservers() const {
         // Notify observers
-        for(ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
             // static_cast can be used since only template class objects can be added
-            static_cast<VoidObserver*>(*it)->notify();    
+            static_cast<VoidObserver*>(*it)->notify();
         }
     }
 };

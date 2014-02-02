@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -32,14 +32,14 @@ public:
     Layer& operator=(const Layer& that);
     virtual Layer* clone() const;
     virtual ~Layer();
-    
+
 
     void resize(uvec2 dimensions);
-    
+
     void resizeRepresentations(Layer* targetLayer, uvec2 targetDim);
 
-	uvec2 getDimension() const;
-	void setDimension(const uvec2& dim);
+    uvec2 getDimension() const;
+    void setDimension(const uvec2& dim);
 
     LayerType getLayerType() const;
 

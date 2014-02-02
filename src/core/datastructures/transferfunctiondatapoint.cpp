@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,7 +20,7 @@ namespace inviwo {
 TransferFunctionDataPoint::TransferFunctionDataPoint(TransferFunction* transFunc, const vec2& pos, const vec4& rgba)
     : pos_(pos)
     , rgba_(rgba)
-    , transFunc_(transFunc){
+    , transFunc_(transFunc) {
 }
 
 TransferFunctionDataPoint::~TransferFunctionDataPoint() {}

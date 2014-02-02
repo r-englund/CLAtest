@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -60,7 +60,7 @@
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 
 
-namespace inviwo{
+namespace inviwo {
 
 /////////////////////////////////////////////////
 // Simple Graphics scene
@@ -75,7 +75,7 @@ signals:
 
 
 /////////////////////////////////////////////////
-// Simple Graphics Rectangle Item with label 
+// Simple Graphics Rectangle Item with label
 // used by Simple Graphics View
 class IVW_QTWIDGETS_API SimpleWithRectangleLabel : public QGraphicsRectItem {
 public:
@@ -120,8 +120,8 @@ public:
 protected:
     void mousePressEvent(QMouseEvent* e);
     void mouseDoubleClickEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
 signals:
     void currentRectItemPositionChanged(vec2 pos);
 private:
@@ -133,34 +133,34 @@ private:
     bool hideLabelDescriptions_;
     bool fillRectangle_;
     QGraphicsRectItem* currentRectItem_;
-    QGraphicsDropShadowEffect* shadowEffect_;    
+    QGraphicsDropShadowEffect* shadowEffect_;
 };
 
 
 /////////////////////////////////////////////////
 // Image Labeling widget
 class ImageEditorWidgetQt;
-class IVW_QTWIDGETS_API ImageLabelWidget : public QWidget{
+class IVW_QTWIDGETS_API ImageLabelWidget : public QWidget {
     Q_OBJECT
 public:
     ImageLabelWidget();
     bool saveDialog();
     void setParent(ImageEditorWidgetQt*);
-    QGraphicsScene *getScene() {return scene_;}
-    QGraphicsView *getView() {return view_;}
+    QGraphicsScene* getScene() {return scene_;}
+    QGraphicsView* getView() {return view_;}
     void addRectangleTest();
     void addBackGroundImage(std::string imagePath);
-    void generateWidget();    
+    void generateWidget();
     void setReadOnly(bool readOnly);
     void hideLabelDescription(bool hide);
     void hideLabels(bool hide);
     ImageEditorWidgetQt* mainParentWidget_;
     QToolBar* toolBar_;
-    QToolButton *reDoButton_;
-    QToolButton *reLoadButton_;
-    QToolButton *saveButton_;
-    QToolButton *unDoButton_;
-    std::string tmpPropertyValue_;   
+    QToolButton* reDoButton_;
+    QToolButton* reLoadButton_;
+    QToolButton* saveButton_;
+    QToolButton* unDoButton_;
+    std::string tmpPropertyValue_;
     SimpleGraphicsScene* scene_;
     SimpleGraphicsView* view_;
     QImage* backGroundImage_;
@@ -173,20 +173,20 @@ public slots:
 signals:
     void rectItemPositionChanged();
 protected:
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent*);
     QSpinBox* positionX_;
     QSpinBox* positionY_;
     QLabel* labelPositionX_;
     QLabel* labelPositionY_;
-    float sceneScaleFactor_;    
+    float sceneScaleFactor_;
     /*void showEvent(QShowEvent *);*/
 };
 
 /////////////////////////////////////////////////
 // Image Editor widget
-class IVW_QTWIDGETS_API ImageEditorWidgetQt : public PropertyWidgetQt{    
+class IVW_QTWIDGETS_API ImageEditorWidgetQt : public PropertyWidgetQt {
     Q_OBJECT
-public:    
+public:
     ImageEditorWidgetQt(Property* property);
     ~ImageEditorWidgetQt();
     void updateFromProperty();
@@ -194,14 +194,14 @@ public:
 private:
     QToolButton* btnEdit_;
     FilePropertyWidgetQt* fileWidget_;
-    Property* property_;   
+    Property* property_;
     ImageLabelWidget* imageLabelWidget_;
     std::string tmpPropertyValue_;
     QCheckBox* checkBox_;
-    void generateWidget();   
+    void generateWidget();
 public slots:
-    void loadImageLabel();    
-    void editImageLabel();    
+    void loadImageLabel();
+    void editImageLabel();
     void setPropertyValue();
     bool writeImageLabel();
 };

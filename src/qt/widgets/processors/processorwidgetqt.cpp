@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -35,20 +35,21 @@ ProcessorWidgetQt::~ProcessorWidgetQt() {}
 void ProcessorWidgetQt::initialize() {
     ProcessorWidget::initialize();
     ivec2 pos = ProcessorWidget::getPositionMetaData();
+    // check if geometry is on screen and alter otherwise
+    QDesktopWidget* desktop = QApplication::desktop();
+    QRect wholeScreenGeometry = desktop->screenGeometry(0);
 
-	// check if geometry is on screen and alter otherwise
-	QDesktopWidget* desktop = QApplication::desktop();
-	QRect wholeScreenGeometry = desktop->screenGeometry(0);
-	for (int i=1; i<desktop->screenCount(); i++)
-		wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
-	wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
-		wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
+    for (int i=1; i<desktop->screenCount(); i++)
+        wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
 
-	QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
-	if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight))
-		QWidget::move(QPoint(0,0));
-	else
-		QWidget::move(pos.x, pos.y);
+    wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
+                                wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
+    QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
+
+    if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight))
+        QWidget::move(QPoint(0,0));
+    else
+        QWidget::move(pos.x, pos.y);
 }
 
 void ProcessorWidgetQt::deinitialize() {
@@ -76,12 +77,12 @@ void ProcessorWidgetQt::move(ivec2 pos) {
 }
 
 void ProcessorWidgetQt::setDimension(ivec2 dimensions) {
-	ProcessorWidget::setDimension(dimensions);
-	QWidget::resize(dimensions.x, dimensions.y);
+    ProcessorWidget::setDimension(dimensions);
+    QWidget::resize(dimensions.x, dimensions.y);
 }
 
 void ProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
-    ProcessorWidget::setDimension(ivec2(event->size().width(), event->size().height()) );
+    ProcessorWidget::setDimension(ivec2(event->size().width(), event->size().height()));
     QWidget::resizeEvent(event);
 }
 
@@ -94,7 +95,7 @@ void ProcessorWidgetQt::closeEvent(QCloseEvent* event) {
 }
 
 void ProcessorWidgetQt::moveEvent(QMoveEvent* event) {
-    ProcessorWidget::move(ivec2(event->pos().x(), event->pos().y()) );
+    ProcessorWidget::move(ivec2(event->pos().x(), event->pos().y()));
     QWidget::moveEvent(event);
 }
 

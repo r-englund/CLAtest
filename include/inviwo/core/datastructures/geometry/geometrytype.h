@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,7 +23,7 @@ enum CoordinatePlane {
     YZ
 };
 
-enum RenderType{
+enum RenderType {
     NOT_SPECIFIED,
     POINTS,
     LINES,
@@ -31,7 +31,7 @@ enum RenderType{
     NUMBER_OF_RENDER_TYPES
 };
 
-enum ConnectivityType{
+enum ConnectivityType {
     NONE,
     STRIP,
     LOOP,

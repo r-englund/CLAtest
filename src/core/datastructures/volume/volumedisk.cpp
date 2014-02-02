@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -17,24 +17,25 @@
 namespace inviwo {
 
 VolumeDisk::VolumeDisk(uvec3 dimensions, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format), DiskRepresentation(){
+    : VolumeRepresentation(dimensions, format), DiskRepresentation() {
 }
 
 VolumeDisk::VolumeDisk(std::string srcFile, uvec3 dimensions, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format), DiskRepresentation(srcFile){
+    : VolumeRepresentation(dimensions, format), DiskRepresentation(srcFile) {
     initialize();
 }
 
-VolumeDisk::VolumeDisk(const VolumeDisk& rhs) 
+VolumeDisk::VolumeDisk(const VolumeDisk& rhs)
     : VolumeRepresentation(rhs)
-    , DiskRepresentation(rhs) {    
+    , DiskRepresentation(rhs) {
 }
 
 VolumeDisk& VolumeDisk::operator=(const VolumeDisk& that) {
-    if(this != &that) {
+    if (this != &that) {
         VolumeRepresentation::operator=(that);
         DiskRepresentation::operator=(that);
     }
+
     return *this;
 }
 

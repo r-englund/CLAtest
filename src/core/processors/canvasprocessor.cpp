@@ -23,7 +23,7 @@ namespace inviwo {
 CanvasProcessor::CanvasProcessor()
     : Processor()
     , inport_("inport")
-	, dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
+    , dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
     , visibleLayer_("visibleLayer", "Visible Layer")
     , saveLayerDirectory_("layerDir", "Output Directory", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA)+"images")
     , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
@@ -31,51 +31,50 @@ CanvasProcessor::CanvasProcessor()
     , disableResize_(false)
 {
     addPort(inport_);
-
-	dimensions_.onChange(this, &CanvasProcessor::resizeCanvas);
-	addProperty(dimensions_);
-
-	visibleLayer_.addOption("color", "Color layer", COLOR_LAYER);
+    dimensions_.onChange(this, &CanvasProcessor::resizeCanvas);
+    addProperty(dimensions_);
+    visibleLayer_.addOption("color", "Color layer", COLOR_LAYER);
     visibleLayer_.addOption("depth", "Depth layer", DEPTH_LAYER);
     visibleLayer_.addOption("picking", "Picking layer", PICKING_LAYER);
     visibleLayer_.set(COLOR_LAYER);
     addProperty(visibleLayer_);
-
     addProperty(saveLayerDirectory_);
-
     saveLayerButton_.onChange(this, &CanvasProcessor::saveImageLayer);
-	addProperty(saveLayerButton_);
+    addProperty(saveLayerButton_);
 }
 
 
 CanvasProcessor::~CanvasProcessor() {}
 
 void CanvasProcessor::initialize() {
-	Processor::initialize();
+    Processor::initialize();
 }
 
 void CanvasProcessor::deinitialize() {
-	if (processorWidget_)
+    if (processorWidget_)
         processorWidget_->hide();
-	Processor::deinitialize();
+
+    Processor::deinitialize();
 }
 
 void CanvasProcessor::resizeCanvas() {
-    if(!disableResize_){
-	    if (processorWidget_)
-		    processorWidget_->setDimension(dimensions_.get());
+    if (!disableResize_) {
+        if (processorWidget_)
+            processorWidget_->setDimension(dimensions_.get());
     }
 }
 
-void CanvasProcessor::setCanvasSize(ivec2 dim){
+void CanvasProcessor::setCanvasSize(ivec2 dim) {
     disableResize_ = true;
     dimensions_.set(dim);
+
     if (canvas_)
         canvas_->resize(uvec2(dimensions_.get()));
+
     disableResize_ = false;
 }
 
-ivec2 CanvasProcessor::getCanvasSize() const{
+ivec2 CanvasProcessor::getCanvasSize() const {
     return dimensions_.get();
 }
 
@@ -100,19 +99,16 @@ void CanvasProcessor::invalidate(PropertyOwner::InvalidationLevel invalidationLe
     Processor::invalidate(invalidationLevel, modifiedProperty);
 }
 
-void CanvasProcessor::performEvaluateRequest(){
-    if (canvas_ && canvas_->getNetworkEvaluator()){
-        if(processorWidget_){
-            if(processorWidget_->getVisibilityMetaData()){
+void CanvasProcessor::performEvaluateRequest() {
+    if (canvas_ && canvas_->getNetworkEvaluator()) {
+        if (processorWidget_) {
+            if (processorWidget_->getVisibilityMetaData())
                 canvas_->getNetworkEvaluator()->requestEvaluate();
-            }
-            else{
+            else
                 canvas_->performEvaluationAtNextShow();
-            }
         }
-        else{
+        else
             canvas_->getNetworkEvaluator()->requestEvaluate();
-        }
     }
 }
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -37,9 +37,9 @@ public:
 class IVW_CORE_API DoubleProperty : public OrdinalProperty<double> {
 public:
     DoubleProperty(std::string identifier, std::string displayName, double value = 0.0,
-                  double minValue = 0.0f, double maxValue = 1.0f, double increment = 0.01f,
-                  PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
-                  PropertySemantics semantics = PropertySemantics::Default);
+                   double minValue = 0.0f, double maxValue = 1.0f, double increment = 0.01f,
+                   PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                   PropertySemantics semantics = PropertySemantics::Default);
     virtual std::string getClassName()  const { return "DoubleProperty"; }
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);

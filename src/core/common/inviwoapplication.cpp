@@ -37,11 +37,10 @@ InviwoApplication::InviwoApplication()
     init(this);
 }
 
-InviwoApplication::InviwoApplication(std::string displayName, 
+InviwoApplication::InviwoApplication(std::string displayName,
                                      std::string basePath)
     : displayName_(displayName)
     , basePath_(basePath) {
-
     init(this);
 }
 
@@ -50,20 +49,21 @@ InviwoApplication::InviwoApplication(int argc, char** argv,
                                      std::string basePath)
     : displayName_(displayName)
     , basePath_(basePath) {
-
     commandLineParser_ = new CommandLineParser(argc, argv);
-	commandLineParser_->initialize();
-	commandLineParser_->parse();
+    commandLineParser_->initialize();
+    commandLineParser_->parse();
     init(this);
 }
 
 InviwoApplication::~InviwoApplication() {
-    if(initialized_)
+    if (initialized_)
         deinitialize();
-    for (size_t i=0; i<modules_.size(); i++){
+
+    for (size_t i=0; i<modules_.size(); i++) {
         InviwoModule* module = modules_[i];
         delete module;
     }
+
     modules_.clear();
     delete commandLineParser_;
     SingeltonBase::deleteAllSingeltons();
@@ -72,7 +72,6 @@ InviwoApplication::~InviwoApplication() {
 
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     printApplicationInfo();
-
     // initialize singleton factories
     DataReaderFactory::init();
     DataReaderDialogFactory::init();
@@ -82,17 +81,15 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     PortFactory::init();
     PortInspectorFactory::init();
     ProcessorFactory::init();
-    ProcessorWidgetFactory::init(); 
+    ProcessorWidgetFactory::init();
     PropertyFactory::init();
     PropertyWidgetFactory::init();
     RepresentationConverterFactory::init();
-
     registerModule(new InviwoCore());
     (*regModuleFunc)(this);
 
-    for(size_t i = 0; i < modules_.size(); i++) {
+    for (size_t i = 0; i < modules_.size(); i++)
         modules_[i]->initialize();
-    }
 
     initialized_ = true;
 }
@@ -100,41 +97,51 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
 void InviwoApplication::deinitialize() {
     for (size_t i=0; i<modules_.size(); i++)
         modules_[i]->deinitialize();
+
     initialized_ = false;
 }
 
 std::string InviwoApplication::getPath(PathType pathType, const std::string& suffix) {
     std::string result = getBasePath();
+
     switch (pathType) {
-    case inviwo::InviwoApplication::PATH_DATA:
-        result += "data/";
-        break;
-    case inviwo::InviwoApplication::PATH_VOLUMES:
-        result += "data/volumes/";
-        break;
-    case inviwo::InviwoApplication::PATH_MODULES:
-        result += "modules/";
-        break;
-    case inviwo::InviwoApplication::PATH_WORKSPACES:
-        result += "data/workspaces/";
-        break;
-    case inviwo::InviwoApplication::PATH_IMAGES:
-        result += "data/images/";
-        break;
-    case inviwo::InviwoApplication::PATH_RESOURCES:
-        result += "resources";
-        break;
-    case inviwo::InviwoApplication::PATH_TRANSFERFUNCTIONS:
-        result += "data/transferfunctions/";
-        break;
-    default:
-        break;
+        case inviwo::InviwoApplication::PATH_DATA:
+            result += "data/";
+            break;
+
+        case inviwo::InviwoApplication::PATH_VOLUMES:
+            result += "data/volumes/";
+            break;
+
+        case inviwo::InviwoApplication::PATH_MODULES:
+            result += "modules/";
+            break;
+
+        case inviwo::InviwoApplication::PATH_WORKSPACES:
+            result += "data/workspaces/";
+            break;
+
+        case inviwo::InviwoApplication::PATH_IMAGES:
+            result += "data/images/";
+            break;
+
+        case inviwo::InviwoApplication::PATH_RESOURCES:
+            result += "resources";
+            break;
+
+        case inviwo::InviwoApplication::PATH_TRANSFERFUNCTIONS:
+            result += "data/transferfunctions/";
+            break;
+
+        default:
+            break;
     }
+
     result += suffix;
     return result;
 }
 
-void InviwoApplication::printApplicationInfo(){
+void InviwoApplication::printApplicationInfo() {
     LogInfoCustom("InviwoInfo", "Inviwo Version: " << IVW_VERSION);
     std::string config = "";
 #ifdef CMAKE_GENERATOR
@@ -145,6 +152,7 @@ void InviwoApplication::printApplicationInfo(){
 #elif defined(CMAKE_INTDIR)
     config += " [" + std::string(CMAKE_INTDIR) + "]";
 #endif
+
     if (config != "")
         LogInfoCustom("InviwoInfo", "Config: " << config);
 }
@@ -159,11 +167,12 @@ std::vector<ModuleCallbackAction*> InviwoApplication::getCallbackActions() {
 
 std::vector<Settings*> InviwoApplication::getModuleSettings() {
     std::vector<Settings*> allModuleSettings;
+
     for (size_t i=0; i<modules_.size(); i++) {
         const std::vector<Settings*> modSettings = modules_[i]->getSettings();
         allModuleSettings.insert(allModuleSettings.end(), modSettings.begin(), modSettings.end());
-
     }
+
     return allModuleSettings;
 }
 

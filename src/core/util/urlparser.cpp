@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -18,7 +18,7 @@
 
 namespace inviwo {
 
-std::string URLParser::addBasePath(const std::string url){
+std::string URLParser::addBasePath(const std::string url) {
     return InviwoApplication::getPtr()->getBasePath()+url;
 }
 
@@ -39,7 +39,7 @@ std::string URLParser::getFileNameWithExtension(const std::string url) {
     return fileNameWithExtension;
 }
 
-std::string URLParser::getFileNameWithoutExtension(const std::string url) {    
+std::string URLParser::getFileNameWithoutExtension(const std::string url) {
     std::string fileNameWithExtension = getFileNameWithExtension(url);
     size_t pos = fileNameWithExtension.find_last_of(".");
     std::string fileNameWithoutExtension = fileNameWithExtension.substr(0, pos);
@@ -47,10 +47,12 @@ std::string URLParser::getFileNameWithoutExtension(const std::string url) {
 }
 
 std::string URLParser::getFileExtension(const std::string url) {
-    std::string filename = getFileNameWithExtension(url);   
+    std::string filename = getFileNameWithExtension(url);
     size_t pos = filename.rfind(".");
-    if(pos == std::string::npos)
+
+    if (pos == std::string::npos)
         return "";
+
     std::string fileExtension = filename.substr(pos+1, url.length());
     return fileExtension;
 }
@@ -65,8 +67,8 @@ std::string URLParser::getRelativePath(const std::string& bPath, const std::stri
     std::string basePath(getFileDirectory(bPath));
     std::string absPath(getFileDirectory(absolutePath));
     std::string fileName(getFileNameWithExtension(absolutePath));
-
     std::string relativePath("");
+
     //if given base path is empty use system base path
     if (basePath.empty())
         basePath = InviwoApplication::getPtr()->getBasePath();
@@ -74,20 +76,25 @@ std::string URLParser::getRelativePath(const std::string& bPath, const std::stri
     //path as string tokens
     std::vector<std::string> basePathTokens;
     std::vector<std::string> absolutePathTokens;
-
     size_t pos = 0, pos1 = std::string::npos;
-    while(pos != std::string::npos) {
+
+    while (pos != std::string::npos) {
         pos1 = basePath.find_first_of("\\/", pos);
-        if(pos1 != pos)            
-            basePathTokens.push_back(basePath.substr(pos, pos1-pos));        
+
+        if (pos1 != pos)
+            basePathTokens.push_back(basePath.substr(pos, pos1-pos));
+
         pos = basePath.find_first_not_of("\\/", pos1);
     }
 
     pos = 0, pos1 = std::string::npos;
-    while(pos != std::string::npos) {
+
+    while (pos != std::string::npos) {
         pos1 = absPath.find_first_of("\\/", pos);
-        if(pos1 != pos)            
-            absolutePathTokens.push_back(absPath.substr(pos, pos1-pos));        
+
+        if (pos1 != pos)
+            absolutePathTokens.push_back(absPath.substr(pos, pos1-pos));
+
         pos = absPath.find_first_not_of("\\/", pos1);
     }
 
@@ -101,13 +108,12 @@ std::string URLParser::getRelativePath(const std::string& bPath, const std::stri
 
     //handle non-matching tokens
     for (size_t i=0; i<basePathTokens.size(); i++)
-        if (basePathTokens[i]!="") relativePath+="../";    
+        if (basePathTokens[i]!="") relativePath+="../";
 
     for (size_t i=0; i<absolutePathTokens.size(); i++)
-        if (absolutePathTokens[i]!="") relativePath+=(absolutePathTokens[i]+"/");    
+        if (absolutePathTokens[i]!="") relativePath+=(absolutePathTokens[i]+"/");
 
     return relativePath+fileName;
-    
 }
 
 }

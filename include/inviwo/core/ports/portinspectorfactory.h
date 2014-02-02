@@ -12,7 +12,7 @@ namespace inviwo {
 class IVW_CORE_API PortInspectorFactory
     : public Factory
     , public Singleton<PortInspectorFactory> {
-        
+
 public:
     PortInspectorFactory();
     virtual ~PortInspectorFactory();
@@ -25,9 +25,9 @@ public:
     virtual bool isValidType(std::string className) const;
 
     typedef std::map<std::string, PortInspector*> PortInspectorMap;
- 
-private: 
-     PortInspectorMap portInspectors_;
+
+private:
+    PortInspectorMap portInspectors_;
 
 };
 

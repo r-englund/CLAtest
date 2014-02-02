@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -34,6 +34,7 @@ public:
             initialize();
             memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*sizeof(T));
         }
+
         return *this;
     };
     virtual ~ImageRAMPrecision() {
@@ -59,9 +60,9 @@ public:
 
 protected:
     void allocatePickingData();
-    
+
 private:
-    static const DataFormatBase* defaultformat(){
+    static const DataFormatBase* defaultformat() {
         return GenericDataFormat(T)::get();
     }
 };
@@ -71,22 +72,25 @@ class ImageRAMCustomPrecision : public ImageRAMPrecision<T> {
 public:
     ImageRAMCustomPrecision(uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = defaultformat())
         : ImageRAMPrecision<T>(dimensions, type, format) {}
-    ImageRAMCustomPrecision(T* data, uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH, const DataFormatBase* format = defaultformat())
+    ImageRAMCustomPrecision(T* data, uvec2 dimensions = uvec2(128,128), ImageType type = COLOR_DEPTH,
+                            const DataFormatBase* format = defaultformat())
         : ImageRAMPrecision<T>(data, dimensions, type, format) {}
     virtual ~ImageRAMCustomPrecision() {};
-    
+
 private:
-    static const DataFormatBase* defaultformat(){
+    static const DataFormatBase* defaultformat() {
         return  DataFormat<T, B>::get();
     }
 };
 
 template<typename T>
-ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, ImageType type, const DataFormatBase* format) : ImageRAM(dimensions, type, format) {
+ImageRAMPrecision<T>::ImageRAMPrecision(uvec2 dimensions, ImageType type, const DataFormatBase* format) : ImageRAM(dimensions, type,
+            format) {
     initialize();
 }
 template<typename T>
-ImageRAMPrecision<T>::ImageRAMPrecision(T* data, uvec2 dimensions, ImageType type, const DataFormatBase* format) : ImageRAM(dimensions, type, format) {
+ImageRAMPrecision<T>::ImageRAMPrecision(T* data, uvec2 dimensions, ImageType type, const DataFormatBase* format) : ImageRAM(dimensions,
+            type, format) {
     initialize(data);
 }
 
@@ -97,20 +101,20 @@ void ImageRAMPrecision<T>::initialize() {
 
 template<typename T>
 void ImageRAMPrecision<T>::initialize(void* data) {
-    if (data == NULL) {
+    if (data == NULL)
         data_ = new T[dimensions_.x*dimensions_.y];
-    } else {
+    else
         data_ = data;
-    }
 }
 
 template<typename T>
-void ImageRAMPrecision<T>::deinitialize(){
-    if(data_) {
+void ImageRAMPrecision<T>::deinitialize() {
+    if (data_) {
         delete[] static_cast<T*>(data_);
         data_ = NULL;
     }
-    if(pickingData_) {
+
+    if (pickingData_) {
         delete[] static_cast<T*>(pickingData_);
         pickingData_ = NULL;
     }
@@ -119,7 +123,6 @@ void ImageRAMPrecision<T>::deinitialize(){
 template<typename T>
 void ImageRAMPrecision<T>::resize(uvec2 dimensions) {
     dimensions_ = dimensions;
-
     //Delete and reallocate data_ to new size
     ImageRAM::deinitialize();
     deinitialize();
@@ -135,31 +138,31 @@ DataRepresentation* ImageRAMPrecision<T>::clone() const {
 }
 
 template<typename T>
-void ImageRAMPrecision<T>::setValueFromSingleFloat(const uvec2& pos, float val){
+void ImageRAMPrecision<T>::setValueFromSingleFloat(const uvec2& pos, float val) {
     T* data = static_cast<T*>(data_);
     getDataFormat()->floatToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void ImageRAMPrecision<T>::setValueFromVec2Float(const uvec2& pos, vec2 val){
+void ImageRAMPrecision<T>::setValueFromVec2Float(const uvec2& pos, vec2 val) {
     T* data = static_cast<T*>(data_);
     getDataFormat()->vec2ToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void ImageRAMPrecision<T>::setValueFromVec3Float(const uvec2& pos, vec3 val){
+void ImageRAMPrecision<T>::setValueFromVec3Float(const uvec2& pos, vec3 val) {
     T* data = static_cast<T*>(data_);
     getDataFormat()->vec3ToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void ImageRAMPrecision<T>::setValueFromVec4Float(const uvec2& pos, vec4 val){
+void ImageRAMPrecision<T>::setValueFromVec4Float(const uvec2& pos, vec4 val) {
     T* data = static_cast<T*>(data_);
     getDataFormat()->vec4ToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-float ImageRAMPrecision<T>::getValueAsSingleFloat(const uvec2& pos) const{
+float ImageRAMPrecision<T>::getValueAsSingleFloat(const uvec2& pos) const {
     float result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
@@ -168,7 +171,7 @@ float ImageRAMPrecision<T>::getValueAsSingleFloat(const uvec2& pos) const{
 }
 
 template<typename T>
-vec2 ImageRAMPrecision<T>::getValueAsVec2Float(const uvec2& pos) const{
+vec2 ImageRAMPrecision<T>::getValueAsVec2Float(const uvec2& pos) const {
     vec2 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
@@ -177,7 +180,7 @@ vec2 ImageRAMPrecision<T>::getValueAsVec2Float(const uvec2& pos) const{
 }
 
 template<typename T>
-vec3 ImageRAMPrecision<T>::getValueAsVec3Float(const uvec2& pos) const{
+vec3 ImageRAMPrecision<T>::getValueAsVec3Float(const uvec2& pos) const {
     vec3 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
@@ -186,7 +189,7 @@ vec3 ImageRAMPrecision<T>::getValueAsVec3Float(const uvec2& pos) const{
 }
 
 template<typename T>
-vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
+vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const {
     vec4 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
@@ -195,18 +198,20 @@ vec4 ImageRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const{
 }
 
 template<typename T>
-vec4 ImageRAMPrecision<T>::getPickingValue(const uvec2& pos) const{
+vec4 ImageRAMPrecision<T>::getPickingValue(const uvec2& pos) const {
     vec4 result = vec4(0.f);
+
     if (pickingData_) {
         T* pickData = static_cast<T*>(pickingData_);
         T val = pickData[posToIndex(pos, dimensions_)];
         result = getDataFormat()->valueToNormalizedVec4Float(&val);
     }
+
     return result;
 }
 
 template<typename T>
-void ImageRAMPrecision<T>::allocatePickingData(){
+void ImageRAMPrecision<T>::allocatePickingData() {
     pickingData_ = new T[dimensions_.x*dimensions_.y];
 }
 

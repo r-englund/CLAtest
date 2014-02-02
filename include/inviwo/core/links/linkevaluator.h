@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,11 +24,11 @@ namespace inviwo {
 //Make this base class to support more evaluator types
 class IVW_CORE_API LinkEvaluator {
 public:
-   LinkEvaluator();
-   void evaluate(Property* src, Property *dst);   
+    LinkEvaluator();
+    void evaluate(Property* src, Property* dst);
 private:
-   bool canLink(Property* src, Property *dst);
-   static bool canConvert(const Variant& src, const Variant& dst);   
+    bool canLink(Property* src, Property* dst);
+    static bool canConvert(const Variant& src, const Variant& dst);
 };
 
 } // namespace

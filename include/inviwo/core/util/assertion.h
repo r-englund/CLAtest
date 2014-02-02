@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,8 +22,8 @@ IVW_CORE_API void ivwAssertion(const char* fileName, const char* functionName, l
 
 #if defined(_DEBUG)
 #define ivwAssert(condition, message) \
-{   std::ostringstream stream__; stream__ << message; \
-    if (!(bool(condition))) ivwAssertion(__FILE__, __FUNCTION__, __LINE__, (stream__.str()));}
+    {   std::ostringstream stream__; stream__ << message; \
+        if (!(bool(condition))) ivwAssertion(__FILE__, __FUNCTION__, __LINE__, (stream__.str()));}
 #else
 #define ivwAssert(condition, message)
 #endif

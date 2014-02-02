@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,7 +19,7 @@
 
 namespace inviwo {
 
-FloatMat3PropertyWidgetQt::FloatMat3PropertyWidgetQt(FloatMat3Property *property) : property_(property) {
+FloatMat3PropertyWidgetQt::FloatMat3PropertyWidgetQt(FloatMat3Property* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
@@ -38,7 +38,7 @@ void FloatMat3PropertyWidgetQt::generateWidget() {
     mat2x0_ = new QLineEdit;
     mat2x1_ = new QLineEdit;
     mat2x2_ = new QLineEdit;
-    
+
     if (property_->getReadOnly()) {
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
         mat0x0_->setDisabled(true);
@@ -47,37 +47,35 @@ void FloatMat3PropertyWidgetQt::generateWidget() {
         mat1x0_->setDisabled(true);
         mat1x1_->setDisabled(true);
         mat1x2_->setDisabled(true);
-        mat2x0_->setDisabled(true); 
-        mat2x1_->setDisabled(true); 
-        mat2x2_->setDisabled(true); 
-
+        mat2x0_->setDisabled(true);
+        mat2x1_->setDisabled(true);
+        mat2x2_->setDisabled(true);
     }
-    else{
-        connect(mat0x0_, SIGNAL(editingFinished ()),
-                         this, SLOT(set0x0Value()));
-        connect(mat0x1_, SIGNAL(editingFinished ()),
-                        this, SLOT(set0x1Value()));
-        connect(mat0x2_, SIGNAL(editingFinished ()),
-                        this, SLOT(set0x2Value()));
-        connect(mat1x0_, SIGNAL(editingFinished ()),
-                        this, SLOT(set1x0Value()));
-        connect(mat1x1_, SIGNAL(editingFinished ()),
-                         this, SLOT(set1x1Value()));
-        connect(mat1x2_, SIGNAL(editingFinished ()),
-                        this, SLOT(set1x2Value()));
-        connect(mat2x0_, SIGNAL(editingFinished ()),
-                        this, SLOT(set2x0Value()));
-        connect(mat2x1_, SIGNAL(editingFinished ()),
-                        this, SLOT(set2x1Value()));
-        connect(mat2x2_, SIGNAL(editingFinished ()),
-                        this, SLOT(set2x2Value()));
+    else {
+        connect(mat0x0_, SIGNAL(editingFinished()),
+                this, SLOT(set0x0Value()));
+        connect(mat0x1_, SIGNAL(editingFinished()),
+                this, SLOT(set0x1Value()));
+        connect(mat0x2_, SIGNAL(editingFinished()),
+                this, SLOT(set0x2Value()));
+        connect(mat1x0_, SIGNAL(editingFinished()),
+                this, SLOT(set1x0Value()));
+        connect(mat1x1_, SIGNAL(editingFinished()),
+                this, SLOT(set1x1Value()));
+        connect(mat1x2_, SIGNAL(editingFinished()),
+                this, SLOT(set1x2Value()));
+        connect(mat2x0_, SIGNAL(editingFinished()),
+                this, SLOT(set2x0Value()));
+        connect(mat2x1_, SIGNAL(editingFinished()),
+                this, SLOT(set2x1Value()));
+        connect(mat2x2_, SIGNAL(editingFinished()),
+                this, SLOT(set2x2Value()));
         label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     }
 
-    QGridLayout *gridLayout = new QGridLayout;
-
+    QGridLayout* gridLayout = new QGridLayout;
     gridLayout->addWidget(mat0x0_,0,0);
     gridLayout->addWidget(mat0x1_,0,1);
     gridLayout->addWidget(mat0x2_,0,2);
@@ -87,7 +85,6 @@ void FloatMat3PropertyWidgetQt::generateWidget() {
     gridLayout->addWidget(mat2x0_,2,0);
     gridLayout->addWidget(mat2x1_,2,1);
     gridLayout->addWidget(mat2x2_,2,2);
-
     matrixgroup->setLayout(gridLayout);
     hLayout->addWidget(matrixgroup);
     setLayout(hLayout);
@@ -190,7 +187,7 @@ void FloatMat3PropertyWidgetQt::updateFromProperty() {
     mat2x2_->setText(QString::number(value[2][2]));
 };
 
-void FloatMat3PropertyWidgetQt::setPropertyDisplayName(){
+void FloatMat3PropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 

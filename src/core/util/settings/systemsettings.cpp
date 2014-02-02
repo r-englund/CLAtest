@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,10 +20,10 @@
 #include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
-SystemSettings::SystemSettings(std::string id) : 
+SystemSettings::SystemSettings(std::string id) :
     Settings(id)
     , allocTest_(0)
-    , viewModeProperty_ ("viewMode","",0)
+    , viewModeProperty_("viewMode","",0)
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
     , enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", true)
@@ -42,45 +42,45 @@ void SystemSettings::initialize() {
     viewModeProperty_.addOption("applicationMode","applicationMode",1);
     addProperty(&viewModeProperty_);
     viewModeProperty_.setVisibility(INVISIBLE);
-
     addProperty(&txtEditorProperty_);
     addProperty(&shaderReloadingProperty_);
     addProperty(&enablePortInspectorsProperty_);
     addProperty(&portInspectorSize_);
     addProperty(&enableSoundProperty_);
     addProperty(&useRAMPercentProperty_);
-
     //btnAllocTestProperty_.onChange(this, &SystemSettings::allocationTest);
     //addProperty(&btnAllocTestProperty_);
-
     InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
     ivwAssert(module!=0, "Core module is not yet registered")
     SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module->getCapabilities());
-    if (sysInfo){
+
+    if (sysInfo) {
         btnSysInfoProperty_.onChange(sysInfo, &SystemCapabilities::printInfo);
-        addProperty(&btnSysInfoProperty_);  
-    } 
+        addProperty(&btnSysInfoProperty_);
+    }
 }
 
 void SystemSettings::deinitialize()  {}
 
-void SystemSettings::allocationTest(){
+void SystemSettings::allocationTest() {
     InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
     ivwAssert(module!=0, "Core module is not yet registered")
     SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module->getCapabilities());
-    if (sysInfo){
+
+    if (sysInfo) {
         IntProperty* useRAMPercent = dynamic_cast<IntProperty*>(getPropertyByIdentifier("useRAMPercent"));
         uint64_t memBytesAlloc = sysInfo->getAvailableMemory(); //In Bytes
         LogInfo("Maximum Available Memory is " << formatBytesToString(memBytesAlloc));
         memBytesAlloc /= 100; //1% of total available memory
         memBytesAlloc *= useRAMPercent->get(); //?% of total available memory
+
         try
         {
             allocTest_ = new uint32_t[static_cast<uint32_t>(memBytesAlloc/4)];
             LogInfo("Allocated " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
             delete allocTest_;
         }
-        catch(std::bad_alloc&)
+        catch (std::bad_alloc&)
         {
             LogError("Failed allocation of " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
         }

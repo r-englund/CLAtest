@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,14 +19,14 @@ namespace inviwo {
 PropertySemantics::PropertySemantics() : semantic_("Default") {}
 PropertySemantics::PropertySemantics(std::string semantic) : semantic_(semantic) {}
 PropertySemantics::PropertySemantics(const PropertySemantics& rhs) : semantic_(rhs.semantic_) {};
-PropertySemantics& PropertySemantics::operator=(const PropertySemantics& that){
-    if (this != &that) {
+PropertySemantics& PropertySemantics::operator=(const PropertySemantics& that) {
+    if (this != &that)
         semantic_ = that.semantic_;
-    }
+
     return *this;
 }
 
-const std::string& PropertySemantics::getString() const{
+const std::string& PropertySemantics::getString() const {
     return semantic_;
 }
 
@@ -41,5 +41,5 @@ const PropertySemantics PropertySemantics::LightPosition("LightPosition");
 const PropertySemantics PropertySemantics::TextEditor("TextEditor");
 const PropertySemantics PropertySemantics::ImageEditor("ImageEditor");
 const PropertySemantics PropertySemantics::ShaderEditor("ShaderEditor");
-    
+
 } // namespace

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -38,169 +38,169 @@
 
 namespace inviwo {
 
-    template <unsigned int N, typename T>
-    class Matrix {};
-    template <typename T>
-    class Matrix<4, T> : public glm::detail::tmat4x4<T> {
-    public:
-        Matrix<4, T>() : glm::detail::tmat4x4<T>(){};
-        Matrix<4, T>(const Matrix<4, T>& m) : glm::detail::tmat4x4<T>(
-            m[0][0], m[0][1], m[0][2], m[0][3], 
+template <unsigned int N, typename T>
+class Matrix {};
+template <typename T>
+class Matrix<4, T> : public glm::detail::tmat4x4<T> {
+public:
+    Matrix<4, T>() : glm::detail::tmat4x4<T>() {};
+    Matrix<4, T>(const Matrix<4, T>& m) : glm::detail::tmat4x4<T>(
+            m[0][0], m[0][1], m[0][2], m[0][3],
             m[1][0], m[1][1], m[1][2], m[1][3],
             m[2][0], m[2][1], m[2][2], m[2][3],
-            m[3][0], m[3][1], m[3][2], m[3][3]){};
-        Matrix<4, T>(const glm::detail::tmat4x4<T>& m) : glm::detail::tmat4x4<T>(m){};
-        Matrix<4, T>(T m) : glm::detail::tmat4x4<T>(m){};
-        Matrix<4, T>(T x1, T y1, T z1, T w1, 
-            T x2, T y2, T z2, T w2,
-            T x3, T y3, T z3, T w3,
-            T x4, T y4, T z4, T w4) : 
-        glm::detail::tmat4x4<T>(x1, y1, z1, w1, 
-            x2, y2, z2, w2,
-            x3, y3, z3, w3,
-            x4, y4, z4, w4){};
-        glm::detail::tmat4x4<T> getGLM(){
-            return *this;
-        };
+            m[3][0], m[3][1], m[3][2], m[3][3]) {};
+    Matrix<4, T>(const glm::detail::tmat4x4<T>& m) : glm::detail::tmat4x4<T>(m) {};
+    Matrix<4, T>(T m) : glm::detail::tmat4x4<T>(m) {};
+    Matrix<4, T>(T x1, T y1, T z1, T w1,
+                 T x2, T y2, T z2, T w2,
+                 T x3, T y3, T z3, T w3,
+                 T x4, T y4, T z4, T w4) :
+        glm::detail::tmat4x4<T>(x1, y1, z1, w1,
+                                x2, y2, z2, w2,
+                                x3, y3, z3, w3,
+                                x4, y4, z4, w4) {};
+    glm::detail::tmat4x4<T> getGLM() {
+        return *this;
     };
-    template <typename T>
-    class Matrix<3, T> : public glm::detail::tmat3x3<T> {
-    public:
-        Matrix<3, T>() : glm::detail::tmat3x3<T>(){};
-        Matrix<3, T>(const Matrix<3, T>& m) : glm::detail::tmat3x3<T>(
-            m[0][0], m[0][1], m[0][2], 
+};
+template <typename T>
+class Matrix<3, T> : public glm::detail::tmat3x3<T> {
+public:
+    Matrix<3, T>() : glm::detail::tmat3x3<T>() {};
+    Matrix<3, T>(const Matrix<3, T>& m) : glm::detail::tmat3x3<T>(
+            m[0][0], m[0][1], m[0][2],
             m[1][0], m[1][1], m[1][2],
-            m[2][0], m[2][1], m[2][2]){};
-        Matrix<3, T>(const glm::detail::tmat3x3<T>& m) : glm::detail::tmat3x3<T>(m){};
-        Matrix<3, T>(T m) : glm::detail::tmat3x3<T>(m){};
-        Matrix<3, T>(T x1, T y1, T z1, 
-            T x2, T y2, T z2,
-            T x3, T y3, T z3) : 
-        glm::detail::tmat3x3<T>(x1, y1, z1, 
-            x2, y2, z2,
-            x3, y3, z3){};
-        glm::detail::tmat3x3<T> getGLM(){
-            return *this;
-        };
+            m[2][0], m[2][1], m[2][2]) {};
+    Matrix<3, T>(const glm::detail::tmat3x3<T>& m) : glm::detail::tmat3x3<T>(m) {};
+    Matrix<3, T>(T m) : glm::detail::tmat3x3<T>(m) {};
+    Matrix<3, T>(T x1, T y1, T z1,
+                 T x2, T y2, T z2,
+                 T x3, T y3, T z3) :
+        glm::detail::tmat3x3<T>(x1, y1, z1,
+                                x2, y2, z2,
+                                x3, y3, z3) {};
+    glm::detail::tmat3x3<T> getGLM() {
+        return *this;
     };
-    template <typename T>
-    class Matrix<2, T> : public glm::detail::tmat2x2<T> {
-    public:
-        Matrix<2, T>() : glm::detail::tmat2x2<T>(){};
-        Matrix<2, T>(const Matrix<2, T>& m) : glm::detail::tmat2x2<T>(
-            m[0][0], m[0][1], 
-            m[1][0], m[1][1]){};
-        Matrix<2, T>(const glm::detail::tmat2x2<T>& m) : glm::detail::tmat2x2<T>(m){};
-        Matrix<2, T>(T m) : glm::detail::tmat2x2<T>(m){};
-        Matrix<2, T>(T x1, T y1, 
-            T x2, T y2) : 
-        glm::detail::tmat2x2<T>(x1, y1, 
-            x2, y2){};
-        glm::detail::tmat2x2<T> getGLM(){
-            return *this;
-        };
+};
+template <typename T>
+class Matrix<2, T> : public glm::detail::tmat2x2<T> {
+public:
+    Matrix<2, T>() : glm::detail::tmat2x2<T>() {};
+    Matrix<2, T>(const Matrix<2, T>& m) : glm::detail::tmat2x2<T>(
+            m[0][0], m[0][1],
+            m[1][0], m[1][1]) {};
+    Matrix<2, T>(const glm::detail::tmat2x2<T>& m) : glm::detail::tmat2x2<T>(m) {};
+    Matrix<2, T>(T m) : glm::detail::tmat2x2<T>(m) {};
+    Matrix<2, T>(T x1, T y1,
+                 T x2, T y2) :
+        glm::detail::tmat2x2<T>(x1, y1,
+                                x2, y2) {};
+    glm::detail::tmat2x2<T> getGLM() {
+        return *this;
     };
-    template <unsigned int N, typename T>
-    class Vector {};
-    template <typename T>
-    class Vector<4, T> : public glm::detail::tvec4<T> {
-    public:
-        Vector<4, T>() : glm::detail::tvec4<T>(){};
-        Vector<4, T>(const Vector<4, T>& v) : glm::detail::tvec4<T>(v.x, v.y, v.z, v.w){};
-        Vector<4, T>(const glm::detail::tvec4<T>& v) : glm::detail::tvec4<T>(v){};
-        Vector<4, T>(T v) : glm::detail::tvec4<T>(v){};
-        Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3, v4){};
-        glm::detail::tvec4<T> getGLM(){ return *this; };
-    };
-    template <typename T>
-    class Vector<3, T> : public glm::detail::tvec3<T> {
-    public:
-        Vector<3, T>() : glm::detail::tvec3<T>(){};
-        Vector<3, T>(const Vector<3, T>& v) : glm::detail::tvec3<T>(v.x, v.y, v.z){};
-        Vector<3, T>(const glm::detail::tvec3<T>& v) : glm::detail::tvec3<T>(v){};
-        Vector<3, T>(T v) : glm::detail::tvec3<T>(v){};
-        Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T>(v1, v2, v3){};
-        glm::detail::tvec3<T> getGLM(){ return *this; };
-    };
-    template <typename T>
-    class Vector<2, T> : public glm::detail::tvec2<T> {
-    public:
-        Vector<2, T>() : glm::detail::tvec2<T>(){};
-        Vector<2, T>(const Vector<2, T>& v) : glm::detail::tvec2<T>(v.x, v.y){};
-        Vector<2, T>(const glm::detail::tvec2<T>& v) : glm::detail::tvec2<T>(v){};
-        Vector<2, T>(T v) : glm::detail::tvec2<T>(v){};
-        Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T>(v1, v2){};
-        glm::detail::tvec2<T> getGLM(){ return *this; };
-    };
+};
+template <unsigned int N, typename T>
+class Vector {};
+template <typename T>
+class Vector<4, T> : public glm::detail::tvec4<T> {
+public:
+    Vector<4, T>() : glm::detail::tvec4<T>() {};
+    Vector<4, T>(const Vector<4, T>& v) : glm::detail::tvec4<T>(v.x, v.y, v.z, v.w) {};
+    Vector<4, T>(const glm::detail::tvec4<T>& v) : glm::detail::tvec4<T>(v) {};
+    Vector<4, T>(T v) : glm::detail::tvec4<T>(v) {};
+    Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3, v4) {};
+    glm::detail::tvec4<T> getGLM() { return *this; };
+};
+template <typename T>
+class Vector<3, T> : public glm::detail::tvec3<T> {
+public:
+    Vector<3, T>() : glm::detail::tvec3<T>() {};
+    Vector<3, T>(const Vector<3, T>& v) : glm::detail::tvec3<T>(v.x, v.y, v.z) {};
+    Vector<3, T>(const glm::detail::tvec3<T>& v) : glm::detail::tvec3<T>(v) {};
+    Vector<3, T>(T v) : glm::detail::tvec3<T>(v) {};
+    Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T>(v1, v2, v3) {};
+    glm::detail::tvec3<T> getGLM() { return *this; };
+};
+template <typename T>
+class Vector<2, T> : public glm::detail::tvec2<T> {
+public:
+    Vector<2, T>() : glm::detail::tvec2<T>() {};
+    Vector<2, T>(const Vector<2, T>& v) : glm::detail::tvec2<T>(v.x, v.y) {};
+    Vector<2, T>(const glm::detail::tvec2<T>& v) : glm::detail::tvec2<T>(v) {};
+    Vector<2, T>(T v) : glm::detail::tvec2<T>(v) {};
+    Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T>(v1, v2) {};
+    glm::detail::tvec2<T> getGLM() { return *this; };
+};
 
-    //Do not set enums specifically, as NUMBER_OF_FORMATS is used to count the number of enums
-    enum DataFormatId{
-        NOT_SPECIALIZED,
-        FLOAT16,
-        FLOAT32,
-        FLOAT64,
-        INT8,
-        INT12,
-        INT16,
-        INT32,
-        INT64,
-        UINT8,
-        UINT12,
-        UINT16,
-        UINT32,
-        UINT64,
-        Vec2FLOAT16,
-        Vec2FLOAT32,
-        Vec2FLOAT64,
-        Vec2INT8,
-        Vec2INT12,
-        Vec2INT16,
-        Vec2INT32,
-        Vec2INT64,
-        Vec2UINT8,
-        Vec2UINT12,
-        Vec2UINT16,
-        Vec2UINT32,
-        Vec2UINT64,
-        Vec3FLOAT16,
-        Vec3FLOAT32,
-        Vec3FLOAT64,
-        Vec3INT8,
-        Vec3INT12,
-        Vec3INT16,
-        Vec3INT32,
-        Vec3INT64,
-        Vec3UINT8,
-        Vec3UINT12,
-        Vec3UINT16,
-        Vec3UINT32,
-        Vec3UINT64,
-        Vec4FLOAT16,
-        Vec4FLOAT32,
-        Vec4FLOAT64,
-        Vec4INT8,
-        Vec4INT12,
-        Vec4INT16,
-        Vec4INT32,
-        Vec4INT64,
-        Vec4UINT8,
-        Vec4UINT12,
-        Vec4UINT16,
-        Vec4UINT32,
-        Vec4UINT64,
-        NUMBER_OF_FORMATS
-    };
+//Do not set enums specifically, as NUMBER_OF_FORMATS is used to count the number of enums
+enum DataFormatId {
+    NOT_SPECIALIZED,
+    FLOAT16,
+    FLOAT32,
+    FLOAT64,
+    INT8,
+    INT12,
+    INT16,
+    INT32,
+    INT64,
+    UINT8,
+    UINT12,
+    UINT16,
+    UINT32,
+    UINT64,
+    Vec2FLOAT16,
+    Vec2FLOAT32,
+    Vec2FLOAT64,
+    Vec2INT8,
+    Vec2INT12,
+    Vec2INT16,
+    Vec2INT32,
+    Vec2INT64,
+    Vec2UINT8,
+    Vec2UINT12,
+    Vec2UINT16,
+    Vec2UINT32,
+    Vec2UINT64,
+    Vec3FLOAT16,
+    Vec3FLOAT32,
+    Vec3FLOAT64,
+    Vec3INT8,
+    Vec3INT12,
+    Vec3INT16,
+    Vec3INT32,
+    Vec3INT64,
+    Vec3UINT8,
+    Vec3UINT12,
+    Vec3UINT16,
+    Vec3UINT32,
+    Vec3UINT64,
+    Vec4FLOAT16,
+    Vec4FLOAT32,
+    Vec4FLOAT64,
+    Vec4INT8,
+    Vec4INT12,
+    Vec4INT16,
+    Vec4INT32,
+    Vec4INT64,
+    Vec4UINT8,
+    Vec4UINT12,
+    Vec4UINT16,
+    Vec4UINT32,
+    Vec4UINT64,
+    NUMBER_OF_FORMATS
+};
 
-class IVW_CORE_API DataFormatBase
-{
+class IVW_CORE_API DataFormatBase {
 public:
     DataFormatBase();
     DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, std::string s);
     virtual ~DataFormatBase();
 
-    static const DataFormatBase* get(){
+    static const DataFormatBase* get() {
         if (!instance_[NOT_SPECIALIZED])
             instance_[NOT_SPECIALIZED] = new DataFormatBase();
+
         return instance_[NOT_SPECIALIZED];
     }
 
@@ -236,7 +236,7 @@ public:
 protected:
     static DataFormatBase* instance_[NUMBER_OF_FORMATS];
 
-    static DataFormatBase* getNonConst(DataFormatId id){
+    static DataFormatBase* getNonConst(DataFormatId id) {
         return instance_[id];
     }
 
@@ -245,25 +245,26 @@ protected:
     size_t bitsStored_;
     int components_;
     std::string* formatStr_;
-    
+
 };
 
 template<typename T, size_t B>
-class IVW_CORE_API DataFormat : public DataFormatBase
-{
+class IVW_CORE_API DataFormat : public DataFormatBase {
 public:
     typedef T type;
     static const size_t bits = B;
 
-    DataFormat() : DataFormatBase(id(), bitsAllocated(), bitsStored(), components(), str()){}
+    DataFormat() : DataFormatBase(id(), bitsAllocated(), bitsStored(), components(), str()) {}
     virtual ~DataFormat() {}
 
-    static const DataFormat<T, B>* get(){
+    static const DataFormat<T, B>* get() {
         DataFormatBase* d = DataFormatBase::getNonConst(id());
-        if(!d){
+
+        if (!d) {
             d = new DataFormat<T, B>();
             instance_[id()] = d;
         }
+
         return static_cast<DataFormat<T, B>*>(d);
     }
 
@@ -289,10 +290,10 @@ public:
 
     //typename D = dest, typename S = src
 
-    template<typename D, typename S> 
+    template<typename D, typename S>
     inline D normalizeSigned(S val) const {
         return (static_cast<D>(val) - static_cast<D>(DataFormat<S, B>::min())) /
-            (static_cast<D>(DataFormat<S, B>::max()) - static_cast<D>(DataFormat<S, B>::min()));
+               (static_cast<D>(DataFormat<S, B>::max()) - static_cast<D>(DataFormat<S, B>::min()));
     }
 
     template<typename D, typename S>
@@ -300,7 +301,7 @@ public:
         return static_cast<D>(val) / static_cast<D>(DataFormat<S, B>::max());
     }
 
-    template<typename D, typename S> 
+    template<typename D, typename S>
     inline D normalizeSignedSingle(void* val) const {
         S valT = *static_cast<S*>(val);
         return normalizeSigned<D, S>(valT);
@@ -570,7 +571,7 @@ template<> inline std::string DataUINT64::str() { return "UINT64"; }
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return singleToVec3<float>(normalizeSignedSingle<float, F::type>(val)); } \
     template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return singleToVec4<float>(normalizeSignedSingle<float, F::type>(val)); } \
     DatatoFloat(F)
-    
+
 #define DataNormalizedUnsignedSingle(F) \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedSingle<float, F::type>(val); } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return singleToVec2<float>(normalizeUnsignedSingle<float, F::type>(val)); } \

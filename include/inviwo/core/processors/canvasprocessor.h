@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -43,7 +43,7 @@ public:
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
                             Property* modifiedProperty=0);
-    
+
     void saveImageLayer();
     void saveImageLayer(const char* filePath);
 
@@ -52,7 +52,7 @@ protected:
 
     ImageInport inport_;
 
-	IntVec2Property dimensions_;
+    IntVec2Property dimensions_;
     IntOptionProperty visibleLayer_; // LayerType enum (Cannot serialize/deserialize enums so we use an int and cast it)
     DirectoryProperty saveLayerDirectory_;
     ButtonProperty saveLayerButton_;
@@ -61,7 +61,7 @@ private:
     Canvas* canvas_;
     bool disableResize_;
 
-	void resizeCanvas();
+    void resizeCanvas();
 };
 
 } // namespace

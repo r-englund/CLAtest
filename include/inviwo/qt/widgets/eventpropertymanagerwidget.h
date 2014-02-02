@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,20 +25,20 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API EventPropertyManagerWidget : public QWidget, public VoidObserver {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	EventPropertyManagerWidget(EventPropertyManager* eventPropertyManager);
-	~EventPropertyManagerWidget();	
+    EventPropertyManagerWidget(EventPropertyManager* eventPropertyManager);
+    ~EventPropertyManagerWidget();
 
-	void notify();
+    void notify();
 private:
-	void emptyLayout(QVBoxLayout* layout);
-	void drawEventPropertyWidgets();	
+    void emptyLayout(QVBoxLayout* layout);
+    void drawEventPropertyWidgets();
 
-	EventPropertyManager* eventPropertyManager_;
-	QVBoxLayout* mainLayout_;
-	std::map<std::string, bool> groupCollapsed;
+    EventPropertyManager* eventPropertyManager_;
+    QVBoxLayout* mainLayout_;
+    std::map<std::string, bool> groupCollapsed;
 };
 
 } //namespace

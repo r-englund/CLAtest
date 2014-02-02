@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,16 +20,17 @@ namespace inviwo {
 
 LinkEvaluator::LinkEvaluator() {}
 
-void LinkEvaluator::evaluate(Property* src, Property *dst) {
+void LinkEvaluator::evaluate(Property* src, Property* dst) {
     ivwAssert(src!=0, "source property expected");
     ivwAssert(dst!=0, "destination property expected");
-    if (canLink(src, dst)) {
+
+    if (canLink(src, dst))
         dst->set(src);
-    }
 }
 
-bool LinkEvaluator::canLink(Property* src, Property *dst) {
+bool LinkEvaluator::canLink(Property* src, Property* dst) {
     if (SimpleCondition::canLink(src,dst)) return true;
+
     return canConvert(src->getVariant(), dst->getVariant());
 }
 
@@ -39,6 +40,7 @@ bool LinkEvaluator::canConvert(const Variant& src, const Variant& dst) {
         //Error message
         return false;
     }
+
     return Variant::canConvert(src.getType(), dst.getType());
 }
 

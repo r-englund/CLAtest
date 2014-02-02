@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -33,19 +33,19 @@ public:
     OptionPropertyInt(std::string identifier, std::string displayName, int value,
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics=PropertySemantics::Default);
-    /** 
+    /**
      * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
      *  values must have overloaded streaming operator <<
-     * 
+     *
      * @return inviwo::Variant variant
      */
     virtual Variant getVariant();
-    /** 
+    /**
      * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
      * values must have overloaded streaming operator >>
-     * 
+     *
      * @param const Variant & input source variant
      */
     virtual void setVariant(const Variant& inVariant);
@@ -56,7 +56,7 @@ public:
 
 /** class OptionPropertyFloat
 * \brief The OptionPropertyFloat is a property holding different options stored with a display name and the float value
-*  
+*
 *  The widget for the property consist of a combobox with the display names for each mapped value
 * @see TemplateOptionProperty
 */
@@ -69,19 +69,19 @@ public:
     OptionPropertyFloat(std::string identifier, std::string displayName, float value,
                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                         PropertySemantics semantics=PropertySemantics::Default);
-    /** 
+    /**
      * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
      *  values must have overloaded streaming operator <<
-     * 
+     *
      * @return inviwo::Variant variant
      */
     virtual Variant getVariant();
-    /** 
+    /**
      * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
      * values must have overloaded streaming operator >>
-     * 
+     *
      * @param const Variant & input source variant
      */
     virtual void setVariant(const Variant& inVariant);
@@ -91,7 +91,7 @@ public:
 
 /** class OptionPropertyDouble
 * \brief The OptionPropertyDouble is a property holding different options stored with a display name and the double value
-* 
+*
 *  The widget for the property consist of a combobox with the display names for each mapped value
 * @see TemplateOptionProperty
 */
@@ -104,19 +104,19 @@ public:
     OptionPropertyDouble(std::string identifier, std::string displayName, double value,
                          PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                          PropertySemantics semantics=PropertySemantics::Default);
-    /** 
+    /**
      * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
      *  values must have overloaded streaming operator <<
-     * 
+     *
      * @return inviwo::Variant variant
      */
     virtual Variant getVariant();
-    /** 
+    /**
      * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
      * values must have overloaded streaming operator >>
-     * 
+     *
      * @param const Variant & input source variant
      */
     virtual void setVariant(const Variant& inVariant);
@@ -139,19 +139,19 @@ public:
     OptionPropertyString(std::string identifier, std::string displayName,
                          PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                          PropertySemantics semantics=PropertySemantics::Default);
-    /** 
+    /**
      * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
      *  values must have overloaded streaming operator <<
-     * 
+     *
      * @return inviwo::Variant variant
      */
     virtual Variant getVariant();
-    /** 
+    /**
      * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
      *
      * values must have overloaded streaming operator >>
-     * 
+     *
      * @param const Variant & input source variant
      */
     virtual void setVariant(const Variant& inVariant);

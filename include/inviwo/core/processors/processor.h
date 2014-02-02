@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -31,12 +31,12 @@
 namespace inviwo {
 
 #define InviwoProcessorInfo() \
-        virtual std::string getClassName() const { return CLASS_NAME; } \
-        virtual std::string getCategory() const { return CATEGORY; } \
-        virtual CodeState getCodeState() const { return CODE_STATE; } \
-        static const std::string CLASS_NAME; \
-        static const std::string CATEGORY; \
-        static const CodeState CODE_STATE;
+    virtual std::string getClassName() const { return CLASS_NAME; } \
+    virtual std::string getCategory() const { return CATEGORY; } \
+    virtual CodeState getCodeState() const { return CODE_STATE; } \
+    static const std::string CLASS_NAME; \
+    static const std::string CATEGORY; \
+    static const CodeState CODE_STATE;
 
 #define ProcessorClassName(T, className) \
     const std::string T::CLASS_NAME = className;
@@ -52,7 +52,7 @@ class IVW_CORE_API Processor : public PropertyOwner, public ProcessorObservable 
 public:
     Processor();
     virtual ~Processor();
-   
+
     InviwoProcessorInfo();
 
     void setIdentifier(const std::string& identifier);
@@ -85,19 +85,19 @@ public:
     virtual bool isReady() const;
 
     virtual void process();
-    
-    //Triggers invalidation. 
+
+    //Triggers invalidation.
     //Perform only full reimplementation of this function, meaning never call Proccessor::invalidate()
     //in your reimplemented invalidation function.
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty=0);
-    
+
     virtual void setValid();
     virtual void initializeResources() {} // reload shaders etc. here
 
     void addInteractionHandler(InteractionHandler* interactionHandler);
     void removeInteractionHandler(InteractionHandler* interactionHandler);
     bool hasInteractionHandler() const;
-	std::vector<InteractionHandler*> getInteractionHandlers() const;
+    std::vector<InteractionHandler*> getInteractionHandlers() const;
     void invokeInteractionEvent(Event* event);
 
     virtual void serialize(IvwSerializer& s) const;
@@ -123,7 +123,7 @@ private:
     std::vector<InteractionHandler*> interactionHandlers_;
 
     //TODO: Use map
-    std::vector<MetaData*> metaData_; 
+    std::vector<MetaData*> metaData_;
 
     Group<std::string, Port*> portDependencySets_;
 

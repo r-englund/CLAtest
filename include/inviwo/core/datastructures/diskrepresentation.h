@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -40,7 +40,7 @@ public:
     void readDataInto(void* dest) const;
 
 private:
-	std::string sourceFile_;      
+    std::string sourceFile_;
     // DiskRepresentation owns a DataReader to be able to convert it self into RAM.
     DataReader* reader_;
 };

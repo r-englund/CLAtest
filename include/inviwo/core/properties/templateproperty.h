@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -32,7 +32,7 @@ public:
                      PropertySemantics semantics = PropertySemantics::Default);
 
     virtual T& get();
-	virtual const T& get() const { return value_; };
+    virtual const T& get() const { return value_; };
     virtual void set(const T& value);
     virtual void set(const Property* srcProperty);
 
@@ -44,8 +44,8 @@ template <typename T>
 TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value,
                                       PropertyOwner::InvalidationLevel invalidationLevel,
                                       PropertySemantics semantics)
-: Property(identifier, displayName, invalidationLevel, semantics),
-value_(value)
+    : Property(identifier, displayName, invalidationLevel, semantics),
+      value_(value)
 {}
 
 template <typename T>
@@ -56,17 +56,19 @@ T& TemplateProperty<T>::get() {
 template <typename T>
 void TemplateProperty<T>::set(const T& value) {
     value_ = value;
-	propertyModified();    
+    propertyModified();
 }
 
 template <typename T>
 void TemplateProperty<T>::set(const Property* srcProperty) {
     const TemplateProperty<T>* templatedSrcProp = dynamic_cast<const TemplateProperty<T>*>(srcProperty);
-    if (templatedSrcProp) 
+
+    if (templatedSrcProp)
         this->value_ = templatedSrcProp->get();
-    else        
+    else
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
-	propertyModified();    
+
+    propertyModified();
 }
 
 

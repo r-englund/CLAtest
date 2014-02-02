@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,12 +36,12 @@ class TransferFunctionDataPoint;
 class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint : public QGraphicsItem {
 
 public:
-    /** \TransferFunctionEditorControlPoint constructor  
+    /** \TransferFunctionEditorControlPoint constructor
     *      Creates a TransferFunctionEditorControlPoint
-    */        
+    */
     TransferFunctionEditorControlPoint(TransferFunctionDataPoint* dataPoint);
-    
-    /** \TransferFunctionEditorControlPoint destructor  
+
+    /** \TransferFunctionEditorControlPoint destructor
     */
     ~TransferFunctionEditorControlPoint();
 
@@ -50,7 +50,7 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
-	void notify();
+    void notify();
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + 255 };
@@ -62,7 +62,7 @@ protected:
     */
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     QRectF boundingRect() const;
-	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
 
 private:

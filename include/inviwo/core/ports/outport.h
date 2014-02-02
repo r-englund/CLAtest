@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,8 +28,8 @@ class Inport;
 
 class IVW_CORE_API Outport : public Port {
 
-friend class SingleInport;
-friend class MultiInport;
+    friend class SingleInport;
+    friend class MultiInport;
 public:
     Outport(std::string identifier,
             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
@@ -47,17 +47,17 @@ public:
     std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
-    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; } 
+    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
     virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
 
     std::vector<Processor*> getDirectSuccessors();
-    
+
     virtual std::string getClassName() const {return "Outport";}
 
 protected:
     void connectTo(Inport* port);
     void disconnectFrom(Inport* port);
-    
+
     template <typename T>
     void getSuccessorsUsingPortType(std::vector<Processor*>&);
 

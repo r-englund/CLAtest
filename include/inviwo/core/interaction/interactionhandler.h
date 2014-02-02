@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -21,17 +21,17 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API InteractionHandler : public EventListener, public IvwSerializable {
+class IVW_CORE_API InteractionHandler : public EventListener, public IvwSerializable {
 
-    public:
-        InteractionHandler();
-        virtual ~InteractionHandler();
+public:
+    InteractionHandler();
+    virtual ~InteractionHandler();
 
-		virtual std::string getClassName() const { return "undefined"; }
+    virtual std::string getClassName() const { return "undefined"; }
 
-		void serialize(IvwSerializer &s) const;
-		void deserialize(IvwDeserializer &d);
-    };
+    void serialize(IvwSerializer& s) const;
+    void deserialize(IvwDeserializer& d);
+};
 
 } // namespace
 

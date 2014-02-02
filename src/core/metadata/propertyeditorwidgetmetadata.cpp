@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,18 +20,19 @@ namespace inviwo {
 PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus() : dockStatus_("Floating") {}
 PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(std::string dockStatus) : dockStatus_(dockStatus) {}
 PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(const PropertyEditorWidgetDockStatus& rhs) : dockStatus_(rhs.dockStatus_) {};
-PropertyEditorWidgetDockStatus& PropertyEditorWidgetDockStatus::operator=(const PropertyEditorWidgetDockStatus& that){
-    if (this != &that) {
+PropertyEditorWidgetDockStatus& PropertyEditorWidgetDockStatus::operator=(const PropertyEditorWidgetDockStatus& that) {
+    if (this != &that)
         dockStatus_ = that.dockStatus_;
-    }
+
     return *this;
 }
-bool PropertyEditorWidgetDockStatus::operator==(const PropertyEditorWidgetDockStatus& that){
+bool PropertyEditorWidgetDockStatus::operator==(const PropertyEditorWidgetDockStatus& that) {
     if (this->getString() ==  that.getString())
-        return true;    
+        return true;
+
     return false;
 }
-const std::string& PropertyEditorWidgetDockStatus::getString() const{
+const std::string& PropertyEditorWidgetDockStatus::getString() const {
     return dockStatus_;
 }
 const PropertyEditorWidgetDockStatus PropertyEditorWidgetDockStatus::Floating("Floating");
@@ -41,34 +42,35 @@ const PropertyEditorWidgetDockStatus PropertyEditorWidgetDockStatus::DockedRight
 
 //////////////////////////////////////////////////////////////////////////
 
-PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData() 
+PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData()
     : positionMetaData_(ivec2(0))
     , dimensionMetaData_(ivec2(256))
     , visiblityMetaData_(false)
-    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()){
+    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()) {
 }
 
-PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData( const PropertyEditorWidgetMetaData& rhs ) 
+PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData(const PropertyEditorWidgetMetaData& rhs)
     : positionMetaData_(rhs.positionMetaData_)
     , dimensionMetaData_(rhs.dimensionMetaData_)
     , visiblityMetaData_(rhs.visiblityMetaData_)
-    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()){
+    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()) {
 }
 
-PropertyEditorWidgetMetaData& PropertyEditorWidgetMetaData::operator=( const PropertyEditorWidgetMetaData& that ){
-    if(this != &that){
+PropertyEditorWidgetMetaData& PropertyEditorWidgetMetaData::operator=(const PropertyEditorWidgetMetaData& that) {
+    if (this != &that) {
         delete this;
         positionMetaData_ = that.positionMetaData_;
         dimensionMetaData_ = that.dimensionMetaData_;
         visiblityMetaData_ = that.visiblityMetaData_;
         dockStatusMetaData_ = that.dockStatusMetaData_;
     }
+
     return *this;
 }
 
 PropertyEditorWidgetMetaData::~PropertyEditorWidgetMetaData() {}
 
-PropertyEditorWidgetMetaData* PropertyEditorWidgetMetaData::clone() const{
+PropertyEditorWidgetMetaData* PropertyEditorWidgetMetaData::clone() const {
     return new PropertyEditorWidgetMetaData(*this);
 }
 
@@ -81,10 +83,10 @@ ivec2 PropertyEditorWidgetMetaData::getWidgetPosition() {
 }
 
 void PropertyEditorWidgetMetaData::setDimension(ivec2 dim) {
-    dimensionMetaData_.set(dim); 
+    dimensionMetaData_.set(dim);
 }
 
-ivec2 PropertyEditorWidgetMetaData::getDimension() const{
+ivec2 PropertyEditorWidgetMetaData::getDimension() const {
     return dimensionMetaData_.get();
 }
 
@@ -92,7 +94,7 @@ void PropertyEditorWidgetMetaData::setVisibile(bool visibility) {
     visiblityMetaData_.set(visibility);
 }
 
-bool PropertyEditorWidgetMetaData::isVisible() const{
+bool PropertyEditorWidgetMetaData::isVisible() const {
     return visiblityMetaData_.get();
 }
 
@@ -117,7 +119,6 @@ void PropertyEditorWidgetMetaData::deserialize(IvwDeserializer& d) {
     ivec2 position, dimension;
     bool visibility;
     std::string dockStatus("");
-
     d.deserialize("type", className, true);
     d.deserialize("position", position);
     d.deserialize("dimension", dimension);

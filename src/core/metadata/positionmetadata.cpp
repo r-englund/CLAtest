@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -16,11 +16,11 @@
 
 namespace inviwo {
 
-PositionMetaData::PositionMetaData() 
+PositionMetaData::PositionMetaData()
     : IVec2MetaData(ivec2(0,0))
 {}
 
-PositionMetaData::PositionMetaData(int x, int y) 
+PositionMetaData::PositionMetaData(int x, int y)
     : IVec2MetaData(ivec2(x,y))
 {}
 
@@ -34,7 +34,7 @@ ivec2 PositionMetaData::getXY() {
     return get();
 }
 
-void PositionMetaData::setXY(const ivec2 &xy) {
+void PositionMetaData::setXY(const ivec2& xy) {
     set(xy);
 }
 
@@ -42,7 +42,7 @@ int PositionMetaData::getX() {
     return get().x;
 }
 
-void PositionMetaData::setX(const int &x) {
+void PositionMetaData::setX(const int& x) {
     ivec2 value = get();
     value.x = x;
     set(value);
@@ -52,7 +52,7 @@ int PositionMetaData::getY() {
     return get().y;
 }
 
-void PositionMetaData::setY(const int &y) {
+void PositionMetaData::setY(const int& y) {
     ivec2 value = get();
     value.y = y;
     set(value);

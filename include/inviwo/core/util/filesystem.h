@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2014 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -33,7 +33,7 @@ IVW_CORE_API std::string getWorkingDirectory();
 
 /**
  * Check if a directory exists.
- * 
+ *
  * @param path Directory path
  * @return True if found, otherwise false.
  */
@@ -41,7 +41,7 @@ IVW_CORE_API bool directoryExists(const std::string& path);
 
 /**
  * Searches all parent folders of path and looks for parentFolder.
- * 
+ *
  * @param path Folders to search, for example C:/a/b/c
  * @param parentFolder Folder to find.
  * @return The directory where the folder was found if found, otherwise path.
@@ -50,7 +50,7 @@ IVW_CORE_API std::string getParentFolderPath(const std::string& path, const std:
 
 /**
  * Finds base path which contains subfolders such as "data" and "modules" where external files are stored
- * 
+ *
  * @return The directory considered to be the basePath.
  */
 IVW_CORE_API std::string findBasePath();

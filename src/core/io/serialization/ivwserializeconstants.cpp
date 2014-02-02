@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -44,12 +44,12 @@ const std::string IvwSerializeConstants::PROCESSOR_ATTRIBUTE_1="identifier";
 const std::string IvwSerializeConstants::PROCESSOR_ATTRIBUTE_2="displayName";
 
 bool IvwSerializeConstants::isReversvedAttribute(const std::string key) {
-    if (   key == PROPERTY_ATTRIBUTE_1
+    if (key == PROPERTY_ATTRIBUTE_1
         || key == PROPERTY_ATTRIBUTE_2
         || key == PROCESSOR_ATTRIBUTE_1
-        || key == PROCESSOR_ATTRIBUTE_2 ) {
+        || key == PROCESSOR_ATTRIBUTE_2)
         return true;
-    }
+
     return false;
 }
 

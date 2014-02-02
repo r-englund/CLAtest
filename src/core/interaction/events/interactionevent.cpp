@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,20 +25,21 @@ InteractionEvent::InteractionEvent() {
 InteractionEvent::~InteractionEvent() {}
 
 void InteractionEvent::serialize(IvwSerializer& s) const {
-	s.serialize("type", getClassName(), true);
-	s.serialize("modifier", modifierName_);
+    s.serialize("type", getClassName(), true);
+    s.serialize("modifier", modifierName_);
 }
 
 void InteractionEvent::deserialize(IvwDeserializer& d) {
     std::string className;
     d.deserialize("type", className, true);
-	d.deserialize("modifier", modifierName_);
-	for (size_t i = 0; i < COUNT; ++i) {
-		if (modifierNames_[i] == modifierName_) {
-			modifier_ = static_cast<InteractionEvent::Modifier>(i);
-			break;
-		}
-	}
+    d.deserialize("modifier", modifierName_);
+
+    for (size_t i = 0; i < COUNT; ++i) {
+        if (modifierNames_[i] == modifierName_) {
+            modifier_ = static_cast<InteractionEvent::Modifier>(i);
+            break;
+        }
+    }
 }
 
 } // namespace

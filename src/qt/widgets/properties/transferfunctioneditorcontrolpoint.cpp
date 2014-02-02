@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,16 +36,13 @@ void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOp
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
     painter->setRenderHint(QPainter::Antialiasing, true);
-
     QPen pen = QPen();
     pen.setWidth(3);
     pen.setCosmetic(true);
     pen.setCapStyle(Qt::RoundCap);
     pen.setStyle(Qt::SolidLine);
     isSelected() ? pen.setColor(QColor(213,79,79)) : pen.setColor(QColor(66,66,66));
-
     QBrush brush = QBrush(QColor::fromRgbF(dataPoint_->getRGBA().r, dataPoint_->getRGBA().g, dataPoint_->getRGBA().b));
-
     painter->setPen(pen);
     painter->setBrush(brush);
     painter->drawEllipse(-size_/2.0, -size_/2.0, size_, size_);
@@ -83,15 +80,17 @@ void TransferFunctionEditorControlPoint::hoverLeaveEvent(QGraphicsSceneHoverEven
     update();
 }
 
-QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change, const QVariant &value) {
+QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change, const QVariant& value) {
     if (change == QGraphicsItem::ItemPositionChange && scene()) {
         // constrain positions to valid view positions
         QPointF newPos = value.toPointF();
         QRectF rect = scene()->sceneRect();
+
         if (!rect.contains(newPos)) {
             newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left())));
             newPos.setY(qMin(rect.bottom(), qMax(newPos.y(), rect.top())));
         }
+
         // update the associated transfer function data point
         QPointF controlPointPos = pos();
         dataPoint_->setPosA(vec2(controlPointPos.x()/rect.width(), controlPointPos.y()/rect.height()),
@@ -99,6 +98,7 @@ QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange chang
         // return the constraint position
         return newPos;
     }
+
     return QGraphicsItem::itemChange(change, value);
 }
 

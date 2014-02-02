@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -18,15 +18,15 @@ namespace inviwo {
 
 DataFormatBase* DataFormatBase::instance_[] = {NULL};
 
-DataFormatBase::DataFormatBase() 
+DataFormatBase::DataFormatBase()
     : formatId_(id())
     , bitsAllocated_(bitsAllocated())
     , bitsStored_(bitsStored())
-    , components_(components()){
+    , components_(components()) {
     formatStr_ = new std::string(str());
 }
 
-DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, std::string s) 
+DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, std::string s)
     : formatId_(t)
     , bitsAllocated_(bA)
     , bitsStored_(bS)
@@ -34,93 +34,94 @@ DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, std:
     formatStr_ = new std::string(s);
 }
 
-DataFormatBase::~DataFormatBase(){
+DataFormatBase::~DataFormatBase() {
     delete formatStr_;
 }
 
-const DataFormatBase* DataFormatBase::get(std::string name){
-    if(name == "") return instance_[NOT_SPECIALIZED];
-    #define DataFormatIdMacro(i) else if(name == #i) return Data##i::get();
-    #include <inviwo/core/util/formatsdefinefunc.h>   
-    else if(name == "UCHAR") return DataUINT8::get();
-    else if(name == "CHAR") return DataINT8::get();
-    else if(name == "USHORT") return DataUINT16::get();
-    else if(name == "USHORT_12") return DataUINT12::get();
-    else if(name == "SHORT") return DataINT16::get();
-    else if(name == "UINT") return DataUINT32::get();
-    else if(name == "INT") return DataINT32::get();
-    else if(name == "FLOAT") return DataFLOAT32::get();
-    else if(name == "DOUBLE") return DataFLOAT64::get();
+const DataFormatBase* DataFormatBase::get(std::string name) {
+    if (name == "") return instance_[NOT_SPECIALIZED];
+
+#define DataFormatIdMacro(i) else if(name == #i) return Data##i::get();
+#include <inviwo/core/util/formatsdefinefunc.h>
+    else if (name == "UCHAR") return DataUINT8::get();
+    else if (name == "CHAR") return DataINT8::get();
+    else if (name == "USHORT") return DataUINT16::get();
+    else if (name == "USHORT_12") return DataUINT12::get();
+    else if (name == "SHORT") return DataINT16::get();
+    else if (name == "UINT") return DataUINT32::get();
+    else if (name == "INT") return DataINT32::get();
+    else if (name == "FLOAT") return DataFLOAT32::get();
+    else if (name == "DOUBLE") return DataFLOAT64::get();
     else return instance_[NOT_SPECIALIZED];
 }
 
-void DataFormatBase::cleanDataFormatBases(){
-    for(int i = 0;i<NUMBER_OF_FORMATS;i++){
-        if(instance_[i]){
+void DataFormatBase::cleanDataFormatBases() {
+    for (int i = 0; i<NUMBER_OF_FORMATS; i++) {
+        if (instance_[i]) {
             delete instance_[i];
             instance_[i] = 0;
         }
     }
 }
 
-float DataFormatBase::valueToNormalizedFloat(void*) const { 
-    return 0.f; 
+float DataFormatBase::valueToNormalizedFloat(void*) const {
+    return 0.f;
 }
 
-vec2 DataFormatBase::valueToNormalizedVec2Float(void*) const { 
-    return vec2(0.f); 
+vec2 DataFormatBase::valueToNormalizedVec2Float(void*) const {
+    return vec2(0.f);
 }
 
-vec3 DataFormatBase::valueToNormalizedVec3Float(void*) const { 
-    return vec3(0.f); 
+vec3 DataFormatBase::valueToNormalizedVec3Float(void*) const {
+    return vec3(0.f);
 }
 
-vec4 DataFormatBase::valueToNormalizedVec4Float(void*) const { 
-    return vec4(0.f); 
+vec4 DataFormatBase::valueToNormalizedVec4Float(void*) const {
+    return vec4(0.f);
 }
 
-void DataFormatBase::floatToValue(float val, void* loc) const { 
+void DataFormatBase::floatToValue(float val, void* loc) const {
     loc = &val;
 }
 
-void DataFormatBase::vec2ToValue(vec2 val, void* loc) const { 
+void DataFormatBase::vec2ToValue(vec2 val, void* loc) const {
     loc = &val;
 }
 
-void DataFormatBase::vec3ToValue(vec3 val, void* loc) const { 
+void DataFormatBase::vec3ToValue(vec3 val, void* loc) const {
     loc = &val;
 }
 
-void DataFormatBase::vec4ToValue(vec4 val, void* loc) const { 
-    loc = &val; 
+void DataFormatBase::vec4ToValue(vec4 val, void* loc) const {
+    loc = &val;
 }
 
-size_t DataFormatBase::getBitsAllocated() const { 
-    return bitsAllocated_; 
+size_t DataFormatBase::getBitsAllocated() const {
+    return bitsAllocated_;
 }
 
-size_t DataFormatBase::getBitsStored() const { 
-    return bitsStored_; 
+size_t DataFormatBase::getBitsStored() const {
+    return bitsStored_;
 }
 
-size_t DataFormatBase::getBytesAllocated() const { 
-    return static_cast<size_t>(glm::ceil(BITS_TO_BYTES(static_cast<float>(getBitsAllocated())))); 
+size_t DataFormatBase::getBytesAllocated() const {
+    return static_cast<size_t>(glm::ceil(BITS_TO_BYTES(static_cast<float>(getBitsAllocated()))));
 }
 
-size_t DataFormatBase::getBytesStored() const { 
-    return static_cast<size_t>(glm::ceil(BITS_TO_BYTES(static_cast<float>(getBitsStored())))); 
+size_t DataFormatBase::getBytesStored() const {
+    return static_cast<size_t>(glm::ceil(BITS_TO_BYTES(static_cast<float>(getBitsStored()))));
 }
 
 int DataFormatBase::getComponents() const {
     return components_;
 }
 
-const char* DataFormatBase::getString() const { 
-    return formatStr_->c_str(); 
+const char* DataFormatBase::getString() const {
+    return formatStr_->c_str();
 }
 
-DataFormatId DataFormatBase::getId() const { 
-    return formatId_; 
+DataFormatId DataFormatBase::getId() const {
+    return formatId_;
 }
 
 } // namespace

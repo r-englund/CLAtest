@@ -45,7 +45,6 @@ void DirectoryPropertyWidgetQt::generateWidget() {
     lineEdit_->setReadOnly(true);
     openButton_ = new QToolButton(this);
     openButton_->setIcon(QIcon(":/icons/open.png"));
-
     connect(directoryLabel_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
     hLayout->addWidget(lineEdit_);
@@ -63,7 +62,6 @@ void DirectoryPropertyWidgetQt::setPropertyValue() {
 
     QList<QUrl> sidebarURLs;
     sidebarURLs << QUrl::fromLocalFile(QDir(dataDir).absolutePath());
-
     //TODO: create InviwoFileDialog to avoid frequent version checks
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
@@ -72,11 +70,9 @@ void DirectoryPropertyWidgetQt::setPropertyValue() {
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
-
     QFileDialog importFileDialog(this, tr("Open Directory ..."), QDir(dataDir).absolutePath());
     importFileDialog.setFileMode(QFileDialog::Directory);
     importFileDialog.setSidebarUrls(sidebarURLs);
-
     QString existingDir = importFileDialog.getExistingDirectory();
     std::string dir = existingDir.toLocal8Bit().constData();
 
@@ -99,8 +95,8 @@ void DirectoryPropertyWidgetQt::setPropertyTreeInfo(std::string path) {
     QStringList files;
     QString filter = "*.*";
     files = currentDir.entryList(QStringList(filter), QDir::Files | QDir::NoSymLinks);
-
     std::vector<std::string> directoryTreeInfo;
+
     //TODO: set property tree info
     for (int i=0; i<files.size(); i++) {
         std::string fileName = files[i].toLocal8Bit().constData();
@@ -110,7 +106,7 @@ void DirectoryPropertyWidgetQt::setPropertyTreeInfo(std::string path) {
     property_->setDirectoryTree(directoryTreeInfo);
 }
 
-void DirectoryPropertyWidgetQt::setPropertyDisplayName(){
+void DirectoryPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(directoryLabel_->getText());
 }
 

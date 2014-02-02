@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -77,9 +77,11 @@ const T* DataGroup::getRepresentation() const {
     // check if a representation exists and return it
     for (int i=0; i<static_cast<int>(representations_.size()); ++i) {
         T* representation = dynamic_cast<T*>(representations_[i]);
+
         if (representation) {
             DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(representation);
-            if(basRep){
+
+            if (basRep) {
                 basRep->update(editableUpdate_);
                 basRep->setAsValid();
                 return representation;
@@ -90,14 +92,16 @@ const T* DataGroup::getRepresentation() const {
     //no representation exists, create one
     T* result = new T();
     DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(result);
-    if(basRep){
+
+    if (basRep) {
         basRep->setPointerToOwner(const_cast<DataGroup*>(this));
         basRep->initialize();
         basRep->update(editableUpdate_);
         basRep->setAsValid();
     }
+
     representations_.push_back(result);
-    return result;    
+    return result;
 }
 
 template<typename T>
@@ -112,8 +116,10 @@ template<typename T>
 bool DataGroup::hasRepresentation() const {
     for (int i=0; i<static_cast<int>(representations_.size()); i++) {
         T* representation = dynamic_cast<T*>(representations_[i]);
+
         if (representation) return true;
     }
+
     return false;
 }
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,19 +23,27 @@ void ivwAssertion(const char* fileName, const char* functionName, long lineNumbe
     std::cout << "Assertion in (" << fileName << ", " << functionName << ", Ln " << lineNumber << "): ";
     std::cout << message << std::endl;
     std::cout << "(choose to ";
-    #if defined(_DEBUG) && defined(WIN32)
-        std::cout << "(b)reak, ";
-    #endif
+#if defined(_DEBUG) && defined(WIN32)
+    std::cout << "(b)reak, ";
+#endif
     std::cout << "(i)gnore or (e)xit):";
+
     while (true) {
         std::string keyboardInput = "";
         std::cin >> keyboardInput;
+
         switch (keyboardInput[0]) {
-            #if defined(_DEBUG) && defined(WIN32)
-                case 'b': __debugbreak();
-            #endif
-                case 'i': return;
-                case 'e': exit(0);
+#if defined(_DEBUG) && defined(WIN32)
+
+            case 'b':
+                __debugbreak();
+#endif
+
+            case 'i':
+                return;
+
+            case 'e':
+                exit(0);
         }
     }
 }

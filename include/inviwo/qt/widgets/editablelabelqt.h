@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,15 +23,15 @@
 #include <QMenu>
 namespace inviwo {
 
-class IVW_QTWIDGETS_API EditableLabelQt: public QWidget{
+class IVW_QTWIDGETS_API EditableLabelQt: public QWidget {
     Q_OBJECT
 public:
-    EditableLabelQt(QWidget *parent , std::string text, bool shortenText=true);
-    EditableLabelQt(QWidget *parent , std::string text, QMenu* contextMenu, bool shortenText=true);
+    EditableLabelQt(QWidget* parent , std::string text, bool shortenText=true);
+    EditableLabelQt(QWidget* parent , std::string text, QMenu* contextMenu, bool shortenText=true);
     void edit();
-    std::string getText(){return text_;};
+    std::string getText() {return text_;};
     void setText(std::string txt);
-    void setContextMenu(QMenu* menu){contextMenu_ = menu;};
+    void setContextMenu(QMenu* menu) {contextMenu_ = menu;};
     void setShortenText(bool shorten);
 public slots:
     void finishEditing();
@@ -43,12 +43,12 @@ private:
     std::string text_;
     void generateWidget();
     QMenu* contextMenu_;
-    void mouseDoubleClickEvent( QMouseEvent * event );
+    void mouseDoubleClickEvent(QMouseEvent* event);
     std::string shortenText();
     bool shortenText_;
 
-    signals:
-        void textChanged();
+signals:
+    void textChanged();
 };
 }//namespace
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,7 +28,7 @@ class Canvas;
 
 class IVW_CORE_API ProcessorNetworkEvaluator : public ProcessorObserver {
 
-friend class Processor;
+    friend class Processor;
 
 public:
     ProcessorNetworkEvaluator(ProcessorNetwork* processorNetwork);
@@ -40,22 +40,22 @@ public:
     std::vector<Canvas*> getRegisteredCanvases() { return registeredCanvases_; }
     void setDefaultRenderContext(Canvas* canvas) { defaultContext_ = canvas; }
     void activateDefaultRenderContext();
-    void initializeNetwork();   
-    
+    void initializeNetwork();
+
     void disableEvaluation();
     void enableEvaluation();
     void requestEvaluate();
 
     void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
-	void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
+    void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
 
-    Processor* retrieveCanvasProcessor(Canvas* canvas);    
+    Processor* retrieveCanvasProcessor(Canvas* canvas);
 
     void notifyInvalidationEnd(Processor*);
     void notify();
 
-    static ProcessorNetworkEvaluator* getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork *network);
+    static ProcessorNetworkEvaluator* getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork* network);
 
 private:
     void evaluate();
@@ -66,11 +66,11 @@ private:
     void traversePredecessors(Processor* processor);
     void determineProcessingOrder();
 
-    void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);    
-	void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
+    void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);
+    void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
 
-    bool isPortConnectedToProcessor(Port* port, Processor *processor);
-   
+    bool isPortConnectedToProcessor(Port* port, Processor* processor);
+
     ProcessorNetwork* processorNetwork_;
 
     std::vector<Processor*> processorsSorted_; // the sorted list of processors obtained through topological sorting
@@ -78,8 +78,8 @@ private:
     std::vector<Property*> propertiesVisited_;
 
     std::vector<Canvas*> registeredCanvases_;
-    Canvas* defaultContext_;    
-    Processor* eventInitiator_; 
+    Canvas* defaultContext_;
+    Processor* eventInitiator_;
 
     bool evaulationQueued_;
     bool evaluationDisabled_;

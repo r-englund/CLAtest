@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -29,13 +29,13 @@ public:
     virtual ~ProcessorWidgetQt();
 
     virtual ProcessorWidget* create() const = 0;
-    virtual void initialize() = 0;    
-    virtual void deinitialize() = 0; 
+    virtual void initialize() = 0;
+    virtual void deinitialize() = 0;
     virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();
     virtual void move(ivec2 pos);
-	virtual void setDimension(ivec2 dimensions);
+    virtual void setDimension(ivec2 dimensions);
 
 protected:
     virtual void resizeEvent(QResizeEvent*);

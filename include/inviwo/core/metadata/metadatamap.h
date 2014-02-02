@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,9 +25,9 @@ class IVW_CORE_API MetaDataMap : public IvwSerializable {
 
 public:
     MetaDataMap();
-    MetaDataMap(const MetaDataMap& );   
+    MetaDataMap(const MetaDataMap&);
     virtual ~MetaDataMap();
-    virtual MetaDataMap* clone() const; 
+    virtual MetaDataMap* clone() const;
     void add(std::string key, MetaData* metaData);
     void remove(std::string key);
     void removeAll();
@@ -38,8 +38,8 @@ public:
 
     MetaDataMap& operator=(const MetaDataMap& map) ;
 
-    virtual void serialize( IvwSerializer &s ) const;
-    virtual void deserialize( IvwDeserializer &d );
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
     typedef std::map<std::string, MetaData*>::const_iterator cIterator;
     typedef std::map<std::string, MetaData*>::iterator iterator;

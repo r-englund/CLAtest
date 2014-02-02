@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -42,11 +42,11 @@ public:
     virtual void startFileObservation(std::string fileName);
     virtual void stopFileObservation(std::string fileName);
 
-	virtual void closeInviwoApplication();
+    virtual void closeInviwoApplication();
 
     virtual void playSound(unsigned int soundID);
 
-	virtual void initialize(registerModuleFuncPtr);
+    virtual void initialize(registerModuleFuncPtr);
 
     virtual Timer* createTimer() const;
 

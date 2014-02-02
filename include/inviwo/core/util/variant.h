@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -49,8 +49,8 @@ public:
         VariantTypeMat4 = 18,
         VariantTypeLastBaseType = 19,
         VariantTypeUserType = 32
-    };    
-  
+    };
+
     Variant();
     Variant(const Variant& obj);
     explicit Variant(bool value);
@@ -71,8 +71,8 @@ public:
     explicit Variant(const dvec4& value);
     explicit Variant(const mat2& value) ;
     explicit Variant(const mat3& value) ;
-    explicit Variant(const mat4& value) ;    
-    explicit Variant(const VariantType &type);
+    explicit Variant(const mat4& value) ;
+    explicit Variant(const VariantType& type);
 
     Variant deepCopy() const;
     ~Variant();
@@ -93,8 +93,8 @@ public:
     double getDouble() const;
     float getFloat() const;
     int getInt() const;
-    long getLong() const;   
-    std::string getString() const;    
+    long getLong() const;
+    std::string getString() const;
     ivec2 getIVec2() const;
     ivec3 getIVec3() const;
     ivec4 getIVec4() const;
@@ -106,9 +106,9 @@ public:
     dvec4 getDVec4() const;
     mat2 getMat2() const;
     mat3 getMat3() const;
-    mat4 getMat4() const;    
+    mat4 getMat4() const;
 
-    
+
     void setBool(const bool& value);
     void setDouble(const double& value);
     void setFloat(const float& value);
@@ -126,7 +126,7 @@ public:
     void setDVec4(const dvec4& value);
     void setMat2(const mat2& value);
     void setMat3(const mat3& value);
-    void setMat4(const mat4& value);  
+    void setMat4(const mat4& value);
 
     template<class T>
     void set(const T& value, VariantType type);
@@ -180,9 +180,10 @@ inline void Variant::set(const T& value, VariantType type) {
         deleteValue();
         currentType_ = type;
     }
-    if (value_ == 0) {
+
+    if (value_ == 0)
         value_ = new T;
-    }
+
     *(T*)value_ = value;
 }
 

@@ -11,7 +11,7 @@ class IVW_QTWIDGETS_API QtWidgetModule : public InviwoModule {
 
 public:
     QtWidgetModule();
-    virtual ~QtWidgetModule(){}
+    virtual ~QtWidgetModule() {}
 
 };
 

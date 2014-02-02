@@ -18,41 +18,38 @@
 namespace inviwo {
 
 Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers)
-	: DataGroup(), StructuredGridEntity<2>(dimensions)
+    : DataGroup(), StructuredGridEntity<2>(dimensions)
     , allowMissingLayers_(allowMissingLayers)
-	, imageType_(comb) {
-
+    , imageType_(comb) {
     initialize(format);
 }
 
-Image::Image(const Image& rhs) 
+Image::Image(const Image& rhs)
     : DataGroup(rhs)
     , StructuredGridEntity<2>(rhs)
     , allowMissingLayers_(rhs.allowMissingLayers_)
     , imageType_(rhs.imageType_)
     , inputSources_(rhs.inputSources_) {
-
     for (std::vector<Layer*>::const_iterator it = rhs.colorLayers_.begin() ; it != rhs.colorLayers_.end(); ++it)
         addColorLayer((*it)->clone());
 
-    if(rhs.depthLayer_){
+    if (rhs.depthLayer_) {
         depthLayer_ = rhs.depthLayer_->clone();
         addLayer(depthLayer_);
-    } else {
+    } else
         depthLayer_ = NULL;
-    }
 
-    if(rhs.pickingLayer_){
+    if (rhs.pickingLayer_) {
         pickingLayer_ = rhs.pickingLayer_->clone();
         addLayer(pickingLayer_);
-    } else {
+    } else
         pickingLayer_ = NULL;
-    }
 
-    for(size_t i = 0; i < rhs.representations_.size(); ++i) {
+    for (size_t i = 0; i < rhs.representations_.size(); ++i) {
         representations_.push_back(rhs.representations_[i]->clone());
         ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
-        if(imRep){
+
+        if (imRep) {
             imRep->setPointerToOwner(this);
             imRep->setAsInvalid();
             //imRep->update(true);
@@ -61,44 +58,41 @@ Image::Image(const Image& rhs)
 }
 
 Image& Image::operator=(const Image& that) {
-    if(this != &that) {
+    if (this != &that) {
         DataGroup::operator=(that);
         StructuredGridEntity<2>::operator=(that);
-
         allowMissingLayers_ = that.allowMissingLayers_;
         imageType_ = that.imageType_;
         inputSources_ = that.inputSources_;
-
         deinitialize();
 
-        for(std::vector<Layer*>::const_iterator it = that.colorLayers_.begin(); it != that.colorLayers_.end(); ++it)
+        for (std::vector<Layer*>::const_iterator it = that.colorLayers_.begin(); it != that.colorLayers_.end(); ++it)
             addColorLayer((*it)->clone());
 
-        if(that.depthLayer_) {
+        if (that.depthLayer_) {
             depthLayer_ = that.depthLayer_->clone();
             addLayer(depthLayer_);
-        } else {
+        } else
             depthLayer_ = NULL;
-        }
 
-        if(that.pickingLayer_) {
+        if (that.pickingLayer_) {
             pickingLayer_ = that.pickingLayer_->clone();
             addLayer(pickingLayer_);
-        } else {
+        } else
             pickingLayer_ = NULL;
-        }
 
-        for(size_t i = 0; i < that.representations_.size(); ++i) {
+        for (size_t i = 0; i < that.representations_.size(); ++i) {
             representations_.push_back(that.representations_[i]->clone());
             ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
-            if(imRep){
+
+            if (imRep) {
                 imRep->setPointerToOwner(this);
                 imRep->setAsInvalid();
                 //imRep->update(true);
             }
         }
-
     }
+
     return *this;
 }
 
@@ -109,30 +103,29 @@ Image* Image::clone() const {
 Image::~Image() {
     //Delete all layers
     deinitialize();
-
 }
 
 void Image::deinitialize() {
-    for(std::vector<Layer*>::iterator it = colorLayers_.begin(); it != colorLayers_.end(); ++it)
-        delete (*it);
+    for (std::vector<Layer*>::iterator it = colorLayers_.begin(); it != colorLayers_.end(); ++it)
+        delete(*it);
 
     delete depthLayer_;
     delete pickingLayer_;
 }
 
-void Image::initialize(const DataFormatBase* format){
+void Image::initialize(const DataFormatBase* format) {
     addColorLayer(new Layer(getDimension(), format));
-
     depthLayer_ = NULL;
     pickingLayer_ = NULL;
-    if (!allowMissingLayers_ || typeContainsDepth(getImageType())){
+
+    if (!allowMissingLayers_ || typeContainsDepth(getImageType())) {
         depthLayer_ = new Layer(getDimension(), DataFLOAT32::get(), DEPTH_LAYER);
         addLayer(depthLayer_);
     }
     else
         depthLayer_ = NULL;
 
-    if (!allowMissingLayers_ || typeContainsPicking(getImageType())){
+    if (!allowMissingLayers_ || typeContainsPicking(getImageType())) {
         pickingLayer_ = new Layer(getDimension(), format);
         addLayer(pickingLayer_);
     }
@@ -141,87 +134,94 @@ void Image::initialize(const DataFormatBase* format){
 }
 
 uvec2 Image::getDimension() const {
-	return StructuredGridEntity<2>::getDimension();
+    return StructuredGridEntity<2>::getDimension();
 }
 
-void Image::setDimension(const uvec2& dim){
-	StructuredGridEntity<2>::setDimension(dim);
+void Image::setDimension(const uvec2& dim) {
+    StructuredGridEntity<2>::setDimension(dim);
     setRepresentationsAsInvalid();
 }
 
-size_t Image::addColorLayer(Layer* layer){
+size_t Image::addColorLayer(Layer* layer) {
     colorLayers_.push_back(layer);
     addLayer(layer);
-
     //Return index to this layer
     return colorLayers_.size()-1;
 }
 
-const std::vector<const Layer*>* Image::getAllLayers() const{
+const std::vector<const Layer*>* Image::getAllLayers() const {
     return &allLayersConst_;
 }
 
-const std::vector<Layer*>* Image::getAllLayers(){
+const std::vector<Layer*>* Image::getAllLayers() {
     return &allLayers_;
 }
 
-const Layer* Image::getLayer(LayerType type, size_t idx) const{
-    switch (type){
-    case COLOR_LAYER:
-    	return getColorLayer(idx);
-    case DEPTH_LAYER:
-        return getDepthLayer();
-    case PICKING_LAYER:
-        return getPickingLayer();
+const Layer* Image::getLayer(LayerType type, size_t idx) const {
+    switch (type) {
+        case COLOR_LAYER:
+            return getColorLayer(idx);
+
+        case DEPTH_LAYER:
+            return getDepthLayer();
+
+        case PICKING_LAYER:
+            return getPickingLayer();
     }
+
     return NULL;
 }
 
-Layer* Image::getLayer(LayerType type, size_t idx){
-    switch (type){
-    case COLOR_LAYER:
-        return getColorLayer(idx);
-    case DEPTH_LAYER:
-        return getDepthLayer();
-    case PICKING_LAYER:
-        return getPickingLayer();
+Layer* Image::getLayer(LayerType type, size_t idx) {
+    switch (type) {
+        case COLOR_LAYER:
+            return getColorLayer(idx);
+
+        case DEPTH_LAYER:
+            return getDepthLayer();
+
+        case PICKING_LAYER:
+            return getPickingLayer();
     }
+
     return NULL;
 }
 
-const Layer* Image::getColorLayer(size_t idx) const{
+const Layer* Image::getColorLayer(size_t idx) const {
     return colorLayers_[idx];
 }
 
-Layer* Image::getColorLayer(size_t idx){
+Layer* Image::getColorLayer(size_t idx) {
     return colorLayers_[idx];
 }
 
-size_t Image::getNumberOfColorLayers() const{
+size_t Image::getNumberOfColorLayers() const {
     return colorLayers_.size();
 }
 
-const Layer* Image::getDepthLayer() const{
+const Layer* Image::getDepthLayer() const {
     ImageSourceMap::const_iterator it = inputSources_.find(DEPTH_LAYER);
-    if(it != inputSources_.end())
+
+    if (it != inputSources_.end())
         return it->second->getDepthLayer();
 
     return depthLayer_;
 }
 
-Layer* Image::getDepthLayer(){
+Layer* Image::getDepthLayer() {
     return depthLayer_;
 }
 
-const Layer* Image::getPickingLayer() const{
+const Layer* Image::getPickingLayer() const {
     ImageSourceMap::const_iterator it = inputSources_.find(PICKING_LAYER);
-    if(it != inputSources_.end())
+
+    if (it != inputSources_.end())
         return it->second->getPickingLayer();
 
     return pickingLayer_;
 }
 
-Layer* Image::getPickingLayer(){
+Layer* Image::getPickingLayer() {
     return pickingLayer_;
 }
 
@@ -232,31 +232,34 @@ void Image::resize(uvec2 dimensions) {
     for (std::vector<Layer*>::iterator it = colorLayers_.begin() ; it != colorLayers_.end(); ++it)
         (*it)->resize(dimensions);
 
-    if(depthLayer_)
+    if (depthLayer_)
         depthLayer_->resize(dimensions);
 
-    if(pickingLayer_)
+    if (pickingLayer_)
         pickingLayer_->resize(dimensions);
 }
 
 void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
     //targetImage->resize(targetDim);
-    std::vector<DataGroupRepresentation*> &targetRepresentations = targetImage->representations_;
+    std::vector<DataGroupRepresentation*>& targetRepresentations = targetImage->representations_;
 
     if (targetRepresentations.size()) {
         //Avoid resize of ImageRAM and ImageDisk if we have another representation
         bool existsMoreThenDiskAndRAMRepresentation = false;
+
         for (size_t j=0; j<targetRepresentations.size(); j++) {
-            if(targetRepresentations[j]->getClassName() != "ImageRAM" && targetRepresentations[j]->getClassName() != "ImageDisk")
+            if (targetRepresentations[j]->getClassName() != "ImageRAM" && targetRepresentations[j]->getClassName() != "ImageDisk")
                 existsMoreThenDiskAndRAMRepresentation = true;
         }
 
         ImageRepresentation* sourceImageRepresentation = 0;
         ImageRepresentation* targetImageRepresentation = 0;
+
         for (size_t i=0; i<representations_.size(); i++) {
             for (size_t j=0; j<targetRepresentations.size(); j++) {
                 if (representations_[i]->getClassName()==targetRepresentations[j]->getClassName()) {
-                    if(!existsMoreThenDiskAndRAMRepresentation || (targetRepresentations[j]->getClassName() != "ImageRAM" && targetRepresentations[j]->getClassName() != "ImageDisk")){
+                    if (!existsMoreThenDiskAndRAMRepresentation || (targetRepresentations[j]->getClassName() != "ImageRAM"
+                            && targetRepresentations[j]->getClassName() != "ImageDisk")) {
                         sourceImageRepresentation = static_cast<ImageRepresentation*>(representations_[i]);
                         sourceImageRepresentation->update(false);
                         targetImageRepresentation = static_cast<ImageRepresentation*>(targetRepresentations[j]);
@@ -286,7 +289,7 @@ void Image::setInputSource(LayerType layer, const Image* src) {
     inputSources_[layer] = src;
 }
 
-void Image::addLayer(Layer* layer){
+void Image::addLayer(Layer* layer) {
     allLayers_.push_back(layer);
     allLayersConst_.push_back(static_cast<const Layer*>(layer));
 }

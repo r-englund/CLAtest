@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -17,12 +17,11 @@
 #include <typeinfo>
 namespace inviwo {
 OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) : property_(property),
-    updating_(false) { 
+    updating_(false) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-
 }
 
 void OptionPropertyWidgetQt::generateWidget() {
@@ -30,14 +29,14 @@ void OptionPropertyWidgetQt::generateWidget() {
     comboBox_ = new QComboBox();
     fillComboBox();
     updateFromProperty();
+
     if (property_->getReadOnly()) {
         comboBox_->setDisabled(true);
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
         hLayout->addWidget(comboBox_);
         setLayout(hLayout);
     }
-    else{
-
+    else {
         label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         hLayout->addWidget(comboBox_);
@@ -47,13 +46,13 @@ void OptionPropertyWidgetQt::generateWidget() {
     }
 }
 
-void OptionPropertyWidgetQt::fillComboBox() {    
+void OptionPropertyWidgetQt::fillComboBox() {
     comboBox_->clear();
+
     for (int i=0; i<property_->numOptions(); i++) {
         QString option = QString::fromStdString(property_->getOptionDisplayNames()[i]);
         comboBox_->addItem(option);
     }
-
 }
 void OptionPropertyWidgetQt::optionChanged() {
     if (!updating_) {
@@ -66,13 +65,13 @@ void OptionPropertyWidgetQt::optionChanged() {
 
 void OptionPropertyWidgetQt::updateFromProperty() {
     updating_ = true;
-    int index = property_->getSelectedOption();    
+    int index = property_->getSelectedOption();
     fillComboBox();
     comboBox_->setCurrentIndex(index);
     updating_ = false;
 }
 
-void OptionPropertyWidgetQt::setPropertyDisplayName(){
+void OptionPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,7 +25,7 @@ class IVW_QTWIDGETS_API RangeSliderQt : public QSplitter {
     Q_OBJECT
 
 public:
-    RangeSliderQt(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent=NULL);
+    RangeSliderQt(Qt::Orientation orientation=Qt::Horizontal, QWidget* parent=NULL);
     virtual ~RangeSliderQt();
 
 public slots:
@@ -48,7 +48,7 @@ signals:
 
 protected:
     int constrainValues(int idx);
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent* event);
 
     int fromInternalToExternal(int val);
     int fromExternalToInternal(int val);

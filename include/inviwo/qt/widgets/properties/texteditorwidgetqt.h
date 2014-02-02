@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -32,14 +32,14 @@ class QToolBar;
 class QToolButton;
 class QCheckBox;
 
-namespace inviwo{
-	class SyntaxHighligther;
-	class FilePropertyWidgetQt;
-	class TextEditorWidgetQt;
-	class HtmlEditorWidgetQt;
-	class StringPropertyWidgetQt;
+namespace inviwo {
+class SyntaxHighligther;
+class FilePropertyWidgetQt;
+class TextEditorWidgetQt;
+class HtmlEditorWidgetQt;
+class StringPropertyWidgetQt;
 
-class IVW_QTWIDGETS_API ModifiedWidget : public QWidget{
+class IVW_QTWIDGETS_API ModifiedWidget : public QWidget {
 
     Q_OBJECT
 
@@ -48,42 +48,42 @@ public:
     bool saveDialog();
     void setParent(TextEditorWidgetQt*);
 
-	QFile* file_;
-	QTextEdit* textEditor_;
-	TextEditorWidgetQt* mainParentWidget_;
-	QToolBar* toolBar_;
-	QToolButton* reDoButton_;
-	QToolButton* reLoadButton_;
-	QToolButton* saveButton_;
-	QToolButton* unDoButton_;
-	std::string tmpPropertyValue_;
+    QFile* file_;
+    QTextEdit* textEditor_;
+    TextEditorWidgetQt* mainParentWidget_;
+    QToolBar* toolBar_;
+    QToolButton* reDoButton_;
+    QToolButton* reLoadButton_;
+    QToolButton* saveButton_;
+    QToolButton* unDoButton_;
+    std::string tmpPropertyValue_;
 
-	SyntaxHighligther* getSyntaxHighligther();
+    SyntaxHighligther* getSyntaxHighligther();
 
     void generateWidget();
 
 public slots:
-	void textHasChanged();
+    void textHasChanged();
 
 protected:
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent*);
 
 private:
-	SyntaxHighligther* syntaxHighligther_;
+    SyntaxHighligther* syntaxHighligther_;
 };
 
-class IVW_QTWIDGETS_API TextEditorWidgetQt : public PropertyWidgetQt{
-    
+class IVW_QTWIDGETS_API TextEditorWidgetQt : public PropertyWidgetQt {
+
     Q_OBJECT
 
 public:
- 
+
     TextEditorWidgetQt(Property* property);
     virtual ~TextEditorWidgetQt();
     void updateFromProperty();
-	SyntaxHighligther* getSyntaxHighligther();
+    SyntaxHighligther* getSyntaxHighligther();
 public:
-     bool saveDialog();
+    bool saveDialog();
 
 
 private:
@@ -98,7 +98,7 @@ private:
     QCheckBox* checkBox_;
 
     void generateWidget();
-   
+
 public slots:
     void loadFile();
     void loadString();

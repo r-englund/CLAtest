@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,23 +22,24 @@ ProcessorMetaData::ProcessorMetaData() {
     addMetaData(visiblityMetaData_);*/
 }
 
-ProcessorMetaData::ProcessorMetaData( const ProcessorMetaData& rhs ): 
-     positionMetaData_(rhs.positionMetaData_) 
-   , visiblityMetaData_(rhs.visiblityMetaData_) {
+ProcessorMetaData::ProcessorMetaData(const ProcessorMetaData& rhs):
+    positionMetaData_(rhs.positionMetaData_)
+    , visiblityMetaData_(rhs.visiblityMetaData_) {
 }
 
-ProcessorMetaData& ProcessorMetaData::operator=( const ProcessorMetaData& that ){
-    if(this != &that){
+ProcessorMetaData& ProcessorMetaData::operator=(const ProcessorMetaData& that) {
+    if (this != &that) {
         delete this;
         positionMetaData_ = that.positionMetaData_;
         visiblityMetaData_ = that.visiblityMetaData_;
     }
+
     return *this;
 }
 
 ProcessorMetaData::~ProcessorMetaData() {}
 
-ProcessorMetaData* ProcessorMetaData::clone() const{
+ProcessorMetaData* ProcessorMetaData::clone() const {
     return new ProcessorMetaData(*this);
 }
 
@@ -59,7 +60,7 @@ bool ProcessorMetaData::isVisible() {
 }
 
 void ProcessorMetaData::serialize(IvwSerializer& s) const {
- //   CompositeMetaData::serialize(s);    
+    //   CompositeMetaData::serialize(s);
     s.serialize("type", getClassName(), true);
     s.serialize("position", positionMetaData_.get());
     s.serialize("visibility", visiblityMetaData_.get());
@@ -69,16 +70,13 @@ void ProcessorMetaData::deserialize(IvwDeserializer& d) {
     std::string className;
     ivec2 position, dimension;
     bool visibility;
-
- //   CompositeMetaData::deserialize(d);
+    //   CompositeMetaData::deserialize(d);
     d.deserialize("type", className, true);
     d.deserialize("position", position);
     d.deserialize("visibility", visibility);
-
-	//TODO check if position is within current monitors
-
+    //TODO check if position is within current monitors
     positionMetaData_.set(position);
-    visiblityMetaData_.set(visibility);    
+    visiblityMetaData_.set(visibility);
 }
 
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,27 +23,27 @@ namespace inviwo {
 class IVW_CORE_API Plane {
 
 public:
-	Plane();
-	Plane(vec3 point, vec3 normal);
-	virtual ~Plane();
+    Plane();
+    Plane(vec3 point, vec3 normal);
+    virtual ~Plane();
 
     vec3 getPoint() const;
     vec3 getNormal() const;
 
-	vec3 getIntersection(const vec3&, const vec3&) const;
+    vec3 getIntersection(const vec3&, const vec3&) const;
 
     vec3 projectPoint(const vec3&) const;
 
-	bool isInside(const vec3&) const;
+    bool isInside(const vec3&) const;
 
     bool perpendicularToPlane(const vec3&) const;
-	
+
     void setPoint(const vec3);
-	void setNormal(const vec3&);
+    void setNormal(const vec3&);
 
 private:
-	vec3 point_;
-	vec3 normal_;
+    vec3 point_;
+    vec3 normal_;
 
 };
 

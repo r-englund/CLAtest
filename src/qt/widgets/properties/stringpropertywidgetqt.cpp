@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -34,7 +34,8 @@ void StringPropertyWidgetQt::generateWidget() {
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     hLayout->addWidget(lineEdit_);
     setLayout(hLayout);
-    if (property_->getReadOnly()) 
+
+    if (property_->getReadOnly())
         label_->finishEditing();
 }
 
@@ -45,11 +46,10 @@ void StringPropertyWidgetQt::setPropertyValue() {
 }
 
 void StringPropertyWidgetQt::updateFromProperty() {
-   lineEdit_->setText(QString::fromStdString(property_->get()));
-
+    lineEdit_->setText(QString::fromStdString(property_->get()));
 }
 
-void StringPropertyWidgetQt::setPropertyDisplayName(){
+void StringPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -41,13 +41,13 @@ public:
 class IVW_CORE_API GeometryMultiInport : public MultiDataInport<Geometry> {
 
 public:
-	GeometryMultiInport(std::string identifier);
-	virtual ~GeometryMultiInport();
+    GeometryMultiInport(std::string identifier);
+    virtual ~GeometryMultiInport();
 
-	void initialize();
-	void deinitialize();
+    void initialize();
+    void deinitialize();
 
-	uvec3 getColorCode() const;
+    uvec3 getColorCode() const;
     virtual std::string getClassName() const {return "GeometryMultiInport";}
 };
 

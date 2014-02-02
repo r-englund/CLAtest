@@ -2,14 +2,14 @@
 
 namespace inviwo {
 
-    PortFactoryObject::PortFactoryObject(const std::string& className)
-        : className_(className) {}
+PortFactoryObject::PortFactoryObject(const std::string& className)
+    : className_(className) {}
 
-    PortFactoryObject::~PortFactoryObject() {}
+PortFactoryObject::~PortFactoryObject() {}
 
-    std::string PortFactoryObject::getClassName() const {
-        return className_;
-    }
+std::string PortFactoryObject::getClassName() const {
+    return className_;
+}
 
 } // namespace
 

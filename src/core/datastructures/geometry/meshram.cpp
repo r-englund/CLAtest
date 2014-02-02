@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,11 +19,11 @@
 namespace inviwo {
 
 MeshRAM::MeshRAM()
-    : GeometryRAM(){
+    : GeometryRAM() {
 }
 
-MeshRAM::MeshRAM(const MeshRAM& rhs) 
-: GeometryRAM(rhs), owner_(rhs.owner_){
+MeshRAM::MeshRAM(const MeshRAM& rhs)
+    : GeometryRAM(rhs), owner_(rhs.owner_) {
     update(true);
 }
 
@@ -39,21 +39,20 @@ MeshRAM* MeshRAM::clone() const {
     return new MeshRAM(*this);
 }
 
-void MeshRAM::update(bool editable){
+void MeshRAM::update(bool editable) {
     attributesRAM_.clear();
-    if(editable){
-        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
+
+    if (editable) {
+        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it)
             attributesRAM_.push_back((*it)->getEditableRepresentation<BufferRAM>());
-        }
     }
-    else{
-        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
+    else {
+        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it)
             attributesRAM_.push_back(const_cast<BufferRAM*>((*it)->getRepresentation<BufferRAM>()));
-        }
     }
 }
 
-void MeshRAM::setPointerToOwner(DataGroup* owner){
+void MeshRAM::setPointerToOwner(DataGroup* owner) {
     owner_ = dynamic_cast<Mesh*>(owner);
 }
 

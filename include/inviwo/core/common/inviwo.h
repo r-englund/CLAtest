@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,10 +36,10 @@
 #ifdef __clang__
 #define STR(X) #X
 #define STARTCLANGIGNORE(X) \
-_Pragma("clang diagnostic push") \
-_Pragma(STR(clang diagnostic ignored X))
+    _Pragma("clang diagnostic push") \
+    _Pragma(STR(clang diagnostic ignored X))
 #define ENDCLANGIGNORE \
-_Pragma("clang diagnostic pop")
+    _Pragma("clang diagnostic pop")
 #else
 #define STARTCLANGIGNORE(X)
 #define ENDCLANGIGNORE
@@ -110,9 +110,9 @@ typedef glm::quat quat;
 #endif
 
 #ifdef _MSC_VER
-    #ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
-        #include <ext/vld/vld.h>
-    #endif
+#ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
+#include <ext/vld/vld.h>
+#endif
 #endif
 
 #endif // IVW_INVIWO_H

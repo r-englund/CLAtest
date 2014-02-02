@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -27,12 +27,12 @@ public :
     PropertyLink();
     PropertyLink(Property* srcProperty, Property* dstProperty);
     virtual ~PropertyLink();
-    
-    void setSourceProperty(Property* src) { srcProperty_=src; }
-    void setDestinationProperty(Property* dst) { dstProperty_=dst; } 
 
-    Property* getSourceProperty() const{ return srcProperty_; }
-    Property* getDestinationProperty() const{ return dstProperty_; }  
+    void setSourceProperty(Property* src) { srcProperty_=src; }
+    void setDestinationProperty(Property* dst) { dstProperty_=dst; }
+
+    Property* getSourceProperty() const { return srcProperty_; }
+    Property* getDestinationProperty() const { return dstProperty_; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

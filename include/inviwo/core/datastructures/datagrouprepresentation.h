@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,7 +36,7 @@ class DataGroup;
 
 class IVW_CORE_API DataGroupRepresentation : public DataRepresentation {
 
-friend class DataGroup;
+    friend class DataGroup;
 
 public:
     DataGroupRepresentation();

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,9 +20,8 @@ namespace inviwo {
 MetaDataMap::MetaDataMap() {}
 
 MetaDataMap::MetaDataMap(const MetaDataMap& inMap) {
-    for (cIterator cIt = inMap.metaData_.begin(); cIt!=inMap.metaData_.end(); ++cIt) {
+    for (cIterator cIt = inMap.metaData_.begin(); cIt!=inMap.metaData_.end(); ++cIt)
         metaData_[cIt->first] = cIt->second->clone();
-    }
 }
 
 MetaDataMap::~MetaDataMap() {
@@ -40,7 +39,8 @@ void MetaDataMap::add(std::string key, MetaData* metaData) {
 
 void MetaDataMap::remove(std::string key) {
     iterator it = metaData_.find(key);
-    if (it != metaData_.end() && it->second){
+
+    if (it != metaData_.end() && it->second) {
         delete it->second;
         metaData_.erase(it);
     }
@@ -49,11 +49,13 @@ void MetaDataMap::remove(std::string key) {
 void MetaDataMap::removeAll() {
     for (cIterator cIt = metaData_.begin(); cIt!=metaData_.end(); ++cIt)
         delete cIt->second;
+
     metaData_.clear();
 }
 
 void MetaDataMap::rename(std::string newKey, std::string oldKey) {
     MetaData* data = get(oldKey);
+
     if (data) {
         metaData_.erase(oldKey);
         add(newKey, data);
@@ -62,37 +64,45 @@ void MetaDataMap::rename(std::string newKey, std::string oldKey) {
 
 std::vector<std::string> MetaDataMap::getKeys() {
     std::vector<std::string> keys;
+
     for (cIterator cIt = metaData_.begin(); cIt!=metaData_.end(); ++cIt)
         keys.push_back(cIt->first);
+
     return keys;
 }
 
 MetaData* MetaDataMap::get(std::string key) {
     cIterator it = metaData_.find(key);
+
     if (it!=metaData_.end())
         return it->second;
+
     return NULL;
 }
 
-const MetaData* MetaDataMap::get(std::string key) const{
+const MetaData* MetaDataMap::get(std::string key) const {
     cIterator it = metaData_.find(key);
+
     if (it!=metaData_.end())
         return const_cast<const MetaData*>(it->second);
+
     return NULL;
 }
 
 MetaDataMap& MetaDataMap::operator=(const MetaDataMap& map) {
     removeAll();
+
     for (cIterator cIt = map.metaData_.begin(); cIt!=map.metaData_.end(); ++cIt)
         metaData_[cIt->first] = cIt->second->clone();
+
     return *this;
 }
 
-void MetaDataMap::serialize( IvwSerializer &s ) const{
+void MetaDataMap::serialize(IvwSerializer& s) const {
     s.serialize("MetaDataMap", metaData_, "MetaDataItem");
 }
 
-void MetaDataMap::deserialize( IvwDeserializer &d ){
+void MetaDataMap::deserialize(IvwDeserializer& d) {
     d.deserialize("MetaDataMap", metaData_, "MetaDataItem");
 }
 

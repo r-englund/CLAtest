@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -34,7 +34,7 @@ public:
     MetaDataOwner& operator=(const MetaDataOwner& rhs);
     virtual MetaDataOwner* clone() const;
     virtual ~MetaDataOwner();
- 
+
     //MetaData
     template<typename T, typename U>
     void setMetaData(std::string key, U value);
@@ -53,16 +53,18 @@ protected:
 template<typename T, typename U>
 void MetaDataOwner::setMetaData(std::string key, U value) {
     MetaData* baseMetaData = metaData_->get(key);
-
     T* derivedMetaData = 0;
+
     if (baseMetaData) {
         derivedMetaData = dynamic_cast<T*>(baseMetaData);
+
         //if not an instance of valid meta data, forcefully replace with valid one
         if (!derivedMetaData) {
             metaData_->remove(key);
             derivedMetaData = new T();
             metaData_->add(key, derivedMetaData);
         }
+
         derivedMetaData->set(value);
     }
     else {
@@ -76,12 +78,14 @@ void MetaDataOwner::setMetaData(std::string key, U value) {
 template<typename T, typename U>
 U MetaDataOwner::getMetaData(std::string key, U val) const {
     const MetaData* baseMetadata = metaData_->get(key);
+
     if (baseMetadata) {
         const T* derivedMetaData = dynamic_cast<const T*>(baseMetadata);
-        if (derivedMetaData) {
+
+        if (derivedMetaData)
             return derivedMetaData->get();
-        }
     }
+
     return val;
 }
 
@@ -89,12 +93,14 @@ U MetaDataOwner::getMetaData(std::string key, U val) const {
 template<typename T>
 bool MetaDataOwner::hasMetaData(std::string key) const {
     const MetaData* baseMetadata = metaData_->get(key);
+
     if (baseMetadata) {
         const T* derivedMetaData = dynamic_cast<const T*>(baseMetadata);
-        if (derivedMetaData) {
+
+        if (derivedMetaData)
             return true;
-        }
     }
+
     return false;
 }
 

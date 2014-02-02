@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,21 +36,21 @@ public:
 
     void setStartPoint(QPointF startPoint) { prepareGeometryChange(); startPoint_ = startPoint; midPoint_ = startPoint; }
     QPointF getStartPoint() const { return startPoint_; }
- 
+
     void setEndPoint(QPointF endPoint) { prepareGeometryChange(); endPoint_ = endPoint; }
     QPointF getEndPoint() const { return endPoint_; }
 
-	void setMidPoint(QPointF midPoint) { prepareGeometryChange(); midPoint_ = midPoint; }
-	void clearMidPoint() { prepareGeometryChange(); midPoint_ = startPoint_; }
-	QPointF getMidPoint() const { return midPoint_; }
+    void setMidPoint(QPointF midPoint) { prepareGeometryChange(); midPoint_ = midPoint; }
+    void clearMidPoint() { prepareGeometryChange(); midPoint_ = startPoint_; }
+    QPointF getMidPoint() const { return midPoint_; }
 
-	void setColor(QColor color) { color_ = color; }
-	QColor getColor() { return color_; }
+    void setColor(QColor color) { color_ = color; }
+    QColor getColor() { return color_; }
 
     void resetBorderColors();
     void setBorderColor(QColor borderColor) { borderColor_ = borderColor; }
     void setSelectedBorderColor(QColor selectedBorderColor) { selectedBorderColor_ = selectedBorderColor; }
-	void setBorderColors(QColor hoverInputColor, QColor hoverOutputColor) { hoverInputColor_ = hoverInputColor; hoverOutputColor_ = hoverOutputColor; }
+    void setBorderColors(QColor hoverInputColor, QColor hoverOutputColor) { hoverInputColor_ = hoverInputColor; hoverOutputColor_ = hoverOutputColor; }
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ConnectionGraphicsType };
@@ -62,14 +62,14 @@ public:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     QRectF boundingRect() const;
 
-	virtual QPainterPath obtainCurvePath() const;
-	QPainterPath obtainCurvePath(QPointF startPoint, QPointF endPoint);
+    virtual QPainterPath obtainCurvePath() const;
+    QPainterPath obtainCurvePath(QPointF startPoint, QPointF endPoint);
 
 protected:
-    
+
     QPointF startPoint_;
     QPointF endPoint_;
-	QPointF midPoint_;
+    QPointF midPoint_;
 
     QColor color_;
     QColor borderColor_;

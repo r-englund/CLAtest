@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -40,7 +40,7 @@ public:
     inline std::string modifierName() const { return modifierName_; }
     inline std::string buttonName() const { return buttonName_; }
 
-	virtual std::string getClassName() const { return "Undefined"; }
+    virtual std::string getClassName() const { return "Undefined"; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Link�ping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -30,14 +30,14 @@ public:
     virtual ~RepresentationConverter();
 
     /**
-     * Checks if it is possible to convert from the data representation. 
+     * Checks if it is possible to convert from the data representation.
      * @param source is the DataRepresentation to test for conversion possibility.
      * @return boolean True if possible, false otherwise.
      */
     virtual bool canConvertFrom(const DataRepresentation* source) const = 0;
     virtual bool canConvertTo(const DataRepresentation* destination) const = 0;
 
-    virtual DataRepresentation* createFrom(const DataRepresentation* source) = 0;    
+    virtual DataRepresentation* createFrom(const DataRepresentation* source) = 0;
     virtual void update(const DataRepresentation* source, DataRepresentation* destination) = 0;
 };
 
@@ -59,38 +59,41 @@ public:
         converters_ = new std::vector<RepresentationConverter*>();
     };
     ~RepresentationConverterPackage() {
-        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it){
-            delete (*it);
-        }
+        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it)
+            delete(*it);
+
         delete converters_;
     }
     bool canConvertFrom(const DataRepresentation* source) const {
-        for (std::vector<RepresentationConverter*>::const_iterator it = converters_->begin() ; it != converters_->end(); ++it){
+        for (std::vector<RepresentationConverter*>::const_iterator it = converters_->begin() ; it != converters_->end(); ++it) {
             if ((*it)->canConvertFrom(source))
                 return true;
         }
+
         return false;
     }
     bool canConvertTo(const DataRepresentation* destination) const {
-        for (std::vector<RepresentationConverter*>::const_iterator it = converters_->begin() ; it != converters_->end(); ++it){
+        for (std::vector<RepresentationConverter*>::const_iterator it = converters_->begin() ; it != converters_->end(); ++it) {
             if ((*it)->canConvertTo(destination))
                 return true;
         }
+
         return false;
     }
-    DataRepresentation* createFrom(const DataRepresentation* source){
-        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it){
+    DataRepresentation* createFrom(const DataRepresentation* source) {
+        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it) {
             if ((*it)->canConvertFrom(source))
                 return (*it)->createFrom(source);
         }
+
         return NULL;
-    }  
+    }
     virtual void update(const DataRepresentation* source, DataRepresentation* destination) {
-        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it){
+        for (std::vector<RepresentationConverter*>::iterator it = converters_->begin() ; it != converters_->end(); ++it) {
             if ((*it)->canConvertFrom(source))
                 (*it)->update(source, destination);
         }
-    }  
+    }
 
     void addConverter(RepresentationConverter* converter) { converters_->push_back(converter); }
     size_t getNumberOfConverters() { return converters_->size(); }

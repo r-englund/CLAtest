@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,8 +19,8 @@ namespace inviwo {
 
 
 ModuleCallbackAction::ModuleCallbackAction(std::string actionName,
-                                           InviwoModule* module,
-                                           ModuleCallBackActionState::Status state)
+        InviwoModule* module,
+        ModuleCallBackActionState::Status state)
     : module_(module)
     , actionName_(actionName)
     , actionState_(state) {

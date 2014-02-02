@@ -45,7 +45,6 @@ void FilePropertyWidgetQt::generateWidget() {
     lineEdit_->setReadOnly(true);
     openButton_ = new QToolButton(this);
     openButton_->setIcon(QIcon(":/icons/open.png"));
-
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
     hLayout->addWidget(lineEdit_);
@@ -55,7 +54,6 @@ void FilePropertyWidgetQt::generateWidget() {
 
 void FilePropertyWidgetQt::setPropertyValue() {
     // dialog window settings
-
     // Setup sidebar
     QList<QUrl> sidebarURLs;
     QString dataDir_ = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
@@ -67,54 +65,60 @@ void FilePropertyWidgetQt::setPropertyValue() {
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
-
     // Setup default path
     QString path;
-    if (property_->get()!= "") {
+
+    if (property_->get()!= "")
         path=QDir(QString::fromStdString(property_->get())).absolutePath();
-    } else {
+    else
         path=QDir(dataDir_).absolutePath();
-    }
 
     // Setup Extensions
     std::vector<std::string> filters = property_->getNameFilters();
     QStringList extension;
+
     for (std::vector<std::string>::const_iterator it = filters.begin();
-         it!=filters.end(); ++it) {
-            extension.push_back(QString::fromStdString(*it));
-    }
+         it!=filters.end(); ++it)
+        extension.push_back(QString::fromStdString(*it));
 
     QFileDialog importFileDialog(this, QString::fromStdString(property_->getDisplayName()), path);
 
-    switch (property_->getAcceptMode()){
-    case FileProperty::AcceptSave :
-        importFileDialog.setAcceptMode(QFileDialog::AcceptSave);
-        break;
-    case FileProperty::AcceptOpen :
-        importFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-        break;
-    default:
-        importFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    switch (property_->getAcceptMode()) {
+        case FileProperty::AcceptSave :
+            importFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+            break;
+
+        case FileProperty::AcceptOpen :
+            importFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+            break;
+
+        default:
+            importFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
     }
 
-    switch (property_->getFileMode()){
-    case FileProperty::AnyFile:
-        importFileDialog.setFileMode(QFileDialog::AnyFile);
-        break;
-    case FileProperty::ExistingFile:
-        importFileDialog.setFileMode(QFileDialog::ExistingFile);
-        break;
-    case FileProperty::Directory:
-        importFileDialog.setFileMode(QFileDialog::Directory);
-        break;
-    case FileProperty::ExistingFiles:
-        importFileDialog.setFileMode(QFileDialog::ExistingFiles);
-        break;
-    case FileProperty::DirectoryOnly:
-        importFileDialog.setFileMode(QFileDialog::DirectoryOnly);
-        break;
-    default:
-        importFileDialog.setFileMode(QFileDialog::AnyFile);
+    switch (property_->getFileMode()) {
+        case FileProperty::AnyFile:
+            importFileDialog.setFileMode(QFileDialog::AnyFile);
+            break;
+
+        case FileProperty::ExistingFile:
+            importFileDialog.setFileMode(QFileDialog::ExistingFile);
+            break;
+
+        case FileProperty::Directory:
+            importFileDialog.setFileMode(QFileDialog::Directory);
+            break;
+
+        case FileProperty::ExistingFiles:
+            importFileDialog.setFileMode(QFileDialog::ExistingFiles);
+            break;
+
+        case FileProperty::DirectoryOnly:
+            importFileDialog.setFileMode(QFileDialog::DirectoryOnly);
+            break;
+
+        default:
+            importFileDialog.setFileMode(QFileDialog::AnyFile);
     }
 
     importFileDialog.setNameFilters(extension);
@@ -124,6 +128,7 @@ void FilePropertyWidgetQt::setPropertyValue() {
         QString path = importFileDialog.selectedFiles().at(0);
         property_->set(path.toLocal8Bit().constData());
     }
+
     updateFromProperty();
     emit modified();
 }
@@ -132,7 +137,7 @@ void FilePropertyWidgetQt::updateFromProperty() {
     lineEdit_->setText(QFileInfo(QString::fromStdString(property_->get())).fileName());
 }
 
-void FilePropertyWidgetQt::setPropertyDisplayName(){
+void FilePropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -30,7 +30,7 @@ class Variant;
 class IVW_CORE_API Property : public IvwSerializable, public VoidObservable, public VoidObserver {
 
 public:
-    Property(std::string identifier, 
+    Property(std::string identifier,
              std::string displayName,
              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
              PropertySemantics semantics = PropertySemantics::Default);
@@ -40,7 +40,7 @@ public:
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);
 
-    virtual std::string getClassName()  const { return "undefined"; }    
+    virtual std::string getClassName()  const { return "undefined"; }
 
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
@@ -48,7 +48,7 @@ public:
     virtual PropertySemantics getSemantics() const;
     virtual void setSemantics(const PropertySemantics& semantics);
 
-    virtual void setReadOnly(const bool &value);
+    virtual void setReadOnly(const bool& value);
     virtual bool getReadOnly()const;
 
     PropertyOwner::InvalidationLevel getInvalidationLevel() const;
@@ -62,10 +62,10 @@ public:
     bool hasWidgets()const;
     MetaData* getMetaData(std::string meta);
 
-    void setGroupID(const std::string &groupID);
+    void setGroupID(const std::string& groupID);
 
-    static void setGroupDisplayName(const std::string &groupID,const std::string &groupDisplayName);
-    
+    static void setGroupDisplayName(const std::string& groupID,const std::string& groupDisplayName);
+
     std::string getGroupID()const;
     std::string getGroupDisplayName()const;
 
@@ -88,7 +88,7 @@ public:
     }
 
     void setVisibility(PropertyVisibilityMode visibilityMode);
-    PropertyVisibilityMode getVisibilityMode(){return visibilityMode_;};
+    PropertyVisibilityMode getVisibilityMode() {return visibilityMode_;};
 
     virtual void setVisible(bool val);
     virtual void updateVisibility();
@@ -115,7 +115,7 @@ private:
     static std::map<std::string,std::string> groupDisplayNames_;
 
     //TODO: Use map (Refer Processor meta-data list)
-    std::vector<MetaData*> metaData_; 
+    std::vector<MetaData*> metaData_;
 };
 
 } // namespace

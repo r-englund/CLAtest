@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -61,19 +61,19 @@ private:
 class IVW_QTEDITOR_API LinkConnectionGraphicsItem : public LinkGraphicsItem {
 
 public:
-    
+
     LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
     ~LinkConnectionGraphicsItem();
-    
-    ProcessorGraphicsItem* getSrcProcessorGraphicsItem() const { return outProcessor_; }    
+
+    ProcessorGraphicsItem* getSrcProcessorGraphicsItem() const { return outProcessor_; }
     ProcessorGraphicsItem* getDestProcessorGraphicsItem() const { return inProcessor_; }
     virtual QRectF boundingRect() const;
 
 private:
     virtual QPainterPath obtainCurvePath() const;
-    
+
     ProcessorGraphicsItem* outProcessor_; ///< Processor representation from which the connection starts
-    ProcessorGraphicsItem* inProcessor_; ///< Processor representation to which the connection goes to 
+    ProcessorGraphicsItem* inProcessor_; ///< Processor representation to which the connection goes to
 };
 
 } // namespace

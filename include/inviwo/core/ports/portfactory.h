@@ -8,7 +8,7 @@
 namespace inviwo {
 
 class IVW_CORE_API PortFactory : public Factory,
-                                 public Singleton<PortFactory> {
+    public Singleton<PortFactory> {
 public:
     PortFactory();
     virtual ~PortFactory();

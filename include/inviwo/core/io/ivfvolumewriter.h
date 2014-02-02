@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,7 +23,7 @@
 namespace inviwo {
 
 class IVW_CORE_API IvfVolumeWriter : public DataWriterType<Volume> {
-public:        
+public:
     IvfVolumeWriter();
     IvfVolumeWriter(const IvfVolumeWriter& rhs);
     IvfVolumeWriter& operator=(const IvfVolumeWriter& that);
@@ -31,7 +31,7 @@ public:
     virtual ~IvfVolumeWriter() {}
 
     virtual void writeData(const Volume* data, const std::string filePath) const;
-};  
+};
 
 } // namespace
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -33,66 +33,67 @@ LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent)
 
 LabelGraphicsItem::~LabelGraphicsItem() {}
 
-QString LabelGraphicsItem::text() const{
+QString LabelGraphicsItem::text() const {
     if (isCropped())
         return orgText_;
     else
         return toPlainText();
 }
 
-void LabelGraphicsItem::setText(const QString &str){
+void LabelGraphicsItem::setText(const QString& str) {
     if (doCrop(str)) {
         if (toolTip()==orgText_)
             setToolTip(str);
+
         orgText_ = str;
         setPlainText(str.left(maxBefore_) + "..." + str.right(maxAfter_));
     }
-    else{
+    else {
         orgText_="";
         setToolTip(orgText_);
         setPlainText(str);
     }
 }
 
-QString LabelGraphicsItem::croppedText() const{
+QString LabelGraphicsItem::croppedText() const {
     return toPlainText();
 }
 
-void LabelGraphicsItem::setCrop(int before, int after){
+void LabelGraphicsItem::setCrop(int before, int after) {
     maxBefore_ = before;
     maxAfter_ = after;
     updateCrop();
 }
 
-bool LabelGraphicsItem::isCropped() const{
+bool LabelGraphicsItem::isCropped() const {
     return (!orgText_.isEmpty());
 }
 
-void LabelGraphicsItem::setNoFocusOut(){
+void LabelGraphicsItem::setNoFocusOut() {
     focusOut_ = false;
 }
 
-bool LabelGraphicsItem::isFocusOut() const{
+bool LabelGraphicsItem::isFocusOut() const {
     return focusOut_;
 }
 
-bool LabelGraphicsItem::doCrop(const QString &str){
+bool LabelGraphicsItem::doCrop(const QString& str) {
     return (maxBefore_ + maxAfter_ + 2 < str.length());
 }
 
-void LabelGraphicsItem::updateCrop(){
+void LabelGraphicsItem::updateCrop() {
     setText(toPlainText());
 }
 
-void LabelGraphicsItem::keyPressEvent(QKeyEvent *event){
+void LabelGraphicsItem::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Return)
         clearFocus();
-    else if (event->key() != Qt::Key_Space )
+    else if (event->key() != Qt::Key_Space)
         QGraphicsTextItem::keyPressEvent(event);
 }
 
 void LabelGraphicsItem::focusInEvent(QFocusEvent* event) {
-    if(isCropped())
+    if (isCropped())
         setPlainText(orgText_);
 }
 

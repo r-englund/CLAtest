@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,15 +24,15 @@ ProcessorWidgetFactory::ProcessorWidgetFactory() {}
 ProcessorWidgetFactory::~ProcessorWidgetFactory() {}
 
 void ProcessorWidgetFactory::registerObject(std::pair<std::string, ProcessorWidget* > widget) {
-    if(processorWidgetMap_.find(widget.first) == processorWidgetMap_.end()) {
+    if (processorWidgetMap_.find(widget.first) == processorWidgetMap_.end())
         processorWidgetMap_.insert(widget);
-    } else {
+    else
         LogWarn("Processor Widget for class name: " << widget.first << " is already registerd");
-    }
 }
 
 ProcessorWidget* ProcessorWidgetFactory::create(std::string processorClassName) const {
     ProcessorWidgetMap::iterator it = processorWidgetMap_.find(processorClassName);
+
     if (it != processorWidgetMap_.end())
         return it->second->create();
     else
@@ -45,6 +45,7 @@ ProcessorWidget* ProcessorWidgetFactory::create(Processor* processor) const {
 
 bool ProcessorWidgetFactory::isValidType(std::string processorClassName) const {
     ProcessorWidgetMap::iterator it = processorWidgetMap_.find(processorClassName);
+
     if (it != processorWidgetMap_.end())
         return true;
     else

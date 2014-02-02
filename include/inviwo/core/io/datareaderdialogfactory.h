@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -30,12 +30,13 @@ public:
     virtual ~DataReaderDialogFactory();
 
     void registerObject(DataReaderDialog* dataReaderDialog);
-    
+
     template <typename T>
     DataReaderDialog* getDataReaderDialog() {
         for (std::map<DataReader*, DataReaderDialog*>::const_iterator it=dataReaderDialogs_.begin(); it!=dataReaderDialogs_.end(); ++it)
             if (dynamic_cast<T*>(it->first))
                 return it->second;
+
         /*
         for (size_t i=0; i<dataReaderDialogs_.size(); i++) {
             DataReaderType<T>* dataReaderType = dynamic_cast<DataReaderType<T>* >(it->first);
@@ -53,6 +54,7 @@ public:
                 LogWarn("DataReaderDialog already registered.");
                 return;
             }
+
         dataReaderDialogs_.insert(std::make_pair(dataReader, dataReaderDialog));
     }
 

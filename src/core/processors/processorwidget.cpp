@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,11 +20,11 @@ namespace inviwo {
 ProcessorWidget::ProcessorWidget()
     : metaData_(0)
     , processor_(0)
-    , initialized_(false){}
+    , initialized_(false) {}
 
 ProcessorWidget::~ProcessorWidget() {}
 
-void ProcessorWidget::initialize() { 
+void ProcessorWidget::initialize() {
     initialized_ = true;
     metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(processor_->getMetaData("ProcessorWidgetMetaData"));
 }
@@ -42,19 +42,19 @@ void ProcessorWidget::show() {
     metaData_->setVisibile(true);
 }
 
-void ProcessorWidget::hide() {    
+void ProcessorWidget::hide() {
     metaData_->setVisibile(false);
 }
 
-void ProcessorWidget::setDimension(ivec2 dimension) {   
+void ProcessorWidget::setDimension(ivec2 dimension) {
     metaData_->setDimension(dimension);
 }
 
-void ProcessorWidget::move(ivec2 pos) {    
+void ProcessorWidget::move(ivec2 pos) {
     metaData_->setWidgetPosition(pos);
 }
 
-bool ProcessorWidget::getVisibilityMetaData() {    
+bool ProcessorWidget::getVisibilityMetaData() {
     return metaData_->isVisible();
 }
 

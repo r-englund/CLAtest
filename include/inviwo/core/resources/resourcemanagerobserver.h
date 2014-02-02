@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,7 +22,7 @@
 namespace inviwo {
 
 
-/** \class ResourceManagerObserver 
+/** \class ResourceManagerObserver
 *
 * Observer for list type objects, such as std::vector.
 *
@@ -46,10 +46,10 @@ public:
 };
 
 
-/** \class ListObservable 
+/** \class ListObservable
 *
-* Observable for list type objects. Should call notifyResourceAdded as soon as an item 
-* has been added to the list and notifyResourceRemoved when an item has been removed. 
+* Observable for list type objects. Should call notifyResourceAdded as soon as an item
+* has been added to the list and notifyResourceRemoved when an item has been removed.
 *
 * @see ListObserver
 */
@@ -61,18 +61,20 @@ public:
     void notifyResourceAdded(const Resource* item) const {
         // Notify observers
         ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+
+        for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
             // static_cast can be used since only template class objects can be added
-            static_cast<ResourceManagerObserver*>(*it)->resourceAdded(item);    
+            static_cast<ResourceManagerObserver*>(*it)->resourceAdded(item);
         }
     }
 
     void notifyResourceRemoved(const Resource* item) const {
         // Notify observers
         ObserverSet::iterator endIt = observers_->end();
-        for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+
+        for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
             // static_cast can be used since only template class objects can be added
-            static_cast<ResourceManagerObserver*>(*it)->resourceRemoved(item);    
+            static_cast<ResourceManagerObserver*>(*it)->resourceRemoved(item);
         }
     }
 };

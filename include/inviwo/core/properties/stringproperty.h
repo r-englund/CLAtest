@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,16 +19,16 @@
 
 namespace inviwo {
 
-    /** class StringProperty
-    * \brief  The StringProperty holds a string as value.
-    * 
-    * The string property has 2 different widgets, one that just displays the value of the string.
-    * The other one makes it possible to edit the string.
-    * To use the editor widget you must specify it in the constructor and set the property semantics to Editor.
-    * 
-    * @see StringPropertyWidgetQt
-    * @see TextEditorWidgetQt
-    */
+/** class StringProperty
+* \brief  The StringProperty holds a string as value.
+*
+* The string property has 2 different widgets, one that just displays the value of the string.
+* The other one makes it possible to edit the string.
+* To use the editor widget you must specify it in the constructor and set the property semantics to Editor.
+*
+* @see StringPropertyWidgetQt
+* @see TextEditorWidgetQt
+*/
 
 class IVW_CORE_API StringProperty : public TemplateProperty<std::string> {
 
@@ -45,7 +45,7 @@ public:
      * @param std::string displayName displayName for the property
      * @param std::string value value of the property
      * @param PropertySemantics semantics Semantics of the property, if nothing is specified it will set to the Default. The semantics can be specified as Editor
-     * @return 
+     * @return
      */
     StringProperty(std::string identifier, std::string displayName, std::string value = "",
                    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,

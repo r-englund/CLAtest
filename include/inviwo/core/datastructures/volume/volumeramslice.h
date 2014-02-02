@@ -31,7 +31,7 @@ public:
     template<typename T, size_t B>
     void evaluate();
 
-    static inline LayerRAM* apply(const VolumeRepresentation* in, CoordinatePlane cPlane, unsigned int sliceNum){
+    static inline LayerRAM* apply(const VolumeRepresentation* in, CoordinatePlane cPlane, unsigned int sliceNum) {
         VolumeRAMSlice sliceOP = VolumeRAMSlice(in, cPlane, sliceNum);
         in->performOperation(&sliceOP);
         return sliceOP.getOutput<LayerRAM>();
@@ -49,9 +49,10 @@ template<typename T, size_t B>
 class VolumeRAMCustomPrecision;
 
 template<typename T, size_t B>
-void VolumeRAMSlice::evaluate(){
+void VolumeRAMSlice::evaluate() {
     const VolumeRAMPrecision<T>* volume = dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
-    if (!volume){
+
+    if (!volume) {
         setOutput(NULL);
         return;
     }

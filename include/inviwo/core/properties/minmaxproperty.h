@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -26,8 +26,8 @@ class MinMaxProperty : public TemplateProperty<glm::detail::tvec2<T> > {
 
 public:
     MinMaxProperty(std::string identifier, std::string displayName, T value, T valueMax,
-        T rangeMin, T rangeMax, T increment, PropertyOwner::InvalidationLevel invalidationLevel,
-        PropertySemantics semantics = PropertySemantics::Default);
+                   T rangeMin, T rangeMax, T increment, PropertyOwner::InvalidationLevel invalidationLevel,
+                   PropertySemantics semantics = PropertySemantics::Default);
 
     T getRangeMin() const;
     T getRangeMax() const;
@@ -35,11 +35,11 @@ public:
 
     glm::detail::tvec2<T> getRange() const;
 
-    void setRangeMin(const T &value);
-    void setRangeMax(const T &value);
-    void setIncrement(const T &value);
+    void setRangeMin(const T& value);
+    void setRangeMax(const T& value);
+    void setIncrement(const T& value);
 
-    void setRange(const glm::detail::tvec2<T> &value);
+    void setRange(const glm::detail::tvec2<T>& value);
 
 
     virtual Variant getVariant();
@@ -53,75 +53,77 @@ private:
 
 template <typename T>
 MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayName,
-                                    T valueMin, T valueMax, T rangeMin, T rangeMax, T increment,
-                                    PropertyOwner::InvalidationLevel invalidationLevel,
-                                    PropertySemantics semantics )
-    : TemplateProperty<glm::detail::tvec2<T> >(identifier, displayName, glm::detail::tvec2<T>(valueMin, valueMax), invalidationLevel, semantics),
-      range_(glm::detail::tvec2<T>(rangeMin, rangeMax)),
-      increment_(increment)
+                                  T valueMin, T valueMax, T rangeMin, T rangeMax, T increment,
+                                  PropertyOwner::InvalidationLevel invalidationLevel,
+                                  PropertySemantics semantics)
+    : TemplateProperty<glm::detail::tvec2<T> >(identifier, displayName, glm::detail::tvec2<T>(valueMin, valueMax), invalidationLevel,
+            semantics),
+    range_(glm::detail::tvec2<T>(rangeMin, rangeMax)),
+    increment_(increment)
 {}
 
 template <typename T>
-T MinMaxProperty<T>::getRangeMin() const { 
-    return range_.x; 
+T MinMaxProperty<T>::getRangeMin() const {
+    return range_.x;
 }
 
 template <typename T>
-T MinMaxProperty<T>::getRangeMax() const { 
-    return range_.y; 
+T MinMaxProperty<T>::getRangeMax() const {
+    return range_.y;
 }
 
 template <typename T>
-T MinMaxProperty<T>::getIncrement() const { 
-    return increment_; 
+T MinMaxProperty<T>::getIncrement() const {
+    return increment_;
 }
 
 template <typename T>
-glm::detail::tvec2<T> MinMaxProperty<T>::getRange() const{
+glm::detail::tvec2<T> MinMaxProperty<T>::getRange() const {
     return range_;
 }
 
 template <typename T>
-void MinMaxProperty<T>::setRangeMin(const T &value) {
-    if(TemplateProperty<glm::detail::tvec2<T> >::value_.x < value || TemplateProperty<glm::detail::tvec2<T> >::value_.x == range_.x)
+void MinMaxProperty<T>::setRangeMin(const T& value) {
+    if (TemplateProperty<glm::detail::tvec2<T> >::value_.x < value || TemplateProperty<glm::detail::tvec2<T> >::value_.x == range_.x)
         TemplateProperty<glm::detail::tvec2<T> >::value_.x = value;
+
     range_.x = value;
     TemplateProperty<glm::detail::tvec2<T> >::propertyModified();
 }
 
 template <typename T>
-void MinMaxProperty<T>::setRangeMax(const T &value) {
-    if(TemplateProperty<glm::detail::tvec2<T> >::value_.y > value || TemplateProperty<glm::detail::tvec2<T> >::value_.y == range_.y)
+void MinMaxProperty<T>::setRangeMax(const T& value) {
+    if (TemplateProperty<glm::detail::tvec2<T> >::value_.y > value || TemplateProperty<glm::detail::tvec2<T> >::value_.y == range_.y)
         TemplateProperty<glm::detail::tvec2<T> >::value_.y = value;
+
     range_.y = value;
     TemplateProperty<glm::detail::tvec2<T> >::propertyModified();
 }
 
 template <typename T>
-void MinMaxProperty<T>::setIncrement(const T &value) {
+void MinMaxProperty<T>::setIncrement(const T& value) {
     increment_ = value;
 }
 
 template <typename T>
-void MinMaxProperty<T>::setRange(const glm::detail::tvec2<T> &value){
+void MinMaxProperty<T>::setRange(const glm::detail::tvec2<T>& value) {
     setRangeMin(value.x);
     setRangeMax(value.y);
 }
 
-template <typename T> 
-Variant MinMaxProperty<T>::getVariant(){
+template <typename T>
+Variant MinMaxProperty<T>::getVariant() {
     return Variant(TemplateProperty<glm::detail::tvec2<T> >::value_);
 }
 
-template <typename T> 
-void MinMaxProperty<T>::setVariant(const Variant& v){
-    if (v.canConvert(getVariantType())) {
+template <typename T>
+void MinMaxProperty<T>::setVariant(const Variant& v) {
+    if (v.canConvert(getVariantType()))
         this->set(v.get<glm::detail::tvec2<T> >());
-    }
 }
 
-template <typename T> 
-int MinMaxProperty<T>::getVariantType(){
+template <typename T>
+int MinMaxProperty<T>::getVariantType() {
     return getVariant().getType();
 }
 

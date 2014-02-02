@@ -6,7 +6,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API PropertyFactoryObject { 
+class IVW_CORE_API PropertyFactoryObject {
 public:
     PropertyFactoryObject(const std::string& className);
     virtual ~PropertyFactoryObject();

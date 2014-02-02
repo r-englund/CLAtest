@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -33,6 +33,7 @@ WindowsTimer::~WindowsTimer() {
 void WindowsTimer::start(unsigned int intervalInMilliseconds, bool once /*= false*/) {
     if (timer_)
         return;
+
     BOOL success = CreateTimerQueueTimer(&timer_,
                                          NULL,
                                          (WAITORTIMERCALLBACK)TimerCallback,

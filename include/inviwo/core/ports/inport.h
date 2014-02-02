@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -44,12 +44,12 @@ public:
     virtual void disconnectFrom(Outport* outport) {};
 
     virtual bool isConnectedTo(Outport* outport) const { return false; }
-    
+
     virtual Outport* getConnectedOutport() const { return NULL; }
     virtual std::vector<Outport*> getConnectedOutports() const { return std::vector<Outport*>(); }
 
     std::vector<Processor*> getPredecessors();
-    
+
     virtual std::string getClassName() const {return "Inport";}
 
     template <typename T>
@@ -57,7 +57,7 @@ public:
         onChangeCallback_.addMemberFunction(o,m);
     }
     void callOnChangeIfInvalid();
-    
+
 protected:
     template <typename T>
     void getPredecessorsUsingPortType(std::vector<Processor*>&);

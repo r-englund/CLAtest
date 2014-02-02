@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,19 +24,24 @@ namespace inviwo {
 
 //TODO: Make operation factory
 template<typename T, size_t B>
-void executeOperationOnVolumeRAMPrecision(DataOperation* dop){
+void executeOperationOnVolumeRAMPrecision(DataOperation* dop) {
     VolumeRAMNormalizedHistogram* volNormalizedHistogram = dynamic_cast<VolumeRAMNormalizedHistogram*>(dop);
-    if (volNormalizedHistogram){
+
+    if (volNormalizedHistogram) {
         volNormalizedHistogram->evaluate<T, B>();
         return;
     }
+
     VolumeRAMSlice* volSliceDop = dynamic_cast<VolumeRAMSlice*>(dop);
-    if (volSliceDop){
+
+    if (volSliceDop) {
         volSliceDop->evaluate<T, B>();
         return;
     }
+
     VolumeRAMSubSet* volSubSetDop = dynamic_cast<VolumeRAMSubSet*>(dop);
-    if (volSubSetDop){
+
+    if (volSubSetDop) {
         volSubSetDop->evaluate<T, B>();
         return;
     }

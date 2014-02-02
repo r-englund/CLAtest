@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,71 +22,71 @@
 
 namespace inviwo {
 
-    class IVW_CORE_API SystemCapabilities : public Capabilities  {
+class IVW_CORE_API SystemCapabilities : public Capabilities  {
 
-    public:
-        struct OSInfo {
-            std::string description;
-            int platform;
-        };
-
-        struct CPUInfo {
-            std::string vendor;
-            std::string model;
-            uint64_t mhz;
-        };
-
-        struct MemoryInfo {
-            uint64_t total; //In Bytes
-            uint64_t available; //In Bytes
-        };
-
-        struct DiskInfo {
-            std::string diskName;
-            std::string diskType;
-            uint64_t total; //In Bytes
-            uint64_t free; //In Bytes
-        };
-
-        struct ProcessMemoryInfo {
-            uint64_t residentMem; //In Bytes
-            uint64_t sharedMem; //In Bytes
-            uint64_t virtualMem; //In Bytes
-        };
-
-        SystemCapabilities();
-        virtual ~SystemCapabilities();
-
-        void printInfo();
-        
-        bool canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory = 100);
-        uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory = 100);
-
-        uint64_t getAvailableMemory();
-
-    protected:
-        void retrieveStaticInfo();
-        void retrieveDynamicInfo();
-
-    private:
-        bool lookupOSInfo();
-        bool lookupCPUInfo();
-        bool lookupMemoryInfo();
-        bool lookupDiskInfo();
-        bool lookupProcessMemoryInfo();
-
-        OSInfo infoOS_;
-        std::vector<CPUInfo> infoCPUs_;
-        MemoryInfo infoRAM_;
-        std::vector<DiskInfo> infoDisks_;
-        ProcessMemoryInfo infoProcRAM_;
-
-        bool successOSInfo_;
-        bool successCPUInfo_;
-        bool successMemoryInfo_;
-        bool successDiskInfo_;
-        //bool successProcessMemoryInfo_;
+public:
+    struct OSInfo {
+        std::string description;
+        int platform;
     };
+
+    struct CPUInfo {
+        std::string vendor;
+        std::string model;
+        uint64_t mhz;
+    };
+
+    struct MemoryInfo {
+        uint64_t total; //In Bytes
+        uint64_t available; //In Bytes
+    };
+
+    struct DiskInfo {
+        std::string diskName;
+        std::string diskType;
+        uint64_t total; //In Bytes
+        uint64_t free; //In Bytes
+    };
+
+    struct ProcessMemoryInfo {
+        uint64_t residentMem; //In Bytes
+        uint64_t sharedMem; //In Bytes
+        uint64_t virtualMem; //In Bytes
+    };
+
+    SystemCapabilities();
+    virtual ~SystemCapabilities();
+
+    void printInfo();
+
+    bool canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory = 100);
+    uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory = 100);
+
+    uint64_t getAvailableMemory();
+
+protected:
+    void retrieveStaticInfo();
+    void retrieveDynamicInfo();
+
+private:
+    bool lookupOSInfo();
+    bool lookupCPUInfo();
+    bool lookupMemoryInfo();
+    bool lookupDiskInfo();
+    bool lookupProcessMemoryInfo();
+
+    OSInfo infoOS_;
+    std::vector<CPUInfo> infoCPUs_;
+    MemoryInfo infoRAM_;
+    std::vector<DiskInfo> infoDisks_;
+    ProcessMemoryInfo infoProcRAM_;
+
+    bool successOSInfo_;
+    bool successCPUInfo_;
+    bool successMemoryInfo_;
+    bool successDiskInfo_;
+    //bool successProcessMemoryInfo_;
+};
 
 } // namespace
 

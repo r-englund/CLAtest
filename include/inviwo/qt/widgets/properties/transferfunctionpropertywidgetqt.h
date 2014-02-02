@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,26 +24,26 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidgetQt {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property);
-	~TransferFunctionPropertyWidgetQt();
+    TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property);
+    ~TransferFunctionPropertyWidgetQt();
 
-	void updateFromProperty();
+    void updateFromProperty();
 
 private:
     EditableLabelQt* label_;
     QPushButton* btnOpenTF_;
 
     TransferFunctionProperty* property_;
-	TransferFunctionPropertyDialog* transferFunctionDialog_;
+    TransferFunctionPropertyDialog* transferFunctionDialog_;
 
-	void generateWidget();
+    void generateWidget();
 
 public slots:
-	void setPropertyValue();
-	void openTransferFunctionDialog();
+    void setPropertyValue();
+    void openTransferFunctionDialog();
     void setPropertyDisplayName();
 };
 

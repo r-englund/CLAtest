@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,7 +28,7 @@ public:
     ~LabelGraphicsItem();
 
     QString text() const;
-    void setText(const QString &);
+    void setText(const QString&);
 
     QString croppedText() const;
     void setCrop(int, int);
@@ -38,7 +38,7 @@ public:
     bool isFocusOut() const;
 
 protected:
-    bool doCrop(const QString &str);
+    bool doCrop(const QString& str);
     void updateCrop();
 
     void keyPressEvent(QKeyEvent* event);

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2014 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,7 +23,7 @@ namespace inviwo {
 struct CanRenderGeometry;
 class GeometryRendererFactory;
 
-/** \class GeometryRenderer 
+/** \class GeometryRenderer
  *
  * Base class for renderers capable of rendering Geometry.
  * A derived GeometryRenderer should be registered by the module.
@@ -37,14 +37,14 @@ class GeometryRendererFactory;
  *    class IVW_XXX_API DerivedRenderer: public GeometryRenderer {
  *    public:
  *        DerivedRenderer(const DerivedGeometry* g): GeometryRenderer(), geomToRender_(g) {};
- *        virtual void render() { // do stuff 
+ *        virtual void render() { // do stuff
  *        }
  *        virtual const Geometry* getGeometry() const { return geomToRender_; }
- *    protected: 
+ *    protected:
  *        virtual DerivedRenderer* create(const Geometry* geom) const { return new DerivedRenderer(static_cast<const DerivedGeometry*>(geom)); }
  *        virtual bool canRender(const Geometry* geom) const { return dynamic_cast<const DerivedGeometry*>(geom) != NULL; }
  *    private:
- *        const DerivedGeometry* geomToRender_; 
+ *        const DerivedGeometry* geomToRender_;
  *    };
  *
  * @endcode
@@ -54,22 +54,22 @@ class GeometryRendererFactory;
  * @see Module
  */
 class GeometryRenderer {
-friend struct CanRenderGeometry; // Access to canRender
-friend class GeometryRendererFactory; // Access to create
+    friend struct CanRenderGeometry; // Access to canRender
+    friend class GeometryRendererFactory; // Access to create
 public:
     GeometryRenderer() {};
     virtual ~GeometryRenderer() {};
 
     /**
      * Render the geometry the renderer was created for.
-     * 
+     *
      */
     virtual void render() = 0;
 
     /**
      * Get the geometry to render.
-     * 
-     * @return 
+     *
+     * @return
      */
     virtual const Geometry* getGeometry() const = 0;
 protected:
@@ -85,7 +85,7 @@ protected:
 
     /**
      * Determine if the renderer can render geometry.
-     * 
+     *
      * @param geom The Geometry to render
      * @return Return true if able to render the Geometry, otherwise false.
      */

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,8 +23,8 @@ class VolumeRepresentation;
 
 class IVW_CORE_API VolumeOperation : public DataOperation {
 public:
-    VolumeOperation(const VolumeRepresentation* in) : DataOperation(), in_(in){}
-    virtual ~VolumeOperation(){}
+    VolumeOperation(const VolumeRepresentation* in) : DataOperation(), in_(in) {}
+    virtual ~VolumeOperation() {}
 
     const VolumeRepresentation* getInputVolume() { return in_; }
 

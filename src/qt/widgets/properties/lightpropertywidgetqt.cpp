@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,9 +28,8 @@ LightPropertyWidgetQt::~LightPropertyWidgetQt() {
     delete lightWidget_;
 }
 
-void LightPropertyWidgetQt::generateWidget() {   
+void LightPropertyWidgetQt::generateWidget() {
     setObjectName("LightPropertyWidgetQt");
-    
     lightWidget_ = new LightPositionWidgetQt();
     QHBoxLayout* hLayout = new QHBoxLayout();
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
@@ -39,8 +38,10 @@ void LightPropertyWidgetQt::generateWidget() {
     connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(setPropertyValue()));
     hLayout->addWidget(lightWidget_);
     setLayout(hLayout);
-    if (property_->getReadOnly()) 
+
+    if (property_->getReadOnly())
         label_->finishEditing();
+
     lightWidget_->setPosition(property_->get());
 }
 
@@ -53,7 +54,7 @@ void LightPropertyWidgetQt::updateFromProperty() {
     lightWidget_->setPosition(property_->get());
 }
 
-void LightPropertyWidgetQt::setPropertyDisplayName(){
+void LightPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 

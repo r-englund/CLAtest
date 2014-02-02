@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -33,15 +33,15 @@ class IVW_QTEDITOR_API ResourceManagerWidget : public InviwoDockWidget, public R
 public:
     ResourceManagerWidget(QWidget* parent);
     ~ResourceManagerWidget();
-    void resourceAdded(const Resource* resource);	
-    void resourceRemoved(const Resource* resource);	
-    void keyPressEvent(QKeyEvent *event);
+    void resourceAdded(const Resource* resource);
+    void resourceRemoved(const Resource* resource);
+    void keyPressEvent(QKeyEvent* event);
 private:
-	void buildLayout();
+    void buildLayout();
     void removeSelectedItems();
 
     QListView* listView_;
-    QStandardItemModel *model_;
+    QStandardItemModel* model_;
 public slots:
 
 

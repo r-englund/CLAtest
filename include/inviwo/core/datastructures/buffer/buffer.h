@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -48,7 +48,7 @@ public:
     void resizeBufferRepresentations(Buffer* targetBuffer, size_t targetSize);
 
     size_t getSize() const;
-	void setSize(size_t size);
+    void setSize(size_t size);
 
     size_t getSizeInBytes();
     BufferType getBufferType() const { return type_; }
@@ -69,12 +69,12 @@ public:
     Attributes(size_t size = 0, BufferUsage usage = STATIC): Buffer(size, DataFormat<T,B>::get(), A, usage) {}
     Attributes(BufferUsage usage): Buffer(0, DataFormat<T,B>::get(), A, usage) {}
 
-    virtual ~Attributes(){ }
+    virtual ~Attributes() { }
 
     virtual Attributes* clone() const { return new Attributes(*this); }
 
 private:
-    static const DataFormatBase* defaultformat(){
+    static const DataFormatBase* defaultformat() {
         return  DataFormat<T, B>::get();
     }
 

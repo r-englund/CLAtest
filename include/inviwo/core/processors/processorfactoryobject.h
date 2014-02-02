@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,7 +28,6 @@ class IVW_CORE_API ProcessorFactoryObject  {
 public:
     ProcessorFactoryObject(std::string className, std::string category, CodeState codeState)
         : className_(className), category_(category), codeState_(codeState) {
-
     }
     virtual ~ProcessorFactoryObject() {}
 
@@ -36,7 +35,7 @@ public:
 
     std::string getClassName() const { return className_; }
     std::string getCategory() const { return category_; }
-    CodeState getCodeState() const { return codeState_; } 
+    CodeState getCodeState() const { return codeState_; }
 
 private:
     std::string className_;
@@ -48,7 +47,7 @@ template<typename T>
 class ProcessorFactoryObjectTemplate : public ProcessorFactoryObject  {
 
 public:
-    ProcessorFactoryObjectTemplate(std::string className, std::string category, CodeState codeState) 
+    ProcessorFactoryObjectTemplate(std::string className, std::string category, CodeState codeState)
         : ProcessorFactoryObject(className, category, codeState) {}
     virtual ~ProcessorFactoryObjectTemplate() {}
 

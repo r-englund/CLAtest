@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -78,113 +78,113 @@ class IvwSerializable;
 
 class IVW_CORE_API IvwSerializeBase {
 public:
-    /** 
+    /**
      * \brief Base class for IvwSerializer and IvwDeserializer.
      *
      * This class consists of features that are common to both serializer
      * and de-serializer. Some of them are reference data manager,
      * (ticpp::Node) node switch and factory registration.
-     * 
+     *
      * @param IvwSerializeBase & s object of similar type.
      * @param bool allowReference disables or enables reference management schemes.
      */
-    IvwSerializeBase(IvwSerializeBase &s, bool allowReference=true);
-    /** 
+    IvwSerializeBase(IvwSerializeBase& s, bool allowReference=true);
+    /**
      * \brief Base class for IvwSerializer and IvwDeserializer.
      *
      * This class consists of features that are common to both serializer
      * and de-serializer. Some of them are reference data manager,
      * (ticpp::Node) node switch and factory registration.
-     * 
+     *
      * @param std::string fileName full path to xml file (for reading or writing).
      * @param bool allowReference disables or enables reference management schemes.
      */
     IvwSerializeBase(std::string fileName, bool allowReference=true);
-    /** 
-     * \brief Destructor    
+    /**
+     * \brief Destructor
      */
     virtual ~IvwSerializeBase();
-    /** 
+    /**
      * \brief gets the xml file name.
      */
-    virtual std::string getFileName();    
-    /** 
+    virtual std::string getFileName();
+    /**
      * \brief Checks whether the given type is a primitive type.
      *
      * return true if type is one of following type:
      * bool, char, signed int, unsigned int, float, double, long double, std::string
-     * 
+     *
      * @param const std::type_info & type can be one of  bool, char, signed int, unsigned int, float, double, long double, std::string
      * @return bool true or false
      */
     bool isPrimitiveType(const std::type_info& type) const;
-    /** 
+    /**
      * \brief Checks whether the given type is a primitive pointer type.
      *
      * return true if type is one of following type:
      * bool*, char*, signed int*, unsigned int*, float*, double*, long double*, std::string*
-     * 
+     *
      * @param const std::type_info & type can be one of  bool, char, signed int, unsigned int, float, double, long double, std::string.
      * @return bool true or false.
      */
     bool isPrimitivePointerType(const std::type_info& type) const;
-    /** 
+    /**
      * \brief Enable or disable reference flag.
      */
-    void setAllowReference(const bool &allowReference);
-    /** 
-     * \brief Registers all factories from all modules.     
+    void setAllowReference(const bool& allowReference);
+    /**
+     * \brief Registers all factories from all modules.
      */
     virtual void registerFactories(void);
 
-    /** 
+    /**
      * \brief For allocating objects such as processors, properties.. using registered factories.
      *
      * @param const std::string & className is used by registered factories to allocate the required object.
      * @return T* NULL if allocation fails or className does not exist in any factories.
      */
     template <typename T>
-    T* getRegisteredType(const std::string &className);
+    T* getRegisteredType(const std::string& className);
 
-    /** 
-     * \brief For allocating objects that do not belong to any registered factories.          
-     * 
+    /**
+     * \brief For allocating objects that do not belong to any registered factories.
+     *
      * @return T* Pointer to object of type T.
      */
     template <typename T>
     T* getNonRegisteredType();
-    
-    /** 
-     * \brief To set file name with full path which will be later serialized or deserialzied     
+
+    /**
+     * \brief To set file name with full path which will be later serialized or deserialzied
      */
     virtual void setFileName(const std::string fileName);
 
     class IVW_CORE_API NodeSwitch {
     public:
-         /** 
-          * \brief NodeSwitch helps track parent node during recursive/nested function calls.
-          * 
-          * @param IvwSerializeBase & serializer reference to serializer or deserializer
-          * @param TxElement * node //Parent (Ticpp Node) element.
-          */
-         NodeSwitch(IvwSerializeBase& serializer, TxElement* node, bool getChild = true);
-        /** 
-         * \brief Destructor         
+        /**
+         * \brief NodeSwitch helps track parent node during recursive/nested function calls.
+         *
+         * @param IvwSerializeBase & serializer reference to serializer or deserializer
+         * @param TxElement * node //Parent (Ticpp Node) element.
+         */
+        NodeSwitch(IvwSerializeBase& serializer, TxElement* node, bool getChild = true);
+        /**
+         * \brief Destructor
          */
         ~NodeSwitch();
 
-    private:  
+    private:
         IvwSerializeBase& serializer_;  //reference to serializer or deserializer
         TxElement* storedNode_; //Parent (Ticpp Node) element.
         bool storedGetChild_;
     };
 
-    struct IVW_CORE_API ReferenceData {            
+    struct IVW_CORE_API ReferenceData {
         TxElement* node_; //Ticpp Node element.
         bool isPointer_; //Used to differentiate pointer and object.
-    };    
+    };
 
-    typedef std::pair<const void *, IvwSerializeBase::ReferenceData> RefDataPair;
+    typedef std::pair<const void*, IvwSerializeBase::ReferenceData> RefDataPair;
     typedef std::multimap<const void*,ReferenceData> RefMap;
     typedef std::vector<IvwSerializeBase::ReferenceData> RefDataList;
 
@@ -192,17 +192,17 @@ public:
     public:
         ReferenceDataContainer();
         ~ReferenceDataContainer();
-        size_t insert(const void *data, TxElement *node, bool isPointer=true);
-        size_t find(const void *data);
+        size_t insert(const void* data, TxElement* node, bool isPointer=true);
+        size_t find(const void* data);
         void* find(const std::string& key, const std::string& reference_or_id);
-        TxElement* nodeCopy(const void *data);
+        TxElement* nodeCopy(const void* data);
         void setReferenceAttributes();
 
-    private:  
+    private:
         RefMap referenceMap_;
         int referenceCount_;
-    };    
-    
+    };
+
 protected:
 
     static std::string nodeToString(const TxElement& node);
@@ -211,7 +211,7 @@ protected:
 
     std::vector<Factory*> registeredFactories_;
     std::string fileName_;
-    TxDocument doc_;    
+    TxDocument doc_;
     TxElement* rootElement_;
     bool allowRef_;
     bool getChild_;
@@ -220,11 +220,13 @@ protected:
 
 
 template <typename T>
-T* IvwSerializeBase::getRegisteredType(const std::string &className) {
+T* IvwSerializeBase::getRegisteredType(const std::string& className) {
     T* data = 0;
-    std::vector<Factory *>::iterator it;
+    std::vector<Factory*>::iterator it;
+
     for (it = registeredFactories_.begin(); it!=registeredFactories_.end(); it++) {
-        data = dynamic_cast<T*>( (*it)->create(className) );
+        data = dynamic_cast<T*>((*it)->create(className));
+
         if (data)
             break;
     }
@@ -233,7 +235,7 @@ T* IvwSerializeBase::getRegisteredType(const std::string &className) {
 }
 
 template <typename T>
-inline T* IvwSerializeBase::getNonRegisteredType() {   
+inline T* IvwSerializeBase::getNonRegisteredType() {
     return new T();
 }
 

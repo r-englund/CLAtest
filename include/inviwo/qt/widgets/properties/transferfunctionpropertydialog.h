@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -43,17 +43,17 @@
 namespace inviwo {
 
 class TransferFunctionPropertyWidgetQt;
- 
+
 class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver, public PropertyEditorWidget {
 
     Q_OBJECT
 
 public:
-	TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent);
-	~TransferFunctionPropertyDialog();
+    TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent);
+    ~TransferFunctionPropertyDialog();
 
     /** \Updates and draws the visual transfer function
-    *         
+    *
     *      Fetches the float array from the TransferFunction and draws a line for each value
     *      Redraws it fully every time, to be optimized if it is allowed to stay
     */
@@ -76,12 +76,12 @@ public slots:
     void showHistogram(bool);
     void dockLocationChanged(Qt::DockWidgetArea dockArea);
 private:
-	int arrayWidth_;
+    int arrayWidth_;
     int arrayHeight_;
 
     TransferFunctionProperty* tfProperty_;     ///< Pointer to property, for get and invalidation in the widget
     TransferFunctionEditor* tfEditor_;         ///< TransferFunctionEditor inherited from QGraphicsScene
-    TransferFunctionEditorView*	tfEditorView_; ///< View that contains the editor
+    TransferFunctionEditorView* tfEditorView_; ///< View that contains the editor
     QPushButton* btnClearTF_;
     QPushButton* btnImportTF_;
     QPushButton* btnExportTF_;
@@ -91,11 +91,11 @@ private:
     QLabel* tfPreview_; ///< View that contains the scene for the painted transfer function
     QPixmap* tfPixmap_;
 
-	QLinearGradient* gradient_;
+    QLinearGradient* gradient_;
 
     QColorDialog* colorDialog_;
     ColorWheel* colorWheel_;
-    
+
     RangeSliderQt* zoomVSlider_;
     RangeSliderQt* zoomHSlider_;
     RangeSliderQt* maskSlider_;
@@ -108,7 +108,7 @@ protected:
     virtual void resizeEvent(QResizeEvent*);
     virtual void closeEvent(QCloseEvent*);
     virtual void showEvent(QShowEvent*);
-    virtual void moveEvent(QMoveEvent*);    
+    virtual void moveEvent(QMoveEvent*);
 };
 
 } // namespace

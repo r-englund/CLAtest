@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,7 +24,7 @@ namespace inviwo {
  * \class Polygon
  * \brief Create a Polygon which consists of points.
  *
- * A Polygon consists of a specific number of vertices, or indices to vertices. 
+ * A Polygon consists of a specific number of vertices, or indices to vertices.
  * When polygon contains vertices, adjacent vertices are considered to be connected with lines to form a edge.
  * First and last vertex are also considered to be connected, to form a closed chain.
  */
@@ -37,34 +37,34 @@ public:
         list_ = new T[size_];
     }
 
-    Polygon(const Polygon& rhs) : size_(rhs.size()){
+    Polygon(const Polygon& rhs) : size_(rhs.size()) {
         list_ = new T[size_];
-        for(size_t i=0; i < size(); ++i){
+
+        for (size_t i=0; i < size(); ++i)
             list_[i] = rhs.get(i);
-        }
     }
 
-    virtual ~Polygon(){
+    virtual ~Polygon() {
         delete[] list_;
     }
 
-    T& at(size_t i){
+    T& at(size_t i) {
         return list_[i];
     }
 
-    T get(size_t i) const{
+    T get(size_t i) const {
         return list_[i];
     }
 
-    size_t size() const{
+    size_t size() const {
         return size_;
     }
 
-    const T* values() const{
+    const T* values() const {
         return list_;
     }
 
-    T* values(){
+    T* values() {
         return list_;
     }
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -18,14 +18,14 @@ namespace inviwo {
 
 FloatMat2Property::FloatMat2Property(std::string identifier, std::string displayName, mat2 value,
                                      mat2 minValue, mat2 maxValue, mat2 increment,
-                                     PropertyOwner::InvalidationLevel invalidationLevel, 
+                                     PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
-	: OrdinalProperty<mat2>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics) 
+    : OrdinalProperty<mat2>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 void FloatMat2Property::serialize(IvwSerializer& s) const {
-	Property::serialize(s);
-	s.serialize("value",get());
+    Property::serialize(s);
+    s.serialize("value",get());
     s.serialize("minvalue", OrdinalProperty<mat2>::getMinValue());
     s.serialize("maxvalue", OrdinalProperty<mat2>::getMaxValue());
     s.serialize("increment", OrdinalProperty<mat2>::getIncrement());
@@ -36,22 +36,19 @@ void FloatMat2Property::deserialize(IvwDeserializer& d) {
     mat2 value;
     d.deserialize("value",value);
     set(value);
-
     d.deserialize("minvalue", value);
     OrdinalProperty<mat2>::setMinValue(value);
-
     d.deserialize("maxvalue",value);
     OrdinalProperty<mat2>::setMaxValue(value);
-
     d.deserialize("increment", value);
     OrdinalProperty<mat2>::setIncrement(value);
 }
 
 FloatMat3Property::FloatMat3Property(std::string identifier, std::string displayName, mat3 value,
                                      mat3 minValue, mat3 maxValue, mat3 increment,
-                                     PropertyOwner::InvalidationLevel invalidationLevel, 
+                                     PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
-    : OrdinalProperty<mat3>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics) 
+    : OrdinalProperty<mat3>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 void FloatMat3Property::serialize(IvwSerializer& s) const {
@@ -67,22 +64,19 @@ void FloatMat3Property::deserialize(IvwDeserializer& d) {
     mat3 value;
     d.deserialize("value",value);
     set(value);
-
     d.deserialize("minvalue", value);
     OrdinalProperty<mat3>::setMinValue(value);
-
     d.deserialize("maxvalue",value);
     OrdinalProperty<mat3>::setMaxValue(value);
-
     d.deserialize("increment", value);
     OrdinalProperty<mat3>::setIncrement(value);
 }
 
 FloatMat4Property::FloatMat4Property(std::string identifier, std::string displayName, mat4 value,
                                      mat4 minValue, mat4 maxValue, mat4 increment,
-                                     PropertyOwner::InvalidationLevel invalidationLevel, 
+                                     PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
-    : OrdinalProperty<mat4>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics) 
+    : OrdinalProperty<mat4>(identifier,displayName,value, minValue, maxValue, increment, invalidationLevel, semantics)
 {}
 
 void FloatMat4Property::serialize(IvwSerializer& s) const {
@@ -98,13 +92,10 @@ void FloatMat4Property::deserialize(IvwDeserializer& d) {
     mat4 value;
     d.deserialize("value",value);
     set(value);
-
     d.deserialize("minvalue", value);
     OrdinalProperty<mat4>::setMinValue(value);
-
     d.deserialize("maxvalue",value);
     OrdinalProperty<mat4>::setMaxValue(value);
-
     d.deserialize("increment", value);
     OrdinalProperty<mat4>::setIncrement(value);
 }

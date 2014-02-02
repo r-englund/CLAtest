@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -26,8 +26,8 @@ class MultiInport;
 
 class IVW_CORE_API Port : public IvwSerializable {
 
-friend class Processor;
-friend class MultiInport;
+    friend class Processor;
+    friend class MultiInport;
 
 public:
     /**
@@ -64,7 +64,7 @@ public:
      */
     virtual uvec3 getColorCode() const;
     /**
-     * All instances have the same color. 
+     * All instances have the same color.
      * Derived should declare its own and return DerivedClass::colorCode in getColorCode
      */
     static uvec3 colorCode;
@@ -77,9 +77,9 @@ public:
     std::string getIdentifier() const;
 
     virtual std::string getClassName() const = 0;
-    
-	virtual bool isConnected() const = 0;
-	virtual bool isReady() const = 0;
+
+    virtual bool isConnected() const = 0;
+    virtual bool isReady() const = 0;
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return PropertyOwner::INVALID_OUTPUT; }
@@ -88,7 +88,7 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-protected:   
+protected:
     std::string identifier_;
 
     void setIdentifier(const std::string& name);

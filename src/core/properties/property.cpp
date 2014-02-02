@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -40,11 +40,11 @@ Property::Property(std::string identifier,
 Property::Property()
     : identifier_("")
     , displayName_("")
-    , propertyModified_(false){
+    , propertyModified_(false) {
 }
 
-Property::~Property(){
-    while(!metaData_.empty()){
+Property::~Property() {
+    while (!metaData_.empty()) {
         delete metaData_.back();
         metaData_.pop_back();
     }
@@ -66,26 +66,26 @@ void Property::setDisplayName(const std::string& displayName) {
     displayName_ = displayName;
 }
 
-PropertySemantics Property::getSemantics()const{
+PropertySemantics Property::getSemantics()const {
     return semantics_;
 }
 
-void Property::setSemantics(const PropertySemantics& semantics){
+void Property::setSemantics(const PropertySemantics& semantics) {
     semantics_ = semantics;
 }
 
 
-void Property::setReadOnly(const bool &value){
+void Property::setReadOnly(const bool& value) {
     readOnly_ = value;
 }
 
-bool Property::getReadOnly()const{
+bool Property::getReadOnly()const {
     return readOnly_;
 }
 
 
 PropertyOwner::InvalidationLevel Property::getInvalidationLevel() const {
-    return invalidationLevel_; 
+    return invalidationLevel_;
 }
 void Property::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
     invalidationLevel_ = invalidationLevel;
@@ -101,7 +101,8 @@ void Property::setOwner(PropertyOwner* owner) {
 
 void Property::registerWidget(PropertyWidget* propertyWidget) {
     propertyWidgets_.push_back(propertyWidget);
-    if(this->visibilityMode_ == INVISIBLE)
+
+    if (this->visibilityMode_ == INVISIBLE)
         updateVisibility();
 }
 
@@ -111,34 +112,36 @@ void Property::updateWidgets() {
             propertyWidgets_[i]->updateFromProperty();
 }
 
-bool Property::hasWidgets() const{
+bool Property::hasWidgets() const {
     return !propertyWidgets_.empty();
 }
 
-void Property::setGroupID(const std::string &groupID) { 
+void Property::setGroupID(const std::string& groupID) {
     groupID_ = groupID;
 }
 
-std::string Property::getGroupID()const{
-     return groupID_;
+std::string Property::getGroupID()const {
+    return groupID_;
 }
 
 
 void Property::propertyModified() {
     onChangeCallback_.invoke();
-    setPropertyModified(true); 
-    //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )    
-    if (getOwner()) getOwner()->invalidate(getInvalidationLevel(), this);    
+    setPropertyModified(true);
+
+    //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )
+    if (getOwner()) getOwner()->invalidate(getInvalidationLevel(), this);
+
     updateWidgets();
 }
 
 
-void Property::setPropertyModified(bool modified) { 
-    propertyModified_ = modified; 
+void Property::setPropertyModified(bool modified) {
+    propertyModified_ = modified;
 }
 
-bool Property::isPropertyModified() const { 
-    return propertyModified_; 
+bool Property::isPropertyModified() const {
+    return propertyModified_;
 }
 
 Variant Property::getVariant() {
@@ -154,6 +157,7 @@ int Property::getVariantType() {
 MetaData* Property::getMetaData(std::string className) {
     //TODO: Code is very similar to processor getMetaData. Use common scheme
     MetaData* meta = 0;
+
     for (size_t i=0; i<metaData_.size(); i++) {
         if (metaData_[i]->getClassName()==className) {
             meta = metaData_[i];
@@ -165,6 +169,7 @@ MetaData* Property::getMetaData(std::string className) {
         meta = dynamic_cast<MetaData*>(MetaDataFactory::getRef().create(className));
         metaData_.push_back(meta);
     }
+
     return meta;
 }
 
@@ -183,14 +188,14 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("MetaDataList", metaData_, "MetaData") ;
 }
 
-bool Property::operator==(const Property& prop){
-	// TODO: this is not an equal operator, change to isSameType or similar
+bool Property::operator==(const Property& prop) {
+    // TODO: this is not an equal operator, change to isSameType or similar
     if (this->getClassName()==prop.getClassName()) return true;
-	else return false;
+    else return false;
 }
 
-void Property::setGroupDisplayName(const std::string &groupID,const std::string &groupDisplayName) {
-	Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));
+void Property::setGroupDisplayName(const std::string& groupID,const std::string& groupDisplayName) {
+    Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));
 }
 
 std::string Property::getGroupDisplayName() const {
@@ -205,31 +210,29 @@ void Property::setVisibility(PropertyVisibilityMode visibilityMode) {
 void Property::updateVisibility() {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     Settings* mainSettings = inviwoApp->getSettingsByType<SystemSettings>();
-    PropertyVisibilityMode appMode =  static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>(mainSettings->getPropertyByIdentifier("viewMode"))->get());
+    PropertyVisibilityMode appMode =  static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>
+                                      (mainSettings->getPropertyByIdentifier("viewMode"))->get());
 
     if (visibilityMode_ == INVISIBLE) {
-        for (size_t i=0; i<propertyWidgets_.size(); i++){
-            propertyWidgets_[i]->hideWidget();
-        }
-    }
-    if (visibilityMode_ == APPLICATION) {
-        for (size_t i=0; i<propertyWidgets_.size(); i++){
-            propertyWidgets_[i]->showWidget();
-        }
-    }
-    else if (visibilityMode_ == DEVELOPMENT && appMode == DEVELOPMENT) {
-        for (size_t i=0; i<propertyWidgets_.size(); i++){
-            propertyWidgets_[i]->showWidget();
-        }
-    }
-    else if (visibilityMode_ == DEVELOPMENT && appMode == APPLICATION ) {
         for (size_t i=0; i<propertyWidgets_.size(); i++)
             propertyWidgets_[i]->hideWidget();
     }
 
+    if (visibilityMode_ == APPLICATION) {
+        for (size_t i=0; i<propertyWidgets_.size(); i++)
+            propertyWidgets_[i]->showWidget();
+    }
+    else if (visibilityMode_ == DEVELOPMENT && appMode == DEVELOPMENT) {
+        for (size_t i=0; i<propertyWidgets_.size(); i++)
+            propertyWidgets_[i]->showWidget();
+    }
+    else if (visibilityMode_ == DEVELOPMENT && appMode == APPLICATION) {
+        for (size_t i=0; i<propertyWidgets_.size(); i++)
+            propertyWidgets_[i]->hideWidget();
+    }
 }
 
-void Property::setVisible( bool val ) {
+void Property::setVisible(bool val) {
     if (val)
         setVisibility(APPLICATION);
     else

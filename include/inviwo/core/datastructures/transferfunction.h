@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,24 +36,24 @@ public:
         InterpolationCubic
     };
 
-	TransferFunction();
-	TransferFunction(const TransferFunction& rhs);
-	TransferFunction& operator=(const TransferFunction& rhs);
-	virtual ~TransferFunction();
+    TransferFunction();
+    TransferFunction(const TransferFunction& rhs);
+    TransferFunction& operator=(const TransferFunction& rhs);
+    virtual ~TransferFunction();
 
     const Layer* getData() const { return data_; }
     size_t getNumDataPoints() const { return dataPoints_.size(); }
     int getTextureSize() { return textureSize_; }
 
-	TransferFunctionDataPoint* getPoint(int i) const;
+    TransferFunctionDataPoint* getPoint(int i) const;
 
-	void addPoint(const vec2& pos, const vec4& color);
-	void addPoint(TransferFunctionDataPoint* dataPoint);
-	void removePoint(TransferFunctionDataPoint* dataPoint);
+    void addPoint(const vec2& pos, const vec4& color);
+    void addPoint(TransferFunctionDataPoint* dataPoint);
+    void removePoint(TransferFunctionDataPoint* dataPoint);
 
     void clearPoints();
 
-	void calcTransferValues();
+    void calcTransferValues();
 
     float getMaskMin() { return maskMin_; }
     void setMaskMin(float maskMin) { maskMin_ = maskMin; }

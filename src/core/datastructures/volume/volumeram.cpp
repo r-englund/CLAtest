@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Link�ping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -21,14 +21,15 @@ VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders borde
     : VolumeRepresentation(dimensions, format, border), data_(NULL), histogram_(NULL), calculatingHistogram_(false)
 {}
 
-VolumeRAM::VolumeRAM(const VolumeRAM& rhs) 
+VolumeRAM::VolumeRAM(const VolumeRAM& rhs)
     : VolumeRepresentation(rhs), data_(NULL), histogram_(new NormalizedHistogram(rhs.histogram_)), calculatingHistogram_(false) {
 }
 VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
-    if(this != &that) {
+    if (this != &that) {
         VolumeRepresentation::operator=(that);
         histogram_ = new NormalizedHistogram(that.histogram_);
     }
+
     return *this;
 }
 VolumeRAM::~VolumeRAM() {
@@ -39,7 +40,7 @@ void VolumeRAM::initialize() {}
 
 void VolumeRAM::deinitialize() {
     // Make sure that data is deinitialized in
-    // child class (should not delete void pointer 
+    // child class (should not delete void pointer
     // since destructor will not be called for object.
     delete histogram_;
     histogram_ = NULL;
@@ -53,23 +54,25 @@ const void* VolumeRAM::getData() const {
     return const_cast<void*>(data_);
 }
 
-bool VolumeRAM::hasNormalizedHistogram() const{
+bool VolumeRAM::hasNormalizedHistogram() const {
     return (histogram_ != NULL);
 }
 
 NormalizedHistogram* VolumeRAM::getNormalizedHistogram() {
-    if(!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
+    if (!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
         calculateHistogram();
-    return histogram_; 
+
+    return histogram_;
 }
 
 const NormalizedHistogram* VolumeRAM::getNormalizedHistogram() const {
     if (!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
         calculateHistogram();
-    return histogram_; 
+
+    return histogram_;
 }
 
-void VolumeRAM::calculateHistogram() const{
+void VolumeRAM::calculateHistogram() const {
     calculatingHistogram_ = true;
     // TODO: using delta should be changeable from outside when requesting
     //       the histogram through getNormalizedHistogram()
@@ -82,17 +85,20 @@ void VolumeRAM::calculateHistogram() const{
 VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format) {
     // TODO: Add more formats
     VolumeRAM* result = 0;
+
     switch (format->getId())
     {
-    case NOT_SPECIALIZED:
-        LogErrorCustom("createVolumeRAM", "Invalid format");
-        break;
-    #define DataFormatIdMacro(i) case i: return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); break;
-    #include <inviwo/core/util/formatsdefinefunc.h>
-    default:
-        LogErrorCustom("createVolumeRAM", "Invalid format or not implemented");
-        break;
+        case NOT_SPECIALIZED:
+            LogErrorCustom("createVolumeRAM", "Invalid format");
+            break;
+#define DataFormatIdMacro(i) case i: return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); break;
+#include <inviwo/core/util/formatsdefinefunc.h>
+
+        default:
+            LogErrorCustom("createVolumeRAM", "Invalid format or not implemented");
+            break;
     }
+
     return result;
 }
 

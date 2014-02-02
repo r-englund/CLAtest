@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -44,7 +44,7 @@ public:
 
     const vec2& getZoomV() const { return zoomV_; }
     void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
-    
+
     void setShowHistogram(bool);
     bool getShowHistogram();
     VolumeInport* getVolumeInport();

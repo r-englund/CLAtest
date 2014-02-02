@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -29,7 +29,7 @@ void ProgressBar::updateProgress(float progress) {
         ivwAssert(progress>=progress_, "Progress should always increase");
         ivwAssert(progress>=0.0f&&progress<=1.0, "Progress out of bounds.");
         progress_ = progress;
-        notifyProgressChanged();    
+        notifyProgressChanged();
     }
 }
 
@@ -37,10 +37,13 @@ void ProgressBar::updateProgressLoop(size_t loopVar, size_t maxLoopVar, float en
     if (visible_) {
         if (beginLoopProgress_<=0.0f)
             beginLoopProgress_ = progress_;
+
         float normalizedLoopVar = static_cast<float>(loopVar)/static_cast<float>(maxLoopVar);
         progress_ = beginLoopProgress_+normalizedLoopVar*(endLoopProgress-beginLoopProgress_);
+
         if (loopVar == maxLoopVar)
             beginLoopProgress_ = -1.0f;
+
         notifyProgressChanged();
     }
 }

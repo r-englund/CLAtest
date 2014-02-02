@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,7 +22,7 @@ SingleInport::SingleInport(std::string identifier,
                            PropertyOwner::InvalidationLevel invalidationLevel)
     : Inport(identifier)
     , connectedOutport_(NULL)
-    , invalidationLevel_(invalidationLevel){
+    , invalidationLevel_(invalidationLevel) {
 }
 
 SingleInport::~SingleInport() {}
@@ -36,15 +36,16 @@ void SingleInport::connectTo(Outport* outport) {
 
 void SingleInport::disconnectFrom(Outport* outport) {
     ivwAssert(connectedOutport_==outport, "Ports are not connected.");
-    if(outport == connectedOutport_) {
+
+    if (outport == connectedOutport_) {
         connectedOutport_ = NULL;
         outport->disconnectFrom(this);
         invalidate(invalidationLevel_);
     }
 }
 
-bool SingleInport::isConnected() const { 
-    return (connectedOutport_!=NULL); 
+bool SingleInport::isConnected() const {
+    return (connectedOutport_!=NULL);
 }
 
 bool SingleInport::isConnectedTo(Outport* outport) const {

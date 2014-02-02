@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -66,52 +66,40 @@ namespace inviwo {
 
 InviwoCore::InviwoCore() : InviwoModule() {
     setIdentifier("Core");
-    
     // Register Converters
     registerRepresentationConverter(new VolumeDisk2RAMConverter());
     registerRepresentationConverter(new LayerDisk2RAMConverter());
-
     // Register MetaData
-    #define MetaDataMacro(n, t, d, v) registerMetaData(new n##MetaData());
-	#include <inviwo/core/metadata/metadatadefinefunc.h>
-
+#define MetaDataMacro(n, t, d, v) registerMetaData(new n##MetaData());
+#include <inviwo/core/metadata/metadatadefinefunc.h>
     registerMetaData(new VectorMetaData<2,float>());
     registerMetaData(new VectorMetaData<3,float>());
     registerMetaData(new VectorMetaData<4,float>());
-
     registerMetaData(new VectorMetaData<2,int>());
     registerMetaData(new VectorMetaData<3,int>());
     registerMetaData(new VectorMetaData<4,int>());
-
     registerMetaData(new VectorMetaData<2,unsigned int>());
     registerMetaData(new VectorMetaData<3,unsigned int>());
     registerMetaData(new VectorMetaData<4,unsigned int>());
-
     registerMetaData(new MatrixMetaData<2,float>());
     registerMetaData(new MatrixMetaData<3,float>());
     registerMetaData(new MatrixMetaData<4,float>());
-
     registerMetaData(new PositionMetaData());
     registerMetaData(new ProcessorMetaData());
     registerMetaData(new ProcessorWidgetMetaData());
     registerMetaData(new PropertyEditorWidgetMetaData());
-
     // Register Capabilities
     registerCapabilities(new SystemCapabilities());
-
     // Register Data readers
     registerDataReader(new DatVolumeReader());
     registerDataReader(new IvfVolumeReader());
     registerDataReader(new RawVolumeReader());
-
     // Register Data writers
     registerDataWriter(new DatVolumeWriter());
-    registerDataWriter(new IvfVolumeWriter()); 
-
+    registerDataWriter(new IvfVolumeWriter());
     // Register Settings
     registerSettings(new SystemSettings());
     registerSettings(new LinkSettings());
-
     // Register Ports
     registerPort(GeometryInport);
     registerPort(GeometryMultiInport);
@@ -120,23 +108,18 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerPort(ImageOutport);
     registerPort(VolumeInport);
     registerPort(VolumeOutport);
-
     // Register PortInspectors
     registerPortInspector(new PortInspector("ImageOutport",
-        InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
-        + "portinspectors/imageportinspector.inv"));
-    
+                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
+                                            + "portinspectors/imageportinspector.inv"));
     registerPortInspector(new PortInspector("VolumeOutport",
-        InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
-        + "portinspectors/volumeportinspector.inv"));
-    
+                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
+                                            + "portinspectors/volumeportinspector.inv"));
     registerPortInspector(new PortInspector("GeometryOutport",
-        InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
-        + "portinspectors/geometryportinspector.inv"));
-    
+                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
+                                            + "portinspectors/geometryportinspector.inv"));
     registerProperty(CameraProperty);
     registerProperty(TransferFunctionProperty);
-
     registerProperty(BoolProperty);
     registerProperty(ButtonProperty);
     registerProperty(DirectoryProperty);
@@ -164,7 +147,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerProperty(IntVec4Property);
 }
 
-void InviwoCore::setupModuleSettings(){
+void InviwoCore::setupModuleSettings() {
     for (size_t i=0; i<moduleSettings_.size(); i++)
         moduleSettings_[i]->initialize();
 }

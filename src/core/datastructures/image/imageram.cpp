@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,11 +20,11 @@
 namespace inviwo {
 
 ImageRAM::ImageRAM()
-    : ImageRepresentation(){
+    : ImageRepresentation() {
 }
 
-ImageRAM::ImageRAM(const ImageRAM& rhs) 
-    : ImageRepresentation(rhs){
+ImageRAM::ImageRAM(const ImageRAM& rhs)
+    : ImageRepresentation(rhs) {
     update(true);
 }
 
@@ -32,15 +32,16 @@ ImageRAM* ImageRAM::clone() const {
     return new ImageRAM(*this);
 }
 ImageRAM& ImageRAM::operator=(const ImageRAM& that) {
-    if(this != &that) {
+    if (this != &that) {
         ImageRepresentation::operator=(that);
         update(true);
     }
+
     return *this;
 }
 ImageRAM::~ImageRAM() {
     ImageRAM::deinitialize();
-}  
+}
 
 void ImageRAM::initialize() {
 }
@@ -48,30 +49,30 @@ void ImageRAM::initialize() {
 void ImageRAM::deinitialize() {
 }
 
-std::string ImageRAM::getClassName() const { 
-    return "ImageRAM"; 
+std::string ImageRAM::getClassName() const {
+    return "ImageRAM";
 }
 
 bool ImageRAM::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     const ImageRAM* source = this;
     ImageRAM* target = dynamic_cast<ImageRAM*>(targetRep);
     ivwAssert(target!=0, "Target representation missing.");
-
     //Copy and resize color layers
     size_t minSize = std::min(source->getOwner()->getNumberOfColorLayers(), target->getOwner()->getNumberOfColorLayers());
+
     for (size_t i=0; i<minSize; ++i) {
-        if(!source->getColorLayerRAM(i)->copyAndResizeLayer(target->getColorLayerRAM(i)))
+        if (!source->getColorLayerRAM(i)->copyAndResizeLayer(target->getColorLayerRAM(i)))
             return false;
     }
 
     //Copy and resize depth layer
-    if(source->getDepthLayerRAM() && target->getDepthLayerRAM())
-        if(!source->getDepthLayerRAM()->copyAndResizeLayer(target->getDepthLayerRAM()))
+    if (source->getDepthLayerRAM() && target->getDepthLayerRAM())
+        if (!source->getDepthLayerRAM()->copyAndResizeLayer(target->getDepthLayerRAM()))
             return false;
 
     //Copy and resize picking layer
-    if(source->getPickingLayerRAM() && target->getPickingLayerRAM())
-        if(!source->getPickingLayerRAM()->copyAndResizeLayer(target->getPickingLayerRAM()))
+    if (source->getPickingLayerRAM() && target->getPickingLayerRAM())
+        if (!source->getPickingLayerRAM()->copyAndResizeLayer(target->getPickingLayerRAM()))
             return false;
 
     return true;
@@ -81,30 +82,33 @@ void ImageRAM::update(bool editable) {
     colorLayersRAM_.clear();
     depthLayerRAM_ = NULL;
     pickingLayerRAM_ = NULL;
-    if(editable){
-        for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i) {
+
+    if (editable) {
+        for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i)
             colorLayersRAM_.push_back(owner_->getColorLayer(i)->getEditableRepresentation<LayerRAM>());
-        }
 
         Layer* depthLayer = owner_->getDepthLayer();
-        if(depthLayer)
+
+        if (depthLayer)
             depthLayerRAM_ = depthLayer->getEditableRepresentation<LayerRAM>();
 
         Layer* pickingLayer = owner_->getPickingLayer();
-        if(pickingLayer)
+
+        if (pickingLayer)
             pickingLayerRAM_ = pickingLayer->getEditableRepresentation<LayerRAM>();
     }
-    else{
-        for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i) {
+    else {
+        for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i)
             colorLayersRAM_.push_back(const_cast<LayerRAM*>(owner_->getColorLayer(i)->getRepresentation<LayerRAM>()));
-        }
 
         Layer* depthLayer = owner_->getDepthLayer();
-        if(depthLayer)
+
+        if (depthLayer)
             depthLayerRAM_ = const_cast<LayerRAM*>(depthLayer->getRepresentation<LayerRAM>());
 
         Layer* pickingLayer = owner_->getPickingLayer();
-        if(pickingLayer)
+
+        if (pickingLayer)
             pickingLayerRAM_ = const_cast<LayerRAM*>(pickingLayer->getRepresentation<LayerRAM>());
     }
 }

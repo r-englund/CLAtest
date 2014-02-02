@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -22,10 +22,8 @@ namespace inviwo {
 RawDataReaderDialogQt::RawDataReaderDialogQt() {
     setWindowTitle("Importing Raw Data");
     QGridLayout* mainLayout = new QGridLayout(this);
-
     QLabel* fileNameLabel = new QLabel("Importing file:");
     fileName_= new QLabel();
-
     QGridLayout* dataTypeLayout = new QGridLayout();
     QLabel* bitDepthLabel = new QLabel("Data format");
     bitDepth_= new QComboBox();
@@ -47,7 +45,6 @@ RawDataReaderDialogQt::RawDataReaderDialogQt() {
     dataTypeLayout->addWidget(channels_,     1, 1);
     QGroupBox* dataTypeBox = new QGroupBox("Data type", this);
     dataTypeBox->setLayout(dataTypeLayout);
-
     QGridLayout* dataSizeLayout = new QGridLayout();
     QLabel* dimensionLabel = new QLabel("Dimensions");
     dimX_= new QSpinBox();
@@ -73,7 +70,6 @@ RawDataReaderDialogQt::RawDataReaderDialogQt() {
     dataSizeLayout->addWidget(timeSteps_,     1, 1);
     QGroupBox* dataSizeBox = new QGroupBox("Data size", this);
     dataSizeBox->setLayout(dataSizeLayout);
-
     QGridLayout* readOptionsLayout = new QGridLayout();
     QLabel* headerOffsetLabel = new QLabel("Header offset");
     headerOffset_ = new QSpinBox();
@@ -97,11 +93,9 @@ RawDataReaderDialogQt::RawDataReaderDialogQt() {
     readOptionsLayout->addWidget(endianess_,          2, 1);
     QGroupBox* readOptionsBox = new QGroupBox("Read options", this);
     readOptionsBox->setLayout(readOptionsLayout);
-
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-
     mainLayout->addWidget(fileNameLabel,  0, 0);
     mainLayout->addWidget(fileName_,      0, 1);
     mainLayout->addWidget(dataTypeBox,    1, 0, 2, 2);
@@ -126,13 +120,16 @@ RawDataReaderDialogQt::~RawDataReaderDialogQt() {
 
 const DataFormatBase* RawDataReaderDialogQt::getFormat(std::string fileName, uvec3* dimensions, bool* littleEndian) {
     fileName_->setText(QString::fromStdString(fileName));
+
     if (exec() && result() == QDialog::Accepted) {
         const DataFormatBase* format = DataFormatBase::get(bitDepth_->currentText().toStdString());
         dimensions->x = dimX_->value();
         dimensions->y = dimY_->value();
         dimensions->z = dimZ_->value();
+
         if (endianess_->currentIndex()==0) *littleEndian=true;
         else *littleEndian=false;
+
         return format;
     }
     else return 0;

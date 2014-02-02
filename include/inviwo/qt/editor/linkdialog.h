@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -76,7 +76,7 @@ public:
     QRectF boundingRect() const;
 
     LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }
- 
+
     LinkDialogPropertyGraphicsItem* getEndProperty() const { return endPropertyGraphicsItem_; }
 
     void switchDirection();
@@ -129,7 +129,7 @@ public:
 
     std::vector<LinkDialogPropertyGraphicsItem*> getPropertyItemList() {return propertyGraphicsItems_;}
 
-    QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const;
+    QSizeF sizeHint(Qt::SizeHint which, const QSizeF& constraint = QSizeF()) const;
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkDialogProcessorGraphicsItemType };
@@ -137,7 +137,7 @@ public:
 
 protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
 private:
     LabelGraphicsItem* nameLabel_;
@@ -150,12 +150,12 @@ private:
 class IVW_QTEDITOR_API LinkDialogPropertyGraphicsItem : public GraphicsItemData<Property> {
 
 public:
-    LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem* , Property* );
+    LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem*, Property*);
     ~LinkDialogPropertyGraphicsItem();
 
     void setProperty(Property* property);
 
-    QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const;
+    QSizeF sizeHint(Qt::SizeHint which, const QSizeF& constraint = QSizeF()) const;
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkDialogPropertyGraphicsItemType };
@@ -184,7 +184,7 @@ public:
 
 protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
     std::string variantTypeAsString(int variantType);
 
 private:
@@ -205,25 +205,29 @@ public:
     ~LinkDialogGraphicsScene() {}
 
     template <typename T>
-    T* getSceneGraphicsItemAt(const QPointF pos, const Qt::ItemSelectionMode mode= Qt::IntersectsItemShape, Qt::SortOrder order=Qt::DescendingOrder) const {    
+    T* getSceneGraphicsItemAt(const QPointF pos, const Qt::ItemSelectionMode mode= Qt::IntersectsItemShape,
+                              Qt::SortOrder order=Qt::DescendingOrder) const {
         QList<QGraphicsItem*> graphicsItems =items(pos, mode, order);
+
         if (graphicsItems.size() > 0) {
             for (int i=0; i<graphicsItems.size(); i++) {
                 T* graphicsItem = qgraphicsitem_cast<T*>(graphicsItems[i]);
+
                 if (graphicsItem)
                     return graphicsItem;
             }
         }
+
         return 0;
     }
-    
+
     QGraphicsItem* getPropertyGraphicsItemAt(Property* property);
     void setNetwork(ProcessorNetwork* network) {processorNetwork_ = network;}
 
     void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
     void removeCurrentPropertyLinks();
     void removeAllPropertyLinks();
-    void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);    
+    void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
@@ -238,10 +242,11 @@ protected:
     void addPropertyLink(PropertyLink* propertyLink);
     bool isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink);
     void makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional);
-    void switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink);    
-    void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty, PropertyLink* propLink);
-    void addProcessorsItemsToScene(Processor *prcoessor, int xPosition, int yPosition);
-    DialogConnectionGraphicsItem* getConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* , LinkDialogPropertyGraphicsItem*);
+    void switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink);
+    void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty,
+            PropertyLink* propLink);
+    void addProcessorsItemsToScene(Processor* prcoessor, int xPosition, int yPosition);
+    DialogConnectionGraphicsItem* getConnectionGraphicsItem(LinkDialogPropertyGraphicsItem*, LinkDialogPropertyGraphicsItem*);
 
 private:
     DialogCurveGraphicsItem* linkCurve_;
@@ -251,7 +256,7 @@ private:
     std::vector<LinkDialogProcessorGraphicsItem*> processorGraphicsItems_;
     std::vector<DialogConnectionGraphicsItem*> connectionGraphicsItems_;
     std::vector<DialogConnectionGraphicsItem*> currentConnectionGraphicsItems_;
-    
+
     ProcessorNetwork* processorNetwork_;
 
     void addConnectionToCurrentList(DialogConnectionGraphicsItem*);
@@ -275,41 +280,41 @@ private:
 /*---------------------------------------------------------------------------------------*/
 
 class IVW_QTEDITOR_API CheckableQComboBox : public QComboBox {
-Q_OBJECT
+    Q_OBJECT
 public:
     CheckableQComboBox(std::string widgetName, std::vector<std::string> options);
-    bool isItemChecked(int i);  
+    bool isItemChecked(int i);
     std::vector<std::string> getCheckedItems();
 public slots:
     void onAutoLinkOptionChecked(const QModelIndex&, const QModelIndex&);
 private:
-    QStandardItemModel * stdandardModel_;
+    QStandardItemModel* stdandardModel_;
     std::vector<QStandardItem*> standardItems_;
     std::string widgetName_;
 };
 
 
 class IVW_QTEDITOR_API LinkDialog : public QDialog {
-Q_OBJECT
+    Q_OBJECT
 public:
-    LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent);    
-    LinkDialog(Processor* src, Processor *dest, ProcessorNetwork* network, QWidget* parent);
+    LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent);
+    LinkDialog(Processor* src, Processor* dest, ProcessorNetwork* network, QWidget* parent);
 
 private slots:
-   void clickedOkayButton();
-   void clickedCancelButton();
-   void clickedAutoLinkPushButton();
-   void clickedDeleteAllLinksPushButton();
+    void clickedOkayButton();
+    void clickedCancelButton();
+    void clickedAutoLinkPushButton();
+    void clickedDeleteAllLinksPushButton();
 
-private:   
+private:
     void initDialog();
 
     LinkDialogGraphicsView* linkDialogView_;
     LinkDialogGraphicsScene* linkDialogScene_;
     QDialogButtonBox* okayCancelbuttonBox_;
-    QPushButton* autoLinkPushButton_;  
+    QPushButton* autoLinkPushButton_;
     CheckableQComboBox* autoLinkOptions_;
-    QPushButton* deleteAllLinkPushButton_;  
+    QPushButton* deleteAllLinkPushButton_;
     Processor* src_;
     Processor* dest_;
 };

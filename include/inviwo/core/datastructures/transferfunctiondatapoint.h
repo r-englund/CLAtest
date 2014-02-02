@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,7 +28,7 @@ class TransferFunction;
 class IVW_CORE_API TransferFunctionDataPoint {
 
 public:
-	TransferFunctionDataPoint(TransferFunction* transFunc, const vec2& pos, const vec4& rgba);
+    TransferFunctionDataPoint(TransferFunction* transFunc, const vec2& pos, const vec4& rgba);
     virtual ~TransferFunctionDataPoint();
 
     const vec2& getPos() const;
@@ -43,7 +43,7 @@ public:
     void setPosA(const vec2& pos, float alpha);
 
 private:
-	vec2 pos_;
+    vec2 pos_;
     vec4 rgba_;
     TransferFunction* transFunc_;
 };

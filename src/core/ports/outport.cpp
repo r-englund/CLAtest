@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,8 +24,8 @@ Outport::Outport(std::string identifier, PropertyOwner::InvalidationLevel invali
 
 Outport::~Outport() {}
 
-bool Outport::isConnected() const { 
-    return !(connectedInports_.empty()); 
+bool Outport::isConnected() const {
+    return !(connectedInports_.empty());
 }
 
 bool Outport::isConnectedTo(Inport* port) const {
@@ -37,9 +37,10 @@ void Outport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
         connectedInports_[i]->invalidate(invalidationLevel);
 }
 
-void Outport::setInvalidationLevel( PropertyOwner::InvalidationLevel invalidationLevel )
+void Outport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel)
 {
     invalidationLevel_ = invalidationLevel;
+
     for (size_t i=0; i<connectedInports_.size(); i++)
         connectedInports_[i]->setInvalidationLevel(invalidationLevel);
 }
@@ -53,8 +54,10 @@ void Outport::getSuccessorsUsingPortType(std::vector<Processor*>& successorProce
             successorProcessors.push_back(connectedInports_[i]->getProcessor());
 
         std::vector<Outport*> outports = decendantProcessor->getOutports();
+
         for (size_t j=0; j<outports.size(); j++) {
             T* outPort = dynamic_cast<T*>(outports[j]);
+
             if (outPort)
                 outPort->template getSuccessorsUsingPortType<T>(successorProcessors);
         }
@@ -79,7 +82,7 @@ void Outport::connectTo(Inport* inport) {
 void Outport::disconnectFrom(Inport* inport) {
     if (std::find(connectedInports_.begin(), connectedInports_.end(), inport) != connectedInports_.end()) {
         connectedInports_.erase(std::remove(connectedInports_.begin(), connectedInports_.end(), inport),
-            connectedInports_.end());
+                                connectedInports_.end());
         Port::invalidate(invalidationLevel_);
     }
 }

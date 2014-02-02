@@ -12,19 +12,16 @@
 template<typename T>
 void testDatReader(std::string filename) {
     std::string file = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-        + "unittests/testdata/" + filename;
-
+                       + "unittests/testdata/" + filename;
     std::string fileExtension = URLParser::getFileExtension(file);
-    DataReaderType<Volume>* reader = 
+    DataReaderType<Volume>* reader =
         DataReaderFactory::getRef().getReaderForTypeAndExtension<Volume>(fileExtension);
     ASSERT_TRUE(reader != NULL);
-
     Volume* volume = reader->readMetaData(file);
-    const VolumeRAMPrecision<T>* volumeRAM = 
+    const VolumeRAMPrecision<T>* volumeRAM =
         static_cast<const VolumeRAMPrecision<T>*>(volume->getRepresentation<VolumeRAM>());
     const T* data = static_cast<const T*>(volumeRAM->getData());
     uvec3 dim = volume->getDimension();
-
     long long ref0;
     double ref1;
     double ref2;
@@ -33,13 +30,16 @@ void testDatReader(std::string filename) {
     long long ty;
     long long tz;
     double mod = static_cast<double>(std::numeric_limits<T>::max())
-        - static_cast<double>(std::numeric_limits<T>::min());
+                 - static_cast<double>(std::numeric_limits<T>::min());
     double min = static_cast<double>(std::numeric_limits<T>::min());
-    for(long long z = 0; z < dim.z; z++) {
+
+    for (long long z = 0; z < dim.z; z++) {
         tz = z*z*z*z*z*z*z*z;
-        for(long long y = 0; y < dim.y; y++) {
+
+        for (long long y = 0; y < dim.y; y++) {
             ty = y*y*y*y;
-            for(long long x = 0; x < dim.x; x++) {
+
+            for (long long x = 0; x < dim.x; x++) {
                 ref0 = x + x*ty + x*ty*tz;
                 ref1 = static_cast<double>(ref0);
                 ref2 = fmod(ref1, mod);
@@ -49,6 +49,7 @@ void testDatReader(std::string filename) {
             }
         }
     }
+
     delete volume;
 }
 

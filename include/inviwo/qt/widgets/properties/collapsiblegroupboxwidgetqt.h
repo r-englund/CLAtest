@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -45,8 +45,8 @@ public:
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
 
-    void setVisibilityMode(PropertyVisibilityMode visibilityMode){visibilityMode_ = visibilityMode;};
-    PropertyVisibilityMode getVisibilityMode(){return visibilityMode_;};
+    void setVisibilityMode(PropertyVisibilityMode visibilityMode) {visibilityMode_ = visibilityMode;};
+    PropertyVisibilityMode getVisibilityMode() {return visibilityMode_;};
 
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
@@ -55,7 +55,7 @@ public:
     void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
     std::vector<Property*> getProperties();
     bool isCollapsed() { return collapsed_; };
-    std::vector<PropertyWidgetQt*> getPropertyWidgets(){return propertyWidgets_; };
+    std::vector<PropertyWidgetQt*> getPropertyWidgets() {return propertyWidgets_; };
     void addWidget(QWidget* widget);
 
     virtual void serialize(IvwSerializer& s) const;

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,7 +23,7 @@
 namespace inviwo {
 
 class IVW_CORE_API DatVolumeWriter : public DataWriterType<Volume> {
-public:        
+public:
     DatVolumeWriter();
     DatVolumeWriter(const DatVolumeWriter& rhs);
     DatVolumeWriter& operator=(const DatVolumeWriter& that);
@@ -43,15 +43,15 @@ private:
 };
 
 template<typename T>
-void inviwo::DatVolumeWriter::writeKeyToString( std::stringstream& ss, const std::string& key, const glm::detail::tvec2<T>& vec ) const{
+void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec2<T>& vec) const {
     ss << key << ": " << vec.x << " " << vec.y << std::endl;
 }
 template<typename T>
-void inviwo::DatVolumeWriter::writeKeyToString( std::stringstream& ss, const std::string& key, const glm::detail::tvec3<T>& vec ) const{
+void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec3<T>& vec) const {
     ss << key << ": " << vec.x << " " << vec.y << " " << vec.z << std::endl;
 }
 template<typename T>
-void inviwo::DatVolumeWriter::writeKeyToString( std::stringstream& ss, const std::string& key, const glm::detail::tvec4<T>& vec ) const{
+void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec4<T>& vec) const {
     ss << key << ": " << vec.x << " " << vec.y << " " << vec.z << " " << vec.w << std::endl;
 }
 

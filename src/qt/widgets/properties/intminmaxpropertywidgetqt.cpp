@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -18,15 +18,15 @@
 
 namespace inviwo {
 
-IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty *property) : property_(property), updatingFromProperty_(false) {
+IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty* property) : property_(property), updatingFromProperty_(false) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
-	updateFromProperty();
+    updateFromProperty();
 }
 
 void IntMinMaxPropertyWidgetQt::generateWidget() {
-	QHBoxLayout* hLayout = new QHBoxLayout();
+    QHBoxLayout* hLayout = new QHBoxLayout();
 
     if (property_->getReadOnly()) {
         valueVec_ = property_->get();
@@ -36,40 +36,33 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
         hLayout->addWidget(readOnlyLabel_);
         setLayout(hLayout);
     }
-    else{
+    else {
         label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         QHBoxLayout* hSliderLayout = new QHBoxLayout();
         QWidget* sliderWidget = new QWidget();
         sliderWidget->setLayout(hSliderLayout);
         hSliderLayout->setContentsMargins(0,0,0,0);
-
         spinBoxMin_ = new QSpinBox(this);
         spinBoxMin_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
         spinBoxMin_->setFixedWidth(50);
         hSliderLayout->addWidget(spinBoxMin_);
-
         slider_ = new RangeSliderQt(Qt::Horizontal, this);
         slider_->setRange(0, 99);
-	    hSliderLayout->addWidget(slider_);
-
+        hSliderLayout->addWidget(slider_);
         spinBoxMax_ = new QSpinBox(this);
         spinBoxMax_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
         spinBoxMax_->setFixedWidth(50);
         hSliderLayout->addWidget(spinBoxMax_);
-
         hLayout->addWidget(sliderWidget);
-	    setLayout(hLayout);
-
+        setLayout(hLayout);
         QSizePolicy labelPol = label_->sizePolicy();
         labelPol.setHorizontalStretch(1);
         labelPol.setControlType(QSizePolicy::Label);
         label_->setSizePolicy(labelPol);
-
         QSizePolicy slidersPol = sliderWidget->sizePolicy();
         slidersPol.setHorizontalStretch(3);
         sliderWidget->setSizePolicy(slidersPol);
-        
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(slider_, SIGNAL(valuesChanged(int,int)), this, SLOT(updateFromSlider(int,int)));
         connect(spinBoxMin_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMin(int)));
@@ -80,55 +73,53 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
 void IntMinMaxPropertyWidgetQt::updateFromProperty() {
     updatingFromProperty_ = true;
     valueVec_ = property_->get();
+
     if (property_->getReadOnly()) {
         readOnlyLabel_->setText(QString::number(valueVec_.x)+","+QString::number(valueVec_.y));
-
         updatingFromProperty_ = false;
     }
-    else{
-
-    slider_->setRange(property_->getRangeMin(), property_->getRangeMax());
-    spinBoxMin_->setRange(property_->getRangeMin(), property_->getRangeMax());
-    spinBoxMax_->setRange(property_->getRangeMin(), property_->getRangeMax());
-
-    spinBoxMin_->setSingleStep(property_->getIncrement());
-    spinBoxMax_->setSingleStep(property_->getIncrement());
-
-
-    slider_->setValue(valueVec_.x, valueVec_.y);
-    spinBoxMin_->setValue(valueVec_.x);
-    spinBoxMax_->setValue(valueVec_.y);
-
-    updatingFromProperty_ = false;
+    else {
+        slider_->setRange(property_->getRangeMin(), property_->getRangeMax());
+        spinBoxMin_->setRange(property_->getRangeMin(), property_->getRangeMax());
+        spinBoxMax_->setRange(property_->getRangeMin(), property_->getRangeMax());
+        spinBoxMin_->setSingleStep(property_->getIncrement());
+        spinBoxMax_->setSingleStep(property_->getIncrement());
+        slider_->setValue(valueVec_.x, valueVec_.y);
+        spinBoxMin_->setValue(valueVec_.x);
+        spinBoxMax_->setValue(valueVec_.y);
+        updatingFromProperty_ = false;
     }
 }
 
 
-void IntMinMaxPropertyWidgetQt::updateFromSlider(int valMin, int valMax){
-    if(!updatingFromProperty_){
+void IntMinMaxPropertyWidgetQt::updateFromSlider(int valMin, int valMax) {
+    if (!updatingFromProperty_) {
         bool changed = false;
-        if(valMin != spinBoxMin_->value()){
+
+        if (valMin != spinBoxMin_->value()) {
             spinBoxMin_->setValue(valMin);
             changed = true;
         }
-        if(valMax != spinBoxMax_->value()){
+
+        if (valMax != spinBoxMax_->value()) {
             spinBoxMax_->setValue(valMax);
             changed = true;
         }
-        if(changed)
+
+        if (changed)
             setPropertyValue();
     }
 }
 
-void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMin(int val){
-    if(!updatingFromProperty_){
+void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMin(int val) {
+    if (!updatingFromProperty_) {
         slider_->setMinValue(val);
         setPropertyValue();
     }
 }
 
-void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMax(int val){
-    if(!updatingFromProperty_){
+void IntMinMaxPropertyWidgetQt::updateFromSpinBoxMax(int val) {
+    if (!updatingFromProperty_) {
         slider_->setMaxValue(val);
         setPropertyValue();
     }
@@ -139,7 +130,7 @@ void IntMinMaxPropertyWidgetQt::setPropertyValue() {
     emit modified();
 }
 
-void IntMinMaxPropertyWidgetQt::setPropertyDisplayName(){
+void IntMinMaxPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 

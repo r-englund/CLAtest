@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,16 +23,12 @@ RepresentationConverterFactory::RepresentationConverterFactory() {}
 RepresentationConverterFactory::~RepresentationConverterFactory() {}
 
 void RepresentationConverterFactory::registerObject(RepresentationConverter* representationConverter) {
-    if(std::find(representationConverters_.begin(),
-        representationConverters_.end(),
-        representationConverter) == representationConverters_.end()) {
-
+    if (std::find(representationConverters_.begin(),
+                  representationConverters_.end(),
+                  representationConverter) == representationConverters_.end())
         representationConverters_.push_back(representationConverter);
-    } else {
+    else
         LogWarn("Could not add a RepresentationConverter becouse it was already added");
-    }
-
-        
-}    
+}
 
 } // namespace

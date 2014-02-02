@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -35,23 +35,23 @@ IVW_CORE_API enum LogLevel {
 
 #define LogInfo(message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+        inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogWarn(message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+        inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogError(message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+        inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 
 #define LogInfoCustom(source, message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(source, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+        inviwo::LogCentral::instance()->log(source, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogWarnCustom(source, message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(source, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+        inviwo::LogCentral::instance()->log(source, inviwo::Warn, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 #define LogErrorCustom(source, message) \
     {   std::ostringstream stream__; stream__ << message; \
-    inviwo::LogCentral::instance()->log(source, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
+        inviwo::LogCentral::instance()->log(source, inviwo::Error, __FILE__, __FUNCTION__, __LINE__, stream__.str());}
 
 class IVW_CORE_API Logger {
 
@@ -59,7 +59,8 @@ public:
     Logger() {};
     virtual ~Logger() {};
 
-    virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg) = 0;
+    virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber,
+                     std::string logMsg) = 0;
 };
 
 class IVW_CORE_API ConsoleLogger : public Logger {
@@ -68,7 +69,8 @@ public:
     ConsoleLogger();
     virtual ~ConsoleLogger();
 
-    virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
+    virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber,
+                     std::string logMsg);
 };
 
 
@@ -78,7 +80,8 @@ public:
     FileLogger(std::string logPath);
     virtual ~FileLogger();
 
-    virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
+    virtual void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber,
+                     std::string logMsg);
 private:
     std::ofstream* fileStream_;
 };

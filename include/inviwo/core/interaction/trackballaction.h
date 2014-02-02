@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -27,26 +27,26 @@ public:
         TRACKBALL_ROTATE  =      0,
         TRACKBALL_ZOOM    ,
         TRACKBALL_PAN     ,
-		TRACKBALL_STEPROTATE_UP,
-		TRACKBALL_STEPROTATE_LEFT,
-		TRACKBALL_STEPROTATE_DOWN,
-		TRACKBALL_STEPROTATE_RIGHT,		
-		TRACKBALL_STEPZOOM_IN,
-		TRACKBALL_STEPZOOM_OUT,
-		TRACKBALL_STEPPAN_UP,
-		TRACKBALL_STEPPAN_LEFT,
-		TRACKBALL_STEPPAN_DOWN,
-		TRACKBALL_STEPPAN_RIGHT,
+        TRACKBALL_STEPROTATE_UP,
+        TRACKBALL_STEPROTATE_LEFT,
+        TRACKBALL_STEPROTATE_DOWN,
+        TRACKBALL_STEPROTATE_RIGHT,
+        TRACKBALL_STEPZOOM_IN,
+        TRACKBALL_STEPZOOM_OUT,
+        TRACKBALL_STEPPAN_UP,
+        TRACKBALL_STEPPAN_LEFT,
+        TRACKBALL_STEPPAN_DOWN,
+        TRACKBALL_STEPPAN_RIGHT,
         COUNT
     };
 
     TrackballAction(TrackballAction::Actions action);
     ~TrackballAction();
 
-	virtual std::string getClassName() const { return "TrackballAction"; }
+    virtual std::string getClassName() const { return "TrackballAction"; }
 
-	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& d);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
 private:
     std::string actionNames_[COUNT];

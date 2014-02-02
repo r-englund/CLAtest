@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,7 +23,7 @@ namespace inviwo {
 /** class DirectoryProperty
 *  A class for file representations.
 *  Holds the value of the path to a file as a string.
-*  
+*
 * @see FileProperty, StringProperty
 */
 
@@ -32,8 +32,8 @@ class IntProperty;
 class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:
     DirectoryProperty(std::string identifier, std::string displayName, std::string value = "",
-                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, 
-                 PropertySemantics semantics = PropertySemantics::Default);
+                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                      PropertySemantics semantics = PropertySemantics::Default);
     virtual std::vector<std::string> getDirectoryTree()  const ;
     virtual std::vector<std::string> getFiles(std::string filters="*.*")  const ;
     virtual void setDirectoryTree(std::vector<std::string> dirTree) ;

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,9 +20,9 @@
 
 namespace inviwo {
 
-/** \class ProgressBarOwner 
+/** \class ProgressBarOwner
 *
-* Class to support processors owning a ProgressBar. 
+* Class to support processors owning a ProgressBar.
 * This class allows a progress bar contained within a processor to be visible in the network.
 *
 * \section example Example
@@ -32,12 +32,12 @@ namespace inviwo {
 *    public:
 *        MyProcessor(): Processor(), ProgressBarOwner() {};
 *        // Need to overload serialize/deseralize
-*        virtual void serialize(IvwSerializer& s) const { 
-*           Processor::serialize(s); 
+*        virtual void serialize(IvwSerializer& s) const {
+*           Processor::serialize(s);
 *           s.serialize("ProgressBar", getProgressBar());
 *        }
-*        virtual void deserialize(IvwDeserializer& d) { 
-*           Processor::deserialize(d); 
+*        virtual void deserialize(IvwDeserializer& d) {
+*           Processor::deserialize(d);
 *           d.deserialize("ProgressBar", getProgressBar());
 *        }
 *    };

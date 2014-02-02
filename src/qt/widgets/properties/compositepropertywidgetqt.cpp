@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,7 +23,6 @@ CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
-
 }
 
 
@@ -32,13 +31,14 @@ void CompositePropertyWidgetQt::generateWidget() {
     QVBoxLayout* vLayout = new QVBoxLayout();
     collapsiveGroupBoxWidget_ = new CollapsibleGroupBoxWidgetQt(property_->getIdentifier(),property_->getDisplayName());
     std::vector<Property*> subProperties = property_->getSubProperties();
+
     for (size_t i=0; i<subProperties.size(); i++) {
         Property* curProperty = subProperties[i];
         collapsiveGroupBoxWidget_->addProperty(curProperty);
     }
+
     collapsiveGroupBoxWidget_->generatePropertyWidgets();
     vLayout->addWidget(collapsiveGroupBoxWidget_);
-    
     vLayout->setContentsMargins(0,0,0,0);
     vLayout->setSpacing(0);
     setLayout(vLayout);

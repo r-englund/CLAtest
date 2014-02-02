@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,7 +25,8 @@ namespace inviwo {
 class IVW_CORE_API VolumeRAM : public VolumeRepresentation {
 
 public:
-    VolumeRAM(uvec3 dimension = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), const DataFormatBase* format = DataFormatBase::get());
+    VolumeRAM(uvec3 dimension = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(),
+              const DataFormatBase* format = DataFormatBase::get());
     VolumeRAM(const VolumeRAM& rhs);
     VolumeRAM& operator=(const VolumeRAM& that);
     virtual VolumeRAM* clone() const = 0;
@@ -37,9 +38,9 @@ public:
 
     virtual void* getData();
     virtual const void* getData() const;
-    /** 
+    /**
      * \brief Takes ownership of data pointer
-     * 
+     *
      * @param void * data is raw volume data pointer
      * @return void none
      */
@@ -62,7 +63,7 @@ public:
     virtual vec3 getValueAsVec3Float(const uvec3& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec3& pos) const = 0;
 
-    static inline unsigned int posToIndex(const uvec3& pos, const uvec3& dim){
+    static inline unsigned int posToIndex(const uvec3& pos, const uvec3& dim) {
         return pos.x+(pos.y*dim.x)+(pos.z*dim.x *dim.y);
     }
 
@@ -77,8 +78,8 @@ protected:
 
 /**
  * Factory for volumes.
- * Creates an VolumeRAM with data type specified by format. 
- * 
+ * Creates an VolumeRAM with data type specified by format.
+ *
  * @param dimension of volume to create.
  * @param format of volume to create.
  * @return NULL if no valid format was specified.

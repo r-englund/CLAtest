@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,25 +28,23 @@
 
 namespace inviwo {
 
-InviwoApplicationQt::InviwoApplicationQt(std::string displayName, 
-                                         std::string basePath,
-                                         int& argc,
-                                         char** argv)
+InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
+        std::string basePath,
+        int& argc,
+        char** argv)
     : QApplication(argc, argv)
     , InviwoApplication(argc, argv, displayName, basePath) {
-
     QCoreApplication::setOrganizationName("Inviwo");
     QCoreApplication::setOrganizationDomain("inviwo.org");
     QCoreApplication::setApplicationName(displayName.c_str());
-
     fileWatcher_ = new QFileSystemWatcher(this);
-    connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString))); 
+    connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 }
 
-InviwoApplicationQt::~InviwoApplicationQt(){}
+InviwoApplicationQt::~InviwoApplicationQt() {}
 
-void InviwoApplicationQt::setMainWindow(QMainWindow* mainWindow) { 
-    mainWindow_ = mainWindow; 
+void InviwoApplicationQt::setMainWindow(QMainWindow* mainWindow) {
+    mainWindow_ = mainWindow;
 }
 
 void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {
@@ -57,68 +55,73 @@ void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {
 
 void InviwoApplicationQt::startFileObservation(std::string fileName) {
     QString qFileName = QString::fromStdString(fileName);
-    if (!fileWatcher_->files().contains(qFileName)){
-        fileWatcher_->addPath(qFileName); 
-    }
+
+    if (!fileWatcher_->files().contains(qFileName))
+        fileWatcher_->addPath(qFileName);
 }
 
 void InviwoApplicationQt::stopFileObservation(std::string fileName) {
     QString qFileName = QString::fromStdString(fileName);
     ivwAssert(fileWatcher_->files().contains(qFileName),
               "trying to stop observation of an unobserved file: "+fileName);
-    if (fileWatcher_->files().contains(qFileName)){
+
+    if (fileWatcher_->files().contains(qFileName))
         fileWatcher_->removePath(qFileName);
-    }
 }
 
 void InviwoApplicationQt::fileChanged(QString fileName) {
     wait(200);
-    if(QFile::exists(fileName)){
+
+    if (QFile::exists(fileName)) {
         std::string fileNameStd = fileName.toLocal8Bit().constData();
+
         for (size_t i=0; i<fileObservers_.size(); i++) {
             std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
+
             if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
                 fileObservers_[i]->fileChanged(fileNameStd);
         }
     }
 }
 
-void InviwoApplicationQt::closeInviwoApplication(){
-	this->quit();
+void InviwoApplicationQt::closeInviwoApplication() {
+    this->quit();
 }
 
 void InviwoApplicationQt::playSound(unsigned int soundID) {
     // Qt currently does not support playing sounds from resources
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-    if((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enableSound"))->get())){
-        if (soundID == IVW_OK) QSound::play(QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_RESOURCES)+"sounds/ok.wav"));
-        else if (soundID == IVW_ERROR) QSound::play(QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_RESOURCES)+"sounds/error.wav"));
+    if ((dynamic_cast<BoolProperty*>
+         (InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enableSound"))->get())) {
+        if (soundID == IVW_OK) QSound::play(QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_RESOURCES)
+                                                +"sounds/ok.wav"));
+        else if (soundID == IVW_ERROR) QSound::play(QString::fromStdString(InviwoApplication::getPtr()->getPath(
+                        InviwoApplication::PATH_RESOURCES)+"sounds/error.wav"));
     }
+
 #endif
 }
 
 
-void InviwoApplicationQt::initialize(registerModuleFuncPtr regModuleFunc){
-	LogInfoCustom("InviwoInfo","QT Version " << QT_VERSION_STR);
-	InviwoApplication::initialize(regModuleFunc);
-    
+void InviwoApplicationQt::initialize(registerModuleFuncPtr regModuleFunc) {
+    LogInfoCustom("InviwoInfo","QT Version " << QT_VERSION_STR);
+    InviwoApplication::initialize(regModuleFunc);
     // Since QtWidgets are not a module we have to register it our self
     InviwoModule* module = new QtWidgetModule();
     registerModule(module);
     module->initialize();
-
 }
 
-Timer* InviwoApplicationQt::createTimer()const { 
-    return new TimerQt(); 
+Timer* InviwoApplicationQt::createTimer()const {
+    return new TimerQt();
 }
 
-void InviwoApplicationQt::wait(int ms){
-    if(ms <= 0)
+void InviwoApplicationQt::wait(int ms) {
+    if (ms <= 0)
         return;
 
 #ifdef Q_OS_WIN
-        Sleep(uint(ms));
+    Sleep(uint(ms));
 #else
     struct timespec ts = { ms / 1000, (ms % 1000) * 1000 * 1000 };
     nanosleep(&ts, NULL);

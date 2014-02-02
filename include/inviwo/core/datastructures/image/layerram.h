@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -54,7 +54,7 @@ public:
     virtual vec3 getValueAsVec3Float(const uvec2& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec2& pos) const = 0;
 
-    static inline unsigned int posToIndex(const uvec2& pos, const uvec2& dim){
+    static inline unsigned int posToIndex(const uvec2& pos, const uvec2& dim) {
         return pos.x+(pos.y*dim.x);
     }
 
@@ -63,12 +63,12 @@ protected:
 };
 
 /**
- * Factory for layers. 
- * Creates an LayerRAM with data type specified by format. 
- * 
+ * Factory for layers.
+ * Creates an LayerRAM with data type specified by format.
+ *
  * @param dimension of layer to create.
  * @param format of layer to create.
- * @return NULL if no valid format was specified. 
+ * @return NULL if no valid format was specified.
  */
 IVW_CORE_API LayerRAM* createLayerRAM(const uvec2& dimension, LayerType type, const DataFormatBase* format);
 

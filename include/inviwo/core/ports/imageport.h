@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -35,7 +35,7 @@ public:
     void initialize();
     void deinitialize();
 
-    void changeDataDimensions(ResizeEvent* resizeEvent);    
+    void changeDataDimensions(ResizeEvent* resizeEvent);
     uvec2 getDimension() const;
     const Image* getData() const;
     uvec3 getColorCode() const;
@@ -50,12 +50,14 @@ private:
 
 class IVW_CORE_API ImageOutport : public DataOutport<Image>, public EventHandler {
 
-friend class ImageInport;
+    friend class ImageInport;
 
 public:
     ImageOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
-    ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format = DataVec4UINT8::get(), PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
-    ImageOutport(std::string identifier, ImageInport* src, ImageType type = COLOR_DEPTH, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format = DataVec4UINT8::get(),
+                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    ImageOutport(std::string identifier, ImageInport* src, ImageType type = COLOR_DEPTH,
+                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~ImageOutport();
 
     void initialize();
@@ -65,12 +67,12 @@ public:
     Image* getData();
 
     virtual void dataChanged();
-    
-    void changeDataDimensions(ResizeEvent* resizeEvent);    
+
+    void changeDataDimensions(ResizeEvent* resizeEvent);
     uvec2 getDimension() const;
     uvec3 getColorCode() const;
     virtual std::string getClassName() const {return "ImageOutport";}
-    
+
     bool addResizeEventListener(EventListener*);
     bool removeResizeEventListener(EventListener*);
 

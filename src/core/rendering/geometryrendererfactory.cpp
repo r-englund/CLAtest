@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2014 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -17,16 +17,16 @@
 
 namespace inviwo {
 
-struct CanRenderGeometry {  
-public:  
+struct CanRenderGeometry {
+public:
     CanRenderGeometry(const Geometry* geom): geom_(geom) {};
-    bool operator()(const GeometryRenderer* renderer)  
-    { return renderer->canRender(geom_); }  
+    bool operator()(const GeometryRenderer* renderer)
+    { return renderer->canRender(geom_); }
 private:
     const Geometry* geom_;
-}; 
+};
 
-GeometryRendererFactory::GeometryRendererFactory(){
+GeometryRendererFactory::GeometryRendererFactory() {
 }
 
 void GeometryRendererFactory::registerObject(GeometryRenderer* renderer) {
@@ -35,11 +35,11 @@ void GeometryRendererFactory::registerObject(GeometryRenderer* renderer) {
 
 GeometryRenderer* GeometryRendererFactory::create(const Geometry* geom) const {
     std::set<GeometryRenderer*>::const_iterator it = std::find_if(renderers_.begin(), renderers_.end(), CanRenderGeometry(geom));
-    if (it != renderers_.end()) {
+
+    if (it != renderers_.end())
         return (*it)->create(geom);
-    } else {
+    else
         return NULL;
-    }
 };
 
 } // namespace

@@ -7,34 +7,30 @@
 
 #define SERIALITION_FILE_NAME InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/tmpfiles/serilizationtests.xml")
 
-TEST(SerialitionTest,initTest){
+TEST(SerialitionTest,initTest) {
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
     EXPECT_TRUE(true);
 }
 
 template <typename T>
-T serializationOfType(T inValue){
+T serializationOfType(T inValue) {
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
-
     serializer.serialize("serializedValue",inValue);
     serializer.writeFile();
-
     IvwDeserializer deserializer(filename);
-
     T outValue;
     deserializer.deserialize("serializedValue",outValue);
-
     return outValue;
 }
 
-#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_NEAR(T(v),serializationOfType(T(v)),std::numeric_limits<T>::epsilon());} 
+#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_NEAR(T(v),serializationOfType(T(v)),std::numeric_limits<T>::epsilon());}
 #define MIN_TEST(n,T) TEST(SerialitionTest,n##MinTest){EXPECT_NEAR(std::numeric_limits<T>::min(),serializationOfType(std::numeric_limits<T>::min()),std::numeric_limits<T>::epsilon());}
 #define MAX_TEST(n,T) TEST(SerialitionTest,n##MaxTest){EXPECT_NEAR(std::numeric_limits<T>::max(),serializationOfType(std::numeric_limits<T>::max()),std::numeric_limits<T>::epsilon());}
 #define EPSILON_TEST(n,T) TEST(SerialitionTest,n##EpsilonTest){EXPECT_NEAR(std::numeric_limits<T>::epsilon(),serializationOfType(std::numeric_limits<T>::epsilon()),std::numeric_limits<T>::epsilon());}
 
-#define NUMERIC_TESTS(n,T,v) TYPE_TEST(n,T,v) MIN_TEST(n,T)  MAX_TEST(n,T) EPSILON_TEST(n,T) 
+#define NUMERIC_TESTS(n,T,v) TYPE_TEST(n,T,v) MIN_TEST(n,T)  MAX_TEST(n,T) EPSILON_TEST(n,T)
 
 static const float oneMinusEpsilonF = 1.0f-std::numeric_limits<float>::epsilon();
 static const double oneMinusEpsilonD = 1.0-std::numeric_limits<double>::epsilon();
@@ -49,7 +45,7 @@ TYPE_TEST(oneMinusEpsilonDobuleTest, double, oneMinusEpsilonD);
 #undef MAX_TEST
 #undef EPSILON_TEST
 
-#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_EQ(T(v),serializationOfType(T(v)));} 
+#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_EQ(T(v),serializationOfType(T(v)));}
 #define MIN_TEST(n,T) TEST(SerialitionTest,n##MinTest){EXPECT_EQ(std::numeric_limits<T>::min(),serializationOfType(std::numeric_limits<T>::min()));}
 #define MAX_TEST(n,T) TEST(SerialitionTest,n##MaxTest){EXPECT_EQ(std::numeric_limits<T>::max(),serializationOfType(std::numeric_limits<T>::max()));}
 #define EPSILON_TEST(n,T) TEST(SerialitionTest,n##EpsilonTest){EXPECT_EQ(std::numeric_limits<T>::epsilon(),serializationOfType(std::numeric_limits<T>::epsilon()));}
@@ -88,20 +84,20 @@ NUMERIC_TESTS(uintFast64SerializationTest,uint_fast64_t,6789);
 
 
 
-class IVW_MODULE_UNITTESTS_API MinimumSerilizableClass : public IvwSerializable{
+class IVW_MODULE_UNITTESTS_API MinimumSerilizableClass : public IvwSerializable {
 public:
     MinimumSerilizableClass(float v=0): value_(v) {}
 
 
-    virtual void serialize( IvwSerializer &s ) const {
+    virtual void serialize(IvwSerializer& s) const {
         s.serialize("classVariable",value_);
     }
 
-    virtual void deserialize( IvwDeserializer &d ) {
+    virtual void deserialize(IvwDeserializer& d) {
         d.deserialize("classVariable",value_);
     }
 
-    bool operator==(const MinimumSerilizableClass &v)const{
+    bool operator==(const MinimumSerilizableClass& v)const {
         return value_ == v.value_;
     }
 
@@ -111,41 +107,30 @@ public:
 
 };
 
-TEST(SerialitionTest,IvwSerializableClassTest){
+TEST(SerialitionTest,IvwSerializableClassTest) {
     MinimumSerilizableClass inValue(12),outValue;
-
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
-
     serializer.serialize("serializedValue",inValue);
-
-
     serializer.writeFile();
-
     IvwDeserializer deserializer(filename);
     deserializer.readFile();
-
     deserializer.deserialize("serializedValue",outValue);
-
     EXPECT_EQ(inValue.value_,12);
     EXPECT_NE(outValue.value_,0);
     EXPECT_EQ(inValue,outValue);
 }
 
 
-TEST(SerialitionTest, IvwSerializableClassAsPointerTest){
-    MinimumSerilizableClass *inValue = new MinimumSerilizableClass(12), *outValue = 0;
-
+TEST(SerialitionTest, IvwSerializableClassAsPointerTest) {
+    MinimumSerilizableClass* inValue = new MinimumSerilizableClass(12), *outValue = 0;
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
-
     serializer.serialize("serializedValue", inValue);
     serializer.writeFile();
-
     IvwDeserializer deserializer(filename);
     deserializer.readFile();
     deserializer.deserialize("serializedValue", outValue);
-
     EXPECT_EQ(inValue->value_, 12);
     EXPECT_NE(outValue->value_, 0);
     EXPECT_EQ(inValue->value_, outValue->value_);
@@ -153,80 +138,63 @@ TEST(SerialitionTest, IvwSerializableClassAsPointerTest){
     delete outValue;
 }
 
-TEST(SerialitionTest, floatVectorTest){
+TEST(SerialitionTest, floatVectorTest) {
     std::vector<float> inVector,outVector;
     inVector.push_back(0.1f);
     inVector.push_back(0.2f);
     inVector.push_back(0.3f);
-
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
-
     serializer.serialize("serializedVector", inVector, "value");
-
     serializer.writeFile();
-
     IvwDeserializer deserializer(filename);
     deserializer.readFile();
     deserializer.deserialize("serializedVector", outVector, "value");
-
     ASSERT_EQ(inVector.size(),outVector.size());
-    for(size_t i = 0;i<inVector.size();i++){
+
+    for (size_t i = 0; i<inVector.size(); i++)
         EXPECT_EQ(inVector[i],outVector[i]);
-    }
 }
 
 
 
 
 
-TEST(SerialitionTest,vectorOfNonPointersTest){
+TEST(SerialitionTest,vectorOfNonPointersTest) {
     std::vector<MinimumSerilizableClass> inVector,outVector;
     inVector.push_back(MinimumSerilizableClass(0.1f));
     inVector.push_back(MinimumSerilizableClass(0.2f));
     inVector.push_back(MinimumSerilizableClass(0.3f));
-
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
-
     serializer.serialize("serializedVector",inVector,"value");
-
-
     serializer.writeFile();
-
     IvwDeserializer deserializer(filename);
     deserializer.readFile();
     deserializer.deserialize("serializedVector",outVector,"value");
-
     ASSERT_EQ(inVector.size(),outVector.size());
-    for(size_t i = 0;i<inVector.size();i++){
+
+    for (size_t i = 0; i<inVector.size(); i++)
         EXPECT_EQ(inVector[i],outVector[i]);
-    }
 }
 
 
-TEST(SerialitionTest,vectorOfPointersTest){
+TEST(SerialitionTest,vectorOfPointersTest) {
     std::vector<MinimumSerilizableClass*> inVector,outVector;
     inVector.push_back(new MinimumSerilizableClass(0.1f));
     inVector.push_back(new MinimumSerilizableClass(0.2f));
     inVector.push_back(new MinimumSerilizableClass(0.3f));
-
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
-
     serializer.serialize("serializedVector",inVector,"value");
-
-
     serializer.writeFile();
-
     IvwDeserializer deserializer(filename);
     deserializer.readFile();
     deserializer.deserialize("serializedVector",outVector,"value");
-
     ASSERT_EQ(inVector.size(),outVector.size());
-    for(size_t i = 0;i<inVector.size();i++){
+
+    for (size_t i = 0; i<inVector.size(); i++)
         EXPECT_EQ(inVector[i]->value_,outVector[i]->value_);
-    }
 
     delete inVector[0];
     delete inVector[1];
@@ -236,14 +204,14 @@ TEST(SerialitionTest,vectorOfPointersTest){
     delete outVector[2];
 }
 
-TEST(SerialitionTest,vec2Tests){
+TEST(SerialitionTest,vec2Tests) {
     vec2 inVec(1.1f,2.2f),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
 }
 
-TEST(SerialitionTest,vec3Tests){
+TEST(SerialitionTest,vec3Tests) {
     vec3 inVec(1.1f,2.2f,3.3f),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -251,7 +219,7 @@ TEST(SerialitionTest,vec3Tests){
     EXPECT_EQ(inVec.z,outVec.z);
 }
 
-TEST(SerialitionTest,vec4Tests){
+TEST(SerialitionTest,vec4Tests) {
     vec4 inVec(1.1f,2.2f,3.3f,4.4f),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -261,14 +229,14 @@ TEST(SerialitionTest,vec4Tests){
 }
 
 
-TEST(SerialitionTest,ivec2Tests){
+TEST(SerialitionTest,ivec2Tests) {
     ivec2 inVec(1,2),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
 }
 
-TEST(SerialitionTest,ivec3Tests){
+TEST(SerialitionTest,ivec3Tests) {
     ivec3 inVec(1,2,3),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -276,7 +244,7 @@ TEST(SerialitionTest,ivec3Tests){
     EXPECT_EQ(inVec.z,outVec.z);
 }
 
-TEST(SerialitionTest,ivec4Tests){
+TEST(SerialitionTest,ivec4Tests) {
     ivec4 inVec(1,2,3,4),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -287,14 +255,14 @@ TEST(SerialitionTest,ivec4Tests){
 
 
 
-TEST(SerialitionTest,uvec2Tests){
+TEST(SerialitionTest,uvec2Tests) {
     uvec2 inVec(1,2),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
 }
 
-TEST(SerialitionTest,uvec3Tests){
+TEST(SerialitionTest,uvec3Tests) {
     uvec3 inVec(1,2,3),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -302,7 +270,7 @@ TEST(SerialitionTest,uvec3Tests){
     EXPECT_EQ(inVec.z,outVec.z);
 }
 
-TEST(SerialitionTest,uvec4Tests){
+TEST(SerialitionTest,uvec4Tests) {
     uvec4 inVec(1,2,3,4),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -313,14 +281,14 @@ TEST(SerialitionTest,uvec4Tests){
 
 
 
-TEST(SerialitionTest,bvec2Tests){
+TEST(SerialitionTest,bvec2Tests) {
     bvec2 inVec(false,true),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
 }
 
-TEST(SerialitionTest,bvec3Tests){
+TEST(SerialitionTest,bvec3Tests) {
     bvec3 inVec(false,true,false),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -328,7 +296,7 @@ TEST(SerialitionTest,bvec3Tests){
     EXPECT_EQ(inVec.z,outVec.z);
 }
 
-TEST(SerialitionTest,bvec4Tests){
+TEST(SerialitionTest,bvec4Tests) {
     bvec4 inVec(false,true,false,true),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -338,14 +306,14 @@ TEST(SerialitionTest,bvec4Tests){
 }
 
 
-TEST(SerialitionTest,dvec2Tests){
+TEST(SerialitionTest,dvec2Tests) {
     dvec2 inVec(1.1,2.2),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
     EXPECT_EQ(inVec.y,outVec.y);
 }
 
-TEST(SerialitionTest,dvec3Tests){
+TEST(SerialitionTest,dvec3Tests) {
     dvec3 inVec(1.1,2.2,3.3),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -353,7 +321,7 @@ TEST(SerialitionTest,dvec3Tests){
     EXPECT_EQ(inVec.z,outVec.z);
 }
 
-TEST(SerialitionTest,dvec4Tests){
+TEST(SerialitionTest,dvec4Tests) {
     dvec4 inVec(1.1,2.2,3.3,4.4),outVec;
     outVec = serializationOfType(inVec);
     EXPECT_EQ(inVec.x,outVec.x);
@@ -363,28 +331,31 @@ TEST(SerialitionTest,dvec4Tests){
 }
 
 
-TEST(SerialitionTest,mat2Tests){
+TEST(SerialitionTest,mat2Tests) {
     mat2 inMat(0.0f,1.0f,2.0f,3.0f),outMat;
     outMat = serializationOfType(inMat);
     int s = 2;
-    for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
-        EXPECT_EQ(inMat[i][j],outMat[i][j]);
+
+    for (int i = 0; i<s; i++)for (int j = 0; j<s; j++)
+            EXPECT_EQ(inMat[i][j],outMat[i][j]);
 }
 
-TEST(SerialitionTest,mat3Tests){
+TEST(SerialitionTest,mat3Tests) {
     mat3 inMat(0.0f,1.0f,2.0f,3.0f,4.0f,5.0f,6.0f,7.0f,8.0f),outMat;
     outMat = serializationOfType(inMat);
     int s = 3;
-    for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
-        EXPECT_EQ(inMat[i][j],outMat[i][j]);
+
+    for (int i = 0; i<s; i++)for (int j = 0; j<s; j++)
+            EXPECT_EQ(inMat[i][j],outMat[i][j]);
 }
 
-TEST(SerialitionTest,mat4Tests){
+TEST(SerialitionTest,mat4Tests) {
     mat4 inMat(0.0f,1.0f,2.0f,3.0f,4.0f,5.0f,6.0f,7.0f,8.0f,9.0f,10.0f,11.0f,12.0f,13.0f,14.0f,15.0f),outMat;
     outMat = serializationOfType(inMat);
     int s = 4;
-    for(int i = 0;i<s;i++)for(int j = 0;j<s;j++)
-        EXPECT_EQ(inMat[i][j],outMat[i][j]);
+
+    for (int i = 0; i<s; i++)for (int j = 0; j<s; j++)
+            EXPECT_EQ(inMat[i][j],outMat[i][j]);
 }
 
 #endif

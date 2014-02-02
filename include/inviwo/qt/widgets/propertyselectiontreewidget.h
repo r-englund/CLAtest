@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,7 +36,7 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);    
+    void mouseMoveEvent(QMouseEvent* e);
 private:
     QPoint dragStartPosition_;
 };
@@ -47,10 +47,10 @@ public:
     PropertySelectionTreeWidget();
     ~PropertySelectionTreeWidget();
     void addProcessorNetwork(ProcessorNetwork* processorNetwork, std::string workspaceFileName="CurrentWorkspace");
-public slots:        
+public slots:
     void clear();
     std::vector<Property*> getSelectedProperties(ProcessorNetwork* processorNetwork);
-private:    
+private:
     PropertySelectionTree* propertySelectionTree_;
     QPoint dragStartPosition_;
     QVBoxLayout* vLayout_;
@@ -60,16 +60,16 @@ class IVW_QTWIDGETS_API PropertySelectionTreeDialog : public QDialog {
     Q_OBJECT
 public:
     PropertySelectionTreeDialog(ProcessorNetwork* processorNetwork,
-                                std::vector<Property*> &selectedProperty,
+                                std::vector<Property*>& selectedProperty,
                                 QWidget* parent);
     ~PropertySelectionTreeDialog() {}
 private slots:
     void clickedOkayButton();
     void clickedCancelButton();
 private:
-    void initDialog();    
+    void initDialog();
     PropertySelectionTreeWidget* selectionTree_;
-    std::vector<Property*> &selectedProperties_;
+    std::vector<Property*>& selectedProperties_;
     ProcessorNetwork* processorNetwork_;
 };
 

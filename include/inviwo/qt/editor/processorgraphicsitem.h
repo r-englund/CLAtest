@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -32,7 +32,7 @@ IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
     ProcessorGraphicsType = 1,
     ConnectionGraphicsType = 2,
     LinkGraphicsType = 3
-    //LinkDialogGraphicsType = 4
+                       //LinkDialogGraphicsType = 4
 };
 
 class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem, public ProcessorObserver {
@@ -66,7 +66,7 @@ protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     void paintStatusIndicator(QPainter* p, QPointF offset, bool status, QColor baseColor);
     void paintProgressBar(QPainter* p, float progress);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
 private:
     Processor* processor_;

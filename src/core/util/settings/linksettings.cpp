@@ -20,7 +20,7 @@
 
 namespace inviwo {
 
-LinkSettings::LinkSettings( std::string id) :
+LinkSettings::LinkSettings(std::string id) :
     Settings(id)
     , displayLinksproerty_("displayLinks", "Display links", true) {}
 
@@ -29,16 +29,16 @@ LinkSettings::~LinkSettings() {
         BoolProperty* property = linkProperties_[i];
         delete property;
     }
+
     linkProperties_.clear();
 }
 
 void LinkSettings::initialize() {
     addProperty(&displayLinksproerty_);
-
     std::vector<std::string> properties = PropertyFactory::getPtr()->getRegistedPropertyClassNames();
     std::sort(properties.begin(), properties.end());
 
-    for(size_t i = 0; i<properties.size(); i++) {
+    for (size_t i = 0; i<properties.size(); i++) {
         BoolProperty* linkPropery = new BoolProperty("link-" + properties[i], properties[i], false);
         linkProperties_.push_back(linkPropery);
         linkPropery->setGroupID("auto-link-properties");
@@ -51,12 +51,14 @@ void LinkSettings::deinitialize()  {}
 
 bool LinkSettings::isLinkable(Property* property)  {
     Property* prop = getPropertyByIdentifier("link-" + property->getClassName());
-    if(prop) {
+
+    if (prop) {
         BoolProperty* linkOption = dynamic_cast<BoolProperty*>(prop);
-        if(linkOption) {
+
+        if (linkOption)
             return linkOption->get();
-        }
     }
+
     return false;
 }
 

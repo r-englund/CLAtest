@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -38,7 +38,7 @@ namespace inviwo {
 //    const Buffer* getBuffer() const { return buffer_;}
 //
 //    virtual AttributesBase* clone() const { return new AttributesBase(*this); }
-//    
+//
 //    virtual BufferType getAttributeType() const { return buffer_->getBufferType(); }
 //    virtual const DataFormatBase* getDataFormat() const { return buffer_->getDataFormat(); }
 //    virtual unsigned int getElementSize() const { return buffer_->getDataFormat()->getBytesStored(); }
@@ -71,7 +71,7 @@ namespace inviwo {
 //    AttributesBase(){}
 //    virtual ~AttributesBase(){}
 //
-//    virtual const void* getAttributes() const = 0;  
+//    virtual const void* getAttributes() const = 0;
 //    virtual BufferType getAttributeType() const = 0;
 //    virtual const DataFormatBase* getDataFormat() const = 0;
 //    virtual unsigned int getElementSize() const = 0;
@@ -87,15 +87,15 @@ namespace inviwo {
 //    virtual ~Attributes(){ }
 //
 //    void add(T);
-//    
+//
 //    const void* getAttributes() const;
-//	std::vector<T> getAttributeContainer();
+//  std::vector<T> getAttributeContainer();
 //    BufferType getAttributeType() const;
 //    const DataFormatBase* getDataFormat() const;
 //    unsigned int getElementSize() const;
 //    unsigned int getNumberOfAttributes() const;
 //    unsigned int getDataSize() const;
-//    
+//
 //private:
 //    const DataFormat<T,B>* dataFormat_;
 //    std::vector<T> attributes_;

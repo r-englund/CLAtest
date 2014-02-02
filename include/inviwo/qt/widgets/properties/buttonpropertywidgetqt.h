@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,21 +28,21 @@ namespace inviwo {
 
 class ButtonPropertyWidgetQt : public PropertyWidgetQt {
 
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	ButtonPropertyWidgetQt(ButtonProperty* property);
+    ButtonPropertyWidgetQt(ButtonProperty* property);
 
     void updateFromProperty();
     QPushButton* getButton();
 private:
-	ButtonProperty* property_;
+    ButtonProperty* property_;
     QPushButton* button_;
 
-	void generateWidget();
+    void generateWidget();
 
 public slots:
-	void handleButton();
+    void handleButton();
 };
 
 } //namespace

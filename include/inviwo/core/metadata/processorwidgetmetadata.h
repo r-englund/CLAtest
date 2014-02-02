@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -39,7 +39,7 @@ public:
 
     void setWidgetPosition(ivec2 pos);
     ivec2 getWidgetPosition();
-    void setDimension(ivec2 dim); 
+    void setDimension(ivec2 dim);
     ivec2 getDimension() const;
     void setVisibile(bool visibility);
     bool isVisible() const;

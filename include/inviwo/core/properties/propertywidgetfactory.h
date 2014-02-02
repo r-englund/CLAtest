@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,7 +25,7 @@
 namespace inviwo {
 
 class IVW_CORE_API PropertyWidgetFactory : public Factory,
-                                           public Singleton<PropertyWidgetFactory> {
+    public Singleton<PropertyWidgetFactory> {
 
 public:
     PropertyWidgetFactory();
@@ -36,7 +36,7 @@ public:
     void registerObject(PropertyWidgetFactoryObject* propertyWidget);
     virtual IvwSerializable* create(std::string className) const;
     virtual bool isValidType(std::string className) const;
-    
+
     std::vector<PropertySemantics> getSupportedSemanicsForProperty(Property* property);
 
     typedef std::multimap<std::string, PropertyWidgetFactoryObject*> WidgetMap;

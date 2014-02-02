@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -30,13 +30,13 @@ class IVW_QTWIDGETS_API MappingPopup : public QWidget {
 public:
     MappingPopup(EventProperty* eventProperty, EventPropertyManager* parentManager);
 
-	void keyReleaseEvent(QKeyEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
-	void mousePressEvent( QMouseEvent * event );
+    void keyReleaseEvent(QKeyEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
 
 private:
-	EventProperty* eventProperty_;
-	EventPropertyManager* parentManager_;
+    EventProperty* eventProperty_;
+    EventPropertyManager* parentManager_;
 };
 
 } // namespace

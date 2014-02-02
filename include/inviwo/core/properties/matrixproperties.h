@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -21,39 +21,40 @@
 namespace inviwo {
 /** class FloatMat2Property
 *  \brief  The FloatMat2Property provides a property holding a 2 by 2 matrix of float values
-*  
+*
 *  The FlaotMat2Property are used by the processors.
 *  It has a widget that shows editable text fields for each element in the matrix in a 2 by 2 grid
-* 
+*
 * @see OrdinalProperty
 */
 class IVW_CORE_API FloatMat2Property : public OrdinalProperty<mat2> {
 public:
-	/** 
-	 * \brief Constructs a FloatMat2Property
-	 *
-	 * <DESCRIBE THE METHOD>
-	 * 
-	 * @param std::string identifier <DESCRIBE ME>
-	 * @param std::string displayName <DESCRIBE ME>
-	 * @param mat2 value <DESCRIBE ME>
-	 * @param mat2 minValue <DESCRIBE ME>
-	 * @param mat2 maxValue <DESCRIBE ME>
-	 * @param mat2 increment <DESCRIBE ME>
-	 * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-	 * @param PropertySemantics semantics <DESCRIBE ME>
-	 * @return  <DESCRIBE ME>
-     */FloatMat2Property(std::string identifier, std::string displayName, mat2 value = mat2(0.0f),
+    /**
+     * \brief Constructs a FloatMat2Property
+     *
+     * <DESCRIBE THE METHOD>
+     *
+     * @param std::string identifier <DESCRIBE ME>
+     * @param std::string displayName <DESCRIBE ME>
+     * @param mat2 value <DESCRIBE ME>
+     * @param mat2 minValue <DESCRIBE ME>
+     * @param mat2 maxValue <DESCRIBE ME>
+     * @param mat2 increment <DESCRIBE ME>
+     * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
+     * @param PropertySemantics semantics <DESCRIBE ME>
+     * @return  <DESCRIBE ME>
+     */
+    FloatMat2Property(std::string identifier, std::string displayName, mat2 value = mat2(0.0f),
                       mat2 minValue=mat2(0.0f), mat2 maxValue= mat2(1.0f), mat2 increment=mat2(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
-	virtual void serialize(IvwSerializer& s) const;
-	virtual void deserialize(IvwDeserializer& d);
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "FloatMat2Property"; }
-	};
+};
 /** class FloatMat3Property
 *  \brief  The FloatMat3Property provides a property holding a 3 by 3 matrix of float values
-*  
+*
 *  The FlaotMat3Property are used by the processors.
 *  It has a widget that shows editable text fields for each element in the matrix in a 3 by 3 grid
 
@@ -61,11 +62,11 @@ public:
 */
 class IVW_CORE_API FloatMat3Property : public OrdinalProperty<mat3> {
 public:
-    /** 
+    /**
      * \brief Constructs a FloatMat3Property
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @param std::string identifier <DESCRIBE ME>
      * @param std::string displayName <DESCRIBE ME>
      * @param mat3 value <DESCRIBE ME>
@@ -75,7 +76,8 @@ public:
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
      * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
-     */FloatMat3Property(std::string identifier, std::string displayName, mat3 value = mat3(0.0f),
+     */
+    FloatMat3Property(std::string identifier, std::string displayName, mat3 value = mat3(0.0f),
                       mat3 minValue=mat3(0.0f), mat3 maxValue= mat3(1.0f), mat3 increment=mat3(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
@@ -85,19 +87,19 @@ public:
 };
 /** class FloatMat4Property
 *  \brief  The FloatMat4Property provides a property holding a 4 by 4 matrix of float values
-*  
+*
 *  The FlaotMat4Property are used by the processors.
 *  It has a widget that shows editable text fields for each element in the matrix in a 4 by 4 grid
-* 
+*
 * @see OrdinalProperty
 */
 class IVW_CORE_API FloatMat4Property : public OrdinalProperty<mat4> {
 public:
-    /** 
+    /**
      * \brief Constructs a FloatMat4Property
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @param std::string identifier <DESCRIBE ME>
      * @param std::string displayName <DESCRIBE ME>
      * @param mat4 value <DESCRIBE ME>
@@ -107,7 +109,8 @@ public:
      * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
      * @param PropertySemantics semantics <DESCRIBE ME>
      * @return  <DESCRIBE ME>
-     */FloatMat4Property(std::string identifier, std::string displayName, mat4 value = mat4(0.0f),
+     */
+    FloatMat4Property(std::string identifier, std::string displayName, mat4 value = mat4(0.0f),
                       mat4 minValue=mat4(0.0f), mat4 maxValue= mat4(1.0f), mat4 increment=mat4(0.1f),
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
@@ -115,7 +118,7 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "FloatMat4Property"; }
 };
- 
+
 }//namespace
 
 #endif

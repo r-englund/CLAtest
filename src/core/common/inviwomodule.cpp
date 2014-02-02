@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -42,66 +42,82 @@ InviwoModule::~InviwoModule() {
 
     for (size_t i=0; i<capabilities_.size(); i++)
         delete capabilities_[i];
+
     capabilities_.clear();
 
     for (size_t i=0; i<data_.size(); i++)
         delete data_[i];
+
     data_.clear();
 
     for (size_t i=0; i<dataReaders_.size(); i++)
         delete dataReaders_[i];
+
     dataReaders_.clear();
 
     for (size_t i=0; i<dataRepresentations_.size(); i++)
         delete dataRepresentations_[i];
+
     dataRepresentations_.clear();
 
     for (size_t i=0; i<dataWriters_.size(); i++)
         delete dataWriters_[i];
+
     dataWriters_.clear();
 
     for (size_t i=0; i<metadata_.size(); i++)
         delete metadata_[i];
+
     metadata_.clear();
 
     for (size_t i=0; i<ports_.size(); i++)
         delete ports_[i];
+
     ports_.clear();
 
-    for(size_t i = 0; i < portInspectors_.size(); i++)
+    for (size_t i = 0; i < portInspectors_.size(); i++)
         delete portInspectors_[i];
+
     portInspectors_.clear();
 
     for (size_t i=0; i<processors_.size(); i++)
         delete processors_[i];
+
     processors_.clear();
 
     for (size_t i=0; i<processorWidgets_.size(); i++)
         delete processorWidgets_[i].second;
+
     processorWidgets_.clear();
 
     for (size_t i=0; i<properties_.size(); i++)
         delete properties_[i];
+
     properties_.clear();
 
-    for(size_t i = 0; i < propertyWidgets_.size(); i++)
+    for (size_t i = 0; i < propertyWidgets_.size(); i++)
         delete propertyWidgets_[i];
+
     propertyWidgets_.clear();
 
     for (size_t i=0; i<representationConverters_.size(); i++)
         delete representationConverters_[i];
+
     representationConverters_.clear();
 
     for (size_t i=0; i<resources_.size(); i++)
         delete resources_[i];
+
     resources_.clear();
 
     for (size_t i=0; i<renderers_.size(); i++)
         delete renderers_[i];
+
     renderers_.clear();
 
     for (size_t i=0; i<moduleSettings_.size(); i++)
         delete moduleSettings_[i];
+
     moduleSettings_.clear();
 }
 
@@ -114,13 +130,12 @@ std::string InviwoModule::getPath(const std::string& suffix) const {
 }
 
 void InviwoModule::initialize() {
-    for(size_t i=0; i<capabilities_.size(); i++){
+    for (size_t i=0; i<capabilities_.size(); i++) {
         capabilities_[i]->initialize();
         capabilities_[i]->printInfo();
     }
 
     setupModuleSettings();
-
     initialized_ = true;
 }
 
@@ -134,6 +149,7 @@ void InviwoModule::deinitialize() {
 
 void InviwoModule::setIdentifier(const std::string& identifier) {
     identifier_ = identifier;
+
     if (xmlDocumentFileName_ == "undefined")
         xmlDocumentFileName_ = identifier_ + ".xml";
 }
@@ -185,11 +201,11 @@ void InviwoModule::registerPortObject(PortFactoryObject* port) {
     PortFactory::getPtr()->registeryObject(port);
 }
 void InviwoModule::registerPortInspector(PortInspector* portInspector) {
-    portInspectors_.push_back(portInspector); 
+    portInspectors_.push_back(portInspector);
     PortInspectorFactory::getPtr()->registerObject(portInspector);
 }
 void InviwoModule::registerProcessorObject(ProcessorFactoryObject* processor) {
-    processors_.push_back(processor); 
+    processors_.push_back(processor);
     ProcessorFactory::getPtr()->registerObject(processor);
 }
 void InviwoModule::registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget) {
@@ -201,11 +217,11 @@ void InviwoModule::registerPropertyObject(PropertyFactoryObject* property) {
     PropertyFactory::getPtr()->registeryObject(property);
 }
 void InviwoModule::registerPropertyWidgetObject(PropertyWidgetFactoryObject* propertyWidget) {
-    propertyWidgets_.push_back(propertyWidget); 
+    propertyWidgets_.push_back(propertyWidget);
     PropertyWidgetFactory::getPtr()->registerObject(propertyWidget);
 }
 void InviwoModule::registerRenderer(GeometryRenderer* renderer) {
-    renderers_.push_back(renderer); 
+    renderers_.push_back(renderer);
     GeometryRendererFactory::getPtr()->registerObject(renderer);
 }
 void InviwoModule::registerRepresentationConverter(RepresentationConverter* representationConverter) {

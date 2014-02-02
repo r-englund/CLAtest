@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,17 +20,16 @@
 #include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
-/** \class PickingManager 
-* Manager for picking objects. 
+/** \class PickingManager
+* Manager for picking objects.
 */
 
-class FindPickingObject
-{
+class FindPickingObject {
 public:
     FindPickingObject(const DataVec3UINT8::type& c) : color_(c) {}
 
-    bool operator()(PickingObject* obj){ 
-        return obj->getPickingColorAsUINT8() == color_; 
+    bool operator()(PickingObject* obj) {
+        return obj->getPickingColorAsUINT8() == color_;
     }
 private:
     DataVec3UINT8::type color_;
@@ -38,7 +37,7 @@ private:
 
 class IVW_CORE_API PickingManager {
 
-friend class PickingContainer;
+    friend class PickingContainer;
 
 public:
     static PickingManager* instance() {
@@ -48,16 +47,18 @@ public:
     ~PickingManager();
 
     template <typename T>
-    const PickingObject* registerPickingCallback(T* o, void (T::*m)(const PickingObject*), bool readDepth = true){
+    const PickingObject* registerPickingCallback(T* o, void (T::*m)(const PickingObject*), bool readDepth = true) {
         PickingObject* pickObj;
-        if(unRegisteredPickingObjects_.empty()){
+
+        if (unRegisteredPickingObjects_.empty()) {
             pickObj = generatePickingObject(pickingObjects_.size());
             pickingObjects_.push_back(pickObj);
         }
-        else{
+        else {
             pickObj = unRegisteredPickingObjects_.back();
             unRegisteredPickingObjects_.pop_back();
         }
+
         pickObj->getCallbackContainer()->addMemberFunction(o,m);
         pickObj->setReadDepth(readDepth);
         return pickObj;

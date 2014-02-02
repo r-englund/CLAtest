@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -18,25 +18,25 @@ namespace inviwo {
 
 EventProperty::EventProperty(std::string identifier, std::string displayName, InteractionEvent* e, Action* action,
                              PropertyOwner::InvalidationLevel invalidationLevel,
-                             PropertySemantics semantics  )
+                             PropertySemantics semantics)
     : Property(identifier, displayName, invalidationLevel, semantics) {
-        event_ = e;
-        action_ = action;
+    event_ = e;
+    action_ = action;
 }
 
-EventProperty::~EventProperty(){
+EventProperty::~EventProperty() {
 }
 
-void EventProperty::serialize( IvwSerializer& s ) const {
+void EventProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);
-	s.serialize("Event", event_);
-	s.serialize("Action", action_);
+    s.serialize("Event", event_);
+    s.serialize("Action", action_);
 }
 
-void EventProperty::deserialize( IvwDeserializer& d ) {
+void EventProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d);
-	d.deserialize("Event", *event_);
-	d.deserialize("Action", *action_);
+    d.deserialize("Event", *event_);
+    d.deserialize("Action", *action_);
 }
 
 } // namespace

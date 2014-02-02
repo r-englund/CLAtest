@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -19,7 +19,7 @@
 
 namespace inviwo {
 
-FloatMat4PropertyWidgetQt::FloatMat4PropertyWidgetQt(FloatMat4Property *property) : property_(property) {
+FloatMat4PropertyWidgetQt::FloatMat4PropertyWidgetQt(FloatMat4Property* property) : property_(property) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
@@ -48,65 +48,63 @@ void FloatMat4PropertyWidgetQt::generateWidget() {
 
     if (property_->getReadOnly()) {
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-         mat0x0_->setDisabled(true);
-         mat0x1_->setDisabled(true);
-         mat0x2_->setDisabled(true);
-         mat0x3_->setDisabled(true);
-         mat1x0_->setDisabled(true);
-         mat1x1_->setDisabled(true);
-         mat1x2_->setDisabled(true); 
-         mat1x3_->setDisabled(true); 
-         mat2x0_->setDisabled(true); 
-         mat2x1_->setDisabled(true); 
-         mat2x2_->setDisabled(true);
-         mat2x3_->setDisabled(true);
-         mat3x0_->setDisabled(true);
-         mat3x1_->setDisabled(true);
-         mat3x2_->setDisabled(true);
-         mat3x3_->setDisabled(true); 
-               
-    }           
-    else        
-    {          
-        connect(mat0x0_, SIGNAL(editingFinished ()),
-            this, SLOT(set0x0Value()));
-        connect(mat0x1_, SIGNAL(editingFinished ()),
-            this, SLOT(set0x1Value()));
-        connect(mat0x2_, SIGNAL(editingFinished ()),
-            this, SLOT(set0x2Value()));
-        connect(mat0x3_, SIGNAL(editingFinished ()),
-            this, SLOT(set0x3Value()));
-        connect(mat1x0_, SIGNAL(editingFinished ()),
-            this, SLOT(set1x0Value()));
-        connect(mat1x1_, SIGNAL(editingFinished ()),
-            this, SLOT(set1x1Value()));
-        connect(mat1x2_, SIGNAL(editingFinished ()),
-            this, SLOT(set1x2Value()));
-        connect(mat1x3_, SIGNAL(editingFinished ()),
-            this, SLOT(set1x3Value()));
-        connect(mat2x0_, SIGNAL(editingFinished ()),
-            this, SLOT(set2x0Value()));
-        connect(mat2x1_, SIGNAL(editingFinished ()),
-            this, SLOT(set2x1Value()));
-        connect(mat2x2_, SIGNAL(editingFinished ()),
-            this, SLOT(set2x2Value()));
-        connect(mat2x3_, SIGNAL(editingFinished ()),
-            this, SLOT(set2x3Value()));
-        connect(mat3x0_, SIGNAL(editingFinished ()),
-            this, SLOT(set3x0Value()));
-        connect(mat3x1_, SIGNAL(editingFinished ()),
-            this, SLOT(set3x1Value()));
-        connect(mat3x2_, SIGNAL(editingFinished ()),
-            this, SLOT(set3x2Value()));
-        connect(mat3x3_, SIGNAL(editingFinished ()),
-            this, SLOT(set3x3Value()));
+        mat0x0_->setDisabled(true);
+        mat0x1_->setDisabled(true);
+        mat0x2_->setDisabled(true);
+        mat0x3_->setDisabled(true);
+        mat1x0_->setDisabled(true);
+        mat1x1_->setDisabled(true);
+        mat1x2_->setDisabled(true);
+        mat1x3_->setDisabled(true);
+        mat2x0_->setDisabled(true);
+        mat2x1_->setDisabled(true);
+        mat2x2_->setDisabled(true);
+        mat2x3_->setDisabled(true);
+        mat3x0_->setDisabled(true);
+        mat3x1_->setDisabled(true);
+        mat3x2_->setDisabled(true);
+        mat3x3_->setDisabled(true);
+    }
+    else
+    {
+        connect(mat0x0_, SIGNAL(editingFinished()),
+                this, SLOT(set0x0Value()));
+        connect(mat0x1_, SIGNAL(editingFinished()),
+                this, SLOT(set0x1Value()));
+        connect(mat0x2_, SIGNAL(editingFinished()),
+                this, SLOT(set0x2Value()));
+        connect(mat0x3_, SIGNAL(editingFinished()),
+                this, SLOT(set0x3Value()));
+        connect(mat1x0_, SIGNAL(editingFinished()),
+                this, SLOT(set1x0Value()));
+        connect(mat1x1_, SIGNAL(editingFinished()),
+                this, SLOT(set1x1Value()));
+        connect(mat1x2_, SIGNAL(editingFinished()),
+                this, SLOT(set1x2Value()));
+        connect(mat1x3_, SIGNAL(editingFinished()),
+                this, SLOT(set1x3Value()));
+        connect(mat2x0_, SIGNAL(editingFinished()),
+                this, SLOT(set2x0Value()));
+        connect(mat2x1_, SIGNAL(editingFinished()),
+                this, SLOT(set2x1Value()));
+        connect(mat2x2_, SIGNAL(editingFinished()),
+                this, SLOT(set2x2Value()));
+        connect(mat2x3_, SIGNAL(editingFinished()),
+                this, SLOT(set2x3Value()));
+        connect(mat3x0_, SIGNAL(editingFinished()),
+                this, SLOT(set3x0Value()));
+        connect(mat3x1_, SIGNAL(editingFinished()),
+                this, SLOT(set3x1Value()));
+        connect(mat3x2_, SIGNAL(editingFinished()),
+                this, SLOT(set3x2Value()));
+        connect(mat3x3_, SIGNAL(editingFinished()),
+                this, SLOT(set3x3Value()));
         label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     }
 
-    QGridLayout *gridLayout = new QGridLayout;
-
+    QGridLayout* gridLayout = new QGridLayout;
     gridLayout->addWidget(mat0x0_,0,0);
     gridLayout->addWidget(mat0x1_,0,1);
     gridLayout->addWidget(mat0x2_,0,2);
@@ -123,7 +121,6 @@ void FloatMat4PropertyWidgetQt::generateWidget() {
     gridLayout->addWidget(mat3x1_,3,1);
     gridLayout->addWidget(mat3x2_,3,2);
     gridLayout->addWidget(mat3x3_,3,3);
-
     matrixgroup->setLayout(gridLayout);
     hLayout->addWidget(matrixgroup);
     setLayout(hLayout);
@@ -294,10 +291,9 @@ void FloatMat4PropertyWidgetQt::updateFromProperty() {
     mat3x1_->setText(QString::number(value[3][1]));
     mat3x2_->setText(QString::number(value[3][2]));
     mat3x3_->setText(QString::number(value[3][3]));
-
 };
 
-void FloatMat4PropertyWidgetQt::setPropertyDisplayName(){
+void FloatMat4PropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 

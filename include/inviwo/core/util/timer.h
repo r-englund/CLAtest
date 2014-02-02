@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,9 +24,9 @@
 
 namespace inviwo {
 
-/** \class Timer 
+/** \class Timer
 *
-* Interface for Timer classes. 
+* Interface for Timer classes.
 * A class deriving from Timer should execute onIntervalEvent() when the interval has passed.
 */
 class IVW_CORE_API Timer {
@@ -36,16 +36,16 @@ public:
 
     /**
      * Start the timer.
-     * 
+     *
      * @param intervalInMilliseconds The time interval until the added callback will be called.
-     * @param once Should the callback only be called the first time the interval has been reached? 
+     * @param once Should the callback only be called the first time the interval has been reached?
      */
     virtual void start(unsigned int intervalInMilliseconds, bool once = false) = 0;
 
     /**
      * Stop the timer from calling the callback.
-     * 
-     * @return 
+     *
+     * @return
      */
     virtual void stop() {};
 
@@ -58,9 +58,9 @@ public:
         onChangeCallback_.addMemberFunction(o,m);
     }
     /**
-     * This function will be called when the time has elapsed. 
+     * This function will be called when the time has elapsed.
      * Callbacks will then be executed.
-     * 
+     *
      * @note Derived classes should call this function when the time has elapsed.
      */
     void onIntervalEvent() const {
@@ -75,13 +75,13 @@ protected:
 #ifdef WIN32
 /**
  * Will be called when WindowsTimer reaches time interval.
- * 
+ *
  * @param param Will be a pointer to WindowsTimer
- * @param timerOrWaitFired 
+ * @param timerOrWaitFired
  */
 static void CALLBACK TimerCallback(void* param, bool timerOrWaitFired);
 
-/** \class WindowsTimer 
+/** \class WindowsTimer
 *
 * Windows only timer. Uses the Windows API to create a timed event. Typically millisecond resolution.
 * @note Does not work when used with Qt together with OpenGL (probably due to OpenGL context and parallel execution)

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,7 +25,7 @@ class IVW_CORE_API LayerDisk : public LayerRepresentation, public DiskRepresenta
 
 public:
     LayerDisk(LayerType type = COLOR_LAYER);
-	LayerDisk(std::string url, LayerType type = COLOR_LAYER);
+    LayerDisk(std::string url, LayerType type = COLOR_LAYER);
     LayerDisk(const LayerDisk& rhs);
     LayerDisk& operator=(const LayerDisk& that);
     virtual LayerDisk* clone() const;
@@ -35,7 +35,7 @@ public:
     virtual std::string getClassName() const;
     virtual bool copyAndResizeLayer(DataRepresentation*) const;
     virtual void resize(uvec2);
-    /** 
+    /**
      * \brief loads data from url.
      *
      * @param void* the destination of the raw data
@@ -44,9 +44,9 @@ public:
      *
      */
     void* loadFileData(void*, uvec2&, DataFormatId&) const;
-    /** 
+    /**
      * \brief loads and rescales data from url.
-     * 
+     *
      * @param void* the destination of the raw data
      * @param uvec2 dimension to scale image to
      * @param DataFormatId the loaded format

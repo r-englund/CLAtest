@@ -32,19 +32,19 @@ Property* PropertyWidget::getProperty() {
 }
 
 void PropertyWidget::setProperty(Property* property) {
-    property_ = property;    
+    property_ = property;
 }
 
-void PropertyWidget::setEditorWidget(PropertyEditorWidget* propertyEditorWidget) { 
-    propertyEditor_ = propertyEditorWidget; 
+void PropertyWidget::setEditorWidget(PropertyEditorWidget* propertyEditorWidget) {
+    propertyEditor_ = propertyEditorWidget;
 }
 
-PropertyEditorWidget* PropertyWidget::getEditorWidget() const { 
+PropertyEditorWidget* PropertyWidget::getEditorWidget() const {
     return propertyEditor_;
 }
 
-bool PropertyWidget::hasEditorWidget() const { 
-    return (propertyEditor_ != 0); 
+bool PropertyWidget::hasEditorWidget() const {
+    return (propertyEditor_ != 0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,14 +52,14 @@ bool PropertyWidget::hasEditorWidget() const {
 //Additional widgets owned by property
 
 PropertyEditorWidget::PropertyEditorWidget()
-: metaData_(0) {
+    : metaData_(0) {
 }
 
 PropertyEditorWidget::~PropertyEditorWidget() {
 }
 
 void PropertyEditorWidget::initialize(Property* property) {
-     metaData_ = dynamic_cast<PropertyEditorWidgetMetaData*>(property->getMetaData("PropertyEditorWidgetMetaData"));
+    metaData_ = dynamic_cast<PropertyEditorWidgetMetaData*>(property->getMetaData("PropertyEditorWidgetMetaData"));
 }
 
 void PropertyEditorWidget::setEditorVisibility(bool visible) {
@@ -70,22 +70,22 @@ void PropertyEditorWidget::showEditor() {
     metaData_->setVisibile(true);
 }
 
-void PropertyEditorWidget::hideEditor() {    
+void PropertyEditorWidget::hideEditor() {
     metaData_->setVisibile(false);
 }
 
-void PropertyEditorWidget::setEditorDimension(ivec2 dimension) {   
+void PropertyEditorWidget::setEditorDimension(ivec2 dimension) {
     metaData_->setDimension(dimension);
 }
 
-void PropertyEditorWidget::moveEditor(ivec2 pos) {    
+void PropertyEditorWidget::moveEditor(ivec2 pos) {
     metaData_->setWidgetPosition(pos);
 }
 
 void PropertyEditorWidget::setDockStatus(PropertyEditorWidgetDockStatus dockStatus) {
     metaData_->setDockStatus(dockStatus);
 }
-bool PropertyEditorWidget::getEditorVisibilityMetaData() {    
+bool PropertyEditorWidget::getEditorVisibilityMetaData() {
     return metaData_->isVisible();
 }
 

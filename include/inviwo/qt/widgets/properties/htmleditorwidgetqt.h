@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -35,10 +35,10 @@
 
 #include <inviwo/qt/widgets/properties/htmllistwidgetqt.h>
 
-namespace inviwo{
-    
+namespace inviwo {
+
 class TextEditorWidgetQt;
-class IVW_QTWIDGETS_API HtmlEditorWidgetQt : public QWidget{
+class IVW_QTWIDGETS_API HtmlEditorWidgetQt : public QWidget {
 
     Q_OBJECT
 
@@ -52,9 +52,9 @@ public:
     QTextEdit* htmlOutput_;
     TextEditorWidgetQt* mainParentWidget_;
     QToolBar* toolBar_;
-    QToolButton *runButton_;    
-    QToolButton *saveButton_;    
-    QToolButton *reLoadButton_;    
+    QToolButton* runButton_;
+    QToolButton* saveButton_;
+    QToolButton* reLoadButton_;
     std::string tmpPropertyValue_;
     HtmlTreeWidget* htmlTreeWidgetQt_;
 
@@ -62,10 +62,10 @@ public:
     void generateWidget();
 
 public slots:
-        void run();
+    void run();
 
 protected:
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent*);
     /*void showEvent(QShowEvent *);*/
 };
 

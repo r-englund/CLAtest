@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,56 +25,56 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API IntSliderWidgetQt : public QWidget {
 
-        Q_OBJECT
+    Q_OBJECT
 public:
 
     IntSliderWidgetQt(int minValue_, int maxValue_, int increment_);
 
     virtual ~IntSliderWidgetQt();
 
- 
-    /** 
+
+    /**
      * \brief Returns the integer value of the slider
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @return int <DESCRIBE ME>
      */
     int getValue();
- 
-    /** 
+
+    /**
      * \brief Sets the value of the slider and spinbox
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @param int tmpValue <DESCRIBE ME>
      * @return void <DESCRIBE ME>
      */
     void setValue(int tmpValue);
 
-    /** 
+    /**
      * \brief sets the maximum value of the spin box and slider
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @param int max <DESCRIBE ME>
      * @return void <DESCRIBE ME>
      */
     void setMaxValue(int max);
-    /** 
+    /**
      * \brief sets the minimum value of the spin box and slider
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @param int min <DESCRIBE ME>
      * @return void <DESCRIBE ME>
      */
     void setMinValue(int min);
 
-    /** 
+    /**
      * \brief Sets the minimum and maximum values of the slider and spin box
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @param int min <DESCRIBE ME>
      * @param int max <DESCRIBE ME>
      * @return void <DESCRIBE ME>
@@ -84,20 +84,20 @@ public:
 
     void setIncrement(int increment);
 
-    /** 
+    /**
      * \brief updates the value of the spin box from the slider value
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @return void <DESCRIBE ME>
      */
     void updateValueSpinBox();
 
-    /** 
+    /**
      * \brief updates the value of the slider from the spin box value
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @return void <DESCRIBE ME>
      */void updateValueSlider();
 
@@ -107,14 +107,14 @@ public:
 
     void updateSlider();
 
-    private slots:
-        void updateFromSlider();
-        void updateFromSpinBox();
+private slots:
+    void updateFromSlider();
+    void updateFromSpinBox();
 
 
 signals:
-        void valueChanged(int value);
-        
+    void valueChanged(int value);
+
 
 
 private:
@@ -127,7 +127,7 @@ private:
     QSpinBox* spinBox_;
     CustomSliderWidgetQt* slider_;
     void generateWidget();
-    static const int SLIDER_MAX = 10000; 
+    static const int SLIDER_MAX = 10000;
 
 };
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -42,13 +42,13 @@ public:
 
     const std::vector<FileExtension>& getExtensions() const;
     void addExtension(FileExtension ext);
-    
+
     bool getOverwrite() const;
     void setOverwrite(bool val);
 
 protected:
     bool overwrite_;
-    
+
 private:
     std::vector<FileExtension> extensions_;
 
@@ -61,9 +61,9 @@ public:
     DataWriterType() : DataWriter() {};
     DataWriterType(const DataWriterType& rhs) : DataWriter(rhs) {};
     DataWriterType& operator=(const DataWriterType& that) {
-        if (this != &that) {
+        if (this != &that)
             DataWriter::operator=(that);
-        }
+
         return *this;
     };
     virtual DataWriterType* clone() const = 0;

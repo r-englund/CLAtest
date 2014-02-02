@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,10 +20,10 @@
 namespace inviwo {
 
 
-Buffer::Buffer(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage): 
-    Data(), size_(size), format_(format), type_(type), usage_(usage){
+Buffer::Buffer(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage):
+    Data(), size_(size), format_(format), type_(type), usage_(usage) {
 }
-Buffer::Buffer(const Buffer& rhs) 
+Buffer::Buffer(const Buffer& rhs)
     : Data(rhs)
     , size_(rhs.size_)
     , format_(rhs.format_)
@@ -32,13 +32,14 @@ Buffer::Buffer(const Buffer& rhs)
 }
 
 Buffer& Buffer::operator=(const Buffer& that) {
-    if(this != &that) {
+    if (this != &that) {
         Data::operator=(that);
         size_ = that.size_;
         format_ = that.format_;
         type_ = that.type_;
         usage_ = that.usage_;
     }
+
     return *this;
 }
 
@@ -46,27 +47,28 @@ Buffer* Buffer::clone() const {
     return new Buffer(*this);
 }
 
-Buffer::~Buffer(){
-
+Buffer::~Buffer() {
 }
 
-void Buffer::resize( size_t size ){
-    if(size != size_) {
+void Buffer::resize(size_t size) {
+    if (size != size_) {
         size_ = size;
+
         for (size_t i=0; i<representations_.size(); i++) {
             // Static cast is ok because the representations must be BufferRepresentations.
             BufferRepresentation* bufferRepresentation = static_cast<BufferRepresentation*>(representations_[i]) ;
             bufferRepresentation->resize(size);
         }
+
         setAllRepresentationsAsInvalid();
     }
 }
 
-size_t Buffer::getSizeInBytes(){
+size_t Buffer::getSizeInBytes() {
     return size_ * format_->getBytesStored();
 }
 
-void Buffer::setSize( size_t size ){
+void Buffer::setSize(size_t size) {
     resize(size);
 }
 
@@ -79,9 +81,9 @@ DataRepresentation* Buffer::createDefaultRepresentation() {
 size_t Buffer::getSize() const
 {
     // We need to update the size if a representation has changed size
-    if(lastValidRepresentation_) {
+    if (lastValidRepresentation_)
         const_cast<Buffer*>(this)->size_ = static_cast<const BufferRepresentation*>(lastValidRepresentation_)->getSize();
-    }
+
     return size_;
 }
 

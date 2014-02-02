@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -35,15 +35,15 @@ typedef enum LayerType {
 } LayerType;
 
 STARTCLANGIGNORE("-Wunused-function")
-static bool typeContainsColor(ImageType type){
+static bool typeContainsColor(ImageType type) {
     return (type == COLOR_ONLY || type == COLOR_DEPTH || type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);
 }
 
-static bool typeContainsDepth(ImageType type){
+static bool typeContainsDepth(ImageType type) {
     return (type == COLOR_DEPTH || type == COLOR_DEPTH_PICKING);
 }
 
-static bool typeContainsPicking(ImageType type){
+static bool typeContainsPicking(ImageType type) {
     return (type == COLOR_PICKING || type == COLOR_DEPTH_PICKING);
 }
 ENDCLANGIGNORE

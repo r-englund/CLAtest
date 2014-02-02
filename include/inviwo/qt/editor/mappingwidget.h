@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,23 +36,23 @@ class IVW_QTEDITOR_API MappingWidget : public InviwoDockWidget, public VoidObser
 public:
     MappingWidget(QWidget* parent);
     ~MappingWidget();
-    void notify();	
+    void notify();
 
 private:
-	void updateWidget();
-	void buildLayout();
-	void findProcessorsWithInteractionHandlers(std::vector<Processor*>* container, std::vector<Processor*> processors);
+    void updateWidget();
+    void buildLayout();
+    void findProcessorsWithInteractionHandlers(std::vector<Processor*>* container, std::vector<Processor*> processors);
 
-	ProcessorNetwork* processorNetwork_;
-	EventPropertyManager* eventPropertyManager_;
-	std::vector<Processor*>* processorsWithInteractionHandlers_;
+    ProcessorNetwork* processorNetwork_;
+    EventPropertyManager* eventPropertyManager_;
+    std::vector<Processor*>* processorsWithInteractionHandlers_;
     size_t prevProcessorsWithInteractionHandlersSize_;
 
-	QComboBox* comboBox_;
+    QComboBox* comboBox_;
 
-	int currentIndex_;
+    int currentIndex_;
 public slots:
-	void comboBoxChange();
+    void comboBoxChange();
 
 };
 

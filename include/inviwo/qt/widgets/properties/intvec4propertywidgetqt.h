@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -27,7 +27,7 @@ namespace inviwo {
 
 class IVW_QTWIDGETS_API IntVec4PropertyWidgetQt : public PropertyWidgetQt {
 
-Q_OBJECT
+    Q_OBJECT
 
 public:
     IntVec4PropertyWidgetQt(IntVec4Property* property);
@@ -42,8 +42,8 @@ private:
     EditableLabelQt* label_;
     IntSliderWidgetQt* sliderX_;
     IntSliderWidgetQt* sliderY_;
-	IntSliderWidgetQt* sliderZ_;
-	IntSliderWidgetQt* sliderW_;
+    IntSliderWidgetQt* sliderZ_;
+    IntSliderWidgetQt* sliderW_;
     QLabel* readOnlyLabel_;
     ivec4 valueVecMax_;
     ivec4 valueVecMin_;

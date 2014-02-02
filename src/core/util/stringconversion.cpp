@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,9 +20,10 @@ std::vector<std::string> splitString(const std::string& str, char delimeter) {
     std::vector<std::string> strings;
     std::stringstream stream(str);
     std::string part;
-    while(std::getline(stream, part, delimeter)) {
+
+    while (std::getline(stream, part, delimeter))
         strings.push_back(part);
-    }
+
     return strings;
 }
 
@@ -38,9 +39,10 @@ std::vector<std::string> splitStringWithMultipleDelimiters(const std::string& st
 
     std::string tempString = str;
     char lastDelimiter = delimiters[delimiters.size()-1];
-    for (size_t i=0; i<delimiters.size()-1; i++) {
+
+    for (size_t i=0; i<delimiters.size()-1; i++)
         replaceInString(tempString, toString(delimiters[i]), toString(lastDelimiter));
-    }
+
     return splitString(tempString, lastDelimiter);
 }
 
@@ -51,7 +53,8 @@ std::string removeFromString(std::string str, char char_to_remove) {
 
 void replaceInString(std::string& str, const std::string& oldStr, const std::string& newStr) {
     size_t pos = 0;
-    while((pos = str.find(oldStr, pos)) != std::string::npos){
+
+    while ((pos = str.find(oldStr, pos)) != std::string::npos) {
         str.replace(pos, oldStr.length(), newStr);
         pos += newStr.length();
     }
@@ -80,11 +83,14 @@ std::string toLower(std::string str) {
 unsigned int countLines(std::string str) {
     unsigned int lineCount = 1;
     size_t position = 0;
+
     while (position < str.length()) {
         if (str.substr(position,1) == "\n")
             lineCount++;
+
         position++;
     }
+
     return lineCount;
 }
 
@@ -92,13 +98,13 @@ static const std::string possibleValues =
     "0123456789"
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     "abcdefghijklmnopqrstuvwxyz";
-std::string randomString(unsigned int length){	
-	std::string s;
-	while(s.size()<length){
-		s += possibleValues[rand()%possibleValues.size()];
-	}
+std::string randomString(unsigned int length) {
+    std::string s;
 
-	return s;
+    while (s.size()<length)
+        s += possibleValues[rand()%possibleValues.size()];
+
+    return s;
 }
 
 } // namespace

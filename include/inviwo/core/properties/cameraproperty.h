@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -64,7 +64,7 @@ public:
     STARTCLANGIGNORE("-Woverloaded-virtual")
     void invalidate();
     ENDCLANGIGNORE
-    void propertyModified(){};
+    void propertyModified() {};
 
     void lockInvalidation() { lockInvalidation_ = true; }
     void unlockInvalidation() { lockInvalidation_ = false; }
@@ -75,9 +75,9 @@ public:
     virtual std::string getClassName()  const { return "CameraProperty"; }
 
     void setInport(Inport* inport);
-    void fitCameraToVolume( const Volume* volume);
-    void fitCameraToGeomtry( const Geometry* volume);
-    void fitWithBasis(const mat3 &basis);
+    void fitCameraToVolume(const Volume* volume);
+    void fitCameraToGeomtry(const Geometry* volume);
+    void fitWithBasis(const mat3& basis);
     void inportChanged();
 private:
     FloatVec3Property lookFrom_;

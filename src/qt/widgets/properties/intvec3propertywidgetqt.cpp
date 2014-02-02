@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -18,22 +18,24 @@
 
 namespace inviwo {
 
-IntVec3PropertyWidgetQt::IntVec3PropertyWidgetQt(IntVec3Property *property) : property_(property) , settingsWidget_(0) {
+IntVec3PropertyWidgetQt::IntVec3PropertyWidgetQt(IntVec3Property* property) : property_(property) , settingsWidget_(0) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
-	generateWidget();
+    generateWidget();
     updateFromProperty();
-    if(!property->getReadOnly())
+
+    if (!property->getReadOnly())
         generatesSettingsWidget();
 }
 
 
-IntVec3PropertyWidgetQt::~IntVec3PropertyWidgetQt(){
+IntVec3PropertyWidgetQt::~IntVec3PropertyWidgetQt() {
     settingsWidget_->deleteLater();
 }
 
 void IntVec3PropertyWidgetQt::generateWidget() {
-	QHBoxLayout* hLayout = new QHBoxLayout();
+    QHBoxLayout* hLayout = new QHBoxLayout();
+
     if (property_->getReadOnly()) {
         valueVec_ = property_->get();
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
@@ -41,11 +43,9 @@ void IntVec3PropertyWidgetQt::generateWidget() {
         hLayout->addWidget(readOnlyLabel_);
         setLayout(hLayout);
     }
-    else{
-
+    else {
         label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
         hLayout->addWidget(label_);
-
         QWidget* sliderWidget = new QWidget();
         QVBoxLayout* vLayout = new QVBoxLayout();
         sliderWidget->setLayout(vLayout);
@@ -54,51 +54,40 @@ void IntVec3PropertyWidgetQt::generateWidget() {
         valueVecMax_ = property_->getMaxValue();
         valueVecMin_ = property_->getMinValue();
         valueIncrement_ = property_->getIncrement();
-        sliderX_ = new IntSliderWidgetQt(valueVecMin_.x,valueVecMax_.x,valueIncrement_.x);  
+        sliderX_ = new IntSliderWidgetQt(valueVecMin_.x,valueVecMax_.x,valueIncrement_.x);
         sliderY_ = new IntSliderWidgetQt(valueVecMin_.y,valueVecMax_.y,valueIncrement_.y);
         sliderZ_ = new IntSliderWidgetQt(valueVecMin_.z,valueVecMax_.z,valueIncrement_.z);
-
         vLayout->addWidget(sliderX_);
         vLayout->addWidget(sliderY_);
         vLayout->addWidget(sliderZ_);
         hLayout->addWidget(sliderWidget);
         setLayout(hLayout);
-
         QSizePolicy labelPol = label_->sizePolicy();
         labelPol.setHorizontalStretch(1);
         labelPol.setControlType(QSizePolicy::Label);
         label_->setSizePolicy(labelPol);
-
         QSizePolicy slidersPol = sliderWidget->sizePolicy();
         slidersPol.setHorizontalStretch(3);
         sliderWidget->setSizePolicy(slidersPol);
-
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
         connect(sliderX_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
         connect(sliderY_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
         connect(sliderZ_, SIGNAL(valueChanged(int)), this, SLOT(setPropertyValue()));
-
     }
-    
 }
 
-void IntVec3PropertyWidgetQt::generatesSettingsWidget(){
-
+void IntVec3PropertyWidgetQt::generatesSettingsWidget() {
     settingsWidget_ = new PropertySettingsWidgetQt(property_);
-
     settingsMenu_ = PropertyWidgetQt::generatePropertyWidgetMenu();
     settingsMenu_->addAction("Property settings");
     settingsMenu_->addAction("Set as Min");
     settingsMenu_->addAction("Set as Max");
-
     sliderX_->setContextMenuPolicy(Qt::CustomContextMenu);
     sliderY_->setContextMenuPolicy(Qt::CustomContextMenu);
     sliderZ_->setContextMenuPolicy(Qt::CustomContextMenu);
-
     connect(sliderX_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuX(const QPoint&)));
     connect(sliderY_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuY(const QPoint&)));
     connect(sliderZ_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenuZ(const QPoint&)));
-
     connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
     connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
     updateContextMenu();
@@ -109,35 +98,28 @@ void IntVec3PropertyWidgetQt::updateFromProperty() {
 
     if (property_->getReadOnly()) {
         readOnlyLabel_->setText(QString::number(valueVec_.x)+","
-            +QString::number(valueVec_.y)+","
-            +QString::number(valueVec_.z));
-
-
+                                +QString::number(valueVec_.y)+","
+                                +QString::number(valueVec_.z));
         readOnlyLabel_->setToolTip("Min: [" +QString::number((property_->getMinValue()).x)+
-            ","+QString::number((property_->getMinValue()).y)+
-            ","+QString::number((property_->getMinValue()).z)+
-            "] Max: [" +QString::number((property_->getMaxValue()).x)+
-            ","+QString::number((property_->getMaxValue()).y)+
-            ","+QString::number((property_->getMinValue()).z)+"]");
-
+                                   ","+QString::number((property_->getMinValue()).y)+
+                                   ","+QString::number((property_->getMinValue()).z)+
+                                   "] Max: [" +QString::number((property_->getMaxValue()).x)+
+                                   ","+QString::number((property_->getMaxValue()).y)+
+                                   ","+QString::number((property_->getMinValue()).z)+"]");
     }
-    else{
+    else {
         valueVecMax_ = property_->getMaxValue();
         valueVecMin_ = property_->getMinValue();
         valueIncrement_ = property_->getIncrement();
-
         sliderX_->setRange(valueVecMin_.x,valueVecMax_.x);
         sliderY_->setRange(valueVecMin_.y,valueVecMax_.y);
         sliderZ_->setRange(valueVecMin_.z,valueVecMax_.z);
-
         sliderX_->setIncrement(valueIncrement_.x);
         sliderY_->setIncrement(valueIncrement_.y);
         sliderZ_->setIncrement(valueIncrement_.z);
-
         sliderX_->setValue(valueVec_.x);
         sliderY_->setValue(valueVec_.y);
         sliderZ_->setValue(valueVec_.z);
-
         sliderX_->updateValueSpinBox();
         sliderY_->updateValueSpinBox();
         sliderZ_->updateValueSpinBox();
@@ -145,8 +127,9 @@ void IntVec3PropertyWidgetQt::updateFromProperty() {
 };
 
 
-void IntVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
+void IntVec3PropertyWidgetQt::showContextMenuX(const QPoint& pos) {
     PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+
     if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderX_->mapToGlobal(pos);
@@ -163,7 +146,7 @@ void IntVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
             property_->setMinValue(valueVecMin_);
             updateFromProperty();
         }
-        else if (selecteditem && selecteditem->text() == "Set as Max"){
+        else if (selecteditem && selecteditem->text() == "Set as Max") {
             //Set current value of the slider to max value of the property
             valueVecMax_ = property_->getMaxValue();
             valueVecMax_.x = sliderX_->getValue();
@@ -171,16 +154,16 @@ void IntVec3PropertyWidgetQt::showContextMenuX( const QPoint& pos ) {
             updateFromProperty();
         }
     }
-
 }
 
-void IntVec3PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
+void IntVec3PropertyWidgetQt::showContextMenuY(const QPoint& pos) {
     PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+
     if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderY_->mapToGlobal(pos);
-
         QAction* selecteditem = settingsMenu_->exec(globalPos);
+
         if (selecteditem && selecteditem->text() == "Property settings") {
             settingsWidget_->reload();
             settingsWidget_->show();
@@ -192,7 +175,7 @@ void IntVec3PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
             property_->setMinValue(valueVecMin_);
             updateFromProperty();
         }
-        else if (selecteditem && selecteditem->text() == "Set as Max"){
+        else if (selecteditem && selecteditem->text() == "Set as Max") {
             //Set current value of the slider to max value of the property
             valueVecMax_ = property_->getMaxValue();
             valueVecMax_.y = sliderY_->getValue();
@@ -200,16 +183,16 @@ void IntVec3PropertyWidgetQt::showContextMenuY( const QPoint& pos ) {
             updateFromProperty();
         }
     }
-
 }
 
-void IntVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
+void IntVec3PropertyWidgetQt::showContextMenuZ(const QPoint& pos) {
     PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+
     if (appVisibilityMode == DEVELOPMENT) {
         updateContextMenu();
         QPoint globalPos = sliderZ_->mapToGlobal(pos);
-
         QAction* selecteditem = settingsMenu_->exec(globalPos);
+
         if (selecteditem && selecteditem->text() == "Property settings") {
             settingsWidget_->reload();
             settingsWidget_->show();
@@ -221,7 +204,7 @@ void IntVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
             property_->setMinValue(valueVecMin_);
             updateFromProperty();
         }
-        else if (selecteditem && selecteditem->text() == "Set as Max"){
+        else if (selecteditem && selecteditem->text() == "Set as Max") {
             //Set current value of the slider to max value of the property
             valueVecMax_ = property_->getMaxValue();
             valueVecMax_.z = sliderZ_->getValue();
@@ -231,7 +214,7 @@ void IntVec3PropertyWidgetQt::showContextMenuZ( const QPoint& pos ) {
     }
 }
 
-void IntVec3PropertyWidgetQt::setPropertyValue(){
+void IntVec3PropertyWidgetQt::setPropertyValue() {
     valueVec_ = property_->get();
     valueVec_.x = sliderX_->getValue();
     valueVec_.y = sliderY_->getValue();
@@ -240,7 +223,7 @@ void IntVec3PropertyWidgetQt::setPropertyValue(){
     emit modified();
 }
 
-void IntVec3PropertyWidgetQt::setPropertyDisplayName(){
+void IntVec3PropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -15,7 +15,7 @@
 #include <inviwo/qt/widgets/floatsliderwidgetqt.h>
 
 namespace inviwo {
-     
+
 FloatSliderWidgetQt::FloatSliderWidgetQt() {
     generateWidget();
 }
@@ -33,7 +33,6 @@ void FloatSliderWidgetQt::generateWidget() {
     hLayout->setContentsMargins(0,0,0,0);
     hLayout->setSpacing(0);
     setLayout(hLayout);
-
     connect(slider_,  SIGNAL(valueChanged(int)),    this, SLOT(updateFromSlider()));
     connect(spinBox_, SIGNAL(valueChanged(double)), this, SLOT(updateFromSpinBox()));
 }
@@ -46,6 +45,7 @@ void FloatSliderWidgetQt::setValue(float value) {
         value_ = value;
         emit valueChanged(value_);
     }
+
     updateSlider();
     updateSpinBox();
 }
@@ -80,6 +80,7 @@ void FloatSliderWidgetQt::setIncrement(float increment) {
 void FloatSliderWidgetQt::updateFromSlider() {
     float normalizedValue = static_cast<float>(slider_->value())/static_cast<float>(slider_->maximum());
     float newValue = minValue_ + (normalizedValue * (maxValue_ - minValue_));
+
     if (newValue != value_) {
         value_ = newValue;
         //updateSpinBox();
@@ -98,6 +99,7 @@ void FloatSliderWidgetQt::updateSlider() {
 
 void FloatSliderWidgetQt::updateFromSpinBox() {
     float newValue = static_cast<float>(spinBox_->value());
+
     if (newValue != value_) {
         value_ = newValue;
         //updateSlider();
@@ -111,15 +113,11 @@ void FloatSliderWidgetQt::updateSpinBox() {
     spinBox_->blockSignals(false);
 }
 
-void FloatSliderWidgetQt::setSpinBoxDecimals( float increment ) {
-
+void FloatSliderWidgetQt::setSpinBoxDecimals(float increment) {
     std::ostringstream buff;
     buff<<increment;
-
     std::string str2 = buff.str().substr(buff.str().find(".")+1,buff.str().length());
-
     spinBox_->setDecimals(static_cast<int>(str2.length()));
-
 }
 
 } // namespace inviwo

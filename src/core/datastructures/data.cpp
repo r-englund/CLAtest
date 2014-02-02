@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -20,21 +20,21 @@ Data::Data()
     : MetaDataOwner()
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
-    , dataFormatBase_(DataFormatBase::get()){
+    , dataFormatBase_(DataFormatBase::get()) {
 }
 
 Data::Data(const DataFormatBase* format)
     : MetaDataOwner()
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
-    , dataFormatBase_(format){
+    , dataFormatBase_(format) {
 }
 
 Data::Data(const Data& rhs)
     : MetaDataOwner(rhs)
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
-    , dataFormatBase_(rhs.dataFormatBase_){
+    , dataFormatBase_(rhs.dataFormatBase_) {
     rhs.copyRepresentationsTo(this);
 }
 
@@ -44,6 +44,7 @@ Data& Data::operator=(const Data& that) {
         that.copyRepresentationsTo(this);
         dataFormatBase_ = that.dataFormatBase_;
     }
+
     return *this;
 }
 
@@ -54,15 +55,17 @@ Data::~Data() {
 
 void Data::clearRepresentations() {
     setAllRepresentationsAsInvalid();
+
     while (hasRepresentations()) {
         delete representations_.back();
         representations_.pop_back();
     }
 }
 
-void Data::copyRepresentationsTo(Data* targetData) const{
+void Data::copyRepresentationsTo(Data* targetData) const {
     targetData->clearRepresentations();
-    if(lastValidRepresentation_) {
+
+    if (lastValidRepresentation_) {
         DataRepresentation* rep = lastValidRepresentation_->clone();
         targetData->addRepresentation(rep);
     }
@@ -75,47 +78,50 @@ void Data::addRepresentation(DataRepresentation* representation) {
     newRepresentationCreated();
 }
 
-void Data::removeRepresentation( DataRepresentation* representation )
+void Data::removeRepresentation(DataRepresentation* representation)
 {
     std::vector<DataRepresentation*>::iterator it = std::find(representations_.begin(), representations_.end(), representation);
-    if(it != representations_.end()) {
+
+    if (it != representations_.end()) {
         // Update last valid representation
-        if(lastValidRepresentation_ == *it) {
+        if (lastValidRepresentation_ == *it) {
             lastValidRepresentation_ = NULL;
-            for(int i = static_cast<int>(representations_.size())-1; i >= 0; --i) {
-                // Check if this representation is valid 
+
+            for (int i = static_cast<int>(representations_.size())-1; i >= 0; --i) {
+                // Check if this representation is valid
                 // and make sure that it is not the one removed
-                if(isRepresentationValid(i) && representations_[i] != representation) {
+                if (isRepresentationValid(i) && representations_[i] != representation) {
                     lastValidRepresentation_ = representations_[i];
                     break;
                 }
             }
         }
+
         // Update valid representation bit mask
         size_t element = static_cast<size_t>(std::distance(representations_.begin(), it));
+
         // Start after the element that is going to be removed and update the mask.
-        for(int i = static_cast<int>(element+1); i < static_cast<int>(representations_.size()); ++i) {
-            if(isRepresentationValid(i)) {
+        for (int i = static_cast<int>(element+1); i < static_cast<int>(representations_.size()); ++i) {
+            if (isRepresentationValid(i))
                 setRepresentationAsValid(i-1);
-            } else {
+            else
                 setRepresentationAsInvalid(i-1);
-            }
         }
-        delete (*it);
+
+        delete(*it);
         representations_.erase(it);
     }
-    
 }
 
 bool Data::hasRepresentations() const {
     return !representations_.empty();
 }
 
-void Data::setDataFormat(const DataFormatBase* format){
+void Data::setDataFormat(const DataFormatBase* format) {
     dataFormatBase_ = format;
 }
 
-const DataFormatBase* Data::getDataFormat() const{
+const DataFormatBase* Data::getDataFormat() const {
     return dataFormatBase_;
 }
 

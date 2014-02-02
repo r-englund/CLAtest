@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -40,17 +40,17 @@ private:
     QLineEdit* mat1x0_;
     QLineEdit* mat1x1_;///< coordinates 1,1 of the matrix equals lower right corner
     EditableLabelQt* label_;
-    
+
 
     void generateWidget();
 
-    public slots:
-        void set0x0Value();
-        void set0x1Value();
-        void set1x0Value();
-        void set1x1Value();
-        void setPropertyValue();
-        void setPropertyDisplayName();
+public slots:
+    void set0x0Value();
+    void set0x1Value();
+    void set1x0Value();
+    void set1x1Value();
+    void setPropertyValue();
+    void setPropertyDisplayName();
 };
 
 } // namespace

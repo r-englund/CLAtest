@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -15,7 +15,7 @@
 /** \Inherited from QGraphicsScene for editing a transfer function (TransferFunction)
 *
 *  Class for graphical configuration of a transfer function
-*  
+*
 */
 
 #ifndef IVW_TRANSFERFUNCTIONEDITOR_H
@@ -53,7 +53,7 @@ class TransferFunctionEditor : public QGraphicsScene {
 
 public :
     /** \TransferFunctionEditor constructor
-    *         
+    *
     *  Main constructor, creates control points
     */
     TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view);
@@ -86,7 +86,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
-	void keyPressEvent(QKeyEvent *e);
+    void keyPressEvent(QKeyEvent* e);
 
     /** \Add new control point
     *      Adds a new control point at the event position
@@ -94,7 +94,7 @@ protected:
     *      Adds a new control point the the points_ array, adds a new line item to the lines_ array,
     *      sorts the points_ array and updates the line items to go to and from the correct points.
     *      Runs CalcTransferValues to update the TransferFunction data Image
-	*/
+    */
     void addControlPoint(QPointF pos);
     void addControlPoint(QPointF pos, vec4 color);
 
@@ -110,11 +110,11 @@ private :
     float zoomRangeYMin_;
     float zoomRangeYMax_;
 
-	QGraphicsView* view_;
-	TransferFunction* transferFunction_; ///< Pointer to widget's member variable
+    QGraphicsView* view_;
+    TransferFunction* transferFunction_; ///< Pointer to widget's member variable
 
     QGraphicsPathItem* graphicsPathItem_;
-	std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
+    std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
 
     bool mouseDrag_;
 };

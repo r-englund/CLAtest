@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Link�ping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -97,7 +97,7 @@ public:
     * @see getProcessorByName()
     */
     template<class T> std::vector<T*> getProcessorsByType() const;
-    
+
     /**
     * Returns a vector of all Processors.
     *
@@ -166,7 +166,7 @@ public:
     * @see removeConnection()
     */
     ProcessorLink* addLink(Processor* sourceProcessor, Processor* destProcessor);
- 
+
     /**
     * Removes and deletes a PortConnection from the ProcessorNetwork. This involves resolving the connection
     * between the two specified Ports, as well as removing this connection from the
@@ -193,7 +193,7 @@ public:
     *
     * @param[in] sourceProcessor The source processor.
     * @param[in] destProcessor The destination processor.
-    * @return The link between the processors or NULL if there is none. 
+    * @return The link between the processors or NULL if there is none.
     * @see addConnection()
     */
     ProcessorLink* getLink(Processor* sourceProcessor, Processor* destProcessor) const;
@@ -225,11 +225,11 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d) throw (Exception);
 
-     /**
-     * Clears the network objects processors, port connections, processor links etc.,
-     * This function clears only the core objects and mainly used to abort any
-     * further operation. 
-     */
+    /**
+    * Clears the network objects processors, port connections, processor links etc.,
+    * This function clears only the core objects and mainly used to abort any
+    * further operation.
+    */
     void clear();
 
 private:
@@ -254,10 +254,13 @@ private:
 template<class T>
 std::vector<T*> ProcessorNetwork::getProcessorsByType() const {
     std::vector<T*> processors;
+
     for (size_t i=0; i<processors_.size(); i++) {
         T* processor = dynamic_cast<T*>(processors_[i]);
+
         if (processor) processors.push_back(processor);
     }
+
     return processors;
 }
 

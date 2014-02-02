@@ -7,7 +7,7 @@
 
 namespace inviwo {
 
-/** \class Clock 
+/** \class Clock
 *
 * Class for measure time.
 */
@@ -18,13 +18,13 @@ public:
 
     /**
      * Start the Clock.
-     * 
+     *
      */
     void start();
 
     /**
      * Stops the clock.
-     * 
+     *
      */
     void stop();
 
@@ -33,7 +33,7 @@ public:
     * If neither start or stop has been called, the return value is undefined.
     */
     float getElapsedMiliseconds() const;
-       
+
     /**
     * Returns the amount of seconds between start and stop call.
     * If neither start or stop has been called, the return value is undefined.
@@ -49,7 +49,7 @@ protected:
     clock_t stopTime_;
 #endif
 
-    
+
 
 
 };

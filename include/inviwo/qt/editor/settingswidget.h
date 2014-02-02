@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -23,7 +23,7 @@
 #include <QScrollArea>
 
 namespace inviwo {
-    class PropertyWidgetQt;
+class PropertyWidgetQt;
 class IVW_QTEDITOR_API SettingsWidget : public InviwoDockWidget {
     Q_OBJECT
 public:

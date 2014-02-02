@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -44,7 +44,7 @@ private:
 };
 
 class IVW_QTEDITOR_API ProcessorListWidget : public InviwoDockWidget {
-Q_OBJECT
+    Q_OBJECT
 public:
     ProcessorListWidget(QWidget* parent);
     ~ProcessorListWidget();

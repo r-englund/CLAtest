@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -24,15 +24,15 @@ namespace inviwo {
 
 /** class BaseOptionProperty
 *   Base class for the option properties
-* 
+*
 * @see TemplateOptionProperty
 */
 class IVW_CORE_API BaseOptionProperty : public Property {
 public:
 
     BaseOptionProperty(std::string identifier, std::string displayName,
-        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-        PropertySemantics semantics=PropertySemantics::Default)
+                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                       PropertySemantics semantics=PropertySemantics::Default)
         : Property(identifier, displayName, invalidationLevel, semantics)
     {}
 
@@ -40,20 +40,23 @@ public:
     virtual int getSelectedOption() const = 0;
     virtual void setSelectedOption(int option) = 0;
     virtual void clearOptions() = 0;
-    
+
     virtual void set(const Property* srcProperty) {
         const BaseOptionProperty* optionSrcProp = dynamic_cast<const BaseOptionProperty*>(srcProperty);
+
         if (optionSrcProp) {
             int option = optionSrcProp->getSelectedOption();
+
             if (option<numOptions())
                 setSelectedOption(option);
             else
                 setSelectedOption(numOptions()-1);
         }
+
         //TODO: variants of option property (or composite property in general) does not work
-        /*else        
+        /*else
             this->setVariant(const_cast<Property*>(srcProperty)->getVariant());*/
-        propertyModified();    
+        propertyModified();
     }
 
     virtual std::vector<std::string> getOptionDisplayNames() const = 0;
@@ -63,22 +66,22 @@ public:
 
 /** class TemplateOptionProperty
 *   Template class for option properties
-* 
+*
 * @see OptionProperties
 * @see BaseOptionProperty
 */
 template<typename T>
 class TemplateOptionProperty : public BaseOptionProperty {
 
-//FIXME: use struct instead of std::pair combination for options
-/*
-template <typename T> 
-struct Option { 
-    std::string identifier;
-    std::string displayName;
-    T value;
-};
-*/
+    //FIXME: use struct instead of std::pair combination for options
+    /*
+    template <typename T>
+    struct Option {
+        std::string identifier;
+        std::string displayName;
+        T value;
+    };
+    */
 
 public:
     TemplateOptionProperty(std::string identifier, std::string displayName,
@@ -89,32 +92,32 @@ public:
                            PropertySemantics semantics=PropertySemantics::Default);
 
 
-    /** 
+    /**
      * \brief Adds an option to the property
      *
      * Adds a option to the property and stores it as a pair in the options_
      * The option name is the name of the option that will be displayed in the widget.
-     * 
+     *
      * @param std::string identifier identifier name
      * @param T value the value of the option
      */
     virtual void addOption(std::string identifier, std::string displayName, T value);
 
 
-    /** 
+    /**
      * \brief returns a vector of keys from the option vector
      *
-     * 
+     *
      * @return std::vector< std::string > <DESCRIBE ME>
      */
     virtual std::vector<std::string> getOptionDisplayNames() const;
 
     virtual int numOptions() const;
 
-    /** 
+    /**
      * \brief Returns the current selected option of the property
      *
-     * 
+     *
      * @return int the index of the selected option
      */
     virtual int getSelectedOption() const;
@@ -123,27 +126,27 @@ public:
     virtual void setSelectedOption(int option);
 
     void getAllOptions(std::vector<T>& allValues) const;
-    
+
     virtual void clearOptions();
 
     virtual void replaceOptions(std::vector<std::string> ids, std::vector<std::string> displayNames, std::vector<T> values);
 
     bool isSelected(std::string identifier) const;
 
-    /** 
+    /**
      * \brief returns the value of the currently selected option
      *
-     * 
+     *
      * @return T <DESCRIBE ME>
      */
     T getValue() const; // deprecated
     T get() const;
 
-    /** 
+    /**
      * \brief Set the currently selected option
      *
      * <DESCRIBE THE METHOD>
-     * 
+     *
      * @param std::string the key to the desiered value
      */
     virtual void set(const Property* srcProperty);
@@ -151,10 +154,10 @@ public:
 
     void setToID(std::string identifier);
     void selectByKey(std::string identifier);
-    
-    /** 
-     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.         
-     * 
+
+    /**
+     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
+     *
      * @return int VariantType as integer
      */
     virtual int getVariantType() {
@@ -173,15 +176,15 @@ protected:
 
 template <typename T>
 TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName,
-                                                    PropertyOwner::InvalidationLevel invalidationLevel,
-                                                    PropertySemantics semantics )
+        PropertyOwner::InvalidationLevel invalidationLevel,
+        PropertySemantics semantics)
     : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics)
 {}
 
 template <typename T>
 TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName, T value,
-                                                    PropertyOwner::InvalidationLevel invalidationLevel,
-                                                    PropertySemantics semantics )
+        PropertyOwner::InvalidationLevel invalidationLevel,
+        PropertySemantics semantics)
     : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics),
       value_(value)
 {}
@@ -189,6 +192,7 @@ TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::s
 template<typename T>
 void TemplateOptionProperty<T>::addOption(std::string optionIdentifier, std::string optionDisplayName, T optionValue) {
     options_.push_back(std::make_pair(std::make_pair(optionIdentifier, optionDisplayName), optionValue));
+
     // in case we add the first option, we also select it
     if (options_.size() == 1) setSelectedOption(0);
 }
@@ -201,9 +205,10 @@ int TemplateOptionProperty<T>::numOptions() const {
 template<typename T>
 std::vector<std::string> TemplateOptionProperty<T>::getOptionDisplayNames() const {
     std::vector<std::string> result;
-    for (size_t i=0; i<options_.size(); i++) {
+
+    for (size_t i=0; i<options_.size(); i++)
         result.push_back(options_[i].first.second);
-    }
+
     return result;
 }
 
@@ -213,14 +218,14 @@ int TemplateOptionProperty<T>::getSelectedOption() const {
         if (options_[i].second == value_)
             return i;
     }
+
     return 0;
 }
 
 template<typename T>
 void TemplateOptionProperty<T>::getAllOptions(std::vector<T>& allValues) const {
-    for (int i=0; i<static_cast<int>(options_.size()); i++) {
-       allValues.push_back(options_[i].second);
-    }
+    for (int i=0; i<static_cast<int>(options_.size()); i++)
+        allValues.push_back(options_[i].second);
 }
 
 
@@ -237,8 +242,10 @@ void TemplateOptionProperty<T>::clearOptions() {
 template<typename T>
 void TemplateOptionProperty<T>::replaceOptions(std::vector<std::string> ids, std::vector<std::string> displayNames, std::vector<T> values) {
     options_.clear();
+
     for (size_t i=0; i<ids.size(); i++)
-        options_.push_back(std::make_pair(std::make_pair(ids[i], displayNames[i]), values[i]));        
+        options_.push_back(std::make_pair(std::make_pair(ids[i], displayNames[i]), values[i]));
+
     setSelectedOption(static_cast<int>(options_.size()-1));
 }
 
@@ -247,6 +254,7 @@ bool TemplateOptionProperty<T>::isSelected(std::string identifier) const {
     for (size_t i=0; i<options_.size(); i++)
         if (options_[i].first.first == identifier)
             return (options_[i].second == value_);
+
     LogWarn("Querying non-existent option.");
     return false;
 }
@@ -272,7 +280,7 @@ template<typename T>
 void TemplateOptionProperty<T>::set(const Property* srcProperty) {
     BaseOptionProperty::set(srcProperty);
 }
-    
+
 template<typename T>
 void TemplateOptionProperty<T>::setToID(std::string identifier) {
     for (size_t i=0; i<options_.size(); i++)
@@ -297,7 +305,7 @@ void TemplateOptionProperty<T>::serialize(IvwSerializer& s) const {
 template<typename T>
 void TemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
     BaseOptionProperty::deserialize(d) ;
-    T value = get(); // Set to default value if property did not exist 
+    T value = get(); // Set to default value if property did not exist
     d.deserialize("value", value);
     set(value);
 }

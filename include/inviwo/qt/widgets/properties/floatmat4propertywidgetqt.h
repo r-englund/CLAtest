@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -34,7 +34,7 @@ public:
 
     void updateFromProperty();
 
-private:    
+private:
     FloatMat4Property* property_;
     QLineEdit* mat0x0_;
     QLineEdit* mat0x1_;
@@ -57,26 +57,26 @@ private:
 
     void generateWidget();
 
-    public slots:
-        void set0x0Value();
-        void set0x1Value();
-        void set0x2Value();
-        void set0x3Value();
-        void set1x0Value();
-        void set1x1Value();
-        void set1x2Value();
-        void set1x3Value();
-        void set2x0Value();
-        void set2x1Value();
-        void set2x2Value();
-        void set2x3Value();
-        void set3x0Value();
-        void set3x1Value();
-        void set3x2Value();
-        void set3x3Value();
+public slots:
+    void set0x0Value();
+    void set0x1Value();
+    void set0x2Value();
+    void set0x3Value();
+    void set1x0Value();
+    void set1x1Value();
+    void set1x2Value();
+    void set1x3Value();
+    void set2x0Value();
+    void set2x1Value();
+    void set2x2Value();
+    void set2x3Value();
+    void set3x0Value();
+    void set3x1Value();
+    void set3x2Value();
+    void set3x3Value();
 
-        void setPropertyValue();
-        void setPropertyDisplayName();
+    void setPropertyValue();
+    void setPropertyDisplayName();
 };
 
 } // namespace

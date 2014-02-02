@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,15 +25,15 @@ public:
 
     Edge(T in1) : v1(in1), v2(in1) {};
 
-	Edge(T in1, T in2) : v1(in1), v2(in2) {};
-	
-	bool operator==(const Edge<T>& e) const {
-		return ( (this->v1==e.v1) && (this->v2==e.v2) ) || ( (this->v1==e.v2) && (this->v2==e.v1) );
-	}
+    Edge(T in1, T in2) : v1(in1), v2(in2) {};
+
+    bool operator==(const Edge<T>& e) const {
+        return ((this->v1==e.v1) && (this->v2==e.v2)) || ((this->v1==e.v2) && (this->v2==e.v1));
+    }
 
 protected:
     //Protected as it can't instantiate v1 and v2;
-    Edge(){}
+    Edge() {}
 
 };
 

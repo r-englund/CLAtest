@@ -5,15 +5,14 @@
 
 namespace inviwo {
 
-DataWriterFactory::DataWriterFactory(){
+DataWriterFactory::DataWriterFactory() {
 }
 
 void DataWriterFactory::registerObject(DataWriter* writer) {
-    for( std::vector<FileExtension>::const_iterator it = writer->getExtensions().begin();
-        it != writer->getExtensions().end(); ++it){
-            if(writerForExtension_.find(it->extension_) == writerForExtension_.end()){
-                writerForExtension_.insert(std::make_pair(it->extension_, writer));
-            }
+    for (std::vector<FileExtension>::const_iterator it = writer->getExtensions().begin();
+         it != writer->getExtensions().end(); ++it) {
+        if (writerForExtension_.find(it->extension_) == writerForExtension_.end())
+            writerForExtension_.insert(std::make_pair(it->extension_, writer));
     }
 }
 

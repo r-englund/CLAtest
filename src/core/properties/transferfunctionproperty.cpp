@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -17,17 +17,17 @@
 namespace inviwo {
 
 TransferFunctionProperty::TransferFunctionProperty(std::string identifier,
-                                                   std::string displayName,
-                                                   TransferFunction value,
-                                                   VolumeInport* volumeInport,
-                                                   PropertyOwner::InvalidationLevel invalidationLevel,
-                                                   PropertySemantics semantics)
+        std::string displayName,
+        TransferFunction value,
+        VolumeInport* volumeInport,
+        PropertyOwner::InvalidationLevel invalidationLevel,
+        PropertySemantics semantics)
     : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
     , mask_(0.0f, 1.0f)
     , zoomH_(0.0f, 1.0f)
     , zoomV_(0.0f, 1.0f)
     , showHistogram_(true)
-    , volumeInport_(volumeInport){
+    , volumeInport_(volumeInport) {
 }
 
 TransferFunctionProperty::~TransferFunctionProperty() {
@@ -36,20 +36,21 @@ TransferFunctionProperty::~TransferFunctionProperty() {
 }
 
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
-	Property::serialize(s);
-	std::stringstream stream;
+    Property::serialize(s);
+    std::stringstream stream;
     s.serialize("size", (int)value_.getNumDataPoints());
-	for (size_t i=0; i<value_.getNumDataPoints(); i++){
-		stream << "pos" << i;
-		s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getPos());
-		stream.clear();
-		stream.str(std::string());
 
-		stream << "rgba" << i;
-		s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getRGBA());
-		stream.clear();
-		stream.str(std::string());
-	}
+    for (size_t i=0; i<value_.getNumDataPoints(); i++) {
+        stream << "pos" << i;
+        s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getPos());
+        stream.clear();
+        stream.str(std::string());
+        stream << "rgba" << i;
+        s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getRGBA());
+        stream.clear();
+        stream.str(std::string());
+    }
+
     s.serialize("mask_", mask_);
     s.serialize("zoomH_", zoomH_);
     s.serialize("zoomV_", zoomV_);
@@ -59,27 +60,26 @@ void TransferFunctionProperty::serialize(IvwSerializer& s) const {
 }
 
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
-	Property::deserialize(d);
-	int size;
-	vec2 pos;
-	vec4 rgba;
-	std::stringstream stream;
-
-	d.deserialize("size", size);
+    Property::deserialize(d);
+    int size;
+    vec2 pos;
+    vec4 rgba;
+    std::stringstream stream;
+    d.deserialize("size", size);
     value_.clearPoints();
-    for (int i = 0; i < size; i++){
+
+    for (int i = 0; i < size; i++) {
         stream << "pos" << i;
         d.deserialize(stream.str(), pos);
         stream.clear();
         stream.str(std::string());
-
         stream << "rgba" << i;
         d.deserialize(stream.str(), rgba);
         stream.clear();
         stream.str(std::string());
-
         value_.addPoint(pos, rgba);
     }
+
     d.deserialize("mask_", mask_);
     get().setMaskMin(mask_.x);
     get().setMaskMax(mask_.y);
@@ -92,15 +92,15 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
     propertyModified();
 }
 
-void TransferFunctionProperty::setShowHistogram(bool show){
+void TransferFunctionProperty::setShowHistogram(bool show) {
     showHistogram_ = show;
 }
 
-bool TransferFunctionProperty::getShowHistogram(){
+bool TransferFunctionProperty::getShowHistogram() {
     return showHistogram_;
 }
 
-VolumeInport* TransferFunctionProperty::getVolumeInport(){
+VolumeInport* TransferFunctionProperty::getVolumeInport() {
     return volumeInport_;
 }
 

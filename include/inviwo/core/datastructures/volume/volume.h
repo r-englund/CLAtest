@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -31,14 +31,14 @@ public:
     Volume& operator=(const Volume& that);
     virtual Volume* clone() const;
     virtual ~Volume();
-       
-    
+
+
     uvec3 getDimension() const;
     void setDimension(const uvec3& dim);
 
-    void setOffset(const vec3& offset); 
+    void setOffset(const vec3& offset);
     vec3 getOffset() const;
-    
+
     mat3 getBasis() const;
     void setBasis(const mat3& basis);
 

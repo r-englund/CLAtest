@@ -13,7 +13,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API PortInspector { 
+class IVW_CORE_API PortInspector {
 public:
     PortInspector(std::string portClassName, std::string inspectorWorkspace);
     virtual ~PortInspector();
@@ -22,7 +22,7 @@ public:
     std::string getPortClassName();
     void setActive(bool val);
     bool isActive();
-   
+
     std::vector<Processor*> getProcessors();
     std::vector<Inport*> getInports();
     CanvasProcessor* getCanvasProcessor();
@@ -31,12 +31,12 @@ public:
 
 private:
     void initialize();
-    
+
     std::string inspectorNetworkFileName_;
     std::string portClassName_;
     bool active_;
     ProcessorNetwork* inspectorNetwork_;
- 
+
     std::vector<Processor*> processors_;
     std::vector<Inport*> inPorts_;
     std::vector<PortConnection*> connections_;

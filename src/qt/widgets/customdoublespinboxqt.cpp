@@ -19,7 +19,7 @@ namespace inviwo {
 
 
 
-CustomDoubleSpinBoxQt::CustomDoubleSpinBoxQt( QWidget *parent /*= 0*/ ) {
+CustomDoubleSpinBoxQt::CustomDoubleSpinBoxQt(QWidget* parent /*= 0*/) {
     // Enables setting number of decimals to display
     displayDecimals_ = decimals();
     // Save default sizeHint before changing decimal property
@@ -28,14 +28,14 @@ CustomDoubleSpinBoxQt::CustomDoubleSpinBoxQt( QWidget *parent /*= 0*/ ) {
     QDoubleSpinBox::setDecimals(std::numeric_limits<double>::max_exponent);
 }
 
-QString CustomDoubleSpinBoxQt::textFromValue( double value ) const {
+QString CustomDoubleSpinBoxQt::textFromValue(double value) const {
     return QString::number(value, 'f', displayDecimals_);
 }
 
-void CustomDoubleSpinBoxQt::setDecimals( int decimals ) {
-    if (decimals == displayDecimals_) {
+void CustomDoubleSpinBoxQt::setDecimals(int decimals) {
+    if (decimals == displayDecimals_)
         return;
-    }
+
     displayDecimals_ = decimals;
     // Block so that no signals are sent
     // since the value does not change
@@ -44,7 +44,6 @@ void CustomDoubleSpinBoxQt::setDecimals( int decimals ) {
     QDoubleSpinBox::setDecimals(decimals);
     cachedSizeHint_ = QDoubleSpinBox::sizeHint();
     QDoubleSpinBox::setDecimals(std::numeric_limits<double>::max_exponent);
-
     setValue(val);
     blockSignals(false);
 }

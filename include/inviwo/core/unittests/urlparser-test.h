@@ -4,14 +4,14 @@
 #define IVW_URLPARSERTEST_TEST_H
 
 
-TEST(URLParserTest,fileExistsTest){
+TEST(URLParserTest,fileExistsTest) {
 #ifdef __FILE__
     EXPECT_TRUE(URLParser::fileExists(__FILE__));
 #endif
     EXPECT_TRUE(URLParser::fileExists(global_argv[0]));//Cant find current executable
 }
 
-TEST(URLParserTest,fileExtensionTest){
+TEST(URLParserTest,fileExtensionTest) {
     EXPECT_STREQ("",URLParser::getFileExtension("").c_str());
     EXPECT_STREQ("txt",URLParser::getFileExtension("test.txt").c_str());
     EXPECT_STREQ("txt",URLParser::getFileExtension("test.dobule.txt").c_str());
@@ -25,11 +25,11 @@ TEST(URLParserTest,fileExtensionTest){
 
 
 
-TEST(URLParserTest,FileDirectoryTest){
+TEST(URLParserTest,FileDirectoryTest) {
     EXPECT_STREQ("C:/a/directory/for/test/",URLParser::getFileDirectory("C:/a/directory/for/test/file.txt").c_str());
     EXPECT_STREQ("C:\\a\\directory\\for\\test\\",URLParser::getFileDirectory("C:\\a\\directory\\for\\test\\file.txt").c_str());
     EXPECT_STREQ("",URLParser::getFileDirectory("justafile.txt").c_str());
-   // EXPECT_STREQ("C:/a/directory/for/test/",URLParser::getFileDirectory("C:/a/directory/for/test//withdoubleslahs.txt").c_str());
+    // EXPECT_STREQ("C:/a/directory/for/test/",URLParser::getFileDirectory("C:/a/directory/for/test//withdoubleslahs.txt").c_str());
 }
 
 #endif

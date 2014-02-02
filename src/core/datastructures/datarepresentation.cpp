@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -17,39 +17,39 @@
 
 namespace inviwo {
 
-DataRepresentation::DataRepresentation() 
+DataRepresentation::DataRepresentation()
     : dataFormatBase_(DataUINT8::get()) {}
-DataRepresentation::DataRepresentation(const DataFormatBase* format) 
+DataRepresentation::DataRepresentation(const DataFormatBase* format)
     : dataFormatBase_(format) {}
-DataRepresentation::DataRepresentation(const DataRepresentation& rhs) 
+DataRepresentation::DataRepresentation(const DataRepresentation& rhs)
     : dataFormatBase_(rhs.dataFormatBase_) {}
 
 DataRepresentation& DataRepresentation::operator=(const DataRepresentation& that) {
-    if(this != &that) {
+    if (this != &that)
         dataFormatBase_ = that.dataFormatBase_;
-    }
+
     return *this;
 }
 
 DataRepresentation::~DataRepresentation() { }
 
-std::string DataRepresentation::getClassName() const { 
-    return "DataRepresentation"; 
+std::string DataRepresentation::getClassName() const {
+    return "DataRepresentation";
 }
 
-const DataFormatBase* DataRepresentation::getDataFormat() const { 
-    return dataFormatBase_; 
+const DataFormatBase* DataRepresentation::getDataFormat() const {
+    return dataFormatBase_;
 }
 
-std::string DataRepresentation::getDataFormatString() const { 
-    return std::string(dataFormatBase_->getString()); 
+std::string DataRepresentation::getDataFormatString() const {
+    return std::string(dataFormatBase_->getString());
 }
 
-DataFormatId DataRepresentation::getDataFormatId() const { 
-    return dataFormatBase_->getId(); 
+DataFormatId DataRepresentation::getDataFormatId() const {
+    return dataFormatBase_->getId();
 }
 
-void DataRepresentation::setDataFormat(const DataFormatBase* format){
+void DataRepresentation::setDataFormat(const DataFormatBase* format) {
     dataFormatBase_ = format;
 }
 

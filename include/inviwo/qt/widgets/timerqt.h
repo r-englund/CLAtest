@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -35,7 +35,7 @@ namespace inviwo {
 //        setSingleShot(once);
 //
 //        connect(this, SIGNAL(timeout()), this, SLOT(onIntervalEventSlot()));
-//        
+//
 //        QTimer::start(intervalInMilliseconds);
 //    };
 //
@@ -59,11 +59,11 @@ public:
     virtual ~TimerQt() { stop();}
 
     virtual void start(unsigned int intervalInMilliseconds, bool once = false) {
-        if(timer_.isActive())
+        if (timer_.isActive())
             return;
+
         once_ = once;
         timer_.start(intervalInMilliseconds, this);
-
     };
 
     virtual void stop() {
@@ -71,14 +71,14 @@ public:
     };
 
 protected:
-    void timerEvent(QTimerEvent *event) {
+    void timerEvent(QTimerEvent* event) {
         onIntervalEvent();
-        if(once_) {
+
+        if (once_)
             stop();
-        }
     }
-     QBasicTimer timer_;
-     bool once_;
+    QBasicTimer timer_;
+    bool once_;
 
 
 };

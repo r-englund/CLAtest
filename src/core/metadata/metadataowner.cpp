@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -17,10 +17,10 @@
 namespace inviwo {
 
 MetaDataOwner::MetaDataOwner()
-    : metaData_(new MetaDataMap()){}
+    : metaData_(new MetaDataMap()) {}
 
-MetaDataOwner::MetaDataOwner(const MetaDataOwner& rhs) 
-    : metaData_(rhs.metaData_->clone()){}
+MetaDataOwner::MetaDataOwner(const MetaDataOwner& rhs)
+    : metaData_(rhs.metaData_->clone()) {}
 
 MetaDataOwner& MetaDataOwner::operator=(const MetaDataOwner& that) {
     if (this != &that) {
@@ -28,6 +28,7 @@ MetaDataOwner& MetaDataOwner::operator=(const MetaDataOwner& that) {
         delete metaData_;
         metaData_ = metadata;
     }
+
     return *this;
 }
 MetaDataOwner* MetaDataOwner::clone() const {

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -34,9 +34,9 @@
 
 namespace inviwo {
 
-class NetworkEditorObserver : public Observer{
+class NetworkEditorObserver : public Observer {
 public:
-    virtual void onNetworkEditorFileChanged(const std::string &newFilename) = 0;
+    virtual void onNetworkEditorFileChanged(const std::string& newFilename) = 0;
 };
 
 /**
@@ -47,8 +47,8 @@ public:
  * - inspector networks
  */
 class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
-                                       public Singleton<NetworkEditor>,
-                                       public Observable<NetworkEditorObserver>         {
+    public Singleton<NetworkEditor>,
+    public Observable<NetworkEditorObserver>         {
     Q_OBJECT
 public:
     NetworkEditor();
@@ -61,7 +61,7 @@ public:
      *
      * Before the processor is added to the network, its identifier is analyzed and
      * if necessary changed, such that the processor names within each network are unique.
-     * 
+     *
      * @param Processor* processor The processor to be added
      * @param pos Position in the network editor, wher ethe graphical representation should be located
      * @param visible Shall the graphical representation be visible
@@ -78,7 +78,7 @@ public:
     void clearNetwork();
     bool saveNetwork(std::string fileName);
     bool loadNetwork(std::string fileName);
-    std::string getCurrentFilename()const{return filename_;}
+    std::string getCurrentFilename()const {return filename_;}
 
     void addPropertyWidgets(Processor* processor);
     void removeAndDeletePropertyWidgets(Processor* processor);
@@ -104,13 +104,13 @@ protected:
 
     void keyPressEvent(QKeyEvent* keyEvent);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
-    
+
     void dragEnterEvent(QGraphicsSceneDragDropEvent* de);
     void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
     void dropEvent(QGraphicsSceneDragDropEvent* de);
 
-	void placeProcessorOnConnection(ProcessorGraphicsItem* processorItem, ConnectionGraphicsItem* connectionItem);
-    void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);  
+    void placeProcessorOnConnection(ProcessorGraphicsItem* processorItem, ConnectionGraphicsItem* connectionItem);
+    void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);
 
     bool isLinkDisplayEnabled();
     void autoLinkOnAddedProcessor(Processor*);
@@ -118,9 +118,9 @@ protected:
     void workerThreadQuit();
 
 private:
-    enum NetworkEditorFlags { 
-        None=0, 
-        CanvasHidden=1, 
+    enum NetworkEditorFlags {
+        None=0,
+        CanvasHidden=1,
         UseOriginalCanvasSize=1<<2
     };
 
@@ -134,8 +134,8 @@ private:
     ProcessorNetwork* processorNetwork_;
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
 
-	ConnectionGraphicsItem* oldConnectionTarget_;
-	ProcessorGraphicsItem* oldProcessorTarget_;
+    ConnectionGraphicsItem* oldConnectionTarget_;
+    ProcessorGraphicsItem* oldProcessorTarget_;
 
     CurveGraphicsItem* connectionCurve_;
     LinkGraphicsItem* linkCurve_;
@@ -145,7 +145,7 @@ private:
     ProcessorGraphicsItem* endProcessor_;
     Port* startPort_;
     Port* endPort_;
-   
+
     Inspection inspection_;
 
     bool gridSnapping_;
@@ -153,7 +153,8 @@ private:
     QTimer hoverTimer_;
     QThread* workerThread_;
 
-    void addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor=true, bool showPropertyWidgets=true, bool showProcessorWidget=true);
+    void addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor=true, bool showPropertyWidgets=true,
+                                     bool showProcessorWidget=true);
     void removeProcessorRepresentations(Processor* processor);
     void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true);
     void removeProcessorGraphicsItem(Processor* processor);
@@ -181,7 +182,8 @@ private:
     void addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos);
     void removePortInspector(std::string processorIdentifier, std::string portIdentifier);
 
-    void addExternalNetwork(std::string fileName, std::string processorPrefix, ivec2 pos, unsigned int networkEditorFlags=NetworkEditor::None, ivec2 canvasSize=ivec2(128));
+    void addExternalNetwork(std::string fileName, std::string processorPrefix, ivec2 pos, unsigned int networkEditorFlags=NetworkEditor::None,
+                            ivec2 canvasSize=ivec2(128));
     void removeExternalNetwork(std::string identifierPrefix);
     std::vector<std::string> saveSnapshotsInExternalNetwork(std::string externalNetworkFile, std::string identifierPrefix);
 
@@ -192,11 +194,11 @@ private:
     std::string filename_;
 };
 
-class IVW_QTEDITOR_API ProcessorWorkerQt : public QObject{
+class IVW_QTEDITOR_API ProcessorWorkerQt : public QObject {
     Q_OBJECT
 public:
-    ProcessorWorkerQt(std::vector<Processor*> processors) : processors_(processors){}
-    ~ProcessorWorkerQt(){};
+    ProcessorWorkerQt(std::vector<Processor*> processors) : processors_(processors) {}
+    ~ProcessorWorkerQt() {};
 
 public slots:
     void process();

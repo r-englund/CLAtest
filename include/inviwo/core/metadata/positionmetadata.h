@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -36,13 +36,13 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
     ivec2 getXY();
-    void setXY(const ivec2 &xy);
+    void setXY(const ivec2& xy);
 
     int getX();
-    void setX(const int &x);
+    void setX(const int& x);
 
     int getY();
-    void setY(const int &y);
+    void setY(const int& y);
 
 };
 

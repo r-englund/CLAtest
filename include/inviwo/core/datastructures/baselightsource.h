@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -21,19 +21,19 @@
 namespace inviwo {
 
 namespace LightSourceType {
-    enum Enum {            
-        LIGHT_AREA = 0,
-		LIGHT_CONE,
-        LIGHT_POINT,
-        LIGHT_DIRECTIONAL
-    };
+enum Enum {
+    LIGHT_AREA = 0,
+    LIGHT_CONE,
+    LIGHT_POINT,
+    LIGHT_DIRECTIONAL
+};
 }
 // TODO: Change/add transformation and size information to meters instead of texture space.
 
 class IVW_CORE_API LightSource {
 public:
-	LightSource() {};
-	virtual ~LightSource() {};
+    LightSource() {};
+    virtual ~LightSource() {};
 
     virtual float getArea() const = 0;
 
@@ -50,7 +50,7 @@ public:
 
     /**
      * Return field of view in radians.
-     * 
+     *
      * @return Field of view in radians
      */
     float getFieldOfView() const { return fieldOfView_; }
@@ -58,30 +58,30 @@ public:
     void setFieldOfView(float FOVInRadians) { fieldOfView_ = FOVInRadians; }
 
     /**
-     * Get normalized general direction of light source. 
-     * 
+     * Get normalized general direction of light source.
+     *
      * @return Normalized direction of light source.
      */
     const vec3& getLightDirection() const { return lightDirection_; }
 
     /**
      * Set normalized direction of light source.
-     * 
+     *
      * @param direction Normalized direction of light source.
      */
     void setLightDirection(const vec3& direction) { lightDirection_ = direction; }
 
     /**
      * Get width and height in texture space.
-     * 
-     * @return 
+     *
+     * @return
      */
     const vec2& getSize() const { return size_; }
 
     /**
      * Set width and height in texture space.
-     * 
-     * @param newSize 
+     *
+     * @param newSize
      */
     void setSize(const vec2& newSize) { size_ = newSize; }
 protected:
@@ -94,7 +94,7 @@ protected:
 
 // Data type that can be transfered to OpenCL device
 // Must be same as modules/opencl/cl/light.cl
-// Note that largest variables should be placed first 
+// Note that largest variables should be placed first
 // in order to ensure struct size
 typedef struct {
     mat4 tm; // Transformation matrix from local to world coordinates
@@ -105,12 +105,12 @@ typedef struct {
     float cosFOV; // cos( (field of view)/2 ), used by cone light
 
     int padding[7]; // OpenCL requires sizes that are power of two (32, 64, 128 and so on)
-}PackedLightSource;
+} PackedLightSource;
 
-// Transform a BaseLightSource to PhotonLightSourceCL 
+// Transform a BaseLightSource to PhotonLightSourceCL
 IVW_CORE_API PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale);
 
-// Calculate how many samples to take from each light source. 
+// Calculate how many samples to take from each light source.
 // x component contains the amount of samples to take in x and y dimension
 // y component is the number of samples taken for each light source (x*x)
 IVW_CORE_API uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources);

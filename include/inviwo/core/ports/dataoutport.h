@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -28,7 +28,7 @@ template< typename T> class DataInport;
 template<typename T>
 class DataOutport : public Outport {
 
-friend class MultiDataInport<T, DataInport<T> >;
+    friend class MultiDataInport<T, DataInport<T> >;
 public:
     DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~DataOutport();
@@ -45,7 +45,7 @@ public:
     bool hasData() const;
     bool isDataOwner() const;
 
-	virtual bool isReady() const { return isConnected(); }
+    virtual bool isReady() const { return isConnected(); }
 
     virtual void dataChanged() {}
 
@@ -63,15 +63,15 @@ DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationL
 
 template <typename T>
 DataOutport<T>::~DataOutport() {
-    if(ownsData_ && data_)
+    if (ownsData_ && data_)
         delete data_;
 }
 
 template <typename T>
-void DataOutport<T>::initialize(){}
+void DataOutport<T>::initialize() {}
 
 template <typename T>
-void DataOutport<T>::deinitialize(){}
+void DataOutport<T>::deinitialize() {}
 
 template <typename T>
 T* DataOutport<T>::getData() {
@@ -79,16 +79,17 @@ T* DataOutport<T>::getData() {
 }
 
 template <typename T>
-const T* DataOutport<T>::getConstData() const{
+const T* DataOutport<T>::getConstData() const {
     return const_cast<const T*>(data_);
 }
 
 template <typename T>
 void DataOutport<T>::setData(T* data, bool ownsData) {
-    if(ownsData_ && data_) {
+    if (ownsData_ && data_) {
         //Delete old data
         delete data_;
     }
+
     ownsData_ = ownsData;
     //Add reference to new data
     data_ = data;
@@ -97,10 +98,11 @@ void DataOutport<T>::setData(T* data, bool ownsData) {
 
 template <typename T>
 void DataOutport<T>::setConstData(const T* data) {
-    if(ownsData_ && data_) {
+    if (ownsData_ && data_) {
         //Delete old data
         delete data_;
     }
+
     ownsData_ = false;
     //Add reference to new data
     data_ = const_cast<T*>(data);

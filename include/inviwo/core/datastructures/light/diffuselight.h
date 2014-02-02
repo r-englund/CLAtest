@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -21,8 +21,7 @@
 
 namespace inviwo {
 
-class DiffuseLight: public LightSource 
-{
+class DiffuseLight: public LightSource {
 public:
     DiffuseLight(): LightSource() {}
     virtual ~DiffuseLight() {};
@@ -40,21 +39,21 @@ public:
 
     /**
      * Set the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
-     * 
-     * @param power 
+     *
+     * @param power
      */
     void setIntensity(const vec3& intensity) { intensity_ = intensity; }
 
     /**
      * Get the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
-     * 
+     *
      * @return Flux density per solid angle, W*s*r^-1
      */
     const vec3& getIntensity() const { return intensity_; }
 
 protected:
     vec3 intensity_; // Color of light source, flux density per solid angle (given in watt per steradian W*s*r^-1)
-    
+
 };
 
 } // namespace inviwo

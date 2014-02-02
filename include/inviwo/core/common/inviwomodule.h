@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -67,7 +67,7 @@ public:
     const std::vector<RepresentationConverter*>& getRepresentationConverters() const;
     const std::vector<Resource*>& getResources() const;
     const std::vector<Settings*>& getSettings() const;
-    
+
     std::string getDescription() const;
     void setDescription(const std::string& description) const;
 
@@ -76,7 +76,7 @@ public:
 
 protected:
     void setIdentifier(const std::string& identifier);
-    
+
     void registerCapabilities(Capabilities* info);
     void registerData(Data* data);
     void registerDataReader(DataReader* reader);
@@ -94,10 +94,10 @@ protected:
     void registerRepresentationConverter(RepresentationConverter* representationConverter);
     void registerResource(Resource* resource);
     void registerSettings(Settings* settings);
-    
+
     void setXMLFileName(const std::string& xmlDocuFileName);
 
-    virtual void setupModuleSettings(){};
+    virtual void setupModuleSettings() {};
 
     std::string getPath(const std::string& suffix = "") const;
 

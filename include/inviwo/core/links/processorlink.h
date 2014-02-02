@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -25,18 +25,18 @@ namespace inviwo {
 
 class IVW_CORE_API ProcessorLink : public IvwSerializable {
 
-public:    
+public:
 
     ProcessorLink();
     ProcessorLink(Processor* outProcessor, Processor* inProcessor);
     virtual ~ProcessorLink();
 
-    Processor* getSourceProcessor() const{ return sourceProcessor_; }
-    Processor* getDestinationProcessor() const{ return destinationProcessor_; }
-    
+    Processor* getSourceProcessor() const { return sourceProcessor_; }
+    Processor* getDestinationProcessor() const { return destinationProcessor_; }
+
 
     void autoLinkPropertiesByType();
-    void evaluate(LinkEvaluator *leval);
+    void evaluate(LinkEvaluator* leval);
     bool isLinked(Property* startProperty, Property* endProperty);
     bool involvesProcessor(Processor* processor);
     bool isPropertySource(Property* property) ;
@@ -49,7 +49,7 @@ public:
     void removePropertyLinks(Property* startProperty, Property* endProperty);
     void removePropertyLink(PropertyLink* plink);
     void removeBidirectionalPair(Property* startProperty, Property* endProperty);
-    std::vector<PropertyLink*> getPropertyLinks() {return propertyLinks_;} 
+    std::vector<PropertyLink*> getPropertyLinks() {return propertyLinks_;}
     PropertyLink* getPropertyLink(Property* startProperty, Property* endProperty);
     PropertyLink* getBidirectionalPair(PropertyLink* propertyLink);
     PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty);
@@ -58,10 +58,10 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-private:    
-   Processor* sourceProcessor_;
-   Processor* destinationProcessor_;
-   std::vector<PropertyLink*> propertyLinks_;
+private:
+    Processor* sourceProcessor_;
+    Processor* destinationProcessor_;
+    std::vector<PropertyLink*> propertyLinks_;
 };
 
 } // namespace

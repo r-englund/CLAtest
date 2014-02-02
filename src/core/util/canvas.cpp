@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -26,9 +26,9 @@ Canvas::Canvas(uvec2 dimensions)
     , dimensions_(dimensions)
     , processorNetworkEvaluator_(0)
     , queuedRequest_(false) {
-
     pickingContainer_ = new PickingContainer();
-    if(!screenAlignedRect_){
+
+    if (!screenAlignedRect_) {
         shared_ = false;
         Position2dBuffer* verticesBuffer = new Position2dBuffer();
         Position2dBufferRAM* verticesBufferRAM = verticesBuffer->getEditableRepresentation<Position2dBufferRAM>();
@@ -50,13 +50,14 @@ Canvas::Canvas(uvec2 dimensions)
 }
 
 Canvas::~Canvas() {
-    if(!shared_)
+    if (!shared_)
         delete screenAlignedRect_;
+
     delete pickingContainer_;
 }
 
 void Canvas::initialize() {
-    if(!pickingContainer_)
+    if (!pickingContainer_)
         pickingContainer_ = new PickingContainer();
 }
 
@@ -69,37 +70,38 @@ void Canvas::activate() {}
 void Canvas::resize(uvec2 size) {
     uvec2 previousDimensions = dimensions_;
     dimensions_ = size;
+
     if (processorNetworkEvaluator_) {
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
-        resizeEvent->setPreviousSize(previousDimensions);        
+        resizeEvent->setPreviousSize(previousDimensions);
         processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
         delete resizeEvent;
     }
 }
 
-uvec2 Canvas::getDimension() { 
+uvec2 Canvas::getDimension() {
     return dimensions_;
 }
 
 void Canvas::update() {}
 
-void Canvas::setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) { 
-    processorNetworkEvaluator_ = networkEvaluator; 
+void Canvas::setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) {
+    processorNetworkEvaluator_ = networkEvaluator;
 }
 
-ProcessorNetworkEvaluator* Canvas::getNetworkEvaluator() const { 
-    return processorNetworkEvaluator_; 
+ProcessorNetworkEvaluator* Canvas::getNetworkEvaluator() const {
+    return processorNetworkEvaluator_;
 }
 
-void Canvas::performEvaluationAtNextShow(){
+void Canvas::performEvaluationAtNextShow() {
     queuedRequest_ = true;
 }
 
-void Canvas::triggerQueuedEvaluation(){
-    if(queuedRequest_){
-        if(getNetworkEvaluator()){
+void Canvas::triggerQueuedEvaluation() {
+    if (queuedRequest_) {
+        if (getNetworkEvaluator())
             getNetworkEvaluator()->requestEvaluate();
-        }
+
         queuedRequest_ = false;
     }
 }
@@ -109,9 +111,10 @@ void Canvas::interactionEvent(InteractionEvent* e) {
 }
 
 void Canvas::mousePressEvent(MouseEvent* e) {
-    if(e->button() == MouseEvent::MOUSE_BUTTON_LEFT) {
+    if (e->button() == MouseEvent::MOUSE_BUTTON_LEFT) {
         bool picked = pickingContainer_->performPick(mousePosToPixelCoordinates(e->pos()));
-        if(!picked)
+
+        if (!picked)
             interactionEvent(e);
     }
     else
@@ -124,21 +127,21 @@ void Canvas::mouseReleaseEvent(MouseEvent* e) {
 }
 
 void Canvas::mouseMoveEvent(MouseEvent* e) {
-    if(pickingContainer_->isPickableSelected())
+    if (pickingContainer_->isPickableSelected())
         pickingContainer_->movePicked(mousePosToPixelCoordinates(e->pos()));
     else
         interactionEvent(e);
 }
 
 void Canvas::keyPressEvent(KeyboardEvent* e) {
-	interactionEvent(e);
+    interactionEvent(e);
 }
 
 void Canvas::keyReleaseEvent(KeyboardEvent* e) {
-	interactionEvent(e);
+    interactionEvent(e);
 }
 
-uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos){
+uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos) {
     uvec2 pos(std::max(mpos.x, 0), std::max(mpos.y, 0));
     pos = glm::min(pos, dimensions_);
     pos.y = dimensions_.y-(pos.y-1);

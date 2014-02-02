@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -31,6 +31,7 @@ void MetaDataFactory::registerObject(MetaData* meta) {
 
 IvwSerializable* MetaDataFactory::create(std::string className) const {
     std::map<std::string, MetaData*>::iterator it = metaDataClassMap_.find(className);
+
     if (it != metaDataClassMap_.end())
         return it->second->clone();
     else
@@ -39,6 +40,7 @@ IvwSerializable* MetaDataFactory::create(std::string className) const {
 
 bool MetaDataFactory::isValidType(std::string className) const {
     std::map<std::string, MetaData*>::iterator it = metaDataClassMap_.find(className);
+
     if (it != metaDataClassMap_.end())
         return true;
     else

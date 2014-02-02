@@ -51,12 +51,10 @@ namespace inviwo {
 
 QtWidgetModule::QtWidgetModule() : InviwoModule() {
     setIdentifier("QtWidget");
-
     // What really happens
     // registerPropertyWidgetObject(
     //     new PropertyWidgetFactoryObjectTemplate<FloatPropertyWidgetQt, FloatProperty>("FloatProperty", "Default")
     // );
-
     registerPropertyWidget(BoolPropertyWidgetQt, BoolProperty, "Default");
     registerPropertyWidget(ButtonPropertyWidgetQt, ButtonProperty, "Default");
     registerPropertyWidget(CameraPropertyWidgetQt, CameraProperty, "Default");
@@ -67,7 +65,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(CompositePropertyWidgetQt, CompositeProperty, "Default");
     registerPropertyWidget(DirectoryPropertyWidgetQt, DirectoryProperty, "Default");
     registerPropertyWidget(EventPropertyWidgetQt, EventProperty, "Default");
-    registerPropertyWidget(FilePropertyWidgetQt, FileProperty, "Default");  
+    registerPropertyWidget(FilePropertyWidgetQt, FileProperty, "Default");
     registerPropertyWidget(FloatMat2PropertyWidgetQt, FloatMat2Property, "Default");
     registerPropertyWidget(FloatMat3PropertyWidgetQt, FloatMat3Property, "Default");
     registerPropertyWidget(FloatMat4PropertyWidgetQt, FloatMat4Property, "Default");
@@ -76,7 +74,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(FloatVec2PropertyWidgetQt, FloatVec2Property, "Default");
     registerPropertyWidget(FloatVec3PropertyWidgetQt, FloatVec3Property, "Default");
     registerPropertyWidget(FloatVec4PropertyWidgetQt, FloatVec4Property, "Default");
-    registerPropertyWidget(ImageEditorWidgetQt, FileProperty, "ImageEditor"); 
+    registerPropertyWidget(ImageEditorWidgetQt, FileProperty, "ImageEditor");
     registerPropertyWidget(ImageEditorWidgetQt, ImageEditorProperty, "Default");
     registerPropertyWidget(ImageEditorWidgetQt, ImageEditorProperty, "ImageEditor");
     registerPropertyWidget(IntMinMaxPropertyWidgetQt, IntMinMaxProperty, "Default");
@@ -84,7 +82,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(IntVec2PropertyWidgetQt, IntVec2Property, "Default");
     registerPropertyWidget(IntVec3PropertyWidgetQt, IntVec3Property, "Default");
     registerPropertyWidget(IntVec4PropertyWidgetQt, IntVec4Property, "Default");
-    registerPropertyWidget(LightPropertyWidgetQt, FloatVec3Property, "LightPosition");     
+    registerPropertyWidget(LightPropertyWidgetQt, FloatVec3Property, "LightPosition");
     registerPropertyWidget(OptionPropertyWidgetQt, BaseOptionProperty, "Default");
     registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyInt, "Default");
     registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyFloat, "Default");
@@ -97,7 +95,6 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(TextEditorWidgetQt, StringProperty, "Editor");
     registerPropertyWidget(TextEditorWidgetQt, StringProperty, "Shader");
     registerPropertyWidget(TransferFunctionPropertyWidgetQt, TransferFunctionProperty, "Default");
-
     registerDataReaderDialog(new RawVolumeReader(), new RawDataReaderDialogQt());
 }
 

@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -37,8 +37,8 @@ DataRepresentation* LayerDisk2RAMConverter::createFrom(const DataRepresentation*
     void* data = NULL;
     uvec2 dimension = layerDisk->getDimension();
     DataFormatId formatId = NOT_SPECIALIZED;
-    
-    if(dimension != uvec2(0))
+
+    if (dimension != uvec2(0))
         data = layerDisk->loadFileDataAndRescale(NULL, dimension, formatId);
     else
         data = layerDisk->loadFileData(NULL, dimension, formatId);
@@ -46,10 +46,11 @@ DataRepresentation* LayerDisk2RAMConverter::createFrom(const DataRepresentation*
     switch (formatId) {
 #define DataFormatIdMacro(i) case i: return new LayerRAM_##i(static_cast<Data##i::type*>(data), dimension, layerDisk->getLayerType());
 #include <inviwo/core/util/formatsdefinefunc.h>
-    default: 
-        LogError("Cannot convert format from Disk to RAM:" << layerDisk->getDataFormat()->getString());
+
+        default:
+            LogError("Cannot convert format from Disk to RAM:" << layerDisk->getDataFormat()->getString());
     }
-        
+
     return NULL;
 }
 

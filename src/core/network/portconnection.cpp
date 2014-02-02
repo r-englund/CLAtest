@@ -1,7 +1,7 @@
 /**********************************************************************
  * Copyright (C) 2012-2013 Scientific Visualization Group - Linköping University
  * All Rights Reserved.
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * No part of this software may be reproduced or transmitted in any
@@ -16,31 +16,31 @@
 
 namespace inviwo {
 
-PortConnection::PortConnection()   
+PortConnection::PortConnection()
     : inport_(0),
-      outport_(0){}
+      outport_(0) {}
 
 PortConnection::PortConnection(Outport* outport, Inport* inport)
     : inport_(inport),
-      outport_(outport){}
+      outport_(outport) {}
 
 PortConnection::~PortConnection() {}
 
-void PortConnection::serialize(IvwSerializer& s) const {  
+void PortConnection::serialize(IvwSerializer& s) const {
     s.serialize("OutPort", *getOutport());
     s.serialize("InPort", *getInport());
 }
 
-void PortConnection::deserialize(IvwDeserializer& d) {    
+void PortConnection::deserialize(IvwDeserializer& d) {
     Outport outport("");
     d.deserialize("OutPort", outport);
     Processor* outPortProcessor = outport.getProcessor();
-    
+
     if (outPortProcessor)
         outport_ = outPortProcessor->getOutport(outport.getIdentifier());
     else
         LogWarn("Could not deserialize " << outport.getIdentifier());
-    
+
     Inport inport("");
     d.deserialize("InPort", inport);
     Processor* inPortProcessor = inport.getProcessor();
