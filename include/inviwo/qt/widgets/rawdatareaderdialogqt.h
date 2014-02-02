@@ -22,7 +22,7 @@ namespace inviwo {
 
 class IVW_CORE_API RawDataReaderDialogQt : public DataReaderDialog, public QDialog {
 public:
-    RawDataReaderDialogQt::RawDataReaderDialogQt();
+    RawDataReaderDialogQt();
     virtual ~RawDataReaderDialogQt();
 
     virtual const DataFormatBase* getFormat(std::string fileName, uvec3* dimensions, bool* littleEndian);
