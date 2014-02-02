@@ -82,8 +82,8 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
     // mark all keys
     if (e->key() == 'A' && e->modifiers()==Qt::ControlModifier) {
         QList<QGraphicsItem*> itemList = items();
-        foreach(QGraphicsItem *item, itemList) {
-            item->setSelected(true);
+        for (int i=0; i<itemList.size(); i++) {
+            itemList[i]->setSelected(true);
         }
     }
 
@@ -147,20 +147,22 @@ void TransferFunctionEditor::removeControlPoint(TransferFunctionEditorControlPoi
 
 void TransferFunctionEditor::recalculateControlPoints() {
     if (!mouseDrag_) {
-        for (size_t i=0; i<controlPoints_.size(); i++) {
-            removeItem(controlPoints_[i]);
-            delete controlPoints_[i];
-        }
+        if (controlPoints_.size() != transferFunction_->getNumDataPoints()) {
+            for (size_t i=0; i<controlPoints_.size(); i++) {
+                removeItem(controlPoints_[i]);
+                delete controlPoints_[i];
+            }
 
-        controlPoints_.clear();
+            controlPoints_.clear();
 
-        // initialize editor with current tf
-        for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
-            TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(static_cast<int>(i));
-            vec2 pos = dataPoint->getPos();
-            pos.x *= width();
-            pos.y *= height();
-            addControlPoint(QPointF(pos.x,pos.y), dataPoint);
+            // initialize editor with current tf
+            for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
+                TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(static_cast<int>(i));
+                vec2 pos = dataPoint->getPos();
+                pos.x *= width();
+                pos.y *= height();
+                addControlPoint(QPointF(pos.x,pos.y), dataPoint);
+            }
         }
     }
 

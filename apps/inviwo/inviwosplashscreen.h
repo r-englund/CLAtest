@@ -27,6 +27,7 @@ public:
     ~InviwoSplashScreen();
 
 	virtual void show();
+    virtual void drawContents(QPainter* painter);
 	virtual void showMessage(std::string message);
 	virtual void finish(QWidget* mainWindow);
 
