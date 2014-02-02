@@ -48,7 +48,4 @@ VolumeDisk::~VolumeDisk() {}
 void VolumeDisk::initialize() {}
 void VolumeDisk::deinitialize() {}
 
-
-
-
 } // namespace

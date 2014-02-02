@@ -116,4 +116,25 @@ std::string URLParser::getRelativePath(const std::string& bPath, const std::stri
     return relativePath+fileName;
 }
 
+bool URLParser::isAbsolutePath(const std::string& path) {
+#ifdef WIN32
+    if (toupper(path[0])>='A'&&toupper(path[0])<='Z'&&path[1]==':') return true;
+    else return false;
+#else
+    if (path[0]=='/') return true;
+    else return false;
+#endif
+}
+
+bool URLParser::sameDrive(const std::string& absPath1, const std::string absPath2) {
+#ifdef WIN32
+    ivwAssert(isAbsolutePath(absPath1), "Given path is not absolute.");
+    ivwAssert(isAbsolutePath(absPath2), "Given path is not absolute.");
+    if (toupper(absPath1[0])==toupper(absPath2[0])) return true;
+    else return false;
+#else
+    return true;
+#endif
+}
+
 }
