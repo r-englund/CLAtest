@@ -34,7 +34,7 @@ void OpenCLSettings::initialize() {
     std::vector<cl::Device> devices = OpenCL::getAllDevices();
     for (size_t i = 0; i < devices.size(); ++i) {
         std::string name = devices[i].getInfo<CL_DEVICE_NAME>();
-        openCLDeviceProperty_.addOption(name, name, i);
+        openCLDeviceProperty_.addOption(name, name, static_cast<int>(i));
     }
     addProperty(openCLDeviceProperty_);
     addProperty(enableOpenGLSharing_);
