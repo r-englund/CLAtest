@@ -74,6 +74,9 @@ NetworkEditor::~NetworkEditor() {
     workerThreadQuit();
     processorNetwork_->lock();
     processorNetwork_->setBroadcastModification(false);
+
+    removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
 
     while (!processors.empty()) {
@@ -1315,8 +1318,10 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
 void NetworkEditor::clearNetwork() {
     processorNetwork_->lock();
     ResourceManager::instance()->clearAllResources();
+    
+    removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+    
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
-
     for (size_t i=0; i<processors.size(); i++)
         removeProcessor(processors[i]);
 
