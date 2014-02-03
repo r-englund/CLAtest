@@ -26,7 +26,7 @@ ProcessorCodeState(ImageSource, CODE_STATE_EXPERIMENTAL);
 ImageSource::ImageSource()
     : Processor(),
     outport_("image.outport"),
-    imageFileName_("imageFileName", "Image file name", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES)+"swirl.tga")
+    imageFileName_("imageFileName", "Image file name", "")
 {
     addPort(outport_);
     addProperty(imageFileName_);
@@ -40,6 +40,10 @@ void ImageSource::initialize() {
 
 void ImageSource::deinitialize() {
     Processor::deinitialize();
+}
+
+bool ImageSource::isReady() const {
+    return (imageFileName_.get() != "");
 }
 
 /**

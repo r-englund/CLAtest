@@ -85,7 +85,7 @@ LightVolumeGL::LightVolumeGL()
       lightSource_("lightSource"),
       supportColoredLight_("supportColoredLight", "Support Light Color", false),
       volumeSizeOption_("volumeSizeOption", "Light Volume Size"),
-      transferFunction_("transferFunction", "Transfer function", TransferFunction()),
+      transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_),
       propagationShader_(NULL),
       mergeShader_(NULL),
       mergeFBO_(NULL),

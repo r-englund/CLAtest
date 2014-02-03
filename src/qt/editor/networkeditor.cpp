@@ -284,12 +284,12 @@ void NetworkEditor::addPropertyWidgets(Processor* processor) {
     PropertyListWidget::instance()->addProcessorProperties(processor);
 }
 
-void NetworkEditor::removeAndDeletePropertyWidgets(Processor* processor) {
-    PropertyListWidget::instance()->removeAndDeleteProcessorProperties(processor);
-}
-
 void NetworkEditor::removePropertyWidgets(Processor* processor) {
     PropertyListWidget::instance()->removeProcessorProperties(processor);
+}
+
+void NetworkEditor::removeAndDeletePropertyWidgets(Processor* processor) {
+    PropertyListWidget::instance()->removeAndDeleteProcessorProperties(processor);
 }
 
 // remove processor widget unnecessary as processor widget is removed when processor is destroyed

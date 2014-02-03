@@ -33,6 +33,8 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
+    virtual bool isReady() const;
+
 protected:
     virtual void process();
 
