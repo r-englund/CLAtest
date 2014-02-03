@@ -51,8 +51,8 @@ VolumeSource::VolumeSource()
 	, volumeFile_("volumeFileName", "Volume file")
     , dataRange_("dataRange", "Data range", ivec2(0,255), ivec2(0,0), ivec2(255,255))
     , valueRange_("valueRange", "Value range", vec2(0.0f,1.0f), vec2(0.0f,0.0f), vec2(1.0f,1.0f))
-    , valueUnit_("valueUnit", "Value unit", "")
-{
+    , valueUnit_("valueUnit", "Value unit", "") {
+    
     addPort(volumePort_);
 
 	volumeFile_.onChange(this, &VolumeSource::loadVolume);

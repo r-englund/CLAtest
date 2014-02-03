@@ -73,10 +73,11 @@ IvfVolumeReader* IvfVolumeReader::clone() const {
 
 Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
     if (!URLParser::fileExists(filePath)) {
-        filePath = URLParser::addBasePath(filePath);
-
-        if (!URLParser::fileExists(filePath))
-            throw DataReaderException("Error: Input file: " + filePath + " does not exist");
+        if (!URLParser::fileExists(URLParser::addBasePath(filePath))){
+            filePath = URLParser::addBasePath(filePath);
+        } else {
+            throw DataReaderException("Error could not find input file: " + filePath);
+        }
     }
 
     std::string fileDirectory = URLParser::getFileDirectory(filePath);
