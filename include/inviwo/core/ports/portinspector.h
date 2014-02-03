@@ -39,13 +39,14 @@
 #include <inviwo/core/network/portconnection.h>
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/core/util/fileobserver.h>
 #include <string.h>
 
 
 
 namespace inviwo {
 
-class IVW_CORE_API PortInspector {
+class IVW_CORE_API PortInspector : public FileObserver {
 public:
     PortInspector(std::string portClassName, std::string inspectorWorkspace);
     virtual ~PortInspector();
@@ -74,6 +75,8 @@ private:
     std::vector<PortConnection*> connections_;
     std::vector<ProcessorLink*> processorLinks_;
     CanvasProcessor* canvasProcessor_;
+    
+    virtual void fileChanged(std::string fileName);
 
 };
 

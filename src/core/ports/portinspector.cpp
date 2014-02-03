@@ -39,6 +39,8 @@ PortInspector::PortInspector(std::string portClassName, std::string inspectorWor
     , portClassName_(portClassName)
     , active_(false)
     , inspectorNetwork_(NULL) {
+    
+    InviwoApplication::getPtr()->registerFileObserver(this);
 }
 
 PortInspector::~PortInspector() {
@@ -95,7 +97,16 @@ std::vector<Processor*> PortInspector::getProcessors() {
     return processors_;
 }
 
+void PortInspector::fileChanged(std::string fileName){
+    if (inspectorNetwork_)
+        delete inspectorNetwork_;
+    initialize();
+}
+
 void PortInspector::initialize() {
+    //Observe the filename;
+    startFileObservation(inspectorNetworkFileName_);
+    
     // Deserialize the network
     IvwDeserializer xmlDeserializer(inspectorNetworkFileName_);
     inspectorNetwork_ = new ProcessorNetwork();
