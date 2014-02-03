@@ -101,6 +101,8 @@ private:
      * @return void <DESCRIBE ME>
      */void generateWidget();
 
+
+    void generateSingleWidget();
     /**
      * \brief Generates a 2D-vector widget
      *
@@ -154,6 +156,8 @@ public slots:
      * @return void <DESCRIBE ME>
      */void cancel();
 
+
+    void fixTabOrder();
 };
 
 }//namespace

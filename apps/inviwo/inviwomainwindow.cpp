@@ -195,20 +195,20 @@ bool InviwoMainWindow::processEndCommandLineArgs(){
 }
 
 void InviwoMainWindow::addMenus() {
-	basicMenuBar = menuBar();
+	menuBar_ = menuBar();
 
 	QAction* first = 0;
-	if(basicMenuBar->actions().size()>0)
-		first = basicMenuBar->actions()[0];
+	if(menuBar_->actions().size()>0)
+		first = menuBar_->actions()[0];
 
-	fileMenuItem_ = new QMenu(tr("&File"),basicMenuBar);
-	viewMenuItem_ = new QMenu(tr("&View"),basicMenuBar);
-    viewModeItem_ = new QMenu(tr("&View mode"),basicMenuBar);
-    helpMenuItem_ = new QMenu(tr("&Help"),basicMenuBar);
-	basicMenuBar->insertMenu(first, fileMenuItem_);
-	basicMenuBar->insertMenu(first, viewMenuItem_);
+	fileMenuItem_ = new QMenu(tr("&File"),menuBar_);
+	viewMenuItem_ = new QMenu(tr("&View"),menuBar_);
+    viewModeItem_ = new QMenu(tr("&View mode"),menuBar_);
+	menuBar_->insertMenu(first, fileMenuItem_);
+	menuBar_->insertMenu(first, viewMenuItem_);
 	viewMenuItem_->addMenu(viewModeItem_);
-    basicMenuBar->insertMenu(first, helpMenuItem_);
+    
+    helpMenuItem_ = menuBar_->addMenu(tr("&Help"));
 }
 
 void InviwoMainWindow::addMenuActions() {
@@ -506,12 +506,12 @@ void InviwoMainWindow::showAboutBox() {
     std::string aboutText;
     aboutText.append("<b>Inviwo V"+IVW_VERSION+"</b><br>");
     aboutText.append("Interactive Visualization Workshop<br>");
-    aboutText.append("(C) 2012-2014 The Inviwo Foundation<br>");
+    aboutText.append("&copy; 2012-2014 The Inviwo Foundation<br>");
     aboutText.append("<a href='http://www.inviwo.org/'>http://www.inviwo.org/</a>");
     aboutText.append("<p>Inviwo is a rapid prototyping environment for interactive \
                      visualizations. It is licensed under the Simplified BSD license.</p>");
     aboutText.append("<p><b>Core Team:</b><br>");
-    aboutText.append("Rickard Englund, Daniel Jönsson, Sathish Kottravel, Timo Ropinski, Peter Steneteg, Erik Sundén</p>");
+    aboutText.append("Rickard Englund, Daniel J&ouml;nsson, Sathish Kottravel, Timo Ropinski, Peter Steneteg, Erik Sund&eacute;n</p>");
     QMessageBox::about(this, QString::fromStdString("Inviwo V"+IVW_VERSION), QString::fromStdString(aboutText));
 }
 

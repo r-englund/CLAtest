@@ -48,12 +48,13 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     , lookTo_("lookTo", "Look to", center, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel)
     , lookUp_("lookUp", "Look up", lookUp, -vec3(10.0f), vec3(10.0f), vec3(0.1f), invalidationLevel)
     , fovy_("fov", "FOV", 60.0f, 30.0f, 360.0f, 0.1f, invalidationLevel)
-    , aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 1.0f, 0.1f, invalidationLevel)
+    , aspectRatio_("aspectRatio", "Aspect Ratio", 256.0f/256.0f, 0.0f, 100.0f, 0.1f, invalidationLevel)
     , farPlane_("far", "Far Plane", 100.0f, 1.0f, 1000.0f, 1.0f, invalidationLevel)
     , nearPlane_("near", "Near Plane", 0.1f, 0.001f, 10.f, 0.001f, invalidationLevel)
     , lockInvalidation_(false)
     , inport_(inport)
-    , data_(0) {
+    , data_(0)
+    , oldBasis_(2) {
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
     lookTo_.onChange(this, &CameraProperty::updateViewMatrix);
     lookUp_.onChange(this, &CameraProperty::updateViewMatrix);

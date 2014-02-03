@@ -126,140 +126,140 @@ PropertySettingsWidgetQt::~PropertySettingsWidgetQt() {
     DELETE_LATER(btnCancel_);
 }
 
+#define FIX_TAB_ORDER(e) if(e){order.push_back(e);}
+void PropertySettingsWidgetQt::fixTabOrder(){
+    std::vector<QWidget*> order;
+    FIX_TAB_ORDER(lineEditMinX_);
+    FIX_TAB_ORDER(lineEditMinY_);
+    FIX_TAB_ORDER(lineEditMinZ_);
+    FIX_TAB_ORDER(lineEditMinW_);
+    FIX_TAB_ORDER(lineEditMaxX_);
+    FIX_TAB_ORDER(lineEditMaxY_);
+    FIX_TAB_ORDER(lineEditMaxZ_);
+    FIX_TAB_ORDER(lineEditMaxW_);
+    FIX_TAB_ORDER(lineEditIcrementX_);
+    FIX_TAB_ORDER(lineEditIcrementY_);
+    FIX_TAB_ORDER(lineEditIcrementZ_);
+    FIX_TAB_ORDER(lineEditIcrementW_);
+    FIX_TAB_ORDER(lineEditIcrementW_);
+    FIX_TAB_ORDER(btnApply_);
+    FIX_TAB_ORDER(btnCancel_);
+
+    for(size_t i = 0;i<order.size()-1;i++){
+        setTabOrder(order[i],order[i+1]);
+    }
+
+    setTabOrder(order.back(),order[0]);
+}
+
 void PropertySettingsWidgetQt::generateWidget() {
     btnApply_ = new QPushButton("Apply",this);
     btnCancel_ = new QPushButton("Cancel",this);
     connect(btnApply_,SIGNAL(clicked()),this,SLOT(save()));
     connect(btnCancel_,SIGNAL(clicked()),this,SLOT(cancel()));
     gridLayout_ = new QGridLayout(this);
-    lineEditMaxX_ = new QLineEdit(this);
-    lineEditMinX_ = new QLineEdit(this);
-    lineEditIcrementX_ = new QLineEdit(this);
+
     minValueLabel_ = new QLabel("Min value",this);
     maxValueLabel_ = new QLabel("Max value",this);
     incValueLabel_ = new QLabel("Increment",this);
 
-    if (floatProperty_!= NULL || intProperty_!= NULL) {
-        gridLayout_->setColumnStretch(1,2);
-        gridLayout_->setColumnStretch(2,2);
-        gridLayout_->addWidget(minValueLabel_,1,1);
-        gridLayout_->addWidget(lineEditMinX_,1,2);
-        gridLayout_->addWidget(maxValueLabel_,2,1);
-        gridLayout_->addWidget(lineEditMaxX_,2,2);
-        gridLayout_->addWidget(incValueLabel_,3,1);
-        gridLayout_->addWidget(lineEditIcrementX_,3,2);
+
+    gridLayout_->addWidget(minValueLabel_,1,1);
+    gridLayout_->addWidget(maxValueLabel_,2,1);
+    gridLayout_->addWidget(incValueLabel_,3,1);
+
+
+
+    if (floatProperty_!= NULL || intProperty_!= NULL){
+        generateSingleWidget();
         gridLayout_->addWidget(btnApply_,4,1);
         gridLayout_->addWidget(btnCancel_,4,2);
     }
 
-    if (floatVec2Property_ != NULL || intVec2Property_ != NULL)
+    if (floatVec2Property_ != NULL || intVec2Property_ != NULL){
         generateVec2Widget();
+        gridLayout_->addWidget(btnApply_,5,1,1,2);
+        gridLayout_->addWidget(btnCancel_,5,3,1,2);
+    }
 
-    if (floatVec3Property_ != NULL || intVec3Property_ != NULL)
+    if (floatVec3Property_ != NULL || intVec3Property_ != NULL){
         generateVec3Widget();
+        gridLayout_->addWidget(btnApply_,5,2,1,2);
+        gridLayout_->addWidget(btnCancel_,5,4,1,1);
+    }
 
-    if (floatVec4Property_!=NULL || intVec4Property_!=NULL)
+    if (floatVec4Property_!=NULL || intVec4Property_!=NULL){
         generateVec4Widget();
+        gridLayout_->addWidget(btnApply_,5,2,1,2);
+        gridLayout_->addWidget(btnCancel_,5,4,1,2);
+    }
+
 
     setLayout(gridLayout_);
+
+    fixTabOrder();
+
     reload();
     setWindowTitle(QString::fromStdString(property_->getDisplayName()));
 }
 
-void PropertySettingsWidgetQt::generateVec2Widget() {
-    lineEditMaxY_ = new QLineEdit(this);
-    lineEditMinY_ = new QLineEdit(this);
-    lineEditIcrementY_ = new QLineEdit(this);
+void PropertySettingsWidgetQt::generateSingleWidget(){
     xValueLabel_ = new QLabel("X",this);
+    lineEditMinX_ = new QLineEdit(this);
+    lineEditMaxX_ = new QLineEdit(this);
+    lineEditIcrementX_ = new QLineEdit(this);
+
+    
+    gridLayout_->addWidget(xValueLabel_      ,0,2,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(lineEditMinX_     ,1,2);
+    gridLayout_->addWidget(lineEditMaxX_     ,2,2);
+    gridLayout_->addWidget(lineEditIcrementX_,3,2);
+    gridLayout_->setColumnStretch(2,2);
+}
+
+void PropertySettingsWidgetQt::generateVec2Widget() {
+    generateSingleWidget();
     yValueLabel_ = new QLabel("Y",this);
-    minValueLabel_ = new QLabel("Min value",this);
-    maxValueLabel_ = new QLabel("Max value",this);
-    incValueLabel_ = new QLabel("Increment",this);
-    gridLayout_->addWidget(lineEditMinX_,2,2,1,1);
-    gridLayout_->addWidget(lineEditMinY_,2,3,1,1);
-    gridLayout_->addWidget(lineEditMaxX_,3,2,1,1);
-    gridLayout_->addWidget(lineEditMaxY_,3,3,1,1);
-    gridLayout_->addWidget(lineEditIcrementX_,4,2,1,1);
-    gridLayout_->addWidget(lineEditIcrementY_,4,3,1,1);
-    gridLayout_->addWidget(xValueLabel_,1,2,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(yValueLabel_,1,3,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(minValueLabel_,2,1);
-    gridLayout_->addWidget(maxValueLabel_,3,1);
-    gridLayout_->addWidget(incValueLabel_,4,1);
-    gridLayout_->addWidget(btnApply_,5,1,1,2);
-    gridLayout_->addWidget(btnCancel_,5,3,1,2);
+    lineEditMinY_ = new QLineEdit(this);
+    lineEditMaxY_ = new QLineEdit(this);
+    lineEditIcrementY_ = new QLineEdit(this);
+
+
+    gridLayout_->addWidget(yValueLabel_      ,0,3,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(lineEditMinY_     ,1,3);
+    gridLayout_->addWidget(lineEditMaxY_     ,2,3);
+    gridLayout_->addWidget(lineEditIcrementY_,3,3);
+    gridLayout_->setColumnStretch(3,2);
 }
 
 void PropertySettingsWidgetQt::generateVec3Widget() {
-    lineEditMaxY_ = new QLineEdit(this);
-    lineEditMaxZ_ = new QLineEdit(this);
-    lineEditMinY_ = new QLineEdit(this);
-    lineEditMinZ_ = new QLineEdit(this);
-    lineEditIcrementY_ = new QLineEdit(this);
-    lineEditIcrementZ_ = new QLineEdit(this);
-    xValueLabel_ = new QLabel("X",this);
-    yValueLabel_ = new QLabel("Y",this);
+    generateVec2Widget();
     zValueLabel_ = new QLabel("Z",this);
-    minValueLabel_ = new QLabel("Min value",this);
-    maxValueLabel_ = new QLabel("Max value",this);
-    incValueLabel_ = new QLabel("Increment",this);
-    gridLayout_->addWidget(lineEditMinX_,2,2,1,1);
-    gridLayout_->addWidget(lineEditMinY_,2,3,1,1);
-    gridLayout_->addWidget(lineEditMinZ_,2,4,1,1);
-    gridLayout_->addWidget(lineEditMaxX_,3,2,1,1);
-    gridLayout_->addWidget(lineEditMaxY_,3,3,1,1);
-    gridLayout_->addWidget(lineEditMaxZ_,3,4,1,1);
-    gridLayout_->addWidget(lineEditIcrementX_,4,2,1,1);
-    gridLayout_->addWidget(lineEditIcrementY_,4,3,1,1);
-    gridLayout_->addWidget(lineEditIcrementZ_,4,4,1,1);
-    gridLayout_->addWidget(xValueLabel_,1,2,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(yValueLabel_,1,3,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(zValueLabel_,1,4,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(minValueLabel_,2,1);
-    gridLayout_->addWidget(maxValueLabel_,3,1);
-    gridLayout_->addWidget(incValueLabel_,4,1);
-    gridLayout_->addWidget(btnApply_,5,2,1,2);
-    gridLayout_->addWidget(btnCancel_,5,4,1,2);
+    lineEditMinZ_ = new QLineEdit(this);
+    lineEditMaxZ_ = new QLineEdit(this);
+    lineEditIcrementZ_ = new QLineEdit(this);
+
+
+    gridLayout_->addWidget(zValueLabel_      ,0,4,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(lineEditMinZ_     ,1,4);
+    gridLayout_->addWidget(lineEditMaxZ_     ,2,4);
+    gridLayout_->addWidget(lineEditIcrementZ_,3,4);
+    gridLayout_->setColumnStretch(4,2);
 }
 
 void PropertySettingsWidgetQt::generateVec4Widget() {
-    lineEditMaxY_ = new QLineEdit(this);
-    lineEditMaxZ_ = new QLineEdit(this);
-    lineEditMaxW_ = new QLineEdit(this);
-    lineEditMinY_ = new QLineEdit(this);
-    lineEditMinZ_ = new QLineEdit(this);
-    lineEditMinW_ = new QLineEdit(this);
-    lineEditIcrementY_ = new QLineEdit(this);
-    lineEditIcrementZ_ = new QLineEdit(this);
-    lineEditIcrementW_ = new QLineEdit(this);
-    xValueLabel_ = new QLabel("X",this);
-    yValueLabel_ = new QLabel("Y",this);
-    zValueLabel_ = new QLabel("Z",this);
+    generateVec3Widget();
     wValueLabel_ = new QLabel("W",this);
-    minValueLabel_ = new QLabel("Min value",this);
-    maxValueLabel_ = new QLabel("Max value",this);
-    incValueLabel_ = new QLabel("Increment",this);
-    gridLayout_->addWidget(lineEditMinX_,2,2,1,1);
-    gridLayout_->addWidget(lineEditMinY_,2,3,1,1);
-    gridLayout_->addWidget(lineEditMinZ_,2,4,1,1);
-    gridLayout_->addWidget(lineEditMinW_,2,5,1,1);
-    gridLayout_->addWidget(lineEditMaxX_,3,2,1,1);
-    gridLayout_->addWidget(lineEditMaxY_,3,3,1,1);
-    gridLayout_->addWidget(lineEditMaxZ_,3,4,1,1);
-    gridLayout_->addWidget(lineEditMaxW_,3,5,1,1);
-    gridLayout_->addWidget(lineEditIcrementX_,4,2,1,1);
-    gridLayout_->addWidget(lineEditIcrementY_,4,3,1,1);
-    gridLayout_->addWidget(lineEditIcrementZ_,4,4,1,1);
-    gridLayout_->addWidget(lineEditIcrementW_,4,5,1,1);
-    gridLayout_->addWidget(xValueLabel_,1,2,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(yValueLabel_,1,3,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(zValueLabel_,1,4,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(wValueLabel_,1,5,1,1,Qt::AlignHCenter);
-    gridLayout_->addWidget(minValueLabel_,2,1);
-    gridLayout_->addWidget(maxValueLabel_,3,1);
-    gridLayout_->addWidget(incValueLabel_,4,1);
-    gridLayout_->addWidget(btnApply_,5,2,1,2);
-    gridLayout_->addWidget(btnCancel_,5,4,1,2);
+    lineEditMinW_ = new QLineEdit(this);
+    lineEditMaxW_ = new QLineEdit(this);
+    lineEditIcrementW_ = new QLineEdit(this);
+
+
+    gridLayout_->addWidget(wValueLabel_      ,0,5,1,1,Qt::AlignHCenter);
+    gridLayout_->addWidget(lineEditMinW_     ,1,5);
+    gridLayout_->addWidget(lineEditMaxW_     ,2,5);
+    gridLayout_->addWidget(lineEditIcrementW_,3,5);
+    gridLayout_->setColumnStretch(5,2);
 }
 
 void PropertySettingsWidgetQt::cancel() {

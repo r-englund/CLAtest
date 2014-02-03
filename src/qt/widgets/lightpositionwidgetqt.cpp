@@ -107,6 +107,8 @@ void LightPositionWidgetQt::setNewPosition(QMouseEvent* event) {
 
 void LightPositionWidgetQt::setPosition(const vec3& p) {
     radius_ = glm::length(p);
+    if(radius_==0)
+        return;
     QPointF center(gradientPixmap_->width()/2, gradientPixmap_->height()/2);
     theta_ = acos(p.z/radius_);
     phi_ = atan2(p.y, p.x);

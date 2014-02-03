@@ -119,7 +119,7 @@ private:
     ResourceManagerWidget* resourceManagerWidget_;
 
     // mainwindow menus
-    QMenuBar* basicMenuBar;
+    QMenuBar* menuBar_;
     QMenu* fileMenuItem_;
     QMenu* viewMenuItem_;
     QMenu* viewModeItem_;
