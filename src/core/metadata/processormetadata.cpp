@@ -80,7 +80,7 @@ void ProcessorMetaData::serialize(IvwSerializer& s) const {
 
 void ProcessorMetaData::deserialize(IvwDeserializer& d) {
     std::string className;
-    ivec2 position(0.0f), dimension(256.0f);
+    ivec2 position(0.0f);
     bool visibility=false;
     bool selection=false;
     //   CompositeMetaData::deserialize(d);
