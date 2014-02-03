@@ -225,12 +225,15 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d) throw (Exception);
 
+    bool isDeserializing()const;
+
     /**
     * Clears the network objects processors, port connections, processor links etc.,
     * This function clears only the core objects and mainly used to abort any
     * further operation.
     */
     void clear();
+
 
 private:
     //Property Linking support
@@ -246,6 +249,7 @@ private:
     std::vector<PortConnection*> portConnections_;
     std::vector<ProcessorLink*> processorLinks_;
 
+    bool deserializing_;
     bool invalidating_;
     Processor* invalidationInitiator_;
     LinkEvaluator* linkEvaluator_;

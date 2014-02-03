@@ -230,12 +230,15 @@ void CameraProperty::inportChanged() {
     if (data_ == 0) { // first time only
         data_ = data;
 
-        if (volumeInport)
-            oldBasis_ = volumeInport->getData()->getBasis();
-        else if (geometryInport)
-            oldBasis_ = geometryInport->getData()->getBasis();
+       if(InviwoApplication::getPtr()->getProcessorNetwork()->isDeserializing()){
+           if (volumeInport)
+               oldBasis_ = volumeInport->getData()->getBasis();
+           else if (geometryInport)
+               oldBasis_ = geometryInport->getData()->getBasis();
+           return;
+       }else{
 
-        return;
+       }
     }
 
     if (data_ == data) // nothing changed change

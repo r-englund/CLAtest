@@ -14,15 +14,35 @@
 
 #include <inviwo/core/network/processornetwork.h>
 
+namespace {
+    class KeepTrueWillAlive{
+    public:
+        KeepTrueWillAlive(bool *b):variable_(b){
+            (*variable_) = true;
+        }
+
+        ~KeepTrueWillAlive(){
+            (*variable_) = false;
+        }
+
+    private:
+        bool* variable_;;
+    };
+}
+
 namespace inviwo {
 
-ProcessorNetwork::ProcessorNetwork() : VoidObservable(), ProcessorObserver(),
-    modified_(true),
-    broadcastModification_(true),
-    locked_(0),
-    invalidating_(false),
-    invalidationInitiator_(NULL),
-    linkEvaluator_(NULL) {
+ProcessorNetwork::ProcessorNetwork() 
+    : VoidObservable()
+    , ProcessorObserver()
+    , modified_(true)
+    , broadcastModification_(true)
+    , locked_(0)
+    , deserializing_(false)
+    , invalidating_(false)
+    , invalidationInitiator_(NULL)
+    , linkEvaluator_(NULL) 
+{
     linkEvaluator_ = new LinkEvaluator();
 }
 
@@ -307,6 +327,7 @@ void ProcessorNetwork::serialize(IvwSerializer& s) const {
 }
 
 void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
+    KeepTrueWillAlive keepTrueWillAlive(&deserializing_); // this will set deserializing_ to true will this value is in scope and set it to false in the destructure 
     std::vector<PortConnection*> portConnections;
     std::vector<ProcessorLink*> processorLinks;
 
@@ -403,6 +424,10 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     }
 
     notifyObservers();
+}
+
+bool ProcessorNetwork::isDeserializing()const{
+    return deserializing_;
 }
 
 std::vector<PortConnection*> ProcessorNetwork::getConnections() const {
