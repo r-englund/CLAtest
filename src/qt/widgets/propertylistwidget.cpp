@@ -92,6 +92,22 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
     if (it != propertyWidgetMap_.end()) {
         it->second->setVisible(false);
         listWidgetLayout_->removeWidget(it->second);
+        CollapsibleGroupBoxWidgetQt* collapsiveGropWidget = static_cast<CollapsibleGroupBoxWidgetQt*>(it->second);
+        std::vector<PropertyWidgetQt*> propertyWidgets = collapsiveGropWidget->getPropertyWidgets();
+        std::vector<Property*> properties = processor->getProperties();
+        for (size_t i=0; i<propertyWidgets.size(); i++) {
+            for (size_t j=0; j<properties.size(); j++)
+                properties[j]->deregisterWidget(propertyWidgets[i]);
+        }
+        for (size_t i=0; i<propertyWidgets.size(); i++) {
+            collapsiveGropWidget->removeWidget(propertyWidgets[i]);
+            propertyWidgets[i]->hide();
+            //TODO: Do not use deleteLater(). Widgets need to be deleted instantly or use deinitialize()
+            //Reason: These are cached widgets which has children widgets.
+            //deleteLater() keeps the children active for a while that causes invalidation of properties.
+            //Hence deleteLater() cannot be used
+            delete propertyWidgets[i];
+        }
         it->second->deleteLater();
         propertyWidgetMap_.erase(it);
     }

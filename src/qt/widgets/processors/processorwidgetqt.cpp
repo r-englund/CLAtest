@@ -37,6 +37,7 @@
 #include <QResizeEvent>
 #include <QMoveEvent>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 namespace inviwo {
 
@@ -53,12 +54,18 @@ ProcessorWidgetQt::~ProcessorWidgetQt() {}
 void ProcessorWidgetQt::initialize() {
     ProcessorWidget::initialize();
     ivec2 pos = ProcessorWidget::getPositionMetaData();
-    // check if geometry is on screen and alter otherwise
-    QDesktopWidget* desktop = QApplication::desktop();
-    QRect wholeScreenGeometry = desktop->screenGeometry(0);
 
-    for (int i=1; i<desktop->screenCount(); i++)
-        wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
+    // check if geometry is on screen and alter otherwise
+    //TODO: Desktop screen info should be added to system capabilities
+    QDesktopWidget* desktop = QApplication::desktop();
+    int primaryScreenIndex = desktop->primaryScreen();
+    QRect wholeScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
+    QRect primaryScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
+
+    for (int i=0; i<desktop->screenCount(); i++) {
+        if (i!=primaryScreenIndex)
+            wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));        
+    }
 
     wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
                                 wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
@@ -66,8 +73,18 @@ void ProcessorWidgetQt::initialize() {
 
     if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight))
         QWidget::move(QPoint(0,0));
-    else
-        QWidget::move(pos.x, pos.y);
+    else {        
+        if (!(pos.x == 0 && pos.y == 0))
+            //TODO: Detect if processor position is set. Need to figure out better way.
+            QWidget::move(pos.x, pos.y);
+        else {      
+            InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+            QPoint appPos = app->getMainWindow()->pos();
+            pos = ivec2(appPos.x(), appPos.y()) ;
+            pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+            QWidget::move(pos.x, pos.y);
+        }
+    }
 }
 
 void ProcessorWidgetQt::deinitialize() {

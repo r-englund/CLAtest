@@ -63,6 +63,7 @@ TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionP
 }
 
 TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog() {
+    hide();
     delete tfPixmap_;
     delete tfEditor_;
     delete colorWheel_;
@@ -323,8 +324,8 @@ void TransferFunctionPropertyDialog::closeEvent(QCloseEvent* event) {
 }
 
 void TransferFunctionPropertyDialog::moveEvent(QMoveEvent* event) {
-    moveEditor(ivec2(event->pos().x(), event->pos().y()));
-
+    ivec2 pos = ivec2(event->pos().x(), event->pos().y());
+    moveEditor(pos);
     if (isFloating() && !(getEditorDockStatus()==PropertyEditorWidgetDockStatus::Floating))
         setDockStatus(PropertyEditorWidgetDockStatus::Floating);
 

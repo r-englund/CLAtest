@@ -98,9 +98,9 @@ void ProcessorMetaData::serialize(IvwSerializer& s) const {
 
 void ProcessorMetaData::deserialize(IvwDeserializer& d) {
     std::string className;
-    ivec2 position(0.0f);
-    bool visibility=false;
-    bool selection=false;
+    ivec2 position(positionMetaData_.get());
+    bool visibility=visiblityMetaData_.get();
+    bool selection=selectionMetaData_.get();
     //   CompositeMetaData::deserialize(d);
     d.deserialize("type", className, true);
     d.deserialize("position", position);

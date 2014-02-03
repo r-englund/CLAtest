@@ -75,6 +75,7 @@ public:
     bool isCollapsed() { return collapsed_; };
     std::vector<PropertyWidgetQt*> getPropertyWidgets() {return propertyWidgets_; };
     void addWidget(QWidget* widget);
+    void removeWidget(QWidget* widget);
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

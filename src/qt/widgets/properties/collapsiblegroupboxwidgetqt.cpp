@@ -286,6 +286,22 @@ void CollapsibleGroupBoxWidgetQt::deserialize(IvwDeserializer& d) {
 
 void CollapsibleGroupBoxWidgetQt::addWidget(QWidget* widget) {
     vLayout_->addWidget(widget);
+    PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(widget);
+    if (propertyWidget) {
+        if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget) == propertyWidgets_.end())
+            propertyWidgets_.push_back(propertyWidget);
+    }
+}
+
+void CollapsibleGroupBoxWidgetQt::removeWidget(QWidget* widget) {    
+    vLayout_->removeWidget(widget);
+    PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(widget);
+    if (propertyWidget) {
+        if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget) != propertyWidgets_.end()) {
+            std::vector<PropertyWidgetQt*>::iterator it = std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget);
+            propertyWidgets_.erase(it);
+        }
+    }
 }
 
 } // namespace

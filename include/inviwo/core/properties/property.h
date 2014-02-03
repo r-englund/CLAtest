@@ -76,6 +76,7 @@ public:
     virtual void setOwner(PropertyOwner* owner);
 
     void registerWidget(PropertyWidget* propertyWidget);
+    void deregisterWidget(PropertyWidget* propertyWidget);
     void updateWidgets();
     bool hasWidgets()const;
     MetaData* getMetaData(std::string meta);

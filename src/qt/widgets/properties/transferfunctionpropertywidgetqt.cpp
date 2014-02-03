@@ -31,10 +31,12 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
+#include <QDesktopWidget>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 namespace inviwo {
 
-TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property) {
+TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property), transferFunctionDialog_(NULL) {
     PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
@@ -42,6 +44,7 @@ TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunct
 }
 
 TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt() {
+    transferFunctionDialog_->hide();
     delete transferFunctionDialog_;
     delete btnOpenTF_;
 }
@@ -85,14 +88,35 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     setLayout(hLayout);
     updateFromProperty();
     //set widget meta data stuff
+    transferFunctionDialog_->hide();    
+
     ivec2 widgetDimension = getEditorWidget()->getEditorDimensionMetaData();
     transferFunctionDialog_->resize(QSize(widgetDimension.x, widgetDimension.y));
-    ivec2 widgetPosition = getEditorWidget()->getEditorPositionMetaData();
-    transferFunctionDialog_->move(widgetPosition.x, widgetPosition.y);
-    bool visible = getEditorWidget()->getEditorVisibilityMetaData();
 
+    ivec2 widgetPosition = getEditorWidget()->getEditorPositionMetaData();
+    //if widgetPosition is not set then widget is positioned at default positions
+    if (!(widgetPosition.x==0 && widgetPosition.y==0)) {        
+        //other wise set the position values from meta data
+        transferFunctionDialog_->move(widgetPosition.x, widgetPosition.y);
+    }
+    else {        
+        //TODO: Desktop screen info should be added to system capabilities
+        QDesktopWidget* desktop = QApplication::desktop();
+
+        int primaryScreenIndex = desktop->primaryScreen();
+        QRect primaryScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
+
+        InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+        QPoint appPos = app->getMainWindow()->pos();
+        widgetPosition = ivec2(appPos.x(), appPos.y()) ;
+        widgetPosition += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+        transferFunctionDialog_->move(widgetPosition.x, widgetPosition.y);
+    }
+
+    bool visible = getEditorWidget()->getEditorVisibilityMetaData();
     if (!visible) transferFunctionDialog_->hide();
     else transferFunctionDialog_->show();
+    
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty() {

@@ -271,6 +271,9 @@ private:
     bool invalidating_;
     Processor* invalidationInitiator_;
     LinkEvaluator* linkEvaluator_;
+
+    bool linking_;
+    Processor* linkInvalidationInitiator_;
 };
 
 template<class T>

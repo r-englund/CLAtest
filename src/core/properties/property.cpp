@@ -124,6 +124,13 @@ void Property::registerWidget(PropertyWidget* propertyWidget) {
         updateVisibility();
 }
 
+void Property::deregisterWidget(PropertyWidget* propertyWidget) {
+    if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget)!=propertyWidgets_.end()) {        
+        propertyWidgets_.erase(std::remove(propertyWidgets_.begin(), propertyWidgets_.end(),
+                               propertyWidget), propertyWidgets_.end());        
+    }
+}
+
 void Property::updateWidgets() {
     for (size_t i=0; i<propertyWidgets_.size(); i++)
         if (propertyWidgets_[i] != 0)
