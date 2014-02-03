@@ -441,6 +441,7 @@ void  NetworkEditor::updateLinkGraphicsItems() {
 
 void NetworkEditor::managePortInspectors() {
     QPointF pos(inspection_.pos_.x, inspection_.pos_.y);
+
     Port* port = 0;
     ProcessorGraphicsItem* processor = getProcessorGraphicsItemAt(pos);
     ConnectionGraphicsItem* connection = getConnectionGraphicsItemAt(pos);
@@ -475,7 +476,10 @@ void NetworkEditor::managePortInspectors() {
             } else {
                 // add port inspector
                 inspection_.setState(Inspection::Inspect);
-                addPortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_, QCursor::pos());
+                QPoint p = QCursor::pos();
+                addPortInspector(inspection_.processorIdentifier_,
+                                 inspection_.portIdentifier_,
+                                 QPoint(p.x()+5, p.y()+5));
             }
         } else { // Left port before time out, reset.
             hoverTimer_.stop();
@@ -511,16 +515,16 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
         portInspector->setActive(true);
         processorNetwork_->lock();
         processorNetwork_->setBroadcastModification(false);
-        CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
+        
         // Add processors to the network
+        CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
         std::vector<Processor*> processors = portInspector->getProcessors();
 
         for (size_t i=0; i<processors.size(); i++) {
             processorNetwork_->addProcessor(processors[i]);
-            //addProcessor(processors[i], QPointF(pos.x()+50*i, pos.y()), true, true, false);
         }
-
         addProcessorRepresentations(canvasProcessor, pos, false, false, false, false);
+        
         // Add connections to the network
         std::vector<PortConnection*> connections = portInspector->getConnections();
 
@@ -882,7 +886,12 @@ LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItemAt(const QPointF p
 //   EVENT HANDLING METHODS   //
 ////////////////////////////////
 void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    hoverTimer_.stop();
+    if (inspection_.state() != Inspection::Start) { // return to start
+        removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+        hoverTimer_.stop();
+        inspection_.resetPort();
+        inspection_.setState(Inspection::Start);
+    }
 
     if (e->button() == Qt::LeftButton) {
         startProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
