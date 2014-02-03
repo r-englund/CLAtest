@@ -151,11 +151,17 @@ void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
         ResizeEvent resizeEvent(imageOutport->getDimension());
         imageInport->changeDataDimensions(&resizeEvent);
     }
+    for (size_t i=0; i<processorGraphicsItems_.size(); i++){
+        processorGraphicsItems_[i]->update();
+    }
 }
 
 void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
     removeConnectionGraphicsItem(getConnectionGraphicsItem(outport, inport));
     processorNetwork_->removeConnection(outport, inport);
+    for (size_t i=0; i<processorGraphicsItems_.size(); i++){
+        processorGraphicsItems_[i]->update();
+    }
 }
 
 
@@ -341,8 +347,7 @@ void NetworkEditor::removeProcessorWidget(Processor* processor) {
 void NetworkEditor::removeConnection(ConnectionGraphicsItem* connectionGraphicsItem) {
     Outport* outport = connectionGraphicsItem->getOutport();
     Inport* inport = connectionGraphicsItem->getInport();
-    removeConnectionGraphicsItem(connectionGraphicsItem);
-    processorNetwork_->removeConnection(outport, inport);
+    removeConnection(outport, inport);
 }
 
 void NetworkEditor::addConnectionGraphicsItem(Outport* outport, Inport* inport) {
