@@ -219,8 +219,6 @@ void CameraProperty::fitWithBasis(const mat3& basis) {
     farPlane_.set(newFarPlane);
     vec3 oldOffset = lookFrom_.get() - lookTo_.get();
     vec3 newPos    = lookTo_.get() + (oldOffset * ratio);
-    float l1 = glm::length(oldOffset);
-    float l2 = glm::length(newPos - lookTo_.get());
     lookFrom_.setMinValue(lookFrom_.getMinValue()*ratio);
     lookFrom_.setMaxValue(lookFrom_.getMaxValue()*ratio);
     lookTo_.setMinValue(lookTo_.getMinValue()*ratio);
