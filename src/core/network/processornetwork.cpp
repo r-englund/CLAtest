@@ -59,6 +59,8 @@ ProcessorNetwork::ProcessorNetwork()
     , deserializing_(false)
     , invalidating_(false)
     , invalidationInitiator_(NULL)
+    , linking_(false)
+    , linkInvalidationInitiator_(NULL)
     , linkEvaluator_(NULL) 
 {
     linkEvaluator_ = new LinkEvaluator();
@@ -214,6 +216,8 @@ void ProcessorNetwork::notifyInvalidationBegin(Processor* p) {
     if (!isInvalidating()) {
         invalidationInitiator_ = p;
         invalidating_ = true;
+        if (linking_ && !linkInvalidationInitiator_)
+            linkInvalidationInitiator_ = p;        
     }
 }
 
@@ -244,6 +248,9 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
         return;
 
     lock();
+
+    linking_ = true;
+
     //perform linking
     std::vector<ProcessorLink*> sortedModifiableLinks = getSortedProcessorLinksFromProperty(modifiedProperty);
     //This saves expensive branched search. But can be still optimized.
@@ -268,8 +275,17 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
 
     for (size_t i=0; i<destinationProperties.size(); i++)
         linkEvaluator_->evaluate(modifiedProperty, destinationProperties[i]);
-
+    
     unlock();
+
+    if (linking_) {
+        linking_ = false;
+        if (linkInvalidationInitiator_) {
+            if (linkInvalidationInitiator_!=invalidationInitiator_)
+                notifyRequestEvaluate(linkInvalidationInitiator_);
+            linkInvalidationInitiator_ = NULL;
+        }
+    }
 }
 
 std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromProperty(Property* modifiedProperty) {

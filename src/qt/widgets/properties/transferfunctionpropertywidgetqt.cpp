@@ -93,26 +93,41 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     ivec2 widgetDimension = getEditorWidget()->getEditorDimensionMetaData();
     transferFunctionDialog_->resize(QSize(widgetDimension.x, widgetDimension.y));
 
-    ivec2 widgetPosition = getEditorWidget()->getEditorPositionMetaData();
-    //if widgetPosition is not set then widget is positioned at default positions
-    if (!(widgetPosition.x==0 && widgetPosition.y==0)) {        
-        //other wise set the position values from meta data
-        transferFunctionDialog_->move(widgetPosition.x, widgetPosition.y);
+    ivec2 pos = getEditorWidget()->getEditorPositionMetaData();
+    
+    //TODO: Desktop screen info should be added to system capabilities
+    QDesktopWidget* desktop = QApplication::desktop();
+    int primaryScreenIndex = desktop->primaryScreen();
+    QRect wholeScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
+    QRect primaryScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
+
+    for (int i=0; i<desktop->screenCount(); i++) {
+        if (i!=primaryScreenIndex)
+            wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));        
+    }
+
+    wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
+        wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
+    QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
+
+    QPoint appPos = app->getMainWindow()->pos();
+
+    if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) {
+        LogWarn("Widget position modified to fit into current screen")
+        pos = ivec2(appPos.x(), appPos.y()) ;
+        pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+        transferFunctionDialog_->move(pos.x, pos.y);
     }
     else {        
-        //TODO: Desktop screen info should be added to system capabilities
-        QDesktopWidget* desktop = QApplication::desktop();
-
-        int primaryScreenIndex = desktop->primaryScreen();
-        QRect primaryScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
-
-        InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-        QPoint appPos = app->getMainWindow()->pos();
-        widgetPosition = ivec2(appPos.x(), appPos.y()) ;
-        widgetPosition += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
-        transferFunctionDialog_->move(widgetPosition.x, widgetPosition.y);
+        if (!(pos.x == 0 && pos.y == 0))            
+            transferFunctionDialog_->move(pos.x, pos.y);
+        else {
+            pos = ivec2(appPos.x(), appPos.y()) ;
+            pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+            transferFunctionDialog_->move(pos.x, pos.y);
+        }
     }
-
+    
     bool visible = getEditorWidget()->getEditorVisibilityMetaData();
     if (!visible) transferFunctionDialog_->hide();
     else transferFunctionDialog_->show();
