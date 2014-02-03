@@ -41,10 +41,13 @@ public:
     ivec2 getPosition();
     void setVisibile(bool visibility);
     bool isVisible();
+    void setSelected(bool selection);
+    bool isSelected();
 
 private:
     IVec2MetaData positionMetaData_;
     BoolMetaData visiblityMetaData_;
+    BoolMetaData selectionMetaData_;
 };
 
 } // namespace

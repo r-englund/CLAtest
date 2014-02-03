@@ -185,7 +185,6 @@ public:
 protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
-    std::string variantTypeAsString(int variantType);
 
 private:
 

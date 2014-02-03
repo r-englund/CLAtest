@@ -442,6 +442,7 @@ void ProcessorGraphicsItem::updateMetaData() {
     ProcessorMetaData* processorMeta = dynamic_cast<ProcessorMetaData*>(processor_->getMetaData("ProcessorMetaData"));
     processorMeta->setVisibile(isVisible());
     processorMeta->setPosition(ivec2(x(), y()));
+    processorMeta->setSelected(isSelected());
 }
 
 void ProcessorGraphicsItem::notify() {

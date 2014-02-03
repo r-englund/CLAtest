@@ -97,14 +97,14 @@ NetworkEditor::~NetworkEditor() {
 /////////////////////////////////////////////
 //   PUBLIC METHODS FOR CHANGING NETWORK   //
 /////////////////////////////////////////////
-void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showProcessor, bool showPropertyWidgets,
+void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showProcessor, bool selectProcessor, bool showPropertyWidgets,
                                  bool showProcessorWidget) {
     // add the processor to the network
     processor->setIdentifier(obtainUniqueProcessorID(processor->getClassName()));
     processor->initialize();
     processorNetwork_->addProcessor(processor);
     // add processor representations
-    addProcessorRepresentations(processor, pos, showProcessor, showPropertyWidgets, showProcessorWidget);
+    addProcessorRepresentations(processor, pos, showProcessor, showPropertyWidgets, selectProcessor);
     autoLinkOnAddedProcessor(processor);
 }
 
@@ -200,10 +200,10 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
 ////////////////////////////////////////////////////////
 //   PRIVATE METHODS FOR ADDING/REMOVING PROCESSORS   //
 ////////////////////////////////////////////////////////
-void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor, bool showPropertyWidgets,
+void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor, bool selectProcessor, bool showPropertyWidgets,
         bool showProcessorWidget) {
     // generate GUI representations (graphics item, property widget, processor widget)
-    addProcessorGraphicsItem(processor, pos, showProcessor);
+    addProcessorGraphicsItem(processor, pos, showProcessor, selectProcessor);
 
     if (showPropertyWidgets)
         addPropertyWidgets(processor);
@@ -230,11 +230,12 @@ void NetworkEditor::removeProcessorRepresentations(Processor* processor) {
     removeProcessorWidget(processor);
 }
 
-void NetworkEditor::addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible) {
+void NetworkEditor::addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible, bool selected) {
     // generate GUI representation and add to editor
     ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem();
     processorGraphicsItem->setProcessor(processor);
     processorGraphicsItem->setVisible(visible);
+    processorGraphicsItem->setSelected(selected);
 
     // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
     if (gridSnapping_) pos = snapToGrid(pos);
@@ -502,7 +503,7 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
             //addProcessor(processors[i], QPointF(pos.x()+50*i, pos.y()), true, true, false);
         }
 
-        addProcessorRepresentations(canvasProcessor, pos, false, false, false);
+        addProcessorRepresentations(canvasProcessor, pos, false, false, false, false);
         // Add connections to the network
         std::vector<PortConnection*> connections = portInspector->getConnections();
 
@@ -909,7 +910,9 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                         e->accept();
                         return;
                     }
-                }
+                }  
+                else
+                    updateAllProcessorGraphicsItemMetaData();
             } else if (e->modifiers() == Qt::ControlModifier) {
                 if (isLinkDisplayEnabled()) {
                     // ctrl modifier pressed: edit link
@@ -1027,11 +1030,19 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
             ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
 
-            if (processorGraphicsItem && gridSnapping_)
-                processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
+            if (processorGraphicsItem) {
+                if (gridSnapping_)
+                    processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
+                processorGraphicsItem->updateMetaData();
+            }
+
         }
 
+        updateAllProcessorGraphicsItemMetaData();
+
         QGraphicsScene::mouseReleaseEvent(e);
+    } else {
+        updateAllProcessorGraphicsItemMetaData();              
     }
 
     QGraphicsScene::mouseReleaseEvent(e);
@@ -1151,6 +1162,14 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
         QGraphicsScene::contextMenuEvent(e);
 }
 
+void NetworkEditor::updateAllProcessorGraphicsItemMetaData() {
+    QList<QGraphicsItem*> selectedGraphicsItems = items();
+    for (int i=0; i<selectedGraphicsItems.size(); i++) {
+        ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+        if (processorGraphicsItem)
+            processorGraphicsItem->updateMetaData();                
+    }  
+}
 
 
 /////////////////////////////////////////
@@ -1365,7 +1384,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     for (size_t i=0; i<processors.size(); i++) {
         processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
         ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
-        addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), meta->isVisible(), false, false);
+        addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), meta->isVisible(), meta->isSelected(), false, false);
     }
 
     // add connections

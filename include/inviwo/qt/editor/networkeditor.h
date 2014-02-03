@@ -67,7 +67,7 @@ public:
      * @param pos Position in the network editor, wher ethe graphical representation should be located
      * @param visible Shall the graphical representation be visible
      */
-    void addProcessor(Processor* processor, QPointF pos, bool showProcessor=true, bool showPropertyWidgets=true, bool showProcessorWidget=true);
+    void addProcessor(Processor* processor, QPointF pos, bool showProcessor=true, bool selectProcessor=true, bool showPropertyWidgets=true, bool showProcessorWidget=true);
     void removeProcessor(Processor* processor);
 
     void addConnection(Outport* outport, Inport* inport);
@@ -102,6 +102,8 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
+    //called by mouse event callbacks to update the meta data states of processor graphics items
+    void updateAllProcessorGraphicsItemMetaData();
 
     void keyPressEvent(QKeyEvent* keyEvent);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
@@ -154,10 +156,10 @@ private:
     QTimer hoverTimer_;
     QThread* workerThread_;
 
-    void addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor=true, bool showPropertyWidgets=true,
+    void addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor=true, bool selectProcessor=true, bool showPropertyWidgets=true,
                                      bool showProcessorWidget=true);
     void removeProcessorRepresentations(Processor* processor);
-    void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true);
+    void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true, bool selected=true);
     void removeProcessorGraphicsItem(Processor* processor);
     void addProcessorWidget(Processor* processor, bool visible=true);
     void removeProcessorWidget(Processor* processor);
