@@ -66,13 +66,11 @@ void LinkGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* option
     IVW_UNUSED_PARAM(widget);
 
     if (isSelected())
-        p->setPen(QPen(Qt::darkRed, 3.0, Qt::DotLine, Qt::RoundCap));
+        p->setPen(QPen(Qt::darkRed, 2.0, Qt::DotLine, Qt::RoundCap));    
     else
-        p->setPen(QPen(Qt::black, 2.0, Qt::DotLine, Qt::RoundCap));
+        p->setPen(QPen(color_, 2.0, Qt::DotLine, Qt::RoundCap));
 
-    p->drawPath(obtainCurvePath());
-    p->setPen(QPen(color_, 2.0, Qt::DotLine, Qt::RoundCap));
-    p->drawPath(obtainCurvePath());
+    p->drawPath(obtainCurvePath());   
 }
 
 QPainterPath LinkGraphicsItem::shape() const {
