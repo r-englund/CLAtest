@@ -37,22 +37,57 @@ uniform vec3 lightColorDiffuse_;
 uniform vec3 lightColorSpecular_;
 uniform int lightSpecularExponent_;
 
+uniform mat4 viewToVoxel_;
+uniform mat4 viewMatrix_;
+
+
 vec3 shadeAmbient(vec3 colorAmb) {
     return colorAmb * lightColorAmbient_;
 }
 
-vec3 shadeDiffuse(vec3 colorDiff, vec3 gradient, vec3 lightPos) {
-    return colorDiff * lightColorDiffuse_ * max(dot(normalize(gradient),lightPos), 0.0);
+vec3 shadeDiffuseCalculation(vec3 colorDiff, vec3 normal, vec3 lightDir) {
+    return colorDiff * lightColorDiffuse_ * max(dot(normal,lightDir), 0.0);
 }
 
-vec3 shadeSpecular(vec3 colorSpec, vec3 gradient, vec3 lightPos, vec3 cameraPos) {
-    vec3 halfway = normalize(cameraPos + lightPos);
-    return colorSpec * lightColorSpecular_ * pow(max(dot(normalize(gradient), halfway), 0.0), lightSpecularExponent_);
+vec3 shadeSpecularCalculation(vec3 colorSpec, vec3 normal, vec3 lightDir, vec3 cameraDir) {
+    vec3 halfway = normalize(cameraDir + lightDir);
+    return colorSpec * lightColorSpecular_ * pow(max(dot(normal, halfway), 0.0), lightSpecularExponent_);
 }
 
-vec3 shadePhong(vec3 colorAmb, vec3 colorDiff, vec3 colorSpec, vec3 gradient, vec3 lightPos, vec3 cameraPos) {
+vec3 shadeDiffuse(vec3 colorDiff, vec3 position, vec3 gradient, vec3 lightPos) {
+    vec3 lightInVoxelSpace = (viewToVoxel_ * vec4(vec3(-lightPos),1.0)).xyz;
+    vec3 gradientInViewSpace = (viewMatrix_ * vec4(gradient,0.0)).xyz;
+    
+    return shadeDiffuseCalculation(colorDiff,
+                                   normalize(gradientInViewSpace),
+                                   normalize(lightInVoxelSpace - position));
+}
+
+
+vec3 shadeSpecular(vec3 colorSpec, vec3 position, vec3 gradient, vec3 lightPos, vec3 cameraPos) {
+    vec3 lightInVoxelSpace = (viewToVoxel_ * vec4(vec3(-lightPos),1.0)).xyz;
+    vec3 cameraInVoxelSpace = (viewToVoxel_ * vec4(cameraPos,1.0)).xyz;
+    vec3 gradientInViewSpace = (viewMatrix_ * vec4(gradient,0.0)).xyz;
+
+    return shadeSpecularCalculation(colorSpec,
+                                    normalize(gradientInViewSpace),
+                                    normalize(lightInVoxelSpace  - position),
+                                    normalize(cameraInVoxelSpace - position));
+}
+
+vec3 shadePhong(vec3 colorAmb, vec3 colorDiff, vec3 colorSpec, vec3 position, vec3 gradient, vec3 lightPos, vec3 cameraPos) {
+    vec3 lightInVoxelSpace = (viewToVoxel_ * vec4(vec3(-lightPos),1.0)).xyz;
+    vec3 cameraInVoxelSpace = (viewToVoxel_ * vec4(cameraPos,1.0)).xyz;
+    vec3 gradientInViewSpace = (viewMatrix_ * vec4(gradient,0.0)).xyz;
+
+
+
+       vec3 normal = normalize(gradientInViewSpace);
+    vec3 lightDir = normalize(lightInVoxelSpace - position);
+    vec3 cameraDir = normalize(cameraInVoxelSpace - position);
+
     vec3 resAmb = shadeAmbient(colorAmb);
-    vec3 resDiff = shadeDiffuse(colorDiff, gradient, lightPos);
-    vec3 resSpec = shadeSpecular(colorSpec, gradient, lightPos, cameraPos);
+    vec3 resDiff = shadeDiffuseCalculation(colorDiff, normal, lightDir);
+    vec3 resSpec = shadeSpecularCalculation(colorSpec, normal, lightDir, cameraDir);
     return resAmb + resDiff + resSpec;
 }

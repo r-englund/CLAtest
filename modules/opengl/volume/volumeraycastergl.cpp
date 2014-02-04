@@ -47,7 +47,7 @@ VolumeRaycasterGL::VolumeRaycasterGL()
     , shadingMode_("shadingMode", "Shading", PropertyOwner::INVALID_RESOURCES)
     , compositingMode_("compositingMode", "Compositing", PropertyOwner::INVALID_RESOURCES)
 
-    , lightPosition_("lightPosition", "Position", vec3(0.5f, 0.5f, 0.5f))
+    , lightPosition_("lightPosition", "Position", vec3(0.0f, 0.7071f, 0.7071f) , vec3(-10,-10,-10) , vec3(10,10,10) )
     , lightColorAmbient_("lightColorAmbient", "Ambient color", vec3(0.5f, 0.5f, 0.5f))
     , lightColorDiffuse_("lightColorDiffuse", "Diffuse color", vec3(0.5f, 0.5f, 0.5f))
     , lightColorSpecular_("lightColorSpecular", "Specular color", vec3(0.5f, 0.5f, 0.5f))
@@ -72,7 +72,7 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     , shadingMode_("shadingMode", "Shading", PropertyOwner::INVALID_RESOURCES)
     , compositingMode_("compositingMode", "Compositing", PropertyOwner::INVALID_RESOURCES)
 
-    , lightPosition_("lightPosition", "Position", vec3(0.5f, 0.5f, 0.5f))
+    , lightPosition_("lightPosition", "Position", vec3(0.0f, 0.7071f, 0.7071f) , vec3(-10,-10,-10) , vec3(10,10,10) )
     , lightColorAmbient_("lightColorAmbient", "Ambient color", vec3(0.5f, 0.5f, 0.5f))
     , lightColorDiffuse_("lightColorDiffuse", "Diffuse color", vec3(0.5f, 0.5f, 0.5f))
     , lightColorSpecular_("lightColorSpecular", "Specular color", vec3(0.5f, 0.5f, 0.5f))
@@ -158,18 +158,18 @@ void VolumeRaycasterGL::initializeResources() {
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(classificationKey, classificationValue);
 
     // shading defines
-    std::string shadingKey = "RC_APPLY_SHADING(colorAmb, colorDiff, colorSpec, gradient, lightPos, cameraPos)";
+    std::string shadingKey = "RC_APPLY_SHADING(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos)";
     std::string shadingValue = "";
     if (shadingMode_.isSelected("none"))
         shadingValue = "colorAmb;";
     else if (shadingMode_.isSelected("ambient"))
         shadingValue = "shadeAmbient(colorAmb);";
     else if (shadingMode_.isSelected("diffuse"))
-        shadingValue = "shadeDiffuse(colorDiff, gradient, lightPos);";
+        shadingValue = "shadeDiffuse(colorDiff, samplePos, gradient, lightPos);";
     else if (shadingMode_.isSelected("specular"))
-        shadingValue = "shadeSpecular(colorSpec, gradient, lightPos, cameraPos);";
+        shadingValue = "shadeSpecular(colorSpec, samplePos, gradient, lightPos, cameraPos);";
     else if (shadingMode_.isSelected("phong"))
-        shadingValue = "shadePhong(colorAmb, colorDiff, colorSpec, gradient, lightPos, cameraPos);";
+        shadingValue = "shadePhong(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 
     // compositing defines
@@ -208,6 +208,10 @@ void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* 
     vec3 dimensions = vec3(inport.getData()->getRepresentation<VolumeGL>()->getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimensions);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.0f)/dimensions);
+
+    mat4 viewToVoxel = inport.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
+    shader->setUniform("viewToVoxel_", viewToVoxel);
+    shader->setUniform("viewMatrix_", camera_.viewMatrix());
 }
 
 void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
@@ -215,7 +219,7 @@ void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
     shader->setUniform("samplingRate_", samplingRate_.get());
 
     shader->setUniform("cameraPosition_", camera_.getLookFrom());
-
+    
     // illumination uniforms
     shader->setUniform("lightPosition_", lightPosition_.get());
     shader->setUniform("lightColorAmbient_", lightColorAmbient_.get());
@@ -226,6 +230,7 @@ void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
 	// depth computation uniforms
 	shader->setUniform("zNear_", camera_.getNearPlaneDist());
 	shader->setUniform("zFar_", camera_.getFarPlaneDist());
+
 }
 
 void VolumeRaycasterGL::addBasicProperties() {

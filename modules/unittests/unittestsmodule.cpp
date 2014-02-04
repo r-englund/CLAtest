@@ -53,7 +53,10 @@ UnitTestsModule::~UnitTestsModule() { }
 void UnitTestsModule::initialize() {
 	InviwoModule::initialize(); //call superclass initialize
 }
-void UnitTestsModule::deinitialize() { }
+void UnitTestsModule::deinitialize() {
+    InviwoModule::deinitialize(); //call superclass deinitialize
+
+}
 
 
 int UnitTestsModule::runAllTests(){ 
