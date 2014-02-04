@@ -57,7 +57,7 @@ public:
 protected:
     virtual void process();
 
-    void computeEntryExitPoints(const mat4& NDCToTextureMat, const vec4& camPosInTextureSpace, const cl::Image2D& entryPointsCL, const cl::Image2D& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent);
+    void computeEntryExitPoints(const mat4& NDCToTextureMat, const vec4& camPosInTextureSpace, const cl::Image& entryPointsCL, const cl::Image& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent);
 
 private:
     GeometryInport geometryPort_;

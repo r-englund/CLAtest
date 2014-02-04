@@ -58,7 +58,7 @@ public:
     void initialize(const Texture3D* texture);
     virtual void setDimension(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(texture_); }
 
-    const cl::Image3DGL& getVolume() const { return *(image3D_); }
+    const cl::Image& getVolume() const { return *(image3D_); }
     const Texture3D* getTexture() const { return texture_; }
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL, const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {

@@ -66,7 +66,7 @@ public:
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeLayer(DataRepresentation* target) const;
 
-    const cl::Image2DGL& get() const { return *(clImage2DGL_); }
+    const cl::Image& get() const { return *(clImage2DGL_); }
     const Texture2D* getTexture() const { return texture_; }
 
     /**

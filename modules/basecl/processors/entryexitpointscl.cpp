@@ -103,14 +103,14 @@ void EntryExitPointsCL::process() {
         LayerCLGL* exitCL = exitPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL();
         entryCL->aquireGLObject(glSync.getGLSyncEvent());
         exitCL->aquireGLObject();
-        const cl::Image2D& entry = entryCL->get();
-        const cl::Image2D& exit = exitCL->get();
+        const cl::Image& entry = entryCL->get();
+        const cl::Image& exit = exitCL->get();
         computeEntryExitPoints(NDCToTextureMat, camPosInTextureSpace, entry, exit, outportDim, profilingEvent);
         exitCL->releaseGLObject();
         entryCL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     } else {
-        const cl::Image2D& entry = entryPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
-        const cl::Image2D& exit = exitPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
+        const cl::Image& entry = entryPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
+        const cl::Image& exit = exitPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
         computeEntryExitPoints(NDCToTextureMat, camPosInTextureSpace, entry, exit, outportDim, profilingEvent);
     }
 #if IVW_PROFILING
@@ -125,7 +125,7 @@ void EntryExitPointsCL::process() {
 
 }
 
-void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, const vec4& camPosInTextureSpace, const cl::Image2D& entryPointsCL, const cl::Image2D& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent) {
+void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, const vec4& camPosInTextureSpace, const cl::Image& entryPointsCL, const cl::Image& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent) {
     svec2 localWorkGroupSize(workGroupSize_.get());
     svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x), getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
 

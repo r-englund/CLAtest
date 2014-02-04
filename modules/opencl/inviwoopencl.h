@@ -41,7 +41,14 @@
 #include <modules/opencl/cl.hpp>
 #include <modules/opencl/glmcl.h>
 #include <modules/opencl/openclmoduledefine.h>
-
+#if defined(CL_VERSION_1_2)
+//using Image2DGL cl::Image2D;
+//using Image3DGL cl::Image3D;
+namespace cl {
+typedef ImageGL Image2DGL;
+typedef ImageGL Image3DGL;
+}
+#endif
 using glm::svec2;
 using glm::svec3;
 

@@ -118,11 +118,11 @@ void VolumeFirstHitCL::process() {
         exit->getLayerCLGL()->aquireGLObject();
         output->getLayerCLGL()->aquireGLObject();
         tfCL->aquireGLObject();
-        const cl::Image3D& volumeCL = volume->getVolume();
-        const cl::Image2D& entryCL = entry->getLayerCLGL()->get();
-        const cl::Image2D& exitCL = exit->getLayerCLGL()->get();
-        const cl::Image2D& outImageCL = output->getLayerCLGL()->get();
-        const cl::Image2D& tf = tfCL->get();
+        const cl::Image& volumeCL = volume->getVolume();
+        const cl::Image& entryCL = entry->getLayerCLGL()->get();
+        const cl::Image& exitCL = exit->getLayerCLGL()->get();
+        const cl::Image& outImageCL = output->getLayerCLGL()->get();
+        const cl::Image& tf = tfCL->get();
         firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
         entry->getLayerCLGL()->releaseGLObject();
         exit->getLayerCLGL()->releaseGLObject();
@@ -135,11 +135,11 @@ void VolumeFirstHitCL::process() {
         const ImageCL* output = outport_.getData()->getEditableRepresentation<ImageCL>();
         const VolumeCL* volume = volumePort_.getData()->getRepresentation<VolumeCL>();
         const LayerCL* tfCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
-        const cl::Image3D& volumeCL = volume->getVolume();
-        const cl::Image2D& entryCL = entry->getLayerCL()->get();
-        const cl::Image2D& exitCL = exit->getLayerCL()->get();
-        const cl::Image2D& outImageCL = output->getLayerCL()->get();
-        const cl::Image2D& tf = tfCL->get();
+        const cl::Image& volumeCL = volume->getVolume();
+        const cl::Image& entryCL = entry->getLayerCL()->get();
+        const cl::Image& exitCL = exit->getLayerCL()->get();
+        const cl::Image& outImageCL = output->getLayerCL()->get();
+        const cl::Image& tf = tfCL->get();
         firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
     }
     
@@ -154,7 +154,7 @@ void VolumeFirstHitCL::process() {
 #endif
 }
 
-void VolumeFirstHitCL::firstHit( const cl::Image3D& volumeCL, const cl::Image2D& entryPoints, const cl::Image2D& exitPoints, const cl::Image2D& transferFunctionCL, const cl::Image2D& output, float stepSize, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent ) {
+void VolumeFirstHitCL::firstHit( const cl::Image& volumeCL, const cl::Image& entryPoints, const cl::Image& exitPoints, const cl::Image& transferFunctionCL, const cl::Image& output, float stepSize, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent ) {
     try
     {
         cl_uint arg = 0;
