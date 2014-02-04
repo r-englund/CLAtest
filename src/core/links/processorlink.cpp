@@ -286,6 +286,12 @@ PropertyLink* ProcessorLink::getBidirectionalPair(PropertyLink* propertyLink) {
     return getPropertyLink(propertyLink->getDestinationProperty(), propertyLink->getSourceProperty());
 }
 
+void ProcessorLink::setSourceModified() {
+    std::vector<Property*> sourceProperties = getSourceProperties();
+    for (size_t i=0; i<sourceProperties.size(); i++)
+        sourceProperties[i]->propertyModified();
+}
+
 std::string ProcessorLink::getLinkInfo() {
     std::string info("");
 

@@ -240,11 +240,13 @@ public:
 
     QGraphicsItem* getPropertyGraphicsItemAt(Property* property);
     void setNetwork(ProcessorNetwork* network) {processorNetwork_ = network;}
+    ProcessorNetwork* getNetwork() {return processorNetwork_;}
 
     void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
     void removeCurrentPropertyLinks();
     void removeAllPropertyLinks();
     void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);
+    int currentLinkItemsCount();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);

@@ -181,6 +181,7 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
     std::vector<Processor*> existingProcessors = processorNetwork_->getProcessors();
     std::vector<Property*> dstProperties = addedProcessor->getProperties();
     LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
+    std::vector<ProcessorLink*> newLinks;
 
     for (size_t i=0; i<dstProperties.size(); i++) {
         Property* dstProperty = dstProperties[i];
@@ -208,6 +209,7 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
                     if (!processorLink) {
                         addLink(srcProcessor, dstProcessor);
                         processorLink = processorNetwork_->getLink(srcProcessor, dstProcessor);
+                        newLinks.push_back(processorLink);
                     }
 
                     processorLink->addPropertyLinks(srcProperty, dstProperty);
@@ -216,6 +218,9 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
             }
         }
     }
+
+    for (size_t i=0; i<newLinks.size(); i++)
+        newLinks[i]->setSourceModified();    
 }
 
 

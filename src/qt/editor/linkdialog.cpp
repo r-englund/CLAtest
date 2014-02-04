@@ -724,6 +724,10 @@ void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp, 
     addConnectionToCurrentList(propertyLinkItem);
 }
 
+int LinkDialogGraphicsScene::currentLinkItemsCount() {
+    return currentConnectionGraphicsItems_.size();
+}
+
 void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
     //For adding representations for existing links in the network
     //LogInfo("Adding Property Link.");
@@ -1122,6 +1126,11 @@ void LinkDialog::initDialog() {
 }
 
 void LinkDialog::clickedOkayButton() {
+    if (linkDialogScene_->currentLinkItemsCount()) {
+        ProcessorLink* link = linkDialogScene_->getNetwork()->getLink(src_, dest_);
+        if(link) 
+            link->setSourceModified();
+    }        
     accept();
 }
 
