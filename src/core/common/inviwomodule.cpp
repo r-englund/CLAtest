@@ -35,7 +35,6 @@
 #include <inviwo/core/ports/portfactory.h>
 #include <inviwo/core/ports/portinspectorfactory.h>
 #include <inviwo/core/io/datareaderfactory.h>
-#include <inviwo/core/io/datareaderdialogfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/processors/processorfactory.h>
@@ -136,6 +135,13 @@ InviwoModule::~InviwoModule() {
         delete moduleSettings_[i];
 
     moduleSettings_.clear();
+
+
+
+    for (size_t i=0; i<dataReaderDialogs_.size(); i++)
+        delete dataReaderDialogs_[i];
+
+    dataReaderDialogs_.clear();
 }
 
 std::string InviwoModule::getIdentifier() const {
@@ -204,10 +210,6 @@ void InviwoModule::registerDataRepresentation(DataRepresentation* dataRepresenta
 void InviwoModule::registerDataReader(DataReader* dataReader) {
     dataReaders_.push_back(dataReader);
     DataReaderFactory::getPtr()->registerObject(dataReader);
-}
-void InviwoModule::registerDataReaderDialog(DataReader* reader, DataReaderDialog* readerDialog) {
-    dataReaderDialogs_.push_back(readerDialog);
-    DataReaderDialogFactory::getPtr()->registerDataReaderDialog(reader, readerDialog);
 }
 
 void InviwoModule::registerDataWriter(DataWriter* dataWriter) {

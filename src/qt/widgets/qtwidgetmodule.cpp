@@ -127,7 +127,8 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(TextEditorWidgetQt, StringProperty, "Editor");
     registerPropertyWidget(TextEditorWidgetQt, StringProperty, "Shader");
     registerPropertyWidget(TransferFunctionPropertyWidgetQt, TransferFunctionProperty, "Default");
-    registerDataReaderDialog(new RawVolumeReader(), new RawDataReaderDialogQt());
+    
+    registerDataReaderDialog<RawVolumeReader>(new RawDataReaderDialogQt());
 }
 
 } // namespace

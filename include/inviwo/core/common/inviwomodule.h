@@ -53,6 +53,7 @@
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <inviwo/core/resources/resource.h>
 #include <inviwo/core/util/capabilities.h>
+#include <inviwo/core/io/datareaderdialogfactory.h>
 
 namespace inviwo {
 
@@ -98,7 +99,18 @@ protected:
     void registerCapabilities(Capabilities* info);
     void registerData(Data* data);
     void registerDataReader(DataReader* reader);
-    void registerDataReaderDialog(DataReader* reader, DataReaderDialog* readerDialog);
+    template<typename T>
+    void registerDataReaderDialog(DataReaderDialog* readerDialog){
+        T* t = 0;
+        for(size_t i = 0;i<dataReaders_.size()&&t==0;i++){
+            t = dynamic_cast<T*>(dataReaders_[i]);
+        }
+        if(t==0){
+            LogWarn("NO DataReader of type " << parseTypeIdName(std::string(typeid(this).name())) << " registred");
+            return;
+        }
+        DataReaderDialogFactory::getPtr()->registerDataReaderDialog(t, readerDialog);
+    }
     void registerDataRepresentation(DataRepresentation* dataRepresentation);
     void registerDataWriter(DataWriter* writer);
     void registerMetaData(MetaData* meta);

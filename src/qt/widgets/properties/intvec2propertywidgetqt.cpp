@@ -172,24 +172,26 @@ void IntVec2PropertyWidgetQt::showContextMenuY(const QPoint& pos) {
         updateContextMenu();
         QPoint globalPos = sliderY_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-
-        if (selecteditem && selecteditem && selecteditem->text() == "Property settings") {
-            settingsWidget_->reload();
-            settingsWidget_->show();
-        }
-        else if (selecteditem && selecteditem && selecteditem->text() == "Set as Min") {
-            //Set current value of the slider to min value of the property
-            valueVecMin_ = property_->getMinValue();
-            valueVecMin_.y = sliderY_->getValue();
-            property_->setMinValue(valueVecMin_);
-            updateFromProperty();
-        }
-        else if (selecteditem && selecteditem && selecteditem->text() == "Set as Max") {
-            //Set current value of the slider to max value of the property
-            valueVecMax_ = property_->getMaxValue();
-            valueVecMax_.y = sliderY_->getValue();
-            property_->setMaxValue(valueVecMax_);
-            updateFromProperty();
+        
+        if(selecteditem){
+            if (selecteditem->text() == "Property settings") {
+                settingsWidget_->reload();
+                settingsWidget_->show();
+            }
+            else if (selecteditem->text() == "Set as Min") {
+                //Set current value of the slider to min value of the property
+                valueVecMin_ = property_->getMinValue();
+                valueVecMin_.y = sliderY_->getValue();
+                property_->setMinValue(valueVecMin_);
+                updateFromProperty();
+           }
+           else if ( selecteditem->text() == "Set as Max") {
+               //Set current value of the slider to max value of the property
+               valueVecMax_ = property_->getMaxValue();
+               valueVecMax_.y = sliderY_->getValue();
+               property_->setMaxValue(valueVecMax_);
+               updateFromProperty();
+           }
         }
     }
 }
