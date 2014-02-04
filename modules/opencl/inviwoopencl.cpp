@@ -358,7 +358,7 @@ std::string errorCodeToString(cl_int err) {
     case CL_INVALID_BUFFER_SIZE: error = "CL_INVALID_BUFFER_SIZE"; break; //                                                -61
     case CL_INVALID_MIP_LEVEL: error = "CL_INVALID_MIP_LEVEL"; break; //                                                    -62
     case CL_INVALID_GLOBAL_WORK_SIZE: error = "CL_INVALID_GLOBAL_WORK_SIZE"; break; //                                      -63
-#if defined(CL_VERSION_1_1)
+#if defined(CL_INVALID_PROPERTY)
     case CL_INVALID_PROPERTY: error = "CL_INVALID_PROPERTY"; break; //                                                      -64
 #endif
     default: error = "unknown OpenCL error"; break;
