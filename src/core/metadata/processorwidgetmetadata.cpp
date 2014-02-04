@@ -48,12 +48,10 @@ ProcessorWidgetMetaData::ProcessorWidgetMetaData(const ProcessorWidgetMetaData& 
 
 ProcessorWidgetMetaData& ProcessorWidgetMetaData::operator=(const ProcessorWidgetMetaData& that) {
     if (this != &that) {
-        delete this;
         positionMetaData_ = that.positionMetaData_;
         dimensionMetaData_ = that.dimensionMetaData_;
         visiblityMetaData_ = that.visiblityMetaData_;
     }
-
     return *this;
 }
 

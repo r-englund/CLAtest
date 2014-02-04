@@ -208,8 +208,8 @@ void CameraProperty::fitCameraToGeomtry(const Geometry* geometry) {
 
 void CameraProperty::fitWithBasis(const mat3& basis) {
     lockInvalidation();
-    float newSize = glm::length(basis * vec3(2,2,2));
-    float oldSize = glm::length(oldBasis_ * vec3(2,2,2));
+    float newSize = glm::length(basis * vec3(1,1,1));
+    float oldSize = glm::length(oldBasis_ * vec3(1,1,1));
     float ratio = newSize/oldSize;
 
     if (ratio == 1)
@@ -224,7 +224,7 @@ void CameraProperty::fitWithBasis(const mat3& basis) {
     lookFrom_.setMaxValue(lookFrom_.getMaxValue()*ratio);
     lookTo_.setMinValue(lookTo_.getMinValue()*ratio);
     lookTo_.setMaxValue(lookTo_.getMaxValue()*ratio);
-    lookFrom_.set(newPos); //TODO something wrong is happening in here.
+    lookFrom_.set(newPos);
     updateViewMatrix();
     updateProjectionMatrix();
     unlockInvalidation();
@@ -253,8 +253,6 @@ void CameraProperty::inportChanged() {
            else if (geometryInport)
                oldBasis_ = geometryInport->getData()->getBasis();
            return;
-       }else{
-
        }
     }
 

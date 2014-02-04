@@ -76,13 +76,11 @@ PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData(const PropertyEditorW
 
 PropertyEditorWidgetMetaData& PropertyEditorWidgetMetaData::operator=(const PropertyEditorWidgetMetaData& that) {
     if (this != &that) {
-        delete this;
         positionMetaData_ = that.positionMetaData_;
         dimensionMetaData_ = that.dimensionMetaData_;
         visiblityMetaData_ = that.visiblityMetaData_;
         dockStatusMetaData_ = that.dockStatusMetaData_;
     }
-
     return *this;
 }
 

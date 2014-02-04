@@ -37,24 +37,20 @@ namespace inviwo {
 ProcessorMetaData::ProcessorMetaData() {
     visiblityMetaData_.set(true);
     selectionMetaData_.set(false);
-    /*addMetaData(positionMetaData_);
-    addMetaData(visiblityMetaData_);*/
 }
 
-ProcessorMetaData::ProcessorMetaData(const ProcessorMetaData& rhs):
-    positionMetaData_(rhs.positionMetaData_)
+ProcessorMetaData::ProcessorMetaData(const ProcessorMetaData& rhs)
+    : positionMetaData_(rhs.positionMetaData_)
     , visiblityMetaData_(rhs.visiblityMetaData_)
     , selectionMetaData_(rhs.selectionMetaData_){
 }
 
 ProcessorMetaData& ProcessorMetaData::operator=(const ProcessorMetaData& that) {
     if (this != &that) {
-        delete this;
         positionMetaData_ = that.positionMetaData_;
         visiblityMetaData_ = that.visiblityMetaData_;
         selectionMetaData_ = that.selectionMetaData_;
     }
-
     return *this;
 }
 

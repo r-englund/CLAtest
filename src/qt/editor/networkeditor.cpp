@@ -557,8 +557,8 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
         LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
         ProcessorLink* processorLink = NULL;
 
-        for (size_t i = 0; i < processors.size(); i++) {
-            Processor* addedProcessor = processors[i];
+        for (size_t h = 0; h < processors.size(); h++) {
+            Processor* addedProcessor = processors[h];
             std::vector<Property*> dstProperties = addedProcessor->getProperties();
 
             for (size_t i = 0; i < dstProperties.size(); i++) {

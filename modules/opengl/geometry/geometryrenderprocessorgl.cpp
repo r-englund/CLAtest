@@ -70,6 +70,9 @@ void GeometryRenderProcessorGL::deinitialize() {
 
 
 void GeometryRenderProcessorGL::process() {
+    if (!inport_.hasData()) {
+        return;
+    }
     std::vector<const Geometry*> geometries = inport_.getData();
     std::vector<GeometryRenderer*>::iterator renIt = renderers_.begin();
     for (std::vector<const Geometry*>::const_iterator it = geometries.begin(), endIt = geometries.end(); it != endIt; ++it, ++renIt) {

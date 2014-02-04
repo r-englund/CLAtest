@@ -53,8 +53,6 @@ void SingleInport::connectTo(Outport* outport) {
 }
 
 void SingleInport::disconnectFrom(Outport* outport) {
-    ivwAssert(connectedOutport_==outport, "Ports are not connected.");
-
     if (outport == connectedOutport_) {
         connectedOutport_ = NULL;
         outport->disconnectFrom(this);
@@ -72,7 +70,6 @@ bool SingleInport::isConnectedTo(Outport* outport) const {
 
 void SingleInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
-    //TODO: for port properties Port::invalidate() should be called here
     Port::invalidate(invalidationLevel);
 }
 
