@@ -93,19 +93,21 @@ void VolumeRaycasterCL::process() {
         return;
     }
     
-    const ImageCLGL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCLGL>();
+    //const ImageCLGL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCLGL>();
+    const ImageCL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCL>();
     // Will synchronize with OpenGL upon creation and destruction
-    SyncCLGL glSync;
-    entryCLGL->getLayerCLGL()->aquireGLObject(glSync.getGLSyncEvent());
+    //SyncCLGL glSync;
+    //entryCLGL->getLayerCLGL()->aquireGLObject(glSync.getGLSyncEvent());
 
-    const ImageCLGL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCLGL>();
-    exitCLGL->getLayerCLGL()->aquireGLObject();
+    //const ImageCLGL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCLGL>();
+    const ImageCL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCL>();
+    //exitCLGL->getLayerCLGL()->aquireGLObject();
 
     Image* outImage = outport_.getData();
-    //ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
-    ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
+    ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
+    //ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
     uvec2 outportDim = outImage->getDimension();
-    outImageCL->getLayerCLGL()->aquireGLObject();
+    //outImageCL->getLayerCLGL()->aquireGLObject();
 
 
     const Volume* volume = volumePort_.getData();
@@ -126,12 +128,12 @@ void VolumeRaycasterCL::process() {
     {
         cl_uint arg = 0;
         kernel_->setArg(arg++, *volumeCL);
-        kernel_->setArg(arg++, *entryCLGL->getLayerCLGL());
-        kernel_->setArg(arg++, *exitCLGL->getLayerCLGL());
+        kernel_->setArg(arg++, *entryCLGL->getLayerCL());
+        kernel_->setArg(arg++, *exitCLGL->getLayerCL());
         kernel_->setArg(arg++, *transferFunctionCL);
         kernel_->setArg(arg++, samplingRate_.get());
         kernel_->setArg(arg++, volumeDim);
-        kernel_->setArg(arg++, *outImageCL->getLayerCLGL());
+        kernel_->setArg(arg++, *outImageCL->getLayerCL());
         // 
         OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
     } catch (cl::Error& err) {
@@ -140,9 +142,9 @@ void VolumeRaycasterCL::process() {
 
     
     //volumeCL->releaseGLObject();
-    outImageCL->getLayerCLGL()->releaseGLObject();
-    exitCLGL->getLayerCLGL()->releaseGLObject();
-    entryCLGL->getLayerCLGL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
+    //outImageCL->getLayerCLGL()->releaseGLObject();
+    //exitCLGL->getLayerCLGL()->releaseGLObject();
+    //entryCLGL->getLayerCLGL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
 #if IVW_PROFILING
     try {
         profilingEvent->wait();
