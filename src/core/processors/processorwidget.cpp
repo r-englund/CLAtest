@@ -37,19 +37,16 @@ namespace inviwo {
 
 ProcessorWidget::ProcessorWidget()
     : metaData_(0)
-    , processor_(0)
-    , initialized_(false) {}
+    , processor_(0) {}
 
 ProcessorWidget::~ProcessorWidget() {}
 
 void ProcessorWidget::initialize() {
-    initialized_ = true;
     metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(processor_->getMetaData("ProcessorWidgetMetaData"));
 }
 
 void ProcessorWidget::deinitialize() {
-    //FIXME: should metaData_ be set to NULL??? //Also initialized_ status is never used anywhere
-    initialized_ = false;
+    //FIXME: should metaData_ be set to NULL???
 }
 
 void ProcessorWidget::setVisible(bool visible) {

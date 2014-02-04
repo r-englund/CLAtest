@@ -106,7 +106,7 @@ protected:
             t = dynamic_cast<T*>(dataReaders_[i]);
         }
         if(t==0){
-            LogWarn("NO DataReader of type " << parseTypeIdName(std::string(typeid(this).name())) << " registred");
+            LogWarn("No DataReader of type " << parseTypeIdName(std::string(typeid(this).name())) << " registered.");
             return;
         }
         DataReaderDialogFactory::getPtr()->registerDataReaderDialog(t, readerDialog);

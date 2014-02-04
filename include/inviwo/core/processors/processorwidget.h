@@ -64,7 +64,6 @@ private:
 
 protected:
     Processor* processor_;
-    bool initialized_;
 
     ivec2 getPositionMetaData();
     ivec2 getDimensionMetaData();
