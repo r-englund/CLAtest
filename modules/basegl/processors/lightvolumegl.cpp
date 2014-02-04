@@ -161,6 +161,9 @@ void LightVolumeGL::deinitialize() {
     for(int i=0; i<2; ++i){
         delete propParams_[i].fbo;
         propParams_[i].fbo = NULL;
+
+        delete propParams_[i].vol;
+        propParams_[i].vol = NULL;
     }
 
     delete mergeFBO_;
