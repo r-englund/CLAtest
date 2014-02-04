@@ -66,6 +66,8 @@ bool PropertyWidget::hasEditorWidget() const {
     return (propertyEditor_ != 0);
 }
 
+void PropertyWidget::initializeEditorWidgetsMetaData() {}
+
 //////////////////////////////////////////////////////////////////////////
 
 //Additional widgets owned by property
@@ -79,6 +81,11 @@ PropertyEditorWidget::~PropertyEditorWidget() {
 
 void PropertyEditorWidget::initialize(Property* property) {
     metaData_ = dynamic_cast<PropertyEditorWidgetMetaData*>(property->getMetaData("PropertyEditorWidgetMetaData"));
+}
+
+void PropertyEditorWidget::deinitialize() {
+    //Not yet tested
+    //metaData_ = NULL;
 }
 
 void PropertyEditorWidget::setEditorVisibility(bool visible) {

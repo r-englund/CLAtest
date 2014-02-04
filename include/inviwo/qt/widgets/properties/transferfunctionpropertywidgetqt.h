@@ -55,6 +55,7 @@ private:
     QPushButton* btnOpenTF_;
 
     TransferFunctionProperty* property_;
+    //TODO: Remove redundant reference to property editor widget
     TransferFunctionPropertyDialog* transferFunctionDialog_;
 
     void generateWidget();

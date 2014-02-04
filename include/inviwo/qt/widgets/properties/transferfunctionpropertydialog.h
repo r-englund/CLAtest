@@ -62,7 +62,7 @@ namespace inviwo {
 
 class TransferFunctionPropertyWidgetQt;
 
-class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public InviwoDockWidget, public VoidObserver, public PropertyEditorWidget {
+class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyEditorWidgetQt {
 
     Q_OBJECT
 

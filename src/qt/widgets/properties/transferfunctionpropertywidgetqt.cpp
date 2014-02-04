@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
-#include <QDesktopWidget>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 namespace inviwo {
@@ -45,6 +44,7 @@ TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunct
 
 TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt() {
     transferFunctionDialog_->hide();
+    setEditorWidget(NULL);
     delete transferFunctionDialog_;
     delete btnOpenTF_;
 }
@@ -53,21 +53,7 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_, app->getMainWindow());
     setEditorWidget(transferFunctionDialog_);
-    PropertyEditorWidgetDockStatus docStatus = getEditorWidget()->getEditorDockStatus();
-
-    if (docStatus == PropertyEditorWidgetDockStatus::DockedLeft) {
-        app->getMainWindow()->addDockWidget(Qt::LeftDockWidgetArea, transferFunctionDialog_);
-        transferFunctionDialog_->setFloating(false);
-    }
-    else if (docStatus == PropertyEditorWidgetDockStatus::DockedRight) {
-        app->getMainWindow()->addDockWidget(Qt::RightDockWidgetArea, transferFunctionDialog_);
-        transferFunctionDialog_->setFloating(false);
-    }
-    else {
-        app->getMainWindow()->addDockWidget(Qt::RightDockWidgetArea, transferFunctionDialog_);
-        transferFunctionDialog_->setFloating(true);
-    }
-
+    
     // notify the transfer function dialog, that the volume with the histogram is already there
     property_->notifyObservers();
     QHBoxLayout* hLayout = new QHBoxLayout();
@@ -87,51 +73,9 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(btnOpenTF_);
     setLayout(hLayout);
     updateFromProperty();
-    //set widget meta data stuff
-    transferFunctionDialog_->hide();    
 
-    ivec2 widgetDimension = getEditorWidget()->getEditorDimensionMetaData();
-    transferFunctionDialog_->resize(QSize(widgetDimension.x, widgetDimension.y));
-
-    ivec2 pos = getEditorWidget()->getEditorPositionMetaData();
-    
-    //TODO: Desktop screen info should be added to system capabilities
-    QDesktopWidget* desktop = QApplication::desktop();
-    int primaryScreenIndex = desktop->primaryScreen();
-    QRect wholeScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
-    QRect primaryScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
-
-    for (int i=0; i<desktop->screenCount(); i++) {
-        if (i!=primaryScreenIndex)
-            wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));        
-    }
-
-    wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
-        wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
-    QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
-
-    QPoint appPos = app->getMainWindow()->pos();
-
-    if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) {
-        LogWarn("Widget position modified to fit into current screen")
-        pos = ivec2(appPos.x(), appPos.y()) ;
-        pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
-        transferFunctionDialog_->move(pos.x, pos.y);
-    }
-    else {        
-        if (!(pos.x == 0 && pos.y == 0))            
-            transferFunctionDialog_->move(pos.x, pos.y);
-        else {
-            pos = ivec2(appPos.x(), appPos.y()) ;
-            pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
-            transferFunctionDialog_->move(pos.x, pos.y);
-        }
-    }
-    
-    bool visible = getEditorWidget()->getEditorVisibilityMetaData();
-    if (!visible) transferFunctionDialog_->hide();
-    else transferFunctionDialog_->show();
-    
+    //initializes position, visibility,size of the widget from meta data
+    initializeEditorWidgetsMetaData();    
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty() {

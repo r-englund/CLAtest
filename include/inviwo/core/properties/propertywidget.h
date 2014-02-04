@@ -55,13 +55,14 @@ public:
 
     void setEditorWidget(PropertyEditorWidget* processorWidget);
     PropertyEditorWidget* getEditorWidget() const;
-    bool hasEditorWidget() const;
+    bool hasEditorWidget() const;    
 
     virtual Property* getProperty();
     virtual void setProperty(Property* property);
 protected:
+    virtual void initializeEditorWidgetsMetaData()=0;
     Property* property_; //< Non owning reference to a property.
-    PropertyEditorWidget* propertyEditor_;  //Additional widgets owned by property widget.
+    PropertyEditorWidget* propertyEditor_;  //< Reference to additional widgets (not necessarily owned always)
 };
 
 
@@ -72,7 +73,8 @@ class IVW_CORE_API PropertyEditorWidget {
 public:
     PropertyEditorWidget();
     virtual ~PropertyEditorWidget();
-    virtual void initialize(Property* property);
+    virtual void initialize(Property* property)=0;
+    virtual void deinitialize()=0;
     //set functions
     virtual void setEditorVisibility(bool visible);
     virtual void showEditor();

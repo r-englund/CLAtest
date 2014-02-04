@@ -39,9 +39,7 @@
 namespace inviwo {
 
 TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty, QWidget* parent)
-    : InviwoDockWidget("Transfer Function", parent)
-    , VoidObserver()
-    , PropertyEditorWidget()
+    : PropertyEditorWidgetQt("Transfer Function", parent)
     , tfProperty_(tfProperty)
     , tfPixmap_(NULL)
 {

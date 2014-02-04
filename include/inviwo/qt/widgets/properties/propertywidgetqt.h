@@ -38,6 +38,7 @@
 #include <QLabel>
 #include <QWidget>
 #include <QMenu>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/core/properties/propertyvisibility.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/util/observer.h>
@@ -59,7 +60,7 @@ public:
     void showWidget();
     void hideWidget();
     //void notify();
-    void updateContextMenu();
+    void updateContextMenu();    
 public slots:
     void visibilityModified(int mode);
     void showContextMenu(const QPoint& pos);
@@ -83,11 +84,24 @@ protected:
     QMenu* generatePropertyWidgetMenu();
     void generateModuleMenuActions();
     void updateModuleMenuActions();
+    virtual void initializeEditorWidgetsMetaData();
 
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
 
 };
+
+//PropertyEditorWidget owned by PropertyWidget
+
+class IVW_QTWIDGETS_API PropertyEditorWidgetQt : public InviwoDockWidget, public VoidObserver, public PropertyEditorWidget {
+    Q_OBJECT
+public:
+    PropertyEditorWidgetQt(std::string widgetName, QWidget* parent);
+    virtual ~PropertyEditorWidgetQt();
+    virtual void initialize(Property* property);
+    virtual void deinitialize();
+};
+
 
 } // namespace
 

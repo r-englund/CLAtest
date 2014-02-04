@@ -36,6 +36,7 @@
 #include <inviwo/core/properties/property.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/common/moduleaction.h>
+#include <QDesktopWidget>
 
 namespace inviwo {
 
@@ -58,9 +59,81 @@ void PropertyWidgetQt::showWidget() {
     this->show();
     emit visibilityChange();
 }
+
 void PropertyWidgetQt::hideWidget() {
     this->hide();
     emit visibilityChange();
+}
+
+void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
+    if (hasEditorWidget()) {
+
+        //Validates editor widget position
+        PropertyEditorWidgetQt* propertyEditorWidget = dynamic_cast<PropertyEditorWidgetQt*>(getEditorWidget());
+        InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+        if (!propertyEditorWidget)
+            return;
+
+        //set widget meta data stuff
+
+        PropertyEditorWidgetDockStatus docStatus = propertyEditorWidget->getEditorDockStatus();
+
+        if (docStatus == PropertyEditorWidgetDockStatus::DockedLeft) {
+            app->getMainWindow()->addDockWidget(Qt::LeftDockWidgetArea, propertyEditorWidget);
+            propertyEditorWidget->setFloating(false);
+        }
+        else if (docStatus == PropertyEditorWidgetDockStatus::DockedRight) {
+            app->getMainWindow()->addDockWidget(Qt::RightDockWidgetArea, propertyEditorWidget);
+            propertyEditorWidget->setFloating(false);
+        }
+        else {
+            app->getMainWindow()->addDockWidget(Qt::RightDockWidgetArea, propertyEditorWidget);
+            propertyEditorWidget->setFloating(true);
+        }
+
+        propertyEditorWidget->hide();    
+
+        ivec2 widgetDimension = getEditorWidget()->getEditorDimensionMetaData();
+        propertyEditorWidget->resize(QSize(widgetDimension.x, widgetDimension.y));
+
+        //TODO: Desktop screen info should be added to system capabilities
+        ivec2 pos = getEditorWidget()->getEditorPositionMetaData();
+        QDesktopWidget* desktop = QApplication::desktop();
+        int primaryScreenIndex = desktop->primaryScreen();
+        QRect wholeScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
+        QRect primaryScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
+
+        for (int i=0; i<desktop->screenCount(); i++) {
+            if (i!=primaryScreenIndex)
+                wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));        
+        }
+
+        wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
+            wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
+        QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
+
+        QPoint appPos = app->getMainWindow()->pos();
+
+        if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) {
+            LogWarn("Widget position modified to fit into current screen")
+                pos = ivec2(appPos.x(), appPos.y()) ;
+            pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+            propertyEditorWidget->move(pos.x, pos.y);
+        }
+        else {        
+            if (!(pos.x == 0 && pos.y == 0))            
+                propertyEditorWidget->move(pos.x, pos.y);
+            else {
+                pos = ivec2(appPos.x(), appPos.y()) ;
+                pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+                propertyEditorWidget->move(pos.x, pos.y);
+            }
+        }
+
+        bool visible = getEditorWidget()->getEditorVisibilityMetaData();
+        if (!visible) propertyEditorWidget->hide();
+        else propertyEditorWidget->show();
+    }
 }
 
 void PropertyWidgetQt::visibilityModified(int mode) {}
@@ -239,6 +312,27 @@ void PropertyWidgetQt::setProperty(Property* property) {
     PropertyWidget::setProperty(property);
     setToolTip(("id: " + property_->getIdentifier()).c_str());
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+PropertyEditorWidgetQt::PropertyEditorWidgetQt(std::string widgetName, QWidget* parent)
+: InviwoDockWidget(QString(widgetName.c_str()), parent)
+, VoidObserver()
+, PropertyEditorWidget()
+{    
+}
+
+PropertyEditorWidgetQt::~PropertyEditorWidgetQt() { }
+
+void PropertyEditorWidgetQt::initialize(Property* property) {
+    PropertyEditorWidget::initialize(property);   
+}
+
+void PropertyEditorWidgetQt::deinitialize() {
+    PropertyEditorWidget::deinitialize();
+    hide();
+}
+
 
 
 } // namespace
