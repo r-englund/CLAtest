@@ -32,9 +32,10 @@
 
 #include "inviwosplashscreen.h"
 
+#include <QApplication>
+#include <QPainter>
 #include <QSplashScreen>
 #include <QTextStream>
-#include <QPainter>
 
 #include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
@@ -42,7 +43,9 @@
 namespace inviwo { 
 
 InviwoSplashScreen::InviwoSplashScreen()
-	: QSplashScreen(QPixmap(":/images/splashscreen.png"), Qt::WindowStaysOnTopHint)
+    : QSplashScreen(dynamic_cast<InviwoApplicationQt*>(inviwo::InviwoApplicationQt::getPtr())->getMainWindow(),
+                    QPixmap(":/images/splashscreen.png"),
+                    Qt::WindowStaysOnTopHint)
 {
 	const CommandLineParser* cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
 	showSplashScreen_ = cmdparser->getShowSplashScreen();
@@ -60,14 +63,13 @@ void InviwoSplashScreen::drawContents(QPainter* painter) {
     QString versionLabel;
     QTextStream labelStream(&versionLabel);
     labelStream << "Version " << QString::fromStdString(IVW_VERSION);
-    //painter->drawText(160, 220, versionLabel);
     painter->drawText(15, 265, versionLabel);
 }
 
 void InviwoSplashScreen::showMessage(std::string message) {
 	// show message and add whitespace to match layout
 	if (showSplashScreen_)
-        QSplashScreen::showMessage(QString::fromStdString("  "+message), Qt::AlignLeft|Qt::AlignBottom, Qt::white);
+        QSplashScreen::showMessage(QString::fromStdString("   "+message), Qt::AlignLeft|Qt::AlignBottom, Qt::white);
 }
 
 void InviwoSplashScreen::finish(QWidget* mainWindow) {

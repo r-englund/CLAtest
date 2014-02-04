@@ -202,69 +202,43 @@ Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
     return 0;
 }
 
-void ProcessorGraphicsItem::paintStatusIndicator(QPainter* p, QPointF offset,
+void ProcessorGraphicsItem::paintStatusIndicator(QPainter* p, QPointF pos,
         bool isOn, QColor baseColor) {
-    // This code has been modified based on the KLed class from the KDE libraries
-    // TODO: check license implications
+
+    qreal ledRadius = 5.0;
+    QColor ledColor;
+    QColor borderColor;
+    if (isOn) {
+        ledColor = baseColor;
+        borderColor = QColor(124,124,124);
+        //borderColor = baseColor.dark(110);//QColor(64,64,64);
+    } else {
+        ledColor = baseColor.dark(400);
+        borderColor = QColor(64,64,64);
+    }
+
+    // initialize painter
     p->save();
-    p->translate(offset);
-    int width = 12;
-    int scale = 1;
-    width *= scale;
-    QColor color;
-
-    if (isOn) color = baseColor;
-    else color = baseColor.dark(500);
-
-    p->setBrush(QBrush(color));
-    p->drawEllipse(scale, scale, width-scale*2, width-scale*2);
-    // draw the bright light spot of the LED
-    // set new width of the pen avoid a "pixelized" shadow
-    // shrink the light on the LED to a size about 3/4 of the complete LED
-    int pos = width / 5 + 1;
-    int lightWidth = width*3/4;
-    // Calculate the LED's "light factor"
-    int lightFactor = (130*2 / (lightWidth ? lightWidth : 1)) + 100;
-
-    // draw the bright spot on the LED
-    while (lightWidth) {
-        color = color.light(lightFactor);
-        p->setPen(QPen(color));
-        p->drawEllipse(pos, pos, lightWidth, lightWidth);
-        lightWidth--;
-
-        if (!lightWidth) break;
-
-        p->drawEllipse(pos, pos, lightWidth, lightWidth);
-        lightWidth--;
-
-        if (!lightWidth) break;
-
-        p->drawEllipse(pos, pos, lightWidth, lightWidth);
-        lightWidth--;
-        pos++;
+    p->setPen(QPen(borderColor, 3.0));
+    p->setBrush(QBrush(ledColor));
+    // draw base shape
+    p->drawEllipse(pos, ledRadius, ledRadius);
+    // draw light highlight
+    QPointF highLightPos = pos;
+    p->setPen(Qt::NoPen);
+    while (ledRadius > 0.0) {
+        ledColor = ledColor.light(120);
+        p->setBrush(QBrush(ledColor));
+        p->drawEllipse(highLightPos, ledRadius, ledRadius);
+        ledRadius -= 0.25;
+        p->drawEllipse(highLightPos, ledRadius, ledRadius);
+        ledRadius -= 0.25;        
+        p->drawEllipse(highLightPos, ledRadius, ledRadius);
+        ledRadius -= 0.25;        
+        highLightPos.setX(highLightPos.x()-0.25);
+        highLightPos.setY(highLightPos.y()-0.25);
     }
-
-    // draw a thin border around the LED which resembles a shadow with light coming
-    // from the upper left
-    QPen pen;
-    pen.setWidth(2 * scale + 1);
-    p->setBrush(Qt::NoBrush);
-    // set the initial color and draw the shadow border at 45° (45*16 = 720).
-    int angle = -720;
-
-    if (isOn == true) color = baseColor.lighter(100);
-    else color = Qt::darkGray;
-
-    for (int arc=120; arc<2880; arc+=240) {
-        pen.setColor(color);
-        p->setPen(pen);
-        int w = width-pen.width()/2 - scale+1;
-        p->drawArc(pen.width()/2, pen.width()/2, w, w, angle+arc, 240);
-        p->drawArc(pen.width()/2, pen.width()/2, w, w, angle-arc, 240);
-        color = color.dark(110);
-    }
-
+    // deinitialize painter
     p->restore();
 }
 
@@ -387,7 +361,7 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
         p->drawRect(portRect);
     }
 
-    paintStatusIndicator(p, QPointF(57.0f, -20.0f),
+    paintStatusIndicator(p, QPointF(64.0f, -15.0f),
                          processor_->isReady(), QColor(0,170,0));
     //TODO: Fix progressbar to true indicator or just make a processing wheel.
     /*ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);

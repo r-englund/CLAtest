@@ -509,9 +509,13 @@ void InviwoMainWindow::showAboutBox() {
     aboutText.append("&copy; 2012-2014 The Inviwo Foundation<br>");
     aboutText.append("<a href='http://www.inviwo.org/'>http://www.inviwo.org/</a>");
     aboutText.append("<p>Inviwo is a rapid prototyping environment for interactive \
-                     visualizations. It is licensed under the Simplified BSD license.</p>");
+                     visualizations.<br>It is licensed under the Simplified BSD license.</p>");
     aboutText.append("<p><b>Core Team:</b><br>");
     aboutText.append("Rickard Englund, Daniel J&ouml;nsson, Sathish Kottravel, Timo Ropinski, Peter Steneteg, Erik Sund&eacute;n</p>");
+    aboutText.append("<p><b>Additional Developers:</b><br>");
+    aboutText.append("Alexander Johansson, Johan Noren, Viktor Axelsson</p>");
+    aboutText.append("<p><b>Former Team Members:</b><br>");
+    aboutText.append("Hans-Christian Helltegen, Andreas Valter, Emanuel Winblad</p>");
     QMessageBox::about(this, QString::fromStdString("Inviwo V"+IVW_VERSION), QString::fromStdString(aboutText));
 }
 

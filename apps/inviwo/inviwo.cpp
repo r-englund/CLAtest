@@ -56,23 +56,20 @@ int main(int argc, char** argv) {
 
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
 	
+    inviwo::InviwoMainWindow mainWin;
+    // setup core application
+    inviwoApp.setMainWindow(&mainWin);
+
     // initialize and show splash screen
 	inviwo::InviwoSplashScreen splashScreen;
 	splashScreen.show();
 	splashScreen.showMessage("Loading application...");
 
-#if (QT_VERSION >= 0x040400)
     QFile styleSheetFile(":/stylesheets/inviwo.qss");
     styleSheetFile.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(styleSheetFile.readAll());
     inviwoApp.setStyleSheet(styleSheet);
     styleSheetFile.close();
-#endif
-
-    inviwo::InviwoMainWindow mainWin;
-
-    // setup core application
-    inviwoApp.setMainWindow(&mainWin);
 
     //Initialize application and register modules
 	splashScreen.showMessage("Initializing modules...");

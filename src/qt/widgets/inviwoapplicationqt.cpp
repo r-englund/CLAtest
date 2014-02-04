@@ -52,7 +52,7 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
         char** argv)
     : QApplication(argc, argv)
     , InviwoApplication(argc, argv, displayName, basePath) {
-    QCoreApplication::setOrganizationName("Inviwo");
+    QCoreApplication::setOrganizationName("Inviwo Foundation");
     QCoreApplication::setOrganizationDomain("inviwo.org");
     QCoreApplication::setApplicationName(displayName.c_str());
     fileWatcher_ = new QFileSystemWatcher(this);
