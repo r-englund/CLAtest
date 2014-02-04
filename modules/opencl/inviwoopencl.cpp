@@ -424,7 +424,7 @@ std::string getCLErrorResolveHint(cl_int err) {
     case CL_INVALID_BUFFER_SIZE: hint = ""; break; //                                                          -61
     case CL_INVALID_MIP_LEVEL: hint = ""; break; //                                                            -62
     case CL_INVALID_GLOBAL_WORK_SIZE: hint = ""; break; //                                                     -63
-#if defined(CL_VERSION_1_1)
+#if defined(CL_INVALID_PROPERTY)
     case CL_INVALID_PROPERTY: hint = ""; break; //                                                             -64
 #endif
     default: hint = ""; break;
