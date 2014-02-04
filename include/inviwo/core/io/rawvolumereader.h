@@ -48,15 +48,20 @@ public:
     virtual RawVolumeReader* clone() const;
     virtual ~RawVolumeReader() {}
 
+    virtual void setParameters(const DataFormatBase* format, ivec3 dimensions, bool littleEndian);
+
     virtual Volume* readMetaData(const std::string filePath);
     virtual void* readData() const;
     virtual void readDataInto(void* dest) const;
+    bool haveReadLittleEndian() const { return littleEndian_; }
+    const DataFormatBase* getFormat() const { return format_; }
 
 private:
     std::string rawFile_;
     bool littleEndian_;
     glm::uvec3 dimension_;
     const DataFormatBase* format_;
+    bool parametersSet_;
 };
 
 } // namespace

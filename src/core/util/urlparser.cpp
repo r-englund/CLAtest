@@ -82,6 +82,7 @@ std::string URLParser::replaceFileExtension(const std::string url, const std::st
 }
 
 std::string URLParser::getRelativePath(const std::string& bPath, const std::string absolutePath) {
+    // FIXME: is the case that the bath path and the absolute path are lying on different drives considered?
     std::string basePath(getFileDirectory(bPath));
     std::string absPath(getFileDirectory(absolutePath));
     std::string fileName(getFileNameWithExtension(absolutePath));

@@ -45,7 +45,8 @@ RawVolumeReader::RawVolumeReader()
     , rawFile_("")
     , littleEndian_(true)
     , dimension_(uvec3(0, 0, 0))
-    , format_(NULL) {
+    , format_(NULL)
+    , parametersSet_(false) {
     addExtension(FileExtension("raw", "Raw binary file"));
 }
 
@@ -54,7 +55,8 @@ RawVolumeReader::RawVolumeReader(const RawVolumeReader& rhs)
     , rawFile_(rhs.rawFile_)
     , littleEndian_(true)
     , dimension_(rhs.dimension_)
-    , format_(rhs.format_) {};
+    , format_(rhs.format_)
+    , parametersSet_(false) {}
 
 RawVolumeReader& RawVolumeReader::operator=(const RawVolumeReader& that) {
     if (this != &that) {
@@ -72,6 +74,12 @@ RawVolumeReader* RawVolumeReader::clone() const {
     return new RawVolumeReader(*this);
 }
 
+void RawVolumeReader::setParameters(const DataFormatBase* format, ivec3 dimensions, bool littleEndian) {
+    parametersSet_ = true;
+    format_ = format;
+    dimension_ = dimensions;
+    littleEndian_ = littleEndian;
+}
 
 Volume* RawVolumeReader::readMetaData(std::string filePath) {
     if (!URLParser::fileExists(filePath)) {
@@ -86,11 +94,11 @@ Volume* RawVolumeReader::readMetaData(std::string filePath) {
     std::string fileExtension = URLParser::getFileExtension(filePath);
     Volume* volume = new UniformRectiLinearVolume();
     rawFile_ = filePath;
-    //format_ = some format
-    DataReaderDialog* readerDialog = DataReaderDialogFactory::getRef().getDataReaderDialog<RawVolumeReader>();
-    ivwAssert(readerDialog!=0, "No data reader dialog found.");
-    format_ = readerDialog->getFormat(rawFile_, &dimension_, &littleEndian_);
-
+    if (!parametersSet_) {
+        DataReaderDialog* readerDialog = DataReaderDialogFactory::getRef().getDataReaderDialog<RawVolumeReader>();
+        ivwAssert(readerDialog!=0, "No data reader dialog found.");
+        format_ = readerDialog->getFormat(rawFile_, &dimension_, &littleEndian_);
+    }
     if (format_) {
         glm::mat3 basis(2.0f);
         glm::vec3 offset(0.0f);
@@ -163,7 +171,6 @@ void* RawVolumeReader::readData() const {
 
     return data;
 }
-
 
 } // namespace
 

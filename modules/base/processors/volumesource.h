@@ -64,6 +64,12 @@ private:
 
     void invalidateOutput();
     void updateRangeProperties(Volume* volume);
+
+    // hidden properties for serializing raw reader state
+    StringProperty rawFileName_;
+    StringProperty rawFormatStr_;
+    IntVec3Property rawDims_;
+    BoolProperty rawEndianess_;
 };
 
 } // namespace

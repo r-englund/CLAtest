@@ -37,6 +37,7 @@
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/io/datareaderfactory.h>
+#include <inviwo/core/io/rawvolumereader.h>
 #include <math.h>
 
 namespace inviwo {
@@ -51,7 +52,12 @@ VolumeSource::VolumeSource()
 	, volumeFile_("volumeFileName", "Volume file")
     , dataRange_("dataRange", "Data range", ivec2(0,255), ivec2(0,0), ivec2(255,255))
     , valueRange_("valueRange", "Value range", vec2(0.0f,1.0f), vec2(0.0f,0.0f), vec2(1.0f,1.0f))
-    , valueUnit_("valueUnit", "Value unit", "") {
+    , valueUnit_("valueUnit", "Value unit", "")
+    , rawFileName_("rawFileName", "", "") // the following properties are hidden
+    , rawFormatStr_("rawFormatStr", "", "")
+    , rawDims_("rawDims", "", ivec3(0,0,0))
+    , rawEndianess_("rawEndianess", "", true)
+{
     
     addPort(volumePort_);
 
@@ -59,7 +65,7 @@ VolumeSource::VolumeSource()
     
     std::vector<FileExtension> ext = DataReaderFactory::getRef().getExtensionsForType<Volume>();
     for(std::vector<FileExtension>::const_iterator it = ext.begin();
-        it != ext.end(); ++it){
+        it != ext.end(); ++it) {
             std::stringstream ss;
             ss << it->description_ << " (*." << it->extension_ << ")";
             volumeFile_.addNameFilter(ss.str());
@@ -72,6 +78,16 @@ VolumeSource::VolumeSource()
     addProperty(valueRange_);
     valueUnit_.onChange(this, &VolumeSource::invalidateOutput);
     addProperty(valueUnit_);
+
+    // add the properties used to serialize the state of the raw reader
+    rawFileName_.setVisibility(INVISIBLE);
+    addProperty(rawFileName_);
+    rawFormatStr_.setVisibility(INVISIBLE);
+    addProperty(rawFormatStr_);
+    rawDims_.setVisibility(INVISIBLE);
+    addProperty(rawDims_);
+    rawEndianess_.setVisibility(INVISIBLE);
+    addProperty(rawEndianess_);
 }
 
 VolumeSource::~VolumeSource() {}
@@ -108,10 +124,37 @@ void VolumeSource::loadVolume() {
         DataReaderType<Volume>* reader = DataReaderFactory::getRef().getReaderForTypeAndExtension<Volume>(fileExtension);
         if (reader) {
             try {
+                /*
+                // check if raw volume is read and set parameters if available
+                RawVolumeReader* rawReader = dynamic_cast<RawVolumeReader*>(reader);
+                if (rawReader &&
+                    (URLParser::getFileNameWithExtension(volumeFile_.get())==URLParser::getFileNameWithExtension(rawFileName_.get()))) {
+                    // the raw file has been imported previously so use the previous parameters
+                    const DataFormatBase* rawFormat = DataFormatBase::get(rawFormatStr_.get());
+                    std::cout << "read meta " << rawDims_.get().x << "/" << rawDims_.get().y << "/" << rawDims_.get().z << std::endl;
+                    rawReader->setParameters(rawFormat, rawDims_.get(), rawEndianess_.get());
+                }
+                */
                 Volume* volume = reader->readMetaData(volumeFile_.get());
                 ResourceManager::instance()->addResource(new TemplateResource<Volume>(volumeFile_.get(), volume));
                 volumePort_.setData(volume, false);
                 updateRangeProperties(volume);
+                /*
+                if (rawReader) {
+                    // write the read parameters into the properties to support serialization
+                    rawFileName_.set(volumeFile_.get());
+                    rawFormatStr_.set(rawReader->getFormat()->getString());
+                    ivec3 dims = ivec3(volume->getDimension());
+                    std::cout << "read data " << dims.x << "/" << dims.y << "/" << dims.z << std::endl;
+                    rawDims_.set(dims);
+                    rawEndianess_.set(rawReader->haveReadLittleEndian());
+                } else {
+                    rawFileName_.set("");
+                    rawFormatStr_.set("");
+                    rawDims_.set(ivec3(0));
+                    rawEndianess_.set(true);
+                }
+                */
             } catch(DataReaderException const& e) {
                 LogError(e.getMessage());
             }
