@@ -80,7 +80,7 @@ public:
     bool getScreenGrabAfterStartup() const;
     const std::string getScreenGrabName() const;
     bool getRunPythonScriptAfterStartup() const;
-    const std::string getPythonScirptName() const;
+    const std::string getPythonScriptName() const;
     bool getQuitApplicationAfterStartup() const;
     bool getLoadWorkspaceFromArg() const;
     bool getShowSplashScreen() const;

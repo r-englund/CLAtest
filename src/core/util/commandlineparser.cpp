@@ -157,7 +157,7 @@ bool CommandLineParser::getRunPythonScriptAfterStartup() const {
     return pythonScriptArg_->isSet();
 }
 
-const std::string CommandLineParser::getPythonScirptName() const {
+const std::string CommandLineParser::getPythonScriptName() const {
     if (pythonScriptArg_->isSet())
         return (pythonScriptArg_->getValue());
 
