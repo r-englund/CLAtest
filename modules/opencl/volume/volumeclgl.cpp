@@ -37,7 +37,7 @@
 namespace inviwo {
 
 VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
-    : VolumeCLBase(), VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format)
+    : VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format)
     , texture_(data) {
 
     if(data) {
@@ -47,7 +47,7 @@ VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
 }
 
 VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, const Texture3D* data)
-    : VolumeCLBase(), VolumeRepresentation(dimensions, format)
+    : VolumeRepresentation(dimensions, format)
     , texture_(data){
 
     initialize(data);

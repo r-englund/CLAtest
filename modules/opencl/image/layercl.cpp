@@ -36,13 +36,13 @@
 namespace inviwo {
 
 LayerCL::LayerCL(uvec2 dimensions, LayerType type, const DataFormatBase* format, const void* data)
-    : LayerCLBase(), LayerRepresentation(dimensions, type, format), layerFormat_(dataFormatToCLImageFormat(format->getId()))
+    : LayerRepresentation(dimensions, type, format), layerFormat_(dataFormatToCLImageFormat(format->getId()))
 {
     initialize(data);
 }
 
 LayerCL::LayerCL( const LayerCL& rhs )
-    : LayerCLBase(), LayerRepresentation(rhs)
+    : LayerRepresentation(rhs)
     , layerFormat_(dataFormatToCLImageFormat(rhs.getDataFormat()->getId())) {
 
     initialize(NULL);
