@@ -57,7 +57,7 @@ T serializationOfType(T inValue) {
     return outValue;
 }
 
-#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_NEAR(T(v),serializationOfType(T(v)),std::numeric_limits<T>::epsilon());}
+#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_NEAR((T)(v),serializationOfType((T)(v)),std::numeric_limits<T>::epsilon());}
 #define MIN_TEST(n,T) TEST(SerialitionTest,n##MinTest){EXPECT_NEAR(std::numeric_limits<T>::min(),serializationOfType(std::numeric_limits<T>::min()),std::numeric_limits<T>::epsilon());}
 #define MAX_TEST(n,T) TEST(SerialitionTest,n##MaxTest){EXPECT_NEAR(std::numeric_limits<T>::max(),serializationOfType(std::numeric_limits<T>::max()),std::numeric_limits<T>::epsilon());}
 #define EPSILON_TEST(n,T) TEST(SerialitionTest,n##EpsilonTest){EXPECT_NEAR(std::numeric_limits<T>::epsilon(),serializationOfType(std::numeric_limits<T>::epsilon()),std::numeric_limits<T>::epsilon());}
@@ -77,7 +77,7 @@ TYPE_TEST(oneMinusEpsilonDobuleTest, double, oneMinusEpsilonD);
 #undef MAX_TEST
 #undef EPSILON_TEST
 
-#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_EQ(T(v),serializationOfType(T(v)));}
+#define TYPE_TEST(n,T,v) TEST(SerialitionTest,n##TypeTest){EXPECT_EQ((T)(v),serializationOfType((T)(v)));}
 #define MIN_TEST(n,T) TEST(SerialitionTest,n##MinTest){EXPECT_EQ(std::numeric_limits<T>::min(),serializationOfType(std::numeric_limits<T>::min()));}
 #define MAX_TEST(n,T) TEST(SerialitionTest,n##MaxTest){EXPECT_EQ(std::numeric_limits<T>::max(),serializationOfType(std::numeric_limits<T>::max()));}
 #define EPSILON_TEST(n,T) TEST(SerialitionTest,n##EpsilonTest){EXPECT_EQ(std::numeric_limits<T>::epsilon(),serializationOfType(std::numeric_limits<T>::epsilon()));}
@@ -85,6 +85,7 @@ TYPE_TEST(oneMinusEpsilonDobuleTest, double, oneMinusEpsilonD);
 
 NUMERIC_TESTS(signedCharSerializationTest,signed char,3);
 NUMERIC_TESTS(unsignedCharSerializationTest,unsigned char,3);
+
 
 //TYPE_TEST(charSerializationTest1,char,'t');
 //TYPE_TEST(charSerializationTest2,char,'b');
@@ -121,8 +122,6 @@ public:
 
 public:
     float value_;
-
-
 };
 
 TEST(SerialitionTest,IvwSerializableClassTest) {
