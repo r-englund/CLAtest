@@ -34,7 +34,7 @@
 
 namespace inviwo {
 
-EditableLabelQt::EditableLabelQt(QWidget* parent , std::string text, bool shortenText)
+EditableLabelQt::EditableLabelQt(QWidget* parent, std::string text, bool shortenText)
     : QWidget(parent)
     , text_(text)
     , contextMenu_(NULL)
@@ -42,7 +42,7 @@ EditableLabelQt::EditableLabelQt(QWidget* parent , std::string text, bool shorte
     generateWidget();
 }
 
-EditableLabelQt::EditableLabelQt(QWidget* parent , std::string text, QMenu* contextMenu, bool shortenText)
+EditableLabelQt::EditableLabelQt(QWidget* parent, std::string text, QMenu* contextMenu, bool shortenText)
     : QWidget(parent)
     , text_(text)
     , contextMenu_(contextMenu)

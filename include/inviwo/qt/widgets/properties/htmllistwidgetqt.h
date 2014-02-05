@@ -47,8 +47,8 @@ class ProcessorFactoryObject;
 class IVW_QTWIDGETS_API HtmlTree : public QTreeWidget {
 
 public:
-    HtmlTree(QWidget* parent) : QTreeWidget(parent) { setObjectName("htmlTree");};
-    ~HtmlTree() {};
+    HtmlTree(QWidget* parent) : QTreeWidget(parent) {}
+    ~HtmlTree() {}
 
 protected:
     void mousePressEvent(QMouseEvent* e);
@@ -69,15 +69,9 @@ private:
     QPoint dragStartPosition_;
 
     bool processorFits(ProcessorFactoryObject* processor, const QString& filter);
-    //QIcon* getCodeStateIcon(CodeState);
 
 private slots:
     void addTagsToTree(const QString& text="");
-
-private:
-    //QIcon iconStable_;
-    //QIcon iconExperimental_;
-    //QIcon iconBroken_;
 };
 
 class IVW_QTWIDGETS_API HtmlDragObject : public QDrag {

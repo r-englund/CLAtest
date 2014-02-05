@@ -464,7 +464,7 @@ void ImageLabelWidget::hideLabels(bool hide) {
 }
 
 void ImageLabelWidget::addRectangleTest() {
-    QAbstractGraphicsShapeItem* i = scene_->addRect(0, 0 , 25, 25);
+    QAbstractGraphicsShapeItem* i = scene_->addRect(0, 0, 25, 25);
     i->setFlag(QGraphicsItem::ItemIsMovable);
     i->setBrush(QColor(0,0,128,0));
     i->setPen(QPen(QColor(255, 0, 0), 2));

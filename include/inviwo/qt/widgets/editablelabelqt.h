@@ -44,8 +44,8 @@ namespace inviwo {
 class IVW_QTWIDGETS_API EditableLabelQt: public QWidget {
     Q_OBJECT
 public:
-    EditableLabelQt(QWidget* parent , std::string text, bool shortenText=true);
-    EditableLabelQt(QWidget* parent , std::string text, QMenu* contextMenu, bool shortenText=true);
+    EditableLabelQt(QWidget* parent, std::string text, bool shortenText=true);
+    EditableLabelQt(QWidget* parent, std::string text, QMenu* contextMenu, bool shortenText=true);
     void edit();
     std::string getText() {return text_;};
     void setText(std::string txt);

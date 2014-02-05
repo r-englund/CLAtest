@@ -228,7 +228,7 @@ void PropertyListWidget::saveState() {
     settings.endGroup();
 }
 
-PropertyVisibilityMode PropertyListWidget::getVisibilityMode() {
+PropertyVisibilityMode PropertyListWidget::getViewMode() {
     if (developerViewMode_)
         return DEVELOPMENT;
     else

@@ -79,18 +79,18 @@ QColor ColorWheel::posColor(const QPoint& point) {
         if (point.x() > r) {
             if (point.y() < r) {
                 //1
-                hue = 90 - (qAtan2((point.x() - r) , (r - point.y()))  / 3.14 / 2 * 360);
+                hue = 90 - (qAtan2((point.x() - r), (r - point.y()))  / 3.14 / 2 * 360);
             } else {
                 //4
-                hue = 270 + (qAtan2((point.x() - r) , (point.y() - r))  / 3.14 / 2 * 360);
+                hue = 270 + (qAtan2((point.x() - r), (point.y() - r))  / 3.14 / 2 * 360);
             }
         } else {
             if (point.y() < r) {
                 //2
-                hue =  90 + (qAtan2((r - point.x()) , (r - point.y()))  / 3.14 / 2 * 360);
+                hue =  90 + (qAtan2((r - point.x()), (r - point.y()))  / 3.14 / 2 * 360);
             } else {
                 //3
-                hue =  270 - (qAtan2((r - point.x()) , (point.y() - r))  / 3.14 / 2 * 360);
+                hue =  270 - (qAtan2((r - point.x()), (point.y() - r))  / 3.14 / 2 * 360);
             }
         }
 

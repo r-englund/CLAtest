@@ -54,7 +54,6 @@ void SettingsWidget::generateWidget() {
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     tabWidget_ = new QTabWidget(this);
     setWidget(tabWidget_);
-    //setWidget(frame);
 }
 
 SettingsWidget::~SettingsWidget() {

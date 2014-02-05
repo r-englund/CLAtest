@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <inviwo/core/interaction/events/eventhandler.h>
-#include <algorithm>
 
 namespace inviwo {
 

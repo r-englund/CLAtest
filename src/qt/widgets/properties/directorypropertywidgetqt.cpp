@@ -55,7 +55,6 @@ DirectoryPropertyWidgetQt::DirectoryPropertyWidgetQt(DirectoryProperty* property
 }
 
 void DirectoryPropertyWidgetQt::generateWidget() {
-    setObjectName("DirectoryPropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
     directoryLabel_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(directoryLabel_);

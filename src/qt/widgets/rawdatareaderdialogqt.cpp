@@ -140,7 +140,7 @@ const DataFormatBase* RawDataReaderDialogQt::getFormat(std::string fileName, uve
     fileName_->setText(QString::fromStdString(fileName));
 
     if (exec() && result() == QDialog::Accepted) {
-        const DataFormatBase* format = DataFormatBase::get(bitDepth_->currentText().toStdString());
+        const DataFormatBase* format = DataFormatBase::get(bitDepth_->currentText().toLocal8Bit().constData());
         dimensions->x = dimX_->value();
         dimensions->y = dimY_->value();
         dimensions->z = dimZ_->value();

@@ -43,7 +43,6 @@ StringPropertyWidgetQt::StringPropertyWidgetQt(StringProperty* property) : prope
 }
 
 void StringPropertyWidgetQt::generateWidget() {
-    setObjectName("StringPropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
     lineEdit_ = new QLineEdit;
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());

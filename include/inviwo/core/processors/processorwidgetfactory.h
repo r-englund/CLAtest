@@ -46,7 +46,7 @@ public:
     ProcessorWidgetFactory();
     ~ProcessorWidgetFactory();
 
-    void registerObject(std::pair<std::string , ProcessorWidget* >);
+    void registerObject(std::pair<std::string, ProcessorWidget* >);
     ProcessorWidget* create(std::string processorClassName) const;
     ProcessorWidget* create(Processor* processor) const;
     bool isValidType(std::string className) const;

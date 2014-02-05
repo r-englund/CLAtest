@@ -74,7 +74,6 @@ void PropertySelectionTree::mouseMoveEvent(QMouseEvent* e) {
 }
 
 PropertySelectionTreeWidget::PropertySelectionTreeWidget() : QWidget() {
-    setObjectName("PropertySelectionTreeWidget");
     vLayout_ = new QVBoxLayout();
     propertySelectionTree_ = new PropertySelectionTree(this);
     propertySelectionTree_->setHeaderHidden(true);

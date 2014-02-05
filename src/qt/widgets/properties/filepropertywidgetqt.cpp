@@ -55,7 +55,6 @@ FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property) : property_(p
 }
 
 void FilePropertyWidgetQt::generateWidget() {
-    setObjectName("FilePropertyWidgetQt");
     QHBoxLayout* hLayout = new QHBoxLayout();
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);

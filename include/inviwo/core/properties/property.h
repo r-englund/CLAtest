@@ -81,12 +81,11 @@ public:
     bool hasWidgets()const;
     MetaData* getMetaData(std::string meta);
 
+    std::string getGroupID()const;
     void setGroupID(const std::string& groupID);
 
-    static void setGroupDisplayName(const std::string& groupID,const std::string& groupDisplayName);
-
-    std::string getGroupID()const;
     std::string getGroupDisplayName()const;
+    static void setGroupDisplayName(const std::string& groupID,const std::string& groupDisplayName);
 
     virtual void propertyModified();
     virtual void setPropertyModified(bool modified);

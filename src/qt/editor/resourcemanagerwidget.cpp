@@ -94,8 +94,7 @@ void ResourceManagerWidget::removeSelectedItems()
     qSort(rows.begin(), rows.end(), qGreater<int>());
 
     for (size_t i=0; i<rows.size(); i++) {
-        //FIXME:: QString::toStdString() crashes hence toLatin1() used.
-        std::string resrcIdentifier(model_->item(rows[i])->text().toLatin1().data());
+        std::string resrcIdentifier(model_->item(rows[i])->text().toLocal8Bit().constData());
         ResourceManager::instance()->removeResource(resrcIdentifier);
     }
 

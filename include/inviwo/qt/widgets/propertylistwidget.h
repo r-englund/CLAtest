@@ -61,7 +61,7 @@ public:
 
     void saveState();
     void notify();
-    PropertyVisibilityMode getVisibilityMode();
+    PropertyVisibilityMode getViewMode();
 
     void cacheProcessorPropertiesItem(Processor* processor);
 

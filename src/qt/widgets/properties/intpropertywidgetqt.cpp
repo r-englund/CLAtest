@@ -37,7 +37,9 @@
 
 namespace inviwo {
 
-IntPropertyWidgetQt::IntPropertyWidgetQt(IntProperty* property) : property_(property) , settingsWidget_(0) {
+IntPropertyWidgetQt::IntPropertyWidgetQt(IntProperty* property)
+    : property_(property)
+    , settingsWidget_(0) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();

@@ -200,7 +200,7 @@ void ShaderObject::upload() {
 
 std::string ShaderObject::getShaderInfoLog() {
     GLint maxLogLength;
-    glGetShaderiv(id_, GL_INFO_LOG_LENGTH , &maxLogLength);
+    glGetShaderiv(id_, GL_INFO_LOG_LENGTH, &maxLogLength);
     LGL_ERROR;
     if (maxLogLength > 1) {
         GLchar* shaderInfoLog = new GLchar[maxLogLength];

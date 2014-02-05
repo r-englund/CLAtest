@@ -124,7 +124,7 @@ public:
      *         where, "enableMIP" & "enableShading" are keys.
      *         address of a property is a value
      *
-     * Note: If children has attribute "type" , then comparisionAttribute becomes meaningless.
+     * Note: If children has attribute "type", then comparisionAttribute becomes meaningless.
      *       Because deserializer always allocates a new instance of type using registered factories.
      *
      *       eg., <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />

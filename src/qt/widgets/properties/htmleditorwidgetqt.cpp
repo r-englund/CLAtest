@@ -87,9 +87,7 @@ void HtmlEditorWidgetQt::generateWidget() {
     toolBar_->addSeparator();
     htmlEditor_ = new QTextEdit(vertical_splitter);
     htmlEditor_->createStandardContextMenu();
-    htmlEditor_->setObjectName("htmlEditor");
     htmlOutput_ = new QTextEdit(vertical_splitter);
-    htmlOutput_->setObjectName("htmlEditorOutput");
     htmlOutput_->setReadOnly(true);
     htmlOutput_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     htmlOutput_->createStandardContextMenu();

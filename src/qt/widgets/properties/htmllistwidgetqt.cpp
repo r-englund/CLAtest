@@ -63,9 +63,6 @@ void HtmlTree::mouseMoveEvent(QMouseEvent* e) {
 }
 
 HtmlTreeWidget::HtmlTreeWidget(QWidget* parent): QWidget(parent) {
-    setObjectName("HtmlTreeWidget");
-    //QFrame* frame = new QFrame();
-    //frame->setObjectName("HtmlTreeWidgetFrame");
     QVBoxLayout* vLayout = new QVBoxLayout();
     QLineEdit* lineEdit = new QLineEdit(this);
     lineEdit->setPlaceholderText("Filter Html object list...");
@@ -76,7 +73,6 @@ HtmlTreeWidget::HtmlTreeWidget(QWidget* parent): QWidget(parent) {
     addTagsToTree();
     processorTree_->expandAll();
     vLayout->addWidget(processorTree_);
-    //frame->setLayout(vLayout);
     setLayout(vLayout);
 }
 

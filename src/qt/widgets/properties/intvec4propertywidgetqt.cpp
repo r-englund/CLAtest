@@ -36,7 +36,9 @@
 
 namespace inviwo {
 
-IntVec4PropertyWidgetQt::IntVec4PropertyWidgetQt(IntVec4Property* property) : property_(property) , settingsWidget_(0) {
+IntVec4PropertyWidgetQt::IntVec4PropertyWidgetQt(IntVec4Property* property)
+    : property_(property)
+    , settingsWidget_(0) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();

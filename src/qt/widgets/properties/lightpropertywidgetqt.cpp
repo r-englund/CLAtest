@@ -47,7 +47,6 @@ LightPropertyWidgetQt::~LightPropertyWidgetQt() {
 }
 
 void LightPropertyWidgetQt::generateWidget() {
-    setObjectName("LightPropertyWidgetQt");
     lightWidget_ = new LightPositionWidgetQt();
     QHBoxLayout* hLayout = new QHBoxLayout();
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());

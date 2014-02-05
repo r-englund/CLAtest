@@ -47,7 +47,6 @@ TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionP
     QString windowTitle = QString::fromStdString("Transfer Function (")+
                           QString::fromStdString(processorName)+QString::fromStdString(")");
     setWindowTitle(windowTitle);
-    setObjectName("Transfer Function");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     generateWidget();
     tfProperty_->get().addObserver(this);
@@ -144,7 +143,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     mainLayout->addWidget(rightPanel);
     mainPanel->setLayout(mainLayout);
     setWidget(mainPanel);
-    connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)) , this, SLOT(dockLocationChanged(Qt::DockWidgetArea)));
+    connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)), this, SLOT(dockLocationChanged(Qt::DockWidgetArea)));
     initialize(tfProperty_);
     setFloating(true);
     setVisible(false);
@@ -291,7 +290,7 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
     exportFileDialog.setNameFilter("*.itf");
 
     if (exportFileDialog.exec()) {
-        std::string file = exportFileDialog.selectedFiles().at(0).toStdString();
+        std::string file = exportFileDialog.selectedFiles().at(0).toLocal8Bit().constData();
         std::string extension = URLParser::getFileExtension(file);
 
         if (extension == "") file.append(".itf");

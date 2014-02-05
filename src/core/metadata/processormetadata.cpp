@@ -42,7 +42,7 @@ ProcessorMetaData::ProcessorMetaData() {
 ProcessorMetaData::ProcessorMetaData(const ProcessorMetaData& rhs)
     : positionMetaData_(rhs.positionMetaData_)
     , visiblityMetaData_(rhs.visiblityMetaData_)
-    , selectionMetaData_(rhs.selectionMetaData_){
+    , selectionMetaData_(rhs.selectionMetaData_) {
 }
 
 ProcessorMetaData& ProcessorMetaData::operator=(const ProcessorMetaData& that) {

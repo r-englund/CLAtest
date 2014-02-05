@@ -48,7 +48,6 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget* parent) : QSp
                             "  border-bottom-right-radius: 0px;"
                             "}"
                         ));
-    middle->setObjectName("valueArea");
     right->setStyleSheet(QString(
                              "QSplitter QFrame {"
                              "  border-top-left-radius: 0px;"

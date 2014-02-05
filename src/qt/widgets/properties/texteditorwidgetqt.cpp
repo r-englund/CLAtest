@@ -202,7 +202,7 @@ bool TextEditorWidgetQt::writeToFile() {
     QTextStream textStream(file_);
     QFileInfo qfileInfo(file_->fileName());
     QString qfilename(qfileInfo.fileName());
-    std::string fileName = qfilename.toStdString();
+    std::string fileName = qfilename.toLocal8Bit().constData();
     std::string extension = URLParser::getFileExtension(fileName);
 
     if (extension == "html" || extension == "htm")
