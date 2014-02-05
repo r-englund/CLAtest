@@ -46,6 +46,13 @@ VolumeCL::VolumeCL(uvec3 dimensions, const DataFormatBase* format, const void* d
     initialize(data);
 }
 
+VolumeCL::VolumeCL( const VolumeCL& rhs )
+    : VolumeRepresentation(rhs), imageFormat_(rhs.imageFormat_)
+{
+    initialize(NULL);
+    OpenCL::instance()->getQueue().enqueueCopyImage(rhs.get(), *clImage_ , glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
+}
+
 VolumeCL::~VolumeCL() {
     deinitialize(); 
 }
@@ -59,21 +66,18 @@ void VolumeCL::initialize(const void* voxels) {
 }
 
 VolumeCL* VolumeCL::clone() const {
-    VolumeCL* newVolumeCL = new VolumeCL(dimensions_, getDataFormat());
-    OpenCL::instance()->getQueue().enqueueCopyImage(*clImage_, (newVolumeCL->get()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
-    return newVolumeCL;
+    return new VolumeCL(*this);
 }
 
 void VolumeCL::deinitialize() {
 	delete clImage_; 
 }
-void VolumeCL::upload( const void* data )
-{
+
+void VolumeCL::upload( const void* data ) {
     OpenCL::instance()->getQueue().enqueueWriteImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(data));
 }
 
-void VolumeCL::download( void* data ) const
-{
+void VolumeCL::download( void* data ) const {
     OpenCL::instance()->getQueue().enqueueReadImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, data);
 }
 
@@ -82,8 +86,7 @@ void VolumeCL::download( void* data ) const
 namespace cl {
 
 template <>
-cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCL& value)
-{
+cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCL& value) {
     return setArg(index, value.get());
 }
 

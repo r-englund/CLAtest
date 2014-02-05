@@ -84,9 +84,7 @@ DataRepresentation* VolumeGL2CLGLConverter::createFrom(const DataRepresentation*
 {
     DataRepresentation* destination = 0;
     const VolumeGL* volumeGL = static_cast<const VolumeGL*>(source);
-
-    const Texture3D* data = volumeGL->getTexture();
-    destination = new VolumeCLGL(volumeGL->getDimension(), volumeGL->getDataFormat(), data);
+    destination = new VolumeCLGL(volumeGL->getDimension(), volumeGL->getDataFormat(), const_cast<Texture3D*>(volumeGL->getTexture()));
      
     return destination;
 }

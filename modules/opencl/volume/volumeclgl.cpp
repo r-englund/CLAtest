@@ -36,7 +36,7 @@
 
 namespace inviwo {
 
-VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
+VolumeCLGL::VolumeCLGL(const DataFormatBase* format, Texture3D* data)
     : VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format)
     , texture_(data) {
 
@@ -46,7 +46,7 @@ VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
     
 }
 
-VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, const Texture3D* data)
+VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, Texture3D* data)
     : VolumeRepresentation(dimensions, format)
     , texture_(data){
 
@@ -55,22 +55,19 @@ VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, co
 
 VolumeCLGL::VolumeCLGL(const VolumeCLGL& rhs) 
     : VolumeRepresentation(rhs) {
-    OpenCL::instance()->getQueue().enqueueCopyImage(*clImage_, 
-                                                    get(),
-                                                    glm::svec3(0), 
-                                                    glm::svec3(0),
-                                                    glm::svec3(dimensions_));
-
+    initialize(rhs.texture_);
 }
 
 VolumeCLGL::~VolumeCLGL() { 
     deinitialize(); 
 }
 
-void VolumeCLGL::initialize(const Texture3D* texture) {
+void VolumeCLGL::initialize(Texture3D* texture) {
     ivwAssert(texture != 0, "Cannot initialize with null OpenGL texture");
+    // Indicate that the texture should not be deleted.
+    texture->increaseRefCount();
     clImage_ = new cl::Image3DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture->getID());
-    
+    texture->addObserver(this);
     VolumeCLGL::initialize();
 }
 

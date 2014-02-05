@@ -47,7 +47,7 @@ public:
     VolumeCL(const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
     VolumeCL(uvec3 dimensions, const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
     virtual ~VolumeCL();
-    
+    VolumeCL(const VolumeCL& rhs);
     virtual void initialize() {};
     virtual void deinitialize();
     virtual VolumeCL* clone() const;

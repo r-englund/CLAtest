@@ -44,6 +44,11 @@ LayerCLGL::LayerCLGL(uvec2 dimensions, LayerType type, const DataFormatBase* for
     }
 }
 
+LayerCLGL::LayerCLGL( const LayerCLGL& rhs )
+    : LayerRepresentation(rhs) {
+    initialize(rhs.texture_);
+}
+
 LayerCLGL::~LayerCLGL() { 
     deinitialize(); 
 }
@@ -58,9 +63,7 @@ void LayerCLGL::initialize(Texture2D* texture) {
 }
 
 LayerCLGL* LayerCLGL::clone() const {
-    Texture2D* clonedTexture = new Texture2D(*texture_); 
-    LayerCLGL* newLayerCLGL = new LayerCLGL(dimensions_, getLayerType(), getDataFormat(), clonedTexture);
-    return newLayerCLGL;
+    return new LayerCLGL(*this);
 }
 
 void LayerCLGL::deinitialize() {

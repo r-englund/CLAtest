@@ -43,7 +43,7 @@ LayerCL::LayerCL(uvec2 dimensions, LayerType type, const DataFormatBase* format,
 
 LayerCL::LayerCL( const LayerCL& rhs )
     : LayerRepresentation(rhs)
-    , layerFormat_(dataFormatToCLImageFormat(rhs.getDataFormat()->getId())) {
+    , layerFormat_(rhs.layerFormat_) {
 
     initialize(NULL);
     OpenCL::instance()->getQueue().enqueueCopyImage(rhs.get(), *clImage_ , glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
@@ -78,27 +78,22 @@ void LayerCL::initialize(const void* texels) {
 }
 
 LayerCL* LayerCL::clone() const {
-    LayerCL* newLayerCL = new LayerCL(dimensions_, getLayerType(), getDataFormat());
-    OpenCL::instance()->getQueue().enqueueCopyImage(*clImage_, (newLayerCL->get()), glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
-    return newLayerCL;
+    return new LayerCL(*this);
 }
 
 void LayerCL::deinitialize() {
 	delete clImage_; 
 }
 
-void LayerCL::upload( const void* data )
-{
+void LayerCL::upload( const void* data ) {
     OpenCL::instance()->getQueue().enqueueWriteImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, const_cast<void*>(data));
 }
 
-void LayerCL::download( void* data ) const
-{
+void LayerCL::download( void* data ) const {
     OpenCL::instance()->getQueue().enqueueReadImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, data);
 }
 
-void LayerCL::resize(uvec2 dimensions)
-{
+void LayerCL::resize(uvec2 dimensions) {
     if (dimensions == dimensions_) {
         return;
     }
@@ -107,10 +102,9 @@ void LayerCL::resize(uvec2 dimensions)
     delete clImage_;
     clImage_ = resizedLayer2D;
     LayerRepresentation::resize(dimensions);
-
 }
 
-bool LayerCL::copyAndResizeLayer(DataRepresentation* target) const{
+bool LayerCL::copyAndResizeLayer(DataRepresentation* target) const {
     LayerCL* targetCL = dynamic_cast<LayerCL*>(target);
 
     if (!targetCL) return false;
@@ -120,8 +114,7 @@ bool LayerCL::copyAndResizeLayer(DataRepresentation* target) const{
 	return true;
 }
 
-void LayerCL::setDimension( uvec2 dimensions )
-{
+void LayerCL::setDimension( uvec2 dimensions ) {
     delete clImage_;
     clImage_ = new cl::Image2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions.x, dimensions.y);
 }

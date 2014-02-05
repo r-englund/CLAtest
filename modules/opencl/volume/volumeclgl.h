@@ -45,8 +45,8 @@ namespace inviwo {
 class IVW_MODULE_OPENCL_API VolumeCLGL: public VolumeCLBase, public VolumeRepresentation, public TextureObserver {
 
 public:
-    VolumeCLGL(const DataFormatBase* format = DataFormatBase::get(), const Texture3D* data = NULL);
-    VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, const Texture3D* data);
+    VolumeCLGL(const DataFormatBase* format = DataFormatBase::get(), Texture3D* data = NULL);
+    VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, Texture3D* data);
     VolumeCLGL(const VolumeCLGL& rhs);
 
     virtual VolumeCLGL* clone() const;
@@ -56,7 +56,7 @@ public:
     virtual void deinitialize();
     
     
-    void initialize(const Texture3D* texture);
+    void initialize(Texture3D* texture);
     virtual void setDimension(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(texture_); }
 
     virtual cl::Image3D& getEditable() { return *static_cast<cl::Image3D*>(clImage_); }
@@ -85,7 +85,7 @@ public:
     }
 
 protected:
-    const Texture3D* texture_;
+    Texture3D* texture_;
 };
 
 } // namespace

@@ -56,6 +56,8 @@ class IVW_MODULE_OPENCL_API LayerCLGL : public LayerCLBase, public LayerRepresen
 public:
     LayerCLGL(uvec2 dimensions = uvec2(64), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataFormatBase::get(), Texture2D* data = NULL);
     virtual ~LayerCLGL();
+    LayerCLGL(const LayerCLGL& rhs);
+
     virtual std::string getClassName() const { return "LayerCLGL"; }
     virtual void initialize(){};
     virtual void deinitialize();
