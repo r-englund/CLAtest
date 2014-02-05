@@ -288,8 +288,10 @@ PropertyLink* ProcessorLink::getBidirectionalPair(PropertyLink* propertyLink) {
 
 void ProcessorLink::setSourceModified() {
     std::vector<Property*> sourceProperties = getSourceProperties();
-    for (size_t i=0; i<sourceProperties.size(); i++)
-        sourceProperties[i]->propertyModified();
+    for (size_t i=0; i<sourceProperties.size(); i++) {
+        if (sourceProperties[i]->getOwner() == sourceProcessor_)
+            sourceProperties[i]->propertyModified();
+    }
 }
 
 std::string ProcessorLink::getLinkInfo() {

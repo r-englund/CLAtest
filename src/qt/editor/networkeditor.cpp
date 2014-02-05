@@ -204,11 +204,11 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
                 if (srcProperty) {
                     Processor* srcProcessor = dynamic_cast<Processor*>(srcProperty->getOwner());
                     Processor* dstProcessor = dynamic_cast<Processor*>(dstProperty->getOwner());
-                    ProcessorLink* processorLink = processorNetwork_->getLink(srcProcessor, dstProcessor);
+                    ProcessorLink* processorLink = processorNetwork_->getLink(dstProcessor, srcProcessor);
 
                     if (!processorLink) {
-                        addLink(srcProcessor, dstProcessor);
-                        processorLink = processorNetwork_->getLink(srcProcessor, dstProcessor);
+                        addLink(dstProcessor, srcProcessor);
+                        processorLink = processorNetwork_->getLink(dstProcessor, srcProcessor);
                         newLinks.push_back(processorLink);
                     }
 

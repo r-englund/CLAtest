@@ -85,7 +85,6 @@ public:
     STARTCLANGIGNORE("-Woverloaded-virtual")
     void invalidate();
     ENDCLANGIGNORE
-    void propertyModified() {};
 
     void lockInvalidation() { lockInvalidation_ = true; }
     void unlockInvalidation() { lockInvalidation_ = false; }
