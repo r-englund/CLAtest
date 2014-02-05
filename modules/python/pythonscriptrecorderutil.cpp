@@ -74,10 +74,7 @@ void PythonScriptRecorderUtil::recordNetworkChanges() {
         bool networkModified = network->isModified();
         //network modified
         if (networkModified) {
-            Property* modifiedProperty = 0;
-
             std::vector<Processor*> processors = network->getProcessors();
-
             for (size_t i=0; i<processors.size(); i++) {
                 std::vector<Property*> properties = processors[i]->getProperties();
                 for (size_t j=0; j<properties.size(); j++) {

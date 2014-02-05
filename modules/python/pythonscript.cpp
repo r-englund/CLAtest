@@ -167,8 +167,6 @@ bool PythonScript::checkRuntimeError() {
     PyErr_Fetch(&pyError_type, &pyError_value, &pyError_traceback);
 
     int errorLine = -1;
-    int errorCol = -1;
-
 
     std::string stacktraceStr;
     if (pyError_traceback) {

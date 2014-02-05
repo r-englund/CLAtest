@@ -66,7 +66,7 @@ void PyModule::addMethod(PyMethod* method){
     methods_.push_back(method);
 
     PyObject* pyFunc = PyCFunction_NewEx(method->getDef(),moduleObject_,name_);
-    int a = PyDict_SetItemString(dict_, method->getName().c_str(), pyFunc);
+    PyDict_SetItemString(dict_, method->getName().c_str(), pyFunc);
     Py_DECREF(pyFunc);
 }
 

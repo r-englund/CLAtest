@@ -47,8 +47,7 @@ PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args){
 
     std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
     std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    PyObject* parameter = PyTuple_GetItem(args, 2);
-
+    
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setCameraFocus() no processor with name: ") + processorName;
@@ -94,7 +93,7 @@ PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args){
 
     std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
     std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    PyObject* parameter = PyTuple_GetItem(args, 2);
+    
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
         std::string msg = std::string("setCameraUp() no processor with name: ") + processorName;
@@ -142,7 +141,7 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args){
 
     std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
     std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    PyObject* parameter = PyTuple_GetItem(args, 2);
+    
 
     Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
     if(!processor){
