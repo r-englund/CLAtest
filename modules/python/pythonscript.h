@@ -34,13 +34,16 @@
 #define IVW_PYTHON_SCRIPT_H
 
 #ifdef IVW_MODULE_PYTHON_EXPORTS 
+    #pragma warning(push)      
+    #pragma warning(disable: 4273)
     #ifdef _DEBUG
         #undef _DEBUG //Prevent linking debug build of python
-            #include <Python.h>
+            #include <Python.h> 
         #define _DEBUG 1
     #else
         #include <Python.h>
     #endif
+    #pragma warning(pop)
 #else
 
 #endif

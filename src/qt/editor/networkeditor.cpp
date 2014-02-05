@@ -561,6 +561,7 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
         std::vector<Processor*> existingProcessors = processorNetwork_->getProcessors();
         LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
         ProcessorLink* processorLink = NULL;
+        std::vector<ProcessorLink*> newLinks;
 
         for (size_t h = 0; h < processors.size(); h++) {
             Processor* addedProcessor = processors[h];
@@ -584,15 +585,19 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
                         }
 
                         if (srcProperty) {
-                            processorLink = processorNetwork_->addLink(existingProcessors[j], addedProcessor);
+                            processorLink = processorNetwork_->addLink(addedProcessor, existingProcessors[j]);
                             processorLink->addPropertyLinks(srcProperty, dstProperty);
                             processorLink->addPropertyLinks(dstProperty, srcProperty);
+
+                            if(std::find(newLinks.begin(), newLinks.end(), processorLink) == newLinks.end()) {
+                                newLinks.push_back(processorLink);
+                            }
                         }
                     }
                 }
             }
         }
-
+ 
         // Setup the widget
         ProcessorWidgetQt* processorWidgetQt =
             dynamic_cast<ProcessorWidgetQt*>(canvasProcessor->getProcessorWidget());
@@ -606,8 +611,7 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
                                          );
         processorWidgetQt->move(ivec2(pos.x(),pos.y()));
         processorWidgetQt->show();
-        processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(),
-                canvasProcessor->getIdentifier());
+
         // Connect the port to inspect to the inports of the inspector network
         Outport* outport = dynamic_cast<Outport*>(port);
         std::vector<Inport*> inports = portInspector->getInports();
@@ -618,6 +622,9 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
         processorNetwork_->unlock();
         processorNetwork_->setBroadcastModification(true);
         processorNetwork_->modified();
+
+        for(size_t i = 0; i < newLinks.size(); i++)
+            newLinks[i]->setSourceModified();
     }
 }
 
@@ -1384,6 +1391,7 @@ void NetworkEditor::clearNetwork() {
 }
 
 bool NetworkEditor::saveNetwork(std::string fileName) {
+    removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
     IvwSerializer xmlSerializer(fileName);
     processorNetwork_->serialize(xmlSerializer);
     processorNetwork_->setModified(false);

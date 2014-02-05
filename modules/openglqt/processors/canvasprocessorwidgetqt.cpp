@@ -83,8 +83,8 @@ void CanvasProcessorWidgetQt::deinitialize() {
         //canvas_->deleteLater();
         //if (children().size())
         //    LogWarn("Canvas is not expected to have children");
-
-        canvas_ = 0;        
+        
+        canvas_ = NULL;        
     }
     ProcessorWidgetQt::deinitialize();
 }

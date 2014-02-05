@@ -132,6 +132,7 @@ void PortInspector::initialize() {
 
         if (canvasProcessor)
             canvasProcessor_ = canvasProcessor;
+
     }
 
     // Store the connections and and disconnect them.

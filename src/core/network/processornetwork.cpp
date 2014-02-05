@@ -32,14 +32,17 @@
 
 #include <inviwo/core/network/processornetwork.h>
 
+
+namespace inviwo {
+
 namespace {
-    class KeepTrueWillAlive{
+    class KeepTrueWhileInScope {
     public:
-        KeepTrueWillAlive(bool *b):variable_(b){
+        KeepTrueWhileInScope(bool *b) :variable_(b) {
             (*variable_) = true;
         }
 
-        ~KeepTrueWillAlive(){
+        ~KeepTrueWhileInScope() {
             (*variable_) = false;
         }
 
@@ -47,8 +50,6 @@ namespace {
         bool* variable_;;
     };
 }
-
-namespace inviwo {
 
 ProcessorNetwork::ProcessorNetwork() 
     : VoidObservable()
@@ -61,8 +62,8 @@ ProcessorNetwork::ProcessorNetwork()
     , invalidationInitiator_(NULL)
     , linking_(false)
     , linkInvalidationInitiator_(NULL)
-    , linkEvaluator_(NULL) 
-{
+    , linkEvaluator_(NULL) {
+
     linkEvaluator_ = new LinkEvaluator();
 }
 
@@ -78,13 +79,6 @@ void ProcessorNetwork::addProcessor(Processor* processor) {
     processor->addObserver(this);
     modified();
 }
-
-void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
-    removeProcessor(processor);
-    processor->deinitialize();
-    delete processor;
-}
-
 
 void ProcessorNetwork::removeProcessor(Processor* processor) {
     ivwAssert(std::find(processors_.begin(), processors_.end(), processor)!=processors_.end(),
@@ -109,6 +103,24 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
     processor->removeObserver(this);
     modified();
+}
+
+void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
+    removeProcessor(processor);
+    processor->deinitialize();
+    delete processor;
+}
+
+Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
+    for(size_t i = 0; i < processors_.size(); i++)
+    if(processors_[i]->getIdentifier() == identifier)
+        return processors_[i];
+
+    return 0;
+}
+
+std::vector<Processor*> ProcessorNetwork::getProcessors() const {
+    return processors_;
 }
 
 
@@ -144,17 +156,32 @@ void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
     modified();
 }
 
-bool ProcessorNetwork::isLinked(Processor* src, Processor* dst) {
-    if (getLink(src, dst))
+bool ProcessorNetwork::isConnected(Outport* sourcePort, Inport* destPort) {
+    if(getConnection(sourcePort, destPort))
         return true;
 
     return false;
 }
 
+PortConnection* ProcessorNetwork::getConnection(Outport* sourcePort, Inport* destPort) {
+    for(size_t i = 0; i < portConnections_.size(); i++) {
+        if(portConnections_[i]->getOutport() == sourcePort &&
+           portConnections_[i]->getInport() == destPort)
+           return portConnections_[i];
+    }
+
+    return NULL;
+}
+
+std::vector<PortConnection*> ProcessorNetwork::getConnections() const {
+    return portConnections_;
+}
+
+
 ProcessorLink* ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {
     ProcessorLink* link = getLink(sourceProcessor, destProcessor);
 
-    if (!link) {
+    if(!link) {
         link = new ProcessorLink(sourceProcessor, destProcessor);
         processorLinks_.push_back(link);
         modified();
@@ -164,13 +191,13 @@ ProcessorLink* ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* 
 }
 
 void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destProcessor) {
-    for (size_t i=0; i<processorLinks_.size(); i++) {
-        if ((processorLinks_[i]->getSourceProcessor()==sourceProcessor &&
-             processorLinks_[i]->getDestinationProcessor()==destProcessor) ||
-            (processorLinks_[i]->getDestinationProcessor()==sourceProcessor &&
-             processorLinks_[i]->getSourceProcessor()==destProcessor)) {
+    for(size_t i = 0; i < processorLinks_.size(); i++) {
+        if((processorLinks_[i]->getSourceProcessor() == sourceProcessor &&
+            processorLinks_[i]->getDestinationProcessor() == destProcessor) ||
+            (processorLinks_[i]->getDestinationProcessor() == sourceProcessor &&
+            processorLinks_[i]->getSourceProcessor() == destProcessor)) {
             delete processorLinks_[i];
-            processorLinks_.erase(processorLinks_.begin()+i);
+            processorLinks_.erase(processorLinks_.begin() + i);
             break;
         }
     }
@@ -178,31 +205,34 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
     modified();
 }
 
+bool ProcessorNetwork::isLinked(Processor* src, Processor* dst) {
+    if (getLink(src, dst))
+        return true;
+
+    return false;
+}
+
+ProcessorLink* ProcessorNetwork::getLink(Processor* processor1, Processor* processor2) const {
+    for(size_t i = 0; i < processorLinks_.size(); i++) {
+        if((processorLinks_[i]->getSourceProcessor() == processor1 &&
+            processorLinks_[i]->getDestinationProcessor() == processor2) ||
+            (processorLinks_[i]->getDestinationProcessor() == processor1 &&
+            processorLinks_[i]->getSourceProcessor() == processor2))
+            return processorLinks_[i];
+    }
+
+    return NULL;
+}
+
+std::vector<ProcessorLink*> ProcessorNetwork::getLinks() const {
+    return processorLinks_;
+}
+
 void ProcessorNetwork::clear() {
     std::vector<Processor*> processors = processors_;
 
     for (size_t i=0; i<processors.size(); i++)
         removeAndDeleteProcessor(processors[i]);
-}
-
-Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
-    for (size_t i=0; i<processors_.size(); i++)
-        if (processors_[i]->getIdentifier()==identifier)
-            return processors_[i];
-
-    return 0;
-}
-
-ProcessorLink* ProcessorNetwork::getLink(Processor* processor1, Processor* processor2) const {
-    for (size_t i=0; i<processorLinks_.size(); i++) {
-        if ((processorLinks_[i]->getSourceProcessor()==processor1 &&
-             processorLinks_[i]->getDestinationProcessor()==processor2) ||
-            (processorLinks_[i]->getDestinationProcessor()==processor1 &&
-             processorLinks_[i]->getSourceProcessor()==processor2))
-            return processorLinks_[i];
-    }
-
-    return NULL;
 }
 
 void ProcessorNetwork::modified() {
@@ -361,7 +391,10 @@ void ProcessorNetwork::serialize(IvwSerializer& s) const {
 }
 
 void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
-    KeepTrueWillAlive keepTrueWillAlive(&deserializing_); // this will set deserializing_ to true will this value is in scope and set it to false in the destructure 
+    // This will set deserializing_ to true while keepTrueWillAlive is in scope 
+    // and set it to false no matter how we leave the scope 
+    KeepTrueWhileInScope keepTrueWillAlive(&deserializing_);
+    
     std::vector<PortConnection*> portConnections;
     std::vector<ProcessorLink*> processorLinks;
 
@@ -464,37 +497,10 @@ bool ProcessorNetwork::isDeserializing()const{
     return deserializing_;
 }
 
-std::vector<PortConnection*> ProcessorNetwork::getConnections() const {
-    return portConnections_;
-}
-
-std::vector<Processor*> ProcessorNetwork::getProcessors() const {
-    return processors_;
-}
-
-std::vector<ProcessorLink*> ProcessorNetwork::getLinks() const {
-    return processorLinks_;
-}
-
 void ProcessorNetwork::setBroadcastModification(bool broadcastModification) {
     broadcastModification_ = broadcastModification;
 }
 
-PortConnection* ProcessorNetwork::getConnection(Outport* sourcePort, Inport* destPort) {
-    for (size_t i = 0; i < portConnections_.size(); i++) {
-        if (portConnections_[i]->getOutport() == sourcePort &&
-            portConnections_[i]->getInport() == destPort)
-            return portConnections_[i];
-    }
 
-    return NULL;
-}
-
-bool ProcessorNetwork::isConnected(Outport* sourcePort, Inport* destPort) {
-    if (getConnection(sourcePort, destPort))
-        return true;
-
-    return false;
-}
 
 } // namespace
