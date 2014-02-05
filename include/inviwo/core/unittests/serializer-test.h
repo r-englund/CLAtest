@@ -93,25 +93,25 @@ NUMERIC_TESTS(uint16SerializationTest,uint16_t,6);
 NUMERIC_TESTS(uint32SerializationTest,uint32_t,654);
 //NUMERIC_TESTS(uint64SerializationTest,uint64_t,6789);
 
-NUMERIC_TESTS(intLeast8SerializationTest,int_least8_t,3);
-NUMERIC_TESTS(intLeast16SerializationTest,int_least16_t,6);
-NUMERIC_TESTS(intLeast32SerializationTest,int_least32_t,654);
-NUMERIC_TESTS(intLeast64SerializationTest,int_least64_t,6789);
-
-NUMERIC_TESTS(uintLeast8SerializationTest,uint_least8_t,3);
-NUMERIC_TESTS(uintLeast16SerializationTest,uint_least16_t,6);
-NUMERIC_TESTS(uintLeast32SerializationTest,uint_least32_t,654);
-//NUMERIC_TESTS(uintLeast64SerializationTest,uint_least64_t,6789);
-
-NUMERIC_TESTS(intFast8SerializationTest,int_fast8_t,3);
-NUMERIC_TESTS(intFast16SerializationTest,int_fast16_t,6);
-NUMERIC_TESTS(intFast32SerializationTest,int_fast32_t,654);
-NUMERIC_TESTS(intFast64SerializationTest,int_fast64_t,6789);
-
-NUMERIC_TESTS(uintFast8SerializationTest,uint_fast8_t,3);
-NUMERIC_TESTS(uintFast16SerializationTest,uint_fast16_t,6);
-NUMERIC_TESTS(uintFast32SerializationTest,uint_fast32_t,654);
-//NUMERIC_TESTS(uintFast64SerializationTest,uint_fast64_t,6789);
+//NUMERIC_TESTS(intLeast8SerializationTest,int_least8_t,3);
+//NUMERIC_TESTS(intLeast16SerializationTest,int_least16_t,6);
+//NUMERIC_TESTS(intLeast32SerializationTest,int_least32_t,654);
+//NUMERIC_TESTS(intLeast64SerializationTest,int_least64_t,6789);
+//
+//NUMERIC_TESTS(uintLeast8SerializationTest,uint_least8_t,3);
+//NUMERIC_TESTS(uintLeast16SerializationTest,uint_least16_t,6);
+//NUMERIC_TESTS(uintLeast32SerializationTest,uint_least32_t,654);
+////NUMERIC_TESTS(uintLeast64SerializationTest,uint_least64_t,6789);
+//
+//NUMERIC_TESTS(intFast8SerializationTest,int_fast8_t,3);
+//NUMERIC_TESTS(intFast16SerializationTest,int_fast16_t,6);
+//NUMERIC_TESTS(intFast32SerializationTest,int_fast32_t,654);
+//NUMERIC_TESTS(intFast64SerializationTest,int_fast64_t,6789);
+//
+//NUMERIC_TESTS(uintFast8SerializationTest,uint_fast8_t,3);
+//NUMERIC_TESTS(uintFast16SerializationTest,uint_fast16_t,6);
+//NUMERIC_TESTS(uintFast32SerializationTest,uint_fast32_t,654);
+////NUMERIC_TESTS(uintFast64SerializationTest,uint_fast64_t,6789);
 
 
 
