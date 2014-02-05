@@ -83,37 +83,23 @@ TYPE_TEST(oneMinusEpsilonDobuleTest, double, oneMinusEpsilonD);
 #define EPSILON_TEST(n,T) TEST(SerialitionTest,n##EpsilonTest){EXPECT_EQ(std::numeric_limits<T>::epsilon(),serializationOfType(std::numeric_limits<T>::epsilon()));}
 
 
-NUMERIC_TESTS(int8SerializationTest,int8_t,3);
-NUMERIC_TESTS(int16SerializationTest,int16_t,6);
-NUMERIC_TESTS(int32SerializationTest,int32_t,654);
-NUMERIC_TESTS(int64SerializationTest,int64_t,6789);
+NUMERIC_TESTS(signedCharSerializationTest,signed char,3);
+NUMERIC_TESTS(unsignedCharSerializationTest,unsigned char,3);
 
-NUMERIC_TESTS(uint8SerializationTest,uint8_t,3);
-NUMERIC_TESTS(uint16SerializationTest,uint16_t,6);
-NUMERIC_TESTS(uint32SerializationTest,uint32_t,654);
-//NUMERIC_TESTS(uint64SerializationTest,uint64_t,6789);
+//TYPE_TEST(charSerializationTest1,char,'t');
+//TYPE_TEST(charSerializationTest2,char,'b');
+//MIN_TEST(charSerializationTest,char);
+//MAX_TEST(charSerializationTest,char);
 
-//NUMERIC_TESTS(intLeast8SerializationTest,int_least8_t,3);
-//NUMERIC_TESTS(intLeast16SerializationTest,int_least16_t,6);
-//NUMERIC_TESTS(intLeast32SerializationTest,int_least32_t,654);
-//NUMERIC_TESTS(intLeast64SerializationTest,int_least64_t,6789);
-//
-//NUMERIC_TESTS(uintLeast8SerializationTest,uint_least8_t,3);
-//NUMERIC_TESTS(uintLeast16SerializationTest,uint_least16_t,6);
-//NUMERIC_TESTS(uintLeast32SerializationTest,uint_least32_t,654);
-////NUMERIC_TESTS(uintLeast64SerializationTest,uint_least64_t,6789);
-//
-//NUMERIC_TESTS(intFast8SerializationTest,int_fast8_t,3);
-//NUMERIC_TESTS(intFast16SerializationTest,int_fast16_t,6);
-//NUMERIC_TESTS(intFast32SerializationTest,int_fast32_t,654);
-//NUMERIC_TESTS(intFast64SerializationTest,int_fast64_t,6789);
-//
-//NUMERIC_TESTS(uintFast8SerializationTest,uint_fast8_t,3);
-//NUMERIC_TESTS(uintFast16SerializationTest,uint_fast16_t,6);
-//NUMERIC_TESTS(uintFast32SerializationTest,uint_fast32_t,654);
-////NUMERIC_TESTS(uintFast64SerializationTest,uint_fast64_t,6789);
+NUMERIC_TESTS(shortSerializationTest,short,-1065);
+NUMERIC_TESTS(unsignedShortSerializationTest,unsigned short,1065);
 
+NUMERIC_TESTS(intSerializationTest,int,-65124);
+NUMERIC_TESTS(unsignedIntSerializationTest,unsigned int,45654);
 
+NUMERIC_TESTS(longSerializationTest,long,650004);
+NUMERIC_TESTS(longLongSerializationTest,long long,6700089);
+NUMERIC_TESTS(unsignedLongLongSerializationTest,unsigned long long,99996789);
 
 
 class IVW_MODULE_UNITTESTS_API MinimumSerilizableClass : public IvwSerializable {
