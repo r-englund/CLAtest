@@ -181,13 +181,13 @@
                     </farPlane>
                 </Property>
                 <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode">
-                    <value content="none" />
+                    <value content="transfer-function" />
                 </Property>
                 <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode">
-                    <value content="mip" />
+                    <value content="dvr" />
                 </Property>
                 <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode">
-                    <value content="none" />
+                    <value content="forward" />
                 </Property>
                 <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue">
                     <value content="0.5" />
