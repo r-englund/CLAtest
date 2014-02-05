@@ -35,21 +35,21 @@
 namespace inviwo {
 
 Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level)
-    : Texture(GL_TEXTURE_2D, glFormat, filtering, level), Observable<TextureObserver>(), ReferenceCounter()
+    : Texture(GL_TEXTURE_2D, glFormat, filtering, level)
     , dimensions_(dimensions) 
 {
     setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level)
-    : Texture(GL_TEXTURE_2D, format, internalformat, dataType, filtering, level), Observable<TextureObserver>(), ReferenceCounter()
+    : Texture(GL_TEXTURE_2D, format, internalformat, dataType, filtering, level)
     , dimensions_(dimensions) 
 {
     setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
 }
 
 Texture2D::Texture2D(const Texture2D& rhs)
-    : Texture(rhs), Observable<TextureObserver>(), ReferenceCounter()
+    : Texture(rhs)
     , dimensions_(rhs.dimensions_) 
 {
     setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
@@ -62,10 +62,6 @@ Texture2D::Texture2D(const Texture2D& rhs)
 Texture2D& Texture2D::operator=(const Texture2D& rhs) {
     if (this != &rhs) {
         Texture::operator=(rhs);
-        // Check if this object is shared with OpenCL/CUDA/DirectX
-        if(getRefCount() > 1) {
-            LogError("This object is shared and cannot changed (size/format etc.) until the shared object has been released");
-        }
         dimensions_ = rhs.dimensions_;
         setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
         initialize(NULL);

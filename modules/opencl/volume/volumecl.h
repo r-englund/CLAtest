@@ -37,10 +37,11 @@
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
+#include <modules/opencl/volume/volumeclbase.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENCL_API VolumeCL : public VolumeRepresentation {
+class IVW_MODULE_OPENCL_API VolumeCL: public VolumeCLBase, public VolumeRepresentation {
 
 public:
     VolumeCL(const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
@@ -64,10 +65,11 @@ public:
      */
     void download(void* data) const;
     cl::ImageFormat getFormat() const { return imageFormat_;}
-    cl::Image3D getVolume() const { return *image3D_; }
+
+    virtual cl::Image3D& getEditable() { return *static_cast<cl::Image3D*>(clImage_); }
+    virtual const cl::Image3D& get() const { return *const_cast<const cl::Image3D*>(static_cast<const cl::Image3D*>(clImage_)); }
 
 protected:
-    cl::Image3D* image3D_;
     cl::ImageFormat imageFormat_;
 };
 

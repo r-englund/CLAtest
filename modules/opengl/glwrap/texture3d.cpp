@@ -77,12 +77,22 @@ Texture3D* Texture3D::clone() const {
 }
 
 void Texture3D::initialize(const void* data) {
+    // Notify observers
+    ObserverSet::iterator endIt = observers_->end();
+    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        // static_cast can be used since only template class objects can be added
+        static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();    
+    }
     // Allocate data
     bind();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     texParameterCallback_->invoke(this);
     glTexImage3D(GL_TEXTURE_3D, level_, internalformat_, dimensions_.x, dimensions_.y, dimensions_.z, 0, format_, dataType_, data);
     LGL_ERROR;
+    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+        // static_cast can be used since only template class objects can be added
+        static_cast<TextureObserver*>(*it)->notifyAfterTextureInitialization();    
+    }
 }
 
 size_t Texture3D::getNumberOfValues() const{

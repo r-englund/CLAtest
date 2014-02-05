@@ -38,6 +38,7 @@
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opengl/glwrap/texture2d.h>
+#include <modules/opencl/image/layerclbase.h>
 
 namespace inviwo {
 /** \class LayerCLGL 
@@ -50,7 +51,7 @@ namespace inviwo {
 *
 * @see Observable
 */
-class IVW_MODULE_OPENCL_API LayerCLGL : public LayerRepresentation, public TextureObserver {
+class IVW_MODULE_OPENCL_API LayerCLGL : public LayerCLBase, public LayerRepresentation, public TextureObserver {
 
 public:
     LayerCLGL(uvec2 dimensions = uvec2(64), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataFormatBase::get(), Texture2D* data = NULL);
@@ -66,7 +67,8 @@ public:
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeLayer(DataRepresentation* target) const;
 
-    const cl::Image& get() const { return *(clImage2DGL_); }
+    virtual cl::Image2D& getEditable() { return *static_cast<cl::Image2D*>(clImage_); }
+    virtual const cl::Image2D& get() const { return *const_cast<const cl::Image2D*>(static_cast<const cl::Image2D*>(clImage_)); }
     const Texture2D* getTexture() const { return texture_; }
 
     /**
@@ -82,16 +84,17 @@ public:
     virtual void notifyAfterTextureInitialization();
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL) const {
-        std::vector<cl::Memory> syncLayers(1, *clImage2DGL_); 
+        std::vector<cl::Memory> syncLayers(1, *clImage_); 
         OpenCL::instance()->getQueue().enqueueAcquireGLObjects(&syncLayers, syncEvents);
     }
     void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL) const {
-        std::vector<cl::Memory> syncLayers(1, *clImage2DGL_); 
+        std::vector<cl::Memory> syncLayers(1, *clImage_); 
         OpenCL::instance()->getQueue().enqueueReleaseGLObjects(&syncLayers, syncEvents, event);
     }
 
+
+
 protected:
-    cl::Image2DGL* clImage2DGL_;
     Texture2D* texture_;
 };
 

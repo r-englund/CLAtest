@@ -35,7 +35,8 @@
 namespace inviwo {
 
 Texture::Texture(GLenum target, GLFormats::GLFormat glFormat, GLenum filtering, GLint level)
-    : target_(target)
+    : Observable<TextureObserver>(), ReferenceCounter()
+    , target_(target)
     , format_(glFormat.format)
     , internalformat_(glFormat.internalFormat)
     , dataType_(glFormat.type)
@@ -52,7 +53,8 @@ Texture::Texture(GLenum target, GLFormats::GLFormat glFormat, GLenum filtering, 
 }
 
 Texture::Texture(GLenum target, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level)
-    : target_(target)
+    : Observable<TextureObserver>(), ReferenceCounter()
+    , target_(target)
     , format_(format)
     , internalformat_(internalformat)
     , dataType_(dataType)
@@ -69,7 +71,8 @@ Texture::Texture(GLenum target, GLint format, GLint internalformat, GLenum dataT
 }
 
 Texture::Texture(const Texture& other)
-    : target_(other.target_)
+    : Observable<TextureObserver>(), ReferenceCounter()
+    , target_(other.target_)
     , format_(other.format_)
     , internalformat_(other.internalformat_)
     , dataType_(other.dataType_)
@@ -87,6 +90,10 @@ Texture::Texture(const Texture& other)
 
 Texture& Texture::operator=(const Texture& rhs) {
     if (this != &rhs) {
+        // Check if this object is shared with OpenCL/CUDA/DirectX
+        if(getRefCount() > 1) {
+            LogError("This object is shared and cannot changed (size/format etc.) until the shared object has been released");
+        }
         target_ = rhs.target_;
         format_ = rhs.format_;
         internalformat_ = rhs.internalformat_;

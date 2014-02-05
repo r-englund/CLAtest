@@ -41,7 +41,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENCL_API ImageCLGL : public ImageRepresentation {
+class IVW_MODULE_OPENCL_API ImageCLGL: public ImageRepresentation {
 
 public:
     ImageCLGL();

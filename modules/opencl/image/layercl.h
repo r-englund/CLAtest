@@ -37,10 +37,11 @@
 #include <inviwo/core/datastructures/image/layerrepresentation.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
+#include <modules/opencl/image/layerclbase.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENCL_API LayerCL : public LayerRepresentation {
+class IVW_MODULE_OPENCL_API LayerCL : public LayerCLBase, public LayerRepresentation {
 
 public:
     LayerCL(uvec2 dimensions = uvec2(128,128), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
@@ -64,11 +65,11 @@ public:
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeLayer(DataRepresentation* target) const;
     cl::ImageFormat getFormat() const { return layerFormat_;}
-    cl::Image2D getEditable() { return *clImage2D_; }
-    const cl::Image2D& get() const { return *const_cast<const cl::Image2D*>(clImage2D_); }
+
+    virtual cl::Image2D& getEditable() { return *static_cast<cl::Image2D*>(clImage_); }
+    virtual const cl::Image2D& get() const { return *const_cast<const cl::Image2D*>(static_cast<const cl::Image2D*>(clImage_)); }
 
 protected:
-    cl::Image2D* clImage2D_;
     cl::ImageFormat layerFormat_;
 };
 

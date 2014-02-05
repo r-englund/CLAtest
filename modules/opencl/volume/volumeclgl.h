@@ -37,11 +37,12 @@
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
+#include <modules/opencl/volume/volumeclbase.h>
 #include <modules/opengl/glwrap/texture3d.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENCL_API VolumeCLGL : public VolumeRepresentation {
+class IVW_MODULE_OPENCL_API VolumeCLGL: public VolumeCLBase, public VolumeRepresentation, public TextureObserver {
 
 public:
     VolumeCLGL(const DataFormatBase* format = DataFormatBase::get(), const Texture3D* data = NULL);
@@ -58,20 +59,32 @@ public:
     void initialize(const Texture3D* texture);
     virtual void setDimension(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(texture_); }
 
-    const cl::Image& getVolume() const { return *(image3D_); }
+    virtual cl::Image3D& getEditable() { return *static_cast<cl::Image3D*>(clImage_); }
+    virtual const cl::Image3D& get() const { return *const_cast<const cl::Image3D*>(static_cast<const cl::Image3D*>(clImage_)); }
     const Texture3D* getTexture() const { return texture_; }
 
+    /**
+    * This method will be called before the texture is initialized.
+    * Override it to add behavior.
+    */
+    virtual void notifyBeforeTextureInitialization();
+
+    /**
+    * This method will be called after the texture has been initialized.
+    * Override it to add behavior.
+    */
+    virtual void notifyAfterTextureInitialization();
+
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL, const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
-        std::vector<cl::Memory> syncImages(1, *image3D_); 
+        std::vector<cl::Memory> syncImages(1, *clImage_); 
         queue.enqueueAcquireGLObjects(&syncImages, syncEvents);
     }
     void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL, const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
-        std::vector<cl::Memory> syncImages(1, *image3D_); 
+        std::vector<cl::Memory> syncImages(1, *clImage_); 
         queue.enqueueReleaseGLObjects(&syncImages, syncEvents, event);
     }
 
 protected:
-    cl::Image3DGL* image3D_;
     const Texture3D* texture_;
 };
 

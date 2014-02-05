@@ -26,55 +26,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file authors: Daniel Jönsson, Erik Sundén
+ * Main file authors: Erik Sundén, Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGE_CL_RESIZER_H
-#define IVW_IMAGE_CL_RESIZER_H
+#ifndef IVW_LAYERCL_BASE_H
+#define IVW_LAYERCL_BASE_H
 
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/image/layerrepresentation.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
 
 namespace inviwo {
-
-/** \class LayerCLResizer 
- * 
- * Helper class that resizes a 2D layer. 
- * @note It will compile the OpenCL kernel the first time resize is called (may take some time).
- * @see LayerCL
- */
-class IVW_MODULE_OPENCL_API LayerCLResizer {
+// Parent classes are responsible for creating the appropriate cl::Image type (Image2D, Image3D, Image2DGL/ImageGL and so forth)
+// This class enables inviwo to use cl::Image(s) in a generic way (i.e. not caring if it is an Image2D or Image2DGL/ImageGL). 
+class IVW_MODULE_OPENCL_API LayerCLBase {
 
 public:
+    LayerCLBase();
+    LayerCLBase(const LayerCLBase& other);
+    virtual ~LayerCLBase();
+	
+    virtual cl::Image& getEditable() { return *clImage_; }
+    virtual const cl::Image& get() const { return *const_cast<const cl::Image*>(clImage_); }
 
-    /**
-     * Resize layer to given dimension. 
-     * 
-     * \param src (const cl::Image2D &) Layer to get data from
-     * \param dst (const cl::Image2D &) Layer containing resized src layer. Note that this should same dimension as resizeToDimension 
-     * \param resizeToDimension (const ivec2 &) Size to resize to
-     * \return (void)
-     */
-    static void resize(const cl::Image& src, const cl::Image& dst, const uvec2& resizeToDimension);
-
-private:
-    LayerCLResizer();
-    LayerCLResizer(LayerCLResizer const&) {};
-    void operator=(LayerCLResizer const&) {};
-    /**
-     * Kernel that takes two layers as input. First layer acts as source and second as destination.
-     * 
-     * \return (cl::Kernel*)
-     */
-    cl::Kernel* getResizeKernel() { return &resizeKernel_; }
-
-    cl::Kernel resizeKernel_;
-
-
+protected:
+    cl::Image* clImage_; // Derived class are responsible for allocating and deallocating this
 };
-
 
 } // namespace
 
-#endif // IVW_IMAGE_CL_RESIZER_H
+namespace cl {
+
+// Kernel argument specializations for LayerCLBase type 
+// (enables calling cl::Queue::setArg with LayerCLBase)
+template <>
+IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::LayerCLBase& value);
+
+} // namespace cl
+
+
+
+#endif // IVW_LAYERCL_BASE_H

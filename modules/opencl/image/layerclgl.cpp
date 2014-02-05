@@ -37,7 +37,7 @@
 namespace inviwo {
 
 LayerCLGL::LayerCLGL(uvec2 dimensions, LayerType type, const DataFormatBase* format, Texture2D* data)
-    : LayerRepresentation(dimensions, type, format), texture_(data)
+    : LayerCLBase(), LayerRepresentation(dimensions, type, format), texture_(data)
 {
     if(data) {
         initialize(data);
@@ -52,7 +52,7 @@ void LayerCLGL::initialize(Texture2D* texture) {
     ivwAssert(texture != 0, "Cannot initialize with null OpenGL texture");
     // Indicate that the texture should not be deleted.
     texture->increaseRefCount();
-    clImage2DGL_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture->getID());
+    clImage_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture->getID());
     texture->addObserver(this);
     LayerCLGL::initialize();
 }
@@ -64,8 +64,7 @@ LayerCLGL* LayerCLGL::clone() const {
 }
 
 void LayerCLGL::deinitialize() {
-    delete clImage2DGL_;
-    clImage2DGL_ = 0; 
+    delete clImage_; // Delete OpenCL image before texture
     if(texture_ && texture_->decreaseRefCount() <= 0){
         delete texture_;
         texture_ = NULL;
@@ -98,11 +97,11 @@ bool LayerCLGL::copyAndResizeLayer(DataRepresentation* targetRep) const{
 }
 
 void LayerCLGL::notifyBeforeTextureInitialization() {
-    delete clImage2DGL_; clImage2DGL_ = 0; 
+    delete clImage_; clImage_ = 0; 
 }
 
 void LayerCLGL::notifyAfterTextureInitialization() {
-    clImage2DGL_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
+    clImage_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
 }
 
 

@@ -47,7 +47,7 @@ LayerCLResizer::LayerCLResizer() {
     }
 }
 
- void LayerCLResizer::resize(const cl::Image2D& src, const cl::Image2D& dst, const uvec2& resizeToDimension)
+ void LayerCLResizer::resize(const cl::Image& src, const cl::Image& dst, const uvec2& resizeToDimension)
  {
     static LayerCLResizer instance;
     try {

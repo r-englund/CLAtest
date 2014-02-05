@@ -38,12 +38,10 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/texture.h>
 #include <inviwo/core/util/observer.h>
-#include <inviwo/core/util/referencecounter.h>
-#include <modules/opengl/textureobserver.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API Texture2D : public Texture, public Observable<TextureObserver>, public ReferenceCounter {
+class IVW_MODULE_OPENGL_API Texture2D : public Texture {
 
 public:
     Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);

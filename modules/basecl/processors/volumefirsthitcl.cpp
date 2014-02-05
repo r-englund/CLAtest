@@ -118,7 +118,7 @@ void VolumeFirstHitCL::process() {
         exit->getLayerCLGL()->aquireGLObject();
         output->getLayerCLGL()->aquireGLObject();
         tfCL->aquireGLObject();
-        const cl::Image& volumeCL = volume->getVolume();
+        const cl::Image& volumeCL = volume->get();
         const cl::Image& entryCL = entry->getLayerCLGL()->get();
         const cl::Image& exitCL = exit->getLayerCLGL()->get();
         const cl::Image& outImageCL = output->getLayerCLGL()->get();
@@ -135,7 +135,7 @@ void VolumeFirstHitCL::process() {
         const ImageCL* output = outport_.getData()->getEditableRepresentation<ImageCL>();
         const VolumeCL* volume = volumePort_.getData()->getRepresentation<VolumeCL>();
         const LayerCL* tfCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
-        const cl::Image& volumeCL = volume->getVolume();
+        const cl::Image& volumeCL = volume->get();
         const cl::Image& entryCL = entry->getLayerCL()->get();
         const cl::Image& exitCL = exit->getLayerCL()->get();
         const cl::Image& outImageCL = output->getLayerCL()->get();

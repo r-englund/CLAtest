@@ -70,8 +70,10 @@ void VolumeGL::initialize() {
 }
 
 void VolumeGL::deinitialize() {
-    delete volumeTexture_;
-    volumeTexture_ = NULL;
+    if(volumeTexture_ && volumeTexture_->decreaseRefCount() <= 0){
+        delete volumeTexture_;
+        volumeTexture_ = NULL;
+    }
 }
 
 void VolumeGL::bindTexture(GLenum texUnit) const{

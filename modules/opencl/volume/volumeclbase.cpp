@@ -26,55 +26,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file authors: Daniel Jönsson, Erik Sundén
+ * Main file authors: Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGE_CL_RESIZER_H
-#define IVW_IMAGE_CL_RESIZER_H
-
-#include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/openclmoduledefine.h>
+#include <modules/opencl/volume/volumeclbase.h>
 
 namespace inviwo {
 
-/** \class LayerCLResizer 
- * 
- * Helper class that resizes a 2D layer. 
- * @note It will compile the OpenCL kernel the first time resize is called (may take some time).
- * @see LayerCL
- */
-class IVW_MODULE_OPENCL_API LayerCLResizer {
+VolumeCLBase::VolumeCLBase()
+    : clImage_(NULL)
+{
+}
 
-public:
+VolumeCLBase::VolumeCLBase( const VolumeCLBase& rhs ) {
 
-    /**
-     * Resize layer to given dimension. 
-     * 
-     * \param src (const cl::Image2D &) Layer to get data from
-     * \param dst (const cl::Image2D &) Layer containing resized src layer. Note that this should same dimension as resizeToDimension 
-     * \param resizeToDimension (const ivec2 &) Size to resize to
-     * \return (void)
-     */
-    static void resize(const cl::Image& src, const cl::Image& dst, const uvec2& resizeToDimension);
+}
 
-private:
-    LayerCLResizer();
-    LayerCLResizer(LayerCLResizer const&) {};
-    void operator=(LayerCLResizer const&) {};
-    /**
-     * Kernel that takes two layers as input. First layer acts as source and second as destination.
-     * 
-     * \return (cl::Kernel*)
-     */
-    cl::Kernel* getResizeKernel() { return &resizeKernel_; }
-
-    cl::Kernel resizeKernel_;
-
-
-};
-
+VolumeCLBase::~VolumeCLBase() { }
 
 } // namespace
 
-#endif // IVW_IMAGE_CL_RESIZER_H
+namespace cl {
+
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCLBase& value) {
+    return setArg(index, value.get());
+}
+
+} // namespace cl

@@ -37,8 +37,7 @@
 namespace inviwo {
 
 VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
-    : VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format)
-    , image3D_(0)
+    : VolumeCLBase(), VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format)
     , texture_(data) {
 
     if(data) {
@@ -48,7 +47,7 @@ VolumeCLGL::VolumeCLGL(const DataFormatBase* format, const Texture3D* data)
 }
 
 VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, const Texture3D* data)
-    : VolumeRepresentation(dimensions, format)
+    : VolumeCLBase(), VolumeRepresentation(dimensions, format)
     , texture_(data){
 
     initialize(data);
@@ -56,8 +55,8 @@ VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, co
 
 VolumeCLGL::VolumeCLGL(const VolumeCLGL& rhs) 
     : VolumeRepresentation(rhs) {
-    OpenCL::instance()->getQueue().enqueueCopyImage(*image3D_, 
-                                                    getVolume(),
+    OpenCL::instance()->getQueue().enqueueCopyImage(*clImage_, 
+                                                    get(),
                                                     glm::svec3(0), 
                                                     glm::svec3(0),
                                                     glm::svec3(dimensions_));
@@ -70,7 +69,7 @@ VolumeCLGL::~VolumeCLGL() {
 
 void VolumeCLGL::initialize(const Texture3D* texture) {
     ivwAssert(texture != 0, "Cannot initialize with null OpenGL texture");
-    image3D_ = new cl::Image3DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture->getID());
+    clImage_ = new cl::Image3DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture->getID());
     
     VolumeCLGL::initialize();
 }
@@ -80,9 +79,17 @@ VolumeCLGL* VolumeCLGL::clone() const {
 }
 
 void VolumeCLGL::deinitialize() {
-    delete image3D_;
-    image3D_ = 0; 
+   delete clImage_; // Delete OpenCL image before texture
 }
+
+void VolumeCLGL::notifyBeforeTextureInitialization() {
+    delete clImage_; clImage_ = 0; 
+}
+
+void VolumeCLGL::notifyAfterTextureInitialization() {
+    clImage_ = new cl::Image3DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture_->getID());
+}
+
 
 } // namespace
 
@@ -91,7 +98,7 @@ namespace cl {
 template <>
 cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCLGL& value)
 {
-    return setArg(index, value.getVolume());
+    return setArg(index, value.get());
 }
 
 

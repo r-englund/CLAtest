@@ -14,6 +14,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/image/imagecl.h
     ${IVW_MODULE_DIR}/opencl/image/imageclgl.h
     ${IVW_MODULE_DIR}/opencl/image/layercl.h
+	${IVW_MODULE_DIR}/opencl/image/layerclbase.h
     ${IVW_MODULE_DIR}/opencl/image/layerclgl.h
     ${IVW_MODULE_DIR}/opencl/image/layerclconverter.h
 	${IVW_MODULE_DIR}/opencl/image/layerclglconverter.h
@@ -25,6 +26,7 @@ set(HEADER_FILES
 	${IVW_MODULE_DIR}/opencl/processors/grayscalecl.h
     ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.h
     ${IVW_MODULE_DIR}/opencl/volume/volumecl.h
+	${IVW_MODULE_DIR}/opencl/volume/volumeclbase.h
     ${IVW_MODULE_DIR}/opencl/volume/volumeclconverter.h
     ${IVW_MODULE_DIR}/opencl/volume/volumeclgl.h
     ${IVW_MODULE_DIR}/opencl/volume/volumeclglconverter.h
@@ -45,6 +47,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/image/imagecl.cpp
     ${IVW_MODULE_DIR}/opencl/image/imageclgl.cpp
     ${IVW_MODULE_DIR}/opencl/image/layercl.cpp
+	${IVW_MODULE_DIR}/opencl/image/layerclbase.cpp
     ${IVW_MODULE_DIR}/opencl/image/layerclgl.cpp
 	${IVW_MODULE_DIR}/opencl/image/layerclconverter.cpp
 	${IVW_MODULE_DIR}/opencl/image/layerclglconverter.cpp
@@ -57,6 +60,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/processors/volumeraycastercl.cpp
 	${IVW_MODULE_DIR}/opencl/settings/openclsettings.cpp
     ${IVW_MODULE_DIR}/opencl/volume/volumecl.cpp
+	${IVW_MODULE_DIR}/opencl/volume/volumeclbase.cpp
 	${IVW_MODULE_DIR}/opencl/volume/volumeclconverter.cpp
 	${IVW_MODULE_DIR}/opencl/volume/volumeclglconverter.cpp
 	${IVW_MODULE_DIR}/opencl/volume/volumeclgl.cpp

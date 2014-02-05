@@ -36,10 +36,12 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/texturecallback.h>
+#include <inviwo/core/util/referencecounter.h>
+#include <modules/opengl/textureobserver.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API Texture {
+class IVW_MODULE_OPENGL_API Texture: public Observable<TextureObserver>, public ReferenceCounter {
 
 public:
     Texture(GLenum, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);
