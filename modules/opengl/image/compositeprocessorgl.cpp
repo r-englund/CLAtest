@@ -37,12 +37,12 @@ namespace inviwo {
 
 CompositeProcessorGL::CompositeProcessorGL()
     : ProcessorGL(),
-    programFileName_("composite.frag")
+    programFileName_("composite.frag"), compositeShader_(NULL)
 {}
 
 CompositeProcessorGL::CompositeProcessorGL(std::string programFileName)
     : ProcessorGL(),
-    programFileName_(programFileName)
+    programFileName_(programFileName), compositeShader_(NULL)
 {}
 
 void CompositeProcessorGL::initialize() {
@@ -52,7 +52,7 @@ void CompositeProcessorGL::initialize() {
 
 void CompositeProcessorGL::deinitialize() {
     delete compositeShader_;
-    compositeShader_ = 0;
+    compositeShader_ = NULL;
     ProcessorGL::deinitialize();
 }
 
