@@ -68,6 +68,7 @@ private:
     std::string inspectorNetworkFileName_;
     std::string portClassName_;
     bool active_;
+    bool needsUpdate_;
     ProcessorNetwork* inspectorNetwork_;
 
     std::vector<Processor*> processors_;
@@ -77,7 +78,6 @@ private:
     CanvasProcessor* canvasProcessor_;
     
     virtual void fileChanged(std::string fileName);
-
 };
 
 } // namespace

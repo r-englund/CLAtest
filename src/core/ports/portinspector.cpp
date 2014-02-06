@@ -38,6 +38,7 @@ PortInspector::PortInspector(std::string portClassName, std::string inspectorWor
     : inspectorNetworkFileName_(inspectorWorkspace)
     , portClassName_(portClassName)
     , active_(false)
+    , needsUpdate_(false)
     , inspectorNetwork_(NULL) {
     
     InviwoApplication::getPtr()->registerFileObserver(this);
@@ -49,6 +50,7 @@ PortInspector::~PortInspector() {
 }
 
 void PortInspector::setActive(bool val) {
+    initialize();
     active_ = val;
 }
 
@@ -65,45 +67,52 @@ std::string PortInspector::getPortClassName() {
 }
 
 std::vector<Inport*> PortInspector::getInports() {
-    if (!inspectorNetwork_)
-        initialize();
-
+    initialize();
     return inPorts_;
 }
 
 CanvasProcessor* PortInspector::getCanvasProcessor() {
-    if (!inspectorNetwork_)
-        initialize();
-
+    initialize();
     return canvasProcessor_;
 }
 
 std::vector<PortConnection*>  PortInspector::getConnections() {
-    if (!inspectorNetwork_)
-        initialize();
-
+    initialize();
     return connections_;
 }
 std::vector<ProcessorLink*> PortInspector::getProcessorLinks() {
-    if (!inspectorNetwork_)
-        initialize();
-
+    initialize();
     return processorLinks_;
 }
 std::vector<Processor*> PortInspector::getProcessors() {
-    if (!inspectorNetwork_)
-        initialize();
-
+    initialize();
     return processors_;
 }
 
 void PortInspector::fileChanged(std::string fileName){
-    if (inspectorNetwork_)
-        delete inspectorNetwork_;
-    initialize();
+    needsUpdate_ = true;
 }
 
 void PortInspector::initialize() {
+    if(active_ == false && needsUpdate_) {
+        if(inspectorNetwork_) {
+            delete inspectorNetwork_;
+            inspectorNetwork_ = NULL;
+
+            processors_.clear();
+            inPorts_.clear();
+            connections_.clear();
+            processorLinks_.clear();
+            canvasProcessor_ = NULL;
+        }
+        stopFileObservation(inspectorNetworkFileName_);
+        needsUpdate_ = false;
+    }
+    if(inspectorNetwork_) {
+        return;
+    }
+
+
     //Observe the filename;
     startFileObservation(inspectorNetworkFileName_);
     
