@@ -115,7 +115,6 @@ void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
         QPoint appPos = app->getMainWindow()->pos();
 
         if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) {
-            LogWarn("Widget position modified to fit into current screen")
                 pos = ivec2(appPos.x(), appPos.y()) ;
             pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
             propertyEditorWidget->move(pos.x, pos.y);
