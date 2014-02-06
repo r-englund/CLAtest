@@ -48,8 +48,8 @@ namespace inviwo {
 
 InviwoModule::InviwoModule()
     : identifier_("undefined")
-    , initialized_(false)
-{}
+    , initialized_(false) {
+}
 
 InviwoModule::~InviwoModule() {
     if (isInitialized())
@@ -80,10 +80,20 @@ InviwoModule::~InviwoModule() {
 
     dataWriters_.clear();
 
+    for(size_t i = 0; i < dialogs_.size(); i++)
+        delete dialogs_[i];
+
+    dialogs_.clear();
+
     for (size_t i=0; i<metadata_.size(); i++)
         delete metadata_[i];
 
     metadata_.clear();
+
+    for(size_t i = 0; i < moduleSettings_.size(); i++)
+        delete moduleSettings_[i];
+
+    moduleSettings_.clear();
 
     for (size_t i=0; i<ports_.size(); i++)
         delete ports_[i];
@@ -130,17 +140,6 @@ InviwoModule::~InviwoModule() {
 
     renderers_.clear();
 
-    for (size_t i=0; i<moduleSettings_.size(); i++)
-        delete moduleSettings_[i];
-
-    moduleSettings_.clear();
-
-
-
-    for (size_t i=0; i<dataReaderDialogs_.size(); i++)
-        delete dataReaderDialogs_[i];
-
-    dataReaderDialogs_.clear();
 }
 
 std::string InviwoModule::getIdentifier() const {
@@ -181,9 +180,9 @@ void InviwoModule::setupModuleSettings() {
 const std::vector<Capabilities*>& InviwoModule::getCapabilities() const {return capabilities_;}
 const std::vector<Data*>& InviwoModule::getData() const {return data_;}
 const std::vector<DataReader*>& InviwoModule::getDataReaders() const {return dataReaders_;}
-const std::vector<DataReaderDialog*>& InviwoModule::getDataReaderDialogs() const {return dataReaderDialogs_;}
 const std::vector<DataRepresentation*>& InviwoModule::getDataRepresentations() const {return dataRepresentations_;}
 const std::vector<DataWriter*>& InviwoModule::getDataWriters() const {return dataWriters_;}
+const std::vector<DialogFactoryObject*>& InviwoModule::getDialogs() const { return dialogs_; }
 const std::vector<MetaData*>& InviwoModule::getMetaData() const {return metadata_;}
 const std::vector<PortFactoryObject*>& InviwoModule::getPorts() const {return ports_;}
 const std::vector<PortInspector*>& InviwoModule::getPortInspectors() const { return portInspectors_; }
@@ -203,10 +202,13 @@ void InviwoModule::registerDataReader(DataReader* dataReader) {
     dataReaders_.push_back(dataReader);
     DataReaderFactory::getPtr()->registerObject(dataReader);
 }
-
 void InviwoModule::registerDataWriter(DataWriter* dataWriter) {
     dataWriters_.push_back(dataWriter);
     DataWriterFactory::getPtr()->registerObject(dataWriter);
+}
+void InviwoModule::registerDialogObject(DialogFactoryObject* dialog) {
+    dialogs_.push_back(dialog);
+    DialogFactory::getPtr()->registerObject(dialog);
 }
 void InviwoModule::registerMetaData(MetaData* meta) {
     metadata_.push_back(meta);

@@ -53,7 +53,8 @@
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <inviwo/core/resources/resource.h>
 #include <inviwo/core/util/capabilities.h>
-#include <inviwo/core/io/datareaderdialogfactory.h>
+#include <inviwo/core/util/dialogfactoryobject.h>
+
 
 namespace inviwo {
 
@@ -72,9 +73,9 @@ public:
     const std::vector<Capabilities*>& getCapabilities() const;
     const std::vector<Data*>& getData() const;
     const std::vector<DataReader*>& getDataReaders() const;
-    const std::vector<DataReaderDialog*>& getDataReaderDialogs() const;
     const std::vector<DataRepresentation*>& getDataRepresentations() const;
     const std::vector<DataWriter*>& getDataWriters() const;
+    const std::vector<DialogFactoryObject*>& getDialogs() const;
     const std::vector<MetaData*>& getMetaData() const;
     const std::vector<PortFactoryObject*>& getPorts() const;
     const std::vector<PortInspector*>& getPortInspectors() const;
@@ -99,12 +100,9 @@ protected:
     void registerCapabilities(Capabilities* info);
     void registerData(Data* data);
     void registerDataReader(DataReader* reader);
-    template<typename T>
-    void registerDataReaderDialog(DataReaderDialog* readerDialog){
-        DataReaderDialogFactory::getPtr()->registerDataReaderDialog<T>(readerDialog);
-    }
     void registerDataRepresentation(DataRepresentation* dataRepresentation);
     void registerDataWriter(DataWriter* writer);
+    void registerDialogObject(DialogFactoryObject* dialog);
     void registerMetaData(MetaData* meta);
     void registerPortObject(PortFactoryObject* port);
     void registerPortInspector(PortInspector* portInspector);
@@ -136,8 +134,8 @@ private:
     std::vector<Data*> data_;
     std::vector<DataRepresentation*> dataRepresentations_;
     std::vector<DataReader*> dataReaders_;
-    std::vector<DataReaderDialog*> dataReaderDialogs_;
     std::vector<DataWriter*> dataWriters_;
+    std::vector<DialogFactoryObject*> dialogs_;
     std::vector<MetaData*> metadata_;
     std::vector<PortFactoryObject*> ports_;
     std::vector<PortInspector*> portInspectors_;
@@ -155,6 +153,7 @@ private:
 #define registerProperty(T) { registerPropertyObject(new PropertyFactoryObjectTemplate<T>(#T)); }
 #define registerPropertyWidget(T, P, semantics) { registerPropertyWidgetObject(new PropertyWidgetFactoryObjectTemplate<T,P>(#P, PropertySemantics(semantics))); }
 #define registerPort(T) { registerPortObject(new PortFactoryObjectTemplate<T>(#T)); }
+#define registerDialog(P, T) { registerDialogObject(new DialogFactoryObjectTemplate<T>(P)); }
 
 
 } // namespace

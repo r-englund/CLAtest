@@ -84,7 +84,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderdialog.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderdialogfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datawriterfactory.h
@@ -184,6 +183,9 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/colorconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/datetime.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/dialog.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/dialogfactory.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/dialogfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/factory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileextension.h
@@ -274,7 +276,6 @@ set(SOURCE_FILES
     interaction/trackballaction.cpp
     io/datareader.cpp
     io/datareaderdialog.cpp
-    io/datareaderdialogfactory.cpp
     io/datareaderfactory.cpp
     io/datawriter.cpp
     io/datawriterfactory.cpp
@@ -350,6 +351,8 @@ set(SOURCE_FILES
     util/canvas.cpp
     util/clock.cpp
     util/commandlineparser.cpp
+    util/dialogfactory.cpp
+    util/dialogfactoryobject.cpp
     util/exception.cpp
     util/fileextension.cpp
     util/fileobserver.cpp

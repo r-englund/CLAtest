@@ -47,7 +47,7 @@ class IVW_CORE_API PropertyWidgetFactory : public Factory,
 
 public:
     PropertyWidgetFactory();
-    ~PropertyWidgetFactory();
+    virtual ~PropertyWidgetFactory();
 
     PropertyWidget* create(Property* property);
 

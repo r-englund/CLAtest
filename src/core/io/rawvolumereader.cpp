@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/io/datareaderdialogfactory.h>
+#include <inviwo/core/util/dialogfactory.h>
 #include <inviwo/core/io/rawvolumereader.h>
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
@@ -95,7 +95,7 @@ Volume* RawVolumeReader::readMetaData(std::string filePath) {
     Volume* volume = new UniformRectiLinearVolume();
     rawFile_ = filePath;
     if (!parametersSet_) {
-        DataReaderDialog* readerDialog = DataReaderDialogFactory::getRef().getDataReaderDialog<RawVolumeReader>();
+        DataReaderDialog* readerDialog = dynamic_cast<DataReaderDialog*>(DialogFactory::getRef().getDialog("RawVolumeReader"));
         ivwAssert(readerDialog!=0, "No data reader dialog found.");
         format_ = readerDialog->getFormat(rawFile_, &dimension_, &littleEndian_);
     }

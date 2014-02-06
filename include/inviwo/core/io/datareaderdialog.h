@@ -34,10 +34,11 @@
 #define IVW_DATAREADERDIALOG_H
 
 #include <inviwo/core/util/formats.h>
+#include <inviwo/core/util/dialog.h>
 
 namespace inviwo {
 
-class IVW_CORE_API DataReaderDialog {
+class IVW_CORE_API DataReaderDialog : public Dialog {
 public:
     DataReaderDialog();
     virtual ~DataReaderDialog();

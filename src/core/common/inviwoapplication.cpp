@@ -33,7 +33,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <inviwo/core/io/datareaderfactory.h>
-#include <inviwo/core/io/datareaderdialogfactory.h>
+#include <inviwo/core/util/dialogfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/ports/portfactory.h>
@@ -91,8 +91,8 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     printApplicationInfo();
     // initialize singleton factories
     DataReaderFactory::init();
-    DataReaderDialogFactory::init();
     DataWriterFactory::init();
+    DialogFactory::init();
     GeometryRendererFactory::init();
     MetaDataFactory::init();
     PortFactory::init();
