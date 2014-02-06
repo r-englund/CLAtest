@@ -38,7 +38,6 @@ namespace inviwo {
 
 FontrenderingModule::FontrenderingModule() : InviwoModule() {
     setIdentifier("Fontrendering");
-    setXMLFileName("fontrendering/fontrenderingmodule.xml");
 
 	registerProcessor(ImageOverlay);
 }
