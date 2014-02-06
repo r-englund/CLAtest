@@ -45,7 +45,6 @@ char** global_argv;
 namespace inviwo{
 UnitTestsModule::UnitTestsModule() : InviwoModule() { 
 	setIdentifier("UnitTests");
-	setXMLFileName("unittests/unittestsmodule.xml");
 }
 
 UnitTestsModule::~UnitTestsModule() { } 

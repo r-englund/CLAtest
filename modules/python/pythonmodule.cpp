@@ -37,7 +37,6 @@ namespace inviwo {
 
 PythonModule::PythonModule() : InviwoModule() {
     setIdentifier("Python");
-    setXMLFileName("python/pythonmodule.xml");   
 
     pyInviwo_ = new PyInviwo();
 }

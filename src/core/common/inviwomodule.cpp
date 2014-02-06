@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -49,7 +49,6 @@ namespace inviwo {
 InviwoModule::InviwoModule()
     : identifier_("undefined")
     , initialized_(false)
-    , xmlDocumentFileName_("undefined")
 {}
 
 InviwoModule::~InviwoModule() {
@@ -172,13 +171,6 @@ void InviwoModule::deinitialize() {
 
 void InviwoModule::setIdentifier(const std::string& identifier) {
     identifier_ = identifier;
-
-    if (xmlDocumentFileName_ == "undefined")
-        xmlDocumentFileName_ = identifier_ + ".xml";
-}
-
-void InviwoModule::setXMLFileName(const std::string& xmlFileName) {
-    xmlDocumentFileName_ = getPath() + "/" + xmlFileName;
 }
 
 void InviwoModule::setupModuleSettings() {

@@ -725,7 +725,7 @@ void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp, 
 }
 
 int LinkDialogGraphicsScene::currentLinkItemsCount() {
-    return currentConnectionGraphicsItems_.size();
+    return static_cast<int>(currentConnectionGraphicsItems_.size());
 }
 
 void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {

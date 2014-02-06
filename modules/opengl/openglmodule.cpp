@@ -51,7 +51,6 @@ OpenGLModule::OpenGLModule() :
     InviwoModule()
     ,btnOpenGLInfo_("printOpenGLInfo", "Print OpenGL Info"){
     setIdentifier("OpenGL");
-    setXMLFileName("opengl/openglmodule.xml");
 
     ShaderManager::init();
     ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opengl/glsl");

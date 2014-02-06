@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
     mainWin.openLastWorkspace();
     splashScreen.finish(&mainWin);
 #if defined(REG_INVIWOUNITTESTSMODULE) && defined(IVW_RUN_UNITTEST_ON_STARTUP)
-    int res = inviwo::UnitTestsModule::runAllTests();
+    inviwo::UnitTestsModule::runAllTests();
 #endif
 
     // process last arguments

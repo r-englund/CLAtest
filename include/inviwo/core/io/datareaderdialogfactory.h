@@ -53,33 +53,35 @@ public:
 
     template <typename T>
     DataReaderDialog* getDataReaderDialog() {
-        for (std::map<DataReader*, DataReaderDialog*>::const_iterator it=dataReaderDialogs_.begin(); it!=dataReaderDialogs_.end(); ++it)
-            if (dynamic_cast<T*>(it->first))
-                return it->second;
+        std::string dataReaderType = parseTypeIdName(std::string(typeid(T).name()));
 
-        /*
-        for (size_t i=0; i<dataReaderDialogs_.size(); i++) {
-            DataReaderType<T>* dataReaderType = dynamic_cast<DataReaderType<T>* >(it->first);
-            if (dataReaderType)
-                return it->second;
+        std::map<std::string, DataReaderDialog*>::const_iterator it;
+        it = dataReaderDialogs_.find(dataReaderType);
+
+        if (it != dataReaderDialogs_.end()) {
+            return it->second;
         }
-        */
+
         return 0;
     }
 
     template <typename T>
-    void registerDataReaderDialog(T* dataReader, DataReaderDialog* dataReaderDialog) {
-        for (std::map<DataReader*, DataReaderDialog*>::const_iterator it=dataReaderDialogs_.begin(); it!=dataReaderDialogs_.end(); ++it)
-            if (dynamic_cast<T*>(it->first)) {
-                LogWarn("DataReaderDialog already registered.");
-                return;
-            }
+    void registerDataReaderDialog(DataReaderDialog* dataReaderDialog) {
+        std::string dataReaderType = parseTypeIdName(std::string(typeid(T).name()));
+        
+        std::map<std::string, DataReaderDialog*>::const_iterator it;
+        it = dataReaderDialogs_.find(dataReaderType);
 
-        dataReaderDialogs_.insert(std::make_pair(dataReader, dataReaderDialog));
+        if (it != dataReaderDialogs_.end()) {
+            LogWarn("DataReaderDialog already registered.");
+            return;
+        }
+
+        dataReaderDialogs_.insert(std::make_pair(dataReaderType, dataReaderDialog));
     }
 
 private:
-    std::map<DataReader*, DataReaderDialog*> dataReaderDialogs_;
+    std::map<std::string, DataReaderDialog*> dataReaderDialogs_;
 };
 
 } // namespace

@@ -52,7 +52,6 @@ namespace inviwo {
 
 OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo", "Print OpenCL Info") {
     setIdentifier("OpenCL");
-    setXMLFileName("opencl/openclmodule.xml");
 
     // Buffer CL
     registerRepresentationConverter(new BufferRAM2CLConverter());

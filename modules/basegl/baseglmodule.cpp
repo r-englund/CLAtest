@@ -52,7 +52,6 @@ namespace inviwo {
 
 BaseGLModule::BaseGLModule() : InviwoModule() {
     setIdentifier("BaseGL");
-    setXMLFileName("basegl/baseglmodule.xml");
 
 	registerProcessor(Background);
 	registerProcessor(CubeProxyGeometry);

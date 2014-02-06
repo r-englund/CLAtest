@@ -83,10 +83,6 @@ namespace inviwo {
 
 QtWidgetModule::QtWidgetModule() : InviwoModule() {
     setIdentifier("QtWidget");
-    // What really happens
-    // registerPropertyWidgetObject(
-    //     new PropertyWidgetFactoryObjectTemplate<FloatPropertyWidgetQt, FloatProperty>("FloatProperty", "Default")
-    // );
     registerPropertyWidget(BoolPropertyWidgetQt, BoolProperty, "Default");
     registerPropertyWidget(ButtonPropertyWidgetQt, ButtonProperty, "Default");
     registerPropertyWidget(CameraPropertyWidgetQt, CameraProperty, "Default");

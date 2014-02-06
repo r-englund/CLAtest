@@ -101,15 +101,7 @@ protected:
     void registerDataReader(DataReader* reader);
     template<typename T>
     void registerDataReaderDialog(DataReaderDialog* readerDialog){
-        T* t = 0;
-        for(size_t i = 0;i<dataReaders_.size()&&t==0;i++){
-            t = dynamic_cast<T*>(dataReaders_[i]);
-        }
-        if(t==0){
-            LogWarn("No DataReader of type " << parseTypeIdName(std::string(typeid(this).name())) << " registered.");
-            return;
-        }
-        DataReaderDialogFactory::getPtr()->registerDataReaderDialog(t, readerDialog);
+        DataReaderDialogFactory::getPtr()->registerDataReaderDialog<T>(readerDialog);
     }
     void registerDataRepresentation(DataRepresentation* dataRepresentation);
     void registerDataWriter(DataWriter* writer);
@@ -124,8 +116,6 @@ protected:
     void registerRepresentationConverter(RepresentationConverter* representationConverter);
     void registerResource(Resource* resource);
     void registerSettings(Settings* settings);
-
-    void setXMLFileName(const std::string& xmlDocuFileName);
 
     /**
      * Initializes all settings registered by the module.
@@ -158,8 +148,6 @@ private:
     std::vector<GeometryRenderer*> renderers_;
     std::vector<RepresentationConverter*> representationConverters_;
     std::vector<Resource*> resources_;
-
-    std::string xmlDocumentFileName_;
 };
 
 

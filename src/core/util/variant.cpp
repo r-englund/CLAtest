@@ -601,7 +601,7 @@ bool Variant::getBool() const {
             std::string s = VP(std::string);
 
             for (unsigned int i = 0; i < s.length(); ++i)
-                s[i] = tolower(s[i]);
+                s[i] = static_cast<char>(tolower(s[i]));
 
             if (s == "1" || s == "true")
                 return true;

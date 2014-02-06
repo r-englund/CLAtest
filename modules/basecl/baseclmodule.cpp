@@ -39,7 +39,6 @@ namespace inviwo {
 
 BaseCLModule::BaseCLModule() : InviwoModule() {
     setIdentifier("BaseCL");
-    setXMLFileName("basecl/baseglmodule.xml");
     
     registerProcessor(EntryExitPointsCL);
     registerProcessor(VolumeFirstHitCL);

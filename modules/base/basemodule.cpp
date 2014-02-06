@@ -50,7 +50,6 @@ namespace inviwo {
 
 BaseModule::BaseModule() : InviwoModule() {
     setIdentifier("Base");
-    setXMLFileName("base/basemodule.xml");
 
     registerProcessor(DiffuseLightSourceProcessor);
     registerProcessor(DirectionalLightSourceProcessor);
