@@ -231,10 +231,8 @@ public:
     void notifyObserversAboutPropertyChange(Property*);
     void notifyInvalidationBegin(Processor*);
     void notifyInvalidationEnd(Processor*);
-    void notifyRequestEvaluate(Processor*);
+    void notifyRequestEvaluate(Processor* p = NULL);
     Processor* getInvalidationInitiator() { return invalidationInitiator_; }
-
-    void setBroadcastModification(bool broadcastModification);
 
     inline void lock() { locked_++; }
     inline void unlock() { (locked_>0)?locked_--:locked_=0; }

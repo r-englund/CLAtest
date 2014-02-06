@@ -55,7 +55,6 @@ ProcessorNetwork::ProcessorNetwork()
     : VoidObservable()
     , ProcessorObserver()
     , modified_(true)
-    , broadcastModification_(true)
     , locked_(0)
     , deserializing_(false)
     , invalidating_(false)
@@ -102,7 +101,6 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     // remove processor itself
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
     processor->removeObserver(this);
-    modified();
 }
 
 void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
@@ -128,32 +126,26 @@ PortConnection* ProcessorNetwork::addConnection(Outport* sourcePort, Inport* des
     PortConnection* connection = getConnection(sourcePort, destPort);
 
     if (!connection) {
-        lock();
+        modified();
         destPort->connectTo(sourcePort);
         connection = new PortConnection(sourcePort, destPort);
         portConnections_.push_back(connection);
-        unlock();
-        modified();
     }
 
     return connection;
 }
 
 void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
-    lock();
-
     for (size_t i=0; i<portConnections_.size(); i++) {
         if (portConnections_[i]->getOutport()==sourcePort &&
             portConnections_[i]->getInport()==destPort) {
+            modified();
             destPort->disconnectFrom(sourcePort);
             delete portConnections_[i];
             portConnections_.erase(portConnections_.begin()+i);
             break;
         }
     }
-
-    unlock();
-    modified();
 }
 
 bool ProcessorNetwork::isConnected(Outport* sourcePort, Inport* destPort) {
@@ -201,8 +193,6 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
             break;
         }
     }
-
-    modified();
 }
 
 bool ProcessorNetwork::isLinked(Processor* src, Processor* dst) {
@@ -237,9 +227,6 @@ void ProcessorNetwork::clear() {
 
 void ProcessorNetwork::modified() {
     modified_ = true;
-
-    if (broadcastModification_)
-        notifyObservers();
 }
 
 void ProcessorNetwork::notifyInvalidationBegin(Processor* p) {
@@ -496,11 +483,5 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
 bool ProcessorNetwork::isDeserializing()const{
     return deserializing_;
 }
-
-void ProcessorNetwork::setBroadcastModification(bool broadcastModification) {
-    broadcastModification_ = broadcastModification;
-}
-
-
 
 } // namespace
