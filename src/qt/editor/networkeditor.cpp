@@ -75,7 +75,9 @@ NetworkEditor::NetworkEditor() :
     , endProcessor_(0)
     , inspection_()
     , gridSnapping_(true)
-    , filename_("") {
+    , filename_("")
+    , renamingProcessor_(false)
+    , lastEditedProcessorGraphicsItem_(0) {
     setSceneRect(-1000,-1000,1000,1000);
     workerThreadReset();
     processorNetwork_ = new ProcessorNetwork();
@@ -1103,37 +1105,42 @@ void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void NetworkEditor::keyPressEvent(QKeyEvent* e) {
-    if (e->key() == Qt::Key_Delete) {
-        // delete selected graphics items
-        // check if selected is connection and delete it
-        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
+    if(!renamingProcessor_  ||  !(lastEditedProcessorGraphicsItem_ && lastEditedProcessorGraphicsItem_->isEditingProcessorName())){
+        renamingProcessor_ = false;
+        if (e->key() == Qt::Key_Delete) {
+        
 
-        for (int i=0; i<selectedGraphicsItems.size(); i++) {
-            ConnectionGraphicsItem* connectionGraphicsItem = dynamic_cast<ConnectionGraphicsItem*>(selectedGraphicsItems[i]);
+            // delete selected graphics items
+            // check if selected is connection and delete it
+            QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
 
-            if (connectionGraphicsItem)
-                removeConnection(connectionGraphicsItem);
-        }
+            for (int i=0; i<selectedGraphicsItems.size(); i++) {
+                ConnectionGraphicsItem* connectionGraphicsItem = dynamic_cast<ConnectionGraphicsItem*>(selectedGraphicsItems[i]);
 
-        // check if selected is link and delete it
-        selectedGraphicsItems = selectedItems();
+                if (connectionGraphicsItem)
+                    removeConnection(connectionGraphicsItem);
+            }
 
-        for (int i=0; i<selectedGraphicsItems.size(); i++) {
-            LinkConnectionGraphicsItem* linkGraphicsItem = dynamic_cast<LinkConnectionGraphicsItem*>(selectedGraphicsItems[i]);
+            // check if selected is link and delete it
+            selectedGraphicsItems = selectedItems();
 
-            if (linkGraphicsItem)
-                removeLink(linkGraphicsItem);
-        }
+            for (int i=0; i<selectedGraphicsItems.size(); i++) {
+                LinkConnectionGraphicsItem* linkGraphicsItem = dynamic_cast<LinkConnectionGraphicsItem*>(selectedGraphicsItems[i]);
 
-        // check if selected is processor and delete it
-        selectedGraphicsItems = selectedItems();
+                if (linkGraphicsItem)
+                    removeLink(linkGraphicsItem);
+            }
 
-        for (int i=0; i<selectedGraphicsItems.size(); i++) {
-            ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+            // check if selected is processor and delete it
+            selectedGraphicsItems = selectedItems();
 
-            if (processorGraphicsItem && !processorGraphicsItem->isEditingProcessorName()) {
-                Processor* processor = processorGraphicsItem->getProcessor();
-                removeProcessor(processor);
+            for (int i=0; i<selectedGraphicsItems.size(); i++) {
+                ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+
+                if (processorGraphicsItem && !processorGraphicsItem->isEditingProcessorName()) {
+                    Processor* processor = processorGraphicsItem->getProcessor();
+                    removeProcessor(processor);
+                }
             }
         }
     }
@@ -1165,8 +1172,11 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
 
         QAction* result = menu.exec(QCursor::pos());
 
-        if (result == renameAction)
+        if (result == renameAction){
+            renamingProcessor_ = true;
+            lastEditedProcessorGraphicsItem_ = processorGraphicsItem;
             processorGraphicsItem->editProcessorName();
+        }
         else if (result == deleteAction) {
             Processor* processor = processorGraphicsItem->getProcessor();
             removeProcessor(processor);

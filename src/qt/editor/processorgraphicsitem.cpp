@@ -378,6 +378,10 @@ bool ProcessorGraphicsItem::isEditingProcessorName() {
 void ProcessorGraphicsItem::setIdentifier(QString text) {
     std::string oldName = getProcessor()->getIdentifier();
     std::string newName = text.toLocal8Bit().constData();
+    if(newName.size()==0){
+        nameLabel_->setText(oldName.c_str());
+        return;
+    }
     getProcessor()->setIdentifier(newName);
     ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
 
@@ -442,19 +446,6 @@ void ProcessorGraphicsItem::notify() {
         setIdentifier(nameLabel_->text());
         nameLabel_->setNoFocusOut();
     }
-
-    //TODO: Fix progressbar to true indicator
-    /*
-    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
-    if (progressBarOwner != NULL) {
-        if (progressBarTimer_.elapsed() > 500 ||
-            progressBarOwner->getProgressBar().getProgress()==0.0f || progressBarOwner->getProgressBar().getProgress()==1.0f) {
-            progressBarTimer_.restart();
-            update();
-            QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-        }
-    }
-    */
 }
 
 } // namespace

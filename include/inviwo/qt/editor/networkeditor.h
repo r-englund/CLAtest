@@ -214,6 +214,8 @@ private:
     std::string obtainUniqueProcessorID(std::string) const;
 
     std::string filename_;
+    bool renamingProcessor_;
+    ProcessorGraphicsItem* lastEditedProcessorGraphicsItem_;
 };
 
 class IVW_QTEDITOR_API ProcessorWorkerQt : public QObject {

@@ -176,6 +176,7 @@ QIcon* ProcessorTreeWidget::getCodeStateIcon(CodeState state) {
         case CODE_STATE_BROKEN:
             return &iconBroken_;
 
+        case CODE_STATE_EXPERIMENTAL:
         default:
             return &iconExperimental_;
     }
