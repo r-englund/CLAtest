@@ -51,26 +51,32 @@ bool PickingContainer::performPick(const uvec2& coord) {
     prevCoord_ = coord;
 
     if (src_) {
-        const LayerRAM* pickingRAM = src_->getPickingLayer()->getRepresentation<LayerRAM>();
-        vec4 value = pickingRAM->getValueAsVec4Float(coord);
-        vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
-        DataVec3UINT8::type pickedColorUINT8;
-        DataVec3UINT8::get()->vec3ToValue(pickedColor*255.f, &pickedColorUINT8);
-        currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
+        const Layer* pickingLayer = src_->getPickingLayer();
+        if(pickingLayer){
+            const LayerRAM* pickingLayerRAM = pickingLayer->getRepresentation<LayerRAM>();
+            vec4 value = pickingLayerRAM->getValueAsVec4Float(coord);
+            vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
+            DataVec3UINT8::type pickedColorUINT8;
+            DataVec3UINT8::get()->vec3ToValue(pickedColor*255.f, &pickedColorUINT8);
+            currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
 
-        if (currentPickObj_) {
-            setPickableSelected(true);
-            currentPickObj_->setPickingPosition(normalizedCoordinates(coord));
+            if (currentPickObj_) {
+                setPickableSelected(true);
+                currentPickObj_->setPickingPosition(normalizedCoordinates(coord));
 
-            if (currentPickObj_->readDepth()) {
-                const LayerRAM* depthRAM = src_->getDepthLayer()->getRepresentation<LayerRAM>();
-                float depth = depthRAM->getValueAsSingleFloat(coord);
-                currentPickObj_->setPickingDepth(depth);
+                if (currentPickObj_->readDepth()) {
+                    const Layer* depthLayer = src_->getDepthLayer();
+                    if(pickingLayer){
+                        const LayerRAM* depthLayerRAM = depthLayer->getRepresentation<LayerRAM>();
+                        float depth = depthLayerRAM->getValueAsSingleFloat(coord);
+                        currentPickObj_->setPickingDepth(depth);
+                    }
+                }
+
+                currentPickObj_->setPickingMove(vec2(0.f,0.f));
+                currentPickObj_->picked();
+                return true;
             }
-
-            currentPickObj_->setPickingMove(vec2(0.f,0.f));
-            currentPickObj_->picked();
-            return true;
         }
     }
 

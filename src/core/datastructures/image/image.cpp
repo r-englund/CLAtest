@@ -220,7 +220,7 @@ size_t Image::getNumberOfColorLayers() const {
 const Layer* Image::getDepthLayer() const {
     ImageSourceMap::const_iterator it = inputSources_.find(DEPTH_LAYER);
 
-    if (it != inputSources_.end())
+    if (it != inputSources_.end() && it->second)
         return it->second->getDepthLayer();
 
     return depthLayer_;
@@ -233,7 +233,7 @@ Layer* Image::getDepthLayer() {
 const Layer* Image::getPickingLayer() const {
     ImageSourceMap::const_iterator it = inputSources_.find(PICKING_LAYER);
 
-    if (it != inputSources_.end())
+    if (it != inputSources_.end() && it->second)
         return it->second->getPickingLayer();
 
     return pickingLayer_;
