@@ -38,7 +38,6 @@ namespace inviwo {
 
 GLUTModule::GLUTModule() : InviwoModule() {
     setIdentifier("GLUT");
-    setXMLFileName("glut/glutmodule.xml");
 }
 
 } // namespace

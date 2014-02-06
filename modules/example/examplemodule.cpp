@@ -38,7 +38,6 @@ namespace inviwo {
 
 ExampleModule::ExampleModule() : InviwoModule() {
     setIdentifier("Example");
-    setXMLFileName("example/examplemodule.xml");
 
     registerProcessor(ExampleProcessor);
 	
