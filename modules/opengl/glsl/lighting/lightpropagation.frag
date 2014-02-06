@@ -57,9 +57,11 @@ vec4 propagateLight(in vec3 coord, in vec3 coordPerm) {
     //Retrieve previous light value
     vec4 lightVoxel = getVoxel(lightVolume_, lightVolumeParameters_, previousPermutedCoord);
     //Return newly calculated propagate light value
-    vec4 newCol = vec4((1.0 - color.a)*lightVoxel.a);
 #ifdef SUPPORT_LIGHT_COLOR
+    vec4 newCol = vec4((1.0 - color.a)*lightVoxel.a);
     newCol.rgb = (1.0 - color.a)*lightVoxel.rgb + color.a*color.rgb;
+#else
+    vec4 newCol = vec4((1.0 - color.a)*lightVoxel.r);
 #endif
     return newCol;
 }

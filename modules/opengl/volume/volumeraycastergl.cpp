@@ -138,13 +138,13 @@ void VolumeRaycasterGL::initializeResources() {
     if (gradientComputationMode_.isSelected("none"))
         gradientComputationValue = "voxel.xyz;";
     else if (gradientComputationMode_.isSelected("forward"))
-        gradientComputationValue = "gradientForwardDiff(voxel.a, volume_, volumeStruct_, samplePos);";
+        gradientComputationValue = "gradientForwardDiff(voxel.r, volume_, volumeStruct_, samplePos);";
     else if (gradientComputationMode_.isSelected("central"))
-        gradientComputationValue = "gradientCentralDiff(voxel.a, volume_, volumeStruct_, samplePos);";
+        gradientComputationValue = "gradientCentralDiff(voxel.r, volume_, volumeStruct_, samplePos);";
     else if (gradientComputationMode_.isSelected("central-higher"))
-        gradientComputationValue = "gradientCentralDiffH(voxel.a, volume_, volumeStruct_, samplePos);";
+        gradientComputationValue = "gradientCentralDiffH(voxel.r, volume_, volumeStruct_, samplePos);";
     else if (gradientComputationMode_.isSelected("backward"))
-        gradientComputationValue = "gradientBackwardDiff(voxel.a, volume_, volumeStruct_, samplePos);";
+        gradientComputationValue = "gradientBackwardDiff(voxel.r, volume_, volumeStruct_, samplePos);";
 
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(gradientComputationKey, gradientComputationValue);
 
@@ -152,7 +152,7 @@ void VolumeRaycasterGL::initializeResources() {
     std::string classificationKey = "RC_APPLY_CLASSIFICATION(transferFunc_, voxel)";
     std::string classificationValue = "";
     if (classificationMode_.isSelected("none"))
-        classificationValue = "vec4(voxel.a);";
+        classificationValue = "vec4(voxel.r);";
     else if (classificationMode_.isSelected("transfer-function"))
         classificationValue = "applyTF(transferFunc_, voxel);";
     raycastPrg_->getFragmentShaderObject()->addShaderDefine(classificationKey, classificationValue);

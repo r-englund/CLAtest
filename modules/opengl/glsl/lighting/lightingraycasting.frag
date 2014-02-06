@@ -67,17 +67,19 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     while (t < tEnd) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getVoxel(volume_, volumeParameters_, samplePos);
-        voxel.xyz = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
+        vec3 gradient = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
         vec4 color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
-        color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, voxel.xyz, lightPosition_, cameraPosition_);
+        color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, cameraPosition_);
         //Light Volume Compositing
         vec4 lightVoxel = getVoxel(lightVolume_, lightVolumeParameters_, samplePos);
 #ifdef LIGHT_COLOR_ENABLED
         //color.rgb *= lightVoxel.rgb;
         color.rgb = (color.rgb * 0.6) + (lightVoxel.rgb * color.rgb * 0.8) + (0.8 * color.rgb * pow(lightVoxel.rgb, vec3(5.0)));
-#endif
         color.rgb *= lightVoxel.a;
-        result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel.xyz, t, tDepth, tIncr);
+#else
+        color.rgb *= lightVoxel.r;
+#endif
+        result = RC_APPLY_COMPOSITING(result, color, samplePos, gradient, t, tDepth, tIncr);
 
         // early ray termination
         if (result.a > ERT_THRESHOLD) t = tEnd;

@@ -59,14 +59,17 @@ FrameBufferObject::~FrameBufferObject() {
 
 void FrameBufferObject::activate() {
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, id_);
+    LGL_ERROR;
 }
 
 void FrameBufferObject::defineDrawBuffers() {
     glDrawBuffers(static_cast<GLsizei>(maxColorAttachements_), drawBuffers_);
+    LGL_ERROR;
 }
 
 void FrameBufferObject::deactivate() {
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    LGL_ERROR;
 }
 
 void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) {

@@ -41,6 +41,10 @@ ProcessorClassName(LightVolumeGL, "LightVolumeGL");
 ProcessorCategory(LightVolumeGL, "Illumination");
 ProcessorCodeState(LightVolumeGL, CODE_STATE_EXPERIMENTAL);
 
+GLfloat borderColor_[4] = {
+    1.f, 1.f, 1.f, 1.f
+};
+
 static const int faceAxis_[6] = { 
     0, 0, 1, 1, 2, 2 
 };
@@ -379,7 +383,10 @@ void LightVolumeGL::supportColoredLightChanged(){
 }
 
 void LightVolumeGL::borderColorTextureParameterFunction(){
-    glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(lightColor_));
+    if(supportColoredLight_.get())
+        glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(lightColor_));
+    else
+        glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, borderColor_);
 }
 
 void LightVolumeGL::updatePermuationMatrices(const vec3& lightPos, PropagationParameters* closest, PropagationParameters* secondClosest){
