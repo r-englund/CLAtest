@@ -100,6 +100,7 @@ QDockWidget::title {
     padding-top: 5px;
     padding-left: 5px;
     border-radius: 3px;
+    text-align: center;
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #888888, stop:0.4 #555555, 
                                 stop:0.5 #000000, stop:1 #111111);

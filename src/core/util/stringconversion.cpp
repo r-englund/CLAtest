@@ -32,6 +32,12 @@
 
 #include <inviwo/core/util/stringconversion.h>
 
+#if defined(__clang__)
+    #include <cstdlib>
+    #include <memory>
+    #include <cxxabi.h>
+#endif
+
 namespace inviwo {
 
 std::vector<std::string> splitString(const std::string& str, char delimeter) {
@@ -79,6 +85,19 @@ void replaceInString(std::string& str, const std::string& oldStr, const std::str
 }
 
 std::string parseTypeIdName(std::string str) {
+#if defined(__clang__)
+    struct handle {
+        char* p;
+        handle(char* ptr) : p(ptr) { }
+        ~handle() { std::free(p); }
+    };
+
+    const char* cstr = str.c_str();
+    int status = -4;
+    handle result( abi::__cxa_demangle(cstr, NULL, NULL, &status) );
+    return (status==0) ? result.p : str;
+
+#endif
     replaceInString(str, "class", "");
     replaceInString(str, "const", "");
     replaceInString(str, "inviwo::", "");
