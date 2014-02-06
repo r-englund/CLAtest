@@ -19,7 +19,6 @@ namespace inviwo {
 
 CVIE3DModule::CVIE3DModule() : InviwoModule() {
     setIdentifier("CVIE3D");
-    setXMLFileName("cvie3d/cvie3dmodule.xml");
 
     registerProcessor(CVIE3DProcessor);
 	
