@@ -51,7 +51,7 @@ public:
     inline GLint getUnitNumber() const { return unitNumber_; }
 
     inline void activate() const { glActiveTexture(unitEnum_); }
-    inline static void setZeroUnit() const { glActiveTexture(GL_TEXTURE0); }
+    inline static void setZeroUnit() { glActiveTexture(GL_TEXTURE0); }
 
 private:
     static std::vector<bool>* textureUnits_;
