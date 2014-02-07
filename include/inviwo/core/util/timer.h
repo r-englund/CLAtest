@@ -65,7 +65,7 @@ public:
      *
      * @return
      */
-    virtual void stop() {};
+    virtual void stop() = 0;
 
     /**
      * Set a callback that will be called when the time interval has passed.

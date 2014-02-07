@@ -99,7 +99,7 @@ void FloatSliderWidgetQt::updateFromSlider() {
     float normalizedValue = static_cast<float>(slider_->value())/static_cast<float>(slider_->maximum());
     float newValue = minValue_ + (normalizedValue * (maxValue_ - minValue_));
 
-    if (newValue != value_) {
+    if (fabs(newValue-value_) > std::numeric_limits<float>::epsilon()) {
         value_ = newValue;
         //updateSpinBox();
         emit valueChanged(value_);
@@ -118,7 +118,7 @@ void FloatSliderWidgetQt::updateSlider() {
 void FloatSliderWidgetQt::updateFromSpinBox() {
     float newValue = static_cast<float>(spinBox_->value());
 
-    if (newValue != value_) {
+    if (fabs(newValue-value_) > std::numeric_limits<float>::epsilon()) {
         value_ = newValue;
         //updateSlider();
         emit valueChanged(value_);
