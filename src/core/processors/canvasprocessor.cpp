@@ -47,6 +47,7 @@ CanvasProcessor::CanvasProcessor()
     , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
     , canvas_(0)
     , disableResize_(false)
+    , queuedRequest_(false)
 {
     addPort(inport_);
     dimensions_.onChange(this, &CanvasProcessor::resizeCanvas);
@@ -117,16 +118,27 @@ void CanvasProcessor::invalidate(PropertyOwner::InvalidationLevel invalidationLe
     Processor::invalidate(invalidationLevel, modifiedProperty);
 }
 
+void CanvasProcessor::triggerQueuedEvaluation() {
+    if (queuedRequest_) {
+        performEvaluateRequest();
+        queuedRequest_ = false;
+    }
+}
+
+void CanvasProcessor::performEvaluationAtNextShow() {
+    queuedRequest_ = true;
+}
+
 void CanvasProcessor::performEvaluateRequest() {
     if (canvas_ && canvas_->getNetworkEvaluator()) {
         if (processorWidget_) {
             if (processorWidget_->getVisibilityMetaData())
-                canvas_->getNetworkEvaluator()->requestEvaluate();
+                notifyObserversRequestEvaluate(this);
             else
-                canvas_->performEvaluationAtNextShow();
+                performEvaluationAtNextShow();
         }
         else
-            canvas_->getNetworkEvaluator()->requestEvaluate();
+            notifyObserversRequestEvaluate(this);
     }
 }
 

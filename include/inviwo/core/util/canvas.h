@@ -61,8 +61,6 @@ public:
 
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator);
     ProcessorNetworkEvaluator* getNetworkEvaluator() const;
-    void performEvaluationAtNextShow();
-    void triggerQueuedEvaluation();
 
 protected:
     void interactionEvent(InteractionEvent* e);
@@ -84,7 +82,6 @@ protected:
     PickingContainer* pickingContainer_;
 
     ProcessorNetworkEvaluator* processorNetworkEvaluator_;
-    bool queuedRequest_;
 };
 
 } // namespace

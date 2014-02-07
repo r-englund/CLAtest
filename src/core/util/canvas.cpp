@@ -42,8 +42,7 @@ Geometry* Canvas::screenAlignedRect_ = NULL;
 Canvas::Canvas(uvec2 dimensions)
     : shared_(true)
     , dimensions_(dimensions)
-    , processorNetworkEvaluator_(0)
-    , queuedRequest_(false) {
+    , processorNetworkEvaluator_(0) {
     pickingContainer_ = new PickingContainer();
 
     if (!screenAlignedRect_) {
@@ -109,19 +108,6 @@ void Canvas::setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) {
 
 ProcessorNetworkEvaluator* Canvas::getNetworkEvaluator() const {
     return processorNetworkEvaluator_;
-}
-
-void Canvas::performEvaluationAtNextShow() {
-    queuedRequest_ = true;
-}
-
-void Canvas::triggerQueuedEvaluation() {
-    if (queuedRequest_) {
-        if (getNetworkEvaluator())
-            getNetworkEvaluator()->requestEvaluate();
-
-        queuedRequest_ = false;
-    }
 }
 
 void Canvas::interactionEvent(InteractionEvent* e) {

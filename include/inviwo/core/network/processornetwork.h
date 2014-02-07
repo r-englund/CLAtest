@@ -258,7 +258,6 @@ private:
     void evaluatePropertyLinks(Property*);
 
     bool modified_;
-    bool broadcastModification_; //< shall observers be notified when the network has been modified
     unsigned int locked_;
 
     std::vector<Processor*> processors_;
@@ -269,6 +268,8 @@ private:
     bool invalidating_;
     Processor* invalidationInitiator_;
     LinkEvaluator* linkEvaluator_;
+
+    bool evaluationQueued_;
 
     bool linking_;
     Processor* linkInvalidationInitiator_;

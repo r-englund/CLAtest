@@ -59,6 +59,7 @@ ProcessorNetwork::ProcessorNetwork()
     , deserializing_(false)
     , invalidating_(false)
     , invalidationInitiator_(NULL)
+    , evaluationQueued_(false)
     , linking_(false)
     , linkInvalidationInitiator_(NULL)
     , linkEvaluator_(NULL) {
@@ -246,7 +247,12 @@ void ProcessorNetwork::notifyInvalidationEnd(Processor* p) {
 }
 
 void ProcessorNetwork::notifyRequestEvaluate(Processor*) {
-    notifyObservers();
+    if(linking_)
+        evaluationQueued_ = true;
+    else{
+        notifyObservers();
+        evaluationQueued_ = false;
+    }
 }
 
 //linking helpers
@@ -297,11 +303,9 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
 
     if (linking_) {
         linking_ = false;
-        if (linkInvalidationInitiator_) {
-            if (linkInvalidationInitiator_!=invalidationInitiator_)
-                notifyRequestEvaluate(linkInvalidationInitiator_);
-            linkInvalidationInitiator_ = NULL;
-        }
+        if(evaluationQueued_ && linkInvalidationInitiator_!=invalidationInitiator_)
+            notifyRequestEvaluate(linkInvalidationInitiator_);
+        linkInvalidationInitiator_ = NULL;
     }
 }
 

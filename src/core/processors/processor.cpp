@@ -186,9 +186,13 @@ bool Processor::isInitialized() const {
 }
 
 void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
-    notifyObserversAboutPropertyChange(modifiedProperty);
     notifyObserversInvalidationBegin(this);
     PropertyOwner::invalidate(invalidationLevel);
+    notifyObserversAboutPropertyChange(modifiedProperty);
+    if(PropertyOwner::isValid()){
+        notifyObserversInvalidationEnd(this);
+        return;
+    }
 
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
         (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);

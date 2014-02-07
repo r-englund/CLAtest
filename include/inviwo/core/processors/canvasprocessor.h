@@ -65,7 +65,10 @@ public:
     void saveImageLayer();
     void saveImageLayer(const char* filePath);
 
+    void triggerQueuedEvaluation();
+
 protected:
+    void performEvaluationAtNextShow();
     void performEvaluateRequest();
 
     ImageInport inport_;
@@ -78,6 +81,7 @@ protected:
 private:
     Canvas* canvas_;
     bool disableResize_;
+    bool queuedRequest_;
 
     void resizeCanvas();
 };
