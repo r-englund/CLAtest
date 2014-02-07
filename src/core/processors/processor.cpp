@@ -45,7 +45,7 @@ ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL);
 Processor::Processor()
     : PropertyOwner(), ProcessorObservable()
     , processorWidget_(0)
-    , identifier_()
+    , identifier_("")
     , initialized_(false) {
         setIdentifier("undefined");
 }
@@ -90,7 +90,7 @@ std::string Processor::setIdentifier(const std::string& identifier) {
 
     std::string baseIdentifier = identifier;
     std::string newIdentifier = identifier;
-    int i = 1;
+    int i = 2;
     while(usedIdentifiers_.find(newIdentifier) != usedIdentifiers_.end()){
         newIdentifier = baseIdentifier + toString(i++);
     }
