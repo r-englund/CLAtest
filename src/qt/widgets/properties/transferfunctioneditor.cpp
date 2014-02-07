@@ -78,7 +78,7 @@ void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         } else
             mouseDrag_ = true;
     }
-    else if (e->button() == Qt::RightButton) {
+    else if (e->button() == Qt::RightButton && !mouseDrag_) {
         if (controlPointGraphicsItem)
             removeControlPoint(controlPointGraphicsItem);
     }

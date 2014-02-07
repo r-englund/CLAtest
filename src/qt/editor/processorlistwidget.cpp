@@ -148,6 +148,7 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     listView_->addItem("Category");
     listView_->addItem("Code State");
     listView_->addItem("Module");
+    listView_->setCurrentIndex(1);
     connect(listView_, SIGNAL(currentIndexChanged(int)), this, SLOT(addProcessorsToTree()));
     listView_->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     listViewLayout->addWidget(listView_);
