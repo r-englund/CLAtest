@@ -47,11 +47,11 @@ public:
 
     static void initialize(int numUnits);
 
-    inline GLint TextureUnit::getEnum() { return unitEnum_; }
-    inline GLint TextureUnit::getUnitNumber() { return unitNumber_; }
+    inline GLint getEnum() const { return unitEnum_; }
+    inline GLint getUnitNumber() const { return unitNumber_; }
 
-    inline void TextureUnit::activate() { glActiveTexture(unitEnum_); }
-    inline static void TextureUnit::setZeroUnit() { glActiveTexture(GL_TEXTURE0); }
+    inline void activate() const { glActiveTexture(unitEnum_); }
+    inline static void setZeroUnit() const { glActiveTexture(GL_TEXTURE0); }
 
 private:
     static std::vector<bool>* textureUnits_;
