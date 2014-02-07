@@ -38,9 +38,6 @@
 #include <modules/base/processors/imagesourceseries.h>
 #include <modules/base/processors/meshclipping.h>
 #include <modules/base/processors/meshcreator.h>
-#include <modules/base/processors/testprocessor.h>
-#include <modules/base/processors/testinvalidationprocessor.h>
-#include <modules/base/processors/transferfunctiontestprocessor.h>
 #include <modules/base/processors/volumesource.h>
 #include <modules/base/processors/volumeexport.h>
 #include <modules/base/processors/volumebasistransformer.h>
@@ -58,9 +55,6 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(ImageSourceSeries);
     registerProcessor(MeshClipping);
     registerProcessor(MeshCreator);
-    //registerProcessor(TestProcessor);
-    //registerProcessor(TransferFunctiontionTestProcessor);
-    //registerProcessor(TestInvalidationProcessor);
 	registerProcessor(VolumeSource);
 	registerProcessor(VolumeExport);
     registerProcessor(VolumeBasisTransformer);

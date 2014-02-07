@@ -11,9 +11,6 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/imagesourceseries.h
     ${IVW_MODULE_DIR}/base/processors/meshclipping.h
     ${IVW_MODULE_DIR}/base/processors/meshcreator.h
-    ${IVW_MODULE_DIR}/base/processors/testprocessor.h
-    ${IVW_MODULE_DIR}/base/processors/testinvalidationprocessor.h
-    ${IVW_MODULE_DIR}/base/processors/transferfunctiontestprocessor.h
     ${IVW_MODULE_DIR}/base/processors/volumesource.h
     ${IVW_MODULE_DIR}/base/processors/volumeexport.h
     ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.h
@@ -31,9 +28,6 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/imagesourceseries.cpp
     ${IVW_MODULE_DIR}/base/processors/meshclipping.cpp
     ${IVW_MODULE_DIR}/base/processors/meshcreator.cpp
-    ${IVW_MODULE_DIR}/base/processors/testprocessor.cpp
-    ${IVW_MODULE_DIR}/base/processors/testinvalidationprocessor.cpp
-    ${IVW_MODULE_DIR}/base/processors/transferfunctiontestprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesource.cpp
     ${IVW_MODULE_DIR}/base/processors/volumeexport.cpp
     ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.cpp
