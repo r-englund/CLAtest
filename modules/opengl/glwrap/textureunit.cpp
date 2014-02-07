@@ -66,7 +66,7 @@ void TextureUnit::initialize(int numUnits) {
 }
 
 void TextureUnit::deinitialize(){
-    if (!textureUnits_) {
+    if (textureUnits_) {
         delete textureUnits_;
     }
 }
