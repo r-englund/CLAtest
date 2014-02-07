@@ -169,7 +169,7 @@ void CollapsibleGroupBoxWidgetQt::updateVisibility() {
     if (visibilityMode == DEVELOPMENT) {
         this->setContextMenuPolicy(Qt::CustomContextMenu);
 
-        for (size_t i= 0; i<properties_.size(); i++) {
+        for (size_t i=0; i<properties_.size(); i++) {
             if (properties_[i]->getVisibilityMode()!= INVISIBLE) {
                 this->setVisible(true);
                 break;
@@ -182,7 +182,7 @@ void CollapsibleGroupBoxWidgetQt::updateVisibility() {
     if (visibilityMode == APPLICATION) {
         this->setContextMenuPolicy(Qt::NoContextMenu);
 
-        for (size_t i= 0; i<properties_.size(); i++) {
+        for (size_t i=0; i<properties_.size(); i++) {
             if (properties_[i]->getVisibilityMode()== APPLICATION) {
                 this->setVisible(true);
                 break;

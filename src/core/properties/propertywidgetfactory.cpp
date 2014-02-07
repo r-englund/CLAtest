@@ -51,7 +51,7 @@ void PropertyWidgetFactory::registerObject(PropertyWidgetFactoryObject* property
     for (WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
         if (sematics == it->second->getSematics()) {
             LogWarn("Adding a PropertyWidget for a Property (" << className
-                    << ") and senamics (" << sematics << ") that is already registed");
+                    << ") and semantics (" << sematics << ") that is already registed.");
         }
     }
 
@@ -71,7 +71,7 @@ PropertyWidget* PropertyWidgetFactory::create(Property* property) {
     for (WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
         if (PropertySemantics::Default == it->second->getSematics()) {
             LogWarn("Requested property widget semantics ("<< sematics <<") for property ("
-                    <<property->getClassName()<<") does not exist, returning Deafult senamic");
+                    <<property->getClassName()<<") does not exist, returning default semantics.");
             return it->second->create(property);
         }
     }

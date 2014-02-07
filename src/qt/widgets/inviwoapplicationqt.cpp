@@ -120,7 +120,7 @@ void InviwoApplicationQt::playSound(unsigned int soundID) {
 
 
 void InviwoApplicationQt::initialize(registerModuleFuncPtr regModuleFunc) {
-    LogInfoCustom("InviwoInfo","QT Version " << QT_VERSION_STR);
+    LogInfoCustom("InviwoInfo", "Qt Version " << QT_VERSION_STR);
     InviwoApplication::initialize(regModuleFunc);
     // Since QtWidgets are not a module we have to register it our self
     InviwoModule* module = new QtWidgetModule();

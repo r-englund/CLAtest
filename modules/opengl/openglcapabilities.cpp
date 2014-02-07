@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "openglcapabilities.h"
+#include "glwrap/textureunit.h"
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/logcentral.h>
 #include <inviwo/core/util/stringconversion.h>
@@ -406,6 +407,7 @@ void OpenGLCapabilities::retrieveStaticInfo(){
         glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS_ARB, (GLint*)&numTexUnits_);
     if (getNumTexUnits() < 0)
         glGetIntegerv(GL_MAX_TEXTURE_UNITS, (GLint*)&numTexUnits_);
+    TextureUnit::initialize(numTexUnits_);
 
 
     //FBO

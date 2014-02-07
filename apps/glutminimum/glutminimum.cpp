@@ -69,7 +69,7 @@ void deinitialize() {
     if (app) app->deinitialize();
 
     delete app;
-    app = 0;
+    app = NULL;
     //for(unsigned int i=0; i<CanvasGLUT::canvasCount_; ++i)
     //    delete CanvasGLUT::canvases_[i];
 }

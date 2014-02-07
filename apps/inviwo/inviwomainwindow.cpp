@@ -509,7 +509,7 @@ void InviwoMainWindow::showAboutBox() {
     aboutText.append("Rickard Englund, Daniel J&ouml;nsson, Sathish Kottravel, Timo Ropinski, Peter Steneteg, Erik Sund&eacute;n</p>");
     aboutText.append("<p><b>Additional Developers:</b><br>");
     aboutText.append("Alexander Johansson, Johan Noren, Viktor Axelsson</p>");
-    aboutText.append("<p><b>Former Team Members:</b><br>");
+    aboutText.append("<p><b>Former Developers:</b><br>");
     aboutText.append("Hans-Christian Helltegen, Andreas Valter, Emanuel Winblad</p>");
     QMessageBox::about(this, QString::fromStdString("Inviwo V"+IVW_VERSION), QString::fromStdString(aboutText));
 }
