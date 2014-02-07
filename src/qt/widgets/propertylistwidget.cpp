@@ -120,7 +120,9 @@ void PropertyListWidget::changeName(std::string oldName, std::string newName) {
     if (it != propertyWidgetMap_.end()) {
         CollapsibleGroupBoxWidgetQt* processorPropertyWidget = dynamic_cast<CollapsibleGroupBoxWidgetQt*>(it->second);
         processorPropertyWidget->setIdentifier(newName);
-        const_cast<std::string&>(it->first) = newName;
+
+        propertyWidgetMap_.erase(it);
+        propertyWidgetMap_[newName] = processorPropertyWidget;
     }
 }
 
