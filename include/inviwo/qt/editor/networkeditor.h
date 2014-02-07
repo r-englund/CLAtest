@@ -110,6 +110,8 @@ public:
 
     void updateLinkGraphicsItems();
 
+    void renamingFinished();
+
 public slots:
     void managePortInspectors();
     void workerThreadReset();
@@ -211,11 +213,9 @@ private:
 
     QPointF snapToGrid(QPointF pos);
     void drawBackground(QPainter* painter, const QRectF& rect);
-    std::string obtainUniqueProcessorID(std::string) const;
 
     std::string filename_;
     bool renamingProcessor_;
-    ProcessorGraphicsItem* lastEditedProcessorGraphicsItem_;
 };
 
 class IVW_QTEDITOR_API ProcessorWorkerQt : public QObject {

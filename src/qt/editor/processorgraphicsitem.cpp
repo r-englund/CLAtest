@@ -378,17 +378,22 @@ bool ProcessorGraphicsItem::isEditingProcessorName() {
 void ProcessorGraphicsItem::setIdentifier(QString text) {
     std::string oldName = getProcessor()->getIdentifier();
     std::string newName = text.toLocal8Bit().constData();
+    if(oldName == newName)
+        return;
     if(newName.size()==0){
         nameLabel_->setText(oldName.c_str());
         return;
     }
-    getProcessor()->setIdentifier(newName);
+    std::string updatedNewName = getProcessor()->setIdentifier(newName);
+    if(updatedNewName != newName){
+        nameLabel_->setText(updatedNewName.c_str());
+    }
     ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
 
     if (processorWidgetQt)
-        processorWidgetQt->setWindowTitle(text);
+        processorWidgetQt->setWindowTitle(updatedNewName.c_str());
 
-    PropertyListWidget::instance()->changeName(oldName, newName);
+    PropertyListWidget::instance()->changeName(oldName, updatedNewName);
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant& value) {
@@ -443,6 +448,7 @@ void ProcessorGraphicsItem::updateMetaData() {
 
 void ProcessorGraphicsItem::notify() {
     if (nameLabel_->isFocusOut()) {
+        NetworkEditor::getPtr()->renamingFinished();
         setIdentifier(nameLabel_->text());
         nameLabel_->setNoFocusOut();
     }

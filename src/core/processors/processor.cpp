@@ -36,6 +36,8 @@
 
 namespace inviwo {
 
+std::set<std::string> Processor::usedIdentifiers_;
+
 ProcessorClassName(Processor, "Processor");
 ProcessorCategory(Processor, "undefined");
 ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL);
@@ -43,11 +45,13 @@ ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL);
 Processor::Processor()
     : PropertyOwner(), ProcessorObservable()
     , processorWidget_(0)
-    , identifier_("undefined")
+    , identifier_()
     , initialized_(false) {
+        setIdentifier("undefined");
 }
 
 Processor::~Processor() {
+    usedIdentifiers_.erase(identifier_);
     while (!metaData_.empty()) {
         delete metaData_.back();
         metaData_.pop_back();
@@ -76,8 +80,23 @@ void Processor::addPort(Outport& port, std::string portDependencySet) {
     addPort(&port, portDependencySet);
 }
 
-void Processor::setIdentifier(const std::string& identifier) {
-    identifier_ = identifier;
+std::string Processor::setIdentifier(const std::string& identifier) {
+    if(identifier == identifier_) //nothing changed
+        return identifier_;
+
+    if(usedIdentifiers_.find(identifier_) != usedIdentifiers_.end()){
+        usedIdentifiers_.erase(identifier_); //remove old identifier
+    }
+
+    std::string baseIdentifier = identifier;
+    std::string newIdentifier = identifier;
+    int i = 1;
+    while(usedIdentifiers_.find(newIdentifier) != usedIdentifiers_.end()){
+        newIdentifier = baseIdentifier + toString(i++);
+    }
+    usedIdentifiers_.insert(newIdentifier);
+    identifier_ = newIdentifier;
+    return identifier_;
 }
 
 std::string Processor::getIdentifier() const {
@@ -264,6 +283,7 @@ void Processor::serialize(IvwSerializer& s) const {
     s.serialize("identifier", identifier_, true);
     s.serialize("MetaDataList", metaData_, "MetaData") ;
 
+
     if (interactionHandlers_.size() != 0)
         s.serialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
 
@@ -272,9 +292,11 @@ void Processor::serialize(IvwSerializer& s) const {
 
 void Processor::deserialize(IvwDeserializer& d) {
     std::string className;
+    std::string identifier;
     d.deserialize("type", className, true);
-    d.deserialize("identifier", identifier_, true);
+    d.deserialize("identifier", identifier, true);
     d.deserialize("MetaDataList", metaData_, "MetaData") ;
+    setIdentifier(identifier);
 
     if (interactionHandlers_.size() != 0)
         d.deserialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");

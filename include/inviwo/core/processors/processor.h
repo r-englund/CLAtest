@@ -72,8 +72,13 @@ public:
     virtual ~Processor();
 
     InviwoProcessorInfo();
-
-    void setIdentifier(const std::string& identifier);
+    
+    /**
+     * Sets the identifier of the Processor. If there already exist a processor with that identifier it will append a number, starting at 2 to ensure uniqueness of identifiers.
+     * @param the new identifier
+     * @return The identifier that was set including eventual appended number
+     */
+    std::string setIdentifier(const std::string& identifier);
     std::string getIdentifier() const;
 
     void setProcessorWidget(ProcessorWidget* processorWidget);
@@ -144,6 +149,8 @@ private:
     std::vector<MetaData*> metaData_;
 
     Group<std::string, Port*> portDependencySets_;
+
+    static std::set<std::string> usedIdentifiers_;
 
     bool initialized_;
 };

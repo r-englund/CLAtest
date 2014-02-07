@@ -76,8 +76,7 @@ NetworkEditor::NetworkEditor() :
     , inspection_()
     , gridSnapping_(true)
     , filename_("")
-    , renamingProcessor_(false)
-    , lastEditedProcessorGraphicsItem_(0) {
+    , renamingProcessor_(false) {
     setSceneRect(-1000,-1000,1000,1000);
     workerThreadReset();
     processorNetwork_ = new ProcessorNetwork();
@@ -118,7 +117,7 @@ NetworkEditor::~NetworkEditor() {
 void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showProcessor, bool selectProcessor, bool showPropertyWidgets,
                                  bool showProcessorWidget) {
     // add the processor to the network
-    processor->setIdentifier(obtainUniqueProcessorID(processor->getClassName()));
+    processor->setIdentifier((processor->getClassName()));
     processor->initialize();
     processorNetwork_->addProcessor(processor);
     // add processor representations
@@ -445,6 +444,9 @@ void  NetworkEditor::updateLinkGraphicsItems() {
     }
 }
 
+void NetworkEditor::renamingFinished(){
+    renamingProcessor_ = false;
+}
 
 //////////////////////////////////////
 //   PORT INSPECTOR FUNCTIONALITY   //
@@ -697,7 +699,7 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
         Processor* processor = processors[i];
         std::string newIdentifier = identifierPrefix+"_"+processor->getIdentifier();
         addProcessor(processor, QPointF(pos.x, pos.y), false, false, false);
-        processor->setIdentifier(obtainUniqueProcessorID(newIdentifier));
+        processor->setIdentifier(newIdentifier);
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
 
         if (canvasProcessor) {
@@ -1094,8 +1096,7 @@ void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void NetworkEditor::keyPressEvent(QKeyEvent* e) {
-    if(!renamingProcessor_  ||  !(lastEditedProcessorGraphicsItem_ && lastEditedProcessorGraphicsItem_->isEditingProcessorName())){
-        renamingProcessor_ = false;
+    if(!renamingProcessor_ ){
         if (e->key() == Qt::Key_Delete) {
         
 
@@ -1163,7 +1164,6 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
 
         if (result == renameAction){
             renamingProcessor_ = true;
-            lastEditedProcessorGraphicsItem_ = processorGraphicsItem;
             processorGraphicsItem->editProcessorName();
         }
         else if (result == deleteAction) {
@@ -1511,22 +1511,6 @@ void NetworkEditor::drawBackground(QPainter* painter, const QRectF& rect) {
     painter->drawLines(linesY.data(), linesY.size());
 }
 
-std::string NetworkEditor::obtainUniqueProcessorID(std::string identifierPrefix) const {
-    if (!processorNetwork_->getProcessorByName(identifierPrefix))
-        return identifierPrefix;
-
-    unsigned int idNumber = 1;
-    std::string validProcessorID;
-    validProcessorID = identifierPrefix;
-
-    do {
-        std::stringstream stringStream;
-        stringStream << idNumber++;
-        validProcessorID = identifierPrefix + stringStream.str();
-    } while (processorNetwork_->getProcessorByName(validProcessorID));
-
-    return validProcessorID;
-}
 
 bool NetworkEditor::isLinkDisplayEnabled() {
     Property* prop = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()->getPropertyByIdentifier("displayLinks");
