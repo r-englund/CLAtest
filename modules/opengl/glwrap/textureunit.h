@@ -46,6 +46,7 @@ public:
     virtual ~TextureUnit();
 
     static void initialize(int numUnits);
+    static void deinitialize();
 
     inline GLint getEnum() const { return unitEnum_; }
     inline GLint getUnitNumber() const { return unitNumber_; }

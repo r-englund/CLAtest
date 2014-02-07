@@ -73,7 +73,9 @@ OpenGLCapabilities::OpenGLCapabilities() {
     preferredGLSLProfile_ = "compatibility";
 }
 
-OpenGLCapabilities::~OpenGLCapabilities() {}
+OpenGLCapabilities::~OpenGLCapabilities() {
+    TextureUnit::deinitialize();
+}
 
 void OpenGLCapabilities::printInfo(){
     //OpenGL General Info
