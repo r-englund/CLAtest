@@ -92,7 +92,7 @@ void OrdinalProperty<T>::set(const Property* srcProperty) {
     } else
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
 
-    propertyModified();
+    TemplateProperty<T>::propertyModified();
 }
 
 template <typename T>
