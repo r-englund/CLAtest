@@ -68,7 +68,7 @@ void FileProperty::serialize(IvwSerializer& s) const {
         basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
 
     std::string serializePath;
-    if (URLParser::sameDrive(basePath, absoluteFilePath))
+    if (absoluteFilePath.size() != 0 && URLParser::sameDrive(basePath, absoluteFilePath))
         serializePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     else
         serializePath = absoluteFilePath;
