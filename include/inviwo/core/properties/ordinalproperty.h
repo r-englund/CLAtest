@@ -51,6 +51,8 @@ public:
     T getMaxValue() const;
     T getIncrement() const;
 
+    virtual void set(const T& value) { TemplateProperty<T>::set(value); } // Need to implement this to avoid compiler confusion with set(const Property*)
+    virtual void set(const Property* src);
     void setMinValue(const T& value);
     void setMaxValue(const T& value);
     void setIncrement(const T& value);
@@ -77,6 +79,21 @@ OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayN
       maxValue_(maxValue),
       increment_(increment)
 {}
+
+template <typename T>
+void OrdinalProperty<T>::set(const Property* srcProperty) {
+    const OrdinalProperty<T>* templatedSrcProp = dynamic_cast<const OrdinalProperty<T>*>(srcProperty);
+
+    if (templatedSrcProp) {
+        minValue_ = templatedSrcProp->getMinValue();
+        maxValue_ = templatedSrcProp->getMaxValue();
+        increment_ = templatedSrcProp->getIncrement();
+        value_ = templatedSrcProp->get();
+    } else
+        this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
+
+    propertyModified();
+}
 
 template <typename T>
 T OrdinalProperty<T>::getMinValue() const {
