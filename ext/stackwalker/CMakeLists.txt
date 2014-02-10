@@ -21,6 +21,10 @@ ivw_group("Source Files" ${SOURCE_FILES})
 # Define defintions
 ivw_define_standard_definitions(stackwalker)
 
+if(WIN32)
+add_definitions( "/W0 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4748" )
+endif()
+
 #--------------------------------------------------------------------
 # Create library
 
