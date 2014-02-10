@@ -107,7 +107,7 @@ void VolumeSliceGL::process(){
     shader_->setUniform("volumeParameters_.dimensionsRCP_", vec3(1.0f)/dimensions);
 
     shader_->setUniform("dimension_", vec2(1.0f/outport_.getData()->getDimension().x, 1.0f/outport_.getData()->getDimension().y));
-    float sliceNum = static_cast<float>(sliceNumber_.get())/glm::max<float>(static_cast<float>(sliceNumber_.getMaxValue()-1), 1.f);
+    float sliceNum = (static_cast<float>(sliceNumber_.get())-0.5f)/glm::max<float>(static_cast<float>(sliceNumber_.getMaxValue()), 1.f);
     shader_->setUniform("sliceNum_", sliceNum);
 
     renderImagePlaneRect();
