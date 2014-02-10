@@ -45,6 +45,7 @@ VolumeSliceGL::VolumeSliceGL()
     outport_("image.outport", COLOR_ONLY),
     coordinatePlane_("coordinatePlane", "Coordinate Plane"),
     sliceNumber_("sliceNumber", "Slice Number", 1, 1, 256),
+    tfMappingEnabled_("tfMappingEnabled", "Enable Transfer Function", true),
     transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_),
     shader_(NULL)
 {
@@ -60,6 +61,9 @@ VolumeSliceGL::VolumeSliceGL()
 
     addProperty(sliceNumber_);
 
+    tfMappingEnabled_.onChange(this, &VolumeSliceGL::tfMappingEnabledChanged);
+    addProperty(tfMappingEnabled_);
+
     addProperty(transferFunction_);
 
     volumeDimensions_ = uvec3(256);
@@ -71,6 +75,7 @@ void VolumeSliceGL::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader("volumeslice.frag", false);
     coordinatePlaneChanged();
+    tfMappingEnabledChanged();
     volumeDimensionChanged();
 }
 
@@ -99,7 +104,8 @@ void VolumeSliceGL::process(){
     shader_->activate();
     setGlobalShaderParameters(shader_);
 
-    shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
+    if(tfMappingEnabled_.get())
+        shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
 
     shader_->setUniform("volume_", volUnit.getUnitNumber());
     vec3 dimensions = vec3(volumeGL->getDimension());
@@ -129,6 +135,20 @@ void VolumeSliceGL::coordinatePlaneChanged(){
         case YZ:
             shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "y,z,x");
             break;
+        }
+        shader_->rebuild();
+    }
+}
+
+void VolumeSliceGL::tfMappingEnabledChanged(){
+    if (shader_) {
+        if(tfMappingEnabled_.get()){
+            shader_->getFragmentShaderObject()->addShaderDefine("TF_MAPPING_ENABLED");
+            transferFunction_.setVisible(true);
+        }
+        else{
+            shader_->getFragmentShaderObject()->removeShaderDefine("TF_MAPPING_ENABLED");
+            transferFunction_.setVisible(false);
         }
         shader_->rebuild();
     }

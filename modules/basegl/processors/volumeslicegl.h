@@ -39,6 +39,7 @@
 #include <modules/opengl/processorgl.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
@@ -61,6 +62,7 @@ protected:
     virtual void process();
 
     void coordinatePlaneChanged();
+    void tfMappingEnabledChanged();
     void volumeDimensionChanged();
 
 private:
@@ -70,6 +72,7 @@ private:
     IntOptionProperty coordinatePlane_;  // CoordinatePlane enum (Cannot serialize/deserialize enums so we use an int and cast it)
     IntProperty sliceNumber_;
 
+    BoolProperty tfMappingEnabled_;
     TransferFunctionProperty transferFunction_;
 
     Shader* shader_;

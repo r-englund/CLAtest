@@ -43,6 +43,8 @@ uniform float sliceNum_;
 void main() {
     vec2 texC = gl_FragCoord.xy * screenDimRCP_;
     vec4 voxel = getVoxel(volume_, volumeParameters_, vec3(coordPlanePermute(texC.x, texC.y, sliceNum_)));
-    vec4 color = applyTF(transferFunc_, voxel);
-    FragData0 = color;
+#ifdef TF_MAPPING_ENABLED
+    voxel = applyTF(transferFunc_, voxel);
+#endif
+    FragData0 = voxel;
 }
