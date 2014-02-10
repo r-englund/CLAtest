@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/util/logcentral.h>
+#include <inviwo/core/util/stacktrace.h>
 
 namespace inviwo {
 
@@ -86,7 +87,7 @@ void FileLogger::log(std::string logSource, unsigned int logLevel, const char* f
     (*fileStream_) << "</font><br>" << std::endl;
 }
 
-LogCentral::LogCentral() : logLevel_(Info) {
+LogCentral::LogCentral() : logLevel_(Info) , logStacktrace_(true) {
     loggers_ = new std::vector<Logger*>();
 }
 LogCentral::~LogCentral() {
@@ -111,9 +112,27 @@ void LogCentral::unregisterLogger(Logger* logger) {
 
 void LogCentral::log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber,
                      std::string logMsg) {
+    std::string msg = logMsg;
+    if(logStacktrace_ && logLevel == Error){
+        std::stringstream ss;
+        ss << logMsg;
+        std::vector<std::string> stacktrace = getStackTrace();
+        for(size_t i = 3;i < stacktrace.size();++i){ //start at i == 3 to remove log and getStacktrace from stackgrace
+            ss << std::endl << stacktrace[i];
+        }
+        msg = ss.str();
+    }
     if (logLevel >= logLevel_)
         for (size_t i=0; i<loggers_->size(); i++)
-            loggers_->at(i)->log(logSource, logLevel, fileName, functionName, lineNumber, logMsg);
+            loggers_->at(i)->log(logSource, logLevel, fileName, functionName, lineNumber, msg);
+}
+
+void LogCentral::setLogStacktrace(const bool &logStacktrace){
+    logStacktrace_ = logStacktrace;
+}
+
+bool LogCentral::getLogStacktrace()const{
+    return logStacktrace_;
 }
 
 } // namespace

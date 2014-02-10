@@ -204,6 +204,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/settings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/settings/systemsettings.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/singleton.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/stacktrace.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
@@ -363,6 +364,7 @@ set(SOURCE_FILES
     util/settings/linksettings.cpp    
     util/settings/settings.cpp    
     util/settings/systemsettings.cpp    
+    util/stacktrace.cpp
     util/stringconversion.cpp
     util/systemcapabilities.cpp
     util/timer.cpp
@@ -391,6 +393,7 @@ set(TEST_FILES
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/urlparser-test.h
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/volume-test.h
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/image-test.h
+	${IVW_INCLUDE_DIR}/inviwo/core/unittests/stacktrace-test.h
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/metadata-test.h
 	${IVW_INCLUDE_DIR}/inviwo/core/unittests/serializer-test.h
 )
@@ -428,6 +431,12 @@ ivw_add_dependencies(
     Sigar
     FreeImage
 )
+
+if(WIN32)
+ivw_add_dependencies(
+    stackwalker
+)
+endif()
 
 #Optimize compiliation with PCH etc
 ivw_compile_optimize()

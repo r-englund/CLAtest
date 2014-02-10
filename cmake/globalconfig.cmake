@@ -129,7 +129,6 @@ option(IVW_PROFILING "Enable profiling" OFF)
 option(IVW_ENABLE_MSVC_MEMLEAK_TEST "Run memoryleak test within Visual Studio" OFF)
 #mark_as_advanced(SHARED_LIBS)
 mark_as_advanced(BUILD_SHARED_LIBS)
-mark_as_advanced(IVW_ENABLE_MSVC_MEMLEAK_TEST)
 mark_as_advanced(FORCE GLM_DIR)
 
 if(SHARED_LIBS)

@@ -120,9 +120,13 @@ public:
     void unregisterLogger(Logger* logger);
     void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
 
+    void setLogStacktrace(const bool &logStacktrace = true);
+    bool getLogStacktrace()const;
+
 private:
     unsigned int logLevel_;
     std::vector<Logger*>* loggers_;
+    bool logStacktrace_;
 };
 
 } // namespace
