@@ -88,7 +88,7 @@ void OrdinalProperty<T>::set(const Property* srcProperty) {
         minValue_ = templatedSrcProp->getMinValue();
         maxValue_ = templatedSrcProp->getMaxValue();
         increment_ = templatedSrcProp->getIncrement();
-        value_ = templatedSrcProp->get();
+        this->value_ = templatedSrcProp->get();
     } else
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
 
