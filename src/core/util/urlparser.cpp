@@ -32,7 +32,7 @@
 
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/common/inviwoapplication.h>
-#include <fstream>
+#include <sys/stat.h>
 
 namespace inviwo {
 
@@ -41,8 +41,9 @@ std::string URLParser::addBasePath(const std::string url) {
 }
 
 bool URLParser::fileExists(std::string fileName) {
-    std::ifstream inputFile(fileName.c_str());
-    return inputFile.good();
+    // http://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
+    struct stat buffer;
+    return (stat(fileName.c_str(), &buffer) == 0);
 }
 
 std::string URLParser::getFileDirectory(const std::string url) {
