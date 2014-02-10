@@ -40,12 +40,20 @@ VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders borde
 {}
 
 VolumeRAM::VolumeRAM(const VolumeRAM& rhs)
-    : VolumeRepresentation(rhs), data_(NULL), histogram_(new NormalizedHistogram(rhs.histogram_)), calculatingHistogram_(false) {
+    : VolumeRepresentation(rhs), data_(NULL), histogram_(NULL), calculatingHistogram_(false) {
+    if(rhs.histogram_){
+        histogram_ = new NormalizedHistogram(rhs.histogram_);
+    }
 }
 VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
     if (this != &that) {
         VolumeRepresentation::operator=(that);
-        histogram_ = new NormalizedHistogram(that.histogram_);
+        data_ = NULL;
+        calculatingHistogram_ = false;
+        if(that.histogram_)
+            histogram_ = new NormalizedHistogram(that.histogram_);
+        else
+            histogram_ = NULL;
     }
 
     return *this;

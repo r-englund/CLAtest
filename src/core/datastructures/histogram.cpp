@@ -40,11 +40,18 @@ NormalizedHistogram::NormalizedHistogram(size_t numberOfBins)
     data_ = new std::vector<float>(numberOfBins, 0.f);
 }
 
-NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram* rhs)
-    : maximumBinValue_(rhs->getMaximumBinValue())
-    , valid_(rhs->isValid()) {
-    data_ = new std::vector<float>(rhs->getData()->size(), 0.f);
-    std::copy(rhs->getData()->begin(), rhs->getData()->end(), std::back_inserter(*data_));
+NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram* rhs){
+    if(rhs){
+        maximumBinValue_ = rhs->getMaximumBinValue();
+        valid_ = rhs->isValid();
+        data_ = new std::vector<float>(rhs->getData()->size(), 0.f);
+        std::copy(rhs->getData()->begin(), rhs->getData()->end(), std::back_inserter(*data_));
+    }
+    else{
+        data_ = new std::vector<float>(256, 0.f);
+        maximumBinValue_ = 1.f;
+        valid_ = false;
+    }
 }
 
 NormalizedHistogram::~NormalizedHistogram() {
