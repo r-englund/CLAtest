@@ -143,7 +143,9 @@ void SimpleGraphicsView::mouseDoubleClickEvent(QMouseEvent* e) {
     QGraphicsView::mouseDoubleClickEvent(e);
 }
 
-SimpleGraphicsView::~SimpleGraphicsView() {}
+SimpleGraphicsView::~SimpleGraphicsView() {
+    delete shadowEffect_;
+}
 
 void SimpleGraphicsView::mousePressEvent(QMouseEvent* e) {
     QPoint currentPoint = e->pos();
@@ -523,7 +525,7 @@ ImageEditorWidgetQt::ImageEditorWidgetQt(Property* property) : property_(propert
 ImageEditorWidgetQt::~ImageEditorWidgetQt() {
     if (imageLabelWidget_) {
         imageLabelWidget_->hide();
-        imageLabelWidget_->deleteLater();
+        delete imageLabelWidget_;
     }
 }
 

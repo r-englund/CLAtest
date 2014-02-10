@@ -51,7 +51,7 @@ class IVW_QTWIDGETS_API SphericalFloatVec3PropertyWidgetQt : public PropertyWidg
 
 public:
     SphericalFloatVec3PropertyWidgetQt(FloatVec3Property* property);
-    virtual ~SphericalFloatVec3PropertyWidgetQt() {}
+    virtual ~SphericalFloatVec3PropertyWidgetQt();
 
     void updateFromProperty();
 

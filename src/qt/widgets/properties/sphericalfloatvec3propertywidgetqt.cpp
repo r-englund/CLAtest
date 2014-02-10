@@ -42,7 +42,8 @@ SphericalFloatVec3PropertyWidgetQt::SphericalFloatVec3PropertyWidgetQt(FloatVec3
     : property_(property)
     , valueVec3Max_(property->getMaxValue())
     , valueVec3Min_(property->getMinValue())
-    , valueIncrement_(property->getIncrement()) {
+    , valueIncrement_(property->getIncrement())
+    , settingsWidget_(0){
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
@@ -50,6 +51,10 @@ SphericalFloatVec3PropertyWidgetQt::SphericalFloatVec3PropertyWidgetQt(FloatVec3
 
     if (!property->getReadOnly())
         generatesSettingsWidget();
+}
+
+SphericalFloatVec3PropertyWidgetQt::~SphericalFloatVec3PropertyWidgetQt(){
+    delete settingsWidget_;
 }
 
 void SphericalFloatVec3PropertyWidgetQt::generateWidget() {

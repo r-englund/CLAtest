@@ -99,7 +99,7 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property* property)
     this->setFixedSize(300,125);
 }
 
-#define DELETE_LATER(prop) if(prop) prop->deleteLater()
+#define DELETE_LATER(prop) if(prop) delete prop;
 PropertySettingsWidgetQt::~PropertySettingsWidgetQt() {
     DELETE_LATER(lineEditMaxX_);
     DELETE_LATER(lineEditMaxY_);
@@ -112,8 +112,7 @@ PropertySettingsWidgetQt::~PropertySettingsWidgetQt() {
     DELETE_LATER(lineEditIcrementX_);
     DELETE_LATER(lineEditIcrementY_);
     DELETE_LATER(lineEditIcrementZ_);
-    DELETE_LATER(lineEditIcrementW_);
-    DELETE_LATER(lineEditIcrementW_);
+    DELETE_LATER(lineEditIcrementW_);;
     DELETE_LATER(xValueLabel_);
     DELETE_LATER(yValueLabel_);
     DELETE_LATER(zValueLabel_);
