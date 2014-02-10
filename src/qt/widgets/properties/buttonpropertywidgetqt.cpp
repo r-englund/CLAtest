@@ -54,7 +54,8 @@ void ButtonPropertyWidgetQt::generateWidget() {
 }
 
 void ButtonPropertyWidgetQt::handleButton() {
-    property_->propertyModified();
+    if(!property_->getReadOnly())
+        property_->propertyModified();
 }
 void ButtonPropertyWidgetQt::updateFromProperty() {}
 
