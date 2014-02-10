@@ -432,6 +432,12 @@ ivw_add_dependencies(
     FreeImage
 )
 
+if(WIN32)
+ivw_add_dependencies(
+    stackwalker
+)
+endif()
+
 #Optimize compiliation with PCH etc
 ivw_compile_optimize()
 
