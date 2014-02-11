@@ -30,6 +30,7 @@
  *
  *********************************************************************************/
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/ports/portinspector.h>
 #include <inviwo/core/io/serialization/ivwserialization.h>
 

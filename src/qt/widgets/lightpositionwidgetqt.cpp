@@ -48,7 +48,6 @@ LightPositionWidgetQt::~LightPositionWidgetQt() {
 void inviwo::LightPositionWidgetQt::generateWidget() {
     gradientPixmap_ = new QPixmap(100,100);
     gradientPixmap_->fill(Qt::transparent);
-    this->setStyleSheet("border: 2px solid");
     this->setFixedWidth(100);
     this->setFixedHeight(100);
     gradient_ = new QRadialGradient(50, 50, 50, 50, 50);

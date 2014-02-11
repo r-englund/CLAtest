@@ -43,6 +43,7 @@
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
+#include <inviwo/core/util/dialogfactory.h>
 
 namespace inviwo {
 

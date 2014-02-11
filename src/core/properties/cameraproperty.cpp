@@ -30,6 +30,7 @@
  *
  *********************************************************************************/
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/cameraproperty.h>
