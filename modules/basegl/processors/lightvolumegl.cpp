@@ -292,6 +292,12 @@ bool LightVolumeGL::lightSourceChanged(){
     switch(lightSource_.getData()->getLightSourceType())
     {
         case LightSourceType::LIGHT_DIRECTIONAL:{
+            if(lightType_ != LightSourceType::LIGHT_DIRECTIONAL){
+                lightType_ = LightSourceType::LIGHT_DIRECTIONAL;
+                propagationShader_->getFragmentShaderObject()->removeShaderDefine("POINT_LIGHT");
+                propagationShader_->getFragmentShaderObject()->build();
+                propagationShader_->link();
+            }
             const DirectionalLight* directionLight = dynamic_cast<const DirectionalLight*>(lightSource_.getData());
             if(directionLight){
                 directionToCenterOfVolume = directionLight->getDirection();
@@ -300,6 +306,12 @@ bool LightVolumeGL::lightSourceChanged(){
             break;
         }
         case LightSourceType::LIGHT_POINT:{
+            if(lightType_ != LightSourceType::LIGHT_POINT){
+                lightType_ = LightSourceType::LIGHT_POINT;
+                propagationShader_->getFragmentShaderObject()->addShaderDefine("POINT_LIGHT");
+                propagationShader_->getFragmentShaderObject()->build();
+                propagationShader_->link();
+            }
             const PointLight* pointLight = dynamic_cast<const PointLight*>(lightSource_.getData());
             if(pointLight){
                 mat4 toWorld = inport_.getData()->getWorldTransform();
@@ -399,7 +411,8 @@ void LightVolumeGL::supportColoredLightChanged(){
         else
             propagationShader_->getFragmentShaderObject()->removeShaderDefine("SUPPORT_LIGHT_COLOR");
 
-        propagationShader_->build();
+        propagationShader_->getFragmentShaderObject()->build();
+        propagationShader_->link();
     }
 
     if(outport_.hasData()){
