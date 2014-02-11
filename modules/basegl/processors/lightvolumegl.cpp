@@ -32,7 +32,7 @@
 
 #include "lightvolumegl.h"
 #include <modules/opengl/volume/volumegl.h>
-#include <inviwo/core/datastructures/light/diffuselight.h>
+#include <inviwo/core/datastructures/light/pointlight.h>
 #include <inviwo/core/datastructures/light/directionallight.h>
 
 namespace inviwo {
@@ -113,6 +113,7 @@ LightVolumeGL::LightVolumeGL()
       mergeFBO_(NULL),
       internalVolumesInvalid_(false),
       volumeDimOut_(uvec3(0)),
+      lightDir_(vec3(0.f)),
       lightPos_(vec3(0.f)),
       lightColor_(vec4(1.f)),
       calculatedOnes_(false)
@@ -214,6 +215,7 @@ void LightVolumeGL::process() {
     propagationShader_->setUniform("volume_", volUnit.getUnitNumber());
     propagationShader_->setUniform("volumeParameters_.dimensions_", volumeDimInF_);
     propagationShader_->setUniform("volumeParameters_.dimensionsRCP_", volumeDimInFRCP_);
+    propagationShader_->setUniform("volumeParameters_.volumeToWorldTransform_", inport_.getData()->getWorldTransform());
 
     propagationShader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
 
@@ -232,7 +234,16 @@ void LightVolumeGL::process() {
 
         propagationShader_->setUniform("lightVolume_", lightVolUnit[i].getUnitNumber());
         propagationShader_->setUniform("permutationMatrix_", propParams_[i].axisPermutation);
-        propagationShader_->setUniform("permutedLightDirection_", propParams_[i].permutedLightDirection);
+
+        if(lightSource_.getData()->getLightSourceType() == LightSourceType::LIGHT_POINT){
+            propagationShader_->setUniform("pointLight_", true);
+            propagationShader_->setUniform("lightPos_", lightPos_);
+            propagationShader_->setUniform("permutedLightMatrix_", propParams_[i].axisPermutationLight);
+        }
+        else{
+            propagationShader_->setUniform("pointLight_", false);
+            propagationShader_->setUniform("permutedLightDirection_", propParams_[i].permutedLightDirection);     
+        }
 
         for(unsigned int z=0; z<volumeDimOut_.z; ++z){
             glFramebufferTexture3DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_3D, propParams_[i].vol->getTexture()->getID(), 0, z);
@@ -275,20 +286,36 @@ void LightVolumeGL::process() {
 }
 
 bool LightVolumeGL::lightSourceChanged(){
-    updatePermuationMatrices(lightSource_.getData()->getLightDirection(), &propParams_[0], &propParams_[1]);
-
     vec3 color = vec3(1.f);
+    vec3 directionToCenterOfVolume = vec3(0.f);
 
-    const DirectionalLight* directionLight = dynamic_cast<const DirectionalLight*>(lightSource_.getData());
-    if(directionLight){
-        color = directionLight->getIntensity();
-    }
-    else{
-        const DiffuseLight* diffuseLight = dynamic_cast<const DiffuseLight*>(lightSource_.getData());
-        if(diffuseLight){
-            color = diffuseLight->getIntensity();
+    switch(lightSource_.getData()->getLightSourceType())
+    {
+        case LightSourceType::LIGHT_DIRECTIONAL:{
+            const DirectionalLight* directionLight = dynamic_cast<const DirectionalLight*>(lightSource_.getData());
+            if(directionLight){
+                directionToCenterOfVolume = directionLight->getDirection();
+                color = directionLight->getIntensity();
+            }
+            break;
         }
+        case LightSourceType::LIGHT_POINT:{
+            const PointLight* pointLight = dynamic_cast<const PointLight*>(lightSource_.getData());
+            if(pointLight){
+                mat4 toWorld = inport_.getData()->getWorldTransform();
+                vec4 volumeCenterWorld = toWorld * vec4(0.f, 0.f, 0.f, 1.f);
+                lightPos_ = pointLight->getPosition();
+                directionToCenterOfVolume = glm::normalize(volumeCenterWorld.xyz() - lightPos_);
+                color = pointLight->getIntensity();
+            }
+            break;
+        }
+        default:
+            LogWarn("Light source not supported, can only handle Directional or Point Light");
+            break;
     }
+
+    updatePermuationMatrices(directionToCenterOfVolume, &propParams_[0], &propParams_[1]);
 
     bool lightColorChanged = false;
     if(color.r != lightColor_.r){
@@ -389,11 +416,13 @@ void LightVolumeGL::borderColorTextureParameterFunction(){
         glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, borderColor_);
 }
 
-void LightVolumeGL::updatePermuationMatrices(const vec3& lightPos, PropagationParameters* closest, PropagationParameters* secondClosest){
-    if(calculatedOnes_ && lightPos==lightPos_)
+void LightVolumeGL::updatePermuationMatrices(const vec3& lightDir, PropagationParameters* closest, PropagationParameters* secondClosest){
+    if(calculatedOnes_ && lightDir==lightDir_)
         return;
 
-    vec3 invertedLightPos = -lightPos;
+    lightDir_ = lightDir;
+
+    vec3 invertedLightPos = -lightDir;
     vec3 invertedLightPosNorm = glm::normalize(invertedLightPos);
 
     //Calculate closest and second closest axis-aligned face.
@@ -416,7 +445,7 @@ void LightVolumeGL::updatePermuationMatrices(const vec3& lightPos, PropagationPa
         }
     }
 
-    vec4 tmpLightDir = vec4(lightPos.x, lightPos.y, lightPos.z, 1.f);
+    vec4 tmpLightDir = vec4(lightDir.x, lightDir.y, lightDir.z, 1.f);
 
     //Perform permutation calculation for closest face
     definePermutationMatrices(closest->axisPermutation, closest->axisPermutationLight, closestFace);

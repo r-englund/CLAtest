@@ -49,7 +49,9 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/layerramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/layerramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/image/layerrepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/light/directionallight.h 
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/light/diffuselight.h 
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/light/directionallight.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/light/pointlight.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/representationconverterfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/spatialdata.h

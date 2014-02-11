@@ -26,21 +26,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file author: Daniel Jönsson
+ * Main file author: Erik Sundén
  *
  *********************************************************************************/
 
-#include "directionallightsourceprocessor.h"
+#include "pointlightsourceprocessor.h"
 
 namespace inviwo {
 
-ProcessorClassName(DirectionalLightSourceProcessor, "Directional light source"); 
-ProcessorCategory(DirectionalLightSourceProcessor, "Light source");
-ProcessorCodeState(DirectionalLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
+ProcessorClassName(PointLightSourceProcessor, "Point light source"); 
+ProcessorCategory(PointLightSourceProcessor, "Light source");
+ProcessorCodeState(PointLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
 
-DirectionalLightSourceProcessor::DirectionalLightSourceProcessor()
+PointLightSourceProcessor::PointLightSourceProcessor()
     : Processor()
-    , outport_("DirectionalLightSource")
+    , outport_("PointLightSource")
     , lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f)
     , lightSize_("lightSize", "Light size", vec2(1.5f, 1.5f), vec2(0.0f, 0.0f), vec2(3.0f, 3.0f))
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
@@ -63,20 +63,20 @@ DirectionalLightSourceProcessor::DirectionalLightSourceProcessor()
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
 
-    lightSource_ = new DirectionalLight();
+    lightSource_ = new PointLight();
 }
 
-DirectionalLightSourceProcessor::~DirectionalLightSourceProcessor() {
+PointLightSourceProcessor::~PointLightSourceProcessor() {
     delete lightSource_;
 }
 
-void DirectionalLightSourceProcessor::process() {
-   updateDirectionalLightSource(lightSource_);
+void PointLightSourceProcessor::process() {
+   updatePointLightSource(lightSource_);
    outport_.setData(lightSource_, false);
 }
 
-void DirectionalLightSourceProcessor::updateDirectionalLightSource(DirectionalLight* lightSource) {
-    vec3 lightPos = vec3(0.5f, 0.5f, 0.5f) + lightPosition_.get()*10.f/*+vec3(20.f, 20.f, 20.f)*/;
+void PointLightSourceProcessor::updatePointLightSource(PointLight* lightSource) {
+    vec3 lightPos = vec3(0.5f, 0.5f, 0.5f) + lightPosition_.get();
     vec3 dir = glm::normalize(vec3(0.5f, 0.5f, 0.5f)-lightPos);
 
     mat4 transformationMatrix = getLightTransformationMatrix(lightPos, dir);
@@ -87,7 +87,7 @@ void DirectionalLightSourceProcessor::updateDirectionalLightSource(DirectionalLi
     vec3 diffuseLight = lightDiffuse_.get().xyz();
     lightSource->setIntensity(lightPowerProp_.get()*diffuseLight);
 
-    lightSource->setDirection(dir);
+    lightSource->setPosition(lightPosition_.get());
 }
 
 } // namespace

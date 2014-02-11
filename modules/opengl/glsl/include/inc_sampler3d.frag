@@ -35,6 +35,7 @@
 struct VOLUME_PARAMETERS {
     vec3 dimensions_;
     vec3 dimensionsRCP_;
+    mat4 volumeToWorldTransform_;
 };
 
 vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {

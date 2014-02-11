@@ -40,6 +40,10 @@ uniform VOLUME_PARAMETERS volumeParameters_;
 uniform VOLUME_TYPE lightVolume_;
 uniform VOLUME_PARAMETERS lightVolumeParameters_;
 
+uniform bool pointLight_;
+uniform vec3 lightPos_;
+
+uniform mat4 permutedLightMatrix_;
 uniform vec4 permutedLightDirection_;
 
 in vec4 texCoord_;
@@ -50,10 +54,18 @@ vec4 propagateLight(in vec3 coord, in vec3 coordPerm) {
     //Retrieve voxel color
     vec4 voxel = getVoxel(volume_, volumeParameters_, coordPerm);
     vec4 color = applyTF(transferFunc_, voxel);
-    //Calculate previous permuted coordinate (directional light)
-    vec3 previousPermutedCoord = vec3(
-                                     coord.xy - permutedLightDirection_.xy * lightVolumeParameters_.dimensionsRCP_.z,
-                                     coord.z - lightVolumeParameters_.dimensionsRCP_.z);
+    
+    //Calculate previous permuted coordinate 
+    vec4 permutedLightDirection = permutedLightDirection_;
+    vec4 worldPos;
+    if(pointLight_){
+        //Point Light
+        worldPos = volumeParameters_.volumeToWorldTransform_ * vec4(coordPerm, 1.0);
+        permutedLightDirection = permutedLightMatrix_ * normalize(worldPos - vec4(lightPos_, 1.0));
+    }
+    vec3 previousPermutedCoord = vec3(coord.xy - permutedLightDirection.xy * lightVolumeParameters_.dimensionsRCP_.z,
+                                      coord.z - lightVolumeParameters_.dimensionsRCP_.z);
+
     //Retrieve previous light value
     vec4 lightVoxel = getVoxel(lightVolume_, lightVolumeParameters_, previousPermutedCoord);
     //Return newly calculated propagate light value

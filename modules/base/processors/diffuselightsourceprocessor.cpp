@@ -80,22 +80,15 @@ void DiffuseLightSourceProcessor::updateLightSource(DiffuseLight* lightSource) {
     vec3 lightPos = vec3(0.5f, 0.5f, 0.5f) + lightPosition_.get();
     vec3 dir = glm::normalize(vec3(0.5f, 0.5f, 0.5f)-lightPos);
 
-    vec3 A = vec3(0,0,1);
-    vec3 B = dir;//B(0,1,0);
-    float angle = acos(glm::dot(A,B));
-    vec3 rotationAxis = glm::normalize(glm::cross(A, B));
-
-#ifndef GLM_FORCE_RADIANS
-    angle = glm::degrees(angle);
-#endif // GLM_FORCE_RADIANS
-   
-    mat4 transformationMatrix = glm::translate(lightPos)*glm::rotate(angle, rotationAxis);
-
+    mat4 transformationMatrix = getLightTransformationMatrix(lightPos, dir);
     lightSource->setObjectToTexture(transformationMatrix);
+
     lightSource->setSize(lightSize_.get());
+
     vec3 diffuseLight = lightDiffuse_.get().xyz();
     lightSource->setIntensity(lightPowerProp_.get()*diffuseLight);
-    lightSource->setLightDirection(dir);
+
+    lightSource->setNormal(dir);
 }
 
 } // namespace

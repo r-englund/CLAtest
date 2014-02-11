@@ -26,52 +26,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file author: Daniel Jönsson
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#include <inviwo/core/datastructures/baselightsource.h>
+#ifndef IVW_POINT_LIGHT_SOURCE_PROCESSOR_H
+#define IVW_POINT_LIGHT_SOURCE_PROCESSOR_H
 
+#include <modules/base/basemoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/light/pointlight.h>
+#include <inviwo/core/ports/dataoutport.h>
+#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/vectorproperties.h>
 
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 
-PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale)
-{
-    PackedLightSource light;
-    light.tm = lightsource->getObjectToTexture();
-    light.radiance = vec4(radianceScale*lightsource->getPower(), 1.f);
-    light.type = lightsource->getLightSourceType();
-    light.area = lightsource->getArea();
-    light.cosFOV = std::cos(glm::radians(lightsource->getFieldOfView()/2.f));
-    light.size = lightsource->getSize();
-    return light;
-}
+class IVW_MODULE_BASE_API PointLightSourceProcessor : public Processor {
+public:
+    PointLightSourceProcessor();
+    virtual ~PointLightSourceProcessor();
 
-uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources)
-{
-    uvec2 samplesPerLight;
-    //samplesPerLight.y = nPhotons.y / nLightSources;
-    //samplesPerLight.x = (int)sqrt((float)nPhotons.x*samplesPerLight.y);
-    unsigned int nPhotons = nSamples.x*nSamples.y;
-    samplesPerLight.y = nPhotons / nLightSources;
-    samplesPerLight.x = (unsigned int)sqrt((float)samplesPerLight.y);
-    samplesPerLight.y = samplesPerLight.x*samplesPerLight.x;
-    return samplesPerLight;
-}
+    InviwoProcessorInfo();
 
-mat4 getLightTransformationMatrix(vec3 pos, vec3 dir){
-    vec3 A = vec3(0,0,1);
-    vec3 B = dir;//B(0,1,0);
-    float angle = acos(glm::dot(A,B));
-    vec3 rotationAxis = glm::normalize(glm::cross(A, B));
+protected:
+    virtual void process();
 
-#ifndef GLM_FORCE_RADIANS
-    angle = glm::degrees(angle);
-#endif // GLM_FORCE_RADIANS
+    /**
+     * Update light source parameters. Transformation will be given in texture space.
+     * 
+     * @param lightSource 
+     * @return 
+     */
+    void updatePointLightSource(PointLight* lightSource);
 
-    mat4 transformationMatrix = glm::translate(pos)*glm::rotate(angle, rotationAxis);
-    return transformationMatrix;
-}
+private:
+    DataOutport<LightSource> outport_;
 
-}
+    FloatProperty lightPowerProp_;
+    FloatVec2Property lightSize_;
+
+    FloatVec4Property lightDiffuse_;
+    FloatVec3Property lightPosition_;
+
+    PointLight* lightSource_;
+};
+
+} // namespace
+
+#endif // IVW_POINT_LIGHT_SOURCE_PROCESSOR_H

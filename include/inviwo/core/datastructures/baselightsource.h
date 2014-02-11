@@ -76,20 +76,6 @@ public:
     void setFieldOfView(float FOVInRadians) { fieldOfView_ = FOVInRadians; }
 
     /**
-     * Get normalized general direction of light source.
-     *
-     * @return Normalized direction of light source.
-     */
-    const vec3& getLightDirection() const { return lightDirection_; }
-
-    /**
-     * Set normalized direction of light source.
-     *
-     * @param direction Normalized direction of light source.
-     */
-    void setLightDirection(const vec3& direction) { lightDirection_ = direction; }
-
-    /**
      * Get width and height in texture space.
      *
      * @return
@@ -103,10 +89,8 @@ public:
      */
     void setSize(const vec2& newSize) { size_ = newSize; }
 protected:
-
     mat4 objectToTextureSpaceMatrix_; // Transformation matrix from object to texture space coordinates
     float fieldOfView_; // Field of view in radians
-    vec3 lightDirection_;
     vec2 size_; // width, height in texture space
 };
 
@@ -132,6 +116,9 @@ IVW_CORE_API PackedLightSource baseLightToPackedLight(const LightSource* lightso
 // x component contains the amount of samples to take in x and y dimension
 // y component is the number of samples taken for each light source (x*x)
 IVW_CORE_API uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources);
+
+// Calculate the object to texture transformation matrix for the light
+IVW_CORE_API mat4 getLightTransformationMatrix(vec3 pos, vec3 dir);
 
 
 } // namespace inviwo

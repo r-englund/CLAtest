@@ -109,6 +109,7 @@ private:
     vec3 volumeDimOutFRCP_;
     vec3 volumeDimInF_;
     vec3 volumeDimInFRCP_;
+    vec3 lightDir_;
     vec3 lightPos_;
     vec4 lightColor_;
     bool calculatedOnes_;

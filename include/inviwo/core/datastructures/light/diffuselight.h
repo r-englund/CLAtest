@@ -56,6 +56,20 @@ public:
     LightSourceType::Enum getLightSourceType() const { return LightSourceType::LIGHT_AREA; }
 
     /**
+     * Get normal of area light.
+     *
+     * @return Area light normal.
+     */
+    const vec3& getNormal() const { return normal_; }
+
+    /**
+     * Set normal of area light.
+     *
+     * @param direction Normal of light source.
+     */
+    void setNormal(const vec3& normal) { normal_ = normal; }
+
+    /**
      * Set the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
      *
      * @param power
@@ -70,6 +84,7 @@ public:
     const vec3& getIntensity() const { return intensity_; }
 
 protected:
+    vec3 normal_;
     vec3 intensity_; // Color of light source, flux density per solid angle (given in watt per steradian W*s*r^-1)
 
 };

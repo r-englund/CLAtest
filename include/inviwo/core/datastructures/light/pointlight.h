@@ -26,12 +26,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file author: Daniel Jönsson
+ * Main file author: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_DIRECTIONAL_LIGHT_H
-#define IVW_DIRECTIONAL_LIGHT_H
+#ifndef IVW_POINT_LIGHT_H
+#define IVW_POINT_LIGHT_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
@@ -39,10 +39,10 @@
 
 namespace inviwo {
 
-class DirectionalLight: public LightSource {
+class PointLight: public LightSource {
 public:
-    DirectionalLight(): LightSource() {}
-    virtual ~DirectionalLight() {};
+    PointLight(): LightSource() {}
+    virtual ~PointLight() {};
 
     virtual float getArea() const { return size_.x*size_.y; }
     /**
@@ -53,21 +53,21 @@ public:
     virtual vec3 getPower() const { return getIntensity()*getArea(); }
 
 
-    LightSourceType::Enum getLightSourceType() const { return LightSourceType::LIGHT_DIRECTIONAL; }
+    LightSourceType::Enum getLightSourceType() const { return LightSourceType::LIGHT_POINT; }
 
     /**
-     * Get normalized general direction of light source.
+     * Get world position of light source.
      *
-     * @return Normalized direction of light source.
+     * @return World position of light source.
      */
-    const vec3& getDirection() const { return direction_; }
+    const vec3& getPosition() const { return position_; }
 
     /**
-     * Set normalized direction of light source.
+     * Set world position of light source.
      *
-     * @param direction Normalized direction of light source.
+     * @param position World position of light source.
      */
-    void setDirection(const vec3& direction) { direction_ = direction; }
+    void setPosition(const vec3& position) { position_ = position; }
 
     /**
      * Set the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
@@ -84,11 +84,11 @@ public:
     const vec3& getIntensity() const { return intensity_; }
 
 protected:
-    vec3 direction_;
+    vec3 position_;
     vec3 intensity_; // Color of light source, flux density per solid angle (given in watt per steradian W*s*r^-1)
 
 };
 
 } // namespace inviwo
 
-#endif // IVW_DIRECTIONAL_LIGHT_H
+#endif // IVW_POINT_LIGHT_H
