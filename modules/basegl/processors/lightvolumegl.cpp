@@ -315,9 +315,10 @@ bool LightVolumeGL::lightSourceChanged(){
             const PointLight* pointLight = dynamic_cast<const PointLight*>(lightSource_.getData());
             if(pointLight){
                 mat4 toWorld = inport_.getData()->getWorldTransform();
-                vec4 volumeCenterWorld = toWorld * vec4(0.f, 0.f, 0.f, 1.f);
+                vec4 volumeCenterWorldW = toWorld * vec4(0.f, 0.f, 0.f, 1.f);
+                vec3 volumeCenterWorld = volumeCenterWorldW.xyz();
                 lightPos_ = pointLight->getPosition();
-                directionToCenterOfVolume = glm::normalize(volumeCenterWorld.xyz() - lightPos_);
+                directionToCenterOfVolume = glm::normalize(volumeCenterWorld - lightPos_);
                 color = pointLight->getIntensity();
             }
             break;
