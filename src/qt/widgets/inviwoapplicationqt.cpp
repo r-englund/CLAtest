@@ -101,7 +101,7 @@ void InviwoApplicationQt::fileChanged(QString fileName) {
 }
 
 void InviwoApplicationQt::closeInviwoApplication() {
-    this->quit();
+    QCoreApplication::quit();
 }
 
 void InviwoApplicationQt::playSound(unsigned int soundID) {

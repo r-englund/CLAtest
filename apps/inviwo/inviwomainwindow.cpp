@@ -515,10 +515,9 @@ void InviwoMainWindow::showAboutBox() {
 }
 
 void InviwoMainWindow::exitInviwo() {
-    InviwoApplication::getPtr()->closeInviwoApplication();
     QMainWindow::close();
+    InviwoApplication::getPtr()->closeInviwoApplication();
 }
-
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     if (!askToSaveWorkspaceChanges()) {
