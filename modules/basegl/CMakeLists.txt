@@ -6,7 +6,6 @@ ivw_module(BaseGL)
 # Add header files
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/basegl/processors/background.h
-    ${IVW_MODULE_DIR}/basegl/processors/cubeproxygeometry.h
     ${IVW_MODULE_DIR}/basegl/processors/drawlinesprocessor.h
     ${IVW_MODULE_DIR}/basegl/processors/entryexitpoints.h
     ${IVW_MODULE_DIR}/basegl/processors/findedges.h
@@ -27,7 +26,6 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/basegl/processors/background.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/cubeproxygeometry.cpp
     ${IVW_MODULE_DIR}/basegl/processors/drawlinesprocessor.cpp
     ${IVW_MODULE_DIR}/basegl/processors/entryexitpoints.cpp
     ${IVW_MODULE_DIR}/basegl/processors/findedges.cpp

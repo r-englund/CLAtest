@@ -87,6 +87,7 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
             if (successfulReload) {
                 LogInfo(shaderFilename + " successfuly reloaded");
                 InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
+                //TODO: Don't invalidate all processors when shader change, invalidate only owners if shader has one.
                 std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
                 for (size_t i=0;i<processors.size();i++)
                     if (dynamic_cast<ProcessorGL*>(processors[i]))

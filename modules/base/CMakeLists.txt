@@ -5,6 +5,7 @@ ivw_module(Base)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
+    ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.h
     ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/imagesource.h
@@ -23,6 +24,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
+    ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.cpp
     ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/imagesource.cpp

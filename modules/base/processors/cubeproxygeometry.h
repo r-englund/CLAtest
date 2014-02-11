@@ -33,18 +33,17 @@
 #ifndef IVW_CUBEPROXYGEOMETRY_H
 #define IVW_CUBEPROXYGEOMETRY_H
 
-#include <modules/basegl/baseglmoduledefine.h>
+#include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/vectorproperties.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API CubeProxyGeometry : public ProcessorGL {
+class IVW_MODULE_BASE_API CubeProxyGeometry : public Processor {
 public:
     CubeProxyGeometry();
     ~CubeProxyGeometry();

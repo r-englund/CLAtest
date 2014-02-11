@@ -40,7 +40,7 @@ ProcessorCategory(CubeProxyGeometry, "Geometry Creation");
 ProcessorCodeState(CubeProxyGeometry, CODE_STATE_STABLE); 
 
 CubeProxyGeometry::CubeProxyGeometry()
-    : ProcessorGL(),
+    : Processor(),
       inport_("volume.inport"),
       outport_("geometry.outport"),
       clippingEnabled_("clippingEnabled", "Enable Clipping", true),
@@ -62,11 +62,11 @@ CubeProxyGeometry::CubeProxyGeometry()
 CubeProxyGeometry::~CubeProxyGeometry() {}
 
 void CubeProxyGeometry::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
 }
 
 void CubeProxyGeometry::deinitialize() {
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void CubeProxyGeometry::process() {

@@ -33,7 +33,6 @@
 #include <modules/basegl/baseglmodule.h>
 
 #include <modules/basegl/processors/background.h>
-#include <modules/basegl/processors/cubeproxygeometry.h>
 #include <modules/basegl/processors/drawlinesprocessor.h>
 #include <modules/basegl/processors/entryexitpoints.h>
 #include <modules/basegl/processors/findedges.h>
@@ -54,7 +53,6 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     setIdentifier("BaseGL");
 
 	registerProcessor(Background);
-	registerProcessor(CubeProxyGeometry);
     registerProcessor(DrawLinesProcessor);
     registerProcessor(EntryExitPoints);
 	registerProcessor(FindEdges);

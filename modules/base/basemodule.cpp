@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include <modules/base/basemodule.h>
-
+#include <modules/base/processors/cubeproxygeometry.h>
 #include <modules/base/processors/diffuselightsourceprocessor.h>
 #include <modules/base/processors/directionallightsourceprocessor.h>
 #include <modules/base/processors/imagesource.h>
@@ -50,6 +50,7 @@ namespace inviwo {
 BaseModule::BaseModule() : InviwoModule() {
     setIdentifier("Base");
 
+    registerProcessor(CubeProxyGeometry);
     registerProcessor(DiffuseLightSourceProcessor);
     registerProcessor(DirectionalLightSourceProcessor);
     registerProcessor(ImageSource);
