@@ -71,34 +71,46 @@ public:
     ProcessorObservable(): Observable<ProcessorObserver>() {};
 
     void notifyObservers() const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+        ObserverSet localObservers = *observers_;
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notify();
+        }
     }
 
     void notifyObservers(Processor* p) const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+        ObserverSet localObservers = *observers_;
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyProcessorObserver(p);
+        }
     }
 
     //TODO: Use seperate class for property observation if necessary
     void notifyObserversAboutPropertyChange(Property* p) const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+        ObserverSet localObservers = *observers_;
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyObserversAboutPropertyChange(p);
+        }
     }
 
     void notifyObserversInvalidationBegin(Processor* p) const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+        ObserverSet localObservers = *observers_;
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationBegin(p);
+        }
     }
 
     void notifyObserversInvalidationEnd(Processor* p) const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+        ObserverSet localObservers = *observers_;
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationEnd(p);
+        }
     }
 
     void notifyObserversRequestEvaluate(Processor* p) const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+        ObserverSet localObservers = *observers_;
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyRequestEvaluate(p);
+        }
     }
 };
 
