@@ -41,10 +41,11 @@ namespace inviwo {
 
 class IVW_CORE_API VolumeRAMNormalizedHistogram : public VolumeOperation {
 public:
-    VolumeRAMNormalizedHistogram(const VolumeRepresentation* in, NormalizedHistogram* oldHist=NULL, int delta=1)
+    VolumeRAMNormalizedHistogram(const VolumeRepresentation* in, NormalizedHistogram* oldHist=NULL, int delta=1, size_t maxNumberOfBins = 2048)
         : VolumeOperation(in)
         , delta_(delta)
-        , histogramContainer_(oldHist) {
+        , histogramContainer_(oldHist)
+        , maxNumberOfBins_(maxNumberOfBins) {
     }
 
     virtual ~VolumeRAMNormalizedHistogram() {}
@@ -61,6 +62,7 @@ public:
 private:
     int delta_;
     NormalizedHistogram* histogramContainer_;
+    size_t maxNumberOfBins_;
 };
 
 template<typename T>
@@ -86,11 +88,16 @@ void VolumeRAMNormalizedHistogram::evaluate() {
     }
 
     //Calculate number of bins in data
-    size_t numberOfBinsInData = static_cast<size_t>(std::pow(2.f, static_cast<float>(dataFormat->getBitsStored())));
-    //Histogram will have a maximum of 2^12 bins
-    size_t numberOfBinsInHistogram = glm::min<size_t>(4096, numberOfBinsInData);
-    //Calculate scaling
-    //float binScaling = static_cast<float>(numberOfBinsInHistogram)/static_cast<float>(numberOfBinsInData);
+    double numberOfBinsInData = std::pow(2.0, static_cast<double>(dataFormat->getBitsStored()));
+    
+    size_t numberOfBinsInHistogram;
+
+    if(numberOfBinsInData > static_cast<double>(maxNumberOfBins_)) {
+        numberOfBinsInHistogram = maxNumberOfBins_;
+    } else {
+        numberOfBinsInHistogram = static_cast<size_t>(numberOfBinsInData);
+    }
+
     //Create Normalized Histogram
     NormalizedHistogram* hist = histogramContainer_;
 

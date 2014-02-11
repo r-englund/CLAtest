@@ -124,37 +124,10 @@ void VolumeSource::loadVolume() {
         DataReaderType<Volume>* reader = DataReaderFactory::getRef().getReaderForTypeAndExtension<Volume>(fileExtension);
         if (reader) {
             try {
-                /*
-                // check if raw volume is read and set parameters if available
-                RawVolumeReader* rawReader = dynamic_cast<RawVolumeReader*>(reader);
-                if (rawReader &&
-                    (URLParser::getFileNameWithExtension(volumeFile_.get())==URLParser::getFileNameWithExtension(rawFileName_.get()))) {
-                    // the raw file has been imported previously so use the previous parameters
-                    const DataFormatBase* rawFormat = DataFormatBase::get(rawFormatStr_.get());
-                    std::cout << "read meta " << rawDims_.get().x << "/" << rawDims_.get().y << "/" << rawDims_.get().z << std::endl;
-                    rawReader->setParameters(rawFormat, rawDims_.get(), rawEndianess_.get());
-                }
-                */
                 Volume* volume = reader->readMetaData(volumeFile_.get());
                 ResourceManager::instance()->addResource(new TemplateResource<Volume>(volumeFile_.get(), volume));
                 volumePort_.setData(volume, false);
                 updateRangeProperties(volume);
-                /*
-                if (rawReader) {
-                    // write the read parameters into the properties to support serialization
-                    rawFileName_.set(volumeFile_.get());
-                    rawFormatStr_.set(rawReader->getFormat()->getString());
-                    ivec3 dims = ivec3(volume->getDimension());
-                    std::cout << "read data " << dims.x << "/" << dims.y << "/" << dims.z << std::endl;
-                    rawDims_.set(dims);
-                    rawEndianess_.set(rawReader->haveReadLittleEndian());
-                } else {
-                    rawFileName_.set("");
-                    rawFormatStr_.set("");
-                    rawDims_.set(ivec3(0));
-                    rawEndianess_.set(true);
-                }
-                */
             } catch(DataReaderException const& e) {
                 LogError(e.getMessage());
             }
