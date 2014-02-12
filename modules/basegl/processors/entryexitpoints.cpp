@@ -47,6 +47,7 @@ EntryExitPoints::EntryExitPoints()
     , exitPort_("exit-points", COLOR_DEPTH, DataVec4UINT16::get())
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), &geometryPort_)
     , capNearClipping_("capNearClipping", "Cap near plane clipping", true)
+    , handleInteractionEvents_("handleEvents", "Handle interaction events", true)
     , trackball_(NULL)
     , capNearClippingPrg_(NULL)
     , tmpEntryPoints_(NULL)
@@ -58,6 +59,8 @@ EntryExitPoints::EntryExitPoints()
 
     addProperty(camera_);
 	addProperty(capNearClipping_);
+    addProperty(handleInteractionEvents_);
+    handleInteractionEvents_.onChange(this, &EntryExitPoints::handleInteractionEventsChanged);
     trackball_ = new Trackball(&camera_);
 	addInteractionHandler(trackball_);
     entryPort_.addResizeEventListener(&camera_);
@@ -180,6 +183,14 @@ void EntryExitPoints::process() {
 
     
     glDisable(GL_CULL_FACE);
+}
+
+void EntryExitPoints::handleInteractionEventsChanged() {
+    if (handleInteractionEvents_.get()) {
+        addInteractionHandler(trackball_);
+    } else {
+        removeInteractionHandler(trackball_);
+    }
 }
 
 } // namespace

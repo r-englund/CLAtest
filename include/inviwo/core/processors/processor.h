@@ -117,7 +117,19 @@ public:
     virtual void setValid();
     virtual void initializeResources() {} // reload shaders etc. here
 
+    /**
+     * Adds the interaction handler such that it receives events propagated 
+     * to the processor. Will not add the interaction handler if it has been added before.
+     * @note The processor will not take ownership of the interaction handler.
+     * @see InteractionHandler
+     * @param InteractionHandler * interactionHandler Interaction handler to be added.
+     */
     void addInteractionHandler(InteractionHandler* interactionHandler);
+    /**
+     * Remove the interaction handler such that events are not propagated.
+     * The interaction handler will not be deleted by the processor.
+     * @param InteractionHandler * interactionHandler
+     */
     void removeInteractionHandler(InteractionHandler* interactionHandler);
     bool hasInteractionHandler() const;
     std::vector<InteractionHandler*> getInteractionHandlers() const;

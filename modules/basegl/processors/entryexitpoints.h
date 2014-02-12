@@ -61,7 +61,7 @@ public:
 
 protected:
     virtual void process();
-
+    void handleInteractionEventsChanged();
 private:
     GeometryInport geometryPort_;
     ImageOutport entryPort_;
@@ -69,6 +69,7 @@ private:
 
     CameraProperty camera_;
 	BoolProperty capNearClipping_;
+    BoolProperty handleInteractionEvents_; // Enable or disable camera movements from canvas
 
     Trackball* trackball_;
 	Shader* capNearClippingPrg_;

@@ -235,15 +235,17 @@ void Processor::process() {
 
 
 void Processor::addInteractionHandler(InteractionHandler* interactionHandler) {
-    interactionHandlers_.push_back(interactionHandler);
+    // Make sure that the interaction handler is not added twice
+    if (std::find(interactionHandlers_.begin(), interactionHandlers_.end(), interactionHandler) == interactionHandlers_.end()) {
+        interactionHandlers_.push_back(interactionHandler);
+    }
 }
 
 void Processor::removeInteractionHandler(InteractionHandler* interactionHandler) {
-    for (size_t i=0; i<interactionHandlers_.size(); i++)
-        if (interactionHandlers_[i] == interactionHandler) {
-            interactionHandlers_.erase(interactionHandlers_.begin()+i);
-            i = interactionHandlers_.size();
-        }
+    std::vector<InteractionHandler*>::iterator it = std::find(interactionHandlers_.begin(), interactionHandlers_.end(), interactionHandler);
+    if (it != interactionHandlers_.end()) {
+        interactionHandlers_.erase(it);
+    }
 }
 
 bool Processor::hasInteractionHandler() const {
