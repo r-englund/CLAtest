@@ -61,7 +61,7 @@ TextureUnit::~TextureUnit() {
 
 void TextureUnit::initialize(int numUnits) {
     if (!textureUnits_) {
-        textureUnits_ = new std::vector<bool>(numUnits);//->getNumTexUnits());
+        textureUnits_ = new std::vector<bool>(numUnits);
     }
 }
 
