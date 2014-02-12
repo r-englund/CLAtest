@@ -18,8 +18,8 @@ else:
 parser = argparse.ArgumentParser(description='Add new files to Inviwo.\n typical usage: \n python.exe ./make-new-files.py --svn --cmake ../build ../include/inviwo/path/to/h-file/MyNewClass', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('names', type=str, nargs='+', action="store", help='Classes to add, form: path/to/h-file/NewClassName')
 parser.add_argument("--dummy", action="store_true", dest="dummy", help="Write local testfiles instead")
-parser.add_argument("--svn", action="store_true", dest="svn", help="Add files to svn, and set file ending to native")			
-parser.add_argument("--cmake", type=str, nargs=1, action="store", dest="builddir", help="Rerun cmake in the specified build directory")
+parser.add_argument("--svn", action="store_true", dest="svn", help="Add files to svn, and set file ending to native")
+parser.add_argument("--cmake", type=str, nargs=1, action="store", dest="builddir", help="Rerun cmake in the specified build directory", default="")
 parser.add_argument("--no-header", action="store_true", dest="no_header", help="Don't write header file")
 parser.add_argument("--no-source", action="store_true", dest="no_source", help="Don't write source file")
 
