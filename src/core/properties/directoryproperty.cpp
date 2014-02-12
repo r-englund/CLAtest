@@ -53,14 +53,36 @@ std::vector<std::string> DirectoryProperty::getDirectoryTree()  const  {
 std::vector<std::string> DirectoryProperty::getFiles(std::string filters)  const {
     std::vector<std::string> validFilesWithExtension;
 
+    std::string filterName = URLParser::getFileNameWithoutExtension(filters);
+    std::string filterExt = URLParser::getFileExtension(filters);
+
+    bool arbitaryName = (filterName == "*");
+    bool arbitaryExt = (filterExt == "*");
+
+    //Matching with star as part of name or ext is not implemented at the moment.
+    //Only: *.*, *.ext, name.*, name.ext
     for (size_t i=0; i<directoryTree_.size(); i++) {
         std::string file = get()+"/";
         file = URLParser::getFileDirectory(file) + directoryTree_[i];
 
-        if (filters=="*.*")
+        if (arbitaryName && arbitaryExt){
             validFilesWithExtension.push_back(file);
-        else if (URLParser::getFileExtension(directoryTree_[i]) == filters)
+            continue;
+        }
+
+        std::string fileExt = URLParser::getFileExtension(directoryTree_[i]);
+
+        if (arbitaryName && fileExt == filterExt){
             validFilesWithExtension.push_back(file);
+            continue;
+        }
+
+        std::string fileName = URLParser::getFileNameWithoutExtension(directoryTree_[i]);
+
+        if(fileName == filterName && fileExt == filterExt){
+            validFilesWithExtension.push_back(file);
+            continue;
+        }
     }
 
     return validFilesWithExtension;
