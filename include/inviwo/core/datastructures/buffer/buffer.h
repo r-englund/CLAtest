@@ -84,12 +84,26 @@ template<typename T, size_t B, BufferType A>
 class Attributes : public Buffer {
 
 public:
-    Attributes(size_t size = 0, BufferUsage usage = STATIC): Buffer(size, DataFormat<T,B>::get(), A, usage) {}
-    Attributes(BufferUsage usage): Buffer(0, DataFormat<T,B>::get(), A, usage) {}
+    Attributes(size_t size = 0, BufferUsage usage = STATIC) 
+        : Buffer(size, DataFormat<T,B>::get(), A, usage) {
+    }
+    Attributes(BufferUsage usage)
+        : Buffer(0, DataFormat<T,B>::get(), A, usage) {
+    }
+    Attributes(const Attributes& rhs)
+        : Buffer(rhs) {
+    }
+    Attributes& operator=(const Attributes& that) {
+        if(this != &that) {
+            Buffer::operator=(that);
+        }
+        return *this;
+    }
+    virtual Attributes<T, B, A>* clone() const {
+        return new Attributes<T, B, A>(*this); 
+    }
 
     virtual ~Attributes() { }
-
-    virtual Attributes* clone() const { return new Attributes(*this); }
 
 private:
     static const DataFormatBase* defaultformat() {
@@ -98,7 +112,7 @@ private:
 
 };
 
-#define DataFormatBuffers(D, A) Attributes<D::type, D::bits, A>
+#define DataFormatBuffers(D, BUFFER_TYPE) Attributes<D::type, D::bits, BUFFER_TYPE>
 
 typedef DataFormatBuffers(DataVec4FLOAT32, COLOR_ATTRIB) ColorBuffer;
 typedef DataFormatBuffers(DataFLOAT32, CURVATURE_ATTRIB) CurvatureBuffer;

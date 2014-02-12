@@ -67,20 +67,30 @@ void TransferFunctionEditor::resetTransferFunction() {
 void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     TransferFunctionEditorControlPoint* controlPointGraphicsItem = getControlPointGraphicsItemAt(e->scenePos());
 
-    if (e->button() == Qt::LeftButton) {
-        if (!controlPointGraphicsItem) {
-            if (e->modifiers()==Qt::NoModifier) {
+    QGraphicsItem* item = QGraphicsScene::mouseGrabberItem();
+
+    switch(e->button()) {
+    case Qt::LeftButton:
+        if(controlPointGraphicsItem) {
+            mouseDrag_ = true;
+        } else {
+            if(e->modifiers() == Qt::NoModifier && QGraphicsScene::selectedItems().isEmpty()) {
                 addControlPoint(e->scenePos());
                 mouseDrag_ = true;
-            }
-            else if (e->modifiers()==Qt::ControlModifier)
+            } else if(e->modifiers() == Qt::ControlModifier) {
                 views().front()->setDragMode(QGraphicsView::RubberBandDrag);
-        } else
-            mouseDrag_ = true;
-    }
-    else if (e->button() == Qt::RightButton && !mouseDrag_) {
-        if (controlPointGraphicsItem)
+            }            
+        }
+        break;
+
+    case Qt::RightButton:
+        if(controlPointGraphicsItem && !mouseDrag_) {
             removeControlPoint(controlPointGraphicsItem);
+        }                         
+        break;
+
+    default:
+        break;
     }
 
     QGraphicsScene::mousePressEvent(e);

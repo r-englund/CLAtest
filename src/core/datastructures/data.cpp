@@ -34,22 +34,38 @@
 
 namespace inviwo {
 
+DataBase::DataBase() : MetaDataOwner() {
+}
+
+DataBase::DataBase(const DataBase& rhs) : MetaDataOwner(rhs)  {
+}
+
+DataBase& DataBase::operator=(const DataBase& that) {
+    if(this != &that) {        
+        MetaDataOwner::operator=(that);
+    }
+    return *this;
+}
+DataBase::~DataBase() {}
+
+
+
 Data::Data()
-    : MetaDataOwner()
+    : DataBase()
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
     , dataFormatBase_(DataFormatBase::get()) {
 }
 
 Data::Data(const DataFormatBase* format)
-    : MetaDataOwner()
+    : DataBase()
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
     , dataFormatBase_(format) {
 }
 
 Data::Data(const Data& rhs)
-    : MetaDataOwner(rhs)
+    : DataBase(rhs)
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
     , dataFormatBase_(rhs.dataFormatBase_) {
@@ -58,11 +74,10 @@ Data::Data(const Data& rhs)
 
 Data& Data::operator=(const Data& that) {
     if (this != &that) {
-        MetaDataOwner::operator=(that);
+        DataBase::operator=(that);
         that.copyRepresentationsTo(this);
         dataFormatBase_ = that.dataFormatBase_;
     }
-
     return *this;
 }
 
@@ -142,8 +157,6 @@ void Data::setDataFormat(const DataFormatBase* format) {
 const DataFormatBase* Data::getDataFormat() const {
     return dataFormatBase_;
 }
-
-
 
 
 } // namespace

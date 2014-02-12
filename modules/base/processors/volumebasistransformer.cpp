@@ -81,6 +81,10 @@ void VolumeBasisTransformer::process() {
             float beta = glm::angle(c,a);
             float gamma = glm::angle(a,b);
 
+            lengths_.setMaxValue(vec3(2.0f * (glm::length(a) + glm::length(b) + glm::length(c))));
+            offset_.setMaxValue(vec3(5.0*glm::length(offset)));
+            offset_.setMinValue(vec3(-5.0*glm::length(offset)));
+
             lengths_.set(vec3(glm::length(a),glm::length(b),glm::length(c)));
             angels_.set(vec3(alpha, beta, gamma));
             offset_.set(offset);
@@ -88,14 +92,15 @@ void VolumeBasisTransformer::process() {
 
         // TODO: This should be changed to make some kind of shallow copy of the representations
         // and update if the inport changes the representations
+        
         Volume* out;
-        if(outport_.hasData()){
-            out = outport_.getData();
-        }else{
+        if(!outport_.hasData() || inport_.getInvalidationLevel() >= INVALID_OUTPUT) {
             out = in->clone();
             outport_.setData(out);
+        } else if(outport_.hasData()) {
+            out = outport_.getData();
         }
-
+        
         float a = lengths_.get()[0];
         float b = lengths_.get()[1];
         float c = lengths_.get()[2];

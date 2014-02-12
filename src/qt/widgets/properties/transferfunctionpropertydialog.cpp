@@ -246,11 +246,11 @@ void TransferFunctionPropertyDialog::setPointColorDialog() {
 
 void TransferFunctionPropertyDialog::setPointColor(QColor color) {
     QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
-
+    vec3 newRgb = vec3(color.redF(), color.greenF(), color.blueF());
     for (int i=0; i<selection.size(); i++) {
-        if (dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))) {
-            vec3 newRgb = vec3(color.redF(),color.greenF(),color.blueF());
-            dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i))->getPoint()->setRGB(newRgb);
+        TransferFunctionEditorControlPoint* tfcp = dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i));
+        if(tfcp) {
+            tfcp->getPoint()->setRGB(newRgb);
         }
     }
 }

@@ -41,6 +41,18 @@
 #include <inviwo/core/metadata/metadataowner.h>
 
 namespace inviwo {
+
+class IVW_CORE_API DataBase :  public MetaDataOwner {
+public:
+    DataBase();
+    DataBase(const DataBase& rhs);
+    DataBase& operator=(const DataBase& rhs);
+    virtual DataBase* clone() const = 0;
+    virtual ~DataBase();
+};
+
+
+
 /** \brief The base class for all data objects.
  *
  *  Data is the base class for all the data objects.
@@ -59,7 +71,7 @@ namespace inviwo {
  *  3 is needed for the factory pattern, 3 should be implemented using 1.
  *
  */
-class IVW_CORE_API Data : public MetaDataOwner {
+class IVW_CORE_API Data : public DataBase {
 
 public:
     Data();

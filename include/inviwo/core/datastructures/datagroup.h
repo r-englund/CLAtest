@@ -55,7 +55,7 @@ namespace inviwo {
  *      and we need to call update before we return it from getRepresentation.
  */
 
-class IVW_CORE_API DataGroup {
+class IVW_CORE_API DataGroup : public DataBase {
 
 public:
     DataGroup();
@@ -84,9 +84,6 @@ protected:
     mutable std::vector<DataGroupRepresentation*> representations_;
 
 private:
-    std::vector<Data*> data_;
-    std::vector<DataGroup*> groupData_;
-
     bool editableUpdate_;
 };
 
