@@ -187,12 +187,13 @@ void CVIE3DProcessor::updateParameterFile(){
 }
 
 void CVIE3DProcessor::findParameterFiles(){
+    parameterFileDirectory_.updateDirectoryTree();
     std::vector<std::string> parameterFiles = parameterFileDirectory_.getFiles("*.gop");
-    parameterFile_.clearOptions();
+    std::vector<std::string> parameterDisplayName;
     for (size_t i=0; i<parameterFiles.size(); i++){ 
-        std::string filename = URLParser::getFileNameWithExtension(parameterFiles[i]);
-        parameterFile_.addOption(filename, filename, parameterFiles[i]);
+        parameterDisplayName.push_back(URLParser::getFileNameWithExtension(parameterFiles[i]));
     }
+    parameterFile_.replaceOptions(parameterDisplayName, parameterDisplayName, parameterFiles);
 }
 
 } // namespace
