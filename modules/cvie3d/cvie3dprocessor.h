@@ -20,7 +20,10 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
+#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/scalarproperties.h>
 #include <CVIE3D.h>
 
@@ -49,13 +52,17 @@ protected:
     void updateConfigurationFile();
     void updateParameterFile();
 
+    void findParameterFiles();
+
 private:
     VolumeInport inport_;
     VolumeOutport outport_;
 
     BoolProperty enabled_;
     FileProperty confFile_;
-    FileProperty parameterFile_;
+    DirectoryProperty parameterFileDirectory_;
+    ButtonProperty findParameterFiles_;
+    StringOptionProperty parameterFile_;
     IntProperty parameterSetting_;
 
     HCVIE3D cvieHandle_;

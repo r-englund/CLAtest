@@ -29,8 +29,11 @@ CVIE3DProcessor::CVIE3DProcessor()
     outport_("volume.outport"),
     enabled_("enabled", "Filtering Enabled", false),
     confFile_("confFile", "Configuration file", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"cvie3D/ext/CVIE3DSDK/bin/CVIE3D.conf"),
-    parameterFile_("parameterFile", "Parameter file", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"cvie3D/ext/CVIE3DSDK/par/default.gop"),
+    parameterFileDirectory_("parameterFileDirectory", "Parameter file directory", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"cvie3D/ext/CVIE3DSDK/par"),
+    findParameterFiles_("findParameterFiles", "Find parameter files"),
+    parameterFile_("parameterFile", "Selected parameter file"),
     parameterSetting_("parameterSetting", "Parameter setting", 0)
+
 {
     addPort(inport_);
     addPort(outport_);
@@ -39,6 +42,11 @@ CVIE3DProcessor::CVIE3DProcessor()
 
     confFile_.onChange(this, &CVIE3DProcessor::updateConfigurationFile);
     addProperty(confFile_);
+
+    addProperty(parameterFileDirectory_);
+
+    findParameterFiles_.onChange(this, &CVIE3DProcessor::findParameterFiles);
+    addProperty(findParameterFiles_);
 
     parameterFile_.onChange(this, &CVIE3DProcessor::updateParameterFile);
     addProperty(parameterFile_);
@@ -167,12 +175,23 @@ void CVIE3DProcessor::updateParameterFile(){
     // Set parameter file
     int nSettings = 0;
     //LogInfo("parameterFile: " << parameterFile_.get());
-    ECVIE3D cvieError = CVIE3DSetParameterFile(cvieHandle_, parameterFile_.get().c_str(), &nSettings);
 
-    if (cvieError != ECVIE3D_Ok) {
-        char errstr[512];
-        LogError("Error in CVIE3DSetParameterFile: " << CVEMGetLastError(cvieHandle_, errstr, sizeof(errstr)));
-        //destroyCVIE3DInstance();
+    if(URLParser::fileExists(parameterFile_.get().c_str())){
+        ECVIE3D cvieError = CVIE3DSetParameterFile(cvieHandle_, parameterFile_.get().c_str(), &nSettings);
+        if (cvieError != ECVIE3D_Ok) {
+            char errstr[512];
+            LogError("Error in CVIE3DSetParameterFile: " << CVEMGetLastError(cvieHandle_, errstr, sizeof(errstr)));
+            //destroyCVIE3DInstance();
+        }
+    }
+}
+
+void CVIE3DProcessor::findParameterFiles(){
+    std::vector<std::string> parameterFiles = parameterFileDirectory_.getFiles("*.gop");
+    parameterFile_.clearOptions();
+    for (size_t i=0; i<parameterFiles.size(); i++){ 
+        std::string filename = URLParser::getFileNameWithExtension(parameterFiles[i]);
+        parameterFile_.addOption(filename, filename, parameterFiles[i]);
     }
 }
 
