@@ -74,7 +74,7 @@ DatVolumeReader* DatVolumeReader::clone() const {
 Volume* DatVolumeReader::readMetaData(std::string filePath)  {
     if (!URLParser::fileExists(filePath)) {
         std::string newPath = URLParser::addBasePath(filePath);
-        if (URLParser::fileExists(newPath)){
+        if (URLParser::fileExists(newPath)) {
             filePath = newPath;
         } else {
             throw DataReaderException("Error could not find input file: " + filePath);
