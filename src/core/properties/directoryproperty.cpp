@@ -45,12 +45,15 @@ DirectoryProperty::DirectoryProperty(std::string identifier, std::string display
 {
 }
 
-
-std::vector<std::string> DirectoryProperty::getDirectoryTree()  const  {
+std::vector<std::string> DirectoryProperty::getDirectoryTree()  const{
     return directoryTree_;
 }
 
-std::vector<std::string> DirectoryProperty::getFiles(std::string filters)  const {
+void DirectoryProperty::updateDirectoryTree(){
+    updateWidgets();
+}
+
+std::vector<std::string> DirectoryProperty::getFiles(std::string filters)  const{
     std::vector<std::string> validFilesWithExtension;
 
     std::string filterName = URLParser::getFileNameWithoutExtension(filters);

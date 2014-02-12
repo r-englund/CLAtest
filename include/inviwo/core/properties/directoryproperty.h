@@ -52,9 +52,10 @@ public:
     DirectoryProperty(std::string identifier, std::string displayName, std::string value = "",
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
-    virtual std::vector<std::string> getDirectoryTree()  const ;
-    virtual std::vector<std::string> getFiles(std::string filters="*.*")  const ;
-    virtual void setDirectoryTree(std::vector<std::string> dirTree) ;
+    virtual std::vector<std::string> getDirectoryTree() const;
+    virtual std::vector<std::string> getFiles(std::string filters="*.*") const;
+    virtual void setDirectoryTree(std::vector<std::string> dirTree);
+    void updateDirectoryTree();
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();

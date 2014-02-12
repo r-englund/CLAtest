@@ -234,6 +234,7 @@ void TemplateOptionProperty<T>::addOption(std::string optionIdentifier, std::str
 
     // in case we add the first option, we also select it
     if (options_.size() == 1) setSelectedOption(0);
+    else propertyModified();
 }
 
 template<typename T>
@@ -285,7 +286,7 @@ void TemplateOptionProperty<T>::replaceOptions(std::vector<std::string> ids, std
     for (size_t i=0; i<ids.size(); i++)
         options_.push_back(std::make_pair(std::make_pair(ids[i], displayNames[i]), values[i]));
 
-    setSelectedOption(static_cast<int>(options_.size()-1));
+    setSelectedOption(0);
 }
 
 template<typename T>
