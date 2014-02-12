@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include "entryexitpointscl.h"
-#include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opencl/image/imagecl.h>
 #include <modules/opencl/image/imageclgl.h>
@@ -52,6 +51,7 @@ EntryExitPointsCL::EntryExitPointsCL()
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
     , workGroupSize_("wgsize", "Work group size", ivec2(8, 8), ivec2(0), ivec2(256))
     , useGLSharing_("glsharing", "Use OpenGL sharing", true)
+    , handleInteractionEvents_("handleEvents", "Handle interaction events", true)
 {
     addPort(geometryPort_);
     addPort(entryPort_, "ImagePortGroup1");
@@ -60,7 +60,10 @@ EntryExitPointsCL::EntryExitPointsCL()
     addProperty(camera_);
     addProperty(workGroupSize_);
     addProperty(useGLSharing_);
-	addInteractionHandler(new Trackball(&camera_));
+    addProperty(handleInteractionEvents_);
+    handleInteractionEvents_.onChange(this, &EntryExitPointsCL::handleInteractionEventsChanged);
+    trackball_ = new Trackball(&camera_);
+	addInteractionHandler(trackball_);
     entryPort_.addResizeEventListener(&camera_);
 }
 
@@ -78,7 +81,8 @@ void EntryExitPointsCL::initialize() {
 }
 
 void EntryExitPointsCL::deinitialize() {
-    Processor::deinitialize();
+    deinitialize();
+    delete trackball_;
 }
 
 void EntryExitPointsCL::process() {
@@ -144,4 +148,11 @@ void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, cons
     }
 }
 
+void EntryExitPointsCL::handleInteractionEventsChanged() {
+    if (handleInteractionEvents_.get()) {
+        addInteractionHandler(trackball_);
+    } else {
+        removeInteractionHandler(trackball_);
+    }
+}
 } // namespace

@@ -69,7 +69,7 @@ private:
 
     CameraProperty camera_;
 	BoolProperty capNearClipping_;
-    BoolProperty handleInteractionEvents_; // Enable or disable camera movements from canvas
+    BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
 
     Trackball* trackball_;
 	Shader* capNearClippingPrg_;

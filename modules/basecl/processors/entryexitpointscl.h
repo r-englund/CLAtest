@@ -35,6 +35,7 @@
 
 #include <modules/basecl/baseclmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
@@ -58,7 +59,7 @@ protected:
     virtual void process();
 
     void computeEntryExitPoints(const mat4& NDCToTextureMat, const vec4& camPosInTextureSpace, const cl::Image& entryPointsCL, const cl::Image& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent);
-
+    void handleInteractionEventsChanged();
 private:
     GeometryInport geometryPort_;
     ImageOutport entryPort_;
@@ -67,7 +68,9 @@ private:
     CameraProperty camera_;
     IntVec2Property workGroupSize_;
     BoolProperty useGLSharing_;
+    BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
 
+    Trackball* trackball_;
 	cl::Kernel* entryExitKernel_;
 
 };

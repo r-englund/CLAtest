@@ -122,13 +122,13 @@ public:
      * to the processor. Will not add the interaction handler if it has been added before.
      * @note The processor will not take ownership of the interaction handler.
      * @see InteractionHandler
-     * @param InteractionHandler * interactionHandler Interaction handler to be added.
+     * @param interactionHandler Interaction handler to be added.
      */
     void addInteractionHandler(InteractionHandler* interactionHandler);
     /**
      * Remove the interaction handler such that events are not propagated.
      * The interaction handler will not be deleted by the processor.
-     * @param InteractionHandler * interactionHandler
+     * @param interactionHandler Interaction handler to be removed.
      */
     void removeInteractionHandler(InteractionHandler* interactionHandler);
     bool hasInteractionHandler() const;
