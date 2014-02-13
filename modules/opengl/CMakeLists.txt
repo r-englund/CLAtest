@@ -28,6 +28,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/texture.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texturecallback.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/texture2darray.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.h
     ${IVW_MODULE_DIR}/opengl/image/imagegl.h
@@ -66,6 +67,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/texture2darray.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.cpp
     ${IVW_MODULE_DIR}/opengl/image/imagegl.cpp
