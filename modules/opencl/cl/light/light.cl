@@ -34,6 +34,7 @@
 #define LIGHT_CL
 
 #include "datastructures/lightsource.cl"
+#include "datastructures/bbox.cl"
 #include "shading/shadingmath.cl"
 #include "transformations.cl"
 
