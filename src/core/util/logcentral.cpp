@@ -120,6 +120,7 @@ void LogCentral::log(std::string logSource, unsigned int logLevel, const char* f
         for(size_t i = 3;i < stacktrace.size();++i){ //start at i == 3 to remove log and getStacktrace from stackgrace
             ss << std::endl << stacktrace[i];
         }
+        ss << std::endl; //append an extra line break to easier seperate several stacktraces in a row
         msg = ss.str();
     }
     if (logLevel >= logLevel_)

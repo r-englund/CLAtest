@@ -49,7 +49,9 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
+
 protected:
+    void logStacktraceCallback();
     void allocationTest();
     uint32_t* allocTest_;
 
@@ -61,6 +63,7 @@ private:
     IntProperty portInspectorSize_;
     BoolProperty enableSoundProperty_;
     IntProperty  useRAMPercentProperty_;
+    BoolProperty  logStackTraceProperty_;
 
     ButtonProperty btnAllocTestProperty_;
     ButtonProperty btnSysInfoProperty_;

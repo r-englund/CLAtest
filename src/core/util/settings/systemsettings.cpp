@@ -48,6 +48,7 @@ SystemSettings::SystemSettings(std::string id) :
     , portInspectorSize_("portInspectorSize", "Port Inspector size", 128, 1, 1024)
     , enableSoundProperty_("enableSound", "Enable sound", true)
     , useRAMPercentProperty_("useRAMPercent", "Max Use Mem %", 50, 1, 100)
+    , logStackTraceProperty_("logStackTraceProperty","Log Stack Trance on Error",false)
     , btnAllocTestProperty_("allocTest", "Perform Allocation Test")
     , btnSysInfoProperty_("printSysInfo", "Print System Info")
 {}
@@ -66,6 +67,8 @@ void SystemSettings::initialize() {
     addProperty(&portInspectorSize_);
     addProperty(&enableSoundProperty_);
     addProperty(&useRAMPercentProperty_);
+    addProperty(logStackTraceProperty_);
+    logStackTraceProperty_.onChange(this,&SystemSettings::logStacktraceCallback);
     //btnAllocTestProperty_.onChange(this, &SystemSettings::allocationTest);
     //addProperty(&btnAllocTestProperty_);
     InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
@@ -79,6 +82,10 @@ void SystemSettings::initialize() {
 }
 
 void SystemSettings::deinitialize()  {}
+
+void SystemSettings::logStacktraceCallback(){
+    LogCentral::instance()->setLogStacktrace(logStackTraceProperty_.get());
+}
 
 void SystemSettings::allocationTest() {
     InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
