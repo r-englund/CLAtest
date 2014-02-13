@@ -63,7 +63,7 @@ void InviwoSplashScreen::drawContents(QPainter* painter) {
     QString versionLabel;
     QTextStream labelStream(&versionLabel);
     labelStream << "Version " << QString::fromStdString(IVW_VERSION);
-    painter->drawText(15, 265, versionLabel);
+    painter->drawText(13, 265, versionLabel);
 }
 
 void InviwoSplashScreen::showMessage(std::string message) {
