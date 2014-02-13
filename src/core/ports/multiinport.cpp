@@ -104,6 +104,21 @@ std::vector<Outport*> MultiInport::getConnectedOutports() const {
     return connectedOutports;
 }
 
+void MultiInport::disconnectFrom(Outport* outport){
+    InportSet::iterator it;
+
+    for (it = inports_->begin(); it != inports_->end(); ++it) {
+        // Find connected port
+        if ((*it)->isConnectedTo(outport)) {
+            (*it)->disconnectFrom(outport);
+            delete *it;
+            inports_->erase(it);
+            break;
+        }
+    }
+
+}
+
 Outport* MultiInport::getConnectedOutport() const {
     if (isConnected())
         return (*(inports_->begin()))->getConnectedOutport();

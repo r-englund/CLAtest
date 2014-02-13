@@ -59,6 +59,8 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     addProperty(centerViewOnGeometry_);
     outport_.addResizeEventListener(&camera_);
 
+    inport_.onChange(this,&GeometryRenderProcessorGL::updateRenderers);
+
 }
 
 void GeometryRenderProcessorGL::deinitialize() {
@@ -73,23 +75,8 @@ void GeometryRenderProcessorGL::process() {
     if (!inport_.hasData()) {
         return;
     }
-    std::vector<const Geometry*> geometries = inport_.getData();
-    std::vector<GeometryRenderer*>::iterator renIt = renderers_.begin();
-    for (std::vector<const Geometry*>::const_iterator it = geometries.begin(), endIt = geometries.end(); it != endIt; ++it, ++renIt) {
-        const Geometry* geom = *it;
-        if (renIt == renderers_.end()) {
-            GeometryRenderer *renderer = GeometryRendererFactory::getPtr()->create(geom);
-            // Do not render if no renderer exist for this geometry
-            if(renderer != NULL) {
-                renderers_.push_back(renderer);
-                // Assign iterator to last element
-                renIt = --renderers_.end();
-            }
-        } else if (geom != (*renIt)->getGeometry()) {
-            // The geometry changed. Create a new renderer for it
-            delete *renIt;
-            *renIt = GeometryRendererFactory::getPtr()->create(geom);
-        }
+    if(renderers_.empty()) {
+        return;
     }
     glEnable(GL_CULL_FACE); 
     glMatrixMode(GL_PROJECTION);
@@ -151,6 +138,49 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
     camera_.setLook(newLookFrom, centerPos, camera_.getLookUp());
 
 
+}
+
+void GeometryRenderProcessorGL::updateRenderers(){
+    std::vector<const Geometry*> geometries = inport_.getData();
+    if(geometries.empty()){
+        while(!renderers_.empty()){
+            delete renderers_.back();
+            renderers_.pop_back();
+        }
+    }
+
+    if(!renderers_.empty()){
+        std::vector<GeometryRenderer*>::iterator it = renderers_.begin();
+        while(it!=renderers_.end()) {
+            const Geometry* geo = (*it)->getGeometry();
+        
+            bool geometryRemoved = true;
+            for(size_t j = 0; j < geometries.size();j++){
+                if(geo == geometries[j]){
+                    geometryRemoved = false;
+                    geometries.erase(geometries.begin()+j); //nothing needs to be changed for this geometry
+                    break;
+                }
+            }
+
+            if(geometryRemoved) {
+                GeometryRenderer* tmp = (*it);
+                bool first = it == renderers_.begin();
+                it = renderers_.erase(it); //geometry removed, so we delete the old renderer
+                delete tmp;
+            }else{
+                ++it;
+            }
+        }
+    }
+
+
+    for(size_t i = 0; i < geometries.size() ; ++i){ //create new renderer for new geometries
+        GeometryRenderer *renderer = GeometryRendererFactory::getPtr()->create(geometries[i]);
+        if(renderer){
+            renderers_.push_back(renderer);
+        }
+    }
 }
 
 } // namespace

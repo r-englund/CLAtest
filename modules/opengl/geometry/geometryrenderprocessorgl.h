@@ -58,6 +58,8 @@ protected:
     virtual void process();
     void centerViewOnGeometry();
 
+    void updateRenderers();
+
     GeometryMultiInport inport_;
     ImageOutport outport_;
 
