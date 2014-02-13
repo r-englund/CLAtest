@@ -61,7 +61,7 @@ void ImageSource::deinitialize() {
 }
 
 bool ImageSource::isReady() const {
-    return (imageFileName_.get() != "");
+    return URLParser::fileExists(imageFileName_.get());
 }
 
 /**

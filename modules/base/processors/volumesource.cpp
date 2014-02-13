@@ -92,6 +92,10 @@ VolumeSource::VolumeSource()
 
 VolumeSource::~VolumeSource() {}
 
+bool VolumeSource::isReady() const {
+    return URLParser::fileExists(volumeFile_.get());
+}
+
 void VolumeSource::invalidateOutput() {
     Volume* volume = volumePort_.getData();
     if (volume) {

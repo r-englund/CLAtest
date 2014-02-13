@@ -52,6 +52,8 @@ public:
 
     InviwoProcessorInfo();
 
+    bool isReady() const;
+
 protected:
     void loadVolume();
 
