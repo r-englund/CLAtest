@@ -101,7 +101,6 @@ void Outport::disconnectFrom(Inport* inport) {
     if (std::find(connectedInports_.begin(), connectedInports_.end(), inport) != connectedInports_.end()) {
         connectedInports_.erase(std::remove(connectedInports_.begin(), connectedInports_.end(), inport),
                                 connectedInports_.end());
-        Port::invalidate(invalidationLevel_);
     }
 }
 

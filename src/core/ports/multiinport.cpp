@@ -113,6 +113,7 @@ void MultiInport::disconnectFrom(Outport* outport){
             (*it)->disconnectFrom(outport);
             delete *it;
             inports_->erase(it);
+            invalidate(PropertyOwner::INVALID_OUTPUT);
             break;
         }
     }
