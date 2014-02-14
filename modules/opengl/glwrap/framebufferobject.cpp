@@ -72,6 +72,8 @@ void FrameBufferObject::deactivate() {
     LGL_ERROR;
 }
 
+/******************************* 2D Texture *****************************************/
+
 void FrameBufferObject::attachTexture(Texture2D* texture, GLenum attachementID) {
     performAttachTexture(attachementID);
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, attachementID, GL_TEXTURE_2D, texture->getID(), 0);
@@ -92,6 +94,52 @@ GLenum FrameBufferObject::attachColorTexture(Texture2D* texture, int attachement
     }
     return attachementID;
 }
+
+/******************************* 2D Array Texture *****************************************/
+
+void FrameBufferObject::attachTexture(Texture2DArray* texture, GLenum attachementID) {
+    performAttachTexture(attachementID);
+    glFramebufferTextureEXT(GL_FRAMEBUFFER_EXT, attachementID, texture->getID(), 0);
+}
+
+GLenum FrameBufferObject::attachColorTexture(Texture2DArray* texture) {
+    GLenum attachementID;
+    if(performAttachColorTexture(attachementID)){
+        glFramebufferTextureEXT(GL_FRAMEBUFFER_EXT, attachementID, texture->getID(), 0);
+    }
+    return attachementID;
+}
+
+GLenum FrameBufferObject::attachColorTexture(Texture2DArray* texture, int attachementNumber, bool attachFromRear) {
+    GLenum attachementID;
+    if(performAttachColorTexture(attachementID, attachementNumber, attachFromRear)){
+        glFramebufferTextureEXT(GL_FRAMEBUFFER_EXT, attachementID, texture->getID(), 0);
+    }
+    return attachementID;
+}
+
+void FrameBufferObject::attachTextureLayer(Texture2DArray* texture, GLenum attachementID, int layer) {
+    performAttachTexture(attachementID);
+    glFramebufferTextureLayerEXT(GL_FRAMEBUFFER_EXT, attachementID, texture->getID(), 0, layer);
+}
+
+GLenum FrameBufferObject::attachColorTextureLayer(Texture2DArray* texture, int layer) {
+    GLenum attachementID;
+    if(performAttachColorTexture(attachementID)){
+        glFramebufferTextureLayerEXT(GL_FRAMEBUFFER_EXT, attachementID, texture->getID(), 0, layer);
+    }
+    return attachementID;
+}
+
+GLenum FrameBufferObject::attachColorTextureLayer(Texture2DArray* texture, int attachementNumber, int layer, bool attachFromRear) {
+    GLenum attachementID;
+    if(performAttachColorTexture(attachementID, attachementNumber, attachFromRear)){
+        glFramebufferTextureLayerEXT(GL_FRAMEBUFFER_EXT, attachementID, texture->getID(), 0, layer);
+    }
+    return attachementID;
+}
+
+/******************************* 3D Texture *****************************************/
 
 void FrameBufferObject::attachTexture(Texture3D* texture, GLenum attachementID) {
     performAttachTexture(attachementID);

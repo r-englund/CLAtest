@@ -36,6 +36,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include "texture2d.h"
+#include "texture2darray.h"
 #include "texture3d.h"
 
 namespace inviwo {
@@ -54,6 +55,16 @@ public:
     void attachTexture(Texture2D* texture, GLenum attachementID);
     GLenum attachColorTexture(Texture2D* texture);
     GLenum attachColorTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear = false);
+
+    //For attaching a 2D Array Texture
+    void attachTexture(Texture2DArray* texture, GLenum attachementID);
+    GLenum attachColorTexture(Texture2DArray* texture);
+    GLenum attachColorTexture(Texture2DArray* texture, int attachmentNumber, bool attachFromRear = false);
+
+    //For attaching a layer of a 2D Array Texture
+    void attachTextureLayer(Texture2DArray* texture, GLenum attachementID, int layer);
+    GLenum attachColorTextureLayer(Texture2DArray* texture, int layer);
+    GLenum attachColorTextureLayer(Texture2DArray* texture, int attachmentNumber, int layer, bool attachFromRear = false);
 
     //For attaching a 3D Texture
     void attachTexture(Texture3D* texture, GLenum attachementID);
