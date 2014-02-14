@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref1">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-325" y="-575" />
@@ -14,19 +14,19 @@
                 <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
                     <MetaDataList />
                     <value x="70" y="80" />
-                    <range x="0" y="150" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY">
                     <MetaDataList />
-                    <value x="0" y="150" />
-                    <range x="0" y="150" />
+                    <value x="0" y="128" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ">
                     <MetaDataList />
-                    <value x="0" y="150" />
-                    <range x="0" y="150" />
+                    <value x="0" y="128" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled">
@@ -35,55 +35,24 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-700" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="IntVec2Property" identifier="dataRange" displayName="Data range" key="dataRange">
+                <Property type="FloatMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
                     <MetaDataList />
-                    <value x="0" y="65535" />
-                    <minvalue x="0" y="0" />
-                    <maxvalue x="65535" y="65535" />
-                    <increment x="1" y="1" />
+                    <value x="0" y="255" />
+                    <range x="0" y="255" />
+                    <increment content="2.7609124e+19" />
                 </Property>
-                <Property type="IntVec3Property" identifier="rawDims" displayName="" key="rawDims">
+                <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <MetaDataList />
-                    <value x="0" y="0" z="0" />
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="10" y="10" z="10" />
-                    <increment x="1" y="1" z="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="rawEndianess" displayName="" key="rawEndianess">
-                    <MetaDataList />
-                    <value content="1" />
-                </Property>
-                <Property type="StringProperty" identifier="rawFileName" displayName="" key="rawFileName">
-                    <MetaDataList />
-                    <value content="" />
-                </Property>
-                <Property type="StringProperty" identifier="rawFormatStr" displayName="" key="rawFormatStr">
-                    <MetaDataList />
-                    <value content="" />
-                </Property>
-                <Property type="FloatVec2Property" identifier="valueRange" displayName="Value range" key="valueRange">
-                    <MetaDataList />
-                    <value x="0" y="1" />
-                    <minvalue x="0" y="0" />
-                    <maxvalue x="1" y="1" />
-                    <increment x="0.0099999998" y="0.0099999998" />
-                </Property>
-                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
-                    <MetaDataList />
-                    <value content="" />
-                </Property>
-                <Property type="FileProperty" identifier="volumeFileName" displayName="Volume file" key="volumeFileName">
-                    <MetaDataList />
-                    <url content="../../volumes/boron.dat" />
+                    <url content="../../volumes/hydrogenatom.dat" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
                         <filter content="Inviwo dat file format (*.dat)" />
@@ -93,9 +62,19 @@
                     <acceptMode content="0" />
                     <fileMode content="0" />
                 </Property>
+                <Property type="FloatMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
+                    <MetaDataList />
+                    <value x="0" y="1" />
+                    <range x="0" y="0" />
+                    <increment content="2.7609124e+19" />
+                </Property>
+                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
+                    <MetaDataList />
+                    <value content="" />
+                </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" id="ref2">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-500" y="-575" />
@@ -106,20 +85,20 @@
             <Properties>
                 <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
                     <MetaDataList />
-                    <value x="0" y="150" />
-                    <range x="0" y="150" />
+                    <value x="0" y="128" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY">
                     <MetaDataList />
                     <value x="70" y="80" />
-                    <range x="0" y="150" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ">
                     <MetaDataList />
-                    <value x="0" y="150" />
-                    <range x="0" y="150" />
+                    <value x="0" y="128" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled">
@@ -128,7 +107,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" id="ref3">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-700" y="-575" />
@@ -139,20 +118,20 @@
             <Properties>
                 <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
                     <MetaDataList />
-                    <value x="0" y="150" />
-                    <range x="0" y="150" />
+                    <value x="0" y="128" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY">
                     <MetaDataList />
-                    <value x="0" y="150" />
-                    <range x="0" y="150" />
+                    <value x="0" y="128" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ">
                     <MetaDataList />
                     <value x="70" y="80" />
-                    <range x="0" y="150" />
+                    <range x="0" y="128" />
                     <increment content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled">
@@ -161,7 +140,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref4">
+        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-575" y="-400" />
@@ -363,7 +342,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref5">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-575" y="-275" />
@@ -371,7 +350,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="738" y="466" />
+                    <position x="1545" y="656" />
                     <dimension x="461" y="455" />
                     <visibility content="1" />
                 </MetaData>
@@ -388,18 +367,6 @@
                     <MetaDataList />
                     <directory content="../../images" />
                     <files>
-                        <file content="canvasgl-20140130_101641.png" />
-                        <file content="canvasgl-20140130_155342.png" />
-                        <file content="canvasgl-20140130_160559.png" />
-                        <file content="canvasgl-20140131_110942.png" />
-                        <file content="canvasgl-20140131_110943.png" />
-                        <file content="canvasgl-20140131_110944.png" />
-                        <file content="canvasgl-20140131_110945.png" />
-                        <file content="canvasgl-20140131_110946.png" />
-                        <file content="canvasgl-20140131_110947.png" />
-                        <file content="canvasgl-20140131_110948.png" />
-                        <file content="canvasgl-20140131_112129.png" />
-                        <file content="canvasgl1-20140130_155450.png" />
                         <file content="placeholder.png" />
                         <file content="swirl.tga" />
                         <file content="swirl1.tga" />
@@ -417,59 +384,59 @@
     </Processors>
     <Connections>
         <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
-            </OutPort>
-            <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
-            </OutPort>
-            <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" reference="ref2" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
-            </OutPort>
-            <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref4" />
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref5" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref4" />
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" reference="ref2" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" reference="ref3" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref4" />
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" reference="ref3" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" reference="ref5" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref4" />
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" reference="ref5" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" reference="ref3" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
             </InPort>
         </Connection>
     </Connections>

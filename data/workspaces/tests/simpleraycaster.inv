@@ -18,8 +18,7 @@
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref1">
                     <MetaDataList />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <MetaDataList />
-                        <value x="2.6109643" y="-3.9147873" z="1.6574987" />
+                        <value x="2.3" y="-4.1999998" z="1.4" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -32,8 +31,7 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <MetaDataList />
-                        <value x="0.7134968" y="0.13415137" z="-0.68038654" />
+                        <value x="0.69999999" y="0.1" z="-0.69999999" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -346,8 +344,7 @@
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref6">
                     <MetaDataList />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <MetaDataList />
-                        <value x="2.6109643" y="-3.9147873" z="1.6574987" />
+                        <value x="2.3" y="-4.1999998" z="1.4" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -360,8 +357,7 @@
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <MetaDataList />
-                        <value x="0.7134968" y="0.13415137" z="-0.68038654" />
+                        <value x="0.69999999" y="0.1" z="-0.69999999" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -413,7 +409,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2112" y="576" />
+                    <position x="1054" y="502" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
