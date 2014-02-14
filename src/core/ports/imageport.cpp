@@ -39,9 +39,9 @@ namespace inviwo {
 uvec3 ImageInport::colorCode = uvec3(90,127,183);
 
 // Image Inport
-ImageInport::ImageInport(std::string identifier,
+ImageInport::ImageInport(std::string identifier, bool outportDeterminesSize,
                          PropertyOwner::InvalidationLevel invalidationLevel)
-    : DataInport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
+    : DataInport<Image>(identifier, invalidationLevel), outportDeterminesSize_(outportDeterminesSize), dimensions_(uvec2(256,256))
 {}
 
 ImageInport::~ImageInport() {}
@@ -92,21 +92,26 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
-    if (equalColorCode(getConnectedOutport())) {
+    if (!isOutportDeterminingSize() && equalColorCode(getConnectedOutport())) {
         ImageOutport* imageOutport = static_cast<ImageOutport*>(getConnectedOutport());
         imageOutport->changeDataDimensions(resizeEvent);
     }
 }
 
 uvec2 ImageInport::getDimension() const {
-    return dimensions_;
+    if(isOutportDeterminingSize() && isConnected()){
+        ImageOutport* outport = dynamic_cast<ImageOutport*>(getConnectedOutport());
+        return outport->getDimension();
+    }
+    else  
+        return dimensions_;
 }
 
 const Image* ImageInport::getData() const {
     if (isConnected()) {
         ImageOutport* outport = dynamic_cast<ImageOutport*>(getConnectedOutport());
 
-        if (dimensions_==outport->getDimension())
+        if (isOutportDeterminingSize() && dimensions_==outport->getDimension())
             return outport->getConstData();
         else
             return const_cast<const Image*>(outport->getResizedImageData(dimensions_));
@@ -117,6 +122,10 @@ const Image* ImageInport::getData() const {
 
 uvec3 ImageInport::getColorCode() const {
     return ImageInport::colorCode;
+}
+
+bool ImageInport::isOutportDeterminingSize() const{
+    return outportDeterminesSize_;
 }
 
 // Image Outport
@@ -170,7 +179,8 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
     for (size_t i=0; i<inPorts.size(); i++) {
         if (equalColorCode(inPorts[i])) {
             ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
-            imageInport->changeDataDimensions(resizeEvent);
+            if(!imageInport->isOutportDeterminingSize())
+                imageInport->changeDataDimensions(resizeEvent);
         }
     }
 

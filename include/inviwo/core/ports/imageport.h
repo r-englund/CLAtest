@@ -47,7 +47,7 @@ class CanvasProcessor;
 class IVW_CORE_API ImageInport : public DataInport<Image> {
 
 public:
-    ImageInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    ImageInport(std::string identifier, bool outportDeterminesSize=false, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~ImageInport();
 
     void initialize();
@@ -57,6 +57,7 @@ public:
     uvec2 getDimension() const;
     const Image* getData() const;
     uvec3 getColorCode() const;
+    bool isOutportDeterminingSize() const;
     static uvec3 colorCode;
     virtual std::string getClassName() const {return "ImageInport";}
 protected:
@@ -64,6 +65,7 @@ protected:
 
 private:
     uvec2 dimensions_;
+    bool outportDeterminesSize_;
 };
 
 class IVW_CORE_API ImageOutport : public DataOutport<Image>, public EventHandler {
