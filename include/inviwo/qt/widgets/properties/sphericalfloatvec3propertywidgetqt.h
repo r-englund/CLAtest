@@ -41,7 +41,7 @@
 #include <math.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include <inviwo/core/properties/vectorproperties.h>
+
 
 namespace inviwo {
 

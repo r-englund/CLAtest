@@ -37,8 +37,6 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/vectorproperties.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 

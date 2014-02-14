@@ -120,10 +120,12 @@ SimpleMesh* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
     vec4 colorUr(0,1,0,1);
     // 4 corners
     rec->addVertex(posLl, texCoordLl, colorLl);
-    rec->addVertex(vec3(posLl.x, posUr.y, posLl.z), vec3(texCoordLl.x, texCoordUr.y, texCoordLl.z), vec4(colorLl.x, colorUr.y, colorLl.z,
-                   colorLl.w));
-    rec->addVertex(vec3(posUr.x, posLl.y, posUr.z), vec3(texCoordLl.x, texCoordUr.y, texCoordUr.z), vec4(colorLl.x, colorUr.y, colorUr.z,
-                   colorLl.w));
+    rec->addVertex(vec3(posLl.x, posUr.y, posLl.z),
+                   vec3(texCoordLl.x, texCoordUr.y, texCoordLl.z),
+                   vec4(colorLl.x, colorUr.y, colorLl.z, colorLl.w));
+    rec->addVertex(vec3(posUr.x, posLl.y, posUr.z),
+                   vec3(texCoordLl.x, texCoordUr.y, texCoordUr.z),
+                   vec4(colorLl.x, colorUr.y, colorUr.z, colorLl.w));
     rec->addVertex(posUr, texCoordUr, colorUr);
     // 4 indices (?)
     rec->setIndicesInfo(TRIANGLES, STRIP);

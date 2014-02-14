@@ -50,8 +50,8 @@ SystemSettings::SystemSettings(std::string id) :
     , useRAMPercentProperty_("useRAMPercent", "Max Use Mem %", 50, 1, 100)
     , logStackTraceProperty_("logStackTraceProperty","Log Stack Trance on Error",false)
     , btnAllocTestProperty_("allocTest", "Perform Allocation Test")
-    , btnSysInfoProperty_("printSysInfo", "Print System Info")
-{}
+    , btnSysInfoProperty_("printSysInfo", "Print System Info") {
+}
 
 SystemSettings::~SystemSettings() {
 }

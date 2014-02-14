@@ -38,7 +38,7 @@
 #include <inviwo/qt/widgets/intsliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
-#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <QMenu>
 
 namespace inviwo {

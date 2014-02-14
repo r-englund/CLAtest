@@ -34,45 +34,34 @@
 #define IVW_VOLUMESOURCE_H
 
 #include <modules/base/basemoduledefine.h>
+#include <modules/base/processors/datasource.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/minmaxproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/ports/volumeport.h>
 
+
 namespace inviwo {
 
-class IVW_MODULE_BASE_API VolumeSource : public Processor {
+class IVW_MODULE_BASE_API VolumeSource : public DataSource<Volume, VolumeOutport> {
 public:
     VolumeSource();
     ~VolumeSource();
 
     InviwoProcessorInfo();
 
-    bool isReady() const;
-
 protected:
-    void loadVolume();
+    virtual void dataLoaded(Volume* data);
+    virtual void invalidateOutput();
 
 private:
-    VolumeOutport volumePort_;
-    FileProperty volumeFile_;
-
-    IntVec2Property dataRange_;
-    FloatVec2Property valueRange_;
+    FloatMinMaxProperty dataRange_;
+    FloatMinMaxProperty valueRange_;
     StringProperty valueUnit_;
-
-    void invalidateOutput();
-    void updateRangeProperties(Volume* volume);
-
-    // hidden properties for serializing raw reader state
-    StringProperty rawFileName_;
-    StringProperty rawFormatStr_;
-    IntVec3Property rawDims_;
-    BoolProperty rawEndianess_;
 };
 
 } // namespace

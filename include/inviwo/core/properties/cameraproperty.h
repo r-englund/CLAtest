@@ -38,8 +38,7 @@
 #include <inviwo/core/datastructures/geometry/geometry.h>
 #include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/vectorproperties.h>
-#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/interaction/events/eventlistener.h>

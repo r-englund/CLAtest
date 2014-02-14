@@ -39,7 +39,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 
-#include <inviwo/core/properties/matrixproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 

@@ -40,7 +40,7 @@
 #include <inviwo/core/datastructures/geometry/simplemesh.h>
 #include <inviwo/core/datastructures/geometry/plane.h>
 #include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/vectorproperties.h>
+
 
 namespace inviwo {
 

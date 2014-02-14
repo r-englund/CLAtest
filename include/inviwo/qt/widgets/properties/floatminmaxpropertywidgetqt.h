@@ -39,7 +39,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/customdoublespinboxqt.h>
 //Core
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/minmaxproperty.h>
 
 namespace inviwo {
 

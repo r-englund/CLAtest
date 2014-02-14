@@ -32,7 +32,7 @@
 
 #include <inviwo/qt/widgets/properties/colorpropertywidgetqt.h>
 
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <QHBoxLayout>
 
 namespace inviwo {

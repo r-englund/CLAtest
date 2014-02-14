@@ -39,7 +39,7 @@
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-#include <inviwo/core/properties/vectorproperties.h>
+
 #include <QtCore/qmath.h>
 
 namespace inviwo {

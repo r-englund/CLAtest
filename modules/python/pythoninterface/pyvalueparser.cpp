@@ -36,10 +36,9 @@
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperties.h>
-#include <inviwo/core/properties/scalarproperties.h>
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/minmaxproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 
 #define PARSETYPE(T,F,S)    T F(PyObject *args){T t;PyArg_ParseTuple(args,S,&t);return t; }

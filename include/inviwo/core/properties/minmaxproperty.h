@@ -36,6 +36,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/templateproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 
@@ -43,8 +44,14 @@ template<typename T>
 class MinMaxProperty : public TemplateProperty<glm::detail::tvec2<T> > {
 
 public:
-    MinMaxProperty(std::string identifier, std::string displayName, T value, T valueMax,
-                   T rangeMin, T rangeMax, T increment, PropertyOwner::InvalidationLevel invalidationLevel,
+    MinMaxProperty(std::string identifier,
+                   std::string displayName,
+                   T valueMin = Defaultvalues<T>::getMin(),
+                   T valueMax = Defaultvalues<T>::getMax(),
+                   T rangeMin = Defaultvalues<T>::getMin(),
+                   T rangeMax = Defaultvalues<T>::getMax(),
+                   T increment = Defaultvalues<T>::getInc(),
+                   PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics = PropertySemantics::Default);
 
     T getRangeMin() const;
@@ -59,15 +66,31 @@ public:
 
     void setRange(const glm::detail::tvec2<T>& value);
 
+    virtual std::string getClassName()  const;
 
     virtual Variant getVariant();
     virtual void setVariant(const Variant& v);
     virtual int getVariantType();
 
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& s);
+
 private:
     glm::detail::tvec2<T> range_;
     T increment_;
 };
+
+typedef MinMaxProperty<float> FloatMinMaxProperty;
+typedef MinMaxProperty<double> DoubleMinMaxProperty;
+typedef MinMaxProperty<int> IntMinMaxProperty;
+
+
+template<typename T>
+std::string MinMaxProperty<T>::getClassName() const {
+    std::stringstream ss;
+    ss << Defaultvalues<T>::getName() << "MinMaxProperty";
+    return ss.str();
+}
 
 template <typename T>
 MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayName,
@@ -143,6 +166,27 @@ void MinMaxProperty<T>::setVariant(const Variant& v) {
 template <typename T>
 int MinMaxProperty<T>::getVariantType() {
     return getVariant().getType();
+}
+
+template <typename T>
+void MinMaxProperty<T>::serialize(IvwSerializer& s) const {
+    Property::serialize(s);
+    s.serialize("value", TemplateProperty<glm::detail::tvec2<T> >::get());
+    s.serialize("range", MinMaxProperty<T>::getRange());
+    s.serialize("increment", MinMaxProperty<T>::getIncrement());
+}
+
+template <typename T>
+void MinMaxProperty<T>::deserialize(IvwDeserializer& d) {
+    Property::deserialize(d);
+    glm::detail::tvec2<T> value;
+    d.deserialize("range", value);
+    MinMaxProperty<T>::setRange(value);
+    T increment;
+    d.deserialize("increment", increment);
+    MinMaxProperty<T>::setIncrement(increment);
+    d.deserialize("value", value);
+    TemplateProperty<glm::detail::tvec2<T> >::set(value);
 }
 
 } // namespace

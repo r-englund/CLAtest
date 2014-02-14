@@ -36,7 +36,7 @@
 #include <inviwo/core/util/settings/settings.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {

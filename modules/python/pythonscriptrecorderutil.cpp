@@ -38,10 +38,9 @@
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/properties/matrixproperties.h>
 #include <inviwo/core/properties/optionproperties.h>
-#include <inviwo/core/properties/scalarproperties.h>
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/minmaxproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/util/assertion.h>

@@ -2197,95 +2197,96 @@ int sigar_file_system_list_get(sigar_t *sigar,
 int sigar_disk_usage_get(sigar_t *sigar, const char *name,
                          sigar_disk_usage_t *disk)
 {
-#if defined(DARWIN)
-    kern_return_t status;
-    io_registry_entry_t parent;
-    io_service_t service;
-    CFDictionaryRef props;
-    CFNumberRef number;
-    sigar_iodev_t *iodev = sigar_iodev_get(sigar, name);
-    char dname[256], *ptr;
-
-    SIGAR_DISK_STATS_INIT(disk);
-
-    if (!iodev) {
-        return ENXIO;
-    }
-
-    /* "/dev/disk0s1" -> "disk0" */ /* XXX better way? */
-    ptr = &iodev->name[SSTRLEN(SIGAR_DEV_PREFIX)];
-    SIGAR_SSTRCPY(dname, ptr);
-    ptr = dname;
-    if (strnEQ(ptr, "disk", 4)) {
-        ptr += 4;
-        if ((ptr = strchr(ptr, 's')) && isdigit(*(ptr+1))) {
-            *ptr = '\0';
-        }
-    }
-
-    if (SIGAR_LOG_IS_DEBUG(sigar)) {
-        sigar_log_printf(sigar, SIGAR_LOG_DEBUG,
-                         "[disk_usage] map %s -> %s",
-                         iodev->name, dname);
-    }
-
-    /* e.g. name == "disk0" */
-    service = IOServiceGetMatchingService(kIOMasterPortDefault,
-                                          IOBSDNameMatching(kIOMasterPortDefault, 0, dname));
-
-    if (!service) {
-        return errno;
-    }
-
-    status = IORegistryEntryGetParentEntry(service, kIOServicePlane, &parent);
-    if (status != KERN_SUCCESS) {
-        IOObjectRelease(service);
-        return status;
-    }
-
-    status = IORegistryEntryCreateCFProperties(parent,
-                                               (CFMutableDictionaryRef *)&props,
-                                               kCFAllocatorDefault,
-                                               kNilOptions);
-    if (props) {
-        CFDictionaryRef stats =
-            (CFDictionaryRef)CFDictionaryGetValue(props,
-                                                  CFSTR(kIOBlockStorageDriverStatisticsKey));
-
-        if (stats) {
-            IoStatGetValue(ReadsKey, disk->reads);
-            IoStatGetValue(BytesReadKey, disk->read_bytes);
-            IoStatGetValue(TotalReadTimeKey, disk->rtime);
-            IoStatGetValue(WritesKey, disk->writes);
-            IoStatGetValue(BytesWrittenKey, disk->write_bytes);
-            IoStatGetValue(TotalWriteTimeKey, disk->wtime);
-            disk->time = disk->rtime + disk->wtime;
-        }
-
-        CFRelease(props);
-    }
-
-    IOObjectRelease(service);
-    IOObjectRelease(parent);
-
-    return SIGAR_OK;
-#elif defined(__FreeBSD__)
-    /* XXX incomplete */
-    struct sigar_statfs buf;
-
-    if (sigar_statfs(name, &buf) < 0) {
-        return errno;
-    }
-
-    SIGAR_DISK_STATS_INIT(disk);
-
-    disk->reads  = buf.f_syncreads + buf.f_asyncreads;
-    disk->writes = buf.f_syncwrites + buf.f_asyncwrites;
-    return SIGAR_OK;
-#else
-    SIGAR_DISK_STATS_INIT(disk);
-    return SIGAR_ENOTIMPL;
-#endif
+//#if defined(DARWIN)
+//    kern_return_t status;
+//    io_registry_entry_t parent;
+//    io_service_t service;
+//    CFDictionaryRef props;
+//    CFNumberRef number;
+//    sigar_iodev_t *iodev = sigar_iodev_get(sigar, name);
+//    char dname[256], *ptr;
+//
+//    SIGAR_DISK_STATS_INIT(disk);
+//
+//    if (!iodev) {
+//        return ENXIO;
+//    }
+//
+//    /* "/dev/disk0s1" -> "disk0" */ /* XXX better way? */
+//    ptr = &iodev->name[SSTRLEN(SIGAR_DEV_PREFIX)];
+//    SIGAR_SSTRCPY(dname, ptr);
+//    ptr = dname;
+//    if (strnEQ(ptr, "disk", 4)) {
+//        ptr += 4;
+//        if ((ptr = strchr(ptr, 's')) && isdigit(*(ptr+1))) {
+//            *ptr = '\0';
+//        }
+//    }
+//
+//    if (SIGAR_LOG_IS_DEBUG(sigar)) {
+//        sigar_log_printf(sigar, SIGAR_LOG_DEBUG,
+//                         "[disk_usage] map %s -> %s",
+//                         iodev->name, dname);
+//    }
+//
+//    /* e.g. name == "disk0" */
+//    service = IOServiceGetMatchingService(kIOMasterPortDefault,
+//                                          IOBSDNameMatching(kIOMasterPortDefault, 0, dname));
+//
+//    if (!service) {
+//        return errno;
+//    }
+//
+//    status = IORegistryEntryGetParentEntry(service, kIOServicePlane, &parent);
+//    if (status != KERN_SUCCESS) {
+//        IOObjectRelease(service);
+//        return status;
+//    }
+//
+//    status = IORegistryEntryCreateCFProperties(parent,
+//                                               (CFMutableDictionaryRef *)&props,
+//                                               kCFAllocatorDefault,
+//                                               kNilOptions);
+//    if (props) {
+//        CFDictionaryRef stats =
+//            (CFDictionaryRef)CFDictionaryGetValue(props,
+//                                                  CFSTR(kIOBlockStorageDriverStatisticsKey));
+//
+//        if (stats) {
+//            IoStatGetValue(ReadsKey, disk->reads);
+//            IoStatGetValue(BytesReadKey, disk->read_bytes);
+//            IoStatGetValue(TotalReadTimeKey, disk->rtime);
+//            IoStatGetValue(WritesKey, disk->writes);
+//            IoStatGetValue(BytesWrittenKey, disk->write_bytes);
+//            IoStatGetValue(TotalWriteTimeKey, disk->wtime);
+//            disk->time = disk->rtime + disk->wtime;
+//        }
+//
+//        CFRelease(props);
+//    }
+//
+//    IOObjectRelease(service);
+//    IOObjectRelease(parent);
+//
+//    return SIGAR_OK;
+//#elif defined(__FreeBSD__)
+//    /* XXX incomplete */
+//    struct sigar_statfs buf;
+//
+//    if (sigar_statfs(name, &buf) < 0) {
+//        return errno;
+//    }
+//
+//    SIGAR_DISK_STATS_INIT(disk);
+//
+//    disk->reads  = buf.f_syncreads + buf.f_asyncreads;
+//    disk->writes = buf.f_syncwrites + buf.f_asyncwrites;
+//    return SIGAR_OK;
+//#else
+//    SIGAR_DISK_STATS_INIT(disk);
+//    return SIGAR_ENOTIMPL;
+//#endif
+    return 0;
 }
 
 int sigar_file_system_usage_get(sigar_t *sigar,
@@ -3607,116 +3608,116 @@ int sigar_proc_port_get(sigar_t *sigar, int protocol,
 int sigar_os_sys_info_get(sigar_t *sigar,
                           sigar_sys_info_t *sysinfo)
 {
-#ifdef DARWIN
-    char *codename = NULL;
-    SInt32 version, version_major, version_minor, version_fix;
-
-    SIGAR_SSTRCPY(sysinfo->name, "MacOSX");
-    SIGAR_SSTRCPY(sysinfo->vendor_name, "Mac OS X");
-    SIGAR_SSTRCPY(sysinfo->vendor, "Apple");
-
-    if (Gestalt(gestaltSystemVersion, &version) == noErr) {
-        if (version >= 0x00001040) {
-            Gestalt('sys1' /*gestaltSystemVersionMajor*/, &version_major);
-            Gestalt('sys2' /*gestaltSystemVersionMinor*/, &version_minor);
-            Gestalt('sys3' /*gestaltSystemVersionBugFix*/, &version_fix);
-        }
-        else {
-            version_fix = version & 0xf;
-            version >>= 4;
-            version_minor = version & 0xf;
-            version >>= 4;
-            version_major = version - (version >> 4) * 6;
-        }
-    }
-    else {
-        return SIGAR_ENOTIMPL;
-    }
-
-    snprintf(sysinfo->vendor_version,
-             sizeof(sysinfo->vendor_version),
-             "%d.%d",
-             (int)version_major, (int)version_minor);
-
-    snprintf(sysinfo->version,
-             sizeof(sysinfo->version),
-             "%s.%d",
-             sysinfo->vendor_version, (int)version_fix);
-
-    if (version_major == 10) {
-        switch (version_minor) {
-          case 2:
-            codename = "Jaguar";
-            break;
-          case 3:
-            codename = "Panther";
-            break;
-          case 4:
-            codename = "Tiger";
-            break;
-          case 5:
-            codename = "Leopard";
-            break;
-          case 6:
-            codename = "Snow Leopard";
-            break;
-          case 7:
-            codename = "Lion";
-            break;
-          case 8:
-            codename = "Mountain Lion";
-            break;
-          default:
-            codename = "Unknown";
-            break;
-        }
-    }
-    else {
-        codename = "Unknown";
-    }
-
-    SIGAR_SSTRCPY(sysinfo->vendor_code_name, codename);
-
-    if(strcmp(sysinfo->vendor_code_name, "Unknown") == 0){
-        snprintf(sysinfo->description,
-                 sizeof(sysinfo->description),
-                 "%s %s",
-                 sysinfo->vendor_name, sysinfo->version);
-    }
-    else{
-        snprintf(sysinfo->description,
-                 sizeof(sysinfo->description),
-                 "%s %s %s",
-                 sysinfo->vendor_name, sysinfo->version, sysinfo->vendor_code_name);
-    }
-#else
-    char *ptr;
-
-#if defined(__FreeBSD__)
-    SIGAR_SSTRCPY(sysinfo->name, "FreeBSD");
-#elif defined(__OpenBSD__)
-    SIGAR_SSTRCPY(sysinfo->name, "OpenBSD");
-#elif defined(__NetBSD__)
-    SIGAR_SSTRCPY(sysinfo->name, "NetBSD");
-#else
-    SIGAR_SSTRCPY(sysinfo->name, "Unknown");
-#endif
-    SIGAR_SSTRCPY(sysinfo->vendor_name, sysinfo->name);
-    SIGAR_SSTRCPY(sysinfo->vendor, sysinfo->name);
-    SIGAR_SSTRCPY(sysinfo->vendor_version,
-                  sysinfo->version);
-
-    if ((ptr = strstr(sysinfo->vendor_version, "-"))) {
-        /* STABLE, RELEASE, CURRENT */
-        *ptr++ = '\0';
-        SIGAR_SSTRCPY(sysinfo->vendor_code_name, ptr);
-    }
-
-    snprintf(sysinfo->description,
-             sizeof(sysinfo->description),
-             "%s %s",
-             sysinfo->name, sysinfo->version);
-#endif
-
+//#ifdef DARWIN
+//    char *codename = NULL;
+//    SInt32 version, version_major, version_minor, version_fix;
+//
+//    SIGAR_SSTRCPY(sysinfo->name, "MacOSX");
+//    SIGAR_SSTRCPY(sysinfo->vendor_name, "Mac OS X");
+//    SIGAR_SSTRCPY(sysinfo->vendor, "Apple");
+//
+//    if (Gestalt(gestaltSystemVersion, &version) == noErr) {
+//        if (version >= 0x00001040) {
+//            Gestalt('sys1' /*gestaltSystemVersionMajor*/, &version_major);
+//            Gestalt('sys2' /*gestaltSystemVersionMinor*/, &version_minor);
+//            Gestalt('sys3' /*gestaltSystemVersionBugFix*/, &version_fix);
+//        }
+//        else {
+//            version_fix = version & 0xf;
+//            version >>= 4;
+//            version_minor = version & 0xf;
+//            version >>= 4;
+//            version_major = version - (version >> 4) * 6;
+//        }
+//    }
+//    else {
+//        return SIGAR_ENOTIMPL;
+//    }
+//
+//    snprintf(sysinfo->vendor_version,
+//             sizeof(sysinfo->vendor_version),
+//             "%d.%d",
+//             (int)version_major, (int)version_minor);
+//
+//    snprintf(sysinfo->version,
+//             sizeof(sysinfo->version),
+//             "%s.%d",
+//             sysinfo->vendor_version, (int)version_fix);
+//
+//    if (version_major == 10) {
+//        switch (version_minor) {
+//          case 2:
+//            codename = "Jaguar";
+//            break;
+//          case 3:
+//            codename = "Panther";
+//            break;
+//          case 4:
+//            codename = "Tiger";
+//            break;
+//          case 5:
+//            codename = "Leopard";
+//            break;
+//          case 6:
+//            codename = "Snow Leopard";
+//            break;
+//          case 7:
+//            codename = "Lion";
+//            break;
+//          case 8:
+//            codename = "Mountain Lion";
+//            break;
+//          default:
+//            codename = "Unknown";
+//            break;
+//        }
+//    }
+//    else {
+//        codename = "Unknown";
+//    }
+//
+//    SIGAR_SSTRCPY(sysinfo->vendor_code_name, codename);
+//
+//    if(strcmp(sysinfo->vendor_code_name, "Unknown") == 0){
+//        snprintf(sysinfo->description,
+//                 sizeof(sysinfo->description),
+//                 "%s %s",
+//                 sysinfo->vendor_name, sysinfo->version);
+//    }
+//    else{
+//        snprintf(sysinfo->description,
+//                 sizeof(sysinfo->description),
+//                 "%s %s %s",
+//                 sysinfo->vendor_name, sysinfo->version, sysinfo->vendor_code_name);
+//    }
+//#else
+//    char *ptr;
+//
+//#if defined(__FreeBSD__)
+//    SIGAR_SSTRCPY(sysinfo->name, "FreeBSD");
+//#elif defined(__OpenBSD__)
+//    SIGAR_SSTRCPY(sysinfo->name, "OpenBSD");
+//#elif defined(__NetBSD__)
+//    SIGAR_SSTRCPY(sysinfo->name, "NetBSD");
+//#else
+//    SIGAR_SSTRCPY(sysinfo->name, "Unknown");
+//#endif
+//    SIGAR_SSTRCPY(sysinfo->vendor_name, sysinfo->name);
+//    SIGAR_SSTRCPY(sysinfo->vendor, sysinfo->name);
+//    SIGAR_SSTRCPY(sysinfo->vendor_version,
+//                  sysinfo->version);
+//
+//    if ((ptr = strstr(sysinfo->vendor_version, "-"))) {
+//        /* STABLE, RELEASE, CURRENT */
+//        *ptr++ = '\0';
+//        SIGAR_SSTRCPY(sysinfo->vendor_code_name, ptr);
+//    }
+//
+//    snprintf(sysinfo->description,
+//             sizeof(sysinfo->description),
+//             "%s %s",
+//             sysinfo->name, sysinfo->version);
+//#endif
+//
     return SIGAR_OK;
 }

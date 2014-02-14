@@ -39,7 +39,7 @@
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/directoryproperty.h>
-#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 

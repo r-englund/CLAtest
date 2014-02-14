@@ -37,8 +37,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/light/diffuselight.h>
 #include <inviwo/core/ports/dataoutport.h>
-#include <inviwo/core/properties/scalarproperties.h>
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/processors/processor.h>
 
 namespace inviwo {

@@ -40,7 +40,7 @@
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <QMenu>
 //Core
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 

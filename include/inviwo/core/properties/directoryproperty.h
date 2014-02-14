@@ -35,6 +35,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/templateproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 
 namespace inviwo {
@@ -44,8 +45,6 @@ namespace inviwo {
 *
 * @see FileProperty, StringProperty
 */
-
-class IntProperty;
 
 class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:

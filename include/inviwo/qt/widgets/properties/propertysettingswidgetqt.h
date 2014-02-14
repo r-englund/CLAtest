@@ -41,8 +41,8 @@
 #include <QPushButton>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 //Core
-#include <inviwo/core/properties/scalarproperties.h>
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+
 
 
 

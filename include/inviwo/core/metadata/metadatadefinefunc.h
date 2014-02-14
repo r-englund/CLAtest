@@ -36,6 +36,7 @@
 MetaDataMacro(Bool, bool, false, true)
 MetaDataMacro(Int, int, 0, 1)
 MetaDataMacro(Float, float, 0.0f, 1.0f)
+MetaDataMacro(Double, double, 0.0f, 1.0f)
 MetaDataMacro(String, std::string, "", "test")
 MetaDataMacro(IVec2, ivec2, ivec2(0), ivec2(1,2))
 MetaDataMacro(IVec3, ivec3, ivec3(0), ivec3(1,2,3))

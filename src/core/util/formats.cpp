@@ -44,11 +44,14 @@ DataFormatBase::DataFormatBase()
     formatStr_ = new std::string(str());
 }
 
-DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, std::string s)
+DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, double max, double min, NumericType nt, std::string s)
     : formatId_(t)
     , bitsAllocated_(bA)
     , bitsStored_(bS)
-    , components_(c) {
+    , components_(c)
+    , numericType_(nt)
+    , max_(max)
+    , min_(min) {
     formatStr_ = new std::string(s);
 }
 
@@ -118,6 +121,10 @@ size_t DataFormatBase::getBitsAllocated() const {
     return bitsAllocated_;
 }
 
+NumericType DataFormatBase::getNumericType() const {
+    return numericType_;
+}
+
 size_t DataFormatBase::getBitsStored() const {
     return bitsStored_;
 }
@@ -132,6 +139,14 @@ size_t DataFormatBase::getBytesStored() const {
 
 int DataFormatBase::getComponents() const {
     return components_;
+}
+
+double DataFormatBase::getMax() const {
+    return max_;
+}
+
+double DataFormatBase::getMin() const {
+    return min_;
 }
 
 const char* DataFormatBase::getString() const {

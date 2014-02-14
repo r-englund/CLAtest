@@ -39,7 +39,7 @@
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/vectorproperties.h>
+#include <inviwo/core/properties/minmaxproperty.h>
 
 namespace inviwo {
 

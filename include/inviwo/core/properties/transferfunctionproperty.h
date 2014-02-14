@@ -34,7 +34,7 @@
 #define IVW_TRANSFERFUNCTIONPROPERTY_H
 
 #include <inviwo/core/properties/templateproperty.h>
-#include <inviwo/core/properties/vectorproperties.h>
+
 #include <inviwo/core/datastructures/transferfunction.h>
 #include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/datastructures/histogram.h>

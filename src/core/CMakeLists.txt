@@ -153,7 +153,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h    
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/matrixproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
@@ -166,11 +165,9 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactoryobject.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/scalarproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferfunctionproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/vectorproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrenderer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/rendering/geometryrendererfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/resources/resource.h
@@ -334,7 +331,6 @@ set(SOURCE_FILES
     properties/eventproperty.cpp
     properties/fileproperty.cpp
     properties/imageeditorproperty.cpp   
-    properties/matrixproperties.cpp
     properties/optionproperties.cpp
     properties/property.cpp
     properties/propertyfactory.cpp
@@ -344,10 +340,8 @@ set(SOURCE_FILES
     properties/propertywidget.cpp
     properties/propertywidgetfactory.cpp
     properties/propertywidgetfactoryobject.cpp
-    properties/scalarproperties.cpp
     properties/stringproperty.cpp
     properties/transferfunctionproperty.cpp
-    properties/vectorproperties.cpp
     rendering/geometryrendererfactory.cpp
     resources/resourcemanager.cpp
     util/assertion.cpp

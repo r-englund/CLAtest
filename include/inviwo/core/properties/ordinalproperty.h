@@ -36,15 +36,53 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/templateproperty.h>
+#include <string>
+#include <sstream>
 
 namespace inviwo {
 
 template<typename T>
-class OrdinalProperty : public TemplateProperty<T> {
+struct Defaultvalues {};
 
+#define DEFAULTVALUES(type, name, val, min, max, inc) \
+template<> \
+struct Defaultvalues<type> { \
+public: \
+    static type getVal() { return val; } \
+    static type getMin() { return min; } \
+    static type getMax() { return max; } \
+    static type getInc() { return inc; } \
+    static std::string getName() { return name; } \
+};
+
+DEFAULTVALUES(float, "Float", 0.0f, 0.0f, 1.0f, 0.01f)
+DEFAULTVALUES(double, "Double", 0.0, 0.0, 1.0, 0.01)
+DEFAULTVALUES(int, "Int", 0, -100, 100, 1)
+
+DEFAULTVALUES(vec2, "FloatVec2", vec2(0.f), vec2(0.f), vec2(1.f), vec2(0.01f))
+DEFAULTVALUES(vec3, "FloatVec3", vec3(0.f), vec3(0.f), vec3(1.f), vec3(0.01f))
+DEFAULTVALUES(vec4, "FloatVec4", vec4(0.f), vec4(0.f), vec4(1.f), vec4(0.01f))
+
+DEFAULTVALUES(ivec2, "IntVec2", ivec2(0), ivec2(0), ivec2(10), ivec2(1))
+DEFAULTVALUES(ivec3, "IntVec3", ivec3(0), ivec3(0), ivec3(10), ivec3(1))
+DEFAULTVALUES(ivec4, "IntVec4", ivec4(0), ivec4(0), ivec4(10), ivec4(1))
+
+DEFAULTVALUES(mat2, "FloatMat2", mat2(0.f), mat2(0.f), mat2(1.f), mat2(0.01f))
+DEFAULTVALUES(mat3, "FloatMat3", mat3(0.f), mat3(0.f), mat3(1.f), mat3(0.01f))
+DEFAULTVALUES(mat4, "FloatMat4", mat4(0.f), mat4(0.f), mat4(1.f), mat4(0.01f))
+
+#undef DEFAULTVALUES
+
+template<typename T>
+class OrdinalProperty : public TemplateProperty<T> {
 public:
-    OrdinalProperty(std::string identifier, std::string displayName, T value,
-                    T minValue, T maxValue, T increment, PropertyOwner::InvalidationLevel invalidationLevel,
+    OrdinalProperty(std::string identifier,
+                    std::string displayName,
+                    T value = Defaultvalues<T>::getVal(),
+                    T minValue = Defaultvalues<T>::getMin(),
+                    T maxValue = Defaultvalues<T>::getMax(),
+                    T increment = Defaultvalues<T>::getInc(),
+                    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                     PropertySemantics semantics = PropertySemantics::Default);
 
     T getMinValue() const;
@@ -57,10 +95,14 @@ public:
     void setMaxValue(const T& value);
     void setIncrement(const T& value);
 
+    virtual std::string getClassName() const;
+
     virtual Variant getVariant();
     virtual void setVariant(const Variant& v);
     virtual int getVariantType();
 
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
 private:
     T minValue_;
@@ -68,6 +110,32 @@ private:
     T increment_;
 };
 
+//Scalar properties
+typedef OrdinalProperty<float> FloatProperty;
+typedef OrdinalProperty<int> IntProperty;
+typedef OrdinalProperty<double> DoubleProperty;
+
+//Vector properties 
+typedef OrdinalProperty<vec2> FloatVec2Property;
+typedef OrdinalProperty<vec3> FloatVec3Property;
+typedef OrdinalProperty<vec4> FloatVec4Property;
+
+typedef OrdinalProperty<ivec2> IntVec2Property;
+typedef OrdinalProperty<ivec3> IntVec3Property;
+typedef OrdinalProperty<ivec4> IntVec4Property;
+
+//Matrix properties
+typedef OrdinalProperty<mat2> FloatMat2Property;
+typedef OrdinalProperty<mat3> FloatMat3Property;
+typedef OrdinalProperty<mat4> FloatMat4Property;
+
+
+template<typename T>
+std::string OrdinalProperty<T>::getClassName() const {
+    std::stringstream ss;
+    ss << Defaultvalues<T>::getName() << "Property";
+    return ss.str();
+}
 
 template <typename T>
 OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayName, T value,
@@ -139,6 +207,30 @@ void OrdinalProperty<T>::setVariant(const Variant& v) {
 template <typename T>
 int OrdinalProperty<T>::getVariantType() {
     return getVariant().getType();
+}
+
+template<typename T>
+void OrdinalProperty<T>::serialize(IvwSerializer& s) const {
+    Property::serialize(s);
+    s.serialize("value", TemplateProperty<T>::get());
+    s.serialize("minvalue", getMinValue());
+    s.serialize("maxvalue", getMaxValue());
+    s.serialize("increment", getIncrement());
+}
+
+
+template<typename T>
+void OrdinalProperty<T>::deserialize(IvwDeserializer& d) {
+    Property::deserialize(d);
+    T value;
+    d.deserialize("value", value);
+    set(value);
+    d.deserialize("minvalue", value);
+    setMinValue(value);
+    d.deserialize("maxvalue", value);
+    setMaxValue(value);
+    d.deserialize("increment", value);
+    setIncrement(value);
 }
 
 

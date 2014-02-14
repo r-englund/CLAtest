@@ -34,6 +34,7 @@
 #include <modules/base/processors/cubeproxygeometry.h>
 #include <modules/base/processors/diffuselightsourceprocessor.h>
 #include <modules/base/processors/directionallightsourceprocessor.h>
+#include <modules/base/processors/geometrysource.h>
 #include <modules/base/processors/imagesource.h>
 #include <modules/base/processors/imagesourceseries.h>
 #include <modules/base/processors/meshclipping.h>
@@ -53,6 +54,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(CubeProxyGeometry);
     registerProcessor(DiffuseLightSourceProcessor);
     registerProcessor(DirectionalLightSourceProcessor);
+    registerProcessor(GeometrySource);
     registerProcessor(ImageSource);
     registerProcessor(ImageSourceSeries);
     registerProcessor(MeshClipping);

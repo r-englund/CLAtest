@@ -94,11 +94,11 @@ void VolumeBasisTransformer::process() {
         // and update if the inport changes the representations
         
         Volume* out;
-        if(!outport_.hasData() || inport_.getInvalidationLevel() >= INVALID_OUTPUT) {
+        if(outport_.hasData() && inport_.getInvalidationLevel() < INVALID_OUTPUT) {
+            out = outport_.getData();
+        } else  {
             out = in->clone();
             outport_.setData(out);
-        } else if(outport_.hasData()) {
-            out = outport_.getData();
         }
         
         float a = lengths_.get()[0];
