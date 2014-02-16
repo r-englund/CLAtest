@@ -104,8 +104,7 @@ void Texture2D::upload(const void* data ) {
 }
 
 void Texture2D::resize(uvec2 dimension) {
-    setWidth(dimension.x);
-    setHeight(dimension.y);
+    dimensions_ = dimension;
     initialize(NULL);
 }
 

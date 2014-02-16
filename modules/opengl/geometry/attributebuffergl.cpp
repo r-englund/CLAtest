@@ -34,150 +34,71 @@
 
 namespace inviwo {
 
-BufferGL::BufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage)
+BufferGL::BufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, BufferObject* data)
     : BufferRepresentation(size, format, type, usage)
-    , glFormat_(getGLFormats()->getGLFormat(format->getId())){
+    , buffer_(data) {
     initialize();
     LGL_ERROR_SUPPRESS;
+}
+
+BufferGL::BufferGL( const BufferGL& rhs ): BufferRepresentation(rhs) {
+    buffer_ = rhs.getBufferObject()->clone();
 }
 
 BufferGL::~BufferGL() {
     deinitialize();
 }
 
-GLenum BufferGL::getFormatType() const {
-    return glFormat_.type;
+GLuint BufferGL::getId() const {
+    return buffer_->getId();
 }
 
-GLuint BufferGL::getId() const {
-    return bufferId_->getId();
+GLenum BufferGL::getFormatType() const {
+    return buffer_->getFormatType();
 }
 
 void BufferGL::enable() const {
-    glEnableClientState(state_);
-    bind();
-    specifyLocation();
+    buffer_->enable();
 }
 
 void BufferGL::disable() const {
-    glDisableClientState(state_);
+    buffer_->disable();
 }
 
 void BufferGL::bind() const {
-    glBindBuffer(target_, bufferId_->getId());
+    buffer_->bind();
 }
 
-void BufferGL::specifyLocation() const {
-    (this->*locationPointerFunc_)();
-}
-
-
-void BufferGL::initialize( const void* data, GLsizeiptr sizeInBytes, GLenum target /*= GL_ARRAY_BUFFER*/ )
+void BufferGL::initialize(const void* data, GLsizeiptr sizeInBytes)
 {
-    //Set global variables
-    target_ = target;
-
-    //Get GL Format
-    glFormat_ = getGLFormats()->getGLFormat(getDataFormat()->getId());
-
-    //Specify location and state
-    switch(getBufferType())
-    {
-    case COLOR_ATTRIB:
-        locationPointerFunc_ = &BufferGL::colorPointer;
-        state_ = GL_COLOR_ARRAY;
-        break;
-    case NORMAL_ATTRIB:
-        locationPointerFunc_ = &BufferGL::normalPointer;
-        state_ = GL_NORMAL_ARRAY;
-        break;
-    case TEXCOORD_ATTRIB:
-        locationPointerFunc_ = &BufferGL::texCoordPointer;
-        state_ = GL_TEXTURE_COORD_ARRAY;
-        break;
-    case POSITION_ATTRIB:
-        locationPointerFunc_ = &BufferGL::vertexPointer;
-        state_ = GL_VERTEX_ARRAY;
-        break;
-    default:
-        locationPointerFunc_ = &BufferGL::emptyFunc;
-        state_ = GL_VERTEX_ARRAY;
-        break;
-    }
-
-    //Specify location and state
-    switch(getBufferUsage())
-    {
-        case DYNAMIC:
-            usageGL_ = GL_DYNAMIC_DRAW;
-            break;
-        default:
-            usageGL_ = GL_STATIC_DRAW;
-            break;
-    }
-
-    bind();
-    // Allocate and transfer possible data
-    glBufferData(target_, sizeInBytes, data, usageGL_);
-    specifyLocation();
+    buffer_->initialize(data, sizeInBytes);
 }
 
 void BufferGL::upload( const void* data, GLsizeiptr sizeInBytes ) {
-    bind();
-    glBufferSubData(target_, 0, sizeInBytes, data);
+    buffer_->upload(data, sizeInBytes);
 }
-
-void BufferGL::colorPointer() const {
-    glColorPointer(glFormat_.channels, glFormat_.type, 0, 0);
-}
-
-void BufferGL::normalPointer() const {
-    glNormalPointer(glFormat_.type, 0, 0);
-}
-
-void BufferGL::texCoordPointer() const {
-    glTexCoordPointer(glFormat_.channels, glFormat_.type, 0, 0);
-}
-
-void BufferGL::vertexPointer() const {
-    glVertexPointer(glFormat_.channels, glFormat_.type, 0, 0);
-}
-
-void BufferGL::emptyFunc() const {}
 
 BufferGL* BufferGL::clone() const{
     return new BufferGL(*this);
 }
 
-void BufferGL::initialize(){
-    //Generate a new buffer
-    GLuint id;
-    glGenBuffers(1, &id);
-    bufferId_ = new BufferGLObjectId(id);
+void BufferGL::initialize() {
+    if (!buffer_) {
+        buffer_ = new BufferObject(getSize(), getDataFormat(), getBufferType(), getBufferUsage());
+    }
 }
 
 void BufferGL::deinitialize() {
-    if(bufferId_->decreaseRefCount() <= 0) {
-        delete bufferId_; bufferId_ = NULL;
+    if (buffer_ && buffer_->decreaseRefCount() <= 0) {
+        delete buffer_;
     }
 }
 
-void BufferGL::download( void* data ) const
-{
-    bind();
-    // Map data
-    void* gldata = glMapBuffer(target_, GL_READ_ONLY);
-    // Copy data if valid pointer
-    if(gldata)
-    {
-        memcpy(data, gldata, getSize()*getSizeOfElement());
-        // Unmap buffer after using it
-        glUnmapBufferARB(target_); 
-    } else {
-        LogError("Unable to map data");
-    }
-
+void BufferGL::download( void* data ) const {
+    buffer_->download(data);
 }
+
+
 
 
 

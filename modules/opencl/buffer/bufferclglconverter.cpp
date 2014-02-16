@@ -55,7 +55,7 @@ DataRepresentation* BufferCLGL2RAMConverter::createFrom(const DataRepresentation
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
     size_t size = src->getSize();
     destination = createBufferRAM(size, src->getDataFormat(), src->getBufferType(), src->getBufferUsage()); 
-    const BufferGL* buffer = src->getBufferGL();
+    BufferObject* buffer = src->getBufferGL();
     if (destination) {
         BufferRAM* dst = static_cast<BufferRAM*>(destination);
         buffer->download(dst->getData());
@@ -74,11 +74,25 @@ void BufferCLGL2RAMConverter::update(const DataRepresentation* source, DataRepre
     src->getBufferGL()->download(dst->getData());
 }
 
+DataRepresentation* BufferCLGL2GLConverter::createFrom( const DataRepresentation* source ) {
+    DataRepresentation* destination = 0;
+    const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
+    BufferObject* data = const_cast<BufferObject*>(src->getBufferGL());
+    destination = new BufferGL(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage(), data);
+    // Increase reference count to indicate that BufferGL is also using the buffer
+    data->increaseRefCount();
+    return destination;
+}
+
+void BufferCLGL2GLConverter::update( const DataRepresentation* source, DataRepresentation* destination ) {
+    // Do nothing since they share data
+}
+
 DataRepresentation* BufferGL2CLGLConverter::createFrom(const DataRepresentation* source )
 {
     DataRepresentation* destination = 0;
     const BufferGL* src = static_cast<const BufferGL*>(source);
-    destination = new BufferCLGL(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage(), src);
+    destination = new BufferCLGL(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage(), const_cast<BufferGL*>(src)->getBufferObject());
     return destination;
 }
 

@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -26,50 +26,74 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file authors: Erik Sundén, Timo Ropinski, Daniel Jönsson
+ * Main file authors: Erik Sundén, Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_TEXTURE2D_H
-#define IVW_TEXTURE2D_H
+#ifndef IVW_BUFFER_OBJECT_H
+#define IVW_BUFFER_OBJECT_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/glwrap/texture.h>
-#include <inviwo/core/util/observer.h>
+#include <modules/opengl/buffer/bufferobjectobserver.h>
+#include <inviwo/core/datastructures/geometry/attributes.h>
+#include <inviwo/core/util/referencecounter.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API Texture2D : public Texture {
+class IVW_MODULE_OPENGL_API BufferObject: public Observable<BufferObjectObserver>, public ReferenceCounter  {
 
 public:
-    Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);
-    Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level = 0);
-    Texture2D(const Texture2D& other);
-    Texture2D& operator=(const Texture2D& other);
-    virtual ~Texture2D();
+    BufferObject(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, GLenum target = GL_ARRAY_BUFFER);
+    virtual ~BufferObject();
+    BufferObject(const BufferObject& rhs);
 
-    Texture2D* clone() const;
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual BufferObject* clone() const;
 
-    void initialize(const void* data);
+    const Buffer* getAttribute() const;
+    GLenum getFormatType() const;
+    GLuint getId() const;
 
-    size_t getNumberOfValues() const;
+    GLFormats::GLFormat getGLFormat() const { return glFormat_; }
+    BufferType getBufferType() const { return type_; }
 
-    void upload(const void* data);
+    virtual void enable() const;
+    virtual void disable() const;
 
-    const uvec2& getDimension() const { return dimensions_;}
-    int getWidth() const{ return dimensions_.x; }
-    int getHeight() const{ return dimensions_.y; }
-    void resize(uvec2 dimension);
+    void bind() const;
+
+    void initialize(const void* data, GLsizeiptr sizeInBytes);
+    void upload(const void* data, GLsizeiptr sizeInBytes);
+
+    void download(void* data) const;
 
 protected:
-    void default2DTextureParameterFunction(Texture*);
+    void enableArray() const;
+    void disableArray() const;
+    void specifyLocation() const;
+
+    void colorPointer() const;
+    void normalPointer() const;
+    void texCoordPointer() const;
+    void vertexPointer() const;
+
+    void emptyFunc() const;
 
 private:
-    uvec2 dimensions_;
+    GLuint id_;
+    GLenum usageGL_;
+    GLenum state_;
+    GLenum target_;
+    GLFormats::GLFormat glFormat_;
+    BufferType type_;
+    GLsizeiptr sizeInBytes_;
+    void (BufferObject::*locationPointerFunc_)() const;
+
 };
+
 
 } // namespace
 
-#endif // IVW_TEXTURE2D_H
+#endif // IVW_BUFFER_OBJECT_H

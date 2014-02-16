@@ -383,4 +383,13 @@ void ImageOutport::updateInputSources() {
         im->setInputSource(it->first, it->second->getData());
 }
 
+void ImageOutport::setDimension(const uvec2& newDimension) {
+    dimensions_ = newDimension;
+    // Clear data
+    dataChanged();
+    // Set new dimension
+    DataOutport<Image>::getData()->resize(newDimension);
+
+}
+
 } // namespace

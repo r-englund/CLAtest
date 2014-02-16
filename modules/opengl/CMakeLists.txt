@@ -20,6 +20,8 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.h
     ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/geometry/meshgl.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/bufferobject.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/elementbufferobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/renderbufferobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.h
@@ -60,6 +62,8 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/meshgl.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/bufferobject.cpp
+    ${IVW_MODULE_DIR}/opengl/glwrap/elementbufferobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/renderbufferobject.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/shader.cpp

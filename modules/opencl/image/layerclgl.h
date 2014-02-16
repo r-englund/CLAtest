@@ -52,7 +52,6 @@ namespace inviwo {
 * @see Observable
 */
 class IVW_MODULE_OPENCL_API LayerCLGL : public LayerCLBase, public LayerRepresentation, public TextureObserver {
-
 public:
     LayerCLGL(uvec2 dimensions = uvec2(64), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataFormatBase::get(), Texture2D* data = NULL);
     virtual ~LayerCLGL();

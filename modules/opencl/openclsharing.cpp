@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -26,50 +26,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file authors: Erik Sundén, Timo Ropinski, Daniel Jönsson
+ * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_TEXTURE2D_H
-#define IVW_TEXTURE2D_H
+#include <modules/opencl/openclsharing.h>
 
-#include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/glwrap/texture.h>
-#include <inviwo/core/util/observer.h>
 
 namespace inviwo {
+CLTextureSharingMap OpenCLImageSharing::clImageSharingMap_;
 
-class IVW_MODULE_OPENGL_API Texture2D : public Texture {
+CLBufferSharingMap OpenCLBufferSharing::clBufferSharingMap_;
 
-public:
-    Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);
-    Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level = 0);
-    Texture2D(const Texture2D& other);
-    Texture2D& operator=(const Texture2D& other);
-    virtual ~Texture2D();
-
-    Texture2D* clone() const;
-
-    void initialize(const void* data);
-
-    size_t getNumberOfValues() const;
-
-    void upload(const void* data);
-
-    const uvec2& getDimension() const { return dimensions_;}
-    int getWidth() const{ return dimensions_.x; }
-    int getHeight() const{ return dimensions_.y; }
-    void resize(uvec2 dimension);
-
-protected:
-    void default2DTextureParameterFunction(Texture*);
-
-private:
-    uvec2 dimensions_;
-};
-
-} // namespace
-
-#endif // IVW_TEXTURE2D_H
+} // end namespace

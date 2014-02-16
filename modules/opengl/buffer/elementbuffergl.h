@@ -36,55 +36,24 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/textureobserver.h>
+#include <modules/opengl/geometry/attributebuffergl.h>
+#include <modules/opengl/glwrap/elementbufferobject.h>
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
 #include <inviwo/core/datastructures/buffer/bufferram.h>
+#include <modules/opengl/geometry/attributebuffergl.h>
 
 namespace inviwo {
 
 
-class IVW_MODULE_OPENGL_API ElementBufferGL: public BufferRepresentation {
+class IVW_MODULE_OPENGL_API ElementBufferGL: public BufferGL {
 
 public:
-    ElementBufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage);
+    ElementBufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, ElementBufferObject* data = NULL);
     virtual ~ElementBufferGL();
 
-    virtual void initialize();
-    virtual void deinitialize();
     virtual ElementBufferGL* clone() const;
 
-    const Buffer* getAttribute() const;
-    GLenum getFormatType() const;
-    GLuint getId() const;
-    GLFormats::GLFormat getGLFormat() const { return glFormat_; }
-
-    void enable() const;
-    void disable() const;
-
-    void bind() const;
-    void specifyLocation() const;
-
-    void upload(const void* data, size_t size);
-    void reupload(const void* data, size_t size);
-
-protected:
-
-    void enableElementArray() const;
-
-    void colorPointer() const;
-    void normalPointer() const;
-    void texCoordPointer() const;
-    void vertexPointer() const;
-
-    void emptyFunc() const;
-
-private:
-    const Buffer* attrib_;
-    GLuint id_;
-    GLenum usageGL_;
-    GLFormats::GLFormat glFormat_;
-    void (ElementBufferGL::*locationPointerFunc_)() const;
-    void (ElementBufferGL::*enableFunc_)() const;
-    void (ElementBufferGL::*disableFunc_)() const;
+    void initialize(const void* data, GLsizeiptr sizeInBytes) { BufferGL::initialize(data, sizeInBytes); }
 
 };
 

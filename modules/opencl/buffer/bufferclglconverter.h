@@ -49,13 +49,23 @@ public:
     virtual ~BufferRAM2CLGLConverter() {};
 };
 
-
-
 class IVW_MODULE_OPENCL_API BufferCLGL2RAMConverter : public RepresentationConverterType<BufferRAM> {
 
 public:
     BufferCLGL2RAMConverter();
     virtual ~BufferCLGL2RAMConverter(){};
+
+    inline bool canConvertFrom(const DataRepresentation* source) const {
+        return dynamic_cast<const BufferCLGL*>(source) != NULL;
+    }
+    DataRepresentation* createFrom(const DataRepresentation* source);
+    void update(const DataRepresentation* source, DataRepresentation* destination);
+};
+
+class IVW_MODULE_OPENCL_API BufferCLGL2GLConverter : public RepresentationConverterType<BufferGL> {
+public:
+    BufferCLGL2GLConverter(): RepresentationConverterType<BufferGL>() {};
+    virtual ~BufferCLGL2GLConverter(){};
 
     inline bool canConvertFrom(const DataRepresentation* source) const {
         return dynamic_cast<const BufferCLGL*>(source) != NULL;

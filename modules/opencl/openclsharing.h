@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -26,50 +26,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file authors: Erik Sundén, Timo Ropinski, Daniel Jönsson
+ * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_TEXTURE2D_H
-#define IVW_TEXTURE2D_H
+#ifndef IVW_OPENCL_SHARING_H
+#define IVW_OPENCL_SHARING_H
 
-#include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <modules/opengl/inviwoopengl.h>
+
+#include <modules/opencl/openclmoduledefine.h>
+#include <modules/opencl/inviwoopencl.h>
 #include <modules/opengl/glwrap/texture.h>
-#include <inviwo/core/util/observer.h>
+#include <modules/opengl/glwrap/bufferobject.h>
+#include <inviwo/core/datastructures/buffer/buffer.h>
+#include <inviwo/core/util/referencecounter.h>
+#include <map>
 
 namespace inviwo {
+class OpenCLImageSharing;
+class LayerCLGL;
+class VolumeCLGL;
 
-class IVW_MODULE_OPENGL_API Texture2D : public Texture {
+typedef std::pair<Texture*, OpenCLImageSharing*> TextureCLImageSharingPair;
+typedef std::map<Texture*, OpenCLImageSharing*> CLTextureSharingMap;
 
+
+class IVW_MODULE_OPENCL_API OpenCLImageSharing: public ReferenceCounter {
+friend class LayerCLGL;
+friend class VolumeCLGL;
 public:
-    Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level = 0);
-    Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level = 0);
-    Texture2D(const Texture2D& other);
-    Texture2D& operator=(const Texture2D& other);
-    virtual ~Texture2D();
+    OpenCLImageSharing(cl::Image* sharedMemory = NULL): ReferenceCounter(), sharedMemory_(sharedMemory) {}
 
-    Texture2D* clone() const;
-
-    void initialize(const void* data);
-
-    size_t getNumberOfValues() const;
-
-    void upload(const void* data);
-
-    const uvec2& getDimension() const { return dimensions_;}
-    int getWidth() const{ return dimensions_.x; }
-    int getHeight() const{ return dimensions_.y; }
-    void resize(uvec2 dimension);
-
-protected:
-    void default2DTextureParameterFunction(Texture*);
-
+    cl::Image* sharedMemory_;
 private:
-    uvec2 dimensions_;
+    static CLTextureSharingMap clImageSharingMap_;
 };
 
-} // namespace
+class OpenCLBufferSharing;
 
-#endif // IVW_TEXTURE2D_H
+typedef std::pair<BufferObject*, OpenCLBufferSharing*> BufferSharingPair;
+typedef std::map<BufferObject*, OpenCLBufferSharing*> CLBufferSharingMap;
+
+class IVW_MODULE_OPENCL_API OpenCLBufferSharing: public ReferenceCounter {
+    friend class BufferCLGL;
+public:
+    OpenCLBufferSharing(cl::Buffer* sharedMemory = NULL): ReferenceCounter(), sharedMemory_(sharedMemory) {}
+
+    cl::Buffer* sharedMemory_;
+private:
+
+    static CLBufferSharingMap clBufferSharingMap_;
+};
+
+
+}
+
+#endif // IVW_OPENCL_SHARING_H

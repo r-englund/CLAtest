@@ -73,14 +73,8 @@ float2 getLightSourceStratifiedUV(const int2 nPhotonsPerLight, const int nLightS
     return (float2)((convert_float2(photonId)+randNum)/convert_float(nPhotonsPerLight.x));
 }
 
-void sampleLights(__global LightSource const * __restrict lightSources, const int2 nPhotonsPerLight,
-                  const int nLightSources, const float2 uv, float3* __restrict origin, float3* __restrict wi, float3* __restrict power, float* __restrict pdf, float3 rndNum, const BBox bbox) {
- 
-    uint globalId = get_global_id(1)*get_global_size(0)+get_global_id(0);
-    int lightSourceId = getLightSourceId(nPhotonsPerLight, nLightSources);
-
-    LightSource lightSource = lightSources[lightSourceId];
-    
+void sampleLight(LightSource lightSource, const float2 uv, float3* __restrict origin, float3* __restrict wi, float3* __restrict power, float* __restrict pdf, float3 rndNum, const BBox bbox) {
+  
     if( lightSource.type == LIGHT_POINT ) {
         float3 localOrigin = (float3)(0.f);
         *origin = transformPoint(lightSource.tm, localOrigin);
@@ -128,6 +122,16 @@ void sampleLights(__global LightSource const * __restrict lightSources, const in
  
 }
 
+void sampleLights(__global LightSource const * __restrict lightSources, const int2 nPhotonsPerLight,
+                  const int nLightSources, const float2 uv, float3* __restrict origin, float3* __restrict wi, float3* __restrict power, float* __restrict pdf, float3 rndNum, const BBox bbox) {
+ 
+    uint globalId = get_global_id(1)*get_global_size(0)+get_global_id(0);
+    int lightSourceId = getLightSourceId(nPhotonsPerLight, nLightSources);
+
+    sampleLight(lightSources[lightSourceId], uv, origin, wi, power, pdf, rndNum, bbox);
+
+ 
+}
   
 
 #endif // LIGHT_CL

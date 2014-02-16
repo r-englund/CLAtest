@@ -61,6 +61,7 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
     // Buffer CLGL
     registerRepresentationConverter(new BufferRAM2CLGLConverter());
     registerRepresentationConverter(new BufferCLGL2RAMConverter());
+    registerRepresentationConverter(new BufferCLGL2GLConverter());
     registerRepresentationConverter(new BufferCL2GLConverter());
     registerRepresentationConverter(new BufferCLGL2CLConverter());
     registerRepresentationConverter(new BufferCL2CLGLConverter());

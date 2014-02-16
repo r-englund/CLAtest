@@ -31,10 +31,11 @@
  *********************************************************************************/
 
 #include <modules/opencl/image/layerclgl.h>
-#include <modules/opencl/image/layerclresizer.h>
+#include <modules/opencl/openclsharing.h>
 #include <inviwo/core/util/assertion.h>
 
 namespace inviwo {
+
 
 LayerCLGL::LayerCLGL(uvec2 dimensions, LayerType type, const DataFormatBase* format, Texture2D* data)
     : LayerRepresentation(dimensions, type, format), texture_(data)
@@ -45,7 +46,7 @@ LayerCLGL::LayerCLGL(uvec2 dimensions, LayerType type, const DataFormatBase* for
 }
 
 LayerCLGL::LayerCLGL( const LayerCLGL& rhs )
-    : LayerRepresentation(rhs) {
+    : LayerRepresentation(rhs), texture_(rhs.texture_) {
     initialize(rhs.texture_);
 }
 
@@ -57,7 +58,16 @@ void LayerCLGL::initialize(Texture2D* texture) {
     ivwAssert(texture != 0, "Cannot initialize with null OpenGL texture");
     // Indicate that the texture should not be deleted.
     texture->increaseRefCount();
-    clImage_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture->getID());
+    CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture);
+    if (it == OpenCLImageSharing::clImageSharingMap_.end()) {
+        clImage_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture->getID());
+        OpenCLImageSharing::clImageSharingMap_.insert(TextureCLImageSharingPair(texture_, new OpenCLImageSharing(clImage_)));
+    } else {
+        clImage_ = it->second->sharedMemory_;
+        it->second->increaseRefCount();
+    }
+    
+
     texture->addObserver(this);
     LayerCLGL::initialize();
 }
@@ -67,7 +77,15 @@ LayerCLGL* LayerCLGL::clone() const {
 }
 
 void LayerCLGL::deinitialize() {
-    delete clImage_; // Delete OpenCL image before texture
+    // Delete OpenCL image before texture
+    CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture_);
+    if (it != OpenCLImageSharing::clImageSharingMap_.end()) {
+        if (it->second->decreaseRefCount() == 0) {
+            delete it->second->sharedMemory_; it->second->sharedMemory_ = 0;
+            delete it->second;
+            OpenCLImageSharing::clImageSharingMap_.erase(it);
+        }
+    }
     if(texture_ && texture_->decreaseRefCount() <= 0){
         delete texture_;
         texture_ = NULL;
@@ -100,11 +118,24 @@ bool LayerCLGL::copyAndResizeLayer(DataRepresentation* targetRep) const{
 }
 
 void LayerCLGL::notifyBeforeTextureInitialization() {
-    delete clImage_; clImage_ = 0; 
+    CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture_);
+    if (it != OpenCLImageSharing::clImageSharingMap_.end()) {
+        if (it->second->decreaseRefCount() == 0) {
+            delete it->second->sharedMemory_; it->second->sharedMemory_ = 0;
+        }
+    }
+    clImage_ = 0; 
 }
 
 void LayerCLGL::notifyAfterTextureInitialization() {
-    clImage_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
+    CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture_);
+    if (it != OpenCLImageSharing::clImageSharingMap_.end()) {
+        if (it->second->getRefCount() == 0) {
+            it->second->sharedMemory_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
+        }
+        clImage_ = it->second->sharedMemory_;
+        it->second->increaseRefCount();
+    }
 }
 
 

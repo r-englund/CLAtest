@@ -88,8 +88,21 @@ public:
 
     virtual void dataChanged();
 
+    /**
+     * Resize port and propagate the resizing to the canvas.
+     * 
+     * @param resizeEvent 
+     */
     void changeDataDimensions(ResizeEvent* resizeEvent);
     uvec2 getDimension() const;
+
+    /**
+     * Set the dimension of this port without propagating the size
+     * through the network. Will resize the image contained within the port.
+     * 
+     * @param newDimension Dimension to be set
+     */
+    void setDimension(const uvec2& newDimension);
     uvec3 getColorCode() const;
     virtual std::string getClassName() const {return "ImageOutport";}
 
