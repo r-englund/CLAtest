@@ -265,7 +265,7 @@
                 <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
                     <value content="" />
                 </Property>
-                <Property type="FileProperty" identifier="volumeFileName" displayName="Volume file" key="volumeFileName">
+                <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <url content="../../volumes/hydrogenatom.dat" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
@@ -495,7 +495,7 @@
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="volume">
+            <OutPort identifier="data">
                 <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
             </OutPort>
             <InPort identifier="volume.inport">
@@ -527,7 +527,7 @@
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="volume">
+            <OutPort identifier="data">
                 <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
             </OutPort>
             <InPort identifier="inport">
@@ -543,7 +543,7 @@
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="volume">
+            <OutPort identifier="data">
                 <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
             </OutPort>
             <InPort identifier="volume">
