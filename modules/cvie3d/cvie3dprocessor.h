@@ -24,7 +24,7 @@
 #include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/properties/optionproperties.h>
-#include <inviwo/core/properties/scalarproperties.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <CVIE3D.h>
 
 namespace inviwo {
