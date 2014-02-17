@@ -86,6 +86,8 @@ protected:
     void updateModuleMenuActions();
     virtual void initializeEditorWidgetsMetaData();
 
+    void paintEvent(QPaintEvent *pe);
+
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
 

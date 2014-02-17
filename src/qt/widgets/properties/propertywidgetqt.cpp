@@ -38,6 +38,9 @@
 #include <inviwo/core/common/moduleaction.h>
 #include <QDesktopWidget>
 
+#include <QStyleOption>
+#include <QPainter>
+
 namespace inviwo {
 
 PropertyWidgetQt::PropertyWidgetQt()
@@ -134,6 +137,14 @@ void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
         else propertyEditorWidget->show();
     }
 }
+
+void PropertyWidgetQt::paintEvent(QPaintEvent *pe) {                                                                                                                                        
+    QStyleOption o;                                                                                                                                                                  
+    o.initFrom(this);                                                                                                                                                                
+    QPainter p(this);                                                                                                                                                                
+    style()->drawPrimitive(
+        QStyle::PE_Widget, &o, &p, this);                                                                                                                         
+};
 
 void PropertyWidgetQt::visibilityModified(int mode) {}
 

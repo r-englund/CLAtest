@@ -41,6 +41,7 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
     : identifier_(identifier)
     , displayName_(displayName)
     , visibilityMode_(APPLICATION) {
+    setObjectName("CollapsibleGroupBoxWidgetQt"); 
     collapsed_ = false;
     generateWidget();
     updateFromProperty();
@@ -49,13 +50,11 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
 void CollapsibleGroupBoxWidgetQt::generateWidget() {
     setContextMenuPolicy(Qt::CustomContextMenu);
     btnCollapse_ = new QToolButton(this);
-    btnCollapse_->setStyleSheet("QToolButton::hover { background-color: gray }");
     QHBoxLayout* hLayout = new QHBoxLayout();
     QGridLayout* gridLayout = new QGridLayout();
     QHBoxLayout* H2 = new QHBoxLayout();
     groupBox_ = new QGroupBox(this);
     groupBox_->setFlat(true);
-    groupBox_->setStyleSheet("border:0;");
     QFrame* frame = new QFrame(this);
     frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     frame->setLineWidth(2);

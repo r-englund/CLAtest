@@ -53,7 +53,8 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     addPort(outport_);
 
     addProperty(camera_);
-    addInteractionHandler(new Trackball(&camera_));
+    trackball_ = new Trackball(&camera_);
+    addInteractionHandler(trackball_);
 
     centerViewOnGeometry_.onChange(this, &GeometryRenderProcessorGL::centerViewOnGeometry);
     addProperty(centerViewOnGeometry_);
@@ -64,6 +65,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 }
 
 void GeometryRenderProcessorGL::deinitialize() {
+    delete trackball_;
     // Delete all renderers
     for (std::vector<GeometryRenderer*>::iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
         delete *it;

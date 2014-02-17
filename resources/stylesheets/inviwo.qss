@@ -100,7 +100,6 @@ QDockWidget::title {
     padding-top: 5px;
     padding-left: 5px;
     border-radius: 3px;
-    text-align: center;
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #888888, stop:0.4 #555555, 
                                 stop:0.5 #000000, stop:1 #111111);
@@ -473,3 +472,23 @@ QProgressBar::chunk {
                                 stop:0 #78d, stop:0.4999 #46a,
                                 stop:0.5 #45a, stop:1 #238);
 }
+
+QWidget#CollapsibleGroupBoxWidgetQt QToolButton::hover { 
+	background-color: gray;
+}
+
+
+QWidget#CollapsibleGroupBoxWidgetQt QGroupBox {
+	border: 0px; 
+}
+
+
+QWidget#CollapsibleGroupBoxWidgetQt QFrame {
+	border: 1px solid #333333; 
+}
+
+QWidget#CollapsibleGroupBoxWidgetQt QLabel {
+	border: 0px;; 
+}
+
+

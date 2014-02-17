@@ -45,7 +45,7 @@
 #include <vector>
 
 namespace inviwo {
-
+    class Trackball;
 class IVW_MODULE_OPENGL_API GeometryRenderProcessorGL : public ProcessorGL {
 public:
     GeometryRenderProcessorGL();
@@ -65,6 +65,7 @@ protected:
 
     CameraProperty camera_;
     ButtonProperty centerViewOnGeometry_;
+    Trackball* trackball_;
 
     std::vector<GeometryRenderer*> renderers_;
 };
