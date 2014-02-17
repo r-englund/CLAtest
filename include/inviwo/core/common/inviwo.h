@@ -77,9 +77,6 @@
 #ifndef GLM_SWIZZLE
 #define GLM_SWIZZLE
 #endif
-#ifndef GLM_FORCE_RADIANS
-#define GLM_FORCE_RADIANS
-#endif
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_precision.hpp>
