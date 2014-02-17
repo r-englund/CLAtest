@@ -127,11 +127,11 @@ void OpenGLCapabilities::printInfo(){
     }
 }
 
-bool OpenGLCapabilities::canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory){
+bool OpenGLCapabilities::canAllocate(glm::u64 dataSize, glm::u8 percentageOfAvailableMemory){
     return getCurrentAvailableTextureMem()*percentageOfAvailableMemory/100 >= dataSize;
 }
 
-uvec3 OpenGLCapabilities::calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory){
+uvec3 OpenGLCapabilities::calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, glm::u8 percentageOfAvailableMemory){
     uvec3 currentBrickDimensions = dimensions;
     while(!canAllocate(getMemorySizeInBytes(currentBrickDimensions, formatSizeInBytes), percentageOfAvailableMemory)){
         int theMaxDim = (currentBrickDimensions.x > currentBrickDimensions.y ? (currentBrickDimensions.x > currentBrickDimensions.z ? 0 : 2) : (currentBrickDimensions.y > currentBrickDimensions.z ? 1 : 2));

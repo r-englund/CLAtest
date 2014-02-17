@@ -42,11 +42,11 @@ namespace inviwo {
 
 #define BYTE_SWAP 1024
 
-static const uint64_t BYTE_SIZE = 1;
-static const uint64_t KILO_BYTE_SIZE = BYTE_SWAP* BYTE_SIZE;
-static const uint64_t MEGA_BYTE_SIZE = BYTE_SWAP* KILO_BYTE_SIZE;
-static const uint64_t GIGA_BYTE_SIZE = BYTE_SWAP* MEGA_BYTE_SIZE;
-static const uint64_t TERA_BYTE_SIZE = BYTE_SWAP* GIGA_BYTE_SIZE;
+static const glm::u64 BYTE_SIZE = 1;
+static const glm::u64 KILO_BYTE_SIZE = BYTE_SWAP* BYTE_SIZE;
+static const glm::u64 MEGA_BYTE_SIZE = BYTE_SWAP* KILO_BYTE_SIZE;
+static const glm::u64 GIGA_BYTE_SIZE = BYTE_SWAP* MEGA_BYTE_SIZE;
+static const glm::u64 TERA_BYTE_SIZE = BYTE_SWAP* GIGA_BYTE_SIZE;
 static const float BYTE_DIV = 1.f/BYTE_SWAP;
 
 #define BYTES_TO_KILOBYTES(bytes) (bytes/BYTE_SWAP)
@@ -55,7 +55,7 @@ static const float BYTE_DIV = 1.f/BYTE_SWAP;
 #define MEGABYTES_TO_BYTES(bytes) (bytes*BYTE_SWAP*BYTE_SWAP)
 
 STARTCLANGIGNORE("-Wunused-function")
-static std::string formatBytesToString(uint64_t bytes) {
+static std::string formatBytesToString(glm::u64 bytes) {
     std::ostringstream stream;
     stream.precision(2);
     stream.setf(std::ios::fixed, std::ios::floatfield);

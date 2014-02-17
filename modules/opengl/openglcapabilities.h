@@ -71,8 +71,8 @@ public:
 
     void printInfo();
 
-    bool canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory = 100);
-    uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory = 100);
+    bool canAllocate(glm::u64 dataSize, glm::u8 percentageOfAvailableMemory = 100);
+    uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, glm::u8 percentageOfAvailableMemory = 100);
 
     bool isExtensionSupported(const char*);
     bool isSupported(const char*);

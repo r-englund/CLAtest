@@ -51,25 +51,25 @@ public:
     struct CPUInfo {
         std::string vendor;
         std::string model;
-        uint64_t mhz;
+        glm::u64 mhz;
     };
 
     struct MemoryInfo {
-        uint64_t total; //In Bytes
-        uint64_t available; //In Bytes
+        glm::u64 total; //In Bytes
+        glm::u64 available; //In Bytes
     };
 
     struct DiskInfo {
         std::string diskName;
         std::string diskType;
-        uint64_t total; //In Bytes
-        uint64_t free; //In Bytes
+        glm::u64 total; //In Bytes
+        glm::u64 free; //In Bytes
     };
 
     struct ProcessMemoryInfo {
-        uint64_t residentMem; //In Bytes
-        uint64_t sharedMem; //In Bytes
-        uint64_t virtualMem; //In Bytes
+        glm::u64 residentMem; //In Bytes
+        glm::u64 sharedMem; //In Bytes
+        glm::u64 virtualMem; //In Bytes
     };
 
     SystemCapabilities();
@@ -77,10 +77,10 @@ public:
 
     void printInfo();
 
-    bool canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory = 100);
-    uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory = 100);
+    bool canAllocate(glm::u64 dataSize, glm::u8 percentageOfAvailableMemory = 100);
+    uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, glm::u8 percentageOfAvailableMemory = 100);
 
-    uint64_t getAvailableMemory();
+    glm::u64 getAvailableMemory();
 
 protected:
     void retrieveStaticInfo();

@@ -94,14 +94,14 @@ void SystemSettings::allocationTest() {
 
     if (sysInfo) {
         IntProperty* useRAMPercent = dynamic_cast<IntProperty*>(getPropertyByIdentifier("useRAMPercent"));
-        uint64_t memBytesAlloc = sysInfo->getAvailableMemory(); //In Bytes
+        glm::u64 memBytesAlloc = sysInfo->getAvailableMemory(); //In Bytes
         LogInfo("Maximum Available Memory is " << formatBytesToString(memBytesAlloc));
         memBytesAlloc /= 100; //1% of total available memory
         memBytesAlloc *= useRAMPercent->get(); //?% of total available memory
 
         try
         {
-            allocTest_ = new uint32_t[static_cast<uint32_t>(memBytesAlloc/4)];
+            allocTest_ = new glm::u32[static_cast<glm::u32>(memBytesAlloc/4)];
             LogInfo("Allocated " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
             delete allocTest_;
         }

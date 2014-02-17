@@ -53,7 +53,7 @@ public:
 protected:
     void logStacktraceCallback();
     void allocationTest();
-    uint32_t* allocTest_;
+    glm::u32* allocTest_;
 
 private:
     OptionPropertyInt viewModeProperty_;

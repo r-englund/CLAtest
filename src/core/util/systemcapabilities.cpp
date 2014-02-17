@@ -43,11 +43,11 @@ SystemCapabilities::SystemCapabilities() {}
 
 SystemCapabilities::~SystemCapabilities() {}
 
-bool SystemCapabilities::canAllocate(uint64_t dataSize, uint8_t percentageOfAvailableMemory) {
+bool SystemCapabilities::canAllocate(glm::u64 dataSize, glm::u8 percentageOfAvailableMemory) {
     return getAvailableMemory()*percentageOfAvailableMemory/100 >= dataSize;
 }
 
-uvec3 SystemCapabilities::calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, uint8_t percentageOfAvailableMemory) {
+uvec3 SystemCapabilities::calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, glm::u8 percentageOfAvailableMemory) {
     uvec3 currentBrickDimensions = dimensions;
 
     while (!canAllocate(getMemorySizeInBytes(currentBrickDimensions, formatSizeInBytes), percentageOfAvailableMemory)) {
@@ -111,7 +111,7 @@ bool SystemCapabilities::lookupCPUInfo() {
             sigar_cpu_info_t cpu_info = cpulinfolist.data[i];
             infoCPUs_[i].vendor = std::string(cpu_info.vendor);
             infoCPUs_[i].model = std::string(cpu_info.model);
-            infoCPUs_[i].mhz = static_cast<uint64_t>(cpu_info.mhz);
+            infoCPUs_[i].mhz = static_cast<glm::u64>(cpu_info.mhz);
         }
     }
 
@@ -129,8 +129,8 @@ bool SystemCapabilities::lookupMemoryInfo() {
     bool SUCCESS = (status == SIGAR_OK);
 
     if (SUCCESS) {
-        infoRAM_.total = MEGABYTES_TO_BYTES(static_cast<uint64_t>(meminfo.ram));
-        infoRAM_.available = static_cast<uint64_t>(meminfo.free);
+        infoRAM_.total = MEGABYTES_TO_BYTES(static_cast<glm::u64>(meminfo.ram));
+        infoRAM_.available = static_cast<glm::u64>(meminfo.free);
     }
 
     sigar_close(sigar);
@@ -159,8 +159,8 @@ bool SystemCapabilities::lookupDiskInfo() {
 
                 if (currentDiskInfo.diskType == "Local") {
                     currentDiskInfo.diskName = std::string(disk_info.dev_name);
-                    currentDiskInfo.total = KILOBYTES_TO_BYTES(static_cast<uint64_t>(diskusageinfo.total));
-                    currentDiskInfo.free = KILOBYTES_TO_BYTES(static_cast<uint64_t>(diskusageinfo.free));
+                    currentDiskInfo.total = KILOBYTES_TO_BYTES(static_cast<glm::u64>(diskusageinfo.total));
+                    currentDiskInfo.free = KILOBYTES_TO_BYTES(static_cast<glm::u64>(diskusageinfo.free));
                     infoDisks_.push_back(currentDiskInfo);
                 }
             }
@@ -181,9 +181,9 @@ bool SystemCapabilities::lookupProcessMemoryInfo() {
     bool SUCCESS = (status == SIGAR_OK);
 
     if (SUCCESS) {
-        infoProcRAM_.residentMem = static_cast<uint64_t>(meminfo.resident);
-        infoProcRAM_.sharedMem = static_cast<uint64_t>(meminfo.share);
-        infoProcRAM_.virtualMem = static_cast<uint64_t>(meminfo.size);
+        infoProcRAM_.residentMem = static_cast<glm::u64>(meminfo.resident);
+        infoProcRAM_.sharedMem = static_cast<glm::u64>(meminfo.share);
+        infoProcRAM_.virtualMem = static_cast<glm::u64>(meminfo.size);
     }
 
     sigar_close(sigar);
@@ -233,7 +233,7 @@ void SystemCapabilities::printInfo() {
     }*/
 }
 
-uint64_t SystemCapabilities::getAvailableMemory() {
+glm::u64 SystemCapabilities::getAvailableMemory() {
     successMemoryInfo_ = lookupMemoryInfo();
 
     if (successMemoryInfo_)

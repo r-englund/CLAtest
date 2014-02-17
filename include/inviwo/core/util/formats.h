@@ -39,7 +39,6 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/util/pstdint.h>
 #include <limits>
 #include <string>
 
@@ -77,7 +76,7 @@ public:
                                 x2, y2, z2, w2,
                                 x3, y3, z3, w3,
                                 x4, y4, z4, w4) {};
-    glm::detail::tmat4x4<T, glm::defaultp> getGLM() {
+    glm::detail::tmat4x4<T, glm::defaultp> getGLM() const {
         return *this;
     };
 };
@@ -97,7 +96,7 @@ public:
         glm::detail::tmat3x3<T, glm::defaultp>(x1, y1, z1,
                                 x2, y2, z2,
                                 x3, y3, z3) {};
-    glm::detail::tmat3x3<T, glm::defaultp> getGLM() {
+    glm::detail::tmat3x3<T, glm::defaultp> getGLM() const {
         return *this;
     };
 };
@@ -114,7 +113,7 @@ public:
                  T x2, T y2) :
         glm::detail::tmat2x2<T, glm::defaultp>(x1, y1,
                                 x2, y2) {};
-    glm::detail::tmat2x2<T, glm::defaultp> getGLM() {
+    glm::detail::tmat2x2<T, glm::defaultp> getGLM() const {
         return *this;
     };
 };
@@ -128,7 +127,7 @@ public:
     Vector<4, T>(const glm::detail::tvec4<T, glm::defaultp>& v) : glm::detail::tvec4<T, glm::defaultp>(v) {};
     Vector<4, T>(T v) : glm::detail::tvec4<T, glm::defaultp>(v) {};
     Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T, glm::defaultp>(v1, v2, v3, v4) {};
-    glm::detail::tvec4<T, glm::defaultp> getGLM() { return *this; };
+    glm::detail::tvec4<T, glm::defaultp> getGLM() const { return *this; };
 };
 template <typename T>
 class Vector<3, T> : public glm::detail::tvec3<T, glm::defaultp> {
@@ -138,7 +137,7 @@ public:
     Vector<3, T>(const glm::detail::tvec3<T, glm::defaultp>& v) : glm::detail::tvec3<T, glm::defaultp>(v) {};
     Vector<3, T>(T v) : glm::detail::tvec3<T, glm::defaultp>(v) {};
     Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T, glm::defaultp>(v1, v2, v3) {};
-    glm::detail::tvec3<T, glm::defaultp> getGLM() { return *this; };
+    glm::detail::tvec3<T, glm::defaultp> getGLM() const { return *this; };
 };
 template <typename T>
 class Vector<2, T> : public glm::detail::tvec2<T, glm::defaultp> {
@@ -148,7 +147,7 @@ public:
     Vector<2, T>(const glm::detail::tvec2<T, glm::defaultp>& v) : glm::detail::tvec2<T, glm::defaultp>(v) {};
     Vector<2, T>(T v) : glm::detail::tvec2<T, glm::defaultp>(v) {};
     Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T, glm::defaultp>(v1, v2) {};
-    glm::detail::tvec2<T, glm::defaultp> getGLM() { return *this; };
+    glm::detail::tvec2<T, glm::defaultp> getGLM() const { return *this; };
 };
 
 //Do not set enums specifically, as NUMBER_OF_FORMATS is used to count the number of enums
@@ -423,22 +422,22 @@ public:
 /*---------------Single Value Formats------------------*/
 
 // Floats
-typedef GenericDataFormat(glm::detail::float32) DataFLOAT32;
-typedef GenericDataFormat(glm::detail::float64) DataFLOAT64;
+typedef GenericDataFormat(glm::f32) DataFLOAT32;
+typedef GenericDataFormat(glm::f64) DataFLOAT64;
 
 // Integers
-typedef GenericDataFormat(int8_t)         DataINT8;
-typedef DataFormat<int16_t, 12>           DataINT12;
-typedef GenericDataFormat(int16_t)        DataINT16;
-typedef GenericDataFormat(int32_t)        DataINT32;
-typedef GenericDataFormat(int64_t)        DataINT64;
+typedef GenericDataFormat(glm::i8)   DataINT8;
+typedef DataFormat<glm::i16, 12>     DataINT12;
+typedef GenericDataFormat(glm::i16)  DataINT16;
+typedef GenericDataFormat(glm::i32)  DataINT32;
+typedef GenericDataFormat(glm::i64)  DataINT64;
 
 // Unsigned Integers
-typedef GenericDataFormat(uint8_t)        DataUINT8;
-typedef DataFormat<uint16_t, 12>          DataUINT12;
-typedef GenericDataFormat(uint16_t)       DataUINT16;
-typedef GenericDataFormat(uint32_t)       DataUINT32;
-typedef GenericDataFormat(uint64_t)       DataUINT64;
+typedef GenericDataFormat(glm::u8)   DataUINT8;
+typedef DataFormat<glm::u16, 12>     DataUINT12;
+typedef GenericDataFormat(glm::u16)  DataUINT16;
+typedef GenericDataFormat(glm::u32)  DataUINT32;
+typedef GenericDataFormat(glm::u64)  DataUINT64;
 
 /*---------------Vec2 Formats--------------------*/
 
@@ -447,15 +446,15 @@ typedef GenericDataFormat(glm::f32vec2) DataVec2FLOAT32;
 typedef GenericDataFormat(glm::f64vec2) DataVec2FLOAT64;
 
 // Integers
-typedef GenericDataFormat(glm::i8vec2) DataVec2INT8;
-typedef DataFormat<glm::detail::tvec2<int16_t, glm::defaultp>, 24> DataVec2INT12;
+typedef GenericDataFormat(glm::i8vec2)  DataVec2INT8;
+typedef DataFormat<glm::i16vec2, 24>    DataVec2INT12;
 typedef GenericDataFormat(glm::i16vec2) DataVec2INT16;
 typedef GenericDataFormat(glm::i32vec2) DataVec2INT32;
 typedef GenericDataFormat(glm::i64vec2) DataVec2INT64;
 
 // Unsigned Integers
-typedef GenericDataFormat(glm::u8vec2) DataVec2UINT8;
-typedef DataFormat<glm::detail::tvec2<uint16_t, glm::defaultp>, 24> DataVec2UINT12;
+typedef GenericDataFormat(glm::u8vec2)  DataVec2UINT8;
+typedef DataFormat<glm::u16vec2, 24>    DataVec2UINT12;
 typedef GenericDataFormat(glm::u16vec2) DataVec2UINT16;
 typedef GenericDataFormat(glm::u32vec2) DataVec2UINT32;
 typedef GenericDataFormat(glm::u64vec2) DataVec2UINT64;
@@ -467,15 +466,15 @@ typedef GenericDataFormat(glm::f32vec3) DataVec3FLOAT32;
 typedef GenericDataFormat(glm::f64vec3) DataVec3FLOAT64;
 
 // Integers
-typedef GenericDataFormat(glm::i8vec3) DataVec3INT8;
-typedef DataFormat<glm::detail::tvec3<int16_t, glm::defaultp>, 24> DataVec3INT12;
+typedef GenericDataFormat(glm::i8vec3)  DataVec3INT8;
+typedef DataFormat<glm::i16vec3, 24>    DataVec3INT12;
 typedef GenericDataFormat(glm::i16vec3) DataVec3INT16;
 typedef GenericDataFormat(glm::i32vec3) DataVec3INT32;
 typedef GenericDataFormat(glm::i64vec3) DataVec3INT64;
 
 // Unsigned Integers
-typedef GenericDataFormat(glm::u8vec3) DataVec3UINT8;
-typedef DataFormat<glm::detail::tvec3<uint16_t, glm::defaultp>, 24> DataVec3UINT12;
+typedef GenericDataFormat(glm::u8vec3)  DataVec3UINT8;
+typedef DataFormat<glm::u16vec3, 24>    DataVec3UINT12;
 typedef GenericDataFormat(glm::u16vec3) DataVec3UINT16;
 typedef GenericDataFormat(glm::u32vec3) DataVec3UINT32;
 typedef GenericDataFormat(glm::u64vec3) DataVec3UINT64;
@@ -487,15 +486,15 @@ typedef GenericDataFormat(glm::f32vec4) DataVec4FLOAT32;
 typedef GenericDataFormat(glm::f64vec4) DataVec4FLOAT64;
 
 // Integers
-typedef GenericDataFormat(glm::i8vec4) DataVec4INT8;
-typedef DataFormat<glm::detail::tvec4<int16_t, glm::defaultp>, 24> DataVec4INT12;
+typedef GenericDataFormat(glm::i8vec4)  DataVec4INT8;
+typedef DataFormat<glm::i16vec4, 24>    DataVec4INT12;
 typedef GenericDataFormat(glm::i16vec4) DataVec4INT16;
 typedef GenericDataFormat(glm::i32vec4) DataVec4INT32;
 typedef GenericDataFormat(glm::i64vec4) DataVec4INT64;
 
 // Unsigned Integers
-typedef GenericDataFormat(glm::u8vec4) DataVec4UINT8;
-typedef DataFormat<glm::detail::tvec4<uint16_t, glm::defaultp>, 24> DataVec4UINT12;
+typedef GenericDataFormat(glm::u8vec4)  DataVec4UINT8;
+typedef DataFormat<glm::u16vec4, 24>    DataVec4UINT12;
 typedef GenericDataFormat(glm::u16vec4) DataVec4UINT16;
 typedef GenericDataFormat(glm::u32vec4) DataVec4UINT32;
 typedef GenericDataFormat(glm::u64vec4) DataVec4UINT64;
