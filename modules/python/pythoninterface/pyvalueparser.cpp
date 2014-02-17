@@ -49,9 +49,9 @@
 namespace inviwo{
     float parseFloat(PyObject *args){return static_cast<float>(PyFloat_AsDouble(args)); }
     double parseDouble(PyObject *args){return PyFloat_AsDouble(args); }
+    int parseInt(PyObject *args){return PyInt_AsLong(args);}
     PARSETYPE(char,parseChar,"b");
     PARSETYPE(short,parseShort,"h");
-    PARSETYPE(int,parseInt,"i");
     PARSETYPE(long,parseLong,"l");
 
     PARSEVEC2(ivec2,int,parseIVec2,"ii");
@@ -70,7 +70,6 @@ namespace inviwo{
     std::string parseStr(PyObject* args){
         return std::string(PyString_AsString(args));
     };
-    //std::string parseStr(PyObject* args){char* c;int l;PyArg_ParseTuple(args,"s#",&c,&l);return std::string(c);};
 
     mat2 parseMat2(PyObject* args){
         mat2 m;
@@ -192,6 +191,16 @@ namespace inviwo{
             static_cast<FloatMinMaxProperty*>(p)->set(parse<vec2>(args));
 
 
+        else if(className == "OptionPropertyInt")
+            static_cast<OptionPropertyInt*>(p)->set(parse<int>(args));
+        else if(className == "OptionPropertyFloat")
+            static_cast<OptionPropertyFloat*>(p)->set(parse<float>(args));
+        else if(className == "OptionPropertyString")
+            static_cast<OptionPropertyString*>(p)->set(parse<std::string>(args));
+        else if(className == "OptionPropertyDouble")
+            static_cast<OptionPropertyDouble*>(p)->set(parse<double>(args));
+
+
         else if(className == "IntMinMaxProperty")
             static_cast<IntMinMaxProperty*>(p)->set(parse<ivec2>(args));
 
@@ -239,7 +248,12 @@ namespace inviwo{
         CAST_DO_STUFF(FloatMat4Property,p);
         CAST_DO_STUFF(FloatMinMaxProperty,p);
         CAST_DO_STUFF(IntMinMaxProperty,p);
-        
+
+        CAST_DO_STUFF(OptionPropertyInt,p);
+        CAST_DO_STUFF(OptionPropertyFloat,p);
+        CAST_DO_STUFF(OptionPropertyString,p);
+        CAST_DO_STUFF(OptionPropertyDouble,p);
+       
         return 0;
     }
 
