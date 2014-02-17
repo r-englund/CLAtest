@@ -118,7 +118,6 @@ void DirectoryProperty::serialize(IvwSerializer& s) const {
 
     std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("directory", relativePath);
-    s.serialize("files", directoryTree_, "file");
 }
 
 void DirectoryProperty::deserialize(IvwDeserializer& d) {
@@ -131,9 +130,6 @@ void DirectoryProperty::deserialize(IvwDeserializer& d) {
         basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
 
     basePath = URLParser::getFileDirectory(basePath);
-    std::vector<std::string> directoryTree;
-    d.deserialize("files", directoryTree, "file");
-    directoryTree_ = directoryTree;
     set(basePath+relativePath);
 }
 
