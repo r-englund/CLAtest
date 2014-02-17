@@ -72,7 +72,8 @@ void VolumeBasisTransformer::process() {
         if (orgBasisAndOffset_ != in->getBasisAndOffset()) {
             orgBasisAndOffset_ = in->getBasisAndOffset();
 
-            vec3 a(orgBasisAndOffset_[0]);
+            //TODO: Can't set these values as deserialization might already have done that.
+            /*vec3 a(orgBasisAndOffset_[0]);
             vec3 b(orgBasisAndOffset_[1]);
             vec3 c(orgBasisAndOffset_[2]);
             vec3 offset(orgBasisAndOffset_[3]);
@@ -87,7 +88,7 @@ void VolumeBasisTransformer::process() {
 
             lengths_.set(vec3(glm::length(a),glm::length(b),glm::length(c)));
             angels_.set(vec3(alpha, beta, gamma));
-            offset_.set(offset);
+            offset_.set(offset);*/
         }
 
         // TODO: This should be changed to make some kind of shallow copy of the representations
