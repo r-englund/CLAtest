@@ -81,7 +81,6 @@ void EntryExitPointsCL::initialize() {
 }
 
 void EntryExitPointsCL::deinitialize() {
-    deinitialize();
     delete trackball_;
 }
 
@@ -95,7 +94,7 @@ void EntryExitPointsCL::process() {
 	uvec2 outportDim = exitPort_.getDimension();
 
 	mat4 NDCToTextureMat = worldToTexMat*camera_.inverseViewMatrix()*camera_.inverseProjectionMatrix();
-	vec4 camPosInTextureSpace = worldToTexMat*vec4(camera_.getLookFrom(), 1.f);
+
 #if IVW_PROFILING
     cl::Event* profilingEvent = new cl::Event(); 
 #else 
@@ -109,13 +108,13 @@ void EntryExitPointsCL::process() {
         exitCL->aquireGLObject();
         const cl::Image& entry = entryCL->get();
         const cl::Image& exit = exitCL->get();
-        computeEntryExitPoints(NDCToTextureMat, camPosInTextureSpace, entry, exit, outportDim, profilingEvent);
+        computeEntryExitPoints(NDCToTextureMat, entry, exit, outportDim, profilingEvent);
         exitCL->releaseGLObject();
         entryCL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     } else {
         const cl::Image& entry = entryPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
         const cl::Image& exit = exitPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
-        computeEntryExitPoints(NDCToTextureMat, camPosInTextureSpace, entry, exit, outportDim, profilingEvent);
+        computeEntryExitPoints(NDCToTextureMat, entry, exit, outportDim, profilingEvent);
     }
 #if IVW_PROFILING
     try {
@@ -129,16 +128,15 @@ void EntryExitPointsCL::process() {
 
 }
 
-void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, const vec4& camPosInTextureSpace, const cl::Image& entryPointsCL, const cl::Image& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent) {
+void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, const cl::Image& entryPointsCL, const cl::Image& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent)
+{
     svec2 localWorkGroupSize(workGroupSize_.get());
     svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x), getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
-
+    
     try
     {
         cl_uint arg = 0;
         entryExitKernel_->setArg(arg++, NDCToTextureMat);
-        entryExitKernel_->setArg(arg++, camPosInTextureSpace);
-        entryExitKernel_->setArg(arg++, vec2(camera_.getNearPlaneDist(), camera_.getFarPlaneDist()));
         entryExitKernel_->setArg(arg++, entryPointsCL);
         entryExitKernel_->setArg(arg++, exitPointsCL);
         OpenCL::instance()->getQueue().enqueueNDRangeKernel(*entryExitKernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);

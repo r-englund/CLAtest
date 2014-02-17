@@ -35,8 +35,6 @@
 #include "intersection/rayboxintersection.cl"
 
 __kernel void entryexitpoints(float16 NDCToTextureMat
-							, float4 camPosInTextureSpace
-							, float2 nearFarPlaneDist
 							, write_only image2d_t entryPoints
 							, write_only image2d_t exitPoints) 
 {
@@ -46,17 +44,20 @@ __kernel void entryexitpoints(float16 NDCToTextureMat
     }
 
 	float2 normalizedScreenCoord = (float2)(get_global_id(0)+0.5f, get_global_id(1)+0.5f)/convert_float2(get_image_dim(entryPoints));
-	float3 normalizedDeviceCoord = (float3)(2.0f*normalizedScreenCoord-1.0f, 1.0f);
-	// convert the ndc back to the volume texture coordinates
-	float3 dir = normalize(transformPoint(NDCToTextureMat, normalizedDeviceCoord));
-
+	//float3 normalizedDeviceCoord = (float3)(2.0f*normalizedScreenCoord-1.0f, (nearFarPlaneDist.x+nearFarPlaneDist.y)/(nearFarPlaneDist.y-nearFarPlaneDist.x));
+    // Compute near and far plane points along ray (device coordinates goes from [-1 -1 -1] to [1 1 1]
+    float3 normalizedDeviceCoordNear = (float3)(2.0f*normalizedScreenCoord-1.0f, -1.f);
+    float3 normalizedDeviceCoordFar = (float3)(2.0f*normalizedScreenCoord-1.0f, 1.f);
+    // convert the ndc back to the volume texture coordinates
+    float3 entry = (transformPointW(NDCToTextureMat, normalizedDeviceCoordNear));
+    float3 exit = (transformPointW(NDCToTextureMat, normalizedDeviceCoordFar));
+    float3 dir = exit-entry;
 	BBox bbox; bbox.pMin = (float3)(0.f); bbox.pMax = (float3)(1.f);
-	float t0 = nearFarPlaneDist.x; float t1 = nearFarPlaneDist.y;
-	bool hit = rayBoxIntersection(bbox, camPosInTextureSpace.xyz, dir, &t0, &t1);
-    
-	if(hit) {
-		write_imagef(entryPoints, globalId,  (float4)(camPosInTextureSpace.xyz+t0*dir, 1.f));     
-		write_imagef(exitPoints, globalId,  (float4)(camPosInTextureSpace.xyz+t1*dir,1.f));    
+    float t0 = 0.f; float t1 = 1.f;
+    bool hit = rayBoxIntersection(bbox, entry.xyz, dir, &t0, &t1); 
+	if(hit) {  
+        write_imagef(entryPoints, globalId,  (float4)(entry.xyz+t0*dir, 1.f));     
+		write_imagef(exitPoints, globalId,  (float4)(entry.xyz+t1*dir,1.f)); 
 	} else {
 		write_imagef(entryPoints, globalId,  (float4)(0.f));     
 		write_imagef(exitPoints, globalId,  (float4)(0.f));    
