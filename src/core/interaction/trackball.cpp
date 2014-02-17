@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/interaction/trackball.h>
+#include <glm/gtx/vector_angle.hpp>
 
 namespace inviwo {
 
@@ -252,7 +253,7 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
     }
 
     if (curTrackballPos != lastTrackballPos_) {
-        // calculate rotation angle (in degrees)
+        // calculate rotation angle (in radians)
         float rotationAngle = glm::angle(curTrackballPos, lastTrackballPos_);
         //difference vector in trackball co-ordinates
         vec3 trackBallOffsetVector = lastTrackballPos_ - curTrackballPos;

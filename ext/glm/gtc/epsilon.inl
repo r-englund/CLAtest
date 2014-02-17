@@ -58,7 +58,7 @@ namespace glm
 		return abs(x - y) < epsilon;
 	}
 
-	template <>
+	/*template <>
 	GLM_FUNC_QUALIFIER bool epsilonNotEqual
 	(
 		float const & x,
@@ -78,7 +78,7 @@ namespace glm
 	)
 	{
 		return abs(x - y) >= epsilon;
-	}
+	}*/
 
 	template <typename T, precision P, template <typename, precision> class vecType>
 	GLM_FUNC_QUALIFIER vecType<bool, P> epsilonEqual

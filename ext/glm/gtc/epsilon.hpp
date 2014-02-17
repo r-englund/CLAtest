@@ -77,7 +77,7 @@ namespace glm
 	/// True if this expression is not satisfied.
 	///
 	/// @see gtc_epsilon
-	template <typename genType>
+	/*template <typename genType>
 	GLM_FUNC_DECL typename genType::boolType epsilonNotEqual(
 		genType const & x,
 		genType const & y,
@@ -93,7 +93,7 @@ namespace glm
 		genType const & y,
 		genType const & epsilon);
 
-	/// @}
+	/// @}*/
 }//namespace glm
 
 #include "epsilon.inl"
