@@ -40,7 +40,6 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/util/pstdint.h>
-#include <glm/glm.hpp>
 #include <limits>
 #include <string>
 
@@ -60,102 +59,101 @@ namespace inviwo {
 template <unsigned int N, typename T>
 class Matrix {};
 template <typename T>
-class Matrix<4, T> : public glm::detail::tmat4x4<T> {
+class Matrix<4, T> : public glm::detail::tmat4x4<T, glm::defaultp> {
 public:
-    Matrix<4, T>() : glm::detail::tmat4x4<T>() {};
-    Matrix<4, T>(const Matrix<4, T>& m) : glm::detail::tmat4x4<T>(
+    Matrix<4, T>() : glm::detail::tmat4x4<T, glm::defaultp>() {};
+    Matrix<4, T>(const Matrix<4, T>& m) : glm::detail::tmat4x4<T, glm::defaultp>(
             m[0][0], m[0][1], m[0][2], m[0][3],
             m[1][0], m[1][1], m[1][2], m[1][3],
             m[2][0], m[2][1], m[2][2], m[2][3],
             m[3][0], m[3][1], m[3][2], m[3][3]) {};
-    Matrix<4, T>(const glm::detail::tmat4x4<T>& m) : glm::detail::tmat4x4<T>(m) {};
-    Matrix<4, T>(T m) : glm::detail::tmat4x4<T>(m) {};
+    Matrix<4, T>(const glm::detail::tmat4x4<T, glm::defaultp>& m) : glm::detail::tmat4x4<T, glm::defaultp>(m) {};
+    Matrix<4, T>(T m) : glm::detail::tmat4x4<T, glm::defaultp>(m) {};
     Matrix<4, T>(T x1, T y1, T z1, T w1,
                  T x2, T y2, T z2, T w2,
                  T x3, T y3, T z3, T w3,
                  T x4, T y4, T z4, T w4) :
-        glm::detail::tmat4x4<T>(x1, y1, z1, w1,
+        glm::detail::tmat4x4<T, glm::defaultp>(x1, y1, z1, w1,
                                 x2, y2, z2, w2,
                                 x3, y3, z3, w3,
                                 x4, y4, z4, w4) {};
-    glm::detail::tmat4x4<T> getGLM() {
+    glm::detail::tmat4x4<T, glm::defaultp> getGLM() {
         return *this;
     };
 };
 template <typename T>
-class Matrix<3, T> : public glm::detail::tmat3x3<T> {
+class Matrix<3, T> : public glm::detail::tmat3x3<T, glm::defaultp> {
 public:
-    Matrix<3, T>() : glm::detail::tmat3x3<T>() {};
-    Matrix<3, T>(const Matrix<3, T>& m) : glm::detail::tmat3x3<T>(
+    Matrix<3, T>() : glm::detail::tmat3x3<T, glm::defaultp>() {};
+    Matrix<3, T>(const Matrix<3, T>& m) : glm::detail::tmat3x3<T, glm::defaultp>(
             m[0][0], m[0][1], m[0][2],
             m[1][0], m[1][1], m[1][2],
             m[2][0], m[2][1], m[2][2]) {};
-    Matrix<3, T>(const glm::detail::tmat3x3<T>& m) : glm::detail::tmat3x3<T>(m) {};
-    Matrix<3, T>(T m) : glm::detail::tmat3x3<T>(m) {};
+    Matrix<3, T>(const glm::detail::tmat3x3<T, glm::defaultp>& m) : glm::detail::tmat3x3<T, glm::defaultp>(m) {};
+    Matrix<3, T>(T m) : glm::detail::tmat3x3<T, glm::defaultp>(m) {};
     Matrix<3, T>(T x1, T y1, T z1,
                  T x2, T y2, T z2,
                  T x3, T y3, T z3) :
-        glm::detail::tmat3x3<T>(x1, y1, z1,
+        glm::detail::tmat3x3<T, glm::defaultp>(x1, y1, z1,
                                 x2, y2, z2,
                                 x3, y3, z3) {};
-    glm::detail::tmat3x3<T> getGLM() {
+    glm::detail::tmat3x3<T, glm::defaultp> getGLM() {
         return *this;
     };
 };
 template <typename T>
-class Matrix<2, T> : public glm::detail::tmat2x2<T> {
+class Matrix<2, T> : public glm::detail::tmat2x2<T, glm::defaultp> {
 public:
-    Matrix<2, T>() : glm::detail::tmat2x2<T>() {};
-    Matrix<2, T>(const Matrix<2, T>& m) : glm::detail::tmat2x2<T>(
+    Matrix<2, T>() : glm::detail::tmat2x2<T, glm::defaultp>() {};
+    Matrix<2, T>(const Matrix<2, T>& m) : glm::detail::tmat2x2<T, glm::defaultp>(
             m[0][0], m[0][1],
             m[1][0], m[1][1]) {};
-    Matrix<2, T>(const glm::detail::tmat2x2<T>& m) : glm::detail::tmat2x2<T>(m) {};
-    Matrix<2, T>(T m) : glm::detail::tmat2x2<T>(m) {};
+    Matrix<2, T>(const glm::detail::tmat2x2<T, glm::defaultp>& m) : glm::detail::tmat2x2<T, glm::defaultp>(m) {};
+    Matrix<2, T>(T m) : glm::detail::tmat2x2<T, glm::defaultp>(m) {};
     Matrix<2, T>(T x1, T y1,
                  T x2, T y2) :
-        glm::detail::tmat2x2<T>(x1, y1,
+        glm::detail::tmat2x2<T, glm::defaultp>(x1, y1,
                                 x2, y2) {};
-    glm::detail::tmat2x2<T> getGLM() {
+    glm::detail::tmat2x2<T, glm::defaultp> getGLM() {
         return *this;
     };
 };
 template <unsigned int N, typename T>
 class Vector {};
 template <typename T>
-class Vector<4, T> : public glm::detail::tvec4<T> {
+class Vector<4, T> : public glm::detail::tvec4<T, glm::defaultp> {
 public:
-    Vector<4, T>() : glm::detail::tvec4<T>() {};
-    Vector<4, T>(const Vector<4, T>& v) : glm::detail::tvec4<T>(v.x, v.y, v.z, v.w) {};
-    Vector<4, T>(const glm::detail::tvec4<T>& v) : glm::detail::tvec4<T>(v) {};
-    Vector<4, T>(T v) : glm::detail::tvec4<T>(v) {};
-    Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T>(v1, v2, v3, v4) {};
-    glm::detail::tvec4<T> getGLM() { return *this; };
+    Vector<4, T>() : glm::detail::tvec4<T, glm::defaultp>() {};
+    Vector<4, T>(const Vector<4, T>& v) : glm::detail::tvec4<T, glm::defaultp>(v.x, v.y, v.z, v.w) {};
+    Vector<4, T>(const glm::detail::tvec4<T, glm::defaultp>& v) : glm::detail::tvec4<T, glm::defaultp>(v) {};
+    Vector<4, T>(T v) : glm::detail::tvec4<T, glm::defaultp>(v) {};
+    Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T, glm::defaultp>(v1, v2, v3, v4) {};
+    glm::detail::tvec4<T, glm::defaultp> getGLM() { return *this; };
 };
 template <typename T>
-class Vector<3, T> : public glm::detail::tvec3<T> {
+class Vector<3, T> : public glm::detail::tvec3<T, glm::defaultp> {
 public:
-    Vector<3, T>() : glm::detail::tvec3<T>() {};
-    Vector<3, T>(const Vector<3, T>& v) : glm::detail::tvec3<T>(v.x, v.y, v.z) {};
-    Vector<3, T>(const glm::detail::tvec3<T>& v) : glm::detail::tvec3<T>(v) {};
-    Vector<3, T>(T v) : glm::detail::tvec3<T>(v) {};
-    Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T>(v1, v2, v3) {};
-    glm::detail::tvec3<T> getGLM() { return *this; };
+    Vector<3, T>() : glm::detail::tvec3<T, glm::defaultp>() {};
+    Vector<3, T>(const Vector<3, T>& v) : glm::detail::tvec3<T, glm::defaultp>(v.x, v.y, v.z) {};
+    Vector<3, T>(const glm::detail::tvec3<T, glm::defaultp>& v) : glm::detail::tvec3<T, glm::defaultp>(v) {};
+    Vector<3, T>(T v) : glm::detail::tvec3<T, glm::defaultp>(v) {};
+    Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T, glm::defaultp>(v1, v2, v3) {};
+    glm::detail::tvec3<T, glm::defaultp> getGLM() { return *this; };
 };
 template <typename T>
-class Vector<2, T> : public glm::detail::tvec2<T> {
+class Vector<2, T> : public glm::detail::tvec2<T, glm::defaultp> {
 public:
-    Vector<2, T>() : glm::detail::tvec2<T>() {};
-    Vector<2, T>(const Vector<2, T>& v) : glm::detail::tvec2<T>(v.x, v.y) {};
-    Vector<2, T>(const glm::detail::tvec2<T>& v) : glm::detail::tvec2<T>(v) {};
-    Vector<2, T>(T v) : glm::detail::tvec2<T>(v) {};
-    Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T>(v1, v2) {};
-    glm::detail::tvec2<T> getGLM() { return *this; };
+    Vector<2, T>() : glm::detail::tvec2<T, glm::defaultp>() {};
+    Vector<2, T>(const Vector<2, T>& v) : glm::detail::tvec2<T, glm::defaultp>(v.x, v.y) {};
+    Vector<2, T>(const glm::detail::tvec2<T, glm::defaultp>& v) : glm::detail::tvec2<T, glm::defaultp>(v) {};
+    Vector<2, T>(T v) : glm::detail::tvec2<T, glm::defaultp>(v) {};
+    Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T, glm::defaultp>(v1, v2) {};
+    glm::detail::tvec2<T, glm::defaultp> getGLM() { return *this; };
 };
 
 //Do not set enums specifically, as NUMBER_OF_FORMATS is used to count the number of enums
 enum DataFormatId {
     NOT_SPECIALIZED,
-    FLOAT16,
     FLOAT32,
     FLOAT64,
     INT8,
@@ -168,7 +166,6 @@ enum DataFormatId {
     UINT16,
     UINT32,
     UINT64,
-    Vec2FLOAT16,
     Vec2FLOAT32,
     Vec2FLOAT64,
     Vec2INT8,
@@ -181,7 +178,6 @@ enum DataFormatId {
     Vec2UINT16,
     Vec2UINT32,
     Vec2UINT64,
-    Vec3FLOAT16,
     Vec3FLOAT32,
     Vec3FLOAT64,
     Vec3INT8,
@@ -194,7 +190,6 @@ enum DataFormatId {
     Vec3UINT16,
     Vec3UINT32,
     Vec3UINT64,
-    Vec4FLOAT16,
     Vec4FLOAT32,
     Vec4FLOAT64,
     Vec4INT8,
@@ -360,27 +355,27 @@ public:
     }
 
     template<typename D, typename S>
-    inline glm::detail::tvec2<D> normalizeSignedVec2(void* val) const {
-        glm::detail::tvec2<S> valT = *static_cast<glm::detail::tvec2<S>*>(val);
-        glm::detail::tvec2<D> result;
+    inline glm::detail::tvec2<D, glm::defaultp> normalizeSignedVec2(void* val) const {
+        glm::detail::tvec2<S, glm::defaultp> valT = *static_cast<glm::detail::tvec2<S, glm::defaultp>*>(val);
+        glm::detail::tvec2<D, glm::defaultp> result;
         result.x = normalizeSigned<D, S>(valT.x);
         result.y = normalizeSigned<D, S>(valT.y);
         return result;
     }
 
     template<typename D, typename S>
-    inline glm::detail::tvec2<D> normalizeUnsignedVec2(void* val) const {
-        glm::detail::tvec2<S> valT = *static_cast<glm::detail::tvec2<S>*>(val);
-        glm::detail::tvec2<D> result;
+    inline glm::detail::tvec2<D, glm::defaultp> normalizeUnsignedVec2(void* val) const {
+        glm::detail::tvec2<S, glm::defaultp> valT = *static_cast<glm::detail::tvec2<S, glm::defaultp>*>(val);
+        glm::detail::tvec2<D, glm::defaultp> result;
         result.x = normalizeUnsigned<D, S>(valT.x);
         result.y = normalizeUnsigned<D, S>(valT.y);
         return result;
     }
 
     template<typename D, typename S>
-    inline glm::detail::tvec3<D> normalizeSignedVec3(void* val) const {
-        glm::detail::tvec3<S> valT = *static_cast<glm::detail::tvec3<S>*>(val);
-        glm::detail::tvec3<D> result;
+    inline glm::detail::tvec3<D, glm::defaultp> normalizeSignedVec3(void* val) const {
+        glm::detail::tvec3<S, glm::defaultp> valT = *static_cast<glm::detail::tvec3<S, glm::defaultp>*>(val);
+        glm::detail::tvec3<D, glm::defaultp> result;
         result.x = normalizeSigned<D, S>(valT.x);
         result.y = normalizeSigned<D, S>(valT.y);
         result.y = normalizeSigned<D, S>(valT.y);
@@ -388,9 +383,9 @@ public:
     }
 
     template<typename D, typename S>
-    inline glm::detail::tvec3<D> normalizeUnsignedVec3(void* val) const {
-        glm::detail::tvec3<S> valT = *static_cast<glm::detail::tvec3<S>*>(val);
-        glm::detail::tvec3<D> result;
+    inline glm::detail::tvec3<D, glm::defaultp> normalizeUnsignedVec3(void* val) const {
+        glm::detail::tvec3<S, glm::defaultp> valT = *static_cast<glm::detail::tvec3<S, glm::defaultp>*>(val);
+        glm::detail::tvec3<D, glm::defaultp> result;
         result.x = normalizeUnsigned<D, S>(valT.x);
         result.y = normalizeUnsigned<D, S>(valT.y);
         result.z = normalizeUnsigned<D, S>(valT.z);
@@ -398,9 +393,9 @@ public:
     }
 
     template<typename D, typename S>
-    inline glm::detail::tvec4<D> normalizeSignedVec4(void* val) const {
-        glm::detail::tvec4<S> valT = *static_cast<glm::detail::tvec4<S>*>(val);
-        glm::detail::tvec4<D> result;
+    inline glm::detail::tvec4<D, glm::defaultp> normalizeSignedVec4(void* val) const {
+        glm::detail::tvec4<S, glm::defaultp> valT = *static_cast<glm::detail::tvec4<S, glm::defaultp>*>(val);
+        glm::detail::tvec4<D, glm::defaultp> result;
         result.x = normalizeSigned<D, S>(valT.x);
         result.y = normalizeSigned<D, S>(valT.y);
         result.y = normalizeSigned<D, S>(valT.y);
@@ -409,9 +404,9 @@ public:
     }
 
     template<typename D, typename S>
-    inline glm::detail::tvec4<D> normalizeUnsignedVec4(void* val) const {
-        glm::detail::tvec4<S> valT = *static_cast<glm::detail::tvec4<S>*>(val);
-        glm::detail::tvec4<D> result;
+    inline glm::detail::tvec4<D, glm::defaultp> normalizeUnsignedVec4(void* val) const {
+        glm::detail::tvec4<S, glm::defaultp> valT = *static_cast<glm::detail::tvec4<S, glm::defaultp>*>(val);
+        glm::detail::tvec4<D, glm::defaultp> result;
         result.x = normalizeUnsigned<D, S>(valT.x);
         result.y = normalizeUnsigned<D, S>(valT.y);
         result.z = normalizeUnsigned<D, S>(valT.z);
@@ -428,7 +423,6 @@ public:
 /*---------------Single Value Formats------------------*/
 
 // Floats
-typedef GenericDataFormat(glm::detail::float16) DataFLOAT16;
 typedef GenericDataFormat(glm::detail::float32) DataFLOAT32;
 typedef GenericDataFormat(glm::detail::float64) DataFLOAT64;
 
@@ -449,100 +443,97 @@ typedef GenericDataFormat(uint64_t)       DataUINT64;
 /*---------------Vec2 Formats--------------------*/
 
 // Floats
-typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float16>)  DataVec2FLOAT16;
-typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float32>)  DataVec2FLOAT32;
-typedef GenericDataFormat(glm::detail::tvec2<glm::detail::float64>)  DataVec2FLOAT64;
+typedef GenericDataFormat(glm::f32vec2) DataVec2FLOAT32;
+typedef GenericDataFormat(glm::f64vec2) DataVec2FLOAT64;
 
 // Integers
-typedef GenericDataFormat(glm::detail::tvec2<int8_t>)   DataVec2INT8;
-typedef DataFormat<glm::detail::tvec2<int16_t>, 24>     DataVec2INT12;
-typedef GenericDataFormat(glm::detail::tvec2<int16_t>)  DataVec2INT16;
-typedef GenericDataFormat(glm::detail::tvec2<int32_t>)  DataVec2INT32;
-typedef GenericDataFormat(glm::detail::tvec2<int64_t>)  DataVec2INT64;
+typedef GenericDataFormat(glm::i8vec2) DataVec2INT8;
+typedef DataFormat<glm::detail::tvec2<int16_t, glm::defaultp>, 24> DataVec2INT12;
+typedef GenericDataFormat(glm::i16vec2) DataVec2INT16;
+typedef GenericDataFormat(glm::i32vec2) DataVec2INT32;
+typedef GenericDataFormat(glm::i64vec2) DataVec2INT64;
 
 // Unsigned Integers
-typedef GenericDataFormat(glm::detail::tvec2<uint8_t>)  DataVec2UINT8;
-typedef DataFormat<glm::detail::tvec2<uint16_t>, 24>    DataVec2UINT12;
-typedef GenericDataFormat(glm::detail::tvec2<uint16_t>) DataVec2UINT16;
-typedef GenericDataFormat(glm::detail::tvec2<uint32_t>) DataVec2UINT32;
-typedef GenericDataFormat(glm::detail::tvec2<uint64_t>) DataVec2UINT64;
+typedef GenericDataFormat(glm::u8vec2) DataVec2UINT8;
+typedef DataFormat<glm::detail::tvec2<uint16_t, glm::defaultp>, 24> DataVec2UINT12;
+typedef GenericDataFormat(glm::u16vec2) DataVec2UINT16;
+typedef GenericDataFormat(glm::u32vec2) DataVec2UINT32;
+typedef GenericDataFormat(glm::u64vec2) DataVec2UINT64;
 
 /*---------------Vec3 Formats--------------------*/
 
 // Floats
-typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float16>)  DataVec3FLOAT16;
-typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float32>)  DataVec3FLOAT32;
-typedef GenericDataFormat(glm::detail::tvec3<glm::detail::float64>)  DataVec3FLOAT64;
+typedef GenericDataFormat(glm::f32vec3) DataVec3FLOAT32;
+typedef GenericDataFormat(glm::f64vec3) DataVec3FLOAT64;
 
 // Integers
-typedef GenericDataFormat(glm::detail::tvec3<int8_t>)   DataVec3INT8;
-typedef DataFormat<glm::detail::tvec3<int16_t>, 36>     DataVec3INT12;
-typedef GenericDataFormat(glm::detail::tvec3<int16_t>)  DataVec3INT16;
-typedef GenericDataFormat(glm::detail::tvec3<int32_t>)  DataVec3INT32;
-typedef GenericDataFormat(glm::detail::tvec3<int64_t>)  DataVec3INT64;
+typedef GenericDataFormat(glm::i8vec3) DataVec3INT8;
+typedef DataFormat<glm::detail::tvec3<int16_t, glm::defaultp>, 24> DataVec3INT12;
+typedef GenericDataFormat(glm::i16vec3) DataVec3INT16;
+typedef GenericDataFormat(glm::i32vec3) DataVec3INT32;
+typedef GenericDataFormat(glm::i64vec3) DataVec3INT64;
 
 // Unsigned Integers
-typedef GenericDataFormat(glm::detail::tvec3<uint8_t>)  DataVec3UINT8;
-typedef DataFormat<glm::detail::tvec3<uint16_t>, 36>    DataVec3UINT12;
-typedef GenericDataFormat(glm::detail::tvec3<uint16_t>) DataVec3UINT16;
-typedef GenericDataFormat(glm::detail::tvec3<uint32_t>) DataVec3UINT32;
-typedef GenericDataFormat(glm::detail::tvec3<uint64_t>) DataVec3UINT64;
+typedef GenericDataFormat(glm::u8vec3) DataVec3UINT8;
+typedef DataFormat<glm::detail::tvec3<uint16_t, glm::defaultp>, 24> DataVec3UINT12;
+typedef GenericDataFormat(glm::u16vec3) DataVec3UINT16;
+typedef GenericDataFormat(glm::u32vec3) DataVec3UINT32;
+typedef GenericDataFormat(glm::u64vec3) DataVec3UINT64;
 
 /*---------------Vec4 Value Formats------------------*/
 
 // Floats
-typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float16>)  DataVec4FLOAT16;
-typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float32>)  DataVec4FLOAT32;
-typedef GenericDataFormat(glm::detail::tvec4<glm::detail::float64>)  DataVec4FLOAT64;
+typedef GenericDataFormat(glm::f32vec4) DataVec4FLOAT32;
+typedef GenericDataFormat(glm::f64vec4) DataVec4FLOAT64;
 
 // Integers
-typedef GenericDataFormat(glm::detail::tvec4<int8_t>)   DataVec4INT8;
-typedef DataFormat<glm::detail::tvec4<int16_t>, 48>     DataVec4INT12;
-typedef GenericDataFormat(glm::detail::tvec4<int16_t>)  DataVec4INT16;
-typedef GenericDataFormat(glm::detail::tvec4<int32_t>)  DataVec4INT32;
-typedef GenericDataFormat(glm::detail::tvec4<int64_t>)  DataVec4INT64;
+typedef GenericDataFormat(glm::i8vec4) DataVec4INT8;
+typedef DataFormat<glm::detail::tvec4<int16_t, glm::defaultp>, 24> DataVec4INT12;
+typedef GenericDataFormat(glm::i16vec4) DataVec4INT16;
+typedef GenericDataFormat(glm::i32vec4) DataVec4INT32;
+typedef GenericDataFormat(glm::i64vec4) DataVec4INT64;
 
 // Unsigned Integers
-typedef GenericDataFormat(glm::detail::tvec4<uint8_t>)  DataVec4UINT8;
-typedef DataFormat<glm::detail::tvec4<uint16_t>, 48>    DataVec4UINT12;
-typedef GenericDataFormat(glm::detail::tvec4<uint16_t>) DataVec4UINT16;
-typedef GenericDataFormat(glm::detail::tvec4<uint32_t>) DataVec4UINT32;
-typedef GenericDataFormat(glm::detail::tvec4<uint64_t>) DataVec4UINT64;
+typedef GenericDataFormat(glm::u8vec4) DataVec4UINT8;
+typedef DataFormat<glm::detail::tvec4<uint16_t, glm::defaultp>, 24> DataVec4UINT12;
+typedef GenericDataFormat(glm::u16vec4) DataVec4UINT16;
+typedef GenericDataFormat(glm::u32vec4) DataVec4UINT32;
+typedef GenericDataFormat(glm::u64vec4) DataVec4UINT64;
 
 /*--------------- Conversions------------------*/
 
 template<typename T>
-inline glm::detail::tvec2<T> singleToVec2(T val) {
-    return glm::detail::tvec2<T>(val);
+inline glm::detail::tvec2<T, glm::defaultp> singleToVec2(T val) {
+    return glm::detail::tvec2<T, glm::defaultp>(val);
 }
 
 template<typename T>
-inline glm::detail::tvec3<T> singleToVec3(T val) {
-    return glm::detail::tvec3<T>(val);
+inline glm::detail::tvec3<T, glm::defaultp> singleToVec3(T val) {
+    return glm::detail::tvec3<T, glm::defaultp>(val);
 }
 
 template<typename T>
-inline glm::detail::tvec4<T> singleToVec4(T val) {
-    return glm::detail::tvec4<T>(val);
+inline glm::detail::tvec4<T, glm::defaultp> singleToVec4(T val) {
+    return glm::detail::tvec4<T, glm::defaultp>(val);
 }
 
 template<typename T>
-glm::detail::tvec3<T> vec2ToVec3(glm::detail::tvec2<T> val) {
-    glm::detail::tvec3<T> result = glm::detail::tvec3<T>(0.f);
+glm::detail::tvec3<T, glm::defaultp> vec2ToVec3(glm::detail::tvec2<T, glm::defaultp> val) {
+    glm::detail::tvec3<T, glm::defaultp> result = glm::detail::tvec3<T, glm::defaultp>(0.f);
     result.xy() = val;
     return result;
 }
 
 template<typename T>
-glm::detail::tvec4<T> vec2ToVec4(glm::detail::tvec2<T> val) {
-    glm::detail::tvec4<T> result = glm::detail::tvec4<T>(0.f);
+glm::detail::tvec4<T, glm::defaultp> vec2ToVec4(glm::detail::tvec2<T, glm::defaultp> val) {
+    glm::detail::tvec4<T, glm::defaultp> result = glm::detail::tvec4<T, glm::defaultp>(0.f);
     result.xy() = val;
     return result;
 }
 
 template<typename T>
-inline glm::detail::tvec4<T> vec3ToVec4(glm::detail::tvec3<T> val) {
-    glm::detail::tvec4<T> result = glm::detail::tvec4<T>(0.f);
+inline glm::detail::tvec4<T, glm::defaultp> vec3ToVec4(glm::detail::tvec3<T, glm::defaultp> val) {
+    glm::detail::tvec4<T, glm::defaultp> result = glm::detail::tvec4<T, glm::defaultp>(0.f);
     result.xyz() = val;
     return result;
 }
@@ -553,10 +544,6 @@ inline glm::detail::tvec4<T> vec3ToVec4(glm::detail::tvec3<T> val) {
 template<> inline size_t DataINT12::bitsAllocated() { return DataINT16::bitsAllocated(); }
 template<> inline size_t DataUINT12::bitsAllocated() { return DataUINT16::bitsAllocated(); }
 
-// Min/Max Specializations
-template<> inline DataFLOAT16::type DataFLOAT16::max() { return DataFLOAT16::type(65504.f); }
-template<> inline DataFLOAT16::type DataFLOAT16::min() { return DataFLOAT16::type(1.f/16384.f); }
-
 template<> inline DataINT12::type DataINT12::max() { return static_cast<DataINT12::type>(2047); }
 template<> inline DataINT12::type DataINT12::min() { return static_cast<DataINT12::type>(-2047); }
 
@@ -564,7 +551,6 @@ template<> inline DataUINT12::type DataUINT12::max() { return static_cast<DataUI
 template<> inline DataUINT12::type DataUINT12::min() { return static_cast<DataUINT12::type>(0); }
 
 // Type Function Specializations
-template<> inline DataFormatId DataFLOAT16::id() { return FLOAT16; }
 template<> inline DataFormatId DataFLOAT32::id() { return FLOAT32; }
 template<> inline DataFormatId DataFLOAT64::id() { return FLOAT64; }
 
@@ -581,7 +567,6 @@ template<> inline DataFormatId DataUINT32::id() { return UINT32; }
 template<> inline DataFormatId DataUINT64::id() { return UINT64; }
 
 // String Function Specializations
-template<> inline std::string DataFLOAT16::str() { return "FLOAT16"; }
 template<> inline std::string DataFLOAT32::str() { return "FLOAT32"; }
 template<> inline std::string DataFLOAT64::str() { return "FLOAT64"; }
 
@@ -628,7 +613,6 @@ template<> inline std::string DataUINT64::str() { return "UINT64"; }
     template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return singleToVec4<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
     DatatoFloat(F)
 
-DataUnchanged(DataFLOAT16)
 DataUnchanged(DataFLOAT32)
 DataUnchanged(DataFLOAT64)
 
@@ -651,8 +635,6 @@ template<> inline size_t DataVec2INT12::bitsAllocated() { return DataVec2INT16::
 template<> inline size_t DataVec2UINT12::bitsAllocated() { return DataVec2UINT16::bitsAllocated(); }
 
 // Min/Max Specializations
-template<> inline DataVec2FLOAT16::type DataVec2FLOAT16::max() { return DataVec2FLOAT16::type(DataFLOAT16::max()); }
-template<> inline DataVec2FLOAT16::type DataVec2FLOAT16::min() { return DataVec2FLOAT16::type(DataFLOAT16::min()); }
 template<> inline DataVec2FLOAT32::type DataVec2FLOAT32::max() { return DataVec2FLOAT32::type(DataFLOAT32::max()); }
 template<> inline DataVec2FLOAT32::type DataVec2FLOAT32::min() { return DataVec2FLOAT32::type(DataFLOAT32::min()); }
 template<> inline DataVec2FLOAT64::type DataVec2FLOAT64::max() { return DataVec2FLOAT64::type(DataFLOAT64::max()); }
@@ -681,7 +663,6 @@ template<> inline DataVec2UINT64::type DataVec2UINT64::max() { return DataVec2UI
 template<> inline DataVec2UINT64::type DataVec2UINT64::min() { return DataVec2UINT64::type(DataUINT64::min()); }
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec2FLOAT16::id() { return Vec2FLOAT16; }
 template<> inline DataFormatId DataVec2FLOAT32::id() { return Vec2FLOAT32; }
 template<> inline DataFormatId DataVec2FLOAT64::id() { return Vec2FLOAT64; }
 
@@ -698,7 +679,6 @@ template<> inline DataFormatId DataVec2UINT32::id() { return Vec2UINT32; }
 template<> inline DataFormatId DataVec2UINT64::id() { return Vec2UINT64; }
 
 // String Function Specializations
-template<> inline std::string DataVec2FLOAT16::str() { return "Vec2FLOAT16"; }
 template<> inline std::string DataVec2FLOAT32::str() { return "Vec2FLOAT32"; }
 template<> inline std::string DataVec2FLOAT64::str() { return "Vec2FLOAT64"; }
 
@@ -752,7 +732,6 @@ template<> inline std::string DataVec2UINT64::str() { return "Vec2UINT64"; }
     template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return vec2ToVec4<float>(normalizeUnsignedVec2<float, G::type>(val)); } \
     DatatoVec2t(F, G)
 
-DataUnchangedVec2(DataVec2FLOAT16, DataFLOAT16)
 DataUnchangedVec2(DataVec2FLOAT32, DataFLOAT32)
 DataUnchangedVec2(DataVec2FLOAT64, DataFLOAT64)
 
@@ -775,8 +754,6 @@ template<> inline size_t DataVec3INT12::bitsAllocated() { return DataVec3INT16::
 template<> inline size_t DataVec3UINT12::bitsAllocated() { return DataVec3UINT16::bitsAllocated(); }
 
 // Min/Max Specializations
-template<> inline DataVec3FLOAT16::type DataVec3FLOAT16::max() { return DataVec3FLOAT16::type(DataFLOAT16::max()); }
-template<> inline DataVec3FLOAT16::type DataVec3FLOAT16::min() { return DataVec3FLOAT16::type(DataFLOAT16::min()); }
 template<> inline DataVec3FLOAT32::type DataVec3FLOAT32::max() { return DataVec3FLOAT32::type(DataFLOAT32::max()); }
 template<> inline DataVec3FLOAT32::type DataVec3FLOAT32::min() { return DataVec3FLOAT32::type(DataFLOAT32::min()); }
 template<> inline DataVec3FLOAT64::type DataVec3FLOAT64::max() { return DataVec3FLOAT64::type(DataFLOAT64::max()); }
@@ -805,7 +782,6 @@ template<> inline DataVec3UINT64::type DataVec3UINT64::max() { return DataVec3UI
 template<> inline DataVec3UINT64::type DataVec3UINT64::min() { return DataVec3UINT64::type(DataUINT64::min()); }
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec3FLOAT16::id() { return Vec3FLOAT16; }
 template<> inline DataFormatId DataVec3FLOAT32::id() { return Vec3FLOAT32; }
 template<> inline DataFormatId DataVec3FLOAT64::id() { return Vec3FLOAT64; }
 
@@ -822,7 +798,6 @@ template<> inline DataFormatId DataVec3UINT32::id() { return Vec3UINT32; }
 template<> inline DataFormatId DataVec3UINT64::id() { return Vec3UINT64; }
 
 // String Function Specializations
-template<> inline std::string DataVec3FLOAT16::str() { return "Vec3FLOAT16"; }
 template<> inline std::string DataVec3FLOAT32::str() { return "Vec3FLOAT32"; }
 template<> inline std::string DataVec3FLOAT64::str() { return "Vec3FLOAT64"; }
 
@@ -871,7 +846,6 @@ template<> inline std::string DataVec3UINT64::str() { return "Vec3UINT64"; }
     template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return vec3ToVec4<float>(normalizeUnsignedVec3<float, G::type>(val)); } \
     DataToVec3t(F, G)
 
-DataUnchangedVec3(DataVec3FLOAT16, DataFLOAT16)
 DataUnchangedVec3(DataVec3FLOAT32, DataFLOAT32)
 DataUnchangedVec3(DataVec3FLOAT64, DataFLOAT64)
 
@@ -894,8 +868,6 @@ template<> inline size_t DataVec4INT12::bitsAllocated() { return DataVec4INT16::
 template<> inline size_t DataVec4UINT12::bitsAllocated() { return DataVec4UINT16::bitsAllocated(); }
 
 // Min/Max Specializations
-template<> inline DataVec4FLOAT16::type DataVec4FLOAT16::max() { return DataVec4FLOAT16::type(DataFLOAT16::max()); }
-template<> inline DataVec4FLOAT16::type DataVec4FLOAT16::min() { return DataVec4FLOAT16::type(DataFLOAT16::min()); }
 template<> inline DataVec4FLOAT32::type DataVec4FLOAT32::max() { return DataVec4FLOAT32::type(DataFLOAT32::max()); }
 template<> inline DataVec4FLOAT32::type DataVec4FLOAT32::min() { return DataVec4FLOAT32::type(DataFLOAT32::min()); }
 template<> inline DataVec4FLOAT64::type DataVec4FLOAT64::max() { return DataVec4FLOAT64::type(DataFLOAT64::max()); }
@@ -924,7 +896,6 @@ template<> inline DataVec4UINT64::type DataVec4UINT64::max() { return DataVec4UI
 template<> inline DataVec4UINT64::type DataVec4UINT64::min() { return DataVec4UINT64::type(DataUINT64::min()); }
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec4FLOAT16::id() { return Vec4FLOAT16; }
 template<> inline DataFormatId DataVec4FLOAT32::id() { return Vec4FLOAT32; }
 template<> inline DataFormatId DataVec4FLOAT64::id() { return Vec4FLOAT64; }
 
@@ -941,7 +912,6 @@ template<> inline DataFormatId DataVec4UINT32::id() { return Vec4UINT32; }
 template<> inline DataFormatId DataVec4UINT64::id() { return Vec4UINT64; }
 
 // String Function Specializations
-template<> inline std::string DataVec4FLOAT16::str() { return "Vec4FLOAT16"; }
 template<> inline std::string DataVec4FLOAT32::str() { return "Vec4FLOAT32"; }
 template<> inline std::string DataVec4FLOAT64::str() { return "Vec4FLOAT64"; }
 
@@ -990,7 +960,6 @@ template<> inline std::string DataVec4UINT64::str() { return "Vec4UINT64"; }
     template<> inline vec4 F::valueToNormalizedVec4Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val); } \
     DataToVec4t(F, G)
 
-DataUnchangedVec4(DataVec4FLOAT16, DataFLOAT16)
 DataUnchangedVec4(DataVec4FLOAT32, DataFLOAT32)
 DataUnchangedVec4(DataVec4FLOAT64, DataFLOAT64)
 

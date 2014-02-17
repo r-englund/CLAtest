@@ -156,7 +156,7 @@ public:
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
-        glm::detail::tvec4<T> u(0);
+        glm::detail::tvec4<T, glm::defaultp> u(0);
         d.deserialize("MetaData", u);
         this->set(u);
     };
@@ -181,7 +181,7 @@ public:
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
-        glm::detail::tvec3<T> u(0);
+        glm::detail::tvec3<T, glm::defaultp> u(0);
         d.deserialize("MetaData", u);
         this->set(u);
     };
@@ -205,7 +205,7 @@ public:
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
-        glm::detail::tvec2<T> u(0);
+        glm::detail::tvec2<T, glm::defaultp> u(0);
         d.deserialize("MetaData", u);
         this->set(u);
     };
@@ -232,7 +232,7 @@ public:
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
-        glm::detail::tmat4x4<T> u(0);
+        glm::detail::tmat4x4<T, glm::defaultp> u(0);
         d.deserialize("MetaData", u);
         this->set(u);
     };
@@ -255,7 +255,7 @@ public:
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
-        glm::detail::tmat3x3<T> u(0);
+        glm::detail::tmat3x3<T, glm::defaultp> u(0);
         d.deserialize("MetaData", u);
         this->set(u);
     };
@@ -278,7 +278,7 @@ public:
         s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
-        glm::detail::tmat2x2<T> u(0);
+        glm::detail::tmat2x2<T, glm::defaultp> u(0);
         d.deserialize("MetaData", u);
         this->set(u);
     };

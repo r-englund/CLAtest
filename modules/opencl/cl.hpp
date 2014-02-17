@@ -134,8 +134,8 @@
 //      static void* ptr(LocalSpaceArg& value) { return &value; } to static const void* ptr(const LocalSpaceArg& value) { return &value; }
 #include <glm/glm.hpp>
 namespace glm {
-typedef glm::detail::tvec2<size_t>	svec2;
-typedef glm::detail::tvec3<size_t>	svec3;
+typedef glm::detail::tvec2<size_t, glm::defaultp>	svec2;
+typedef glm::detail::tvec3<size_t, glm::defaultp>	svec3;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

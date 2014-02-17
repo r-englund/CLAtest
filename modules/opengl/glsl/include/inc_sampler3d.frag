@@ -39,5 +39,13 @@ struct VOLUME_PARAMETERS {
 };
 
 vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+#ifdef GLSL_VERSION_140
+    return texture(volume, samplePos);
+#else
     return texture3D(volume, samplePos);
+#endif
+}
+
+vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
+    return texelFetch(volume, samplePos, 0);
 }

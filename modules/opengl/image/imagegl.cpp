@@ -160,9 +160,9 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
 
     glm::mat4 scale;
     if (ratioTarget < ratioSource)
-        scale = glm::scale(1.0f, ratioTarget/ratioSource, 1.0f);
+        scale = glm::scale(glm::vec3(1.0f, ratioTarget/ratioSource, 1.0f));
     else
-        scale = glm::scale(ratioSource/ratioTarget, 1.0f, 1.0f);
+        scale = glm::scale(glm::vec3(ratioSource/ratioTarget, 1.0f, 1.0f));
 
     program_->activate();
     program_->setUniform("color_", colorUnit.getUnitNumber());

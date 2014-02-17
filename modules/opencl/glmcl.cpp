@@ -43,59 +43,54 @@ namespace cl {
 
 // int types
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int8>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::i8vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::int8>(value, 0));
+    return setArg(index, glm::i8vec4(value, 0));
 }
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int16>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::i16vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::int16>(value, 0));
+    return setArg(index, glm::i16vec4(value, 0));
 }
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int32>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::i32vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::int32>(value, 0));
+    return setArg(index, glm::i32vec4(value, 0));
 }
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::int64>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::i64vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::int16>(value, 0));
+    return setArg(index, glm::i64vec4(value, 0));
 }
 
 // uint types
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint8>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::u8vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::uint8>(value, 0));
+    return setArg(index, glm::u8vec4(value, 0));
 }
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint16>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::u16vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::uint16>(value, 0));
+    return setArg(index, glm::u16vec4(value, 0));
 }
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint32>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::u32vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::uint32>(value, 0));
+    return setArg(index, glm::u32vec4(value, 0));
 }
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::uint64>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::u64vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::uint64>(value, 0));
+    return setArg(index, glm::u64vec4(value, 0));
 }
 
 
 // float types
 template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::float16>& value)
+cl_int Kernel::setArg(cl_uint index, const glm::vec3& value)
 {
-    return setArg(index, glm::detail::tvec4<glm::detail::float16>(value, 0));
-}
-template <>
-cl_int Kernel::setArg(cl_uint index, const glm::detail::tvec3<glm::detail::float32>& value)
-{
-    return setArg(index, glm::detail::tvec4<glm::detail::float32>(value, 0));
+    return setArg(index, glm::vec4(value, 0));
 }
 
 

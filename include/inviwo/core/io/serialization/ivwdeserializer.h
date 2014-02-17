@@ -171,18 +171,18 @@ public:
 
     // glm vector types
     template<class T>
-    void deserialize(const std::string& key, glm::detail::tvec4<T>& data);
+    void deserialize(const std::string& key, glm::detail::tvec4<T, glm::defaultp>& data);
     template<class T>
-    void deserialize(const std::string& key, glm::detail::tvec3<T>& data);
+    void deserialize(const std::string& key, glm::detail::tvec3<T, glm::defaultp>& data);
     template<class T>
-    void deserialize(const std::string& key, glm::detail::tvec2<T>& data);
+    void deserialize(const std::string& key, glm::detail::tvec2<T, glm::defaultp>& data);
     // glm matrix types
     template<class T>
-    void deserialize(const std::string& key, glm::detail::tmat4x4<T>& data);
+    void deserialize(const std::string& key, glm::detail::tmat4x4<T, glm::defaultp>& data);
     template<class T>
-    void deserialize(const std::string& key, glm::detail::tmat3x3<T>& data);
+    void deserialize(const std::string& key, glm::detail::tmat3x3<T, glm::defaultp>& data);
     template<class T>
-    void deserialize(const std::string& key, glm::detail::tmat2x2<T>& data);
+    void deserialize(const std::string& key, glm::detail::tmat2x2<T, glm::defaultp>& data);
 
     /**
      * \brief  Deserialize any Serializable object
@@ -244,26 +244,26 @@ private:
 };
 
 template<class T>
-void IvwDeserializer::deserialize(const std::string& key, glm::detail::tvec4<T>& data) {
+void IvwDeserializer::deserialize(const std::string& key, glm::detail::tvec4<T, glm::defaultp>& data) {
     deserializeVector(key, data);
 }
 template<class T>
-void IvwDeserializer::deserialize(const std::string& key, glm::detail::tvec3<T>& data) {
+void IvwDeserializer::deserialize(const std::string& key, glm::detail::tvec3<T, glm::defaultp>& data) {
     deserializeVector(key, data);
 }
 template<class T>
-void IvwDeserializer::deserialize(const std::string& key, glm::detail::tvec2<T>& data) {
+void IvwDeserializer::deserialize(const std::string& key, glm::detail::tvec2<T, glm::defaultp>& data) {
     deserializeVector(key, data);
 }
 
 template<class T>
-void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat4x4<T>& data) {
+void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat4x4<T, glm::defaultp>& data) {
     try {
         TxElement* keyNode = rootElement_->FirstChildElement(key);
         NodeSwitch tempNodeSwitch(*this, keyNode);
-        glm::detail::tvec4<T> rowVec;
+        glm::detail::tvec4<T, glm::defaultp> rowVec;
 
-        for (size_t i = 0; i < 4; i++) {
+        for (glm::length_t i = 0; i < 4; i++) {
             std::stringstream key;
             key << "row" << i;
             deserializeVector(key.str(), rowVec);
@@ -275,13 +275,13 @@ void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat4x4<T
     } catch (TxException&) {}
 }
 template<class T>
-void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat3x3<T>& data) {
+void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat3x3<T, glm::defaultp>& data) {
     try {
         TxElement* keyNode = rootElement_->FirstChildElement(key);
         NodeSwitch tempNodeSwitch(*this, keyNode);
-        glm::detail::tvec3<T> rowVec;
+        glm::detail::tvec3<T, glm::defaultp> rowVec;
 
-        for (size_t i = 0; i < 3; i++) {
+        for (glm::length_t i = 0; i < 3; i++) {
             std::stringstream key;
             key << "row" << i;
             deserializeVector(key.str(), rowVec);
@@ -292,13 +292,13 @@ void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat3x3<T
     } catch (TxException&) {}
 }
 template<class T>
-void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat2x2<T>& data) {
+void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat2x2<T, glm::defaultp>& data) {
     try {
         TxElement* keyNode = rootElement_->FirstChildElement(key);
         NodeSwitch tempNodeSwitch(*this, keyNode);
-        glm::detail::tvec2<T> rowVec;
+        glm::detail::tvec2<T, glm::defaultp> rowVec;
 
-        for (size_t i = 0; i < 2; i++) {
+        for (glm::length_t i = 0; i < 2; i++) {
             std::stringstream key;
             key << "row" << i;
             deserializeVector(key.str(), rowVec);

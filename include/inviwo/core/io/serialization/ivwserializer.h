@@ -77,18 +77,18 @@ public:
 
     // glm vector types
     template<class T>
-    void serialize(const std::string& key, const glm::detail::tvec4<T>& data);
+    void serialize(const std::string& key, const glm::detail::tvec4<T, glm::defaultp>& data);
     template<class T>
-    void serialize(const std::string& key, const glm::detail::tvec3<T>& data);
+    void serialize(const std::string& key, const glm::detail::tvec3<T, glm::defaultp>& data);
     template<class T>
-    void serialize(const std::string& key, const glm::detail::tvec2<T>& data);
+    void serialize(const std::string& key, const glm::detail::tvec2<T, glm::defaultp>& data);
     // glm matrix types
     template<class T>
-    void serialize(const std::string& key, const glm::detail::tmat4x4<T>& data);
+    void serialize(const std::string& key, const glm::detail::tmat4x4<T, glm::defaultp>& data);
     template<class T>
-    void serialize(const std::string& key, const glm::detail::tmat3x3<T>& data);
+    void serialize(const std::string& key, const glm::detail::tmat3x3<T, glm::defaultp>& data);
     template<class T>
-    void serialize(const std::string& key, const glm::detail::tmat2x2<T>& data);
+    void serialize(const std::string& key, const glm::detail::tmat2x2<T, glm::defaultp>& data);
 
     // serializable classes
     void serialize(const std::string& key, const IvwSerializable& sObj);
@@ -175,61 +175,61 @@ inline void IvwSerializer::serializePrimitives(const std::string& key, const T& 
 }
 
 template<class T>
-void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec4<T>& data) {
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec4<T, glm::defaultp>& data) {
     serializeVector(key, data);
 }
 template<class T>
-void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec3<T>& data) {
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec3<T, glm::defaultp>& data) {
     serializeVector(key, data);
 }
 template<class T>
-void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec2<T>& data) {
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tvec2<T, glm::defaultp>& data) {
     serializeVector(key, data);
 }
 
 template<class T>
-void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat4x4<T>& data) {
-    glm::detail::tvec4<T> rowVec;
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat4x4<T, glm::defaultp>& data) {
+    glm::detail::tvec4<T, glm::defaultp> rowVec;
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
     NodeSwitch tempNodeSwitch(*this, newNode);
 
-    for (size_t i=0; i<4; i++) {
+    for (glm::length_t i=0; i<4; i++) {
         std::stringstream key;
         key << "row" << i;
-        rowVec = glm::detail::tvec4<T>(data[i][0], data[i][1], data[i][2], data[i][3]);
+        rowVec = glm::detail::tvec4<T, glm::defaultp>(data[i][0], data[i][1], data[i][2], data[i][3]);
         serializeVector(key.str(), rowVec);
     }
 
     delete newNode;
 }
 template<class T>
-void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat3x3<T>& data) {
-    glm::detail::tvec3<T> rowVec;
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat3x3<T, glm::defaultp>& data) {
+    glm::detail::tvec3<T, glm::defaultp> rowVec;
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
     NodeSwitch tempNodeSwitch(*this, newNode);
 
-    for (size_t i=0; i<3; i++) {
+    for (glm::length_t i=0; i<3; i++) {
         std::stringstream key;
         key << "row" << i;
-        rowVec = glm::detail::tvec3<T>(data[i][0], data[i][1], data[i][2]);
+        rowVec = glm::detail::tvec3<T, glm::defaultp>(data[i][0], data[i][1], data[i][2]);
         serializeVector(key.str(), rowVec);
     }
 
     delete newNode;
 }
 template<class T>
-void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat2x2<T>& data) {
-    glm::detail::tvec2<T> rowVec;
+void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat2x2<T, glm::defaultp>& data) {
+    glm::detail::tvec2<T, glm::defaultp> rowVec;
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
     NodeSwitch tempNodeSwitch(*this, newNode);
 
-    for (size_t i=0; i<2; i++) {
+    for (glm::length_t i=0; i<2; i++) {
         std::stringstream key;
         key << "row" << i;
-        rowVec = glm::detail::tvec2<T>(data[i][0], data[i][1]);
+        rowVec = glm::detail::tvec2<T, glm::defaultp>(data[i][0], data[i][1]);
         serializeVector(key.str(), rowVec);
     }
 

@@ -74,11 +74,13 @@
 #include <inviwo/core/common/inviwocommondefines.h>
 
 // include glm
+#ifndef GLM_SWIZZLE
+#define GLM_SWIZZLE
+#endif
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
-#include <glm/gtc/quaternion.hpp>
+#include <glm/gtc/type_precision.hpp>
 #include <glm/gtx/quaternion.hpp>
-#include <glm/core/type.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/euler_angles.hpp>
