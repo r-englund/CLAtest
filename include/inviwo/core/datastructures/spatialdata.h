@@ -525,23 +525,23 @@ const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getTextureToWorldMatri
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToTextureMatrix() const {
-    return glm::inverse(getDimensionMatrix());
+    return glm::inverse<float, glm::defaultp>(getDimensionMatrix());
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToModelMatrix() const {
-    return glm::inverse(getDimensionMatrix())*getBasisMatrix();
+    return glm::inverse<float, glm::defaultp>(getDimensionMatrix())*getBasisMatrix();
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToWorldMatrix() const {
-    return glm::inverse(getDimensionMatrix())*getBasisMatrix()*getWorldMatrix();
+    return glm::inverse<float, glm::defaultp>(getDimensionMatrix())*getBasisMatrix()*getWorldMatrix();
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToTextureMatrix() const {
-    return glm::inverse(getBasisMatrix());
+    return glm::inverse<float, glm::defaultp>(getBasisMatrix());
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToIndexMatrix() const {
-    return glm::inverse(getBasisMatrix())*getDimensionMatrix();
+    return glm::inverse<float, glm::defaultp>(getBasisMatrix())*getDimensionMatrix();
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToWorldMatrix() const {
@@ -549,15 +549,15 @@ const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToWorldMatrix(
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToTextureMatrix() const {
-    return glm::inverse(getWorldMatrix())*glm::inverse(getBasisMatrix());
+    return glm::inverse<float, glm::defaultp>(getWorldMatrix())*glm::inverse<float, glm::defaultp>(getBasisMatrix());
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToIndexMatrix() const {
-    return glm::inverse(getWorldMatrix())*glm::inverse(getBasisMatrix())*getDimensionMatrix();
+    return glm::inverse<float, glm::defaultp>(getWorldMatrix())*glm::inverse<float, glm::defaultp>(getBasisMatrix())*getDimensionMatrix();
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToModelMatrix() const {
-    return glm::inverse(getWorldMatrix());
+    return glm::inverse<float, glm::defaultp>(getWorldMatrix());
 }
 
 
