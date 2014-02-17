@@ -61,7 +61,7 @@ public:
 protected:
     virtual void process();
 
-    void coordinatePlaneChanged();
+    void planeSettingsChanged();
     void tfMappingEnabledChanged();
     void volumeDimensionChanged();
 
@@ -70,6 +70,8 @@ private:
     ImageOutport outport_;
 
     IntOptionProperty coordinatePlane_;  // CoordinatePlane enum (Cannot serialize/deserialize enums so we use an int and cast it)
+    BoolProperty flipHorizontal_;
+    BoolProperty flipVertical_;
     IntProperty sliceNumber_;
 
     BoolProperty tfMappingEnabled_;

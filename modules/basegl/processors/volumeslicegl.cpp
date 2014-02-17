@@ -44,6 +44,8 @@ VolumeSliceGL::VolumeSliceGL()
     inport_("volume.inport"),
     outport_("image.outport", COLOR_ONLY),
     coordinatePlane_("coordinatePlane", "Coordinate Plane"),
+    flipHorizontal_("flipHorizontal", "Flip Horizontal View", false),
+    flipVertical_("flipVertical", "Flip Vertical View", false),
     sliceNumber_("sliceNumber", "Slice Number", 1, 1, 256),
     tfMappingEnabled_("tfMappingEnabled", "Enable Transfer Function", true),
     transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_),
@@ -56,8 +58,13 @@ VolumeSliceGL::VolumeSliceGL()
     coordinatePlane_.addOption("xz", "XZ Plane", XZ);
     coordinatePlane_.addOption("yz", "YZ Plane", YZ);
     coordinatePlane_.set(XY);
-    coordinatePlane_.onChange(this, &VolumeSliceGL::coordinatePlaneChanged);
+    coordinatePlane_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
     addProperty(coordinatePlane_);
+
+    flipHorizontal_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
+    addProperty(flipHorizontal_);
+    flipVertical_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
+    addProperty(flipVertical_);
 
     addProperty(sliceNumber_);
 
@@ -74,7 +81,7 @@ VolumeSliceGL::~VolumeSliceGL() {}
 void VolumeSliceGL::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader("volumeslice.frag", false);
-    coordinatePlaneChanged();
+    planeSettingsChanged();
     tfMappingEnabledChanged();
     volumeDimensionChanged();
 }
@@ -122,18 +129,21 @@ void VolumeSliceGL::process(){
     deactivateCurrentTarget();
 }
 
-void VolumeSliceGL::coordinatePlaneChanged(){
+void VolumeSliceGL::planeSettingsChanged(){
+    std::string fH = (flipHorizontal_.get() ? "1.0-" : "");
+    std::string fV = (flipVertical_.get() ? "1.0-" : "");
+
     if (shader_) {
         switch(coordinatePlane_.get())
         {
         case XY:
-            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "x,y,z");
+            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x," + fV + "y,z");
             break;
         case XZ:
-            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "x,z,y");
+            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x,z," + fV + "y");
             break;
         case YZ:
-            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "y,z,x");
+            shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fV + "y,z," + fH + "x");
             break;
         }
         shader_->rebuild();
