@@ -102,7 +102,7 @@ void sampleLight(LightSource lightSource, const float2 uv, float3* __restrict or
             *origin = transformPoint(lightSource.tm, localOrigin);
             
             // Directional light
-            float3 pointOnPlane = transformPoint(lightSource.tm, (float3)(localOrigin.xy, 0.1f));
+            float3 pointOnPlane = transformPoint(lightSource.tm, (float3)(localOrigin.xy, 1.0f));
             *wi = normalize(pointOnPlane-*origin);
             *pdf = lightSource.area; 
             *power = lightSource.radiance;
