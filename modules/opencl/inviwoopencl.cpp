@@ -453,6 +453,8 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
     switch (format) {
     case NOT_SPECIALIZED:
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case FLOAT16:
+        clFormat = cl::ImageFormat(CL_R, CL_HALF_FLOAT);  break;
     case FLOAT32:
         clFormat = cl::ImageFormat(CL_R, CL_FLOAT); break;
     case FLOAT64:
@@ -477,6 +479,8 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
         clFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32); break;
     case UINT64:
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec2FLOAT16:
+        clFormat = cl::ImageFormat(CL_RG, CL_HALF_FLOAT);  break;
     case Vec2FLOAT32:
         clFormat = cl::ImageFormat(CL_RG, CL_FLOAT);  break;
     case Vec2FLOAT64:
@@ -500,6 +504,8 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
     case Vec2UINT32:
         clFormat = cl::ImageFormat(CL_RG, CL_UNSIGNED_INT32);  break;
     case Vec2UINT64:
+        LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec3FLOAT16:
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
     case Vec3FLOAT32:
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
@@ -525,6 +531,8 @@ cl::ImageFormat dataFormatToCLImageFormat( inviwo::DataFormatId format )
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
     case Vec3UINT64:
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion"); break;
+    case Vec4FLOAT16:
+        clFormat = cl::ImageFormat(CL_RGBA, CL_HALF_FLOAT);  break;
     case Vec4FLOAT32:
         clFormat = cl::ImageFormat(CL_RGBA, CL_FLOAT);  break;
     case Vec4FLOAT64:
