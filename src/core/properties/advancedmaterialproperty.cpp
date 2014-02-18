@@ -78,7 +78,7 @@ AdvancedMaterialProperty::~AdvancedMaterialProperty() {}
 
 vec4 AdvancedMaterialProperty::getCombinedMaterialParameters() const {
     ShadingFunctionEnum::Enum shadingType = getPhaseFunctionEnum();
-    vec4 scaledMaterial = vec4(getIndexOfRefractionTerm(1.f, indexOfRefractionProp.get()), roughnessProp.get(), anisotropyProp.get(), 0.f);
+    vec4 scaledMaterial(getIndexOfRefractionTerm(1.f, indexOfRefractionProp.get()), roughnessProp.get(), anisotropyProp.get(), 0.f);
 
     if (shadingType == ShadingFunctionEnum::HENYEY_GREENSTEIN) {
         //scaledMaterial.z = anisotropyProp_.get();
