@@ -54,8 +54,12 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    virtual void* getData();
-    virtual const void* getData() const;
+    void* getData();
+    const void* getData() const;
+
+    virtual void* getData(size_t) = 0;
+    virtual const void* getData(size_t) const = 0;
+
     /**
      * \brief Takes ownership of data pointer
      *

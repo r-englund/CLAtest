@@ -71,7 +71,11 @@ public:
     virtual void deinitialize();
     virtual VolumeRAMPrecision<T>* clone() const;
 
-    virtual void setDimension(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(); }
+    using VolumeRAM::getData;
+    void* getData(size_t);
+    const void* getData(size_t) const;
+
+    void setDimension(uvec3 dimensions);
 
     void setValueFromSingleFloat(const uvec3& pos, float val);
     void setValueFromVec2Float(const uvec3& pos, vec2 val);
@@ -150,6 +154,23 @@ void VolumeRAMPrecision<T>::performOperation(DataOperation* dop) const {
 template<typename T, size_t B>
 void VolumeRAMCustomPrecision<T,B>::performOperation(DataOperation* dop) const {
     executeOperationOnVolumeRAMPrecision<T, B>(dop);
+}
+
+template<typename T>
+void* VolumeRAMPrecision<T>::getData(size_t pos){
+    return static_cast<T*>(data_)+pos;
+}
+
+template<typename T>
+const void* VolumeRAMPrecision<T>::getData(size_t pos) const{
+    return const_cast<const T*>(static_cast<T*>(data_))+pos;
+}
+
+template<typename T>
+void VolumeRAMPrecision<T>::setDimension(uvec3 dimensions) { 
+    dimensions_ = dimensions; 
+    deinitialize(); 
+    initialize(); 
 }
 
 template<typename T>
