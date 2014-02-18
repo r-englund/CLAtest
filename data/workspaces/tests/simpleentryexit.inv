@@ -38,7 +38,7 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FileProperty" identifier="volumeFileName" displayName="Volume file name">
+                <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <url content="../../volumes/hydrogenatom.dat" />
                 </Property>
             </Properties>
@@ -255,7 +255,7 @@
     </Processors>
     <Connections>
         <Connection>
-            <OutPort identifier="volume">
+            <OutPort identifier="data">
                 <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume.inport">

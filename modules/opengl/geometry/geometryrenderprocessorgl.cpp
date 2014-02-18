@@ -80,7 +80,6 @@ void GeometryRenderProcessorGL::process() {
     if(renderers_.empty()) {
         return;
     }
-    glEnable(GL_CULL_FACE); 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
@@ -88,21 +87,23 @@ void GeometryRenderProcessorGL::process() {
     glPushMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
 
-
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glDepthMask(GL_TRUE);
     activateAndClearTarget(outport_);
-    glCullFace(GL_BACK);
 
     for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
         (*it)->render();
     }
 
     deactivateCurrentTarget();
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
 
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
-
-    glDisable(GL_CULL_FACE);
 }
 
 void GeometryRenderProcessorGL::centerViewOnGeometry() {
