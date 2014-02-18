@@ -66,8 +66,8 @@ public:
                              PropertySemantics semantics = PropertySemantics::Default);
     virtual ~AdvancedMaterialProperty();
 
-    vec4 getCombinedMaterialParameters();
-    ShadingFunctionEnum::Enum getPhaseFunctionEnum();
+    vec4 getCombinedMaterialParameters() const;
+    ShadingFunctionEnum::Enum getPhaseFunctionEnum() const;
 
     virtual void phaseFunctionChanged();
     std::string getGroupId() const { return "materialProperties"; }

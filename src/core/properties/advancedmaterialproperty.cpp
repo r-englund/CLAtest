@@ -76,7 +76,7 @@ AdvancedMaterialProperty::AdvancedMaterialProperty(std::string identifier, std::
 AdvancedMaterialProperty::~AdvancedMaterialProperty() {}
 
 
-vec4 AdvancedMaterialProperty::getCombinedMaterialParameters() {
+vec4 AdvancedMaterialProperty::getCombinedMaterialParameters() const {
     ShadingFunctionEnum::Enum shadingType = getPhaseFunctionEnum();
     vec4 scaledMaterial = vec4(getIndexOfRefractionTerm(1.f, indexOfRefractionProp.get()), roughnessProp.get(), anisotropyProp.get(), 0.f);
 
@@ -144,7 +144,7 @@ void AdvancedMaterialProperty::phaseFunctionChanged() {
     propertyModified();
 }
 
-ShadingFunctionEnum::Enum AdvancedMaterialProperty::getPhaseFunctionEnum() {
+ShadingFunctionEnum::Enum AdvancedMaterialProperty::getPhaseFunctionEnum() const {
     const std::string& shadingFunction = phaseFunctionProp.get();
 
     if (shadingFunction == "HenyeyGreenstein") {
