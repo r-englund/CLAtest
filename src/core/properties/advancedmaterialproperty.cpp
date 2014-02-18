@@ -93,7 +93,9 @@ vec4 AdvancedMaterialProperty::getCombinedMaterialParameters() const {
         scaledMaterial.y = WardParameterMapping(roughnessProp.get());
     } else if (shadingType == ShadingFunctionEnum::ABC_MICROFACET) {
         // TODO: Use better parameter naming for this
-        scaledMaterial.yz = BCParameterMapping(vec2(roughnessProp.get(), anisotropyProp.get()));
+        vec2 bcParameter = BCParameterMapping(vec2(roughnessProp.get(), anisotropyProp.get()));
+        scaledMaterial.y = bcParameter.x;
+        scaledMaterial.z = bcParameter.y;
     } else if (shadingType == ShadingFunctionEnum::ASHIKHMIN) {
         scaledMaterial.y = roughnessToShininess(roughnessProp.get());
     } else if (shadingType == ShadingFunctionEnum::MIX) {
