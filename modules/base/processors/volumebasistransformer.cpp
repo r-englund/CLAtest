@@ -73,6 +73,7 @@ void VolumeBasisTransformer::process() {
             orgBasisAndOffset_ = in->getBasisAndOffset();
 
             //TODO: Can't set these values as deserialization might already have done that.
+            //Also not that glm::angle always return radians from now on.
             /*vec3 a(orgBasisAndOffset_[0]);
             vec3 b(orgBasisAndOffset_[1]);
             vec3 c(orgBasisAndOffset_[2]);
